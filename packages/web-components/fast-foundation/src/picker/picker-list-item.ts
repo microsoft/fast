@@ -87,6 +87,31 @@ export class PickerListItem extends FoundationElement {
         }
     }
 
+    public handleItemKeyDown = (e: KeyboardEvent): boolean => {
+        if (e.defaultPrevented) {
+            return false;
+        }
+
+        if (e.key === "Enter") {
+            this.handleItemInvoke();
+            return false;
+        }
+
+        return true;
+    };
+
+    public handleItemClick = (e: MouseEvent): boolean => {
+        if (e.defaultPrevented) {
+            return false;
+        }
+        this.handleItemInvoke();
+        return false;
+    };
+
+    private handleItemInvoke = (): void => {
+        this.$emit("pickeriteminvoked");
+    };
+
     private updateView(): void {
         this.disconnectView();
 

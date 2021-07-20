@@ -6,8 +6,8 @@ import {
     RepeatDirective,
     ViewTemplate,
 } from "@microsoft/fast-element";
-import { FoundationElement } from "../foundation-element";
 import uniqueId from "lodash-es/uniqueId";
+import { FoundationElement } from "../foundation-element";
 import {
     AnchoredRegion,
     AnchoredRegionConfig,
@@ -15,6 +15,8 @@ import {
 } from "../anchored-region";
 import type { PickerMenu } from "./picker-menu";
 import type { PickerList } from "./picker-list";
+import { PickerMenuOption } from "./picker-menu-option";
+import { PickerListItem } from "./picker-list-item";
 
 /**
  *
@@ -106,8 +108,8 @@ export class Picker extends FoundationElement {
     @attr({ attribute: "label" })
     public label: string;
     private labelChanged(): void {
-        if (this.$fastController.isConnected && this.selectedList !== undefined) {
-            this.selectedList.setAttribute("label", this.label);
+        if (this.$fastController.isConnected && this.listElement !== undefined) {
+            this.listElement.setAttribute("label", this.label);
         }
     }
 
@@ -121,8 +123,8 @@ export class Picker extends FoundationElement {
     @attr({ attribute: "labelledby" })
     public labelledby: string;
     private labelledbyChanged(): void {
-        if (this.$fastController.isConnected && this.selectedList !== undefined) {
-            this.selectedList.setAttribute("labelledby", this.labelledby);
+        if (this.$fastController.isConnected && this.listElement !== undefined) {
+            this.listElement.setAttribute("labelledby", this.labelledby);
         }
     }
 
@@ -232,8 +234,8 @@ export class Picker extends FoundationElement {
     public query: string;
     private queryChanged(): void {
         if (this.$fastController.isConnected) {
-            if (this.selectedList.inputElement.value !== this.query) {
-                this.selectedList.inputElement.value = this.query;
+            if (this.listElement.inputElement.value !== this.query) {
+                this.listElement.inputElement.value = this.query;
             }
             this.$emit("querychange", { bubbles: false });
         }
@@ -330,7 +332,7 @@ export class Picker extends FoundationElement {
      *
      * @internal
      */
-    public selectedList: PickerList;
+    public listElement: PickerList;
 
     /**
      * reference to the menu
@@ -352,7 +354,7 @@ export class Picker extends FoundationElement {
      * @internal
      */
     @observable
-    public selectedOptions: string[] = [];
+    public selectedItems: string[] = [];
 
     protected hasFocus = false;
 
@@ -375,10 +377,10 @@ export class Picker extends FoundationElement {
             this.optionsList = this.options.split(",");
         }
 
-        this.selectedList = document.createElement(this.selectedlisttag) as PickerList;
-        this.selectedList.label = this.label;
-        this.selectedList.labelledby = this.labelledby;
-        this.appendChild(this.selectedList);
+        this.listElement = document.createElement(this.selectedlisttag) as PickerList;
+        this.listElement.label = this.label;
+        this.listElement.labelledby = this.labelledby;
+        this.appendChild(this.listElement);
 
         const match: string = this.pickermenutag.toUpperCase();
         this.menuElement = Array.from(this.children).find((element: HTMLElement) => {
@@ -404,27 +406,22 @@ export class Picker extends FoundationElement {
     public disconnectedCallback() {
         super.disconnectedCallback();
         this.toggleFlyout(false);
-        this.selectedList.inputElement.removeEventListener("input", this.handleTextInput);
-        this.selectedList.inputElement.removeEventListener(
-            "click",
-            this.handleInputClick
-        );
+        this.listElement.inputElement.removeEventListener("input", this.handleTextInput);
+        this.listElement.inputElement.removeEventListener("click", this.handleInputClick);
     }
 
     private initialize(): void {
-        console.debug("initialize");
-
         this.updateListItemTemplate();
         this.updateOptionTemplate();
 
         this.itemsRepeatBehavior = new RepeatDirective(
-            x => x.selectedOptions,
+            x => x.selectedItems,
             x => x.activeListItemTemplate,
             { positioning: true }
-        ).createBehavior(this.selectedList.itemsPlaceholderElement);
+        ).createBehavior(this.listElement.itemsPlaceholderElement);
 
-        this.selectedList.inputElement.addEventListener("input", this.handleTextInput);
-        this.selectedList.inputElement.addEventListener("click", this.handleInputClick);
+        this.listElement.inputElement.addEventListener("input", this.handleTextInput);
+        this.listElement.inputElement.addEventListener("click", this.handleInputClick);
         this.$fastController.addBehaviors([this.itemsRepeatBehavior!]);
 
         this.menuElement.suggestionsAvailableText = this.suggestionsAvailableText;
@@ -449,7 +446,7 @@ export class Picker extends FoundationElement {
             return;
         }
 
-        if (open && document.activeElement === this.selectedList.inputElement) {
+        if (open && document.activeElement === this.listElement.inputElement) {
             this.flyoutOpen = open;
             DOM.queueUpdate(() => {
                 if (this.menuElement !== undefined) {
@@ -467,7 +464,7 @@ export class Picker extends FoundationElement {
     }
 
     private handleTextInput = (e: InputEvent): void => {
-        this.query = this.selectedList.inputElement.value;
+        this.query = this.listElement.inputElement.value;
     };
 
     private handleInputClick = (e: MouseEvent): void => {
@@ -552,7 +549,7 @@ export class Picker extends FoundationElement {
             }
 
             case "ArrowRight": {
-                if (document.activeElement !== this.selectedList.inputElement) {
+                if (document.activeElement !== this.listElement.inputElement) {
                     this.incrementFocusedItem(1);
                     return false;
                 }
@@ -561,7 +558,7 @@ export class Picker extends FoundationElement {
             }
 
             case "ArrowLeft": {
-                if (this.selectedList.inputElement.selectionStart === 0) {
+                if (this.listElement.inputElement.selectionStart === 0) {
                     this.incrementFocusedItem(-1);
                     return false;
                 }
@@ -575,10 +572,10 @@ export class Picker extends FoundationElement {
                     return true;
                 }
 
-                if (document.activeElement === this.selectedList.inputElement) {
-                    if (this.selectedList.inputElement.selectionStart === 0) {
-                        this.selection = this.selectedOptions
-                            .slice(0, this.selectedOptions.length - 1)
+                if (document.activeElement === this.listElement.inputElement) {
+                    if (this.listElement.inputElement.selectionStart === 0) {
+                        this.selection = this.selectedItems
+                            .slice(0, this.selectedItems.length - 1)
                             .toString();
                         this.toggleFlyout(false);
                         return false;
@@ -587,14 +584,14 @@ export class Picker extends FoundationElement {
                     return true;
                 }
 
-                const selectedItems: Element[] = Array.from(this.selectedList.children);
+                const selectedItems: Element[] = Array.from(this.listElement.children);
                 const currentFocusedItemIndex: number = selectedItems.indexOf(
                     document.activeElement
                 );
 
                 if (currentFocusedItemIndex > -1) {
                     // delete currently focused item
-                    this.selection = this.selectedOptions
+                    this.selection = this.selectedItems
                         .splice(currentFocusedItemIndex, 1)
                         .toString();
                     DOM.queueUpdate(() => {
@@ -633,37 +630,6 @@ export class Picker extends FoundationElement {
         return false;
     };
 
-    public handleOptionClick = (e: MouseEvent, value: string): boolean => {
-        if (e.defaultPrevented) {
-            return false;
-        }
-        this.selection = `${this.selection}${this.selection === "" ? "" : ","}${value}`;
-        this.toggleFlyout(false);
-        this.selectedList.inputElement.value = "";
-        return false;
-    };
-
-    public handleItemKeyDown = (e: KeyboardEvent, itemIndex: number): boolean => {
-        if (e.defaultPrevented) {
-            return false;
-        }
-
-        if (e.key === "Enter") {
-            this.handleItemInvoke(itemIndex);
-            return false;
-        }
-
-        return true;
-    };
-
-    public handleItemClick = (e: MouseEvent, itemIndex: number): boolean => {
-        if (e.defaultPrevented) {
-            return false;
-        }
-        this.handleItemInvoke(itemIndex);
-        return false;
-    };
-
     public updatePosition = (): void => {
         if (this.region !== undefined) {
             this.region.update();
@@ -678,12 +644,12 @@ export class Picker extends FoundationElement {
     };
 
     public handleSelectionChange(): void {
-        if (this.selectedOptions.toString() === this.selection) {
+        if (this.selectedItems.toString() === this.selection) {
             return;
         }
 
         //TODO: trim white space?
-        this.selectedOptions = this.selection === "" ? [] : this.selection.split(",");
+        this.selectedItems = this.selection === "" ? [] : this.selection.split(",");
 
         this.checkMaxItems();
         this.$emit("selectionchange", { bubbles: false });
@@ -699,36 +665,68 @@ export class Picker extends FoundationElement {
             return;
         }
         this.region.viewportElement = document.body;
-        this.region.anchorElement = this.selectedList.inputElement;
+        this.region.anchorElement = this.listElement.inputElement;
     };
 
     private checkMaxItems = (): void => {
-        if (this.selectedList.inputElement === undefined) {
+        if (this.listElement.inputElement === undefined) {
             return;
         }
         if (
             this.maxSelected !== undefined &&
-            this.selectedOptions.length >= this.maxSelected
+            this.selectedItems.length >= this.maxSelected
         ) {
-            this.selectedList.inputElement.hidden = true;
+            this.listElement.inputElement.hidden = true;
         } else {
-            this.selectedList.inputElement.hidden = false;
+            this.listElement.inputElement.hidden = false;
         }
     };
 
-    private handleItemInvoke = (itemIndex: number): void => {
-        const newSelection: string[] = this.selectedOptions.slice();
-        newSelection.splice(itemIndex, 1);
-        this.selection = newSelection.toString();
-        DOM.queueUpdate(() => this.incrementFocusedItem(0));
+    public handleItemInvoke = (e: Event): boolean => {
+        if (e.defaultPrevented) {
+            return false;
+        }
+        if (e.target instanceof PickerListItem) {
+            const listItems: Element[] = Array.from(
+                this.listElement.querySelectorAll("[role='listitem']")
+            );
+            const itemIndex: number = listItems.indexOf(e.target as Element);
+            if (itemIndex !== -1) {
+                const newSelection: string[] = this.selectedItems.slice();
+                newSelection.splice(itemIndex, 1);
+                this.selection = newSelection.toString();
+                DOM.queueUpdate(() => this.incrementFocusedItem(0));
+            }
+            return false;
+        }
+        return true;
+    };
+
+    public handleOptionInvoke = (e: Event): boolean => {
+        if (e.defaultPrevented) {
+            return false;
+        }
+
+        if (e.target instanceof PickerMenuOption) {
+            this.selection = `${this.selection}${this.selection === "" ? "" : ","}${
+                e.target.value
+            }`;
+            this.toggleFlyout(false);
+            this.listElement.inputElement.value = "";
+            return false;
+        }
+
+        const value: string = (e.target as PickerMenuOption).value;
+
+        return true;
     };
 
     private incrementFocusedItem(increment: number) {
         const selectedItems: Element[] = Array.from(
-            this.selectedList.querySelectorAll("[role='listitem']")
+            this.listElement.querySelectorAll("[role='listitem']")
         );
         if (selectedItems.length === 0) {
-            this.selectedList.inputElement.focus();
+            this.listElement.inputElement.focus();
             return;
         }
 
@@ -746,7 +744,7 @@ export class Picker extends FoundationElement {
                 Math.max(0, currentFocusedItemIndex + increment)
             );
             if (newFocusedItemIndex === selectedItems.length) {
-                this.selectedList.inputElement.focus();
+                this.listElement.inputElement.focus();
             } else {
                 (selectedItems[newFocusedItemIndex] as HTMLElement).focus();
             }
@@ -756,9 +754,9 @@ export class Picker extends FoundationElement {
     private disableMenu = (): void => {
         this.menuFocusIndex = -1;
         this.menuFocusOptionId = undefined;
-        this.selectedList?.inputElement?.removeAttribute("aria-activedescendant");
-        this.selectedList?.inputElement?.removeAttribute("aria-owns");
-        this.selectedList?.inputElement?.removeAttribute("aria-expanded");
+        this.listElement?.inputElement?.removeAttribute("aria-activedescendant");
+        this.listElement?.inputElement?.removeAttribute("aria-owns");
+        this.listElement?.inputElement?.removeAttribute("aria-expanded");
         //this.menuElement.scrollTo(0, 0);
     };
 
@@ -788,9 +786,9 @@ export class Picker extends FoundationElement {
 
         this.menuFocusOptionId = this.menuElement.optionElements[this.menuFocusIndex].id;
 
-        this.selectedList.inputElement.setAttribute("aria-owns", this.menuId);
-        this.selectedList.inputElement.setAttribute("aria-expanded", "true");
-        this.selectedList.inputElement.setAttribute(
+        this.listElement.inputElement.setAttribute("aria-owns", this.menuId);
+        this.listElement.inputElement.setAttribute("aria-expanded", "true");
+        this.listElement.inputElement.setAttribute(
             "aria-activedescendant",
             this.menuFocusOptionId
         );
@@ -803,7 +801,6 @@ export class Picker extends FoundationElement {
     };
 
     private updateListItemTemplate(): void {
-        console.debug("item template");
         this.activeListItemTemplate =
             this.listItemTemplate === undefined
                 ? this.defaultListItemTemplate
@@ -811,7 +808,6 @@ export class Picker extends FoundationElement {
     }
 
     private updateOptionTemplate(): void {
-        console.debug("option template");
         this.activeMenuOptionTemplate =
             this.menuOptionTemplate === undefined
                 ? this.defaultMenuOptionTemplate

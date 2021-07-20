@@ -6,13 +6,10 @@ import { PickerMenuOption } from "./picker-menu-option";
 import { PickerList } from "./picker-list";
 import { PickerListItem } from "./picker-list-item";
 
-function createListItemTemplate(context): ViewTemplate {
+function createDefaultListItemTemplate(context): ViewTemplate {
     const pickerListItemTag: string = context.tagFor(PickerListItem);
     return html`
     <${pickerListItemTag}
-        @click="${(x, c) => c.parent.handleItemClick(c.event as MouseEvent, c.index)}"
-        @keydown="${(x, c) =>
-            c.parent.handleItemKeyDown(c.event as KeyboardEvent, c.index)}"
         value="${x => x}"
         :contentsTemplate="${(x, c) => c.parent.listItemContentsTemplate}"
     >
@@ -20,11 +17,10 @@ function createListItemTemplate(context): ViewTemplate {
     `;
 }
 
-function createMenuOptionTemplate(context): ViewTemplate {
+function createDefaultMenuOptionTemplate(context): ViewTemplate {
     const pickerMenuOptionTag: string = context.tagFor(PickerMenuOption);
     return html`
     <${pickerMenuOptionTag}
-        @click="${(x, c) => c.parent.handleOptionClick(c.event as MouseEvent, x)}"
         value="${x => x}"
         :contentsTemplate="${(x, c) => c.parent.menuOptionContentsTemplate}"
     >
@@ -43,17 +39,21 @@ export const pickerTemplate: (context, definition) => ViewTemplate<Picker> = (
     const anchoredRegionTag: string = context.tagFor(AnchoredRegion);
     const pickerMenutag: string = context.tagFor(PickerMenu);
     const pickerListtag: string = context.tagFor(PickerList);
-    const listItemTemplate: ViewTemplate = createListItemTemplate(context);
-    const menuOptionTemplate: ViewTemplate = createMenuOptionTemplate(context);
+    const defaultListItemTemplate: ViewTemplate = createDefaultListItemTemplate(context);
+    const defaultMenuOptionTemplate: ViewTemplate = createDefaultMenuOptionTemplate(
+        context
+    );
     return html<Picker>`
         <template
             :selectedlisttag="${() => pickerListtag}"
             :pickermenutag="${() => pickerMenutag}"
-            :defaultListItemTemplate="${listItemTemplate}"
-            :defaultMenuOptionTemplate="${menuOptionTemplate}"
+            :defaultListItemTemplate="${defaultListItemTemplate}"
+            :defaultMenuOptionTemplate="${defaultMenuOptionTemplate}"
             @focusin="${(x, c) => x.handleFocusIn(c.event as FocusEvent)}"
             @focusout="${(x, c) => x.handleFocusOut(c.event as FocusEvent)}"
             @keydown="${(x, c) => x.handleKeyDown(c.event as KeyboardEvent)}"
+            @pickeriteminvoked="${(x, c) => x.handleItemInvoke(c.event as Event)}"
+            @pickeroptioninvoked="${(x, c) => x.handleOptionInvoke(c.event as Event)}"
         >
             <slot name="list-region"></slot>
 

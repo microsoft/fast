@@ -81,6 +81,18 @@ export class PickerMenuOption extends FoundationElement {
         }
     }
 
+    public handleOptionClick = (e: MouseEvent): boolean => {
+        if (e.defaultPrevented) {
+            return false;
+        }
+        this.handleOptionInvoked();
+        return false;
+    };
+
+    private handleOptionInvoked = (): void => {
+        this.$emit("pickeroptioninvoked");
+    };
+
     private updateView(): void {
         this.disconnectView();
 

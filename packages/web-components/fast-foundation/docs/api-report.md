@@ -1502,13 +1502,11 @@ export class Picker extends FoundationElement {
     // (undocumented)
     handleFocusOut: (e: FocusEvent) => boolean;
     // (undocumented)
-    handleItemClick: (e: MouseEvent, itemIndex: number) => boolean;
-    // (undocumented)
-    handleItemKeyDown: (e: KeyboardEvent, itemIndex: number) => boolean;
+    handleItemInvoke: (e: Event) => boolean;
     // (undocumented)
     handleKeyDown: (e: KeyboardEvent) => boolean;
     // (undocumented)
-    handleOptionClick: (e: MouseEvent, value: string) => boolean;
+    handleOptionInvoke: (e: Event) => boolean;
     // (undocumented)
     handleRegionLoaded: (e: Event) => void;
     // (undocumented)
@@ -1517,6 +1515,8 @@ export class Picker extends FoundationElement {
     protected hasFocus: boolean;
     label: string;
     labelledby: string;
+    // @internal
+    listElement: PickerList;
     // (undocumented)
     listItemContentsTemplate: ViewTemplate;
     listItemTemplate: ViewTemplate;
@@ -1543,12 +1543,10 @@ export class Picker extends FoundationElement {
     query: string;
     // @internal (undocumented)
     region: AnchoredRegion;
-    // @internal
-    selectedList: PickerList;
+    // @internal (undocumented)
+    selectedItems: string[];
     // @internal (undocumented)
     selectedlisttag: string;
-    // @internal (undocumented)
-    selectedOptions: string[];
     selection: string;
     // @internal
     showLoading: boolean;
@@ -1583,6 +1581,10 @@ export class PickerListItem extends FoundationElement {
     handleFocusin(e: FocusEvent): void;
     // (undocumented)
     handleFocusout(e: FocusEvent): void;
+    // (undocumented)
+    handleItemClick: (e: MouseEvent) => boolean;
+    // (undocumented)
+    handleItemKeyDown: (e: KeyboardEvent) => boolean;
     value: string;
 }
 
@@ -1626,6 +1628,8 @@ export class PickerMenuOption extends FoundationElement {
     handleFocusin(e: FocusEvent): void;
     // (undocumented)
     handleFocusout(e: FocusEvent): void;
+    // (undocumented)
+    handleOptionClick: (e: MouseEvent) => boolean;
     value: string;
 }
 

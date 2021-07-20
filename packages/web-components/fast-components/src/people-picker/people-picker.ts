@@ -348,7 +348,7 @@ export class PeoplePicker extends FoundationElement {
 
             if (
                 this.defaultSelection &&
-                !this.picker.selectedOptions.length &&
+                !this.picker.selectedItems.length &&
                 !this.defaultSelectedUsers
             ) {
                 this.defaultSelectedUsers = await getUsersForUserIds(
@@ -445,7 +445,7 @@ export class PeoplePicker extends FoundationElement {
         // check if people need to be updated
         // ensuring people list is displayed
         // find ids from selected people
-        const idFilter = this.picker.selectedOptions;
+        const idFilter = this.picker.selectedItems;
 
         if (people) {
             // filter id's
