@@ -104,15 +104,11 @@ addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
             .querySelectorAll("[id^=anchor-menu-many]")
             .forEach((el: HTMLButtonElement) => {
                 el.addEventListener("click", (e: MouseEvent) => {
-                    const menuNum = el.id.substr(16, el.id.length - 16);
+                    const menuNum = el.id.substr(16);
                     const menu: FoundationAnchoredRegion = document.getElementById(
                         `menu-many${menuNum}`
                     ) as FoundationAnchoredRegion;
-                    if (menu.style.display === "none") {
-                        menu.style.display = "";
-                    } else {
-                        menu.style.display = "none";
-                    }
+                    menu.style.display = menu.style.display === "none" ? "" : "none";
                 });
             });
     }
