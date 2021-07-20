@@ -16,6 +16,8 @@ import {
     focusStrokeInner,
     focusStrokeOuter,
     focusStrokeWidth,
+    foregroundOnAccentActive,
+    foregroundOnAccentHover,
     foregroundOnAccentRest,
     neutralFillStealthRest,
     neutralForegroundRest,
@@ -82,9 +84,17 @@ export const flipperStyles: (
         border-color: ${neutralStrokeRest};
     }
 
+    :host(:hover) {
+        color: ${foregroundOnAccentHover};
+    }
+
     :host(:hover)::before {
         background: ${accentFillHover};
         border-color: ${accentFillHover};
+    }
+
+    :host(:active) {
+        color: ${foregroundOnAccentActive};
     }
 
     :host(:active)::before {

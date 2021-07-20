@@ -2,6 +2,200 @@
   "name": "@microsoft/fast-tooling",
   "entries": [
     {
+      "date": "Sun, 18 Jul 2021 07:16:22 GMT",
+      "tag": "@microsoft/fast-tooling_v0.25.0",
+      "version": "0.25.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "update the exporting of services and web components in tooling and match the new pathing in sites",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "bc681d48fb43349f8d0808f44cc6b8e2d1011461",
+            "package": "@microsoft/fast-tooling"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-components to v2.2.3",
+            "author": "ben@platform5.ch",
+            "commit": "442a9ef1012dba49179fad629e4ba8aab312d8a7",
+            "package": "@microsoft/fast-tooling"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 15 Jul 2021 01:41:48 GMT",
+      "tag": "@microsoft/fast-tooling_v0.24.2",
+      "version": "0.24.2",
+      "comments": {
+        "none": [
+          {
+            "comment": "adding spec for image upload web component",
+            "author": "44823142+williamw2@users.noreply.github.com",
+            "commit": "9ff68c5c80e6ea04be1472b8d6bd31eb84ecc19c",
+            "package": "@microsoft/fast-tooling"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-foundation to v2.5.0",
+            "author": "chhol@microsoft.com",
+            "commit": "35773aadf50b51e3d64dd8969398d2c473d437ed",
+            "package": "@microsoft/fast-tooling"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 14 Jul 2021 07:15:36 GMT",
+      "tag": "@microsoft/fast-tooling_v0.24.1",
+      "version": "0.24.1",
+      "comments": {
+        "patch": [
+          {
+            "comment": "fix: spelling issue in HTML render layer",
+            "author": "44823142+williamw2@users.noreply.github.com",
+            "commit": "7f99c89ec67ef8d73de887e2ca5817a6e5ca561f",
+            "package": "@microsoft/fast-tooling"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 13 Jul 2021 07:14:52 GMT",
+      "tag": "@microsoft/fast-tooling_v0.24.0",
+      "version": "0.24.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "update the monaco adapter, html render and html render layer and react Form to update their stored schema dictionaries when the schema dictionary has new schemas added to it",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "826c8db2f28ba1df818c45e62cfeabebabd2d6e9",
+            "package": "@microsoft/fast-tooling"
+          },
+          {
+            "comment": "new schemas can be added to the schema dictionary in the MessageSystem",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "0edf0f4057906f07a8caaa74d313734438d9abed",
+            "package": "@microsoft/fast-tooling"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-components to v2.2.1",
+            "author": "ben@platform5.ch",
+            "commit": "76cb8ab887a58d1d5990359e08131407a3c607ba",
+            "package": "@microsoft/fast-tooling"
+          },
+          {
+            "comment": "Bump @microsoft/fast-foundation to v2.4.0",
+            "author": "roeisenb@microsoft.com",
+            "commit": "3a9f152446a1a9e0afd6fd84c808eba46839aeeb",
+            "package": "@microsoft/fast-tooling"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sun, 11 Jul 2021 07:15:10 GMT",
+      "tag": "@microsoft/fast-tooling_v0.23.7",
+      "version": "0.23.7",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Adding support for preview mode interaction logic to HTMLRender",
+            "author": "44823142+williamw2@users.noreply.github.com",
+            "commit": "34a67ea50ef4f538614b30d5248e63e908e9a95d",
+            "package": "@microsoft/fast-tooling"
+          }
+        ],
+        "none": [
+          {
+            "comment": "Bump @microsoft/fast-components to v2.2.0",
+            "author": "john.kreitlow@microsoft.com",
+            "commit": "d2694b4992c3787447597882397f588d701933a9",
+            "package": "@microsoft/fast-tooling"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 07 Jul 2021 07:19:51 GMT",
+      "tag": "@microsoft/fast-tooling_v0.23.6",
+      "version": "0.23.6",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-components to v2.2.0",
+            "author": "scomea@microsoft.com",
+            "commit": "ec7475de213ef4eb6a3964c902ae0fcf7657a640",
+            "package": "@microsoft/fast-tooling"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sun, 04 Jul 2021 07:15:28 GMT",
+      "tag": "@microsoft/fast-tooling_v0.23.5",
+      "version": "0.23.5",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-components to v2.1.0",
+            "author": "john.kreitlow@microsoft.com",
+            "commit": "3f9131d61d0b3149fc99d77db6e5fb1d0231a5d1",
+            "package": "@microsoft/fast-tooling"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 01 Jul 2021 07:15:57 GMT",
+      "tag": "@microsoft/fast-tooling_v0.23.4",
+      "version": "0.23.4",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-components to v2.0.2",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "77eb5ec9e41f14335c1fcc13b7c477605e0e3a8e",
+            "package": "@microsoft/fast-tooling"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 30 Jun 2021 07:19:09 GMT",
+      "tag": "@microsoft/fast-tooling_v0.23.3",
+      "version": "0.23.3",
+      "comments": {
+        "none": [
+          {
+            "comment": "Bump @microsoft/fast-components to v2.0.1",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "41b8432616afa284e2325913d7182a3b907fa789",
+            "package": "@microsoft/fast-tooling"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 29 Jun 2021 07:14:52 GMT",
+      "tag": "@microsoft/fast-tooling_v0.23.3",
+      "version": "0.23.3",
+      "comments": {
+        "patch": [
+          {
+            "comment": "update the CSS layout component to accept inline CSS string values",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "014d97a2d16e2a9a0d801503722e2e145f3fea46",
+            "package": "@microsoft/fast-tooling"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 25 Jun 2021 02:02:57 GMT",
       "tag": "@microsoft/fast-tooling_v0.23.2",
       "version": "0.23.2",

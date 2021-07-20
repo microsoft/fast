@@ -2,10 +2,16 @@ import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-
 import { Direction } from "@microsoft/fast-web-utilities";
 import { DataDictionary } from "@microsoft/fast-tooling";
 import { StandardLuminance } from "@microsoft/fast-components";
+import { DisplayMode } from "./utilities/shared";
 
 export enum FormId {
     component,
     designSystem,
+}
+
+export enum NavigationId {
+    navigation,
+    libraries,
 }
 
 /**
@@ -80,7 +86,17 @@ export interface ProjectFile {
     mobileFormVisible: boolean;
 
     /**
-     * The active form id
+     * The active navigation id for the left pane
+     */
+    activeNavigationId: NavigationId;
+
+    /**
+     * Libraries that have been added to the project
+     */
+    addedLibraries: string[];
+
+    /**
+     * The active form id for the right pane
      */
     activeFormId: FormId;
 
@@ -103,6 +119,11 @@ export interface ProjectFile {
      * The last mapped data dictionary to monaco editor value
      */
     lastMappedDataDictionaryToMonacoEditorHTMLValue: string;
+
+    /**
+     * The display mode
+     */
+    displayMode: DisplayMode;
 }
 
 export type CreatorManagedClasses = ManagedClasses<{}>;

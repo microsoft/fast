@@ -44,7 +44,9 @@ const { create } = DesignToken;
 // General tokens
 
 /** @public */
-export const bodyFont = create<string>("body-font").withDefault("Segoe UI, sans-serif");
+export const bodyFont = create<string>("body-font").withDefault(
+    'aktiv-grotesk, "Segoe UI", Arial, Helvetica, sans-serif'
+);
 /** @public */
 export const baseHeightMultiplier = create<number>("base-height-multiplier").withDefault(
     10
@@ -84,67 +86,67 @@ export const typeRampBaseLineHeight = create<string>(
 ).withDefault("20px");
 /** @public */
 export const typeRampMinus1FontSize = create<string>(
-    "type-ramp-minus1-font-size"
+    "type-ramp-minus-1-font-size"
 ).withDefault("12px");
 /** @public */
 export const typeRampMinus1LineHeight = create<string>(
-    "type-ramp-minus1-line-height"
+    "type-ramp-minus-1-line-height"
 ).withDefault("16px");
 /** @public */
 export const typeRampMinus2FontSize = create<string>(
-    "type-ramp-minus2-font-size"
+    "type-ramp-minus-2-font-size"
 ).withDefault("10px");
 /** @public */
 export const typeRampMinus2LineHeight = create<string>(
-    "type-ramp-minus2-line-height"
+    "type-ramp-minus-2-line-height"
 ).withDefault("16px");
 /** @public */
 export const typeRampPlus1FontSize = create<string>(
-    "type-ramp-plus1-font-size"
+    "type-ramp-plus-1-font-size"
 ).withDefault("16px");
 /** @public */
 export const typeRampPlus1LineHeight = create<string>(
-    "type-ramp-plus1-line-height"
+    "type-ramp-plus-1-line-height"
 ).withDefault("24px");
 /** @public */
 export const typeRampPlus2FontSize = create<string>(
-    "type-ramp-plus2-font-size"
+    "type-ramp-plus-2-font-size"
 ).withDefault("20px");
 /** @public */
 export const typeRampPlus2LineHeight = create<string>(
-    "type-ramp-plus2-line-height"
+    "type-ramp-plus-2-line-height"
 ).withDefault("28px");
 /** @public */
 export const typeRampPlus3FontSize = create<string>(
-    "type-ramp-plus3-font-size"
+    "type-ramp-plus-3-font-size"
 ).withDefault("28px");
 /** @public */
 export const typeRampPlus3LineHeight = create<string>(
-    "type-ramp-plus3-line-height"
+    "type-ramp-plus-3-line-height"
 ).withDefault("36px");
 /** @public */
 export const typeRampPlus4FontSize = create<string>(
-    "type-ramp-plus4-font-size"
+    "type-ramp-plus-4-font-size"
 ).withDefault("34px");
 /** @public */
 export const typeRampPlus4LineHeight = create<string>(
-    "type-ramp-plus4-line-height"
+    "type-ramp-plus-4-line-height"
 ).withDefault("44px");
 /** @public */
 export const typeRampPlus5FontSize = create<string>(
-    "type-ramp-plus5-font-size"
+    "type-ramp-plus-5-font-size"
 ).withDefault("46px");
 /** @public */
 export const typeRampPlus5LineHeight = create<string>(
-    "type-ramp-plus5-line-height"
+    "type-ramp-plus-5-line-height"
 ).withDefault("56px");
 /** @public */
 export const typeRampPlus6FontSize = create<string>(
-    "type-ramp-plus6-font-size"
+    "type-ramp-plus-6-font-size"
 ).withDefault("60px");
 /** @public */
 export const typeRampPlus6LineHeight = create<string>(
-    "type-ramp-plus6-line-height"
+    "type-ramp-plus-6-line-height"
 ).withDefault("72px");
 
 // Color recipe values
@@ -303,71 +305,24 @@ enum ContrastTarget {
     large = 7,
 }
 
-// Foreground On Accent
-const foregroundOnAccentByContrast = (contrast: number) => (
-    element: HTMLElement,
-    reference?: Swatch
-) => {
-    return foregroundOnAccentAlgorithm(
-        reference || fillColor.getValueFor(element),
-        contrast
-    );
-};
-/** @public */
-export const foregroundOnAccentRecipe = create<ColorRecipe>({
-    name: "foreground-on-accent-recipe",
-    cssCustomPropertyName: null,
-}).withDefault({
-    evaluate: (element: HTMLElement, reference?: Swatch): Swatch =>
-        foregroundOnAccentByContrast(ContrastTarget.normal)(element, reference),
-});
-/** @public */
-export const foregroundOnAccentLargeRecipe = create<ColorRecipe>({
-    name: "foreground-on-accent-large-recipe",
-    cssCustomPropertyName: null,
-}).withDefault({
-    evaluate: (element: HTMLElement, reference?: Swatch): Swatch =>
-        foregroundOnAccentByContrast(ContrastTarget.large)(element, reference),
-});
-
-/** @public */
-export const foregroundOnAccentRest = create<Swatch>(
-    "foreground-on-accent-rest"
-).withDefault((element: HTMLElement) =>
-    foregroundOnAccentRecipe.getValueFor(element).evaluate(element)
-);
-/** @public */
-export const foregroundOnAccentRestLarge = create<Swatch>(
-    "foreground-on-accent-rest-large"
-).withDefault((element: HTMLElement) =>
-    foregroundOnAccentLargeRecipe.getValueFor(element).evaluate(element)
-);
-
 // Accent Fill
-const accentFillByContrast = (contrast: number) => (
-    element: HTMLElement,
-    reference?: Swatch
-) =>
-    accentFillAlgorithm(
-        accentPalette.getValueFor(element),
-        neutralPalette.getValueFor(element),
-        reference || fillColor.getValueFor(element),
-        foregroundOnAccentRest.getValueFor(element),
-        contrast,
-        accentFillHoverDelta.getValueFor(element),
-        accentFillActiveDelta.getValueFor(element),
-        accentFillFocusDelta.getValueFor(element),
-        neutralFillRestDelta.getValueFor(element),
-        neutralFillHoverDelta.getValueFor(element),
-        neutralFillActiveDelta.getValueFor(element)
-    );
 /** @public */
 export const accentFillRecipe = create<InteractiveColorRecipe>({
     name: "accent-fill-recipe",
     cssCustomPropertyName: null,
 }).withDefault({
     evaluate: (element: HTMLElement, reference?: Swatch): InteractiveSwatchSet =>
-        accentFillByContrast(ContrastTarget.normal)(element, reference),
+        accentFillAlgorithm(
+            accentPalette.getValueFor(element),
+            neutralPalette.getValueFor(element),
+            reference || fillColor.getValueFor(element),
+            accentFillHoverDelta.getValueFor(element),
+            accentFillActiveDelta.getValueFor(element),
+            accentFillFocusDelta.getValueFor(element),
+            neutralFillRestDelta.getValueFor(element),
+            neutralFillHoverDelta.getValueFor(element),
+            neutralFillActiveDelta.getValueFor(element)
+        ),
 });
 
 /** @public */
@@ -393,6 +348,99 @@ export const accentFillFocus = create<Swatch>("accent-fill-focus").withDefault(
     (element: HTMLElement) => {
         return accentFillRecipe.getValueFor(element).evaluate(element).focus;
     }
+);
+
+// Foreground On Accent
+const foregroundOnAccentByContrast = (contrast: number) => (
+    element: HTMLElement,
+    reference?: Swatch
+) => {
+    return foregroundOnAccentAlgorithm(
+        reference || accentFillRest.getValueFor(element),
+        contrast
+    );
+};
+
+/** @public */
+export const foregroundOnAccentRecipe = create<ColorRecipe>({
+    name: "foreground-on-accent-recipe",
+    cssCustomPropertyName: null,
+}).withDefault({
+    evaluate: (element: HTMLElement, reference?: Swatch): Swatch =>
+        foregroundOnAccentByContrast(ContrastTarget.normal)(element, reference),
+});
+/** @public */
+export const foregroundOnAccentRest = create<Swatch>(
+    "foreground-on-accent-rest"
+).withDefault((element: HTMLElement) =>
+    foregroundOnAccentRecipe
+        .getValueFor(element)
+        .evaluate(element, accentFillRest.getValueFor(element))
+);
+/** @public */
+export const foregroundOnAccentHover = create<Swatch>(
+    "foreground-on-accent-hover"
+).withDefault((element: HTMLElement) =>
+    foregroundOnAccentRecipe
+        .getValueFor(element)
+        .evaluate(element, accentFillHover.getValueFor(element))
+);
+/** @public */
+export const foregroundOnAccentActive = create<Swatch>(
+    "foreground-on-accent-active"
+).withDefault((element: HTMLElement) =>
+    foregroundOnAccentRecipe
+        .getValueFor(element)
+        .evaluate(element, accentFillActive.getValueFor(element))
+);
+/** @public */
+export const foregroundOnAccentFocus = create<Swatch>(
+    "foreground-on-accent-focus"
+).withDefault((element: HTMLElement) =>
+    foregroundOnAccentRecipe
+        .getValueFor(element)
+        .evaluate(element, accentFillFocus.getValueFor(element))
+);
+
+/** @public */
+export const foregroundOnAccentLargeRecipe = create<ColorRecipe>({
+    name: "foreground-on-accent-large-recipe",
+    cssCustomPropertyName: null,
+}).withDefault({
+    evaluate: (element: HTMLElement, reference?: Swatch): Swatch =>
+        foregroundOnAccentByContrast(ContrastTarget.large)(element, reference),
+});
+/** @public */
+export const foregroundOnAccentRestLarge = create<Swatch>(
+    "foreground-on-accent-rest-large"
+).withDefault((element: HTMLElement) =>
+    foregroundOnAccentLargeRecipe
+        .getValueFor(element)
+        .evaluate(element, accentFillRest.getValueFor(element))
+);
+/** @public */
+export const foregroundOnAccentHoverLarge = create<Swatch>(
+    "foreground-on-accent-hover-large"
+).withDefault((element: HTMLElement) =>
+    foregroundOnAccentLargeRecipe
+        .getValueFor(element)
+        .evaluate(element, accentFillHover.getValueFor(element))
+);
+/** @public */
+export const foregroundOnAccentActiveLarge = create<Swatch>(
+    "foreground-on-accent-active-large"
+).withDefault((element: HTMLElement) =>
+    foregroundOnAccentLargeRecipe
+        .getValueFor(element)
+        .evaluate(element, accentFillActive.getValueFor(element))
+);
+/** @public */
+export const foregroundOnAccentFocusLarge = create<Swatch>(
+    "foreground-on-accent-focus-large"
+).withDefault((element: HTMLElement) =>
+    foregroundOnAccentLargeRecipe
+        .getValueFor(element)
+        .evaluate(element, accentFillFocus.getValueFor(element))
 );
 
 // Accent Foreground

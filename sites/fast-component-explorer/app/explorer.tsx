@@ -13,6 +13,7 @@ import {
     DataDictionary,
     MessageSystem,
     MessageSystemType,
+    monacoAdapterId,
 } from "@microsoft/fast-tooling";
 import {
     componentCategories,
@@ -23,7 +24,6 @@ import {
     TransparencyToggle,
 } from "@microsoft/site-utilities";
 import * as monaco from "monaco-editor/esm/vs/editor/editor.api";
-import { monacoAdapterId } from "@microsoft/fast-tooling/dist/esm/message-system-service/monaco-adapter.service";
 import { ListboxOption } from "@microsoft/fast-foundation";
 import { ComponentViewConfig, Scenario } from "./fast-components/configs/data.props";
 import * as componentConfigs from "./fast-components/configs";

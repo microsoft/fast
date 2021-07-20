@@ -1,4 +1,5 @@
 import React from "react";
+import "../__tests__/mocks/match-media";
 import {
     DataType,
     dictionaryLink,

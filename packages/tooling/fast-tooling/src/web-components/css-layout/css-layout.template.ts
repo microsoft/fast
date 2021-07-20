@@ -534,7 +534,7 @@ const columnGap = html`
  * The template for the css-layout component.
  * @public
  */
-export const CSSLayoutTemplate = (context: ElementDefinitionContext) => html<CSSLayout>`
+export const cssLayoutTemplate = (context: ElementDefinitionContext) => html<CSSLayout>`
     <template>
         <div class="control-region">
             <${context.tagFor(Switch)} checked="${x => x.flexEnabled}" @change="${(

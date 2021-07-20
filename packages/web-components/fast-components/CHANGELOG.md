@@ -1,8 +1,75 @@
 # Change Log - @microsoft/fast-components
 
-This log was last generated on Fri, 25 Jun 2021 02:02:57 GMT and should not be manually modified.
+This log was last generated on Sun, 18 Jul 2021 07:16:22 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.2.3
+
+Sun, 18 Jul 2021 07:16:22 GMT
+
+### Patches
+
+- breadcrumb: allow wrapping of items in the list container (ben@platform5.ch)
+
+## 2.2.2
+
+Thu, 15 Jul 2021 01:41:48 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.5.0 (chhol@microsoft.com)
+
+## 2.2.1
+
+Tue, 13 Jul 2021 07:14:52 GMT
+
+### Patches
+
+- text-field: start/end display flex (ben@platform5.ch)
+- fix: export tooltipStyles (derekdon@protonmail.com)
+
+## 2.2.0
+
+Wed, 07 Jul 2021 07:19:51 GMT
+
+### Minor changes
+
+- focus trap improvement (scomea@microsoft.com)
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.3.0 (scomea@microsoft.com)
+
+## 2.1.0
+
+Sun, 04 Jul 2021 07:15:28 GMT
+
+### Minor changes
+
+- select should emit an input event before the change event (john.kreitlow@microsoft.com)
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.2.0 (john.kreitlow@microsoft.com)
+
+## 2.0.2
+
+Thu, 01 Jul 2021 07:15:57 GMT
+
+### Patches
+
+- correct names for typography tokens (nicholasrice@users.noreply.github.com)
+- Update default value for bodyFont Design Token (nicholasrice@users.noreply.github.com)
+
+## 2.0.1
+
+Wed, 30 Jun 2021 07:19:09 GMT
+
+### Patches
+
+- export the design system provider base class (nicholasrice@users.noreply.github.com)
+- Fixed foregroundOnAccent recipe to work in all states (47367562+bheston@users.noreply.github.com)
 
 ## 2.0.0
 

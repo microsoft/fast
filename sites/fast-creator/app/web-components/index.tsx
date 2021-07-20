@@ -2,10 +2,6 @@
 import h from "@microsoft/site-utilities/dist/web-components/pragma";
 import React from "react";
 import {
-    fastToolingColorPicker,
-    fastToolingCSSLayout,
-} from "@microsoft/fast-tooling/dist/esm/web-components";
-import {
     fastButton,
     fastSelect,
     fastSlider,
@@ -16,28 +12,32 @@ import {
     fastTabs,
     fastTextField,
 } from "@microsoft/fast-components";
-import { fastToolingHTMLRenderLayerInlineEdit } from "@microsoft/fast-tooling/dist/esm/web-components/html-render-layer-inline-edit/html-render-layer-inline-edit";
-import { fastToolingHTMLRender } from "@microsoft/fast-tooling/dist/esm/web-components/html-render";
-import { fastToolingHTMLRenderLayerNavigation } from "@microsoft/fast-tooling/dist/esm/web-components/html-render-layer-navigation";
 import { Select } from "@microsoft/fast-foundation";
 import { componentCategories, downChevron, upChevron } from "@microsoft/site-utilities";
-import { MessageSystem } from "@microsoft/fast-tooling";
+import { toggleStyle } from "@microsoft/site-utilities/src/components/style";
+import {
+    cssLayoutCssProperties,
+    DataType,
+    fastToolingColorPicker,
+    fastToolingCSSLayout,
+    MessageSystem,
+} from "@microsoft/fast-tooling";
 import {
     ControlConfig,
     ModularForm,
+    ModularNavigation,
     StandardControlPlugin,
 } from "@microsoft/fast-tooling-react";
-
 import CSSControl from "@microsoft/fast-tooling-react/dist/form/custom-controls/control.css";
 import { CSSPropertiesDictionary } from "@microsoft/fast-tooling/dist/esm/data-utilities/mapping.mdn-data";
 import { ControlContext } from "@microsoft/fast-tooling-react/dist/form/templates/types";
 import { XOR } from "@microsoft/fast-tooling/dist/dts/data-utilities/type.utilities";
 import { CSSStandardControlPlugin } from "@microsoft/fast-tooling-react/dist/form/custom-controls/css";
-import { cssLayoutCssProperties } from "@microsoft/fast-tooling/dist/esm/web-components/css-layout";
 import { CSSControlConfig } from "@microsoft/fast-tooling-react/dist/form/custom-controls/css/css.template.control.standard.props";
 import { DesignSystem } from "@microsoft/fast-foundation";
-import { FormId } from "../creator.props";
+import { FormId, NavigationId } from "../creator.props";
 import { properties as CSSProperties } from "../css-data";
+import { elementLibraries } from "../configs";
 import { defaultDevices, Device } from "./devices";
 
 /**
@@ -54,10 +54,7 @@ DesignSystem.getOrCreate().register(
     fastTabPanel(),
     fastTextField(),
     fastToolingColorPicker({ prefix: "fast-tooling" }),
-    fastToolingHTMLRender({ prefix: "fast-tooling" }),
-    fastToolingHTMLRenderLayerNavigation({ prefix: "fast-tooling" }),
-    fastToolingCSSLayout({ prefix: "fast-tooling" }),
-    fastToolingHTMLRenderLayerInlineEdit({ prefix: "fast-tooling" })
+    fastToolingCSSLayout({ prefix: "fast-tooling" })
 );
 
 export function renderDevToolToggle(selected: boolean, onToggleCallback: () => void) {
@@ -96,7 +93,7 @@ export function renderDeviceSelect(
 ): React.ReactNode {
     return (
         <fast-select
-            selectedIndex={selectedDeviceId}
+            value={selectedDeviceId}
             events={{
                 change: (e: React.ChangeEvent): void => {
                     onChangeCallback((e.target as Select).value);
@@ -241,6 +238,104 @@ function getCSSControls(): StandardControlPlugin {
     });
 }
 
+function renderStartIcon(isIncluded: boolean): React.ReactNode {
+    if (isIncluded) {
+        return (
+            <svg
+                width="12"
+                height="9"
+                viewBox="0 0 12 9"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+            >
+                <path
+                    d="M11.8639 0.65511C12.0533 0.856064 12.0439 1.17251 11.8429 1.36191L3.91309 8.8358C3.67573 9.05952 3.30311 9.05263 3.07417 8.82028L0.393838 6.09995C0.200027 5.90325 0.202372 5.58667 0.399074 5.39286C0.595777 5.19905 0.912351 5.2014 1.10616 5.3981L3.51192 7.83975L11.1571 0.634189C11.358 0.44479 11.6745 0.454157 11.8639 0.65511Z"
+                    fill="#FFFFFF"
+                />
+            </svg>
+        );
+    }
+
+    return (
+        <svg
+            width="11"
+            height="11"
+            viewBox="0 0 11 11"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+        >
+            <path
+                d="M6 0.5C6 0.223858 5.77614 0 5.5 0C5.22386 0 5 0.223858 5 0.5V5H0.5C0.223858 5 0 5.22386 0 5.5C0 5.77614 0.223858 6 0.5 6H5V10.5C5 10.7761 5.22386 11 5.5 11C5.77614 11 6 10.7761 6 10.5V6H10.5C10.7761 6 11 5.77614 11 5.5C11 5.22386 10.7761 5 10.5 5H6V0.5Z"
+                fill="#FFFFFF"
+            />
+        </svg>
+    );
+}
+
+export function renderNavigationTabs(
+    activeId: any,
+    fastMessageSystem: MessageSystem,
+    addedLibraries: string[],
+    handleAddLibrary: (libraryId: string) => void,
+    handleNavigationTabsVisibility: (navigationId: any) => void
+): React.ReactNode {
+    return (
+        <fast-tabs
+            activeId={activeId}
+            events={{
+                change: (e: React.ChangeEvent<HTMLElement>) => {
+                    if ((e as any).detail) {
+                        handleNavigationTabsVisibility((e as any).detail.id);
+                    }
+                },
+            }}
+        >
+            <fast-tab id={NavigationId.navigation}>Navigation</fast-tab>
+            <fast-tab id={NavigationId.libraries}>Libraries</fast-tab>
+            <fast-tab-panel id={NavigationId.navigation + "Panel"}>
+                <ModularNavigation
+                    messageSystem={fastMessageSystem}
+                    types={[DataType.object]}
+                />
+            </fast-tab-panel>
+            <fast-tab-panel id={NavigationId.libraries + "Panel"}>
+                <div
+                    style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "flex-start",
+                        padding: "10px",
+                    }}
+                >
+                    {Object.values(elementLibraries).map(elementLibrary => {
+                        if (elementLibrary.optional) {
+                            const isIncluded: boolean = addedLibraries.includes(
+                                elementLibrary.id
+                            );
+                            return (
+                                <fast-button
+                                    key={elementLibrary.id}
+                                    events={{
+                                        click: (e: React.ChangeEvent) => {
+                                            handleAddLibrary(elementLibrary.id);
+                                        },
+                                    }}
+                                    disabled={isIncluded}
+                                >
+                                    <span slot="start">
+                                        {renderStartIcon(isIncluded)}
+                                    </span>
+                                    {elementLibrary.displayName}
+                                </fast-button>
+                            );
+                        }
+                    })}
+                </div>
+            </fast-tab-panel>
+        </fast-tabs>
+    );
+}
+
 export function renderFormTabs(
     activeId: any,
     fastMessageSystem: MessageSystem,
@@ -331,19 +426,23 @@ export class CSSLayout extends React.Component<CSSLayoutProps, {}> {
     }
 }
 
-export class HTMLRenderReact extends React.Component {
-    public renderRef: React.RefObject<HTMLDivElement>;
-
-    private setRenderRef = el => {
-        this.renderRef = el;
-    };
-
-    render() {
-        return (
-            <fast-tooling-html-render ref={this.setRenderRef}>
-                <fast-tooling-html-render-layer-navigation role="htmlrenderlayer"></fast-tooling-html-render-layer-navigation>
-                <fast-tooling-html-render-layer-inline-edit role="htmlrenderlayer"></fast-tooling-html-render-layer-inline-edit>
-            </fast-tooling-html-render>
-        );
-    }
+export function renderPreviewSwitch(
+    switchState: boolean,
+    onChangeCallback: (newState: boolean) => void,
+    disable: boolean
+): React.ReactNode {
+    return (
+        <fast-switch
+            checked={switchState ? true : null}
+            disabled={disable ? true : null}
+            events={{
+                change: (e: React.ChangeEvent): void => {
+                    onChangeCallback(!switchState);
+                },
+            }}
+            style={toggleStyle}
+        >
+            <span>Preview</span>
+        </fast-switch>
+    );
 }
