@@ -6,7 +6,8 @@ A 1 month calendar view. This will include the month name as the title and colum
 
 ### Background
 
-*Relevant historical or background information, related existing issues, etc.*
+There was a lot of requests for a date picker component. The calendar is key component that. It was broken out so that it can be
+use on it's own or with the date picker to add some additional reuse.
 
 ### Use Cases
 
@@ -21,7 +22,7 @@ Can be used for a schedule.
 
 - A calendar month view.
 - Coloring - fonts, borders, backgrounds, buttons.
-- Callback function for returning the clicked date.
+- Custom event fired when selecting a date.
 
 
 ### Risks and Challenges
@@ -34,6 +35,8 @@ There are 13 calendar types. most have different years than the gregorian calend
 Some don't start on our January 1st. (Example: The Hindu calendar starts on March 22nd.)
 Not all months have the same number of days. (Example: The Hindu calendar is 31 days the first month, five months have 30 days and the last 6 months have 31 days.)
 Some calendars don't have 365 days. (Example: Hindu has 354 days in a normal year, 355 days in a short leap year and 385 days in big leap year.)
+Some calendars of the same type are different for different countries. Cambodia, Lao and Thailand use the Buddhist calendar and have the same number of days. Burma uses the Buddhist calendar but has a different
+  number of days for one of it's leap years.
 Not all browser calendar codes match real calendars. (Example indian = hindu calendar)
 - Calendars: buddhist, chinese, coptic, ethiopia, ethiopic, gregory, hebrew, indian, islamic, iso8601, japanese, persian, roc
 
@@ -43,13 +46,9 @@ There are 22 numbering systems.
 Calculating date/times can run into timezone issues.
 - Hour cycles: h11, h12, h23, h24
 
-Click handler
-Currently I'm using a function that takes the event and finds the date on the clicked element. The developer can attach a method to the calendar that uses the event to extract the date clicked.
-Is this the best way? I looked at attaching a method as a callback but would rely on something like the eval() function which isn't ideal.
 
 ### Prior Art/Examples
 
-*Screenshots and/or links to existing, canonical, or exemplary implementations of the component.*
 Prototype: https://codepen.io/kungfukarl/pen/dcc7a25c745706ca71419db805936e44
 
 
@@ -57,29 +56,31 @@ Prototype: https://codepen.io/kungfukarl/pen/dcc7a25c745706ca71419db805936e44
 
 ## Design
 
-*Describe the design of the component, thinking through several perspectives:*
+I've been working primarily off of the calendar used in the FluentUI date picker component. However, the calendar component is highly customizable. So it should accomidate most any style.
 
 TBD
 
 ### API
 
-*The key elements of the component's public API surface:*
-
 *Component Name*
 - `fast-calendar`
 
 *Attributes:*
-- `month`: number - default current month
-- `year`: number - default current year
-- `monthLabels`: string - comma separated list of months
-- `weekdayLabels`: string - comma separated list of week day labels (sun, mon, tue, etc.)
+- `month`: number - default: current month 
+- `year`: number - default: current year
 - `locale`: string - a locale string which can include the market(country and language), calendar type and numbering system.
+- `weekday-format`: `long` | `narrow` | `short` - default: `short` - Labeling format for the names of the weekdays.
+- `month-format`: `long` | `narrow` | `short` - default: `long` - Labeling format for the month name.
+- `min-weeks`: number - default: 0 - Minimum number of weeks to show.
+- `disabled-dates`: string - A comma separated list of dates to show as disabled.
+- `selected-dates`: string - a comma separated list of dates to show as highlighted.
 
 *Slots*
-- The calendar component will generate dynamic slots for each date to slot content onto the calendar.
-
-
-*Consider high and low-level APIs. Attempt to design a powerful and extensible low-level API with a high-level API for developer/designer ergonomics and simplicity.*
+- The calendar component will generate dynamic slots for each date to slot content onto the calendar. Example <slot name="1-1-2021"></slot>
+- `default`: Content in the default slot will show up between the title and the weekday labels.
+- `end`: Content shows up after the calendar days.
+- `start`: Content shows up before the title slot.
+- `title`: Replaces the title content with custom slotted content.
 
 ### Anatomy and Appearance
 
@@ -93,8 +94,15 @@ Dynamically generated slots with the date as the name in the template.
 *Slotted Content/Slotted Classes*
 
 *CSS Parts*
-- `title` - the month name
-- `today` - the current day
+- `title`: the month name and year
+- `month`: the month name in the title
+- `year`: the year in the title
+- `week-days`: the row for the weekday labels
+- `week-day`: each individual weekday label
+- `days`: each week of numbered days
+- `day`: each numbered day container in the calendar
+- `date`: the number in the day container
+- `today`: the current dates number in it's day container
 
 ---
 
@@ -103,7 +111,14 @@ Dynamically generated slots with the date as the name in the template.
 *Important aspects of the planned implementation with careful consideration of web standards and integration.*
 
 ```html
-<fast-calendar month="1" year="2025" action="datePicked" locale="th-TH-u-ca-bhuddist-nu-thai">
+<fast-calendar 
+  month="1"
+  year="2025"
+  month-format="short"
+  weekday-format="narrow"
+  locale="th-TH-u-ca-bhuddist-nu-thai"
+  disabled-dates="1-5-2022,1-6-2022,1-7-2022"
+  selected-dates="1-20-2022,1-30-2022">
   <div slot="1-1-2022">Happy New Year!</div>
 </fast-calendar>
 ```
@@ -111,33 +126,27 @@ Dynamically generated slots with the date as the name in the template.
 
 ### States
 
-*Key component states, valid state transitions, and how interactions trigger a state transition.*
-
+-`disabled-dates`: This is an attribute on the calendar passed as a comma separated list. A disabled attribute is passed
+  through the date-selected event when clicking on the date.
+-`selected-dates`: Like disabled-dates, this is an attribute on the calendar passed as a comma separated list. It also
+  passes a selected attribute through the date-selected event when a date is clicked.
 
 ### Accessibility
 
 *Consider the accessibility of the component, including:*
 
-- *Keyboard Navigation and Focus*
-- *Form Input*
-- *Use with Assistive Technology*
-  - e.g. The implications shadow dom might have on how roles and attributes are presented to the AT. Components which delegate focus require all global aria-* attributes to be enumerated.
-
-- How does tabbing and navigation work?
-- Contrast for current date and selected date(s)
-- Manual input of dates
+*Keyboard Navigation and Focus*
+- Users can tab to the first date in the calendar.
+- The underlying markup uses a form of data-grid so that you can arrow around the calendar.
 
 ### Globalization
+*Special RTL handling*
+- RTL initiated when using 'ar' or 'he' language codes, 'arabic' or 'arabext' numbering, 'hebrew' or 'islamic' calendars.
+- Loads numbering in reverse for each week.
 
-*Consider whether the component has any special globalization needs such as:*
-
-- *Special RTL handling*
-- *Swapping of internal icons/visuals*
-- *Localization*
-
+*Localization*
 - Localization of year, month and weekday labels and day numbering handled by Intl js library when setting the language.
-- RTL initiated when using 'ar' or 'he' language codes, 'arabic' or 'arabext' numbering, 'hebrew' or 'islamic' calendars. 'persian' calendars?
-- RTL, is it just reversed?
+- 
 
 ### Test Plan
 
