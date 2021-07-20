@@ -500,9 +500,9 @@ export class Picker extends FoundationElement {
                 } else {
                     const nextFocusOptionIndex = this.flyoutOpen
                         ? Math.min(
-                              this.menuFocusIndex + 1,
-                              this.menuElement.optionElements.length - 1
-                          )
+                            this.menuFocusIndex + 1,
+                            this.menuElement.optionElements.length - 1
+                        )
                         : 0;
                     this.setFocusedOption(nextFocusOptionIndex);
                 }
@@ -651,7 +651,9 @@ export class Picker extends FoundationElement {
         //TODO: trim white space?
         this.selectedItems = this.selection === "" ? [] : this.selection.split(",");
 
-        this.checkMaxItems();
+        DOM.queueUpdate(()=>{
+            this.checkMaxItems();
+        });
         this.$emit("selectionchange", { bubbles: false });
     }
 
@@ -676,6 +678,15 @@ export class Picker extends FoundationElement {
             this.maxSelected !== undefined &&
             this.selectedItems.length >= this.maxSelected
         ) {
+
+            if (
+                document.activeElement === this.listElement.inputElement
+            ) {
+                const selectedItemInstances: Element[] = Array.from(
+                    this.listElement.querySelectorAll("[role='listitem']")
+                );
+                (selectedItemInstances[selectedItemInstances.length - 1] as HTMLElement).focus();
+            }
             this.listElement.inputElement.hidden = true;
         } else {
             this.listElement.inputElement.hidden = false;
@@ -708,9 +719,7 @@ export class Picker extends FoundationElement {
         }
 
         if (e.target instanceof PickerMenuOption) {
-            this.selection = `${this.selection}${this.selection === "" ? "" : ","}${
-                e.target.value
-            }`;
+            this.selection = `${this.selection}${this.selection === "" ? "" : ","}${e.target.value}`;
             this.toggleFlyout(false);
             this.listElement.inputElement.value = "";
             return false;
@@ -744,7 +753,11 @@ export class Picker extends FoundationElement {
                 Math.max(0, currentFocusedItemIndex + increment)
             );
             if (newFocusedItemIndex === selectedItems.length) {
-                this.listElement.inputElement.focus();
+                if (this.maxSelected !== undefined && this.selectedItems.length >= this.maxSelected) {
+                    (selectedItems[newFocusedItemIndex - 1] as HTMLElement).focus();
+                } else {
+                    this.listElement.inputElement.focus();
+                }
             } else {
                 (selectedItems[newFocusedItemIndex] as HTMLElement).focus();
             }
