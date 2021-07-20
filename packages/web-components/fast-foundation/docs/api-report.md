@@ -10,6 +10,7 @@ import { ComposableStyles } from '@microsoft/fast-element';
 import { Constructable } from '@microsoft/fast-element';
 import { CSSDirective } from '@microsoft/fast-element';
 import { Direction } from '@microsoft/fast-web-utilities';
+import { ElementsFilter } from '@microsoft/fast-element';
 import { ElementStyles } from '@microsoft/fast-element';
 import { ElementViewTemplate } from '@microsoft/fast-element';
 import { FASTElement } from '@microsoft/fast-element';
@@ -793,6 +794,19 @@ export interface DelegatesARIAListbox extends ARIAGlobalStatesAndProperties {
 }
 
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
+// Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "DelegatesARIAListboxOption" because one of its declarations is marked as @internal
+//
+// @public
+export class DelegatesARIAListboxOption {
+    ariaChecked?: "true" | "false";
+    ariaSelected: "true" | "false" | undefined;
+}
+
+// @internal
+export interface DelegatesARIAListboxOption extends ARIAGlobalStatesAndProperties {
+}
+
+// Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
 // Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "DelegatesARIASelect" because one of its declarations is marked as @internal
 //
 // @public
@@ -1291,25 +1305,24 @@ export const lightModeStylesheetBehavior: (styles: ElementStyles) => MatchMediaS
 // Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "Listbox" because one of its declarations is marked as @internal
 //
 // @public
-export class Listbox extends FoundationElement {
+export abstract class Listbox extends FoundationElement {
     // @internal
     clickHandler(e: MouseEvent): boolean | void;
     disabled: boolean;
     // @internal
     get firstSelectedOption(): ListboxOption;
-    // @internal (undocumented)
-    protected focusAndScrollOptionIntoView(): void;
+    // @internal
+    protected focusAndScrollOptionIntoView(optionToFocus?: ListboxOption | null): void;
     // @internal (undocumented)
     focusinHandler(e: FocusEvent): void;
+    // @internal (undocumented)
+    protected getFilteredOptions(): ListboxOption[];
     handleTypeAhead: (key: string) => void;
     // @internal
     keydownHandler(e: KeyboardEvent): boolean | void;
     get length(): number;
     // @internal
     mousedownHandler(e: MouseEvent): boolean | void;
-    multiple: boolean;
-    // (undocumented)
-    multipleChanged(prev: unknown, next: boolean): void;
     get options(): ListboxOption[];
     set options(value: ListboxOption[]);
     // @internal
@@ -1324,14 +1337,16 @@ export class Listbox extends FoundationElement {
     selectFirstOption(): void;
     // @internal
     selectLastOption(): void;
-    // @internal
+    // @internal (undocumented)
     selectNextOption(): void;
     // @internal
     selectPreviousOption(): void;
-    // @internal (undocumented)
+    // @internal
     protected setDefaultSelectedOption(): void;
     protected setSelectedOptions(): void;
-    static slottedOptionFilter: (n: HTMLElement) => boolean;
+    // @internal
+    protected shouldSkipFocus: boolean;
+    static slottedOptionFilter: ElementsFilter;
     // @internal (undocumented)
     slottedOptions: HTMLElement[];
     // (undocumented)
@@ -1352,12 +1367,61 @@ export class Listbox extends FoundationElement {
 export interface Listbox extends DelegatesARIAListbox {
 }
 
+// @public
+export class ListboxElement extends Listbox {
+    // @internal (undocumented)
+    protected activeIndexChanged(prev: any, next: any): void;
+    // @internal
+    get activeOption(): ListboxOption | null;
+    // @internal (undocumented)
+    protected checkFirstOption(preserveChecked?: boolean): void;
+    // @internal
+    protected checkLastOption(preserveChecked?: boolean): void;
+    // @internal
+    protected checkNextOption(preserveChecked?: boolean): void;
+    // @internal
+    protected checkPreviousOption(preserveChecked?: boolean): void;
+    // @internal @override
+    clickHandler(e: MouseEvent): boolean | void;
+    // (undocumented)
+    connectedCallback(): void;
+    // (undocumented)
+    disconnectedCallback(): void;
+    // (undocumented)
+    get firstSelectedOptionIndex(): number;
+    // @internal (undocumented)
+    protected focusAndScrollOptionIntoView(): void;
+    // @internal
+    focusinHandler(e: FocusEvent): void;
+    // @internal
+    focusoutHandler(e: FocusEvent): void;
+    // @internal @override
+    keydownHandler(e: KeyboardEvent): boolean | void;
+    // @internal @override
+    mousedownHandler(e: MouseEvent): boolean | void;
+    multiple: boolean;
+    // (undocumented)
+    multipleChanged(prev: unknown, next: boolean): void;
+    // @override
+    protected setSelectedOptions(): void;
+    // @internal
+    toggleSelectedForAllCheckedOptions(): void;
+    // (undocumented)
+    typeaheadBufferChanged(prev: string, next: string): void;
+    }
+
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
 // Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "ListboxOption" because one of its declarations is marked as @internal
 //
 // @public
 export class ListboxOption extends FoundationElement {
     constructor(text?: string, value?: string, defaultSelected?: boolean, selected?: boolean);
+    // @internal
+    checked?: boolean;
+    // (undocumented)
+    checkedChanged(prev: unknown, next?: boolean): void;
+    // (undocumented)
+    connectedCallback(): void;
     defaultSelected: boolean;
     // (undocumented)
     protected defaultSelectedChanged(): void;
@@ -1367,10 +1431,9 @@ export class ListboxOption extends FoundationElement {
     protected disabledChanged(prev: any, next: any): void;
     // (undocumented)
     get form(): HTMLFormElement | null;
-    protected initialValue: string;
+    initialValue: string;
     // (undocumented)
     initialValueChanged(previous: string, next: string): void;
-    // (undocumented)
     get label(): string;
     // @internal (undocumented)
     proxy: HTMLOptionElement;
@@ -1379,16 +1442,14 @@ export class ListboxOption extends FoundationElement {
     // (undocumented)
     protected selectedAttributeChanged(): void;
     // (undocumented)
-    protected selectedChanged(): void;
-    // (undocumented)
+    protected selectedChanged(prev: unknown, next: boolean): void;
     get text(): string;
-    set value(next: string);
-    // (undocumented)
     get value(): string;
+    set value(next: string);
     }
 
 // @internal (undocumented)
-export interface ListboxOption extends StartEnd {
+export interface ListboxOption extends DelegatesARIAListboxOption, StartEnd {
 }
 
 // @public

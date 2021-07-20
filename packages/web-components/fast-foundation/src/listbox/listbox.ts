@@ -1,4 +1,4 @@
-import { attr, observable, Observable } from "@microsoft/fast-element";
+import { attr, ElementsFilter, observable, Observable } from "@microsoft/fast-element";
 import {
     keyArrowDown,
     keyArrowUp,
@@ -17,12 +17,11 @@ import { applyMixins } from "../utilities/apply-mixins";
 import { ListboxRole } from "./listbox.options";
 
 /**
- * A Listbox Custom HTML Element.
- * Implements the {@link https://www.w3.org/TR/wai-aria-1.1/#listbox | ARIA listbox }.
+ * The abstract class for Listbox-based components.
  *
  * @public
  */
-export class Listbox extends FoundationElement {
+export abstract class Listbox extends FoundationElement {
     /**
      * The internal unfiltered list of selectable options.
      *
@@ -86,27 +85,6 @@ export class Listbox extends FoundationElement {
     }
 
     /**
-     * Indicates if the listbox is in multi-selection mode.
-     *
-     * @public
-     * @remarks
-     * HTML Attribute: `multiple`
-     */
-    @attr({ mode: "boolean" })
-    public multiple: boolean;
-    multipleChanged(prev: unknown, next: boolean): void {
-        if (this.$fastController.isConnected) {
-            this.options.forEach(o => {
-                o.checked = next ? false : undefined;
-            });
-
-            this.ariaMultiselectable = next ? "true" : undefined;
-
-            this.setSelectedOptions();
-        }
-    }
-
-    /**
      * The list of options.
      *
      * @public
@@ -148,7 +126,7 @@ export class Listbox extends FoundationElement {
      *
      * @internal
      */
-    private shouldSkipFocus: boolean = false;
+    protected shouldSkipFocus: boolean = false;
 
     /**
      * Typeahead timeout in milliseconds.
@@ -160,17 +138,20 @@ export class Listbox extends FoundationElement {
     /**
      * @internal
      */
+    protected getFilteredOptions(): ListboxOption[] {
+        const pattern = this.typeaheadBuffer.replace(/[.*+\-?^${}()|[\]\\]/g, "\\$&");
+        const re = new RegExp(`^${pattern}`, "gi");
+        return this.options.filter((o: ListboxOption) => o.text.trim().match(re));
+    }
+
+    /**
+     * @internal
+     */
     @observable
     protected typeaheadBuffer: string = "";
     public typeaheadBufferChanged(prev: string, next: string): void {
         if (this.$fastController.isConnected) {
-            const pattern = this.typeaheadBuffer.replace(/[.*+\-?^${}()|[\]\\]/g, "\\$&");
-            const re = new RegExp(`^${pattern}`, "gi");
-
-            const filteredOptions = this.options.filter((o: ListboxOption) =>
-                o.text.trim().match(re)
-            );
-
+            const filteredOptions = this.getFilteredOptions();
             if (filteredOptions.length) {
                 const selectedIndex = this.options.indexOf(filteredOptions[0]);
                 if (selectedIndex > -1) {
@@ -223,7 +204,7 @@ export class Listbox extends FoundationElement {
      * @param n - element to filter
      * @public
      */
-    public static slottedOptionFilter = (n: HTMLElement) =>
+    public static slottedOptionFilter: ElementsFilter = (n: HTMLElement) =>
         isListboxOption(n) && !n.disabled && !n.hidden;
 
     /**
@@ -237,42 +218,45 @@ export class Listbox extends FoundationElement {
         if (this.$fastController.isConnected) {
             this.options.forEach(o => {
                 o.selected = next.includes(o);
-
-                // ensure `checked` state is null if not in multiple mode
-                o.checked = this.multiple ? false : undefined;
             });
-
-            if (this.multiple && this.firstSelectedOption) {
-                this.firstSelectedOption.checked = true;
-            }
         }
     }
 
     /**
-     * Handles click events for listbox options
+     * Handles click events for listbox options.
      *
      * @internal
      */
     public clickHandler(e: MouseEvent): boolean | void {
-        const captured = (e.target as HTMLElement).closest(
-            `option,[role=option]`
-        ) as ListboxOption;
+        const captured = (e.target as Element | null)?.closest<ListboxOption>(
+            `[role=option]`
+        );
 
-        if (captured && !captured.disabled) {
-            this.selectedIndex = this.options.indexOf(captured);
-            return true;
+        if (!captured || captured.disabled) {
+            return;
         }
+
+        this.selectedIndex = this.options.indexOf(captured);
+
+        return true;
     }
 
     /**
+     * Ensures that the provided option is focused and scrolled into view.
+     *
+     * @param optionToFocus - The option to focus
      * @internal
      */
-    protected focusAndScrollOptionIntoView(): void {
-        if (this.contains(document.activeElement) && this.firstSelectedOption) {
-            this.firstSelectedOption.focus();
-            requestAnimationFrame(() => {
-                this.firstSelectedOption.scrollIntoView({ block: "nearest" });
-            });
+    protected focusAndScrollOptionIntoView(
+        optionToFocus: ListboxOption | null = this.firstSelectedOption
+    ): void {
+        if (this.contains(document.activeElement)) {
+            if (optionToFocus) {
+                optionToFocus.focus();
+                requestAnimationFrame(() => {
+                    optionToFocus.scrollIntoView({ block: "nearest" });
+                });
+            }
         }
     }
 
@@ -375,12 +359,12 @@ export class Listbox extends FoundationElement {
     }
 
     /**
-     * Moves focus to the first selectable option
+     * Moves focus to the first selectable option.
      *
      * @public
      */
     public selectFirstOption(): void {
-        if (!this.disabled) {
+        if (this.options?.length > 0) {
             this.selectedIndex = 0;
         }
     }
@@ -391,22 +375,18 @@ export class Listbox extends FoundationElement {
      * @internal
      */
     public selectLastOption(): void {
-        if (!this.disabled) {
-            this.selectedIndex = this.options.length - 1;
-        }
+        this.selectedIndex = this.options.length - 1;
     }
 
     /**
-     * Moves focus to the next selectable option
+     *
      *
      * @internal
+     * @remarks
+     * Single-selection mode only.
      */
     public selectNextOption(): void {
-        if (
-            !this.disabled &&
-            this.options &&
-            this.selectedIndex < this.options.length - 1
-        ) {
+        if (this.selectedIndex < this.options.length - 1) {
             this.selectedIndex += 1;
         }
     }
@@ -417,19 +397,24 @@ export class Listbox extends FoundationElement {
      * @internal
      */
     public selectPreviousOption(): void {
-        if (!this.disabled && this.selectedIndex > 0) {
-            this.selectedIndex = this.selectedIndex - 1;
+        if (!this.options.length) {
+            return;
+        }
+
+        if (this.selectedIndex > 0) {
+            this.selectedIndex -= this.selectedIndex > 0 ? 1 : 0;
         }
     }
 
     /**
+     * Set the `selectedIndex` to the index of the first option with the
+     * `selected` attribute present.
+     *
      * @internal
      */
     protected setDefaultSelectedOption() {
         if (this.options && this.$fastController.isConnected) {
-            const selectedIndex = this.options.findIndex(
-                el => el.getAttribute("selected") !== null
-            );
+            const selectedIndex = this.options.findIndex(o => o.hasAttribute("selected"));
 
             if (selectedIndex !== -1) {
                 this.selectedIndex = selectedIndex;
@@ -448,14 +433,8 @@ export class Listbox extends FoundationElement {
      */
     protected setSelectedOptions() {
         if (this.$fastController.isConnected && this.options) {
-            const selectedOption = this.options[this.selectedIndex] || null;
-
-            this.selectedOptions = this.options.filter(el =>
-                el.isSameNode(selectedOption)
-            );
-            this.ariaActiveDescendant = this.firstSelectedOption
-                ? this.firstSelectedOption.id
-                : "";
+            this.selectedOptions = [this.options[this.selectedIndex]];
+            this.ariaActiveDescendant = this.firstSelectedOption?.id ?? "";
             this.focusAndScrollOptionIntoView();
         }
     }

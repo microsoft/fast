@@ -1,4 +1,4 @@
-import { Listbox, listboxTemplate as template } from "@microsoft/fast-foundation";
+import { ListboxElement, listboxTemplate as template } from "@microsoft/fast-foundation";
 import { listboxStyles as styles } from "./listbox.styles";
 
 /**
@@ -11,7 +11,7 @@ import { listboxStyles as styles } from "./listbox.styles";
  * Generates HTML Element: \<fast-listbox\>
  *
  */
-export const fastListbox = Listbox.compose({
+export const fastListbox = ListboxElement.compose({
     baseName: "listbox",
     template,
     styles,
@@ -27,4 +27,4 @@ export const listboxStyles = styles;
  * Base class for Listbox
  * @public
  */
-export { Listbox };
+export { ListboxElement as Listbox };

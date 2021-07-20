@@ -1,7 +1,7 @@
-import { Listbox } from "../listbox/listbox";
+import { ListboxElement } from "../listbox/listbox.element";
 import { FormAssociated } from "../form-associated/form-associated";
 
-class _Select extends Listbox {}
+class _Select extends ListboxElement {}
 interface _Select extends FormAssociated {}
 
 /**
