@@ -6,6 +6,8 @@ import {
     CalendarDayTemplate,
     CalendarTitleTemplate,
     CalendarWeekdayTemplate,
+    endTemplate,
+    startTemplate,
 } from "@microsoft/fast-foundation";
 
 /**
@@ -66,12 +68,14 @@ const FASTCalendarWeekTamplate: ViewTemplate<CalendarDateInfo[]> = html`
  */
 export const FASTCalendarTemplate: ViewTemplate<Calendar> = html`
     <template>
-        ${CalendarTitleTemplate}
+        ${startTemplate} ${CalendarTitleTemplate}
+        <slot></slot>
         <div class="week-days" part="week-days">
             ${repeat(x => x.getLocaleWeekDays(), CalendarWeekdayTemplate)}
         </div>
         <fast-calendar-grid generate-header="none">
             ${repeat(getWeeks, FASTCalendarWeekTamplate)}
         </fast-calendar-grid>
+        ${endTemplate}
     </template>
 `;

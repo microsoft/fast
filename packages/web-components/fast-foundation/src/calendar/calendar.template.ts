@@ -10,11 +10,8 @@ import type { Calendar, CalendarDateInfo } from "./calendar";
 export const CalendarTitleTemplate: ViewTemplate<Calendar> = html`
     <slot name="title">
         <div class="title" part="title">
-            ${startTemplate}
-            <slot></slot>
             <span part="month">${x => x.getLocaleMonth()}</span>
             <span part="year">${x => x.getLocaleYear()}</span>
-            ${endTemplate}
         </div>
     </slot>
 `;
@@ -62,12 +59,14 @@ export const CalendarDayTemplate: ViewTemplate<CalendarDateInfo> = html`
  */
 export const CalendarTemplate: ViewTemplate<Calendar> = html`
     <template>
-        ${CalendarTitleTemplate}
+        ${startTemplate} ${CalendarTitleTemplate}
+        <slot></slot>
         <div class="week-days" part="week-days">
             ${repeat(x => x.getLocaleWeekDays(), CalendarWeekdayTemplate)}
         </div>
         <div class="days" part="days">
             ${repeat(x => x.getDays(), CalendarDayTemplate)}
         </div>
+        ${endTemplate}
     </template>
 `;

@@ -216,6 +216,11 @@
         transition: all ease-out 1s;
     }
 
+    #click::part(day):hover,
+    #click::part(today):hover {
+        background: #333;
+    }
+
     .calendar-change {
         position: relative;
         margin: 20px 40px;
@@ -332,6 +337,16 @@
     let calendarSelect = document.getElementById("click");
     const dateSelect = evt => {
         const { day, month, year } = evt.detail;
+        const dateString = `${month}-${day}-${year}`;
+        if (calendarSelect.dateInString(evt.detail, calendarSelect.selectedDates)) {
+            calendarSelect.selectedDates = calendarSelect.selectedDates.replace(
+                new RegExp(",?" + dateString),
+                ""
+            );
+        } else {
+            calendarSelect.selectedDates +=
+                (calendarSelect.selectedDates === "" ? "" : ",") + dateString;
+        }
         const output = document.getElementById("click-output");
         output.className = "";
         output.innerHTML = "";
