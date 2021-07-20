@@ -23,8 +23,6 @@ describe("ListboxOption", function() {
 
         await DOM.nextUpdate();
 
-        console.log(element.getAttribute("aria-selected"));
-
         expect(element.getAttribute("aria-selected")).to.equal("true");
 
         element.selected = false;
