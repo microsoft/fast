@@ -1,8 +1,20 @@
 # Change Log - @microsoft/fast-tooling
 
-This log was last generated on Thu, 15 Jul 2021 01:41:48 GMT and should not be manually modified.
+This log was last generated on Sun, 18 Jul 2021 07:16:22 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.25.0
+
+Sun, 18 Jul 2021 07:16:22 GMT
+
+### Minor changes
+
+- update the exporting of services and web components in tooling and match the new pathing in sites (7559015+janechu@users.noreply.github.com)
+
+### Patches
+
+- Bump @microsoft/fast-components to v2.2.3 (ben@platform5.ch)
 
 ## 0.24.2
 

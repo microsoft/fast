@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-components",
   "entries": [
     {
+      "date": "Sun, 18 Jul 2021 07:16:22 GMT",
+      "tag": "@microsoft/fast-components_v2.2.3",
+      "version": "2.2.3",
+      "comments": {
+        "patch": [
+          {
+            "comment": "breadcrumb: allow wrapping of items in the list container",
+            "author": "ben@platform5.ch",
+            "commit": "442a9ef1012dba49179fad629e4ba8aab312d8a7",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 15 Jul 2021 01:41:48 GMT",
       "tag": "@microsoft/fast-components_v2.2.2",
       "version": "2.2.2",
