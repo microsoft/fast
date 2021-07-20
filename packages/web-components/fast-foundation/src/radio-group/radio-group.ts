@@ -1,16 +1,18 @@
-import { attr, FASTElement, observable } from "@microsoft/fast-element";
+import { attr, observable } from "@microsoft/fast-element";
 import {
+    ArrowKeys,
     Direction,
-    keyCodeArrowDown,
+    keyArrowDown,
+    keyArrowLeft,
+    keyArrowRight,
+    keyArrowUp,
     keyCodeArrowLeft,
     keyCodeArrowRight,
-    keyCodeArrowUp,
-    keyCodeEnter,
-    keyCodeSpace,
-    keyCodeTab,
+    keyEnter,
     Orientation,
 } from "@microsoft/fast-web-utilities";
 import { getDirection } from "../utilities";
+import { FoundationElement } from "../foundation-element";
 
 /**
  * An Radio Group Custom HTML Element.
@@ -18,7 +20,7 @@ import { getDirection } from "../utilities";
  *
  * @public
  */
-export class RadioGroup extends FASTElement {
+export class RadioGroup extends FoundationElement {
     /**
      * When true, the child radios will be immutable by user interaction. See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/readonly | readonly HTML attribute} for more information.
      * @public
@@ -125,9 +127,19 @@ export class RadioGroup extends FASTElement {
 
     private selectedRadio: HTMLInputElement | null;
     private focusedRadio: HTMLInputElement | null;
-    private parentToolbar: HTMLElement | null | undefined;
-    private isInsideToolbar: boolean = false;
     private direction: Direction;
+
+    private get parentToolbar(): HTMLElement | null {
+        return this.closest('[role="toolbar"]');
+    }
+
+    private get isInsideToolbar(): boolean {
+        return (this.parentToolbar ?? false) as boolean;
+    }
+
+    private get isInsideFoundationToolbar(): boolean {
+        return !!this.parentToolbar?.["$fastController"];
+    }
 
     /**
      * @internal
@@ -136,9 +148,6 @@ export class RadioGroup extends FASTElement {
         super.connectedCallback();
         this.direction = getDirection(this);
         this.setupRadioButtons();
-        this.parentToolbar = this.parentElement?.closest('[role="toolbar"]');
-        this.isInsideToolbar =
-            this.parentToolbar !== undefined && this.parentToolbar !== null;
     }
 
     public disconnectedCallback(): void {
@@ -175,14 +184,16 @@ export class RadioGroup extends FASTElement {
                 radio.readOnly = true;
             }
 
-            if (this.value && this.value === radio.getAttribute("value")) {
+            if (this.value && this.value === radio.value) {
                 this.selectedRadio = radio;
                 this.focusedRadio = radio;
                 radio.checked = true;
                 radio.setAttribute("tabindex", "0");
                 foundMatchingVal = true;
             } else {
-                radio.setAttribute("tabindex", "-1");
+                if (!this.isInsideFoundationToolbar) {
+                    radio.setAttribute("tabindex", "-1");
+                }
                 radio.checked = false;
             }
             radio.addEventListener("change", this.radioChangeHandler);
@@ -217,7 +228,9 @@ export class RadioGroup extends FASTElement {
             this.slottedRadioButtons.forEach((radio: HTMLInputElement) => {
                 if (radio !== changedRadio) {
                     radio.checked = false;
-                    radio.setAttribute("tabindex", "-1");
+                    if (!this.isInsideFoundationToolbar) {
+                        radio.setAttribute("tabindex", "-1");
+                    }
                 }
             });
             this.selectedRadio = changedRadio;
@@ -248,11 +261,11 @@ export class RadioGroup extends FASTElement {
     };
 
     private moveRightOffGroup = () => {
-        (this.nextElementSibling as HTMLInputElement).focus();
+        (this.nextElementSibling as HTMLInputElement)?.focus();
     };
 
     private moveLeftOffGroup = () => {
-        (this.previousElementSibling as HTMLInputElement).focus();
+        (this.previousElementSibling as HTMLInputElement)?.focus();
     };
 
     /**
@@ -279,13 +292,16 @@ export class RadioGroup extends FASTElement {
                     }
                 });
             } else {
-                this.selectedRadio.setAttribute("tabindex", "0");
                 this.focusedRadio = this.selectedRadio;
-                group.forEach((nextRadio: HTMLInputElement) => {
-                    if (nextRadio !== this.selectedRadio) {
-                        nextRadio.setAttribute("tabindex", "-1");
-                    }
-                });
+
+                if (!this.isInsideFoundationToolbar) {
+                    this.selectedRadio.setAttribute("tabindex", "0");
+                    group.forEach((nextRadio: HTMLInputElement) => {
+                        if (nextRadio !== this.selectedRadio) {
+                            nextRadio.setAttribute("tabindex", "-1");
+                        }
+                    });
+                }
             }
         }
         return true;
@@ -407,28 +423,41 @@ export class RadioGroup extends FASTElement {
      * @internal
      */
     public keydownHandler = (e: KeyboardEvent): boolean | void => {
-        switch (e.keyCode) {
-            case keyCodeEnter:
-                this.checkFocusedRadio();
-                break;
-            case keyCodeArrowRight:
-            case keyCodeArrowDown:
-                if (this.direction === Direction.ltr) {
-                    this.moveRight(e);
-                } else {
-                    this.moveLeft(e);
-                }
-                break;
-            case keyCodeArrowLeft:
-            case keyCodeArrowUp:
-                if (this.direction === Direction.ltr) {
-                    this.moveLeft(e);
-                } else {
-                    this.moveRight(e);
-                }
-                break;
+        const key = e.key;
+
+        if (key in ArrowKeys && this.isInsideFoundationToolbar) {
+            return true;
         }
 
-        return e.keyCode === keyCodeTab || e.keyCode === keyCodeSpace;
+        switch (key) {
+            case keyEnter: {
+                this.checkFocusedRadio();
+                break;
+            }
+
+            case keyArrowRight:
+            case keyArrowDown: {
+                if (this.direction === Direction.ltr) {
+                    this.moveRight(e);
+                } else {
+                    this.moveLeft(e);
+                }
+                break;
+            }
+
+            case keyArrowLeft:
+            case keyArrowUp: {
+                if (this.direction === Direction.ltr) {
+                    this.moveLeft(e);
+                } else {
+                    this.moveRight(e);
+                }
+                break;
+            }
+
+            default: {
+                return true;
+            }
+        }
     };
 }

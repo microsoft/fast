@@ -13,6 +13,11 @@ export interface ViewerClassNameContract {
     viewer_contentRegion?: string;
 
     /**
+     * The content region in preview display mode
+     */
+    viewer_contentRegion__preview?: string;
+
+    /**
      * The content region disabled from interaction
      */
     viewer_contentRegion__disabled?: string;

@@ -1,25 +1,42 @@
-import { css } from "@microsoft/fast-element";
+import { css, ElementStyles } from "@microsoft/fast-element";
 import { SystemColors } from "@microsoft/fast-web-utilities";
-import { focusVisible, forcedColorsStylesheetBehavior } from "@microsoft/fast-foundation";
 import {
-    neutralFocusBehavior,
-    neutralForegroundActiveBehavior,
-    neutralForegroundRestBehavior,
-} from "../styles/recipes";
+    ElementDefinitionContext,
+    focusVisible,
+    forcedColorsStylesheetBehavior,
+    FoundationElementDefinition,
+} from "@microsoft/fast-foundation";
+import {
+    bodyFont,
+    controlCornerRadius,
+    designUnit,
+    focusStrokeOuter,
+    neutralForegroundRest,
+    strokeWidth,
+    typeRampBaseFontSize,
+    typeRampBaseLineHeight,
+} from "../design-tokens";
 
-export const DataGridCellStyles = css`
+export const dataGridCellStyles: (
+    context: ElementDefinitionContext,
+    definition: FoundationElementDefinition
+) => ElementStyles = (
+    context: ElementDefinitionContext,
+    definition: FoundationElementDefinition
+) =>
+    css`
     :host {
-        padding: calc(var(--design-unit) * 1px) calc(var(--design-unit) * 3px);
-        color: ${neutralForegroundRestBehavior.var};
+        padding: calc(${designUnit} * 1px) calc(${designUnit} * 3px);
+        color: ${neutralForegroundRest};
         box-sizing: border-box;
-        font-family: var(--body-font);
-        font-size: var(--type-ramp-base-font-size);
-        line-height: var(--type-ramp-base-line-height);
+        font-family: ${bodyFont};
+        font-size: ${typeRampBaseFontSize};
+        line-height: ${typeRampBaseLineHeight};
         font-weight: 400;
-        border: transparent calc(var(--outline-width) * 1px) solid;
+        border: transparent calc(${strokeWidth} * 1px) solid;
         overflow: hidden;
         white-space: nowrap;
-        border-radius: calc(var(--corner-radius) * 1px);
+        border-radius: calc(${controlCornerRadius} * 1px);
     }
 
     :host(.column-header) {
@@ -27,16 +44,13 @@ export const DataGridCellStyles = css`
     }
 
     :host(:${focusVisible}) {
-        border: ${neutralFocusBehavior.var} calc(var(--outline-width) * 1px) solid;
-        color: ${neutralForegroundActiveBehavior.var};
+        border: ${focusStrokeOuter} calc(${strokeWidth} * 1px) solid;
+        color: ${neutralForegroundRest};
     }
 
 `.withBehaviors(
-    neutralFocusBehavior,
-    neutralForegroundActiveBehavior,
-    neutralForegroundRestBehavior,
-    forcedColorsStylesheetBehavior(
-        css`
+        forcedColorsStylesheetBehavior(
+            css`
         :host {
             forced-color-adjust: none;
             border-color: transparent;
@@ -50,5 +64,5 @@ export const DataGridCellStyles = css`
             color: ${SystemColors.FieldText};
         }
         `
-    )
-);
+        )
+    );

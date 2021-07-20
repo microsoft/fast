@@ -6,6 +6,12 @@ import { MessageSystemType } from "./types";
 import { ValidationError } from "./validation.props";
 import { History } from "./history.props";
 
+/**
+ * Note on nomenclature: incoming messages are being sent to, and recieved, by the message system
+ * while outgoing messages are being sent from the message system to any registered service. These
+ * terms are from the POV of the message system.
+ */
+
 export enum MessageSystemDataDictionaryTypeAction {
     get = "get",
     updateActiveId = "update-active-id",
@@ -40,6 +46,10 @@ export enum MessageSystemHistoryTypeAction {
     get = "get",
 }
 
+export enum MessageSystemSchemaDictionaryTypeAction {
+    add = "add",
+}
+
 interface ArbitraryMessageIncoming<TConfig = {}> {
     /**
      * Additional arbitrary options to be passed with the message
@@ -56,6 +66,10 @@ interface ArbitraryMessageOutgoing<TConfig = {}> {
 
 /**
  * The message to initialize the message system
+ *
+ * A message system can be initialized without a data dictionary or schema dictionary
+ * if asynchronous services are being added to the message system and the initialization
+ * must happen at a later stage once the asynchronous services have initialized.
  */
 export interface InitializeMessageIncoming<TConfig = {}>
     extends ArbitraryMessageIncoming<TConfig> {
@@ -502,6 +516,26 @@ export interface GetHistoryMessageOutgoing<TConfig = {}>
     history: History;
 }
 
+/**
+ * The message to add schemas to the schema dictionary
+ */
+export interface AddSchemaDictionaryMessageIncoming<TConfig = {}>
+    extends ArbitraryMessageIncoming<TConfig> {
+    type: MessageSystemType.schemaDictionary;
+    action: MessageSystemSchemaDictionaryTypeAction.add;
+    schemas: any[];
+}
+
+/**
+ * The message that schemas have been added to the schema dictionary
+ */
+export interface AddSchemaDictionaryMessageOutgoing<TConfig = {}>
+    extends ArbitraryMessageOutgoing<TConfig> {
+    type: MessageSystemType.schemaDictionary;
+    action: MessageSystemSchemaDictionaryTypeAction.add;
+    schemaDictionary: SchemaDictionary;
+}
+
 export interface CustomMessageIncomingOutgoing<OConfig>
     extends ArbitraryMessageIncoming<OConfig> {
     type: MessageSystemType.custom;
@@ -579,12 +613,23 @@ export type HistoryMessageIncoming = GetHistoryMessageIncoming;
 export type HistoryMessageOutgoing = GetHistoryMessageOutgoing;
 
 /**
+ * Incoming schema dictionary messages to the message system
+ */
+export type SchemaDictionaryMessageIncoming = AddSchemaDictionaryMessageIncoming;
+
+/**
+ * Outgoing schema dictionary messages from the message system
+ */
+export type SchemaDictionaryMessageOutgoing = AddSchemaDictionaryMessageOutgoing;
+
+/**
  * Incoming messages to the message system
  */
 export type MessageSystemIncoming<C = {}, OConfig = {}> =
     | InitializeMessageIncoming
     | DataMessageIncoming
     | HistoryMessageIncoming
+    | SchemaDictionaryMessageIncoming
     | NavigationMessageIncoming
     | NavigationDictionaryMessageIncoming
     | DataDictionaryMessageIncoming
@@ -598,6 +643,7 @@ export type MessageSystemOutgoing<C = {}, OConfig = {}> =
     | InitializeMessageOutgoing
     | DataMessageOutgoing
     | HistoryMessageOutgoing
+    | SchemaDictionaryMessageOutgoing
     | NavigationMessageOutgoing
     | NavigationDictionaryMessageOutgoing
     | DataDictionaryMessageOutgoing

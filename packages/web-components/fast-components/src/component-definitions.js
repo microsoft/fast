@@ -6,6 +6,8 @@ import fastAnchorDefinition from "./anchor/anchor.vscode.definition.json";
 export { fastAnchorDefinition };
 import fastAnchoredRegionDefinition from "./anchored-region/anchored-region.vscode.definition.json";
 export { fastAnchoredRegionDefinition };
+import fastAvatarDefinition from "./avatar/avatar.vscode.definition.json";
+export { fastAvatarDefinition };
 import fastBadgeDefinition from "./badge/badge.vscode.definition.json";
 export { fastBadgeDefinition };
 import fastBreadcrumbDefinition from "./breadcrumb/breadcrumb.vscode.definition.json";
@@ -74,6 +76,8 @@ import fastTextAreaDefinition from "./text-area/text-area.vscode.definition.json
 export { fastTextAreaDefinition };
 import fastTextFieldDefinition from "./text-field/text-field.vscode.definition.json";
 export { fastTextFieldDefinition };
+import fastToolbarDefinition from "./toolbar/toolbar.vscode.definition.json";
+export { fastToolbarDefinition };
 import fastTooltipDefinition from "./tooltip/tooltip.vscode.definition.json";
 export { fastTooltipDefinition };
 import fastTreeItemDefinition from "./tree-item/tree-item.vscode.definition.json";

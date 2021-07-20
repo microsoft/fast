@@ -1,4 +1,9 @@
-import { attr, nullableNumberConverter, observable } from "@microsoft/fast-element";
+import {
+    attr,
+    nullableNumberConverter,
+    observable,
+    SyntheticViewTemplate,
+} from "@microsoft/fast-element";
 import {
     Direction,
     keyCodeArrowDown,
@@ -10,6 +15,7 @@ import {
     keyCodeTab,
     Orientation,
 } from "@microsoft/fast-web-utilities";
+import type { FoundationElementDefinition } from "../foundation-element";
 import { getDirection } from "../utilities/direction";
 import { convertPixelToPercent } from "./slider-utilities";
 import { FormAssociatedSlider } from "./slider.form-associated";
@@ -33,6 +39,14 @@ export interface SliderConfiguration {
     direction?: Direction;
     disabled?: boolean;
 }
+
+/**
+ * Slider configuration options
+ * @public
+ */
+export type SliderOptions = FoundationElementDefinition & {
+    thumb?: string | SyntheticViewTemplate;
+};
 
 /**
  * A Slider Custom HTML Element.
@@ -65,6 +79,11 @@ export class Slider extends FormAssociatedSlider implements SliderConfiguration 
      * @internal
      */
     public thumb: HTMLDivElement;
+
+    /**
+     * @internal
+     */
+    public stepMultiplier: number;
 
     /**
      * @internal
@@ -183,6 +202,7 @@ export class Slider extends FormAssociatedSlider implements SliderConfiguration 
             this.proxy.step = `${this.step}`;
         }
 
+        this.updateStepMultiplier();
         this.validate();
     }
 
@@ -220,6 +240,7 @@ export class Slider extends FormAssociatedSlider implements SliderConfiguration 
         this.proxy.setAttribute("type", "range");
 
         this.direction = getDirection(this);
+        this.updateStepMultiplier();
         this.setupTrackConstraints();
         this.setupListeners();
         this.setupDefaultValue();
@@ -314,6 +335,18 @@ export class Slider extends FormAssociatedSlider implements SliderConfiguration 
                 ? `bottom: ${percentage}%; transition: none;`
                 : `bottom: ${percentage}%; transition: all 0.2s ease;`;
         }
+    }
+
+    /**
+     * Update the step multiplier used to ensure rounding errors from steps that
+     * are not whole numbers
+     */
+    private updateStepMultiplier(): void {
+        const stepString: string = this.step + "";
+        const decimalPlacesOfStep: number = !!(this.step % 1)
+            ? stepString.length - stepString.indexOf(".") - 1
+            : 0;
+        this.stepMultiplier = Math.pow(10, decimalPlacesOfStep);
     }
 
     private setupTrackConstraints = (): void => {
@@ -447,12 +480,24 @@ export class Slider extends FormAssociatedSlider implements SliderConfiguration 
         if (isNaN(value)) {
             value = this.min;
         }
+
+        /**
+         * The following logic intends to overcome the issue with math in JavaScript with regards to floating point numbers.
+         * This is needed as the `step` may be an integer but could also be a float. To accomplish this the step  is assumed to be a float
+         * and is converted to an integer by determining the number of decimal places it represent, multiplying it until it is an
+         * integer and then dividing it to get back to the correct number.
+         */
         let constrainedValue: number = value - this.min;
-        const remainderVal: number = constrainedValue % Number(this.step);
+        const roundedConstrainedValue: number = Math.round(constrainedValue / this.step);
+        const remainderValue: number =
+            constrainedValue -
+            (roundedConstrainedValue * (this.stepMultiplier * this.step)) /
+                this.stepMultiplier;
+
         constrainedValue =
-            remainderVal >= Number(this.step) / 2
-                ? constrainedValue - remainderVal + Number(this.step)
-                : constrainedValue - remainderVal;
+            remainderValue >= Number(this.step) / 2
+                ? constrainedValue - remainderValue + Number(this.step)
+                : constrainedValue - remainderValue;
         return constrainedValue + this.min;
     };
 }

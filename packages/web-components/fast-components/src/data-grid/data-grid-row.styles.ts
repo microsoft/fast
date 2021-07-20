@@ -1,31 +1,31 @@
-import { css } from "@microsoft/fast-element";
-import { forcedColorsStylesheetBehavior } from "@microsoft/fast-foundation";
-import { neutralDividerRestBehavior, neutralFillRestBehavior } from "../styles/recipes";
+import { css, ElementStyles } from "@microsoft/fast-element";
+import {
+    ElementDefinitionContext,
+    FoundationElementDefinition,
+} from "@microsoft/fast-foundation";
+import { neutralFillRest, neutralStrokeDividerRest, strokeWidth } from "../design-tokens";
 
-export const DataGridRowStyles = css`
+export const dataGridRowStyles: (
+    context: ElementDefinitionContext,
+    definition: FoundationElementDefinition
+) => ElementStyles = (
+    context: ElementDefinitionContext,
+    definition: FoundationElementDefinition
+) => css`
     :host {
         display: grid;
         padding: 1px 0;
         box-sizing: border-box;
         width: 100%;
-        border-bottom: calc(var(--outline-width) * 1px) solid var(--neutral-divider-rest);
+        border-bottom: calc(${strokeWidth} * 1px) solid ${neutralStrokeDividerRest};
     }
 
     :host(.header) {
     }
 
     :host(.sticky-header) {
-        background: ${neutralFillRestBehavior.var};
+        background: ${neutralFillRest};
         position: sticky;
         top: 0;
     }
-`.withBehaviors(
-    neutralDividerRestBehavior,
-    neutralFillRestBehavior,
-    forcedColorsStylesheetBehavior(
-        css`
-            :host {
-            }
-        `
-    )
-);
+`;

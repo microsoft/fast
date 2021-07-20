@@ -47,6 +47,7 @@ export class Viewer extends Foundation<
         width: void 0,
         responsive: void 0,
         messageSystem: void 0,
+        preview: void 0,
     };
 
     private messageSystemConfig: Register;
@@ -211,6 +212,10 @@ export class Viewer extends Foundation<
 
     private generateContentRegionClassNames(): string {
         let classes: string = this.props.managedClasses.viewer_contentRegion;
+
+        if (this.props.preview) {
+            classes += ` ${this.props.managedClasses.viewer_contentRegion__preview}`;
+        }
 
         if (this.state.resizing) {
             classes += ` ${this.props.managedClasses.viewer_contentRegion__disabled}`;

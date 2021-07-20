@@ -8,9 +8,9 @@ import {
     LineHeight1Property,
 } from "../style/css-properties";
 
-export const HTMLRenderLayerNavigationStyles = css`
+export const htmlRenderLayerNavigationStyles = (context, definition) => css`
     .navigation-region {
-        position: absolute;
+        position: fixed;
         top: 0;
         right: 0;
         bottom: 0;

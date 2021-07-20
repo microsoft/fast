@@ -1,9 +1,25 @@
-import { css } from "@microsoft/fast-element";
-import { disabledCursor, focusVisible } from "@microsoft/fast-foundation";
-import { SelectStyles } from "../select/select.styles";
+import { css, ElementStyles } from "@microsoft/fast-element";
+import {
+    ComboboxOptions,
+    disabledCursor,
+    ElementDefinitionContext,
+    focusVisible,
+} from "@microsoft/fast-foundation";
+import {
+    strokeWidth,
+    typeRampBaseFontSize,
+    typeRampBaseLineHeight,
+} from "../design-tokens";
+import { selectStyles } from "../select/select.styles";
 
-export const ComboboxStyles = css`
-    ${SelectStyles}
+export const comboboxStyles: (
+    context: ElementDefinitionContext,
+    definition: ComboboxOptions
+) => ElementStyles = (
+    context: ElementDefinitionContext,
+    definition: ComboboxOptions
+) => css`
+    ${selectStyles(context, definition)}
 
     :host(:empty) .listbox {
         display: none;
@@ -20,9 +36,9 @@ export const ComboboxStyles = css`
         background: transparent;
         border: none;
         color: inherit;
-        font-size: var(--type-ramp-base-font-size);
-        line-height: var(--type-ramp-base-line-height);
-        height: calc(100% - (var(--outline-width) * 1px));
+        font-size: ${typeRampBaseFontSize};
+        line-height: ${typeRampBaseLineHeight};
+        height: calc(100% - (${strokeWidth} * 1px));
         margin: auto 0;
         width: 100%;
     }

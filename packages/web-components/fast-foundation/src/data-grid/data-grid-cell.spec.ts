@@ -1,15 +1,15 @@
 import { expect } from "chai";
 import { customElement, html, ViewTemplate } from "@microsoft/fast-element";
 import { fixture } from "../test-utilities/fixture";
-import { createDataGridCellTemplate, DataGridCell } from "./index";
+import { dataGridCellTemplate, DataGridCell } from "./index";
 import { newDataRow } from "./data-grid.spec";
 import { DataGridCellTypes } from "./data-grid.options";
 
-@customElement({
-    name: "fast-data-grid-cell",
-    template: createDataGridCellTemplate("fast"),
+
+const FASTDataGridCell = DataGridCell.compose({
+    baseName: "data-grid-cell",
+    template: dataGridCellTemplate
 })
-class FASTDataGridCell extends DataGridCell {}
 
 const testCellContentsTemplate: ViewTemplate = html<DataGridCell>`
     <template>
@@ -28,10 +28,10 @@ function getFocusTarget(cell: DataGridCell): HTMLElement {
 }
 
 async function setup() {
-    const { element, connect, disconnect } = await fixture<FASTDataGridCell>(
-        "fast-data-grid-cell"
+    const { element, connect, disconnect, parent } = await fixture(
+        FASTDataGridCell()
     );
-    return { element, connect, disconnect };
+    return { element, connect, disconnect, parent };
 }
 
 describe("Data grid cell", () => {

@@ -1,4 +1,5 @@
-import { attr, FASTElement } from "@microsoft/fast-element";
+import { attr } from "@microsoft/fast-element";
+import { FoundationElement } from "../foundation-element";
 
 /**
  * A structure representing skeleton shapes
@@ -11,7 +12,7 @@ export type SkeletonShape = "rect" | "circle";
  *
  * @public
  */
-export class Skeleton extends FASTElement {
+export class Skeleton extends FoundationElement {
     /**
      * Indicates the Skeleton should have a filled style.
      *

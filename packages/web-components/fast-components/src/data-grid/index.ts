@@ -1,76 +1,86 @@
-import { customElement, ViewTemplate } from "@microsoft/fast-element";
 import {
+    dataGridCellTemplate,
+    dataGridRowTemplate,
+    dataGridTemplate,
     DataGrid,
-    createDataGridTemplate,
-    DataGridRow,
-    createDataGridRowTemplate,
     DataGridCell,
-    createDataGridCellTemplate,
+    DataGridRow,
 } from "@microsoft/fast-foundation";
-import { DataGridStyles as gridStyles } from "./data-grid.styles";
-import { DataGridRowStyles as rowStyles } from "./data-grid-row.styles";
-import { DataGridCellStyles as cellStyles } from "./data-grid-cell.styles";
-
-const gridTemplate: ViewTemplate = createDataGridTemplate("fast");
-const rowTemplate: ViewTemplate = createDataGridRowTemplate("fast");
-const cellTemplate: ViewTemplate = createDataGridCellTemplate("fast");
+import { dataGridStyles as gridStyles } from "./data-grid.styles";
+import { dataGridRowStyles as rowStyles } from "./data-grid-row.styles";
+import { dataGridCellStyles as cellStyles } from "./data-grid-cell.styles";
 
 /**
- * The FAST Data Grid Element.
+ * A function that returns a {@link @microsoft/fast-foundation#DataGridCell} registration for configuring the component with a DesignSystem.
  *
  * @public
  * @remarks
- * HTML Element: \<fast-data-grid\>
+ * Generates HTML Element: \<fast-data-grid-cell\>
  */
-@customElement({
-    name: "fast-data-grid",
-    template: gridTemplate,
-    styles: gridStyles,
-})
-export class FASTDataGrid extends DataGrid {}
-
-/**
- * Styles for DataGrid
- * @public
- */
-export const DataGridStyles = gridStyles;
-
-/**
- * The FAST Data Grid Row Element.
- *
- * @public
- * @remarks
- * HTML Element: \<fast-data-grid-row\>
- */
-@customElement({
-    name: "fast-data-grid-row",
-    template: rowTemplate,
-    styles: rowStyles,
-})
-export class FASTDataGridRow extends DataGridRow {}
-
-/**
- * Styles for DataGrid row
- * @public
- */
-export const DataGridRowStyles = rowStyles;
-
-/**
- * The FAST Data Grid Cell Element.
- *
- * @public
- * @remarks
- * HTML Element: \<fast-data-grid-cell\>
- */
-@customElement({
-    name: "fast-data-grid-cell",
-    template: cellTemplate,
+export const fastDataGridCell = DataGridCell.compose({
+    baseName: "data-grid-cell",
+    template: dataGridCellTemplate,
     styles: cellStyles,
-})
-export class FASTDataGridCell extends DataGridCell {}
+});
 
 /**
  * Styles for DataGrid cell
  * @public
  */
-export const DataGridCellStyles = cellStyles;
+export const dataGridCellStyles = cellStyles;
+
+/**
+ * A function that returns a {@link @microsoft/fast-foundation#DataGridRow} registration for configuring the component with a DesignSystem.
+ *
+ * @public
+ * @remarks
+ * Generates HTML Element: \<fast-data-grid-row\>
+ */
+export const fastDataGridRow = DataGridRow.compose({
+    baseName: "data-grid-row",
+    template: dataGridRowTemplate,
+    styles: rowStyles,
+});
+
+/**
+ * Styles for DataGrid row
+ * @public
+ */
+export const dataGridRowStyles = rowStyles;
+
+/**
+ * A function that returns a {@link @microsoft/fast-foundation#DataGrid} registration for configuring the component with a DesignSystem.
+ *
+ * @public
+ * @remarks
+ * Generates HTML Element: \<fast-data-grid\>
+ */
+export const fastDataGrid = DataGrid.compose({
+    baseName: "data-grid",
+    template: dataGridTemplate,
+    styles: gridStyles,
+});
+
+/**
+ * Styles for DataGrid
+ * @public
+ */
+export const dataGridStyles = gridStyles;
+
+/**
+ * Base class for DataGrid
+ * @public
+ */
+export { DataGrid };
+
+/**
+ * Base class for DataGridRow
+ * @public
+ */
+export { DataGridRow };
+
+/**
+ * Base class for DataGridCell
+ * @public
+ */
+export { DataGridCell };

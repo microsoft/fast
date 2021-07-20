@@ -1,8 +1,184 @@
 # Change Log - @microsoft/fast-creator
 
-This log was last generated on Sun, 02 May 2021 07:18:00 GMT and should not be manually modified.
+This log was last generated on Sun, 18 Jul 2021 07:16:22 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.7.0
+
+Sun, 18 Jul 2021 07:16:22 GMT
+
+### Patches
+
+- Bump @microsoft/fast-tooling-react to v2.9.3 (ben@platform5.ch)
+
+## 0.7.0
+
+Thu, 15 Jul 2021 01:41:48 GMT
+
+### Patches
+
+- Bump @microsoft/fast-tooling-react to v2.9.2 (chhol@microsoft.com)
+
+## 0.7.0
+
+Wed, 14 Jul 2021 07:15:36 GMT
+
+### Patches
+
+- Bump @microsoft/fast-tooling-react to v2.9.1 (44823142+williamw2@users.noreply.github.com)
+
+## 0.7.0
+
+Tue, 13 Jul 2021 07:14:52 GMT
+
+### Patches
+
+- Bump @microsoft/fast-tooling-react to v2.9.0 (ben@platform5.ch)
+
+## 0.7.0
+
+Wed, 07 Jul 2021 07:19:51 GMT
+
+### Patches
+
+- Bump @microsoft/fast-tooling-react to v2.8.25 (scomea@microsoft.com)
+
+## 0.7.0
+
+Sun, 04 Jul 2021 07:15:28 GMT
+
+### Patches
+
+- Bump @microsoft/fast-tooling-react to v2.8.24 (john.kreitlow@microsoft.com)
+
+## 0.7.0
+
+Thu, 01 Jul 2021 07:15:57 GMT
+
+### Patches
+
+- Bump @microsoft/fast-tooling-react to v2.8.23 (nicholasrice@users.noreply.github.com)
+
+## 0.7.0
+
+Tue, 29 Jun 2021 07:14:52 GMT
+
+### Patches
+
+- Bump @microsoft/fast-tooling-react to v2.8.22 (7559015+janechu@users.noreply.github.com)
+
+## 0.7.0
+
+Fri, 25 Jun 2021 02:02:57 GMT
+
+### Patches
+
+- Bump @microsoft/fast-tooling-react to v2.8.21 (roeisenb@microsoft.com)
+
+## 0.7.0
+
+Wed, 23 Jun 2021 22:58:18 GMT
+
+### Patches
+
+- Bump @microsoft/fast-components to v1.21.8 (tlmii@users.noreply.github.com)
+
+## 0.7.0
+
+Sun, 20 Jun 2021 07:21:25 GMT
+
+### Patches
+
+- Bump @microsoft/fast-tooling-react to v2.8.19 (robarb@microsoft.com)
+
+## 0.7.0
+
+Sun, 13 Jun 2021 07:19:23 GMT
+
+### Patches
+
+- Bump @microsoft/fast-tooling to v0.22.3 (nicholasrice@users.noreply.github.com)
+
+## 0.7.0
+
+Tue, 08 Jun 2021 07:29:18 GMT
+
+### Patches
+
+- Bump @microsoft/fast-tooling-react to v2.8.17 (scomea@microsoft.com)
+
+## 0.7.0
+
+Sun, 06 Jun 2021 07:35:11 GMT
+
+### Patches
+
+- Bump @microsoft/fast-tooling-react to v2.8.16 (khamu@microsoft.com)
+
+## 0.7.0
+
+Wed, 02 Jun 2021 07:47:44 GMT
+
+### Patches
+
+- Bump @microsoft/fast-tooling-react to v2.8.15 (7559015+janechu@users.noreply.github.com)
+
+## 0.7.0
+
+Mon, 31 May 2021 07:44:04 GMT
+
+### Patches
+
+- Bump @microsoft/fast-tooling to v0.22.0 (7559015+janechu@users.noreply.github.com)
+
+## 0.7.0
+
+Thu, 27 May 2021 07:34:58 GMT
+
+### Patches
+
+- Bump @microsoft/fast-tooling-react to v2.8.12 (44823142+williamw2@users.noreply.github.com)
+
+## 0.7.0
+
+Wed, 26 May 2021 07:33:37 GMT
+
+### Patches
+
+- Bump @microsoft/fast-tooling to v0.21.0 (7559015+janechu@users.noreply.github.com)
+
+## 0.7.0
+
+Tue, 25 May 2021 07:27:43 GMT
+
+### Patches
+
+- Bump @microsoft/fast-tooling-react to v2.8.10 (scomea@microsoft.com)
+
+## 0.7.0
+
+Fri, 21 May 2021 17:48:08 GMT
+
+### Patches
+
+- Bump @microsoft/fast-tooling to v0.20.0 (nicholasrice@users.noreply.github.com)
+
+## 0.7.0
+
+Thu, 20 May 2021 07:24:10 GMT
+
+### Patches
+
+- Bump @microsoft/fast-tooling-react to v2.8.8 (john.kreitlow@microsoft.com)
+
+## 0.7.0
+
+Wed, 19 May 2021 23:37:36 GMT
+
+### Patches
+
+- Bump @microsoft/site-utilities to v0.9.0 (7559015+janechu@users.noreply.github.com)
 
 ## 0.7.0
 

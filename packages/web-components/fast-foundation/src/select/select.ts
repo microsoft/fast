@@ -1,10 +1,24 @@
-import { attr, Observable, observable } from "@microsoft/fast-element";
+import {
+    attr,
+    Observable,
+    observable,
+    SyntheticViewTemplate,
+} from "@microsoft/fast-element";
+import type { FoundationElementDefinition } from "../foundation-element";
 import type { ListboxOption } from "../listbox-option/listbox-option";
 import { ARIAGlobalStatesAndProperties } from "../patterns/aria-global";
 import { StartEnd } from "../patterns/start-end";
 import { applyMixins } from "../utilities/apply-mixins";
 import { FormAssociatedSelect } from "./select.form-associated";
 import { SelectPosition, SelectRole } from "./select.options";
+
+/**
+ * Select configuration options
+ * @public
+ */
+export type SelectOptions = FoundationElementDefinition & {
+    indicator?: string | SyntheticViewTemplate;
+};
 
 /**
  * A Select Custom HTML Element.
@@ -91,7 +105,11 @@ export class Select extends FormAssociatedSelect {
         }
 
         if (shouldEmit) {
-            this.$emit("change");
+            this.$emit("input");
+            this.$emit("change", this, {
+                bubbles: true,
+                composed: undefined,
+            });
         }
     }
 
@@ -257,8 +275,11 @@ export class Select extends FormAssociatedSelect {
             return;
         }
 
-        if (!this.options || !this.options.includes(focusTarget as ListboxOption)) {
+        if (!this.options?.includes(focusTarget as ListboxOption)) {
             this.open = false;
+            if (this.indexWhenOpened !== this.selectedIndex) {
+                this.updateValue(true);
+            }
         }
     }
 
@@ -341,6 +362,7 @@ export class Select extends FormAssociatedSelect {
 
         if (!this.open && this.indexWhenOpened !== this.selectedIndex) {
             this.updateValue(true);
+            this.indexWhenOpened = this.selectedIndex;
         }
 
         return true;

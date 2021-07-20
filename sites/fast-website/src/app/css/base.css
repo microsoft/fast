@@ -1,7 +1,5 @@
 html {
-    background-color: var(--background-color);
     box-sizing: border-box;
-    font: 16px "aktiv-grotesk", "Segoe UI", Arial, Helvetica, sans-serif;
 }
 
 html,
@@ -12,14 +10,16 @@ body {
 }
 
 body {
-    background-color: var(--background-color);
+    background-color: var(--fill-color);
     color: var(--neutral-foreground-rest);
     margin: 0;
     padding: 0;
+    font-family: var(--body-font);
+    font-size: var(--type-ramp-base-font-size);
+    line-height: var(--type-ramp-base-line-height);
 }
 
 .body-provider {
-    background-color: var(--background-color);
     isolation: isolate;
 }
 

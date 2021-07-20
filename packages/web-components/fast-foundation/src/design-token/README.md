@@ -90,6 +90,38 @@ const value = {
 fancyFillColor.setValueFor(descendent, value)
 ```
 
+### Subscription
+`DesignToken` supports subscription, notifying a subscriber when a value changes. Subscriptions can subscribe to *any* change throughout the document tree or they can subscribe changes for specific elements.
+
+**Example: Subscribe to changes for any element**
+
+```ts
+const subscriber = {
+    handleChange(record) {
+        console.log(`DesignToken ${record.token} changed for element ${record.target}`);
+    }
+};
+
+fillColor.subscribe(subscriber);
+```
+
+**Example: Subscribe to changes a specific element**
+
+```ts
+// ...
+const target = document.body.querySelector("#my-element");
+
+fillColor.subscribe(subscriber, target);
+```
+
+Subscribers can be unsubscribed using the `unsubscribe()` method, providing the :
+
+
+```ts
+// ...
+fillColor.unsubscribe(subscriber);
+fillColor.unsubscribe(subscriber, target);
+```
 ## Using Design Tokens in CSS
 Any token can be used directly in a FAST stylesheet by using the Design Token as a CSS directive. Assuming the token value has been set for the element or some ancestor element, the value of the token embedded in the stylesheet will be the token value for that element instance.
 

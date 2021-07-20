@@ -1,26 +1,16 @@
 import { expect, assert } from "chai";
-import { Slider, SliderTemplate as template } from "./index";
-import { SliderLabel, SliderLabelTemplate as itemTemplate } from "../slider-label";
+import { Slider, sliderTemplate as template } from "./index";
 import { fixture } from "../test-utilities/fixture";
-import { DOM, customElement } from "@microsoft/fast-element";
+import { DOM } from "@microsoft/fast-element";
 import { Orientation, Direction } from "@microsoft/fast-web-utilities";
 
-@customElement({
-    name: "fast-slider",
-    template,
+const FASTSlider = Slider.compose({
+    baseName: "slider",
+    template
 })
-class FASTSlider extends Slider {}
-
-@customElement({
-    name: "fast-slider-label",
-    template: itemTemplate,
-})
-class FASTSliderLabel extends SliderLabel {}
 
 async function setup() {
-    const { element, connect, disconnect, parent } = await fixture<FASTSlider>(
-        "fast-slider"
-    );
+    const { element, connect, disconnect, parent } = await fixture(FASTSlider());
 
     return { element, connect, disconnect, parent };
 }
@@ -219,6 +209,37 @@ describe("Slider", () => {
         await disconnect();
     });
 
+    it("should constrain and normalize the value when the `step` attribute has been provided and is a float", async () => {
+        const { element, connect, disconnect } = await setup();
+
+        element.step = 0.1;
+        element.value = "0.5";
+
+        await connect();
+
+        expect((element as any).calculateNewValue(47)).to.equal(0.6);
+
+        await disconnect();
+    });
+
+    it("should update the `stepMultiplier` when the `step` attribute has been updated", async () => {
+        const { element, connect, disconnect } = await setup();
+
+        element.step = 2;
+        element.value = "4";
+
+        await connect();
+
+        expect((element as any).calculateNewValue(430)).to.equal(6);
+
+        element.step = 0.1;
+        element.value = "0.5";
+
+        expect((element as any).calculateNewValue(47)).to.equal(0.6);
+
+        await disconnect();
+    });
+
     it("should set the `aria-valuemax` attribute with the `max` property when provided", async () => {
         const { element, connect, disconnect } = await setup();
 
@@ -230,6 +251,7 @@ describe("Slider", () => {
 
         await disconnect();
     });
+
     it("should set an `aria-valuestring` attribute with the result of the valueTextFormatter() method", async () => {
         const { element, connect, disconnect } = await setup();
 

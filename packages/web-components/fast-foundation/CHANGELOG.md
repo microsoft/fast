@@ -1,8 +1,171 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Sun, 25 Apr 2021 07:21:02 GMT and should not be manually modified.
+This log was last generated on Thu, 15 Jul 2021 01:41:48 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.5.0
+
+Thu, 15 Jul 2021 01:41:48 GMT
+
+### Minor changes
+
+- extend design token type signature (chhol@microsoft.com)
+
+## 2.4.0
+
+Tue, 13 Jul 2021 07:14:52 GMT
+
+### Minor changes
+
+- docs(di): make API public, stabilize, and add docs (roeisenb@microsoft.com)
+
+## 2.3.0
+
+Wed, 07 Jul 2021 07:19:51 GMT
+
+### Minor changes
+
+- focus trap improvement (scomea@microsoft.com)
+
+## 2.2.0
+
+Sun, 04 Jul 2021 07:15:28 GMT
+
+### Minor changes
+
+- select should emit an input event before the change event (john.kreitlow@microsoft.com)
+
+## 2.1.0
+
+Thu, 01 Jul 2021 07:15:57 GMT
+
+### Minor changes
+
+- ensure DesignToken considers shadow DOM when determining DOM hierarchy (nicholasrice@users.noreply.github.com)
+
+### Patches
+
+- Fixes bug in DesignToken where aliased tokens didn't update CSS custom properties. (nicholasrice@users.noreply.github.com)
+
+## 2.0.0
+
+Fri, 25 Jun 2021 02:02:57 GMT
+
+### Major changes
+
+- remove deprecated APIs and Design System Provider infrastructure (nicholasrice@users.noreply.github.com)
+- feat(design-system): better integrate with DI and enforce constraints (roeisenb@microsoft.com)
+- migrate directional-stylesheet utility (nicholasrice@users.noreply.github.com)
+- update components to extend FoundationElement (chhol@microsoft.com)
+- feat: styling and text alignment for menu (jes@microsoft.com)
+- add API support for setting default slotted content as part of component composition (chhol@microsoft.com)
+- update card to extend foundation (chhol@microsoft.com)
+- feat: encapsulate and optimize ComponentPresentation resolution (roeisenb@microsoft.com)
+
+### Minor changes
+
+- fix(foundation-element): enable subclassing with customElement decorator (roeisenb@microsoft.com)
+- feat(design-system): enable overriding the shadow root mode (roeisenb@microsoft.com)
+- docs(fast-foundation): add api docs for design system and foundation ele (roeisenb@microsoft.com)
+
+## 1.24.8
+
+Wed, 23 Jun 2021 22:58:18 GMT
+
+### Patches
+
+- prevent left/right arrows from scrolling when expanding/collapsing tree-item (tlmii@users.noreply.github.com)
+
+## 1.24.7
+
+Sun, 20 Jun 2021 07:21:25 GMT
+
+### Patches
+
+- Enable stepping from null values on number-field (robarb@microsoft.com)
+- fix malformed templates (scomea@microsoft.com)
+
+## 1.24.6
+
+Sun, 13 Jun 2021 07:19:23 GMT
+
+### Patches
+
+- ensure host element of a shadowed element can be resolved (nicholasrice@users.noreply.github.com)
+
+## 1.24.5
+
+Tue, 08 Jun 2021 07:29:18 GMT
+
+### Patches
+
+- streamline horizontal scroll resize (scomea@microsoft.com)
+
+## 1.24.4
+
+Sun, 30 May 2021 07:42:30 GMT
+
+### Patches
+
+- Ensure stale Design Token custom property stylesheets are removed when token values change. (nicholasrice@users.noreply.github.com)
+- fix bug caused by asserting parentElement was not null (nicholasrice@users.noreply.github.com)
+
+## 1.24.3
+
+Wed, 26 May 2021 07:33:37 GMT
+
+### Patches
+
+- allow a float to be accurately represented when a step is a fraction (7559015+janechu@users.noreply.github.com)
+- fix css custom property emission for dependent DesignToken properties (nicholasrice@users.noreply.github.com)
+
+## 1.24.2
+
+Tue, 25 May 2021 07:27:43 GMT
+
+### Patches
+
+- fix data grid tabbing (scomea@microsoft.com)
+
+## 1.24.1
+
+Fri, 21 May 2021 17:48:08 GMT
+
+### Patches
+
+- update to Design System Provider to use dom.supportsAdoptedStyleSheets (nicholasrice@users.noreply.github.com)
+
+## 1.24.0
+
+Thu, 20 May 2021 07:24:10 GMT
+
+### Minor changes
+
+- add toolbar component (john.kreitlow@microsoft.com)
+
+### Patches
+
+- Bump @microsoft/fast-web-utilities to v4.8.0 (john.kreitlow@microsoft.com)
+
+## 1.23.0
+
+Wed, 19 May 2021 23:37:36 GMT
+
+### Minor changes
+
+- Adds subscribe and unsubscribe methods to DesignToken (nicholasrice@users.noreply.github.com)
+- Adds feature to DesignToken to prevent emission to CSS (nicholasrice@users.noreply.github.com)
+- Addresses significant performance issues with DesignToken implmentation. This change removes several alpha APIs on DesignToken. (nicholasrice@users.noreply.github.com)
+
+### Patches
+
+- fix: update scrolling with delay loaded content (robarb@microsoft.com)
+- menu should not reset tabIndex unnecessarily (scomea@microsoft.com)
+- selected option is not visible when dropdown is opened in fast-select (john.kreitlow@microsoft.com)
+- undefined (nicholasrice@users.noreply.github.com)
+- fix: fast-number-field does not fire input event when buttons pressed (robarb@microsoft.com)
+- Bump @microsoft/fast-element to v1.3.0 (nicholasrice@users.noreply.github.com)
 
 ## 1.20.0
 

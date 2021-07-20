@@ -1,11 +1,5 @@
-import {
-    attr,
-    FASTElement,
-    html,
-    HTMLView,
-    observable,
-    ViewTemplate,
-} from "@microsoft/fast-element";
+import { attr, html, HTMLView, observable, ViewTemplate } from "@microsoft/fast-element";
+import { FoundationElement } from "../foundation-element";
 import {
     eventFocusIn,
     eventFocusOut,
@@ -46,7 +40,7 @@ const defaultHeaderCellContentsTemplate: ViewTemplate<DataGridCell> = html`
  *
  * @public
  */
-export class DataGridCell extends FASTElement {
+export class DataGridCell extends FoundationElement {
     /**
      * The type of cell
      *
@@ -141,7 +135,7 @@ export class DataGridCell extends FASTElement {
     }
 
     public handleFocusin(e: FocusEvent): void {
-        if (this.isActiveCell || this.columnDefinition === null) {
+        if (this.isActiveCell) {
             return;
         }
 
@@ -150,6 +144,7 @@ export class DataGridCell extends FASTElement {
         switch (this.cellType) {
             case DataGridCellTypes.columnHeader:
                 if (
+                    this.columnDefinition !== null &&
                     this.columnDefinition.headerCellInternalFocusQueue !== true &&
                     typeof this.columnDefinition.headerCellFocusTargetCallback ===
                         "function"
@@ -166,6 +161,7 @@ export class DataGridCell extends FASTElement {
 
             default:
                 if (
+                    this.columnDefinition !== null &&
                     this.columnDefinition.cellInternalFocusQueue !== true &&
                     typeof this.columnDefinition.cellFocusTargetCallback === "function"
                 ) {
