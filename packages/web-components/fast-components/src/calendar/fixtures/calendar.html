@@ -22,15 +22,9 @@
         --cell-height: 100px;
         --cell-border: 1px solid #666;
         --weekday-background: #024;
-        --weekday-color: #fff;
         --current-day-color: orange;
         --current-day-border: 1px solid;
         --inactive-day-color: transparent;
-    }
-
-    .borders::part(date),
-    .borders::part(today) {
-        color: lightskyblue;
         text-align: center;
     }
 
@@ -113,6 +107,12 @@
     .borders3::part(week):hover {
         background: #030;
         cursor: pointer;
+    }
+
+    .borders3::part(day):hover,
+    .borders3::part(today):hover {
+        background: #080;
+        color: #0f0;
     }
 
     .borders4 {
@@ -276,21 +276,21 @@
 <fast-calendar month="4" year="2020"></fast-calendar>
 
 <h2>Expanded weekday labels</h2>
-<fast-calendar class="long-days" weekdayFormat="long"></fast-calendar>
+<fast-calendar class="long-days" weekday-format="long"></fast-calendar>
 
 <h2>Shortened month and weekday labels</h2>
 <fast-calendar
     class="compact"
     month="12"
-    monthFormat="short"
-    weekdayFormat="narrow"
+    month-format="short"
+    weekday-format="narrow"
 ></fast-calendar>
 
 <h2>Styling for borders, font colors and background colors</h2>
 <fast-calendar class="borders"></fast-calendar>
-<fast-calendar class="borders2" weekdayFormat="narrow"></fast-calendar>
-<fast-calendar class="borders3" weekdayFormat="narrow"></fast-calendar>
-<fast-calendar class="borders4" weekdayFormat="narrow"></fast-calendar>
+<fast-calendar class="borders2" weekday-format="narrow"></fast-calendar>
+<fast-calendar class="borders3" weekday-format="narrow"></fast-calendar>
+<fast-calendar class="borders4" weekday-format="narrow"></fast-calendar>
 
 <h2>Calendar with events</h2>
 <fast-calendar class="events light-borders" month="1" year="2021">
@@ -307,14 +307,14 @@
 <fast-calendar
     month="12"
     year="2021"
-    disabledDates="12-2-2021,12-3-2021,12-4-2021,12-10-2021,12-11-2021,12-14-2021,12-15-2021,12-16-2021,12-17-2021,12-19-2021,12-22-2021,12-28-2021,12-29-2021,12-30-2021"
+    disabled-dates="12-2-2021,12-3-2021,12-4-2021,12-10-2021,12-11-2021,12-14-2021,12-15-2021,12-16-2021,12-17-2021,12-19-2021,12-22-2021,12-28-2021,12-29-2021,12-30-2021"
 ></fast-calendar>
 
 <h2>Selected dates</h2>
 <fast-calendar
     month="12"
     year="2021"
-    selectedDates="12-2-2021,12-3-2021,12-4-2021,12-10-2021,12-11-2021,12-14-2021,12-15-2021,12-16-2021,12-17-2021,12-19-2021,12-22-2021,12-28-2021,12-29-2021,12-30-2021"
+    selected-dates="12-2-2021,12-3-2021,12-4-2021,12-10-2021,12-11-2021,12-14-2021,12-15-2021,12-16-2021,12-17-2021,12-19-2021,12-22-2021,12-28-2021,12-29-2021,12-30-2021"
 ></fast-calendar>
 
 <h2>Calendar with click handler</h2>
@@ -342,7 +342,7 @@
 </script>
 
 <h2>Changing calendar</h2>
-<fast-calendar class="light-borders calendar-change" minWeeks="6">
+<fast-calendar class="light-borders calendar-change" min-weeks="6">
     <button id="previous" class="calendar-control" tabindex="-1">
         <fast-flipper
             id="previous-flipper"
@@ -371,14 +371,22 @@
 </script>
 
 <h2>German calendar</h2>
-<fast-calendar class="long-days" weekdayFormat="long" locale="de-DE"></fast-calendar>
+<fast-calendar
+    class="long-days"
+    weekday-format="long"
+    locale="de-DE"
+    style="text-align: center;"
+></fast-calendar>
 
 <h2>Thai Buddhist calendar</h2>
-<fast-calendar locale="th-TH-u-ca-buddhist-nu-thai"></fast-calendar>
+<fast-calendar
+    locale="th-TH-u-ca-buddhist-nu-thai"
+    style="text-align: center;"
+></fast-calendar>
 
 <h2>Arabic calendar</h2>
 <fast-calendar
-    style="direction: rtl;"
+    style="direction: rtl; text-align: center;"
     class="events"
     locale="ar-XE-u-ca-islamic-nu-arab"
     month="1"

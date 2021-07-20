@@ -1,4 +1,4 @@
-import { attr, FASTElement } from "@microsoft/fast-element";
+import { attr, FASTElement, nullableNumberConverter } from "@microsoft/fast-element";
 import { FoundationElement } from "../foundation-element";
 
 /**
@@ -57,28 +57,28 @@ export class Calendar extends FoundationElement {
      * Month to display
      * @public
      */
-    @attr
+    @attr({ converter: nullableNumberConverter })
     public month: number = new Date().getMonth() + 1;
 
     /**
      * Year of the month to display
      * @public
      */
-    @attr
+    @attr({ converter: nullableNumberConverter })
     public year: number = new Date().getFullYear();
 
     /**
      * Format style for the week day labels
      * @public
      */
-    @attr
+    @attr({ attribute: "weekday-format" })
     public weekdayFormat: DateStyle = "short";
 
     /**
      * Format style for the month label
      * @public
      */
-    @attr
+    @attr({ attribute: "month-format" })
     public monthFormat: DateStyle = "long";
 
     /**
@@ -87,21 +87,21 @@ export class Calendar extends FoundationElement {
      *  when changing or across multiple calendars
      * @public
      */
-    @attr
+    @attr({ attribute: "min-weeks", converter: nullableNumberConverter })
     public minWeeks: number = 0;
 
     /**
      * A list of dates that should be shown as disabled
      * @public
      */
-    @attr
+    @attr({ attribute: "disabled-dates" })
     public disabledDates: string = "";
 
     /**
      * A list of dates that should be shown as highlighted
      * @public
      */
-    @attr
+    @attr({ attribute: "selected-dates" })
     public selectedDates: string = "";
 
     /**

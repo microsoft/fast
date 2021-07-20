@@ -50,6 +50,7 @@ import { fastTreeView } from "./tree-view/index";
 // with improper pathing
 import type { Anchor } from "./anchor/index";
 import type { Button } from "./button/index";
+import type { CalendarGridCell } from "./calendar/index";
 import type { Card } from "./card/index";
 import type { Disclosure } from "./disclosure/index";
 import type { HorizontalScroll } from "./horizontal-scroll/index";

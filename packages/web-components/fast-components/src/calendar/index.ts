@@ -97,19 +97,24 @@ export const fastCalendarGridCell = CalendarGridCell.compose({
 });
 
 /**
- * Base class for DataGrid
+ * Base class for fastCalendar
+ */
+export { Calendar };
+
+/**
+ * Base class for fastCalendarGrid
  * @public
  */
 export { DataGrid };
 
 /**
- * Base class for DataGridRow
+ * Base class for fastCalendarGridRow
  * @public
  */
 export { DataGridRow };
 
 /**
- * Base class for DataGridCell
+ * Base class for fastCalendarGridCell
  * @public
  */
 export { DataGridCell };
