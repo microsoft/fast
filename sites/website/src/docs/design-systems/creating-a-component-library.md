@@ -80,6 +80,16 @@ const counterTemplate = (context: ElementDefinitionContext) => {
         <${buttonTag} @click=${x => x.increment()}>Count!</${buttonTag}>
     `;
 }
+
+const counterStyles = (context: ElementDefinitionContext) => {
+    const buttonTag = context.tagFor(Button);
+
+    return css`
+        ${buttonTag} {
+            margin-inline-start: 12px;
+        }
+    `;
+}
 ```
 
 #### What is the `FoundationElementDefinition`?
