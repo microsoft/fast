@@ -24,15 +24,15 @@ describe("Calendar", () => {
 
             await connect();
 
-            expect((element as FASTCalendar).month).to.equal(today.getMonth() + 1);
-            expect((element as FASTCalendar).year).to.equal(today.getFullYear());
+            expect((element as Calendar).month).to.equal(today.getMonth() + 1);
+            expect((element as Calendar).year).to.equal(today.getFullYear());
 
             await disconnect();
         });
 
-        it("Should return 6 weeks of days", async () => {
+        it("Should return 5 weeks of days for August 2021", async () => {
             const { element, connect, disconnect } = await fixture(html<FASTCalendar>`
-                <fast-calendar></fast-calendar>
+                <fast-calendar month="5" year="2021"></fast-calendar>
             `);
 
             await connect();
@@ -124,7 +124,7 @@ describe("Calendar", () => {
 
         it("Should return Jan for month 1 and short format", async () => {
             const { element, connect, disconnect } = await fixture(html<FASTCalendar>`
-                <fast-calendar month="1" year="2021" monthFormat="short"></fast-calendar>
+                <fast-calendar month="1" year="2021" month-format="short"></fast-calendar>
             `);
 
             await connect();
@@ -146,7 +146,7 @@ describe("Calendar", () => {
 
         it("Should return Monday weekday for long format", async () => {
             const { element, connect, disconnect } = await fixture(html<FASTCalendar>`
-                <fast-calendar month="1" year="2021" weekdayFormat="long"></fast-calendar>
+                <fast-calendar month="1" year="2021" weekday-format="long"></fast-calendar>
             `);
 
             await connect();
@@ -157,7 +157,7 @@ describe("Calendar", () => {
 
         it("Should return M for Monday for narrow format", async () => {
             const { element, connect, disconnect } = await fixture(html<FASTCalendar>`
-                <fast-calendar month="1" year="2021" weekdayFormat="narrow"></fast-calendar>
+                <fast-calendar month="1" year="2021" weekday-format="narrow"></fast-calendar>
             `);
 
             await connect();
@@ -191,6 +191,7 @@ describe("Calendar", () => {
             const matchedDays = weekdays.filter((day, index) => day === frenchWeekdays[index]);
             expect(matchedDays.length).to.equal(7);
         });
+
         it("Should be 1943 for the year 2021 for the Hindu calendar", async () => {
             const { element, connect, disconnect } = await fixture(html<FASTCalendar>`
                 <fast-calendar month="6" year="2021" locale="hi-IN-u-ca-indian"></fast-calendar>
@@ -212,6 +213,73 @@ describe("Calendar", () => {
             const year = (element as Calendar).getLocaleYear();
             const match = year.match(/\d+/);
             expect(match && parseInt(match[0])).to.equal(2564);
+        });
+
+        it("Should not be RTL for languages that are not Arabic or Hebrew", async () => {
+            const { element, connect, disconnect } = await fixture(html<FASTCalendar>`
+                <fast-calendar month="6" year="2021" locale="en-US"></fast-calendar>
+            `);
+
+            await connect();
+
+            expect((element as Calendar).isRTL()).to.equal(false);
+        });
+
+        it("Should be RTL for Arabic language", async () => {
+            const { element, connect, disconnect } = await fixture(html<FASTCalendar>`
+                <fast-calendar month="6" year="2021" locale="ar-XE-u-ca-islamic-nu-arab"></fast-calendar>
+            `);
+
+            await connect();
+
+            expect((element as Calendar).isRTL()).to.equal(true);
+        });
+    });
+
+
+    describe("Day states", () => {
+        it("Should not show date as disabled by default", async () => {
+            const { element, connect, disconnect } = await fixture(html<FASTCalendar>`
+                <fast-calendar month="5" year="2021"></fast-calendar>
+            `);
+
+            await connect();
+
+            expect((element as Calendar).dateInString({month: 5, day: 7, year: 2021}, (element as Calendar).disabledDates)).to.equal(false);
+            expect((element as Calendar).getDayClassNames({month: 5, day: 7, year: 2021}).indexOf("disabled") < 0).to.equal(true);
+        });
+
+        it("Should show date as disabled when added to disabled-dates attribute", async () => {
+            const { element, connect, disconnect } = await fixture(html<FASTCalendar>`
+                <fast-calendar month="5" year="2021" disabled-dates="5-6-2021,5-7-2021,5-8-2021"></fast-calendar>
+            `);
+
+            await connect();
+
+            expect((element as Calendar).dateInString({month: 5, day: 7, year: 2021}, (element as Calendar).disabledDates)).to.equal(true);
+            expect((element as Calendar).getDayClassNames({month: 5, day: 7, year: 2021}).indexOf("disabled") >= 0).to.equal(true);
+        });
+
+        it("Should not show date as selected by default", async () => {
+            const { element, connect, disconnect } = await fixture(html<FASTCalendar>`
+                <fast-calendar month="5" year="2021"></fast-calendar>
+            `);
+
+            await connect();
+
+            expect((element as Calendar).dateInString({month: 5, day: 7, year: 2021}, (element as Calendar).selectedDates)).to.equal(false);
+            expect((element as Calendar).getDayClassNames({month: 5, day: 7, year: 2021}).indexOf("selected") < 0).to.equal(true);
+        });
+
+        it("Should show date as selected when added to selected-dates attribute", async () => {
+            const { element, connect, disconnect } = await fixture(html<FASTCalendar>`
+                <fast-calendar month="5" year="2021" selected-dates="5-6-2021,5-7-2021,5-8-2021"></fast-calendar>
+            `);
+
+            await connect();
+
+            expect((element as Calendar).dateInString({month: 5, day: 7, year: 2021}, (element as Calendar).selectedDates)).to.equal(true);
+            expect((element as Calendar).getDayClassNames({month: 5, day: 7, year: 2021}).indexOf("selected") >= 0).to.equal(true);
         });
     });
 });
