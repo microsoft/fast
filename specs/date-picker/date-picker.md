@@ -59,7 +59,7 @@ This is a community requested component.
 - `fast-date-picker`
 
 *Props/Attrs*
-- `value` - A predefined date.
+- `value` - A predefined date or one picked by the user.
 = `locale` - Market and language
 - `placeholder` - Text to appear when a date isn't present.
 - `name` - the name of the control
@@ -71,8 +71,9 @@ This is a community requested component.
 - `required` - The date field is required or optional.
 - `min` - Earliest allowed date.
 - `max` - Latest allowed date.cx
-- `list` - A list of predefined options for the user to pick from.
-- `step` - 
+- `allowTextInput` - Whether the date-picker allows input of a date string directly or not.
+- `ariaLabel` - Aria label for screen reader.
+- `type` - Type of picker. Supports all of the HTML types. `date` | `month` | `week` | `time` | `datetime-local`
 
 *Methods*
 
