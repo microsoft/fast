@@ -114,9 +114,9 @@
     "@microsoft/fast-element": "^1.4.0",
     "@microsoft/fast-foundation": "^2.6.0",
     "@microsoft/fast-web-utilities": "^4.8.0",
-    "@microsoft/mgt": "^2.0.1",
-    "@microsoft/mgt-element": "^2.0.1",
-    "@microsoft/mgt-msal-provider": "^2.0.1",
+    "@microsoft/mgt": "^2.2.1",
+    "@microsoft/mgt-element": "^2.2.1",
+    "@microsoft/mgt-msal-provider": "^2.2.1",
     "tslib": "^1.13.0",
     "vscode-html-languageservice": "^4.0.3"
   },

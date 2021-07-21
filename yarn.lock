@@ -1190,14 +1190,7 @@
     core-js-pure "^3.15.0"
     regenerator-runtime "^0.13.4"
 
-"@babel/runtime@^7.0.0", "@babel/runtime@^7.1.2", "@babel/runtime@^7.10.2", "@babel/runtime@^7.10.3", "@babel/runtime@^7.12.1", "@babel/runtime@^7.12.5", "@babel/runtime@^7.13.10", "@babel/runtime@^7.14.0", "@babel/runtime@^7.2.0", "@babel/runtime@^7.3.1", "@babel/runtime@^7.5.0", "@babel/runtime@^7.5.5", "@babel/runtime@^7.7.2", "@babel/runtime@^7.8.4":
-  version "7.14.6"
-  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.14.6.tgz#535203bc0892efc7dec60bdc27b2ecf6e409062d"
-  integrity sha512-/PCB2uJ7oM44tz8YhC4Z/6PeOKXp4K588f+5M3clr1M4zbqztlo0XEfJ2LEzj/FgwfgGcIdl8n7YYjTCI0BYwg==
-  dependencies:
-    regenerator-runtime "^0.13.4"
-
-"@babel/runtime@^7.4.4":
+"@babel/runtime@^7.0.0", "@babel/runtime@^7.1.2", "@babel/runtime@^7.10.2", "@babel/runtime@^7.10.3", "@babel/runtime@^7.12.1", "@babel/runtime@^7.12.5", "@babel/runtime@^7.13.10", "@babel/runtime@^7.14.0", "@babel/runtime@^7.2.0", "@babel/runtime@^7.3.1", "@babel/runtime@^7.4.4", "@babel/runtime@^7.5.0", "@babel/runtime@^7.5.5", "@babel/runtime@^7.7.2", "@babel/runtime@^7.8.4":
   version "7.14.6"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.14.6.tgz#535203bc0892efc7dec60bdc27b2ecf6e409062d"
   integrity sha512-/PCB2uJ7oM44tz8YhC4Z/6PeOKXp4K588f+5M3clr1M4zbqztlo0XEfJ2LEzj/FgwfgGcIdl8n7YYjTCI0BYwg==
@@ -3209,81 +3202,81 @@
   resolved "https://registry.yarnpkg.com/@microsoft/fast-tooling/-/fast-tooling-0.7.0.tgz#a8487eb5ca85fc796c1b9149496f6fa7b4763e47"
   integrity sha512-fclz9DF6nxyEgj/h2hONM8s+49CQBEGaXA+dfZzhUpGUJJLcZRHoBA/e/Xxf8Qoot5fxiTqpU9wJqgxg7gR13A==
 
-"@microsoft/mgt-components@2.2.0":
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/@microsoft/mgt-components/-/mgt-components-2.2.0.tgz#27de54b1068e32d8df4cf5226526393077f134a5"
-  integrity sha512-X5jk9iIYvGCZwuLxT1WnXr8hPkR7ddgvxe+TtFBO/y0YyjiyqXQc5/cDdQrYNMypJGgM8paJ5hjP1VRXDJ8jCQ==
+"@microsoft/mgt-components@2.2.1":
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/@microsoft/mgt-components/-/mgt-components-2.2.1.tgz#614425c61bb08a59eba27fb7736276371325f62f"
+  integrity sha512-AdRyST6pyqEv7dVZTHrpcr4GuxjKJBQf+w4AkPJVXqtr/a4YbNcmOBHtGGFtPAjSx+CpGCMGBeZeTXgxTrdDKw==
   dependencies:
-    "@microsoft/mgt-element" "2.2.0"
+    "@microsoft/mgt-element" "2.2.1"
     "@microsoft/microsoft-graph-client" "^2.2.1"
     "@microsoft/microsoft-graph-types" "^1.36.0"
     "@microsoft/microsoft-graph-types-beta" "^0.7.0-preview"
     office-ui-fabric-core "11.0.0"
 
-"@microsoft/mgt-element@2.2.0", "@microsoft/mgt-element@^2.0.1":
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/@microsoft/mgt-element/-/mgt-element-2.2.0.tgz#859fa5b9e2467931e201934f19632e58af421b39"
-  integrity sha512-tlh9t3g0odKTGBVz681FgiI6Ti49g2VDuun3+9uYs8pNTDvOXdbuqcZJvbqnlGMLOfHFkMI6UNG/rymx8hQ4lQ==
+"@microsoft/mgt-element@2.2.1", "@microsoft/mgt-element@^2.2.1":
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/@microsoft/mgt-element/-/mgt-element-2.2.1.tgz#da6c9c68a105aa83b80647601391429adcd3a6ae"
+  integrity sha512-s8qkRYFTXI/veOyhHjyjs5LKU1O8sl8ZznKkZAywVl4gdbIpyNy+oTXPR1yst3E5We5z8mGj48Z2bndxabupMQ==
   dependencies:
     "@microsoft/microsoft-graph-client" "^2.2.1"
     idb "6.0.0"
     lit-element "^2.4.0"
 
-"@microsoft/mgt-msal-provider@2.2.0", "@microsoft/mgt-msal-provider@^2.0.1":
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/@microsoft/mgt-msal-provider/-/mgt-msal-provider-2.2.0.tgz#968c472c6b1ba3a099c3b06edeb703c821dfd23b"
-  integrity sha512-RNem+ZawjKA0Pb09o+6Pj6gYifr4asFSavn1/5vQC2sjUDQcsy3/YmzenWLwesq2vTYfxTNKIJchO/xgJXgjeA==
+"@microsoft/mgt-msal-provider@2.2.1", "@microsoft/mgt-msal-provider@^2.2.1":
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/@microsoft/mgt-msal-provider/-/mgt-msal-provider-2.2.1.tgz#2699d0fac3179a4f4538c09073adea7ba193703b"
+  integrity sha512-7iDdtFES5tmGekAtzLrOZiW671yYFgmU5POmtYC8oEqCmcErSHj2CyftYZORJjBVoUFaIkIfrTJwxWcz9RI82A==
   dependencies:
-    "@microsoft/mgt-element" "2.2.0"
+    "@microsoft/mgt-element" "2.2.1"
     "@microsoft/microsoft-graph-client" "^2.2.1"
     msal "^1.4.10"
 
-"@microsoft/mgt-msal2-provider@2.2.0":
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/@microsoft/mgt-msal2-provider/-/mgt-msal2-provider-2.2.0.tgz#cd629c4b3072d97b15419c379c204495ef22f209"
-  integrity sha512-7XftnJFdMWlV6LzLiPCEmZZNvGojzs3+yRNHR6tfUAscfEwiEa4OscVPCs/M2qoDFBht2kDL0F5SRbWkZf64Pg==
+"@microsoft/mgt-msal2-provider@2.2.1":
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/@microsoft/mgt-msal2-provider/-/mgt-msal2-provider-2.2.1.tgz#e272c8e9b90cc891d9f7501992b98c163fea5d10"
+  integrity sha512-UhJf0nA/eMGyyLJEhsFZwKkSwNTeYVzS3SiUFJxLG09JA/bMHFvzmsX8XxpnvRi/52O/6cywHCxVyIKFF7cKTg==
   dependencies:
     "@azure/msal-browser" "^2.14.1"
-    "@microsoft/mgt-element" "2.2.0"
+    "@microsoft/mgt-element" "2.2.1"
     "@microsoft/microsoft-graph-client" "^2.2.1"
 
-"@microsoft/mgt-proxy-provider@2.2.0":
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/@microsoft/mgt-proxy-provider/-/mgt-proxy-provider-2.2.0.tgz#66e29afa276fceb3bbaaf2851475a2dcee43ad25"
-  integrity sha512-riJtGGZBJ5KgU4faMzEOHZYfGWHn5QDqvFAIpi8QZoSO1yJZfPJMRp5urfr5GjY2PBcitGjMuX79i/fdVX25WQ==
+"@microsoft/mgt-proxy-provider@2.2.1":
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/@microsoft/mgt-proxy-provider/-/mgt-proxy-provider-2.2.1.tgz#1db27c33003409009d9b134c1e8c2a4c5a78d36d"
+  integrity sha512-FH27gVbQGC7hCP97CnTyGnxVt1TrRNFwSmNy9GLDdkB8I9myo9mlTIQOAeTyariN9kJGbQHnicVI7jOcTDfd9g==
   dependencies:
-    "@microsoft/mgt-element" "2.2.0"
+    "@microsoft/mgt-element" "2.2.1"
     "@microsoft/microsoft-graph-client" "^2.2.1"
 
-"@microsoft/mgt-sharepoint-provider@2.2.0":
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/@microsoft/mgt-sharepoint-provider/-/mgt-sharepoint-provider-2.2.0.tgz#5378ea149064d8a9099e8e8b9414bed5f218e4ad"
-  integrity sha512-cq/Sf1Z6JzYzPA+TEw8ckqVodAlN1Cqd/QK/k4nWx7++4H+aCnQiziGUGHVzQP4E4eIiE9ByExOz0WiLYsCu6A==
+"@microsoft/mgt-sharepoint-provider@2.2.1":
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/@microsoft/mgt-sharepoint-provider/-/mgt-sharepoint-provider-2.2.1.tgz#b5d2943367b5863c9624f6b88a807b026361a48d"
+  integrity sha512-JsKp2ZE+Ii1rtN1TxiNqPflIuBovZUqO4JOeR2AGRxRwmbOeKTJwYHqWMbvLLMRCllQko+ycf9HeHazdEn8DNA==
   dependencies:
-    "@microsoft/mgt-element" "2.2.0"
+    "@microsoft/mgt-element" "2.2.1"
 
-"@microsoft/mgt-teams-provider@2.2.0":
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/@microsoft/mgt-teams-provider/-/mgt-teams-provider-2.2.0.tgz#9d480c5008739f04cbccac6694d7229bb4587e1d"
-  integrity sha512-fgHdxgNV7l7aTdz8rmWijhsiJmggNR3VpJgBdls3LPmC1XsOELJF/aOI5W/2K66PNYcKzZoxAZPL+zzY+Gea7A==
+"@microsoft/mgt-teams-provider@2.2.1":
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/@microsoft/mgt-teams-provider/-/mgt-teams-provider-2.2.1.tgz#a9f3b8df0ee89b7d77cb091d59c783c1b9dfac91"
+  integrity sha512-wh5NiA9xeEz7DPVmOL8g9oZrj0ERUr/2gioQBIFvs9QCYhnhY2lKuXbyb6+WjOB7bnS4HpuPeWbNpkCmcfR6bw==
   dependencies:
-    "@microsoft/mgt-element" "2.2.0"
-    "@microsoft/mgt-msal-provider" "2.2.0"
+    "@microsoft/mgt-element" "2.2.1"
+    "@microsoft/mgt-msal-provider" "2.2.1"
     "@microsoft/microsoft-graph-client" "^2.2.1"
     msal "^1.4.10"
 
-"@microsoft/mgt@^2.0.1":
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/@microsoft/mgt/-/mgt-2.2.0.tgz#0c6d27d37489281aa187617acebff10740e29ef4"
-  integrity sha512-W4NWgcfNOr8q7rRoxHKjIBUjxqRBArzDcKYy5g9HxK/68pKmq+7MTZWK9G46mmVHE1nu1zOqef1U+F2UgsCg/A==
+"@microsoft/mgt@^2.2.1":
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/@microsoft/mgt/-/mgt-2.2.1.tgz#dd408fb3729593dd27bdc941261d18ea9373bbf5"
+  integrity sha512-JspRFmaOjkcRLEMaLFMhVa/Fq/bCK83E2ako1rghHfngkocQ5kwZJxRNku5RAJg6FgPXW5HUC+x9GMs0Z4i1fQ==
   dependencies:
-    "@microsoft/mgt-components" "2.2.0"
-    "@microsoft/mgt-element" "2.2.0"
-    "@microsoft/mgt-msal-provider" "2.2.0"
-    "@microsoft/mgt-msal2-provider" "2.2.0"
-    "@microsoft/mgt-proxy-provider" "2.2.0"
-    "@microsoft/mgt-sharepoint-provider" "2.2.0"
-    "@microsoft/mgt-teams-provider" "2.2.0"
+    "@microsoft/mgt-components" "2.2.1"
+    "@microsoft/mgt-element" "2.2.1"
+    "@microsoft/mgt-msal-provider" "2.2.1"
+    "@microsoft/mgt-msal2-provider" "2.2.1"
+    "@microsoft/mgt-proxy-provider" "2.2.1"
+    "@microsoft/mgt-sharepoint-provider" "2.2.1"
+    "@microsoft/mgt-teams-provider" "2.2.1"
 
 "@microsoft/microsoft-graph-client@^2.2.1":
   version "2.2.1"
