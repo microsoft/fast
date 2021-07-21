@@ -495,7 +495,7 @@ export interface InterfaceConfiguration {
 
     /**
      * When true, the dependency will be re-resolved when FASTElement connection changes.
-     * If the resolved value changes due to connection change, a {@link @microsoft/fast-element#Observable.notify | notification }
+     * If the resolved value changes due to connection change, a {@link @microsoft/fast-element#Observable | notification }
      * will be emitted for the property, with the previous and next values provided to any subscriber.
      */
     respectConnection?: boolean;
@@ -888,12 +888,16 @@ export const DI = Object.freeze({
      * @returns The same class, with a static `register` method that takes a container and returns the appropriate resolver.
      *
      * @example
+     * On an existing class
      * ```ts
-     * // On an existing class
      * class Foo { }
      * DI.transient(Foo);
+     * ```
      *
-     * // Inline declaration
+     * @example
+     * Inline declaration
+     *
+     * ```ts
      * const Foo = DI.transient(class { });
      * // Foo is now strongly typed with register
      * Foo.register(container);
@@ -921,12 +925,15 @@ export const DI = Object.freeze({
      * @param target - The class / constructor function to register as a singleton.
      * @returns The same class, with a static `register` method that takes a container and returns the appropriate resolver.
      * @example
+     * On an existing class
      * ```ts
-     * // On an existing class
      * class Foo { }
      * DI.singleton(Foo);
+     * ```
      *
-     * // Inline declaration
+     * @example
+     * Inline declaration
+     * ```ts
      * const Foo = DI.singleton(class { });
      * // Foo is now strongly typed with register
      * Foo.register(container);
@@ -1009,7 +1016,7 @@ function transientDecorator<T extends Constructable>(
  *
  * @example
  * ```ts
- * &#64;transient()
+ * @transient()
  * class Foo { }
  * ```
  *
@@ -1025,7 +1032,7 @@ export function transient<T extends Constructable>(): typeof transientDecorator;
  *
  * @example
  * ```ts
- * &#64;transient()
+ * @transient()
  * class Foo { }
  * ```
  *
@@ -1056,7 +1063,7 @@ function singletonDecorator<T extends Constructable>(
  *
  * @example
  * ```ts
- * &#64;singleton()
+ * @singleton()
  * class Foo { }
  * ```
  *
@@ -1079,7 +1086,7 @@ export function singleton<T extends Constructable>(
  *
  * @example
  * ```ts
- * &#64;singleton()
+ * @singleton()
  * class Foo { }
  * ```
  *
@@ -1144,8 +1151,9 @@ export const all = createAllResolver(
 );
 
 /**
- * A decorator that lazily injects a dependency depending on whether the [[`Key`]] is present at the time of function call.
+ * A decorator that lazily injects a dependency depending on whether the `Key` is present at the time of function call.
  *
+ * @example
  * You need to make your argument a function that returns the type, for example
  * ```ts
  * class Foo {
@@ -1154,8 +1162,9 @@ export const all = createAllResolver(
  * const foo = container.get(Foo); // instanceof Foo
  * foo.random(); // throws
  * ```
- * would throw an exception because you haven't registered `'random'` before calling the method. This, would give you a
- * new [['Math.random()']] number each time.
+ * would throw an exception because you haven't registered `'random'` before calling the method.
+ * @example
+ * This, would give you a new 'Math.random()' number each time.
  * ```ts
  * class Foo {
  *   constructor( @lazy('random') public random: () => random )
@@ -1164,6 +1173,7 @@ export const all = createAllResolver(
  * container.get(Foo).random(); // some random number
  * container.get(Foo).random(); // another random number
  * ```
+ *
  * `@lazy` does not manage the lifecycle of the underlying key. If you want a singleton, you have to register as a
  * `singleton`, `transient` would also behave as you would expect, providing you a new instance each time.
  *
@@ -1179,7 +1189,8 @@ export const lazy = createResolver(
 );
 
 /**
- * A decorator that allows you to optionally inject a dependency depending on whether the [[`Key`]] is present, for example
+ * A decorator that allows you to optionally inject a dependency depending on whether the [[`Key`]] is present, for example:
+ * @example
  * ```ts
  * class Foo {
  *   constructor( @inject('mystring') public str: string = 'somestring' )
@@ -1187,6 +1198,8 @@ export const lazy = createResolver(
  * container.get(Foo); // throws
  * ```
  * would fail
+ *
+ * @example
  * ```ts
  * class Foo {
  *   constructor( @optional('mystring') public str: string = 'somestring' )
