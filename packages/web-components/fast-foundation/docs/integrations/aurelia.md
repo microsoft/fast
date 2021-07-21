@@ -105,7 +105,7 @@ and then simply register it from your `src/main.ts`:
 ```ts
 // src/main.ts
 
-import { FASTAdapter } from './aurelia-fast-adapter';
+import { FASTAdapter } from 'aurelia-fast-adapter';
 
 Aurelia
   .register(FASTAdapter) // add this line
@@ -118,7 +118,7 @@ If you use FAST in its default configuration that's all you need to do. But if y
 ```ts
 // src/main.ts
 
-import { FASTAdapter } from './aurelia-fast-adapter';
+import { FASTAdapter } from 'aurelia-fast-adapter';
 
 Aurelia
   .register(FASTAdapter.customize({withPrefix: 'my-custom-prefix'}) // customized with prefix
@@ -130,7 +130,7 @@ Also, in case you have local components that also require two-way binding, you c
 ```ts
 // src/main.ts
 
-import { FASTAdapter } from './aurelia-fast-adapter';
+import { FASTAdapter } from 'aurelia-fast-adapter';
 
 // this line will tell the adapter that it must use two-way binding on the <my-custom-prefix-date-field> component and use this two-way binding on the `value` property. It's possible to add several properties at once if necessary
 FASTAdapter.tags['DATE-FIELD'] = ['value'];
