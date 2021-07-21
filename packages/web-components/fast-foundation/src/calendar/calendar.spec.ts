@@ -49,7 +49,7 @@ describe("Calendar", () => {
 
             const today = new Date();
 
-            expect((element as Calendar).isToday(today.getFullYear(), today.getMonth() + 1, today.getDate())).to.equal(true);
+            expect((element as Calendar).isToday(today)).to.equal(true);
         })
     });
 
@@ -118,7 +118,7 @@ describe("Calendar", () => {
 
             await connect();
 
-            const month = (element as Calendar).getLocaleMonth();
+            const month = (element as Calendar).getMonth();
             expect(month).to.equal("January");
         });
 
@@ -129,7 +129,7 @@ describe("Calendar", () => {
 
             await connect();
 
-            const month = (element as Calendar).getLocaleMonth();
+            const month = (element as Calendar).getMonth();
             expect(month).to.equal("Jan");
         });
 
@@ -140,7 +140,7 @@ describe("Calendar", () => {
 
             await connect();
 
-            const weekdays = (element as Calendar).getLocaleWeekDays();
+            const weekdays = (element as Calendar).getWeekDays();
             expect(weekdays[1]).to.equal("Mon");
         });
 
@@ -151,7 +151,7 @@ describe("Calendar", () => {
 
             await connect();
 
-            const weekdays = (element as Calendar).getLocaleWeekDays();
+            const weekdays = (element as Calendar).getWeekDays();
             expect(weekdays[1]).to.equal("Monday");
         });
 
@@ -162,7 +162,7 @@ describe("Calendar", () => {
 
             await connect();
 
-            const weekdays = (element as Calendar).getLocaleWeekDays();
+            const weekdays = (element as Calendar).getWeekDays();
             expect(weekdays[1]).to.equal("M");
         });
     });
@@ -175,7 +175,7 @@ describe("Calendar", () => {
 
             await connect();
 
-            const month = (element as Calendar).getLocaleMonth();
+            const month = (element as Calendar).getMonth();
             expect(month).to.equal("mai");
         });
 
@@ -187,7 +187,7 @@ describe("Calendar", () => {
             await connect();
 
             const frenchWeekdays = [ "dim.", "lun.", "mar.", "mer.", "jeu.", "ven.", "sam." ];
-            const weekdays = (element as Calendar).getLocaleWeekDays();
+            const weekdays = (element as Calendar).getWeekDays();
             const matchedDays = weekdays.filter((day, index) => day === frenchWeekdays[index]);
             expect(matchedDays.length).to.equal(7);
         });
@@ -199,7 +199,7 @@ describe("Calendar", () => {
 
             await connect();
 
-            const year = (element as Calendar).getLocaleYear();
+            const year = (element as Calendar).getYear();
             expect(parseInt(year)).to.equal(1943);
         });
 
@@ -210,7 +210,7 @@ describe("Calendar", () => {
 
             await connect();
 
-            const year = (element as Calendar).getLocaleYear();
+            const year = (element as Calendar).getYear();
             const match = year.match(/\d+/);
             expect(match && parseInt(match[0])).to.equal(2564);
         });
@@ -245,7 +245,7 @@ describe("Calendar", () => {
 
             await connect();
 
-            expect((element as Calendar).dateInString({month: 5, day: 7, year: 2021}, (element as Calendar).disabledDates)).to.equal(false);
+            expect((element as Calendar).dateInString(`5-7-2021`, (element as Calendar).disabledDates)).to.equal(false);
             expect((element as Calendar).getDayClassNames({month: 5, day: 7, year: 2021}).indexOf("disabled") < 0).to.equal(true);
         });
 
@@ -256,8 +256,8 @@ describe("Calendar", () => {
 
             await connect();
 
-            expect((element as Calendar).dateInString({month: 5, day: 7, year: 2021}, (element as Calendar).disabledDates)).to.equal(true);
-            expect((element as Calendar).getDayClassNames({month: 5, day: 7, year: 2021}).indexOf("disabled") >= 0).to.equal(true);
+            expect((element as Calendar).dateInString("5-7-2021", (element as Calendar).disabledDates)).to.equal(true);
+            expect((element as Calendar).getDayClassNames({month: 5, day: 7, year: 2021, disabled: true}).indexOf("disabled") >= 0).to.equal(true);
         });
 
         it("Should not show date as selected by default", async () => {
@@ -267,7 +267,7 @@ describe("Calendar", () => {
 
             await connect();
 
-            expect((element as Calendar).dateInString({month: 5, day: 7, year: 2021}, (element as Calendar).selectedDates)).to.equal(false);
+            expect((element as Calendar).dateInString(`5-7-2021`, (element as Calendar).selectedDates)).to.equal(false);
             expect((element as Calendar).getDayClassNames({month: 5, day: 7, year: 2021}).indexOf("selected") < 0).to.equal(true);
         });
 
@@ -278,8 +278,8 @@ describe("Calendar", () => {
 
             await connect();
 
-            expect((element as Calendar).dateInString({month: 5, day: 7, year: 2021}, (element as Calendar).selectedDates)).to.equal(true);
-            expect((element as Calendar).getDayClassNames({month: 5, day: 7, year: 2021}).indexOf("selected") >= 0).to.equal(true);
+            expect((element as Calendar).dateInString(`5-7-2021`, (element as Calendar).selectedDates)).to.equal(true);
+            expect((element as Calendar).getDayClassNames({month: 5, day: 7, year: 2021, selected: true}).indexOf("selected") >= 0).to.equal(true);
         });
     });
 });

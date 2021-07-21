@@ -71,7 +71,7 @@ export const FASTCalendarTemplate: ViewTemplate<Calendar> = html`
         ${startTemplate} ${CalendarTitleTemplate}
         <slot></slot>
         <div class="week-days" part="week-days">
-            ${repeat(x => x.getLocaleWeekDays(), CalendarWeekdayTemplate)}
+            ${repeat(x => x.getWeekDays(), CalendarWeekdayTemplate)}
         </div>
         <fast-calendar-grid generate-header="none">
             ${repeat(getWeeks, FASTCalendarWeekTamplate)}

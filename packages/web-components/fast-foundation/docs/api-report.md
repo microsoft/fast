@@ -264,27 +264,29 @@ export const buttonTemplate: (context: ElementDefinitionContext, definition: Fou
 
 // @public
 export class Calendar extends FoundationElement {
-    dateInString(date: CalendarDateInfo, datesString: string): boolean;
+    dateInString(date: Date | string, datesString: string): boolean;
+    dayFormat: "numeric" | "2-digit";
     disabledDates: string;
+    getDay(date: Date | string, format?: "numeric" | "2-digit", locale?: string): string;
     getDayClassNames(date: CalendarDateInfo): string;
-    getDays(info?: CalendarInfo): CalendarDateInfo[];
-    getLocaleDay(month?: number, day?: number, year?: number): string;
-    getLocaleMonth(month?: number): string;
-    getLocaleWeekDays(): string[];
-    getLocaleYear(year?: number): string;
-    getMonthInfo(year?: number, month?: number): CalendarInfo;
-    handleDateSelect(day?: CalendarDateInfo): void;
+    getDays(info?: CalendarInfo, minWeeks?: number): CalendarDateInfo[];
+    getMonth(month?: number, format?: DateStyle, locale?: string): string;
+    getMonthInfo(month?: number, year?: number): CalendarInfo;
+    getWeekDays(format?: DateStyle, locale?: string): string[];
+    getYear(year?: number, format?: YearFormat, locale?: string): string;
+    handleDateSelect(day: CalendarDateInfo): void;
     // @internal
-    isRTL(): boolean;
-    isToday(year: number, month: number, day: number): boolean;
+    isRTL(locale?: string): boolean;
+    isToday(date: Date | string): boolean;
     locale: string;
-    localeFormatter(date: string | number[] | Date | undefined, options: Intl.DateTimeFormatOptions, locale?: string): string;
+    localeFormatter(date?: Date | string, format?: Intl.DateTimeFormatOptions, locale?: string): string;
     minWeeks: number;
     month: number;
     monthFormat: DateStyle;
     selectedDates: string;
     weekdayFormat: DateStyle;
     year: number;
+    yearFormat: YearFormat;
 }
 
 // @public
@@ -2246,6 +2248,9 @@ export type VerticalPosition = "top" | "bottom" | "unset";
 
 // @public
 export function whitespaceFilter(value: Node, index: number, array: Node[]): boolean;
+
+// @public
+export type YearFormat = "numeric" | "2-digit";
 
 
 // Warnings were encountered during analysis:
