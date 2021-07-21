@@ -1,5 +1,6 @@
 import { css, ElementStyles } from "@microsoft/fast-element";
 import {
+    AnchoredRegion,
     ElementDefinitionContext,
     forcedColorsStylesheetBehavior,
     FoundationElementDefinition,
@@ -49,7 +50,7 @@ export const tooltipStyles: (
             z-index: 10000;
         }
 
-        fast-anchored-region {
+        ${context.tagFor(AnchoredRegion)} {
             display: flex;
             justify-content: center;
             align-items: center;
@@ -57,24 +58,24 @@ export const tooltipStyles: (
             flex-direction: row;
         }
 
-        fast-anchored-region.right,
-        fast-anchored-region.left {
+        ${context.tagFor(AnchoredRegion)}.right,
+        ${context.tagFor(AnchoredRegion)}.left {
             flex-direction: column;
         }
 
-        fast-anchored-region.top .tooltip {
+        ${context.tagFor(AnchoredRegion)}.top .tooltip {
             margin-bottom: 4px;
         }
 
-        fast-anchored-region.bottom .tooltip {
+        ${context.tagFor(AnchoredRegion)}.bottom .tooltip {
             margin-top: 4px;
         }
 
-        fast-anchored-region.left .tooltip {
+        ${context.tagFor(AnchoredRegion)}.left .tooltip {
             margin-right: 4px;
         }
 
-        fast-anchored-region.right .tooltip {
+        ${context.tagFor(AnchoredRegion)}.right .tooltip {
             margin-left: 4px;
         }
     `.withBehaviors(
