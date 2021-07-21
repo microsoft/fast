@@ -54,7 +54,6 @@ export class Picker extends FoundationElement {
     @attr({ attribute: "options" })
     public options: string;
     private optionsChanged(): void {
-        //TODO: trim white space?
         this.optionsList = this.options.split(",");
     }
 
@@ -129,6 +128,23 @@ export class Picker extends FoundationElement {
     }
 
     /**
+     * Whether to display a loading state if the menu is opened.
+     *
+     * @public
+     * @remarks
+     * HTML Attribute: showloading
+     */
+    @attr({ attribute: "showloading" })
+    public showLoading: boolean = false;
+    private showLoadingChanged(): void {
+        if (this.$fastController.isConnected) {
+            DOM.queueUpdate(() => {
+                this.setFocusedOption(0);
+            });
+        }
+    }
+
+    /**
      * Allows alternate flyout menu configurations.
      *
      * @public
@@ -142,7 +158,8 @@ export class Picker extends FoundationElement {
     }
 
     /**
-     * Template to use for selected items.
+     * Template used to generate selected items.
+     * This is used in a repeat directive.
      *
      * @public
      */
@@ -154,11 +171,15 @@ export class Picker extends FoundationElement {
 
     /**
      * Default template to use for selected items (usually specified in the component template).
+     * This is used in a repeat directive.
      *
      * @public
      */
     @observable
     public defaultListItemTemplate?: ViewTemplate;
+    private defaultListItemTemplateChanged(): void {
+        this.updateListItemTemplate();
+    }
 
     /**
      * The item template currently in use.
@@ -170,6 +191,7 @@ export class Picker extends FoundationElement {
 
     /**
      * Template to use for available options.
+     * This is used in a repeat directive.
      *
      * @public
      */
@@ -180,12 +202,16 @@ export class Picker extends FoundationElement {
     }
 
     /**
-     * Default template to use for available options(usually specified in the template).
+     * Default template to use for available options (usually specified in the template).
+     * This is used in a repeat directive.
      *
      * @public
      */
     @observable
     public defaultMenuOptionTemplate?: ViewTemplate;
+    private defaultMenuOptionTemplateChanged(): void {
+        this.updateOptionTemplate();
+    }
 
     /**
      * The option template currently in use.
@@ -196,7 +222,7 @@ export class Picker extends FoundationElement {
     public activeMenuOptionTemplate?: ViewTemplate;
 
     /**
-     *
+     *  Template to use for the contents of a selected list item
      *
      * @public
      */
@@ -204,7 +230,7 @@ export class Picker extends FoundationElement {
     public listItemContentsTemplate: ViewTemplate;
 
     /**
-     *
+     *  Template to use for the contents of menu options
      *
      * @public
      */
@@ -212,7 +238,7 @@ export class Picker extends FoundationElement {
     public menuOptionContentsTemplate: ViewTemplate;
 
     /**
-     *
+     *  Current list of options in array form
      *
      * @public
      */
@@ -242,7 +268,7 @@ export class Picker extends FoundationElement {
     }
 
     /**
-     *
+     *  Indicates if the flyout menu is open or not
      *
      * @internal
      */
@@ -258,7 +284,7 @@ export class Picker extends FoundationElement {
     }
 
     /**
-     *
+     *  The id of the menu element
      *
      * @internal
      */
@@ -266,7 +292,7 @@ export class Picker extends FoundationElement {
     public menuId: string;
 
     /**
-     *
+     *  The tag for the selected list element (ie. "fast-picker-list" vs. "fluent-picker-list")
      *
      * @internal
      */
@@ -274,7 +300,7 @@ export class Picker extends FoundationElement {
     public selectedlisttag: string;
 
     /**
-     *
+     * The tag for the menu element (ie. "fast-picker-menu" vs. "fluent-picker-menu")
      *
      * @internal
      */
@@ -282,7 +308,7 @@ export class Picker extends FoundationElement {
     public pickermenutag: string;
 
     /**
-     *
+     *  Index of currently active menu option
      *
      * @internal
      */
@@ -290,7 +316,7 @@ export class Picker extends FoundationElement {
     public menuFocusIndex: number = -1;
 
     /**
-     *
+     *  Id of currently active menu option.
      *
      * @internal
      */
@@ -298,22 +324,7 @@ export class Picker extends FoundationElement {
     public menuFocusOptionId: string | undefined;
 
     /**
-     *  todo: attribute for this
-     *
-     * @internal
-     */
-    @observable
-    public showLoading: boolean = false;
-    private showLoadingChanged(): void {
-        if (this.$fastController.isConnected) {
-            DOM.queueUpdate(() => {
-                this.setFocusedOption(0);
-            });
-        }
-    }
-
-    /**
-     *
+     *  Internal flag to indicate no options available display should be shown.
      *
      * @internal
      */
@@ -328,21 +339,21 @@ export class Picker extends FoundationElement {
     }
 
     /**
-     * reference to the selected item list
+     * reference to the selected list element
      *
      * @internal
      */
     public listElement: PickerList;
 
     /**
-     * reference to the menu
+     * reference to the menu element
      *
      * @internal
      */
     public menuElement: PickerMenu;
 
     /**
-     *
+     * reference to the anchored region element
      *
      * @internal
      */
@@ -356,8 +367,7 @@ export class Picker extends FoundationElement {
     @observable
     public selectedItems: string[] = [];
 
-    protected hasFocus = false;
-
+    private hasFocus = false;
     private itemsRepeatBehavior: RepeatBehavior | null;
 
     private optionsRepeatBehavior: RepeatBehavior | null;
@@ -410,6 +420,9 @@ export class Picker extends FoundationElement {
         this.listElement.inputElement.removeEventListener("click", this.handleInputClick);
     }
 
+    /**
+     * Initialize the component.  This is delayed a frame to ensure children are connected as well.
+     */
     private initialize(): void {
         this.updateListItemTemplate();
         this.updateOptionTemplate();
@@ -441,6 +454,9 @@ export class Picker extends FoundationElement {
         this.handleSelectionChange();
     }
 
+    /**
+     * Toggles the menu flyout
+     */
     private toggleFlyout(open: boolean): void {
         if (this.flyoutOpen === open) {
             return;
@@ -463,14 +479,23 @@ export class Picker extends FoundationElement {
         return;
     }
 
+    /**
+     * Handle input event from input element
+     */
     private handleTextInput = (e: InputEvent): void => {
         this.query = this.listElement.inputElement.value;
     };
 
+    /**
+     * Handle click event from input element
+     */
     private handleInputClick = (e: MouseEvent): void => {
         e.preventDefault();
     };
 
+    /**
+     * Handle the menu options updated event from the child menu
+     */
     private handleMenuOptionsUpdated = (e: Event): void => {
         e.preventDefault();
         if (this.flyoutOpen) {
@@ -478,6 +503,9 @@ export class Picker extends FoundationElement {
         }
     };
 
+    /**
+     * Handle key down events.
+     */
     public handleKeyDown = (e: KeyboardEvent): boolean => {
         if (e.defaultPrevented) {
             return false;
@@ -500,9 +528,9 @@ export class Picker extends FoundationElement {
                 } else {
                     const nextFocusOptionIndex = this.flyoutOpen
                         ? Math.min(
-                            this.menuFocusIndex + 1,
-                            this.menuElement.optionElements.length - 1
-                        )
+                              this.menuFocusIndex + 1,
+                              this.menuElement.optionElements.length - 1
+                          )
                         : 0;
                     this.setFocusedOption(nextFocusOptionIndex);
                 }
@@ -608,6 +636,9 @@ export class Picker extends FoundationElement {
         return true;
     };
 
+    /**
+     * Handle focus in events.
+     */
     public handleFocusIn = (e: FocusEvent): boolean => {
         if (!this.hasFocus) {
             this.hasFocus = true;
@@ -615,6 +646,9 @@ export class Picker extends FoundationElement {
         return false;
     };
 
+    /**
+     * Handle focus out events.
+     */
     public handleFocusOut = (e: FocusEvent): boolean => {
         if (
             this.menuElement === undefined ||
@@ -630,12 +664,25 @@ export class Picker extends FoundationElement {
         return false;
     };
 
-    public updatePosition = (): void => {
-        if (this.region !== undefined) {
-            this.region.update();
+    /**
+     * Sets properties on the anchored region once it is instanciated.
+     */
+    public handleSelectionChange(): void {
+        if (this.selectedItems.toString() === this.selection) {
+            return;
         }
-    };
 
+        this.selectedItems = this.selection === "" ? [] : this.selection.split(",");
+
+        DOM.queueUpdate(() => {
+            this.checkMaxItems();
+        });
+        this.$emit("selectionchange", { bubbles: false });
+    }
+
+    /**
+     * Anchored region is loaded, menu and options exist in the DOM.
+     */
     public handleRegionLoaded = (e: Event): void => {
         DOM.queueUpdate(() => {
             this.setFocusedOption(0);
@@ -643,20 +690,9 @@ export class Picker extends FoundationElement {
         });
     };
 
-    public handleSelectionChange(): void {
-        if (this.selectedItems.toString() === this.selection) {
-            return;
-        }
-
-        //TODO: trim white space?
-        this.selectedItems = this.selection === "" ? [] : this.selection.split(",");
-
-        DOM.queueUpdate(()=>{
-            this.checkMaxItems();
-        });
-        this.$emit("selectionchange", { bubbles: false });
-    }
-
+    /**
+     * Sets properties on the anchored region once it is instanciated.
+     */
     private setRegionProps = (): void => {
         if (!this.flyoutOpen) {
             return;
@@ -670,6 +706,9 @@ export class Picker extends FoundationElement {
         this.region.anchorElement = this.listElement.inputElement;
     };
 
+    /**
+     * Checks if the maximum number of items has been chosen and updates the ui.
+     */
     private checkMaxItems = (): void => {
         if (this.listElement.inputElement === undefined) {
             return;
@@ -678,14 +717,13 @@ export class Picker extends FoundationElement {
             this.maxSelected !== undefined &&
             this.selectedItems.length >= this.maxSelected
         ) {
-
-            if (
-                document.activeElement === this.listElement.inputElement
-            ) {
+            if (document.activeElement === this.listElement.inputElement) {
                 const selectedItemInstances: Element[] = Array.from(
                     this.listElement.querySelectorAll("[role='listitem']")
                 );
-                (selectedItemInstances[selectedItemInstances.length - 1] as HTMLElement).focus();
+                (selectedItemInstances[
+                    selectedItemInstances.length - 1
+                ] as HTMLElement).focus();
             }
             this.listElement.inputElement.hidden = true;
         } else {
@@ -693,6 +731,9 @@ export class Picker extends FoundationElement {
         }
     };
 
+    /**
+     * A list item has been invoked.
+     */
     public handleItemInvoke = (e: Event): boolean => {
         if (e.defaultPrevented) {
             return false;
@@ -713,13 +754,18 @@ export class Picker extends FoundationElement {
         return true;
     };
 
+    /**
+     * A menu option has been invoked.
+     */
     public handleOptionInvoke = (e: Event): boolean => {
         if (e.defaultPrevented) {
             return false;
         }
 
         if (e.target instanceof PickerMenuOption) {
-            this.selection = `${this.selection}${this.selection === "" ? "" : ","}${e.target.value}`;
+            this.selection = `${this.selection}${this.selection === "" ? "" : ","}${
+                e.target.value
+            }`;
             this.toggleFlyout(false);
             this.listElement.inputElement.value = "";
             return false;
@@ -730,6 +776,9 @@ export class Picker extends FoundationElement {
         return true;
     };
 
+    /**
+     * Increments the focused list item by the specified amount
+     */
     private incrementFocusedItem(increment: number) {
         const selectedItems: Element[] = Array.from(
             this.listElement.querySelectorAll("[role='listitem']")
@@ -753,7 +802,10 @@ export class Picker extends FoundationElement {
                 Math.max(0, currentFocusedItemIndex + increment)
             );
             if (newFocusedItemIndex === selectedItems.length) {
-                if (this.maxSelected !== undefined && this.selectedItems.length >= this.maxSelected) {
+                if (
+                    this.maxSelected !== undefined &&
+                    this.selectedItems.length >= this.maxSelected
+                ) {
                     (selectedItems[newFocusedItemIndex - 1] as HTMLElement).focus();
                 } else {
                     this.listElement.inputElement.focus();
@@ -764,15 +816,20 @@ export class Picker extends FoundationElement {
         }
     }
 
+    /**
+     * Disables the menu. Note that the menu can be open, just doens't have any valid options on display.
+     */
     private disableMenu = (): void => {
         this.menuFocusIndex = -1;
         this.menuFocusOptionId = undefined;
         this.listElement?.inputElement?.removeAttribute("aria-activedescendant");
         this.listElement?.inputElement?.removeAttribute("aria-owns");
         this.listElement?.inputElement?.removeAttribute("aria-expanded");
-        //this.menuElement.scrollTo(0, 0);
     };
 
+    /**
+     * Sets the currently focused menu option by index
+     */
     private setFocusedOption = (optionIndex: number): void => {
         if (
             !this.flyoutOpen ||
@@ -813,6 +870,9 @@ export class Picker extends FoundationElement {
         this.menuElement.scrollTo(0, focusedOption.offsetTop);
     };
 
+    /**
+     * Updates the template used for the list item repeat behavior
+     */
     private updateListItemTemplate(): void {
         this.activeListItemTemplate =
             this.listItemTemplate === undefined
@@ -820,6 +880,9 @@ export class Picker extends FoundationElement {
                 : this.listItemTemplate;
     }
 
+    /**
+     * Updates the template used for the menu option repeat behavior
+     */
     private updateOptionTemplate(): void {
         this.activeMenuOptionTemplate =
             this.menuOptionTemplate === undefined

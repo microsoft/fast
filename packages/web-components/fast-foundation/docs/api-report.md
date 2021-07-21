@@ -1495,29 +1495,19 @@ export class Picker extends FoundationElement {
     defaultMenuOptionTemplate?: ViewTemplate;
     // (undocumented)
     disconnectedCallback(): void;
-    // @internal (undocumented)
+    // @internal
     flyoutOpen: boolean;
-    // (undocumented)
     handleFocusIn: (e: FocusEvent) => boolean;
-    // (undocumented)
     handleFocusOut: (e: FocusEvent) => boolean;
-    // (undocumented)
     handleItemInvoke: (e: Event) => boolean;
-    // (undocumented)
     handleKeyDown: (e: KeyboardEvent) => boolean;
-    // (undocumented)
     handleOptionInvoke: (e: Event) => boolean;
-    // (undocumented)
     handleRegionLoaded: (e: Event) => void;
-    // (undocumented)
     handleSelectionChange(): void;
-    // (undocumented)
-    protected hasFocus: boolean;
     label: string;
     labelledby: string;
     // @internal
     listElement: PickerList;
-    // (undocumented)
     listItemContentsTemplate: ViewTemplate;
     listItemTemplate: ViewTemplate;
     loadingText: string;
@@ -1525,37 +1515,32 @@ export class Picker extends FoundationElement {
     menuConfig: AnchoredRegionConfig;
     // @internal
     menuElement: PickerMenu;
-    // @internal (undocumented)
+    // @internal
     menuFocusIndex: number;
-    // @internal (undocumented)
+    // @internal
     menuFocusOptionId: string | undefined;
-    // @internal (undocumented)
+    // @internal
     menuId: string;
-    // (undocumented)
     menuOptionContentsTemplate: ViewTemplate;
     menuOptionTemplate: ViewTemplate;
     noSuggestionsText: string;
     options: string;
-    // (undocumented)
     optionsList: string[];
-    // @internal (undocumented)
+    // @internal
     pickermenutag: string;
     query: string;
-    // @internal (undocumented)
+    // @internal
     region: AnchoredRegion;
     // @internal (undocumented)
     selectedItems: string[];
-    // @internal (undocumented)
+    // @internal
     selectedlisttag: string;
     selection: string;
-    // @internal
     showLoading: boolean;
-    // @internal (undocumented)
+    // @internal
     showNoOptions: boolean;
     suggestionsAvailableText: string;
-    // (undocumented)
-    updatePosition: () => void;
-}
+    }
 
 // @public
 export class PickerList extends FoundationElement {
