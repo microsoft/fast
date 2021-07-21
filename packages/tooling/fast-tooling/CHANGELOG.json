@@ -2,6 +2,44 @@
   "name": "@microsoft/fast-tooling",
   "entries": [
     {
+      "date": "Wed, 21 Jul 2021 07:14:48 GMT",
+      "tag": "@microsoft/fast-tooling_v0.25.1",
+      "version": "0.25.1",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-components to v2.3.0",
+            "author": "roeisenb@microsoft.com",
+            "commit": "b3359293e9b5763cd9eb9f26906ae475b22ce978",
+            "package": "@microsoft/fast-tooling"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sun, 18 Jul 2021 07:16:22 GMT",
+      "tag": "@microsoft/fast-tooling_v0.25.0",
+      "version": "0.25.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "update the exporting of services and web components in tooling and match the new pathing in sites",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "bc681d48fb43349f8d0808f44cc6b8e2d1011461",
+            "package": "@microsoft/fast-tooling"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-components to v2.2.3",
+            "author": "ben@platform5.ch",
+            "commit": "442a9ef1012dba49179fad629e4ba8aab312d8a7",
+            "package": "@microsoft/fast-tooling"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 15 Jul 2021 01:41:48 GMT",
       "tag": "@microsoft/fast-tooling_v0.24.2",
       "version": "0.24.2",

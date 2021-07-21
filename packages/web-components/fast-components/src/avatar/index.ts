@@ -54,7 +54,7 @@ export const imgTemplate = html<Avatar>`
 
 /**
  * A function that returns a {@link @microsoft/fast-foundation#Avatar} registration for configuring the component with a DesignSystem.
- *  {@link @microsoft/fast-foundation#AvatarTemplate}
+ *  {@link @microsoft/fast-foundation#avatarTemplate}
  *
  *
  * @public

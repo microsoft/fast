@@ -1,8 +1,29 @@
 # Change Log - @microsoft/fast-components
 
-This log was last generated on Thu, 15 Jul 2021 01:41:48 GMT and should not be manually modified.
+This log was last generated on Wed, 21 Jul 2021 07:14:48 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.3.0
+
+Wed, 21 Jul 2021 07:14:48 GMT
+
+### Minor changes
+
+- feat(fast-design-system): improve ergonomics of the fast design system (roeisenb@microsoft.com)
+
+### Patches
+
+- Hide step-up and step-down for number-field when readonly (robarb@microsoft.com)
+- Bump @microsoft/fast-foundation to v2.5.1 (robarb@microsoft.com)
+
+## 2.2.3
+
+Sun, 18 Jul 2021 07:16:22 GMT
+
+### Patches
+
+- breadcrumb: allow wrapping of items in the list container (ben@platform5.ch)
 
 ## 2.2.2
 

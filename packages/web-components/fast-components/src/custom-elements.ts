@@ -51,6 +51,7 @@ import type { SliderLabel } from "./slider-label/index";
 import type { TextArea } from "./text-area/index";
 import type { TextField } from "./text-field/index";
 import type { Toolbar } from "./toolbar/index";
+import type { Container } from "@microsoft/fast-foundation";
 
 // When adding new components, make sure to add the component to the `allComponents` object
 // in addition to exporting the component by name. Ideally we would be able to just add
@@ -106,6 +107,9 @@ export {
 /**
  * All Web Components
  * @public
+ * @remarks
+ * This object can be passed directly to the Design System's `register` method to
+ * statically link and register all available components.
  */
 export const allComponents = {
     fastAccordion,
@@ -151,4 +155,19 @@ export const allComponents = {
     fastToolbar,
     fastTreeView,
     fastTreeItem,
+    register(container?: Container) {
+        if (!container) {
+            // preserve backward compatibility with code that loops through
+            // the values of this object and calls them as funcs with no args
+            return;
+        }
+
+        for (const key in this) {
+            if (key === "register") {
+                continue;
+            }
+
+            this[key]().register(container);
+        }
+    },
 };
