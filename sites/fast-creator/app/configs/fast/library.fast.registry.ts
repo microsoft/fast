@@ -5,9 +5,11 @@ import { setupFASTComponentDesignSystem } from "./library.fast.design-system.map
 export function registerFASTComponents(): void {
     setupFASTComponentDesignSystem(document.body);
 
-    DesignSystem.getOrCreate().register(
-        Object.values(allComponents).map((component: (config: any) => any) => {
-            return component({ prefix: "fast" });
-        })
-    );
+    DesignSystem.getOrCreate()
+        .withPrefix("fast")
+        .register(
+            Object.values(allComponents).map((component: () => void) => {
+                return component();
+            })
+        );
 }
