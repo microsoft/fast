@@ -1,7 +1,0 @@
-{
-  "type": "minor",
-  "comment": "feat(fast-design-system): improve ergonomics of the fast design system",
-  "packageName": "@microsoft/fast-components",
-  "email": "roeisenb@microsoft.com",
-  "dependentChangeType": "patch"
-}

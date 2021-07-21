@@ -2,6 +2,43 @@
   "name": "@microsoft/fast-components",
   "entries": [
     {
+      "date": "Wed, 21 Jul 2021 07:14:48 GMT",
+      "tag": "@microsoft/fast-components_v2.3.0",
+      "version": "2.3.0",
+      "comments": {
+        "none": [
+          {
+            "comment": "fixing doc-comments causing api-documenter to fail",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "d5f27df7b30e474c69a336741cf00e49a6806ca2",
+            "package": "@microsoft/fast-components"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "Hide step-up and step-down for number-field when readonly",
+            "author": "robarb@microsoft.com",
+            "commit": "6e53b2866250dc08881a57b371069a40a69df391",
+            "package": "@microsoft/fast-components"
+          },
+          {
+            "comment": "Bump @microsoft/fast-foundation to v2.5.1",
+            "author": "robarb@microsoft.com",
+            "commit": "6e53b2866250dc08881a57b371069a40a69df391",
+            "package": "@microsoft/fast-components"
+          }
+        ],
+        "minor": [
+          {
+            "comment": "feat(fast-design-system): improve ergonomics of the fast design system",
+            "author": "roeisenb@microsoft.com",
+            "commit": "b3359293e9b5763cd9eb9f26906ae475b22ce978",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sun, 18 Jul 2021 07:16:22 GMT",
       "tag": "@microsoft/fast-components_v2.2.3",
       "version": "2.2.3",
