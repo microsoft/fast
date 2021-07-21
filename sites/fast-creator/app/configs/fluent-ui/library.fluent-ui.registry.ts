@@ -5,9 +5,11 @@ import { setupFluentUIComponentDesignSystem } from "./library.fluent-ui.design-s
 export function registerFluentUIComponents(): void {
     setupFluentUIComponentDesignSystem(document.body);
 
-    DesignSystem.getOrCreate().register(
-        Object.values(allComponents).map((component: (config: any) => any) => {
-            return component({ prefix: "fluent" });
-        })
-    );
+    DesignSystem.getOrCreate()
+        .withPrefix("fluent")
+        .register(
+            Object.values(allComponents).map((component: () => void) => {
+                return component();
+            })
+        );
 }
