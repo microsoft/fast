@@ -56,6 +56,7 @@ import {
     StandardLuminance,
     SwatchRGB,
 } from "@microsoft/fast-components";
+import { LinkedDataActionType } from "@microsoft/fast-tooling-react/dist/form/templates/types";
 import { CreatorState, FormId, NavigationId, ProjectFile } from "./creator.props";
 import { elementLibraries, elementLibraryContents } from "./configs";
 import { divTag } from "./configs/native/library.native.tags";
@@ -425,7 +426,10 @@ class Creator extends Editor<{}, CreatorState> {
         return (e: ControlOnChangeConfig): void => {
             Object.entries(elementLibraryContents).forEach(
                 ([elementLibraryId, schemaIds]: [string, string[]]) => {
-                    if (schemaIds.includes(e.value[0].schemaId)) {
+                    if (
+                        e.linkedDataAction === LinkedDataActionType.add &&
+                        schemaIds.includes(e.value[0].schemaId)
+                    ) {
                         onChange({
                             ...e,
                             value:
@@ -434,6 +438,8 @@ class Creator extends Editor<{}, CreatorState> {
                                         .componentDictionary[e.value[0].schemaId].example,
                                 ] || e.value,
                         });
+                    } else if (e.linkedDataAction === LinkedDataActionType.remove) {
+                        onChange(e);
                     }
                 }
             );
