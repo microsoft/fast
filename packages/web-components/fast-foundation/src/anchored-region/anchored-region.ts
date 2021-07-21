@@ -666,10 +666,12 @@ export class AnchoredRegion extends FoundationElement {
         ) {
             this.regionRect = regionEntry.boundingClientRect;
             this.anchorRect = anchorEntry.boundingClientRect;
-            if (this.viewportElement === document.documentElement){
+            if (this.viewportElement === document.documentElement) {
                 this.viewportRect = new DOMRectReadOnly(
-                    viewportEntry.boundingClientRect.x + document.documentElement.scrollLeft, 
-                    viewportEntry.boundingClientRect.y + document.documentElement.scrollTop, 
+                    viewportEntry.boundingClientRect.x +
+                        document.documentElement.scrollLeft,
+                    viewportEntry.boundingClientRect.y +
+                        document.documentElement.scrollTop,
                     viewportEntry.boundingClientRect.width,
                     viewportEntry.boundingClientRect.height
                 );
