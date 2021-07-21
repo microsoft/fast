@@ -495,7 +495,29 @@ describe("A DesignToken", () => {
 
                 removeElement(target);
             });
-        })
+        });
+        it.only("should update the CSS custom property of a derived token with a dependency that is a derived token that depends on a third token", async () => {
+                const tokenA = DesignToken.create<number>("token-a");
+                const tokenB = DesignToken.create<number>("token-b");
+                const tokenC = DesignToken.create<number>("token-c");
+                const parent = addElement();
+                const child = addElement(parent);
+
+                tokenA.withDefault(3);
+                tokenB.withDefault((el: HTMLElement) => tokenA.getValueFor(el) * 2);
+                tokenC.withDefault((el) => tokenB.getValueFor(el) * 2)
+
+                await DOM.nextUpdate();
+
+                expect(tokenC.getValueFor(child)).to.equal(12);
+                expect(window.getComputedStyle(child).getPropertyValue(tokenC.cssCustomProperty)).to.equal("12");
+
+                tokenA.setValueFor(child, 4);
+
+                await DOM.nextUpdate();
+                expect(tokenC.getValueFor(child)).to.equal(16);
+                expect(window.getComputedStyle(child).getPropertyValue(tokenC.cssCustomProperty)).to.equal("16");
+        });
     })
     describe("deleting simple values", () => {
         it("should throw when deleted and no parent token value is set", () => {
