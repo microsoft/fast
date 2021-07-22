@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "add content container and move handlers for toolbar",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "sethdonohue@Admins-MBP.guest.corp.microsoft.com",
+  "dependentChangeType": "patch"
+}
