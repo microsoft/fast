@@ -49,7 +49,13 @@ export const toolbarStyles: (
             justify-content: flex-start;
         }
 
-        :host([orientation="vertical"]) .positioning-region {
+        .content {
+            display: inline-flex;
+            flex-flow: row wrap;
+        }
+
+        :host([orientation="vertical"]) .positioning-region,
+        :host([orientation="vertical"]) .content {
             flex-direction: column;
         }
 

@@ -23,19 +23,24 @@ export const toolbarTemplate: (
         aria-orientation="${x => x.orientation}"
         orientation="${x => x.orientation}"
         role="toolbar"
-        @click="${(x, c) => x.clickHandler(c.event as MouseEvent)}"
-        @focusin="${(x, c) => x.focusinHandler(c.event as FocusEvent)}"
-        @keydown="${(x, c) => x.keydownHandler(c.event as KeyboardEvent)}"
     >
         <slot name="label"></slot>
         <div class="positioning-region" part="positioning-region">
             ${startTemplate}
-            <slot
-                ${slotted({
-                    filter: elements(),
-                    property: "slottedItems",
-                })}
-            ></slot>
+            <span
+                class="content"
+                part="content"
+                @focusin="${(x, c) => x.focusinHandler(c.event as FocusEvent)}"
+                @click="${(x, c) => x.clickHandler(c.event as MouseEvent)}"
+                @keydown="${(x, c) => x.keydownHandler(c.event as KeyboardEvent)}"
+            >
+                <slot
+                    ${slotted({
+                        filter: elements(),
+                        property: "slottedItems",
+                    })}
+                ></slot>
+            </span>
             ${endTemplate}
         </div>
     </template>
