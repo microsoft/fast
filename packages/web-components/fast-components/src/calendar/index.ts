@@ -35,6 +35,8 @@ export const CalendarStyles = styles;
 
 /**
  * Custom grid component for the calendar component
+ *
+ * @public
  */
 export const fastCalendarGrid = DataGrid.compose({
     baseName: "calendar-grid",
@@ -43,12 +45,19 @@ export const fastCalendarGrid = DataGrid.compose({
 
 /**
  * Custom grid row component for the calendar component
+ *
+ * @public
  */
 export const fastCalendarGridRow = DataGridRow.compose({
     baseName: "calendar-grid-row",
     template: dataGridRowTemplate,
 });
 
+/**
+ * Custom grid cell component for the calendar component
+ *
+ * @public
+ */
 export class CalendarGridCell extends DataGridCell {
     /**
      * Day of the date cell that this wraps
@@ -72,9 +81,9 @@ export class CalendarGridCell extends DataGridCell {
     public year;
 
     /**
-     *
-     * @param e - keyboard event
      * Emits a date selection if the user hit either the enter or space keys
+     * @param e - keyboard event
+     * @public
      */
     public handleKeydown(e: KeyboardEvent): void {
         if (e.keyCode === keyCodeEnter || e.keyCode === keyCodeSpace) {
@@ -90,6 +99,7 @@ export class CalendarGridCell extends DataGridCell {
 
 /**
  * Custom grid cell component for the calendar component
+ * @public
  */
 export const fastCalendarGridCell = CalendarGridCell.compose({
     baseName: "calendar-grid-cell",
@@ -98,6 +108,7 @@ export const fastCalendarGridCell = CalendarGridCell.compose({
 
 /**
  * Base class for fastCalendar
+ * @public
  */
 export { Calendar };
 
