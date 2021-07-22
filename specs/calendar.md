@@ -70,17 +70,32 @@ TBD
 - `year`: number - default: current year
 - `locale`: string - a locale string which can include the market(country and language), calendar type and numbering system.
 - `weekday-format`: `long` | `narrow` | `short` - default: `short` - Labeling format for the names of the weekdays.
+- `day-format`: `numeric` | `2-digit` - default: `numeric` - Formatting for days.
 - `month-format`: `long` | `narrow` | `short` - default: `long` - Labeling format for the month name.
+- `year-format`: `numeric` | `2-digit` - default: `numeric` - Labeling format for the year in the title.
 - `min-weeks`: number - default: 0 - Minimum number of weeks to show.
 - `disabled-dates`: string - A comma separated list of dates to show as disabled.
 - `selected-dates`: string - a comma separated list of dates to show as highlighted.
 
 *Slots*
-- The calendar component will generate dynamic slots for each date to slot content onto the calendar. Example <slot name="1-1-2021"></slot>
+- The calendar component will generate dynamic slots for each date to slot content into the calendar days. Example <slot name="1-1-2021"></slot>
 - `default`: Content in the default slot will show up between the title and the weekday labels.
 - `end`: Content shows up after the calendar days.
 - `start`: Content shows up before the title slot.
 - `title`: Replaces the title content with custom slotted content.
+
+*Methods*
+- `getMonthInfo(month, year)`: Returns an object with the information needed to render a month calendar. Day starts, number of days, number of days in the month before.
+- `getMonth(month, format, locale)`: Returns a localized month label for the current market, calendar and language.
+- `getYear(year, format, locale)`: Returns a localized year for the current market, calendar and language.
+- `getDay(date, format, locale)`: Returns a localized day number for the current marekt, calendar and language.
+- `getWeekdays(format, locale)`: Returns a list of the weekday labels for the current market, calendar and language.
+- `getDays(info)`: Returns a list of days for a calendar month. Includes the day, month, year, selected state and disable state.
+- `dateInString(date, dateString)` - Checks to see if a date exists in a comma separated list of dates.
+- `handleDateSelect(day)`: - Emits a `date-selected` event with the day set in the details.
+
+*Events*
+- `date-selected`: Custom event that's fired when a date is clicked. Includes the date in the details of the event.
 
 ### Anatomy and Appearance
 
@@ -89,7 +104,7 @@ TBD
 *Slot Names*
 Dynamically generated slots with the date as the name in the template.
 
-- *Host Classes*
+*Host Classes*
 
 *Slotted Content/Slotted Classes*
 
