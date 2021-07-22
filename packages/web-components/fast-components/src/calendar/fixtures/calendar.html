@@ -332,7 +332,7 @@
         const dateSelect = evt => {
             const { day, month, year } = evt.detail;
             const dateString = `${month}-${day}-${year}`;
-            if (calendarSelect.dateInString(evt.detail, calendarSelect.selectedDates)) {
+            if (calendarSelect.dateInString(dateString, calendarSelect.selectedDates)) {
                 calendarSelect.selectedDates = calendarSelect.selectedDates.replace(
                     new RegExp(",?" + dateString),
                     ""
