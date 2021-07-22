@@ -119,6 +119,7 @@
         width: 560px;
         --current-day-color: #fff;
         color: aqua;
+        position: relative;
     }
 
     .borders4::part(month) {
@@ -135,6 +136,7 @@
 
     .borders4::part(day) {
         text-align: center;
+        position: static;
     }
 
     .borders4::part(date),
@@ -150,20 +152,16 @@
         background: purple;
         border-radius: 50%;
     }
-    .borders4::part(week),
-    .borders4::part(day) {
-        position: relative;
-    }
 
     .borders4::part(week):hover::before {
         content: "";
         display: block;
         position: absolute;
-        width: 100%;
         height: 1px;
         background: red;
-        top: 50%;
-        left: 0;
+        left: 20px;
+        right: 20px;
+        margin: 20px 0 0;
     }
 
     .borders4::part(day):hover::before,
@@ -171,11 +169,11 @@
         content: "";
         display: block;
         position: absolute;
-        left: 50%;
-        top: 0;
+        top: 95px;
+        bottom: 20px;
         width: 1px;
-        height: 100%;
         background: red;
+        margin: 0 0 0 35px;
     }
 
     .borders4::part(day):hover::after,
@@ -185,11 +183,10 @@
         position: absolute;
         width: 30px;
         height: 30px;
-        top: 50%;
-        left: 50%;
         transform: translate(-50%, -50%);
         border-radius: 50%;
         border: 1px solid red;
+        margin: -15px 0 0 35px;
     }
 
     .light-borders {
@@ -267,11 +264,6 @@
         line-height: 30px;
     }
 </style>
-<script>
-    const bindScript = (id, script) => {
-        document.getElementById(id).addEventListener("click", script);
-    };
-</script>
 <h1>Calendar</h1>
 
 <h2>Default</h2>
@@ -334,26 +326,29 @@
     <div id="click-output"></div>
 </div>
 <script>
-    let calendarSelect = document.getElementById("click");
-    const dateSelect = evt => {
-        const { day, month, year } = evt.detail;
-        const dateString = `${month}-${day}-${year}`;
-        if (calendarSelect.dateInString(evt.detail, calendarSelect.selectedDates)) {
-            calendarSelect.selectedDates = calendarSelect.selectedDates.replace(
-                new RegExp(",?" + dateString),
-                ""
-            );
-        } else {
-            calendarSelect.selectedDates +=
-                (calendarSelect.selectedDates === "" ? "" : ",") + dateString;
-        }
-        const output = document.getElementById("click-output");
-        output.className = "";
-        output.innerHTML = "";
-        output.innerHTML = `${month}-${day}-${year} was selected`;
-        setTimeout(() => (output.className = "loaded"), 1);
-    };
-    calendarSelect.addEventListener("date-select", dateSelect);
+    if (!window.calendarSelect) {
+        let calendarSelect = document.getElementById("click");
+
+        const dateSelect = evt => {
+            const { day, month, year } = evt.detail;
+            const dateString = `${month}-${day}-${year}`;
+            if (calendarSelect.dateInString(evt.detail, calendarSelect.selectedDates)) {
+                calendarSelect.selectedDates = calendarSelect.selectedDates.replace(
+                    new RegExp(",?" + dateString),
+                    ""
+                );
+            } else {
+                calendarSelect.selectedDates +=
+                    (calendarSelect.selectedDates === "" ? "" : ",") + dateString;
+            }
+            const output = document.getElementById("click-output");
+            output.className = "";
+            output.innerHTML = "";
+            output.innerHTML = `${month}-${day}-${year} was selected`;
+            setTimeout(() => (output.className = "loaded"), 1);
+        };
+        calendarSelect.addEventListener("date-select", dateSelect);
+    }
 </script>
 
 <h2>Changing calendar</h2>
@@ -372,17 +367,23 @@
 </fast-calendar>
 
 <script>
-    const changeCalendar = (direction, event) => {
-        const calendar = event.path.find(
-            node => !!node.tagName && node.tagName.toLowerCase().indexOf("calendar") >= 0
-        );
-        const { month, year } = calendar;
-        const nextMonth = month + direction;
-        calendar.year = year + (nextMonth > 12 ? 1 : nextMonth < 1 ? -1 : 0);
-        calendar.month = nextMonth < 1 ? 12 : nextMonth > 12 ? 1 : nextMonth;
-    };
-    bindScript("previous", changeCalendar.bind(this, -1));
-    bindScript("next", changeCalendar.bind(this, 1));
+    if (!window.changeCalendar) {
+        const bindScript = (id, script) => {
+            document.getElementById(id).addEventListener("click", script);
+        };
+        const changeCalendar = (direction, event) => {
+            const calendar = event.path.find(
+                node =>
+                    !!node.tagName && node.tagName.toLowerCase().indexOf("calendar") >= 0
+            );
+            const { month, year } = calendar;
+            const nextMonth = month + direction;
+            calendar.year = year + (nextMonth > 12 ? 1 : nextMonth < 1 ? -1 : 0);
+            calendar.month = nextMonth < 1 ? 12 : nextMonth > 12 ? 1 : nextMonth;
+        };
+        bindScript("previous", changeCalendar.bind(this, -1));
+        bindScript("next", changeCalendar.bind(this, 1));
+    }
 </script>
 
 <h2>German calendar</h2>
