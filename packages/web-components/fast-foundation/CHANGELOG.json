@@ -2,6 +2,52 @@
   "name": "@microsoft/fast-foundation",
   "entries": [
     {
+      "date": "Thu, 22 Jul 2021 07:19:53 GMT",
+      "tag": "@microsoft/fast-foundation_v2.5.2",
+      "version": "2.5.2",
+      "comments": {
+        "none": [
+          {
+            "comment": "doc: fix import adapter statement",
+            "author": "ben@platform5.ch",
+            "commit": "7cfed1eef45c4947bd0439d448b9c79befc58406",
+            "package": "@microsoft/fast-foundation"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "Fixed attr boolean mode on menu item",
+            "author": "47367562+bheston@users.noreply.github.com",
+            "commit": "6325e61798e5fee6bb09ce0336636a1d1f2c4959",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 21 Jul 2021 07:14:48 GMT",
+      "tag": "@microsoft/fast-foundation_v2.5.1",
+      "version": "2.5.1",
+      "comments": {
+        "none": [
+          {
+            "comment": "fixing doc comments causing api-documenter to fail",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "d5f27df7b30e474c69a336741cf00e49a6806ca2",
+            "package": "@microsoft/fast-foundation"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "Hide step-up and step-down for number-field when readonly",
+            "author": "robarb@microsoft.com",
+            "commit": "6e53b2866250dc08881a57b371069a40a69df391",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 15 Jul 2021 01:41:48 GMT",
       "tag": "@microsoft/fast-foundation_v2.5.0",
       "version": "2.5.0",

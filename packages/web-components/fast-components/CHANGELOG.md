@@ -1,8 +1,33 @@
 # Change Log - @microsoft/fast-components
 
-This log was last generated on Sun, 18 Jul 2021 07:16:22 GMT and should not be manually modified.
+This log was last generated on Thu, 22 Jul 2021 07:19:53 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.4.0
+
+Thu, 22 Jul 2021 07:19:53 GMT
+
+### Minor changes
+
+- update component styles to leverage context.tagFor() for nested element styles (chhol@microsoft.com)
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.5.2 (47367562+bheston@users.noreply.github.com)
+
+## 2.3.0
+
+Wed, 21 Jul 2021 07:14:48 GMT
+
+### Minor changes
+
+- feat(fast-design-system): improve ergonomics of the fast design system (roeisenb@microsoft.com)
+
+### Patches
+
+- Hide step-up and step-down for number-field when readonly (robarb@microsoft.com)
+- Bump @microsoft/fast-foundation to v2.5.1 (robarb@microsoft.com)
 
 ## 2.2.3
 
