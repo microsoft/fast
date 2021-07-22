@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "Fixed attr boolean mode on menu item",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "47367562+bheston@users.noreply.github.com",
+  "dependentChangeType": "patch"
+}
