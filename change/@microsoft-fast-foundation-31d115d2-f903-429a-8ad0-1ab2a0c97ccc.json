@@ -1,0 +1,7 @@
+{
+  "type": "none",
+  "comment": "doc: fix import adapter statement",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "ben@platform5.ch",
+  "dependentChangeType": "none"
+}

@@ -56,7 +56,7 @@ export class MenuItem extends FoundationElement {
      * @remarks
      * HTML Attribute: expanded
      */
-    @attr({ attribute: "expanded" })
+    @attr({ mode: "boolean" })
     public expanded: boolean;
     private expandedChanged(oldValue: boolean): void {
         if (this.$fastController.isConnected) {
@@ -95,7 +95,7 @@ export class MenuItem extends FoundationElement {
      * @remarks
      * HTML Attribute: checked
      */
-    @attr
+    @attr({ mode: "boolean" })
     public checked: boolean;
     private checkedChanged(oldValue, newValue): void {
         if (this.$fastController.isConnected) {
