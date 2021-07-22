@@ -1,6 +1,7 @@
 import { css, ElementStyles } from "@microsoft/fast-element";
 import {
     AvatarOptions,
+    Badge,
     display,
     ElementDefinitionContext,
 } from "@microsoft/fast-foundation";
@@ -14,14 +15,14 @@ import {
 } from "../design-tokens";
 import { DirectionalStyleSheetBehavior } from "../styles";
 
-const rtl = css`
-    ::slotted(fast-badge) {
+const rtl = (context, definition) => css`
+    ::slotted(${context.tagFor(Badge)}) {
         left: 0;
     }
 `;
 
-const ltr = css`
-    ::slotted(fast-badge) {
+const ltr = (context, definition) => css`
+    ::slotted(${context.tagFor(Badge)}) {
         right: 0;
     }
 `;
@@ -89,8 +90,13 @@ export const avatarStyles: (
             min-height: var(--avatar-size, var(--avatar-size-default));
         }
 
-        ::slotted(fast-badge) {
+        ::slotted(${context.tagFor(Badge)}) {
             position: absolute;
             display: block;
         }
-    `.withBehaviors(new DirectionalStyleSheetBehavior(ltr, rtl));
+    `.withBehaviors(
+        new DirectionalStyleSheetBehavior(
+            ltr(context, definition),
+            rtl(context, definition)
+        )
+    );
