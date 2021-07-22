@@ -121,7 +121,7 @@ export class Toolbar extends FoundationElement {
     public slottedLabel: HTMLElement[];
 
     /**
-     * Set the activeIndex when a focusable element in the toolbar is clicked.
+     * Set the activeIndex when a focusable element in the toolbar's content is clicked.
      *
      * @internal
      */
@@ -143,7 +143,7 @@ export class Toolbar extends FoundationElement {
     }
 
     /**
-     * When the toolbar receives focus, set the currently active element as focused.
+     * When the toolbar's content receives focus, set the currently active element as focused.
      *
      * @internal
      */
@@ -163,7 +163,7 @@ export class Toolbar extends FoundationElement {
      * @param key - The event key value
      * @internal
      */
-    private getDirectionalIncrementer(key: string): number {
+    private getDirectionalIncrementor(key: string): number {
         return (
             ToolbarArrowKeyMap[key]?.[this.orientation]?.[this.direction] ??
             ToolbarArrowKeyMap[key]?.[this.orientation] ??
@@ -172,7 +172,7 @@ export class Toolbar extends FoundationElement {
     }
 
     /**
-     * Handle keyboard events for the toolbar.
+     * Handle keyboard events for the toolbar's content.
      *
      * @internal
      */
@@ -183,12 +183,12 @@ export class Toolbar extends FoundationElement {
             return true;
         }
 
-        const incrementer = this.getDirectionalIncrementer(key);
-        if (!incrementer) {
+        const incrementor = this.getDirectionalIncrementor(key);
+        if (!incrementor) {
             return !(e.target as HTMLElement).closest("[role=radiogroup]");
         }
 
-        const nextIndex = this.activeIndex + incrementer;
+        const nextIndex = this.activeIndex + incrementor;
         if (this.focusableElements[nextIndex]) {
             e.preventDefault();
         }
