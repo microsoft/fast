@@ -36,7 +36,7 @@ export const menuItemTemplate: (
                 x => x.role === MenuItemRole.menuitemcheckbox,
                 html<MenuItem>`
                     <div part="input-container" class="input-container">
-                        <span part="checkbox" class="checkbox">
+                        <span part="checkbox" class="checkbox" aria-hidden="true">
                             <slot name="checkbox-indicator">
                                 ${definition.checkboxIndicator || ""}
                             </slot>
@@ -48,7 +48,7 @@ export const menuItemTemplate: (
                 x => x.role === MenuItemRole.menuitemradio,
                 html<MenuItem>`
                     <div part="input-container" class="input-container">
-                        <span part="radio" class="radio">
+                        <span part="radio" class="radio" aria-hidden="true">
                             <slot name="radio-indicator">
                                 ${definition.radioIndicator || ""}
                             </slot>
