@@ -13,7 +13,7 @@ A Design Token is a semantic, named variable used to describe a Design System. T
 
 ## FAST Frame Design Tokens
 
-The `@microsoft/fast-components` have extensive support for predefined design token. See [configuring styles](/docs/design-systems/fast-frame#configuring-styles) for details on adjusting or using the existing tokens, or read on to create your own.
+The `@microsoft/fast-components` have extensive support for predefined design tokens. See [configuring styles](/docs/design-systems/fast-frame#configuring-styles) for details on adjusting or using the existing tokens, or read on to create your own.
 
 ## Create a Token
 
@@ -207,6 +207,7 @@ themeManager.theme = "red"; // Forces the derived tokens to re-evaluate and CSS 
 
 
 ## Aliasing Design Tokens
+
 In some design systems, Design Tokens may have complex hierarchies with tokens referencing other tokens. This can be accomplished by setting a Design Token to another Design Token.
 
 ```ts
