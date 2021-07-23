@@ -665,7 +665,7 @@ export class Picker extends FoundationElement {
     };
 
     /**
-     * Sets properties on the anchored region once it is instanciated.
+     * The list of selected items has changed
      */
     public handleSelectionChange(): void {
         if (this.selectedItems.toString() === this.selection) {
