@@ -1782,10 +1782,10 @@
     unique-filename "^1.1.1"
     which "^1.3.1"
 
-"@fluentui/web-components@^1.2.1":
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/@fluentui/web-components/-/web-components-1.2.1.tgz#fe147e481bbaa895ad4686c16bd3274941800d64"
-  integrity sha512-iam67FLRNte9mWsNvajKUQdHY0OyZqtYUPbSkJ47NYg/mzWUmafVBsw8hGbO5SxsMTu7UGNGQmOarRSM/vh7/Q==
+"@fluentui/web-components@^1.2.3":
+  version "1.2.3"
+  resolved "https://registry.yarnpkg.com/@fluentui/web-components/-/web-components-1.2.3.tgz#d2737e9a8a1ae6dab4cfc064921464fb521bf141"
+  integrity sha512-3WKv8U2R4dt4EH/BfogufEmIp3nG9y0XUoiruHam43fD9LJhtXrgw5jjLHRfzWjhG0DYPAeuH9+FEjnaM+crwA==
   dependencies:
     "@microsoft/fast-colors" "^5.1.0"
     "@microsoft/fast-element" "^1.4.0"
