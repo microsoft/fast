@@ -5,53 +5,96 @@ sidebar_label: accordion
 custom_edit_url: https://github.com/microsoft/fast/edit/master/packages/web-components/fast-foundation/src/accordion/README.md
 ---
 
+## Setup
+
+### Basic Setup
+
+```ts
+import {
+    provideFASTDesignSystem,
+    fastAccordion,
+    fastAccordionItem
+} from "@microsoft/fast-components";
+
+provideFASTDesignSystem()
+    .register(
+        fastAccordion(),
+        fastAccordionItem()
+    );
+```
+
+### Customizing Icons
+
+```ts
+import {
+    provideFASTDesignSystem,
+    fastAccordion,
+    fastAccordionItem
+} from "@microsoft/fast-components";
+
+provideFASTDesignSystem()
+    .register(
+        fastAccordion(),
+        fastAccordionItem({
+            collapsedIcon: `...your collapsed icon...`,
+            expandedIcon: `...your expanded icon...`,
+        })
+    );
+```
+
 ## Usage
 
 ```html live
-<fast-design-system-provider use-defaults>
-    <fast-accordion>
-        <fast-accordion-item expanded>
-            <span slot="heading">Panel one</span>
-            Panel one content
-        </fast-accordion-item>
-        <fast-accordion-item>
-            <span slot="heading">Panel two</span>
-            Panel two content
-        </fast-accordion-item>
-        <fast-accordion-item expanded>
-            <span slot="heading">Panel three</span>
-            Panel three content
-        </fast-accordion-item>
-    </fast-accordion>
-</fast-design-system-provider>
+<fast-accordion>
+    <fast-accordion-item expanded>
+        <span slot="heading">Panel one</span>
+        Panel one content
+    </fast-accordion-item>
+    <fast-accordion-item>
+        <span slot="heading">Panel two</span>
+        Panel two content
+    </fast-accordion-item>
+    <fast-accordion-item expanded>
+        <span slot="heading">Panel three</span>
+        Panel three content
+    </fast-accordion-item>
+</fast-accordion>
 ```
 
-## Applying custom styles
+## Your own design system
+
+### fast-accordion
 
 ```ts
-import { customElement } from "@microsoft/fast-element";
-import { Accordion, AccordionTemplate as template } from "@microsoft/fast-foundation";
-import { MyAccordionStyles as styles } from "./accordion.styles";
+import { Accordion, accordionTemplate as template } from "@microsoft/fast-foundation";
+import { accordionStyles as styles } from "./my-accordion.styles";
 
-@customElement({
-    name: "fast-accordion",
+export const myAccordion = Accordion.compose({
+    baseName: "accordion",
     template,
     styles,
-})
-export class FASTAccordion extends Accordion {}
+});
 ```
 
 ### fast-accordion-item
 
 ```ts
-import { customElement } from "@microsoft/fast-element";
-import { AccordionItem, AccordionItemTemplate as template } from "@microsoft/fast-foundation";
-import { MyAccordionItemStyles as styles } from "./accordion-item.styles";
+import {
+    AccordionItem,
+    AccordionItemOptions,
+    accordionItemTemplate as template,
+} from "@microsoft/fast-foundation";
+import { accordionItemStyles as styles } from "./my-accordion-item.styles";
 
-@customElement({
-    name: "fast-accordion-item",
+export const myAccordionItem = AccordionItem.compose<AccordionItemOptions>({
+    baseName: "accordion-item",
     template,
     styles,
-})
-export class FASTAccordionItem extends AccordionItem {}
+    collapsedIcon: `...default collapsed icon...`,
+    expandedIcon: `...default expanded icon...`,
+});
 ```
+
+## Additional resources
+
+View the full specification for the accordion [here](https://github.com/microsoft/fast/blob/master/packages/web-components/fast-foundation/src/accordion/accordion.spec.md).
