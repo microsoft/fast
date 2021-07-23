@@ -1,4 +1,4 @@
-import { elements, html, slotted } from "@microsoft/fast-element";
+import { elements, html, ref, slotted } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
 import { endTemplate, startTemplate } from "../patterns";
 import type { FoundationElementDefinition } from "../foundation-element";
@@ -23,25 +23,36 @@ export const toolbarTemplate: (
         aria-orientation="${x => x.orientation}"
         orientation="${x => x.orientation}"
         role="toolbar"
+        @click="${(x, c) => x.clickHandler(c.event as MouseEvent)}"
+        @focusin="${(x, c) => x.focusinHandler(c.event as FocusEvent)}"
+        @keydown="${(x, c) => x.keydownHandler(c.event as KeyboardEvent)}"
     >
         <slot name="label"></slot>
         <div class="positioning-region" part="positioning-region">
-            ${startTemplate}
-            <span
-                class="content"
-                part="content"
-                @focusin="${(x, c) => x.focusinHandler(c.event as FocusEvent)}"
-                @click="${(x, c) => x.clickHandler(c.event as MouseEvent)}"
-                @keydown="${(x, c) => x.keydownHandler(c.event as KeyboardEvent)}"
-            >
+            <span class="start start__hidden" part="start" ${ref("startContainer")}>
                 <slot
+                    name="start"
                     ${slotted({
                         filter: elements(),
-                        property: "slottedItems",
+                        property: "startSlottedItems",
                     })}
                 ></slot>
             </span>
-            ${endTemplate}
+            <slot
+                ${slotted({
+                    filter: elements(),
+                    property: "slottedItems",
+                })}
+            ></slot>
+            <span class="end end__hidden" part="end" ${ref("endContainer")}>
+                <slot
+                    name="end"
+                    ${slotted({
+                        filter: elements(),
+                        property: "endSlottedItems",
+                    })}
+                ></slot>
+            </span>
         </div>
     </template>
 `;

@@ -97,20 +97,43 @@ export class Toolbar extends FoundationElement {
      */
     @observable
     public slottedItems: HTMLElement[];
-
-    /**
-     * Prepare the slotted elements which can be focusable.
-     *
-     * @param prev - The previous list of slotted elements.
-     * @param next - The new list of slotted elements.
-     * @internal
-     */
-    protected slottedItemsChanged(prev: unknown, next: HTMLElement[]): void {
+    protected slottedItemsChanged(): void {
         if (this.$fastController.isConnected) {
-            this.focusableElements = next.reduce(Toolbar.reduceFocusableItems, []);
-            this.setFocusableElements();
+            this.buildFocusableElements();
         }
     }
+
+    /**
+     * the elements in the start slot.
+     *
+     * @internal
+     */
+    @observable startSlottedItems: HTMLElement[];
+    protected startSlottedItemsChanged(): void {
+        if (this.$fastController.isConnected) {
+            this.buildFocusableElements();
+            this.startContainer.classList.toggle(
+                "start__hidden",
+                this.startSlottedItems.length < 1
+            );
+        }
+    }
+    public startContainer: HTMLSpanElement;
+
+    /**
+     * the elements in the end slot.
+     */
+    @observable endSlottedItems: HTMLElement[];
+    protected endSlottedItemsChanged(): void {
+        if (this.$fastController.isConnected) {
+            this.buildFocusableElements();
+            this.endContainer.classList.toggle(
+                "end__hidden",
+                this.endSlottedItems.length < 1
+            );
+        }
+    }
+    public endContainer: HTMLSpanElement;
 
     /**
      * The elements in the label slot.
@@ -121,7 +144,7 @@ export class Toolbar extends FoundationElement {
     public slottedLabel: HTMLElement[];
 
     /**
-     * Set the activeIndex when a focusable element in the toolbar's content is clicked.
+     * Set the activeIndex when a focusable element in the toolbar is clicked.
      *
      * @internal
      */
@@ -143,7 +166,7 @@ export class Toolbar extends FoundationElement {
     }
 
     /**
-     * When the toolbar's content receives focus, set the currently active element as focused.
+     * When the toolbar receives focus, set the currently active element as focused.
      *
      * @internal
      */
@@ -172,7 +195,7 @@ export class Toolbar extends FoundationElement {
     }
 
     /**
-     * Handle keyboard events for the toolbar's content.
+     * Handle keyboard events for the toolbar.
      *
      * @internal
      */
@@ -196,6 +219,26 @@ export class Toolbar extends FoundationElement {
         this.setFocusedElement(nextIndex);
 
         return true;
+    }
+
+    /**
+     * get all the slotted elements
+     */
+    protected getAllSlottedItems(): HTMLElement[] {
+        return [...this.startSlottedItems, ...this.slottedItems, ...this.endSlottedItems];
+    }
+
+    /**
+     * Prepare the slotted elements which can be focusable.
+     *
+     * @internal
+     */
+    protected buildFocusableElements(): void {
+        this.focusableElements = this.getAllSlottedItems().reduce(
+            Toolbar.reduceFocusableItems,
+            []
+        );
+        this.setFocusableElements();
     }
 
     /**
@@ -298,5 +341,5 @@ applyMixins(DelegatesARIAToolbar, ARIAGlobalStatesAndProperties);
 /**
  * @internal
  */
-export interface Toolbar extends StartEnd, DelegatesARIAToolbar {}
-applyMixins(Toolbar, StartEnd, DelegatesARIAToolbar);
+export interface Toolbar extends DelegatesARIAToolbar {}
+applyMixins(Toolbar, DelegatesARIAToolbar);

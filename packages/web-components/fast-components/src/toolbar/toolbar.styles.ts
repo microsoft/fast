@@ -49,13 +49,7 @@ export const toolbarStyles: (
             justify-content: flex-start;
         }
 
-        .content {
-            display: inline-flex;
-            flex-flow: row wrap;
-        }
-
-        :host([orientation="vertical"]) .positioning-region,
-        :host([orientation="vertical"]) .content {
+        :host([orientation="vertical"]) .positioning-region {
             flex-direction: column;
         }
 
@@ -73,6 +67,11 @@ export const toolbarStyles: (
             display: flex;
             margin: auto;
             margin-inline: 0;
+        }
+
+        .start__hidden,
+        .end__hidden {
+            display: none;
         }
 
         ::slotted(svg) {

@@ -97,6 +97,30 @@
         <fast-option>Option 3</fast-option>
     </fast-select>
     <fast-checkbox>Checkbox</fast-checkbox>
+    <fast-radio-group slot="end">
+        <fast-radio value="filter">Filter</fast-radio>
+        <fast-radio value="search">
+            <fast-text-field placeholder="Search"></fast-text-field>
+        </fast-radio>
+    </fast-radio-group>
+    <svg slot="end"><use href="#icon" /></svg>
+</fast-toolbar>
+<h2>Fast Components w/ Width</h2>
+<fast-toolbar id="toolbar-fast-components" style="width: 800px;">
+    <fast-button>Button</fast-button>
+    <fast-radio-group>
+        <fast-radio checked>One</fast-radio>
+        <fast-radio>Two</fast-radio>
+        <fast-radio>Three</fast-radio>
+    </fast-radio-group>
+    <fast-button>Button</fast-button>
+    <fast-radio-group slot="end">
+        <fast-radio value="filter">Filter</fast-radio>
+        <fast-radio value="search">
+            <fast-text-field placeholder="Search"></fast-text-field>
+        </fast-radio>
+    </fast-radio-group>
+    <svg slot="end"><use href="#icon" /></svg>
 </fast-toolbar>
 
 <h2>Disabled Elements</h2>

@@ -17,6 +17,10 @@ async function setup() {
     FASTToolbar()
   );
 
+  const startButton = document.createElement("button");
+  startButton.textContent = "startButton";
+  startButton.slot="start";
+
   const control1 = document.createElement("button");
   control1.textContent = "control1";
 
@@ -26,6 +30,7 @@ async function setup() {
   const control3 = document.createElement("button");
   control3.textContent = "control3";
 
+  element.appendChild(control1);
   element.appendChild(control1);
   element.appendChild(control2);
   element.appendChild(control3);
@@ -60,6 +65,7 @@ describe("Toolbar", () => {
     await connect();
 
     element.focus();
+    console.log(document.activeElement);
 
     expect(document.activeElement?.textContent).to.equal("control1");
 
