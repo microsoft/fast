@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-tooling
 
-This log was last generated on Wed, 21 Jul 2021 07:14:48 GMT and should not be manually modified.
+This log was last generated on Thu, 22 Jul 2021 07:19:53 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.25.2
+
+Thu, 22 Jul 2021 07:19:53 GMT
+
+### Patches
+
+- Bump @microsoft/fast-components to v2.4.0 (chhol@microsoft.com)
 
 ## 0.25.1
 
