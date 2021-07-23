@@ -32,7 +32,6 @@ import {
     Dimension,
     DirectionSwitch,
     Editor,
-    fastComponentExtendedSchemas,
     Logo,
     nativeElementExtendedSchemas,
     textSchema,
@@ -57,9 +56,10 @@ import {
     StandardLuminance,
     SwatchRGB,
 } from "@microsoft/fast-components";
+import { LinkedDataActionType } from "@microsoft/fast-tooling-react/dist/form/templates/types";
 import { CreatorState, FormId, NavigationId, ProjectFile } from "./creator.props";
 import { elementLibraries, elementLibraryContents } from "./configs";
-import { divTag } from "./configs/library.native.tags";
+import { divTag } from "./configs/native/library.native.tags";
 import { ProjectFileTransfer } from "./components";
 import { previewReady } from "./preview/preview";
 import { Footer } from "./site-footer";
@@ -71,7 +71,7 @@ import {
     renderPreviewSwitch,
 } from "./web-components";
 import { Device } from "./web-components/devices";
-import fastDesignTokensSchema from "./configs/library.fast.design-tokens.schema.json";
+import fastDesignTokensSchema from "./configs/fast/library.fast.design-tokens.schema.json";
 import {
     creatorOriginatorId,
     CustomMessageSystemActions,
@@ -208,6 +208,7 @@ class Creator extends Editor<{}, CreatorState> {
                 },
                 defaultElementDataId,
             ],
+            schemaDictionary: nativeElementExtendedSchemas,
             transparentBackground: false,
             lastMappedDataDictionaryToMonacoEditorHTMLValue: "",
             displayMode: DisplayMode.interactive,
@@ -425,7 +426,10 @@ class Creator extends Editor<{}, CreatorState> {
         return (e: ControlOnChangeConfig): void => {
             Object.entries(elementLibraryContents).forEach(
                 ([elementLibraryId, schemaIds]: [string, string[]]) => {
-                    if (schemaIds.includes(e.value[0].schemaId)) {
+                    if (
+                        e.linkedDataAction === LinkedDataActionType.add &&
+                        schemaIds.includes(e.value[0].schemaId)
+                    ) {
                         onChange({
                             ...e,
                             value:
@@ -434,6 +438,8 @@ class Creator extends Editor<{}, CreatorState> {
                                         .componentDictionary[e.value[0].schemaId].example,
                                 ] || e.value,
                         });
+                    } else if (e.linkedDataAction === LinkedDataActionType.remove) {
+                        onChange(e);
                     }
                 }
             );
@@ -505,6 +511,10 @@ class Creator extends Editor<{}, CreatorState> {
             if (!e.data.options || e.data.options.originatorId !== monacoAdapterId) {
                 this.updateEditorContent(e.data.dataDictionary);
             }
+        }
+
+        if (e.data.type === MessageSystemType.schemaDictionary) {
+            updatedState.schemaDictionary = e.data.schemaDictionary;
         }
 
         this.setState(updatedState as CreatorState);

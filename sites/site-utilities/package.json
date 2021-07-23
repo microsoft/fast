@@ -57,6 +57,7 @@
     "vscode-web-custom-data": "^0.3.1"
   },
   "dependencies": {
+    "@fluentui/web-components": "^1.2.3",
     "@microsoft/fast-components": "^2.4.0",
     "@microsoft/fast-foundation": "^2.5.2",
     "@microsoft/fast-tooling": "^0.25.2",

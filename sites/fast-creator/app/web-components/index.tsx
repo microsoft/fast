@@ -305,6 +305,7 @@ export function renderNavigationTabs(
                         flexDirection: "column",
                         alignItems: "flex-start",
                         padding: "10px",
+                        rowGap: "10px",
                     }}
                 >
                     {Object.values(elementLibraries).map(elementLibrary => {

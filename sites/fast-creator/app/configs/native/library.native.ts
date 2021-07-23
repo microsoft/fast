@@ -1,5 +1,5 @@
 import { nativeElementSchemas } from "@microsoft/site-utilities";
-import { NativeElementLibraryDefinition } from "./typings";
+import { NativeElementLibraryDefinition } from "../typings";
 import {
     divExample,
     heading1Example,

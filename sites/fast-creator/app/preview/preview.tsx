@@ -16,13 +16,12 @@ import FASTMessageSystemWorker from "@microsoft/fast-tooling/dist/message-system
 import { ViewerCustomAction } from "@microsoft/fast-tooling-react";
 import {
     fastComponentDefinitions,
+    fluentUIComponentDefinitions,
     nativeElementDefinitions,
 } from "@microsoft/site-utilities";
 import { classNames, Direction } from "@microsoft/fast-web-utilities";
-import {
-    mapFASTComponentsDesignSystem,
-    setupFASTComponentDesignSystem,
-} from "../configs/library.fast.design-system.mapping";
+import { mapFASTComponentsDesignSystem } from "../configs/fast/library.fast.design-system.mapping";
+import { mapFluentUIComponentsDesignSystem } from "../configs/fluent-ui/library.fluent-ui.design-system.mapping";
 import { elementLibraries } from "../configs";
 import {
     creatorOriginatorId,
@@ -77,8 +76,6 @@ class Preview extends Foundation<{}, {}, PreviewState> {
             htmlRenderReady: false,
             displayMode: DisplayMode.interactive,
         };
-
-        setupFASTComponentDesignSystem(document.body);
 
         this.state.htmlRenderMessageSystem.add({
             onMessage: this.handleHtmlMessageSystem,
@@ -143,6 +140,7 @@ class Preview extends Foundation<{}, {}, PreviewState> {
                 .renderRef as any).messageSystem = this.state.htmlRenderMessageSystem;
             (this.renderRef.current.renderRef as any).markupDefinitions = {
                 ...fastComponentDefinitions,
+                ...fluentUIComponentDefinitions,
                 ...nativeElementDefinitions,
             };
             this.setState({ htmlRenderReady: true });
@@ -155,6 +153,11 @@ class Preview extends Foundation<{}, {}, PreviewState> {
                     .data as any)
             ) {
                 mapFASTComponentsDesignSystem(
+                    document.body,
+                    this.state.designSystemDataDictionary[0][designTokensLinkedDataId]
+                        .data as any
+                );
+                mapFluentUIComponentsDesignSystem(
                     document.body,
                     this.state.designSystemDataDictionary[0][designTokensLinkedDataId]
                         .data as any
