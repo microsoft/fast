@@ -5,20 +5,27 @@ import * as Generator from "yeoman-generator";
 import { Options } from "../commands/generate";
 
 class ComponentGenerator extends Generator {
+    pjson!: any
+
     constructor(args: any, public options: Options) {
         super(args, options);
+        this.pjson = this.fs.readJSON(this.destinationPath('package.json'), {});
     }
 
     async prompting(): Promise<void> {
+        this.log(this.pjson.namespace);
         this.log(path.join(__dirname, "../../templates"));
     }
 
     writing(): void {
         this.sourceRoot(path.join(__dirname, "../../templates/component"));
+
+        const namespace = this.pjson.namespace
+
         const componentPath = this.destinationPath(
             `src/${this.options.name}/${this.options.name}.ts`
         );
-        const opts = { ...this.options, _, type: "component", path: componentPath };
+        const opts = { ...this.options, _, type: "component", path: componentPath, namespace };
 
         this.fs.copyTpl(
             this.templatePath("_component.stories.ts.ejs"),

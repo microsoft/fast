@@ -1,6 +1,7 @@
 {
   "name": "my-project",
   "version": "1.0.0",
+  "namespace": "/* @echo namespace */",
   "author": "author",
   "license": "MIT",
   "devDependencies": {

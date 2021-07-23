@@ -1,5 +1,5 @@
 import { create } from "@storybook/theming/create";
 
 export default create({
-    brandTitle: "FAST components storybook",
+    brandTitle: "/* @echo name */ components storybook",
 });
