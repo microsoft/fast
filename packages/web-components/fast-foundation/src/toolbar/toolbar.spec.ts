@@ -30,7 +30,7 @@ async function setup() {
   const control3 = document.createElement("button");
   control3.textContent = "control3";
 
-  element.appendChild(control1);
+  element.appendChild(startButton);
   element.appendChild(control1);
   element.appendChild(control2);
   element.appendChild(control3);
@@ -59,15 +59,14 @@ describe("Toolbar", () => {
     await disconnect();
   });
 
-  it("should move focus to its first control when it receives focus", async () => {
+  it("should move focus to its first focusable element when it receives focus, and then to next focusable element on arrow right keypress", async () => {
     const { element, connect, disconnect, document } = await setup();
 
     await connect();
 
     element.focus();
-    console.log(document.activeElement);
 
-    expect(document.activeElement?.textContent).to.equal("control1");
+    expect(document.activeElement?.textContent).to.equal("startButton");
 
     await disconnect();
   });
