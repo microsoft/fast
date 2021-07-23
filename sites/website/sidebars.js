@@ -21,6 +21,7 @@ module.exports = {
                     items: [
                         "components/accordion",
                         "components/anchor",
+                        "components/anchored-region",
                         "components/badge",
                         "components/breadcrumb",
                         "components/breadcrumb-item",
