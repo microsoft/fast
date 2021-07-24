@@ -7,31 +7,66 @@ custom_edit_url: https://github.com/microsoft/fast/edit/master/packages/web-comp
 
 An implementation of a [checkbox](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/Input/checkbox) as a form-connected web-component.
 
+## Setup
+
+### Basic Setup
+
+```ts
+import {
+    provideFASTDesignSystem,
+    fastCheckbox
+} from "@microsoft/fast-components";
+
+provideFASTDesignSystem()
+    .register(
+        fastCheckbox()
+    );
+```
+
+### Customizing Indicators
+
+```ts
+import {
+    provideFASTDesignSystem,
+    fastCheckbox
+} from "@microsoft/fast-components";
+
+provideFASTDesignSystem()
+    .register(
+        fastCheckbox({
+            checkedIndicator: `...your checked indicator...`,
+            indeterminateIndicator: `...your indeterminate indicator...`,
+        })
+    );
+```
+
 ## Usage
 
 ```html live
-<fast-design-system-provider use-defaults>
-    <fieldset>
-        <legend>Fruits</legend>
-        <fast-checkbox checked>Apple</fast-checkbox>
-        <fast-checkbox checked>Banana</fast-checkbox>
-        <fast-checkbox>Honeydew</fast-checkbox>
-        <fast-checkbox checked>Mango</fast-checkbox>
-    </fieldset>
-</fast-design-system-provider>
+<fieldset>
+    <legend>Fruits</legend>
+    <fast-checkbox checked>Apple</fast-checkbox>
+    <fast-checkbox checked>Banana</fast-checkbox>
+    <fast-checkbox>Honeydew</fast-checkbox>
+    <fast-checkbox checked>Mango</fast-checkbox>
+</fieldset>
 ```
 
-## Applying custom styles
+## Create your own design system
 
 ```ts
-import { customElement } from "@microsoft/fast-element";
-import { Checkbox, CheckboxTemplate as template } from "@microsoft/fast-foundation";
-import { CheckboxStyles as styles } from "./checkbox.styles";
+import {
+    Checkbox,
+    CheckboxOptions,
+    checkboxTemplate as template,
+} from "@microsoft/fast-foundation";
+import { checkboxStyles as styles } from "./my-checkbox.styles";
 
-@customElement({
-    name: "fast-checkbox",
+export const myCheckbox = Checkbox.compose<CheckboxOptions>({
+    baseName: "checkbox",
     template,
     styles,
-})
-export class FASTCheckbox extends Checkbox {}
+    checkedIndicator: `...default checked indicator...`,
+    indeterminateIndicator: `...default indeterminate indicator...`,
+});
 ```
