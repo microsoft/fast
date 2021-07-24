@@ -2,6 +2,7 @@ import { attr, DOM, FASTElement, observable } from "@microsoft/fast-element";
 import { Direction, keyCodeEscape } from "@microsoft/fast-web-utilities";
 import type {
     AnchoredRegion,
+    AutoUpdateMode,
     AxisPositioningMode,
     AxisScalingMode,
 } from "../anchored-region";
@@ -76,6 +77,17 @@ export class Tooltip extends FoundationElement {
             this.updateLayout();
         }
     }
+
+    /**
+     * Controls when the tooltip updates its position, default is 'anchor' which only updates when
+     * the anchor is resized.  'auto' will update on scroll/resize events.
+     * Corresponds to anchored-region auto-update-mode.
+     * @public
+     * @remarks
+     * HTML Attribute: auto-update-mode
+     */
+    @attr({ attribute: "auto-update-mode" })
+    public autoUpdateMode: AutoUpdateMode = "anchor";
 
     /**
      * the html element currently being used as anchor.
