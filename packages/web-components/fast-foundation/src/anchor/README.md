@@ -31,7 +31,7 @@ provideFASTDesignSystem()
 <fast-anchor href="https://fast.design" appearance="hypertext">FAST</fast-anchor>
 ```
 
-## Your own design system
+## Create your own design system
 
 ```ts
 import {

@@ -93,7 +93,7 @@ While the `shape` attribute lets you choose between `circle` (default) or `squar
 </fast-avatar>
 ```
 
-## Your own design system
+## Create your own design system
 
 ```ts
 import {
@@ -113,6 +113,10 @@ export const myAvatar = Avatar.compose<AvatarOptions>({
     },
 });
 ```
+
+:::note
+This component is built with the expectation that focus is delegated to the anchor element rendered into the shadow DOM.
+:::
 
 ## Additional resources
 

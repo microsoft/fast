@@ -65,9 +65,9 @@ provideFASTDesignSystem()
 </fast-accordion>
 ```
 
-## Your own design system
+## Create your own design system
 
-### fast-accordion
+### Accordion
 
 ```ts
 import { Accordion, accordionTemplate as template } from "@microsoft/fast-foundation";
@@ -80,7 +80,7 @@ export const myAccordion = Accordion.compose({
 });
 ```
 
-### fast-accordion-item
+### AccordionItem
 
 ```ts
 import {
