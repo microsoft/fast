@@ -28,6 +28,7 @@ module.exports = {
                         "components/button",
                         "components/card",
                         "components/checkbox",
+                        "components/combobox",
                         "components/data-grid",
                         "components/dialog",
                         "components/divider",
