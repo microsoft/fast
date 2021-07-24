@@ -5,13 +5,26 @@ sidebar_label: skeleton
 custom_edit_url: https://github.com/microsoft/fast/edit/master/packages/web-components/fast-foundation/src/skeleton/README.md
 ---
 
-The `skeleton` component is used as a placeholder for another component that is in a loading state.
+The `skeleton` component is used as a visual placeholder for an element while it is in a loading state and usually presents itself as a simplified wireframe-like version of the UI it is representing.
+
+## Setup
+
+```ts
+import {
+    provideFASTDesignSystem,
+    fastSkeleton
+} from "@microsoft/fast-components";
+
+provideFASTDesignSystem()
+    .register(
+        fastSkeleton()
+    );
+```
 
 ## Usage
 
-A URL for an image asset may be passed to the `pattern` attribute. In this mode, the `fast-skeleton` component is used as a container for a transparent SVG that may express a more complex placeholder
+### Basic Usage
 
-_Example:_
 ```html
 <fast-skeleton
     style="
@@ -24,9 +37,27 @@ _Example:_
 ></fast-skeleton>
 ```
 
+### Pattern
+
+A URL for an image asset may be passed to the `pattern` attribute. In this mode, the `fast-skeleton` component is used as a container for a transparent SVG that may express a more complex placeholder
+
+```html
+<fast-skeleton
+    style="
+        --neutral-fill-rest: #e1dfdd;
+        border-radius: 4px;
+        width: 500px;
+        height: 250px;
+    "
+    shape="rect"
+    pattern="https://static.fast.design/assets/skeleton-test-pattern.svg"
+></fast-skeleton>
+```
+
+### Shimmer
+
 The `shimmer` boolean attribute will activate the component's shimmer effect.
 
-_Example:_
 ```html
 <fast-skeleton
     style="
@@ -41,9 +72,10 @@ _Example:_
 ></fast-skeleton>
 ```
 
+### Custom SVG
+
 An inline SVG can also be inserted into the slot of the `fast-skeleton`.
 
-_Example:_
 ```html
 <fast-skeleton
     style="
@@ -82,9 +114,9 @@ _Example:_
 </fast-skeleton>
 ```
 
-## Customization
+### Further Customizations
 
-
+The following CSS variables can be used to customize the appearance.
 
 | CSS Variable                  | Expected value  |
 |-------------------------------|-----------------|
@@ -92,3 +124,20 @@ _Example:_
 |`--skeleton-animation-fill`    | Color           |
 |`--skeleton-animation-gradient`| Linear gradient |
 |`--skeleton-animation-timing`  | Easing function |
+
+## Create your own design
+
+```ts
+import { Skeleton, skeletonTemplate as template } from "@microsoft/fast-foundation";
+import { skeletonStyles as styles } from "./my-skeleton.styles";
+
+export const mySkeleton = Skeleton.compose({
+    baseName: "skeleton",
+    template,
+    styles,
+});
+```
+
+## Additional resources
+
+View the full specification for number-field along with additional configuration options [here](https://github.com/microsoft/fast/blob/master/packages/web-components/fast-foundation/src/skeleton/skeleton.spec.md)
