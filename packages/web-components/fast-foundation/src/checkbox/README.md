@@ -70,3 +70,7 @@ export const myCheckbox = Checkbox.compose<CheckboxOptions>({
     indeterminateIndicator: `...default indeterminate indicator...`,
 });
 ```
+
+## Additional resources
+
+View the full specification for checkbox along with additional configuration options [here](https://github.com/microsoft/fast/blob/master/packages/web-components/fast-foundation/src/checkbox/checkbox.spec.md)
