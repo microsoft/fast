@@ -34,6 +34,7 @@ module.exports = {
                         "components/disclosure",
                         "components/divider",
                         "components/flipper",
+                        "components/horizontal-scroll",
                         "components/listbox",
                         "components/listbox-option",
                         "components/menu",
