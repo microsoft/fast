@@ -82,6 +82,7 @@ import {
     previewOriginatorId,
     rootOriginatorId,
 } from "./utilities";
+import { fluentUIComponentId } from "./configs/fluent-ui";
 
 DesignSystem.getOrCreate().register(
     fastBadge(),
@@ -478,6 +479,7 @@ class Creator extends Editor<{}, CreatorState> {
                 } as CustomMessageIncomingOutgoing<any>);
                 updatedState.previewReady = true;
                 this.updateEditorContent(this.state.dataDictionary);
+                this.handleLibraryAdded(fluentUIComponentId);
             } else if (e.data.value) {
                 this.fastMessageSystem.postMessage({
                     type: MessageSystemType.navigation,
