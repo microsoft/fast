@@ -40,7 +40,7 @@ document.getElementById("samplegrid").rowsData = [
 ]; 
 ```
 
-## Create your own design system
+## Create your own design
 
 ### DataGridCell
 

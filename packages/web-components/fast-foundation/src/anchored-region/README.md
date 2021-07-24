@@ -39,7 +39,7 @@ A region that always renders above the anchor element.
 </div>
 ```
 
-## Create your own design system
+## Create your own design
 
 ```ts
 import {

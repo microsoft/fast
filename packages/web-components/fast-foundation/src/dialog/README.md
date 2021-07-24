@@ -35,7 +35,7 @@ provideFASTDesignSystem()
 </fast-dialog>
 ```
 
-## Create your own design system
+## Create your own design
 
 ```ts
 import { Dialog, dialogTemplate as template } from "@microsoft/fast-foundation";

@@ -42,7 +42,7 @@ fast-badge {
 In addition to the color map support detailed above, the `fast-badge` from the Microsoft component implementation (`@fluentui/web-components`) includes an attribute to set default appearances which ensure WCAG 2.1 AA contrast requirements.
 :::
 
-## Create your own design system
+## Create your own design
 
 ```ts
 import { Badge, badgeTemplate as template } from "@microsoft/fast-foundation";

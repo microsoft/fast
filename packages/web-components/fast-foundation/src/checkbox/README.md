@@ -52,7 +52,7 @@ provideFASTDesignSystem()
 </fieldset>
 ```
 
-## Create your own design system
+## Create your own design
 
 ```ts
 import {

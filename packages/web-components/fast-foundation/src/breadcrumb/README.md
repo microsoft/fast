@@ -53,7 +53,7 @@ provideFASTDesignSystem()
 </fast-breadcrumb>
 ```
 
-## Create your own design system
+## Create your own design
 
 ### Breadcrumb
 

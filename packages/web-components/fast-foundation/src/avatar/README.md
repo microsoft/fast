@@ -93,7 +93,7 @@ While the `shape` attribute lets you choose between `circle` (default) or `squar
 </fast-avatar>
 ```
 
-## Create your own design system
+## Create your own design
 
 ```ts
 import {

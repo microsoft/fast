@@ -31,6 +31,7 @@ module.exports = {
                         "components/combobox",
                         "components/data-grid",
                         "components/dialog",
+                        "components/disclosure",
                         "components/divider",
                         "components/flipper",
                         "components/listbox",

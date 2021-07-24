@@ -65,7 +65,7 @@ provideFASTDesignSystem()
 </fast-accordion>
 ```
 
-## Create your own design system
+## Create your own design
 
 ### Accordion
 

@@ -27,7 +27,7 @@ provideFASTDesignSystem()
 <fast-button appearance="primary">Submit</fast-button>
 ```
 
-## Create your own design system
+## Create your own design
 
 ```ts
 import {

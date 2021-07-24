@@ -31,7 +31,7 @@ provideFASTDesignSystem()
 </fast-card>
 ```
 
-## Create your own design system
+## Create your own design
 
 ```ts
 import {
