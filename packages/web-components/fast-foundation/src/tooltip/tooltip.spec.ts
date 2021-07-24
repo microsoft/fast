@@ -90,13 +90,13 @@ describe("Tooltip", () => {
         await disconnect();
     });
 
-    it("should set update mode to 'auto' by default", async () => {
+    it("should set update mode to 'anchor' by default", async () => {
         const { element, connect, disconnect } = await setup();
-        const tooltip: FASTTooltip = element.querySelector("fast-tooltip") as FASTTooltip;
+        const tooltip: Tooltip = element;
 
         await connect();
 
-        expect(tooltip.autoUpdateMode).to.equal("auto");
+        expect(tooltip.autoUpdateMode).to.equal("anchor");
 
         await disconnect();
     });

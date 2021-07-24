@@ -79,14 +79,15 @@ export class Tooltip extends FoundationElement {
     }
 
     /**
-     * Controls when the tooltip updates its position, default is auto.
+     * Controls when the tooltip updates its position, default is 'anchor' which only updates when
+     * the anchor is resized.  'auto' will update on scroll/resize events.
      * Corresponds to anchored-region auto-update-mode.
      * @public
      * @remarks
      * HTML Attribute: auto-update-mode
      */
     @attr({ attribute: "auto-update-mode" })
-    public autoUpdateMode: AutoUpdateMode = "auto";
+    public autoUpdateMode: AutoUpdateMode = "anchor";
 
     /**
      * the html element currently being used as anchor.
