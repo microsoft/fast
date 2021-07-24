@@ -7,25 +7,62 @@ custom_edit_url: https://github.com/microsoft/fast/edit/master/packages/web-comp
 
 An implementation of a [radio](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/radio) as a form-connected web-component.
 
+## Setup
+
+### Basic Setup
+
+```ts
+import {
+    provideFASTDesignSystem,
+    fastRadio
+} from "@microsoft/fast-components";
+
+provideFASTDesignSystem()
+    .register(
+        fastRadio()
+    );
+```
+
+### Customizing the indicator
+
+```ts
+import {
+    provideFASTDesignSystem,
+    fastRadio
+} from "@microsoft/fast-components";
+
+provideFASTDesignSystem()
+    .register(
+        fastRadio({
+            checkedIndicator: `...your checked indicator...`
+        })
+    );
+```
+
 ## Usage
 
 ```html live
-<fast-design-system-provider use-defaults>
-    <fast-radio value="mango" required>Mango</fast-radio>
-</fast-design-system-provider>
+<fast-radio value="mango" required>Mango</fast-radio>
  ```
 
-## Applying custom styles
+## Create your own design
 
 ```ts
-import { customElement } from "@microsoft/fast-element";
-import { Radio, RadioTemplate as template } from "@microsoft/fast-foundation";
-import { RadioStyles as styles } from "./radio.styles";
+import {
+    Radio,
+    RadioOptions,
+    radioTemplate as template,
+} from "@microsoft/fast-foundation";
+import { radioStyles as styles } from "./my-radio.styles";
 
-@customElement({
-    name: "fast-radio",
+export const myRadio = Radio.compose<RadioOptions>({
+    baseName: "radio",
     template,
     styles,
-})
-export class FASTRadio extends Radio {}
+    checkedIndicator: `...default checked indicator...`,
+});
 ```
+
+## Additional resources
+
+View the full specification for radio along with additional configuration options [here](https://github.com/microsoft/fast/blob/master/packages/web-components/fast-foundation/src/radio/radio.spec.md)
