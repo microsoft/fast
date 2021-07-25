@@ -2,6 +2,168 @@
   "name": "@microsoft/fast-tooling-react",
   "entries": [
     {
+      "date": "Sun, 25 Jul 2021 07:17:41 GMT",
+      "tag": "@microsoft/fast-tooling-react_v2.9.6",
+      "version": "2.9.6",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-tooling to v0.25.3",
+            "author": "scomea@microsoft.com",
+            "commit": "9f6e61d3b45af6da0430677f9d437ff7ba0cdae9",
+            "package": "@microsoft/fast-tooling-react"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 22 Jul 2021 07:19:53 GMT",
+      "tag": "@microsoft/fast-tooling-react_v2.9.5",
+      "version": "2.9.5",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-tooling to v0.25.2",
+            "author": "chhol@microsoft.com",
+            "commit": "f184db3753b62b900e734f929c48703e2540815f",
+            "package": "@microsoft/fast-tooling-react"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 21 Jul 2021 07:14:48 GMT",
+      "tag": "@microsoft/fast-tooling-react_v2.9.4",
+      "version": "2.9.4",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-tooling to v0.25.1",
+            "author": "roeisenb@microsoft.com",
+            "commit": "b3359293e9b5763cd9eb9f26906ae475b22ce978",
+            "package": "@microsoft/fast-tooling-react"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sun, 18 Jul 2021 07:16:22 GMT",
+      "tag": "@microsoft/fast-tooling-react_v2.9.3",
+      "version": "2.9.3",
+      "comments": {
+        "none": [
+          {
+            "comment": "fix issue with jest testing when exporting web components from fast-tooling package",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "bc681d48fb43349f8d0808f44cc6b8e2d1011461",
+            "package": "@microsoft/fast-tooling-react"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-tooling to v0.25.0",
+            "author": "ben@platform5.ch",
+            "commit": "442a9ef1012dba49179fad629e4ba8aab312d8a7",
+            "package": "@microsoft/fast-tooling-react"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 15 Jul 2021 01:41:48 GMT",
+      "tag": "@microsoft/fast-tooling-react_v2.9.2",
+      "version": "2.9.2",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-tooling to v0.24.2",
+            "author": "chhol@microsoft.com",
+            "commit": "35773aadf50b51e3d64dd8969398d2c473d437ed",
+            "package": "@microsoft/fast-tooling-react"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 14 Jul 2021 07:15:36 GMT",
+      "tag": "@microsoft/fast-tooling-react_v2.9.1",
+      "version": "2.9.1",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-tooling to v0.24.1",
+            "author": "44823142+williamw2@users.noreply.github.com",
+            "commit": "7f99c89ec67ef8d73de887e2ca5817a6e5ca561f",
+            "package": "@microsoft/fast-tooling-react"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 13 Jul 2021 07:14:52 GMT",
+      "tag": "@microsoft/fast-tooling-react_v2.9.0",
+      "version": "2.9.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "update the monaco adapter, html render and html render layer and react Form to update their stored schema dictionaries when the schema dictionary has new schemas added to it",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "826c8db2f28ba1df818c45e62cfeabebabd2d6e9",
+            "package": "@microsoft/fast-tooling-react"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-components to v2.2.1",
+            "author": "ben@platform5.ch",
+            "commit": "76cb8ab887a58d1d5990359e08131407a3c607ba",
+            "package": "@microsoft/fast-tooling-react"
+          },
+          {
+            "comment": "Bump @microsoft/fast-tooling to v0.24.0",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "826c8db2f28ba1df818c45e62cfeabebabd2d6e9",
+            "package": "@microsoft/fast-tooling-react"
+          },
+          {
+            "comment": "Bump @microsoft/fast-foundation to v2.4.0",
+            "author": "roeisenb@microsoft.com",
+            "commit": "3a9f152446a1a9e0afd6fd84c808eba46839aeeb",
+            "package": "@microsoft/fast-tooling-react"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sun, 11 Jul 2021 07:15:10 GMT",
+      "tag": "@microsoft/fast-tooling-react_v2.8.26",
+      "version": "2.8.26",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Adding support for preview mode styles to the viewer",
+            "author": "44823142+williamw2@users.noreply.github.com",
+            "commit": "34a67ea50ef4f538614b30d5248e63e908e9a95d",
+            "package": "@microsoft/fast-tooling-react"
+          }
+        ],
+        "none": [
+          {
+            "comment": "Bump @microsoft/fast-components to v2.2.0",
+            "author": "john.kreitlow@microsoft.com",
+            "commit": "d2694b4992c3787447597882397f588d701933a9",
+            "package": "@microsoft/fast-tooling-react"
+          },
+          {
+            "comment": "Bump @microsoft/fast-tooling to v0.23.7",
+            "author": "44823142+williamw2@users.noreply.github.com",
+            "commit": "34a67ea50ef4f538614b30d5248e63e908e9a95d",
+            "package": "@microsoft/fast-tooling-react"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 07 Jul 2021 07:19:51 GMT",
       "tag": "@microsoft/fast-tooling-react_v2.8.25",
       "version": "2.8.25",

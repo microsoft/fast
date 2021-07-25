@@ -1,6 +1,11 @@
 import { fastComponentSchemas, textSchema } from "@microsoft/site-utilities";
 import { uniqueId } from "lodash-es";
 import {
+    heading2Example,
+    imageExample,
+    paragraphExample,
+} from "../native/library.native.examples";
+import {
     fastAnchorTag,
     fastBadgeTag,
     fastButtonTag,
@@ -24,11 +29,6 @@ import {
     fastTextAreaTag,
     fastTextFieldTag,
 } from "./library.fast.tags";
-import {
-    heading2Example,
-    imageExample,
-    paragraphExample,
-} from "./library.native.examples";
 
 export const fastAnchorExample = {
     schemaId: fastComponentSchemas[fastAnchorTag].id,
@@ -109,6 +109,13 @@ export const fastCheckboxExample = {
     schemaId: fastComponentSchemas[fastCheckboxTag].id,
     data: {},
     dataLocation: "Slot",
+    linkedData: [
+        {
+            schemaId: textSchema.id,
+            data: "Lorem ipsum",
+            dataLocation: "Slot",
+        },
+    ],
 };
 export const fastDialogExample = {
     schemaId: fastComponentSchemas[fastDialogTag].id,

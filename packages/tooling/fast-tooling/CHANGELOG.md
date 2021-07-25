@@ -1,8 +1,82 @@
 # Change Log - @microsoft/fast-tooling
 
-This log was last generated on Wed, 07 Jul 2021 07:19:51 GMT and should not be manually modified.
+This log was last generated on Sun, 25 Jul 2021 07:17:41 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.25.3
+
+Sun, 25 Jul 2021 07:17:41 GMT
+
+### Patches
+
+- Bump @microsoft/fast-components to v2.5.0 (scomea@microsoft.com)
+
+## 0.25.2
+
+Thu, 22 Jul 2021 07:19:53 GMT
+
+### Patches
+
+- Bump @microsoft/fast-components to v2.4.0 (chhol@microsoft.com)
+
+## 0.25.1
+
+Wed, 21 Jul 2021 07:14:48 GMT
+
+### Patches
+
+- Bump @microsoft/fast-components to v2.3.0 (roeisenb@microsoft.com)
+
+## 0.25.0
+
+Sun, 18 Jul 2021 07:16:22 GMT
+
+### Minor changes
+
+- update the exporting of services and web components in tooling and match the new pathing in sites (7559015+janechu@users.noreply.github.com)
+
+### Patches
+
+- Bump @microsoft/fast-components to v2.2.3 (ben@platform5.ch)
+
+## 0.24.2
+
+Thu, 15 Jul 2021 01:41:48 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.5.0 (chhol@microsoft.com)
+
+## 0.24.1
+
+Wed, 14 Jul 2021 07:15:36 GMT
+
+### Patches
+
+- fix: spelling issue in HTML render layer (44823142+williamw2@users.noreply.github.com)
+
+## 0.24.0
+
+Tue, 13 Jul 2021 07:14:52 GMT
+
+### Minor changes
+
+- update the monaco adapter, html render and html render layer and react Form to update their stored schema dictionaries when the schema dictionary has new schemas added to it (7559015+janechu@users.noreply.github.com)
+- new schemas can be added to the schema dictionary in the MessageSystem (7559015+janechu@users.noreply.github.com)
+
+### Patches
+
+- Bump @microsoft/fast-components to v2.2.1 (ben@platform5.ch)
+- Bump @microsoft/fast-foundation to v2.4.0 (roeisenb@microsoft.com)
+
+## 0.23.7
+
+Sun, 11 Jul 2021 07:15:10 GMT
+
+### Patches
+
+- Adding support for preview mode interaction logic to HTMLRender (44823142+williamw2@users.noreply.github.com)
 
 ## 0.23.6
 

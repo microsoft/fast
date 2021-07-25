@@ -22,6 +22,9 @@ const styles: ComponentStyles<ViewerClassNameContract, {}> = (): ComponentStyleS
             height: "100%",
             boxShadow: "0 0 22px rgba(0,0,0,0.22), 0 2px 5px rgba(0,0,0,0.18)",
         },
+        viewer_contentRegion__preview: {
+            borderRadius: "0",
+        },
         viewer_iframe: {
             borderRadius: "4px",
             border: "none",

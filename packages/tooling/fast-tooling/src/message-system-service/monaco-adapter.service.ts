@@ -4,7 +4,6 @@ import {
     SchemaDictionary,
 } from "../message-system";
 import { DataDictionary } from "../message-system";
-import { LinkedData, Parent } from "../";
 import { mapVSCodeHTMLAndDataDictionaryToDataDictionary } from "../data-utilities/mapping.vscode-html-languageservice";
 import { mapDataDictionaryToMonacoEditorHTML } from "../data-utilities/monaco";
 import {
@@ -15,80 +14,24 @@ import {
     MonacoAdapterAction,
     MonacoAdapterActionCallbackConfig,
 } from "./monaco-adapter.service-action";
+import {
+    findDictionaryIdParents,
+    findUpdatedDictionaryId,
+} from "./monaco-adapter.service.utilities";
 
 export type actionCallback = () => void;
 
-export interface ExtendedParent extends Parent {
-    /**
-     * The current dictionary ID this parent refers to
-     */
-    currentId: string;
-
-    /**
-     * The linked data index in the parent
-     */
-    linkedDataIndex: number;
-}
-
+/**
+ * @alpha
+ */
 export const monacoAdapterId: string = "fast-tooling::monaco-adapter-service";
 
-export function findDictionaryIdParents(
-    dictionaryId: string,
-    dataDictionary: DataDictionary<unknown>,
-    parents: ExtendedParent[] = []
-): ExtendedParent[] {
-    if (
-        dataDictionary[0][dictionaryId] &&
-        dataDictionary[0][dictionaryId].parent &&
-        dataDictionary[0][dictionaryId].parent.id
-    ) {
-        const parent = dataDictionary[0][dictionaryId].parent;
-
-        parents.unshift({
-            ...parent,
-            currentId: dictionaryId,
-            linkedDataIndex: dataDictionary[0][parent.id].data[
-                parent.dataLocation
-            ].findIndex((dictionaryItem: LinkedData) => {
-                return dictionaryItem.id === dictionaryId;
-            }),
-        });
-
-        findDictionaryIdParents(parent.id, dataDictionary, parents);
-    }
-
-    return parents;
-}
-
-export function findUpdatedDictionaryId(
-    parents: ExtendedParent[],
-    dataDictionary: DataDictionary<unknown>,
-    dictionaryId: string = dataDictionary[1]
-): string {
-    if (parents.length === 0) {
-        return dictionaryId;
-    }
-
-    const dataLocation = parents[0].dataLocation;
-    const linkedDataIndex = parents[0].linkedDataIndex;
-
-    if (
-        !dataDictionary[0][dictionaryId].data ||
-        !dataDictionary[0][dictionaryId].data[dataLocation] ||
-        !dataDictionary[0][dictionaryId].data[dataLocation][linkedDataIndex] ||
-        typeof dataDictionary[0][dictionaryId].data[dataLocation][linkedDataIndex].id !==
-            "string"
-    ) {
-        return dictionaryId;
-    }
-
-    const newDictionaryId =
-        dataDictionary[0][dictionaryId].data[dataLocation][linkedDataIndex].id;
-    parents.shift();
-
-    return findUpdatedDictionaryId(parents, dataDictionary, newDictionaryId);
-}
-
+/**
+ *
+ * @alpha
+ * @remarks
+ * A MessageSystemService for the Monaco Editor.
+ */
 export class MonacoAdapter extends MessageSystemService<
     MonacoAdapterActionCallbackConfig,
     {}
@@ -131,6 +74,9 @@ export class MonacoAdapter extends MessageSystemService<
                 break;
             case MessageSystemType.navigation:
                 this.dictionaryId = e.data.activeDictionaryId;
+                break;
+            case MessageSystemType.schemaDictionary:
+                this.schemaDictionary = e.data.schemaDictionary;
                 break;
         }
     };
@@ -217,3 +163,5 @@ export class MonacoAdapter extends MessageSystemService<
         }
     };
 }
+
+export { MonacoAdapterAction, MonacoAdapterActionCallbackConfig };

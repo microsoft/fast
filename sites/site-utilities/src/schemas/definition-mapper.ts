@@ -3,13 +3,17 @@ import { WebComponentDefinition } from "@microsoft/fast-tooling/dist/esm/data-ut
 import * as fastComponentDefinitions from "@microsoft/fast-components/dist/esm/component-definitions";
 import {
     fastComponentExtendedDefinitions,
+    fluentUIComponentDefinitions,
+    fluentUIComponentExtendedDefinitions,
     nativeElementDefinitions,
     nativeElementExtendedDefinitions,
 } from "../definitions";
 
 const fastComponentSchemas: { [key: string]: any } = {};
+const fluentUIComponentSchemas: { [key: string]: any } = {};
 const nativeElementSchemas: { [key: string]: any } = {};
 const fastComponentExtendedSchemas: { [key: string]: any } = {};
+const fluentUIComponentExtendedSchemas: { [key: string]: any } = {};
 const nativeElementExtendedSchemas: { [key: string]: any } = {};
 
 function mapToJSONSchemas(
@@ -29,8 +33,10 @@ function mapToJSONSchemas(
 }
 
 mapToJSONSchemas(fastComponentDefinitions, fastComponentSchemas);
+mapToJSONSchemas(fluentUIComponentDefinitions, fluentUIComponentSchemas);
 mapToJSONSchemas(nativeElementDefinitions, nativeElementSchemas);
 mapToJSONSchemas(fastComponentExtendedDefinitions, fastComponentExtendedSchemas);
+mapToJSONSchemas(fluentUIComponentExtendedDefinitions, fluentUIComponentExtendedSchemas);
 mapToJSONSchemas(nativeElementExtendedDefinitions, nativeElementExtendedSchemas);
 
 /**
@@ -57,7 +63,9 @@ Object.entries(nativeElementExtendedSchemas).forEach(([schemaKey]: [string, any]
 
 export {
     fastComponentSchemas,
+    fluentUIComponentSchemas,
     nativeElementSchemas,
     fastComponentExtendedSchemas,
+    fluentUIComponentExtendedSchemas,
     nativeElementExtendedSchemas,
 };

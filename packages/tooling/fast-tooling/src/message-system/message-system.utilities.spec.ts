@@ -4,6 +4,8 @@ import { linkedDataSchema } from "../schemas";
 import {
     AddDataMessageOutgoing,
     AddLinkedDataDataMessageOutgoing,
+    AddSchemaDictionaryMessageIncoming,
+    AddSchemaDictionaryMessageOutgoing,
     DuplicateDataMessageOutgoing,
     GetDataDictionaryMessageIncoming,
     GetDataDictionaryMessageOutgoing,
@@ -18,6 +20,7 @@ import {
     MessageSystemHistoryTypeAction,
     MessageSystemNavigationDictionaryTypeAction,
     MessageSystemNavigationTypeAction,
+    MessageSystemSchemaDictionaryTypeAction,
     MessageSystemValidationTypeAction,
     NavigationMessageOutgoing,
     RemoveDataMessageOutgoing,
@@ -1134,6 +1137,49 @@ describe("getMessage", () => {
             expect(updateNavigationDictionaryActiveId.activeDictionaryId).to.equal(
                 "nav2"
             );
+        });
+    });
+    describe("schemaDictionary", () => {
+        it("should add schemas to the schema dictionary", () => {
+            const dataBlob: DataDictionary<unknown> = [
+                {
+                    data: {
+                        schemaId: "foo",
+                        data: {
+                            foo: "bar",
+                        },
+                    },
+                },
+                "data",
+            ];
+            const schemaDictionary: SchemaDictionary = {
+                foo: { $id: "foo" },
+            };
+            getMessage({
+                type: MessageSystemType.initialize,
+                data: dataBlob,
+                schemaDictionary,
+            });
+
+            const addedSchemaDictionary: AddSchemaDictionaryMessageOutgoing = getMessage({
+                type: MessageSystemType.schemaDictionary,
+                action: MessageSystemSchemaDictionaryTypeAction.add,
+                schemas: [
+                    {
+                        $id: "bar",
+                        type: "string",
+                    },
+                ],
+            } as AddSchemaDictionaryMessageIncoming) as AddSchemaDictionaryMessageOutgoing;
+
+            expect(addedSchemaDictionary.type).to.equal(
+                MessageSystemType.schemaDictionary
+            );
+            expect(addedSchemaDictionary.action).to.equal(
+                MessageSystemSchemaDictionaryTypeAction.add
+            );
+            expect(addedSchemaDictionary.schemaDictionary.bar).not.to.be.undefined;
+            expect(addedSchemaDictionary.schemaDictionary.foo).not.to.be.undefined;
         });
     });
     describe("validation", () => {

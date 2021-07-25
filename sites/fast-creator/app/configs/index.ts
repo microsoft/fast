@@ -1,9 +1,11 @@
-import { fastComponentLibrary } from "./library.fast";
-import { nativeElementLibrary } from "./library.native";
+import { fastComponentLibrary } from "./fast";
+import { fluentUIComponentLibrary } from "./fluent-ui";
+import { nativeElementLibrary } from "./native";
 import { ElementLibraryDefinition } from "./typings";
 
 const elementLibraries: { [key: string]: ElementLibraryDefinition } = {
     [fastComponentLibrary.id]: fastComponentLibrary,
+    [fluentUIComponentLibrary.id]: fluentUIComponentLibrary,
     [nativeElementLibrary.id]: nativeElementLibrary,
 };
 

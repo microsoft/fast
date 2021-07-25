@@ -63,7 +63,7 @@ export const accordionItemTemplate: (context: ElementDefinitionContext, definiti
 // @public
 export const accordionTemplate: (context: ElementDefinitionContext, definition: FoundationElementDefinition) => ViewTemplate<Accordion>;
 
-// @alpha (undocumented)
+// @public
 export const all: (key: any, searchAncestors?: boolean | undefined) => ReturnType<typeof DI.inject>;
 
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
@@ -103,25 +103,27 @@ export class AnchoredRegion extends FoundationElement {
     fixedPlacement: boolean;
     horizontalDefaultPosition: HorizontalPosition;
     horizontalInset: boolean;
-    // Warning: (ae-forgotten-export) The symbol "AnchoredRegionHorizontalPositionLabel" needs to be exported by the entry point index.d.ts
-    horizontalPosition: AnchoredRegionHorizontalPositionLabel;
+    horizontalPosition: AnchoredRegionPositionLabel | undefined;
     horizontalPositioningMode: AxisPositioningMode;
     horizontalScaling: AxisScalingMode;
     horizontalThreshold: number;
+    horizontalViewportLock: boolean;
     // @internal
     initialLayoutComplete: boolean;
     update: () => void;
-    updateAnchorOffset: (horizontalOffsetDelta: number, verticalOffsetDelta: number) => void;
     verticalDefaultPosition: VerticalPosition;
     verticalInset: boolean;
-    // Warning: (ae-forgotten-export) The symbol "AnchoredRegionVerticalPositionLabel" needs to be exported by the entry point index.d.ts
-    verticalPosition: AnchoredRegionVerticalPositionLabel;
+    verticalPosition: AnchoredRegionPositionLabel | undefined;
     verticalPositioningMode: AxisPositioningMode;
     verticalScaling: AxisScalingMode;
     verticalThreshold: number;
+    verticalViewportLock: boolean;
     viewport: string;
     viewportElement: HTMLElement | null;
     }
+
+// @beta
+export type AnchoredRegionPositionLabel = "start" | "insetStart" | "insetEnd" | "end";
 
 // @beta
 export const anchoredRegionTemplate: (context: ElementDefinitionContext, definition: FoundationElementDefinition) => ViewTemplate<AnchoredRegion>;
@@ -416,43 +418,35 @@ export function composedParent<T extends HTMLElement>(element: T): HTMLElement |
 // @alpha
 export type ConstructableFormAssociated = Constructable<HTMLElement & FASTElement>;
 
-// @alpha (undocumented)
+// @public
 export interface Container extends ServiceLocator {
-    // (undocumented)
     createChild(config?: Partial<Omit<ContainerConfiguration, "parentLocator">>): Container;
-    // (undocumented)
     getFactory<T extends Constructable>(key: T): Factory<T>;
-    // (undocumented)
     getResolver<K extends Key, T = K>(key: K | Key, autoRegister?: boolean): Resolver<T> | null;
-    // (undocumented)
     register(...params: any[]): Container;
-    // (undocumented)
     registerFactory<T extends Constructable>(key: T, factory: Factory<T>): void;
-    // (undocumented)
-    registerResolver<K extends Key, T = K>(key: K, resolver: Resolver<T>, isDisposable?: boolean): Resolver<T>;
-    // (undocumented)
+    registerResolver<K extends Key, T = K>(key: K, resolver: Resolver<T>): Resolver<T>;
     registerTransformer<K extends Key, T = K>(key: K, transformer: Transformer_2<T>): boolean;
 }
 
-// @alpha (undocumented)
+// @public
 export const Container: InterfaceSymbol<Container>;
 
-// @alpha (undocumented)
+// @public
 export interface ContainerConfiguration {
-    // (undocumented)
     defaultResolver(key: Key, handler: Container): Resolver;
-    // (undocumented)
     parentLocator: ParentLocator;
-    // (undocumented)
     responsibleForOwnerRequests: boolean;
 }
 
-// @alpha (undocumented)
+// @public
 export const ContainerConfiguration: Readonly<{
     default: Readonly<ContainerConfiguration>;
 }>;
 
-// @alpha (undocumented)
+// Warning: (ae-internal-missing-underscore) The name "ContainerImpl" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal (undocumented)
 export class ContainerImpl implements Container {
     constructor(owner: any, config: ContainerConfiguration);
     // (undocumented)
@@ -491,9 +485,9 @@ export class ContainerImpl implements Container {
 export type ContextualElementDefinition = Omit<PartialFASTElementDefinition, "name">;
 
 // @public
-export interface CSSDesignToken<T extends string | number | boolean | BigInteger | null | Array<any> | symbol | {
+export interface CSSDesignToken<T extends string | number | boolean | BigInteger | null | Array<any> | symbol | ({
     createCSS?(): string;
-}> extends DesignToken<T>, CSSDirective {
+} & Record<PropertyKey, any>)> extends DesignToken<T>, CSSDirective {
     readonly cssCustomProperty: string;
 }
 
@@ -623,7 +617,7 @@ export class DefaultComponentPresentation implements ComponentPresentation {
     readonly template: ElementViewTemplate | null;
 }
 
-// @alpha (undocumented)
+// @public
 export const DefaultResolver: Readonly<{
     none(key: Key): Resolver;
     singleton(key: Key): Resolver;
@@ -742,8 +736,6 @@ export interface DesignSystemRegistrationContext {
     tryDefineElement(name: string, type: Constructable, callback: ElementDefinitionCallback): any;
 }
 
-// Warning: (ae-incompatible-release-tags) The symbol "DesignSystemRegistrationContext" is marked as @public, but its signature references "InterfaceSymbol" which is marked as @alpha
-//
 // @public
 export const DesignSystemRegistrationContext: InterfaceSymbol<DesignSystemRegistrationContext>;
 
@@ -785,12 +777,12 @@ export interface DesignTokenSubscriber<T extends DesignToken<any>> {
 // @public
 export type DesignTokenValue<T> = StaticDesignTokenValue<T> | DerivedDesignTokenValue<T>;
 
-// @alpha (undocumented)
+// @public
 export const DI: Readonly<{
     createContainer(config?: Partial<ContainerConfiguration> | undefined): Container;
-    findResponsibleContainer(element: HTMLElement): Container;
-    findParentContainer(element: HTMLElement): Container;
-    getOrCreateDOMContainer(element?: HTMLElement, config?: Partial<Pick<ContainerConfiguration, "responsibleForOwnerRequests" | "defaultResolver">> | undefined): Container;
+    findResponsibleContainer(node: Node): Container;
+    findParentContainer(node: Node): Container;
+    getOrCreateDOMContainer(node?: Node, config?: Partial<Pick<ContainerConfiguration, "responsibleForOwnerRequests" | "defaultResolver">> | undefined): Container;
     getDesignParamtypes: (Type: Constructable | Injectable) => readonly Key[] | undefined;
     getAnnotationParamtypes: (Type: Constructable | Injectable) => readonly Key[] | undefined;
     getOrCreateAnnotationParamTypes(Type: Constructable | Injectable): Key[];
@@ -865,18 +857,11 @@ export enum DividerRole {
 // @public
 export const dividerTemplate: (context: ElementDefinitionContext, definition: FoundationElementDefinition) => ViewTemplate<Divider>;
 
-// @alpha (undocumented)
-export interface DOMParentLocatorEventDetail {
-    // (undocumented)
-    container: Container | void;
-}
-
 // @public
 export type ElementDefinitionCallback = (ctx: ElementDefinitionContext) => void;
 
 // @public
 export interface ElementDefinitionContext {
-    // Warning: (ae-incompatible-release-tags) The symbol "container" is marked as @public, but its signature references "Container" which is marked as @alpha
     readonly container: Container;
     defineElement(definition?: ContextualElementDefinition): void;
     definePresentation(presentation: ComponentPresentation): void;
@@ -893,13 +878,10 @@ export type ElementDisambiguationCallback = (nameAttempt: string, typeAttempt: C
 // @public
 export const endTemplate: ViewTemplate<StartEnd>;
 
-// @alpha (undocumented)
+// @public
 export interface Factory<T extends Constructable = any> {
-    // (undocumented)
     construct(container: Container, dynamicDependencies?: Key[]): Resolved<T>;
-    // (undocumented)
     registerTransformer(transformer: Transformer_2<T>): void;
-    // (undocumented)
     readonly Type: T;
 }
 
@@ -1110,33 +1092,25 @@ export const horizontalScrollTemplate: (context: ElementDefinitionContext, defin
 // @public
 export type HorizontalScrollView = "default" | "mobile";
 
-// @alpha
+// @public
 export function ignore(target: Injectable, property?: string | number, descriptor?: PropertyDescriptor | number): void;
 
-// @alpha (undocumented)
+// @public
 export const inject: (...dependencies: Key[]) => (target: any, key?: string | number | undefined, descriptor?: number | PropertyDescriptor | undefined) => void;
 
-// @alpha (undocumented)
+// @public
 export type Injectable<T = {}> = Constructable<T> & {
     inject?: Key[];
 };
 
-// @alpha (undocumented)
+// @public
 export interface InterfaceConfiguration {
     friendlyName?: string;
     respectConnection?: boolean;
 }
 
-// @alpha (undocumented)
+// @public
 export type InterfaceSymbol<K = any> = (target: any, property: string, index?: number) => void;
-
-// @alpha (undocumented)
-export interface Invoker<T extends Constructable = any> {
-    // (undocumented)
-    invoke(container: Container, fn: T, dependencies: Key[]): Resolved<T>;
-    // (undocumented)
-    invokeWithDynamicDependencies(container: Container, fn: T, staticDependencies: Key[], dynamicDependencies: Key[]): Resolved<T>;
-}
 
 // @public
 export function isListboxOption(el: Element): el is ListboxOption;
@@ -1144,10 +1118,10 @@ export function isListboxOption(el: Element): el is ListboxOption;
 // @public
 export function isTreeItemElement(el: Element): el is HTMLElement;
 
-// @alpha (undocumented)
+// @public
 export type Key = PropertyKey | object | InterfaceSymbol | Constructable | Resolver;
 
-// @alpha
+// @public
 export const lazy: (key: any) => any;
 
 // @public
@@ -1371,10 +1345,10 @@ export const menuItemTemplate: (context: ElementDefinitionContext, definition: M
 // @public
 export const menuTemplate: (context: ElementDefinitionContext, definition: FoundationElementDefinition) => ViewTemplate<Menu>;
 
-// @alpha (undocumented)
+// @public
 export const newInstanceForScope: (key: any) => any;
 
-// @alpha (undocumented)
+// @public
 export const newInstanceOf: (key: any) => any;
 
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
@@ -1427,7 +1401,7 @@ export type NumberFieldOptions = FoundationElementDefinition & {
 // @public
 export const numberFieldTemplate: (context: ElementDefinitionContext, definition: NumberFieldOptions) => ViewTemplate<NumberField>;
 
-// @alpha
+// @public
 export const optional: (key: any) => any;
 
 // @public
@@ -1435,7 +1409,7 @@ export type OverrideFoundationElementDefinition<T extends FoundationElementDefin
     prefix?: string;
 };
 
-// @alpha (undocumented)
+// @public
 export type ParentLocator = (owner: any) => Container | null;
 
 // @public
@@ -1533,19 +1507,18 @@ export type RadioOptions = FoundationElementDefinition & {
 // @public
 export const radioTemplate: (context: ElementDefinitionContext, definition: RadioOptions) => ViewTemplate<Radio>;
 
-// @alpha (undocumented)
+// @public
 export type RegisterSelf<T extends Constructable> = {
     register(container: Container): Resolver<InstanceType<T>>;
     registerInRequestor: boolean;
 };
 
-// @alpha (undocumented)
+// @public
 export interface Registration<K = any> {
-    // (undocumented)
     register(container: Container, key?: Key): Resolver<K>;
 }
 
-// @alpha
+// @public
 export const Registration: Readonly<{
     instance<T>(key: Key, value: T): Registration<T>;
     singleton<T_1 extends Constructable<{}>>(key: Key, value: T_1): Registration<InstanceType<T_1>>;
@@ -1555,38 +1528,31 @@ export const Registration: Readonly<{
     aliasTo<T_5>(originalKey: T_5, aliasKey: Key): Registration<Resolved<T_5>>;
 }>;
 
-// @alpha (undocumented)
+// @public
 export interface Registry {
-    // (undocumented)
-    register(container: Container, ...params: unknown[]): void | Resolver | Container;
+    register(container: Container, ...params: unknown[]): void | Resolver;
 }
 
-// @alpha (undocumented)
+// @public
 export type ResolveCallback<T = any> = (handler: Container, requestor: Container, resolver: Resolver<T>) => T;
 
 // Warning: (ae-forgotten-export) The symbol "ResolverLike" needs to be exported by the entry point index.d.ts
 //
-// @alpha (undocumented)
+// @public
 export type Resolved<K> = K extends InterfaceSymbol<infer T> ? T : K extends Constructable ? InstanceType<K> : K extends ResolverLike<any, infer T1> ? T1 extends Constructable ? InstanceType<T1> : T1 : K;
 
-// @alpha (undocumented)
+// @public
 export interface Resolver<K = any> extends ResolverLike<Container, K> {
 }
 
-// @alpha (undocumented)
+// @public
 export class ResolverBuilder<K> {
     constructor(container: Container, key: Key);
-    // (undocumented)
     aliasTo(destinationKey: Key): Resolver<K>;
-    // (undocumented)
     cachedCallback(value: ResolveCallback<K>): Resolver<K>;
-    // (undocumented)
     callback(value: ResolveCallback<K>): Resolver<K>;
-    // (undocumented)
     instance(value: K): Resolver<K>;
-    // (undocumented)
     singleton(value: Constructable): Resolver<K>;
-    // (undocumented)
     transient(value: Constructable): Resolver<K>;
 }
 
@@ -1695,36 +1661,29 @@ export enum SelectRole {
 // @public
 export const selectTemplate: (context: ElementDefinitionContext, definition: SelectOptions) => ViewTemplate<Select>;
 
-// @alpha (undocumented)
+// @public
 export interface ServiceLocator {
-    // (undocumented)
     get<K extends Key>(key: K): Resolved<K>;
-    // (undocumented)
     get<K extends Key>(key: Key): Resolved<K>;
-    // (undocumented)
     get<K extends Key>(key: K | Key): Resolved<K>;
-    // (undocumented)
     getAll<K extends Key>(key: K, searchAncestors?: boolean): readonly Resolved<K>[];
-    // (undocumented)
     getAll<K extends Key>(key: Key, searchAncestors?: boolean): readonly Resolved<K>[];
-    // (undocumented)
     getAll<K extends Key>(key: K | Key, searchAncestors?: boolean): readonly Resolved<K>[];
-    // (undocumented)
     has<K extends Key>(key: K | Key, searchAncestors: boolean): boolean;
 }
 
-// @alpha (undocumented)
+// @public
 export const ServiceLocator: InterfaceSymbol<ServiceLocator>;
 
 // Warning: (ae-forgotten-export) The symbol "singletonDecorator" needs to be exported by the entry point index.d.ts
 //
-// @alpha
+// @public
 export function singleton<T extends Constructable>(): typeof singletonDecorator;
 
-// @alpha (undocumented)
+// @public (undocumented)
 export function singleton<T extends Constructable>(options?: SingletonOptions): typeof singletonDecorator;
 
-// @alpha
+// @public
 export function singleton<T extends Constructable>(target: T & Partial<RegisterSelf<T>>): T & RegisterSelf<T>;
 
 // @public
@@ -2085,6 +2044,8 @@ export const toolbarTemplate: (context: ElementDefinitionContext, definition: Fo
 export class Tooltip extends FoundationElement {
     anchor: string;
     anchorElement: HTMLElement | null;
+    // Warning: (ae-incompatible-release-tags) The symbol "autoUpdateMode" is marked as @public, but its signature references "AutoUpdateMode" which is marked as @beta
+    autoUpdateMode: AutoUpdateMode;
     // (undocumented)
     connectedCallback(): void;
     // @internal
@@ -2133,17 +2094,17 @@ export enum TooltipPosition {
 // @public
 export const tooltipTemplate: (context: ElementDefinitionContext, definition: FoundationElementDefinition) => ViewTemplate;
 
-// @alpha (undocumented)
+// @public
 type Transformer_2<K> = (instance: Resolved<K>) => Resolved<K>;
 
 export { Transformer_2 as Transformer }
 
 // Warning: (ae-forgotten-export) The symbol "transientDecorator" needs to be exported by the entry point index.d.ts
 //
-// @alpha
+// @public
 export function transient<T extends Constructable>(): typeof transientDecorator;
 
-// @alpha
+// @public
 export function transient<T extends Constructable>(target: T & Partial<RegisterSelf<T>>): T & RegisterSelf<T>;
 
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
@@ -2231,9 +2192,8 @@ export function whitespaceFilter(value: Node, index: number, array: Node[]): boo
 
 // Warnings were encountered during analysis:
 //
-// dist/dts/design-system/component-presentation.d.ts:27:5 - (ae-incompatible-release-tags) The symbol "define" is marked as @public, but its signature references "Container" which is marked as @alpha
 // dist/dts/design-token/design-token.d.ts:91:5 - (ae-forgotten-export) The symbol "create" needs to be exported by the entry point index.d.ts
-// dist/dts/di/di.d.ts:204:5 - (ae-forgotten-export) The symbol "SingletonOptions" needs to be exported by the entry point index.d.ts
+// dist/dts/di/di.d.ts:506:5 - (ae-forgotten-export) The symbol "SingletonOptions" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
 

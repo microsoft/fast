@@ -1,8 +1,49 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Wed, 07 Jul 2021 07:19:51 GMT and should not be manually modified.
+This log was last generated on Sun, 25 Jul 2021 07:17:41 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.6.0
+
+Sun, 25 Jul 2021 07:17:41 GMT
+
+### Minor changes
+
+- add auto position tracking to tooltip (scomea@microsoft.com)
+- anchored region uses transform (scomea@microsoft.com)
+
+## 2.5.2
+
+Thu, 22 Jul 2021 07:19:53 GMT
+
+### Patches
+
+- Fixed attr boolean mode on menu item (47367562+bheston@users.noreply.github.com)
+
+## 2.5.1
+
+Wed, 21 Jul 2021 07:14:48 GMT
+
+### Patches
+
+- Hide step-up and step-down for number-field when readonly (robarb@microsoft.com)
+
+## 2.5.0
+
+Thu, 15 Jul 2021 01:41:48 GMT
+
+### Minor changes
+
+- extend design token type signature (chhol@microsoft.com)
+
+## 2.4.0
+
+Tue, 13 Jul 2021 07:14:52 GMT
+
+### Minor changes
+
+- docs(di): make API public, stabilize, and add docs (roeisenb@microsoft.com)
 
 ## 2.3.0
 

@@ -1,8 +1,72 @@
 # Change Log - @microsoft/fast-components
 
-This log was last generated on Wed, 07 Jul 2021 07:19:51 GMT and should not be manually modified.
+This log was last generated on Sun, 25 Jul 2021 07:17:41 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.5.0
+
+Sun, 25 Jul 2021 07:17:41 GMT
+
+### Minor changes
+
+- add auto position tracking to tooltip (scomea@microsoft.com)
+- anchored region uses transform (scomea@microsoft.com)
+
+### Patches
+
+- add layouts for 0 indent submenus (scomea@microsoft.com)
+- Bump @microsoft/fast-foundation to v2.6.0 (scomea@microsoft.com)
+
+## 2.4.0
+
+Thu, 22 Jul 2021 07:19:53 GMT
+
+### Minor changes
+
+- update component styles to leverage context.tagFor() for nested element styles (chhol@microsoft.com)
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.5.2 (47367562+bheston@users.noreply.github.com)
+
+## 2.3.0
+
+Wed, 21 Jul 2021 07:14:48 GMT
+
+### Minor changes
+
+- feat(fast-design-system): improve ergonomics of the fast design system (roeisenb@microsoft.com)
+
+### Patches
+
+- Hide step-up and step-down for number-field when readonly (robarb@microsoft.com)
+- Bump @microsoft/fast-foundation to v2.5.1 (robarb@microsoft.com)
+
+## 2.2.3
+
+Sun, 18 Jul 2021 07:16:22 GMT
+
+### Patches
+
+- breadcrumb: allow wrapping of items in the list container (ben@platform5.ch)
+
+## 2.2.2
+
+Thu, 15 Jul 2021 01:41:48 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.5.0 (chhol@microsoft.com)
+
+## 2.2.1
+
+Tue, 13 Jul 2021 07:14:52 GMT
+
+### Patches
+
+- text-field: start/end display flex (ben@platform5.ch)
+- fix: export tooltipStyles (derekdon@protonmail.com)
 
 ## 2.2.0
 
