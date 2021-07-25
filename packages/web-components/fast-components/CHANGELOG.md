@@ -1,8 +1,22 @@
 # Change Log - @microsoft/fast-components
 
-This log was last generated on Thu, 22 Jul 2021 07:19:53 GMT and should not be manually modified.
+This log was last generated on Sun, 25 Jul 2021 07:17:41 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.5.0
+
+Sun, 25 Jul 2021 07:17:41 GMT
+
+### Minor changes
+
+- add auto position tracking to tooltip (scomea@microsoft.com)
+- anchored region uses transform (scomea@microsoft.com)
+
+### Patches
+
+- add layouts for 0 indent submenus (scomea@microsoft.com)
+- Bump @microsoft/fast-foundation to v2.6.0 (scomea@microsoft.com)
 
 ## 2.4.0
 
