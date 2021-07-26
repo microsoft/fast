@@ -31,6 +31,8 @@ export const tooltipTemplate: (
                 horizontal-default-position="${x => x.horizontalDefaultPosition}"
                 horizontal-scaling="${x => x.horizontalScaling}"
                 horizontal-inset="${x => x.horizontalInset}"
+                vertical-viewport-lock="${x => x.horizontalViewportLock}"
+                horizontal-viewport-lock="${x => x.verticalViewportLock}"
                 dir="${x => x.currentDirection}"
                 ${ref("region")}
             >
