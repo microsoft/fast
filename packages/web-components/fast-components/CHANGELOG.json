@@ -2,6 +2,41 @@
   "name": "@microsoft/fast-components",
   "entries": [
     {
+      "date": "Sun, 25 Jul 2021 07:17:41 GMT",
+      "tag": "@microsoft/fast-components_v2.5.0",
+      "version": "2.5.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "add auto position tracking to tooltip",
+            "author": "scomea@microsoft.com",
+            "commit": "9f6e61d3b45af6da0430677f9d437ff7ba0cdae9",
+            "package": "@microsoft/fast-components"
+          },
+          {
+            "comment": "anchored region uses transform",
+            "author": "scomea@microsoft.com",
+            "commit": "4dd29d77f026b51c4031bf19acf494d1768a2611",
+            "package": "@microsoft/fast-components"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "add layouts for 0 indent submenus",
+            "author": "scomea@microsoft.com",
+            "commit": "3f9be338b60a37bca9a07d1e110f755cd675c982",
+            "package": "@microsoft/fast-components"
+          },
+          {
+            "comment": "Bump @microsoft/fast-foundation to v2.6.0",
+            "author": "scomea@microsoft.com",
+            "commit": "9f6e61d3b45af6da0430677f9d437ff7ba0cdae9",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 22 Jul 2021 07:19:53 GMT",
       "tag": "@microsoft/fast-components_v2.4.0",
       "version": "2.4.0",

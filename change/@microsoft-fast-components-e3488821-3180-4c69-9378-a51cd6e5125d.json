@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "add layouts for 0 indent submenus",
-  "packageName": "@microsoft/fast-components",
-  "email": "scomea@microsoft.com",
-  "dependentChangeType": "patch"
-}

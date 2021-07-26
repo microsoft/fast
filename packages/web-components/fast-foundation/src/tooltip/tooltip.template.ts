@@ -22,6 +22,7 @@ export const tooltipTemplate: (
             html<Tooltip>`
             <${context.tagFor(AnchoredRegion)}
                 fixed-placement="true"
+                auto-update-mode="${x => x.autoUpdateMode}"
                 vertical-positioning-mode="${x => x.verticalPositioningMode}"
                 vertical-default-position="${x => x.verticalDefaultPosition}"
                 vertical-inset="${x => x.verticalInset}"
