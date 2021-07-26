@@ -75,4 +75,5 @@ export const myFlipper = Flipper.compose<FlipperOptions>({
 
 ## Additional resources
 
-View the full specification for flipper along with additional configuration options [here](https://github.com/microsoft/fast/blob/master/packages/web-components/fast-foundation/src/flipper/flipper.spec.md)
+* [Component explorer examples](https://explore.fast.design/components/fast-flipper)
+* [Component technical specification](https://github.com/microsoft/fast/blob/master/packages/web-components/fast-foundation/src/flipper/flipper.spec.md)

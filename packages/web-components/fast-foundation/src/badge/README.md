@@ -57,4 +57,6 @@ export const myBadge = Badge.compose({
 
 ## Additional resources
 
-View the full specification for badge along with additional configuration options [here](https://github.com/microsoft/fast/blob/master/packages/web-components/fast-foundation/src/badge/badge.spec.md)
+* [Component explorer examples](https://explore.fast.design/components/fast-badge)
+* [Component technical specification](https://github.com/microsoft/fast/blob/master/packages/web-components/fast-foundation/src/badge/badge.spec.md)
+* [Open UI Analysis](https://open-ui.org/components/badge.research)

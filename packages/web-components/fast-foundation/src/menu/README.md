@@ -134,4 +134,6 @@ export const myMenuItem = MenuItem.compose<MenuItemOptions>({
 
 ## Additional resources
 
-View the full specification for menu along with additional configuration options [here](https://github.com/microsoft/fast/blob/master/packages/web-components/fast-foundation/src/menu/menu.spec.md)
+* [Component explorer examples](https://explore.fast.design/components/fast-menu)
+* [Component technical specification](https://github.com/microsoft/fast/blob/master/packages/web-components/fast-foundation/src/menu/menu.spec.md)
+* [W3C Component Aria Practices](https://w3c.github.io/aria-practices/#menu)

@@ -65,4 +65,7 @@ export const myRadio = Radio.compose<RadioOptions>({
 
 ## Additional resources
 
-View the full specification for radio along with additional configuration options [here](https://github.com/microsoft/fast/blob/master/packages/web-components/fast-foundation/src/radio/radio.spec.md)
+* [Component explorer examples](https://explore.fast.design/components/fast-radio)
+* [Component technical specification](https://github.com/microsoft/fast/blob/master/packages/web-components/fast-foundation/src/radio/radio.spec.md)
+* [W3C Component Aria Practices](https://www.w3.org/TR/wai-aria/#radio)
+* [Open UI Analysis](https://open-ui.org/components/radio-button.research)

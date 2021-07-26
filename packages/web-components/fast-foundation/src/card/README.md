@@ -49,4 +49,6 @@ export const myCard = Card.compose({
 
 ## Additional resources
 
-View the full specification for card along with additional configuration options [here](https://github.com/microsoft/fast/blob/master/packages/web-components/fast-foundation/src/card/card.spec.md)
+* [Component explorer examples](https://explore.fast.design/components/fast-card)
+* [Component technical specification](https://github.com/microsoft/fast/blob/master/packages/web-components/fast-foundation/src/card/card.spec.md)
+* [Open UI Analysis](https://open-ui.org/components/card.research)

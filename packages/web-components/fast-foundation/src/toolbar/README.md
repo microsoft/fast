@@ -82,4 +82,6 @@ export const myToolbar = Toolbar.compose({
 
 ## Additional resources
 
-View the full specification for toolbar along with additional configuration options [here](https://github.com/microsoft/fast/blob/master/packages/web-components/fast-foundation/src/toolbar/toolbar.spec.md)
+* [Component explorer examples](https://explore.fast.design/components/fast-toolbar)
+* [Component technical specification](https://github.com/microsoft/fast/blob/master/packages/web-components/fast-foundation/src/toolbar/toolbar.spec.md)
+* [W3C Component Aria Practices](https://w3c.github.io/aria-practices/#toolbar)

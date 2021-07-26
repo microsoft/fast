@@ -90,4 +90,6 @@ See [listbox-option](/docs/components/listbox-option) for more information.
 
 ## Additional resources
 
-View the full specification for combobox along with additional configuration options [here](https://github.com/microsoft/fast/tree/master/packages/web-components/fast-foundation/src/combobox)
+* [Component explorer examples](https://explore.fast.design/components/fast-combobox)
+* [Component technical specification](https://github.com/microsoft/fast/tree/master/packages/web-components/fast-foundation/src/combobox)
+* [W3C Component Aria Practices](https://w3c.github.io/aria-practices/#combobox)

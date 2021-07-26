@@ -108,4 +108,7 @@ export const mySliderLabel = SliderLabel.compose({
 
 ## Additional resources
 
-View the full specification for slider along with additional configuration options [here](https://github.com/microsoft/fast/blob/master/packages/web-components/fast-foundation/src/slider/slider.spec.md)
+* [Component explorer examples](https://explore.fast.design/components/fast-slider)
+* [Component technical specification](https://github.com/microsoft/fast/blob/master/packages/web-components/fast-foundation/src/slider/slider.spec.md)
+* [W3C Component Aria Practices](https://w3c.github.io/aria-practices/#slider)
+* [Open UI Analysis](https://open-ui.org/components/slider.research)

@@ -52,4 +52,5 @@ This component is built with the expectation that focus is delegated to the inpu
 
 ## Additional resources
 
-View the full specification for number-field along with additional configuration options [here](https://github.com/microsoft/fast/blob/master/packages/web-components/fast-foundation/src/text-area/text-area.spec.md)
+* [Component explorer examples](https://explore.fast.design/components/fast-text-area)
+* [Component technical specification](https://github.com/microsoft/fast/blob/master/packages/web-components/fast-foundation/src/text-area/text-area.spec.md)

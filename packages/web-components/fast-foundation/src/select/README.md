@@ -80,4 +80,8 @@ See [listbox-option](/docs/components/listbox-option) for more information.
 
 ## Additional resources
 
-View the full specification for select along with additional configuration options [here](https://github.com/microsoft/fast/blob/master/packages/web-components/fast-foundation/src/select/select.spec.md)
+* [Component explorer examples](https://explore.fast.design/components/fast-select)
+* [Component technical specification](https://github.com/microsoft/fast/blob/master/packages/web-components/fast-foundation/src/select/select.spec.md)
+* [W3C Component Aria Practices](https://www.w3.org/TR/wai-aria-practices-1.1/#Listbox)
+* [Open UI Analysis](https://open-ui.org/components/select.research)
+* [Open UI Proposal](https://open-ui.org/components/select)

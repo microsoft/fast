@@ -5,7 +5,9 @@ sidebar_label: breadcrumb
 custom_edit_url: https://github.com/microsoft/fast/edit/master/packages/web-components/fast-foundation/src/breadcrumb/README.md
 ---
 
-`fast-breadcrumb` is used as a navigational aid, allowing users to maintain awareness of their navigated path within a program, app, or a website.
+As defined by the [W3C](https://w3c.github.io/aria-practices/#breadcrumb):
+
+> A breadcrumb trail consists of a list of links to the parent pages of the current page in hierarchical order. It helps users find their place within a website or web application. Breadcrumbs are often placed horizontally before a page's main content.
 
 ## Setup
 
@@ -95,4 +97,9 @@ This component is built with the expectation that focus is delegated to the anch
 
 ## Additional resources
 
-View the full specification for breadcrumb along with additional configuration options [here](https://github.com/microsoft/fast/blob/master/packages/web-components/fast-foundation/src/breadcrumb/breadcrumb.spec.md)
+View the full specification for breadcrumb along with additional configuration options [here]()
+
+* [Component explorer examples](https://explore.fast.design/components/fast-breadcrumb)
+* [Component technical specification](https://github.com/microsoft/fast/blob/master/packages/web-components/fast-foundation/src/breadcrumb/breadcrumb.spec.md)
+* [W3C Component Aria Practices](https://w3c.github.io/aria-practices/#breadcrumb)
+* [Open UI Analysis](https://open-ui.org/components/Breadcrumb)

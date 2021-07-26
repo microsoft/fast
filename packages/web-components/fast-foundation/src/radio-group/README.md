@@ -54,4 +54,7 @@ export const myRadioGroup = RadioGroup.compose({
 
 ## Additional resources
 
-View the full specification for radio-group along with additional configuration options [here](https://github.com/microsoft/fast/blob/master/packages/web-components/fast-foundation/src/radio-group/radio-group.spec.md)
+* [Component explorer examples](https://explore.fast.design/components/fast-radio-group)
+* [Component technical specification](https://github.com/microsoft/fast/blob/master/packages/web-components/fast-foundation/src/radio-group/radio-group.spec.md)
+* [W3C Component Aria Practices](https://www.w3.org/TR/wai-aria/#radiogroup)
+* [Open UI Analysis](https://open-ui.org/components/radio-button.research)

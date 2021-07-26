@@ -94,4 +94,6 @@ export const myTreeView = TreeView.compose({
 
 ## Additional resources
 
-View the full specification for number-field along with additional configuration options [here](https://github.com/microsoft/fast/blob/master/packages/web-components/fast-foundation/src/tree-view/tree-view.spec.md)
+* [Component explorer examples](https://explore.fast.design/components/fast-tree-view)
+* [Component technical specification](https://github.com/microsoft/fast/blob/master/packages/web-components/fast-foundation/src/tree-view/tree-view.spec.md)
+* [W3C Component Aria Practices](https://www.w3.org/TR/wai-aria/#tree)

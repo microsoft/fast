@@ -103,4 +103,7 @@ export const myProgressRing = ProgressRing.compose<ProgressRingOptions>({
 
 ## Additional resources
 
-View the full specification for progress and progress-ring along with additional configuration options [here](https://github.com/microsoft/fast/blob/master/packages/web-components/fast-foundation/src/progress/progress.spec.md)
+* [Component explorer examples for `progress`](https://explore.fast.design/components/fast-progress)
+* [Component explorer examples for `progress-ring`](https://explore.fast.design/components/fast-progress-ring)
+* [Component technical specification](https://github.com/microsoft/fast/blob/master/packages/web-components/fast-foundation/src/progress/progress.spec.md)
+* [W3C Component Aria Practices](https://www.w3.org/TR/wai-aria/#progressbar)

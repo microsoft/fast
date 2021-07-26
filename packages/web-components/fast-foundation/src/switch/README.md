@@ -69,4 +69,7 @@ export const mySwitch = Switch.compose<SwitchOptions>({
 
 ## Additional resources
 
-View the full specification for switch along with additional configuration options [here](https://github.com/microsoft/fast/blob/master/packages/web-components/fast-foundation/src/switch/switch.spec.md)
+* [Component explorer examples](https://explore.fast.design/components/fast-switch)
+* [Component technical specification](https://github.com/microsoft/fast/blob/master/packages/web-components/fast-foundation/src/switch/switch.spec.md)
+* [W3C Component Aria Practices](https://www.w3.org/TR/wai-aria/#switch)
+* [Open UI Analysis](https://open-ui.org/components/switch)

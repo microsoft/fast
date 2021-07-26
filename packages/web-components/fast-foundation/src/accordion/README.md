@@ -5,7 +5,7 @@ sidebar_label: accordion
 custom_edit_url: https://github.com/microsoft/fast/edit/master/packages/web-components/fast-foundation/src/accordion/README.md
 ---
 
-As defined by the W3C:
+As defined by the [W3C](https://w3c.github.io/aria-practices/#accordion):
 
 > An accordion is a vertically stacked set of interactive headings that each contain a title, content snippet, or thumbnail representing a section of content. The headings function as controls that enable users to reveal or hide their associated sections of content. Accordions are commonly used to reduce the need to scroll when presenting multiple sections of content on a single page.
 
@@ -101,4 +101,6 @@ export const myAccordionItem = AccordionItem.compose<AccordionItemOptions>({
 
 ## Additional resources
 
-View the full specification for the accordion [here](https://github.com/microsoft/fast/blob/master/packages/web-components/fast-foundation/src/accordion/accordion.spec.md).
+* [Component explorer examples](https://explore.fast.design/components/fast-accordion)
+* [Component technical specification](https://github.com/microsoft/fast/blob/master/packages/web-components/fast-foundation/src/accordion/accordion.spec.md)
+* [W3C Component Aria Practices](https://w3c.github.io/aria-practices/#accordion)

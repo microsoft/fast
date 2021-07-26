@@ -53,3 +53,7 @@ export const myAnchor = Anchor.compose({
 :::note
 This component is built with the expectation that focus is delegated to the anchor element rendered into the shadow DOM.
 :::
+
+## Additional resources
+
+* [Component explorer examples](https://explore.fast.design/components/fast-anchor)

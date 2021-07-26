@@ -42,4 +42,5 @@ export const myDivider = Divider.compose({
 
 ## Additional resources
 
-View the full specification for divider along with additional configuration options [here](https://github.com/microsoft/fast/blob/master/packages/web-components/fast-foundation/src/divider/divider.spec.md)
+* [Component explorer examples](https://explore.fast.design/components/fast-divider)
+* [Component technical specification](https://github.com/microsoft/fast/blob/master/packages/web-components/fast-foundation/src/divider/divider.spec.md)

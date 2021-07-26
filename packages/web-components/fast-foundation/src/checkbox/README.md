@@ -73,4 +73,8 @@ export const myCheckbox = Checkbox.compose<CheckboxOptions>({
 
 ## Additional resources
 
-View the full specification for checkbox along with additional configuration options [here](https://github.com/microsoft/fast/blob/master/packages/web-components/fast-foundation/src/checkbox/checkbox.spec.md)
+* [Component explorer examples](https://explore.fast.design/components/fast-checkbox)
+* [Component technical specification](https://github.com/microsoft/fast/blob/master/packages/web-components/fast-foundation/src/checkbox/checkbox.spec.md)
+* [W3C Component Aria Practices](https://w3c.github.io/aria-practices/#checkbox)
+* [Open UI Analysis](https://open-ui.org/components/checkbox.research)
+* [Open UI Proposal](https://open-ui.org/components/checkbox)

@@ -45,4 +45,5 @@ export const myOption = ListboxOption.compose({
 
 ## Additional resources
 
-View the full specification for listbox-option along with additional configuration options [here](https://github.com/microsoft/fast/blob/master/packages/web-components/fast-foundation/src/listbox-option/listbox-option.spec.md)
+* [Component technical specification](https://github.com/microsoft/fast/blob/master/packages/web-components/fast-foundation/src/listbox-option/listbox-option.spec.md)
+* [W3C Component Aria Practices](https://w3c.github.io/aria/#option)

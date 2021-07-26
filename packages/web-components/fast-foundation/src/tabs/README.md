@@ -103,4 +103,7 @@ export const myTabs = Tabs.compose({
 
 ## Additional resources
 
-View the full specification for tabs along with additional configuration options [here](https://github.com/microsoft/fast/blob/master/packages/web-components/fast-foundation/src/tabs/tabs.spec.md)
+* [Component explorer examples](https://explore.fast.design/components/fast-tabs)
+* [Component technical specification](https://github.com/microsoft/fast/blob/master/packages/web-components/fast-foundation/src/tabs/tabs.spec.md)
+* [W3C Component Aria Practices](https://w3c.github.io/aria-practices/#tabpanel)
+* [Open UI Analysis](https://open-ui.org/components/tabs.research)

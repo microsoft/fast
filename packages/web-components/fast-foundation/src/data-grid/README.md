@@ -92,4 +92,7 @@ export const myDataGrid = DataGrid.compose({
 
 ## Additional resources
 
-View the full specification for datagrid [here](https://github.com/microsoft/fast/blob/master/packages/web-components/fast-foundation/src/data-grid/data-grid.spec.md). See [Component Explorer](https://explore.fast.design/components/fast-data-grid) for additional usage examples.
+* [Component explorer examples](https://explore.fast.design/components/fast-data-grid)
+* [Component technical specification](https://github.com/microsoft/fast/blob/master/packages/web-components/fast-foundation/src/data-grid/data-grid.spec.md)
+* [W3C Component Aria Practices](https://w3c.github.io/aria-practices/#grid)
+* [Open UI Analysis](https://open-ui.org/components/table.research)

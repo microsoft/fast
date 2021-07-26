@@ -55,4 +55,6 @@ export const myDisclosure = Disclosure.compose({
 
 ## Additional resources
 
-View the full specification for disclosure along with additional configuration options [here](https://github.com/microsoft/fast/blob/master/packages/web-components/fast-foundation/src/disclosure/disclosure.spec.md)
+* [Component explorer examples](https://explore.fast.design/components/fast-disclosure)
+* [Component technical specification](https://github.com/microsoft/fast/blob/master/packages/web-components/fast-foundation/src/disclosure/disclosure.spec.md)
+* [W3C Component Aria Practices](https://w3c.github.io/aria-practices/#disclosure)

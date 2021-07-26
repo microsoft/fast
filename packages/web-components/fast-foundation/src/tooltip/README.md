@@ -45,4 +45,7 @@ export const myTooltip = Tooltip.compose({
 
 ## Additional resources
 
-View the full specification for tooltip [here](https://github.com/microsoft/fast/blob/master/packages/web-components/fast-foundation/src/tooltip/tooltip.spec.md). See [Component Explorer](https://explore.fast.design/components/fast-tooltip) for usage examples.
+* [Component explorer examples](https://explore.fast.design/components/fast-tooltip)
+* [Component technical specification](https://github.com/microsoft/fast/blob/master/packages/web-components/fast-foundation/src/tooltip/tooltip.spec.md)
+* [W3C Component Aria Practices](https://w3c.github.io/aria-practices/#tooltip)
+* [Open UI Analysis](https://open-ui.org/components/tooltip.research)
