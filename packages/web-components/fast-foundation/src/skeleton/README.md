@@ -28,7 +28,6 @@ provideFASTDesignSystem()
 ```html
 <fast-skeleton
     style="
-        --neutral-fill-rest: #e1dfdd;
         border-radius: 4px;
         width: 50px;
         height: 50px;
@@ -44,7 +43,6 @@ A URL for an image asset may be passed to the `pattern` attribute. In this mode,
 ```html
 <fast-skeleton
     style="
-        --neutral-fill-rest: #e1dfdd;
         border-radius: 4px;
         width: 500px;
         height: 250px;
@@ -61,7 +59,6 @@ The `shimmer` boolean attribute will activate the component's shimmer effect.
 ```html
 <fast-skeleton
     style="
-        --neutral-fill-rest: #e1dfdd;
         border-radius: 4px;
         width: 500px;
         height: 250px;
@@ -79,7 +76,6 @@ An inline SVG can also be inserted into the slot of the `fast-skeleton`.
 ```html
 <fast-skeleton
     style="
-        --neutral-fill-rest: #e1dfdd;
         border-radius: 4px;
         width: 500px;
         height: 250px;
