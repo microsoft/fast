@@ -496,7 +496,7 @@ describe("A DesignToken", () => {
                 removeElement(target);
             });
         });
-        it.only("should update the CSS custom property of a derived token with a dependency that is a derived token that depends on a third token", async () => {
+        it("should update the CSS custom property of a derived token with a dependency that is a derived token that depends on a third token", async () => {
                 const tokenA = DesignToken.create<number>("token-a");
                 const tokenB = DesignToken.create<number>("token-b");
                 const tokenC = DesignToken.create<number>("token-c");
@@ -517,6 +517,24 @@ describe("A DesignToken", () => {
                 await DOM.nextUpdate();
                 expect(tokenC.getValueFor(child)).to.equal(16);
                 expect(window.getComputedStyle(child).getPropertyValue(tokenC.cssCustomProperty)).to.equal("16");
+        });
+        it("should update tokens when an element for which a token with dependencies is set is appended to the DOM", async () => {
+            const tokenA = DesignToken.create<number>("token-a");
+            const tokenB = DesignToken.create<number>("token-b");
+
+            tokenA.withDefault(6);
+            tokenB.withDefault(el => tokenA.getValueFor(el) * 2);
+
+            const element = document.createElement(`fast-${uniqueElementName()}`);
+
+            tokenA.setValueFor(element, 7);
+
+
+            document.body.appendChild(element);
+
+            await DOM.nextUpdate();
+
+            expect(window.getComputedStyle(element).getPropertyValue(tokenB.cssCustomProperty)).to.equal('14');
         });
     })
     describe("deleting simple values", () => {
