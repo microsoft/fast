@@ -31,6 +31,10 @@ export const CalendarWeekdayTemplate: ViewTemplate<Calendar> = html`
 export const CalendarDayTemplate: ViewTemplate<CalendarDateInfo> = html`
     <div
         part="day"
+        aria-label="${(x, c) =>
+            ("getMonth" in c.parent ? c : c.parentContext).parent.getMonth(
+                x.month
+            )} ${x => x.day}"
         class="${(x, c) =>
             ("getDayClassNames" in c.parent
                 ? c
