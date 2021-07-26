@@ -76,7 +76,7 @@ export interface ExplorerState extends EditorState {
     /**
      * The schema dictionary
      */
-    schemaDictionary?: SchemaDictionary;
+    schemaDictionary: SchemaDictionary;
 
     /**
      * The active pivot tab
