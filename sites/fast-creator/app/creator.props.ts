@@ -113,7 +113,7 @@ export interface ProjectFile {
     /**
      * The schema dictionary
      */
-    schemaDictionary?: SchemaDictionary;
+    schemaDictionary: SchemaDictionary;
 
     /**
      * Preview background transparency
