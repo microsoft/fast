@@ -702,7 +702,6 @@ export class Picker extends FoundationElement {
             DOM.queueUpdate(this.setRegionProps);
             return;
         }
-        this.region.viewportElement = document.body;
         this.region.anchorElement = this.listElement.inputElement;
     };
 

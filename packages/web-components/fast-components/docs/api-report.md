@@ -28,7 +28,6 @@ import { DataGrid } from '@microsoft/fast-foundation';
 import { DataGridCell } from '@microsoft/fast-foundation';
 import { DataGridRow } from '@microsoft/fast-foundation';
 import { DesignSystem } from '@microsoft/fast-foundation';
-import { DesignToken } from '@microsoft/fast-foundation';
 import { Dialog } from '@microsoft/fast-foundation';
 import { Direction } from '@microsoft/fast-web-utilities';
 import { Disclosure as Disclosure_2 } from '@microsoft/fast-foundation';
@@ -40,6 +39,7 @@ import { FlipperOptions } from '@microsoft/fast-foundation';
 import { FoundationElement } from '@microsoft/fast-foundation';
 import { HorizontalScroll as HorizontalScroll_2 } from '@microsoft/fast-foundation';
 import { HorizontalScrollOptions } from '@microsoft/fast-foundation';
+import { IDynamicPerson } from '@microsoft/mgt';
 import { Listbox } from '@microsoft/fast-foundation';
 import { ListboxOption } from '@microsoft/fast-foundation';
 import { Menu } from '@microsoft/fast-foundation';
@@ -47,6 +47,12 @@ import { MenuItem } from '@microsoft/fast-foundation';
 import { MenuItemOptions } from '@microsoft/fast-foundation';
 import { NumberField as NumberField_2 } from '@microsoft/fast-foundation';
 import { NumberFieldOptions } from '@microsoft/fast-foundation';
+import { PersonType } from '@microsoft/mgt';
+import { Picker } from '@microsoft/fast-foundation';
+import { PickerList } from '@microsoft/fast-foundation';
+import { PickerListItem } from '@microsoft/fast-foundation';
+import { PickerMenu } from '@microsoft/fast-foundation';
+import { PickerMenuOption } from '@microsoft/fast-foundation';
 import { ProgressOptions } from '@microsoft/fast-foundation';
 import { ProgressRingOptions } from '@microsoft/fast-foundation';
 import { Radio } from '@microsoft/fast-foundation';
@@ -90,7 +96,7 @@ export const accentFillHover: import("@microsoft/fast-foundation").CSSDesignToke
 export const accentFillHoverDelta: import("@microsoft/fast-foundation").CSSDesignToken<number>;
 
 // @public (undocumented)
-export const accentFillRecipe: DesignToken<InteractiveColorRecipe>;
+export const accentFillRecipe: import("@microsoft/fast-foundation").CSSDesignToken<InteractiveColorRecipe>;
 
 // @public (undocumented)
 export const accentFillRest: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
@@ -117,7 +123,7 @@ export const accentForegroundHover: import("@microsoft/fast-foundation").CSSDesi
 export const accentForegroundHoverDelta: import("@microsoft/fast-foundation").CSSDesignToken<number>;
 
 // @public (undocumented)
-export const accentForegroundRecipe: DesignToken<InteractiveColorRecipe>;
+export const accentForegroundRecipe: import("@microsoft/fast-foundation").CSSDesignToken<InteractiveColorRecipe>;
 
 // @public (undocumented)
 export const accentForegroundRest: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
@@ -126,7 +132,7 @@ export const accentForegroundRest: import("@microsoft/fast-foundation").CSSDesig
 export const accentForegroundRestDelta: import("@microsoft/fast-foundation").CSSDesignToken<number>;
 
 // @public (undocumented)
-export const accentPalette: DesignToken<Palette<Swatch>>;
+export const accentPalette: import("@microsoft/fast-foundation").CSSDesignToken<Palette<Swatch>>;
 
 export { Accordion }
 
@@ -140,50 +146,66 @@ export const accordionStyles: (context: import("@microsoft/fast-foundation").Ele
 
 // @public
 export const allComponents: {
-    fastAccordion: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FoundationElementDefinition, typeof import("@microsoft/fast-foundation").Accordion>;
-    fastAccordionItem: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").AccordionItemOptions> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").AccordionItemOptions, import("@microsoft/fast-element").Constructable<import("@microsoft/fast-foundation").FoundationElement>>;
-    fastAnchor: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FoundationElementDefinition, typeof Anchor>;
-    fastAnchoredRegion: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FoundationElementDefinition, typeof import("@microsoft/fast-foundation").AnchoredRegion>;
-    fastAvatar: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").AvatarOptions> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").AvatarOptions, import("@microsoft/fast-element").Constructable<import("@microsoft/fast-foundation").FoundationElement>>;
-    fastBadge: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FoundationElementDefinition, typeof import("@microsoft/fast-foundation").Badge>;
-    fastBreadcrumb: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FoundationElementDefinition, typeof import("@microsoft/fast-foundation").Breadcrumb>;
-    fastBreadcrumbItem: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").BreadcrumbItemOptions> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").BreadcrumbItemOptions, import("@microsoft/fast-element").Constructable<import("@microsoft/fast-foundation").FoundationElement>>;
-    fastButton: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FoundationElementDefinition, typeof Button>;
-    fastCard: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FoundationElementDefinition, typeof Card>;
-    fastCheckbox: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").CheckboxOptions> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").CheckboxOptions, import("@microsoft/fast-element").Constructable<import("@microsoft/fast-foundation").FoundationElement>>;
-    fastCombobox: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").ComboboxOptions> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").ComboboxOptions, import("@microsoft/fast-element").Constructable<import("@microsoft/fast-foundation").FoundationElement>>;
-    fastDataGrid: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FoundationElementDefinition, typeof import("@microsoft/fast-foundation").DataGrid>;
-    fastDataGridCell: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FoundationElementDefinition, typeof import("@microsoft/fast-foundation").DataGridCell>;
-    fastDataGridRow: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FoundationElementDefinition, typeof import("@microsoft/fast-foundation").DataGridRow>;
-    fastDialog: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FoundationElementDefinition, typeof import("@microsoft/fast-foundation").Dialog>;
-    fastDisclosure: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FoundationElementDefinition, typeof Disclosure>;
-    fastDivider: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FoundationElementDefinition, typeof import("@microsoft/fast-foundation").Divider>;
-    fastFlipper: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FlipperOptions> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FlipperOptions, import("@microsoft/fast-element").Constructable<import("@microsoft/fast-foundation").FoundationElement>>;
-    fastHorizontalScroll: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").HorizontalScrollOptions> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").HorizontalScrollOptions, import("@microsoft/fast-element").Constructable<import("@microsoft/fast-foundation").FoundationElement>>;
-    fastListbox: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FoundationElementDefinition, typeof import("@microsoft/fast-foundation").Listbox>;
-    fastOption: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FoundationElementDefinition, typeof import("@microsoft/fast-foundation").ListboxOption>;
-    fastMenu: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FoundationElementDefinition, typeof import("@microsoft/fast-foundation").Menu>;
-    fastMenuItem: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").MenuItemOptions> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").MenuItemOptions, import("@microsoft/fast-element").Constructable<import("@microsoft/fast-foundation").FoundationElement>>;
-    fastNumberField: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").NumberFieldOptions> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").NumberFieldOptions, import("@microsoft/fast-element").Constructable<import("@microsoft/fast-foundation").FoundationElement>>;
-    fastProgress: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").ProgressOptions> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").ProgressOptions, import("@microsoft/fast-element").Constructable<import("@microsoft/fast-foundation").FoundationElement>>;
-    fastProgressRing: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").ProgressRingOptions> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").ProgressRingOptions, import("@microsoft/fast-element").Constructable<import("@microsoft/fast-foundation").FoundationElement>>;
-    fastRadio: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").RadioOptions> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").RadioOptions, import("@microsoft/fast-element").Constructable<import("@microsoft/fast-foundation").FoundationElement>>;
-    fastRadioGroup: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FoundationElementDefinition, typeof import("@microsoft/fast-foundation").RadioGroup>;
-    fastSelect: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").SelectOptions> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").SelectOptions, import("@microsoft/fast-element").Constructable<import("@microsoft/fast-foundation").FoundationElement>>;
-    fastSkeleton: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FoundationElementDefinition, typeof import("@microsoft/fast-foundation").Skeleton>;
-    fastSlider: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").SliderOptions> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").SliderOptions, import("@microsoft/fast-element").Constructable<import("@microsoft/fast-foundation").FoundationElement>>;
-    fastSliderLabel: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FoundationElementDefinition, typeof SliderLabel>;
-    fastSwitch: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").SwitchOptions> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").SwitchOptions, import("@microsoft/fast-element").Constructable<import("@microsoft/fast-foundation").FoundationElement>>;
-    fastTabs: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FoundationElementDefinition, typeof import("@microsoft/fast-foundation").Tabs>;
-    fastTab: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FoundationElementDefinition, typeof import("@microsoft/fast-foundation").Tab>;
-    fastTabPanel: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FoundationElementDefinition, typeof import("@microsoft/fast-foundation").TabPanel>;
-    fastTextArea: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FoundationElementDefinition, typeof TextArea>;
-    fastTextField: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FoundationElementDefinition, typeof TextField>;
-    fastTooltip: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FoundationElementDefinition, typeof import("@microsoft/fast-foundation").Tooltip>;
-    fastToolbar: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FoundationElementDefinition, typeof Toolbar>;
-    fastTreeView: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FoundationElementDefinition, typeof import("@microsoft/fast-foundation").TreeView>;
-    fastTreeItem: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").TreeItemOptions> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").TreeItemOptions, import("@microsoft/fast-element").Constructable<import("@microsoft/fast-foundation").FoundationElement>>;
-    register(container?: Container | undefined): void;
+    fastAccordion: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition>) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FoundationElementDefinition, typeof import("@microsoft/fast-foundation").Accordion>;
+    fastAccordionItem: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").AccordionItemOptions>) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").AccordionItemOptions, import("@microsoft/fast-element").Constructable<import("@microsoft/fast-foundation").FoundationElement>>;
+    fastAnchor: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition>) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FoundationElementDefinition, typeof Anchor>;
+    fastAnchoredRegion: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition>) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FoundationElementDefinition, typeof import("@microsoft/fast-foundation").AnchoredRegion>;
+    fastAvatar: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").AvatarOptions>) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").AvatarOptions, import("@microsoft/fast-element").Constructable<import("@microsoft/fast-foundation").FoundationElement>>;
+    fastBadge: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition>) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FoundationElementDefinition, typeof import("@microsoft/fast-foundation").Badge>;
+    fastBreadcrumb: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition>) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FoundationElementDefinition, typeof import("@microsoft/fast-foundation").Breadcrumb>;
+    fastBreadcrumbItem: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").BreadcrumbItemOptions>) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").BreadcrumbItemOptions, import("@microsoft/fast-element").Constructable<import("@microsoft/fast-foundation").FoundationElement>>;
+    fastButton: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition>) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FoundationElementDefinition, typeof Button>;
+    fastCard: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition>) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FoundationElementDefinition, typeof Card>;
+    fastCheckbox: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").CheckboxOptions>) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").CheckboxOptions, import("@microsoft/fast-element").Constructable<import("@microsoft/fast-foundation").FoundationElement>>;
+    fastCombobox: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").ComboboxOptions>) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").ComboboxOptions, import("@microsoft/fast-element").Constructable<import("@microsoft/fast-foundation").FoundationElement>>;
+    fastDataGrid: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition>) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FoundationElementDefinition, typeof import("@microsoft/fast-foundation").DataGrid>;
+    fastDataGridCell: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition>) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FoundationElementDefinition, typeof import("@microsoft/fast-foundation").DataGridCell>;
+    fastDataGridRow: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition>) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FoundationElementDefinition, typeof import("@microsoft/fast-foundation").DataGridRow>;
+    fastDialog: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition>) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FoundationElementDefinition, typeof import("@microsoft/fast-foundation").Dialog>;
+    fastDisclosure: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition>) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FoundationElementDefinition, typeof Disclosure>;
+    fastDivider: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition>) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FoundationElementDefinition, typeof import("@microsoft/fast-foundation").Divider>;
+    fastFlipper: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FlipperOptions>) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FlipperOptions, import("@microsoft/fast-element").Constructable<import("@microsoft/fast-foundation").FoundationElement>>;
+    fastHorizontalScroll: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").HorizontalScrollOptions>) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").HorizontalScrollOptions, import("@microsoft/fast-element").Constructable<import("@microsoft/fast-foundation").FoundationElement>>;
+    fastListbox: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition>) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FoundationElementDefinition, typeof import("@microsoft/fast-foundation").Listbox>;
+    fastOption: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition>) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FoundationElementDefinition, typeof import("@microsoft/fast-foundation").ListboxOption>;
+    fastMenu: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition>) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FoundationElementDefinition, typeof import("@microsoft/fast-foundation").Menu>;
+    fastMenuItem: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").MenuItemOptions>) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").MenuItemOptions, import("@microsoft/fast-element").Constructable<import("@microsoft/fast-foundation").FoundationElement>>;
+    fastNumberField: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").NumberFieldOptions>) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").NumberFieldOptions, import("@microsoft/fast-element").Constructable<import("@microsoft/fast-foundation").FoundationElement>>;
+    fastPeoplePicker: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<{
+        baseName: string;
+        template: (context: any, definition: any) => import("@microsoft/fast-element").ViewTemplate<PeoplePicker, any>;
+        styles: import("@microsoft/fast-element").ElementStyles;
+        shadowOptions: any;
+    }>) => import("@microsoft/fast-foundation").FoundationElementRegistry<{
+        baseName: string;
+        template: (context: any, definition: any) => import("@microsoft/fast-element").ViewTemplate<PeoplePicker, any>;
+        styles: import("@microsoft/fast-element").ElementStyles;
+        shadowOptions: any;
+    }, typeof PeoplePicker>;
+    fastPicker: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition>) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FoundationElementDefinition, typeof import("@microsoft/fast-foundation").Picker>;
+    fastPickerList: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition>) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FoundationElementDefinition, typeof import("@microsoft/fast-foundation").PickerList>;
+    fastPickerListItem: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition>) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FoundationElementDefinition, typeof import("@microsoft/fast-foundation").PickerListItem>;
+    fastPickerMenu: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition>) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FoundationElementDefinition, typeof import("@microsoft/fast-foundation").PickerMenu>;
+    fastPickerMenuOption: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition>) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FoundationElementDefinition, typeof import("@microsoft/fast-foundation").PickerMenuOption>;
+    fastProgress: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").ProgressOptions>) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").ProgressOptions, import("@microsoft/fast-element").Constructable<import("@microsoft/fast-foundation").FoundationElement>>;
+    fastProgressRing: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").ProgressRingOptions>) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").ProgressRingOptions, import("@microsoft/fast-element").Constructable<import("@microsoft/fast-foundation").FoundationElement>>;
+    fastRadio: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").RadioOptions>) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").RadioOptions, import("@microsoft/fast-element").Constructable<import("@microsoft/fast-foundation").FoundationElement>>;
+    fastRadioGroup: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition>) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FoundationElementDefinition, typeof import("@microsoft/fast-foundation").RadioGroup>;
+    fastSelect: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").SelectOptions>) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").SelectOptions, import("@microsoft/fast-element").Constructable<import("@microsoft/fast-foundation").FoundationElement>>;
+    fastSkeleton: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition>) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FoundationElementDefinition, typeof import("@microsoft/fast-foundation").Skeleton>;
+    fastSlider: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").SliderOptions>) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").SliderOptions, import("@microsoft/fast-element").Constructable<import("@microsoft/fast-foundation").FoundationElement>>;
+    fastSliderLabel: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition>) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FoundationElementDefinition, typeof SliderLabel>;
+    fastSwitch: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").SwitchOptions>) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").SwitchOptions, import("@microsoft/fast-element").Constructable<import("@microsoft/fast-foundation").FoundationElement>>;
+    fastTabs: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition>) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FoundationElementDefinition, typeof import("@microsoft/fast-foundation").Tabs>;
+    fastTab: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition>) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FoundationElementDefinition, typeof import("@microsoft/fast-foundation").Tab>;
+    fastTabPanel: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition>) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FoundationElementDefinition, typeof import("@microsoft/fast-foundation").TabPanel>;
+    fastTextArea: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition>) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FoundationElementDefinition, typeof TextArea>;
+    fastTextField: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition>) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FoundationElementDefinition, typeof TextField>;
+    fastTooltip: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition>) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FoundationElementDefinition, typeof import("@microsoft/fast-foundation").Tooltip>;
+    fastToolbar: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition>) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FoundationElementDefinition, typeof Toolbar>;
+    fastTreeView: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition>) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FoundationElementDefinition, typeof import("@microsoft/fast-foundation").TreeView>;
+    fastTreeItem: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").TreeItemOptions>) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").TreeItemOptions, import("@microsoft/fast-element").Constructable<import("@microsoft/fast-foundation").FoundationElement>>;
+    register(container?: Container): void;
 };
 
 // @public
@@ -422,158 +444,202 @@ export { Divider }
 export const dividerStyles: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: import("@microsoft/fast-foundation").FoundationElementDefinition) => import("@microsoft/fast-element").ElementStyles;
 
 // @public
-export const fastAccordion: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FoundationElementDefinition, typeof Accordion>;
+export const fastAccordion: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition>) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FoundationElementDefinition, typeof Accordion>;
 
 // @public
-export const fastAccordionItem: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<AccordionItemOptions> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<AccordionItemOptions, import("@microsoft/fast-element").Constructable<import("@microsoft/fast-foundation").FoundationElement>>;
+export const fastAccordionItem: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<AccordionItemOptions>) => import("@microsoft/fast-foundation").FoundationElementRegistry<AccordionItemOptions, import("@microsoft/fast-element").Constructable<import("@microsoft/fast-foundation").FoundationElement>>;
 
 // @public
-export const fastAnchor: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FoundationElementDefinition, typeof Anchor>;
+export const fastAnchor: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition>) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FoundationElementDefinition, typeof Anchor>;
 
 // @beta
-export const fastAnchoredRegion: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FoundationElementDefinition, typeof AnchoredRegion>;
+export const fastAnchoredRegion: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition>) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FoundationElementDefinition, typeof AnchoredRegion>;
 
 // @public
-export const fastAvatar: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<AvatarOptions> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<AvatarOptions, import("@microsoft/fast-element").Constructable<import("@microsoft/fast-foundation").FoundationElement>>;
+export const fastAvatar: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<AvatarOptions>) => import("@microsoft/fast-foundation").FoundationElementRegistry<AvatarOptions, import("@microsoft/fast-element").Constructable<import("@microsoft/fast-foundation").FoundationElement>>;
 
 // @public
-export const fastBadge: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FoundationElementDefinition, typeof Badge>;
+export const fastBadge: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition>) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FoundationElementDefinition, typeof Badge>;
 
 // @public
-export const fastBreadcrumb: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FoundationElementDefinition, typeof Breadcrumb>;
+export const fastBreadcrumb: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition>) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FoundationElementDefinition, typeof Breadcrumb>;
 
 // @public
-export const fastBreadcrumbItem: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<BreadcrumbItemOptions> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<BreadcrumbItemOptions, import("@microsoft/fast-element").Constructable<import("@microsoft/fast-foundation").FoundationElement>>;
+export const fastBreadcrumbItem: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<BreadcrumbItemOptions>) => import("@microsoft/fast-foundation").FoundationElementRegistry<BreadcrumbItemOptions, import("@microsoft/fast-element").Constructable<import("@microsoft/fast-foundation").FoundationElement>>;
 
 // Warning: (ae-incompatible-release-tags) The symbol "fastButton" is marked as @public, but its signature references "Button" which is marked as @internal
 //
 // @public
-export const fastButton: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FoundationElementDefinition, typeof Button>;
+export const fastButton: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition>) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FoundationElementDefinition, typeof Button>;
 
 // Warning: (ae-incompatible-release-tags) The symbol "fastCard" is marked as @public, but its signature references "Card" which is marked as @internal
 //
 // @public
-export const fastCard: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FoundationElementDefinition, typeof Card>;
+export const fastCard: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition>) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FoundationElementDefinition, typeof Card>;
 
 // @public
-export const fastCheckbox: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<CheckboxOptions> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<CheckboxOptions, import("@microsoft/fast-element").Constructable<import("@microsoft/fast-foundation").FoundationElement>>;
+export const fastCheckbox: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<CheckboxOptions>) => import("@microsoft/fast-foundation").FoundationElementRegistry<CheckboxOptions, import("@microsoft/fast-element").Constructable<import("@microsoft/fast-foundation").FoundationElement>>;
 
 // @public
-export const fastCombobox: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<ComboboxOptions> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<ComboboxOptions, import("@microsoft/fast-element").Constructable<import("@microsoft/fast-foundation").FoundationElement>>;
+export const fastCombobox: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<ComboboxOptions>) => import("@microsoft/fast-foundation").FoundationElementRegistry<ComboboxOptions, import("@microsoft/fast-element").Constructable<import("@microsoft/fast-foundation").FoundationElement>>;
 
 // @public
-export const fastDataGrid: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FoundationElementDefinition, typeof DataGrid>;
+export const fastDataGrid: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition>) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FoundationElementDefinition, typeof DataGrid>;
 
 // @public
-export const fastDataGridCell: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FoundationElementDefinition, typeof DataGridCell>;
+export const fastDataGridCell: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition>) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FoundationElementDefinition, typeof DataGridCell>;
 
 // @public
-export const fastDataGridRow: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FoundationElementDefinition, typeof DataGridRow>;
+export const fastDataGridRow: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition>) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FoundationElementDefinition, typeof DataGridRow>;
 
 // @public
 export const fastDesignSystemProvider: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<{
     baseName: string;
     template: import("@microsoft/fast-element").ViewTemplate<any, any>;
     styles: import("@microsoft/fast-element").ElementStyles;
-}> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<{
+}>) => import("@microsoft/fast-foundation").FoundationElementRegistry<{
     baseName: string;
     template: import("@microsoft/fast-element").ViewTemplate<any, any>;
     styles: import("@microsoft/fast-element").ElementStyles;
 }, typeof DesignSystemProvider>;
 
 // @public
-export const fastDialog: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FoundationElementDefinition, typeof Dialog>;
+export const fastDialog: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition>) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FoundationElementDefinition, typeof Dialog>;
 
 // Warning: (ae-incompatible-release-tags) The symbol "fastDisclosure" is marked as @public, but its signature references "Disclosure" which is marked as @internal
 //
 // @public
-export const fastDisclosure: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FoundationElementDefinition, typeof Disclosure>;
+export const fastDisclosure: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition>) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FoundationElementDefinition, typeof Disclosure>;
 
 // @public
-export const fastDivider: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FoundationElementDefinition, typeof Divider>;
+export const fastDivider: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition>) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FoundationElementDefinition, typeof Divider>;
 
 // @public
-export const fastFlipper: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<FlipperOptions> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<FlipperOptions, import("@microsoft/fast-element").Constructable<import("@microsoft/fast-foundation").FoundationElement>>;
+export const fastFlipper: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<FlipperOptions>) => import("@microsoft/fast-foundation").FoundationElementRegistry<FlipperOptions, import("@microsoft/fast-element").Constructable<import("@microsoft/fast-foundation").FoundationElement>>;
 
 // @public
-export const fastHorizontalScroll: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<HorizontalScrollOptions> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<HorizontalScrollOptions, import("@microsoft/fast-element").Constructable<import("@microsoft/fast-foundation").FoundationElement>>;
+export const fastHorizontalScroll: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<HorizontalScrollOptions>) => import("@microsoft/fast-foundation").FoundationElementRegistry<HorizontalScrollOptions, import("@microsoft/fast-element").Constructable<import("@microsoft/fast-foundation").FoundationElement>>;
 
 // @public
-export const fastListbox: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FoundationElementDefinition, typeof Listbox>;
+export const fastListbox: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition>) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FoundationElementDefinition, typeof Listbox>;
 
 // @public
-export const fastMenu: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FoundationElementDefinition, typeof Menu>;
+export const fastMenu: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition>) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FoundationElementDefinition, typeof Menu>;
 
 // @public
-export const fastMenuItem: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<MenuItemOptions> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<MenuItemOptions, import("@microsoft/fast-element").Constructable<import("@microsoft/fast-foundation").FoundationElement>>;
+export const fastMenuItem: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<MenuItemOptions>) => import("@microsoft/fast-foundation").FoundationElementRegistry<MenuItemOptions, import("@microsoft/fast-element").Constructable<import("@microsoft/fast-foundation").FoundationElement>>;
 
 // @public
-export const fastNumberField: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<NumberFieldOptions> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<NumberFieldOptions, import("@microsoft/fast-element").Constructable<import("@microsoft/fast-foundation").FoundationElement>>;
+export const fastNumberField: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<NumberFieldOptions>) => import("@microsoft/fast-foundation").FoundationElementRegistry<NumberFieldOptions, import("@microsoft/fast-element").Constructable<import("@microsoft/fast-foundation").FoundationElement>>;
 
 // @public
-export const fastOption: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FoundationElementDefinition, typeof ListboxOption>;
+export const fastOption: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition>) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FoundationElementDefinition, typeof ListboxOption>;
 
 // @public
-export const fastProgress: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<ProgressOptions> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<ProgressOptions, import("@microsoft/fast-element").Constructable<import("@microsoft/fast-foundation").FoundationElement>>;
+export const fastPeoplePicker: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<{
+    baseName: string;
+    template: (context: any, definition: any) => import("@microsoft/fast-element").ViewTemplate<PeoplePicker, any>;
+    styles: import("@microsoft/fast-element").ElementStyles;
+    shadowOptions: any;
+}>) => import("@microsoft/fast-foundation").FoundationElementRegistry<{
+    baseName: string;
+    template: (context: any, definition: any) => import("@microsoft/fast-element").ViewTemplate<PeoplePicker, any>;
+    styles: import("@microsoft/fast-element").ElementStyles;
+    shadowOptions: any;
+}, typeof PeoplePicker>;
 
 // @public
-export const fastProgressRing: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<ProgressRingOptions> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<ProgressRingOptions, import("@microsoft/fast-element").Constructable<import("@microsoft/fast-foundation").FoundationElement>>;
+export const fastPicker: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition>) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FoundationElementDefinition, typeof Picker>;
+
+// @public (undocumented)
+export class FASTPickerList extends PickerList {
+}
+
+// @public (undocumented)
+export const fastPickerList: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition>) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FoundationElementDefinition, typeof PickerList>;
+
+// @public (undocumented)
+export class FASTPickerListItem extends PickerListItem {
+}
+
+// @public (undocumented)
+export const fastPickerListItem: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition>) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FoundationElementDefinition, typeof PickerListItem>;
+
+// @public (undocumented)
+export class FASTPickerMenu extends PickerMenu {
+}
+
+// @public (undocumented)
+export const fastPickerMenu: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition>) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FoundationElementDefinition, typeof PickerMenu>;
+
+// @public (undocumented)
+export class FASTPickerMenuOption extends PickerMenuOption {
+}
+
+// @public (undocumented)
+export const fastPickerMenuOption: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition>) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FoundationElementDefinition, typeof PickerMenuOption>;
 
 // @public
-export const fastRadio: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<RadioOptions> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<RadioOptions, import("@microsoft/fast-element").Constructable<import("@microsoft/fast-foundation").FoundationElement>>;
+export const fastProgress: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<ProgressOptions>) => import("@microsoft/fast-foundation").FoundationElementRegistry<ProgressOptions, import("@microsoft/fast-element").Constructable<import("@microsoft/fast-foundation").FoundationElement>>;
 
 // @public
-export const fastRadioGroup: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FoundationElementDefinition, typeof RadioGroup>;
+export const fastProgressRing: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<ProgressRingOptions>) => import("@microsoft/fast-foundation").FoundationElementRegistry<ProgressRingOptions, import("@microsoft/fast-element").Constructable<import("@microsoft/fast-foundation").FoundationElement>>;
 
 // @public
-export const fastSelect: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<SelectOptions> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<SelectOptions, import("@microsoft/fast-element").Constructable<import("@microsoft/fast-foundation").FoundationElement>>;
+export const fastRadio: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<RadioOptions>) => import("@microsoft/fast-foundation").FoundationElementRegistry<RadioOptions, import("@microsoft/fast-element").Constructable<import("@microsoft/fast-foundation").FoundationElement>>;
 
 // @public
-export const fastSkeleton: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FoundationElementDefinition, typeof Skeleton>;
+export const fastRadioGroup: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition>) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FoundationElementDefinition, typeof RadioGroup>;
 
 // @public
-export const fastSlider: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<SliderOptions> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<SliderOptions, import("@microsoft/fast-element").Constructable<import("@microsoft/fast-foundation").FoundationElement>>;
+export const fastSelect: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<SelectOptions>) => import("@microsoft/fast-foundation").FoundationElementRegistry<SelectOptions, import("@microsoft/fast-element").Constructable<import("@microsoft/fast-foundation").FoundationElement>>;
+
+// @public
+export const fastSkeleton: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition>) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FoundationElementDefinition, typeof Skeleton>;
+
+// @public
+export const fastSlider: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<SliderOptions>) => import("@microsoft/fast-foundation").FoundationElementRegistry<SliderOptions, import("@microsoft/fast-element").Constructable<import("@microsoft/fast-foundation").FoundationElement>>;
 
 // Warning: (ae-incompatible-release-tags) The symbol "fastSliderLabel" is marked as @public, but its signature references "SliderLabel" which is marked as @internal
 //
 // @public
-export const fastSliderLabel: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FoundationElementDefinition, typeof SliderLabel>;
+export const fastSliderLabel: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition>) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FoundationElementDefinition, typeof SliderLabel>;
 
 // @public
-export const fastSwitch: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<SwitchOptions> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<SwitchOptions, import("@microsoft/fast-element").Constructable<import("@microsoft/fast-foundation").FoundationElement>>;
+export const fastSwitch: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<SwitchOptions>) => import("@microsoft/fast-foundation").FoundationElementRegistry<SwitchOptions, import("@microsoft/fast-element").Constructable<import("@microsoft/fast-foundation").FoundationElement>>;
 
 // @public
-export const fastTab: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FoundationElementDefinition, typeof Tab>;
+export const fastTab: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition>) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FoundationElementDefinition, typeof Tab>;
 
 // @public
-export const fastTabPanel: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FoundationElementDefinition, typeof TabPanel>;
+export const fastTabPanel: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition>) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FoundationElementDefinition, typeof TabPanel>;
 
 // @public
-export const fastTabs: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FoundationElementDefinition, typeof Tabs>;
+export const fastTabs: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition>) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FoundationElementDefinition, typeof Tabs>;
 
 // Warning: (ae-incompatible-release-tags) The symbol "fastTextArea" is marked as @public, but its signature references "TextArea" which is marked as @internal
 //
 // @public
-export const fastTextArea: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FoundationElementDefinition, typeof TextArea>;
+export const fastTextArea: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition>) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FoundationElementDefinition, typeof TextArea>;
 
 // Warning: (ae-incompatible-release-tags) The symbol "fastTextField" is marked as @public, but its signature references "TextField" which is marked as @internal
 //
 // @public
-export const fastTextField: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FoundationElementDefinition, typeof TextField>;
+export const fastTextField: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition>) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FoundationElementDefinition, typeof TextField>;
 
 // Warning: (ae-incompatible-release-tags) The symbol "fastToolbar" is marked as @public, but its signature references "Toolbar" which is marked as @internal
 //
 // @public
-export const fastToolbar: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FoundationElementDefinition, typeof Toolbar>;
+export const fastToolbar: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition>) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FoundationElementDefinition, typeof Toolbar>;
 
 // @public
-export const fastTooltip: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FoundationElementDefinition, typeof Tooltip>;
+export const fastTooltip: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition>) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FoundationElementDefinition, typeof Tooltip>;
 
 // @public
-export const fastTreeItem: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<TreeItemOptions> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<TreeItemOptions, import("@microsoft/fast-element").Constructable<import("@microsoft/fast-foundation").FoundationElement>>;
+export const fastTreeItem: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<TreeItemOptions>) => import("@microsoft/fast-foundation").FoundationElementRegistry<TreeItemOptions, import("@microsoft/fast-element").Constructable<import("@microsoft/fast-foundation").FoundationElement>>;
 
 // @public
-export const fastTreeView: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FoundationElementDefinition, typeof TreeView>;
+export const fastTreeView: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition>) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FoundationElementDefinition, typeof TreeView>;
 
 // @public (undocumented)
 export const fillColor: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
@@ -587,13 +653,13 @@ export const flipperStyles: (context: import("@microsoft/fast-foundation").Eleme
 export const focusStrokeInner: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
 
 // @public (undocumented)
-export const focusStrokeInnerRecipe: DesignToken<ColorRecipe>;
+export const focusStrokeInnerRecipe: import("@microsoft/fast-foundation").CSSDesignToken<ColorRecipe>;
 
 // @public (undocumented)
 export const focusStrokeOuter: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
 
 // @public (undocumented)
-export const focusStrokeOuterRecipe: DesignToken<ColorRecipe>;
+export const focusStrokeOuterRecipe: import("@microsoft/fast-foundation").CSSDesignToken<ColorRecipe>;
 
 // @public (undocumented)
 export const focusStrokeWidth: import("@microsoft/fast-foundation").CSSDesignToken<number>;
@@ -617,10 +683,10 @@ export const foregroundOnAccentHover: import("@microsoft/fast-foundation").CSSDe
 export const foregroundOnAccentHoverLarge: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
 
 // @public (undocumented)
-export const foregroundOnAccentLargeRecipe: DesignToken<ColorRecipe>;
+export const foregroundOnAccentLargeRecipe: import("@microsoft/fast-foundation").CSSDesignToken<ColorRecipe>;
 
 // @public (undocumented)
-export const foregroundOnAccentRecipe: DesignToken<ColorRecipe>;
+export const foregroundOnAccentRecipe: import("@microsoft/fast-foundation").CSSDesignToken<ColorRecipe>;
 
 // @public (undocumented)
 export const foregroundOnAccentRest: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
@@ -707,7 +773,7 @@ export const neutralFillInputHover: import("@microsoft/fast-foundation").CSSDesi
 export const neutralFillInputHoverDelta: import("@microsoft/fast-foundation").CSSDesignToken<number>;
 
 // @public (undocumented)
-export const neutralFillInputRecipe: DesignToken<InteractiveColorRecipe>;
+export const neutralFillInputRecipe: import("@microsoft/fast-foundation").CSSDesignToken<InteractiveColorRecipe>;
 
 // @public (undocumented)
 export const neutralFillInputRest: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
@@ -716,7 +782,7 @@ export const neutralFillInputRest: import("@microsoft/fast-foundation").CSSDesig
 export const neutralFillInputRestDelta: import("@microsoft/fast-foundation").CSSDesignToken<number>;
 
 // @public (undocumented)
-export const neutralFillLayerRecipe: DesignToken<ColorRecipe>;
+export const neutralFillLayerRecipe: import("@microsoft/fast-foundation").CSSDesignToken<ColorRecipe>;
 
 // @public (undocumented)
 export const neutralFillLayerRest: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
@@ -725,7 +791,7 @@ export const neutralFillLayerRest: import("@microsoft/fast-foundation").CSSDesig
 export const neutralFillLayerRestDelta: import("@microsoft/fast-foundation").CSSDesignToken<number>;
 
 // @public (undocumented)
-export const neutralFillRecipe: DesignToken<InteractiveColorRecipe>;
+export const neutralFillRecipe: import("@microsoft/fast-foundation").CSSDesignToken<InteractiveColorRecipe>;
 
 // @public (undocumented)
 export const neutralFillRest: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
@@ -752,7 +818,7 @@ export const neutralFillStealthHover: import("@microsoft/fast-foundation").CSSDe
 export const neutralFillStealthHoverDelta: import("@microsoft/fast-foundation").CSSDesignToken<number>;
 
 // @public (undocumented)
-export const neutralFillStealthRecipe: DesignToken<InteractiveColorRecipe>;
+export const neutralFillStealthRecipe: import("@microsoft/fast-foundation").CSSDesignToken<InteractiveColorRecipe>;
 
 // @public (undocumented)
 export const neutralFillStealthRest: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
@@ -779,7 +845,7 @@ export const neutralFillStrongHover: import("@microsoft/fast-foundation").CSSDes
 export const neutralFillStrongHoverDelta: import("@microsoft/fast-foundation").CSSDesignToken<number>;
 
 // @public (undocumented)
-export const neutralFillStrongRecipe: DesignToken<InteractiveColorRecipe>;
+export const neutralFillStrongRecipe: import("@microsoft/fast-foundation").CSSDesignToken<InteractiveColorRecipe>;
 
 // @public (undocumented)
 export const neutralFillStrongRest: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
@@ -791,10 +857,10 @@ export const neutralFillStrongRestDelta: import("@microsoft/fast-foundation").CS
 export const neutralForegroundHint: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
 
 // @public (undocumented)
-export const neutralForegroundHintRecipe: DesignToken<ColorRecipe>;
+export const neutralForegroundHintRecipe: import("@microsoft/fast-foundation").CSSDesignToken<ColorRecipe>;
 
 // @public (undocumented)
-export const neutralForegroundRecipe: DesignToken<ColorRecipe>;
+export const neutralForegroundRecipe: import("@microsoft/fast-foundation").CSSDesignToken<ColorRecipe>;
 
 // @public (undocumented)
 export const neutralForegroundRest: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
@@ -803,40 +869,40 @@ export const neutralForegroundRest: import("@microsoft/fast-foundation").CSSDesi
 export const neutralLayer1: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
 
 // @public (undocumented)
-export const neutralLayer1Recipe: DesignToken<ColorRecipe>;
+export const neutralLayer1Recipe: import("@microsoft/fast-foundation").CSSDesignToken<ColorRecipe>;
 
 // @public (undocumented)
 export const neutralLayer2: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
 
 // @public (undocumented)
-export const neutralLayer2Recipe: DesignToken<ColorRecipe>;
+export const neutralLayer2Recipe: import("@microsoft/fast-foundation").CSSDesignToken<ColorRecipe>;
 
 // @public (undocumented)
 export const neutralLayer3: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
 
 // @public (undocumented)
-export const neutralLayer3Recipe: DesignToken<ColorRecipe>;
+export const neutralLayer3Recipe: import("@microsoft/fast-foundation").CSSDesignToken<ColorRecipe>;
 
 // @public (undocumented)
 export const neutralLayer4: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
 
 // @public (undocumented)
-export const neutralLayer4Recipe: DesignToken<ColorRecipe>;
+export const neutralLayer4Recipe: import("@microsoft/fast-foundation").CSSDesignToken<ColorRecipe>;
 
 // @public (undocumented)
 export const neutralLayerCardContainer: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
 
 // @public (undocumented)
-export const neutralLayerCardContainerRecipe: DesignToken<ColorRecipe>;
+export const neutralLayerCardContainerRecipe: import("@microsoft/fast-foundation").CSSDesignToken<ColorRecipe>;
 
 // @public (undocumented)
 export const neutralLayerFloating: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
 
 // @public (undocumented)
-export const neutralLayerFloatingRecipe: DesignToken<ColorRecipe>;
+export const neutralLayerFloatingRecipe: import("@microsoft/fast-foundation").CSSDesignToken<ColorRecipe>;
 
 // @public (undocumented)
-export const neutralPalette: DesignToken<Palette<Swatch>>;
+export const neutralPalette: import("@microsoft/fast-foundation").CSSDesignToken<Palette<Swatch>>;
 
 // @public (undocumented)
 export const neutralStrokeActive: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
@@ -845,7 +911,7 @@ export const neutralStrokeActive: import("@microsoft/fast-foundation").CSSDesign
 export const neutralStrokeActiveDelta: import("@microsoft/fast-foundation").CSSDesignToken<number>;
 
 // @public (undocumented)
-export const neutralStrokeDividerRecipe: DesignToken<ColorRecipe>;
+export const neutralStrokeDividerRecipe: import("@microsoft/fast-foundation").CSSDesignToken<ColorRecipe>;
 
 // @public (undocumented)
 export const neutralStrokeDividerRest: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
@@ -866,7 +932,7 @@ export const neutralStrokeHover: import("@microsoft/fast-foundation").CSSDesignT
 export const neutralStrokeHoverDelta: import("@microsoft/fast-foundation").CSSDesignToken<number>;
 
 // @public (undocumented)
-export const neutralStrokeRecipe: DesignToken<InteractiveColorRecipe>;
+export const neutralStrokeRecipe: import("@microsoft/fast-foundation").CSSDesignToken<InteractiveColorRecipe>;
 
 // @public (undocumented)
 export const neutralStrokeRest: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
@@ -912,6 +978,26 @@ export type PaletteRGB = Palette<SwatchRGB>;
 export const PaletteRGB: Readonly<{
     create(source: SwatchRGB): PaletteRGB;
 }>;
+
+// @public
+export const PeoplePickerStyles: import("@microsoft/fast-element").ElementStyles;
+
+export { Picker }
+
+// @public
+export const PickerListItemStyles: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: import("@microsoft/fast-foundation").FoundationElementDefinition) => import("@microsoft/fast-element").ElementStyles;
+
+// @public
+export const PickerListStyles: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: import("@microsoft/fast-foundation").FoundationElementDefinition) => import("@microsoft/fast-element").ElementStyles;
+
+// @public
+export const PickerMenuOptionStyles: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: import("@microsoft/fast-foundation").FoundationElementDefinition) => import("@microsoft/fast-element").ElementStyles;
+
+// @public
+export const PickerMenuStyles: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: import("@microsoft/fast-foundation").FoundationElementDefinition) => import("@microsoft/fast-element").ElementStyles;
+
+// @public
+export const PickerStyles: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: import("@microsoft/fast-foundation").FoundationElementDefinition) => import("@microsoft/fast-element").ElementStyles;
 
 // @public
 export const progressRingStyles: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: ProgressRingOptions) => import("@microsoft/fast-element").ElementStyles;
@@ -1138,13 +1224,14 @@ export const typeRampPlus6LineHeight: import("@microsoft/fast-foundation").CSSDe
 
 // Warnings were encountered during analysis:
 //
-// dist/dts/custom-elements.d.ts:68:5 - (ae-incompatible-release-tags) The symbol "fastButton" is marked as @public, but its signature references "Button" which is marked as @internal
-// dist/dts/custom-elements.d.ts:69:5 - (ae-incompatible-release-tags) The symbol "fastCard" is marked as @public, but its signature references "Card" which is marked as @internal
-// dist/dts/custom-elements.d.ts:76:5 - (ae-incompatible-release-tags) The symbol "fastDisclosure" is marked as @public, but its signature references "Disclosure" which is marked as @internal
-// dist/dts/custom-elements.d.ts:92:5 - (ae-incompatible-release-tags) The symbol "fastSliderLabel" is marked as @public, but its signature references "SliderLabel" which is marked as @internal
-// dist/dts/custom-elements.d.ts:97:5 - (ae-incompatible-release-tags) The symbol "fastTextArea" is marked as @public, but its signature references "TextArea" which is marked as @internal
-// dist/dts/custom-elements.d.ts:98:5 - (ae-incompatible-release-tags) The symbol "fastTextField" is marked as @public, but its signature references "TextField" which is marked as @internal
-// dist/dts/custom-elements.d.ts:100:5 - (ae-incompatible-release-tags) The symbol "fastToolbar" is marked as @public, but its signature references "Toolbar" which is marked as @internal
+// dist/dts/custom-elements.d.ts:71:5 - (ae-incompatible-release-tags) The symbol "fastButton" is marked as @public, but its signature references "Button" which is marked as @internal
+// dist/dts/custom-elements.d.ts:72:5 - (ae-incompatible-release-tags) The symbol "fastCard" is marked as @public, but its signature references "Card" which is marked as @internal
+// dist/dts/custom-elements.d.ts:79:5 - (ae-incompatible-release-tags) The symbol "fastDisclosure" is marked as @public, but its signature references "Disclosure" which is marked as @internal
+// dist/dts/custom-elements.d.ts:88:5 - (ae-forgotten-export) The symbol "PeoplePicker" needs to be exported by the entry point index.d.ts
+// dist/dts/custom-elements.d.ts:111:5 - (ae-incompatible-release-tags) The symbol "fastSliderLabel" is marked as @public, but its signature references "SliderLabel" which is marked as @internal
+// dist/dts/custom-elements.d.ts:116:5 - (ae-incompatible-release-tags) The symbol "fastTextArea" is marked as @public, but its signature references "TextArea" which is marked as @internal
+// dist/dts/custom-elements.d.ts:117:5 - (ae-incompatible-release-tags) The symbol "fastTextField" is marked as @public, but its signature references "TextField" which is marked as @internal
+// dist/dts/custom-elements.d.ts:119:5 - (ae-incompatible-release-tags) The symbol "fastToolbar" is marked as @public, but its signature references "Toolbar" which is marked as @internal
 
 // (No @packageDocumentation comment for this package)
 
