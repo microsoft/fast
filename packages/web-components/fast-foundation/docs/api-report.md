@@ -2014,26 +2014,40 @@ export class Toolbar extends FoundationElement {
     get activeIndex(): number;
     set activeIndex(value: number);
     // @internal
+    protected buildFocusableElements(): void;
+    // @internal
     clickHandler(e: MouseEvent): boolean | void;
     // @internal (undocumented)
     connectedCallback(): void;
     // @internal
     direction: Direction;
+    // (undocumented)
+    endContainer: HTMLSpanElement;
+    endSlottedItems: HTMLElement[];
+    // (undocumented)
+    protected endSlottedItemsChanged(): void;
     // @internal
     focusinHandler(e: FocusEvent): boolean | void;
+    protected getAllSlottedItems(): HTMLElement[];
     // @internal
     keydownHandler(e: KeyboardEvent): boolean | void;
     orientation: Orientation;
     // @internal
     slottedItems: HTMLElement[];
-    // @internal
-    protected slottedItemsChanged(prev: unknown, next: HTMLElement[]): void;
+    // (undocumented)
+    protected slottedItemsChanged(): void;
     // @internal
     slottedLabel: HTMLElement[];
+    // (undocumented)
+    startContainer: HTMLSpanElement;
+    // @internal
+    startSlottedItems: HTMLElement[];
+    // (undocumented)
+    protected startSlottedItemsChanged(): void;
 }
 
 // @internal (undocumented)
-export interface Toolbar extends StartEnd, DelegatesARIAToolbar {
+export interface Toolbar extends DelegatesARIAToolbar {
 }
 
 // @public
