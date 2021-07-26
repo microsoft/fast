@@ -103,25 +103,27 @@ export class AnchoredRegion extends FoundationElement {
     fixedPlacement: boolean;
     horizontalDefaultPosition: HorizontalPosition;
     horizontalInset: boolean;
-    // Warning: (ae-forgotten-export) The symbol "AnchoredRegionHorizontalPositionLabel" needs to be exported by the entry point index.d.ts
-    horizontalPosition: AnchoredRegionHorizontalPositionLabel;
+    horizontalPosition: AnchoredRegionPositionLabel | undefined;
     horizontalPositioningMode: AxisPositioningMode;
     horizontalScaling: AxisScalingMode;
     horizontalThreshold: number;
+    horizontalViewportLock: boolean;
     // @internal
     initialLayoutComplete: boolean;
     update: () => void;
-    updateAnchorOffset: (horizontalOffsetDelta: number, verticalOffsetDelta: number) => void;
     verticalDefaultPosition: VerticalPosition;
     verticalInset: boolean;
-    // Warning: (ae-forgotten-export) The symbol "AnchoredRegionVerticalPositionLabel" needs to be exported by the entry point index.d.ts
-    verticalPosition: AnchoredRegionVerticalPositionLabel;
+    verticalPosition: AnchoredRegionPositionLabel | undefined;
     verticalPositioningMode: AxisPositioningMode;
     verticalScaling: AxisScalingMode;
     verticalThreshold: number;
+    verticalViewportLock: boolean;
     viewport: string;
     viewportElement: HTMLElement | null;
     }
+
+// @beta
+export type AnchoredRegionPositionLabel = "start" | "insetStart" | "insetEnd" | "end";
 
 // @beta
 export const anchoredRegionTemplate: (context: ElementDefinitionContext, definition: FoundationElementDefinition) => ViewTemplate<AnchoredRegion>;
@@ -2106,6 +2108,8 @@ export const toolbarTemplate: (context: ElementDefinitionContext, definition: Fo
 export class Tooltip extends FoundationElement {
     anchor: string;
     anchorElement: HTMLElement | null;
+    // Warning: (ae-incompatible-release-tags) The symbol "autoUpdateMode" is marked as @public, but its signature references "AutoUpdateMode" which is marked as @beta
+    autoUpdateMode: AutoUpdateMode;
     // (undocumented)
     connectedCallback(): void;
     // @internal

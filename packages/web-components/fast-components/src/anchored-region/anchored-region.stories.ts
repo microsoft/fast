@@ -5,11 +5,9 @@ import { AnchoredRegion as FoundationAnchoredRegion } from "@microsoft/fast-foun
 import AnchoredRegionTemplate from "./fixtures/base.html";
 import "./index";
 
-let scalingViewportPreviousXValue: number = 250;
-let scalingViewportPreviousYValue: number = 250;
-
 addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
     if (name.toLowerCase().startsWith("anchored-region")) {
+        //scroll stuff into view
         document.querySelectorAll("div[id^=viewport]").forEach((el: HTMLElement) => {
             el.scrollTop = 280;
             RtlScrollConverter.setScrollLeft(
@@ -19,74 +17,99 @@ addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
             );
         });
 
-        document.querySelectorAll("[id^=toggle-anchor-anchor").forEach(anchor => {
+        // header region
+        const headerFixedButton = document.getElementById("anchor-header-menu-fixed");
+        headerFixedButton?.addEventListener("click", (e: MouseEvent) => {
+            const menu: FoundationAnchoredRegion = document.getElementById(
+                "header-menu-fixed"
+            ) as FoundationAnchoredRegion;
+            if (menu.style.display === "none") {
+                menu.style.display = "";
+            } else {
+                menu.style.display = "none";
+            }
+        });
+
+        const headerScalingButton = document.getElementById("anchor-header-menu-scaling");
+        headerScalingButton?.addEventListener("click", (e: MouseEvent) => {
+            const menu: FoundationAnchoredRegion = document.getElementById(
+                "header-menu-scaling"
+            ) as FoundationAnchoredRegion;
+            if (menu.style.display === "none") {
+                menu.style.display = "";
+            } else {
+                menu.style.display = "none";
+            }
+        });
+
+        const regionScalingUpdate = document.getElementById(
+            "region-upd1"
+        ) as FoundationAnchoredRegion;
+        document
+            .getElementById("viewport-upd1")!
+            .addEventListener("scroll", () => regionScalingUpdate.update());
+
+        const togglesRegion = document.getElementById("toggles-region");
+
+        // toggle anchor example
+        document.querySelectorAll("[id^=toggles1-anchor").forEach(anchor => {
             anchor.addEventListener("click", (e: MouseEvent) => {
-                document
-                    .getElementById("toggle-anchor-region")!
-                    .setAttribute("anchor", (e.target as HTMLElement).id);
+                togglesRegion!.setAttribute("anchor", (e.target as HTMLElement).id);
             });
         });
 
-        const positionsRegion = document.getElementById("toggle-positions-region")!;
         document
-            .querySelectorAll("#toggle-positions-horizontal, #toggle-positions-vertical")
-            .forEach((el: HTMLElement) => {
-                el.addEventListener("click", (e: MouseEvent) => {
-                    const isHorizontal = (e.target as HTMLElement).id.includes(
-                        "horizontal"
-                    );
-                    const direction = isHorizontal ? "horizontal" : "vertical";
-                    const attr = `${direction}-default-position`;
-
-                    const currentPosition = positionsRegion.getAttribute(attr);
-
-                    positionsRegion.setAttribute(
-                        attr,
-                        isHorizontal
-                            ? currentPosition === "left"
-                                ? "right"
-                                : "left"
-                            : currentPosition === "top"
-                            ? "bottom"
-                            : "top"
-                    );
-                });
+            .getElementById("toggle-positions-horizontal")!
+            .addEventListener("click", (e: MouseEvent) => {
+                if (
+                    togglesRegion?.getAttribute("horizontal-default-position") === "right"
+                ) {
+                    togglesRegion!.setAttribute("horizontal-default-position", "left");
+                } else {
+                    togglesRegion!.setAttribute("horizontal-default-position", "right");
+                }
             });
 
-        const smallContent = document.getElementById("toggle-positions-small")!;
-        const largeContent = document.getElementById("toggle-positions-large")!;
         document
-            .querySelectorAll("[id^=btn-toggle-positions]")
-            .forEach((el: HTMLElement) => {
-                el.addEventListener("click", (e: MouseEvent) => {
-                    const isSmall = (e.target as HTMLElement).id.includes("small");
-                    smallContent.hidden = !isSmall;
-                    largeContent.hidden = isSmall;
-                });
+            .getElementById("toggle-positions-vertical")!
+            .addEventListener("click", (e: MouseEvent) => {
+                if (togglesRegion?.getAttribute("vertical-default-position") === "top") {
+                    togglesRegion!.setAttribute("vertical-default-position", "bottom");
+                } else {
+                    togglesRegion!.setAttribute("vertical-default-position", "top");
+                }
             });
 
-        const regionScalingUpdate = document.getElementById(
-            "region-scaling-update"
-        ) as FoundationAnchoredRegion;
         document
-            .getElementById("viewport-scaling-update")!
-            .addEventListener("scroll", () => regionScalingUpdate.update());
+            .getElementById("toggle-inset-vertical")!
+            .addEventListener("click", (e: MouseEvent) => {
+                if (togglesRegion?.getAttribute("vertical-inset") === "true") {
+                    togglesRegion!.setAttribute("vertical-inset", "false");
+                } else {
+                    togglesRegion!.setAttribute("vertical-inset", "true");
+                }
+            });
 
-        const regionScalingOffset = document.getElementById(
-            "region-scaling-offset"
-        ) as FoundationAnchoredRegion;
         document
-            .getElementById("viewport-scaling-offset")
-            ?.addEventListener("scroll", (e: MouseEvent) => {
-                const target = e.target as HTMLElement;
+            .getElementById("toggle-inset-horizontal")!
+            .addEventListener("click", (e: MouseEvent) => {
+                if (togglesRegion?.getAttribute("horizontal-inset") === "true") {
+                    togglesRegion!.setAttribute("horizontal-inset", "false");
+                } else {
+                    togglesRegion!.setAttribute("horizontal-inset", "true");
+                }
+            });
 
-                regionScalingOffset.updateAnchorOffset(
-                    scalingViewportPreviousXValue - target.scrollLeft,
-                    scalingViewportPreviousYValue - target.scrollTop
-                );
-
-                scalingViewportPreviousXValue = target.scrollLeft;
-                scalingViewportPreviousYValue = target.scrollTop;
+        document
+            .querySelectorAll("[id^=anchor-menu-many]")
+            .forEach((el: HTMLButtonElement) => {
+                el.addEventListener("click", (e: MouseEvent) => {
+                    const menuNum = el.id.substr(16);
+                    const menu: FoundationAnchoredRegion = document.getElementById(
+                        `menu-many${menuNum}`
+                    ) as FoundationAnchoredRegion;
+                    menu.style.display = menu.style.display === "none" ? "" : "none";
+                });
             });
     }
 });

@@ -2,6 +2,50 @@
   "name": "@microsoft/fast-foundation",
   "entries": [
     {
+      "date": "Sun, 25 Jul 2021 07:17:41 GMT",
+      "tag": "@microsoft/fast-foundation_v2.6.0",
+      "version": "2.6.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "add auto position tracking to tooltip",
+            "author": "scomea@microsoft.com",
+            "commit": "9f6e61d3b45af6da0430677f9d437ff7ba0cdae9",
+            "package": "@microsoft/fast-foundation"
+          },
+          {
+            "comment": "anchored region uses transform",
+            "author": "scomea@microsoft.com",
+            "commit": "4dd29d77f026b51c4031bf19acf494d1768a2611",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 22 Jul 2021 07:19:53 GMT",
+      "tag": "@microsoft/fast-foundation_v2.5.2",
+      "version": "2.5.2",
+      "comments": {
+        "none": [
+          {
+            "comment": "doc: fix import adapter statement",
+            "author": "ben@platform5.ch",
+            "commit": "7cfed1eef45c4947bd0439d448b9c79befc58406",
+            "package": "@microsoft/fast-foundation"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "Fixed attr boolean mode on menu item",
+            "author": "47367562+bheston@users.noreply.github.com",
+            "commit": "6325e61798e5fee6bb09ce0336636a1d1f2c4959",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 21 Jul 2021 07:14:48 GMT",
       "tag": "@microsoft/fast-foundation_v2.5.1",
       "version": "2.5.1",

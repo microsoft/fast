@@ -1,5 +1,5 @@
 import { nativeElementSchemas } from "@microsoft/site-utilities";
-import { NativeElementLibraryDefinition } from "./typings";
+import { NativeElementLibraryDefinition } from "../typings";
 import {
     divExample,
     heading1Example,
@@ -10,6 +10,7 @@ import {
     heading6Example,
     imageExample,
     labelExample,
+    paragraphExample,
     spanExample,
 } from "./library.native.examples";
 import {
@@ -46,7 +47,7 @@ export const nativeElementLibrary: NativeElementLibraryDefinition = {
         [nativeElementSchemas[paragraphTag].$id]: {
             displayName: nativeElementSchemas[paragraphTag].title,
             schema: nativeElementSchemas[paragraphTag],
-            example: imageExample,
+            example: paragraphExample,
         },
         [nativeElementSchemas[spanTag].$id]: {
             displayName: nativeElementSchemas[spanTag].title,

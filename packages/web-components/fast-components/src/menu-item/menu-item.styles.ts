@@ -63,6 +63,10 @@ export const menuItemStyles: (
         grid-row: 1;
         margin-inline-start: 10px;
     }
+    :host(.indent-0) .expand-collapse-glyph-container {
+        grid-column: 5;
+        grid-row: 1;
+    }
     :host(.indent-2) {
         grid-template-columns: minmax(42px, auto) minmax(42px, auto) 1fr minmax(42px, auto) minmax(42px, auto);
     }
@@ -156,6 +160,13 @@ export const menuItemStyles: (
         fill: ${neutralForegroundRest};
     }
 
+    :host(.indent-0[aria-haspopup="menu"]) {
+        display: grid;
+        grid-template-columns: minmax(42px, auto) auto 1fr minmax(42px, auto) minmax(42px, auto);
+        align-items: center;
+        min-height: 32px;
+    }
+
     :host(.indent-1[aria-haspopup="menu"]),
     :host(.indent-1[role="menuitemcheckbox"]),
     :host(.indent-1[role="menuitemradio"]) {
@@ -185,6 +196,10 @@ export const menuItemStyles: (
     :host([role="menuitemcheckbox"]) .content,
     :host([role="menuitemradio"]) .content {
         grid-column-start: 3;
+    }
+
+    :host([aria-haspopup="menu"].indent-0) .content {
+        grid-column-start: 1;
     }
 
     :host([aria-haspopup="menu"]) .end,

@@ -1,8 +1,25 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Wed, 21 Jul 2021 07:14:48 GMT and should not be manually modified.
+This log was last generated on Sun, 25 Jul 2021 07:17:41 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.6.0
+
+Sun, 25 Jul 2021 07:17:41 GMT
+
+### Minor changes
+
+- add auto position tracking to tooltip (scomea@microsoft.com)
+- anchored region uses transform (scomea@microsoft.com)
+
+## 2.5.2
+
+Thu, 22 Jul 2021 07:19:53 GMT
+
+### Patches
+
+- Fixed attr boolean mode on menu item (47367562+bheston@users.noreply.github.com)
 
 ## 2.5.1
 

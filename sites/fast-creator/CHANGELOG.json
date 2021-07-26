@@ -2,6 +2,36 @@
   "name": "@microsoft/fast-creator",
   "entries": [
     {
+      "date": "Sun, 25 Jul 2021 07:17:41 GMT",
+      "tag": "@microsoft/fast-creator_v0.7.0",
+      "version": "0.7.0",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-tooling-react to v2.9.6",
+            "author": "scomea@microsoft.com",
+            "commit": "9f6e61d3b45af6da0430677f9d437ff7ba0cdae9",
+            "package": "@microsoft/fast-creator"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 22 Jul 2021 07:19:53 GMT",
+      "tag": "@microsoft/fast-creator_v0.7.0",
+      "version": "0.7.0",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-tooling-react to v2.9.5",
+            "author": "chhol@microsoft.com",
+            "commit": "f184db3753b62b900e734f929c48703e2540815f",
+            "package": "@microsoft/fast-creator"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 21 Jul 2021 07:14:48 GMT",
       "tag": "@microsoft/fast-creator_v0.7.0",
       "version": "0.7.0",
