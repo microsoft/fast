@@ -14,12 +14,14 @@ An implementation of a content scroller as a web-component.
 ```ts
 import {
     provideFASTDesignSystem,
-    fastHorizontalScroll
+    fastHorizontalScroll,
+    fastFlipper
 } from "@microsoft/fast-components";
 
 provideFASTDesignSystem()
     .register(
-        fastHorizontalScroll()
+        fastHorizontalScroll(),
+        fastFlipper()
     );
 ```
 
