@@ -6,7 +6,7 @@ custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/src
 ---
 #### Design System
 
-A Design System can generally be thought of as a collection of resources for interactive media that promotes brand alignment. While that definition is intentionally broad, in UI development, Design Systems generally manifest as component libraries surrounded by usage guidance and design principles.
+A Design System can generally be thought of as a collection of resources for interactive media that promotes brand alignment. While that definition is intentionally broad, in UI development Design Systems generally manifest as component libraries surrounded by usage guidance and design principles.
 
 #### Design Token
 
