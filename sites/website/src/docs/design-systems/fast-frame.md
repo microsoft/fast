@@ -16,16 +16,16 @@ Web components from FAST Frame must be registered with the `DesignSystem` prior 
 ```ts
 // ...
 import { 
-		fastButton, 
-		fastMenu, 
-		provideFASTDesignSystem 
+    fastButton, 
+    fastMenu, 
+    provideFASTDesignSystem 
 } from "@microsoft/fast-components";
 
 provideFASTDesignSystem()
-		.register(
-    		fastButton(),
-    		fastMenu()
-		);
+    .register(
+        fastButton(),
+        fastMenu()
+    );
 ```
 
 ### Add Element to HTML
@@ -98,9 +98,9 @@ The prefix for a component can be configured for a component registration by pro
 
 ```ts
 provideFASTDesignSystem()
-	.register(
-		fastButton({ prefix: "faster" })
-	);
+    .register(
+        fastButton({ prefix: "faster" })
+    );
 ```
 
 #### Template
@@ -109,13 +109,13 @@ To use a custom template for a component, provide a `template` field to the conf
 
 ```ts
 provideFASTDesignSystem()
-	.register(
-		fastButton({ 
-			template: html`
-				<p>A completely new template</p>
-			` 
-		})
-	)
+    .register(
+        fastButton({ 
+            template: html`
+                <p>A completely new template</p>
+            ` 
+        })
+    )
 ```
 
 #### Styles
@@ -124,28 +124,28 @@ Styles for a component can be configured as well, by providing a `styles` field 
 
 ```ts
 provideFASTDesignSystem()
-	.register(
-		fastButton({ 
-			styles: css`
-				/* completely replace the original styles */
-			` 
-		})
-	)
+    .register(
+        fastButton({ 
+            styles: css`
+                /* completely replace the original styles */
+            ` 
+        })
+    )
 ```
 
 It's also worth noting that this can be used to simply extend the existing styles, by importing the originals and composing those with new styles. Here's what that would look like:
 
 ```ts
 provideFASTDesignSystem()
-	.register(
-		fastButton({
-			styles: css`
-				/* import and compose the original styles */
-				${buttonStyles}
-				/* add your style augmentations here */
-			`
-		})
-	)
+    .register(
+        fastButton({
+            styles: css`
+                /* import and compose the original styles */
+                ${buttonStyles}
+                /* add your style augmentations here */
+            `
+        })
+    )
 ```
 
 #### Shadow Options
@@ -154,14 +154,14 @@ Shadow options can be configured as well, including both [shadow root mode](http
 
 ```ts
 provideFASTDesignSystem()
-	.register(
-		fastButton({ 
-			shadowOptions: {
-				mode: "closed",
-			 	delegatesFocus: true 
-			}
-		})
-	);
+    .register(
+        fastButton({ 
+            shadowOptions: {
+                mode: "closed",
+                delegatesFocus: true 
+            }
+        })
+    );
 ```
 
 For more information on shadow options, see [Element.attachShadow()](https://developer.mozilla.org/en-US/docs/Web/API/Element/attachShadow).
