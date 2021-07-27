@@ -30,12 +30,11 @@ provideFASTDesignSystem()
 ## Usage
 
 ```html live
-<label id="radiogroup">Preset selected-value</label>
-<fast-radio-group value="maverick" aria-labelledby="radiogroup" name="best-pilot">
-    <fast-radio value="ice-man">Ice Man</fast-radio>
-    <fast-radio value="maverick">Maverick</fast-radio>
-    <fast-radio value="viper">Viper</fast-radio>
-    <fast-radio value="jester">Jester</fast-radio>
+<label id="fruit">Favorite fruit:</label>
+<fast-radio-group value="mango" aria-labelledby="fruit" name="favorite-fruit">
+    <fast-radio value="apple">Apple</fast-radio>
+    <fast-radio value="mango">Mango</fast-radio>
+    <fast-radio value="orange">Orange</fast-radio>
 </fast-radio-group>
 ```
 

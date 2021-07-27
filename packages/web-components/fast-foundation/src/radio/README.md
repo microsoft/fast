@@ -42,8 +42,19 @@ provideFASTDesignSystem()
 ## Usage
 
 ```html live
-<fast-radio value="mango" required>Mango</fast-radio>
+<div role="radiogroup" aria-labelledby="fruit">
+    <h3 id="fruit">Favorite fruit:</h3>
+    <fast-radio value="apple">Apple</fast-radio>
+    <fast-radio value="mango" checked>Mango</fast-radio>
+    <fast-radio value="orange">Orange</fast-radio>
+</div>
  ```
+
+:::note
+
+For a more ergonomic usage of radios in groups, see [the `fast-radio-group` documentation](/docs/components/radio-group).
+
+:::
 
 ## Create your own design
 
