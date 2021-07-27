@@ -16,6 +16,4 @@ The following browsers have native support for the Web Components features used 
 * Opera Mobile 46+
 * Chrome for Android 81+
 * Firefox for Android 68+
-* Samsung Internet 6.2+
-
-It is possible to use `fast-element` and our components in older browsers, but polyfills are required and won't perform as well as the native implementations. For more information on leveraging polyfills [see the webcomponents/polyfills project](https://github.com/webcomponents/polyfills/tree/master/packages/webcomponentsjs) on GitHub.
+* Samsung Internet 6.2+x

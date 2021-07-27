@@ -51,34 +51,11 @@ Should you wish to go one step further and leverage a client-side bundler, such 
 npm install --save @microsoft/fast-components @microsoft/fast-element lodash-es
 ```
 
-In this case, because Webpack can tree-shake unused components, you'll also want to be sure to explicitly import the components you want to use somewhere in your own JavaScript code. See [our Webpack guide](./webpack) for an example.
+In this case, because Webpack can tree-shake unused components, you'll also want to be sure to register the components you want to use somewhere in your own JavaScript code. See [our Webpack guide](./webpack) for an example.
 
 ## Using the components
 
-Regardless of which path you've chosen above, you should be all set to start using the components. The first component we want to set up is the `<fast-design-system-provider>` component. This configures the design system that will govern the appearance of all of the components. The best place to put this is at the root of your app, wrapping all your HTML. Here's an example of what your `_Layout.cshtml` might look like:
-
-```html
-<body>
-  <fast-design-system-provider use-defaults>
-    <header>
-        ...
-    </header>
-    <div>
-      <main role="main">
-        @RenderBody()
-      </main>
-    </div>
-    <footer>
-      ...
-    </footer>
-  </fast-design-system-provider>
-  <script src="~/js/site.js" asp-append-version="true"></script>
-  <script type="module" src="~/js/fast-components.min.js"></script>
-  @RenderSection("Scripts", required: false)
-</body>
-```
-
-With this in place, you can use any component in any of your views. For example, you could put something like this in your `Index.cshtml` file:
+With your script tag added (or your client bundle in place), you can use any component in any of your views. For example, you could put something like this in your `Index.cshtml` file:
 
 ```html
 @{
@@ -96,10 +73,6 @@ For a splash of style, add the following to your `wwwroot/css/site.css` file:
 ```css
 :not(:defined) {
   visibility: hidden;
-}
-
-fast-design-system-provider {
-  display: inline-block;
 }
 
 fast-card {
