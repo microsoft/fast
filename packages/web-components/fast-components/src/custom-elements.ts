@@ -13,6 +13,7 @@ import { fastCard } from "./card/index";
 import { fastCheckbox } from "./checkbox/index";
 import { fastCombobox } from "./combobox/index";
 import { fastDataGrid, fastDataGridCell, fastDataGridRow } from "./data-grid/index";
+import { fastDesignSystemProvider } from "./design-system-provider/index";
 import { fastDialog } from "./dialog/index";
 import { fastDisclosure } from "./disclosure/index";
 import { fastDivider } from "./divider/index";
@@ -74,6 +75,7 @@ export {
     fastDataGrid,
     fastDataGridCell,
     fastDataGridRow,
+    fastDesignSystemProvider,
     fastDialog,
     fastDisclosure,
     fastDivider,
@@ -127,6 +129,7 @@ export const allComponents = {
     fastDataGrid,
     fastDataGridCell,
     fastDataGridRow,
+    fastDesignSystemProvider,
     fastDialog,
     fastDisclosure,
     fastDivider,
