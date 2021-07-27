@@ -27,10 +27,10 @@ export const checkboxTemplate: (
             x.checked ? "checked" : ""} ${x => (x.indeterminate ? "indeterminate" : "")}"
     >
         <div part="control" class="control">
-            <slot name="checked-indicator" aria-hidden="true">
+            <slot name="checked-indicator">
                 ${definition.checkedIndicator || ""}
             </slot>
-            <slot name="indeterminate-indicator" aria-hidden="true">
+            <slot name="indeterminate-indicator">
                 ${definition.indeterminateIndicator || ""}
             </slot>
         </div>
