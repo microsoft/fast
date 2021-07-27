@@ -657,6 +657,7 @@ export class AnchoredRegion extends FoundationElement {
 
         // don't update the dom unless there is a significant difference in rect positions
         if (
+            !this.regionVisible ||
             this.regionRect === undefined ||
             this.anchorRect === undefined ||
             this.viewportRect === undefined ||
