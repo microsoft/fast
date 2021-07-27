@@ -27,12 +27,9 @@ provideFASTDesignSystem()
 
 ```html live
 <fast-disclosure appearance="lightweight">
-    <span slot="start">👩🏻‍🦳</span>
-    <strong slot="title">Read about White Canary</strong>
+    <strong slot="title">Read about FAST</strong>
     <div>
-        Sara Lance, also known by her alter-ego White Canary, is a fictional character
-        in The CW's Arrowverse franchise, first introduced in the 2012 pilot episode
-        of the television series Arrow, and later starring in Legends of Tomorrow.
+        FAST is a collection of technologies built on Web Components and modern Web Standards, designed to help you efficiently tackle some of the most common challenges in website and application design and development.
     </div>
 </fast-disclosure>
 ```
