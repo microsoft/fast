@@ -31,7 +31,7 @@ The required fields are:
 * **sidebar_label**: The label displayed in the table of contents.
 * **custom_edit_url**: A URL where the document source can be edited.
 
-Beneath the YAML metadata block, the article's body is written with [GitHub-flavored Markdown syntax](https://github.github.com/gfm/). Since our documentation system will turn the `title` metadata into the article header, the content should begin  with a short introductory paragraph, followed by an h2 header for each section of the document. You may use h3 headers beneath h2 headers but avoid deeper sub-sections.
+Beneath the YAML metadata block, the article's body is written with [GitHub-flavored Markdown syntax](https://github.github.com/gfm/). Since our documentation system will turn the `title` metadata into the article header, the content should begin with a short introductory paragraph, followed by an h2 header for each section of the document. You may use h3 headers beneath h2 headers but avoid deeper sub-sections.
 
 In addition to [GitHub-flavored Markdown syntax](https://github.github.com/gfm/), you may use the admonitions `note`, `tip`, `important`, `caution`, and `warning`. Here's an example of the syntax for a `note`:
 
