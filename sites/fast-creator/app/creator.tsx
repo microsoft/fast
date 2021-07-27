@@ -133,7 +133,7 @@ class Creator extends Editor<{}, CreatorState> {
             return (
                 <LinkedDataControl
                     {...config}
-                    onChange={this.handleAddLinkedData(config.onChange)}
+                    onChange={this.handleLinkedDataUpdates(config.onChange)}
                 />
             );
         },
@@ -423,7 +423,9 @@ class Creator extends Editor<{}, CreatorState> {
         );
     };
 
-    private handleAddLinkedData = (onChange): ((e: ControlOnChangeConfig) => void) => {
+    private handleLinkedDataUpdates = (
+        onChange
+    ): ((e: ControlOnChangeConfig) => void) => {
         return (e: ControlOnChangeConfig): void => {
             Object.entries(elementLibraryContents).forEach(
                 ([elementLibraryId, schemaIds]: [string, string[]]) => {
@@ -439,7 +441,10 @@ class Creator extends Editor<{}, CreatorState> {
                                         .componentDictionary[e.value[0].schemaId].example,
                                 ] || e.value,
                         });
-                    } else if (e.linkedDataAction === LinkedDataActionType.remove) {
+                    } else if (
+                        e.linkedDataAction === LinkedDataActionType.remove ||
+                        e.linkedDataAction === LinkedDataActionType.reorder
+                    ) {
                         onChange(e);
                     }
                 }
