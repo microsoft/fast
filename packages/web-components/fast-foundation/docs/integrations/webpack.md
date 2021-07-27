@@ -165,37 +165,29 @@ First, open your `src/main.ts` file and add the following code:
 
 ```ts
 import { 
-  FASTDesignSystemProvider, 
-  FASTCard, 
-  FASTButton 
+  provideFASTDesignSystem, 
+  fastCard, 
+  fastButton
 } from '@microsoft/fast-components';
 
-/*
- * Ensure that tree-shaking doesn't remove these components from the bundle.
- * There are multiple ways to prevent tree shaking, of which this is one.
- */
-FASTDesignSystemProvider;
-FASTCard;
-FASTButton;
+provideFASTDesignSystem()
+    .register(
+        fastCard(),
+        fastButton()
+    );
 ```
 
-This code imports the `<fast-design-system-provider>` component as well as the `<fast-card>`, and `<fast-button>` components. Once you save, the dev server will rebuild and refresh your browser. However, you still won't see anything. To get some UI showing up, we need to write some HTML that uses our components. Replace the `<body>` of your `index.html` file with the following markup:
+This code uses the FAST Design System to register the `<fast-card>` and `<fast-button>` components. Once you save, the dev server will rebuild and refresh your browser. However, you still won't see anything. To get some UI showing up, we need to write some HTML that uses our components. Replace the contents of the `<body>` in your `index.html` file with the following markup:
 
 ```html
 <body>
-  <fast-design-system-provider use-defaults>
-    <fast-card>
-      <h2>Hello World!</h2>
-      <fast-button appearance="accent">Click Me</fast-button>
-    </fast-card>
-  </fast-design-system-provider>
+  <fast-card>
+    <h2>Hello World!</h2>
+    <fast-button appearance="accent">Click Me</fast-button>
+  </fast-card>
   <style>
     :not(:defined) {
       visibility: hidden;
-    }
-    
-    fast-design-system-provider {
-      display: inline-block;
     }
 
     fast-card {
