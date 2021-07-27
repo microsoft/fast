@@ -482,7 +482,7 @@ class Creator extends Editor<{}, CreatorState> {
                 } as CustomMessageIncomingOutgoing<any>);
                 updatedState.previewReady = true;
                 this.updateEditorContent(this.state.dataDictionary);
-                this.handleLibraryAdded(fluentUIComponentId);
+                this.handleAddLibrary(fluentUIComponentId);
             } else if (e.data.value) {
                 this.fastMessageSystem.postMessage({
                     type: MessageSystemType.navigation,
