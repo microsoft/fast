@@ -9,7 +9,15 @@ import type { Calendar, CalendarDateInfo } from "./calendar";
  */
 export const CalendarTitleTemplate: ViewTemplate<Calendar> = html`
     <slot name="title">
-        <div class="title" part="title">
+        <div
+            class="title"
+            part="title"
+            aria-label="${x =>
+                x.localeFormatter(`${x.month}-2-${x.year}`, {
+                    month: "long",
+                    year: "numeric",
+                })}"
+        >
             <span part="month">${x => x.getMonth()}</span>
             <span part="year">${x => x.getYear()}</span>
         </div>
@@ -20,8 +28,14 @@ export const CalendarTitleTemplate: ViewTemplate<Calendar> = html`
  * Calendar weekday label template
  * @public
  */
-export const CalendarWeekdayTemplate: ViewTemplate<Calendar> = html`
-    <div class="week-day" part="week-day">${x => x}</div>
+export const CalendarWeekdayTemplate: ViewTemplate = html`
+    <div
+        class="week-day"
+        part="week-day"
+        aria-label="${x => (x.label !== x.text ? x.label : null)}"
+    >
+        ${x => x.text}
+    </div>
 `;
 
 /**
@@ -32,9 +46,13 @@ export const CalendarDayTemplate: ViewTemplate<CalendarDateInfo> = html`
     <div
         part="day"
         aria-label="${(x, c) =>
-            ("getMonth" in c.parent ? c : c.parentContext).parent.getMonth(
-                x.month
-            )} ${x => x.day}"
+            ("localeFormatter" in c.parent
+                ? c
+                : c.parentContext
+            ).parent.localeFormatter(`${x.month}-${x.day}-${x.year}`, {
+                month: "long",
+                day: "numeric",
+            })}"
         class="${(x, c) =>
             ("getDayClassNames" in c.parent
                 ? c

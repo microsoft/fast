@@ -274,7 +274,10 @@ export class Calendar extends FoundationElement {
     getDays(info?: CalendarInfo, minWeeks?: number): CalendarDateInfo[];
     getMonth(month?: number, format?: DateStyle, locale?: string): string;
     getMonthInfo(month?: number, year?: number): CalendarInfo;
-    getWeekDays(format?: DateStyle, locale?: string): string[];
+    getWeekDays(format?: DateStyle, locale?: string): {
+        label: string;
+        text: string;
+    }[];
     getYear(year?: number, format?: YearFormat, locale?: string): string;
     handleDateSelect(day: CalendarDateInfo): void;
     // @internal
@@ -316,7 +319,7 @@ export const CalendarTemplate: ViewTemplate<Calendar>;
 export const CalendarTitleTemplate: ViewTemplate<Calendar>;
 
 // @public
-export const CalendarWeekdayTemplate: ViewTemplate<Calendar>;
+export const CalendarWeekdayTemplate: ViewTemplate;
 
 // @public
 export class Card extends FoundationElement {

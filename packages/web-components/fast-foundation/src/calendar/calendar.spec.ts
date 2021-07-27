@@ -141,7 +141,7 @@ describe("Calendar", () => {
             await connect();
 
             const weekdays = (element as Calendar).getWeekDays();
-            expect(weekdays[1]).to.equal("Mon");
+            expect(weekdays[1].text).to.equal("Mon");
         });
 
         it("Should return Monday weekday for long format", async () => {
@@ -152,7 +152,7 @@ describe("Calendar", () => {
             await connect();
 
             const weekdays = (element as Calendar).getWeekDays();
-            expect(weekdays[1]).to.equal("Monday");
+            expect(weekdays[1].text).to.equal("Monday");
         });
 
         it("Should return M for Monday for narrow format", async () => {
@@ -163,7 +163,7 @@ describe("Calendar", () => {
             await connect();
 
             const weekdays = (element as Calendar).getWeekDays();
-            expect(weekdays[1]).to.equal("M");
+            expect(weekdays[1].text).to.equal("M");
         });
     });
 
@@ -188,7 +188,7 @@ describe("Calendar", () => {
 
             const frenchWeekdays = [ "dim.", "lun.", "mar.", "mer.", "jeu.", "ven.", "sam." ];
             const weekdays = (element as Calendar).getWeekDays();
-            const matchedDays = weekdays.filter((day, index) => day === frenchWeekdays[index]);
+            const matchedDays = weekdays.filter((day, index) => day.text === frenchWeekdays[index]);
             expect(matchedDays.length).to.equal(7);
         });
 

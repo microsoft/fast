@@ -257,12 +257,16 @@ export class Calendar extends FoundationElement {
     public getWeekDays(
         format: DateStyle = this.weekdayFormat,
         locale = this.locale
-    ): string[] {
+    ): { label: string; text: string }[] {
         return Array(7)
             .fill(null)
-            .map((_, day) =>
-                this.localeFormatter(`1-${day + 1}-2017`, { weekday: format }, locale)
-            );
+            .map((_, day) => {
+                const date = `1-${day + 1}-2017`;
+                return {
+                    label: this.localeFormatter(date, { weekday: "long" }, locale),
+                    text: this.localeFormatter(date, { weekday: format }, locale),
+                };
+            });
     }
 
     /**
