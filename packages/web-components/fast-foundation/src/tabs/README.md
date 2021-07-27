@@ -28,7 +28,7 @@ provideFASTDesignSystem()
 ## Usage
 
 ```html live
-<fast-tabs activeId="entrees">
+<fast-tabs activeid="entrees">
     <fast-tab id="apps">Appetizers</fast-tab>
     <fast-tab id="entrees">Entrees</fast-tab>
     <fast-tab id="desserts">Desserts</fast-tab>
