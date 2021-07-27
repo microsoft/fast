@@ -177,7 +177,7 @@ provideFASTDesignSystem()
     );
 ```
 
-This code uses the FAST Design System to register the `<fast-card>` and `<fast-button>` components. Once you save, the dev server will rebuild and refresh your browser. However, you still won't see anything. To get some UI showing up, we need to write some HTML that uses our components. Replace the `<body>` of your `index.html` file with the following markup:
+This code uses the FAST Design System to register the `<fast-card>` and `<fast-button>` components. Once you save, the dev server will rebuild and refresh your browser. However, you still won't see anything. To get some UI showing up, we need to write some HTML that uses our components. Replace the contents of the `<body>` in your `index.html` file with the following markup:
 
 ```html
 <body>
