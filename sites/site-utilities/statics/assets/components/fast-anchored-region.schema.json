@@ -52,6 +52,12 @@
       "mapsToAttribute": "horizontal-inset",
       "type": "boolean"
     },
+    "horizontal-viewport-lock": {
+      "title": "Horizontal viewport lock",
+      "description": "Determines whether the region remains in the viewport (ie. detaches from the anchor) on the horizontal axis",
+      "mapsToAttribute": "horizontal-viewport-lock",
+      "type": "boolean"
+    },
     "horizontal-threshold": {
       "title": "Horizontal threshold",
       "description": "The space allocated to the default position before the widest area is selected for layout",
@@ -98,6 +104,12 @@
       "title": "Vertical inset",
       "description": "Determines whether the region should overlap the anchor on the vertical axis",
       "mapsToAttribute": "vertical-inset",
+      "type": "boolean"
+    },
+    "vertical-viewport-lock": {
+      "title": "Vertical viewport lock",
+      "description": "Determines whether the region remains in the viewport (ie. detaches from the anchor) on the vertical axis",
+      "mapsToAttribute": "vertical-viewport-lock",
       "type": "boolean"
     },
     "vertical-threshold": {
