@@ -1,0 +1,32 @@
+{
+  "$schema": "http://json-schema.org/schema#",
+  "$id": "fast-picker-menu",
+  "id": "fast-picker-menu",
+  "title": "Picker menu",
+  "description": "The FAST picker-menu element",
+  "type": "object",
+  "version": 1.1,
+  "mapsToTagName": "fast-picker-menu",
+  "properties": {
+    "Slot": {
+      "description": "The default slot",
+      "mapsToSlot": "",
+      "@microsoft/fast-tooling/dictionary-link": true,
+      "pluginId": "@microsoft/fast-tooling/linked-data",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "The ID of the data corresponding to a dictionary key",
+            "type": "string"
+          },
+          "dataLocation": {
+            "title": "The location of the data using lodash path syntax",
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

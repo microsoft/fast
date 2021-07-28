@@ -1,0 +1,63 @@
+<fast-design-system-provider use-defaults>
+    <h1>Picker</h1>
+
+    <h2>Default</h2>
+    <fast-picker
+        default-selection=""
+        selection=""
+        options="apples,oranges,bananas,pears,strawberries"
+        no-suggestions-text="No suggestions available"
+        suggestions-available-text="Suggestions available"
+        loading-text="Loading"
+        label="Select some things"
+    ></fast-picker>
+
+    <h2>Preselection</h2>
+    <fast-picker
+        selection="bananas,strawberries"
+        options="apples,oranges,bananas,pears,strawberries"
+        no-suggestions-text="No suggestions available"
+        suggestions-available-text="Suggestions available"
+        loading-text="Loading"
+        label="Select some things"
+    ></fast-picker>
+
+    <h2>Custom menu</h2>
+    <fast-picker
+        default-selection=""
+        selection=""
+        options="apples,oranges,bananas,pears,strawberries"
+        label="Select some things"
+    >
+        <fast-picker-menu id="custom-menu">
+            <fast-picker-menu-option slot="header-region">
+                pre-option
+            </fast-picker-menu-option>
+            <fast-picker-menu-option slot="footer-region">
+                post-option
+            </fast-picker-menu-option>
+        </fast-picker-menu>
+    </fast-picker>
+
+    <h2>Single item</h2>
+    <fast-picker
+        options="apples,oranges,bananas,pears,strawberries"
+        max-selected="1"
+        no-suggestions-text="No suggestions available"
+        suggestions-available-text="Suggestions available"
+        loading-text="Loading"
+        label="Select people"
+    ></fast-picker>
+
+    <h2>Multiple items, limit to 3</h2>
+    <fast-picker
+        options="apples,oranges,bananas,pears,strawberries"
+        max-selected="3"
+        no-suggestions-text="No suggestions available"
+        suggestions-available-text="Suggestions available"
+        loading-text="Loading"
+        label="Select people"
+    ></fast-picker>
+
+    <div style="height: 400px; opacity: 0;"></div>
+</fast-design-system-provider>

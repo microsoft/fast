@@ -1,0 +1,17 @@
+{
+    "version": 1.1,
+    "tags": [
+        {
+            "name": "fast-picker-list",
+            "title": "Picker list",
+            "description": "The FAST picker-list element",
+            "attributes": [],
+            "slots": [
+                {
+                    "name": "",
+                    "description": "The default slot"
+                }
+            ]
+        }
+    ]
+}
