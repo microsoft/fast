@@ -1,6 +1,7 @@
 /**
  * Export all custom element definitions
  */
+import type { Container } from "@microsoft/fast-foundation";
 import { fastAccordion, fastAccordionItem } from "./accordion/index";
 import { fastAnchor } from "./anchor/index";
 import { fastAnchoredRegion } from "./anchored-region/index";
@@ -42,6 +43,7 @@ import { fastTreeView } from "./tree-view/index";
 
 // Don't delete these. They're needed so that API-extractor doesn't add import types
 // with improper pathing
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import type { Anchor } from "./anchor/index";
 import type { Button } from "./button/index";
 import type { Card } from "./card/index";
@@ -51,7 +53,7 @@ import type { SliderLabel } from "./slider-label/index";
 import type { TextArea } from "./text-area/index";
 import type { TextField } from "./text-field/index";
 import type { Toolbar } from "./toolbar/index";
-import type { Container } from "@microsoft/fast-foundation";
+/* eslint-enable @typescript-eslint/no-unused-vars */
 
 // When adding new components, make sure to add the component to the `allComponents` object
 // in addition to exporting the component by name. Ideally we would be able to just add
