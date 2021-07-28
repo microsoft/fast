@@ -6,8 +6,12 @@ import {
     customElement,
     ExecutionContext,
 } from "@microsoft/fast-element";
-import { neutralLayerL1Behavior, parseColorString } from "@fluentui/web-components";
-import { ComponentStateColorPalette, ColorRGBA64 } from "@microsoft/fast-colors";
+import { neutralLayer1 } from "@fluentui/web-components";
+import {
+    ComponentStateColorPalette,
+    parseColor,
+    ColorRGBA64,
+} from "@microsoft/fast-colors";
 import { typography } from "./typography";
 
 function createColorPalette(baseColor: ColorRGBA64) {
@@ -63,7 +67,8 @@ const template = html<DesignPropertyPanel>`
                 step="0.01"
                 :value=${x => parseFloat(x.provider?.baseLayerLuminance)}
                 @change=${(x, c) => {
-                    x.provider.backgroundColor = (neutralLayerL1Behavior.value as any)({
+                    x.provider.backgroundColor = (x.neutralLayerL1Behavior
+                        .cssCustomProperty as any)({
                         ...x.provider.designSystem,
                     });
                     x.provider.baseLayerLuminance = parseFloat(targetValue(c)).toFixed(2);
@@ -83,7 +88,7 @@ const template = html<DesignPropertyPanel>`
                 @input=${(x, c) => {
                     x.provider.accentBaseColor = targetValue(c);
                     x.provider.accentPalette = createColorPalette(
-                        parseColorString(targetValue(c))
+                        parseColor(targetValue(c))!
                     );
                 }}
             />
@@ -144,15 +149,17 @@ const styles = css`
 })
 export class DesignPropertyPanel extends FASTElement {
     @observable provider!: any;
+
+    neutralLayerL1Behavior: typeof neutralLayer1 = neutralLayer1;
+
     providerChanged() {
-        this.provider.registerCSSCustomProperty(neutralLayerL1Behavior);
+        this.provider.registerCSSCustomProperty(this.neutralLayerL1Behavior);
         this.provider.style.setProperty(
             "background-color",
-            `var(--${neutralLayerL1Behavior.name})`
+            `var(--${this.neutralLayerL1Behavior.name})`
         );
-        this.provider.backgroundColor = (neutralLayerL1Behavior.value as any)(
-            this.provider.designSystem
-        );
+        this.provider.backgroundColor = (this.neutralLayerL1Behavior
+            .cssCustomProperty as any)(this.provider.designSystem);
         this.provider.baseLayerLuminance = 1;
     }
 
