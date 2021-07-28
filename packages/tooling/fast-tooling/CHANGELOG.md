@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-tooling
 
-This log was last generated on Sun, 25 Jul 2021 07:17:41 GMT and should not be manually modified.
+This log was last generated on Wed, 28 Jul 2021 07:17:22 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.25.4
+
+Wed, 28 Jul 2021 07:17:22 GMT
+
+### Patches
+
+- Bump @microsoft/fast-element to v1.4.1 (nicholasrice@users.noreply.github.com)
 
 ## 0.25.3
 

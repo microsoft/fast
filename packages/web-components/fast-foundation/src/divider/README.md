@@ -7,25 +7,40 @@ custom_edit_url: https://github.com/microsoft/fast/edit/master/packages/web-comp
 
 A web component implementation of a [horizontal rule](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/hr).
 
+## Setup
+
+```ts
+import {
+    provideFASTDesignSystem,
+    fastDivider
+} from "@microsoft/fast-components";
+
+provideFASTDesignSystem()
+    .register(
+        fastDivider()
+    );
+```
+
 ## Usage
 
 ```html live
-<fast-design-system-provider use-defaults>
-    <fast-divider></fast-divider>
-</fast-design-system-provider>
+<fast-divider></fast-divider>
 ```
 
-##  Applying custom styles
+##  Create your own design
 
 ```ts
-import { customElement } from "@microsoft/fast-element";
-import { Divider, DividerTemplate as template } from "@microsoft/fast-foundation";
-import { DividerStyles as styles } from "./divider.styles";
+import { Divider, dividerTemplate as template } from "@microsoft/fast-foundation";
+import { dividerStyles as styles } from "./my-divider.styles";
 
-@customElement({
-    name: "fast-divider",
+export const myDivider = Divider.compose({
+    baseName: "divider",
     template,
     styles,
-})
-export class FASTDivider extends Divider {}
+});
 ```
+
+## Additional resources
+
+* [Component explorer examples](https://explore.fast.design/components/fast-divider)
+* [Component technical specification](https://github.com/microsoft/fast/blob/master/packages/web-components/fast-foundation/src/divider/divider.spec.md)

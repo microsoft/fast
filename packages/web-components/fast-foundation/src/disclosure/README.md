@@ -5,36 +5,53 @@ sidebar_label: disclosure
 custom_edit_url: https://github.com/microsoft/fast/edit/master/packages/web-components/fast-foundation/src/disclosure/README.md
 ---
 
-`fast-disclosure` is a web component combination of a button and section of content. A button, an invoker, activates the disclosure and shows/hides the exam content.
+A disclosure component is the implementation of native `details` and `summary` controls that toggles the visibility of the extra content. Visually, it would look like a button or hyperlink and beneath extra content. As defined by the W3C:
+
+> A disclosure is a button that controls the visibility of a section of content. When the controlled content is hidden, it is often styled as a typical push button with a right-pointing arrow or triangle to hint that activating the button will display additional content. When the content is visible, the arrow or triangle typically points down.
+
+## Setup
+
+```ts
+import {
+    provideFASTDesignSystem,
+    fastDisclosure
+} from "@microsoft/fast-components";
+
+provideFASTDesignSystem()
+    .register(
+        fastDisclosure()
+    );
+```
 
 ## Usage
 
 ```html live
-<fast-design-system-provider use-defaults>
-    <fast-disclosure appearance="lightweight">
-        <span slot="start">👩🏻‍🦳</span>
-        <strong slot="title">Read about White Canary</strong>
-        <div>
-            Sara Lance, also known by her alter-ego White Canary, is a fictional character
-            in The CW's Arrowverse franchise, first introduced in the 2012 pilot episode
-            of the television series Arrow, and later starring in Legends of Tomorrow.
-        </div>
-    </fast-disclosure>
-</fast-design-system-provider>
+<fast-disclosure appearance="lightweight">
+    <strong slot="title">Read about FAST</strong>
+    <div>
+        FAST is a collection of technologies built on Web Components and modern Web Standards, designed to help you efficiently tackle some of the most common challenges in website and application design and development.
+    </div>
+</fast-disclosure>
 ```
 
-## Applying custom styles
+## Create your own design
 
 ```ts
-import { customElement } from "@microsoft/fast-element";
-import { Disclosure, DisclosureTemplate as template } from "@microsoft/fast-foundation";
-import { DisclosureStyles as styles } from "./disclosure.styles";
+import {
+    Disclosure,
+    disclosureTemplate as template,
+} from "@microsoft/fast-foundation";
+import { disclosureStyles as styles } from "./my-disclosure.styles";
 
-// Disclosure
-@customElement({
-    name: "fast-disclosure",
+export const myDisclosure = Disclosure.compose({
+    baseName: "disclosure",
     template,
     styles,
-})
-export class FASTDisclosure extends Disclosure {}
+});
 ```
+
+## Additional resources
+
+* [Component explorer examples](https://explore.fast.design/components/fast-disclosure)
+* [Component technical specification](https://github.com/microsoft/fast/blob/master/packages/web-components/fast-foundation/src/disclosure/disclosure.spec.md)
+* [W3C Component Aria Practices](https://w3c.github.io/aria-practices/#disclosure)
