@@ -137,6 +137,7 @@ describe("mapVSCodeParsedHTMLToDataDictionary", () => {
             },
         });
         const root: string = value[1];
+        console.log("WAT", JSON.stringify(value[0][root], null, 2));
         expect(value[0][root]).to.deep.equal({
             schemaId: inputSchema.id,
             data: {

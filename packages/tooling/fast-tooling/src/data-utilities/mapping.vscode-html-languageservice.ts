@@ -43,13 +43,21 @@ function parseElementAttributeValue(schema, attribute): [string, any] {
         }
 
         if (schema.properties[attribute.name].type === DataType.string) {
-            if (typeof attribute.value === "string") {
-                return [attribute.name, attribute.value];
-            }
+            let parsedValue;
 
             // Attributes which may appear as a JSON type other than
             // a string must be converted
-            return [attribute.name, `${JSON.parse(attribute.value)}`];
+            try {
+                parsedValue = JSON.parse(attribute.value);
+
+                if (typeof parsedValue !== "string") {
+                    parsedValue = `${parsedValue}`;
+                }
+            } catch (e) {
+                parsedValue = attribute.value;
+            }
+
+            return [attribute.name, parsedValue];
         }
     }
 
