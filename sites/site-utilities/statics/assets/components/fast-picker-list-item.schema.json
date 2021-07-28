@@ -1,0 +1,11 @@
+{
+  "$schema": "http://json-schema.org/schema#",
+  "$id": "fast-picker-list-item",
+  "id": "fast-picker-list-item",
+  "title": "Picker list item",
+  "description": "The FAST picker-list-item element",
+  "type": "object",
+  "version": 1.1,
+  "mapsToTagName": "fast-picker-list-item",
+  "properties": {}
+}
