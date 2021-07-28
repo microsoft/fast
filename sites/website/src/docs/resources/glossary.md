@@ -5,7 +5,12 @@ sidebar_label: Glossary
 custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/src/docs/resources/glossary.md
 ---
 #### Design System
-In FAST, the Design System is a collection of properties that informs visual rendering. It generally contains information about fonts, type-ramps, colors, etc.
+
+A Design System can generally be thought of as a collection of resources for interactive media that promotes brand alignment. While that definition is intentionally broad, in UI development Design Systems generally manifest as component libraries surrounded by usage guidance and design principles.
+
+#### Design Token
+
+A Design Token is a semantic, named variable used to describe a Design System. They often describe design concepts like typography, color, sizes, UI spacing, etc. FAST encourages checking out [the Design Tokens Community Group](https://github.com/design-tokens/community-group#design-tokens) for more information on Design Tokens themselves.
 
 #### ES2015
 

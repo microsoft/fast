@@ -101,10 +101,7 @@ async function copyArticleMarkdown() {
 
     await moveMarkdownFiles(path.resolve(fastComponents, "docs/design"), "design");
 
-    const componentDocs = findFiles(
-        path.resolve(fastFoundation, "src"),
-        "README.md"
-    ).filter(x => !x.includes("anchored-region"));
+    const componentDocs = findFiles(path.resolve(fastFoundation, "src"), "README.md");
 
     for (const source of componentDocs) {
         const folder = path.dirname(source);

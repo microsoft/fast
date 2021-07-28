@@ -11,29 +11,21 @@ FAST Frame ([`@microsoft/fast-components`](https://www.npmjs.com/package/@micros
 
 ### Create a `DesignSystem`
 
-Web components from FAST Frame must be registered with the `DesignSystem` prior to being used in HTML. To set up the `DesignSystem`, import the DesignSystem gateway from `@microsoft/fast-foundation` and request an instance of the system:
-
-```ts
-import { DesignSystem  } from "@microsoft/fast-foundation";
-
-const designSystem = DesignSystem.getOrCreate();
-```
-
-### Register Components
-
-With the Design System in hand, registration of components is easy. Simply import the registrations of the components you want to use from `@microsoft/fast-components` and register them with the Design System:
-
+Web components from FAST Frame must be registered with the `DesignSystem` prior to being used in HTML. To set up the `DesignSystem`, first import and invoke the provider function from `@microsoft/fast-foundation` to get the `DesignSystem` instance. Then import the registrations of the components you want to use from `@microsoft/fast-components` and register them with the `DesignSystem`:
 
 ```ts
 // ...
-import { fastButton, fastMenu } from "@microsoft/fast-components";
+import { 
+    fastButton, 
+    fastMenu, 
+    provideFASTDesignSystem 
+} from "@microsoft/fast-components";
 
-// ...
-designSystem.register(
-    fastButton(),
-    fastMenu()
-);
-
+provideFASTDesignSystem()
+    .register(
+        fastButton(),
+        fastMenu()
+    );
 ```
 
 ### Add Element to HTML
@@ -61,11 +53,9 @@ As [Web Components](https://developer.mozilla.org/en-US/docs/Web/Web_Components)
 This prefix can be changed for all components registered by the DesignSystem using the `DesignSystem.withPrefix()` API:
 
 ```ts
-import { DesignSystem } from "@microsoft/fast-foundation";
-import { fastButton } from "@microsoft/fast-components";
+import { fastButton, provideFASTDesignSystem } from "@microsoft/fast-components";
 
-DesignSystem
-    .getOrCreate()
+provideFASTDesignSystem()
     .withPrefix("faster")
     .register(fastButton())
 ```
@@ -81,8 +71,7 @@ In this case, the element can be used in HTML using the ‘faster’:
 Unless specified during [component registration creation](/docs/design-systems/creating-a-component-library#compose-and-export-registration), all components registered with the DesignSystem are defined with [the shadow root mode](https://developer.mozilla.org/en-US/docs/Web/API/ShadowRoot/mode) originally specified by the component developer (typically "open", as that is both recommended and the default). This behavior can be changed using `DesignSystem.withShadowRootMode()` to close all shadow roots by default:
 
 ```ts
-DesignSystem
-    .getOrCreate()
+provideFASTDesignSystem()
     .withShadowRootMode("closed")
     .register(/* ... */)
 ```
@@ -92,8 +81,7 @@ DesignSystem
 If two elements registered with the DesignSystem share the same tag name, the name can be disambiguated using `DesignSystem.withElementDisambiguation()`, allowing opportunity to provide a new name if there are conflicts:
 
 ```ts
-DesignSystem
-    .getOrCreate()
+provideFASTDesignSystem()
     .withElementDisambiguation((name: string, type: Constructable<{}>) => {
         return `disambiguated-${name}`;
     })
@@ -109,11 +97,10 @@ The DesignSystem APIs described above impact all components registered to the De
 The prefix for a component can be configured for a component registration by providing a configuration object with a prefix field during registration:
 
 ```ts
-DesignSystem
-	.getOrCreate()
-	.register(
-		fastButton({ prefix: "faster" })
-	);
+provideFASTDesignSystem()
+    .register(
+        fastButton({ prefix: "faster" })
+    );
 ```
 
 #### Template
@@ -121,15 +108,14 @@ DesignSystem
 To use a custom template for a component, provide a `template` field to the configuration object during registration:
 
 ```ts
-DesignSystem
-	.getOrCreate()
-	.register(
-		fastButton({ 
-			template: html`
-				<p>A completely new template</p>
-			` 
-		})
-	)
+provideFASTDesignSystem()
+    .register(
+        fastButton({ 
+            template: html`
+                <p>A completely new template</p>
+            ` 
+        })
+    )
 ```
 
 #### Styles
@@ -137,31 +123,29 @@ DesignSystem
 Styles for a component can be configured as well, by providing a `styles` field to the configuration object during registration:
 
 ```ts
-DesignSystem
-	.getOrCreate()
-	.register(
-		fastButton({ 
-			styles: css`
-				/* completely replace the original styles */
-			` 
-		})
-	)
+provideFASTDesignSystem()
+    .register(
+        fastButton({ 
+            styles: css`
+                /* completely replace the original styles */
+            ` 
+        })
+    )
 ```
 
 It's also worth noting that this can be used to simply extend the existing styles, by importing the originals and composing those with new styles. Here's what that would look like:
 
 ```ts
-DesignSystem
-	.getOrCreate()
-	.register(
-		fastButton({
-			styles: css`
-				/* import and compose the original styles */
-				${buttonStyles}
-				/* add your style augmentations here */
-			`
-		})
-	)
+provideFASTDesignSystem()
+    .register(
+        fastButton({
+            styles: css`
+                /* import and compose the original styles */
+                ${buttonStyles}
+                /* add your style augmentations here */
+            `
+        })
+    )
 ```
 
 #### Shadow Options
@@ -169,16 +153,15 @@ DesignSystem
 Shadow options can be configured as well, including both [shadow root mode](https://developer.mozilla.org/en-US/docs/Web/API/ShadowRoot/mode) and [focus delegation](https://developer.mozilla.org/en-US/docs/Web/API/ShadowRoot/delegatesFocus):
 
 ```ts
-DesignSystem
-	.getOrCreate()
-	.register(
-		fastButton({ 
-			shadowOptions: {
-				mode: "closed",
-			 	delegatesFocus: true 
-			}
-		})
-	);
+provideFASTDesignSystem()
+    .register(
+        fastButton({ 
+            shadowOptions: {
+                mode: "closed",
+                delegatesFocus: true 
+            }
+        })
+    );
 ```
 
 For more information on shadow options, see [Element.attachShadow()](https://developer.mozilla.org/en-US/docs/Web/API/Element/attachShadow).

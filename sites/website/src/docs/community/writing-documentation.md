@@ -9,7 +9,7 @@ Thank you for your interest in contributing to our documentation. We put togethe
 
 ## Documentation types
 
-There are two types of documentation; articles and API references. Articles are documents that use [GitHub-flavored Markdown syntax](https://github.github.com/gfm/) located in our packages. API references include details such as classes and methods and are located within the code they describe.
+There are two types of documentation: articles and API references. Articles are documents that use [GitHub-flavored Markdown syntax](https://github.github.com/gfm/) located in our packages. API references include details such as classes and methods and are located within the code they describe.
 
 ## Writing articles
 
@@ -31,7 +31,7 @@ The required fields are:
 * **sidebar_label**: The label displayed in the table of contents.
 * **custom_edit_url**: A URL where the document source can be edited.
 
-Beneath the YAML metadata block, article's body is written with [GitHub-flavored Markdown syntax](https://github.github.com/gfm/). Since our documentation system will turn the `title` metadata into the article header, the content should begin  with a short introductory paragraph, followed by an h2 header for each section of the document. You may use h3 headers beneath h2 headers but avoid deeper sub-sections.
+Beneath the YAML metadata block, the article's body is written with [GitHub-flavored Markdown syntax](https://github.github.com/gfm/). Since our documentation system will turn the `title` metadata into the article header, the content should begin with a short introductory paragraph, followed by an h2 header for each section of the document. You may use h3 headers beneath h2 headers but avoid deeper sub-sections.
 
 In addition to [GitHub-flavored Markdown syntax](https://github.github.com/gfm/), you may use the admonitions `note`, `tip`, `important`, `caution`, and `warning`. Here's an example of the syntax for a `note`:
 
@@ -77,7 +77,7 @@ export class Statistics {
 
 ## Building and testing the docs
 
-To test documentation changes, clone and build the documentation as described in [the contributor guide](./contributor-guide). Next, open a terminal and navigate to `sites/website` and run the documentation site with `yarn dev` to preview the site and validate your changes are rendering.
+To test documentation changes, clone and build the documentation as described in [the contributor guide](./contributor-guide). Next, open a terminal and navigate to `sites/website` and run the documentation site with `yarn dev` to preview the site and validate that your changes are rendering.
 
 ## Style guide
 
@@ -105,7 +105,7 @@ A sentence fragment in parenthesis:
 
 > The first time it said 'hello world,' I knew we would be friends (and we still are).
 
-**Quotation marks with periods**: When a sentence ends with a quotation mark, the period goes on the inside. The only exception to this rule in cases where the quotation marks are around text intended to be input by the user, but in these cases, use `code` formatting.
+**Quotation marks with periods**: When a sentence ends with a quotation mark, the period goes on the inside. The only exception to this rule is cases where the quotation marks are around text intended to be input by the user, but in these cases, use `code` formatting.
 
 >The boy said, "The first time it said 'hello world,' I knew we would be friends."
 >At the prompt, type `hello world`.
@@ -184,7 +184,7 @@ List:
 
 > Type `npm start` in the console.
 
-> Use the `fast-animation` package.
+> Use the `fast-element` package.
 
 > The `console.log()` method outputs a message to the console.
 
