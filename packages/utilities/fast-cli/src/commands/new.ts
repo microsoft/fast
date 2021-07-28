@@ -7,7 +7,7 @@ const { spawn } = require("child_process");
 const template = path.join(__dirname, "../../templates/new");
 
 export default class New extends Command {
-    static description: string = "Scaffolds out a new FAST design system project";
+    static description: string = "builds a scaffold for a new FAST project";
 
     static args: any = [
         {
