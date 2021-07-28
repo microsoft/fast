@@ -10,15 +10,10 @@ import { accentForegroundActive } from "../design-tokens";
  */
 export const CalendarStyles = css`
     ${display("block")} :host {
-        --cell-height: calc(${heightNumber} * 1px);
-        --current-day-color: ${accentForegroundActive};
-        --inactive-day-color: ${SystemColors.GrayText};
-        --disabled-day-color: ${SystemColors.GrayText};
-        --selected-day-outline: 1px solid ${accentForegroundActive};
     }
 
     .days {
-        border-left: var(--cell-border);
+        border-left: var(--cell-border, none);
         display: grid;
         grid-template-columns: repeat(7, 1fr);
     }
@@ -26,7 +21,7 @@ export const CalendarStyles = css`
     .week-days {
         display: grid;
         grid-template-columns: repeat(7, 1fr);
-        border-bottom: var(--cell-border);
+        border-bottom: var(--cell-border, none);
     }
 
     .title {
@@ -36,43 +31,43 @@ export const CalendarStyles = css`
     }
 
     .week-day {
-        background-color: var(--weekday-background);
-        color: var(--weekday-color);
+        background-color: var(--weekday-background, transparent);
+        color: var(--weekday-color, inherit);
         padding: 5px 0;
         text-align: center;
     }
 
     .day {
         box-sizing: border-box;
-        height: var(--cell-height);
+        height: var(--cell-height, calc(${heightNumber} * 1px));
         padding: 5px;
         vertical-align: top;
-        border-bottom: var(--cell-border);
-        border-right: var(--cell-border);
+        border-bottom: var(--cell-border, none);
+        border-right: var(--cell-border, none);
         position: relative;
     }
 
     .day.off {
-        color: var(--inactive-day-color);
-        background: var(--inactive-day-background);
+        color: var(--inactive-day-color, ${SystemColors.GrayText});
+        background: var(--inactive-day-background, transparent);
     }
 
     .day.disabled {
-        color: var(--disabled-day-color);
-        background: var(--disabled-day-background);
-        outline: var(--disabled-day-outline);
+        color: var(--disabled-day-color, ${SystemColors.GrayText});
+        background: var(--disabled-day-background, transparent);
+        outline: var(--disabled-day-outline, none);
     }
 
     .day.selected {
-        color: var(--selected-day-color);
-        background: var(--selected-day-background);
-        outline: var(--selected-day-outline);
+        color: var(--selected-day-color, ${accentForegroundActive});
+        background: var(--selected-day-background, transparent);
+        outline: var(--selected-day-outline, 1px solid ${accentForegroundActive});
     }
 
     .today {
-        background: var(--current-day-background);
-        color: var(--current-day-color);
-        outline: var(--current-day-border);
+        background: var(--current-day-background, transparent);
+        color: var(--current-day-color, ${accentForegroundActive});
+        outline: var(--current-day-border, none);
         outline-offset: -1px;
     }
 `;
