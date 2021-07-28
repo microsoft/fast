@@ -41,6 +41,16 @@ function parseElementAttributeValue(schema, attribute): [string, any] {
             // Attributes are always strings, this must be converted
             return [attribute.name, parseFloat(JSON.parse(attribute.value))];
         }
+
+        if (schema.properties[attribute.name].type === DataType.string) {
+            if (typeof attribute.value === "string") {
+                return [attribute.name, attribute.value];
+            }
+
+            // Attributes which may appear as a JSON type other than
+            // a string must be converted
+            return [attribute.name, `${JSON.parse(attribute.value)}`];
+        }
     }
 
     if (attribute.name !== "slot") {
