@@ -64,31 +64,27 @@ First, open your `src/app.js` file and add the following code:
 
 ```js
 import { 
-  FASTDesignSystemProvider, 
-  FASTCard, 
-  FASTButton 
+  provideFASTDesignSystem, 
+  fastCard, 
+  fastButton
 } from '@microsoft/fast-components';
 
-/*
- * Ensure that tree-shaking doesn't remove these components from the bundle.
- * There are multiple ways to prevent tree shaking, of which this is one.
- */
-FASTDesignSystemProvider;
-FASTCard;
-FASTButton;
+provideFASTDesignSystem()
+    .register(
+        fastCard(),
+        fastButton()
+    );
 ```
 
-This code imports the `<fast-design-system-provider>` component as well as the `<fast-card>`, and `<fast-button>` components. Once you save, the dev server will rebuild and refresh your browser. However, you still won't see anything. To get some UI showing up, we need to write some HTML that uses our components. Replace the App component in your `src/app.js` file with the following:
+This code uses the FAST Design System to register the `<fast-card>` and `<fast-button>` components. Once you save, the dev server will rebuild and refresh your browser. However, you still won't see anything. To get some UI showing up, we need to write some HTML that uses our components. Replace the App component in your `src/app.js` file with the following:
 
 ```jsx
 function App() {
   return (
-    <fast-design-system-provider use-defaults>
-      <fast-card>
-        <h2>FAST React</h2>
-        <fast-button appearance="accent" onClick={() => console.log("clicked")}>Click Me</fast-button>
-      </fast-card>
-    </fast-design-system-provider>
+    <fast-card>
+      <h2>FAST React</h2>
+      <fast-button appearance="accent" onClick={() => console.log("clicked")}>Click Me</fast-button>
+    </fast-card>
   );
 }
 ```
@@ -96,10 +92,6 @@ function App() {
 To add a splash of style, add the following to the `src/App.css`:
 
 ```css
-fast-design-system-provider {
-  display: block;
-}
-
 fast-card {
   padding: 16px;
   display: flex;
@@ -119,26 +111,32 @@ fast-card > fast-button {
 Congratulations! You're now set up to use FAST and React!
 
 ## Additional Notes
+
 ### create-react-app
+
 FAST makes use of decorators to define components. At this time, `create-react-app` [does not support decorators](https://create-react-app.dev/docs/can-i-use-decorators/). This won't be a problem when using components *imported* from FAST because they have already been transpiled by TypeScript - but to *create* components in a `create-react-app` application you'll need to do one of the following:
 - [Define components without decorators](https://fast.design/docs/fast-element/defining-elements#working-without-decorators)
 - [Eject](https://create-react-app.dev/docs/available-scripts#npm-run-eject)`create-react-app` and change Babel to support decorators 
 - Use an intermediary like [react-app-rewired](https://www.npmjs.com/package/react-app-rewired)
   
 ### Data Binding
+
 #### HTML Attributes
+
 React is capable of rendering custom HTML elements and binding data to them, but it is beneficial to understand *how* React does this. React will apply all *props* to a custom HTML element as *HTML attributes* - including non-primitive types such as arrays and objects. Where some UI libraries provide binding syntaxes to distinguish setting properties, attributes, and events, React does not. This means that it can be very easy to end up with `my-prop="[object Object]"` in your HTML. React is exploring solutions [in this issue](https://github.com/facebook/react/issues/11347). See the section on [interop layers](#interop-layers-skatejsval-and-reactify-wc) for a work-around for this issue.
 
 #### Custom events
+
 React's synthetic eventing system comes with an unfortunate side-effect of being incapable of declaratively applying [`CustomEvent`](https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent) listeners. [interop layers](#interop-layers-skatejsval-and-reactify-wc) can be used to address this issue. Alternatively, a `ref` can be used on the custom element to imperatively apply the event listener to the HTML element directly.
 
-
 #### Interop layers: @skatejs/val and reactify-wc
+
 [@skatejs/val](https://github.com/skatejs/val) is a small library that wraps React's `createElement` function and provides the ability direct React *props* explicitly to HTML attributes, DOM properties, or to declarative event listeners.
 
 Another good option is [reactify-wc](https://github.com/BBKolton/reactify-wc). It provides similar capabilities as `@skatejs/val` but does so by creating component wrappers.
 
 ### TypeScript and TSX support
+
 If you're using TypeScript, you'll need to augment the `JSX.IntrinsicElements` interface to use custom elements in TSX. To do so, create a `custom-elements.d.ts` file in your source directory and add the following:
 
 ```ts
