@@ -2,6 +2,29 @@
   "name": "@microsoft/fast-foundation",
   "entries": [
     {
+      "date": "Wed, 28 Jul 2021 07:17:22 GMT",
+      "tag": "@microsoft/fast-foundation_v2.6.1",
+      "version": "2.6.1",
+      "comments": {
+        "none": [
+          {
+            "comment": "docs(components): add/update and expand content",
+            "author": "roeisenb@microsoft.com",
+            "commit": "07d03884b168bb66d482a72df2d2941f8561b9ce",
+            "package": "@microsoft/fast-foundation"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "update on !regionVisible",
+            "author": "scomea@microsoft.com",
+            "commit": "1e22a9ca163fba0830eef1d3fcf5d222fa01ed28",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sun, 25 Jul 2021 07:17:41 GMT",
       "tag": "@microsoft/fast-foundation_v2.6.0",
       "version": "2.6.0",
