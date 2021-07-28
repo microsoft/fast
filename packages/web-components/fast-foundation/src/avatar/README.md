@@ -120,8 +120,6 @@ This component is built with the expectation that focus is delegated to the anch
 
 ## Additional resources
 
-View the full specification for the avatar [here](https://github.com/microsoft/fast/blob/master/packages/web-components/fast-foundation/src/avatar/avatar.spec.md).
-
 * [Component explorer examples](https://explore.fast.design/components/fast-avatar)
 * [Component technical specification](https://github.com/microsoft/fast/blob/master/packages/web-components/fast-foundation/src/avatar/avatar.spec.md)
 * [Open UI Analysis](https://open-ui.org/components/avatar.research)
