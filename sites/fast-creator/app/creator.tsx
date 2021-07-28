@@ -82,6 +82,7 @@ import {
     previewOriginatorId,
     rootOriginatorId,
 } from "./utilities";
+import { fluentUIComponentId } from "./configs/fluent-ui";
 
 DesignSystem.getOrCreate().register(
     fastBadge(),
@@ -132,7 +133,7 @@ class Creator extends Editor<{}, CreatorState> {
             return (
                 <LinkedDataControl
                     {...config}
-                    onChange={this.handleAddLinkedData(config.onChange)}
+                    onChange={this.handleLinkedDataUpdates(config.onChange)}
                 />
             );
         },
@@ -422,7 +423,9 @@ class Creator extends Editor<{}, CreatorState> {
         );
     };
 
-    private handleAddLinkedData = (onChange): ((e: ControlOnChangeConfig) => void) => {
+    private handleLinkedDataUpdates = (
+        onChange
+    ): ((e: ControlOnChangeConfig) => void) => {
         return (e: ControlOnChangeConfig): void => {
             Object.entries(elementLibraryContents).forEach(
                 ([elementLibraryId, schemaIds]: [string, string[]]) => {
@@ -438,7 +441,10 @@ class Creator extends Editor<{}, CreatorState> {
                                         .componentDictionary[e.value[0].schemaId].example,
                                 ] || e.value,
                         });
-                    } else if (e.linkedDataAction === LinkedDataActionType.remove) {
+                    } else if (
+                        e.linkedDataAction === LinkedDataActionType.remove ||
+                        e.linkedDataAction === LinkedDataActionType.reorder
+                    ) {
                         onChange(e);
                     }
                 }
@@ -478,6 +484,7 @@ class Creator extends Editor<{}, CreatorState> {
                 } as CustomMessageIncomingOutgoing<any>);
                 updatedState.previewReady = true;
                 this.updateEditorContent(this.state.dataDictionary);
+                this.handleAddLibrary(fluentUIComponentId);
             } else if (e.data.value) {
                 this.fastMessageSystem.postMessage({
                     type: MessageSystemType.navigation,

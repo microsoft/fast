@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-element
 
-This log was last generated on Fri, 21 May 2021 17:48:08 GMT and should not be manually modified.
+This log was last generated on Wed, 28 Jul 2021 07:17:22 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.4.1
+
+Wed, 28 Jul 2021 07:17:22 GMT
+
+### Patches
+
+- implement patch to work around Angular optimization bug (nicholasrice@users.noreply.github.com)
 
 ## 1.4.0
 
