@@ -1348,4 +1348,52 @@ describe("mapVSCodeHTMLAndDataDictionaryToDataDictionary", () => {
             },
         });
     });
+    it("should map boolean attributes", () => {
+        const mappedData = mapVSCodeHTMLAndDataDictionaryToDataDictionary(
+            "<input required />",
+            "text",
+            [
+                {
+                    root: {
+                        schemaId: "input",
+                        data: {},
+                    },
+                },
+                "root",
+            ],
+            {
+                [inputSchema.id]: inputSchema,
+            }
+        );
+        expect(mappedData[0].root).to.deep.equal({
+            schemaId: inputSchema.id,
+            data: {
+                required: true,
+            },
+        });
+    });
+    it("should map number attributes", () => {
+        const mappedData = mapVSCodeHTMLAndDataDictionaryToDataDictionary(
+            '<input value="5" />',
+            "text",
+            [
+                {
+                    root: {
+                        schemaId: "input",
+                        data: {},
+                    },
+                },
+                "root",
+            ],
+            {
+                [inputSchema.id]: inputSchema,
+            }
+        );
+        expect(mappedData[0].root).to.deep.equal({
+            schemaId: inputSchema.id,
+            data: {
+                value: 5,
+            },
+        });
+    });
 });
