@@ -2,7 +2,7 @@ import { expect } from "chai";
 import { DOM, html } from "@microsoft/fast-element";
 import { DesignSystem } from "@microsoft/fast-foundation";
 import { fixture } from "../../__test__/fixture";
-import { fastToolingFileActionObjectUrl } from "../file-action-objectUrl";
+import { fastToolingFileActionObjectUrl } from "../file-action-objecturl";
 import { File as FastFile } from "./file";
 import { fastToolingFile } from "./";
 
