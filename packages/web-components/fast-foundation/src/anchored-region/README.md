@@ -1,7 +1,7 @@
 ---
-id: fast-anchored-region
+id: anchored-region
 title: fast-anchored-region
-sidebar_label: fast-anchored-region
+sidebar_label: anchored-region
 custom_edit_url: https://github.com/microsoft/fast/edit/master/packages/web-components/fast-foundation/src/anchored-region/README.md
 ---
 
@@ -25,7 +25,7 @@ provideFASTDesignSystem()
 
 A region that always renders above the anchor element.
 
-```html
+```html live
 <div id="viewport">
     <button id="anchor">
         Button is an anchor

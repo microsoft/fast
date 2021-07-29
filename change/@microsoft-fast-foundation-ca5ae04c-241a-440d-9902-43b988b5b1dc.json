@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "update on !regionVisible",
-  "packageName": "@microsoft/fast-foundation",
-  "email": "scomea@microsoft.com",
-  "dependentChangeType": "patch"
-}

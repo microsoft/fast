@@ -28,13 +28,15 @@ provideFASTDesignSystem()
 ## Usage
 
 ```html live
-<label id="preferred-format">Preferred Format:</label><br />
-<fast-listbox aria-labelledby="preferred-format" name="preferred-format">
-    <fast-option value="vinyl">Vinyl Record</fast-option>
-    <fast-option value="casette">Casette</fast-option>
-    <fast-option value="cd">Compact Disc</fast-option>
-    <fast-option value="digital">Digital</fast-option>
-</fast-listbox>
+<div>
+    <label id="preferred-format">Preferred Format:</label><br />
+    <fast-listbox aria-labelledby="preferred-format" name="preferred-format">
+        <fast-option value="vinyl">Vinyl Record</fast-option>
+        <fast-option value="casette">Casette</fast-option>
+        <fast-option value="cd">Compact Disc</fast-option>
+        <fast-option value="digital">Digital</fast-option>
+    </fast-listbox>
+</div>
 ```
 
 ## Create your own design

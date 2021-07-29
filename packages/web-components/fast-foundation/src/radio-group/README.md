@@ -30,8 +30,7 @@ provideFASTDesignSystem()
 ## Usage
 
 ```html live
-<label id="fruit">Favorite fruit:</label>
-<fast-radio-group value="mango" aria-labelledby="fruit" name="favorite-fruit">
+<fast-radio-group value="mango" name="favorite-fruit">
     <fast-radio value="apple">Apple</fast-radio>
     <fast-radio value="mango">Mango</fast-radio>
     <fast-radio value="orange">Orange</fast-radio>

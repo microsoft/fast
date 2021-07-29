@@ -2,6 +2,36 @@
   "name": "@microsoft/fast-tooling-examples",
   "entries": [
     {
+      "date": "Thu, 29 Jul 2021 07:18:18 GMT",
+      "tag": "@microsoft/fast-tooling-examples_v0.4.19",
+      "version": "0.4.19",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/site-utilities to v0.9.0",
+            "author": "47367562+bheston@users.noreply.github.com",
+            "commit": "45a348674554ac26d0153b1d850523d82fb89762",
+            "package": "@microsoft/fast-tooling-examples"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 28 Jul 2021 07:17:22 GMT",
+      "tag": "@microsoft/fast-tooling-examples_v0.4.19",
+      "version": "0.4.19",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/site-utilities to v0.9.0",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "e92c9e5197e54fc5c6ec6daaf36c09d9190c7ef2",
+            "package": "@microsoft/fast-tooling-examples"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sun, 25 Jul 2021 07:17:41 GMT",
       "tag": "@microsoft/fast-tooling-examples_v0.4.19",
       "version": "0.4.19",

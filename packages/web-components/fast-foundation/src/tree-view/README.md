@@ -1,6 +1,6 @@
 ---
 id: tree-view
-title: tree-view
+title: fast-tree-view
 sidebar_label: tree-view
 custom_edit_url: https://github.com/microsoft/fast/edit/master/packages/web-components/fast-foundation/src/tree-view/README.md
 ---
