@@ -1,7 +1,7 @@
 import { FileAction } from "../file-action/file-action";
 
 /**
- * Implementation of a FileAction that converts files a Object URLs.
+ * Implementation of a FileAction that converts files into Object URLs.
  */
 export class FileActionObjectUrl extends FileAction {
     public performFileAction(
