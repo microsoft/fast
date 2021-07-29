@@ -46,6 +46,7 @@ import { fastTreeView } from "./tree-view/index";
 import type { Anchor } from "./anchor/index";
 import type { Button } from "./button/index";
 import type { Card } from "./card/index";
+import type { DesignSystemProvider } from "./design-system-provider/index";
 import type { Disclosure } from "./disclosure/index";
 import type { HorizontalScroll } from "./horizontal-scroll/index";
 import type { SliderLabel } from "./slider-label/index";
