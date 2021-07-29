@@ -1,11 +1,13 @@
 
 import { css, DOM, FASTElement, html, Observable } from "@microsoft/fast-element";
-import { expect } from "chai";
+import chia, { expect, spy } from "chai";
 import { DesignSystem } from "../design-system";
 import { uniqueElementName } from "../test-utilities/fixture";
 import { FoundationElement } from "../foundation-element";
 import { CSSDesignToken, DesignToken, DesignTokenChangeRecord, DesignTokenSubscriber } from "./design-token";
+import spies from "chai-spies";
 
+chia.use(spies);
 const elementName = uniqueElementName();
 
 DesignSystem.getOrCreate()
@@ -792,6 +794,46 @@ describe("A DesignToken", () => {
             DesignToken.create<number>({name: "no-css", cssCustomPropertyName: null}).subscribe({handleChange(record) {
                 const test: AssertDesignToken<typeof record.token> = record.token;
             }})
+        });
+
+        it("should notify a subscriber when a dependency of a subscribed token changes", () => {
+            const tokenA = DesignToken.create<number>("a");
+            const tokenB = DesignToken.create<number>("b");
+
+            tokenA.withDefault(6);
+            tokenB.withDefault((el) => tokenA.getValueFor(el) * 2);
+
+            const handleChange = chia.spy(() => {})
+            const subscriber = {
+                handleChange
+            }
+            
+
+            tokenB.subscribe(subscriber);
+
+            tokenA.withDefault(7);
+            expect(handleChange).to.have.been.called()
+        });
+
+        it("should notify a subscriber when a dependency of a dependency of a subscribed token changes", () => {
+            const tokenA = DesignToken.create<number>("a");
+            const tokenB = DesignToken.create<number>("b");
+            const tokenC = DesignToken.create<number>("c");
+
+            tokenA.withDefault(6);
+            tokenB.withDefault((el) => tokenA.getValueFor(el) * 2);
+            tokenC.withDefault((el) => tokenB.getValueFor(el) * 2);
+
+            const handleChange = chia.spy(() => {})
+            const subscriber = {
+                handleChange
+            }
+            
+
+            tokenC.subscribe(subscriber);
+
+            tokenA.withDefault(7);
+            expect(handleChange).to.have.been.called()
         })
     });
 });
