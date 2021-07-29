@@ -65,8 +65,9 @@ declare namespace JSX {
             React.HTMLAttributes<HTMLElement>,
             HTMLElement
         > & {
-            accept?:string;
-            multiple?:boolean;
+            accept?: string;
+            multiple?: boolean;
+            disabled?: boolean;
             events?: {
                 change?: (e: React.ChangeEvent<HTMLElement>) => void;
             };
@@ -74,8 +75,7 @@ declare namespace JSX {
         "fast-tooling-file-action-objecturl": React.DetailedHTMLProps<
             React.HTMLAttributes<HTMLElement>,
             HTMLElement
-        > & {
-        };        
+        > & {};
     }
 }
 

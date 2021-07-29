@@ -20,7 +20,7 @@ export const FileTemplate: (
                     <slot></slot>
                 </${context.tagFor(Button)}>
             </div>
-            <slot ${slotted("action")}></slot>
+            <slot name="action" ${slotted("action")}></slot>
         </template>
     `;
 };

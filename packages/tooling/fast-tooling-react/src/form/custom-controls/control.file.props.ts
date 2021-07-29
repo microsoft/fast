@@ -1,6 +1,9 @@
 import { CommonControlConfig } from "../templates";
 
 export interface FileControlState {
+    value: string;
 }
 
-export type FileControlProps = CommonControlConfig;
+export interface FileControlProps extends CommonControlConfig {
+    accept: string;
+}

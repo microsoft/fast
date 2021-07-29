@@ -3,10 +3,9 @@ import { FileTemplate as template } from "./file.template";
 import { FileStyles as styles } from "./file.styles";
 
 /**
- *
- * @public
+ * @alpha
  * @remarks
- * HTML Element: \<color-picker\>
+ * HTML Element: \<fast-tooling-file\>
  */
 export const fastToolingFile = File.compose({
     baseName: "file",
