@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "fix select border styles when control is active",
-  "packageName": "@microsoft/fast-components",
-  "email": "corylaviska@microsoft.com",
-  "dependentChangeType": "patch"
-}
