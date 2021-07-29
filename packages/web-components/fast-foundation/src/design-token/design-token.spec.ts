@@ -812,7 +812,7 @@ describe("A DesignToken", () => {
             tokenB.subscribe(subscriber);
 
             tokenA.withDefault(7);
-            expect(handleChange).to.have.been.called()
+            expect(handleChange).to.have.been.called();
         });
 
         it("should notify a subscriber when a dependency of a dependency of a subscribed token changes", () => {
@@ -834,6 +834,27 @@ describe("A DesignToken", () => {
 
             tokenA.withDefault(7);
             expect(handleChange).to.have.been.called()
+        });
+
+        it("should notify a subscriber when a dependency changes for an element down the DOM tree", () => {
+            const tokenA = DesignToken.create<number>("a");
+            const tokenB = DesignToken.create<number>("b");
+
+            const target = addElement();
+
+            tokenA.withDefault(6);
+            tokenB.withDefault((el) => tokenA.getValueFor(el) * 2);
+
+            const handleChange = chia.spy(() => {})
+            const subscriber = {
+                handleChange
+            }
+            
+
+            tokenB.subscribe(subscriber);
+
+            tokenA.setValueFor(target, 7);
+            expect(handleChange).to.have.been.called();
         })
     });
 });
