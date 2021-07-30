@@ -56,7 +56,7 @@ provideFASTDesignSystem()
 
 ## Usage
 
-```html live
+```html
 <fast-horizontal-scroll>
     <fast-card>
         Card number 1

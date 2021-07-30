@@ -42,10 +42,10 @@ provideFASTDesignSystem()
 ## Usage
 
 ```html live
-<div role="radiogroup" aria-labelledby="fruit">
+<div role="radiogroup" aria-labelledby="fruit" name="favorite-fruit">
     <h3 id="fruit">Favorite fruit:</h3>
     <fast-radio value="apple">Apple</fast-radio>
-    <fast-radio value="mango" checked>Mango</fast-radio>
+    <fast-radio value="mango">Mango</fast-radio>
     <fast-radio value="orange">Orange</fast-radio>
 </div>
  ```

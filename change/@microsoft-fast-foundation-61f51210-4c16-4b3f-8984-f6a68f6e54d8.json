@@ -1,6 +1,6 @@
 {
   "type": "none",
-  "comment": "docs(components): add/update and expand content",
+  "comment": "refactor(fixture): mild change to typings to enable typical code pattern",
   "packageName": "@microsoft/fast-foundation",
   "email": "roeisenb@microsoft.com",
   "dependentChangeType": "none"
