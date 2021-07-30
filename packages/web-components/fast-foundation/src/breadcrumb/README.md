@@ -97,8 +97,6 @@ This component is built with the expectation that focus is delegated to the anch
 
 ## Additional resources
 
-View the full specification for breadcrumb along with additional configuration options [here]()
-
 * [Component explorer examples](https://explore.fast.design/components/fast-breadcrumb)
 * [Component technical specification](https://github.com/microsoft/fast/blob/master/packages/web-components/fast-foundation/src/breadcrumb/breadcrumb.spec.md)
 * [W3C Component Aria Practices](https://w3c.github.io/aria-practices/#breadcrumb)
