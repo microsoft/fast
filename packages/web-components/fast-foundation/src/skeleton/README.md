@@ -1,6 +1,6 @@
 ---
 id: skeleton
-title: skeleton
+title: fast-skeleton
 sidebar_label: skeleton
 custom_edit_url: https://github.com/microsoft/fast/edit/master/packages/web-components/fast-foundation/src/skeleton/README.md
 ---

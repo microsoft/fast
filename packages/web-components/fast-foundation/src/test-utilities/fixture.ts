@@ -82,7 +82,7 @@ export interface Fixture<TElement = HTMLElement> {
      * Yields control to the caller one Microtask later, in order to
      * ensure that the DOM has settled.
      */
-    connect(): Promise<void>;
+    connect: () => Promise<void>;
 
     /**
      * Removes the {@link Fixture.parent} from the DOM, causing the
@@ -91,7 +91,7 @@ export interface Fixture<TElement = HTMLElement> {
      * Yields control to the caller one Microtask later, in order to
      * ensure that the DOM has settled.
      */
-    disconnect(): Promise<void>;
+    disconnect: () => Promise<void>;
 }
 
 function findElement(view: HTMLView): HTMLElement {
