@@ -331,4 +331,89 @@ describe("mapDataDictionaryToMonacoEditorHTML", () => {
             )
         ).to.equal(text);
     });
+    it("should map a data dictionary with multiple out of order nested entries at the same level", () => {
+        const text = "<div><span>Hello world</span><div>Hello pluto</div></div>";
+        expect(
+            mapDataDictionaryToMonacoEditorHTML(
+                [
+                    {
+                        root: {
+                            schemaId: "div",
+                            data: {
+                                Slot: [
+                                    {
+                                        id: "span",
+                                    },
+                                    {
+                                        id: "div",
+                                    },
+                                ],
+                            },
+                        },
+                        div: {
+                            schemaId: "div",
+                            parent: {
+                                id: "root",
+                                dataLocation: "Slot",
+                            },
+                            data: {
+                                Slot: [
+                                    {
+                                        id: "text2",
+                                    },
+                                ],
+                            },
+                        },
+                        span: {
+                            schemaId: "span",
+                            parent: {
+                                id: "root",
+                                dataLocation: "Slot",
+                            },
+                            data: {
+                                Slot: [
+                                    {
+                                        id: "text",
+                                    },
+                                ],
+                            },
+                        },
+                        text2: {
+                            schemaId: "text",
+                            parent: {
+                                id: "div",
+                                dataLocation: "Slot",
+                            },
+                            data: "Hello pluto",
+                        },
+                        text: {
+                            schemaId: "text",
+                            parent: {
+                                id: "span",
+                                dataLocation: "Slot",
+                            },
+                            data: "Hello world",
+                        },
+                    },
+                    "root",
+                ],
+                {
+                    div: {
+                        id: "div",
+                        type: "object",
+                        [ReservedElementMappingKeyword.mapsToTagName]: "div",
+                    },
+                    span: {
+                        id: "span",
+                        type: "object",
+                        [ReservedElementMappingKeyword.mapsToTagName]: "span",
+                    },
+                    text: {
+                        id: "text",
+                        type: "string",
+                    },
+                }
+            )
+        ).to.equal(text);
+    });
 });
