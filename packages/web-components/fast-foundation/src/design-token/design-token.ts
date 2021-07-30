@@ -243,13 +243,40 @@ const childToParent = new WeakMap<DesignTokenNode<any>, DesignTokenNode<any>>();
 const noop = Function.prototype;
 
 /**
+ * Determines if a value should be considered a DerivedDesignTokenValue<T>
+ */
+function isDerivedTokenValue<T>(
+    value: DesignTokenValue<T> | DesignTokenImpl<T>
+): value is DerivedDesignTokenValue<T> {
+    return typeof value === "function";
+}
+
+/**
  * A node responsible for setting and getting token values,
  * emitting values to CSS custom properties, and maintaining
  * inheritance structures.
  */
 class DesignTokenNode<T extends { createCSS?(): string }> {
+    public static channel<T>(token: DesignToken<T>): InterfaceSymbol<DesignTokenNode<T>> {
+        return channelCache.has(token)
+            ? channelCache.get(token)!
+            : channelCache.set(token, DI.createInterface<DesignTokenNode<T>>()) &&
+                  channelCache.get(token)!;
+    }
+
+    public static for<T>(token: DesignToken<T>, target: HTMLElement) {
+        const targetCache = nodeCache.has(target)
+            ? nodeCache.get(target)!
+            : nodeCache.set(target, new Map()) && nodeCache.get(target)!;
+        return targetCache.has(token)
+            ? targetCache.get(token)!
+            : targetCache.set(token, new DesignTokenNode(token, target)) &&
+                  targetCache.get(token)!;
+    }
+
     /** Track downstream nodes */
     private children: Set<DesignTokenNode<any>> = new Set();
+
     private bindingObserver: BindingObserver | undefined;
 
     /**
@@ -326,7 +353,7 @@ class DesignTokenNode<T extends { createCSS?(): string }> {
     private resolveRealValue(): T {
         const rawValue = this.resolveRawValue();
 
-        if (DesignTokenNode.isDerivedTokenValue(rawValue)) {
+        if (isDerivedTokenValue(rawValue)) {
             if (!this.bindingObserver || this.bindingObserver.source !== rawValue) {
                 this.setupBindingObserver(rawValue);
             }
@@ -372,19 +399,6 @@ class DesignTokenNode<T extends { createCSS?(): string }> {
 
     private resolveCSSValue(value: T) {
         return value && typeof value.createCSS === "function" ? value.createCSS() : value;
-    }
-
-    public static channel<T>(token: DesignToken<T>): InterfaceSymbol<DesignTokenNode<T>> {
-        return channelCache.has(token)
-            ? channelCache.get(token)!
-            : channelCache.set(token, DI.createInterface<DesignTokenNode<T>>()) &&
-                  channelCache.get(token)!;
-    }
-
-    private static isDerivedTokenValue<T>(
-        value: DesignTokenValue<T> | DesignTokenImpl<T>
-    ): value is DerivedDesignTokenValue<T> {
-        return typeof value === "function";
     }
 
     /**
@@ -436,16 +450,6 @@ class DesignTokenNode<T extends { createCSS?(): string }> {
             );
         },
     };
-
-    public static for<T>(token: DesignToken<T>, target: HTMLElement) {
-        const targetCache = nodeCache.has(target)
-            ? nodeCache.get(target)!
-            : nodeCache.set(target, new Map()) && nodeCache.get(target)!;
-        return targetCache.has(token)
-            ? targetCache.get(token)!
-            : targetCache.set(token, new DesignTokenNode(token, target)) &&
-                  targetCache.get(token)!;
-    }
 
     public appendChild<T>(child: DesignTokenNode<T>) {
         if (this.children.has(child)) {
