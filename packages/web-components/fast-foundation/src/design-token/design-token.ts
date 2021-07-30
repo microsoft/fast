@@ -251,6 +251,41 @@ function isDerivedTokenValue<T>(
     return typeof value === "function";
 }
 
+class CustomPropertyReflector {
+    public startReflection(token: CSSDesignToken<any>, target: HTMLElement) {
+        token.subscribe(this, target);
+        this.handleChange({ token, target });
+    }
+
+    public stopReflection(token: CSSDesignToken<any>, target: HTMLElement) {
+        token.unsubscribe(this, target);
+    }
+
+    public handleChange(record: DesignTokenChangeRecord<any>) {
+        const { token, target } = record;
+        this.remove(token, target);
+        this.add(token, target);
+    }
+
+    private add(token: CSSDesignToken<any>, target: HTMLElement) {
+        CustomPropertyManager.addTo(
+            target,
+            token,
+            this.resolveCSSValue(token.getValueFor(target))
+        );
+    }
+
+    private remove(token: CSSDesignToken<any>, target: HTMLElement) {
+        CustomPropertyManager.removeFrom(target, token as CSSDesignToken<any>);
+    }
+
+    private resolveCSSValue(value: any) {
+        return value && typeof value.createCSS === "function" ? value.createCSS() : value;
+    }
+}
+
+const customPropertyReflector = new CustomPropertyReflector();
+
 /**
  * A node responsible for setting and getting token values,
  * emitting values to CSS custom properties, and maintaining
@@ -301,18 +336,15 @@ class DesignTokenNode<T extends { createCSS?(): string }> {
     public useCSSCustomProperty = false;
     private useCSSCustomPropertyChanged?(prev: undefined | boolean, next: boolean) {
         if (next) {
-            Observable.getNotifier(this).subscribe(
-                this.cssCustomPropertySubscriber,
-                "value"
+            customPropertyReflector.startReflection(
+                this.token as CSSDesignToken<T>,
+                this.target
             );
-
-            this.cssCustomPropertySubscriber.handleChange();
-        } else if (prev) {
-            Observable.getNotifier(this).unsubscribe(
-                this.cssCustomPropertySubscriber,
-                "value"
+        } else if (prev && !next) {
+            customPropertyReflector.stopReflection(
+                this.token as CSSDesignToken<T>,
+                this.target
             );
-            this.cssCustomPropertySubscriber.dispose();
         }
     }
 
@@ -397,10 +429,6 @@ class DesignTokenNode<T extends { createCSS?(): string }> {
         );
     }
 
-    private resolveCSSValue(value: T) {
-        return value && typeof value.createCSS === "function" ? value.createCSS() : value;
-    }
-
     /**
      * Invoked when parent node's value changes
      */
@@ -430,26 +458,6 @@ class DesignTokenNode<T extends { createCSS?(): string }> {
             this.bindingObserver = undefined;
         }
     }
-
-    private cssCustomPropertySubscriber = {
-        handleChange: () => {
-            CustomPropertyManager.removeFrom(
-                this.target,
-                this.token as CSSDesignToken<T>
-            );
-            CustomPropertyManager.addTo(
-                this.target,
-                this.token as CSSDesignToken<T>,
-                this.resolveCSSValue(this.value)
-            );
-        },
-        dispose: () => {
-            CustomPropertyManager.removeFrom(
-                this.target,
-                this.token as CSSDesignToken<T>
-            );
-        },
-    };
 
     public appendChild<T>(child: DesignTokenNode<T>) {
         if (this.children.has(child)) {
