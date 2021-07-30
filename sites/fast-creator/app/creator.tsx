@@ -57,7 +57,14 @@ import {
     SwatchRGB,
 } from "@microsoft/fast-components";
 import { LinkedDataActionType } from "@microsoft/fast-tooling-react/dist/form/templates/types";
-import { CreatorState, FormId, NavigationId, ProjectFile } from "./creator.props";
+import { XOR } from "@microsoft/fast-tooling/dist/dts/data-utilities/type.utilities";
+import {
+    CreatorState,
+    ExternalInitializingData,
+    FormId,
+    NavigationId,
+    ProjectFile,
+} from "./creator.props";
 import { elementLibraries, elementLibraryContents } from "./configs";
 import { divTag } from "./configs/native/library.native.tags";
 import { ProjectFileTransfer } from "./components";
@@ -538,18 +545,24 @@ class Creator extends Editor<{}, CreatorState> {
 
     private handleWindowMessage = (e: MessageEvent): void => {
         if (e.data) {
-            try {
-                const messageData = JSON.parse(e.data);
+            let messageData: XOR<null, ExternalInitializingData>;
 
-                if (messageData.type === "dataDictionary" && messageData.data) {
-                    this.fastMessageSystem.postMessage({
-                        type: MessageSystemType.initialize,
-                        data: messageData.data,
-                        schemaDictionary: schemaDictionaryWithNativeElements,
-                    });
-                }
+            try {
+                messageData = JSON.parse(e.data);
             } catch (e) {
-                console.log(e);
+                messageData = null;
+            }
+
+            if (
+                messageData &&
+                messageData.type === MessageSystemType.dataDictionary &&
+                messageData.data
+            ) {
+                this.fastMessageSystem.postMessage({
+                    type: MessageSystemType.initialize,
+                    data: messageData.data,
+                    schemaDictionary: schemaDictionaryWithNativeElements,
+                });
             }
         }
     };
