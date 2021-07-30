@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "fix image load resize bug in html render component",
+  "packageName": "@microsoft/fast-tooling",
+  "email": "44823142+williamw2@users.noreply.github.com",
+  "dependentChangeType": "patch"
+}
