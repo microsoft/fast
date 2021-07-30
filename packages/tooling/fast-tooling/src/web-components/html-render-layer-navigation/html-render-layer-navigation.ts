@@ -4,6 +4,19 @@ import {
     HTMLRenderLayer,
     OverlayPosition,
 } from "../html-render-layer/html-render-layer";
+import type {
+    ConstructibleResizeObserver,
+    ResizeObserverClassDefinition,
+} from "./resize-observer";
+
+// TODO: the Resize Observer related files are a temporary stopgap measure until
+// the package's Typescript version is upgraded to the latest version.
+// At that point these files should be deleted.
+declare global {
+    interface WindowWithResizeObserver extends Window {
+        ResizeObserver: ConstructibleResizeObserver;
+    }
+}
 
 export class HTMLRenderLayerNavigation extends HTMLRenderLayer {
     public layerActivityId: string = "NavLayer";
@@ -35,8 +48,17 @@ export class HTMLRenderLayerNavigation extends HTMLRenderLayer {
     private timeoutRef: number = null;
     private currElementRef: HTMLElement = null;
 
+    //TODO: Replace with vanila ResizeObserver after Typscript is upgraded to at least v4.2.3.
+    private resizeDetector: ResizeObserverClassDefinition | null = null;
+
     connectedCallback() {
         super.connectedCallback();
+
+        this.resizeDetector = new ((window as unknown) as WindowWithResizeObserver).ResizeObserver(
+            this.handleWindowChange
+        );
+
+        this.resizeDetector.observe(document.body);
 
         window.addEventListener("scroll", this.handleWindowChange);
         window.addEventListener("resize", this.handleWindowChange);
@@ -47,6 +69,8 @@ export class HTMLRenderLayerNavigation extends HTMLRenderLayer {
 
         window.removeEventListener("scroll", this.handleWindowChange);
         window.removeEventListener("resize", this.handleWindowChange);
+        this.resizeDetector.disconnect();
+        this.resizeDetector = null;
     }
 
     private handleWindowChange = () => {
