@@ -1,7 +1,0 @@
-{
-  "type": "none",
-  "comment": "refactor(fixture): mild change to typings to enable typical code pattern",
-  "packageName": "@microsoft/fast-foundation",
-  "email": "roeisenb@microsoft.com",
-  "dependentChangeType": "none"
-}
