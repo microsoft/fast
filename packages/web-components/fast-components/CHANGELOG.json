@@ -2,6 +2,29 @@
   "name": "@microsoft/fast-components",
   "entries": [
     {
+      "date": "Sun, 01 Aug 2021 07:17:15 GMT",
+      "tag": "@microsoft/fast-components_v2.5.3",
+      "version": "2.5.3",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Register design-system-provider",
+            "author": "47367562+bheston@users.noreply.github.com",
+            "commit": "96a1fe10892fa513c800a2623bfc06e237ae8a8c",
+            "package": "@microsoft/fast-components"
+          }
+        ],
+        "none": [
+          {
+            "comment": "Bump @microsoft/fast-foundation to v2.6.2",
+            "author": "roeisenb@microsoft.com",
+            "commit": "46bb752c86f1112f4cc92f8b0c155addf05225e0",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 29 Jul 2021 07:18:18 GMT",
       "tag": "@microsoft/fast-components_v2.5.2",
       "version": "2.5.2",
