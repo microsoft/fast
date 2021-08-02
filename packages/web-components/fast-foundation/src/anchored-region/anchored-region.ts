@@ -299,7 +299,7 @@ export class AnchoredRegion extends FoundationElement {
     }
 
     /**
-     *
+     * The auto-update setting of the component
      *
      * @beta
      * @remarks

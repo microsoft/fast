@@ -7,227 +7,221 @@ import type {
 } from "./anchored-region";
 
 /**
- * A utility interface to facilitate passing around anchored region
- * configurations
+ * A utility interface to store anchored region
+ * configurations that correspond to various common flyout
+ * positioning schemes
  *
  * @public
  */
 export interface AnchoredRegionConfig {
     /**
-     *
+     * Whether the region is positioned using css "position: fixed".
+     * Otherwise the region uses "position: absolute".
+     * Fixed placement allows the region to break out of parent containers,
      */
     fixedPlacement?: boolean;
 
     /**
-     *
+     * The auto-update setting of the component
      */
     autoUpdateMode?: AutoUpdateMode;
 
     /**
-     *
+     * Sets what logic the component uses to determine vertical placement.
      */
     verticalPositioningMode: AxisPositioningMode;
 
     /**
-     *
+     * The default vertical position of the region relative to the anchor element
      */
     verticalDefaultPosition?: VerticalPosition;
 
     /**
-     *
+     * Whether the region overlaps the anchor on the vertical axis
      */
     verticalInset: boolean;
 
     /**
-     *
+     * Defines how the height of the region is calculated
      */
     verticalScaling: AxisScalingMode;
 
     /**
-     *
+     * How short the space allocated to the default position has to be before the tallest area
+     * is selected for layout
      */
     verticalThreshold?: number;
 
     /**
-     *
+     * Sets what logic the component uses to determine horizontal placement.
      */
     horizontalPositioningMode: AxisPositioningMode;
 
     /**
-     *
+     * The default horizontal position of the region relative to the anchor element
      */
     horizontalDefaultPosition?: HorizontalPosition;
 
     /**
-     *
+     *  hether the region overlaps the anchor on the horizontal axis
      */
     horizontalInset: boolean;
 
     /**
-     *
+     * Defines how the width of the region is calculate
      */
     horizontalScaling: AxisScalingMode;
 
     /**
-     *
+     * How short the space allocated to the default position has to be before the widest area
+     * is selected for layout
      */
     horizontalThreshold?: number;
 }
 
-// /**
-//  * A flyout that always places itself below the anchor and has
-//  * a width to match the anchor
-//  */
-// export const flyoutBelow: AnchoredRegionConfig = {
-//     verticalDefaultPosition: "bottom",
-//     verticalPositioningMode: "locktodefault",
-//     verticalInset: false,
-//     verticalScaling: "content",
+/**
+ * A flyout that always places itself above the anchor, has
+ * a width to match the anchor, and is sized vertically by content
+ */
+export const Above: AnchoredRegionConfig = {
+    verticalDefaultPosition: "top",
+    verticalPositioningMode: "locktodefault",
+    verticalInset: false,
+    verticalScaling: "content",
 
-//     horizontalDefaultPosition: "right",
-//     horizontalPositioningMode: "locktodefault",
-//     horizontalInset: true,
-//     horizontalScaling: "anchor",
-// };
+    horizontalDefaultPosition: "right",
+    horizontalPositioningMode: "locktodefault",
+    horizontalInset: true,
+    horizontalScaling: "anchor",
+};
 
-// /**
-//  * A flyout that always places itself below the anchor, has
-//  * a width to match the anchor, and scales to span the space
-//  * between the anchor and the edge of the viewport
-//  */
-// export const flyoutBelowScaling: AnchoredRegionConfig = {
-//     verticalDefaultPosition: "bottom",
-//     verticalPositioningMode: "locktodefault",
-//     verticalInset: false,
-//     verticalScaling: "fill",
+/**
+ * A flyout that always places itself below the anchor, has
+ * a width to match the anchor, and is sized vertically by content
+ */
+export const Below: AnchoredRegionConfig = {
+    verticalDefaultPosition: "bottom",
+    verticalPositioningMode: "locktodefault",
+    verticalInset: false,
+    verticalScaling: "content",
 
-//     horizontalDefaultPosition: "right",
-//     horizontalPositioningMode: "locktodefault",
-//     horizontalInset: true,
-//     horizontalScaling: "anchor",
-// };
+    horizontalDefaultPosition: "right",
+    horizontalPositioningMode: "locktodefault",
+    horizontalInset: true,
+    horizontalScaling: "anchor",
+};
 
-// /**
-//  * A flyout that always places itself above the anchor and has
-//  * a width to match the anchor
-//  */
-// export const flyoutAbove: AnchoredRegionConfig = {
-//     verticalDefaultPosition: "top",
-//     verticalPositioningMode: "locktodefault",
-//     verticalInset: false,
-//     verticalScaling: "content",
+/**
+ * A flyout that always places itself to the left of the anchor, has
+ * a height to match the anchor, and is sized horizontally by content
+ */
+export const Left: AnchoredRegionConfig = {
+    verticalDefaultPosition: "bottom",
+    verticalPositioningMode: "locktodefault",
+    verticalInset: true,
+    verticalScaling: "anchor",
 
-//     horizontalDefaultPosition: "right",
-//     horizontalPositioningMode: "locktodefault",
-//     horizontalInset: true,
-//     horizontalScaling: "anchor",
-// };
+    horizontalDefaultPosition: "left",
+    horizontalPositioningMode: "locktodefault",
+    horizontalInset: false,
+    horizontalScaling: "content",
+};
 
-// /**
-//  * A flyout that places itself above or below the anchor
-//  * based on available space.
-//  */
-// export const flyoutAboveOrBelow: AnchoredRegionConfig = {
-//     verticalPositioningMode: "dynamic",
-//     verticalInset: false,
-//     verticalScaling: "content",
+/**
+ * A flyout that always places itself to the right of the anchor, has
+ * a height to match the anchor, and is sized horizontally by content
+ */
+export const Right: AnchoredRegionConfig = {
+    verticalDefaultPosition: "bottom",
+    verticalPositioningMode: "locktodefault",
+    verticalInset: true,
+    verticalScaling: "anchor",
 
-//     horizontalDefaultPosition: "right",
-//     horizontalPositioningMode: "locktodefault",
-//     horizontalInset: true,
-//     horizontalScaling: "anchor",
-// };
+    horizontalDefaultPosition: "right",
+    horizontalPositioningMode: "locktodefault",
+    horizontalInset: false,
+    horizontalScaling: "content",
+};
 
-// /**
-//  * A flyout that always places itself to the left of the anchor and has
-//  * a height to match the anchor
-//  */
-// export const flyoutLeft: AnchoredRegionConfig = {
-//     verticalDefaultPosition: "bottom",
-//     verticalPositioningMode: "locktodefault",
-//     verticalInset: true,
-//     verticalScaling: "anchor",
+/**
+ * A flyout that places itself above or below the anchor
+ * based on available space, has a width to match the anchor,
+ * and is sized vertically by content
+ */
+export const Tallest: AnchoredRegionConfig = {
+    verticalPositioningMode: "dynamic",
+    verticalInset: false,
+    verticalScaling: "content",
 
-//     horizontalDefaultPosition: "left",
-//     horizontalPositioningMode: "locktodefault",
-//     horizontalInset: false,
-//     horizontalScaling: "content",
-// };
+    horizontalDefaultPosition: "right",
+    horizontalPositioningMode: "locktodefault",
+    horizontalInset: true,
+    horizontalScaling: "anchor",
+};
 
-// /**
-//  * A flyout that always places itself to the right of the anchor and has
-//  * a height to match the anchor
-//  */
-// export const flyoutRight: AnchoredRegionConfig = {
-//     verticalDefaultPosition: "bottom",
-//     verticalPositioningMode: "locktodefault",
-//     verticalInset: true,
-//     verticalScaling: "anchor",
+/**
+ * A flyout that places itself to the left or right of the anchor
+ * based on available space, has a height to match the anchor,
+ * and is sized horizontally by content
+ */
+export const Widest: AnchoredRegionConfig = {
+    verticalDefaultPosition: "bottom",
+    verticalPositioningMode: "locktodefault",
+    verticalInset: true,
+    verticalScaling: "anchor",
 
-//     horizontalDefaultPosition: "right",
-//     horizontalPositioningMode: "locktodefault",
-//     horizontalInset: false,
-//     horizontalScaling: "content",
-// };
+    horizontalPositioningMode: "dynamic",
+    horizontalInset: false,
+    horizontalScaling: "content",
+};
 
-// /**
-//  * A flyout that always places itself to the right of the anchor and has
-//  * a height to match the anchor
-//  */
-// export const flyoutLeftOrRight: AnchoredRegionConfig = {
-//     verticalDefaultPosition: "bottom",
-//     verticalPositioningMode: "locktodefault",
-//     verticalInset: true,
-//     verticalScaling: "anchor",
+/**
+ * A flyout that always places itself to the left of the anchor,
+ * has a height to match the content, is sized horizontally by content
+ * and expands downwards from the top of the anchor
+ */
+export const DropDownLeft: AnchoredRegionConfig = {
+    verticalDefaultPosition: "bottom",
+    verticalPositioningMode: "locktodefault",
+    verticalInset: true,
+    verticalScaling: "content",
 
-//     horizontalPositioningMode: "dynamic",
-//     horizontalInset: false,
-//     horizontalScaling: "content",
-// };
+    horizontalDefaultPosition: "left",
+    horizontalPositioningMode: "locktodefault",
+    horizontalInset: false,
+    horizontalScaling: "content",
+};
 
-// /**
-//  * A flyout that always places itself to the left of the anchor
-//  * drops down vertically
-//  */
-// export const dropDownLeft: AnchoredRegionConfig = {
-//     verticalDefaultPosition: "bottom",
-//     verticalPositioningMode: "locktodefault",
-//     verticalInset: true,
-//     verticalScaling: "content",
+/**
+ * A flyout that always places itself to the right of the anchor,
+ * has a height to match the content, is sized horizontally by content
+ * and expands downwards from the top of the anchor
+ */
+export const DropDownRight: AnchoredRegionConfig = {
+    verticalDefaultPosition: "bottom",
+    verticalPositioningMode: "locktodefault",
+    verticalInset: true,
+    verticalScaling: "content",
 
-//     horizontalDefaultPosition: "left",
-//     horizontalPositioningMode: "locktodefault",
-//     horizontalInset: false,
-//     horizontalScaling: "content",
-// };
+    horizontalDefaultPosition: "right",
+    horizontalPositioningMode: "locktodefault",
+    horizontalInset: false,
+    horizontalScaling: "content",
+};
 
-// /**
-//  * A flyout that always places itself to the right of the anchor
-//  * drops down vertically
-//  */
-// export const dropDownRight: AnchoredRegionConfig = {
-//     verticalDefaultPosition: "bottom",
-//     verticalPositioningMode: "locktodefault",
-//     verticalInset: true,
-//     verticalScaling: "content",
+/**
+ * A flyout that places itself to the left or right of the anchor
+ * based on available space, has a height to match the content,
+ * is sized horizontally by content and expands downwards from the top
+ * of the anchor
+ */
+export const DropDownWidest: AnchoredRegionConfig = {
+    verticalDefaultPosition: "bottom",
+    verticalPositioningMode: "locktodefault",
+    verticalInset: true,
+    verticalScaling: "content",
 
-//     horizontalDefaultPosition: "right",
-//     horizontalPositioningMode: "locktodefault",
-//     horizontalInset: false,
-//     horizontalScaling: "content",
-// };
-
-// /**
-//  * A flyout that places itself to the left or right of the anchor depending on space and
-//  * drops down vertically
-//  */
-// export const dropDownLeftOrRight: AnchoredRegionConfig = {
-//     verticalDefaultPosition: "bottom",
-//     verticalPositioningMode: "locktodefault",
-//     verticalInset: true,
-//     verticalScaling: "content",
-
-//     horizontalPositioningMode: "dynamic",
-//     horizontalInset: false,
-//     horizontalScaling: "content",
-// };
+    horizontalPositioningMode: "dynamic",
+    horizontalInset: false,
+    horizontalScaling: "content",
+};
