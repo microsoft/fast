@@ -1,4 +1,4 @@
-import { attr, DOM } from "@microsoft/fast-element";
+import { attr, DOM, Notifier, Observable } from "@microsoft/fast-element";
 import { keyCodeEscape, keyCodeTab } from "@microsoft/fast-web-utilities";
 import { isTabbable } from "tabbable";
 import { FoundationElement } from "../foundation-element";
@@ -11,7 +11,8 @@ import { FoundationElement } from "../foundation-element";
  */
 export class Dialog extends FoundationElement {
     /**
-     * Indicates the element is modal. When modal, user interaction will be limited to the contents of the element.
+     * Indicates the element is modal. When modal, user mouse interaction will be limited to the contents of the element by a modal
+     * overlay.  Clicks on the overlay will cause the dialog to emit a "dismiss" event.
      * @public
      * @defaultValue - true
      * @remarks
@@ -41,6 +42,11 @@ export class Dialog extends FoundationElement {
      */
     @attr({ attribute: "trap-focus", mode: "boolean" })
     public trapFocus: boolean = true;
+    private trapFocusChanged = (): void => {
+        if ((this as FoundationElement).$fastController.isConnected) {
+            this.updateTrapFocus();
+        }
+    };
 
     /**
      * The id of the element describing the dialog.
@@ -78,6 +84,16 @@ export class Dialog extends FoundationElement {
     /**
      * @internal
      */
+    private isTrappingFocus: boolean = false;
+
+    /**
+     * @internal
+     */
+    private notifier: Notifier;
+
+    /**
+     * @internal
+     */
     public dismiss(): void {
         this.$emit("dismiss");
     }
@@ -107,10 +123,9 @@ export class Dialog extends FoundationElement {
         super.connectedCallback();
 
         document.addEventListener("keydown", this.handleDocumentKeydown);
-
-        // Ensure the DOM is updated
-        // This helps avoid a delay with `autofocus` elements receiving focus
-        DOM.queueUpdate(this.trapFocusChanged);
+        this.notifier = Observable.getNotifier(this);
+        this.notifier.subscribe(this, "hidden");
+        this.updateTrapFocus();
     }
 
     /**
@@ -123,25 +138,23 @@ export class Dialog extends FoundationElement {
         document.removeEventListener("keydown", this.handleDocumentKeydown);
 
         // if we are trapping focus remove the focusin listener
-        if (this.trapFocus) {
-            document.removeEventListener("focusin", this.handleDocumentFocus);
-        }
+        this.updateTrapFocus(false);
+
+        this.notifier.unsubscribe(this, "hidden");
     }
 
-    private trapFocusChanged = (): void => {
-        if (this.trapFocus) {
-            // Add an event listener for focusin events if we should be trapping focus
-            document.addEventListener("focusin", this.handleDocumentFocus);
-
-            // determine if we should move focus inside the dialog
-            if (this.shouldForceFocus(document.activeElement)) {
-                this.focusFirstElement();
-            }
-        } else {
-            // remove event listener if we are not trapping focus
-            document.removeEventListener("focusin", this.handleDocumentFocus);
+    /**
+     * @internal
+     */
+    public handleChange(source: any, propertyName: string) {
+        switch (propertyName) {
+            case "hidden":
+                this.updateTrapFocus();
+                break;
+            default:
+                break;
         }
-    };
+    }
 
     private handleDocumentKeydown = (e: KeyboardEvent): void => {
         if (!e.defaultPrevented && !this.hidden) {
@@ -208,6 +221,10 @@ export class Dialog extends FoundationElement {
 
         if (bounds.length > 0) {
             bounds[0].focus();
+        } else {
+            if (this.dialog instanceof HTMLElement) {
+                this.dialog.focus;
+            }
         }
     };
 
@@ -215,7 +232,41 @@ export class Dialog extends FoundationElement {
      * we should only focus if focus has not already been brought to the dialog
      */
     private shouldForceFocus = (currentFocusElement: Element | null): boolean => {
-        return !this.hidden && !this.contains(currentFocusElement);
+        return this.isTrappingFocus && !this.contains(currentFocusElement);
+    };
+
+    /**
+     * we should we be active trapping focus
+     */
+    private shouldTrapFocus = (): boolean => {
+        return this.trapFocus && !this.hidden;
+    };
+
+    /**
+     *
+     *
+     * @internal
+     */
+    private updateTrapFocus = (shouldTrapFocusOverride?: boolean): void => {
+        const shouldTrapFocus =
+            shouldTrapFocusOverride === undefined
+                ? this.shouldTrapFocus()
+                : shouldTrapFocusOverride;
+
+        if (shouldTrapFocus && !this.isTrappingFocus) {
+            this.isTrappingFocus = true;
+            // Add an event listener for focusin events if we are trapping focus
+            document.addEventListener("focusin", this.handleDocumentFocus);
+            DOM.queueUpdate(() => {
+                if (this.shouldForceFocus(document.activeElement)) {
+                    this.focusFirstElement();
+                }
+            });
+        } else if (!shouldTrapFocus && this.isTrappingFocus) {
+            this.isTrappingFocus = false;
+            // remove event listener if we are not trapping focus
+            document.removeEventListener("focusin", this.handleDocumentFocus);
+        }
     };
 
     /**
