@@ -32,7 +32,7 @@ export const CalendarWeekdayTemplate: ViewTemplate = html`
     <div
         class="week-day"
         part="week-day"
-        aria-label="${x => (x.label !== x.text ? x.label : null)}"
+        abbr="${x => (x.label !== x.text ? x.label : null)}"
     >
         ${x => x.text}
     </div>
@@ -46,13 +46,13 @@ export const CalendarDayTemplate: ViewTemplate<CalendarDateInfo> = html`
     <div
         part="day"
         aria-label="${(x, c) =>
-            ("localeFormatter" in c.parent
-                ? c
-                : c.parentContext
-            ).parent.localeFormatter(`${x.month}-${x.day}-${x.year}`, {
-                month: "long",
-                day: "numeric",
-            })}"
+            ("localeFormatter" in c.parent ? c : c.parentContext).parent.localeFormatter(
+                `${x.month}-${x.day}-${x.year}`,
+                {
+                    month: "long",
+                    day: "numeric",
+                }
+            )}"
         class="${(x, c) =>
             ("getDayClassNames" in c.parent
                 ? c

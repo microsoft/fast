@@ -2,16 +2,28 @@ import { attr, FASTElement, nullableNumberConverter } from "@microsoft/fast-elem
 import { FoundationElement } from "../foundation-element";
 
 /**
- * enum representing the different month and weekday formats
+ * enum representing the different day formats
  * @public
  */
-export type DateStyle = "long" | "narrow" | "short";
+export type DayFormat = "2-digit" | "numeric";
+
+/**
+ * enum representing the different weekday formats
+ * @public
+ */
+export type WeekdayFormat = "long" | "narrow" | "short";
+
+/**
+ * enum representing the different month formats
+ * @public
+ */
+export type MonthFormat = "2-digit" | "long" | "narrow" | "numeric" | "short";
 
 /**
  * enum representing the different year formats
  * @public
  */
-export type YearFormat = "numeric" | "2-digit";
+export type YearFormat = "2-digit" | "numeric";
 
 /**
  * Information about a month
@@ -78,21 +90,21 @@ export class Calendar extends FoundationElement {
      * @public
      */
     @attr({ attribute: "day-format" })
-    public dayFormat: "numeric" | "2-digit" = "numeric";
+    public dayFormat: DayFormat = "numeric";
 
     /**
      * Format style for the week day labels
      * @public
      */
     @attr({ attribute: "weekday-format" })
-    public weekdayFormat: DateStyle = "short";
+    public weekdayFormat: WeekdayFormat = "short";
 
     /**
      * Format style for the month label
      * @public
      */
     @attr({ attribute: "month-format" })
-    public monthFormat: DateStyle = "long";
+    public monthFormat: MonthFormat = "long";
 
     /**
      * Format style for the year used in the title
@@ -206,14 +218,14 @@ export class Calendar extends FoundationElement {
     /**
      * Gets a localized month name
      * @param month - number of the month, january = 1, febuary = 2, etc
-     * @param format - DateStyle = "long" | "narrow" | "short"
+     * @param format - MonthFormat
      * @param locale - locale settings
      * @returns a localized string representing the name of the month
      * @public
      */
     public getMonth(
         month: number = this.month,
-        format: DateStyle = this.monthFormat,
+        format: MonthFormat = this.monthFormat,
         locale: string = this.locale
     ): string {
         return this.localeFormatter(`${month}-3-2017`, { month: format }, locale);
@@ -241,7 +253,7 @@ export class Calendar extends FoundationElement {
      */
     public getDay(
         date: Date | string,
-        format: "numeric" | "2-digit" = "numeric",
+        format: DayFormat = this.dayFormat,
         locale = this.locale
     ): string {
         return !date ? "" : this.localeFormatter(date, { day: format }, locale);
@@ -249,13 +261,13 @@ export class Calendar extends FoundationElement {
 
     /**
      * Gets a localized list of weekday names
-     * @param format - DateStyle = "long" | "narrow" | "short": format settings for the weekdays
+     * @param format - WeekdayFormat = "long" | "narrow" | "short": format settings for the weekdays
      * @param locale - locale settings
      * @returns an array of localized strings representing the names of the weekdays
      * @public
      */
     public getWeekDays(
-        format: DateStyle = this.weekdayFormat,
+        format: WeekdayFormat = this.weekdayFormat,
         locale = this.locale
     ): { label: string; text: string }[] {
         return Array(7)

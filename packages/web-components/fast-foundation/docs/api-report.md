@@ -267,14 +267,14 @@ export const buttonTemplate: (context: ElementDefinitionContext, definition: Fou
 // @public
 export class Calendar extends FoundationElement {
     dateInString(date: Date | string, datesString: string): boolean;
-    dayFormat: "numeric" | "2-digit";
+    dayFormat: DayFormat;
     disabledDates: string;
-    getDay(date: Date | string, format?: "numeric" | "2-digit", locale?: string): string;
+    getDay(date: Date | string, format?: DayFormat, locale?: string): string;
     getDayClassNames(date: CalendarDateInfo): string;
     getDays(info?: CalendarInfo, minWeeks?: number): CalendarDateInfo[];
-    getMonth(month?: number, format?: DateStyle, locale?: string): string;
+    getMonth(month?: number, format?: MonthFormat, locale?: string): string;
     getMonthInfo(month?: number, year?: number): CalendarInfo;
-    getWeekDays(format?: DateStyle, locale?: string): {
+    getWeekDays(format?: WeekdayFormat, locale?: string): {
         label: string;
         text: string;
     }[];
@@ -287,9 +287,9 @@ export class Calendar extends FoundationElement {
     localeFormatter(date?: Date | string, format?: Intl.DateTimeFormatOptions, locale?: string): string;
     minWeeks: number;
     month: number;
-    monthFormat: DateStyle;
+    monthFormat: MonthFormat;
     selectedDates: string;
-    weekdayFormat: DateStyle;
+    weekdayFormat: WeekdayFormat;
     year: number;
     yearFormat: YearFormat;
 }
@@ -667,7 +667,7 @@ export enum DataGridRowTypes {
 export const dataGridTemplate: (context: any, definition: any) => ViewTemplate<DataGrid>;
 
 // @public
-export type DateStyle = "long" | "narrow" | "short";
+export type DayFormat = "2-digit" | "numeric";
 
 // @public
 export class DefaultComponentPresentation implements ComponentPresentation {
@@ -1403,6 +1403,9 @@ export const menuItemTemplate: (context: ElementDefinitionContext, definition: M
 
 // @public
 export const menuTemplate: (context: ElementDefinitionContext, definition: FoundationElementDefinition) => ViewTemplate<Menu>;
+
+// @public
+export type MonthFormat = "2-digit" | "long" | "narrow" | "numeric" | "short";
 
 // @public
 export type MonthInfo = {
@@ -2254,10 +2257,13 @@ export function validateKey(key: any): void;
 export type VerticalPosition = "top" | "bottom" | "unset";
 
 // @public
+export type WeekdayFormat = "long" | "narrow" | "short";
+
+// @public
 export function whitespaceFilter(value: Node, index: number, array: Node[]): boolean;
 
 // @public
-export type YearFormat = "numeric" | "2-digit";
+export type YearFormat = "2-digit" | "numeric";
 
 
 // Warnings were encountered during analysis:
