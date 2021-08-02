@@ -20,7 +20,6 @@ export const fastCheckbox = Checkbox.compose<CheckboxOptions>({
     styles,
     checkedIndicator: `
         <svg
-            aria-hidden="true"
             part="checked-indicator"
             class="checked-indicator"
             viewBox="0 0 20 20"
