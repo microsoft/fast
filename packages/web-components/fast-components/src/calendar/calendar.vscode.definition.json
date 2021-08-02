@@ -7,6 +7,22 @@
             "description": "The FAST calendar element",
             "attributes": [
                 {
+                    "name": "day-format",
+                    "title": "Day format",
+                    "description": "The rendering style for the days in the calendar.",
+                    "type": "string",
+                    "default": "numeric",
+                    "required": false,
+                    "values": [
+                        {
+                            "name": "2-digit"
+                        },
+                        {
+                            "name": "numeric"
+                        }
+                    ]
+                },
+                {
                     "name": "disabled-dates",
                     "title": "Disabled dates",
                     "description": "A comma separated list of dates to show as disabled.",
