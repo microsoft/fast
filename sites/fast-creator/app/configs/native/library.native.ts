@@ -1,4 +1,4 @@
-import { nativeElementSchemas } from "@microsoft/site-utilities";
+import { nativeElementSchemas, textSchema } from "@microsoft/site-utilities";
 import { NativeElementLibraryDefinition } from "../typings";
 import {
     divExample,
@@ -12,6 +12,7 @@ import {
     labelExample,
     paragraphExample,
     spanExample,
+    textExample,
 } from "./library.native.examples";
 import {
     divTag,
@@ -34,6 +35,11 @@ export const nativeElementLibrary: NativeElementLibraryDefinition = {
     displayName: "HTML Elements",
     optional: false,
     componentDictionary: {
+        [textSchema.$id]: {
+            displayName: textSchema.title,
+            schema: textSchema,
+            example: textExample,
+        },
         [nativeElementSchemas[divTag].$id]: {
             displayName: nativeElementSchemas[divTag].title,
             schema: nativeElementSchemas[divTag],

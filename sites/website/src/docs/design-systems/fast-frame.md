@@ -14,7 +14,6 @@ FAST Frame ([`@microsoft/fast-components`](https://www.npmjs.com/package/@micros
 Web components from FAST Frame must be registered with the `DesignSystem` prior to being used in HTML. To set up the `DesignSystem`, first import and invoke the provider function from `@microsoft/fast-foundation` to get the `DesignSystem` instance. Then import the registrations of the components you want to use from `@microsoft/fast-components` and register them with the `DesignSystem`:
 
 ```ts
-// ...
 import { 
     fastButton, 
     fastMenu, 

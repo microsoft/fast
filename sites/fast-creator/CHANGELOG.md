@@ -1,8 +1,32 @@
 # Change Log - @microsoft/fast-creator
 
-This log was last generated on Sun, 25 Jul 2021 07:17:41 GMT and should not be manually modified.
+This log was last generated on Sun, 01 Aug 2021 07:17:15 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.7.0
+
+Sun, 01 Aug 2021 07:17:15 GMT
+
+### Patches
+
+- Bump @microsoft/fast-tooling-react to v2.9.9 (7559015+janechu@users.noreply.github.com)
+
+## 0.7.0
+
+Thu, 29 Jul 2021 07:18:18 GMT
+
+### Patches
+
+- Bump @microsoft/fast-tooling-react to v2.9.8 (47367562+bheston@users.noreply.github.com)
+
+## 0.7.0
+
+Wed, 28 Jul 2021 07:17:22 GMT
+
+### Patches
+
+- Bump @microsoft/fast-tooling-react to v2.9.7 (nicholasrice@users.noreply.github.com)
 
 ## 0.7.0
 
