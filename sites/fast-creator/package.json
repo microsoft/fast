@@ -70,9 +70,9 @@
   },
   "dependencies": {
     "@fluentui/web-components": "^1.2.3",
-    "@microsoft/fast-components": "^2.5.2",
-    "@microsoft/fast-tooling": "^0.25.5",
-    "@microsoft/fast-tooling-react": "^2.9.8",
+    "@microsoft/fast-components": "^2.5.3",
+    "@microsoft/fast-tooling": "^0.25.6",
+    "@microsoft/fast-tooling-react": "^2.9.9",
     "@microsoft/fast-foundation": "^2.6.2",
     "monaco-editor": "^0.21.2",
     "monaco-editor-webpack-plugin": "^1.9.0"
