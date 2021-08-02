@@ -13,6 +13,12 @@ import {
     spanTag,
 } from "./library.native.tags";
 
+export const textExample = {
+    schemaId: textSchema.$id,
+    data: "Lorem ipsum",
+    dataLocation: "Slot",
+};
+
 export const imageExample = {
     schemaId: nativeElementSchemas[imageTag].id,
     data: {

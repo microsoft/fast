@@ -42,7 +42,7 @@ export const selectTemplate: (
                 <div class="selected-value" part="selected-value">
                     <slot name="selected-value">${x => x.displayValue}</slot>
                 </div>
-                <div class="indicator" part="indicator" aria-hidden="true">
+                <div class="indicator" part="indicator">
                     <slot name="indicator">
                         ${definition.indicator || ""}
                     </slot>

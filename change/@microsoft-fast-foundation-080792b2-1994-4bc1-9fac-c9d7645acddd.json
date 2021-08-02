@@ -1,7 +1,0 @@
-{
-  "type": "none",
-  "comment": "docs: fix various errors discovered while building the site",
-  "packageName": "@microsoft/fast-foundation",
-  "email": "roeisenb@microsoft.com",
-  "dependentChangeType": "none"
-}

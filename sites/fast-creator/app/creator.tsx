@@ -57,7 +57,14 @@ import {
     SwatchRGB,
 } from "@microsoft/fast-components";
 import { LinkedDataActionType } from "@microsoft/fast-tooling-react/dist/form/templates/types";
-import { CreatorState, FormId, NavigationId, ProjectFile } from "./creator.props";
+import { XOR } from "@microsoft/fast-tooling/dist/dts/data-utilities/type.utilities";
+import {
+    CreatorState,
+    ExternalInitializingData,
+    FormId,
+    NavigationId,
+    ProjectFile,
+} from "./creator.props";
 import { elementLibraries, elementLibraryContents } from "./configs";
 import { divTag } from "./configs/native/library.native.tags";
 import { ProjectFileTransfer } from "./components";
@@ -110,10 +117,13 @@ fillColor.setValueFor(
 
 /* eslint-disable-next-line @typescript-eslint/no-var-requires */
 const FASTInlineLogo = require("@microsoft/site-utilities/statics/assets/fast-inline-logo.svg");
-const schemaDictionary: SchemaDictionary = {
+const schemaDictionaryWithNativeElements: SchemaDictionary = {
     ...nativeElementExtendedSchemas,
+    [textSchema.$id]: textSchema,
+};
+const schemaDictionaryWithDesignTokens: SchemaDictionary = {
+    ...schemaDictionaryWithNativeElements,
     [fastDesignTokensSchema.id]: fastDesignTokensSchema,
-    [textSchema.id]: textSchema,
 };
 
 export const previewAccentColor: string = "PREVIEW::ACCENTCOLOR";
@@ -209,7 +219,7 @@ class Creator extends Editor<{}, CreatorState> {
                 },
                 defaultElementDataId,
             ],
-            schemaDictionary: nativeElementExtendedSchemas,
+            schemaDictionary: schemaDictionaryWithNativeElements,
             transparentBackground: false,
             lastMappedDataDictionaryToMonacoEditorHTMLValue: "",
             displayMode: DisplayMode.interactive,
@@ -468,12 +478,12 @@ class Creator extends Editor<{}, CreatorState> {
                 this.fastMessageSystem.postMessage({
                     type: MessageSystemType.initialize,
                     dataDictionary: this.state.dataDictionary,
-                    schemaDictionary,
+                    schemaDictionary: schemaDictionaryWithNativeElements,
                 });
                 this.fastDesignMessageSystem.postMessage({
                     type: MessageSystemType.initialize,
                     dataDictionary: this.state.designSystemDataDictionary,
-                    schemaDictionary,
+                    schemaDictionary: schemaDictionaryWithDesignTokens,
                 });
                 this.fastMessageSystem.postMessage({
                     type: MessageSystemType.custom,
@@ -535,18 +545,24 @@ class Creator extends Editor<{}, CreatorState> {
 
     private handleWindowMessage = (e: MessageEvent): void => {
         if (e.data) {
-            try {
-                const messageData = JSON.parse(e.data);
+            let messageData: XOR<null, ExternalInitializingData>;
 
-                if (messageData.type === "dataDictionary" && messageData.data) {
-                    this.fastMessageSystem.postMessage({
-                        type: MessageSystemType.initialize,
-                        data: messageData.data,
-                        schemaDictionary,
-                    });
-                }
+            try {
+                messageData = JSON.parse(e.data);
             } catch (e) {
-                console.log(e);
+                messageData = null;
+            }
+
+            if (
+                messageData &&
+                messageData.type === MessageSystemType.dataDictionary &&
+                messageData.data
+            ) {
+                this.fastMessageSystem.postMessage({
+                    type: MessageSystemType.initialize,
+                    data: messageData.data,
+                    schemaDictionary: schemaDictionaryWithNativeElements,
+                });
             }
         }
     };
@@ -556,7 +572,7 @@ class Creator extends Editor<{}, CreatorState> {
             this.fastMessageSystem.postMessage({
                 type: MessageSystemType.initialize,
                 data: projectFile.dataDictionary,
-                schemaDictionary,
+                schemaDictionary: schemaDictionaryWithNativeElements,
             })
         );
     };
@@ -700,7 +716,7 @@ class Creator extends Editor<{}, CreatorState> {
                 this.fastDesignMessageSystem.postMessage({
                     type: MessageSystemType.initialize,
                     dataDictionary: this.state.designSystemDataDictionary,
-                    schemaDictionary,
+                    schemaDictionary: schemaDictionaryWithDesignTokens,
                 });
             }
         );

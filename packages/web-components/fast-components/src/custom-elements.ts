@@ -19,6 +19,7 @@ import { fastCard } from "./card/index";
 import { fastCheckbox } from "./checkbox/index";
 import { fastCombobox } from "./combobox/index";
 import { fastDataGrid, fastDataGridCell, fastDataGridRow } from "./data-grid/index";
+import { fastDesignSystemProvider } from "./design-system-provider/index";
 import { fastDialog } from "./dialog/index";
 import { fastDisclosure } from "./disclosure/index";
 import { fastDivider } from "./divider/index";
@@ -52,6 +53,7 @@ import type { Anchor } from "./anchor/index";
 import type { Button } from "./button/index";
 import type { CalendarGridCell } from "./calendar/index";
 import type { Card } from "./card/index";
+import type { DesignSystemProvider } from "./design-system-provider/index";
 import type { Disclosure } from "./disclosure/index";
 import type { HorizontalScroll } from "./horizontal-scroll/index";
 import type { SliderLabel } from "./slider-label/index";
@@ -85,6 +87,7 @@ export {
     fastDataGrid,
     fastDataGridCell,
     fastDataGridRow,
+    fastDesignSystemProvider,
     fastDialog,
     fastDisclosure,
     fastDivider,
@@ -142,6 +145,7 @@ export const allComponents = {
     fastDataGrid,
     fastDataGridCell,
     fastDataGridRow,
+    fastDesignSystemProvider,
     fastDialog,
     fastDisclosure,
     fastDivider,

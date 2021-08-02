@@ -1,8 +1,25 @@
 # Change Log - @microsoft/fast-components
 
-This log was last generated on Wed, 28 Jul 2021 07:17:22 GMT and should not be manually modified.
+This log was last generated on Sun, 01 Aug 2021 07:17:15 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.5.3
+
+Sun, 01 Aug 2021 07:17:15 GMT
+
+### Patches
+
+- Register design-system-provider (47367562+bheston@users.noreply.github.com)
+
+## 2.5.2
+
+Thu, 29 Jul 2021 07:18:18 GMT
+
+### Patches
+
+- remove unnecessary aria-hidden attributes (47367562+bheston@users.noreply.github.com)
+- fix select border styles when control is active (corylaviska@microsoft.com)
 
 ## 2.5.1
 

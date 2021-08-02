@@ -2,6 +2,62 @@
   "name": "@microsoft/fast-tooling",
   "entries": [
     {
+      "date": "Sun, 01 Aug 2021 07:17:15 GMT",
+      "tag": "@microsoft/fast-tooling_v0.25.6",
+      "version": "0.25.6",
+      "comments": {
+        "patch": [
+          {
+            "comment": "ensure that the mapping of numbers and booleans works with the consolidated data mapping",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "6a68c798486f13d0ca9fa2588739f0d6c4089f1a",
+            "package": "@microsoft/fast-tooling"
+          },
+          {
+            "comment": "identifies the order of slotted items by their position in the data, instead of the data dictionary object",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "42b6aba50c9ff86c7fdd3eb2d02e2092f8ad8d5d",
+            "package": "@microsoft/fast-tooling"
+          },
+          {
+            "comment": "fix word wrapping in htmlrender navigation pill",
+            "author": "44823142+williamw2@users.noreply.github.com",
+            "commit": "c63d2261990a76028ddb9ed39ad82360562a0862",
+            "package": "@microsoft/fast-tooling"
+          }
+        ],
+        "none": [
+          {
+            "comment": "Bump @microsoft/fast-components to v2.5.3",
+            "author": "roeisenb@microsoft.com",
+            "commit": "46bb752c86f1112f4cc92f8b0c155addf05225e0",
+            "package": "@microsoft/fast-tooling"
+          },
+          {
+            "comment": "Bump @microsoft/fast-foundation to v2.6.2",
+            "author": "roeisenb@microsoft.com",
+            "commit": "46bb752c86f1112f4cc92f8b0c155addf05225e0",
+            "package": "@microsoft/fast-tooling"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 29 Jul 2021 07:18:18 GMT",
+      "tag": "@microsoft/fast-tooling_v0.25.5",
+      "version": "0.25.5",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-components to v2.5.2",
+            "author": "47367562+bheston@users.noreply.github.com",
+            "commit": "45a348674554ac26d0153b1d850523d82fb89762",
+            "package": "@microsoft/fast-tooling"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 28 Jul 2021 07:17:22 GMT",
       "tag": "@microsoft/fast-tooling_v0.25.4",
       "version": "0.25.4",
