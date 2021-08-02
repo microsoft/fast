@@ -1,8 +1,18 @@
 # Change Log - @microsoft/fast-tooling
 
-This log was last generated on Thu, 29 Jul 2021 07:18:18 GMT and should not be manually modified.
+This log was last generated on Sun, 01 Aug 2021 07:17:15 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.25.6
+
+Sun, 01 Aug 2021 07:17:15 GMT
+
+### Patches
+
+- ensure that the mapping of numbers and booleans works with the consolidated data mapping (7559015+janechu@users.noreply.github.com)
+- identifies the order of slotted items by their position in the data, instead of the data dictionary object (7559015+janechu@users.noreply.github.com)
+- fix word wrapping in htmlrender navigation pill (44823142+williamw2@users.noreply.github.com)
 
 ## 0.25.5
 

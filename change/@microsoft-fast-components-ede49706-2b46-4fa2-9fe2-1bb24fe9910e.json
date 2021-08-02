@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "Register design-system-provider",
-  "packageName": "@microsoft/fast-components",
-  "email": "47367562+bheston@users.noreply.github.com",
-  "dependentChangeType": "patch"
-}

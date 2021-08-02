@@ -82,7 +82,7 @@ abstract class Editor<P, S extends EditorState> extends React.Component<P, S> {
                     action: (config: MonacoAdapterActionCallbackConfig): void => {
                         // trigger an update to the monaco value that
                         // also updates the DataDictionary which fires a
-                        // postMessage to the MessageSystem if the udpate
+                        // postMessage to the MessageSystem if the update
                         // is coming from Monaco and not a data dictionary update
                         config.updateMonacoModelValue(
                             this.monacoValue,
