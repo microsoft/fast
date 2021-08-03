@@ -1,14 +1,14 @@
 import {
-    Above as AnchoredRegionAbove,
-    Below as AnchoredRegionBelow,
     AnchoredRegionConfig,
-    DropDownLeft as AnchoredRegionDropDownLeft,
-    DropDownRight as AnchoredRegionDropDownRight,
-    DropDownWidest as AnchoredRegionDropDownWidest,
-    Left as AnchoredRegionLeft,
-    Right as AnchoredRegionRight,
-    Tallest as AnchoredRegionTallest,
-    Widest as AnchoredRegionWidest,
+    ARConfigAbove,
+    ARConfigBelow,
+    ARConfigDropDownLeft,
+    ARConfigDropDownRight,
+    ARConfigDropDownWidest,
+    ARConfigLeft,
+    ARConfigRight,
+    ARConfigTallest,
+    ARConfigWidest,
 } from "../anchored-region/anchored-region-config";
 
 /**
@@ -30,32 +30,32 @@ export interface FlyoutConfig {
  * A flyout that always places itself above the anchor, has
  * a width to match the anchor, and is sized vertically by content
  */
-export const Above: FlyoutConfig = {
-    anchoredRegionConfig: AnchoredRegionAbove,
+export const FlyoutAbove: FlyoutConfig = {
+    anchoredRegionConfig: ARConfigAbove,
 };
 
 /**
  * A flyout that always places itself below the anchor, has
  * a width to match the anchor, and is sized vertically by content
  */
-export const Below: FlyoutConfig = {
-    anchoredRegionConfig: AnchoredRegionBelow,
+export const FlyoutBelow: FlyoutConfig = {
+    anchoredRegionConfig: ARConfigBelow,
 };
 
 /**
  * A flyout that always places itself to the left of the anchor, has
  * a height to match the anchor, and is sized horizontally by content
  */
-export const Left: FlyoutConfig = {
-    anchoredRegionConfig: AnchoredRegionLeft,
+export const FlyoutLeft: FlyoutConfig = {
+    anchoredRegionConfig: ARConfigLeft,
 };
 
 /**
  * A flyout that always places itself to the right of the anchor, has
  * a height to match the anchor, and is sized horizontally by content
  */
-export const Right: FlyoutConfig = {
-    anchoredRegionConfig: AnchoredRegionRight,
+export const FlyoutRight: FlyoutConfig = {
+    anchoredRegionConfig: ARConfigRight,
 };
 
 /**
@@ -63,8 +63,8 @@ export const Right: FlyoutConfig = {
  * based on available space, has a width to match the anchor,
  * and is sized vertically by content
  */
-export const Tallest: FlyoutConfig = {
-    anchoredRegionConfig: AnchoredRegionTallest,
+export const FlyoutTallest: FlyoutConfig = {
+    anchoredRegionConfig: ARConfigTallest,
 };
 
 /**
@@ -72,6 +72,34 @@ export const Tallest: FlyoutConfig = {
  * based on available space, has a height to match the anchor,
  * and is sized horizontally by content
  */
-export const Widest: FlyoutConfig = {
-    anchoredRegionConfig: AnchoredRegionWidest,
+export const FlyoutWidest: FlyoutConfig = {
+    anchoredRegionConfig: ARConfigWidest,
+};
+
+/**
+ * A flyout that always places itself to the left of the anchor,
+ * has a height to match the content, is sized horizontally by content
+ * and expands downwards from the top of the anchor
+ */
+export const FlyoutDropDownLeft: FlyoutConfig = {
+    anchoredRegionConfig: ARConfigDropDownLeft,
+};
+
+/**
+ * A flyout that always places itself to the right of the anchor,
+ * has a height to match the content, is sized horizontally by content
+ * and expands downwards from the top of the anchor
+ */
+export const FlyoutDropDownRight: FlyoutConfig = {
+    anchoredRegionConfig: ARConfigDropDownRight,
+};
+
+/**
+ * A flyout that places itself to the left or right of the anchor
+ * based on available space, has a height to match the content,
+ * is sized horizontally by content and expands downwards from the top
+ * of the anchor
+ */
+export const FlyoutDropDownWidest: FlyoutConfig = {
+    anchoredRegionConfig: ARConfigDropDownWidest,
 };
