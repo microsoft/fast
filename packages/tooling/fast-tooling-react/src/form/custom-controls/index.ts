@@ -6,6 +6,8 @@ import TextAlignControl from "./control.text-align";
 import { TextAlignControlProps } from "./control.text-align.props";
 // import ThemeControl from "./control.theme";
 // import { ThemeControlProps } from "./control.theme.props";
+import FileControl from "./control.file";
+import { FileControlProps } from "./control.file.props";
 
 export {
     AlignControl,
@@ -16,4 +18,6 @@ export {
     TextAlignControlProps,
     // ThemeControl, // TODO: this needs a visual pass
     // ThemeControlProps,
+    FileControl,
+    FileControlProps,
 };
