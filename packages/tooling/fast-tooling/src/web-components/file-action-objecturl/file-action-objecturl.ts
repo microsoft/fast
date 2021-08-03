@@ -1,4 +1,4 @@
-import { FileAction } from "../file-action/file-action";
+import { FileAction } from "../file-action/";
 
 /**
  * Implementation of a FileAction that converts files into Object URLs.
@@ -7,7 +7,7 @@ export class FileActionObjectUrl extends FileAction {
     public performFileAction(
         files: FileList,
         completedCallback: (fileReferences: string[]) => void,
-        progressCallback?: (progress: number) => void
+        progressCallback?: (progress: number) => Promise<void>
     ): void {
         this._files = files;
         this._fileReferences = [];
@@ -19,11 +19,11 @@ export class FileActionObjectUrl extends FileAction {
 
             // Call progress callback if supplied.
             if (progressCallback) {
-                progressCallback(this._fileReferences.length / this._files.length);
+                progressCallback(this.fileReferences.length / this.files.length);
             }
         });
 
         // Call completed callback
-        completedCallback(this._fileReferences);
+        completedCallback(this.fileReferences);
     }
 }

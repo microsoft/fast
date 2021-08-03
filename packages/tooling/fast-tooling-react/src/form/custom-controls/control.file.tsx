@@ -4,16 +4,16 @@ import React from "react";
 import manageJss from "@microsoft/fast-jss-manager-react";
 import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 import styles, { FileControlClassNameContract } from "./control.file.style";
-import { FileControlProps, FileControlState } from "./control.file.props";
+import { FileControlProps } from "./control.file.props";
 import { classNames } from "@microsoft/fast-web-utilities";
 import { fastToolingFile } from "@microsoft/fast-tooling/dist/esm/web-components";
 
 /**
+ * @alpha
  * Custom form control definition
  */
 class FileControl extends React.Component<
-    FileControlProps & ManagedClasses<FileControlClassNameContract>,
-    FileControlState
+    FileControlProps & ManagedClasses<FileControlClassNameContract>
 > {
     public static displayName: string = "FileControl";
 
@@ -22,10 +22,6 @@ class FileControl extends React.Component<
     > = {
         managedClasses: {},
     };
-
-    constructor(props: FileControlProps) {
-        super(props);
-    }
 
     /**
      * Render the component
@@ -54,16 +50,6 @@ class FileControl extends React.Component<
             </div>
         );
     }
-
-    /**
-     * React lifecycle hook
-     */
-    public componentDidMount(): void {}
-
-    /**
-     * React lifecycle hook
-     */
-    public componentWillUnMount(): void {}
 
     /**
      * Callback for input change

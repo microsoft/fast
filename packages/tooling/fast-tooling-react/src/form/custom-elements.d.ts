@@ -71,6 +71,7 @@ declare namespace JSX {
             events?: {
                 change?: (e: React.ChangeEvent<HTMLElement>) => void;
             };
+            progressCallback?: (progress: number) => Promise<void>;
         };
         "fast-tooling-file-action-objecturl": React.DetailedHTMLProps<
             React.HTMLAttributes<HTMLElement>,

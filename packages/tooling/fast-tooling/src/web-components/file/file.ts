@@ -1,6 +1,6 @@
 import { attr, observable } from "@microsoft/fast-element";
 import { isHTMLElement } from "@microsoft/fast-web-utilities";
-import { FileAction } from "../file-action/file-action";
+import { FileAction } from "../file-action/";
 import { FormAssociatedFile } from "./file.form-associated";
 
 /**
@@ -26,21 +26,21 @@ export class File extends FormAssociatedFile {
      * Matches syntax for the "accept" attribute of the <file type="file"/> element.
      */
     @attr
-    public accept: string = "";
+    public accept: string;
 
     /**
      * When true the file picker will allow the selection of multiple files.
      * By default only one file is allowed.
      */
     @attr
-    public multiple: boolean = false;
+    public multiple: boolean;
 
     /**
      * Callback method for reporting progress of long running FileAction.
      * The progress value is calculated by the FileAction but should be a number between 0 and 1.
      */
     @attr
-    public progressCallback: (progress: number) => void;
+    public progressCallback: (progress: number) => Promise<void>;
 
     /**
      * After file(s) are selected this property will contain a string array with the references
@@ -57,15 +57,9 @@ export class File extends FormAssociatedFile {
     public action: HTMLSlotElement;
     private actionChanged(oldValue, newValue): void {
         if (this.$fastController.isConnected) {
-            if (this.children.length > 0) {
-                Array.from(this.children).every((value: FileAction) => {
-                    if (this.isFileAction(value)) {
-                        this.fileAction = value;
-                        return false;
-                    }
-                    return true;
-                });
-            }
+            this.fileAction = Array.from(this.children).find(
+                this.isFileAction
+            ) as FileAction;
         }
     }
 
@@ -107,7 +101,7 @@ export class File extends FormAssociatedFile {
                     this.fileReferences = values;
                     this.$emit("change");
                 },
-                this.progressCallback ? this.progressCallback : null
+                this.progressCallback
             );
         }
     }

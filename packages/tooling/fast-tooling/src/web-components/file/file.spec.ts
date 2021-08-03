@@ -68,6 +68,7 @@ describe("File", () => {
         let testProgress: number = 0;
         element.progressCallback = (progress: number) => {
             testProgress = progress;
+            return null;
         };
         element.handleChange((fakeFileEvent as unknown) as Event);
         await DOM.nextUpdate();
@@ -105,6 +106,7 @@ describe("File", () => {
         let testProgress: number = 0;
         element.progressCallback = (progress: number) => {
             testProgress = progress;
+            return null;
         };
         element.handleChange((fakeFileEvent as unknown) as Event);
 

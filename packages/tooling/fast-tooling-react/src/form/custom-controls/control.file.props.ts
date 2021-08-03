@@ -1,9 +1,9 @@
 import { CommonControlConfig } from "../templates";
 
-export interface FileControlState {
-    value: string;
-}
-
 export interface FileControlProps extends CommonControlConfig {
+    /**
+     * A comma seperated list of accepted file types.
+     * Example: ".jpg,.png,.gif"
+     */
     accept: string;
 }

@@ -27,11 +27,11 @@ export abstract class FileAction extends FoundationElement {
      * @param files - The FileList of files to perform the action on
      * @param completedCallback - Callback for when file processing is complete
      * @param progressCallback - Optional progress callback
-     * @returns Array of strings representing the files
+     * @returns void
      */
     public abstract performFileAction(
         files: FileList,
         completedCallback: (fileReferences: string[]) => void,
-        progressCallback?: (progress: number) => void
+        progressCallback?: (progress: number) => Promise<void>
     ): void;
 }
