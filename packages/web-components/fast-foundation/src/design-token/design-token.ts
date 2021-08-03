@@ -335,9 +335,6 @@ class DesignTokenNode<T extends { createCSS?(): string }> {
      */
     @observable
     private _rawValue: DesignTokenValue<T> | undefined;
-    private _rawValueChanged() {
-        Observable.getNotifier(this).notify("value");
-    }
 
     /**
      * The actual value set for the node, or undefined.
@@ -452,9 +449,7 @@ class DesignTokenNode<T extends { createCSS?(): string }> {
     public handleChange = this.unsetValueChangeHandler;
 
     private unsetValueChangeHandler(source: DesignTokenNode<T>, key: "value") {
-        if (this._rawValue === void 0) {
-            Observable.getNotifier(this).notify("value");
-        }
+        this.cacheValue = this.resolveRealValue();
     }
 
     private setupBindingObserver(value: DerivedDesignTokenValue<T>) {
@@ -465,7 +460,10 @@ class DesignTokenNode<T extends { createCSS?(): string }> {
 
     private bindingChangeHandler = {
         handleChange: () => {
-            Observable.getNotifier(this).notify("value");
+            this.cacheValue = this.bindingObserver!.observe(
+                this.target,
+                defaultExecutionContext
+            );
         },
     };
 
@@ -491,6 +489,9 @@ class DesignTokenNode<T extends { createCSS?(): string }> {
         this.children.add(child);
         Observable.getNotifier(this).subscribe(child, "value");
         childToParent.set(child, this);
+
+        // Notify child that upstream value has changed.
+        child.handleChange(this as any, "value");
     }
 
     public removeChild<T>(child: DesignTokenNode<T>) {
@@ -522,28 +523,24 @@ class DesignTokenNode<T extends { createCSS?(): string }> {
         return DesignTokenNode.for(this.token, defaultElement);
     }
 
-    private tokenDependencySubscriber = {
-        handleChange: (record: DesignTokenChangeRecord<DesignToken<any>>) => {
-            const rawValue = this.resolveRawValue();
-            const target = DesignTokenNode.for(this.token, record.target);
+    private _cacheValue: StaticDesignTokenValue<T> | undefined;
+    private get cacheValue(): StaticDesignTokenValue<T> | undefined {
+        Observable.track(this, "value");
+        return this._cacheValue;
+    }
 
-            // Only act on downstream nodes
-            if (
-                this.contains(target) &&
-                !target.useCSSCustomProperty &&
-                target.resolveRawValue() === rawValue
-            ) {
-                target.useCSSCustomProperty = true;
-            }
-        },
-    };
+    private set cacheValue(value: StaticDesignTokenValue<T> | undefined) {
+        if (this._cacheValue !== value) {
+            this._cacheValue = value;
+            Observable.notify(this, "value");
+        }
+    }
 
     /**
      * The resolved value for a node.
      */
     public get value(): StaticDesignTokenValue<T> | undefined {
-        Observable.track(this, "value");
-        return this.resolveRealValue();
+        return this.cacheValue;
     }
 
     /**
@@ -558,25 +555,18 @@ class DesignTokenNode<T extends { createCSS?(): string }> {
         this.handleChange = noop as () => void;
         this._rawValue = value;
 
-        if (!this.useCSSCustomProperty) {
-            this.useCSSCustomProperty = true;
+        if (isDerivedTokenValue(value)) {
+            this.setupBindingObserver(value);
+            this.cacheValue = this.bindingObserver!.observe(
+                this.target,
+                defaultExecutionContext
+            );
+        } else {
+            this.cacheValue = value as StaticDesignTokenValue<T>;
         }
 
-        if (this.bindingObserver) {
-            const records = this.bindingObserver.records();
-
-            for (const record of records) {
-                if (
-                    record.propertySource instanceof DesignTokenNode &&
-                    record.propertySource.token instanceof DesignTokenImpl
-                ) {
-                    const { token } = record.propertySource;
-                    token.subscribe(this.tokenDependencySubscriber);
-                    token.appliedTo.forEach(target =>
-                        this.tokenDependencySubscriber.handleChange({ token, target })
-                    );
-                }
-            }
+        if (DesignTokenImpl.isCSSDesignToken(this.token) && !this.useCSSCustomProperty) {
+            this.useCSSCustomProperty = true;
         }
     }
 
@@ -591,6 +581,7 @@ class DesignTokenNode<T extends { createCSS?(): string }> {
         this._rawValue = void 0;
         this.handleChange = this.unsetValueChangeHandler;
         this.tearDownBindingObserver();
+        this.cacheValue = this.resolveRealValue();
     }
 }
 
