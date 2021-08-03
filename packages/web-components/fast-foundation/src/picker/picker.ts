@@ -8,11 +8,7 @@ import {
 } from "@microsoft/fast-element";
 import uniqueId from "lodash-es/uniqueId";
 import { FoundationElement } from "../foundation-element";
-import {
-    AnchoredRegion,
-    AnchoredRegionConfig,
-    flyoutBelowScaling,
-} from "../anchored-region";
+import type { AnchoredRegion } from "../anchored-region";
 import type { PickerMenu } from "./picker-menu";
 import type { PickerList } from "./picker-list";
 import { PickerMenuOption } from "./picker-menu-option";
@@ -24,15 +20,16 @@ import { PickerListItem } from "./picker-list-item";
 export type PickerMenuPosition = "top" | "bottom";
 
 /**
- * A List Picker Custom HTML Element.
+ * A Picker Custom HTML Element.  This is an early "alpha" version of the component.
+ * Developers should expect the api to evolve, breaking changes are possible.
  *
- * @public
+ * @alpha
  */
 export class Picker extends FoundationElement {
     /**
      * Currently selected items. Comma delineated string ie. "apples,oranges".
      *
-     * @public
+     * @alpha
      * @remarks
      * HTML Attribute: selection
      */
@@ -141,19 +138,6 @@ export class Picker extends FoundationElement {
             DOM.queueUpdate(() => {
                 this.setFocusedOption(0);
             });
-        }
-    }
-
-    /**
-     * Allows alternate flyout menu configurations.
-     *
-     * @public
-     */
-    @observable
-    public menuConfig: AnchoredRegionConfig;
-    private menuConfigChanged(): void {
-        if (this.$fastController.isConnected && !this.menuConfig) {
-            this.menuConfig = flyoutBelowScaling;
         }
     }
 
@@ -378,10 +362,6 @@ export class Picker extends FoundationElement {
      */
     public connectedCallback(): void {
         super.connectedCallback();
-
-        if (this.menuConfig === undefined) {
-            this.menuConfig = flyoutBelowScaling;
-        }
 
         if (this.options !== undefined) {
             this.optionsList = this.options.split(",");
@@ -770,7 +750,7 @@ export class Picker extends FoundationElement {
             return false;
         }
 
-        const value: string = (e.target as PickerMenuOption).value;
+        // const value: string = (e.target as PickerMenuOption).value;
 
         return true;
     };

@@ -62,28 +62,16 @@ export const pickerTemplate: (context, definition) => ViewTemplate<Picker> = (
                 html<Picker>`
                 <${anchoredRegionTag}
                     class="region"
-                    auto-update-mode="${x =>
-                        x.menuConfig.autoUpdateMode !== undefined
-                            ? x.menuConfig.autoUpdateMode
-                            : "auto"}"
-                    fixed-placement="${x =>
-                        x.menuConfig.fixedPlacement !== undefined
-                            ? x.menuConfig.fixedPlacement
-                            : true}"
-                    vertical-positioning-mode="${x =>
-                        x.menuConfig.verticalPositioningMode}"
-                    vertical-default-position="${x =>
-                        x.menuConfig.verticalDefaultPosition}"
-                    vertical-scaling="${x => x.menuConfig.verticalScaling}"
-                    vertical-inset="${x => x.menuConfig.verticalInset}"
-                    vertical-threshold="${x => x.menuConfig.verticalThreshold}"
-                    horizontal-positioning-mode="${x =>
-                        x.menuConfig.horizontalPositioningMode}"
-                    horizontal-default-position="${x =>
-                        x.menuConfig.horizontalDefaultPosition}"
-                    horizontal-scaling="${x => x.menuConfig.horizontalScaling}"
-                    horizontal-inset="${x => x.menuConfig.horizontalInset}"
-                    horizontal-threshold="${x => x.menuConfig.horizontalThreshold}"
+                    auto-update-mode="auto"
+                    fixed-placement="true"
+                    vertical-positioning-mode="locktodefault"
+                    vertical-default-position="bottom"
+                    vertical-scaling="content"
+                    vertical-inset="false"
+                    horizontal-positioning-mode="locktodefault"
+                    horizontal-default-position="right"
+                    horizontal-scaling="anchor"
+                    horizontal-inset="true"
                     @loaded="${(x, c) => x.handleRegionLoaded(c.event as Event)}"
                     ${ref("region")}
                 >
