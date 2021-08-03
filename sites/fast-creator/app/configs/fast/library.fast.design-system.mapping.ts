@@ -12,10 +12,7 @@ import {
 } from "@microsoft/fast-components";
 import { parseColorHexRGB } from "@microsoft/fast-colors";
 
-export function setupFASTComponentDesignSystem(
-    element: HTMLElement,
-    getAllFastTagNames: () => string
-) {
+export function setupFASTComponentDesignSystem(element: HTMLElement) {
     element.style.setProperty("background-color", `var(${fillColor.cssCustomProperty})`);
     element.style.setProperty("color", `var(${neutralForegroundRest.cssCustomProperty})`);
     const aktivGroteskLink = document.createElement("link");
