@@ -56,14 +56,7 @@ class FileControl extends React.Component<
      */
     public onChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
         const newValue: string = (e.target as fastToolingFile).fileReferences[0];
-        this.setState(
-            {
-                value: newValue,
-            },
-            () => {
-                this.props.onChange({ value: newValue });
-            }
-        );
+        this.props.onChange({ value: newValue });
     };
 }
 
