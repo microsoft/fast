@@ -28,8 +28,7 @@ provideFASTDesignSystem()
 ## Usage
 
 ```html live
-<label id="toolbar-label">Preset selected-value</label>
-<fast-toolbar aria-labelledby="toolbar-label">
+<fast-toolbar>
     <fast-button>Button</fast-button>
     <fast-radio-group>
         <fast-radio checked>One</fast-radio>
@@ -57,7 +56,6 @@ provideFASTDesignSystem()
         <fast-option>Second option</fast-option>
         <fast-option>Option 3</fast-option>
     </fast-select>
-    <fast-checkbox>Checkbox</fast-checkbox>
 </fast-toolbar>
 ```
 

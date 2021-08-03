@@ -18,7 +18,8 @@ const nativeElementExtendedSchemas: { [key: string]: any } = {};
 
 function mapToJSONSchemas(
     definitions: { [key: string]: WebComponentDefinition },
-    schemas: { [key: string]: any }
+    schemas: { [key: string]: any },
+    libraryName?: string
 ): void {
     Object.entries(definitions).forEach(
         ([, definition]: [string, WebComponentDefinition]) => {
@@ -26,17 +27,38 @@ function mapToJSONSchemas(
                 (definitionTagItem: any) => {
                     const jsonSchema = definitionTagItem;
                     schemas[jsonSchema.$id] = jsonSchema;
+
+                    if (libraryName) {
+                        schemas[jsonSchema.$id].title = `${
+                            schemas[jsonSchema.$id].title
+                        } (${libraryName})`;
+                    }
                 }
             );
         }
     );
 }
 
-mapToJSONSchemas(fastComponentDefinitions, fastComponentSchemas);
-mapToJSONSchemas(fluentUIComponentDefinitions, fluentUIComponentSchemas);
+const fastLibraryName = "FAST";
+const fluentUILibraryName = "Fluent UI";
+
+mapToJSONSchemas(fastComponentDefinitions, fastComponentSchemas, fastLibraryName);
+mapToJSONSchemas(
+    fluentUIComponentDefinitions,
+    fluentUIComponentSchemas,
+    fluentUILibraryName
+);
 mapToJSONSchemas(nativeElementDefinitions, nativeElementSchemas);
-mapToJSONSchemas(fastComponentExtendedDefinitions, fastComponentExtendedSchemas);
-mapToJSONSchemas(fluentUIComponentExtendedDefinitions, fluentUIComponentExtendedSchemas);
+mapToJSONSchemas(
+    fastComponentExtendedDefinitions,
+    fastComponentExtendedSchemas,
+    fastLibraryName
+);
+mapToJSONSchemas(
+    fluentUIComponentExtendedDefinitions,
+    fluentUIComponentExtendedSchemas,
+    fluentUILibraryName
+);
 mapToJSONSchemas(nativeElementExtendedDefinitions, nativeElementExtendedSchemas);
 
 /**

@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "implement patch to work around Angular optimization bug",
-  "packageName": "@microsoft/fast-element",
-  "email": "nicholasrice@users.noreply.github.com",
-  "dependentChangeType": "patch"
-}
