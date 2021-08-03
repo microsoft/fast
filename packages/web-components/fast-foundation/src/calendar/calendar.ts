@@ -1,29 +1,12 @@
-import { attr, FASTElement, nullableNumberConverter } from "@microsoft/fast-element";
+import {
+    attr,
+    FASTElement,
+    nullableNumberConverter,
+    observable,
+} from "@microsoft/fast-element";
 import { FoundationElement } from "../foundation-element";
-
-/**
- * enum representing the different day formats
- * @public
- */
-export type DayFormat = "2-digit" | "numeric";
-
-/**
- * enum representing the different weekday formats
- * @public
- */
-export type WeekdayFormat = "long" | "narrow" | "short";
-
-/**
- * enum representing the different month formats
- * @public
- */
-export type MonthFormat = "2-digit" | "long" | "narrow" | "numeric" | "short";
-
-/**
- * enum representing the different year formats
- * @public
- */
-export type YearFormat = "2-digit" | "numeric";
+import type { DayFormat, MonthFormat, WeekdayFormat, YearFormat } from "./date-formatter";
+import { DateFormatter } from "./date-formatter";
 
 /**
  * Information about a month
@@ -65,11 +48,20 @@ export type CalendarDateInfo = {
  */
 export class Calendar extends FoundationElement {
     /**
+     * date formatter utitlity for getting localized strings
+     */
+    @observable
+    public dateFormatter: DateFormatter = new DateFormatter();
+
+    /**
      * String repesentation of the full locale including market, calendar type and numbering system
      * @public
      */
     @attr
     public locale: string = "en-US";
+    private localeChanged(): void {
+        this.dateFormatter.locale = this.locale;
+    }
 
     /**
      * Month to display
@@ -91,6 +83,9 @@ export class Calendar extends FoundationElement {
      */
     @attr({ attribute: "day-format" })
     public dayFormat: DayFormat = "numeric";
+    private dayFormatChanged(): void {
+        this.dateFormatter.dayFormat = this.dayFormat;
+    }
 
     /**
      * Format style for the week day labels
@@ -98,6 +93,9 @@ export class Calendar extends FoundationElement {
      */
     @attr({ attribute: "weekday-format" })
     public weekdayFormat: WeekdayFormat = "short";
+    private weekdayFormatChanged(): void {
+        this.dateFormatter.weekdayFormat = this.weekdayFormat;
+    }
 
     /**
      * Format style for the month label
@@ -105,6 +103,9 @@ export class Calendar extends FoundationElement {
      */
     @attr({ attribute: "month-format" })
     public monthFormat: MonthFormat = "long";
+    private monthFormatChanged(): void {
+        this.dateFormatter.monthFormat = this.monthFormat;
+    }
 
     /**
      * Format style for the year used in the title
@@ -112,6 +113,9 @@ export class Calendar extends FoundationElement {
      */
     @attr({ attribute: "year-format" })
     public yearFormat: YearFormat = "numeric";
+    private yearFormatChanged(): void {
+        this.dateFormatter.yearFormat = this.yearFormat;
+    }
 
     /**
      * Minimum number of weeks to show for the month
@@ -189,96 +193,6 @@ export class Calendar extends FoundationElement {
                 year: nextMonth.getFullYear(),
             },
         };
-    }
-
-    /**
-     * International formatter for getting year, month and weekday names
-     * @param date - date to format
-     * @param options - elements to format and timezone
-     * @param locale - locale settings
-     * @returns a localized string for requested element
-     */
-    public localeFormatter(
-        date: Date | string = `${this.month}-1-${this.year}`,
-        format: Intl.DateTimeFormatOptions = {
-            month: this.monthFormat,
-            year: this.yearFormat,
-            day: this.dayFormat,
-        },
-        locale: string = this.locale
-    ): string {
-        if (typeof date === "string") {
-            date = new Date(date);
-        }
-        const optionsWithTimeZone = Object.assign({}, { timeZone: "utc" }, format);
-
-        return new Intl.DateTimeFormat(locale, optionsWithTimeZone).format(date);
-    }
-
-    /**
-     * Gets a localized month name
-     * @param month - number of the month, january = 1, febuary = 2, etc
-     * @param format - MonthFormat
-     * @param locale - locale settings
-     * @returns a localized string representing the name of the month
-     * @public
-     */
-    public getMonth(
-        month: number = this.month,
-        format: MonthFormat = this.monthFormat,
-        locale: string = this.locale
-    ): string {
-        return this.localeFormatter(`${month}-3-2017`, { month: format }, locale);
-    }
-
-    /**
-     * Gets a localized year
-     * @param year - year of the calendar to display
-     * @returns a localized string repesenting the year
-     * @public
-     */
-    public getYear(
-        year: number = this.year,
-        format: YearFormat = this.yearFormat,
-        locale: string = this.locale
-    ): string {
-        return this.localeFormatter(`6-1-${year}`, { year: format }, locale);
-    }
-
-    /**
-     * Gets a localized day
-     * @param day - day
-     * @returns a localized version of the day
-     * @public
-     */
-    public getDay(
-        date: Date | string,
-        format: DayFormat = this.dayFormat,
-        locale = this.locale
-    ): string {
-        return !date ? "" : this.localeFormatter(date, { day: format }, locale);
-    }
-
-    /**
-     * Gets a localized list of weekday names
-     * @param format - WeekdayFormat = "long" | "narrow" | "short": format settings for the weekdays
-     * @param locale - locale settings
-     * @returns an array of localized strings representing the names of the weekdays
-     * @public
-     */
-    public getWeekDays(
-        format: WeekdayFormat = this.weekdayFormat,
-        locale = this.locale
-    ): { label: string; text: string }[] {
-        return Array(7)
-            .fill(null)
-            .map((_, day) => {
-                const date = `1-${day + 1}-2017`;
-                return {
-                    label: this.localeFormatter(date, { weekday: "long" }, locale),
-                    text: this.localeFormatter(date, { weekday: format }, locale),
-                };
-            });
     }
 
     /**

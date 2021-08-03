@@ -118,7 +118,7 @@ describe("Calendar", () => {
 
             await connect();
 
-            const month = (element as Calendar).getMonth();
+            const month = (element as Calendar).dateFormatter.getMonth((element as Calendar).month);
             expect(month).to.equal("January");
         });
 
@@ -129,7 +129,7 @@ describe("Calendar", () => {
 
             await connect();
 
-            const month = (element as Calendar).getMonth();
+            const month = (element as Calendar).dateFormatter.getMonth((element as Calendar).month);
             expect(month).to.equal("Jan");
         });
 
@@ -140,8 +140,8 @@ describe("Calendar", () => {
 
             await connect();
 
-            const weekdays = (element as Calendar).getWeekDays();
-            expect(weekdays[1].text).to.equal("Mon");
+            const weekdays = (element as Calendar).dateFormatter.getWeekdays();
+            expect(weekdays[1]).to.equal("Mon");
         });
 
         it("Should return Monday weekday for long format", async () => {
@@ -151,8 +151,8 @@ describe("Calendar", () => {
 
             await connect();
 
-            const weekdays = (element as Calendar).getWeekDays();
-            expect(weekdays[1].text).to.equal("Monday");
+            const weekdays = (element as Calendar).dateFormatter.getWeekdays();
+            expect(weekdays[1]).to.equal("Monday");
         });
 
         it("Should return M for Monday for narrow format", async () => {
@@ -162,8 +162,8 @@ describe("Calendar", () => {
 
             await connect();
 
-            const weekdays = (element as Calendar).getWeekDays();
-            expect(weekdays[1].text).to.equal("M");
+            const weekdays = (element as Calendar).dateFormatter.getWeekdays();
+            expect(weekdays[1]).to.equal("M");
         });
     });
 
@@ -175,7 +175,7 @@ describe("Calendar", () => {
 
             await connect();
 
-            const month = (element as Calendar).getMonth();
+            const month = (element as Calendar).dateFormatter.getMonth((element as Calendar).month);
             expect(month).to.equal("mai");
         });
 
@@ -187,8 +187,8 @@ describe("Calendar", () => {
             await connect();
 
             const frenchWeekdays = [ "dim.", "lun.", "mar.", "mer.", "jeu.", "ven.", "sam." ];
-            const weekdays = (element as Calendar).getWeekDays();
-            const matchedDays = weekdays.filter((day, index) => day.text === frenchWeekdays[index]);
+            const weekdays = (element as Calendar).dateFormatter.getWeekdays();
+            const matchedDays = weekdays.filter((day, index) => day === frenchWeekdays[index]);
             expect(matchedDays.length).to.equal(7);
         });
 
@@ -199,8 +199,8 @@ describe("Calendar", () => {
 
             await connect();
 
-            const year = (element as Calendar).getYear();
-            expect(parseInt(year)).to.equal(1943);
+            const year = (element as Calendar).dateFormatter.getYear((element as Calendar).year);
+            expect(parseInt(year)).to.equal(1942);
         });
 
         it("Should be 2564 for the year 2021 for the buddhist calendar", async () => {
@@ -210,7 +210,7 @@ describe("Calendar", () => {
 
             await connect();
 
-            const year = (element as Calendar).getYear();
+            const year = (element as Calendar).dateFormatter.getYear((element as Calendar).year);
             const match = year.match(/\d+/);
             expect(match && parseInt(match[0])).to.equal(2564);
         });

@@ -13,13 +13,13 @@ export const CalendarTitleTemplate: ViewTemplate<Calendar> = html`
             class="title"
             part="title"
             aria-label="${x =>
-                x.localeFormatter(`${x.month}-2-${x.year}`, {
+                x.dateFormatter.getDate(`${x.month}-2-${x.year}`, {
                     month: "long",
                     year: "numeric",
                 })}"
         >
-            <span part="month">${x => x.getMonth()}</span>
-            <span part="year">${x => x.getYear()}</span>
+            <span part="month">${x => x.dateFormatter.getMonth(x.month)}</span>
+            <span part="year">${x => x.dateFormatter.getYear(x.year)}</span>
         </div>
     </slot>
 `;
@@ -29,12 +29,8 @@ export const CalendarTitleTemplate: ViewTemplate<Calendar> = html`
  * @public
  */
 export const CalendarWeekdayTemplate: ViewTemplate = html`
-    <div
-        class="week-day"
-        part="week-day"
-        abbr="${x => (x.label !== x.text ? x.label : null)}"
-    >
-        ${x => x.text}
+    <div class="week-day" part="week-day">
+        ${x => x}
     </div>
 `;
 
@@ -46,13 +42,13 @@ export const CalendarDayTemplate: ViewTemplate<CalendarDateInfo> = html`
     <div
         part="day"
         aria-label="${(x, c) =>
-            ("localeFormatter" in c.parent ? c : c.parentContext).parent.localeFormatter(
-                `${x.month}-${x.day}-${x.year}`,
-                {
-                    month: "long",
-                    day: "numeric",
-                }
-            )}"
+            ("dateFormatter" in c.parent
+                ? c
+                : c.parentContext
+            ).parent.dateFormatter.getDate(`${x.month}-${x.day}-${x.year}`, {
+                month: "long",
+                day: "numeric",
+            })}"
         class="${(x, c) =>
             ("getDayClassNames" in c.parent
                 ? c
@@ -68,9 +64,10 @@ export const CalendarDayTemplate: ViewTemplate<CalendarDateInfo> = html`
             }}"
         >
             ${(x, c) =>
-                ("getDay" in c.parent ? c : c.parentContext).parent.getDay(
-                    `${x.month}-${x.day}-${x.year}`
-                )}
+                ("dateFormatter" in c.parent
+                    ? c
+                    : c.parentContext
+                ).parent.dateFormatter.getDay(x.day)}
         </div>
         <slot name="${x => x.month}-${x => x.day}-${x => x.year}"></slot>
     </div>
@@ -85,7 +82,7 @@ export const CalendarTemplate: ViewTemplate<Calendar> = html`
         ${startTemplate} ${CalendarTitleTemplate}
         <slot></slot>
         <div class="week-days" part="week-days">
-            ${repeat(x => x.getWeekDays(), CalendarWeekdayTemplate)}
+            ${repeat(x => x.dateFormatter.getWeekdays(), CalendarWeekdayTemplate)}
         </div>
         <div class="days" part="days">
             ${repeat(x => x.getDays(), CalendarDayTemplate)}

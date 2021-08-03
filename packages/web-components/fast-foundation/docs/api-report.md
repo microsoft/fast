@@ -266,25 +266,18 @@ export const buttonTemplate: (context: ElementDefinitionContext, definition: Fou
 
 // @public
 export class Calendar extends FoundationElement {
+    dateFormatter: DateFormatter;
     dateInString(date: Date | string, datesString: string): boolean;
     dayFormat: DayFormat;
     disabledDates: string;
-    getDay(date: Date | string, format?: DayFormat, locale?: string): string;
     getDayClassNames(date: CalendarDateInfo): string;
     getDays(info?: CalendarInfo, minWeeks?: number): CalendarDateInfo[];
-    getMonth(month?: number, format?: MonthFormat, locale?: string): string;
     getMonthInfo(month?: number, year?: number): CalendarInfo;
-    getWeekDays(format?: WeekdayFormat, locale?: string): {
-        label: string;
-        text: string;
-    }[];
-    getYear(year?: number, format?: YearFormat, locale?: string): string;
     handleDateSelect(day: CalendarDateInfo): void;
     // @internal
     isRTL(locale?: string): boolean;
     isToday(date: Date | string): boolean;
     locale: string;
-    localeFormatter(date?: Date | string, format?: Intl.DateTimeFormatOptions, locale?: string): string;
     minWeeks: number;
     month: number;
     monthFormat: MonthFormat;
@@ -292,7 +285,7 @@ export class Calendar extends FoundationElement {
     weekdayFormat: WeekdayFormat;
     year: number;
     yearFormat: YearFormat;
-}
+    }
 
 // @public
 export type CalendarDateInfo = {
@@ -665,6 +658,30 @@ export enum DataGridRowTypes {
 
 // @public
 export const dataGridTemplate: (context: any, definition: any) => ViewTemplate<DataGrid>;
+
+// @public
+export class DateFormatter {
+    constructor(props?: any);
+    dayFormat: DayFormat;
+    // (undocumented)
+    getDate(date: {
+        day: number;
+        month: number;
+        year: number;
+    } | string | Date, format?: Intl.DateTimeFormatOptions, locale?: string): string;
+    // (undocumented)
+    getDay(day?: number, format?: Intl.DateTimeFormatOptions, locale?: string): string;
+    // (undocumented)
+    getMonth(month?: number, format?: Intl.DateTimeFormatOptions, locale?: string): string;
+    // (undocumented)
+    getWeekdays(format?: Intl.DateTimeFormatOptions, locale?: string): string[];
+    // (undocumented)
+    getYear(year?: number, format?: Intl.DateTimeFormatOptions, locale?: string): string;
+    locale: string;
+    monthFormat: MonthFormat;
+    weekdayFormat: WeekdayFormat;
+    yearFormat: YearFormat;
+}
 
 // @public
 export type DayFormat = "2-digit" | "numeric";
