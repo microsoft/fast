@@ -122,48 +122,6 @@ export class AnchoredRegion extends FoundationElement {
     viewportElement: HTMLElement | null;
     }
 
-// @public
-export interface AnchoredRegionConfig {
-    // Warning: (ae-incompatible-release-tags) The symbol "autoUpdateMode" is marked as @public, but its signature references "AutoUpdateMode" which is marked as @beta
-    //
-    // (undocumented)
-    autoUpdateMode?: AutoUpdateMode;
-    // (undocumented)
-    fixedPlacement?: boolean;
-    // Warning: (ae-incompatible-release-tags) The symbol "horizontalDefaultPosition" is marked as @public, but its signature references "HorizontalPosition" which is marked as @beta
-    //
-    // (undocumented)
-    horizontalDefaultPosition?: HorizontalPosition;
-    // (undocumented)
-    horizontalInset: boolean;
-    // Warning: (ae-incompatible-release-tags) The symbol "horizontalPositioningMode" is marked as @public, but its signature references "AxisPositioningMode" which is marked as @beta
-    //
-    // (undocumented)
-    horizontalPositioningMode: AxisPositioningMode;
-    // Warning: (ae-incompatible-release-tags) The symbol "horizontalScaling" is marked as @public, but its signature references "AxisScalingMode" which is marked as @beta
-    //
-    // (undocumented)
-    horizontalScaling: AxisScalingMode;
-    // (undocumented)
-    horizontalThreshold?: number;
-    // Warning: (ae-incompatible-release-tags) The symbol "verticalDefaultPosition" is marked as @public, but its signature references "VerticalPosition" which is marked as @beta
-    //
-    // (undocumented)
-    verticalDefaultPosition?: VerticalPosition;
-    // (undocumented)
-    verticalInset: boolean;
-    // Warning: (ae-incompatible-release-tags) The symbol "verticalPositioningMode" is marked as @public, but its signature references "AxisPositioningMode" which is marked as @beta
-    //
-    // (undocumented)
-    verticalPositioningMode: AxisPositioningMode;
-    // Warning: (ae-incompatible-release-tags) The symbol "verticalScaling" is marked as @public, but its signature references "AxisScalingMode" which is marked as @beta
-    //
-    // (undocumented)
-    verticalScaling: AxisScalingMode;
-    // (undocumented)
-    verticalThreshold?: number;
-}
-
 // @beta
 export type AnchoredRegionPositionLabel = "start" | "insetStart" | "insetEnd" | "end";
 
@@ -900,15 +858,6 @@ export enum DividerRole {
 export const dividerTemplate: (context: ElementDefinitionContext, definition: FoundationElementDefinition) => ViewTemplate<Divider>;
 
 // @public
-export const dropDownLeft: AnchoredRegionConfig;
-
-// @public
-export const dropDownLeftOrRight: AnchoredRegionConfig;
-
-// @public
-export const dropDownRight: AnchoredRegionConfig;
-
-// @public
 export type ElementDefinitionCallback = (ctx: ElementDefinitionContext) => void;
 
 // @public
@@ -973,27 +922,6 @@ export type FlipperOptions = FoundationElementDefinition & {
 
 // @public
 export const flipperTemplate: (context: ElementDefinitionContext, definition: FlipperOptions) => ViewTemplate<Flipper>;
-
-// @public
-export const flyoutAbove: AnchoredRegionConfig;
-
-// @public
-export const flyoutAboveOrBelow: AnchoredRegionConfig;
-
-// @public
-export const flyoutBelow: AnchoredRegionConfig;
-
-// @public
-export const flyoutBelowScaling: AnchoredRegionConfig;
-
-// @public
-export const flyoutLeft: AnchoredRegionConfig;
-
-// @public
-export const flyoutLeftOrRight: AnchoredRegionConfig;
-
-// @public
-export const flyoutRight: AnchoredRegionConfig;
 
 // @public
 export const focusVisible: string;
@@ -1512,7 +1440,6 @@ export class Picker extends FoundationElement {
     listItemTemplate: ViewTemplate;
     loadingText: string;
     maxSelected: number | undefined;
-    menuConfig: AnchoredRegionConfig;
     // @internal
     menuElement: PickerMenu;
     // @internal
