@@ -287,7 +287,7 @@ class CustomPropertyReflector {
         CustomPropertyManager.addTo(
             target,
             token,
-            this.resolveCSSValue(token.getValueFor(target))
+            this.resolveCSSValue(DesignTokenNode.for(token, target).value)
         );
     }
 

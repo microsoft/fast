@@ -223,7 +223,7 @@ describe("A DesignToken", () => {
             removeElement(ancestor, parent, target);
         });
 
-        it("should update value of a dependent token when getting a token for a target", () => {
+        it("should update value of a dependent token when getting a token for a target", async () => {
             const ancestor = addElement()
             const parent = addElement(ancestor);
             const target = addElement(parent);
@@ -237,13 +237,13 @@ describe("A DesignToken", () => {
             expect(tokenB.getValueFor(target)).to.equal(12);
 
             tokenA.setValueFor(parent, 7);
-            DOM.nextUpdate();
+            await DOM.nextUpdate();
 
             expect(tokenB.getValueFor(target)).to.equal(14);
             removeElement(ancestor);
         });
 
-        it("should get an updated value when a used design token is set for a node closer to the target", () => {
+        it("should get an updated value when a dependent design token is set for a node closer to the target", () => {
             const ancestor = addElement()
             const parent = addElement(ancestor);
             const target = addElement(parent);
