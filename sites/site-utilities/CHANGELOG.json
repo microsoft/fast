@@ -2,6 +2,41 @@
   "name": "@microsoft/site-utilities",
   "entries": [
     {
+      "date": "Tue, 03 Aug 2021 07:17:33 GMT",
+      "tag": "@microsoft/site-utilities_v0.9.0",
+      "version": "0.9.0",
+      "comments": {
+        "none": [
+          {
+            "comment": "Bump @microsoft/fast-components to v2.5.4",
+            "author": "mathieu.lavoie@logmein.com",
+            "commit": "65e86a86cbf2b584f7a76081a9bef5a76e78b6f3",
+            "package": "@microsoft/site-utilities"
+          },
+          {
+            "comment": "Bump @microsoft/fast-tooling to v0.25.7",
+            "author": "mathieu.lavoie@logmein.com",
+            "commit": "65e86a86cbf2b584f7a76081a9bef5a76e78b6f3",
+            "package": "@microsoft/site-utilities"
+          },
+          {
+            "comment": "Bump @microsoft/fast-foundation to v2.6.2",
+            "author": "mathieu.lavoie@logmein.com",
+            "commit": "65e86a86cbf2b584f7a76081a9bef5a76e78b6f3",
+            "package": "@microsoft/site-utilities"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-tooling-react to v2.9.10",
+            "author": "mathieu.lavoie@logmein.com",
+            "commit": "65e86a86cbf2b584f7a76081a9bef5a76e78b6f3",
+            "package": "@microsoft/site-utilities"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sun, 01 Aug 2021 07:17:15 GMT",
       "tag": "@microsoft/site-utilities_v0.9.0",
       "version": "0.9.0",
