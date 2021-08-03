@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-components
 
-This log was last generated on Sun, 01 Aug 2021 07:17:15 GMT and should not be manually modified.
+This log was last generated on Tue, 03 Aug 2021 07:17:33 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.5.4
+
+Tue, 03 Aug 2021 07:17:33 GMT
+
+### Patches
+
+- add neutralForegroundRest color to host (khamu@microsoft.com)
 
 ## 2.5.3
 
