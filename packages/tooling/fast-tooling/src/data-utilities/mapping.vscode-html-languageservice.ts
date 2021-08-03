@@ -29,6 +29,49 @@ export interface MapNodeToDataDictionaryConfig {
  * vscode-html-languageservice package
  */
 
+function parseElementAttributeValue(schema, attribute): [string, any] {
+    if (schema && schema.properties && schema.properties[attribute.name]) {
+        if (schema.properties[attribute.name].type === DataType.boolean) {
+            // When the attribute is a boolean, it does not matter
+            // what it's value, it will always be true if present
+            return [attribute.name, true];
+        }
+
+        if (schema.properties[attribute.name].type === DataType.number) {
+            // Attributes are always strings, this must be converted
+            return [attribute.name, parseFloat(JSON.parse(attribute.value))];
+        }
+
+        if (schema.properties[attribute.name].type === DataType.string) {
+            let parsedValue;
+
+            // Attributes which may appear as a JSON type other than
+            // a string must be converted
+            try {
+                parsedValue = JSON.parse(attribute.value);
+
+                if (typeof parsedValue !== "string") {
+                    parsedValue = `${parsedValue}`;
+                }
+            } catch (e) {
+                parsedValue = attribute.value;
+            }
+
+            return [attribute.name, parsedValue];
+        }
+    }
+
+    if (attribute.name !== "slot") {
+        try {
+            const parsedValue = JSON.parse(attribute.value);
+
+            return [attribute.name, parsedValue === null ? true : parsedValue];
+        } catch (e) {
+            return [attribute.name, attribute.value];
+        }
+    }
+}
+
 function mapAttributesAndSlotsToData(
     node: Node,
     slotAttributes: { [key: string]: LinkedData[] },
@@ -37,33 +80,16 @@ function mapAttributesAndSlotsToData(
 ) {
     return Object.entries(node.attributes)
         .map(([attributeKey, attributeValue]: [string, string]) => {
-            if (schemaDictionary[schemaId].properties[attributeKey]) {
-                if (
-                    schemaDictionary[schemaId].properties[attributeKey].type ===
-                    DataType.boolean
-                ) {
-                    // When the attribute is a boolean, it does not matter
-                    // what it's value, it will always be true if present
-                    return [attributeKey, true];
+            const parsedAttributeValue = parseElementAttributeValue(
+                schemaDictionary[schemaId],
+                {
+                    name: attributeKey,
+                    value: attributeValue,
                 }
+            );
 
-                if (
-                    schemaDictionary[schemaId].properties[attributeKey].type ===
-                    DataType.number
-                ) {
-                    // Attributes are always strings, this must be converted
-                    return [attributeKey, parseFloat(JSON.parse(attributeValue))];
-                }
-            }
-
-            if (attributeKey !== "slot") {
-                try {
-                    const parsedValue = JSON.parse(attributeValue);
-
-                    return [attributeKey, parsedValue === null ? true : parsedValue];
-                } catch (e) {
-                    return [attributeKey, ""];
-                }
+            if (parsedAttributeValue !== void 0) {
+                return parsedAttributeValue;
             }
         })
         .reduce((previousValue, currentValue) => {
@@ -444,11 +470,15 @@ function identifyElementsFromParsedValue(
     });
 }
 
-function mapElementAttributes(element): { [key: string]: any } {
+function mapElementAttributes(element: Node, schema): { [key: string]: any } {
     return element.attributes.reduce((prevValue, currentValue) => {
+        const parsedAttribute = parseElementAttributeValue(schema, currentValue);
+
         return {
             ...prevValue,
-            [currentValue.name]: currentValue.value,
+            [currentValue.name]: parsedAttribute
+                ? parsedAttribute[1]
+                : currentValue.value,
         };
     }, {});
 }
@@ -672,7 +702,7 @@ function mapUpdatesFromMonacoEditor(
                 data: isTextNode
                     ? element.content
                     : {
-                          ...mapElementAttributes(element),
+                          ...mapElementAttributes(element, schemaDictionary[schemaId]),
                           ...children[0],
                       },
             },

@@ -1,8 +1,34 @@
 # Change Log - @microsoft/fast-tooling
 
-This log was last generated on Wed, 28 Jul 2021 07:17:22 GMT and should not be manually modified.
+This log was last generated on Tue, 03 Aug 2021 07:17:33 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.25.7
+
+Tue, 03 Aug 2021 07:17:33 GMT
+
+### Patches
+
+- Bump @microsoft/fast-components to v2.5.4 (mathieu.lavoie@logmein.com)
+
+## 0.25.6
+
+Sun, 01 Aug 2021 07:17:15 GMT
+
+### Patches
+
+- ensure that the mapping of numbers and booleans works with the consolidated data mapping (7559015+janechu@users.noreply.github.com)
+- identifies the order of slotted items by their position in the data, instead of the data dictionary object (7559015+janechu@users.noreply.github.com)
+- fix word wrapping in htmlrender navigation pill (44823142+williamw2@users.noreply.github.com)
+
+## 0.25.5
+
+Thu, 29 Jul 2021 07:18:18 GMT
+
+### Patches
+
+- Bump @microsoft/fast-components to v2.5.2 (47367562+bheston@users.noreply.github.com)
 
 ## 0.25.4
 
