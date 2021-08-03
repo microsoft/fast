@@ -183,9 +183,15 @@ class DesignTokenImpl<T extends { createCSS?(): string }> extends CSSDirective
     }
 
     public getValueFor(element: HTMLElement): StaticDesignTokenValue<T> {
-        const node = DesignTokenNode.for(this, element);
-        Observable.track(node, "value");
-        return DesignTokenNode.for(this, element).value;
+        const { value } = DesignTokenNode.for<T>(this, element);
+
+        if (value === undefined) {
+            throw new Error(
+                `Value could not be retrieved for token named "${this.name}". Ensure the value is set for ${element} or an ancestor of ${element}.`
+            );
+        }
+
+        return value;
     }
 
     public setValueFor(
@@ -194,12 +200,11 @@ class DesignTokenImpl<T extends { createCSS?(): string }> extends CSSDirective
     ): this {
         this._appliedTo.add(element);
         if (value instanceof DesignTokenImpl) {
-            const tokenValue = value;
-
-            value = ((target: HTMLElement) =>
-                tokenValue.getValueFor(target)) as DerivedDesignTokenValue<T>;
+            value = this.alias(value);
         }
-        DesignTokenNode.for<T>(this, element).set(value);
+
+        DesignTokenNode.for<T>(this, element).set(value as DesignTokenValue<T>);
+
         [
             ...this.getOrCreateSubscriberSet(this),
             ...this.getOrCreateSubscriberSet(element),
@@ -214,7 +219,7 @@ class DesignTokenImpl<T extends { createCSS?(): string }> extends CSSDirective
     }
 
     public withDefault(value: DesignTokenValue<T> | DesignToken<T>) {
-        DesignTokenNode.for(this, defaultElement).set(value);
+        this.setValueFor(defaultElement, value);
 
         return this;
     }
@@ -234,6 +239,16 @@ class DesignTokenImpl<T extends { createCSS?(): string }> extends CSSDirective
         target?: HTMLElement
     ): void {
         this.getOrCreateSubscriberSet(target).delete(subscriber);
+    }
+
+    /**
+     * Returns a DesignToken value that functions as an alias to a provided Design Token.
+     * @param token - The token to alias to
+     * @returns
+     */
+    private alias(token: DesignToken<T>): DerivedDesignTokenValue<T> {
+        return (((target: HTMLElement) =>
+            token.getValueFor(target)) as unknown) as DerivedDesignTokenValue<T>;
     }
 }
 
@@ -259,6 +274,7 @@ class CustomPropertyReflector {
 
     public stopReflection(token: CSSDesignToken<any>, target: HTMLElement) {
         token.unsubscribe(this, target);
+        this.remove(token, target);
     }
 
     public handleChange(record: DesignTokenChangeRecord<any>) {
@@ -299,7 +315,7 @@ class DesignTokenNode<T extends { createCSS?(): string }> {
                   channelCache.get(token)!;
     }
 
-    public static for<T>(token: DesignToken<T>, target: HTMLElement) {
+    public static for<T>(token: DesignToken<T>, target: HTMLElement): DesignTokenNode<T> {
         const targetCache = nodeCache.has(target)
             ? nodeCache.get(target)!
             : nodeCache.set(target, new Map()) && nodeCache.get(target)!;
@@ -382,25 +398,30 @@ class DesignTokenNode<T extends { createCSS?(): string }> {
         this.tearDownBindingObserver();
     }
 
-    private resolveRealValue(): T {
+    private resolveRealValue(): StaticDesignTokenValue<T> | undefined {
         const rawValue = this.resolveRawValue();
 
-        if (isDerivedTokenValue(rawValue)) {
-            if (!this.bindingObserver || this.bindingObserver.source !== rawValue) {
-                this.setupBindingObserver(rawValue);
-            }
+        if (rawValue !== undefined) {
+            if (isDerivedTokenValue(rawValue)) {
+                if (!this.bindingObserver || this.bindingObserver.source !== rawValue) {
+                    this.setupBindingObserver(rawValue);
+                }
 
-            return this.bindingObserver!.observe(this.target, defaultExecutionContext);
-        } else {
-            if (this.bindingObserver) {
-                this.tearDownBindingObserver();
-            }
+                return this.bindingObserver!.observe(
+                    this.target,
+                    defaultExecutionContext
+                );
+            } else {
+                if (this.bindingObserver) {
+                    this.tearDownBindingObserver();
+                }
 
-            return rawValue as any;
+                return rawValue as any;
+            }
         }
     }
 
-    private resolveRawValue(): DesignTokenValue<T> {
+    private resolveRawValue(): DesignTokenValue<T> | undefined {
         /* eslint-disable-next-line */
         let current: DesignTokenNode<T> | undefined = this;
 
@@ -423,10 +444,6 @@ class DesignTokenNode<T extends { createCSS?(): string }> {
                 return this.resolveRawValue();
             }
         }
-
-        throw new Error(
-            `Value could not be retrieved for token named "${this.token.name}". Ensure the value is set for ${this.target} or an ancestor of ${this.target}. `
-        );
     }
 
     /**
@@ -524,7 +541,8 @@ class DesignTokenNode<T extends { createCSS?(): string }> {
     /**
      * The resolved value for a node.
      */
-    public get value(): T {
+    public get value(): StaticDesignTokenValue<T> | undefined {
+        Observable.track(this, "value");
         return this.resolveRealValue();
     }
 
