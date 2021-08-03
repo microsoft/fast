@@ -1,3 +1,4 @@
+import { ArrowKeys } from "@microsoft/fast-web-utilities";
 import type {
     ListboxOption as FASTOption,
     Select as FASTSelectType,
@@ -186,6 +187,36 @@ describe("FASTSelect", function () {
 
                 expect(await element.evaluate(node => node.open)).to.be.false;
             });
+        });
+    });
+
+    describe("should emit an event when focused and receives keyboard interaction", function () {
+        describe("while closed", function () {
+            for (const direction of Object.values(ArrowKeys)) {
+                describe(`via ${direction} key`, function () {
+                    for (const eventName of ["change", "input"]) {
+                        it(`of type '${eventName}'`, async function () {
+                            const element = (await this.page.waitForSelector(
+                                "fast-select"
+                            )) as ElementHandle<FASTSelect>;
+
+                            await this.page.exposeFunction("sendEvent", type =>
+                                expect(type).to.equal(eventName)
+                            );
+
+                            await element.evaluate((node, eventName) => {
+                                node.addEventListener(
+                                    eventName,
+                                    async (e: CustomEvent) =>
+                                        await window["sendEvent"](e.type)
+                                );
+                            }, eventName);
+
+                            await element.press(direction);
+                        });
+                    }
+                });
+            }
         });
     });
 

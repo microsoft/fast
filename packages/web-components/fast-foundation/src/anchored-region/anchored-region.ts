@@ -63,45 +63,20 @@ export type VerticalPosition = "top" | "bottom" | "unset";
 export type AutoUpdateMode = "anchor" | "auto";
 
 /**
+ * Describes the possible positions of the region relative
+ * to its anchor. Depending on the axis start = left/top, end = right/bottom
+ *
+ * @beta
+ */
+export type AnchoredRegionPositionLabel = "start" | "insetStart" | "insetEnd" | "end";
+
+/**
  * @internal
  */
 interface Dimension {
     height: number;
     width: number;
 }
-
-/**
- * describes the possible horizontal positions of the region relative
- * to its anchor
- *
- * @internal
- */
-type AnchoredRegionHorizontalPositionLabel =
-    | "left"
-    | "insetLeft"
-    | "insetRight"
-    | "right"
-    | "undefined";
-
-/**
- * describes the possible vertical positions of the region relative
- * to its anchor
- *
- * @internal
- */
-type AnchoredRegionVerticalPositionLabel =
-    | "top"
-    | "insetTop"
-    | "insetBottom"
-    | "bottom"
-    | "undefined";
-
-/**
- * describes possible transform origin settings
- *
- * @internal
- */
-type Location = "top" | "left" | "right" | "bottom";
 
 /**
  * An anchored region Custom HTML Element.
@@ -165,6 +140,19 @@ export class AnchoredRegion extends FoundationElement {
     @attr({ attribute: "horizontal-default-position" })
     public horizontalDefaultPosition: HorizontalPosition = "unset";
     private horizontalDefaultPositionChanged(): void {
+        this.updateForAttributeChange();
+    }
+
+    /**
+     * Whether the region remains in the viewport (ie. detaches from the anchor) on the horizontal axis
+     *
+     * @beta
+     * @remarks
+     * HTML Attribute: horizontal-viewport-lock
+     */
+    @attr({ attribute: "horizontal-viewport-lock", mode: "boolean" })
+    public horizontalViewportLock: boolean = false;
+    private horizontalViewportLockChanged(): void {
         this.updateForAttributeChange();
     }
 
@@ -234,6 +222,19 @@ export class AnchoredRegion extends FoundationElement {
     @attr({ attribute: "vertical-default-position" })
     public verticalDefaultPosition: VerticalPosition = "unset";
     private verticalDefaultPositionChanged(): void {
+        this.updateForAttributeChange();
+    }
+
+    /**
+     * Whether the region remains in the viewport (ie. detaches from the anchor) on the vertical axis
+     *
+     * @beta
+     * @remarks
+     * HTML Attribute: vertical-viewport-lock
+     */
+    @attr({ attribute: "vertical-viewport-lock", mode: "boolean" })
+    public verticalViewportLock: boolean = false;
+    private verticalViewportLockChanged(): void {
         this.updateForAttributeChange();
     }
 
@@ -362,56 +363,38 @@ export class AnchoredRegion extends FoundationElement {
     /**
      * indicates the current horizontal position of the region
      */
-    public verticalPosition: AnchoredRegionVerticalPositionLabel;
+    public verticalPosition: AnchoredRegionPositionLabel | undefined;
 
     /**
      * indicates the current vertical position of the region
      */
-    public horizontalPosition: AnchoredRegionHorizontalPositionLabel;
+    public horizontalPosition: AnchoredRegionPositionLabel | undefined;
 
     /**
-     * values to be applied to the component's positioning attributes on render
+     * values to be applied to the component's transform on render
      */
-    private regionTop: string;
-    private regionRight: string;
-    private regionBottom: string;
-    private regionLeft: string;
+    private translateX: number;
+    private translateY: number;
 
     /**
-     * the span in pixels of the selected position on each axis
+     * the span to be applied to the region on each axis
      */
     private regionWidth: string;
     private regionHeight: string;
 
-    private containingBlockWidth: number;
-    private containingBlockHeight: number;
-
-    private xTransformOrigin: string;
-    private yTransformOrigin: string;
-
     private resizeDetector: ResizeObserverClassDefinition | null = null;
 
-    private viewportRect: ClientRect | DOMRect | null;
-    private anchorRect: ClientRect | DOMRect | null;
-    private regionRect: ClientRect | DOMRect | null;
-
-    private regionDimension: Dimension;
-
-    private anchorTop: number;
-    private anchorRight: number;
-    private anchorBottom: number;
-    private anchorLeft: number;
-    private anchorHeight: number;
-    private anchorWidth: number;
+    private viewportRect: ClientRect | DOMRect | undefined;
+    private anchorRect: ClientRect | DOMRect | undefined;
+    private regionRect: ClientRect | DOMRect | undefined;
 
     /**
      * base offsets between the positioner's base position and the anchor's
      */
-    private baseHorizontalOffset: number;
-    private baseVerticalOffset: number;
+    private baseHorizontalOffset: number = 0;
+    private baseVerticalOffset: number = 0;
 
     private pendingPositioningUpdate: boolean = false;
-    private pendingLayoutUpdate: boolean = false;
     private pendingReset: boolean = false;
     private currentDirection: Direction = Direction.ltr;
     private regionVisible: boolean = false;
@@ -456,29 +439,9 @@ export class AnchoredRegion extends FoundationElement {
      * update position
      */
     public update = (): void => {
-        if (this.viewportRect === null || this.regionDimension === null) {
-            this.requestLayoutUpdate();
-            return;
+        if (!this.pendingPositioningUpdate) {
+            this.requestPositionUpdates();
         }
-
-        this.requestPositionUpdates();
-    };
-
-    /**
-     * Public function to enable authors to update the layout based on changes in anchor offset without resorting
-     * to a more epensive update call
-     */
-    public updateAnchorOffset = (
-        horizontalOffsetDelta: number,
-        verticalOffsetDelta: number
-    ): void => {
-        this.anchorLeft = this.anchorLeft + horizontalOffsetDelta;
-        this.anchorRight = this.anchorRight + horizontalOffsetDelta;
-
-        this.anchorTop = this.anchorTop + verticalOffsetDelta;
-        this.anchorBottom = this.anchorBottom + verticalOffsetDelta;
-
-        this.updateLayout();
     };
 
     /**
@@ -525,16 +488,6 @@ export class AnchoredRegion extends FoundationElement {
     }
 
     /**
-     * Request a layout update if there are currently no open requests
-     */
-    private requestLayoutUpdate(): void {
-        if (this.pendingLayoutUpdate === false && this.pendingReset === false) {
-            this.pendingLayoutUpdate = true;
-            DOM.queueUpdate(() => this.updateLayout());
-        }
-    }
-
-    /**
      * Request a reset if there are currently no open requests
      */
     private requestReset(): void {
@@ -542,7 +495,6 @@ export class AnchoredRegion extends FoundationElement {
             (this as FoundationElement).$fastController.isConnected &&
             this.pendingReset === false
         ) {
-            this.pendingLayoutUpdate = false;
             this.setInitialState();
             DOM.queueUpdate(() => this.reset());
             this.pendingReset = true;
@@ -555,36 +507,24 @@ export class AnchoredRegion extends FoundationElement {
     private setInitialState(): void {
         this.initialLayoutComplete = false;
         this.regionVisible = false;
-        this.regionTop = "0";
-        this.regionRight = "0";
-        this.regionBottom = "0";
-        this.regionLeft = "0";
-        this.regionWidth = "100%";
-        this.regionHeight = "100%";
-
-        this.xTransformOrigin = "left";
-        this.yTransformOrigin = "top";
-
-        this.viewportRect = null;
-        this.regionRect = null;
-        this.anchorRect = null;
-        this.regionDimension = { height: 0, width: 0 };
-
-        this.anchorTop = 0;
-        this.anchorRight = 0;
-        this.anchorBottom = 0;
-        this.anchorLeft = 0;
-        this.anchorHeight = 0;
-        this.anchorWidth = 0;
-
-        this.verticalPosition = "undefined";
-        this.horizontalPosition = "undefined";
+        this.translateX = 0;
+        this.translateY = 0;
 
         this.baseHorizontalOffset = 0;
         this.baseVerticalOffset = 0;
 
+        this.viewportRect = undefined;
+        this.regionRect = undefined;
+        this.anchorRect = undefined;
+
+        this.verticalPosition = undefined;
+        this.horizontalPosition = undefined;
+
         this.style.opacity = "0";
         this.style.pointerEvents = "none";
+
+        this.style.position = this.fixedPlacement ? "fixed" : "absolute";
+        this.updatePositionClasses();
 
         this.updateRegionStyle();
     }
@@ -603,6 +543,7 @@ export class AnchoredRegion extends FoundationElement {
 
         if (this.resizeDetector !== null) {
             this.resizeDetector.observe(this.anchorElement);
+            this.resizeDetector.observe(this);
         }
     };
 
@@ -683,16 +624,10 @@ export class AnchoredRegion extends FoundationElement {
 
         this.pendingPositioningUpdate = false;
 
-        if (!this.applyIntersectionEntries(entries) || this.regionRect === null) {
+        if (!this.applyIntersectionEntries(entries)) {
             return;
         }
 
-        if (!this.initialLayoutComplete) {
-            this.containingBlockHeight = this.regionRect.height;
-            this.containingBlockWidth = this.regionRect.width;
-        }
-
-        this.updateRegionOffset(this.regionRect);
         this.updateLayout();
     };
 
@@ -722,24 +657,52 @@ export class AnchoredRegion extends FoundationElement {
 
         // don't update the dom unless there is a significant difference in rect positions
         if (
-            this.regionRect === null ||
-            this.anchorRect === null ||
-            this.viewportRect === null ||
+            !this.regionVisible ||
+            this.regionRect === undefined ||
+            this.anchorRect === undefined ||
+            this.viewportRect === undefined ||
             this.isRectDifferent(this.anchorRect, anchorEntry.boundingClientRect) ||
             this.isRectDifferent(this.viewportRect, viewportEntry.boundingClientRect) ||
             this.isRectDifferent(this.regionRect, regionEntry.boundingClientRect)
         ) {
             this.regionRect = regionEntry.boundingClientRect;
             this.anchorRect = anchorEntry.boundingClientRect;
-            this.viewportRect = viewportEntry.boundingClientRect;
+            if (this.viewportElement === document.documentElement) {
+                this.viewportRect = new DOMRectReadOnly(
+                    viewportEntry.boundingClientRect.x +
+                        document.documentElement.scrollLeft,
+                    viewportEntry.boundingClientRect.y +
+                        document.documentElement.scrollTop,
+                    viewportEntry.boundingClientRect.width,
+                    viewportEntry.boundingClientRect.height
+                );
+            } else {
+                this.viewportRect = viewportEntry.boundingClientRect;
+            }
 
-            this.handleRegionIntersection(regionEntry);
-            this.handleAnchorIntersection(anchorEntry);
+            this.updateRegionOffset();
 
             return true;
         }
 
         return false;
+    };
+
+    /**
+     *  Update the offset values
+     */
+    private updateRegionOffset = (): void => {
+        if (this.anchorRect && this.regionRect) {
+            this.baseHorizontalOffset =
+                this.baseHorizontalOffset +
+                (this.anchorRect.left - this.regionRect.left) +
+                (this.translateX - this.baseHorizontalOffset);
+
+            this.baseVerticalOffset =
+                this.baseVerticalOffset +
+                (this.anchorRect.top - this.regionRect.top) +
+                (this.translateY - this.baseVerticalOffset);
+        }
     };
 
     /**
@@ -761,36 +724,9 @@ export class AnchoredRegion extends FoundationElement {
     };
 
     /**
-     *  Update data based on anchor intersections
-     */
-    private handleAnchorIntersection = (anchorEntry: IntersectionObserverEntry): void => {
-        this.anchorTop = anchorEntry.boundingClientRect.top;
-        this.anchorRight = anchorEntry.boundingClientRect.right;
-        this.anchorBottom = anchorEntry.boundingClientRect.bottom;
-        this.anchorLeft = anchorEntry.boundingClientRect.left;
-        this.anchorHeight = anchorEntry.boundingClientRect.height;
-        this.anchorWidth = anchorEntry.boundingClientRect.width;
-    };
-
-    /**
-     *  Update data based on positioner intersections
-     */
-    private handleRegionIntersection = (regionEntry: IntersectionObserverEntry): void => {
-        const regionRect: ClientRect | DOMRect = regionEntry.boundingClientRect;
-        this.regionDimension = {
-            height: regionRect.height,
-            width: regionRect.width,
-        };
-    };
-
-    /**
      *  Handle resize events
      */
     private handleResize = (entries: ResizeObserverEntry[]): void => {
-        if (!this.initialLayoutComplete) {
-            return;
-        }
-
         this.update();
     };
 
@@ -819,14 +755,15 @@ export class AnchoredRegion extends FoundationElement {
      *  Recalculate layout related state values
      */
     private updateLayout = (): void => {
-        this.pendingLayoutUpdate = false;
-
-        let desiredVerticalPosition: AnchoredRegionVerticalPositionLabel = "undefined";
-        let desiredHorizontalPosition: AnchoredRegionHorizontalPositionLabel =
-            "undefined";
+        let desiredVerticalPosition: AnchoredRegionPositionLabel | undefined = undefined;
+        let desiredHorizontalPosition:
+            | AnchoredRegionPositionLabel
+            | undefined = undefined;
 
         if (this.horizontalPositioningMode !== "uncontrolled") {
-            const horizontalOptions: AnchoredRegionHorizontalPositionLabel[] = this.getHorizontalPositioningOptions();
+            const horizontalOptions: AnchoredRegionPositionLabel[] = this.getPositioningOptions(
+                this.horizontalInset
+            );
 
             if (this.horizontalDefaultPosition !== "unset") {
                 let dirCorrectedHorizontalDefaultPosition: string = this
@@ -860,14 +797,14 @@ export class AnchoredRegion extends FoundationElement {
                 switch (dirCorrectedHorizontalDefaultPosition) {
                     case "left":
                         desiredHorizontalPosition = this.horizontalInset
-                            ? "insetLeft"
-                            : "left";
+                            ? "insetStart"
+                            : "start";
                         break;
 
                     case "right":
                         desiredHorizontalPosition = this.horizontalInset
-                            ? "insetRight"
-                            : "right";
+                            ? "insetEnd"
+                            : "end";
                         break;
                 }
             }
@@ -875,34 +812,69 @@ export class AnchoredRegion extends FoundationElement {
             const horizontalThreshold: number =
                 this.horizontalThreshold !== undefined
                     ? this.horizontalThreshold
-                    : this.regionDimension.width;
+                    : this.regionRect !== undefined
+                    ? this.regionRect.width
+                    : 0;
+
+            const anchorLeft: number =
+                this.anchorRect !== undefined ? this.anchorRect.left : 0;
+            const anchorRight: number =
+                this.anchorRect !== undefined ? this.anchorRect.right : 0;
+            const anchorWidth: number =
+                this.anchorRect !== undefined ? this.anchorRect.width : 0;
+            const viewportLeft: number =
+                this.viewportRect !== undefined ? this.viewportRect.left : 0;
+            const viewportRight: number =
+                this.viewportRect !== undefined ? this.viewportRect.right : 0;
 
             if (
-                desiredHorizontalPosition === "undefined" ||
+                desiredHorizontalPosition === undefined ||
                 (!(this.horizontalPositioningMode === "locktodefault") &&
-                    this.getAvailableWidth(desiredHorizontalPosition) <
-                        horizontalThreshold)
+                    this.getAvailableSpace(
+                        desiredHorizontalPosition,
+                        anchorLeft,
+                        anchorRight,
+                        anchorWidth,
+                        viewportLeft,
+                        viewportRight
+                    ) < horizontalThreshold)
             ) {
                 desiredHorizontalPosition =
-                    this.getAvailableWidth(horizontalOptions[0]) >
-                    this.getAvailableWidth(horizontalOptions[1])
+                    this.getAvailableSpace(
+                        horizontalOptions[0],
+                        anchorLeft,
+                        anchorRight,
+                        anchorWidth,
+                        viewportLeft,
+                        viewportRight
+                    ) >
+                    this.getAvailableSpace(
+                        horizontalOptions[1],
+                        anchorLeft,
+                        anchorRight,
+                        anchorWidth,
+                        viewportLeft,
+                        viewportRight
+                    )
                         ? horizontalOptions[0]
                         : horizontalOptions[1];
             }
         }
 
         if (this.verticalPositioningMode !== "uncontrolled") {
-            const verticalOptions: AnchoredRegionVerticalPositionLabel[] = this.getVerticalPositioningOptions();
+            const verticalOptions: AnchoredRegionPositionLabel[] = this.getPositioningOptions(
+                this.verticalInset
+            );
             if (this.verticalDefaultPosition !== "unset") {
                 switch (this.verticalDefaultPosition) {
                     case "top":
-                        desiredVerticalPosition = this.verticalInset ? "insetTop" : "top";
+                        desiredVerticalPosition = this.verticalInset
+                            ? "insetStart"
+                            : "start";
                         break;
 
                     case "bottom":
-                        desiredVerticalPosition = this.verticalInset
-                            ? "insetBottom"
-                            : "bottom";
+                        desiredVerticalPosition = this.verticalInset ? "insetEnd" : "end";
                         break;
                 }
             }
@@ -910,16 +882,50 @@ export class AnchoredRegion extends FoundationElement {
             const verticalThreshold: number =
                 this.verticalThreshold !== undefined
                     ? this.verticalThreshold
-                    : this.regionDimension.height;
+                    : this.regionRect !== undefined
+                    ? this.regionRect.height
+                    : 0;
+
+            const anchorTop: number =
+                this.anchorRect !== undefined ? this.anchorRect.top : 0;
+            const anchorBottom: number =
+                this.anchorRect !== undefined ? this.anchorRect.bottom : 0;
+            const anchorHeight: number =
+                this.anchorRect !== undefined ? this.anchorRect.height : 0;
+            const viewportTop: number =
+                this.viewportRect !== undefined ? this.viewportRect.top : 0;
+            const viewportBottom: number =
+                this.viewportRect !== undefined ? this.viewportRect.bottom : 0;
 
             if (
-                desiredVerticalPosition === "undefined" ||
+                desiredVerticalPosition === undefined ||
                 (!(this.verticalPositioningMode === "locktodefault") &&
-                    this.getAvailableHeight(desiredVerticalPosition) < verticalThreshold)
+                    this.getAvailableSpace(
+                        desiredVerticalPosition,
+                        anchorTop,
+                        anchorBottom,
+                        anchorHeight,
+                        viewportTop,
+                        viewportBottom
+                    ) < verticalThreshold)
             ) {
                 desiredVerticalPosition =
-                    this.getAvailableHeight(verticalOptions[0]) >
-                    this.getAvailableHeight(verticalOptions[1])
+                    this.getAvailableSpace(
+                        verticalOptions[0],
+                        anchorTop,
+                        anchorBottom,
+                        anchorHeight,
+                        viewportTop,
+                        viewportBottom
+                    ) >
+                    this.getAvailableSpace(
+                        verticalOptions[1],
+                        anchorTop,
+                        anchorBottom,
+                        anchorHeight,
+                        viewportTop,
+                        viewportBottom
+                    )
                         ? verticalOptions[0]
                         : verticalOptions[1];
             }
@@ -953,10 +959,9 @@ export class AnchoredRegion extends FoundationElement {
             this.$emit("loaded", this, { bubbles: false });
         }
 
+        this.updatePositionClasses();
+
         if (positionChanged) {
-            // do a position check to ensure we're in the right spot
-            // temporary until method for recalculating offsets on position changes improved
-            this.requestPositionUpdates();
             // emit change event
             this.$emit("positionchange", this, { bubbles: false });
         }
@@ -967,298 +972,271 @@ export class AnchoredRegion extends FoundationElement {
      *  to the root element
      */
     private updateRegionStyle = (): void => {
-        this.classList.toggle("top", this.verticalPosition === "top");
-        this.classList.toggle("bottom", this.verticalPosition === "bottom");
-        this.classList.toggle("inset-top", this.verticalPosition === "insetTop");
-        this.classList.toggle("inset-bottom", this.verticalPosition === "insetBottom");
+        this.style.width = this.regionWidth;
+        this.style.height = this.regionHeight;
+        this.style.transform = `translate(${this.translateX}px, ${this.translateY}px)`;
+    };
 
-        this.classList.toggle("left", this.horizontalPosition === "left");
-        this.classList.toggle("right", this.horizontalPosition === "right");
-        this.classList.toggle("inset-left", this.horizontalPosition === "insetLeft");
-        this.classList.toggle("inset-right", this.horizontalPosition === "insetRight");
+    /**
+     *  Updates the css classes that reflect the current position of the element
+     */
+    private updatePositionClasses = (): void => {
+        this.classList.toggle("top", this.verticalPosition === "start");
+        this.classList.toggle("bottom", this.verticalPosition === "end");
+        this.classList.toggle("inset-top", this.verticalPosition === "insetStart");
+        this.classList.toggle("inset-bottom", this.verticalPosition === "insetEnd");
 
-        this.style.position = this.fixedPlacement ? "fixed" : "absolute";
-        this.style.transformOrigin = `${this.yTransformOrigin} ${this.xTransformOrigin}`;
-
-        if (this.horizontalPositioningMode === "uncontrolled") {
-            this.style.width = "unset";
-            this.style.right = "unset";
-            this.style.left = "unset";
-        } else {
-            this.style.width = this.regionWidth;
-            this.style.right = this.regionRight;
-            this.style.left = this.regionLeft;
-        }
-
-        if (this.verticalPositioningMode === "uncontrolled") {
-            this.style.height = "unset";
-            this.style.top = "unset";
-            this.style.bottom = "unset";
-        } else {
-            this.style.height = this.regionHeight;
-            this.style.top = this.regionTop;
-            this.style.bottom = this.regionBottom;
-        }
+        this.classList.toggle("left", this.horizontalPosition === "start");
+        this.classList.toggle("right", this.horizontalPosition === "end");
+        this.classList.toggle("inset-left", this.horizontalPosition === "insetStart");
+        this.classList.toggle("inset-right", this.horizontalPosition === "insetEnd");
     };
 
     /**
      * Get horizontal positioning state based on desired position
      */
     private setHorizontalPosition = (
-        desiredHorizontalPosition: AnchoredRegionHorizontalPositionLabel,
+        desiredHorizontalPosition: AnchoredRegionPositionLabel | undefined,
         nextPositionerDimension: Dimension
     ): void => {
-        let right: number | null = null;
-        let left: number | null = null;
-        let xTransformOrigin: string = "left";
-
-        switch (desiredHorizontalPosition) {
-            case "left":
-                xTransformOrigin = "right";
-                right = this.containingBlockWidth - this.baseHorizontalOffset;
-                break;
-
-            case "insetLeft":
-                xTransformOrigin = "right";
-                right =
-                    this.containingBlockWidth -
-                    this.anchorWidth -
-                    this.baseHorizontalOffset;
-                break;
-
-            case "insetRight":
-                xTransformOrigin = "left";
-                left = this.baseHorizontalOffset;
-                break;
-
-            case "right":
-                xTransformOrigin = "left";
-                left = this.anchorWidth + this.baseHorizontalOffset;
-                break;
+        if (
+            desiredHorizontalPosition === undefined ||
+            this.regionRect === undefined ||
+            this.anchorRect === undefined ||
+            this.viewportRect === undefined
+        ) {
+            return;
         }
 
-        this.xTransformOrigin = xTransformOrigin;
-        this.regionRight = right === null ? "unset" : `${right}px`;
-        this.regionLeft = left === null ? "unset" : `${left}px`;
-        this.horizontalPosition = desiredHorizontalPosition;
+        let nextRegionWidth: number = 0;
 
         switch (this.horizontalScaling) {
             case "anchor":
-                this.regionWidth = `${this.anchorWidth}px`;
-                break;
-
             case "fill":
-                this.regionWidth = `${nextPositionerDimension.width}px`;
+                nextRegionWidth = nextPositionerDimension.width;
+                this.regionWidth = `${nextRegionWidth}px`;
                 break;
 
             case "content":
+                nextRegionWidth = this.regionRect.width;
                 this.regionWidth = "unset";
                 break;
         }
-    };
 
-    /**
-     * Get vertical positioning state based on desired position
-     */
-    private setVerticalPosition = (
-        desiredVerticalPosition: AnchoredRegionVerticalPositionLabel,
-        nextPositionerDimension: Dimension
-    ): void => {
-        let top: number | null = null;
-        let bottom: number | null = null;
-        let yTransformOrigin: string = "top";
-
-        switch (desiredVerticalPosition) {
-            case "top":
-                yTransformOrigin = "bottom";
-                bottom = this.containingBlockHeight - this.baseVerticalOffset;
+        switch (desiredHorizontalPosition) {
+            case "start":
+                this.translateX = this.baseHorizontalOffset - nextRegionWidth;
+                if (
+                    this.horizontalViewportLock &&
+                    this.anchorRect.left > this.viewportRect.right
+                ) {
+                    this.translateX =
+                        this.translateX -
+                        (this.anchorRect.left - this.viewportRect.right);
+                }
                 break;
 
-            case "insetTop":
-                yTransformOrigin = "bottom";
-                bottom =
-                    this.containingBlockHeight -
-                    this.baseVerticalOffset -
-                    this.anchorHeight;
+            case "insetStart":
+                this.translateX =
+                    this.baseHorizontalOffset - nextRegionWidth + this.anchorRect.width;
+                if (
+                    this.horizontalViewportLock &&
+                    this.anchorRect.right > this.viewportRect.right
+                ) {
+                    this.translateX =
+                        this.translateX -
+                        (this.anchorRect.right - this.viewportRect.right);
+                }
                 break;
 
-            case "insetBottom":
-                yTransformOrigin = "top";
-                top = this.baseVerticalOffset;
+            case "insetEnd":
+                this.translateX = this.baseHorizontalOffset;
+                if (
+                    this.horizontalViewportLock &&
+                    this.anchorRect.left < this.viewportRect.left
+                ) {
+                    this.translateX =
+                        this.translateX - (this.anchorRect.left - this.viewportRect.left);
+                }
                 break;
 
-            case "bottom":
-                yTransformOrigin = "top";
-                top = this.baseVerticalOffset + this.anchorHeight;
+            case "end":
+                this.translateX = this.baseHorizontalOffset + this.anchorRect.width;
+                if (
+                    this.horizontalViewportLock &&
+                    this.anchorRect.right < this.viewportRect.left
+                ) {
+                    this.translateX =
+                        this.translateX -
+                        (this.anchorRect.right - this.viewportRect.left);
+                }
                 break;
         }
 
-        this.yTransformOrigin = yTransformOrigin;
-        this.regionTop = top === null ? "unset" : `${top}px`;
-        this.regionBottom = bottom === null ? "unset" : `${bottom}px`;
-        this.verticalPosition = desiredVerticalPosition;
+        this.horizontalPosition = desiredHorizontalPosition;
+    };
+
+    /**
+     * Set vertical positioning state based on desired position
+     */
+    private setVerticalPosition = (
+        desiredVerticalPosition: AnchoredRegionPositionLabel | undefined,
+        nextPositionerDimension: Dimension
+    ): void => {
+        if (
+            desiredVerticalPosition === undefined ||
+            this.regionRect === undefined ||
+            this.anchorRect === undefined ||
+            this.viewportRect === undefined
+        ) {
+            return;
+        }
+
+        let nextRegionHeight: number = 0;
 
         switch (this.verticalScaling) {
             case "anchor":
-                this.regionHeight = `${this.anchorHeight}px`;
-                break;
-
             case "fill":
-                this.regionHeight = `${nextPositionerDimension.height}px`;
+                nextRegionHeight = nextPositionerDimension.height;
+                this.regionHeight = `${nextRegionHeight}px`;
                 break;
 
             case "content":
+                nextRegionHeight = this.regionRect.height;
                 this.regionHeight = "unset";
                 break;
         }
+
+        switch (desiredVerticalPosition) {
+            case "start":
+                this.translateY = this.baseVerticalOffset - nextRegionHeight;
+                if (
+                    this.verticalViewportLock &&
+                    this.anchorRect.top > this.viewportRect.bottom
+                ) {
+                    this.translateY =
+                        this.translateY -
+                        (this.anchorRect.top - this.viewportRect.bottom);
+                }
+                break;
+
+            case "insetStart":
+                this.translateY =
+                    this.baseVerticalOffset - nextRegionHeight + this.anchorRect.height;
+                if (
+                    this.verticalViewportLock &&
+                    this.anchorRect.bottom > this.viewportRect.bottom
+                ) {
+                    this.translateY =
+                        this.translateY -
+                        (this.anchorRect.bottom - this.viewportRect.bottom);
+                }
+                break;
+
+            case "insetEnd":
+                this.translateY = this.baseVerticalOffset;
+                if (
+                    this.verticalViewportLock &&
+                    this.anchorRect.top < this.viewportRect.top
+                ) {
+                    this.translateY =
+                        this.translateY - (this.anchorRect.top - this.viewportRect.top);
+                }
+                break;
+
+            case "end":
+                this.translateY = this.baseVerticalOffset + this.anchorRect.height;
+                if (
+                    this.verticalViewportLock &&
+                    this.anchorRect.bottom < this.viewportRect.top
+                ) {
+                    this.translateY =
+                        this.translateY -
+                        (this.anchorRect.bottom - this.viewportRect.top);
+                }
+                break;
+        }
+
+        this.verticalPosition = desiredVerticalPosition;
     };
 
     /**
-     *  Update the offset values
+     *  Get available positions based on positioning mode
      */
-    private updateRegionOffset = (regionRect: DOMRect | ClientRect): void => {
-        if (this.horizontalPositioningMode === "uncontrolled") {
-            this.baseHorizontalOffset = this.anchorLeft - regionRect.left;
-        } else {
-            switch (this.horizontalPosition) {
-                case "undefined":
-                    this.baseHorizontalOffset = this.anchorLeft - regionRect.left;
-                    break;
-                case "left":
-                    this.baseHorizontalOffset =
-                        this.baseHorizontalOffset + (this.anchorLeft - regionRect.right);
-                    break;
-                case "insetLeft":
-                    this.baseHorizontalOffset =
-                        this.baseHorizontalOffset + (this.anchorRight - regionRect.right);
-                    break;
-                case "insetRight":
-                    this.baseHorizontalOffset =
-                        this.baseHorizontalOffset + (this.anchorLeft - regionRect.left);
-                    break;
-                case "right":
-                    this.baseHorizontalOffset =
-                        this.baseHorizontalOffset + (this.anchorRight - regionRect.left);
-                    break;
-            }
+    private getPositioningOptions = (inset: boolean): AnchoredRegionPositionLabel[] => {
+        if (inset) {
+            return ["insetStart", "insetEnd"];
         }
-
-        if (this.verticalPositioningMode === "uncontrolled") {
-            this.baseVerticalOffset = this.anchorTop - regionRect.top;
-        } else {
-            switch (this.verticalPosition) {
-                case "undefined":
-                    this.baseVerticalOffset = this.anchorTop - regionRect.top;
-                    break;
-                case "top":
-                    this.baseVerticalOffset =
-                        this.baseVerticalOffset + (this.anchorTop - regionRect.bottom);
-                    break;
-                case "insetTop":
-                    this.baseVerticalOffset =
-                        this.baseVerticalOffset + (this.anchorBottom - regionRect.bottom);
-                    break;
-                case "insetBottom":
-                    this.baseVerticalOffset =
-                        this.baseVerticalOffset + (this.anchorTop - regionRect.top);
-                    break;
-                case "bottom":
-                    this.baseVerticalOffset =
-                        this.baseVerticalOffset + (this.anchorBottom - regionRect.top);
-                    break;
-            }
-        }
+        return ["start", "end"];
     };
 
     /**
-     *  Get available Horizontal positions based on positioning mode
+     *  Get the space available for a particular relative position
      */
-    private getHorizontalPositioningOptions = (): AnchoredRegionHorizontalPositionLabel[] => {
-        if (this.horizontalInset) {
-            return ["insetLeft", "insetRight"];
-        }
-        return ["left", "right"];
-    };
-
-    /**
-     * Get available Vertical positions based on positioning mode
-     */
-    private getVerticalPositioningOptions = (): AnchoredRegionVerticalPositionLabel[] => {
-        if (this.verticalInset) {
-            return ["insetTop", "insetBottom"];
-        }
-        return ["top", "bottom"];
-    };
-
-    /**
-     *  Get the width available for a particular horizontal position
-     */
-    private getAvailableWidth = (
-        positionOption: AnchoredRegionHorizontalPositionLabel
+    private getAvailableSpace = (
+        positionOption: AnchoredRegionPositionLabel,
+        anchorStart: number,
+        anchorEnd: number,
+        anchorSpan: number,
+        viewportStart: number,
+        viewportEnd: number
     ): number => {
-        if (this.viewportRect !== null) {
-            const spaceLeft: number = this.anchorLeft - this.viewportRect.left;
-            const spaceRight: number =
-                this.viewportRect.right - (this.anchorLeft + this.anchorWidth);
+        const spaceStart: number = anchorStart - viewportStart;
+        const spaceEnd: number = viewportEnd - (anchorStart + anchorSpan);
 
-            switch (positionOption) {
-                case "left":
-                    return spaceLeft;
-                case "insetLeft":
-                    return spaceLeft + this.anchorWidth;
-                case "insetRight":
-                    return spaceRight + this.anchorWidth;
-                case "right":
-                    return spaceRight;
-            }
+        switch (positionOption) {
+            case "start":
+                return spaceStart;
+            case "insetStart":
+                return spaceStart + anchorSpan;
+            case "insetEnd":
+                return spaceEnd + anchorSpan;
+            case "end":
+                return spaceEnd;
         }
-
-        return 0;
-    };
-
-    /**
-     *  Get the height available for a particular vertical position
-     */
-    private getAvailableHeight = (
-        positionOption: AnchoredRegionVerticalPositionLabel
-    ): number => {
-        if (this.viewportRect !== null) {
-            const spaceAbove: number = this.anchorTop - this.viewportRect.top;
-            const spaceBelow: number =
-                this.viewportRect.bottom - (this.anchorTop + this.anchorHeight);
-
-            switch (positionOption) {
-                case "top":
-                    return spaceAbove;
-                case "insetTop":
-                    return spaceAbove + this.anchorHeight;
-                case "insetBottom":
-                    return spaceBelow + this.anchorHeight;
-                case "bottom":
-                    return spaceBelow;
-            }
-        }
-        return 0;
     };
 
     /**
      * Get region dimensions
      */
     private getNextRegionDimension = (
-        desiredHorizontalPosition: AnchoredRegionHorizontalPositionLabel,
-        desiredVerticalPosition: AnchoredRegionVerticalPositionLabel
+        desiredHorizontalPosition: AnchoredRegionPositionLabel | undefined,
+        desiredVerticalPosition: AnchoredRegionPositionLabel | undefined
     ): Dimension => {
         const newRegionDimension: Dimension = {
-            height: this.regionDimension.height,
-            width: this.regionDimension.width,
+            height: this.regionRect !== undefined ? this.regionRect.height : 0,
+            width: this.regionRect !== undefined ? this.regionRect.width : 0,
         };
 
-        if (this.horizontalScaling === "fill") {
-            newRegionDimension.width = this.getAvailableWidth(desiredHorizontalPosition);
+        if (
+            desiredHorizontalPosition !== undefined &&
+            this.horizontalScaling === "fill"
+        ) {
+            newRegionDimension.width = this.getAvailableSpace(
+                desiredHorizontalPosition,
+                this.anchorRect !== undefined ? this.anchorRect.left : 0,
+                this.anchorRect !== undefined ? this.anchorRect.right : 0,
+                this.anchorRect !== undefined ? this.anchorRect.width : 0,
+                this.viewportRect !== undefined ? this.viewportRect.left : 0,
+                this.viewportRect !== undefined ? this.viewportRect.right : 0
+            );
+        } else if (this.horizontalScaling === "anchor") {
+            newRegionDimension.width =
+                this.anchorRect !== undefined ? this.anchorRect.width : 0;
         }
 
-        if (this.verticalScaling === "fill") {
-            newRegionDimension.height = this.getAvailableHeight(desiredVerticalPosition);
+        if (desiredVerticalPosition !== undefined && this.verticalScaling === "fill") {
+            newRegionDimension.height = this.getAvailableSpace(
+                desiredVerticalPosition,
+                this.anchorRect !== undefined ? this.anchorRect.top : 0,
+                this.anchorRect !== undefined ? this.anchorRect.bottom : 0,
+                this.anchorRect !== undefined ? this.anchorRect.height : 0,
+                this.viewportRect !== undefined ? this.viewportRect.top : 0,
+                this.viewportRect !== undefined ? this.viewportRect.bottom : 0
+            );
+        } else if (this.verticalScaling === "anchor") {
+            newRegionDimension.height =
+                this.anchorRect !== undefined ? this.anchorRect.height : 0;
         }
 
         return newRegionDimension;
@@ -1268,8 +1246,11 @@ export class AnchoredRegion extends FoundationElement {
      * starts event listeners that can trigger auto updating
      */
     private startAutoUpdateEventListeners = (): void => {
-        window.addEventListener(eventResize, this.update);
-        window.addEventListener(eventScroll, this.update, true);
+        window.addEventListener(eventResize, this.update, { passive: true });
+        window.addEventListener(eventScroll, this.update, {
+            passive: true,
+            capture: true,
+        });
         if (this.resizeDetector !== null && this.viewportElement !== null) {
             this.resizeDetector.observe(this.viewportElement);
         }

@@ -41,32 +41,28 @@ First, open your `src/main.ts` file and add the following code:
 
 ```ts
 import { 
-  FASTDesignSystemProvider, 
-  FASTCard, 
-  FASTButton,
-  FASTTextField
+  provideFASTDesignSystem, 
+  fastCard, 
+  fastButton,
+  fastTextField
 } from '@microsoft/fast-components';
 
-/*
- * Ensure that tree-shaking doesn't remove these components from the bundle.
- * There are multiple ways to prevent tree shaking, of which this is one.
- */
-FASTDesignSystemProvider;
-FASTCard;
-FASTButton;
-FASTTextField;
+provideFASTDesignSystem()
+    .register(
+        fastCard(),
+        fastButton(),
+        fastTextField()
+    );
 ```
 
-This code imports the `<fast-design-system-provider>` component as well as the `<fast-card>`, `<fast-button>` and `<fast-text-field>` components. Once you save, the dev server will rebuild and refresh your browser. However, you still won't see anything. To get some UI showing up, we need to write some HTML that uses our components. Replace the HTML template in your `app/app.component.html` file with the following markup:
+This code uses the FAST Design System to register `<fast-card>`, `<fast-button>` and `<fast-text-field>` components. Once you save, the dev server will rebuild and refresh your browser. However, you still won't see anything. To get some UI showing up, we need to write some HTML that uses our components. Replace the HTML template in your `app/app.component.html` file with the following markup:
 
 ```html
-<fast-design-system-provider use-defaults>
-  <fast-card>
-    <h2>{{title}}</h2>
-    <fast-text-field [(ngModel)]='exampleTextField' name='exampleTextField' ngDefaultControl placeholder="Enter Some Text"></fast-text-field>
-    <fast-button appearance="accent" (click)="onClick()">Click Me</fast-button>
-  </fast-card>
-</fast-design-system-provider>
+<fast-card>
+  <h2>{{title}}</h2>
+  <fast-text-field [(ngModel)]='exampleTextField' name='exampleTextField' ngDefaultControl placeholder="Enter Some Text"></fast-text-field>
+  <fast-button appearance="accent" (click)="onClick()">Click Me</fast-button>
+</fast-card>
 ```
 
 Replace the code in your `app/app.component.ts` file contents with this:
@@ -103,10 +99,6 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 To add a splash of style, replace the `app/app.component.css` file contents with this:
 
 ```css
-fast-design-system-provider {
-  display: block;
-}
-
 fast-card {
   padding: 16px;
   display: flex;
@@ -129,7 +121,7 @@ fast-card > fast-button {
 
 :::note
 
-Third party controls require a ControlValueAccessor for writing a value and listening to changes on input elements. Add ngDefaultControl attribute to your component to have two-way binding working with FormControlDirective, FormControlName or NgModel directives:
+Third party controls require a ControlValueAccessor for writing a value and listening to changes on input elements. Add ngDefaultControl attribute to your component to have two-way binding working with FormControlDirective, FormControlName, or NgModel directives:
 
 :::
 

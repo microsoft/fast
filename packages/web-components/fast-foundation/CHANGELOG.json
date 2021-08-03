@@ -2,6 +2,217 @@
   "name": "@microsoft/fast-foundation",
   "entries": [
     {
+      "date": "Sun, 01 Aug 2021 07:17:15 GMT",
+      "tag": "@microsoft/fast-foundation_v2.6.2",
+      "version": "2.6.2",
+      "comments": {
+        "none": [
+          {
+            "comment": "refactor(fixture): mild change to typings to enable typical code pattern",
+            "author": "roeisenb@microsoft.com",
+            "commit": "46bb752c86f1112f4cc92f8b0c155addf05225e0",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 29 Jul 2021 07:18:18 GMT",
+      "tag": "@microsoft/fast-foundation_v2.6.2",
+      "version": "2.6.2",
+      "comments": {
+        "none": [
+          {
+            "comment": "docs: fix various errors discovered while building the site",
+            "author": "roeisenb@microsoft.com",
+            "commit": "b2a640ff068917d251ca84be6dee72d4f4e941a3",
+            "package": "@microsoft/fast-foundation"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "remove unnecessary aria-hidden attributes",
+            "author": "47367562+bheston@users.noreply.github.com",
+            "commit": "45a348674554ac26d0153b1d850523d82fb89762",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 28 Jul 2021 07:17:22 GMT",
+      "tag": "@microsoft/fast-foundation_v2.6.1",
+      "version": "2.6.1",
+      "comments": {
+        "none": [
+          {
+            "comment": "docs(components): add/update and expand content",
+            "author": "roeisenb@microsoft.com",
+            "commit": "07d03884b168bb66d482a72df2d2941f8561b9ce",
+            "package": "@microsoft/fast-foundation"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "update on !regionVisible",
+            "author": "scomea@microsoft.com",
+            "commit": "1e22a9ca163fba0830eef1d3fcf5d222fa01ed28",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sun, 25 Jul 2021 07:17:41 GMT",
+      "tag": "@microsoft/fast-foundation_v2.6.0",
+      "version": "2.6.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "add auto position tracking to tooltip",
+            "author": "scomea@microsoft.com",
+            "commit": "9f6e61d3b45af6da0430677f9d437ff7ba0cdae9",
+            "package": "@microsoft/fast-foundation"
+          },
+          {
+            "comment": "anchored region uses transform",
+            "author": "scomea@microsoft.com",
+            "commit": "4dd29d77f026b51c4031bf19acf494d1768a2611",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 22 Jul 2021 07:19:53 GMT",
+      "tag": "@microsoft/fast-foundation_v2.5.2",
+      "version": "2.5.2",
+      "comments": {
+        "none": [
+          {
+            "comment": "doc: fix import adapter statement",
+            "author": "ben@platform5.ch",
+            "commit": "7cfed1eef45c4947bd0439d448b9c79befc58406",
+            "package": "@microsoft/fast-foundation"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "Fixed attr boolean mode on menu item",
+            "author": "47367562+bheston@users.noreply.github.com",
+            "commit": "6325e61798e5fee6bb09ce0336636a1d1f2c4959",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 21 Jul 2021 07:14:48 GMT",
+      "tag": "@microsoft/fast-foundation_v2.5.1",
+      "version": "2.5.1",
+      "comments": {
+        "none": [
+          {
+            "comment": "fixing doc comments causing api-documenter to fail",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "d5f27df7b30e474c69a336741cf00e49a6806ca2",
+            "package": "@microsoft/fast-foundation"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "Hide step-up and step-down for number-field when readonly",
+            "author": "robarb@microsoft.com",
+            "commit": "6e53b2866250dc08881a57b371069a40a69df391",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 15 Jul 2021 01:41:48 GMT",
+      "tag": "@microsoft/fast-foundation_v2.5.0",
+      "version": "2.5.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "extend design token type signature",
+            "author": "chhol@microsoft.com",
+            "commit": "35773aadf50b51e3d64dd8969398d2c473d437ed",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 13 Jul 2021 07:14:52 GMT",
+      "tag": "@microsoft/fast-foundation_v2.4.0",
+      "version": "2.4.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "docs(di): make API public, stabilize, and add docs",
+            "author": "roeisenb@microsoft.com",
+            "commit": "3a9f152446a1a9e0afd6fd84c808eba46839aeeb",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 07 Jul 2021 07:19:51 GMT",
+      "tag": "@microsoft/fast-foundation_v2.3.0",
+      "version": "2.3.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "focus trap improvement",
+            "author": "scomea@microsoft.com",
+            "commit": "ec7475de213ef4eb6a3964c902ae0fcf7657a640",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sun, 04 Jul 2021 07:15:28 GMT",
+      "tag": "@microsoft/fast-foundation_v2.2.0",
+      "version": "2.2.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "select should emit an input event before the change event",
+            "author": "john.kreitlow@microsoft.com",
+            "commit": "3f9131d61d0b3149fc99d77db6e5fb1d0231a5d1",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 01 Jul 2021 07:15:57 GMT",
+      "tag": "@microsoft/fast-foundation_v2.1.0",
+      "version": "2.1.0",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Fixes bug in DesignToken where aliased tokens didn't update CSS custom properties.",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "8c885780279ee8b8acddc2a0428fc09b4e1788c0",
+            "package": "@microsoft/fast-foundation"
+          }
+        ],
+        "minor": [
+          {
+            "comment": "ensure DesignToken considers shadow DOM when determining DOM hierarchy",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "0ab5dec4ad2a9ce717d90912127e094d094ede6d",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 25 Jun 2021 02:02:57 GMT",
       "tag": "@microsoft/fast-foundation_v2.0.0",
       "version": "2.0.0",

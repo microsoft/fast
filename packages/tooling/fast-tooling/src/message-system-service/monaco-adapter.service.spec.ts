@@ -7,12 +7,12 @@ import {
     Register,
 } from "../message-system";
 import { mapDataDictionaryToMonacoEditorHTML } from "../data-utilities/monaco";
+import { MessageSystemSchemaDictionaryTypeAction } from "../message-system/message-system.utilities.props";
+import { MonacoAdapter, monacoAdapterId } from "./monaco-adapter.service";
 import {
     findDictionaryIdParents,
     findUpdatedDictionaryId,
-    MonacoAdapter,
-    monacoAdapterId,
-} from "./monaco-adapter.service";
+} from "./monaco-adapter.service.utilities";
 import { MonacoAdapterAction } from "./monaco-adapter.service-action";
 
 chai.use(spies);
@@ -547,6 +547,68 @@ xdescribe("MonacoAdapter", () => {
             },
             root,
         ]);
+    });
+    it("should change the schema dictionary when a schema dictionary event is fired", () => {
+        const dataDictionary: DataDictionary<unknown> = [
+            {
+                div: {
+                    schemaId: "div",
+                    data: {},
+                },
+            },
+            "div",
+        ];
+        const schemaDictionary = {
+            div: {
+                id: "div",
+                $id: "div",
+                type: "object",
+                mapsToTagName: "div",
+            },
+        };
+        const messageSystem = new MessageSystem({
+            webWorker: "",
+        });
+        const monacoAdapter = new MonacoAdapter({
+            messageSystem,
+            actions: [],
+        });
+
+        messageSystem["register"].forEach((registeredItem: Register) => {
+            registeredItem.onMessage({
+                data: {
+                    type: MessageSystemType.initialize,
+                    dataDictionary,
+                    schemaDictionary,
+                },
+            } as any);
+        });
+
+        expect(Object.keys(monacoAdapter["schemaDictionary"])).to.have.length(1);
+
+        messageSystem["register"].forEach((registeredItem: Register) => {
+            registeredItem.onMessage({
+                data: {
+                    type: MessageSystemType.schemaDictionary,
+                    action: MessageSystemSchemaDictionaryTypeAction.add,
+                    schemas: [
+                        {
+                            id: "text",
+                            $id: "text",
+                            type: "string",
+                        },
+                        {
+                            id: "span",
+                            $id: "span",
+                            type: "object",
+                            mapsToTagName: "span",
+                        },
+                    ],
+                },
+            } as any);
+        });
+
+        expect(Object.keys(monacoAdapter["schemaDictionary"])).to.have.length(3);
     });
 });
 

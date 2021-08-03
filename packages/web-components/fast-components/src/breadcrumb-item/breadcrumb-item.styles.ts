@@ -37,6 +37,7 @@ export const breadcrumbItemStyles: (
         line-height: ${typeRampBaseLineHeight};
         min-width: calc(${heightNumber} * 1px);
         outline: none;
+        color: ${neutralForegroundRest}
     }
 
     .listitem {

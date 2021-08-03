@@ -1,6 +1,6 @@
 import { css, customElement, html } from "@microsoft/fast-element";
 import { expect } from "chai";
-import { DI, Registration } from "../di";
+import { DI } from "../di";
 import { fixture, uniqueElementName } from "../test-utilities/fixture";
 import {
     ComponentPresentation,

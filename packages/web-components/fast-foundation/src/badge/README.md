@@ -7,11 +7,24 @@ custom_edit_url: https://github.com/microsoft/fast/edit/master/packages/web-comp
 
 The `fast-badge` component is used to highlight an item and attract attention or flag status.
 
+## Setup
+
+```ts
+import {
+    provideFASTDesignSystem,
+    fastBadge
+} from "@microsoft/fast-components";
+
+provideFASTDesignSystem()
+    .register(
+        fastBadge()
+    );
+```
+
 ## Usage
 
 The `fill` and `color` attributes of the *badge* create CSS custom properties which can be used to style the control.
 
-__Example custom property map__
 ```css
 fast-badge {
     --badge-fill-primary: #00FF00;
@@ -22,26 +35,28 @@ fast-badge {
 ```
 
 ```html live
-<fast-design-system-provider use-defaults>
-    <fast-badge appearance="accent">Danger</fast-badge>
-</fast-design-system-provider>
+<fast-badge fill="danger" color="dark">Danger</fast-badge>
 ```
 
 :::note
 In addition to the color map support detailed above, the `fast-badge` from the Microsoft component implementation (`@fluentui/web-components`) includes an attribute to set default appearances which ensure WCAG 2.1 AA contrast requirements.
 :::
 
-## Applying custom styles
+## Create your own design
 
 ```ts
-import { customElement } from "@microsoft/fast-element";
-import { Badge, BadgeTemplate as template } from "@microsoft/fast-foundation";
-import { BadgeStyles as styles } from "./badge.styles";
+import { Badge, badgeTemplate as template } from "@microsoft/fast-foundation";
+import { badgeStyles as styles } from "./my-badge.styles";
 
-@customElement({
-    name: "fast-badge",
+export const myBadge = Badge.compose({
+    baseName: "badge",
     template,
     styles,
-})
-export class FASTBadge extends Badge {}
+});
 ```
+
+## Additional resources
+
+* [Component explorer examples](https://explore.fast.design/components/fast-badge)
+* [Component technical specification](https://github.com/microsoft/fast/blob/master/packages/web-components/fast-foundation/src/badge/badge.spec.md)
+* [Open UI Analysis](https://open-ui.org/components/badge.research)

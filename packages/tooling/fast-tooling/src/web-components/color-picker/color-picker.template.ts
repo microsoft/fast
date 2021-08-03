@@ -7,7 +7,7 @@ import { ColorPicker } from "./color-picker";
  * The template for the color picker component.
  * @public
  */
-export const ColorPickerTemplate: (
+export const colorPickerTemplate: (
     context: ElementDefinitionContext
 ) => ViewTemplate<ColorPicker> = context => {
     return html`

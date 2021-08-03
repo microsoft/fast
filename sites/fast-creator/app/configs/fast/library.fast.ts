@@ -1,10 +1,11 @@
 import { fastComponentSchemas } from "@microsoft/site-utilities";
-import { WebComponentLibraryDefinition } from "./typings";
+import { WebComponentLibraryDefinition } from "../typings";
 import {
     fastAnchorExample,
     fastBadgeExample,
     fastButtonExample,
     fastCardExample,
+    fastCheckboxExample,
     fastDialogExample,
     fastDividerExample,
     fastFlipperExample,
@@ -47,14 +48,17 @@ import {
     fastTextAreaTag,
     fastTextFieldTag,
 } from "./library.fast.tags";
-
-export const importScriptLocation = "fast-components.min.js";
+import { registerFASTComponents } from "./library.fast.registry";
 export const fastComponentId = "fast-components";
 
 export const fastComponentLibrary: WebComponentLibraryDefinition = {
     id: fastComponentId,
     displayName: "FAST Components",
-    import: `./${importScriptLocation}`,
+    optional: true,
+    import: async () => {
+        await import("./library.fast.import");
+    },
+    register: registerFASTComponents,
     componentDictionary: {
         [fastComponentSchemas[fastAnchorTag].$id]: {
             displayName: fastComponentSchemas[fastAnchorTag].title,
@@ -79,7 +83,7 @@ export const fastComponentLibrary: WebComponentLibraryDefinition = {
         [fastComponentSchemas[fastCheckboxTag].$id]: {
             displayName: fastComponentSchemas[fastCheckboxTag].title,
             schema: fastComponentSchemas[fastCheckboxTag],
-            example: fastCardExample,
+            example: fastCheckboxExample,
         },
         [fastComponentSchemas[fastDialogTag].$id]: {
             displayName: fastComponentSchemas[fastDialogTag].title,

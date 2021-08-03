@@ -6,12 +6,10 @@ import {
     ViewTemplate,
 } from "@microsoft/fast-element";
 import { DesignSystem, DesignSystemRegistrationContext } from "../design-system";
-import { DI, Registry } from "../di";
+import { DI } from "../di";
 import type {
-    FoundationElement,
     FoundationElementDefinition,
     FoundationElementRegistry,
-    OverrideFoundationElementDefinition,
 } from "../foundation-element/foundation-element";
 
 /**
@@ -84,7 +82,7 @@ export interface Fixture<TElement = HTMLElement> {
      * Yields control to the caller one Microtask later, in order to
      * ensure that the DOM has settled.
      */
-    connect(): Promise<void>;
+    connect: () => Promise<void>;
 
     /**
      * Removes the {@link Fixture.parent} from the DOM, causing the
@@ -93,7 +91,7 @@ export interface Fixture<TElement = HTMLElement> {
      * Yields control to the caller one Microtask later, in order to
      * ensure that the DOM has settled.
      */
-    disconnect(): Promise<void>;
+    disconnect: () => Promise<void>;
 }
 
 function findElement(view: HTMLView): HTMLElement {

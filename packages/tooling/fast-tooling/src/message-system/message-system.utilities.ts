@@ -20,11 +20,14 @@ import {
     MessageSystemNavigationDictionaryTypeAction,
     MessageSystemNavigationTypeAction,
     MessageSystemOutgoing,
+    MessageSystemSchemaDictionaryTypeAction,
     MessageSystemValidationTypeAction,
     NavigationDictionaryMessageIncoming,
     NavigationDictionaryMessageOutgoing,
     NavigationMessageIncoming,
     NavigationMessageOutgoing,
+    SchemaDictionaryMessageIncoming,
+    SchemaDictionaryMessageOutgoing,
     ValidationMessageIncoming,
     ValidationMessageOutgoing,
 } from "./message-system.utilities.props";
@@ -163,6 +166,32 @@ function getHistoryMessage(data: HistoryMessageIncoming): HistoryMessageOutgoing
                 type: MessageSystemType.history,
                 action: MessageSystemHistoryTypeAction.get,
                 history,
+            };
+    }
+}
+
+/**
+ * Handles all schema dictionary manipulation messages
+ */
+function getSchemaDictionaryMessage(
+    data: SchemaDictionaryMessageIncoming
+): SchemaDictionaryMessageOutgoing {
+    switch (data.action) {
+        case MessageSystemSchemaDictionaryTypeAction.add:
+            schemaDictionary = data.schemas.reduce(
+                (previousSchemaDictionary, currentSchema) => {
+                    return {
+                        ...previousSchemaDictionary,
+                        [currentSchema.$id]: currentSchema,
+                    };
+                },
+                schemaDictionary
+            );
+
+            return {
+                type: MessageSystemType.schemaDictionary,
+                action: MessageSystemSchemaDictionaryTypeAction.add,
+                schemaDictionary,
             };
     }
 }
@@ -483,6 +512,8 @@ export function getMessage<C = {}>(
             return updateHistory(getValidationMessage(data));
         case MessageSystemType.history:
             return getHistoryMessage(data);
+        case MessageSystemType.schemaDictionary:
+            return getSchemaDictionaryMessage(data);
         case MessageSystemType.initialize:
             /**
              * TODO: remove this ternary to rely on the dataDictionary

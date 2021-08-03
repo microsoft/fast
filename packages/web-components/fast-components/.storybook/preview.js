@@ -1,6 +1,4 @@
-import * as FAST from "../src/index-rollup";
-
-FAST;
+import "../src/index-rollup";
 
 export const parameters = {
     layout: "fullscreen",

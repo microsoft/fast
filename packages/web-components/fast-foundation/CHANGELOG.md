@@ -1,8 +1,93 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Fri, 25 Jun 2021 02:02:57 GMT and should not be manually modified.
+This log was last generated on Thu, 29 Jul 2021 07:18:18 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.6.2
+
+Thu, 29 Jul 2021 07:18:18 GMT
+
+### Patches
+
+- remove unnecessary aria-hidden attributes (47367562+bheston@users.noreply.github.com)
+
+## 2.6.1
+
+Wed, 28 Jul 2021 07:17:22 GMT
+
+### Patches
+
+- update on !regionVisible (scomea@microsoft.com)
+
+## 2.6.0
+
+Sun, 25 Jul 2021 07:17:41 GMT
+
+### Minor changes
+
+- add auto position tracking to tooltip (scomea@microsoft.com)
+- anchored region uses transform (scomea@microsoft.com)
+
+## 2.5.2
+
+Thu, 22 Jul 2021 07:19:53 GMT
+
+### Patches
+
+- Fixed attr boolean mode on menu item (47367562+bheston@users.noreply.github.com)
+
+## 2.5.1
+
+Wed, 21 Jul 2021 07:14:48 GMT
+
+### Patches
+
+- Hide step-up and step-down for number-field when readonly (robarb@microsoft.com)
+
+## 2.5.0
+
+Thu, 15 Jul 2021 01:41:48 GMT
+
+### Minor changes
+
+- extend design token type signature (chhol@microsoft.com)
+
+## 2.4.0
+
+Tue, 13 Jul 2021 07:14:52 GMT
+
+### Minor changes
+
+- docs(di): make API public, stabilize, and add docs (roeisenb@microsoft.com)
+
+## 2.3.0
+
+Wed, 07 Jul 2021 07:19:51 GMT
+
+### Minor changes
+
+- focus trap improvement (scomea@microsoft.com)
+
+## 2.2.0
+
+Sun, 04 Jul 2021 07:15:28 GMT
+
+### Minor changes
+
+- select should emit an input event before the change event (john.kreitlow@microsoft.com)
+
+## 2.1.0
+
+Thu, 01 Jul 2021 07:15:57 GMT
+
+### Minor changes
+
+- ensure DesignToken considers shadow DOM when determining DOM hierarchy (nicholasrice@users.noreply.github.com)
+
+### Patches
+
+- Fixes bug in DesignToken where aliased tokens didn't update CSS custom properties. (nicholasrice@users.noreply.github.com)
 
 ## 2.0.0
 

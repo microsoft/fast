@@ -1,8 +1,130 @@
 # Change Log - @microsoft/fast-components
 
-This log was last generated on Wed, 30 Jun 2021 07:19:09 GMT and should not be manually modified.
+This log was last generated on Sun, 01 Aug 2021 07:17:15 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.5.3
+
+Sun, 01 Aug 2021 07:17:15 GMT
+
+### Patches
+
+- Register design-system-provider (47367562+bheston@users.noreply.github.com)
+
+## 2.5.2
+
+Thu, 29 Jul 2021 07:18:18 GMT
+
+### Patches
+
+- remove unnecessary aria-hidden attributes (47367562+bheston@users.noreply.github.com)
+- fix select border styles when control is active (corylaviska@microsoft.com)
+
+## 2.5.1
+
+Wed, 28 Jul 2021 07:17:22 GMT
+
+### Patches
+
+- Bump @microsoft/fast-element to v1.4.1 (nicholasrice@users.noreply.github.com)
+
+## 2.5.0
+
+Sun, 25 Jul 2021 07:17:41 GMT
+
+### Minor changes
+
+- add auto position tracking to tooltip (scomea@microsoft.com)
+- anchored region uses transform (scomea@microsoft.com)
+
+### Patches
+
+- add layouts for 0 indent submenus (scomea@microsoft.com)
+- Bump @microsoft/fast-foundation to v2.6.0 (scomea@microsoft.com)
+
+## 2.4.0
+
+Thu, 22 Jul 2021 07:19:53 GMT
+
+### Minor changes
+
+- update component styles to leverage context.tagFor() for nested element styles (chhol@microsoft.com)
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.5.2 (47367562+bheston@users.noreply.github.com)
+
+## 2.3.0
+
+Wed, 21 Jul 2021 07:14:48 GMT
+
+### Minor changes
+
+- feat(fast-design-system): improve ergonomics of the fast design system (roeisenb@microsoft.com)
+
+### Patches
+
+- Hide step-up and step-down for number-field when readonly (robarb@microsoft.com)
+- Bump @microsoft/fast-foundation to v2.5.1 (robarb@microsoft.com)
+
+## 2.2.3
+
+Sun, 18 Jul 2021 07:16:22 GMT
+
+### Patches
+
+- breadcrumb: allow wrapping of items in the list container (ben@platform5.ch)
+
+## 2.2.2
+
+Thu, 15 Jul 2021 01:41:48 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.5.0 (chhol@microsoft.com)
+
+## 2.2.1
+
+Tue, 13 Jul 2021 07:14:52 GMT
+
+### Patches
+
+- text-field: start/end display flex (ben@platform5.ch)
+- fix: export tooltipStyles (derekdon@protonmail.com)
+
+## 2.2.0
+
+Wed, 07 Jul 2021 07:19:51 GMT
+
+### Minor changes
+
+- focus trap improvement (scomea@microsoft.com)
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.3.0 (scomea@microsoft.com)
+
+## 2.1.0
+
+Sun, 04 Jul 2021 07:15:28 GMT
+
+### Minor changes
+
+- select should emit an input event before the change event (john.kreitlow@microsoft.com)
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.2.0 (john.kreitlow@microsoft.com)
+
+## 2.0.2
+
+Thu, 01 Jul 2021 07:15:57 GMT
+
+### Patches
+
+- correct names for typography tokens (nicholasrice@users.noreply.github.com)
+- Update default value for bodyFont Design Token (nicholasrice@users.noreply.github.com)
 
 ## 2.0.1
 

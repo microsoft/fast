@@ -73,7 +73,9 @@ module.exports = (env, args) => {
                 template: path.resolve(appDir, "index.html"),
             }),
             new ModernizrWebpackPlugin(modernizrConfig),
-            new MiniCSSExtractPlugin("fast-animation-package.css"),
+            new MiniCSSExtractPlugin({
+                filename: "fast-animation-package.css",
+            }),
             new BundleAnalyzerPlugin({
                 analyzerMode: "disabled",
             }),

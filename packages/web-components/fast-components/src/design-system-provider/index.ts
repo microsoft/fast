@@ -12,8 +12,10 @@ import {
     DesignToken,
     DesignTokenValue,
     display,
+    ElementDefinitionContext,
     forcedColorsStylesheetBehavior,
     FoundationElement,
+    FoundationElementDefinition,
 } from "@microsoft/fast-foundation";
 import { Direction, SystemColors } from "@microsoft/fast-web-utilities";
 import { Palette } from "../color/palette";
@@ -141,7 +143,7 @@ function designToken<T>(token: DesignToken<T>) {
 
 /**
  * The FAST DesignSystemProvider Element.
- * @public
+ * @internal
  */
 export class DesignSystemProvider extends FoundationElement {
     constructor() {
@@ -1050,17 +1052,35 @@ export class DesignSystemProvider extends FoundationElement {
 }
 
 /**
-A function that returns a {@link @microsoft/fast-foundation#DesignSystemProvider} registration for configuring the component with a DesignSystem. *
+ * Template for DesignSystemProvider.
+ * @public
+ */
+export const designSystemProviderTemplate = (
+    context: ElementDefinitionContext,
+    definition: FoundationElementDefinition
+) => html`
+    <slot></slot>
+`;
+
+/**
+ * Styles for DesignSystemProvider.
+ * @public
+ */
+export const designSystemProviderStyles = (
+    context: ElementDefinitionContext,
+    definition: FoundationElementDefinition
+) => css`
+    ${display("block")}
+`;
+
+/**
+ * A function that returns a {@link DesignSystemProvider} registration for configuring the component with a DesignSystem.
  * @public
  * @remarks
  * Generates HTML Element: \<fast-design-system-provider\>
  */
 export const fastDesignSystemProvider = DesignSystemProvider.compose({
     baseName: "design-system-provider",
-    template: html`
-        <slot></slot>
-    `,
-    styles: css`
-        ${display("block")}
-    `,
+    template: designSystemProviderTemplate,
+    styles: designSystemProviderStyles,
 });

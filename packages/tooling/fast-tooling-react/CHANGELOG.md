@@ -1,8 +1,126 @@
 # Change Log - @microsoft/fast-tooling-react
 
-This log was last generated on Tue, 29 Jun 2021 07:14:52 GMT and should not be manually modified.
+This log was last generated on Sun, 01 Aug 2021 07:17:15 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.9.9
+
+Sun, 01 Aug 2021 07:17:15 GMT
+
+### Patches
+
+- Bump @microsoft/fast-components to v2.5.3 (roeisenb@microsoft.com)
+
+## 2.9.8
+
+Thu, 29 Jul 2021 07:18:18 GMT
+
+### Patches
+
+- Bump @microsoft/fast-tooling to v0.25.5 (47367562+bheston@users.noreply.github.com)
+
+## 2.9.7
+
+Wed, 28 Jul 2021 07:17:22 GMT
+
+### Patches
+
+- Bump @microsoft/fast-tooling to v0.25.4 (nicholasrice@users.noreply.github.com)
+
+## 2.9.6
+
+Sun, 25 Jul 2021 07:17:41 GMT
+
+### Patches
+
+- Bump @microsoft/fast-tooling to v0.25.3 (scomea@microsoft.com)
+
+## 2.9.5
+
+Thu, 22 Jul 2021 07:19:53 GMT
+
+### Patches
+
+- Bump @microsoft/fast-tooling to v0.25.2 (chhol@microsoft.com)
+
+## 2.9.4
+
+Wed, 21 Jul 2021 07:14:48 GMT
+
+### Patches
+
+- Bump @microsoft/fast-tooling to v0.25.1 (roeisenb@microsoft.com)
+
+## 2.9.3
+
+Sun, 18 Jul 2021 07:16:22 GMT
+
+### Patches
+
+- Bump @microsoft/fast-tooling to v0.25.0 (ben@platform5.ch)
+
+## 2.9.2
+
+Thu, 15 Jul 2021 01:41:48 GMT
+
+### Patches
+
+- Bump @microsoft/fast-tooling to v0.24.2 (chhol@microsoft.com)
+
+## 2.9.1
+
+Wed, 14 Jul 2021 07:15:36 GMT
+
+### Patches
+
+- Bump @microsoft/fast-tooling to v0.24.1 (44823142+williamw2@users.noreply.github.com)
+
+## 2.9.0
+
+Tue, 13 Jul 2021 07:14:52 GMT
+
+### Minor changes
+
+- update the monaco adapter, html render and html render layer and react Form to update their stored schema dictionaries when the schema dictionary has new schemas added to it (7559015+janechu@users.noreply.github.com)
+
+### Patches
+
+- Bump @microsoft/fast-components to v2.2.1 (ben@platform5.ch)
+- Bump @microsoft/fast-tooling to v0.24.0 (7559015+janechu@users.noreply.github.com)
+- Bump @microsoft/fast-foundation to v2.4.0 (roeisenb@microsoft.com)
+
+## 2.8.26
+
+Sun, 11 Jul 2021 07:15:10 GMT
+
+### Patches
+
+- Adding support for preview mode styles to the viewer (44823142+williamw2@users.noreply.github.com)
+
+## 2.8.25
+
+Wed, 07 Jul 2021 07:19:51 GMT
+
+### Patches
+
+- Bump @microsoft/fast-tooling to v0.23.6 (scomea@microsoft.com)
+
+## 2.8.24
+
+Sun, 04 Jul 2021 07:15:28 GMT
+
+### Patches
+
+- Bump @microsoft/fast-tooling to v0.23.5 (john.kreitlow@microsoft.com)
+
+## 2.8.23
+
+Thu, 01 Jul 2021 07:15:57 GMT
+
+### Patches
+
+- Bump @microsoft/fast-tooling to v0.23.4 (nicholasrice@users.noreply.github.com)
 
 ## 2.8.22
 

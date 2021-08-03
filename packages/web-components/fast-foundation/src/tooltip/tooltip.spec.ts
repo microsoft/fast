@@ -90,6 +90,17 @@ describe("Tooltip", () => {
         await disconnect();
     });
 
+    it("should set update mode to 'anchor' by default", async () => {
+        const { element, connect, disconnect } = await setup();
+        const tooltip: Tooltip = element;
+
+        await connect();
+
+        expect(tooltip.autoUpdateMode).to.equal("anchor");
+
+        await disconnect();
+    });
+
     it("should not set a default position by default", async () => {
         const { element, connect, disconnect } = await setup();
         const tooltip: Tooltip = element;

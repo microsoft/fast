@@ -2,17 +2,17 @@ import { observable } from "@microsoft/fast-element";
 import {
     ActivityType,
     HTMLRenderLayer,
-    OverylayPosition,
+    OverlayPosition,
 } from "../html-render-layer/html-render-layer";
 
 export class HTMLRenderLayerNavigation extends HTMLRenderLayer {
     public layerActivityId: string = "NavLayer";
 
     @observable
-    public hoverPosition: OverylayPosition = new OverylayPosition(0, 0, 0, 0);
+    public hoverPosition: OverlayPosition = new OverlayPosition(0, 0, 0, 0);
 
     @observable
-    public clickPosition: OverylayPosition = new OverylayPosition(0, 0, 0, 0);
+    public clickPosition: OverlayPosition = new OverlayPosition(0, 0, 0, 0);
 
     @observable
     public hoverLayerActive: boolean = false;
@@ -53,21 +53,23 @@ export class HTMLRenderLayerNavigation extends HTMLRenderLayer {
         if (this.hoverLayerActive) {
             this.handleUnHighlight();
         }
-        if (this.clickLayerActive) {
+        if (this.clickLayerActive && this.currElementRef !== null) {
             this.clickLayerHide = true;
             if (this.timeoutRef !== null) {
                 window.clearTimeout(this.timeoutRef);
             }
             this.timeoutRef = window.setTimeout(() => {
-                this.clickPosition = this.GetPositionFromElement(this.currElementRef);
+                if (this.clickLayerActive && this.currElementRef !== null) {
+                    this.clickPosition = this.GetPositionFromElement(this.currElementRef);
+                }
                 this.clickLayerHide = false;
             }, 40);
         }
     };
 
-    private GetPositionFromElement(target: HTMLElement): OverylayPosition {
+    private GetPositionFromElement(target: HTMLElement): OverlayPosition {
         const pos: DOMRect = target.getBoundingClientRect();
-        return new OverylayPosition(pos.top, pos.left, pos.width, pos.height);
+        return new OverlayPosition(pos.top, pos.left, pos.width, pos.height);
     }
 
     private handleSelect(dataDictionaryId: string, elementRef: HTMLElement) {
@@ -99,6 +101,7 @@ export class HTMLRenderLayerNavigation extends HTMLRenderLayer {
     }
 
     private handleClear() {
+        this.clickLayerActive = false;
         this.currElementRef = null;
         this.clickLayerActive = false;
         this.clickPillContent = "";
