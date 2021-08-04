@@ -1,4 +1,5 @@
 import { observable } from "@microsoft/fast-element";
+import { dataSetName } from "../../message-system/message-system.utilities";
 import {
     ActivityType,
     HTMLRenderLayer,
@@ -96,12 +97,19 @@ export class HTMLRenderLayerNavigation extends HTMLRenderLayer {
         return new OverlayPosition(pos.top, pos.left, pos.width, pos.height);
     }
 
+    private getTitleForDictionaryId(dataDictionaryId): string {
+        if (this.schemaDictionary && this.dataDictionary) {
+            if (this.dataDictionary[0][dataDictionaryId].data[dataSetName])
+                return this.dataDictionary[0][dataDictionaryId].data[dataSetName];
+            else
+                return this.schemaDictionary[
+                    this.dataDictionary[0][dataDictionaryId].schemaId
+                ].title;
+        }
+        return null;
+    }
     private handleSelect(dataDictionaryId: string, elementRef: HTMLElement) {
-        const title =
-            this.schemaDictionary && this.dataDictionary
-                ? this.schemaDictionary[this.dataDictionary[0][dataDictionaryId].schemaId]
-                      .title
-                : null;
+        const title = this.getTitleForDictionaryId(dataDictionaryId);
         this.clickPosition = this.GetPositionFromElement(elementRef);
         this.clickLayerActive = true;
         this.currElementRef = elementRef;
@@ -110,11 +118,7 @@ export class HTMLRenderLayerNavigation extends HTMLRenderLayer {
     }
 
     private handleHighlight(dataDictionaryId: string, elementRef: HTMLElement) {
-        const title =
-            this.schemaDictionary && this.dataDictionary
-                ? this.schemaDictionary[this.dataDictionary[0][dataDictionaryId].schemaId]
-                      .title
-                : null;
+        const title = this.getTitleForDictionaryId(dataDictionaryId);
         this.hoverPosition = this.GetPositionFromElement(elementRef);
         this.hoverPillContent = title || "Untitled";
         this.hoverLayerActive = true;
@@ -146,6 +150,7 @@ export class HTMLRenderLayerNavigation extends HTMLRenderLayer {
         if (layerActivityId === this.layerActivityId) {
             return;
         }
+
         switch (activityType) {
             case ActivityType.hover:
                 this.handleHighlight(dataDictionaryId, elementRef as HTMLElement);
