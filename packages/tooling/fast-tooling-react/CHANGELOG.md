@@ -1,8 +1,22 @@
 # Change Log - @microsoft/fast-tooling-react
 
-This log was last generated on Tue, 03 Aug 2021 07:17:33 GMT and should not be manually modified.
+This log was last generated on Wed, 04 Aug 2021 07:15:14 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.10.0
+
+Wed, 04 Aug 2021 07:15:14 GMT
+
+### Minor changes
+
+- adding file component react wrapper (44823142+williamw2@users.noreply.github.com)
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.6.3 (chhol@microsoft.com)
+- Bump @microsoft/fast-tooling to v0.26.0 (44823142+williamw2@users.noreply.github.com)
+- Bump @microsoft/fast-components to v2.5.5 (chhol@microsoft.com)
 
 ## 2.9.10
 
