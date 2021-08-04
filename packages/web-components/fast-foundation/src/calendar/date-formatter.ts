@@ -108,10 +108,10 @@ export class DateFormatter {
      */
     getDay(
         day: number = new Date().getDate(),
-        format: Intl.DateTimeFormatOptions = { day: this.dayFormat },
+        format: DayFormat = this.dayFormat,
         locale: string = this.locale
     ): string {
-        return this.getDate({ month: 1, day, year: 2020 }, format, locale);
+        return this.getDate({ month: 1, day, year: 2020 }, { day: format }, locale);
     }
 
     /**
@@ -124,10 +124,10 @@ export class DateFormatter {
      */
     getMonth(
         month: number = new Date().getMonth() + 1,
-        format: Intl.DateTimeFormatOptions = { month: this.monthFormat },
+        format: MonthFormat = this.monthFormat,
         locale: string = this.locale
     ): string {
-        return this.getDate({ month, day: 2, year: 2020 }, format, locale);
+        return this.getDate({ month, day: 2, year: 2020 }, { month: format }, locale);
     }
 
     /**
@@ -140,10 +140,10 @@ export class DateFormatter {
      */
     getYear(
         year: number = new Date().getFullYear(),
-        format: Intl.DateTimeFormatOptions = { year: this.yearFormat },
+        format: YearFormat = this.yearFormat,
         locale: string = this.locale
     ): string {
-        return this.getDate({ month: 2, day: 2, year }, format, locale);
+        return this.getDate({ month: 2, day: 2, year }, { year: format }, locale);
     }
 
     /**
@@ -154,14 +154,14 @@ export class DateFormatter {
      * @public
      */
     getWeekdays(
-        format: Intl.DateTimeFormatOptions = { weekday: this.weekdayFormat },
+        format: WeekdayFormat = this.weekdayFormat,
         locale: string = this.locale
     ): string[] {
         return Array(7)
             .fill(null)
             .map((_, day) => {
                 const date = `1-${day + 1}-2017`;
-                return this.getDate(date, format, locale);
+                return this.getDate(date, { weekday: format }, locale);
             });
     }
 }

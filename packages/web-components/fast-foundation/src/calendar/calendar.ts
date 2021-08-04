@@ -196,23 +196,6 @@ export class Calendar extends FoundationElement {
     }
 
     /**
-     * Simple check if a date is the current date
-     * @param date - Date | string | number[]
-     * @returns true if the date is the current date otherwise returns false
-     * @public
-     */
-    public isToday(date: Date | string): boolean {
-        const today = new Date();
-        date = date instanceof Date ? date : new Date(date);
-
-        return (
-            date.getDate() == today.getDate() &&
-            date.getMonth() == today.getMonth() &&
-            date.getFullYear() == today.getFullYear()
-        );
-    }
-
-    /**
      * A list of calendar days
      * @param info - an object containing the information needed to render a calendar month
      * @param minWeeks - minimum number of weeks to show
@@ -222,16 +205,16 @@ export class Calendar extends FoundationElement {
     public getDays(
         info: CalendarInfo = this.getMonthInfo(),
         minWeeks: number = this.minWeeks
-    ): CalendarDateInfo[] {
+    ): CalendarDateInfo[][] {
         minWeeks = minWeeks > 10 ? 10 : minWeeks;
         const { start, length, previous, next } = info;
-        const days: CalendarDateInfo[] = [];
+        const days: CalendarDateInfo[][] = [];
         let dayCount = 1 - start;
 
         while (
-            days.length < start + length ||
-            days.length < minWeeks * 7 ||
-            days.length % 7 !== 0
+            dayCount < length ||
+            days.length < minWeeks ||
+            days[days.length - 1].length % 7 !== 0
         ) {
             const { month, year } =
                 dayCount < 1 ? previous : dayCount > length ? next : info;
@@ -251,8 +234,12 @@ export class Calendar extends FoundationElement {
                 disabled,
                 selected,
             };
-
-            days.push(date);
+            const target = days[days.length - 1];
+            if (days.length === 0 || target.length % 7 === 0) {
+                days.push([date]);
+            } else {
+                target.push(date);
+            }
             dayCount++;
         }
 
@@ -282,11 +269,11 @@ export class Calendar extends FoundationElement {
      * @returns - string of class names
      * @public
      */
-    public getDayClassNames(date: CalendarDateInfo): string {
+    public getDayClassNames(date: CalendarDateInfo, todayString?: string): string {
         const { day, month, year, disabled, selected } = date;
         let className: string = "day";
 
-        if (this.isToday(`${month}-${day}-${year}`)) {
+        if (todayString === `${month}-${day}-${year}`) {
             className += " today";
         }
 
@@ -303,6 +290,27 @@ export class Calendar extends FoundationElement {
         }
 
         return className;
+    }
+
+    /**
+     *
+     * @returns An array of weekday text and full text if abbreviated
+     * @public
+     */
+    public getWeekdayText(): any[] {
+        const weekdayText: any[] = this.dateFormatter
+            .getWeekdays()
+            .map(text => ({ text }));
+
+        if (this.weekdayFormat !== "long") {
+            const longText = this.dateFormatter.getWeekdays("long");
+            return weekdayText.map((weekday: any, index) => {
+                weekday.abbr = longText[index];
+                return weekday;
+            });
+        }
+
+        return weekdayText;
     }
 
     /**

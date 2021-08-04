@@ -9,12 +9,7 @@ import { fastBadge } from "./badge/index";
 import { fastBreadcrumbItem } from "./breadcrumb-item/index";
 import { fastBreadcrumb } from "./breadcrumb/index";
 import { fastButton } from "./button/index";
-import {
-    fastCalendar,
-    fastCalendarGrid,
-    fastCalendarGridCell,
-    fastCalendarGridRow,
-} from "./calendar/index";
+import { fastCalendar, fastCalendarCell } from "./calendar/index";
 import { fastCard } from "./card/index";
 import { fastCheckbox } from "./checkbox/index";
 import { fastCombobox } from "./combobox/index";
@@ -51,7 +46,7 @@ import { fastTreeView } from "./tree-view/index";
 // with improper pathing
 import type { Anchor } from "./anchor/index";
 import type { Button } from "./button/index";
-import type { CalendarGridCell } from "./calendar/index";
+import type { CalendarCell } from "./calendar/index";
 import type { Card } from "./card/index";
 import type { DesignSystemProvider } from "./design-system-provider/index";
 import type { Disclosure } from "./disclosure/index";
@@ -78,9 +73,7 @@ export {
     fastBreadcrumbItem,
     fastButton,
     fastCalendar,
-    fastCalendarGrid,
-    fastCalendarGridCell,
-    fastCalendarGridRow,
+    fastCalendarCell,
     fastCard,
     fastCheckbox,
     fastCombobox,
@@ -136,9 +129,7 @@ export const allComponents = {
     fastBreadcrumbItem,
     fastButton,
     fastCalendar,
-    fastCalendarGrid,
-    fastCalendarGridCell,
-    fastCalendarGridRow,
+    fastCalendarCell,
     fastCard,
     fastCheckbox,
     fastCombobox,

@@ -270,13 +270,14 @@ export class Calendar extends FoundationElement {
     dateInString(date: Date | string, datesString: string): boolean;
     dayFormat: DayFormat;
     disabledDates: string;
-    getDayClassNames(date: CalendarDateInfo): string;
-    getDays(info?: CalendarInfo, minWeeks?: number): CalendarDateInfo[];
+    getDayClassNames(date: CalendarDateInfo, todayString?: string): string;
+    getDays(info?: CalendarInfo, minWeeks?: number): CalendarDateInfo[][];
     getMonthInfo(month?: number, year?: number): CalendarInfo;
+    // (undocumented)
+    getWeekdayText(): any[];
     handleDateSelect(day: CalendarDateInfo): void;
     // @internal
     isRTL(locale?: string): boolean;
-    isToday(date: Date | string): boolean;
     locale: string;
     minWeeks: number;
     month: number;
@@ -288,6 +289,17 @@ export class Calendar extends FoundationElement {
     }
 
 // @public
+export class CalendarCell extends DataGridCell {
+    day: any;
+    handleKeydown(e: KeyboardEvent): void;
+    month: any;
+    year: any;
+}
+
+// @public
+export const calendarCellTemplate: (context: ElementDefinitionContext, todayString: string) => ViewTemplate<CalendarDateInfo>;
+
+// @public
 export type CalendarDateInfo = {
     day: number;
     month: number;
@@ -297,22 +309,22 @@ export type CalendarDateInfo = {
 };
 
 // @public
-export const CalendarDayTemplate: ViewTemplate<CalendarDateInfo>;
-
-// @public
 export type CalendarInfo = MonthInfo & {
     previous: MonthInfo;
     next: MonthInfo;
 };
 
-// @public
-export const CalendarTemplate: ViewTemplate<Calendar>;
+// @public (undocumented)
+export const calendarRowTemplate: (context: ElementDefinitionContext, todayString: string) => ViewTemplate;
 
 // @public
-export const CalendarTitleTemplate: ViewTemplate<Calendar>;
+export const calendarTemplate: (context: ElementDefinitionContext, definition: FoundationElementDefinition) => ViewTemplate<Calendar>;
 
 // @public
-export const CalendarWeekdayTemplate: ViewTemplate;
+export const calendarTitleTemplate: ViewTemplate<Calendar>;
+
+// @public
+export const calendarWeekdayTemplate: (context: any) => ViewTemplate;
 
 // @public
 export class Card extends FoundationElement {
@@ -670,13 +682,13 @@ export class DateFormatter {
         year: number;
     } | string | Date, format?: Intl.DateTimeFormatOptions, locale?: string): string;
     // (undocumented)
-    getDay(day?: number, format?: Intl.DateTimeFormatOptions, locale?: string): string;
+    getDay(day?: number, format?: DayFormat, locale?: string): string;
     // (undocumented)
-    getMonth(month?: number, format?: Intl.DateTimeFormatOptions, locale?: string): string;
+    getMonth(month?: number, format?: MonthFormat, locale?: string): string;
     // (undocumented)
-    getWeekdays(format?: Intl.DateTimeFormatOptions, locale?: string): string[];
+    getWeekdays(format?: WeekdayFormat, locale?: string): string[];
     // (undocumented)
-    getYear(year?: number, format?: Intl.DateTimeFormatOptions, locale?: string): string;
+    getYear(year?: number, format?: YearFormat, locale?: string): string;
     locale: string;
     monthFormat: MonthFormat;
     weekdayFormat: WeekdayFormat;

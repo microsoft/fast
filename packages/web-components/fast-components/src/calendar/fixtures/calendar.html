@@ -31,11 +31,18 @@
     .borders::part(day) {
         background: #222;
         transition: all 0.5s linear;
+        text-align: left;
     }
 
     .borders::part(day):hover {
         background: #000;
         cursor: pointer;
+    }
+
+    .borders::part(today) {
+        background: transparent;
+        color: orange;
+        width: auto;
     }
 
     .borders::part(title) {
@@ -94,8 +101,13 @@
         --current-day-color: #0f0;
     }
 
+    .border3::part(week-days) {
+        border: 0;
+    }
+
     .borders3::part(week-day) {
         background: #080;
+        border: 0;
     }
 
     .borders3::part(date),
@@ -109,9 +121,13 @@
         cursor: pointer;
     }
 
-    .borders3::part(day):hover,
-    .borders3::part(today):hover {
+    .borders3::part(day):hover {
         background: #080;
+        color: #0f0;
+    }
+
+    .borders3::part(today) {
+        background: transparent;
         color: #0f0;
     }
 
@@ -127,16 +143,15 @@
     }
 
     .borders4::part(week-days) {
-        border-bottom: 1px solid;
+        border-bottom: 1px solid purple;
     }
 
     .borders4::part(week-day) {
         color: purple;
     }
 
-    .borders4::part(day) {
-        text-align: center;
-        position: static;
+    .borders4::part(week) {
+        position: relative;
     }
 
     .borders4::part(date),
@@ -159,9 +174,9 @@
         position: absolute;
         height: 1px;
         background: red;
-        left: 20px;
-        right: 20px;
-        margin: 20px 0 0;
+        left: 10px;
+        right: 10px;
+        margin: 23px 0 0;
     }
 
     .borders4::part(day):hover::before,
@@ -169,9 +184,9 @@
         content: "";
         display: block;
         position: absolute;
-        top: 95px;
-        bottom: 20px;
+        top: -27px;
         width: 1px;
+        height: 100px;
         background: red;
         margin: 0 0 0 35px;
     }
@@ -181,12 +196,12 @@
         content: "";
         display: block;
         position: absolute;
-        width: 30px;
-        height: 30px;
+        width: 35px;
+        height: 35px;
         transform: translate(-50%, -50%);
         border-radius: 50%;
         border: 1px solid red;
-        margin: -15px 0 0 35px;
+        margin: -19px 0 0 36px;
     }
 
     .light-borders {
@@ -252,16 +267,6 @@
 
     #year fast-calendar::part(title) {
         color: #fff;
-    }
-
-    #year fast-calendar::part(today) {
-        background: #da1a5f;
-        color: #fff;
-        border-radius: 50%;
-        text-align: center;
-        height: 30px;
-        width: 30px;
-        line-height: 30px;
     }
 </style>
 <h1>Calendar</h1>
