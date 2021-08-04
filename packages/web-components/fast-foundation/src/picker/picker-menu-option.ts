@@ -26,19 +26,12 @@ export class PickerMenuOption extends FoundationElement {
     public contentsTemplate: ViewTemplate;
 
     private customView: HTMLView | null = null;
-    // private isActive: boolean = false;
-    // private isInternalFocused: boolean = false;
 
     /**
      * @internal
      */
     public connectedCallback(): void {
         super.connectedCallback();
-
-        // this.addEventListener(eventFocusIn, this.handleFocusin);
-        // this.addEventListener(eventFocusOut, this.handleFocusout);
-        // this.addEventListener(eventKeyDown, this.handleKeydown);
-
         this.updateView();
     }
 
@@ -47,38 +40,7 @@ export class PickerMenuOption extends FoundationElement {
      */
     public disconnectedCallback(): void {
         super.disconnectedCallback();
-        // this.removeEventListener(eventFocusIn, this.handleFocusin);
-        // this.removeEventListener(eventFocusOut, this.handleFocusout);
-        // this.removeEventListener(eventKeyDown, this.handleKeydown)
         this.disconnectView();
-    }
-
-    public handleFocusin(e: FocusEvent): void {
-        // if (this.isActiveCell) {
-        //     return;
-        // }
-        // this.isActiveCell = true;
-        // if (
-        //     this.columnDefinition !== null &&
-        //     this.columnDefinition.cellInternalFocusQueue !== true &&
-        //     typeof this.columnDefinition.cellFocusTargetCallback === "function"
-        // ) {
-        //     // move focus to the focus target
-        //     const focusTarget: HTMLElement = this.columnDefinition.cellFocusTargetCallback(
-        //         this
-        //     );
-        //     if (focusTarget !== null) {
-        //         focusTarget.focus();
-        //     }
-        // }
-        // this.$emit("cell-focused", this);
-    }
-
-    public handleFocusout(e: FocusEvent): void {
-        if (this !== document.activeElement && !this.contains(document.activeElement)) {
-            // this.isActiveCell = false;
-            // this.isInternalFocused = false;
-        }
     }
 
     public handleOptionClick = (e: MouseEvent): boolean => {

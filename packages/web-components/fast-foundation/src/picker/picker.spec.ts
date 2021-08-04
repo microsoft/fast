@@ -74,6 +74,12 @@ async function setupPickerMenuOption() {
 describe("Picker", () => {
 
     /**
+     *  Picker tests
+     */
+
+
+
+    /**
      *  Picker-list tests
      */
     it("picker list should include a role of `list`", async () => {
@@ -86,6 +92,31 @@ describe("Picker", () => {
         await disconnect();
     });
 
+    
+    it("picker list should include a text input with role of 'combobox'", async () => {
+        const { element, connect, disconnect } = await setupPickerList();
+
+        await connect();
+
+        const input: HTMLInputElement | null = element.querySelector('input');
+
+        expect(input?.getAttribute("role")).to.equal("combobox");
+
+        await disconnect();
+    });
+
+    /**
+     *  Picker-list-item tests
+     */
+     it("picker list-item should include a role of `listitem`", async () => {
+        const { element, connect, disconnect } = await setupPickerListItem();
+    
+        await connect();
+    
+        expect(element.getAttribute("role")).to.equal("listitem");
+    
+        await disconnect();
+    });
 
     /**
      *  Picker-menu tests
@@ -97,6 +128,19 @@ describe("Picker", () => {
     
         expect(element.getAttribute("role")).to.equal("list");
     
+        await disconnect();
+    });
+
+    /**
+     *  Picker-menu-option tests
+     */
+    it("picker menu-option should include a role of `listitem`", async () => {
+        const { element, connect, disconnect } = await setupPickerMenuOption();
+        
+        await connect();
+        
+        expect(element.getAttribute("role")).to.equal("listitem");
+        
         await disconnect();
     });
 });
