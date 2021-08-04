@@ -205,10 +205,6 @@ class DesignTokenImpl<T extends { createCSS?(): string }> extends CSSDirective
 
         DesignTokenNode.for<T>(this, element).set(value as DesignTokenValue<T>);
 
-        [
-            ...this.getOrCreateSubscriberSet(this),
-            ...this.getOrCreateSubscriberSet(element),
-        ].forEach(x => x.handleChange({ token: this, target: element }));
         return this;
     }
 
@@ -238,7 +234,11 @@ class DesignTokenImpl<T extends { createCSS?(): string }> extends CSSDirective
         subscriber: DesignTokenSubscriber<this>,
         target?: HTMLElement
     ): void {
-        this.getOrCreateSubscriberSet(target).delete(subscriber);
+        const list = this.subscribers.get(target || this);
+
+        if (list && list.has(subscriber)) {
+            list.delete(subscriber);
+        }
     }
 
     /**
@@ -249,6 +249,22 @@ class DesignTokenImpl<T extends { createCSS?(): string }> extends CSSDirective
     private alias(token: DesignToken<T>): DerivedDesignTokenValue<T> {
         return (((target: HTMLElement) =>
             token.getValueFor(target)) as unknown) as DerivedDesignTokenValue<T>;
+    }
+
+    /**
+     * Notifies subscribers that the value for an element has changed.
+     * @param element - The element to emit a notification for
+     */
+    public notify(element: HTMLElement) {
+        const record = Object.freeze({ token: this, target: element });
+
+        if (this.subscribers.has(this)) {
+            this.subscribers.get(this)!.forEach(sub => sub.handleChange(record));
+        }
+
+        if (this.subscribers.has(element)) {
+            this.subscribers.get(element)!.forEach(sub => sub.handleChange(record));
+        }
     }
 }
 
@@ -498,6 +514,8 @@ class DesignTokenNode<T extends { createCSS?(): string }> {
         this.children.delete(child);
         childToParent.delete(child);
         Observable.getNotifier(this).unsubscribe(child, "value");
+
+        child.handleChange(this as any, "value");
     }
 
     public contains<T>(node: DesignTokenNode<T>) {
@@ -533,6 +551,7 @@ class DesignTokenNode<T extends { createCSS?(): string }> {
         if (this._cacheValue !== value) {
             this._cacheValue = value;
             Observable.notify(this, "value");
+            (this.token as DesignTokenImpl<T>).notify(this.target);
         }
     }
 
