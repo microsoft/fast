@@ -5,11 +5,11 @@ import { setupFluentUIComponentDesignSystem } from "./library.fluent-ui.design-s
 
 function getAllFluentComponentTags(containingSelector?: string): string {
     if (containingSelector) {
-        `${containingSelector} ${Object.keys(allComponents).reduce(
+        return `${Object.keys(allComponents).reduce(
             (previousValue: string, componentName: string) => {
-                return `${previousValue ? `${previousValue}, ` : ""}${spinalCase(
-                    componentName
-                )}`;
+                return `${
+                    previousValue ? `${previousValue}, ` : ""
+                }${containingSelector} ${spinalCase(componentName)}`;
             },
             ""
         )}`;
