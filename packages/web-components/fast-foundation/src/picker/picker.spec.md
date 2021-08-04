@@ -2,6 +2,8 @@
 
 ## Overview
 
+NOTE: `picker` is an alpha version of the component.  Developers should expect API changes until the component is stable.
+
 The 'picker' component enables users to select a list of items from a searchable list of options.  A basic implemetation could be selecting  pizza toppings from a relatively short local list, while a more advanced one could be selecting recients for an e-mail by querying a large directory of recipients on a remote server as the user types.
 
 ### Use Cases
@@ -49,7 +51,6 @@ Picker is the top level container which hosts both a `picker-list` component to 
 - `showloading`:  Whether to display a loading state if the menu is opened.
 
 *Properties:*
-- `menuConfig`: (AnchoredRegionConfig)  Allows alternate flyout menu configurations (Experimental, needs discussion).
 - `listItemTemplate`: (ViewTemplate) Template used to generate listItems, used as part of a repeat directive.
 - `defaultListItemTemplate`: (ViewTemplate) Default template used to generate list items, used as part of a repeat directive.
 - `menuOptionTemplate`: (ViewTemplate) Template used to generate menu options, used as part of a repeat directive.
@@ -81,13 +82,8 @@ The `picker-list` sub-component encapulates the display of selected items as wel
 - `picker-list`
 
 *Attributes:*
-- `label`: The text applied to the `aria-label` attribute of the internal input element.
-- `labelledby`: The text applied to the `aria-labelledby` attribute of the internal input element.
-
-*Properties:*
-- `menuConfig`: (AnchoredRegionConfig)  Allows alternate flyout menu configurations (Experimental, needs discussion).
-
-
+- `label`: The text applied to the `aria-label` attribute of the internal input element.  Usually set by the parent picker component.
+- `labelledby`: The text applied to the `aria-labelledby` attribute of the internal input element.  Usually set by the parent picker component.
 
 **Picker-Menu**
 
@@ -100,8 +96,8 @@ The `picker-menu` sub-component is displayed in a flyout and shows the available
 
 *Slots:*
 - default: Options generated from data are inserted here.
-- `header-region`: Authors can add a custom menu header here.  Elements with a role of 'listitem' will be added to the menu navigation.
-- `footer-region`: Authors can add a custom menu footer here.  Elements with a role of 'listitem' will be added to the menu navigation.
+- `header-region`: Authors can add a custom menu header here.  Elements with a role of 'listitem' will be added to the menu navigation.  Typically authors will need to handle invocation of custom items themselves.
+- `footer-region`: Authors can add a custom menu footer here.  Elements with a role of 'listitem' will be added to the menu navigation.  Typically authors will need to handle invocation of custom items themselves.
 
 *Events*
 - `optionsupdated`: Emitted when the available options change.
@@ -110,3 +106,7 @@ The `picker-menu` sub-component is displayed in a flyout and shows the available
 
 ### Accessibility
 Picker should apply all the appropriate aria attributes and roles to properly support assistive technologies.
+
+## Next Steps
+- add attribute to turn on filtering of already selected options
+- add attribute to turn on filtering of options based on text input

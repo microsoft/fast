@@ -15,11 +15,6 @@ import { PickerMenuOption } from "./picker-menu-option";
 import { PickerListItem } from "./picker-list-item";
 
 /**
- *
- */
-export type PickerMenuPosition = "top" | "bottom";
-
-/**
  * A Picker Custom HTML Element.  This is an early "alpha" version of the component.
  * Developers should expect the api to evolve, breaking changes are possible.
  *

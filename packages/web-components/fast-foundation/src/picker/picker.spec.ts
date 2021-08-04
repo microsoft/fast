@@ -1,33 +1,102 @@
-// import { customElement, html, ViewTemplate } from "@microsoft/fast-element";
-// import { expect, assert } from "chai";
-// import { fixture } from "../fixture";
-// import { Picker, createPickerTemplate } from "./index";
+import { expect } from "chai";
+import {     
+    Picker,
+    PickerList,
+    PickerListItem,
+    pickerListItemTemplate,
+    pickerListTemplate,
+    PickerMenu,
+    PickerMenuOption,
+    pickerMenuOptionTemplate,
+    pickerMenuTemplate,
+    pickerTemplate, 
+} from "./index";
+import { fixture } from "../test-utilities/fixture";
 
-// function createItemTemplate(): ViewTemplate {
-//     return html`
-//         <button role="listitem">${x => x}</button>
-//     `;
-// }
+const FASTPicker = Picker.compose({
+    baseName: "picker",
+    template: pickerTemplate
+})
 
-// function createOptionTemplate(): ViewTemplate {
-//     return html`
-//         <button role="option">${x => x}</button>
-//     `;
-// }
+const FASTPickerList = PickerList.compose({
+    baseName: "picker-list",
+    template: pickerListTemplate
+})
 
-// @customElement({
-//     name: "fast-picker",
-//     template: createPickerTemplate("fast",  createItemTemplate(), createOptionTemplate()),
-// })
-// class FASTPicker extends Picker {}
+const FASTPickerListItem = PickerListItem.compose({
+    baseName: "picker-list-item",
+    template: pickerListItemTemplate
+})
 
-// async function setup() {
-//     const { element, connect, disconnect, parent } = await fixture<FASTPicker>(
-//         "fast-picker"
-//     );
+const FASTPickerMenu = PickerMenu.compose({
+    baseName: "picker-menu",
+    template: pickerMenuTemplate
+})
 
-//     return { element, connect, disconnect, parent };
-// }
+const FASTPickerMenuOption = PickerMenuOption.compose({
+    baseName: "picker-menu-option",
+    template: pickerMenuOptionTemplate
+})
 
-// describe("Picker", () => {
-// });
+
+async function setupPicker() {
+    const { element, connect, disconnect } = await fixture(FASTPicker());
+
+    return { element, connect, disconnect };
+}
+
+async function setupPickerList() {
+    const { element, connect, disconnect } = await fixture(FASTPickerList());
+
+    return { element, connect, disconnect };
+}
+
+async function setupPickerListItem() {
+    const { element, connect, disconnect } = await fixture(FASTPickerListItem());
+
+    return { element, connect, disconnect };
+}
+
+async function setupPickerMenu() {
+    const { element, connect, disconnect } = await fixture(FASTPickerMenu());
+
+    return { element, connect, disconnect };
+}
+
+async function setupPickerMenuOption() {
+    const { element, connect, disconnect } = await fixture(FASTPickerMenuOption());
+
+    return { element, connect, disconnect };
+}
+
+
+
+describe("Picker", () => {
+
+    /**
+     *  Picker-list tests
+     */
+    it("picker list should include a role of `list`", async () => {
+        const { element, connect, disconnect } = await setupPickerList();
+
+        await connect();
+
+        expect(element.getAttribute("role")).to.equal("list");
+
+        await disconnect();
+    });
+
+
+    /**
+     *  Picker-menu tests
+     */
+    it("picker menu should include a role of `list`", async () => {
+        const { element, connect, disconnect } = await setupPickerList();
+    
+        await connect();
+    
+        expect(element.getAttribute("role")).to.equal("list");
+    
+        await disconnect();
+    });
+});
