@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "menu should check for slot before automatically assigning a value",
-  "packageName": "@microsoft/fast-foundation",
-  "email": "chhol@microsoft.com",
-  "dependentChangeType": "patch"
-}

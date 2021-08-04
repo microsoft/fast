@@ -1,7 +1,0 @@
-{
-  "type": "minor",
-  "comment": "adding file component react wrapper",
-  "packageName": "@microsoft/fast-tooling-react",
-  "email": "44823142+williamw2@users.noreply.github.com",
-  "dependentChangeType": "patch"
-}

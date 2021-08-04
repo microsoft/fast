@@ -1,8 +1,22 @@
 # Change Log - @microsoft/fast-tooling
 
-This log was last generated on Tue, 03 Aug 2021 07:17:33 GMT and should not be manually modified.
+This log was last generated on Wed, 04 Aug 2021 07:15:14 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.26.0
+
+Wed, 04 Aug 2021 07:15:14 GMT
+
+### Minor changes
+
+- adding file and file action web components (44823142+williamw2@users.noreply.github.com)
+
+### Patches
+
+- fix image load resize bug in html render component (44823142+williamw2@users.noreply.github.com)
+- Bump @microsoft/fast-foundation to v2.6.3 (chhol@microsoft.com)
+- Bump @microsoft/fast-components to v2.5.5 (chhol@microsoft.com)
 
 ## 0.25.7
 
