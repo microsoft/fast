@@ -24,7 +24,7 @@ export class PickerListItem extends FoundationElement {
     public value: string;
 
     /**
-     *
+     *  The template used to render the contents of the list item
      *
      * @public
      */

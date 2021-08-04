@@ -98,9 +98,9 @@ describe("Picker", () => {
 
         await connect();
 
-        const input: HTMLInputElement | null = element.querySelector('input');
+        const inputElement: HTMLInputElement | null | undefined = element.shadowRoot?.querySelector('.input-element');
 
-        expect(input?.getAttribute("role")).to.equal("combobox");
+        expect(inputElement?.getAttribute("role")).to.equal("combobox");
 
         await disconnect();
     });
@@ -115,6 +115,24 @@ describe("Picker", () => {
     
         expect(element.getAttribute("role")).to.equal("listitem");
     
+        await disconnect();
+    });
+
+    it("picker list-item emits 'pickeriteminvoked' event when clicked", async () => {
+        const { element, connect, disconnect } = await setupPickerListItem();
+
+        let wasInvoked: boolean = false;
+
+        element.addEventListener("pickeriteminvoked", e => {
+            wasInvoked = true;
+        });
+
+        await connect();
+
+        element.click();
+
+        expect(wasInvoked).to.equal(true);
+
         await disconnect();
     });
 
@@ -141,6 +159,24 @@ describe("Picker", () => {
         
         expect(element.getAttribute("role")).to.equal("listitem");
         
+        await disconnect();
+    });
+
+    it("picker menu-option emits 'pickeroptioninvoked' event when clicked", async () => {
+        const { element, connect, disconnect } = await setupPickerMenuOption();
+
+        let wasInvoked: boolean = false;
+
+        element.addEventListener("pickeroptioninvoked", e => {
+            wasInvoked = true;
+        });
+
+        await connect();
+
+        element.click();
+
+        expect(wasInvoked).to.equal(true);
+
         await disconnect();
     });
 });

@@ -1,6 +1,6 @@
+import uniqueId from "lodash-es/uniqueId";
 import { observable } from "@microsoft/fast-element";
 import { FoundationElement } from "../foundation-element";
-import uniqueId from "lodash-es/uniqueId";
 
 /**
  * A List Picker Menu Custom HTML Element.
@@ -9,8 +9,7 @@ import uniqueId from "lodash-es/uniqueId";
  */
 export class PickerMenu extends FoundationElement {
     /**
-     *
-     *
+     *  Elements in the default slot
      *
      * @internal
      */
@@ -21,7 +20,7 @@ export class PickerMenu extends FoundationElement {
     }
 
     /**
-     *
+     *  Elements in the header slot
      *
      *
      * @internal
@@ -33,7 +32,7 @@ export class PickerMenu extends FoundationElement {
     }
 
     /**
-     *
+     *  Elements in the footer slot
      *
      *
      * @internal
@@ -45,6 +44,8 @@ export class PickerMenu extends FoundationElement {
     }
 
     /**
+     * Text to display to assistive technology when
+     * suggestions are available
      *
      * @public
      */

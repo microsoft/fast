@@ -29,14 +29,14 @@ export class PickerList extends FoundationElement {
     public labelledby: string;
 
     /**
-     *
+     * The input element of the component
      *
      * @public
      */
     public inputElement: HTMLInputElement;
 
     /**
-     *
+     *  Reference to the placeholder element for the repeat directive
      *
      * @public
      */
