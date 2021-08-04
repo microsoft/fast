@@ -1461,7 +1461,7 @@ export type OverrideFoundationElementDefinition<T extends FoundationElementDefin
 // @public
 export type ParentLocator = (owner: any) => Container | null;
 
-// @public
+// @alpha
 export class Picker extends FoundationElement {
     // @internal
     activeListItemTemplate?: ViewTemplate;
@@ -1469,7 +1469,9 @@ export class Picker extends FoundationElement {
     activeMenuOptionTemplate?: ViewTemplate;
     // @internal (undocumented)
     connectedCallback(): void;
+    // @public
     defaultListItemTemplate?: ViewTemplate;
+    // @public
     defaultMenuOptionTemplate?: ViewTemplate;
     // (undocumented)
     disconnectedCallback(): void;
@@ -1482,13 +1484,19 @@ export class Picker extends FoundationElement {
     handleOptionInvoke: (e: Event) => boolean;
     handleRegionLoaded: (e: Event) => void;
     handleSelectionChange(): void;
+    // @public
     label: string;
+    // @public
     labelledby: string;
     // @internal
     listElement: PickerList;
+    // @public
     listItemContentsTemplate: ViewTemplate;
+    // @public
     listItemTemplate: ViewTemplate;
+    // @public
     loadingText: string;
+    // @public
     maxSelected: number | undefined;
     // @internal
     menuElement: PickerMenu;
@@ -1498,13 +1506,19 @@ export class Picker extends FoundationElement {
     menuFocusOptionId: string | undefined;
     // @internal
     menuId: string;
+    // @public
     menuOptionContentsTemplate: ViewTemplate;
+    // @public
     menuOptionTemplate: ViewTemplate;
+    // @public
     noSuggestionsText: string;
+    // @public
     options: string;
+    // @public
     optionsList: string[];
     // @internal
     pickermenutag: string;
+    // @public
     query: string;
     // @internal
     region: AnchoredRegion;
@@ -1513,9 +1527,11 @@ export class Picker extends FoundationElement {
     // @internal
     selectedlisttag: string;
     selection: string;
+    // @public
     showLoading: boolean;
     // @internal
     showNoOptions: boolean;
+    // @public
     suggestionsAvailableText: string;
     }
 
@@ -1598,12 +1614,11 @@ export class PickerMenuOption extends FoundationElement {
 // @public (undocumented)
 export const pickerMenuOptionTemplate: (context: any, definition: any) => ViewTemplate<PickerMenuOption>;
 
-// @public (undocumented)
-export type PickerMenuPosition = "top" | "bottom";
-
 // @public
 export const pickerMenuTemplate: (context: any, definition: any) => ViewTemplate<PickerMenu>;
 
+// Warning: (ae-incompatible-release-tags) The symbol "pickerTemplate" is marked as @public, but its signature references "Picker" which is marked as @alpha
+//
 // @public
 export const pickerTemplate: (context: any, definition: any) => ViewTemplate<Picker>;
 
