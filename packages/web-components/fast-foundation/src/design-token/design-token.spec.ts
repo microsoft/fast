@@ -243,7 +243,7 @@ describe("A DesignToken", () => {
             removeElement(ancestor);
         });
 
-        it("should get an updated value when a dependent design token is set for a node closer to the target", () => {
+        it("should get an updated value when a dependent design token is set for a node closer to the target", async () => {
             const ancestor = addElement()
             const parent = addElement(ancestor);
             const target = addElement(parent);
@@ -256,6 +256,7 @@ describe("A DesignToken", () => {
             expect(tokenB.getValueFor(target)).to.equal(12);
 
             tokenA.setValueFor(target, 7);
+
 
             expect(tokenB.getValueFor(target)).to.equal(14);
             removeElement(ancestor);
@@ -796,7 +797,7 @@ describe("A DesignToken", () => {
             }})
         });
 
-        it("should notify a subscriber when a dependency of a subscribed token changes", () => {
+        it("should notify a subscriber when a dependency of a subscribed token changes", async () => {
             const tokenA = DesignToken.create<number>("a");
             const tokenB = DesignToken.create<number>("b");
 
@@ -812,10 +813,12 @@ describe("A DesignToken", () => {
             tokenB.subscribe(subscriber);
 
             tokenA.withDefault(7);
+
+            await DOM.nextUpdate();
             expect(handleChange).to.have.been.called();
         });
 
-        it("should notify a subscriber when a dependency of a dependency of a subscribed token changes", () => {
+        it("should notify a subscriber when a dependency of a dependency of a subscribed token changes", async () => {
             const tokenA = DesignToken.create<number>("a");
             const tokenB = DesignToken.create<number>("b");
             const tokenC = DesignToken.create<number>("c");
@@ -833,6 +836,8 @@ describe("A DesignToken", () => {
             tokenC.subscribe(subscriber);
 
             tokenA.withDefault(7);
+
+            await DOM.nextUpdate();
             expect(handleChange).to.have.been.called()
         });
 
