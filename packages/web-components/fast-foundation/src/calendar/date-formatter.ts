@@ -37,33 +37,33 @@ export class DateFormatter {
      * Formatting for the day
      * @public
      */
-    public dayFormat: DayFormat;
+    public dayFormat: DayFormat = "numeric";
 
     /**
      * Formatting for the weekday labels
      * @public
      */
-    public weekdayFormat: WeekdayFormat;
+    public weekdayFormat: WeekdayFormat = "long";
 
     /**
      * Formatting for the month
      * @public
      */
-    public monthFormat: MonthFormat;
+    public monthFormat: MonthFormat = "long";
 
     /**
      * Formatting for the year
      * @public
      */
-    public yearFormat: YearFormat;
+    public yearFormat: YearFormat = "numeric";
 
-    constructor(props?) {
+    constructor(config?) {
         /**
          * Add properties on construction
          */
-        for (const key in props) {
-            if (key in this) {
-                this[key] = props[key];
+        if (config) {
+            for (const key in config) {
+                this[key] = config[key];
             }
         }
     }
@@ -77,7 +77,7 @@ export class DateFormatter {
      * @public
      */
     getDate(
-        date: { day: number; month: number; year: number } | string | Date,
+        date: { day: number; month: number; year: number } | string | Date = new Date(),
         format: Intl.DateTimeFormatOptions = {
             weekday: this.weekdayFormat,
             month: this.monthFormat,
@@ -148,6 +148,24 @@ export class DateFormatter {
 
     /**
      *
+     * @param weekday - The number of the weekday, defaults to Sunday
+     * @param format - The formatting for the weekday label
+     * @param locale - The locale data used for formatting
+     * @returns - A formatted weekday label
+     * @public
+     */
+    getWeekday(
+        weekday: number = 0,
+        format: WeekdayFormat = this.weekdayFormat,
+        locale: string = this.locale
+    ): string {
+        const date = `1-${weekday + 1}-2017`;
+
+        return this.getDate(date, { weekday: format }, locale);
+    }
+
+    /**
+     *
      * @param format - The formatting for the weekdays
      * @param locale - The locale data used for formatting
      * @returns - An array of the weekday labels
@@ -159,9 +177,6 @@ export class DateFormatter {
     ): string[] {
         return Array(7)
             .fill(null)
-            .map((_, day) => {
-                const date = `1-${day + 1}-2017`;
-                return this.getDate(date, { weekday: format }, locale);
-            });
+            .map((_, day) => this.getWeekday(day, format, locale));
     }
 }

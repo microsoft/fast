@@ -212,7 +212,7 @@ export class Calendar extends FoundationElement {
         let dayCount = 1 - start;
 
         while (
-            dayCount < length ||
+            dayCount < length + 1 ||
             days.length < minWeeks ||
             days[days.length - 1].length % 7 !== 0
         ) {

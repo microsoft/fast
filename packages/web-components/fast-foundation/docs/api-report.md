@@ -673,10 +673,10 @@ export const dataGridTemplate: (context: any, definition: any) => ViewTemplate<D
 
 // @public
 export class DateFormatter {
-    constructor(props?: any);
+    constructor(config?: any);
     dayFormat: DayFormat;
     // (undocumented)
-    getDate(date: {
+    getDate(date?: {
         day: number;
         month: number;
         year: number;
@@ -685,6 +685,8 @@ export class DateFormatter {
     getDay(day?: number, format?: DayFormat, locale?: string): string;
     // (undocumented)
     getMonth(month?: number, format?: MonthFormat, locale?: string): string;
+    // (undocumented)
+    getWeekday(weekday?: number, format?: WeekdayFormat, locale?: string): string;
     // (undocumented)
     getWeekdays(format?: WeekdayFormat, locale?: string): string[];
     // (undocumented)
