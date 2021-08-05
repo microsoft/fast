@@ -10,13 +10,13 @@ const defaultContentsTemplate: ViewTemplate<PickerListItem> = html`
 /**
  * A picker list item Custom HTML Element.
  *
- * @public
+ * @alpha
  */
 export class PickerListItem extends FoundationElement {
     /**
      * The underlying string value of the item
      *
-     * @public
+     * @alpha
      * @remarks
      * HTML Attribute: value
      */
@@ -26,7 +26,7 @@ export class PickerListItem extends FoundationElement {
     /**
      *  The template used to render the contents of the list item
      *
-     * @public
+     * @alpha
      */
     @observable
     public contentsTemplate: ViewTemplate;
