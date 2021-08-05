@@ -272,6 +272,10 @@ const nodeCache = new WeakMap<HTMLElement, Map<DesignToken<any>, DesignTokenNode
 const channelCache = new Map<DesignToken<any>, InterfaceSymbol<DesignTokenNode<any>>>();
 const childToParent = new WeakMap<DesignTokenNode<any>, DesignTokenNode<any>>();
 const noop = Function.prototype;
+const tokenValueDependencyGraph = new WeakMap<
+    DerivedDesignTokenValue<any>,
+    Set<DesignToken<any>>
+>();
 
 /**
  * Determines if a value should be considered a DerivedDesignTokenValue<T>
@@ -297,6 +301,51 @@ class CustomPropertyReflector {
         const { token, target } = record;
         this.remove(token, target);
         this.add(token, target);
+    }
+
+    public requestReflection(token: DesignToken<any>, target: HTMLElement) {
+        target.dispatchEvent(
+            new CustomEvent<CustomPropertyReflectionRequest>(
+                "request-custom-property-reflection",
+                {
+                    composed: true,
+                    bubbles: true,
+                    cancelable: false,
+                    detail: { token: token, handledBy: new Set() },
+                }
+            )
+        );
+    }
+
+    public listenForReflection(token: DesignToken<any>, target: HTMLElement) {
+        target.addEventListener(
+            "request-custom-property-reflection",
+            (e: CustomEvent<CustomPropertyReflectionRequest>) => {
+                if (e.detail.handledBy.has(token)) {
+                    return;
+                }
+
+                const node = DesignTokenNode.for(token, target);
+                const raw = node.rawValue;
+
+                if (!isDerivedTokenValue(raw) || !tokenValueDependencyGraph.has(raw)) {
+                    return;
+                }
+
+                const dependencies = tokenValueDependencyGraph.get(raw)!;
+                e.detail.handledBy.add(token);
+
+                if (!dependencies.has(e.detail.token)) {
+                    return;
+                }
+
+                const eventTarget = e.composedPath()[0];
+
+                if (eventTarget instanceof HTMLElement) {
+                    DesignTokenNode.for(token, eventTarget).useCSSCustomProperty = true;
+                }
+            }
+        );
     }
 
     private add(token: CSSDesignToken<any>, target: HTMLElement) {
@@ -368,6 +417,7 @@ class DesignTokenNode<T extends { createCSS?(): string }> {
                 this.token as CSSDesignToken<T>,
                 this.target
             );
+            customPropertyReflector.requestReflection(this.token, this.target);
         } else if (prev && !next) {
             customPropertyReflector.stopReflection(
                 this.token as CSSDesignToken<T>,
@@ -404,6 +454,10 @@ class DesignTokenNode<T extends { createCSS?(): string }> {
 
     public bind() {
         this.findParentNode()?.appendChild(this);
+
+        if (this._rawValue) {
+            customPropertyReflector.requestReflection(this.token, this.target);
+        }
     }
 
     public unbind() {
@@ -580,17 +634,26 @@ class DesignTokenNode<T extends { createCSS?(): string }> {
             );
 
             const records = this.bindingObserver!.records();
+            const dependencies = new Set<DesignToken<any>>();
+
             for (const record of records) {
                 if (
                     record.propertySource instanceof DesignTokenNode &&
-                    record.propertySource.token instanceof DesignTokenImpl
+                    record.propertyName === "value"
                 ) {
-                    const { token } = record.propertySource;
-                    token.subscribe(this.tokenDependencySubscriber);
-                    token.appliedTo.forEach(target =>
-                        this.tokenDependencySubscriber.handleChange({ token, target })
-                    );
+                    dependencies.add(record.propertySource.token);
                 }
+            }
+
+            if (dependencies.size > 0) {
+                tokenValueDependencyGraph.set(value, dependencies);
+                customPropertyReflector.listenForReflection(this.token, this.target);
+
+                dependencies.forEach(token => {
+                    token.appliedTo.forEach(target => {
+                        customPropertyReflector.requestReflection(token, target);
+                    });
+                });
             }
         } else {
             this._value = value as StaticDesignTokenValue<T>;
@@ -600,21 +663,7 @@ class DesignTokenNode<T extends { createCSS?(): string }> {
             this.useCSSCustomProperty = true;
         }
     }
-    private tokenDependencySubscriber = {
-        handleChange: (record: DesignTokenChangeRecord<DesignToken<any>>) => {
-            const rawValue = this.resolveRawValue();
-            const target = DesignTokenNode.for(this.token, record.target);
 
-            // Only act on downstream nodes
-            if (
-                this.contains(target) &&
-                !target.useCSSCustomProperty &&
-                target.resolveRawValue() === rawValue
-            ) {
-                target.useCSSCustomProperty = true;
-            }
-        },
-    };
     /**
      * Deletes any value set for the node.
      */
@@ -628,6 +677,11 @@ class DesignTokenNode<T extends { createCSS?(): string }> {
         this.tearDownBindingObserver();
         this._value = this.resolveRealValue();
     }
+}
+
+interface CustomPropertyReflectionRequest {
+    token: DesignToken<any>;
+    handledBy: Set<DesignToken<any>>;
 }
 
 function create<T extends Function>(

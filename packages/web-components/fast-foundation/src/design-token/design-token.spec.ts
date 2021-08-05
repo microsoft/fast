@@ -528,10 +528,9 @@ describe("A DesignToken", () => {
             tokenA.withDefault(6);
             tokenB.withDefault(el => tokenA.getValueFor(el) * 2);
 
-            const element = document.createElement(`fast-${uniqueElementName()}`);
+            const element = document.createElement(`fast-${elementName}`);
 
             tokenA.setValueFor(element, 7);
-
 
             document.body.appendChild(element);
 
