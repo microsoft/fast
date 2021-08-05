@@ -57,15 +57,45 @@ export class DateFormatter {
      */
     public yearFormat: YearFormat = "numeric";
 
+    /**
+     * Date used for formatting
+     */
+    public date: Date = new Date();
+
     constructor(config?) {
         /**
          * Add properties on construction
          */
         if (config) {
             for (const key in config) {
-                this[key] = config[key];
+                const value: any = config[key];
+                if (key === "date") {
+                    this.date = this.getDateObject(value);
+                } else {
+                    this[key] = value;
+                }
             }
         }
+    }
+
+    /**
+     * Helper function to make sure that the DateFormatter is working with an instance of Date
+     * @param date - The date as an object, string or Date insance
+     * @returns - A Date instance
+     * @public
+     */
+    public getDateObject(
+        date: { day: number; month: number; year: number } | string | Date
+    ): Date {
+        if (typeof date === "string") {
+            return new Date(date);
+        } else if ("day" in date && "month" in date && "year" in date) {
+            const { day, month, year } = date;
+            const dateString = `${month}-${day}-${year}`;
+            return new Date(dateString);
+        }
+
+        return date;
     }
 
     /**
@@ -76,8 +106,8 @@ export class DateFormatter {
      * @returns A localized string of the date provided
      * @public
      */
-    getDate(
-        date: { day: number; month: number; year: number } | string | Date = new Date(),
+    public getDate(
+        date: { day: number; month: number; year: number } | string | Date = this.date,
         format: Intl.DateTimeFormatOptions = {
             weekday: this.weekdayFormat,
             month: this.monthFormat,
@@ -86,13 +116,7 @@ export class DateFormatter {
         },
         locale: string = this.locale
     ): string {
-        let dateString: string = typeof date === "string" ? date : "";
-        if (typeof date !== "string" && !(date instanceof Date)) {
-            const { day, month, year } = date;
-            dateString = `${month}-${day}-${year}`;
-        }
-
-        const dateObj = date instanceof Date ? date : new Date(dateString);
+        const dateObj = this.getDateObject(date);
         const optionsWithTimeZone = Object.assign({}, { timeZone: "utc" }, format);
 
         return new Intl.DateTimeFormat(locale, optionsWithTimeZone).format(dateObj);
@@ -106,8 +130,8 @@ export class DateFormatter {
      * @returns - A localized number for the day
      * @public
      */
-    getDay(
-        day: number = new Date().getDate(),
+    public getDay(
+        day: number = this.date.getDate(),
         format: DayFormat = this.dayFormat,
         locale: string = this.locale
     ): string {
@@ -122,8 +146,8 @@ export class DateFormatter {
      * @returns - A localized name of the month
      * @public
      */
-    getMonth(
-        month: number = new Date().getMonth() + 1,
+    public getMonth(
+        month: number = this.date.getMonth() + 1,
         format: MonthFormat = this.monthFormat,
         locale: string = this.locale
     ): string {
@@ -138,8 +162,8 @@ export class DateFormatter {
      * @returns - A localized string for the year
      * @public
      */
-    getYear(
-        year: number = new Date().getFullYear(),
+    public getYear(
+        year: number = this.date.getFullYear(),
         format: YearFormat = this.yearFormat,
         locale: string = this.locale
     ): string {
@@ -154,7 +178,7 @@ export class DateFormatter {
      * @returns - A formatted weekday label
      * @public
      */
-    getWeekday(
+    public getWeekday(
         weekday: number = 0,
         format: WeekdayFormat = this.weekdayFormat,
         locale: string = this.locale
@@ -171,7 +195,7 @@ export class DateFormatter {
      * @returns - An array of the weekday labels
      * @public
      */
-    getWeekdays(
+    public getWeekdays(
         format: WeekdayFormat = this.weekdayFormat,
         locale: string = this.locale
     ): string[] {

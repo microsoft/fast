@@ -674,6 +674,7 @@ export const dataGridTemplate: (context: any, definition: any) => ViewTemplate<D
 // @public
 export class DateFormatter {
     constructor(config?: any);
+    date: Date;
     dayFormat: DayFormat;
     // (undocumented)
     getDate(date?: {
@@ -681,6 +682,11 @@ export class DateFormatter {
         month: number;
         year: number;
     } | string | Date, format?: Intl.DateTimeFormatOptions, locale?: string): string;
+    getDateObject(date: {
+        day: number;
+        month: number;
+        year: number;
+    } | string | Date): Date;
     // (undocumented)
     getDay(day?: number, format?: DayFormat, locale?: string): string;
     // (undocumented)

@@ -58,12 +58,14 @@ describe("Calendar", () => {
             const monthFormat = "narrow";
             const yearFormat = "2-digit";
             const weekdayFormat = "short";
+            const date = new Date("1-1-2021");
             const formatter = new DateFormatter({
                 locale,
                 dayFormat,
                 monthFormat,
                 yearFormat,
-                weekdayFormat
+                weekdayFormat,
+                date
             });
 
             expect(formatter.locale).to.equal(locale);
@@ -71,6 +73,9 @@ describe("Calendar", () => {
             expect(formatter.monthFormat).to.equal(monthFormat);
             expect(formatter.yearFormat).to.equal(yearFormat);
             expect(formatter.weekdayFormat).to.equal(weekdayFormat);
+            expect(formatter.date.getDate()).to.equal(1);
+            expect(formatter.date.getMonth()).to.equal(0);
+            expect(formatter.date.getFullYear()).to.equal(2021);
         });
 
         it("Should return a date string for today by default", () => {
@@ -89,25 +94,24 @@ describe("Calendar", () => {
         });
 
         it("Should default formatting to [weekday='long'], [month='long'] [day='numeric'], [year='numeric'] string", () => {
-            const date = new Date("1-1-2020");
-            const formatter = new DateFormatter();
+            const formatter = new DateFormatter({date: "1-1-2020"});
 
-            expect(formatter.getDate(date)).to.equal("Wednesday, January 1, 2020");
+            expect(formatter.getDate()).to.equal("Wednesday, January 1, 2020");
         });
 
         it("Should be able to change formats", () => {
-            const date = new Date("1-1-2020");
             const formatter = new DateFormatter({
                 weekdayFormat: undefined,
-                monthFormat: "short"
+                monthFormat: "short",
+                date: new Date("1-1-2020")
             });
 
-            expect(formatter.getDate(date)).to.equal("Jan 1, 2020");
+            expect(formatter.getDate()).to.equal("Jan 1, 2020");
 
             formatter.dayFormat = "2-digit";
 
-            expect(formatter.getDate(date)).to.equal("Jan 01, 2020");
-            expect(formatter.getDate(date, {
+            expect(formatter.getDate()).to.equal("Jan 01, 2020");
+            expect(formatter.getDate("1-1-2020", {
                 month: "narrow",
                 day: "2-digit",
                 year: "2-digit"
@@ -137,7 +141,7 @@ describe("Calendar", () => {
             expect(formatter.getMonth()).to.equal(months[today.getMonth()]);
         });
 
-        it("Should return formatter month with getMonth()", () => {
+        it("Should return formatted month with getMonth()", () => {
             const formatter = new DateFormatter();
 
             expect(formatter.getMonth(1)).to.equal("January");
@@ -183,14 +187,13 @@ describe("Calendar", () => {
         });
 
         it("Should return a localized string when setting the locale", () => {
-            const formatter = new DateFormatter({locale: 'fr-FR'});
-            const date = new Date("3-1-2015");
+            const formatter = new DateFormatter({locale: 'fr-FR', date: '3-1-2015'});
 
-            expect(formatter.getDate(date)).to.equal("dimanche 1 mars 2015");
+            expect(formatter.getDate()).to.equal("dimanche 1 mars 2015");
             expect(formatter.getWeekday(0)).to.equal("dimanche");
             expect(formatter.getMonth(3)).to.equal("mars");
             formatter.locale = "de-DE";
-            expect(formatter.getDate(date)).to.equal("Sonntag, 1. März 2015");
+            expect(formatter.getDate()).to.equal("Sonntag, 1. März 2015");
             expect(formatter.getWeekday(0)).to.equal("Sonntag");
             expect(formatter.getMonth(3)).to.equal("März");
         });
