@@ -1,6 +1,5 @@
 import { elements, html, slotted } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
-import { endTemplate, startTemplate } from "../patterns";
 import type { FoundationElementDefinition } from "../foundation-element";
 import type { ElementDefinitionContext } from "../design-system";
 import { endTemplate, startTemplate } from "../patterns";

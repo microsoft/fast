@@ -2023,6 +2023,7 @@ export class Toolbar extends FoundationElement {
     direction: Direction;
     // @internal
     focusinHandler(e: FocusEvent): boolean | void;
+    // @internal
     protected getAllSlottedItems(): (HTMLElement | Node)[];
     // @internal
     keydownHandler(e: KeyboardEvent): boolean | void;

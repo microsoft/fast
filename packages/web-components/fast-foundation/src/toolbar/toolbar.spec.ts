@@ -59,7 +59,7 @@ describe("Toolbar", () => {
     await disconnect();
   });
 
-  it("should move focus to its first focusable element when it receives focus, and then to next focusable element on arrow right keypress", async () => {
+  it("should move focus to its first focusable element when it receives focus", async () => {
     const { element, connect, disconnect, document } = await setup();
 
     await connect();

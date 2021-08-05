@@ -191,6 +191,7 @@ export class Toolbar extends FoundationElement {
 
     /**
      * get all the slotted elements
+     * @internal
      */
     protected getAllSlottedItems(): (HTMLElement | Node)[] {
         return [
