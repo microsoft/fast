@@ -9,6 +9,7 @@ import {
     bodyFont,
     controlCornerRadius,
     designUnit,
+    strokeWidth,
     typeRampMinus1FontSize,
     typeRampMinus1LineHeight,
 } from "../design-tokens";
@@ -31,9 +32,10 @@ export const badgeStyles: (
 
     .control {
         border-radius: calc(${controlCornerRadius} * 1px);
-        padding: calc(${designUnit} * 0.5px) calc(${designUnit} * 1px);
+        padding: calc(((${designUnit} * 0.5) - ${strokeWidth}) * 1px) calc((${designUnit} - ${strokeWidth}) * 1px);
         color: ${accentForegroundRest};
         font-weight: 600;
+        border: calc(${strokeWidth} * 1px) solid transparent;
     }
 
     .control[style] {
