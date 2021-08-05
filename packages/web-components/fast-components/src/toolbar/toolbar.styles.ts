@@ -69,11 +69,6 @@ export const toolbarStyles: (
             margin-inline: 0;
         }
 
-        .start__hidden,
-        .end__hidden {
-            display: none;
-        }
-
         ::slotted(svg) {
             /* TODO: adaptive typography https://github.com/microsoft/fast/issues/2432 */
             width: 16px;
