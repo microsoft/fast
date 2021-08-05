@@ -97,7 +97,7 @@ export class HTMLRenderLayerNavigation extends HTMLRenderLayer {
         return new OverlayPosition(pos.top, pos.left, pos.width, pos.height);
     }
 
-    private getTitleForDictionaryId(dataDictionaryId): string {
+    private getTitleForDictionaryId(dataDictionaryId): string | null {
         if (this.schemaDictionary && this.dataDictionary) {
             if (this.dataDictionary[0][dataDictionaryId].data[dataSetName])
                 return this.dataDictionary[0][dataDictionaryId].data[dataSetName];
