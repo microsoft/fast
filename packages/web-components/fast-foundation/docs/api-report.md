@@ -1469,9 +1469,7 @@ export class Picker extends FoundationElement {
     activeMenuOptionTemplate?: ViewTemplate;
     // @internal (undocumented)
     connectedCallback(): void;
-    // @public
     defaultListItemTemplate?: ViewTemplate;
-    // @public
     defaultMenuOptionTemplate?: ViewTemplate;
     // (undocumented)
     disconnectedCallback(): void;
@@ -1484,19 +1482,13 @@ export class Picker extends FoundationElement {
     handleOptionInvoke: (e: Event) => boolean;
     handleRegionLoaded: (e: Event) => void;
     handleSelectionChange(): void;
-    // @public
     label: string;
-    // @public
     labelledby: string;
     // @internal
     listElement: PickerList;
-    // @public
     listItemContentsTemplate: ViewTemplate;
-    // @public
     listItemTemplate: ViewTemplate;
-    // @public
     loadingText: string;
-    // @public
     maxSelected: number | undefined;
     // @internal
     menuElement: PickerMenu;
@@ -1506,19 +1498,13 @@ export class Picker extends FoundationElement {
     menuFocusOptionId: string | undefined;
     // @internal
     menuId: string;
-    // @public
     menuOptionContentsTemplate: ViewTemplate;
-    // @public
     menuOptionTemplate: ViewTemplate;
-    // @public
     noSuggestionsText: string;
-    // @public
     options: string;
-    // @public
     optionsList: string[];
     // @internal
     pickermenutag: string;
-    // @public
     query: string;
     // @internal
     region: AnchoredRegion;
@@ -1527,15 +1513,13 @@ export class Picker extends FoundationElement {
     // @internal
     selectedlisttag: string;
     selection: string;
-    // @public
     showLoading: boolean;
     // @internal
     showNoOptions: boolean;
-    // @public
     suggestionsAvailableText: string;
     }
 
-// @public
+// @alpha
 export class PickerList extends FoundationElement {
     // @internal (undocumented)
     connectedCallback(): void;
@@ -1545,7 +1529,7 @@ export class PickerList extends FoundationElement {
     labelledby: string;
 }
 
-// @public
+// @alpha
 export class PickerListItem extends FoundationElement {
     // @internal (undocumented)
     connectedCallback(): void;
@@ -1559,13 +1543,17 @@ export class PickerListItem extends FoundationElement {
     value: string;
 }
 
+// Warning: (ae-incompatible-release-tags) The symbol "pickerListItemTemplate" is marked as @public, but its signature references "PickerListItem" which is marked as @alpha
+//
 // @public (undocumented)
 export const pickerListItemTemplate: (context: any, definition: any) => ViewTemplate<PickerListItem>;
 
+// Warning: (ae-incompatible-release-tags) The symbol "pickerListTemplate" is marked as @public, but its signature references "PickerList" which is marked as @alpha
+//
 // @public (undocumented)
 export const pickerListTemplate: (context: any, definition: any) => ViewTemplate<PickerList>;
 
-// @public
+// @alpha
 export class PickerMenu extends FoundationElement {
     // @internal (undocumented)
     connectedCallback(): void;
@@ -1586,7 +1574,7 @@ export class PickerMenu extends FoundationElement {
     suggestionsAvailableText: string;
     }
 
-// @public
+// @alpha
 export class PickerMenuOption extends FoundationElement {
     // @internal (undocumented)
     connectedCallback(): void;
@@ -1599,9 +1587,13 @@ export class PickerMenuOption extends FoundationElement {
     value: string;
 }
 
+// Warning: (ae-incompatible-release-tags) The symbol "pickerMenuOptionTemplate" is marked as @public, but its signature references "PickerMenuOption" which is marked as @alpha
+//
 // @public (undocumented)
 export const pickerMenuOptionTemplate: (context: any, definition: any) => ViewTemplate<PickerMenuOption>;
 
+// Warning: (ae-incompatible-release-tags) The symbol "pickerMenuTemplate" is marked as @public, but its signature references "PickerMenu" which is marked as @alpha
+//
 // @public
 export const pickerMenuTemplate: (context: any, definition: any) => ViewTemplate<PickerMenu>;
 

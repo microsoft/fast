@@ -39,7 +39,7 @@ export class Picker extends FoundationElement {
     /**
      * Currently available options. Comma delineated string ie. "apples,oranges".
      *
-     * @public
+     * @alpha
      * @remarks
      * HTML Attribute: options
      */
@@ -52,7 +52,7 @@ export class Picker extends FoundationElement {
     /**
      * The maximum number of items that can be selected.
      *
-     * @public
+     * @alpha
      * @remarks
      * HTML Attribute: max-selected
      */
@@ -62,7 +62,7 @@ export class Picker extends FoundationElement {
     /**
      * The text to present to assistive technolgies when no suggestions are available.
      *
-     * @public
+     * @alpha
      * @remarks
      * HTML Attribute: no-suggestions-text
      */
@@ -72,7 +72,7 @@ export class Picker extends FoundationElement {
     /**
      *  The text to present to assistive technolgies when suggestions are available.
      *
-     * @public
+     * @alpha
      * @remarks
      * HTML Attribute: suggestions-available-text
      */
@@ -82,7 +82,7 @@ export class Picker extends FoundationElement {
     /**
      * The text to present to assistive technologies when suggestions are loading.
      *
-     * @public
+     * @alpha
      * @remarks
      * HTML Attribute: loading-text
      */
@@ -92,7 +92,7 @@ export class Picker extends FoundationElement {
     /**
      * Applied to the aria-label attribute of the input element
      *
-     * @public
+     * @alpha
      * @remarks
      * HTML Attribute: label
      */
@@ -107,7 +107,7 @@ export class Picker extends FoundationElement {
     /**
      * Applied to the aria-labelledby attribute of the input element
      *
-     * @public
+     * @alpha
      * @remarks
      * HTML Attribute: labelledby
      */
@@ -122,7 +122,7 @@ export class Picker extends FoundationElement {
     /**
      * Whether to display a loading state if the menu is opened.
      *
-     * @public
+     * @alpha
      * @remarks
      * HTML Attribute: showloading
      */
@@ -140,7 +140,7 @@ export class Picker extends FoundationElement {
      * Template used to generate selected items.
      * This is used in a repeat directive.
      *
-     * @public
+     * @alpha
      */
     @observable
     public listItemTemplate: ViewTemplate;
@@ -152,7 +152,7 @@ export class Picker extends FoundationElement {
      * Default template to use for selected items (usually specified in the component template).
      * This is used in a repeat directive.
      *
-     * @public
+     * @alpha
      */
     @observable
     public defaultListItemTemplate?: ViewTemplate;
@@ -172,7 +172,7 @@ export class Picker extends FoundationElement {
      * Template to use for available options.
      * This is used in a repeat directive.
      *
-     * @public
+     * @alpha
      */
     @observable
     public menuOptionTemplate: ViewTemplate;
@@ -184,7 +184,7 @@ export class Picker extends FoundationElement {
      * Default template to use for available options (usually specified in the template).
      * This is used in a repeat directive.
      *
-     * @public
+     * @alpha
      */
     @observable
     public defaultMenuOptionTemplate?: ViewTemplate;
@@ -203,7 +203,7 @@ export class Picker extends FoundationElement {
     /**
      *  Template to use for the contents of a selected list item
      *
-     * @public
+     * @alpha
      */
     @observable
     public listItemContentsTemplate: ViewTemplate;
@@ -211,7 +211,7 @@ export class Picker extends FoundationElement {
     /**
      *  Template to use for the contents of menu options
      *
-     * @public
+     * @alpha
      */
     @observable
     public menuOptionContentsTemplate: ViewTemplate;
@@ -219,7 +219,7 @@ export class Picker extends FoundationElement {
     /**
      *  Current list of options in array form
      *
-     * @public
+     * @alpha
      */
     @observable
     public optionsList: string[] = [];
@@ -233,7 +233,7 @@ export class Picker extends FoundationElement {
     /**
      * The text value currently in the input field
      *
-     * @public
+     * @alpha
      */
     @observable
     public query: string;
@@ -363,6 +363,10 @@ export class Picker extends FoundationElement {
         }
 
         this.listElement = document.createElement(this.selectedlisttag) as PickerList;
+
+        console.debug(this.selectedlisttag);
+        console.debug(this.pickermenutag);
+
         this.listElement.label = this.label;
         this.listElement.labelledby = this.labelledby;
         this.appendChild(this.listElement);

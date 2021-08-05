@@ -5,13 +5,13 @@ import { FoundationElement } from "../foundation-element";
 /**
  * A List Picker Menu Custom HTML Element.
  *
- * @public
+ * @alpha
  */
 export class PickerList extends FoundationElement {
     /**
      * Applied to the aria-label attribute of the input element
      *
-     * @public
+     * @alpha
      * @remarks
      * HTML Attribute: label
      */
@@ -21,7 +21,7 @@ export class PickerList extends FoundationElement {
     /**
      * Applied to the aria-labelledby attribute of the input element
      *
-     * @public
+     * @alpha
      * @remarks
      * HTML Attribute: labelledby
      */
@@ -31,14 +31,14 @@ export class PickerList extends FoundationElement {
     /**
      * The input element of the component
      *
-     * @public
+     * @alpha
      */
     public inputElement: HTMLInputElement;
 
     /**
      *  Reference to the placeholder element for the repeat directive
      *
-     * @public
+     * @alpha
      */
     public itemsPlaceholderElement: Node;
 

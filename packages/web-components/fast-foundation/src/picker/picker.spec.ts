@@ -12,11 +12,8 @@ import {
     pickerTemplate, 
 } from "./index";
 import { fixture } from "../test-utilities/fixture";
-
-const FASTPicker = Picker.compose({
-    baseName: "picker",
-    template: pickerTemplate
-})
+import { DOM } from "@microsoft/fast-element";
+import { KeyCodes } from "@microsoft/fast-web-utilities";
 
 const FASTPickerList = PickerList.compose({
     baseName: "picker-list",
@@ -38,9 +35,28 @@ const FASTPickerMenuOption = PickerMenuOption.compose({
     template: pickerMenuOptionTemplate
 })
 
+const FASTPicker = Picker.compose({
+    baseName: "picker",
+    template: pickerTemplate
+})
+
+const enterEvent = new KeyboardEvent("keydown", {
+    key: "Enter",
+    keyCode: KeyCodes.enter,
+    bubbles: true,
+} as KeyboardEventInit);
+
 
 async function setupPicker() {
-    const { element, connect, disconnect } = await fixture(FASTPicker());
+    const { element, connect, disconnect } = await fixture(
+        [
+            FASTPicker(), 
+            FASTPickerList(), 
+            FASTPickerListItem(), 
+            FASTPickerMenu(), 
+            FASTPickerMenuOption()
+        ]
+    );
 
     return { element, connect, disconnect };
 }
@@ -76,6 +92,14 @@ describe("Picker", () => {
     /**
      *  Picker tests
      */
+     it("picker should create a list element when instanciated", async () => {
+        const { element, connect, disconnect } = await setupPicker();
+        await connect();
+
+        expect((element as Picker).listElement).to.be.instanceof(PickerList);
+
+        await disconnect();
+    });
 
 
 
@@ -136,11 +160,29 @@ describe("Picker", () => {
         await disconnect();
     });
 
+    it("picker menu-option emits 'pickeriteminvoked' event on 'Enter'", async () => {
+        const { element, connect, disconnect } = await setupPickerListItem();
+
+        let wasInvoked: boolean = false;
+
+        element.addEventListener("pickeriteminvoked", e => {
+            wasInvoked = true;
+        });
+
+        await connect();
+
+        element.dispatchEvent(enterEvent);
+
+        expect(wasInvoked).to.equal(true);
+
+        await disconnect();
+    });
+
     /**
      *  Picker-menu tests
      */
     it("picker menu should include a role of `list`", async () => {
-        const { element, connect, disconnect } = await setupPickerList();
+        const { element, connect, disconnect } = await setupPickerMenu();
     
         await connect();
     

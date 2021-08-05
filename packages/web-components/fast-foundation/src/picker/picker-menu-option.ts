@@ -10,13 +10,13 @@ const defaultContentsTemplate: ViewTemplate<PickerMenuOption> = html`
 /**
  * A picker list item Custom HTML Element.
  *
- * @public
+ * @alpha
  */
 export class PickerMenuOption extends FoundationElement {
     /**
      * The underlying string value of the item
      *
-     * @public
+     * @alpha
      * @remarks
      * HTML Attribute: value
      */
