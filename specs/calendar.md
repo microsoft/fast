@@ -149,6 +149,7 @@ Dynamically generated slots with the date as the name in the template.
 ### Accessibility
 
 *Consider the accessibility of the component, including:*
+- Dates have an aria-label to denote the month and day for more semantic meaning rather than just the day number.
 
 *Keyboard Navigation and Focus*
 - Users can tab to the first date in the calendar.
@@ -165,9 +166,7 @@ Dynamically generated slots with the date as the name in the template.
 
 ### Test Plan
 
-*What is the plan for testing the component, if different from the normal path?*
 Need to figure out how to test the different markets.
-How do I know what calendar and numbering systems to use with which market?
 
 ### Documentation
 
