@@ -2021,14 +2021,9 @@ export class Toolbar extends FoundationElement {
     connectedCallback(): void;
     // @internal
     direction: Direction;
-    // (undocumented)
-    endContainer: HTMLSpanElement;
-    endSlottedItems: HTMLElement[];
-    // (undocumented)
-    protected endSlottedItemsChanged(): void;
     // @internal
     focusinHandler(e: FocusEvent): boolean | void;
-    protected getAllSlottedItems(): HTMLElement[];
+    protected getAllSlottedItems(): (HTMLElement | Node)[];
     // @internal
     keydownHandler(e: KeyboardEvent): boolean | void;
     orientation: Orientation;
@@ -2038,16 +2033,10 @@ export class Toolbar extends FoundationElement {
     protected slottedItemsChanged(): void;
     // @internal
     slottedLabel: HTMLElement[];
-    // (undocumented)
-    startContainer: HTMLSpanElement;
-    // @internal
-    startSlottedItems: HTMLElement[];
-    // (undocumented)
-    protected startSlottedItemsChanged(): void;
 }
 
 // @internal (undocumented)
-export interface Toolbar extends DelegatesARIAToolbar {
+export interface Toolbar extends StartEnd, DelegatesARIAToolbar {
 }
 
 // @public

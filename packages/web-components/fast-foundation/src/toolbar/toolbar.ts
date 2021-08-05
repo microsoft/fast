@@ -104,38 +104,6 @@ export class Toolbar extends FoundationElement {
     }
 
     /**
-     * the elements in the start slot.
-     *
-     * @internal
-     */
-    @observable startSlottedItems: HTMLElement[];
-    protected startSlottedItemsChanged(): void {
-        if (this.$fastController.isConnected) {
-            this.buildFocusableElements();
-            this.startContainer.classList.toggle(
-                "start__hidden",
-                this.startSlottedItems.length < 1
-            );
-        }
-    }
-    public startContainer: HTMLSpanElement;
-
-    /**
-     * the elements in the end slot.
-     */
-    @observable endSlottedItems: HTMLElement[];
-    protected endSlottedItemsChanged(): void {
-        if (this.$fastController.isConnected) {
-            this.buildFocusableElements();
-            this.endContainer.classList.toggle(
-                "end__hidden",
-                this.endSlottedItems.length < 1
-            );
-        }
-    }
-    public endContainer: HTMLSpanElement;
-
-    /**
      * The elements in the label slot.
      *
      * @internal
@@ -224,8 +192,12 @@ export class Toolbar extends FoundationElement {
     /**
      * get all the slotted elements
      */
-    protected getAllSlottedItems(): HTMLElement[] {
-        return [...this.startSlottedItems, ...this.slottedItems, ...this.endSlottedItems];
+    protected getAllSlottedItems(): (HTMLElement | Node)[] {
+        return [
+            ...this.start.assignedNodes(),
+            ...this.slottedItems,
+            ...this.end.assignedNodes(),
+        ];
     }
 
     /**
@@ -341,5 +313,5 @@ applyMixins(DelegatesARIAToolbar, ARIAGlobalStatesAndProperties);
 /**
  * @internal
  */
-export interface Toolbar extends DelegatesARIAToolbar {}
-applyMixins(Toolbar, DelegatesARIAToolbar);
+export interface Toolbar extends StartEnd, DelegatesARIAToolbar {}
+applyMixins(Toolbar, StartEnd, DelegatesARIAToolbar);
