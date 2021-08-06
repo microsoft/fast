@@ -10,6 +10,14 @@
                 {
                     "name": "",
                     "description": "The default slot"
+                },
+                {
+                    "name": "header-region",
+                    "description": "The header-region slot"
+                },
+                {
+                    "name": "footer-region",
+                    "description": "The footer-region slot"
                 }
             ]
         }
