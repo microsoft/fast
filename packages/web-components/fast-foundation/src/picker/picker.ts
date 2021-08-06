@@ -50,6 +50,26 @@ export class Picker extends FoundationElement {
     }
 
     /**
+     * Whether the component should remove an option from the list when it is in the selection
+     *
+     * @alpha
+     * @remarks
+     * HTML Attribute: filter-selected
+     */
+    @attr({ attribute: "filter-selected", mode: "boolean" })
+    public filterSelected: boolean = true;
+
+    /**
+     * Whether the component should remove options based on the current query
+     *
+     * @alpha
+     * @remarks
+     * HTML Attribute: filter-query
+     */
+    @attr({ attribute: "filter-query", mode: "boolean" })
+    public filterQuery: boolean = true;
+
+    /**
      * The maximum number of items that can be selected.
      *
      * @alpha
@@ -224,10 +244,7 @@ export class Picker extends FoundationElement {
     @observable
     public optionsList: string[] = [];
     private optionsListChanged(): void {
-        if (this.$fastController.isConnected) {
-            this.showNoOptions = this.optionsList.length === 0 ? true : false;
-            this.setFocusedOption(this.optionsList.length === 0 ? -1 : 0);
-        }
+        this.updateFilteredOptions();
     }
 
     /**
@@ -242,7 +259,22 @@ export class Picker extends FoundationElement {
             if (this.listElement.inputElement.value !== this.query) {
                 this.listElement.inputElement.value = this.query;
             }
+            this.updateFilteredOptions();
             this.$emit("querychange", { bubbles: false });
+        }
+    }
+
+    /**
+     *  Current list of filtered options in array form
+     *
+     * @internal
+     */
+    @observable
+    public filteredOptionsList: string[] = [];
+    private filteredOptionsListChanged(): void {
+        if (this.$fastController.isConnected) {
+            this.showNoOptions = this.filteredOptionsList.length === 0 ? true : false;
+            this.setFocusedOption(this.filteredOptionsList.length === 0 ? -1 : 0);
         }
     }
 
@@ -396,6 +428,10 @@ export class Picker extends FoundationElement {
         this.listElement.inputElement.removeEventListener("click", this.handleInputClick);
     }
 
+    /**
+     * Move focus to the input element
+     * @public
+     */
     public focus() {
         if (this.listElement !== undefined) {
             this.listElement?.inputElement.focus();
@@ -426,7 +462,7 @@ export class Picker extends FoundationElement {
         );
 
         this.optionsRepeatBehavior = new RepeatDirective(
-            x => x.optionsList,
+            x => x.filteredOptionsList,
             x => x.activeMenuOptionTemplate,
             { positioning: true }
         ).createBehavior(this.optionsPlaceholder);
@@ -656,6 +692,8 @@ export class Picker extends FoundationElement {
 
         this.selectedItems = this.selection === "" ? [] : this.selection.split(",");
 
+        this.updateFilteredOptions();
+
         DOM.queueUpdate(() => {
             this.checkMaxItems();
         });
@@ -869,5 +907,20 @@ export class Picker extends FoundationElement {
             this.menuOptionTemplate === undefined
                 ? this.defaultMenuOptionTemplate
                 : this.menuOptionTemplate;
+    }
+
+    /**
+     * Updates the filtered options array
+     */
+    private updateFilteredOptions(): void {
+        this.filteredOptionsList = this.optionsList.slice(0);
+        if (this.filterSelected) {
+            this.filteredOptionsList = this.filteredOptionsList.filter(
+                el => this.selectedItems.indexOf(el) === -1
+            );
+        }
+        // if (this.filterQuery){
+
+        // }
     }
 }
