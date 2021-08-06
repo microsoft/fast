@@ -19,7 +19,7 @@ import type {
     StaticDesignTokenValue,
 } from "./interfaces";
 
-const defaultElements = new WeakSet<HTMLElement>([document.body]);
+const defaultElement = document.body;
 
 /**
  * Describes a DesignToken instance.
@@ -185,11 +185,7 @@ class DesignTokenImpl<T extends { createCSS?(): string }> extends CSSDirective
     }
 
     public getValueFor(element: HTMLElement): StaticDesignTokenValue<T> {
-        // const node = DesignTokenNode.getOrCreate(this, element);
-        // Observable.track(node, "value");
-        // return DesignTokenNode.getOrCreate(this, element).value;
-
-        return "REPLACE ME" as any;
+        return DesignTokenNode.getOrCreate(element).get(this);
     }
 
     public setValueFor(
@@ -198,27 +194,21 @@ class DesignTokenImpl<T extends { createCSS?(): string }> extends CSSDirective
     ): this {
         this._appliedTo.add(element);
         if (value instanceof DesignTokenImpl) {
-            const tokenValue = value;
-
-            value = ((target: HTMLElement) =>
-                tokenValue.getValueFor(target)) as DerivedDesignTokenValue<T>;
+            value = this.alias(value);
         }
-        // DesignTokenNode.getOrCreate<T>(this, element).set(value);
-        [
-            ...this.getOrCreateSubscriberSet(this),
-            ...this.getOrCreateSubscriberSet(element),
-        ].forEach(x => x.handleChange({ token: this, target: element }));
+
+        DesignTokenNode.getOrCreate(element).set(this, value as DesignTokenValue<T>);
         return this;
     }
 
     public deleteValueFor(element: HTMLElement): this {
         this._appliedTo.delete(element);
-        // DesignTokenNode.getOrCreate(this, element).delete();
+        DesignTokenNode.getOrCreate(element).delete(this);
         return this;
     }
 
     public withDefault(value: DesignTokenValue<T> | DesignToken<T>) {
-        // DesignTokenNode.getOrCreate(this, defaultElement).set(value);
+        this.setValueFor(defaultElement, value);
 
         return this;
     }
@@ -238,6 +228,15 @@ class DesignTokenImpl<T extends { createCSS?(): string }> extends CSSDirective
         target?: HTMLElement
     ): void {
         this.getOrCreateSubscriberSet(target).delete(subscriber);
+    }
+
+    /**
+     * Alias the token to the provided token.
+     * @param token - the token to alias to
+     */
+    private alias(token: DesignToken<T>): DerivedDesignTokenValue<T> {
+        return (((target: HTMLElement) =>
+            token.getValueFor(target)) as unknown) as DerivedDesignTokenValue<T>;
     }
 }
 
@@ -274,7 +273,7 @@ class DesignTokenNode implements Behavior {
      * Null is returned if no node is found or the node provided is for a default element.
      */
     public static findParent(node: DesignTokenNode): DesignTokenNode | null {
-        if (!defaultElements.has(node.target)) {
+        if (!(defaultElement === node.target)) {
             let parent = composedParent(node.target);
 
             while (parent !== null) {
@@ -303,6 +302,28 @@ class DesignTokenNode implements Behavior {
         } else if (target.isConnected) {
             this.bind();
         }
+    }
+
+    /**
+     * Gets the value of a token for a node
+     * @param token - The token to retrieve the value for
+     * @returns
+     */
+    public get<T>(token: DesignToken<T>): StaticDesignTokenValue<T> {
+        return 0 as any;
+    }
+
+    /**
+     * Sets a token to a value for a node
+     * @param token - The token to set
+     * @param value - The value to set the token to
+     */
+    public set<T>(token: DesignToken<T>, value: DesignTokenValue<T>): void {
+        console.log("setting:", token, value);
+    }
+
+    public delete<T>(token: DesignToken<T>): void {
+        console.log("deleting:", token);
     }
 
     /**
