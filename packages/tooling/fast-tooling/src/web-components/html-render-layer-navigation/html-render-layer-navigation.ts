@@ -98,16 +98,14 @@ export class HTMLRenderLayerNavigation extends HTMLRenderLayer {
     }
 
     private getTitleForDictionaryId(dataDictionaryId): string | null {
-        if (this.schemaDictionary && this.dataDictionary) {
-            if (this.dataDictionary[0][dataDictionaryId].data[dataSetName])
-                return this.dataDictionary[0][dataDictionaryId].data[dataSetName];
-            else
-                return this.schemaDictionary[
-                    this.dataDictionary[0][dataDictionaryId].schemaId
-                ].title;
-        }
-        return null;
+        const dataDictionaryEntry = this.dataDictionary?.[0][dataDictionaryId];
+        return (
+            dataDictionaryEntry.data[dataSetName] ??
+            this.schemaDictionary?.[dataDictionaryEntry.schemaId].title ??
+            null
+        );
     }
+
     private handleSelect(dataDictionaryId: string, elementRef: HTMLElement) {
         const title = this.getTitleForDictionaryId(dataDictionaryId);
         this.clickPosition = this.GetPositionFromElement(elementRef);
