@@ -303,51 +303,6 @@ class CustomPropertyReflector {
         this.add(token, target);
     }
 
-    public requestReflection(token: DesignToken<any>, target: HTMLElement) {
-        target.dispatchEvent(
-            new CustomEvent<CustomPropertyReflectionRequest>(
-                "request-custom-property-reflection",
-                {
-                    composed: true,
-                    bubbles: true,
-                    cancelable: false,
-                    detail: { token: token, handledBy: new Set() },
-                }
-            )
-        );
-    }
-
-    public listenForReflection(token: DesignToken<any>, target: HTMLElement) {
-        target.addEventListener(
-            "request-custom-property-reflection",
-            (e: CustomEvent<CustomPropertyReflectionRequest>) => {
-                if (e.detail.handledBy.has(token)) {
-                    return;
-                }
-
-                const node = DesignTokenNode.for(token, target);
-                const raw = node.rawValue;
-
-                if (!isDerivedTokenValue(raw) || !tokenValueDependencyGraph.has(raw)) {
-                    return;
-                }
-
-                const dependencies = tokenValueDependencyGraph.get(raw)!;
-                e.detail.handledBy.add(token);
-
-                if (!dependencies.has(e.detail.token)) {
-                    return;
-                }
-
-                const eventTarget = e.composedPath()[0];
-
-                if (eventTarget instanceof HTMLElement) {
-                    DesignTokenNode.for(token, eventTarget).useCSSCustomProperty = true;
-                }
-            }
-        );
-    }
-
     private add(token: CSSDesignToken<any>, target: HTMLElement) {
         CustomPropertyManager.addTo(
             target,
@@ -366,6 +321,17 @@ class CustomPropertyReflector {
 }
 
 const customPropertyReflector = new CustomPropertyReflector();
+
+/**
+ * Describes an event detail used to determine when and where to
+ * create new DesignToken nodes (and reflect to CSS custom properties)
+ */
+interface DesignTokenSynchronizationEventData {
+    node: DesignTokenNode<any>;
+    handledBy: Set<DesignToken<any>>;
+}
+
+const designTokenSyncEventName = "fast:design-token:synchronize";
 
 /**
  * A node responsible for setting and getting token values,
@@ -387,6 +353,26 @@ class DesignTokenNode<T extends { createCSS?(): string }> {
         return targetCache.has(token)
             ? targetCache.get(token)!
             : new DesignTokenNode(token, target); // node is added to cache during construction
+    }
+
+    /**
+     * Emits a DOM event to inform other DesignTokenNode instances
+     * that a change is being made for the provided 'node' that could
+     * impact the derived value of other nodes.
+     * @param node - The node informing other nodes to synchronize
+     */
+    public static requestSynchronization(node: DesignTokenNode<any>) {
+        node.target.dispatchEvent(
+            new CustomEvent<DesignTokenSynchronizationEventData>(
+                designTokenSyncEventName,
+                {
+                    composed: true,
+                    bubbles: true,
+                    cancelable: false,
+                    detail: { node, handledBy: new Set() },
+                }
+            )
+        );
     }
 
     /** Track downstream nodes */
@@ -417,7 +403,7 @@ class DesignTokenNode<T extends { createCSS?(): string }> {
                 this.token as CSSDesignToken<T>,
                 this.target
             );
-            customPropertyReflector.requestReflection(this.token, this.target);
+            DesignTokenNode.requestSynchronization(this);
         } else if (prev && !next) {
             customPropertyReflector.stopReflection(
                 this.token as CSSDesignToken<T>,
@@ -455,8 +441,11 @@ class DesignTokenNode<T extends { createCSS?(): string }> {
     public bind() {
         this.findParentNode()?.appendChild(this);
 
+        // If value was set prior to element connection, other nodes
+        // need to be informed so they can reflect if they care about
+        // the node being connected.
         if (this._rawValue) {
-            customPropertyReflector.requestReflection(this.token, this.target);
+            DesignTokenNode.requestSynchronization(this);
         }
     }
 
@@ -593,6 +582,35 @@ class DesignTokenNode<T extends { createCSS?(): string }> {
         return DesignTokenNode.for(this.token, defaultElement);
     }
 
+    /**
+     * Reacts to synchronization events, creating a new node instance and
+     * reflecting to CSS custom properties where the derived value is driven by
+     * the node emitting the event.
+     * @param e - the event object
+     */
+    private tokenSynchronizationHandler = (
+        e: CustomEvent<DesignTokenSynchronizationEventData>
+    ): void => {
+        if (e.detail.handledBy.has(this.token)) {
+            return;
+        }
+
+        const raw = this._rawValue;
+
+        if (!raw || !isDerivedTokenValue(raw) || !tokenValueDependencyGraph.has(raw)) {
+            return;
+        }
+
+        const dependencies = tokenValueDependencyGraph.get(raw)!;
+        e.detail.handledBy.add(this.token);
+
+        if (!dependencies.has(e.detail.node.token)) {
+            return;
+        }
+
+        DesignTokenNode.for(this.token, e.detail.node.target).useCSSCustomProperty = true;
+    };
+
     private __value: StaticDesignTokenValue<T> | undefined;
     private get _value(): StaticDesignTokenValue<T> | undefined {
         Observable.track(this, "value");
@@ -647,11 +665,16 @@ class DesignTokenNode<T extends { createCSS?(): string }> {
 
             if (dependencies.size > 0) {
                 tokenValueDependencyGraph.set(value, dependencies);
-                customPropertyReflector.listenForReflection(this.token, this.target);
+                this.target.addEventListener(
+                    designTokenSyncEventName,
+                    this.tokenSynchronizationHandler
+                );
 
                 dependencies.forEach(token => {
                     token.appliedTo.forEach(target => {
-                        customPropertyReflector.requestReflection(token, target);
+                        DesignTokenNode.requestSynchronization(
+                            DesignTokenNode.for(token, target)
+                        );
                     });
                 });
             }
@@ -677,11 +700,6 @@ class DesignTokenNode<T extends { createCSS?(): string }> {
         this.tearDownBindingObserver();
         this._value = this.resolveRealValue();
     }
-}
-
-interface CustomPropertyReflectionRequest {
-    token: DesignToken<any>;
-    handledBy: Set<DesignToken<any>>;
 }
 
 function create<T extends Function>(
