@@ -49,6 +49,9 @@ Picker is the top level container which hosts both a `picker-list` component to 
 - `label`: The text applied to the `aria-label` attribute of the internal input element.
 - `labelledby`: The text applied to the `aria-labelledby` attribute of the internal input element.  
 - `showloading`:  Whether to display a loading state if the menu is opened.
+- `filter-selected`:  Whether to remove selected elements from the option list (default=true)
+- `filter-query`:  Whether to remove elements that don't match the query string (default=true)
+
 
 *Properties:*
 - `listItemTemplate`: (ViewTemplate) Template used to generate listItems, used as part of a repeat directive.

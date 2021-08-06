@@ -1474,8 +1474,12 @@ export class Picker extends FoundationElement {
     // (undocumented)
     disconnectedCallback(): void;
     // @internal
+    filteredOptionsList: string[];
+    filterQuery: boolean;
+    filterSelected: boolean;
+    // @internal
     flyoutOpen: boolean;
-    // (undocumented)
+    // @public
     focus(): void;
     handleFocusIn: (e: FocusEvent) => boolean;
     handleFocusOut: (e: FocusEvent) => boolean;
