@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "replace css comment expressions with normal css comments",
+  "packageName": "@microsoft/fast-components",
+  "email": "john.kreitlow@microsoft.com",
+  "dependentChangeType": "patch"
+}
