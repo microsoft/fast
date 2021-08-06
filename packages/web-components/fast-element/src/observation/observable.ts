@@ -461,8 +461,13 @@ class BindingObserverImplementation<TSource = any, TReturn = any, TParent = any>
 
         if (prev !== null) {
             if (!this.needsRefresh) {
+                // Declaring the variable prior to assignment below circumvents
+                // a bug in Angular's optimization process causing infinite recursion
+                // of this watch() method. Details https://github.com/microsoft/fast/issues/4969
+                let prevValue;
                 watcher = void 0;
-                const prevValue = prev.propertySource[prev.propertyName];
+                /* eslint-disable-next-line */
+                prevValue = prev.propertySource[prev.propertyName];
                 watcher = this;
 
                 if (propertySource === prevValue) {

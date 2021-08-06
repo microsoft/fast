@@ -2,6 +2,159 @@
   "name": "@microsoft/fast-components",
   "entries": [
     {
+      "date": "Thu, 05 Aug 2021 07:17:32 GMT",
+      "tag": "@microsoft/fast-components_v2.5.6",
+      "version": "2.5.6",
+      "comments": {
+        "patch": [
+          {
+            "comment": "add border to badge and adjust padding size",
+            "author": "khamu@microsoft.com",
+            "commit": "627d25135c31330fb7d8e2b9c1abf01a79143f58",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 04 Aug 2021 07:15:14 GMT",
+      "tag": "@microsoft/fast-components_v2.5.5",
+      "version": "2.5.5",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-foundation to v2.6.3",
+            "author": "chhol@microsoft.com",
+            "commit": "98c45b1c087853529e157384fe514f6c79422189",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 03 Aug 2021 07:17:33 GMT",
+      "tag": "@microsoft/fast-components_v2.5.4",
+      "version": "2.5.4",
+      "comments": {
+        "patch": [
+          {
+            "comment": "add neutralForegroundRest color to host",
+            "author": "khamu@microsoft.com",
+            "commit": "6bb917feb78dc2a551a8fc6a0d19cc5c761ecf3a",
+            "package": "@microsoft/fast-components"
+          }
+        ],
+        "none": [
+          {
+            "comment": "Bump @microsoft/fast-element to v1.4.1",
+            "author": "mathieu.lavoie@logmein.com",
+            "commit": "65e86a86cbf2b584f7a76081a9bef5a76e78b6f3",
+            "package": "@microsoft/fast-components"
+          },
+          {
+            "comment": "Bump @microsoft/fast-foundation to v2.6.2",
+            "author": "mathieu.lavoie@logmein.com",
+            "commit": "65e86a86cbf2b584f7a76081a9bef5a76e78b6f3",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sun, 01 Aug 2021 07:17:15 GMT",
+      "tag": "@microsoft/fast-components_v2.5.3",
+      "version": "2.5.3",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Register design-system-provider",
+            "author": "47367562+bheston@users.noreply.github.com",
+            "commit": "96a1fe10892fa513c800a2623bfc06e237ae8a8c",
+            "package": "@microsoft/fast-components"
+          }
+        ],
+        "none": [
+          {
+            "comment": "Bump @microsoft/fast-foundation to v2.6.2",
+            "author": "roeisenb@microsoft.com",
+            "commit": "46bb752c86f1112f4cc92f8b0c155addf05225e0",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 29 Jul 2021 07:18:18 GMT",
+      "tag": "@microsoft/fast-components_v2.5.2",
+      "version": "2.5.2",
+      "comments": {
+        "patch": [
+          {
+            "comment": "remove unnecessary aria-hidden attributes",
+            "author": "47367562+bheston@users.noreply.github.com",
+            "commit": "45a348674554ac26d0153b1d850523d82fb89762",
+            "package": "@microsoft/fast-components"
+          },
+          {
+            "comment": "fix select border styles when control is active",
+            "author": "corylaviska@microsoft.com",
+            "commit": "f4d179432f3892fe5efd2f68dd9b0d6ab9edd6da",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 28 Jul 2021 07:17:22 GMT",
+      "tag": "@microsoft/fast-components_v2.5.1",
+      "version": "2.5.1",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-element to v1.4.1",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "e92c9e5197e54fc5c6ec6daaf36c09d9190c7ef2",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sun, 25 Jul 2021 07:17:41 GMT",
+      "tag": "@microsoft/fast-components_v2.5.0",
+      "version": "2.5.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "add auto position tracking to tooltip",
+            "author": "scomea@microsoft.com",
+            "commit": "9f6e61d3b45af6da0430677f9d437ff7ba0cdae9",
+            "package": "@microsoft/fast-components"
+          },
+          {
+            "comment": "anchored region uses transform",
+            "author": "scomea@microsoft.com",
+            "commit": "4dd29d77f026b51c4031bf19acf494d1768a2611",
+            "package": "@microsoft/fast-components"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "add layouts for 0 indent submenus",
+            "author": "scomea@microsoft.com",
+            "commit": "3f9be338b60a37bca9a07d1e110f755cd675c982",
+            "package": "@microsoft/fast-components"
+          },
+          {
+            "comment": "Bump @microsoft/fast-foundation to v2.6.0",
+            "author": "scomea@microsoft.com",
+            "commit": "9f6e61d3b45af6da0430677f9d437ff7ba0cdae9",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 22 Jul 2021 07:19:53 GMT",
       "tag": "@microsoft/fast-components_v2.4.0",
       "version": "2.4.0",

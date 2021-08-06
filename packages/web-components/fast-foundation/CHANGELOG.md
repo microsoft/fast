@@ -1,8 +1,41 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Thu, 22 Jul 2021 07:19:53 GMT and should not be manually modified.
+This log was last generated on Wed, 04 Aug 2021 07:15:14 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.6.3
+
+Wed, 04 Aug 2021 07:15:14 GMT
+
+### Patches
+
+- menu should check for slot before automatically assigning a value (chhol@microsoft.com)
+
+## 2.6.2
+
+Thu, 29 Jul 2021 07:18:18 GMT
+
+### Patches
+
+- remove unnecessary aria-hidden attributes (47367562+bheston@users.noreply.github.com)
+
+## 2.6.1
+
+Wed, 28 Jul 2021 07:17:22 GMT
+
+### Patches
+
+- update on !regionVisible (scomea@microsoft.com)
+
+## 2.6.0
+
+Sun, 25 Jul 2021 07:17:41 GMT
+
+### Minor changes
+
+- add auto position tracking to tooltip (scomea@microsoft.com)
+- anchored region uses transform (scomea@microsoft.com)
 
 ## 2.5.2
 

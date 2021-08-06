@@ -2,6 +2,118 @@
   "name": "@microsoft/fast-foundation",
   "entries": [
     {
+      "date": "Wed, 04 Aug 2021 07:15:14 GMT",
+      "tag": "@microsoft/fast-foundation_v2.6.3",
+      "version": "2.6.3",
+      "comments": {
+        "patch": [
+          {
+            "comment": "menu should check for slot before automatically assigning a value",
+            "author": "chhol@microsoft.com",
+            "commit": "98c45b1c087853529e157384fe514f6c79422189",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 03 Aug 2021 07:17:33 GMT",
+      "tag": "@microsoft/fast-foundation_v2.6.2",
+      "version": "2.6.2",
+      "comments": {
+        "none": [
+          {
+            "comment": "Bump @microsoft/fast-element to v1.4.1",
+            "author": "mathieu.lavoie@logmein.com",
+            "commit": "65e86a86cbf2b584f7a76081a9bef5a76e78b6f3",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sun, 01 Aug 2021 07:17:15 GMT",
+      "tag": "@microsoft/fast-foundation_v2.6.2",
+      "version": "2.6.2",
+      "comments": {
+        "none": [
+          {
+            "comment": "refactor(fixture): mild change to typings to enable typical code pattern",
+            "author": "roeisenb@microsoft.com",
+            "commit": "46bb752c86f1112f4cc92f8b0c155addf05225e0",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 29 Jul 2021 07:18:18 GMT",
+      "tag": "@microsoft/fast-foundation_v2.6.2",
+      "version": "2.6.2",
+      "comments": {
+        "none": [
+          {
+            "comment": "docs: fix various errors discovered while building the site",
+            "author": "roeisenb@microsoft.com",
+            "commit": "b2a640ff068917d251ca84be6dee72d4f4e941a3",
+            "package": "@microsoft/fast-foundation"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "remove unnecessary aria-hidden attributes",
+            "author": "47367562+bheston@users.noreply.github.com",
+            "commit": "45a348674554ac26d0153b1d850523d82fb89762",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 28 Jul 2021 07:17:22 GMT",
+      "tag": "@microsoft/fast-foundation_v2.6.1",
+      "version": "2.6.1",
+      "comments": {
+        "none": [
+          {
+            "comment": "docs(components): add/update and expand content",
+            "author": "roeisenb@microsoft.com",
+            "commit": "07d03884b168bb66d482a72df2d2941f8561b9ce",
+            "package": "@microsoft/fast-foundation"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "update on !regionVisible",
+            "author": "scomea@microsoft.com",
+            "commit": "1e22a9ca163fba0830eef1d3fcf5d222fa01ed28",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sun, 25 Jul 2021 07:17:41 GMT",
+      "tag": "@microsoft/fast-foundation_v2.6.0",
+      "version": "2.6.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "add auto position tracking to tooltip",
+            "author": "scomea@microsoft.com",
+            "commit": "9f6e61d3b45af6da0430677f9d437ff7ba0cdae9",
+            "package": "@microsoft/fast-foundation"
+          },
+          {
+            "comment": "anchored region uses transform",
+            "author": "scomea@microsoft.com",
+            "commit": "4dd29d77f026b51c4031bf19acf494d1768a2611",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 22 Jul 2021 07:19:53 GMT",
       "tag": "@microsoft/fast-foundation_v2.5.2",
       "version": "2.5.2",

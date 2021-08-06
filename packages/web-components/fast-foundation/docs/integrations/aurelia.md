@@ -38,15 +38,20 @@ With all the basic pieces in place, let's run our app in dev mode with `npm star
 First, open your `src/main.ts` file and add the following code:
 
 ```ts
-import { DesignSystem } from '@microsoft/fast-foundation';
-import { fastButton, fastCard } from '@microsoft/fast-components';
+import { 
+  provideFASTDesignSystem, 
+  fastCard, 
+  fastButton
+} from '@microsoft/fast-components';
 
-// you can choose to prefix all components the way that suit your project
-// the following code will prefix with `fast-`, such as `<fast-button>` or `<fast-card>`
-DesignSystem.getOrCreate().register(fastAnchor({prefix: 'fast'}));
+provideFASTDesignSystem()
+    .register(
+        fastCard(),
+        fastButton()
+    );
 ```
 
-This code imports and register the `<fast-card>`, and `<fast-button>` components. Once you save, the dev server will rebuild and refresh your browser. However, you still won't see anything. To get some UI showing up, we need to write some HTML that uses our components. Replace your `my-app.html` file with the following markup:
+This code uses the FAST Design System to register the `<fast-card>` and `<fast-button>` components. Once you save, the dev server will rebuild and refresh your browser. However, you still won't see anything. To get some UI showing up, we need to write some HTML that uses our components. Replace your `my-app.html` file with the following markup:
 
 ```html
 <fast-card>
@@ -125,7 +130,7 @@ Aurelia
   .start();
 ```
 
-Also, in case you have local components that also require two-way binding, you can adjust the adapter before to register it as such:
+Also, in case you have local components that require two-way binding, you can adjust the adapter before to register it as such:
 
 ```ts
 // src/main.ts
@@ -245,30 +250,26 @@ First, open your `src/main.ts` file and add the following code:
 
 ```ts
 import { 
-  FASTDesignSystemProvider, 
-  FASTCard, 
-  FASTButton 
+  provideFASTDesignSystem, 
+  fastCard, 
+  fastButton
 } from '@microsoft/fast-components';
 
-/*
- * Ensure that tree-shaking doesn't remove these components from the bundle.
- * There are multiple ways to prevent tree shaking, of which this is one.
- */
-FASTDesignSystemProvider;
-FASTCard;
-FASTButton;
+provideFASTDesignSystem()
+    .register(
+        fastCard(),
+        fastButton()
+    );
 ```
 
-This code imports the `<fast-design-system-provider>` component as well as the `<fast-card>`, and `<fast-button>` components. Once you save, the dev server will rebuild and refresh your browser. However, you still won't see anything. To get some UI showing up, we need to write some HTML that uses our components. Replace your `app.html` file with the following markup:
+This code uses the FAST Design System to register the `<fast-card>` and `<fast-button>` components. Once you save, the dev server will rebuild and refresh your browser. However, you still won't see anything. To get some UI showing up, we need to write some HTML that uses our components. Replace your `app.html` file with the following markup:
 
 ```html
 <template>
-  <fast-design-system-provider use-defaults>
-    <fast-card>
-      <h2>${message}</h2>
-      <fast-button appearance="accent" click.trigger="onClick()">Click Me</fast-button>
-    </fast-card>
-  </fast-design-system-provider>
+  <fast-card>
+    <h2>${message}</h2>
+    <fast-button appearance="accent" click.trigger="onClick()">Click Me</fast-button>
+  </fast-card>
 </template>
 ```
 
@@ -288,11 +289,6 @@ To add a splash of style, add the following to your `app.html` template:
 
 ```html
 <style>
-  fast-design-system-provider {
-    display: inline-block;
-    color: var(--neutral-foreground-rest);
-  }
-
   fast-card {
     padding: 16px;
     display: flex;

@@ -59,6 +59,7 @@ export const htmlRenderLayerNavigationStyles = (context, definition) => css`
         text-transform: uppercase;
         font-weight: 700;
         color: ${BackgroundColorProperty};
+        white-space: nowrap;
     }
     .hover-layer .pill {
         background-color: ${BackgroundColorProperty};

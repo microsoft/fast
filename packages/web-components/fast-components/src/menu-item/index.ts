@@ -20,7 +20,6 @@ export const fastMenuItem = MenuItem.compose<MenuItemOptions>({
     styles,
     checkboxIndicator: `
         <svg
-            aria-hidden="true"
             part="checkbox-indicator"
             class="checkbox-indicator"
             viewBox="0 0 20 20"

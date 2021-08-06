@@ -139,17 +139,79 @@ Here we provide the base component name of `counter`, which will be combined wit
 
 ### Registering Library Components in an Application
 
-To register the component, an application author will import the registration and register it in their `DesignSystem`, overriding any properties as necessary:
+To register the component, an application author will import the registration and register it in their `DesignSystem`, overriding any properties as necessary. For example, if this component had been created for the FAST Frame design system, then the the following code could be used:
 
 ```ts
 import { counter } from "your-package";
-import { DesignSystem } from "@microsoft/fast-foundation";
+import { provideFASTDesignSystem } from "@microsoft/fast-components";
 
-DesignSystem.getOrCreate()
-    .withPrefix('your')
+provideFASTDesignSystem()
     .register(
         counter({ defaultButtonContent: "Please count." })
     );
 ```
 
 The advantage of setting `defaultButtonContent` here is that it overrides the `Counter`'s default slotted content for **all** instances of `your-counter`. Instead of having to define it everywhere in the app that the button is used, the app author provides the configuration once in a centralized location. This can be extremely useful in scenarios where components contain default icons that the app author may need to swap.
+
+## Defining a design system
+
+The above examples show how to build a single component that can be flexibly registered with an existing design system. But, you can create your own design system as well. To do so, you would start with the base components defined in `@microsoft/fast-foundation` and compose them with your own styles. You would also define your own `DesignToken`s to be used within your styles. Finally, you would export a "provider function" for your community to use in setting everything up.
+
+### FAST design system thinking
+
+When creating a design system, it can be helpful to think in terms of layers and use cases.
+
+1. **foundation components**: A reusable set of component classes and templates, independent of any design system, and designed for maximum flexibility.
+2. **design system**: Leverages the flexibility of the foundation components, but adds the unique opinions of the design system (e.g. styles, element prefix, design tokens, theme colors, etc). It exports the component registration functions so that apps can decide what to use. This layer may also choose to "lock down" certain options so that the design system remains coherent when used.
+3. **application**: Registers only the components needed by the app itself.
+4. **features**: Only uses the components available in the app. Get access to design tokens to create feature-specific styled components in alignment with the design system.
+
+Notice that the strength of the opinions increases as you proceed down the list, with each layer further constraining the system. When creating a design system, it's important to think through these use cases and consider how different scenarios are impacted.
+
+### Composing a foundation component
+
+Let's imagine that we want to add a `Button` to our design system. We only need to import the `@microsoft/fast-foundation` `Button` component class and template, and then compose them with our design system's button styles:
+
+```ts
+import {
+    Button,
+    buttonTemplate as template,
+} from "@microsoft/fast-foundation";
+import { buttonStyles as styles } from "./special-button.styles";
+
+export const specialButton = Button.compose({
+    baseName: "button",
+    template,
+    styles,
+    shadowOptions: {
+        delegatesFocus: true,
+    },
+});
+
+export const buttonStyles = styles;
+```
+
+As a practice, always be sure to export your styles independently as well. This enables the consumers of your components to build their own versions of your component, reusing and augmenting your styles as needed.
+
+When authoring your own styles, you'll also want to leverage design tokens. Please see [the design token documentation](docs/design-systems/design-tokens) for how to create and use design tokens.
+
+### Creating a design system provider function
+
+For convenience, and to ensure consistent design system configuration, it's a good idea to provide a simple function that sets up your design system. If we wanted to create a function for the "special" design system, we would use the following code:
+
+```ts
+export function provideSpecialDesignSystem(element?: HTMLElement): DesignSystem {
+    return DesignSystem.getOrCreate(element).withPrefix("special");
+}
+```
+
+The underlying `DesignSystem.getOrCreate` API gets the design system directly attached to the provided element. If one does not exist, it creates one. By default, if no element is provided, the design system is created on the `document.body`. Using this function abstracts those details and provides a much improved set of ergonomics to those using your components, while also giving you the opportunity to bake in certain configuration yourself, such as defining the default element prefix.
+
+Now consumers of your components can setup your design system in their application with the button component as follows:
+
+```ts
+provideSpecialDesignSystem()
+    .register(
+        specialButton()
+    );
+```
