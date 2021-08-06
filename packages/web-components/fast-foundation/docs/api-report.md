@@ -1477,6 +1477,8 @@ export class Picker extends FoundationElement {
     disconnectedCallback(): void;
     // @internal
     flyoutOpen: boolean;
+    // (undocumented)
+    focus(): void;
     handleFocusIn: (e: FocusEvent) => boolean;
     handleFocusOut: (e: FocusEvent) => boolean;
     handleItemInvoke: (e: Event) => boolean;
