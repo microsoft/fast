@@ -919,8 +919,10 @@ export class Picker extends FoundationElement {
                 el => this.selectedItems.indexOf(el) === -1
             );
         }
-        // if (this.filterQuery){
-
-        // }
+        if (this.filterQuery) {
+            this.filteredOptionsList = this.filteredOptionsList.filter(
+                el => el.indexOf(this.query) !== -1
+            );
+        }
     }
 }
