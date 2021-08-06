@@ -8,40 +8,57 @@
   "version": 1.1,
   "mapsToTagName": "fast-picker",
   "properties": {
-    "value": {
-      "description": "The value attribute",
-      "mapsToAttribute": "value",
+    "selection": {
+      "description": "The selection attribute",
+      "mapsToAttribute": "selection",
       "type": "string"
     },
-    "autofocus": {
-      "description": "The autofocus attribute",
-      "mapsToAttribute": "autofocus",
-      "type": "boolean"
-    },
-    "placeholder": {
-      "description": "The placeholder attribute",
-      "mapsToAttribute": "placeholder",
+    "options": {
+      "description": "The options attribute",
+      "mapsToAttribute": "options",
       "type": "string"
     },
-    "name": {
-      "description": "The name attribute",
-      "mapsToAttribute": "name",
+    "filter-selected": {
+      "default": true,
+      "description": "The filter-selected attribute",
+      "mapsToAttribute": "filter-selected",
+      "type": "boolean"
+    },
+    "filter-query": {
+      "default": true,
+      "description": "The filter-query attribute",
+      "mapsToAttribute": "filter-query",
+      "type": "boolean"
+    },
+    "max-selected": {
+      "description": "The max-selected attribute",
+      "mapsToAttribute": "max-selected",
+      "type": "number"
+    },
+    "no-suggestions-text": {
+      "description": "The no-suggestions-text attribute",
+      "mapsToAttribute": "no-suggestions-text",
       "type": "string"
     },
-    "required": {
-      "description": "The required attribute",
-      "mapsToAttribute": "required",
-      "type": "boolean"
+    "suggestions-available-text": {
+      "description": "The suggestions-available-text attribute",
+      "mapsToAttribute": "suggestions-available-text",
+      "type": "string"
     },
-    "disabled": {
-      "description": "The disabled attribute",
-      "mapsToAttribute": "disabled",
-      "type": "boolean"
+    "loading-text": {
+      "description": "The loading-text attribute",
+      "mapsToAttribute": "loading-text",
+      "type": "string"
     },
-    "readonly": {
-      "description": "The readonly attribute",
-      "mapsToAttribute": "readonly",
-      "type": "boolean"
+    "label": {
+      "description": "The label attribute",
+      "mapsToAttribute": "label",
+      "type": "string"
+    },
+    "labelledby": {
+      "description": "The labelledby attribute",
+      "mapsToAttribute": "labelledby",
+      "type": "string"
     },
     "Slot": {
       "description": "The default slot",

@@ -143,10 +143,8 @@ export class Picker extends FoundationElement {
      * Whether to display a loading state if the menu is opened.
      *
      * @alpha
-     * @remarks
-     * HTML Attribute: showloading
      */
-    @attr({ attribute: "showloading" })
+    @observable
     public showLoading: boolean = false;
     private showLoadingChanged(): void {
         if (this.$fastController.isConnected) {
