@@ -1,10 +1,12 @@
 import {
+    Behavior,
     BindingObserver,
     CSSDirective,
     defaultExecutionContext,
     FASTElement,
     observable,
     Observable,
+    TargetedHTMLDirective,
 } from "@microsoft/fast-element";
 import { DI, InterfaceSymbol, Registration } from "../di/di";
 import { composedParent } from "../utilities";
@@ -17,7 +19,7 @@ import type {
     StaticDesignTokenValue,
 } from "./interfaces";
 
-const defaultElement = document.body;
+const defaultElements = new WeakSet<HTMLElement>([document.body]);
 
 /**
  * Describes a DesignToken instance.
@@ -183,9 +185,11 @@ class DesignTokenImpl<T extends { createCSS?(): string }> extends CSSDirective
     }
 
     public getValueFor(element: HTMLElement): StaticDesignTokenValue<T> {
-        const node = DesignTokenNode.for(this, element);
-        Observable.track(node, "value");
-        return DesignTokenNode.for(this, element).value;
+        // const node = DesignTokenNode.getOrCreate(this, element);
+        // Observable.track(node, "value");
+        // return DesignTokenNode.getOrCreate(this, element).value;
+
+        return "REPLACE ME" as any;
     }
 
     public setValueFor(
@@ -199,7 +203,7 @@ class DesignTokenImpl<T extends { createCSS?(): string }> extends CSSDirective
             value = ((target: HTMLElement) =>
                 tokenValue.getValueFor(target)) as DerivedDesignTokenValue<T>;
         }
-        DesignTokenNode.for<T>(this, element).set(value);
+        // DesignTokenNode.getOrCreate<T>(this, element).set(value);
         [
             ...this.getOrCreateSubscriberSet(this),
             ...this.getOrCreateSubscriberSet(element),
@@ -209,12 +213,12 @@ class DesignTokenImpl<T extends { createCSS?(): string }> extends CSSDirective
 
     public deleteValueFor(element: HTMLElement): this {
         this._appliedTo.delete(element);
-        DesignTokenNode.for(this, element).delete();
+        // DesignTokenNode.getOrCreate(this, element).delete();
         return this;
     }
 
     public withDefault(value: DesignTokenValue<T> | DesignToken<T>) {
-        DesignTokenNode.for(this, defaultElement).set(value);
+        // DesignTokenNode.getOrCreate(this, defaultElement).set(value);
 
         return this;
     }
@@ -237,330 +241,126 @@ class DesignTokenImpl<T extends { createCSS?(): string }> extends CSSDirective
     }
 }
 
-const nodeCache = new WeakMap<HTMLElement, Map<DesignToken<any>, DesignTokenNode<any>>>();
-const channelCache = new Map<DesignToken<any>, InterfaceSymbol<DesignTokenNode<any>>>();
-const childToParent = new WeakMap<DesignTokenNode<any>, DesignTokenNode<any>>();
-const noop = Function.prototype;
+const nodeCache = new WeakMap<HTMLElement, DesignTokenNode>();
+const childToParent = new WeakMap<DesignTokenNode, DesignTokenNode>();
 
 /**
  * A node responsible for setting and getting token values,
  * emitting values to CSS custom properties, and maintaining
  * inheritance structures.
  */
-class DesignTokenNode<T extends { createCSS?(): string }> {
-    /** Track downstream nodes */
-    private children: Set<DesignTokenNode<any>> = new Set();
-    private bindingObserver: BindingObserver | undefined;
-
+class DesignTokenNode implements Behavior {
     /**
-     * The raw, unresolved value that was set for a token.
+     * Returns a DesignTokenNode for an element.
+     * Creates a new instance if one does not already exist for a node,
+     * otherwise returns the cached instance
+     *
+     * @param target - The HTML element to retrieve a DesignTokenNode for
      */
-    @observable
-    private _rawValue: DesignTokenValue<T> | undefined;
-    private _rawValueChanged() {
-        Observable.getNotifier(this).notify("value");
+    public static getOrCreate(target: HTMLElement): DesignTokenNode {
+        return nodeCache.get(target) || new DesignTokenNode(target);
     }
 
     /**
-     * The actual value set for the node, or undefined.
-     * This will be a reference to the original object for all data types
-     * passed by reference.
+     * Determines if a DesignTokenNode has been created for a target
+     * @param target - The element to test
      */
-    public get rawValue(): DesignTokenValue<T> | undefined {
-        return this._rawValue;
+    public static existsFor(target: HTMLElement): boolean {
+        return nodeCache.has(target);
     }
 
+    /**
+     * Searches for and return the nearest parent DesignTokenNode.
+     * Null is returned if no node is found or the node provided is for a default element.
+     */
+    public static findParent(node: DesignTokenNode): DesignTokenNode | null {
+        if (!defaultElements.has(node.target)) {
+            let parent = composedParent(node.target);
+
+            while (parent !== null) {
+                if (nodeCache.has(parent)) {
+                    return nodeCache.get(parent)!;
+                }
+
+                parent = composedParent(parent);
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * All children assigned to the node
+     */
     @observable
-    public useCSSCustomProperty = false;
-    private useCSSCustomPropertyChanged?(prev: undefined | boolean, next: boolean) {
-        if (next) {
-            Observable.getNotifier(this).subscribe(
-                this.cssCustomPropertySubscriber,
-                "value"
-            );
+    private children: Array<DesignTokenNode> = [];
 
-            this.cssCustomPropertySubscriber.handleChange();
-        } else if (prev) {
-            Observable.getNotifier(this).unsubscribe(
-                this.cssCustomPropertySubscriber,
-                "value"
-            );
-            this.cssCustomPropertySubscriber.dispose();
-        }
-    }
-
-    constructor(
-        public readonly token: DesignToken<T> | CSSDesignToken<T>,
-        public readonly target: HTMLElement | (HTMLElement & FASTElement)
-    ) {
-        if (nodeCache.has(target) && nodeCache.get(target)!.has(token)) {
-            throw new Error(
-                `DesignTokenNode already created for ${token.name} and ${target}. Use DesignTokenNode.for() to ensure proper reuse`
-            );
-        }
-
-        const container = DI.getOrCreateDOMContainer(this.target);
-        const channel = DesignTokenNode.channel(token);
-        container.register(Registration.instance(channel, this));
-
-        if (!DesignTokenImpl.isCSSDesignToken(token)) {
-            delete this.useCSSCustomPropertyChanged;
-        }
+    constructor(public readonly target: HTMLElement | (HTMLElement & FASTElement)) {
+        nodeCache.set(target, this);
 
         if (target instanceof FASTElement) {
             (target as FASTElement).$fastController.addBehaviors([this]);
-        } else {
-            this.findParentNode()?.appendChild(this);
+        } else if (target.isConnected) {
+            this.bind();
         }
     }
 
+    /**
+     * Invoked when the DesignTokenNode.target is attached to the document
+     */
     public bind() {
-        this.findParentNode()?.appendChild(this);
+        const parent = DesignTokenNode.findParent(this);
+
+        if (parent) {
+            parent.appendChild(this);
+        }
     }
 
+    /**
+     * Invoked when the DesignTokenNode.target is detached from the document
+     */
     public unbind() {
-        childToParent.get(this)?.removeChild(this);
-        this.tearDownBindingObserver();
-    }
-
-    private resolveRealValue(): T {
-        const rawValue = this.resolveRawValue();
-
-        if (DesignTokenNode.isDerivedTokenValue(rawValue)) {
-            if (!this.bindingObserver || this.bindingObserver.source !== rawValue) {
-                this.setupBindingObserver(rawValue);
-            }
-
-            return this.bindingObserver!.observe(this.target, defaultExecutionContext);
-        } else {
-            if (this.bindingObserver) {
-                this.tearDownBindingObserver();
-            }
-
-            return rawValue as any;
+        if (childToParent.has(this)) {
+            const parent = childToParent.get(this)!;
+            parent.removeChild(this);
         }
-    }
-
-    private resolveRawValue(): DesignTokenValue<T> {
-        /* eslint-disable-next-line */
-        let current: DesignTokenNode<T> | undefined = this;
-
-        do {
-            const { rawValue } = current;
-
-            if (rawValue !== void 0) {
-                return rawValue;
-            }
-
-            current = childToParent.get(current);
-        } while (current !== undefined);
-
-        // If there is no parent, try to resolve parent and try again.
-        if (!childToParent.has(this)) {
-            const parent = this.findParentNode();
-
-            if (parent) {
-                parent.appendChild(this);
-                return this.resolveRawValue();
-            }
-        }
-
-        throw new Error(
-            `Value could not be retrieved for token named "${this.token.name}". Ensure the value is set for ${this.target} or an ancestor of ${this.target}. `
-        );
-    }
-
-    private resolveCSSValue(value: T) {
-        return value && typeof value.createCSS === "function" ? value.createCSS() : value;
-    }
-
-    public static channel<T>(token: DesignToken<T>): InterfaceSymbol<DesignTokenNode<T>> {
-        return channelCache.has(token)
-            ? channelCache.get(token)!
-            : channelCache.set(token, DI.createInterface<DesignTokenNode<T>>()) &&
-                  channelCache.get(token)!;
-    }
-
-    private static isDerivedTokenValue<T>(
-        value: DesignTokenValue<T> | DesignTokenImpl<T>
-    ): value is DerivedDesignTokenValue<T> {
-        return typeof value === "function";
     }
 
     /**
-     * Invoked when parent node's value changes
+     * Appends a child to a parent DesignTokenNode.
+     * @param child - The child to append to the node
      */
-    public handleChange = this.unsetValueChangeHandler;
+    public appendChild(child: DesignTokenNode): void {
+        childToParent.get(child)?.removeChild(child);
+        const reParent = this.children.filter(x => child.contains(x));
 
-    private unsetValueChangeHandler(source: DesignTokenNode<T>, key: "value") {
-        if (this._rawValue === void 0) {
-            Observable.getNotifier(this).notify("value");
-        }
-    }
-
-    private setupBindingObserver(value: DerivedDesignTokenValue<T>) {
-        this.tearDownBindingObserver();
-
-        this.bindingObserver = Observable.binding(value, this.bindingChangeHandler);
-    }
-
-    private bindingChangeHandler = {
-        handleChange: () => {
-            Observable.getNotifier(this).notify("value");
-        },
-    };
-
-    private tearDownBindingObserver() {
-        if (this.bindingObserver) {
-            this.bindingObserver.disconnect();
-            this.bindingObserver = undefined;
-        }
-    }
-
-    private cssCustomPropertySubscriber = {
-        handleChange: () => {
-            CustomPropertyManager.removeFrom(
-                this.target,
-                this.token as CSSDesignToken<T>
-            );
-            CustomPropertyManager.addTo(
-                this.target,
-                this.token as CSSDesignToken<T>,
-                this.resolveCSSValue(this.value)
-            );
-        },
-        dispose: () => {
-            CustomPropertyManager.removeFrom(
-                this.target,
-                this.token as CSSDesignToken<T>
-            );
-        },
-    };
-
-    public static for<T>(token: DesignToken<T>, target: HTMLElement) {
-        const targetCache = nodeCache.has(target)
-            ? nodeCache.get(target)!
-            : nodeCache.set(target, new Map()) && nodeCache.get(target)!;
-        return targetCache.has(token)
-            ? targetCache.get(token)!
-            : targetCache.set(token, new DesignTokenNode(token, target)) &&
-                  targetCache.get(token)!;
-    }
-
-    public appendChild<T>(child: DesignTokenNode<T>) {
-        if (this.children.has(child)) {
-            return;
-        }
-
-        this.children.forEach(c => {
-            if (child.contains(c)) {
-                this.removeChild(c);
-                child.appendChild(c);
-            }
-        });
-
-        this.children.add(child);
-        Observable.getNotifier(this).subscribe(child, "value");
         childToParent.set(child, this);
-    }
+        this.children.push(child);
 
-    public removeChild<T>(child: DesignTokenNode<T>) {
-        this.children.delete(child);
-        childToParent.delete(child);
-        Observable.getNotifier(this).unsubscribe(child, "value");
-    }
-
-    public contains<T>(node: DesignTokenNode<T>) {
-        return composedContains(this.target, node.target);
-    }
-
-    private findParentNode(): DesignTokenNode<T> | null {
-        if (this.target === defaultElement) {
-            return null;
-        }
-
-        const parent = composedParent(this.target);
-
-        if (this.target !== document.body && parent) {
-            const container = DI.getOrCreateDOMContainer(parent);
-
-            // TODO: use Container.tryGet() when added by https://github.com/microsoft/fast/issues/4582
-            if (container.has(DesignTokenNode.channel(this.token), true)) {
-                return container.get(DesignTokenNode.channel(this.token));
-            }
-        }
-
-        return DesignTokenNode.for(this.token, defaultElement);
-    }
-
-    private tokenDependencySubscriber = {
-        handleChange: (record: DesignTokenChangeRecord<DesignToken<any>>) => {
-            const rawValue = this.resolveRawValue();
-            const target = DesignTokenNode.for(this.token, record.target);
-
-            // Only act on downstream nodes
-            if (
-                this.contains(target) &&
-                !target.useCSSCustomProperty &&
-                target.resolveRawValue() === rawValue
-            ) {
-                target.useCSSCustomProperty = true;
-            }
-        },
-    };
-
-    /**
-     * The resolved value for a node.
-     */
-    public get value(): T {
-        return this.resolveRealValue();
+        reParent.forEach(x => child.appendChild(x));
     }
 
     /**
-     * Sets a value for the node
-     * @param value The value to set
+     * Removes a child from an element if the
+     * @param child - The child to remove.
      */
-    public set(value: DesignTokenValue<T>): void {
-        if (value === this._rawValue) {
-            return;
+    public removeChild(child: DesignTokenNode): boolean {
+        const childIndex = this.children.indexOf(child);
+
+        if (childIndex !== -1) {
+            this.children.splice(childIndex, 1);
         }
 
-        this.handleChange = noop as () => void;
-        this._rawValue = value;
-
-        if (!this.useCSSCustomProperty) {
-            this.useCSSCustomProperty = true;
-        }
-
-        if (this.bindingObserver) {
-            const records = this.bindingObserver.records();
-
-            for (const record of records) {
-                if (
-                    record.propertySource instanceof DesignTokenNode &&
-                    record.propertySource.token instanceof DesignTokenImpl
-                ) {
-                    const { token } = record.propertySource;
-                    token.subscribe(this.tokenDependencySubscriber);
-                    token.appliedTo.forEach(target =>
-                        this.tokenDependencySubscriber.handleChange({ token, target })
-                    );
-                }
-            }
-        }
+        return childToParent.get(child) === this ? childToParent.delete(child) : false;
     }
 
     /**
-     * Deletes any value set for the node.
+     * Tests whether a provided node is contained by
+     * the calling node.
+     * @param test - The node to test
      */
-    public delete() {
-        if (this.useCSSCustomProperty) {
-            this.useCSSCustomProperty = false;
-        }
-
-        this._rawValue = void 0;
-        this.handleChange = this.unsetValueChangeHandler;
-        this.tearDownBindingObserver();
+    public contains(test: DesignTokenNode): boolean {
+        return composedContains(this.target, test.target);
     }
 }
 
@@ -589,4 +389,50 @@ function create<T>(nameOrConfig: string | DesignTokenConfiguration): any {
  */
 export const DesignToken = Object.freeze({
     create,
+
+    /**
+     * Informs DesignToken that an HTMLElement for which tokens have
+     * been set has been connected to the document.
+     *
+     * The browser does not provide a reliable mechanism to observe an HTMLElement's connectedness
+     * in all scenarios, so invoking this method manually is necessary when:
+     *
+     * 1. Token values are set for an HTMLElement.
+     * 2. The HTMLElement does not inherit from FASTElement.
+     * 3. The HTMLElement is not connected to the document when token values are set.
+     *
+     * @param element - The element to notify
+     * @returns - true if notification was successful, otherwise false.
+     */
+    notifyConnection(element: HTMLElement): boolean {
+        if (!element.isConnected || !DesignTokenNode.existsFor(element)) {
+            return false;
+        }
+
+        DesignTokenNode.getOrCreate(element).bind();
+
+        return true;
+    },
+
+    /**
+     * Informs DesignToken that an HTMLElement for which tokens have
+     * been set has been disconnected to the document.
+     *
+     * The browser does not provide a reliable mechanism to observe an HTMLElement's connectedness
+     * in all scenarios, so invoking this method manually is necessary when:
+     *
+     * 1. Token values are set for an HTMLElement.
+     * 2. The HTMLElement does not inherit from FASTElement.
+     *
+     * @param element - The element to notify
+     * @returns - true if notification was successful, otherwise false.
+     */
+    notifyDisconnection(element: HTMLElement): boolean {
+        if (element.isConnected || !DesignTokenNode.existsFor(element)) {
+            return false;
+        }
+
+        DesignTokenNode.getOrCreate(element).unbind();
+        return true;
+    },
 });
