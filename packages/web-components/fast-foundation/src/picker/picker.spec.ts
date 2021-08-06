@@ -17,7 +17,8 @@ import { KeyCodes } from "@microsoft/fast-web-utilities";
 
 const FASTPickerList = PickerList.compose({
     baseName: "picker-list",
-    template: pickerListTemplate
+    template: pickerListTemplate,
+    shadowOptions: null,
 })
 
 const FASTPickerListItem = PickerListItem.compose({
@@ -37,7 +38,10 @@ const FASTPickerMenuOption = PickerMenuOption.compose({
 
 const FASTPicker = Picker.compose({
     baseName: "picker",
-    template: pickerTemplate
+    template: pickerTemplate,
+    shadowOptions: {
+        delegatesFocus: true,
+    },
 })
 
 const enterEvent = new KeyboardEvent("keydown", {
@@ -101,6 +105,30 @@ describe("Picker", () => {
         await disconnect();
     });
 
+    it("picker should create a menu element when instanciated", async () => {
+        const { element, connect, disconnect } = await setupPicker();
+        await connect();
+
+        expect((element as Picker).menuElement).to.be.instanceof(PickerMenu);
+
+        await disconnect();
+    });
+
+    it("picker should move focus to the input element when focused", async () => {
+        const { element, connect, disconnect } = await setupPicker();
+        await connect();
+
+        await DOM.nextUpdate();
+
+        element.focus();
+
+        await DOM.nextUpdate();
+        console.debug(document.activeElement);
+        expect(document.activeElement === (element as Picker).listElement.inputElement).to.equal(true);
+
+        await disconnect();
+    });
+
 
 
     /**
@@ -122,7 +150,7 @@ describe("Picker", () => {
 
         await connect();
 
-        const inputElement: HTMLInputElement | null | undefined = element.shadowRoot?.querySelector('.input-element');
+        const inputElement: Element | null | undefined = element.querySelector('.input-element');
 
         expect(inputElement?.getAttribute("role")).to.equal("combobox");
 

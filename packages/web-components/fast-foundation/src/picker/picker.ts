@@ -364,9 +364,6 @@ export class Picker extends FoundationElement {
 
         this.listElement = document.createElement(this.selectedlisttag) as PickerList;
 
-        console.debug(this.selectedlisttag);
-        console.debug(this.pickermenutag);
-
         this.listElement.label = this.label;
         this.listElement.labelledby = this.labelledby;
         this.appendChild(this.listElement);
@@ -397,6 +394,12 @@ export class Picker extends FoundationElement {
         this.toggleFlyout(false);
         this.listElement.inputElement.removeEventListener("input", this.handleTextInput);
         this.listElement.inputElement.removeEventListener("click", this.handleInputClick);
+    }
+
+    public focus() {
+        if (this.listElement !== undefined) {
+            this.listElement?.inputElement.focus();
+        }
     }
 
     /**
