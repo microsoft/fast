@@ -157,6 +157,8 @@ export const keyHome: "Home" = "Home";
 export const keyEnd: "End" = "End";
 export const keySpace: " " = " ";
 export const keyTab: "Tab" = "Tab";
+export const keyBack: "Backspace" = "Backspace";
+export const keyDelete: "Delete" = "Delete";
 
 export const ArrowKeys = {
     ArrowDown: keyArrowDown,
