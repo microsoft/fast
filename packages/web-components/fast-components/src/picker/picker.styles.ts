@@ -14,9 +14,6 @@ export const pickerStyles: (
     definition: FoundationElementDefinition
 ) =>
     css`
-        :host {
-        }
-
         .region {
             z-index: 1000;
             overflow: hidden;

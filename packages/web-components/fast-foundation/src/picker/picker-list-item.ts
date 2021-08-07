@@ -1,4 +1,5 @@
 import { attr, html, HTMLView, observable, ViewTemplate } from "@microsoft/fast-element";
+import { keyEnter } from "@microsoft/fast-web-utilities";
 import { FoundationElement } from "../foundation-element";
 
 const defaultContentsTemplate: ViewTemplate<PickerListItem> = html`
@@ -31,7 +32,7 @@ export class PickerListItem extends FoundationElement {
     @observable
     public contentsTemplate: ViewTemplate;
 
-    private customView: HTMLView | null = null;
+    private customView: HTMLView | undefined;
 
     /**
      * @internal
@@ -45,8 +46,8 @@ export class PickerListItem extends FoundationElement {
      * @internal
      */
     public disconnectedCallback(): void {
-        super.disconnectedCallback();
         this.disconnectView();
+        super.disconnectedCallback();
     }
 
     public handleItemKeyDown = (e: KeyboardEvent): boolean => {
@@ -54,7 +55,7 @@ export class PickerListItem extends FoundationElement {
             return false;
         }
 
-        if (e.key === "Enter") {
+        if (e.key === keyEnter) {
             this.handleItemInvoke();
             return false;
         }
@@ -63,10 +64,9 @@ export class PickerListItem extends FoundationElement {
     };
 
     public handleItemClick = (e: MouseEvent): boolean => {
-        if (e.defaultPrevented) {
-            return false;
+        if (!e.defaultPrevented) {
+            this.handleItemInvoke();
         }
-        this.handleItemInvoke();
         return false;
     };
 
@@ -77,17 +77,14 @@ export class PickerListItem extends FoundationElement {
     private updateView(): void {
         this.disconnectView();
 
-        if (this.contentsTemplate !== undefined) {
-            this.customView = this.contentsTemplate.render(this, this);
-        } else {
-            this.customView = defaultContentsTemplate.render(this, this);
-        }
+        this.customView =
+            this.contentsTemplate !== undefined
+                ? this.contentsTemplate.render(this, this)
+                : defaultContentsTemplate.render(this, this);
     }
 
     private disconnectView(): void {
-        if (this.customView !== null) {
-            this.customView.dispose();
-            this.customView = null;
-        }
+        this.customView?.dispose();
+        this.customView = undefined;
     }
 }

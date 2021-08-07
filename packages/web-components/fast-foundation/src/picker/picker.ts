@@ -6,6 +6,18 @@ import {
     RepeatDirective,
     ViewTemplate,
 } from "@microsoft/fast-element";
+import {
+    keyArrowDown,
+    keyArrowLeft,
+    keyArrowRight,
+    keyArrowUp,
+    keyBack,
+    keyDelete,
+    keyEnd,
+    keyEnter,
+    keyEscape,
+    keyHome,
+} from "@microsoft/fast-web-utilities";
 import uniqueId from "lodash-es/uniqueId";
 import { FoundationElement } from "../foundation-element";
 import type { AnchoredRegion } from "../anchored-region";
@@ -119,8 +131,8 @@ export class Picker extends FoundationElement {
     @attr({ attribute: "label" })
     public label: string;
     private labelChanged(): void {
-        if (this.$fastController.isConnected && this.listElement !== undefined) {
-            this.listElement.setAttribute("label", this.label);
+        if (this.$fastController.isConnected) {
+            this.listElement?.setAttribute("label", this.label);
         }
     }
 
@@ -134,8 +146,8 @@ export class Picker extends FoundationElement {
     @attr({ attribute: "labelledby" })
     public labelledby: string;
     private labelledbyChanged(): void {
-        if (this.$fastController.isConnected && this.listElement !== undefined) {
-            this.listElement.setAttribute("labelledby", this.labelledby);
+        if (this.$fastController.isConnected) {
+            this.listElement?.setAttribute("labelledby", this.labelledby);
         }
     }
 
@@ -527,7 +539,7 @@ export class Picker extends FoundationElement {
             return false;
         }
         switch (e.key) {
-            case "Home": {
+            case keyHome: {
                 if (!this.flyoutOpen) {
                     this.toggleFlyout(true);
                 } else {
@@ -538,7 +550,7 @@ export class Picker extends FoundationElement {
                 return false;
             }
 
-            case "ArrowDown": {
+            case keyArrowDown: {
                 if (!this.flyoutOpen) {
                     this.toggleFlyout(true);
                 } else {
@@ -553,7 +565,7 @@ export class Picker extends FoundationElement {
                 return false;
             }
 
-            case "ArrowUp": {
+            case keyArrowUp: {
                 if (!this.flyoutOpen) {
                     this.toggleFlyout(true);
                 } else {
@@ -565,7 +577,7 @@ export class Picker extends FoundationElement {
                 return false;
             }
 
-            case "End": {
+            case keyEnd: {
                 if (!this.flyoutOpen) {
                     this.toggleFlyout(true);
                 } else {
@@ -577,12 +589,12 @@ export class Picker extends FoundationElement {
                 return false;
             }
 
-            case "Escape": {
+            case keyEscape: {
                 this.toggleFlyout(false);
                 return false;
             }
 
-            case "Enter": {
+            case keyEnter: {
                 if (
                     this.menuFocusIndex !== -1 &&
                     this.menuElement.optionElements.length > this.menuFocusIndex
@@ -592,7 +604,7 @@ export class Picker extends FoundationElement {
                 return false;
             }
 
-            case "ArrowRight": {
+            case keyArrowRight: {
                 if (document.activeElement !== this.listElement.inputElement) {
                     this.incrementFocusedItem(1);
                     return false;
@@ -601,7 +613,7 @@ export class Picker extends FoundationElement {
                 return true;
             }
 
-            case "ArrowLeft": {
+            case keyArrowLeft: {
                 if (this.listElement.inputElement.selectionStart === 0) {
                     this.incrementFocusedItem(-1);
                     return false;
@@ -610,8 +622,8 @@ export class Picker extends FoundationElement {
                 return true;
             }
 
-            case "Delete":
-            case "Backspace": {
+            case keyDelete:
+            case keyBack: {
                 if (document.activeElement === null) {
                     return true;
                 }

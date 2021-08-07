@@ -25,7 +25,7 @@ export class PickerMenuOption extends FoundationElement {
 
     public contentsTemplate: ViewTemplate;
 
-    private customView: HTMLView | null = null;
+    private customView: HTMLView | undefined;
 
     /**
      * @internal
@@ -58,17 +58,14 @@ export class PickerMenuOption extends FoundationElement {
     private updateView(): void {
         this.disconnectView();
 
-        if (this.contentsTemplate !== undefined) {
-            this.customView = this.contentsTemplate.render(this, this);
-        } else {
-            this.customView = defaultContentsTemplate.render(this, this);
-        }
+        this.customView =
+            this.contentsTemplate !== undefined
+                ? this.contentsTemplate.render(this, this)
+                : defaultContentsTemplate.render(this, this);
     }
 
     private disconnectView(): void {
-        if (this.customView !== null) {
-            this.customView.dispose();
-            this.customView = null;
-        }
+        this.customView?.dispose();
+        this.customView = undefined;
     }
 }

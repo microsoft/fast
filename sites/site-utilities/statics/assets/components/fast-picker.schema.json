@@ -60,9 +60,69 @@
       "mapsToAttribute": "labelledby",
       "type": "string"
     },
-    "Slot": {
-      "description": "The default slot",
-      "mapsToSlot": "",
+    "SlotListRegion": {
+      "description": "The list-region slot",
+      "mapsToSlot": "list-region",
+      "@microsoft/fast-tooling/dictionary-link": true,
+      "pluginId": "@microsoft/fast-tooling/linked-data",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "The ID of the data corresponding to a dictionary key",
+            "type": "string"
+          },
+          "dataLocation": {
+            "title": "The location of the data using lodash path syntax",
+            "type": "string"
+          }
+        }
+      }
+    },
+    "SlotMenuRegion": {
+      "description": "The menu-region slot",
+      "mapsToSlot": "menu-region",
+      "@microsoft/fast-tooling/dictionary-link": true,
+      "pluginId": "@microsoft/fast-tooling/linked-data",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "The ID of the data corresponding to a dictionary key",
+            "type": "string"
+          },
+          "dataLocation": {
+            "title": "The location of the data using lodash path syntax",
+            "type": "string"
+          }
+        }
+      }
+    },
+    "SlotNoOptionsRegion": {
+      "description": "The no-options-region slot",
+      "mapsToSlot": "no-options-region",
+      "@microsoft/fast-tooling/dictionary-link": true,
+      "pluginId": "@microsoft/fast-tooling/linked-data",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "The ID of the data corresponding to a dictionary key",
+            "type": "string"
+          },
+          "dataLocation": {
+            "title": "The location of the data using lodash path syntax",
+            "type": "string"
+          }
+        }
+      }
+    },
+    "SlotLoadingRegion": {
+      "description": "The loading-region slot",
+      "mapsToSlot": "loading-region",
       "@microsoft/fast-tooling/dictionary-link": true,
       "pluginId": "@microsoft/fast-tooling/linked-data",
       "type": "array",

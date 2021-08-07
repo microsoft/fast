@@ -7,5 +7,31 @@
   "type": "object",
   "version": 1.1,
   "mapsToTagName": "fast-picker-menu-option",
-  "properties": {}
+  "properties": {
+    "value": {
+      "description": "The value attribute",
+      "mapsToAttribute": "value",
+      "type": "string"
+    },
+    "Slot": {
+      "description": "The default slot",
+      "mapsToSlot": "",
+      "@microsoft/fast-tooling/dictionary-link": true,
+      "pluginId": "@microsoft/fast-tooling/linked-data",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "The ID of the data corresponding to a dictionary key",
+            "type": "string"
+          },
+          "dataLocation": {
+            "title": "The location of the data using lodash path syntax",
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
 }
