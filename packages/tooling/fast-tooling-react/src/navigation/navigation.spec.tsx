@@ -646,6 +646,122 @@ describe("Navigation", () => {
         const inputs3: any = rendered.find("input");
         expect(inputs3).toHaveLength(0);
     });
+    test("should toggle the expand state on an item if the expand item trigger has been clicked", () => {
+        const schema: any = {
+            id: "foo",
+            type: "object",
+            properties: {
+                bar: {
+                    type: "object",
+                    properties: {
+                        bat: {
+                            type: "string",
+                        },
+                    },
+                },
+            },
+        };
+        const data: any = {
+            bar: "hello world",
+        };
+        const navigation: NavigationConfig = [
+            {
+                "": {
+                    self: "",
+                    parent: null,
+                    relativeDataLocation: "",
+                    schemaLocation: "",
+                    schema,
+                    disabled: false,
+                    data,
+                    text: "bat",
+                    type: DataType.object,
+                    items: [],
+                },
+            },
+            "",
+        ];
+        const fastMessageSystem: MessageSystem = new MessageSystem({
+            webWorker: "",
+            dataDictionary: [
+                {
+                    "": {
+                        schemaId: schema.id,
+                        data,
+                    },
+                },
+                "",
+            ],
+            schemaDictionary: {
+                [schema.id]: schema,
+            },
+        });
+
+        const rendered: any = mount(
+            <Navigation {...navigationProps} messageSystem={fastMessageSystem} />
+        );
+
+        fastMessageSystem["register"].forEach((registeredItem: Register) => {
+            registeredItem.onMessage({
+                data: {
+                    type: MessageSystemType.initialize,
+                    activeDictionaryId: "",
+                    activeNavigationConfigId: "",
+                    schema,
+                    data,
+                    dataDictionary: [
+                        {
+                            "": {
+                                schemaId: schema.id,
+                                data,
+                            },
+                        },
+                        "",
+                    ],
+                    navigationDictionary: [
+                        {
+                            "": navigation,
+                        },
+                        "",
+                    ],
+                    navigation,
+                    schemaDictionary: {
+                        foo: schema,
+                    },
+                    historyLimit: 30,
+                } as InitializeMessageOutgoing,
+            } as any);
+        });
+
+        rendered
+            .find("Navigation")
+            .at(1)
+            .setState({
+                navigationDictionary: [
+                    {
+                        "": navigation,
+                    },
+                    "",
+                ],
+            });
+
+        const containingNavigationItem: any = rendered.find('div[role="treeitem"]').at(1);
+        const expandTrigger: any = containingNavigationItem.find("span").at(1);
+
+        expect(containingNavigationItem.prop("aria-expanded")).toBe(false);
+
+        expandTrigger.simulate("click");
+
+        expect(rendered.find('div[role="treeitem"]').at(1).prop("aria-expanded")).toBe(
+            true
+        );
+
+        expandTrigger.simulate("click");
+
+        expect(rendered.find('div[role="treeitem"]').at(1).prop("aria-expanded")).toBe(
+            false
+        );
+    });
     test("should update the navigations expanded items to include the navigation item parents when a message system navigation message is sent", () => {
         const schema: any = {
             id: "foo",
@@ -810,6 +926,188 @@ describe("Navigation", () => {
         const expandedItemsAfter = rendered.find("[aria-expanded=true]");
 
         expect(expandedItemsAfter.length).toEqual(3);
+    });
+    test("should update the navigations expanded items to include any non-dictionary expandable item when a message system navigation message is sent", () => {
+        const schema: any = {
+            id: "foo",
+            type: "object",
+            properties: {
+                obj: {
+                    type: "object",
+                    properties: {
+                        bat: {
+                            type: "string",
+                        },
+                    },
+                },
+                children: {
+                    ...linkedDataSchema,
+                },
+            },
+        };
+        const data: any = {
+            children: [
+                {
+                    id: "foo",
+                },
+            ],
+        };
+        const dataDictionary: DataDictionary<any> = [
+            {
+                "": {
+                    schemaId: schema.id,
+                    data,
+                },
+                foo: {
+                    parent: {
+                        id: "",
+                        dataLocation: "children",
+                    },
+                    schemaId: schema.id,
+                    data: {
+                        obj: {},
+                    },
+                },
+            },
+            "",
+        ];
+        const navigation1: NavigationConfig = [
+            {
+                "": {
+                    self: "",
+                    parent: null,
+                    relativeDataLocation: "",
+                    schemaLocation: "",
+                    schema,
+                    disabled: false,
+                    data,
+                    text: "foo",
+                    type: DataType.object,
+                    items: ["obj", "children"],
+                },
+                obj: {
+                    self: "obj",
+                    parent: "",
+                    relativeDataLocation: "obj",
+                    schemaLocation: "properties.obj",
+                    schema,
+                    disabled: false,
+                    data: {},
+                    text: "obj",
+                    type: DataType.object,
+                    items: [],
+                },
+                children: {
+                    self: "children",
+                    parent: "",
+                    relativeDataLocation: "children",
+                    schemaLocation: "properties.children",
+                    schema: schema.properties.children,
+                    disabled: false,
+                    data: data.children,
+                    text: "children",
+                    type: DataType.array,
+                    items: [""],
+                },
+            },
+            "",
+        ];
+        const navigation2: NavigationConfig = [
+            {
+                "": {
+                    self: "",
+                    parent: "",
+                    parentDictionaryItem: {
+                        id: "",
+                        dataLocation: "children",
+                    },
+                    relativeDataLocation: "",
+                    schemaLocation: "",
+                    schema,
+                    disabled: false,
+                    data: {
+                        obj: {},
+                    },
+                    text: "bar",
+                    type: DataType.object,
+                    items: [],
+                },
+            },
+            "",
+        ];
+        const fastMessageSystem: MessageSystem = new MessageSystem({
+            webWorker: "",
+            dataDictionary,
+            schemaDictionary: {
+                [schema.id]: schema,
+            },
+        });
+
+        const rendered: any = mount(
+            <Navigation {...navigationProps} messageSystem={fastMessageSystem} />
+        );
+
+        fastMessageSystem["register"].forEach((registeredItem: Register) => {
+            registeredItem.onMessage({
+                data: {
+                    type: MessageSystemType.initialize,
+                    activeDictionaryId: "",
+                    activeNavigationConfigId: "",
+                    schema,
+                    data,
+                    dataDictionary,
+                    navigationDictionary: [
+                        {
+                            "": navigation1,
+                            foo: navigation2,
+                        },
+                        "",
+                    ],
+                    navigation: navigation1,
+                    schemaDictionary: {
+                        foo: schema,
+                    },
+                    historyLimit: 30,
+                } as InitializeMessageOutgoing,
+            } as any);
+        });
+
+        expect(rendered.find("[aria-expanded=true]").length).toEqual(0);
+
+        fastMessageSystem["register"].forEach((registeredItem: Register) => {
+            registeredItem.onMessage({
+                data: {
+                    type: MessageSystemType.navigation,
+                    action: MessageSystemNavigationTypeAction.update,
+                    activeDictionaryId: "foo",
+                    activeNavigationConfigId: "",
+                },
+            } as any);
+        });
+
+        rendered
+            .find("Navigation")
+            .at(1)
+            .setState({
+                navigationDictionary: [
+                    {
+                        "": navigation1,
+                        foo: navigation2,
+                    },
+                    "",
+                ],
+            });
+
+        const containedObjectNavigationItem: any = rendered
+            .find('div[role="treeitem"]')
+            .at(2);
+        const containedObjectExpandTrigger: any = containedObjectNavigationItem
+            .find("span")
+            .at(1);
+
+        containedObjectExpandTrigger.simulate("click");
+
+        expect(rendered.find("[aria-expanded=true]").length).toEqual(4);
     });
     test("should only render object types if objects have been specified", () => {
         const schema: any = {
