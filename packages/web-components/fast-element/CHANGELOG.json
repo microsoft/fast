@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-element",
   "entries": [
     {
+      "date": "Tue, 03 Aug 2021 07:17:33 GMT",
+      "tag": "@microsoft/fast-element_v1.4.1",
+      "version": "1.4.1",
+      "comments": {
+        "none": [
+          {
+            "comment": "chore: eslint fixes in fast-element",
+            "author": "mathieu.lavoie@logmein.com",
+            "commit": "65e86a86cbf2b584f7a76081a9bef5a76e78b6f3",
+            "package": "@microsoft/fast-element"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 28 Jul 2021 07:17:22 GMT",
       "tag": "@microsoft/fast-element_v1.4.1",
       "version": "1.4.1",

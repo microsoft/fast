@@ -16,7 +16,7 @@ export const menuTemplate: (
     definition: FoundationElementDefinition
 ) => html`
     <template
-        slot="${x => (x.isNestedMenu() ? "submenu" : void 0)}"
+        slot="${x => (x.slot ? x.slot : x.isNestedMenu() ? "submenu" : void 0)}"
         role="menu"
         @keydown="${(x, c) => x.handleMenuKeyDown(c.event as KeyboardEvent)}"
         @focusout="${(x, c) => x.handleFocusOut(c.event as FocusEvent)}"

@@ -72,6 +72,15 @@ export class MonacoAdapter extends MessageSystemService<
                     });
                 }
                 break;
+            case MessageSystemType.dataDictionary:
+                this.dictionaryId = e.data.activeDictionaryId;
+                this.dataDictionary = e.data.dataDictionary;
+
+                break;
+            case MessageSystemType.data:
+                this.dataDictionary = e.data.dataDictionary;
+
+                break;
             case MessageSystemType.navigation:
                 this.dictionaryId = e.data.activeDictionaryId;
                 break;
@@ -141,16 +150,19 @@ export class MonacoAdapter extends MessageSystemService<
             .map((lineValue: string) => {
                 return lineValue.replace(/^\s*/g, "");
             });
-        const dataDictionary = mapVSCodeHTMLAndDataDictionaryToDataDictionary(
-            this.monacoModelValue.join("").replace(/\n/g, ""),
-            "text",
-            this.dataDictionary,
-            this.schemaDictionary
-        );
-
-        this.updateDictionaryIdAndNavigationConfigIdFromDataDictionary(dataDictionary);
 
         if (!isExternal) {
+            const dataDictionary = mapVSCodeHTMLAndDataDictionaryToDataDictionary(
+                this.monacoModelValue.join("").replace(/\n/g, ""),
+                "text",
+                this.dataDictionary,
+                this.schemaDictionary
+            );
+
+            this.updateDictionaryIdAndNavigationConfigIdFromDataDictionary(
+                dataDictionary
+            );
+
             this.messageSystem.postMessage({
                 type: MessageSystemType.initialize,
                 dataDictionary,
