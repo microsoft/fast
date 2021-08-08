@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "resolve the expanded navigation items mismatch after triggering the expand trigger then a navigation message",
-  "packageName": "@microsoft/fast-tooling-react",
-  "email": "7559015+janechu@users.noreply.github.com",
-  "dependentChangeType": "patch"
-}
