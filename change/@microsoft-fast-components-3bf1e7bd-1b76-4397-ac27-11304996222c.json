@@ -1,0 +1,7 @@
+{
+  "type": "none",
+  "comment": "remove css color assignment from body of storybook to ensure there missing values are not hidden or missed",
+  "packageName": "@microsoft/fast-components",
+  "email": "chhol@microsoft.com",
+  "dependentChangeType": "none"
+}
