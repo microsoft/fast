@@ -132,19 +132,25 @@ provideFASTDesignSystem()
     )
 ```
 
-It's also worth noting that this can be used to simply extend the existing styles, by importing the originals and composing those with new styles. Here's what that would look like:
+It's also worth noting that this can be used to extend the existing styles, by importing the originals and composing those with new styles by calling the style function. Here's what that would look like:
 
 ```ts
 provideFASTDesignSystem()
     .register(
         fastButton({
-            styles: css`
-                /* import and compose the original styles */
-                ${buttonStyles}
+            styles: (ctx, def) => css`
+                ${buttonStyles(ctx, def)}
                 /* add your style augmentations here */
             `
         })
     )
+```
+
+:::important
+
+At present, there is a minor typing bug across all the style functions, so you will need to cast the second argument as follows `${buttonStyles(ctx, def as any)}`. This issue will be fixed in an upcoming release.
+
+:::
 ```
 
 #### Shadow Options
