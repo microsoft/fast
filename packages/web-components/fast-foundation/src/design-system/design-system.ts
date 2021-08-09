@@ -78,13 +78,19 @@ export type ElementDefinitionCallback = (ctx: ElementDefinitionContext) => void;
 
 /**
  * The element definition context interface. Designed to be used in `tryDefineElement`
- * @param baseClass - FAST actual base class instance.
- * @param callback - A callback to invoke if definition will happen.
  * @public
  */
 export interface ElementDefinitionParams
     extends Pick<ElementDefinitionContext, "name" | "type"> {
-    baseClass?: Constructable;
+    /**
+     * FAST actual base class instance.
+     * @public
+     */
+    readonly baseClass?: Constructable;
+    /**
+     * A callback to invoke if definition will happen.
+     * @public
+     */
     callback: ElementDefinitionCallback;
 }
 

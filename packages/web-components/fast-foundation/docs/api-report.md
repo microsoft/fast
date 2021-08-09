@@ -874,9 +874,7 @@ export interface ElementDefinitionContext {
 
 // @public
 export interface ElementDefinitionParams extends Pick<ElementDefinitionContext, "name" | "type"> {
-    // (undocumented)
-    baseClass?: Constructable;
-    // (undocumented)
+    readonly baseClass?: Constructable;
     callback: ElementDefinitionCallback;
 }
 
