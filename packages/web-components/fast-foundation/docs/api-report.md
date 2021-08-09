@@ -733,7 +733,7 @@ export const DesignSystem: Readonly<{
 // @public
 export interface DesignSystemRegistrationContext {
     readonly elementPrefix: string;
-    tryDefineElement(name: string, type: Constructable, callback: ElementDefinitionCallback): any;
+    tryDefineElement(ctx: ElementDefinitionParams): any;
 }
 
 // @public
@@ -870,6 +870,14 @@ export interface ElementDefinitionContext {
     tagFor(type: Constructable): string;
     readonly type: Constructable;
     readonly willDefine: boolean;
+}
+
+// @public
+export interface ElementDefinitionParams extends Pick<ElementDefinitionContext, "name" | "type"> {
+    // (undocumented)
+    baseClass?: Constructable;
+    // (undocumented)
+    callback: ElementDefinitionCallback;
 }
 
 // @public

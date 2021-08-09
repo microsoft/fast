@@ -108,9 +108,11 @@ describe("DesignSystem", () => {
             .register({
                 register(container: Container) {
                     const context = container.get(DesignSystemRegistrationContext);
-                    context.tryDefineElement(elementName, customElement, x =>
-                        x.defineElement()
-                    );
+                    context.tryDefineElement({
+                        name: elementName,
+                        type: customElement,
+                        callback: x => x.defineElement()
+                    });
                 },
             });
 
@@ -131,21 +133,21 @@ describe("DesignSystem", () => {
                 {
                     register(container: Container) {
                         const context = container.get(DesignSystemRegistrationContext);
-                        context.tryDefineElement(
-                            elementName,
-                            class extends HTMLElement {},
-                            x => x.defineElement()
-                        );
+                        context.tryDefineElement({
+                            name: elementName,
+                            type: class extends HTMLElement {},
+                            callback: x => x.defineElement()
+                        });
                     },
                 },
                 {
                     register(container: Container) {
                         const context = container.get(DesignSystemRegistrationContext);
-                        context.tryDefineElement(
-                            elementName,
-                            class extends HTMLElement {},
-                            x => x.defineElement()
-                        );
+                        context.tryDefineElement({
+                            name: elementName,
+                            type: class extends HTMLElement {},
+                            callback: x => x.defineElement()
+                        });
                     },
                 }
             );
@@ -166,19 +168,21 @@ describe("DesignSystem", () => {
                 {
                     register(container: Container) {
                         const context = container.get(DesignSystemRegistrationContext);
-                        context.tryDefineElement(elementName, customElement, x =>
-                            x.defineElement()
-                        );
+                        context.tryDefineElement({
+                            name: elementName,
+                            type: customElement,
+                            callback: x => x.defineElement()
+                        });
                     },
                 },
                 {
                     register(container: Container) {
                         const context = container.get(DesignSystemRegistrationContext);
-                        context.tryDefineElement(
-                            elementName,
-                            class extends HTMLElement {},
-                            x => x.defineElement()
-                        );
+                        context.tryDefineElement({
+                            name: elementName,
+                            type: class extends HTMLElement {},
+                            callback: x => x.defineElement()
+                        });
                     },
                 }
             );
@@ -197,9 +201,13 @@ describe("DesignSystem", () => {
             .register({
                 register(container: Container) {
                     const context = container.get(DesignSystemRegistrationContext);
-                    context.tryDefineElement(elementName, customElement, x => {
-                        mode = x.shadowRootMode;
-                        x.defineElement();
+                    context.tryDefineElement({
+                        name: elementName,
+                        type: customElement,
+                        callback: x => {
+                            mode = x.shadowRootMode;
+                            x.defineElement();
+                        }
                     });
                 },
             });
@@ -218,9 +226,13 @@ describe("DesignSystem", () => {
             .register({
                 register(container: Container) {
                     const context = container.get(DesignSystemRegistrationContext);
-                    context.tryDefineElement(elementName, customElement, x => {
-                        mode = x.shadowRootMode;
-                        x.defineElement();
+                    context.tryDefineElement({
+                        name: elementName,
+                        type: customElement,
+                        callback: x => {
+                            mode = x.shadowRootMode;
+                            x.defineElement();
+                        }
                     });
                 },
             });
@@ -239,9 +251,13 @@ describe("DesignSystem", () => {
             .register({
                 register(container: Container) {
                     const context = container.get(DesignSystemRegistrationContext);
-                    context.tryDefineElement(elementName, customElement, x => {
-                        mode = x.shadowRootMode;
-                        x.defineElement();
+                    context.tryDefineElement({
+                        name: elementName,
+                        type: customElement,
+                        callback: x => {
+                            mode = x.shadowRootMode;
+                            x.defineElement();
+                        }
                     });
                 },
             });

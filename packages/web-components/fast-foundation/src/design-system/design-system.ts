@@ -76,7 +76,11 @@ export interface ElementDefinitionContext {
  */
 export type ElementDefinitionCallback = (ctx: ElementDefinitionContext) => void;
 
-interface ElementDefinitionParams
+/**
+ * The element definition context interface. Designed to be used in `tryDefineElement`
+ * @public
+ */
+export interface ElementDefinitionParams
     extends Pick<ElementDefinitionContext, "name" | "type"> {
     baseClass?: Constructable;
     callback: ElementDefinitionCallback;
@@ -96,9 +100,7 @@ export interface DesignSystemRegistrationContext {
 
     /**
      * Used to attempt to define a custom element.
-     * @param name - The name of the element to define.
-     * @param type - The type of the constructor to use to define the element.
-     * @param callback - A callback to invoke if definition will happen.
+     * @param ctx - The definition context.
      * @public
      */
     tryDefineElement(ctx: ElementDefinitionParams);
