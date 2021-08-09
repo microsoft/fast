@@ -129,6 +129,21 @@ describe("mapVSCodeParsedHTMLToDataDictionary", () => {
             },
         });
     });
+    it("should return a DataDictionary containing an HTML element with a string attribute if an HTML element with a string attribute has been passed when the attribute is presented as a number", () => {
+        const value = mapVSCodeParsedHTMLToDataDictionary({
+            value: ['<input name="1" />'],
+            schemaDictionary: {
+                [inputSchema.id]: inputSchema,
+            },
+        });
+        const root: string = value[1];
+        expect(value[0][root]).to.deep.equal({
+            schemaId: inputSchema.id,
+            data: {
+                name: "1",
+            },
+        });
+    });
     it("should return a DataDictionary containing an HTML element without a slot attribute as part of the data if an HTML element with a slot attribute has been passed", () => {
         const value = mapVSCodeParsedHTMLToDataDictionary({
             value: ['<input slot="bar" />'],
@@ -1345,6 +1360,84 @@ describe("mapVSCodeHTMLAndDataDictionaryToDataDictionary", () => {
             schemaId: "div",
             data: {
                 id: "",
+            },
+        });
+    });
+    it("should map boolean attributes", () => {
+        const mappedData = mapVSCodeHTMLAndDataDictionaryToDataDictionary(
+            "<input required />",
+            "text",
+            [
+                {
+                    root: {
+                        schemaId: "input",
+                        data: {},
+                    },
+                },
+                "root",
+            ],
+            {
+                [inputSchema.id]: inputSchema,
+            }
+        );
+        expect(mappedData[0].root).to.deep.equal({
+            schemaId: inputSchema.id,
+            data: {
+                required: true,
+            },
+        });
+    });
+    it("should map number attributes", () => {
+        const mappedData = mapVSCodeHTMLAndDataDictionaryToDataDictionary(
+            '<input value="5" />',
+            "text",
+            [
+                {
+                    root: {
+                        schemaId: "input",
+                        data: {},
+                    },
+                },
+                "root",
+            ],
+            {
+                [inputSchema.id]: inputSchema,
+            }
+        );
+        expect(mappedData[0].root).to.deep.equal({
+            schemaId: inputSchema.id,
+            data: {
+                value: 5,
+            },
+        });
+    });
+    it("should map a string attribute", () => {
+        const value = mapVSCodeParsedHTMLToDataDictionary({
+            value: ['<input name="foo" />'],
+            schemaDictionary: {
+                [inputSchema.id]: inputSchema,
+            },
+        });
+        const root: string = value[1];
+        expect(value[0][root]).to.deep.equal({
+            schemaId: inputSchema.id,
+            data: {
+                name: "foo",
+            },
+        });
+    });
+    it("should map a string attribute even when presented as a number", () => {
+        const value = mapVSCodeParsedHTMLToDataDictionary({
+            value: ['<input name="1" />'],
+            schemaDictionary: {
+                [inputSchema.id]: inputSchema,
+            },
+        });
+        const root: string = value[1];
+        expect(value[0][root]).to.deep.equal({
+            schemaId: inputSchema.id,
+            data: {
+                name: "1",
             },
         });
     });

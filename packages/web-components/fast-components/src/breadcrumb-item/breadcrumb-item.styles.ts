@@ -37,6 +37,7 @@ export const breadcrumbItemStyles: (
         line-height: ${typeRampBaseLineHeight};
         min-width: calc(${heightNumber} * 1px);
         outline: none;
+        color: ${neutralForegroundRest}
     }
 
     .listitem {
@@ -112,10 +113,8 @@ export const breadcrumbItemStyles: (
     }
 
     ::slotted(svg) {
-        ${
-            /* Glyph size and margin-left is temporary - 
-            replace when adaptive typography is figured out */ ""
-        } width: 16px;
+        /* TODO: adaptive typography https://github.com/microsoft/fast/issues/2432 */
+        width: 16px;
         height: 16px;
     }
 

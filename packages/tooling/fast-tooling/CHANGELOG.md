@@ -1,8 +1,72 @@
 # Change Log - @microsoft/fast-tooling
 
-This log was last generated on Sun, 25 Jul 2021 07:17:41 GMT and should not be manually modified.
+This log was last generated on Sun, 08 Aug 2021 07:18:56 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.26.2
+
+Sun, 08 Aug 2021 07:18:56 GMT
+
+### Patches
+
+- addresses an issue where on initially editing content the MonacoAdapter would switch the navigation location (7559015+janechu@users.noreply.github.com)
+
+## 0.26.1
+
+Thu, 05 Aug 2021 07:17:32 GMT
+
+### Patches
+
+- Bump @microsoft/fast-components to v2.5.6 (khamu@microsoft.com)
+
+## 0.26.0
+
+Wed, 04 Aug 2021 07:15:14 GMT
+
+### Minor changes
+
+- adding file and file action web components (44823142+williamw2@users.noreply.github.com)
+
+### Patches
+
+- fix image load resize bug in html render component (44823142+williamw2@users.noreply.github.com)
+- Bump @microsoft/fast-foundation to v2.6.3 (chhol@microsoft.com)
+- Bump @microsoft/fast-components to v2.5.5 (chhol@microsoft.com)
+
+## 0.25.7
+
+Tue, 03 Aug 2021 07:17:33 GMT
+
+### Patches
+
+- Bump @microsoft/fast-components to v2.5.4 (mathieu.lavoie@logmein.com)
+
+## 0.25.6
+
+Sun, 01 Aug 2021 07:17:15 GMT
+
+### Patches
+
+- ensure that the mapping of numbers and booleans works with the consolidated data mapping (7559015+janechu@users.noreply.github.com)
+- identifies the order of slotted items by their position in the data, instead of the data dictionary object (7559015+janechu@users.noreply.github.com)
+- fix word wrapping in htmlrender navigation pill (44823142+williamw2@users.noreply.github.com)
+
+## 0.25.5
+
+Thu, 29 Jul 2021 07:18:18 GMT
+
+### Patches
+
+- Bump @microsoft/fast-components to v2.5.2 (47367562+bheston@users.noreply.github.com)
+
+## 0.25.4
+
+Wed, 28 Jul 2021 07:17:22 GMT
+
+### Patches
+
+- Bump @microsoft/fast-element to v1.4.1 (nicholasrice@users.noreply.github.com)
 
 ## 0.25.3
 
