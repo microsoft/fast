@@ -119,6 +119,32 @@ describe("DesignSystem", () => {
         expect(customElements.get(elementName)).to.equal(customElement);
     });
 
+    it("Should register an element with a custom base class", () => {
+        const elementName = uniqueElementName();
+        const baseClass = class extends HTMLElement {};
+        const customElement = class extends baseClass {};
+        const host = document.createElement("div");
+
+        expect(customElements.get(elementName)).to.be.undefined;
+
+        DesignSystem.getOrCreate(host)
+            .register({
+                register(container: Container) {
+                    const context = container.get(DesignSystemRegistrationContext);
+                    context.tryDefineElement({
+                        name: elementName,
+                        type: customElement,
+                        callback: x => x.defineElement(),
+                        baseClass
+                    });
+                },
+            });
+
+        expect(customElements.get(elementName)).to.equal(customElement);
+        expect(DesignSystem.tagFor(baseClass)).to.equal(elementName);
+        expect(DesignSystem.tagFor(customElement)).to.equal(elementName);
+    });
+
     it("Should detect duplicate elements and allow disambiguation", () => {
         const elementName = uniqueElementName();
         const elementName2 = uniqueElementName();
