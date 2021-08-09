@@ -19,9 +19,9 @@ import {
     cssLayoutCssProperties,
     DataType,
     fastToolingColorPicker,
+    fastToolingCSSLayout,
     fastToolingFile,
     fastToolingFileActionObjectUrl,
-    fastToolingCSSLayout,
     MessageSystem,
 } from "@microsoft/fast-tooling";
 import {
