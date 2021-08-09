@@ -148,7 +148,7 @@ provideFASTDesignSystem()
 
 :::important
 
-At present, there is a minor typing bug across all the style functions, so you will need to cast the second argument as follows `${buttonStyles(ctx, def as any)}`. This issue will be fixed in an upcoming release.
+At present, there is a minor typing bug across all the style and template functions, so you will need to cast the second argument as follows `${buttonStyles(ctx, def as any)}`. This issue will be fixed in an upcoming release.
 
 :::
 ```
