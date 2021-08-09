@@ -148,7 +148,7 @@ provideFASTDesignSystem()
 
 :::important
 
-At present, there is a minor typing bug across all the style and template functions, so you will need to cast the second argument as follows `${buttonStyles(ctx, def as any)}`. This issue will be fixed in an upcoming release.
+At present, there is a minor typing bug across all the style and template functions, so you will need to cast the second argument as follows `${buttonStyles(ctx, def as any)}`. [We have tracked this issue](https://github.com/microsoft/fast/issues/5047) and are planning a fix soon.
 
 :::
 ```
