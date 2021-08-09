@@ -1324,6 +1324,122 @@ describe("mapVSCodeHTMLAndDataDictionaryToDataDictionary", () => {
             data: "<",
         });
     });
+    it("should map an existing data dictionary with a single attribute to an existing parsed HTMLvalue with multiple attributes", () => {
+        const mappedData = mapVSCodeHTMLAndDataDictionaryToDataDictionary(
+            '<div id="baz"><div id="foo" title="bar"></div></div>',
+            "text",
+            [
+                {
+                    root: {
+                        schemaId: "div",
+                        data: {
+                            foo: "bar",
+                            Slot: [
+                                {
+                                    id: "foo",
+                                },
+                            ],
+                        },
+                    },
+                    foo: {
+                        schemaId: "div",
+                        parent: {
+                            id: "root",
+                            dataLocation: "Slot",
+                        },
+                        data: {
+                            id: "foo",
+                        },
+                    },
+                },
+                "root",
+            ],
+            {
+                div: {
+                    $id: "div",
+                    id: "div",
+                    mapsToTagName: "div",
+                    properties: {
+                        id: {
+                            type: "string",
+                        },
+                        title: {
+                            type: "string",
+                        },
+                        Slot: {
+                            mapsToSlot: "",
+                        },
+                    },
+                },
+            }
+        );
+
+        const keys = Object.keys(mappedData[0]);
+
+        expect(keys).to.have.length(2);
+        expect(mappedData[0][keys[1]].data).to.deep.equal({
+            id: "foo",
+            title: "bar",
+        });
+    });
+    it("should map an existing data dictionary with multiple attributes to an existing parsed HTMLvalue with a single attribute", () => {
+        const mappedData = mapVSCodeHTMLAndDataDictionaryToDataDictionary(
+            '<div id="baz"><div id="foo"></div></div>',
+            "text",
+            [
+                {
+                    root: {
+                        schemaId: "div",
+                        data: {
+                            foo: "bar",
+                            Slot: [
+                                {
+                                    id: "foo",
+                                },
+                            ],
+                        },
+                    },
+                    foo: {
+                        schemaId: "div",
+                        parent: {
+                            id: "root",
+                            dataLocation: "Slot",
+                        },
+                        data: {
+                            id: "foo",
+                            title: "bar",
+                        },
+                    },
+                },
+                "root",
+            ],
+            {
+                div: {
+                    $id: "div",
+                    id: "div",
+                    mapsToTagName: "div",
+                    properties: {
+                        id: {
+                            type: "string",
+                        },
+                        title: {
+                            type: "string",
+                        },
+                        Slot: {
+                            mapsToSlot: "",
+                        },
+                    },
+                },
+            }
+        );
+
+        const keys = Object.keys(mappedData[0]);
+
+        expect(keys).to.have.length(2);
+        expect(mappedData[0][keys[1]].data).to.deep.equal({
+            id: "foo",
+        });
+    });
     it("should map an un-parsable attribute without throwing an error", () => {
         let mappedData;
 

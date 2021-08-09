@@ -32,7 +32,7 @@ function getLinkedDataDataLocations(
 
     for (let i = 0, length = allLinkedDataDictionaryIds.length; i < length; i++) {
         const linkedDataSlotName =
-            dataDictionary[0][allLinkedDataDictionaryIds[0]].parent.dataLocation;
+            dataDictionary[0][allLinkedDataDictionaryIds[i]].parent.dataLocation;
         const slottedIndex = dataDictionary[0][dictionaryId].data[linkedDataSlotName]
             .map(item => {
                 return item.id;
