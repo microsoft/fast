@@ -1,8 +1,24 @@
 # Change Log - @microsoft/fast-tooling-react
 
-This log was last generated on Wed, 04 Aug 2021 07:15:14 GMT and should not be manually modified.
+This log was last generated on Sun, 08 Aug 2021 07:18:56 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.10.2
+
+Sun, 08 Aug 2021 07:18:56 GMT
+
+### Patches
+
+- resolve the expanded navigation items mismatch after triggering the expand trigger then a navigation message (7559015+janechu@users.noreply.github.com)
+
+## 2.10.1
+
+Thu, 05 Aug 2021 07:17:32 GMT
+
+### Patches
+
+- Bump @microsoft/fast-tooling to v0.26.1 (khamu@microsoft.com)
 
 ## 2.10.0
 

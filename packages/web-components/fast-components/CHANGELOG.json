@@ -2,6 +2,36 @@
   "name": "@microsoft/fast-components",
   "entries": [
     {
+      "date": "Sun, 08 Aug 2021 07:18:56 GMT",
+      "tag": "@microsoft/fast-components_v2.5.7",
+      "version": "2.5.7",
+      "comments": {
+        "patch": [
+          {
+            "comment": "replace css comment expressions with normal css comments",
+            "author": "john.kreitlow@microsoft.com",
+            "commit": "a399c21d2af55d8a173c5bb8dec28bd1b7ee1b93",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 05 Aug 2021 07:17:32 GMT",
+      "tag": "@microsoft/fast-components_v2.5.6",
+      "version": "2.5.6",
+      "comments": {
+        "patch": [
+          {
+            "comment": "add border to badge and adjust padding size",
+            "author": "khamu@microsoft.com",
+            "commit": "627d25135c31330fb7d8e2b9c1abf01a79143f58",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 04 Aug 2021 07:15:14 GMT",
       "tag": "@microsoft/fast-components_v2.5.5",
       "version": "2.5.5",

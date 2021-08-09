@@ -70,7 +70,7 @@ export const toolbarStyles: (
         }
 
         ::slotted(svg) {
-            ${/* Glyph size is temporary - replace when adaptive typography is figured out */ ""}
+            /* TODO: adaptive typography https://github.com/microsoft/fast/issues/2432 */
             width: 16px;
             height: 16px;
         }

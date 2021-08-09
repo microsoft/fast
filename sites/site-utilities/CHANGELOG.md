@@ -1,8 +1,24 @@
 # Change Log - @microsoft/site-utilities
 
-This log was last generated on Wed, 04 Aug 2021 07:15:14 GMT and should not be manually modified.
+This log was last generated on Sun, 08 Aug 2021 07:18:56 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.9.0
+
+Sun, 08 Aug 2021 07:18:56 GMT
+
+### Patches
+
+- Bump @microsoft/fast-components to v2.5.7 (john.kreitlow@microsoft.com)
+
+## 0.9.0
+
+Thu, 05 Aug 2021 07:17:32 GMT
+
+### Patches
+
+- Bump @microsoft/fast-tooling-react to v2.10.1 (khamu@microsoft.com)
 
 ## 0.9.0
 
