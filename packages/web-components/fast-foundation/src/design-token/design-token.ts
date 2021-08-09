@@ -289,10 +289,34 @@ class DesignTokenNode implements Behavior {
     }
 
     /**
+     * Finds the closest node with a value explicitly assigned for a token, otherwise null.
+     * @param token - The token to look for
+     * @param start - The node to start looking for value assignment
+     * @returns
+     */
+    public static findClosestAssignedNode<T>(
+        token: DesignToken<T>,
+        start: DesignTokenNode
+    ) {
+        let current: DesignTokenNode | null = start;
+        do {
+            if (current.has(token)) {
+                return current;
+            }
+
+            current = current.parent;
+        } while (current !== null);
+    }
+
+    /**
      * All children assigned to the node
      */
     @observable
     private children: Array<DesignTokenNode> = [];
+
+    public get parent(): DesignTokenNode | null {
+        return childToParent.get(this) || null;
+    }
 
     constructor(public readonly target: HTMLElement | (HTMLElement & FASTElement)) {
         nodeCache.set(target, this);
@@ -302,6 +326,14 @@ class DesignTokenNode implements Behavior {
         } else if (target.isConnected) {
             this.bind();
         }
+    }
+
+    /**
+     * Checks if a token has been assigned an explicit value the node.
+     * @param token - the token to check.
+     */
+    public has<T>(token: DesignToken<T>): boolean {
+        return false;
     }
 
     /**
@@ -322,6 +354,10 @@ class DesignTokenNode implements Behavior {
         console.log("setting:", token, value);
     }
 
+    /**
+     * Deletes a token value for the node.
+     * @param token - The token to delete the value for
+     */
     public delete<T>(token: DesignToken<T>): void {
         console.log("deleting:", token);
     }
@@ -329,7 +365,7 @@ class DesignTokenNode implements Behavior {
     /**
      * Invoked when the DesignTokenNode.target is attached to the document
      */
-    public bind() {
+    public bind(): void {
         const parent = DesignTokenNode.findParent(this);
 
         if (parent) {
@@ -340,8 +376,8 @@ class DesignTokenNode implements Behavior {
     /**
      * Invoked when the DesignTokenNode.target is detached from the document
      */
-    public unbind() {
-        if (childToParent.has(this)) {
+    public unbind(): void {
+        if (this.parent) {
             const parent = childToParent.get(this)!;
             parent.removeChild(this);
         }
@@ -352,7 +388,9 @@ class DesignTokenNode implements Behavior {
      * @param child - The child to append to the node
      */
     public appendChild(child: DesignTokenNode): void {
-        childToParent.get(child)?.removeChild(child);
+        if (child.parent) {
+            childToParent.get(child)!.removeChild(child);
+        }
         const reParent = this.children.filter(x => child.contains(x));
 
         childToParent.set(child, this);
@@ -372,7 +410,7 @@ class DesignTokenNode implements Behavior {
             this.children.splice(childIndex, 1);
         }
 
-        return childToParent.get(child) === this ? childToParent.delete(child) : false;
+        return child.parent === this ? childToParent.delete(child) : false;
     }
 
     /**
