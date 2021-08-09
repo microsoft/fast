@@ -185,7 +185,15 @@ class DesignTokenImpl<T extends { createCSS?(): string }> extends CSSDirective
     }
 
     public getValueFor(element: HTMLElement): StaticDesignTokenValue<T> {
-        return DesignTokenNode.getOrCreate(element).get(this);
+        const value = DesignTokenNode.getOrCreate(element).get(this);
+
+        if (value !== undefined) {
+            return value;
+        }
+
+        throw new Error(
+            `Value could not be retrieved for token named "${this.name}". Ensure the value is set for ${element} or an ancestor of ${element}.`
+        );
     }
 
     public setValueFor(
@@ -297,7 +305,7 @@ class DesignTokenNode implements Behavior {
     public static findClosestAssignedNode<T>(
         token: DesignToken<T>,
         start: DesignTokenNode
-    ) {
+    ): DesignTokenNode | null {
         let current: DesignTokenNode | null = start;
         do {
             if (current.has(token)) {
@@ -306,6 +314,8 @@ class DesignTokenNode implements Behavior {
 
             current = current.parent;
         } while (current !== null);
+
+        return null;
     }
 
     /**
@@ -313,6 +323,8 @@ class DesignTokenNode implements Behavior {
      */
     @observable
     private children: Array<DesignTokenNode> = [];
+
+    private assignedTokens: Map<DesignToken<any>, DesignTokenValue<any>> = new Map();
 
     public get parent(): DesignTokenNode | null {
         return childToParent.get(this) || null;
@@ -333,7 +345,7 @@ class DesignTokenNode implements Behavior {
      * @param token - the token to check.
      */
     public has<T>(token: DesignToken<T>): boolean {
-        return false;
+        return this.assignedTokens.has(token);
     }
 
     /**
@@ -341,8 +353,14 @@ class DesignTokenNode implements Behavior {
      * @param token - The token to retrieve the value for
      * @returns
      */
-    public get<T>(token: DesignToken<T>): StaticDesignTokenValue<T> {
-        return 0 as any;
+    public get<T>(token: DesignToken<T>): StaticDesignTokenValue<T> | undefined {
+        const responsibleNode = DesignTokenNode.findClosestAssignedNode(token, this);
+
+        if (responsibleNode === this) {
+            return this.assignedTokens.get(token)!;
+        } else {
+            return responsibleNode?.get(token);
+        }
     }
 
     /**
@@ -351,7 +369,7 @@ class DesignTokenNode implements Behavior {
      * @param value - The value to set the token to
      */
     public set<T>(token: DesignToken<T>, value: DesignTokenValue<T>): void {
-        console.log("setting:", token, value);
+        this.assignedTokens.set(token, value);
     }
 
     /**
@@ -359,7 +377,7 @@ class DesignTokenNode implements Behavior {
      * @param token - The token to delete the value for
      */
     public delete<T>(token: DesignToken<T>): void {
-        console.log("deleting:", token);
+        this.assignedTokens.delete(token);
     }
 
     /**
