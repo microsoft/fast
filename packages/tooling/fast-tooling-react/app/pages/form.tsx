@@ -1,6 +1,11 @@
 import * as testConfigs from "./form/";
 import { AlignControl, Form } from "../../src";
-import { ControlConfig, StandardControlPlugin, TextAlignControl } from "../../src";
+import {
+    ControlConfig,
+    StandardControlPlugin,
+    TextAlignControl,
+    FileControl,
+} from "../../src";
 import CSSControl from "../../src/form/custom-controls/control.css";
 import { properties as allCSSProperties } from "@microsoft/fast-tooling/dist/esm/css-data";
 import { FormProps } from "../../src/form/form.props";
@@ -32,21 +37,29 @@ import { CSSStandardControlPlugin } from "../../src/form/custom-controls/css";
 import { CSSControlConfig } from "../../src/form/custom-controls/css/css.template.control.standard.props";
 import { DesignSystem } from "@microsoft/fast-foundation";
 import {
+    fastButton,
     fastCheckbox,
     fastNumberField,
     fastOption,
     fastSelect,
     fastTextField,
 } from "@microsoft/fast-components";
-import { fastToolingColorPicker } from "@microsoft/fast-tooling/dist/esm/web-components";
+import {
+    fastToolingColorPicker,
+    fastToolingFile,
+    fastToolingFileActionObjectUrl,
+} from "@microsoft/fast-tooling/dist/esm/web-components";
 
 DesignSystem.getOrCreate().register(
+    fastButton(),
     fastCheckbox(),
     fastNumberField(),
     fastOption(),
     fastSelect(),
     fastTextField(),
-    fastToolingColorPicker({ prefix: "fast-tooling" })
+    fastToolingColorPicker({ prefix: "fast-tooling" }),
+    fastToolingFile({ prefix: "fast-tooling" }),
+    fastToolingFileActionObjectUrl({ prefix: "fast-tooling" })
 );
 
 export type componentDataOnChange = (e: React.ChangeEvent<HTMLFormElement>) => void;
@@ -142,6 +155,16 @@ class FormTestPage extends React.Component<{}, FormTestPageState> {
         this.childOptions = this.getChildOptions();
 
         this.controlPlugins = [
+            new StandardControlPlugin({
+                id: testConfigs.customControl.schema.properties.file.formControlId,
+                control: (config: ControlConfig): React.ReactNode => {
+                    return (
+                        <FileControl {...config} accept=".jpg,.jpeg,.png,.gif">
+                            Add Image
+                        </FileControl>
+                    );
+                },
+            }),
             new StandardControlPlugin({
                 id: testConfigs.customControl.schema.properties.textAlign.formControlId,
                 control: (config: ControlConfig): React.ReactNode => {

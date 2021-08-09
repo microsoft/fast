@@ -126,6 +126,12 @@ Example of how to format `MIGRATION.md`:
 - `Bat` has been updated to use the new API [`BatConfig`](link/to/api).
 ```
 
+### Recommended Settings for Visual Studio Code
+
+You can use any code editor you like when working with the FAST monorepo. One of our favorites is [Visual Studio Code](https://code.visualstudio.com/). VS Code has great autocomplete support for TypeScript and JavaScript APIs, as well as a rich ecosystem of plugins.
+
+Default VS Code settings for this project are configured as [Workspace settings](https://code.visualstudio.com/docs/getstarted/settings) in the `.vscode` directory. These settings override user settings for the workspace and are configured to ensure consistent code formatting across different environments. We also include a list of [Workspace recommended extensions](https://code.visualstudio.com/docs/editor/extension-marketplace#_workspace-recommended-extensions) for VS Code for syntax highlighting and code linting.
+
 ## Contribution policy
 
 A “Contribution” is work voluntarily submitted to a project. This submitted work can include code, documentation, design, answering questions, or submitting and triaging issues.

@@ -5,6 +5,11 @@ export default {
     type: "object",
     id: "customControl",
     properties: {
+        file: {
+            title: "File",
+            type: "string",
+            formControlId: "custom-controls/file",
+        },
         textAlign: {
             title: "Text align",
             type: "string",

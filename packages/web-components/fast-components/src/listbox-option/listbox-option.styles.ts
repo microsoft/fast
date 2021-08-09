@@ -114,9 +114,7 @@ export const optionStyles: (
     }
 
     ::slotted(svg) {
-        ${
-            /* Glyph size and margin-left is temporary - replace when adaptive typography is figured out */ ""
-        }
+        /* TODO: adaptive typography https://github.com/microsoft/fast/issues/2432 */
         height: calc(${designUnit} * 4px);
         width: calc(${designUnit} * 4px);
     }
