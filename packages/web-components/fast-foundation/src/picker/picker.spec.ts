@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import {     
+import {
     Picker,
     PickerList,
     PickerListItem,
@@ -9,11 +9,23 @@ import {
     PickerMenuOption,
     pickerMenuOptionTemplate,
     pickerMenuTemplate,
-    pickerTemplate, 
+    pickerTemplate,
 } from "./index";
 import { fixture } from "../test-utilities/fixture";
 import { DOM } from "@microsoft/fast-element";
-import { KeyCodes } from "@microsoft/fast-web-utilities";
+import {
+    keyArrowDown,
+    keyArrowLeft,
+    keyArrowRight,
+    keyArrowUp,
+    keyBack,
+    KeyCodes,
+    keyDelete,
+    keyEnd,
+    keyEnter,
+    keyEscape,
+    keyHome,
+} from "@microsoft/fast-web-utilities";
 
 const FASTPickerList = PickerList.compose({
     baseName: "picker-list",
@@ -45,8 +57,20 @@ const FASTPicker = Picker.compose({
 })
 
 const enterEvent = new KeyboardEvent("keydown", {
-    key: "Enter",
+    key: keyEnter,
     keyCode: KeyCodes.enter,
+    bubbles: true,
+} as KeyboardEventInit);
+
+const arrowLeftEvent = new KeyboardEvent("keydown", {
+    key: keyArrowLeft,
+    keyCode: KeyCodes.arrowLeft,
+    bubbles: true,
+} as KeyboardEventInit);
+
+const arrowRightEvent = new KeyboardEvent("keydown", {
+    key: keyArrowRight,
+    keyCode: KeyCodes.arrowRight,
     bubbles: true,
 } as KeyboardEventInit);
 
@@ -54,10 +78,10 @@ const enterEvent = new KeyboardEvent("keydown", {
 async function setupPicker() {
     const { element, connect, disconnect } = await fixture(
         [
-            FASTPicker(), 
-            FASTPickerList(), 
-            FASTPickerListItem(), 
-            FASTPickerMenu(), 
+            FASTPicker(),
+            FASTPickerList(),
+            FASTPickerListItem(),
+            FASTPickerMenu(),
             FASTPickerMenuOption()
         ]
     );
@@ -114,6 +138,20 @@ describe("Picker", () => {
         await disconnect();
     });
 
+    it("picker should generate list items for selected elements", async () => {
+        const { element, connect, disconnect } = await setupPicker();
+
+        element.selection = "apples,oranges,bananas"
+
+        await connect();
+
+        await DOM.nextUpdate();
+
+        expect(element.querySelectorAll("fast-picker-list-item").length).to.equal(3);
+
+        await disconnect();
+    });
+
     it("picker should move focus to the input element when focused", async () => {
         const { element, connect, disconnect } = await setupPicker();
         await connect();
@@ -123,13 +161,53 @@ describe("Picker", () => {
         element.focus();
 
         await DOM.nextUpdate();
-        console.debug(document.activeElement);
+
         expect(document.activeElement === (element as Picker).listElement.inputElement).to.equal(true);
 
         await disconnect();
     });
 
+    it("picker should move focus accross list items with left/right arrow keys", async () => {
+        const { element, connect, disconnect } = await setupPicker();
 
+        element.selection = "apples,oranges,bananas"
+
+        await connect();
+
+        await DOM.nextUpdate();
+        element.focus();
+        await DOM.nextUpdate();
+
+        expect(document.activeElement === (element as Picker).listElement.inputElement).to.equal(true);
+
+        const listItems: Element[] = Array.from(element.querySelectorAll("fast-picker-list-item"));
+
+        element.dispatchEvent(arrowLeftEvent);
+        expect(document.activeElement === listItems[2]).to.equal(true);
+
+        element.dispatchEvent(arrowLeftEvent);
+        expect(document.activeElement === listItems[1]).to.equal(true);
+
+        element.dispatchEvent(arrowLeftEvent);
+        expect(document.activeElement === listItems[0]).to.equal(true);
+
+        element.dispatchEvent(arrowLeftEvent);
+        expect(document.activeElement === listItems[0]).to.equal(true);
+
+        element.dispatchEvent(arrowRightEvent);
+        expect(document.activeElement === listItems[1]).to.equal(true);
+
+        element.dispatchEvent(arrowRightEvent);
+        expect(document.activeElement === listItems[2]).to.equal(true);
+
+        element.dispatchEvent(arrowRightEvent);
+        expect(document.activeElement === (element as Picker).listElement.inputElement).to.equal(true);
+
+        element.dispatchEvent(arrowRightEvent);
+        expect(document.activeElement === (element as Picker).listElement.inputElement).to.equal(true);
+
+        await disconnect();
+    });
 
     /**
      *  Picker-list tests
@@ -144,7 +222,7 @@ describe("Picker", () => {
         await disconnect();
     });
 
-    
+
     it("picker list should include a text input with role of 'combobox'", async () => {
         const { element, connect, disconnect } = await setupPickerList();
 
@@ -162,11 +240,11 @@ describe("Picker", () => {
      */
      it("picker list-item should include a role of `listitem`", async () => {
         const { element, connect, disconnect } = await setupPickerListItem();
-    
+
         await connect();
-    
+
         expect(element.getAttribute("role")).to.equal("listitem");
-    
+
         await disconnect();
     });
 
@@ -211,11 +289,11 @@ describe("Picker", () => {
      */
     it("picker menu should include a role of `list`", async () => {
         const { element, connect, disconnect } = await setupPickerMenu();
-    
+
         await connect();
-    
+
         expect(element.getAttribute("role")).to.equal("list");
-    
+
         await disconnect();
     });
 
@@ -224,11 +302,11 @@ describe("Picker", () => {
      */
     it("picker menu-option should include a role of `listitem`", async () => {
         const { element, connect, disconnect } = await setupPickerMenuOption();
-        
+
         await connect();
-        
+
         expect(element.getAttribute("role")).to.equal("listitem");
-        
+
         await disconnect();
     });
 
