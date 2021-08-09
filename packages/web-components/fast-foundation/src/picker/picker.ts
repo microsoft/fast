@@ -519,6 +519,7 @@ export class Picker extends FoundationElement {
      */
     private handleInputClick = (e: MouseEvent): void => {
         e.preventDefault();
+        this.toggleFlyout(true);
     };
 
     /**
@@ -929,7 +930,7 @@ export class Picker extends FoundationElement {
                 el => this.selectedItems.indexOf(el) === -1
             );
         }
-        if (this.filterQuery) {
+        if (this.filterQuery && this.query !== "" && this.query !== undefined) {
             this.filteredOptionsList = this.filteredOptionsList.filter(
                 el => el.indexOf(this.query) !== -1
             );

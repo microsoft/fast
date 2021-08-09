@@ -74,6 +74,18 @@ const arrowRightEvent = new KeyboardEvent("keydown", {
     bubbles: true,
 } as KeyboardEventInit);
 
+const backEvent = new KeyboardEvent("keydown", {
+    key: keyBack,
+    keyCode: KeyCodes.back,
+    bubbles: true,
+} as KeyboardEventInit);
+
+const deleteEvent = new KeyboardEvent("keydown", {
+    key: keyDelete,
+    keyCode: KeyCodes.delete,
+    bubbles: true,
+} as KeyboardEventInit);
+
 
 async function setupPicker() {
     const { element, connect, disconnect } = await fixture(
@@ -160,8 +172,6 @@ describe("Picker", () => {
 
         element.focus();
 
-        await DOM.nextUpdate();
-
         expect(document.activeElement === (element as Picker).listElement.inputElement).to.equal(true);
 
         await disconnect();
@@ -176,7 +186,6 @@ describe("Picker", () => {
 
         await DOM.nextUpdate();
         element.focus();
-        await DOM.nextUpdate();
 
         expect(document.activeElement === (element as Picker).listElement.inputElement).to.equal(true);
 
@@ -205,6 +214,35 @@ describe("Picker", () => {
 
         element.dispatchEvent(arrowRightEvent);
         expect(document.activeElement === (element as Picker).listElement.inputElement).to.equal(true);
+
+        await disconnect();
+    });
+
+    it("picker should delete entries with delete/backspace keystrokes", async () => {
+        const { element, connect, disconnect } = await setupPicker();
+
+        element.selection = "apples,oranges,bananas"
+
+        await connect();
+
+        await DOM.nextUpdate();
+        element.focus();
+
+        let listItems: Element[] = Array.from(element.querySelectorAll("fast-picker-list-item"));
+        expect(listItems.length).to.equal(3);
+        expect(element.selection).to.equal("apples,oranges,bananas");
+
+        element.dispatchEvent(backEvent);
+        await DOM.nextUpdate();
+        listItems = Array.from(element.querySelectorAll("fast-picker-list-item"));
+        expect(listItems.length).to.equal(2);
+        expect(element.selection).to.equal("apples,oranges");
+
+        element.dispatchEvent(deleteEvent);
+        await DOM.nextUpdate();
+        listItems = Array.from(element.querySelectorAll("fast-picker-list-item"));
+        expect(listItems.length).to.equal(1);
+        expect(element.selection).to.equal("apples");
 
         await disconnect();
     });
