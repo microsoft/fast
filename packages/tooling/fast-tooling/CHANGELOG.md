@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-tooling
 
-This log was last generated on Thu, 05 Aug 2021 07:17:32 GMT and should not be manually modified.
+This log was last generated on Sun, 08 Aug 2021 07:18:56 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.26.2
+
+Sun, 08 Aug 2021 07:18:56 GMT
+
+### Patches
+
+- addresses an issue where on initially editing content the MonacoAdapter would switch the navigation location (7559015+janechu@users.noreply.github.com)
 
 ## 0.26.1
 
