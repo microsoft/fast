@@ -34,7 +34,7 @@ export interface FoundationElementDefinition {
     baseName: string;
 
     /**
-     * The actual FAST base class of the component.
+     * The actual FAST base class of the component if different from the class used to compose.
      */
     baseClass?: Constructable;
 
