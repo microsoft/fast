@@ -1,8 +1,46 @@
 # Change Log - @microsoft/fast-tooling-react
 
-This log was last generated on Sun, 01 Aug 2021 07:17:15 GMT and should not be manually modified.
+This log was last generated on Sun, 08 Aug 2021 07:18:56 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.10.2
+
+Sun, 08 Aug 2021 07:18:56 GMT
+
+### Patches
+
+- resolve the expanded navigation items mismatch after triggering the expand trigger then a navigation message (7559015+janechu@users.noreply.github.com)
+
+## 2.10.1
+
+Thu, 05 Aug 2021 07:17:32 GMT
+
+### Patches
+
+- Bump @microsoft/fast-tooling to v0.26.1 (khamu@microsoft.com)
+
+## 2.10.0
+
+Wed, 04 Aug 2021 07:15:14 GMT
+
+### Minor changes
+
+- adding file component react wrapper (44823142+williamw2@users.noreply.github.com)
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.6.3 (chhol@microsoft.com)
+- Bump @microsoft/fast-tooling to v0.26.0 (44823142+williamw2@users.noreply.github.com)
+- Bump @microsoft/fast-components to v2.5.5 (chhol@microsoft.com)
+
+## 2.9.10
+
+Tue, 03 Aug 2021 07:17:33 GMT
+
+### Patches
+
+- Bump @microsoft/fast-tooling to v0.25.7 (mathieu.lavoie@logmein.com)
 
 ## 2.9.9
 
