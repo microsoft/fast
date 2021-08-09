@@ -6,6 +6,7 @@ import {
     FASTElement,
     observable,
     Observable,
+    Splice,
     TargetedHTMLDirective,
 } from "@microsoft/fast-element";
 import { DI, InterfaceSymbol, Registration } from "../di/di";
@@ -235,7 +236,27 @@ class DesignTokenImpl<T extends { createCSS?(): string }> extends CSSDirective
         subscriber: DesignTokenSubscriber<this>,
         target?: HTMLElement
     ): void {
-        this.getOrCreateSubscriberSet(target).delete(subscriber);
+        const list = this.subscribers.get(target || this);
+
+        if (list && list.has(subscriber)) {
+            list.delete(subscriber);
+        }
+    }
+
+    /**
+     * Notifies subscribers that the value for an element has changed.
+     * @param element - The element to emit a notification for
+     */
+    public notify(element: HTMLElement) {
+        const record = Object.freeze({ token: this, target: element });
+
+        if (this.subscribers.has(this)) {
+            this.subscribers.get(this)!.forEach(sub => sub.handleChange(record));
+        }
+
+        if (this.subscribers.has(element)) {
+            this.subscribers.get(element)!.forEach(sub => sub.handleChange(record));
+        }
     }
 
     /**
@@ -356,11 +377,16 @@ class DesignTokenNode implements Behavior {
     public get<T>(token: DesignToken<T>): StaticDesignTokenValue<T> | undefined {
         const responsibleNode = DesignTokenNode.findClosestAssignedNode(token, this);
 
-        if (responsibleNode === this) {
-            return this.assignedTokens.get(token)!;
-        } else {
-            return responsibleNode?.get(token);
+        if (!responsibleNode) {
+            return;
         }
+
+        const value =
+            responsibleNode === this
+                ? this.assignedTokens.get(token)!
+                : responsibleNode!.get(token);
+
+        return value;
     }
 
     /**
