@@ -1,5 +1,7 @@
 import {
     Behavior,
+    Binding,
+    BindingObserver,
     CSSDirective,
     defaultExecutionContext,
     FASTElement,
@@ -345,6 +347,64 @@ class CustomPropertyReflector {
     }
 }
 
+class DerivedValueBindingContainer<T> implements Subscriber {
+    @observable private _value: T;
+    public _valueChanged() {
+        this.token.notify(this.node.target);
+    }
+
+    public get value() {
+        return this._value;
+    }
+
+    private bindingObserver: BindingObserver<HTMLElement, T>;
+    constructor(
+        public readonly binding: Binding<HTMLElement, T>,
+        private token: DesignTokenImpl<T>,
+        private node: DesignTokenNode
+    ) {
+        this.bindingObserver = Observable.binding(binding, this, false);
+        this._value = this.bindingObserver.observe(node.target, defaultExecutionContext);
+        this.dependencies = Object.freeze([...this.collectDependencies()]);
+    }
+
+    /**
+     * Handles change emitted from the BindingObserver.
+     * @internal
+     */
+    handleChange() {
+        this._value = this.bindingObserver.observe(
+            this.node.target,
+            defaultExecutionContext
+        );
+    }
+
+    /**
+     * Dispose of the DerivedValueBindingContainer
+     */
+    public dispose() {
+        this.bindingObserver.disconnect();
+    }
+
+    public readonly dependencies: ReadonlyArray<DesignTokenImpl<any>>;
+
+    private collectDependencies() {
+        const dependencies = new Set<DesignTokenImpl<any>>();
+
+        for (const record of this.bindingObserver.records()) {
+            if (record.propertySource instanceof DesignTokenNode) {
+                const token = DesignTokenImpl.getTokenById(record.propertyName);
+
+                if (token !== undefined) {
+                    dependencies.add(token);
+                }
+            }
+        }
+
+        return dependencies;
+    }
+}
+
 const nodeCache = new WeakMap<HTMLElement, DesignTokenNode>();
 const childToParent = new WeakMap<DesignTokenNode, DesignTokenNode>();
 
@@ -466,9 +526,16 @@ class DesignTokenNode implements Behavior, Subscriber {
         Observable.track(this, token.id);
 
         if (raw !== undefined) {
-            return DesignTokenImpl.isDerivedDesignTokenValue(raw)
-                ? raw(this.target)
-                : (raw as any);
+            if (raw instanceof DerivedValueBindingContainer) {
+                // This is probably a little extra, we really only need to evaluate the fn
+                // const container = new DerivedValueBindingContainer(raw.binding, token, this);
+                // const { value } = container;
+                // container.dispose();
+                return raw.binding(this.target, defaultExecutionContext);
+                // return value;
+            } else {
+                return raw as any;
+            }
         }
 
         return undefined;
@@ -493,9 +560,38 @@ class DesignTokenNode implements Behavior, Subscriber {
      * @param value - The value to set the token to
      */
     public set<T>(token: DesignTokenImpl<T>, value: DesignTokenValue<T>): void {
-        this.assignedTokens.set(token, value);
+        if (this.assignedTokens.has(token)) {
+            const prev = this.assignedTokens.get(token);
 
-        token.notify(this.target);
+            if (prev instanceof DerivedValueBindingContainer) {
+                prev.dispose();
+            }
+        }
+
+        if (DesignTokenImpl.isDerivedDesignTokenValue(value)) {
+            const container = new DerivedValueBindingContainer(value, token, this);
+            this.assignedTokens.set(token, container);
+            const { dependencies } = container;
+
+            if (DesignTokenImpl.isCSSDesignToken(token)) {
+                dependencies.forEach(tokenDependency => {
+                    const { appliedTo } = tokenDependency;
+
+                    appliedTo.forEach(target => {
+                        const appliedToNode = DesignTokenNode.getOrCreate(target);
+                        if (
+                            this.contains(appliedToNode) &&
+                            appliedToNode.getRaw(token) === this.assignedTokens.get(token)
+                        ) {
+                            appliedToNode.reflectToCSS(token as any);
+                        }
+                    });
+                });
+            }
+        } else {
+            this.assignedTokens.set(token, value);
+            token.notify(this.target);
+        }
 
         if (DesignTokenImpl.isCSSDesignToken(token)) {
             this.reflectToCSS(token);

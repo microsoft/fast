@@ -796,7 +796,7 @@ describe("A DesignToken", () => {
             }})
         });
 
-        it("should notify a subscriber when a dependency of a subscribed token changes", () => {
+        it("should notify a subscriber when a dependency of a subscribed token changes", async () => {
             const tokenA = DesignToken.create<number>("a");
             const tokenB = DesignToken.create<number>("b");
 
@@ -812,10 +812,11 @@ describe("A DesignToken", () => {
             tokenB.subscribe(subscriber);
 
             tokenA.withDefault(7);
+            await DOM.nextUpdate();
             expect(handleChange).to.have.been.called();
         });
 
-        it("should notify a subscriber when a dependency of a dependency of a subscribed token changes", () => {
+        it("should notify a subscriber when a dependency of a dependency of a subscribed token changes", async () => {
             const tokenA = DesignToken.create<number>("a");
             const tokenB = DesignToken.create<number>("b");
             const tokenC = DesignToken.create<number>("c");
@@ -833,10 +834,11 @@ describe("A DesignToken", () => {
             tokenC.subscribe(subscriber);
 
             tokenA.withDefault(7);
+            await DOM.nextUpdate();
             expect(handleChange).to.have.been.called()
         });
 
-        it("should notify a subscriber when a dependency changes for an element down the DOM tree", () => {
+        it("should notify a subscriber when a dependency changes for an element down the DOM tree", async () => {
             const tokenA = DesignToken.create<number>("a");
             const tokenB = DesignToken.create<number>("b");
 
@@ -854,6 +856,7 @@ describe("A DesignToken", () => {
             tokenB.subscribe(subscriber);
 
             tokenA.setValueFor(target, 7);
+            await DOM.nextUpdate();
             expect(handleChange).to.have.been.called();
         })
     });
