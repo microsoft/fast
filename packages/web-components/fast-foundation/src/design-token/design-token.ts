@@ -317,7 +317,7 @@ class CustomPropertyReflector {
     }
 
     private remove(token: CSSDesignToken<any>, target: HTMLElement) {
-        CustomPropertyManager.removeFrom(target, token as CSSDesignToken<any>);
+        CustomPropertyManager.removeFrom(target, token);
     }
 
     private resolveCSSValue(value: any) {
@@ -395,6 +395,9 @@ class DesignTokenNode implements Behavior, Subscriber {
         return null;
     }
 
+    /**
+     * Responsible for reflecting tokens to CSS custom properties
+     */
     public static cssCustomPropertyReflector = new CustomPropertyReflector();
 
     /**
@@ -457,6 +460,8 @@ class DesignTokenNode implements Behavior, Subscriber {
     public set<T>(token: DesignTokenImpl<T>, value: DesignTokenValue<T>): void {
         this.assignedTokens.set(token, value);
         Observable.notify(this, token.id);
+
+        token.notify(this.target);
 
         if (DesignTokenImpl.isCSSDesignToken(token)) {
             this.reflectToCSS(token);
@@ -551,8 +556,12 @@ class DesignTokenNode implements Behavior, Subscriber {
         const token = DesignTokenImpl.getTokenById(property);
 
         // Propagate change notifications down to children
+        // This will notify bindingObservers of updates
+        // to upstream dependent tokens. It also notifies
+        // any token subscribers of a change
         if (token && !this.has(token)) {
             Observable.getNotifier(this).notify(property);
+            token.notify(this.target);
         }
     }
 }
