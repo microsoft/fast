@@ -157,7 +157,7 @@ export class DesignPropertyPanel extends FASTElement {
     @observable provider!: DesignSystemProvider;
 
     providerChanged() {
-        fillColor.setValueFor(this.provider, neutralLayer1);
+        fillColor.withDefault(neutralLayer1);
         this.provider.style.setProperty(
             "background-color",
             `var(--${neutralLayer1.name})`
