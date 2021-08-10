@@ -1,6 +1,7 @@
 import {
     Behavior,
     CSSDirective,
+    defaultExecutionContext,
     FASTElement,
     observable,
     Observable,
@@ -15,7 +16,6 @@ import type {
     DesignTokenValue,
     StaticDesignTokenValue,
 } from "./interfaces";
-import { uniqueId } from "./unique-id";
 
 const defaultElement = document.body;
 
@@ -159,6 +159,20 @@ class DesignTokenImpl<T extends { createCSS?(): string }> extends CSSDirective
         return typeof (token as CSSDesignToken<T>).cssCustomProperty === "string";
     }
 
+    public static isDerivedDesignTokenValue<T>(
+        value: any
+    ): value is DerivedDesignTokenValue<T> {
+        return typeof value === "function";
+    }
+
+    public static uniqueId: () => string = (() => {
+        let id = 0;
+        return () => {
+            id++;
+            return id.toString(16);
+        };
+    })();
+
     /**
      * Gets a token by ID. Returns undefined if the token was not found.
      * @param id - The ID of the token
@@ -172,11 +186,6 @@ class DesignTokenImpl<T extends { createCSS?(): string }> extends CSSDirective
      * Token storage by token ID
      */
     private static tokensById = new Map<string, DesignTokenImpl<any>>();
-
-    /**
-     * Unique id Generator
-     */
-    public static uniqueId: Generator<string, string> = uniqueId();
 
     private getOrCreateSubscriberSet(
         target: HTMLElement | this = this
@@ -197,7 +206,7 @@ class DesignTokenImpl<T extends { createCSS?(): string }> extends CSSDirective
             this.cssVar = `var(${this.cssCustomProperty})`;
         }
 
-        this.id = DesignTokenImpl.uniqueId.next().value;
+        this.id = DesignTokenImpl.uniqueId();
         DesignTokenImpl.tokensById.set(this.id, this);
     }
 
@@ -392,7 +401,8 @@ class DesignTokenNode implements Behavior, Subscriber {
             current = current.parent;
         } while (current !== null);
 
-        return null;
+        const defaultNode = DesignTokenNode.getOrCreate(defaultElement);
+        return defaultNode.has(token) ? defaultNode : null;
     }
 
     /**
@@ -436,20 +446,29 @@ class DesignTokenNode implements Behavior, Subscriber {
      * @returns
      */
     public get<T>(token: DesignTokenImpl<T>): StaticDesignTokenValue<T> | undefined {
-        const responsibleNode = DesignTokenNode.findClosestAssignedNode(token, this);
-
-        if (!responsibleNode) {
-            return;
-        }
-
-        const value =
-            responsibleNode === this
-                ? this.assignedTokens.get(token)!
-                : responsibleNode!.get(token);
-
+        const raw = this.getRaw(token);
         Observable.track(this, token.id);
 
-        return value;
+        if (raw !== undefined) {
+            return DesignTokenImpl.isDerivedDesignTokenValue(raw)
+                ? raw(this.target)
+                : (raw as any);
+        }
+
+        return undefined;
+    }
+
+    /**
+     * Retrieves the raw assigned value of a token from the nearest assigned node.
+     * @param token - The token to retrieve a raw value for
+     * @returns
+     */
+    public getRaw<T>(token: DesignTokenImpl<T>): DesignTokenValue<T> | undefined {
+        if (this.assignedTokens.has(token)) {
+            return this.assignedTokens.get(token);
+        }
+
+        return DesignTokenNode.findClosestAssignedNode(token, this)?.getRaw(token);
     }
 
     /**
