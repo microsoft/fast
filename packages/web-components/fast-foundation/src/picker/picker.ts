@@ -25,6 +25,7 @@ import type { PickerMenu } from "./picker-menu";
 import type { PickerList } from "./picker-list";
 import { PickerMenuOption } from "./picker-menu-option";
 import { PickerListItem } from "./picker-list-item";
+import { FormAssociatedPicker } from "./picker.form-associated";
 
 /**
  * A Picker Custom HTML Element.  This is an early "alpha" version of the component.
@@ -32,7 +33,7 @@ import { PickerListItem } from "./picker-list-item";
  *
  * @alpha
  */
-export class Picker extends FoundationElement {
+export class Picker extends FormAssociatedPicker {
     /**
      * Currently selected items. Comma delineated string ie. "apples,oranges".
      *
@@ -45,6 +46,10 @@ export class Picker extends FoundationElement {
     private selectionChanged(): void {
         if (this.$fastController.isConnected) {
             this.handleSelectionChange();
+            if (this.proxy instanceof HTMLInputElement) {
+                this.proxy.value = this.selection;
+                this.validate();
+            }
         }
     }
 
