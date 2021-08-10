@@ -208,6 +208,8 @@ class DesignTokenImpl<T extends { createCSS?(): string }> extends CSSDirective
 
         this.id = DesignTokenImpl.uniqueId();
         DesignTokenImpl.tokensById.set(this.id, this);
+
+        this.subscribe(this);
     }
 
     public createCSS(): string {
@@ -286,6 +288,15 @@ class DesignTokenImpl<T extends { createCSS?(): string }> extends CSSDirective
         if (this.subscribers.has(element)) {
             this.subscribers.get(element)!.forEach(sub => sub.handleChange(record));
         }
+    }
+
+    /**
+     * Proxy changes to Observable
+     * @param record - The change record
+     */
+    public handleChange(record: DesignTokenChangeRecord<this>) {
+        const node = DesignTokenNode.getOrCreate(record.target);
+        Observable.getNotifier(node).notify(record.token.id);
     }
 
     /**
@@ -483,7 +494,6 @@ class DesignTokenNode implements Behavior, Subscriber {
      */
     public set<T>(token: DesignTokenImpl<T>, value: DesignTokenValue<T>): void {
         this.assignedTokens.set(token, value);
-        Observable.notify(this, token.id);
 
         token.notify(this.target);
 
@@ -580,11 +590,7 @@ class DesignTokenNode implements Behavior, Subscriber {
         const token = DesignTokenImpl.getTokenById(property);
 
         // Propagate change notifications down to children
-        // This will notify bindingObservers of updates
-        // to upstream dependent tokens. It also notifies
-        // any token subscribers of a change
         if (token && !this.has(token)) {
-            Observable.getNotifier(this).notify(property);
             token.notify(this.target);
         }
     }
