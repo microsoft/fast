@@ -111,5 +111,4 @@ The `picker-menu` sub-component is displayed in a flyout and shows the available
 Picker should apply all the appropriate aria attributes and roles to properly support assistive technologies.
 
 ## Next Steps
-- add attribute to turn on filtering of already selected options
-- add attribute to turn on filtering of options based on text input
+- support picker as a form element

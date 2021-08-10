@@ -1463,8 +1463,10 @@ export type OverrideFoundationElementDefinition<T extends FoundationElementDefin
 // @public
 export type ParentLocator = (owner: any) => Container | null;
 
+// Warning: (ae-forgotten-export) The symbol "FormAssociatedPicker" needs to be exported by the entry point index.d.ts
+//
 // @alpha
-export class Picker extends FoundationElement {
+export class Picker extends FormAssociatedPicker {
     // @internal
     activeListItemTemplate?: ViewTemplate;
     // @internal
