@@ -1,10 +1,10 @@
 import {
-    dataGridCellTemplate,
-    dataGridRowTemplate,
-    dataGridTemplate,
     DataGrid,
     DataGridCell,
+    dataGridCellTemplate,
     DataGridRow,
+    dataGridRowTemplate,
+    dataGridTemplate,
 } from "@microsoft/fast-foundation";
 import { dataGridStyles as gridStyles } from "./data-grid.styles";
 import { dataGridRowStyles as rowStyles } from "./data-grid-row.styles";
