@@ -1,24 +1,20 @@
 import {
     Behavior,
-    BindingObserver,
     CSSDirective,
-    defaultExecutionContext,
     FASTElement,
     observable,
     Observable,
-    Splice,
-    TargetedHTMLDirective,
+    Subscriber,
 } from "@microsoft/fast-element";
-import { DI, InterfaceSymbol, Registration } from "../di/di";
 import { composedParent } from "../utilities";
 import { composedContains } from "../utilities/composed-contains";
-import { CustomPropertyManager } from "./custom-property-manager";
 import type {
     DerivedDesignTokenValue,
     DesignTokenConfiguration,
     DesignTokenValue,
     StaticDesignTokenValue,
 } from "./interfaces";
+import { uniqueId } from "./unique-id";
 
 const defaultElement = document.body;
 
@@ -131,6 +127,7 @@ class DesignTokenImpl<T extends { createCSS?(): string }> extends CSSDirective
     implements DesignToken<T> {
     public readonly name: string;
     public readonly cssCustomProperty: string | undefined;
+    public readonly id: string;
     private cssVar: string | undefined;
     private subscribers = new WeakMap<
         HTMLElement | this,
@@ -161,6 +158,25 @@ class DesignTokenImpl<T extends { createCSS?(): string }> extends CSSDirective
         return typeof (token as CSSDesignToken<T>).cssCustomProperty === "string";
     }
 
+    /**
+     * Gets a token by ID. Returns undefined if the token was not found.
+     * @param id - The ID of the token
+     * @returns
+     */
+    public static getTokenById(id: string): DesignTokenImpl<any> | undefined {
+        return DesignTokenImpl.tokensById.get(id);
+    }
+
+    /**
+     * Token storage by token ID
+     */
+    private static tokensById = new Map<string, DesignTokenImpl<any>>();
+
+    /**
+     * Unique id Generator
+     */
+    public static uniqueId: Generator<string, string> = uniqueId();
+
     private getOrCreateSubscriberSet(
         target: HTMLElement | this = this
     ): Set<DesignTokenSubscriber<this>> {
@@ -179,6 +195,9 @@ class DesignTokenImpl<T extends { createCSS?(): string }> extends CSSDirective
             this.cssCustomProperty = `--${configuration.cssCustomPropertyName}`;
             this.cssVar = `var(${this.cssCustomProperty})`;
         }
+
+        this.id = DesignTokenImpl.uniqueId.next().value;
+        DesignTokenImpl.tokensById.set(this.id, this);
     }
 
     public createCSS(): string {
@@ -277,7 +296,7 @@ const childToParent = new WeakMap<DesignTokenNode, DesignTokenNode>();
  * emitting values to CSS custom properties, and maintaining
  * inheritance structures.
  */
-class DesignTokenNode implements Behavior {
+class DesignTokenNode implements Behavior, Subscriber {
     /**
      * Returns a DesignTokenNode for an element.
      * Creates a new instance if one does not already exist for a node,
@@ -324,7 +343,7 @@ class DesignTokenNode implements Behavior {
      * @returns
      */
     public static findClosestAssignedNode<T>(
-        token: DesignToken<T>,
+        token: DesignTokenImpl<T>,
         start: DesignTokenNode
     ): DesignTokenNode | null {
         let current: DesignTokenNode | null = start;
@@ -365,7 +384,7 @@ class DesignTokenNode implements Behavior {
      * Checks if a token has been assigned an explicit value the node.
      * @param token - the token to check.
      */
-    public has<T>(token: DesignToken<T>): boolean {
+    public has<T>(token: DesignTokenImpl<T>): boolean {
         return this.assignedTokens.has(token);
     }
 
@@ -374,7 +393,7 @@ class DesignTokenNode implements Behavior {
      * @param token - The token to retrieve the value for
      * @returns
      */
-    public get<T>(token: DesignToken<T>): StaticDesignTokenValue<T> | undefined {
+    public get<T>(token: DesignTokenImpl<T>): StaticDesignTokenValue<T> | undefined {
         const responsibleNode = DesignTokenNode.findClosestAssignedNode(token, this);
 
         if (!responsibleNode) {
@@ -386,6 +405,8 @@ class DesignTokenNode implements Behavior {
                 ? this.assignedTokens.get(token)!
                 : responsibleNode!.get(token);
 
+        Observable.track(this, token.id);
+
         return value;
     }
 
@@ -394,15 +415,16 @@ class DesignTokenNode implements Behavior {
      * @param token - The token to set
      * @param value - The value to set the token to
      */
-    public set<T>(token: DesignToken<T>, value: DesignTokenValue<T>): void {
+    public set<T>(token: DesignTokenImpl<T>, value: DesignTokenValue<T>): void {
         this.assignedTokens.set(token, value);
+        Observable.notify(this, token.id);
     }
 
     /**
      * Deletes a token value for the node.
      * @param token - The token to delete the value for
      */
-    public delete<T>(token: DesignToken<T>): void {
+    public delete<T>(token: DesignTokenImpl<T>): void {
         this.assignedTokens.delete(token);
     }
 
@@ -441,6 +463,8 @@ class DesignTokenNode implements Behavior {
         this.children.push(child);
 
         reParent.forEach(x => child.appendChild(x));
+
+        Observable.getNotifier(this).subscribe(child);
     }
 
     /**
@@ -454,6 +478,7 @@ class DesignTokenNode implements Behavior {
             this.children.splice(childIndex, 1);
         }
 
+        Observable.getNotifier(this).unsubscribe(child);
         return child.parent === this ? childToParent.delete(child) : false;
     }
 
@@ -464,6 +489,19 @@ class DesignTokenNode implements Behavior {
      */
     public contains(test: DesignTokenNode): boolean {
         return composedContains(this.target, test.target);
+    }
+
+    /**
+     * Handle changes to upstream tokens
+     * @param source - The parent DesignTokenNode
+     * @param property - The token ID that changed
+     */
+    public handleChange(source: DesignTokenNode, property: string) {
+        const token = DesignTokenImpl.getTokenById(property);
+        // Propagate change notifications down to children
+        if (token && !this.has(token)) {
+            Observable.getNotifier(this).notify(property);
+        }
     }
 }
 
