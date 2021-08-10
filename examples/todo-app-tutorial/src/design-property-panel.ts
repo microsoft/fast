@@ -6,7 +6,13 @@ import {
     customElement,
     ExecutionContext,
 } from "@microsoft/fast-element";
-import { neutralLayer1 } from "@fluentui/web-components";
+import {
+    DesignSystemProvider,
+    fillColor,
+    neutralLayer1,
+    PaletteRGB,
+    SwatchRGB,
+} from "@fluentui/web-components";
 import {
     ComponentStateColorPalette,
     parseColor,
@@ -28,14 +34,14 @@ const template = html<DesignPropertyPanel>`
     <fluent-card>
         <h2>Design System Properties</h2>
         <div class="row">
-            <h4>Corner Radius: ${x => x.provider?.cornerRadius}px</h4>
+            <h4>Corner Radius: ${x => x.provider?.controlCornerRadius}px</h4>
             <fluent-slider
                 orientation="horizontal"
                 min="0"
                 max="50"
                 step="1"
-                :value=${x => x.provider?.cornerRadius}
-                @change=${(x, c) => (x.provider.cornerRadius = targetValue(c))}
+                value=${x => x.provider?.controlCornerRadius}
+                @change=${(x, c) => (x.provider.controlCornerRadius = targetValue(c))}
             >
                 <fluent-slider-label position="0">0px</fluent-slider-label>
                 <fluent-slider-label position="50">50px</fluent-slider-label>
@@ -49,9 +55,11 @@ const template = html<DesignPropertyPanel>`
                 min="0"
                 max="1"
                 step="0.01"
-                :value=${x => x.provider?.disabledOpacity}
+                value=${x => x.provider?.disabledOpacity}
                 @change=${(x, c) =>
-                    (x.provider.disabledOpacity = parseFloat(targetValue(c)).toFixed(2))}
+                    (x.provider.disabledOpacity = Number(
+                        parseFloat(targetValue(c)).toFixed(2)
+                    ))}
             >
                 <fluent-slider-label position="0">0%</fluent-slider-label>
                 <fluent-slider-label position="100">100%</fluent-slider-label>
@@ -65,13 +73,11 @@ const template = html<DesignPropertyPanel>`
                 min="0"
                 max="1"
                 step="0.01"
-                :value=${x => parseFloat(x.provider?.baseLayerLuminance)}
+                value=${x => x.provider?.baseLayerLuminance}
                 @change=${(x, c) => {
-                    x.provider.backgroundColor = (x.neutralLayerL1Behavior
-                        .cssCustomProperty as any)({
-                        ...x.provider.designSystem,
-                    });
-                    x.provider.baseLayerLuminance = parseFloat(targetValue(c)).toFixed(2);
+                    x.provider.baseLayerLuminance = Number(
+                        parseFloat(targetValue(c)).toFixed(2)
+                    );
                 }}
             >
                 <fluent-slider-label position="0">Black</fluent-slider-label>
@@ -86,10 +92,10 @@ const template = html<DesignPropertyPanel>`
                 type="color"
                 :value=${x => x.provider?.accentBaseColor}
                 @input=${(x, c) => {
-                    x.provider.accentBaseColor = targetValue(c);
-                    x.provider.accentPalette = createColorPalette(
-                        parseColor(targetValue(c))!
-                    );
+                    const { r, g, b } = parseColor(targetValue(c))!;
+                    const swatch = SwatchRGB.create(r, g, b);
+                    x.provider.accentBaseColor = swatch;
+                    x.provider.accentPalette = PaletteRGB.create(swatch);
                 }}
             />
         </div>
@@ -107,8 +113,8 @@ const template = html<DesignPropertyPanel>`
             <h4>Outline Width</h4>
             <fluent-text-field
                 type="number"
-                :value=${x => x.provider?.outlineWidth}
-                @input=${(x, c) => (x.provider.outlineWidth = targetValue(c))}
+                :value=${x => x.provider?.strokeWidth}
+                @input=${(x, c) => (x.provider.strokeWidth = targetValue(c))}
             ></fluent-text-field>
         </div>
     </fluent-card>
@@ -148,23 +154,19 @@ const styles = css`
     styles,
 })
 export class DesignPropertyPanel extends FASTElement {
-    @observable provider!: any;
-
-    neutralLayerL1Behavior: typeof neutralLayer1 = neutralLayer1;
+    @observable provider!: DesignSystemProvider;
 
     providerChanged() {
-        this.provider.registerCSSCustomProperty(this.neutralLayerL1Behavior);
+        fillColor.setValueFor(this.provider, neutralLayer1);
         this.provider.style.setProperty(
             "background-color",
-            `var(--${this.neutralLayerL1Behavior.name})`
+            `var(--${neutralLayer1.name})`
         );
-        this.provider.backgroundColor = (this.neutralLayerL1Behavior
-            .cssCustomProperty as any)(this.provider.designSystem);
         this.provider.baseLayerLuminance = 1;
     }
 
     connectedCallback() {
         super.connectedCallback();
-        this.provider = this.parentElement;
+        this.provider = this.parentElement as DesignSystemProvider;
     }
 }
