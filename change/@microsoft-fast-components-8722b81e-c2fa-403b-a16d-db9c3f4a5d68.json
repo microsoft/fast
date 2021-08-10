@@ -1,7 +1,0 @@
-{
-  "type": "none",
-  "comment": "chore: eslint fixes in fast-components",
-  "packageName": "@microsoft/fast-components",
-  "email": "mathieu.lavoie@logmein.com",
-  "dependentChangeType": "none"
-}
