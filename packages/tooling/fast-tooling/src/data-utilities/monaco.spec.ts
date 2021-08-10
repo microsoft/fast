@@ -372,7 +372,7 @@ describe("mapDataDictionaryToMonacoEditorHTML", () => {
     });
     it("should map a data dictionary with multiple different named slotted entries", () => {
         const text =
-            '<div><span slot="foo">Hello world</span><span slot="bar">Hello pluto</span></div>';
+            '<div><span slot="foo">Hello world</span><span id="foo1" title="foo2" slot="bar">Hello pluto</span></div>';
         expect(
             mapDataDictionaryToMonacoEditorHTML(
                 [
@@ -421,6 +421,8 @@ describe("mapDataDictionaryToMonacoEditorHTML", () => {
                                 dataLocation: "SlotBar",
                             },
                             data: {
+                                id: "foo1",
+                                title: "foo2",
                                 Slot: [
                                     {
                                         id: "text2",
@@ -459,6 +461,14 @@ describe("mapDataDictionaryToMonacoEditorHTML", () => {
                         id: "span",
                         type: "object",
                         [ReservedElementMappingKeyword.mapsToTagName]: "span",
+                        properties: {
+                            id: {
+                                type: "string",
+                            },
+                            title: {
+                                type: "string",
+                            },
+                        },
                     },
                     text: {
                         id: "text",

@@ -1137,7 +1137,7 @@ describe("mapVSCodeHTMLAndDataDictionaryToDataDictionary", () => {
     });
     it("should map an existing data dictionary with named slots to an existing parsed HTML value with named slots", () => {
         const mappedData = mapVSCodeHTMLAndDataDictionaryToDataDictionary(
-            '<div id="baz"><span slot="test"></span></div>',
+            '<div id="baz"><span id="foo1" title="foo2" slot="test"></span></div>',
             "text",
             [
                 {
@@ -1159,6 +1159,8 @@ describe("mapVSCodeHTMLAndDataDictionaryToDataDictionary", () => {
                             dataLocation: "SlotTest",
                         },
                         data: {
+                            id: "foo1",
+                            title: "foo2",
                             slot: "test",
                         },
                     },
@@ -1212,6 +1214,8 @@ describe("mapVSCodeHTMLAndDataDictionaryToDataDictionary", () => {
                         dataLocation: "SlotTest",
                     },
                     data: {
+                        id: "foo1",
+                        title: "foo2",
                         slot: "test",
                     },
                 },
