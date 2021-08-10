@@ -377,6 +377,8 @@ class DesignTokenNode implements Behavior, Subscriber {
 
                 parent = composedParent(parent);
             }
+
+            return DesignTokenNode.getOrCreate(defaultElement);
         }
 
         return null;
@@ -398,11 +400,14 @@ class DesignTokenNode implements Behavior, Subscriber {
                 return current;
             }
 
-            current = current.parent;
+            current = current.parent
+                ? current.parent
+                : current.target !== defaultElement
+                ? DesignTokenNode.getOrCreate(defaultElement)
+                : null;
         } while (current !== null);
 
-        const defaultNode = DesignTokenNode.getOrCreate(defaultElement);
-        return defaultNode.has(token) ? defaultNode : null;
+        return null;
     }
 
     /**
