@@ -186,6 +186,7 @@ export class SubscriberSet implements Notifier {
  */
 export class PropertyChangeNotifier implements Notifier {
     private subscribers: Record<string, SubscriberSet> = {};
+    private sourceSubscribers: SubscriberSet | null = null;
 
     /**
      * The source that property changes are being notified for.
@@ -210,6 +211,10 @@ export class PropertyChangeNotifier implements Notifier {
         if (subscribers !== void 0) {
             subscribers.notify(propertyName);
         }
+
+        if (this.sourceSubscribers !== null) {
+            this.sourceSubscribers.notify(propertyName);
+        }
     }
 
     /**
@@ -217,16 +222,24 @@ export class PropertyChangeNotifier implements Notifier {
      * @param subscriber - The object that is subscribing for change notification.
      * @param propertyToWatch - The name of the property that the subscriber is interested in watching for changes.
      */
-    public subscribe(subscriber: Subscriber, propertyToWatch: string): void {
-        let subscribers = this.subscribers[propertyToWatch];
+    public subscribe(subscriber: Subscriber, propertyToWatch?: string): void {
+        if (propertyToWatch) {
+            let subscribers = this.subscribers[propertyToWatch];
 
-        if (subscribers === void 0) {
-            this.subscribers[propertyToWatch] = subscribers = new SubscriberSet(
-                this.source
-            );
+            if (subscribers === void 0) {
+                this.subscribers[propertyToWatch] = subscribers = new SubscriberSet(
+                    this.source
+                );
+            }
+
+            subscribers.subscribe(subscriber);
+        } else {
+            if (this.sourceSubscribers === null) {
+                this.sourceSubscribers = new SubscriberSet(this.source);
+            }
+
+            this.sourceSubscribers.subscribe(subscriber);
         }
-
-        subscribers.subscribe(subscriber);
     }
 
     /**
@@ -234,13 +247,17 @@ export class PropertyChangeNotifier implements Notifier {
      * @param subscriber - The object that is unsubscribing from change notification.
      * @param propertyToUnwatch - The name of the property that the subscriber is no longer interested in watching.
      */
-    public unsubscribe(subscriber: Subscriber, propertyToUnwatch: string): void {
-        const subscribers = this.subscribers[propertyToUnwatch];
+    public unsubscribe(subscriber: Subscriber, propertyToUnwatch?: string): void {
+        if (propertyToUnwatch) {
+            const subscribers = this.subscribers[propertyToUnwatch];
 
-        if (subscribers === void 0) {
-            return;
+            if (subscribers === void 0) {
+                return;
+            }
+
+            subscribers.unsubscribe(subscriber);
+        } else if (this.sourceSubscribers !== null) {
+            this.sourceSubscribers.unsubscribe(subscriber);
         }
-
-        subscribers.unsubscribe(subscriber);
     }
 }
