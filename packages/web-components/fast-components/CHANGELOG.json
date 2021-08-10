@@ -2,6 +2,33 @@
   "name": "@microsoft/fast-components",
   "entries": [
     {
+      "date": "Tue, 10 Aug 2021 07:16:01 GMT",
+      "tag": "@microsoft/fast-components_v2.5.7",
+      "version": "2.5.7",
+      "comments": {
+        "none": [
+          {
+            "comment": "chore: demo more suitable placeholder",
+            "author": "bashmish@gmail.com",
+            "commit": "45634989043c4c9bffd9a10c9f0723eb399c25e6",
+            "package": "@microsoft/fast-components"
+          },
+          {
+            "comment": "remove css color assignment from body of storybook to ensure there missing values are not hidden or missed",
+            "author": "chhol@microsoft.com",
+            "commit": "cd58a5d41c0865e1a76cfcad9ea5da1d36412cd7",
+            "package": "@microsoft/fast-components"
+          },
+          {
+            "comment": "chore: eslint fixes in fast-components",
+            "author": "mathieu.lavoie@logmein.com",
+            "commit": "46e4117944d5d0339cb158f1de735205c68a6569",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sun, 08 Aug 2021 07:18:56 GMT",
       "tag": "@microsoft/fast-components_v2.5.7",
       "version": "2.5.7",
