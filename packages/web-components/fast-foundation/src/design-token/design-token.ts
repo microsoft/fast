@@ -8,6 +8,7 @@ import {
 } from "@microsoft/fast-element";
 import { composedParent } from "../utilities";
 import { composedContains } from "../utilities/composed-contains";
+import { CustomPropertyManager } from "./custom-property-manager";
 import type {
     DerivedDesignTokenValue,
     DesignTokenConfiguration,
@@ -288,6 +289,42 @@ class DesignTokenImpl<T extends { createCSS?(): string }> extends CSSDirective
     }
 }
 
+class CustomPropertyReflector {
+    public startReflection(token: CSSDesignToken<any>, target: HTMLElement) {
+        token.subscribe(this, target);
+        this.handleChange({ token, target });
+    }
+
+    public stopReflection(token: CSSDesignToken<any>, target: HTMLElement) {
+        token.unsubscribe(this, target);
+        this.remove(token, target);
+    }
+
+    public handleChange(record: DesignTokenChangeRecord<any>) {
+        const { token, target } = record;
+        this.remove(token, target);
+        this.add(token, target);
+    }
+
+    private add(token: CSSDesignToken<any>, target: HTMLElement) {
+        CustomPropertyManager.addTo(
+            target,
+            token,
+            this.resolveCSSValue(
+                DesignTokenNode.getOrCreate(target).get(token as DesignTokenImpl<any>)
+            )
+        );
+    }
+
+    private remove(token: CSSDesignToken<any>, target: HTMLElement) {
+        CustomPropertyManager.removeFrom(target, token as CSSDesignToken<any>);
+    }
+
+    private resolveCSSValue(value: any) {
+        return value && typeof value.createCSS === "function" ? value.createCSS() : value;
+    }
+}
+
 const nodeCache = new WeakMap<HTMLElement, DesignTokenNode>();
 const childToParent = new WeakMap<DesignTokenNode, DesignTokenNode>();
 
@@ -358,6 +395,8 @@ class DesignTokenNode implements Behavior, Subscriber {
         return null;
     }
 
+    public static cssCustomPropertyReflector = new CustomPropertyReflector();
+
     /**
      * All children assigned to the node
      */
@@ -418,6 +457,10 @@ class DesignTokenNode implements Behavior, Subscriber {
     public set<T>(token: DesignTokenImpl<T>, value: DesignTokenValue<T>): void {
         this.assignedTokens.set(token, value);
         Observable.notify(this, token.id);
+
+        if (DesignTokenImpl.isCSSDesignToken(token)) {
+            this.reflectToCSS(token);
+        }
     }
 
     /**
@@ -492,12 +535,21 @@ class DesignTokenNode implements Behavior, Subscriber {
     }
 
     /**
+     * Instructs the node to reflect a design token for the provided token.
+     * @param token - The design token to reflect
+     */
+    public reflectToCSS(token: CSSDesignToken<any>) {
+        DesignTokenNode.cssCustomPropertyReflector.startReflection(token, this.target);
+    }
+
+    /**
      * Handle changes to upstream tokens
      * @param source - The parent DesignTokenNode
      * @param property - The token ID that changed
      */
     public handleChange(source: DesignTokenNode, property: string) {
         const token = DesignTokenImpl.getTokenById(property);
+
         // Propagate change notifications down to children
         if (token && !this.has(token)) {
             Observable.getNotifier(this).notify(property);
