@@ -35,9 +35,16 @@ const FASTCalendar = Calendar.compose({
 })
 
 async function setup(props?) {
-    const { document, element, connect, disconnect } = await fixture(
+    const { document, element, connect, disconnect }: {
+        document: Document,
+        element: HTMLElement & Calendar,
+        connect: () => void,
+        disconnect: () => void
+    } = await fixture(
         [FASTCalendar(), FASTDataGrid(), FASTDataGridRow(), FASTCalendarCell()]
     );
+
+    element.locale = "en-US-u-ca-gregory-nu-latn";
 
     for(const key in props) {
         element.setAttribute(key, props[key]);

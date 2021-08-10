@@ -319,6 +319,6 @@ export class Calendar extends FoundationElement {
      * @public
      */
     public handleDateSelect(day: CalendarDateInfo): void {
-        (this as FASTElement).$emit("date-select", day);
+        (this as FASTElement).$emit("dateselected", day);
     }
 }
