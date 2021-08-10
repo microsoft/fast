@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "Removing design-system-provider from storybook",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "robarb@microsoft.com",
+  "dependentChangeType": "patch"
+}
