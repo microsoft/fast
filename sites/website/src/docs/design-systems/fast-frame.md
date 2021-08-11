@@ -1,7 +1,7 @@
 ---
 id: fast-frame
 title: The FAST Frame Design System 
-sidebar_label: FAST Frame
+sidebar_label: FAST Frame Design System
 custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/src/docs/design-systems/fast-frame.md
 ---
 
@@ -34,6 +34,20 @@ Once you've registered the components as shown above, they are now available for
 ```html
 <fast-button>Click me!</fast-button>
 ```
+
+### Hide undefined elements
+
+Custom Elements that have not been [upgraded](https://developers.google.com/web/fundamentals/web-components/customelements#upgrades) and don't have styles attached can still be rendered by the browser but they likely do not look how they are supposed to. To avoid a *flash of un-styled content* (FOUC), visually hide Custom Elements that are not yet defined:
+
+```CSS
+:not(:defined) {
+    visibility: hidden;
+}
+```
+
+:::important
+The consuming application must apply this, as the components themselves do not.
+:::
 
 ## Configuring Components
 
@@ -151,7 +165,6 @@ provideFASTDesignSystem()
 At present, there is a minor typing bug across all the style and template functions, so you will need to cast the second argument as follows `${buttonStyles(ctx, def as any)}`. [We have tracked this issue](https://github.com/microsoft/fast/issues/5047) and are planning a fix soon.
 
 :::
-```
 
 #### Shadow Options
 
