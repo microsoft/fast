@@ -1,4 +1,3 @@
-import { keyCodeArrowDown, keyCodeArrowUp } from "@microsoft/fast-web-utilities";
 import { attr, DOM, nullableNumberConverter, observable } from "@microsoft/fast-element";
 import { StartEnd } from "../patterns/index";
 import { applyMixins } from "../utilities/index";
@@ -255,16 +254,16 @@ export class NumberField extends FormAssociatedNumberField {
      * @param e - the keyboard event
      * @internal
      */
-    public handleKeyDown(e: KeyboardEvent): void | boolean {
+    public handleKeyDown(e: Event & KeyboardEvent): void | boolean {
         if (e.defaultPrevented) {
             return;
         }
 
-        switch (e.keyCode) {
-            case keyCodeArrowUp:
+        switch (e.key) {
+            case "ArrowUp":
                 this.stepUp();
                 return;
-            case keyCodeArrowDown:
+            case "ArrowDown":
                 this.stepDown();
                 return;
             default:
