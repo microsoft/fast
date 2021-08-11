@@ -15,6 +15,10 @@ import { parseColorHexRGB } from "@microsoft/fast-colors";
 export function setupFASTComponentDesignSystem(element: HTMLElement) {
     element.style.setProperty("background-color", `var(${fillColor.cssCustomProperty})`);
     element.style.setProperty("color", `var(${neutralForegroundRest.cssCustomProperty})`);
+    const aktivGroteskLink = document.createElement("link");
+    aktivGroteskLink.setAttribute("href", "https://use.typekit.net/spx2dgm.css");
+    aktivGroteskLink.setAttribute("rel", "stylesheet");
+    element.appendChild(aktivGroteskLink);
 }
 
 export function mapFASTComponentsDesignSystem(
