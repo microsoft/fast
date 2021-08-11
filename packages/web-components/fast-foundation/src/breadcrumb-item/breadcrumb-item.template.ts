@@ -2,8 +2,8 @@ import { html, when } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
 import { anchorTemplate } from "../anchor";
 import { endTemplate, startTemplate } from "../patterns/start-end";
-import type { BreadcrumbItem, BreadcrumbItemOptions } from "./breadcrumb-item";
 import type { ElementDefinitionContext } from "../design-system";
+import type { BreadcrumbItem, BreadcrumbItemOptions } from "./breadcrumb-item";
 
 /**
  * The template for the {@link @microsoft/fast-foundation#(BreadcrumbItem:class)} component.

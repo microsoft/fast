@@ -60,8 +60,8 @@
     "@fluentui/web-components": "^1.2.3",
     "@microsoft/fast-components": "^2.5.7",
     "@microsoft/fast-foundation": "^2.6.3",
-    "@microsoft/fast-tooling": "^0.26.2",
-    "@microsoft/fast-tooling-react": "^2.10.2",
+    "@microsoft/fast-tooling": "^0.26.3",
+    "@microsoft/fast-tooling-react": "^2.10.3",
     "@skatejs/val": "^0.5.0",
     "monaco-editor": "^0.21.2",
     "vscode-html-languageservice": "^3.1.3"

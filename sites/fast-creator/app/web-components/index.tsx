@@ -20,10 +20,13 @@ import {
     DataType,
     fastToolingColorPicker,
     fastToolingCSSLayout,
+    fastToolingFile,
+    fastToolingFileActionObjectUrl,
     MessageSystem,
 } from "@microsoft/fast-tooling";
 import {
     ControlConfig,
+    FileControl,
     ModularForm,
     ModularNavigation,
     StandardControlPlugin,
@@ -54,7 +57,9 @@ DesignSystem.getOrCreate().register(
     fastTabPanel(),
     fastTextField(),
     fastToolingColorPicker({ prefix: "fast-tooling" }),
-    fastToolingCSSLayout({ prefix: "fast-tooling" })
+    fastToolingCSSLayout({ prefix: "fast-tooling" }),
+    fastToolingFile({ prefix: "fast-tooling" }),
+    fastToolingFileActionObjectUrl({ prefix: "fast-tooling" })
 );
 
 export function renderDevToolToggle(selected: boolean, onToggleCallback: () => void) {
@@ -272,6 +277,20 @@ function renderStartIcon(isIncluded: boolean): React.ReactNode {
     );
 }
 
+function getImageUploadControl(): StandardControlPlugin {
+    return new StandardControlPlugin({
+        id: "src",
+        context: ControlContext.fill,
+        control: (controlConfig: ControlConfig): React.ReactNode => {
+            return (
+                <FileControl {...controlConfig} accept=".jpg,.jpeg,.png,.gif">
+                    Add Image
+                </FileControl>
+            );
+        },
+    });
+}
+
 export function renderNavigationTabs(
     activeId: any,
     fastMessageSystem: MessageSystem,
@@ -367,7 +386,11 @@ export function renderFormTabs(
                 <ModularForm
                     key={FormId.component}
                     messageSystem={fastMessageSystem}
-                    controls={[linkedDataControl, getCSSControls()]}
+                    controls={[
+                        linkedDataControl,
+                        getCSSControls(),
+                        getImageUploadControl(),
+                    ]}
                     categories={componentCategories}
                 />
             </fast-tab-panel>
