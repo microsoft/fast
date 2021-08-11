@@ -1,0 +1,7 @@
+{
+  "type": "none",
+  "comment": "docs: re-organize content for better navigation and discovery",
+  "packageName": "@microsoft/fast-components",
+  "email": "roeisenb@microsoft.com",
+  "dependentChangeType": "none"
+}
