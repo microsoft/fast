@@ -1,6 +1,6 @@
 {
   "type": "patch",
-  "comment": "update styles for toolbar focus sequence bug fix",
+  "comment": "update examples for toolbar focus sequence bug fix",
   "packageName": "@microsoft/fast-components",
   "email": "sethdonohue@Admins-MBP.guest.corp.microsoft.com",
   "dependentChangeType": "patch"

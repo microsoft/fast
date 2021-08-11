@@ -193,7 +193,7 @@ export class Toolbar extends FoundationElement {
      * get all the slotted elements
      * @internal
      */
-    protected getAllSlottedItems(): (HTMLElement | Node)[] {
+    protected get allSlottedItems(): (HTMLElement | Node)[] {
         return [
             ...this.start.assignedElements(),
             ...this.slottedItems,
@@ -207,7 +207,7 @@ export class Toolbar extends FoundationElement {
      * @internal
      */
     protected reduceFocusableElements(): void {
-        this.focusableElements = this.getAllSlottedItems().reduce(
+        this.focusableElements = this.allSlottedItems.reduce(
             Toolbar.reduceFocusableItems,
             []
         );

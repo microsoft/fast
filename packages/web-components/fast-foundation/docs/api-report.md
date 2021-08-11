@@ -2014,7 +2014,7 @@ export class Toolbar extends FoundationElement {
     get activeIndex(): number;
     set activeIndex(value: number);
     // @internal
-    protected buildFocusableElements(): void;
+    protected get allSlottedItems(): (HTMLElement | Node)[];
     // @internal
     clickHandler(e: MouseEvent): boolean | void;
     // @internal (undocumented)
@@ -2024,10 +2024,10 @@ export class Toolbar extends FoundationElement {
     // @internal
     focusinHandler(e: FocusEvent): boolean | void;
     // @internal
-    protected getAllSlottedItems(): (HTMLElement | Node)[];
-    // @internal
     keydownHandler(e: KeyboardEvent): boolean | void;
     orientation: Orientation;
+    // @internal
+    protected reduceFocusableElements(): void;
     // @internal
     slottedItems: HTMLElement[];
     // (undocumented)
