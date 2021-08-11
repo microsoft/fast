@@ -1,8 +1,8 @@
 import { elements, html, slotted } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
-import type { Breadcrumb } from "./breadcrumb";
 import type { FoundationElementDefinition } from "../foundation-element";
 import type { ElementDefinitionContext } from "../design-system";
+import type { Breadcrumb } from "./breadcrumb";
 
 /**
  * The template for the {@link @microsoft/fast-foundation#Breadcrumb} component.

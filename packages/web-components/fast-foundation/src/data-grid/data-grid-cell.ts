@@ -1,5 +1,4 @@
 import { attr, html, HTMLView, observable, ViewTemplate } from "@microsoft/fast-element";
-import { FoundationElement } from "../foundation-element";
 import {
     eventFocusIn,
     eventFocusOut,
@@ -8,6 +7,7 @@ import {
     keyCodeEscape,
     keyCodeFunction2,
 } from "@microsoft/fast-web-utilities";
+import { FoundationElement } from "../foundation-element";
 import type { ColumnDefinition } from "./data-grid";
 import { DataGridCellTypes } from "./data-grid.options";
 

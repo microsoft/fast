@@ -1,9 +1,9 @@
 import { elements, html, slotted } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
 import { Orientation } from "@microsoft/fast-web-utilities";
-import type { RadioGroup } from "./radio-group";
 import type { FoundationElementDefinition } from "../foundation-element";
 import type { ElementDefinitionContext } from "../design-system";
+import type { RadioGroup } from "./radio-group";
 
 /**
  * The template for the {@link @microsoft/fast-foundation#RadioGroup} component.
