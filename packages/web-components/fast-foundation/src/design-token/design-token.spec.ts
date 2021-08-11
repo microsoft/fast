@@ -12,8 +12,8 @@ const elementName = uniqueElementName();
 
 DesignSystem.getOrCreate()
     .register(
-        FoundationElement.compose({ 
-            type: class extends FoundationElement { }, 
+        FoundationElement.compose({
+            type: class extends FoundationElement { },
             baseName: elementName,
             template: html`<slot></slot>`
         })()
@@ -337,7 +337,7 @@ describe("A DesignToken", () => {
                 removeElement(parent);
             });
 
-            it("should set a CSS custom property equal to the resolved value for an both elements for which a dependent token is set when setting a derived token value", async () => {
+            it("should set a CSS custom property equal to the resolved value for both elements for which a dependent token is set when setting a derived token value", async () => {
                 const parent = addElement();
                 const target = addElement(parent);
                 const tokenA = DesignToken.create<number>("A");
@@ -347,6 +347,7 @@ describe("A DesignToken", () => {
                 tokenA.setValueFor(target, 7);
                 tokenB.setValueFor(parent, (target: HTMLElement & FASTElement) => tokenA.getValueFor(target) * 2);
 
+                await DOM.nextUpdate();
 
                 expect(window.getComputedStyle(parent).getPropertyValue(tokenB.cssCustomProperty)).to.equal('12');
                 expect(window.getComputedStyle(target).getPropertyValue(tokenB.cssCustomProperty)).to.equal('14');
@@ -807,7 +808,7 @@ describe("A DesignToken", () => {
             const subscriber = {
                 handleChange
             }
-            
+
 
             tokenB.subscribe(subscriber);
 
@@ -829,7 +830,7 @@ describe("A DesignToken", () => {
             const subscriber = {
                 handleChange
             }
-            
+
 
             tokenC.subscribe(subscriber);
 
@@ -851,7 +852,7 @@ describe("A DesignToken", () => {
             const subscriber = {
                 handleChange
             }
-            
+
 
             tokenB.subscribe(subscriber);
 
