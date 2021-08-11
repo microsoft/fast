@@ -4,9 +4,7 @@ import {
     ElementViewTemplate,
     FASTElement,
 } from "@microsoft/fast-element";
-import { Container, DI, InterfaceSymbol, Registration } from "../di/di";
-
-const presentationKeys = new Map<string, InterfaceSymbol<ComponentPresentation>>();
+import { Container, DI, Registration } from "../di/di";
 
 /**
  * Applies presentation details, such as template and styles, to a component instance.

@@ -6,7 +6,6 @@ import {
     RepeatDirective,
     ViewTemplate,
 } from "@microsoft/fast-element";
-import { FoundationElement } from "../foundation-element";
 import {
     eventFocus,
     eventFocusOut,
@@ -18,6 +17,7 @@ import {
     keyCodePageDown,
     keyCodePageUp,
 } from "@microsoft/fast-web-utilities";
+import { FoundationElement } from "../foundation-element";
 import type { DataGridCell } from "./data-grid-cell";
 import type { DataGridRow } from "./data-grid-row";
 import { DataGridRowTypes, GenerateHeaderOptions } from "./data-grid.options";
