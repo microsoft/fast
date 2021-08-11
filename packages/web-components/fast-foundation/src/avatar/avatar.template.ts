@@ -1,7 +1,7 @@
-import { html, when } from "@microsoft/fast-element";
+import { html } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
-import type { Avatar, AvatarOptions } from "./avatar";
 import type { ElementDefinitionContext } from "../design-system";
+import type { Avatar, AvatarOptions } from "./avatar";
 
 /**
  * The template for {@link @microsoft/fast-foundation#Avatar} component.
