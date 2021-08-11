@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-tooling
 
-This log was last generated on Sun, 08 Aug 2021 07:18:56 GMT and should not be manually modified.
+This log was last generated on Wed, 11 Aug 2021 07:14:31 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.26.3
+
+Wed, 11 Aug 2021 07:14:31 GMT
+
+### Patches
+
+- fix: html renderer use custom title if present (44823142+williamw2@users.noreply.github.com)
 
 ## 0.26.2
 
