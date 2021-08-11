@@ -223,7 +223,7 @@ export class Dialog extends FoundationElement {
             bounds[0].focus();
         } else {
             if (this.dialog instanceof HTMLElement) {
-                this.dialog.focus;
+                this.dialog.focus();
             }
         }
     };
