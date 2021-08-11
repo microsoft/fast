@@ -88,7 +88,11 @@ const deleteEvent = new KeyboardEvent("keydown", {
 
 
 async function setupPicker() {
-    const { element, connect, disconnect } = await fixture(
+    const { element, connect, disconnect }: {
+        element: HTMLElement & Picker,
+        connect: () => void,
+        disconnect: () => void
+    } = await fixture(
         [
             FASTPicker(),
             FASTPickerList(),
@@ -136,7 +140,7 @@ describe("Picker", () => {
         const { element, connect, disconnect } = await setupPicker();
         await connect();
 
-        expect((element as Picker).listElement).to.be.instanceof(PickerList);
+        expect(element.listElement).to.be.instanceof(PickerList);
 
         await disconnect();
     });
@@ -145,7 +149,7 @@ describe("Picker", () => {
         const { element, connect, disconnect } = await setupPicker();
         await connect();
 
-        expect((element as Picker).menuElement).to.be.instanceof(PickerMenu);
+        expect(element.menuElement).to.be.instanceof(PickerMenu);
 
         await disconnect();
     });
@@ -172,7 +176,7 @@ describe("Picker", () => {
 
         element.focus();
 
-        expect(document.activeElement === (element as Picker).listElement.inputElement).to.equal(true);
+        expect(document.activeElement === element.listElement.inputElement).to.equal(true);
 
         await disconnect();
     });
@@ -187,7 +191,7 @@ describe("Picker", () => {
         await DOM.nextUpdate();
         element.focus();
 
-        expect(document.activeElement === (element as Picker).listElement.inputElement).to.equal(true);
+        expect(document.activeElement === element.listElement.inputElement).to.equal(true);
 
         const listItems: Element[] = Array.from(element.querySelectorAll("fast-picker-list-item"));
 
@@ -210,10 +214,10 @@ describe("Picker", () => {
         expect(document.activeElement === listItems[2]).to.equal(true);
 
         element.dispatchEvent(arrowRightEvent);
-        expect(document.activeElement === (element as Picker).listElement.inputElement).to.equal(true);
+        expect(document.activeElement === element.listElement.inputElement).to.equal(true);
 
         element.dispatchEvent(arrowRightEvent);
-        expect(document.activeElement === (element as Picker).listElement.inputElement).to.equal(true);
+        expect(document.activeElement === element.listElement.inputElement).to.equal(true);
 
         await disconnect();
     });

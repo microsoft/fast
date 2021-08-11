@@ -149,10 +149,10 @@ export class Picker extends FormAssociatedPicker {
      * HTML Attribute: labelledby
      */
     @attr({ attribute: "labelledby" })
-    public labelledby: string;
+    public labelledBy: string;
     private labelledbyChanged(): void {
         if (this.$fastController.isConnected) {
-            this.listElement?.setAttribute("labelledby", this.labelledby);
+            this.listElement?.setAttribute("labelledby", this.labelledBy);
         }
     }
 
@@ -288,7 +288,7 @@ export class Picker extends FormAssociatedPicker {
     public filteredOptionsList: string[] = [];
     private filteredOptionsListChanged(): void {
         if (this.$fastController.isConnected) {
-            this.showNoOptions = this.filteredOptionsList.length === 0 ? true : false;
+            this.showNoOptions = this.filteredOptionsList.length === 0;
             this.setFocusedOption(this.filteredOptionsList.length === 0 ? -1 : 0);
         }
     }
@@ -323,7 +323,7 @@ export class Picker extends FormAssociatedPicker {
      * @internal
      */
     @observable
-    public selectedlisttag: string;
+    public selectedListTag: string;
 
     /**
      * The tag for the menu element (ie. "fast-picker-menu" vs. "fluent-picker-menu")
@@ -331,7 +331,7 @@ export class Picker extends FormAssociatedPicker {
      * @internal
      */
     @observable
-    public pickermenutag: string;
+    public pickerMenuTag: string;
 
     /**
      *  Index of currently active menu option
@@ -392,8 +392,6 @@ export class Picker extends FormAssociatedPicker {
      */
     @observable
     public selectedItems: string[] = [];
-
-    private hasFocus = false;
     private itemsRepeatBehavior: RepeatBehavior | null;
 
     private optionsRepeatBehavior: RepeatBehavior | null;
@@ -405,23 +403,19 @@ export class Picker extends FormAssociatedPicker {
     public connectedCallback(): void {
         super.connectedCallback();
 
-        if (this.options !== undefined) {
-            this.optionsList = this.options.split(",");
-        }
-
-        this.listElement = document.createElement(this.selectedlisttag) as PickerList;
+        this.listElement = document.createElement(this.selectedListTag) as PickerList;
 
         this.listElement.label = this.label;
-        this.listElement.labelledby = this.labelledby;
+        this.listElement.labelledby = this.labelledBy;
         this.appendChild(this.listElement);
 
-        const match: string = this.pickermenutag.toUpperCase();
+        const match: string = this.pickerMenuTag.toUpperCase();
         this.menuElement = Array.from(this.children).find((element: HTMLElement) => {
             return element.tagName === match;
         }) as PickerMenu;
 
         if (this.menuElement === undefined) {
-            this.menuElement = document.createElement(this.pickermenutag) as PickerMenu;
+            this.menuElement = document.createElement(this.pickerMenuTag) as PickerMenu;
             this.appendChild(this.menuElement);
         }
 
@@ -448,9 +442,7 @@ export class Picker extends FormAssociatedPicker {
      * @public
      */
     public focus() {
-        if (this.listElement !== undefined) {
-            this.listElement?.inputElement.focus();
-        }
+        this.listElement?.inputElement.focus();
     }
 
     /**
@@ -545,16 +537,30 @@ export class Picker extends FormAssociatedPicker {
             return false;
         }
         switch (e.key) {
-            case keyHome: {
-                if (!this.flyoutOpen) {
-                    this.toggleFlyout(true);
-                } else {
-                    if (this.menuElement.optionElements.length > 0) {
-                        this.setFocusedOption(0);
-                    }
-                }
-                return false;
-            }
+            // TODO: what should "home" and "end" keys do, exactly?
+            //
+            // case keyHome: {
+            //     if (!this.flyoutOpen) {
+            //         this.toggleFlyout(true);
+            //     } else {
+            //         if (this.menuElement.optionElements.length > 0) {
+            //             this.setFocusedOption(0);
+            //         }
+            //     }
+            //     return false;
+            // }
+
+            // case keyEnd: {
+            //     if (!this.flyoutOpen) {
+            //         this.toggleFlyout(true);
+            //     } else {
+            //         if (this.menuElement.optionElements.length > 0) {
+            //             this.toggleFlyout(true);
+            //             this.setFocusedOption(this.menuElement.optionElements.length - 1);
+            //         }
+            //     }
+            //     return false;
+            // }
 
             case keyArrowDown: {
                 if (!this.flyoutOpen) {
@@ -579,18 +585,6 @@ export class Picker extends FormAssociatedPicker {
                         ? Math.max(this.menuFocusIndex - 1, 0)
                         : 0;
                     this.setFocusedOption(previousFocusOptionIndex);
-                }
-                return false;
-            }
-
-            case keyEnd: {
-                if (!this.flyoutOpen) {
-                    this.toggleFlyout(true);
-                } else {
-                    if (this.menuElement.optionElements.length > 0) {
-                        this.toggleFlyout(true);
-                        this.setFocusedOption(this.menuElement.optionElements.length - 1);
-                    }
                 }
                 return false;
             }
@@ -674,9 +668,6 @@ export class Picker extends FormAssociatedPicker {
      * Handle focus in events.
      */
     public handleFocusIn = (e: FocusEvent): boolean => {
-        if (!this.hasFocus) {
-            this.hasFocus = true;
-        }
         return false;
     };
 
@@ -689,10 +680,6 @@ export class Picker extends FormAssociatedPicker {
             !this.menuElement.contains(e.relatedTarget as Element)
         ) {
             this.toggleFlyout(false);
-        }
-
-        if (!this.contains(document.activeElement)) {
-            this.hasFocus = false;
         }
 
         return false;
@@ -815,38 +802,41 @@ export class Picker extends FormAssociatedPicker {
      * Increments the focused list item by the specified amount
      */
     private incrementFocusedItem(increment: number) {
-        const selectedItems: Element[] = Array.from(
-            this.listElement.querySelectorAll("[role='listitem']")
-        );
-        if (selectedItems.length === 0) {
+        if (this.selectedItems.length === 0) {
             this.listElement.inputElement.focus();
             return;
         }
 
+        const selectedItemsAsElements: Element[] = Array.from(
+            this.listElement.querySelectorAll("[role='listitem']")
+        );
+
         if (document.activeElement !== null) {
-            let currentFocusedItemIndex: number = selectedItems.indexOf(
+            let currentFocusedItemIndex: number = selectedItemsAsElements.indexOf(
                 document.activeElement
             );
             if (currentFocusedItemIndex === -1) {
                 // use the input element
-                currentFocusedItemIndex = selectedItems.length;
+                currentFocusedItemIndex = selectedItemsAsElements.length;
             }
 
             const newFocusedItemIndex = Math.min(
-                selectedItems.length,
+                selectedItemsAsElements.length,
                 Math.max(0, currentFocusedItemIndex + increment)
             );
-            if (newFocusedItemIndex === selectedItems.length) {
+            if (newFocusedItemIndex === selectedItemsAsElements.length) {
                 if (
                     this.maxSelected !== undefined &&
                     this.selectedItems.length >= this.maxSelected
                 ) {
-                    (selectedItems[newFocusedItemIndex - 1] as HTMLElement).focus();
+                    (selectedItemsAsElements[
+                        newFocusedItemIndex - 1
+                    ] as HTMLElement).focus();
                 } else {
                     this.listElement.inputElement.focus();
                 }
             } else {
-                (selectedItems[newFocusedItemIndex] as HTMLElement).focus();
+                (selectedItemsAsElements[newFocusedItemIndex] as HTMLElement).focus();
             }
         }
     }
@@ -910,9 +900,7 @@ export class Picker extends FormAssociatedPicker {
      */
     private updateListItemTemplate(): void {
         this.activeListItemTemplate =
-            this.listItemTemplate === undefined
-                ? this.defaultListItemTemplate
-                : this.listItemTemplate;
+            this.listItemTemplate ?? this.defaultListItemTemplate;
     }
 
     /**
@@ -920,9 +908,7 @@ export class Picker extends FormAssociatedPicker {
      */
     private updateOptionTemplate(): void {
         this.activeMenuOptionTemplate =
-            this.menuOptionTemplate === undefined
-                ? this.defaultMenuOptionTemplate
-                : this.menuOptionTemplate;
+            this.menuOptionTemplate ?? this.defaultMenuOptionTemplate;
     }
 
     /**

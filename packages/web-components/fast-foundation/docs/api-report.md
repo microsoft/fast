@@ -1491,7 +1491,7 @@ export class Picker extends FormAssociatedPicker {
     handleRegionLoaded: (e: Event) => void;
     handleSelectionChange(): void;
     label: string;
-    labelledby: string;
+    labelledBy: string;
     // @internal
     listElement: PickerList;
     listItemContentsTemplate: ViewTemplate;
@@ -1512,14 +1512,14 @@ export class Picker extends FormAssociatedPicker {
     options: string;
     optionsList: string[];
     // @internal
-    pickermenutag: string;
+    pickerMenuTag: string;
     query: string;
     // @internal
     region: AnchoredRegion;
     // @internal (undocumented)
     selectedItems: string[];
     // @internal
-    selectedlisttag: string;
+    selectedListTag: string;
     selection: string;
     showLoading: boolean;
     // @internal

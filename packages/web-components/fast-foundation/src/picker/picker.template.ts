@@ -45,8 +45,8 @@ export const pickerTemplate: (context, definition) => ViewTemplate<Picker> = (
     );
     return html<Picker>`
         <template
-            :selectedlisttag="${() => pickerListtag}"
-            :pickermenutag="${() => pickerMenutag}"
+            :selectedListTag="${() => pickerListtag}"
+            :pickerMenuTag="${() => pickerMenutag}"
             :defaultListItemTemplate="${defaultListItemTemplate}"
             :defaultMenuOptionTemplate="${defaultMenuOptionTemplate}"
             @focusin="${(x, c) => x.handleFocusIn(c.event as FocusEvent)}"
