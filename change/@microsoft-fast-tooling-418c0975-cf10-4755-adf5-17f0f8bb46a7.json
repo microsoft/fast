@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "ensure named slots are all accounted for as children and fix an issue where multiple attributes could appear as an array",
+  "packageName": "@microsoft/fast-tooling",
+  "email": "7559015+janechu@users.noreply.github.com",
+  "dependentChangeType": "patch"
+}
