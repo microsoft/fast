@@ -1,8 +1,8 @@
 import { html, ref, slotted, when } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
 import { endTemplate, startTemplate } from "../patterns";
-import type { NumberField, NumberFieldOptions } from "./number-field";
 import type { ElementDefinitionContext } from "../design-system";
+import type { NumberField, NumberFieldOptions } from "./number-field";
 
 /**
  * The template for the {@link @microsoft/fast-foundation#(NumberField:class)} component.
