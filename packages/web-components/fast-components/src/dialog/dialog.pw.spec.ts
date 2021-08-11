@@ -1,7 +1,5 @@
 import type { Dialog as FASTDialogType } from "@microsoft/fast-foundation";
 import { expect } from "chai";
-import type { ElementHandle } from "playwright";
-import type { fastDesignSystemProvider } from "../design-system-provider";
 
 type FASTDialog = HTMLElement & FASTDialogType;
 
@@ -45,11 +43,20 @@ describe("FASTDialog", function () {
         expect(element).to.exist;
     });
 
+    // FASTDialog should focus on the first element
+    it("should focus on first element", async function () {
+        const element = await this.page.$("fast-dialog");
+    
+        expect(
+            await this.page.evaluate(
+                () => document.activeElement?.id
+            )
+        ).to.equal("button1");
+    });
+
     // FASTDialog should trap focus
     it("should trap focus", async function () {
         const element = await this.page.$("fast-dialog");
-
-        await element?.focus();
 
         expect(
             await this.page.evaluate(
