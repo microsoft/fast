@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "fix: html renderer use custom title if present",
-  "packageName": "@microsoft/fast-tooling",
-  "email": "44823142+williamw2@users.noreply.github.com",
-  "dependentChangeType": "patch"
-}
