@@ -492,7 +492,7 @@ class DesignTokenNode implements Behavior, Subscriber {
     @observable
     private children: Array<DesignTokenNode> = [];
 
-    private assignedTokens: Map<DesignToken<any>, DesignTokenValue<any>> = new Map();
+    private assignedTokens: Map<DesignTokenImpl<any>, DesignTokenValue<any>> = new Map();
 
     public get parent(): DesignTokenNode | null {
         return childToParent.get(this) || null;
@@ -532,7 +532,6 @@ class DesignTokenNode implements Behavior, Subscriber {
                 // const { value } = container;
                 // container.dispose();
                 return raw.binding(this.target, defaultExecutionContext);
-                // return value;
             } else {
                 return raw as any;
             }
@@ -588,6 +587,15 @@ class DesignTokenNode implements Behavior, Subscriber {
                     });
                 });
             }
+
+            // Works but hacky
+            // dependencies.forEach(dep => {
+            //     dep.subscribe({handleChange: (record) => {
+            //         if (this.contains(DesignTokenNode.getOrCreate(record.target))) {
+            //             DesignTokenNode.getOrCreate(record.target).reflectToCSS(token as any);
+            //         }
+            //     }})
+            // })
         } else {
             this.assignedTokens.set(token, value);
             token.notify(this.target);
