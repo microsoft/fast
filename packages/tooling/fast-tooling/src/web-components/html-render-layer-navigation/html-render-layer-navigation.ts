@@ -1,4 +1,5 @@
 import { observable } from "@microsoft/fast-element";
+import { dataSetName } from "../../message-system/message-system.utilities";
 import {
     ActivityType,
     HTMLRenderLayer,
@@ -96,12 +97,17 @@ export class HTMLRenderLayerNavigation extends HTMLRenderLayer {
         return new OverlayPosition(pos.top, pos.left, pos.width, pos.height);
     }
 
+    private getTitleForDictionaryId(dataDictionaryId): string | null {
+        const dataDictionaryEntry = this.dataDictionary?.[0][dataDictionaryId];
+        return (
+            dataDictionaryEntry.data[dataSetName] ??
+            this.schemaDictionary?.[dataDictionaryEntry.schemaId].title ??
+            null
+        );
+    }
+
     private handleSelect(dataDictionaryId: string, elementRef: HTMLElement) {
-        const title =
-            this.schemaDictionary && this.dataDictionary
-                ? this.schemaDictionary[this.dataDictionary[0][dataDictionaryId].schemaId]
-                      .title
-                : null;
+        const title = this.getTitleForDictionaryId(dataDictionaryId);
         this.clickPosition = this.GetPositionFromElement(elementRef);
         this.clickLayerActive = true;
         this.currElementRef = elementRef;
@@ -110,11 +116,7 @@ export class HTMLRenderLayerNavigation extends HTMLRenderLayer {
     }
 
     private handleHighlight(dataDictionaryId: string, elementRef: HTMLElement) {
-        const title =
-            this.schemaDictionary && this.dataDictionary
-                ? this.schemaDictionary[this.dataDictionary[0][dataDictionaryId].schemaId]
-                      .title
-                : null;
+        const title = this.getTitleForDictionaryId(dataDictionaryId);
         this.hoverPosition = this.GetPositionFromElement(elementRef);
         this.hoverPillContent = title || "Untitled";
         this.hoverLayerActive = true;
@@ -146,6 +148,7 @@ export class HTMLRenderLayerNavigation extends HTMLRenderLayer {
         if (layerActivityId === this.layerActivityId) {
             return;
         }
+
         switch (activityType) {
             case ActivityType.hover:
                 this.handleHighlight(dataDictionaryId, elementRef as HTMLElement);
