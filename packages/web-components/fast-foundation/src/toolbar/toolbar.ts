@@ -99,7 +99,7 @@ export class Toolbar extends FoundationElement {
     public slottedItems: HTMLElement[];
     protected slottedItemsChanged(): void {
         if (this.$fastController.isConnected) {
-            this.buildFocusableElements();
+            this.reduceFocusableElements();
         }
     }
 
@@ -154,7 +154,7 @@ export class Toolbar extends FoundationElement {
      * @param key - The event key value
      * @internal
      */
-    private getDirectionalIncrementor(key: string): number {
+    private getDirectionalIncrementer(key: string): number {
         return (
             ToolbarArrowKeyMap[key]?.[this.orientation]?.[this.direction] ??
             ToolbarArrowKeyMap[key]?.[this.orientation] ??
@@ -174,12 +174,12 @@ export class Toolbar extends FoundationElement {
             return true;
         }
 
-        const incrementor = this.getDirectionalIncrementor(key);
-        if (!incrementor) {
+        const incrementer = this.getDirectionalIncrementer(key);
+        if (!incrementer) {
             return !(e.target as HTMLElement).closest("[role=radiogroup]");
         }
 
-        const nextIndex = this.activeIndex + incrementor;
+        const nextIndex = this.activeIndex + incrementer;
         if (this.focusableElements[nextIndex]) {
             e.preventDefault();
         }
@@ -195,9 +195,9 @@ export class Toolbar extends FoundationElement {
      */
     protected getAllSlottedItems(): (HTMLElement | Node)[] {
         return [
-            ...this.start.assignedNodes(),
+            ...this.start.assignedElements(),
             ...this.slottedItems,
-            ...this.end.assignedNodes(),
+            ...this.end.assignedElements(),
         ];
     }
 
@@ -206,7 +206,7 @@ export class Toolbar extends FoundationElement {
      *
      * @internal
      */
-    protected buildFocusableElements(): void {
+    protected reduceFocusableElements(): void {
         this.focusableElements = this.getAllSlottedItems().reduce(
             Toolbar.reduceFocusableItems,
             []
