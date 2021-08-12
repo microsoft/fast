@@ -140,6 +140,7 @@ export interface NavigationHandledProps {
 
     /**
      * The default data location to use if a linked data container is dropped on
+     * @alpha
      */
     defaultLinkedDataDroppableDataLocation?: string;
 }
