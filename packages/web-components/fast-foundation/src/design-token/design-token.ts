@@ -498,6 +498,11 @@ class DesignTokenNode implements Behavior, Subscriber {
     private rawValues: Map<DesignTokenImpl<any>, DesignTokenValue<any>> = new Map();
 
     /**
+     * Tokens currently being reflected to CSS custom properties
+     */
+    private reflecting = new Set<CSSDesignToken<any>>();
+
+    /**
      * Binding observers for assigned and inheirted derived values.
      */
     private bindingObservers = new Map<
@@ -696,7 +701,13 @@ class DesignTokenNode implements Behavior, Subscriber {
      * @param token - The design token to reflect
      */
     public reflectToCSS(token: CSSDesignToken<any>) {
-        DesignTokenNode.cssCustomPropertyReflector.startReflection(token, this.target);
+        if (!this.reflecting.has(token)) {
+            this.reflecting.add(token);
+            DesignTokenNode.cssCustomPropertyReflector.startReflection(
+                token,
+                this.target
+            );
+        }
     }
 
     /**
