@@ -347,64 +347,6 @@ class CustomPropertyReflector {
     }
 }
 
-// class DerivedValueBindingContainer<T> implements Subscriber {
-//     @observable private _value: T;
-//     public _valueChanged() {
-//         this.token.notify(this.node.target);
-//     }
-//
-//     public get value() {
-//         return this._value;
-//     }
-//
-//     private bindingObserver: BindingObserver<HTMLElement, T>;
-//     constructor(
-//         public readonly binding: Binding<HTMLElement, T>,
-//         private token: DesignTokenImpl<T>,
-//         private node: DesignTokenNode
-//     ) {
-//         this.bindingObserver = Observable.binding(binding, this, false);
-//         this._value = this.bindingObserver.observe(node.target, defaultExecutionContext);
-//         this.dependencies = Object.freeze([...this.collectDependencies()]);
-//     }
-//
-//     /**
-//      * Handles change emitted from the BindingObserver.
-//      * @internal
-//      */
-//     handleChange() {
-//         this._value = this.bindingObserver.observe(
-//             this.node.target,
-//             defaultExecutionContext
-//         );
-//     }
-//
-//     /**
-//      * Dispose of the DerivedValueBindingContainer
-//      */
-//     public dispose() {
-//         this.bindingObserver.disconnect();
-//     }
-//
-//     public readonly dependencies: ReadonlyArray<DesignTokenImpl<any>>;
-//
-//     private collectDependencies() {
-//         const dependencies = new Set<DesignTokenImpl<any>>();
-//
-//         for (const record of this.bindingObserver.records()) {
-//             if (record.propertySource instanceof DesignTokenNode) {
-//                 const token = DesignTokenImpl.getTokenById(record.propertyName);
-//
-//                 if (token !== undefined) {
-//                     dependencies.add(token);
-//                 }
-//             }
-//         }
-//
-//         return dependencies;
-//     }
-// }
-
 const nodeCache = new WeakMap<HTMLElement, DesignTokenNode>();
 const childToParent = new WeakMap<DesignTokenNode, DesignTokenNode>();
 
@@ -587,17 +529,21 @@ class DesignTokenNode implements Behavior, Subscriber {
             const binding = this.setupBindingObserver(token, value);
             const dependencies = this.collectBindingTokenDependencies(binding);
 
-            const apply = DesignTokenImpl.isCSSDesignToken(token)
-                ? "reflectToCSS"
-                : "get";
-            dependencies.forEach(x => {
-                x.appliedTo.forEach(y => {
-                    const node = DesignTokenNode.getOrCreate(y);
+            const reflect = DesignTokenImpl.isCSSDesignToken(token);
 
-                    if (this.contains(node) && node.getRaw(token) === value) {
-                        node[apply](token as any);
-                    }
-                });
+            dependencies.forEach(x => {
+                // Check all existing nodes for which a dependency has been applied
+                // and determine if we need to update the token being set for that node
+                if (reflect) {
+                    x.appliedTo.forEach(y => {
+                        const node = DesignTokenNode.getOrCreate(y);
+
+                        if (this.contains(node) && node.getRaw(token) === value) {
+                            token.notify(node.target);
+                            node.reflectToCSS(token as CSSDesignToken<T>);
+                        }
+                    });
+                }
 
                 x.subscribe({
                     handleChange: record => {
@@ -642,6 +588,10 @@ class DesignTokenNode implements Behavior, Subscriber {
         if (parent) {
             parent.appendChild(this);
         }
+
+        for (const key of this.rawValues.keys()) {
+            key.notify(this.target);
+        }
     }
 
     /**
@@ -670,6 +620,10 @@ class DesignTokenNode implements Behavior, Subscriber {
         reParent.forEach(x => child.appendChild(x));
 
         Observable.getNotifier(this).subscribe(child);
+
+        // for (const key of this.rawValues.keys()) {
+        //     key.notify(this.target)
+        // }
     }
 
     /**

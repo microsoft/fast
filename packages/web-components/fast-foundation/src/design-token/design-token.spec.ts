@@ -532,8 +532,6 @@ describe("A DesignToken", () => {
 
             tokenA.setValueFor(element, 7);
 
-
-            console.log("appending to DOM")
             document.body.appendChild(element);
 
             await DOM.nextUpdate();
