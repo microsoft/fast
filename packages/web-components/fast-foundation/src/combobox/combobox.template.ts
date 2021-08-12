@@ -2,8 +2,8 @@ import { html, ref, slotted } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
 import { Listbox } from "../listbox/listbox";
 import { endTemplate, startTemplate } from "../patterns/start-end";
-import type { Combobox, ComboboxOptions } from "./combobox";
 import type { ElementDefinitionContext } from "../design-system";
+import type { Combobox, ComboboxOptions } from "./combobox";
 
 /**
  * The template for the {@link @microsoft/fast-foundation#(Combobox:class)} component.

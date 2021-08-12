@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-tooling
 
-This log was last generated on Wed, 11 Aug 2021 07:14:31 GMT and should not be manually modified.
+This log was last generated on Thu, 12 Aug 2021 07:16:50 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.26.4
+
+Thu, 12 Aug 2021 07:16:50 GMT
+
+### Patches
+
+- ensure named slots are all accounted for as children and fix an issue where multiple attributes could appear as an array (7559015+janechu@users.noreply.github.com)
 
 ## 0.26.3
 

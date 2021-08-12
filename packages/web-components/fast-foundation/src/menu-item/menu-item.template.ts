@@ -2,9 +2,9 @@ import { html, ref, when } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
 import { AnchoredRegion } from "../anchored-region";
 import { endTemplate, startTemplate } from "../patterns/start-end";
+import type { ElementDefinitionContext } from "../design-system";
 import { MenuItemRole } from "./menu-item";
 import type { MenuItem, MenuItemOptions } from "./menu-item";
-import type { ElementDefinitionContext } from "../design-system";
 
 /**
  * Generates a template for the {@link @microsoft/fast-foundation#(MenuItem:class)} component using

@@ -807,6 +807,8 @@ export class Dialog extends FoundationElement {
     disconnectedCallback(): void;
     // @internal (undocumented)
     dismiss(): void;
+    // @internal (undocumented)
+    handleChange(source: any, propertyName: string): void;
     hidden: boolean;
     hide(): void;
     modal: boolean;
