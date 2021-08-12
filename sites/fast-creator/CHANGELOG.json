@@ -2,6 +2,35 @@
   "name": "@microsoft/fast-creator",
   "entries": [
     {
+      "date": "Thu, 12 Aug 2021 07:16:50 GMT",
+      "tag": "@microsoft/fast-creator_v0.7.0",
+      "version": "0.7.0",
+      "comments": {
+        "none": [
+          {
+            "comment": "Bump @microsoft/fast-tooling to v0.26.4",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "1fc192e494b311562df5150234e4085dd315753c",
+            "package": "@microsoft/fast-creator"
+          },
+          {
+            "comment": "Bump @microsoft/site-utilities to v0.9.0",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "1fc192e494b311562df5150234e4085dd315753c",
+            "package": "@microsoft/fast-creator"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-tooling-react to v2.10.4",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "1fc192e494b311562df5150234e4085dd315753c",
+            "package": "@microsoft/fast-creator"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 11 Aug 2021 07:14:31 GMT",
       "tag": "@microsoft/fast-creator_v0.7.0",
       "version": "0.7.0",

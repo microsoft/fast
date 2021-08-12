@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "fix dialog focus on open",
-  "packageName": "@microsoft/fast-components",
-  "email": "scomea@microsoft.com",
-  "dependentChangeType": "patch"
-}
