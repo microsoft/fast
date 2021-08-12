@@ -347,6 +347,70 @@ class CustomPropertyReflector {
     }
 }
 
+/**
+ * A light wrapper around BindingObserver to handle value caching and
+ * token notification
+ */
+class DesignTokenBindingObserver<T> {
+    public readonly dependencies = new Set<DesignTokenImpl<any>>();
+    private observer: BindingObserver<HTMLElement, DerivedDesignTokenValue<T>>;
+    constructor(
+        public readonly source: Binding<HTMLElement, DerivedDesignTokenValue<T>>,
+        public readonly token: DesignTokenImpl<T>,
+        public readonly node: DesignTokenNode
+    ) {
+        this.observer = Observable.binding(source, this);
+
+        // This is a little bit hacky because it's using internal APIs of BindingObserverImpl.
+        // BindingObserverImpl queues updates to batch it's notifications which doesn't work for this
+        // scenario because the DesignToken.getValueFor API is not async. Assigning .handleChange to .call
+        // forces immediate invocation of this classes handleChange() method, allowing resolution of values
+        // synchronously.
+        (this.observer as any).handleChange = (this.observer as any).call;
+
+        this.handleChange();
+
+        for (const record of this.observer.records()) {
+            if (record.propertySource instanceof DesignTokenNode) {
+                const token = DesignTokenImpl.getTokenById(record.propertyName);
+
+                if (token !== undefined) {
+                    this.dependencies.add(token);
+                }
+            }
+        }
+    }
+
+    public disconnect() {
+        this.observer.disconnect();
+    }
+
+    @observable private _value: StaticDesignTokenValue<T>;
+    private _valueChanged(prev, next) {
+        // Only notify on changes, not initialization
+        if (prev !== undefined) {
+            this.token.notify(this.node.target);
+        }
+    }
+
+    /**
+     * The value of the binding
+     */
+    public get value() {
+        return this._value;
+    }
+
+    /**
+     * @internal
+     */
+    public handleChange() {
+        this._value = (this.observer.observe(
+            this.node.target,
+            defaultExecutionContext
+        ) as unknown) as StaticDesignTokenValue<T>;
+    }
+}
+
 const nodeCache = new WeakMap<HTMLElement, DesignTokenNode>();
 const childToParent = new WeakMap<DesignTokenNode, DesignTokenNode>();
 
@@ -449,7 +513,7 @@ class DesignTokenNode implements Behavior, Subscriber {
      */
     private bindingObservers = new Map<
         DesignTokenImpl<any>,
-        BindingObserver<HTMLElement, any>
+        DesignTokenBindingObserver<any>
     >();
 
     public get parent(): DesignTokenNode | null {
@@ -488,7 +552,7 @@ class DesignTokenNode implements Behavior, Subscriber {
                 return (
                     this.bindingObservers.get(token) ||
                     this.setupBindingObserver(token, raw)
-                ).observe(this.target, defaultExecutionContext);
+                ).value;
             } else {
                 return raw;
             }
@@ -527,7 +591,7 @@ class DesignTokenNode implements Behavior, Subscriber {
 
         if (DesignTokenImpl.isDerivedDesignTokenValue(value)) {
             const binding = this.setupBindingObserver(token, value);
-            const dependencies = this.collectBindingTokenDependencies(binding);
+            const { dependencies } = binding;
 
             const reflect = DesignTokenImpl.isCSSDesignToken(token);
 
@@ -577,6 +641,7 @@ class DesignTokenNode implements Behavior, Subscriber {
         this.rawValues.delete(token);
         this.tearDownBindingObserver(token);
         this.children.forEach(x => x.purgeInheritedBindings(token));
+        token.notify(this.target);
     }
 
     /**
@@ -620,10 +685,6 @@ class DesignTokenNode implements Behavior, Subscriber {
         reParent.forEach(x => child.appendChild(x));
 
         Observable.getNotifier(this).subscribe(child);
-
-        // for (const key of this.rawValues.keys()) {
-        //     key.notify(this.target)
-        // }
     }
 
     /**
@@ -699,22 +760,16 @@ class DesignTokenNode implements Behavior, Subscriber {
     /**
      * Sets up a binding observer for a derived token value that notifies token
      * subscribers on change.
+     *
      * @param token - The token to notify when the binding updates
      * @param source - The binding source
      */
     private setupBindingObserver<T>(
         token: DesignTokenImpl<T>,
         source: DerivedDesignTokenValue<T>
-    ): BindingObserver<HTMLElement, T> {
-        const binding = Observable.binding(
-            source,
-            {
-                handleChange: () => {
-                    token.notify(this.target);
-                },
-            },
-            false
-        );
+    ): DesignTokenBindingObserver<T> {
+        const binding = new DesignTokenBindingObserver(source as any, token, this);
+
         this.bindingObservers.set(token, binding);
         return binding;
     }
@@ -730,30 +785,6 @@ class DesignTokenNode implements Behavior, Subscriber {
         }
 
         return false;
-    }
-
-    /**
-     * Collects all DesignTokenImpl that are used inside by a BindingObserver
-     * @param bindingObserver - The BindingObserver to collect dependencies of
-     * @returns
-     */
-    private collectBindingTokenDependencies<T>(
-        bindingObserver: BindingObserver<HTMLElement, T>
-    ): Set<DesignTokenImpl<any>> {
-        const collected = new Set<DesignTokenImpl<any>>();
-
-        bindingObserver.observe(this.target, defaultExecutionContext);
-        for (const record of bindingObserver.records()) {
-            if (record.propertySource instanceof DesignTokenNode) {
-                const token = DesignTokenImpl.getTokenById(record.propertyName);
-
-                if (token !== undefined) {
-                    collected.add(token);
-                }
-            }
-        }
-
-        return collected;
     }
 }
 
