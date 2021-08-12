@@ -2,6 +2,44 @@
   "name": "@microsoft/fast-tooling",
   "entries": [
     {
+      "date": "Thu, 12 Aug 2021 07:16:50 GMT",
+      "tag": "@microsoft/fast-tooling_v0.26.4",
+      "version": "0.26.4",
+      "comments": {
+        "patch": [
+          {
+            "comment": "ensure named slots are all accounted for as children and fix an issue where multiple attributes could appear as an array",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "1fc192e494b311562df5150234e4085dd315753c",
+            "package": "@microsoft/fast-tooling"
+          }
+        ],
+        "none": [
+          {
+            "comment": "Bump @microsoft/fast-components to v2.5.8",
+            "author": "scomea@microsoft.com",
+            "commit": "ee9239067b2245056e066e3a4e532b4ad00d4815",
+            "package": "@microsoft/fast-tooling"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 11 Aug 2021 07:14:31 GMT",
+      "tag": "@microsoft/fast-tooling_v0.26.3",
+      "version": "0.26.3",
+      "comments": {
+        "patch": [
+          {
+            "comment": "fix: html renderer use custom title if present",
+            "author": "44823142+williamw2@users.noreply.github.com",
+            "commit": "becce2a15d62eea79ad07a2336c44a603e49e99d",
+            "package": "@microsoft/fast-tooling"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 10 Aug 2021 07:16:01 GMT",
       "tag": "@microsoft/fast-tooling_v0.26.2",
       "version": "0.26.2",

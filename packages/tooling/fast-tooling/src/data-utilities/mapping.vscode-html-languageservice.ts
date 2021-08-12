@@ -77,14 +77,25 @@ function mapAttributesAndSlotsToData(
     slotAttributes: { [key: string]: LinkedData[] },
     schemaId: string,
     schemaDictionary: SchemaDictionary
-) {
-    return Object.entries(node.attributes)
-        .map(([attributeKey, attributeValue]: [string, string]) => {
+): { [key: string]: any } {
+    const attributes = Array.isArray(node.attributes)
+        ? node.attributes
+        : Object.entries(node.attributes).map(
+              ([attributeKey, attributeValue]: [string, string]) => {
+                  return {
+                      [attributeKey]: attributeValue,
+                  };
+              }
+          );
+
+    return attributes
+        .map((attribute: { [key: string]: string }) => {
+            const name = Object.keys(attribute)[0];
             const parsedAttributeValue = parseElementAttributeValue(
                 schemaDictionary[schemaId],
                 {
-                    name: attributeKey,
-                    value: attributeValue,
+                    name,
+                    value: attribute[name],
                 }
             );
 
