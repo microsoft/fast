@@ -1,4 +1,4 @@
-import { attr, html, HTMLView, ViewTemplate } from "@microsoft/fast-element";
+import { attr, html, HTMLView, observable, ViewTemplate } from "@microsoft/fast-element";
 import { FoundationElement } from "../foundation-element";
 
 const defaultContentsTemplate: ViewTemplate<PickerMenuOption> = html`
@@ -23,7 +23,18 @@ export class PickerMenuOption extends FoundationElement {
     @attr({ attribute: "value" })
     public value: string;
 
+    /**
+     *  The template used to render the contents of the list item
+     *
+     * @alpha
+     */
+    @observable
     public contentsTemplate: ViewTemplate;
+    private contentsTemplateChanged(): void {
+        if (this.$fastController.isConnected) {
+            this.updateView();
+        }
+    }
 
     private customView: HTMLView | undefined;
 
