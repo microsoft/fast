@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-components
 
-This log was last generated on Sun, 08 Aug 2021 07:18:56 GMT and should not be manually modified.
+This log was last generated on Thu, 12 Aug 2021 07:16:50 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.5.8
+
+Thu, 12 Aug 2021 07:16:50 GMT
+
+### Patches
+
+- fix dialog focus on open (scomea@microsoft.com)
 
 ## 2.5.7
 

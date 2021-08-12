@@ -2,6 +2,29 @@
   "name": "@microsoft/fast-components",
   "entries": [
     {
+      "date": "Thu, 12 Aug 2021 07:16:50 GMT",
+      "tag": "@microsoft/fast-components_v2.5.8",
+      "version": "2.5.8",
+      "comments": {
+        "patch": [
+          {
+            "comment": "fix dialog focus on open",
+            "author": "scomea@microsoft.com",
+            "commit": "ee9239067b2245056e066e3a4e532b4ad00d4815",
+            "package": "@microsoft/fast-components"
+          }
+        ],
+        "none": [
+          {
+            "comment": "docs: re-organize content for better navigation and discovery",
+            "author": "roeisenb@microsoft.com",
+            "commit": "cfec9758a17811de95399a2168ed199e7dd3c510",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 10 Aug 2021 07:16:01 GMT",
       "tag": "@microsoft/fast-components_v2.5.7",
       "version": "2.5.7",

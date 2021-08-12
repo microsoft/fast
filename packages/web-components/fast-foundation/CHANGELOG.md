@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Wed, 04 Aug 2021 07:15:14 GMT and should not be manually modified.
+This log was last generated on Thu, 12 Aug 2021 07:16:50 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.6.4
+
+Thu, 12 Aug 2021 07:16:50 GMT
+
+### Patches
+
+- fix dialog focus on open (scomea@microsoft.com)
 
 ## 2.6.3
 
