@@ -1586,7 +1586,6 @@ export class PickerMenu extends FoundationElement {
 export class PickerMenuOption extends FoundationElement {
     // @internal (undocumented)
     connectedCallback(): void;
-    // (undocumented)
     contentsTemplate: ViewTemplate;
     // @internal (undocumented)
     disconnectedCallback(): void;

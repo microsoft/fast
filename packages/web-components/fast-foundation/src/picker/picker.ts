@@ -63,7 +63,10 @@ export class Picker extends FormAssociatedPicker {
     @attr({ attribute: "options" })
     public options: string;
     private optionsChanged(): void {
-        this.optionsList = this.options.split(",");
+        this.optionsList = this.options
+            .split(",")
+            .map(opt => opt.trim())
+            .filter(opt => opt !== "");
     }
 
     /**
