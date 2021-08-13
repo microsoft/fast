@@ -150,7 +150,7 @@ export class Button extends FormAssociatedButton {
     /**
      * Submits the parent form
      */
-    private handleSubmission = () => {
+    private handleSubmission = (e: Event) => {
         if (!this.form) {
             return;
         }
@@ -161,22 +161,28 @@ export class Button extends FormAssociatedButton {
             this.attachProxy();
         }
 
-        // Browser support for requestSubmit is not comprehensive
-        // so click the proxy if it isn't supported
-        typeof this.form.requestSubmit === "function"
-            ? this.form.requestSubmit(this.proxy)
-            : this.proxy.click();
+        setTimeout(() => {
+            if (e.defaultPrevented) return;
 
-        if (!attached) {
-            this.detachProxy();
-        }
+            // Browser support for requestSubmit is not comprehensive
+            // so click the proxy if it isn't supported
+            typeof this.form?.requestSubmit === "function"
+                ? this.form.requestSubmit(this.proxy)
+                : this.proxy.click();
+
+            if (!attached) {
+                this.detachProxy();
+            }
+        });
     };
 
     /**
      * Resets the parent form
      */
-    private handleFormReset = () => {
-        this.form?.reset();
+    private handleFormReset = (e: Event) => {
+        setTimeout(() => {
+            !e.defaultPrevented && this.form?.reset();
+        });
     };
 
     public control: HTMLButtonElement;
