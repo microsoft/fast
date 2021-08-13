@@ -165,7 +165,6 @@ function designToken<T>(token: DesignToken<T>) {
 export class DesignPropertyPanel extends FASTElement {
     @observable app!: HTMLElement;
 
-    // @designToken(baseLayerLuminance)
     @observable
     baseLayerLuminance: number | undefined;
     baseLayerLuminanceChanged(prev: number | undefined, next: number): void {
