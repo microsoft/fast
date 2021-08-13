@@ -4,7 +4,8 @@ import {
     forcedColorsStylesheetBehavior,
     FoundationElementDefinition,
 } from "@microsoft/fast-foundation";
-import { neutralLayerFloating } from "../design-tokens";
+import { designUnit, neutralLayerFloating } from "../design-tokens";
+import { heightNumber } from "../styles/index";
 
 export const pickerStyles: (
     context: ElementDefinitionContext,
@@ -29,12 +30,12 @@ export const pickerStyles: (
         .no-options-display {
             background: ${neutralLayerFloating};
             width: 100%;
-            height: 160px;
+            min-height: calc(${heightNumber} * 1px);
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-items: center;
-            padding: 8px;
+            padding: calc(${designUnit} * 1px);
         }
 
         .loading-progress {

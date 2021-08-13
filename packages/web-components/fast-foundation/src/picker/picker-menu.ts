@@ -68,9 +68,9 @@ export class PickerMenu extends FoundationElement {
 
     private updateOptions(): void {
         this.optionElements.splice(0, this.optionElements.length);
-        [this.headerElements, this.menuElements, this.footerElements].forEach(
-            this.addSlottedListItems
-        );
+        this.addSlottedListItems(this.headerElements);
+        this.addSlottedListItems(this.menuElements);
+        this.addSlottedListItems(this.footerElements);
         this.$emit("optionsupdated", { bubbles: false });
     }
 
