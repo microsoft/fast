@@ -5,21 +5,16 @@ import {
     forcedColorsStylesheetBehavior,
     FoundationElementDefinition,
 } from "@microsoft/fast-foundation";
-import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
     accentFillActive,
-    accentFillRest,
     bodyFont,
     controlCornerRadius,
     designUnit,
     focusStrokeOuter,
     focusStrokeWidth,
     foregroundOnAccentActive,
-    neutralFillInputHover,
-    neutralFillInputRest,
     neutralForegroundRest,
     neutralLayer3,
-    strokeWidth,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
 } from "../design-tokens";
