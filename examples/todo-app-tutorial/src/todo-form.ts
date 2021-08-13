@@ -26,6 +26,7 @@ const template = html<TodoForm>`
 const styles = css`
     form {
         display: flex;
+        align-items: center;
     }
 
     fluent-button {
