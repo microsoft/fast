@@ -363,9 +363,10 @@ class DesignTokenBindingObserver<T> {
 
         // This is a little bit hacky because it's using internal APIs of BindingObserverImpl.
         // BindingObserverImpl queues updates to batch it's notifications which doesn't work for this
-        // scenario because the DesignToken.getValueFor API is not async. Assigning .handleChange to .call
-        // forces immediate invocation of this classes handleChange() method, allowing resolution of values
-        // synchronously.
+        // scenario because the DesignToken.getValueFor API is not async. Without this, using DesignToken.getValueFor()
+        // after DesignToken.setValueFor() when setting a dependency of the value being retrieved can return a stale
+        // value. Assigning .handleChange to .call forces immediate invocation of this classes handleChange() method,
+        // allowing resolution of values synchronously.
         (this.observer as any).handleChange = (this.observer as any).call;
 
         this.handleChange();
