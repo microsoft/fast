@@ -21,11 +21,7 @@ import {
     strokeWidth,
     SwatchRGB,
 } from "@fluentui/web-components";
-import {
-    ComponentStateColorPalette,
-    parseColor,
-    ColorRGBA64,
-} from "@microsoft/fast-colors";
+import { parseColor } from "@microsoft/fast-colors";
 import { typography } from "./typography";
 import { DesignToken, DesignTokenValue } from "@microsoft/fast-foundation";
 
@@ -76,12 +72,7 @@ const template = html<DesignPropertyPanel>`
                 step="0.01"
                 value=${x => x.baseLayerLuminance}
                 @change=${(x, c) => {
-                    const v = parseFloat(targetValue(c)).toFixed(2);
-                    console.log(v);
-                    x.baseLayerLuminance = v as any;
-                    // x.baseLayerLuminance = Number(
-                    //     parseFloat(targetValue(c)).toFixed(2)
-                    // );
+                    x.baseLayerLuminance = Number(parseFloat(targetValue(c)).toFixed(2));
                 }}
             >
                 <fluent-slider-label position="0">Black</fluent-slider-label>

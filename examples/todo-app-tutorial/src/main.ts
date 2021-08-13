@@ -1,5 +1,4 @@
 import {
-    baseLayerLuminance,
     fluentButton,
     fluentCard,
     fluentCheckbox,
