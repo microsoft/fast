@@ -315,6 +315,7 @@ export function renderNavigationTabs(
                 <ModularNavigation
                     messageSystem={fastMessageSystem}
                     types={[DataType.object]}
+                    defaultLinkedDataDroppableDataLocation={"Slot"}
                 />
             </fast-tab-panel>
             <fast-tab-panel id={NavigationId.libraries + "Panel"}>
