@@ -1,4 +1,4 @@
-import { attr, observable } from "@microsoft/fast-element";
+import { attr, observable, DOM } from "@microsoft/fast-element";
 import { ARIAGlobalStatesAndProperties, StartEnd } from "../patterns/index";
 import { applyMixins } from "../utilities/apply-mixins";
 import { FormAssociatedButton } from "./button.form-associated";
@@ -161,7 +161,7 @@ export class Button extends FormAssociatedButton {
             this.attachProxy();
         }
 
-        setTimeout(() => {
+        DOM.queueUpdate(() => {
             if (e.defaultPrevented) return;
 
             // Browser support for requestSubmit is not comprehensive
@@ -180,7 +180,7 @@ export class Button extends FormAssociatedButton {
      * Resets the parent form
      */
     private handleFormReset = (e: Event) => {
-        setTimeout(() => {
+        DOM.queueUpdate(() => {
             !e.defaultPrevented && this.form?.reset();
         });
     };
