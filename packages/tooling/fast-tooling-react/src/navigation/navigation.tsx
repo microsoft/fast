@@ -8,7 +8,6 @@ import {
     keyCodeEnter,
     keyCodeHome,
     keyCodeSpace,
-    keyCodeTab,
 } from "@microsoft/fast-web-utilities";
 import Foundation, {
     FoundationProps,
@@ -34,6 +33,7 @@ import {
     Register,
     TreeNavigationItem,
     getLinkedData,
+    DataType,
 } from "@microsoft/fast-tooling";
 import manageJss, { ManagedClasses } from "@microsoft/fast-jss-manager-react";
 import styles, { NavigationClassNameContract } from "./navigation.style";
@@ -127,22 +127,19 @@ class Navigation extends Foundation<
         activeDictionaryId: string,
         activeNavigationConfigId: string
     ): Set<string> {
+        const updatedDictionaryItemConfigItems = new Set(
+            this.state.expandedNavigationConfigItems[activeDictionaryId]
+        );
+
         if (this.state.expandedNavigationConfigItems[activeDictionaryId] === undefined) {
             return new Set([activeNavigationConfigId]);
-        } else if (
-            this.state.expandedNavigationConfigItems[activeDictionaryId].has(
-                activeNavigationConfigId
-            )
-        ) {
-            this.state.expandedNavigationConfigItems[activeDictionaryId].delete(
-                activeNavigationConfigId
-            );
-            return this.state.expandedNavigationConfigItems[activeDictionaryId];
+        } else if (updatedDictionaryItemConfigItems.has(activeNavigationConfigId)) {
+            updatedDictionaryItemConfigItems.delete(activeNavigationConfigId);
+            return updatedDictionaryItemConfigItems;
         }
 
-        return this.state.expandedNavigationConfigItems[activeDictionaryId].add(
-            activeNavigationConfigId
-        );
+        updatedDictionaryItemConfigItems.add(activeNavigationConfigId);
+        return updatedDictionaryItemConfigItems;
     }
 
     /**
@@ -211,11 +208,22 @@ class Navigation extends Foundation<
         navigationConfigId: string,
         index: number
     ): React.ReactNode {
-        const isDictionaryLink: boolean =
+        const isLinkedData: boolean =
             this.state.navigationDictionary[0][dictionaryId] !== undefined &&
             this.state.navigationDictionary[0][dictionaryId][1] === navigationConfigId;
-        const isDraggable: boolean =
-            isDictionaryLink && this.state.navigationDictionary[1] !== dictionaryId; // is linked data and not the root level item
+        const isRootLinkedData: boolean =
+            this.state.navigationDictionary[1] === dictionaryId &&
+            navigationConfigId === "";
+        const isDraggable: boolean = isLinkedData && !isRootLinkedData; // is linked data and not the root level item
+        const isDroppable: boolean =
+            (isLinkedData &&
+                this.state.navigationDictionary[0]?.[dictionaryId]?.[0]?.[
+                    navigationConfigId
+                ]?.schema?.type === DataType.object &&
+                !isRootLinkedData) || // a piece of linked data that is not the root and is an object type
+            this.state.navigationDictionary[0]?.[dictionaryId]?.[0]?.[navigationConfigId]
+                ?.schema?.[dictionaryLink] || // an identified dictionary link
+            (isRootLinkedData && this.props.defaultLinkedDataDroppableDataLocation); // the root linked data with an defined droppable data location
         const isTriggerRenderable: boolean = this.shouldTriggerRender(
             dictionaryId,
             navigationConfigId
@@ -225,12 +233,18 @@ class Navigation extends Foundation<
             navigationConfigId,
             isTriggerRenderable
         );
-        const itemType: DragDropItemType = isDraggable
-            ? DragDropItemType.linkedData
-            : this.state.navigationDictionary[0][dictionaryId][0][navigationConfigId]
-                  .schema[dictionaryLink]
-            ? DragDropItemType.linkedDataContainer
-            : DragDropItemType.default;
+        const itemType: DragDropItemType =
+            isRootLinkedData && isDroppable
+                ? DragDropItemType.rootLinkedData
+                : isRootLinkedData
+                ? DragDropItemType.rootLinkedDataUndroppable
+                : isLinkedData && isDroppable
+                ? DragDropItemType.linkedData
+                : isLinkedData
+                ? DragDropItemType.linkedDataUndroppable
+                : isDroppable
+                ? DragDropItemType.linkedDataContainer
+                : DragDropItemType.undraggableUndroppable;
 
         const trigger: React.ReactNode = isTriggerRenderable
             ? this.renderTrigger(
@@ -239,7 +253,7 @@ class Navigation extends Foundation<
                       .text,
                   content !== null,
                   isDraggable,
-                  itemType !== DragDropItemType.default,
+                  itemType !== DragDropItemType.undraggableUndroppable,
                   dictionaryId,
                   navigationConfigId,
                   index
@@ -255,6 +269,7 @@ class Navigation extends Foundation<
                 role={"treeitem"}
                 className={this.props.managedClasses.navigation_itemRegion}
                 aria-expanded={this.getExpandedState(dictionaryId, navigationConfigId)}
+                data-type={itemType}
                 key={index}
             >
                 {trigger}
@@ -442,11 +457,16 @@ class Navigation extends Foundation<
 
     private getParentElement(dictionaryId: string): { [key: string]: Set<string> } {
         if (this.state.dataDictionary[0][dictionaryId].parent) {
-            let parentDictionaryItem =
-                this.state.expandedNavigationConfigItems[dictionaryId] || new Set([""]);
-
             const parentDictionaryId = this.state.dataDictionary[0][dictionaryId].parent
                 .id;
+            const parentDictionaryItem = this.state.expandedNavigationConfigItems[
+                parentDictionaryId
+            ]
+                ? new Set([
+                      "",
+                      ...this.state.expandedNavigationConfigItems[parentDictionaryId],
+                  ])
+                : new Set([""]);
             const parentDictionaryItemDataLocations: Set<string> = new Set(
                 this.state.dataDictionary[0][dictionaryId].parent.dataLocation.split(".")
             );
@@ -496,7 +516,13 @@ class Navigation extends Foundation<
             this.state.hoveredItem[1] === dictionaryId &&
             this.state.hoveredItem[2] === navigationConfigId
         ) {
-            if (this.state.hoveredItem[0] === DragDropItemType.linkedDataContainer) {
+            if (
+                this.state.hoveredItem[0] === DragDropItemType.linkedDataContainer ||
+                ((this.state.hoveredItem[0] === DragDropItemType.linkedData ||
+                    this.state.hoveredItem[0] === DragDropItemType.rootLinkedData) &&
+                    this.props.defaultLinkedDataDroppableDataLocation &&
+                    this.state.hoveredItem[3] === HoverLocation.center)
+            ) {
                 className += ` ${this.props.managedClasses.navigation_item__hover}`;
             } else if (this.state.hoveredItem[0] === DragDropItemType.linkedData) {
                 if (this.state.hoveredItem[3] === HoverLocation.after) {
@@ -557,13 +583,22 @@ class Navigation extends Foundation<
     };
 
     private handleDragEnd = (): void => {
+        const dropOntoLinkedData: boolean =
+            (this.state.linkedDataLocation[1] === "" ||
+                this.state.linkedDataLocation[1] ===
+                    this.props.defaultLinkedDataDroppableDataLocation) &&
+            this.props.defaultLinkedDataDroppableDataLocation &&
+            this.state.hoveredItem[3] === HoverLocation.center;
+
         this.props.messageSystem.postMessage({
             type: MessageSystemType.data,
             action: MessageSystemDataTypeAction.addLinkedData,
             linkedData: this.state.linkedData,
             dictionaryId: this.state.linkedDataLocation[0],
-            dataLocation: this.state.linkedDataLocation[1],
-            index: this.state.linkedDataLocation[2],
+            dataLocation: dropOntoLinkedData
+                ? this.props.defaultLinkedDataDroppableDataLocation
+                : this.state.linkedDataLocation[1],
+            index: dropOntoLinkedData ? void 0 : this.state.linkedDataLocation[2],
             options: {
                 originatorId: navigationId,
             },
@@ -574,6 +609,9 @@ class Navigation extends Foundation<
         });
     };
 
+    /**
+     * Handles hovering over an item
+     */
     private handleDragHover = (
         type: DragDropItemType,
         dictionaryId: string,
@@ -587,8 +625,17 @@ class Navigation extends Foundation<
         ][0][navigationConfigId].relativeDataLocation;
         const isLinkedDataContainer: boolean =
             type === DragDropItemType.linkedDataContainer;
+        const isLinkedData: boolean =
+            type === DragDropItemType.linkedData ||
+            type === DragDropItemType.rootLinkedData;
 
         if (
+            isLinkedData &&
+            this.props.defaultLinkedDataDroppableDataLocation &&
+            location === HoverLocation.center
+        ) {
+            parentDataLocation = this.props.defaultLinkedDataDroppableDataLocation;
+        } else if (
             !isLinkedDataContainer &&
             this.state.navigationDictionary[0][dictionaryId][0][navigationConfigId]
                 .parentDictionaryItem !== undefined

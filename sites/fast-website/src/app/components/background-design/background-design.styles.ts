@@ -1,4 +1,4 @@
-import { neutralFillRestBehavior } from "@microsoft/fast-components";
+import { fillColor } from "@microsoft/fast-components";
 import { css } from "@microsoft/fast-element";
 import { display } from "@microsoft/fast-foundation";
 
@@ -24,7 +24,7 @@ export const BackgroundDesignStyles = css`
     }
 
     :host .background-image::after {
-        background: var(--background-color);
+        background: ${fillColor};
         content: "";
         display: block;
         height: 100%;
@@ -47,4 +47,4 @@ export const BackgroundDesignStyles = css`
         object-position: 50% 50%;
         width: 100%;
     }
-`.withBehaviors(neutralFillRestBehavior);
+`;

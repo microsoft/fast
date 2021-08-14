@@ -1,8 +1,233 @@
 # Change Log - @microsoft/fast-components
 
-This log was last generated on Tue, 08 Jun 2021 07:29:18 GMT and should not be manually modified.
+This log was last generated on Thu, 12 Aug 2021 07:16:50 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.5.8
+
+Thu, 12 Aug 2021 07:16:50 GMT
+
+### Patches
+
+- fix dialog focus on open (scomea@microsoft.com)
+
+## 2.5.7
+
+Sun, 08 Aug 2021 07:18:56 GMT
+
+### Patches
+
+- replace css comment expressions with normal css comments (john.kreitlow@microsoft.com)
+
+## 2.5.6
+
+Thu, 05 Aug 2021 07:17:32 GMT
+
+### Patches
+
+- add border to badge and adjust padding size (khamu@microsoft.com)
+
+## 2.5.5
+
+Wed, 04 Aug 2021 07:15:14 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.6.3 (chhol@microsoft.com)
+
+## 2.5.4
+
+Tue, 03 Aug 2021 07:17:33 GMT
+
+### Patches
+
+- add neutralForegroundRest color to host (khamu@microsoft.com)
+
+## 2.5.3
+
+Sun, 01 Aug 2021 07:17:15 GMT
+
+### Patches
+
+- Register design-system-provider (47367562+bheston@users.noreply.github.com)
+
+## 2.5.2
+
+Thu, 29 Jul 2021 07:18:18 GMT
+
+### Patches
+
+- remove unnecessary aria-hidden attributes (47367562+bheston@users.noreply.github.com)
+- fix select border styles when control is active (corylaviska@microsoft.com)
+
+## 2.5.1
+
+Wed, 28 Jul 2021 07:17:22 GMT
+
+### Patches
+
+- Bump @microsoft/fast-element to v1.4.1 (nicholasrice@users.noreply.github.com)
+
+## 2.5.0
+
+Sun, 25 Jul 2021 07:17:41 GMT
+
+### Minor changes
+
+- add auto position tracking to tooltip (scomea@microsoft.com)
+- anchored region uses transform (scomea@microsoft.com)
+
+### Patches
+
+- add layouts for 0 indent submenus (scomea@microsoft.com)
+- Bump @microsoft/fast-foundation to v2.6.0 (scomea@microsoft.com)
+
+## 2.4.0
+
+Thu, 22 Jul 2021 07:19:53 GMT
+
+### Minor changes
+
+- update component styles to leverage context.tagFor() for nested element styles (chhol@microsoft.com)
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.5.2 (47367562+bheston@users.noreply.github.com)
+
+## 2.3.0
+
+Wed, 21 Jul 2021 07:14:48 GMT
+
+### Minor changes
+
+- feat(fast-design-system): improve ergonomics of the fast design system (roeisenb@microsoft.com)
+
+### Patches
+
+- Hide step-up and step-down for number-field when readonly (robarb@microsoft.com)
+- Bump @microsoft/fast-foundation to v2.5.1 (robarb@microsoft.com)
+
+## 2.2.3
+
+Sun, 18 Jul 2021 07:16:22 GMT
+
+### Patches
+
+- breadcrumb: allow wrapping of items in the list container (ben@platform5.ch)
+
+## 2.2.2
+
+Thu, 15 Jul 2021 01:41:48 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.5.0 (chhol@microsoft.com)
+
+## 2.2.1
+
+Tue, 13 Jul 2021 07:14:52 GMT
+
+### Patches
+
+- text-field: start/end display flex (ben@platform5.ch)
+- fix: export tooltipStyles (derekdon@protonmail.com)
+
+## 2.2.0
+
+Wed, 07 Jul 2021 07:19:51 GMT
+
+### Minor changes
+
+- focus trap improvement (scomea@microsoft.com)
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.3.0 (scomea@microsoft.com)
+
+## 2.1.0
+
+Sun, 04 Jul 2021 07:15:28 GMT
+
+### Minor changes
+
+- select should emit an input event before the change event (john.kreitlow@microsoft.com)
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.2.0 (john.kreitlow@microsoft.com)
+
+## 2.0.2
+
+Thu, 01 Jul 2021 07:15:57 GMT
+
+### Patches
+
+- correct names for typography tokens (nicholasrice@users.noreply.github.com)
+- Update default value for bodyFont Design Token (nicholasrice@users.noreply.github.com)
+
+## 2.0.1
+
+Wed, 30 Jun 2021 07:19:09 GMT
+
+### Patches
+
+- export the design system provider base class (nicholasrice@users.noreply.github.com)
+- Fixed foregroundOnAccent recipe to work in all states (47367562+bheston@users.noreply.github.com)
+
+## 2.0.0
+
+Fri, 25 Jun 2021 02:02:57 GMT
+
+### Major changes
+
+- fix(fast-components): update rollup index to use the new DS API (roeisenb@microsoft.com)
+- removing leftover color references and inline direction utilities (nicholasrice@users.noreply.github.com)
+- remove css capabilities from palette design tokens (nicholasrice@users.noreply.github.com)
+- feat: styling and text alignment for menu (jes@microsoft.com)
+- update components to extend FoundationElement (chhol@microsoft.com)
+- remove deprecated APIs and Design System Provider infrastructure (nicholasrice@users.noreply.github.com)
+- update name casing for style exports to lowercase as they are functions (chhol@microsoft.com)
+
+### Minor changes
+
+- removes deprecated infrastructure from fast-color-explorer (nicholasrice@users.noreply.github.com)
+- undefined (nicholasrice@users.noreply.github.com)
+- More design token cleanup (47367562+bheston@users.noreply.github.com)
+- migrate directional-stylesheet utility (nicholasrice@users.noreply.github.com)
+- add support for default slotted content for components with visual indicators (chhol@microsoft.com)
+- ensure all base classes for composition are exported (chhol@microsoft.com)
+
+### Patches
+
+- fixes card fill color (nicholasrice@users.noreply.github.com)
+- migrate tree-item recipes to design tokens (nicholasrice@users.noreply.github.com)
+- undefined (nicholasrice@users.noreply.github.com)
+- Bump @microsoft/fast-foundation to v2.0.0 (nicholasrice@users.noreply.github.com)
+
+## 1.21.8
+
+Wed, 23 Jun 2021 22:58:18 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v1.24.8 (tlmii@users.noreply.github.com)
+
+## 1.21.7
+
+Sun, 20 Jun 2021 07:21:25 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v1.24.7 (robarb@microsoft.com)
+
+## 1.21.6
+
+Sun, 13 Jun 2021 07:19:23 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v1.24.6 (nicholasrice@users.noreply.github.com)
 
 ## 1.21.5
 

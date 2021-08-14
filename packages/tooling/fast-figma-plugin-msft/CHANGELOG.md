@@ -1,8 +1,168 @@
 # Change Log - @microsoft/fast-figma-plugin-msft
 
-This log was last generated on Tue, 08 Jun 2021 07:29:18 GMT and should not be manually modified.
+This log was last generated on Sun, 08 Aug 2021 07:18:56 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.8.16
+
+Sun, 08 Aug 2021 07:18:56 GMT
+
+### Patches
+
+- Bump @microsoft/fast-components to v2.5.7 (john.kreitlow@microsoft.com)
+
+## 0.8.16
+
+Thu, 05 Aug 2021 07:17:32 GMT
+
+### Patches
+
+- Bump @microsoft/fast-components to v2.5.6 (khamu@microsoft.com)
+
+## 0.8.16
+
+Wed, 04 Aug 2021 07:15:14 GMT
+
+### Patches
+
+- Bump @microsoft/fast-components to v2.5.5 (chhol@microsoft.com)
+
+## 0.8.16
+
+Tue, 03 Aug 2021 07:17:33 GMT
+
+### Patches
+
+- Bump @microsoft/fast-components to v2.5.4 (mathieu.lavoie@logmein.com)
+
+## 0.8.16
+
+Sun, 01 Aug 2021 07:17:15 GMT
+
+### Patches
+
+- Bump @microsoft/fast-components to v2.5.3 (roeisenb@microsoft.com)
+
+## 0.8.16
+
+Thu, 29 Jul 2021 07:18:18 GMT
+
+### Patches
+
+- Bump @microsoft/fast-components to v2.5.2 (47367562+bheston@users.noreply.github.com)
+
+## 0.8.16
+
+Wed, 28 Jul 2021 07:17:22 GMT
+
+### Patches
+
+- Bump @microsoft/fast-element to v1.4.1 (nicholasrice@users.noreply.github.com)
+
+## 0.8.16
+
+Sun, 25 Jul 2021 07:17:41 GMT
+
+### Patches
+
+- Bump @microsoft/fast-components to v2.5.0 (scomea@microsoft.com)
+
+## 0.8.16
+
+Thu, 22 Jul 2021 07:19:53 GMT
+
+### Patches
+
+- Bump @microsoft/fast-components to v2.4.0 (chhol@microsoft.com)
+
+## 0.8.16
+
+Wed, 21 Jul 2021 07:14:48 GMT
+
+### Patches
+
+- Bump @microsoft/fast-components to v2.3.0 (roeisenb@microsoft.com)
+
+## 0.8.16
+
+Sun, 18 Jul 2021 07:16:22 GMT
+
+### Patches
+
+- Bump @microsoft/fast-components to v2.2.3 (ben@platform5.ch)
+
+## 0.8.16
+
+Thu, 15 Jul 2021 01:41:48 GMT
+
+### Patches
+
+- Bump @microsoft/fast-components to v2.2.2 (chhol@microsoft.com)
+
+## 0.8.16
+
+Tue, 13 Jul 2021 07:14:52 GMT
+
+### Patches
+
+- Bump @microsoft/fast-components to v2.2.1 (ben@platform5.ch)
+
+## 0.8.16
+
+Wed, 07 Jul 2021 07:19:51 GMT
+
+### Patches
+
+- Bump @microsoft/fast-components to v2.2.0 (scomea@microsoft.com)
+
+## 0.8.16
+
+Sun, 04 Jul 2021 07:15:28 GMT
+
+### Patches
+
+- Bump @microsoft/fast-components to v2.1.0 (john.kreitlow@microsoft.com)
+
+## 0.8.16
+
+Thu, 01 Jul 2021 07:15:57 GMT
+
+### Patches
+
+- Bump @microsoft/fast-components to v2.0.2 (nicholasrice@users.noreply.github.com)
+
+## 0.8.16
+
+Fri, 25 Jun 2021 02:02:57 GMT
+
+### Patches
+
+- Bump @microsoft/fast-components to v2.0.0 (roeisenb@microsoft.com)
+
+## 0.8.16
+
+Wed, 23 Jun 2021 22:58:18 GMT
+
+### Patches
+
+- Bump @microsoft/fast-components to v1.21.8 (tlmii@users.noreply.github.com)
+
+## 0.8.16
+
+Sun, 20 Jun 2021 07:21:25 GMT
+
+### Patches
+
+- Bump @microsoft/fast-components to v1.21.7 (robarb@microsoft.com)
+
+## 0.8.16
+
+Sun, 13 Jun 2021 07:19:23 GMT
+
+### Patches
+
+- Bump @microsoft/fast-components to v1.21.6 (nicholasrice@users.noreply.github.com)
 
 ## 0.8.16
 

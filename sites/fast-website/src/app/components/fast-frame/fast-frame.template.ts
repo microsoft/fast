@@ -1,4 +1,4 @@
-import { html, repeat } from "@microsoft/fast-element";
+import { html, ref, repeat } from "@microsoft/fast-element";
 import ContextIcon from "svg/icon-context.svg";
 import ContrastIcon from "svg/icon-contrast.svg";
 import DownloadIcon from "svg/icon-download.svg";
@@ -175,15 +175,15 @@ export const FastFrameTemplate = html<FastFrame>`
                                     20PX
                                 </fast-slider-label>
                             </fast-slider>
-                            <label for="outline-width-slider">Outline width</label>
+                            <label for="stroke-width-slider">Stroke width</label>
                             <fast-slider
-                                id="outline-width-slider"
+                                id="stroke-width-slider"
                                 min="1"
                                 max="4"
                                 step="1"
                                 value="1"
                                 @change="${(x, c) =>
-                                    x.outlineWidthChangeHandler(c.event as CustomEvent)}"
+                                    x.strokeWidthChangeHandler(c.event as CustomEvent)}"
                             >
                                 <fast-slider-label hide-mark position="1">
                                     1PX
@@ -213,26 +213,11 @@ export const FastFrameTemplate = html<FastFrame>`
                     </div>
                 </fast-tab-panel>
             </fast-tabs>
-            <fast-design-system-provider
-                use-defaults
+            <div
+                ${ref("preview")}
                 class="${x => (x.expanded ? "preview preview-expanded" : "preview")}"
-                base-layer-luminance="${x => x.baseLayerLuminance}"
-                background-color="${x => x.backgroundColor}"
-                accent-base-color="${x => x.accentColor}"
-                density="${x => x.density}"
-                corner-radius="${x => x.borderRadius}"
-                outline-width="${x => x.outlineWidth}"
-                :accentPalette=${x =>
-                    Array.isArray(x.accentPalette) ? x.accentPalette : null}
-                :neutralPalette=${x =>
-                    Array.isArray(x.neutralPalette) ? x.neutralPalette : null}
             >
-                <fast-design-system-provider
-                    density="0"
-                    class="responsive-expand-flipper"
-                    base-height-multiplier="10"
-                    base-horizontal-spacing-multiplier="3"
-                >
+                <div class="responsive-expand-flipper">
                     <fast-flipper
                         direction="${x => (x.expanded ? "next" : "previous")}"
                         aria-expanded="${x => x.expanded}"
@@ -242,7 +227,7 @@ export const FastFrameTemplate = html<FastFrame>`
                         @click="${(x, c) =>
                             x.handleExpandKeypress(c.event as KeyboardEvent)}"
                     ></fast-flipper>
-                </fast-design-system-provider>
+                </div>
                 <fast-card>
                     <div class="image-container">
                         <fast-badge fill="primary" color="primary" class="badge">
@@ -346,7 +331,7 @@ export const FastFrameTemplate = html<FastFrame>`
                         </fast-button>
                     </div>
                 </div>
-            </fast-design-system-provider>
+            </div>
         </div>
     </template>
 `;

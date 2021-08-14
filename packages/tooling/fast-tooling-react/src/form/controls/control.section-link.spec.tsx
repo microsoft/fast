@@ -1,5 +1,6 @@
 import React from "react";
 import Adapter from "enzyme-adapter-react-16";
+import "../../__tests__/mocks/match-media";
 import { configure, mount, shallow } from "enzyme";
 import { SectionLinkControl } from "./control.section-link";
 import { SectionLinkControlProps } from "./control.section-link.props";

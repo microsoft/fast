@@ -8,6 +8,9 @@ import {
     DataDictionary,
     MessageSystem,
     MessageSystemType,
+    MonacoAdapter,
+    MonacoAdapterAction,
+    MonacoAdapterActionCallbackConfig,
 } from "@microsoft/fast-tooling";
 import { ViewerCustomAction } from "@microsoft/fast-tooling-react";
 // This is only used as a typescript reference, the actual monaco import must
@@ -16,12 +19,6 @@ import * as monaco from "monaco-editor/esm/vs/editor/editor.api";
 import { StandardLuminance } from "@microsoft/fast-components";
 import { classNames, Direction } from "@microsoft/fast-web-utilities";
 import FASTMessageSystemWorker from "@microsoft/fast-tooling/dist/message-system.min.js";
-import { MonacoAdapter } from "@microsoft/fast-tooling/dist/esm/message-system-service/monaco-adapter.service";
-import {
-    MonacoAdapterAction,
-    MonacoAdapterActionCallbackConfig,
-} from "@microsoft/fast-tooling/dist/esm/message-system-service/monaco-adapter.service-action";
-import { schemaDictionary } from "../../schemas";
 import { EditorState } from "./editor.props";
 
 export const previewBackgroundTransparency: string = "PREVIEW::TRANSPARENCY";
@@ -85,7 +82,7 @@ abstract class Editor<P, S extends EditorState> extends React.Component<P, S> {
                     action: (config: MonacoAdapterActionCallbackConfig): void => {
                         // trigger an update to the monaco value that
                         // also updates the DataDictionary which fires a
-                        // postMessage to the MessageSystem if the udpate
+                        // postMessage to the MessageSystem if the update
                         // is coming from Monaco and not a data dictionary update
                         config.updateMonacoModelValue(
                             this.monacoValue,
@@ -158,7 +155,10 @@ abstract class Editor<P, S extends EditorState> extends React.Component<P, S> {
     public updateEditorContent(dataDictionary: DataDictionary<unknown>): void {
         if (this.editor) {
             const lastMappedDataDictionaryToMonacoEditorHTMLValue = html_beautify(
-                mapDataDictionaryToMonacoEditorHTML(dataDictionary, schemaDictionary)
+                mapDataDictionaryToMonacoEditorHTML(
+                    dataDictionary,
+                    this.state.schemaDictionary
+                )
             );
 
             this.setState(

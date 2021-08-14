@@ -1,7 +1,7 @@
 import addons from "@storybook/addons";
 import { STORY_RENDERED } from "@storybook/core-events";
+import type { Slider as FoundationSlider } from "@microsoft/fast-foundation";
 import Examples from "./fixtures/base.html";
-import type { FASTSlider } from "./index";
 import "./index";
 
 function valueTextFormatter(value: string): string {
@@ -11,7 +11,7 @@ function valueTextFormatter(value: string): string {
 addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
     if (name.toLowerCase().endsWith("slider")) {
         ["switcher", "switcher2", "slider1"].forEach(x => {
-            const slider = document.getElementById(x) as FASTSlider;
+            const slider = document.getElementById(x) as FoundationSlider;
             slider.valueTextFormatter = valueTextFormatter;
         });
     }

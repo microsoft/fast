@@ -1,4 +1,4 @@
-import { attr, DOM, FASTElement, observable } from "@microsoft/fast-element";
+import { attr, DOM, observable, SyntheticViewTemplate } from "@microsoft/fast-element";
 import {
     Direction,
     keyCodeArrowLeft,
@@ -7,6 +7,7 @@ import {
     keyCodeSpace,
 } from "@microsoft/fast-web-utilities";
 import type { AnchoredRegion } from "../anchored-region";
+import { FoundationElement, FoundationElementDefinition } from "../foundation-element";
 import type { Menu } from "../menu/menu";
 import { StartEnd } from "../patterns/start-end";
 import { getDirection } from "../utilities/";
@@ -16,12 +17,28 @@ import { MenuItemRole } from "./menu-item.options";
 export { MenuItemRole };
 
 /**
+ * Types of menu item column count.
+ * @public
+ */
+export type MenuItemColumnCount = 0 | 1 | 2;
+
+/**
+ * Menu Item configuration options
+ * @public
+ */
+export type MenuItemOptions = FoundationElementDefinition & {
+    checkboxIndicator?: string | SyntheticViewTemplate;
+    expandCollapseGlyph?: string | SyntheticViewTemplate;
+    radioIndicator?: string | SyntheticViewTemplate;
+};
+
+/**
  * A Switch Custom HTML Element.
  * Implements {@link https://www.w3.org/TR/wai-aria-1.1/#menuitem | ARIA menuitem }, {@link https://www.w3.org/TR/wai-aria-1.1/#menuitemcheckbox | ARIA menuitemcheckbox}, or {@link https://www.w3.org/TR/wai-aria-1.1/#menuitemradio | ARIA menuitemradio }.
  *
  * @public
  */
-export class MenuItem extends FASTElement {
+export class MenuItem extends FoundationElement {
     /**
      * The disabled state of the element.
      *
@@ -39,7 +56,7 @@ export class MenuItem extends FASTElement {
      * @remarks
      * HTML Attribute: expanded
      */
-    @attr({ attribute: "expanded" })
+    @attr({ mode: "boolean" })
     public expanded: boolean;
     private expandedChanged(oldValue: boolean): void {
         if (this.$fastController.isConnected) {
@@ -54,6 +71,12 @@ export class MenuItem extends FASTElement {
             this.$emit("expanded-change", this, { bubbles: false });
         }
     }
+
+    /**
+     * @internal
+     */
+    @observable
+    public startColumnCount: MenuItemColumnCount;
 
     /**
      * The role of the element.
@@ -72,7 +95,7 @@ export class MenuItem extends FASTElement {
      * @remarks
      * HTML Attribute: checked
      */
-    @attr
+    @attr({ mode: "boolean" })
     public checked: boolean;
     private checkedChanged(oldValue, newValue): void {
         if (this.$fastController.isConnected) {
@@ -120,6 +143,10 @@ export class MenuItem extends FASTElement {
         DOM.queueUpdate(() => {
             this.updateSubmenu();
         });
+
+        if (!this.startColumnCount) {
+            this.startColumnCount = 1;
+        }
 
         this.observer = new MutationObserver(this.updateSubmenu);
     }

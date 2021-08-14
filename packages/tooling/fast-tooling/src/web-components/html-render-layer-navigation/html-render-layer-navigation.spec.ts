@@ -1,13 +1,11 @@
 import { DOM } from "@microsoft/fast-element";
 import { expect } from "chai";
-import { fixture } from "../fixture";
+import { fixture } from "../../__test__/fixture";
 import { MessageSystem, MessageSystemType } from "../../message-system";
 import dataDictionaryConfig from "../../__test__/html-render/data-dictionary-config";
 import schemaDictionary from "../../__test__/html-render/schema-dictionary";
 import { ActivityType } from "../html-render-layer/html-render-layer";
-import { HTMLRenderLayerNavgation } from "./html-render-layer-navigation";
-
-HTMLRenderLayerNavgation;
+import { fastToolingHTMLRenderLayerNavigation } from "./";
 
 /* eslint-disable-next-line @typescript-eslint/no-var-requires */
 const FASTMessageSystemWorker = require("../../../message-system.min.js");
@@ -17,9 +15,9 @@ const fastMessageSystemWorker = new FASTMessageSystemWorker();
 const wait = () => new Promise(done => setTimeout(done, 20));
 
 async function setup() {
-    const { element, connect, disconnect, parent } = await fixture<
-        HTMLRenderLayerNavgation
-    >("fast-tooling-html-render-layer-navigation");
+    const { element, connect, disconnect, parent } = await fixture(
+        fastToolingHTMLRenderLayerNavigation()
+    );
     const message = new MessageSystem({
         webWorker: fastMessageSystemWorker,
     });
@@ -84,7 +82,7 @@ xdescribe("HTMLRenderLayerNavgation", () => {
         const div = document.createElement("div");
         parent.appendChild(div);
 
-        element.elementActivity(ActivityType.click, "root", div);
+        element.elementActivity("test", ActivityType.click, "root", div);
         await DOM.nextUpdate();
 
         const select = element.shadowRoot?.querySelector(".click-layer");
@@ -94,13 +92,13 @@ xdescribe("HTMLRenderLayerNavgation", () => {
         expect(pill.innerHTML).to.equal(schemaDictionary["div"].title);
 
         element.dataDictionary = null;
-        element.elementActivity(ActivityType.click, "root", div);
+        element.elementActivity("test", ActivityType.click, "root", div);
         await DOM.nextUpdate();
 
         pill = element.shadowRoot?.querySelector(".click-layer .pill");
         expect(pill.innerHTML).to.equal("Untitled");
 
-        element.elementActivity(ActivityType.clear, "", div);
+        element.elementActivity("test", ActivityType.clear, "", div);
         await DOM.nextUpdate();
 
         const selectClear = element.shadowRoot?.querySelector(".click-layer");
@@ -128,7 +126,7 @@ xdescribe("HTMLRenderLayerNavgation", () => {
         const div = document.createElement("div");
         parent.appendChild(div);
 
-        element.elementActivity(ActivityType.hover, "root", div);
+        element.elementActivity("test", ActivityType.hover, "root", div);
         await DOM.nextUpdate();
 
         const hover = element.shadowRoot?.querySelector(".hover-layer");
@@ -138,13 +136,13 @@ xdescribe("HTMLRenderLayerNavgation", () => {
         expect(pill.innerHTML).to.equal(schemaDictionary["div"].title);
 
         element.dataDictionary = null;
-        element.elementActivity(ActivityType.hover, "root", div);
+        element.elementActivity("test", ActivityType.hover, "root", div);
         await DOM.nextUpdate();
 
         pill = element.shadowRoot?.querySelector(".hover-layer .pill");
         expect(pill.innerHTML).to.equal("Untitled");
 
-        element.elementActivity(ActivityType.blur, "", div);
+        element.elementActivity("test", ActivityType.blur, "", div);
         await DOM.nextUpdate();
 
         const hoverBlur = element.shadowRoot?.querySelector(".hover-layer");
@@ -171,7 +169,7 @@ xdescribe("HTMLRenderLayerNavgation", () => {
         const div = document.createElement("div");
         parent.appendChild(div);
 
-        element.elementActivity(ActivityType.hover, "root", div);
+        element.elementActivity("test", ActivityType.hover, "root", div);
         await DOM.nextUpdate();
 
         const hover = element.shadowRoot?.querySelector(".hover-layer");
@@ -187,7 +185,7 @@ xdescribe("HTMLRenderLayerNavgation", () => {
         const hoverBlur = element.shadowRoot?.querySelector(".hover-layer");
         expect(hoverBlur.classList.contains("active")).to.equal(false);
 
-        element.elementActivity(ActivityType.click, "root", div);
+        element.elementActivity("test", ActivityType.click, "root", div);
         await DOM.nextUpdate();
 
         const select = element.shadowRoot?.querySelector(".click-layer");

@@ -1,19 +1,16 @@
 import { expect } from "chai";
-import { Dialog, DialogTemplate as template } from "./index";
+import { Dialog, dialogTemplate as template } from "./index";
 import { fixture } from "../test-utilities/fixture";
-import { DOM, customElement } from "@microsoft/fast-element";
+import { DOM } from "@microsoft/fast-element";
 import { KeyCodes } from "@microsoft/fast-web-utilities";
 
-@customElement({
-    name: "fast-dialog",
-    template,
+const FASTDialog = Dialog.compose({
+    baseName: "dialog",
+    template,  
 })
-class FASTDialog extends Dialog {}
 
 async function setup() {
-    const { connect, disconnect, document, element } = await fixture<Dialog>(
-        "fast-dialog"
-    );
+    const { connect, disconnect, document, element } = await fixture(FASTDialog());
 
     return { connect, disconnect, document, element };
 }
@@ -113,13 +110,13 @@ describe("Dialog", () => {
         await disconnect();
     });
 
-    it("should add a tabindex of -1 to the modal overlay when modal is true", async () => {
+    it("should add a tabindex of -1 to the dialog control", async () => {
         const { element, connect, disconnect } = await setup();
 
         await connect();
 
         expect(
-            element.shadowRoot?.querySelector(".overlay")?.getAttribute("tabindex")
+            element.shadowRoot?.querySelector(".control")?.getAttribute("tabindex")
         ).to.equal("-1");
 
         await disconnect();

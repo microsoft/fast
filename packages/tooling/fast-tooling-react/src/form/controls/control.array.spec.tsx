@@ -1,5 +1,6 @@
 import React from "react";
 import Adapter from "enzyme-adapter-react-16";
+import "../../__tests__/mocks/match-media";
 import { configure, mount } from "enzyme";
 import ArrayControlStyled, { ArrayControl } from "./control.array";
 import { ArrayControlProps } from "./control.array.props";

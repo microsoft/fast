@@ -2,13 +2,21 @@ import { html, ref, slotted } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
 import { endTemplate, startTemplate } from "../patterns";
 import { whitespaceFilter } from "../utilities";
+import type { FoundationElementDefinition } from "../foundation-element";
+import type { ElementDefinitionContext } from "../design-system";
 import type { TextField } from "./text-field";
 
 /**
  * The template for the {@link @microsoft/fast-foundation#(TextField:class)} component.
  * @public
  */
-export const TextFieldTemplate: ViewTemplate<TextField> = html`
+export const textFieldTemplate: (
+    context: ElementDefinitionContext,
+    definition: FoundationElementDefinition
+) => ViewTemplate<TextField> = (
+    context: ElementDefinitionContext,
+    definition: FoundationElementDefinition
+) => html`
     <template
         class="
             ${x => (x.readOnly ? "readonly" : "")}

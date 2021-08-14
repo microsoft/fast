@@ -26,7 +26,7 @@ if (process.env.WEBSITE_HOSTNAME.indexOf("create") > -1) {
                 defaultSrc: ["'self'"],
                 fontSrc: ["'self' use.typekit.net static.fast.design c.s-microsoft.com"],
                 frameAncestors: [`'self' ${process.env.FRAME_ANCESTOR_PARTNER}`],
-                imgSrc: ["'self' data: *.fast.design"],
+                imgSrc: ["'self' data: *.fast.design via.placeholder.com"],
                 scriptSrc: ["'self' 'unsafe-eval'"],
                 styleSrc: ["'self' https: 'unsafe-inline'"],
             },

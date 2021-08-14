@@ -5,7 +5,7 @@ import { fastComponentSchemas, nativeElementSchemas } from "./definition-mapper"
 const schemaDictionary: SchemaDictionary = {
     ...fastComponentSchemas,
     ...nativeElementSchemas,
-    [textSchema.id]: textSchema,
+    [textSchema.$id]: textSchema,
 };
 
 export * from "./definition-mapper";

@@ -1,20 +1,14 @@
-import { customElement, DOM } from "@microsoft/fast-element";
+import { fastSwitch } from "@microsoft/fast-components";
+import { DOM } from "@microsoft/fast-element";
+import { DesignSystem } from "@microsoft/fast-foundation";
 import { expect } from "chai";
-import { fixture } from "../fixture";
-import { CSSLayoutTemplate as template } from "./css-layout.template";
-import { FASTToolingCSSLayout as CSSLayout } from ".";
-
-@customElement({
-    name: "fast-tooling-css-layout",
-    template,
-})
-class FASTToolingCSSLayout extends CSSLayout {}
-FASTToolingCSSLayout;
+import { fixture } from "../../__test__/fixture";
+import { fastToolingCSSLayout } from ".";
 
 async function setup() {
-    const { element, connect, disconnect } = await fixture<FASTToolingCSSLayout>(
-        "fast-tooling-css-layout"
-    );
+    const { element, connect, disconnect } = await fixture(fastToolingCSSLayout(), {
+        designSystem: DesignSystem.getOrCreate().register(fastSwitch()),
+    });
 
     return { element, connect, disconnect };
 }
@@ -301,6 +295,144 @@ describe("CSSLayout", () => {
         await DOM.nextUpdate();
 
         expect(changedConfig.toString()).to.equal({ display: "flex" }.toString());
+
+        await disconnect();
+    });
+    it("should update the stored CSS display value when the value is updated", async () => {
+        const { element, connect, disconnect } = await setup();
+        element.value = "display: flex;";
+
+        await connect();
+
+        const toggle: HTMLInputElement = element.shadowRoot?.querySelector("fast-switch");
+
+        expect(toggle.checked).to.equal(true);
+
+        await disconnect();
+    });
+    it("should update the stored CSS flex-direction value when the value is updated", async () => {
+        const { element, connect, disconnect } = await setup();
+        element.value = "display: flex; flex-direction: row;";
+
+        await connect();
+
+        const input = element.shadowRoot?.querySelector(
+            "input[name='flex-direction']"
+        ) as HTMLInputElement;
+
+        expect(input.checked).to.equal(true);
+
+        await disconnect();
+    });
+    it("should update the stored CSS justify-content value when the value is updated", async () => {
+        const { element, connect, disconnect } = await setup();
+        element.value = "display: flex; justify-content: center;";
+
+        await connect();
+
+        const input = element.shadowRoot?.querySelectorAll(
+            "input[name='justify-content']"
+        )[2] as HTMLInputElement;
+
+        expect(input.checked).to.equal(true);
+
+        await disconnect();
+    });
+    it("should update the stored CSS align-content value when the value is updated", async () => {
+        const { element, connect, disconnect } = await setup();
+        element.value = "display: flex; align-content: center;";
+
+        await connect();
+
+        const input = element.shadowRoot?.querySelectorAll(
+            "input[name='align-content']"
+        )[2] as HTMLInputElement;
+
+        expect(input.checked).to.equal(true);
+
+        await disconnect();
+    });
+    it("should update the stored CSS align-items value when the value is updated", async () => {
+        const { element, connect, disconnect } = await setup();
+        element.value = "display: flex; align-items: stretch;";
+
+        await connect();
+
+        const input = element.shadowRoot?.querySelectorAll(
+            "input[name='align-items']"
+        )[3] as HTMLInputElement;
+
+        expect(input.checked).to.equal(true);
+
+        await disconnect();
+    });
+    it("should update the stored CSS column-gap value when the value is updated", async () => {
+        const { element, connect, disconnect } = await setup();
+        element.value = "display: flex; column-gap: 12px;";
+
+        await connect();
+
+        const input = element.shadowRoot?.querySelector(
+            "input[name='column-gap']"
+        ) as HTMLInputElement;
+
+        expect(input.value).to.equal("12");
+
+        await disconnect();
+    });
+    it("should not update the stored CSS column-gap value when the value is updated with a non-px appended value", async () => {
+        const { element, connect, disconnect } = await setup();
+        element.value = "display: flex; column-gap: 12em;";
+
+        await connect();
+
+        const input = element.shadowRoot?.querySelector(
+            "input[name='column-gap']"
+        ) as HTMLInputElement;
+
+        expect(input.value).to.equal("");
+
+        await disconnect();
+    });
+    it("should update the stored CSS row-gap value when the value is updated", async () => {
+        const { element, connect, disconnect } = await setup();
+        element.value = "display: flex; row-gap: 24px;";
+
+        await connect();
+
+        const input = element.shadowRoot?.querySelector(
+            "input[name='row-gap']"
+        ) as HTMLInputElement;
+
+        expect(input.value).to.equal("24");
+
+        await disconnect();
+    });
+    it("should not update the stored CSS row-gap value when the value is updated with a non-px appended value", async () => {
+        const { element, connect, disconnect } = await setup();
+        element.value = "display: flex; row-gap: 24em;";
+
+        await connect();
+
+        const input = element.shadowRoot?.querySelector(
+            "input[name='row-gap']"
+        ) as HTMLInputElement;
+
+        expect(input.value).to.equal("");
+
+        await disconnect();
+    });
+    it("should update the stored CSS flex-wrap value when the value is updated", async () => {
+        const { element, connect, disconnect } = await setup();
+        element.value = "display: flex; flex-wrap: wrap;";
+
+        await connect();
+
+        const input = element.shadowRoot?.querySelector(
+            "input[name='flex-wrap']"
+        ) as HTMLInputElement;
+
+        expect(input.checked).to.equal(true);
 
         await disconnect();
     });

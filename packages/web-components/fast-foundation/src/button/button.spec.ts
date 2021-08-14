@@ -1,18 +1,15 @@
 import { expect } from "chai";
-import { customElement, DOM } from "@microsoft/fast-element";
+import { DOM } from "@microsoft/fast-element";
 import { fixture } from "../test-utilities/fixture";
-import { Button, ButtonTemplate as template } from "./index";
+import { Button, buttonTemplate as template } from "./index";
 
-@customElement({
-    name: "fast-button",
-    template,
+const FASTButton = Button.compose({
+    baseName: "button",
+    template
 })
-class FASTButton extends Button {}
 
 async function setup() {
-    const { connect, disconnect, element, parent } = await fixture<FASTButton>(
-        "fast-button"
-    );
+    const { connect, disconnect, element, parent } = await fixture(FASTButton());
 
     return { connect, disconnect, element, parent };
 }

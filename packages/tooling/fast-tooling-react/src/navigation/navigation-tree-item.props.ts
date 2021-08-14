@@ -7,9 +7,12 @@ export enum VerticalDragDirection {
 }
 
 export enum DragDropItemType {
-    default = "default",
+    rootLinkedData = "root-linked-data",
+    rootLinkedDataUndroppable = "root-linked-data-undroppable",
     linkedData = "linked-data",
+    linkedDataUndroppable = "linked-data-undroppable",
     linkedDataContainer = "linked-data-container",
+    undraggableUndroppable = "undraggable-undroppable",
 }
 
 export interface NavigationTreeItemProps

@@ -8,7 +8,7 @@ import {
     LineHeight1Property,
 } from "../style/css-properties";
 
-export const HTMLRenderLayerNavigationStyles = css`
+export const htmlRenderLayerNavigationStyles = (context, definition) => css`
     .navigation-region {
         position: fixed;
         top: 0;
@@ -59,6 +59,7 @@ export const HTMLRenderLayerNavigationStyles = css`
         text-transform: uppercase;
         font-weight: 700;
         color: ${BackgroundColorProperty};
+        white-space: nowrap;
     }
     .hover-layer .pill {
         background-color: ${BackgroundColorProperty};

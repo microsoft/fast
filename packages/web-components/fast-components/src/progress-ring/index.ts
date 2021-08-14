@@ -1,28 +1,51 @@
-import { customElement } from "@microsoft/fast-element";
 import {
-    BaseProgress,
-    ProgressRingTemplate as template,
+    BaseProgress as ProgressRing,
+    ProgressRingOptions,
+    progressRingTemplate as template,
 } from "@microsoft/fast-foundation";
-import { ProgressRingStyles as styles } from "./progress-ring.styles";
+import { progressRingStyles as styles } from "./progress-ring.styles";
 
 /**
- * The FAST Progress Ring Element. Implements {@link @microsoft/fast-foundation#BaseProgress},
- * {@link @microsoft/fast-foundation#ProgressRingTemplate}
+ * A function that returns a {@link @microsoft/fast-foundation#BaseProgress} registration for configuring the component with a DesignSystem.
+ * Implements {@link @microsoft/fast-foundation#progressRingTemplate}
  *
  *
  * @public
  * @remarks
- * HTML Element: \<fast-progress-ring\>
+ * Generates HTML Element: \<fast-progress-ring\>
  */
-@customElement({
-    name: "fast-progress-ring",
+export const fastProgressRing = ProgressRing.compose<ProgressRingOptions>({
+    baseName: "progress-ring",
     template,
     styles,
-})
-export class FASTProgressRing extends BaseProgress {}
+    indeterminateIndicator: `
+        <svg class="progress" part="progress" viewBox="0 0 16 16">
+            <circle
+                class="background"
+                part="background"
+                cx="8px"
+                cy="8px"
+                r="7px"
+            ></circle>
+            <circle
+                class="indeterminate-indicator-1"
+                part="indeterminate-indicator-1"
+                cx="8px"
+                cy="8px"
+                r="7px"
+            ></circle>
+        </svg>
+    `,
+});
 
 /**
  * Styles for ProgressRing
  * @public
  */
-export const ProgressRingStyles = styles;
+export const progressRingStyles = styles;
+
+/**
+ * Base class for ProgressRing
+ * @public
+ */
+export { ProgressRing };
