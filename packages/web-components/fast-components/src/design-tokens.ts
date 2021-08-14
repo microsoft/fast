@@ -27,7 +27,7 @@ import { neutralStrokeDivider as neutralStrokeDividerAlgorithm } from "./color/r
 import { Swatch } from "./color/swatch";
 import { StandardLuminance } from "./color/utilities/base-layer-luminance";
 import { accentBase, middleGrey } from "./color/utilities/color-constants";
-import { InteractiveSwatchSet } from "./color/recipe";
+import { isDark } from "./color/utilities/is-dark";
 
 /** @public */
 export interface Recipe<T> {
@@ -56,10 +56,6 @@ export const baseHeightMultiplier = create<number>("base-height-multiplier").wit
 export const baseHorizontalSpacingMultiplier = create<number>(
     "base-horizontal-spacing-multiplier"
 ).withDefault(3);
-/** @public */
-export const baseLayerLuminance = create<number>("base-layer-luminance").withDefault(
-    StandardLuminance.DarkMode
-);
 /** @public */
 export const controlCornerRadius = create<number>("control-corner-radius").withDefault(4);
 /** @public */
@@ -300,6 +296,15 @@ export const fillColor = create<Swatch>("fill-color").withDefault(element => {
     const palette = neutralPalette.getValueFor(element);
     return palette.get(palette.swatches.length - 5);
 });
+
+/** @public */
+export const baseLayerLuminance = create<number>(
+    "base-layer-luminance"
+).withDefault((element: HTMLElement) =>
+    isDark(fillColor.getValueFor(element))
+        ? StandardLuminance.DarkMode
+        : StandardLuminance.LightMode
+);
 
 enum ContrastTarget {
     normal = 4.5,
