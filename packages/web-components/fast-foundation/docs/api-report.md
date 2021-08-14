@@ -1462,7 +1462,7 @@ export class NumberField extends FormAssociatedNumberField {
     // @internal
     handleChange(): void;
     // @internal
-    handleKeyDown(e: KeyboardEvent): void | boolean;
+    handleKeyDown(e: Event & KeyboardEvent): void | boolean;
     // @internal
     handleTextInput(): void;
     hideStep: boolean;
