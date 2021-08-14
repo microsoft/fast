@@ -7,12 +7,12 @@ import {
     Register,
 } from "../message-system";
 import { mapDataDictionaryToMonacoEditorHTML } from "../data-utilities/monaco";
+import { MessageSystemSchemaDictionaryTypeAction } from "../message-system/message-system.utilities.props";
+import { MonacoAdapter, monacoAdapterId } from "./monaco-adapter.service";
 import {
     findDictionaryIdParents,
     findUpdatedDictionaryId,
-    MonacoAdapter,
-    monacoAdapterId,
-} from "./monaco-adapter.service";
+} from "./monaco-adapter.service.utilities";
 import { MonacoAdapterAction } from "./monaco-adapter.service-action";
 
 chai.use(spies);
@@ -159,6 +159,55 @@ xdescribe("MonacoAdapter", () => {
             mapDataDictionaryToMonacoEditorHTML(dataDictionary, schemaDictionary),
         ]);
     });
+    it("should update the data dictionary when an initialize event is fired", () => {
+        const dataDictionary: DataDictionary<unknown> = [
+            {
+                div: {
+                    schemaId: "div",
+                    data: {},
+                },
+                text: {
+                    schemaId: "text",
+                    data: "foo",
+                },
+            },
+            "div",
+        ];
+        const schemaDictionary = {
+            div: {
+                id: "div",
+                $id: "div",
+                type: "object",
+                mapsToTagName: "div",
+            },
+            text: {
+                id: "text",
+                $id: "text",
+                type: "string",
+            },
+        };
+        const messageSystem = new MessageSystem({
+            webWorker: "",
+        });
+        const monacoAdapter = new MonacoAdapter({
+            messageSystem,
+            actions: [],
+        });
+
+        messageSystem["register"].forEach((registeredItem: Register) => {
+            registeredItem.onMessage({
+                data: {
+                    type: MessageSystemType.initialize,
+                    dataDictionary,
+                    schemaDictionary,
+                },
+            } as any);
+        });
+
+        expect(JSON.stringify(monacoAdapter["dataDictionary"])).to.equal(
+            JSON.stringify(dataDictionary)
+        );
+    });
     it("should change the dictionary id when a navigation event is fired", () => {
         const dataDictionary: DataDictionary<unknown> = [
             {
@@ -213,6 +262,144 @@ xdescribe("MonacoAdapter", () => {
         });
 
         expect(monacoAdapter["dictionaryId"]).to.equal("text");
+    });
+    it("should update the data dictionary when the data dictionary event is fired", () => {
+        const dataDictionary1: DataDictionary<unknown> = [
+            {
+                div: {
+                    schemaId: "div",
+                    data: {},
+                },
+                text: {
+                    schemaId: "text",
+                    data: "foo",
+                },
+            },
+            "div",
+        ];
+        const dataDictionary2: DataDictionary<unknown> = [
+            {
+                div: {
+                    schemaId: "div",
+                    data: {},
+                },
+                foo: {
+                    schemaId: "text",
+                    data: "bar",
+                },
+            },
+            "div",
+        ];
+        const schemaDictionary = {
+            div: {
+                id: "div",
+                $id: "div",
+                type: "object",
+                mapsToTagName: "div",
+            },
+            text: {
+                id: "text",
+                $id: "text",
+                type: "string",
+            },
+        };
+        const messageSystem = new MessageSystem({
+            webWorker: "",
+        });
+        const monacoAdapter = new MonacoAdapter({
+            messageSystem,
+            actions: [],
+        });
+
+        messageSystem["register"].forEach((registeredItem: Register) => {
+            registeredItem.onMessage({
+                data: {
+                    type: MessageSystemType.initialize,
+                    dataDictionary: dataDictionary1,
+                    schemaDictionary,
+                },
+            } as any);
+        });
+        messageSystem["register"].forEach((registeredItem: Register) => {
+            registeredItem.onMessage({
+                data: {
+                    type: MessageSystemType.dataDictionary,
+                    dataDictionary: dataDictionary2,
+                    activeDictionaryId: "foo",
+                },
+            } as any);
+        });
+
+        expect(JSON.stringify(monacoAdapter["dataDictionary"])).to.equal(
+            JSON.stringify(dataDictionary2)
+        );
+        expect(monacoAdapter["dictionaryId"]).to.equal("foo");
+    });
+    it("should update the data dictionary when the data event is fired", () => {
+        const dataDictionary1: DataDictionary<unknown> = [
+            {
+                div: {
+                    schemaId: "div",
+                    data: {},
+                },
+                text: {
+                    schemaId: "text",
+                    data: "foo",
+                },
+            },
+            "div",
+        ];
+        const dataDictionary2: DataDictionary<unknown> = [
+            {
+                div: {
+                    schemaId: "div",
+                    data: {},
+                },
+            },
+            "div",
+        ];
+        const schemaDictionary = {
+            div: {
+                id: "div",
+                $id: "div",
+                type: "object",
+                mapsToTagName: "div",
+            },
+            text: {
+                id: "text",
+                $id: "text",
+                type: "string",
+            },
+        };
+        const messageSystem = new MessageSystem({
+            webWorker: "",
+        });
+        const monacoAdapter = new MonacoAdapter({
+            messageSystem,
+            actions: [],
+        });
+
+        messageSystem["register"].forEach((registeredItem: Register) => {
+            registeredItem.onMessage({
+                data: {
+                    type: MessageSystemType.initialize,
+                    dataDictionary: dataDictionary1,
+                    schemaDictionary,
+                },
+            } as any);
+        });
+        messageSystem["register"].forEach((registeredItem: Register) => {
+            registeredItem.onMessage({
+                data: {
+                    type: MessageSystemType.data,
+                    dataDictionary: dataDictionary2,
+                },
+            } as any);
+        });
+
+        expect(JSON.stringify(monacoAdapter["dataDictionary"])).to.equal(
+            JSON.stringify(dataDictionary2)
+        );
     });
     it("should fire an action when the corresponding id is used", () => {
         const dataDictionary: DataDictionary<unknown> = [
@@ -547,6 +734,68 @@ xdescribe("MonacoAdapter", () => {
             },
             root,
         ]);
+    });
+    it("should change the schema dictionary when a schema dictionary event is fired", () => {
+        const dataDictionary: DataDictionary<unknown> = [
+            {
+                div: {
+                    schemaId: "div",
+                    data: {},
+                },
+            },
+            "div",
+        ];
+        const schemaDictionary = {
+            div: {
+                id: "div",
+                $id: "div",
+                type: "object",
+                mapsToTagName: "div",
+            },
+        };
+        const messageSystem = new MessageSystem({
+            webWorker: "",
+        });
+        const monacoAdapter = new MonacoAdapter({
+            messageSystem,
+            actions: [],
+        });
+
+        messageSystem["register"].forEach((registeredItem: Register) => {
+            registeredItem.onMessage({
+                data: {
+                    type: MessageSystemType.initialize,
+                    dataDictionary,
+                    schemaDictionary,
+                },
+            } as any);
+        });
+
+        expect(Object.keys(monacoAdapter["schemaDictionary"])).to.have.length(1);
+
+        messageSystem["register"].forEach((registeredItem: Register) => {
+            registeredItem.onMessage({
+                data: {
+                    type: MessageSystemType.schemaDictionary,
+                    action: MessageSystemSchemaDictionaryTypeAction.add,
+                    schemas: [
+                        {
+                            id: "text",
+                            $id: "text",
+                            type: "string",
+                        },
+                        {
+                            id: "span",
+                            $id: "span",
+                            type: "object",
+                            mapsToTagName: "span",
+                        },
+                    ],
+                },
+            } as any);
+        });
+
+        expect(Object.keys(monacoAdapter["schemaDictionary"])).to.have.length(3);
     });
 });
 

@@ -1,19 +1,15 @@
 import { expect } from "chai";
 import { BaseProgress as Progress } from "../progress";
-import { ProgressRingTemplate as template } from "./index";
+import { progressRingTemplate as template } from "./index";
 import { fixture } from "../test-utilities/fixture";
-import { DOM, customElement } from "@microsoft/fast-element";
 
-@customElement({
-    name: "fast-progress-ring",
-    template,
+const FASTProgressRing = Progress.compose({
+    baseName: "progress-ring",
+    template
 })
-class FASTProgressRing extends Progress {}
 
 async function setup() {
-    const { element, connect, disconnect } = await fixture<FASTProgressRing>(
-        "fast-progress-ring"
-    );
+    const { element, connect, disconnect } = await fixture(FASTProgressRing());
 
     return { element, connect, disconnect };
 }

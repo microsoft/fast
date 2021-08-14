@@ -1,18 +1,15 @@
-import { customElement, DOM } from "@microsoft/fast-element";
+import { DOM } from "@microsoft/fast-element";
 import { expect, assert } from "chai";
 import { fixture } from "../test-utilities/fixture";
-import { NumberField, NumberFieldTemplate as template } from "./index";
+import { NumberField, numberFieldTemplate as template } from "./index";
 
-@customElement({
-    name: "fast-number-field",
+const FASTNumberField = NumberField.compose({
+    baseName: "number-field",
     template,
 })
-class FASTNumberField extends NumberField {}
 
 async function setup() {
-    const { element, connect, disconnect, parent } = await fixture<FASTNumberField>(
-        "fast-number-field"
-    );
+    const { element, connect, disconnect, parent } = await fixture(FASTNumberField());
 
     return { element, connect, disconnect, parent };
 }
@@ -711,6 +708,24 @@ describe("NumberField", () => {
             await disconnect();
         });
 
+        it("should set value to max if the max changes to a value less than the value", async () => {
+            const { element, connect, disconnect } = await setup();
+            const max = 10;
+            const value = 10 + max;
+
+            element.setAttribute("value", `${value}`);
+
+            await connect();
+            expect(element.value).to.equal(value.toString());
+
+            element.setAttribute("max", max.toString());
+            await DOM.nextUpdate();
+
+            expect(element.value).to.equal(max.toString());
+
+            await disconnect();
+        });
+
         it("should set value to min when value is less than min", async () => {
             const { element, connect, disconnect } = await setup();
             const min = 10;
@@ -719,6 +734,24 @@ describe("NumberField", () => {
             element.setAttribute("value", `${min - 10}`);
 
             await connect();
+            expect(element.value).to.equal(min.toString());
+
+            await disconnect();
+        });
+
+        it("should set value to min when value is less than min", async () => {
+            const { element, connect, disconnect } = await setup();
+            const min = 10;
+            const value = min - 10;
+
+            element.setAttribute("value", `${value}`);
+
+            await connect();
+            expect(element.value).to.equal(value.toString());
+
+            element.setAttribute("min", min.toString());
+            await DOM.nextUpdate();
+
             expect(element.value).to.equal(min.toString());
 
             await disconnect();
@@ -794,6 +827,62 @@ describe("NumberField", () => {
 
             await disconnect();
         });
+
+        it("should increment no value to the step amount", async () => {
+            const { element, connect, disconnect } = await setup();
+            const step = 2;
+            element.step = step;
+            element.stepUp();
+
+            await connect();
+            expect(element.value).to.equal(`${step}`);
+
+            await disconnect();
+        });
+
+        it("should decrement no value to the negative step amount", async () => {
+            const { element, connect, disconnect } = await setup();
+            const step = 2;
+            element.step = step;
+            element.stepDown();
+
+            await connect();
+            expect(element.value).to.equal(`${0 - step}`);
+
+            await disconnect();
+        });
+
+        it("should update the proxy value when incrementing the value", async () => {
+            const { element, connect, disconnect } = await setup();
+            const step = 2;
+            const value = 5;
+
+            element.step = step;
+            element.value = `${value}`;
+            element.stepUp();
+
+            await connect();
+            expect(element.value).to.equal(`${value + step}`);
+            expect(element.proxy.value).to.equal(`${value + step}`);
+
+            await disconnect();
+        });
+
+        it("should update the proxy value when decrementing the value", async () => {
+            const { element, connect, disconnect } = await setup();
+            const step = 2;
+            const value = 5;
+
+            element.step = step;
+            element.value = `${value}`;
+            element.stepDown();
+
+            await connect();
+            expect(element.value).to.equal(`${value - step}`);
+            expect(element.proxy.value).to.equal(`${value - step}`);
+
+            await disconnect();
+        });
     });
 
     describe("hide step", () => {
@@ -805,6 +894,25 @@ describe("NumberField", () => {
             expect(element.shadowRoot?.querySelector(".controls")).not.to.equal(null);
 
             element.setAttribute("hide-step", "");
+
+            await DOM.nextUpdate();
+
+            expect(
+                element.shadowRoot?.querySelector(".controls")).to.equal(null);
+
+            await disconnect();
+        });
+    });
+
+    describe("readonly", () => {
+        it("should not render step controls when `readonly` attribute is present", async () => {
+            const { element, connect, disconnect } = await setup();
+
+            await connect();
+
+            expect(element.shadowRoot?.querySelector(".controls")).not.to.equal(null);
+
+            element.setAttribute("readonly", "");
 
             await DOM.nextUpdate();
 

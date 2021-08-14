@@ -127,22 +127,19 @@ class Navigation extends Foundation<
         activeDictionaryId: string,
         activeNavigationConfigId: string
     ): Set<string> {
+        const updatedDictionaryItemConfigItems = new Set(
+            this.state.expandedNavigationConfigItems[activeDictionaryId]
+        );
+
         if (this.state.expandedNavigationConfigItems[activeDictionaryId] === undefined) {
             return new Set([activeNavigationConfigId]);
-        } else if (
-            this.state.expandedNavigationConfigItems[activeDictionaryId].has(
-                activeNavigationConfigId
-            )
-        ) {
-            this.state.expandedNavigationConfigItems[activeDictionaryId].delete(
-                activeNavigationConfigId
-            );
-            return this.state.expandedNavigationConfigItems[activeDictionaryId];
+        } else if (updatedDictionaryItemConfigItems.has(activeNavigationConfigId)) {
+            updatedDictionaryItemConfigItems.delete(activeNavigationConfigId);
+            return updatedDictionaryItemConfigItems;
         }
 
-        return this.state.expandedNavigationConfigItems[activeDictionaryId].add(
-            activeNavigationConfigId
-        );
+        updatedDictionaryItemConfigItems.add(activeNavigationConfigId);
+        return updatedDictionaryItemConfigItems;
     }
 
     /**
@@ -442,11 +439,16 @@ class Navigation extends Foundation<
 
     private getParentElement(dictionaryId: string): { [key: string]: Set<string> } {
         if (this.state.dataDictionary[0][dictionaryId].parent) {
-            let parentDictionaryItem =
-                this.state.expandedNavigationConfigItems[dictionaryId] || new Set([""]);
-
             const parentDictionaryId = this.state.dataDictionary[0][dictionaryId].parent
                 .id;
+            const parentDictionaryItem = this.state.expandedNavigationConfigItems[
+                parentDictionaryId
+            ]
+                ? new Set([
+                      "",
+                      ...this.state.expandedNavigationConfigItems[parentDictionaryId],
+                  ])
+                : new Set([""]);
             const parentDictionaryItemDataLocations: Set<string> = new Set(
                 this.state.dataDictionary[0][dictionaryId].parent.dataLocation.split(".")
             );

@@ -1,30 +1,33 @@
 /** @jsx h */ /* Note: Set the JSX pragma to the wrapped version of createElement */
-
+import h from "@microsoft/site-utilities/dist/web-components/pragma";
 import React from "react";
 import {
-    FASTButton,
-    FASTDesignSystemProvider,
-    FASTOption,
-    FASTSelect,
-    FASTTab,
-    FASTTabPanel,
-    FASTTabs,
+    fastButton,
+    fastDesignSystemProvider,
+    fastOption,
+    fastSelect,
+    fastTab,
+    fastTabPanel,
+    fastTabs,
 } from "@microsoft/fast-components";
 import { downChevron, upChevron } from "@microsoft/site-utilities";
-import h from "@microsoft/site-utilities/dist/web-components/pragma";
-import { ListboxOption } from "@microsoft/fast-foundation";
+import { DesignSystem, ListboxOption } from "@microsoft/fast-foundation";
+import { Select } from "@microsoft/fast-foundation";
 import { Scenario } from "../fast-components/configs/data.props";
 
 /**
  * Ensure tree-shaking doesn't remove these components from the bundle
  */
-FASTButton;
-FASTDesignSystemProvider;
-FASTOption;
-FASTSelect;
-FASTTab;
-FASTTabPanel;
-FASTTabs;
+
+DesignSystem.getOrCreate().register(
+    fastButton(),
+    fastDesignSystemProvider(),
+    fastOption(),
+    fastSelect(),
+    fastTab(),
+    fastTabPanel(),
+    fastTabs()
+);
 
 interface RenderDevToolsTabsConfig {
     codeRenderCallback: (e: HTMLElement) => void;
@@ -77,8 +80,8 @@ export function renderScenarioSelect(
             events={{
                 change: (e: React.ChangeEvent): void => {
                     onChangeCallback(
-                        (e.target as FASTSelect).value,
-                        (e.target as FASTSelect).selectedOptions
+                        (e.target as Select).value,
+                        (e.target as Select).selectedOptions
                     );
                 },
             }}

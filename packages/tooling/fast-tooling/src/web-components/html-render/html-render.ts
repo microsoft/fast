@@ -1,5 +1,6 @@
-import { customElement, FASTElement, observable } from "@microsoft/fast-element";
+import { observable } from "@microsoft/fast-element";
 import { isHTMLElement } from "@microsoft/fast-web-utilities";
+import { FoundationElement } from "@microsoft/fast-foundation";
 import {
     htmlMapper,
     htmlResolver,
@@ -14,26 +15,26 @@ import {
     DataDictionary,
     MessageSystem,
     MessageSystemNavigationTypeAction,
+    MessageSystemSchemaDictionaryTypeAction,
     MessageSystemType,
     SchemaDictionary,
 } from "../../message-system";
 import { ActivityType, HTMLRenderLayer } from "../html-render-layer/html-render-layer";
-import { HTMLRenderStyles } from "./html-render.styles";
-import { HTMLRenderTemplate } from "./html-render.template";
 
-export const HTMLRenderOriginatorId = "fast-tooling::html-renderer";
+/**
+ * An ID that signifies the origin of a MessageSystem message.
+ *
+ * @alpha
+ */
+export const htmlRenderOriginatorId = "fast-tooling::html-renderer";
 
-@customElement({
-    name: "fast-tooling-html-render",
-    template: HTMLRenderTemplate,
-    styles: HTMLRenderStyles,
-})
-export class HTMLRender extends FASTElement {
+export class HTMLRender extends FoundationElement {
+    private layerActivityId: string = "HTMLRender";
     private dataDictionary: DataDictionary<unknown>;
 
     private schemaDictionary: SchemaDictionary;
 
-    private messageOriginatorId: string = HTMLRenderOriginatorId;
+    private messageOriginatorId: string = htmlRenderOriginatorId;
 
     private dataDictionaryAttr: string = "data-datadictionaryid";
 
@@ -44,6 +45,9 @@ export class HTMLRender extends FASTElement {
     private activeDictionaryId: string = "";
 
     private renderLayers: HTMLRenderLayer[] = [];
+
+    @observable
+    public interactiveMode: boolean = true;
 
     @observable
     public markup: HTMLElement;
@@ -60,6 +64,7 @@ export class HTMLRender extends FASTElement {
                 Array.from(this.children).forEach((value: HTMLRenderLayer) => {
                     if (this.isHtmlRenderLayer(value)) {
                         value.messageSystem = this.messageSystem;
+                        value.activityCallback = this.layerCallback;
                         this.renderLayers.push(value);
                     }
                 });
@@ -80,22 +85,36 @@ export class HTMLRender extends FASTElement {
     }
 
     // Messaging
-
+    private selectTimeout = null;
     private handleMessageSystem = (e: MessageEvent): void => {
         if (e.data) {
             if (
-                e.data.type === MessageSystemType.initialize ||
-                e.data.type === MessageSystemType.data
+                (e.data.type === MessageSystemType.initialize ||
+                    e.data.type === MessageSystemType.data) &&
+                (!e.data.options ||
+                    e.data.options.originatorId !== this.messageOriginatorId)
             ) {
                 this.dataDictionary = e.data.dataDictionary;
                 this.schemaDictionary = e.data.schemaDictionary;
                 this.currentElement = null;
-                this.updateLayers(ActivityType.clear, "", null);
+                this.updateLayers(
+                    this.layerActivityId,
+                    ActivityType.clear,
+                    "",
+                    null,
+                    null
+                );
                 this.renderMarkup();
                 if (e.data.activeDictionaryId) {
                     this.activeDictionaryId = e.data.activeDictionaryId;
                     // give everything time to actually render
-                    window.setTimeout(this.selectActiveDictionaryId, 50);
+                    if (this.selectTimeout) {
+                        window.clearTimeout(this.selectTimeout);
+                    }
+                    this.selectTimeout = window.setTimeout(
+                        this.selectActiveDictionaryId,
+                        50
+                    );
                 }
             }
             if (
@@ -105,51 +124,119 @@ export class HTMLRender extends FASTElement {
             ) {
                 if (e.data.action === MessageSystemNavigationTypeAction.update) {
                     this.activeDictionaryId = e.data.activeDictionaryId;
-                    const el: HTMLElement = this.shadowRoot.querySelector(
-                        "[" +
-                            this.dataDictionaryAttr +
-                            "=" +
-                            this.activeDictionaryId +
-                            "]"
+                    if (this.selectTimeout) {
+                        window.clearTimeout(this.selectTimeout);
+                    }
+                    this.selectTimeout = window.setTimeout(
+                        this.selectActiveDictionaryId,
+                        50
                     );
-                    if (el) {
-                        this.currentElement = el;
+                }
+            }
+            if (
+                e.data.type === MessageSystemType.custom &&
+                e.data.options &&
+                e.data.options.originatorId !== this.messageOriginatorId
+            ) {
+                const action: string[] = (e.data.options.action as string).split("::");
+                if (action[0] === "displayMode") {
+                    this.interactiveMode = action[1] !== "preview";
+                    if (this.interactiveMode) {
                         this.updateLayers(
-                            ActivityType.click,
-                            this.activeDictionaryId,
-                            el
+                            this.layerActivityId,
+                            ActivityType.releaseFocus,
+                            null,
+                            null,
+                            null
+                        );
+                        // give everything time to update positions
+                        if (this.selectTimeout) {
+                            window.clearTimeout(this.selectTimeout);
+                        }
+                        this.selectTimeout = window.setTimeout(
+                            this.selectActiveDictionaryId,
+                            100
+                        );
+                    } else {
+                        this.updateLayers(
+                            this.layerActivityId,
+                            ActivityType.clear,
+                            "",
+                            null,
+                            null
+                        );
+                        this.updateLayers(
+                            this.layerActivityId,
+                            ActivityType.takeFocus,
+                            null,
+                            null,
+                            null
                         );
                     }
+                }
+            }
+            if (
+                e.data.type === MessageSystemType.schemaDictionary &&
+                (!e.data.options ||
+                    e.data.options.originatorId !== this.messageOriginatorId)
+            ) {
+                if (e.data.action === MessageSystemSchemaDictionaryTypeAction.add) {
+                    this.schemaDictionary = e.data.schemaDictionary;
                 }
             }
         }
     };
 
     private selectActiveDictionaryId = () => {
-        const el: HTMLElement = this.shadowRoot.querySelector(
-            "[" + this.dataDictionaryAttr + "=" + this.activeDictionaryId + "]"
+        this.selectTimeout = null;
+        let el: HTMLElement = this.shadowRoot.querySelector(
+            `[${this.dataDictionaryAttr}=${this.activeDictionaryId}]`
         );
+        while (!el && this.dataDictionary[0][this.activeDictionaryId].parent) {
+            this.activeDictionaryId = this.dataDictionary[0][
+                this.activeDictionaryId
+            ].parent.id;
+            el = this.shadowRoot.querySelector(
+                `[${this.dataDictionaryAttr}=${this.activeDictionaryId}]`
+            );
+        }
         if (el) {
             this.currentElement = el;
-            this.updateLayers(
-                ActivityType.click,
-                this.activeDictionaryId,
-                this.currentElement
-            );
+            if (this.interactiveMode) {
+                this.updateLayers(
+                    this.layerActivityId,
+                    ActivityType.click,
+                    this.activeDictionaryId,
+                    this.currentElement,
+                    null
+                );
+            }
         }
     };
 
     private updateLayers(
+        layerActivityId: string,
         activityType: ActivityType,
         dictionaryId: string,
-        elementRef: HTMLElement
+        elementRef: HTMLElement,
+        event: Event
     ) {
         if (this.renderLayers) {
             this.renderLayers.forEach(value => {
-                value.elementActivity(activityType, dictionaryId, elementRef);
+                value.elementActivity(
+                    layerActivityId,
+                    activityType,
+                    dictionaryId,
+                    elementRef,
+                    event
+                );
             });
         }
     }
+
+    private layerCallback = (layerActivityId: string, activityType: ActivityType) => {
+        this.updateLayers(layerActivityId, activityType, "", null, null);
+    };
 
     /// Mouse Handlers
 
@@ -168,6 +255,9 @@ export class HTMLRender extends FASTElement {
     }
 
     public hoverHandler(e: MouseEvent): boolean {
+        if (!this.interactiveMode) {
+            return true;
+        }
         const targetEl = this.getTargetElementFromMouseEvent(e);
         if (
             targetEl.dataId !== null &&
@@ -177,13 +267,22 @@ export class HTMLRender extends FASTElement {
                     this.currentElement.getAttribute(this.dataDictionaryAttr)
             )
         ) {
-            this.updateLayers(ActivityType.hover, targetEl.dataId, targetEl.el);
+            this.updateLayers(
+                this.layerActivityId,
+                ActivityType.hover,
+                targetEl.dataId,
+                targetEl.el,
+                null
+            );
         }
         return false;
     }
 
     public blurHandler(e: MouseEvent): boolean {
-        this.updateLayers(ActivityType.blur, "", null);
+        if (!this.interactiveMode) {
+            return true;
+        }
+        this.updateLayers(this.layerActivityId, ActivityType.blur, "", null, null);
         return false;
     }
 
@@ -197,8 +296,9 @@ export class HTMLRender extends FASTElement {
             },
             activeNavigationConfigId: "",
         });
+        this.activeDictionaryId = dataId;
         this.currentElement = el;
-        this.updateLayers(ActivityType.click, dataId, el);
+        this.updateLayers(this.layerActivityId, ActivityType.click, dataId, el, null);
     }
 
     private clearElement() {
@@ -211,11 +311,15 @@ export class HTMLRender extends FASTElement {
             },
             activeNavigationConfigId: "",
         });
+        this.activeDictionaryId = null;
         this.currentElement = null;
-        this.updateLayers(ActivityType.clear, "", null);
+        this.updateLayers(this.layerActivityId, ActivityType.clear, "", null, null);
     }
 
     public clickHandler(e: MouseEvent): boolean {
+        if (!this.interactiveMode) {
+            return true;
+        }
         const targetEl = this.getTargetElementFromMouseEvent(e);
         if (targetEl.dataId !== null) {
             this.selectElement(targetEl.el, targetEl.dataId);
@@ -224,7 +328,78 @@ export class HTMLRender extends FASTElement {
         }
     }
 
+    public dblClickHandler(e: MouseEvent): boolean {
+        if (!this.interactiveMode) {
+            return true;
+        }
+        // Get the element of the double click event
+        const targetEl = this.getTargetElementFromMouseEvent(e);
+        if (
+            targetEl.dataId !== null &&
+            this.dataDictionary[0][targetEl.dataId].data["Slot"] &&
+            this.dataDictionary[0][targetEl.dataId].data["Slot"].length > 0
+        ) {
+            let textNode = null;
+            let childIndex = -1;
+            // Find the actuall text node that was double clicked
+            if (targetEl.el.childNodes.length > 0) {
+                let i = 0;
+                while (i < targetEl.el.childNodes.length && textNode === null) {
+                    if (targetEl.el.childNodes[i].nodeType === 3) {
+                        const range = document.createRange();
+                        range.selectNode(targetEl.el.childNodes[i]);
+                        const rect = range.getBoundingClientRect();
+                        if (
+                            e.clientX >= rect.left &&
+                            e.clientX <= rect.right &&
+                            e.clientY >= rect.top &&
+                            e.clientY <= rect.bottom
+                        ) {
+                            textNode = targetEl.el.childNodes[i];
+                            childIndex = i;
+                        }
+                    }
+                    i++;
+                }
+            }
+            if (childIndex === -1) {
+                return false;
+            }
+
+            // The childNode index should be the same as the dictionary index.
+            const newDataId: string = this.dataDictionary[0][targetEl.dataId].data[
+                "Slot"
+            ][childIndex].id;
+
+            // Navigate to the text node
+            this.messageSystem.postMessage({
+                type: MessageSystemType.navigation,
+                action: MessageSystemNavigationTypeAction.update,
+                activeDictionaryId: newDataId,
+                options: {
+                    originatorId: this.messageOriginatorId,
+                },
+                activeNavigationConfigId: "",
+            });
+
+            // Update the layers
+            this.updateLayers(
+                this.layerActivityId,
+                ActivityType.doubleClick,
+                newDataId,
+                textNode,
+                e
+            );
+            e.preventDefault();
+            e.stopPropagation();
+            return false;
+        }
+    }
+
     public keyUpHandler(e: KeyboardEvent): boolean {
+        if (!this.interactiveMode) {
+            return true;
+        }
         if (e.key === "Tab") {
             const currTab: number = this.currentElement
                 ? Number(this.currentElement.getAttribute("taborder"))
@@ -257,12 +432,18 @@ export class HTMLRender extends FASTElement {
     }
 
     public keyDownHandler(e: KeyboardEvent): boolean {
+        if (!this.interactiveMode) {
+            return true;
+        }
         e.preventDefault();
         e.stopPropagation();
         return false;
     }
 
     public containerClickHandler(e: MouseEvent): boolean {
+        if (!this.interactiveMode) {
+            return true;
+        }
         this.clearElement();
         e.stopPropagation();
         return false;

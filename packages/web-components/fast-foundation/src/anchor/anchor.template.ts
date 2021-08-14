@@ -1,13 +1,21 @@
 import { html, ref, slotted } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
 import { endTemplate, startTemplate } from "../patterns/start-end";
+import type { ElementDefinitionContext } from "../design-system";
+import type { FoundationElementDefinition } from "../foundation-element";
 import type { Anchor } from "./anchor";
 
 /**
  * The template for the {@link @microsoft/fast-foundation#(Anchor:class)} component.
  * @public
  */
-export const AnchorTemplate: ViewTemplate<Anchor> = html`
+export const anchorTemplate: (
+    context: ElementDefinitionContext,
+    definition: FoundationElementDefinition
+) => ViewTemplate<Anchor> = (
+    context: ElementDefinitionContext,
+    definition: FoundationElementDefinition
+) => html`
     <a
         class="control"
         part="control"

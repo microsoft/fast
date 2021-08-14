@@ -1,64 +1,24 @@
 ---
 id: overview
-title: What is the Design System?
+title: What is a Design System?
 sidebar_label: Overview
 custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/src/docs/design-systems/overview.md
 ---
-A *Design System* is somewhat of an amorphous term but can generally be thought of as a collection of resources for interactive media that promotes brand alignment. While that definition is intentionally broad, in UI development, Design Systems generally manifest as component libraries surrounded by usage guidance and design principles.
 
-FAST uses "Design System" in a narrower sense than the above; the Design System is a dictionary of data that informs the visual (and sometimes functional) representation of UI elements. The Design System captures, stores, and reflects any information that should inform the rendering of a UI element. This data is often referred to as *Design Tokens*. Common examples of data in a Design System are:
-- UI Colors
-- Fonts and type ramps
-- Motion data such as timings and easing curves
-- UI Density
-- Spacing values
+A Design System can generally be thought of as a collection of resources for interactive media that promotes brand alignment. While that definition is intentionally broad, in UI development, Design Systems generally manifest as component libraries surrounded by usage guidance and design principles.
 
-## How the Design System is used
-There are two ways that Design System values (Design Tokens) are used:
-1. In CSS
-2. In JavaScript
+## How does FAST facilitate development of design systems?
 
-### Design System in CSS
-Many Design Tokens are used as CSS property values in component stylesheets. Assume for a moment that a Design Token `font-size-large` exists in a Design System, you may see something like the following:
+FAST helps by both providing a highly configurable design system that you can drop into any app and by providing a set of building blocks you can use to construct your own design system from scratch, with very little work.
 
-```css
-:host {
-    font-size: var(--font-size-large);
-}
-```
+## A highly configurable design system
 
-### Design System in JavaScript
-The Design System can also be required by JavaScript. Assume for a moment that a Design Token `fadeInDuration` exists in a Design System, you may see something like the following:
+[FAST Frame](/docs/design-systems/fast-frame) is the name of our highly configurable design system. It's made up of a set of web components and accompanying design tokens. The visual design can be impacted in myriad ways using the exported [Design Tokens](/docs/design-systems/design-tokens), element templates and styles can be augmented or overridden, and shadow roots can be opened or closed as necessary for your application. If you’re looking to get up and running with FAST Web Components and the FAST Frame design system, [start here](/docs/design-systems/fast-frame).
 
-```js
-const keyFrames = new KeyframeEffect(
-    targetElement,
-    [{ opacity: "0"}, {opacity: "1"}],
-    {duration: designSystem.fadeInDuration}
-)
-```
+### Design Tokens
 
-## The DesignSystemProvider
-The Design System itself manifests through a [DesignSystemProvider](/docs/api/fast-foundation.designsystemprovider): it is the vessel through which the Design System is expressed. The [DesignSystemProvider](/docs/api/fast-foundation.designsystemprovider) is an HTML element that facilitates usage, configuration, and propagation of the Design System through a UI view. The [DesignSystemProvider](/docs/api/fast-foundation.designsystemprovider) is responsible for expressing the Design System both as a readable JavaScript property *and* as CSS custom properties.
+Design Tokens are powerful tools that are used to express design abstractions like color, typography, spacing units, and other design-led values. FAST exposes powerful tools for creating and using Design Tokens for your Design System. Both FAST Frame and the Fluent UI Web Components leverage FAST's design tokens extensively. FAST Frame's use of design tokens is so extensive that you might be able to create your own design system simply by modifying the existing tokens. Of course, you can always create your own tokens and even base your tokens on compositions of existing tokens. To learn more [see our documentation on design tokens](/docs/design-systems/design-tokens).
 
-### Design System flow
-The Design System is mutable and inherited. Think of the Design System as a flow of data through the DOM toward leaf nodes, where every [DesignSystemProvider](/docs/api/fast-foundation.designsystemprovider) element inherits Design System data from its closest ancestor [DesignSystemProvider](/docs/api/fast-foundation.designsystemprovider) and provides opportunity to *change* that data for all descendent elements. Let's visualize this, and assume there is a `font-size-large` Design Token in the Design System:
+## Your own design system based on FAST components
 
-**Example: The Design System flows data down the DOM hierarchy**
-```html
-<my-design-system-provider font-size-large="28px">
-    <my-text style="font-size: var(--font-size-large);" id="one">
-        My font size is 28px
-    </my-text>
-
-    <my-design-system-provider font-size-large="15px">
-        <my-text style="font-size: var(--font-size-large);" id="two">
-            My font size is 15px
-        </my-text>
-    </my-design-system-provider>
-</my-design-system-provider>
-```
-
-As shown above, the `font-size-large` Design System property is set on each [DesignSystemProvider](/docs/api/fast-foundation.designsystemprovider) instance. The [DesignSystemProvider](/docs/api/fast-foundation.designsystemprovider) reflects that value to a CSS custom property ([more on that later](/docs/design-systems/using-the-design-system#css-custom-properties)), which the `<my-text>` element uses in it's stylesheet.
-
-But we can *also* access that hierarchical information from JavaScript, which opens up many advanced scenarios that will be explored in the [FAST Frame Design System](/docs/design-systems/fast-frame).
+If you need more control than you can get through modifying design token values or recipes, you can wrap your styling around the foundation components. By exporting raw JavaScript Custom Element classes, `@microsoft/fast-foundation` handles the business-logic driving a large catalog of UI components. These Custom Element classes can be taken as-is and composed with your templates and styles to match your application or library requirements, reducing the development time and overhead of creating your own design system. For example, rather than implementing a Tree View from scratch, you can use the Foundation Tree View class and simply compose it with your own CSS to create a reusable web component as part of your own system.

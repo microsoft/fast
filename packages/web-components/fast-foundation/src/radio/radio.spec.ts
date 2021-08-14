@@ -1,19 +1,16 @@
 import { expect, assert } from "chai";
-import { Radio, RadioTemplate as template } from "./index";
+import { Radio, radioTemplate as template } from "./index";
 import { fixture } from "../test-utilities/fixture";
-import { DOM, customElement } from "@microsoft/fast-element";
+import { DOM } from "@microsoft/fast-element";
 import { KeyCodes } from "@microsoft/fast-web-utilities";
 
-@customElement({
-    name: "fast-radio",
+const FASTRadio = Radio.compose({
+    baseName: "radio",
     template,
 })
-class FASTRadio extends Radio {}
 
 async function setup() {
-    const { connect, disconnect, element, parent } = await fixture<FASTRadio>(
-        "fast-radio"
-    );
+    const { connect, disconnect, element, parent } = await fixture(FASTRadio());
 
     return { element, connect, disconnect, parent };
 }

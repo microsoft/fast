@@ -4,19 +4,21 @@ import { classNames, Direction } from "@microsoft/fast-web-utilities";
 import React from "react";
 import {
     CustomMessageIncomingOutgoing,
-    DataType,
+    fastToolingColorPicker,
+    htmlRenderOriginatorId,
+    MessageSystemDataTypeAction,
     MessageSystemNavigationTypeAction,
+    MessageSystemSchemaDictionaryTypeAction,
     MessageSystemType,
+    monacoAdapterId,
     SchemaDictionary,
 } from "@microsoft/fast-tooling";
-import { HTMLRenderOriginatorId } from "@microsoft/fast-tooling/dist/esm/web-components/html-render/html-render";
 import {
     ControlConfig,
     ControlType,
     defaultDevices,
     Display,
     LinkedDataControl,
-    ModularNavigation,
     ModularViewer,
     StandardControlPlugin,
     ViewerCustomAction,
@@ -30,35 +32,98 @@ import {
     Dimension,
     DirectionSwitch,
     Editor,
-    fastComponentExtendedSchemas,
     Logo,
     nativeElementExtendedSchemas,
     textSchema,
     ThemeSelector,
 } from "@microsoft/site-utilities";
-import { fastDesignSystemDefaults } from "@microsoft/fast-components/src/fast-design-system";
-import { neutralLayerL1, StandardLuminance } from "@microsoft/fast-components";
 import * as monaco from "monaco-editor/esm/vs/editor/editor.api";
-import { monacoAdapterId } from "@microsoft/fast-tooling/dist/esm/message-system-service/monaco-adapter.service";
-import { CreatorState, FormId, ProjectFile } from "./creator.props";
-import { linkedDataExamples } from "./configs";
-import { divTag } from "./configs/library.native.tags";
+import { DesignSystem } from "@microsoft/fast-foundation";
+import {
+    baseLayerLuminance,
+    fastBadge,
+    fastCheckbox,
+    fastNumberField,
+    fastOption,
+    fastSelect,
+    fastSlider,
+    fastSliderLabel,
+    fastTab,
+    fastTabPanel,
+    fastTabs,
+    fastTextField,
+    fillColor,
+    StandardLuminance,
+    SwatchRGB,
+} from "@microsoft/fast-components";
+import { LinkedDataActionType } from "@microsoft/fast-tooling-react/dist/form/templates/types";
+import { XOR } from "@microsoft/fast-tooling/dist/dts/data-utilities/type.utilities";
+import {
+    CreatorState,
+    ExternalInitializingData,
+    FormId,
+    NavigationId,
+    ProjectFile,
+} from "./creator.props";
+import { elementLibraries, elementLibraryContents } from "./configs";
+import { divTag } from "./configs/native/library.native.tags";
 import { ProjectFileTransfer } from "./components";
-import { previewReady } from "./preview";
+import { previewReady } from "./preview/preview";
 import { Footer } from "./site-footer";
 import {
     renderDeviceSelect,
     renderDevToolToggle,
     renderFormTabs,
+    renderNavigationTabs,
+    renderPreviewSwitch,
 } from "./web-components";
 import { Device } from "./web-components/devices";
+import fastDesignTokensSchema from "./configs/fast/library.fast.design-tokens.schema.json";
+import {
+    creatorOriginatorId,
+    CustomMessageSystemActions,
+    designTokensLinkedDataId,
+    DisplayMode,
+    displayModeMessageInteractive,
+    displayModeMessagePreview,
+    previewOriginatorId,
+    rootOriginatorId,
+} from "./utilities";
+import { fluentUIComponentId } from "./configs/fluent-ui";
+
+DesignSystem.getOrCreate().register(
+    fastBadge(),
+    fastCheckbox(),
+    fastNumberField(),
+    fastOption(),
+    fastSelect(),
+    fastSlider(),
+    fastSliderLabel(),
+    fastTabs(),
+    fastTab(),
+    fastTabPanel(),
+    fastTextField(),
+    fastToolingColorPicker({ prefix: "fast-tooling" })
+);
+baseLayerLuminance.setValueFor(document.body, StandardLuminance.DarkMode);
+fillColor.setValueFor(
+    document.body,
+    SwatchRGB.create(
+        StandardLuminance.DarkMode,
+        StandardLuminance.DarkMode,
+        StandardLuminance.DarkMode
+    )
+);
 
 /* eslint-disable-next-line @typescript-eslint/no-var-requires */
 const FASTInlineLogo = require("@microsoft/site-utilities/statics/assets/fast-inline-logo.svg");
-const schemaDictionary: SchemaDictionary = {
-    ...fastComponentExtendedSchemas,
+const schemaDictionaryWithNativeElements: SchemaDictionary = {
     ...nativeElementExtendedSchemas,
-    [textSchema.id]: textSchema,
+    [textSchema.$id]: textSchema,
+};
+const schemaDictionaryWithDesignTokens: SchemaDictionary = {
+    ...schemaDictionaryWithNativeElements,
+    [fastDesignTokensSchema.id]: fastDesignTokensSchema,
 };
 
 export const previewAccentColor: string = "PREVIEW::ACCENTCOLOR";
@@ -78,7 +143,7 @@ class Creator extends Editor<{}, CreatorState> {
             return (
                 <LinkedDataControl
                     {...config}
-                    onChange={this.handleAddLinkedData(config.onChange)}
+                    onChange={this.handleLinkedDataUpdates(config.onChange)}
                 />
             );
         },
@@ -100,8 +165,6 @@ class Creator extends Editor<{}, CreatorState> {
 
     constructor(props: {}) {
         super(props);
-
-        const designSystemLinkedDataId: string = "design-system";
 
         this.devices = this.getDevices();
 
@@ -125,30 +188,27 @@ class Creator extends Editor<{}, CreatorState> {
             deviceId: this.devices[0].id,
             theme: StandardLuminance.LightMode,
             direction: Direction.ltr,
-            accentColor: fastDesignSystemDefaults.accentBaseColor,
+            accentColor: "",
             activeDictionaryId: defaultElementDataId,
             previewReady: false,
             devToolsVisible: true,
             mobileFormVisible: false,
             mobileNavigationVisible: false,
             activeFormId: FormId.component,
+            activeNavigationId: NavigationId.navigation,
+            addedLibraries: [],
             designSystemDataDictionary: [
                 {
-                    [designSystemLinkedDataId]: {
-                        schemaId: "fast-design-system-provider",
+                    [designTokensLinkedDataId]: {
+                        schemaId: "fastDesignTokens",
                         data: {
-                            "use-defaults": true,
-                            "accent-base-color": fastDesignSystemDefaults.accentBaseColor,
+                            "accent-base-color": "#DA1A5F",
                             direction: Direction.ltr,
-                            "background-color": neutralLayerL1(
-                                Object.assign({}, fastDesignSystemDefaults, {
-                                    baseLayerLuminance: StandardLuminance.LightMode,
-                                })
-                            ),
+                            theme: StandardLuminance.LightMode,
                         },
                     },
                 },
-                designSystemLinkedDataId,
+                designTokensLinkedDataId,
             ],
             dataDictionary: [
                 {
@@ -159,22 +219,29 @@ class Creator extends Editor<{}, CreatorState> {
                 },
                 defaultElementDataId,
             ],
+            schemaDictionary: schemaDictionaryWithNativeElements,
             transparentBackground: false,
             lastMappedDataDictionaryToMonacoEditorHTMLValue: "",
+            displayMode: DisplayMode.interactive,
         };
     }
 
     public render(): React.ReactNode {
         const accentColor: string = (this.state.designSystemDataDictionary[0][
-            "design-system"
+            designTokensLinkedDataId
         ].data as any)["accent-base-color"];
         const direction: Direction = (this.state.designSystemDataDictionary[0][
-            "design-system"
+            designTokensLinkedDataId
         ].data as any)["direction"];
         return (
             <div
                 className={this.getContainerClassNames()}
-                style={{ gridTemplateColumns: "260px auto 280px" }}
+                style={{
+                    gridTemplateColumns:
+                        this.state.displayMode === DisplayMode.interactive
+                            ? "260px auto 280px"
+                            : "0px auto 0px",
+                }}
             >
                 <div className={this.paneStartClassNames}>
                     <Logo
@@ -184,10 +251,13 @@ class Creator extends Editor<{}, CreatorState> {
                         version={"ALPHA"}
                     />
                     <div style={{ height: "calc(100% - 48px)" }}>
-                        <ModularNavigation
-                            messageSystem={this.fastMessageSystem}
-                            types={[DataType.object]}
-                        />
+                        {renderNavigationTabs(
+                            this.state.activeNavigationId,
+                            this.fastMessageSystem,
+                            this.state.addedLibraries,
+                            this.handleAddLibrary,
+                            this.handleNavigationVisibility
+                        )}
                     </div>
                     <ProjectFileTransfer
                         projectFile={this.state}
@@ -202,61 +272,71 @@ class Creator extends Editor<{}, CreatorState> {
                             <Logo logo={FASTInlineLogo} />
                             {this.renderMobileFormTrigger()}
                         </div>
-                        <fast-design-system-provider background-color="#333">
-                            <div className={this.canvasMenuBarClassNames}>
-                                {renderDeviceSelect(
-                                    this.state.deviceId,
-                                    this.handleUpdateDevice,
+                        <div className={this.canvasMenuBarClassNames}>
+                            {renderDeviceSelect(
+                                this.state.deviceId,
+                                this.handleUpdateDevice,
+                                !this.state.previewReady
+                            )}
+                            <Dimension
+                                width={this.state.viewerWidth}
+                                height={this.state.viewerHeight}
+                                onUpdateWidth={this.onUpdateWidth}
+                                onUpdateHeight={this.onUpdateHeight}
+                                onUpdateOrientation={this.handleUpdateOrientation}
+                                onDimensionChange={this.handleDimensionChange}
+                                disabled={!this.state.previewReady}
+                            />
+                            <div
+                                style={{
+                                    display: "flex",
+                                    marginLeft: "auto",
+                                }}
+                            >
+                                {renderPreviewSwitch(
+                                    this.state.displayMode === DisplayMode.preview,
+                                    this.handlePreviewModeSwitch,
                                     !this.state.previewReady
                                 )}
-                                <Dimension
-                                    width={this.state.viewerWidth}
-                                    height={this.state.viewerHeight}
-                                    onUpdateWidth={this.handleUpdateWidth}
-                                    onUpdateHeight={this.handleUpdateHeight}
-                                    onUpdateOrientation={this.handleUpdateOrientation}
-                                    onDimensionChange={this.handleDimensionChange}
+                                <ThemeSelector
+                                    id={"theme-selector"}
+                                    theme={this.state.theme}
+                                    onUpdateTheme={this.handleUpdateTheme}
                                     disabled={!this.state.previewReady}
                                 />
-                                <div
-                                    style={{
-                                        display: "flex",
-                                        marginLeft: "auto",
-                                    }}
-                                >
-                                    <ThemeSelector
-                                        id={"theme-selector"}
-                                        theme={this.state.theme}
-                                        onUpdateTheme={this.handleUpdateTheme}
-                                        disabled={!this.state.previewReady}
-                                    />
-                                    <DirectionSwitch
-                                        id={"direction-switch"}
-                                        direction={direction}
-                                        onUpdateDirection={this.handleUpdateDirection}
-                                        disabled={!this.state.previewReady}
-                                    />
-                                    <AccentColorPicker
-                                        id={"accent-color-picker"}
-                                        accentBaseColor={
-                                            accentColor !== undefined
-                                                ? accentColor
-                                                : fastDesignSystemDefaults.accentBaseColor
-                                        }
-                                        onAccentColorPickerChange={
-                                            this.handleAccentColorPickerChange
-                                        }
-                                        disabled={!this.state.previewReady}
-                                    />
-                                </div>
+                                <DirectionSwitch
+                                    id={"direction-switch"}
+                                    direction={direction}
+                                    onUpdateDirection={this.handleUpdateDirection}
+                                    disabled={!this.state.previewReady}
+                                />
+                                <AccentColorPicker
+                                    id={"accent-color-picker"}
+                                    accentBaseColor={
+                                        accentColor !== undefined
+                                            ? accentColor
+                                            : "#DA1A5F"
+                                    }
+                                    onAccentColorPickerChange={
+                                        this.handleAccentColorPickerChange
+                                    }
+                                    disabled={!this.state.previewReady}
+                                />
                             </div>
-                        </fast-design-system-provider>
+                        </div>
                     </div>
                     <div
-                        className={classNames(this.canvasContentClassNames, [
-                            "canvas-content__dev-tools-hidden",
-                            !this.state.devToolsVisible,
-                        ])}
+                        className={classNames(
+                            this.canvasContentClassNames,
+                            [
+                                "canvas-content__dev-tools-hidden",
+                                !this.state.devToolsVisible,
+                            ],
+                            [
+                                "canvas-content__preview",
+                                this.state.displayMode === DisplayMode.preview,
+                            ]
+                        )}
                     >
                         <div
                             ref={this.viewerContainerRef}
@@ -273,9 +353,15 @@ class Creator extends Editor<{}, CreatorState> {
                                 onUpdateHeight={this.onUpdateHeight}
                                 onUpdateWidth={this.onUpdateWidth}
                                 responsive={true}
+                                preview={this.state.displayMode === DisplayMode.preview}
                             />
                         </div>
-                        <div className={"dev-tools"}>
+                        <div
+                            className={classNames("dev-tools", [
+                                "preview",
+                                this.state.displayMode === DisplayMode.preview,
+                            ])}
+                        >
                             <div
                                 ref={this.editorContainerRef}
                                 style={{ height: "100%", paddingTop: "24px" }}
@@ -302,18 +388,77 @@ class Creator extends Editor<{}, CreatorState> {
         );
     }
 
+    private handleNavigationVisibility = (navigationId): void => {
+        this.setState({
+            activeNavigationId: navigationId,
+        });
+    };
+
     private handleFormVisibility = (formId): void => {
         this.setState({
             activeFormId: formId,
         });
     };
 
-    private handleAddLinkedData = (onChange): ((e: ControlOnChangeConfig) => void) => {
+    private handleAddLibrary = (libraryId: string) => {
+        this.fastMessageSystem.postMessage({
+            type: MessageSystemType.custom,
+            action: ViewerCustomAction.call,
+            options: {
+                originatorId: rootOriginatorId,
+            },
+            data: {
+                action: CustomMessageSystemActions.libraryAdd,
+                id: libraryId,
+            },
+        } as CustomMessageIncomingOutgoing<any>);
+    };
+
+    private handleLibraryAdded = (libraryId: string): void => {
+        this.setState(
+            {
+                addedLibraries: this.state.addedLibraries.concat([libraryId]),
+            },
+            () => {
+                this.fastMessageSystem.postMessage({
+                    type: MessageSystemType.schemaDictionary,
+                    action: MessageSystemSchemaDictionaryTypeAction.add,
+                    schemas: Object.values(
+                        elementLibraries[libraryId].componentDictionary
+                    ).map(componentDictionaryItem => {
+                        return componentDictionaryItem.schema;
+                    }),
+                });
+            }
+        );
+    };
+
+    private handleLinkedDataUpdates = (
+        onChange
+    ): ((e: ControlOnChangeConfig) => void) => {
         return (e: ControlOnChangeConfig): void => {
-            onChange({
-                ...e,
-                value: linkedDataExamples[e.value[0].schemaId] || e.value,
-            });
+            Object.entries(elementLibraryContents).forEach(
+                ([elementLibraryId, schemaIds]: [string, string[]]) => {
+                    if (
+                        e.linkedDataAction === LinkedDataActionType.add &&
+                        schemaIds.includes(e.value[0].schemaId)
+                    ) {
+                        onChange({
+                            ...e,
+                            value:
+                                [
+                                    elementLibraries[elementLibraryId]
+                                        .componentDictionary[e.value[0].schemaId].example,
+                                ] || e.value,
+                        });
+                    } else if (
+                        e.linkedDataAction === LinkedDataActionType.remove ||
+                        e.linkedDataAction === LinkedDataActionType.reorder
+                    ) {
+                        onChange(e);
+                    }
+                }
+            );
         };
     };
 
@@ -323,20 +468,34 @@ class Creator extends Editor<{}, CreatorState> {
             e.data.type === MessageSystemType.custom &&
             e.data.action === ViewerCustomAction.response
         ) {
-            if (e.data.value === previewReady) {
+            if (
+                e.data &&
+                e.data.options &&
+                e.data.options.originatorId === previewOriginatorId
+            ) {
+                this.handleLibraryAdded(e.data.data.id);
+            } else if (e.data.value && e.data.value === previewReady) {
                 this.fastMessageSystem.postMessage({
                     type: MessageSystemType.initialize,
                     dataDictionary: this.state.dataDictionary,
-                    schemaDictionary,
+                    schemaDictionary: schemaDictionaryWithNativeElements,
                 });
                 this.fastDesignMessageSystem.postMessage({
                     type: MessageSystemType.initialize,
                     dataDictionary: this.state.designSystemDataDictionary,
-                    schemaDictionary,
+                    schemaDictionary: schemaDictionaryWithDesignTokens,
                 });
+                this.fastMessageSystem.postMessage({
+                    type: MessageSystemType.custom,
+                    originatorId: designTokensLinkedDataId,
+                    data: this.state.designSystemDataDictionary[0][
+                        designTokensLinkedDataId
+                    ].data,
+                } as CustomMessageIncomingOutgoing<any>);
                 updatedState.previewReady = true;
                 this.updateEditorContent(this.state.dataDictionary);
-            } else {
+                this.handleAddLibrary(fluentUIComponentId);
+            } else if (e.data.value) {
                 this.fastMessageSystem.postMessage({
                     type: MessageSystemType.navigation,
                     action: MessageSystemNavigationTypeAction.update,
@@ -344,7 +503,17 @@ class Creator extends Editor<{}, CreatorState> {
                         e.data.value === "" ? this.state.dataDictionary[1] : e.data.value,
                     activeNavigationConfigId: "",
                     options: {
-                        originatorId: HTMLRenderOriginatorId,
+                        originatorId: htmlRenderOriginatorId,
+                    },
+                });
+            } else if (e.data.data) {
+                this.fastMessageSystem.postMessage({
+                    type: MessageSystemType.data,
+                    action: MessageSystemDataTypeAction.update,
+                    data: e.data.data,
+                    dataLocation: "",
+                    options: {
+                        originatorId: htmlRenderOriginatorId,
                     },
                 });
             }
@@ -361,6 +530,10 @@ class Creator extends Editor<{}, CreatorState> {
             }
         }
 
+        if (e.data.type === MessageSystemType.schemaDictionary) {
+            updatedState.schemaDictionary = e.data.schemaDictionary;
+        }
+
         this.setState(updatedState as CreatorState);
     };
 
@@ -372,18 +545,24 @@ class Creator extends Editor<{}, CreatorState> {
 
     private handleWindowMessage = (e: MessageEvent): void => {
         if (e.data) {
-            try {
-                const messageData = JSON.parse(e.data);
+            let messageData: XOR<null, ExternalInitializingData>;
 
-                if (messageData.type === "dataDictionary" && messageData.data) {
-                    this.fastMessageSystem.postMessage({
-                        type: MessageSystemType.initialize,
-                        data: messageData.data,
-                        schemaDictionary,
-                    });
-                }
+            try {
+                messageData = JSON.parse(e.data);
             } catch (e) {
-                console.log(e);
+                messageData = null;
+            }
+
+            if (
+                messageData &&
+                messageData.type === MessageSystemType.dataDictionary &&
+                messageData.data
+            ) {
+                this.fastMessageSystem.postMessage({
+                    type: MessageSystemType.initialize,
+                    data: messageData.data,
+                    schemaDictionary: schemaDictionaryWithNativeElements,
+                });
             }
         }
     };
@@ -393,7 +572,7 @@ class Creator extends Editor<{}, CreatorState> {
             this.fastMessageSystem.postMessage({
                 type: MessageSystemType.initialize,
                 data: projectFile.dataDictionary,
-                schemaDictionary,
+                schemaDictionary: schemaDictionaryWithNativeElements,
             })
         );
     };
@@ -405,12 +584,15 @@ class Creator extends Editor<{}, CreatorState> {
             }
 
             this.windowResizing = window.setTimeout(() => {
-                this.setState({
-                    viewerWidth: 0,
-                    viewerHeight: 0,
-                });
+                const device: Device | void = this.getDeviceById(this.state.deviceId);
+                if (device && device.display === Display.responsive) {
+                    this.setState({
+                        viewerWidth: 0,
+                        viewerHeight: 0,
+                    });
 
-                this.setViewerToFullSize();
+                    this.setViewerToFullSize();
+                }
                 this.updateMonacoEditor();
             });
         }
@@ -447,25 +629,32 @@ class Creator extends Editor<{}, CreatorState> {
 
     private handleUpdateDevice = (deviceId: string): void => {
         const device: Device | void = this.getDeviceById(deviceId);
-        let viewerHeight: number = this.state.viewerHeight;
-        let viewerWidth: number = this.state.viewerWidth;
 
         if (device) {
-            viewerHeight =
-                device.display === Display.responsive
-                    ? this.state.viewerHeight
-                    : (device.height as number);
-            viewerWidth =
-                device.display === Display.responsive
-                    ? this.state.viewerWidth
-                    : (device.width as number);
+            if (
+                device.display === Display.responsive &&
+                this.state.deviceId !== Display.responsive
+            ) {
+                // if we are changing from a fixed device to response then trigger a window resize event
+                // to reset the size of the viewer.
+                this.setState(
+                    {
+                        deviceId,
+                    },
+                    () => {
+                        this.handleWindowResize();
+                    }
+                );
+            } else {
+                const viewerHeight: number = device.height as number;
+                const viewerWidth: number = device.width as number;
+                this.setState({
+                    deviceId,
+                    viewerHeight,
+                    viewerWidth,
+                });
+            }
         }
-
-        this.setState({
-            deviceId,
-            viewerHeight,
-            viewerWidth,
-        });
     };
 
     private handleUpdateOrientation = (): void => {
@@ -477,7 +666,6 @@ class Creator extends Editor<{}, CreatorState> {
 
     private setResponsiveDeviceId(): void {
         const activeDevice: Device | void = this.getDeviceById(this.state.deviceId);
-
         if (activeDevice && activeDevice.display !== Display.responsive) {
             this.setState({
                 deviceId: Display.responsive,
@@ -486,13 +674,13 @@ class Creator extends Editor<{}, CreatorState> {
     }
 
     public onUpdateHeight = (viewerHeight: number): void => {
-        this.handleUpdateHeight(viewerHeight);
         this.setResponsiveDeviceId();
+        this.handleUpdateHeight(viewerHeight);
     };
 
     public onUpdateWidth = (viewerWidth: number): void => {
-        this.handleUpdateWidth(viewerWidth);
         this.setResponsiveDeviceId();
+        this.handleUpdateWidth(viewerWidth);
     };
 
     private updateDesignSystemDataDictionaryState = (newData: {
@@ -502,31 +690,33 @@ class Creator extends Editor<{}, CreatorState> {
             {
                 designSystemDataDictionary: [
                     {
-                        ["design-system"]: {
+                        [designTokensLinkedDataId]: {
                             schemaId: this.state.designSystemDataDictionary[0][
-                                "design-system"
+                                designTokensLinkedDataId
                             ].schemaId,
                             data: {
                                 ...(this.state.designSystemDataDictionary[0][
-                                    "design-system"
+                                    designTokensLinkedDataId
                                 ] as any).data,
                                 ...newData,
                             },
                         },
                     },
-                    "design-system",
+                    designTokensLinkedDataId,
                 ],
             },
             () => {
                 this.fastMessageSystem.postMessage({
                     type: MessageSystemType.custom,
-                    originatorId: "design-system",
-                    data: this.state.designSystemDataDictionary[0]["design-system"].data,
+                    originatorId: designTokensLinkedDataId,
+                    data: this.state.designSystemDataDictionary[0][
+                        designTokensLinkedDataId
+                    ].data,
                 } as CustomMessageIncomingOutgoing<any>);
                 this.fastDesignMessageSystem.postMessage({
                     type: MessageSystemType.initialize,
                     dataDictionary: this.state.designSystemDataDictionary,
-                    schemaDictionary,
+                    schemaDictionary: schemaDictionaryWithDesignTokens,
                 });
             }
         );
@@ -556,11 +746,7 @@ class Creator extends Editor<{}, CreatorState> {
         });
 
         this.updateDesignSystemDataDictionaryState({
-            "background-color": neutralLayerL1(
-                Object.assign({}, fastDesignSystemDefaults, {
-                    baseLayerLuminance: updatedTheme,
-                })
-            ),
+            theme: updatedTheme,
         });
     };
 
@@ -569,9 +755,8 @@ class Creator extends Editor<{}, CreatorState> {
      */
     public handleUpdateDirection = (): void => {
         const updatedDirection: Direction =
-            (this.state.designSystemDataDictionary[0]["design-system"].data as any)[
-                "direction"
-            ] === Direction.ltr
+            (this.state.designSystemDataDictionary[0][designTokensLinkedDataId]
+                .data as any)["direction"] === Direction.ltr
                 ? Direction.rtl
                 : Direction.ltr;
 
@@ -588,8 +773,36 @@ class Creator extends Editor<{}, CreatorState> {
                 devToolsVisible: !this.state.devToolsVisible,
             },
             () => {
-                this.setViewerToFullSize();
+                const device: Device | void = this.getDeviceById(this.state.deviceId);
+                if (device && device.display === Display.responsive) {
+                    this.setViewerToFullSize();
+                }
                 this.updateMonacoEditor();
+            }
+        );
+    };
+
+    /**
+     * Handle the preview mode switch change event
+     * @param newState - The new state of the switch
+     */
+    private handlePreviewModeSwitch = (newState: boolean): void => {
+        this.setState(
+            {
+                displayMode: newState ? DisplayMode.preview : DisplayMode.interactive,
+            },
+            () => {
+                // Send message
+                this.fastMessageSystem.postMessage({
+                    type: MessageSystemType.custom,
+                    options: {
+                        originatorId: creatorOriginatorId,
+                        action: newState
+                            ? displayModeMessagePreview
+                            : displayModeMessageInteractive,
+                    },
+                });
+                this.handleWindowResize();
             }
         );
     };

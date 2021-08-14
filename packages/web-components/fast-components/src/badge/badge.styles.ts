@@ -1,36 +1,57 @@
-import { css } from "@microsoft/fast-element";
-import { display } from "@microsoft/fast-foundation";
-import { accentForegroundRestBehavior, heightNumber } from "../styles/index";
+import { css, ElementStyles } from "@microsoft/fast-element";
+import {
+    display,
+    ElementDefinitionContext,
+    FoundationElementDefinition,
+} from "@microsoft/fast-foundation";
+import {
+    accentForegroundRest,
+    bodyFont,
+    controlCornerRadius,
+    designUnit,
+    strokeWidth,
+    typeRampMinus1FontSize,
+    typeRampMinus1LineHeight,
+} from "../design-tokens";
+import { heightNumber } from "../styles/index";
 
-export const BadgeStyles = css`
-    ${display("inline-block")} :host {
-        box-sizing: border-box;
-        font-family: var(--body-font);
-        font-size: var(--type-ramp-minus-1-font-size);
-        line-height: var(--type-ramp-minus-1-line-height);
-    }
+export const badgeStyles: (
+    context: ElementDefinitionContext,
+    definition: FoundationElementDefinition
+) => ElementStyles = (
+    context: ElementDefinitionContext,
+    definition: FoundationElementDefinition
+) =>
+    css`
+        ${display("inline-block")} :host {
+            box-sizing: border-box;
+            font-family: ${bodyFont};
+            font-size: ${typeRampMinus1FontSize};
+            line-height: ${typeRampMinus1LineHeight};
+        }
 
-    .control {
-        border-radius: calc(var(--corner-radius) * 1px);
-        padding: calc(var(--design-unit) * 0.5px) calc(var(--design-unit) * 1px);
-        color: ${accentForegroundRestBehavior.var};
-        font-weight: 600;
-    }
+        .control {
+            border-radius: calc(${controlCornerRadius} * 1px);
+            padding: calc(((${designUnit} * 0.5) - ${strokeWidth}) * 1px)
+                calc((${designUnit} - ${strokeWidth}) * 1px);
+            color: ${accentForegroundRest};
+            font-weight: 600;
+            border: calc(${strokeWidth} * 1px) solid transparent;
+        }
 
-    .control[style] {
-        font-weight: 400;
-    }
+        .control[style] {
+            font-weight: 400;
+        }
 
-    :host([circular]) .control {
-        border-radius: 100px;
-        padding: 0 calc(var(--design-unit) * 1px);
-        ${
-            /* Need to work with Brian on width and height here */ ""
-        } height: calc((${heightNumber} - (var(--design-unit) * 3)) * 1px);
-        min-width: calc((${heightNumber} - (var(--design-unit) * 3)) * 1px);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        box-sizing: border-box;
-    }
-`.withBehaviors(accentForegroundRestBehavior);
+        :host([circular]) .control {
+            border-radius: 100px;
+            padding: 0 calc(${designUnit} * 1px);
+            /* Need to work with Brian on width and height here */
+            height: calc((${heightNumber} - (${designUnit} * 3)) * 1px);
+            min-width: calc((${heightNumber} - (${designUnit} * 3)) * 1px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-sizing: border-box;
+        }
+    `;

@@ -1,11 +1,4 @@
-import {
-    attr,
-    FASTElement,
-    html,
-    HTMLView,
-    observable,
-    ViewTemplate,
-} from "@microsoft/fast-element";
+import { attr, html, HTMLView, observable, ViewTemplate } from "@microsoft/fast-element";
 import {
     eventFocusIn,
     eventFocusOut,
@@ -14,6 +7,7 @@ import {
     keyCodeEscape,
     keyCodeFunction2,
 } from "@microsoft/fast-web-utilities";
+import { FoundationElement } from "../foundation-element";
 import type { ColumnDefinition } from "./data-grid";
 import { DataGridCellTypes } from "./data-grid.options";
 
@@ -46,7 +40,7 @@ const defaultHeaderCellContentsTemplate: ViewTemplate<DataGridCell> = html`
  *
  * @public
  */
-export class DataGridCell extends FASTElement {
+export class DataGridCell extends FoundationElement {
     /**
      * The type of cell
      *

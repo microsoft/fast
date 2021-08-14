@@ -13,6 +13,7 @@ import {
     DataDictionary,
     MessageSystem,
     MessageSystemType,
+    monacoAdapterId,
 } from "@microsoft/fast-tooling";
 import {
     componentCategories,
@@ -23,7 +24,6 @@ import {
     TransparencyToggle,
 } from "@microsoft/site-utilities";
 import * as monaco from "monaco-editor/esm/vs/editor/editor.api";
-import { monacoAdapterId } from "@microsoft/fast-tooling/dist/esm/message-system-service/monaco-adapter.service";
 import { ListboxOption } from "@microsoft/fast-foundation";
 import { ComponentViewConfig, Scenario } from "./fast-components/configs/data.props";
 import * as componentConfigs from "./fast-components/configs";
@@ -86,6 +86,7 @@ class Explorer extends Editor<ExplorerProps, ExplorerState> {
             previewReady: false,
             activeDictionaryId: componentLinkedDataId,
             dataDictionary: this.getScenarioData(componentConfig, selectedScenarioIndex),
+            schemaDictionary,
             activePivotTab: "code",
             mobileFormVisible: false,
             mobileNavigationVisible: false,
@@ -188,7 +189,9 @@ class Explorer extends Editor<ExplorerProps, ExplorerState> {
                                 tabUpdateCallback: (
                                     e: React.ChangeEvent<HTMLElement>
                                 ) => {
-                                    this.handlePivotUpdate((e as any).detail.id);
+                                    (e as any)?.detail?.id
+                                        ? this.handlePivotUpdate((e as any).detail.id)
+                                        : void 0;
                                 },
                                 guidanceTabPanelContent: this.state.componentConfig
                                     .guidance,
@@ -275,7 +278,7 @@ class Explorer extends Editor<ExplorerProps, ExplorerState> {
             this.fastMessageSystem.postMessage({
                 type: MessageSystemType.initialize,
                 dataDictionary,
-                schemaDictionary,
+                schemaDictionary: this.state.schemaDictionary,
             });
 
             this.setState(
