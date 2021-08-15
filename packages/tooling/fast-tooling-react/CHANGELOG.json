@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-tooling-react",
   "entries": [
     {
+      "date": "Sun, 15 Aug 2021 07:17:25 GMT",
+      "tag": "@microsoft/fast-tooling-react_v2.10.5",
+      "version": "2.10.5",
+      "comments": {
+        "patch": [
+          {
+            "comment": "various fixes to the Navigations drag and drop making it more flexible for web components",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "04c8b8a5701fd1d16d2ed70f827b98589de2abf2",
+            "package": "@microsoft/fast-tooling-react"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 12 Aug 2021 07:16:50 GMT",
       "tag": "@microsoft/fast-tooling-react_v2.10.4",
       "version": "2.10.4",
