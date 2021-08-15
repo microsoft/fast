@@ -1,7 +1,0 @@
-{
-  "type": "minor",
-  "comment": "add new PaletteRGB.from() API to support easier creation of PaletteRGB instances",
-  "packageName": "@microsoft/fast-components",
-  "email": "nicholasrice@users.noreply.github.com",
-  "dependentChangeType": "patch"
-}
