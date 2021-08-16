@@ -1,4 +1,4 @@
-import { observable } from "@microsoft/fast-element";
+import { attr, observable } from "@microsoft/fast-element";
 import { MessageSystemDataTypeAction, MessageSystemType } from "../../message-system";
 import {
     ActivityType,
@@ -8,6 +8,15 @@ import {
 import { htmlRenderOriginatorId } from "../html-render/html-render";
 
 export class HTMLRenderLayerInlineEdit extends HTMLRenderLayer {
+    /**
+     * Specifies whether to automatically select all text when editing
+     * is initiated. If present then all text within the textarea will
+     * be selected otherwise it will just be given focus with the cursor
+     * placed at the end of the text.
+     */
+    @attr({ mode: "boolean" })
+    public autoselect: boolean;
+
     public layerActivityId: string = "InlineEditLayer";
 
     @observable
@@ -141,6 +150,9 @@ export class HTMLRenderLayerInlineEdit extends HTMLRenderLayer {
         // give the dom time to update and show the textarea before giving it focus
         window.setTimeout(() => {
             this.textAreaRef.focus();
+            if (this.autoselect) {
+                this.textAreaRef.select();
+            }
         }, 10);
     }
 
