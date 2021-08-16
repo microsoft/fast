@@ -25,7 +25,10 @@ export class HTMLRenderReact extends React.Component {
     render() {
         return (
             <fast-tooling-html-render ref={this.setRenderRef}>
-                <fast-tooling-html-render-layer-navigation role="htmlrenderlayer"></fast-tooling-html-render-layer-navigation>
+                <fast-tooling-html-render-layer-navigation
+                    role="htmlrenderlayer"
+                    resizeobserverselector="#root .preview"
+                ></fast-tooling-html-render-layer-navigation>
                 <fast-tooling-html-render-layer-inline-edit
                     role="htmlrenderlayer"
                     autoselect
