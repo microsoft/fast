@@ -60,6 +60,7 @@ export * from "./toolbar/index";
 export * from "./tooltip/index";
 export * from "./tree-item/index";
 export * from "./tree-view/index";
+export * from "./virtualizing-stack/index";
 
 // export our utilities
 export * from "./utilities/index";

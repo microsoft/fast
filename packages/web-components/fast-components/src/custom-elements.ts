@@ -50,6 +50,7 @@ import { fastToolbar } from "./toolbar/index";
 import { fastTooltip } from "./tooltip/index";
 import { fastTreeItem } from "./tree-item/index";
 import { fastTreeView } from "./tree-view/index";
+import { fastVirtualizingStack } from "./virtualizing-stack/index";
 
 // Don't delete these. They're needed so that API-extractor doesn't add import types
 // with improper pathing
@@ -125,6 +126,7 @@ export {
     fastToolbar,
     fastTreeView,
     fastTreeItem,
+    fastVirtualizingStack,
 };
 
 /**
@@ -186,6 +188,8 @@ export const allComponents = {
     fastToolbar,
     fastTreeView,
     fastTreeItem,
+    fastVirtualizingStack,
+    register(container?: Container) {
     register(container?: Container, ...rest: any[]) {
         if (!container) {
             // preserve backward compatibility with code that loops through

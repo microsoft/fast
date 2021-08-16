@@ -1,0 +1,50 @@
+{
+  "$schema": "http://json-schema.org/schema#",
+  "$id": "fast-virtualizing-stack",
+  "id": "fast-virtualizing-stack",
+  "title": "Virtualizing stack",
+  "description": "The FAST virtualizing stack element",
+  "type": "object",
+  "version": 1.1,
+  "mapsToTagName": "fast-virtualizing-stack",
+  "properties": {
+    "viewport": {
+      "title": "Viewport ID",
+      "description": "The HTML ID of the viewport the region is positioned relative to",
+      "mapsToAttribute": "viewport",
+      "type": "string"
+    },
+    "orientation": {
+      "enum": [
+        "horizontal",
+        "vertical"
+      ],
+      "default": "vertical",
+      "title": "Orientation",
+      "description": "The orientation of the stack",
+      "mapsToAttribute": "orientation",
+      "type": "string"
+    },
+    "Slot": {
+      "title": "Default slot",
+      "description": "The default slot",
+      "mapsToSlot": "",
+      "@microsoft/fast-tooling/dictionary-link": true,
+      "pluginId": "@microsoft/fast-tooling/linked-data",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "The ID of the data corresponding to a dictionary key",
+            "type": "string"
+          },
+          "dataLocation": {
+            "title": "The location of the data using lodash path syntax",
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

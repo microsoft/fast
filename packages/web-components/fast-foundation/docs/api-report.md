@@ -2760,6 +2760,13 @@ export type VerticalPosition = "top" | "bottom" | "center" | "unset";
 export type WeekdayFormat = "long" | "narrow" | "short";
 
 // @public
+export class VirtualizingStack extends FoundationElement {
+}
+
+// @public
+export const virtualizingStackTemplate: (context: ElementDefinitionContext, definition: FoundationElementDefinition) => ViewTemplate<VirtualizingStack>;
+
+// @public
 export function whitespaceFilter(value: Node, index: number, array: Node[]): boolean;
 
 // @public

@@ -1,0 +1,39 @@
+{
+    "version": 1.1,
+    "tags": [
+        {
+            "name": "fast-virtualizing-stack",
+            "title": "Virtualizing stack",
+            "description": "The FAST virtualizing stack element",
+            "attributes": [
+                {
+                    "name": "viewport",
+                    "title": "Viewport ID",
+                    "description":
+                        "The HTML ID of the viewport the region is positioned relative to",
+                    "type": "string",
+                    "required": false
+                },
+                {
+                    "name": "orientation",
+                    "title": "Orientation",
+                    "description": "The orientation of the stack",
+                    "default": "vertical",
+                    "values": [
+                        { "name": "horizontal" },
+                        { "name": "vertical" }
+                    ],
+                    "required": false,
+                    "type": "string"
+                }
+            ],
+            "slots": [
+                {
+                    "name": "",
+                    "title": "Default slot",
+                    "description": "The default slot"
+                }
+            ]
+        }
+    ]
+}
