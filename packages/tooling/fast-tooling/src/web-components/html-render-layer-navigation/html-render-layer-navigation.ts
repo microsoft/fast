@@ -70,9 +70,9 @@ export class HTMLRenderLayerNavigation extends HTMLRenderLayer {
         );
 
         this.resizeDetector.observe(
-            this.resizeobserverselector
+            (this.resizeobserverselector
                 ? document.querySelector(this.resizeobserverselector)
-                : null ?? document.body
+                : null) ?? document.body
         );
 
         window.addEventListener("scroll", this.handleWindowChange);
