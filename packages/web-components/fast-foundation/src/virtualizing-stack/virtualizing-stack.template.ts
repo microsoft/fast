@@ -15,5 +15,7 @@ export const virtualizingStackTemplate: (
     context: ElementDefinitionContext,
     definition: FoundationElementDefinition
 ) => html`
-    <slot></slot>
+    <template>
+        <slot></slot>
+    </template>
 `;
