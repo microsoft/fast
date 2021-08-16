@@ -24,9 +24,11 @@ if (process.env.WEBSITE_HOSTNAME.indexOf("create") > -1) {
         helmet.contentSecurityPolicy({
             directives: {
                 defaultSrc: ["'self'"],
-                fontSrc: ["'self' use.typekit.net static.fast.design c.s-microsoft.com"],
+                fontSrc: [
+                    "'self' static2.sharepointonline.com use.typekit.net static.fast.design c.s-microsoft.com",
+                ],
                 frameAncestors: [`'self' ${process.env.FRAME_ANCESTOR_PARTNER}`],
-                imgSrc: ["'self' data: *.fast.design via.placeholder.com"],
+                imgSrc: ["'self' blob: data: *.fast.design via.placeholder.com"],
                 scriptSrc: ["'self' 'unsafe-eval'"],
                 styleSrc: ["'self' https: 'unsafe-inline'"],
             },
