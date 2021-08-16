@@ -1,8 +1,32 @@
 # Change Log - @microsoft/fast-components
 
-This log was last generated on Thu, 05 Aug 2021 07:17:32 GMT and should not be manually modified.
+This log was last generated on Sun, 15 Aug 2021 07:17:25 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.6.0
+
+Sun, 15 Aug 2021 07:17:25 GMT
+
+### Minor changes
+
+- add new PaletteRGB.from() API to support easier creation of PaletteRGB instances (nicholasrice@users.noreply.github.com)
+
+## 2.5.8
+
+Thu, 12 Aug 2021 07:16:50 GMT
+
+### Patches
+
+- fix dialog focus on open (scomea@microsoft.com)
+
+## 2.5.7
+
+Sun, 08 Aug 2021 07:18:56 GMT
+
+### Patches
+
+- replace css comment expressions with normal css comments (john.kreitlow@microsoft.com)
 
 ## 2.5.6
 

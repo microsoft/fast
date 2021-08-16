@@ -2,6 +2,29 @@
   "name": "@microsoft/fast-foundation",
   "entries": [
     {
+      "date": "Thu, 12 Aug 2021 07:16:50 GMT",
+      "tag": "@microsoft/fast-foundation_v2.6.4",
+      "version": "2.6.4",
+      "comments": {
+        "none": [
+          {
+            "comment": "chore: eslint fixes in fast-foundation",
+            "author": "mathieu.lavoie@logmein.com",
+            "commit": "7265f039d4e4d1a219a4ab6bf831b78540d339e8",
+            "package": "@microsoft/fast-foundation"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "fix dialog focus on open",
+            "author": "scomea@microsoft.com",
+            "commit": "ee9239067b2245056e066e3a4e532b4ad00d4815",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 04 Aug 2021 07:15:14 GMT",
       "tag": "@microsoft/fast-foundation_v2.6.3",
       "version": "2.6.3",

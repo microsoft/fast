@@ -1,0 +1,10 @@
+{
+  "recommendations": [
+    "bierner.github-markdown-preview",
+    "bierner.jsdoc-markdown-highlighting",
+    "dbaeumer.vscode-eslint",
+    "ghmcadams.lintlens",
+    "rvest.vs-code-prettier-eslint",
+    "sidneys1.gitconfig"
+  ]
+}

@@ -17,6 +17,7 @@ export enum NavigationDataType {
 
 export enum HoverLocation {
     before = "before",
+    center = "center",
     after = "after",
 }
 
@@ -136,6 +137,12 @@ export interface NavigationHandledProps {
      * The JSON schema types that will be visible
      */
     types?: DataType[];
+
+    /**
+     * The default data location to use if a linked data container is dropped on
+     * @alpha
+     */
+    defaultLinkedDataDroppableDataLocation?: string;
 }
 
 export type NavigationProps = NavigationHandledProps;

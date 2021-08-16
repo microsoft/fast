@@ -1,8 +1,40 @@
 # Change Log - @microsoft/fast-tooling-react
 
-This log was last generated on Thu, 05 Aug 2021 07:17:32 GMT and should not be manually modified.
+This log was last generated on Sun, 15 Aug 2021 07:17:25 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.10.5
+
+Sun, 15 Aug 2021 07:17:25 GMT
+
+### Patches
+
+- various fixes to the Navigations drag and drop making it more flexible for web components (7559015+janechu@users.noreply.github.com)
+
+## 2.10.4
+
+Thu, 12 Aug 2021 07:16:50 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.6.4 (scomea@microsoft.com)
+
+## 2.10.3
+
+Wed, 11 Aug 2021 07:14:31 GMT
+
+### Patches
+
+- Bump @microsoft/fast-tooling to v0.26.3 (44823142+williamw2@users.noreply.github.com)
+
+## 2.10.2
+
+Sun, 08 Aug 2021 07:18:56 GMT
+
+### Patches
+
+- resolve the expanded navigation items mismatch after triggering the expand trigger then a navigation message (7559015+janechu@users.noreply.github.com)
 
 ## 2.10.1
 

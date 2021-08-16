@@ -1,9 +1,9 @@
 import { html } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
 import { endTemplate, startTemplate } from "../patterns/start-end";
-import type { ListboxOption } from "./listbox-option";
 import type { FoundationElementDefinition } from "../foundation-element";
 import type { ElementDefinitionContext } from "../design-system";
+import type { ListboxOption } from "./listbox-option";
 
 /**
  * The template for the {@link @microsoft/fast-foundation#(ListboxOption:class)} component.
