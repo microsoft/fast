@@ -71,7 +71,9 @@ export class HTMLRenderLayerNavigation extends HTMLRenderLayer {
 
         this.resizeDetector.observe(
             (this.resizeobserverselector
-                ? document.querySelector(this.resizeobserverselector)
+                ? (this.getRootNode() as Element).querySelector(
+                      this.resizeobserverselector
+                  )
                 : null) ?? document.body
         );
 
