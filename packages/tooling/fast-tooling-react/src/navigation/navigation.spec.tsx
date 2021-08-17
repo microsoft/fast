@@ -1361,9 +1361,15 @@ describe("Navigation", () => {
         const item: any = rendered.find("a");
         expect(item).toHaveLength(1);
 
-        rendered.find("Navigation").at(1).setState({
-            activeItemEditable: true,
-        });
+        rendered
+            .find("Navigation")
+            .at(1)
+            .setState({
+                textEditing: {
+                    dictionaryId: "",
+                    navigationConfigId: "",
+                },
+            });
 
         const inputs2: any = rendered.find("input");
         expect(inputs2).toHaveLength(1);
@@ -1469,9 +1475,15 @@ describe("Navigation", () => {
 
         const item: any = rendered.find("a");
 
-        rendered.find("Navigation").at(1).setState({
-            activeItemEditable: true,
-        });
+        rendered
+            .find("Navigation")
+            .at(1)
+            .setState({
+                textEditing: {
+                    dictionaryId: "",
+                    navigationConfigId: "",
+                },
+            });
 
         const inputs1: any = rendered.find("input");
         inputs1.simulate("blur");
@@ -1579,9 +1591,15 @@ describe("Navigation", () => {
 
         const item: any = rendered.find("a");
 
-        rendered.find("Navigation").at(1).setState({
-            activeItemEditable: true,
-        });
+        rendered
+            .find("Navigation")
+            .at(1)
+            .setState({
+                textEditing: {
+                    dictionaryId: "",
+                    navigationConfigId: "",
+                },
+            });
 
         const inputs1: any = rendered.find("input");
         inputs1.simulate("keydown", { keyCode: keyCodeEnter });

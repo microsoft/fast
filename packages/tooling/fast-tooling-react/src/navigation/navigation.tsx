@@ -65,6 +65,8 @@ class Navigation extends Foundation<
 
     private rootElement: React.RefObject<HTMLDivElement>;
 
+    private editableElement: React.RefObject<HTMLInputElement>;
+
     constructor(props: NavigationProps) {
         super(props);
 
@@ -84,7 +86,7 @@ class Navigation extends Foundation<
             dataDictionary: null,
             activeDictionaryId: "",
             activeNavigationConfigId: "",
-            activeItemEditable: false,
+            textEditing: null,
             expandedNavigationConfigItems: {},
             linkedData: void 0,
             linkedDataLocation: null,
@@ -92,6 +94,7 @@ class Navigation extends Foundation<
         };
 
         this.rootElement = React.createRef();
+        this.editableElement = React.createRef();
     }
 
     public render(): React.ReactNode {
@@ -294,10 +297,8 @@ class Navigation extends Foundation<
                 index={index}
                 key={index}
                 isCollapsible={isCollapsible}
-                isEditable={
-                    this.state.activeItemEditable &&
-                    this.isEditable(dictionaryId, navigationConfigId)
-                }
+                isEditing={this.isEditing(dictionaryId, navigationConfigId)}
+                inputRef={this.editableElement}
                 className={this.getDraggableItemClassName(
                     isCollapsible,
                     isDraggable,
@@ -394,11 +395,15 @@ class Navigation extends Foundation<
         return null;
     }
 
-    private isEditable(dictionaryId?: string, navigationConfigId?: string): boolean {
+    /**
+     * Determine if an element is currently being edited
+     */
+    private isEditing(dictionaryId?: string, navigationConfigId?: string): boolean {
         return (
-            this.state.activeDictionaryId === dictionaryId &&
-            this.state.activeNavigationConfigId === navigationConfigId &&
-            this.state.activeNavigationConfigId === ""
+            this.state.textEditing &&
+            this.state.textEditing.dictionaryId === dictionaryId &&
+            this.state.textEditing.navigationConfigId === navigationConfigId &&
+            this.state.textEditing.navigationConfigId === ""
         );
     }
 
@@ -680,7 +685,6 @@ class Navigation extends Foundation<
         let timesClicked = 0;
 
         return (event: React.MouseEvent<HTMLElement>): void => {
-            clearTimeout(timer);
             timesClicked += 1;
 
             setTimeout(() => {
@@ -689,11 +693,13 @@ class Navigation extends Foundation<
                         dictionaryId,
                         navigationConfigId
                     );
+                    clearTimeout(timer);
                 } else if (timesClicked === 2) {
                     this.handleNavigationItemDoubleClick(
                         dictionaryId,
                         navigationConfigId
                     );
+                    clearTimeout(timer);
                 }
 
                 timesClicked = 0;
@@ -718,9 +724,7 @@ class Navigation extends Foundation<
         dictionaryId: string,
         navigationConfigId: string
     ): void => {
-        if (this.isEditable(dictionaryId, navigationConfigId)) {
-            this.triggerNavigationEdit();
-        }
+        this.triggerNavigationEdit(dictionaryId, navigationConfigId);
     };
 
     /**
@@ -751,7 +755,7 @@ class Navigation extends Foundation<
     ) => void) => {
         return () => {
             this.setState({
-                activeItemEditable: false,
+                textEditing: null,
             });
         };
     };
@@ -767,7 +771,7 @@ class Navigation extends Foundation<
                 switch (e.keyCode) {
                     case keyCodeEnter:
                         this.setState({
-                            activeItemEditable: false,
+                            textEditing: null,
                         });
                 }
             }
@@ -798,10 +802,24 @@ class Navigation extends Foundation<
         });
     }
 
-    private triggerNavigationEdit(): void {
-        this.setState({
-            activeItemEditable: true,
-        });
+    private triggerNavigationEdit(
+        dictionaryId: string,
+        navigationConfigId: string
+    ): void {
+        this.setState(
+            {
+                textEditing: {
+                    dictionaryId,
+                    navigationConfigId,
+                },
+            },
+            () => {
+                if (this.editableElement?.current) {
+                    this.editableElement.current.focus();
+                    this.editableElement.current.select();
+                }
+            }
+        );
     }
 
     private triggerNavigationUpdate(
@@ -810,7 +828,7 @@ class Navigation extends Foundation<
     ): void {
         this.setState(
             {
-                activeItemEditable: false,
+                textEditing: null,
             },
             () => {
                 this.props.messageSystem.postMessage({
