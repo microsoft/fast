@@ -1,4 +1,4 @@
-import { attr, DOM, observable } from "@microsoft/fast-element";
+import { attr, DOM, observable, ViewTemplate } from "@microsoft/fast-element";
 import { Direction, eventResize, eventScroll } from "@microsoft/fast-web-utilities";
 import { FoundationElement } from "../foundation-element";
 import { IntersectionService } from "../anchored-region/intersection-service";
@@ -78,6 +78,54 @@ export class VirtualizingStack extends FoundationElement {
             this.initialize();
         }
     }
+
+    /**
+     *
+     *
+     * @public
+     */
+    @observable
+    public items: any[];
+
+    /**
+     * The default row item template.  Set by the component templates.
+     *
+     * @internal
+     */
+    @observable
+    public itemTemplate: ViewTemplate;
+
+    /**
+     *
+     *
+     * @internal
+     */
+    @observable
+    public visibleItems: any[] = [];
+
+    /**
+     *
+     *
+     * @internal
+     */
+    @observable
+    public totalHeight: number = 0;
+
+    /**
+     *
+     *
+     * @internal
+     */
+    @observable
+    public topSpacerHeight: number = 0;
+
+    /**
+     *
+     *
+     * @internal
+     */
+    @observable
+    public bottomSpacerHeight: number = 0;
 
     /**
      * indicates that an initial positioning pass on layout has completed
