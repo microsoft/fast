@@ -11,6 +11,7 @@ import {
     fastTabPanel,
     fastTabs,
     fastTextField,
+    fastTooltip,
 } from "@microsoft/fast-components";
 import { Select } from "@microsoft/fast-foundation";
 import { componentCategories, downChevron, upChevron } from "@microsoft/site-utilities";
@@ -56,6 +57,7 @@ DesignSystem.getOrCreate().register(
     fastSwitch(),
     fastTabPanel(),
     fastTextField(),
+    fastTooltip(),
     fastToolingColorPicker({ prefix: "fast-tooling" }),
     fastToolingCSSLayout({ prefix: "fast-tooling" }),
     fastToolingFile({ prefix: "fast-tooling" }),

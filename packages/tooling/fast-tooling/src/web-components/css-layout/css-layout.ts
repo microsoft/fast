@@ -1,5 +1,6 @@
 import { observable } from "@microsoft/fast-element";
 import { mapCSSInlineStyleToCSSPropertyDictionary } from "../../data-utilities/mapping.mdn-data";
+import { fastToolingPrefix } from "../utilities";
 import { FormAssociatedCSSLayout } from "./css-layout.form-associated";
 import {
     alignContentOptions,
@@ -178,6 +179,13 @@ export class CSSLayout extends FormAssociatedCSSLayout {
 
         this.onChange(this.getCSSLayoutDictionary());
         this.$emit("change");
+    }
+
+    /**
+     * Returns a string using a pattern to create an input ID
+     */
+    public getInputId(cssPropertyName: string, cssPropertyValue: string): string {
+        return `${fastToolingPrefix}-${cssPropertyName}-${cssPropertyValue}`;
     }
 
     /**
