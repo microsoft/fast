@@ -84,6 +84,7 @@ export const cssLayoutStyles = css`
         border: 3px solid #1b1b1b;
         position: relative;
         height: 24px;
+        max-width: 24px;
     }
 
     .control-radio-region .active {

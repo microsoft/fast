@@ -1,3 +1,4 @@
+import { Tooltip } from "@microsoft/fast-components";
 import { html, repeat } from "@microsoft/fast-element";
 import { ElementDefinitionContext, Switch } from "@microsoft/fast-foundation";
 import { CSSLayout } from "./css-layout";
@@ -553,8 +554,8 @@ export const cssLayoutTemplate = (context: ElementDefinitionContext) => html<CSS
                         html<string, CSSLayout>`
                             <div
                                 class="${(x, c) => c.parent.flexDirectionName} ${x =>
-                                    x} ${(x, c) =>
-                                    x === c.parent.flexDirectionValue ? "active" : ""}"
+                            x} ${(x, c) =>
+                            x === c.parent.flexDirectionValue ? "active" : ""}"
                             >
                                 ${x =>
                                     x === "row"
@@ -565,6 +566,11 @@ export const cssLayoutTemplate = (context: ElementDefinitionContext) => html<CSS
                                         ? flexDirectionColumn
                                         : flexDirectionColumnReverse}
                                 <input
+                                    id="${(x, c) =>
+                                        c.parent.getInputId(
+                                            c.parent.flexDirectionName,
+                                            x
+                                        )}"
                                     type="radio"
                                     aria-label="${x => x}"
                                     name="${(x, c) => c.parent.flexDirectionName}"
@@ -577,6 +583,15 @@ export const cssLayoutTemplate = (context: ElementDefinitionContext) => html<CSS
                                             c.event
                                         )}"
                                 />
+                                <${context.tagFor(Tooltip)}
+                                    anchor="${(x, c) =>
+                                        c.parent.getInputId(
+                                            c.parent.flexDirectionName,
+                                            x
+                                        )}"
+                                >
+                                    ${x => x}
+                                </${context.tagFor(Tooltip)}>
                             </div>
                         `
                     )}
@@ -590,8 +605,8 @@ export const cssLayoutTemplate = (context: ElementDefinitionContext) => html<CSS
                         html<string, CSSLayout>`
                             <div
                                 class="${(x, c) => c.parent.justifyContentName} ${x =>
-                                    x} ${(x, c) =>
-                                    x === c.parent.justifyContentValue ? "active" : ""}"
+                            x} ${(x, c) =>
+                            x === c.parent.justifyContentValue ? "active" : ""}"
                             >
                                 ${x =>
                                     x === "flex-start"
@@ -606,6 +621,11 @@ export const cssLayoutTemplate = (context: ElementDefinitionContext) => html<CSS
                                         ? justifyContentSpaceBetween
                                         : justifyContentSpaceEvenly}
                                 <input
+                                    id="${(x, c) =>
+                                        c.parent.getInputId(
+                                            c.parent.justifyContentName,
+                                            x
+                                        )}"
                                     type="radio"
                                     aria-label="${x => x}"
                                     name="${(x, c) => c.parent.justifyContentName}"
@@ -618,6 +638,15 @@ export const cssLayoutTemplate = (context: ElementDefinitionContext) => html<CSS
                                             c.event
                                         )}"
                                 />
+                                <${context.tagFor(Tooltip)}
+                                    anchor="${(x, c) =>
+                                        c.parent.getInputId(
+                                            c.parent.justifyContentName,
+                                            x
+                                        )}"
+                                >
+                                    ${x => x}
+                                </${context.tagFor(Tooltip)}>
                             </div>
                         `
                     )}
@@ -631,8 +660,8 @@ export const cssLayoutTemplate = (context: ElementDefinitionContext) => html<CSS
                         html<string, CSSLayout>`
                             <div
                                 class="${(x, c) => c.parent.alignContentName} ${x =>
-                                    x} ${(x, c) =>
-                                    x === c.parent.alignContentValue ? "active" : ""}"
+                            x} ${(x, c) =>
+                            x === c.parent.alignContentValue ? "active" : ""}"
                             >
                                 ${x =>
                                     x === "flex-start"
@@ -649,6 +678,11 @@ export const cssLayoutTemplate = (context: ElementDefinitionContext) => html<CSS
                                         ? alignContentSpaceEvenly
                                         : alignContentStretch}
                                 <input
+                                    id="${(x, c) =>
+                                        c.parent.getInputId(
+                                            c.parent.alignContentName,
+                                            x
+                                        )}"
                                     type="radio"
                                     aria-label="${x => x}"
                                     name="${(x, c) => c.parent.alignContentName}"
@@ -661,6 +695,15 @@ export const cssLayoutTemplate = (context: ElementDefinitionContext) => html<CSS
                                             c.event
                                         )}"
                                 />
+                                <${context.tagFor(Tooltip)}
+                                    anchor="${(x, c) =>
+                                        c.parent.getInputId(
+                                            c.parent.alignContentName,
+                                            x
+                                        )}"
+                                >
+                                    ${x => x}
+                                </${context.tagFor(Tooltip)}>
                             </div>
                         `
                     )}
@@ -674,9 +717,9 @@ export const cssLayoutTemplate = (context: ElementDefinitionContext) => html<CSS
                         html<string, CSSLayout>`
                             <div
                                 class="${(x, c) => c.parent.alignItemsName} ${x => x} ${(
-                                    x,
-                                    c
-                                ) => (x === c.parent.alignItemsValue ? "active" : "")}"
+                            x,
+                            c
+                        ) => (x === c.parent.alignItemsValue ? "active" : "")}"
                             >
                                 ${x =>
                                     x === "flex-start"
@@ -687,6 +730,8 @@ export const cssLayoutTemplate = (context: ElementDefinitionContext) => html<CSS
                                         ? alignItemsCenter
                                         : alignItemsStretch}
                                 <input
+                                    id="${(x, c) =>
+                                        c.parent.getInputId(c.parent.alignItemsName, x)}"
                                     type="radio"
                                     aria-label="${x => x}"
                                     name="${(x, c) => c.parent.alignItemsName}"
@@ -698,6 +743,12 @@ export const cssLayoutTemplate = (context: ElementDefinitionContext) => html<CSS
                                             c.event
                                         )}"
                                 />
+                                <${context.tagFor(Tooltip)}
+                                    anchor="${(x, c) =>
+                                        c.parent.getInputId(c.parent.alignItemsName, x)}"
+                                >
+                                    ${x => x}
+                                </${context.tagFor(Tooltip)}>
                             </div>
                         `
                     )}
@@ -749,9 +800,9 @@ export const cssLayoutTemplate = (context: ElementDefinitionContext) => html<CSS
                         html<string, CSSLayout>`
                             <div
                                 class="${(x, c) => c.parent.flexWrapName} ${x => x} ${(
-                                    x,
-                                    c
-                                ) => (x === c.parent.flexWrapValue ? "active" : "")}"
+                            x,
+                            c
+                        ) => (x === c.parent.flexWrapValue ? "active" : "")}"
                             >
                                 ${x =>
                                     x === "wrap"
@@ -760,6 +811,8 @@ export const cssLayoutTemplate = (context: ElementDefinitionContext) => html<CSS
                                         ? flexWrapWrapReverse
                                         : flexWrapNoWrap}
                                 <input
+                                    id="${(x, c) =>
+                                        c.parent.getInputId(c.parent.flexWrapName, x)}"
                                     type="radio"
                                     aria-label="${x => x}"
                                     name="${(x, c) => c.parent.flexWrapName}"
@@ -771,6 +824,12 @@ export const cssLayoutTemplate = (context: ElementDefinitionContext) => html<CSS
                                             c.event
                                         )}"
                                 />
+                                <${context.tagFor(Tooltip)}
+                                    anchor="${(x, c) =>
+                                        c.parent.getInputId(c.parent.flexWrapName, x)}"
+                                >
+                                    ${x => x}
+                                </${context.tagFor(Tooltip)}>
                             </div>
                         `
                     )}
