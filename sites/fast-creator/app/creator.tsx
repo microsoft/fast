@@ -604,7 +604,7 @@ class Creator extends Editor<{}, CreatorState> {
     }
 
     private updateMonacoEditor = (): void => {
-        this.createMonacoEditor(monaco);
+        this.createMonacoEditor(monaco, undefined, { fontSize: "16px" });
 
         if (this.editorContainerRef.current && this.editor) {
             this.editor.layout();
