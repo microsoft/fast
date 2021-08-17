@@ -261,6 +261,24 @@ export class NumberField extends FormAssociatedNumberField {
     public handleChange(): void {
         this.$emit("change");
     }
+
+    /**
+     * Handles the internal control's `keydown` event
+     * @internal
+     */
+    public handleKeyDown(event: KeyboardEvent): boolean {
+        if (event.key === "ArrowUp") {
+            this.stepUp();
+            return false;
+        }
+
+        if (event.key === "ArrowDown") {
+            this.stepDown();
+            return false;
+        }
+
+        return true;
+    }
 }
 
 /**
