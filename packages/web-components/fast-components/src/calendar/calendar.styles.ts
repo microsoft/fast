@@ -49,6 +49,7 @@ export const CalendarStyles = css`
         border-bottom: var(--cell-border);
         border-right: var(--cell-border);
         border-top: var(--cell-border);
+        border-radius: 0;
     }
 
     .day {
@@ -60,6 +61,7 @@ export const CalendarStyles = css`
         border-right: var(--cell-border);
         outline-offset: -1px;
         line-height: var(--cell-line-height);
+        border-radius: 0;
     }
 
     .day.off {
