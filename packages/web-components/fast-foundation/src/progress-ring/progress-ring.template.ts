@@ -40,7 +40,8 @@ export const progressRingTemplate: (
                     <circle
                         class="determinate"
                         part="determinate"
-                        style="stroke-dasharray: ${x => (44 * x.value!) / 100}px 44px"
+                        style="stroke-dasharray: ${x =>
+                            (44 * x.percentComplete!) / 100}px 44px"
                         cx="8px"
                         cy="8px"
                         r="7px"
