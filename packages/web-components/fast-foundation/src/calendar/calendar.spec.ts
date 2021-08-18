@@ -1,18 +1,19 @@
 import { customElement, DOM, html } from "@microsoft/fast-element";
 import { expect } from "chai";
 import { fixture } from "../test-utilities/fixture";
-import { Calendar, calendarTemplate, CalendarCell, DateFormatter } from "./index";
+import { Calendar, calendarTemplate, DateFormatter } from "./index";
 import { 
     dataGridTemplate, 
-    DataGrid, 
+    DataGrid,
+    DataGridCell,
     DataGridRow, 
     dataGridRowTemplate, 
-    dataGridCellTemplate 
+    dataGridCellTemplate
 } from "../data-grid/index";
 
 
-const FASTCalendarCell = CalendarCell.compose({
-    baseName: "calendar-cell",
+const FASTDataGridCell = DataGridCell.compose({
+    baseName: "data-grid-cell",
     template: dataGridCellTemplate
 });
 
@@ -41,7 +42,7 @@ async function setup(props?) {
         connect: () => void,
         disconnect: () => void
     } = await fixture(
-        [FASTCalendar(), FASTDataGrid(), FASTDataGridRow(), FASTCalendarCell()]
+        [FASTCalendar(), FASTDataGrid(), FASTDataGridRow(), FASTDataGridCell()]
     );
 
     element.locale = "en-US-u-ca-gregory-nu-latn";

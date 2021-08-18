@@ -290,14 +290,6 @@ export class Calendar extends FoundationElement {
     }
 
 // @public
-export class CalendarCell extends DataGridCell {
-    day: any;
-    handleKeydown(e: KeyboardEvent): void;
-    month: any;
-    year: any;
-}
-
-// @public
 export const calendarCellTemplate: (context: ElementDefinitionContext, todayString: string) => ViewTemplate<CalendarDateInfo>;
 
 // @public
