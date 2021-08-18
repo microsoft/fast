@@ -1,6 +1,6 @@
 import { Command, flags } from "@oclif/command";
 import { createEnv } from "yeoman-environment";
-
+import { definitions } from "../definitions";
 export interface Options {
     name: string;
     defaults?: boolean;
@@ -38,5 +38,9 @@ export default class Generate extends Command {
             defaults: flags.defaults,
             force: flags.force,
         } as Options);
+    }
+
+    end(): void {
+        definitions();
     }
 }

@@ -1,5 +1,7 @@
 import * as path from "path";
 import { Command } from "@oclif/command";
+import { createEnv } from "yeoman-environment";
+import { definitions } from "../definitions";
 
 const { spawn } = require("child_process");
 
@@ -17,11 +19,21 @@ export default class New extends Command {
         },
     ];
 
+    protected generateDefinitions(options: any = {}): void {
+        const env = createEnv();
+
+        env.register(require.resolve("../generators/definitions"), "fast:definitions");
+
+        env.run("fast:definitions", options);
+    }
+
     async run(): Promise<void> {
         const { args } = this.parse(New);
         spawn("npx", ["makes", template, args.projectName], {
             stdio: "inherit",
             shell: true,
         });
+
+        definitions();
     }
 }
