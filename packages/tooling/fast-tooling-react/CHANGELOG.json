@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-tooling-react",
   "entries": [
     {
+      "date": "Wed, 18 Aug 2021 07:16:21 GMT",
+      "tag": "@microsoft/fast-tooling-react_v2.10.7",
+      "version": "2.10.7",
+      "comments": {
+        "patch": [
+          {
+            "comment": "focus and select text when navigation items are double clicked and adjust behavior so that any item can be edited, not just active navigation items",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "99759a17ca1a8f8afe574d2dbd01c76021f70da4",
+            "package": "@microsoft/fast-tooling-react"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 17 Aug 2021 07:14:05 GMT",
       "tag": "@microsoft/fast-tooling-react_v2.10.6",
       "version": "2.10.6",
