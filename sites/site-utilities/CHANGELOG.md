@@ -1,8 +1,16 @@
 # Change Log - @microsoft/site-utilities
 
-This log was last generated on Tue, 17 Aug 2021 07:14:05 GMT and should not be manually modified.
+This log was last generated on Wed, 18 Aug 2021 07:16:21 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.9.0
+
+Wed, 18 Aug 2021 07:16:21 GMT
+
+### Patches
+
+- Bump @microsoft/fast-tooling to v0.27.0 (7559015+janechu@users.noreply.github.com)
 
 ## 0.9.0
 
