@@ -2,6 +2,57 @@
   "name": "@microsoft/fast-tooling",
   "entries": [
     {
+      "date": "Wed, 18 Aug 2021 07:16:21 GMT",
+      "tag": "@microsoft/fast-tooling_v0.27.0",
+      "version": "0.27.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "add tooltips to the CSS layout radio buttons",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "79f62ae08fd5db598272ca907ba03c4afa81a49f",
+            "package": "@microsoft/fast-tooling"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 17 Aug 2021 07:14:05 GMT",
+      "tag": "@microsoft/fast-tooling_v0.26.6",
+      "version": "0.26.6",
+      "comments": {
+        "patch": [
+          {
+            "comment": "add autoselect option to html render inline edit component",
+            "author": "44823142+williamw2@users.noreply.github.com",
+            "commit": "9bb3f1855d79777c96d69f156878a8873924f02b",
+            "package": "@microsoft/fast-tooling"
+          },
+          {
+            "comment": "make resize observer target configurable",
+            "author": "44823142+williamw2@users.noreply.github.com",
+            "commit": "92e4668bc4debb393245b9e381b92932f84c8fa8",
+            "package": "@microsoft/fast-tooling"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sun, 15 Aug 2021 07:17:25 GMT",
+      "tag": "@microsoft/fast-tooling_v0.26.5",
+      "version": "0.26.5",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-components to v2.6.0",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "820962bf53e3ddcc62b22e011878bb8ff728e223",
+            "package": "@microsoft/fast-tooling"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 12 Aug 2021 07:16:50 GMT",
       "tag": "@microsoft/fast-tooling_v0.26.4",
       "version": "0.26.4",

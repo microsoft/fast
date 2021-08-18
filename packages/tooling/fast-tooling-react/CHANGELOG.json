@@ -2,6 +2,51 @@
   "name": "@microsoft/fast-tooling-react",
   "entries": [
     {
+      "date": "Wed, 18 Aug 2021 07:16:21 GMT",
+      "tag": "@microsoft/fast-tooling-react_v2.10.7",
+      "version": "2.10.7",
+      "comments": {
+        "patch": [
+          {
+            "comment": "focus and select text when navigation items are double clicked and adjust behavior so that any item can be edited, not just active navigation items",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "99759a17ca1a8f8afe574d2dbd01c76021f70da4",
+            "package": "@microsoft/fast-tooling-react"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 17 Aug 2021 07:14:05 GMT",
+      "tag": "@microsoft/fast-tooling-react_v2.10.6",
+      "version": "2.10.6",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-tooling to v0.26.6",
+            "author": "44823142+williamw2@users.noreply.github.com",
+            "commit": "9bb3f1855d79777c96d69f156878a8873924f02b",
+            "package": "@microsoft/fast-tooling-react"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sun, 15 Aug 2021 07:17:25 GMT",
+      "tag": "@microsoft/fast-tooling-react_v2.10.5",
+      "version": "2.10.5",
+      "comments": {
+        "patch": [
+          {
+            "comment": "various fixes to the Navigations drag and drop making it more flexible for web components",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "04c8b8a5701fd1d16d2ed70f827b98589de2abf2",
+            "package": "@microsoft/fast-tooling-react"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 12 Aug 2021 07:16:50 GMT",
       "tag": "@microsoft/fast-tooling-react_v2.10.4",
       "version": "2.10.4",

@@ -1,8 +1,32 @@
 # Change Log - @microsoft/fast-component-explorer
 
-This log was last generated on Thu, 12 Aug 2021 07:16:50 GMT and should not be manually modified.
+This log was last generated on Wed, 18 Aug 2021 07:16:21 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.17.2
+
+Wed, 18 Aug 2021 07:16:21 GMT
+
+### Patches
+
+- Bump @microsoft/fast-tooling to v0.27.0 (7559015+janechu@users.noreply.github.com)
+
+## 0.17.2
+
+Tue, 17 Aug 2021 07:14:05 GMT
+
+### Patches
+
+- Bump @microsoft/fast-tooling-react to v2.10.6 (44823142+williamw2@users.noreply.github.com)
+
+## 0.17.2
+
+Sun, 15 Aug 2021 07:17:25 GMT
+
+### Patches
+
+- Bump @microsoft/fast-tooling to v0.26.5 (nicholasrice@users.noreply.github.com)
 
 ## 0.17.2
 

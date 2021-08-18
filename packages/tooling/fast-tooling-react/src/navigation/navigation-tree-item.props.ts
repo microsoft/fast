@@ -66,7 +66,12 @@ export interface NavigationTreeItemProps
     /**
      * Whether this navigation item is editable
      */
-    isEditable: boolean;
+    isEditing: boolean;
+
+    /**
+     * The React ref for the input element
+     */
+    inputRef: React.RefObject<HTMLInputElement>;
 
     /**
      * The text content

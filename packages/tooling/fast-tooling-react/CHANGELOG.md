@@ -1,8 +1,32 @@
 # Change Log - @microsoft/fast-tooling-react
 
-This log was last generated on Thu, 12 Aug 2021 07:16:50 GMT and should not be manually modified.
+This log was last generated on Wed, 18 Aug 2021 07:16:21 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.10.7
+
+Wed, 18 Aug 2021 07:16:21 GMT
+
+### Patches
+
+- focus and select text when navigation items are double clicked and adjust behavior so that any item can be edited, not just active navigation items (7559015+janechu@users.noreply.github.com)
+
+## 2.10.6
+
+Tue, 17 Aug 2021 07:14:05 GMT
+
+### Patches
+
+- Bump @microsoft/fast-tooling to v0.26.6 (44823142+williamw2@users.noreply.github.com)
+
+## 2.10.5
+
+Sun, 15 Aug 2021 07:17:25 GMT
+
+### Patches
+
+- various fixes to the Navigations drag and drop making it more flexible for web components (7559015+janechu@users.noreply.github.com)
 
 ## 2.10.4
 
