@@ -8,7 +8,7 @@ async function setup() {
     const { element, connect, disconnect } = await fixture([
         fastToolingCSSLayout(),
         fastSwitch(),
-        fastTooltip()
+        fastTooltip(),
     ]);
 
     return { element, connect, disconnect };
@@ -67,16 +67,11 @@ describe("CSSLayout", () => {
     });
     it("should contain a tooltip for a flex-direction value that matches it's id attribute", async () => {
         const { element, connect, disconnect } = await setup();
-        let css = "";
 
         await connect();
 
         const toggle = element.shadowRoot?.querySelector("fast-switch");
         const toggleEvent = new Event("click", {} as MouseEventInit);
-
-        element.addEventListener("change", (e: any) => {
-            css = e.target.value;
-        });
 
         toggle.dispatchEvent(toggleEvent);
 
@@ -317,7 +312,7 @@ describe("CSSLayout", () => {
         const rowGapInput = element.shadowRoot?.querySelector(
             "input.css-row-gap"
         ) as HTMLInputElement;
-        rowGapInput.setAttribute("value", "5");
+        rowGapInput.value = "5";
 
         await DOM.nextUpdate();
 
@@ -351,7 +346,7 @@ describe("CSSLayout", () => {
         const columnGapInput = element.shadowRoot?.querySelector(
             "input.css-column-gap"
         ) as HTMLInputElement;
-        columnGapInput.setAttribute("value", "5");
+        columnGapInput.value = "5";
 
         await DOM.nextUpdate();
 
