@@ -1,4 +1,4 @@
-import { fastSwitch } from "@microsoft/fast-components";
+import { fastSwitch, fastTooltip } from "@microsoft/fast-components";
 import { DOM } from "@microsoft/fast-element";
 import { DesignSystem } from "@microsoft/fast-foundation";
 import { expect } from "chai";
@@ -7,7 +7,7 @@ import { fastToolingCSSLayout } from ".";
 
 async function setup() {
     const { element, connect, disconnect } = await fixture(fastToolingCSSLayout(), {
-        designSystem: DesignSystem.getOrCreate().register(fastSwitch()),
+        designSystem: DesignSystem.getOrCreate().register(fastSwitch(), fastTooltip()),
     });
 
     return { element, connect, disconnect };
@@ -64,6 +64,35 @@ describe("CSSLayout", () => {
 
         await disconnect();
     });
+    it("should contain a tooltip for a flex-direction value that matches it's id attribute", async () => {
+        const { element, connect, disconnect } = await setup();
+        let css = "";
+
+        await connect();
+
+        const toggle = element.shadowRoot?.querySelector("fast-switch");
+        const toggleEvent = new Event("click", {} as MouseEventInit);
+
+        element.addEventListener("change", (e: any) => {
+            css = e.target.value;
+        });
+
+        toggle.dispatchEvent(toggleEvent);
+
+        await DOM.nextUpdate();
+
+        const input = element.shadowRoot?.querySelector(
+            "input[name='flex-direction']"
+        ) as HTMLInputElement;
+        const tooltip = element.shadowRoot?.querySelector(
+            "input[name='flex-direction'] + fast-tooltip"
+        );
+
+        expect(input.getAttribute("id")).to.equal(tooltip.getAttribute("anchor"));
+        expect(tooltip.textContent.trim()).to.equal("row");
+
+        await disconnect();
+    });
     it("should emit an updated flex-direction value when the flex-direction value is updated", async () => {
         const { element, connect, disconnect } = await setup();
         let css = "";
@@ -90,6 +119,35 @@ describe("CSSLayout", () => {
         await DOM.nextUpdate();
 
         expect(css).to.equal("display: flex; flex-direction: row;");
+
+        await disconnect();
+    });
+    it("should contain a tooltip for a justify-content value that matches it's id attribute", async () => {
+        const { element, connect, disconnect } = await setup();
+        let css = "";
+
+        await connect();
+
+        const toggle = element.shadowRoot?.querySelector("fast-switch");
+        const toggleEvent = new Event("click", {} as MouseEventInit);
+
+        element.addEventListener("change", (e: any) => {
+            css = e.target.value;
+        });
+
+        toggle.dispatchEvent(toggleEvent);
+
+        await DOM.nextUpdate();
+
+        const input = element.shadowRoot?.querySelector(
+            "input[name='justify-content']"
+        ) as HTMLInputElement;
+        const tooltip = element.shadowRoot?.querySelector(
+            "input[name='justify-content'] + fast-tooltip"
+        );
+
+        expect(input.getAttribute("id")).to.equal(tooltip.getAttribute("anchor"));
+        expect(tooltip.textContent.trim()).to.equal("flex-start");
 
         await disconnect();
     });
@@ -122,6 +180,35 @@ describe("CSSLayout", () => {
 
         await disconnect();
     });
+    it("should contain a tooltip for a align-content value that matches it's id attribute", async () => {
+        const { element, connect, disconnect } = await setup();
+        let css = "";
+
+        await connect();
+
+        const toggle = element.shadowRoot?.querySelector("fast-switch");
+        const toggleEvent = new Event("click", {} as MouseEventInit);
+
+        element.addEventListener("change", (e: any) => {
+            css = e.target.value;
+        });
+
+        toggle.dispatchEvent(toggleEvent);
+
+        await DOM.nextUpdate();
+
+        const input = element.shadowRoot?.querySelector(
+            "input[name='align-content']"
+        ) as HTMLInputElement;
+        const tooltip = element.shadowRoot?.querySelector(
+            "input[name='align-content'] + fast-tooltip"
+        );
+
+        expect(input.getAttribute("id")).to.equal(tooltip.getAttribute("anchor"));
+        expect(tooltip.textContent.trim()).to.equal("flex-start");
+
+        await disconnect();
+    });
     it("should emit an updated align-content value when the align-content value is updated", async () => {
         const { element, connect, disconnect } = await setup();
         let css = "";
@@ -148,6 +235,35 @@ describe("CSSLayout", () => {
         await DOM.nextUpdate();
 
         expect(css).to.equal("display: flex; align-content: flex-start;");
+
+        await disconnect();
+    });
+    it("should contain a tooltip for a align-items value that matches it's id attribute", async () => {
+        const { element, connect, disconnect } = await setup();
+        let css = "";
+
+        await connect();
+
+        const toggle = element.shadowRoot?.querySelector("fast-switch");
+        const toggleEvent = new Event("click", {} as MouseEventInit);
+
+        element.addEventListener("change", (e: any) => {
+            css = e.target.value;
+        });
+
+        toggle.dispatchEvent(toggleEvent);
+
+        await DOM.nextUpdate();
+
+        const input = element.shadowRoot?.querySelector(
+            "input[name='align-items']"
+        ) as HTMLInputElement;
+        const tooltip = element.shadowRoot?.querySelector(
+            "input[name='align-items'] + fast-tooltip"
+        );
+
+        expect(input.getAttribute("id")).to.equal(tooltip.getAttribute("anchor"));
+        expect(tooltip.textContent.trim()).to.equal("flex-start");
 
         await disconnect();
     });
@@ -245,6 +361,35 @@ describe("CSSLayout", () => {
         await DOM.nextUpdate();
 
         expect(css).to.equal("display: flex; column-gap: 5px;");
+
+        await disconnect();
+    });
+    it("should contain a tooltip for a flex-wrap value that matches it's id attribute", async () => {
+        const { element, connect, disconnect } = await setup();
+        let css = "";
+
+        await connect();
+
+        const toggle = element.shadowRoot?.querySelector("fast-switch");
+        const toggleEvent = new Event("click", {} as MouseEventInit);
+
+        element.addEventListener("change", (e: any) => {
+            css = e.target.value;
+        });
+
+        toggle.dispatchEvent(toggleEvent);
+
+        await DOM.nextUpdate();
+
+        const input = element.shadowRoot?.querySelector(
+            "input[name='flex-wrap']"
+        ) as HTMLInputElement;
+        const tooltip = element.shadowRoot?.querySelector(
+            "input[name='flex-wrap'] + fast-tooltip"
+        );
+
+        expect(input.getAttribute("id")).to.equal(tooltip.getAttribute("anchor"));
+        expect(tooltip.textContent.trim()).to.equal("wrap");
 
         await disconnect();
     });

@@ -18,11 +18,13 @@ function editableOverlay(
     value: string,
     handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void,
     handleInputBlur: (e: React.FocusEvent<HTMLInputElement>) => void,
-    handleInputKeyDown: (e: React.KeyboardEvent<HTMLInputElement>) => void
+    handleInputKeyDown: (e: React.KeyboardEvent<HTMLInputElement>) => void,
+    inputRef: React.RefObject<HTMLInputElement>
 ): React.ReactNode {
     return (
         <input
             className={className}
+            ref={inputRef}
             key={"overlay"}
             value={value}
             onChange={handleInputChange}
@@ -39,7 +41,7 @@ function treeItem(
     handleInputKeyDown: React.KeyboardEventHandler<HTMLInputElement>,
     handleExpandClick: React.MouseEventHandler<HTMLElement>,
     handleKeyDown: React.KeyboardEventHandler<HTMLElement>,
-    isEditable: boolean,
+    isEditing: boolean,
     isCollapsible: boolean,
     className: string,
     expandTriggerClassName: string,
@@ -48,15 +50,17 @@ function treeItem(
     text: string,
     dictionaryId: string,
     navigationConfigId: string,
+    inputRef: React.RefObject<HTMLInputElement>,
     ref?: (node: HTMLAnchorElement) => React.ReactElement<any>
 ): React.ReactElement {
-    const displayText: React.ReactNode = isEditable
+    const displayText: React.ReactNode = isEditing
         ? editableOverlay(
               displayTextInputClassName,
               text,
               handleInputChange,
               handleInputBlur,
-              handleInputKeyDown
+              handleInputKeyDown,
+              inputRef
           )
         : isCollapsible
         ? treeItemCollapsible(
@@ -140,7 +144,7 @@ export const NavigationTreeItem: React.FC<NavigationTreeItemProps> = ({
     expandTriggerClassName,
     contentClassName,
     displayTextInputClassName,
-    isEditable,
+    isEditing,
     isCollapsible,
     handleClick,
     handleInputChange,
@@ -150,6 +154,7 @@ export const NavigationTreeItem: React.FC<NavigationTreeItemProps> = ({
     handleKeyDown,
     dictionaryId,
     navigationConfigId,
+    inputRef,
 }: React.PropsWithChildren<NavigationTreeItemProps>): React.ReactElement => {
     return treeItem(
         handleClick,
@@ -158,7 +163,7 @@ export const NavigationTreeItem: React.FC<NavigationTreeItemProps> = ({
         handleInputKeyDown,
         handleExpandClick,
         handleKeyDown,
-        isEditable,
+        isEditing,
         isCollapsible,
         className,
         expandTriggerClassName,
@@ -166,7 +171,8 @@ export const NavigationTreeItem: React.FC<NavigationTreeItemProps> = ({
         displayTextInputClassName,
         text,
         dictionaryId,
-        navigationConfigId
+        navigationConfigId,
+        inputRef
     );
 };
 
@@ -184,7 +190,8 @@ export const DraggableNavigationTreeItem: React.FC<NavigationTreeItemProps> = ({
     contentClassName,
     displayTextInputClassName,
     isCollapsible,
-    isEditable,
+    isEditing,
+    inputRef,
     dragStart,
     dragEnd,
     dragHover,
@@ -276,7 +283,7 @@ export const DraggableNavigationTreeItem: React.FC<NavigationTreeItemProps> = ({
         handleInputKeyDown,
         handleExpandClick,
         handleKeyDown,
-        isEditable,
+        isEditing,
         isCollapsible,
         className,
         expandTriggerClassName,
@@ -285,6 +292,7 @@ export const DraggableNavigationTreeItem: React.FC<NavigationTreeItemProps> = ({
         text,
         dictionaryId,
         navigationConfigId,
+        inputRef,
         (node: HTMLSpanElement): React.ReactElement => {
             ref = node;
             return refNode(node);
