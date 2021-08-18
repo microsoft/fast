@@ -275,7 +275,8 @@ export class Calendar extends FoundationElement {
     getMonthInfo(month?: number, year?: number): CalendarInfo;
     // (undocumented)
     getWeekdayText(): any[];
-    handleDateSelect(day: CalendarDateInfo): void;
+    handleDateSelect(event: Event, day: CalendarDateInfo): void;
+    handleKeydown(event: KeyboardEvent, date: CalendarDateInfo): boolean;
     // @internal
     isRTL(locale?: string): boolean;
     locale: string;

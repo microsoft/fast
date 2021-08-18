@@ -4,6 +4,7 @@ import {
     nullableNumberConverter,
     observable,
 } from "@microsoft/fast-element";
+import { keyEnter } from "@microsoft/fast-web-utilities";
 import { FoundationElement } from "../foundation-element";
 import type { DayFormat, MonthFormat, WeekdayFormat, YearFormat } from "./date-formatter";
 import { DateFormatter } from "./date-formatter";
@@ -318,7 +319,21 @@ export class Calendar extends FoundationElement {
      * @param date - Date cell
      * @public
      */
-    public handleDateSelect(day: CalendarDateInfo): void {
+    public handleDateSelect(event: Event, day: CalendarDateInfo): void {
+        event.preventDefault;
         (this as FASTElement).$emit("dateselected", day);
+    }
+
+    /**
+     * Handles keyboard events on a cell
+     * @param event - Keyboard event
+     * @param date - Date of the cell selected
+     */
+    public handleKeydown(event: KeyboardEvent, date: CalendarDateInfo): boolean {
+        if (event.key === keyEnter) {
+            this.handleDateSelect(event, date);
+        }
+
+        return true;
     }
 }

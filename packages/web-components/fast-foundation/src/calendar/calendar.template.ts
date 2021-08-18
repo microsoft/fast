@@ -1,12 +1,10 @@
 import { ExecutionContext, html, repeat } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
 import { endTemplate, startTemplate } from "../patterns/start-end";
-import { DataGrid } from "../data-grid/data-grid";
-import { DataGridRow } from "../data-grid/data-grid-row";
+import { DataGrid, DataGridCell, DataGridRow } from "../data-grid";
 import type { FoundationElementDefinition } from "../foundation-element";
 import type { ElementDefinitionContext } from "../design-system";
 import type { Calendar, CalendarDateInfo } from "./calendar";
-import { CalendarCell } from "./calendar-cell";
 
 /**
  * A basic Calendar title template that includes the month and year
@@ -38,7 +36,7 @@ export const calendarTitleTemplate: ViewTemplate<Calendar> = html`
  * @public
  */
 export const calendarWeekdayTemplate: (context) => ViewTemplate = context => {
-    const cellTag = context.tagFor(CalendarCell);
+    const cellTag = context.tagFor(DataGridCell);
     return html`
         <${cellTag}
             class="week-day"
@@ -66,7 +64,7 @@ export const calendarCellTemplate: (
     context: ElementDefinitionContext,
     todayString: string
 ) => {
-    const cellTag: string = context.tagFor(CalendarCell);
+    const cellTag: string = context.tagFor(DataGridCell);
     return html`
         <${cellTag}
             class="${(x, c) => c.parentContext.parent.getDayClassNames(x, todayString)}"
@@ -77,7 +75,8 @@ export const calendarCellTemplate: (
             month="${x => x.month}"
             year="${x => x.year}"
             grid-column="${(x, c) => c.index + 1}"
-            @click="${(x, c) => c.parentContext.parent.handleDateSelect(x)}"
+            @click="${(x, c) => c.parentContext.parent.handleDateSelect(c.event, x)}"
+            @keydown="${(x, c) => c.parentContext.parent.handleKeydown(c.event, x)}"
             aria-label="${(x, c) =>
                 c.parentContext.parent.dateFormatter.getDate(
                     `${x.month}-${x.day}-${x.year}`,

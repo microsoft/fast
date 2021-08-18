@@ -28,10 +28,15 @@
         text-align: center;
     }
 
+    .borders::part(week-day) {
+        border-radius: 0;
+    }
+
     .borders::part(day) {
         background: #222;
         transition: all 0.5s linear;
         text-align: left;
+        border-radius: 0;
     }
 
     .borders::part(day):hover {
@@ -73,8 +78,8 @@
     .borders2::part(date),
     .borders2::part(today) {
         text-align: center;
-        width: 50px;
-        height: 50px;
+        width: 46px;
+        height: 46px;
         line-height: 50px;
         text-align: center;
         background: #333;
@@ -108,6 +113,11 @@
     .borders3::part(week-day) {
         background: #080;
         border: 0;
+        border-radius: 0;
+    }
+
+    .borders3::part(day) {
+        border-radius: 0;
     }
 
     .borders3::part(date),
@@ -133,6 +143,7 @@
 
     .borders4 {
         width: 560px;
+        --cell-height: 60px;
         --current-day-color: #fff;
         color: aqua;
         position: relative;
@@ -356,7 +367,7 @@
             output.innerHTML = `${month}-${day}-${year} was selected`;
             setTimeout(() => (output.className = "loaded"), 1);
         };
-        calendarSelect.addEventListener("date-select", dateSelect);
+        calendarSelect.addEventListener("dateselected", dateSelect);
     }
 </script>
 
