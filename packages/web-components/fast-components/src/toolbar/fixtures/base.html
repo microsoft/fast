@@ -13,6 +13,8 @@
 <h2>Default</h2>
 <fast-toolbar>
     <button>Button</button>
+    <button slot="end">End Slot Button</button>
+    <button slot="start">Start Slot Button</button>
     <select>
         <option>Option 1</option>
         <option>Second option</option>
@@ -61,6 +63,8 @@
     <button>One</button>
     <button>Two</button>
     <button>Three</button>
+    <button slot="end">End Slot Button</button>
+    <button slot="start">Start Slot Button</button>
 </fast-toolbar>
 
 <h2>FAST components</h2>
@@ -93,6 +97,30 @@
         <fast-option>Option 3</fast-option>
     </fast-select>
     <fast-checkbox>Checkbox</fast-checkbox>
+    <fast-radio-group slot="end">
+        <fast-radio value="filter">Filter</fast-radio>
+        <fast-radio value="search">
+            <fast-text-field placeholder="Search"></fast-text-field>
+        </fast-radio>
+    </fast-radio-group>
+    <svg slot="end"><use href="#icon" /></svg>
+</fast-toolbar>
+<h2>Fast Components w/ Width</h2>
+<fast-toolbar id="toolbar-fast-components" style="width: 800px;">
+    <fast-button>Button</fast-button>
+    <fast-radio-group>
+        <fast-radio checked>One</fast-radio>
+        <fast-radio>Two</fast-radio>
+        <fast-radio>Three</fast-radio>
+    </fast-radio-group>
+    <fast-button>Button</fast-button>
+    <fast-radio-group slot="end">
+        <fast-radio value="filter">Filter</fast-radio>
+        <fast-radio value="search">
+            <fast-text-field placeholder="Search"></fast-text-field>
+        </fast-radio>
+    </fast-radio-group>
+    <svg slot="end"><use href="#icon" /></svg>
 </fast-toolbar>
 
 <h2>Disabled Elements</h2>
@@ -155,9 +183,13 @@
 <fast-toolbar id="toolbar-start-end-slots">
     <svg slot="start"><use href="#icon" /></svg>
     <svg slot="end"><use href="#icon" /></svg>
+    <button slot="end">End Slot Button</button>
+    <button slot="start">Start Slot Button</button>
 </fast-toolbar>
 
 <fast-toolbar id="toolbar-start-end-slots-vertical" orientation="vertical">
     <svg slot="start"><use href="#icon" /></svg>
     <svg slot="end"><use href="#icon" /></svg>
+    <button slot="end">End Slot Button</button>
+    <button slot="start">Start Slot Button</button>
 </fast-toolbar>

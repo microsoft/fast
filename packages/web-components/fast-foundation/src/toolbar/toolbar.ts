@@ -97,18 +97,9 @@ export class Toolbar extends FoundationElement {
      */
     @observable
     public slottedItems: HTMLElement[];
-
-    /**
-     * Prepare the slotted elements which can be focusable.
-     *
-     * @param prev - The previous list of slotted elements.
-     * @param next - The new list of slotted elements.
-     * @internal
-     */
-    protected slottedItemsChanged(prev: unknown, next: HTMLElement[]): void {
+    protected slottedItemsChanged(): void {
         if (this.$fastController.isConnected) {
-            this.focusableElements = next.reduce(Toolbar.reduceFocusableItems, []);
-            this.setFocusableElements();
+            this.reduceFocusableElements();
         }
     }
 
@@ -196,6 +187,31 @@ export class Toolbar extends FoundationElement {
         this.setFocusedElement(nextIndex);
 
         return true;
+    }
+
+    /**
+     * get all the slotted elements
+     * @internal
+     */
+    protected get allSlottedItems(): (HTMLElement | Node)[] {
+        return [
+            ...this.start.assignedElements(),
+            ...this.slottedItems,
+            ...this.end.assignedElements(),
+        ];
+    }
+
+    /**
+     * Prepare the slotted elements which can be focusable.
+     *
+     * @internal
+     */
+    protected reduceFocusableElements(): void {
+        this.focusableElements = this.allSlottedItems.reduce(
+            Toolbar.reduceFocusableItems,
+            []
+        );
+        this.setFocusableElements();
     }
 
     /**

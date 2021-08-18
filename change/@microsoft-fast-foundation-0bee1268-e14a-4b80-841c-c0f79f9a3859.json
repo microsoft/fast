@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "add reducefocusableElements and all slotted items to keyboard interaction",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "sethdonohue@Admins-MBP.guest.corp.microsoft.com",
+  "dependentChangeType": "patch"
+}
