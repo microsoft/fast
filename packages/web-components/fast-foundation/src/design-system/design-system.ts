@@ -108,7 +108,7 @@ export interface DesignSystemRegistrationContext {
 
     /**
      * Used to attempt to define a custom element.
-     * @param ctx - The definition context.
+     * @param ctx - The custom element definition.
      * @public
      */
     tryDefineElement(ctx: ElementDefinitionParams);
