@@ -101,7 +101,7 @@ fast-design-system-provider {
 `;
 
 export default {
-    title: "Anchored Region",
+    title: "Components/Anchored Region",
     decorators: [
         Story => `
             <style>${providerStyles}</style>

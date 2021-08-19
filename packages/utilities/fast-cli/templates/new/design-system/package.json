@@ -41,6 +41,7 @@
   },
   "devDependencies": {
     "@storybook/addons": "^6.1.17",
+    "@storybook/addon-essentials": "^6.3.7",
     "@storybook/html": "^6.1.17",
     "@storybook/theming": "^6.1.17",
     "@types/chai": "^4.2.11",
