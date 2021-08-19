@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Thu, 12 Aug 2021 07:16:50 GMT and should not be manually modified.
+This log was last generated on Thu, 19 Aug 2021 07:15:21 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.6.5
+
+Thu, 19 Aug 2021 07:15:21 GMT
+
+### Patches
+
+- add reducefocusableElements and all slotted items to keyboard interaction (sethdonohue@Admins-MBP.guest.corp.microsoft.com)
 
 ## 2.6.4
 
