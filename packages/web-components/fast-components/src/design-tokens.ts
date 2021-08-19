@@ -5,6 +5,7 @@ import { Swatch } from "./color/swatch";
 import { accentFill as accentFillAlgorithm } from "./color/recipes/accent-fill";
 import { accentForeground as accentForegroundAlgorithm } from "./color/recipes/accent-foreground";
 import { foregroundOnAccent as foregroundOnAccentAlgorithm } from "./color/recipes/foreground-on-accent";
+import { gradientShadowStroke as gradientShadowStrokeAlgorithm } from "./color/recipes/gradient-shadow-stroke";
 import { neutralFill as neutralFillAlgorithm } from "./color/recipes/neutral-fill";
 import { neutralFillInput as neutralFillInputAlgorithm } from "./color/recipes/neutral-fill-input";
 import { neutralFillLayer as neutralFillLayerAlgorithm } from "./color/recipes/neutral-fill-layer";
@@ -38,6 +39,12 @@ export type ColorRecipe = Recipe<Swatch>;
 
 /** @public */
 export type InteractiveColorRecipe = Recipe<InteractiveSwatchSet>;
+
+/** @public */
+export type InteractiveSet = Record<"rest" | "hover" | "active" | "focus", string>;
+
+/** @public */
+export type InteractiveRecipe = Recipe<InteractiveSet>;
 
 const { create } = DesignToken;
 
@@ -822,6 +829,65 @@ export const neutralFillLayerRest = create<Swatch>(
     "neutral-fill-layer-rest"
 ).withDefault((element: HTMLElement) =>
     neutralFillLayerRecipe.getValueFor(element).evaluate(element)
+);
+
+// Stroke Control Accent
+/** @public */
+export const strokeControlAccentRecipe = create<InteractiveRecipe>({
+    name: "stroke-control-accent-recipe",
+    cssCustomPropertyName: null,
+}).withDefault({
+    evaluate: (
+        element: HTMLElement,
+        reference?: Swatch
+    ): Record<"rest" | "hover" | "active" | "focus", string> => {
+        return gradientShadowStrokeAlgorithm(
+            accentPalette.getValueFor(element),
+            reference || fillColor.getValueFor(element),
+            -2,
+            -2,
+            -2,
+            -2,
+            4
+        );
+    },
+});
+
+/** @public */
+export const strokeControlAccentRest = create<string>(
+    "stroke-control-accent-rest"
+).withDefault(
+    (element: HTMLElement) =>
+        strokeControlAccentRecipe
+            .getValueFor(element)
+            .evaluate(element, accentFillRest.getValueFor(element)).rest
+);
+/** @public */
+export const strokeControlAccentHover = create<string>(
+    "stroke-control-accent-hover"
+).withDefault(
+    (element: HTMLElement) =>
+        strokeControlAccentRecipe
+            .getValueFor(element)
+            .evaluate(element, accentFillActive.getValueFor(element)).hover
+);
+/** @public */
+export const strokeControlAccentActive = create<string>(
+    "stroke-control-accent-active"
+).withDefault(
+    (element: HTMLElement) =>
+        strokeControlAccentRecipe
+            .getValueFor(element)
+            .evaluate(element, accentFillHover.getValueFor(element)).active
+);
+/** @public */
+export const strokeControlAccentFocus = create<string>(
+    "stroke-control-accent-focus"
+).withDefault(
+    (element: HTMLElement) =>
+        strokeControlAccentRecipe
+            .getValueFor(element)
+            .evaluate(element, accentFillFocus.getValueFor(element)).focus
 );
 
 // Focus Stroke Outer
