@@ -1,6 +1,6 @@
 import React from "react";
 import styles, { CSSControlClassNameContract } from "./control.css.style";
-import { CSSControlProps, CSSControlState } from "./control.css.props";
+import { CSSControlProps } from "./control.css.props";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 import { classNames } from "@microsoft/fast-web-utilities";
@@ -10,6 +10,7 @@ import {
 } from "@microsoft/fast-tooling/dist/esm/data-utilities/mapping.mdn-data";
 import { CSSRef } from "./control.css-ref";
 import { CSSStandardControlPlugin } from "./css";
+import { memoize } from "lodash-es";
 
 /**
  * This is currently experimental, any use of the CSS control must include the following
@@ -42,12 +43,18 @@ import { CSSStandardControlPlugin } from "./css";
  */
 class CSSControl extends React.Component<
     CSSControlProps & ManagedClasses<CSSControlClassNameContract>,
-    CSSControlState
+    {}
 > {
+    private memoizeMappedStyleToCSSPropertyDictionary: (
+        value: string
+    ) => { [key: string]: string };
+
     constructor(props: CSSControlProps & ManagedClasses<CSSControlClassNameContract>) {
         super(props);
 
-        this.state = mapCSSInlineStyleToCSSPropertyDictionary(this.props.value);
+        this.memoizeMappedStyleToCSSPropertyDictionary = memoize(
+            mapCSSInlineStyleToCSSPropertyDictionary
+        );
     }
 
     public render(): React.ReactNode {
@@ -71,8 +78,11 @@ class CSSControl extends React.Component<
                 (cssControl: CSSStandardControlPlugin): void => {
                     cssControl.updateProps({
                         css: {
-                            ...this.state,
+                            ...this.memoizeMappedStyleToCSSPropertyDictionary(
+                                this.props.value || ""
+                            ),
                         },
+                        value: this.props.value,
                         onChange: this.handleMultiplePropertyOnChange,
                     });
 
@@ -94,7 +104,9 @@ class CSSControl extends React.Component<
                     return this.renderCSSProperty(
                         cssProperty,
                         cssPropertyName,
-                        this.state[cssPropertyName] || ""
+                        this.memoizeMappedStyleToCSSPropertyDictionary(this.props.value)[
+                            cssPropertyName
+                        ] || ""
                     );
                 }
             ),
@@ -126,35 +138,32 @@ class CSSControl extends React.Component<
     }
 
     private handleMultiplePropertyOnChange = (css: { [key: string]: string }): void => {
-        this.setState(
-            {
-                ...css,
-            },
-            this.resolveCSS
-        );
+        this.resolveCSS(css);
     };
 
     private handleOnChange = (propertyName: string): ((value: string) => void) => {
         return (value: string): void => {
-            this.setState(
-                {
-                    [propertyName]: value,
-                },
-                this.resolveCSS
-            );
+            this.resolveCSS({
+                [propertyName]: value,
+            });
         };
     };
 
-    private resolveCSS = (): void => {
+    private resolveCSS = (css: { [key: string]: string }): void => {
+        const cssDictionary = {
+            ...this.memoizeMappedStyleToCSSPropertyDictionary(this.props.value),
+            ...css,
+        };
+
         this.props.onChange({
             value:
-                `${Object.keys(this.state)
+                `${Object.keys(cssDictionary)
                     .reduce((previousValue: string, propertyName: string) => {
-                        if (!this.state[propertyName]) {
+                        if (!cssDictionary[propertyName]) {
                             return previousValue;
                         }
 
-                        return `${previousValue} ${propertyName}: ${this.state[propertyName]};`;
+                        return `${previousValue} ${propertyName}: ${cssDictionary[propertyName]};`;
                     }, "")
                     .trim()}` || undefined,
         });

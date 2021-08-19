@@ -11,6 +11,11 @@ export interface CSSControlConfig {
      * A call back used to update the css
      */
     onChange: (css: { [key: string]: string }) => void;
+
+    /**
+     * The value
+     */
+    value: string;
 }
 
 /**

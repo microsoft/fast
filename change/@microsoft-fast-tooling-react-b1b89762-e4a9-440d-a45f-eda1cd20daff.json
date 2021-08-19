@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "fixes an issue where the CSS layout would not update when style was updated in the Monaco Editor",
+  "packageName": "@microsoft/fast-tooling-react",
+  "email": "7559015+janechu@users.noreply.github.com",
+  "dependentChangeType": "patch"
+}

@@ -13,10 +13,3 @@ export interface CSSControlProps extends ControlConfig {
      */
     cssControls?: CSSStandardControlPlugin[];
 }
-
-export interface CSSControlState {
-    /**
-     * Each key represents a property name and the string as the property value
-     */
-    [key: string]: string;
-}

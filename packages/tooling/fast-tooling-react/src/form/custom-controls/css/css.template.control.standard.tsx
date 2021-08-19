@@ -25,6 +25,7 @@ export default class CSSStandardControlTemplate extends React.Component<
         return {
             css: this.props.css,
             onChange: this.props.onChange,
+            value: this.props.value,
         };
     }
 }

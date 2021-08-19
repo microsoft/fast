@@ -82,6 +82,7 @@
 
             cssLayoutControlElement.addEventListener("change", e => {
                 customStyleElement.innerText = ".content { " + e.target.value + " }";
+                cssLayoutControlElement.setAttribute("value", e.target.value);
             });
         </script>
     </body>
