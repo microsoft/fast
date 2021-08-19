@@ -19539,7 +19539,7 @@ selenium-webdriver@^3.6.0:
   resolved "https://registry.yarnpkg.com/selenium-webdriver/-/selenium-webdriver-3.6.0.tgz#2ba87a1662c020b8988c981ae62cb2a01298eafc"
   integrity sha512-WH7Aldse+2P5bbFBO4Gle/nuQOdVwpHMTL6raL3uuBj/vPG07k6uzt3aiahu352ONBr5xXh0hDlM3LhtXPOC4Q==
   dependencies:
-    jszip "^3.1"
+    jszip "^3.5.0"
     rimraf "^2.5.4"
     tmp "0.0.30"
     xml2js "^0.4.17"
