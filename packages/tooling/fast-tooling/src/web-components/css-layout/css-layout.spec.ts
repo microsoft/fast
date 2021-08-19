@@ -120,16 +120,11 @@ describe("CSSLayout", () => {
     });
     it("should contain a tooltip for a justify-content value that matches it's id attribute", async () => {
         const { element, connect, disconnect } = await setup();
-        let css = "";
 
         await connect();
 
         const toggle = element.shadowRoot?.querySelector("fast-switch");
         const toggleEvent = new Event("click", {} as MouseEventInit);
-
-        element.addEventListener("change", (e: any) => {
-            css = e.target.value;
-        });
 
         toggle.dispatchEvent(toggleEvent);
 
@@ -178,16 +173,11 @@ describe("CSSLayout", () => {
     });
     it("should contain a tooltip for a align-content value that matches it's id attribute", async () => {
         const { element, connect, disconnect } = await setup();
-        let css = "";
 
         await connect();
 
         const toggle = element.shadowRoot?.querySelector("fast-switch");
         const toggleEvent = new Event("click", {} as MouseEventInit);
-
-        element.addEventListener("change", (e: any) => {
-            css = e.target.value;
-        });
 
         toggle.dispatchEvent(toggleEvent);
 
@@ -236,16 +226,11 @@ describe("CSSLayout", () => {
     });
     it("should contain a tooltip for a align-items value that matches it's id attribute", async () => {
         const { element, connect, disconnect } = await setup();
-        let css = "";
 
         await connect();
 
         const toggle = element.shadowRoot?.querySelector("fast-switch");
         const toggleEvent = new Event("click", {} as MouseEventInit);
-
-        element.addEventListener("change", (e: any) => {
-            css = e.target.value;
-        });
 
         toggle.dispatchEvent(toggleEvent);
 
@@ -362,16 +347,11 @@ describe("CSSLayout", () => {
     });
     it("should contain a tooltip for a flex-wrap value that matches it's id attribute", async () => {
         const { element, connect, disconnect } = await setup();
-        let css = "";
 
         await connect();
 
         const toggle = element.shadowRoot?.querySelector("fast-switch");
         const toggleEvent = new Event("click", {} as MouseEventInit);
-
-        element.addEventListener("change", (e: any) => {
-            css = e.target.value;
-        });
 
         toggle.dispatchEvent(toggleEvent);
 
