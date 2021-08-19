@@ -2,6 +2,66 @@
   "name": "@microsoft/fast-website",
   "entries": [
     {
+      "date": "Thu, 19 Aug 2021 07:15:21 GMT",
+      "tag": "@microsoft/fast-website_v1.3.16",
+      "version": "1.3.16",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/site-utilities to v0.9.0",
+            "author": "sethdonohue@Admins-MBP.guest.corp.microsoft.com",
+            "commit": "4a4e2c16987aa015c3f90adbe400f09a0d4c2563",
+            "package": "@microsoft/fast-website"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 18 Aug 2021 07:16:21 GMT",
+      "tag": "@microsoft/fast-website_v1.3.16",
+      "version": "1.3.16",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/site-utilities to v0.9.0",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "79f62ae08fd5db598272ca907ba03c4afa81a49f",
+            "package": "@microsoft/fast-website"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 17 Aug 2021 07:14:05 GMT",
+      "tag": "@microsoft/fast-website_v1.3.16",
+      "version": "1.3.16",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/site-utilities to v0.9.0",
+            "author": "44823142+williamw2@users.noreply.github.com",
+            "commit": "9bb3f1855d79777c96d69f156878a8873924f02b",
+            "package": "@microsoft/fast-website"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sun, 15 Aug 2021 07:17:25 GMT",
+      "tag": "@microsoft/fast-website_v1.3.16",
+      "version": "1.3.16",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/site-utilities to v0.9.0",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "820962bf53e3ddcc62b22e011878bb8ff728e223",
+            "package": "@microsoft/fast-website"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 12 Aug 2021 07:16:50 GMT",
       "tag": "@microsoft/fast-website_v1.3.16",
       "version": "1.3.16",

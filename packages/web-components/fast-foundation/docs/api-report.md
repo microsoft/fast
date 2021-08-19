@@ -2023,6 +2023,8 @@ export class Toolbar extends FoundationElement {
     get activeIndex(): number;
     set activeIndex(value: number);
     // @internal
+    protected get allSlottedItems(): (HTMLElement | Node)[];
+    // @internal
     clickHandler(e: MouseEvent): boolean | void;
     // @internal (undocumented)
     connectedCallback(): void;
@@ -2034,9 +2036,11 @@ export class Toolbar extends FoundationElement {
     keydownHandler(e: KeyboardEvent): boolean | void;
     orientation: Orientation;
     // @internal
-    slottedItems: HTMLElement[];
+    protected reduceFocusableElements(): void;
     // @internal
-    protected slottedItemsChanged(prev: unknown, next: HTMLElement[]): void;
+    slottedItems: HTMLElement[];
+    // (undocumented)
+    protected slottedItemsChanged(): void;
     // @internal
     slottedLabel: HTMLElement[];
 }

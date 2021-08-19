@@ -1,4 +1,4 @@
-import { observable } from "@microsoft/fast-element";
+import { attr, observable } from "@microsoft/fast-element";
 import { dataSetName } from "../../message-system/message-system.utilities";
 import {
     ActivityType,
@@ -20,6 +20,16 @@ declare global {
 }
 
 export class HTMLRenderLayerNavigation extends HTMLRenderLayer {
+    /**
+     * Specifies a query selector string for choosing the element to attach
+     * the resize observer to. Defaults to document.body if not supplied.
+     * document.querySelector is used to find the element so the resizeobserverselector
+     * should be specific enough to return only one element, otherwise only the first match
+     * will be used.
+     */
+    @attr
+    public resizeobserverselector: string;
+
     public layerActivityId: string = "NavLayer";
 
     @observable
@@ -59,7 +69,13 @@ export class HTMLRenderLayerNavigation extends HTMLRenderLayer {
             this.handleWindowChange
         );
 
-        this.resizeDetector.observe(document.body);
+        this.resizeDetector.observe(
+            (this.resizeobserverselector
+                ? (this.getRootNode() as Element).querySelector(
+                      this.resizeobserverselector
+                  )
+                : null) ?? document.body
+        );
 
         window.addEventListener("scroll", this.handleWindowChange);
         window.addEventListener("resize", this.handleWindowChange);
