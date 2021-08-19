@@ -1,7 +1,8 @@
 import { customElement, DOM, html } from "@microsoft/fast-element";
 import { expect } from "chai";
 import { fixture } from "../test-utilities/fixture";
-import { Calendar, calendarTemplate, DateFormatter } from "./index";
+import { Calendar, calendarTemplate } from "./index";
+import { DateFormatter } from "./date-formatter";
 import { 
     dataGridTemplate, 
     DataGrid,
@@ -443,8 +444,6 @@ describe("Calendar", () => {
         it("Should not be RTL for languages that are not Arabic or Hebrew", async () => {
             const { element, disconnect } = await setup({month: 8, year: 2021, locale: 'en-US'});
 
-            expect((element as Calendar).isRTL()).to.equal(false);
- 
             const dates = element.shadowRoot?.querySelectorAll(".date");
             const dateStrings = dates ? Array.from(dates).map(date => date.innerHTML.trim()) : [];
             expect(parseInt(dateStrings[0]) < parseInt(dateStrings[1])).to.equal(true);
@@ -454,8 +453,6 @@ describe("Calendar", () => {
 
         it("Should be RTL for Arabic language", async () => {
             const { element, disconnect } = await setup({month: 8, year: 2021, locale: 'ar-XE-u-ca-islamic-nu-arab'});
-
-            expect((element as Calendar).isRTL()).to.equal(true);
 
             const dates = element.shadowRoot?.querySelectorAll(".date");
             const dateStrings = dates ? Array.from(dates).map(date => date.innerHTML.trim()) : [];

@@ -1,4 +1,4 @@
-import { ExecutionContext, html, repeat } from "@microsoft/fast-element";
+import { html, repeat } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
 import { endTemplate, startTemplate } from "../patterns/start-end";
 import { DataGrid, DataGridCell, DataGridRow } from "../data-grid";

@@ -50,8 +50,8 @@ export type CalendarDateInfo = {
 export class Calendar extends FoundationElement {
     /**
      * date formatter utitlity for getting localized strings
+     * @public
      */
-    @observable
     public dateFormatter: DateFormatter = new DateFormatter();
 
     /**
@@ -146,14 +146,6 @@ export class Calendar extends FoundationElement {
      * @internal
      */
     private oneDayInMs: number = 86400000;
-
-    /**
-     * An evaluation of whether or not the calendar is rendered as RTL
-     * @internal
-     */
-    public isRTL(locale: string = this.locale): boolean {
-        return locale.trim().match(/\b(he|ar)-/i) !== null;
-    }
 
     /**
      * Gets data needed to render about a calendar month as well as the previous and next months
@@ -294,7 +286,7 @@ export class Calendar extends FoundationElement {
     }
 
     /**
-     *
+     * Returns a list of weekday labels
      * @returns An array of weekday text and full text if abbreviated
      * @public
      */
