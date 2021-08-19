@@ -1,13 +1,16 @@
 import {
+    accentPalette,
     baseLayerLuminance,
     controlCornerRadius,
     disabledOpacity,
     fillColor,
     focusStrokeWidth,
     neutralForegroundRest,
+    PaletteRGB,
     strokeWidth,
     SwatchRGB,
 } from "@fluentui/web-components";
+import { parseColorHexRGB } from "@microsoft/fast-colors";
 
 export function setupFluentUIComponentDesignSystem(
     element: HTMLElement,
@@ -446,6 +449,18 @@ export function mapFluentUIComponentsDesignSystem(
             case "base-layer-luminance":
                 baseLayerLuminance.setValueFor(element, value);
                 break;
+            case "accent-base-color": {
+                const base = parseColorHexRGB(value);
+
+                if (base) {
+                    accentPalette.setValueFor(
+                        element,
+                        PaletteRGB.create(SwatchRGB.create(base.r, base.g, base.b))
+                    );
+                }
+
+                break;
+            }
             case "control-corner-radius":
                 controlCornerRadius.setValueFor(element, value);
                 break;

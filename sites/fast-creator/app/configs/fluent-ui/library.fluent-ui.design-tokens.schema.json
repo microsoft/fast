@@ -4,7 +4,15 @@
     "description": "The Fluent UI Design Tokens definition.",
     "type": "object",
     "id": "fluentUIDesignTokens",
+    "$id": "fluentUIDesignTokens",
     "properties": {
+        "accent-base-color": {
+            "formControlId": "accent-base-color",
+            "title": "Accent base color",
+            "description": "The accent palette base color",
+            "type": "string",
+            "default": "#0078d4"
+        },
         "fill-color": {
             "formControlId": "fill-color",
             "title": "Fill color",
