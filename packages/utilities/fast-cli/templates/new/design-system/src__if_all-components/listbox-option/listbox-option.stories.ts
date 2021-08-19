@@ -1,8 +1,5 @@
-import { /* @echo namespace */ Option } from "./index";
-
 export default {
     title: "Components/Listbox Option",
-    component: /* @echo namespace */ Option,
     argTypes: {
         disabled: {
             control: { type: "boolean" },

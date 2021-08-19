@@ -1,8 +1,5 @@
-import { /* @echo namespace */ Listbox } from "./index";
-
 export default {
     title: "Components/Listbox",
-    component: /* @echo namespace */ Listbox,
 };
 
 const listBoxTemplate = () => `

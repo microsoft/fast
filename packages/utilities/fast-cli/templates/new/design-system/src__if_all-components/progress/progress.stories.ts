@@ -1,8 +1,5 @@
-import { /* @echo namespace */ Progress } from "./index";
-
 export default {
     title: "Components/Progress",
-    component: /* @echo namespace */ Progress,
     argTypes: {
         paused: {
             control: { type: "boolean" },

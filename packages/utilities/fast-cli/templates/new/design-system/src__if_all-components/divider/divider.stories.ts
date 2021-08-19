@@ -1,8 +1,5 @@
-import { /* @echo namespace */ Divider } from "./index";
-
 export default {
     title: "Components/Divider",
-    component: /* @echo namespace */ Divider,
 };
 
 const DividerTemplate = () =>

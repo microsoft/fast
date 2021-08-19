@@ -1,8 +1,5 @@
-import { /* @echo namespace */ MenuItem } from "./index";
-
 export default {
     title: "Components/Menu Item",
-    component: /* @echo namespace */ MenuItem,
     argTypes: {
         checked: {
             control: { type: "boolean" },

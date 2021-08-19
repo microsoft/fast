@@ -1,8 +1,5 @@
-import { /* @echo namespace */ Flipper } from "./index";
-
 export default {
     title: "Components/Flipper",
-    component: /* @echo namespace */ Flipper,
     argTypes: {
         direction: {
             options: ["previous", "next"],

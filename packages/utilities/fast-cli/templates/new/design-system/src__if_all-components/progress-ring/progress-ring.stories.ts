@@ -1,8 +1,5 @@
-import { /* @echo namespace */ ProgressRing } from "./index";
-
 export default {
     title: "Components/Progress Ring",
-    component: /* @echo namespace */ ProgressRing,
     argTypes: {
         paused: {
             control: { type: "boolean" },

@@ -1,8 +1,5 @@
-import { /* @echo namespace */ Menu } from "./index";
-
 export default {
     title: "Components/Menu",
-    component: /* @echo namespace */ Menu,
 };
 
 const MenuTemplate = () => `
