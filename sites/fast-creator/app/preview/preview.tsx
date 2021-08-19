@@ -152,11 +152,8 @@ class Preview extends Foundation<{}, {}, PreviewState> {
                 (this.state.designSystemDataDictionary[0][designTokensLinkedDataId]
                     .data as any)
             ) {
-                mapFASTComponentsDesignSystem(
-                    document.body,
-                    this.state.designSystemDataDictionary[0][designTokensLinkedDataId]
-                        .data as any
-                );
+                // TODO: investigate the use of multiple design systems
+                // or determine how to register namespaced design tokens
                 mapFluentUIComponentsDesignSystem(
                     document.body,
                     this.state.designSystemDataDictionary[0][designTokensLinkedDataId]

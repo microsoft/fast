@@ -1,4 +1,5 @@
 import { observable } from "@microsoft/fast-element";
+import { keyCodeSpace } from "@microsoft/fast-web-utilities";
 import { mapCSSInlineStyleToCSSPropertyDictionary } from "../../data-utilities/mapping.mdn-data";
 import { fastToolingPrefix } from "../utilities";
 import { FormAssociatedCSSLayout } from "./css-layout.form-associated";
@@ -112,8 +113,6 @@ export class CSSLayout extends FormAssociatedCSSLayout {
     public flexWrapName: string = "flex-wrap";
 
     public valueChanged(previous: string, next: string) {
-        super.valueChanged(previous, next);
-
         const cssPropertyDictionary = mapCSSInlineStyleToCSSPropertyDictionary(next);
 
         this.flexEnabled = cssPropertyDictionary["display"] === "flex";
@@ -126,6 +125,8 @@ export class CSSLayout extends FormAssociatedCSSLayout {
         );
         this.rowGapValue = this.resolvePxValue(cssPropertyDictionary[this.rowGapName]);
         this.flexWrapValue = cssPropertyDictionary[this.flexWrapName] || "";
+
+        super.valueChanged(previous, next);
     }
 
     /**
@@ -138,6 +139,32 @@ export class CSSLayout extends FormAssociatedCSSLayout {
         [key: string]: string;
         /* eslint-disable-next-line @typescript-eslint/no-empty-function */
     }): void => {};
+
+    /**
+     * Handles the css-layout controls being enabled by pressing space
+     * @internal
+     */
+    public handleKeypressCSSChange = (
+        observablePropertyName: ObservableFlexboxCSSPropertyName,
+        e: KeyboardEvent
+    ): void => {
+        switch (e.keyCode) {
+            case keyCodeSpace:
+                this.handleCSSChange(observablePropertyName, e);
+                break;
+        }
+    };
+
+    /**
+     * Handles the css-layout controls being enabled by click
+     * @internal
+     */
+    public handleClickCSSChange = (
+        observablePropertyName: ObservableFlexboxCSSPropertyName,
+        e: MouseEvent
+    ): void => {
+        this.handleCSSChange(observablePropertyName, e);
+    };
 
     /**
      * The change event handler for the css-layout controls
@@ -158,16 +185,31 @@ export class CSSLayout extends FormAssociatedCSSLayout {
             this[observablePropertyName] = "";
         }
 
-        this.value = this.convertCSSLayoutValuesToString();
+        this.initialValue = this.convertCSSLayoutValuesToString();
 
         this.onChange(this.getCSSLayoutDictionary());
         this.$emit("change");
     }
 
     /**
-     * Handles the css-layout controls being enabled
+     * Handles the css-layout controls being enabled by click
      * @internal
      */
+    public handleClickToggleCSSLayout = (): void => {
+        this.handleToggleCSSLayout();
+    };
+
+    /**
+     * Handles the css-layout controls being enabled by pressing space
+     */
+    public handleKeypressToggleCSSLayout = (e: KeyboardEvent): void => {
+        switch (e.keyCode) {
+            case keyCodeSpace:
+                this.handleToggleCSSLayout();
+                break;
+        }
+    };
+
     public handleToggleCSSLayout(): void {
         if (this.flexEnabled) {
             this.resetCSSLayoutValues();
@@ -175,7 +217,7 @@ export class CSSLayout extends FormAssociatedCSSLayout {
 
         this.flexEnabled = !this.flexEnabled;
 
-        this.value = this.convertCSSLayoutValuesToString();
+        this.initialValue = this.convertCSSLayoutValuesToString();
 
         this.onChange(this.getCSSLayoutDictionary());
         this.$emit("change");
