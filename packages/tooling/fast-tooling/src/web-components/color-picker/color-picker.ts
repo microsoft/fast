@@ -273,8 +273,7 @@ export class ColorPicker extends FormAssociatedColorPicker {
      * Initialize internal color values based on input value and set the UI elements
      * to the correct positions / values.
      */
-    private initColorValues(): void
-    {
+    private initColorValues(): void {
         if (!isNullOrWhiteSpace(this.value)) {
             this.currentRGBColor = parseColor(this.value);
         } else {
