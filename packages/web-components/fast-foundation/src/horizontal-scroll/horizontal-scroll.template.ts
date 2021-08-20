@@ -1,8 +1,8 @@
 import { elements, html, ref, slotted, when } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
 import { endTemplate, startTemplate } from "../patterns";
-import type { HorizontalScroll, HorizontalScrollOptions } from "./horizontal-scroll";
 import type { ElementDefinitionContext } from "../design-system";
+import type { HorizontalScroll, HorizontalScrollOptions } from "./horizontal-scroll";
 
 /**
  * @public

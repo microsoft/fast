@@ -1,8 +1,87 @@
 # Change Log - @microsoft/fast-tooling
 
-This log was last generated on Tue, 03 Aug 2021 07:17:33 GMT and should not be manually modified.
+This log was last generated on Thu, 19 Aug 2021 07:15:21 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.27.1
+
+Thu, 19 Aug 2021 07:15:21 GMT
+
+### Patches
+
+- Bump @microsoft/fast-components to v2.6.1 (sethdonohue@Admins-MBP.guest.corp.microsoft.com)
+
+## 0.27.0
+
+Wed, 18 Aug 2021 07:16:21 GMT
+
+### Minor changes
+
+- add tooltips to the CSS layout radio buttons (7559015+janechu@users.noreply.github.com)
+
+## 0.26.6
+
+Tue, 17 Aug 2021 07:14:05 GMT
+
+### Patches
+
+- add autoselect option to html render inline edit component (44823142+williamw2@users.noreply.github.com)
+- make resize observer target configurable (44823142+williamw2@users.noreply.github.com)
+
+## 0.26.5
+
+Sun, 15 Aug 2021 07:17:25 GMT
+
+### Patches
+
+- Bump @microsoft/fast-components to v2.6.0 (nicholasrice@users.noreply.github.com)
+
+## 0.26.4
+
+Thu, 12 Aug 2021 07:16:50 GMT
+
+### Patches
+
+- ensure named slots are all accounted for as children and fix an issue where multiple attributes could appear as an array (7559015+janechu@users.noreply.github.com)
+
+## 0.26.3
+
+Wed, 11 Aug 2021 07:14:31 GMT
+
+### Patches
+
+- fix: html renderer use custom title if present (44823142+williamw2@users.noreply.github.com)
+
+## 0.26.2
+
+Sun, 08 Aug 2021 07:18:56 GMT
+
+### Patches
+
+- addresses an issue where on initially editing content the MonacoAdapter would switch the navigation location (7559015+janechu@users.noreply.github.com)
+
+## 0.26.1
+
+Thu, 05 Aug 2021 07:17:32 GMT
+
+### Patches
+
+- Bump @microsoft/fast-components to v2.5.6 (khamu@microsoft.com)
+
+## 0.26.0
+
+Wed, 04 Aug 2021 07:15:14 GMT
+
+### Minor changes
+
+- adding file and file action web components (44823142+williamw2@users.noreply.github.com)
+
+### Patches
+
+- fix image load resize bug in html render component (44823142+williamw2@users.noreply.github.com)
+- Bump @microsoft/fast-foundation to v2.6.3 (chhol@microsoft.com)
+- Bump @microsoft/fast-components to v2.5.5 (chhol@microsoft.com)
 
 ## 0.25.7
 

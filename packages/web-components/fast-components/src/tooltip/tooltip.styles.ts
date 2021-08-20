@@ -45,8 +45,8 @@ export const tooltipStyles: (
             font-size: ${typeRampBaseFontSize};
             line-height: ${typeRampBaseLineHeight};
             white-space: nowrap;
-            ${/* TODO: a mechanism to manage z-index across components
-            https://github.com/microsoft/fast/issues/3813 */ ""}
+            /* TODO: a mechanism to manage z-index across components
+                https://github.com/microsoft/fast/issues/3813 */
             z-index: 10000;
         }
 

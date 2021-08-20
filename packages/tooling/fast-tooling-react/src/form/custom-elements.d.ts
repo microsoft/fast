@@ -61,6 +61,22 @@ declare namespace JSX {
                 change?: (e: React.ChangeEvent<HTMLElement>) => void;
             };
         };
+        "fast-tooling-file": React.DetailedHTMLProps<
+            React.HTMLAttributes<HTMLElement>,
+            HTMLElement
+        > & {
+            accept?: string;
+            multiple?: boolean;
+            disabled?: boolean;
+            events?: {
+                change?: (e: React.ChangeEvent<HTMLElement>) => void;
+            };
+            progressCallback?: (progress: number) => Promise<void>;
+        };
+        "fast-tooling-file-action-objecturl": React.DetailedHTMLProps<
+            React.HTMLAttributes<HTMLElement>,
+            HTMLElement
+        > & {};
     }
 }
 

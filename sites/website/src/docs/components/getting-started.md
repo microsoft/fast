@@ -1,6 +1,6 @@
 ---
-title: Getting Started with FAST Components
-sidebar_label: Getting Started
+title: Components QuickStart
+sidebar_label: QuickStart
 custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/src/docs/fast-foundation/getting-started.md
 ---
 [![License: MIT](/badges/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
@@ -95,7 +95,7 @@ For simplicity, examples throughout the documentation will assume the library ha
 
 ## Add components
 
-With the components registered, add any component to the HTML. That's it! For a comprehensive list of all elements, see the [Components](/docs/components) section.
+With the components registered, add any component to the HTML. That's it! For a comprehensive list of all elements, see the [Components](/docs/components/accordion) section.
 
 ```html
 <!-- ... -->

@@ -189,7 +189,9 @@ class Explorer extends Editor<ExplorerProps, ExplorerState> {
                                 tabUpdateCallback: (
                                     e: React.ChangeEvent<HTMLElement>
                                 ) => {
-                                    this.handlePivotUpdate((e as any).detail.id);
+                                    (e as any)?.detail?.id
+                                        ? this.handlePivotUpdate((e as any).detail.id)
+                                        : void 0;
                                 },
                                 guidanceTabPanelContent: this.state.componentConfig
                                     .guidance,

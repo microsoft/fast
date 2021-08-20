@@ -1,8 +1,56 @@
 # Change Log - @microsoft/fast-components
 
-This log was last generated on Tue, 03 Aug 2021 07:17:33 GMT and should not be manually modified.
+This log was last generated on Thu, 19 Aug 2021 07:15:21 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.6.1
+
+Thu, 19 Aug 2021 07:15:21 GMT
+
+### Patches
+
+- update examples for toolbar focus sequence bug fix (sethdonohue@Admins-MBP.guest.corp.microsoft.com)
+
+## 2.6.0
+
+Sun, 15 Aug 2021 07:17:25 GMT
+
+### Minor changes
+
+- add new PaletteRGB.from() API to support easier creation of PaletteRGB instances (nicholasrice@users.noreply.github.com)
+
+## 2.5.8
+
+Thu, 12 Aug 2021 07:16:50 GMT
+
+### Patches
+
+- fix dialog focus on open (scomea@microsoft.com)
+
+## 2.5.7
+
+Sun, 08 Aug 2021 07:18:56 GMT
+
+### Patches
+
+- replace css comment expressions with normal css comments (john.kreitlow@microsoft.com)
+
+## 2.5.6
+
+Thu, 05 Aug 2021 07:17:32 GMT
+
+### Patches
+
+- add border to badge and adjust padding size (khamu@microsoft.com)
+
+## 2.5.5
+
+Wed, 04 Aug 2021 07:15:14 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.6.3 (chhol@microsoft.com)
 
 ## 2.5.4
 

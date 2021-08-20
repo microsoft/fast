@@ -1,8 +1,8 @@
 import { html, ref } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
 import { endTemplate, startTemplate } from "../patterns/start-end";
-import type { AccordionItem, AccordionItemOptions } from "./accordion-item";
 import type { ElementDefinitionContext } from "../design-system";
+import type { AccordionItem, AccordionItemOptions } from "./accordion-item";
 
 /**
  * The template for the {@link @microsoft/fast-foundation#(AccordionItem:class)} component.

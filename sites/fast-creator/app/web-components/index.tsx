@@ -11,6 +11,7 @@ import {
     fastTabPanel,
     fastTabs,
     fastTextField,
+    fastTooltip,
 } from "@microsoft/fast-components";
 import { Select } from "@microsoft/fast-foundation";
 import { componentCategories, downChevron, upChevron } from "@microsoft/site-utilities";
@@ -20,10 +21,13 @@ import {
     DataType,
     fastToolingColorPicker,
     fastToolingCSSLayout,
+    fastToolingFile,
+    fastToolingFileActionObjectUrl,
     MessageSystem,
 } from "@microsoft/fast-tooling";
 import {
     ControlConfig,
+    FileControl,
     ModularForm,
     ModularNavigation,
     StandardControlPlugin,
@@ -53,8 +57,11 @@ DesignSystem.getOrCreate().register(
     fastSwitch(),
     fastTabPanel(),
     fastTextField(),
+    fastTooltip(),
     fastToolingColorPicker({ prefix: "fast-tooling" }),
-    fastToolingCSSLayout({ prefix: "fast-tooling" })
+    fastToolingCSSLayout({ prefix: "fast-tooling" }),
+    fastToolingFile({ prefix: "fast-tooling" }),
+    fastToolingFileActionObjectUrl({ prefix: "fast-tooling" })
 );
 
 export function renderDevToolToggle(selected: boolean, onToggleCallback: () => void) {
@@ -272,6 +279,20 @@ function renderStartIcon(isIncluded: boolean): React.ReactNode {
     );
 }
 
+function getImageUploadControl(): StandardControlPlugin {
+    return new StandardControlPlugin({
+        id: "src",
+        context: ControlContext.fill,
+        control: (controlConfig: ControlConfig): React.ReactNode => {
+            return (
+                <FileControl {...controlConfig} accept=".jpg,.jpeg,.png,.gif">
+                    Add Image
+                </FileControl>
+            );
+        },
+    });
+}
+
 export function renderNavigationTabs(
     activeId: any,
     fastMessageSystem: MessageSystem,
@@ -296,6 +317,7 @@ export function renderNavigationTabs(
                 <ModularNavigation
                     messageSystem={fastMessageSystem}
                     types={[DataType.object]}
+                    defaultLinkedDataDroppableDataLocation={"Slot"}
                 />
             </fast-tab-panel>
             <fast-tab-panel id={NavigationId.libraries + "Panel"}>
@@ -367,7 +389,11 @@ export function renderFormTabs(
                 <ModularForm
                     key={FormId.component}
                     messageSystem={fastMessageSystem}
-                    controls={[linkedDataControl, getCSSControls()]}
+                    controls={[
+                        linkedDataControl,
+                        getCSSControls(),
+                        getImageUploadControl(),
+                    ]}
                     categories={componentCategories}
                 />
             </fast-tab-panel>
