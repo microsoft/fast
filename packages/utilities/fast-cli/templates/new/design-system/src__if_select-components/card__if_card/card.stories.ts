@@ -1,8 +1,19 @@
 import CardTemplate from "./fixtures/card.html";
-import "./index";
 
 export default {
-    title: "Card",
+    title: "Components/Card",
 };
 
-export const Card = () => CardTemplate;
+export const Card = (): string => CardTemplate;
+
+const example = `
+</* @echo namespace */-card>Card Content<//* @echo namespace */-card>
+`;
+
+Card.parameters = {
+    docs: {
+        source: {
+            code: example,
+        },
+    },
+};

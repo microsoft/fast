@@ -13,7 +13,7 @@ import { checkboxStyles as styles } from "./checkbox.styles";
  * @remarks
  * Generates HTML Element: \</* @echo namespace */-checkbox\>
  */
-export const/* @echo namespace */Checkbox = Checkbox.compose<CheckboxOptions>({
+export const /* @echo namespace */Checkbox = Checkbox.compose<CheckboxOptions>({
     baseName: "checkbox",
     template,
     styles,

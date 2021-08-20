@@ -8,8 +8,7 @@ import { listboxStyles as styles } from "./listbox.styles";
  *
  * @public
  * @remarks
- * Generates HTML Element: \</* echo namespace */-listbox\>
- *
+ * Generates HTML Element: \</* @echo namespace */-listbox\>
  */
 export const /* @echo namespace */Listbox = Listbox.compose({
     baseName: "listbox",

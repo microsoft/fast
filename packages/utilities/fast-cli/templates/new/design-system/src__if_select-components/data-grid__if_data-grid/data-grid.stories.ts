@@ -1,5 +1,5 @@
 import { html } from "@microsoft/fast-element";
-import type {
+import {
     Button,
     ColumnDefinition,
     DataGrid,
@@ -12,13 +12,14 @@ import { STORY_RENDERED } from "@storybook/core-events";
 import DataGridTemplate from "./fixtures/base.html";
 import "./index";
 
+/* eslint-disable @typescript-eslint/ban-types */
 let defaultGridElement: DataGrid | null = null;
 const defaultRowData: object = newDataRow("default");
 
 const columnWidths: string[] = ["1fr", "1fr", "1fr", "1fr"];
 
 const defaultRowItemTemplate = html`
-    <fast-data-grid-row
+    </* @echo namespace */-data-grid-row
         :rowData="${x => x}"
         :cellItemTemplate="${(x, c) => c.parent.cellItemTemplate}"
         :headerCellItemTemplate="${(x, c) => c.parent.headerCellItemTemplate}"
@@ -26,16 +27,16 @@ const defaultRowItemTemplate = html`
 `;
 
 const customRowItemTemplate = html`
-    <fast-data-grid-row
+    </* @echo namespace */-data-grid-row
         :rowData="${x => x}"
         :cellItemTemplate="${(x, c) => c.parent.cellItemTemplate}"
         :headerCellItemTemplate="${(x, c) => c.parent.headerCellItemTemplate}"
     ></fast-data-grid-row>
-    <fast-divider style="margin-bottom: 6px; margin-top: 6px;"></fast-divider>
+    </* @echo namespace */-divider style="margin-bottom: 6px; margin-top: 6px;"></fast-divider>
 `;
 
 const customCellItemTemplate = html`
-    <fast-data-grid-cell
+    </* @echo namespace */-data-grid-cell
         style="background: brown"
         grid-column="${(x, c) => c.index + 1}"
         :rowData="${(x, c) => c.parent.rowData}"
@@ -44,7 +45,7 @@ const customCellItemTemplate = html`
 `;
 
 const customHeaderCellItemTemplate = html`
-    <fast-data-grid-cell
+    </* @echo namespace */-data-grid-cell
         style="background: orange"
         cell-type="columnheader"
         grid-column="${(x, c) => c.index + 1}"
@@ -53,7 +54,7 @@ const customHeaderCellItemTemplate = html`
 `;
 
 addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
-    if (name.toLowerCase().startsWith("data-grid")) {
+    if (name.toLowerCase().startsWith("components-data-grid")) {
         defaultGridElement = document.getElementById("defaultGrid") as DataGrid;
         reset();
 
@@ -98,7 +99,7 @@ addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
         if (headerCell) {
             headerCell.columnDefinition = {
                 columnDataKey: "name",
-                title: "Name",
+                title: "Components/Name",
             };
         }
 
@@ -209,7 +210,8 @@ addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
 
 const buttonCellTemplate = html<DataGridCell>`
     <template>
-        <fast-button @click="${x => cellTemplateButtonClick(x)}" style="width: 100%;">
+        </* @echo namespace */-button @click="${x =>
+            cellTemplateButtonClick(x)}" style="width: 100%;">
             ${x =>
                 x.rowData === null ||
                 x.columnDefinition === null ||
@@ -222,7 +224,7 @@ const buttonCellTemplate = html<DataGridCell>`
 
 const buttonHeaderCellTemplate = html<DataGridCell>`
     <template>
-        <fast-button
+        </* @echo namespace */-button
             @click="${x => headerTemplateButtonClick(x)}"
             style="width: 100%; background: green"
         >
@@ -433,7 +435,7 @@ const baseColumns: ColumnDefinition[] = [
 
 const templateColumns: ColumnDefinition[] = [
     {
-        title: "RowID",
+        title: "Components/RowID",
         columnDataKey: "rowId",
         cellTemplate: buttonCellTemplate,
         cellFocusTargetCallback: getFocusTarget,
@@ -441,7 +443,7 @@ const templateColumns: ColumnDefinition[] = [
         headerCellFocusTargetCallback: getFocusTarget,
     },
     {
-        title: "Column 1",
+        title: "Components/Column 1",
         columnDataKey: "item1",
         cellTemplate: buttonCellTemplate,
         cellFocusTargetCallback: getFocusTarget,
@@ -449,7 +451,7 @@ const templateColumns: ColumnDefinition[] = [
         headerCellFocusTargetCallback: getFocusTarget,
     },
     {
-        title: "Column 2",
+        title: "Components/Column 2",
         columnDataKey: "item2",
         cellTemplate: buttonCellTemplate,
         cellFocusTargetCallback: getFocusTarget,
@@ -457,7 +459,7 @@ const templateColumns: ColumnDefinition[] = [
         headerCellFocusTargetCallback: getFocusTarget,
     },
     {
-        title: "Column 3",
+        title: "Components/Column 3",
         columnDataKey: "item3",
         cellTemplate: buttonCellTemplate,
         cellFocusTargetCallback: getFocusTarget,
@@ -470,8 +472,22 @@ function getFocusTarget(cell: DataGridCell): HTMLElement {
     return cell.querySelector("fast-button") as HTMLElement;
 }
 
+/* eslint-enable @typescript-eslint/ban-types */
+
 export default {
-    title: "Data Grid",
+    title: "Components/Data Grid",
 };
 
 export const dataGrid = () => DataGridTemplate;
+
+const example = `
+</* @echo namespace */-data-grid id="defaultGrid" style="max-height: 400px; overflow-y: auto"><//* @echo namespace */-data-grid>
+`;
+
+dataGrid.parameters = {
+    docs: {
+        source: {
+            code: example,
+        },
+    },
+};

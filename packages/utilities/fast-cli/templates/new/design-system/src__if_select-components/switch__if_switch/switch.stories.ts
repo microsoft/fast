@@ -1,8 +1,37 @@
-import Examples from "./fixtures/base.html";
-import "./index";
-
 export default {
-    title: "Switch",
+    title: "Components/Switch",
+    argTypes: {
+        checked: {
+            control: { type: "boolean" },
+        },
+        disabled: {
+            control: { type: "boolean" },
+        },
+    },
 };
 
-export const Switch = () => Examples;
+const SwitchTemplate = ({ checked, disabled }) => `
+</* @echo namespace */-switch
+  ${checked ? "checked" : ""}
+  ${disabled ? "disabled" : ""}
+><//* @echo namespace */-switch>
+`;
+
+export const Switch = SwitchTemplate.bind({});
+
+Switch.args = {
+    checked: false,
+    disabled: false,
+};
+
+const example = `
+</* @echo namespace */-switch><//* @echo namespace */-switch>
+`;
+
+Switch.parameters = {
+    docs: {
+        source: {
+            code: example,
+        },
+    },
+};
