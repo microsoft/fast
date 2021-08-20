@@ -6,6 +6,7 @@ export default {
     description: "A test component's schema definition.",
     type: "object",
     id: "children",
+    $id: "children",
     properties: {
         object: {
             title: "Object",
