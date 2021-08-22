@@ -1,8 +1,17 @@
 # Change Log - @microsoft/fast-tooling
 
-This log was last generated on Thu, 19 Aug 2021 07:15:21 GMT and should not be manually modified.
+This log was last generated on Sun, 22 Aug 2021 07:17:14 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.27.2
+
+Sun, 22 Aug 2021 07:17:14 GMT
+
+### Patches
+
+- fix color picker component value update bug (44823142+williamw2@users.noreply.github.com)
+- fixes an issue where the CSS layout would not update when style was updated in the Monaco Editor (7559015+janechu@users.noreply.github.com)
 
 ## 0.27.1
 

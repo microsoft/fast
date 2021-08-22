@@ -2,7 +2,7 @@
   "name": "@microsoft/fast-tooling",
   "description": "A set of utilities to assist in creating web UI",
   "sideEffects": false,
-  "version": "0.27.1",
+  "version": "0.27.2",
   "author": {
     "name": "Microsoft",
     "url": "https://discord.gg/FcSNfg4"
