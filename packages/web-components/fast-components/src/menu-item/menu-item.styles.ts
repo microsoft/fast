@@ -16,6 +16,7 @@ import {
     disabledOpacity,
     focusStrokeOuter,
     focusStrokeWidth,
+    foregroundOnAccentRest,
     neutralFillStealthRest,
     neutralForegroundHint,
     neutralForegroundRest,
@@ -256,7 +257,7 @@ export const menuItemStyles: (
         width: 100%;
         height: 100%;
         display: block;
-        fill: ${neutralForegroundRest};
+        fill: ${foregroundOnAccentRest};
         pointer-events: none;
     }
 
@@ -268,7 +269,7 @@ export const menuItemStyles: (
         bottom: 4px;
         border-radius: 999px;
         display: block;
-        background: ${neutralForegroundRest};
+        background: ${foregroundOnAccentRest};
         pointer-events: none;
     }
 
