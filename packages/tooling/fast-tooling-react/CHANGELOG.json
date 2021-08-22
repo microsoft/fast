@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-tooling-react",
   "entries": [
     {
+      "date": "Sun, 22 Aug 2021 07:17:14 GMT",
+      "tag": "@microsoft/fast-tooling-react_v2.10.9",
+      "version": "2.10.9",
+      "comments": {
+        "patch": [
+          {
+            "comment": "fixes an issue where the CSS layout would not update when style was updated in the Monaco Editor",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "2ca5f4c605fcd6750a662431b4b0a02ffeac42d5",
+            "package": "@microsoft/fast-tooling-react"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 19 Aug 2021 07:15:21 GMT",
       "tag": "@microsoft/fast-tooling-react_v2.10.8",
       "version": "2.10.8",
