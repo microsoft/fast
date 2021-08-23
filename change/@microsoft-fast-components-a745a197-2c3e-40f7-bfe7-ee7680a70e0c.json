@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "fix menu-item checked-indicator foreground color",
-  "packageName": "@microsoft/fast-components",
-  "email": "ben@platform5.ch",
-  "dependentChangeType": "patch"
-}
