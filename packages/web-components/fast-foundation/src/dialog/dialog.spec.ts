@@ -110,13 +110,13 @@ describe("Dialog", () => {
         await disconnect();
     });
 
-    it("should add a tabindex of -1 to the modal overlay when modal is true", async () => {
+    it("should add a tabindex of -1 to the dialog control", async () => {
         const { element, connect, disconnect } = await setup();
 
         await connect();
 
         expect(
-            element.shadowRoot?.querySelector(".overlay")?.getAttribute("tabindex")
+            element.shadowRoot?.querySelector(".control")?.getAttribute("tabindex")
         ).to.equal("-1");
 
         await disconnect();

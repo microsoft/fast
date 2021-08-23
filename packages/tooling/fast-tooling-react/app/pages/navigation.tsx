@@ -21,6 +21,7 @@ export interface NavigationTestPageState {
     cssPropertyOverrides: boolean;
     types?: DataType[];
     activeDictionaryId: string;
+    defaultLinkedDataDroppableDataLocation: boolean;
 }
 
 const CSSpropertyOverrides = {
@@ -59,6 +60,7 @@ class NavigationTestPage extends React.Component<{}, NavigationTestPageState> {
             cssPropertyOverrides: false,
             types: undefined,
             activeDictionaryId: children[1],
+            defaultLinkedDataDroppableDataLocation: false,
         };
     }
 
@@ -141,10 +143,27 @@ class NavigationTestPage extends React.Component<{}, NavigationTestPageState> {
                     />
                     <label htmlFor={"allowNulls"}>Allow null</label>
                 </fieldset>
+                <fieldset>
+                    <legend>Options</legend>
+                    <input
+                        type={"checkbox"}
+                        id={"assignDefaultLinkedDataDatalocation"}
+                        onChange={this.handleSetDefaultLinkedDataDatalocation}
+                        value={this.state.defaultLinkedDataDroppableDataLocation.toString()}
+                    />
+                    <label htmlFor={"assignDefaultLinkedDataDatalocation"}>
+                        Assign "children" as default data location
+                    </label>
+                </fieldset>
                 {this.renderAllLinkedData()}
                 <ModularNavigation
                     messageSystem={fastMessageSystem}
                     types={this.state.types}
+                    defaultLinkedDataDroppableDataLocation={
+                        this.state.defaultLinkedDataDroppableDataLocation
+                            ? "children"
+                            : void 0
+                    }
                 />
 
                 <pre>{JSON.stringify(this.state.types, null, 2)}</pre>
@@ -181,6 +200,13 @@ class NavigationTestPage extends React.Component<{}, NavigationTestPageState> {
             }
         );
     }
+
+    private handleSetDefaultLinkedDataDatalocation = (e: React.ChangeEvent): void => {
+        this.setState({
+            defaultLinkedDataDroppableDataLocation: !this.state
+                .defaultLinkedDataDroppableDataLocation,
+        });
+    };
 
     private handleLinkedDataNavigationOnChange = (linkedDataId: string): (() => void) => {
         return () => {
@@ -220,7 +246,11 @@ class NavigationTestPage extends React.Component<{}, NavigationTestPageState> {
     };
 
     private handleMessageSystem = (e: MessageEvent): void => {
-        if (e.data && e.data.type === MessageSystemType.initialize) {
+        if (
+            e.data &&
+            (e.data.type === MessageSystemType.initialize ||
+                e.data.type === MessageSystemType.data)
+        ) {
             this.setState({
                 navigation: e.data.navigationDictionary,
             });

@@ -23,13 +23,13 @@ export const dialogTemplate: (
                     class="overlay"
                     part="overlay"
                     role="presentation"
-                    tabindex="-1"
                     @click="${x => x.dismiss()}"
                 ></div>
             `
         )}
         <div
             role="dialog"
+            tabindex="-1"
             class="control"
             part="control"
             aria-modal="${x => x.modal}"

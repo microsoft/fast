@@ -1,8 +1,66 @@
 # Change Log - @microsoft/fast-tooling
 
-This log was last generated on Wed, 11 Aug 2021 07:14:31 GMT and should not be manually modified.
+This log was last generated on Mon, 23 Aug 2021 07:14:54 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.27.3
+
+Mon, 23 Aug 2021 07:14:54 GMT
+
+### Patches
+
+- Bump @microsoft/fast-components to v2.6.2 (ben@platform5.ch)
+
+## 0.27.2
+
+Sun, 22 Aug 2021 07:17:14 GMT
+
+### Patches
+
+- fix color picker component value update bug (44823142+williamw2@users.noreply.github.com)
+- fixes an issue where the CSS layout would not update when style was updated in the Monaco Editor (7559015+janechu@users.noreply.github.com)
+
+## 0.27.1
+
+Thu, 19 Aug 2021 07:15:21 GMT
+
+### Patches
+
+- Bump @microsoft/fast-components to v2.6.1 (sethdonohue@Admins-MBP.guest.corp.microsoft.com)
+
+## 0.27.0
+
+Wed, 18 Aug 2021 07:16:21 GMT
+
+### Minor changes
+
+- add tooltips to the CSS layout radio buttons (7559015+janechu@users.noreply.github.com)
+
+## 0.26.6
+
+Tue, 17 Aug 2021 07:14:05 GMT
+
+### Patches
+
+- add autoselect option to html render inline edit component (44823142+williamw2@users.noreply.github.com)
+- make resize observer target configurable (44823142+williamw2@users.noreply.github.com)
+
+## 0.26.5
+
+Sun, 15 Aug 2021 07:17:25 GMT
+
+### Patches
+
+- Bump @microsoft/fast-components to v2.6.0 (nicholasrice@users.noreply.github.com)
+
+## 0.26.4
+
+Thu, 12 Aug 2021 07:16:50 GMT
+
+### Patches
+
+- ensure named slots are all accounted for as children and fix an issue where multiple attributes could appear as an array (7559015+janechu@users.noreply.github.com)
 
 ## 0.26.3
 
