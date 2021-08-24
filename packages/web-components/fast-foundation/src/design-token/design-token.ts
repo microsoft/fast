@@ -510,11 +510,19 @@ class DesignTokenNode implements Behavior, Subscriber {
     private reflecting = new Set<CSSDesignToken<any>>();
 
     /**
-     * Binding observers for assigned and inheirted derived values.
+     * Binding observers for assigned and inherited derived values.
      */
     private bindingObservers = new Map<
         DesignTokenImpl<any>,
         DesignTokenBindingObserver<any>
+    >();
+
+    /**
+     * Tracks subscribers for tokens assigned a derived value for the node.
+     */
+    private tokenSubscribers = new Map<
+        DesignTokenImpl<any>,
+        DesignTokenSubscriber<any>
     >();
 
     public get parent(): DesignTokenNode | null {
@@ -590,41 +598,50 @@ class DesignTokenNode implements Behavior, Subscriber {
 
         this.rawValues.set(token, value);
 
+        if (this.tokenSubscribers.has(token)) {
+            token.unsubscribe(this.tokenSubscribers.get(token)!);
+            this.tokenSubscribers.delete(token);
+        }
+
         if (DesignTokenImpl.isDerivedDesignTokenValue(value)) {
             const binding = this.setupBindingObserver(token, value);
             const { dependencies } = binding;
 
             const reflect = DesignTokenImpl.isCSSDesignToken(token);
 
-            dependencies.forEach(x => {
-                // Check all existing nodes for which a dependency has been applied
-                // and determine if we need to update the token being set for that node
-                if (reflect) {
-                    x.appliedTo.forEach(y => {
-                        const node = DesignTokenNode.getOrCreate(y);
-
-                        if (this.contains(node) && node.getRaw(token) === value) {
-                            token.notify(node.target);
-                            node.reflectToCSS(token as CSSDesignToken<T>);
-                        }
-                    });
-                }
-
-                x.subscribe({
+            if (dependencies.size > 0) {
+                const subscriber: DesignTokenSubscriber<any> = {
                     handleChange: record => {
-                        // TODO: Need to make notification automatic
-                        if (
-                            this !== DesignTokenNode.getOrCreate(record.target) &&
-                            this.contains(DesignTokenNode.getOrCreate(record.target))
-                        ) {
+                        const node = DesignTokenNode.getOrCreate(record.target);
+
+                        if (this !== node && this.contains(node)) {
                             token.notify(record.target);
                             DesignTokenNode.getOrCreate(record.target).reflectToCSS(
                                 token as any
                             );
                         }
                     },
+                };
+
+                this.tokenSubscribers.set(token, subscriber);
+
+                dependencies.forEach(x => {
+                    // Check all existing nodes for which a dependency has been applied
+                    // and determine if we need to update the token being set for that node
+                    if (reflect) {
+                        x.appliedTo.forEach(y => {
+                            const node = DesignTokenNode.getOrCreate(y);
+
+                            if (this.contains(node) && node.getRaw(token) === value) {
+                                token.notify(node.target);
+                                node.reflectToCSS(token as CSSDesignToken<T>);
+                            }
+                        });
+                    }
+
+                    x.subscribe(subscriber);
                 });
-            });
+            }
         }
 
         if (DesignTokenImpl.isCSSDesignToken(token)) {
