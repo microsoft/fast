@@ -1,6 +1,6 @@
 {
   "type": "patch",
-  "comment": "fixes an issue where the CSS layout would not update when style was updated in the Monaco Editor",
+  "comment": "add a list of linked data that cannot be dropped to",
   "packageName": "@microsoft/fast-tooling-react",
   "email": "7559015+janechu@users.noreply.github.com",
   "dependentChangeType": "patch"

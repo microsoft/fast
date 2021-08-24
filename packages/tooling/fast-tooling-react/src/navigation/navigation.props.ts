@@ -22,6 +22,49 @@ export enum HoverLocation {
     after = "after",
 }
 
+export interface LinkedDataLocationConfig {
+    /**
+     * Dictionary key
+     */
+    0: string;
+
+    /**
+     * Navigation config key
+     */
+    1: string;
+
+    /**
+     * The index
+     */
+    2: number;
+}
+
+export type LinkedDataLocation = XOR<LinkedDataLocationConfig, null>;
+
+export interface HoveredItemConfig {
+    /**
+     * The type of the hovered item
+     */
+    0: DragDropItemType;
+
+    /**
+     * The dictionary ID
+     */
+    1: string;
+
+    /**
+     * The navigation config ID
+     */
+    2: string;
+
+    /**
+     * The location of the hover
+     */
+    3: HoverLocation;
+}
+
+export type HoveredItem = XOR<HoveredItemConfig, null>;
+
 interface TextEditing {
     /**
      * The dictionary ID of the current text being edited
@@ -73,47 +116,12 @@ export interface NavigationState {
     /**
      * The linked datas location
      */
-    linkedDataLocation: {
-        /**
-         * Dictionary key
-         */
-        0: string;
-
-        /**
-         * Navigation config key
-         */
-        1: string;
-
-        /**
-         * The index
-         */
-        2: number;
-    } | null;
+    linkedDataLocation: LinkedDataLocation;
 
     /**
      * The item being hovered
      */
-    hoveredItem: {
-        /**
-         * The type of the hovered item
-         */
-        0: DragDropItemType;
-
-        /**
-         * The dictionary ID
-         */
-        1: string;
-
-        /**
-         * The navigation config ID
-         */
-        2: string;
-
-        /**
-         * The location of the hover
-         */
-        3: HoverLocation;
-    } | null;
+    hoveredItem: HoveredItem;
 }
 
 export interface TreeNavigation {
@@ -156,6 +164,12 @@ export interface NavigationHandledProps {
      * @alpha
      */
     defaultLinkedDataDroppableDataLocation?: string;
+
+    /**
+     * An array of schema IDs that can't be dropped to
+     * @alpha
+     */
+    droppableBlocklist?: string[];
 }
 
 export type NavigationProps = NavigationHandledProps;

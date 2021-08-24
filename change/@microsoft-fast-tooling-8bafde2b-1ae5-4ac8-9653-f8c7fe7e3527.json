@@ -1,6 +1,6 @@
 {
   "type": "patch",
-  "comment": "fixes an issue where the CSS layout would not update when style was updated in the Monaco Editor",
+  "comment": "address drag and drop issues where the active data dictionary ID was not updated during the removal of linked data",
   "packageName": "@microsoft/fast-tooling",
   "email": "7559015+janechu@users.noreply.github.com",
   "dependentChangeType": "patch"
