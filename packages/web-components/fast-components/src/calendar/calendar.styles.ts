@@ -1,5 +1,5 @@
 import { css } from "@microsoft/fast-element";
-import { display } from "@microsoft/fast-foundation";
+import { display, forcedColorsStylesheetBehavior } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import { heightNumber } from "../styles/index";
 import {
@@ -98,4 +98,28 @@ export const CalendarStyles = css`
         color: inherit;
         width: auto;
     }
-`;
+`.withBehaviors(
+    forcedColorsStylesheetBehavior(
+        css`
+            :host {
+                --selected-day-outline: 1px solid ${SystemColors.Highlight};
+            }
+
+            .day,
+            .week-day {
+                background: ${SystemColors.Canvas};
+                color: ${SystemColors.CanvasText};
+                fill: currentcolor;
+            }
+
+            .day.selected {
+                color: ${SystemColors.Highlight};
+            }
+
+            .today .date {
+                background: ${SystemColors.Highlight};
+                color: ${SystemColors.HighlightText};
+            }
+        `
+    )
+);
