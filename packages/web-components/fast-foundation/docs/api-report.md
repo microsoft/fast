@@ -1041,6 +1041,11 @@ export class FoundationElementRegistry<TDefinition extends FoundationElementDefi
     readonly type: Constructable<FoundationElement>;
 }
 
+// Warning: (ae-forgotten-export) The symbol "LazyFoundationOption" needs to be exported by the entry point index.d.ts
+//
+// @public
+export type FoundationElementTemplate<T, K = void> = LazyFoundationOption<T, K & FoundationElementDefinition>;
+
 // @public
 export enum GenerateHeaderOptions {
     // (undocumented)
@@ -1085,12 +1090,12 @@ export class HorizontalScroll extends FoundationElement {
 
 // @public
 export type HorizontalScrollOptions = FoundationElementDefinition & {
-    nextFlipper?: string | SyntheticViewTemplate;
-    previousFlipper?: string | SyntheticViewTemplate;
+    nextFlipper?: FoundationElementTemplate<SyntheticViewTemplate<any, HorizontalScroll>, HorizontalScrollOptions> | SyntheticViewTemplate | string;
+    previousFlipper?: FoundationElementTemplate<SyntheticViewTemplate<any, HorizontalScroll>, HorizontalScrollOptions> | SyntheticViewTemplate | string;
 };
 
 // @public (undocumented)
-export const horizontalScrollTemplate: (context: ElementDefinitionContext, definition: HorizontalScrollOptions) => ViewTemplate<HorizontalScroll>;
+export const horizontalScrollTemplate: FoundationElementTemplate<ViewTemplate<HorizontalScroll>, HorizontalScrollOptions>;
 
 // @public
 export type HorizontalScrollView = "default" | "mobile";
