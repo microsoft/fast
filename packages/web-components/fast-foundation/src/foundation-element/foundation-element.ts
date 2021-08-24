@@ -1,10 +1,10 @@
-import { ElementStyles, FASTElement, observable } from "@microsoft/fast-element";
 import type {
     AttributeConfiguration,
     ComposableStyles,
     Constructable,
     ElementViewTemplate,
 } from "@microsoft/fast-element";
+import { ElementStyles, FASTElement, observable } from "@microsoft/fast-element";
 import {
     ComponentPresentation,
     DefaultComponentPresentation,
@@ -67,6 +67,15 @@ export interface FoundationElementDefinition {
      */
     readonly elementOptions?: EagerOrLazyFoundationOption<ElementDefinitionOptions, this>;
 }
+
+/**
+ * A foundation element template function.
+ * @public
+ */
+export type FoundationElementTemplate<T, K = void> = LazyFoundationOption<
+    T,
+    K & FoundationElementDefinition
+>;
 
 /**
  * A set of properties which the component consumer can override during the element registration process.
