@@ -10,6 +10,7 @@ import {
 } from "@microsoft/fast-element";
 import { typography } from "./typography";
 import { TodoItem } from "./todo-item";
+import { fillColor, neutralForegroundRest } from "@fluentui/web-components";
 
 function eventDetail<T = any>(ctx: ExecutionContext) {
     return (ctx.event as CustomEvent).detail as T;
@@ -48,6 +49,9 @@ const styles = css`
     ${typography} :host {
         display: block;
         padding: 16px;
+        background: ${fillColor};
+        color: ${neutralForegroundRest};
+        height: 100%;
     }
 
     ul {
