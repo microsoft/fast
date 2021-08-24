@@ -2764,16 +2764,29 @@ export class VirtualizingStack extends FoundationElement {
     // @beta (undocumented)
     autoUpdateMode: VirtualizingStackAutoUpdateMode;
     // @internal (undocumented)
+    bottomSpacerHeight: number;
+    // @internal (undocumented)
     connectedCallback(): void;
     // @internal (undocumented)
     disconnectedCallback(): void;
-    // @internal
-    initialLayoutComplete: boolean;
-    update: () => void;
+    // (undocumented)
+    heightMap: number[];
+    // @beta (undocumented)
+    itemHeight: number;
+    // (undocumented)
+    items: any[];
+    // (undocumented)
+    itemTemplate: ViewTemplate;
+    // @internal (undocumented)
+    topSpacerHeight: number;
+    // @internal (undocumented)
+    totalHeight: number;
     // @beta
     viewport: string;
     // @beta
     viewportElement: HTMLElement | null;
+    // @internal (undocumented)
+    visibleItems: any[];
     }
 
 // @beta

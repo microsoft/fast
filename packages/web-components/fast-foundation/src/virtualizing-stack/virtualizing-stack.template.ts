@@ -1,4 +1,4 @@
-import { html } from "@microsoft/fast-element";
+import { html, ref } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
 import type { ElementDefinitionContext } from "../design-system";
 import type { FoundationElementDefinition } from "../foundation-element";
@@ -15,7 +15,9 @@ export const virtualizingStackTemplate: (
     context: ElementDefinitionContext,
     definition: FoundationElementDefinition
 ) => html`
-    <template>
+    <template style="height: ${x => x.totalHeight}px">
+        <div class="top-spacer" style="height: ${x => x.topSpacerHeight}px"></div>
         <slot></slot>
+        <div class="bottom-spacer" style="height: ${x => x.bottomSpacerHeight}px"></div>
     </template>
 `;

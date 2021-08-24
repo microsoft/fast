@@ -1,21 +1,19 @@
 import { Direction, RtlScrollConverter } from "@microsoft/fast-web-utilities";
 import addons from "@storybook/addons";
 import { STORY_RENDERED } from "@storybook/core-events";
-import { VirtualizingStack as FoundationVirtualizingStack } from "@microsoft/fast-foundation";
+import {
+    VirtualizingStack as FoundationVirtualizingStack,
+    VirtualizingStack,
+} from "@microsoft/fast-foundation";
 import VirtualizingStackTemplate from "./fixtures/base.html";
 import "./index";
 
 addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
     if (name.toLowerCase().startsWith("virtualizing-stack")) {
-        //scroll stuff into view
-        document.querySelectorAll("div[id^=viewport]").forEach((el: HTMLElement) => {
-            el.scrollTop = 280;
-            RtlScrollConverter.setScrollLeft(
-                el,
-                el.dir === Direction.rtl ? -250 : 250,
-                el.dir === Direction.rtl ? Direction.rtl : Direction.ltr
-            );
-        });
+        const defaultStack = document.getElementById(
+            "default-stack"
+        ) as VirtualizingStack;
+        defaultStack.items = ["1", "2", "3"];
     }
 });
 

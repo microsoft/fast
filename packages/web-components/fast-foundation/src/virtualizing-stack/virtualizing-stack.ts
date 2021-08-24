@@ -1,12 +1,15 @@
-import { attr, DOM, observable, ViewTemplate } from "@microsoft/fast-element";
-import { Direction, eventResize, eventScroll } from "@microsoft/fast-web-utilities";
+import {
+    attr,
+    html,
+    observable,
+    RepeatBehavior,
+    RepeatDirective,
+    ViewTemplate,
+} from "@microsoft/fast-element";
+import { eventResize, eventScroll } from "@microsoft/fast-web-utilities";
 import { FoundationElement } from "../foundation-element";
 import { IntersectionService } from "../anchored-region/intersection-service";
-import type { ResizeObserverEntry } from "../anchored-region/resize-observer-entry";
-import type {
-    ConstructibleResizeObserver,
-    ResizeObserverClassDefinition,
-} from "../anchored-region/resize-observer";
+import type { ResizeObserverClassDefinition } from "../anchored-region/resize-observer";
 
 /**
  * Defines if the component updates its position automatically. Calling update() always provokes an update.
@@ -15,6 +18,12 @@ import type {
  */
 export type VirtualizingStackAutoUpdateMode = "resize-only" | "auto";
 
+const defaultItemTemplate: ViewTemplate<any> = html`
+    <template>
+        ${x => x}
+    </template>
+`;
+
 /**
  * An virtualizing stack Custom HTML Element.
  *
@@ -22,17 +31,32 @@ export type VirtualizingStackAutoUpdateMode = "resize-only" | "auto";
  */
 export class VirtualizingStack extends FoundationElement {
     /**
-     * The HTML ID of the viewport element this region is positioned relative to
+     * The HTML ID of the viewport element
      *
      * @beta
      * @remarks
      * HTML Attribute: anchor
      */
-    @attr
+    @attr({ attribute: "viewport" })
     public viewport: string = "";
     private viewportChanged(): void {
-        if (this.initialLayoutComplete) {
+        if (this.$fastController.isConnected) {
             this.viewportElement = this.getViewport();
+        }
+    }
+
+    /**
+     *
+     *
+     * @beta
+     * @remarks
+     * HTML Attribute: item-height
+     */
+    @attr({ attribute: "item-height" })
+    public itemHeight: number;
+    private itemHeightChanged(): void {
+        if (this.$fastController.isConnected) {
+            this.updateVisibleItems();
         }
     }
 
@@ -49,10 +73,7 @@ export class VirtualizingStack extends FoundationElement {
         prevMode: VirtualizingStackAutoUpdateMode,
         newMode: VirtualizingStackAutoUpdateMode
     ): void {
-        if (
-            (this as FoundationElement).$fastController.isConnected &&
-            this.initialLayoutComplete
-        ) {
+        if (this.$fastController.isConnected) {
             if (prevMode === "auto") {
                 this.stopAutoUpdateEventListeners();
             }
@@ -69,13 +90,10 @@ export class VirtualizingStack extends FoundationElement {
      * @beta
      */
     @observable
-    public viewportElement: HTMLElement | null = null;
+    public viewportElement: HTMLElement | null;
     private viewportElementChanged(): void {
-        if (
-            (this as FoundationElement).$fastController.isConnected &&
-            this.initialLayoutComplete
-        ) {
-            this.initialize();
+        if ((this as FoundationElement).$fastController.isConnected) {
+            // this.initialize();
         }
     }
 
@@ -86,14 +104,32 @@ export class VirtualizingStack extends FoundationElement {
      */
     @observable
     public items: any[];
+    private itemsChanged(): void {
+        if (this.$fastController.isConnected) {
+            this.updateDimensions();
+        }
+    }
 
     /**
-     * The default row item template.  Set by the component templates.
      *
-     * @internal
+     *
+     * @public
      */
     @observable
-    public itemTemplate: ViewTemplate;
+    public heightMap: number[];
+    private itemEndsChanged(): void {
+        if (this.$fastController.isConnected) {
+            this.updateDimensions();
+        }
+    }
+
+    /**
+     *
+     *
+     * @public
+     */
+    @observable
+    public itemTemplate: ViewTemplate = defaultItemTemplate;
 
     /**
      *
@@ -127,27 +163,47 @@ export class VirtualizingStack extends FoundationElement {
     @observable
     public bottomSpacerHeight: number = 0;
 
-    /**
-     * indicates that an initial positioning pass on layout has completed
-     *
-     * @internal
-     */
-    @observable
-    public initialLayoutComplete: boolean = false;
-
     private static intersectionService: IntersectionService = new IntersectionService();
     private resizeDetector: ResizeObserverClassDefinition | null = null;
     private pendingPositioningUpdate: boolean = false;
+
+    private visibleRangeStart: number = 0;
+    private visibleRangeEnd: number = 0;
+
+    private viewportRect: ClientRect | DOMRect | undefined;
+    private stackRect: ClientRect | DOMRect | undefined;
+
+    private itemsRepeatBehavior: RepeatBehavior | null;
+    private itemsPlaceholder: Node | null = null;
+
+    // defines how big a difference in pixels there must be between states to
+    // justify a layout update that affects the dom (prevents repeated sub-pixel corrections)
+    private updateThreshold: number = 0.5;
 
     /**
      * @internal
      */
     connectedCallback() {
         super.connectedCallback();
+        this.viewportElement = this.getViewport();
         if (this.autoUpdateMode === "auto") {
             this.startAutoUpdateEventListeners();
         }
-        this.initialize();
+        this.initializeResizeDetector();
+        this.startObservers();
+        this.updateDimensions();
+        this.requestPositionUpdates();
+
+        this.itemsPlaceholder = document.createComment("");
+        this.appendChild(this.itemsPlaceholder);
+
+        this.itemsRepeatBehavior = new RepeatDirective(
+            x => x.visibleItems,
+            x => x.itemTemplate,
+            { positioning: true }
+        ).createBehavior(this.itemsPlaceholder);
+
+        this.$fastController.addBehaviors([this.itemsRepeatBehavior!]);
     }
 
     /**
@@ -163,34 +219,13 @@ export class VirtualizingStack extends FoundationElement {
     }
 
     /**
-     * update position
-     */
-    public update = (): void => {
-        // if (!this.pendingPositioningUpdate) {
-        //     this.requestPositionUpdates();
-        // }
-    };
-
-    /**
-     *  Handle resize events
-     */
-    private handleResize = (entries: ResizeObserverEntry[]): void => {
-        this.update();
-    };
-
-    /**
-     * fully initializes the component
-     */
-    private initialize(): void {
-        this.initializeResizeDetector();
-    }
-
-    /**
      * starts event listeners that can trigger auto updating
      */
     private startAutoUpdateEventListeners = (): void => {
-        window.addEventListener(eventResize, this.update, { passive: true });
-        window.addEventListener(eventScroll, this.update, {
+        window.addEventListener(eventResize, this.requestPositionUpdates, {
+            passive: true,
+        });
+        window.addEventListener(eventScroll, this.requestPositionUpdates, {
             passive: true,
             capture: true,
         });
@@ -203,12 +238,22 @@ export class VirtualizingStack extends FoundationElement {
      * stops event listeners that can trigger auto updating
      */
     private stopAutoUpdateEventListeners = (): void => {
-        window.removeEventListener(eventResize, this.update);
-        window.removeEventListener(eventScroll, this.update);
+        window.removeEventListener(eventResize, this.requestPositionUpdates);
+        window.removeEventListener(eventScroll, this.requestPositionUpdates);
         if (this.resizeDetector !== null && this.viewportElement !== null) {
             this.resizeDetector.unobserve(this.viewportElement);
         }
     };
+
+    /**
+     * initializes the instance's resize observer
+     */
+    private initializeResizeDetector(): void {
+        this.disconnectResizeDetector();
+        this.resizeDetector = new ((window as unknown) as WindowWithResizeObserver).ResizeObserver(
+            this.requestPositionUpdates
+        );
+    }
 
     /**
      * destroys the instance's resize observer
@@ -219,53 +264,6 @@ export class VirtualizingStack extends FoundationElement {
             this.resizeDetector = null;
         }
     }
-
-    /**
-     * initializes the instance's resize observer
-     */
-    private initializeResizeDetector(): void {
-        this.disconnectResizeDetector();
-        this.resizeDetector = new ((window as unknown) as WindowWithResizeObserver).ResizeObserver(
-            this.handleResize
-        );
-    }
-
-    /**
-     * get position updates
-     */
-    private requestPositionUpdates = (): void => {
-        if (this.pendingPositioningUpdate) {
-            return;
-        }
-        VirtualizingStack.intersectionService.requestPosition(
-            this,
-            this.handleIntersection
-        );
-        if (this.viewportElement !== null) {
-            VirtualizingStack.intersectionService.requestPosition(
-                this.viewportElement,
-                this.handleIntersection
-            );
-        }
-        this.pendingPositioningUpdate = true;
-    };
-
-    /**
-     *  Handle intersections
-     */
-    private handleIntersection = (entries: IntersectionObserverEntry[]): void => {
-        if (!this.pendingPositioningUpdate) {
-            return;
-        }
-
-        this.pendingPositioningUpdate = false;
-
-        // if (!this.applyIntersectionEntries(entries)) {
-        //     return;
-        // }
-
-        // this.updateLayout();
-    };
 
     /**
      * Gets the viewport element by id, or defaults to document root
@@ -311,5 +309,143 @@ export class VirtualizingStack extends FoundationElement {
         if (this.resizeDetector !== null) {
             this.resizeDetector.disconnect();
         }
+    };
+
+    /**
+     *
+     */
+    private updateDimensions = (): void => {
+        if (this.heightMap !== undefined) {
+            if (this.heightMap.length === 0) {
+                this.totalHeight = 0;
+            }
+        } else if (this.itemHeight !== undefined) {
+            this.totalHeight = this.itemHeight * this.items.length;
+        }
+
+        this.updateVisibleItems();
+    };
+
+    /**
+     *
+     */
+    private updateVisibleItems = (): void => {
+        if (this.items.length === 0) {
+            this.visibleItems = [];
+            this.topSpacerHeight = 0;
+            this.bottomSpacerHeight = 0;
+            return;
+        }
+
+        if (this.heightMap !== undefined) {
+            // TODO: scomea - wire this up
+            this.visibleItems = [];
+            this.topSpacerHeight = 0;
+            this.bottomSpacerHeight = 0;
+        } else if (this.itemHeight !== undefined) {
+            let firstVisibleIndex: number = Math.floor(
+                this.visibleRangeStart / this.itemHeight
+            );
+            const visibleRangeLength = this.visibleRangeEnd - this.visibleRangeStart;
+            let lastVisibleIndex: number =
+                firstVisibleIndex + Math.floor(visibleRangeLength / this.itemHeight);
+
+            if (firstVisibleIndex < 0) {
+                firstVisibleIndex = 0;
+            }
+
+            if (lastVisibleIndex >= this.items.length) {
+                lastVisibleIndex = this.items.length - 1;
+            }
+
+            this.visibleItems = this.items.slice(firstVisibleIndex, lastVisibleIndex);
+            this.topSpacerHeight = firstVisibleIndex * this.itemHeight;
+            this.bottomSpacerHeight =
+                (this.items.length - lastVisibleIndex - 1) * this.itemHeight;
+        }
+    };
+
+    /**
+     * get position updates
+     */
+    private requestPositionUpdates = (): void => {
+        if (this.pendingPositioningUpdate || this.viewportElement === null) {
+            return;
+        }
+        VirtualizingStack.intersectionService.requestPosition(
+            this,
+            this.handleIntersection
+        );
+        VirtualizingStack.intersectionService.requestPosition(
+            this.viewportElement,
+            this.handleIntersection
+        );
+        this.pendingPositioningUpdate = true;
+    };
+
+    /**
+     *  Handle intersections
+     */
+    private handleIntersection = (entries: IntersectionObserverEntry[]): void => {
+        if (!this.pendingPositioningUpdate) {
+            return;
+        }
+
+        this.pendingPositioningUpdate = false;
+
+        const stackEntry: IntersectionObserverEntry | undefined = entries.find(
+            x => x.target === this
+        );
+        const viewportEntry: IntersectionObserverEntry | undefined = entries.find(
+            x => x.target === this.viewportElement
+        );
+
+        if (stackEntry === undefined || viewportEntry === undefined) {
+            return;
+        }
+
+        if (
+            this.viewportRect === undefined ||
+            this.stackRect === undefined ||
+            this.isRectDifferent(this.stackRect, stackEntry.boundingClientRect) ||
+            this.isRectDifferent(this.viewportRect, viewportEntry.boundingClientRect)
+        ) {
+            this.stackRect = stackEntry.boundingClientRect;
+            if (this.viewportElement === document.documentElement) {
+                this.viewportRect = new DOMRectReadOnly(
+                    viewportEntry.boundingClientRect.x +
+                        document.documentElement.scrollLeft,
+                    viewportEntry.boundingClientRect.y +
+                        document.documentElement.scrollTop,
+                    viewportEntry.boundingClientRect.width,
+                    viewportEntry.boundingClientRect.height
+                );
+            } else {
+                this.viewportRect = viewportEntry.boundingClientRect;
+            }
+
+            this.visibleRangeStart = this.viewportRect.top - this.stackRect.top;
+            this.visibleRangeEnd = this.visibleRangeStart + this.viewportRect.height;
+
+            this.updateVisibleItems();
+        }
+    };
+
+    /**
+     *  compare rects to see if there is enough change to justify a DOM update
+     */
+    private isRectDifferent = (
+        rectA: DOMRect | ClientRect,
+        rectB: DOMRect | ClientRect
+    ): boolean => {
+        if (
+            Math.abs(rectA.top - rectB.top) > this.updateThreshold ||
+            Math.abs(rectA.right - rectB.right) > this.updateThreshold ||
+            Math.abs(rectA.bottom - rectB.bottom) > this.updateThreshold ||
+            Math.abs(rectA.left - rectB.left) > this.updateThreshold
+        ) {
+            return true;
+        }
+        return false;
     };
 }
