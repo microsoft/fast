@@ -5,6 +5,7 @@ import {
     MessageSystem,
     NavigationConfigDictionary,
 } from "@microsoft/fast-tooling";
+import { XOR } from "@microsoft/fast-tooling/dist/dts/data-utilities/type.utilities";
 import { DragDropItemType } from "./navigation-tree-item.props";
 
 export enum NavigationDataType {
@@ -17,7 +18,20 @@ export enum NavigationDataType {
 
 export enum HoverLocation {
     before = "before",
+    center = "center",
     after = "after",
+}
+
+interface TextEditing {
+    /**
+     * The dictionary ID of the current text being edited
+     */
+    dictionaryId: string;
+
+    /**
+     * The navigation config ID of the current text being edited
+     */
+    navigationConfigId: string;
 }
 
 export interface NavigationState {
@@ -32,9 +46,9 @@ export interface NavigationState {
     activeNavigationConfigId: string;
 
     /**
-     * Whether the current active item is editable
+     * The current item being edited
      */
-    activeItemEditable: boolean;
+    textEditing: XOR<null, TextEditing>;
 
     /**
      * Expanded navigation config items
@@ -136,6 +150,12 @@ export interface NavigationHandledProps {
      * The JSON schema types that will be visible
      */
     types?: DataType[];
+
+    /**
+     * The default data location to use if a linked data container is dropped on
+     * @alpha
+     */
+    defaultLinkedDataDroppableDataLocation?: string;
 }
 
 export type NavigationProps = NavigationHandledProps;

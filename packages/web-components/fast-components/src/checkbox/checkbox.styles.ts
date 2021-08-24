@@ -43,12 +43,9 @@ export const checkboxStyles: (
         align-items: center;
         outline: none;
         margin: calc(${designUnit} * 1px) 0;
-        ${
-            /*
-             * Chromium likes to select label text or the default slot when
-             * the checkbox is clicked. Maybe there is a better solution here?
-             */ ""
-        } user-select: none;
+        /* Chromium likes to select label text or the default slot when the checkbox is
+            clicked. Maybe there is a better solution here? */
+        user-select: none;
     }
 
     .control {
@@ -66,9 +63,9 @@ export const checkboxStyles: (
     .label {
         font-family: ${bodyFont};
         color: ${neutralForegroundRest};
-        ${
-            /* Need to discuss with Brian how HorizontalSpacingNumber can work. https://github.com/microsoft/fast/issues/2766 */ ""
-        } padding-inline-start: calc(${designUnit} * 2px + 2px);
+        /* Need to discuss with Brian how HorizontalSpacingNumber can work.
+            https://github.com/microsoft/fast/issues/2766 */
+        padding-inline-start: calc(${designUnit} * 2px + 2px);
         margin-inline-end: calc(${designUnit} * 2px + 2px);
         cursor: pointer;
         font-size: ${typeRampBaseFontSize};

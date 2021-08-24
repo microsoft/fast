@@ -2,6 +2,249 @@
   "name": "@microsoft/fast-tooling-react",
   "entries": [
     {
+      "date": "Mon, 23 Aug 2021 07:14:54 GMT",
+      "tag": "@microsoft/fast-tooling-react_v2.10.10",
+      "version": "2.10.10",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-tooling to v0.27.3",
+            "author": "ben@platform5.ch",
+            "commit": "c819b1959c9e941a68fe7ebd75ce94c4ce59d83b",
+            "package": "@microsoft/fast-tooling-react"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sun, 22 Aug 2021 07:17:14 GMT",
+      "tag": "@microsoft/fast-tooling-react_v2.10.9",
+      "version": "2.10.9",
+      "comments": {
+        "patch": [
+          {
+            "comment": "fixes an issue where the CSS layout would not update when style was updated in the Monaco Editor",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "2ca5f4c605fcd6750a662431b4b0a02ffeac42d5",
+            "package": "@microsoft/fast-tooling-react"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 19 Aug 2021 07:15:21 GMT",
+      "tag": "@microsoft/fast-tooling-react_v2.10.8",
+      "version": "2.10.8",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-tooling to v0.27.1",
+            "author": "sethdonohue@Admins-MBP.guest.corp.microsoft.com",
+            "commit": "4a4e2c16987aa015c3f90adbe400f09a0d4c2563",
+            "package": "@microsoft/fast-tooling-react"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 18 Aug 2021 07:16:21 GMT",
+      "tag": "@microsoft/fast-tooling-react_v2.10.7",
+      "version": "2.10.7",
+      "comments": {
+        "patch": [
+          {
+            "comment": "focus and select text when navigation items are double clicked and adjust behavior so that any item can be edited, not just active navigation items",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "99759a17ca1a8f8afe574d2dbd01c76021f70da4",
+            "package": "@microsoft/fast-tooling-react"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 17 Aug 2021 07:14:05 GMT",
+      "tag": "@microsoft/fast-tooling-react_v2.10.6",
+      "version": "2.10.6",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-tooling to v0.26.6",
+            "author": "44823142+williamw2@users.noreply.github.com",
+            "commit": "9bb3f1855d79777c96d69f156878a8873924f02b",
+            "package": "@microsoft/fast-tooling-react"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sun, 15 Aug 2021 07:17:25 GMT",
+      "tag": "@microsoft/fast-tooling-react_v2.10.5",
+      "version": "2.10.5",
+      "comments": {
+        "patch": [
+          {
+            "comment": "various fixes to the Navigations drag and drop making it more flexible for web components",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "04c8b8a5701fd1d16d2ed70f827b98589de2abf2",
+            "package": "@microsoft/fast-tooling-react"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 12 Aug 2021 07:16:50 GMT",
+      "tag": "@microsoft/fast-tooling-react_v2.10.4",
+      "version": "2.10.4",
+      "comments": {
+        "none": [
+          {
+            "comment": "Bump @microsoft/fast-tooling to v0.26.4",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "1fc192e494b311562df5150234e4085dd315753c",
+            "package": "@microsoft/fast-tooling-react"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-foundation to v2.6.4",
+            "author": "scomea@microsoft.com",
+            "commit": "ee9239067b2245056e066e3a4e532b4ad00d4815",
+            "package": "@microsoft/fast-tooling-react"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 11 Aug 2021 07:14:31 GMT",
+      "tag": "@microsoft/fast-tooling-react_v2.10.3",
+      "version": "2.10.3",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-tooling to v0.26.3",
+            "author": "44823142+williamw2@users.noreply.github.com",
+            "commit": "becce2a15d62eea79ad07a2336c44a603e49e99d",
+            "package": "@microsoft/fast-tooling-react"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 10 Aug 2021 07:16:01 GMT",
+      "tag": "@microsoft/fast-tooling-react_v2.10.2",
+      "version": "2.10.2",
+      "comments": {
+        "none": [
+          {
+            "comment": "Bump @microsoft/fast-tooling to v0.26.2",
+            "author": "bashmish@gmail.com",
+            "commit": "45634989043c4c9bffd9a10c9f0723eb399c25e6",
+            "package": "@microsoft/fast-tooling-react"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sun, 08 Aug 2021 07:18:56 GMT",
+      "tag": "@microsoft/fast-tooling-react_v2.10.2",
+      "version": "2.10.2",
+      "comments": {
+        "patch": [
+          {
+            "comment": "resolve the expanded navigation items mismatch after triggering the expand trigger then a navigation message",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "4f4e4c9d6e8244fce545f34bccec0946be8c7eaf",
+            "package": "@microsoft/fast-tooling-react"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 05 Aug 2021 07:17:32 GMT",
+      "tag": "@microsoft/fast-tooling-react_v2.10.1",
+      "version": "2.10.1",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-tooling to v0.26.1",
+            "author": "khamu@microsoft.com",
+            "commit": "627d25135c31330fb7d8e2b9c1abf01a79143f58",
+            "package": "@microsoft/fast-tooling-react"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 04 Aug 2021 07:15:14 GMT",
+      "tag": "@microsoft/fast-tooling-react_v2.10.0",
+      "version": "2.10.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "adding file component react wrapper",
+            "author": "44823142+williamw2@users.noreply.github.com",
+            "commit": "9a148b099ae34676af3d2d1ef412140db3c4f220",
+            "package": "@microsoft/fast-tooling-react"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-foundation to v2.6.3",
+            "author": "chhol@microsoft.com",
+            "commit": "98c45b1c087853529e157384fe514f6c79422189",
+            "package": "@microsoft/fast-tooling-react"
+          },
+          {
+            "comment": "Bump @microsoft/fast-tooling to v0.26.0",
+            "author": "44823142+williamw2@users.noreply.github.com",
+            "commit": "9a148b099ae34676af3d2d1ef412140db3c4f220",
+            "package": "@microsoft/fast-tooling-react"
+          },
+          {
+            "comment": "Bump @microsoft/fast-components to v2.5.5",
+            "author": "chhol@microsoft.com",
+            "commit": "98c45b1c087853529e157384fe514f6c79422189",
+            "package": "@microsoft/fast-tooling-react"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 03 Aug 2021 07:17:33 GMT",
+      "tag": "@microsoft/fast-tooling-react_v2.9.10",
+      "version": "2.9.10",
+      "comments": {
+        "none": [
+          {
+            "comment": "Bump @microsoft/fast-components to v2.5.4",
+            "author": "mathieu.lavoie@logmein.com",
+            "commit": "65e86a86cbf2b584f7a76081a9bef5a76e78b6f3",
+            "package": "@microsoft/fast-tooling-react"
+          },
+          {
+            "comment": "Bump @microsoft/fast-element to v1.4.1",
+            "author": "mathieu.lavoie@logmein.com",
+            "commit": "65e86a86cbf2b584f7a76081a9bef5a76e78b6f3",
+            "package": "@microsoft/fast-tooling-react"
+          },
+          {
+            "comment": "Bump @microsoft/fast-foundation to v2.6.2",
+            "author": "mathieu.lavoie@logmein.com",
+            "commit": "65e86a86cbf2b584f7a76081a9bef5a76e78b6f3",
+            "package": "@microsoft/fast-tooling-react"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-tooling to v0.25.7",
+            "author": "mathieu.lavoie@logmein.com",
+            "commit": "65e86a86cbf2b584f7a76081a9bef5a76e78b6f3",
+            "package": "@microsoft/fast-tooling-react"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sun, 01 Aug 2021 07:17:15 GMT",
       "tag": "@microsoft/fast-tooling-react_v2.9.9",
       "version": "2.9.9",

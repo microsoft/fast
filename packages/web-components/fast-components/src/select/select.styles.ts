@@ -183,7 +183,7 @@ export const selectStyles: (
     .indicator,
     .select-indicator,
     ::slotted(svg) {
-        ${`` /* Glyph size is temporary - replace when glyph-size var is added */}
+        /* TODO: adaptive typography https://github.com/microsoft/fast/issues/2432 */
         fill: currentcolor;
         height: 1em;
         min-height: calc(${designUnit} * 4px);

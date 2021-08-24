@@ -1,0 +1,33 @@
+{
+  "[json]": {
+    "files.insertFinalNewline": false
+  },
+  "[markdown]": {
+    "editor.quickSuggestions": false,
+    "editor.wordWrap": "wordWrapColumn",
+    "editor.wordWrapColumn": 90,
+    "files.insertFinalNewline": false,
+    "files.trimTrailingWhitespace": false
+  },
+  "[typescript]": {
+    "editor.tabSize": 4
+  },
+  "editor.trimAutoWhitespace": true,
+  "eslint.codeActionsOnSave.mode": "problems",
+  "eslint.lintTask.enable": true,
+  "eslint.packageManager": "yarn",
+  "eslint.validate": [
+    "typescript"
+  ],
+  "files.eol": "\n",
+  "files.insertFinalNewline": true,
+  "files.trimFinalNewlines": true,
+  "files.trimTrailingWhitespace": true,
+  "javascript.format.enable": false,
+  "javascript.format.insertSpaceAfterFunctionKeywordForAnonymousFunctions": false,
+  "js/ts.implicitProjectConfig.experimentalDecorators": true,
+  "npm.packageManager": "yarn",
+  "typescript.enablePromptUseWorkspaceTsdk": true,
+  "typescript.format.enable": false,
+  "typescript.preferences.quoteStyle": "double"
+}
