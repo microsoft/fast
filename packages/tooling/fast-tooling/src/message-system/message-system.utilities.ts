@@ -3,6 +3,7 @@ import { getDataWithDuplicate } from "../data-utilities/duplicate";
 import {
     getDataUpdatedWithoutSourceData,
     getDataUpdatedWithSourceData,
+    getNextActiveParentDictionaryId,
 } from "../data-utilities/relocate";
 import { getLinkedDataDictionary, getLinkedDataList } from "./data";
 import { MessageSystemType } from "./types";
@@ -373,17 +374,27 @@ function getDataMessage(data: DataMessageIncoming): DataMessageOutgoing {
                 ? data.dictionaryId
                 : activeDictionaryId;
             const linkedDataIds: string[] = [];
-            // remove linkedData from the dictionary
+            const removedLinkedData: unknown = dataDictionary[0][activeDictionaryId].data;
+
+            // add linked data IDs to be removed
             data.linkedData.forEach((linkedData: LinkedData) => {
-                delete dataDictionary[0][linkedData.id];
                 linkedDataIds.push(linkedData.id);
 
-                // remove references from the linkedData to any other
-                // piece of linkedData
+                // add linked data IDs to be removed from other pieces of linked data
                 getLinkedDataList(dataDictionary, linkedData.id).forEach((id: string) => {
-                    delete dataDictionary[0][id];
                     linkedDataIds.push(id);
                 });
+            });
+            // get the active dictionary ID in case it is among those being removed
+            activeDictionaryId = getNextActiveParentDictionaryId(
+                activeDictionaryId,
+                linkedDataIds,
+                dataDictionary
+            );
+
+            // remove linked data from the dictionary
+            linkedDataIds.forEach((linkedDataId: string) => {
+                delete dataDictionary[0][linkedDataId];
             });
 
             let filteredLinkedDataRefs: LinkedData[] = get(
@@ -419,7 +430,8 @@ function getDataMessage(data: DataMessageIncoming): DataMessageOutgoing {
             return {
                 type: MessageSystemType.data,
                 action: MessageSystemDataTypeAction.removeLinkedData,
-                data: dataDictionary[0][activeDictionaryId].data,
+                data: removedLinkedData,
+                activeDictionaryId,
                 dataDictionary,
                 navigation: navigationDictionary[0][activeDictionaryId],
                 navigationDictionary,

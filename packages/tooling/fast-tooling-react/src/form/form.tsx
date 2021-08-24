@@ -175,6 +175,9 @@ class Form extends React.Component<
                 this.setState({
                     data: e.data.data,
                     dataDictionary: e.data.dataDictionary,
+                    activeDictionaryId: e.data?.activeDictionaryId
+                        ? e.data.activeDictionaryId
+                        : this.state.activeDictionaryId,
                     navigation: e.data.navigation,
                     navigationDictionary: e.data.navigationDictionary,
                     options: e.data.options,

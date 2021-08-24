@@ -4,6 +4,7 @@
  */
 
 import { cloneDeep, get, set, unset } from "lodash-es";
+import { DataDictionary } from "../message-system";
 import { normalizeDataLocationToDotNotation } from "./location";
 import { DataType } from "./types";
 
@@ -190,4 +191,25 @@ export function getDataUpdatedWithoutSourceData(
     }
 
     return clonedData;
+}
+
+export function getNextActiveParentDictionaryId(
+    activeDictionaryId: string,
+    dictionaryIdsToBeRemoved: string[],
+    dataDictionary: DataDictionary<unknown>
+): string {
+    const updatedActiveDictionaryId: string = activeDictionaryId;
+
+    if (
+        dataDictionary[1] !== activeDictionaryId &&
+        dictionaryIdsToBeRemoved.includes(activeDictionaryId)
+    ) {
+        return getNextActiveParentDictionaryId(
+            dataDictionary[0][activeDictionaryId].parent.id,
+            dictionaryIdsToBeRemoved,
+            dataDictionary
+        );
+    }
+
+    return updatedActiveDictionaryId;
 }

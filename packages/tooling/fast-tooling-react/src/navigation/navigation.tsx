@@ -26,17 +26,22 @@ import { DragDropItemType } from "./navigation-tree-item.props";
 import {
     dataSetName,
     dictionaryLink,
-    LinkedData,
     MessageSystemDataTypeAction,
     MessageSystemNavigationTypeAction,
     MessageSystemType,
     Register,
     TreeNavigationItem,
-    getLinkedData,
     DataType,
 } from "@microsoft/fast-tooling";
 import manageJss, { ManagedClasses } from "@microsoft/fast-jss-manager-react";
 import styles, { NavigationClassNameContract } from "./navigation.style";
+import {
+    getDraggableItemClassName,
+    getDragStartMessage,
+    getDragStartState,
+    getDragEndMessage,
+    getDragHoverState,
+} from "./navigation.utilities";
 
 export const navigationId = "fast-tooling-react::navigation";
 
@@ -211,6 +216,9 @@ class Navigation extends Foundation<
         navigationConfigId: string,
         index: number
     ): React.ReactNode {
+        const schema: any = this.state.navigationDictionary[0]?.[dictionaryId]?.[0]?.[
+            navigationConfigId
+        ]?.schema;
         const isLinkedData: boolean =
             this.state.navigationDictionary[0][dictionaryId] !== undefined &&
             this.state.navigationDictionary[0][dictionaryId][1] === navigationConfigId;
@@ -218,15 +226,15 @@ class Navigation extends Foundation<
             this.state.navigationDictionary[1] === dictionaryId &&
             navigationConfigId === "";
         const isDraggable: boolean = isLinkedData && !isRootLinkedData; // is linked data and not the root level item
+        const isBlockedFromBeingDroppable: boolean = !(
+            this.props?.droppableBlocklist?.includes(schema?.$id) || false
+        ); // is included in the droppable blocked list provided
         const isDroppable: boolean =
-            (isLinkedData &&
-                this.state.navigationDictionary[0]?.[dictionaryId]?.[0]?.[
-                    navigationConfigId
-                ]?.schema?.type === DataType.object &&
-                !isRootLinkedData) || // a piece of linked data that is not the root and is an object type
-            this.state.navigationDictionary[0]?.[dictionaryId]?.[0]?.[navigationConfigId]
-                ?.schema?.[dictionaryLink] || // an identified dictionary link
-            (isRootLinkedData && this.props.defaultLinkedDataDroppableDataLocation); // the root linked data with an defined droppable data location
+            isBlockedFromBeingDroppable &&
+            ((isLinkedData && schema?.type === DataType.object && !isRootLinkedData) || // a piece of linked data that is not the root and is an object type
+            schema?.[dictionaryLink] || // an identified dictionary link
+                (isRootLinkedData && this.props.defaultLinkedDataDroppableDataLocation)); // the root linked data with an defined droppable data location
+
         const isTriggerRenderable: boolean = this.shouldTriggerRender(
             dictionaryId,
             navigationConfigId
@@ -299,12 +307,24 @@ class Navigation extends Foundation<
                 isCollapsible={isCollapsible}
                 isEditing={this.isEditing(dictionaryId, navigationConfigId)}
                 inputRef={this.editableElement}
-                className={this.getDraggableItemClassName(
+                className={getDraggableItemClassName(
                     isCollapsible,
                     isDraggable,
                     isDroppable,
                     dictionaryId,
-                    navigationConfigId
+                    navigationConfigId,
+                    this.state.hoveredItem,
+                    this.state.activeDictionaryId,
+                    this.state.activeNavigationConfigId,
+                    this.props.defaultLinkedDataDroppableDataLocation,
+                    this.props.managedClasses.navigation_item,
+                    this.props.managedClasses.navigation_item__expandable,
+                    this.props.managedClasses.navigation_item__active,
+                    this.props.managedClasses.navigation_item__draggable,
+                    this.props.managedClasses.navigation_item__droppable,
+                    this.props.managedClasses.navigation_item__hover,
+                    this.props.managedClasses.navigation_item__hoverAfter,
+                    this.props.managedClasses.navigation_item__hoverBefore
                 )}
                 expandTriggerClassName={
                     this.props.managedClasses.navigation_itemExpandTrigger
@@ -488,126 +508,41 @@ class Navigation extends Foundation<
         return {};
     }
 
-    private getDraggableItemClassName(
-        isCollapsible: boolean,
-        isDraggable: boolean,
-        isDroppable: boolean,
-        dictionaryId: string,
-        navigationConfigId: string
-    ): string {
-        let className: string = this.props.managedClasses.navigation_item;
-
-        if (isCollapsible) {
-            className += ` ${this.props.managedClasses.navigation_item__expandable}`;
-        }
-
-        if (
-            this.state.activeDictionaryId === dictionaryId &&
-            this.state.activeNavigationConfigId === navigationConfigId
-        ) {
-            className += ` ${this.props.managedClasses.navigation_item__active}`;
-        }
-
-        if (isDraggable) {
-            className += ` ${this.props.managedClasses.navigation_item__draggable}`;
-        }
-
-        if (isDroppable) {
-            className += ` ${this.props.managedClasses.navigation_item__droppable}`;
-        }
-
-        if (
-            this.state.hoveredItem !== null &&
-            this.state.hoveredItem[1] === dictionaryId &&
-            this.state.hoveredItem[2] === navigationConfigId
-        ) {
-            if (
-                this.state.hoveredItem[0] === DragDropItemType.linkedDataContainer ||
-                ((this.state.hoveredItem[0] === DragDropItemType.linkedData ||
-                    this.state.hoveredItem[0] === DragDropItemType.rootLinkedData) &&
-                    this.props.defaultLinkedDataDroppableDataLocation &&
-                    this.state.hoveredItem[3] === HoverLocation.center)
-            ) {
-                className += ` ${this.props.managedClasses.navigation_item__hover}`;
-            } else if (this.state.hoveredItem[0] === DragDropItemType.linkedData) {
-                if (this.state.hoveredItem[3] === HoverLocation.after) {
-                    className += ` ${this.props.managedClasses.navigation_item__hoverAfter}`;
-                } else {
-                    className += ` ${this.props.managedClasses.navigation_item__hoverBefore}`;
-                }
-            }
-        }
-
-        return className;
-    }
-
     /**
      * Handler for the beginning of the drag
      * - This method removes the dragging item from the data
      */
     private handleDragStart = (index: number): ((dictionaryId: string) => void) => {
         return (dictionaryId: string): void => {
-            this.setState({
-                linkedData: getLinkedData(this.state.dataDictionary, [dictionaryId]),
-                linkedDataLocation: [
-                    this.state.navigationDictionary[0][dictionaryId][0][
-                        this.state.navigationDictionary[0][dictionaryId][1]
-                    ].parentDictionaryItem.id,
-                    this.state.navigationDictionary[0][dictionaryId][0][
-                        this.state.navigationDictionary[0][dictionaryId][1]
-                    ].parentDictionaryItem.dataLocation,
+            this.setState(
+                getDragStartState(
+                    dictionaryId,
                     index,
-                ],
-            });
+                    this.state.dataDictionary,
+                    this.state.navigationDictionary
+                )
+            );
 
-            this.props.messageSystem.postMessage({
-                type: MessageSystemType.data,
-                action: MessageSystemDataTypeAction.removeLinkedData,
-                dictionaryId: this.state.navigationDictionary[0][dictionaryId][0][
-                    this.state.navigationDictionary[0][dictionaryId][1]
-                ].parentDictionaryItem.id,
-                dataLocation: this.state.navigationDictionary[0][dictionaryId][0][
-                    this.state.navigationDictionary[0][dictionaryId][1]
-                ].parentDictionaryItem.dataLocation,
-                linkedData: this.state.navigationDictionary[0][
-                    this.state.navigationDictionary[0][dictionaryId][0][
-                        this.state.navigationDictionary[0][dictionaryId][1]
-                    ].parentDictionaryItem.id
-                ][0][
-                    this.state.navigationDictionary[0][dictionaryId][0][
-                        this.state.navigationDictionary[0][dictionaryId][1]
-                    ].parentDictionaryItem.dataLocation
-                ].data.filter((value: LinkedData) => {
-                    return value.id === dictionaryId;
-                }),
-                options: {
-                    originatorId: navigationId,
-                },
-            });
+            this.props.messageSystem.postMessage(
+                getDragStartMessage(
+                    dictionaryId,
+                    navigationId,
+                    this.state.navigationDictionary
+                )
+            );
         };
     };
 
     private handleDragEnd = (): void => {
-        const dropOntoLinkedData: boolean =
-            (this.state.linkedDataLocation[1] === "" ||
-                this.state.linkedDataLocation[1] ===
-                    this.props.defaultLinkedDataDroppableDataLocation) &&
-            this.props.defaultLinkedDataDroppableDataLocation &&
-            this.state.hoveredItem[3] === HoverLocation.center;
-
-        this.props.messageSystem.postMessage({
-            type: MessageSystemType.data,
-            action: MessageSystemDataTypeAction.addLinkedData,
-            linkedData: this.state.linkedData,
-            dictionaryId: this.state.linkedDataLocation[0],
-            dataLocation: dropOntoLinkedData
-                ? this.props.defaultLinkedDataDroppableDataLocation
-                : this.state.linkedDataLocation[1],
-            index: dropOntoLinkedData ? void 0 : this.state.linkedDataLocation[2],
-            options: {
-                originatorId: navigationId,
-            },
-        });
+        this.props.messageSystem.postMessage(
+            getDragEndMessage(
+                navigationId,
+                this.state.hoveredItem,
+                this.state.linkedData,
+                this.state.linkedDataLocation,
+                this.props.defaultLinkedDataDroppableDataLocation
+            )
+        );
 
         this.setState({
             hoveredItem: null,
@@ -624,54 +559,18 @@ class Navigation extends Foundation<
         index: number,
         location: HoverLocation
     ): void => {
-        let parentDictionaryId: string = dictionaryId;
-        let parentDataLocation: string = this.state.navigationDictionary[0][
-            dictionaryId
-        ][0][navigationConfigId].relativeDataLocation;
-        const isLinkedDataContainer: boolean =
-            type === DragDropItemType.linkedDataContainer;
-        const isLinkedData: boolean =
-            type === DragDropItemType.linkedData ||
-            type === DragDropItemType.rootLinkedData;
-
-        if (
-            isLinkedData &&
-            this.props.defaultLinkedDataDroppableDataLocation &&
-            location === HoverLocation.center
-        ) {
-            parentDataLocation = this.props.defaultLinkedDataDroppableDataLocation;
-        } else if (
-            !isLinkedDataContainer &&
-            this.state.navigationDictionary[0][dictionaryId][0][navigationConfigId]
-                .parentDictionaryItem !== undefined
-        ) {
-            parentDataLocation = this.state.navigationDictionary[0][dictionaryId][0][
-                navigationConfigId
-            ].parentDictionaryItem.dataLocation;
-            parentDictionaryId = this.state.navigationDictionary[0][dictionaryId][0][
-                navigationConfigId
-            ].parentDictionaryItem.id;
-        }
-
-        if (
-            this.state.hoveredItem === null ||
-            dictionaryId !== this.state.hoveredItem[1] ||
-            navigationConfigId !== this.state.hoveredItem[2] ||
-            location !== this.state.hoveredItem[3]
-        ) {
-            this.setState({
-                hoveredItem: [type, dictionaryId, navigationConfigId, location],
-                linkedDataLocation: [
-                    parentDictionaryId,
-                    parentDataLocation,
-                    isLinkedDataContainer
-                        ? undefined
-                        : location === HoverLocation.before
-                        ? index
-                        : index + 1,
-                ],
-            });
-        }
+        this.setState(
+            getDragHoverState(
+                dictionaryId,
+                navigationConfigId,
+                type,
+                location,
+                index,
+                this.state.hoveredItem,
+                this.state.navigationDictionary,
+                this.props.defaultLinkedDataDroppableDataLocation
+            )
+        );
     };
 
     /**
