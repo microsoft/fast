@@ -62,6 +62,7 @@ export const CalendarStyles = css`
         outline-offset: -1px;
         line-height: var(--cell-line-height);
         border-radius: 0;
+        white-space: normal;
     }
 
     .day.off {
