@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-components
 
-This log was last generated on Thu, 19 Aug 2021 07:15:21 GMT and should not be manually modified.
+This log was last generated on Mon, 23 Aug 2021 07:14:54 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.6.2
+
+Mon, 23 Aug 2021 07:14:54 GMT
+
+### Patches
+
+- fix menu-item checked-indicator foreground color (ben@platform5.ch)
 
 ## 2.6.1
 
