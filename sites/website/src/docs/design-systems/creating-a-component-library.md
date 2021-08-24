@@ -139,14 +139,15 @@ Here we provide the base component name of `counter`, which will be combined wit
 
 ### Registering Library Components in an Application
 
-To register the component, an application author will import the registration and register it in their `DesignSystem`, overriding any properties as necessary. For example, if this component had been created for the FAST Frame design system, then the the following code could be used:
+To register the component, an application author will import the registration and register it in their `DesignSystem`, overriding any properties as necessary. For example, if this component had been created for the FAST Frame design system, then the following code could be used:
 
 ```ts
 import { counter } from "your-package";
-import { provideFASTDesignSystem } from "@microsoft/fast-components";
+import { provideFASTDesignSystem, fastButton } from "@microsoft/fast-components";
 
 provideFASTDesignSystem()
     .register(
+        fastButton(),
         counter({ defaultButtonContent: "Please count." })
     );
 ```
