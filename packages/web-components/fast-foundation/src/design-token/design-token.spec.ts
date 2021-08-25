@@ -1,6 +1,6 @@
 
 import { css, DOM, FASTElement, html, Observable } from "@microsoft/fast-element";
-import chia, { expect, spy } from "chai";
+import chia, { expect } from "chai";
 import { DesignSystem } from "../design-system";
 import { uniqueElementName } from "../test-utilities/fixture";
 import { FoundationElement } from "../foundation-element";
@@ -197,7 +197,7 @@ describe("A DesignToken", () => {
             const tokenB = DesignToken.create<number>("B");
 
             tokenA.setValueFor(target, 6);
-            tokenB.setValueFor(target, (target: HTMLElement & FASTElement) => tokenA.getValueFor(target) * 2);
+            tokenB.setValueFor(target, (target) => tokenA.getValueFor(target) * 2);
 
             expect(tokenB.getValueFor(target)).to.equal(12);
 
@@ -216,7 +216,7 @@ describe("A DesignToken", () => {
 
             tokenA.setValueFor(ancestor, 7);
             tokenA.setValueFor(parent, 6);
-            tokenB.setValueFor(ancestor, (target: HTMLElement & FASTElement) => tokenA.getValueFor(target) * 2);
+            tokenB.setValueFor(ancestor, (target) => tokenA.getValueFor(target) * 2);
 
             const value = tokenB.getValueFor(target);
             expect(value).to.equal(12);
@@ -232,7 +232,7 @@ describe("A DesignToken", () => {
 
             tokenA.setValueFor(ancestor, 7);
             tokenA.setValueFor(parent, 6);
-            tokenB.setValueFor(ancestor, (target: HTMLElement & FASTElement) => tokenA.getValueFor(target) * 2);
+            tokenB.setValueFor(ancestor, (target ) => tokenA.getValueFor(target) * 2);
 
             expect(tokenB.getValueFor(target)).to.equal(12);
 
@@ -251,7 +251,7 @@ describe("A DesignToken", () => {
             const tokenB = DesignToken.create<number>("B");
 
             tokenA.setValueFor(ancestor, 6);
-            tokenB.setValueFor(ancestor, (target: HTMLElement & FASTElement) => tokenA.getValueFor(target) * 2);
+            tokenB.setValueFor(ancestor, (target) => tokenA.getValueFor(target) * 2);
 
             expect(tokenB.getValueFor(target)).to.equal(12);
 
@@ -266,7 +266,7 @@ describe("A DesignToken", () => {
                 const target = addElement();
                 const token = DesignToken.create<number>("test");
 
-                token.setValueFor(target, (target: HTMLElement & FASTElement) => 12);
+                token.setValueFor(target, (target) => 12);
 
                 expect(window.getComputedStyle(target).getPropertyValue(token.cssCustomProperty)).to.equal('12');
 
@@ -278,7 +278,7 @@ describe("A DesignToken", () => {
                 const tokenB = DesignToken.create<number>("B");
 
                 tokenA.setValueFor(target, 6);
-                tokenB.setValueFor(target, (target: HTMLElement & FASTElement) => tokenA.getValueFor(target) * 2);
+                tokenB.setValueFor(target, (target) => tokenA.getValueFor(target) * 2);
 
 
                 expect(window.getComputedStyle(target).getPropertyValue(tokenB.cssCustomProperty)).to.equal('12');
@@ -291,7 +291,7 @@ describe("A DesignToken", () => {
                 const tokenB = DesignToken.create<number>("B");
 
                 tokenA.setValueFor(target, 6);
-                tokenB.setValueFor(target, (target: HTMLElement & FASTElement) => tokenA.getValueFor(target) * 2);
+                tokenB.setValueFor(target, (target) => tokenA.getValueFor(target) * 2);
                 expect(window.getComputedStyle(target).getPropertyValue(tokenB.cssCustomProperty)).to.equal('12');
 
                 tokenA.setValueFor(target, 7);
@@ -308,7 +308,7 @@ describe("A DesignToken", () => {
                 const tokenB = DesignToken.create<number>("B");
 
                 tokenA.setValueFor(parent, 6);
-                tokenB.setValueFor(parent, (target: HTMLElement & FASTElement) => tokenA.getValueFor(target) * 2);
+                tokenB.setValueFor(parent, (target) => tokenA.getValueFor(target) * 2);
                 tokenA.setValueFor(target, 7);
 
                 await DOM.nextUpdate();
@@ -327,7 +327,7 @@ describe("A DesignToken", () => {
                 const tokenB = DesignToken.create<number>("B");
 
                 tokenA.setValueFor(parent, 6);
-                tokenB.setValueFor(parent, (target: HTMLElement & FASTElement) => tokenA.getValueFor(target) * 2);
+                tokenB.setValueFor(parent, (target) => tokenA.getValueFor(target) * 2);
                 tokenA.setValueFor(target, 7);
 
                 await DOM.nextUpdate();
@@ -345,7 +345,7 @@ describe("A DesignToken", () => {
 
                 tokenA.setValueFor(parent, 6);
                 tokenA.setValueFor(target, 7);
-                tokenB.setValueFor(parent, (target: HTMLElement & FASTElement) => tokenA.getValueFor(target) * 2);
+                tokenB.setValueFor(parent, (target) => tokenA.getValueFor(target) * 2);
 
                 await DOM.nextUpdate();
 
@@ -374,7 +374,7 @@ describe("A DesignToken", () => {
                 const target = addElement();
                 const token = DesignToken.create<number>({name: "test", cssCustomPropertyName: null});
 
-                token.setValueFor(target, (target: HTMLElement & FASTElement) => 12);
+                token.setValueFor(target, (target) => 12);
 
                 expect(window.getComputedStyle(target).getPropertyValue('--test')).to.equal('');
 
@@ -435,7 +435,7 @@ describe("A DesignToken", () => {
             const target = addElement();
 
             tokenA.setValueFor(target, 6);
-            tokenB.setValueFor(target, (target: HTMLElement) => tokenA.getValueFor(target) * 2);
+            tokenB.setValueFor(target, (targetHTMLElement) => tokenA.getValueFor(target) * 2);
             tokenC.setValueFor(target, tokenB);
 
             expect(tokenC.getValueFor(target)).to.equal(12);
@@ -485,7 +485,7 @@ describe("A DesignToken", () => {
                 const target = addElement();
 
                 tokenA.setValueFor(target, 6);
-                tokenB.setValueFor(target, (target: HTMLElement) => tokenA.getValueFor(target) * 2);
+                tokenB.setValueFor(target, (targetHTMLElement) => tokenA.getValueFor(target) * 2);
                 tokenC.setValueFor(target, tokenB);
 
                 await DOM.nextUpdate();
