@@ -1,13 +1,9 @@
-import { html, ViewTemplate } from "@microsoft/fast-element";
+import { html } from "@microsoft/fast-element";
 import DataAreaIcon from "@fluentui/svg-icons/icons/data_area_24_regular.svg";
 import DataHistogramIcon from "@fluentui/svg-icons/icons/data_histogram_24_regular.svg";
 import DataScatterIcon from "@fluentui/svg-icons/icons/data_scatter_24_regular.svg";
-import { SampleApp } from "./sample-app";
 
-export const sampleAppTemplate: (
-    context: any,
-    definition: any
-) => ViewTemplate<SampleApp> = (context: any, definition: any) => html`
+export const sampleAppTemplate = html`
     <template>
         <app-layer-background background-layer-recipe="L3">
             <div class="wrapper">

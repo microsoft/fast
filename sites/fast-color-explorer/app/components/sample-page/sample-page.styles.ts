@@ -6,7 +6,7 @@ import {
 import { css } from "@microsoft/fast-element";
 import { display } from "@microsoft/fast-foundation";
 
-export const samplePageStyles = (context, definition) => css`
+export const samplePageStyles = css`
     ${display("flex")} :host {
         display: grid;
         grid-gap: calc(var(--gutter) * 2px);

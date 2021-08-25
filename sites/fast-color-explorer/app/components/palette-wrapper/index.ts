@@ -40,7 +40,7 @@ class PaletteWrapper extends FoundationElement {
     }
 }
 
-export const sampleAppTemplate: (
+export const paletteWrapperTemplate: (
     context: any,
     definition: any
 ) => ViewTemplate<PaletteWrapper> = (context: any, definition: any) => html`
@@ -49,5 +49,5 @@ export const sampleAppTemplate: (
 
 export const paletteWrapper = PaletteWrapper.compose({
     baseName: "palette-wrapper",
-    template: sampleAppTemplate,
+    template: paletteWrapperTemplate,
 });

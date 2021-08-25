@@ -1,13 +1,9 @@
-import { html, ViewTemplate } from "@microsoft/fast-element";
+import { html } from "@microsoft/fast-element";
 import MoreIcon from "@fluentui/svg-icons/icons/more_horizontal_20_regular.svg";
 import DownloadIcon from "@fluentui/svg-icons/icons/arrow_download_20_regular.svg";
 import PlayIcon from "@fluentui/svg-icons/icons/play_20_regular.svg";
-import { SamplePage } from "./sample-page";
 
-export const samplePageTemplate: (
-    context: any,
-    definition: any
-) => ViewTemplate<SamplePage> = (context: any, definition: any) => html`
+export const samplePageTemplate = html`
     <template>
         <fast-card>
             <div class="image-container">
