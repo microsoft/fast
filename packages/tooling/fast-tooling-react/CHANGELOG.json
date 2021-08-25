@@ -2,6 +2,81 @@
   "name": "@microsoft/fast-tooling-react",
   "entries": [
     {
+      "date": "Wed, 25 Aug 2021 07:17:07 GMT",
+      "tag": "@microsoft/fast-tooling-react_v2.10.11",
+      "version": "2.10.11",
+      "comments": {
+        "patch": [
+          {
+            "comment": "add a list of linked data that cannot be dropped to",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "eeff27a68288e4f4ff9fb368779dfd21ba1392ee",
+            "package": "@microsoft/fast-tooling-react"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Mon, 23 Aug 2021 07:14:54 GMT",
+      "tag": "@microsoft/fast-tooling-react_v2.10.10",
+      "version": "2.10.10",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-tooling to v0.27.3",
+            "author": "ben@platform5.ch",
+            "commit": "c819b1959c9e941a68fe7ebd75ce94c4ce59d83b",
+            "package": "@microsoft/fast-tooling-react"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sun, 22 Aug 2021 07:17:14 GMT",
+      "tag": "@microsoft/fast-tooling-react_v2.10.9",
+      "version": "2.10.9",
+      "comments": {
+        "patch": [
+          {
+            "comment": "fixes an issue where the CSS layout would not update when style was updated in the Monaco Editor",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "2ca5f4c605fcd6750a662431b4b0a02ffeac42d5",
+            "package": "@microsoft/fast-tooling-react"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 19 Aug 2021 07:15:21 GMT",
+      "tag": "@microsoft/fast-tooling-react_v2.10.8",
+      "version": "2.10.8",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-tooling to v0.27.1",
+            "author": "sethdonohue@Admins-MBP.guest.corp.microsoft.com",
+            "commit": "4a4e2c16987aa015c3f90adbe400f09a0d4c2563",
+            "package": "@microsoft/fast-tooling-react"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 18 Aug 2021 07:16:21 GMT",
+      "tag": "@microsoft/fast-tooling-react_v2.10.7",
+      "version": "2.10.7",
+      "comments": {
+        "patch": [
+          {
+            "comment": "focus and select text when navigation items are double clicked and adjust behavior so that any item can be edited, not just active navigation items",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "99759a17ca1a8f8afe574d2dbd01c76021f70da4",
+            "package": "@microsoft/fast-tooling-react"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 17 Aug 2021 07:14:05 GMT",
       "tag": "@microsoft/fast-tooling-react_v2.10.6",
       "version": "2.10.6",
