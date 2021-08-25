@@ -1561,4 +1561,111 @@ describe("mapVSCodeHTMLAndDataDictionaryToDataDictionary", () => {
             },
         });
     });
+    it("should map a new node with children and attributes", () => {
+        const mappedDataDictionary = mapVSCodeHTMLAndDataDictionaryToDataDictionary(
+            '<div><div><img src="https://via.placeholder.com/320x180" /><span>LOREM</span></div><div><img src="https://via.placeholder.com/320x180" /><span>LOREM</span></div></div>',
+            "text",
+            [
+                {
+                    root: {
+                        schemaId: "div",
+                        data: {
+                            Slot: [
+                                {
+                                    id: "fast1",
+                                },
+                            ],
+                        },
+                    },
+                    fast1: {
+                        schemaId: "div",
+                        data: {
+                            Slot: [
+                                {
+                                    id: "fast2",
+                                },
+                                {
+                                    id: "fast3",
+                                },
+                            ],
+                        },
+                        parent: {
+                            id: "root",
+                            dataLocation: "Slot",
+                        },
+                    },
+                    fast2: {
+                        schemaId: "img",
+                        data: {
+                            src: "https://via.placeholder.com/320x180",
+                        },
+                        parent: {
+                            id: "fast1",
+                            dataLocation: "Slot",
+                        },
+                    },
+                    fast3: {
+                        schemaId: "span",
+                        data: {
+                            Slot: [
+                                {
+                                    id: "fast4",
+                                },
+                            ],
+                        },
+                        parent: {
+                            id: "fast1",
+                            dataLocation: "Slot",
+                        },
+                    },
+                    fast4: {
+                        schemaId: "text",
+                        data: "LOREM",
+                        parent: {
+                            id: "fast3",
+                            dataLocation: "Slot",
+                        },
+                    },
+                },
+                "root",
+            ],
+            {
+                div: {
+                    $id: "div",
+                    id: "div",
+                    mapsToTagName: "div",
+                },
+                span: {
+                    $id: "span",
+                    id: "span",
+                    mapsToTagName: "span",
+                },
+                img: {
+                    $id: "img",
+                    id: "img",
+                    mapsToTagName: "img",
+                    type: "object",
+                    properties: {
+                        src: {
+                            type: "string",
+                        },
+                    },
+                },
+                text: {
+                    $id: "text",
+                    id: "text",
+                    type: "string",
+                },
+            }
+        );
+        expect((mappedDataDictionary[0].root.data as any)?.Slot).to.have.length(2);
+        expect(Object.keys(mappedDataDictionary[0])).to.have.length(9);
+        const newNodeId = (mappedDataDictionary[0].root.data as any)?.Slot[1].id;
+        expect((mappedDataDictionary[0][newNodeId].data as any)?.Slot).to.have.length(2);
+        const newNodeWithAttribId = (mappedDataDictionary[0][newNodeId].data as any)
+            ?.Slot[0].id;
+        expect(mappedDataDictionary[0][newNodeWithAttribId].data).to.deep.equal({
+            src: "https://via.placeholder.com/320x180",
+        });
+    });
 });
