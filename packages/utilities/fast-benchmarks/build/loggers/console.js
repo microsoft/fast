@@ -9,7 +9,6 @@ module.exports = (name, result) => {
         switch (key) {
             case "mean":
             case "mean percentage":
-                // A lower average is better
                 color = result[key] <= 0 ? chalk.green : chalk.red;
                 break;
             default:
