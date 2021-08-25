@@ -321,6 +321,12 @@ export interface RemoveLinkedDataDataMessageOutgoing<TConfig = {}>
     type: MessageSystemType.data;
     action: MessageSystemDataTypeAction.removeLinkedData;
     data: unknown;
+    /**
+     * The current active dictionary ID, which may change depending on
+     * whether the current active dictionary ID at the time of linked data removal
+     * was contained in the removed linked data
+     */
+    activeDictionaryId: string;
     dataDictionary: DataDictionary<unknown>;
     navigation: NavigationConfig;
     navigationDictionary: NavigationConfigDictionary;
