@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-tooling",
   "entries": [
     {
+      "date": "Wed, 25 Aug 2021 07:17:07 GMT",
+      "tag": "@microsoft/fast-tooling_v0.27.4",
+      "version": "0.27.4",
+      "comments": {
+        "patch": [
+          {
+            "comment": "address drag and drop issues where the active data dictionary ID was not updated during the removal of linked data",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "eeff27a68288e4f4ff9fb368779dfd21ba1392ee",
+            "package": "@microsoft/fast-tooling"
+          }
+        ]
+      }
+    },
+    {
       "date": "Mon, 23 Aug 2021 07:14:54 GMT",
       "tag": "@microsoft/fast-tooling_v0.27.3",
       "version": "0.27.3",
