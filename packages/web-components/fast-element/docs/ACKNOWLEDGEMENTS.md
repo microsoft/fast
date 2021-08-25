@@ -8,3 +8,4 @@ There are many great open source projects that have inspired us and enabled us t
 * [lit-html](https://lit-html.polymer-project.org/) - One of the first libraries to leverage standard JavaScript tagged template literals for HTML templates. We were inspired by this technique and wanted to explore whether it could be combined with our idea of arrow function binding expressions.
 * [Polymer](https://www.polymer-project.org/) - One of the first libraries (if not the first) to embrace Web Components.
 * [Vue](https://vuejs.org/) - We liked the terseness of the `:` and `@` syntax in templates, so we adapted it along with some modifications in our templates.
+* [asap](https://github.com/kriskowal/asap) - An awesome, time-tested async task queue implementation that heavily inspired our DOM update system.
