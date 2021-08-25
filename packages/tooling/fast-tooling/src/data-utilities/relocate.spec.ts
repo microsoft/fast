@@ -3,6 +3,7 @@ import { expect } from "chai";
 import {
     getDataUpdatedWithoutSourceData,
     getDataUpdatedWithSourceData,
+    getNextActiveParentDictionaryId,
 } from "./relocate";
 import { DataType } from "./types";
 
@@ -143,5 +144,160 @@ describe("getDataUpdatedWithoutSourceData", () => {
         expect(updatedData).to.deep.equal({
             foo: ["bat"],
         });
+    });
+});
+
+/**
+ * Gets the next active dictionary ID when linked data is being removed
+ */
+describe("getNextActiveParentDictionaryId", () => {
+    it("should get the current active dictionary ID if the active dictionary ID is not being removed", () => {
+        expect(
+            getNextActiveParentDictionaryId(
+                "foo",
+                ["bat"],
+                [
+                    {
+                        bar: {
+                            schemaId: "",
+                            data: {
+                                Children: [
+                                    {
+                                        id: "foo",
+                                    },
+                                    {
+                                        id: "bat",
+                                    },
+                                ],
+                            },
+                        },
+                        foo: {
+                            schemaId: "",
+                            parent: {
+                                id: "bar",
+                                dataLocation: "Children",
+                            },
+                            data: "Hello world",
+                        },
+                        bat: {
+                            schemaId: "",
+                            parent: {
+                                id: "bar",
+                                dataLocation: "Children",
+                            },
+                            data: "Hello pluto",
+                        },
+                    },
+                    "bar",
+                ]
+            )
+        ).to.equal("foo");
+    });
+    it("should get the next active parent dictionary ID if the current active dictionary ID's parent is not being removed", () => {
+        expect(
+            getNextActiveParentDictionaryId(
+                "foo",
+                ["foo"],
+                [
+                    {
+                        bar: {
+                            schemaId: "",
+                            data: {
+                                Children: [
+                                    {
+                                        id: "foo",
+                                    },
+                                ],
+                            },
+                        },
+                        foo: {
+                            schemaId: "",
+                            parent: {
+                                id: "bar",
+                                dataLocation: "Children",
+                            },
+                            data: "Hello world",
+                        },
+                    },
+                    "bar",
+                ]
+            )
+        ).to.equal("bar");
+    });
+    it("should get the next active parent dictionary ID if the current active dictionary ID's parent is being removed", () => {
+        expect(
+            getNextActiveParentDictionaryId(
+                "foo",
+                ["baz", "foo"],
+                [
+                    {
+                        bar: {
+                            schemaId: "",
+                            data: {
+                                Children: [
+                                    {
+                                        id: "baz",
+                                    },
+                                ],
+                            },
+                        },
+                        baz: {
+                            schemaId: "",
+                            parent: {
+                                id: "bar",
+                                dataLocation: "Children",
+                            },
+                            data: {
+                                Children: [
+                                    {
+                                        id: "foo",
+                                    },
+                                ],
+                            },
+                        },
+                        foo: {
+                            schemaId: "",
+                            parent: {
+                                id: "baz",
+                                dataLocation: "Children",
+                            },
+                            data: "Hello world",
+                        },
+                    },
+                    "bar",
+                ]
+            )
+        ).to.equal("bar");
+    });
+    it("should return the root ID even if it removal of the ID is being attempted", () => {
+        expect(
+            getNextActiveParentDictionaryId(
+                "foo",
+                ["bar", "foo"],
+                [
+                    {
+                        bar: {
+                            schemaId: "",
+                            data: {
+                                Children: [
+                                    {
+                                        id: "foo",
+                                    },
+                                ],
+                            },
+                        },
+                        foo: {
+                            schemaId: "",
+                            parent: {
+                                id: "bar",
+                                dataLocation: "Children",
+                            },
+                            data: "Hello world",
+                        },
+                    },
+                    "bar",
+                ]
+            )
+        ).to.equal("bar");
     });
 });
