@@ -20,7 +20,9 @@ export type VirtualizingStackAutoUpdateMode = "resize-only" | "auto";
 
 const defaultItemTemplate: ViewTemplate<any> = html`
     <template>
-        ${x => x}
+        <div style="height:20px;">
+            ${x => x}
+        </div>
     </template>
 `;
 
@@ -68,7 +70,7 @@ export class VirtualizingStack extends FoundationElement {
      * HTML Attribute: auto-update-mode
      */
     @attr({ attribute: "auto-update-mode" })
-    public autoUpdateMode: VirtualizingStackAutoUpdateMode = "resize-only";
+    public autoUpdateMode: VirtualizingStackAutoUpdateMode = "auto";
     private autoUpdateModeChanged(
         prevMode: VirtualizingStackAutoUpdateMode,
         newMode: VirtualizingStackAutoUpdateMode
@@ -315,12 +317,17 @@ export class VirtualizingStack extends FoundationElement {
      *
      */
     private updateDimensions = (): void => {
-        if (this.heightMap !== undefined) {
-            if (this.heightMap.length === 0) {
-                this.totalHeight = 0;
+        if (this.items === undefined) {
+            this.totalHeight = 0;
+        } else {
+            if (this.heightMap !== undefined) {
+                if (this.heightMap.length === 0) {
+                    //TODO: wire this up
+                    this.totalHeight = 0;
+                }
+            } else if (this.itemHeight !== undefined) {
+                this.totalHeight = this.itemHeight * this.items.length;
             }
-        } else if (this.itemHeight !== undefined) {
-            this.totalHeight = this.itemHeight * this.items.length;
         }
 
         this.updateVisibleItems();
@@ -330,11 +337,38 @@ export class VirtualizingStack extends FoundationElement {
      *
      */
     private updateVisibleItems = (): void => {
-        if (this.items.length === 0) {
+        if (
+            this.items === undefined ||
+            this.items.length === 0 ||
+            this.stackRect === undefined ||
+            this.viewportRect === undefined
+        ) {
             this.visibleItems = [];
             this.topSpacerHeight = 0;
             this.bottomSpacerHeight = 0;
+            this.visibleRangeStart = -1;
+            this.visibleRangeEnd = -1;
             return;
+        }
+
+        if (this.viewportRect.top >= this.stackRect.bottom) {
+            this.visibleRangeStart = this.stackRect.height;
+            this.visibleRangeEnd = this.stackRect.height;
+        } else if (this.viewportRect.bottom <= this.stackRect.top) {
+            this.visibleRangeStart = 0;
+            this.visibleRangeEnd = 0;
+        } else {
+            this.visibleRangeStart = this.viewportRect.top - this.stackRect.top;
+            this.visibleRangeEnd =
+                this.stackRect.height -
+                (this.stackRect.bottom - this.viewportRect.bottom);
+
+            this.visibleRangeStart =
+                this.visibleRangeStart < 0 ? 0 : this.visibleRangeStart;
+            this.visibleRangeEnd =
+                this.visibleRangeEnd > this.stackRect.height
+                    ? this.stackRect.height
+                    : this.visibleRangeEnd;
         }
 
         if (this.heightMap !== undefined) {
@@ -423,9 +457,6 @@ export class VirtualizingStack extends FoundationElement {
             } else {
                 this.viewportRect = viewportEntry.boundingClientRect;
             }
-
-            this.visibleRangeStart = this.viewportRect.top - this.stackRect.top;
-            this.visibleRangeEnd = this.visibleRangeStart + this.viewportRect.height;
 
             this.updateVisibleItems();
         }

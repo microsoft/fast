@@ -12,5 +12,7 @@ export const virtualizingStackStyles: (
     definition: FoundationElementDefinition
 ) => css`
     :host {
+        display: flex;
+        flex-direction: column;
     }
 `;

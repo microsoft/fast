@@ -15,7 +15,11 @@ export const virtualizingStackTemplate: (
     context: ElementDefinitionContext,
     definition: FoundationElementDefinition
 ) => html`
-    <template style="height: ${x => x.totalHeight}px">
+    <template
+        style="
+            height: ${x => x.totalHeight}px
+        "
+    >
         <div class="top-spacer" style="height: ${x => x.topSpacerHeight}px"></div>
         <slot></slot>
         <div class="bottom-spacer" style="height: ${x => x.bottomSpacerHeight}px"></div>
