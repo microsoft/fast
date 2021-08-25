@@ -8,7 +8,6 @@ import {
     keyCodeEnter,
     keyCodeHome,
     keyCodeSpace,
-    keyCodeTab,
 } from "@microsoft/fast-web-utilities";
 import Foundation, {
     FoundationProps,
@@ -27,16 +26,22 @@ import { DragDropItemType } from "./navigation-tree-item.props";
 import {
     dataSetName,
     dictionaryLink,
-    LinkedData,
     MessageSystemDataTypeAction,
     MessageSystemNavigationTypeAction,
     MessageSystemType,
     Register,
     TreeNavigationItem,
-    getLinkedData,
+    DataType,
 } from "@microsoft/fast-tooling";
 import manageJss, { ManagedClasses } from "@microsoft/fast-jss-manager-react";
 import styles, { NavigationClassNameContract } from "./navigation.style";
+import {
+    getDraggableItemClassName,
+    getDragStartMessage,
+    getDragStartState,
+    getDragEndMessage,
+    getDragHoverState,
+} from "./navigation.utilities";
 
 export const navigationId = "fast-tooling-react::navigation";
 
@@ -65,6 +70,8 @@ class Navigation extends Foundation<
 
     private rootElement: React.RefObject<HTMLDivElement>;
 
+    private editableElement: React.RefObject<HTMLInputElement>;
+
     constructor(props: NavigationProps) {
         super(props);
 
@@ -84,7 +91,7 @@ class Navigation extends Foundation<
             dataDictionary: null,
             activeDictionaryId: "",
             activeNavigationConfigId: "",
-            activeItemEditable: false,
+            textEditing: null,
             expandedNavigationConfigItems: {},
             linkedData: void 0,
             linkedDataLocation: null,
@@ -92,6 +99,7 @@ class Navigation extends Foundation<
         };
 
         this.rootElement = React.createRef();
+        this.editableElement = React.createRef();
     }
 
     public render(): React.ReactNode {
@@ -127,22 +135,19 @@ class Navigation extends Foundation<
         activeDictionaryId: string,
         activeNavigationConfigId: string
     ): Set<string> {
+        const updatedDictionaryItemConfigItems = new Set(
+            this.state.expandedNavigationConfigItems[activeDictionaryId]
+        );
+
         if (this.state.expandedNavigationConfigItems[activeDictionaryId] === undefined) {
             return new Set([activeNavigationConfigId]);
-        } else if (
-            this.state.expandedNavigationConfigItems[activeDictionaryId].has(
-                activeNavigationConfigId
-            )
-        ) {
-            this.state.expandedNavigationConfigItems[activeDictionaryId].delete(
-                activeNavigationConfigId
-            );
-            return this.state.expandedNavigationConfigItems[activeDictionaryId];
+        } else if (updatedDictionaryItemConfigItems.has(activeNavigationConfigId)) {
+            updatedDictionaryItemConfigItems.delete(activeNavigationConfigId);
+            return updatedDictionaryItemConfigItems;
         }
 
-        return this.state.expandedNavigationConfigItems[activeDictionaryId].add(
-            activeNavigationConfigId
-        );
+        updatedDictionaryItemConfigItems.add(activeNavigationConfigId);
+        return updatedDictionaryItemConfigItems;
     }
 
     /**
@@ -211,11 +216,25 @@ class Navigation extends Foundation<
         navigationConfigId: string,
         index: number
     ): React.ReactNode {
-        const isDictionaryLink: boolean =
+        const schema: any = this.state.navigationDictionary[0]?.[dictionaryId]?.[0]?.[
+            navigationConfigId
+        ]?.schema;
+        const isLinkedData: boolean =
             this.state.navigationDictionary[0][dictionaryId] !== undefined &&
             this.state.navigationDictionary[0][dictionaryId][1] === navigationConfigId;
-        const isDraggable: boolean =
-            isDictionaryLink && this.state.navigationDictionary[1] !== dictionaryId; // is linked data and not the root level item
+        const isRootLinkedData: boolean =
+            this.state.navigationDictionary[1] === dictionaryId &&
+            navigationConfigId === "";
+        const isDraggable: boolean = isLinkedData && !isRootLinkedData; // is linked data and not the root level item
+        const isBlockedFromBeingDroppable: boolean = !(
+            this.props?.droppableBlocklist?.includes(schema?.$id) || false
+        ); // is included in the droppable blocked list provided
+        const isDroppable: boolean =
+            isBlockedFromBeingDroppable &&
+            ((isLinkedData && schema?.type === DataType.object && !isRootLinkedData) || // a piece of linked data that is not the root and is an object type
+            schema?.[dictionaryLink] || // an identified dictionary link
+                (isRootLinkedData && this.props.defaultLinkedDataDroppableDataLocation)); // the root linked data with an defined droppable data location
+
         const isTriggerRenderable: boolean = this.shouldTriggerRender(
             dictionaryId,
             navigationConfigId
@@ -225,12 +244,18 @@ class Navigation extends Foundation<
             navigationConfigId,
             isTriggerRenderable
         );
-        const itemType: DragDropItemType = isDraggable
-            ? DragDropItemType.linkedData
-            : this.state.navigationDictionary[0][dictionaryId][0][navigationConfigId]
-                  .schema[dictionaryLink]
-            ? DragDropItemType.linkedDataContainer
-            : DragDropItemType.default;
+        const itemType: DragDropItemType =
+            isRootLinkedData && isDroppable
+                ? DragDropItemType.rootLinkedData
+                : isRootLinkedData
+                ? DragDropItemType.rootLinkedDataUndroppable
+                : isLinkedData && isDroppable
+                ? DragDropItemType.linkedData
+                : isLinkedData
+                ? DragDropItemType.linkedDataUndroppable
+                : isDroppable
+                ? DragDropItemType.linkedDataContainer
+                : DragDropItemType.undraggableUndroppable;
 
         const trigger: React.ReactNode = isTriggerRenderable
             ? this.renderTrigger(
@@ -239,7 +264,7 @@ class Navigation extends Foundation<
                       .text,
                   content !== null,
                   isDraggable,
-                  itemType !== DragDropItemType.default,
+                  itemType !== DragDropItemType.undraggableUndroppable,
                   dictionaryId,
                   navigationConfigId,
                   index
@@ -255,6 +280,7 @@ class Navigation extends Foundation<
                 role={"treeitem"}
                 className={this.props.managedClasses.navigation_itemRegion}
                 aria-expanded={this.getExpandedState(dictionaryId, navigationConfigId)}
+                data-type={itemType}
                 key={index}
             >
                 {trigger}
@@ -279,16 +305,26 @@ class Navigation extends Foundation<
                 index={index}
                 key={index}
                 isCollapsible={isCollapsible}
-                isEditable={
-                    this.state.activeItemEditable &&
-                    this.isEditable(dictionaryId, navigationConfigId)
-                }
-                className={this.getDraggableItemClassName(
+                isEditing={this.isEditing(dictionaryId, navigationConfigId)}
+                inputRef={this.editableElement}
+                className={getDraggableItemClassName(
                     isCollapsible,
                     isDraggable,
                     isDroppable,
                     dictionaryId,
-                    navigationConfigId
+                    navigationConfigId,
+                    this.state.hoveredItem,
+                    this.state.activeDictionaryId,
+                    this.state.activeNavigationConfigId,
+                    this.props.defaultLinkedDataDroppableDataLocation,
+                    this.props.managedClasses.navigation_item,
+                    this.props.managedClasses.navigation_item__expandable,
+                    this.props.managedClasses.navigation_item__active,
+                    this.props.managedClasses.navigation_item__draggable,
+                    this.props.managedClasses.navigation_item__droppable,
+                    this.props.managedClasses.navigation_item__hover,
+                    this.props.managedClasses.navigation_item__hoverAfter,
+                    this.props.managedClasses.navigation_item__hoverBefore
                 )}
                 expandTriggerClassName={
                     this.props.managedClasses.navigation_itemExpandTrigger
@@ -379,11 +415,15 @@ class Navigation extends Foundation<
         return null;
     }
 
-    private isEditable(dictionaryId?: string, navigationConfigId?: string): boolean {
+    /**
+     * Determine if an element is currently being edited
+     */
+    private isEditing(dictionaryId?: string, navigationConfigId?: string): boolean {
         return (
-            this.state.activeDictionaryId === dictionaryId &&
-            this.state.activeNavigationConfigId === navigationConfigId &&
-            this.state.activeNavigationConfigId === ""
+            this.state.textEditing &&
+            this.state.textEditing.dictionaryId === dictionaryId &&
+            this.state.textEditing.navigationConfigId === navigationConfigId &&
+            this.state.textEditing.navigationConfigId === ""
         );
     }
 
@@ -442,11 +482,16 @@ class Navigation extends Foundation<
 
     private getParentElement(dictionaryId: string): { [key: string]: Set<string> } {
         if (this.state.dataDictionary[0][dictionaryId].parent) {
-            let parentDictionaryItem =
-                this.state.expandedNavigationConfigItems[dictionaryId] || new Set([""]);
-
             const parentDictionaryId = this.state.dataDictionary[0][dictionaryId].parent
                 .id;
+            const parentDictionaryItem = this.state.expandedNavigationConfigItems[
+                parentDictionaryId
+            ]
+                ? new Set([
+                      "",
+                      ...this.state.expandedNavigationConfigItems[parentDictionaryId],
+                  ])
+                : new Set([""]);
             const parentDictionaryItemDataLocations: Set<string> = new Set(
                 this.state.dataDictionary[0][dictionaryId].parent.dataLocation.split(".")
             );
@@ -463,117 +508,50 @@ class Navigation extends Foundation<
         return {};
     }
 
-    private getDraggableItemClassName(
-        isCollapsible: boolean,
-        isDraggable: boolean,
-        isDroppable: boolean,
-        dictionaryId: string,
-        navigationConfigId: string
-    ): string {
-        let className: string = this.props.managedClasses.navigation_item;
-
-        if (isCollapsible) {
-            className += ` ${this.props.managedClasses.navigation_item__expandable}`;
-        }
-
-        if (
-            this.state.activeDictionaryId === dictionaryId &&
-            this.state.activeNavigationConfigId === navigationConfigId
-        ) {
-            className += ` ${this.props.managedClasses.navigation_item__active}`;
-        }
-
-        if (isDraggable) {
-            className += ` ${this.props.managedClasses.navigation_item__draggable}`;
-        }
-
-        if (isDroppable) {
-            className += ` ${this.props.managedClasses.navigation_item__droppable}`;
-        }
-
-        if (
-            this.state.hoveredItem !== null &&
-            this.state.hoveredItem[1] === dictionaryId &&
-            this.state.hoveredItem[2] === navigationConfigId
-        ) {
-            if (this.state.hoveredItem[0] === DragDropItemType.linkedDataContainer) {
-                className += ` ${this.props.managedClasses.navigation_item__hover}`;
-            } else if (this.state.hoveredItem[0] === DragDropItemType.linkedData) {
-                if (this.state.hoveredItem[3] === HoverLocation.after) {
-                    className += ` ${this.props.managedClasses.navigation_item__hoverAfter}`;
-                } else {
-                    className += ` ${this.props.managedClasses.navigation_item__hoverBefore}`;
-                }
-            }
-        }
-
-        return className;
-    }
-
     /**
      * Handler for the beginning of the drag
      * - This method removes the dragging item from the data
      */
     private handleDragStart = (index: number): ((dictionaryId: string) => void) => {
         return (dictionaryId: string): void => {
-            this.setState({
-                linkedData: getLinkedData(this.state.dataDictionary, [dictionaryId]),
-                linkedDataLocation: [
-                    this.state.navigationDictionary[0][dictionaryId][0][
-                        this.state.navigationDictionary[0][dictionaryId][1]
-                    ].parentDictionaryItem.id,
-                    this.state.navigationDictionary[0][dictionaryId][0][
-                        this.state.navigationDictionary[0][dictionaryId][1]
-                    ].parentDictionaryItem.dataLocation,
+            this.setState(
+                getDragStartState(
+                    dictionaryId,
                     index,
-                ],
-            });
+                    this.state.dataDictionary,
+                    this.state.navigationDictionary
+                )
+            );
 
-            this.props.messageSystem.postMessage({
-                type: MessageSystemType.data,
-                action: MessageSystemDataTypeAction.removeLinkedData,
-                dictionaryId: this.state.navigationDictionary[0][dictionaryId][0][
-                    this.state.navigationDictionary[0][dictionaryId][1]
-                ].parentDictionaryItem.id,
-                dataLocation: this.state.navigationDictionary[0][dictionaryId][0][
-                    this.state.navigationDictionary[0][dictionaryId][1]
-                ].parentDictionaryItem.dataLocation,
-                linkedData: this.state.navigationDictionary[0][
-                    this.state.navigationDictionary[0][dictionaryId][0][
-                        this.state.navigationDictionary[0][dictionaryId][1]
-                    ].parentDictionaryItem.id
-                ][0][
-                    this.state.navigationDictionary[0][dictionaryId][0][
-                        this.state.navigationDictionary[0][dictionaryId][1]
-                    ].parentDictionaryItem.dataLocation
-                ].data.filter((value: LinkedData) => {
-                    return value.id === dictionaryId;
-                }),
-                options: {
-                    originatorId: navigationId,
-                },
-            });
+            this.props.messageSystem.postMessage(
+                getDragStartMessage(
+                    dictionaryId,
+                    navigationId,
+                    this.state.navigationDictionary
+                )
+            );
         };
     };
 
     private handleDragEnd = (): void => {
-        this.props.messageSystem.postMessage({
-            type: MessageSystemType.data,
-            action: MessageSystemDataTypeAction.addLinkedData,
-            linkedData: this.state.linkedData,
-            dictionaryId: this.state.linkedDataLocation[0],
-            dataLocation: this.state.linkedDataLocation[1],
-            index: this.state.linkedDataLocation[2],
-            options: {
-                originatorId: navigationId,
-            },
-        });
+        this.props.messageSystem.postMessage(
+            getDragEndMessage(
+                navigationId,
+                this.state.hoveredItem,
+                this.state.linkedData,
+                this.state.linkedDataLocation,
+                this.props.defaultLinkedDataDroppableDataLocation
+            )
+        );
 
         this.setState({
             hoveredItem: null,
         });
     };
 
+    /**
+     * Handles hovering over an item
+     */
     private handleDragHover = (
         type: DragDropItemType,
         dictionaryId: string,
@@ -581,45 +559,18 @@ class Navigation extends Foundation<
         index: number,
         location: HoverLocation
     ): void => {
-        let parentDictionaryId: string = dictionaryId;
-        let parentDataLocation: string = this.state.navigationDictionary[0][
-            dictionaryId
-        ][0][navigationConfigId].relativeDataLocation;
-        const isLinkedDataContainer: boolean =
-            type === DragDropItemType.linkedDataContainer;
-
-        if (
-            !isLinkedDataContainer &&
-            this.state.navigationDictionary[0][dictionaryId][0][navigationConfigId]
-                .parentDictionaryItem !== undefined
-        ) {
-            parentDataLocation = this.state.navigationDictionary[0][dictionaryId][0][
-                navigationConfigId
-            ].parentDictionaryItem.dataLocation;
-            parentDictionaryId = this.state.navigationDictionary[0][dictionaryId][0][
-                navigationConfigId
-            ].parentDictionaryItem.id;
-        }
-
-        if (
-            this.state.hoveredItem === null ||
-            dictionaryId !== this.state.hoveredItem[1] ||
-            navigationConfigId !== this.state.hoveredItem[2] ||
-            location !== this.state.hoveredItem[3]
-        ) {
-            this.setState({
-                hoveredItem: [type, dictionaryId, navigationConfigId, location],
-                linkedDataLocation: [
-                    parentDictionaryId,
-                    parentDataLocation,
-                    isLinkedDataContainer
-                        ? undefined
-                        : location === HoverLocation.before
-                        ? index
-                        : index + 1,
-                ],
-            });
-        }
+        this.setState(
+            getDragHoverState(
+                dictionaryId,
+                navigationConfigId,
+                type,
+                location,
+                index,
+                this.state.hoveredItem,
+                this.state.navigationDictionary,
+                this.props.defaultLinkedDataDroppableDataLocation
+            )
+        );
     };
 
     /**
@@ -633,7 +584,6 @@ class Navigation extends Foundation<
         let timesClicked = 0;
 
         return (event: React.MouseEvent<HTMLElement>): void => {
-            clearTimeout(timer);
             timesClicked += 1;
 
             setTimeout(() => {
@@ -642,11 +592,13 @@ class Navigation extends Foundation<
                         dictionaryId,
                         navigationConfigId
                     );
+                    clearTimeout(timer);
                 } else if (timesClicked === 2) {
                     this.handleNavigationItemDoubleClick(
                         dictionaryId,
                         navigationConfigId
                     );
+                    clearTimeout(timer);
                 }
 
                 timesClicked = 0;
@@ -671,9 +623,7 @@ class Navigation extends Foundation<
         dictionaryId: string,
         navigationConfigId: string
     ): void => {
-        if (this.isEditable(dictionaryId, navigationConfigId)) {
-            this.triggerNavigationEdit();
-        }
+        this.triggerNavigationEdit(dictionaryId, navigationConfigId);
     };
 
     /**
@@ -704,7 +654,7 @@ class Navigation extends Foundation<
     ) => void) => {
         return () => {
             this.setState({
-                activeItemEditable: false,
+                textEditing: null,
             });
         };
     };
@@ -720,7 +670,7 @@ class Navigation extends Foundation<
                 switch (e.keyCode) {
                     case keyCodeEnter:
                         this.setState({
-                            activeItemEditable: false,
+                            textEditing: null,
                         });
                 }
             }
@@ -751,10 +701,24 @@ class Navigation extends Foundation<
         });
     }
 
-    private triggerNavigationEdit(): void {
-        this.setState({
-            activeItemEditable: true,
-        });
+    private triggerNavigationEdit(
+        dictionaryId: string,
+        navigationConfigId: string
+    ): void {
+        this.setState(
+            {
+                textEditing: {
+                    dictionaryId,
+                    navigationConfigId,
+                },
+            },
+            () => {
+                if (this.editableElement?.current) {
+                    this.editableElement.current.focus();
+                    this.editableElement.current.select();
+                }
+            }
+        );
     }
 
     private triggerNavigationUpdate(
@@ -763,7 +727,7 @@ class Navigation extends Foundation<
     ): void {
         this.setState(
             {
-                activeItemEditable: false,
+                textEditing: null,
             },
             () => {
                 this.props.messageSystem.postMessage({

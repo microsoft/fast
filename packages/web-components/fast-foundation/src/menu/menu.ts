@@ -195,8 +195,6 @@ export class Menu extends FoundationElement {
             this.focusIndex = 0;
         }
 
-        let indent: MenuItemColumnCount;
-
         function elementIndent(el: HTMLElement): MenuItemColumnCount {
             if (!(el instanceof MenuItem)) {
                 return 1;
@@ -221,7 +219,7 @@ export class Menu extends FoundationElement {
             }
         }
 
-        indent = menuItems.reduce((accum, current) => {
+        const indent: MenuItemColumnCount = menuItems.reduce((accum, current) => {
             const elementValue = elementIndent(current);
 
             return accum > elementValue ? accum : elementValue;

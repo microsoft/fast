@@ -16,6 +16,7 @@ import {
     disabledOpacity,
     focusStrokeOuter,
     focusStrokeWidth,
+    foregroundOnAccentRest,
     neutralFillStealthRest,
     neutralForegroundHint,
     neutralForegroundRest,
@@ -122,10 +123,8 @@ export const menuItemStyles: (
     }
 
     .expand-collapse-glyph {
-        ${
-            /* Glyph size is temporary - 
-            replace when glyph-size var is added */ ""
-        } width: 16px;
+        /* TODO: adaptive typography https://github.com/microsoft/fast/issues/2432 */
+        width: 16px;
         height: 16px;
         fill: currentcolor;
     }
@@ -144,10 +143,8 @@ export const menuItemStyles: (
     }
 
     ::slotted(svg) {
-        ${
-            /* Glyph size and margin-left is temporary - 
-            replace when adaptive typography is figured out */ ""
-        } width: 16px;
+        /* TODO: adaptive typography https://github.com/microsoft/fast/issues/2432 */
+        width: 16px;
         height: 16px;
     }
 
@@ -260,7 +257,7 @@ export const menuItemStyles: (
         width: 100%;
         height: 100%;
         display: block;
-        fill: ${neutralForegroundRest};
+        fill: ${foregroundOnAccentRest};
         pointer-events: none;
     }
 
@@ -272,7 +269,7 @@ export const menuItemStyles: (
         bottom: 4px;
         border-radius: 999px;
         display: block;
-        background: ${neutralForegroundRest};
+        background: ${foregroundOnAccentRest};
         pointer-events: none;
     }
 

@@ -1,4 +1,5 @@
-import { observable } from "@microsoft/fast-element";
+import { attr, observable } from "@microsoft/fast-element";
+import { dataSetName } from "../../message-system/message-system.utilities";
 import {
     ActivityType,
     HTMLRenderLayer,
@@ -19,6 +20,16 @@ declare global {
 }
 
 export class HTMLRenderLayerNavigation extends HTMLRenderLayer {
+    /**
+     * Specifies a query selector string for choosing the element to attach
+     * the resize observer to. Defaults to document.body if not supplied.
+     * document.querySelector is used to find the element so the resizeobserverselector
+     * should be specific enough to return only one element, otherwise only the first match
+     * will be used.
+     */
+    @attr
+    public resizeobserverselector: string;
+
     public layerActivityId: string = "NavLayer";
 
     @observable
@@ -58,7 +69,13 @@ export class HTMLRenderLayerNavigation extends HTMLRenderLayer {
             this.handleWindowChange
         );
 
-        this.resizeDetector.observe(document.body);
+        this.resizeDetector.observe(
+            (this.resizeobserverselector
+                ? (this.getRootNode() as Element).querySelector(
+                      this.resizeobserverselector
+                  )
+                : null) ?? document.body
+        );
 
         window.addEventListener("scroll", this.handleWindowChange);
         window.addEventListener("resize", this.handleWindowChange);
@@ -96,12 +113,17 @@ export class HTMLRenderLayerNavigation extends HTMLRenderLayer {
         return new OverlayPosition(pos.top, pos.left, pos.width, pos.height);
     }
 
+    private getTitleForDictionaryId(dataDictionaryId): string | null {
+        const dataDictionaryEntry = this.dataDictionary?.[0][dataDictionaryId];
+        return (
+            dataDictionaryEntry.data[dataSetName] ??
+            this.schemaDictionary?.[dataDictionaryEntry.schemaId].title ??
+            null
+        );
+    }
+
     private handleSelect(dataDictionaryId: string, elementRef: HTMLElement) {
-        const title =
-            this.schemaDictionary && this.dataDictionary
-                ? this.schemaDictionary[this.dataDictionary[0][dataDictionaryId].schemaId]
-                      .title
-                : null;
+        const title = this.getTitleForDictionaryId(dataDictionaryId);
         this.clickPosition = this.GetPositionFromElement(elementRef);
         this.clickLayerActive = true;
         this.currElementRef = elementRef;
@@ -110,11 +132,7 @@ export class HTMLRenderLayerNavigation extends HTMLRenderLayer {
     }
 
     private handleHighlight(dataDictionaryId: string, elementRef: HTMLElement) {
-        const title =
-            this.schemaDictionary && this.dataDictionary
-                ? this.schemaDictionary[this.dataDictionary[0][dataDictionaryId].schemaId]
-                      .title
-                : null;
+        const title = this.getTitleForDictionaryId(dataDictionaryId);
         this.hoverPosition = this.GetPositionFromElement(elementRef);
         this.hoverPillContent = title || "Untitled";
         this.hoverLayerActive = true;
@@ -146,6 +164,7 @@ export class HTMLRenderLayerNavigation extends HTMLRenderLayer {
         if (layerActivityId === this.layerActivityId) {
             return;
         }
+
         switch (activityType) {
             case ActivityType.hover:
                 this.handleHighlight(dataDictionaryId, elementRef as HTMLElement);

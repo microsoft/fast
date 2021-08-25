@@ -1,8 +1,60 @@
 # Change Log - @microsoft/fast-components
 
-This log was last generated on Thu, 05 Aug 2021 07:17:32 GMT and should not be manually modified.
+This log was last generated on Wed, 25 Aug 2021 07:17:07 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.7.0
+
+Wed, 25 Aug 2021 07:17:07 GMT
+
+### Minor changes
+
+- use context.tagFor to generate flippers for horizontal scroller component (john.kreitlow@microsoft.com)
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.7.0 (john.kreitlow@microsoft.com)
+
+## 2.6.2
+
+Mon, 23 Aug 2021 07:14:54 GMT
+
+### Patches
+
+- fix menu-item checked-indicator foreground color (ben@platform5.ch)
+
+## 2.6.1
+
+Thu, 19 Aug 2021 07:15:21 GMT
+
+### Patches
+
+- update examples for toolbar focus sequence bug fix (sethdonohue@Admins-MBP.guest.corp.microsoft.com)
+
+## 2.6.0
+
+Sun, 15 Aug 2021 07:17:25 GMT
+
+### Minor changes
+
+- add new PaletteRGB.from() API to support easier creation of PaletteRGB instances (nicholasrice@users.noreply.github.com)
+
+## 2.5.8
+
+Thu, 12 Aug 2021 07:16:50 GMT
+
+### Patches
+
+- fix dialog focus on open (scomea@microsoft.com)
+
+## 2.5.7
+
+Sun, 08 Aug 2021 07:18:56 GMT
+
+### Patches
+
+- replace css comment expressions with normal css comments (john.kreitlow@microsoft.com)
 
 ## 2.5.6
 

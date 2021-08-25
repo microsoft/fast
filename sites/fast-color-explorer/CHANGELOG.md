@@ -1,8 +1,88 @@
 # Change Log - @microsoft/fast-color-explorer
 
-This log was last generated on Thu, 05 Aug 2021 07:17:32 GMT and should not be manually modified.
+This log was last generated on Wed, 25 Aug 2021 07:17:07 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.6.19
+
+Wed, 25 Aug 2021 07:17:07 GMT
+
+### Patches
+
+- Bump @microsoft/fast-components to v2.7.0 (john.kreitlow@microsoft.com)
+
+## 1.6.19
+
+Mon, 23 Aug 2021 07:14:54 GMT
+
+### Patches
+
+- Bump @microsoft/site-utilities to v0.9.0 (ben@platform5.ch)
+
+## 1.6.19
+
+Sun, 22 Aug 2021 07:17:14 GMT
+
+### Patches
+
+- Bump @microsoft/site-utilities to v0.9.0 (44823142+williamw2@users.noreply.github.com)
+
+## 1.6.19
+
+Thu, 19 Aug 2021 07:15:21 GMT
+
+### Patches
+
+- Bump @microsoft/site-utilities to v0.9.0 (sethdonohue@Admins-MBP.guest.corp.microsoft.com)
+
+## 1.6.19
+
+Wed, 18 Aug 2021 07:16:21 GMT
+
+### Patches
+
+- Bump @microsoft/site-utilities to v0.9.0 (7559015+janechu@users.noreply.github.com)
+
+## 1.6.19
+
+Tue, 17 Aug 2021 07:14:05 GMT
+
+### Patches
+
+- Bump @microsoft/site-utilities to v0.9.0 (44823142+williamw2@users.noreply.github.com)
+
+## 1.6.19
+
+Sun, 15 Aug 2021 07:17:25 GMT
+
+### Patches
+
+- Bump @microsoft/site-utilities to v0.9.0 (nicholasrice@users.noreply.github.com)
+
+## 1.6.19
+
+Thu, 12 Aug 2021 07:16:50 GMT
+
+### Patches
+
+- Bump @microsoft/site-utilities to v0.9.0 (7559015+janechu@users.noreply.github.com)
+
+## 1.6.19
+
+Wed, 11 Aug 2021 07:14:31 GMT
+
+### Patches
+
+- Bump @microsoft/site-utilities to v0.9.0 (44823142+williamw2@users.noreply.github.com)
+
+## 1.6.19
+
+Sun, 08 Aug 2021 07:18:56 GMT
+
+### Patches
+
+- Bump @microsoft/fast-components to v2.5.7 (john.kreitlow@microsoft.com)
 
 ## 1.6.19
 

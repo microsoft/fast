@@ -1,19 +1,22 @@
-import { elements, html, ref, slotted, when } from "@microsoft/fast-element";
-import type { ViewTemplate } from "@microsoft/fast-element";
+import {
+    elements,
+    html,
+    ref,
+    slotted,
+    ViewTemplate,
+    when,
+} from "@microsoft/fast-element";
+import type { FoundationElementTemplate } from "../foundation-element";
 import { endTemplate, startTemplate } from "../patterns";
 import type { HorizontalScroll, HorizontalScrollOptions } from "./horizontal-scroll";
-import type { ElementDefinitionContext } from "../design-system";
 
 /**
  * @public
  */
-export const horizontalScrollTemplate: (
-    context: ElementDefinitionContext,
-    definition: HorizontalScrollOptions
-) => ViewTemplate<HorizontalScroll> = (
-    context: ElementDefinitionContext,
-    definition: HorizontalScrollOptions
-) => html`
+export const horizontalScrollTemplate: FoundationElementTemplate<
+    ViewTemplate<HorizontalScroll>,
+    HorizontalScrollOptions
+> = (context, definition) => html`
     <template
         class="horizontal-scroll"
         @keyup="${(x, c) => x.keyupHandler(c.event as KeyboardEvent)}"
@@ -44,7 +47,9 @@ export const horizontalScrollTemplate: (
                     >
                         <div class="scroll-action">
                             <slot name="previous-flipper">
-                                ${definition.previousFlipper || ""}
+                                ${definition.previousFlipper instanceof Function
+                                    ? definition.previousFlipper(context, definition)
+                                    : definition.previousFlipper ?? ""}
                             </slot>
                         </div>
                     </div>
@@ -55,7 +60,9 @@ export const horizontalScrollTemplate: (
                     >
                         <div class="scroll-action">
                             <slot name="next-flipper">
-                                ${definition.nextFlipper || ""}
+                                ${definition.nextFlipper instanceof Function
+                                    ? definition.nextFlipper(context, definition)
+                                    : definition.nextFlipper ?? ""}
                             </slot>
                         </div>
                     </div>
