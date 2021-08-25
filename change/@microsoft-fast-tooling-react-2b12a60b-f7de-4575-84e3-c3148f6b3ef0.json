@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "add a list of linked data that cannot be dropped to",
-  "packageName": "@microsoft/fast-tooling-react",
-  "email": "7559015+janechu@users.noreply.github.com",
-  "dependentChangeType": "patch"
-}

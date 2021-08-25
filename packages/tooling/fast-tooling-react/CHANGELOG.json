@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-tooling-react",
   "entries": [
     {
+      "date": "Wed, 25 Aug 2021 07:17:07 GMT",
+      "tag": "@microsoft/fast-tooling-react_v2.10.11",
+      "version": "2.10.11",
+      "comments": {
+        "patch": [
+          {
+            "comment": "add a list of linked data that cannot be dropped to",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "eeff27a68288e4f4ff9fb368779dfd21ba1392ee",
+            "package": "@microsoft/fast-tooling-react"
+          }
+        ]
+      }
+    },
+    {
       "date": "Mon, 23 Aug 2021 07:14:54 GMT",
       "tag": "@microsoft/fast-tooling-react_v2.10.10",
       "version": "2.10.10",

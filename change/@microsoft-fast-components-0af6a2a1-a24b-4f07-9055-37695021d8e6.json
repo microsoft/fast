@@ -1,7 +1,0 @@
-{
-  "type": "minor",
-  "comment": "use context.tagFor to generate flippers for horizontal scroller component",
-  "packageName": "@microsoft/fast-components",
-  "email": "john.kreitlow@microsoft.com",
-  "dependentChangeType": "patch"
-}

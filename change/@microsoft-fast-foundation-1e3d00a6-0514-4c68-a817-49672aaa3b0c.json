@@ -1,7 +1,0 @@
-{
-  "type": "minor",
-  "comment": "allow context for partials on component compositions",
-  "packageName": "@microsoft/fast-foundation",
-  "email": "john.kreitlow@microsoft.com",
-  "dependentChangeType": "patch"
-}
