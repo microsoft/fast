@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-tooling
 
-This log was last generated on Mon, 23 Aug 2021 07:14:54 GMT and should not be manually modified.
+This log was last generated on Wed, 25 Aug 2021 07:17:07 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.27.4
+
+Wed, 25 Aug 2021 07:17:07 GMT
+
+### Patches
+
+- address drag and drop issues where the active data dictionary ID was not updated during the removal of linked data (7559015+janechu@users.noreply.github.com)
 
 ## 0.27.3
 
