@@ -32,7 +32,7 @@
     "@types/lodash-es": "^4.17.4",
     "@types/mocha": "^7.0.2",
     "@types/node": "^10",
-    "@types/yeoman-generator": "^5.2.1",
+    "@types/yeoman-generator": "^5.2.2",
     "babel-core": "^7.0.0-bridge.0",
     "chai": "^4.2.0",
     "chai-spies": "^1.0.0",

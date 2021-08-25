@@ -1,16 +1,24 @@
 import * as fileSys from "fs";
 import * as _ from "lodash";
 import * as Generator from "yeoman-generator";
-import { Options } from "../commands/generate";
+// import { Options } from "../commands/generate";
+import { Options } from "../commands/new";
 
 class DefinitionGenerator extends Generator {
     pjson!: any;
 
     _ext: string = ".ts";
 
+    get _src(): any {
+        if (fileSys.existsSync("package.json")) {
+            return fileSys.readdirSync(this.destinationPath(`./src`));
+        }
+        return fileSys.readdirSync(this.destinationPath(`./${this.options.name}/src`));
+    }
+
     get _customElements(): any {
         return _.without(
-            fileSys.readdirSync(this.destinationPath("./src")),
+            this._src,
             "__test__",
             "design-system-provider",
             "utilities",
@@ -29,7 +37,7 @@ class DefinitionGenerator extends Generator {
 
     get _indexSrc(): any {
         return _.without(
-            fileSys.readdirSync(this.destinationPath("./src")),
+            this._src,
             "__test__",
             "accordion-item",
             "styles",
@@ -120,7 +128,7 @@ export const allComponents = {
                 return `export { FASTDesignSystem, fastDesignSystemDefaults } from "./fast-design-system"`;
             }
             if (item === "design-system-provider") {
-                return `export * "./${item}/index";
+                return `export * from "./${item}/index";
 export { Swatch, SwatchRGB } from "./color/swatch";
 export { Palette, PaletteRGB } from "./color/palatte";
 export { isDark } from "./color/utilities/is-dark";
@@ -138,33 +146,66 @@ export { StandardLuminance } from "./color/utilities/base-layer-luminance";`;
 
     constructor(args: any, public options: Options) {
         super(args, options);
-        this.pjson = this.fs.readJSON(this.destinationPath("package.json"), {});
+        if (!fileSys.existsSync("package.json")) {
+            this.pjson = this.fs.readJSON(`${this.options.name}/package.json`);
+        } else {
+            this.pjson = this.fs.readJSON("package.json");
+        }
     }
 
     async prompting(): Promise<void> {
-        this.log(this._importPaths);
-        // const things = this.sourceRoot(path.join(__dirname, "../../package.json"))
-        // this.log(this.pjson.namespace)
+        if (fileSys.existsSync("package.json")) {
+            this.log(`path: ./src`);
+        } else {
+            this.log(`path: ./${this.options.name}/src`);
+        }
     }
 
     writing(): void {
+        if (fileSys.existsSync("package.json")) {
+            this.fs.write(
+                this.destinationPath(`./src/custom-elements${this._ext}`),
+                this._formatPaths
+            );
+
+            this.fs.append(
+                this.destinationPath(`./src/custom-elements${this._ext}`),
+                this._exports
+            );
+
+            this.fs.append(
+                this.destinationPath(`./src/custom-elements${this._ext}`),
+                this._allComponents
+            );
+
+            this.fs.write(
+                this.destinationPath(`./src/index${this._ext}`),
+                this._index.join("\n")
+            );
+        }
         this.fs.write(
-            this.destinationPath(`./src/custom-elements${this._ext}`),
+            this.destinationPath(
+                `./${this.options.name}/src/custom-elements${this._ext}`
+            ),
             this._formatPaths
         );
 
         this.fs.append(
-            this.destinationPath(`./src/custom-elements${this._ext}`),
+            this.destinationPath(
+                `./${this.options.name}/src/custom-elements${this._ext}`
+            ),
             this._exports
         );
 
         this.fs.append(
-            this.destinationPath(`./src/custom-elements${this._ext}`),
+            this.destinationPath(
+                `./${this.options.name}/src/custom-elements${this._ext}`
+            ),
             this._allComponents
         );
 
         this.fs.write(
-            this.destinationPath(`./src/index${this._ext}`),
+            this.destinationPath(`./${this.options.name}/src/index${this._ext}`),
             this._index.join("\n")
         );
     }

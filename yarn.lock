@@ -4524,9 +4524,11 @@
   integrity sha512-rr+OQyAjxze7GgWrSaJwydHStIhHq2lvY3BOC2Mj7KnzI7XK0Uw1TOOdI9lDoajEbSWLiYgoo4f1R51erQfhPQ==
 
 "@types/debug@*":
-  version "4.1.6"
-  resolved "https://registry.yarnpkg.com/@types/debug/-/debug-4.1.6.tgz#0b7018723084918a865eff99249c490505df2163"
-  integrity sha512-7fDOJFA/x8B+sO1901BmHlf5dE1cxBU8mRXj8QOEDnn16hhGJv/IHxJtZhvsabZsIMn0eLIyeOKAeqSNJJYTpA==
+  version "4.1.7"
+  resolved "https://registry.yarnpkg.com/@types/debug/-/debug-4.1.7.tgz#7cc0ea761509124709b8b2d1090d8f6c17aadb82"
+  integrity sha512-9AonUzyTjXXhEOa0DnqpzZi6VHlqKMswga9EXjpXnnqxwLtdvPPtlO8evrI5D9S6asFRCQ6v+wpiUKbw+vKqyg==
+  dependencies:
+    "@types/ms" "*"
 
 "@types/diff@*":
   version "5.0.1"
@@ -4534,9 +4536,9 @@
   integrity sha512-XIpxU6Qdvp1ZE6Kr3yrkv1qgUab0fyf4mHYvW8N3Bx3PCsbN6or1q9/q72cv5jIFWolaGH08U9XyYoLLIykyKQ==
 
 "@types/ejs@*":
-  version "3.0.7"
-  resolved "https://registry.yarnpkg.com/@types/ejs/-/ejs-3.0.7.tgz#4f2af032f65c54e2bc0b32abce0125af7923b143"
-  integrity sha512-AUxAGNIPr7wQmzdFMNhHy/RkR5kk8gSzAZIuCYY//6ZYJKHvnjezmoEYP34coPleUPnqrUWt03cCq7NzNaA/qg==
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/@types/ejs/-/ejs-3.1.0.tgz#ab8109208106b5e764e5a6c92b2ba1c625b73020"
+  integrity sha512-DCg+Ka+uDQ31lJ/UtEXVlaeV3d6t81gifaVWKJy4MYVVgvJttyX/viREy+If7fz+tK/gVxTGMtyrFPnm4gjrVA==
 
 "@types/eslint-scope@^3.7.0":
   version "3.7.0"
@@ -4779,6 +4781,11 @@
   version "8.2.0"
   resolved "https://registry.yarnpkg.com/@types/mocha/-/mocha-8.2.0.tgz#3eb56d13a1de1d347ecb1957c6860c911704bc44"
   integrity sha512-/Sge3BymXo4lKc31C8OINJgXLaw+7vL1/L1pGiBNpGrBiT8FQiaFpSYV0uhTaG4y78vcMBTMFsWaHDvuD+xGzQ==
+
+"@types/ms@*":
+  version "0.7.31"
+  resolved "https://registry.yarnpkg.com/@types/ms/-/ms-0.7.31.tgz#31b7ca6407128a3d2bbc27fe2d21b345397f6197"
+  integrity sha512-iiUgKzV9AuaEkZqkOLDIvlQiL6ltuZd9tGcW3gwpnX8JbuiuhFlEGmmFXEXkN50Cvq7Os88IY2v0dkDqXYWVgA==
 
 "@types/node-fetch@^2.5.7":
   version "2.5.11"
@@ -5065,10 +5072,10 @@
     chalk "^4.1.0"
     rxjs "^6.4.0"
 
-"@types/yeoman-generator@*", "@types/yeoman-generator@^5.2.1":
-  version "5.2.1"
-  resolved "https://registry.yarnpkg.com/@types/yeoman-generator/-/yeoman-generator-5.2.1.tgz#da0a88d36ad20f05afa59aa330f10d4936c2ed7c"
-  integrity sha512-3l6Jlc8oMRetDqkm1mFOx0KPKVlstWbeGqzETYABFORsJ+p9p2A+YVigUfYKSiptRM/iF/5TzAFvSNDwfwOVTQ==
+"@types/yeoman-generator@*", "@types/yeoman-generator@^5.2.2":
+  version "5.2.2"
+  resolved "https://registry.yarnpkg.com/@types/yeoman-generator/-/yeoman-generator-5.2.2.tgz#970fba066e358f1d3eda2fa404dbd30a5cca23c2"
+  integrity sha512-tdX63hwkSEGPizBJRwFxfxcQO5uOBTxJFZVVxGIXUY9HzRsb+45cLIBKK3nKH6bNSvcXDVjDSoqD+6/79OHKFw==
   dependencies:
     "@types/debug" "*"
     "@types/ejs" "*"

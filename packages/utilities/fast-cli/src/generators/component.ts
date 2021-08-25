@@ -3,6 +3,7 @@ import * as _ from "lodash";
 import * as Generator from "yeoman-generator";
 
 import { Options } from "../commands/generate";
+import { definitions } from "../definitions";
 
 class ComponentGenerator extends Generator {
     pjson!: any;
@@ -18,7 +19,7 @@ class ComponentGenerator extends Generator {
         this.log(path.join(__dirname, "../../templates"));
     }
 
-    writing(): void {
+    async writing(): Promise<void> {
         this.sourceRoot(path.join(__dirname, "../../templates/component"));
 
         const namespace = this.pjson.namespace;
@@ -81,6 +82,10 @@ class ComponentGenerator extends Generator {
             this.destinationPath(`src/${this.options.name}/README.md`),
             opts
         );
+    }
+
+    end(): void {
+        definitions();
     }
 }
 
