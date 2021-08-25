@@ -7,6 +7,9 @@
 module.exports = (baseline, benchmark) => {
     return {
         hz: benchmark.hz - baseline.hz,
+        "hz percentage": ((benchmark.hz - baseline.hz) / baseline.hz) * 100,
         mean: benchmark.stats.mean - baseline.stats.mean,
+        "mean percentage":
+            ((benchmark.stats.mean - baseline.stats.mean) / baseline.stats.mean) * 100,
     };
 };
