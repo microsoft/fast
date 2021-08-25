@@ -145,7 +145,6 @@ export const selectSpanStyle: CSSRules<{}> = {
         position: "absolute",
         top: "9px",
         right: "4px",
-        zIndex: "1",
         borderLeft: "3px solid transparent",
         borderRight: "3px solid transparent",
         borderTop: `3px solid ${textColorCSSProperty}`,
@@ -244,7 +243,6 @@ export const removeItemStyle: CSSRules<{}> = {
     padding: "0",
     width: "20px",
     height: "20px",
-    zIndex: "1",
     borderRadius: borderRadiusCSSProperty,
     ...applyFocusVisible({
         ...insetStrongBoxShadow(accentColorCSSProperty),
