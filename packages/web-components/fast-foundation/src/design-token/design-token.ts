@@ -367,6 +367,7 @@ class DesignTokenBindingObserver<T> {
         // after DesignToken.setValueFor() when setting a dependency of the value being retrieved can return a stale
         // value. Assigning .handleChange to .call forces immediate invocation of this classes handleChange() method,
         // allowing resolution of values synchronously.
+        // TODO: https://github.com/microsoft/fast/issues/5110
         (this.observer as any).handleChange = (this.observer as any).call;
 
         this.handleChange();
