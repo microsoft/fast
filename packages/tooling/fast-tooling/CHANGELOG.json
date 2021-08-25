@@ -2,6 +2,72 @@
   "name": "@microsoft/fast-tooling",
   "entries": [
     {
+      "date": "Wed, 25 Aug 2021 07:17:07 GMT",
+      "tag": "@microsoft/fast-tooling_v0.27.4",
+      "version": "0.27.4",
+      "comments": {
+        "patch": [
+          {
+            "comment": "address drag and drop issues where the active data dictionary ID was not updated during the removal of linked data",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "eeff27a68288e4f4ff9fb368779dfd21ba1392ee",
+            "package": "@microsoft/fast-tooling"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Mon, 23 Aug 2021 07:14:54 GMT",
+      "tag": "@microsoft/fast-tooling_v0.27.3",
+      "version": "0.27.3",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-components to v2.6.2",
+            "author": "ben@platform5.ch",
+            "commit": "c819b1959c9e941a68fe7ebd75ce94c4ce59d83b",
+            "package": "@microsoft/fast-tooling"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sun, 22 Aug 2021 07:17:14 GMT",
+      "tag": "@microsoft/fast-tooling_v0.27.2",
+      "version": "0.27.2",
+      "comments": {
+        "patch": [
+          {
+            "comment": "fix color picker component value update bug",
+            "author": "44823142+williamw2@users.noreply.github.com",
+            "commit": "4c0bdb6211e503843d4ade19208e897f8750a95d",
+            "package": "@microsoft/fast-tooling"
+          },
+          {
+            "comment": "fixes an issue where the CSS layout would not update when style was updated in the Monaco Editor",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "2ca5f4c605fcd6750a662431b4b0a02ffeac42d5",
+            "package": "@microsoft/fast-tooling"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 19 Aug 2021 07:15:21 GMT",
+      "tag": "@microsoft/fast-tooling_v0.27.1",
+      "version": "0.27.1",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-components to v2.6.1",
+            "author": "sethdonohue@Admins-MBP.guest.corp.microsoft.com",
+            "commit": "4a4e2c16987aa015c3f90adbe400f09a0d4c2563",
+            "package": "@microsoft/fast-tooling"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 18 Aug 2021 07:16:21 GMT",
       "tag": "@microsoft/fast-tooling_v0.27.0",
       "version": "0.27.0",
