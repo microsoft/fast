@@ -382,7 +382,7 @@ export class VirtualizingStack extends FoundationElement {
             );
             const visibleRangeLength = this.visibleRangeEnd - this.visibleRangeStart;
             let lastVisibleIndex: number =
-                firstVisibleIndex + Math.floor(visibleRangeLength / this.itemHeight);
+                firstVisibleIndex + Math.ceil(visibleRangeLength / this.itemHeight);
 
             if (firstVisibleIndex < 0) {
                 firstVisibleIndex = 0;
@@ -392,7 +392,7 @@ export class VirtualizingStack extends FoundationElement {
                 lastVisibleIndex = this.items.length - 1;
             }
 
-            this.visibleItems = this.items.slice(firstVisibleIndex, lastVisibleIndex);
+            this.visibleItems = this.items.slice(firstVisibleIndex, lastVisibleIndex + 1);
             this.topSpacerHeight = firstVisibleIndex * this.itemHeight;
             this.bottomSpacerHeight =
                 (this.items.length - lastVisibleIndex - 1) * this.itemHeight;
