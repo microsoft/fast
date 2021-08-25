@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Thu, 19 Aug 2021 07:15:21 GMT and should not be manually modified.
+This log was last generated on Wed, 25 Aug 2021 07:17:07 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.7.0
+
+Wed, 25 Aug 2021 07:17:07 GMT
+
+### Minor changes
+
+- allow context for partials on component compositions (john.kreitlow@microsoft.com)
 
 ## 2.6.5
 
