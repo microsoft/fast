@@ -18,6 +18,13 @@ export interface StyleTarget {
     append(styles: HTMLStyleElement): void;
 
     /**
+     * Adds styles to the target.
+     * @param styles - The styles element to add.
+     * @deprecated
+     */
+    prepend(styles: HTMLStyleElement): void;
+
+    /**
      * Removes styles from the target.
      * @param styles - The styles element to remove.
      */
