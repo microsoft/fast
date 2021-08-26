@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-foundation",
   "entries": [
     {
+      "date": "Thu, 26 Aug 2021 07:17:43 GMT",
+      "tag": "@microsoft/fast-foundation_v2.7.1",
+      "version": "2.7.1",
+      "comments": {
+        "patch": [
+          {
+            "comment": "fix slider dragging when page is scrolled",
+            "author": "corylaviska@microsoft.com",
+            "commit": "bc0c7b0a0b99fd8463740b09870178ae192e5274",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 25 Aug 2021 07:17:07 GMT",
       "tag": "@microsoft/fast-foundation_v2.7.0",
       "version": "2.7.0",

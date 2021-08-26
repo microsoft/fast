@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-element",
   "entries": [
     {
+      "date": "Thu, 26 Aug 2021 07:17:43 GMT",
+      "tag": "@microsoft/fast-element_v1.4.2",
+      "version": "1.4.2",
+      "comments": {
+        "patch": [
+          {
+            "comment": "feat(fast-element): make the task queue resilient to task exceptions",
+            "author": "roeisenb@microsoft.com",
+            "commit": "0e03f23e37b83cd1b428c01cc0e3d4c2dd9f69bd",
+            "package": "@microsoft/fast-element"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 03 Aug 2021 07:17:33 GMT",
       "tag": "@microsoft/fast-element_v1.4.1",
       "version": "1.4.1",

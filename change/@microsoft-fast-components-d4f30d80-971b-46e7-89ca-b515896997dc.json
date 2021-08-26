@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "fix typings so that PaletteRGB.from supports plain objects",
-  "packageName": "@microsoft/fast-components",
-  "email": "nicholasrice@users.noreply.github.com",
-  "dependentChangeType": "patch"
-}
