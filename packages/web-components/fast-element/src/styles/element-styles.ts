@@ -12,15 +12,15 @@ export interface StyleTarget {
     adoptedStyleSheets?: CSSStyleSheet[];
 
     /**
-     * Adds styles to the target.
+     * Adds styles to the target by appending the styles.
      * @param styles - The styles element to add.
      */
     append(styles: HTMLStyleElement): void;
 
     /**
-     * Adds styles to the target.
+     * Adds styles to the target by prepending the styles.
      * @param styles - The styles element to add.
-     * @deprecated
+     * @deprecated - use append()
      */
     prepend(styles: HTMLStyleElement): void;
 

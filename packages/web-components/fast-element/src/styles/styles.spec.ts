@@ -77,7 +77,7 @@ if (DOM.supportsAdoptedStyleSheets) {
                 expect((target.adoptedStyleSheets![0])).to.equal(cache.get('r'));
                 expect((target.adoptedStyleSheets![1])).to.equal(cache.get('g'));
             });
-            it("should order HTMLStyleElement in order of provided sheets", () => {
+            it("should order HTMLStyleElements in array order of provided sheets", () => {
                 const cache = new Map();
                 const red = new AdoptedStyleSheetsStyles(['r', 'g'], cache);
                 const target: Pick<StyleTarget, "adoptedStyleSheets"> = {
@@ -151,7 +151,7 @@ describe("StyleSheetStyles", () => {
         expect((shadowRoot.childNodes[0] as HTMLStyleElement).innerHTML).to.equal("body:{color:red;}");
         expect((shadowRoot.childNodes[1] as HTMLStyleElement).innerHTML).to.equal("body:{color:green;}");
     });
-    it("should order HTMLStyleElement in order of provided sheets", () => {
+    it("should order the HTMLStyleElements in array order of provided sheets", () => {
         const red = new StyleElementStyles([`body:{color:red;}`, `body:{color:green;}`]);
         document.body.innerHTML = "";
 
