@@ -1,0 +1,7 @@
+{
+  "type": "minor",
+  "comment": "Adds capability to Observable to subscribe to any observable property change for an object",
+  "packageName": "@microsoft/fast-element",
+  "email": "nicholasrice@users.noreply.github.com",
+  "dependentChangeType": "patch"
+}

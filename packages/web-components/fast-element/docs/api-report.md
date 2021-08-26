@@ -425,8 +425,8 @@ export class PropertyChangeNotifier implements Notifier {
     constructor(source: any);
     notify(propertyName: string): void;
     readonly source: any;
-    subscribe(subscriber: Subscriber, propertyToWatch: string): void;
-    unsubscribe(subscriber: Subscriber, propertyToUnwatch: string): void;
+    subscribe(subscriber: Subscriber, propertyToWatch?: string): void;
+    unsubscribe(subscriber: Subscriber, propertyToUnwatch?: string): void;
 }
 
 // @public
