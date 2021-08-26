@@ -108,10 +108,10 @@ export interface DesignSystemRegistrationContext {
 
     /**
      * Used to attempt to define a custom element.
-     * @param ctx - The custom element definition.
+     * @param params - The custom element definition.
      * @public
      */
-    tryDefineElement(ctx: ElementDefinitionParams);
+    tryDefineElement(params: ElementDefinitionParams);
 }
 
 /**
@@ -287,9 +287,9 @@ class DefaultDesignSystem implements DesignSystem {
 
         this.context = {
             elementPrefix: this.prefix,
-            tryDefineElement(ctx: ElementDefinitionParams) {
-                const { name, baseClass, callback } = ctx;
-                let { type } = ctx;
+            tryDefineElement(params: ElementDefinitionParams) {
+                const { name, baseClass, callback } = params;
+                let { type } = params;
                 let elementName: string | null = name;
                 let foundByName = elementTypesByTag.get(elementName);
 
