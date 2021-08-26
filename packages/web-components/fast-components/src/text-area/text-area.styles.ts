@@ -1,35 +1,22 @@
 import { css, ElementStyles } from "@microsoft/fast-element";
 import {
-    disabledCursor,
     display,
     ElementDefinitionContext,
-    focusVisible,
     forcedColorsStylesheetBehavior,
     FoundationElementDefinition,
 } from "@microsoft/fast-foundation";
 import {
-    accentFillActive,
-    accentFillHover,
-    accentFillRest,
-    bodyFont,
-    controlCornerRadius,
-    designUnit,
-    disabledOpacity,
-    focusStrokeOuter,
-    neutralFillHover,
-    neutralFillInputActive,
-    neutralFillInputHover,
-    neutralFillInputRest,
-    neutralFillRest,
-    neutralForegroundRest,
-    neutralStrokeRest,
-    strokeWidth,
-    typeRampBaseFontSize,
-    typeRampBaseLineHeight,
-} from "../design-tokens";
-import { heightNumber } from "../styles/index";
+    heightNumber,
+    inputFilledForcedColorStyles,
+    inputFilledStyles,
+    inputForcedColorStyles,
+    inputStateStyles,
+    inputStyles,
+} from "../styles";
+import { appearanceBehavior } from "../utilities/behaviors";
+import { designUnit } from "../design-tokens";
 
-export const textAreaStyles: (
+export const textAreaFilledStyles: (
     context: ElementDefinitionContext,
     definition: FoundationElementDefinition
 ) => ElementStyles = (
@@ -37,102 +24,53 @@ export const textAreaStyles: (
     definition: FoundationElementDefinition
 ) =>
     css`
-    ${display("inline-block")} :host {
-        font-family: ${bodyFont};
-        outline: none;
-        user-select: none;
+        ${inputFilledStyles(context, definition, ".control")}
+    `.withBehaviors(
+        forcedColorsStylesheetBehavior(
+            css`
+                ${inputFilledForcedColorStyles(context, definition, ".control")}
+            `
+        )
+    );
+
+export const textAreaStyles = (context, definition) =>
+    css`
+    ${display("inline-flex")}
+
+    ${inputStyles(context, definition, ".control")}
+
+    ${inputStateStyles(context, definition, ".control")}
+
+    :host {
+      flex-direction: column;
+      vertical-align: bottom;
     }
 
     .control {
-        box-sizing: border-box;
-        position: relative;
-        color: ${neutralForegroundRest};
-        background: ${neutralFillInputRest};
-        border-radius: calc(${controlCornerRadius} * 1px);
-        border: calc(${strokeWidth} * 1px) solid ${accentFillRest};
-        height: calc(${heightNumber} * 2px);
-        font: inherit;
-        font-size: ${typeRampBaseFontSize};
-        line-height: ${typeRampBaseLineHeight};
-        padding: calc(${designUnit} * 2px + 1px);
-        width: 100%;
-        resize: none;
+      height: calc((${heightNumber} * 2) * 1px);
+      padding: calc(${designUnit}} * 1.5px) calc(${designUnit}} * 2px + 1px);
     }
 
-    .control:hover:enabled {
-        background: ${neutralFillInputHover};
-        border-color: ${accentFillHover};
+    :host .control {
+      resize: none;
     }
 
-    .control:active:enabled {
-        background: ${neutralFillInputActive};
-        border-color: ${accentFillActive};
+    :host(.resize-both) .control {
+      resize: both;
     }
 
-    .control:hover,
-    .control:${focusVisible},
-    .control:disabled,
-    .control:active {
-        outline: none;
+    :host(.resize-horizontal) .control {
+      resize: horizontal;
     }
 
-    :host(:focus-within) .control {
-        border-color: ${focusStrokeOuter};
-        box-shadow: 0 0 0 1px ${focusStrokeOuter} inset;
+    :host(.resize-vertical) .control {
+      resize: vertical;
     }
-
-    :host([appearance="filled"]) .control {
-        background: ${neutralFillRest};
-    }
-
-    :host([appearance="filled"]:hover:not([disabled])) .control {
-        background: ${neutralFillHover};
-    }
-
-    :host([resize="both"]) .control {
-        resize: both;
-    }
-
-    :host([resize="horizontal"]) .control {
-        resize: horizontal;
-    }
-
-    :host([resize="vertical"]) .control {
-        resize: vertical;
-    }
-
-    .label {
-        display: block;
-        color: ${neutralForegroundRest};
-        cursor: pointer;
-        font-size: ${typeRampBaseFontSize};
-        line-height: ${typeRampBaseLineHeight};
-        margin-bottom: 4px;
-    }
-
-    .label__hidden {
-        display: none;
-        visibility: hidden;
-    }
-
-    :host([disabled]) .label,
-    :host([readonly]) .label,
-    :host([readonly]) .control,
-    :host([disabled]) .control {
-        cursor: ${disabledCursor};
-    }
-    :host([disabled]) {
-        opacity: ${disabledOpacity};
-    }
-    :host([disabled]) .control {
-        border-color: ${neutralStrokeRest};
-    }
- `.withBehaviors(
+  `.withBehaviors(
+        appearanceBehavior("filled", textAreaFilledStyles(context, definition)),
         forcedColorsStylesheetBehavior(
             css`
-                :host([disabled]) {
-                    opacity: 1;
-                }
+                ${inputForcedColorStyles(context, definition, ".control")}
             `
         )
     );

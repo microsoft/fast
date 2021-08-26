@@ -1,15 +1,14 @@
 import { css, ElementStyles } from "@microsoft/fast-element";
 import {
-    AnchoredRegion,
     ElementDefinitionContext,
     forcedColorsStylesheetBehavior,
     FoundationElementDefinition,
 } from "@microsoft/fast-foundation";
+import { elevationShadowTooltip } from "../styles/index";
 import {
     bodyFont,
     controlCornerRadius,
-    focusStrokeOuter,
-    neutralFillRest,
+    fillColor,
     neutralForegroundRest,
     strokeWidth,
     typeRampBaseFontSize,
@@ -29,28 +28,26 @@ export const tooltipStyles: (
             overflow: visible;
             height: 0;
             width: 0;
+            z-index: 10000;
         }
 
         .tooltip {
             box-sizing: border-box;
             border-radius: calc(${controlCornerRadius} * 1px);
-            border: calc(${strokeWidth} * 1px) solid ${focusStrokeOuter};
-            box-shadow: 0 0 0 1px ${focusStrokeOuter} inset;
-            background: ${neutralFillRest};
+            border: calc(${strokeWidth} * 1px) solid transparent;
+            background: ${fillColor};
             color: ${neutralForegroundRest};
-            padding: 4px;
+            padding: 4px 12px;
             height: fit-content;
             width: fit-content;
             font-family: ${bodyFont};
             font-size: ${typeRampBaseFontSize};
             line-height: ${typeRampBaseLineHeight};
             white-space: nowrap;
-            /* TODO: a mechanism to manage z-index across components
-                https://github.com/microsoft/fast/issues/3813 */
-            z-index: 10000;
+            box-shadow: ${elevationShadowTooltip};
         }
 
-        ${context.tagFor(AnchoredRegion)} {
+        fast-anchored-region {
             display: flex;
             justify-content: center;
             align-items: center;
@@ -58,31 +55,75 @@ export const tooltipStyles: (
             flex-direction: row;
         }
 
-        ${context.tagFor(AnchoredRegion)}.right,
-        ${context.tagFor(AnchoredRegion)}.left {
+        fast-anchored-region.right,
+        fast-anchored-region.left {
             flex-direction: column;
         }
 
-        ${context.tagFor(AnchoredRegion)}.top .tooltip {
-            margin-bottom: 4px;
+        fast-anchored-region.top .tooltip::after,
+        fast-anchored-region.bottom .tooltip::after,
+        fast-anchored-region.left .tooltip::after,
+        fast-anchored-region.right .tooltip::after {
+            content: "";
+            width: 12px;
+            height: 12px;
+            background: ${fillColor};
+            border-radius: calc(${controlCornerRadius} * 1px);
+            position: absolute;
         }
 
-        ${context.tagFor(AnchoredRegion)}.bottom .tooltip {
-            margin-top: 4px;
+        fast-anchored-region.top .tooltip::after {
+            transform: rotate(45deg) translateX(-50%);
+            bottom: 4px;
+            left: 50%;
         }
 
-        ${context.tagFor(AnchoredRegion)}.left .tooltip {
-            margin-right: 4px;
+        fast-anchored-region.top .tooltip {
+            margin-bottom: 12px;
         }
 
-        ${context.tagFor(AnchoredRegion)}.right .tooltip {
-            margin-left: 4px;
+        fast-anchored-region.bottom .tooltip::after {
+            transform: rotate(45deg) translateX(-50%);
+            top: 12px;
+            left: 50%;
+        }
+
+        fast-anchored-region.bottom .tooltip {
+            margin-top: 12px;
+        }
+
+        fast-anchored-region.left .tooltip::after {
+            transform: rotate(45deg) translateY(-50%);
+            top: 50%;
+            right: 12px;
+        }
+
+        fast-anchored-region.left .tooltip {
+            margin-right: 12px;
+        }
+
+        fast-anchored-region.right .tooltip::after {
+            transform: rotate(45deg) translateY(-50%);
+            top: 50%;
+            left: 4px;
+        }
+
+        fast-anchored-region.right .tooltip {
+            margin-left: 12px;
         }
     `.withBehaviors(
         forcedColorsStylesheetBehavior(
             css`
                 :host([disabled]) {
                     opacity: 1;
+                }
+                fast-anchored-region.top .tooltip::after,
+                fast-anchored-region.bottom .tooltip::after,
+                fast-anchored-region.left .tooltip::after,
+                fast-anchored-region.right .tooltip::after {
+                    content: "";
+                    width: unset;
+                    height: unset;
                 }
             `
         )

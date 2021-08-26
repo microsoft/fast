@@ -8,31 +8,29 @@ import {
     forcedColorsStylesheetBehavior,
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
+import { heightNumber } from "../styles";
 import {
-    accentFillActive,
-    accentFillHover,
-    accentFillRest,
     bodyFont,
     controlCornerRadius,
     designUnit,
     disabledOpacity,
     fillColor,
     focusStrokeOuter,
-    foregroundOnAccentActive,
-    foregroundOnAccentHover,
-    foregroundOnAccentRest,
+    focusStrokeWidth,
     neutralFillInputActive,
+    neutralFillInputFocus,
     neutralFillInputHover,
     neutralFillInputRest,
+    neutralForegroundActive,
+    neutralForegroundHover,
     neutralForegroundRest,
-    neutralStrokeActive,
-    neutralStrokeHover,
-    neutralStrokeRest,
+    strokeControlStrongActive,
+    strokeControlStrongHover,
+    strokeControlStrongRest,
     strokeWidth,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
 } from "../design-tokens";
-import { heightNumber } from "../styles/index";
 
 export const checkboxStyles: (
     context: ElementDefinitionContext,
@@ -40,191 +38,168 @@ export const checkboxStyles: (
 ) => ElementStyles = (context: ElementDefinitionContext, definition: CheckboxOptions) =>
     css`
     ${display("inline-flex")} :host {
-        align-items: center;
-        outline: none;
-        margin: calc(${designUnit} * 1px) 0;
-        /* Chromium likes to select label text or the default slot when the checkbox is
-            clicked. Maybe there is a better solution here? */
-        user-select: none;
+      align-items: center;
+      outline: none;
+      margin: calc(${designUnit} * 1px) 0;
+      ${
+          /*
+           * Chromium likes to select label text or the default slot when
+           * the checkbox is clicked. Maybe there is a better solution here?
+           */ ""
+      } user-select: none;
     }
 
     .control {
-        position: relative;
-        width: calc((${heightNumber} / 2 + ${designUnit}) * 1px);
-        height: calc((${heightNumber} / 2 + ${designUnit}) * 1px);
-        box-sizing: border-box;
-        border-radius: calc(${controlCornerRadius} * 1px);
-        border: calc(${strokeWidth} * 1px) solid ${neutralStrokeRest};
-        background: ${neutralFillInputRest};
-        outline: none;
-        cursor: pointer;
-    }
-
-    .label {
-        font-family: ${bodyFont};
-        color: ${neutralForegroundRest};
-        /* Need to discuss with Brian how HorizontalSpacingNumber can work.
-            https://github.com/microsoft/fast/issues/2766 */
-        padding-inline-start: calc(${designUnit} * 2px + 2px);
-        margin-inline-end: calc(${designUnit} * 2px + 2px);
-        cursor: pointer;
-        font-size: ${typeRampBaseFontSize};
-        line-height: ${typeRampBaseLineHeight};
+      position: relative;
+      width: calc((${heightNumber} / 2 + ${designUnit}) * 1px);
+      height: calc((${heightNumber} / 2 + ${designUnit}) * 1px);
+      box-sizing: border-box;
+      border-radius: calc(${controlCornerRadius} * 1px);
+      border: calc(${strokeWidth} * 1px) solid ${strokeControlStrongRest};
+      background: ${neutralFillInputRest};
+      outline: none;
+      cursor: pointer;
     }
 
     .label__hidden {
-        display: none;
-        visibility: hidden;
+      display: none;
+      visibility: hidden;
     }
 
-    .checked-indicator {
-        width: 100%;
-        height: 100%;
-        display: block;
-        fill: ${foregroundOnAccentRest};
-        opacity: 0;
-        pointer-events: none;
+    .label {
+      font-family: ${bodyFont};
+      color: ${neutralForegroundRest};
+      ${
+          /* Need to discuss with Brian how HorizontalSpacingNumber can work. https://github.com/microsoft/fast/issues/2766 */ ""
+      } padding-inline-start: calc(${designUnit} * 2px + 2px);
+      margin-inline-end: calc(${designUnit} * 2px + 2px);
+      cursor: pointer;
+      font-size: ${typeRampBaseFontSize};
+      line-height: ${typeRampBaseLineHeight};
     }
 
-    .indeterminate-indicator {
-        border-radius: calc(${controlCornerRadius} * 1px);
-        background: ${foregroundOnAccentRest};
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        width: 50%;
-        height: 50%;
-        transform: translate(-50%, -50%);
-        opacity: 0;
+    slot[name="checked-indicator"],
+    slot[name="indeterminate-indicator"] {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 100%;
+      fill: ${neutralForegroundRest};
+      opacity: 0;
+      pointer-events: none;
     }
 
-    :host(:not([disabled])) .control:hover {
-        background: ${neutralFillInputHover};
-        border-color: ${neutralStrokeHover};
-    }
-
-    :host(:not([disabled])) .control:active {
-        background: ${neutralFillInputActive};
-        border-color: ${neutralStrokeActive};
+    slot[name="indeterminate-indicator"] {
+      position: absolute;
+      top: 0;
     }
 
     :host(:${focusVisible}) .control {
-        box-shadow: 0 0 0 2px ${fillColor}, 0 0 0 4px ${focusStrokeOuter};
+      box-shadow: 0 0 0 calc(${focusStrokeWidth} * 1px) ${focusStrokeOuter};
+      background: ${neutralFillInputFocus};
+      border-color: ${focusStrokeOuter};
     }
 
-    :host([aria-checked="true"]) .control {
-        background: ${accentFillRest};
-        border: calc(${strokeWidth} * 1px) solid ${accentFillRest};
+    :host([aria-checked="true"]:enabled:hover) .control {
+      background: ${neutralFillInputHover};
+      border-color: ${strokeControlStrongHover};
     }
 
-    :host([aria-checked="true"]:not([disabled])) .control:hover {
-        background: ${accentFillHover};
-        border: calc(${strokeWidth} * 1px) solid ${accentFillHover};
+    :host[aria-checked="true"]:enabled:active) .control {
+      background: ${neutralFillInputActive};
+      border-color: ${strokeControlStrongHover};
     }
 
-    :host([aria-checked="true"]:not([disabled])) .control:hover .checked-indicator {
-        fill: ${foregroundOnAccentHover};
+    :host(.disabled) .label,
+    :host(.readonly) .label,
+    :host(.readonly) .control,
+    :host(.disabled) .control {
+      cursor: ${disabledCursor};
     }
 
-    :host([aria-checked="true"]:not([disabled])) .control:hover .indeterminate-indicator {
-        background: ${foregroundOnAccentHover};
+    :host([aria-checked="true"]:not(.indeterminate)) slot[name='checked-indicator'],
+    :host(.indeterminate) slot[name='indeterminate-indicator'] {
+      opacity: 1;
     }
 
-    :host([aria-checked="true"]:not([disabled])) .control:active {
-        background: ${accentFillActive};
-        border: calc(${strokeWidth} * 1px) solid ${accentFillActive};
+    :host([aria-checked="true"]:enabled:hover) slot[name="checked-indicator"],
+    :host([aria-checked="true"]:enabled:hover) slot[name="indeterminate-indicator"] {
+      fill: ${neutralForegroundHover};
     }
 
-    :host([aria-checked="true"]:not([disabled])) .control:active .checked-indicator {
-        fill: ${foregroundOnAccentActive};
+    :host([aria-checked="true"]:enabled:active) slot[name="checked-indicator"],
+    :host([aria-checked="true"]:enabled:active) slot[name="indeterminate-indicator"] {
+      fill: ${neutralForegroundActive};
     }
 
-    :host([aria-checked="true"]:not([disabled])) .control:active .indeterminate-indicator {
-        background: ${foregroundOnAccentActive};
+    :host(.disabled) {
+      opacity: ${disabledOpacity};
     }
-
-    :host([aria-checked="true"]:${focusVisible}:not([disabled])) .control {
-        box-shadow: 0 0 0 2px ${fillColor}, 0 0 0 4px ${focusStrokeOuter};
-    }
-
-
-    :host([disabled]) .label,
-    :host([readonly]) .label,
-    :host([readonly]) .control,
-    :host([disabled]) .control {
-        cursor: ${disabledCursor};
-    }
-
-    :host([aria-checked="true"]:not(.indeterminate)) .checked-indicator,
-    :host(.indeterminate) .indeterminate-indicator {
-        opacity: 1;
-    }
-
-    :host([disabled]) {
-        opacity: ${disabledOpacity};
-    }
-`.withBehaviors(
+  `.withBehaviors(
         forcedColorsStylesheetBehavior(
             css`
-            .control {
-                forced-color-adjust: none;
-                border-color: ${SystemColors.FieldText};
-                background: ${SystemColors.Field};
-            }
-            .checked-indicator {
-                fill: ${SystemColors.FieldText};
-            }
-            .indeterminate-indicator {
-                background: ${SystemColors.FieldText};
-            }
-            :host(:not([disabled])) .control:hover, .control:active {
-                border-color: ${SystemColors.Highlight};
-                background: ${SystemColors.Field};
-            }
-            :host(:${focusVisible}) .control {
-                box-shadow: 0 0 0 2px ${SystemColors.Field}, 0 0 0 4px ${SystemColors.FieldText};
-            }
-            :host([aria-checked="true"]:${focusVisible}:not([disabled])) .control {
-                box-shadow: 0 0 0 2px ${SystemColors.Field}, 0 0 0 4px ${SystemColors.FieldText};
-            }
-            :host([aria-checked="true"]) .control {
-                background: ${SystemColors.Highlight};
-                border-color: ${SystemColors.Highlight};
-            }
-            :host([aria-checked="true"]:not([disabled])) .control:hover, .control:active {
-                border-color: ${SystemColors.Highlight};
-                background: ${SystemColors.HighlightText};
-            }
-            :host([aria-checked="true"]) .checked-indicator {
-                fill: ${SystemColors.HighlightText};
-            }
-            :host([aria-checked="true"]:not([disabled])) .control:hover .checked-indicator {
-                fill: ${SystemColors.Highlight}
-            }
-            :host([aria-checked="true"]) .indeterminate-indicator {
-                background: ${SystemColors.HighlightText};
-            }
-            :host([aria-checked="true"]) .control:hover .indeterminate-indicator {
-                background: ${SystemColors.Highlight}
-            }
-            :host([disabled]) {
-                opacity: 1;
-            }
-            :host([disabled]) .control {
-                forced-color-adjust: none;
-                border-color: ${SystemColors.GrayText};
-                background: ${SystemColors.Field};
-            }
-            :host([disabled]) .indeterminate-indicator,
-            :host([aria-checked="true"][disabled]) .control:hover .indeterminate-indicator {
-                forced-color-adjust: none;
-                background: ${SystemColors.GrayText};
-            }
-            :host([disabled]) .checked-indicator,
-            :host([aria-checked="true"][disabled]) .control:hover .checked-indicator {
-                forced-color-adjust: none;
-                fill: ${SystemColors.GrayText};
-            }
-        `
+        .control {
+          forced-color-adjust: none;
+          border-color: ${SystemColors.FieldText};
+          background: ${SystemColors.Field};
+        }
+        :host(:enabled) .control:hover,
+        .control:active {
+          border-color: ${SystemColors.Highlight};
+          background: ${SystemColors.Field};
+        }
+        slot[name='checked-indicator'] {
+          fill: ${SystemColors.FieldText};
+        }
+        slot[name='indeterminate-indicator'] {
+          fill: ${SystemColors.FieldText};
+        }
+        :host(:${focusVisible}) .control {
+          border-color: ${SystemColors.Highlight};
+          box-shadow: 0 0 0 2px ${SystemColors.Field}, 0 0 0 4px ${SystemColors.FieldText};
+        }
+        :host(.checked:${focusVisible}:enabled) .control {
+          box-shadow: 0 0 0 2px ${SystemColors.Field}, 0 0 0 4px ${SystemColors.FieldText};
+        }
+        :host(.checked) .control {
+          background: ${SystemColors.Highlight};
+          border-color: ${SystemColors.Highlight};
+        }
+        :host(.checked) .control:hover,
+        .control:active {
+          background: ${SystemColors.HighlightText};
+        }
+        :host(.checked) slot[name='checked-indicator'] {
+          fill: ${SystemColors.HighlightText};
+        }
+        :host(.checked) .control:hover slot[name='checked-indicator'] {
+          fill: ${SystemColors.Highlight};
+        }
+        :host(.checked) slot[name='indeterminate-indicator'] {
+          fill: ${SystemColors.HighlightText};
+        }
+        :host(.checked) .control:hover slot[name='indeterminate-indicator'] {
+          fill: ${SystemColors.Highlight};
+        }
+        :host(.disabled) {
+          opacity: 1;
+        }
+        :host(.disabled) .control {
+          forced-color-adjust: none;
+          border-color: ${SystemColors.GrayText};
+          background: ${SystemColors.Field};
+        }
+        :host(.disabled) slot[name='indeterminate-indicator'],
+        :host(.checked.disabled) .control:hover slot[name='indeterminate-indicator'] {
+          forced-color-adjust: none;
+          fill: ${SystemColors.GrayText};
+        }
+        :host(.disabled) slot[name='checked-indicator'],
+        :host(.checked.disabled) .control:hover slot[name='checked-indicator'] {
+          forced-color-adjust: none;
+          fill: ${SystemColors.GrayText};
+        }
+      `
         )
     );
