@@ -422,8 +422,8 @@ export class Slider extends FormAssociatedSlider implements SliderConfiguration 
                 : (e as MouseEvent);
         const eventValue: number =
             this.orientation === Orientation.horizontal
-                ? sourceEvent.pageX - this.trackLeft
-                : sourceEvent.pageY;
+                ? sourceEvent.pageX - document.documentElement.scrollLeft - this.trackLeft
+                : sourceEvent.pageY - document.documentElement.scrollTop;
 
         this.value = `${this.calculateNewValue(eventValue)}`;
     };
@@ -469,8 +469,8 @@ export class Slider extends FormAssociatedSlider implements SliderConfiguration 
 
             const controlValue: number =
                 this.orientation === Orientation.horizontal
-                    ? e.pageX - this.trackLeft
-                    : e.pageY;
+                    ? e.pageX - document.documentElement.scrollLeft - this.trackLeft
+                    : e.pageY - document.documentElement.scrollTop;
 
             this.value = `${this.calculateNewValue(controlValue)}`;
         }
