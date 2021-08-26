@@ -285,6 +285,9 @@ export type ColorRecipe = Recipe<Swatch>;
 export { Combobox }
 
 // @public
+export type ComboboxAppearance = "filled" | "outline";
+
+// @public
 export const comboboxStyles: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: ComboboxOptions) => import("@microsoft/fast-element").ElementStyles;
 
 // @public (undocumented)
@@ -648,6 +651,12 @@ export const imgTemplate: import("@microsoft/fast-element").ViewTemplate<Avatar,
 export type InteractiveColorRecipe = Recipe<InteractiveSwatchSet>;
 
 // @public (undocumented)
+export type InteractiveRecipe = Recipe<InteractiveSet>;
+
+// @public (undocumented)
+export type InteractiveSet = Record<"rest" | "hover" | "active" | "focus", string>;
+
+// @public (undocumented)
 export interface InteractiveSwatchSet {
     active: Swatch;
     focus: Swatch;
@@ -657,6 +666,9 @@ export interface InteractiveSwatchSet {
 
 // @public
 export function isDark(color: Swatch): boolean;
+
+// @public (undocumented)
+export const layerCornerRadius: import("@microsoft/fast-foundation").CSSDesignToken<number>;
 
 export { Listbox }
 
@@ -793,13 +805,22 @@ export const neutralFillStrongRest: import("@microsoft/fast-foundation").CSSDesi
 export const neutralFillStrongRestDelta: import("@microsoft/fast-foundation").CSSDesignToken<number>;
 
 // @public (undocumented)
+export const neutralForegroundActive: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
+
+// @public (undocumented)
+export const neutralForegroundFocus: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
+
+// @public (undocumented)
 export const neutralForegroundHint: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
 
 // @public (undocumented)
 export const neutralForegroundHintRecipe: DesignToken<ColorRecipe>;
 
 // @public (undocumented)
-export const neutralForegroundRecipe: DesignToken<ColorRecipe>;
+export const neutralForegroundHover: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
+
+// @public (undocumented)
+export const neutralForegroundRecipe: DesignToken<InteractiveColorRecipe>;
 
 // @public (undocumented)
 export const neutralForegroundRest: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
@@ -893,7 +914,7 @@ export class NumberField extends NumberField_2 {
 export type NumberFieldAppearance = "filled" | "outline";
 
 // @public
-export const numberFieldStyles: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: NumberFieldOptions) => import("@microsoft/fast-element").ElementStyles;
+export const numberFieldStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
 
 // @public
 export const optionStyles: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: import("@microsoft/fast-foundation").FoundationElementDefinition) => import("@microsoft/fast-element").ElementStyles;
@@ -947,7 +968,7 @@ export interface Recipe<T> {
 export { Select }
 
 // @public
-export const selectStyles: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: SelectOptions) => import("@microsoft/fast-element").ElementStyles;
+export const selectStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
 
 export { Skeleton }
 
@@ -977,6 +998,66 @@ export enum StandardLuminance {
     // (undocumented)
     LightMode = 1
 }
+
+// @public (undocumented)
+export const strokeControlAccentActive: import("@microsoft/fast-foundation").CSSDesignToken<string>;
+
+// @public (undocumented)
+export const strokeControlAccentFocus: import("@microsoft/fast-foundation").CSSDesignToken<string>;
+
+// @public (undocumented)
+export const strokeControlAccentHover: import("@microsoft/fast-foundation").CSSDesignToken<string>;
+
+// @public (undocumented)
+export const strokeControlAccentRecipe: DesignToken<InteractiveRecipe>;
+
+// @public (undocumented)
+export const strokeControlAccentRest: import("@microsoft/fast-foundation").CSSDesignToken<string>;
+
+// @public (undocumented)
+export const strokeControlActive: import("@microsoft/fast-foundation").CSSDesignToken<string>;
+
+// @public (undocumented)
+export const strokeControlFocus: import("@microsoft/fast-foundation").CSSDesignToken<string>;
+
+// @public (undocumented)
+export const strokeControlHover: import("@microsoft/fast-foundation").CSSDesignToken<string>;
+
+// @public (undocumented)
+export const strokeControlRecipe: DesignToken<InteractiveRecipe>;
+
+// @public (undocumented)
+export const strokeControlRest: import("@microsoft/fast-foundation").CSSDesignToken<string>;
+
+// @public (undocumented)
+export const strokeControlStrongActive: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
+
+// @public (undocumented)
+export const strokeControlStrongFocus: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
+
+// @public (undocumented)
+export const strokeControlStrongHover: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
+
+// @public (undocumented)
+export const strokeControlStrongRecipe: DesignToken<InteractiveColorRecipe>;
+
+// @public (undocumented)
+export const strokeControlStrongRest: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
+
+// @public (undocumented)
+export const strokeControlTextActive: import("@microsoft/fast-foundation").CSSDesignToken<string>;
+
+// @public (undocumented)
+export const strokeControlTextFocus: import("@microsoft/fast-foundation").CSSDesignToken<string>;
+
+// @public (undocumented)
+export const strokeControlTextHover: import("@microsoft/fast-foundation").CSSDesignToken<string>;
+
+// @public (undocumented)
+export const strokeControlTextRecipe: DesignToken<InteractiveRecipe>;
+
+// @public (undocumented)
+export const strokeControlTextRest: import("@microsoft/fast-foundation").CSSDesignToken<string>;
 
 // @public (undocumented)
 export const strokeWidth: import("@microsoft/fast-foundation").CSSDesignToken<number>;
@@ -1036,6 +1117,8 @@ export class TextArea extends TextArea_2 {
     // @public
     appearance: TextAreaAppearance;
     // (undocumented)
+    appearanceChanged(oldValue: TextAreaAppearance, newValue: TextAreaAppearance): void;
+    // (undocumented)
     connectedCallback(): void;
 }
 
@@ -1043,7 +1126,7 @@ export class TextArea extends TextArea_2 {
 export type TextAreaAppearance = "filled" | "outline";
 
 // @public
-export const textAreaStyles: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: import("@microsoft/fast-foundation").FoundationElementDefinition) => import("@microsoft/fast-element").ElementStyles;
+export const textAreaStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
 
 // Warning: (ae-internal-missing-underscore) The name "TextField" should be prefixed with an underscore because the declaration is marked as @internal
 //
@@ -1059,7 +1142,7 @@ export class TextField extends TextField_2 {
 export type TextFieldAppearance = "filled" | "outline";
 
 // @public
-export const textFieldStyles: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: import("@microsoft/fast-foundation").FoundationElementDefinition) => import("@microsoft/fast-element").ElementStyles;
+export const textFieldStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
 
 // Warning: (ae-internal-missing-underscore) The name "Toolbar" should be prefixed with an underscore because the declaration is marked as @internal
 //
