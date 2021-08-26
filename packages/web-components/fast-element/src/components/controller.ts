@@ -162,7 +162,7 @@ export class Controller extends PropertyChangeNotifier {
             ((this.element.getRootNode() as any) as StyleTarget);
 
         if (styles instanceof HTMLStyleElement) {
-            target.prepend(styles);
+            target.append(styles);
         } else if (!styles.isAttachedTo(target)) {
             const sourceBehaviors = styles.behaviors;
             styles.addStylesTo(target);
