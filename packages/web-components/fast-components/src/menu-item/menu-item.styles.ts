@@ -17,6 +17,8 @@ import {
     focusStrokeOuter,
     focusStrokeWidth,
     foregroundOnAccentRest,
+    neutralFillStealthActive,
+    neutralFillStealthHover,
     neutralFillStealthRest,
     neutralForegroundHint,
     neutralForegroundRest,
@@ -51,6 +53,7 @@ export const menuItemStyles: (
       line-height: ${typeRampBaseLineHeight};
       border-radius: calc(${controlCornerRadius} * 1px);
       border: calc(${strokeWidth} * 1px) solid transparent;
+      background: ${neutralFillStealthRest};
     }
 
     :host(.indent-0) {
@@ -77,17 +80,6 @@ export const menuItemStyles: (
     :host(.indent-0[aria-haspopup="menu"]) .expand-collapse-glyph-container {
         grid-column: 5;
     }
-/**
-    :host(.indent-0) .expand-collapse-glyph-container {
-        grid-column: 5;
-        grid-row: 1;
-    }
-    :host(.indent-1[aria-haspopup="menu"]), :host(.indent-1[role="menuitemcheckbox"]), :host(.indent-1[role="menuitemradio"]) {
-        display: grid;
-        grid-template-columns: minmax(32px, auto) auto 1fr minmax(32px, auto) minmax(32px, auto);
-        align-items: center;
-        min-height: 32px;
-    }*/
 
     :host(.indent-2) {
       grid-template-columns: minmax(32px, auto) minmax(32px, auto) 1fr minmax(32px, auto) minmax(32px, auto);
