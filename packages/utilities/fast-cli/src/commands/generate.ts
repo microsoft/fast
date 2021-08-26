@@ -1,6 +1,6 @@
 import { Command } from "@oclif/command";
 import { createEnv } from "yeoman-environment";
-export interface Options {
+export interface GenerateOptions {
     name: string;
 }
 
@@ -27,6 +27,6 @@ export default class Generate extends Command {
         const { args } = this.parse(Generate);
         this.generate({
             name: args.name,
-        } as Options);
+        } as GenerateOptions);
     }
 }

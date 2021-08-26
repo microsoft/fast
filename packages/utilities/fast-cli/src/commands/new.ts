@@ -4,7 +4,7 @@ import { createEnv } from "yeoman-environment";
 import { definitions } from "../definitions";
 
 const { spawn } = require("child_process");
-export interface Options {
+export interface NewOptions {
     name: string;
 }
 
@@ -40,7 +40,7 @@ export default class New extends Command {
             p.on("close", () => {
                 definitions({
                     name: args.projectName,
-                } as Options);
+                } as NewOptions);
                 resolve();
             });
         });
