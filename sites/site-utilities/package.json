@@ -58,10 +58,10 @@
   },
   "dependencies": {
     "@fluentui/web-components": "^1.2.3",
-    "@microsoft/fast-components": "^2.5.8",
-    "@microsoft/fast-foundation": "^2.6.4",
-    "@microsoft/fast-tooling": "^0.26.4",
-    "@microsoft/fast-tooling-react": "^2.10.4",
+    "@microsoft/fast-components": "^2.7.1",
+    "@microsoft/fast-foundation": "^2.7.1",
+    "@microsoft/fast-tooling": "^0.27.5",
+    "@microsoft/fast-tooling-react": "^2.10.12",
     "@skatejs/val": "^0.5.0",
     "monaco-editor": "^0.21.2",
     "vscode-html-languageservice": "^3.1.3"

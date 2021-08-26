@@ -2,6 +2,126 @@
   "name": "@microsoft/fast-tooling-examples",
   "entries": [
     {
+      "date": "Thu, 26 Aug 2021 07:17:43 GMT",
+      "tag": "@microsoft/fast-tooling-examples_v0.4.19",
+      "version": "0.4.19",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/site-utilities to v0.9.0",
+            "author": "47367562+bheston@users.noreply.github.com",
+            "commit": "db90173c4f85ff65bc77af53b827c85c1f9e3fcf",
+            "package": "@microsoft/fast-tooling-examples"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 25 Aug 2021 07:17:07 GMT",
+      "tag": "@microsoft/fast-tooling-examples_v0.4.19",
+      "version": "0.4.19",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/site-utilities to v0.9.0",
+            "author": "john.kreitlow@microsoft.com",
+            "commit": "bc9f51cb9357da7ccb34a3251b316c21dcc17b09",
+            "package": "@microsoft/fast-tooling-examples"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Mon, 23 Aug 2021 07:14:54 GMT",
+      "tag": "@microsoft/fast-tooling-examples_v0.4.19",
+      "version": "0.4.19",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/site-utilities to v0.9.0",
+            "author": "ben@platform5.ch",
+            "commit": "c819b1959c9e941a68fe7ebd75ce94c4ce59d83b",
+            "package": "@microsoft/fast-tooling-examples"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sun, 22 Aug 2021 07:17:14 GMT",
+      "tag": "@microsoft/fast-tooling-examples_v0.4.19",
+      "version": "0.4.19",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/site-utilities to v0.9.0",
+            "author": "44823142+williamw2@users.noreply.github.com",
+            "commit": "4c0bdb6211e503843d4ade19208e897f8750a95d",
+            "package": "@microsoft/fast-tooling-examples"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 19 Aug 2021 07:15:21 GMT",
+      "tag": "@microsoft/fast-tooling-examples_v0.4.19",
+      "version": "0.4.19",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/site-utilities to v0.9.0",
+            "author": "sethdonohue@Admins-MBP.guest.corp.microsoft.com",
+            "commit": "4a4e2c16987aa015c3f90adbe400f09a0d4c2563",
+            "package": "@microsoft/fast-tooling-examples"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 18 Aug 2021 07:16:21 GMT",
+      "tag": "@microsoft/fast-tooling-examples_v0.4.19",
+      "version": "0.4.19",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/site-utilities to v0.9.0",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "79f62ae08fd5db598272ca907ba03c4afa81a49f",
+            "package": "@microsoft/fast-tooling-examples"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 17 Aug 2021 07:14:05 GMT",
+      "tag": "@microsoft/fast-tooling-examples_v0.4.19",
+      "version": "0.4.19",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/site-utilities to v0.9.0",
+            "author": "44823142+williamw2@users.noreply.github.com",
+            "commit": "9bb3f1855d79777c96d69f156878a8873924f02b",
+            "package": "@microsoft/fast-tooling-examples"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sun, 15 Aug 2021 07:17:25 GMT",
+      "tag": "@microsoft/fast-tooling-examples_v0.4.19",
+      "version": "0.4.19",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/site-utilities to v0.9.0",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "820962bf53e3ddcc62b22e011878bb8ff728e223",
+            "package": "@microsoft/fast-tooling-examples"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 12 Aug 2021 07:16:50 GMT",
       "tag": "@microsoft/fast-tooling-examples_v0.4.19",
       "version": "0.4.19",

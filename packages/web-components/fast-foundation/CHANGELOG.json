@@ -2,6 +2,51 @@
   "name": "@microsoft/fast-foundation",
   "entries": [
     {
+      "date": "Thu, 26 Aug 2021 07:17:43 GMT",
+      "tag": "@microsoft/fast-foundation_v2.7.1",
+      "version": "2.7.1",
+      "comments": {
+        "patch": [
+          {
+            "comment": "fix slider dragging when page is scrolled",
+            "author": "corylaviska@microsoft.com",
+            "commit": "bc0c7b0a0b99fd8463740b09870178ae192e5274",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 25 Aug 2021 07:17:07 GMT",
+      "tag": "@microsoft/fast-foundation_v2.7.0",
+      "version": "2.7.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "allow context for partials on component compositions",
+            "author": "john.kreitlow@microsoft.com",
+            "commit": "bc9f51cb9357da7ccb34a3251b316c21dcc17b09",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 19 Aug 2021 07:15:21 GMT",
+      "tag": "@microsoft/fast-foundation_v2.6.5",
+      "version": "2.6.5",
+      "comments": {
+        "patch": [
+          {
+            "comment": "add reducefocusableElements and all slotted items to keyboard interaction",
+            "author": "sethdonohue@Admins-MBP.guest.corp.microsoft.com",
+            "commit": "4a4e2c16987aa015c3f90adbe400f09a0d4c2563",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 12 Aug 2021 07:16:50 GMT",
       "tag": "@microsoft/fast-foundation_v2.6.4",
       "version": "2.6.4",
