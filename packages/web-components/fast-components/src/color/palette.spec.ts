@@ -18,4 +18,12 @@ describe("PaletteRGB.from", () => {
 
 		expect(palette.source === test).to.be.true;
 	})
+
+	it("should create a palette from a rgb object", () => {
+		const source = {r: 1, g: 1, b: 1};
+		const palette = PaletteRGB.from(source);
+
+		expect(palette.source === source).to.be.false;
+		expect(isSwatchRGB(palette.source)).to.be.true;
+	})
 });
