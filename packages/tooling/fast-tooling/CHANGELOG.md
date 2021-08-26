@@ -1,8 +1,33 @@
 # Change Log - @microsoft/fast-tooling
 
-This log was last generated on Thu, 19 Aug 2021 07:15:21 GMT and should not be manually modified.
+This log was last generated on Wed, 25 Aug 2021 07:17:07 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.27.4
+
+Wed, 25 Aug 2021 07:17:07 GMT
+
+### Patches
+
+- address drag and drop issues where the active data dictionary ID was not updated during the removal of linked data (7559015+janechu@users.noreply.github.com)
+
+## 0.27.3
+
+Mon, 23 Aug 2021 07:14:54 GMT
+
+### Patches
+
+- Bump @microsoft/fast-components to v2.6.2 (ben@platform5.ch)
+
+## 0.27.2
+
+Sun, 22 Aug 2021 07:17:14 GMT
+
+### Patches
+
+- fix color picker component value update bug (44823142+williamw2@users.noreply.github.com)
+- fixes an issue where the CSS layout would not update when style was updated in the Monaco Editor (7559015+janechu@users.noreply.github.com)
 
 ## 0.27.1
 

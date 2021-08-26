@@ -24,6 +24,7 @@ import {
     fastToolingFile,
     fastToolingFileActionObjectUrl,
     MessageSystem,
+    voidElements,
 } from "@microsoft/fast-tooling";
 import {
     ControlConfig,
@@ -318,6 +319,7 @@ export function renderNavigationTabs(
                     messageSystem={fastMessageSystem}
                     types={[DataType.object]}
                     defaultLinkedDataDroppableDataLocation={"Slot"}
+                    droppableBlocklist={voidElements}
                 />
             </fast-tab-panel>
             <fast-tab-panel id={NavigationId.libraries + "Panel"}>

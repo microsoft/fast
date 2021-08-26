@@ -1,8 +1,28 @@
 # Change Log - @microsoft/fast-components
 
-This log was last generated on Thu, 19 Aug 2021 07:15:21 GMT and should not be manually modified.
+This log was last generated on Wed, 25 Aug 2021 07:17:07 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.7.0
+
+Wed, 25 Aug 2021 07:17:07 GMT
+
+### Minor changes
+
+- use context.tagFor to generate flippers for horizontal scroller component (john.kreitlow@microsoft.com)
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.7.0 (john.kreitlow@microsoft.com)
+
+## 2.6.2
+
+Mon, 23 Aug 2021 07:14:54 GMT
+
+### Patches
+
+- fix menu-item checked-indicator foreground color (ben@platform5.ch)
 
 ## 2.6.1
 

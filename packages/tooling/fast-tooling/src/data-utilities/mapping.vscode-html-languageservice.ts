@@ -79,7 +79,11 @@ function mapAttributesAndSlotsToData(
     schemaDictionary: SchemaDictionary
 ): { [key: string]: any } {
     const attributes = Array.isArray(node.attributes)
-        ? node.attributes
+        ? node.attributes.map(attribute => {
+              return {
+                  [attribute.name]: attribute.value,
+              };
+          })
         : Object.entries(node.attributes).map(
               ([attributeKey, attributeValue]: [string, string]) => {
                   return {
@@ -500,6 +504,7 @@ function resolveDataDictionaryFromElement(
     node: Node,
     parent: Parent,
     slotAttributes: { [key: string]: LinkedData[] },
+    children: ElementChildren,
     schemaDictionary: SchemaDictionary
 ): DataDictionary<unknown> {
     return [
@@ -512,11 +517,15 @@ function resolveDataDictionaryFromElement(
                         ? node.content
                         : mapAttributesAndSlotsToData(
                               node,
-                              slotAttributes,
+                              {
+                                  ...slotAttributes,
+                                  ...children[0],
+                              },
                               schemaId,
                               schemaDictionary
                           ),
             },
+            ...children[1],
         },
         linkedDataId,
     ];
@@ -542,14 +551,34 @@ function findSchemaId(
           }) || "div";
 }
 
+function getUniqueId(linkedDataIds: string[]): string {
+    const id: string = uniqueId("fast");
+
+    if (linkedDataIds.includes(id)) {
+        return getUniqueId(linkedDataIds);
+    }
+
+    return id;
+}
+
 function mapElementToDataDictionary(
     node: Node,
     textSchemaId: string,
     schemaDictionary: SchemaDictionary,
-    parent: Parent
+    parent: Parent,
+    linkedDataIds: string[],
+    previousDataDictionary: DataDictionary<unknown>
 ): DataDictionary<unknown> {
-    const linkedDataId = uniqueId("fast");
+    const linkedDataId = getUniqueId(linkedDataIds);
     const schemaId: string = findSchemaId(node, textSchemaId, schemaDictionary);
+    /* eslint-disable-next-line @typescript-eslint/no-use-before-define */
+    const linkedData = mapElementChildren(
+        node,
+        textSchemaId,
+        schemaDictionary,
+        linkedDataId,
+        previousDataDictionary
+    );
 
     return resolveDataDictionaryFromElement(
         linkedDataId,
@@ -557,6 +586,7 @@ function mapElementToDataDictionary(
         node,
         parent,
         {},
+        linkedData,
         schemaDictionary
     );
 }
@@ -584,7 +614,7 @@ function mapElementChildren(
     const previouslyMatchedChildren: string[] = [];
     let dataDictionaryChildItems: { [key: string]: Data<unknown> } = {};
 
-    element.children.forEach(child => {
+    (element.children || []).forEach(child => {
         const slotAttribute: Attribute | undefined = child.attributes.find(
             (attribute: Attribute) => {
                 return attribute.name === "slot";
@@ -597,7 +627,7 @@ function mapElementChildren(
         // Find current dictionary item slots
         if (
             Array.isArray(
-                previousDataDictionary[0][currentDictionaryId].data[schemaSlotName]
+                previousDataDictionary[0][currentDictionaryId]?.data?.[schemaSlotName]
             )
         ) {
             const matchingChild: LinkedData = previousDataDictionary[0][
@@ -645,14 +675,19 @@ function mapElementChildren(
                     {
                         id: currentDictionaryId,
                         dataLocation: schemaSlotName,
-                    }
+                    },
+                    Object.keys(previousDataDictionary[0]),
+                    previousDataDictionary
                 );
 
                 elementChildren[schemaSlotName].push({
                     id: newNode[1],
                 });
 
-                dataDictionaryChildItems[newNode[1]] = newNode[0][newNode[1]];
+                dataDictionaryChildItems = {
+                    ...dataDictionaryChildItems,
+                    ...newNode[0],
+                };
             }
         } else {
             const newNode = mapElementToDataDictionary(
@@ -662,7 +697,9 @@ function mapElementChildren(
                 {
                     id: currentDictionaryId,
                     dataLocation: schemaSlotName,
-                }
+                },
+                Object.keys(previousDataDictionary[0]),
+                previousDataDictionary
             );
 
             if (Array.isArray(elementChildren[schemaSlotName])) {
@@ -677,7 +714,10 @@ function mapElementChildren(
                 ];
             }
 
-            dataDictionaryChildItems[newNode[1]] = newNode[0][newNode[1]];
+            dataDictionaryChildItems = {
+                ...dataDictionaryChildItems,
+                ...newNode[0],
+            };
         }
     });
 
@@ -753,6 +793,8 @@ export function mapVSCodeHTMLAndDataDictionaryToDataDictionary(
         },
         textSchemaId,
         schemaDictionary,
-        undefined
+        undefined,
+        Object.keys(previousDataDictionary[0]),
+        previousDataDictionary
     );
 }

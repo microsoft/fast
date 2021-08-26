@@ -1,8 +1,32 @@
 # Change Log - @microsoft/fast-tooling-react
 
-This log was last generated on Thu, 19 Aug 2021 07:15:21 GMT and should not be manually modified.
+This log was last generated on Wed, 25 Aug 2021 07:17:07 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.10.11
+
+Wed, 25 Aug 2021 07:17:07 GMT
+
+### Patches
+
+- add a list of linked data that cannot be dropped to (7559015+janechu@users.noreply.github.com)
+
+## 2.10.10
+
+Mon, 23 Aug 2021 07:14:54 GMT
+
+### Patches
+
+- Bump @microsoft/fast-tooling to v0.27.3 (ben@platform5.ch)
+
+## 2.10.9
+
+Sun, 22 Aug 2021 07:17:14 GMT
+
+### Patches
+
+- fixes an issue where the CSS layout would not update when style was updated in the Monaco Editor (7559015+janechu@users.noreply.github.com)
 
 ## 2.10.8
 
