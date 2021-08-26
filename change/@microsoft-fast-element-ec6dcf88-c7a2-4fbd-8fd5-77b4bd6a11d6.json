@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "feat(fast-element): make the task queue resilient to task exceptions",
-  "packageName": "@microsoft/fast-element",
-  "email": "roeisenb@microsoft.com",
-  "dependentChangeType": "patch"
-}
