@@ -232,9 +232,7 @@ export class PropertyChangeNotifier implements Notifier {
 
             subscribers.subscribe(subscriber);
         } else {
-            if (this.sourceSubscribers === null) {
-                this.sourceSubscribers = new SubscriberSet(this.source);
-            }
+            this.sourceSubscribers = this.sourceSubscribers ?? new SubscriberSet(this.source);
 
             this.sourceSubscribers.subscribe(subscriber);
         }
