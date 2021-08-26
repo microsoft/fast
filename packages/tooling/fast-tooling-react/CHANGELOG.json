@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-tooling-react",
   "entries": [
     {
+      "date": "Thu, 26 Aug 2021 07:17:43 GMT",
+      "tag": "@microsoft/fast-tooling-react_v2.10.12",
+      "version": "2.10.12",
+      "comments": {
+        "patch": [
+          {
+            "comment": "the linked data removal button and the dropdown arrow will not display over absolutely positioned controls",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "062b6642246a8bf54a1371daeee4328660672f3f",
+            "package": "@microsoft/fast-tooling-react"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 25 Aug 2021 07:17:07 GMT",
       "tag": "@microsoft/fast-tooling-react_v2.10.11",
       "version": "2.10.11",
