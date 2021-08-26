@@ -218,7 +218,7 @@ export class StyleElementStyles extends ElementStyles {
 
         target = this.normalizeTarget(target);
 
-        for (let i = styleSheets.length - 1; i > -1; --i) {
+        for (let i = 0; i < styleSheets.length; i++) {
             const element = document.createElement("style");
             element.innerHTML = styleSheets[i];
             element.className = styleClass;

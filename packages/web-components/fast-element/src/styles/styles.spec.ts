@@ -77,6 +77,18 @@ if (DOM.supportsAdoptedStyleSheets) {
                 expect((target.adoptedStyleSheets![0])).to.equal(cache.get('r'));
                 expect((target.adoptedStyleSheets![1])).to.equal(cache.get('g'));
             });
+            it("should order HTMLStyleElement in order of provided sheets", () => {
+                const cache = new Map();
+                const red = new AdoptedStyleSheetsStyles(['r', 'g'], cache);
+                const target: Pick<StyleTarget, "adoptedStyleSheets"> = {
+                    adoptedStyleSheets: [],
+                };
+
+                red.addStylesTo(target as StyleTarget);
+
+                expect((target.adoptedStyleSheets![0])).to.equal(cache.get('r'));
+                expect((target.adoptedStyleSheets![1])).to.equal(cache.get('g'));
+            });
         });
     });
 }
@@ -135,6 +147,17 @@ describe("StyleSheetStyles", () => {
         const shadowRoot = element.attachShadow({mode: "open"});
         red.addStylesTo(shadowRoot);
         green.addStylesTo(shadowRoot);
+
+        expect((shadowRoot.childNodes[0] as HTMLStyleElement).innerHTML).to.equal("body:{color:red;}");
+        expect((shadowRoot.childNodes[1] as HTMLStyleElement).innerHTML).to.equal("body:{color:green;}");
+    });
+    it("should order HTMLStyleElement in order of provided sheets", () => {
+        const red = new StyleElementStyles([`body:{color:red;}`, `body:{color:green;}`]);
+        document.body.innerHTML = "";
+
+        const element = document.createElement("div");
+        const shadowRoot = element.attachShadow({mode: "open"});
+        red.addStylesTo(shadowRoot);
 
         expect((shadowRoot.childNodes[0] as HTMLStyleElement).innerHTML).to.equal("body:{color:red;}");
         expect((shadowRoot.childNodes[1] as HTMLStyleElement).innerHTML).to.equal("body:{color:green;}");
