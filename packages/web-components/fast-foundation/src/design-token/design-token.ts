@@ -707,7 +707,7 @@ class DesignTokenNode implements Behavior, Subscriber {
     }
 
     /**
-     * Removes a child from an element if the
+     * Removes a child from a node.
      * @param child - The child to remove.
      */
     public removeChild(child: DesignTokenNode): boolean {
