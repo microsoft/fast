@@ -5,6 +5,7 @@ import {
     observable,
     SyntheticViewTemplate,
 } from "@microsoft/fast-element";
+import { keyArrowDown, keyArrowUp } from "@microsoft/fast-web-utilities";
 import { StartEnd } from "../patterns/index";
 import { applyMixins } from "../utilities/index";
 import type { FoundationElementDefinition } from "../foundation-element";
@@ -263,6 +264,7 @@ export class NumberField extends FormAssociatedNumberField {
     }
 
     /**
+<<<<<<< HEAD
      * Handle keyboard events for the input.
      *
      * @param e - the keyboard event
@@ -283,6 +285,25 @@ export class NumberField extends FormAssociatedNumberField {
             default:
                 return true;
         }
+=======
+     * Handles the internal control's `keydown` event
+     * @internal
+     */
+    public handleKeyDown(e: KeyboardEvent): boolean {
+        const key = e.key;
+
+        switch (key) {
+            case keyArrowUp:
+                this.stepUp();
+                return false;
+
+            case keyArrowDown:
+                this.stepDown();
+                return false;
+        }
+
+        return true;
+>>>>>>> 0dd749b39 (Add up/down support to number field (#5081))
     }
 }
 

@@ -1373,7 +1373,7 @@ export class NumberField extends FormAssociatedNumberField {
     // @internal
     handleChange(): void;
     // @internal
-    handleKeyDown(e: Event & KeyboardEvent): void | boolean;
+    handleKeyDown(e: KeyboardEvent): boolean;
     // @internal
     handleTextInput(): void;
     hideStep: boolean;
