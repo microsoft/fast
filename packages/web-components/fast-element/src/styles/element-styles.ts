@@ -15,7 +15,7 @@ export interface StyleTarget {
      * Adds styles to the target.
      * @param styles - The styles element to add.
      */
-    prepend(styles: HTMLStyleElement): void;
+    append(styles: HTMLStyleElement): void;
 
     /**
      * Removes styles from the target.
@@ -215,7 +215,7 @@ export class StyleElementStyles extends ElementStyles {
             const element = document.createElement("style");
             element.innerHTML = styleSheets[i];
             element.className = styleClass;
-            target.prepend(element);
+            target.append(element);
         }
 
         super.addStylesTo(target);

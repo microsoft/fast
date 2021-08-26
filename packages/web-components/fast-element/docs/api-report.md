@@ -493,7 +493,7 @@ export interface Splice {
 // @public
 export interface StyleTarget {
     adoptedStyleSheets?: CSSStyleSheet[];
-    prepend(styles: HTMLStyleElement): void;
+    append(styles: HTMLStyleElement): void;
     querySelectorAll<E extends Element = Element>(selectors: string): NodeListOf<E>;
     removeChild(styles: HTMLStyleElement): void;
 }
