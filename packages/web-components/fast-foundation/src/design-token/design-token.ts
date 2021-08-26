@@ -245,7 +245,11 @@ class DesignTokenImpl<T extends { createCSS?(): string }> extends CSSDirective
 
     public deleteValueFor(element: HTMLElement): this {
         this._appliedTo.delete(element);
-        DesignTokenNode.getOrCreate(element).delete(this);
+
+        if (DesignTokenNode.existsFor(element)) {
+            DesignTokenNode.getOrCreate(element).delete(this);
+        }
+
         return this;
     }
 
