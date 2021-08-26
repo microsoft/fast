@@ -69,7 +69,8 @@ function create(rOrSource: SwatchRGB | number, g?: number, b?: number): PaletteR
  * @param source - The source color
  */
 function from(source: SwatchRGB): PaletteRGB;
-function from(source: Pick<SwatchRGB, "r" | "g" | "b">): PaletteRGB {
+function from(source: Record<"r" | "g" | "b", number>): PaletteRGB;
+function from(source: any): PaletteRGB {
     return isSwatchRGB(source)
         ? PaletteRGBImpl.from(source)
         : PaletteRGBImpl.from(SwatchRGB.create(source.r, source.g, source.b));
