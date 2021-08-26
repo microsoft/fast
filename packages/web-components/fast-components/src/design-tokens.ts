@@ -1028,6 +1028,53 @@ export const focusStrokeInner = create<Swatch>(
     focusStrokeInnerRecipe.getValueFor(element).evaluate(element)
 );
 
+// Stroke Control Strong
+/** @public */
+export const strokeControlStrongRecipe = create<InteractiveColorRecipe>({
+    name: "stroke-control-strong-recipe",
+    cssCustomPropertyName: null,
+}).withDefault({
+    evaluate: (element: HTMLElement, reference?: Swatch): InteractiveSwatchSet =>
+        contrastSetAlgorithm(
+            neutralPalette.getValueFor(element),
+            reference || fillColor.getValueFor(element),
+            5.5,
+            0,
+            0,
+            0,
+            0
+        ),
+});
+
+/** @public */
+export const strokeControlStrongRest = create<Swatch>(
+    "stroke-control-strong-rest"
+).withDefault(
+    (element: HTMLElement) =>
+        strokeControlStrongRecipe.getValueFor(element).evaluate(element).rest
+);
+/** @public */
+export const strokeControlStrongHover = create<Swatch>(
+    "stroke-control-strong-hover"
+).withDefault(
+    (element: HTMLElement) =>
+        strokeControlStrongRecipe.getValueFor(element).evaluate(element).hover
+);
+/** @public */
+export const strokeControlStrongActive = create<Swatch>(
+    "stroke-control-strong-active"
+).withDefault(
+    (element: HTMLElement) =>
+        strokeControlStrongRecipe.getValueFor(element).evaluate(element).active
+);
+/** @public */
+export const strokeControlStrongFocus = create<Swatch>(
+    "stroke-control-strong-focus"
+).withDefault(
+    (element: HTMLElement) =>
+        strokeControlStrongRecipe.getValueFor(element).evaluate(element).focus
+);
+
 // Neutral Foreground Hint
 /** @public */
 export const neutralForegroundHintRecipe = create<ColorRecipe>({
