@@ -435,7 +435,7 @@ describe("A DesignToken", () => {
             const target = addElement();
 
             tokenA.setValueFor(target, 6);
-            tokenB.setValueFor(target, (targetHTMLElement) => tokenA.getValueFor(target) * 2);
+            tokenB.setValueFor(target, (target) => tokenA.getValueFor(target) * 2);
             tokenC.setValueFor(target, tokenB);
 
             expect(tokenC.getValueFor(target)).to.equal(12);
@@ -485,7 +485,7 @@ describe("A DesignToken", () => {
                 const target = addElement();
 
                 tokenA.setValueFor(target, 6);
-                tokenB.setValueFor(target, (targetHTMLElement) => tokenA.getValueFor(target) * 2);
+                tokenB.setValueFor(target, (target) => tokenA.getValueFor(target) * 2);
                 tokenC.setValueFor(target, tokenB);
 
                 await DOM.nextUpdate();

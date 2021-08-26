@@ -232,7 +232,8 @@ export class PropertyChangeNotifier implements Notifier {
 
             subscribers.subscribe(subscriber);
         } else {
-            this.sourceSubscribers = this.sourceSubscribers ?? new SubscriberSet(this.source);
+            this.sourceSubscribers =
+                this.sourceSubscribers ?? new SubscriberSet(this.source);
 
             this.sourceSubscribers.subscribe(subscriber);
         }
@@ -246,14 +247,11 @@ export class PropertyChangeNotifier implements Notifier {
     public unsubscribe(subscriber: Subscriber, propertyToUnwatch?: string): void {
         if (propertyToUnwatch) {
             const subscribers = this.subscribers[propertyToUnwatch];
-
-            if (subscribers === void 0) {
-                return;
+            if (subscribers !== void 0) {
+                subscribers.unsubscribe(subscriber);
             }
-
-            subscribers.unsubscribe(subscriber);
-        } else if (this.sourceSubscribers !== null) {
-            this.sourceSubscribers.unsubscribe(subscriber);
+        } else {
+            this.sourceSubscribers?.unsubscribe(subscriber);
         }
     }
 }
