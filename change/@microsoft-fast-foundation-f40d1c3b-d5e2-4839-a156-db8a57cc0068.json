@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "add up/down key support to number-field",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "corylaviska@microsoft.com",
+  "dependentChangeType": "patch"
+}
