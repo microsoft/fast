@@ -79,7 +79,7 @@ export interface FoundationElementDefinition {
  */
 export type OverrideFoundationElementDefinition<
     T extends FoundationElementDefinition
-> = Partial<Omit<T, "type">> & {
+> = Partial<Omit<T, "type" | "baseClass">> & {
     /**
      * An element prefix that overrides the design system configuration.
      * @public
@@ -224,7 +224,7 @@ export class FoundationElementRegistry<
         context.tryDefineElement({
             name,
             type: this.type,
-            baseClass: overrideDefinition.baseClass,
+            baseClass: this.elementDefinition.baseClass,
             callback: x => {
                 const presentation = new DefaultComponentPresentation(
                     resolveOption(definition.template, x, definition),

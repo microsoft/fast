@@ -733,7 +733,7 @@ export const DesignSystem: Readonly<{
 // @public
 export interface DesignSystemRegistrationContext {
     readonly elementPrefix: string;
-    tryDefineElement(ctx: ElementDefinitionParams): any;
+    tryDefineElement(params: ElementDefinitionParams): any;
 }
 
 // @public
@@ -1413,7 +1413,7 @@ export const numberFieldTemplate: (context: ElementDefinitionContext, definition
 export const optional: (key: any) => any;
 
 // @public
-export type OverrideFoundationElementDefinition<T extends FoundationElementDefinition> = Partial<Omit<T, "type">> & {
+export type OverrideFoundationElementDefinition<T extends FoundationElementDefinition> = Partial<Omit<T, "type" | "baseClass">> & {
     prefix?: string;
 };
 
