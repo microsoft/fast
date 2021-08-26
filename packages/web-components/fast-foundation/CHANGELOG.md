@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Wed, 25 Aug 2021 07:17:07 GMT and should not be manually modified.
+This log was last generated on Thu, 26 Aug 2021 07:17:43 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.7.1
+
+Thu, 26 Aug 2021 07:17:43 GMT
+
+### Patches
+
+- fix slider dragging when page is scrolled (corylaviska@microsoft.com)
 
 ## 2.7.0
 
