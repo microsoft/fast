@@ -6,11 +6,13 @@ import { accentFill as accentFillAlgorithm } from "./color/recipes/accent-fill";
 import { accentForeground as accentForegroundAlgorithm } from "./color/recipes/accent-foreground";
 import { foregroundOnAccent as foregroundOnAccentAlgorithm } from "./color/recipes/foreground-on-accent";
 import { gradientShadowStroke as gradientShadowStrokeAlgorithm } from "./color/recipes/gradient-shadow-stroke";
+import { underlineStroke as underlineStrokeAlgorithm } from "./color/recipes/underline-stroke";
 import { neutralFill as neutralFillAlgorithm } from "./color/recipes/neutral-fill";
 import { neutralFillInput as neutralFillInputAlgorithm } from "./color/recipes/neutral-fill-input";
 import { neutralFillLayer as neutralFillLayerAlgorithm } from "./color/recipes/neutral-fill-layer";
 import { neutralFillStealth as neutralFillStealthAlgorithm } from "./color/recipes/neutral-fill-stealth";
 import { neutralFillContrast as neutralFillContrastAlgorithm } from "./color/recipes/neutral-fill-contrast";
+import { contrastSetRecipe as contrastSetAlgorithm } from "./color/recipes/contrast-set-recipe";
 import {
     focusStrokeInner as focusStrokeInnerAlgorithm,
     focusStrokeOuter as focusStrokeOuterAlgorithm,
@@ -56,7 +58,7 @@ export const bodyFont = create<string>("body-font").withDefault(
 );
 /** @public */
 export const baseHeightMultiplier = create<number>("base-height-multiplier").withDefault(
-    10
+    8
 );
 /** @public */
 export const baseHorizontalSpacingMultiplier = create<number>(
@@ -76,6 +78,8 @@ export const designUnit = create<number>("design-unit").withDefault(4);
 export const direction = create<Direction>("direction").withDefault(Direction.ltr);
 /** @public */
 export const disabledOpacity = create<number>("disabled-opacity").withDefault(0.3);
+/** @public */
+export const layerCornerRadius = create<number>("layer-corner-radius").withDefault(4);
 /** @public */
 export const strokeWidth = create<number>("stroke-width").withDefault(1);
 /** @public */
@@ -199,11 +203,11 @@ export const neutralFillRestDelta = create<number>("neutral-fill-rest-delta").wi
 /** @public */
 export const neutralFillHoverDelta = create<number>(
     "neutral-fill-hover-delta"
-).withDefault(10);
+).withDefault(7);
 /** @public */
 export const neutralFillActiveDelta = create<number>(
     "neutral-fill-active-delta"
-).withDefault(5);
+).withDefault(10);
 /** @public */
 export const neutralFillFocusDelta = create<number>(
     "neutral-fill-focus-delta"
@@ -212,19 +216,19 @@ export const neutralFillFocusDelta = create<number>(
 /** @public */
 export const neutralFillInputRestDelta = create<number>(
     "neutral-fill-input-rest-delta"
-).withDefault(0);
+).withDefault(1);
 /** @public */
 export const neutralFillInputHoverDelta = create<number>(
     "neutral-fill-input-hover-delta"
-).withDefault(0);
+).withDefault(2);
 /** @public */
 export const neutralFillInputActiveDelta = create<number>(
     "neutral-fill-input-active-delta"
-).withDefault(0);
+).withDefault(3);
 /** @public */
 export const neutralFillInputFocusDelta = create<number>(
     "neutral-fill-input-focus-delta"
-).withDefault(0);
+).withDefault(1);
 
 /** @public */
 export const neutralFillStealthRestDelta = create<number>(
@@ -831,6 +835,48 @@ export const neutralFillLayerRest = create<Swatch>(
     neutralFillLayerRecipe.getValueFor(element).evaluate(element)
 );
 
+// Stroke Control
+/** @public */
+export const strokeControlRecipe = create<InteractiveRecipe>({
+    name: "stroke-control-recipe",
+    cssCustomPropertyName: null,
+}).withDefault({
+    evaluate: (
+        element: HTMLElement
+    ): Record<"rest" | "hover" | "active" | "focus", string> => {
+        return gradientShadowStrokeAlgorithm(
+            neutralPalette.getValueFor(element),
+            fillColor.getValueFor(element),
+            neutralStrokeRestDelta.getValueFor(element),
+            neutralStrokeHoverDelta.getValueFor(element),
+            neutralStrokeActiveDelta.getValueFor(element),
+            neutralStrokeFocusDelta.getValueFor(element),
+            4
+        );
+    },
+});
+
+/** @public */
+export const strokeControlRest = create<string>("stroke-control-rest").withDefault(
+    (element: HTMLElement) =>
+        strokeControlRecipe.getValueFor(element).evaluate(element).rest
+);
+/** @public */
+export const strokeControlHover = create<string>("stroke-control-hover").withDefault(
+    (element: HTMLElement) =>
+        strokeControlRecipe.getValueFor(element).evaluate(element).hover
+);
+/** @public */
+export const strokeControlActive = create<string>("stroke-control-active").withDefault(
+    (element: HTMLElement) =>
+        strokeControlRecipe.getValueFor(element).evaluate(element).active
+);
+/** @public */
+export const strokeControlFocus = create<string>("stroke-control-focus").withDefault(
+    (element: HTMLElement) =>
+        strokeControlRecipe.getValueFor(element).evaluate(element).focus
+);
+
 // Stroke Control Accent
 /** @public */
 export const strokeControlAccentRecipe = create<InteractiveRecipe>({
@@ -888,6 +934,57 @@ export const strokeControlAccentFocus = create<string>(
         strokeControlAccentRecipe
             .getValueFor(element)
             .evaluate(element, accentFillFocus.getValueFor(element)).focus
+);
+
+// Stroke Control Text
+/** @public */
+export const strokeControlTextRecipe = create<InteractiveRecipe>({
+    name: "stroke-control-text-recipe",
+    cssCustomPropertyName: null,
+}).withDefault({
+    evaluate: (
+        element: HTMLElement
+    ): Record<"rest" | "hover" | "active" | "focus", string> => {
+        return underlineStrokeAlgorithm(
+            neutralPalette.getValueFor(element),
+            fillColor.getValueFor(element),
+            neutralStrokeRestDelta.getValueFor(element),
+            neutralStrokeHoverDelta.getValueFor(element),
+            neutralStrokeActiveDelta.getValueFor(element),
+            neutralStrokeFocusDelta.getValueFor(element),
+            20,
+            strokeWidth.getValueFor(element) + "px"
+        );
+    },
+});
+
+/** @public */
+export const strokeControlTextRest = create<string>(
+    "stroke-control-text-rest"
+).withDefault(
+    (element: HTMLElement) =>
+        strokeControlTextRecipe.getValueFor(element).evaluate(element).rest
+);
+/** @public */
+export const strokeControlTextHover = create<string>(
+    "stroke-control-text-hover"
+).withDefault(
+    (element: HTMLElement) =>
+        strokeControlTextRecipe.getValueFor(element).evaluate(element).hover
+);
+/** @public */
+export const strokeControlTextActive = create<string>(
+    "stroke-control-text-active"
+).withDefault(
+    (element: HTMLElement) =>
+        strokeControlTextRecipe.getValueFor(element).evaluate(element).active
+);
+/** @public */
+export const strokeControlTextFocus = create<string>(
+    "stroke-control-text-focus"
+).withDefault(
+    (element: HTMLElement) =>
+        strokeControlTextRecipe.getValueFor(element).evaluate(element).focus
 );
 
 // Focus Stroke Outer
@@ -953,22 +1050,48 @@ export const neutralForegroundHint = create<Swatch>(
 
 // Neutral Foreground
 /** @public */
-export const neutralForegroundRecipe = create<ColorRecipe>({
+export const neutralForegroundRecipe = create<InteractiveColorRecipe>({
     name: "neutral-foreground-recipe",
     cssCustomPropertyName: null,
 }).withDefault({
-    evaluate: (element: HTMLElement): Swatch =>
+    evaluate: (element: HTMLElement): InteractiveSwatchSet =>
         neutralForegroundAlgorithm(
             neutralPalette.getValueFor(element),
-            fillColor.getValueFor(element)
+            fillColor.getValueFor(element),
+            8,
+            12,
+            24,
+            12
         ),
 });
 
 /** @public */
 export const neutralForegroundRest = create<Swatch>(
     "neutral-foreground-rest"
-).withDefault((element: HTMLElement) =>
-    neutralForegroundRecipe.getValueFor(element).evaluate(element)
+).withDefault(
+    (element: HTMLElement) =>
+        neutralForegroundRecipe.getValueFor(element).evaluate(element).rest
+);
+/** @public */
+export const neutralForegroundHover = create<Swatch>(
+    "neutral-foreground-hover"
+).withDefault(
+    (element: HTMLElement) =>
+        neutralForegroundRecipe.getValueFor(element).evaluate(element).hover
+);
+/** @public */
+export const neutralForegroundActive = create<Swatch>(
+    "neutral-foreground-active"
+).withDefault(
+    (element: HTMLElement) =>
+        neutralForegroundRecipe.getValueFor(element).evaluate(element).active
+);
+/** @public */
+export const neutralForegroundFocus = create<Swatch>(
+    "neutral-foreground-focus"
+).withDefault(
+    (element: HTMLElement) =>
+        neutralForegroundRecipe.getValueFor(element).evaluate(element).focus
 );
 
 // Neutral Stroke

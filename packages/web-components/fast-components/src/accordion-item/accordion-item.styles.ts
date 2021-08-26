@@ -84,18 +84,11 @@ export const accordionItemStyles: (
       outline: none;
       border: calc(${strokeWidth} * 1px) solid ${focusStrokeOuter};
       border-radius: calc(${controlCornerRadius} * 1px);
-      box-shadow: 0 0 0 calc((${focusStrokeWidth} - ${strokeWidth}) * 1px) ${focusStrokeOuter};
-    }
-
-    :host(.expanded) .button:${focusVisible}::before {
-      border-bottom-left-radius: 0;
-      border-bottom-right-radius: 0;
+      box-shadow: 0 0 0 calc(${focusStrokeWidth} * 1px) ${focusStrokeOuter};
     }
 
     :host(.expanded) .region {
       display: block;
-      border-bottom-left-radius: calc((${controlCornerRadius} - ${strokeWidth}) * 1px);
-      border-bottom-right-radius: calc((${controlCornerRadius} - ${strokeWidth}) * 1px);
     }
 
     .icon {

@@ -5,15 +5,17 @@ import {
     FoundationElementDefinition,
 } from "@microsoft/fast-foundation";
 import {
-    accentForegroundRest,
+    accentFillRest,
     bodyFont,
     controlCornerRadius,
     designUnit,
+    foregroundOnAccentRest,
+    neutralFillRest,
+    neutralForegroundRest,
     strokeWidth,
     typeRampMinus1FontSize,
     typeRampMinus1LineHeight,
 } from "../design-tokens";
-import { heightNumber } from "../styles/index";
 
 export const badgeStyles: (
     context: ElementDefinitionContext,
@@ -34,24 +36,30 @@ export const badgeStyles: (
             border-radius: calc(${controlCornerRadius} * 1px);
             padding: calc(((${designUnit} * 0.5) - ${strokeWidth}) * 1px)
                 calc((${designUnit} - ${strokeWidth}) * 1px);
-            color: ${accentForegroundRest};
-            font-weight: 600;
             border: calc(${strokeWidth} * 1px) solid transparent;
         }
 
-        .control[style] {
-            font-weight: 400;
+        :host(.lightweight) .control {
+            background: transparent;
+            color: ${neutralForegroundRest};
+            font-weight: 600;
+        }
+
+        :host(.accent) .control {
+            background: ${accentFillRest};
+            color: ${foregroundOnAccentRest};
+        }
+
+        :host(.neutral) .control {
+            background: ${neutralFillRest};
+            color: ${neutralForegroundRest};
         }
 
         :host([circular]) .control {
             border-radius: 100px;
-            padding: 0 calc(${designUnit} * 1px);
-            /* Need to work with Brian on width and height here */
-            height: calc((${heightNumber} - (${designUnit} * 3)) * 1px);
-            min-width: calc((${heightNumber} - (${designUnit} * 3)) * 1px);
+            min-width: calc(${typeRampMinus1LineHeight} - calc(${designUnit} * 1px));
             display: flex;
             align-items: center;
             justify-content: center;
-            box-sizing: border-box;
         }
     `;
