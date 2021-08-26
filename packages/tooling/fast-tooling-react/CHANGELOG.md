@@ -1,8 +1,24 @@
 # Change Log - @microsoft/fast-tooling-react
 
-This log was last generated on Mon, 23 Aug 2021 07:14:54 GMT and should not be manually modified.
+This log was last generated on Thu, 26 Aug 2021 07:17:43 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.10.12
+
+Thu, 26 Aug 2021 07:17:43 GMT
+
+### Patches
+
+- the linked data removal button and the dropdown arrow will not display over absolutely positioned controls (7559015+janechu@users.noreply.github.com)
+
+## 2.10.11
+
+Wed, 25 Aug 2021 07:17:07 GMT
+
+### Patches
+
+- add a list of linked data that cannot be dropped to (7559015+janechu@users.noreply.github.com)
 
 ## 2.10.10
 

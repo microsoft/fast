@@ -126,6 +126,7 @@ module.exports = {
             type: "category",
             label: "Resources",
             items: [
+                "resources/why-web-components",
                 "resources/license",
                 "resources/security",
                 "resources/browser-support",

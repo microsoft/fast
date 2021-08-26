@@ -5,7 +5,7 @@ import {
     customElement,
     css,
 } from "@microsoft/fast-element";
-import { FluentTextField } from "@fluentui/web-components";
+import type { TextField } from "@fluentui/web-components";
 
 const template = html<TodoForm>`
     <form @submit=${x => x.submitTodo()}>
@@ -26,6 +26,7 @@ const template = html<TodoForm>`
 const styles = css`
     form {
         display: flex;
+        align-items: center;
     }
 
     fluent-button {
@@ -53,6 +54,6 @@ export class TodoForm extends FASTElement {
     }
 
     public onDescriptionInput(event: Event) {
-        this.description = (event.target! as FluentTextField).value;
+        this.description = (event.target! as TextField).value;
     }
 }

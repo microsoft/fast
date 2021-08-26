@@ -2,6 +2,50 @@
   "name": "@microsoft/fast-components",
   "entries": [
     {
+      "date": "Thu, 26 Aug 2021 07:17:43 GMT",
+      "tag": "@microsoft/fast-components_v2.7.1",
+      "version": "2.7.1",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Updated the default fill color to neutral layer 1",
+            "author": "47367562+bheston@users.noreply.github.com",
+            "commit": "db90173c4f85ff65bc77af53b827c85c1f9e3fcf",
+            "package": "@microsoft/fast-components"
+          },
+          {
+            "comment": "fix typings so that PaletteRGB.from supports plain objects",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "fdcc23632db3e0fdea00c4ee428436bc6caa3386",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 25 Aug 2021 07:17:07 GMT",
+      "tag": "@microsoft/fast-components_v2.7.0",
+      "version": "2.7.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "use context.tagFor to generate flippers for horizontal scroller component",
+            "author": "john.kreitlow@microsoft.com",
+            "commit": "bc9f51cb9357da7ccb34a3251b316c21dcc17b09",
+            "package": "@microsoft/fast-components"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-foundation to v2.7.0",
+            "author": "john.kreitlow@microsoft.com",
+            "commit": "bc9f51cb9357da7ccb34a3251b316c21dcc17b09",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
       "date": "Mon, 23 Aug 2021 07:14:54 GMT",
       "tag": "@microsoft/fast-components_v2.6.2",
       "version": "2.6.2",
