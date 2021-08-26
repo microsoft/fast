@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "fix slider dragging when page is scrolled",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "corylaviska@microsoft.com",
+  "dependentChangeType": "patch"
+}
