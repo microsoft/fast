@@ -1,0 +1,7 @@
+{
+  "type": "major",
+  "comment": "Add FAST CLI",
+  "packageName": "@microsoft/fast-cli",
+  "email": "v-dlesac@microsoft.com",
+  "dependentChangeType": "patch"
+}

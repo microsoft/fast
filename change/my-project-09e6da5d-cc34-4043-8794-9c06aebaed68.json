@@ -1,0 +1,7 @@
+{
+  "type": "none",
+  "comment": "Template package.json",
+  "packageName": "my-project",
+  "email": "v-dlesac@microsoft.com",
+  "dependentChangeType": "none"
+}
