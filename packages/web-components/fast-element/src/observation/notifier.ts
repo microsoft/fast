@@ -212,9 +212,7 @@ export class PropertyChangeNotifier implements Notifier {
             subscribers.notify(propertyName);
         }
 
-        if (this.sourceSubscribers !== null) {
-            this.sourceSubscribers.notify(propertyName);
-        }
+        this.sourceSubscribers?.notify(propertyName);
     }
 
     /**
