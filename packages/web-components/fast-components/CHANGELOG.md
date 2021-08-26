@@ -1,8 +1,17 @@
 # Change Log - @microsoft/fast-components
 
-This log was last generated on Wed, 25 Aug 2021 07:17:07 GMT and should not be manually modified.
+This log was last generated on Thu, 26 Aug 2021 07:17:43 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.7.1
+
+Thu, 26 Aug 2021 07:17:43 GMT
+
+### Patches
+
+- Updated the default fill color to neutral layer 1 (47367562+bheston@users.noreply.github.com)
+- fix typings so that PaletteRGB.from supports plain objects (nicholasrice@users.noreply.github.com)
 
 ## 2.7.0
 
