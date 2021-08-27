@@ -1,8 +1,9 @@
 import {
     accentFillRest,
-    neutralFillCard,
+    controlCornerRadius,
+    designUnit,
     neutralForegroundRest,
-} from "@microsoft/fast-components/dist/esm/design-tokens";
+} from "@microsoft/fast-components";
 import { css } from "@microsoft/fast-element";
 import { display } from "@microsoft/fast-foundation";
 
@@ -13,8 +14,8 @@ export const samplePageStyles = css`
         grid-template-columns: auto 300px;
         padding: calc(var(--gutter) * 2px);
         position: relative;
-        border-radius: 0 calc(var(--corner-radius) * 1px) calc(var(--corner-radius) * 1px)
-            0;
+        border-radius: 0 calc(${controlCornerRadius} * 1px)
+            calc(${controlCornerRadius} * 1px) 0;
     }
 
     .image-container {
@@ -49,14 +50,14 @@ export const samplePageStyles = css`
     }
 
     .sample-control-text {
-        margin-inline-start: calc(var(--design-unit) * 2px + 2px);
+        margin-inline-start: calc(${designUnit} * 2px + 2px);
     }
 
     .sample-control-icon {
         width: 21px;
         height: 21px;
         background-color: ${accentFillRest};
-        border-radius: calc(var(--corner-radius) * 1px);
+        border-radius: calc(${controlCornerRadius} * 1px);
     }
 
     .preview-controls {
@@ -78,7 +79,7 @@ export const samplePageStyles = css`
     }
 
     .control-container p {
-        margin-inline-start: calc(var(--design-unit) * 2px + 2px);
+        margin-inline-start: calc(${designUnit} * 2px + 2px);
     }
 
     .control-container-grid {
@@ -111,7 +112,6 @@ export const samplePageStyles = css`
     }
 
     fast-tab-panel {
-        background: ${neutralFillCard};
         height: 100%;
     }
 

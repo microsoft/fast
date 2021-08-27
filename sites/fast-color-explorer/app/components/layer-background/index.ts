@@ -77,10 +77,7 @@ class LayerBackground extends FoundationElement {
     }
 }
 
-export const layerBackgroundTemplate: (
-    context: any,
-    definition: any
-) => ViewTemplate<LayerBackground> = (context: any, definition: any) => html`
+export const layerBackgroundTemplate = html`
     <slot></slot>
 `;
 

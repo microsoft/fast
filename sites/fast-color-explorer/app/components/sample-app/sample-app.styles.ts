@@ -3,6 +3,8 @@ import { display, forcedColorsStylesheetBehavior } from "@microsoft/fast-foundat
 import { elevation } from "@microsoft/fast-components/dist/esm/styles";
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
+    bodyFont,
+    controlCornerRadius,
     designUnit,
     fillColor,
     neutralForegroundHint,
@@ -17,13 +19,13 @@ export const sampleAppStyles = css`
 
     :host {
         flex-direction: column;
-        font-family: var(--body-font);
+        font-family: ${bodyFont};
         color: ${neutralForegroundRest};
         box-sizing: border-box;
         min-height: 650px;
         min-width: 775px;
         background: ${fillColor};
-        border-radius: calc(var(--corner-radius) * 1px);
+        border-radius: calc(${controlCornerRadius} * 1px);
         --elevation: 20;
         ${elevation}
         --gutter: 20;
@@ -116,12 +118,12 @@ export const sampleAppStyles = css`
 
     .saturation-slider-track {
         height: 100%;
-        border-radius: calc(var(--corner-radius) * 1px);
+        border-radius: calc(${controlCornerRadius} * 1px);
     }
 
     .hue-slider-track {
         height: 100%;
-        border-radius: calc(var(--corner-radius) * 1px);
+        border-radius: calc(${controlCornerRadius} * 1px);
         background-image:
             linear-gradient(
                 to right,
