@@ -5,6 +5,7 @@ import {
     forcedColorsStylesheetBehavior,
     FoundationElementDefinition,
 } from "@microsoft/fast-foundation";
+import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
     AccentButtonStyles,
     baseButtonStyles,
@@ -34,8 +35,14 @@ export const buttonStyles: (
     `.withBehaviors(
         forcedColorsStylesheetBehavior(
             css`
-                :host([disabled]) {
+                :host([disabled]),
+                :host([disabled]) .control {
                     opacity: 1;
+                    background: ${SystemColors.ButtonFace};
+                    border-color: ${SystemColors.GrayText} !important;
+                    box-shadow: none !important;
+                    color: ${SystemColors.GrayText};
+                    fill: currentcolor;
                 }
             `
         ),
@@ -45,7 +52,18 @@ export const buttonStyles: (
         ),
         appearanceBehavior(
             "lightweight",
-            LightweightButtonStyles(context, definition, interactivitySelector)
+            css`
+                ${LightweightButtonStyles(context, definition, interactivitySelector)}
+            `.withBehaviors(
+                forcedColorsStylesheetBehavior(
+                    css`
+                        :host([disabled]),
+                        :host([disabled]) .control {
+                            border-color: ${SystemColors.ButtonFace} !important;
+                        }
+                    `
+                )
+            )
         ),
         appearanceBehavior(
             "outline",
@@ -53,6 +71,17 @@ export const buttonStyles: (
         ),
         appearanceBehavior(
             "stealth",
-            StealthButtonStyles(context, definition, interactivitySelector)
+            css`
+                ${StealthButtonStyles(context, definition, interactivitySelector)}
+            `.withBehaviors(
+                forcedColorsStylesheetBehavior(
+                    css`
+                        :host([disabled]),
+                        :host([disabled]) .control {
+                            border-color: ${SystemColors.ButtonFace} !important;
+                        }
+                    `
+                )
+            )
         )
     );

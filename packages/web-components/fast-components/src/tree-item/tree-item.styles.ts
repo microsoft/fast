@@ -239,36 +239,39 @@ export const treeItemStyles: (
         new DirectionalStyleSheetBehavior(ltr, rtl),
         forcedColorsStylesheetBehavior(
             css`
-        :host {
-          forced-color-adjust: none;
-          border-color: transparent;
-          background: ${SystemColors.Field};
-          color: ${SystemColors.FieldText};
-        }
-        :host(:not([disabled])) .positioning-region:hover,
-        :host([selected]) .positioning-region {
-          background: ${SystemColors.Highlight};
-        }
-        :host .positioning-region:hover .content-region,
-        :host([selected]) .positioning-region .content-region {
-          color: ${SystemColors.HighlightText};
-        }
-        :host([selected])::after {
-          background: ${SystemColors.Field};
-        }
-        :host(:${focusVisible}) .positioning-region {
-          border-color: ${SystemColors.FieldText};
-          box-shadow: 0 0 0 2px inset ${SystemColors.Field};
-        }
-        :host([disabled]) .content-region,
-        :host([disabled]) .positioning-region:hover .content-region {
-          opacity: 1;
-          color: ${SystemColors.GrayText};
-        }
-        :host(.nested) .expand-collapse-button:hover {
-          background: ${SystemColors.Field};
-          fill: ${SystemColors.FieldText};
-        }
-      `
+              :host {
+                forced-color-adjust: none;
+                border-color: transparent;
+                background: ${SystemColors.ButtonFace};
+                color: ${SystemColors.ButtonText};
+              }
+              .positioning-region {
+                background: ${SystemColors.ButtonFace};
+              }
+              :host(:not([disabled])) .positioning-region:hover,
+              :host(:not([disabled])[selected]) .positioning-region {
+                background: ${SystemColors.Highlight};
+                color: ${SystemColors.HighlightText};
+              }
+              :host([selected])::after {
+                background: ${SystemColors.HighlightText};
+              }
+              :host(:${focusVisible}) .positioning-region {
+                border-color: ${SystemColors.ButtonText};
+                box-shadow: 0 0 0 2px inset ${SystemColors.ButtonFace};
+              }
+              :host([disabled]) {
+                opacity: 1;
+              }
+              :host([disabled]) .positioning-region {
+                color: ${SystemColors.GrayText};
+                fill: currentcolor;
+              }
+              :host(.nested) .expand-collapse-button:hover,
+              :host(:not([disabled])[selected]) .expand-collapse-button:hover {
+                background: ${SystemColors.ButtonFace};
+                fill: ${SystemColors.ButtonText};
+              }
+            `
         )
     );
