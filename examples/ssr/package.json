@@ -7,9 +7,10 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@lit-labs/ssr": "^1.0.0-rc.2",
+    "@microsoft/fast-components": "^2.7.2",
     "@microsoft/fast-element": "^1.5.0",
     "@microsoft/fast-foundation": "^2.8.0",
-    "@microsoft/fast-components": "^2.7.2",
     "lodash-es": "4.17.15",
     "tslib": "^1.11.1"
   },
