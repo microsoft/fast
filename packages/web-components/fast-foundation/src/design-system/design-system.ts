@@ -112,7 +112,7 @@ export interface DesignSystemRegistrationContext {
      * @param type - The type of the constructor to use to define the element.
      * @param callback - A callback to invoke if definition will happen.
      * @public
-     * @deprecated
+     * @deprecated - Use the signature with the ElementDefinitionParams param type instead
      */
     tryDefineElement(
         name: string,
