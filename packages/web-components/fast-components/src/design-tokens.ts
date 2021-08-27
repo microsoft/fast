@@ -203,11 +203,11 @@ export const neutralFillRestDelta = create<number>("neutral-fill-rest-delta").wi
 /** @public */
 export const neutralFillHoverDelta = create<number>(
     "neutral-fill-hover-delta"
-).withDefault(7);
+).withDefault(10);
 /** @public */
 export const neutralFillActiveDelta = create<number>(
     "neutral-fill-active-delta"
-).withDefault(10);
+).withDefault(5);
 /** @public */
 export const neutralFillFocusDelta = create<number>(
     "neutral-fill-focus-delta"
@@ -835,6 +835,47 @@ export const neutralFillLayerRest = create<Swatch>(
     neutralFillLayerRecipe.getValueFor(element).evaluate(element)
 );
 
+// Focus Stroke Outer
+/** @public */
+export const focusStrokeOuterRecipe = create<ColorRecipe>({
+    name: "focus-stroke-outer-recipe",
+    cssCustomPropertyName: null,
+}).withDefault({
+    evaluate: (element: HTMLElement): Swatch =>
+        focusStrokeOuterAlgorithm(
+            neutralPalette.getValueFor(element),
+            fillColor.getValueFor(element)
+        ),
+});
+
+/** @public */
+export const focusStrokeOuter = create<Swatch>(
+    "focus-stroke-outer"
+).withDefault((element: HTMLElement) =>
+    focusStrokeOuterRecipe.getValueFor(element).evaluate(element)
+);
+
+// Focus Stroke Inner
+/** @public */
+export const focusStrokeInnerRecipe = create<ColorRecipe>({
+    name: "focus-stroke-inner-recipe",
+    cssCustomPropertyName: null,
+}).withDefault({
+    evaluate: (element: HTMLElement): Swatch =>
+        focusStrokeInnerAlgorithm(
+            accentPalette.getValueFor(element),
+            fillColor.getValueFor(element),
+            focusStrokeOuter.getValueFor(element)
+        ),
+});
+
+/** @public */
+export const focusStrokeInner = create<Swatch>(
+    "focus-stroke-inner"
+).withDefault((element: HTMLElement) =>
+    focusStrokeInnerRecipe.getValueFor(element).evaluate(element)
+);
+
 // Stroke Control
 /** @public */
 export const strokeControlRecipe = create<InteractiveRecipe>({
@@ -875,65 +916,6 @@ export const strokeControlActive = create<string>("stroke-control-active").withD
 export const strokeControlFocus = create<string>("stroke-control-focus").withDefault(
     (element: HTMLElement) =>
         strokeControlRecipe.getValueFor(element).evaluate(element).focus
-);
-
-// Stroke Control Accent
-/** @public */
-export const strokeControlAccentRecipe = create<InteractiveRecipe>({
-    name: "stroke-control-accent-recipe",
-    cssCustomPropertyName: null,
-}).withDefault({
-    evaluate: (
-        element: HTMLElement,
-        reference?: Swatch
-    ): Record<"rest" | "hover" | "active" | "focus", string> => {
-        return gradientShadowStrokeAlgorithm(
-            accentPalette.getValueFor(element),
-            reference || fillColor.getValueFor(element),
-            -2,
-            -2,
-            -2,
-            -2,
-            4
-        );
-    },
-});
-
-/** @public */
-export const strokeControlAccentRest = create<string>(
-    "stroke-control-accent-rest"
-).withDefault(
-    (element: HTMLElement) =>
-        strokeControlAccentRecipe
-            .getValueFor(element)
-            .evaluate(element, accentFillRest.getValueFor(element)).rest
-);
-/** @public */
-export const strokeControlAccentHover = create<string>(
-    "stroke-control-accent-hover"
-).withDefault(
-    (element: HTMLElement) =>
-        strokeControlAccentRecipe
-            .getValueFor(element)
-            .evaluate(element, accentFillActive.getValueFor(element)).hover
-);
-/** @public */
-export const strokeControlAccentActive = create<string>(
-    "stroke-control-accent-active"
-).withDefault(
-    (element: HTMLElement) =>
-        strokeControlAccentRecipe
-            .getValueFor(element)
-            .evaluate(element, accentFillHover.getValueFor(element)).active
-);
-/** @public */
-export const strokeControlAccentFocus = create<string>(
-    "stroke-control-accent-focus"
-).withDefault(
-    (element: HTMLElement) =>
-        strokeControlAccentRecipe
-            .getValueFor(element)
-            .evaluate(element, accentFillFocus.getValueFor(element)).focus
 );
 
 // Stroke Control Text
@@ -985,47 +967,6 @@ export const strokeControlTextFocus = create<string>(
 ).withDefault(
     (element: HTMLElement) =>
         strokeControlTextRecipe.getValueFor(element).evaluate(element).focus
-);
-
-// Focus Stroke Outer
-/** @public */
-export const focusStrokeOuterRecipe = create<ColorRecipe>({
-    name: "focus-stroke-outer-recipe",
-    cssCustomPropertyName: null,
-}).withDefault({
-    evaluate: (element: HTMLElement): Swatch =>
-        focusStrokeOuterAlgorithm(
-            neutralPalette.getValueFor(element),
-            fillColor.getValueFor(element)
-        ),
-});
-
-/** @public */
-export const focusStrokeOuter = create<Swatch>(
-    "focus-stroke-outer"
-).withDefault((element: HTMLElement) =>
-    focusStrokeOuterRecipe.getValueFor(element).evaluate(element)
-);
-
-// Focus Stroke Inner
-/** @public */
-export const focusStrokeInnerRecipe = create<ColorRecipe>({
-    name: "focus-stroke-inner-recipe",
-    cssCustomPropertyName: null,
-}).withDefault({
-    evaluate: (element: HTMLElement): Swatch =>
-        focusStrokeInnerAlgorithm(
-            accentPalette.getValueFor(element),
-            fillColor.getValueFor(element),
-            focusStrokeOuter.getValueFor(element)
-        ),
-});
-
-/** @public */
-export const focusStrokeInner = create<Swatch>(
-    "focus-stroke-inner"
-).withDefault((element: HTMLElement) =>
-    focusStrokeInnerRecipe.getValueFor(element).evaluate(element)
 );
 
 // Stroke Control Strong
