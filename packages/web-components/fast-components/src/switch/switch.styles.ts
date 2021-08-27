@@ -13,6 +13,7 @@ import {
     designUnit,
     disabledOpacity,
     focusStrokeOuter,
+    focusStrokeWidth,
     neutralFillInputActive,
     neutralFillInputHover,
     neutralFillInputRest,
@@ -172,56 +173,46 @@ export const switchStyles: (
         ),
         forcedColorsStylesheetBehavior(
             css`
-        slot[name="switch"],
-        :host(:enabled) .switch:active slot[name="switch"] {
-          forced-color-adjust: none;
-          background: ${SystemColors.FieldText};
-        }
-        .switch {
-          forced-color-adjust: none;
-          background: ${SystemColors.Field};
-          border-color: ${SystemColors.FieldText};
-        }
-        :host(:enabled) .switch:hover {
-          background: ${SystemColors.HighlightText};
-          border-color: ${SystemColors.Highlight};
-        }
-        :host(.checked) .switch {
-          background: ${SystemColors.Highlight};
-          border-color: ${SystemColors.Highlight};
-        }
-        :host(.checked:enabled) .switch:hover,
-        :host(:enabled) .switch:active {
-          background: ${SystemColors.HighlightText};
-          border-color: ${SystemColors.Highlight};
-        }
-        :host(.checked) slot[name="switch"] {
-          background: ${SystemColors.HighlightText};
-        }
-        :host(.checked:enabled) .switch:hover slot[name="switch"] {
-          background: ${SystemColors.Highlight};
-        }
-        :host(:${focusVisible}) .switch {
-          border-color: ${SystemColors.Highlight};
-          box-shadow: 0 0 0 2px ${SystemColors.Field}, 0 0 0 4px ${SystemColors.FieldText};
-        }
-        :host(.checked:${focusVisible}:enabled) .switch {
-          box-shadow: 0 0 0 2px ${SystemColors.Field}, 0 0 0 4px ${SystemColors.FieldText};
-        }
-        :host(.disabled) {
-          opacity: 1;
-        }
-        :host(.disabled) slot[name="switch"] {
-          background: ${SystemColors.GrayText};
-        }
-        :host(.disabled) .switch {
-          background: ${SystemColors.Field};
-          border-color: ${SystemColors.GrayText};
-        }
-        .status-message,
-        .label {
-          color: ${SystemColors.FieldText};
-        }
-      `
+              :host {
+                forced-color-adjust: auto;
+              }
+              .switch {
+                background: ${SystemColors.Field};
+              }
+              slot[name="switch"] {
+                background: none;
+                border: none;
+                fill: ${SystemColors.FieldText};
+              }
+              :host(:enabled:hover) .switch {
+                border-color: ${SystemColors.Highlight};
+              }
+              :host(:enabled:${focusVisible}) .switch,
+              :host([aria-checked="true"]:enabled:${focusVisible}) .switch {
+                forced-color-adjust: none;
+                border-color: ${SystemColors.FieldText};
+                box-shadow: 0 0 0 calc(${focusStrokeWidth} * 1px) ${SystemColors.FieldText};
+              }
+              :host(.checked) .switch {
+                background: ${SystemColors.Highlight};
+              }
+              :host([aria-checked="true"]) .switch slot[name="switch"] {
+                fill: ${SystemColors.HighlightText};
+              }
+              :host([aria-checked='true']:enabled:hover) .switch slot[name='switch'],
+              :host([aria-checked='true']:enabled) .switch:hover slot[name='switch'] {
+                fill: ${SystemColors.Highlight};
+              }
+              :host(.disabled) {
+                opacity: 1;
+              }
+              :host(.disabled) .switch {
+                background: ${SystemColors.Field};
+                border-color: ${SystemColors.GrayText};
+              }
+              :host(.disabled) slot[name='switch'] {
+                fill: ${SystemColors.GrayText};
+              }
+            `
         )
     );
