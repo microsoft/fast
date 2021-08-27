@@ -53,7 +53,6 @@ export const menuItemStyles: (
       line-height: ${typeRampBaseLineHeight};
       border-radius: calc(${controlCornerRadius} * 1px);
       border: calc(${strokeWidth} * 1px) solid transparent;
-      background: ${neutralFillStealthRest};
     }
 
     :host(.indent-0) {
@@ -213,29 +212,10 @@ export const menuItemStyles: (
     }
 
     :host([aria-checked="true"]) .checkbox-indicator,
-    :host([aria-checked="true"]) ::slotted([slot="checkbox-indicator"]) {
-        width: 100%;
-        height: 100%;
-        display: block;
-        fill: ${foregroundOnAccentRest};
-        pointer-events: none;
-    }
-
-    :host([aria-checked="true"]) .radio-indicator {
-        position: absolute;
-        top: 4px;
-        left: 4px;
-        right: 4px;
-        bottom: 4px;
-        border-radius: 999px;
-        display: block;
-        background: ${foregroundOnAccentRest};
-        pointer-events: none;
-    }
-
-    :host([aria-checked="true"]) ::slotted([slot="radio-indicator"]) {
-        display: block;
-        pointer-events: none;
+    :host([aria-checked="true"]) slot[name="checkbox-indicator"],
+    :host([aria-checked="true"]) .radio-indicator,
+    :host([aria-checked="true"]) slot[name="radio-indicator"] {
+      display: flex;
     }
 `.withBehaviors(
         forcedColorsStylesheetBehavior(
