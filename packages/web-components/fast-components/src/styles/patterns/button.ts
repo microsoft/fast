@@ -104,6 +104,7 @@ export const baseButtonStyles = (
     :host .control:${focusVisible} {
       border-color: ${focusStrokeOuter} !important;
       box-shadow: 0 0 0 calc(${focusStrokeWidth} * 1px) ${focusStrokeOuter} inset !important;
+      color: ${neutralForegroundHover};
     }
 
     .control::-moz-focus-inner {
@@ -205,6 +206,7 @@ export const AccentButtonStyles = (
 
     :host .control:${focusVisible} {
       box-shadow: 0 0 0 calc((${focusStrokeWidth} - ${strokeWidth}) * 1px) ${focusStrokeOuter} inset;
+      color: ${foregroundOnAccentHover};
     }
   `.withBehaviors(
         forcedColorsStylesheetBehavior(

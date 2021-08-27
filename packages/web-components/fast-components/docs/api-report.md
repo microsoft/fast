@@ -1000,21 +1000,6 @@ export enum StandardLuminance {
 }
 
 // @public (undocumented)
-export const strokeControlAccentActive: import("@microsoft/fast-foundation").CSSDesignToken<string>;
-
-// @public (undocumented)
-export const strokeControlAccentFocus: import("@microsoft/fast-foundation").CSSDesignToken<string>;
-
-// @public (undocumented)
-export const strokeControlAccentHover: import("@microsoft/fast-foundation").CSSDesignToken<string>;
-
-// @public (undocumented)
-export const strokeControlAccentRecipe: DesignToken<InteractiveRecipe>;
-
-// @public (undocumented)
-export const strokeControlAccentRest: import("@microsoft/fast-foundation").CSSDesignToken<string>;
-
-// @public (undocumented)
 export const strokeControlActive: import("@microsoft/fast-foundation").CSSDesignToken<string>;
 
 // @public (undocumented)
