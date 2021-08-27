@@ -2,6 +2,35 @@
   "name": "@microsoft/fast-foundation",
   "entries": [
     {
+      "date": "Fri, 27 Aug 2021 14:14:26 GMT",
+      "tag": "@microsoft/fast-foundation_v2.8.0",
+      "version": "2.8.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "Refactor DesignToken implementation to support deep token dependency hierarchies",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "e498f1e35232169d2bf80e366350d0cde812d76d",
+            "package": "@microsoft/fast-foundation"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "add up/down key support to number-field",
+            "author": "corylaviska@microsoft.com",
+            "commit": "0dd749b39bb8d1a0005b0a511ebcc7853f6a077b",
+            "package": "@microsoft/fast-foundation"
+          },
+          {
+            "comment": "Bump @microsoft/fast-element to v1.5.0",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "e498f1e35232169d2bf80e366350d0cde812d76d",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 26 Aug 2021 07:17:43 GMT",
       "tag": "@microsoft/fast-foundation_v2.7.1",
       "version": "2.7.1",
