@@ -1,19 +1,19 @@
 /* eslint-disable */
 import { render } from "@lit-labs/ssr/lib/render-with-global-dom-shim.js";
 import { Readable } from "stream";
-import { html } from "@microsoft/fast-element";
+import { html } from "lit";
 
 // Keep process open until stream closes
 setInterval(() => {}, 1 << 30);
 
 function myTemplate() {
     return html`
-        <p>success</p>
+        <my-element>foo</my-element>
     `;
 }
-//...
 
-const ssrResult = render(myTemplate());
+const templateResult = myTemplate();
+const ssrResult = render(templateResult);
 const stream = Readable.from(ssrResult);
 
 stream.on("readable", function() {
