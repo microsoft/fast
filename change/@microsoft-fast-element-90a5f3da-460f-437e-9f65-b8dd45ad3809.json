@@ -1,0 +1,7 @@
+{
+  "type": "minor",
+  "comment": "ensure HTMLStyleElement DOM order matches call addStylesTo() call order",
+  "packageName": "@microsoft/fast-element",
+  "email": "nicholasrice@users.noreply.github.com",
+  "dependentChangeType": "patch"
+}
