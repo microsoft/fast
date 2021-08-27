@@ -51,7 +51,7 @@ Once an interface key is defined, you'll want to register a concrete value with 
 
 ```ts
 container.register(
-  Registration.instance(ServiceBaseURL, "https://www.fast.design/")
+    Registration.instance(ServiceBaseURL, "https://www.fast.design/")
 );
 ```
 
@@ -83,8 +83,8 @@ The above code defines a key for the `ServiceBaseURL` and configures a value for
 
 ```ts
 export class HTTPClient {
-  constructor(@ServiceBaseURL serviceBaseURL: string) {}
-  public get<T>(url: string): Promise<T> { ... }
+    constructor(@ServiceBaseURL serviceBaseURL: string) {}
+    public get<T>(url: string): Promise<T> { ... }
 }
 ```
 
@@ -96,14 +96,14 @@ Our `ServiceBaseURL` represented a simple string. So, how do we handle something
 
 ```ts
 export interface HTTPClient {
-  get<T>(url: string): Promise<T>;
+    get<T>(url: string): Promise<T>;
 }
 
 export const HTTPClient = DI.createInterface<HTTPClient>();
 
 export class DefaultHTTPClient implements HTTPClient {
-  constructor(@ServiceBaseURL serviceBaseURL: string) {}
-  public get<T>(url: string): Promise<T> { ... }
+    constructor(@ServiceBaseURL serviceBaseURL: string) {}
+    public get<T>(url: string): Promise<T> { ... }
 }
 ```
 
@@ -111,10 +111,10 @@ We could follow the same pattern for the `UserSession` as well, but let's look a
 
 ```ts
 export class AccountService {
-  constructor(
-    @HttpClient http: HttpClient, 
-    @inject(UserSession) session: UserSession
-  ) {}
+    constructor(
+        @HttpClient http: HttpClient, 
+        @inject(UserSession) session: UserSession
+    ) {}
 }
 ```
 
@@ -122,10 +122,10 @@ Better yet, if you are using the `tsconfig.json` setting `"emitDecoratorMetadata
 
 ```ts
 export class AccountService {
-  constructor(
-    @HttpClient http: HttpClient, 
-    @inject() session: UserSession
-  ) {}
+    constructor(
+        @HttpClient http: HttpClient, 
+        @inject() session: UserSession
+    ) {}
 }
 ```
 
@@ -143,18 +143,18 @@ We've seen how we can explicitly register dependencies with the container and al
 
 ```ts
 export interface AccountService {
-  ...
+    ...
 }
 
 class DefaultAccountService implements AccountService {
-  constructor(
-    @HttpClient http: HttpClient, 
-    @inject() session: UserSession
-  ) {}
+    constructor(
+        @HttpClient http: HttpClient, 
+        @inject() session: UserSession
+    ) {}
 }
 
 export const AccountService = DI.createInterface<AccountService>(
-  x => x.singleton(DefaultAccountService)
+    x => x.singleton(DefaultAccountService)
 );
 ```
 
@@ -166,7 +166,7 @@ To address this, the FAST DI supports property injection on web components. Here
 
 ```ts
 export class NewAccountScreen extends FASTElement {
-  @AccountService accountService!: AccountService;
+    @AccountService accountService!: AccountService;
 }
 ```
 
@@ -176,6 +176,6 @@ Alternatively, like with constructor injection, you can also use the `inject` de
 
 ```ts
 export class NewAccountScreen extends FASTElement {
-  @inject(MyService) accountService!: MyService;
+    @inject(MyService) accountService!: MyService;
 }
 ```
