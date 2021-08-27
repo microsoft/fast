@@ -1,0 +1,19 @@
+{
+  "name": "fast-ssr",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "private": true,
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@microsoft/fast-element": "^1.5.0",
+    "@microsoft/fast-foundation": "^2.8.0",
+    "@microsoft/fast-components": "^2.7.2",
+    "lodash-es": "4.17.15",
+    "tslib": "^1.11.1"
+  },
+  "devDependencies": {
+    "typescript": "^3.8.3"
+  }
+}
