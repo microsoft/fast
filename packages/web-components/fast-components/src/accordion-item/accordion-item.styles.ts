@@ -140,13 +140,11 @@ export const accordionItemStyles: (
   `.withBehaviors(
         forcedColorsStylesheetBehavior(
             css`
-        .button:${focusVisible}::before {
-          border-color: ${SystemColors.Highlight};
-          box-shadow: 0 0 0 calc((${focusStrokeWidth} - ${strokeWidth}) * 1px) ${SystemColors.Highlight};
-        }
-        .icon {
-          fill: ${SystemColors.ButtonText};
-        }
-      `
+              .button:${focusVisible}::before {
+                forced-color-adjust: none;
+                border-color: ${SystemColors.Highlight};
+                box-shadow: 0 0 0 calc(${focusStrokeWidth} * 1px) ${SystemColors.Highlight};
+              }
+            `
         )
     );
