@@ -1,8 +1,17 @@
 # Change Log - @microsoft/fast-element
 
-This log was last generated on Thu, 26 Aug 2021 07:17:43 GMT and should not be manually modified.
+This log was last generated on Fri, 27 Aug 2021 14:14:26 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.5.0
+
+Fri, 27 Aug 2021 14:14:26 GMT
+
+### Minor changes
+
+- Adds capability to Observable to subscribe to any observable property change for an object (nicholasrice@users.noreply.github.com)
+- ensure HTMLStyleElement DOM order matches call addStylesTo() call order (nicholasrice@users.noreply.github.com)
 
 ## 1.4.2
 
