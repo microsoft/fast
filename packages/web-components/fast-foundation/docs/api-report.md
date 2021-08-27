@@ -733,6 +733,8 @@ export const DesignSystem: Readonly<{
 // @public
 export interface DesignSystemRegistrationContext {
     readonly elementPrefix: string;
+    // @deprecated
+    tryDefineElement(name: string, type: Constructable, callback: ElementDefinitionCallback): any;
     tryDefineElement(params: ElementDefinitionParams): any;
 }
 

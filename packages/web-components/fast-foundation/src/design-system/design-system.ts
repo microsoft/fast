@@ -108,6 +108,20 @@ export interface DesignSystemRegistrationContext {
 
     /**
      * Used to attempt to define a custom element.
+     * @param name - The name of the element to define.
+     * @param type - The type of the constructor to use to define the element.
+     * @param callback - A callback to invoke if definition will happen.
+     * @public
+     * @deprecated
+     */
+    tryDefineElement(
+        name: string,
+        type: Constructable,
+        callback: ElementDefinitionCallback
+    );
+
+    /**
+     * Used to attempt to define a custom element.
      * @param params - The custom element definition.
      * @public
      */
@@ -285,47 +299,80 @@ class DefaultDesignSystem implements DesignSystem {
         const disambiguate = this.disambiguate;
         const shadowRootMode = this.shadowRootMode;
 
+        const extractTryDefineElementParams = (
+            params: string | ElementDefinitionParams,
+            elementDefinitionType?: Constructable,
+            elementDefinitionCallback?: ElementDefinitionCallback
+        ): ElementDefinitionParams => {
+            if (typeof params === "string") {
+                return {
+                    name: params,
+                    type: elementDefinitionType!,
+                    callback: elementDefinitionCallback!,
+                };
+            } else {
+                return params;
+            }
+        };
+
+        function tryDefineElement(params: ElementDefinitionParams);
+        function tryDefineElement(
+            name: string,
+            type: Constructable,
+            callback: ElementDefinitionCallback
+        );
+        function tryDefineElement(
+            params: string | ElementDefinitionParams,
+            elementDefinitionType?: Constructable,
+            elementDefinitionCallback?: ElementDefinitionCallback
+        ) {
+            const extractedParams = extractTryDefineElementParams(
+                params,
+                elementDefinitionType,
+                elementDefinitionCallback
+            );
+            const { name, callback, baseClass } = extractedParams;
+            let { type } = extractedParams;
+            let elementName: string | null = name;
+            let foundByName = elementTypesByTag.get(elementName);
+
+            while (foundByName && elementName) {
+                elementName = disambiguate(elementName, type, foundByName);
+
+                if (elementName) {
+                    foundByName = elementTypesByTag.get(elementName);
+                }
+            }
+
+            const willDefine = !!elementName;
+
+            if (willDefine) {
+                if (elementTagsByType.has(type)) {
+                    type = class extends type {};
+                }
+
+                elementTypesByTag.set(elementName!, type);
+                elementTagsByType.set(type, elementName!);
+                if (baseClass) {
+                    elementTagsByType.set(baseClass, elementName!);
+                }
+            }
+
+            elementDefinitionEntries.push(
+                new ElementDefinitionEntry(
+                    container,
+                    elementName || name,
+                    type,
+                    shadowRootMode,
+                    callback,
+                    willDefine
+                )
+            );
+        }
+
         this.context = {
             elementPrefix: this.prefix,
-            tryDefineElement(params: ElementDefinitionParams) {
-                const { name, baseClass, callback } = params;
-                let { type } = params;
-                let elementName: string | null = name;
-                let foundByName = elementTypesByTag.get(elementName);
-
-                while (foundByName && elementName) {
-                    elementName = disambiguate(elementName, type, foundByName);
-
-                    if (elementName) {
-                        foundByName = elementTypesByTag.get(elementName);
-                    }
-                }
-
-                const willDefine = !!elementName;
-
-                if (willDefine) {
-                    if (elementTagsByType.has(type)) {
-                        type = class extends type {};
-                    }
-
-                    elementTypesByTag.set(elementName!, type);
-                    elementTagsByType.set(type, elementName!);
-                    if (baseClass) {
-                        elementTagsByType.set(baseClass, elementName!);
-                    }
-                }
-
-                elementDefinitionEntries.push(
-                    new ElementDefinitionEntry(
-                        container,
-                        elementName || name,
-                        type,
-                        shadowRootMode,
-                        callback,
-                        willDefine
-                    )
-                );
-            },
+            tryDefineElement,
         };
 
         container.register(...registrations);

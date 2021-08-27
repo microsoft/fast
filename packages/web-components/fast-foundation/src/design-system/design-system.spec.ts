@@ -119,6 +119,24 @@ describe("DesignSystem", () => {
         expect(customElements.get(elementName)).to.equal(customElement);
     });
 
+    it("Should register elements with the deprecated `tryDefineElement` signature", () => {
+        const elementName = uniqueElementName();
+        const customElement = class extends HTMLElement {};
+        const host = document.createElement("div");
+
+        expect(customElements.get(elementName)).to.be.undefined;
+
+        DesignSystem.getOrCreate(host)
+            .register({
+                register(container: Container) {
+                    const context = container.get(DesignSystemRegistrationContext);
+                    context.tryDefineElement(elementName, customElement, x => x.defineElement());
+                },
+            });
+
+        expect(customElements.get(elementName)).to.equal(customElement);
+    });
+
     it("Should register an element with a custom base class", () => {
         const elementName = uniqueElementName();
         const baseClass = class extends HTMLElement {};
