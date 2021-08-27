@@ -21,7 +21,9 @@ export const virtualizingStackTemplate: (
         "
     >
         <div class="top-spacer" style="height: ${x => x.topSpacerHeight}px"></div>
-        <slot></slot>
+        <div class="item-stack" style="height: ${x => x.itemStackHeight}px">
+            <slot></slot>
+        </div>
         <div class="bottom-spacer" style="height: ${x => x.bottomSpacerHeight}px"></div>
     </template>
 `;

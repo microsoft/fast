@@ -16,7 +16,7 @@ import type { ResizeObserverClassDefinition } from "../anchored-region/resize-ob
  *
  * @beta
  */
-export type VirtualizingStackAutoUpdateMode = "resize-only" | "auto";
+export type VirtualizingStackAutoUpdateMode = "manual | resize-only" | "auto";
 
 const defaultItemTemplate: ViewTemplate<any> = html`
     <template>
@@ -44,6 +44,7 @@ export class VirtualizingStack extends FoundationElement {
     private viewportChanged(): void {
         if (this.$fastController.isConnected) {
             this.viewportElement = this.getViewport();
+            this.updateDimensions();
         }
     }
 
@@ -58,6 +59,7 @@ export class VirtualizingStack extends FoundationElement {
     public itemHeight: number;
     private itemHeightChanged(): void {
         if (this.$fastController.isConnected) {
+            this.updateDimensions();
             this.updateVisibleItems();
         }
     }
@@ -165,6 +167,14 @@ export class VirtualizingStack extends FoundationElement {
     @observable
     public bottomSpacerHeight: number = 0;
 
+    /**
+     *
+     *
+     * @internal
+     */
+    @observable
+    public itemStackHeight: number = 0;
+
     private static intersectionService: IntersectionService = new IntersectionService();
     private resizeDetector: ResizeObserverClassDefinition | null = null;
     private pendingPositioningUpdate: boolean = false;
@@ -218,6 +228,15 @@ export class VirtualizingStack extends FoundationElement {
         }
         this.stopObservers();
         this.disconnectResizeDetector();
+    }
+
+    /**
+     * Request a layout update
+     *
+     * @public
+     */
+    public update(): void {
+        this.requestPositionUpdates();
     }
 
     /**
@@ -330,7 +349,7 @@ export class VirtualizingStack extends FoundationElement {
             }
         }
 
-        this.updateVisibleItems();
+        this.requestPositionUpdates();
     };
 
     /**
@@ -346,6 +365,7 @@ export class VirtualizingStack extends FoundationElement {
             this.visibleItems = [];
             this.topSpacerHeight = 0;
             this.bottomSpacerHeight = 0;
+            this.itemStackHeight = 0;
             this.visibleRangeStart = -1;
             this.visibleRangeEnd = -1;
             return;
@@ -376,6 +396,7 @@ export class VirtualizingStack extends FoundationElement {
             this.visibleItems = [];
             this.topSpacerHeight = 0;
             this.bottomSpacerHeight = 0;
+            this.itemStackHeight = 0;
         } else if (this.itemHeight !== undefined) {
             let firstVisibleIndex: number = Math.floor(
                 this.visibleRangeStart / this.itemHeight
@@ -396,6 +417,8 @@ export class VirtualizingStack extends FoundationElement {
             this.topSpacerHeight = firstVisibleIndex * this.itemHeight;
             this.bottomSpacerHeight =
                 (this.items.length - lastVisibleIndex - 1) * this.itemHeight;
+            this.itemStackHeight =
+                this.totalHeight - this.topSpacerHeight - this.bottomSpacerHeight;
         }
     };
 

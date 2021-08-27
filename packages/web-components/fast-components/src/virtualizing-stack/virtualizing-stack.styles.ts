@@ -12,6 +12,12 @@ export const virtualizingStackStyles: (
     definition: FoundationElementDefinition
 ) => css`
     :host {
+        contain: size;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .item-stack {
         display: flex;
         flex-direction: column;
     }
