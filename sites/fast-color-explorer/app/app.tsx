@@ -115,9 +115,9 @@ class App extends React.Component<AppProps, {}> {
 
     private renderSampleApp = (): React.ReactNode => {
         return (
-            <app-palette-wrapper
-                neutral-base-color={this.props.neutralBaseColor}
-                accent-base-color={this.props.accentBaseColor}
+            <fast-design-system-provider
+                neutral-color={this.props.neutralBaseColor}
+                accent-color={this.props.accentBaseColor}
                 style={{
                     display: "flex",
                     alignItems: "stretch",
@@ -138,7 +138,7 @@ class App extends React.Component<AppProps, {}> {
                 >
                     <app-sample-app></app-sample-app>
                 </app-layer-background>
-            </app-palette-wrapper>
+            </fast-design-system-provider>
         );
     };
 
