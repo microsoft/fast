@@ -262,6 +262,52 @@ describe("Dialog", () => {
             await disconnect();
         });
 
+        it("should fire a 'cancel' event when its overlay is clicked", async () => {
+            const { element, connect, disconnect } = await setup();
+
+            await connect();
+
+            const overlay = element.shadowRoot!.querySelector(".overlay")! as HTMLElement;
+
+            const wasDismissed = await new Promise(resolve => {
+                element.addEventListener("cancel", () => resolve(true));
+
+                overlay.click();
+
+                // Resolve false on the next update in case click hasn't happened
+                DOM.queueUpdate(() => resolve(false));
+            });
+
+            expect(wasDismissed).to.equal(true);
+
+            await disconnect();
+        });
+
+        it("should fire a 'close' event when its button is clicked", async () => {
+            const { element, connect, disconnect } = await setup();
+
+            const button = document.createElement('button');
+            button.textContent = 'close';
+            element.append(button)
+
+            await connect();
+
+            const overlay = element.shadowRoot!.querySelector(".overlay")! as HTMLElement;
+
+            const wasDismissed = await new Promise(resolve => {
+                element.addEventListener("close", () => resolve(true));
+
+                button.click();
+
+                // Resolve false on the next update in case click hasn't happened
+                DOM.queueUpdate(() => resolve(false));
+            });
+
+            expect(wasDismissed).to.equal(true);
+
+            await disconnect();
+        });
+
         it("should fire a 'dismiss' event when keydown is invoked on the document", async () => {
             const { element, connect, disconnect, document } = await setup();
 
