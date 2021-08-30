@@ -22,7 +22,7 @@ DI Containers can exist in a hierarchy, allowing child containers to override th
 const container = DI.getOrCreateDOMContainer();
 ```
 
-You'll want to create and configure your root container as early as possible in your application lifecycle, typically in your application's entry point module. If you are using FAST's Design System features or its components, we've integrated them with DI, so that you can figure everything with a unified API. Instead of calling `DI.getOrCreateDOMContainer()` you can simply import the Design System Provider function and use that. Here's some code that you may have seen in other parts of our documentation, that does just that:
+You'll want to create and configure your root container as early as possible in your application lifecycle, typically in your application's entry point module. If you are using FAST's Design System features or its components, we've integrated them with DI, so that you can configure everything with a unified API. Instead of calling `DI.getOrCreateDOMContainer()` you can simply import the Design System Provider function and use that. Here's some code that you may have seen in other parts of our documentation, that does just that:
 
 ```ts
 provideFASTDesignSystem()
@@ -39,7 +39,7 @@ Once you have a container, you can use it to register and retrieve system depend
 
 ## Creating DI Keys
 
-The FAST DI can handle any kind of dependency, including primitive values like strings. So, we can register a `ServiceBaseURL` with our container and any HTTP service that needs it can simply request it by key. This is nice because it lets us centralize this configuration, making it easy to swap out in different environments. Here's how you define a strongly typed *key* that symbolizes an interface to a dependency.
+The FAST DI can handle any kind of dependency, including primitive values like strings. Simply register a `ServiceBaseURL` with the container and any HTTP service that needs it can simply request it by key. This allows for a centralized configuration, making it easy to swap out in different environments. Here's how you define a strongly typed *key* that symbolizes an interface to a dependency.
 
 ```ts
 export const ServiceBaseURL = DI.createInterface<string>();
