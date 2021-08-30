@@ -2,6 +2,29 @@
   "name": "@microsoft/fast-foundation",
   "entries": [
     {
+      "date": "Mon, 30 Aug 2021 22:30:39 GMT",
+      "tag": "@microsoft/fast-foundation_v2.8.1",
+      "version": "2.8.1",
+      "comments": {
+        "none": [
+          {
+            "comment": "docs(integrations): add an ember tutorial",
+            "author": "roeisenb@microsoft.com",
+            "commit": "cb5d2b128a7f0283377642b8e7e97fc68d22d952",
+            "package": "@microsoft/fast-foundation"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "fixing issue where a token would subscribe to itself, causing max-callstack-exceded in certain scenarios",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "c4fe4d0706dae02bc2d4c8ea37dafe6c79c03075",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 27 Aug 2021 14:14:26 GMT",
       "tag": "@microsoft/fast-foundation_v2.8.0",
       "version": "2.8.0",
