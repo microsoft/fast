@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "fixing issue where a token would subscribe to itself, causing max-callstack-exceded in certain scenarios",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "nicholasrice@users.noreply.github.com",
+  "dependentChangeType": "patch"
+}
