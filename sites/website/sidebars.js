@@ -80,6 +80,11 @@ module.exports = {
         },
         {
             type: "category",
+            label: "Apps and Experiences",
+            items: ["apps-and-experiences/dependency-injection"],
+        },
+        {
+            type: "category",
             label: "Integrations",
             items: [
                 "integrations/introduction",
