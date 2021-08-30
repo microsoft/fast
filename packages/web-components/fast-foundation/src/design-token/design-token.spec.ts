@@ -498,6 +498,19 @@ describe("A DesignToken", () => {
 
                 removeElement(target);
             });
+
+            it("should support accessing the token for being assigned from the derived value", () => {
+                const tokenA = DesignToken.create<number>("token-a");
+                const parent = addElement();
+                const child = addElement(parent);
+                tokenA.withDefault(6);
+                const recipe = (el: HTMLElement) => tokenA.getValueFor(el.parentElement!) * 2;
+                tokenA.setValueFor(parent, recipe);
+                tokenA.setValueFor(child, recipe);
+
+                expect(tokenA.getValueFor(parent)).to.equal(12);
+                expect(tokenA.getValueFor(child)).to.equal(24);
+            })
         });
         it("should update the CSS custom property of a derived token with a dependency that is a derived token that depends on a third token", async () => {
                 const tokenA = DesignToken.create<number>("token-a");

@@ -377,10 +377,13 @@ class DesignTokenBindingObserver<T> {
         this.handleChange();
 
         for (const record of this.observer.records()) {
-            if (record.propertySource instanceof DesignTokenNode) {
+            const { propertySource } = record;
+            if (propertySource instanceof DesignTokenNode) {
                 const token = DesignTokenImpl.getTokenById(record.propertyName);
 
-                if (token !== undefined) {
+                // Tokens should not enumerate themselves as a dependency because
+                // any setting of the token will override the value for that scope.
+                if (token !== undefined && token !== this.token) {
                     this.dependencies.add(token);
                 }
             }
@@ -637,13 +640,16 @@ class DesignTokenNode implements Behavior, Subscriber {
                         x.appliedTo.forEach(y => {
                             const node = DesignTokenNode.getOrCreate(y);
 
-                            if (this.contains(node) && node.getRaw(token) === value) {
+                            if (
+                                this !== node &&
+                                this.contains(node) &&
+                                node.getRaw(token) === value
+                            ) {
                                 token.notify(node.target);
                                 node.reflectToCSS(token as CSSDesignToken<T>);
                             }
                         });
                     }
-
                     x.subscribe(subscriber);
                 });
             }
