@@ -1,8 +1,21 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Thu, 26 Aug 2021 07:17:43 GMT and should not be manually modified.
+This log was last generated on Fri, 27 Aug 2021 14:14:26 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.8.0
+
+Fri, 27 Aug 2021 14:14:26 GMT
+
+### Minor changes
+
+- Refactor DesignToken implementation to support deep token dependency hierarchies (nicholasrice@users.noreply.github.com)
+
+### Patches
+
+- add up/down key support to number-field (corylaviska@microsoft.com)
+- Bump @microsoft/fast-element to v1.5.0 (nicholasrice@users.noreply.github.com)
 
 ## 2.7.1
 
