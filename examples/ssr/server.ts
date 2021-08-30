@@ -1,5 +1,6 @@
 /* eslint-disable */
 import { render } from "@lit-labs/ssr/lib/render-with-global-dom-shim.js";
+import { ElementRenderer } from "@lit-labs/ssr/lib/element-renderer";
 import { Readable } from "stream";
 import { html } from "lit";
 
@@ -11,9 +12,9 @@ function myTemplate() {
 
 const templateResult = myTemplate();
 const ssrResult = render(templateResult);
-const stream = Readable.from(ssrResult);
+const stream = (Readable as any).from(ssrResult);
 
-stream.on("readable", function () {
+stream.on("readable", function (this: any) {
     let data;
 
     while ((data = this.read())) {
