@@ -640,11 +640,7 @@ class DesignTokenNode implements Behavior, Subscriber {
                         x.appliedTo.forEach(y => {
                             const node = DesignTokenNode.getOrCreate(y);
 
-                            if (
-                                this !== node &&
-                                this.contains(node) &&
-                                node.getRaw(token) === value
-                            ) {
+                            if (this.contains(node) && node.getRaw(token) === value) {
                                 token.notify(node.target);
                                 node.reflectToCSS(token as CSSDesignToken<T>);
                             }
