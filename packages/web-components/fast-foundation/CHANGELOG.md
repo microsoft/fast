@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Fri, 27 Aug 2021 14:14:26 GMT and should not be manually modified.
+This log was last generated on Mon, 30 Aug 2021 22:30:39 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.8.1
+
+Mon, 30 Aug 2021 22:30:39 GMT
+
+### Patches
+
+- fixing issue where a token would subscribe to itself, causing max-callstack-exceded in certain scenarios (nicholasrice@users.noreply.github.com)
 
 ## 2.8.0
 
