@@ -87,6 +87,7 @@ module.exports = {
                 "integrations/aspnet",
                 "integrations/aurelia",
                 "integrations/blazor",
+                "integrations/ember",
                 "integrations/react",
                 "integrations/vue",
                 "integrations/webpack",
