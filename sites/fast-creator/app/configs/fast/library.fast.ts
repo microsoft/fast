@@ -48,7 +48,6 @@ import {
     fastTextAreaTag,
     fastTextFieldTag,
 } from "./library.fast.tags";
-import { registerFASTComponents } from "./library.fast.registry";
 export const fastComponentId = "fast-components";
 
 export const fastComponentLibrary: WebComponentLibraryDefinition = {
@@ -58,7 +57,9 @@ export const fastComponentLibrary: WebComponentLibraryDefinition = {
     import: async () => {
         await import("./library.fast.import");
     },
-    register: registerFASTComponents,
+    register: async () => {
+        (await import("./library.fast.registry")).registerFASTComponents();
+    },
     componentDictionary: {
         [fastComponentSchemas[fastAnchorTag].$id]: {
             displayName: fastComponentSchemas[fastAnchorTag].title,
