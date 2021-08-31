@@ -17,8 +17,6 @@ import {
     focusStrokeOuter,
     focusStrokeWidth,
     neutralFillHover,
-    neutralFillRest,
-    neutralFillStealthRest,
     neutralForegroundHover,
     neutralForegroundRest,
     strokeWidth,
@@ -45,14 +43,12 @@ export const tabStyles: (
         padding: 0 calc((6 + (${designUnit} * 2 * ${density})) * 1px);
         color: ${neutralForegroundRest};
         fill: currentcolor;
-        background: ${neutralFillRest};
         border-radius: calc(${controlCornerRadius} * 1px);
         border: calc(${strokeWidth} * 1px) solid transparent;
         align-items: center;
         justify-content: center;
         cursor: pointer;
         outline: none;
-        margin: 4px;
       }
 
       :host(:not(.disabled):hover),
@@ -64,30 +60,30 @@ export const tabStyles: (
       }
 
       :host(:${focusVisible}) {
-        background: ${neutralFillHover};
         border-color: ${focusStrokeOuter};
         box-shadow: 0 0 0 calc(${focusStrokeWidth} * 1px) ${focusStrokeOuter} inset;
-        color: ${neutralForegroundHover};
-      }
-
-      :host([aria-selected="true"]) {
-        z-index: 2;
-        background: ${neutralFillHover};
         color: ${neutralForegroundHover};
       }
 
       :host([disabled]) {
         cursor: ${disabledCursor};
         opacity: ${disabledOpacity};
-    }
+      }
+
+      :host([disabled]:hover) {
+        background: transparent;
+      }
 
       :host(.vertical) {
         justify-content: start;
-        grid-column: 1 / 3;
+        grid-column: 2 / 3;
       }
 
-      :host(.vertical[aria-selected="true"]) {
+      :host([aria-selected="true"]),
+      :host(.vertical[aria-selected="true"]),
+      :host(.vertical:hover[aria-selected="true"]) {
         z-index: 2;
+        background: ${neutralFillHover};
       }
     `.withBehaviors(
         forcedColorsStylesheetBehavior(
@@ -117,7 +113,7 @@ export const tabStyles: (
             border-color: ${SystemColors.GrayText};
             color: ${SystemColors.GrayText};
             fill: currentcolor;
-        }
+          }
         `
         )
     );

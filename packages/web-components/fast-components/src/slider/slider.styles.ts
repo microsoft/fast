@@ -17,13 +17,9 @@ import {
     disabledOpacity,
     focusStrokeOuter,
     focusStrokeWidth,
-    neutralFillActive,
-    neutralFillHover,
     neutralFillRest,
     neutralFillStealthRest,
     neutralFillStrongHover,
-    neutralFillStrongRest,
-    strokeControlStrongActive,
     strokeControlStrongHover,
     strokeControlStrongRest,
     strokeWidth,
@@ -79,7 +75,8 @@ export const sliderStyles: (
       border-radius: 50%;
       box-sizing: border-box;
     }
-    :host(:not(.disabled)) .thumb-cursor:hover {
+    :host(:not(.disabled)) .thumb-cursor:hover,
+    :host(:not(.disabled)) .thumb-cursor:active {
       background: ${neutralFillStrongHover};
       border-color: ${strokeControlStrongHover};
     }
