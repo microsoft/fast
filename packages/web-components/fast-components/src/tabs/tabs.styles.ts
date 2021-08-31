@@ -7,9 +7,11 @@ import {
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
+    accentFillRest,
     bodyFont,
     controlCornerRadius,
-    neutralFillRest,
+    fillColor,
+    focusStrokeWidth,
     neutralForegroundRest,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
@@ -24,62 +26,103 @@ export const tabsStyles: (
     definition: FoundationElementDefinition
 ) =>
     css`
-        ${display("grid")} :host {
-            box-sizing: border-box;
-            font-family: ${bodyFont};
-            font-size: ${typeRampBaseFontSize};
-            line-height: ${typeRampBaseLineHeight};
-            color: ${neutralForegroundRest};
-            grid-template-columns: auto 1fr auto;
-            grid-template-rows: auto 1fr;
+      ${display("grid")} :host {
+        box-sizing: border-box;
+        font-family: ${bodyFont};
+        font-size: ${typeRampBaseFontSize};
+        line-height: ${typeRampBaseLineHeight};
+        color: ${neutralForegroundRest};
+        grid-template-columns: auto 1fr auto;
+        grid-template-rows: auto 1fr;
+      }
+
+      .tablist {
+        display: grid;
+        grid-template-rows: calc(${heightNumber} * 1px); auto;
+        grid-template-columns: auto;
+        grid-column-gap: 8px;
+        position: relative;
+        width: max-content;
+        align-self: end;
+        background: ${fillColor};
+        border-radius: calc(${controlCornerRadius} * 1px);
+        padding: 4px;
+      }
+
+        :host([disabled]) {
+            background: transparent;
         }
 
-        .tablist {
-            display: flex;
-            position: relative;
-            width: max-content;
-            background: ${neutralFillRest};
-            border-radius: calc(${controlCornerRadius} * 1px);
-        }
+      .start,
+      .end {
+        align-self: center;
+      }
 
-        .start,
-        .end {
-            align-self: center;
-        }
+      .activeIndicator {
+        grid-row: 2;
+        grid-column: 1;
+        width: 20px;
+        height: 3px;
+        border-radius: calc(${controlCornerRadius} * 1px);
+        justify-self: center;
+        background: ${accentFillRest};
+        z-index: 2;
+      }
 
-        .tabpanel {
-            grid-row: 2;
-            grid-column-start: 1;
-            grid-column-end: 4;
-            position: relative;
-        }
+      .activeIndicatorTransition {
+        transition: transform 0.2s ease-in-out;
+      }
 
-        :host(.vertical) {
-            grid-template-rows: auto 1fr auto;
-            grid-template-columns: auto 1fr;
-        }
+      .tabpanel {
+        grid-row: 2;
+        grid-column-start: 1;
+        grid-column-end: 4;
+        position: relative;
+      }
 
-        :host(.vertical) .tablist {
-            grid-row-start: 2;
-            grid-row-end: 2;
-            display: grid;
-            grid-template-rows: auto;
-            grid-template-columns: auto 1fr;
-            position: relative;
-            width: max-content;
-            justify-self: end;
-            width: 100%;
-        }
+      :host(.vertical) {
+        grid-template-rows: auto 1fr auto;
+        grid-template-columns: auto 1fr;
+      }
 
-        :host(.vertical) .tabpanel {
-            grid-column: 2;
-            grid-row-start: 1;
-            grid-row-end: 4;
-        }
+      :host(.vertical) .tablist {
+        grid-row-start: 2;
+        grid-row-end: 2;
+        display: grid;
+        grid-template-rows: auto;
+        grid-template-columns: auto 1fr;
+        grid-row-gap: 8px;
+        grid-column-gap: 0;
+        position: relative;
+        width: max-content;
+        justify-self: end;
+        width: 100%;
+      }
 
-        :host(.vertical) .end {
-            grid-row: 3;
-        }
+      :host(.vertical) .tabpanel {
+        grid-column: 2;
+        grid-row-start: 1;
+        grid-row-end: 4;
+      }
+
+      :host(.vertical) .end {
+        grid-row: 3;
+      }
+
+      :host(.vertical) .activeIndicator {
+        grid-column: 1;
+        grid-row: 1;
+        width: 3px;
+        height: 20px;
+        margin-inline-start: calc(${focusStrokeWidth} * 1px);
+        border-radius: calc(${controlCornerRadius} * 1px);
+        align-self: center;
+        background: ${accentFillRest};
+      }
+
+      :host(.vertical) .activeIndicatorTransition {
+        transition: transform 0.2s linear;
+      }
     `.withBehaviors(
         forcedColorsStylesheetBehavior(
             css`

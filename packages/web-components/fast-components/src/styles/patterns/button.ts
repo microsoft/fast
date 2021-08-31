@@ -16,6 +16,7 @@ import {
     controlCornerRadius,
     density,
     designUnit,
+    focusStrokeInner,
     focusStrokeOuter,
     focusStrokeWidth,
     foregroundOnAccentActive,
@@ -194,6 +195,8 @@ export const AccentButtonStyles = (
     }
 
     :host .control:${focusVisible} {
+      box-shadow: 0 0 0 calc((${focusStrokeWidth} - ${strokeWidth}) * 1px) ${focusStrokeOuter} inset,
+        0 0 0 calc(((${focusStrokeWidth} * 2) - ${strokeWidth}) * 1px) ${focusStrokeInner} inset !important;
       color: ${foregroundOnAccentHover};
     }
   `.withBehaviors(
