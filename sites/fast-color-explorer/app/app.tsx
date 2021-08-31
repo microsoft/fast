@@ -1,36 +1,47 @@
-import { StandardLuminance } from "@microsoft/fast-components";
-import { Background } from "@microsoft/fast-components-react-msft";
+import {
+    baseLayerLuminance,
+    ColorRecipe,
+    neutralLayer1Recipe,
+    neutralLayer2Recipe,
+    neutralLayer3Recipe,
+    neutralLayer4Recipe,
+    neutralLayerCardContainerRecipe,
+    neutralLayerFloatingRecipe,
+    StandardLuminance,
+} from "@microsoft/fast-components";
+import { DesignToken } from "@microsoft/fast-foundation";
+import {
+    DesignSystem,
+    DesignSystemDefaults,
+} from "@microsoft/fast-components-styles-msft";
 import { DesignSystemProvider } from "@microsoft/fast-jss-manager-react";
 import { Canvas, Container, Row } from "@microsoft/fast-layouts-react";
 import React from "react";
 import { connect } from "react-redux";
 import AutoSizer from "react-virtualized-auto-sizer";
 import { FixedSizeList } from "react-window";
-import ColorBlocks from "./color-blocks";
+import { AppColorBlock } from "./components/color-block";
 import { ControlPane } from "./control-pane";
-import { ColorsDesignSystem } from "./design-system";
 import { Gradient } from "./gradient";
-import {
-    ColorRecipe,
-    neutralLayer1,
-    neutralLayer2,
-    neutralLayer3,
-    neutralLayer4,
-    neutralLayerCardContainer,
-    neutralLayerFloating,
-    Swatch,
-    SwatchResolver,
-} from "./recipes";
 import { Footer } from "./site-footer";
 import { AppState, ComponentTypes } from "./state";
 
+AppColorBlock;
+
 interface AppProps {
-    designSystem: ColorsDesignSystem;
-    componentType: ComponentTypes;
-    neutralBaseColor: Swatch;
-    accentBaseColor: Swatch;
+    component: ComponentTypes;
+    neutralBaseColor: string;
+    neutralPalette: string[];
+    accentBaseColor: string;
+    accentPalette: string[];
     showOnlyRecommendedBackgrounds: boolean;
 }
+
+// For legacy React control pane
+const designSystem: DesignSystem = Object.assign({}, DesignSystemDefaults, {
+    backgroundColor: "#181818",
+    baseLayerLuminance: StandardLuminance.DarkMode,
+});
 
 class App extends React.Component<AppProps, {}> {
     private colorBlockScrollerRef: React.RefObject<FixedSizeList> = React.createRef<
@@ -44,25 +55,25 @@ class App extends React.Component<AppProps, {}> {
         },
     };
 
-    private backgroundRecipes: Array<[SwatchResolver, string]> = [
-        [neutralLayerFloating, "neutralLayerFloating"],
-        [neutralLayerCardContainer, "neutralLayerCardContainer"],
-        [neutralLayer1, "neutralLayer1"],
-        [neutralLayer2, "neutralLayer2"],
-        [neutralLayer3, "neutralLayer3"],
-        [neutralLayer4, "neutralLayer4"],
+    private backgroundRecipes: Array<[DesignToken<ColorRecipe>, string]> = [
+        [neutralLayerFloatingRecipe, "neutralLayerFloating"],
+        [neutralLayerCardContainerRecipe, "neutralLayerCardContainer"],
+        [neutralLayer1Recipe, "neutralLayer1"],
+        [neutralLayer2Recipe, "neutralLayer2"],
+        [neutralLayer3Recipe, "neutralLayer3"],
+        [neutralLayer4Recipe, "neutralLayer4"],
     ];
 
     public render(): React.ReactNode {
         return (
-            <DesignSystemProvider designSystem={this.props.designSystem}>
+            <DesignSystemProvider designSystem={designSystem}>
                 <Container jssStyleSheet={this.containerStyleOverrides}>
                     <Row fill={true}>
                         <Canvas>
                             <Container jssStyleSheet={this.containerStyleOverrides}>
                                 <Row height={20} minHeight={20}>
                                     <Gradient
-                                        colors={this.props.designSystem.neutralPalette}
+                                        colors={this.props.neutralPalette}
                                         markedColor={this.props.neutralBaseColor}
                                         createAnchors={true}
                                         scrollToItem={this.handleGradientScroll}
@@ -70,7 +81,7 @@ class App extends React.Component<AppProps, {}> {
                                 </Row>
                                 <Row height={20} minHeight={20}>
                                     <Gradient
-                                        colors={this.props.designSystem.accentPalette}
+                                        colors={this.props.accentPalette}
                                         markedColor={this.props.accentBaseColor}
                                         createAnchors={false}
                                     />
@@ -163,23 +174,22 @@ class App extends React.Component<AppProps, {}> {
 
     private renderColorBlock = (props: any): JSX.Element => {
         const color: string = props.data[props.index].color;
-        const index: number = this.props.designSystem.neutralPalette.indexOf(color);
+        const index: number = this.props.neutralPalette.indexOf(color);
 
         return (
             <div style={props.style} key={color}>
-                <Background value={color} style={{ minHeight: "100%" }}>
-                    <ColorBlocks
-                        index={index}
-                        backgroundColor={color}
-                        title={props.data[props.index].title}
-                    />
-                </Background>
+                <app-color-block
+                    index={index}
+                    component={this.props.component}
+                    background-color={color}
+                    layer-name={props.data[props.index].title}
+                ></app-color-block>
             </div>
         );
     };
 
     private backgrounds(): Array<{ color: string; title?: string }> {
-        const neutralPalette: string[] = this.props.designSystem.neutralPalette;
+        const neutralPalette: string[] = this.props.neutralPalette;
         const neutralLayers: Array<{
             color: string;
             title: string;
@@ -206,19 +216,17 @@ class App extends React.Component<AppProps, {}> {
     private resolveRecipes = (
         luminance: number
     ): Array<{ color: string; title: string }> => {
-        const designSystem: ColorsDesignSystem = Object.assign(
-            {},
-            this.props.designSystem,
-            {
-                baseLayerLuminance: luminance,
-            }
-        );
+        const designSystem = document.createElement("div");
+        baseLayerLuminance.setValueFor(designSystem, luminance);
         return this.backgroundRecipes
-            .map((conf: [ColorRecipe<string>, string]): {
+            .map((conf: [DesignToken<ColorRecipe>, string]): {
                 color: string;
                 title: string;
             } => ({
-                color: conf[0](designSystem),
+                color: conf[0]
+                    .getValueFor(document.body)
+                    .evaluate(designSystem)
+                    .toColorString(),
                 title: conf[1],
             }))
             .reduce(
@@ -261,10 +269,11 @@ class App extends React.Component<AppProps, {}> {
 
 function mapStateToProps(state: AppState): Partial<AppProps> {
     return {
-        designSystem: state.designSystem,
-        componentType: state.componentType,
+        component: state.componentType,
         neutralBaseColor: state.neutralBaseColor,
+        neutralPalette: state.neutralPalette,
         accentBaseColor: state.accentBaseColor,
+        accentPalette: state.accentPalette,
         showOnlyRecommendedBackgrounds: state.showOnlyRecommendedBackgrounds,
     };
 }
