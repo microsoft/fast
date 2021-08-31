@@ -21,7 +21,7 @@ export const horizontalScrollTemplate: FoundationElementTemplate<
         class="horizontal-scroll"
         @keyup="${(x, c) => x.keyupHandler(c.event as KeyboardEvent)}"
     >
-        ${startTemplate}
+        ${startTemplate(context, definition)}
         <div class="scroll-area">
             <div
                 class="scroll-view"
@@ -69,6 +69,6 @@ export const horizontalScrollTemplate: FoundationElementTemplate<
                 `
             )}
         </div>
-        ${endTemplate}
+        ${endTemplate(context, definition)}
     </template>
 `;

@@ -27,7 +27,7 @@ export const numberFieldTemplate: (
             <slot ${slotted("defaultSlottedNodes")}></slot>
         </label>
         <div class="root" part="root">
-            ${startTemplate}
+            ${startTemplate(context, definition)}
             <input
                 class="control"
                 part="control"
@@ -92,7 +92,7 @@ export const numberFieldTemplate: (
                     </div>
                 `
             )}
-            ${endTemplate}
+            ${endTemplate(context, definition)}
         </div>
     </template>
 `;

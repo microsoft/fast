@@ -38,8 +38,8 @@ export const accordionItemTemplate: (
                     <slot name="heading" part="heading"></slot>
                 </span>
             </button>
-            ${startTemplate}
-            ${endTemplate}
+            ${startTemplate(context, definition)}
+            ${endTemplate(context, definition)}
             <span class="icon" part="icon" aria-hidden="true">
                 <slot name="expanded-icon" part="expanded-icon">
                     ${definition.expandedIcon || ""}

@@ -26,9 +26,9 @@ export const breadcrumbItemTemplate: (
         ${when(
             x => !x.href,
             html<BreadcrumbItem>`
-                ${startTemplate}
+                ${startTemplate(context, definition)}
                 <slot></slot>
-                ${endTemplate}
+                ${endTemplate(context, definition)}
             `
         )}
         ${when(

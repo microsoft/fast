@@ -2,9 +2,8 @@ import { html, ref, slotted } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
 import { endTemplate, startTemplate } from "../patterns";
 import { whitespaceFilter } from "../utilities";
-import type { FoundationElementDefinition } from "../foundation-element";
 import type { ElementDefinitionContext } from "../design-system";
-import type { TextField } from "./text-field";
+import type { TextField, TextFieldOptions } from "./text-field";
 
 /**
  * The template for the {@link @microsoft/fast-foundation#(TextField:class)} component.
@@ -12,10 +11,10 @@ import type { TextField } from "./text-field";
  */
 export const textFieldTemplate: (
     context: ElementDefinitionContext,
-    definition: FoundationElementDefinition
+    definition: TextFieldOptions
 ) => ViewTemplate<TextField> = (
     context: ElementDefinitionContext,
-    definition: FoundationElementDefinition
+    definition: TextFieldOptions
 ) => html`
     <template
         class="
@@ -35,7 +34,7 @@ export const textFieldTemplate: (
             ></slot>
         </label>
         <div class="root" part="root">
-            ${startTemplate}
+            ${startTemplate(context, definition)}
             <input
                 class="control"
                 part="control"
@@ -76,7 +75,7 @@ export const textFieldTemplate: (
                 aria-roledescription="${x => x.ariaRoledescription}"
                 ${ref("control")}
             />
-            ${endTemplate}
+            ${endTemplate(context, definition)}
         </div>
     </template>
 `;

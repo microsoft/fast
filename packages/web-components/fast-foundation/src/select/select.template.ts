@@ -37,7 +37,7 @@ export const selectTemplate: (
             role="button"
             ?disabled="${x => x.disabled}"
         >
-            ${startTemplate}
+            ${startTemplate(context, definition)}
             <slot name="button-container">
                 <div class="selected-value" part="selected-value">
                     <slot name="selected-value">${x => x.displayValue}</slot>
@@ -48,7 +48,7 @@ export const selectTemplate: (
                     </slot>
                 </div>
             </slot>
-            ${endTemplate}
+            ${endTemplate(context, definition)}
         </div>
         <div
             aria-disabled="${x => x.disabled}"

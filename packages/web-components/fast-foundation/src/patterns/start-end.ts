@@ -1,5 +1,28 @@
-import { html, ref } from "@microsoft/fast-element";
+import { html, ref, SyntheticViewTemplate } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
+import type { ElementDefinitionContext } from "../design-system";
+
+/**
+ * Start configuration options
+ * @public
+ */
+export type StartOptions = {
+    start?: string | SyntheticViewTemplate;
+};
+
+/**
+ * End configuration options
+ * @public
+ */
+export type EndOptions = {
+    end?: string | SyntheticViewTemplate;
+};
+
+/**
+ * Start/End configuration options
+ * @public
+ */
+export type StartEndOptions = StartOptions & EndOptions;
 
 /**
  * A mixin class implementing start and end elements.
@@ -29,13 +52,14 @@ export class StartEnd {
  *
  * @public
  */
-export const endTemplate: ViewTemplate<StartEnd> = html`
+export const endTemplate: (
+    context: ElementDefinitionContext,
+    definition: StartOptions
+) => ViewTemplate<StartEnd> = (context: ElementDefinitionContext, definition) => html`
     <span part="end" ${ref("endContainer")}>
-        <slot
-            name="end"
-            ${ref("end")}
-            @slotchange="${x => x.handleEndContentChange()}"
-        ></slot>
+        <slot name="end" ${ref("end")} @slotchange="${x => x.handleEndContentChange()}">
+            ${definition.start || ""}
+        </slot>
     </span>
 `;
 
@@ -45,12 +69,20 @@ export const endTemplate: ViewTemplate<StartEnd> = html`
  *
  * @public
  */
-export const startTemplate: ViewTemplate<StartEnd> = html`
+export const startTemplate: (
+    context: ElementDefinitionContext,
+    definition: EndOptions
+) => ViewTemplate<StartEnd> = (
+    context: ElementDefinitionContext,
+    definition: EndOptions
+) => html`
     <span part="start" ${ref("startContainer")}>
         <slot
             name="start"
             ${ref("start")}
             @slotchange="${x => x.handleStartContentChange()}"
-        ></slot>
+        >
+            ${definition.end || ""}
+        </slot>
     </span>
 `;

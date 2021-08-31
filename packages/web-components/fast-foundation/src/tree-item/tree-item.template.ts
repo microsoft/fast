@@ -52,9 +52,9 @@ export const treeItemTemplate: (
                         </div>
                     `
                 )}
-                ${startTemplate}
+                ${startTemplate(context, definition)}
                 <slot></slot>
-                ${endTemplate}
+                ${endTemplate(context, definition)}
             </div>
         </div>
         ${when(

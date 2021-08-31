@@ -26,7 +26,7 @@ export const comboboxTemplate: (
         @focusout="${(x, c) => x.focusoutHandler(c.event as FocusEvent)}"
     >
         <div class="control" part="control">
-            ${startTemplate}
+            ${startTemplate(context, definition)}
             <slot name="control">
                 <input
                     class="selected-value"
@@ -52,7 +52,7 @@ export const comboboxTemplate: (
                     </slot>
                 </div>
             </slot>
-            ${endTemplate}
+            ${endTemplate(context, definition)}
         </div>
         <div
             aria-disabled="${x => x.disabled}"

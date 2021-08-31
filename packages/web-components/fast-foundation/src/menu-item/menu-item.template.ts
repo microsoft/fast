@@ -57,11 +57,11 @@ export const menuItemTemplate: (
                 `
             )}
         </div>
-        ${startTemplate}
+        ${startTemplate(context, definition)}
         <span class="content" part="content">
             <slot></slot>
         </span>
-        ${endTemplate}
+        ${endTemplate(context, definition)}
         ${when(
             x => x.hasSubmenu,
             html<MenuItem>`
