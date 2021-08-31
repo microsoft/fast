@@ -7,22 +7,24 @@ import {
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
-    accentForegroundRest,
     bodyFont,
     controlCornerRadius,
     disabledOpacity,
     focusStrokeOuter,
     focusStrokeWidth,
+    neutralFillActive,
     neutralFillHover,
+    neutralFillInputActive,
     neutralFillInputHover,
     neutralFillInputRest,
     neutralFillRest,
+    neutralForegroundActive,
     neutralForegroundHover,
     neutralForegroundRest,
+    neutralStrokeActive,
+    neutralStrokeHover,
+    neutralStrokeRest,
     strokeControlRest,
-    strokeControlStrongRest,
-    strokeControlTextHover,
-    strokeControlTextRest,
     strokeWidth,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
@@ -57,7 +59,7 @@ export const inputStyles: (
     position: relative;
     color: inherit;
     background: ${neutralFillInputRest};
-    border: calc(${strokeWidth} * 1px) solid ${strokeControlStrongRest};
+    border: calc(${strokeWidth} * 1px) solid ${neutralStrokeRest};
     border-radius: calc(${controlCornerRadius} * 1px);
     height: calc(${heightNumber} * 1px);
     font-family: inherit;
@@ -114,13 +116,12 @@ export const inputStateStyles: (
     definition: FoundationElementDefinition,
     rootSelector: string
 ) => css`
-  :host(:hover:not([disabled]):not(:focus-within)) ${rootSelector} {
-    background: ${neutralFillInputHover};
-    color: ${neutralForegroundHover};
-  }
-
+  :host(:hover:not([disabled]):not(:focus-within)) ${rootSelector},
   :host(:active:not([disabled])) ${rootSelector},
   :host(:focus-within:not([disabled])) ${rootSelector} {
+    background: ${neutralFillInputRest};
+    border-color: ${neutralStrokeHover};
+    box-shadow: 0 0 0 calc((${focusStrokeWidth} - ${strokeWidth}) * 1px) ${neutralStrokeHover} inset;
     color: ${neutralForegroundHover};
   }
 
@@ -148,14 +149,25 @@ export const inputFilledStyles: (
         border-color: transparent;
     }
 
-    :host(:hover:not([disabled]):not(:focus-within)) ${rootSelector} {
-        background: ${neutralFillHover};
-        border-color: transparent;
+    :host(:hover:not([disabled]):not(:focus-within)) ${rootSelector},
+    :host(:active:not([disabled])) ${rootSelector},
+    :host(:focus-within:not([disabled])) ${rootSelector} {
+      background: ${neutralFillRest};
+      border-color: ${neutralStrokeRest};
+      box-shadow: none;
+      color: ${neutralForegroundHover};
     }
 
+    :host(:active:not([disabled])) ${rootSelector},
     :host(:focus-within:not([disabled])) ${rootSelector} {
-        border-color: transparent;
-        box-shadow: none;
+      background: ${neutralFillRest};
+      color: ${neutralForegroundActive};
+    }
+
+    :host(:${focusVisible}:not([disabled])) ${rootSelector} {
+      border-color: ${focusStrokeOuter};
+      box-shadow: 0 0 0 calc(${focusStrokeWidth} * 1px) ${focusStrokeOuter} inset;
+      color: ${neutralForegroundHover};
     }
 `;
 
