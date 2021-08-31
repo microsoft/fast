@@ -48,7 +48,6 @@ import {
     fluentTextAreaTag,
     fluentTextFieldTag,
 } from "./library.fluent-ui.tags";
-import { registerFluentUIComponents } from "./library.fluent-ui.registry";
 export const fluentUIComponentId = "fluent-ui-components";
 
 export const fluentUIComponentLibrary: WebComponentLibraryDefinition = {
@@ -58,7 +57,9 @@ export const fluentUIComponentLibrary: WebComponentLibraryDefinition = {
     import: async () => {
         await import("./library.fluent-ui.import");
     },
-    register: registerFluentUIComponents,
+    register: async () => {
+        (await import("./library.fluent-ui.registry")).registerFluentUIComponents();
+    },
     componentDictionary: {
         [fluentUIComponentSchemas[fluentAnchorTag].$id]: {
             displayName: fluentUIComponentSchemas[fluentAnchorTag].title,
