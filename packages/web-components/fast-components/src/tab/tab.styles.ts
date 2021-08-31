@@ -18,6 +18,7 @@ import {
     focusStrokeWidth,
     neutralFillHover,
     neutralFillRest,
+    neutralFillStealthRest,
     neutralForegroundHover,
     neutralForegroundRest,
     strokeWidth,
@@ -49,27 +50,29 @@ export const tabStyles: (
         border: calc(${strokeWidth} * 1px) solid transparent;
         align-items: center;
         justify-content: center;
-        grid-row: 1 / 3;
         cursor: pointer;
         outline: none;
+        margin: 4px;
+      }
+
+      :host(:not(.disabled):hover),
+      :host(:not(.disabled):active),
+      :host(.vertical:not(.disabled):hover),
+      :host(.vertical:not(.disabled):active) {
+        background: ${neutralFillHover};
+        color: ${neutralForegroundHover};
+      }
+
+      :host(:${focusVisible}) {
+        background: ${neutralFillHover};
+        border-color: ${focusStrokeOuter};
+        box-shadow: 0 0 0 calc(${focusStrokeWidth} * 1px) ${focusStrokeOuter} inset;
+        color: ${neutralForegroundHover};
       }
 
       :host([aria-selected="true"]) {
         z-index: 2;
         background: ${neutralFillHover};
-        color: ${neutralForegroundHover};
-      }
-
-      :host(:hover),
-      :host(:active),
-      :host(.vertical:hover),
-      :host(.vertical:active) {
-        color: ${neutralForegroundHover};
-      }
-
-      :host(:${focusVisible}) {
-        border-color: ${focusStrokeOuter};
-        box-shadow: 0 0 0 calc(${focusStrokeWidth} * 1px) ${focusStrokeOuter} inset;
         color: ${neutralForegroundHover};
       }
 
@@ -86,9 +89,6 @@ export const tabStyles: (
       :host(.vertical[aria-selected="true"]) {
         z-index: 2;
       }
-
-      :host(.vertical:hover[aria-selected="true"]) {
-      }
     `.withBehaviors(
         forcedColorsStylesheetBehavior(
             css`
@@ -97,20 +97,27 @@ export const tabStyles: (
             color: ${SystemColors.ButtonText};
             fill: currentcolor;
           }
-          :host(:hover),
-          :host(.vertical:hover),
+          :host(:not(.disabled):hover),
+          :host(.vertical:not(.disabled):hover),
           :host([aria-selected="true"]),
-          :host([aria-selected="true"]:hover) {
+          :host([aria-selected="true"]:not(.disabled):hover) {
             border-color: ${SystemColors.Highlight};
             color: ${SystemColors.Highlight};
             fill: currentcolor;
           }
-          :host(:${focusVisible}) {
+          :host(:not(.disabled):${focusVisible}) {
             forced-color-adjust: none;
             background: ${SystemColors.ButtonFace};
             border-color: ${SystemColors.Highlight};
             box-shadow: 0 0 0 calc(${focusStrokeWidth} * 1px) ${SystemColors.Highlight} inset;
           }
+          :host([disabled]),
+          :host([disabled]:hover) {
+            opacity: 1;
+            border-color: ${SystemColors.GrayText};
+            color: ${SystemColors.GrayText};
+            fill: currentcolor;
+        }
         `
         )
     );

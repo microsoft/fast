@@ -30,8 +30,9 @@ import {
     neutralForegroundActive,
     neutralForegroundHover,
     neutralForegroundRest,
-    neutralStrokeActive,
-    neutralStrokeRest,
+    strokeControlActive,
+    strokeControlHover,
+    strokeControlRest,
     strokeWidth,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
@@ -373,11 +374,15 @@ export const OutlineButtonStyles = (
     css`
         :host .control {
             background: transparent !important;
-            border-color: ${neutralStrokeRest};
+            border-color: ${strokeControlRest};
         }
 
         :host .control${interactivitySelector}:active {
-            border-color: ${neutralStrokeActive};
+            border-color: ${strokeControlHover};
+        }
+
+        :host .control${interactivitySelector}:active {
+            border-color: ${strokeControlActive};
         }
     `.withBehaviors(
         forcedColorsStylesheetBehavior(

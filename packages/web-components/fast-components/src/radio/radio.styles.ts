@@ -95,13 +95,20 @@ export const radioStyles: (
       pointer-events: none;
     }
 
-    :host(:enabled:hover) .control {
-      background: ${neutralFillInputHover};
+    :host(.checked) .control {
+      background: transparent;
+      border-color: ${strokeControlStrongRest};
+    }
+
+    :host(:enabled:hover) .control,
+    :host(.checked:enabled:hover) .control {
+      background: transparent;
       border-color: ${strokeControlStrongHover};
     }
 
-    :host(:enabled:active) .control {
-      background: ${neutralFillInputActive};
+    :host(:enabled:active) .control,
+    :host(.checked:enabled:active) .control {
+      background: transparent;
       border-color: ${strokeControlStrongActive};
     }
 
@@ -111,24 +118,9 @@ export const radioStyles: (
 
     :host(:${focusVisible}) .control,
     :host(.checked:enabled:${focusVisible}) .control {
-      background: ${neutralFillInputFocus};
+      background: transparent;
       border-color: ${focusStrokeOuter};
       box-shadow: 0 0 0 calc(${focusStrokeWidth} * 1px) ${focusStrokeOuter};
-    }
-
-    :host(.checked) .control {
-      background: ${neutralFillInputRest};
-      border-color: ${strokeControlStrongRest};
-    }
-
-    :host(.checked:enabled:hover) .control {
-      background: ${neutralFillInputRest};
-      border-color: ${strokeControlStrongRest};
-    }
-
-    :host(.checked:enabled:active) .control {
-      background: ${neutralFillInputRest};
-      border-color: ${strokeControlStrongRest};
     }
 
     :host(.disabled) .label,

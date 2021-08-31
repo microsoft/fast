@@ -8,6 +8,8 @@ import {
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
     bodyFont,
+    controlCornerRadius,
+    neutralFillRest,
     neutralForegroundRest,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
@@ -22,65 +24,62 @@ export const tabsStyles: (
     definition: FoundationElementDefinition
 ) =>
     css`
-      ${display("grid")} :host {
-        box-sizing: border-box;
-        font-family: ${bodyFont};
-        font-size: ${typeRampBaseFontSize};
-        line-height: ${typeRampBaseLineHeight};
-        color: ${neutralForegroundRest};
-        grid-template-columns: auto 1fr auto;
-        grid-template-rows: auto 1fr;
-      }
+        ${display("grid")} :host {
+            box-sizing: border-box;
+            font-family: ${bodyFont};
+            font-size: ${typeRampBaseFontSize};
+            line-height: ${typeRampBaseLineHeight};
+            color: ${neutralForegroundRest};
+            grid-template-columns: auto 1fr auto;
+            grid-template-rows: auto 1fr;
+        }
 
-      .tablist {
-        display: grid;
-        grid-template-rows: calc(${heightNumber} * 1px); auto;
-        grid-template-columns: auto;
-        position: relative;
-        width: max-content;
-        align-self: end;
-        grid-column-gap: 8px;
-      }
+        .tablist {
+            display: flex;
+            position: relative;
+            width: max-content;
+            background: ${neutralFillRest};
+            border-radius: calc(${controlCornerRadius} * 1px);
+        }
 
-      .start,
-      .end {
-        align-self: center;
-      }
+        .start,
+        .end {
+            align-self: center;
+        }
 
-      .tabpanel {
-        grid-row: 2;
-        grid-column-start: 1;
-        grid-column-end: 4;
-        position: relative;
-      }
+        .tabpanel {
+            grid-row: 2;
+            grid-column-start: 1;
+            grid-column-end: 4;
+            position: relative;
+        }
 
-      :host(.vertical) {
-        grid-template-rows: auto 1fr auto;
-        grid-template-columns: auto 1fr;
-      }
+        :host(.vertical) {
+            grid-template-rows: auto 1fr auto;
+            grid-template-columns: auto 1fr;
+        }
 
-      :host(.vertical) .tablist {
-        grid-row-start: 2;
-        grid-row-end: 2;
-        display: grid;
-        grid-template-rows: auto;
-        grid-template-columns: auto 1fr;
-        position: relative;
-        width: max-content;
-        justify-self: end;
-        width: 100%;
-        grid-row-gap: 8px;
-      }
+        :host(.vertical) .tablist {
+            grid-row-start: 2;
+            grid-row-end: 2;
+            display: grid;
+            grid-template-rows: auto;
+            grid-template-columns: auto 1fr;
+            position: relative;
+            width: max-content;
+            justify-self: end;
+            width: 100%;
+        }
 
-      :host(.vertical) .tabpanel {
-        grid-column: 2;
-        grid-row-start: 1;
-        grid-row-end: 4;
-      }
+        :host(.vertical) .tabpanel {
+            grid-column: 2;
+            grid-row-start: 1;
+            grid-row-end: 4;
+        }
 
-      :host(.vertical) .end {
-        grid-row: 3;
-      }
+        :host(.vertical) .end {
+            grid-row: 3;
+        }
     `.withBehaviors(
         forcedColorsStylesheetBehavior(
             css`

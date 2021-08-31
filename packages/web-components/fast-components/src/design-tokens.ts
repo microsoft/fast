@@ -981,9 +981,9 @@ export const strokeControlStrongRecipe = create<InteractiveColorRecipe>({
             reference || fillColor.getValueFor(element),
             5.5,
             0,
-            0,
-            0,
-            0
+            12,
+            24,
+            12
         ),
 });
 
