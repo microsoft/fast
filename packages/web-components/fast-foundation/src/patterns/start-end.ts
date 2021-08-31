@@ -54,11 +54,18 @@ export class StartEnd {
  */
 export const endTemplate: (
     context: ElementDefinitionContext,
-    definition: StartOptions
-) => ViewTemplate<StartEnd> = (context: ElementDefinitionContext, definition) => html`
-    <span part="end" ${ref("endContainer")}>
+    definition: EndOptions
+) => ViewTemplate<StartEnd> = (
+    context: ElementDefinitionContext,
+    definition: EndOptions
+) => html`
+    <span
+        part="end"
+        ${ref("endContainer")}
+        class=${x => (definition.end ? "end" : void 0)}
+    >
         <slot name="end" ${ref("end")} @slotchange="${x => x.handleEndContentChange()}">
-            ${definition.start || ""}
+            ${definition.end || ""}
         </slot>
     </span>
 `;
@@ -71,18 +78,22 @@ export const endTemplate: (
  */
 export const startTemplate: (
     context: ElementDefinitionContext,
-    definition: EndOptions
+    definition: StartOptions
 ) => ViewTemplate<StartEnd> = (
     context: ElementDefinitionContext,
-    definition: EndOptions
+    definition: StartOptions
 ) => html`
-    <span part="start" ${ref("startContainer")}>
+    <span
+        part="start"
+        ${ref("startContainer")}
+        class="${x => (definition.start ? "start" : void 0)}"
+    >
         <slot
             name="start"
             ${ref("start")}
             @slotchange="${x => x.handleStartContentChange()}"
         >
-            ${definition.end || ""}
+            ${definition.start || ""}
         </slot>
     </span>
 `;
