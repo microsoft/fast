@@ -6,6 +6,7 @@ const CopyPlugin = require("copy-webpack-plugin");
 const MonacoWebpackPlugin = require("monaco-editor-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const manifest = require("@microsoft/site-utilities/src/curated-html.json").join("");
+const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
 
 const appDir = path.resolve(__dirname, "./");
 const outDir = path.resolve(__dirname, "./www");
@@ -94,6 +95,10 @@ module.exports = {
             // available options are documented at https://github.com/Microsoft/monaco-editor-webpack-plugin#options
             languages: ["html"],
             features: ["format", "coreCommands", "codeAction", "suggest"],
+        }),
+        new BundleAnalyzerPlugin({
+            // Remove this to inspect bundle sizes.
+            analyzerMode: "disabled",
         }),
     ],
 };

@@ -4,6 +4,7 @@ const path = require("path");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
 
 const appDir = path.resolve(__dirname, "./");
 const outDir = path.resolve(__dirname, "./www");
@@ -68,6 +69,10 @@ module.exports = {
             title: "FAST Creator Preview",
             inject: "body",
             template: path.resolve(appDir, "index.html"),
+        }),
+        new BundleAnalyzerPlugin({
+            // Remove this to inspect bundle sizes.
+            analyzerMode: "disabled",
         }),
     ],
 };
