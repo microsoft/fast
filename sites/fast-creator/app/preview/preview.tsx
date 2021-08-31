@@ -20,7 +20,6 @@ import {
     nativeElementDefinitions,
 } from "@microsoft/site-utilities";
 import { classNames, Direction } from "@microsoft/fast-web-utilities";
-import { mapFASTComponentsDesignSystem } from "../configs/fast/library.fast.design-system.mapping";
 import { mapFluentUIComponentsDesignSystem } from "../configs/fluent-ui/library.fluent-ui.design-system.mapping";
 import { elementLibraries } from "../configs";
 import {
