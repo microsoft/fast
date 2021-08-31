@@ -13,13 +13,8 @@ import {
     bodyFont,
     designUnit,
     disabledOpacity,
-    fillColor,
     focusStrokeOuter,
     focusStrokeWidth,
-    neutralFillInputActive,
-    neutralFillInputFocus,
-    neutralFillInputHover,
-    neutralFillInputRest,
     neutralForegroundRest,
     strokeControlStrongActive,
     strokeControlStrongHover,
@@ -102,13 +97,11 @@ export const radioStyles: (
 
     :host(:enabled:hover) .control,
     :host(.checked:enabled:hover) .control {
-      background: transparent;
       border-color: ${strokeControlStrongHover};
     }
 
     :host(:enabled:active) .control,
     :host(.checked:enabled:active) .control {
-      background: transparent;
       border-color: ${strokeControlStrongActive};
     }
 
@@ -118,7 +111,6 @@ export const radioStyles: (
 
     :host(:${focusVisible}) .control,
     :host(.checked:enabled:${focusVisible}) .control {
-      background: transparent;
       border-color: ${focusStrokeOuter};
       box-shadow: 0 0 0 calc(${focusStrokeWidth} * 1px) ${focusStrokeOuter};
     }

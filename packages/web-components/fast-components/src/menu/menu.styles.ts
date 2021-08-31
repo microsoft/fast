@@ -10,9 +10,9 @@ import { elevationShadowFlyout } from "../styles/index";
 import {
     controlCornerRadius,
     designUnit,
+    fillColor,
     layerCornerRadius,
     neutralForegroundRest,
-    neutralLayerFloating,
     neutralStrokeDividerRest,
     strokeWidth,
 } from "../design-tokens";
@@ -26,7 +26,7 @@ export const menuStyles: (
 ) =>
     css`
         ${display("block")} :host {
-            background: ${neutralLayerFloating};
+            background: ${fillColor};
             border: calc(${strokeWidth} * 1px) solid transparent;
             border-radius: ${layerCornerRadius};
             box-shadow: ${elevationShadowFlyout};
