@@ -80,6 +80,11 @@ module.exports = {
         },
         {
             type: "category",
+            label: "Apps and Experiences",
+            items: ["apps-and-experiences/dependency-injection"],
+        },
+        {
+            type: "category",
             label: "Integrations",
             items: [
                 "integrations/introduction",
@@ -87,6 +92,7 @@ module.exports = {
                 "integrations/aspnet",
                 "integrations/aurelia",
                 "integrations/blazor",
+                "integrations/ember",
                 "integrations/react",
                 "integrations/vue",
                 "integrations/webpack",
