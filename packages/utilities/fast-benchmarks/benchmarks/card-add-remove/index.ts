@@ -5,7 +5,7 @@ import { DesignSystem } from "@microsoft/fast-foundation";
 DesignSystem.getOrCreate().register(fastCard());
 
 export default new Benchmark(
-    "dt-add-remove",
+    "card-add-remove",
     function (deferred: any): void {
         const element = document.createElement("fast-card") as Card;
         Observable.getNotifier(element.$fastController).subscribe(
