@@ -92,9 +92,10 @@ class StyleElementStyleSheetTarget implements PropertyTarget {
         // so we need to add a new rule each time and populate it with the stored properties
         const { sheet } = this.style;
         if (sheet) {
-            this.target = (sheet.rules[
-                sheet.insertRule(":host{}")
-            ] as CSSStyleRule).style;
+            // Safari will throw if we try to use the return result of insertRule()
+            // to index the rule inline, so store as a const prior to indexing.
+            const index = sheet.insertRule(":host{}");
+            this.target = (sheet.rules[index] as CSSStyleRule).style;
         } else {
             this.target = null;
         }
