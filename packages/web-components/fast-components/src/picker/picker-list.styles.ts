@@ -64,22 +64,22 @@ export const pickerListStyles: (
             border-color: ${accentFillActive};
         }
 
-        ::focus-within[role="combobox"] {
+        :focus-within[role="combobox"] {
             border-color: ${focusStrokeOuter};
             box-shadow: 0 0 0 1px ${focusStrokeOuter} inset;
         }
     `.withBehaviors(
         forcedColorsStylesheetBehavior(
             css`
-                :hover[role="combobox"] {
+                [role="combobox"]:active {
                     background: ${SystemColors.Field};
                     border-color: ${SystemColors.Highlight};
                 }
-                :focus-within:enabled[role="combobox"] {
+                [role="combobox"]:focus-within {
                     border-color: ${SystemColors.Highlight};
                     box-shadow: 0 0 0 1px ${SystemColors.Highlight} inset;
                 }
-                input::placeholder {
+                input:placeholder {
                     color: ${SystemColors.GrayText};
                 }
             `

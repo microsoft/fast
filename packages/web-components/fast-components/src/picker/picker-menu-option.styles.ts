@@ -5,6 +5,7 @@ import {
     forcedColorsStylesheetBehavior,
     FoundationElementDefinition,
 } from "@microsoft/fast-foundation";
+import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
     accentFillActive,
     bodyFont,
@@ -66,4 +67,29 @@ export const pickerMenuOptionStyles: (
     color: ${foregroundOnAccentActive};
 }
 
-`.withBehaviors(forcedColorsStylesheetBehavior(css``));
+`.withBehaviors(
+        forcedColorsStylesheetBehavior(
+            css`
+                :host {
+                    border-color: transparent;
+                    forced-color-adjust: none;
+                    color: ${SystemColors.ButtonText};
+                    fill: currentcolor;
+                }
+
+                :host(:not([aria-selected="true"]):hover),
+                :host([aria-selected="true"]) {
+                    background: ${SystemColors.Highlight};
+                    color: ${SystemColors.HighlightText};
+                }
+
+                :host([disabled]),
+                :host([disabled]:not([aria-selected="true"]):hover) {
+                    background: ${SystemColors.Canvas};
+                    color: ${SystemColors.GrayText};
+                    fill: currentcolor;
+                    opacity: 1;
+                }
+            `
+        )
+    );

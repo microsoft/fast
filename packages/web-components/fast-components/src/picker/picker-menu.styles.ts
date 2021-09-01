@@ -39,6 +39,7 @@ export const pickerMenuStyles: (
             width: 100%;
             max-height: 100%;
             min-height: 58px;
+            box-sizing: border-box;
             flex-direction: column;
             overflow-y: auto;
             overflow-x: hidden;
