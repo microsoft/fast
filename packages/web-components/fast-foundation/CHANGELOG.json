@@ -2,6 +2,29 @@
   "name": "@microsoft/fast-foundation",
   "entries": [
     {
+      "date": "Wed, 01 Sep 2021 07:18:34 GMT",
+      "tag": "@microsoft/fast-foundation_v2.9.0",
+      "version": "2.9.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "add viewport lock to tooltip",
+            "author": "scomea@microsoft.com",
+            "commit": "397d02d7bfc9b61bfafb44d4ccdf8db49fd25453",
+            "package": "@microsoft/fast-foundation"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "don't block all keys while focused",
+            "author": "corylaviska@microsoft.com",
+            "commit": "12efc3d7553ece88318b9fcdf8e11cc27253d30a",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
       "date": "Mon, 30 Aug 2021 22:30:39 GMT",
       "tag": "@microsoft/fast-foundation_v2.8.1",
       "version": "2.8.1",
