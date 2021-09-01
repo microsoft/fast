@@ -1,5 +1,5 @@
 import { fastComponentSchemas } from "@microsoft/site-utilities";
-import { WebComponentLibraryDefinition } from "../typings";
+import { WebComponentLibraryDefinition, WebComponentDefinition } from "../typings";
 import {
     fastAnchorExample,
     fastBadgeExample,
@@ -61,6 +61,31 @@ export const fastComponentLibrary: WebComponentLibraryDefinition = {
         (await import("./library.fast.registry")).registerFASTComponents();
     },
     componentDictionary: {
+        ...Object.values(fastComponentSchemas as { [key: string]: any })
+            .map(
+                (schema: any): WebComponentDefinition => {
+                    return {
+                        displayName: schema.title,
+                        schema,
+                        example: {
+                            schemaId: schema.$id,
+                            data: {},
+                        },
+                    };
+                }
+            )
+            .reduce(
+                (
+                    accum: { [key: string]: any },
+                    elementDefinition: WebComponentDefinition
+                ): { [key: string]: any } => {
+                    return {
+                        ...accum,
+                        [elementDefinition.example.schemaId]: elementDefinition,
+                    };
+                },
+                {}
+            ),
         [fastComponentSchemas[fastAnchorTag].$id]: {
             displayName: fastComponentSchemas[fastAnchorTag].title,
             schema: fastComponentSchemas[fastAnchorTag],
