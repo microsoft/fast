@@ -198,9 +198,13 @@ export const badgeTemplate: (context: ElementDefinitionContext, definition: Foun
 
 // @public
 export class BaseProgress extends FoundationElement {
+    // @internal (undocumented)
+    connectedCallback(): void;
     max: number;
     min: number;
     paused: any;
+    // @internal
+    percentComplete: number;
     value: number | null;
 }
 
@@ -2077,6 +2081,7 @@ export class Tooltip extends FoundationElement {
     horizontalPositioningMode: AxisPositioningMode;
     // @internal (undocumented)
     horizontalScaling: AxisScalingMode;
+    horizontalViewportLock: boolean;
     position: TooltipPosition;
     // @internal
     region: AnchoredRegion;
@@ -2090,6 +2095,7 @@ export class Tooltip extends FoundationElement {
     verticalPositioningMode: AxisPositioningMode;
     // @internal (undocumented)
     verticalScaling: AxisScalingMode;
+    verticalViewportLock: boolean;
     // @internal
     viewportElement: HTMLElement | null;
     visible: boolean;
