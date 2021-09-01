@@ -1,63 +1,25 @@
-import { Constructable, DOM, ElementStyles, FASTElement } from "@microsoft/fast-element";
-
-/**
- * Caching mechanism for CSS custom properties
- */
-class CustomPropertyManagerImpl {
-    public addTo(
-        element: HTMLElement,
-        token: { cssCustomProperty: string },
-        value: any
-    ): void {
-        DOM.queueUpdate(() =>
-            PropertyManager.getOrCreate(element).setProperty(
-                token.cssCustomProperty,
-                value
-            )
-        );
-        // if (isFastElement(element)) {
-        //     const styles = this.getElementStyles(token, value);
-        //     // element.$fastController.addStyles(styles);
-        //     this.getOrCreateAppliedCache(element).set(token.cssCustomProperty, styles);
-        // } else {
-        // DOM.queueUpdate(() =>
-        //     element.style.setProperty(token.cssCustomProperty, value)
-        // );
-        // }
-    }
-
-    public removeFrom(element: HTMLElement, token: { cssCustomProperty: string }): void {
-        DOM.queueUpdate(() =>
-            PropertyManager.getOrCreate(element).removeProperty(token.cssCustomProperty)
-        );
-        // if (isFastElement(element)) {
-        //     const cache = this.getOrCreateAppliedCache(element);
-        //     const styles = cache.get(token.cssCustomProperty);
-
-        //     if (styles) {
-        //         element.$fastController.removeStyles(styles);
-        //         cache.delete(token.cssCustomProperty);
-        //     }
-        // } else {
-        // DOM.queueUpdate(() => element.style.removeProperty(token.cssCustomProperty));
-        // }
-    }
-}
+import {
+    Constructable,
+    Controller,
+    DOM,
+    ElementStyles,
+    FASTElement,
+    observable,
+    Observable,
+} from "@microsoft/fast-element";
 
 function isFastElement(element: HTMLElement | FASTElement): element is FASTElement {
     return element instanceof FASTElement;
 }
-
-/**
- * @internal
- */
-export const CustomPropertyManager = new CustomPropertyManagerImpl();
 
 interface PropertyTarget {
     setProperty(name: string, value: string | null): void;
     removeProperty(name: string);
 }
 
+/**
+ * Handles setting properties for a FASTElement using Constructable Stylesheets
+ */
 class ConstructableStyleSheetTarget implements PropertyTarget {
     private target: PropertyTarget;
     constructor(source: HTMLElement & FASTElement) {
@@ -65,50 +27,118 @@ class ConstructableStyleSheetTarget implements PropertyTarget {
         this.target = (sheet.cssRules[sheet.insertRule(":host{}")] as CSSStyleRule).style;
         source.$fastController.addStyles(ElementStyles.create([sheet]));
     }
+
     public setProperty(name: string, value: string) {
-        this.target.setProperty(name, value);
+        DOM.queueUpdate(() => this.target.setProperty(name, value));
     }
     public removeProperty(name: string) {
-        this.target.removeProperty(name);
+        DOM.queueUpdate(() => this.target.removeProperty(name));
     }
 }
 
+/**
+ * Handles setting properties for a FASTElement using an HTMLStyleElement
+ */
 class StyleElementStyleSheetTarget implements PropertyTarget {
-    constructor(target: HTMLElement & FASTElement) {
-        throw new Error();
-    }
-    public setProperty(name: string, value: string) {
-        console.log("setting");
-    }
-    public removeProperty(name: string) {
-        console.log("removing");
-    }
-}
+    private store = new Map<string, string>();
+    private readonly style: HTMLStyleElement;
 
-class PropertyManager {
-    private static cache: WeakMap<HTMLElement, PropertyManager> = new WeakMap();
-    public target: PropertyTarget;
-    private static propertyTargetCtor: Constructable<
-        PropertyTarget
-    > = ConstructableStyleSheetTarget;
-    constructor(public readonly source: HTMLElement) {
-        PropertyManager.cache.set(source, this);
-        if (!isFastElement(source)) {
-            this.target = source.style;
-        } else {
-            this.target = new PropertyManager.propertyTargetCtor(source);
+    @observable
+    private target: PropertyTarget | null = null;
+    private targetChanged() {
+        if (this.target !== null) {
+            for (const [key, value] of this.store.entries()) {
+                this.target.setProperty(key, value);
+            }
         }
     }
 
-    public setProperty(name: string, value: any) {
-        this.target.setProperty(name, value);
+    constructor(target: HTMLElement & FASTElement) {
+        const controller = target.$fastController;
+        this.style = document.createElement("style") as HTMLStyleElement;
+
+        controller.addStyles(this.style);
+
+        Observable.getNotifier(controller).subscribe(this, "isConnected");
+        this.handleChange(controller, "isConnected");
     }
 
-    public removeProperty(name) {
-        this.target.removeProperty(name);
+    public setProperty(name: string, value: string) {
+        this.store.set(name, value);
+
+        DOM.queueUpdate(() => {
+            if (this.target !== null) {
+                this.target.setProperty(name, value);
+            }
+        });
     }
 
-    public static getOrCreate(source: HTMLElement) {
-        return PropertyManager.cache.get(source) || new PropertyManager(source);
+    public removeProperty(name: string) {
+        this.store.delete(name);
+
+        DOM.queueUpdate(() => {
+            if (this.target !== null) {
+                this.target.removeProperty(name);
+            }
+        });
+    }
+
+    handleChange(source: Controller, key: "isConnected") {
+        // HTMLStyleElement.sheet is null if the element isn't connected to the DOM,
+        // so this method reacts to changes in DOM connection for the element hosting
+        // the HTMLStyleElement.
+        //
+        // All rules applied via the CSSOM also get cleared when the element disconnects,
+        // so we need to add a new rule each time and populate it with the stored properties
+        const { sheet } = this.style;
+        if (sheet) {
+            this.target = (sheet.rules[
+                sheet.insertRule(":host{}")
+            ] as CSSStyleRule).style;
+        } else {
+            this.target = null;
+        }
     }
 }
+
+/**
+ * Handles setting properties for a normal HTMLElement
+ */
+class ElementStyleSheetTarget implements PropertyTarget {
+    private target: PropertyTarget;
+    constructor(source: HTMLElement) {
+        this.target = source.style;
+    }
+
+    setProperty(name: string, value: any) {
+        this.target.setProperty(name, value);
+    }
+    removeProperty(name: string) {
+        this.target.removeProperty(name);
+    }
+}
+
+const cache: WeakMap<HTMLElement, PropertyTarget> = new WeakMap();
+const propertyTargetCtor: Constructable<PropertyTarget> = DOM.supportsAdoptedStyleSheets
+    ? ConstructableStyleSheetTarget
+    : StyleElementStyleSheetTarget;
+
+/**
+ * Manages creation and caching of PropertyTarget instances.
+ *
+ * @internal
+ */
+export const PropertyTargetManager = Object.freeze({
+    getOrCreate(source: HTMLElement): PropertyTarget {
+        if (cache.has(source)) {
+            return cache.get(source)!;
+        }
+
+        const target = isFastElement(source)
+            ? new propertyTargetCtor(source)
+            : new ElementStyleSheetTarget(source);
+        cache.set(source, target);
+
+        return target;
+    },
+});
