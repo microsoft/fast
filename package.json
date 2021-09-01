@@ -30,6 +30,9 @@
       "**/react-syntax-highlighter"
     ]
   },
+  "engines": {
+    "yarn": ">=1.13 <2"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Microsoft/fast.git"
