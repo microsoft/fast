@@ -1,0 +1,7 @@
+{
+  "type": "minor",
+  "comment": "add viewport lock to tooltip",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "scomea@microsoft.com",
+  "dependentChangeType": "patch"
+}

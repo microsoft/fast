@@ -300,4 +300,16 @@ describe("Tooltip", () => {
 
         await disconnect();
     });
+
+    it("should set viewport lock attributes to undefined(false) by default", async () => {
+        const { element, connect, disconnect } = await setup();
+        const tooltip: Tooltip = element;
+
+        await connect();
+
+        expect(tooltip.verticalViewportLock).to.equal(undefined);
+        expect(tooltip.horizontalViewportLock).to.equal(undefined);
+
+        await disconnect();
+    });
 });
