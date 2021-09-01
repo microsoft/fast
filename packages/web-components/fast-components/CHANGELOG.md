@@ -1,8 +1,20 @@
 # Change Log - @microsoft/fast-components
 
-This log was last generated on Mon, 30 Aug 2021 22:30:39 GMT and should not be manually modified.
+This log was last generated on Wed, 01 Sep 2021 07:18:34 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.8.0
+
+Wed, 01 Sep 2021 07:18:34 GMT
+
+### Minor changes
+
+- Add viewport lock to tooltip (scomea@microsoft.com)
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.9.0 (scomea@microsoft.com)
 
 ## 2.7.3
 
