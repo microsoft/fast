@@ -151,9 +151,6 @@ export const allComponents = {
                     case "custom-elements.ts": {
                         return `export * from "./custom-elements"`;
                     }
-                    case "fast-design-system.ts": {
-                        return `export { FASTDesignSystem, fastDesignSystemDefaults } from "./fast-design-system"`;
-                    }
                     case "design-system-provider": {
                         return `
 export * from "./${item}/index";
