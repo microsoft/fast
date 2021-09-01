@@ -1,6 +1,7 @@
 import {
     attr,
     nullableNumberConverter,
+    observable,
     SyntheticViewTemplate,
 } from "@microsoft/fast-element";
 import { FoundationElement, FoundationElementDefinition } from "../foundation-element";
@@ -36,6 +37,11 @@ export class BaseProgress extends FoundationElement {
      */
     @attr({ converter: nullableNumberConverter })
     public value: number | null;
+    private valueChanged(): void {
+        if (this.$fastController.isConnected) {
+            this.updatePercentComplete();
+        }
+    }
 
     /**
      * The minimum value
@@ -45,6 +51,11 @@ export class BaseProgress extends FoundationElement {
      */
     @attr({ converter: nullableNumberConverter })
     public min: number;
+    private minChanged(): void {
+        if (this.$fastController.isConnected) {
+            this.updatePercentComplete();
+        }
+    }
 
     /**
      * The maximum value
@@ -54,6 +65,11 @@ export class BaseProgress extends FoundationElement {
      */
     @attr({ converter: nullableNumberConverter })
     public max: number;
+    private maxChanged(): void {
+        if (this.$fastController.isConnected) {
+            this.updatePercentComplete();
+        }
+    }
 
     /**
      * Indicates the progress is paused
@@ -63,4 +79,29 @@ export class BaseProgress extends FoundationElement {
      */
     @attr({ mode: "boolean" })
     public paused;
+
+    /**
+     * Indicates progress in %
+     * @internal
+     */
+    @observable
+    public percentComplete: number = 0;
+
+    /**
+     * @internal
+     */
+    public connectedCallback(): void {
+        super.connectedCallback();
+        this.updatePercentComplete();
+    }
+
+    private updatePercentComplete(): void {
+        const min: number = typeof this.min === "number" ? this.min : 0;
+        const max: number = typeof this.max === "number" ? this.max : 100;
+        const value: number = typeof this.value === "number" ? this.value : 0;
+        const range: number = max - min;
+
+        this.percentComplete =
+            range === 0 ? 0 : Math.fround(((value - min) / range) * 100);
+    }
 }

@@ -198,9 +198,13 @@ export const badgeTemplate: (context: ElementDefinitionContext, definition: Foun
 
 // @public
 export class BaseProgress extends FoundationElement {
+    // @internal (undocumented)
+    connectedCallback(): void;
     max: number;
     min: number;
     paused: any;
+    // @internal
+    percentComplete: number;
     value: number | null;
 }
 
