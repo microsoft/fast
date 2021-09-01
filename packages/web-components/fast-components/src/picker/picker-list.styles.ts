@@ -1,7 +1,6 @@
 import { css, ElementStyles } from "@microsoft/fast-element";
 import {
     ElementDefinitionContext,
-    focusVisible,
     forcedColorsStylesheetBehavior,
     FoundationElementDefinition,
 } from "@microsoft/fast-foundation";
@@ -13,12 +12,9 @@ import {
     controlCornerRadius,
     designUnit,
     focusStrokeOuter,
-    focusStrokeWidth,
-    foregroundOnAccentActive,
     neutralFillInputHover,
     neutralFillInputRest,
     neutralForegroundRest,
-    neutralLayer3,
     strokeWidth,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
