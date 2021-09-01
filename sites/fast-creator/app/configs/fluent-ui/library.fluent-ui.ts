@@ -1,5 +1,5 @@
 import { fluentUIComponentSchemas } from "@microsoft/site-utilities";
-import { WebComponentLibraryDefinition } from "../typings";
+import { WebComponentDefinition, WebComponentLibraryDefinition } from "../typings";
 import {
     fluentAnchorExample,
     fluentBadgeExample,
@@ -59,6 +59,31 @@ export const fluentUIComponentLibrary: WebComponentLibraryDefinition = {
         (await import("./library.fluent-ui.registry")).registerFluentUIComponents();
     },
     componentDictionary: {
+        ...Object.values(fluentUIComponentSchemas as { [key: string]: any })
+            .map(
+                (schema: any): WebComponentDefinition => {
+                    return {
+                        displayName: schema.title,
+                        schema,
+                        example: {
+                            schemaId: schema.$id,
+                            data: {},
+                        },
+                    };
+                }
+            )
+            .reduce(
+                (
+                    accum: { [key: string]: any },
+                    elementDefinition: WebComponentDefinition
+                ): { [key: string]: any } => {
+                    return {
+                        ...accum,
+                        [elementDefinition.example.schemaId]: elementDefinition,
+                    };
+                },
+                {}
+            ),
         [fluentUIComponentSchemas[fluentAnchorTag].$id]: {
             displayName: fluentUIComponentSchemas[fluentAnchorTag].title,
             schema: fluentUIComponentSchemas[fluentAnchorTag],
