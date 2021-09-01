@@ -3,6 +3,7 @@ import { linkedDataSchema } from "@microsoft/fast-tooling";
 export default {
     $schema: "http://json-schema.org/schema#",
     title: "Component with children",
+    alias: "With Children",
     description: "A test component's schema definition.",
     type: "object",
     id: "children",

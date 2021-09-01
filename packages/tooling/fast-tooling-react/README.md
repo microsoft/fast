@@ -21,13 +21,13 @@ The tooling available in FAST Tooling React can be used together to create UI fo
         - [Disabled](#disabled)
         - [Examples & default](#examples-&-default)
         - [Badges](#badges)
+        - [Alias](#alias)
         - [Dictionaries](#dictionaries)
     - [Categories](#categories)
     - [JSON schema keywords](#json-schema-keywords)
         - [oneOf & anyOf](#oneof-&-anyof)
         - [Enums](#enums)
         - [allOf & $ref](#allof-&-ref)
-    - [Categories](#categories)
 - [Navigation](#navigation)
     - [Include data types](#include-data-types)
 - [Navigation Menu](#navigation-menu)
@@ -466,6 +466,10 @@ Example:
     "badgeDescription": "Setting this field will cause adverse effects"
 }
 ```
+
+#### Alias
+
+Occasionally the `title` provided by the JSON schema may not be enough information for the `Form` component, if an additional `alias` property is provided, this will be used as the linked data control label. In Chromium based browsers this will show both, and both the `title` text and `alias` text will autocomplete. In Firefox however, this will result in only showing the `alias`, so ensure that the `alias` text contains enough information to be easily autocompleted by a user.
 
 #### Dictionaries
 
