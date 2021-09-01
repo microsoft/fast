@@ -111,14 +111,17 @@ class ElementStyleSheetTarget implements PropertyTarget {
     }
 
     setProperty(name: string, value: any) {
-        this.target.setProperty(name, value);
+        DOM.queueUpdate(() => this.target.setProperty(name, value));
     }
     removeProperty(name: string) {
-        this.target.removeProperty(name);
+        DOM.queueUpdate(() => this.target.removeProperty(name));
     }
 }
 
-const cache: WeakMap<HTMLElement, PropertyTarget> = new WeakMap();
+// Caches PropertyTarget instances
+const propertyTargetCache: WeakMap<HTMLElement, PropertyTarget> = new WeakMap();
+// Use Constructable StyleSheets for FAST elements when supported, otherwise use
+// HTMLStyleElement instances
 const propertyTargetCtor: Constructable<PropertyTarget> = DOM.supportsAdoptedStyleSheets
     ? ConstructableStyleSheetTarget
     : StyleElementStyleSheetTarget;
@@ -130,14 +133,14 @@ const propertyTargetCtor: Constructable<PropertyTarget> = DOM.supportsAdoptedSty
  */
 export const PropertyTargetManager = Object.freeze({
     getOrCreate(source: HTMLElement): PropertyTarget {
-        if (cache.has(source)) {
-            return cache.get(source)!;
+        if (propertyTargetCache.has(source)) {
+            return propertyTargetCache.get(source)!;
         }
 
         const target = isFastElement(source)
             ? new propertyTargetCtor(source)
             : new ElementStyleSheetTarget(source);
-        cache.set(source, target);
+        propertyTargetCache.set(source, target);
 
         return target;
     },
