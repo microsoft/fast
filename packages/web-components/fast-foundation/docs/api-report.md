@@ -2077,6 +2077,7 @@ export class Tooltip extends FoundationElement {
     horizontalPositioningMode: AxisPositioningMode;
     // @internal (undocumented)
     horizontalScaling: AxisScalingMode;
+    horizontalViewportLock: boolean;
     position: TooltipPosition;
     // @internal
     region: AnchoredRegion;
@@ -2090,6 +2091,7 @@ export class Tooltip extends FoundationElement {
     verticalPositioningMode: AxisPositioningMode;
     // @internal (undocumented)
     verticalScaling: AxisScalingMode;
+    verticalViewportLock: boolean;
     // @internal
     viewportElement: HTMLElement | null;
     visible: boolean;
