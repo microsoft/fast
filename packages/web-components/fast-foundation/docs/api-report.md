@@ -754,6 +754,8 @@ export interface DesignToken<T extends string | number | boolean | BigInteger | 
 // @public
 export const DesignToken: Readonly<{
     create: typeof create;
+    notifyConnection(element: HTMLElement): boolean;
+    notifyDisconnection(element: HTMLElement): boolean;
 }>;
 
 // @public
@@ -1372,6 +1374,8 @@ export class NumberField extends FormAssociatedNumberField {
     defaultSlottedNodes: Node[];
     // @internal
     handleChange(): void;
+    // @internal
+    handleKeyDown(e: KeyboardEvent): boolean;
     // @internal
     handleTextInput(): void;
     hideStep: boolean;
