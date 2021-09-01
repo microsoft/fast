@@ -4,7 +4,6 @@ import {
     fluentAnchorExample,
     fluentBadgeExample,
     fluentButtonExample,
-    fluentCardExample,
     fluentCheckboxExample,
     fluentDialogExample,
     fluentDividerExample,
@@ -28,7 +27,6 @@ import {
     fluentAnchorTag,
     fluentBadgeTag,
     fluentButtonTag,
-    fluentCardTag,
     fluentCheckboxTag,
     fluentDialogTag,
     fluentDividerTag,
@@ -75,11 +73,6 @@ export const fluentUIComponentLibrary: WebComponentLibraryDefinition = {
             displayName: fluentUIComponentSchemas[fluentBadgeTag].title,
             schema: fluentUIComponentSchemas[fluentBadgeTag],
             example: fluentBadgeExample,
-        },
-        [fluentUIComponentSchemas[fluentCardTag].$id]: {
-            displayName: fluentUIComponentSchemas[fluentCardTag].title,
-            schema: fluentUIComponentSchemas[fluentCardTag],
-            example: fluentCardExample,
         },
         [fluentUIComponentSchemas[fluentCheckboxTag].$id]: {
             displayName: fluentUIComponentSchemas[fluentCheckboxTag].title,
