@@ -1,98 +1,79 @@
 <h1>Tooltip</h1>
 
 <h2>Default</h2>
-<div style="height: 400px; width: 400px; background: lightgray;">
+<div style="height: 400px; width: 400px; background: lightgray; overflow: scroll;">
     <fast-tooltip anchor="anchor-default">
         Helpful text is helpful
     </fast-tooltip>
-    <fast-button id="anchor-default" style="margin: 200px;">
+    <fast-button id="anchor-default" style="margin: 200px; height: 150px; width: 150px;">
         anchor
     </fast-button>
 </div>
 
-<h2>Show/Hide</h2>
-<div style="height: 400px; width: 400px; background: lightgray;">
-    <fast-tooltip
-        id="tooltip-show-1"
-        anchor="anchor-show"
-        visible
-        position="top"
-        auto-update-mode="auto"
-    >
-        Always visible
-    </fast-tooltip>
-    <fast-tooltip
-        id="tooltip-show-2"
-        anchor="anchor-show"
-        visible
-        position="right"
-        auto-update-mode="auto"
-    >
-        Always visible
-    </fast-tooltip>
-    <fast-tooltip
-        id="tooltip-show-3"
-        anchor="anchor-show"
-        visible
-        position="bottom"
-        auto-update-mode="auto"
-    >
-        Always visible
-    </fast-tooltip>
-    <fast-tooltip
-        id="tooltip-show-4"
-        anchor="anchor-show"
-        visible
-        position="left"
-        auto-update-mode="auto"
-    >
-        Always visible
-    </fast-tooltip>
-    <fast-button id="anchor-show" style="margin: 200px;">
-        Toggle tooltips
-    </fast-button>
-</div>
+<h2>Show/Hide with auto updating and lock to viewport</h2>
+<fast-tooltip
+    id="tooltip-show-1"
+    anchor="anchor-show"
+    position="top"
+    auto-update-mode="auto"
+    vertical-viewport-lock="true"
+    horizontal-viewport-lock="true"
+>
+    Helpful text is helpful
+</fast-tooltip>
+<fast-tooltip
+    id="tooltip-show-2"
+    anchor="anchor-show"
+    position="right"
+    auto-update-mode="auto"
+    vertical-viewport-lock="true"
+    horizontal-viewport-lock="true"
+>
+    Helpful text is helpful
+</fast-tooltip>
+<fast-tooltip
+    id="tooltip-show-3"
+    anchor="anchor-show"
+    position="bottom"
+    auto-update-mode="auto"
+    vertical-viewport-lock="true"
+    horizontal-viewport-lock="true"
+>
+    Helpful text is helpful
+</fast-tooltip>
+<fast-tooltip
+    id="tooltip-show-4"
+    anchor="anchor-show"
+    position="left"
+    auto-update-mode="auto"
+    vertical-viewport-lock="true"
+    horizontal-viewport-lock="true"
+>
+    Helpful text is helpful
+</fast-tooltip>
+<fast-button id="anchor-show" style="margin: 100px 200px 100px 200px;">
+    Toggle tooltips
+</fast-button>
 
-<h2>Top</h2>
+<h2>Fixed positions</h2>
 <div style="height: 400px; width: 400px; background: lightgray; overflow: scroll;">
-    <fast-tooltip position="top" anchor="anchor-top">
-        Helpful text is helpful
+    <fast-tooltip position="top" anchor="anchor-positions">
+        Top
     </fast-tooltip>
 
-    <fast-button id="anchor-top" style="margin: 200px;">
-        anchor
-    </fast-button>
-</div>
-
-<h2>Right</h2>
-<div style="height: 400px; width: 400px; background: lightgray; overflow: scroll;">
-    <fast-tooltip anchor="anchor-right" position="right">
-        Helpful text is helpful
+    <fast-tooltip anchor="anchor-positions" position="right">
+        Right
     </fast-tooltip>
 
-    <fast-button id="anchor-right" style="margin: 200px;">
-        anchor
-    </fast-button>
-</div>
-
-<h2>Bottom</h2>
-<div style="height: 400px; width: 400px; background: lightgray; overflow: scroll;">
-    <fast-tooltip anchor="anchor-bottom" position="bottom">
-        Helpful text is helpful
+    <fast-tooltip anchor="anchor-positions" position="bottom">
+        Bottom
     </fast-tooltip>
 
-    <fast-button id="anchor-bottom" style="margin: 200px;">
-        anchor
-    </fast-button>
-</div>
-
-<h2>Left</h2>
-<div style="height: 400px; width: 400px; background: lightgray; overflow: scroll;">
-    <fast-tooltip anchor="anchor-left" position="left">
-        Helpful text is helpful
+    <fast-tooltip anchor="anchor-positions" position="left">
+        Left
     </fast-tooltip>
 
-    <fast-button id="anchor-left" style="margin: 200px;">
+    <fast-button id="anchor-positions" style="margin: 200px;">
         anchor
     </fast-button>
 </div>
