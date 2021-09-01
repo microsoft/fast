@@ -956,7 +956,8 @@ export type PaletteRGB = Palette<SwatchRGB>;
 
 // @public (undocumented)
 export const PaletteRGB: Readonly<{
-    create(source: SwatchRGB): PaletteRGB;
+    create: typeof create;
+    from: typeof from;
 }>;
 
 export { Picker }
@@ -1201,6 +1202,8 @@ export const typeRampPlus6LineHeight: import("@microsoft/fast-foundation").CSSDe
 
 // Warnings were encountered during analysis:
 //
+// dist/dts/color/palette.d.ts:48:5 - (ae-forgotten-export) The symbol "create" needs to be exported by the entry point index.d.ts
+// dist/dts/color/palette.d.ts:49:5 - (ae-forgotten-export) The symbol "from" needs to be exported by the entry point index.d.ts
 // dist/dts/custom-elements.d.ts:71:5 - (ae-incompatible-release-tags) The symbol "fastButton" is marked as @public, but its signature references "Button" which is marked as @internal
 // dist/dts/custom-elements.d.ts:72:5 - (ae-incompatible-release-tags) The symbol "fastCard" is marked as @public, but its signature references "Card" which is marked as @internal
 // dist/dts/custom-elements.d.ts:78:5 - (ae-incompatible-release-tags) The symbol "fastDesignSystemProvider" is marked as @public, but its signature references "DesignSystemProvider" which is marked as @internal
