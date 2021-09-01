@@ -98,4 +98,30 @@ describe("Progress ring", () => {
 
         await disconnect();
     });
+
+    it("should have a `percentComplete` value to match the inputs", async () => {
+        const { element, connect, disconnect } = await setup();
+
+        await connect();
+
+        expect(element.percentComplete).to.equal(0);
+
+        element.setAttribute("value", "50");
+
+        expect(element.percentComplete).to.equal(50);
+
+        element.setAttribute("value", "100");
+
+        expect(element.percentComplete).to.equal(100);
+
+        element.setAttribute("max", "200");
+
+        expect(element.percentComplete).to.equal(50);
+
+        element.setAttribute("min", "100");
+
+        expect(element.percentComplete).to.equal(0);
+
+        await disconnect();
+    });
 });

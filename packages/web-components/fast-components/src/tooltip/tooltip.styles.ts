@@ -25,7 +25,7 @@ export const tooltipStyles: (
 ) =>
     css`
         :host {
-            contain: layout;
+            contain: size;
             overflow: visible;
             height: 0;
             width: 0;

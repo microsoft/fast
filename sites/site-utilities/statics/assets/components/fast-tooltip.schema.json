@@ -27,6 +27,17 @@
       "mapsToAttribute": "delay",
       "type": "number"
     },
+    "auto-update-mode": {
+      "enum": [
+        "anchor",
+        "auto"
+      ],
+      "default": "anchor",
+      "title": "Auto update mode",
+      "description": "Controls when the tooltip updates its position.",
+      "mapsToAttribute": "auto-update-mode",
+      "type": "string"
+    },
     "position": {
       "enum": [
         "top",
@@ -40,6 +51,18 @@
       "description": "Controls the placement of the tooltip relative to the configured 'Anchor ID'",
       "mapsToAttribute": "position",
       "type": "string"
+    },
+    "horizontal-viewport-lock": {
+      "title": "Horizontal viewport lock",
+      "description": "Controls if the tooltip will always remain fully in the viewport on the horizontal axis",
+      "mapsToAttribute": "horizontal-viewport-lock",
+      "type": "boolean"
+    },
+    "vertical-viewport-lock": {
+      "title": "Vertical viewport lock",
+      "description": "Controls if the tooltip will always remain fully in the viewport on the vertical axis",
+      "mapsToAttribute": "vertical-viewport-lock",
+      "type": "boolean"
     },
     "Slot": {
       "title": "Default slot",
