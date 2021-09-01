@@ -5,6 +5,7 @@ import {
     imageExample,
     paragraphExample,
 } from "../native/library.native.examples";
+import { longExampleText, shortExampleText } from "../constants";
 import {
     fluentAnchorTag,
     fluentBadgeTag,
@@ -63,7 +64,7 @@ export const fluentBadgeExample = {
     linkedData: [
         {
             schemaId: textSchema.id,
-            data: "LOREM",
+            data: shortExampleText,
             dataLocation: "Slot",
         },
     ],
@@ -112,7 +113,7 @@ export const fluentCheckboxExample = {
     linkedData: [
         {
             schemaId: textSchema.id,
-            data: "Lorem ipsum",
+            data: shortExampleText,
             dataLocation: "Slot",
         },
     ],
@@ -139,7 +140,7 @@ export const fluentMenuItemExample = {
     linkedData: [
         {
             schemaId: textSchema.id,
-            data: "Lorem ipsum sit amet",
+            data: shortExampleText,
             dataLocation: "Slot",
         },
     ],
@@ -194,7 +195,7 @@ export const fluentTabExample = {
     linkedData: [
         {
             schemaId: textSchema.id,
-            data: "Lorem ipsum sit amet",
+            data: shortExampleText,
             dataLocation: "Slot",
         },
     ],
@@ -208,8 +209,7 @@ export const fluentTabPanelExample = {
     linkedData: [
         {
             schemaId: textSchema.id,
-            data:
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut id ante non massa vulputate facilisis. Vestibulum ac consequat sem. Etiam sodales turpis nec ante hendrerit, ut cursus risus sollicitudin. Curabitur et suscipit ex, sit amet faucibus neque. In ac nunc elementum, porta purus sed, scelerisque dui. Nullam ut tincidunt mi, id imperdiet risus. Curabitur a metus in ligula pellentesque pellentesque. Vivamus porta velit sollicitudin turpis aliquam, sit amet accumsan purus gravida. Etiam euismod ex neque, vel lobortis ligula semper ac. Proin eget metus vel turpis tempus accumsan. Aenean rhoncus ex lectus, a tincidunt justo volutpat quis. Sed id tincidunt purus. Phasellus ultrices, magna id viverra pellentesque, nisl turpis ullamcorper metus, sed varius nunc magna ut lacus.",
+            data: longExampleText,
             dataLocation: "Slot",
         },
     ],
