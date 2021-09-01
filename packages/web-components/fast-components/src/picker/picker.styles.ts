@@ -50,4 +50,4 @@ export const pickerStyles: (
         .top {
             flex-direction: column-reverse;
         }
-    `.withBehaviors(forcedColorsStylesheetBehavior(css``));
+    `;
