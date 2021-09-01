@@ -21,7 +21,7 @@ import { pickerListItemStyles } from "./picker-list-item.styles";
  * {@link @microsoft/fast-foundation#PickerTemplate}
  *
  *
- * @public
+ * @alpha
  * @remarks
  * * Generates HTML Element: \<fast-picker\>
  */
@@ -42,15 +42,15 @@ export const PickerStyles = pickerStyles;
 
 /**
  * Base class for Picker
- * @public
+ * @alpha
  */
 export { Picker };
 
 /**
+ * Component that displays the list of available picker options
  *
  *
- *
- * @public
+ * @alpha
  * @remarks
  * HTML Element: \<fast-picker-menu\>
  */
@@ -59,7 +59,6 @@ export const fastPickerMenu = PickerMenu.compose({
     template: pickerMenuTemplate,
     styles: pickerMenuStyles,
 });
-export class FASTPickerMenu extends PickerMenu {}
 
 /**
  * Styles for PickerMenu
@@ -68,10 +67,10 @@ export class FASTPickerMenu extends PickerMenu {}
 export const PickerMenuStyles = pickerMenuStyles;
 
 /**
+ *  Component that displays available picker menu options
  *
  *
- *
- * @public
+ * @alpha
  * @remarks
  * HTML Element: \<fast-picker-menu-option\>
  */
@@ -80,7 +79,6 @@ export const fastPickerMenuOption = PickerMenuOption.compose({
     template: pickerMenuOptionTemplate,
     styles: pickerMenuOptionStyles,
 });
-export class FASTPickerMenuOption extends PickerMenuOption {}
 
 /**
  * Styles for PickerMenuOption
@@ -89,10 +87,10 @@ export class FASTPickerMenuOption extends PickerMenuOption {}
 export const PickerMenuOptionStyles = pickerMenuOptionStyles;
 
 /**
+ * Component that displays the list of selected picker items along
+ * with the input combobox
  *
- *
- *
- * @public
+ * @alpha
  * @remarks
  * HTML Element: \<fast-picker-list\>
  *
@@ -103,7 +101,6 @@ export const fastPickerList = PickerList.compose({
     styles: pickerListStyles,
     shadowOptions: null,
 });
-export class FASTPickerList extends PickerList {}
 
 /**
  * Styles for PickerList
@@ -112,10 +109,9 @@ export class FASTPickerList extends PickerList {}
 export const PickerListStyles = pickerListStyles;
 
 /**
+ * Component that displays selected items
  *
- *
- *
- * @public
+ * @alpha
  * @remarks
  * HTML Element: \<fast-picker-list-item\>
  */
@@ -124,7 +120,6 @@ export const fastPickerListItem = PickerListItem.compose({
     template: pickerListItemTemplate,
     styles: pickerListItemStyles,
 });
-export class FASTPickerListItem extends PickerListItem {}
 
 /**
  * Styles for PickerListItem
