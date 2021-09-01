@@ -1,5 +1,5 @@
 import { fluentUIComponentSchemas } from "@microsoft/site-utilities";
-import { WebComponentLibraryDefinition, WebComponentDefinition } from "../typings";
+import { WebComponentDefinition, WebComponentLibraryDefinition } from "../typings";
 import {
     fluentAnchorExample,
     fluentBadgeExample,
