@@ -2,6 +2,29 @@
   "name": "@microsoft/fast-components",
   "entries": [
     {
+      "date": "Wed, 01 Sep 2021 07:18:34 GMT",
+      "tag": "@microsoft/fast-components_v2.8.0",
+      "version": "2.8.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "Add viewport lock to tooltip",
+            "author": "scomea@microsoft.com",
+            "commit": "397d02d7bfc9b61bfafb44d4ccdf8db49fd25453",
+            "package": "@microsoft/fast-components"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-foundation to v2.9.0",
+            "author": "scomea@microsoft.com",
+            "commit": "397d02d7bfc9b61bfafb44d4ccdf8db49fd25453",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
       "date": "Mon, 30 Aug 2021 22:30:39 GMT",
       "tag": "@microsoft/fast-components_v2.7.3",
       "version": "2.7.3",
