@@ -52,7 +52,7 @@ export class StartEnd {
  *
  * @public
  */
-export const endTemplate: (
+export const endSlotTemplate: (
     context: ElementDefinitionContext,
     definition: EndOptions
 ) => ViewTemplate<StartEnd> = (
@@ -76,7 +76,7 @@ export const endTemplate: (
  *
  * @public
  */
-export const startTemplate: (
+export const startSlotTemplate: (
     context: ElementDefinitionContext,
     definition: StartOptions
 ) => ViewTemplate<StartEnd> = (
@@ -95,5 +95,39 @@ export const startTemplate: (
         >
             ${definition.start || ""}
         </slot>
+    </span>
+`;
+
+/**
+ * The template for the end element.
+ * For use with {@link StartEnd}
+ *
+ * @public
+ * @deprecated - use endSlotTemplate
+ */
+export const endTemplate: ViewTemplate<StartEnd> = html`
+    <span part="end" ${ref("endContainer")}>
+        <slot
+            name="end"
+            ${ref("end")}
+            @slotchange="${x => x.handleEndContentChange()}"
+        ></slot>
+    </span>
+`;
+
+/**
+ * The template for the start element.
+ * For use with {@link StartEnd}
+ *
+ * @public
+ * @deprecated - use startSlotTemplate
+ */
+export const startTemplate: ViewTemplate<StartEnd> = html`
+    <span part="start" ${ref("startContainer")}>
+        <slot
+            name="start"
+            ${ref("start")}
+            @slotchange="${x => x.handleStartContentChange()}"
+        ></slot>
     </span>
 `;

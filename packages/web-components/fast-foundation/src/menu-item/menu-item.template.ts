@@ -1,7 +1,7 @@
 import { html, ref, when } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
 import { AnchoredRegion } from "../anchored-region";
-import { endTemplate, startTemplate } from "../patterns/start-end";
+import { endSlotTemplate, startSlotTemplate } from "../patterns/start-end";
 import type { ElementDefinitionContext } from "../design-system";
 import { MenuItemRole } from "./menu-item";
 import type { MenuItem, MenuItemOptions } from "./menu-item";
@@ -57,11 +57,11 @@ export const menuItemTemplate: (
                 `
             )}
         </div>
-        ${startTemplate(context, definition)}
+        ${startSlotTemplate(context, definition)}
         <span class="content" part="content">
             <slot></slot>
         </span>
-        ${endTemplate(context, definition)}
+        ${endSlotTemplate(context, definition)}
         ${when(
             x => x.hasSubmenu,
             html<MenuItem>`

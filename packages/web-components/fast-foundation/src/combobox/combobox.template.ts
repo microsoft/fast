@@ -1,7 +1,7 @@
 import { html, ref, slotted } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
 import { Listbox } from "../listbox/listbox";
-import { endTemplate, startTemplate } from "../patterns/start-end";
+import { endSlotTemplate, startSlotTemplate } from "../patterns/start-end";
 import type { ElementDefinitionContext } from "../design-system";
 import type { Combobox, ComboboxOptions } from "./combobox";
 
@@ -26,7 +26,7 @@ export const comboboxTemplate: (
         @focusout="${(x, c) => x.focusoutHandler(c.event as FocusEvent)}"
     >
         <div class="control" part="control">
-            ${startTemplate(context, definition)}
+            ${startSlotTemplate(context, definition)}
             <slot name="control">
                 <input
                     class="selected-value"
@@ -52,7 +52,7 @@ export const comboboxTemplate: (
                     </slot>
                 </div>
             </slot>
-            ${endTemplate(context, definition)}
+            ${endSlotTemplate(context, definition)}
         </div>
         <div
             aria-disabled="${x => x.disabled}"

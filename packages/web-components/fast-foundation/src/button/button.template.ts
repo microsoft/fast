@@ -1,6 +1,6 @@
 import { html, ref, slotted } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
-import { endTemplate, startTemplate } from "../patterns/start-end";
+import { endSlotTemplate, startSlotTemplate } from "../patterns/start-end";
 import type { ElementDefinitionContext } from "../design-system";
 import type { Button, ButtonOptions } from "./button";
 
@@ -52,10 +52,10 @@ export const buttonTemplate: (
         aria-roledescription="${x => x.ariaRoledescription}"
         ${ref("control")}
     >
-        ${startTemplate(context, definition)}
+        ${startSlotTemplate(context, definition)}
         <span class="content" part="content">
             <slot ${slotted("defaultSlottedContent")}></slot>
         </span>
-        ${endTemplate(context, definition)}
+        ${endSlotTemplate(context, definition)}
     </button>
 `;

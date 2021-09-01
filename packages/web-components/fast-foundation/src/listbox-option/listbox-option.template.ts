@@ -1,6 +1,6 @@
 import { html } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
-import { endTemplate, startTemplate } from "../patterns/start-end";
+import { endSlotTemplate, startSlotTemplate } from "../patterns/start-end";
 import type { ElementDefinitionContext } from "../design-system";
 import type { ListboxOption, ListboxOptionOptions } from "./listbox-option";
 
@@ -21,10 +21,10 @@ export const listboxOptionTemplate: (
             x.disabled ? "disabled" : ""}"
         role="option"
     >
-        ${startTemplate(context, definition)}
+        ${startSlotTemplate(context, definition)}
         <span class="content" part="content">
             <slot></slot>
         </span>
-        ${endTemplate(context, definition)}
+        ${endSlotTemplate(context, definition)}
     </template>
 `;

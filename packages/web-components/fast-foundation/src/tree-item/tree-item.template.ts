@@ -1,6 +1,6 @@
 import { children, elements, html, ref, slotted, when } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
-import { endTemplate, startTemplate } from "../patterns/start-end";
+import { endSlotTemplate, startSlotTemplate } from "../patterns/start-end";
 import type { ElementDefinitionContext } from "../design-system";
 import type { TreeItem, TreeItemOptions } from "./tree-item";
 
@@ -52,9 +52,9 @@ export const treeItemTemplate: (
                         </div>
                     `
                 )}
-                ${startTemplate(context, definition)}
+                ${startSlotTemplate(context, definition)}
                 <slot></slot>
-                ${endTemplate(context, definition)}
+                ${endSlotTemplate(context, definition)}
             </div>
         </div>
         ${when(

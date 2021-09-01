@@ -1,6 +1,6 @@
 import { html, ref, slotted } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
-import { endTemplate, startTemplate } from "../patterns";
+import { endSlotTemplate, startSlotTemplate } from "../patterns";
 import { whitespaceFilter } from "../utilities";
 import type { ElementDefinitionContext } from "../design-system";
 import type { TextField, TextFieldOptions } from "./text-field";
@@ -34,7 +34,7 @@ export const textFieldTemplate: (
             ></slot>
         </label>
         <div class="root" part="root">
-            ${startTemplate(context, definition)}
+            ${startSlotTemplate(context, definition)}
             <input
                 class="control"
                 part="control"
@@ -75,7 +75,7 @@ export const textFieldTemplate: (
                 aria-roledescription="${x => x.ariaRoledescription}"
                 ${ref("control")}
             />
-            ${endTemplate(context, definition)}
+            ${endSlotTemplate(context, definition)}
         </div>
     </template>
 `;

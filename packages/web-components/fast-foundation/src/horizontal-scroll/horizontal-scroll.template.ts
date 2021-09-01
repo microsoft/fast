@@ -7,7 +7,7 @@ import {
     when,
 } from "@microsoft/fast-element";
 import type { FoundationElementTemplate } from "../foundation-element";
-import { endTemplate, startTemplate } from "../patterns";
+import { endSlotTemplate, startSlotTemplate } from "../patterns";
 import type { HorizontalScroll, HorizontalScrollOptions } from "./horizontal-scroll";
 
 /**
@@ -21,7 +21,7 @@ export const horizontalScrollTemplate: FoundationElementTemplate<
         class="horizontal-scroll"
         @keyup="${(x, c) => x.keyupHandler(c.event as KeyboardEvent)}"
     >
-        ${startTemplate(context, definition)}
+        ${startSlotTemplate(context, definition)}
         <div class="scroll-area">
             <div
                 class="scroll-view"
@@ -69,6 +69,6 @@ export const horizontalScrollTemplate: FoundationElementTemplate<
                 `
             )}
         </div>
-        ${endTemplate(context, definition)}
+        ${endSlotTemplate(context, definition)}
     </template>
 `;

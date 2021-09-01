@@ -1,6 +1,6 @@
 import { html, ref, slotted, when } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
-import { endTemplate, startTemplate } from "../patterns/start-end";
+import { endSlotTemplate, startSlotTemplate } from "../patterns/start-end";
 import type { ElementDefinitionContext } from "../design-system";
 import type { Tabs, TabsOptions } from "./tabs";
 
@@ -16,7 +16,7 @@ export const tabsTemplate: (
     definition: TabsOptions
 ) => html`
     <template class="${x => x.orientation}">
-        ${startTemplate(context, definition)}
+        ${startSlotTemplate(context, definition)}
         <div class="tablist" part="tablist" role="tablist">
             <slot class="tab" name="tab" part="tab" ${slotted("tabs")}></slot>
 
@@ -31,7 +31,7 @@ export const tabsTemplate: (
                 `
             )}
         </div>
-        ${endTemplate(context, definition)}
+        ${endSlotTemplate(context, definition)}
         <div class="tabpanel">
             <slot name="tabpanel" part="tabpanel" ${slotted("tabpanels")}></slot>
         </div>

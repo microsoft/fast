@@ -912,7 +912,10 @@ export type EndOptions = {
 };
 
 // @public
-export const endTemplate: (context: ElementDefinitionContext, definition: EndOptions) => ViewTemplate<StartEnd>;
+export const endSlotTemplate: (context: ElementDefinitionContext, definition: EndOptions) => ViewTemplate<StartEnd>;
+
+// @public @deprecated
+export const endTemplate: ViewTemplate<StartEnd>;
 
 // @public
 export interface Factory<T extends Constructable = any> {
@@ -1876,7 +1879,10 @@ export type StartOptions = {
 };
 
 // @public
-export const startTemplate: (context: ElementDefinitionContext, definition: StartOptions) => ViewTemplate<StartEnd>;
+export const startSlotTemplate: (context: ElementDefinitionContext, definition: StartOptions) => ViewTemplate<StartEnd>;
+
+// @public @deprecated
+export const startTemplate: ViewTemplate<StartEnd>;
 
 // @public
 export type StaticDesignTokenValue<T> = T extends Function ? never : T;

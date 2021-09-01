@@ -1,7 +1,7 @@
 import { elements, html, slotted } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
 import type { ElementDefinitionContext } from "../design-system";
-import { endTemplate, startTemplate } from "../patterns";
+import { endSlotTemplate, startSlotTemplate } from "../patterns";
 import type { Toolbar, ToolbarOptions } from "./toolbar";
 
 /**
@@ -28,14 +28,14 @@ export const toolbarTemplate: (
     >
         <slot name="label"></slot>
         <div class="positioning-region" part="positioning-region">
-            ${startTemplate(context, definition)}
+            ${startSlotTemplate(context, definition)}
             <slot
                 ${slotted({
                     filter: elements(),
                     property: "slottedItems",
                 })}
             ></slot>
-            ${endTemplate(context, definition)}
+            ${endSlotTemplate(context, definition)}
         </div>
     </template>
 `;

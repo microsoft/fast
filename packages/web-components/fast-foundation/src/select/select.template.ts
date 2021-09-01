@@ -1,7 +1,7 @@
 import { html, slotted } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
 import { Listbox } from "../listbox/listbox";
-import { endTemplate, startTemplate } from "../patterns/start-end";
+import { endSlotTemplate, startSlotTemplate } from "../patterns/start-end";
 import type { ElementDefinitionContext } from "../design-system";
 import type { Select, SelectOptions } from "./select";
 
@@ -37,7 +37,7 @@ export const selectTemplate: (
             role="button"
             ?disabled="${x => x.disabled}"
         >
-            ${startTemplate(context, definition)}
+            ${startSlotTemplate(context, definition)}
             <slot name="button-container">
                 <div class="selected-value" part="selected-value">
                     <slot name="selected-value">${x => x.displayValue}</slot>
@@ -48,7 +48,7 @@ export const selectTemplate: (
                     </slot>
                 </div>
             </slot>
-            ${endTemplate(context, definition)}
+            ${endSlotTemplate(context, definition)}
         </div>
         <div
             aria-disabled="${x => x.disabled}"
