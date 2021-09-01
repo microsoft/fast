@@ -1,5 +1,5 @@
 import { nativeElementSchemas, textSchema } from "@microsoft/site-utilities";
-import { NativeElementLibraryDefinition } from "../typings";
+import { NativeElementLibraryDefinition, WebComponentDefinition } from "../typings";
 import {
     divExample,
     heading1Example,
@@ -35,6 +35,31 @@ export const nativeElementLibrary: NativeElementLibraryDefinition = {
     displayName: "HTML Elements",
     optional: false,
     componentDictionary: {
+        ...Object.values(nativeElementSchemas as { [key: string]: any })
+            .map(
+                (schema: any): WebComponentDefinition => {
+                    return {
+                        displayName: schema.title,
+                        schema,
+                        example: {
+                            schemaId: schema.$id,
+                            data: {},
+                        },
+                    };
+                }
+            )
+            .reduce(
+                (
+                    accum: { [key: string]: any },
+                    elementDefinition: WebComponentDefinition
+                ): { [key: string]: any } => {
+                    return {
+                        ...accum,
+                        [elementDefinition.example.schemaId]: elementDefinition,
+                    };
+                },
+                {}
+            ),
         [textSchema.$id]: {
             displayName: textSchema.title,
             schema: textSchema,
