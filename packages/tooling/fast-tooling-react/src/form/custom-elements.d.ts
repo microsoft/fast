@@ -4,9 +4,7 @@ declare namespace JSX {
         "fast-design-system-provider": React.DetailedHTMLProps<
             React.HTMLAttributes<HTMLElement>,
             HTMLElement
-        > & {
-            "use-defaults"?: boolean;
-        };
+        > & {};
         "fast-checkbox": React.DetailedHTMLProps<
             React.HTMLAttributes<HTMLElement>,
             HTMLElement
