@@ -13,13 +13,10 @@ import {
     keyArrowUp,
     keyBack,
     keyDelete,
-    keyEnd,
     keyEnter,
     keyEscape,
-    keyHome,
 } from "@microsoft/fast-web-utilities";
 import uniqueId from "lodash-es/uniqueId";
-import { FoundationElement } from "../foundation-element";
 import type { AnchoredRegion } from "../anchored-region";
 import type { PickerMenu } from "./picker-menu";
 import type { PickerList } from "./picker-list";
@@ -788,9 +785,11 @@ export class Picker extends FormAssociatedPicker {
         }
 
         if (e.target instanceof PickerMenuOption) {
-            this.selection = `${this.selection}${this.selection === "" ? "" : ","}${
-                e.target.value
-            }`;
+            if (e.target.value !== undefined) {
+                this.selection = `${this.selection}${this.selection === "" ? "" : ","}${
+                    e.target.value
+                }`;
+            }
             this.toggleFlyout(false);
             this.listElement.inputElement.value = "";
             return false;

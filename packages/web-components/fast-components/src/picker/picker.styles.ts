@@ -1,7 +1,6 @@
 import { css, ElementStyles } from "@microsoft/fast-element";
 import {
     ElementDefinitionContext,
-    forcedColorsStylesheetBehavior,
     FoundationElementDefinition,
 } from "@microsoft/fast-foundation";
 import { designUnit, neutralLayerFloating } from "../design-tokens";
