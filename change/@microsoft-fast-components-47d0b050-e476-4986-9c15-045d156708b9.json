@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "Removed remaining 'use-defaults' which no longer exists",
-  "packageName": "@microsoft/fast-components",
-  "email": "47367562+bheston@users.noreply.github.com",
-  "dependentChangeType": "patch"
-}
