@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Thu, 02 Sep 2021 07:15:21 GMT and should not be manually modified.
+This log was last generated on Thu, 02 Sep 2021 17:17:56 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.10.0
+
+Thu, 02 Sep 2021 17:17:56 GMT
+
+### Minor changes
+
+- feat(design-system): enable complete ignore of duplicate elements (roeisenb@microsoft.com)
 
 ## 2.9.1
 
