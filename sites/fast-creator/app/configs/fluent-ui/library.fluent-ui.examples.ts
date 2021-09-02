@@ -1,16 +1,10 @@
 import { fluentUIComponentSchemas, textSchema } from "@microsoft/site-utilities";
 import { uniqueId } from "lodash-es";
-import {
-    heading2Example,
-    imageExample,
-    paragraphExample,
-} from "../native/library.native.examples";
 import { longExampleText, shortExampleText } from "../constants";
 import {
     fluentAnchorTag,
     fluentBadgeTag,
     fluentButtonTag,
-    fluentCardTag,
     fluentCheckboxTag,
     fluentDialogTag,
     fluentDividerTag,
@@ -66,43 +60,6 @@ export const fluentBadgeExample = {
             schemaId: textSchema.id,
             data: shortExampleText,
             dataLocation: "Slot",
-        },
-    ],
-};
-export const fluentCardExample = {
-    schemaId: fluentUIComponentSchemas[fluentCardTag].id,
-    data: {
-        style: "width: 320px",
-    },
-    dataLocation: "Slot",
-    linkedData: [
-        imageExample,
-        {
-            ...fluentBadgeExample,
-            data: {
-                style:
-                    "margin: 5px 10px; --badge-fill-fill: #3278cd; --badge-color-color: white;",
-                fill: "fill",
-                color: "color",
-            },
-        },
-        {
-            ...heading2Example,
-            data: {
-                style: "margin: 5px 10px",
-            },
-        },
-        {
-            ...paragraphExample,
-            data: {
-                style: "margin: 0 10px",
-            },
-        },
-        {
-            ...fluentButtonExample,
-            data: {
-                style: "margin: 10px",
-            },
         },
     ],
 };
