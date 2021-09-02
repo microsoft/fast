@@ -1,10 +1,9 @@
 import { fluentUIComponentSchemas } from "@microsoft/site-utilities";
-import { WebComponentLibraryDefinition } from "../typings";
+import { WebComponentDefinition, WebComponentLibraryDefinition } from "../typings";
 import {
     fluentAnchorExample,
     fluentBadgeExample,
     fluentButtonExample,
-    fluentCardExample,
     fluentCheckboxExample,
     fluentDialogExample,
     fluentDividerExample,
@@ -28,7 +27,6 @@ import {
     fluentAnchorTag,
     fluentBadgeTag,
     fluentButtonTag,
-    fluentCardTag,
     fluentCheckboxTag,
     fluentDialogTag,
     fluentDividerTag,
@@ -61,6 +59,31 @@ export const fluentUIComponentLibrary: WebComponentLibraryDefinition = {
         (await import("./library.fluent-ui.registry")).registerFluentUIComponents();
     },
     componentDictionary: {
+        ...Object.values(fluentUIComponentSchemas as { [key: string]: any })
+            .map(
+                (schema: any): WebComponentDefinition => {
+                    return {
+                        displayName: schema.title,
+                        schema,
+                        example: {
+                            schemaId: schema.$id,
+                            data: {},
+                        },
+                    };
+                }
+            )
+            .reduce(
+                (
+                    accum: { [key: string]: any },
+                    elementDefinition: WebComponentDefinition
+                ): { [key: string]: any } => {
+                    return {
+                        ...accum,
+                        [elementDefinition.example.schemaId]: elementDefinition,
+                    };
+                },
+                {}
+            ),
         [fluentUIComponentSchemas[fluentAnchorTag].$id]: {
             displayName: fluentUIComponentSchemas[fluentAnchorTag].title,
             schema: fluentUIComponentSchemas[fluentAnchorTag],
@@ -75,11 +98,6 @@ export const fluentUIComponentLibrary: WebComponentLibraryDefinition = {
             displayName: fluentUIComponentSchemas[fluentBadgeTag].title,
             schema: fluentUIComponentSchemas[fluentBadgeTag],
             example: fluentBadgeExample,
-        },
-        [fluentUIComponentSchemas[fluentCardTag].$id]: {
-            displayName: fluentUIComponentSchemas[fluentCardTag].title,
-            schema: fluentUIComponentSchemas[fluentCardTag],
-            example: fluentCardExample,
         },
         [fluentUIComponentSchemas[fluentCheckboxTag].$id]: {
             displayName: fluentUIComponentSchemas[fluentCheckboxTag].title,

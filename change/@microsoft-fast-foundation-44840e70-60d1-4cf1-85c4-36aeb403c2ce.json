@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "configure system to use a single CSSStyleSheet for custom property setting",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "nicholasrice@users.noreply.github.com",
+  "dependentChangeType": "patch"
+}
