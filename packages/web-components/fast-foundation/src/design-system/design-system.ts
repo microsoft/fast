@@ -113,14 +113,23 @@ export const DesignSystemRegistrationContext: InterfaceSymbol<DesignSystemRegist
 
 /**
  * Indicates what to do with an ambiguous (duplicate) element.
+ * @public
  */
 export const ElementDisambiguation = Object.freeze({
+    /**
+     * Skip defining the element but still call the provided callback passed
+     * to DesignSystemRegistrationContext.tryDefineElement
+     */
     definitionCallbackOnly: null,
+    /**
+     * Ignore the duplicate element entirely.
+     */
     ignoreDuplicate: Symbol(),
 });
 
 /**
  * Represents the return values expected from an ElementDisambiguationCallback.
+ * @public
  */
 export type ElementDisambiguationResult =
     | string
