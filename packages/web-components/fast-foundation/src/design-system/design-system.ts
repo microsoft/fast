@@ -119,7 +119,10 @@ export const ElementDisambiguation = Object.freeze({
     ignoreDuplicate: Symbol(),
 });
 
-type ElementDisambiguationResult =
+/**
+ * Represents the return values expected from an ElementDisambiguationCallback.
+ */
+export type ElementDisambiguationResult =
     | string
     | typeof ElementDisambiguation.ignoreDuplicate
     | typeof ElementDisambiguation.definitionCallbackOnly;
@@ -127,6 +130,12 @@ type ElementDisambiguationResult =
 /**
  * The callback type that is invoked when two elements are trying to define themselves with
  * the same name.
+ * @remarks
+ * The callback should return either:
+ * 1. A string to provide a new name used to disambiguate the element
+ * 2. ElementDisambiguation.ignoreDuplicate to ignore the duplicate element entirely
+ * 3. ElementDisambiguation.definitionCallbackOnly to skip defining the element but still
+ * call the provided callback passed to DesignSystemRegistrationContext.tryDefineElement
  * @public
  */
 export type ElementDisambiguationCallback = (

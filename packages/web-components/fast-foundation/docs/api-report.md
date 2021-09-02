@@ -886,10 +886,11 @@ export const ElementDisambiguation: Readonly<{
     ignoreDuplicate: symbol;
 }>;
 
-// Warning: (ae-forgotten-export) The symbol "ElementDisambiguationResult" needs to be exported by the entry point index.d.ts
-//
 // @public
 export type ElementDisambiguationCallback = (nameAttempt: string, typeAttempt: Constructable, existingType: Constructable) => ElementDisambiguationResult;
+
+// @public
+export type ElementDisambiguationResult = string | typeof ElementDisambiguation.ignoreDuplicate | typeof ElementDisambiguation.definitionCallbackOnly;
 
 // @public
 export const endTemplate: ViewTemplate<StartEnd>;
