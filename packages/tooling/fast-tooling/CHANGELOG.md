@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-tooling
 
-This log was last generated on Thu, 02 Sep 2021 07:15:21 GMT and should not be manually modified.
+This log was last generated on Thu, 02 Sep 2021 17:17:56 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.27.10
+
+Thu, 02 Sep 2021 17:17:56 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.10.0 (roeisenb@microsoft.com)
 
 ## 0.27.9
 

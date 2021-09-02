@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-foundation",
   "entries": [
     {
+      "date": "Thu, 02 Sep 2021 17:17:56 GMT",
+      "tag": "@microsoft/fast-foundation_v2.10.0",
+      "version": "2.10.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "feat(design-system): enable complete ignore of duplicate elements",
+            "author": "roeisenb@microsoft.com",
+            "commit": "fe1db8607dce8c80fa83ad01ee2c8dbc9e845c98",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 02 Sep 2021 07:15:21 GMT",
       "tag": "@microsoft/fast-foundation_v2.9.1",
       "version": "2.9.1",

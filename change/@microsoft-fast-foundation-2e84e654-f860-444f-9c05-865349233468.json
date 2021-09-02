@@ -1,7 +1,0 @@
-{
-  "type": "minor",
-  "comment": "feat(design-system): enable complete ignore of duplicate elements",
-  "packageName": "@microsoft/fast-foundation",
-  "email": "roeisenb@microsoft.com",
-  "dependentChangeType": "patch"
-}
