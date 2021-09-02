@@ -206,7 +206,7 @@ export class BaseProgress extends FoundationElement {
     // @internal
     percentComplete: number;
     value: number | null;
-}
+    }
 
 // @public
 export class Breadcrumb extends FoundationElement {
@@ -881,7 +881,16 @@ export interface ElementDefinitionContext {
 }
 
 // @public
-export type ElementDisambiguationCallback = (nameAttempt: string, typeAttempt: Constructable, existingType: Constructable) => string | null;
+export const ElementDisambiguation: Readonly<{
+    definitionCallbackOnly: null;
+    ignoreDuplicate: symbol;
+}>;
+
+// @public
+export type ElementDisambiguationCallback = (nameAttempt: string, typeAttempt: Constructable, existingType: Constructable) => ElementDisambiguationResult;
+
+// @public
+export type ElementDisambiguationResult = string | typeof ElementDisambiguation.ignoreDuplicate | typeof ElementDisambiguation.definitionCallbackOnly;
 
 // @public
 export const endTemplate: ViewTemplate<StartEnd>;

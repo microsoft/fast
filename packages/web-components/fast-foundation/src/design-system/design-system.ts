@@ -112,15 +112,46 @@ export const DesignSystemRegistrationContext: InterfaceSymbol<DesignSystemRegist
 >();
 
 /**
+ * Indicates what to do with an ambiguous (duplicate) element.
+ * @public
+ */
+export const ElementDisambiguation = Object.freeze({
+    /**
+     * Skip defining the element but still call the provided callback passed
+     * to DesignSystemRegistrationContext.tryDefineElement
+     */
+    definitionCallbackOnly: null,
+    /**
+     * Ignore the duplicate element entirely.
+     */
+    ignoreDuplicate: Symbol(),
+});
+
+/**
+ * Represents the return values expected from an ElementDisambiguationCallback.
+ * @public
+ */
+export type ElementDisambiguationResult =
+    | string
+    | typeof ElementDisambiguation.ignoreDuplicate
+    | typeof ElementDisambiguation.definitionCallbackOnly;
+
+/**
  * The callback type that is invoked when two elements are trying to define themselves with
  * the same name.
+ * @remarks
+ * The callback should return either:
+ * 1. A string to provide a new name used to disambiguate the element
+ * 2. ElementDisambiguation.ignoreDuplicate to ignore the duplicate element entirely
+ * 3. ElementDisambiguation.definitionCallbackOnly to skip defining the element but still
+ * call the provided callback passed to DesignSystemRegistrationContext.tryDefineElement
  * @public
  */
 export type ElementDisambiguationCallback = (
     nameAttempt: string,
     typeAttempt: Constructable,
     existingType: Constructable
-) => string | null;
+) => ElementDisambiguationResult;
 
 const elementTypesByTag = new Map<string, Constructable>();
 const elementTagsByType = new Map<Constructable, string>();
@@ -239,8 +270,9 @@ export const DesignSystem = Object.freeze({
 class DefaultDesignSystem implements DesignSystem {
     private prefix: string = "fast";
     private shadowRootMode: ShadowRootMode | undefined = undefined;
-    private disambiguate: ElementDisambiguationCallback = () => null;
     private context: DesignSystemRegistrationContext;
+    private disambiguate: ElementDisambiguationCallback = () =>
+        ElementDisambiguation.definitionCallbackOnly;
 
     constructor(private host: HTMLElement, private container: Container) {
         (host as any).$$designSystem$$ = this;
@@ -280,36 +312,44 @@ class DefaultDesignSystem implements DesignSystem {
                 type: Constructable,
                 callback: ElementDefinitionCallback
             ) {
-                let elementName: string | null = name;
-                let foundByName = elementTypesByTag.get(elementName);
+                let elementName = name;
+                let typeFoundByName = elementTypesByTag.get(elementName);
+                let needsDefine = true;
 
-                while (foundByName && elementName) {
-                    elementName = disambiguate(elementName, type, foundByName);
+                while (typeFoundByName) {
+                    const result = disambiguate(elementName, type, typeFoundByName);
 
-                    if (elementName) {
-                        foundByName = elementTypesByTag.get(elementName);
+                    switch (result) {
+                        case ElementDisambiguation.ignoreDuplicate:
+                            return;
+                        case ElementDisambiguation.definitionCallbackOnly:
+                            needsDefine = false;
+                            typeFoundByName = void 0;
+                            break;
+                        default:
+                            elementName = result as string;
+                            typeFoundByName = elementTypesByTag.get(elementName);
+                            break;
                     }
                 }
 
-                const willDefine = !!elementName;
-
-                if (willDefine) {
+                if (needsDefine) {
                     if (elementTagsByType.has(type)) {
                         type = class extends type {};
                     }
 
-                    elementTypesByTag.set(elementName!, type);
-                    elementTagsByType.set(type, elementName!);
+                    elementTypesByTag.set(elementName, type);
+                    elementTagsByType.set(type, elementName);
                 }
 
                 elementDefinitionEntries.push(
                     new ElementDefinitionEntry(
                         container,
-                        elementName || name,
+                        elementName,
                         type,
                         shadowRootMode,
                         callback,
-                        willDefine
+                        needsDefine
                     )
                 );
             },

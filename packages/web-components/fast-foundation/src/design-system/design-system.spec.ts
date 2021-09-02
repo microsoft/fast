@@ -2,7 +2,7 @@ import type { Constructable } from "@microsoft/fast-element";
 import { expect } from "chai";
 import { Container, DI } from "../di";
 import { uniqueElementName } from "../test-utilities/fixture";
-import { DesignSystem, DesignSystemRegistrationContext } from "./design-system";
+import { DesignSystem, DesignSystemRegistrationContext, ElementDisambiguation } from "./design-system";
 
 describe("DesignSystem", () => {
     it("Should return the same instance for the same element", () => {
@@ -155,11 +155,12 @@ describe("DesignSystem", () => {
         expect(customElements.get(elementName2)).to.not.be.undefined;
     });
 
-    it("Should skip defining duplicate elements by default", () => {
+    it("Should only call callbacks for duplicate elements by default", () => {
         const elementName = uniqueElementName();
         const customElement = class extends HTMLElement {};
         const host = document.createElement("div");
         const system = DesignSystem.getOrCreate(host);
+        let callbackCalled = false;
 
         expect(() => {
             system.register(
@@ -177,7 +178,10 @@ describe("DesignSystem", () => {
                         context.tryDefineElement(
                             elementName,
                             class extends HTMLElement {},
-                            x => x.defineElement()
+                            x => {
+                                x.defineElement();
+                                callbackCalled = true;
+                            }
                         );
                     },
                 }
@@ -185,6 +189,45 @@ describe("DesignSystem", () => {
         }).not.to.throw();
 
         expect(customElements.get(elementName)).to.equal(customElement);
+        expect(callbackCalled).to.be.true;
+    });
+
+    it("Can completely ignore duplicates", () => {
+        const elementName = uniqueElementName();
+        const customElement = class extends HTMLElement {};
+        const host = document.createElement("div");
+        const system = DesignSystem.getOrCreate(host)
+            .withElementDisambiguation(() => ElementDisambiguation.ignoreDuplicate);
+        let callbackCalled = false;
+
+        expect(() => {
+            system.register(
+                {
+                    register(container: Container) {
+                        const context = container.get(DesignSystemRegistrationContext);
+                        context.tryDefineElement(elementName, customElement, x =>
+                            x.defineElement()
+                        );
+                    },
+                },
+                {
+                    register(container: Container) {
+                        const context = container.get(DesignSystemRegistrationContext);
+                        context.tryDefineElement(
+                            elementName,
+                            class extends HTMLElement {},
+                            x => {
+                                x.defineElement();
+                                callbackCalled = true;
+                            }
+                        );
+                    },
+                }
+            );
+        }).not.to.throw();
+
+        expect(customElements.get(elementName)).to.equal(customElement);
+        expect(callbackCalled).to.be.false;
     });
 
     it("Should have an undefined shadow mode by default", () => {
