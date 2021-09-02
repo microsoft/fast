@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-router
 
-This log was last generated on Fri, 27 Aug 2021 14:14:26 GMT and should not be manually modified.
+This log was last generated on Thu, 02 Sep 2021 07:15:21 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.2.7
+
+Thu, 02 Sep 2021 07:15:21 GMT
+
+### Patches
+
+- Removed remaining 'use-defaults' which no longer exists (47367562+bheston@users.noreply.github.com)
 
 ## 0.2.6
 

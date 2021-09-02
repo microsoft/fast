@@ -17,7 +17,6 @@ export class Footer extends React.Component<{}, {}> {
         return (
             <fast-design-system-provider
                 class="site-wrapper"
-                use-defaults
                 dangerouslySetInnerHTML={{ __html: FooterTemplate() }}
             ></fast-design-system-provider>
         );
