@@ -1,4 +1,5 @@
 import { nativeElementSchemas, textSchema } from "@microsoft/site-utilities";
+import { longExampleText, shortExampleText } from "../constants";
 import {
     divTag,
     heading1Tag,
@@ -15,7 +16,7 @@ import {
 
 export const textExample = {
     schemaId: textSchema.$id,
-    data: "Lorem ipsum",
+    data: shortExampleText,
     dataLocation: "Slot",
 };
 
@@ -34,7 +35,7 @@ export const heading1Example = {
     linkedData: [
         {
             schemaId: textSchema.id,
-            data: "Lorem ipsum sit amet",
+            data: shortExampleText,
             dataLocation: "Slot",
         },
     ],
@@ -47,7 +48,7 @@ export const heading2Example = {
     linkedData: [
         {
             schemaId: textSchema.id,
-            data: "Lorem ipsum sit amet",
+            data: shortExampleText,
             dataLocation: "Slot",
         },
     ],
@@ -60,7 +61,7 @@ export const heading3Example = {
     linkedData: [
         {
             schemaId: textSchema.id,
-            data: "Lorem ipsum sit amet",
+            data: shortExampleText,
             dataLocation: "Slot",
         },
     ],
@@ -73,7 +74,7 @@ export const heading4Example = {
     linkedData: [
         {
             schemaId: textSchema.id,
-            data: "Lorem ipsum sit amet",
+            data: shortExampleText,
             dataLocation: "Slot",
         },
     ],
@@ -86,7 +87,7 @@ export const heading5Example = {
     linkedData: [
         {
             schemaId: textSchema.id,
-            data: "Lorem ipsum sit amet",
+            data: shortExampleText,
             dataLocation: "Slot",
         },
     ],
@@ -99,7 +100,7 @@ export const heading6Example = {
     linkedData: [
         {
             schemaId: textSchema.id,
-            data: "Lorem ipsum sit amet",
+            data: shortExampleText,
             dataLocation: "Slot",
         },
     ],
@@ -112,8 +113,7 @@ export const paragraphExample = {
     linkedData: [
         {
             schemaId: textSchema.id,
-            data:
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut id ante non massa vulputate facilisis. Vestibulum ac consequat sem. Etiam sodales turpis nec ante hendrerit, ut cursus risus sollicitudin. Curabitur et suscipit ex, sit amet faucibus neque. In ac nunc elementum, porta purus sed, scelerisque dui. Nullam ut tincidunt mi, id imperdiet risus. Curabitur a metus in ligula pellentesque pellentesque. Vivamus porta velit sollicitudin turpis aliquam, sit amet accumsan purus gravida. Etiam euismod ex neque, vel lobortis ligula semper ac.",
+            data: longExampleText,
             dataLocation: "Slot",
         },
     ],
@@ -132,7 +132,7 @@ export const spanExample = {
     linkedData: [
         {
             schemaId: textSchema.id,
-            data: "Lorem ipsum sit amet",
+            data: shortExampleText,
             dataLocation: "Slot",
         },
     ],
@@ -145,7 +145,7 @@ export const labelExample = {
     linkedData: [
         {
             schemaId: textSchema.id,
-            data: "Lorem ipsum sit amet",
+            data: shortExampleText,
             dataLocation: "Slot",
         },
     ],
