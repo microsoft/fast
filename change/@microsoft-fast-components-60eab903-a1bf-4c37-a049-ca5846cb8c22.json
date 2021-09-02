@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "progress component bar width",
-  "packageName": "@microsoft/fast-components",
-  "email": "scomea@microsoft.com",
-  "dependentChangeType": "patch"
-}
