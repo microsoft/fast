@@ -2,6 +2,27 @@
   "name": "@microsoft/fast-components",
   "entries": [
     {
+      "date": "Thu, 02 Sep 2021 07:15:21 GMT",
+      "tag": "@microsoft/fast-components_v2.8.1",
+      "version": "2.8.1",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Removed remaining 'use-defaults' which no longer exists",
+            "author": "47367562+bheston@users.noreply.github.com",
+            "commit": "f34fa1b1bdbb0cf4c371b556c2486bd160646c53",
+            "package": "@microsoft/fast-components"
+          },
+          {
+            "comment": "progress component bar width",
+            "author": "scomea@microsoft.com",
+            "commit": "21c6791f13b17e08d131358e423c86b73b77a79e",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 01 Sep 2021 07:18:34 GMT",
       "tag": "@microsoft/fast-components_v2.8.0",
       "version": "2.8.0",

@@ -1,8 +1,23 @@
 # Change Log - @microsoft/fast-tooling-react
 
-This log was last generated on Wed, 01 Sep 2021 07:18:34 GMT and should not be manually modified.
+This log was last generated on Thu, 02 Sep 2021 07:15:21 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.11.0
+
+Thu, 02 Sep 2021 07:15:21 GMT
+
+### Minor changes
+
+- allow an autocomplete in the form to use an alias (7559015+janechu@users.noreply.github.com)
+
+### Patches
+
+- Removed remaining 'use-defaults' which no longer exists (47367562+bheston@users.noreply.github.com)
+- Bump @microsoft/fast-components to v2.8.1 (47367562+bheston@users.noreply.github.com)
+- Bump @microsoft/fast-tooling to v0.27.9 (47367562+bheston@users.noreply.github.com)
+- Bump @microsoft/fast-foundation to v2.9.1 (nicholasrice@users.noreply.github.com)
 
 ## 2.10.15
 

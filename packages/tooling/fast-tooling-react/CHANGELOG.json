@@ -2,6 +2,47 @@
   "name": "@microsoft/fast-tooling-react",
   "entries": [
     {
+      "date": "Thu, 02 Sep 2021 07:15:21 GMT",
+      "tag": "@microsoft/fast-tooling-react_v2.11.0",
+      "version": "2.11.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "allow an autocomplete in the form to use an alias",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "59a8320fd64682da4a4b30c4c9d1640716c39271",
+            "package": "@microsoft/fast-tooling-react"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "Removed remaining 'use-defaults' which no longer exists",
+            "author": "47367562+bheston@users.noreply.github.com",
+            "commit": "f34fa1b1bdbb0cf4c371b556c2486bd160646c53",
+            "package": "@microsoft/fast-tooling-react"
+          },
+          {
+            "comment": "Bump @microsoft/fast-components to v2.8.1",
+            "author": "47367562+bheston@users.noreply.github.com",
+            "commit": "f34fa1b1bdbb0cf4c371b556c2486bd160646c53",
+            "package": "@microsoft/fast-tooling-react"
+          },
+          {
+            "comment": "Bump @microsoft/fast-tooling to v0.27.9",
+            "author": "47367562+bheston@users.noreply.github.com",
+            "commit": "f34fa1b1bdbb0cf4c371b556c2486bd160646c53",
+            "package": "@microsoft/fast-tooling-react"
+          },
+          {
+            "comment": "Bump @microsoft/fast-foundation to v2.9.1",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "29cdc520f699eaf1f1669eaeacb4a7a8a7cfe1c2",
+            "package": "@microsoft/fast-tooling-react"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 01 Sep 2021 07:18:34 GMT",
       "tag": "@microsoft/fast-tooling-react_v2.10.15",
       "version": "2.10.15",
