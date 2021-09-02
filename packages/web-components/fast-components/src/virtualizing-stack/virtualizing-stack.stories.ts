@@ -8,7 +8,7 @@ import "./index";
 let defaultStackElement: FoundationVirtualingStack;
 
 const imageItemTemplate = html`
-    <image height="100px" width="120px" src="${x => x}"></image>
+    <image style="height:100px; width:120px;" src="${x => x}"></image>
 `;
 
 addons.getChannel().addListener(STORY_RENDERED, (name: string) => {

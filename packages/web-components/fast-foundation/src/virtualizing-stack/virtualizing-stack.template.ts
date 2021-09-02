@@ -15,15 +15,20 @@ export const virtualizingStackTemplate: (
     context: ElementDefinitionContext,
     definition: FoundationElementDefinition
 ) => html`
-    <template
-        style="
-            height: ${x => x.totalHeight}px
-        "
-    >
-        <div class="top-spacer" style="height: ${x => x.topSpacerHeight}px"></div>
-        <div class="item-stack" style="height: ${x => x.itemStackHeight}px">
-            <slot></slot>
+    <template>
+        <div
+            class="container"
+            style="height: ${x => x.totalHeight}px"
+            ${ref("container")}
+        >
+            <div class="top-spacer" style="height: ${x => x.topSpacerHeight}px"></div>
+            <div class="item-stack" style="height: ${x => x.itemStackHeight}px">
+                <slot></slot>
+            </div>
+            <div
+                class="bottom-spacer"
+                style="height: ${x => x.bottomSpacerHeight}px"
+            ></div>
         </div>
-        <div class="bottom-spacer" style="height: ${x => x.bottomSpacerHeight}px"></div>
     </template>
 `;

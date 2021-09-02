@@ -1,5 +1,6 @@
 import {
     attr,
+    DOM,
     html,
     observable,
     RepeatBehavior,
@@ -60,7 +61,6 @@ export class VirtualizingStack extends FoundationElement {
     private itemHeightChanged(): void {
         if (this.$fastController.isConnected) {
             this.updateDimensions();
-            this.updateVisibleItems();
         }
     }
 
@@ -175,9 +175,18 @@ export class VirtualizingStack extends FoundationElement {
     @observable
     public itemStackHeight: number = 0;
 
+    /**
+     * reference to the container element
+     *
+     * @internal
+     */
+    public container: HTMLDivElement;
+
     private static intersectionService: IntersectionService = new IntersectionService();
     private resizeDetector: ResizeObserverClassDefinition | null = null;
+
     private pendingPositioningUpdate: boolean = false;
+    private delayLayoutUpdate: boolean = false;
 
     private visibleRangeStart: number = 0;
     private visibleRangeEnd: number = 0;
@@ -190,7 +199,7 @@ export class VirtualizingStack extends FoundationElement {
 
     // defines how big a difference in pixels there must be between states to
     // justify a layout update that affects the dom (prevents repeated sub-pixel corrections)
-    private updateThreshold: number = 0.5;
+    private updateThreshold: number = 2;
 
     /**
      * @internal
@@ -317,7 +326,7 @@ export class VirtualizingStack extends FoundationElement {
         if (this.pendingPositioningUpdate) {
             this.pendingPositioningUpdate = false;
             VirtualizingStack.intersectionService.cancelRequestPosition(
-                this,
+                this.container,
                 this.handleIntersection
             );
             if (this.viewportElement !== null) {
@@ -336,6 +345,7 @@ export class VirtualizingStack extends FoundationElement {
      *
      */
     private updateDimensions = (): void => {
+        console.debug("updateDimensions");
         if (this.items === undefined) {
             this.totalHeight = 0;
         } else {
@@ -356,6 +366,12 @@ export class VirtualizingStack extends FoundationElement {
      *
      */
     private updateVisibleItems = (): void => {
+        console.debug("updateVisibleItems");
+        if (this.pendingPositioningUpdate) {
+            console.debug("updateVisibleItems - return");
+            return;
+        }
+
         if (
             this.items === undefined ||
             this.items.length === 0 ||
@@ -427,10 +443,12 @@ export class VirtualizingStack extends FoundationElement {
      */
     private requestPositionUpdates = (): void => {
         if (this.pendingPositioningUpdate || this.viewportElement === null) {
+            console.debug("requestPositionUpdates-return");
             return;
         }
+        console.debug("requestPositionUpdates");
         VirtualizingStack.intersectionService.requestPosition(
-            this,
+            this.container,
             this.handleIntersection
         );
         VirtualizingStack.intersectionService.requestPosition(
@@ -445,13 +463,16 @@ export class VirtualizingStack extends FoundationElement {
      */
     private handleIntersection = (entries: IntersectionObserverEntry[]): void => {
         if (!this.pendingPositioningUpdate) {
+            console.debug("handleIntersection-return");
             return;
         }
+
+        console.debug(`handleIntersection: ${this.stackRect?.top}`);
 
         this.pendingPositioningUpdate = false;
 
         const stackEntry: IntersectionObserverEntry | undefined = entries.find(
-            x => x.target === this
+            x => x.target === this.container
         );
         const viewportEntry: IntersectionObserverEntry | undefined = entries.find(
             x => x.target === this.viewportElement
@@ -481,7 +502,9 @@ export class VirtualizingStack extends FoundationElement {
                 this.viewportRect = viewportEntry.boundingClientRect;
             }
 
-            this.updateVisibleItems();
+            DOM.queueUpdate(() => {
+                this.updateVisibleItems();
+            });
         }
     };
 

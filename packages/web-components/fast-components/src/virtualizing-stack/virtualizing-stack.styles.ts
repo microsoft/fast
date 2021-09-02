@@ -12,13 +12,27 @@ export const virtualizingStackStyles: (
     definition: FoundationElementDefinition
 ) => css`
     :host {
+        height: 100%;
+    }
+
+    .container {
         contain: size;
+        display: flex;
+        overflow: hidden;
+        flex-direction: column;
+        justify-content: flex-start;
+    }
+
+    .item-stack {
+        justify-content: flex-start;
+        overflow: hidden;
         display: flex;
         flex-direction: column;
     }
 
-    .item-stack {
-        display: flex;
-        flex-direction: column;
+    .top-spacer {
+    }
+
+    .bottom-spacer {
     }
 `;
