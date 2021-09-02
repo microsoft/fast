@@ -199,12 +199,15 @@ class Preview extends Foundation<{}, {}, PreviewState> {
     }
 
     private updateDOM(messageData: MessageSystemOutgoing): () => void {
+        console.log("preview updateDOM", messageData);
         switch (messageData.type) {
             case MessageSystemType.initialize:
             case MessageSystemType.custom:
             case MessageSystemType.data:
+                if(!(messageData as any).options || (messageData as any).options.originatorId !== htmlRenderOriginatorId)
                 return this.attachComponentsAndInit;
             case MessageSystemType.navigation:
+                if(!(messageData as any).options || (messageData as any).options.originatorId !== htmlRenderOriginatorId)
                 return this.handleNavigation;
         }
         return this.attachMappedComponents;

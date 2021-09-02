@@ -465,6 +465,8 @@ class Creator extends Editor<{}, CreatorState> {
 
     private handleMessageSystem = (e: MessageEvent): void => {
         const updatedState: Partial<CreatorState> = {};
+        console.log("Creator",e.data);
+
         if (
             e.data.type === MessageSystemType.custom &&
             e.data.action === ViewerCustomAction.response

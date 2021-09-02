@@ -88,6 +88,7 @@ export class HTMLRender extends FoundationElement {
     private selectTimeout = null;
     private handleMessageSystem = (e: MessageEvent): void => {
         if (e.data) {
+            console.log("Html Render",e.data);
             if (
                 (e.data.type === MessageSystemType.initialize ||
                     e.data.type === MessageSystemType.data) &&
