@@ -4,7 +4,7 @@ declare namespace JSX {
         "fast-design-system-provider": React.DetailedHTMLProps<
             React.HTMLAttributes<HTMLElement>,
             HTMLElement
-        > & {};
+        >;
         "fast-checkbox": React.DetailedHTMLProps<
             React.HTMLAttributes<HTMLElement>,
             HTMLElement
@@ -74,7 +74,7 @@ declare namespace JSX {
         "fast-tooling-file-action-objecturl": React.DetailedHTMLProps<
             React.HTMLAttributes<HTMLElement>,
             HTMLElement
-        > & {};
+        >;
     }
 }
 
