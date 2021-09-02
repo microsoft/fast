@@ -10,7 +10,7 @@ An implementation of a [tree-item](https://w3c.github.io/aria/#treeitem) as a we
 ## Usage
 
 ```html live
-<fast-design-system-provider use-defaults>
+<fast-design-system-provider>
     <fast-tree-view>
         Root
         <fast-tree-item>Item 1</fast-tree-item>

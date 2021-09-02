@@ -82,7 +82,7 @@ The second step is to add the [Design System Provider](https://www.fast.design/d
 
 ```html
 <body>
-  <fast-design-system-provider use-defaults>
+  <fast-design-system-provider>
   ...
 ```
 
@@ -551,4 +551,3 @@ Fluent is based around a lighter user experience, using blue accents. There's al
 As you can see, it's possible to encapsulate your company's entire design philosophy as a FAST design system provider, and deploy it across all your websites and apps. However, the flexibility is still there. You can still change the base luminance to a darker or black theme. You could adjust all the design properties to make the design system provider match the appearance of the default FAST design system.
 
 There's a completed sample webpage located in FastPage\index.html if you'd like to view all of the above changes already made to the example.
-
