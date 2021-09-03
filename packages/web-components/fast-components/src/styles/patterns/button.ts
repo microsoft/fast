@@ -10,6 +10,7 @@ import {
 import { heightNumber } from "../size";
 import {
     accentFillActive,
+    accentFillFocus,
     accentFillHover,
     accentFillRest,
     bodyFont,
@@ -23,6 +24,7 @@ import {
     foregroundOnAccentHover,
     foregroundOnAccentRest,
     neutralFillActive,
+    neutralFillFocus,
     neutralFillHover,
     neutralFillRest,
     neutralFillStealthActive,
@@ -31,9 +33,9 @@ import {
     neutralForegroundActive,
     neutralForegroundHover,
     neutralForegroundRest,
-    strokeControlActive,
-    strokeControlHover,
-    strokeControlRest,
+    neutralStrokeActive,
+    neutralStrokeHover,
+    neutralStrokeRest,
     strokeWidth,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
@@ -57,7 +59,6 @@ export const baseButtonStyles = (
       line-height: ${typeRampBaseLineHeight};
       height: calc(${heightNumber} * 1px);
       min-width: calc(${heightNumber} * 1px);
-      color: ${neutralForegroundRest};
       border-radius: calc(${controlCornerRadius} * 1px);
       fill: currentcolor;
       cursor: pointer;
@@ -75,7 +76,7 @@ export const baseButtonStyles = (
       white-space: nowrap;
       outline: none;
       text-decoration: none;
-      color: inherit;
+      color: ${neutralForegroundRest};
       border-radius: inherit;
       fill: inherit;
       cursor: inherit;
@@ -104,6 +105,7 @@ export const baseButtonStyles = (
     }
 
     :host .control:${focusVisible} {
+      background: ${neutralFillFocus};
       border-color: ${focusStrokeOuter} !important;
       box-shadow: 0 0 0 calc(${focusStrokeWidth} * 1px) ${focusStrokeOuter} inset !important;
       color: ${neutralForegroundHover};
@@ -195,6 +197,7 @@ export const AccentButtonStyles = (
     }
 
     :host .control:${focusVisible} {
+      background: ${accentFillFocus};
       box-shadow: 0 0 0 calc((${focusStrokeWidth} - ${strokeWidth}) * 1px) ${focusStrokeOuter} inset,
         0 0 0 calc(((${focusStrokeWidth} * 2) - ${strokeWidth}) * 1px) ${focusStrokeInner} inset !important;
       color: ${foregroundOnAccentHover};
@@ -376,16 +379,18 @@ export const OutlineButtonStyles = (
 ) =>
     css`
         :host .control {
-            background: transparent !important;
-            border-color: ${strokeControlRest};
+            background: transparent;
+            border-color: ${neutralStrokeRest} !important;
+        }
+
+        :host .control${interactivitySelector}:hover {
+            background: transparent;
+            border-color: ${neutralStrokeHover} !important;
         }
 
         :host .control${interactivitySelector}:active {
-            border-color: ${strokeControlHover};
-        }
-
-        :host .control${interactivitySelector}:active {
-            border-color: ${strokeControlActive};
+            background: transparent;
+            border-color: ${neutralStrokeActive} !important;
         }
     `.withBehaviors(
         forcedColorsStylesheetBehavior(

@@ -19,6 +19,7 @@ import {
     neutralForegroundActive,
     neutralForegroundHover,
     neutralForegroundRest,
+    strokeControlStrongFocus,
     strokeControlStrongHover,
     strokeControlStrongRest,
     strokeWidth,
@@ -79,7 +80,7 @@ export const checkboxStyles: (
       justify-content: center;
       width: 100%;
       height: 100%;
-      fill: ${neutralForegroundRest};
+      fill: ${neutralForegroundHover};
       opacity: 0;
       pointer-events: none;
     }
@@ -99,8 +100,8 @@ export const checkboxStyles: (
     }
 
     :host(:${focusVisible}) .control {
-      box-shadow: 0 0 0 calc(${focusStrokeWidth} * 1px) ${focusStrokeOuter};
-      border-color: ${focusStrokeOuter};
+      box-shadow: 0 0 0 calc(${focusStrokeWidth} * 1px) ${strokeControlStrongFocus};
+      border-color: ${strokeControlStrongFocus};
     }
 
     :host(.disabled) .label,
@@ -118,11 +119,6 @@ export const checkboxStyles: (
     :host(:enabled:hover[aria-checked="true"]:not(.indeterminate)) slot[name="checked-indicator"],
     :host(:enabled:hover[aria-checked="true"].indeterminate) slot[name="indeterminate-indicator"] {
       fill: ${neutralForegroundHover};
-    }
-
-    :host([aria-checked="true"]:enabled:active) slot[name="checked-indicator"],
-    :host([aria-checked="true"]:enabled:active) slot[name="indeterminate-indicator"] {
-      fill: ${neutralForegroundActive};
     }
 
     :host(.disabled) {

@@ -13,6 +13,11 @@ import {
     focusStrokeOuter,
     focusStrokeWidth,
     neutralFillRest,
+    neutralFillStealthActive,
+    neutralFillStealthFocus,
+    neutralFillStealthHover,
+    neutralFillStealthRest,
+    neutralForegroundActive,
     neutralForegroundHover,
     neutralForegroundRest,
     strokeWidth,
@@ -57,6 +62,7 @@ export const breadcrumbItemStyles: (
       position: relative;
       align-items: center;
       box-sizing: border-box;
+      background: ${neutralFillStealthRest};
       color: ${neutralForegroundRest};
       cursor: pointer;
       display: flex;
@@ -68,15 +74,14 @@ export const breadcrumbItemStyles: (
       padding: 4px 8px;
     }
 
-    .control:hover,
-    .control:active {
-      background: ${neutralFillRest};
+    .control:hover {
+      background: ${neutralFillStealthHover};
       color: ${neutralForegroundHover};
     }
 
     .control:active {
-      background: transparent;
-      color: ${neutralForegroundHover};
+      background: ${neutralFillStealthActive};
+      color: ${neutralForegroundActive};
     }
 
     .control:${focusVisible} {
