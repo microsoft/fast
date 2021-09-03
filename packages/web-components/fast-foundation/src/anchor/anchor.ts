@@ -94,6 +94,17 @@ export class Anchor extends FASTElement {
      * References the root element
      */
     public control: HTMLAnchorElement;
+
+    /**
+     * Manually calls the control's focus when delegatesFocus is unsupported
+     */
+    public handleUnsupportedDelegatesFocus(): boolean {
+        if (this.shadowRoot && this.shadowRoot.delegatesFocus === undefined) {
+            this.control.focus();
+            return false;
+        }
+        return true;
+    }
 }
 
 /**

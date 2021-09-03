@@ -3,6 +3,12 @@ import { ARIAGlobalStatesAndProperties, StartEnd } from "../patterns/index";
 import { applyMixins } from "../utilities/apply-mixins";
 import { FormAssociatedButton } from "./button.form-associated";
 
+declare global {
+    interface ShadowRoot {
+        delegatesFocus: boolean;
+    }
+}
+
 /**
  * A Button Custom HTML Element.
  * Based largely on the {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button | <button> element }.
@@ -187,6 +193,17 @@ export class Button extends FormAssociatedButton {
     }
 
     public control: HTMLButtonElement;
+
+    /**
+     * Manually calls the control's focus when delegatesFocus is unsupported
+     */
+    public handleUnsupportedDelegatesFocus(): boolean {
+        if (this.shadowRoot && this.shadowRoot.delegatesFocus === undefined) {
+            this.control.focus();
+            return false;
+        }
+        return true;
+    }
 }
 
 /**

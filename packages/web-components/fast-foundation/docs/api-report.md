@@ -69,6 +69,7 @@ export class Anchor extends FASTElement {
     // @internal
     defaultSlottedContent: HTMLElement[];
     download: string;
+    handleUnsupportedDelegatesFocus(): boolean;
     href: string;
     hreflang: string;
     ping: string;
@@ -223,6 +224,7 @@ export class Button extends FormAssociatedButton {
     formmethod: string;
     formnovalidate: boolean;
     formtarget: "_self" | "_blank" | "_parent" | "_top";
+    handleUnsupportedDelegatesFocus(): boolean;
     // @deprecated (undocumented)
     get root(): HTMLButtonElement;
     type: "submit" | "reset" | "button";
