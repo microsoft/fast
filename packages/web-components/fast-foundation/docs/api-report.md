@@ -206,7 +206,7 @@ export class BaseProgress extends FoundationElement {
     // @internal
     percentComplete: number;
     value: number | null;
-}
+    }
 
 // @public
 export class Breadcrumb extends FoundationElement {
