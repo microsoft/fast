@@ -366,60 +366,46 @@ class DefaultDesignSystem implements DesignSystem {
             const { name, callback, baseClass } = extractedParams;
             let { type } = extractedParams;
             let elementName: string | null = name;
-            let foundByName = elementTypesByTag.get(elementName);
 
-            while (foundByName && elementName) {
-                elementName = disambiguate(elementName, type, foundByName);
+            let typeFoundByName = elementTypesByTag.get(elementName);
+            let needsDefine = true;
 
-                if (elementName) {
-                    foundByName = elementTypesByTag.get(elementName);
-        this.context = {
-            elementPrefix: this.prefix,
-            tryDefineElement(
-                name: string,
-                type: Constructable,
-                callback: ElementDefinitionCallback
-            ) {
-                let elementName = name;
-                let typeFoundByName = elementTypesByTag.get(elementName);
-                let needsDefine = true;
+            while (typeFoundByName) {
+                const result = disambiguate(elementName, type, typeFoundByName);
 
-                while (typeFoundByName) {
-                    const result = disambiguate(elementName, type, typeFoundByName);
-
-                    switch (result) {
-                        case ElementDisambiguation.ignoreDuplicate:
-                            return;
-                        case ElementDisambiguation.definitionCallbackOnly:
-                            needsDefine = false;
-                            typeFoundByName = void 0;
-                            break;
-                        default:
-                            elementName = result as string;
-                            typeFoundByName = elementTypesByTag.get(elementName);
-                            break;
-                    }
+                switch (result) {
+                    case ElementDisambiguation.ignoreDuplicate:
+                        return;
+                    case ElementDisambiguation.definitionCallbackOnly:
+                        needsDefine = false;
+                        typeFoundByName = void 0;
+                        break;
+                    default:
+                        elementName = result as string;
+                        typeFoundByName = elementTypesByTag.get(elementName);
+                        break;
                 }
             }
 
-                if (needsDefine) {
-                    if (elementTagsByType.has(type)) {
-                        type = class extends type {};
-                    }
-
-                    elementTypesByTag.set(elementName, type);
-                    elementTagsByType.set(type, elementName);
+            if (needsDefine) {
+                if (elementTagsByType.has(type)) {
+                    type = class extends type {};
+                }
+                elementTypesByTag.set(elementName, type);
+                elementTagsByType.set(type, elementName);
+                if (baseClass) {
+                    elementTagsByType.set(baseClass, elementName!);
                 }
             }
 
             elementDefinitionEntries.push(
                 new ElementDefinitionEntry(
                     container,
-                    elementName || name,
+                    elementName,
                     type,
                     shadowRootMode,
                     callback,
-                    willDefine
+                    needsDefine
                 )
             );
         }
@@ -427,17 +413,6 @@ class DefaultDesignSystem implements DesignSystem {
         this.context = {
             elementPrefix: this.prefix,
             tryDefineElement,
-                elementDefinitionEntries.push(
-                    new ElementDefinitionEntry(
-                        container,
-                        elementName,
-                        type,
-                        shadowRootMode,
-                        callback,
-                        needsDefine
-                    )
-                );
-            },
         };
 
         container.register(...registrations);
