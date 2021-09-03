@@ -22,13 +22,14 @@ export const horizontalScrollTemplate: FoundationElementTemplate<
         @keyup="${(x, c) => x.keyupHandler(c.event as KeyboardEvent)}"
     >
         ${startSlotTemplate(context, definition)}
-        <div class="scroll-area">
+        <div class="scroll-area" part="scroll-area">
             <div
                 class="scroll-view"
+                part="scroll-view"
                 @scroll="${x => x.scrolled()}"
                 ${ref("scrollContainer")}
             >
-                <div class="content-container">
+                <div class="content-container" part="content-container">
                     <slot
                         ${slotted({
                             property: "scrollItems",
@@ -45,7 +46,7 @@ export const horizontalScrollTemplate: FoundationElementTemplate<
                         part="scroll-prev"
                         ${ref("previousFlipperContainer")}
                     >
-                        <div class="scroll-action">
+                        <div class="scroll-action" part="scroll-action-previous">
                             <slot name="previous-flipper">
                                 ${definition.previousFlipper instanceof Function
                                     ? definition.previousFlipper(context, definition)
@@ -58,7 +59,7 @@ export const horizontalScrollTemplate: FoundationElementTemplate<
                         part="scroll-next"
                         ${ref("nextFlipperContainer")}
                     >
-                        <div class="scroll-action">
+                        <div class="scroll-action" part="scroll-action-next">
                             <slot name="next-flipper">
                                 ${definition.nextFlipper instanceof Function
                                     ? definition.nextFlipper(context, definition)
