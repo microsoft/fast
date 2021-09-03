@@ -15,8 +15,10 @@ import {
     disabledOpacity,
     focusStrokeOuter,
     focusStrokeWidth,
+    neutralForegroundHover,
     neutralForegroundRest,
     strokeControlStrongActive,
+    strokeControlStrongFocus,
     strokeControlStrongHover,
     strokeControlStrongRest,
     strokeWidth,
@@ -85,7 +87,7 @@ export const radioStyles: (
       justify-content: center;
       width: 100%;
       height: 100%;
-      fill: ${neutralForegroundRest};
+      fill: ${neutralForegroundHover};
       opacity: 0;
       pointer-events: none;
     }
@@ -100,19 +102,14 @@ export const radioStyles: (
       border-color: ${strokeControlStrongHover};
     }
 
-    :host(:enabled:active) .control,
-    :host(.checked:enabled:active) .control {
-      border-color: ${strokeControlStrongActive};
-    }
-
     :host(:enabled:active) slot[name="checked-indicator"] {
       opacity: 1;
     }
 
     :host(:${focusVisible}) .control,
     :host(.checked:enabled:${focusVisible}) .control {
-      border-color: ${focusStrokeOuter};
-      box-shadow: 0 0 0 calc(${focusStrokeWidth} * 1px) ${focusStrokeOuter};
+      border-color: ${strokeControlStrongFocus};
+      box-shadow: 0 0 0 calc(${focusStrokeWidth} * 1px) ${strokeControlStrongFocus};
     }
 
     :host(.disabled) .label,
