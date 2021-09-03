@@ -16,6 +16,11 @@ export class Tabs extends FoundationTabs {
     public connectedCallback(): void {
         super.connectedCallback();
 
+        const tablist = this.closest(".tab-list") as HTMLElement;
+        if (tablist) {
+            fillColor.setValueFor(tablist, neutralLayerFloating);
+        }
+
         fillColor.setValueFor(this, neutralLayerFloating);
     }
 }

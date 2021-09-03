@@ -15,11 +15,13 @@ import {
     focusStrokeOuter,
     focusStrokeWidth,
     neutralFillActive,
+    neutralFillFocus,
     neutralFillHover,
     neutralFillRest,
-    neutralFillStrongActive,
-    neutralFillStrongHover,
-    neutralFillStrongRest,
+    neutralForegroundActive,
+    neutralForegroundFocus,
+    neutralForegroundHover,
+    neutralForegroundRest,
 } from "../design-tokens";
 
 export const flipperStyles: (
@@ -34,7 +36,7 @@ export const flipperStyles: (
       align-items: center;
       margin: 0;
       fill: currentcolor;
-      color: ${neutralFillStrongRest};
+      color: ${neutralForegroundRest};
       background: ${neutralFillRest};
       box-sizing: border-box;
       border: calc(${focusStrokeWidth} * 1px) solid transparent;
@@ -55,21 +57,20 @@ export const flipperStyles: (
 
     :host(:not(.disabled):hover) {
       cursor: pointer;
-    }
-
-    :host(:not(.disabled):hover) {
-      background: ${neutralFillRest};
-      fill: ${neutralFillStrongHover};
+      background: ${neutralFillHover};
+      fill: ${neutralForegroundHover};
     }
 
     :host(:not(.disabled):active) {
-      background: ${neutralFillRest};
-      fill: ${neutralFillStrongActive};
+      background: ${neutralFillActive};
+      fill: ${neutralForegroundActive};
     }
 
     :host(:${focusVisible}) {
+      background: ${neutralFillFocus};
       border-color: ${focusStrokeOuter};
-      box-shadow: 0 0 0 calc(${focusStrokeWidth} * 1px) ${focusStrokeOuter} inset;
+      box-shadow: 0 0 0 calc(${focusStrokeWidth} * 1px) ${focusStrokeOuter};
+      fill: ${neutralForegroundFocus};
     }
 
     :host::-moz-focus-inner {
