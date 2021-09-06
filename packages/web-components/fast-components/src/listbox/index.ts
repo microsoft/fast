@@ -1,5 +1,24 @@
-import { Listbox, listboxTemplate as template } from "@microsoft/fast-foundation";
+import {
+    Listbox as FoundationListbox,
+    listboxTemplate as template,
+} from "@microsoft/fast-foundation";
+import { fillColor, neutralLayerFloating } from "../design-tokens";
 import { listboxStyles as styles } from "./listbox.styles";
+
+/**
+ * The FAST listboxclass
+ * @public
+ */
+export class Listbox extends FoundationListbox {
+    /**
+     * @internal
+     */
+    public connectedCallback(): void {
+        super.connectedCallback();
+
+        fillColor.setValueFor(this, neutralLayerFloating);
+    }
+}
 
 /**
  * A function that returns a {@link @microsoft/fast-foundation#Listbox} registration for configuring the component with a DesignSystem.
@@ -18,9 +37,7 @@ export const fastListbox = Listbox.compose({
 });
 
 /**
- * Base class for Listbox
+ * Styles for Listbox
  * @public
  */
-export { Listbox };
-
-export { styles as listboxStyles };
+export const listboxStyles = styles;
