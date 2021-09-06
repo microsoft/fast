@@ -1027,6 +1027,21 @@ export enum StandardLuminance {
 }
 
 // @public (undocumented)
+export const strokeControlStrongActive: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
+
+// @public (undocumented)
+export const strokeControlStrongFocus: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
+
+// @public (undocumented)
+export const strokeControlStrongHover: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
+
+// @public (undocumented)
+export const strokeControlStrongRecipe: DesignToken<InteractiveColorRecipe>;
+
+// @public (undocumented)
+export const strokeControlStrongRest: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
+
+// @public (undocumented)
 export const strokeWidth: import("@microsoft/fast-foundation").CSSDesignToken<number>;
 
 // @public
