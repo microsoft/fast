@@ -7,10 +7,9 @@ import {
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
-    accentFillRest,
     bodyFont,
     controlCornerRadius,
-    designUnit,
+    fillColor,
     neutralForegroundRest,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
@@ -48,28 +47,12 @@ export const tabsStyles: (
             align-self: center;
         }
 
-        .activeIndicator {
-            grid-row: 2;
-            grid-column: 1;
-            width: 100%;
-            height: 5px;
-            justify-self: center;
-            background: ${accentFillRest};
-            margin-top: 10px;
-            border-radius: calc(${controlCornerRadius} * 1px)
-                calc(${controlCornerRadius} * 1px) 0 0;
-        }
-
-        .activeIndicatorTransition {
-            transition: transform 0.2s ease-in-out;
-        }
-
-        .tabpanel {
-            grid-row: 2;
-            grid-column-start: 1;
-            grid-column-end: 4;
-            position: relative;
-        }
+      .tabpanel {
+        grid-row: 2;
+        grid-column-start: 1;
+        grid-column-end: 4;
+        position: relative;
+      }
 
         :host([orientation="vertical"]) {
             grid-template-rows: auto 1fr auto;
@@ -96,26 +79,9 @@ export const tabsStyles: (
             grid-row-end: 4;
         }
 
-        :host([orientation="vertical"]) .end {
-            grid-row: 3;
-        }
-
-        :host([orientation="vertical"]) .activeIndicator {
-            grid-column: 1;
-            grid-row: 1;
-            width: 5px;
-            height: 100%;
-            margin-inline-end: 10px;
-            align-self: center;
-            background: ${accentFillRest};
-            margin-top: 0;
-            border-radius: 0 calc(${controlCornerRadius} * 1px)
-                calc(${controlCornerRadius} * 1px) 0;
-        }
-
-        :host([orientation="vertical"]) .activeIndicatorTransition {
-            transition: transform 0.2s linear;
-        }
+      :host(.vertical) .end {
+        grid-row: 3;
+      }
     `.withBehaviors(
         forcedColorsStylesheetBehavior(
             css`

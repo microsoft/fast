@@ -1,9 +1,31 @@
 import {
-    Combobox,
     ComboboxOptions,
+    Combobox as FoundationCombobox,
     comboboxTemplate as template,
 } from "@microsoft/fast-foundation";
+import { fillColor, neutralLayerFloating } from "../design-tokens";
 import { comboboxStyles as styles } from "./combobox.styles";
+
+/**
+ * Combobox appearances
+ * @public
+ */
+export type ComboboxAppearance = "filled" | "outline";
+
+/**
+ * The FAST combobox class
+ * @public
+ */
+export class Combobox extends FoundationCombobox {
+    /**
+     * @internal
+     */
+    public connectedCallback(): void {
+        super.connectedCallback();
+
+        fillColor.setValueFor(this, neutralLayerFloating);
+    }
+}
 
 /**
  * A function that returns a {@link @microsoft/fast-foundation#Combobox} registration for configuring the component with a DesignSystem.
@@ -40,9 +62,3 @@ export const fastCombobox = Combobox.compose<ComboboxOptions>({
  * @public
  */
 export const comboboxStyles = styles;
-
-/**
- * Base class for Combobox
- * @public
- */
-export { Combobox };

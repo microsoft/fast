@@ -16,9 +16,14 @@ import {
     disabledOpacity,
     focusStrokeOuter,
     focusStrokeWidth,
-    foregroundOnAccentRest,
+    neutralFillStealthActive,
+    neutralFillStealthFocus,
+    neutralFillStealthHover,
     neutralFillStealthRest,
+    neutralForegroundActive,
+    neutralForegroundFocus,
     neutralForegroundHint,
+    neutralForegroundHover,
     neutralForegroundRest,
     neutralLayer2,
     neutralLayer3,
@@ -87,22 +92,23 @@ export const menuItemStyles: (
         grid-column: 4;
     }
 
-    :host(:${focusVisible}) {
-        border-color: ${focusStrokeOuter};
-        background: ${neutralLayer3};
-        color: ${neutralForegroundRest};
-    }
-
-    :host(:hover) {
-        background: ${neutralLayer3};
-        color: ${neutralForegroundRest};
+    :host(:not([disabled]):hover) {
+      background: ${neutralFillStealthHover};
+      color: ${neutralForegroundHover};
     }
 
     :host([aria-checked="true"]),
     :host(:active),
     :host(.expanded) {
-        background: ${neutralLayer2};
-        color: ${neutralForegroundRest};
+      background: ${neutralFillStealthActive};
+      color: ${neutralForegroundActive};
+    }
+
+    :host(:${focusVisible}) {
+      background: ${neutralFillStealthFocus};
+      border: calc(${strokeWidth} * 1px) solid ${focusStrokeOuter};
+      box-shadow: 0 0 0 calc(${focusStrokeWidth} * 1px) ${focusStrokeOuter} inset;
+      color: ${neutralForegroundFocus};
     }
 
     :host([disabled]) {
@@ -217,25 +223,6 @@ export const menuItemStyles: (
         box-sizing: border-box;
         outline: none;
         margin-inline-start: 10px;
-    }
-
-    :host .checkbox,
-    :host .radio {
-        border: calc(${strokeWidth} * 1px) solid ${neutralForegroundRest};
-    }
-
-    :host([aria-checked="true"]) .checkbox,
-    :host([aria-checked="true"]) .radio {
-        background: ${accentFillRest};
-        border-color: ${accentFillRest};
-    }
-
-    :host .checkbox {
-        border-radius: calc(${controlCornerRadius} * 1px);
-    }
-
-    :host .radio {
-        border-radius: 999px;
     }
 
     :host .checkbox-indicator,
