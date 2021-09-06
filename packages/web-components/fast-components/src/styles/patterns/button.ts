@@ -8,6 +8,7 @@ import { SystemColors } from "@microsoft/fast-web-utilities";
 import { heightNumber } from "../size";
 import {
     accentFillActive,
+    accentFillFocus,
     accentFillHover,
     accentFillRest,
     accentForegroundActive,
@@ -24,12 +25,19 @@ import {
     foregroundOnAccentHover,
     foregroundOnAccentRest,
     neutralFillActive,
+    neutralFillFocus,
     neutralFillHover,
     neutralFillRest,
     neutralFillStealthActive,
     neutralFillStealthHover,
     neutralFillStealthRest,
     neutralForegroundRest,
+<<<<<<< HEAD
+=======
+    strokeControlStrongActive,
+    strokeControlStrongHover,
+    strokeControlStrongRest,
+>>>>>>> f6eb1c00c (adjust deltas, add fill stroke token, and update stroke on small inputs)
     strokeWidth,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
@@ -88,8 +96,26 @@ export const BaseButtonStyles = css`
         box-shadow: 0 0 0 calc((${focusStrokeWidth} - ${strokeWidth}) * 1px) ${focusStrokeOuter} inset;
     }
 
-    .control::-moz-focus-inner {
-        border: 0;
+    .control.icon-only {
+      padding: 0;
+      line-height: 0;
+    }
+
+    :host .control${interactivitySelector}:hover {
+      background: ${neutralFillHover};
+      color: ${neutralForegroundHover};
+    }
+
+    :host .control${interactivitySelector}:active {
+      background: ${neutralFillActive};
+      color: ${neutralForegroundActive};
+    }
+
+    :host .control:${focusVisible} {
+      background: ${neutralFillFocus};
+      border-color: ${focusStrokeOuter} !important;
+      box-shadow: 0 0 0 calc(${focusStrokeWidth} * 1px) ${focusStrokeOuter} inset !important;
+      color: ${neutralForegroundHover};
     }
 
     .start,
@@ -127,7 +153,7 @@ export const BaseButtonStyles = css`
               color: ${SystemColors.ButtonText};
               fill: currentColor;
             }
-    
+
             :host(:hover) .control {
               forced-color-adjust: none;
               background-color: ${SystemColors.Highlight};
@@ -184,9 +210,11 @@ export const AccentButtonStyles = css`
         color: ${foregroundOnAccentActive};
     }
 
-    :host([appearance="accent"]) .control:${focusVisible} {
-        box-shadow: 0 0 0 calc((${focusStrokeWidth} - ${strokeWidth}) * 1px) ${focusStrokeOuter} inset,
-            0 0 0 calc((${focusStrokeWidth} + ${strokeWidth}) * 1px) ${focusStrokeInner} inset;
+    :host .control:${focusVisible} {
+      background: ${accentFillFocus};
+      box-shadow: 0 0 0 calc((${focusStrokeWidth} - ${strokeWidth}) * 1px) ${focusStrokeOuter} inset,
+        0 0 0 calc(((${focusStrokeWidth} * 2) - ${strokeWidth}) * 1px) ${focusStrokeInner} inset !important;
+      color: ${foregroundOnAccentHover};
     }
 `.withBehaviors(
     forcedColorsStylesheetBehavior(
@@ -380,57 +408,54 @@ export const LightweightButtonStyles = css`
 /**
  * @internal
  */
-export const OutlineButtonStyles = css`
-    :host([appearance="outline"]) {
-        background: transparent;
-        border-color: ${accentFillRest};
-    }
+export const OutlineButtonStyles = (
+    context: ElementDefinitionContext,
+    definition: FoundationElementDefinition,
+    interactivitySelector: string = ""
+) =>
+    css`
+        :host .control {
+            background: transparent;
+            border-color: ${strokeControlStrongRest} !important;
+        }
 
-    :host([appearance="outline"]:hover) {
-        border-color: ${accentFillHover};
-    }
+        :host .control${interactivitySelector}:hover {
+            background: transparent;
+            border-color: ${strokeControlStrongHover} !important;
+        }
 
-    :host([appearance="outline"]:active) {
-        border-color: ${accentFillActive};
-    }
-
-    :host([appearance="outline"]) .control {
-        border-color: inherit;
-    }
-
-    :host([appearance="outline"]) .control:${focusVisible} {
-        box-shadow: 0 0 0 calc((${focusStrokeWidth} - ${strokeWidth}) * 1px) ${focusStrokeOuter} inset;
-        border-color: ${focusStrokeOuter};
-    }
-`.withBehaviors(
-    forcedColorsStylesheetBehavior(
-        css`
-            :host([appearance="outline"]) .control {
-                border-color: ${SystemColors.ButtonText};
-            }
-            :host([appearance="outline"]) .control:${focusVisible} {
-              forced-color-adjust: none;
-              background-color: ${SystemColors.Highlight};
-              border-color: ${SystemColors.ButtonText};
-              box-shadow: 0 0 0 calc((${focusStrokeWidth} - ${strokeWidth}) * 1px) ${SystemColors.ButtonText} inset;
-              color: ${SystemColors.HighlightText};
-              fill: currentColor;
-            }
-            :host([appearance="outline"][href]) .control {
-                background: ${SystemColors.ButtonFace};
-                border-color: ${SystemColors.LinkText};
-                color: ${SystemColors.LinkText};
-                fill: currentColor;
-            }
-            :host([appearance="outline"][href]) .control:hover,
-            :host([appearance="outline"][href]) .control:${focusVisible} {
-              forced-color-adjust: none;
-              border-color: ${SystemColors.LinkText};
-              box-shadow: 0 0 0 1px ${SystemColors.LinkText} inset;
-            }
-        `
-    )
-);
+        :host .control${interactivitySelector}:active {
+            background: ${neutralFillActive};
+            border-color: ${strokeControlStrongActive} !important;
+        }
+    `.withBehaviors(
+        forcedColorsStylesheetBehavior(
+            css`
+                :host .control {
+                    border-color: ${SystemColors.ButtonText};
+                }
+                :host .control${interactivitySelector}:hover {
+                  border-color: ${SystemColors.Highlight};
+                  color: ${SystemColors.Highlight};
+                }
+                :host .control${interactivitySelector}:${focusVisible} {
+                  forced-color-adjust: none;
+                  border-color: ${SystemColors.Highlight} !important;
+                  box-shadow: 0 0 0 calc(${focusStrokeWidth} * 1px) ${SystemColors.Highlight} !important;
+                  color: ${SystemColors.Highlight};
+                }
+                :host([href]) {
+                    border-color: ${SystemColors.LinkText};
+                }
+                :host([href]) .control${interactivitySelector}:${focusVisible} {
+                  forced-color-adjust: none;
+                  border-color: ${SystemColors.LinkText} !important;
+                  box-shadow: 0 0 0 calc(${focusStrokeWidth} * 1px) ${SystemColors.LinkText} !important;
+                  color: ${SystemColors.LinkText};
+                }
+            `
+        )
+    );
 
 /**
  * @internal

@@ -10,10 +10,9 @@ import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
     controlCornerRadius,
     designUnit,
+    fillColor,
     focusStrokeOuter,
     focusStrokeWidth,
-    neutralLayerFloating,
-    neutralStrokeRest,
     strokeWidth,
 } from "../design-tokens";
 
@@ -26,8 +25,8 @@ export const listboxStyles: (
 ) =>
     css`
         ${display("inline-flex")} :host {
-            background: ${neutralLayerFloating};
-            border: calc(${strokeWidth} * 1px) solid ${neutralStrokeRest};
+            background: ${fillColor};
+            border: calc(${strokeWidth} * 1px) solid transparent;
             border-radius: calc(${controlCornerRadius} * 1px);
             box-sizing: border-box;
             flex-direction: column;
@@ -36,8 +35,7 @@ export const listboxStyles: (
 
         :host(:focus-within:not([disabled])) {
             border-color: ${focusStrokeOuter};
-            box-shadow: 0 0 0 calc((${focusStrokeWidth} - ${strokeWidth}) * 1px)
-                ${focusStrokeOuter} inset;
+            box-shadow: 0 0 0 calc(${focusStrokeWidth} * 1px) ${focusStrokeOuter} inset;
         }
     `.withBehaviors(
         forcedColorsStylesheetBehavior(

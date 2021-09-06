@@ -9,16 +9,16 @@ import {
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
-    accentForegroundActive,
-    accentForegroundHover,
-    accentForegroundRest,
+    accentFillHover,
+    accentFillRest,
     bodyFont,
     controlCornerRadius,
     designUnit,
     disabledOpacity,
     focusStrokeOuter,
     focusStrokeWidth,
-    neutralFillActive,
+    foregroundOnAccentHover,
+    foregroundOnAccentRest,
     neutralFillHover,
     neutralFillRest,
     neutralFillStealthRest,
@@ -81,49 +81,21 @@ export const tabStyles: (
         fill: currentcolor;
     }
 
-    :host([aria-selected="true"]:hover) {
-        background: ${neutralFillHover};
-        color: ${accentForegroundHover};
-        fill: currentcolor;
-    }
-
-    :host([aria-selected="true"]:active) {
-        background: ${neutralFillActive};
-        color: ${accentForegroundActive};
-        fill: currentcolor;
-    }
-
-    :host(:${focusVisible}) {
-        outline: none;
-        border: calc(${strokeWidth} * 1px) solid ${focusStrokeOuter};
-        box-shadow: 0 0 0 calc((${focusStrokeWidth} - ${strokeWidth}) * 1px)
-            ${focusStrokeOuter};
-    }
-
-    :host(:focus) {
-        outline: none;
-    }
-
-    :host(.vertical) {
-        justify-content: end;
-        grid-column: 2;
-    }
-
-    :host(.vertical[aria-selected="true"]) {
+      :host([aria-selected="true"]),
+      :host(.vertical[aria-selected="true"]),
+      :host(.vertical:hover[aria-selected="true"]) {
         z-index: 2;
-    }
+        background: ${accentFillRest};
+        color: ${foregroundOnAccentRest}
+      }
 
-    :host(.vertical:hover) {
-        color: ${neutralForegroundRest};
-    }
-
-    :host(.vertical:active) {
-        color: ${neutralForegroundRest};
-    }
-
-    :host(.vertical:hover[aria-selected="true"]) {
-    }
-`.withBehaviors(
+      :host([aria-selected="true"]:hover),
+      :host(.vertical[aria-selected="true"]:hover),
+      :host(.vertical:hover[aria-selected="true"]) {
+        z-index: 2;
+        background: ${accentFillHover};
+        color: ${foregroundOnAccentHover}
+    `.withBehaviors(
         forcedColorsStylesheetBehavior(
             css`
             :host {

@@ -26,8 +26,9 @@ import {
     neutralFillInputRest,
     neutralFillStealthRest,
     neutralForegroundRest,
-    neutralLayerFloating,
-    neutralStrokeRest,
+    neutralStrokeInputFillActive,
+    neutralStrokeInputFillHover,
+    neutralStrokeInputFillRest,
     strokeWidth,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
@@ -41,19 +42,18 @@ export const selectStyles: (
 ) => ElementStyles = (context: ElementDefinitionContext, definition: SelectOptions) =>
     css`
     ${display("inline-flex")} :host {
-        --elevation: 14;
-        background: ${neutralFillInputRest};
-        border-radius: calc(${controlCornerRadius} * 1px);
-        border: calc(${strokeWidth} * 1px) solid ${accentFillRest};
-        box-sizing: border-box;
-        color: ${neutralForegroundRest};
-        font-family: ${bodyFont};
-        height: calc(${heightNumber} * 1px);
-        position: relative;
-        user-select: none;
-        min-width: 250px;
-        outline: none;
-        vertical-align: top;
+      background: ${neutralFillRest};
+      border: calc(${strokeWidth} * 1px) solid ${neutralStrokeInputFillRest};
+      border-radius: calc(${controlCornerRadius} * 1px);
+      box-sizing: border-box;
+      color: ${neutralForegroundRest};
+      fill: currentcolor;
+      font-family: ${bodyFont};
+      height: calc(${heightNumber} * 1px);
+      position: relative;
+      user-select: none;
+      min-width: 250px;
+      vertical-align: top;
     }
 
     .listbox {
@@ -91,13 +91,16 @@ export const selectStyles: (
     }
 
     :host(:not([disabled]):hover) {
-        background: ${neutralFillInputHover};
-        border-color: ${accentFillHover};
+      background:${neutralFillHover};
+      border-color: ${neutralStrokeInputFillHover};
+      color: ${neutralForegroundHover};
     }
 
-    :host(:${focusVisible}) {
-        border-color: ${focusStrokeOuter};
-        box-shadow: 0 0 0 calc(${focusStrokeWidth} * 1px) ${focusStrokeOuter};
+    :host(:not([disabled]):active),
+    :host(:focus-within) {
+      background: ${neutralFillActive};
+      border-color: ${neutralStrokeInputFillActive};
+      color: ${neutralForegroundActive};
     }
 
     :host(:${focusVisible}) ::slotted([aria-selected="true"][role="option"]:not([disabled])) {

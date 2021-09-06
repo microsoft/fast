@@ -16,18 +16,14 @@ import {
     controlCornerRadius,
     designUnit,
     disabledOpacity,
-    fillColor,
-    focusStrokeOuter,
-    foregroundOnAccentActive,
-    foregroundOnAccentHover,
-    foregroundOnAccentRest,
-    neutralFillInputActive,
-    neutralFillInputHover,
-    neutralFillInputRest,
+    focusStrokeWidth,
+    neutralFillActive,
+    neutralForegroundHover,
     neutralForegroundRest,
-    neutralStrokeActive,
-    neutralStrokeHover,
-    neutralStrokeRest,
+    strokeControlStrongActive,
+    strokeControlStrongFocus,
+    strokeControlStrongHover,
+    strokeControlStrongRest,
     strokeWidth,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
@@ -77,13 +73,16 @@ export const checkboxStyles: (
         visibility: hidden;
     }
 
-    .checked-indicator {
-        width: 100%;
-        height: 100%;
-        display: block;
-        fill: ${foregroundOnAccentRest};
-        opacity: 0;
-        pointer-events: none;
+    slot[name="checked-indicator"],
+    slot[name="indeterminate-indicator"] {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 100%;
+      fill: ${neutralForegroundHover};
+      opacity: 0;
+      pointer-events: none;
     }
 
     .indeterminate-indicator {
@@ -98,18 +97,26 @@ export const checkboxStyles: (
         opacity: 0;
     }
 
-    :host(:not([disabled])) .control:hover {
-        background: ${neutralFillInputHover};
-        border-color: ${neutralStrokeHover};
+    :host([aria-checked="true"]) .control {
+      background: ${neutralFillActive};
+      border-color: ${strokeControlStrongRest};
     }
 
-    :host(:not([disabled])) .control:active {
-        background: ${neutralFillInputActive};
-        border-color: ${neutralStrokeActive};
+    :host(:hover) .control,
+    :host([aria-checked="true"]:enabled:hover) .control {
+      border-color: ${strokeControlStrongHover};
     }
 
-    :host(:${focusVisible}) .control {
-        box-shadow: 0 0 0 2px ${fillColor}, 0 0 0 4px ${focusStrokeOuter};
+    :host(:active) .control,
+    :host([aria-checked="true"]:enabled:active) .control {
+      background: ${neutralFillActive};
+      border-color: ${strokeControlStrongActive};
+    }
+
+    :host(:${focusVisible}) .control,
+    :host([aria-checked="true"]:enabled:${focusVisible}) .control {
+      border-color: ${strokeControlStrongFocus};
+      box-shadow: 0 0 0 calc(${focusStrokeWidth} * 1px) ${strokeControlStrongFocus};
     }
 
     :host([aria-checked="true"]) .control {
@@ -117,9 +124,9 @@ export const checkboxStyles: (
         border: calc(${strokeWidth} * 1px) solid ${accentFillRest};
     }
 
-    :host([aria-checked="true"]:not([disabled])) .control:hover {
-        background: ${accentFillHover};
-        border: calc(${strokeWidth} * 1px) solid ${accentFillHover};
+    :host([aria-checked="true"]:not(.indeterminate)) slot[name='checked-indicator'],
+    :host([aria-checked="true"].indeterminate) slot[name='indeterminate-indicator'] {
+      opacity: 1;
     }
 
     :host([aria-checked="true"]:not([disabled])) .control:hover .checked-indicator {
@@ -155,13 +162,8 @@ export const checkboxStyles: (
         cursor: ${disabledCursor};
     }
 
-    :host([aria-checked="true"]:not(.indeterminate)) .checked-indicator,
-    :host(.indeterminate) .indeterminate-indicator {
-        opacity: 1;
-    }
-
-    :host([disabled]) {
-        opacity: ${disabledOpacity};
+    :host(.disabled) {
+      opacity: ${disabledOpacity};
     }
 `.withBehaviors(
         forcedColorsStylesheetBehavior(

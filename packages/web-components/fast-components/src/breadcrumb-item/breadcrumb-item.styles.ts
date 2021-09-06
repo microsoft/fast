@@ -13,6 +13,12 @@ import {
     accentForegroundRest,
     bodyFont,
     focusStrokeWidth,
+    neutralFillRest,
+    neutralFillStealthActive,
+    neutralFillStealthHover,
+    neutralFillStealthRest,
+    neutralForegroundActive,
+    neutralForegroundHover,
     neutralForegroundRest,
     strokeWidth,
     typeRampBaseFontSize,
@@ -52,46 +58,29 @@ export const breadcrumbItemStyles: (
     }
 
     .control {
-        align-items: center;
-        box-sizing: border-box;
-        color: ${accentForegroundRest};
-        cursor: pointer;
-        display: flex;
-        fill: inherit;
-        outline: none;
-        text-decoration: none;
-        white-space: nowrap;
+      position: relative;
+      align-items: center;
+      box-sizing: border-box;
+      background: ${neutralFillStealthRest};
+      color: ${neutralForegroundRest};
+      cursor: pointer;
+      display: flex;
+      fill: inherit;
+      outline: none;
+      text-decoration: none;
+      white-space: nowrap;
+      border-radius: inherit;
+      padding: 4px 8px;
     }
 
     .control:hover {
-        color: ${accentForegroundHover};
+      background: ${neutralFillStealthHover};
+      color: ${neutralForegroundHover};
     }
 
     .control:active {
-        color: ${accentForegroundActive};
-    }
-
-    .control .content {
-        position: relative;
-    }
-
-    .control .content::before {
-        content: "";
-        display: block;
-        height: calc(${strokeWidth} * 1px);
-        left: 0;
-        position: absolute;
-        right: 0;
-        top: calc(1em + 4px);
-        width: 100%;
-    }
-
-    .control:hover .content::before {
-        background: ${accentForegroundHover};
-    }
-
-    .control:active .content::before {
-        background: ${accentForegroundActive};
+      background: ${neutralFillStealthActive};
+      color: ${neutralForegroundActive};
     }
 
     .control:${focusVisible} .content::before {

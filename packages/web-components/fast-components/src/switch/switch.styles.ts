@@ -16,18 +16,14 @@ import {
     controlCornerRadius,
     designUnit,
     disabledOpacity,
-    fillColor,
-    focusStrokeOuter,
-    foregroundOnAccentActive,
-    foregroundOnAccentHover,
-    foregroundOnAccentRest,
-    neutralFillInputActive,
-    neutralFillInputHover,
-    neutralFillInputRest,
+    focusStrokeWidth,
+    neutralFillActive,
+    neutralForegroundHover,
     neutralForegroundRest,
-    neutralStrokeActive,
-    neutralStrokeHover,
-    neutralStrokeRest,
+    strokeControlStrongActive,
+    strokeControlStrongFocus,
+    strokeControlStrongHover,
+    strokeControlStrongRest,
     strokeWidth,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
@@ -78,22 +74,26 @@ export const switchStyles: (
         border: calc(${strokeWidth} * 1px) solid ${neutralStrokeRest};
     }
 
-    .switch:hover {
-        background: ${neutralFillInputHover};
-        border-color: ${neutralStrokeHover};
-        cursor: pointer;
+    :host([aria-checked="true"]) .switch {
+      border-color: ${strokeControlStrongRest};
+      background: ${neutralFillActive};
     }
 
-    host([disabled]) .switch:hover,
-    host([readonly]) .switch:hover {
-        background: ${neutralFillInputHover};
-        border-color: ${neutralStrokeHover};
-        cursor: ${disabledCursor};
+    :host(:enabled:hover) .switch,
+    :host([aria-checked="true"]:enabled:hover) .switch {
+      border-color: ${strokeControlStrongHover};
     }
 
-    :host(:not([disabled])) .switch:active {
-        background: ${neutralFillInputActive};
-        border-color: ${neutralStrokeActive};
+    :host(:enabled:active) .switch,
+    :host([aria-checked="true"]:enabled:active) .switch {
+      background: ${neutralFillActive};
+      border-color: ${strokeControlStrongActive};
+    }
+
+    :host(:${focusVisible}) .switch,
+    :host([aria-checked="true"]:${focusVisible}:enabled) .switch {
+      border-color: ${strokeControlStrongFocus};
+      box-shadow: 0 0 0 calc(${focusStrokeWidth} * 1px) ${strokeControlStrongFocus};
     }
 
     :host(:${focusVisible}) .switch {

@@ -6,8 +6,23 @@ import {
 import { selectStyles as styles } from "./select.styles";
 
 /**
- * A function that returns a {@link @microsoft/fast-foundation#Select} registration for configuring the component with a DesignSystem.
- * Implements {@link @microsoft/fast-foundation#selectTemplate}
+ * The FAST select class
+ * @internal
+ */
+export class Select extends FoundationSelect {
+    /**
+     * @internal
+     */
+    public connectedCallback(): void {
+        super.connectedCallback();
+
+        fillColor.setValueFor(this, neutralLayerFloating);
+    }
+}
+
+/**
+ * The FAST select Custom Element. Implements, {@link @microsoft/fast-foundation#Select}
+ * {@link @microsoft/fast-foundation#selectTemplate}
  *
  *
  * @public
@@ -32,7 +47,6 @@ export const fastSelect = Select.compose<SelectOptions>({
         </svg>
     `,
 });
-
 /**
  * Styles for Select
  * @public

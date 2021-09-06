@@ -15,9 +15,16 @@ import {
     disabledOpacity,
     fillColor,
     focusStrokeOuter,
-    neutralForegroundRest,
-    neutralStrokeHover,
+    focusStrokeWidth,
+    neutralFillRest,
+    neutralFillStealthRest,
+    neutralFillStrongHover,
+    neutralForegroundHover,
     neutralStrokeRest,
+    strokeControlStrongActive,
+    strokeControlStrongHover,
+    strokeControlStrongRest,
+    strokeWidth,
 } from "../design-tokens";
 import { heightNumber } from "../styles/index";
 
@@ -62,7 +69,7 @@ export const sliderStyles: (
     :host(:${focusVisible}) .thumb-cursor {
         box-shadow: 0 0 0 2px ${fillColor}, 0 0 0 4px ${focusStrokeOuter};
     }
-    
+
     .thumb-container {
         position: absolute;
         height: calc(var(--thumb-size) * 1px);
@@ -72,59 +79,81 @@ export const sliderStyles: (
         fill: currentcolor;
     }
     .thumb-cursor {
-        border: none;
-        width: calc(var(--thumb-size) * 1px);
-        height: calc(var(--thumb-size) * 1px);
-        background: ${neutralForegroundRest};
-        border-radius: calc(${controlCornerRadius} * 1px);
+      display: flex;
+      position: relative;
+      border: none;
+      width: calc(var(--thumb-size) * 1px);
+      height: calc(var(--thumb-size) * 1px);
+      background: ${fillColor};
+      border: calc(${focusStrokeWidth} * 1px) solid ${strokeControlStrongRest};
+      border-radius: 50%;
+      box-sizing: border-box;
     }
-    .thumb-cursor:hover {
-        background: ${neutralForegroundRest};
-        border-color: ${neutralStrokeHover};
+    :host(:not(.disabled)) .thumb-cursor:hover,
+    :host(:not(.disabled)) .thumb-cursor:active {
+      background: ${neutralForegroundHover};
+      border-color: ${strokeControlStrongActive};
     }
-    .thumb-cursor:active {
-        background: ${neutralForegroundRest};
+    :host(:${focusVisible}) .thumb-cursor {
+      background: ${neutralForegroundHover};
+      border-color: ${focusStrokeOuter};
+      box-shadow: 0 0 0 calc(${focusStrokeWidth} * 1px) ${focusStrokeOuter};
     }
-    :host([orientation="horizontal"]) .thumb-container {
-        transform: translateX(calc(var(--thumb-translate) * 1px));
+    .track-start {
+      background: ${accentForegroundRest};
+      position: absolute;
+      height: 100%;
+      left: 0;
+      border-radius: calc(${controlCornerRadius} * 1px);
     }
-    :host([orientation="vertical"]) .thumb-container {
-        transform: translateY(calc(var(--thumb-translate) * 1px));
+    :host(.horizontal) .thumb-container {
+      transform: translateX(calc(var(--thumb-translate) * 1px));
     }
-    :host([orientation="horizontal"]) {
-        min-width: calc(var(--thumb-size) * 1px);
+    :host(.vertical) .thumb-container {
+      transform: translateY(calc(var(--thumb-translate) * 1px));
     }
-    :host([orientation="horizontal"]) .track {
-        right: calc(var(--track-overhang) * 1px);
-        left: calc(var(--track-overhang) * 1px);
-        align-self: start;
-        margin-top: calc((${designUnit} + calc(${density} + 2)) * 1px);
-        height: calc(var(--track-width) * 1px);
+    :host(.horizontal) {
+      min-width: calc(var(--thumb-size) * 1px);
     }
-    :host([orientation="vertical"]) .track {
-        top: calc(var(--track-overhang) * 1px);
-        bottom: calc(var(--track-overhang) * 1px);
-        width: calc(var(--track-width) * 1px);
-        margin-inline-start: calc((${designUnit} + calc(${density} + 2)) * 1px);
-        height: 100%;
+    :host(.horizontal) .track {
+      right: calc(var(--track-overhang) * 1px);
+      left: calc(var(--track-overhang) * 1px);
+      align-self: start;
+      margin-top: calc((${designUnit} + calc(${density} + 5)) * 1px);
+      height: calc(var(--track-width) * 1px);
+    }
+    :host(.vertical) .track {
+      top: calc(var(--track-overhang) * 1px);
+      bottom: calc(var(--track-overhang) * 1px);
+      margin-inline-start: calc((${designUnit} + calc(${density} + 5)) * 1px);
+      width: calc(var(--track-width) * 1px);
+      height: 100%;
     }
     .track {
-        background: ${neutralStrokeRest};
-        position: absolute;
-        border-radius: calc(${controlCornerRadius} * 1px);
+      background: ${neutralStrokeRest};
+      border: 1px solid ${neutralStrokeRest};
+      border-radius: 2px;
+      box-sizing: border-box;
+      position: absolute;
     }
-    :host([orientation="vertical"]) {
-        height: calc(var(--fast-slider-height) * 1px);
-        min-height: calc(var(--thumb-size) * 1px);
-        min-width: calc(${designUnit} * 20px);
+    :host(.vertical) {
+      height: 100%;
+      min-height: calc(${designUnit} * 60px);
+      min-width: calc(${designUnit} * 20px);
     }
-    :host([disabled]), :host([readonly]) {
-        cursor: ${disabledCursor};
+    :host(.vertical) .track-start {
+      height: auto;
+      width: 100%;
+      top: 0;
     }
-    :host([disabled]) {
-        opacity: ${disabledOpacity};
+    :host(.disabled),
+    :host(.readonly) {
+      cursor: ${disabledCursor};
     }
-`.withBehaviors(
+    :host(.disabled) {
+      opacity: ${disabledOpacity};
+    }
+  `.withBehaviors(
         forcedColorsStylesheetBehavior(
             css`
             .thumb-cursor {
@@ -155,7 +184,7 @@ export const sliderStyles: (
             :host(:${focusVisible}) .thumb-cursor {
                 background: ${SystemColors.Highlight};
                 border-color: ${SystemColors.Highlight};
-                box-shadow: 0 0 0 2px ${SystemColors.Field}, 0 0 0 4px ${SystemColors.FieldText};    
+                box-shadow: 0 0 0 2px ${SystemColors.Field}, 0 0 0 4px ${SystemColors.FieldText};
             }
         `
         )

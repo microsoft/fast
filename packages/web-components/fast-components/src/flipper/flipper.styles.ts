@@ -16,13 +16,15 @@ import {
     focusStrokeInner,
     focusStrokeOuter,
     focusStrokeWidth,
-    foregroundOnAccentActive,
-    foregroundOnAccentHover,
-    foregroundOnAccentRest,
-    neutralFillStealthRest,
+    neutralFillActive,
+    neutralFillFocus,
+    neutralFillHover,
+    neutralFillRest,
+    neutralFillStrongHover,
+    neutralForegroundActive,
+    neutralForegroundFocus,
+    neutralForegroundHover,
     neutralForegroundRest,
-    neutralStrokeRest,
-    strokeWidth,
 } from "../design-tokens";
 import { heightNumber } from "../styles/index";
 
@@ -32,31 +34,19 @@ export const flipperStyles: (
 ) => ElementStyles = (context: ElementDefinitionContext, definition: FlipperOptions) =>
     css`
     ${display("inline-flex")} :host {
-        width: calc(${heightNumber} * 1px);
-        height: calc(${heightNumber} * 1px);
-        justify-content: center;
-        align-items: center;
-        margin: 0;
-        position: relative;
-        fill: currentcolor;
-        color: ${foregroundOnAccentRest};
-        background: transparent;
-        outline: none;
-        border: none;
-        padding: 0;
-    }
-
-    :host::before {
-        content: "";
-        background: ${accentFillRest};
-        border: calc(${strokeWidth} * 1px) solid ${accentFillRest};
-        border-radius: 50%;
-        position: absolute;
-        top: 0;
-        right: 0;
-        left: 0;
-        bottom: 0;
-        transition: all 0.1s ease-in-out;
+      width: calc((${heightNumber} + ${designUnit}) * 1px);
+      height: calc((${heightNumber} + ${designUnit}) * 1px);
+      justify-content: center;
+      align-items: center;
+      margin: 0;
+      fill: currentcolor;
+      color: ${neutralForegroundRest};
+      background: ${neutralFillRest};
+      box-sizing: border-box;
+      border: calc(${focusStrokeWidth} * 1px) solid transparent;
+      border-radius: 50%;
+      outline: none;
+      padding: 0;
     }
 
     .next,
@@ -82,32 +72,22 @@ export const flipperStyles: (
         border-color: ${neutralStrokeRest};
     }
 
-    :host(:hover) {
-        color: ${foregroundOnAccentHover};
+    :host(:not(.disabled):hover) {
+      cursor: pointer;
+      background: ${neutralFillHover};
+      fill: ${neutralForegroundHover};
     }
 
-    :host(:hover)::before {
-        background: ${accentFillHover};
-        border-color: ${accentFillHover};
-    }
-
-    :host(:active) {
-        color: ${foregroundOnAccentActive};
-    }
-
-    :host(:active)::before {
-        background: ${accentFillActive};
-        border-color: ${accentFillActive};
+    :host(:not(.disabled):active) {
+      background: ${neutralFillActive};
+      fill: ${neutralForegroundActive};
     }
 
     :host(:${focusVisible}) {
-        outline: none;
-    }
-
-    :host(:${focusVisible})::before {
-        box-shadow: 0 0 0 calc((${focusStrokeWidth} - ${strokeWidth}) * 1px) ${focusStrokeOuter} inset,
-            0 0 0 calc((${focusStrokeWidth} + ${strokeWidth}) * 1px) ${focusStrokeInner} inset;
-        border-color: ${focusStrokeOuter};
+      background: ${neutralFillFocus};
+      border-color: ${focusStrokeOuter};
+      box-shadow: 0 0 0 calc(${focusStrokeWidth} * 1px) ${focusStrokeOuter};
+      fill: ${neutralForegroundFocus};
     }
 
     :host::-moz-focus-inner {

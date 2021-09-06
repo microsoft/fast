@@ -15,18 +15,14 @@ import {
     bodyFont,
     designUnit,
     disabledOpacity,
-    fillColor,
-    focusStrokeOuter,
-    foregroundOnAccentActive,
-    foregroundOnAccentHover,
-    foregroundOnAccentRest,
-    neutralFillInputActive,
-    neutralFillInputHover,
-    neutralFillInputRest,
+    focusStrokeWidth,
+    neutralFillActive,
+    neutralForegroundHover,
     neutralForegroundRest,
-    neutralStrokeActive,
-    neutralStrokeHover,
-    neutralStrokeRest,
+    strokeControlStrongActive,
+    strokeControlStrongFocus,
+    strokeControlStrongHover,
+    strokeControlStrongRest,
     strokeWidth,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
@@ -112,14 +108,20 @@ export const radioStyles: (
         box-shadow: 0 0 0 2px ${fillColor}, 0 0 0 4px ${focusStrokeOuter};
     }
 
-    :host([aria-checked="true"]) .control {
-        background: ${accentFillRest};
-        border: calc(${strokeWidth} * 1px) solid ${accentFillRest};
+    slot[name="checked-indicator"] {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 100%;
+      fill: ${neutralForegroundHover};
+      opacity: 0;
+      pointer-events: none;
     }
 
-    :host([aria-checked="true"]:not([disabled])) .control:hover {
-        background: ${accentFillHover};
-        border: calc(${strokeWidth} * 1px) solid ${accentFillHover};
+    :host(.checked) .control {
+      background: ${neutralFillActive};
+      border-color: ${strokeControlStrongRest};
     }
 
     :host([aria-checked="true"]:not([disabled])) .control:hover .checked-indicator {
@@ -127,18 +129,20 @@ export const radioStyles: (
         fill: ${foregroundOnAccentHover};
     }
 
-    :host([aria-checked="true"]:not([disabled])) .control:active {
-        background: ${accentFillActive};
-        border: calc(${strokeWidth} * 1px) solid ${accentFillActive};
+    :host(:enabled:active) .control,
+    :host(.checked:enabled:active) .control {
+      background: ${neutralFillActive};
+      border-color: ${strokeControlStrongActive};
     }
 
-    :host([aria-checked="true"]:not([disabled])) .control:active .checked-indicator {
-        background: ${foregroundOnAccentActive};
-        fill: ${foregroundOnAccentActive};
+    :host(:${focusVisible}) .control,
+    :host(.checked:enabled:${focusVisible}) .control {
+      border-color: ${strokeControlStrongFocus};
+      box-shadow: 0 0 0 calc(${focusStrokeWidth} * 1px) ${strokeControlStrongFocus};
     }
 
-    :host([aria-checked="true"]:${focusVisible}:not([disabled])) .control {
-        box-shadow: 0 0 0 2px ${fillColor}, 0 0 0 4px ${focusStrokeOuter};
+    :host(:enabled:active) slot[name="checked-indicator"] {
+      opacity: 1;
     }
 
     :host([disabled]) .label,
