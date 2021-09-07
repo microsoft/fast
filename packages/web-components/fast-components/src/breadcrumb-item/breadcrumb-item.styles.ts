@@ -13,7 +13,6 @@ import {
     accentForegroundRest,
     bodyFont,
     focusStrokeWidth,
-    neutralFillRest,
     neutralFillStealthActive,
     neutralFillStealthHover,
     neutralFillStealthRest,

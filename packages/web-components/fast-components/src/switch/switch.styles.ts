@@ -17,7 +17,8 @@ import {
     designUnit,
     disabledOpacity,
     focusStrokeWidth,
-    neutralFillActive,
+    neutralFillInputActive,
+    neutralFillInputRest,
     neutralForegroundHover,
     neutralForegroundRest,
     strokeControlStrongActive,
@@ -68,19 +69,19 @@ export const switchStyles: (
     }
 
     .switch {
-        position: relative;
-        outline: none;
-        box-sizing: border-box;
-        width: calc(${heightNumber} * 1px);
-        height: calc((${heightNumber} / 2 + ${designUnit}) * 1px);
-        background: ${neutralFillInputRest};
-        border-radius: calc(${controlCornerRadius} * 1px);
-        border: calc(${strokeWidth} * 1px) solid ${neutralStrokeRest};
+      position: relative;
+      outline: none;
+      box-sizing: border-box;
+      width: calc(((${heightNumber} / 2) + ${designUnit}) * 2px);
+      height: calc(((${heightNumber} / 2) + ${designUnit}) * 1px);
+      background: ${neutralFillInputRest};
+      border-radius: calc(${heightNumber} * 1px);
+      border: calc(${strokeWidth} * 1px) solid ${strokeControlStrongRest};
     }
 
     :host([aria-checked="true"]) .switch {
       border-color: ${strokeControlStrongRest};
-      background: ${neutralFillActive};
+      background: ${neutralFillInputActive};
     }
 
     :host(:enabled:hover) .switch,
@@ -90,7 +91,7 @@ export const switchStyles: (
 
     :host(:enabled:active) .switch,
     :host([aria-checked="true"]:enabled:active) .switch {
-      background: ${neutralFillActive};
+      background: ${neutralFillInputActive};
       border-color: ${strokeControlStrongActive};
     }
 

@@ -12,7 +12,6 @@ import {
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import { Swatch } from "../color/swatch";
 import {
-    accentForegroundRest,
     baseHeightMultiplier,
     bodyFont,
     controlCornerRadius,
@@ -22,8 +21,8 @@ import {
     focusStrokeOuter,
     focusStrokeWidth,
     neutralFillRecipe,
-    neutralFillRest,
     neutralFillStealthActive,
+    neutralFillStealthFocus,
     neutralFillStealthHover,
     neutralFillStealthRecipe,
     neutralFillStealthRest,
@@ -106,10 +105,7 @@ export const treeItemStyles: (
         --tree-item-nested-width: 0;
     }
 
-    :host(:focus) > .positioning-region {
-        outline: none;
-    }
-
+    :host(:focus) > .positioning-region,
     :host(:focus) .content-region {
         outline: none;
     }
@@ -120,12 +116,21 @@ export const treeItemStyles: (
         color: ${neutralForegroundRest};
     }
 
-    .positioning-region {
-        display: flex;
-        position: relative;
-        box-sizing: border-box;
-        border: transparent calc(${strokeWidth} * 1px) solid;
-        height: calc((${heightNumber} + 1) * 1px);
+    :host(:not([disabled])) .positioning-region:hover {
+      background: ${neutralFillStealthHover};
+      color: ${neutralForegroundHover};
+    }
+
+    :host(:not([disabled])) .positioning-region:active {
+      background: ${neutralFillStealthActive};
+      color: ${neutralForegroundActive};
+    }
+
+    :host(:${focusVisible}) .positioning-region {
+      background: ${neutralFillStealthFocus}
+      border-color: ${focusStrokeOuter};
+      box-shadow: 0 0 0 calc(${focusStrokeWidth} * 1px) ${focusStrokeOuter} inset;
+      color: ${neutralForegroundHover};
     }
 
     .positioning-region::before {
@@ -133,14 +138,6 @@ export const treeItemStyles: (
         display: block;
         width: var(--tree-item-nested-width);
         flex-shrink: 0;
-    }
-
-    .positioning-region:hover {
-        background: ${neutralFillStealthHover};
-    }
-
-    .positioning-region:active {
-        background: ${neutralFillStealthActive};
     }
 
     .content-region {
@@ -231,8 +228,9 @@ export const treeItemStyles: (
         background: ${expandCollapseHoverBehavior};
     }
 
-    :host([selected]) .positioning-region {
-        background: ${neutralFillRest};
+    :host(:not([disabled])[selected]) .positioning-region {
+      background: ${neutralFillStealthActive};
+      color: ${neutralForegroundActive}
     }
 
     :host([selected]) .expand-collapse-button:hover {
