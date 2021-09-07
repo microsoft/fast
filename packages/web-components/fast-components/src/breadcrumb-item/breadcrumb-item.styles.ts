@@ -48,6 +48,7 @@ export const breadcrumbItemStyles: (
 
     .separator {
         margin: 0 6px;
+        display: flex;
     }
 
     .control {
