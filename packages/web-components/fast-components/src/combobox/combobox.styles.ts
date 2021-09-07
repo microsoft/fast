@@ -5,20 +5,19 @@ import {
     ElementDefinitionContext,
     focusVisible,
 } from "@microsoft/fast-foundation";
+import { appearanceBehavior } from "../utilities/behaviors";
 import {
     strokeWidth,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
 } from "../design-tokens";
-import { selectStyles } from "../select/select.styles";
+import { selectFilledStyles, selectStyles } from "../select/select.styles";
 
 export const comboboxStyles: (
     context: ElementDefinitionContext,
     definition: ComboboxOptions
-) => ElementStyles = (
-    context: ElementDefinitionContext,
-    definition: ComboboxOptions
-) => css`
+) => ElementStyles = (context: ElementDefinitionContext, definition: ComboboxOptions) =>
+    css`
     ${selectStyles(context, definition)}
 
     :host(:empty) .listbox {
@@ -28,6 +27,10 @@ export const comboboxStyles: (
     :host([disabled]) *,
     :host([disabled]) {
         cursor: ${disabledCursor};
+        user-select: none;
+    }
+
+    :host(:active) .selected-value {
         user-select: none;
     }
 
@@ -49,4 +52,4 @@ export const comboboxStyles: (
     .selected-value:active {
         outline: none;
     }
-`;
+`.withBehaviors(appearanceBehavior("filled", selectFilledStyles(context, definition)));
