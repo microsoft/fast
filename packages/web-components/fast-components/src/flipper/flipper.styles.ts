@@ -20,7 +20,6 @@ import {
     neutralFillFocus,
     neutralFillHover,
     neutralFillRest,
-    neutralFillStrongHover,
     neutralForegroundActive,
     neutralForegroundFocus,
     neutralForegroundHover,

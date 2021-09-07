@@ -25,8 +25,6 @@ import {
     neutralForegroundHint,
     neutralForegroundHover,
     neutralForegroundRest,
-    neutralLayer2,
-    neutralLayer3,
     strokeWidth,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
