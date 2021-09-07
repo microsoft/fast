@@ -1,8 +1,12 @@
+import { uniqueId } from "lodash-es";
 import { XOR } from "../data-utilities/type.utilities";
 import { MessageSystemType } from "./types";
 import { defaultHistoryLimit } from "./history";
 import { Initialize, MessageSystemConfig, Register } from "./message-system.props";
-import { MessageSystemIncoming } from "./message-system.utilities.props";
+import {
+    InternalMessageSystemIncoming,
+    MessageSystemIncoming,
+} from "./message-system.utilities.props";
 
 /**
  * The registration used for the message system
@@ -22,6 +26,11 @@ export default class MessageSystem<C = {}> {
      * The history limit
      */
     private historyLimit: number;
+
+    /**
+     * The message queue
+     */
+    private messageQueue: [{ [key: string]: MessageEvent }, string[]] = [{}, []];
 
     constructor(config: MessageSystemConfig) {
         if ((window as any).Worker) {
@@ -79,22 +88,47 @@ export default class MessageSystem<C = {}> {
     }
 
     /**
-     * Post a message
+     * Post a message to the message system web worker
      */
     public postMessage(message: MessageSystemIncoming): void {
         if ((window as any).Worker && this.worker) {
-            this.worker.postMessage(message);
+            const uuid: string = uniqueId();
+
+            this.messageQueue[1].push(uuid);
+            this.worker.postMessage([message, uuid] as InternalMessageSystemIncoming);
         }
     }
 
     /**
-     * The onmessage handler for the message system
+     * The onmessage handler for the message system which recieves a message
+     * from the message system web worker and passes it to each registered item
      */
     private onMessage = (e: MessageEvent): void => {
-        this.register.forEach((registeredItem: Register) => {
-            registeredItem.onMessage(e);
-        });
+        this.messageQueue[0][e.data[1]] = e;
+
+        this.sendNextMessage();
     };
+
+    /**
+     * Fire the messages in the order they have been received when they are made available
+     */
+    private sendNextMessage = (): void => {
+        if (this.messageQueue[1][0] && this.messageQueue[0][this.messageQueue[1][0]]) {
+            this.register.forEach((registeredItem: Register) => {
+                registeredItem.onMessage(this.messageQueue[0][this.messageQueue[1][0]]);
+            });
+            this.clearNextMessage();
+            this.sendNextMessage();
+        }
+    };
+
+    /**
+     * Clears the next message to be sent in the message queue
+     */
+    private clearNextMessage(): void {
+        delete this.messageQueue[0][this.messageQueue[1][0]];
+        this.messageQueue[1].shift();
+    }
 
     /**
      * Get a registered items config
