@@ -17,14 +17,11 @@ import {
     focusStrokeOuter,
     focusStrokeWidth,
     neutralFillStealthActive,
-    neutralFillStealthFocus,
     neutralFillStealthHover,
     neutralFillStealthRest,
-    neutralForegroundActive,
-    neutralForegroundFocus,
     neutralForegroundHint,
-    neutralForegroundHover,
     neutralForegroundRest,
+    strokeControlStrongRest,
     strokeWidth,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
@@ -107,22 +104,19 @@ export const menuItemStyles: (
       grid-column: 4;
     }
 
+    :host(:${focusVisible}) {
+      border: calc(${strokeWidth} * 1px) solid ${focusStrokeOuter};
+      box-shadow: 0 0 0 calc(${focusStrokeWidth} * 1px) ${focusStrokeOuter} inset;
+    }
+
     :host(:not([disabled]):hover) {
       background: ${neutralFillStealthHover};
-      color: ${neutralForegroundHover};
     }
 
     :host(:not([disabled]):active),
     :host(.expanded) {
       background: ${neutralFillStealthActive};
-      color: ${neutralForegroundActive};
-    }
-
-    :host(:${focusVisible}) {
-      background: ${neutralFillStealthFocus};
-      border: calc(${strokeWidth} * 1px) solid ${focusStrokeOuter};
-      box-shadow: 0 0 0 calc(${focusStrokeWidth} * 1px) ${focusStrokeOuter} inset;
-      color: ${neutralForegroundFocus};
+      color: ${neutralForegroundRest};
     }
 
     :host([disabled]) {
@@ -190,6 +184,19 @@ export const menuItemStyles: (
       height: calc((${heightNumber} / 2 + ${designUnit}) * 1px);
       box-sizing: border-box;
       outline: none;
+    }
+
+    :host .checkbox,
+    :host .radio {
+        border: calc(${strokeWidth} * 1px) solid ${strokeControlStrongRest};
+    }
+
+    :host .checkbox {
+        border-radius: calc(${controlCornerRadius} * 1px);
+    }
+
+    :host .radio {
+        border-radius: 999px;
     }
 
     :host .checkbox-indicator,

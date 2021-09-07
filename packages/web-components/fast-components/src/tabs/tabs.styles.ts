@@ -58,7 +58,6 @@ export const tabsStyles: (
         align-self: center;
       }
 
-      /*
       .activeIndicator {
         grid-row: 2;
         grid-column: 1;
@@ -73,7 +72,6 @@ export const tabsStyles: (
       .activeIndicatorTransition {
         transition: transform 0.2s ease-in-out;
       }
-      */
 
       .tabpanel {
         grid-row: 2;
@@ -111,7 +109,6 @@ export const tabsStyles: (
         grid-row: 3;
       }
 
-      /*
       :host(.vertical) .activeIndicator {
         grid-column: 1;
         grid-row: 1;
@@ -126,7 +123,6 @@ export const tabsStyles: (
       :host(.vertical) .activeIndicatorTransition {
         transition: transform 0.2s linear;
       }
-      */
     `.withBehaviors(
         forcedColorsStylesheetBehavior(
             css`

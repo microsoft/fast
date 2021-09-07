@@ -14,10 +14,12 @@ import {
     disabledOpacity,
     focusStrokeOuter,
     focusStrokeWidth,
+    neutralFillInputActive,
+    neutralFillInputHover,
+    neutralFillInputRest,
     neutralForegroundHover,
     neutralForegroundRest,
     strokeControlStrongActive,
-    strokeControlStrongFocus,
     strokeControlStrongHover,
     strokeControlStrongRest,
     strokeWidth,
@@ -74,13 +76,21 @@ export const switchStyles: (
 
     :host(:enabled:hover) .switch,
     :host([aria-checked="true"]:enabled:hover) .switch {
+      background: transparent;
       border-color: ${strokeControlStrongHover};
+    }
+
+    :host(:enabled:active) .switch,
+    :host([aria-checked="true"]:enabled:active) .switch {
+      background: transparent;
+      border-color: ${strokeControlStrongActive};
     }
 
     :host(:${focusVisible}) .switch,
     :host([aria-checked="true"]:${focusVisible}:enabled) .switch {
-      box-shadow: 0 0 0 calc(${focusStrokeWidth} * 1px) ${strokeControlStrongFocus};
-      border-color: ${strokeControlStrongFocus};
+      background: transparent;
+      box-shadow: 0 0 0 3px ${focusStrokeOuter};
+      border-color: ${focusStrokeOuter};
     }
 
     slot[name="switch"] {

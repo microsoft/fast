@@ -10,6 +10,7 @@ import {
     fillColor,
     layerCornerRadius,
     neutralForegroundRest,
+    neutralStrokeRest,
     strokeWidth,
 } from "../design-tokens";
 import {
@@ -34,7 +35,7 @@ export const cardStyles: (
             width: var(--card-width, 100%);
             box-sizing: border-box;
             background: ${fillColor};
-            border: calc(${strokeWidth} * 1px) solid transparent;
+            border: calc(${strokeWidth} * 1px) solid ${neutralStrokeRest};
             border-radius: calc(${layerCornerRadius} * 1px);
             box-shadow: ${elevationShadowCardRest};
             color: ${neutralForegroundRest};

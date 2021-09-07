@@ -13,19 +13,18 @@ import {
     focusStrokeOuter,
     focusStrokeWidth,
     neutralFillActive,
-    neutralFillFocus,
     neutralFillHover,
-    neutralFillInputFocus,
+    neutralFillInputActive,
     neutralFillInputHover,
     neutralFillInputRest,
     neutralFillRest,
     neutralForegroundActive,
-    neutralForegroundFocus,
     neutralForegroundHover,
     neutralForegroundRest,
     neutralStrokeActive,
     neutralStrokeHover,
     neutralStrokeRest,
+    strokeControlRest,
     strokeWidth,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
@@ -59,7 +58,6 @@ export const inputStyles: (
     box-sizing: border-box;
     position: relative;
     color: inherit;
-    fill: inherit;
     background: ${neutralFillInputRest};
     border: calc(${strokeWidth} * 1px) solid ${neutralStrokeRest};
     border-radius: calc(${controlCornerRadius} * 1px);
@@ -121,17 +119,16 @@ export const inputStateStyles: (
   :host(:hover:not([disabled]):not(:focus-within)) ${rootSelector},
   :host(:active:not([disabled])) ${rootSelector},
   :host(:focus-within:not([disabled])) ${rootSelector} {
-    background: ${neutralFillInputHover};
+    background: ${neutralFillInputRest};
     border-color: ${neutralStrokeHover};
-    box-shadow: 0 0 0 calc((${focusStrokeWidth} - ${strokeWidth}) * 1px) ${focusStrokeOuter} inset;
+    box-shadow: 0 0 0 calc((${focusStrokeWidth} - ${strokeWidth}) * 1px) ${neutralStrokeHover} inset;
     color: ${neutralForegroundHover};
   }
 
   :host(:${focusVisible}:not([disabled])) ${rootSelector} {
-    background: ${neutralFillInputFocus};
     border-color: ${focusStrokeOuter};
     box-shadow: 0 0 0 calc(${focusStrokeWidth} * 1px) ${focusStrokeOuter} inset;
-    color: ${neutralForegroundFocus};
+    color: ${neutralForegroundHover};
   }
 `;
 
@@ -150,29 +147,27 @@ export const inputFilledStyles: (
     :host ${rootSelector} {
         background: ${neutralFillRest};
         border-color: transparent;
-        color: ${neutralForegroundRest};
     }
 
     :host(:hover:not([disabled]):not(:focus-within)) ${rootSelector},
     :host(:active:not([disabled])) ${rootSelector},
     :host(:focus-within:not([disabled])) ${rootSelector} {
-      background: ${neutralFillHover};
-      border-color: ${neutralFillActive};
+      background: ${neutralFillRest};
+      border-color: ${neutralStrokeRest};
       box-shadow: none;
       color: ${neutralForegroundHover};
     }
 
-    :host(:active:not([disabled])) ${rootSelector} {
-      background: ${neutralFillActive};
-      border-color: ${neutralFillActive};
+    :host(:active:not([disabled])) ${rootSelector},
+    :host(:focus-within:not([disabled])) ${rootSelector} {
+      background: ${neutralFillRest};
       color: ${neutralForegroundActive};
     }
 
     :host(:${focusVisible}:not([disabled])) ${rootSelector} {
-      background: ${neutralFillFocus};
       border-color: ${focusStrokeOuter};
       box-shadow: 0 0 0 calc(${focusStrokeWidth} * 1px) ${focusStrokeOuter} inset;
-      color: ${neutralForegroundFocus};
+      color: ${neutralForegroundHover};
     }
 `;
 

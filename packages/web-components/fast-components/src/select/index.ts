@@ -17,7 +17,10 @@ export class Select extends FoundationSelect {
     public connectedCallback(): void {
         super.connectedCallback();
 
-        fillColor.setValueFor(this, neutralLayerFloating);
+        const listbox = this.closest(".listbox") as HTMLElement;
+        if (listbox) {
+            fillColor.setValueFor(listbox, neutralLayerFloating);
+        }
     }
 }
 

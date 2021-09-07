@@ -9,8 +9,6 @@ import {
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
-    accentFillHover,
-    accentFillRest,
     bodyFont,
     controlCornerRadius,
     density,
@@ -18,8 +16,6 @@ import {
     disabledOpacity,
     focusStrokeOuter,
     focusStrokeWidth,
-    foregroundOnAccentHover,
-    foregroundOnAccentRest,
     neutralFillHover,
     neutralForegroundHover,
     neutralForegroundRest,
@@ -87,16 +83,7 @@ export const tabStyles: (
       :host(.vertical[aria-selected="true"]),
       :host(.vertical:hover[aria-selected="true"]) {
         z-index: 2;
-        background: ${accentFillRest};
-        color: ${foregroundOnAccentRest}
-      }
-
-      :host([aria-selected="true"]:hover),
-      :host(.vertical[aria-selected="true"]:hover),
-      :host(.vertical:hover[aria-selected="true"]) {
-        z-index: 2;
-        background: ${accentFillHover};
-        color: ${foregroundOnAccentHover}
+        background: ${neutralFillHover};
       }
     `.withBehaviors(
         forcedColorsStylesheetBehavior(
