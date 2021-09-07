@@ -226,7 +226,10 @@ describe("DesignSystem", () => {
                         context.tryDefineElement({
                             name: elementName,
                             type: class extends HTMLElement {},
-                            callback: x => x.defineElement()
+                            callback: x => {
+                                x.defineElement();
+                                callbackCalled = true;
+                            },
                         });
                     },
                 }
@@ -234,7 +237,7 @@ describe("DesignSystem", () => {
         }).not.to.throw();
 
         expect(customElements.get(elementName)).to.equal(customElement);
-        expect(callbackCalled).to.be.false;
+        expect(callbackCalled).to.be.true;
     });
 
     it("Can completely ignore duplicates", () => {
@@ -250,27 +253,33 @@ describe("DesignSystem", () => {
                 {
                     register(container: Container) {
                         const context = container.get(DesignSystemRegistrationContext);
-                        context.tryDefineElement(elementName, customElement, x =>
-                            x.defineElement()
-                        );
+                        context.tryDefineElement({
+                            name: elementName,
+                            type: customElement,
+                            callback: x =>
+                            x.defineElement(),
+                        });
                     },
                 },
                 {
                     register(container: Container) {
                         const context = container.get(DesignSystemRegistrationContext);
-                        context.tryDefineElement(
-                            elementName,
-                            class extends HTMLElement {},
-                            x => {
+                        context.tryDefineElement({
+                            name: elementName,
+                            type: class extends HTMLElement {},
+                            callback: x => {
                                 x.defineElement();
                                 callbackCalled = true;
-                            }
-                        );
+                            },
+                        });
                     },
                 }
             );
         }).not.to.throw();
-    })
+
+        expect(customElements.get(elementName)).to.equal(customElement);
+        expect(callbackCalled).to.be.false;
+    });
 
     it("Should have an undefined shadow mode by default", () => {
         const elementName = uniqueElementName();
