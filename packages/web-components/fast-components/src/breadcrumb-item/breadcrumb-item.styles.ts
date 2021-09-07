@@ -113,26 +113,12 @@ export const breadcrumbItemStyles: (
   `.withBehaviors(
         forcedColorsStylesheetBehavior(
             css`
-              :host,
-              .control {
-                border-color: ${SystemColors.ButtonFace};
-              }
-              .control .content::after {
-                content: "";
-                display: block;
-                height: calc(${strokeWidth} * 1px);
-              }
-              .control:hover .content::after ,
-              .control:active .content::after,
-              .control:${focusVisible} .content::after {
-                  background: ${SystemColors.LinkText};
-              }
-              :host(:not([href])) {
-                  color: ${SystemColors.ButtonText};
-                  fill: currentcolor;
-              }
-              .separator {
-                  fill: ${SystemColors.ButtonText};
+                :host(:not([href])) {
+                    color: ${SystemColors.ButtonText};
+                    fill: currentcolor;
+                }
+                .separator {
+                    fill: ${SystemColors.ButtonText};
                 }
             `
         )

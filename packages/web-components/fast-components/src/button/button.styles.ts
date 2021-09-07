@@ -5,7 +5,6 @@ import {
     forcedColorsStylesheetBehavior,
     FoundationElementDefinition,
 } from "@microsoft/fast-foundation";
-import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
     AccentButtonStyles,
     baseButtonStyles,
@@ -35,14 +34,8 @@ export const buttonStyles: (
     `.withBehaviors(
         forcedColorsStylesheetBehavior(
             css`
-                :host([disabled]),
-                :host([disabled]) .control {
+                :host([disabled]) {
                     opacity: 1;
-                    background: ${SystemColors.ButtonFace};
-                    border-color: ${SystemColors.GrayText} !important;
-                    box-shadow: none !important;
-                    color: ${SystemColors.GrayText};
-                    fill: currentcolor;
                 }
             `
         ),
@@ -52,18 +45,7 @@ export const buttonStyles: (
         ),
         appearanceBehavior(
             "lightweight",
-            css`
-                ${LightweightButtonStyles(context, definition, interactivitySelector)}
-            `.withBehaviors(
-                forcedColorsStylesheetBehavior(
-                    css`
-                        :host([disabled]),
-                        :host([disabled]) .control {
-                            border-color: ${SystemColors.ButtonFace} !important;
-                        }
-                    `
-                )
-            )
+            LightweightButtonStyles(context, definition, interactivitySelector)
         ),
         appearanceBehavior(
             "outline",
@@ -71,17 +53,6 @@ export const buttonStyles: (
         ),
         appearanceBehavior(
             "stealth",
-            css`
-                ${StealthButtonStyles(context, definition, interactivitySelector)}
-            `.withBehaviors(
-                forcedColorsStylesheetBehavior(
-                    css`
-                        :host([disabled]),
-                        :host([disabled]) .control {
-                            border-color: ${SystemColors.ButtonFace} !important;
-                        }
-                    `
-                )
-            )
+            StealthButtonStyles(context, definition, interactivitySelector)
         )
     );

@@ -173,32 +173,21 @@ export const inputForcedColorStyles: (
 ) => css`
     ${rootSelector} {
         forced-color-adjust: none;
-        background: ${SystemColors.Field};
-        border-color: ${SystemColors.FieldText};
-    }
-    :host(:hover:not([disabled])) ${rootSelector}, :host(:hover:not([disabled])) .control,
-    :host(:hover:not([disabled]):not(:focus-within)) .control {
-        background: ${SystemColors.Field};
-        border-color: ${SystemColors.Highlight};
-    }
-    :host(:hover:not([disabled])) .controls,
-    :host(:focus-within:not([disabled])) .controls {
-        background: transparent;
-        color: ${SystemColors.FieldText};
-        fill: currentcolor;
-    }
-    :host(:hover:not([disabled]):not(:focus-within)) .root {
         background: ${SystemColors.ButtonFace};
+        border-color: ${SystemColors.ButtonText};
+    }
+    :host(:hover:not([disabled])) ${rootSelector} {
+        background: ${SystemColors.ButtonFace};
+        border-color: ${SystemColors.Highlight};
     }
     :host(:focus-within:enabled) ${rootSelector} {
         border-color: ${SystemColors.Highlight};
         box-shadow: 0 0 0 1px ${SystemColors.Highlight} inset;
     }
     .control,
-    ::-webkit-input-placeholder,
-    ::slotted(svg) {
+    ::placeholder,
+    ::-webkit-input-placeholder {
         color: ${SystemColors.FieldText};
-        fill: currentcolor;
     }
     :host([disabled]) {
         opacity: 1;
@@ -209,8 +198,7 @@ export const inputForcedColorStyles: (
     }
     :host([disabled]) ::placeholder,
     :host([disabled]) ::-webkit-input-placeholder,
-    :host([disabled]) .label,
-    ::placeholder {
+    :host([disabled]) .label {
         color: ${SystemColors.GrayText};
     }
 `;

@@ -60,9 +60,9 @@ export const cardStyles: (
         forcedColorsStylesheetBehavior(
             css`
                 :host {
+                    forced-color-adjust: none;
                     background: ${SystemColors.Canvas};
-                    color: ${SystemColors.CanvasText};
-                    fill: currentcolor;
+                    box-shadow: 0 0 0 1px ${SystemColors.CanvasText};
                 }
             `
         )

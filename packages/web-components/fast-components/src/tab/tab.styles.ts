@@ -78,6 +78,8 @@ export const tabStyles: (
         opacity: ${disabledOpacity};
     }
 
+
+
       :host(.vertical) {
         justify-content: start;
         grid-column: 1 / 3;
@@ -93,23 +95,26 @@ export const tabStyles: (
         forcedColorsStylesheetBehavior(
             css`
           :host {
-            background: ${SystemColors.ButtonFace};
+            forced-color-adjust: none;
+            border-color: transparent;
             color: ${SystemColors.ButtonText};
             fill: currentcolor;
           }
           :host(:hover),
           :host(.vertical:hover),
-          :host([aria-selected="true"]),
           :host([aria-selected="true"]:hover) {
-            border-color: ${SystemColors.Highlight};
+            background: ${SystemColors.Highlight};
+            color: ${SystemColors.HighlightText};
+            fill: currentcolor;
+          }
+          :host([aria-selected="true"]) {
+            background: ${SystemColors.HighlightText};
             color: ${SystemColors.Highlight};
             fill: currentcolor;
           }
           :host(:${focusVisible}) {
-            forced-color-adjust: none;
-            background: ${SystemColors.ButtonFace};
-            border-color: ${SystemColors.Highlight};
-            box-shadow: 0 0 0 calc(${focusStrokeWidth} * 1px) ${SystemColors.Highlight} inset;
+            border-color: ${SystemColors.ButtonText};
+            box-shadow: none;
           }
         `
         )

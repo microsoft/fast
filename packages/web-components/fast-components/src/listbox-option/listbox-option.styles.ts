@@ -126,29 +126,23 @@ export const optionStyles: (
         forcedColorsStylesheetBehavior(
             css`
                 :host {
-                    background: ${SystemColors.ButtonFace};
                     border-color: transparent;
                     color: ${SystemColors.ButtonText};
                     forced-color-adjust: none;
                 }
-                :host(:not([disabled])[aria-selected="true"]:hover),
-                :host(:not([disabled])[aria-selected="true"]:active),
-                :host(:not([disabled]):not([aria-selected="true"]):hover),
-                :host(:not([disabled]):not([aria-selected="true"]):active),
+
+                :host(:not([aria-selected="true"]):hover),
                 :host([aria-selected="true"]) {
                     background: ${SystemColors.Highlight};
                     color: ${SystemColors.HighlightText};
                 }
+
                 :host([disabled]),
                 :host([disabled]:not([aria-selected="true"]):hover) {
                     background: ${SystemColors.Canvas};
                     color: ${SystemColors.GrayText};
                     fill: currentcolor;
                     opacity: 1;
-                }
-                :host([aria-selected="true"])::before,
-                :host(:not([disabled]):active)::before {
-                    background: ${SystemColors.HighlightText};
                 }
             `
         )
