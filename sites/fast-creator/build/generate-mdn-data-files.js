@@ -10,12 +10,12 @@ const today = new Date();
 const comment = `/**
  * This file is generated from build/generate-mdn-data-files.js
  * any modifications will be overwritten.
- * 
+ *
  * Last modified: ${today.toLocaleDateString()}
  */
 `;
 // A subset of the MDN properties to be used in the Creator
-const subsetOfProperties = ["background-color", ...cssLayoutCssProperties];
+const subsetOfProperties = ["background-color","width", ...cssLayoutCssProperties];
 // a subset of CSS generated from the list of properties above
 const subsetOfCSSProperties = Object.entries(mdnCSS.properties).reduce(
     (previousProperties, [currentKey, currentValue]) => {

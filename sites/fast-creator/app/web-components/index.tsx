@@ -294,6 +294,18 @@ function getImageUploadControl(): StandardControlPlugin {
     });
 }
 
+function getWidthControl(): StandardControlPlugin {
+    return new StandardControlPlugin({
+        id: "width",
+        context: ControlContext.fill,
+        control: (controlConfig: ControlConfig): React.ReactNode => {
+            return (
+                <fast-text-field></fast-text-field>
+            );
+        },
+    });
+}
+
 export function renderNavigationTabs(
     activeId: any,
     fastMessageSystem: MessageSystem,
@@ -395,6 +407,7 @@ export function renderFormTabs(
                         linkedDataControl,
                         getCSSControls(),
                         getImageUploadControl(),
+                        getWidthControl(),
                     ]}
                     categories={componentCategories}
                 />
