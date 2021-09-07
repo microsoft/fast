@@ -3,7 +3,6 @@ import {
     ElementDefinitionContext,
     FoundationElementDefinition,
 } from "@microsoft/fast-foundation";
-import { neutralForegroundRest } from "..";
 
 export const anchoredRegionStyles: (
     context: ElementDefinitionContext,
@@ -15,6 +14,5 @@ export const anchoredRegionStyles: (
     :host {
         contain: layout;
         display: block;
-        color: ${neutralForegroundRest};
     }
 `;
