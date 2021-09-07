@@ -1,0 +1,6 @@
+{
+  "type": "patch",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "roeisenb@microsoft.com",
+  "dependentChangeType": "patch"
+}
