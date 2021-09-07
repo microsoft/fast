@@ -12,10 +12,14 @@ import {
     accentFillActive,
     accentFillHover,
     accentFillRest,
+    accentForegroundActive,
+    accentForegroundHover,
+    accentForegroundRest,
     bodyFont,
     controlCornerRadius,
     density,
     designUnit,
+    focusStrokeInner,
     focusStrokeOuter,
     focusStrokeWidth,
     foregroundOnAccentActive,
@@ -27,11 +31,13 @@ import {
     neutralFillStealthActive,
     neutralFillStealthHover,
     neutralFillStealthRest,
-    neutralForegroundActive,
-    neutralForegroundHover,
     neutralForegroundRest,
     neutralStrokeActive,
+    neutralStrokeHover,
     neutralStrokeRest,
+    strokeControlAccentActive,
+    strokeControlAccentHover,
+    strokeControlAccentRest,
     strokeWidth,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
@@ -62,7 +68,7 @@ export const baseButtonStyles = (
     }
 
     :host .control {
-      background: ${neutralFillRest};
+      background: padding-box linear-gradient(${neutralFillRest}, ${neutralFillRest}), border-box ${neutralStrokeRest};
       border: calc(${strokeWidth} * 1px) solid transparent;
       flex-grow: 1;
       box-sizing: border-box;
@@ -92,18 +98,18 @@ export const baseButtonStyles = (
     }
 
     :host .control${interactivitySelector}:hover {
-      background: ${neutralFillHover};
-      color: ${neutralForegroundHover};
+      background: padding-box linear-gradient(${neutralFillHover}, ${neutralFillHover}),
+        border-box ${neutralStrokeHover};
     }
 
     :host .control${interactivitySelector}:active {
-      background: ${neutralFillActive};
-      color: ${neutralForegroundActive};
+      background: padding-box linear-gradient(${neutralFillActive}, ${neutralFillActive}),
+        border-box ${neutralStrokeActive};
     }
 
     :host .control:${focusVisible} {
       border-color: ${focusStrokeOuter} !important;
-      box-shadow: 0 0 0 calc(${focusStrokeWidth} * 1px) ${focusStrokeOuter} inset !important;
+      box-shadow: 0 0 0 calc((${focusStrokeWidth} - ${strokeWidth}) * 1px) ${focusStrokeOuter} inset !important;
     }
 
     .control::-moz-focus-inner {
@@ -175,7 +181,7 @@ export const baseButtonStyles = (
           color: ${SystemColors.LinkText};
           fill: currentcolor;
         }
-      `
+    `
         )
     );
 
@@ -189,17 +195,19 @@ export const AccentButtonStyles = (
 ) =>
     css`
     :host .control {
-      background: ${accentFillRest};
+      background: padding-box linear-gradient(${accentFillRest}, ${accentFillRest}), border-box ${strokeControlAccentRest};
       color: ${foregroundOnAccentRest};
     }
 
     :host .control${interactivitySelector}:hover {
-      background: ${accentFillHover};
+      background: padding-box linear-gradient(${accentFillHover}, ${accentFillHover}),
+        border-box ${strokeControlAccentHover};
       color: ${foregroundOnAccentHover};
     }
 
     :host .control${interactivitySelector}:active {
-      background: ${accentFillActive};
+      background: padding-box linear-gradient(${accentFillActive}, ${accentFillActive}),
+        border-box ${strokeControlAccentActive};
       color: ${foregroundOnAccentActive};
     }
 
@@ -279,15 +287,15 @@ export const HypertextStyles = (
     }
     :host .control${interactivitySelector} {
       background: transparent;
-      color: ${neutralForegroundRest};
+      color: ${accentForegroundRest};
     }
     :host .control${interactivitySelector}:hover {
       background: transparent;
-      color: ${neutralForegroundHover};
+      color: ${accentForegroundHover};
     }
     :host .control${interactivitySelector}:active {
       background: transparent;
-      color: ${neutralForegroundActive};
+      color: ${accentForegroundActive};
     }
     :host .control:${focusVisible} {
       box-shadow: 0 0 0 calc(${focusStrokeWidth} * 1px) ${focusStrokeOuter} !important;
@@ -311,41 +319,43 @@ export const LightweightButtonStyles = (
     interactivitySelector: string = ""
 ) =>
     css`
-    :host .control {
-      padding: 0;
-      height: initial;
-      background: transparent !important;
-    }
+        :host {
+            color: ${accentForegroundRest};
+        }
 
-    :host .content {
-      position: relative;
-    }
+        :host .control {
+            padding: 0;
+            height: initial;
+            background: transparent !important;
+        }
 
-    :host .control:${focusVisible} {
-      border-color: transparent !important;
-      box-shadow: none !important;
-    }
+        :host .control${interactivitySelector}:hover {
+            color: ${accentForegroundHover};
+        }
 
-    :host .content::before {
-      content: "";
-      display: block;
-      height: calc(${strokeWidth} * 1px);
-      position: absolute;
-      top: calc(1em + 3px);
-      width: 100%;
-      background: transparent;
-    }
+        :host .control${interactivitySelector}:active {
+            color: ${accentForegroundActive};
+        }
 
-    :host .control${interactivitySelector}:hover .content::before,
-    :host .control${interactivitySelector}:active .content::before {
-      background: ${neutralForegroundHover};
-    }
+        :host .content {
+            position: relative;
+        }
 
-    :host .control${interactivitySelector}:${focusVisible} .content::before {
-      background: ${neutralForegroundHover};
-      height: calc(${strokeWidth} * 2px);
-    }
-  `.withBehaviors(
+        :host .content::before {
+            content: "";
+            display: block;
+            height: calc(${strokeWidth} * 1px);
+            position: absolute;
+            top: calc(1em + 3px);
+            width: 100%;
+            background: ${accentForegroundRest};
+        }
+
+        :host .control${interactivitySelector}:hover .content::before,
+        :host .control${interactivitySelector}:active .content::before {
+            background: transparent;
+        }
+    `.withBehaviors(
         forcedColorsStylesheetBehavior(
             css`
         :host {
@@ -393,6 +403,10 @@ export const OutlineButtonStyles = (
             border-color: ${neutralStrokeRest};
         }
 
+        :host .control${interactivitySelector}:hover {
+            border-color: ${neutralStrokeHover};
+        }
+
         :host .control${interactivitySelector}:active {
             border-color: ${neutralStrokeActive};
         }
@@ -418,19 +432,18 @@ export const StealthButtonStyles = (
     interactivitySelector: string = ""
 ) =>
     css`
-    :host .control {
-      background: ${neutralFillStealthRest};
-    }
+        :host .control {
+            background: ${neutralFillStealthRest};
+        }
 
-    :host .control${interactivitySelector}:hover,
-    :host .control${interactivitySelector}:${focusVisible} {
-      background: ${neutralFillStealthHover};
-    }
+        :host .control${interactivitySelector}:hover {
+            background: ${neutralFillStealthHover};
+        }
 
-    :host .control${interactivitySelector}:active {
-      background: ${neutralFillStealthActive};
-    }
-  `.withBehaviors(
+        :host .control${interactivitySelector}:active {
+            background: ${neutralFillStealthActive};
+        }
+    `.withBehaviors(
         forcedColorsStylesheetBehavior(
             css`
         :host,

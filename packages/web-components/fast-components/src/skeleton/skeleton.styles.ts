@@ -1,16 +1,12 @@
 import { css, ElementStyles } from "@microsoft/fast-element";
 import {
-    display,
     ElementDefinitionContext,
+    forcedColorsStylesheetBehavior,
     FoundationElementDefinition,
 } from "@microsoft/fast-foundation";
-import {
-    controlCornerRadius,
-    neutralFillInputHover,
-    neutralFillInputRest,
-    neutralFillRest,
-    neutralForegroundRest,
-} from "../design-tokens";
+import { SystemColors } from "@microsoft/fast-web-utilities";
+import { display } from "@microsoft/fast-foundation";
+import { controlCornerRadius, neutralFillRest } from "../design-tokens";
 
 export const skeletonStyles: (
     context: ElementDefinitionContext,
@@ -35,11 +31,11 @@ export const skeletonStyles: (
             --skeleton-animation-timing-default: ease-in-out;
         }
 
-        :host(.rect) {
+        :host([shape="rect"]) {
             border-radius: calc(${controlCornerRadius} * 1px);
         }
 
-        :host(.circle) {
+        :host([shape="circle"]) {
             border-radius: 100%;
             overflow: hidden;
         }
@@ -93,4 +89,18 @@ export const skeletonStyles: (
                 transform: translateX(100%);
             }
         }
-    `;
+    `.withBehaviors(
+        forcedColorsStylesheetBehavior(
+            css`
+                :host {
+                    forced-color-adjust: none;
+                    background-color: ${SystemColors.ButtonFace};
+                    box-shadow: 0 0 0 1px ${SystemColors.ButtonText};
+                }
+
+                ${display("block")} span.shimmer {
+                    display: none;
+                }
+            `
+        )
+    );

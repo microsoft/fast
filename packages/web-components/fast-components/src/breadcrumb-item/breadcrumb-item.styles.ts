@@ -8,16 +8,11 @@ import {
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
+    accentForegroundActive,
+    accentForegroundHover,
+    accentForegroundRest,
     bodyFont,
-    controlCornerRadius,
-    focusStrokeOuter,
     focusStrokeWidth,
-    neutralFillActive,
-    neutralFillHover,
-    neutralForegroundActive,
-    neutralForegroundHover,
-    // neutralForegroundActive,
-    // neutralForegroundHover,
     neutralForegroundRest,
     strokeWidth,
     typeRampBaseFontSize,
@@ -34,90 +29,111 @@ export const breadcrumbItemStyles: (
 ) =>
     css`
     ${display("inline-flex")} :host {
-      background: transparent;
-      box-sizing: border-box;
-      font-family: ${bodyFont};
-      font-size: ${typeRampBaseFontSize};
-      fill: currentcolor;
-      line-height: ${typeRampBaseLineHeight};
-      min-width: calc(${heightNumber} * 1px);
-      border: calc(${strokeWidth} * 1px) solid transparent;
-      border-radius: calc(${controlCornerRadius} * 1px);
-      outline: none;
-      color: ${neutralForegroundRest}
+        background: transparent;
+        box-sizing: border-box;
+        font-family: ${bodyFont};
+        font-size: ${typeRampBaseFontSize};
+        fill: currentColor;
+        line-height: ${typeRampBaseLineHeight};
+        min-width: calc(${heightNumber} * 1px);
+        outline: none;
+        color: ${neutralForegroundRest}
     }
 
     .listitem {
-      display: flex;
-      align-items: center;
-      border-radius: inherit;
+        display: flex;
+        align-items: center;
+        width: max-content;
     }
 
     .separator {
-        margin: 0 20px;
-      }
+        margin: 0 6px;
+    }
 
     .control {
-      position: relative;
-      align-items: center;
-      box-sizing: border-box;
-      color: ${neutralForegroundRest};
-      cursor: pointer;
-      display: flex;
-      fill: inherit;
-      outline: none;
-      text-decoration: none;
-      white-space: nowrap;
-      border-radius: inherit;
-      padding: 4px 8px;
+        align-items: center;
+        box-sizing: border-box;
+        color: ${accentForegroundRest};
+        cursor: pointer;
+        display: flex;
+        fill: inherit;
+        outline: none;
+        text-decoration: none;
+        white-space: nowrap;
     }
 
     .control:hover {
-      background: ${neutralFillHover};
-      color: ${neutralForegroundHover};
+        color: ${accentForegroundHover};
     }
 
     .control:active {
-      background: ${neutralFillActive};
-      color: ${neutralForegroundActive};
+        color: ${accentForegroundActive};
     }
 
-    .control:${focusVisible} {
-      border-color: ${focusStrokeOuter};
+    .control .content {
+        position: relative;
     }
 
-    .control:${focusVisible}::after {
-      content: "";
-      position: absolute;
-      inset: calc(${strokeWidth} * -1px);
-      box-shadow: 0 0 0 calc(${focusStrokeWidth} * 1px) ${focusStrokeOuter} inset;
-      border-radius: inherit;
+    .control .content::before {
+        content: "";
+        display: block;
+        height: calc(${strokeWidth} * 1px);
+        left: 0;
+        position: absolute;
+        right: 0;
+        top: calc(1em + 4px);
+        width: 100%;
     }
 
-    :host(:not([href])),
-    :host([aria-current]) .control {
-      color: ${neutralForegroundRest};
-      fill: currentcolor;
-      cursor: default;
+    .control:hover .content::before {
+        background: ${accentForegroundHover};
+    }
+
+    .control:active .content::before {
+        background: ${accentForegroundActive};
+    }
+
+    .control:${focusVisible} .content::before {
+        background: ${neutralForegroundRest};
+        height: calc(${focusStrokeWidth} * 1px);
+    }
+
+    .control:not([href]) {
+        color: ${neutralForegroundRest};
+        cursor: default;
+    }
+
+    .control:not([href]) .content::before {
+        background: none;
+    }
+
+    .start,
+    .end {
+        display: flex;
+    }
+
+    ::slotted(svg) {
+        /* TODO: adaptive typography https://github.com/microsoft/fast/issues/2432 */
+        width: 16px;
+        height: 16px;
     }
 
     .start {
-      display: flex;
-      margin-inline-end: 6px;
+        margin-inline-end: 6px;
     }
 
     .end {
-      display: flex;
-      margin-inline-start: 6px;
+        margin-inline-start: 6px;
     }
-  `.withBehaviors(
+`.withBehaviors(
         forcedColorsStylesheetBehavior(
             css`
-                :host(:not([href])) {
-                    color: ${SystemColors.ButtonText};
-                    fill: currentcolor;
+                .control:hover .content::before,
+                .control:${focusVisible} .content::before {
+                    background: ${SystemColors.LinkText};
                 }
-                .separator {
+                .start,
+                .end {
                     fill: ${SystemColors.ButtonText};
                 }
             `
