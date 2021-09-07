@@ -361,7 +361,7 @@ class DesignTokenBindingObserver<T> {
         public readonly token: DesignTokenImpl<T>,
         public readonly node: DesignTokenNode
     ) {
-        this.observer = Observable.binding(source, this);
+        this.observer = Observable.binding(source, this, false);
 
         // This is a little bit hacky because it's using internal APIs of BindingObserverImpl.
         // BindingObserverImpl queues updates to batch it's notifications which doesn't work for this

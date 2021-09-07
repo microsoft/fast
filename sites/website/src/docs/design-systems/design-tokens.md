@@ -205,7 +205,8 @@ specialColor.setValueFor(target, () => themeManager.theme === "blue" ? "#0000FF"
 themeManager.theme = "red"; // Forces the derived tokens to re-evaluate and CSS custom properties to update if applicable
 ```
 
-
+> Note: *volatile* token values that conditionally access DesignTokens or other observable properties are currently not supported by DesignToken. If you need to use conditionals,
+ensure all DesignTokens or observable properties are accessed outside of conditional blocks. See (Observables and State)[/docs/fast-element/observables-and-state#observable-features] for more information.
 ## Aliasing Design Tokens
 
 In some design systems, Design Tokens may have complex hierarchies with tokens referencing other tokens. This can be accomplished by setting a Design Token to another Design Token.
