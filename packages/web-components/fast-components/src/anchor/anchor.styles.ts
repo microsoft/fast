@@ -5,15 +5,13 @@ import {
 } from "@microsoft/fast-foundation";
 import {
     AccentButtonStyles,
-    baseButtonStyles,
+    BaseButtonStyles,
     HypertextStyles,
     LightweightButtonStyles,
     OutlineButtonStyles,
     StealthButtonStyles,
-} from "../styles/";
+} from "../styles/index";
 import { appearanceBehavior } from "../utilities/behaviors";
-
-const interactivitySelector: string = "[href]";
 
 export const anchorStyles: (
     context: ElementDefinitionContext,
@@ -23,30 +21,11 @@ export const anchorStyles: (
     definition: FoundationElementDefinition
 ) =>
     css`
-        :host .control:not([href]) {
-            cursor: default;
-        }
-
-        ${baseButtonStyles(context, definition, interactivitySelector)}
+        ${BaseButtonStyles}
     `.withBehaviors(
-        appearanceBehavior(
-            "accent",
-            AccentButtonStyles(context, definition, interactivitySelector)
-        ),
-        appearanceBehavior(
-            "hypertext",
-            HypertextStyles(context, definition, interactivitySelector)
-        ),
-        appearanceBehavior(
-            "lightweight",
-            LightweightButtonStyles(context, definition, interactivitySelector)
-        ),
-        appearanceBehavior(
-            "outline",
-            OutlineButtonStyles(context, definition, interactivitySelector)
-        ),
-        appearanceBehavior(
-            "stealth",
-            StealthButtonStyles(context, definition, interactivitySelector)
-        )
+        appearanceBehavior("accent", AccentButtonStyles),
+        appearanceBehavior("hypertext", HypertextStyles),
+        appearanceBehavior("lightweight", LightweightButtonStyles),
+        appearanceBehavior("outline", OutlineButtonStyles),
+        appearanceBehavior("stealth", StealthButtonStyles)
     );
