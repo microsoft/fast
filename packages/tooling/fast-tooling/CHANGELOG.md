@@ -1,8 +1,353 @@
 # Change Log - @microsoft/fast-tooling
 
-This log was last generated on Mon, 31 May 2021 07:44:04 GMT and should not be manually modified.
+This log was last generated on Thu, 02 Sep 2021 17:17:56 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.27.10
+
+Thu, 02 Sep 2021 17:17:56 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.10.0 (roeisenb@microsoft.com)
+
+## 0.27.9
+
+Thu, 02 Sep 2021 07:15:21 GMT
+
+### Patches
+
+- Bump @microsoft/fast-components to v2.8.1 (47367562+bheston@users.noreply.github.com)
+
+## 0.27.8
+
+Wed, 01 Sep 2021 07:18:34 GMT
+
+### Patches
+
+- Bump @microsoft/fast-components to v2.8.0 (scomea@microsoft.com)
+
+## 0.27.7
+
+Mon, 30 Aug 2021 22:30:39 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.8.1 (nicholasrice@users.noreply.github.com)
+
+## 0.27.6
+
+Fri, 27 Aug 2021 14:14:26 GMT
+
+### Patches
+
+- Bump @microsoft/fast-element to v1.5.0 (nicholasrice@users.noreply.github.com)
+
+## 0.27.5
+
+Thu, 26 Aug 2021 07:17:43 GMT
+
+### Patches
+
+- addresses an issue where deep nested and multiple additional nodes were not created using a previous data dictionary (7559015+janechu@users.noreply.github.com)
+
+## 0.27.4
+
+Wed, 25 Aug 2021 07:17:07 GMT
+
+### Patches
+
+- address drag and drop issues where the active data dictionary ID was not updated during the removal of linked data (7559015+janechu@users.noreply.github.com)
+
+## 0.27.3
+
+Mon, 23 Aug 2021 07:14:54 GMT
+
+### Patches
+
+- Bump @microsoft/fast-components to v2.6.2 (ben@platform5.ch)
+
+## 0.27.2
+
+Sun, 22 Aug 2021 07:17:14 GMT
+
+### Patches
+
+- fix color picker component value update bug (44823142+williamw2@users.noreply.github.com)
+- fixes an issue where the CSS layout would not update when style was updated in the Monaco Editor (7559015+janechu@users.noreply.github.com)
+
+## 0.27.1
+
+Thu, 19 Aug 2021 07:15:21 GMT
+
+### Patches
+
+- Bump @microsoft/fast-components to v2.6.1 (sethdonohue@Admins-MBP.guest.corp.microsoft.com)
+
+## 0.27.0
+
+Wed, 18 Aug 2021 07:16:21 GMT
+
+### Minor changes
+
+- add tooltips to the CSS layout radio buttons (7559015+janechu@users.noreply.github.com)
+
+## 0.26.6
+
+Tue, 17 Aug 2021 07:14:05 GMT
+
+### Patches
+
+- add autoselect option to html render inline edit component (44823142+williamw2@users.noreply.github.com)
+- make resize observer target configurable (44823142+williamw2@users.noreply.github.com)
+
+## 0.26.5
+
+Sun, 15 Aug 2021 07:17:25 GMT
+
+### Patches
+
+- Bump @microsoft/fast-components to v2.6.0 (nicholasrice@users.noreply.github.com)
+
+## 0.26.4
+
+Thu, 12 Aug 2021 07:16:50 GMT
+
+### Patches
+
+- ensure named slots are all accounted for as children and fix an issue where multiple attributes could appear as an array (7559015+janechu@users.noreply.github.com)
+
+## 0.26.3
+
+Wed, 11 Aug 2021 07:14:31 GMT
+
+### Patches
+
+- fix: html renderer use custom title if present (44823142+williamw2@users.noreply.github.com)
+
+## 0.26.2
+
+Sun, 08 Aug 2021 07:18:56 GMT
+
+### Patches
+
+- addresses an issue where on initially editing content the MonacoAdapter would switch the navigation location (7559015+janechu@users.noreply.github.com)
+
+## 0.26.1
+
+Thu, 05 Aug 2021 07:17:32 GMT
+
+### Patches
+
+- Bump @microsoft/fast-components to v2.5.6 (khamu@microsoft.com)
+
+## 0.26.0
+
+Wed, 04 Aug 2021 07:15:14 GMT
+
+### Minor changes
+
+- adding file and file action web components (44823142+williamw2@users.noreply.github.com)
+
+### Patches
+
+- fix image load resize bug in html render component (44823142+williamw2@users.noreply.github.com)
+- Bump @microsoft/fast-foundation to v2.6.3 (chhol@microsoft.com)
+- Bump @microsoft/fast-components to v2.5.5 (chhol@microsoft.com)
+
+## 0.25.7
+
+Tue, 03 Aug 2021 07:17:33 GMT
+
+### Patches
+
+- Bump @microsoft/fast-components to v2.5.4 (mathieu.lavoie@logmein.com)
+
+## 0.25.6
+
+Sun, 01 Aug 2021 07:17:15 GMT
+
+### Patches
+
+- ensure that the mapping of numbers and booleans works with the consolidated data mapping (7559015+janechu@users.noreply.github.com)
+- identifies the order of slotted items by their position in the data, instead of the data dictionary object (7559015+janechu@users.noreply.github.com)
+- fix word wrapping in htmlrender navigation pill (44823142+williamw2@users.noreply.github.com)
+
+## 0.25.5
+
+Thu, 29 Jul 2021 07:18:18 GMT
+
+### Patches
+
+- Bump @microsoft/fast-components to v2.5.2 (47367562+bheston@users.noreply.github.com)
+
+## 0.25.4
+
+Wed, 28 Jul 2021 07:17:22 GMT
+
+### Patches
+
+- Bump @microsoft/fast-element to v1.4.1 (nicholasrice@users.noreply.github.com)
+
+## 0.25.3
+
+Sun, 25 Jul 2021 07:17:41 GMT
+
+### Patches
+
+- Bump @microsoft/fast-components to v2.5.0 (scomea@microsoft.com)
+
+## 0.25.2
+
+Thu, 22 Jul 2021 07:19:53 GMT
+
+### Patches
+
+- Bump @microsoft/fast-components to v2.4.0 (chhol@microsoft.com)
+
+## 0.25.1
+
+Wed, 21 Jul 2021 07:14:48 GMT
+
+### Patches
+
+- Bump @microsoft/fast-components to v2.3.0 (roeisenb@microsoft.com)
+
+## 0.25.0
+
+Sun, 18 Jul 2021 07:16:22 GMT
+
+### Minor changes
+
+- update the exporting of services and web components in tooling and match the new pathing in sites (7559015+janechu@users.noreply.github.com)
+
+### Patches
+
+- Bump @microsoft/fast-components to v2.2.3 (ben@platform5.ch)
+
+## 0.24.2
+
+Thu, 15 Jul 2021 01:41:48 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.5.0 (chhol@microsoft.com)
+
+## 0.24.1
+
+Wed, 14 Jul 2021 07:15:36 GMT
+
+### Patches
+
+- fix: spelling issue in HTML render layer (44823142+williamw2@users.noreply.github.com)
+
+## 0.24.0
+
+Tue, 13 Jul 2021 07:14:52 GMT
+
+### Minor changes
+
+- update the monaco adapter, html render and html render layer and react Form to update their stored schema dictionaries when the schema dictionary has new schemas added to it (7559015+janechu@users.noreply.github.com)
+- new schemas can be added to the schema dictionary in the MessageSystem (7559015+janechu@users.noreply.github.com)
+
+### Patches
+
+- Bump @microsoft/fast-components to v2.2.1 (ben@platform5.ch)
+- Bump @microsoft/fast-foundation to v2.4.0 (roeisenb@microsoft.com)
+
+## 0.23.7
+
+Sun, 11 Jul 2021 07:15:10 GMT
+
+### Patches
+
+- Adding support for preview mode interaction logic to HTMLRender (44823142+williamw2@users.noreply.github.com)
+
+## 0.23.6
+
+Wed, 07 Jul 2021 07:19:51 GMT
+
+### Patches
+
+- Bump @microsoft/fast-components to v2.2.0 (scomea@microsoft.com)
+
+## 0.23.5
+
+Sun, 04 Jul 2021 07:15:28 GMT
+
+### Patches
+
+- Bump @microsoft/fast-components to v2.1.0 (john.kreitlow@microsoft.com)
+
+## 0.23.4
+
+Thu, 01 Jul 2021 07:15:57 GMT
+
+### Patches
+
+- Bump @microsoft/fast-components to v2.0.2 (nicholasrice@users.noreply.github.com)
+
+## 0.23.3
+
+Tue, 29 Jun 2021 07:14:52 GMT
+
+### Patches
+
+- update the CSS layout component to accept inline CSS string values (7559015+janechu@users.noreply.github.com)
+
+## 0.23.2
+
+Fri, 25 Jun 2021 02:02:57 GMT
+
+### Patches
+
+- Bump @microsoft/fast-components to v2.0.0 (roeisenb@microsoft.com)
+
+## 0.23.1
+
+Wed, 23 Jun 2021 22:58:18 GMT
+
+### Patches
+
+- Adding inline edit layer to HTMLRenderer (44823142+williamw2@users.noreply.github.com)
+
+## 0.23.0
+
+Sun, 20 Jun 2021 07:21:25 GMT
+
+### Minor changes
+
+- add a utility to convert inline css styles to a property dictionary (7559015+janechu@users.noreply.github.com)
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v1.24.7 (robarb@microsoft.com)
+- Bump @microsoft/fast-components to v1.21.7 (robarb@microsoft.com)
+
+## 0.22.3
+
+Sun, 13 Jun 2021 07:19:23 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v1.24.6 (nicholasrice@users.noreply.github.com)
+
+## 0.22.2
+
+Tue, 08 Jun 2021 07:29:18 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v1.24.5 (scomea@microsoft.com)
+
+## 0.22.1
+
+Sun, 06 Jun 2021 07:35:11 GMT
+
+### Patches
+
+- Bump @microsoft/fast-components to v1.21.4 (khamu@microsoft.com)
 
 ## 0.22.0
 

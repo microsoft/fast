@@ -1,6 +1,7 @@
 import { attr, FASTElement, observable, Observable } from "@microsoft/fast-element";
 import { ArrowKeys, Direction, limit, Orientation } from "@microsoft/fast-web-utilities";
 import { isFocusable } from "tabbable";
+import { FoundationElement } from "../foundation-element";
 import { ARIAGlobalStatesAndProperties } from "../patterns/aria-global";
 import { StartEnd } from "../patterns/start-end";
 import { applyMixins } from "../utilities/apply-mixins";
@@ -39,7 +40,7 @@ const ToolbarArrowKeyMap = Object.freeze({
  *
  * @public
  */
-export class Toolbar extends FASTElement {
+export class Toolbar extends FoundationElement {
     /**
      * The internal index of the currently focused element.
      *
@@ -96,18 +97,9 @@ export class Toolbar extends FASTElement {
      */
     @observable
     public slottedItems: HTMLElement[];
-
-    /**
-     * Prepare the slotted elements which can be focusable.
-     *
-     * @param prev - The previous list of slotted elements.
-     * @param next - The new list of slotted elements.
-     * @internal
-     */
-    protected slottedItemsChanged(prev: unknown, next: HTMLElement[]): void {
+    protected slottedItemsChanged(): void {
         if (this.$fastController.isConnected) {
-            this.focusableElements = next.reduce(Toolbar.reduceFocusableItems, []);
-            this.setFocusableElements();
+            this.reduceFocusableElements();
         }
     }
 
@@ -195,6 +187,31 @@ export class Toolbar extends FASTElement {
         this.setFocusedElement(nextIndex);
 
         return true;
+    }
+
+    /**
+     * get all the slotted elements
+     * @internal
+     */
+    protected get allSlottedItems(): (HTMLElement | Node)[] {
+        return [
+            ...this.start.assignedElements(),
+            ...this.slottedItems,
+            ...this.end.assignedElements(),
+        ];
+    }
+
+    /**
+     * Prepare the slotted elements which can be focusable.
+     *
+     * @internal
+     */
+    protected reduceFocusableElements(): void {
+        this.focusableElements = this.allSlottedItems.reduce(
+            Toolbar.reduceFocusableItems,
+            []
+        );
+        this.setFocusableElements();
     }
 
     /**

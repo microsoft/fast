@@ -1,53 +1,83 @@
 import type { Constructable } from "@microsoft/fast-element";
 import { expect } from "chai";
-import type { Container } from "../di";
+import { Container, DI } from "../di";
 import { uniqueElementName } from "../test-utilities/fixture";
-import { DesignSystem, DesignSystemRegistrationContext } from "./design-system";
+import { DesignSystem, DesignSystemRegistrationContext, ElementDisambiguation } from "./design-system";
 
 describe("DesignSystem", () => {
+    it("Should return the same instance for the same element", () => {
+        const host = document.createElement("div");
+        const ds1 = DesignSystem.getOrCreate(host);
+        const ds2 = DesignSystem.getOrCreate(host);
+
+        expect(ds1).to.equal(ds2);
+    });
+
+    it("Should find the responsible design system for an element in the hierarchy", () => {
+        const host = document.createElement("div");
+        const child = document.createElement("div");
+        host.appendChild(child);
+
+        const ds1 = DesignSystem.getOrCreate(host);
+        const ds2 = DesignSystem.responsibleFor(child);
+
+        expect(ds1).to.equal(ds2);
+    });
+
     it("Should initialize with a default prefix of 'fast'", () => {
         const host = document.createElement("div");
-        const container = new DesignSystem().applyTo(host);
+        let prefix = '';
 
-        expect(container.get(DesignSystemRegistrationContext).elementPrefix).to.equal(
-            "fast"
-        );
+        DesignSystem.getOrCreate(host)
+            .register({
+                register(container: Container) {
+                    prefix = container.get(DesignSystemRegistrationContext).elementPrefix;
+                }
+            });
+
+        expect(prefix).to.equal("fast");
     });
 
     it("Should initialize with a provided prefix", () => {
         const host = document.createElement("div");
-        const container = new DesignSystem().withPrefix("custom").applyTo(host);
+        let prefix = '';
 
-        expect(container.get(DesignSystemRegistrationContext).elementPrefix).to.equal(
-            "custom"
-        );
+        DesignSystem.getOrCreate(host)
+            .withPrefix("custom")
+            .register({
+                register(container: Container) {
+                    prefix = container.get(DesignSystemRegistrationContext).elementPrefix;
+                }
+            });
+
+        expect(prefix).to.equal("custom");
     });
 
-    it("Should apply registries to the container", () => {
+    it("Should apply registries to the container associated with the host", () => {
         let capturedContainer: Container | null = null;
         const host = document.createElement("div");
-        const container = new DesignSystem()
+
+        DesignSystem.getOrCreate(host)
             .register({
                 register(container: Container) {
                     capturedContainer = container;
                 },
-            })
-            .applyTo(host);
+            });
 
-        expect(capturedContainer).to.equal(container);
+        const container = DI.getOrCreateDOMContainer(host);
+        expect(container).equals(capturedContainer);
     });
 
     it("Should provide a way for registries to define elements", () => {
         let capturedDefine: any;
         const host = document.createElement("div");
-        new DesignSystem()
+        DesignSystem.getOrCreate(host)
             .register({
                 register(container: Container) {
                     capturedDefine = container.get(DesignSystemRegistrationContext)
                         .tryDefineElement;
                 },
-            })
-            .applyTo(host);
+            });
 
         expect(capturedDefine).to.not.be.null;
     });
@@ -55,35 +85,34 @@ describe("DesignSystem", () => {
     it("Should provide a way for registries to get the default prefix", () => {
         let capturePrefix: string | null = null;
         const host = document.createElement("div");
-        new DesignSystem()
+        DesignSystem.getOrCreate(host)
             .withPrefix("custom")
             .register({
                 register(container: Container) {
                     capturePrefix = container.get(DesignSystemRegistrationContext)
                         .elementPrefix;
                 },
-            })
-            .applyTo(host);
+            });
 
         expect(capturePrefix).to.equal("custom");
     });
 
-    it("Should register elements when applied", () => {
+    it("Should register elements", () => {
         const elementName = uniqueElementName();
         const customElement = class extends HTMLElement {};
         const host = document.createElement("div");
-        const system = new DesignSystem().register({
-            register(container: Container) {
-                const context = container.get(DesignSystemRegistrationContext);
-                context.tryDefineElement(elementName, customElement, x =>
-                    x.defineElement()
-                );
-            },
-        });
 
         expect(customElements.get(elementName)).to.be.undefined;
 
-        system.applyTo(host);
+        DesignSystem.getOrCreate(host)
+            .register({
+                register(container: Container) {
+                    const context = container.get(DesignSystemRegistrationContext);
+                    context.tryDefineElement(elementName, customElement, x =>
+                        x.defineElement()
+                    );
+                },
+            });
 
         expect(customElements.get(elementName)).to.equal(customElement);
     });
@@ -93,7 +122,7 @@ describe("DesignSystem", () => {
         const elementName2 = uniqueElementName();
         const host = document.createElement("div");
         let capturedType: Constructable | null = null;
-        const system = new DesignSystem()
+        DesignSystem.getOrCreate(host)
             .withElementDisambiguation((name, type, existingType) => {
                 capturedType = existingType;
                 return elementName2;
@@ -119,40 +148,147 @@ describe("DesignSystem", () => {
                         );
                     },
                 }
-            )
-            .applyTo(host);
+            );
 
         expect(capturedType).to.not.be.null;
         expect(customElements.get(elementName)).to.not.be.undefined;
         expect(customElements.get(elementName2)).to.not.be.undefined;
     });
 
-    it("Should skip defining duplicate elements by default", () => {
+    it("Should only call callbacks for duplicate elements by default", () => {
         const elementName = uniqueElementName();
         const customElement = class extends HTMLElement {};
         const host = document.createElement("div");
-        const system = new DesignSystem().register(
-            {
-                register(container: Container) {
-                    const context = container.get(DesignSystemRegistrationContext);
-                    context.tryDefineElement(elementName, customElement, x =>
-                        x.defineElement()
-                    );
-                },
-            },
-            {
-                register(container: Container) {
-                    const context = container.get(DesignSystemRegistrationContext);
-                    context.tryDefineElement(
-                        elementName,
-                        class extends HTMLElement {},
-                        x => x.defineElement()
-                    );
-                },
-            }
-        );
+        const system = DesignSystem.getOrCreate(host);
+        let callbackCalled = false;
 
-        expect(() => system.applyTo(host)).not.to.throw();
+        expect(() => {
+            system.register(
+                {
+                    register(container: Container) {
+                        const context = container.get(DesignSystemRegistrationContext);
+                        context.tryDefineElement(elementName, customElement, x =>
+                            x.defineElement()
+                        );
+                    },
+                },
+                {
+                    register(container: Container) {
+                        const context = container.get(DesignSystemRegistrationContext);
+                        context.tryDefineElement(
+                            elementName,
+                            class extends HTMLElement {},
+                            x => {
+                                x.defineElement();
+                                callbackCalled = true;
+                            }
+                        );
+                    },
+                }
+            );
+        }).not.to.throw();
+
         expect(customElements.get(elementName)).to.equal(customElement);
+        expect(callbackCalled).to.be.true;
+    });
+
+    it("Can completely ignore duplicates", () => {
+        const elementName = uniqueElementName();
+        const customElement = class extends HTMLElement {};
+        const host = document.createElement("div");
+        const system = DesignSystem.getOrCreate(host)
+            .withElementDisambiguation(() => ElementDisambiguation.ignoreDuplicate);
+        let callbackCalled = false;
+
+        expect(() => {
+            system.register(
+                {
+                    register(container: Container) {
+                        const context = container.get(DesignSystemRegistrationContext);
+                        context.tryDefineElement(elementName, customElement, x =>
+                            x.defineElement()
+                        );
+                    },
+                },
+                {
+                    register(container: Container) {
+                        const context = container.get(DesignSystemRegistrationContext);
+                        context.tryDefineElement(
+                            elementName,
+                            class extends HTMLElement {},
+                            x => {
+                                x.defineElement();
+                                callbackCalled = true;
+                            }
+                        );
+                    },
+                }
+            );
+        }).not.to.throw();
+
+        expect(customElements.get(elementName)).to.equal(customElement);
+        expect(callbackCalled).to.be.false;
+    });
+
+    it("Should have an undefined shadow mode by default", () => {
+        const elementName = uniqueElementName();
+        const customElement = class extends HTMLElement {};
+        const host = document.createElement("div");
+        let mode: ShadowRootMode | undefined | null = null;
+
+        DesignSystem.getOrCreate(host)
+            .register({
+                register(container: Container) {
+                    const context = container.get(DesignSystemRegistrationContext);
+                    context.tryDefineElement(elementName, customElement, x => {
+                        mode = x.shadowRootMode;
+                        x.defineElement();
+                    });
+                },
+            });
+
+        expect(mode).to.equal(undefined);
+    });
+
+    it("Should pass through open shadow mode overrides", () => {
+        const elementName = uniqueElementName();
+        const customElement = class extends HTMLElement {};
+        const host = document.createElement("div");
+        let mode: ShadowRootMode | undefined | null = null;
+
+        DesignSystem.getOrCreate(host)
+            .withShadowRootMode('open')
+            .register({
+                register(container: Container) {
+                    const context = container.get(DesignSystemRegistrationContext);
+                    context.tryDefineElement(elementName, customElement, x => {
+                        mode = x.shadowRootMode;
+                        x.defineElement();
+                    });
+                },
+            });
+
+        expect(mode).to.equal('open');
+    });
+
+    it("Should pass through closed shadow mode overrides", () => {
+        const elementName = uniqueElementName();
+        const customElement = class extends HTMLElement {};
+        const host = document.createElement("div");
+        let mode: ShadowRootMode | undefined | null = null;
+
+        DesignSystem.getOrCreate(host)
+            .withShadowRootMode('closed')
+            .register({
+                register(container: Container) {
+                    const context = container.get(DesignSystemRegistrationContext);
+                    context.tryDefineElement(elementName, customElement, x => {
+                        mode = x.shadowRootMode;
+                        x.defineElement();
+                    });
+                },
+            });
+
+        expect(mode).to.equal('closed');
     });
 });

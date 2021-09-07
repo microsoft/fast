@@ -185,13 +185,6 @@ export class Button extends FormAssociatedButton {
         this.form?.reset();
     };
 
-    /**
-     * @deprecated This API has been deprecated
-     */
-    public get root() {
-        return this.control;
-    }
-
     public control: HTMLButtonElement;
 
     /**

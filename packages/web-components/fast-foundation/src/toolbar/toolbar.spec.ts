@@ -2,21 +2,24 @@ import { customElement } from "@microsoft/fast-element";
 import { Orientation } from "@microsoft/fast-web-utilities";
 import { expect } from "chai";
 import { fixture } from "../test-utilities/fixture";
-import { Toolbar, ToolbarTemplate } from "./index";
+import { Toolbar, toolbarTemplate as template } from "./index";
 
-@customElement({
-  name: "fast-toolbar",
-  template: ToolbarTemplate,
+const FASTToolbar = Toolbar.compose({
+  baseName: "toolbar",
+  template,
   shadowOptions: {
     delegatesFocus: true
   }
 })
-class FASTToolbar extends Toolbar {}
 
 async function setup() {
-  const { element, connect, disconnect, parent } = await fixture<FASTToolbar>(
-    "fast-toolbar"
+  const { element, connect, disconnect, parent } = await fixture(
+    FASTToolbar()
   );
+
+  const startButton = document.createElement("button");
+  startButton.textContent = "startButton";
+  startButton.slot="start";
 
   const control1 = document.createElement("button");
   control1.textContent = "control1";
@@ -27,6 +30,7 @@ async function setup() {
   const control3 = document.createElement("button");
   control3.textContent = "control3";
 
+  element.appendChild(startButton);
   element.appendChild(control1);
   element.appendChild(control2);
   element.appendChild(control3);
@@ -55,14 +59,14 @@ describe("Toolbar", () => {
     await disconnect();
   });
 
-  it("should move focus to its first control when it receives focus", async () => {
+  it("should move focus to its first focusable element when it receives focus", async () => {
     const { element, connect, disconnect, document } = await setup();
 
     await connect();
 
     element.focus();
 
-    expect(document.activeElement?.textContent).to.equal("control1");
+    expect(document.activeElement?.textContent).to.equal("startButton");
 
     await disconnect();
   });

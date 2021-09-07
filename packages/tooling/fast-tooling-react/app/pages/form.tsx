@@ -1,8 +1,13 @@
 import * as testConfigs from "./form/";
 import { AlignControl, Form } from "../../src";
-import { ControlConfig, StandardControlPlugin, TextAlignControl } from "../../src";
+import {
+    ControlConfig,
+    StandardControlPlugin,
+    TextAlignControl,
+    FileControl,
+} from "../../src";
 import CSSControl from "../../src/form/custom-controls/control.css";
-import { properties } from "@microsoft/fast-tooling/dist/esm/css-data";
+import { properties as allCSSProperties } from "@microsoft/fast-tooling/dist/esm/css-data";
 import { FormProps } from "../../src/form/form.props";
 import {
     FormAttributeSettingsMappingToPropertyNames,
@@ -11,6 +16,7 @@ import {
 import React from "react";
 import {
     AjvMapper,
+    DataDictionary,
     getDataFromSchema,
     MessageSystem,
     MessageSystemType,
@@ -29,12 +35,39 @@ import { CSSPropertiesDictionary } from "@microsoft/fast-tooling/dist/esm/data-u
 import { ControlContext } from "../../src/form/templates/types";
 import { CSSStandardControlPlugin } from "../../src/form/custom-controls/css";
 import { CSSControlConfig } from "../../src/form/custom-controls/css/css.template.control.standard.props";
+import { DesignSystem } from "@microsoft/fast-foundation";
+import {
+    fastButton,
+    fastCheckbox,
+    fastNumberField,
+    fastOption,
+    fastSelect,
+    fastTextField,
+} from "@microsoft/fast-components";
+import {
+    fastToolingColorPicker,
+    fastToolingFile,
+    fastToolingFileActionObjectUrl,
+} from "@microsoft/fast-tooling/dist/esm/web-components";
+
+DesignSystem.getOrCreate().register(
+    fastButton(),
+    fastCheckbox(),
+    fastNumberField(),
+    fastOption(),
+    fastSelect(),
+    fastTextField(),
+    fastToolingColorPicker({ prefix: "fast-tooling" }),
+    fastToolingFile({ prefix: "fast-tooling" }),
+    fastToolingFileActionObjectUrl({ prefix: "fast-tooling" })
+);
 
 export type componentDataOnChange = (e: React.ChangeEvent<HTMLFormElement>) => void;
 
 export interface FormTestPageState {
     schema: any;
     data: any;
+    dataDictionary: DataDictionary<unknown>;
     navigation: any;
     attributeAssignment?: FormAttributeSettingsMappingToPropertyNames;
     showExtendedControls: boolean;
@@ -53,6 +86,14 @@ export interface DataSet {
     displayName: string;
     data: any;
 }
+
+const properties = {
+    "border-width": allCSSProperties["border-width"],
+    "border-style": allCSSProperties["border-style"],
+    "border-color": allCSSProperties["border-color"],
+    "outline-offset": allCSSProperties["outline-offset"],
+    "animation-delay": allCSSProperties["animation-delay"],
+};
 
 const dataSets: DataSet[] = [
     {
@@ -115,6 +156,16 @@ class FormTestPage extends React.Component<{}, FormTestPageState> {
 
         this.controlPlugins = [
             new StandardControlPlugin({
+                id: testConfigs.customControl.schema.properties.file.formControlId,
+                control: (config: ControlConfig): React.ReactNode => {
+                    return (
+                        <FileControl {...config} accept=".jpg,.jpeg,.png,.gif">
+                            Add Image
+                        </FileControl>
+                    );
+                },
+            }),
+            new StandardControlPlugin({
                 id: testConfigs.customControl.schema.properties.textAlign.formControlId,
                 control: (config: ControlConfig): React.ReactNode => {
                     return <TextAlignControl {...config} />;
@@ -134,6 +185,7 @@ class FormTestPage extends React.Component<{}, FormTestPageState> {
                         <CSSControl
                             css={(properties as unknown) as CSSPropertiesDictionary}
                             {...config}
+                            key={`${config.dictionaryId}::${config.dataLocation}`}
                         />
                     );
                 },
@@ -146,6 +198,7 @@ class FormTestPage extends React.Component<{}, FormTestPageState> {
                     return (
                         <CSSControl
                             css={(properties as unknown) as CSSPropertiesDictionary}
+                            key={`${config.dictionaryId}::${config.dataLocation}`}
                             cssControls={[
                                 new CSSStandardControlPlugin({
                                     id: "foo",
@@ -203,7 +256,7 @@ class FormTestPage extends React.Component<{}, FormTestPageState> {
             }),
         ];
 
-        const exampleData: any = getDataFromSchema(testConfigs.customControl.schema);
+        const exampleData: any = getDataFromSchema(testConfigs.controlPluginCss.schema);
 
         if ((window as any).Worker) {
             fastMessageSystem = new MessageSystem({
@@ -211,7 +264,7 @@ class FormTestPage extends React.Component<{}, FormTestPageState> {
                 dataDictionary: [
                     {
                         foo: {
-                            schemaId: testConfigs.customControl.schema.id,
+                            schemaId: testConfigs.controlPluginCss.schema.id,
                             data: exampleData,
                         },
                     },
@@ -226,8 +279,17 @@ class FormTestPage extends React.Component<{}, FormTestPageState> {
         }
 
         this.state = {
-            schema: testConfigs.customControl.schema,
+            schema: testConfigs.controlPluginCss.schema,
             data: exampleData,
+            dataDictionary: [
+                {
+                    foo: {
+                        schemaId: testConfigs.controlPluginCss.schema.id,
+                        data: exampleData,
+                    },
+                },
+                "foo",
+            ],
             navigation: void 0,
             showExtendedControls: false,
             inlineErrors: void 0,
@@ -258,7 +320,10 @@ class FormTestPage extends React.Component<{}, FormTestPageState> {
                     }}
                 >
                     <div>
-                        <select onChange={this.handleComponentUpdate}>
+                        <select
+                            onChange={this.handleComponentUpdate}
+                            defaultValue={testConfigs.controlPluginCss.schema.id}
+                        >
                             {this.getComponentOptions()}
                         </select>
                         {this.renderDataSetComponentOptions()}
@@ -293,7 +358,7 @@ class FormTestPage extends React.Component<{}, FormTestPageState> {
                         </label>
                         <br />
                     </div>
-                    <h2>Data</h2>
+                    <h2>Data Dictionary</h2>
                     <pre
                         style={{
                             padding: "12px",
@@ -301,7 +366,7 @@ class FormTestPage extends React.Component<{}, FormTestPageState> {
                             borderRadius: "4px",
                         }}
                     >
-                        {JSON.stringify(this.state.data, null, 2)}
+                        {JSON.stringify(this.state.dataDictionary, null, 2)}
                     </pre>
                     <h2>Navigation</h2>
                     <pre
@@ -437,6 +502,7 @@ class FormTestPage extends React.Component<{}, FormTestPageState> {
                 if (e.data.data) {
                     this.setState({
                         data: e.data.data,
+                        dataDictionary: e.data.dataDictionary,
                     });
                 }
             case MessageSystemType.navigation:

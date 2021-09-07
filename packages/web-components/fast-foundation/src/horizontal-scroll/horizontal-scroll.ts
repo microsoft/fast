@@ -1,7 +1,7 @@
+import type { SyntheticViewTemplate } from "@microsoft/fast-element";
 import {
     attr,
-    DOM,
-    FASTElement,
+    booleanConverter,
     nullableNumberConverter,
     observable,
 } from "@microsoft/fast-element";
@@ -13,7 +13,11 @@ import type {
     ConstructibleResizeObserver,
     ResizeObserverClassDefinition,
 } from "../anchored-region/resize-observer";
-import type { ResizeObserverEntry } from "../anchored-region/resize-observer-entry";
+import type {
+    FoundationElementDefinition,
+    FoundationElementTemplate,
+} from "../foundation-element";
+import { FoundationElement } from "../foundation-element";
 
 declare global {
     interface WindowWithResizeObserver extends Window {
@@ -34,10 +38,31 @@ export type HorizontalScrollView = "default" | "mobile";
 export type ScrollEasing = "linear" | "ease-in" | "ease-out" | "ease-in-out";
 
 /**
+ * Horizontal scroll configuration options
+ * @public
+ */
+export type HorizontalScrollOptions = FoundationElementDefinition & {
+    nextFlipper?:
+        | FoundationElementTemplate<
+              SyntheticViewTemplate<any, HorizontalScroll>,
+              HorizontalScrollOptions
+          >
+        | SyntheticViewTemplate
+        | string;
+    previousFlipper?:
+        | FoundationElementTemplate<
+              SyntheticViewTemplate<any, HorizontalScroll>,
+              HorizontalScrollOptions
+          >
+        | SyntheticViewTemplate
+        | string;
+};
+
+/**
  * A HorizontalScroll Custom HTML Element
  * @public
  */
-export class HorizontalScroll extends FASTElement {
+export class HorizontalScroll extends FoundationElement {
     /**
      * Reference to DOM element that scrolls the content
      * @public
@@ -48,13 +73,13 @@ export class HorizontalScroll extends FASTElement {
      * Reference to flipper to scroll to previous content
      * @public
      */
-    public previousFlipper: HTMLDivElement;
+    public previousFlipperContainer: HTMLDivElement;
 
     /**
      * Reference to flipper to scroll to the next content
      * @public
      */
-    public nextFlipper: HTMLDivElement;
+    public nextFlipperContainer: HTMLDivElement;
 
     /**
      * @internal
@@ -104,6 +129,13 @@ export class HorizontalScroll extends FASTElement {
      */
     @attr
     public easing: ScrollEasing = "ease-in-out";
+
+    /**
+     * Attribute to hide flippers from assistive technology
+     * @public
+     */
+    @attr({ attribute: "aria-hidden", converter: booleanConverter })
+    public flippersHiddenFromAT: boolean = false;
 
     /**
      * Scrolling state
@@ -197,22 +229,10 @@ export class HorizontalScroll extends FASTElement {
     private initializeResizeDetector(): void {
         this.disconnectResizeDetector();
         this.resizeDetector = new ((window as unknown) as WindowWithResizeObserver).ResizeObserver(
-            this.handleResize.bind(this)
+            this.resized.bind(this)
         );
         this.resizeDetector.observe(this);
     }
-
-    /**
-     * Handle resize events
-     * @internal
-     */
-    private handleResize = (entries: ResizeObserverEntry[]): void => {
-        entries.forEach((entry: ResizeObserverEntry): void => {
-            if (entry.target === this) {
-                this.resized();
-            }
-        });
-    };
 
     /**
      * Looks for slots and uses child nodes instead
@@ -287,17 +307,35 @@ export class HorizontalScroll extends FASTElement {
      */
     private setFlippers(): void {
         const position: number = this.scrollContainer.scrollLeft;
-        if (this.previousFlipper) {
-            this.previousFlipper.classList.toggle("disabled", position === 0);
+        if (this.previousFlipperContainer) {
+            this.previousFlipperContainer.classList.toggle("disabled", position === 0);
         }
-        if (this.nextFlipper && this.scrollStops) {
+        if (this.nextFlipperContainer && this.scrollStops) {
             const lastStop: number = Math.abs(
                 this.scrollStops[this.scrollStops.length - 1]
             );
-            this.nextFlipper.classList.toggle(
+            this.nextFlipperContainer.classList.toggle(
                 "disabled",
                 Math.abs(position) + this.width >= lastStop
             );
+        }
+    }
+
+    /**
+     * Lets the user arrow left and right through the horizontal scroll
+     * @param e - Keyboard event
+     * @public
+     */
+    public keyupHandler(e: Event & KeyboardEvent) {
+        const key = e.key;
+
+        switch (key) {
+            case "ArrowLeft":
+                this.scrollToPrevious();
+                break;
+            case "ArrowRight":
+                this.scrollToNext();
+                break;
         }
     }
 

@@ -14,20 +14,37 @@ const fastHTMLPolicy: TrustedTypesPolicy = $global.trustedTypes.createPolicy(
 
 let htmlPolicy: TrustedTypesPolicy = fastHTMLPolicy;
 
+// We use a queue so we can ensure errors are thrown in order.
+const pendingErrors: any[] = [];
+
+function throwFirstError() {
+    if (pendingErrors.length) {
+        throw pendingErrors.shift();
+    }
+}
+
+function tryRunTask(task: Callable) {
+    try {
+        (task as any).call();
+    } catch (error) {
+        pendingErrors.push(error);
+        setTimeout(throwFirstError, 0);
+    }
+}
+
 function processQueue(): void {
     const capacity = 1024;
     let index = 0;
 
     while (index < updateQueue.length) {
-        const task = updateQueue[index];
-        (task as any).call();
+        tryRunTask(updateQueue[index]);
         index++;
 
-        // Prevent leaking memory for long chains of recursive calls to `queueMicroTask`.
-        // If we call `queueMicroTask` within a MicroTask scheduled by `queueMicroTask`, the queue will
-        // grow, but to avoid an O(n) walk for every MicroTask we execute, we don't
-        // shift MicroTasks off the queue after they have been executed.
-        // Instead, we periodically shift 1024 MicroTasks off the queue.
+        // Prevent leaking memory for long chains of recursive calls to `DOM.queueUpdate`.
+        // If we call `DOM.queueUpdate` within a task scheduled by `DOM.queueUpdate`, the queue will
+        // grow, but to avoid an O(n) walk for every task we execute, we don't
+        // shift tasks off the queue after they have been executed.
+        // Instead, we periodically shift 1024 tasks off the queue.
         if (index > capacity) {
             // Manually shift all values starting at the index back to the
             // beginning of the queue.

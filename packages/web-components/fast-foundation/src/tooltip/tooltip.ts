@@ -2,10 +2,12 @@ import { attr, DOM, FASTElement, observable } from "@microsoft/fast-element";
 import { Direction, keyCodeEscape } from "@microsoft/fast-web-utilities";
 import type {
     AnchoredRegion,
+    AutoUpdateMode,
     AxisPositioningMode,
     AxisScalingMode,
 } from "../anchored-region";
 import { getDirection } from "../utilities/";
+import { FoundationElement } from "../foundation-element";
 import { TooltipPosition } from "./tooltip.options";
 
 export { TooltipPosition };
@@ -15,9 +17,7 @@ export { TooltipPosition };
  *
  * @public
  */
-export class Tooltip extends FASTElement {
-    private static DirectionAttributeName: string = "dir";
-
+export class Tooltip extends FoundationElement {
     /**
      * Whether the tooltip is visible or not.
      * If undefined tooltip is shown when anchor element is hovered
@@ -75,6 +75,35 @@ export class Tooltip extends FASTElement {
             this.updateLayout();
         }
     }
+
+    /**
+     * Controls when the tooltip updates its position, default is 'anchor' which only updates when
+     * the anchor is resized.  'auto' will update on scroll/resize events.
+     * Corresponds to anchored-region auto-update-mode.
+     * @public
+     * @remarks
+     * HTML Attribute: auto-update-mode
+     */
+    @attr({ attribute: "auto-update-mode" })
+    public autoUpdateMode: AutoUpdateMode = "anchor";
+
+    /**
+     * Controls if the tooltip will always remain fully in the viewport on the horizontal axis
+     * @public
+     * @remarks
+     * HTML Attribute: horizontal-viewport-lock
+     */
+    @attr({ attribute: "horizontal-viewport-lock" })
+    public horizontalViewportLock: boolean;
+
+    /**
+     * Controls if the tooltip will always remain fully in the viewport on the vertical axis
+     * @public
+     * @remarks
+     * HTML Attribute: vertical-viewport-lock
+     */
+    @attr({ attribute: "vertical-viewport-lock" })
+    public verticalViewportLock: boolean;
 
     /**
      * the html element currently being used as anchor.
@@ -242,23 +271,23 @@ export class Tooltip extends FASTElement {
      * @internal
      */
     public handlePositionChange = (ev: Event): void => {
-        this.classList.toggle("top", this.region.verticalPosition === "top");
-        this.classList.toggle("bottom", this.region.verticalPosition === "bottom");
-        this.classList.toggle("inset-top", this.region.verticalPosition === "insetTop");
+        this.classList.toggle("top", this.region.verticalPosition === "start");
+        this.classList.toggle("bottom", this.region.verticalPosition === "end");
+        this.classList.toggle("inset-top", this.region.verticalPosition === "insetStart");
         this.classList.toggle(
             "inset-bottom",
-            this.region.verticalPosition === "insetBottom"
+            this.region.verticalPosition === "insetEnd"
         );
 
-        this.classList.toggle("left", this.region.horizontalPosition === "left");
-        this.classList.toggle("right", this.region.horizontalPosition === "right");
+        this.classList.toggle("left", this.region.horizontalPosition === "start");
+        this.classList.toggle("right", this.region.horizontalPosition === "end");
         this.classList.toggle(
             "inset-left",
-            this.region.horizontalPosition === "insetLeft"
+            this.region.horizontalPosition === "insetStart"
         );
         this.classList.toggle(
             "inset-right",
-            this.region.horizontalPosition === "insetRight"
+            this.region.horizontalPosition === "insetEnd"
         );
     };
 
@@ -446,7 +475,6 @@ export class Tooltip extends FASTElement {
         if (!this.tooltipVisible) {
             return;
         }
-        this.viewportElement = document.body;
         this.region.viewportElement = this.viewportElement;
         this.region.anchorElement = this.anchorElement;
         (this.region as any).addEventListener(

@@ -29,7 +29,7 @@ export class Controller extends PropertyChangeNotifier {
     private needsInitialization: boolean = true;
     private _template: ElementViewTemplate | null = null;
     private _styles: ElementStyles | null = null;
-    private _isConnected = false;
+    private _isConnected: boolean = false;
 
     /**
      * The element being controlled by this controller.
@@ -58,7 +58,7 @@ export class Controller extends PropertyChangeNotifier {
         return this._isConnected;
     }
 
-    private setIsConnected(value: boolean) {
+    private setIsConnected(value: boolean): void {
         this._isConnected = value;
         Observable.notify(this, "isConnected");
     }
@@ -162,7 +162,7 @@ export class Controller extends PropertyChangeNotifier {
             ((this.element.getRootNode() as any) as StyleTarget);
 
         if (styles instanceof HTMLStyleElement) {
-            target.prepend(styles);
+            target.append(styles);
         } else if (!styles.isAttachedTo(target)) {
             const sourceBehaviors = styles.behaviors;
             styles.addStylesTo(target);

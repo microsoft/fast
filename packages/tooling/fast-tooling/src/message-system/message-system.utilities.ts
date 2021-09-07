@@ -3,6 +3,7 @@ import { getDataWithDuplicate } from "../data-utilities/duplicate";
 import {
     getDataUpdatedWithoutSourceData,
     getDataUpdatedWithSourceData,
+    getNextActiveParentDictionaryId,
 } from "../data-utilities/relocate";
 import { getLinkedDataDictionary, getLinkedDataList } from "./data";
 import { MessageSystemType } from "./types";
@@ -20,11 +21,14 @@ import {
     MessageSystemNavigationDictionaryTypeAction,
     MessageSystemNavigationTypeAction,
     MessageSystemOutgoing,
+    MessageSystemSchemaDictionaryTypeAction,
     MessageSystemValidationTypeAction,
     NavigationDictionaryMessageIncoming,
     NavigationDictionaryMessageOutgoing,
     NavigationMessageIncoming,
     NavigationMessageOutgoing,
+    SchemaDictionaryMessageIncoming,
+    SchemaDictionaryMessageOutgoing,
     ValidationMessageIncoming,
     ValidationMessageOutgoing,
 } from "./message-system.utilities.props";
@@ -163,6 +167,32 @@ function getHistoryMessage(data: HistoryMessageIncoming): HistoryMessageOutgoing
                 type: MessageSystemType.history,
                 action: MessageSystemHistoryTypeAction.get,
                 history,
+            };
+    }
+}
+
+/**
+ * Handles all schema dictionary manipulation messages
+ */
+function getSchemaDictionaryMessage(
+    data: SchemaDictionaryMessageIncoming
+): SchemaDictionaryMessageOutgoing {
+    switch (data.action) {
+        case MessageSystemSchemaDictionaryTypeAction.add:
+            schemaDictionary = data.schemas.reduce(
+                (previousSchemaDictionary, currentSchema) => {
+                    return {
+                        ...previousSchemaDictionary,
+                        [currentSchema.$id]: currentSchema,
+                    };
+                },
+                schemaDictionary
+            );
+
+            return {
+                type: MessageSystemType.schemaDictionary,
+                action: MessageSystemSchemaDictionaryTypeAction.add,
+                schemaDictionary,
             };
     }
 }
@@ -344,17 +374,27 @@ function getDataMessage(data: DataMessageIncoming): DataMessageOutgoing {
                 ? data.dictionaryId
                 : activeDictionaryId;
             const linkedDataIds: string[] = [];
-            // remove linkedData from the dictionary
+            const removedLinkedData: unknown = dataDictionary[0][activeDictionaryId].data;
+
+            // add linked data IDs to be removed
             data.linkedData.forEach((linkedData: LinkedData) => {
-                delete dataDictionary[0][linkedData.id];
                 linkedDataIds.push(linkedData.id);
 
-                // remove references from the linkedData to any other
-                // piece of linkedData
+                // add linked data IDs to be removed from other pieces of linked data
                 getLinkedDataList(dataDictionary, linkedData.id).forEach((id: string) => {
-                    delete dataDictionary[0][id];
                     linkedDataIds.push(id);
                 });
+            });
+            // get the active dictionary ID in case it is among those being removed
+            activeDictionaryId = getNextActiveParentDictionaryId(
+                activeDictionaryId,
+                linkedDataIds,
+                dataDictionary
+            );
+
+            // remove linked data from the dictionary
+            linkedDataIds.forEach((linkedDataId: string) => {
+                delete dataDictionary[0][linkedDataId];
             });
 
             let filteredLinkedDataRefs: LinkedData[] = get(
@@ -390,7 +430,8 @@ function getDataMessage(data: DataMessageIncoming): DataMessageOutgoing {
             return {
                 type: MessageSystemType.data,
                 action: MessageSystemDataTypeAction.removeLinkedData,
-                data: dataDictionary[0][activeDictionaryId].data,
+                data: removedLinkedData,
+                activeDictionaryId,
                 dataDictionary,
                 navigation: navigationDictionary[0][activeDictionaryId],
                 navigationDictionary,
@@ -483,6 +524,8 @@ export function getMessage<C = {}>(
             return updateHistory(getValidationMessage(data));
         case MessageSystemType.history:
             return getHistoryMessage(data);
+        case MessageSystemType.schemaDictionary:
+            return getSchemaDictionaryMessage(data);
         case MessageSystemType.initialize:
             /**
              * TODO: remove this ternary to rely on the dataDictionary

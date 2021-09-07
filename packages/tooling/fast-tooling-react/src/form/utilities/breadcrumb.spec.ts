@@ -1,3 +1,4 @@
+import "../../__tests__/mocks/match-media";
 import { DataType } from "@microsoft/fast-tooling";
 import { BreadcrumbItem, getBreadcrumbs, getDictionaryBreadcrumbs } from "./breadcrumb";
 

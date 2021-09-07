@@ -7,11 +7,16 @@ import {
 } from "@microsoft/fast-colors";
 import { attr, DOM, observable } from "@microsoft/fast-element";
 import { isNullOrWhiteSpace } from "@microsoft/fast-web-utilities";
-import { FASTTextField } from "@microsoft/fast-components";
 import { FormAssociatedColorPicker } from "./color-picker.form-associated";
 
-// Prevent tree shaking
-FASTTextField;
+/**
+ * This is currently experimental, any use of the color picker must include the following
+ * imports and register with the DesignSystem
+ *
+ * import { fastTextField } from "@microsoft/fast-components";
+ * import { DesignSystem } from "@microsoft/fast-foundation";
+ * DesignSystem.getOrCreate().register(fastTextField());
+ */
 
 /**
  * Simple class for storing all of the color picker UI observable values.
@@ -138,14 +143,7 @@ export class ColorPicker extends FormAssociatedColorPicker {
     public connectedCallback(): void {
         super.connectedCallback();
         this.open = false;
-        if (!isNullOrWhiteSpace(this.value)) {
-            this.currentRGBColor = parseColor(this.value);
-        } else {
-            this.currentRGBColor = new ColorRGBA64(1, 0, 0, 1);
-        }
-        this.currentHSVColor = rgbToHSV(this.currentRGBColor);
-        this.updateUIValues(false);
-
+        this.initColorValues();
         this.proxy.setAttribute("type", "color");
 
         if (this.autofocus) {
@@ -160,6 +158,8 @@ export class ColorPicker extends FormAssociatedColorPicker {
      * @internal
      */
     public handleFocus(): void {
+        // Re-init colors in case the value changed externally since the UI was last visible.
+        this.initColorValues();
         this.open = true;
     }
 
@@ -176,7 +176,7 @@ export class ColorPicker extends FormAssociatedColorPicker {
      * @internal
      */
     public handleTextInput(): void {
-        this.value = this.control.value;
+        this.initialValue = this.control.value;
         if (this.isValideCSSColor(this.value)) {
             this.currentRGBColor = parseColor(this.value);
             this.currentHSVColor = rgbToHSV(this.currentRGBColor);
@@ -267,6 +267,20 @@ export class ColorPicker extends FormAssociatedColorPicker {
      */
     public handleChange(): void {
         this.$emit("change");
+    }
+
+    /**
+     * Initialize internal color values based on input value and set the UI elements
+     * to the correct positions / values.
+     */
+    private initColorValues(): void {
+        if (!isNullOrWhiteSpace(this.value)) {
+            this.currentRGBColor = parseColor(this.value);
+        } else {
+            this.currentRGBColor = new ColorRGBA64(1, 0, 0, 1);
+        }
+        this.currentHSVColor = rgbToHSV(this.currentRGBColor);
+        this.updateUIValues(false);
     }
 
     /**
@@ -374,7 +388,7 @@ export class ColorPicker extends FormAssociatedColorPicker {
     private updateUIValues(updateValue: boolean) {
         this.uiValues = new ColorPickerUI(this.currentRGBColor, this.currentHSVColor);
         if (updateValue) {
-            this.value =
+            this.initialValue =
                 this.currentRGBColor.a !== 1
                     ? this.currentRGBColor.toStringWebRGBA()
                     : this.currentRGBColor.toStringHexRGB();

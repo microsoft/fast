@@ -1,7 +1,7 @@
-import { FASTElement } from "@microsoft/fast-element";
 import { FormAssociated } from "../form-associated/form-associated";
+import { FoundationElement } from "../foundation-element";
 
-class _NumberField extends FASTElement {}
+class _NumberField extends FoundationElement {}
 interface _NumberField extends FormAssociated {}
 
 /**

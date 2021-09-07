@@ -1,28 +1,19 @@
-import { customElement } from "@microsoft/fast-element";
+import { html } from "@microsoft/fast-element";
 import {
-    HorizontalScroll,
-    HorizontalScrollTemplate as template,
+    Flipper,
+    HorizontalScroll as FoundationHorizontalScroll,
+    HorizontalScrollOptions,
+    horizontalScrollTemplate as template,
 } from "@microsoft/fast-foundation";
 import {
     ActionsStyles,
-    HorizontalScrollStyles as styles,
+    horizontalScrollStyles as styles,
 } from "./horizontal-scroll.styles";
 
 /**
- * The FAST HorizontalScroll Element. Implements {@link @microsoft/fast-foundation#HorizontalScroll},
- * {@link @microsoft/fast-foundation#HorizontalScrollTemplate}
- *
- *
- * @public
- * @remarks
- * HTML Element: \<fast-horizontal-scroll\>
+ * @internal
  */
-@customElement({
-    name: "fast-horizontal-scroll",
-    template,
-    styles,
-})
-export class FASTHorizontalScroll extends HorizontalScroll {
+export class HorizontalScroll extends FoundationHorizontalScroll {
     /**
      * @public
      */
@@ -34,3 +25,31 @@ export class FASTHorizontalScroll extends HorizontalScroll {
         }
     }
 }
+
+/**
+ * A function that returns a {@link @microsoft/fast-foundation#HorizontalScroll} registration for configuring the component with a DesignSystem.
+ * Implements {@link @microsoft/fast-foundation#horizontalScrollTemplate}
+ *
+ *
+ * @public
+ * @remarks
+ * Generates HTML Element: \<fast-horizontal-scroll\>
+ */
+export const fastHorizontalScroll = HorizontalScroll.compose<HorizontalScrollOptions>({
+    baseName: "horizontal-scroll",
+    template,
+    styles,
+    nextFlipper: context => html`
+        <${context.tagFor(Flipper)}
+            @click="${x => x.scrollToNext()}"
+            aria-hidden="${x => x.flippersHiddenFromAT}"
+        ></${context.tagFor(Flipper)}>
+    `,
+    previousFlipper: context => html`
+        <${context.tagFor(Flipper)}
+            @click="${x => x.scrollToPrevious()}"
+            direction="previous"
+            aria-hidden="${x => x.flippersHiddenFromAT}"
+        ></${context.tagFor(Flipper)}>
+    `,
+});

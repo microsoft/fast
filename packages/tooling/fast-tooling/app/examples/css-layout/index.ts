@@ -1,6 +1,7 @@
-import { FASTDesignSystemProvider } from "@microsoft/fast-components";
-import { FASTToolingCSSLayout } from "../../../src/web-components";
+import { fastSwitch, fastTooltip } from "@microsoft/fast-components";
+import { DesignSystem } from "@microsoft/fast-foundation";
+import { fastToolingCSSLayout } from "../../../src/web-components/css-layout";
 
-// Prevent tree shaking
-FASTDesignSystemProvider;
-FASTToolingCSSLayout;
+DesignSystem.getOrCreate()
+    .withPrefix("fast-tooling")
+    .register(fastSwitch(), fastTooltip(), fastToolingCSSLayout());

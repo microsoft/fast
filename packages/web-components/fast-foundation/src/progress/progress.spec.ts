@@ -1,16 +1,15 @@
 import { expect } from "chai";
-import { BaseProgress as Progress, ProgressTemplate as template } from "./index";
+import { BaseProgress as Progress, progressTemplate as template } from "./index";
 import { fixture } from "../test-utilities/fixture";
 import { customElement } from "@microsoft/fast-element";
 
-@customElement({
-    name: "fast-progress",
-    template,
+const FASTProgress = Progress.compose({
+    baseName: "progress",
+    template
 })
-class FASTProgress extends Progress {}
 
 async function setup() {
-    const { element, connect, disconnect } = await fixture<FASTProgress>("fast-progress");
+    const { element, connect, disconnect } = await fixture(FASTProgress());
 
     return { element, connect, disconnect };
 }
@@ -96,6 +95,32 @@ describe("Progress ring", () => {
         expect(
             element.shadowRoot?.querySelector(".progress")?.getAttribute("slot")
         ).to.equal("indeterminate");
+
+        await disconnect();
+    });
+
+    it("should have a `percentComplete` value to match the inputs", async () => {
+        const { element, connect, disconnect } = await setup();
+
+        await connect();
+
+        expect(element.percentComplete).to.equal(0);
+
+        element.setAttribute("value", "50");
+
+        expect(element.percentComplete).to.equal(50);
+
+        element.setAttribute("value", "100");
+
+        expect(element.percentComplete).to.equal(100);
+
+        element.setAttribute("max", "200");
+
+        expect(element.percentComplete).to.equal(50);
+
+        element.setAttribute("min", "100");
+
+        expect(element.percentComplete).to.equal(0);
 
         await disconnect();
     });

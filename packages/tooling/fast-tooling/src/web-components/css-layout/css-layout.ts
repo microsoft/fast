@@ -1,5 +1,7 @@
 import { observable } from "@microsoft/fast-element";
-import { FASTSwitch } from "@microsoft/fast-components";
+import { keyCodeSpace } from "@microsoft/fast-web-utilities";
+import { mapCSSInlineStyleToCSSPropertyDictionary } from "../../data-utilities/mapping.mdn-data";
+import { fastToolingPrefix } from "../utilities";
 import { FormAssociatedCSSLayout } from "./css-layout.form-associated";
 import {
     alignContentOptions,
@@ -10,9 +12,6 @@ import {
     justifyContentOptions,
     ObservableFlexboxCSSPropertyName,
 } from "./css-layout.css-properties";
-
-// Prevent tree shaking
-FASTSwitch;
 
 /**
  * A CSSLayout Custom HTML Element.
@@ -113,17 +112,59 @@ export class CSSLayout extends FormAssociatedCSSLayout {
     public flexWrapValue: string = "";
     public flexWrapName: string = "flex-wrap";
 
+    public valueChanged(previous: string, next: string) {
+        const cssPropertyDictionary = mapCSSInlineStyleToCSSPropertyDictionary(next);
+
+        this.flexEnabled = cssPropertyDictionary["display"] === "flex";
+        this.flexDirectionValue = cssPropertyDictionary[this.flexDirectionName] || "";
+        this.justifyContentValue = cssPropertyDictionary[this.justifyContentName] || "";
+        this.alignContentValue = cssPropertyDictionary[this.alignContentName] || "";
+        this.alignItemsValue = cssPropertyDictionary[this.alignItemsName] || "";
+        this.columnGapValue = this.resolvePxValue(
+            cssPropertyDictionary[this.columnGapName]
+        );
+        this.rowGapValue = this.resolvePxValue(cssPropertyDictionary[this.rowGapName]);
+        this.flexWrapValue = cssPropertyDictionary[this.flexWrapName] || "";
+
+        super.valueChanged(previous, next);
+    }
+
     /**
      * The onChange provided, set this to trigger CSS updates
      * in a data dictionary format
      *
      * @param config
      */
-
     public onChange: (config: { [key: string]: string }) => void = (config: {
         [key: string]: string;
         /* eslint-disable-next-line @typescript-eslint/no-empty-function */
     }): void => {};
+
+    /**
+     * Handles the css-layout controls being enabled by pressing space
+     * @internal
+     */
+    public handleKeypressCSSChange = (
+        observablePropertyName: ObservableFlexboxCSSPropertyName,
+        e: KeyboardEvent
+    ): void => {
+        switch (e.keyCode) {
+            case keyCodeSpace:
+                this.handleCSSChange(observablePropertyName, e);
+                break;
+        }
+    };
+
+    /**
+     * Handles the css-layout controls being enabled by click
+     * @internal
+     */
+    public handleClickCSSChange = (
+        observablePropertyName: ObservableFlexboxCSSPropertyName,
+        e: MouseEvent
+    ): void => {
+        this.handleCSSChange(observablePropertyName, e);
+    };
 
     /**
      * The change event handler for the css-layout controls
@@ -144,16 +185,31 @@ export class CSSLayout extends FormAssociatedCSSLayout {
             this[observablePropertyName] = "";
         }
 
-        this.value = this.convertCSSLayoutValuesToString();
+        this.initialValue = this.convertCSSLayoutValuesToString();
 
         this.onChange(this.getCSSLayoutDictionary());
         this.$emit("change");
     }
 
     /**
-     * Handles the css-layout controls being enabled
+     * Handles the css-layout controls being enabled by click
      * @internal
      */
+    public handleClickToggleCSSLayout = (): void => {
+        this.handleToggleCSSLayout();
+    };
+
+    /**
+     * Handles the css-layout controls being enabled by pressing space
+     */
+    public handleKeypressToggleCSSLayout = (e: KeyboardEvent): void => {
+        switch (e.keyCode) {
+            case keyCodeSpace:
+                this.handleToggleCSSLayout();
+                break;
+        }
+    };
+
     public handleToggleCSSLayout(): void {
         if (this.flexEnabled) {
             this.resetCSSLayoutValues();
@@ -161,10 +217,17 @@ export class CSSLayout extends FormAssociatedCSSLayout {
 
         this.flexEnabled = !this.flexEnabled;
 
-        this.value = this.convertCSSLayoutValuesToString();
+        this.initialValue = this.convertCSSLayoutValuesToString();
 
         this.onChange(this.getCSSLayoutDictionary());
         this.$emit("change");
+    }
+
+    /**
+     * Returns a string using a pattern to create an input ID
+     */
+    public getInputId(cssPropertyName: string, cssPropertyValue: string): string {
+        return `${fastToolingPrefix}-${cssPropertyName}-${cssPropertyValue}`;
     }
 
     /**
@@ -179,6 +242,18 @@ export class CSSLayout extends FormAssociatedCSSLayout {
         this.columnGapValue = "";
         this.rowGapValue = "";
         this.flexWrapValue = "";
+    }
+
+    /**
+     * Removes the 'px' from an CSS value
+     * @returns
+     */
+    private resolvePxValue(value: string | undefined): string {
+        if (value && value.endsWith("px")) {
+            return value.replace("px", "");
+        }
+
+        return "";
     }
 
     /**

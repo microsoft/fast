@@ -1,4 +1,5 @@
 import "jest";
+import "../../../__tests__/mocks/match-media";
 import { CombiningKeyword, MessageSystem } from "@microsoft/fast-tooling";
 import {
     childrenSchema,

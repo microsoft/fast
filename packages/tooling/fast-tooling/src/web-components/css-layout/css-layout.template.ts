@@ -1,4 +1,6 @@
+import { Tooltip } from "@microsoft/fast-components";
 import { html, repeat } from "@microsoft/fast-element";
+import { ElementDefinitionContext, Switch } from "@microsoft/fast-foundation";
 import { CSSLayout } from "./css-layout";
 
 /**
@@ -533,12 +535,17 @@ const columnGap = html`
  * The template for the css-layout component.
  * @public
  */
-export const CSSLayoutTemplate = html<CSSLayout>`
+export const cssLayoutTemplate = (context: ElementDefinitionContext) => html<CSSLayout>`
     <template>
         <div class="control-region">
-            <fast-switch @change="${(x, c) => x.handleToggleCSSLayout()}">
+            <${context.tagFor(Switch)}
+                :checked="${x => x.flexEnabled}"
+                @keypress="${(x, c) =>
+                    x.handleKeypressToggleCSSLayout(c.event as KeyboardEvent)}"
+                @click="${(x, c) => x.handleClickToggleCSSLayout()}"
+            >
                 Enable Flexbox
-            </fast-switch>
+            </${context.tagFor(Switch)}>
         </div>
         <div class="flexbox-controls${x => (x.flexEnabled ? ` active` : "")}">
             <div class="control-region">
@@ -549,8 +556,8 @@ export const CSSLayoutTemplate = html<CSSLayout>`
                         html<string, CSSLayout>`
                             <div
                                 class="${(x, c) => c.parent.flexDirectionName} ${x =>
-                                    x} ${(x, c) =>
-                                    x === c.parent.flexDirectionValue ? "active" : ""}"
+                            x} ${(x, c) =>
+                            x === c.parent.flexDirectionValue ? "active" : ""}"
                             >
                                 ${x =>
                                     x === "row"
@@ -561,18 +568,37 @@ export const CSSLayoutTemplate = html<CSSLayout>`
                                         ? flexDirectionColumn
                                         : flexDirectionColumnReverse}
                                 <input
+                                    id="${(x, c) =>
+                                        c.parent.getInputId(
+                                            c.parent.flexDirectionName,
+                                            x
+                                        )}"
                                     type="radio"
                                     aria-label="${x => x}"
                                     name="${(x, c) => c.parent.flexDirectionName}"
                                     value="${x => x}"
-                                    ?selected="${(x, c) =>
+                                    ?checked="${(x, c) =>
                                         c.parent.flexDirectionValue === x}"
-                                    @change="${(x, c) =>
-                                        c.parent.handleCSSChange(
+                                    @keypress="${(x, c) =>
+                                        c.parent.handleKeypressCSSChange(
                                             "flexDirectionValue",
-                                            c.event
+                                            c.event as KeyboardEvent
+                                        )}"
+                                    @click="${(x, c) =>
+                                        c.parent.handleClickCSSChange(
+                                            "flexDirectionValue",
+                                            c.event as MouseEvent
                                         )}"
                                 />
+                                <${context.tagFor(Tooltip)}
+                                    anchor="${(x, c) =>
+                                        c.parent.getInputId(
+                                            c.parent.flexDirectionName,
+                                            x
+                                        )}"
+                                >
+                                    ${x => x}
+                                </${context.tagFor(Tooltip)}>
                             </div>
                         `
                     )}
@@ -586,8 +612,8 @@ export const CSSLayoutTemplate = html<CSSLayout>`
                         html<string, CSSLayout>`
                             <div
                                 class="${(x, c) => c.parent.justifyContentName} ${x =>
-                                    x} ${(x, c) =>
-                                    x === c.parent.justifyContentValue ? "active" : ""}"
+                            x} ${(x, c) =>
+                            x === c.parent.justifyContentValue ? "active" : ""}"
                             >
                                 ${x =>
                                     x === "flex-start"
@@ -602,18 +628,37 @@ export const CSSLayoutTemplate = html<CSSLayout>`
                                         ? justifyContentSpaceBetween
                                         : justifyContentSpaceEvenly}
                                 <input
+                                    id="${(x, c) =>
+                                        c.parent.getInputId(
+                                            c.parent.justifyContentName,
+                                            x
+                                        )}"
                                     type="radio"
                                     aria-label="${x => x}"
                                     name="${(x, c) => c.parent.justifyContentName}"
                                     value="${x => x}"
-                                    ?selected="${(x, c) =>
+                                    ?checked="${(x, c) =>
                                         c.parent.justifyContentValue === x}"
-                                    @change="${(x, c) =>
-                                        c.parent.handleCSSChange(
+                                    @keypress="${(x, c) =>
+                                        c.parent.handleKeypressCSSChange(
                                             "justifyContentValue",
-                                            c.event
+                                            c.event as KeyboardEvent
+                                        )}"
+                                    @click="${(x, c) =>
+                                        c.parent.handleClickCSSChange(
+                                            "justifyContentValue",
+                                            c.event as MouseEvent
                                         )}"
                                 />
+                                <${context.tagFor(Tooltip)}
+                                    anchor="${(x, c) =>
+                                        c.parent.getInputId(
+                                            c.parent.justifyContentName,
+                                            x
+                                        )}"
+                                >
+                                    ${x => x}
+                                </${context.tagFor(Tooltip)}>
                             </div>
                         `
                     )}
@@ -627,8 +672,8 @@ export const CSSLayoutTemplate = html<CSSLayout>`
                         html<string, CSSLayout>`
                             <div
                                 class="${(x, c) => c.parent.alignContentName} ${x =>
-                                    x} ${(x, c) =>
-                                    x === c.parent.alignContentValue ? "active" : ""}"
+                            x} ${(x, c) =>
+                            x === c.parent.alignContentValue ? "active" : ""}"
                             >
                                 ${x =>
                                     x === "flex-start"
@@ -645,18 +690,37 @@ export const CSSLayoutTemplate = html<CSSLayout>`
                                         ? alignContentSpaceEvenly
                                         : alignContentStretch}
                                 <input
+                                    id="${(x, c) =>
+                                        c.parent.getInputId(
+                                            c.parent.alignContentName,
+                                            x
+                                        )}"
                                     type="radio"
                                     aria-label="${x => x}"
                                     name="${(x, c) => c.parent.alignContentName}"
                                     value="${x => x}"
-                                    ?selected="${(x, c) =>
+                                    ?checked="${(x, c) =>
                                         c.parent.alignContentValue === x}"
-                                    @change="${(x, c) =>
-                                        c.parent.handleCSSChange(
+                                    @keypress="${(x, c) =>
+                                        c.parent.handleKeypressCSSChange(
                                             "alignContentValue",
-                                            c.event
+                                            c.event as KeyboardEvent
+                                        )}"
+                                    @click="${(x, c) =>
+                                        c.parent.handleClickCSSChange(
+                                            "alignContentValue",
+                                            c.event as MouseEvent
                                         )}"
                                 />
+                                <${context.tagFor(Tooltip)}
+                                    anchor="${(x, c) =>
+                                        c.parent.getInputId(
+                                            c.parent.alignContentName,
+                                            x
+                                        )}"
+                                >
+                                    ${x => x}
+                                </${context.tagFor(Tooltip)}>
                             </div>
                         `
                     )}
@@ -670,9 +734,9 @@ export const CSSLayoutTemplate = html<CSSLayout>`
                         html<string, CSSLayout>`
                             <div
                                 class="${(x, c) => c.parent.alignItemsName} ${x => x} ${(
-                                    x,
-                                    c
-                                ) => (x === c.parent.alignItemsValue ? "active" : "")}"
+                            x,
+                            c
+                        ) => (x === c.parent.alignItemsValue ? "active" : "")}"
                             >
                                 ${x =>
                                     x === "flex-start"
@@ -683,18 +747,30 @@ export const CSSLayoutTemplate = html<CSSLayout>`
                                         ? alignItemsCenter
                                         : alignItemsStretch}
                                 <input
+                                    id="${(x, c) =>
+                                        c.parent.getInputId(c.parent.alignItemsName, x)}"
                                     type="radio"
                                     aria-label="${x => x}"
                                     name="${(x, c) => c.parent.alignItemsName}"
                                     value="${x => x}"
-                                    ?selected="${(x, c) =>
-                                        c.parent.alignItemsValue === x}"
-                                    @change="${(x, c) =>
-                                        c.parent.handleCSSChange(
+                                    ?checked="${(x, c) => c.parent.alignItemsValue === x}"
+                                    @keypress="${(x, c) =>
+                                        c.parent.handleKeypressCSSChange(
                                             "alignItemsValue",
-                                            c.event
+                                            c.event as KeyboardEvent
+                                        )}"
+                                    @click="${(x, c) =>
+                                        c.parent.handleClickCSSChange(
+                                            "alignItemsValue",
+                                            c.event as MouseEvent
                                         )}"
                                 />
+                                <${context.tagFor(Tooltip)}
+                                    anchor="${(x, c) =>
+                                        c.parent.getInputId(c.parent.alignItemsName, x)}"
+                                >
+                                    ${x => x}
+                                </${context.tagFor(Tooltip)}>
                             </div>
                         `
                     )}
@@ -709,9 +785,11 @@ export const CSSLayoutTemplate = html<CSSLayout>`
                                 ${rowGap}
                             </div>
                             <input
+                                name="${x => x.rowGapName}"
                                 class="css-row-gap"
                                 type="number"
                                 id="fast-tooling-css-row-gap"
+                                :value="${x => x.rowGapValue}"
                                 @input="${(x, c) =>
                                     x.handleCSSChange("rowGapValue", c.event)}"
                             />
@@ -724,9 +802,11 @@ export const CSSLayoutTemplate = html<CSSLayout>`
                                 ${columnGap}
                             </div>
                             <input
+                                name="${x => x.columnGapName}"
                                 class="css-column-gap"
                                 type="number"
                                 id="fast-tooling-css-column-gap"
+                                :value="${x => x.columnGapValue}"
                                 @input="${(x, c) =>
                                     x.handleCSSChange("columnGapValue", c.event)}"
                             />
@@ -742,9 +822,9 @@ export const CSSLayoutTemplate = html<CSSLayout>`
                         html<string, CSSLayout>`
                             <div
                                 class="${(x, c) => c.parent.flexWrapName} ${x => x} ${(
-                                    x,
-                                    c
-                                ) => (x === c.parent.flexWrapValue ? "active" : "")}"
+                            x,
+                            c
+                        ) => (x === c.parent.flexWrapValue ? "active" : "")}"
                             >
                                 ${x =>
                                     x === "wrap"
@@ -753,17 +833,30 @@ export const CSSLayoutTemplate = html<CSSLayout>`
                                         ? flexWrapWrapReverse
                                         : flexWrapNoWrap}
                                 <input
+                                    id="${(x, c) =>
+                                        c.parent.getInputId(c.parent.flexWrapName, x)}"
                                     type="radio"
                                     aria-label="${x => x}"
                                     name="${(x, c) => c.parent.flexWrapName}"
                                     value="${x => x}"
-                                    ?selected="${(x, c) => c.parent.flexWrapValue === x}"
-                                    @change="${(x, c) =>
-                                        c.parent.handleCSSChange(
+                                    ?checked="${(x, c) => c.parent.flexWrapValue === x}"
+                                    @keypress="${(x, c) =>
+                                        c.parent.handleKeypressCSSChange(
                                             "flexWrapValue",
-                                            c.event
+                                            c.event as KeyboardEvent
+                                        )}"
+                                    @click="${(x, c) =>
+                                        c.parent.handleClickCSSChange(
+                                            "flexWrapValue",
+                                            c.event as MouseEvent
                                         )}"
                                 />
+                                <${context.tagFor(Tooltip)}
+                                    anchor="${(x, c) =>
+                                        c.parent.getInputId(c.parent.flexWrapName, x)}"
+                                >
+                                    ${x => x}
+                                </${context.tagFor(Tooltip)}>
                             </div>
                         `
                     )}

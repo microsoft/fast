@@ -1,0 +1,74 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "title": "Fluent UI Design Tokens",
+    "description": "The Fluent UI Design Tokens definition.",
+    "type": "object",
+    "id": "fluentUIDesignTokens",
+    "$id": "fluentUIDesignTokens",
+    "properties": {
+        "accent-base-color": {
+            "formControlId": "accent-base-color",
+            "title": "Accent base color",
+            "description": "The accent palette base color",
+            "type": "string",
+            "default": "#0078d4"
+        },
+        "fill-color": {
+            "formControlId": "fill-color",
+            "title": "Fill color",
+            "type": "string"
+        },
+        "base-layer-luminance": {
+            "formControlId": "base-layer-luminance",
+            "title": "Base layer luminance",
+            "type": "number",
+            "default": 0.23
+        },
+        "control-corner-radius": {
+            "formControlId": "control-corner-radius",
+            "title": "Control corner radius",
+            "description": "The corner radius value for controls",
+            "type": "number",
+            "default": 3
+        },
+        "stroke-width": {
+            "formControlId": "stroke-width",
+            "title": "Stroke width",
+            "type": "number",
+            "default": 1
+        },
+        "focus-stroke-width": {
+            "formControlId": "focus-stroke-width",
+            "title": "Focus stroke width",
+            "description": "The stroke width of elements when focused",
+            "type": "number",
+            "default": 2
+        },
+        "disabled-opacity": {
+            "formControlId": "disabled-opacity",
+            "title": "disabled opacity",
+            "type": "number",
+            "default": 0.3
+        },
+        "direction": {
+            "formControlId": "direction",
+            "title": "The left/right reflow direction",
+            "type": "string",
+            "enum": [
+                "ltr",
+                "rtl"
+            ],
+            "default": "ltr"
+        },
+        "theme": {
+            "formControlId": "theme",
+            "title": "The dark or light theme",
+            "type": "number",
+            "enum": [
+                0.23,
+                1
+            ],
+            "default": "1"
+        }
+    }
+}

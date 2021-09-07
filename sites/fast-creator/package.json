@@ -43,7 +43,6 @@
     "eslint-config-prettier": "6.10.1",
     "exenv-es6": "^1.0.0",
     "file-loader": "^6.0.0",
-    "focus-visible": "^4.1.5",
     "html-webpack-plugin": "^3.2.0",
     "jest": "^25.4.0",
     "jss": "^9.8.7",
@@ -70,9 +69,11 @@
     "worker-loader": "^2.0.0"
   },
   "dependencies": {
-    "@microsoft/fast-components": "^1.21.3",
-    "@microsoft/fast-tooling": "^0.22.0",
-    "@microsoft/fast-tooling-react": "^2.8.15",
+    "@fluentui/web-components": "^1.2.3",
+    "@microsoft/fast-components": "^2.8.2",
+    "@microsoft/fast-tooling": "^0.27.10",
+    "@microsoft/fast-tooling-react": "^2.11.1",
+    "@microsoft/fast-foundation": "^2.10.0",
     "monaco-editor": "^0.21.2",
     "monaco-editor-webpack-plugin": "^1.9.0"
   }

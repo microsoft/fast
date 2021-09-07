@@ -2,6 +2,80 @@
   "name": "@microsoft/fast-element",
   "entries": [
     {
+      "date": "Fri, 27 Aug 2021 14:14:26 GMT",
+      "tag": "@microsoft/fast-element_v1.5.0",
+      "version": "1.5.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "Adds capability to Observable to subscribe to any observable property change for an object",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "e498f1e35232169d2bf80e366350d0cde812d76d",
+            "package": "@microsoft/fast-element"
+          },
+          {
+            "comment": "ensure HTMLStyleElement DOM order matches call addStylesTo() call order",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "e43c49b26457f6bdca34b91bbaa8658359e4b2d5",
+            "package": "@microsoft/fast-element"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 26 Aug 2021 07:17:43 GMT",
+      "tag": "@microsoft/fast-element_v1.4.2",
+      "version": "1.4.2",
+      "comments": {
+        "patch": [
+          {
+            "comment": "feat(fast-element): make the task queue resilient to task exceptions",
+            "author": "roeisenb@microsoft.com",
+            "commit": "0e03f23e37b83cd1b428c01cc0e3d4c2dd9f69bd",
+            "package": "@microsoft/fast-element"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 03 Aug 2021 07:17:33 GMT",
+      "tag": "@microsoft/fast-element_v1.4.1",
+      "version": "1.4.1",
+      "comments": {
+        "none": [
+          {
+            "comment": "chore: eslint fixes in fast-element",
+            "author": "mathieu.lavoie@logmein.com",
+            "commit": "65e86a86cbf2b584f7a76081a9bef5a76e78b6f3",
+            "package": "@microsoft/fast-element"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 28 Jul 2021 07:17:22 GMT",
+      "tag": "@microsoft/fast-element_v1.4.1",
+      "version": "1.4.1",
+      "comments": {
+        "none": [
+          {
+            "comment": "docs(components): add/update and expand content",
+            "author": "roeisenb@microsoft.com",
+            "commit": "07d03884b168bb66d482a72df2d2941f8561b9ce",
+            "package": "@microsoft/fast-element"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "implement patch to work around Angular optimization bug",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "e92c9e5197e54fc5c6ec6daaf36c09d9190c7ef2",
+            "package": "@microsoft/fast-element"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sun, 30 May 2021 07:42:30 GMT",
       "tag": "@microsoft/fast-element_v1.4.0",
       "version": "1.4.0",

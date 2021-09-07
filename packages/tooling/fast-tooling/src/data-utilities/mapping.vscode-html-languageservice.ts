@@ -29,41 +29,82 @@ export interface MapNodeToDataDictionaryConfig {
  * vscode-html-languageservice package
  */
 
+function parseElementAttributeValue(schema, attribute): [string, any] {
+    if (schema && schema.properties && schema.properties[attribute.name]) {
+        if (schema.properties[attribute.name].type === DataType.boolean) {
+            // When the attribute is a boolean, it does not matter
+            // what it's value, it will always be true if present
+            return [attribute.name, true];
+        }
+
+        if (schema.properties[attribute.name].type === DataType.number) {
+            // Attributes are always strings, this must be converted
+            return [attribute.name, parseFloat(JSON.parse(attribute.value))];
+        }
+
+        if (schema.properties[attribute.name].type === DataType.string) {
+            let parsedValue;
+
+            // Attributes which may appear as a JSON type other than
+            // a string must be converted
+            try {
+                parsedValue = JSON.parse(attribute.value);
+
+                if (typeof parsedValue !== "string") {
+                    parsedValue = `${parsedValue}`;
+                }
+            } catch (e) {
+                parsedValue = attribute.value;
+            }
+
+            return [attribute.name, parsedValue];
+        }
+    }
+
+    if (attribute.name !== "slot") {
+        try {
+            const parsedValue = JSON.parse(attribute.value);
+
+            return [attribute.name, parsedValue === null ? true : parsedValue];
+        } catch (e) {
+            return [attribute.name, attribute.value];
+        }
+    }
+}
+
 function mapAttributesAndSlotsToData(
     node: Node,
     slotAttributes: { [key: string]: LinkedData[] },
     schemaId: string,
     schemaDictionary: SchemaDictionary
-) {
-    return Object.entries(node.attributes)
-        .map(([attributeKey, attributeValue]: [string, string]) => {
-            if (schemaDictionary[schemaId].properties[attributeKey]) {
-                if (
-                    schemaDictionary[schemaId].properties[attributeKey].type ===
-                    DataType.boolean
-                ) {
-                    // When the attribute is a boolean, it does not matter
-                    // what it's value, it will always be true if present
-                    return [attributeKey, true];
-                }
+): { [key: string]: any } {
+    const attributes = Array.isArray(node.attributes)
+        ? node.attributes.map(attribute => {
+              return {
+                  [attribute.name]: attribute.value,
+              };
+          })
+        : Object.entries(node.attributes).map(
+              ([attributeKey, attributeValue]: [string, string]) => {
+                  return {
+                      [attributeKey]: attributeValue,
+                  };
+              }
+          );
 
-                if (
-                    schemaDictionary[schemaId].properties[attributeKey].type ===
-                    DataType.number
-                ) {
-                    // Attributes are always strings, this must be converted
-                    return [attributeKey, parseFloat(JSON.parse(attributeValue))];
+    return attributes
+        .map((attribute: { [key: string]: string }) => {
+            const name = Object.keys(attribute)[0];
+            const parsedAttributeValue = parseElementAttributeValue(
+                schemaDictionary[schemaId],
+                {
+                    name,
+                    value: attribute[name],
                 }
-            }
+            );
 
-            if (attributeKey !== "slot") {
-                try {
-                    const parsedValue = JSON.parse(attributeValue);
-
-                    return [attributeKey, parsedValue === null ? true : parsedValue];
-                } catch (e) {
-                    return [attributeKey, ""];
-                }
+            if (parsedAttributeValue !== void 0) {
+                return parsedAttributeValue;
             }
         })
         .reduce((previousValue, currentValue) => {
@@ -444,11 +485,15 @@ function identifyElementsFromParsedValue(
     });
 }
 
-function mapElementAttributes(element): { [key: string]: any } {
+function mapElementAttributes(element: Node, schema): { [key: string]: any } {
     return element.attributes.reduce((prevValue, currentValue) => {
+        const parsedAttribute = parseElementAttributeValue(schema, currentValue);
+
         return {
             ...prevValue,
-            [currentValue.name]: currentValue.value,
+            [currentValue.name]: parsedAttribute
+                ? parsedAttribute[1]
+                : currentValue.value,
         };
     }, {});
 }
@@ -459,6 +504,7 @@ function resolveDataDictionaryFromElement(
     node: Node,
     parent: Parent,
     slotAttributes: { [key: string]: LinkedData[] },
+    children: ElementChildren,
     schemaDictionary: SchemaDictionary
 ): DataDictionary<unknown> {
     return [
@@ -471,11 +517,15 @@ function resolveDataDictionaryFromElement(
                         ? node.content
                         : mapAttributesAndSlotsToData(
                               node,
-                              slotAttributes,
+                              {
+                                  ...slotAttributes,
+                                  ...children[0],
+                              },
                               schemaId,
                               schemaDictionary
                           ),
             },
+            ...children[1],
         },
         linkedDataId,
     ];
@@ -501,14 +551,34 @@ function findSchemaId(
           }) || "div";
 }
 
+function getUniqueId(linkedDataIds: string[]): string {
+    const id: string = uniqueId("fast");
+
+    if (linkedDataIds.includes(id)) {
+        return getUniqueId(linkedDataIds);
+    }
+
+    return id;
+}
+
 function mapElementToDataDictionary(
     node: Node,
     textSchemaId: string,
     schemaDictionary: SchemaDictionary,
-    parent: Parent
+    parent: Parent,
+    linkedDataIds: string[],
+    previousDataDictionary: DataDictionary<unknown>
 ): DataDictionary<unknown> {
-    const linkedDataId = uniqueId("fast");
+    const linkedDataId = getUniqueId(linkedDataIds);
     const schemaId: string = findSchemaId(node, textSchemaId, schemaDictionary);
+    /* eslint-disable-next-line @typescript-eslint/no-use-before-define */
+    const linkedData = mapElementChildren(
+        node,
+        textSchemaId,
+        schemaDictionary,
+        linkedDataId,
+        previousDataDictionary
+    );
 
     return resolveDataDictionaryFromElement(
         linkedDataId,
@@ -516,6 +586,7 @@ function mapElementToDataDictionary(
         node,
         parent,
         {},
+        linkedData,
         schemaDictionary
     );
 }
@@ -543,7 +614,7 @@ function mapElementChildren(
     const previouslyMatchedChildren: string[] = [];
     let dataDictionaryChildItems: { [key: string]: Data<unknown> } = {};
 
-    element.children.forEach(child => {
+    (element.children || []).forEach(child => {
         const slotAttribute: Attribute | undefined = child.attributes.find(
             (attribute: Attribute) => {
                 return attribute.name === "slot";
@@ -556,7 +627,7 @@ function mapElementChildren(
         // Find current dictionary item slots
         if (
             Array.isArray(
-                previousDataDictionary[0][currentDictionaryId].data[schemaSlotName]
+                previousDataDictionary[0][currentDictionaryId]?.data?.[schemaSlotName]
             )
         ) {
             const matchingChild: LinkedData = previousDataDictionary[0][
@@ -604,14 +675,19 @@ function mapElementChildren(
                     {
                         id: currentDictionaryId,
                         dataLocation: schemaSlotName,
-                    }
+                    },
+                    Object.keys(previousDataDictionary[0]),
+                    previousDataDictionary
                 );
 
                 elementChildren[schemaSlotName].push({
                     id: newNode[1],
                 });
 
-                dataDictionaryChildItems[newNode[1]] = newNode[0][newNode[1]];
+                dataDictionaryChildItems = {
+                    ...dataDictionaryChildItems,
+                    ...newNode[0],
+                };
             }
         } else {
             const newNode = mapElementToDataDictionary(
@@ -621,7 +697,9 @@ function mapElementChildren(
                 {
                     id: currentDictionaryId,
                     dataLocation: schemaSlotName,
-                }
+                },
+                Object.keys(previousDataDictionary[0]),
+                previousDataDictionary
             );
 
             if (Array.isArray(elementChildren[schemaSlotName])) {
@@ -636,7 +714,10 @@ function mapElementChildren(
                 ];
             }
 
-            dataDictionaryChildItems[newNode[1]] = newNode[0][newNode[1]];
+            dataDictionaryChildItems = {
+                ...dataDictionaryChildItems,
+                ...newNode[0],
+            };
         }
     });
 
@@ -672,7 +753,7 @@ function mapUpdatesFromMonacoEditor(
                 data: isTextNode
                     ? element.content
                     : {
-                          ...mapElementAttributes(element),
+                          ...mapElementAttributes(element, schemaDictionary[schemaId]),
                           ...children[0],
                       },
             },
@@ -712,6 +793,8 @@ export function mapVSCodeHTMLAndDataDictionaryToDataDictionary(
         },
         textSchemaId,
         schemaDictionary,
-        undefined
+        undefined,
+        Object.keys(previousDataDictionary[0]),
+        previousDataDictionary
     );
 }

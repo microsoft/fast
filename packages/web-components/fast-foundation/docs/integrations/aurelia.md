@@ -39,29 +39,25 @@ First, open your `src/main.ts` file and add the following code:
 
 ```ts
 import { 
-  FASTDesignSystemProvider, 
-  FASTCard, 
-  FASTButton 
+  provideFASTDesignSystem, 
+  fastCard, 
+  fastButton
 } from '@microsoft/fast-components';
 
-/*
- * Ensure that tree-shaking doesn't remove these components from the bundle.
- * There are multiple ways to prevent tree shaking, of which this is one.
- */
-FASTDesignSystemProvider;
-FASTCard;
-FASTButton;
+provideFASTDesignSystem()
+    .register(
+        fastCard(),
+        fastButton()
+    );
 ```
 
-This code imports the `<fast-design-system-provider>` component as well as the `<fast-card>`, and `<fast-button>` components. Once you save, the dev server will rebuild and refresh your browser. However, you still won't see anything. To get some UI showing up, we need to write some HTML that uses our components. Replace your `my-app.html` file with the following markup:
+This code uses the FAST Design System to register the `<fast-card>` and `<fast-button>` components. Once you save, the dev server will rebuild and refresh your browser. However, you still won't see anything. To get some UI showing up, we need to write some HTML that uses our components. Replace your `my-app.html` file with the following markup:
 
 ```html
-<fast-design-system-provider use-defaults>
-  <fast-card>
-    <h2>${message}</h2>
-    <fast-button appearance="accent" click.trigger="onClick()">Click Me</fast-button>
-  </fast-card>
-</fast-design-system-provider>
+<fast-card>
+  <h2>${message}</h2>
+  <fast-button appearance="accent" click.trigger="onClick()">Click Me</fast-button>
+</fast-card>
 ```
 
 Replace your `my-app.ts` with this:
@@ -79,10 +75,6 @@ export class MyApp {
 To add a splash of style, replace your `my-app.css` content with this:
 
 ```css
-fast-design-system-provider {
-  display: inline-block;
-}
-
 fast-card {
   padding: 16px;
   display: flex;
@@ -101,88 +93,124 @@ fast-card > fast-button {
 
 ### Enabling two-way bindings
 
-Aurelia knows by default how to listen for changes in native elements. Now we need to teach it how to listen for changes in FAST elements. You can do so by [extending its templating syntax](https://docs.aurelia.io/examples/integration/ms-fast). We suggest to create an adapter file and then register it in your `main.ts`. Here is how:
+Aurelia knows by default how to listen for changes in native elements. Now we need to teach it how to listen for changes in FAST elements. You can do so by [extending its templating syntax](https://docs.aurelia.io/examples/integration/ms-fast). 
 
-First create a `src/aurelia-fast-adapter.ts` file and copy the following code:
+You can either use a [wrapper](https://www.npmjs.com/package/aurelia-fast-adapter) developed by the community or teach Aurelia manually:
+
+### Import and register `aurelia-fast-adapter`
+
+Start by installing the adapter
 
 ```ts
-// aurelia-fast-adapter.ts
-import { IContainer, IAttrSyntaxTransformer, NodeObserverLocator, AppTask } from 'aurelia';
-
-export class AureliaFastAdapter {
-
-  public static register(container: IContainer) {
-    AureliaFastAdapter.extendTemplatingSyntax(container);
-  }
-
-  private static extendTemplatingSyntax(container) {
-    AppTask.with(IContainer).beforeCreate().call(container => {
-      const attrSyntaxTransformer = container.get(IAttrSyntaxTransformer);
-      const nodeObserverLocator = container.get(NodeObserverLocator);
-      attrSyntaxTransformer.useTwoWay((el, property) => {
-        switch (el.tagName) {
-          case 'FAST-SLIDER':
-          case 'FAST-TEXT-FIELD':
-          case 'FAST-TEXT-AREA':
-            return property === 'value';
-          case 'FAST-CHECKBOX':
-          case 'FAST-RADIO':
-          case 'FAST-RADIO-GROUP':
-          case 'FAST-SWITCH':
-            return property === 'checked';
-          case 'FAST-TABS':
-            return property === 'activeid';
-          default:
-            return false;
-        }
-      });
-      // Teach Aurelia what events to use to observe properties of elements.
-      const valuePropertyConfig = { events: ['input', 'change'] };
-      nodeObserverLocator.useConfig({
-        'FAST-CHECKBOX': {
-          checked: valuePropertyConfig
-        },
-        'FAST-RADIO': {
-          checked: valuePropertyConfig
-        },
-        'FAST-RADIO-GROUP': {
-          value: valuePropertyConfig
-        },
-        'FAST-SLIDER': {
-          value: valuePropertyConfig
-        },
-        'FAST-SWITCH': {
-          checked: valuePropertyConfig
-        },
-        'FAST-TABS': {
-          activeid: valuePropertyConfig
-        },
-        'FAST-TEXT-FIELD': {
-          value: valuePropertyConfig
-        },
-        'FAST-TEXT-AREA': {
-          value: valuePropertyConfig
-        }
-      });
-    }).register(container);
-  }
-}
+npm install aurelia-fast-adapter
 ```
 
-Then, open your `src/main.ts` file and register your new adapter as such: 
+and then simply register it from your `src/main.ts`:
 
 ```ts
-// main.ts
+// src/main.ts
 
-import { AureliaFastAdapter } from './aurelia-fast-adapter';
+import { FASTAdapter } from 'aurelia-fast-adapter';
 
 Aurelia
-  .register(AureliaFastAdapter) // add this line
+  .register(FASTAdapter) // add this line
   // other registrations...
   .start();
 ```
 
+If you use FAST in its default configuration that's all you need to do. But if you changed the prefix of your components to something else, you can customize the adapter as such:
+
+```ts
+// src/main.ts
+
+import { FASTAdapter } from 'aurelia-fast-adapter';
+
+Aurelia
+  .register(FASTAdapter.customize({withPrefix: 'my-custom-prefix'}) // customized with prefix
+  .start();
+```
+
+Also, in case you have local components that require two-way binding, you can adjust the adapter before to register it as such:
+
+```ts
+// src/main.ts
+
+import { FASTAdapter } from 'aurelia-fast-adapter';
+
+// this line will tell the adapter that it must use two-way binding on the <my-custom-prefix-date-field> component and use this two-way binding on the `value` property. It's possible to add several properties at once if necessary
+FASTAdapter.tags['DATE-FIELD'] = ['value'];
+
+Aurelia
+  .register(FASTAdapter.customize({withPrefix: 'my-custom-prefix'})
+  .start();
+```
+
 Congratulations! You're now set up to use FAST and Aurelia 2!
+
+### Manually teach Aurelia 2 about two-way binding:
+
+If the example doesn't seem obvious, the following prerequisite reads are recommended:
+
+* [extending Aurelia templating syntax](https://docs.aurelia.io/app-basics/extending-templating-syntax)
+
+The following is a code example of how to teach Aurelia to work seamlessly with Microsoft FAST.
+
+```typescript
+import { AppTask, IContainer, IAttrMapper, NodeObserverLocator } from 'aurelia';
+
+Aurelia.register(AppTask.beforeCreate(IContainer, container => {
+  const attrMapper = container.get(IAttrMapper);
+  const nodeObserverLocator = container.get(NodeObserverLocator);
+  attrMapper.useTwoWay((el, property) => {
+    switch (el.tagName) {
+      case 'FAST-SLIDER':
+      case 'FAST-TEXT-FIELD':
+      case 'FAST-TEXT-AREA':
+        return property === 'value';
+      case 'FAST-CHECKBOX':
+      case 'FAST-RADIO':
+      case 'FAST-RADIO-GROUP':
+      case 'FAST-SWITCH':
+        return property === 'checked';
+      case 'FAST-TABS':
+        return property === 'activeid';
+      default:
+        return false;
+    }
+  });
+
+  // Teach Aurelia what events to use to observe properties of elements.
+  // Because FAST components all use a single change event to notify,
+  // we can use a single common object
+  const valuePropertyConfig = { events: ['input', 'change'] };
+  nodeObserverLocator.useConfig({
+    'FAST-CHECKBOX': {
+      checked: valuePropertyConfig
+    },
+    'FAST-RADIO': {
+      checked: valuePropertyConfig
+    },
+    'FAST-RADIO-GROUP': {
+      value: valuePropertyConfig
+    },
+    'FAST-SLIDER': {
+      value: valuePropertyConfig
+    },
+    'FAST-SWITCH': {
+      checked: valuePropertyConfig
+    },
+    'FAST-TABS': {
+      activeid: valuePropertyConfig
+    },
+    'FAST-TEXT-FIELD': {
+      value: valuePropertyConfig
+    },
+    'FAST-TEXT-AREA': {
+      value: valuePropertyConfig
+    }
+  });
+}))
+```
 
 ## Aurelia 1
 
@@ -222,30 +250,26 @@ First, open your `src/main.ts` file and add the following code:
 
 ```ts
 import { 
-  FASTDesignSystemProvider, 
-  FASTCard, 
-  FASTButton 
+  provideFASTDesignSystem, 
+  fastCard, 
+  fastButton
 } from '@microsoft/fast-components';
 
-/*
- * Ensure that tree-shaking doesn't remove these components from the bundle.
- * There are multiple ways to prevent tree shaking, of which this is one.
- */
-FASTDesignSystemProvider;
-FASTCard;
-FASTButton;
+provideFASTDesignSystem()
+    .register(
+        fastCard(),
+        fastButton()
+    );
 ```
 
-This code imports the `<fast-design-system-provider>` component as well as the `<fast-card>`, and `<fast-button>` components. Once you save, the dev server will rebuild and refresh your browser. However, you still won't see anything. To get some UI showing up, we need to write some HTML that uses our components. Replace your `app.html` file with the following markup:
+This code uses the FAST Design System to register the `<fast-card>` and `<fast-button>` components. Once you save, the dev server will rebuild and refresh your browser. However, you still won't see anything. To get some UI showing up, we need to write some HTML that uses our components. Replace your `app.html` file with the following markup:
 
 ```html
 <template>
-  <fast-design-system-provider use-defaults>
-    <fast-card>
-      <h2>${message}</h2>
-      <fast-button appearance="accent" click.trigger="onClick()">Click Me</fast-button>
-    </fast-card>
-  </fast-design-system-provider>
+  <fast-card>
+    <h2>${message}</h2>
+    <fast-button appearance="accent" click.trigger="onClick()">Click Me</fast-button>
+  </fast-card>
 </template>
 ```
 
@@ -265,11 +289,6 @@ To add a splash of style, add the following to your `app.html` template:
 
 ```html
 <style>
-  fast-design-system-provider {
-    display: inline-block;
-    color: var(--neutral-foreground-rest);
-  }
-
   fast-card {
     padding: 16px;
     display: flex;

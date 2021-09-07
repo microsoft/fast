@@ -4,39 +4,97 @@ import {
     PartialFASTElementDefinition,
 } from "@microsoft/fast-element";
 import { Container, DI, InterfaceSymbol, Registration } from "../di/di";
+import { ComponentPresentation } from "./component-presentation";
 
 /**
- * Defines an element within the context of a design system.
- * @alpha
+ * Enables defining an element within the context of a design system.
+ * @public
  */
 export type ContextualElementDefinition = Omit<PartialFASTElementDefinition, "name">;
 
 /**
  * The design system context in which an element can be defined.
- * @alpha
+ * @public
  */
 export interface ElementDefinitionContext {
+    /**
+     * The name that the element will be defined as.
+     * @public
+     */
     readonly name: string;
+
+    /**
+     * The type that will be defined.
+     * @public
+     */
     readonly type: Constructable;
+
+    /**
+     * The dependency injection container associated with the design system.
+     * @public
+     */
     readonly container: Container;
+
+    /**
+     * Indicates whether or not a platform define call will be made in order
+     * to define the element.
+     * @public
+     */
     readonly willDefine: boolean;
+
+    /**
+     * The shadow root mode specified by the design system's configuration.
+     * @public
+     */
+    readonly shadowRootMode: ShadowRootMode | undefined;
+
+    /**
+     * Defines the element.
+     * @param definition - The definition for the element.
+     * @public
+     */
     defineElement(definition?: ContextualElementDefinition): void;
+
+    /**
+     * Defines a presentation for the element.
+     * @param presentation - The presentation configuration.
+     * @public
+     */
+    definePresentation(presentation: ComponentPresentation): void;
+
+    /**
+     * Returns the HTML element tag name that the type will be defined as.
+     * @param type - The type to lookup.
+     * @public
+     */
     tagFor(type: Constructable): string;
 }
 
 /**
  * The callback type that is invoked when an element can be defined by a design system.
- * @alpha
+ * @public
  */
 export type ElementDefinitionCallback = (ctx: ElementDefinitionContext) => void;
 
 /**
  * Design system contextual APIs and configuration usable within component
  * registries.
- * @alpha
+ * @public
  */
 export interface DesignSystemRegistrationContext {
+    /**
+     * The element prefix specified by the design system's configuration.
+     * @public
+     */
     readonly elementPrefix: string;
+
+    /**
+     * Used to attempt to define a custom element.
+     * @param name - The name of the element to define.
+     * @param type - The type of the constructor to use to define the element.
+     * @param callback - A callback to invoke if definition will happen.
+     * @public
+     */
     tryDefineElement(
         name: string,
         type: Constructable,
@@ -45,99 +103,259 @@ export interface DesignSystemRegistrationContext {
 }
 
 /**
- * @alpha
+ * Design system contextual APIs and configuration usable within component
+ * registries.
+ * @public
  */
 export const DesignSystemRegistrationContext: InterfaceSymbol<DesignSystemRegistrationContext> = DI.createInterface<
     DesignSystemRegistrationContext
 >();
 
 /**
+ * Indicates what to do with an ambiguous (duplicate) element.
+ * @public
+ */
+export const ElementDisambiguation = Object.freeze({
+    /**
+     * Skip defining the element but still call the provided callback passed
+     * to DesignSystemRegistrationContext.tryDefineElement
+     */
+    definitionCallbackOnly: null,
+    /**
+     * Ignore the duplicate element entirely.
+     */
+    ignoreDuplicate: Symbol(),
+});
+
+/**
+ * Represents the return values expected from an ElementDisambiguationCallback.
+ * @public
+ */
+export type ElementDisambiguationResult =
+    | string
+    | typeof ElementDisambiguation.ignoreDuplicate
+    | typeof ElementDisambiguation.definitionCallbackOnly;
+
+/**
  * The callback type that is invoked when two elements are trying to define themselves with
  * the same name.
- * @alpha
+ * @remarks
+ * The callback should return either:
+ * 1. A string to provide a new name used to disambiguate the element
+ * 2. ElementDisambiguation.ignoreDuplicate to ignore the duplicate element entirely
+ * 3. ElementDisambiguation.definitionCallbackOnly to skip defining the element but still
+ * call the provided callback passed to DesignSystemRegistrationContext.tryDefineElement
+ * @public
  */
 export type ElementDisambiguationCallback = (
     nameAttempt: string,
     typeAttempt: Constructable,
     existingType: Constructable
-) => string | null;
+) => ElementDisambiguationResult;
 
 const elementTypesByTag = new Map<string, Constructable>();
 const elementTagsByType = new Map<Constructable, string>();
 
 /**
- * @alpha
+ * Represents a configurable design system.
+ * @public
  */
-export class DesignSystem {
-    private registrations: any[] = [];
-    private prefix: string = "fast";
-    private disambiguate: ElementDisambiguationCallback = () => null;
+export interface DesignSystem {
+    /**
+     * Registers components and services with the design system and the
+     * underlying dependency injection container.
+     * @param params - The registries to pass to the design system
+     * and the underlying dependency injection container.
+     * @public
+     */
+    register(...params: any[]): DesignSystem;
 
-    public withPrefix(prefix: string) {
+    /**
+     * Configures the prefix to add to each custom element name.
+     * @param prefix - The prefix to use for custom elements.
+     * @public
+     */
+    withPrefix(prefix: string): DesignSystem;
+
+    /**
+     * Overrides the default Shadow DOM mode for custom elements.
+     * @param mode - The Shadow DOM mode to use for custom elements.
+     * @public
+     */
+    withShadowRootMode(mode: ShadowRootMode): DesignSystem;
+
+    /**
+     * Provides a custom callback capable of resolving scenarios where
+     * two different elements request the same element name.
+     * @param callback - The disambiguation callback.
+     * @public
+     */
+    withElementDisambiguation(callback: ElementDisambiguationCallback): DesignSystem;
+}
+
+const designSystemKey = DI.createInterface<DesignSystem>(x =>
+    x.cachedCallback(handler => {
+        const element = document.body as any;
+        const owned = element.$$designSystem$$ as DesignSystem;
+
+        if (owned) {
+            return owned;
+        }
+
+        return (new DefaultDesignSystem(element, handler) as any) as DesignSystem;
+    })
+);
+
+/**
+ * An API gateway to design system features.
+ * @public
+ */
+export const DesignSystem = Object.freeze({
+    /**
+     * Returns the HTML element name that the type is defined as.
+     * @param type - The type to lookup.
+     * @public
+     */
+    tagFor(type: Constructable): string {
+        return elementTagsByType.get(type)!;
+    },
+
+    /**
+     * Searches the DOM hierarchy for the design system that is responsible
+     * for the provided element.
+     * @param element - The element to locate the design system for.
+     * @returns The located design system.
+     * @public
+     */
+    responsibleFor(element: HTMLElement): DesignSystem {
+        const owned = (element as any).$$designSystem$$ as DesignSystem;
+
+        if (owned) {
+            return owned;
+        }
+
+        const container = DI.findResponsibleContainer(element);
+        return container.get(designSystemKey);
+    },
+
+    /**
+     * Gets the DesignSystem if one is explicitly defined on the provided element;
+     * otherwise creates a design system defined directly on the element.
+     * @param element - The element to get or create a design system for.
+     * @returns The design system.
+     * @public
+     */
+    getOrCreate(element: HTMLElement = document.body): DesignSystem {
+        const owned = (element as any).$$designSystem$$ as DesignSystem;
+
+        if (owned) {
+            return owned;
+        }
+
+        const container = DI.getOrCreateDOMContainer(element);
+
+        if (!container.has(designSystemKey, false)) {
+            container.register(
+                Registration.instance(
+                    designSystemKey,
+                    new DefaultDesignSystem(element, container)
+                )
+            );
+        }
+
+        return container.get(designSystemKey);
+    },
+});
+
+class DefaultDesignSystem implements DesignSystem {
+    private prefix: string = "fast";
+    private shadowRootMode: ShadowRootMode | undefined = undefined;
+    private context: DesignSystemRegistrationContext;
+    private disambiguate: ElementDisambiguationCallback = () =>
+        ElementDisambiguation.definitionCallbackOnly;
+
+    constructor(private host: HTMLElement, private container: Container) {
+        (host as any).$$designSystem$$ = this;
+
+        container.register(
+            Registration.callback(DesignSystemRegistrationContext, () => this.context)
+        );
+    }
+
+    public withPrefix(prefix: string): DesignSystem {
         this.prefix = prefix;
         return this;
     }
 
-    public withElementDisambiguation(callback: ElementDisambiguationCallback) {
+    public withShadowRootMode(mode: ShadowRootMode): DesignSystem {
+        this.shadowRootMode = mode;
+        return this;
+    }
+
+    public withElementDisambiguation(
+        callback: ElementDisambiguationCallback
+    ): DesignSystem {
         this.disambiguate = callback;
         return this;
     }
 
-    public register(...params: any[]) {
-        this.registrations.push(...params);
-        return this;
-    }
-
-    public applyTo(element: HTMLElement) {
-        const container = DI.getOrCreateDOMContainer(element);
+    public register(...registrations: any[]): DesignSystem {
+        const container = this.container;
         const elementDefinitionEntries: ElementDefinitionEntry[] = [];
         const disambiguate = this.disambiguate;
-        const context: DesignSystemRegistrationContext = {
+        const shadowRootMode = this.shadowRootMode;
+
+        this.context = {
             elementPrefix: this.prefix,
             tryDefineElement(
                 name: string,
                 type: Constructable,
                 callback: ElementDefinitionCallback
             ) {
-                let elementName: string | null = name;
-                let foundByName = elementTypesByTag.get(elementName);
+                let elementName = name;
+                let typeFoundByName = elementTypesByTag.get(elementName);
+                let needsDefine = true;
 
-                while (foundByName && elementName) {
-                    elementName = disambiguate(elementName, type, foundByName);
+                while (typeFoundByName) {
+                    const result = disambiguate(elementName, type, typeFoundByName);
 
-                    if (elementName) {
-                        foundByName = elementTypesByTag.get(elementName);
+                    switch (result) {
+                        case ElementDisambiguation.ignoreDuplicate:
+                            return;
+                        case ElementDisambiguation.definitionCallbackOnly:
+                            needsDefine = false;
+                            typeFoundByName = void 0;
+                            break;
+                        default:
+                            elementName = result as string;
+                            typeFoundByName = elementTypesByTag.get(elementName);
+                            break;
                     }
                 }
 
-                const willDefine = !!elementName;
-
-                if (willDefine) {
+                if (needsDefine) {
                     if (elementTagsByType.has(type)) {
                         type = class extends type {};
                     }
 
-                    elementTypesByTag.set(elementName!, type);
-                    elementTagsByType.set(type, elementName!);
+                    elementTypesByTag.set(elementName, type);
+                    elementTagsByType.set(type, elementName);
                 }
 
                 elementDefinitionEntries.push(
                     new ElementDefinitionEntry(
                         container,
-                        elementName || name,
+                        elementName,
                         type,
+                        shadowRootMode,
                         callback,
-                        willDefine
+                        needsDefine
                     )
                 );
             },
         };
 
-        container.register(
-            Registration.instance(DesignSystemRegistrationContext, context)
-        );
-
-        container.register(...this.registrations);
+        container.register(...registrations);
 
         for (const entry of elementDefinitionEntries) {
             entry.callback(entry);
@@ -147,7 +365,7 @@ export class DesignSystem {
             }
         }
 
-        return container;
+        return this;
     }
 }
 
@@ -158,9 +376,14 @@ class ElementDefinitionEntry implements ElementDefinitionContext {
         public readonly container: Container,
         public readonly name: string,
         public readonly type: Constructable,
+        public shadowRootMode: ShadowRootMode | undefined,
         public readonly callback: ElementDefinitionCallback,
         public readonly willDefine: boolean
     ) {}
+
+    definePresentation(presentation: ComponentPresentation) {
+        ComponentPresentation.define(this.name, presentation, this.container);
+    }
 
     defineElement(definition: ContextualElementDefinition) {
         this.definition = new FASTElementDefinition(this.type, {
@@ -170,6 +393,6 @@ class ElementDefinitionEntry implements ElementDefinitionContext {
     }
 
     tagFor(type: Constructable): string {
-        return elementTagsByType.get(type)!;
+        return DesignSystem.tagFor(type)!;
     }
 }

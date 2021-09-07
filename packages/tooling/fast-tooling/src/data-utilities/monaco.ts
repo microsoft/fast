@@ -17,7 +17,8 @@ function getLinkedDataDataLocations(
     dictionaryId: string,
     dataDictionary: DataDictionary<unknown>
 ): string[] {
-    const allDataLocations = Object.entries(dataDictionary[0])
+    // get all linked data data locations for a dictionary id
+    const allLinkedDataDictionaryIds = Object.entries(dataDictionary[0])
         .filter(([, dictionaryItem]: [string, Data<any>]) => {
             return get(dictionaryItem, "parent.id") === dictionaryId;
         })
@@ -25,9 +26,31 @@ function getLinkedDataDataLocations(
             return dictionaryItem[0];
         });
 
-    return allDataLocations.filter((dataLocation: string, index: number) => {
-        return allDataLocations.indexOf(dataLocation) === index;
-    });
+    // identify and group all items by slot name
+    // e.g. { Slot: ["id1", "id2", "id3"], SlotFoo: ["id5", "id4"] }
+    const dictionaryOfLinkedDataIdsBySlotName: { [key: string]: string[] } = {};
+
+    for (let i = 0, length = allLinkedDataDictionaryIds.length; i < length; i++) {
+        const linkedDataSlotName =
+            dataDictionary[0][allLinkedDataDictionaryIds[i]].parent.dataLocation;
+        const slottedIndex = dataDictionary[0][dictionaryId].data[linkedDataSlotName]
+            .map(item => {
+                return item.id;
+            })
+            .indexOf(allLinkedDataDictionaryIds[i]);
+
+        if (!dictionaryOfLinkedDataIdsBySlotName[linkedDataSlotName]) {
+            dictionaryOfLinkedDataIdsBySlotName[linkedDataSlotName] = [];
+        }
+
+        dictionaryOfLinkedDataIdsBySlotName[linkedDataSlotName][slottedIndex] =
+            allLinkedDataDictionaryIds[i];
+    }
+
+    // flatten the object structure with string arrays into a single string array
+    return Object.values(dictionaryOfLinkedDataIdsBySlotName).reduce((prev, curr) => {
+        return prev.concat(curr);
+    }, []);
 }
 
 function mapDataDictionaryItemToMonacoEditorHTMLLine(

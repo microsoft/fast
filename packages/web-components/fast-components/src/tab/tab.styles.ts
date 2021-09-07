@@ -1,42 +1,54 @@
-import { css } from "@microsoft/fast-element";
+import { css, ElementStyles } from "@microsoft/fast-element";
 import {
     disabledCursor,
     display,
+    ElementDefinitionContext,
     focusVisible,
     forcedColorsStylesheetBehavior,
+    FoundationElementDefinition,
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
-    accentFillActiveBehavior,
-    accentFillHoverBehavior,
-    accentFillRestBehavior,
-    accentForegroundActiveBehavior,
-    accentForegroundHoverBehavior,
-    accentForegroundRestBehavior,
-    heightNumber,
-    neutralFillActiveBehavior,
-    neutralFillHoverBehavior,
-    neutralFillRestBehavior,
-    neutralFillStealthRestBehavior,
-    neutralFocusBehavior,
-    neutralForegroundActiveBehavior,
-    neutralForegroundHintBehavior,
-    neutralForegroundHoverBehavior,
-    neutralForegroundRestBehavior,
-} from "../styles";
+    accentForegroundActive,
+    accentForegroundHover,
+    accentForegroundRest,
+    bodyFont,
+    controlCornerRadius,
+    designUnit,
+    disabledOpacity,
+    focusStrokeOuter,
+    focusStrokeWidth,
+    neutralFillActive,
+    neutralFillHover,
+    neutralFillRest,
+    neutralFillStealthRest,
+    neutralForegroundHint,
+    neutralForegroundRest,
+    strokeWidth,
+    typeRampBaseFontSize,
+    typeRampBaseLineHeight,
+} from "../design-tokens";
+import { heightNumber } from "../styles";
 
-export const TabStyles = css`
+export const tabStyles: (
+    context: ElementDefinitionContext,
+    definition: FoundationElementDefinition
+) => ElementStyles = (
+    context: ElementDefinitionContext,
+    definition: FoundationElementDefinition
+) =>
+    css`
     ${display("inline-flex")} :host {
         box-sizing: border-box;
-        font-family: var(--body-font);
-        font-size: var(--type-ramp-base-font-size);
-        line-height: var(--type-ramp-base-line-height);
+        font-family: ${bodyFont};
+        font-size: ${typeRampBaseFontSize};
+        line-height: ${typeRampBaseLineHeight};
         height: calc(${heightNumber} * 1px);
-        padding: calc(var(--design-unit) * 5px) calc(var(--design-unit) * 4px);
-        color: ${neutralForegroundHintBehavior.var};
+        padding: calc(${designUnit} * 5px) calc(${designUnit} * 4px);
+        color: ${neutralForegroundHint};
         fill: currentcolor;
-        border-radius: calc(var(--corner-radius) * 1px);
-        border: calc(var(--outline-width) * 1px) solid transparent;
+        border-radius: calc(${controlCornerRadius} * 1px);
+        border: calc(${strokeWidth} * 1px) solid transparent;
         align-items: center;
         justify-content: center;
         grid-row: 1;
@@ -44,48 +56,48 @@ export const TabStyles = css`
     }
 
     :host(:hover) {
-        color: ${neutralForegroundHoverBehavior.var};
+        color: ${neutralForegroundRest};
         fill: currentcolor;
     }
 
     :host(:active) {
-        color: ${neutralForegroundActiveBehavior.var};
+        color: ${neutralForegroundRest};
         fill: currentcolor;
     }
 
     :host([disabled]) {
         cursor: ${disabledCursor};
-        opacity: var(--disabled-opacity);
+        opacity: ${disabledOpacity};
     }
 
     :host([disabled]:hover) {
-        color: ${neutralForegroundHintBehavior.var};
-        background: ${neutralFillStealthRestBehavior.var};
+        color: ${neutralForegroundHint};
+        background: ${neutralFillStealthRest};
     }
 
     :host([aria-selected="true"]) {
-        background: ${neutralFillRestBehavior.var};
-        color: ${accentForegroundRestBehavior.var};
+        background: ${neutralFillRest};
+        color: ${accentForegroundRest};
         fill: currentcolor;
     }
 
     :host([aria-selected="true"]:hover) {
-        background: ${neutralFillHoverBehavior.var};
-        color: ${accentForegroundHoverBehavior.var};
+        background: ${neutralFillHover};
+        color: ${accentForegroundHover};
         fill: currentcolor;
     }
 
     :host([aria-selected="true"]:active) {
-        background: ${neutralFillActiveBehavior.var};
-        color: ${accentForegroundActiveBehavior.var};
+        background: ${neutralFillActive};
+        color: ${accentForegroundActive};
         fill: currentcolor;
     }
 
     :host(:${focusVisible}) {
         outline: none;
-        border: calc(var(--outline-width) * 1px) solid ${neutralFocusBehavior.var};
-        box-shadow: 0 0 0 calc((var(--focus-outline-width) - var(--outline-width)) * 1px)
-            ${neutralFocusBehavior.var};
+        border: calc(${strokeWidth} * 1px) solid ${focusStrokeOuter};
+        box-shadow: 0 0 0 calc((${focusStrokeWidth} - ${strokeWidth}) * 1px)
+            ${focusStrokeOuter};
     }
 
     :host(:focus) {
@@ -102,33 +114,18 @@ export const TabStyles = css`
     }
 
     :host(.vertical:hover) {
-        color: ${neutralForegroundHoverBehavior.var};
+        color: ${neutralForegroundRest};
     }
 
     :host(.vertical:active) {
-        color: ${neutralForegroundActiveBehavior.var};
+        color: ${neutralForegroundRest};
     }
 
     :host(.vertical:hover[aria-selected="true"]) {
     }
 `.withBehaviors(
-    accentFillActiveBehavior,
-    accentFillHoverBehavior,
-    accentFillRestBehavior,
-    accentForegroundActiveBehavior,
-    accentForegroundHoverBehavior,
-    accentForegroundRestBehavior,
-    neutralFillActiveBehavior,
-    neutralFillHoverBehavior,
-    neutralFillRestBehavior,
-    neutralFillStealthRestBehavior,
-    neutralFocusBehavior,
-    neutralForegroundHintBehavior,
-    neutralForegroundActiveBehavior,
-    neutralForegroundHoverBehavior,
-    neutralForegroundRestBehavior,
-    forcedColorsStylesheetBehavior(
-        css`
+        forcedColorsStylesheetBehavior(
+            css`
             :host {
                 forced-color-adjust: none;
                 border-color: transparent;
@@ -151,6 +148,12 @@ export const TabStyles = css`
                 border-color: ${SystemColors.ButtonText};
                 box-shadow: none;
             }
+            :host([disabled]),
+            :host([disabled]:hover) {
+                opacity: 1;
+                color: ${SystemColors.GrayText};
+                background: ${SystemColors.ButtonFace};
+            }
         `
-    )
-);
+        )
+    );

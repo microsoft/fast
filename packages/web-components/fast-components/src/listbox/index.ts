@@ -1,26 +1,30 @@
-import { customElement } from "@microsoft/fast-element";
-import { Listbox, ListboxTemplate as template } from "@microsoft/fast-foundation";
-import { ListboxStyles as styles } from "./listbox.styles";
+import { Listbox, listboxTemplate as template } from "@microsoft/fast-foundation";
+import { listboxStyles as styles } from "./listbox.styles";
 
 /**
- * The FAST listbox Custom Element. Implements, {@link @microsoft/fast-foundation#Listbox}
- * {@link @microsoft/fast-foundation#ListboxTemplate}
+ * A function that returns a {@link @microsoft/fast-foundation#Listbox} registration for configuring the component with a DesignSystem.
+ * Implements {@link @microsoft/fast-foundation#listboxTemplate}
  *
  *
  * @public
  * @remarks
- * HTML Element: \<fast-listbox\>
+ * Generates HTML Element: \<fast-listbox\>
  *
  */
-@customElement({
-    name: "fast-listbox",
+export const fastListbox = Listbox.compose({
+    baseName: "listbox",
     template,
     styles,
-})
-export class FASTListbox extends Listbox {}
+});
 
 /**
  * Styles for Listbox
  * @public
  */
-export const ListboxStyles = styles;
+export const listboxStyles = styles;
+
+/**
+ * Base class for Listbox
+ * @public
+ */
+export { Listbox };

@@ -4,9 +4,7 @@ declare namespace JSX {
         "fast-design-system-provider": React.DetailedHTMLProps<
             React.HTMLAttributes<HTMLElement>,
             HTMLElement
-        > & {
-            "use-defaults"?: boolean;
-        };
+        >;
         "fast-checkbox": React.DetailedHTMLProps<
             React.HTMLAttributes<HTMLElement>,
             HTMLElement
@@ -40,22 +38,43 @@ declare namespace JSX {
             events?: {
                 change?: (e: React.ChangeEvent<HTMLElement>) => void;
             };
+            props?: {
+                value: string;
+            };
         };
         "fast-option": React.DetailedHTMLProps<
             React.HTMLAttributes<HTMLElement>,
             HTMLElement
         > & {
             value?: string;
+            selected?: string;
         };
-        "color-picker": React.DetailedHTMLProps<
+        "fast-tooling-color-picker": React.DetailedHTMLProps<
             React.HTMLAttributes<HTMLElement>,
             HTMLElement
         > & {
             name?: string;
+            value?: string;
             events?: {
                 change?: (e: React.ChangeEvent<HTMLElement>) => void;
             };
         };
+        "fast-tooling-file": React.DetailedHTMLProps<
+            React.HTMLAttributes<HTMLElement>,
+            HTMLElement
+        > & {
+            accept?: string;
+            multiple?: boolean;
+            disabled?: boolean;
+            events?: {
+                change?: (e: React.ChangeEvent<HTMLElement>) => void;
+            };
+            progressCallback?: (progress: number) => Promise<void>;
+        };
+        "fast-tooling-file-action-objecturl": React.DetailedHTMLProps<
+            React.HTMLAttributes<HTMLElement>,
+            HTMLElement
+        >;
     }
 }
 

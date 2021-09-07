@@ -7,15 +7,6 @@
             "description": "The FAST design system provider element",
             "attributes": [
                 {
-                    "name": "use-defaults",
-                    "title": "Use defaults",
-                    "description":
-                        "When true, sets all design system values default - does not inherit",
-                    "type": "boolean",
-                    "default": true,
-                    "required": false
-                },
-                {
                     "name": "no-paint",
                     "title": "No paint",
                     "description": "Do not paint the background",
@@ -24,9 +15,9 @@
                     "required": false
                 },
                 {
-                    "name": "background-color",
-                    "title": "Background color",
-                    "description": "The background color",
+                    "name": "fill-color",
+                    "title": "Fill color",
+                    "description": "The fill color used for backgrounds",
                     "type": "string",
                     "default": "#181818",
                     "required": false
@@ -88,24 +79,24 @@
                     "required": false
                 },
                 {
-                    "name": "corner-radius",
-                    "title": "Corner radius",
-                    "description": "The corner radius value for elements",
+                    "name": "control-corner-radius",
+                    "title": "Control Corner radius",
+                    "description": "The corner radius value for control components",
                     "type": "number",
                     "default": 3,
                     "required": false
                 },
                 {
-                    "name": "outline-width",
-                    "title": "Outline width",
+                    "name": "stroke-width",
+                    "title": "Stroke width",
                     "description": "The width of outline strokes",
                     "type": "number",
                     "default": 1,
                     "required": false
                 },
                 {
-                    "name": "focus-outline-width",
-                    "title": "Focus outline width",
+                    "name": "focus-stroke-width",
+                    "title": "Focus stroke width",
                     "description": "The width of focus outline strokes",
                     "type": "number",
                     "default": 2,
@@ -274,13 +265,6 @@
                     "required": false
                 },
                 {
-                    "name": "accent-fill-selected-delta",
-                    "title": "Accent fill delta (selected)",
-                    "type": "number",
-                    "default": 12,
-                    "required": false
-                },
-                {
                     "name": "accent-foreground-rest-delta",
                     "title": "Accent foreground delta (rest)",
                     "type": "number",
@@ -337,13 +321,6 @@
                     "required": false
                 },
                 {
-                    "name": "neutral-fill-selected-delta",
-                    "title": "Neutral fill delta (selected)",
-                    "type": "number",
-                    "default": 7,
-                    "required": false
-                },
-                {
                     "name": "neutral-fill-input-rest-delta",
                     "title": "Neutral fill input delta (rest)",
                     "type": "number",
@@ -367,13 +344,6 @@
                 {
                     "name": "neutral-fill-input-focus-delta",
                     "title": "Neutral fill input delta (focus)",
-                    "type": "number",
-                    "default": 0,
-                    "required": false
-                },
-                {
-                    "name": "neutral-fill-input-selected-delta",
-                    "title": "Neutral fill input delta (selected)",
                     "type": "number",
                     "default": 0,
                     "required": false
@@ -407,29 +377,22 @@
                     "required": false
                 },
                 {
-                    "name": "neutral-fill-stealth-selected-delta",
-                    "title": "Neutral fill stealth delta (selected)",
-                    "type": "number",
-                    "default": 7,
-                    "required": false
-                },
-                {
-                    "name": "neutral-fill-toggle-hover-delta",
-                    "title": "Neutral fill toggle delta (hover)",
+                    "name": "neutral-fill-strong-hover-delta",
+                    "title": "Neutral fill strong delta (hover)",
                     "type": "number",
                     "default": 8,
                     "required": false
                 },
                 {
-                    "name": "neutral-fill-toggle-active-delta",
-                    "title": "Neutral fill toggle delta (active)",
+                    "name": "neutral-fill-strong-active-delta",
+                    "title": "Neutral fill strong delta (active)",
                     "type": "number",
                     "default": -5,
                     "required": false
                 },
                 {
-                    "name": "neutral-fill-toggle-focus-delta",
-                    "title": "Neutral fill toggle delta (focus)",
+                    "name": "neutral-fill-strong-focus-delta",
+                    "title": "Neutral fill strong delta (focus)",
                     "type": "number",
                     "default": 0,
                     "required": false
@@ -444,64 +407,43 @@
                     "required": false
                 },
                 {
-                    "name": "neutral-fill-card-delta",
-                    "title": "Card background delta",
+                    "name": "neutral-fill-layer-rest-delta",
+                    "title": "Layer background delta",
                     "type": "number",
                     "default": 3,
                     "required": false
                 },
                 {
-                    "name": "neutral-foreground-hover-delta",
-                    "title": "Neutral foreground delta (hover)",
-                    "type": "number",
-                    "default": 0,
-                    "required": false
-                },
-                {
-                    "name": "neutral-foreground-active-delta",
-                    "title": "Neutral foreground delta (active)",
-                    "type": "number",
-                    "default": 0,
-                    "required": false
-                },
-                {
-                    "name": "neutral-foreground-focus-delta",
-                    "title": "Neutral foreground delta (focus)",
-                    "type": "number",
-                    "default": 0,
-                    "required": false
-                },
-                {
-                    "name": "neutral-divider-rest-delta",
-                    "title": "Neutral divider delta",
+                    "name": "neutral-stroke-divider-rest-delta",
+                    "title": "Neutral divider stroke delta",
                     "type": "number",
                     "default": 8,
                     "required": false
                 },
                 {
-                    "name": "neutral-outline-rest-delta",
-                    "title": "Neutral outline delta (rest)",
+                    "name": "neutral-stroke-rest-delta",
+                    "title": "Neutral stroke delta (rest)",
                     "type": "number",
                     "default": 25,
                     "required": false
                 },
                 {
-                    "name": "neutral-outline-hover-delta",
-                    "title": "Neutral outline delta (hover)",
+                    "name": "neutral-stroke-hover-delta",
+                    "title": "Neutral stroke delta (hover)",
                     "type": "number",
                     "default": 40,
                     "required": false
                 },
                 {
-                    "name": "neutral-outline-active-delta",
-                    "title": "Neutral outline delta (active)",
+                    "name": "neutral-stroke-active-delta",
+                    "title": "Neutral stroke delta (active)",
                     "type": "number",
                     "default": 16,
                     "required": false
                 },
                 {
-                    "name": "neutral-outline-focus-delta",
-                    "title": "Neutral outline delta (focus)",
+                    "name": "neutral-stroke-focus-delta",
+                    "title": "Neutral stroke delta (focus)",
                     "type": "number",
                     "default": 25,
                     "required": false

@@ -11,18 +11,20 @@ import {
     useDrag,
     useDrop,
 } from "react-dnd";
-import { HoverLocation } from "./navigation.props";
+import { getHoverLocation, refNode } from "./navigation-tree-item.utilities";
 
 function editableOverlay(
     className: string,
     value: string,
     handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void,
     handleInputBlur: (e: React.FocusEvent<HTMLInputElement>) => void,
-    handleInputKeyDown: (e: React.KeyboardEvent<HTMLInputElement>) => void
+    handleInputKeyDown: (e: React.KeyboardEvent<HTMLInputElement>) => void,
+    inputRef: React.RefObject<HTMLInputElement>
 ): React.ReactNode {
     return (
         <input
             className={className}
+            ref={inputRef}
             key={"overlay"}
             value={value}
             onChange={handleInputChange}
@@ -39,7 +41,7 @@ function treeItem(
     handleInputKeyDown: React.KeyboardEventHandler<HTMLInputElement>,
     handleExpandClick: React.MouseEventHandler<HTMLElement>,
     handleKeyDown: React.KeyboardEventHandler<HTMLElement>,
-    isEditable: boolean,
+    isEditing: boolean,
     isCollapsible: boolean,
     className: string,
     expandTriggerClassName: string,
@@ -48,15 +50,17 @@ function treeItem(
     text: string,
     dictionaryId: string,
     navigationConfigId: string,
+    inputRef: React.RefObject<HTMLInputElement>,
     ref?: (node: HTMLAnchorElement) => React.ReactElement<any>
 ): React.ReactElement {
-    const displayText: React.ReactNode = isEditable
+    const displayText: React.ReactNode = isEditing
         ? editableOverlay(
               displayTextInputClassName,
               text,
               handleInputChange,
               handleInputBlur,
-              handleInputKeyDown
+              handleInputKeyDown,
+              inputRef
           )
         : isCollapsible
         ? treeItemCollapsible(
@@ -140,7 +144,7 @@ export const NavigationTreeItem: React.FC<NavigationTreeItemProps> = ({
     expandTriggerClassName,
     contentClassName,
     displayTextInputClassName,
-    isEditable,
+    isEditing,
     isCollapsible,
     handleClick,
     handleInputChange,
@@ -150,6 +154,7 @@ export const NavigationTreeItem: React.FC<NavigationTreeItemProps> = ({
     handleKeyDown,
     dictionaryId,
     navigationConfigId,
+    inputRef,
 }: React.PropsWithChildren<NavigationTreeItemProps>): React.ReactElement => {
     return treeItem(
         handleClick,
@@ -158,7 +163,7 @@ export const NavigationTreeItem: React.FC<NavigationTreeItemProps> = ({
         handleInputKeyDown,
         handleExpandClick,
         handleKeyDown,
-        isEditable,
+        isEditing,
         isCollapsible,
         className,
         expandTriggerClassName,
@@ -166,7 +171,8 @@ export const NavigationTreeItem: React.FC<NavigationTreeItemProps> = ({
         displayTextInputClassName,
         text,
         dictionaryId,
-        navigationConfigId
+        navigationConfigId,
+        inputRef
     );
 };
 
@@ -184,7 +190,8 @@ export const DraggableNavigationTreeItem: React.FC<NavigationTreeItemProps> = ({
     contentClassName,
     displayTextInputClassName,
     isCollapsible,
-    isEditable,
+    isEditing,
+    inputRef,
     dragStart,
     dragEnd,
     dragHover,
@@ -193,6 +200,8 @@ export const DraggableNavigationTreeItem: React.FC<NavigationTreeItemProps> = ({
     index,
 }: React.PropsWithChildren<NavigationTreeItemProps>): React.ReactElement => {
     let ref: HTMLAnchorElement | HTMLSpanElement | null = null;
+    let cachedRef: HTMLAnchorElement | HTMLSpanElement | null = null;
+    let cachedRefBoundingClientRect: DOMRect;
 
     const drag: [
         unknown,
@@ -215,31 +224,26 @@ export const DraggableNavigationTreeItem: React.FC<NavigationTreeItemProps> = ({
     const drop: [{}, DragElementWrapper<any>] = useDrop({
         accept: [DragDropItemType.linkedData],
         hover(item: DragObjectWithType, monitor: DropTargetMonitor): void {
-            const dragItemOffsetY: number = monitor.getClientOffset().y;
-            const dropItemBoundingClientRect: DOMRect = ref.getBoundingClientRect() as DOMRect;
-            let hoverLocation: HoverLocation = HoverLocation.before;
+            /**
+             * When the hovered element changes, reset the cached ref and
+             * the cached bounding client rect to reduce performance cost
+             */
+            if (cachedRef !== ref) {
+                cachedRef = ref;
 
-            if (
-                dropItemBoundingClientRect.y + dropItemBoundingClientRect.height / 2 <
-                dragItemOffsetY
-            ) {
-                hoverLocation = HoverLocation.after;
+                cachedRefBoundingClientRect = ref.getBoundingClientRect() as DOMRect;
             }
 
-            dragHover(type, dictionaryId, navigationConfigId, index, hoverLocation);
+            dragHover(
+                type,
+                dictionaryId,
+                navigationConfigId,
+                index,
+                getHoverLocation(type, monitor, cachedRefBoundingClientRect)
+            );
         },
     });
     const dropTarget: ConnectDropTarget = drop[1];
-
-    function refNode(node: HTMLSpanElement | HTMLAnchorElement): React.ReactElement {
-        switch (type) {
-            case DragDropItemType.linkedData:
-                return dragSource(dropTarget(node));
-            case DragDropItemType.linkedDataContainer:
-            case DragDropItemType.default:
-                return dropTarget(node);
-        }
-    }
 
     return treeItem(
         handleClick,
@@ -248,7 +252,7 @@ export const DraggableNavigationTreeItem: React.FC<NavigationTreeItemProps> = ({
         handleInputKeyDown,
         handleExpandClick,
         handleKeyDown,
-        isEditable,
+        isEditing,
         isCollapsible,
         className,
         expandTriggerClassName,
@@ -257,9 +261,10 @@ export const DraggableNavigationTreeItem: React.FC<NavigationTreeItemProps> = ({
         text,
         dictionaryId,
         navigationConfigId,
+        inputRef,
         (node: HTMLSpanElement): React.ReactElement => {
             ref = node;
-            return refNode(node);
+            return refNode(node, type, dragSource, dropTarget);
         }
     );
 };

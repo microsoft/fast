@@ -12,11 +12,7 @@
         <style type="text/css">*:not(:defined){visibility:hidden}</style>
     </head>
     <body>
-        <fast-design-system-provider
-            class="body-provider"
-            use-defaults
-            type-ramp-base-font-size="16px"
-        >
+        <div class="body-provider">
             <div class="site-wrapper">
                 <%= include('header') %>
                 <section class="section hero-section" id="hero">
@@ -198,6 +194,6 @@
                 <%= include('footer') %>
             </div>
             <background-design></background-design>
-        </fast-design-system-provider>
+        </div>
     </body>
 </html>

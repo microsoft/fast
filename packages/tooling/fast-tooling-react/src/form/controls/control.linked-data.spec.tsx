@@ -1,5 +1,6 @@
 import React from "react";
 import Adapter from "enzyme-adapter-react-16";
+import "../../__tests__/mocks/match-media";
 import { configure, mount, ReactWrapper } from "enzyme";
 import HTML5Backend from "react-dnd-html5-backend";
 import { DndProvider } from "react-dnd";
@@ -56,6 +57,7 @@ const linkedDataProps: LinkedDataControlProps = {
     schemaDictionary: {
         alpha: {
             title: "alpha",
+            alias: "A",
             id: "alpha",
             type: "object",
             properties: {},
@@ -147,6 +149,17 @@ describe("LinkedDataControl", () => {
         const datalist: string = rendered.find("datalist").props()["id"];
 
         expect(inputAriaControls).toEqual(datalist);
+    });
+    test("should add a `label` to an option if it's schema contains an `alias` property", () => {
+        const rendered: any = mount(
+            <LinkedDataFormControlWithDragAndDrop
+                {...linkedDataProps}
+                managedClasses={managedClasses}
+            />
+        );
+        const listboxItems: any = rendered.find("datalist option");
+
+        expect(listboxItems.at(0).prop("label")).toEqual("A");
     });
     test("should generate options based on the schema items in the schema dictionary", () => {
         const rendered: any = mount(

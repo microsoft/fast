@@ -35,13 +35,19 @@ _Attributes:_
 -   `anchor` - The html id of the HTMLElement which the tooltip is attached to.
 -   `delay` - time in milliseconds to wait before showing and hiding the tooltip. Defaults to 300.
 -   `visible` - boolean value to toggle the visibility of the tooltip (defaults to undefined).
--   `position` - enum; where the tooltip should appear relative to its target. 'start' and 'end' are like 'left' and 'right' but are inverted when the direction is 'rtl' When the position is undefined the tooltip is placed above or below the anchor based on available space.
+-   `position` - where the tooltip should appear relative to its target. 'start' and 'end' are like 'left' and 'right' but are inverted when the direction is 'rtl' When the position is undefined the tooltip is placed above or below the anchor based on available space.
     -   top
     -   bottom
     -   left
     -   right
     -   start
     -   end
+
+- auto-update-mode - Corresponds to anchored region's auto update mode and governs when the tooltip checks its position.  Default is "auto".
+
+- horizontal-viewport-lock - Controls if the tooltip will always remain fully in the viewport on the horizontal axis
+
+- vertical-viewport-lock - Controls if the tooltip will always remain fully in the viewport on the vertical axis
 
 _Properties:_
 

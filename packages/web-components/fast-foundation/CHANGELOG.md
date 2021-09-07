@@ -1,8 +1,238 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Sun, 30 May 2021 07:42:30 GMT and should not be manually modified.
+This log was last generated on Thu, 02 Sep 2021 17:17:56 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.10.0
+
+Thu, 02 Sep 2021 17:17:56 GMT
+
+### Minor changes
+
+- feat(design-system): enable complete ignore of duplicate elements (roeisenb@microsoft.com)
+
+## 2.9.1
+
+Thu, 02 Sep 2021 07:15:21 GMT
+
+### Patches
+
+- configure system to use a single CSSStyleSheet for custom property setting (nicholasrice@users.noreply.github.com)
+- progress component bar width (scomea@microsoft.com)
+- Removed remaining 'use-defaults' which no longer exists (47367562+bheston@users.noreply.github.com)
+
+## 2.9.0
+
+Wed, 01 Sep 2021 07:18:34 GMT
+
+### Minor changes
+
+- add viewport lock to tooltip (scomea@microsoft.com)
+
+### Patches
+
+- don't block all keys while focused (corylaviska@microsoft.com)
+
+## 2.8.1
+
+Mon, 30 Aug 2021 22:30:39 GMT
+
+### Patches
+
+- fixing issue where a token would subscribe to itself, causing max-callstack-exceded in certain scenarios (nicholasrice@users.noreply.github.com)
+
+## 2.8.0
+
+Fri, 27 Aug 2021 14:14:26 GMT
+
+### Minor changes
+
+- Refactor DesignToken implementation to support deep token dependency hierarchies (nicholasrice@users.noreply.github.com)
+
+### Patches
+
+- add up/down key support to number-field (corylaviska@microsoft.com)
+- Bump @microsoft/fast-element to v1.5.0 (nicholasrice@users.noreply.github.com)
+
+## 2.7.1
+
+Thu, 26 Aug 2021 07:17:43 GMT
+
+### Patches
+
+- fix slider dragging when page is scrolled (corylaviska@microsoft.com)
+
+## 2.7.0
+
+Wed, 25 Aug 2021 07:17:07 GMT
+
+### Minor changes
+
+- allow context for partials on component compositions (john.kreitlow@microsoft.com)
+
+## 2.6.5
+
+Thu, 19 Aug 2021 07:15:21 GMT
+
+### Patches
+
+- add reducefocusableElements and all slotted items to keyboard interaction (sethdonohue@Admins-MBP.guest.corp.microsoft.com)
+
+## 2.6.4
+
+Thu, 12 Aug 2021 07:16:50 GMT
+
+### Patches
+
+- fix dialog focus on open (scomea@microsoft.com)
+
+## 2.6.3
+
+Wed, 04 Aug 2021 07:15:14 GMT
+
+### Patches
+
+- menu should check for slot before automatically assigning a value (chhol@microsoft.com)
+
+## 2.6.2
+
+Thu, 29 Jul 2021 07:18:18 GMT
+
+### Patches
+
+- remove unnecessary aria-hidden attributes (47367562+bheston@users.noreply.github.com)
+
+## 2.6.1
+
+Wed, 28 Jul 2021 07:17:22 GMT
+
+### Patches
+
+- update on !regionVisible (scomea@microsoft.com)
+
+## 2.6.0
+
+Sun, 25 Jul 2021 07:17:41 GMT
+
+### Minor changes
+
+- add auto position tracking to tooltip (scomea@microsoft.com)
+- anchored region uses transform (scomea@microsoft.com)
+
+## 2.5.2
+
+Thu, 22 Jul 2021 07:19:53 GMT
+
+### Patches
+
+- Fixed attr boolean mode on menu item (47367562+bheston@users.noreply.github.com)
+
+## 2.5.1
+
+Wed, 21 Jul 2021 07:14:48 GMT
+
+### Patches
+
+- Hide step-up and step-down for number-field when readonly (robarb@microsoft.com)
+
+## 2.5.0
+
+Thu, 15 Jul 2021 01:41:48 GMT
+
+### Minor changes
+
+- extend design token type signature (chhol@microsoft.com)
+
+## 2.4.0
+
+Tue, 13 Jul 2021 07:14:52 GMT
+
+### Minor changes
+
+- docs(di): make API public, stabilize, and add docs (roeisenb@microsoft.com)
+
+## 2.3.0
+
+Wed, 07 Jul 2021 07:19:51 GMT
+
+### Minor changes
+
+- focus trap improvement (scomea@microsoft.com)
+
+## 2.2.0
+
+Sun, 04 Jul 2021 07:15:28 GMT
+
+### Minor changes
+
+- select should emit an input event before the change event (john.kreitlow@microsoft.com)
+
+## 2.1.0
+
+Thu, 01 Jul 2021 07:15:57 GMT
+
+### Minor changes
+
+- ensure DesignToken considers shadow DOM when determining DOM hierarchy (nicholasrice@users.noreply.github.com)
+
+### Patches
+
+- Fixes bug in DesignToken where aliased tokens didn't update CSS custom properties. (nicholasrice@users.noreply.github.com)
+
+## 2.0.0
+
+Fri, 25 Jun 2021 02:02:57 GMT
+
+### Major changes
+
+- remove deprecated APIs and Design System Provider infrastructure (nicholasrice@users.noreply.github.com)
+- feat(design-system): better integrate with DI and enforce constraints (roeisenb@microsoft.com)
+- migrate directional-stylesheet utility (nicholasrice@users.noreply.github.com)
+- update components to extend FoundationElement (chhol@microsoft.com)
+- feat: styling and text alignment for menu (jes@microsoft.com)
+- add API support for setting default slotted content as part of component composition (chhol@microsoft.com)
+- update card to extend foundation (chhol@microsoft.com)
+- feat: encapsulate and optimize ComponentPresentation resolution (roeisenb@microsoft.com)
+
+### Minor changes
+
+- fix(foundation-element): enable subclassing with customElement decorator (roeisenb@microsoft.com)
+- feat(design-system): enable overriding the shadow root mode (roeisenb@microsoft.com)
+- docs(fast-foundation): add api docs for design system and foundation ele (roeisenb@microsoft.com)
+
+## 1.24.8
+
+Wed, 23 Jun 2021 22:58:18 GMT
+
+### Patches
+
+- prevent left/right arrows from scrolling when expanding/collapsing tree-item (tlmii@users.noreply.github.com)
+
+## 1.24.7
+
+Sun, 20 Jun 2021 07:21:25 GMT
+
+### Patches
+
+- Enable stepping from null values on number-field (robarb@microsoft.com)
+- fix malformed templates (scomea@microsoft.com)
+
+## 1.24.6
+
+Sun, 13 Jun 2021 07:19:23 GMT
+
+### Patches
+
+- ensure host element of a shadowed element can be resolved (nicholasrice@users.noreply.github.com)
+
+## 1.24.5
+
+Tue, 08 Jun 2021 07:29:18 GMT
+
+### Patches
+
+- streamline horizontal scroll resize (scomea@microsoft.com)
 
 ## 1.24.4
 

@@ -1,28 +1,42 @@
-import { css } from "@microsoft/fast-element";
+import { css, ElementStyles } from "@microsoft/fast-element";
 import {
-    DirectionalStyleSheetBehavior,
     disabledCursor,
     display,
+    ElementDefinitionContext,
     focusVisible,
     forcedColorsStylesheetBehavior,
+    MenuItemOptions,
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
-    accentFillRestBehavior,
-    heightNumber,
-    neutralFillStealthRestBehavior,
-    neutralFocusBehavior,
-    neutralForegroundHoverBehavior,
-    neutralForegroundRestBehavior,
-    neutralLayerL2Behavior,
-    neutralLayerL3Behavior,
-} from "../styles/index";
+    accentFillRest,
+    bodyFont,
+    controlCornerRadius,
+    designUnit,
+    disabledOpacity,
+    focusStrokeOuter,
+    focusStrokeWidth,
+    foregroundOnAccentRest,
+    neutralFillStealthRest,
+    neutralForegroundHint,
+    neutralForegroundRest,
+    neutralLayer2,
+    neutralLayer3,
+    strokeWidth,
+    typeRampBaseFontSize,
+    typeRampBaseLineHeight,
+} from "../design-tokens";
+import { DirectionalStyleSheetBehavior, heightNumber } from "../styles/index";
 
-export const MenuItemStyles = css`
+export const menuItemStyles: (
+    context: ElementDefinitionContext,
+    definition: MenuItemOptions
+) => ElementStyles = (context: ElementDefinitionContext, definition: MenuItemOptions) =>
+    css`
     ${display("grid")} :host {
         contain: layout;
         overflow: visible;
-        font-family: var(--body-font);
+        font-family: ${bodyFont};
         outline: none;
         box-sizing: border-box;
         height: calc(${heightNumber} * 1px);
@@ -31,59 +45,87 @@ export const MenuItemStyles = css`
         justify-items: center;
         align-items: center;
         padding: 0;
-        margin: 0 calc(var(--design-unit) * 1px);
+        margin: 0 calc(${designUnit} * 1px);
         white-space: nowrap;
-        color: ${neutralForegroundRestBehavior.var};
+        color: ${neutralForegroundRest};
         fill: currentcolor;
         cursor: pointer;
-        font-size: var(--type-ramp-base-font-size);
-        line-height: var(--type-ramp-base-line-height);
-        border-radius: calc(var(--corner-radius) * 1px);
-        border: calc(var(--focus-outline-width) * 1px) solid transparent;
+        font-size: ${typeRampBaseFontSize};
+        line-height: ${typeRampBaseLineHeight};
+        border-radius: calc(${controlCornerRadius} * 1px);
+        border: calc(${focusStrokeWidth} * 1px) solid transparent;
+    }
+
+    :host(.indent-0) {
+        grid-template-columns: auto 1fr minmax(42px, auto);
+    }
+    :host(.indent-0) .content {
+        grid-column: 1;
+        grid-row: 1;
+        margin-inline-start: 10px;
+    }
+    :host(.indent-0) .expand-collapse-glyph-container {
+        grid-column: 5;
+        grid-row: 1;
+    }
+    :host(.indent-2) {
+        grid-template-columns: minmax(42px, auto) minmax(42px, auto) 1fr minmax(42px, auto) minmax(42px, auto);
+    }
+    :host(.indent-2) .content {
+        grid-column: 3;
+        grid-row: 1;
+        margin-inline-start: 10px;
+    }
+    :host(.indent-2) .expand-collapse-glyph-container {
+        grid-column: 5;
+        grid-row: 1;
+    }
+    :host(.indent-2) .start {
+        grid-column: 2;
+    }
+    :host(.indent-2) .end {
+        grid-column: 4;
     }
 
     :host(:${focusVisible}) {
-        border-color: ${neutralFocusBehavior.var};
-        background: ${neutralLayerL3Behavior.var};
-        color: ${neutralForegroundRestBehavior.var};
+        border-color: ${focusStrokeOuter};
+        background: ${neutralLayer3};
+        color: ${neutralForegroundRest};
     }
 
     :host(:hover) {
-        background: ${neutralLayerL3Behavior.var};
-        color: ${neutralForegroundHoverBehavior.var};
+        background: ${neutralLayer3};
+        color: ${neutralForegroundRest};
     }
 
     :host([aria-checked="true"]),
     :host(:active),
     :host(.expanded) {
-        background: ${neutralLayerL2Behavior.var};
-        color: ${neutralForegroundRestBehavior.var};
+        background: ${neutralLayer2};
+        color: ${neutralForegroundRest};
     }
 
     :host([disabled]) {
         cursor: ${disabledCursor};
-        opacity: var(--disabled-opacity);
+        opacity: ${disabledOpacity};
     }
 
     :host([disabled]:hover) {
-        color: ${neutralForegroundRestBehavior.var};
+        color: ${neutralForegroundRest};
         fill: currentcolor;
-        background: ${neutralFillStealthRestBehavior.var}
+        background: ${neutralFillStealthRest};
     }
 
     :host([disabled]:hover) .start,
     :host([disabled]:hover) .end,
     :host([disabled]:hover)::slotted(svg) {
-        fill: ${neutralForegroundRestBehavior.var};
+        fill: ${neutralForegroundRest};
     }
 
     .expand-collapse-glyph {
-        ${
-            /* Glyph size is temporary - 
-            replace when glyph-size var is added */ ""
-        } width: 16px;
+        /* TODO: adaptive typography https://github.com/microsoft/fast/issues/2432 */
+        width: 16px;
         height: 16px;
-        transition: transform 0.1s linear;
         fill: currentcolor;
     }
 
@@ -99,12 +141,10 @@ export const MenuItemStyles = css`
         display: flex;
         justify-content: center;
     }
-    
+
     ::slotted(svg) {
-        ${
-            /* Glyph size and margin-left is temporary - 
-            replace when adaptive typography is figured out */ ""
-        } width: 16px;
+        /* TODO: adaptive typography https://github.com/microsoft/fast/issues/2432 */
+        width: 16px;
         height: 16px;
     }
 
@@ -114,16 +154,27 @@ export const MenuItemStyles = css`
     :host(:active) .start,
     :host(:active) .end,
     :host(:active)::slotted(svg) {
-        fill: ${neutralForegroundRestBehavior.var};
+        fill: ${neutralForegroundRest};
     }
 
-    :host([aria-haspopup="menu"]),
-    :host([role="menuitemcheckbox"]),
-    :host([role="menuitemradio"]) {
+    :host(.indent-0[aria-haspopup="menu"]) {
         display: grid;
-        grid-template-columns: auto auto 1fr minmax(42px, auto);
+        grid-template-columns: minmax(42px, auto) auto 1fr minmax(42px, auto) minmax(42px, auto);
         align-items: center;
         min-height: 32px;
+    }
+
+    :host(.indent-1[aria-haspopup="menu"]),
+    :host(.indent-1[role="menuitemcheckbox"]),
+    :host(.indent-1[role="menuitemradio"]) {
+        display: grid;
+        grid-template-columns: minmax(42px, auto) auto 1fr minmax(42px, auto) minmax(42px, auto);
+        align-items: center;
+        min-height: 32px;
+    }
+
+    :host(.indent-2:not([aria-haspopup="menu"])) .end {
+        grid-column: 5;
     }
 
     :host .input-container,
@@ -138,17 +189,14 @@ export const MenuItemStyles = css`
         margin-inline-end: 10px;
     }
 
-    :host([aria-haspopup="menu"]) .start,
-    :host([role="menuitemcheckbox"]) .start,
-    :host([role="menuitemradio"]) .start {
-        grid-column-start: 2;
-        margin-inline-end: 10px;
-    }
-
     :host([aria-haspopup="menu"]) .content,
     :host([role="menuitemcheckbox"]) .content,
     :host([role="menuitemradio"]) .content {
         grid-column-start: 3;
+    }
+
+    :host([aria-haspopup="menu"].indent-0) .content {
+        grid-column-start: 1;
     }
 
     :host([aria-haspopup="menu"]) .end,
@@ -173,19 +221,17 @@ export const MenuItemStyles = css`
 
     :host .checkbox,
     :host .radio {
-        border: calc(var(--outline-width) * 1px) solid ${
-            neutralForegroundRestBehavior.var
-        };
+        border: calc(${strokeWidth} * 1px) solid ${neutralForegroundRest};
     }
 
     :host([aria-checked="true"]) .checkbox,
     :host([aria-checked="true"]) .radio {
-        background: ${accentFillRestBehavior.var};
-        border-color: ${accentFillRestBehavior.var};
+        background: ${accentFillRest};
+        border-color: ${accentFillRest};
     }
 
     :host .checkbox {
-        border-radius: calc(var(--corner-radius) * 1px);
+        border-radius: calc(${controlCornerRadius} * 1px);
     }
 
     :host .radio {
@@ -201,12 +247,17 @@ export const MenuItemStyles = css`
         display: none;
     }
 
+    ::slotted([slot="end"]:not(svg)) {
+        margin-inline-end: 10px;
+        color: ${neutralForegroundHint}
+    }
+
     :host([aria-checked="true"]) .checkbox-indicator,
     :host([aria-checked="true"]) ::slotted([slot="checkbox-indicator"]) {
         width: 100%;
         height: 100%;
         display: block;
-        fill: ${neutralForegroundRestBehavior.var};
+        fill: ${foregroundOnAccentRest};
         pointer-events: none;
     }
 
@@ -218,7 +269,7 @@ export const MenuItemStyles = css`
         bottom: 4px;
         border-radius: 999px;
         display: block;
-        background: ${neutralForegroundRestBehavior.var};
+        background: ${foregroundOnAccentRest};
         pointer-events: none;
     }
 
@@ -227,15 +278,8 @@ export const MenuItemStyles = css`
         pointer-events: none;
     }
 `.withBehaviors(
-    accentFillRestBehavior,
-    neutralFillStealthRestBehavior,
-    neutralFocusBehavior,
-    neutralForegroundHoverBehavior,
-    neutralForegroundRestBehavior,
-    neutralLayerL2Behavior,
-    neutralLayerL3Behavior,
-    forcedColorsStylesheetBehavior(
-        css`
+        forcedColorsStylesheetBehavior(
+            css`
             :host {
                 border-color: transparent;
                 color: ${SystemColors.ButtonText};
@@ -265,7 +309,7 @@ export const MenuItemStyles = css`
             :host(:${focusVisible}) {
                 background: ${SystemColors.Highlight};
                 border-color: ${SystemColors.ButtonText};
-                box-shadow: 0 0 0 calc(var(--focus-outline-width) * 1px) inset ${SystemColors.HighlightText};
+                box-shadow: 0 0 0 calc(${focusStrokeWidth} * 1px) inset ${SystemColors.HighlightText};
                 color: ${SystemColors.HighlightText};
                 fill: currentcolor;
             }
@@ -321,25 +365,28 @@ export const MenuItemStyles = css`
             :host([aria-checked="true"]) .radio-indicator {
                 background: ${SystemColors.Highlight};
             }
-        `
-    ),
 
-    new DirectionalStyleSheetBehavior(
-        css`
-            .expand-collapse-glyph {
-                transform: rotate(0deg);
+            ::slotted([slot="end"]:not(svg)) {
+                color: ${SystemColors.ButtonText};
             }
-            :host([expanded="true"]) .expand-collapse-glyph {
-                transform: rotate(45deg);
-            }
-        `,
-        css`
-            .expand-collapse-glyph {
-                transform: rotate(180deg);
-            }
-            :host([expanded="true"]) .expand-collapse-glyph {
-                transform: rotate(135deg);
+
+            :host(:hover) ::slotted([slot="end"]:not(svg)),
+            :host(:${focusVisible}) ::slotted([slot="end"]:not(svg)) {
+                color: ${SystemColors.HighlightText};
             }
         `
-    )
-);
+        ),
+
+        new DirectionalStyleSheetBehavior(
+            css`
+                .expand-collapse-glyph {
+                    transform: rotate(0deg);
+                }
+            `,
+            css`
+                .expand-collapse-glyph {
+                    transform: rotate(180deg);
+                }
+            `
+        )
+    );

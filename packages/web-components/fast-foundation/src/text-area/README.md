@@ -7,28 +7,50 @@ custom_edit_url: https://github.com/microsoft/fast/edit/master/packages/web-comp
 
 An implementation of an [HTML textarea element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/textarea) as a form-connected web-component. The `fast-text-area` supports two visual appearances, outline and filled, with the control defaulting to the outline appearance.
 
+## Setup
+
+```ts
+import {
+    provideFASTDesignSystem,
+    fastTextArea
+} from "@microsoft/fast-components";
+
+provideFASTDesignSystem()
+    .register(
+        fastTextArea()
+    );
+```
+
 ## Usage
 
 ```html live
-<fast-design-system-provider use-defaults>
-    <fast-text-area placeholder="Describe your experience">How was your stay?</fast-text-area>
-</fast-design-system-provider>
+<fast-text-area placeholder="Describe your experience">How was your stay?</fast-text-area>
 ```
 
-## Applying custom styles
+## Create your own design
 
 ```ts
-import { customElement } from "@microsoft/fast-element";
-import { TextAreaTemplate as template, TextArea } from "@microsoft/fast-foundation";
-import { TextAreaStyles as styles } from "./text-area.styles";
+import {
+    TextArea,
+    textAreaTemplate as template,
+} from "@microsoft/fast-foundation";
+import { textAreaStyles as styles } from "./my-text-area.styles";
 
-@customElement({
-    name: "fast-text-area",
+export const myTextArea = TextArea.compose({
+    baseName: "text-area",
     template,
     styles,
     shadowOptions: {
         delegatesFocus: true,
     },
-})
-export class FASTTextArea extends TextArea {}
+});
 ```
+
+:::note
+This component is built with the expectation that focus is delegated to the input element rendered into the shadow DOM.
+:::
+
+## Additional resources
+
+* [Component explorer examples](https://explore.fast.design/components/fast-text-area)
+* [Component technical specification](https://github.com/microsoft/fast/blob/master/packages/web-components/fast-foundation/src/text-area/text-area.spec.md)
