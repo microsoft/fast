@@ -3,9 +3,9 @@ import {
     eventFocusIn,
     eventFocusOut,
     eventKeyDown,
-    keyCodeEnter,
-    keyCodeEscape,
-    keyCodeFunction2,
+    keyEnter,
+    keyEscape,
+    keyFunction2,
 } from "@microsoft/fast-web-utilities";
 import { FoundationElement } from "../foundation-element";
 import type { ColumnDefinition } from "./data-grid";
@@ -198,9 +198,9 @@ export class DataGridCell extends FoundationElement {
             return;
         }
 
-        switch (e.keyCode) {
-            case keyCodeEnter:
-            case keyCodeFunction2:
+        switch (e.key) {
+            case keyEnter:
+            case keyFunction2:
                 if (this.isInternalFocused || this.columnDefinition === undefined) {
                     return;
                 }
@@ -237,7 +237,7 @@ export class DataGridCell extends FoundationElement {
                 }
                 break;
 
-            case keyCodeEscape:
+            case keyEscape:
                 if (this.isInternalFocused) {
                     this.focus();
                     this.isInternalFocused = false;
