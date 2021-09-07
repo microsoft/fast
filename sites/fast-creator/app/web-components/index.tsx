@@ -286,7 +286,10 @@ function getImageUploadControl(): StandardControlPlugin {
         context: ControlContext.fill,
         control: (controlConfig: ControlConfig): React.ReactNode => {
             return (
-                <FileControl {...controlConfig} accept=".apng,.avif,.gif,.jpg,.jpeg,.png,.webp">
+                <FileControl
+                    {...controlConfig}
+                    accept=".apng,.avif,.gif,.jpg,.jpeg,.png,.webp"
+                >
                     Add Image
                 </FileControl>
             );
