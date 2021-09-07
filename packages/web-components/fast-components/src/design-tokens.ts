@@ -552,6 +552,7 @@ export const foregroundOnAccentFocus = create<Swatch>(
         .evaluate(element, accentFillFocus.getValueFor(element))
 );
 
+// Foreground On Accent Large
 /** @public */
 export const foregroundOnAccentLargeRecipe = create<ColorRecipe>({
     name: "foreground-on-accent-large-recipe",

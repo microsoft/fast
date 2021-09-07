@@ -32,7 +32,7 @@ export const toolbarStyles: (
             );
             background-color: ${fillColor};
             border-radius: calc(${controlCornerRadius} * 1px);
-            color: ${neutralForegroundRest}
+            color: ${neutralForegroundRest};
             fill: currentcolor;
             padding: var(--toolbar-item-gap);
         }
@@ -72,7 +72,6 @@ export const toolbarStyles: (
             /* TODO: adaptive typography https://github.com/microsoft/fast/issues/2432 */
             width: 16px;
             height: 16px;
-            fill: ${neutralForegroundRest}
         }
     `.withBehaviors(
         forcedColorsStylesheetBehavior(

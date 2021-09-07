@@ -6,7 +6,7 @@ import { fillColor, neutralLayerFloating } from "../design-tokens";
 import { listboxStyles as styles } from "./listbox.styles";
 
 /**
- * The FAST listboxclass
+ * The FAST listbox class
  * @public
  */
 export class Listbox extends FoundationListbox {
