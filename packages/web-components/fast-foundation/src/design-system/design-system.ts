@@ -3,6 +3,7 @@ import {
     FASTElementDefinition,
     PartialFASTElementDefinition,
 } from "@microsoft/fast-element";
+import { FoundationElement } from "..";
 import { Container, DI, InterfaceSymbol, Registration } from "../di/di";
 import { ComponentPresentation } from "./component-presentation";
 
@@ -334,7 +335,7 @@ class DefaultDesignSystem implements DesignSystem {
                 }
 
                 if (needsDefine) {
-                    if (elementTagsByType.has(type)) {
+                    if (elementTagsByType.has(type) || type === FoundationElement) {
                         type = class extends type {};
                     }
 

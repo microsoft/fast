@@ -1,5 +1,6 @@
 import type { Constructable } from "@microsoft/fast-element";
 import { expect } from "chai";
+import { FoundationElement } from "..";
 import { Container, DI } from "../di";
 import { uniqueElementName } from "../test-utilities/fixture";
 import { DesignSystem, DesignSystemRegistrationContext, ElementDisambiguation } from "./design-system";
@@ -228,6 +229,27 @@ describe("DesignSystem", () => {
 
         expect(customElements.get(elementName)).to.equal(customElement);
         expect(callbackCalled).to.be.false;
+    });
+
+    it("Should auto-subclass if attempting to define FoundationElement", () => {
+        const elementName = uniqueElementName();
+        const host = document.createElement("div");
+
+        DesignSystem.getOrCreate(host)
+            .register({
+                register(container: Container) {
+                    container.get(DesignSystemRegistrationContext)
+                        .tryDefineElement(elementName, FoundationElement, x => {
+                            x.defineElement();
+                        });
+                },
+            });
+
+        const type = customElements.get(elementName)!;
+        const proto = Reflect.getPrototypeOf(type);
+
+        expect(type).to.not.equal(FoundationElement);
+        expect(proto).to.equal(FoundationElement);
     });
 
     it("Should have an undefined shadow mode by default", () => {
