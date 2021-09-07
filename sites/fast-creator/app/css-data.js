@@ -2,7 +2,7 @@
  * This file is generated from build/generate-mdn-data-files.js
  * any modifications will be overwritten.
  *
- * Last modified: 9/3/2021
+ * Last modified: 5/28/2021
  */
 export const properties = {
     "align-content": {
@@ -401,69 +401,6 @@ export const properties = {
             "multiplier": null,
             "prepend": null,
             "type": "syntax"
-        }
-    },
-    "width": {
-        "name": "width",
-        "appliesTo": "allElementsButNonReplacedAndTableRows",
-        "syntax": {
-            "mapsToProperty": "width",
-            "percentages": "referToWidthOfContainingBlock",
-            "ref": [
-                {
-                    "ref": "auto",
-                    "type": "value",
-                    "refCombinatorType": "none",
-                    "prepend": null,
-                    "multiplier": null
-                },
-                {
-                    "ref": "<length>",
-                    "type": "type",
-                    "refCombinatorType": "none",
-                    "prepend": null,
-                    "multiplier": null
-                },
-                {
-                    "ref": "<percentage>",
-                    "type": "type",
-                    "refCombinatorType": "none",
-                    "prepend": null,
-                    "multiplier": null
-                },
-                {
-                    "ref": "min-content",
-                    "type": "value",
-                    "refCombinatorType": "none",
-                    "prepend": null,
-                    "multiplier": null
-                },
-                {
-                    "ref": "max-content",
-                    "type": "value",
-                    "refCombinatorType": "none",
-                    "prepend": null,
-                    "multiplier": null
-                },
-                {
-                    "ref": "fit-content",
-                    "type": "value",
-                    "refCombinatorType": "none",
-                    "prepend": null,
-                    "multiplier": null
-                },
-                {
-                    "ref": "<length-percentage>",
-                    "type": "syntax",
-                    "refCombinatorType": "none",
-                    "prepend": null,
-                    "multiplier": null
-                }
-            ],
-            "refCombinatorType": "exactlyOne",
-            "multiplier": null,
-            "prepend": null,
-            "type": "mixed"
         }
     }
 }

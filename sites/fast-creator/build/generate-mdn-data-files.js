@@ -15,7 +15,7 @@ const comment = `/**
  */
 `;
 // A subset of the MDN properties to be used in the Creator
-const subsetOfProperties = ["background-color","width", ...cssLayoutCssProperties];
+const subsetOfProperties = ["background-color", ...cssLayoutCssProperties];
 // a subset of CSS generated from the list of properties above
 const subsetOfCSSProperties = Object.entries(mdnCSS.properties).reduce(
     (previousProperties, [currentKey, currentValue]) => {
