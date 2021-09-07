@@ -45,7 +45,7 @@ export default class MessageSystem<C = {}> {
                     : defaultHistoryLimit;
 
             if (Array.isArray(config.dataDictionary) && config.schemaDictionary) {
-                this.worker.postMessage({
+                this.postMessage({
                     type: MessageSystemType.initialize,
                     data: config.dataDictionary,
                     schemaDictionary: config.schemaDictionary,
@@ -77,7 +77,7 @@ export default class MessageSystem<C = {}> {
                 typeof config.historyLimit === "number"
                     ? config.historyLimit
                     : this.historyLimit;
-            (this.worker as Worker).postMessage({
+            this.postMessage({
                 type: MessageSystemType.initialize,
                 dataDictionary: config.dataDictionary,
                 data: config.data,
@@ -95,7 +95,7 @@ export default class MessageSystem<C = {}> {
             const uuid: string = uniqueId();
 
             this.messageQueue[1].push(uuid);
-            this.worker.postMessage([message, uuid] as InternalMessageSystemIncoming);
+            this.worker.postMessage([message, uuid]);
         }
     }
 
