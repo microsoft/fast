@@ -16,8 +16,9 @@ import {
     designUnit,
     disabledOpacity,
     focusStrokeWidth,
-    neutralFillActive,
-    neutralForegroundHover,
+    neutralFillInputActive,
+    neutralFillInputRest,
+    neutralForegroundActive,
     neutralForegroundRest,
     strokeControlStrongActive,
     strokeControlStrongFocus,
@@ -48,27 +49,15 @@ export const radioStyles: (
     }
 
     .control {
-        position: relative;
-        width: calc((${heightNumber} / 2 + ${designUnit}) * 1px);
-        height: calc((${heightNumber} / 2 + ${designUnit}) * 1px);
-        box-sizing: border-box;
-        border-radius: 999px;
-        border: calc(${strokeWidth} * 1px) solid ${neutralStrokeRest};
-        background: ${neutralFillInputRest};
-        outline: none;
-        cursor: pointer;
-    }
-
-    .label {
-        font-family: ${bodyFont};
-        color: ${neutralForegroundRest};
-        /* Need to discuss with Brian how HorizontalSpacingNumber can work.
-            https://github.com/microsoft/fast/issues/2766 */
-        padding-inline-start: calc(${designUnit} * 2px + 2px);
-        margin-inline-end: calc(${designUnit} * 2px + 2px);
-        cursor: pointer;
-        font-size: ${typeRampBaseFontSize};
-        line-height: ${typeRampBaseLineHeight};
+      position: relative;
+      width: calc(var(--input-size) * 1px);
+      height: calc(var(--input-size) * 1px);
+      box-sizing: border-box;
+      border-radius: 50%;
+      border: calc(${strokeWidth} * 1px) solid ${strokeControlStrongRest};
+      background: ${neutralFillInputRest};
+      outline: none;
+      cursor: pointer;
     }
 
     .label__hidden {
@@ -114,13 +103,13 @@ export const radioStyles: (
       justify-content: center;
       width: 100%;
       height: 100%;
-      fill: ${neutralForegroundHover};
+      fill: ${neutralForegroundActive};
       opacity: 0;
       pointer-events: none;
     }
 
     :host(.checked) .control {
-      background: ${neutralFillActive};
+      background: ${neutralFillInputActive};
       border-color: ${strokeControlStrongRest};
     }
 
@@ -131,7 +120,7 @@ export const radioStyles: (
 
     :host(:enabled:active) .control,
     :host(.checked:enabled:active) .control {
-      background: ${neutralFillActive};
+      background: ${neutralFillInputActive};
       border-color: ${strokeControlStrongActive};
     }
 

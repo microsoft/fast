@@ -213,7 +213,7 @@ export const neutralFillInputHoverDelta = create<number>(
 /** @public */
 export const neutralFillInputActiveDelta = create<number>(
     "neutral-fill-input-active-delta"
-).withDefault(0);
+).withDefault(-10);
 /** @public */
 export const neutralFillInputFocusDelta = create<number>(
     "neutral-fill-input-focus-delta"
