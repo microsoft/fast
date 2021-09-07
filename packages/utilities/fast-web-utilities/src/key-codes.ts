@@ -1,6 +1,6 @@
 /*
  * Key Code values
- * @deprecated - use individual keycode exports
+ * @deprecated - KeyCodes are deprecated, use individual string key exports
  */
 export enum KeyCodes {
     alt = 18,
@@ -74,6 +74,10 @@ export enum KeyCodes {
     windowsRight = 92,
 }
 
+/*
+ * Individual Key Code values
+ * @deprecated - KeyCodes are deprecated, use string key exports
+ */
 export const keyCodeAlt: number = 18;
 export const keyCodeArrowDown: number = 40;
 export const keyCodeArrowLeft: number = 37;
@@ -155,6 +159,9 @@ export const keyEnter: "Enter" = "Enter";
 export const keyEscape: "Escape" = "Escape";
 export const keyHome: "Home" = "Home";
 export const keyEnd: "End" = "End";
+export const keyFunction2: "F2" = "F2";
+export const keyPageDown: "PageDown" = "PageDown";
+export const keyPageUp: "PageUp" = "PageUp";
 export const keySpace: " " = " ";
 export const keyTab: "Tab" = "Tab";
 

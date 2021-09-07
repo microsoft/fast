@@ -8,11 +8,11 @@ import {
 import {
     getDisplayedNodes,
     isHTMLElement,
-    keyCodeArrowDown,
-    keyCodeArrowLeft,
-    keyCodeArrowRight,
-    keyCodeArrowUp,
-    keyCodeEnter,
+    keyArrowDown,
+    keyArrowLeft,
+    keyArrowRight,
+    keyArrowUp,
+    keyEnter,
 } from "@microsoft/fast-web-utilities";
 import { StartEnd } from "../patterns/start-end";
 import type { TreeView } from "../tree-view";
@@ -169,28 +169,28 @@ export class TreeItem extends FoundationElement {
             return true;
         }
 
-        switch (e.keyCode) {
-            case keyCodeArrowLeft:
+        switch (e.key) {
+            case keyArrowLeft:
                 // preventDefault to ensure we don't scroll the page
                 e.preventDefault();
                 this.collapseOrFocusParent();
                 break;
-            case keyCodeArrowRight:
+            case keyArrowRight:
                 // preventDefault to ensure we don't scroll the page
                 e.preventDefault();
                 this.expandOrFocusFirstChild();
                 break;
-            case keyCodeArrowDown:
+            case keyArrowDown:
                 // preventDefault to ensure we don't scroll the page
                 e.preventDefault();
                 this.focusNextNode(1);
                 break;
-            case keyCodeArrowUp:
+            case keyArrowUp:
                 // preventDefault to ensure we don't scroll the page
                 e.preventDefault();
                 this.focusNextNode(-1);
                 break;
-            case keyCodeEnter:
+            case keyEnter:
                 // In single-select trees where selection does not follow focus (see note below),
                 // the default action is typically to select the focused node.
                 this.handleSelected(e);

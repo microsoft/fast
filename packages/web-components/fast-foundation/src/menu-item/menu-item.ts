@@ -1,10 +1,10 @@
 import { attr, DOM, observable, SyntheticViewTemplate } from "@microsoft/fast-element";
 import {
     Direction,
-    keyCodeArrowLeft,
-    keyCodeArrowRight,
-    keyCodeEnter,
-    keyCodeSpace,
+    keyArrowLeft,
+    keyArrowRight,
+    keyEnter,
+    keySpace,
 } from "@microsoft/fast-web-utilities";
 import type { AnchoredRegion } from "../anchored-region";
 import { FoundationElement, FoundationElementDefinition } from "../foundation-element";
@@ -171,18 +171,18 @@ export class MenuItem extends FoundationElement {
             return false;
         }
 
-        switch (e.keyCode) {
-            case keyCodeEnter:
-            case keyCodeSpace:
+        switch (e.key) {
+            case keyEnter:
+            case keySpace:
                 this.invoke();
                 return false;
 
-            case keyCodeArrowRight:
+            case keyArrowRight:
                 //open/focus on submenu
                 this.expandAndFocus();
                 return false;
 
-            case keyCodeArrowLeft:
+            case keyArrowLeft:
                 //close submenu
                 if (this.expanded) {
                     this.expanded = false;

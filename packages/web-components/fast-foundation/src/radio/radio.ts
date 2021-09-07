@@ -1,5 +1,5 @@
 import { attr, observable, SyntheticViewTemplate } from "@microsoft/fast-element";
-import { keyCodeSpace } from "@microsoft/fast-web-utilities";
+import { keySpace } from "@microsoft/fast-web-utilities";
 import type { FoundationElementDefinition } from "../foundation-element";
 import { FormAssociatedRadio } from "./radio.form-associated";
 
@@ -190,8 +190,8 @@ export class Radio extends FormAssociatedRadio implements RadioControl {
      * @internal
      */
     public keypressHandler = (e: KeyboardEvent): boolean | void => {
-        switch (e.keyCode) {
-            case keyCodeSpace:
+        switch (e.key) {
+            case keySpace:
                 if (!this.checked && !this.readOnly) {
                     this.checked = true;
                 }
