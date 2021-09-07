@@ -3,7 +3,8 @@ import { expect } from "chai";
 import { FoundationElement } from "..";
 import { Container, DI } from "../di";
 import { uniqueElementName } from "../test-utilities/fixture";
-import { DesignSystem, DesignSystemRegistrationContext, ElementDisambiguation } from "./design-system";
+import { DesignSystem, ElementDisambiguation } from "./design-system";
+import { DesignSystemRegistrationContext } from "./registration-context";
 
 describe("DesignSystem", () => {
     it("Should return the same instance for the same element", () => {

@@ -1,6 +1,6 @@
 {
   "type": "patch",
-  "comment": "fix(design-system): don't allow FoundationElement to be defined directly",
+  "comment": "fix(design-system): make FoundationElement.compose safe to use directly",
   "packageName": "@microsoft/fast-foundation",
   "email": "roeisenb@microsoft.com",
   "dependentChangeType": "patch"
