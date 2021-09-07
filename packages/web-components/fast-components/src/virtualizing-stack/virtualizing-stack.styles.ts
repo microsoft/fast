@@ -16,23 +16,14 @@ export const virtualizingStackStyles: (
     }
 
     .container {
-        contain: size;
-        display: flex;
         overflow: hidden;
-        flex-direction: column;
-        justify-content: flex-start;
     }
 
     .item-stack {
-        justify-content: flex-start;
-        overflow: hidden;
+        width: 200px;
+        background: blue;
         display: flex;
         flex-direction: column;
-    }
-
-    .top-spacer {
-    }
-
-    .bottom-spacer {
+        overflow: hidden;
     }
 `;

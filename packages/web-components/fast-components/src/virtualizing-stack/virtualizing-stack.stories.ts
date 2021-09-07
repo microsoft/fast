@@ -5,21 +5,27 @@ import { VirtualizingStack as FoundationVirtualingStack } from "@microsoft/fast-
 import VirtualizingStackTemplate from "./fixtures/base.html";
 import "./index";
 
-let defaultStackElement: FoundationVirtualingStack;
+let stack1: FoundationVirtualingStack;
 
 const imageItemTemplate = html`
-    <image style="height:100px; width:120px;" src="${x => x}"></image>
+    <fast-card style="height:100px; width:120px;">
+        <image style="height:100px; width:120px;" src="${x => x}"></image>
+    </fast-card>
 `;
 
 addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
-    defaultStackElement = document.getElementById(
-        "default-stack"
-    ) as FoundationVirtualingStack;
-
     if (name.toLowerCase().startsWith("virtualizing-stack")) {
-        defaultStackElement.itemTemplate = imageItemTemplate;
-        defaultStackElement.itemHeight = 100;
-        defaultStackElement.items = newDataSet(100000);
+        const stack1 = document.getElementById("stack1") as FoundationVirtualingStack;
+
+        stack1.itemTemplate = imageItemTemplate;
+        stack1.itemHeight = 100;
+        stack1.items = newDataSet(100);
+
+        const stack2 = document.getElementById("stack2") as FoundationVirtualingStack;
+
+        stack2.itemTemplate = imageItemTemplate;
+        stack2.itemHeight = 100;
+        stack2.items = newDataSet(100);
     }
 });
 

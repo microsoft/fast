@@ -18,17 +18,23 @@ export const virtualizingStackTemplate: (
     <template>
         <div
             class="container"
-            style="height: ${x => x.totalHeight}px"
+            style="
+                overflow: hidden;
+                height: ${x => x.totalHeight}px;
+                display: grid;
+                grid-template-rows: ${x => x.topSpacerHeight}px ${x =>
+                x.itemStackHeight}px ${x => x.bottomSpacerHeight}px;
+            "
             ${ref("container")}
         >
-            <div class="top-spacer" style="height: ${x => x.topSpacerHeight}px"></div>
-            <div class="item-stack" style="height: ${x => x.itemStackHeight}px">
+            <div
+                class="item-stack"
+                style="
+                    grid-row: 2;
+                "
+            >
                 <slot></slot>
             </div>
-            <div
-                class="bottom-spacer"
-                style="height: ${x => x.bottomSpacerHeight}px"
-            ></div>
         </div>
     </template>
 `;

@@ -94,7 +94,7 @@ export class VirtualizingStack extends FoundationElement {
      * @beta
      */
     @observable
-    public viewportElement: HTMLElement | null;
+    public viewportElement: HTMLElement;
     private viewportElementChanged(): void {
         if ((this as FoundationElement).$fastController.isConnected) {
             // this.initialize();
@@ -192,7 +192,7 @@ export class VirtualizingStack extends FoundationElement {
     private visibleRangeEnd: number = 0;
 
     private viewportRect: ClientRect | DOMRect | undefined;
-    private stackRect: ClientRect | DOMRect | undefined;
+    private containerRect: ClientRect | DOMRect | undefined;
 
     private itemsRepeatBehavior: RepeatBehavior | null;
     private itemsPlaceholder: Node | null = null;
@@ -231,12 +231,12 @@ export class VirtualizingStack extends FoundationElement {
      * @internal
      */
     public disconnectedCallback(): void {
-        super.disconnectedCallback();
         if (this.autoUpdateMode === "auto") {
             this.stopAutoUpdateEventListeners();
         }
         this.stopObservers();
         this.disconnectResizeDetector();
+        super.disconnectedCallback();
     }
 
     /**
@@ -298,12 +298,17 @@ export class VirtualizingStack extends FoundationElement {
     /**
      * Gets the viewport element by id, or defaults to document root
      */
-    private getViewport = (): HTMLElement | null => {
-        if (typeof this.viewport !== "string" || this.viewport === "") {
-            return document.documentElement;
+    private getViewport = (): HTMLElement => {
+        let viewportElement: HTMLElement | null = null;
+        if (typeof this.viewport === "string") {
+            viewportElement = document.getElementById(this.viewport);
         }
 
-        return document.getElementById(this.viewport);
+        if (viewportElement !== null) {
+            return viewportElement;
+        }
+
+        return document.documentElement;
     };
 
     /**
@@ -366,16 +371,17 @@ export class VirtualizingStack extends FoundationElement {
      *
      */
     private updateVisibleItems = (): void => {
-        console.debug("updateVisibleItems");
         if (this.pendingPositioningUpdate) {
             console.debug("updateVisibleItems - return");
             return;
         }
 
+        console.debug("updateVisibleItems");
+
         if (
             this.items === undefined ||
             this.items.length === 0 ||
-            this.stackRect === undefined ||
+            this.containerRect === undefined ||
             this.viewportRect === undefined
         ) {
             this.visibleItems = [];
@@ -387,23 +393,23 @@ export class VirtualizingStack extends FoundationElement {
             return;
         }
 
-        if (this.viewportRect.top >= this.stackRect.bottom) {
-            this.visibleRangeStart = this.stackRect.height;
-            this.visibleRangeEnd = this.stackRect.height;
-        } else if (this.viewportRect.bottom <= this.stackRect.top) {
+        if (this.viewportRect.top >= this.containerRect.bottom) {
+            this.visibleRangeStart = this.containerRect.height;
+            this.visibleRangeEnd = this.containerRect.height;
+        } else if (this.viewportRect.bottom <= this.containerRect.top) {
             this.visibleRangeStart = 0;
             this.visibleRangeEnd = 0;
         } else {
-            this.visibleRangeStart = this.viewportRect.top - this.stackRect.top;
+            this.visibleRangeStart = this.viewportRect.top - this.containerRect.top;
             this.visibleRangeEnd =
-                this.stackRect.height -
-                (this.stackRect.bottom - this.viewportRect.bottom);
+                this.containerRect.height -
+                (this.containerRect.bottom - this.viewportRect.bottom);
 
             this.visibleRangeStart =
                 this.visibleRangeStart < 0 ? 0 : this.visibleRangeStart;
             this.visibleRangeEnd =
-                this.visibleRangeEnd > this.stackRect.height
-                    ? this.stackRect.height
+                this.visibleRangeEnd > this.containerRect.height
+                    ? this.containerRect.height
                     : this.visibleRangeEnd;
         }
 
@@ -429,12 +435,13 @@ export class VirtualizingStack extends FoundationElement {
                 lastVisibleIndex = this.items.length - 1;
             }
 
-            this.visibleItems = this.items.slice(firstVisibleIndex, lastVisibleIndex + 1);
             this.topSpacerHeight = firstVisibleIndex * this.itemHeight;
             this.bottomSpacerHeight =
                 (this.items.length - lastVisibleIndex - 1) * this.itemHeight;
             this.itemStackHeight =
                 this.totalHeight - this.topSpacerHeight - this.bottomSpacerHeight;
+
+            this.visibleItems = this.items.slice(firstVisibleIndex, lastVisibleIndex + 1);
         }
     };
 
@@ -442,11 +449,13 @@ export class VirtualizingStack extends FoundationElement {
      * get position updates
      */
     private requestPositionUpdates = (): void => {
-        if (this.pendingPositioningUpdate || this.viewportElement === null) {
+        if (this.pendingPositioningUpdate) {
             console.debug("requestPositionUpdates-return");
             return;
         }
         console.debug("requestPositionUpdates");
+        this.pendingPositioningUpdate = true;
+
         VirtualizingStack.intersectionService.requestPosition(
             this.container,
             this.handleIntersection
@@ -455,7 +464,6 @@ export class VirtualizingStack extends FoundationElement {
             this.viewportElement,
             this.handleIntersection
         );
-        this.pendingPositioningUpdate = true;
     };
 
     /**
@@ -467,7 +475,7 @@ export class VirtualizingStack extends FoundationElement {
             return;
         }
 
-        console.debug(`handleIntersection: ${this.stackRect?.top}`);
+        console.debug(`handleIntersection: ${this.containerRect?.top}`);
 
         this.pendingPositioningUpdate = false;
 
@@ -484,11 +492,11 @@ export class VirtualizingStack extends FoundationElement {
 
         if (
             this.viewportRect === undefined ||
-            this.stackRect === undefined ||
-            this.isRectDifferent(this.stackRect, stackEntry.boundingClientRect) ||
+            this.containerRect === undefined ||
+            this.isRectDifferent(this.containerRect, stackEntry.boundingClientRect) ||
             this.isRectDifferent(this.viewportRect, viewportEntry.boundingClientRect)
         ) {
-            this.stackRect = stackEntry.boundingClientRect;
+            this.containerRect = stackEntry.boundingClientRect;
             if (this.viewportElement === document.documentElement) {
                 this.viewportRect = new DOMRectReadOnly(
                     viewportEntry.boundingClientRect.x +

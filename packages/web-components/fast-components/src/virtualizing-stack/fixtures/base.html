@@ -1,9 +1,29 @@
 <h1>
     Virtualizing Stack
 </h1>
-<h2>Default</h2>
-<fast-virtualizing-stack
-    item-height="20"
-    id="default-stack"
-    style="width: 120px;"
-></fast-virtualizing-stack>
+<div style="width: 240px; display: grid; grid-template-columns: 50% 50%;">
+    <h2>Default</h2>
+    <fast-virtualizing-stack
+        item-height="100"
+        id="stack1"
+        style="grid-column: 1; width: 120px; background: gray;"
+    ></fast-virtualizing-stack>
+
+    <div
+        id="viewport2"
+        style="
+            height: 400px;
+            grid-column: 2;
+            width: 120px;
+            overflow-y: scroll;
+            background: gray;
+        "
+    >
+        <fast-virtualizing-stack
+            item-height="100"
+            viewport="viewport2"
+            id="stack2"
+            style="width: 120px; background: gray;"
+        ></fast-virtualizing-stack>
+    </div>
+</div>
