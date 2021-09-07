@@ -9,6 +9,7 @@ import {
     neutralFillInputHover,
     neutralFillInputRest,
     neutralFillRest,
+    neutralForegroundRest,
 } from "../design-tokens";
 
 export const skeletonStyles: (
@@ -20,7 +21,7 @@ export const skeletonStyles: (
 ) =>
     css`
         ${display("block")} :host {
-            --skeleton-fill-default: ${neutralFillInputRest};
+            --skeleton-fill-default: #e1dfdd;
             overflow: hidden;
             width: 100%;
             position: relative;
@@ -28,7 +29,7 @@ export const skeletonStyles: (
             --skeleton-animation-gradient-default: linear-gradient(
                 270deg,
                 var(--skeleton-fill, var(--skeleton-fill-default)) 0%,
-                ${neutralFillInputHover} 51.13%,
+                #f3f2f1 51.13%,
                 var(--skeleton-fill, var(--skeleton-fill-default)) 100%
             );
             --skeleton-animation-timing-default: ease-in-out;

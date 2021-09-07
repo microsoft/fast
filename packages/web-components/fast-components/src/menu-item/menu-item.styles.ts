@@ -18,7 +18,6 @@ import {
     focusStrokeWidth,
     neutralFillStealthActive,
     neutralFillStealthHover,
-    neutralFillStealthRest,
     neutralForegroundHint,
     neutralForegroundRest,
     strokeControlStrongRest,
@@ -53,7 +52,6 @@ export const menuItemStyles: (
       line-height: ${typeRampBaseLineHeight};
       border-radius: calc(${controlCornerRadius} * 1px);
       border: calc(${strokeWidth} * 1px) solid transparent;
-      background: ${neutralFillStealthRest};
     }
 
     :host(.indent-0) {

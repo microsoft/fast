@@ -16,6 +16,10 @@ import {
     disabledOpacity,
     focusStrokeOuter,
     focusStrokeWidth,
+    neutralFillInputActive,
+    neutralFillInputFocus,
+    neutralFillInputHover,
+    neutralFillInputRest,
     neutralForegroundActive,
     neutralForegroundHover,
     neutralForegroundRest,
@@ -91,15 +95,18 @@ export const checkboxStyles: (
 
     :host(:hover) .control,
     :host([aria-checked="true"]:enabled:hover) .control {
+      background: transparent;
       border-color: ${strokeControlStrongHover};
     }
 
     :host[aria-checked="true"]:enabled:active) .control {
+      background: transparent;
       border-color: ${neutralForegroundActive};
     }
 
     :host(:${focusVisible}) .control {
       box-shadow: 0 0 0 calc(${focusStrokeWidth} * 1px) ${focusStrokeOuter};
+      background: transparent;
       border-color: ${focusStrokeOuter};
     }
 

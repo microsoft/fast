@@ -2,18 +2,6 @@
     .icon {
         pointer-events: none;
     }
-    .start-content {
-        margin-inline-end: 8px;
-    }
-    .end-content {
-        margin-inline-start: 8px;
-    }
-    .start-content-vert {
-        margin-bottom: 8px;
-    }
-    .end-content-vert {
-        margin-top: 8px;
-    }
 </style>
 <h1>Tabs</h1>
 
@@ -69,7 +57,7 @@
 
 <h2>With Start and End</h2>
 <fast-tabs id="myTab" activeId="TabTwo">
-    <fast-button slot="start" appearance="stealth" class="start-content">
+    <fast-button slot="start" appearance="stealth">
         <svg
             xmlns="http://www.w3.org/2000/svg"
             width="16px"
@@ -81,7 +69,7 @@
             />
         </svg>
     </fast-button>
-    <fast-button slot="end" appearance="stealth" class="end-content">
+    <fast-button slot="end" appearance="stealth">
         <svg
             xmlns="http://www.w3.org/2000/svg"
             width="16px"
@@ -231,12 +219,12 @@
 
 <h2>Supplemental content</h2>
 <fast-tabs>
-    <div slot="start" class="start-content">
+    <div slot="start">
         <button>1</button>
         <button>2</button>
         <button>3</button>
     </div>
-    <div slot="end" class="end-content">
+    <div slot="end">
         <button>1</button>
         <button>2</button>
         <button>3</button>
@@ -257,12 +245,12 @@
 
 <h2>Supplemental content - Vertical</h2>
 <fast-tabs orientation="vertical">
-    <div slot="start" class="start-content-vert">
+    <div slot="start">
         <button>1</button>
         <button>2</button>
         <button>3</button>
     </div>
-    <div slot="end" class="end-content-vert">
+    <div slot="end">
         <button>1</button>
         <button>2</button>
         <button>3</button>

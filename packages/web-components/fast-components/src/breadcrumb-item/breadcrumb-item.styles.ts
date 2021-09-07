@@ -12,8 +12,12 @@ import {
     controlCornerRadius,
     focusStrokeOuter,
     focusStrokeWidth,
-    neutralFillRest,
+    neutralFillActive,
+    neutralFillHover,
+    neutralForegroundActive,
     neutralForegroundHover,
+    // neutralForegroundActive,
+    // neutralForegroundHover,
     neutralForegroundRest,
     strokeWidth,
     typeRampBaseFontSize,
@@ -68,20 +72,18 @@ export const breadcrumbItemStyles: (
       padding: 4px 8px;
     }
 
-    .control:hover,
-    .control:active {
-      background: ${neutralFillRest};
+    .control:hover {
+      background: ${neutralFillHover};
       color: ${neutralForegroundHover};
     }
 
     .control:active {
-      background: transparent;
-      color: ${neutralForegroundHover};
+      background: ${neutralFillActive};
+      color: ${neutralForegroundActive};
     }
 
     .control:${focusVisible} {
       border-color: ${focusStrokeOuter};
-      color: ${neutralForegroundHover};
     }
 
     .control:${focusVisible}::after {
