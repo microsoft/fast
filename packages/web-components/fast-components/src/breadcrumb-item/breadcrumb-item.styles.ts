@@ -14,9 +14,8 @@ import {
     bodyFont,
     focusStrokeWidth,
     neutralFillStealthActive,
-    neutralFillStealthHover,
-    neutralFillStealthRest,
     neutralForegroundActive,
+    neutralForegroundFocus,
     neutralForegroundHover,
     neutralForegroundRest,
     strokeWidth,
@@ -34,15 +33,16 @@ export const breadcrumbItemStyles: (
 ) =>
     css`
     ${display("inline-flex")} :host {
-        background: transparent;
-        box-sizing: border-box;
-        font-family: ${bodyFont};
-        font-size: ${typeRampBaseFontSize};
-        fill: currentColor;
-        line-height: ${typeRampBaseLineHeight};
-        min-width: calc(${heightNumber} * 1px);
-        outline: none;
-        color: ${neutralForegroundRest}
+      background: transparent;
+      box-sizing: border-box;
+      font-family: ${bodyFont};
+      font-size: ${typeRampBaseFontSize};
+      fill: currentcolor;
+      line-height: ${typeRampBaseLineHeight};
+      min-width: calc(${heightNumber} * 1px);
+      border-radius: calc(${controlCornerRadius} * 1px);
+      outline: none;
+      color: ${neutralForegroundRest}
     }
 
     .listitem {
@@ -60,7 +60,8 @@ export const breadcrumbItemStyles: (
       position: relative;
       align-items: center;
       box-sizing: border-box;
-      background: ${neutralFillStealthRest};
+      background: transparent;
+      border: calc(${strokeWidth} * 1px) solid transparent;
       color: ${neutralForegroundRest};
       cursor: pointer;
       display: flex;
@@ -73,7 +74,6 @@ export const breadcrumbItemStyles: (
     }
 
     .control:hover {
-      background: ${neutralFillStealthHover};
       color: ${neutralForegroundHover};
     }
 
@@ -82,14 +82,37 @@ export const breadcrumbItemStyles: (
       color: ${neutralForegroundActive};
     }
 
-    .control:${focusVisible} .content::before {
-        background: ${neutralForegroundRest};
-        height: calc(${focusStrokeWidth} * 1px);
+    .control:${focusVisible} {
+      border-color: ${focusStrokeOuter};
+      box-shadow: 0 0 0 calc(${focusStrokeWidth} * 1px) ${focusStrokeOuter} inset;
+      color: ${neutralForegroundFocus};
     }
 
-    .control:not([href]) {
-        color: ${neutralForegroundRest};
-        cursor: default;
+    .control .content {
+      position: relative;
+    }
+
+    .control .content::before {
+      content: "";
+      display: block;
+      height: calc(${strokeWidth} * 1px);
+      left: 0;
+      position: absolute;
+      right: 0;
+      top: calc(1em + 4px);
+      width: 100%;
+    }
+
+    .control:hover .content::before {
+      background: ${neutralForegroundHover};
+    }
+
+    .control:active .content::before {
+      background: transparent;
+    }
+
+    .control:${focusVisible} .content::before {
+      background: ${neutralForegroundHover};
     }
 
     .control:not([href]) .content::before {
