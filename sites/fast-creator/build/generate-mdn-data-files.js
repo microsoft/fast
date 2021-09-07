@@ -10,7 +10,7 @@ const today = new Date();
 const comment = `/**
  * This file is generated from build/generate-mdn-data-files.js
  * any modifications will be overwritten.
- *
+ * 
  * Last modified: ${today.toLocaleDateString()}
  */
 `;

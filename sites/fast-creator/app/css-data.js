@@ -6,401 +6,401 @@
  */
 export const properties = {
     "align-content": {
-        "name": "align-content",
-        "appliesTo": "multilineFlexContainers",
-        "syntax": {
-            "mapsToProperty": "align-content",
-            "percentages": "no",
-            "ref": [
+        name: "align-content",
+        appliesTo: "multilineFlexContainers",
+        syntax: {
+            mapsToProperty: "align-content",
+            percentages: "no",
+            ref: [
                 {
-                    "ref": "normal",
-                    "type": "value",
-                    "refCombinatorType": "none",
-                    "prepend": null,
-                    "multiplier": null
+                    ref: "normal",
+                    type: "value",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
                 },
                 {
-                    "ref": "<baseline-position>",
-                    "type": "syntax",
-                    "refCombinatorType": "none",
-                    "prepend": null,
-                    "multiplier": null
+                    ref: "<baseline-position>",
+                    type: "syntax",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
                 },
                 {
-                    "ref": "<content-distribution>",
-                    "type": "syntax",
-                    "refCombinatorType": "none",
-                    "prepend": null,
-                    "multiplier": null
+                    ref: "<content-distribution>",
+                    type: "syntax",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
                 },
                 {
-                    "ref": [
+                    ref: [
                         {
-                            "ref": "<overflow-position>",
-                            "type": "syntax",
-                            "refCombinatorType": "none",
-                            "prepend": null,
-                            "multiplier": null
+                            ref: "<overflow-position>",
+                            type: "syntax",
+                            refCombinatorType: "none",
+                            prepend: null,
+                            multiplier: null,
                         },
                         {
-                            "ref": "<content-position>",
-                            "type": "syntax",
-                            "refCombinatorType": "none",
-                            "prepend": null,
-                            "multiplier": null
-                        }
+                            ref: "<content-position>",
+                            type: "syntax",
+                            refCombinatorType: "none",
+                            prepend: null,
+                            multiplier: null,
+                        },
                     ],
-                    "refCombinatorType": "juxtaposition",
-                    "type": "group",
-                    "prepend": null,
-                    "multiplier": null
-                }
+                    refCombinatorType: "juxtaposition",
+                    type: "group",
+                    prepend: null,
+                    multiplier: null,
+                },
             ],
-            "refCombinatorType": "exactlyOne",
-            "multiplier": null,
-            "prepend": null,
-            "type": "mixed"
-        }
+            refCombinatorType: "exactlyOne",
+            multiplier: null,
+            prepend: null,
+            type: "mixed",
+        },
     },
     "align-items": {
-        "name": "align-items",
-        "appliesTo": "allElements",
-        "syntax": {
-            "mapsToProperty": "align-items",
-            "percentages": "no",
-            "ref": [
+        name: "align-items",
+        appliesTo: "allElements",
+        syntax: {
+            mapsToProperty: "align-items",
+            percentages: "no",
+            ref: [
                 {
-                    "ref": "normal",
-                    "type": "value",
-                    "refCombinatorType": "none",
-                    "prepend": null,
-                    "multiplier": null
+                    ref: "normal",
+                    type: "value",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
                 },
                 {
-                    "ref": "stretch",
-                    "type": "value",
-                    "refCombinatorType": "none",
-                    "prepend": null,
-                    "multiplier": null
+                    ref: "stretch",
+                    type: "value",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
                 },
                 {
-                    "ref": "<baseline-position>",
-                    "type": "syntax",
-                    "refCombinatorType": "none",
-                    "prepend": null,
-                    "multiplier": null
+                    ref: "<baseline-position>",
+                    type: "syntax",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
                 },
                 {
-                    "ref": [
+                    ref: [
                         {
-                            "ref": "<overflow-position>",
-                            "type": "syntax",
-                            "refCombinatorType": "none",
-                            "prepend": null,
-                            "multiplier": null
+                            ref: "<overflow-position>",
+                            type: "syntax",
+                            refCombinatorType: "none",
+                            prepend: null,
+                            multiplier: null,
                         },
                         {
-                            "ref": "<self-position>",
-                            "type": "syntax",
-                            "refCombinatorType": "none",
-                            "prepend": null,
-                            "multiplier": null
-                        }
+                            ref: "<self-position>",
+                            type: "syntax",
+                            refCombinatorType: "none",
+                            prepend: null,
+                            multiplier: null,
+                        },
                     ],
-                    "refCombinatorType": "juxtaposition",
-                    "type": "group",
-                    "prepend": null,
-                    "multiplier": null
-                }
+                    refCombinatorType: "juxtaposition",
+                    type: "group",
+                    prepend: null,
+                    multiplier: null,
+                },
             ],
-            "refCombinatorType": "exactlyOne",
-            "multiplier": null,
-            "prepend": null,
-            "type": "mixed"
-        }
+            refCombinatorType: "exactlyOne",
+            multiplier: null,
+            prepend: null,
+            type: "mixed",
+        },
     },
     "background-color": {
-        "name": "background-color",
-        "appliesTo": "allElements",
-        "syntax": {
-            "mapsToProperty": "background-color",
-            "percentages": "no",
-            "ref": "<color>",
-            "type": "syntax",
-            "refCombinatorType": "none",
-            "prepend": null,
-            "multiplier": null
-        }
+        name: "background-color",
+        appliesTo: "allElements",
+        syntax: {
+            mapsToProperty: "background-color",
+            percentages: "no",
+            ref: "<color>",
+            type: "syntax",
+            refCombinatorType: "none",
+            prepend: null,
+            multiplier: null,
+        },
     },
     "column-gap": {
-        "name": "column-gap",
-        "appliesTo": "multiColumnElementsFlexContainersGridContainers",
-        "syntax": {
-            "mapsToProperty": "column-gap",
-            "percentages": "referToDimensionOfContentArea",
-            "ref": [
+        name: "column-gap",
+        appliesTo: "multiColumnElementsFlexContainersGridContainers",
+        syntax: {
+            mapsToProperty: "column-gap",
+            percentages: "referToDimensionOfContentArea",
+            ref: [
                 {
-                    "ref": "normal",
-                    "type": "value",
-                    "refCombinatorType": "none",
-                    "prepend": null,
-                    "multiplier": null
+                    ref: "normal",
+                    type: "value",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
                 },
                 {
-                    "ref": "<length-percentage>",
-                    "type": "syntax",
-                    "refCombinatorType": "none",
-                    "prepend": null,
-                    "multiplier": null
-                }
+                    ref: "<length-percentage>",
+                    type: "syntax",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
             ],
-            "refCombinatorType": "exactlyOne",
-            "multiplier": null,
-            "prepend": null,
-            "type": "syntax"
-        }
+            refCombinatorType: "exactlyOne",
+            multiplier: null,
+            prepend: null,
+            type: "syntax",
+        },
     },
-    "display": {
-        "name": "display",
-        "appliesTo": "allElements",
-        "syntax": {
-            "mapsToProperty": "display",
-            "percentages": "no",
-            "ref": [
+    display: {
+        name: "display",
+        appliesTo: "allElements",
+        syntax: {
+            mapsToProperty: "display",
+            percentages: "no",
+            ref: [
                 {
-                    "ref": [
+                    ref: [
                         {
-                            "ref": "<display-outside>",
-                            "type": "syntax",
-                            "refCombinatorType": "none",
-                            "prepend": null,
-                            "multiplier": null
+                            ref: "<display-outside>",
+                            type: "syntax",
+                            refCombinatorType: "none",
+                            prepend: null,
+                            multiplier: null,
                         },
                         {
-                            "ref": "<display-inside>",
-                            "type": "syntax",
-                            "refCombinatorType": "none",
-                            "prepend": null,
-                            "multiplier": null
-                        }
+                            ref: "<display-inside>",
+                            type: "syntax",
+                            refCombinatorType: "none",
+                            prepend: null,
+                            multiplier: null,
+                        },
                     ],
-                    "refCombinatorType": "atLeastOneInAnyOrder",
-                    "type": "group",
-                    "prepend": null,
-                    "multiplier": null
+                    refCombinatorType: "atLeastOneInAnyOrder",
+                    type: "group",
+                    prepend: null,
+                    multiplier: null,
                 },
                 {
-                    "ref": "<display-listitem>",
-                    "type": "syntax",
-                    "refCombinatorType": "none",
-                    "prepend": null,
-                    "multiplier": null
+                    ref: "<display-listitem>",
+                    type: "syntax",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
                 },
                 {
-                    "ref": "<display-internal>",
-                    "type": "syntax",
-                    "refCombinatorType": "none",
-                    "prepend": null,
-                    "multiplier": null
+                    ref: "<display-internal>",
+                    type: "syntax",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
                 },
                 {
-                    "ref": "<display-box>",
-                    "type": "syntax",
-                    "refCombinatorType": "none",
-                    "prepend": null,
-                    "multiplier": null
+                    ref: "<display-box>",
+                    type: "syntax",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
                 },
                 {
-                    "ref": "<display-legacy>",
-                    "type": "syntax",
-                    "refCombinatorType": "none",
-                    "prepend": null,
-                    "multiplier": null
-                }
+                    ref: "<display-legacy>",
+                    type: "syntax",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
             ],
-            "refCombinatorType": "exactlyOne",
-            "multiplier": null,
-            "prepend": null,
-            "type": "mixed"
-        }
+            refCombinatorType: "exactlyOne",
+            multiplier: null,
+            prepend: null,
+            type: "mixed",
+        },
     },
     "flex-direction": {
-        "name": "flex-direction",
-        "appliesTo": "flexContainers",
-        "syntax": {
-            "mapsToProperty": "flex-direction",
-            "percentages": "no",
-            "ref": [
+        name: "flex-direction",
+        appliesTo: "flexContainers",
+        syntax: {
+            mapsToProperty: "flex-direction",
+            percentages: "no",
+            ref: [
                 {
-                    "ref": "row",
-                    "type": "value",
-                    "refCombinatorType": "none",
-                    "prepend": null,
-                    "multiplier": null
+                    ref: "row",
+                    type: "value",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
                 },
                 {
-                    "ref": "row-reverse",
-                    "type": "value",
-                    "refCombinatorType": "none",
-                    "prepend": null,
-                    "multiplier": null
+                    ref: "row-reverse",
+                    type: "value",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
                 },
                 {
-                    "ref": "column",
-                    "type": "value",
-                    "refCombinatorType": "none",
-                    "prepend": null,
-                    "multiplier": null
+                    ref: "column",
+                    type: "value",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
                 },
                 {
-                    "ref": "column-reverse",
-                    "type": "value",
-                    "refCombinatorType": "none",
-                    "prepend": null,
-                    "multiplier": null
-                }
+                    ref: "column-reverse",
+                    type: "value",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
             ],
-            "refCombinatorType": "exactlyOne",
-            "multiplier": null,
-            "prepend": null,
-            "type": "mixed"
-        }
+            refCombinatorType: "exactlyOne",
+            multiplier: null,
+            prepend: null,
+            type: "mixed",
+        },
     },
     "flex-wrap": {
-        "name": "flex-wrap",
-        "appliesTo": "flexContainers",
-        "syntax": {
-            "mapsToProperty": "flex-wrap",
-            "percentages": "no",
-            "ref": [
+        name: "flex-wrap",
+        appliesTo: "flexContainers",
+        syntax: {
+            mapsToProperty: "flex-wrap",
+            percentages: "no",
+            ref: [
                 {
-                    "ref": "nowrap",
-                    "type": "value",
-                    "refCombinatorType": "none",
-                    "prepend": null,
-                    "multiplier": null
+                    ref: "nowrap",
+                    type: "value",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
                 },
                 {
-                    "ref": "wrap",
-                    "type": "value",
-                    "refCombinatorType": "none",
-                    "prepend": null,
-                    "multiplier": null
+                    ref: "wrap",
+                    type: "value",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
                 },
                 {
-                    "ref": "wrap-reverse",
-                    "type": "value",
-                    "refCombinatorType": "none",
-                    "prepend": null,
-                    "multiplier": null
-                }
+                    ref: "wrap-reverse",
+                    type: "value",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
             ],
-            "refCombinatorType": "exactlyOne",
-            "multiplier": null,
-            "prepend": null,
-            "type": "mixed"
-        }
+            refCombinatorType: "exactlyOne",
+            multiplier: null,
+            prepend: null,
+            type: "mixed",
+        },
     },
     "justify-content": {
-        "name": "justify-content",
-        "appliesTo": "flexContainers",
-        "syntax": {
-            "mapsToProperty": "justify-content",
-            "percentages": "no",
-            "ref": [
+        name: "justify-content",
+        appliesTo: "flexContainers",
+        syntax: {
+            mapsToProperty: "justify-content",
+            percentages: "no",
+            ref: [
                 {
-                    "ref": "normal",
-                    "type": "value",
-                    "refCombinatorType": "none",
-                    "prepend": null,
-                    "multiplier": null
+                    ref: "normal",
+                    type: "value",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
                 },
                 {
-                    "ref": "<content-distribution>",
-                    "type": "syntax",
-                    "refCombinatorType": "none",
-                    "prepend": null,
-                    "multiplier": null
+                    ref: "<content-distribution>",
+                    type: "syntax",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
                 },
                 {
-                    "ref": [
+                    ref: [
                         {
-                            "ref": "<overflow-position>",
-                            "type": "syntax",
-                            "refCombinatorType": "none",
-                            "prepend": null,
-                            "multiplier": {
-                                "type": "zeroOrOne"
-                            }
+                            ref: "<overflow-position>",
+                            type: "syntax",
+                            refCombinatorType: "none",
+                            prepend: null,
+                            multiplier: {
+                                type: "zeroOrOne",
+                            },
                         },
                         {
-                            "ref": [
+                            ref: [
                                 {
-                                    "ref": "<content-position>",
-                                    "type": "syntax",
-                                    "refCombinatorType": "none",
-                                    "prepend": null,
-                                    "multiplier": null
+                                    ref: "<content-position>",
+                                    type: "syntax",
+                                    refCombinatorType: "none",
+                                    prepend: null,
+                                    multiplier: null,
                                 },
                                 {
-                                    "ref": "left",
-                                    "type": "value",
-                                    "refCombinatorType": "none",
-                                    "prepend": null,
-                                    "multiplier": null
+                                    ref: "left",
+                                    type: "value",
+                                    refCombinatorType: "none",
+                                    prepend: null,
+                                    multiplier: null,
                                 },
                                 {
-                                    "ref": "right",
-                                    "type": "value",
-                                    "refCombinatorType": "none",
-                                    "prepend": null,
-                                    "multiplier": null
-                                }
+                                    ref: "right",
+                                    type: "value",
+                                    refCombinatorType: "none",
+                                    prepend: null,
+                                    multiplier: null,
+                                },
                             ],
-                            "refCombinatorType": "juxtaposition",
-                            "type": "group",
-                            "prepend": null,
-                            "multiplier": null
-                        }
+                            refCombinatorType: "juxtaposition",
+                            type: "group",
+                            prepend: null,
+                            multiplier: null,
+                        },
                     ],
-                    "refCombinatorType": "juxtaposition",
-                    "type": "group",
-                    "prepend": null,
-                    "multiplier": null
-                }
+                    refCombinatorType: "juxtaposition",
+                    type: "group",
+                    prepend: null,
+                    multiplier: null,
+                },
             ],
-            "refCombinatorType": "exactlyOne",
-            "multiplier": null,
-            "prepend": null,
-            "type": "mixed"
-        }
+            refCombinatorType: "exactlyOne",
+            multiplier: null,
+            prepend: null,
+            type: "mixed",
+        },
     },
     "row-gap": {
-        "name": "row-gap",
-        "appliesTo": "multiColumnElementsFlexContainersGridContainers",
-        "syntax": {
-            "mapsToProperty": "row-gap",
-            "percentages": "referToDimensionOfContentArea",
-            "ref": [
+        name: "row-gap",
+        appliesTo: "multiColumnElementsFlexContainersGridContainers",
+        syntax: {
+            mapsToProperty: "row-gap",
+            percentages: "referToDimensionOfContentArea",
+            ref: [
                 {
-                    "ref": "normal",
-                    "type": "value",
-                    "refCombinatorType": "none",
-                    "prepend": null,
-                    "multiplier": null
+                    ref: "normal",
+                    type: "value",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
                 },
                 {
-                    "ref": "<length-percentage>",
-                    "type": "syntax",
-                    "refCombinatorType": "none",
-                    "prepend": null,
-                    "multiplier": null
-                }
+                    ref: "<length-percentage>",
+                    type: "syntax",
+                    refCombinatorType: "none",
+                    prepend: null,
+                    multiplier: null,
+                },
             ],
-            "refCombinatorType": "exactlyOne",
-            "multiplier": null,
-            "prepend": null,
-            "type": "syntax"
-        }
-    }
-}
+            refCombinatorType: "exactlyOne",
+            multiplier: null,
+            prepend: null,
+            type: "syntax",
+        },
+    },
+};
