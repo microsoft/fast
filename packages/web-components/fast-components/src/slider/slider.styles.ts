@@ -10,25 +10,30 @@ import {
 } from "@microsoft/fast-foundation";
 import { heightNumber } from "../styles";
 import {
+    accentFillActive,
+    accentFillHover,
+    accentFillRest,
     accentForegroundRest,
     controlCornerRadius,
     density,
     designUnit,
     disabledOpacity,
+    fillColor,
     focusStrokeOuter,
     focusStrokeWidth,
     neutralFillActive,
     neutralFillHover,
     neutralFillRest,
-    neutralFillStealthRest,
-    neutralFillStrongHover,
     neutralFillStrongRest,
-    strokeControlStrongActive,
-    strokeControlStrongHover,
+    neutralForegroundHover,
+    neutralForegroundRest,
+    neutralStrokeActive,
+    neutralStrokeHover,
+    strokeControlRest,
     strokeControlStrongRest,
+    strokeControlTextRest,
     strokeWidth,
 } from "../design-tokens";
-import { neutralFill } from "../color/recipes/neutral-fill";
 
 export const sliderStyles: (
     context: ElementDefinitionContext,
@@ -62,6 +67,11 @@ export const sliderStyles: (
       height: 100%;
       grid-template-columns: calc(var(--thumb-size) * 1px) 1fr;
     }
+    :host(:${focusVisible}) .thumb-cursor {
+      background: ${neutralForegroundHover};
+      border-color: ${focusStrokeOuter};
+      box-shadow: 0 0 0 calc(${focusStrokeWidth} * 1px) ${focusStrokeOuter};
+    }
     .thumb-container {
       position: absolute;
       height: calc(var(--thumb-size) * 1px);
@@ -74,19 +84,15 @@ export const sliderStyles: (
       border: none;
       width: calc(var(--thumb-size) * 1px);
       height: calc(var(--thumb-size) * 1px);
-      background: ${neutralFillStealthRest};
-      border: calc(${strokeWidth} * 1px) solid ${strokeControlStrongRest};
+      background: ${neutralFillRest};
+      border: calc(${strokeWidth} * 1px) solid ${neutralFillStrongRest};
       border-radius: 50%;
       box-sizing: border-box;
     }
-    :host(:not(.disabled)) .thumb-cursor:hover {
-      background: ${neutralFillStrongHover};
-      border-color: ${strokeControlStrongHover};
-    }
-    :host(:${focusVisible}) .thumb-cursor {
-      background: ${neutralFillStrongHover};
-      border-color: ${focusStrokeOuter};
-      box-shadow: 0 0 0 calc(${focusStrokeWidth} * 1px) ${focusStrokeOuter};
+    :host(:not(.disabled)) .thumb-cursor:hover,
+    :host(:not(.disabled)) .thumb-cursor:active {
+      background: ${neutralForegroundHover};
+      border-color: ${neutralForegroundHover};
     }
     .track-start {
       background: ${accentForegroundRest};
@@ -119,8 +125,8 @@ export const sliderStyles: (
       height: 100%;
     }
     .track {
-      background: ${neutralFillRest};
-      border: 1px solid ${neutralFillRest};
+      background: ${neutralFillStrongRest};
+      border: 1px solid ${strokeControlStrongRest};
       border-radius: 2px;
       box-sizing: border-box;
       position: absolute;

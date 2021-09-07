@@ -16,11 +16,12 @@ import {
     disabledOpacity,
     focusStrokeOuter,
     focusStrokeWidth,
+    foregroundOnAccentRest,
     neutralFillStealthActive,
     neutralFillStealthHover,
+    neutralFillStealthRest,
     neutralForegroundHint,
     neutralForegroundRest,
-    strokeControlStrongRest,
     strokeWidth,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
@@ -103,6 +104,7 @@ export const menuItemStyles: (
     }
 
     :host(:${focusVisible}) {
+      background: ${neutralFillStealthHover};
       border: calc(${strokeWidth} * 1px) solid ${focusStrokeOuter};
       box-shadow: 0 0 0 calc(${focusStrokeWidth} * 1px) ${focusStrokeOuter} inset;
     }
@@ -186,7 +188,7 @@ export const menuItemStyles: (
 
     :host .checkbox,
     :host .radio {
-        border: calc(${strokeWidth} * 1px) solid ${strokeControlStrongRest};
+        border: calc(${strokeWidth} * 1px) solid ${neutralForegroundRest};
     }
 
     :host .checkbox {

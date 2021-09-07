@@ -69,26 +69,23 @@ export const switchStyles: (
       box-sizing: border-box;
       width: calc(((${heightNumber} / 2) + ${designUnit}) * 2px);
       height: calc(((${heightNumber} / 2) + ${designUnit}) * 1px);
-      background: transparent;
+      background: ${neutralFillInputRest};
       border-radius: calc(${heightNumber} * 1px);
       border: calc(${strokeWidth} * 1px) solid ${strokeControlStrongRest};
     }
 
-    :host(:enabled:hover) .switch,
-    :host([aria-checked="true"]:enabled:hover) .switch {
-      background: transparent;
+    :host(:enabled:hover) .switch {
+      background: ${neutralFillInputHover};
       border-color: ${strokeControlStrongHover};
     }
 
-    :host(:enabled:active) .switch,
-    :host([aria-checked="true"]:enabled:active) .switch {
-      background: transparent;
+    :host(:enabled:active) .switch {
+      background: ${neutralFillInputActive};
       border-color: ${strokeControlStrongActive};
     }
 
     :host(:${focusVisible}) .switch,
     :host([aria-checked="true"]:${focusVisible}:enabled) .switch {
-      background: transparent;
       box-shadow: 0 0 0 3px ${focusStrokeOuter};
       border-color: ${focusStrokeOuter};
     }
@@ -123,6 +120,12 @@ export const switchStyles: (
 
     .status-message {
       margin-inline-start: calc(${designUnit} * 2px + 2px);
+    }
+
+    :host([aria-checked="true"]) .switch,
+    :host([aria-checked="true"]:enabled:hover) .switch {
+      background: ${neutralFillInputRest};
+      border-color: ${neutralForegroundHover};
     }
 
     :host([aria-checked="true"]) .switch slot[name='switch'],

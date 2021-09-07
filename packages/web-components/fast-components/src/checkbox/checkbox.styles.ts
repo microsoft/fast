@@ -54,7 +54,7 @@ export const checkboxStyles: (
       box-sizing: border-box;
       border-radius: calc(${controlCornerRadius} * 1px);
       border: calc(${strokeWidth} * 1px) solid ${strokeControlStrongRest};
-      background: transparent;
+      background: ${neutralFillInputRest};
       outline: none;
       cursor: pointer;
     }
@@ -93,21 +93,20 @@ export const checkboxStyles: (
       top: 0;
     }
 
-    :host(:hover) .control,
+    :host(:${focusVisible}) .control {
+      box-shadow: 0 0 0 calc(${focusStrokeWidth} * 1px) ${focusStrokeOuter};
+      background: ${neutralFillInputFocus};
+      border-color: ${focusStrokeOuter};
+    }
+
     :host([aria-checked="true"]:enabled:hover) .control {
-      background: transparent;
+      background: ${neutralFillInputHover};
       border-color: ${strokeControlStrongHover};
     }
 
     :host[aria-checked="true"]:enabled:active) .control {
-      background: transparent;
-      border-color: ${neutralForegroundActive};
-    }
-
-    :host(:${focusVisible}) .control {
-      box-shadow: 0 0 0 calc(${focusStrokeWidth} * 1px) ${focusStrokeOuter};
-      background: transparent;
-      border-color: ${focusStrokeOuter};
+      background: ${neutralFillInputActive};
+      border-color: ${strokeControlStrongHover};
     }
 
     :host(.disabled) .label,
@@ -122,8 +121,8 @@ export const checkboxStyles: (
       opacity: 1;
     }
 
-    :host(:enabled:hover[aria-checked="true"]:not(.indeterminate)) slot[name="checked-indicator"],
-    :host(:enabled:hover[aria-checked="true"].indeterminate) slot[name="indeterminate-indicator"] {
+    :host([aria-checked="true"]:enabled:hover) slot[name="checked-indicator"],
+    :host([aria-checked="true"]:enabled:hover) slot[name="indeterminate-indicator"] {
       fill: ${neutralForegroundHover};
     }
 
