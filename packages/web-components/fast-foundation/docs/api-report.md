@@ -737,7 +737,9 @@ export const DesignSystem: Readonly<{
 // @public
 export interface DesignSystemRegistrationContext {
     readonly elementPrefix: string;
+    // @deprecated
     tryDefineElement(name: string, type: Constructable, callback: ElementDefinitionCallback): any;
+    tryDefineElement(params: ElementDefinitionParams): any;
 }
 
 // @public
@@ -878,6 +880,12 @@ export interface ElementDefinitionContext {
     tagFor(type: Constructable): string;
     readonly type: Constructable;
     readonly willDefine: boolean;
+}
+
+// @public
+export interface ElementDefinitionParams extends Pick<ElementDefinitionContext, "name" | "type"> {
+    readonly baseClass?: Constructable;
+    callback: ElementDefinitionCallback;
 }
 
 // @public
@@ -1033,6 +1041,7 @@ export class FoundationElement extends FASTElement {
 // @public
 export interface FoundationElementDefinition {
     readonly attributes?: EagerOrLazyFoundationOption<(AttributeConfiguration | string)[], this>;
+    baseClass?: Constructable;
     baseName: string;
     readonly elementOptions?: EagerOrLazyFoundationOption<ElementDefinitionOptions, this>;
     readonly shadowOptions?: EagerOrLazyFoundationOption<Partial<ShadowRootInit> | null, this>;
@@ -1428,7 +1437,7 @@ export const numberFieldTemplate: (context: ElementDefinitionContext, definition
 export const optional: (key: any) => any;
 
 // @public
-export type OverrideFoundationElementDefinition<T extends FoundationElementDefinition> = Partial<Omit<T, "type">> & {
+export type OverrideFoundationElementDefinition<T extends FoundationElementDefinition> = Partial<Omit<T, "type" | "baseClass">> & {
     prefix?: string;
 };
 

@@ -1,0 +1,7 @@
+{
+  "type": "minor",
+  "comment": "fix: allow for base class",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "mathieu.lavoie@logmein.com",
+  "dependentChangeType": "patch"
+}
