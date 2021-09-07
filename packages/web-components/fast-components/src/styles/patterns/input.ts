@@ -19,8 +19,6 @@ import {
     neutralFillRest,
     neutralForegroundHover,
     neutralForegroundRest,
-    strokeControlRest,
-    strokeControlStrongRest,
     strokeControlTextHover,
     strokeControlTextRest,
     strokeWidth,
@@ -56,8 +54,8 @@ export const inputStyles: (
     box-sizing: border-box;
     position: relative;
     color: inherit;
-    background: ${neutralFillInputRest};
-    border: calc(${strokeWidth} * 1px) solid ${strokeControlStrongRest};
+    background: padding-box linear-gradient(${neutralFillRest}, ${neutralFillRest}), border-box ${neutralFillRest};
+    border: calc(${strokeWidth} * 1px) solid transparent;
     border-radius: calc(${controlCornerRadius} * 1px);
     height: calc(${heightNumber} * 1px);
     font-family: inherit;
@@ -115,8 +113,9 @@ export const inputStateStyles: (
     rootSelector: string
 ) => css`
   :host(:hover:not([disabled]):not(:focus-within)) ${rootSelector} {
-    background: ${neutralFillInputHover};
-    color: ${neutralForegroundHover};
+    background: padding-box linear-gradient(${neutralFillHover}, ${neutralFillHover}),
+      border-box ${strokeControlTextHover};
+      color: ${neutralForegroundHover};
   }
 
   :host(:active:not([disabled])) ${rootSelector},
@@ -144,12 +143,12 @@ export const inputFilledStyles: (
     rootSelector: string
 ) => css`
     :host ${rootSelector} {
-        background: ${neutralFillRest};
+        background: ${neutralFillInputRest};
         border-color: transparent;
     }
 
     :host(:hover:not([disabled]):not(:focus-within)) ${rootSelector} {
-        background: ${neutralFillHover};
+        background: ${neutralFillInputHover};
         border-color: transparent;
     }
 
