@@ -6,10 +6,11 @@ import {
 } from "@microsoft/fast-foundation";
 import {
     bodyFont,
-    designUnit,
     neutralForegroundRest,
-    typeRampBaseFontSize,
-    typeRampBaseLineHeight,
+    neutralStrokeDividerRest,
+    strokeWidth,
+    typeRampMinus1FontSize,
+    typeRampMinus1LineHeight,
 } from "../design-tokens";
 
 export const accordionStyles: (
@@ -24,9 +25,9 @@ export const accordionStyles: (
             box-sizing: border-box;
             flex-direction: column;
             font-family: ${bodyFont};
-            font-size: ${typeRampBaseFontSize};
-            line-height: ${typeRampBaseLineHeight};
+            font-size: ${typeRampMinus1FontSize};
+            line-height: ${typeRampMinus1LineHeight};
             color: ${neutralForegroundRest};
-            gap: calc(${designUnit} * 1px);
+            border-top: calc(${strokeWidth} * 1px) solid ${neutralStrokeDividerRest};
         }
     `;
