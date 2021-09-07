@@ -214,6 +214,30 @@ export function getSliderControls(
     ];
 }
 
+function renderCSSTextControl(
+    styleName: string,
+    labelText: string,
+    config: CSSControlConfig
+): React.ReactNode {
+    const id: string = "style-" + styleName;
+    return (
+        <div>
+            <label htmlFor={id}>{labelText}</label>
+            <fast-text-field
+                id={id}
+                value={config.css[styleName]}
+                events={{
+                    change: (e: React.ChangeEvent): void => {
+                        config.onChange({
+                            [styleName]: (e.target as HTMLInputElement).value,
+                        });
+                    },
+                }}
+            ></fast-text-field>
+        </div>
+    );
+}
+
 function getCSSControls(): StandardControlPlugin {
     return new StandardControlPlugin({
         id: "style",
@@ -236,6 +260,27 @@ function getCSSControls(): StandardControlPlugin {
                                         onChange={config.onChange}
                                     />
                                 );
+                            },
+                        }),
+                        new CSSStandardControlPlugin({
+                            id: "margin",
+                            propertyNames: ["margin"],
+                            control: (config: CSSControlConfig) => {
+                                return renderCSSTextControl("margin", "margin", config);
+                            },
+                        }),
+                        new CSSStandardControlPlugin({
+                            id: "padding",
+                            propertyNames: ["padding"],
+                            control: (config: CSSControlConfig) => {
+                                return renderCSSTextControl("padding", "padding", config);
+                            },
+                        }),
+                        new CSSStandardControlPlugin({
+                            id: "width",
+                            propertyNames: ["width"],
+                            control: (config: CSSControlConfig) => {
+                                return renderCSSTextControl("width", "width", config);
                             },
                         }),
                     ]}
