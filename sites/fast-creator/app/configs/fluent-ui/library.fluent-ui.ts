@@ -1,4 +1,4 @@
-import { fluentUIComponentSchemas } from "@microsoft/site-utilities";
+import { fluentUIComponentExtendedSchemas } from "@microsoft/site-utilities";
 import { WebComponentDefinition, WebComponentLibraryDefinition } from "../typings";
 import {
     fluentAnchorExample,
@@ -59,7 +59,7 @@ export const fluentUIComponentLibrary: WebComponentLibraryDefinition = {
         (await import("./library.fluent-ui.registry")).registerFluentUIComponents();
     },
     componentDictionary: {
-        ...Object.values(fluentUIComponentSchemas as { [key: string]: any })
+        ...Object.values(fluentUIComponentExtendedSchemas as { [key: string]: any })
             .map(
                 (schema: any): WebComponentDefinition => {
                     return {
@@ -84,109 +84,109 @@ export const fluentUIComponentLibrary: WebComponentLibraryDefinition = {
                 },
                 {}
             ),
-        [fluentUIComponentSchemas[fluentAnchorTag].$id]: {
-            displayName: fluentUIComponentSchemas[fluentAnchorTag].title,
-            schema: fluentUIComponentSchemas[fluentAnchorTag],
+        [fluentUIComponentExtendedSchemas[fluentAnchorTag].$id]: {
+            displayName: fluentUIComponentExtendedSchemas[fluentAnchorTag].title,
+            schema: fluentUIComponentExtendedSchemas[fluentAnchorTag],
             example: fluentAnchorExample,
         },
-        [fluentUIComponentSchemas[fluentButtonTag].$id]: {
-            displayName: fluentUIComponentSchemas[fluentButtonTag].title,
-            schema: fluentUIComponentSchemas[fluentButtonTag],
+        [fluentUIComponentExtendedSchemas[fluentButtonTag].$id]: {
+            displayName: fluentUIComponentExtendedSchemas[fluentButtonTag].title,
+            schema: fluentUIComponentExtendedSchemas[fluentButtonTag],
             example: fluentButtonExample,
         },
-        [fluentUIComponentSchemas[fluentBadgeTag].$id]: {
-            displayName: fluentUIComponentSchemas[fluentBadgeTag].title,
-            schema: fluentUIComponentSchemas[fluentBadgeTag],
+        [fluentUIComponentExtendedSchemas[fluentBadgeTag].$id]: {
+            displayName: fluentUIComponentExtendedSchemas[fluentBadgeTag].title,
+            schema: fluentUIComponentExtendedSchemas[fluentBadgeTag],
             example: fluentBadgeExample,
         },
-        [fluentUIComponentSchemas[fluentCheckboxTag].$id]: {
-            displayName: fluentUIComponentSchemas[fluentCheckboxTag].title,
-            schema: fluentUIComponentSchemas[fluentCheckboxTag],
+        [fluentUIComponentExtendedSchemas[fluentCheckboxTag].$id]: {
+            displayName: fluentUIComponentExtendedSchemas[fluentCheckboxTag].title,
+            schema: fluentUIComponentExtendedSchemas[fluentCheckboxTag],
             example: fluentCheckboxExample,
         },
-        [fluentUIComponentSchemas[fluentDialogTag].$id]: {
-            displayName: fluentUIComponentSchemas[fluentDialogTag].title,
-            schema: fluentUIComponentSchemas[fluentDialogTag],
+        [fluentUIComponentExtendedSchemas[fluentDialogTag].$id]: {
+            displayName: fluentUIComponentExtendedSchemas[fluentDialogTag].title,
+            schema: fluentUIComponentExtendedSchemas[fluentDialogTag],
             example: fluentDialogExample,
         },
-        [fluentUIComponentSchemas[fluentDividerTag].$id]: {
-            displayName: fluentUIComponentSchemas[fluentDividerTag].title,
-            schema: fluentUIComponentSchemas[fluentDividerTag],
+        [fluentUIComponentExtendedSchemas[fluentDividerTag].$id]: {
+            displayName: fluentUIComponentExtendedSchemas[fluentDividerTag].title,
+            schema: fluentUIComponentExtendedSchemas[fluentDividerTag],
             example: fluentDividerExample,
         },
-        [fluentUIComponentSchemas[fluentFlipperTag].$id]: {
-            displayName: fluentUIComponentSchemas[fluentFlipperTag].title,
-            schema: fluentUIComponentSchemas[fluentFlipperTag],
+        [fluentUIComponentExtendedSchemas[fluentFlipperTag].$id]: {
+            displayName: fluentUIComponentExtendedSchemas[fluentFlipperTag].title,
+            schema: fluentUIComponentExtendedSchemas[fluentFlipperTag],
             example: fluentFlipperExample,
         },
-        [fluentUIComponentSchemas[fluentMenuTag].$id]: {
-            displayName: fluentUIComponentSchemas[fluentMenuTag].title,
-            schema: fluentUIComponentSchemas[fluentMenuTag],
+        [fluentUIComponentExtendedSchemas[fluentMenuTag].$id]: {
+            displayName: fluentUIComponentExtendedSchemas[fluentMenuTag].title,
+            schema: fluentUIComponentExtendedSchemas[fluentMenuTag],
             example: fluentMenuExample,
         },
-        [fluentUIComponentSchemas[fluentMenuItemTag].$id]: {
-            displayName: fluentUIComponentSchemas[fluentMenuItemTag].title,
-            schema: fluentUIComponentSchemas[fluentMenuItemTag],
+        [fluentUIComponentExtendedSchemas[fluentMenuItemTag].$id]: {
+            displayName: fluentUIComponentExtendedSchemas[fluentMenuItemTag].title,
+            schema: fluentUIComponentExtendedSchemas[fluentMenuItemTag],
             example: fluentMenuItemExample,
         },
-        [fluentUIComponentSchemas[fluentProgressTag].$id]: {
-            displayName: fluentUIComponentSchemas[fluentProgressTag].title,
-            schema: fluentUIComponentSchemas[fluentProgressTag],
+        [fluentUIComponentExtendedSchemas[fluentProgressTag].$id]: {
+            displayName: fluentUIComponentExtendedSchemas[fluentProgressTag].title,
+            schema: fluentUIComponentExtendedSchemas[fluentProgressTag],
             example: fluentProgressExample,
         },
-        [fluentUIComponentSchemas[fluentProgressRingTag].$id]: {
-            displayName: fluentUIComponentSchemas[fluentProgressRingTag].title,
-            schema: fluentUIComponentSchemas[fluentProgressRingTag],
+        [fluentUIComponentExtendedSchemas[fluentProgressRingTag].$id]: {
+            displayName: fluentUIComponentExtendedSchemas[fluentProgressRingTag].title,
+            schema: fluentUIComponentExtendedSchemas[fluentProgressRingTag],
             example: fluentProgressRingExample,
         },
-        [fluentUIComponentSchemas[fluentRadioGroupTag].$id]: {
-            displayName: fluentUIComponentSchemas[fluentRadioGroupTag].title,
-            schema: fluentUIComponentSchemas[fluentRadioGroupTag],
+        [fluentUIComponentExtendedSchemas[fluentRadioGroupTag].$id]: {
+            displayName: fluentUIComponentExtendedSchemas[fluentRadioGroupTag].title,
+            schema: fluentUIComponentExtendedSchemas[fluentRadioGroupTag],
             example: fluentRadioGroupExample,
         },
-        [fluentUIComponentSchemas[fluentRadioTag].$id]: {
-            displayName: fluentUIComponentSchemas[fluentRadioTag].title,
-            schema: fluentUIComponentSchemas[fluentRadioTag],
+        [fluentUIComponentExtendedSchemas[fluentRadioTag].$id]: {
+            displayName: fluentUIComponentExtendedSchemas[fluentRadioTag].title,
+            schema: fluentUIComponentExtendedSchemas[fluentRadioTag],
             example: fluentRadioExample,
         },
-        [fluentUIComponentSchemas[fluentSliderTag].$id]: {
-            displayName: fluentUIComponentSchemas[fluentSliderTag].title,
-            schema: fluentUIComponentSchemas[fluentSliderTag],
+        [fluentUIComponentExtendedSchemas[fluentSliderTag].$id]: {
+            displayName: fluentUIComponentExtendedSchemas[fluentSliderTag].title,
+            schema: fluentUIComponentExtendedSchemas[fluentSliderTag],
             example: fluentSliderExample,
         },
-        [fluentUIComponentSchemas[fluentSliderLabelTag].$id]: {
-            displayName: fluentUIComponentSchemas[fluentSliderLabelTag].title,
-            schema: fluentUIComponentSchemas[fluentSliderLabelTag],
+        [fluentUIComponentExtendedSchemas[fluentSliderLabelTag].$id]: {
+            displayName: fluentUIComponentExtendedSchemas[fluentSliderLabelTag].title,
+            schema: fluentUIComponentExtendedSchemas[fluentSliderLabelTag],
             example: fluentSliderLabelExample,
         },
-        [fluentUIComponentSchemas[fluentSwitchTag].$id]: {
-            displayName: fluentUIComponentSchemas[fluentSwitchTag].title,
-            schema: fluentUIComponentSchemas[fluentSwitchTag],
+        [fluentUIComponentExtendedSchemas[fluentSwitchTag].$id]: {
+            displayName: fluentUIComponentExtendedSchemas[fluentSwitchTag].title,
+            schema: fluentUIComponentExtendedSchemas[fluentSwitchTag],
             example: fluentSwitchExample,
         },
-        [fluentUIComponentSchemas[fluentTabsTag].$id]: {
-            displayName: fluentUIComponentSchemas[fluentTabsTag].title,
-            schema: fluentUIComponentSchemas[fluentTabsTag],
+        [fluentUIComponentExtendedSchemas[fluentTabsTag].$id]: {
+            displayName: fluentUIComponentExtendedSchemas[fluentTabsTag].title,
+            schema: fluentUIComponentExtendedSchemas[fluentTabsTag],
             example: fluentTabsExample,
         },
-        [fluentUIComponentSchemas[fluentTabTag].$id]: {
-            displayName: fluentUIComponentSchemas[fluentTabTag].title,
-            schema: fluentUIComponentSchemas[fluentTabTag],
+        [fluentUIComponentExtendedSchemas[fluentTabTag].$id]: {
+            displayName: fluentUIComponentExtendedSchemas[fluentTabTag].title,
+            schema: fluentUIComponentExtendedSchemas[fluentTabTag],
             example: fluentTabExample,
         },
-        [fluentUIComponentSchemas[fluentTabPanelTag].$id]: {
-            displayName: fluentUIComponentSchemas[fluentTabPanelTag].title,
-            schema: fluentUIComponentSchemas[fluentTabPanelTag],
+        [fluentUIComponentExtendedSchemas[fluentTabPanelTag].$id]: {
+            displayName: fluentUIComponentExtendedSchemas[fluentTabPanelTag].title,
+            schema: fluentUIComponentExtendedSchemas[fluentTabPanelTag],
             example: fluentTabPanelExample,
         },
-        [fluentUIComponentSchemas[fluentTextAreaTag].$id]: {
-            displayName: fluentUIComponentSchemas[fluentTextAreaTag].title,
-            schema: fluentUIComponentSchemas[fluentTextAreaTag],
+        [fluentUIComponentExtendedSchemas[fluentTextAreaTag].$id]: {
+            displayName: fluentUIComponentExtendedSchemas[fluentTextAreaTag].title,
+            schema: fluentUIComponentExtendedSchemas[fluentTextAreaTag],
             example: fluentTextAreaExample,
         },
-        [fluentUIComponentSchemas[fluentTextFieldTag].$id]: {
-            displayName: fluentUIComponentSchemas[fluentTextFieldTag].title,
-            schema: fluentUIComponentSchemas[fluentTextFieldTag],
+        [fluentUIComponentExtendedSchemas[fluentTextFieldTag].$id]: {
+            displayName: fluentUIComponentExtendedSchemas[fluentTextFieldTag].title,
+            schema: fluentUIComponentExtendedSchemas[fluentTextFieldTag],
             example: fluentTextFieldExample,
         },
     },
