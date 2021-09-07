@@ -1,5 +1,6 @@
 {
   "type": "patch",
+  "comment": "fix(design-system): don't allow FoundationElement to be defined directly",
   "packageName": "@microsoft/fast-foundation",
   "email": "roeisenb@microsoft.com",
   "dependentChangeType": "patch"
