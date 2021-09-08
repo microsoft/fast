@@ -71,11 +71,12 @@ export const all: (key: any, searchAncestors?: boolean | undefined) => ReturnTyp
 //
 // @public
 export class Anchor extends FoundationElement {
+    // @internal (undocumented)
+    connectedCallback(): void;
     control: HTMLAnchorElement;
     // @internal
     defaultSlottedContent: HTMLElement[];
     download: string;
-    handleUnsupportedDelegatesFocus(): boolean;
     href: string;
     hreflang: string;
     ping: string;

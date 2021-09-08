@@ -97,15 +97,25 @@ export class Anchor extends FoundationElement {
     public control: HTMLAnchorElement;
 
     /**
-     * Manually calls the control's focus when delegatesFocus is unsupported
+     * @internal
      */
-    public handleUnsupportedDelegatesFocus(): boolean {
-        if (this.shadowRoot && this.shadowRoot.delegatesFocus === undefined) {
-            this.control.focus();
-            return false;
-        }
-        return true;
+    public connectedCallback(): void {
+        super.connectedCallback();
+
+        this.handleUnsupportedDelegatesFocus();
     }
+
+    /**
+     * Overrides the focus call for FireFox where delegatesFocus is unsupported.
+     */
+    private handleUnsupportedDelegatesFocus = () => {
+        // InstallTrigger is only defined in FireFox
+        if (typeof window.InstallTrigger !== "undefined") {
+            this.focus = () => {
+                this.control.focus();
+            };
+        }
+    };
 }
 
 /**
