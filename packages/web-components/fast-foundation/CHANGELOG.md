@@ -1,8 +1,21 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Thu, 02 Sep 2021 17:17:56 GMT and should not be manually modified.
+This log was last generated on Wed, 08 Sep 2021 07:16:17 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.11.0
+
+Wed, 08 Sep 2021 07:16:17 GMT
+
+### Minor changes
+
+- fix: allow for base class (mathieu.lavoie@logmein.com)
+
+### Patches
+
+- force non-volatile binding and update docs to explain that DesignToken does not support volatile bindings (nicholasrice@users.noreply.github.com)
+- Bump @microsoft/fast-element to v1.5.1 (roeisenb@microsoft.com)
 
 ## 2.10.0
 

@@ -1,7 +1,0 @@
-{
-  "type": "none",
-  "comment": "revert un-intentionally added commits",
-  "packageName": "@microsoft/fast-components",
-  "email": "nicholasrice@users.noreply.github.com",
-  "dependentChangeType": "none"
-}
