@@ -110,13 +110,59 @@ describe("DesignSystem", () => {
             .register({
                 register(container: Container) {
                     const context = container.get(DesignSystemRegistrationContext);
-                    context.tryDefineElement(elementName, customElement, x =>
-                        x.defineElement()
-                    );
+                    context.tryDefineElement({
+                        name: elementName,
+                        type: customElement,
+                        callback: x => x.defineElement()
+                    });
                 },
             });
 
         expect(customElements.get(elementName)).to.equal(customElement);
+    });
+
+    it("Should register elements with the deprecated `tryDefineElement` signature", () => {
+        const elementName = uniqueElementName();
+        const customElement = class extends HTMLElement {};
+        const host = document.createElement("div");
+
+        expect(customElements.get(elementName)).to.be.undefined;
+
+        DesignSystem.getOrCreate(host)
+            .register({
+                register(container: Container) {
+                    const context = container.get(DesignSystemRegistrationContext);
+                    context.tryDefineElement(elementName, customElement, x => x.defineElement());
+                },
+            });
+
+        expect(customElements.get(elementName)).to.equal(customElement);
+    });
+
+    it("Should register an element with a custom base class", () => {
+        const elementName = uniqueElementName();
+        const baseClass = class extends HTMLElement {};
+        const customElement = class extends baseClass {};
+        const host = document.createElement("div");
+
+        expect(customElements.get(elementName)).to.be.undefined;
+
+        DesignSystem.getOrCreate(host)
+            .register({
+                register(container: Container) {
+                    const context = container.get(DesignSystemRegistrationContext);
+                    context.tryDefineElement({
+                        name: elementName,
+                        type: customElement,
+                        callback: x => x.defineElement(),
+                        baseClass
+                    });
+                },
+            });
+
+        expect(customElements.get(elementName)).to.equal(customElement);
+        expect(DesignSystem.tagFor(baseClass)).to.equal(elementName);
+        expect(DesignSystem.tagFor(customElement)).to.equal(elementName);
     });
 
     it("Should detect duplicate elements and allow disambiguation", () => {
@@ -133,21 +179,21 @@ describe("DesignSystem", () => {
                 {
                     register(container: Container) {
                         const context = container.get(DesignSystemRegistrationContext);
-                        context.tryDefineElement(
-                            elementName,
-                            class extends HTMLElement {},
-                            x => x.defineElement()
-                        );
+                        context.tryDefineElement({
+                            name: elementName,
+                            type: class extends HTMLElement {},
+                            callback: x => x.defineElement()
+                        });
                     },
                 },
                 {
                     register(container: Container) {
                         const context = container.get(DesignSystemRegistrationContext);
-                        context.tryDefineElement(
-                            elementName,
-                            class extends HTMLElement {},
-                            x => x.defineElement()
-                        );
+                        context.tryDefineElement({
+                            name: elementName,
+                            type: class extends HTMLElement {},
+                            callback: x => x.defineElement()
+                        });
                     },
                 }
             );
@@ -169,22 +215,24 @@ describe("DesignSystem", () => {
                 {
                     register(container: Container) {
                         const context = container.get(DesignSystemRegistrationContext);
-                        context.tryDefineElement(elementName, customElement, x =>
-                            x.defineElement()
-                        );
+                        context.tryDefineElement({
+                            name: elementName,
+                            type: customElement,
+                            callback: x => x.defineElement()
+                        });
                     },
                 },
                 {
                     register(container: Container) {
                         const context = container.get(DesignSystemRegistrationContext);
-                        context.tryDefineElement(
-                            elementName,
-                            class extends HTMLElement {},
-                            x => {
+                        context.tryDefineElement({
+                            name: elementName,
+                            type: class extends HTMLElement {},
+                            callback: x => {
                                 x.defineElement();
                                 callbackCalled = true;
-                            }
-                        );
+                            },
+                        });
                     },
                 }
             );
@@ -207,22 +255,25 @@ describe("DesignSystem", () => {
                 {
                     register(container: Container) {
                         const context = container.get(DesignSystemRegistrationContext);
-                        context.tryDefineElement(elementName, customElement, x =>
-                            x.defineElement()
-                        );
+                        context.tryDefineElement({
+                            name: elementName,
+                            type: customElement,
+                            callback: x =>
+                            x.defineElement(),
+                        });
                     },
                 },
                 {
                     register(container: Container) {
                         const context = container.get(DesignSystemRegistrationContext);
-                        context.tryDefineElement(
-                            elementName,
-                            class extends HTMLElement {},
-                            x => {
+                        context.tryDefineElement({
+                            name: elementName,
+                            type: class extends HTMLElement {},
+                            callback: x => {
                                 x.defineElement();
                                 callbackCalled = true;
-                            }
-                        );
+                            },
+                        });
                     },
                 }
             );
@@ -263,9 +314,13 @@ describe("DesignSystem", () => {
             .register({
                 register(container: Container) {
                     const context = container.get(DesignSystemRegistrationContext);
-                    context.tryDefineElement(elementName, customElement, x => {
-                        mode = x.shadowRootMode;
-                        x.defineElement();
+                    context.tryDefineElement({
+                        name: elementName,
+                        type: customElement,
+                        callback: x => {
+                            mode = x.shadowRootMode;
+                            x.defineElement();
+                        }
                     });
                 },
             });
@@ -284,9 +339,13 @@ describe("DesignSystem", () => {
             .register({
                 register(container: Container) {
                     const context = container.get(DesignSystemRegistrationContext);
-                    context.tryDefineElement(elementName, customElement, x => {
-                        mode = x.shadowRootMode;
-                        x.defineElement();
+                    context.tryDefineElement({
+                        name: elementName,
+                        type: customElement,
+                        callback: x => {
+                            mode = x.shadowRootMode;
+                            x.defineElement();
+                        }
                     });
                 },
             });
@@ -305,9 +364,13 @@ describe("DesignSystem", () => {
             .register({
                 register(container: Container) {
                     const context = container.get(DesignSystemRegistrationContext);
-                    context.tryDefineElement(elementName, customElement, x => {
-                        mode = x.shadowRootMode;
-                        x.defineElement();
+                    context.tryDefineElement({
+                        name: elementName,
+                        type: customElement,
+                        callback: x => {
+                            mode = x.shadowRootMode;
+                            x.defineElement();
+                        }
                     });
                 },
             });
