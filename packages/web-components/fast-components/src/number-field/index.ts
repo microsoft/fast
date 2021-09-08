@@ -57,6 +57,7 @@ export const numberFieldStyles = styles;
  */
 export const fastNumberField = NumberField.compose<NumberFieldOptions>({
     baseName: "number-field",
+    baseClass: FoundationNumberField,
     styles,
     template,
     shadowOptions: {
