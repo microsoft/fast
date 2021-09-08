@@ -8,10 +8,12 @@ import { ElementStyles, FASTElement, observable } from "@microsoft/fast-element"
 import {
     ComponentPresentation,
     DefaultComponentPresentation,
+} from "../design-system/component-presentation";
+import {
     DesignSystemRegistrationContext,
     ElementDefinitionContext,
-} from "../design-system";
-import type { Container, Registry } from "../di";
+} from "../design-system/registration-context";
+import type { Container, Registry } from "../di/di";
 
 type LazyFoundationOption<T, K extends FoundationElementDefinition> = (
     context: ElementDefinitionContext,
