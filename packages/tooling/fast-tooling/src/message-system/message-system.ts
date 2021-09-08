@@ -1,3 +1,4 @@
+import { uniqueId } from "lodash-es";
 import { XOR } from "../data-utilities/type.utilities";
 import { MessageSystemType } from "./types";
 import { defaultHistoryLimit } from "./history";
@@ -23,6 +24,11 @@ export default class MessageSystem<C = {}> {
      */
     private historyLimit: number;
 
+    /**
+     * The message queue
+     */
+    private messageQueue: [{ [key: string]: MessageEvent }, string[]] = [{}, []];
+
     constructor(config: MessageSystemConfig) {
         if ((window as any).Worker) {
             this.worker =
@@ -36,7 +42,7 @@ export default class MessageSystem<C = {}> {
                     : defaultHistoryLimit;
 
             if (Array.isArray(config.dataDictionary) && config.schemaDictionary) {
-                this.worker.postMessage({
+                this.postMessage({
                     type: MessageSystemType.initialize,
                     data: config.dataDictionary,
                     schemaDictionary: config.schemaDictionary,
@@ -68,7 +74,7 @@ export default class MessageSystem<C = {}> {
                 typeof config.historyLimit === "number"
                     ? config.historyLimit
                     : this.historyLimit;
-            (this.worker as Worker).postMessage({
+            this.postMessage({
                 type: MessageSystemType.initialize,
                 dataDictionary: config.dataDictionary,
                 data: config.data,
@@ -79,22 +85,56 @@ export default class MessageSystem<C = {}> {
     }
 
     /**
-     * Post a message
+     * Post a message to the message system web worker
      */
     public postMessage(message: MessageSystemIncoming): void {
         if ((window as any).Worker && this.worker) {
-            this.worker.postMessage(message);
+            const uuid: string = uniqueId();
+
+            this.messageQueue[1].push(uuid);
+            this.worker.postMessage([message, uuid]);
         }
     }
 
     /**
-     * The onmessage handler for the message system
+     * The onmessage handler for the message system which recieves a message
+     * from the message system web worker and passes it to each registered item
      */
     private onMessage = (e: MessageEvent): void => {
-        this.register.forEach((registeredItem: Register) => {
-            registeredItem.onMessage(e);
-        });
+        this.messageQueue[0][e.data[1]] = e;
+
+        this.sendNextMessage();
     };
+
+    /**
+     * Fire the messages in the order they have been received when they are made available
+     */
+    private sendNextMessage = (): void => {
+        const firstMessageId = this.messageQueue[1][0];
+        const firstMessageInQueue = this.messageQueue[0][firstMessageId];
+
+        if (firstMessageId && firstMessageInQueue) {
+            const updatedEvent = new MessageEvent("message", {
+                data: firstMessageInQueue.data[0],
+                origin: firstMessageInQueue.origin,
+                lastEventId: firstMessageInQueue.lastEventId,
+                source: firstMessageInQueue.source,
+            });
+            this.register.forEach((registeredItem: Register) => {
+                registeredItem.onMessage(updatedEvent);
+            });
+            this.clearNextMessage();
+            this.sendNextMessage();
+        }
+    };
+
+    /**
+     * Clears the next message to be sent in the message queue
+     */
+    private clearNextMessage(): void {
+        delete this.messageQueue[0][this.messageQueue[1][0]];
+        this.messageQueue[1].shift();
+    }
 
     /**
      * Get a registered items config

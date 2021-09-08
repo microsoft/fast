@@ -64,6 +64,30 @@ interface ArbitraryMessageOutgoing<TConfig = {}> {
     options?: TConfig;
 }
 
+export interface InternalIncomingMessage<Message> {
+    /**
+     * The message to be sent
+     */
+    0: Message;
+
+    /**
+     * The internal ID of the message
+     */
+    1: string;
+}
+
+export interface InternalOutgoingMessage<Message> {
+    /**
+     * The message to be sent
+     */
+    0: Message;
+
+    /**
+     * The internal ID of the message
+     */
+    1: string;
+}
+
 /**
  * The message to initialize the message system
  *
@@ -543,7 +567,7 @@ export interface AddSchemaDictionaryMessageOutgoing<TConfig = {}>
 }
 
 export interface CustomMessageIncomingOutgoing<OConfig>
-    extends ArbitraryMessageIncoming<OConfig> {
+    extends ArbitraryMessageOutgoing<OConfig> {
     type: MessageSystemType.custom;
 }
 
@@ -643,6 +667,21 @@ export type MessageSystemIncoming<C = {}, OConfig = {}> =
     | CustomMessage<C, OConfig>;
 
 /**
+ * Outgoing message to the message system after passing
+ * through the internal MessageSystem instance
+ */
+export type InternalMessageSystemIncoming<C = {}, OConfig = {}> =
+    | InternalIncomingMessage<InitializeMessageIncoming>
+    | InternalIncomingMessage<DataMessageIncoming>
+    | InternalIncomingMessage<HistoryMessageIncoming>
+    | InternalIncomingMessage<SchemaDictionaryMessageIncoming>
+    | InternalIncomingMessage<NavigationMessageIncoming>
+    | InternalIncomingMessage<NavigationDictionaryMessageIncoming>
+    | InternalIncomingMessage<DataDictionaryMessageIncoming>
+    | InternalIncomingMessage<ValidationMessageIncoming>
+    | InternalOutgoingMessage<CustomMessage<C, OConfig>>;
+
+/**
  * Outgoing messages from the message system
  */
 export type MessageSystemOutgoing<C = {}, OConfig = {}> =
@@ -655,3 +694,18 @@ export type MessageSystemOutgoing<C = {}, OConfig = {}> =
     | DataDictionaryMessageOutgoing
     | ValidationMessageOutgoing
     | CustomMessage<C, OConfig>;
+
+/**
+ * Outgoing message to the message system after passing
+ * through the internal MessageSystem instance
+ */
+export type InternalMessageSystemOutgoing<C = {}, OConfig = {}> =
+    | InternalOutgoingMessage<InitializeMessageOutgoing>
+    | InternalOutgoingMessage<DataMessageOutgoing>
+    | InternalOutgoingMessage<HistoryMessageOutgoing>
+    | InternalOutgoingMessage<SchemaDictionaryMessageOutgoing>
+    | InternalOutgoingMessage<NavigationMessageOutgoing>
+    | InternalOutgoingMessage<NavigationDictionaryMessageOutgoing>
+    | InternalOutgoingMessage<DataDictionaryMessageOutgoing>
+    | InternalOutgoingMessage<ValidationMessageOutgoing>
+    | InternalOutgoingMessage<CustomMessage<C, OConfig>>;
