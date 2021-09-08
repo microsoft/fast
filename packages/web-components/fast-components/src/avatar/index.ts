@@ -63,6 +63,7 @@ export const imgTemplate = html<Avatar>`
  */
 export const fastAvatar = Avatar.compose<AvatarOptions>({
     baseName: "avatar",
+    baseClass: FoundationAvatar,
     template,
     styles,
     media: imgTemplate,

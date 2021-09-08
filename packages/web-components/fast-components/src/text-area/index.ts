@@ -50,6 +50,7 @@ export class TextArea extends FoundationTextArea {
  */
 export const fastTextArea = TextArea.compose({
     baseName: "text-area",
+    baseClass: FoundationTextArea,
     template,
     styles,
     shadowOptions: {

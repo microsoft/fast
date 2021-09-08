@@ -50,6 +50,7 @@ export class TextField extends FoundationTextField {
  */
 export const fastTextField = TextField.compose({
     baseName: "text-field",
+    baseClass: FoundationTextField,
     template,
     styles,
     shadowOptions: {
