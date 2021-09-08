@@ -117,10 +117,16 @@ export class Anchor extends FoundationElement {
 
     /**
      * Overrides the focus call for FireFox where delegatesFocus is unsupported.
+     * This should be removed as soon as FireFox supports delegatesFocus properly,
+     * the check for override does not work for any browser outside of FireFox.
+     * Relevant PR on the Firefox browser: https://phabricator.services.mozilla.com/D123858
      */
     private handleUnsupportedDelegatesFocus = () => {
         // InstallTrigger is only defined in FireFox
-        if (typeof window.InstallTrigger !== "undefined") {
+        if (
+            typeof ((window as unknown) as WindowWithInstallTrigger).InstallTrigger !==
+            "undefined"
+        ) {
             this.focus = () => {
                 this.control.focus();
             };

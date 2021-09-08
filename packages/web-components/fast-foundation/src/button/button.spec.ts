@@ -1,7 +1,8 @@
-import { expect } from "chai";
-import { DOM } from "@microsoft/fast-element";
-import { fixture } from "../test-utilities/fixture";
 import { Button, buttonTemplate as template } from "./index";
+
+import { DOM } from "@microsoft/fast-element";
+import { expect } from "chai";
+import { fixture } from "../test-utilities/fixture";
 
 const FASTButton = Button.compose({
     baseName: "button",
@@ -175,6 +176,43 @@ describe("Button", () => {
             element.shadowRoot?.querySelector("button")?.getAttribute("value")
         ).to.equal(value);
 
+        await disconnect();
+    });
+
+    it("should not modify the focus function when outside of FireFox", async () => {
+        const { element, connect, disconnect } = await setup();
+
+        element.autofocus = true;
+        let controlFocusCalled = false;
+
+        await connect();
+        element.control.focus = () => {
+            controlFocusCalled = true;
+        };
+
+        element.focus();
+
+        expect(controlFocusCalled).to.equal(false);
+
+        await disconnect();
+    });
+
+    it("should modify the focus function when in FireFox", async () => {
+        const { element, connect, disconnect } = await setup();
+
+        element.autofocus = true;
+        ((window as unknown) as WindowWithInstallTrigger).InstallTrigger = true;
+        let controlFocusCalled = false;
+
+        await connect();
+        element.control.focus = () => {
+            controlFocusCalled = true;
+        };
+
+        element.focus();
+
+        expect(controlFocusCalled).to.equal(true);
+        ((window as unknown) as WindowWithInstallTrigger).InstallTrigger = undefined;
         await disconnect();
     });
 
