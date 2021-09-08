@@ -88,6 +88,15 @@ mapToJSONSchemas(nativeElementExtendedDefinitions, nativeElementExtendedSchemas)
 /**
  * Map the formControlId to all property names for use by the <Form /> component
  */
+Object.entries(fluentUIComponentExtendedSchemas).forEach(([schemaKey]: [string, any]) => {
+    Object.keys(fluentUIComponentExtendedSchemas[schemaKey].properties).forEach(
+        (propertyKey: string) => {
+            fluentUIComponentExtendedSchemas[schemaKey].properties[propertyKey][
+                "formControlId"
+            ] = propertyKey;
+        }
+    );
+});
 Object.entries(fastComponentExtendedSchemas).forEach(([schemaKey]: [string, any]) => {
     Object.keys(fastComponentExtendedSchemas[schemaKey].properties).forEach(
         (propertyKey: string) => {

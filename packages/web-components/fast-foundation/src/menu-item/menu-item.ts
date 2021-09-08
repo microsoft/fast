@@ -9,7 +9,7 @@ import {
 import type { AnchoredRegion } from "../anchored-region";
 import { FoundationElement, FoundationElementDefinition } from "../foundation-element";
 import type { Menu } from "../menu/menu";
-import { StartEnd } from "../patterns/start-end";
+import { StartEnd, StartEndOptions } from "../patterns/start-end";
 import { getDirection } from "../utilities/";
 import { applyMixins } from "../utilities/apply-mixins";
 import { MenuItemRole } from "./menu-item.options";
@@ -26,11 +26,12 @@ export type MenuItemColumnCount = 0 | 1 | 2;
  * Menu Item configuration options
  * @public
  */
-export type MenuItemOptions = FoundationElementDefinition & {
-    checkboxIndicator?: string | SyntheticViewTemplate;
-    expandCollapseGlyph?: string | SyntheticViewTemplate;
-    radioIndicator?: string | SyntheticViewTemplate;
-};
+export type MenuItemOptions = FoundationElementDefinition &
+    StartEndOptions & {
+        checkboxIndicator?: string | SyntheticViewTemplate;
+        expandCollapseGlyph?: string | SyntheticViewTemplate;
+        radioIndicator?: string | SyntheticViewTemplate;
+    };
 
 /**
  * A Switch Custom HTML Element.
