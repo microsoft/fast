@@ -2,6 +2,29 @@
   "name": "@microsoft/fast-components",
   "entries": [
     {
+      "date": "Wed, 08 Sep 2021 07:16:17 GMT",
+      "tag": "@microsoft/fast-components_v2.8.3",
+      "version": "2.8.3",
+      "comments": {
+        "patch": [
+          {
+            "comment": "fix(breadcrumb-item): add display flex to separator",
+            "author": "ben@platform5.ch",
+            "commit": "2581a5ec2daba8f448f6d34c00725105678ab5d4",
+            "package": "@microsoft/fast-components"
+          }
+        ],
+        "none": [
+          {
+            "comment": "revert un-intentionally added commits",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "ba27201afe1aa74d70c070e2c82c8790dd5b401a",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 02 Sep 2021 17:17:56 GMT",
       "tag": "@microsoft/fast-components_v2.8.2",
       "version": "2.8.2",
