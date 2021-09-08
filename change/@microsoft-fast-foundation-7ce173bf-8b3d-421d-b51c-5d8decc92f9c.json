@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "force non-volatile binding and update docs to explain that DesignToken does not support volatile bindings",
-  "packageName": "@microsoft/fast-foundation",
-  "email": "nicholasrice@users.noreply.github.com",
-  "dependentChangeType": "patch"
-}

@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-creator",
   "entries": [
     {
+      "date": "Wed, 08 Sep 2021 07:16:17 GMT",
+      "tag": "@microsoft/fast-creator_v0.7.0",
+      "version": "0.7.0",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-tooling-react to v2.11.2",
+            "author": "roeisenb@microsoft.com",
+            "commit": "bdd28c8861b3523a9984ca8feda2af9019861a8a",
+            "package": "@microsoft/fast-creator"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 02 Sep 2021 17:17:56 GMT",
       "tag": "@microsoft/fast-creator_v0.7.0",
       "version": "0.7.0",

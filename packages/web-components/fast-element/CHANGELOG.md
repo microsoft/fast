@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-element
 
-This log was last generated on Fri, 27 Aug 2021 14:14:26 GMT and should not be manually modified.
+This log was last generated on Wed, 08 Sep 2021 07:16:17 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.5.1
+
+Wed, 08 Sep 2021 07:16:17 GMT
+
+### Patches
+
+- perf(Controller): reduce object allocation needed for isConnected prop (roeisenb@microsoft.com)
 
 ## 1.5.0
 

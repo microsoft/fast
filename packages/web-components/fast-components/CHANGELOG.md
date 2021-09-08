@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-components
 
-This log was last generated on Thu, 02 Sep 2021 17:17:56 GMT and should not be manually modified.
+This log was last generated on Wed, 08 Sep 2021 07:16:17 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.8.3
+
+Wed, 08 Sep 2021 07:16:17 GMT
+
+### Patches
+
+- fix(breadcrumb-item): add display flex to separator (ben@platform5.ch)
 
 ## 2.8.2
 
