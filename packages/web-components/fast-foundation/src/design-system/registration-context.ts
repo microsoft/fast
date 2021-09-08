@@ -76,6 +76,24 @@ export interface ElementDefinitionContext {
 export type ElementDefinitionCallback = (ctx: ElementDefinitionContext) => void;
 
 /**
+ * The element definition context interface. Designed to be used in `tryDefineElement`
+ * @public
+ */
+export interface ElementDefinitionParams
+    extends Pick<ElementDefinitionContext, "name" | "type"> {
+    /**
+     * FAST actual base class instance.
+     * @public
+     */
+    readonly baseClass?: Constructable;
+    /**
+     * A callback to invoke if definition will happen.
+     * @public
+     */
+    callback: ElementDefinitionCallback;
+}
+
+/**
  * Design system contextual APIs and configuration usable within component
  * registries.
  * @public
@@ -93,12 +111,20 @@ export interface DesignSystemRegistrationContext {
      * @param type - The type of the constructor to use to define the element.
      * @param callback - A callback to invoke if definition will happen.
      * @public
+     * @deprecated - Use the signature with the ElementDefinitionParams param type instead
      */
     tryDefineElement(
         name: string,
         type: Constructable,
         callback: ElementDefinitionCallback
     );
+
+    /**
+     * Used to attempt to define a custom element.
+     * @param params - The custom element definition.
+     * @public
+     */
+    tryDefineElement(params: ElementDefinitionParams);
 }
 
 /**

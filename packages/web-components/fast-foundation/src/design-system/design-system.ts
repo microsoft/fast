@@ -7,25 +7,8 @@ import {
     DesignSystemRegistrationContext,
     ElementDefinitionCallback,
     ElementDefinitionContext,
+    ElementDefinitionParams,
 } from "./registration-context";
-
-/**
- * The element definition context interface. Designed to be used in `tryDefineElement`
- * @public
- */
-export interface ElementDefinitionParams
-    extends Pick<ElementDefinitionContext, "name" | "type"> {
-    /**
-     * FAST actual base class instance.
-     * @public
-     */
-    readonly baseClass?: Constructable;
-    /**
-     * A callback to invoke if definition will happen.
-     * @public
-     */
-    callback: ElementDefinitionCallback;
-}
 
 /**
  * Indicates what to do with an ambiguous (duplicate) element.
