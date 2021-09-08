@@ -245,7 +245,7 @@ describe("MessageSystem", () => {
         const messageSystem: MessageSystem = new MessageSystem({
             webWorker: "",
         });
-        messageSystem.postMessage({} as any)
+        messageSystem.postMessage({} as any);
 
         expect(messageSystem["messageQueue"][1]).to.have.length(1);
     });
@@ -259,9 +259,11 @@ describe("MessageSystem", () => {
         const messageSystem: MessageSystem = new MessageSystem({
             webWorker: "",
         });
-        messageSystem.postMessage({} as any)
+        messageSystem.postMessage({} as any);
 
-        messageSystem["onMessage"]({ data: ["foo", messageSystem["messageQueue"][1][0]] } as any);
+        messageSystem["onMessage"]({
+            data: ["foo", messageSystem["messageQueue"][1][0]],
+        } as any);
         expect(messageSystem["messageQueue"][1]).to.have.length(0);
     });
     it("should not clear a message uuid if an onmessage has been called that is not the first uuid available", () => {
@@ -274,7 +276,7 @@ describe("MessageSystem", () => {
         const messageSystem: MessageSystem = new MessageSystem({
             webWorker: "",
         });
-        messageSystem.postMessage({} as any)
+        messageSystem.postMessage({} as any);
 
         messageSystem["onMessage"]({ data: ["foo", "unmatchableuuid"] } as any);
         expect(messageSystem["messageQueue"][1]).to.have.length(1);

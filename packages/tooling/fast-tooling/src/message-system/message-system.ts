@@ -3,10 +3,7 @@ import { XOR } from "../data-utilities/type.utilities";
 import { MessageSystemType } from "./types";
 import { defaultHistoryLimit } from "./history";
 import { Initialize, MessageSystemConfig, Register } from "./message-system.props";
-import {
-    InternalMessageSystemIncoming,
-    MessageSystemIncoming,
-} from "./message-system.utilities.props";
+import { MessageSystemIncoming } from "./message-system.utilities.props";
 
 /**
  * The registration used for the message system
@@ -114,8 +111,14 @@ export default class MessageSystem<C = {}> {
      */
     private sendNextMessage = (): void => {
         if (this.messageQueue[1][0] && this.messageQueue[0][this.messageQueue[1][0]]) {
+            const updatedEvent = new MessageEvent("message", {
+                data: this.messageQueue[0][this.messageQueue[1][0]].data[0],
+                origin: this.messageQueue[0][this.messageQueue[1][0]].origin,
+                lastEventId: this.messageQueue[0][this.messageQueue[1][0]].lastEventId,
+                source: this.messageQueue[0][this.messageQueue[1][0]].source,
+            });
             this.register.forEach((registeredItem: Register) => {
-                registeredItem.onMessage(this.messageQueue[0][this.messageQueue[1][0]]);
+                registeredItem.onMessage(updatedEvent);
             });
             this.clearNextMessage();
             this.sendNextMessage();
