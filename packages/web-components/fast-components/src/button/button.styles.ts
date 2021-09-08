@@ -7,102 +7,55 @@ import {
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
-    accentFillRest,
-    accentForegroundRest,
-    disabledOpacity,
-    neutralFillRest,
-    neutralFillStealthRest,
-} from "../design-tokens";
-import {
     AccentButtonStyles,
-    BaseButtonStyles,
+    baseButtonStyles,
     LightweightButtonStyles,
     OutlineButtonStyles,
     StealthButtonStyles,
-} from "../styles/index";
+} from "../styles/";
 import { appearanceBehavior } from "../utilities/behaviors";
+import { disabledOpacity } from "../design-tokens";
+
+const interactivitySelector: string = ":not([disabled])";
 
 export const buttonStyles: (
     context: ElementDefinitionContext,
     definition: ButtonOptions
 ) => ElementStyles = (context: ElementDefinitionContext, definition: ButtonOptions) =>
     css`
-        :host([disabled]),
-        :host([disabled]:hover),
-        :host([disabled]:active) {
+        :host([disabled]) {
             opacity: ${disabledOpacity};
-            background-color: ${neutralFillRest};
             cursor: ${disabledCursor};
         }
-
-        ${BaseButtonStyles}
+        ${baseButtonStyles(context, definition, interactivitySelector)}
     `.withBehaviors(
         forcedColorsStylesheetBehavior(
             css`
                 :host([disabled]),
-                :host([disabled]) .control,
-                :host([disabled]:hover),
-                :host([disabled]:active) {
-                    forced-color-adjust: none;
-                    background-color: ${SystemColors.ButtonFace};
-                    border-color: ${SystemColors.GrayText};
-                    color: ${SystemColors.GrayText};
-                    cursor: ${disabledCursor};
+                :host([disabled]) .control {
                     opacity: 1;
+                    background: ${SystemColors.ButtonFace};
+                    border-color: ${SystemColors.GrayText} !important;
+                    box-shadow: none !important;
+                    color: ${SystemColors.GrayText};
+                    fill: currentcolor;
                 }
             `
         ),
         appearanceBehavior(
             "accent",
-            css`
-                :host([appearance="accent"][disabled]),
-                :host([appearance="accent"][disabled]:hover),
-                :host([appearance="accent"][disabled]:active) {
-                    background: ${accentFillRest};
-                }
-
-                ${AccentButtonStyles}
-            `.withBehaviors(
-                forcedColorsStylesheetBehavior(
-                    css`
-                        :host([appearance="accent"][disabled]) .control,
-                        :host([appearance="accent"][disabled]) .control:hover {
-                            background: ${SystemColors.ButtonFace};
-                            border-color: ${SystemColors.GrayText};
-                            color: ${SystemColors.GrayText};
-                        }
-                    `
-                )
-            )
+            AccentButtonStyles(context, definition, interactivitySelector)
         ),
         appearanceBehavior(
             "lightweight",
             css`
-                :host([appearance="lightweight"][disabled]:hover),
-                :host([appearance="lightweight"][disabled]:active) {
-                    background-color: transparent;
-                    color: ${accentForegroundRest};
-                }
-
-                :host([appearance="lightweight"][disabled]) .content::before,
-                :host([appearance="lightweight"][disabled]:hover) .content::before,
-                :host([appearance="lightweight"][disabled]:active) .content::before {
-                    background: transparent;
-                }
-
-                ${LightweightButtonStyles}
+                ${LightweightButtonStyles(context, definition, interactivitySelector)}
             `.withBehaviors(
                 forcedColorsStylesheetBehavior(
                     css`
-                        :host([appearance="lightweight"].disabled) .control {
-                            forced-color-adjust: none;
-                            color: ${SystemColors.GrayText};
-                        }
-
-                        :host([appearance="lightweight"].disabled)
-                            .control:hover
-                            .content::before {
-                            background: none;
+                        :host([disabled]),
+                        :host([disabled]) .control {
+                            border-color: ${SystemColors.ButtonFace} !important;
                         }
                     `
                 )
@@ -110,46 +63,18 @@ export const buttonStyles: (
         ),
         appearanceBehavior(
             "outline",
-            css`
-                :host([appearance="outline"][disabled]),
-                :host([appearance="outline"][disabled]:hover),
-                :host([appearance="outline"][disabled]:active) {
-                    background: transparent;
-                    border-color: ${accentFillRest};
-                }
-
-                ${OutlineButtonStyles}
-            `.withBehaviors(
-                forcedColorsStylesheetBehavior(
-                    css`
-                        :host([appearance="outline"][disabled]) .control {
-                            border-color: ${SystemColors.GrayText};
-                        }
-                    `
-                )
-            )
+            OutlineButtonStyles(context, definition, interactivitySelector)
         ),
         appearanceBehavior(
             "stealth",
             css`
-                :host([appearance="stealth"][disabled]),
-                :host([appearance="stealth"][disabled]:hover),
-                :host([appearance="stealth"][disabled]:active) {
-                    background: ${neutralFillStealthRest};
-                }
-
-                ${StealthButtonStyles}
+                ${StealthButtonStyles(context, definition, interactivitySelector)}
             `.withBehaviors(
                 forcedColorsStylesheetBehavior(
                     css`
-                        :host([appearance="stealth"][disabled]) {
-                            background: ${SystemColors.ButtonFace};
-                        }
-
-                        :host([appearance="stealth"][disabled]) .control {
-                            background: ${SystemColors.ButtonFace};
-                            border-color: transparent;
-                            color: ${SystemColors.GrayText};
+                        :host([disabled]),
+                        :host([disabled]) .control {
+                            border-color: ${SystemColors.ButtonFace} !important;
                         }
                     `
                 )

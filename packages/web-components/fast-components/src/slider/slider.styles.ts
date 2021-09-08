@@ -1,4 +1,5 @@
 import { css, ElementStyles } from "@microsoft/fast-element";
+import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
     disabledCursor,
     display,
@@ -7,8 +8,9 @@ import {
     forcedColorsStylesheetBehavior,
     SliderOptions,
 } from "@microsoft/fast-foundation";
-import { SystemColors } from "@microsoft/fast-web-utilities";
+import { heightNumber } from "../styles";
 import {
+    accentForegroundRest,
     controlCornerRadius,
     density,
     designUnit,
@@ -26,57 +28,45 @@ import {
     strokeControlStrongRest,
     strokeWidth,
 } from "../design-tokens";
-import { heightNumber } from "../styles/index";
+import { neutralFill } from "../color/recipes/neutral-fill";
 
 export const sliderStyles: (
     context: ElementDefinitionContext,
     definition: SliderOptions
 ) => ElementStyles = (context: ElementDefinitionContext, definition: SliderOptions) =>
     css`
-    :host([hidden]) {
-        display: none;
-    }
-
     ${display("inline-grid")} :host {
-        --thumb-size: calc(${heightNumber} * 0.5 - ${designUnit});
-        --thumb-translate: calc(var(--thumb-size) * 0.5);
-        --track-overhang: calc((${designUnit} / 2) * -1);
-        --track-width: ${designUnit};
-        --fast-slider-height: calc(var(--thumb-size) * 10);
-        align-items: center;
-        width: 100%;
-        margin: calc(${designUnit} * 1px) 0;
-        user-select: none;
-        box-sizing: border-box;
-        border-radius: calc(${controlCornerRadius} * 1px);
-        outline: none;
-        cursor: pointer;
+      --thumb-size: calc((${heightNumber} / 2) + ${designUnit} + (${strokeWidth} * 2));
+      --thumb-translate: calc(var(--thumb-size) * 0.5);
+      --track-overhang: calc((${designUnit} / 2) * -1);
+      --track-width: ${designUnit};
+      align-items: center;
+      width: 100%;
+      margin: calc(${designUnit} * 1px) 0;
+      user-select: none;
+      box-sizing: border-box;
+      border-radius: calc(${controlCornerRadius} * 1px);
+      outline: none;
+      cursor: pointer;
     }
-    :host([orientation="horizontal"]) .positioning-region {
-        position: relative;
-        margin: 0 8px;
-        display: grid;
-        grid-template-rows: calc(var(--thumb-size) * 1px) 1fr;
+    :host(.horizontal) .positioning-region {
+      position: relative;
+      margin: 0 8px;
+      display: grid;
+      grid-template-rows: calc(var(--thumb-size) * 1px) 1fr;
     }
-    :host([orientation="vertical"]) .positioning-region {
-        position: relative;
-        margin: 0 8px;
-        display: grid;
-        height: 100%;
-        grid-template-columns: calc(var(--thumb-size) * 1px) 1fr;
+    :host(.vertical) .positioning-region {
+      position: relative;
+      margin: 0 8px;
+      display: grid;
+      height: 100%;
+      grid-template-columns: calc(var(--thumb-size) * 1px) 1fr;
     }
-
-    :host(:${focusVisible}) .thumb-cursor {
-        box-shadow: 0 0 0 2px ${fillColor}, 0 0 0 4px ${focusStrokeOuter};
-    }
-
     .thumb-container {
-        position: absolute;
-        height: calc(var(--thumb-size) * 1px);
-        width: calc(var(--thumb-size) * 1px);
-        transition: all 0.2s ease;
-        color: ${neutralForegroundRest};
-        fill: currentcolor;
+      position: absolute;
+      height: calc(var(--thumb-size) * 1px);
+      width: calc(var(--thumb-size) * 1px);
+      transition: all 0.2s ease;
     }
     .thumb-cursor {
       display: flex;
@@ -156,36 +146,32 @@ export const sliderStyles: (
   `.withBehaviors(
         forcedColorsStylesheetBehavior(
             css`
-            .thumb-cursor {
-                forced-color-adjust: none;
-                border-color: ${SystemColors.FieldText};
-                background: ${SystemColors.FieldText};
-            }
-            .thumb-cursor:hover,
-            .thumb-cursor:active {
-                background: ${SystemColors.Highlight};
-            }
-            .track {
-                forced-color-adjust: none;
-                background: ${SystemColors.FieldText};
-            }
-            :host(:${focusVisible}) .thumb-cursor {
-                border-color: ${SystemColors.Highlight};
-            }
-            :host([disabled]) {
-                opacity: 1;
-            }
-            :host([disabled]) .track,
-            :host([disabled]) .thumb-cursor {
-                forced-color-adjust: none;
-                background: ${SystemColors.GrayText};
-            }
-
-            :host(:${focusVisible}) .thumb-cursor {
-                background: ${SystemColors.Highlight};
-                border-color: ${SystemColors.Highlight};
-                box-shadow: 0 0 0 2px ${SystemColors.Field}, 0 0 0 4px ${SystemColors.FieldText};
-            }
-        `
+        .thumb-cursor {
+          forced-color-adjust: none;
+          border-color: ${SystemColors.FieldText};
+          background: ${SystemColors.FieldText};
+        }
+        :host(:not(.disabled)) .thumb-cursor:hover,
+        :host(:not(.disabled)) .thumb-cursor:active {
+          background: ${SystemColors.Highlight};
+        }
+        .track {
+          forced-color-adjust: none;
+          background: ${SystemColors.FieldText};
+        }
+        :host(:${focusVisible}) .thumb-cursor {
+          background: ${SystemColors.Highlight};
+          border-color: ${SystemColors.Highlight};
+          box-shadow: 0 0 0 2px ${SystemColors.Field}, 0 0 0 4px ${SystemColors.FieldText};
+        }
+        :host(.disabled) {
+          opacity: 1;
+        }
+        :host(.disabled) .track,
+        :host(.disabled) .thumb-cursor {
+          forced-color-adjust: none;
+          background: ${SystemColors.GrayText};
+        }
+      `
         )
     );

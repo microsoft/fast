@@ -9,11 +9,7 @@ import {
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
-    accentFillActive,
-    accentFillHover,
-    accentFillRest,
     bodyFont,
-    controlCornerRadius,
     designUnit,
     disabledOpacity,
     focusStrokeWidth,
@@ -29,7 +25,7 @@ import {
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
 } from "../design-tokens";
-import { DirectionalStyleSheetBehavior, heightNumber } from "../styles/index";
+import { DirectionalStyleSheetBehavior, heightNumber } from "../styles";
 
 export const switchStyles: (
     context: ElementDefinitionContext,
@@ -37,33 +33,31 @@ export const switchStyles: (
 ) => ElementStyles = (context: ElementDefinitionContext, definition: SwitchOptions) =>
     css`
     :host([hidden]) {
-        display: none;
+      display: none;
     }
-
     ${display("inline-flex")} :host {
-        align-items: center;
-        outline: none;
-        font-family: ${bodyFont};
-        margin: calc(${designUnit} * 1px) 0;
-        ${
-            /*
-             * Chromium likes to select label text or the default slot when
-             * the checkbox is clicked. Maybe there is a better solution here?
-             */ ""
-        } user-select: none;
+      align-items: center;
+      outline: none;
+      font-family: ${bodyFont};
+      margin: calc(${designUnit} * 1px) 0;
+      ${
+          /*
+           * Chromium likes to select label text or the default slot when
+           * the checkbox is clicked. Maybe there is a better solution here?
+           */ ""
+      } user-select: none;
     }
-
-    :host([disabled]) {
-        opacity: ${disabledOpacity};
+    :host(.disabled) {
+      opacity: ${disabledOpacity};
     }
-
-    :host([disabled]) .label,
-    :host([readonly]) .label,
-    :host([readonly]) .switch,
-    :host([disabled]) .switch {
-        cursor: ${disabledCursor};
+    :host(.disabled) .label,
+    :host(.readonly) .label,
+    :host(.disabled) .switch,
+    :host(.readonly) .switch,
+    :host(.disabled) .status-message,
+    :host(.readonly) .status-message {
+      cursor: ${disabledCursor};
     }
-
     .switch {
       position: relative;
       outline: none;
@@ -74,195 +68,130 @@ export const switchStyles: (
       border-radius: calc(${heightNumber} * 1px);
       border: calc(${strokeWidth} * 1px) solid ${strokeControlStrongRest};
     }
-
     :host([aria-checked="true"]) .switch {
       border-color: ${strokeControlStrongRest};
       background: ${neutralFillInputActive};
     }
-
     :host(:enabled:hover) .switch,
     :host([aria-checked="true"]:enabled:hover) .switch {
       border-color: ${strokeControlStrongHover};
     }
-
     :host(:enabled:active) .switch,
     :host([aria-checked="true"]:enabled:active) .switch {
       background: ${neutralFillInputActive};
       border-color: ${strokeControlStrongActive};
     }
-
     :host(:${focusVisible}) .switch,
     :host([aria-checked="true"]:${focusVisible}:enabled) .switch {
       border-color: ${strokeControlStrongFocus};
       box-shadow: 0 0 0 calc(${focusStrokeWidth} * 1px) ${strokeControlStrongFocus};
     }
-
-    :host(:${focusVisible}) .switch {
-        box-shadow: 0 0 0 2px ${fillColor}, 0 0 0 4px ${focusStrokeOuter};
+    slot[name="switch"] {
+      position: absolute;
+      display: flex;
+      border: 1px solid transparent; /* Spacing included in the transform reference box */
+      fill: ${neutralForegroundRest};
+      transition: all 0.2s ease-in-out;
     }
-
-    .checked-indicator {
-        position: absolute;
-        top: 5px;
-        bottom: 5px;
-        background: ${neutralForegroundRest};
-        border-radius: calc(${controlCornerRadius} * 1px);
-        transition: all 0.2s ease-in-out;
-    }
-
     .status-message {
-        color: ${neutralForegroundRest};
-        cursor: pointer;
-        font-size: ${typeRampBaseFontSize};
-        line-height: ${typeRampBaseLineHeight};
+      color: ${neutralForegroundRest};
+      cursor: pointer;
+      font-size: ${typeRampBaseFontSize};
+      line-height: ${typeRampBaseLineHeight};
     }
-
-    :host([disabled]) .status-message,
-    :host([readonly]) .status-message {
-        cursor: ${disabledCursor};
-    }
-
-    .label {
-        color: ${neutralForegroundRest};
-
-        ${
-            /* Need to discuss with Brian how HorizontalSpacingNumber can work. https://github.com/microsoft/fast/issues/2766 */ ""
-        } margin-inline-end: calc(${designUnit} * 2px + 2px);
-        font-size: ${typeRampBaseFontSize};
-        line-height: ${typeRampBaseLineHeight};
-        cursor: pointer;
-    }
-
     .label__hidden {
-        display: none;
-        visibility: hidden;
+      display: none;
+      visibility: hidden;
     }
-
-    ::slotted(*) {
-        ${
-            /* Need to discuss with Brian how HorizontalSpacingNumber can work. https://github.com/microsoft/fast/issues/2766 */ ""
-        } margin-inline-start: calc(${designUnit} * 2px + 2px);
+    .label {
+      color: ${neutralForegroundRest};
+      font-size: ${typeRampBaseFontSize};
+      line-height: ${typeRampBaseLineHeight};
+      margin-inline-end: calc(${designUnit} * 2px + 2px);
+      cursor: pointer;
     }
-
-    :host([aria-checked="true"]) .checked-indicator {
-        background: ${foregroundOnAccentRest};
+    .status-message {
+      margin-inline-start: calc(${designUnit} * 2px + 2px);
     }
-
-    :host([aria-checked="true"]) .switch {
-        background: ${accentFillRest};
-        border-color: ${accentFillRest};
+    :host([aria-checked="true"]) .switch slot[name='switch'],
+    :host([aria-checked="true"]:enabled:hover) .switch slot[name='switch'] {
+        fill: ${neutralForegroundHover};
     }
-
-    :host([aria-checked="true"]:not([disabled])) .switch:hover {
-        background: ${accentFillHover};
-        border-color: ${accentFillHover};
-    }
-
-    :host([aria-checked="true"]:not([disabled])) .switch:hover .checked-indicator {
-        background: ${foregroundOnAccentHover};
-    }
-
-    :host([aria-checked="true"]:not([disabled])) .switch:active {
-        background: ${accentFillActive};
-        border-color: ${accentFillActive};
-    }
-
-    :host([aria-checked="true"]:not([disabled])) .switch:active .checked-indicator {
-        background: ${foregroundOnAccentActive};
-    }
-
-    :host([aria-checked="true"]:${focusVisible}:not([disabled])) .switch {
-        box-shadow: 0 0 0 2px ${fillColor}, 0 0 0 4px ${focusStrokeOuter};
-    }
-
     .unchecked-message {
-        display: block;
+      display: block;
     }
-
     .checked-message {
-        display: none;
+      display: none;
     }
-
     :host([aria-checked="true"]) .unchecked-message {
-        display: none;
+      display: none;
     }
-
     :host([aria-checked="true"]) .checked-message {
-        display: block;
+      display: block;
     }
-`.withBehaviors(
-        forcedColorsStylesheetBehavior(
-            css`
-            .checked-indicator,
-            :host(:not([disabled])) .switch:active .checked-indicator {
-                forced-color-adjust: none;
-                background: ${SystemColors.FieldText};
-            }
-            .switch {
-                forced-color-adjust: none;
-                background: ${SystemColors.Field};
-                border-color: ${SystemColors.FieldText};
-            }
-            :host(:not([disabled])) .switch:hover {
-                background: ${SystemColors.HighlightText};
-                border-color: ${SystemColors.Highlight};
-            }
-            :host([aria-checked="true"]) .switch {
-                background: ${SystemColors.Highlight};
-                border-color: ${SystemColors.Highlight};
-            }
-            :host([aria-checked="true"]:not([disabled])) .switch:hover,
-            :host(:not([disabled])) .switch:active {
-                background: ${SystemColors.HighlightText};
-                border-color: ${SystemColors.Highlight};
-            }
-            :host([aria-checked="true"]) .checked-indicator {
-                background: ${SystemColors.HighlightText};
-            }
-            :host([aria-checked="true"]:not([disabled])) .switch:hover .checked-indicator {
-                background: ${SystemColors.Highlight};
-            }
-            :host([disabled]) {
-                opacity: 1;
-            }
-            :host(:${focusVisible}) .switch {
-                border-color: ${SystemColors.Highlight};
-                box-shadow: 0 0 0 2px ${SystemColors.Field}, 0 0 0 4px ${SystemColors.FieldText};
-            }
-            :host([aria-checked="true"]:${focusVisible}:not([disabled])) .switch {
-                box-shadow: 0 0 0 2px ${SystemColors.Field}, 0 0 0 4px ${SystemColors.FieldText};
-            }
-            :host([disabled]) .checked-indicator {
-                background: ${SystemColors.GrayText};
-            }
-            :host([disabled]) .switch {
-                background: ${SystemColors.Field};
-                border-color: ${SystemColors.GrayText};
-            }
-        `
-        ),
+  `.withBehaviors(
         new DirectionalStyleSheetBehavior(
             css`
-                .checked-indicator {
-                    left: 5px;
-                    right: calc(((${heightNumber} / 2) + 1) * 1px);
+                slot[name="switch"] {
+                    left: 0;
                 }
-
-                :host([aria-checked="true"]) .checked-indicator {
-                    left: calc(((${heightNumber} / 2) + 1) * 1px);
-                    right: 5px;
+                :host([aria-checked="true"]) slot[name="switch"] {
+                    left: 100%;
+                    transform: translateX(-100%);
                 }
             `,
             css`
-                .checked-indicator {
-                    right: 5px;
-                    left: calc(((${heightNumber} / 2) + 1) * 1px);
+                slot[name="switch"] {
+                    right: 0;
                 }
-
-                :host([aria-checked="true"]) .checked-indicator {
-                    right: calc(((${heightNumber} / 2) + 1) * 1px);
-                    left: 5px;
+                :host([aria-checked="true"]) slot[name="switch"] {
+                    right: 100%;
+                    transform: translateX(100%);
                 }
+            `
+        ),
+        forcedColorsStylesheetBehavior(
+            css`
+              :host {
+                forced-color-adjust: auto;
+              }
+              .switch {
+                background: ${SystemColors.Field};
+              }
+              slot[name="switch"] {
+                background: none;
+                border: none;
+                fill: ${SystemColors.FieldText};
+              }
+              :host(:enabled:hover) .switch {
+                border-color: ${SystemColors.Highlight};
+              }
+              :host(:enabled:${focusVisible}) .switch,
+              :host([aria-checked="true"]:enabled:${focusVisible}) .switch {
+                forced-color-adjust: none;
+                border-color: ${SystemColors.FieldText};
+                box-shadow: 0 0 0 calc(${focusStrokeWidth} * 1px) ${SystemColors.FieldText};
+              }
+              :host(.checked) .switch {
+                background: ${SystemColors.Highlight};
+              }
+              :host([aria-checked="true"]) .switch slot[name="switch"] {
+                fill: ${SystemColors.HighlightText};
+              }
+              :host([aria-checked='true']:enabled:hover) .switch slot[name='switch'],
+              :host([aria-checked='true']:enabled) .switch:hover slot[name='switch'] {
+                fill: ${SystemColors.Highlight};
+              }
+              :host(.disabled) {
+                opacity: 1;
+              }
+              :host(.disabled) .switch {
+                background: ${SystemColors.Field};
+                border-color: ${SystemColors.GrayText};
+              }
+              :host(.disabled) slot[name='switch'] {
+                fill: ${SystemColors.GrayText};
+              }
             `
         )
     );

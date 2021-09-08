@@ -56,7 +56,6 @@ export const inputStyles: (
     user-select: none;
     position: relative;
   }
-
   ${rootSelector} {
     box-sizing: border-box;
     position: relative;
@@ -70,18 +69,15 @@ export const inputStyles: (
     font-size: inherit;
     line-height: inherit;
   }
-
   .control {
     width: 100%;
   }
-
   .control:hover,
   .control:${focusVisible},
   .control:disabled,
   .control:active {
     outline: none;
   }
-
   .label {
     display: block;
     color: ${neutralForegroundRest};
@@ -90,19 +86,16 @@ export const inputStyles: (
     line-height: ${typeRampBaseLineHeight};
     margin-bottom: 4px;
   }
-
   .label__hidden {
     display: none;
     visibility: hidden;
   }
-
   :host([disabled]) ${rootSelector}, :host([readonly]) ${rootSelector}, :host([disabled]) .label,
   :host([readonly]) .label,
   :host([disabled]) .control,
   :host([readonly]) .control {
     cursor: ${disabledCursor};
   }
-
   :host([disabled]) {
     opacity: ${disabledOpacity};
   }
@@ -128,7 +121,6 @@ export const inputStateStyles: (
     box-shadow: 0 0 0 calc((${focusStrokeWidth} - ${strokeWidth}) * 1px) ${neutralStrokeHover} inset;
     color: ${neutralForegroundHover};
   }
-
   :host(:${focusVisible}:not([disabled])) ${rootSelector} {
     background: ${neutralFillInputFocus};
     border-color: ${neutralStrokeFocus};
@@ -154,14 +146,12 @@ export const inputFilledStyles: (
         border-color: ${neutralStrokeInputFillRest};
         color: ${neutralForegroundRest};
     }
-
     :host(:hover:not([disabled]):not(:focus-within)) ${rootSelector} {
       background: ${neutralFillHover};
       border-color: ${neutralStrokeInputFillHover};
       box-shadow: none;
       color: ${neutralForegroundHover};
     }
-
     :host(:active:not([disabled])) ${rootSelector},
     :host(:focus-within:not([disabled])) ${rootSelector} {
       background: ${neutralFillRest};
@@ -169,7 +159,6 @@ export const inputFilledStyles: (
       box-shadow: 0 0 0 calc(${strokeWidth} * 1px) ${neutralStrokeInputFillActive} inset;
       color: ${neutralForegroundActive};
     }
-
     :host(:${focusVisible}:not([disabled])) ${rootSelector} {
       background: ${neutralFillFocus};
       border-color: ${neutralStrokeInputFillFocus};

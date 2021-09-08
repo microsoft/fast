@@ -14,7 +14,6 @@ import {
     controlCornerRadius,
     designUnit,
     disabledOpacity,
-    focusStrokeInner,
     focusStrokeOuter,
     focusStrokeWidth,
     neutralFillStealthActive,
@@ -57,13 +56,11 @@ export const optionStyles: (
       user-select: none;
       white-space: nowrap;
     }
-
     :host(:not([disabled]):hover),
     :host(:not([disabled]):not([aria-selected="true"]):hover) {
       background: ${neutralFillStealthHover};
       color: ${neutralForegroundHover};
     }
-
     :host(:not([disabled]):active),
     :host(:not([disabled]):not([aria-selected='true']):active),
     :host([aria-selected="true"]),
@@ -72,69 +69,57 @@ export const optionStyles: (
       background: ${neutralFillStealthActive};
       color: ${neutralForegroundActive};
     }
-
     :host(:${focusVisible}) {
       border-color: ${focusStrokeOuter};
     }
-
     :host([disabled]) {
-        cursor: ${disabledCursor};
-        opacity: ${disabledOpacity};
+      cursor: ${disabledCursor};
+      opacity: ${disabledOpacity};
     }
-
-    :host([disabled]:hover) {
-        background-color: inherit;
-    }
-
     .content {
-        grid-column-start: 2;
-        justify-self: start;
-        overflow: hidden;
-        text-overflow: ellipsis;
+      grid-column-start: 2;
+      justify-self: start;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
-
     .start,
     .end,
     ::slotted(svg) {
-        display: flex;
+      display: flex;
     }
-
-    ::slotted(svg) {
-        /* TODO: adaptive typography https://github.com/microsoft/fast/issues/2432 */
-        height: calc(${designUnit} * 4px);
-        width: calc(${designUnit} * 4px);
-    }
-
     ::slotted([slot="end"]) {
-        margin-inline-start: 1ch;
+      margin-inline-start: 1ch;
     }
-
     ::slotted([slot="start"]) {
-        margin-inline-end: 1ch;
+      margin-inline-end: 1ch;
     }
-
-`.withBehaviors(
+  `.withBehaviors(
         forcedColorsStylesheetBehavior(
             css`
                 :host {
+                    background: ${SystemColors.ButtonFace};
                     border-color: transparent;
-                    forced-color-adjust: none;
                     color: ${SystemColors.ButtonText};
-                    fill: currentcolor;
+                    forced-color-adjust: none;
                 }
-
-                :host(:not([aria-selected="true"]):hover),
+                :host(:not([disabled])[aria-selected="true"]:hover),
+                :host(:not([disabled])[aria-selected="true"]:active),
+                :host(:not([disabled]):not([aria-selected="true"]):hover),
+                :host(:not([disabled]):not([aria-selected="true"]):active),
                 :host([aria-selected="true"]) {
                     background: ${SystemColors.Highlight};
                     color: ${SystemColors.HighlightText};
                 }
-
                 :host([disabled]),
                 :host([disabled]:not([aria-selected="true"]):hover) {
                     background: ${SystemColors.Canvas};
                     color: ${SystemColors.GrayText};
                     fill: currentcolor;
                     opacity: 1;
+                }
+                :host([aria-selected="true"])::before,
+                :host(:not([disabled]):active)::before {
+                    background: ${SystemColors.HighlightText};
                 }
             `
         )
