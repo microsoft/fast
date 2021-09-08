@@ -227,7 +227,7 @@ function renderCSSTextControl(
                 id={id}
                 value={config.css[styleName]}
                 events={{
-                    change: (e: React.ChangeEvent): void => {
+                    input: (e: React.ChangeEvent): void => {
                         config.onChange({
                             [styleName]: (e.target as HTMLInputElement).value,
                         });
