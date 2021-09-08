@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-element",
   "entries": [
     {
+      "date": "Wed, 08 Sep 2021 07:16:17 GMT",
+      "tag": "@microsoft/fast-element_v1.5.1",
+      "version": "1.5.1",
+      "comments": {
+        "patch": [
+          {
+            "comment": "perf(Controller): reduce object allocation needed for isConnected prop",
+            "author": "roeisenb@microsoft.com",
+            "commit": "bdd28c8861b3523a9984ca8feda2af9019861a8a",
+            "package": "@microsoft/fast-element"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 27 Aug 2021 14:14:26 GMT",
       "tag": "@microsoft/fast-element_v1.5.0",
       "version": "1.5.0",
