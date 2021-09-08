@@ -1,11 +1,17 @@
 import { attr, FASTElement, observable, Observable } from "@microsoft/fast-element";
 import { ArrowKeys, Direction, limit, Orientation } from "@microsoft/fast-web-utilities";
 import { isFocusable } from "tabbable";
-import { FoundationElement } from "../foundation-element";
+import { FoundationElement, FoundationElementDefinition } from "../foundation-element";
 import { ARIAGlobalStatesAndProperties } from "../patterns/aria-global";
-import { StartEnd } from "../patterns/start-end";
+import { StartEnd, StartEndOptions } from "../patterns/start-end";
 import { applyMixins } from "../utilities/apply-mixins";
 import { getDirection } from "../utilities/direction";
+
+/**
+ * Toolbar configuration options
+ * @public
+ */
+export type ToolbarOptions = FoundationElementDefinition & StartEndOptions;
 
 /**
  * A map for directionality derived from keyboard input strings,

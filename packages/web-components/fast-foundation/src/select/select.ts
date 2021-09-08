@@ -7,7 +7,7 @@ import {
 import type { FoundationElementDefinition } from "../foundation-element";
 import type { ListboxOption } from "../listbox-option/listbox-option";
 import { ARIAGlobalStatesAndProperties } from "../patterns/aria-global";
-import { StartEnd } from "../patterns/start-end";
+import { StartEnd, StartEndOptions } from "../patterns/start-end";
 import { applyMixins } from "../utilities/apply-mixins";
 import { FormAssociatedSelect } from "./select.form-associated";
 import { SelectPosition, SelectRole } from "./select.options";
@@ -16,9 +16,10 @@ import { SelectPosition, SelectRole } from "./select.options";
  * Select configuration options
  * @public
  */
-export type SelectOptions = FoundationElementDefinition & {
-    indicator?: string | SyntheticViewTemplate;
-};
+export type SelectOptions = FoundationElementDefinition &
+    StartEndOptions & {
+        indicator?: string | SyntheticViewTemplate;
+    };
 
 /**
  * A Select Custom HTML Element.

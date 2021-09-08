@@ -14,7 +14,7 @@ import {
     keyCodeArrowUp,
     keyCodeEnter,
 } from "@microsoft/fast-web-utilities";
-import { StartEnd } from "../patterns/start-end";
+import { StartEnd, StartEndOptions } from "../patterns/start-end";
 import type { TreeView } from "../tree-view";
 import { applyMixins } from "../utilities/apply-mixins";
 import { FoundationElement, FoundationElementDefinition } from "../foundation-element";
@@ -33,9 +33,10 @@ export function isTreeItemElement(el: Element): el is HTMLElement {
  * Tree Item configuration options
  * @public
  */
-export type TreeItemOptions = FoundationElementDefinition & {
-    expandCollapseGlyph?: string | SyntheticViewTemplate;
-};
+export type TreeItemOptions = FoundationElementDefinition &
+    StartEndOptions & {
+        expandCollapseGlyph?: string | SyntheticViewTemplate;
+    };
 
 /**
  * A Tree item Custom HTML Element.

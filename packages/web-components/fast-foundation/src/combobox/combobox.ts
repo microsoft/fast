@@ -8,7 +8,7 @@ import { limit } from "@microsoft/fast-web-utilities";
 import uniqueId from "lodash-es/uniqueId";
 import type { ListboxOption } from "../listbox-option/listbox-option";
 import { ARIAGlobalStatesAndProperties } from "../patterns/aria-global";
-import { StartEnd } from "../patterns/start-end";
+import { StartEnd, StartEndOptions } from "../patterns/start-end";
 import { SelectPosition, SelectRole } from "../select/select.options";
 import { applyMixins } from "../utilities/apply-mixins";
 import type { FoundationElementDefinition } from "../foundation-element";
@@ -19,9 +19,10 @@ import { ComboboxAutocomplete } from "./combobox.options";
  * Combobox configuration options
  * @public
  */
-export type ComboboxOptions = FoundationElementDefinition & {
-    indicator?: string | SyntheticViewTemplate;
-};
+export type ComboboxOptions = FoundationElementDefinition &
+    StartEndOptions & {
+        indicator?: string | SyntheticViewTemplate;
+    };
 
 /**
  * A Combobox Custom HTML Element.

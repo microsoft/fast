@@ -8,9 +8,15 @@ import {
     keyCodeHome,
     wrapInBounds,
 } from "@microsoft/fast-web-utilities";
-import { StartEnd } from "../patterns/start-end";
+import { StartEnd, StartEndOptions } from "../patterns/start-end";
 import { applyMixins } from "../utilities/apply-mixins";
-import { FoundationElement } from "../foundation-element";
+import { FoundationElement, FoundationElementDefinition } from "../foundation-element";
+
+/**
+ * Tabs option configuration options
+ * @public
+ */
+export type TabsOptions = FoundationElementDefinition & StartEndOptions;
 
 /**
  * The orientation of the {@link @microsoft/fast-foundation#(Tabs:class)} component
