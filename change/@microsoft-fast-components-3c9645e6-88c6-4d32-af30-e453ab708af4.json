@@ -1,0 +1,7 @@
+{
+  "type": "minor",
+  "comment": "update visuals styles for web components",
+  "packageName": "@microsoft/fast-components",
+  "email": "khamu@microsoft.com",
+  "dependentChangeType": "patch"
+}
