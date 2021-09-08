@@ -110,12 +110,15 @@ export default class MessageSystem<C = {}> {
      * Fire the messages in the order they have been received when they are made available
      */
     private sendNextMessage = (): void => {
-        if (this.messageQueue[1][0] && this.messageQueue[0][this.messageQueue[1][0]]) {
+        const firstMessageId = this.messageQueue[1][0];
+        const firstMessageInQueue = this.messageQueue[0][firstMessageId];
+
+        if (firstMessageId && firstMessageInQueue) {
             const updatedEvent = new MessageEvent("message", {
-                data: this.messageQueue[0][this.messageQueue[1][0]].data[0],
-                origin: this.messageQueue[0][this.messageQueue[1][0]].origin,
-                lastEventId: this.messageQueue[0][this.messageQueue[1][0]].lastEventId,
-                source: this.messageQueue[0][this.messageQueue[1][0]].source,
+                data: firstMessageInQueue.data[0],
+                origin: firstMessageInQueue.origin,
+                lastEventId: firstMessageInQueue.lastEventId,
+                source: firstMessageInQueue.source,
             });
             this.register.forEach((registeredItem: Register) => {
                 registeredItem.onMessage(updatedEvent);
