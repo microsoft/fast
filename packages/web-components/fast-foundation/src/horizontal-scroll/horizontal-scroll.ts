@@ -18,6 +18,7 @@ import type {
     FoundationElementTemplate,
 } from "../foundation-element";
 import { FoundationElement } from "../foundation-element";
+import type { StartEndOptions } from "../patterns";
 
 declare global {
     interface WindowWithResizeObserver extends Window {
@@ -41,22 +42,23 @@ export type ScrollEasing = "linear" | "ease-in" | "ease-out" | "ease-in-out";
  * Horizontal scroll configuration options
  * @public
  */
-export type HorizontalScrollOptions = FoundationElementDefinition & {
-    nextFlipper?:
-        | FoundationElementTemplate<
-              SyntheticViewTemplate<any, HorizontalScroll>,
-              HorizontalScrollOptions
-          >
-        | SyntheticViewTemplate
-        | string;
-    previousFlipper?:
-        | FoundationElementTemplate<
-              SyntheticViewTemplate<any, HorizontalScroll>,
-              HorizontalScrollOptions
-          >
-        | SyntheticViewTemplate
-        | string;
-};
+export type HorizontalScrollOptions = FoundationElementDefinition &
+    StartEndOptions & {
+        nextFlipper?:
+            | FoundationElementTemplate<
+                  SyntheticViewTemplate<any, HorizontalScroll>,
+                  HorizontalScrollOptions
+              >
+            | SyntheticViewTemplate
+            | string;
+        previousFlipper?:
+            | FoundationElementTemplate<
+                  SyntheticViewTemplate<any, HorizontalScroll>,
+                  HorizontalScrollOptions
+              >
+            | SyntheticViewTemplate
+            | string;
+    };
 
 /**
  * A HorizontalScroll Custom HTML Element
