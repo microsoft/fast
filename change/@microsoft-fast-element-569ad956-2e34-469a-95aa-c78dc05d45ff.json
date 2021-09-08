@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "perf(Controller): reduce object allocation needed for isConnected prop",
+  "packageName": "@microsoft/fast-element",
+  "email": "roeisenb@microsoft.com",
+  "dependentChangeType": "patch"
+}

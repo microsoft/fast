@@ -32,6 +32,16 @@ export class Controller extends PropertyChangeNotifier {
     private _isConnected: boolean = false;
 
     /**
+     * This allows Observable.getNotifier(...) to return the Controller
+     * when the notifier for the Controller itself is being requested. The
+     * result is that the Observable system does not need to create a separate
+     * instance of Notifier for observables on the Controller. The component and
+     * the controller will now share the same notifier, removing one-object construct
+     * per web component instance.
+     */
+    private readonly $fastController = this;
+
+    /**
      * The element being controlled by this controller.
      */
     public readonly element: HTMLElement;
