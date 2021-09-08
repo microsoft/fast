@@ -6,6 +6,7 @@ import {
     focusVisible,
     forcedColorsStylesheetBehavior,
     FoundationElementDefinition,
+    ListboxOptionOptions,
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
@@ -33,10 +34,10 @@ import { heightNumber } from "../styles/size";
 
 export const optionStyles: (
     context: ElementDefinitionContext,
-    definition: FoundationElementDefinition
+    definition: ListboxOptionOptions
 ) => ElementStyles = (
     context: ElementDefinitionContext,
-    definition: FoundationElementDefinition
+    definition: ListboxOptionOptions
 ) =>
     css`
     ${display("inline-flex")} :host {

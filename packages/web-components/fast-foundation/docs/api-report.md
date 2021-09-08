@@ -52,7 +52,7 @@ export interface AccordionItem extends StartEnd {
 }
 
 // @public
-export type AccordionItemOptions = FoundationElementDefinition & {
+export type AccordionItemOptions = FoundationElementDefinition & StartEndOptions & {
     expandedIcon?: string | SyntheticViewTemplate;
     collapsedIcon?: string | SyntheticViewTemplate;
 };
@@ -129,7 +129,10 @@ export type AnchoredRegionPositionLabel = "start" | "insetStart" | "insetEnd" | 
 export const anchoredRegionTemplate: (context: ElementDefinitionContext, definition: FoundationElementDefinition) => ViewTemplate<AnchoredRegion>;
 
 // @public
-export const anchorTemplate: (context: ElementDefinitionContext, definition: FoundationElementDefinition) => ViewTemplate<Anchor>;
+export type AnchorOptions = FoundationElementDefinition & StartEndOptions;
+
+// @public
+export const anchorTemplate: (context: ElementDefinitionContext, definition: AnchorOptions) => ViewTemplate<Anchor>;
 
 // @public
 export function applyMixins(derivedCtor: any, ...baseCtors: any[]): void;
@@ -230,7 +233,7 @@ export interface BreadcrumbItem extends StartEnd, DelegatesARIALink {
 }
 
 // @public
-export type BreadcrumbItemOptions = FoundationElementDefinition & {
+export type BreadcrumbItemOptions = FoundationElementDefinition & StartEndOptions & {
     separator?: string | SyntheticViewTemplate;
 };
 
@@ -266,7 +269,10 @@ export interface Button extends StartEnd, DelegatesARIAButton {
 }
 
 // @public
-export const buttonTemplate: (context: ElementDefinitionContext, definition: FoundationElementDefinition) => ViewTemplate<Button>;
+export type ButtonOptions = FoundationElementDefinition & StartEndOptions;
+
+// @public
+export const buttonTemplate: (context: ElementDefinitionContext, definition: ButtonOptions) => ViewTemplate<Button>;
 
 // @public
 export class Card extends FoundationElement {
@@ -395,7 +401,7 @@ export enum ComboboxAutocomplete {
 }
 
 // @public
-export type ComboboxOptions = FoundationElementDefinition & {
+export type ComboboxOptions = FoundationElementDefinition & StartEndOptions & {
     indicator?: string | SyntheticViewTemplate;
 };
 
@@ -901,6 +907,14 @@ export type ElementDisambiguationCallback = (nameAttempt: string, typeAttempt: C
 export type ElementDisambiguationResult = string | typeof ElementDisambiguation.ignoreDuplicate | typeof ElementDisambiguation.definitionCallbackOnly;
 
 // @public
+export type EndOptions = {
+    end?: string | SyntheticViewTemplate;
+};
+
+// @public
+export const endSlotTemplate: (context: ElementDefinitionContext, definition: EndOptions) => ViewTemplate<StartEnd>;
+
+// @public @deprecated
 export const endTemplate: ViewTemplate<StartEnd>;
 
 // @public
@@ -1111,7 +1125,7 @@ export class HorizontalScroll extends FoundationElement {
     }
 
 // @public
-export type HorizontalScrollOptions = FoundationElementDefinition & {
+export type HorizontalScrollOptions = FoundationElementDefinition & StartEndOptions & {
     nextFlipper?: FoundationElementTemplate<SyntheticViewTemplate<any, HorizontalScroll>, HorizontalScrollOptions> | SyntheticViewTemplate | string;
     previousFlipper?: FoundationElementTemplate<SyntheticViewTemplate<any, HorizontalScroll>, HorizontalScrollOptions> | SyntheticViewTemplate | string;
 };
@@ -1260,7 +1274,10 @@ export interface ListboxOption extends StartEnd {
 }
 
 // @public
-export const listboxOptionTemplate: (context: ElementDefinitionContext, definition: FoundationElementDefinition) => ViewTemplate<ListboxOption>;
+export type ListboxOptionOptions = FoundationElementDefinition & StartEndOptions;
+
+// @public
+export const listboxOptionTemplate: (context: ElementDefinitionContext, definition: ListboxOptionOptions) => ViewTemplate<ListboxOption>;
 
 // @public
 export enum ListboxRole {
@@ -1356,7 +1373,7 @@ export interface MenuItem extends StartEnd {
 export type MenuItemColumnCount = 0 | 1 | 2;
 
 // @public
-export type MenuItemOptions = FoundationElementDefinition & {
+export type MenuItemOptions = FoundationElementDefinition & StartEndOptions & {
     checkboxIndicator?: string | SyntheticViewTemplate;
     expandCollapseGlyph?: string | SyntheticViewTemplate;
     radioIndicator?: string | SyntheticViewTemplate;
@@ -1425,7 +1442,7 @@ export interface NumberField extends StartEnd, DelegatesARIATextbox {
 }
 
 // @public
-export type NumberFieldOptions = FoundationElementDefinition & {
+export type NumberFieldOptions = FoundationElementDefinition & StartEndOptions & {
     stepDownGlyph?: string | SyntheticViewTemplate;
     stepUpGlyph?: string | SyntheticViewTemplate;
 };
@@ -1672,7 +1689,7 @@ export interface Select extends StartEnd, DelegatesARIASelect {
 }
 
 // @public
-export type SelectOptions = FoundationElementDefinition & {
+export type SelectOptions = FoundationElementDefinition & StartEndOptions & {
     indicator?: string | SyntheticViewTemplate;
 };
 
@@ -1854,6 +1871,17 @@ export class StartEnd {
 }
 
 // @public
+export type StartEndOptions = StartOptions & EndOptions;
+
+// @public
+export type StartOptions = {
+    start?: string | SyntheticViewTemplate;
+};
+
+// @public
+export const startSlotTemplate: (context: ElementDefinitionContext, definition: StartOptions) => ViewTemplate<StartEnd>;
+
+// @public @deprecated
 export const startTemplate: ViewTemplate<StartEnd>;
 
 // @public
@@ -1938,6 +1966,9 @@ export interface Tabs extends StartEnd {
 }
 
 // @public
+export type TabsOptions = FoundationElementDefinition & StartEndOptions;
+
+// @public
 export enum TabsOrientation {
     // (undocumented)
     horizontal = "horizontal",
@@ -1946,7 +1977,7 @@ export enum TabsOrientation {
 }
 
 // @public
-export const tabsTemplate: (context: ElementDefinitionContext, definition: FoundationElementDefinition) => ViewTemplate<Tabs>;
+export const tabsTemplate: (context: ElementDefinitionContext, definition: TabsOptions) => ViewTemplate<Tabs>;
 
 // @public
 export const tabTemplate: (context: ElementDefinitionContext, definition: FoundationElementDefinition) => ViewTemplate<Tab>;
@@ -2027,7 +2058,10 @@ export interface TextField extends StartEnd, DelegatesARIATextbox {
 }
 
 // @public
-export const textFieldTemplate: (context: ElementDefinitionContext, definition: FoundationElementDefinition) => ViewTemplate<TextField>;
+export type TextFieldOptions = FoundationElementDefinition & StartEndOptions;
+
+// @public
+export const textFieldTemplate: (context: ElementDefinitionContext, definition: TextFieldOptions) => ViewTemplate<TextField>;
 
 // @public
 export enum TextFieldType {
@@ -2074,7 +2108,10 @@ export interface Toolbar extends StartEnd, DelegatesARIAToolbar {
 }
 
 // @public
-export const toolbarTemplate: (context: ElementDefinitionContext, definition: FoundationElementDefinition) => ViewTemplate<Toolbar>;
+export type ToolbarOptions = FoundationElementDefinition & StartEndOptions;
+
+// @public
+export const toolbarTemplate: (context: ElementDefinitionContext, definition: ToolbarOptions) => ViewTemplate<Toolbar>;
 
 // @public
 export class Tooltip extends FoundationElement {
@@ -2188,7 +2225,7 @@ export interface TreeItem extends StartEnd {
 }
 
 // @public
-export type TreeItemOptions = FoundationElementDefinition & {
+export type TreeItemOptions = FoundationElementDefinition & StartEndOptions & {
     expandCollapseGlyph?: string | SyntheticViewTemplate;
 };
 
