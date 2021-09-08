@@ -1,0 +1,7 @@
+{
+  "type": "minor",
+  "comment": "adding option to commit inline edit changes on blur",
+  "packageName": "@microsoft/fast-tooling",
+  "email": "44823142+williamw2@users.noreply.github.com",
+  "dependentChangeType": "patch"
+}
