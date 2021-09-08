@@ -40,6 +40,8 @@ export class HTMLRender extends FoundationElement {
 
     private tabCounter: number = 1;
 
+    public renderContainerElement: HTMLElement;
+
     private currentElement: HTMLElement;
 
     private activeDictionaryId: string = "";
@@ -88,7 +90,6 @@ export class HTMLRender extends FoundationElement {
     private selectTimeout = null;
     private handleMessageSystem = (e: MessageEvent): void => {
         if (e.data) {
-            console.log("Html Render",e.data);
             if (
                 (e.data.type === MessageSystemType.initialize ||
                     e.data.type === MessageSystemType.data) &&
@@ -236,6 +237,9 @@ export class HTMLRender extends FoundationElement {
     }
 
     private layerCallback = (layerActivityId: string, activityType: ActivityType) => {
+        if (activityType === ActivityType.releaseFocus) {
+            this.renderContainerElement.focus();
+        }
         this.updateLayers(layerActivityId, activityType, "", null, null);
     };
 
@@ -408,7 +412,6 @@ export class HTMLRender extends FoundationElement {
                 ? 0
                 : this.tabCounter;
             const nextTab: number = e.shiftKey ? currTab + 1 : currTab - 1;
-
             if (nextTab > 0 && nextTab < this.tabCounter) {
                 const tabElements: Array<Element> = Array.from(
                     (e.composedPath()[0] as HTMLElement).getElementsByTagName("*")
@@ -425,7 +428,6 @@ export class HTMLRender extends FoundationElement {
                 e.stopPropagation();
                 return false;
             } else {
-                this.clearElement();
                 (e.composedPath()[0] as HTMLElement).blur();
             }
         }
@@ -445,7 +447,6 @@ export class HTMLRender extends FoundationElement {
         if (!this.interactiveMode) {
             return true;
         }
-        this.clearElement();
         e.stopPropagation();
         return false;
     }
@@ -474,6 +475,7 @@ export class HTMLRender extends FoundationElement {
 
     public renderMarkup(): void {
         if (this.markupDefinitions !== null) {
+            this.tabCounter = 1;
             this.markup = mapDataDictionary({
                 dataDictionary: this.dataDictionary,
                 schemaDictionary: this.schemaDictionary,

@@ -162,7 +162,6 @@ export class MonacoAdapter extends MessageSystemService<
             this.updateDictionaryIdAndNavigationConfigIdFromDataDictionary(
                 dataDictionary
             );
-                console.log("monaco post", this.dictionaryId);
             this.messageSystem.postMessage({
                 type: MessageSystemType.initialize,
                 dataDictionary,

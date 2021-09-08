@@ -70,6 +70,11 @@ export class HTMLRenderLayerInlineEdit extends HTMLRenderLayer {
     };
 
     public handleKeyDown(e: KeyboardEvent) {
+        if (e.key === "Tab") {
+            this.commitEdit();
+            e.preventDefault();
+            return false;
+        }
         if (e.key.length === 1) {
             this.currentTextNode.textContent += e.key;
             this.applySizeAndPositionToTextbox();
@@ -79,8 +84,7 @@ export class HTMLRenderLayerInlineEdit extends HTMLRenderLayer {
 
     public handleTextInput(e: KeyboardEvent) {
         if (e.key === "Enter") {
-            if(this.commitmode === CommitMode.onEnter)
-            {
+            if (this.commitmode === CommitMode.onEnter) {
                 this.commitEdit();
                 e.preventDefault();
                 return false;
@@ -176,7 +180,7 @@ export class HTMLRenderLayerInlineEdit extends HTMLRenderLayer {
     }
 
     private commitEdit() {
-        if(!this.textAreaActive) return;
+        if (!this.textAreaActive) return;
 
         this.textAreaActive = false;
         const newValue = this.textAreaRef.value.replaceAll("\n", " ").trim();
@@ -201,7 +205,7 @@ export class HTMLRenderLayerInlineEdit extends HTMLRenderLayer {
     }
 
     private cancelEdit() {
-        if(!this.textAreaActive) return;
+        if (!this.textAreaActive) return;
         // reset all changes
         this.textAreaActive = false;
         if (this.currentTextNode) {
