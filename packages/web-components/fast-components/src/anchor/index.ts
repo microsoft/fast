@@ -81,6 +81,7 @@ export const anchorStyles = styles;
  */
 export const fastAnchor = Anchor.compose({
     baseName: "anchor",
+    baseClass: FoundationAnchor,
     template,
     styles,
     shadowOptions: {
