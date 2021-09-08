@@ -34,7 +34,6 @@ export const tooltipStyles: (
             height: 0;
             width: 0;
         }
-
         .tooltip {
             box-sizing: border-box;
             border-radius: calc(${controlCornerRadius} * 1px);
@@ -53,7 +52,6 @@ export const tooltipStyles: (
                 https://github.com/microsoft/fast/issues/3813 */
             z-index: 10000;
         }
-
         ${context.tagFor(AnchoredRegion)} {
             display: flex;
             justify-content: center;
@@ -62,24 +60,19 @@ export const tooltipStyles: (
             flex-direction: row;
             pointer-events: none;
         }
-
         ${context.tagFor(AnchoredRegion)}.right,
         ${context.tagFor(AnchoredRegion)}.left {
             flex-direction: column;
         }
-
         ${context.tagFor(AnchoredRegion)}.top .tooltip {
             margin-bottom: 4px;
         }
-
         ${context.tagFor(AnchoredRegion)}.bottom .tooltip {
             margin-top: 4px;
         }
-
         ${context.tagFor(AnchoredRegion)}.left .tooltip {
             margin-right: 4px;
         }
-
         ${context.tagFor(AnchoredRegion)}.right .tooltip {
             margin-left: 4px;
         }
