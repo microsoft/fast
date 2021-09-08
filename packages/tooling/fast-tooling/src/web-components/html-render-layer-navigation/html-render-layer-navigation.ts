@@ -164,6 +164,7 @@ export class HTMLRenderLayerNavigation extends HTMLRenderLayer {
         if (layerActivityId === this.layerActivityId) {
             return;
         }
+
         switch (activityType) {
             case ActivityType.hover:
                 this.handleHighlight(dataDictionaryId, elementRef as HTMLElement);

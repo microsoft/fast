@@ -162,6 +162,7 @@ export class MonacoAdapter extends MessageSystemService<
             this.updateDictionaryIdAndNavigationConfigIdFromDataDictionary(
                 dataDictionary
             );
+
             this.messageSystem.postMessage({
                 type: MessageSystemType.initialize,
                 dataDictionary,
