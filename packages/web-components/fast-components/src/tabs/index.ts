@@ -1,5 +1,24 @@
-import { Tabs, tabsTemplate as template } from "@microsoft/fast-foundation";
+import {
+    Tabs as FoundationTabs,
+    tabsTemplate as template,
+} from "@microsoft/fast-foundation";
+import { fillColor, neutralLayerFloating } from "../design-tokens";
 import { tabsStyles as styles } from "./tabs.styles";
+
+/**
+ * The FAST tabs class
+ * @public
+ */
+export class Tabs extends FoundationTabs {
+    /**
+     * @internal
+     */
+    public connectedCallback(): void {
+        super.connectedCallback();
+
+        fillColor.setValueFor(this, neutralLayerFloating);
+    }
+}
 
 /**
  * A function that returns a {@link @microsoft/fast-foundation#Tabs} registration for configuring the component with a DesignSystem.
@@ -23,9 +42,3 @@ export * from "../tab-panel";
  * @public
  */
 export const tabsStyles = styles;
-
-/**
- * Base class for Tabs
- * @public
- */
-export { Tabs };

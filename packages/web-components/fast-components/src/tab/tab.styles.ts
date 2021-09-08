@@ -13,6 +13,7 @@ import {
     accentFillRest,
     bodyFont,
     controlCornerRadius,
+    density,
     designUnit,
     disabledOpacity,
     focusStrokeOuter,
@@ -20,9 +21,7 @@ import {
     foregroundOnAccentHover,
     foregroundOnAccentRest,
     neutralFillHover,
-    neutralFillRest,
-    neutralFillStealthRest,
-    neutralForegroundHint,
+    neutralForegroundHover,
     neutralForegroundRest,
     strokeWidth,
     typeRampBaseFontSize,
@@ -38,49 +37,46 @@ export const tabStyles: (
     definition: FoundationElementDefinition
 ) =>
     css`
-    ${display("inline-flex")} :host {
+      ${display("inline-flex")} :host {
         box-sizing: border-box;
         font-family: ${bodyFont};
         font-size: ${typeRampBaseFontSize};
+        font-weight: 400;
         line-height: ${typeRampBaseLineHeight};
         height: calc(${heightNumber} * 1px);
-        padding: calc(${designUnit} * 5px) calc(${designUnit} * 4px);
-        color: ${neutralForegroundHint};
+        padding: 0 calc((6 + (${designUnit} * 2 * ${density})) * 1px);
+        color: ${neutralForegroundRest};
         fill: currentcolor;
         border-radius: calc(${controlCornerRadius} * 1px);
         border: calc(${strokeWidth} * 1px) solid transparent;
         align-items: center;
         justify-content: center;
-        grid-row: 1;
         cursor: pointer;
-    }
-
-    :host(:hover) {
-        color: ${neutralForegroundRest};
-        fill: currentcolor;
-    }
-
-    :host(:active) {
-        color: ${neutralForegroundRest};
-        fill: currentcolor;
-    }
-
-    :host([disabled]) {
+        outline: none;
+      }
+      :host(:not(.disabled):hover),
+      :host(:not(.disabled):active),
+      :host(.vertical:not(.disabled):hover),
+      :host(.vertical:not(.disabled):active) {
+        background: ${neutralFillHover};
+        color: ${neutralForegroundHover};
+      }
+      :host(:${focusVisible}) {
+        border-color: ${focusStrokeOuter};
+        box-shadow: 0 0 0 calc(${focusStrokeWidth} * 1px) ${focusStrokeOuter} inset;
+        color: ${neutralForegroundHover};
+      }
+      :host([disabled]) {
         cursor: ${disabledCursor};
         opacity: ${disabledOpacity};
-    }
-
-    :host([disabled]:hover) {
-        color: ${neutralForegroundHint};
-        background: ${neutralFillStealthRest};
-    }
-
-    :host([aria-selected="true"]) {
-        background: ${neutralFillRest};
-        color: ${accentForegroundRest};
-        fill: currentcolor;
-    }
-
+      }
+      :host([disabled]:hover) {
+        background: transparent;
+      }
+      :host(.vertical) {
+        justify-content: start;
+        grid-column: 2 / 3;
+      }
       :host([aria-selected="true"]),
       :host(.vertical[aria-selected="true"]),
       :host(.vertical:hover[aria-selected="true"]) {
@@ -88,7 +84,6 @@ export const tabStyles: (
         background: ${accentFillRest};
         color: ${foregroundOnAccentRest}
       }
-
       :host([aria-selected="true"]:hover),
       :host(.vertical[aria-selected="true"]:hover),
       :host(.vertical:hover[aria-selected="true"]) {
@@ -98,34 +93,32 @@ export const tabStyles: (
     `.withBehaviors(
         forcedColorsStylesheetBehavior(
             css`
-            :host {
-                forced-color-adjust: none;
-                border-color: transparent;
-                color: ${SystemColors.ButtonText};
-                fill: currentcolor;
-            }
-            :host(:hover),
-            :host(.vertical:hover),
-            :host([aria-selected="true"]:hover) {
-                background: ${SystemColors.Highlight};
-                color: ${SystemColors.HighlightText};
-                fill: currentcolor;
-            }
-            :host([aria-selected="true"]) {
-                background: ${SystemColors.HighlightText};
-                color: ${SystemColors.Highlight};
-                fill: currentcolor;
-            }
-            :host(:${focusVisible}) {
-                border-color: ${SystemColors.ButtonText};
-                box-shadow: none;
-            }
-            :host([disabled]),
-            :host([disabled]:hover) {
-                opacity: 1;
-                color: ${SystemColors.GrayText};
-                background: ${SystemColors.ButtonFace};
-            }
+          :host {
+            background: ${SystemColors.ButtonFace};
+            color: ${SystemColors.ButtonText};
+            fill: currentcolor;
+          }
+          :host(:not(.disabled):hover),
+          :host(.vertical:not(.disabled):hover),
+          :host([aria-selected="true"]),
+          :host([aria-selected="true"]:not(.disabled):hover) {
+            border-color: ${SystemColors.Highlight};
+            color: ${SystemColors.Highlight};
+            fill: currentcolor;
+          }
+          :host(:not(.disabled):${focusVisible}) {
+            forced-color-adjust: none;
+            background: ${SystemColors.ButtonFace};
+            border-color: ${SystemColors.Highlight};
+            box-shadow: 0 0 0 calc(${focusStrokeWidth} * 1px) ${SystemColors.Highlight} inset;
+          }
+          :host([disabled]),
+          :host([disabled]:hover) {
+            opacity: 1;
+            border-color: ${SystemColors.GrayText};
+            color: ${SystemColors.GrayText};
+            fill: currentcolor;
+          }
         `
         )
     );

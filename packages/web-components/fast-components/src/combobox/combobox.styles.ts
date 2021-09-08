@@ -20,17 +20,17 @@ export const comboboxStyles: (
     definition: ComboboxOptions
 ) => css`
     ${selectStyles(context, definition)}
-
     :host(:empty) .listbox {
         display: none;
     }
-
     :host([disabled]) *,
     :host([disabled]) {
         cursor: ${disabledCursor};
         user-select: none;
     }
-
+    :host(:active) .selected-value {
+        user-select: none;
+    }
     .selected-value {
         -webkit-appearance: none;
         background: transparent;
@@ -42,7 +42,6 @@ export const comboboxStyles: (
         margin: auto 0;
         width: 100%;
     }
-
     .selected-value:hover,
     .selected-value:${focusVisible},
     .selected-value:disabled,

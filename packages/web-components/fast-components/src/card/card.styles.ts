@@ -28,7 +28,6 @@ export const cardStyles: (
 ) =>
     css`
         ${display("block")} :host {
-            --elevation: 4;
             display: block;
             contain: content;
             height: var(--card-height, 100%);
@@ -40,19 +39,15 @@ export const cardStyles: (
             box-shadow: ${elevationShadowCardRest};
             color: ${neutralForegroundRest};
         }
-
         :host(:hover) {
             box-shadow: ${elevationShadowCardHover};
         }
-
         :host(:active) {
             box-shadow: ${elevationShadowCardActive};
         }
-
         :host(:focus-within) {
             box-shadow: ${elevationShadowCardFocus};
         }
-
         :host {
             content-visibility: auto;
         }
@@ -60,9 +55,9 @@ export const cardStyles: (
         forcedColorsStylesheetBehavior(
             css`
                 :host {
-                    forced-color-adjust: none;
                     background: ${SystemColors.Canvas};
-                    box-shadow: 0 0 0 1px ${SystemColors.CanvasText};
+                    color: ${SystemColors.CanvasText};
+                    fill: currentcolor;
                 }
             `
         )

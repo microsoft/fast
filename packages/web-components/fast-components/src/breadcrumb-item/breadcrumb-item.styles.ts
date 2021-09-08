@@ -8,10 +8,9 @@ import {
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
-    accentForegroundActive,
-    accentForegroundHover,
-    accentForegroundRest,
     bodyFont,
+    controlCornerRadius,
+    focusStrokeOuter,
     focusStrokeWidth,
     neutralFillStealthActive,
     neutralForegroundActive,
@@ -44,18 +43,15 @@ export const breadcrumbItemStyles: (
       outline: none;
       color: ${neutralForegroundRest}
     }
-
     .listitem {
-        display: flex;
-        align-items: center;
-        width: max-content;
+      display: flex;
+      align-items: center;
+      border-radius: inherit;
     }
-
     .separator {
-        margin: 0 6px;
-        display: flex;
-    }
-
+        margin: 0 20px;
+        display:flex;
+      }
     .control {
       position: relative;
       align-items: center;
@@ -72,26 +68,21 @@ export const breadcrumbItemStyles: (
       border-radius: inherit;
       padding: 4px 8px;
     }
-
     .control:hover {
       color: ${neutralForegroundHover};
     }
-
     .control:active {
       background: ${neutralFillStealthActive};
       color: ${neutralForegroundActive};
     }
-
     .control:${focusVisible} {
       border-color: ${focusStrokeOuter};
       box-shadow: 0 0 0 calc(${focusStrokeWidth} * 1px) ${focusStrokeOuter} inset;
       color: ${neutralForegroundFocus};
     }
-
     .control .content {
       position: relative;
     }
-
     .control .content::before {
       content: "";
       display: block;
@@ -102,51 +93,52 @@ export const breadcrumbItemStyles: (
       top: calc(1em + 4px);
       width: 100%;
     }
-
     .control:hover .content::before {
       background: ${neutralForegroundHover};
     }
-
     .control:active .content::before {
       background: transparent;
     }
-
     .control:${focusVisible} .content::before {
       background: ${neutralForegroundHover};
     }
-
-    .control:not([href]) .content::before {
-        background: none;
+    :host(:not([href])),
+    :host([aria-current]) .control {
+      color: ${neutralForegroundRest};
+      fill: currentcolor;
+      cursor: default;
     }
-
-    .start,
-    .end {
-        display: flex;
-    }
-
-    ::slotted(svg) {
-        /* TODO: adaptive typography https://github.com/microsoft/fast/issues/2432 */
-        width: 16px;
-        height: 16px;
-    }
-
     .start {
-        margin-inline-end: 6px;
+      display: flex;
+      margin-inline-end: 6px;
     }
-
     .end {
-        margin-inline-start: 6px;
+      display: flex;
+      margin-inline-start: 6px;
     }
-`.withBehaviors(
+  `.withBehaviors(
         forcedColorsStylesheetBehavior(
             css`
-                .control:hover .content::before,
-                .control:${focusVisible} .content::before {
-                    background: ${SystemColors.LinkText};
-                }
-                .start,
-                .end {
-                    fill: ${SystemColors.ButtonText};
+              :host,
+              .control {
+                border-color: ${SystemColors.ButtonFace};
+              }
+              .control .content::after {
+                content: "";
+                display: block;
+                height: calc(${strokeWidth} * 1px);
+              }
+              .control:hover .content::after ,
+              .control:active .content::after,
+              .control:${focusVisible} .content::after {
+                  background: ${SystemColors.LinkText};
+              }
+              :host(:not([href])) {
+                  color: ${SystemColors.ButtonText};
+                  fill: currentcolor;
+              }
+              .separator {
+                  fill: ${SystemColors.ButtonText};
                 }
             `
         )
