@@ -1,0 +1,7 @@
+{
+  "type": "minor",
+  "comment": "add start/end slot definitions to support default slotted content",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "chhol@microsoft.com",
+  "dependentChangeType": "patch"
+}
