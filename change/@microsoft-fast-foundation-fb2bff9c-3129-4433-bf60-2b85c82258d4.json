@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "fix(design-system): make FoundationElement.compose safe to use directly",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "roeisenb@microsoft.com",
+  "dependentChangeType": "patch"
+}
