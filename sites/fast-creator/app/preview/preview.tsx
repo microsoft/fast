@@ -10,7 +10,9 @@ import {
     MessageSystemOutgoing,
     MessageSystemType,
     NavigationMessageOutgoing,
+    RemoveLinkedDataDataMessageOutgoing,
     SchemaDictionary,
+    UpdateDataMessageIncoming,
 } from "@microsoft/fast-tooling";
 import FASTMessageSystemWorker from "@microsoft/fast-tooling/dist/message-system.min.js";
 import { ViewerCustomAction } from "@microsoft/fast-tooling-react";
@@ -227,7 +229,6 @@ class Preview extends Foundation<{}, {}, PreviewState> {
             } catch (e) {
                 return;
             }
-
             if (
                 messageData !== undefined &&
                 (!(messageData as any).options ||
@@ -247,15 +248,31 @@ class Preview extends Foundation<{}, {}, PreviewState> {
                             this.updateDOM(messageData as MessageSystemOutgoing)
                         );
                         break;
-                    case MessageSystemType.data:
+                    case MessageSystemType.data: {
+                        const dictionaryId: Partial<PreviewState> =
+                            typeof (messageData as RemoveLinkedDataDataMessageOutgoing)
+                                .activeDictionaryId === "string"
+                                ? {
+                                      activeDictionaryId: (messageData as RemoveLinkedDataDataMessageOutgoing)
+                                          .activeDictionaryId,
+                                  }
+                                : typeof (messageData as UpdateDataMessageIncoming)
+                                      .dictionaryId === "string"
+                                ? {
+                                      activeDictionaryId: (messageData as UpdateDataMessageIncoming)
+                                          .dictionaryId,
+                                  }
+                                : {};
                         this.setState(
                             {
                                 dataDictionary: (messageData as DataMessageOutgoing)
                                     .dataDictionary,
+                                ...(dictionaryId as {}),
                             },
                             this.updateDOM(messageData as MessageSystemOutgoing)
                         );
                         break;
+                    }
                     case MessageSystemType.navigation:
                         if (
                             !(messageData as any).options ||
