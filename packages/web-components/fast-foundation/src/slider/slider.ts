@@ -290,22 +290,22 @@ export class Slider extends FormAssociatedSlider implements SliderConfiguration 
     }
 
     protected keypressHandler = (e: KeyboardEvent) => {
-        if (e.keyCode !== keyCodeTab) {
-            e.preventDefault();
-        }
-
         if (e.keyCode === keyCodeHome) {
+            e.preventDefault();
             this.value = `${this.min}`;
         } else if (e.keyCode === keyCodeEnd) {
+            e.preventDefault();
             this.value = `${this.max}`;
         } else if (!e.shiftKey) {
             switch (e.keyCode) {
                 case keyCodeArrowRight:
                 case keyCodeArrowUp:
+                    e.preventDefault();
                     this.increment();
                     break;
                 case keyCodeArrowLeft:
                 case keyCodeArrowDown:
+                    e.preventDefault();
                     this.decrement();
                     break;
             }

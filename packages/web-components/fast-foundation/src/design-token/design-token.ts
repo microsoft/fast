@@ -11,7 +11,7 @@ import {
 } from "@microsoft/fast-element";
 import { composedParent } from "../utilities";
 import { composedContains } from "../utilities/composed-contains";
-import { CustomPropertyManager } from "./custom-property-manager";
+import { PropertyTargetManager } from "./custom-property-manager";
 import type {
     DerivedDesignTokenValue,
     DesignTokenConfiguration,
@@ -328,14 +328,12 @@ class CustomPropertyReflector {
 
     public handleChange(record: DesignTokenChangeRecord<any>) {
         const { token, target } = record;
-        this.remove(token, target);
         this.add(token, target);
     }
 
     private add(token: CSSDesignToken<any>, target: HTMLElement) {
-        CustomPropertyManager.addTo(
-            target,
-            token,
+        PropertyTargetManager.getOrCreate(target).setProperty(
+            token.cssCustomProperty,
             this.resolveCSSValue(
                 DesignTokenNode.getOrCreate(target).get(token as DesignTokenImpl<any>)
             )
@@ -343,7 +341,7 @@ class CustomPropertyReflector {
     }
 
     private remove(token: CSSDesignToken<any>, target: HTMLElement) {
-        CustomPropertyManager.removeFrom(target, token);
+        PropertyTargetManager.getOrCreate(target).removeProperty(token.cssCustomProperty);
     }
 
     private resolveCSSValue(value: any) {
@@ -363,7 +361,7 @@ class DesignTokenBindingObserver<T> {
         public readonly token: DesignTokenImpl<T>,
         public readonly node: DesignTokenNode
     ) {
-        this.observer = Observable.binding(source, this);
+        this.observer = Observable.binding(source, this, false);
 
         // This is a little bit hacky because it's using internal APIs of BindingObserverImpl.
         // BindingObserverImpl queues updates to batch it's notifications which doesn't work for this

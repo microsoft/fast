@@ -308,6 +308,12 @@ describe("The Controller", () => {
         }
     });
 
+    it("should use itself as the notifier", () => {
+        const { controller } = createController();
+        const notifier = Observable.getNotifier(controller);
+        expect(notifier).to.equal(controller);
+    });
+
     it("should have an observable isConnected property", () => {
         const { element, controller } = createController();
         let attached = controller.isConnected;

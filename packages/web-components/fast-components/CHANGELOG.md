@@ -1,8 +1,58 @@
 # Change Log - @microsoft/fast-components
 
-This log was last generated on Mon, 30 Aug 2021 22:30:39 GMT and should not be manually modified.
+This log was last generated on Thu, 09 Sep 2021 07:21:36 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.9.0
+
+Thu, 09 Sep 2021 07:21:36 GMT
+
+### Minor changes
+
+- add start/end slot definitions to support default slotted content (chhol@microsoft.com)
+- feat(fast-components): leverage FoundationElement.compose baseClass (roeisenb@microsoft.com)
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.12.0 (chhol@microsoft.com)
+
+## 2.8.3
+
+Wed, 08 Sep 2021 07:16:17 GMT
+
+### Patches
+
+- fix(breadcrumb-item): add display flex to separator (ben@platform5.ch)
+
+## 2.8.2
+
+Thu, 02 Sep 2021 17:17:56 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.10.0 (roeisenb@microsoft.com)
+
+## 2.8.1
+
+Thu, 02 Sep 2021 07:15:21 GMT
+
+### Patches
+
+- Removed remaining 'use-defaults' which no longer exists (47367562+bheston@users.noreply.github.com)
+- progress component bar width (scomea@microsoft.com)
+
+## 2.8.0
+
+Wed, 01 Sep 2021 07:18:34 GMT
+
+### Minor changes
+
+- Add viewport lock to tooltip (scomea@microsoft.com)
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.9.0 (scomea@microsoft.com)
 
 ## 2.7.3
 
