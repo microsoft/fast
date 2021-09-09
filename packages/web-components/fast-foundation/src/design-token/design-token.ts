@@ -713,6 +713,20 @@ class DesignTokenNode implements Behavior, Subscriber {
 
         reParent.forEach(x => child.appendChild(x));
 
+        // Disconnect and delete all bindings that don't
+        // not set explicitly for the token that do not
+        // match the new context. Otherwise, evaluate
+        // the value for the new context
+        child.bindingObservers.forEach(binding => {
+            const { token } = binding;
+            if (!child.has(token) && binding.source !== this.getRaw(token)) {
+                binding.disconnect();
+                child.bindingObservers.delete(token);
+            } else {
+                binding.handleChange();
+            }
+        });
+
         Observable.getNotifier(this).subscribe(child);
     }
 
