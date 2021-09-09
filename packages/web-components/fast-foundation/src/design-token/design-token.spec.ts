@@ -740,50 +740,25 @@ describe("A DesignToken", () => {
 
             removeElement(ancestor);
         });
-        xit("should notify a target-subscriber if the value is changed for the provided target", () => {
-                let invoked = false;
+        it("should notify a target-subscriber if the value is changed for the provided target", () => {
                 const parent = addElement();
                 const target = addElement(parent);
                 const token = DesignToken.create<number>("test");
 
+                const handleChange = chia.spy(() => {});
                 const subscriber: DesignTokenSubscriber<typeof token>  = {
-                    handleChange(record: DesignTokenChangeRecord<typeof token>) {
-                        invoked = true;
-                    }
+                    handleChange
                 }
 
                 token.subscribe(subscriber, target);
 
                 token.setValueFor(parent, 12);
-                expect(invoked).to.be.false;
+                expect(handleChange).to.have.been.called.once;
 
                 token.setValueFor(target, 14);
-                expect(invoked).to.be.true;
+                expect(handleChange).to.have.been.called.twice;
 
                 removeElement(parent);
-        });
-        xit("should not notify a target-subscriber if the value is changed for a different target", () => {
-                let invoked = false;
-                const ancestor = addElement();
-                const parent = addElement(ancestor);
-                const target = addElement(parent);
-                const token = DesignToken.create<number>("test");
-
-                const subscriber: DesignTokenSubscriber<typeof token>  = {
-                    handleChange(record: DesignTokenChangeRecord<typeof token>) {
-                        invoked = true;
-                    }
-                }
-
-                token.subscribe(subscriber, target);
-
-                token.setValueFor(ancestor, 12);
-                expect(invoked).to.be.false;
-
-                token.setValueFor(parent, 14);
-                expect(invoked).to.be.false;
-
-                removeElement(ancestor);
         });
 
         it("should not notify a subscriber after unsubscribing", () => {
