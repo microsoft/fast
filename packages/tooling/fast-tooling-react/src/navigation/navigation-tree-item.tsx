@@ -222,7 +222,7 @@ export const DraggableNavigationTreeItem: React.FC<NavigationTreeItemProps> = ({
     });
     const dragSource: ConnectDragSource = drag[1];
     const drop: [{}, DragElementWrapper<any>] = useDrop({
-        accept: [DragDropItemType.linkedData],
+        accept: [DragDropItemType.linkedData, DragDropItemType.linkedDataUndroppable],
         hover(item: DragObjectWithType, monitor: DropTargetMonitor): void {
             /**
              * When the hovered element changes, reset the cached ref and
