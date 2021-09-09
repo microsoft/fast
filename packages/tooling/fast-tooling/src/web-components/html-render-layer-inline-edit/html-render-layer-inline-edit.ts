@@ -7,6 +7,11 @@ import {
 } from "../html-render-layer/html-render-layer";
 import { htmlRenderOriginatorId } from "../html-render/html-render";
 
+export enum CommitMode {
+    onBlurOrEnter = "on-blur-or-enter",
+    onEnterOnly = "on-enter-only",
+}
+
 export class HTMLRenderLayerInlineEdit extends HTMLRenderLayer {
     /**
      * Specifies whether to automatically select all text when editing
@@ -16,6 +21,14 @@ export class HTMLRenderLayerInlineEdit extends HTMLRenderLayer {
      */
     @attr({ mode: "boolean" })
     public autoselect: boolean;
+
+    /**
+     * Specifies when changes to the text should be committed.
+     * Only on "Enter" keypress or any time the textarea loses focus.
+     * Default: CommitMode.onBlur
+     */
+    @attr({ attribute: "commit-mode" })
+    public commitMode: CommitMode;
 
     public layerActivityId: string = "InlineEditLayer";
 
@@ -38,6 +51,9 @@ export class HTMLRenderLayerInlineEdit extends HTMLRenderLayer {
     connectedCallback() {
         super.connectedCallback();
 
+        if (!this.commitMode) {
+            this.commitMode = CommitMode.onBlurOrEnter;
+        }
         window.addEventListener("scroll", this.handleWindowChange);
     }
 
@@ -54,6 +70,11 @@ export class HTMLRenderLayerInlineEdit extends HTMLRenderLayer {
     };
 
     public handleKeyDown(e: KeyboardEvent) {
+        if (e.key === "Tab" && this.commitMode === CommitMode.onBlurOrEnter) {
+            this.commitEdit();
+            e.preventDefault();
+            return false;
+        }
         if (e.key.length === 1) {
             this.currentTextNode.textContent += e.key;
             this.applySizeAndPositionToTextbox();
@@ -80,7 +101,9 @@ export class HTMLRenderLayerInlineEdit extends HTMLRenderLayer {
     }
 
     public handleBlur(e: InputEvent) {
-        this.cancelEdit();
+        this.commitMode === CommitMode.onBlurOrEnter
+            ? this.commitEdit()
+            : this.cancelEdit();
     }
 
     private getPositionFromElement(target: Node): OverlayPosition {
@@ -157,8 +180,10 @@ export class HTMLRenderLayerInlineEdit extends HTMLRenderLayer {
     }
 
     private commitEdit() {
-        const newValue = this.textAreaRef.value.replaceAll("\n", "");
+        if (!this.textAreaActive) return;
+
         this.textAreaActive = false;
+        const newValue = this.textAreaRef.value.replaceAll("\n", " ").trim();
         this.textValue = "";
         this.originalTextValue = "";
 
@@ -180,11 +205,12 @@ export class HTMLRenderLayerInlineEdit extends HTMLRenderLayer {
     }
 
     private cancelEdit() {
+        if (!this.textAreaActive) return;
         // reset all changes
+        this.textAreaActive = false;
         if (this.currentTextNode) {
             this.currentTextNode.textContent = this.originalTextValue;
         }
-        this.textAreaActive = false;
         this.currentDataId = null;
         this.currentTextNode = null;
         this.textValue = "";
