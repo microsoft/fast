@@ -8,8 +8,8 @@ import {
 import { htmlRenderOriginatorId } from "../html-render/html-render";
 
 export enum CommitMode {
-    onBlur = "onblur",
-    onEnter = "onenter",
+    onBlurOrEnter = "on-blur-or-enter",
+    onEnterOnly = "on-enter-only",
 }
 
 export class HTMLRenderLayerInlineEdit extends HTMLRenderLayer {
@@ -27,8 +27,8 @@ export class HTMLRenderLayerInlineEdit extends HTMLRenderLayer {
      * Only on "Enter" keypress or any time the textarea loses focus.
      * Default: CommitMode.onBlur
      */
-    @attr
-    public commitmode: CommitMode;
+    @attr({ attribute: "commit-mode" })
+    public commitMode: CommitMode;
 
     public layerActivityId: string = "InlineEditLayer";
 
@@ -51,8 +51,8 @@ export class HTMLRenderLayerInlineEdit extends HTMLRenderLayer {
     connectedCallback() {
         super.connectedCallback();
 
-        if (!this.commitmode) {
-            this.commitmode = CommitMode.onBlur;
+        if (!this.commitMode) {
+            this.commitMode = CommitMode.onBlurOrEnter;
         }
         window.addEventListener("scroll", this.handleWindowChange);
     }
@@ -70,7 +70,7 @@ export class HTMLRenderLayerInlineEdit extends HTMLRenderLayer {
     };
 
     public handleKeyDown(e: KeyboardEvent) {
-        if (e.key === "Tab") {
+        if (e.key === "Tab" && this.commitMode === CommitMode.onBlurOrEnter) {
             this.commitEdit();
             e.preventDefault();
             return false;
@@ -84,11 +84,9 @@ export class HTMLRenderLayerInlineEdit extends HTMLRenderLayer {
 
     public handleTextInput(e: KeyboardEvent) {
         if (e.key === "Enter") {
-            if (this.commitmode === CommitMode.onEnter) {
-                this.commitEdit();
-                e.preventDefault();
-                return false;
-            }
+            this.commitEdit();
+            e.preventDefault();
+            return false;
         } else if (e.key === "Escape") {
             this.cancelEdit();
             e.preventDefault();
@@ -103,7 +101,9 @@ export class HTMLRenderLayerInlineEdit extends HTMLRenderLayer {
     }
 
     public handleBlur(e: InputEvent) {
-        this.commitmode === CommitMode.onBlur ? this.commitEdit() : this.cancelEdit();
+        this.commitMode === CommitMode.onBlurOrEnter
+            ? this.commitEdit()
+            : this.cancelEdit();
     }
 
     private getPositionFromElement(target: Node): OverlayPosition {
