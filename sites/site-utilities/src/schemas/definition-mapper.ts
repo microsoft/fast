@@ -31,6 +31,7 @@ const alias: { [key: string]: string } = {
     li: "List item",
     div: "Container",
     a: "Hyperlink",
+    img: "Image",
 };
 
 function mapToJSONSchemas(
