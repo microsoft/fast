@@ -5,13 +5,13 @@ import { Picker } from "@microsoft/fast-foundation";
 import PickerTemplate from "./fixtures/picker.html";
 
 const optionContentsTemplate: ViewTemplate = html`
-    <div style="background: blue">
+    <div class="div-blue">
         ${x => x.value}
     </div>
 `;
 
 const itemContentsTemplate: ViewTemplate = html`
-    <div style="background: purple">
+    <div class="div-purple">
         ${x => x.value}
     </div>
 `;

@@ -37,16 +37,17 @@ export const pickerTemplate: (context, definition) => ViewTemplate<Picker> = (
     definition
 ) => {
     const anchoredRegionTag: string = context.tagFor(AnchoredRegion);
-    const pickerMenutag: string = context.tagFor(PickerMenu);
-    const pickerListtag: string = context.tagFor(PickerList);
+    const pickerMenuTag: string = context.tagFor(PickerMenu);
+    const pickerListTag: string = context.tagFor(PickerList);
+    const progressRingTag: string = context.tagFor(PickerList);
     const defaultListItemTemplate: ViewTemplate = createDefaultListItemTemplate(context);
     const defaultMenuOptionTemplate: ViewTemplate = createDefaultMenuOptionTemplate(
         context
     );
     return html<Picker>`
         <template
-            :selectedListTag="${() => pickerListtag}"
-            :pickerMenuTag="${() => pickerMenutag}"
+            :selectedListTag="${() => pickerListTag}"
+            :pickerMenuTag="${() => pickerMenuTag}"
             :defaultListItemTemplate="${defaultListItemTemplate}"
             :defaultMenuOptionTemplate="${defaultMenuOptionTemplate}"
             @focusin="${(x, c) => x.handleFocusIn(c.event as FocusEvent)}"
@@ -96,12 +97,12 @@ export const pickerTemplate: (context, definition) => ViewTemplate<Picker> = (
                         html<Picker>`
                             <div class="loading-display" part="loading-display">
                                 <slot name="loading-region">
-                                    <fast-progress-ring
+                                    <${progressRingTag}
                                         part="loading-progress"
                                         class="loading-progress
                                         slot="loading-region"
-                                    ></fast-progress-ring>
-                                    ${x => x.loadingText}
+                                    ></${progressRingTag}>
+                                        ${x => x.loadingText}
                                 </slot>
                             </div>
                         `
