@@ -740,7 +740,7 @@ describe("A DesignToken", () => {
 
             removeElement(ancestor);
         });
-        it("should notify a target-subscriber if the value is changed for a the provided target", () => {
+        xit("should notify a target-subscriber if the value is changed for the provided target", () => {
                 let invoked = false;
                 const parent = addElement();
                 const target = addElement(parent);
@@ -762,7 +762,7 @@ describe("A DesignToken", () => {
 
                 removeElement(parent);
         });
-        it("should not notify a target-subscriber if the value is changed for a different target", () => {
+        xit("should not notify a target-subscriber if the value is changed for a different target", () => {
                 let invoked = false;
                 const ancestor = addElement();
                 const parent = addElement(ancestor);
@@ -882,7 +882,7 @@ describe("A DesignToken", () => {
             await DOM.nextUpdate();
             expect(handleChange).to.have.been.called();
         })
-        it.only("should notify a subscriber when a dependency changes for an element down the DOM tree", async () => {
+        it("should notify a subscriber when a dependency of subscribed token changes for a parent of the subscription target", async () => {
             const tokenA = DesignToken.create<number>("a");
             const tokenB = DesignToken.create<number>("b");
 

@@ -267,6 +267,12 @@ class DesignTokenImpl<T extends { createCSS?(): string }> extends CSSDirective
         if (!subscriberSet.has(subscriber)) {
             subscriberSet.add(subscriber);
         }
+
+        if (target && !DesignTokenNode.existsFor(target)) {
+            // Ensure a node is created for the target so that
+            // notifications can be propagated to it.
+            DesignTokenNode.getOrCreate(target);
+        }
     }
 
     public unsubscribe(
