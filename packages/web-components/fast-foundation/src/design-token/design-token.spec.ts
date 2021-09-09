@@ -934,7 +934,7 @@ describe("A DesignToken", () => {
 
             const grandparent = addElement();
             const parent = addElement(grandparent)
-            const target = addElement(parent)
+            const child = addElement(parent)
 
             tokenA.withDefault(() => 6);
             tokenB.withDefault((el) => tokenA.getValueFor(el) * 2);
@@ -945,12 +945,34 @@ describe("A DesignToken", () => {
             }
 
 
-            tokenB.subscribe(subscriber, target);
+            tokenB.subscribe(subscriber, child);
 
             tokenA.setValueFor(grandparent, () => 7);
             await DOM.nextUpdate();
             expect(handleChange).to.have.been.called();
-            expect(tokenB.getValueFor(target)).to.equal(14)
         });
+        // it.only("should notify a subscriber when a dependency changes for an element down the DOM tree FOO", async () => {
+        //     const tokenA = DesignToken.create<number>("a");
+        //     const tokenB = DesignToken.create<number>("b");
+
+        //     const grandparent = addElement();
+        //     const parent = addElement(grandparent)
+        //     const child = addElement(parent);
+
+        //     tokenA.withDefault(() => 6);
+        //     tokenB.withDefault((el) => tokenA.getValueFor(el) * 2);
+
+        //     const handleChange = chia.spy(() => {})
+        //     const subscriber = {
+        //         handleChange
+        //     }
+
+
+        //     tokenB.subscribe(subscriber, child);
+
+        //     tokenA.setValueFor(grandparent, () => 7);
+        //     await DOM.nextUpdate();
+        //     expect(handleChange).to.have.been.called();
+        // })
     });
 });
