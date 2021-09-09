@@ -248,8 +248,7 @@ class Preview extends Foundation<{}, {}, PreviewState> {
                             this.updateDOM(messageData as MessageSystemOutgoing)
                         );
                         break;
-                    case MessageSystemType.data:
-                        {
+                    case MessageSystemType.data: {
                         const dictionaryId: Partial<PreviewState> =
                             typeof (messageData as RemoveLinkedDataDataMessageOutgoing)
                                 .activeDictionaryId === "string"
@@ -273,7 +272,7 @@ class Preview extends Foundation<{}, {}, PreviewState> {
                             this.updateDOM(messageData as MessageSystemOutgoing)
                         );
                         break;
-                        }
+                    }
                     case MessageSystemType.navigation:
                         if (
                             !(messageData as any).options ||
