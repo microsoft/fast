@@ -5,8 +5,6 @@ import { VirtualizingStack as FoundationVirtualingStack } from "@microsoft/fast-
 import VirtualizingStackTemplate from "./fixtures/base.html";
 import "./index";
 
-let stack1: FoundationVirtualingStack;
-
 const imageItemTemplate = html`
     <fast-card style="height:100px; width:120px;">
         <image style="height:100px; width:120px;" src="${x => x}"></image>
@@ -19,13 +17,13 @@ addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
 
         stack1.itemTemplate = imageItemTemplate;
         stack1.itemHeight = 100;
-        stack1.items = newDataSet(100);
+        stack1.items = newDataSet(100000);
 
         const stack2 = document.getElementById("stack2") as FoundationVirtualingStack;
 
         stack2.itemTemplate = imageItemTemplate;
         stack2.itemHeight = 100;
-        stack2.items = newDataSet(100);
+        stack2.items = newDataSet(100000);
     }
 });
 

@@ -21,7 +21,6 @@ export const virtualizingStackStyles: (
 
     .item-stack {
         width: 200px;
-        background: blue;
         display: flex;
         flex-direction: column;
         overflow: hidden;

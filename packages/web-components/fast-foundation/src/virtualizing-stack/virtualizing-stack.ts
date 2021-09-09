@@ -180,7 +180,7 @@ export class VirtualizingStack extends FoundationElement {
      *
      * @internal
      */
-    public container: HTMLDivElement;
+    public containerElement: HTMLDivElement;
 
     private static intersectionService: IntersectionService = new IntersectionService();
     private resizeDetector: ResizeObserverClassDefinition | null = null;
@@ -197,9 +197,13 @@ export class VirtualizingStack extends FoundationElement {
     private itemsRepeatBehavior: RepeatBehavior | null;
     private itemsPlaceholder: Node | null = null;
 
-    // defines how big a difference in pixels there must be between states to
-    // justify a layout update that affects the dom (prevents repeated sub-pixel corrections)
-    private updateThreshold: number = 2;
+    /**
+     * Delays updating ui during scrolling
+     * (to avoid rendering of items that just scroll by)
+     */
+    private scrollLayoutUpdateTimer: number | null = null;
+
+    private scrollLayoutUpdateDelay: number = 50;
 
     /**
      * @internal
@@ -237,6 +241,7 @@ export class VirtualizingStack extends FoundationElement {
         this.stopObservers();
         this.disconnectResizeDetector();
         super.disconnectedCallback();
+        this.clearLayoutUpdateTimer();
     }
 
     /**
@@ -246,6 +251,20 @@ export class VirtualizingStack extends FoundationElement {
      */
     public update(): void {
         this.requestPositionUpdates();
+    }
+
+    private startLayoutUpdateTimer(): void {
+        this.clearLayoutUpdateTimer();
+        this.scrollLayoutUpdateTimer = window.setTimeout((): void => {
+            this.updateVisibleItems();
+        }, this.scrollLayoutUpdateDelay);
+    }
+
+    private clearLayoutUpdateTimer(): void {
+        if (this.scrollLayoutUpdateTimer !== null) {
+            window.clearTimeout(this.scrollLayoutUpdateTimer);
+            this.scrollLayoutUpdateTimer = null;
+        }
     }
 
     /**
@@ -331,7 +350,7 @@ export class VirtualizingStack extends FoundationElement {
         if (this.pendingPositioningUpdate) {
             this.pendingPositioningUpdate = false;
             VirtualizingStack.intersectionService.cancelRequestPosition(
-                this.container,
+                this.containerElement,
                 this.handleIntersection
             );
             if (this.viewportElement !== null) {
@@ -371,6 +390,8 @@ export class VirtualizingStack extends FoundationElement {
      *
      */
     private updateVisibleItems = (): void => {
+        this.clearLayoutUpdateTimer();
+
         if (this.pendingPositioningUpdate) {
             console.debug("updateVisibleItems - return");
             return;
@@ -450,20 +471,22 @@ export class VirtualizingStack extends FoundationElement {
      */
     private requestPositionUpdates = (): void => {
         if (this.pendingPositioningUpdate) {
-            console.debug("requestPositionUpdates-return");
             return;
         }
         console.debug("requestPositionUpdates");
         this.pendingPositioningUpdate = true;
+        this.clearLayoutUpdateTimer();
 
-        VirtualizingStack.intersectionService.requestPosition(
-            this.container,
-            this.handleIntersection
-        );
-        VirtualizingStack.intersectionService.requestPosition(
-            this.viewportElement,
-            this.handleIntersection
-        );
+        DOM.queueUpdate(() => {
+            VirtualizingStack.intersectionService.requestPosition(
+                this.containerElement,
+                this.handleIntersection
+            );
+            VirtualizingStack.intersectionService.requestPosition(
+                this.viewportElement,
+                this.handleIntersection
+            );
+        });
     };
 
     /**
@@ -471,7 +494,6 @@ export class VirtualizingStack extends FoundationElement {
      */
     private handleIntersection = (entries: IntersectionObserverEntry[]): void => {
         if (!this.pendingPositioningUpdate) {
-            console.debug("handleIntersection-return");
             return;
         }
 
@@ -479,58 +501,29 @@ export class VirtualizingStack extends FoundationElement {
 
         this.pendingPositioningUpdate = false;
 
-        const stackEntry: IntersectionObserverEntry | undefined = entries.find(
-            x => x.target === this.container
+        const containerEntry: IntersectionObserverEntry | undefined = entries.find(
+            x => x.target === this.containerElement
         );
         const viewportEntry: IntersectionObserverEntry | undefined = entries.find(
             x => x.target === this.viewportElement
         );
 
-        if (stackEntry === undefined || viewportEntry === undefined) {
+        if (containerEntry === undefined || viewportEntry === undefined) {
             return;
         }
 
-        if (
-            this.viewportRect === undefined ||
-            this.containerRect === undefined ||
-            this.isRectDifferent(this.containerRect, stackEntry.boundingClientRect) ||
-            this.isRectDifferent(this.viewportRect, viewportEntry.boundingClientRect)
-        ) {
-            this.containerRect = stackEntry.boundingClientRect;
-            if (this.viewportElement === document.documentElement) {
-                this.viewportRect = new DOMRectReadOnly(
-                    viewportEntry.boundingClientRect.x +
-                        document.documentElement.scrollLeft,
-                    viewportEntry.boundingClientRect.y +
-                        document.documentElement.scrollTop,
-                    viewportEntry.boundingClientRect.width,
-                    viewportEntry.boundingClientRect.height
-                );
-            } else {
-                this.viewportRect = viewportEntry.boundingClientRect;
-            }
-
-            DOM.queueUpdate(() => {
-                this.updateVisibleItems();
-            });
+        this.containerRect = containerEntry.boundingClientRect;
+        if (this.viewportElement === document.documentElement) {
+            this.viewportRect = new DOMRectReadOnly(
+                viewportEntry.boundingClientRect.x + document.documentElement.scrollLeft,
+                viewportEntry.boundingClientRect.y + document.documentElement.scrollTop,
+                viewportEntry.boundingClientRect.width,
+                viewportEntry.boundingClientRect.height
+            );
+        } else {
+            this.viewportRect = viewportEntry.boundingClientRect;
         }
-    };
 
-    /**
-     *  compare rects to see if there is enough change to justify a DOM update
-     */
-    private isRectDifferent = (
-        rectA: DOMRect | ClientRect,
-        rectB: DOMRect | ClientRect
-    ): boolean => {
-        if (
-            Math.abs(rectA.top - rectB.top) > this.updateThreshold ||
-            Math.abs(rectA.right - rectB.right) > this.updateThreshold ||
-            Math.abs(rectA.bottom - rectB.bottom) > this.updateThreshold ||
-            Math.abs(rectA.left - rectB.left) > this.updateThreshold
-        ) {
-            return true;
-        }
-        return false;
+        this.startLayoutUpdateTimer();
     };
 }
