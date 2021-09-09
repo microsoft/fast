@@ -107,8 +107,14 @@ export class HTMLRender extends FoundationElement {
                     null
                 );
                 this.renderMarkup();
-                if (e.data.activeDictionaryId) {
-                    this.activeDictionaryId = e.data.activeDictionaryId;
+                if (
+                    typeof e.data.activeDictionaryId === "string" ||
+                    typeof e.data.dictionaryId === "string"
+                ) {
+                    this.activeDictionaryId =
+                        typeof e.data.activeDictionaryId === "string"
+                            ? e.data.activeDictionaryId
+                            : e.data.dictionaryId;
                     // give everything time to actually render
                     if (this.selectTimeout) {
                         window.clearTimeout(this.selectTimeout);
@@ -194,7 +200,7 @@ export class HTMLRender extends FoundationElement {
         let el: HTMLElement = this.shadowRoot.querySelector(
             `[${this.dataDictionaryAttr}=${this.activeDictionaryId}]`
         );
-        while (!el && this.dataDictionary[0][this.activeDictionaryId].parent) {
+        while (!el && this.dataDictionary[0][this.activeDictionaryId]?.parent) {
             this.activeDictionaryId = this.dataDictionary[0][
                 this.activeDictionaryId
             ].parent.id;
