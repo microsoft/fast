@@ -2,6 +2,29 @@
   "name": "@microsoft/fast-foundation",
   "entries": [
     {
+      "date": "Thu, 09 Sep 2021 07:21:36 GMT",
+      "tag": "@microsoft/fast-foundation_v2.12.0",
+      "version": "2.12.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "add start/end slot definitions to support default slotted content",
+            "author": "chhol@microsoft.com",
+            "commit": "3ad50c8eec98b3156a4559586ca76e4abebefad8",
+            "package": "@microsoft/fast-foundation"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "fix(design-system): make FoundationElement.compose safe to use directly",
+            "author": "roeisenb@microsoft.com",
+            "commit": "a508e1e08780d741300d4a03e2bf43ad53a2c017",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 08 Sep 2021 07:16:17 GMT",
       "tag": "@microsoft/fast-foundation_v2.11.0",
       "version": "2.11.0",

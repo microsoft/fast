@@ -1,8 +1,20 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Wed, 08 Sep 2021 07:16:17 GMT and should not be manually modified.
+This log was last generated on Thu, 09 Sep 2021 07:21:36 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.12.0
+
+Thu, 09 Sep 2021 07:21:36 GMT
+
+### Minor changes
+
+- add start/end slot definitions to support default slotted content (chhol@microsoft.com)
+
+### Patches
+
+- fix(design-system): make FoundationElement.compose safe to use directly (roeisenb@microsoft.com)
 
 ## 2.11.0
 
