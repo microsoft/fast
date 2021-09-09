@@ -6,7 +6,7 @@ import {
     SyntheticViewTemplate,
 } from "@microsoft/fast-element";
 import { keyArrowDown, keyArrowUp } from "@microsoft/fast-web-utilities";
-import { StartEnd } from "../patterns/index";
+import { StartEnd, StartEndOptions } from "../patterns/index";
 import { applyMixins } from "../utilities/index";
 import type { FoundationElementDefinition } from "../foundation-element";
 import { DelegatesARIATextbox } from "../text-field/index";
@@ -16,10 +16,11 @@ import { FormAssociatedNumberField } from "./number-field.form-associated";
  * Number Field configuration options
  * @public
  */
-export type NumberFieldOptions = FoundationElementDefinition & {
-    stepDownGlyph?: string | SyntheticViewTemplate;
-    stepUpGlyph?: string | SyntheticViewTemplate;
-};
+export type NumberFieldOptions = FoundationElementDefinition &
+    StartEndOptions & {
+        stepDownGlyph?: string | SyntheticViewTemplate;
+        stepUpGlyph?: string | SyntheticViewTemplate;
+    };
 
 /**
  * A Number Field Custom HTML Element.

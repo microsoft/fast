@@ -2,6 +2,58 @@
   "name": "@microsoft/fast-components",
   "entries": [
     {
+      "date": "Thu, 09 Sep 2021 07:21:36 GMT",
+      "tag": "@microsoft/fast-components_v2.9.0",
+      "version": "2.9.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "add start/end slot definitions to support default slotted content",
+            "author": "chhol@microsoft.com",
+            "commit": "3ad50c8eec98b3156a4559586ca76e4abebefad8",
+            "package": "@microsoft/fast-components"
+          },
+          {
+            "comment": "feat(fast-components): leverage FoundationElement.compose baseClass",
+            "author": "roeisenb@microsoft.com",
+            "commit": "291ed18f2f77b5e650dedc53465ff523bb38a1c6",
+            "package": "@microsoft/fast-components"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-foundation to v2.12.0",
+            "author": "chhol@microsoft.com",
+            "commit": "3ad50c8eec98b3156a4559586ca76e4abebefad8",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 08 Sep 2021 07:16:17 GMT",
+      "tag": "@microsoft/fast-components_v2.8.3",
+      "version": "2.8.3",
+      "comments": {
+        "patch": [
+          {
+            "comment": "fix(breadcrumb-item): add display flex to separator",
+            "author": "ben@platform5.ch",
+            "commit": "2581a5ec2daba8f448f6d34c00725105678ab5d4",
+            "package": "@microsoft/fast-components"
+          }
+        ],
+        "none": [
+          {
+            "comment": "revert un-intentionally added commits",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "ba27201afe1aa74d70c070e2c82c8790dd5b401a",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 02 Sep 2021 17:17:56 GMT",
       "tag": "@microsoft/fast-components_v2.8.2",
       "version": "2.8.2",

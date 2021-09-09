@@ -203,9 +203,17 @@ class Preview extends Foundation<{}, {}, PreviewState> {
             case MessageSystemType.initialize:
             case MessageSystemType.custom:
             case MessageSystemType.data:
-                return this.attachComponentsAndInit;
+                if (
+                    !(messageData as any).options ||
+                    (messageData as any).options.originatorId !== htmlRenderOriginatorId
+                )
+                    return this.attachComponentsAndInit;
             case MessageSystemType.navigation:
-                return this.handleNavigation;
+                if (
+                    !(messageData as any).options ||
+                    (messageData as any).options.originatorId !== htmlRenderOriginatorId
+                )
+                    return this.handleNavigation;
         }
         return this.attachMappedComponents;
     }
