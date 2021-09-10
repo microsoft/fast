@@ -1,8 +1,7 @@
-import { Button, buttonTemplate as template } from "./index";
-
-import { DOM } from "@microsoft/fast-element";
 import { expect } from "chai";
+import { DOM } from "@microsoft/fast-element";
 import { fixture } from "../test-utilities/fixture";
+import { Button, buttonTemplate as template } from "./index";
 
 const FASTButton = Button.compose({
     baseName: "button",

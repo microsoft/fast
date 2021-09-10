@@ -9,15 +9,6 @@ import type { FoundationElementDefinition } from "../foundation-element";
 import { FormAssociatedButton } from "./button.form-associated";
 
 /**
- * Define InstallTrigger as part of the Window to check for its presence in FireFox for working around the missing delegatesFocus support
- */
-declare global {
-    interface WindowWithInstallTrigger extends Window {
-        InstallTrigger: any;
-    }
-}
-
-/**
  * Button configuration options
  * @public
  */
