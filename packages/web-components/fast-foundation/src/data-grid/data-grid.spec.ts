@@ -1,17 +1,17 @@
 import { expect } from "chai";
 import { fixture } from "../test-utilities/fixture";
-import { 
-    dataGridTemplate, 
-    DataGrid, 
-    DataGridRow, 
-    dataGridRowTemplate, 
+import {
+    dataGridTemplate,
+    DataGrid,
+    DataGridRow,
+    dataGridRowTemplate,
     DataGridCell,
-    dataGridCellTemplate 
+    dataGridCellTemplate
 } from "./index";
 import type { ColumnDefinition } from "./data-grid";
 import { DataGridRowTypes, GenerateHeaderOptions } from "./data-grid.options";
 import { DOM } from "@microsoft/fast-element";
-import { KeyCodes } from "@microsoft/fast-web-utilities";
+import { keyArrowDown, keyArrowUp, keyEnd, keyHome } from "@microsoft/fast-web-utilities";
 
 const FASTDataGridCell = DataGridCell.compose({
     baseName: "data-grid-cell",
@@ -49,27 +49,23 @@ export function newDataRow(id: string): object {
 }
 
 const arrowUpEvent = new KeyboardEvent("keydown", {
-    key: "ArrowUp",
-    keyCode: KeyCodes.arrowUp,
+    key: keyArrowUp,
     bubbles: true,
 } as KeyboardEventInit);
 
 const arrowDownEvent = new KeyboardEvent("keydown", {
-    key: "ArrowDown",
-    keyCode: KeyCodes.arrowDown,
+    key: keyArrowDown,
     bubbles: true,
 } as KeyboardEventInit);
 
 const homeEvent = new KeyboardEvent("keydown", {
-    key: "Home",
-    keyCode: KeyCodes.home,
+    key: keyHome,
     bubbles: true,
     ctrlKey: true,
 } as KeyboardEventInit);
 
 const endEvent = new KeyboardEvent("keydown", {
-    key: "End",
-    keyCode: KeyCodes.end,
+    key: keyEnd,
     bubbles: true,
     ctrlKey: true,
 } as KeyboardEventInit);

@@ -1501,7 +1501,7 @@ export class Radio extends FormAssociatedRadio implements RadioControl {
     checked: boolean;
     checkedAttribute: boolean;
     // @internal (undocumented)
-    clickHandler: (e: MouseEvent) => void;
+    clickHandler(e: MouseEvent): boolean | void;
     // @internal (undocumented)
     connectedCallback(): void;
     defaultChecked: boolean | undefined;
