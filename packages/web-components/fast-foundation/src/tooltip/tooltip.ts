@@ -131,6 +131,14 @@ export class Tooltip extends FoundationElement {
                     this.handleAnchorMouseOut,
                     { passive: true }
                 );
+                this.anchorElement.addEventListener("focusin", this.handleAnchorFocusIn, {
+                    passive: true,
+                });
+                this.anchorElement.addEventListener(
+                    "focusout",
+                    this.handleAnchorFocusOut,
+                    { passive: true }
+                );
 
                 const anchorId: string = this.anchorElement.id;
 
@@ -251,6 +259,11 @@ export class Tooltip extends FoundationElement {
      */
     private isAnchorHovered: boolean = false;
 
+    /**
+     * Indicates whether the anchor is currently being focused
+     */
+    private isAnchorFocused: boolean = false;
+
     public connectedCallback(): void {
         super.connectedCallback();
         this.anchorElement = this.getAnchor();
@@ -302,6 +315,18 @@ export class Tooltip extends FoundationElement {
      * mouse leaves anchor
      */
     private handleAnchorMouseOut = (ev: Event): void => {
+        if (this.isAnchorHovered) {
+            this.isAnchorHovered = false;
+            this.updateTooltipVisibility();
+        }
+        this.clearDelayTimer();
+    };
+
+    private handleAnchorFocusIn = (ev: Event): void => {
+        this.startHoverTimer();
+    };
+
+    private handleAnchorFocusOut = (ev: Event): void => {
         if (this.isAnchorHovered) {
             this.isAnchorHovered = false;
             this.updateTooltipVisibility();
