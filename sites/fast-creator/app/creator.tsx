@@ -68,7 +68,7 @@ import {
 import { elementLibraries, elementLibraryContents } from "./configs";
 import { divTag } from "./configs/native/library.native.tags";
 import { ProjectFileTransfer } from "./components";
-import { previewReady } from "./preview/preview";
+import { previewReady } from "./preview/constants";
 import { Footer } from "./site-footer";
 import {
     renderDeviceSelect,
@@ -238,7 +238,7 @@ class Creator extends Editor<{}, CreatorState> {
                 style={{
                     gridTemplateColumns:
                         this.state.displayMode === DisplayMode.interactive
-                            ? "260px auto 280px"
+                            ? undefined
                             : "0px auto 0px",
                 }}
             >
