@@ -35,13 +35,12 @@ import {
 } from "../utilities";
 import { WebComponentLibraryDefinition } from "../configs/typings";
 import { HTMLRenderReact } from "./web-components";
+import { previewReady } from "./constants";
 
 const style: HTMLStyleElement = document.createElement("style");
 style.innerText =
     "body, html { width:100%; height:100%; overflow-x:initial; } #root {height:100%} ";
 document.head.appendChild(style);
-
-export const previewReady: string = "PREVIEW::READY";
 
 export interface PreviewState {
     activeDictionaryId: string;
