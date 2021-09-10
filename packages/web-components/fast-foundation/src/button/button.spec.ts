@@ -179,43 +179,6 @@ describe("Button", () => {
         await disconnect();
     });
 
-    it("should not modify the focus function when outside of FireFox", async () => {
-        const { element, connect, disconnect } = await setup();
-
-        element.autofocus = true;
-        let controlFocusCalled = false;
-
-        await connect();
-        element.control.focus = () => {
-            controlFocusCalled = true;
-        };
-
-        element.focus();
-
-        expect(controlFocusCalled).to.equal(false);
-
-        await disconnect();
-    });
-
-    it("should modify the focus function when in FireFox", async () => {
-        const { element, connect, disconnect } = await setup();
-
-        element.autofocus = true;
-        ((window as unknown) as WindowWithInstallTrigger).InstallTrigger = true;
-        let controlFocusCalled = false;
-
-        await connect();
-        element.control.focus = () => {
-            controlFocusCalled = true;
-        };
-
-        element.focus();
-
-        expect(controlFocusCalled).to.equal(true);
-        ((window as unknown) as WindowWithInstallTrigger).InstallTrigger = undefined;
-        await disconnect();
-    });
-
     describe("Delegates ARIA button", () => {
         it("should set the `aria-atomic` attribute on the internal button when provided", async () => {
             const { element, connect, disconnect } = await setup();
