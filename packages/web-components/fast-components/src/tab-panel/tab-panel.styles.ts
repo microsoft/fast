@@ -18,7 +18,7 @@ export const tabPanelStyles: (
     context: ElementDefinitionContext,
     definition: FoundationElementDefinition
 ) => css`
-    ${display("flex")} :host {
+    ${display("block")} :host {
         box-sizing: border-box;
         font-size: ${typeRampBaseFontSize};
         line-height: ${typeRampBaseLineHeight};

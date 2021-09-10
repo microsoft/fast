@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "change default tab panel display; fixes #5171",
+  "packageName": "@microsoft/fast-components",
+  "email": "corylaviska@microsoft.com",
+  "dependentChangeType": "patch"
+}
