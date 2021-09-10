@@ -1,5 +1,15 @@
 import { attr, DOM, observable } from "@microsoft/fast-element";
-import { keyEnd, keyHome } from "@microsoft/fast-web-utilities";
+import {
+    getDisplayedNodes,
+    isHTMLElement,
+    keyCodeArrowDown,
+    keyCodeArrowLeft,
+    keyCodeArrowRight,
+    keyCodeArrowUp,
+    keyCodeEnd,
+    keyCodeEnter,
+    keyCodeHome,
+} from "@microsoft/fast-web-utilities";
 import { isTreeItemElement, TreeItem } from "../tree-item";
 import { FoundationElement } from "../foundation-element";
 
@@ -85,20 +95,77 @@ export class TreeView extends FoundationElement {
         }
 
         switch (e.key) {
-            case keyHome:
+            case keyCodeHome:
                 if (this.treeItems && this.treeItems.length) {
                     TreeItem.focusItem(this.treeItems[0]);
                 }
                 break;
-            case keyEnd:
+            case keyCodeEnd:
                 if (this.treeItems && this.treeItems.length) {
                     TreeItem.focusItem(this.treeItems[this.treeItems.length - 1]);
                 }
+                break;
+            case keyCodeArrowLeft:
+                if (e.target && this.isFocusableElement(e.target as HTMLElement)) {
+                    const item = e.target as HTMLElement;
+                    if (item instanceof TreeItem && item.childItemLength() > 0) {
+                        item.expanded = false;
+                    }
+                }
+                break;
+            case keyCodeArrowRight:
+                if (e.target && this.isFocusableElement(e.target as HTMLElement)) {
+                    const item = e.target as HTMLElement;
+                    if (item instanceof TreeItem && item.childItemLength() > 0) {
+                        item.expanded = true;
+                    }
+                }
+                break;
+            case keyCodeArrowDown:
+                if (e.target && this.isFocusableElement(e.target as HTMLElement)) {
+                    this.focusNextNode(1, e.target as HTMLElement);
+                }
+                break;
+            case keyCodeArrowUp:
+                if (e.target && this.isFocusableElement(e.target as HTMLElement)) {
+                    this.focusNextNode(-1, e.target as HTMLElement);
+                }
+                break;
+            case keyCodeEnter:
+                // In single-select trees where selection does not follow focus (see note below),
+                // the default action is typically to select the focused node.
+                this.handleSelected(e.target as HTMLElement);
                 break;
             default:
                 return true;
         }
     };
+
+    private focusNextNode(delta: number, item: HTMLElement): void {
+        const visibleNodes: HTMLElement[] | void = this.getVisibleNodes();
+        if (!visibleNodes) {
+            return;
+        }
+
+        if (item instanceof TreeItem) {
+            let focusItem = visibleNodes[visibleNodes.indexOf(item) + delta];
+            while (focusItem && focusItem.hasAttribute("disabled")) {
+                const offset: number = delta >= 0 ? 1 : -1;
+                const nextHtmlItem = visibleNodes[
+                    delta + offset + visibleNodes.indexOf(item)
+                ] as HTMLElement;
+                if (isTreeItemElement(nextHtmlItem)) {
+                    focusItem = nextHtmlItem;
+                }
+                if (!focusItem) {
+                    break;
+                }
+            }
+            if (isHTMLElement(focusItem)) {
+                TreeItem.focusItem(focusItem);
+            }
+        }
+    }
 
     private setItems = (): void => {
         const focusIndex = this.treeItems.findIndex(this.isFocusableElement);
@@ -123,15 +190,22 @@ export class TreeView extends FoundationElement {
         }
     };
 
+    private handleSelected(item: HTMLElement): void {
+        if (item instanceof TreeItem) {
+            if (this.currentSelected !== item) {
+                if (this.currentSelected instanceof TreeItem) {
+                    this.currentSelected.selected = false;
+                }
+                item.selected = true;
+                this.currentSelected = item;
+            }
+        }
+    }
+
     private handleItemSelected = (e: CustomEvent): void => {
         const newSelection: HTMLElement = e.target as HTMLElement;
         if (newSelection !== this.currentSelected) {
-            if (this.currentSelected) {
-                // TODO: fix this below, shouldn't need both
-                (this.currentSelected as HTMLElement).removeAttribute("selected");
-                (this.currentSelected as TreeItem).selected = false;
-            }
-            this.currentSelected = newSelection;
+            this.handleSelected(newSelection);
         }
     };
 
@@ -150,14 +224,6 @@ export class TreeView extends FoundationElement {
     };
 
     private getVisibleNodes(): HTMLElement[] {
-        const treeItems: HTMLElement[] = [];
-        if (this.slottedTreeItems !== undefined) {
-            this.slottedTreeItems.forEach((item: any) => {
-                if (isTreeItemElement(item)) {
-                    treeItems.push(item as any);
-                }
-            });
-        }
-        return treeItems;
+        return getDisplayedNodes(this, "[role='treeitem']") || [];
     }
 }

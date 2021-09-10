@@ -2336,11 +2336,7 @@ export class TreeItem extends FoundationElement {
     childItemLength(): number;
     // (undocumented)
     childItems: HTMLElement[];
-    // @internal (undocumented)
-    connectedCallback(): void;
     disabled: boolean;
-    // @internal (undocumented)
-    disconnectedCallback(): void;
     // (undocumented)
     expandCollapseButton: HTMLDivElement;
     expanded: boolean;
@@ -2348,12 +2344,9 @@ export class TreeItem extends FoundationElement {
     focusable: boolean;
     static focusItem(el: HTMLElement): void;
     // (undocumented)
-    handleChange(source: any, propertyName: string): void;
-    // (undocumented)
     handleClick: (e: MouseEvent) => void;
     // (undocumented)
     handleExpandCollapseButtonClick: (e: MouseEvent) => void;
-    handleKeyDown: (e: KeyboardEvent) => void | boolean;
     // (undocumented)
     readonly isNestedItem: () => boolean;
     // (undocumented)
