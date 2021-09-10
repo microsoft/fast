@@ -1,8 +1,84 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Thu, 26 Aug 2021 07:17:43 GMT and should not be manually modified.
+This log was last generated on Thu, 09 Sep 2021 07:21:36 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.12.0
+
+Thu, 09 Sep 2021 07:21:36 GMT
+
+### Minor changes
+
+- add start/end slot definitions to support default slotted content (chhol@microsoft.com)
+
+### Patches
+
+- fix(design-system): make FoundationElement.compose safe to use directly (roeisenb@microsoft.com)
+
+## 2.11.0
+
+Wed, 08 Sep 2021 07:16:17 GMT
+
+### Minor changes
+
+- fix: allow for base class (mathieu.lavoie@logmein.com)
+
+### Patches
+
+- force non-volatile binding and update docs to explain that DesignToken does not support volatile bindings (nicholasrice@users.noreply.github.com)
+- Bump @microsoft/fast-element to v1.5.1 (roeisenb@microsoft.com)
+
+## 2.10.0
+
+Thu, 02 Sep 2021 17:17:56 GMT
+
+### Minor changes
+
+- feat(design-system): enable complete ignore of duplicate elements (roeisenb@microsoft.com)
+
+## 2.9.1
+
+Thu, 02 Sep 2021 07:15:21 GMT
+
+### Patches
+
+- configure system to use a single CSSStyleSheet for custom property setting (nicholasrice@users.noreply.github.com)
+- progress component bar width (scomea@microsoft.com)
+- Removed remaining 'use-defaults' which no longer exists (47367562+bheston@users.noreply.github.com)
+
+## 2.9.0
+
+Wed, 01 Sep 2021 07:18:34 GMT
+
+### Minor changes
+
+- add viewport lock to tooltip (scomea@microsoft.com)
+
+### Patches
+
+- don't block all keys while focused (corylaviska@microsoft.com)
+
+## 2.8.1
+
+Mon, 30 Aug 2021 22:30:39 GMT
+
+### Patches
+
+- fixing issue where a token would subscribe to itself, causing max-callstack-exceded in certain scenarios (nicholasrice@users.noreply.github.com)
+
+## 2.8.0
+
+Fri, 27 Aug 2021 14:14:26 GMT
+
+### Minor changes
+
+- Refactor DesignToken implementation to support deep token dependency hierarchies (nicholasrice@users.noreply.github.com)
+
+### Patches
+
+- add up/down key support to number-field (corylaviska@microsoft.com)
+- Bump @microsoft/fast-element to v1.5.0 (nicholasrice@users.noreply.github.com)
 
 ## 2.7.1
 

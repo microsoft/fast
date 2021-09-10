@@ -1,8 +1,14 @@
 import { attr, observable, Observable } from "@microsoft/fast-element";
 import { isHTMLElement } from "@microsoft/fast-web-utilities";
-import { StartEnd } from "../patterns/start-end";
+import { StartEnd, StartEndOptions } from "../patterns/start-end";
 import { applyMixins } from "../utilities/apply-mixins";
-import { FoundationElement } from "../foundation-element";
+import { FoundationElement, FoundationElementDefinition } from "../foundation-element";
+
+/**
+ * Listbox option configuration options
+ * @public
+ */
+export type ListboxOptionOptions = FoundationElementDefinition & StartEndOptions;
 
 /**
  * Determines if the element is a {@link (ListboxOption:class)}

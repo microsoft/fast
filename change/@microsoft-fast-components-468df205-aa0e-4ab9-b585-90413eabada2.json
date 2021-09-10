@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "Remove commented CSS",
+  "packageName": "@microsoft/fast-components",
+  "email": "john.kreitlow@microsoft.com",
+  "dependentChangeType": "patch"
+}

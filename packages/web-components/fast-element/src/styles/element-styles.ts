@@ -12,8 +12,15 @@ export interface StyleTarget {
     adoptedStyleSheets?: CSSStyleSheet[];
 
     /**
-     * Adds styles to the target.
+     * Adds styles to the target by appending the styles.
      * @param styles - The styles element to add.
+     */
+    append(styles: HTMLStyleElement): void;
+
+    /**
+     * Adds styles to the target by prepending the styles.
+     * @param styles - The styles element to add.
+     * @deprecated - use append()
      */
     prepend(styles: HTMLStyleElement): void;
 
@@ -211,11 +218,11 @@ export class StyleElementStyles extends ElementStyles {
 
         target = this.normalizeTarget(target);
 
-        for (let i = styleSheets.length - 1; i > -1; --i) {
+        for (let i = 0; i < styleSheets.length; i++) {
             const element = document.createElement("style");
             element.innerHTML = styleSheets[i];
             element.className = styleClass;
-            target.prepend(element);
+            target.append(element);
         }
 
         super.addStylesTo(target);

@@ -1,16 +1,22 @@
 import { attr, observable } from "@microsoft/fast-element";
 import {
-    keyCodeArrowDown,
-    keyCodeArrowLeft,
-    keyCodeArrowRight,
-    keyCodeArrowUp,
-    keyCodeEnd,
-    keyCodeHome,
+    keyArrowDown,
+    keyArrowLeft,
+    keyArrowRight,
+    keyArrowUp,
+    keyEnd,
+    keyHome,
     wrapInBounds,
 } from "@microsoft/fast-web-utilities";
-import { StartEnd } from "../patterns/start-end";
+import { StartEnd, StartEndOptions } from "../patterns/start-end";
 import { applyMixins } from "../utilities/apply-mixins";
-import { FoundationElement } from "../foundation-element";
+import { FoundationElement, FoundationElementDefinition } from "../foundation-element";
+
+/**
+ * Tabs option configuration options
+ * @public
+ */
+export type TabsOptions = FoundationElementDefinition & StartEndOptions;
 
 /**
  * The orientation of the {@link @microsoft/fast-foundation#(Tabs:class)} component
@@ -251,36 +257,35 @@ export class Tabs extends FoundationElement {
     }
 
     private handleTabKeyDown = (event: KeyboardEvent): void => {
-        const keyCode: number = event.keyCode;
         if (this.isHorizontal()) {
-            switch (keyCode) {
-                case keyCodeArrowLeft:
+            switch (event.key) {
+                case keyArrowLeft:
                     event.preventDefault();
                     this.adjustBackward(event);
                     break;
-                case keyCodeArrowRight:
+                case keyArrowRight:
                     event.preventDefault();
                     this.adjustForward(event);
                     break;
             }
         } else {
-            switch (keyCode) {
-                case keyCodeArrowUp:
+            switch (event.key) {
+                case keyArrowUp:
                     event.preventDefault();
                     this.adjustBackward(event);
                     break;
-                case keyCodeArrowDown:
+                case keyArrowDown:
                     event.preventDefault();
                     this.adjustForward(event);
                     break;
             }
         }
-        switch (keyCode) {
-            case keyCodeHome:
+        switch (event.key) {
+            case keyHome:
                 event.preventDefault();
                 this.adjust(-this.activeTabIndex);
                 break;
-            case keyCodeEnd:
+            case keyEnd:
                 event.preventDefault();
                 this.adjust(this.tabs.length - this.activeTabIndex - 1);
                 break;

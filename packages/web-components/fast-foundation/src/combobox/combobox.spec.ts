@@ -3,7 +3,7 @@ import { DOM } from "@microsoft/fast-element";
 import { listboxOptionTemplate, ListboxOption } from "../listbox-option";
 import { fixture } from "../test-utilities/fixture";
 import { Combobox, comboboxTemplate as template } from "./index";
-import { KeyCodes } from "@microsoft/fast-web-utilities";
+import { keyArrowDown, keyArrowUp } from "@microsoft/fast-web-utilities";
 
 const FASTCombobox = Combobox.compose({
     baseName: "combobox",
@@ -146,8 +146,7 @@ describe("Combobox", () => {
             expect(element.open).to.be.true;
 
             const event = new KeyboardEvent("keydown", {
-                key: "ArrowDown",
-                keyCode: KeyCodes.arrowDown,
+                key: keyArrowDown,
             } as KeyboardEventInit);
 
             const wasChanged = await Promise.race([
@@ -177,8 +176,7 @@ describe("Combobox", () => {
             expect(element.open).to.be.true;
 
             const event = new KeyboardEvent("keydown", {
-                key: "ArrowUp",
-                keyCode: KeyCodes.arrowUp,
+                key: keyArrowUp,
             } as KeyboardEventInit);
 
             const wasChanged = await Promise.race([

@@ -1,5 +1,5 @@
 import { observable } from "@microsoft/fast-element";
-import { keyCodeSpace } from "@microsoft/fast-web-utilities";
+import { keySpace } from "@microsoft/fast-web-utilities";
 import { mapCSSInlineStyleToCSSPropertyDictionary } from "../../data-utilities/mapping.mdn-data";
 import { fastToolingPrefix } from "../utilities";
 import { FormAssociatedCSSLayout } from "./css-layout.form-associated";
@@ -148,8 +148,8 @@ export class CSSLayout extends FormAssociatedCSSLayout {
         observablePropertyName: ObservableFlexboxCSSPropertyName,
         e: KeyboardEvent
     ): void => {
-        switch (e.keyCode) {
-            case keyCodeSpace:
+        switch (e.key) {
+            case keySpace:
                 this.handleCSSChange(observablePropertyName, e);
                 break;
         }
@@ -203,8 +203,8 @@ export class CSSLayout extends FormAssociatedCSSLayout {
      * Handles the css-layout controls being enabled by pressing space
      */
     public handleKeypressToggleCSSLayout = (e: KeyboardEvent): void => {
-        switch (e.keyCode) {
-            case keyCodeSpace:
+        switch (e.key) {
+            case keySpace:
                 this.handleToggleCSSLayout();
                 break;
         }

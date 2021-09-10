@@ -1,6 +1,6 @@
 import { html, ref, slotted, when } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
-import { endTemplate, startTemplate } from "../patterns";
+import { endSlotTemplate, startSlotTemplate } from "../patterns";
 import type { ElementDefinitionContext } from "../design-system";
 import type { NumberField, NumberFieldOptions } from "./number-field";
 
@@ -27,13 +27,14 @@ export const numberFieldTemplate: (
             <slot ${slotted("defaultSlottedNodes")}></slot>
         </label>
         <div class="root" part="root">
-            ${startTemplate}
+            ${startSlotTemplate(context, definition)}
             <input
                 class="control"
                 part="control"
                 id="control"
                 @input="${x => x.handleTextInput()}"
                 @change="${x => x.handleChange()}"
+                @keydown="${(x, c) => x.handleKeyDown(c.event as KeyboardEvent)}"
                 ?autofocus="${x => x.autofocus}"
                 ?disabled="${x => x.disabled}"
                 list="${x => x.list}"
@@ -91,7 +92,7 @@ export const numberFieldTemplate: (
                     </div>
                 `
             )}
-            ${endTemplate}
+            ${endSlotTemplate(context, definition)}
         </div>
     </template>
 `;
