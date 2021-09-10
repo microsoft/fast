@@ -2,6 +2,243 @@
   "name": "@microsoft/fast-foundation",
   "entries": [
     {
+      "date": "Thu, 09 Sep 2021 07:21:36 GMT",
+      "tag": "@microsoft/fast-foundation_v2.12.0",
+      "version": "2.12.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "add start/end slot definitions to support default slotted content",
+            "author": "chhol@microsoft.com",
+            "commit": "3ad50c8eec98b3156a4559586ca76e4abebefad8",
+            "package": "@microsoft/fast-foundation"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "fix(design-system): make FoundationElement.compose safe to use directly",
+            "author": "roeisenb@microsoft.com",
+            "commit": "a508e1e08780d741300d4a03e2bf43ad53a2c017",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 08 Sep 2021 07:16:17 GMT",
+      "tag": "@microsoft/fast-foundation_v2.11.0",
+      "version": "2.11.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "fix: allow for base class",
+            "author": "mathieu.lavoie@logmein.com",
+            "commit": "5493d3ac1f0d2d854031f2211bc32c0bb9d2c234",
+            "package": "@microsoft/fast-foundation"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "force non-volatile binding and update docs to explain that DesignToken does not support volatile bindings",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "d48af06747dd8c9e1bd4265f8174ee81edc5fc07",
+            "package": "@microsoft/fast-foundation"
+          },
+          {
+            "comment": "Bump @microsoft/fast-element to v1.5.1",
+            "author": "roeisenb@microsoft.com",
+            "commit": "bdd28c8861b3523a9984ca8feda2af9019861a8a",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 02 Sep 2021 17:17:56 GMT",
+      "tag": "@microsoft/fast-foundation_v2.10.0",
+      "version": "2.10.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "feat(design-system): enable complete ignore of duplicate elements",
+            "author": "roeisenb@microsoft.com",
+            "commit": "fe1db8607dce8c80fa83ad01ee2c8dbc9e845c98",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 02 Sep 2021 07:15:21 GMT",
+      "tag": "@microsoft/fast-foundation_v2.9.1",
+      "version": "2.9.1",
+      "comments": {
+        "patch": [
+          {
+            "comment": "configure system to use a single CSSStyleSheet for custom property setting",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "29cdc520f699eaf1f1669eaeacb4a7a8a7cfe1c2",
+            "package": "@microsoft/fast-foundation"
+          },
+          {
+            "comment": "progress component bar width",
+            "author": "scomea@microsoft.com",
+            "commit": "21c6791f13b17e08d131358e423c86b73b77a79e",
+            "package": "@microsoft/fast-foundation"
+          },
+          {
+            "comment": "Removed remaining 'use-defaults' which no longer exists",
+            "author": "47367562+bheston@users.noreply.github.com",
+            "commit": "f34fa1b1bdbb0cf4c371b556c2486bd160646c53",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 01 Sep 2021 07:18:34 GMT",
+      "tag": "@microsoft/fast-foundation_v2.9.0",
+      "version": "2.9.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "add viewport lock to tooltip",
+            "author": "scomea@microsoft.com",
+            "commit": "397d02d7bfc9b61bfafb44d4ccdf8db49fd25453",
+            "package": "@microsoft/fast-foundation"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "don't block all keys while focused",
+            "author": "corylaviska@microsoft.com",
+            "commit": "12efc3d7553ece88318b9fcdf8e11cc27253d30a",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Mon, 30 Aug 2021 22:30:39 GMT",
+      "tag": "@microsoft/fast-foundation_v2.8.1",
+      "version": "2.8.1",
+      "comments": {
+        "none": [
+          {
+            "comment": "docs(integrations): add an ember tutorial",
+            "author": "roeisenb@microsoft.com",
+            "commit": "cb5d2b128a7f0283377642b8e7e97fc68d22d952",
+            "package": "@microsoft/fast-foundation"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "fixing issue where a token would subscribe to itself, causing max-callstack-exceded in certain scenarios",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "c4fe4d0706dae02bc2d4c8ea37dafe6c79c03075",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 27 Aug 2021 14:14:26 GMT",
+      "tag": "@microsoft/fast-foundation_v2.8.0",
+      "version": "2.8.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "Refactor DesignToken implementation to support deep token dependency hierarchies",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "e498f1e35232169d2bf80e366350d0cde812d76d",
+            "package": "@microsoft/fast-foundation"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "add up/down key support to number-field",
+            "author": "corylaviska@microsoft.com",
+            "commit": "0dd749b39bb8d1a0005b0a511ebcc7853f6a077b",
+            "package": "@microsoft/fast-foundation"
+          },
+          {
+            "comment": "Bump @microsoft/fast-element to v1.5.0",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "e498f1e35232169d2bf80e366350d0cde812d76d",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 26 Aug 2021 07:17:43 GMT",
+      "tag": "@microsoft/fast-foundation_v2.7.1",
+      "version": "2.7.1",
+      "comments": {
+        "patch": [
+          {
+            "comment": "fix slider dragging when page is scrolled",
+            "author": "corylaviska@microsoft.com",
+            "commit": "bc0c7b0a0b99fd8463740b09870178ae192e5274",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 25 Aug 2021 07:17:07 GMT",
+      "tag": "@microsoft/fast-foundation_v2.7.0",
+      "version": "2.7.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "allow context for partials on component compositions",
+            "author": "john.kreitlow@microsoft.com",
+            "commit": "bc9f51cb9357da7ccb34a3251b316c21dcc17b09",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 19 Aug 2021 07:15:21 GMT",
+      "tag": "@microsoft/fast-foundation_v2.6.5",
+      "version": "2.6.5",
+      "comments": {
+        "patch": [
+          {
+            "comment": "add reducefocusableElements and all slotted items to keyboard interaction",
+            "author": "sethdonohue@Admins-MBP.guest.corp.microsoft.com",
+            "commit": "4a4e2c16987aa015c3f90adbe400f09a0d4c2563",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 12 Aug 2021 07:16:50 GMT",
+      "tag": "@microsoft/fast-foundation_v2.6.4",
+      "version": "2.6.4",
+      "comments": {
+        "none": [
+          {
+            "comment": "chore: eslint fixes in fast-foundation",
+            "author": "mathieu.lavoie@logmein.com",
+            "commit": "7265f039d4e4d1a219a4ab6bf831b78540d339e8",
+            "package": "@microsoft/fast-foundation"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "fix dialog focus on open",
+            "author": "scomea@microsoft.com",
+            "commit": "ee9239067b2245056e066e3a4e532b4ad00d4815",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 04 Aug 2021 07:15:14 GMT",
       "tag": "@microsoft/fast-foundation_v2.6.3",
       "version": "2.6.3",

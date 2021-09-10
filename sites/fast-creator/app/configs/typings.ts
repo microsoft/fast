@@ -1,6 +1,6 @@
 import { Data } from "@microsoft/fast-tooling";
 
-interface WebComponentDefinition {
+export interface WebComponentDefinition {
     /**
      * The display name for the component
      */

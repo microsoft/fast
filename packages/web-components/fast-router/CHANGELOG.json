@@ -2,6 +2,66 @@
   "name": "@microsoft/fast-router",
   "entries": [
     {
+      "date": "Wed, 08 Sep 2021 07:16:17 GMT",
+      "tag": "@microsoft/fast-router_v0.2.8",
+      "version": "0.2.8",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-element to v1.5.1",
+            "author": "roeisenb@microsoft.com",
+            "commit": "bdd28c8861b3523a9984ca8feda2af9019861a8a",
+            "package": "@microsoft/fast-router"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 02 Sep 2021 07:15:21 GMT",
+      "tag": "@microsoft/fast-router_v0.2.7",
+      "version": "0.2.7",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Removed remaining 'use-defaults' which no longer exists",
+            "author": "47367562+bheston@users.noreply.github.com",
+            "commit": "f34fa1b1bdbb0cf4c371b556c2486bd160646c53",
+            "package": "@microsoft/fast-router"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 27 Aug 2021 14:14:26 GMT",
+      "tag": "@microsoft/fast-router_v0.2.6",
+      "version": "0.2.6",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-element to v1.5.0",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "e498f1e35232169d2bf80e366350d0cde812d76d",
+            "package": "@microsoft/fast-router"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 26 Aug 2021 07:17:43 GMT",
+      "tag": "@microsoft/fast-router_v0.2.5",
+      "version": "0.2.5",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-element to v1.4.2",
+            "author": "roeisenb@microsoft.com",
+            "commit": "0e03f23e37b83cd1b428c01cc0e3d4c2dd9f69bd",
+            "package": "@microsoft/fast-router"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 03 Aug 2021 07:17:33 GMT",
       "tag": "@microsoft/fast-router_v0.2.4",
       "version": "0.2.4",

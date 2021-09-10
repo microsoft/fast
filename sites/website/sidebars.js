@@ -7,9 +7,10 @@ module.exports = {
         },
         {
             type: "category",
-            label: "Using FAST Components",
+            label: "Using the Components",
             items: [
                 "components/getting-started",
+                "design-systems/fast-frame",
                 {
                     type: "category",
                     label: "Components",
@@ -49,20 +50,11 @@ module.exports = {
                         "components/tree-view",
                     ],
                 },
-                {
-                    type: "category",
-                    label: "Design",
-                    items: [
-                        "design/introduction",
-                        "design/localization",
-                        "design/match-media-stylesheets",
-                    ],
-                },
             ],
         },
         {
             type: "category",
-            label: "Using FAST Element",
+            label: "Building Components",
             items: [
                 "fast-element/getting-started",
                 "fast-element/defining-elements",
@@ -76,23 +68,20 @@ module.exports = {
         },
         {
             type: "category",
-            label: "Design Systems",
+            label: "Creating Design Systems",
             items: [
                 "design-systems/overview",
-                "design-systems/fast-frame",
                 "design-systems/creating-a-component-library",
                 "design-systems/design-tokens",
                 "design-systems/high-contrast",
+                "design/match-media-stylesheets",
+                "design/localization",
             ],
         },
         {
             type: "category",
-            label: "Tools",
-            items: [
-                "tools/component-explorer",
-                "tools/vscode",
-                "tools/hot-module-reload",
-            ],
+            label: "Apps and Experiences",
+            items: ["apps-and-experiences/dependency-injection"],
         },
         {
             type: "category",
@@ -103,9 +92,19 @@ module.exports = {
                 "integrations/aspnet",
                 "integrations/aurelia",
                 "integrations/blazor",
+                "integrations/ember",
                 "integrations/react",
                 "integrations/vue",
                 "integrations/webpack",
+            ],
+        },
+        {
+            type: "category",
+            label: "Tools",
+            items: [
+                "tools/component-explorer",
+                "tools/vscode",
+                "tools/hot-module-reload",
             ],
         },
         {
@@ -133,6 +132,7 @@ module.exports = {
             type: "category",
             label: "Resources",
             items: [
+                "resources/why-web-components",
                 "resources/license",
                 "resources/security",
                 "resources/browser-support",

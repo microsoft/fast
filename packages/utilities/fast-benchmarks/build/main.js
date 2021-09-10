@@ -10,6 +10,7 @@ const resultEmitter = require("./loggers/console");
 const diff = require("./diff");
 const { chromium } = require("playwright");
 const mkdirp = require("mkdirp");
+const { default: chalk } = require("chalk");
 process.env.BENCHMARK_SRC = path.resolve(__dirname, "../benchmarks");
 
 program
@@ -71,13 +72,28 @@ async function runBenchmarks(htmlPaths) {
 
     for (var i = 0; i < htmlPaths.length; i++) {
         const name = htmlPaths[i];
-        console.log(`Starting benchmark for "${name.replace(".html", "")}"`);
+        const friendlyName = name.replace(".html", "");
+        console.log(chalk.bold(chalk.green(`Starting benchmark for "${friendlyName}"`)));
         await page.goto(`localhost:${port}/${name}`);
-        const result = await page.evaluate(async () => {
-            return await bench.default.run();
-        });
 
-        results[name] = result;
+        try {
+            const result = await page.evaluate(() => {
+                return new Promise((resolve, reject) => {
+                    bench.default.on("complete", function () {
+                        resolve(this);
+                    });
+                    bench.default.on("error", function (event) {
+                        reject(event.currentTarget.name || "un-named");
+                    });
+                    bench.default.run();
+                });
+            });
+
+            results[name] = result;
+        } catch (e) {
+            console.error(chalk.red(`${friendlyName} test failed:`));
+            console.error(chalk.red(e.stack));
+        }
     }
 
     await browser.close();

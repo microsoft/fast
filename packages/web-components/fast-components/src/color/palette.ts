@@ -4,7 +4,7 @@ import {
     ComponentStateColorPalette,
     parseColorHexRGB,
 } from "@microsoft/fast-colors";
-import { Swatch, SwatchRGB } from "./swatch";
+import { isSwatchRGB, Swatch, SwatchRGB } from "./swatch";
 import { binarySearch } from "./utilities/binary-search";
 import { directionByIsDark } from "./utilities/direction-by-is-dark";
 import { contrast, RelativeLuminance } from "./utilities/relative-luminance";
@@ -44,11 +44,41 @@ export interface Palette<T extends Swatch = Swatch> {
 /** @public */
 export type PaletteRGB = Palette<SwatchRGB>;
 
+/**
+ * Creates a PaletteRGB from input R, G, B color values.
+ * @param r - Red value represented as a number between 0 and 1.
+ * @param g - Green value represented as a number between 0 and 1.
+ * @param b - Blue value represented as a number between 0 and 1.
+ */
+function create(r: number, g: number, b: number): PaletteRGB;
+/**
+ * Creates a PaletteRGB from a source SwatchRGB object.
+ * @deprecated - Use PaletteRGB.from()
+ */
+function create(source: SwatchRGB): PaletteRGB;
+function create(rOrSource: SwatchRGB | number, g?: number, b?: number): PaletteRGB {
+    if (typeof rOrSource === "number") {
+        return PaletteRGB.from(SwatchRGB.create(rOrSource, g!, b!));
+    } else {
+        return PaletteRGB.from(rOrSource);
+    }
+}
+
+/**
+ * Creates a PaletteRGB from a source color object.
+ * @param source - The source color
+ */
+function from(source: SwatchRGB): PaletteRGB;
+function from(source: Record<"r" | "g" | "b", number>): PaletteRGB;
+function from(source: any): PaletteRGB {
+    return isSwatchRGB(source)
+        ? PaletteRGBImpl.from(source)
+        : PaletteRGBImpl.from(SwatchRGB.create(source.r, source.g, source.b));
+}
 /** @public */
 export const PaletteRGB = Object.freeze({
-    create(source: SwatchRGB): PaletteRGB {
-        return PaletteRGBImpl.from(source);
-    },
+    create,
+    from,
 });
 
 /**

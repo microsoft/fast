@@ -2,11 +2,11 @@ import { expect } from "chai";
 import { Dialog, dialogTemplate as template } from "./index";
 import { fixture } from "../test-utilities/fixture";
 import { DOM } from "@microsoft/fast-element";
-import { KeyCodes } from "@microsoft/fast-web-utilities";
+import { keyEscape } from "@microsoft/fast-web-utilities";
 
 const FASTDialog = Dialog.compose({
     baseName: "dialog",
-    template,  
+    template,
 })
 
 async function setup() {
@@ -110,13 +110,13 @@ describe("Dialog", () => {
         await disconnect();
     });
 
-    it("should add a tabindex of -1 to the modal overlay when modal is true", async () => {
+    it("should add a tabindex of -1 to the dialog control", async () => {
         const { element, connect, disconnect } = await setup();
 
         await connect();
 
         expect(
-            element.shadowRoot?.querySelector(".overlay")?.getAttribute("tabindex")
+            element.shadowRoot?.querySelector(".control")?.getAttribute("tabindex")
         ).to.equal("-1");
 
         await disconnect();
@@ -266,8 +266,7 @@ describe("Dialog", () => {
             const { element, connect, disconnect, document } = await setup();
 
             const event = new KeyboardEvent("keydown", {
-                key: "Escape",
-                keyCode: KeyCodes.escape,
+                key: keyEscape,
             } as KeyboardEventInit);
 
             await connect();

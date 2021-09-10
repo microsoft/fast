@@ -142,7 +142,7 @@ FASTDesignSystemProvider;
 FASTRouter;
 
 const template = html<MainApplication>`
-  <fast-design-system-provider use-defaults>
+  <fast-design-system-provider>
     <fast-router :config=${x => x.routerConfiguration}></fast-router>
   </fast-design-system-provider>
 `;

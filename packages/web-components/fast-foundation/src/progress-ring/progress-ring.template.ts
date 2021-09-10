@@ -3,6 +3,8 @@ import type { ViewTemplate } from "@microsoft/fast-element";
 import type { BaseProgress, ProgressRingOptions } from "../progress/base-progress";
 import type { ElementDefinitionContext } from "../design-system";
 
+const progressSegments: number = 44;
+
 /**
  * The template for the {@link @microsoft/fast-foundation#BaseProgress} component.
  * @public
@@ -40,7 +42,9 @@ export const progressRingTemplate: (
                     <circle
                         class="determinate"
                         part="determinate"
-                        style="stroke-dasharray: ${x => (44 * x.value!) / 100}px 44px"
+                        style="stroke-dasharray: ${x =>
+                            (progressSegments * x.percentComplete!) /
+                            100}px ${progressSegments}px"
                         cx="8px"
                         cy="8px"
                         r="7px"

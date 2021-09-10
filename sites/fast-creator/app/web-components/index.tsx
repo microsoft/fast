@@ -11,6 +11,7 @@ import {
     fastTabPanel,
     fastTabs,
     fastTextField,
+    fastTooltip,
 } from "@microsoft/fast-components";
 import { Select } from "@microsoft/fast-foundation";
 import { componentCategories, downChevron, upChevron } from "@microsoft/site-utilities";
@@ -23,6 +24,7 @@ import {
     fastToolingFile,
     fastToolingFileActionObjectUrl,
     MessageSystem,
+    voidElements,
 } from "@microsoft/fast-tooling";
 import {
     ControlConfig,
@@ -56,6 +58,7 @@ DesignSystem.getOrCreate().register(
     fastSwitch(),
     fastTabPanel(),
     fastTextField(),
+    fastTooltip(),
     fastToolingColorPicker({ prefix: "fast-tooling" }),
     fastToolingCSSLayout({ prefix: "fast-tooling" }),
     fastToolingFile({ prefix: "fast-tooling" }),
@@ -105,6 +108,7 @@ export function renderDeviceSelect(
                 },
             }}
             disabled={disable ? true : null}
+            style={{ minWidth: "170px" }}
         >
             {renderDeviceOptions()}
         </fast-select>
@@ -211,6 +215,30 @@ export function getSliderControls(
     ];
 }
 
+function renderCSSTextControl(
+    styleName: string,
+    labelText: string,
+    config: CSSControlConfig
+): React.ReactNode {
+    const id: string = "style-" + styleName;
+    return (
+        <div>
+            <label htmlFor={id}>{labelText}</label>
+            <fast-text-field
+                id={id}
+                value={config.css[styleName]}
+                events={{
+                    input: (e: React.ChangeEvent): void => {
+                        config.onChange({
+                            [styleName]: (e.target as HTMLInputElement).value,
+                        });
+                    },
+                }}
+            ></fast-text-field>
+        </div>
+    );
+}
+
 function getCSSControls(): StandardControlPlugin {
     return new StandardControlPlugin({
         id: "style",
@@ -233,6 +261,27 @@ function getCSSControls(): StandardControlPlugin {
                                         onChange={config.onChange}
                                     />
                                 );
+                            },
+                        }),
+                        new CSSStandardControlPlugin({
+                            id: "margin",
+                            propertyNames: ["margin"],
+                            control: (config: CSSControlConfig) => {
+                                return renderCSSTextControl("margin", "margin", config);
+                            },
+                        }),
+                        new CSSStandardControlPlugin({
+                            id: "padding",
+                            propertyNames: ["padding"],
+                            control: (config: CSSControlConfig) => {
+                                return renderCSSTextControl("padding", "padding", config);
+                            },
+                        }),
+                        new CSSStandardControlPlugin({
+                            id: "width",
+                            propertyNames: ["width"],
+                            control: (config: CSSControlConfig) => {
+                                return renderCSSTextControl("width", "width", config);
                             },
                         }),
                     ]}
@@ -283,7 +332,10 @@ function getImageUploadControl(): StandardControlPlugin {
         context: ControlContext.fill,
         control: (controlConfig: ControlConfig): React.ReactNode => {
             return (
-                <FileControl {...controlConfig} accept=".jpg,.jpeg,.png,.gif">
+                <FileControl
+                    {...controlConfig}
+                    accept=".apng,.avif,.gif,.jpg,.jpeg,.png,.webp"
+                >
                     Add Image
                 </FileControl>
             );
@@ -315,6 +367,8 @@ export function renderNavigationTabs(
                 <ModularNavigation
                     messageSystem={fastMessageSystem}
                     types={[DataType.object]}
+                    defaultLinkedDataDroppableDataLocation={"Slot"}
+                    droppableBlocklist={voidElements}
                 />
             </fast-tab-panel>
             <fast-tab-panel id={NavigationId.libraries + "Panel"}>
