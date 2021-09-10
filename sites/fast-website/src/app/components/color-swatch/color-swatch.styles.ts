@@ -1,24 +1,26 @@
-import { css } from "@microsoft/fast-element";
 import {
+    accentFillRest,
     bodyFont,
     controlCornerRadius,
     density,
     designUnit,
     disabledOpacity,
     focusStrokeOuter,
+    foregroundOnAccentRest,
     neutralForegroundRest,
     neutralStrokeHover,
     neutralStrokeRest,
     strokeWidth,
 } from "@microsoft/fast-components";
 import { heightNumber } from "@microsoft/fast-components/dist/esm/styles/size";
-import { SystemColors } from "@microsoft/fast-web-utilities";
+import { css } from "@microsoft/fast-element";
 import {
-    display,
-    forcedColorsStylesheetBehavior,
-    focusVisible,
     disabledCursor,
+    display,
+    focusVisible,
+    forcedColorsStylesheetBehavior,
 } from "@microsoft/fast-foundation";
+import { SystemColors } from "@microsoft/fast-web-utilities";
 
 export const ColorSwatchStyles = css`
 ${display("inline-flex")} :host {
@@ -26,18 +28,15 @@ ${display("inline-flex")} :host {
     align-items: center;
     outline: none;
     margin: calc(${designUnit} * 1px) 0;
-    ${
-        /*
-         * Chromium likes to select label text or the default slot when
-         * the radio button is clicked. Maybe there is a better solution here?
-         */ ""
-    } user-select: none;
+    user-select: none;
     position: relative;
     flex-direction: row;
     transition: all 0.2s ease-in-out;
 }
 
 .control {
+    background: ${accentFillRest};
+    color: ${neutralForegroundRest};
     position: relative;
     width: calc(var(--input-size) * 1px);
     height: calc(var(--input-size) * 1px);
@@ -55,14 +54,13 @@ ${display("inline-flex")} :host {
 .label {
     font-family: ${bodyFont};
     color: ${neutralForegroundRest};
-    ${
-        /* Need to discuss with Brian how HorizontalSpacingNumber can work. https://github.com/microsoft/fast/issues/2766 */ ""
-    } padding-inline-start: calc(${designUnit} * 2px + 2px);
+    /* TODO: Need to discuss with Brian how HorizontalSpacingNumber can work.
+        https://github.com/microsoft/fast/issues/2766 */
+    padding-inline-start: calc(${designUnit} * 2px + 2px);
     margin-inline-end: calc(${designUnit} * 2px + 2px);
     cursor: pointer;
-    ${
-        /* Font size is temporary - replace when adaptive typography is figured out */ ""
-    } font-size: calc(1rem + (${density} * 2px));
+    /* TODO: adaptive typography https://github.com/microsoft/fast/issues/2432 */
+    font-size: calc(1rem + (${density} * 2px));
 }
 
 .checked-indicator {
@@ -77,6 +75,14 @@ ${display("inline-flex")} :host {
     border: 1px solid ${neutralForegroundRest};
     opacity: 0;
     pointer-events: none;
+}
+
+::slotted([slot="checked-indicator"]) {
+    align-items: center;
+    color: ${foregroundOnAccentRest};
+    display: flex;
+    fill: currentColor;
+    justify-content: center;
 }
 
 .control:hover {
