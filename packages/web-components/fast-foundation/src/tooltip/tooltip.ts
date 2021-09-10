@@ -1,5 +1,5 @@
 import { attr, DOM, FASTElement, observable } from "@microsoft/fast-element";
-import { Direction, keyCodeEscape } from "@microsoft/fast-web-utilities";
+import { Direction, keyEscape } from "@microsoft/fast-web-utilities";
 import type {
     AnchoredRegion,
     AutoUpdateMode,
@@ -408,8 +408,8 @@ export class Tooltip extends FoundationElement {
      */
     private handleDocumentKeydown = (e: KeyboardEvent): void => {
         if (!e.defaultPrevented && this.tooltipVisible) {
-            switch (e.keyCode) {
-                case keyCodeEscape:
+            switch (e.key) {
+                case keyEscape:
                     this.isAnchorHovered = false;
                     this.updateTooltipVisibility();
                     this.$emit("dismiss");

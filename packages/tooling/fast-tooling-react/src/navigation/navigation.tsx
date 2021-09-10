@@ -1,13 +1,13 @@
 import React from "react";
 import {
-    keyCodeArrowDown,
-    keyCodeArrowLeft,
-    keyCodeArrowRight,
-    keyCodeArrowUp,
-    keyCodeEnd,
-    keyCodeEnter,
-    keyCodeHome,
-    keyCodeSpace,
+    keyArrowDown,
+    keyArrowLeft,
+    keyArrowRight,
+    keyArrowUp,
+    keyEnd,
+    keyEnter,
+    keyHome,
+    keySpace,
 } from "@microsoft/fast-web-utilities";
 import Foundation, {
     FoundationProps,
@@ -667,8 +667,8 @@ class Navigation extends Foundation<
     ) => void) => {
         return (e: React.KeyboardEvent<HTMLInputElement>): void => {
             if (e.target === e.currentTarget) {
-                switch (e.keyCode) {
-                    case keyCodeEnter:
+                switch (e.key) {
+                    case keyEnter:
                         this.setState({
                             textEditing: null,
                         });
@@ -888,9 +888,9 @@ class Navigation extends Foundation<
             e.preventDefault();
 
             if (e.target === e.currentTarget) {
-                switch (e.keyCode) {
-                    case keyCodeEnter:
-                    case keyCodeSpace:
+                switch (e.key) {
+                    case keyEnter:
+                    case keySpace:
                         if (e.target === e.currentTarget) {
                             this.triggerExpandCollapse(dictionaryId, navigationConfigId);
                             this.triggerNavigationUpdate(
@@ -899,22 +899,22 @@ class Navigation extends Foundation<
                             );
                         }
                         break;
-                    case keyCodeArrowDown:
+                    case keyArrowDown:
                         this.focusNextTreeItem(dictionaryId, navigationConfigId);
                         break;
-                    case keyCodeArrowUp:
+                    case keyArrowUp:
                         this.focusPreviousTreeItem(dictionaryId, navigationConfigId);
                         break;
-                    case keyCodeArrowRight:
+                    case keyArrowRight:
                         this.focusAndOpenTreeItems(dictionaryId, navigationConfigId);
                         break;
-                    case keyCodeArrowLeft:
+                    case keyArrowLeft:
                         this.focusAndCloseTreeItems(dictionaryId, navigationConfigId);
                         break;
-                    case keyCodeHome:
+                    case keyHome:
                         this.focusFirstTreeItem();
                         break;
-                    case keyCodeEnd:
+                    case keyEnd:
                         this.focusLastTreeItem();
                         break;
                 }

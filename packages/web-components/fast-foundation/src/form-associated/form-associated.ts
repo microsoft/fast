@@ -1,6 +1,6 @@
 import { attr, DOM, emptyArray, observable } from "@microsoft/fast-element";
 import type { Constructable, FASTElement } from "@microsoft/fast-element";
-import { keyCodeEnter } from "@microsoft/fast-web-utilities";
+import { keyEnter } from "@microsoft/fast-web-utilities";
 
 /**
  * This file enables typing support for ElementInternals APIs.
@@ -599,8 +599,8 @@ export function FormAssociated<T extends ConstructableFormAssociated>(BaseCtor: 
         }
 
         private _keypressHandler(e: KeyboardEvent): void {
-            switch (e.keyCode) {
-                case keyCodeEnter:
+            switch (e.key) {
+                case keyEnter:
                     if (this.form instanceof HTMLFormElement) {
                         // Implicit submission
                         const defaultButton = this.form.querySelector(

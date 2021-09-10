@@ -1,5 +1,5 @@
 import { attr, DOM, observable } from "@microsoft/fast-element";
-import { keyCodeEnd, keyCodeHome } from "@microsoft/fast-web-utilities";
+import { keyEnd, keyHome } from "@microsoft/fast-web-utilities";
 import { isTreeItemElement, TreeItem } from "../tree-item";
 import { FoundationElement } from "../foundation-element";
 
@@ -84,13 +84,13 @@ export class TreeView extends FoundationElement {
             return true;
         }
 
-        switch (e.keyCode) {
-            case keyCodeHome:
+        switch (e.key) {
+            case keyHome:
                 if (this.treeItems && this.treeItems.length) {
                     TreeItem.focusItem(this.treeItems[0]);
                 }
                 break;
-            case keyCodeEnd:
+            case keyEnd:
                 if (this.treeItems && this.treeItems.length) {
                     TreeItem.focusItem(this.treeItems[this.treeItems.length - 1]);
                 }

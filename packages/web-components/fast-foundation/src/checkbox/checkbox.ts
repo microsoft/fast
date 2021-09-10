@@ -1,5 +1,5 @@
 import { attr, observable, SyntheticViewTemplate } from "@microsoft/fast-element";
-import { keyCodeSpace } from "@microsoft/fast-web-utilities";
+import { keySpace } from "@microsoft/fast-web-utilities";
 import type { FoundationElementDefinition } from "../foundation-element";
 import { FormAssociatedCheckbox } from "./checkbox.form-associated";
 
@@ -159,8 +159,8 @@ export class Checkbox extends FormAssociatedCheckbox {
      * @internal
      */
     public keypressHandler = (e: KeyboardEvent): void => {
-        switch (e.keyCode) {
-            case keyCodeSpace:
+        switch (e.key) {
+            case keySpace:
                 this.checked = !this.checked;
                 break;
         }

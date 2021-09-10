@@ -2,7 +2,7 @@ import { expect, assert } from "chai";
 import { Switch, switchTemplate as template } from "./index";
 import { fixture } from "../test-utilities/fixture";
 import { DOM } from "@microsoft/fast-element";
-import { KeyCodes } from "@microsoft/fast-web-utilities";
+import { keySpace } from "@microsoft/fast-web-utilities";
 
 const FASTSwitch = Switch.compose({
     baseName: "switch",
@@ -246,8 +246,7 @@ describe("Switch", () => {
             const { element, connect, disconnect } = await setup();
             let wasInvoked: boolean = false;
             const event = new KeyboardEvent("keydown", {
-                key: "space",
-                keyCode: KeyCodes.space,
+                key: keySpace,
             } as KeyboardEventInit);
 
             await connect();

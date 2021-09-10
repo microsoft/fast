@@ -6,8 +6,6 @@ import {
     keyArrowLeft,
     keyArrowRight,
     keyArrowUp,
-    keyCodeArrowLeft,
-    keyCodeArrowRight,
     keyEnter,
     Orientation,
 } from "@microsoft/fast-web-utilities";
@@ -329,21 +327,17 @@ export class RadioGroup extends FoundationElement {
     private shouldMoveOffGroupToTheRight = (
         index: number,
         group: HTMLElement[],
-        keyCode: number
+        key: string
     ): boolean => {
-        return (
-            index === group.length &&
-            this.isInsideToolbar &&
-            keyCode === keyCodeArrowRight
-        );
+        return index === group.length && this.isInsideToolbar && key === keyArrowRight;
     };
 
     private shouldMoveOffGroupToTheLeft = (
         group: HTMLElement[],
-        keyCode: number
+        key: string
     ): boolean => {
         const index = this.focusedRadio ? group.indexOf(this.focusedRadio) - 1 : 0;
-        return index < 0 && this.isInsideToolbar && keyCode === keyCodeArrowLeft;
+        return index < 0 && this.isInsideToolbar && key === keyArrowLeft;
     };
 
     private checkFocusedRadio = (): void => {
@@ -364,7 +358,7 @@ export class RadioGroup extends FoundationElement {
         let index: number = 0;
 
         index = this.focusedRadio ? group.indexOf(this.focusedRadio) + 1 : 1;
-        if (this.shouldMoveOffGroupToTheRight(index, group, e.keyCode)) {
+        if (this.shouldMoveOffGroupToTheRight(index, group, e.key)) {
             this.moveRightOffGroup();
             return;
         } else if (index === group.length) {
@@ -397,7 +391,7 @@ export class RadioGroup extends FoundationElement {
         index = this.focusedRadio ? group.indexOf(this.focusedRadio) - 1 : 0;
         index = index < 0 ? group.length - 1 : index;
 
-        if (this.shouldMoveOffGroupToTheLeft(group, e.keyCode)) {
+        if (this.shouldMoveOffGroupToTheLeft(group, e.key)) {
             this.moveLeftOffGroup();
             return;
         }

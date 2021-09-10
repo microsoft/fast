@@ -1,5 +1,5 @@
 import { attr, DOM, Notifier, Observable } from "@microsoft/fast-element";
-import { keyCodeEscape, keyCodeTab } from "@microsoft/fast-web-utilities";
+import { keyEscape, keyTab } from "@microsoft/fast-web-utilities";
 import { isTabbable } from "tabbable";
 import { FoundationElement } from "../foundation-element";
 
@@ -158,13 +158,13 @@ export class Dialog extends FoundationElement {
 
     private handleDocumentKeydown = (e: KeyboardEvent): void => {
         if (!e.defaultPrevented && !this.hidden) {
-            switch (e.keyCode) {
-                case keyCodeEscape:
+            switch (e.key) {
+                case keyEscape:
                     this.dismiss();
                     e.preventDefault();
                     break;
 
-                case keyCodeTab:
+                case keyTab:
                     this.handleTabKeyDown(e);
                     break;
             }

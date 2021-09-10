@@ -1,6 +1,6 @@
-/*
+/**
  * Key Code values
- * @deprecated - use individual keycode exports
+ * @deprecated - KeyCodes are deprecated, use individual string key exports
  */
 export enum KeyCodes {
     alt = 18,
@@ -74,74 +74,349 @@ export enum KeyCodes {
     windowsRight = 92,
 }
 
+/**
+ * @deprecated - KeyCodes are deprecated, use string key exports
+ */
 export const keyCodeAlt: number = 18;
+
+/**
+ * @deprecated - KeyCodes are deprecated, use string key exports
+ */
 export const keyCodeArrowDown: number = 40;
+
+/**
+ * @deprecated - KeyCodes are deprecated, use string key exports
+ */
 export const keyCodeArrowLeft: number = 37;
+
+/**
+ * @deprecated - KeyCodes are deprecated, use string key exports
+ */
 export const keyCodeArrowRight: number = 39;
+
+/**
+ * @deprecated - KeyCodes are deprecated, use string key exports
+ */
 export const keyCodeArrowUp: number = 38;
+
+/**
+ * @deprecated - KeyCodes are deprecated, use string key exports
+ */
 export const keyCodeBack: number = 8;
+
+/**
+ * @deprecated - KeyCodes are deprecated, use string key exports
+ */
 export const keyCodeBackSlash: number = 220;
+
+/**
+ * @deprecated - KeyCodes are deprecated, use string key exports
+ */
 export const keyCodeBreak: number = 19;
+
+/**
+ * @deprecated - KeyCodes are deprecated, use string key exports
+ */
 export const keyCodeCapsLock: number = 20;
+
+/**
+ * @deprecated - KeyCodes are deprecated, use string key exports
+ */
 export const keyCodeCloseBracket: number = 221;
+
+/**
+ * @deprecated - KeyCodes are deprecated, use string key exports
+ */
 export const keyCodeColon: number = 186;
+
+/**
+ * @deprecated - KeyCodes are deprecated, use string key exports
+ */
 export const keyCodeColon2: number = 59; // Opera and Firefox
+
+/**
+ * @deprecated - KeyCodes are deprecated, use string key exports
+ */
 export const keyCodeComma: number = 188;
+
+/**
+ * @deprecated - KeyCodes are deprecated, use string key exports
+ */
 export const keyCodeCtrl: number = 17;
+
+/**
+ * @deprecated - KeyCodes are deprecated, use string key exports
+ */
 export const keyCodeDelete: number = 46;
+
+/**
+ * @deprecated - KeyCodes are deprecated, use string key exports
+ */
 export const keyCodeEnd: number = 35;
+
+/**
+ * @deprecated - KeyCodes are deprecated, use string key exports
+ */
 export const keyCodeEnter: number = 13;
+
+/**
+ * @deprecated - KeyCodes are deprecated, use string key exports
+ */
 export const keyCodeEquals: number = 187;
+
+/**
+ * @deprecated - KeyCodes are deprecated, use string key exports
+ */
 export const keyCodeEquals2: number = 61; // Opera
+
+/**
+ * @deprecated - KeyCodes are deprecated, use string key exports
+ */
 export const keyCodeEquals3: number = 107; // Firefox
+
+/**
+ * @deprecated - KeyCodes are deprecated, use string key exports
+ */
 export const keyCodeEscape: number = 27;
+
+/**
+ * @deprecated - KeyCodes are deprecated, use string key exports
+ */
 export const keyCodeForwardSlash: number = 191;
+
+/**
+ * @deprecated - KeyCodes are deprecated, use string key exports
+ */
 export const keyCodeFunction1: number = 112;
+
+/**
+ * @deprecated - KeyCodes are deprecated, use string key exports
+ */
 export const keyCodeFunction10: number = 121;
+
+/**
+ * @deprecated - KeyCodes are deprecated, use string key exports
+ */
 export const keyCodeFunction11: number = 122;
+
+/**
+ * @deprecated - KeyCodes are deprecated, use string key exports
+ */
 export const keyCodeFunction12: number = 123;
+
+/**
+ * @deprecated - KeyCodes are deprecated, use string key exports
+ */
 export const keyCodeFunction2: number = 113;
+
+/**
+ * @deprecated - KeyCodes are deprecated, use string key exports
+ */
 export const keyCodeFunction3: number = 114;
+
+/**
+ * @deprecated - KeyCodes are deprecated, use string key exports
+ */
 export const keyCodeFunction4: number = 115;
+
+/**
+ * @deprecated - KeyCodes are deprecated, use string key exports
+ */
 export const keyCodeFunction5: number = 116;
+
+/**
+ * @deprecated - KeyCodes are deprecated, use string key exports
+ */
 export const keyCodeFunction6: number = 117;
+
+/**
+ * @deprecated - KeyCodes are deprecated, use string key exports
+ */
 export const keyCodeFunction7: number = 118;
+
+/**
+ * @deprecated - KeyCodes are deprecated, use string key exports
+ */
 export const keyCodeFunction8: number = 119;
+
+/**
+ * @deprecated - KeyCodes are deprecated, use string key exports
+ */
 export const keyCodeFunction9: number = 120;
+
+/**
+ * @deprecated - KeyCodes are deprecated, use string key exports
+ */
 export const keyCodeHome: number = 36;
+
+/**
+ * @deprecated - KeyCodes are deprecated, use string key exports
+ */
 export const keyCodeInsert: number = 45;
+
+/**
+ * @deprecated - KeyCodes are deprecated, use string key exports
+ */
 export const keyCodeMenu: number = 93;
+
+/**
+ * @deprecated - KeyCodes are deprecated, use string key exports
+ */
 export const keyCodeMinus: number = 189;
+
+/**
+ * @deprecated - KeyCodes are deprecated, use string key exports
+ */
 export const keyCodeMinus2: number = 109; // Opera and Firefox
+
+/**
+ * @deprecated - KeyCodes are deprecated, use string key exports
+ */
 export const keyCodeNumLock: number = 144;
+
+/**
+ * @deprecated - KeyCodes are deprecated, use string key exports
+ */
 export const keyCodeNumPad0: number = 96;
+
+/**
+ * @deprecated - KeyCodes are deprecated, use string key exports
+ */
 export const keyCodeNumPad1: number = 97;
+
+/**
+ * @deprecated - KeyCodes are deprecated, use string key exports
+ */
 export const keyCodeNumPad2: number = 98;
+
+/**
+ * @deprecated - KeyCodes are deprecated, use string key exports
+ */
 export const keyCodeNumPad3: number = 99;
+
+/**
+ * @deprecated - KeyCodes are deprecated, use string key exports
+ */
 export const keyCodeNumPad4: number = 100;
+
+/**
+ * @deprecated - KeyCodes are deprecated, use string key exports
+ */
 export const keyCodeNumPad5: number = 101;
+
+/**
+ * @deprecated - KeyCodes are deprecated, use string key exports
+ */
 export const keyCodeNumPad6: number = 102;
+
+/**
+ * @deprecated - KeyCodes are deprecated, use string key exports
+ */
 export const keyCodeNumPad7: number = 103;
+
+/**
+ * @deprecated - KeyCodes are deprecated, use string key exports
+ */
 export const keyCodeNumPad8: number = 104;
+
+/**
+ * @deprecated - KeyCodes are deprecated, use string key exports
+ */
 export const keyCodeNumPad9: number = 105;
+
+/**
+ * @deprecated - KeyCodes are deprecated, use string key exports
+ */
 export const keyCodeNumPadDivide: number = 111;
+
+/**
+ * @deprecated - KeyCodes are deprecated, use string key exports
+ */
 export const keyCodeNumPadDot: number = 110;
+
+/**
+ * @deprecated - KeyCodes are deprecated, use string key exports
+ */
 export const keyCodeNumPadMinus: number = 109;
+
+/**
+ * @deprecated - KeyCodes are deprecated, use string key exports
+ */
 export const keyCodeNumPadMultiply: number = 106;
+
+/**
+ * @deprecated - KeyCodes are deprecated, use string key exports
+ */
 export const keyCodeNumPadPlus: number = 107;
+
+/**
+ * @deprecated - KeyCodes are deprecated, use string key exports
+ */
 export const keyCodeOpenBracket: number = 219;
+
+/**
+ * @deprecated - KeyCodes are deprecated, use string key exports
+ */
 export const keyCodePageDown: number = 34;
+
+/**
+ * @deprecated - KeyCodes are deprecated, use string key exports
+ */
 export const keyCodePageUp: number = 33;
+
+/**
+ * @deprecated - KeyCodes are deprecated, use string key exports
+ */
 export const keyCodePeriod: number = 190;
+
+/**
+ * @deprecated - KeyCodes are deprecated, use string key exports
+ */
 export const keyCodePrint: number = 44;
+
+/**
+ * @deprecated - KeyCodes are deprecated, use string key exports
+ */
 export const keyCodeQuote: number = 222;
+
+/**
+ * @deprecated - KeyCodes are deprecated, use string key exports
+ */
 export const keyCodeScrollLock: number = 145;
+
+/**
+ * @deprecated - KeyCodes are deprecated, use string key exports
+ */
 export const keyCodeShift: number = 16;
+
+/**
+ * @deprecated - KeyCodes are deprecated, use string key exports
+ */
 export const keyCodeSpace: number = 32;
+
+/**
+ * @deprecated - KeyCodes are deprecated, use string key exports
+ */
 export const keyCodeTab: number = 9;
+
+/**
+ * @deprecated - KeyCodes are deprecated, use string key exports
+ */
 export const keyCodeTilde: number = 192;
+
+/**
+ * @deprecated - KeyCodes are deprecated, use string key exports
+ */
 export const keyCodeWindowsLeft: number = 91;
+
+/**
+ * @deprecated - KeyCodes are deprecated, use string key exports
+ */
 export const keyCodeWindowsOpera: number = 219; // Opera
+
+/**
+ * @deprecated - KeyCodes are deprecated, use string key exports
+ */
 export const keyCodeWindowsRight: number = 92;
 
 /**
@@ -155,6 +430,9 @@ export const keyEnter: "Enter" = "Enter";
 export const keyEscape: "Escape" = "Escape";
 export const keyHome: "Home" = "Home";
 export const keyEnd: "End" = "End";
+export const keyFunction2: "F2" = "F2";
+export const keyPageDown: "PageDown" = "PageDown";
+export const keyPageUp: "PageUp" = "PageUp";
 export const keySpace: " " = " ";
 export const keyTab: "Tab" = "Tab";
 

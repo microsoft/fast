@@ -1,6 +1,6 @@
 import { assert, expect } from "chai";
 import { DOM } from "@microsoft/fast-element";
-import { KeyCodes } from "@microsoft/fast-web-utilities";
+import { keyArrowDown, keyArrowUp, keyEnd, keyHome } from "@microsoft/fast-web-utilities";
 import { fixture } from "../test-utilities/fixture";
 import { ListboxOption, listboxOptionTemplate } from "../listbox-option";
 import { timeout } from "../test-utilities/timeout";
@@ -173,8 +173,7 @@ describe("Select", () => {
             expect(element.open).to.be.true;
 
             const event = new KeyboardEvent("keydown", {
-                key: "ArrowDown",
-                keyCode: KeyCodes.arrowDown,
+                key: keyArrowDown,
             } as KeyboardEventInit);
 
             const wasChanged = await Promise.race([
@@ -206,8 +205,7 @@ describe("Select", () => {
             expect(element.open).to.be.true;
 
             const event = new KeyboardEvent("keydown", {
-                key: "ArrowUp",
-                keyCode: KeyCodes.arrowUp,
+                key: keyArrowUp,
             } as KeyboardEventInit);
 
             const wasChanged = await Promise.race([
@@ -235,8 +233,7 @@ describe("Select", () => {
             expect(element.open).to.be.true;
 
             const event = new KeyboardEvent("keydown", {
-                key: "Home",
-                keyCode: KeyCodes.home,
+                key: keyHome,
             } as KeyboardEventInit);
 
             const wasChanged = await Promise.race([
@@ -266,8 +263,7 @@ describe("Select", () => {
             expect(element.open).to.be.true;
 
             const event = new KeyboardEvent("keydown", {
-                key: "End",
-                keyCode: KeyCodes.end,
+                key: keyEnd,
             } as KeyboardEventInit);
 
             const wasChanged = await Promise.race([
@@ -297,8 +293,7 @@ describe("Select", () => {
             expect(element.open).to.be.true;
 
             const event = new KeyboardEvent("keydown", {
-                key: "ArrowDown",
-                keyCode: KeyCodes.arrowDown,
+                key: keyArrowDown,
             } as KeyboardEventInit);
 
             const wasInput = await Promise.race([
@@ -330,8 +325,7 @@ describe("Select", () => {
             expect(element.open).to.be.true;
 
             const event = new KeyboardEvent("keydown", {
-                key: "ArrowUp",
-                keyCode: KeyCodes.arrowUp,
+                key: keyArrowUp,
             } as KeyboardEventInit);
 
             const wasInput = await Promise.race([
@@ -359,8 +353,7 @@ describe("Select", () => {
             expect(element.open).to.be.true;
 
             const event = new KeyboardEvent("keydown", {
-                key: "Home",
-                keyCode: KeyCodes.home,
+                key: "Home"
             } as KeyboardEventInit);
 
             const wasInput = await Promise.race([
@@ -390,8 +383,7 @@ describe("Select", () => {
             expect(element.open).to.be.true;
 
             const event = new KeyboardEvent("keydown", {
-                key: "End",
-                keyCode: KeyCodes.end,
+                key: keyEnd,
             } as KeyboardEventInit);
 
             const wasInput = await Promise.race([
@@ -423,8 +415,7 @@ describe("Select", () => {
             expect(element.open).to.be.false;
 
             const event = new KeyboardEvent("keydown", {
-                key: "ArrowDown",
-                keyCode: KeyCodes.arrowDown,
+                key: keyArrowDown,
             } as KeyboardEventInit);
 
             const wasChanged = await Promise.race([
@@ -454,8 +445,7 @@ describe("Select", () => {
             expect(element.open).to.be.false;
 
             const event = new KeyboardEvent("keydown", {
-                key: "ArrowUp",
-                keyCode: KeyCodes.arrowUp,
+                key: keyArrowUp
             } as KeyboardEventInit);
 
             const wasChanged = await Promise.race([
@@ -485,8 +475,7 @@ describe("Select", () => {
             expect(element.open).to.be.false;
 
             const event = new KeyboardEvent("keydown", {
-                key: "Home",
-                keyCode: KeyCodes.home,
+                key: keyHome,
             } as KeyboardEventInit);
 
             const wasChanged = await Promise.race([
@@ -512,8 +501,7 @@ describe("Select", () => {
             expect(element.open).to.be.false;
 
             const event = new KeyboardEvent("keydown", {
-                key: "End",
-                keyCode: KeyCodes.end,
+                key: keyEnd
             } as KeyboardEventInit);
 
             const wasChanged = await Promise.race([
@@ -546,13 +534,11 @@ describe("Select", () => {
             expect(element.open).to.be.false;
 
             const arrowDownEvent = new KeyboardEvent("keydown", {
-                key: "ArrowDown",
-                keyCode: KeyCodes.arrowDown,
+                key: keyArrowDown,
             } as KeyboardEventInit);
 
             const arrowUpEvent = new KeyboardEvent("keydown", {
-                key: "ArrowUp",
-                keyCode: KeyCodes.arrowUp,
+                key: keyArrowUp,
             } as KeyboardEventInit);
 
             expect(await Promise.race([
@@ -592,8 +578,7 @@ describe("Select", () => {
             expect(element.open).to.be.false;
 
             const event = new KeyboardEvent("keydown", {
-                key: "ArrowDown",
-                keyCode: KeyCodes.arrowDown,
+                key: keyArrowDown,
             } as KeyboardEventInit);
 
             const wasInput = await Promise.race([
@@ -623,8 +608,7 @@ describe("Select", () => {
             expect(element.open).to.be.false;
 
             const event = new KeyboardEvent("keydown", {
-                key: "ArrowUp",
-                keyCode: KeyCodes.arrowUp,
+                key: keyArrowUp,
             } as KeyboardEventInit);
 
             const wasInput = await Promise.race([
@@ -654,8 +638,7 @@ describe("Select", () => {
             expect(element.open).to.be.false;
 
             const event = new KeyboardEvent("keydown", {
-                key: "Home",
-                keyCode: KeyCodes.home,
+                key: keyHome,
             } as KeyboardEventInit);
 
             const wasInput = await Promise.race([
@@ -681,8 +664,7 @@ describe("Select", () => {
             expect(element.open).to.be.false;
 
             const event = new KeyboardEvent("keydown", {
-                key: "End",
-                keyCode: KeyCodes.end,
+                key: "End"
             } as KeyboardEventInit);
 
             const wasInput = await Promise.race([

@@ -122,7 +122,7 @@ export class ShortcutsAction extends MessageSystemServiceAction<
             for (let i = 0; i < keysLength; i++) {
                 if (
                     keys.findIndex((suppliedKey: KeyConfig) => {
-                        // determine if this matches a specified keycode
+                        // determine if this matches a specified key value
                         if (
                             typeof (suppliedKey as SpecificKey).value === "string" &&
                             typeof (this.keys[i] as SpecificKey).value === "string" &&
@@ -130,7 +130,7 @@ export class ShortcutsAction extends MessageSystemServiceAction<
                                 (this.keys[i] as SpecificKey).value
                         ) {
                             return true;
-                            // determine if this matches a modifier keycode
+                            // determine if this matches a modifier key value
                         } else if (
                             typeof (suppliedKey as SpecificKey).value === "undefined" &&
                             typeof (this.keys[i] as SpecificKey).value === "undefined"

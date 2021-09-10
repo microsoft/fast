@@ -1,9 +1,6 @@
 import React from "react";
 import Adapter from "enzyme-adapter-react-16";
 import "../__tests__/mocks/match-media";
-import { configure, mount, render, shallow } from "enzyme";
-import { NavigationProps } from "./navigation.props";
-import { ModularNavigation, Navigation } from "./index";
 import {
     DataDictionary,
     DataType,
@@ -14,11 +11,14 @@ import {
     NavigationConfigDictionary,
     Register,
 } from "@microsoft/fast-tooling";
-import { keyCodeAlt, keyCodeEnter } from "@microsoft/fast-web-utilities";
+import { keyEnter } from "@microsoft/fast-web-utilities";
 import {
     linkedDataSchema,
     MessageSystemNavigationTypeAction,
 } from "@microsoft/fast-tooling";
+import { configure, mount, render, shallow } from "enzyme";
+import { NavigationProps } from "./navigation.props";
+import { ModularNavigation, Navigation } from "./index";
 
 /*
  * Configure Enzyme
@@ -1602,7 +1602,7 @@ describe("Navigation", () => {
             });
 
         const inputs1: any = rendered.find("input");
-        inputs1.simulate("keydown", { keyCode: keyCodeEnter });
+        inputs1.simulate("keydown", { key: keyEnter });
         const inputs3: any = rendered.find("input");
         expect(inputs3).toHaveLength(0);
     });

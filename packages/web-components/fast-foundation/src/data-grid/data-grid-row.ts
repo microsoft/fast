@@ -8,10 +8,10 @@ import {
 import {
     eventFocusOut,
     eventKeyDown,
-    keyCodeArrowLeft,
-    keyCodeArrowRight,
-    keyCodeEnd,
-    keyCodeHome,
+    keyArrowLeft,
+    keyArrowRight,
+    keyEnd,
+    keyHome,
 } from "@microsoft/fast-web-utilities";
 import { FoundationElement } from "../foundation-element";
 import type { ColumnDefinition } from "./data-grid";
@@ -228,15 +228,15 @@ export class DataGridRow extends FoundationElement {
             return;
         }
         let newFocusColumnIndex: number = 0;
-        switch (e.keyCode) {
-            case keyCodeArrowLeft:
+        switch (e.key) {
+            case keyArrowLeft:
                 // focus left one cell
                 newFocusColumnIndex = Math.max(0, this.focusColumnIndex - 1);
                 (this.cellElements[newFocusColumnIndex] as HTMLElement).focus();
                 e.preventDefault();
                 break;
 
-            case keyCodeArrowRight:
+            case keyArrowRight:
                 // focus right one cell
                 newFocusColumnIndex = Math.min(
                     this.cellElements.length - 1,
@@ -246,13 +246,13 @@ export class DataGridRow extends FoundationElement {
                 e.preventDefault();
                 break;
 
-            case keyCodeHome:
+            case keyHome:
                 if (!e.ctrlKey) {
                     (this.cellElements[0] as HTMLElement).focus();
                     e.preventDefault();
                 }
                 break;
-            case keyCodeEnd:
+            case keyEnd:
                 if (!e.ctrlKey) {
                     // focus last cell of the row
                     (this.cellElements[
