@@ -36,6 +36,7 @@ export class SliderLabel extends FoundationSliderLabel {
 
 export const fastSliderLabel = SliderLabel.compose({
     baseName: "slider-label",
+    baseClass: FoundationSliderLabel,
     template,
     styles,
 });

@@ -204,9 +204,9 @@ export class Radio extends FormAssociatedRadio implements RadioControl {
     /**
      * @internal
      */
-    public clickHandler = (e: MouseEvent): void => {
+    public clickHandler(e: MouseEvent): boolean | void {
         if (!this.disabled && !this.readOnly && !this.checked) {
             this.checked = true;
         }
-    };
+    }
 }

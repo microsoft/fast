@@ -1,8 +1,29 @@
 # Change Log - @microsoft/fast-components
 
-This log was last generated on Thu, 02 Sep 2021 17:17:56 GMT and should not be manually modified.
+This log was last generated on Thu, 09 Sep 2021 07:21:36 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.9.0
+
+Thu, 09 Sep 2021 07:21:36 GMT
+
+### Minor changes
+
+- add start/end slot definitions to support default slotted content (chhol@microsoft.com)
+- feat(fast-components): leverage FoundationElement.compose baseClass (roeisenb@microsoft.com)
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.12.0 (chhol@microsoft.com)
+
+## 2.8.3
+
+Wed, 08 Sep 2021 07:16:17 GMT
+
+### Patches
+
+- fix(breadcrumb-item): add display flex to separator (ben@platform5.ch)
 
 ## 2.8.2
 

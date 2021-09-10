@@ -1,8 +1,29 @@
 # Change Log - @microsoft/fast-tooling
 
-This log was last generated on Thu, 02 Sep 2021 17:17:56 GMT and should not be manually modified.
+This log was last generated on Thu, 09 Sep 2021 07:21:36 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.28.0
+
+Thu, 09 Sep 2021 07:21:36 GMT
+
+### Minor changes
+
+- add a message queue to the message system (7559015+janechu@users.noreply.github.com)
+
+### Patches
+
+- Bump @microsoft/fast-components to v2.9.0 (chhol@microsoft.com)
+- Bump @microsoft/fast-foundation to v2.12.0 (chhol@microsoft.com)
+
+## 0.27.11
+
+Wed, 08 Sep 2021 07:16:17 GMT
+
+### Patches
+
+- Bump @microsoft/fast-element to v1.5.1 (roeisenb@microsoft.com)
 
 ## 0.27.10
 

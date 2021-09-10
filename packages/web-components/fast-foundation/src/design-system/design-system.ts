@@ -1,115 +1,14 @@
-import {
-    Constructable,
-    FASTElementDefinition,
-    PartialFASTElementDefinition,
-} from "@microsoft/fast-element";
-import { Container, DI, InterfaceSymbol, Registration } from "../di/di";
+import { Constructable, FASTElementDefinition } from "@microsoft/fast-element";
+import { FoundationElement } from "../foundation-element/foundation-element";
+import { Container, DI, Registration } from "../di/di";
 import { ComponentPresentation } from "./component-presentation";
-
-/**
- * Enables defining an element within the context of a design system.
- * @public
- */
-export type ContextualElementDefinition = Omit<PartialFASTElementDefinition, "name">;
-
-/**
- * The design system context in which an element can be defined.
- * @public
- */
-export interface ElementDefinitionContext {
-    /**
-     * The name that the element will be defined as.
-     * @public
-     */
-    readonly name: string;
-
-    /**
-     * The type that will be defined.
-     * @public
-     */
-    readonly type: Constructable;
-
-    /**
-     * The dependency injection container associated with the design system.
-     * @public
-     */
-    readonly container: Container;
-
-    /**
-     * Indicates whether or not a platform define call will be made in order
-     * to define the element.
-     * @public
-     */
-    readonly willDefine: boolean;
-
-    /**
-     * The shadow root mode specified by the design system's configuration.
-     * @public
-     */
-    readonly shadowRootMode: ShadowRootMode | undefined;
-
-    /**
-     * Defines the element.
-     * @param definition - The definition for the element.
-     * @public
-     */
-    defineElement(definition?: ContextualElementDefinition): void;
-
-    /**
-     * Defines a presentation for the element.
-     * @param presentation - The presentation configuration.
-     * @public
-     */
-    definePresentation(presentation: ComponentPresentation): void;
-
-    /**
-     * Returns the HTML element tag name that the type will be defined as.
-     * @param type - The type to lookup.
-     * @public
-     */
-    tagFor(type: Constructable): string;
-}
-
-/**
- * The callback type that is invoked when an element can be defined by a design system.
- * @public
- */
-export type ElementDefinitionCallback = (ctx: ElementDefinitionContext) => void;
-
-/**
- * Design system contextual APIs and configuration usable within component
- * registries.
- * @public
- */
-export interface DesignSystemRegistrationContext {
-    /**
-     * The element prefix specified by the design system's configuration.
-     * @public
-     */
-    readonly elementPrefix: string;
-
-    /**
-     * Used to attempt to define a custom element.
-     * @param name - The name of the element to define.
-     * @param type - The type of the constructor to use to define the element.
-     * @param callback - A callback to invoke if definition will happen.
-     * @public
-     */
-    tryDefineElement(
-        name: string,
-        type: Constructable,
-        callback: ElementDefinitionCallback
-    );
-}
-
-/**
- * Design system contextual APIs and configuration usable within component
- * registries.
- * @public
- */
-export const DesignSystemRegistrationContext: InterfaceSymbol<DesignSystemRegistrationContext> = DI.createInterface<
-    DesignSystemRegistrationContext
->();
+import {
+    ContextualElementDefinition,
+    DesignSystemRegistrationContext,
+    ElementDefinitionCallback,
+    ElementDefinitionContext,
+    ElementDefinitionParams,
+} from "./registration-context";
 
 /**
  * Indicates what to do with an ambiguous (duplicate) element.
@@ -305,54 +204,88 @@ class DefaultDesignSystem implements DesignSystem {
         const disambiguate = this.disambiguate;
         const shadowRootMode = this.shadowRootMode;
 
+        const extractTryDefineElementParams = (
+            params: string | ElementDefinitionParams,
+            elementDefinitionType?: Constructable,
+            elementDefinitionCallback?: ElementDefinitionCallback
+        ): ElementDefinitionParams => {
+            if (typeof params === "string") {
+                return {
+                    name: params,
+                    type: elementDefinitionType!,
+                    callback: elementDefinitionCallback!,
+                };
+            } else {
+                return params;
+            }
+        };
+
+        function tryDefineElement(params: ElementDefinitionParams);
+        function tryDefineElement(
+            name: string,
+            type: Constructable,
+            callback: ElementDefinitionCallback
+        );
+        function tryDefineElement(
+            params: string | ElementDefinitionParams,
+            elementDefinitionType?: Constructable,
+            elementDefinitionCallback?: ElementDefinitionCallback
+        ) {
+            const extractedParams = extractTryDefineElementParams(
+                params,
+                elementDefinitionType,
+                elementDefinitionCallback
+            );
+            const { name, callback, baseClass } = extractedParams;
+            let { type } = extractedParams;
+            let elementName: string | null = name;
+
+            let typeFoundByName = elementTypesByTag.get(elementName);
+            let needsDefine = true;
+
+            while (typeFoundByName) {
+                const result = disambiguate(elementName, type, typeFoundByName);
+
+                switch (result) {
+                    case ElementDisambiguation.ignoreDuplicate:
+                        return;
+                    case ElementDisambiguation.definitionCallbackOnly:
+                        needsDefine = false;
+                        typeFoundByName = void 0;
+                        break;
+                    default:
+                        elementName = result as string;
+                        typeFoundByName = elementTypesByTag.get(elementName);
+                        break;
+                }
+            }
+
+            if (needsDefine) {
+                if (elementTagsByType.has(type) || type === FoundationElement) {
+                    type = class extends type {};
+                }
+                elementTypesByTag.set(elementName, type);
+                elementTagsByType.set(type, elementName);
+                if (baseClass) {
+                    elementTagsByType.set(baseClass, elementName!);
+                }
+            }
+
+            elementDefinitionEntries.push(
+                new ElementDefinitionEntry(
+                    container,
+                    elementName,
+                    type,
+                    shadowRootMode,
+                    callback,
+                    needsDefine
+                )
+            );
+        }
+
         this.context = {
             elementPrefix: this.prefix,
-            tryDefineElement(
-                name: string,
-                type: Constructable,
-                callback: ElementDefinitionCallback
-            ) {
-                let elementName = name;
-                let typeFoundByName = elementTypesByTag.get(elementName);
-                let needsDefine = true;
-
-                while (typeFoundByName) {
-                    const result = disambiguate(elementName, type, typeFoundByName);
-
-                    switch (result) {
-                        case ElementDisambiguation.ignoreDuplicate:
-                            return;
-                        case ElementDisambiguation.definitionCallbackOnly:
-                            needsDefine = false;
-                            typeFoundByName = void 0;
-                            break;
-                        default:
-                            elementName = result as string;
-                            typeFoundByName = elementTypesByTag.get(elementName);
-                            break;
-                    }
-                }
-
-                if (needsDefine) {
-                    if (elementTagsByType.has(type)) {
-                        type = class extends type {};
-                    }
-
-                    elementTypesByTag.set(elementName, type);
-                    elementTagsByType.set(type, elementName);
-                }
-
-                elementDefinitionEntries.push(
-                    new ElementDefinitionEntry(
-                        container,
-                        elementName,
-                        type,
-                        shadowRootMode,
-                        callback,
-                        needsDefine
-                    )
-                );
-            },
+            tryDefineElement,
         };
 
         container.register(...registrations);

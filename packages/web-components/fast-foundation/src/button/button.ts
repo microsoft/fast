@@ -1,7 +1,18 @@
 import { attr, observable } from "@microsoft/fast-element";
-import { ARIAGlobalStatesAndProperties, StartEnd } from "../patterns/index";
+import {
+    ARIAGlobalStatesAndProperties,
+    StartEnd,
+    StartEndOptions,
+} from "../patterns/index";
 import { applyMixins } from "../utilities/apply-mixins";
+import type { FoundationElementDefinition } from "../foundation-element";
 import { FormAssociatedButton } from "./button.form-associated";
+
+/**
+ * Button configuration options
+ * @public
+ */
+export type ButtonOptions = FoundationElementDefinition & StartEndOptions;
 
 /**
  * A Button Custom HTML Element.
