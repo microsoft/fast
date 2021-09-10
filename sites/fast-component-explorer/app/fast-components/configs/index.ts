@@ -58,6 +58,9 @@ export { fastProgressConfig };
 import fastProgressRingConfig from "./fast-progress-ring";
 export { fastProgressRingConfig };
 
+import fastPickerConfig from "./fast-picker";
+export { fastPickerConfig };
+
 import fastRadioConfig from "./fast-radio";
 export { fastRadioConfig };
 
