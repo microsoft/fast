@@ -21,9 +21,6 @@ import {
     focusStrokeWidth,
     neutralFillActive,
     neutralFillHover,
-    neutralFillInputActive,
-    neutralFillInputHover,
-    neutralFillInputRest,
     neutralFillRest,
     neutralFillStealthActive,
     neutralFillStealthHover,
@@ -32,9 +29,9 @@ import {
     neutralForegroundFocus,
     neutralForegroundHover,
     neutralForegroundRest,
-    neutralStrokeInputFillActive,
-    neutralStrokeInputFillHover,
-    neutralStrokeInputFillRest,
+    neutralStrokeInputFilledActive,
+    neutralStrokeInputFilledHover,
+    neutralStrokeInputFilledRest,
     strokeWidth,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
@@ -46,15 +43,15 @@ export const selectFilledStyles: (
 ) => ElementStyles = (context: ElementDefinitionContext, definition: SelectOptions) =>
     css`
         ${display("inline-flex")} :host {
-            background: ${neutralFillInputRest};
+            background: ${neutralFillRest};
             border-color: transparent;
         }
         :host(:not([disabled]):hover) {
-            background: ${neutralFillInputHover};
+            background: ${neutralFillHover};
             border-color: transparent;
         }
         :host(:not([disabled]):active) {
-            background: ${neutralFillInputActive};
+            background: ${neutralFillActive};
             border-color: transparent;
         }
     `;
@@ -82,7 +79,7 @@ export const selectStyles = (context, definition) =>
     css`
     ${display("inline-flex")} :host {
       background: ${neutralFillRest};
-      border: calc(${strokeWidth} * 1px) solid ${neutralStrokeInputFillRest};
+      border: calc(${strokeWidth} * 1px) solid ${neutralStrokeInputFilledRest};
       border-radius: calc(${controlCornerRadius} * 1px);
       box-sizing: border-box;
       color: ${neutralForegroundRest};
@@ -127,13 +124,13 @@ export const selectStyles = (context, definition) =>
     }
     :host(:not([disabled]):hover) {
       background:${neutralFillHover};
-      border-color: ${neutralStrokeInputFillHover};
+      border-color: ${neutralStrokeInputFilledHover};
       color: ${neutralForegroundHover};
     }
     :host(:not([disabled]):active),
     :host(:focus-within) {
       background: ${neutralFillActive};
-      border-color: ${neutralStrokeInputFillActive};
+      border-color: ${neutralStrokeInputFilledActive};
       color: ${neutralForegroundActive};
     }
     :host(:${focusVisible}) {

@@ -20,7 +20,10 @@ import {
     focusStrokeWidth,
     foregroundOnAccentHover,
     foregroundOnAccentRest,
-    neutralFillHover,
+    neutralFillStealthActive,
+    neutralFillStealthHover,
+    neutralFillStealthRest,
+    neutralForegroundActive,
     neutralForegroundHover,
     neutralForegroundRest,
     strokeWidth,
@@ -45,6 +48,7 @@ export const tabStyles: (
         line-height: ${typeRampBaseLineHeight};
         height: calc(${heightNumber} * 1px);
         padding: 0 calc((6 + (${designUnit} * 2 * ${density})) * 1px);
+        background: ${neutralFillStealthRest};
         color: ${neutralForegroundRest};
         fill: currentcolor;
         border-radius: calc(${controlCornerRadius} * 1px);
@@ -55,11 +59,14 @@ export const tabStyles: (
         outline: none;
       }
       :host(:not(.disabled):hover),
-      :host(:not(.disabled):active),
-      :host(.vertical:not(.disabled):hover),
-      :host(.vertical:not(.disabled):active) {
-        background: ${neutralFillHover};
+      :host(.vertical:not(.disabled):hover) {
+        background: ${neutralFillStealthHover};
         color: ${neutralForegroundHover};
+      }
+      :host(:not(.disabled):active),
+      :host(.vertical:not(.disabled):active) {
+        background: ${neutralFillStealthActive};
+        color: ${neutralForegroundActive};
       }
       :host(:${focusVisible}) {
         border-color: ${focusStrokeOuter};

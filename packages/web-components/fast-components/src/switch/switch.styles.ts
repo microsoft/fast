@@ -15,7 +15,7 @@ import {
     focusStrokeWidth,
     neutralFillInputActive,
     neutralFillInputRest,
-    neutralForegroundHover,
+    neutralForegroundActive,
     neutralForegroundRest,
     strokeControlStrongActive,
     strokeControlStrongFocus,
@@ -115,7 +115,7 @@ export const switchStyles: (
     }
     :host([aria-checked="true"]) .switch slot[name='switch'],
     :host([aria-checked="true"]:enabled:hover) .switch slot[name='switch'] {
-        fill: ${neutralForegroundHover};
+        fill: ${neutralForegroundActive};
     }
     .unchecked-message {
       display: block;

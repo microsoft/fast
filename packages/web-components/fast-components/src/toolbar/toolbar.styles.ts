@@ -10,9 +10,9 @@ import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
     controlCornerRadius,
     fillColor,
+    focusStrokeOuter,
     focusStrokeWidth,
     neutralForegroundRest,
-    neutralStrokeFocus,
     strokeWidth,
 } from "../design-tokens";
 
@@ -38,7 +38,7 @@ export const toolbarStyles: (
         }
 
         :host(${focusVisible}) {
-            outline: calc(${strokeWidth} * 1px) solid ${neutralStrokeFocus};
+            outline: calc(${strokeWidth} * 1px) solid ${focusStrokeOuter};
         }
 
         .positioning-region {

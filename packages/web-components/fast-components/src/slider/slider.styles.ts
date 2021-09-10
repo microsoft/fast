@@ -18,17 +18,13 @@ import {
     fillColor,
     focusStrokeOuter,
     focusStrokeWidth,
-    neutralFillRest,
-    neutralFillStealthRest,
-    neutralFillStrongHover,
     neutralForegroundHover,
     neutralStrokeRest,
     strokeControlStrongActive,
-    strokeControlStrongHover,
     strokeControlStrongRest,
     strokeWidth,
 } from "../design-tokens";
-import { neutralFill } from "../color/recipes/neutral-fill";
+import { neutralForegroundRest } from "..";
 
 export const sliderStyles: (
     context: ElementDefinitionContext,
@@ -142,6 +138,10 @@ export const sliderStyles: (
     }
     :host(.disabled) {
       opacity: ${disabledOpacity};
+    }
+    ::slotted([slot="thumb"]) {
+      color: ${neutralForegroundRest};
+      fill: currentcolor;
     }
   `.withBehaviors(
         forcedColorsStylesheetBehavior(

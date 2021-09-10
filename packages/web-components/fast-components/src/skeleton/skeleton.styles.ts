@@ -6,8 +6,7 @@ import {
 } from "@microsoft/fast-foundation";
 import {
     controlCornerRadius,
-    neutralFillInputHover,
-    neutralFillInputRest,
+    neutralFillActive,
     neutralFillRest,
 } from "../design-tokens";
 
@@ -20,7 +19,7 @@ export const skeletonStyles: (
 ) =>
     css`
         ${display("block")} :host {
-            --skeleton-fill-default: ${neutralFillInputRest};
+            --skeleton-fill-default: ${neutralFillRest};
             overflow: hidden;
             width: 100%;
             position: relative;
@@ -28,7 +27,7 @@ export const skeletonStyles: (
             --skeleton-animation-gradient-default: linear-gradient(
                 270deg,
                 var(--skeleton-fill, var(--skeleton-fill-default)) 0%,
-                ${neutralFillInputHover} 51.13%,
+                ${neutralFillActive} 51.13%,
                 var(--skeleton-fill, var(--skeleton-fill-default)) 100%
             );
             --skeleton-animation-timing-default: ease-in-out;
@@ -60,7 +59,7 @@ export const skeletonStyles: (
             );
             background-size: 0px 0px / 90% 100%;
             background-repeat: no-repeat;
-            background-color: var(--skeleton-animation-fill, ${neutralFillRest});
+            background-color: var(--skeleton-animation-fill, ${neutralFillActive});
             animation: shimmer 2s infinite;
             animation-timing-function: var(
                 --skeleton-animation-timing,
