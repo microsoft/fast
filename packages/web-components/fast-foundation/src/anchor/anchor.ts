@@ -1,7 +1,17 @@
 import { attr, observable } from "@microsoft/fast-element";
-import { FoundationElement } from "../foundation-element";
-import { ARIAGlobalStatesAndProperties, StartEnd } from "../patterns/index";
+import { FoundationElement, FoundationElementDefinition } from "../foundation-element";
+import {
+    ARIAGlobalStatesAndProperties,
+    StartEnd,
+    StartEndOptions,
+} from "../patterns/index";
 import { applyMixins } from "../utilities/apply-mixins";
+
+/**
+ * Anchor configuration options
+ * @public
+ */
+export type AnchorOptions = FoundationElementDefinition & StartEndOptions;
 
 /**
  * An Anchor Custom HTML Element.

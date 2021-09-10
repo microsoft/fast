@@ -5,7 +5,8 @@ import {
     observable,
     SyntheticViewTemplate,
 } from "@microsoft/fast-element";
-import { StartEnd } from "../patterns/index";
+import { keyArrowDown, keyArrowUp } from "@microsoft/fast-web-utilities";
+import { StartEnd, StartEndOptions } from "../patterns/index";
 import { applyMixins } from "../utilities/index";
 import type { FoundationElementDefinition } from "../foundation-element";
 import { DelegatesARIATextbox } from "../text-field/index";
@@ -15,10 +16,11 @@ import { FormAssociatedNumberField } from "./number-field.form-associated";
  * Number Field configuration options
  * @public
  */
-export type NumberFieldOptions = FoundationElementDefinition & {
-    stepDownGlyph?: string | SyntheticViewTemplate;
-    stepUpGlyph?: string | SyntheticViewTemplate;
-};
+export type NumberFieldOptions = FoundationElementDefinition &
+    StartEndOptions & {
+        stepDownGlyph?: string | SyntheticViewTemplate;
+        stepUpGlyph?: string | SyntheticViewTemplate;
+    };
 
 /**
  * A Number Field Custom HTML Element.
@@ -260,6 +262,26 @@ export class NumberField extends FormAssociatedNumberField {
      */
     public handleChange(): void {
         this.$emit("change");
+    }
+
+    /**
+     * Handles the internal control's `keydown` event
+     * @internal
+     */
+    public handleKeyDown(e: KeyboardEvent): boolean {
+        const key = e.key;
+
+        switch (key) {
+            case keyArrowUp:
+                this.stepUp();
+                return false;
+
+            case keyArrowDown:
+                this.stepDown();
+                return false;
+        }
+
+        return true;
     }
 }
 

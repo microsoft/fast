@@ -1,17 +1,19 @@
-import { ElementStyles, FASTElement, observable } from "@microsoft/fast-element";
 import type {
     AttributeConfiguration,
     ComposableStyles,
     Constructable,
     ElementViewTemplate,
 } from "@microsoft/fast-element";
+import { ElementStyles, FASTElement, observable } from "@microsoft/fast-element";
 import {
     ComponentPresentation,
     DefaultComponentPresentation,
+} from "../design-system/component-presentation";
+import {
     DesignSystemRegistrationContext,
     ElementDefinitionContext,
-} from "../design-system";
-import type { Container, Registry } from "../di";
+} from "../design-system/registration-context";
+import type { Container, Registry } from "../di/di";
 
 type LazyFoundationOption<T, K extends FoundationElementDefinition> = (
     context: ElementDefinitionContext,
@@ -32,6 +34,11 @@ export interface FoundationElementDefinition {
      * The non-prefixed name of the component.
      */
     baseName: string;
+
+    /**
+     * The actual FAST base class of the component if different from the class used to compose.
+     */
+    baseClass?: Constructable;
 
     /**
      * The template to render for the custom element.
@@ -69,12 +76,21 @@ export interface FoundationElementDefinition {
 }
 
 /**
+ * A foundation element template function.
+ * @public
+ */
+export type FoundationElementTemplate<T, K = void> = LazyFoundationOption<
+    T,
+    K & FoundationElementDefinition
+>;
+
+/**
  * A set of properties which the component consumer can override during the element registration process.
  * @public
  */
 export type OverrideFoundationElementDefinition<
     T extends FoundationElementDefinition
-> = Partial<Omit<T, "type">> & {
+> = Partial<Omit<T, "type" | "baseClass">> & {
     /**
      * An element prefix that overrides the design system configuration.
      * @public
@@ -216,43 +232,56 @@ export class FoundationElementRegistry<
         const prefix = definition.prefix || context.elementPrefix;
         const name = `${prefix}-${definition.baseName}`;
 
-        context.tryDefineElement(name, this.type, x => {
-            const presentation = new DefaultComponentPresentation(
-                resolveOption(definition.template, x, definition),
-                resolveOption(definition.styles, x, definition)
-            );
+        context.tryDefineElement({
+            name,
+            type: this.type,
+            baseClass: this.elementDefinition.baseClass,
+            callback: x => {
+                const presentation = new DefaultComponentPresentation(
+                    resolveOption(definition.template, x, definition),
+                    resolveOption(definition.styles, x, definition)
+                );
 
-            x.definePresentation(presentation);
+                x.definePresentation(presentation);
 
-            let shadowOptions = resolveOption(definition.shadowOptions, x, definition);
+                let shadowOptions = resolveOption(
+                    definition.shadowOptions,
+                    x,
+                    definition
+                );
 
-            if (x.shadowRootMode) {
-                // If the design system has overridden the shadow root mode, we need special handling.
+                if (x.shadowRootMode) {
+                    // If the design system has overridden the shadow root mode, we need special handling.
 
-                if (shadowOptions) {
-                    // If there are shadow options present in the definition, then
-                    // either the component itself has specified an option or the
-                    // registry function has overridden it.
-                    if (!overrideDefinition.shadowOptions) {
-                        // There were shadow options provided by the component and not overridden by
-                        // the registry.
-                        shadowOptions.mode = x.shadowRootMode;
+                    if (shadowOptions) {
+                        // If there are shadow options present in the definition, then
+                        // either the component itself has specified an option or the
+                        // registry function has overridden it.
+                        if (!overrideDefinition.shadowOptions) {
+                            // There were shadow options provided by the component and not overridden by
+                            // the registry.
+                            shadowOptions.mode = x.shadowRootMode;
+                        }
+                    } else if (shadowOptions !== null) {
+                        // If the component author did not provide shadow options,
+                        // and did not null them out (light dom opt-in) then they
+                        // were relying on the FASTElement default. So, if the
+                        // design system provides a mode, we need to create the options
+                        // to override the default.
+                        shadowOptions = { mode: x.shadowRootMode };
                     }
-                } else if (shadowOptions !== null) {
-                    // If the component author did not provide shadow options,
-                    // and did not null them out (light dom opt-in) then they
-                    // were relying on the FASTElement default. So, if the
-                    // design system provides a mode, we need to create the options
-                    // to override the default.
-                    shadowOptions = { mode: x.shadowRootMode };
                 }
-            }
 
-            x.defineElement({
-                elementOptions: resolveOption(definition.elementOptions, x, definition),
-                shadowOptions,
-                attributes: resolveOption(definition.attributes, x, definition),
-            });
+                x.defineElement({
+                    elementOptions: resolveOption(
+                        definition.elementOptions,
+                        x,
+                        definition
+                    ),
+                    shadowOptions,
+                    attributes: resolveOption(definition.attributes, x, definition),
+                });
+            },
         });
     }
 }

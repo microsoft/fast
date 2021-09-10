@@ -1,7 +1,7 @@
 ---
 id: fast-frame
 title: The FAST Frame Design System 
-sidebar_label: FAST Frame
+sidebar_label: FAST Frame Design System
 custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/src/docs/design-systems/fast-frame.md
 ---
 
@@ -34,6 +34,20 @@ Once you've registered the components as shown above, they are now available for
 ```html
 <fast-button>Click me!</fast-button>
 ```
+
+### Hide undefined elements
+
+Custom Elements that have not been [upgraded](https://developers.google.com/web/fundamentals/web-components/customelements#upgrades) and don't have styles attached can still be rendered by the browser but they likely do not look how they are supposed to. To avoid a *flash of un-styled content* (FOUC), visually hide Custom Elements that are not yet defined:
+
+```CSS
+:not(:defined) {
+    visibility: hidden;
+}
+```
+
+:::important
+The consuming application must apply this, as the components themselves do not.
+:::
 
 ## Configuring Components
 
@@ -77,12 +91,26 @@ provideFASTDesignSystem()
 
 #### `DesignSystem.withElementDisambiguation()`
 
-If two elements registered with the DesignSystem share the same tag name, the name can be disambiguated using `DesignSystem.withElementDisambiguation()`, allowing opportunity to provide a new name if there are conflicts:
+By default, an element registered with an already-taken name will not be re-registered with the platform. However, its element definition callback will still be invoked, allowing it to define an alternate presentation (styles and template), scoped to the DOM tree that the design system is defined on.
+
+As a best practice, one should try to avoid registering the same component more than once. However, if your architecture makes this difficult or impossible, you can provide a custom callback to handle disambiguating the duplicate elements.
+
+The `ElementDisambiguationCallback` will be passed the tag name being registered, the type being registered, and the type that was already registered with the tag. Your callback can then return one of three types of values:
+
+* `string` - Return a string to select an alternate name for the element to be registered under.
+* `ElementDisambiguation.definitionCallbackOnly` - This is the default callback's return value, which prevents re-registering the element but allows its callback to run and define alternate presentations for the element (styles and template). Note that having more than one presentation for the same element will trigger a slower rendering code path for elements of that type. So, it's best to avoid this unless it's absolutely needed for your application design.
+* `ElementDisambiguation.ignoreDuplicate` - This option completely ignores the duplicate element and no action is taken during registration if an element with the same tag is already registered.
+
+Here's an example custom disambiguation callback showing a couple of these options.
 
 ```ts
 provideFASTDesignSystem()
-    .withElementDisambiguation((name: string, type: Constructable<{}>) => {
-        return `disambiguated-${name}`;
+    .withElementDisambiguation((nameAttempt, typeAttempt, existingType) => {
+        if (nameAttempt === "foo") {
+            return "bar";
+        }
+
+        return ElementDisambiguation.ignoreDuplicate;
     })
     .register(/* ... */)
 ```
@@ -151,7 +179,6 @@ provideFASTDesignSystem()
 At present, there is a minor typing bug across all the style and template functions, so you will need to cast the second argument as follows `${buttonStyles(ctx, def as any)}`. [We have tracked this issue](https://github.com/microsoft/fast/issues/5047) and are planning a fix soon.
 
 :::
-```
 
 #### Shadow Options
 

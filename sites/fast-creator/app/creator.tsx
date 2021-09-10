@@ -78,7 +78,7 @@ import {
     renderPreviewSwitch,
 } from "./web-components";
 import { Device } from "./web-components/devices";
-import fastDesignTokensSchema from "./configs/fast/library.fast.design-tokens.schema.json";
+import fluentDesignTokensSchema from "./configs/fluent-ui/library.fluent-ui.design-tokens.schema.json";
 import {
     creatorOriginatorId,
     CustomMessageSystemActions,
@@ -123,7 +123,7 @@ const schemaDictionaryWithNativeElements: SchemaDictionary = {
 };
 const schemaDictionaryWithDesignTokens: SchemaDictionary = {
     ...schemaDictionaryWithNativeElements,
-    [fastDesignTokensSchema.id]: fastDesignTokensSchema,
+    [fluentDesignTokensSchema.id]: fluentDesignTokensSchema,
 };
 
 export const previewAccentColor: string = "PREVIEW::ACCENTCOLOR";
@@ -200,9 +200,8 @@ class Creator extends Editor<{}, CreatorState> {
             designSystemDataDictionary: [
                 {
                     [designTokensLinkedDataId]: {
-                        schemaId: "fastDesignTokens",
+                        schemaId: fluentDesignTokensSchema.$id,
                         data: {
-                            "accent-base-color": "#DA1A5F",
                             direction: Direction.ltr,
                             theme: StandardLuminance.LightMode,
                         },
@@ -315,7 +314,9 @@ class Creator extends Editor<{}, CreatorState> {
                                     accentBaseColor={
                                         accentColor !== undefined
                                             ? accentColor
-                                            : "#DA1A5F"
+                                            : fluentDesignTokensSchema?.properties?.[
+                                                  "accent-base-color"
+                                              ]?.default
                                     }
                                     onAccentColorPickerChange={
                                         this.handleAccentColorPickerChange
@@ -604,7 +605,7 @@ class Creator extends Editor<{}, CreatorState> {
     }
 
     private updateMonacoEditor = (): void => {
-        this.createMonacoEditor(monaco);
+        this.createMonacoEditor(monaco, undefined, { fontSize: "16px" });
 
         if (this.editorContainerRef.current && this.editor) {
             this.editor.layout();

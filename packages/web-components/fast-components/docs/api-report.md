@@ -209,7 +209,7 @@ export { AnchoredRegion }
 export const anchoredRegionStyles: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: import("@microsoft/fast-foundation").FoundationElementDefinition) => import("@microsoft/fast-element").ElementStyles;
 
 // @public
-export const anchorStyles: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: import("@microsoft/fast-foundation").FoundationElementDefinition) => import("@microsoft/fast-element").ElementStyles;
+export const anchorStyles: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: import("@microsoft/fast-foundation").AnchorOptions) => import("@microsoft/fast-element").ElementStyles;
 
 // @public
 export class Avatar extends Avatar_2 {
@@ -261,7 +261,7 @@ export class Button extends Button_2 {
 export type ButtonAppearance = "accent" | "lightweight" | "neutral" | "outline" | "stealth";
 
 // @public
-export const buttonStyles: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: import("@microsoft/fast-foundation").FoundationElementDefinition) => import("@microsoft/fast-element").ElementStyles;
+export const buttonStyles: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: import("@microsoft/fast-foundation").AnchorOptions) => import("@microsoft/fast-element").ElementStyles;
 
 // Warning: (ae-internal-missing-underscore) The name "Card" should be prefixed with an underscore because the declaration is marked as @internal
 //
@@ -896,7 +896,7 @@ export type NumberFieldAppearance = "filled" | "outline";
 export const numberFieldStyles: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: NumberFieldOptions) => import("@microsoft/fast-element").ElementStyles;
 
 // @public
-export const optionStyles: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: import("@microsoft/fast-foundation").FoundationElementDefinition) => import("@microsoft/fast-element").ElementStyles;
+export const optionStyles: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: import("@microsoft/fast-foundation").AnchorOptions) => import("@microsoft/fast-element").ElementStyles;
 
 // @public
 export interface Palette<T extends Swatch = Swatch> {
@@ -915,7 +915,8 @@ export type PaletteRGB = Palette<SwatchRGB>;
 
 // @public (undocumented)
 export const PaletteRGB: Readonly<{
-    create(source: SwatchRGB): PaletteRGB;
+    create: typeof create;
+    from: typeof from;
 }>;
 
 // @public
@@ -1023,7 +1024,7 @@ export const tabPanelStyles: (context: import("@microsoft/fast-foundation").Elem
 export { Tabs }
 
 // @public
-export const tabsStyles: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: import("@microsoft/fast-foundation").FoundationElementDefinition) => import("@microsoft/fast-element").ElementStyles;
+export const tabsStyles: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: import("@microsoft/fast-foundation").AnchorOptions) => import("@microsoft/fast-element").ElementStyles;
 
 // @public
 export const tabStyles: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: import("@microsoft/fast-foundation").FoundationElementDefinition) => import("@microsoft/fast-element").ElementStyles;
@@ -1058,7 +1059,7 @@ export class TextField extends TextField_2 {
 export type TextFieldAppearance = "filled" | "outline";
 
 // @public
-export const textFieldStyles: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: import("@microsoft/fast-foundation").FoundationElementDefinition) => import("@microsoft/fast-element").ElementStyles;
+export const textFieldStyles: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: import("@microsoft/fast-foundation").AnchorOptions) => import("@microsoft/fast-element").ElementStyles;
 
 // Warning: (ae-internal-missing-underscore) The name "Toolbar" should be prefixed with an underscore because the declaration is marked as @internal
 //
@@ -1069,7 +1070,7 @@ export class Toolbar extends Toolbar_2 {
 }
 
 // @public
-export const toolbarStyles: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: import("@microsoft/fast-foundation").FoundationElementDefinition) => import("@microsoft/fast-element").ElementStyles;
+export const toolbarStyles: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: import("@microsoft/fast-foundation").AnchorOptions) => import("@microsoft/fast-element").ElementStyles;
 
 export { Tooltip }
 
@@ -1143,6 +1144,8 @@ export const typeRampPlus6LineHeight: import("@microsoft/fast-foundation").CSSDe
 
 // Warnings were encountered during analysis:
 //
+// dist/dts/color/palette.d.ts:48:5 - (ae-forgotten-export) The symbol "create" needs to be exported by the entry point index.d.ts
+// dist/dts/color/palette.d.ts:49:5 - (ae-forgotten-export) The symbol "from" needs to be exported by the entry point index.d.ts
 // dist/dts/custom-elements.d.ts:70:5 - (ae-incompatible-release-tags) The symbol "fastButton" is marked as @public, but its signature references "Button" which is marked as @internal
 // dist/dts/custom-elements.d.ts:71:5 - (ae-incompatible-release-tags) The symbol "fastCard" is marked as @public, but its signature references "Card" which is marked as @internal
 // dist/dts/custom-elements.d.ts:77:5 - (ae-incompatible-release-tags) The symbol "fastDesignSystemProvider" is marked as @public, but its signature references "DesignSystemProvider" which is marked as @internal

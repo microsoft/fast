@@ -1,8 +1,10 @@
 import type { Constructable } from "@microsoft/fast-element";
 import { expect } from "chai";
+import { FoundationElement } from "..";
 import { Container, DI } from "../di";
 import { uniqueElementName } from "../test-utilities/fixture";
-import { DesignSystem, DesignSystemRegistrationContext } from "./design-system";
+import { DesignSystem, ElementDisambiguation } from "./design-system";
+import { DesignSystemRegistrationContext } from "./registration-context";
 
 describe("DesignSystem", () => {
     it("Should return the same instance for the same element", () => {
@@ -108,13 +110,59 @@ describe("DesignSystem", () => {
             .register({
                 register(container: Container) {
                     const context = container.get(DesignSystemRegistrationContext);
-                    context.tryDefineElement(elementName, customElement, x =>
-                        x.defineElement()
-                    );
+                    context.tryDefineElement({
+                        name: elementName,
+                        type: customElement,
+                        callback: x => x.defineElement()
+                    });
                 },
             });
 
         expect(customElements.get(elementName)).to.equal(customElement);
+    });
+
+    it("Should register elements with the deprecated `tryDefineElement` signature", () => {
+        const elementName = uniqueElementName();
+        const customElement = class extends HTMLElement {};
+        const host = document.createElement("div");
+
+        expect(customElements.get(elementName)).to.be.undefined;
+
+        DesignSystem.getOrCreate(host)
+            .register({
+                register(container: Container) {
+                    const context = container.get(DesignSystemRegistrationContext);
+                    context.tryDefineElement(elementName, customElement, x => x.defineElement());
+                },
+            });
+
+        expect(customElements.get(elementName)).to.equal(customElement);
+    });
+
+    it("Should register an element with a custom base class", () => {
+        const elementName = uniqueElementName();
+        const baseClass = class extends HTMLElement {};
+        const customElement = class extends baseClass {};
+        const host = document.createElement("div");
+
+        expect(customElements.get(elementName)).to.be.undefined;
+
+        DesignSystem.getOrCreate(host)
+            .register({
+                register(container: Container) {
+                    const context = container.get(DesignSystemRegistrationContext);
+                    context.tryDefineElement({
+                        name: elementName,
+                        type: customElement,
+                        callback: x => x.defineElement(),
+                        baseClass
+                    });
+                },
+            });
+
+        expect(customElements.get(elementName)).to.equal(customElement);
+        expect(DesignSystem.tagFor(baseClass)).to.equal(elementName);
+        expect(DesignSystem.tagFor(customElement)).to.equal(elementName);
     });
 
     it("Should detect duplicate elements and allow disambiguation", () => {
@@ -131,21 +179,21 @@ describe("DesignSystem", () => {
                 {
                     register(container: Container) {
                         const context = container.get(DesignSystemRegistrationContext);
-                        context.tryDefineElement(
-                            elementName,
-                            class extends HTMLElement {},
-                            x => x.defineElement()
-                        );
+                        context.tryDefineElement({
+                            name: elementName,
+                            type: class extends HTMLElement {},
+                            callback: x => x.defineElement()
+                        });
                     },
                 },
                 {
                     register(container: Container) {
                         const context = container.get(DesignSystemRegistrationContext);
-                        context.tryDefineElement(
-                            elementName,
-                            class extends HTMLElement {},
-                            x => x.defineElement()
-                        );
+                        context.tryDefineElement({
+                            name: elementName,
+                            type: class extends HTMLElement {},
+                            callback: x => x.defineElement()
+                        });
                     },
                 }
             );
@@ -155,36 +203,105 @@ describe("DesignSystem", () => {
         expect(customElements.get(elementName2)).to.not.be.undefined;
     });
 
-    it("Should skip defining duplicate elements by default", () => {
+    it("Should only call callbacks for duplicate elements by default", () => {
         const elementName = uniqueElementName();
         const customElement = class extends HTMLElement {};
         const host = document.createElement("div");
         const system = DesignSystem.getOrCreate(host);
+        let callbackCalled = false;
 
         expect(() => {
             system.register(
                 {
                     register(container: Container) {
                         const context = container.get(DesignSystemRegistrationContext);
-                        context.tryDefineElement(elementName, customElement, x =>
-                            x.defineElement()
-                        );
+                        context.tryDefineElement({
+                            name: elementName,
+                            type: customElement,
+                            callback: x => x.defineElement()
+                        });
                     },
                 },
                 {
                     register(container: Container) {
                         const context = container.get(DesignSystemRegistrationContext);
-                        context.tryDefineElement(
-                            elementName,
-                            class extends HTMLElement {},
-                            x => x.defineElement()
-                        );
+                        context.tryDefineElement({
+                            name: elementName,
+                            type: class extends HTMLElement {},
+                            callback: x => {
+                                x.defineElement();
+                                callbackCalled = true;
+                            },
+                        });
                     },
                 }
             );
         }).not.to.throw();
 
         expect(customElements.get(elementName)).to.equal(customElement);
+        expect(callbackCalled).to.be.true;
+    });
+
+    it("Can completely ignore duplicates", () => {
+        const elementName = uniqueElementName();
+        const customElement = class extends HTMLElement {};
+        const host = document.createElement("div");
+        const system = DesignSystem.getOrCreate(host)
+            .withElementDisambiguation(() => ElementDisambiguation.ignoreDuplicate);
+        let callbackCalled = false;
+
+        expect(() => {
+            system.register(
+                {
+                    register(container: Container) {
+                        const context = container.get(DesignSystemRegistrationContext);
+                        context.tryDefineElement({
+                            name: elementName,
+                            type: customElement,
+                            callback: x =>
+                            x.defineElement(),
+                        });
+                    },
+                },
+                {
+                    register(container: Container) {
+                        const context = container.get(DesignSystemRegistrationContext);
+                        context.tryDefineElement({
+                            name: elementName,
+                            type: class extends HTMLElement {},
+                            callback: x => {
+                                x.defineElement();
+                                callbackCalled = true;
+                            },
+                        });
+                    },
+                }
+            );
+        }).not.to.throw();
+
+        expect(customElements.get(elementName)).to.equal(customElement);
+        expect(callbackCalled).to.be.false;
+    });
+
+    it("Should auto-subclass if attempting to define FoundationElement", () => {
+        const elementName = uniqueElementName();
+        const host = document.createElement("div");
+
+        DesignSystem.getOrCreate(host)
+            .register({
+                register(container: Container) {
+                    container.get(DesignSystemRegistrationContext)
+                        .tryDefineElement(elementName, FoundationElement, x => {
+                            x.defineElement();
+                        });
+                },
+            });
+
+        const type = customElements.get(elementName)!;
+        const proto = Reflect.getPrototypeOf(type);
+
+        expect(type).to.not.equal(FoundationElement);
+        expect(proto).to.equal(FoundationElement);
     });
 
     it("Should have an undefined shadow mode by default", () => {
@@ -197,9 +314,13 @@ describe("DesignSystem", () => {
             .register({
                 register(container: Container) {
                     const context = container.get(DesignSystemRegistrationContext);
-                    context.tryDefineElement(elementName, customElement, x => {
-                        mode = x.shadowRootMode;
-                        x.defineElement();
+                    context.tryDefineElement({
+                        name: elementName,
+                        type: customElement,
+                        callback: x => {
+                            mode = x.shadowRootMode;
+                            x.defineElement();
+                        }
                     });
                 },
             });
@@ -218,9 +339,13 @@ describe("DesignSystem", () => {
             .register({
                 register(container: Container) {
                     const context = container.get(DesignSystemRegistrationContext);
-                    context.tryDefineElement(elementName, customElement, x => {
-                        mode = x.shadowRootMode;
-                        x.defineElement();
+                    context.tryDefineElement({
+                        name: elementName,
+                        type: customElement,
+                        callback: x => {
+                            mode = x.shadowRootMode;
+                            x.defineElement();
+                        }
                     });
                 },
             });
@@ -239,9 +364,13 @@ describe("DesignSystem", () => {
             .register({
                 register(container: Container) {
                     const context = container.get(DesignSystemRegistrationContext);
-                    context.tryDefineElement(elementName, customElement, x => {
-                        mode = x.shadowRootMode;
-                        x.defineElement();
+                    context.tryDefineElement({
+                        name: elementName,
+                        type: customElement,
+                        callback: x => {
+                            mode = x.shadowRootMode;
+                            x.defineElement();
+                        }
                     });
                 },
             });

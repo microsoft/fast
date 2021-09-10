@@ -6,13 +6,13 @@ import {
 } from "@microsoft/fast-element";
 import {
     Direction,
-    keyCodeArrowDown,
-    keyCodeArrowLeft,
-    keyCodeArrowRight,
-    keyCodeArrowUp,
-    keyCodeEnd,
-    keyCodeHome,
-    keyCodeTab,
+    keyArrowDown,
+    keyArrowLeft,
+    keyArrowRight,
+    keyArrowUp,
+    keyEnd,
+    keyHome,
+    keyTab,
     Orientation,
 } from "@microsoft/fast-web-utilities";
 import type { FoundationElementDefinition } from "../foundation-element";
@@ -290,22 +290,22 @@ export class Slider extends FormAssociatedSlider implements SliderConfiguration 
     }
 
     protected keypressHandler = (e: KeyboardEvent) => {
-        if (e.keyCode !== keyCodeTab) {
+        if (e.key === keyHome) {
             e.preventDefault();
-        }
-
-        if (e.keyCode === keyCodeHome) {
             this.value = `${this.min}`;
-        } else if (e.keyCode === keyCodeEnd) {
+        } else if (e.key === keyEnd) {
+            e.preventDefault();
             this.value = `${this.max}`;
         } else if (!e.shiftKey) {
-            switch (e.keyCode) {
-                case keyCodeArrowRight:
-                case keyCodeArrowUp:
+            switch (e.key) {
+                case keyArrowRight:
+                case keyArrowUp:
+                    e.preventDefault();
                     this.increment();
                     break;
-                case keyCodeArrowLeft:
-                case keyCodeArrowDown:
+                case keyArrowLeft:
+                case keyArrowDown:
+                    e.preventDefault();
                     this.decrement();
                     break;
             }
@@ -422,8 +422,8 @@ export class Slider extends FormAssociatedSlider implements SliderConfiguration 
                 : (e as MouseEvent);
         const eventValue: number =
             this.orientation === Orientation.horizontal
-                ? sourceEvent.pageX - this.trackLeft
-                : sourceEvent.pageY;
+                ? sourceEvent.pageX - document.documentElement.scrollLeft - this.trackLeft
+                : sourceEvent.pageY - document.documentElement.scrollTop;
 
         this.value = `${this.calculateNewValue(eventValue)}`;
     };
@@ -469,8 +469,8 @@ export class Slider extends FormAssociatedSlider implements SliderConfiguration 
 
             const controlValue: number =
                 this.orientation === Orientation.horizontal
-                    ? e.pageX - this.trackLeft
-                    : e.pageY;
+                    ? e.pageX - document.documentElement.scrollLeft - this.trackLeft
+                    : e.pageY - document.documentElement.scrollTop;
 
             this.value = `${this.calculateNewValue(controlValue)}`;
         }

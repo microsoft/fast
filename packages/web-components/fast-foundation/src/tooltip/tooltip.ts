@@ -1,5 +1,5 @@
 import { attr, DOM, FASTElement, observable } from "@microsoft/fast-element";
-import { Direction, keyCodeEscape } from "@microsoft/fast-web-utilities";
+import { Direction, keyEscape } from "@microsoft/fast-web-utilities";
 import type {
     AnchoredRegion,
     AutoUpdateMode,
@@ -18,8 +18,6 @@ export { TooltipPosition };
  * @public
  */
 export class Tooltip extends FoundationElement {
-    private static DirectionAttributeName: string = "dir";
-
     /**
      * Whether the tooltip is visible or not.
      * If undefined tooltip is shown when anchor element is hovered
@@ -88,6 +86,24 @@ export class Tooltip extends FoundationElement {
      */
     @attr({ attribute: "auto-update-mode" })
     public autoUpdateMode: AutoUpdateMode = "anchor";
+
+    /**
+     * Controls if the tooltip will always remain fully in the viewport on the horizontal axis
+     * @public
+     * @remarks
+     * HTML Attribute: horizontal-viewport-lock
+     */
+    @attr({ attribute: "horizontal-viewport-lock" })
+    public horizontalViewportLock: boolean;
+
+    /**
+     * Controls if the tooltip will always remain fully in the viewport on the vertical axis
+     * @public
+     * @remarks
+     * HTML Attribute: vertical-viewport-lock
+     */
+    @attr({ attribute: "vertical-viewport-lock" })
+    public verticalViewportLock: boolean;
 
     /**
      * the html element currently being used as anchor.
@@ -392,8 +408,8 @@ export class Tooltip extends FoundationElement {
      */
     private handleDocumentKeydown = (e: KeyboardEvent): void => {
         if (!e.defaultPrevented && this.tooltipVisible) {
-            switch (e.keyCode) {
-                case keyCodeEscape:
+            switch (e.key) {
+                case keyEscape:
                     this.isAnchorHovered = false;
                     this.updateTooltipVisibility();
                     this.$emit("dismiss");
@@ -459,7 +475,6 @@ export class Tooltip extends FoundationElement {
         if (!this.tooltipVisible) {
             return;
         }
-        this.viewportElement = document.body;
         this.region.viewportElement = this.viewportElement;
         this.region.anchorElement = this.anchorElement;
         (this.region as any).addEventListener(

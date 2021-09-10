@@ -1,5 +1,5 @@
 import { fastComponentSchemas } from "@microsoft/site-utilities";
-import { WebComponentLibraryDefinition } from "../typings";
+import { WebComponentDefinition, WebComponentLibraryDefinition } from "../typings";
 import {
     fastAnchorExample,
     fastBadgeExample,
@@ -48,7 +48,6 @@ import {
     fastTextAreaTag,
     fastTextFieldTag,
 } from "./library.fast.tags";
-import { registerFASTComponents } from "./library.fast.registry";
 export const fastComponentId = "fast-components";
 
 export const fastComponentLibrary: WebComponentLibraryDefinition = {
@@ -58,8 +57,35 @@ export const fastComponentLibrary: WebComponentLibraryDefinition = {
     import: async () => {
         await import("./library.fast.import");
     },
-    register: registerFASTComponents,
+    register: async () => {
+        (await import("./library.fast.registry")).registerFASTComponents();
+    },
     componentDictionary: {
+        ...Object.values(fastComponentSchemas as { [key: string]: any })
+            .map(
+                (schema: any): WebComponentDefinition => {
+                    return {
+                        displayName: schema.title,
+                        schema,
+                        example: {
+                            schemaId: schema.$id,
+                            data: {},
+                        },
+                    };
+                }
+            )
+            .reduce(
+                (
+                    accum: { [key: string]: any },
+                    elementDefinition: WebComponentDefinition
+                ): { [key: string]: any } => {
+                    return {
+                        ...accum,
+                        [elementDefinition.example.schemaId]: elementDefinition,
+                    };
+                },
+                {}
+            ),
         [fastComponentSchemas[fastAnchorTag].$id]: {
             displayName: fastComponentSchemas[fastAnchorTag].title,
             schema: fastComponentSchemas[fastAnchorTag],

@@ -1137,7 +1137,7 @@ describe("mapVSCodeHTMLAndDataDictionaryToDataDictionary", () => {
     });
     it("should map an existing data dictionary with named slots to an existing parsed HTML value with named slots", () => {
         const mappedData = mapVSCodeHTMLAndDataDictionaryToDataDictionary(
-            '<div id="baz"><span slot="test"></span></div>',
+            '<div id="baz"><span id="foo1" title="foo2" slot="test"></span></div>',
             "text",
             [
                 {
@@ -1159,6 +1159,8 @@ describe("mapVSCodeHTMLAndDataDictionaryToDataDictionary", () => {
                             dataLocation: "SlotTest",
                         },
                         data: {
+                            id: "foo1",
+                            title: "foo2",
                             slot: "test",
                         },
                     },
@@ -1212,6 +1214,8 @@ describe("mapVSCodeHTMLAndDataDictionaryToDataDictionary", () => {
                         dataLocation: "SlotTest",
                     },
                     data: {
+                        id: "foo1",
+                        title: "foo2",
                         slot: "test",
                     },
                 },
@@ -1322,6 +1326,122 @@ describe("mapVSCodeHTMLAndDataDictionaryToDataDictionary", () => {
                 dataLocation: "Slot",
             },
             data: "<",
+        });
+    });
+    it("should map an existing data dictionary with a single attribute to an existing parsed HTMLvalue with multiple attributes", () => {
+        const mappedData = mapVSCodeHTMLAndDataDictionaryToDataDictionary(
+            '<div id="baz"><div id="foo" title="bar"></div></div>',
+            "text",
+            [
+                {
+                    root: {
+                        schemaId: "div",
+                        data: {
+                            foo: "bar",
+                            Slot: [
+                                {
+                                    id: "foo",
+                                },
+                            ],
+                        },
+                    },
+                    foo: {
+                        schemaId: "div",
+                        parent: {
+                            id: "root",
+                            dataLocation: "Slot",
+                        },
+                        data: {
+                            id: "foo",
+                        },
+                    },
+                },
+                "root",
+            ],
+            {
+                div: {
+                    $id: "div",
+                    id: "div",
+                    mapsToTagName: "div",
+                    properties: {
+                        id: {
+                            type: "string",
+                        },
+                        title: {
+                            type: "string",
+                        },
+                        Slot: {
+                            mapsToSlot: "",
+                        },
+                    },
+                },
+            }
+        );
+
+        const keys = Object.keys(mappedData[0]);
+
+        expect(keys).to.have.length(2);
+        expect(mappedData[0][keys[1]].data).to.deep.equal({
+            id: "foo",
+            title: "bar",
+        });
+    });
+    it("should map an existing data dictionary with multiple attributes to an existing parsed HTMLvalue with a single attribute", () => {
+        const mappedData = mapVSCodeHTMLAndDataDictionaryToDataDictionary(
+            '<div id="baz"><div id="foo"></div></div>',
+            "text",
+            [
+                {
+                    root: {
+                        schemaId: "div",
+                        data: {
+                            foo: "bar",
+                            Slot: [
+                                {
+                                    id: "foo",
+                                },
+                            ],
+                        },
+                    },
+                    foo: {
+                        schemaId: "div",
+                        parent: {
+                            id: "root",
+                            dataLocation: "Slot",
+                        },
+                        data: {
+                            id: "foo",
+                            title: "bar",
+                        },
+                    },
+                },
+                "root",
+            ],
+            {
+                div: {
+                    $id: "div",
+                    id: "div",
+                    mapsToTagName: "div",
+                    properties: {
+                        id: {
+                            type: "string",
+                        },
+                        title: {
+                            type: "string",
+                        },
+                        Slot: {
+                            mapsToSlot: "",
+                        },
+                    },
+                },
+            }
+        );
+
+        const keys = Object.keys(mappedData[0]);
+
+        expect(keys).to.have.length(2);
+        expect(mappedData[0][keys[1]].data).to.deep.equal({
+            id: "foo",
         });
     });
     it("should map an un-parsable attribute without throwing an error", () => {
@@ -1439,6 +1559,113 @@ describe("mapVSCodeHTMLAndDataDictionaryToDataDictionary", () => {
             data: {
                 name: "1",
             },
+        });
+    });
+    it("should map a new node with children and attributes", () => {
+        const mappedDataDictionary = mapVSCodeHTMLAndDataDictionaryToDataDictionary(
+            '<div><div><img src="https://via.placeholder.com/320x180" /><span>LOREM</span></div><div><img src="https://via.placeholder.com/320x180" /><span>LOREM</span></div></div>',
+            "text",
+            [
+                {
+                    root: {
+                        schemaId: "div",
+                        data: {
+                            Slot: [
+                                {
+                                    id: "fast1",
+                                },
+                            ],
+                        },
+                    },
+                    fast1: {
+                        schemaId: "div",
+                        data: {
+                            Slot: [
+                                {
+                                    id: "fast2",
+                                },
+                                {
+                                    id: "fast3",
+                                },
+                            ],
+                        },
+                        parent: {
+                            id: "root",
+                            dataLocation: "Slot",
+                        },
+                    },
+                    fast2: {
+                        schemaId: "img",
+                        data: {
+                            src: "https://via.placeholder.com/320x180",
+                        },
+                        parent: {
+                            id: "fast1",
+                            dataLocation: "Slot",
+                        },
+                    },
+                    fast3: {
+                        schemaId: "span",
+                        data: {
+                            Slot: [
+                                {
+                                    id: "fast4",
+                                },
+                            ],
+                        },
+                        parent: {
+                            id: "fast1",
+                            dataLocation: "Slot",
+                        },
+                    },
+                    fast4: {
+                        schemaId: "text",
+                        data: "LOREM",
+                        parent: {
+                            id: "fast3",
+                            dataLocation: "Slot",
+                        },
+                    },
+                },
+                "root",
+            ],
+            {
+                div: {
+                    $id: "div",
+                    id: "div",
+                    mapsToTagName: "div",
+                },
+                span: {
+                    $id: "span",
+                    id: "span",
+                    mapsToTagName: "span",
+                },
+                img: {
+                    $id: "img",
+                    id: "img",
+                    mapsToTagName: "img",
+                    type: "object",
+                    properties: {
+                        src: {
+                            type: "string",
+                        },
+                    },
+                },
+                text: {
+                    $id: "text",
+                    id: "text",
+                    type: "string",
+                },
+            }
+        );
+        expect((mappedDataDictionary[0].root.data as any)?.Slot).to.have.length(2);
+        expect(Object.keys(mappedDataDictionary[0])).to.have.length(9);
+        const newNodeId = (mappedDataDictionary[0].root.data as any)?.Slot[1].id;
+        expect((mappedDataDictionary[0][newNodeId].data as any)?.Slot).to.have.length(2);
+        const newNodeWithAttribId = (mappedDataDictionary[0][newNodeId].data as any)
+            ?.Slot[0].id;
+        expect(mappedDataDictionary[0][newNodeWithAttribId].data).to.deep.equal({
+            src: "https://via.placeholder.com/320x180",
         });
     });
 });

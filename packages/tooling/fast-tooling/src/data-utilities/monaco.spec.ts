@@ -212,7 +212,7 @@ describe("mapDataDictionaryToMonacoEditorHTML", () => {
             )
         ).to.equal(text);
     });
-    it("should map a data dictionary with slotted nested entries", () => {
+    it("should map a data dictionary with named and unnamed slotted nested entries", () => {
         const text = '<div><span slot="foo">Hello world</span></div>';
         expect(
             mapDataDictionaryToMonacoEditorHTML(
@@ -269,6 +269,206 @@ describe("mapDataDictionaryToMonacoEditorHTML", () => {
                         id: "span",
                         type: "object",
                         [ReservedElementMappingKeyword.mapsToTagName]: "span",
+                    },
+                    text: {
+                        id: "text",
+                        type: "string",
+                    },
+                }
+            )
+        ).to.equal(text);
+    });
+    it("should map a data dictionary with multiple named slotted entries", () => {
+        const text =
+            '<div><span slot="foo">Hello world</span><span slot="foo">Hello pluto</span></div>';
+        expect(
+            mapDataDictionaryToMonacoEditorHTML(
+                [
+                    {
+                        root: {
+                            schemaId: "div",
+                            data: {
+                                SlotFoo: [
+                                    {
+                                        id: "span1",
+                                    },
+                                    {
+                                        id: "span2",
+                                    },
+                                ],
+                            },
+                        },
+                        span1: {
+                            schemaId: "span",
+                            parent: {
+                                id: "root",
+                                dataLocation: "SlotFoo",
+                            },
+                            data: {
+                                Slot: [
+                                    {
+                                        id: "text1",
+                                    },
+                                ],
+                            },
+                        },
+                        text1: {
+                            schemaId: "text",
+                            parent: {
+                                id: "span1",
+                                dataLocation: "Slot",
+                            },
+                            data: "Hello world",
+                        },
+                        span2: {
+                            schemaId: "span",
+                            parent: {
+                                id: "root",
+                                dataLocation: "SlotFoo",
+                            },
+                            data: {
+                                Slot: [
+                                    {
+                                        id: "text2",
+                                    },
+                                ],
+                            },
+                        },
+                        text2: {
+                            schemaId: "text",
+                            parent: {
+                                id: "span2",
+                                dataLocation: "Slot",
+                            },
+                            data: "Hello pluto",
+                        },
+                    },
+                    "root",
+                ],
+                {
+                    div: {
+                        id: "div",
+                        type: "object",
+                        [ReservedElementMappingKeyword.mapsToTagName]: "div",
+                        properties: {
+                            SlotFoo: {
+                                [ReservedElementMappingKeyword.mapsToSlot]: "foo",
+                                ...linkedDataSchema,
+                            },
+                        },
+                    },
+                    span: {
+                        id: "span",
+                        type: "object",
+                        [ReservedElementMappingKeyword.mapsToTagName]: "span",
+                    },
+                    text: {
+                        id: "text",
+                        type: "string",
+                    },
+                }
+            )
+        ).to.equal(text);
+    });
+    it("should map a data dictionary with multiple different named slotted entries", () => {
+        const text =
+            '<div><span slot="foo">Hello world</span><span id="foo1" title="foo2" slot="bar">Hello pluto</span></div>';
+        expect(
+            mapDataDictionaryToMonacoEditorHTML(
+                [
+                    {
+                        root: {
+                            schemaId: "div",
+                            data: {
+                                SlotFoo: [
+                                    {
+                                        id: "span1",
+                                    },
+                                ],
+                                SlotBar: [
+                                    {
+                                        id: "span2",
+                                    },
+                                ],
+                            },
+                        },
+                        span1: {
+                            schemaId: "span",
+                            parent: {
+                                id: "root",
+                                dataLocation: "SlotFoo",
+                            },
+                            data: {
+                                Slot: [
+                                    {
+                                        id: "text1",
+                                    },
+                                ],
+                            },
+                        },
+                        text1: {
+                            schemaId: "text",
+                            parent: {
+                                id: "span1",
+                                dataLocation: "Slot",
+                            },
+                            data: "Hello world",
+                        },
+                        span2: {
+                            schemaId: "span",
+                            parent: {
+                                id: "root",
+                                dataLocation: "SlotBar",
+                            },
+                            data: {
+                                id: "foo1",
+                                title: "foo2",
+                                Slot: [
+                                    {
+                                        id: "text2",
+                                    },
+                                ],
+                            },
+                        },
+                        text2: {
+                            schemaId: "text",
+                            parent: {
+                                id: "span2",
+                                dataLocation: "Slot",
+                            },
+                            data: "Hello pluto",
+                        },
+                    },
+                    "root",
+                ],
+                {
+                    div: {
+                        id: "div",
+                        type: "object",
+                        [ReservedElementMappingKeyword.mapsToTagName]: "div",
+                        properties: {
+                            SlotFoo: {
+                                [ReservedElementMappingKeyword.mapsToSlot]: "foo",
+                                ...linkedDataSchema,
+                            },
+                            SlotBar: {
+                                [ReservedElementMappingKeyword.mapsToSlot]: "bar",
+                                ...linkedDataSchema,
+                            },
+                        },
+                    },
+                    span: {
+                        id: "span",
+                        type: "object",
+                        [ReservedElementMappingKeyword.mapsToTagName]: "span",
+                        properties: {
+                            id: {
+                                type: "string",
+                            },
+                            title: {
+                                type: "string",
+                            },
+                        },
                     },
                     text: {
                         id: "text",

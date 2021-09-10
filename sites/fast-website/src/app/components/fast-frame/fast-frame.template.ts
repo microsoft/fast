@@ -1,4 +1,6 @@
-import { html, ref, repeat } from "@microsoft/fast-element";
+import EyedropperIcon from "@fluentui/svg-icons/icons/eyedropper_20_filled.svg";
+import { ColorHSL, hslToRGB } from "@microsoft/fast-colors";
+import { html, ref, repeat, when } from "@microsoft/fast-element";
 import ContextIcon from "svg/icon-context.svg";
 import ContrastIcon from "svg/icon-contrast.svg";
 import DownloadIcon from "svg/icon-download.svg";
@@ -6,7 +8,6 @@ import PaletteIcon from "svg/icon-palette.svg";
 import PlayIcon from "svg/icon-play.svg";
 import SwatchesIcon from "svg/icon-swatches.svg";
 import { FastFrame } from "./fast-frame";
-import { ColorHSL, hslToRGB } from "@microsoft/fast-colors";
 
 export const FastFrameTemplate = html<FastFrame>`
     <template>
@@ -76,10 +77,24 @@ export const FastFrameTemplate = html<FastFrame>`
                                             tabindex="0"
                                             aria-label="neutral color ${x => x}"
                                             value="${x => x}"
-                                            background-color="${x => x}"
                                             checked="${(x, c) =>
                                                 x === c.parent.previewNeutralPalette[0]}"
                                         ></site-color-swatch>
+                                    `
+                                )}
+                                ${when(
+                                    x => "EyeDropper" in globalThis,
+                                    html`
+                                        <site-color-swatch
+                                            tabindex="0"
+                                            value="#000"
+                                            custom-value
+                                            aria-label="custom neutral color"
+                                        >
+                                            <div slot="checked-indicator">
+                                                ${EyedropperIcon}
+                                            </div>
+                                        </site-color-swatch>
                                     `
                                 )}
                             </fast-radio-group>
@@ -93,16 +108,29 @@ export const FastFrameTemplate = html<FastFrame>`
                             >
                                 ${repeat(
                                     x => x.previewAccentPalette,
-
                                     html<string>`
                                         <site-color-swatch
                                             tabindex="0"
                                             aria-label="accent color ${x => x}"
                                             value="${x => x}"
-                                            background-color="${x => x}"
                                             checked="${(x, c) =>
                                                 x === c.parent.previewAccentPalette[0]}"
                                         ></site-color-swatch>
+                                    `
+                                )}
+                                ${when(
+                                    x => "EyeDropper" in globalThis,
+                                    html`
+                                        <site-color-swatch
+                                            tabindex="0"
+                                            value="#000"
+                                            custom-value
+                                            aria-label="custom accent color"
+                                        >
+                                            <div slot="checked-indicator">
+                                                ${EyedropperIcon}
+                                            </div>
+                                        </site-color-swatch>
                                     `
                                 )}
                             </fast-radio-group>

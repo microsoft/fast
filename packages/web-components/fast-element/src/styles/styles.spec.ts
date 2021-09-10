@@ -62,6 +62,33 @@ if (DOM.supportsAdoptedStyleSheets) {
                 elementStyles.removeStylesFrom(target);
                 expect(elementStyles.isAttachedTo(target)).to.equal(false)
             });
+
+            it("should order HTMLStyleElement order by addStyleTo() call order", () => {
+                const cache = new Map();
+                const red = new AdoptedStyleSheetsStyles(['r'], cache);
+                const green = new AdoptedStyleSheetsStyles(['g'], cache);
+                const target: Pick<StyleTarget, "adoptedStyleSheets"> = {
+                    adoptedStyleSheets: [],
+                };
+
+                red.addStylesTo(target as StyleTarget);
+                green.addStylesTo(target as StyleTarget);
+
+                expect((target.adoptedStyleSheets![0])).to.equal(cache.get('r'));
+                expect((target.adoptedStyleSheets![1])).to.equal(cache.get('g'));
+            });
+            it("should order HTMLStyleElements in array order of provided sheets", () => {
+                const cache = new Map();
+                const red = new AdoptedStyleSheetsStyles(['r', 'g'], cache);
+                const target: Pick<StyleTarget, "adoptedStyleSheets"> = {
+                    adoptedStyleSheets: [],
+                };
+
+                red.addStylesTo(target as StyleTarget);
+
+                expect((target.adoptedStyleSheets![0])).to.equal(cache.get('r'));
+                expect((target.adoptedStyleSheets![1])).to.equal(cache.get('g'));
+            });
         });
     });
 }
@@ -109,6 +136,31 @@ describe("StyleSheetStyles", () => {
 
         elementStyles.removeStylesFrom(document);
         expect(elementStyles.isAttachedTo(document)).to.equal(false)
+    });
+
+    it("should order HTMLStyleElement order by addStyleTo() call order", () => {
+        const red = new StyleElementStyles([`body:{color:red;}`]);
+        const green = new StyleElementStyles([`body:{color:green;}`]);
+        document.body.innerHTML = "";
+
+        const element = document.createElement("div");
+        const shadowRoot = element.attachShadow({mode: "open"});
+        red.addStylesTo(shadowRoot);
+        green.addStylesTo(shadowRoot);
+
+        expect((shadowRoot.childNodes[0] as HTMLStyleElement).innerHTML).to.equal("body:{color:red;}");
+        expect((shadowRoot.childNodes[1] as HTMLStyleElement).innerHTML).to.equal("body:{color:green;}");
+    });
+    it("should order the HTMLStyleElements in array order of provided sheets", () => {
+        const red = new StyleElementStyles([`body:{color:red;}`, `body:{color:green;}`]);
+        document.body.innerHTML = "";
+
+        const element = document.createElement("div");
+        const shadowRoot = element.attachShadow({mode: "open"});
+        red.addStylesTo(shadowRoot);
+
+        expect((shadowRoot.childNodes[0] as HTMLStyleElement).innerHTML).to.equal("body:{color:red;}");
+        expect((shadowRoot.childNodes[1] as HTMLStyleElement).innerHTML).to.equal("body:{color:green;}");
     });
 });
 
@@ -254,7 +306,7 @@ describe("cssPartial", () => {
             createCSS() { return "red" };
             createBehavior() { return undefined; }
         }
-        
+
         const partial = cssPartial`color: ${new myDirective}`;
         expect (partial.createCSS()).to.equal("color: red");
     });
