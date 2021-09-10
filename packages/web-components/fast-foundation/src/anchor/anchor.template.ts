@@ -1,9 +1,9 @@
 import { html, ref, slotted } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
 import { endTemplate, startTemplate } from "../patterns/start-end";
-import type { Anchor } from "./anchor";
 import type { ElementDefinitionContext } from "../design-system";
 import type { FoundationElementDefinition } from "../foundation-element";
+import type { Anchor } from "./anchor";
 
 /**
  * The template for the {@link @microsoft/fast-foundation#(Anchor:class)} component.

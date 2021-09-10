@@ -132,19 +132,25 @@ provideFASTDesignSystem()
     )
 ```
 
-It's also worth noting that this can be used to simply extend the existing styles, by importing the originals and composing those with new styles. Here's what that would look like:
+It's also worth noting that this can be used to extend the existing styles, by importing the originals and composing those with new styles by calling the style function. Here's what that would look like:
 
 ```ts
 provideFASTDesignSystem()
     .register(
         fastButton({
-            styles: css`
-                /* import and compose the original styles */
-                ${buttonStyles}
+            styles: (ctx, def) => css`
+                ${buttonStyles(ctx, def)}
                 /* add your style augmentations here */
             `
         })
     )
+```
+
+:::important
+
+At present, there is a minor typing bug across all the style and template functions, so you will need to cast the second argument as follows `${buttonStyles(ctx, def as any)}`. [We have tracked this issue](https://github.com/microsoft/fast/issues/5047) and are planning a fix soon.
+
+:::
 ```
 
 #### Shadow Options
