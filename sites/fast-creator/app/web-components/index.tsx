@@ -108,6 +108,7 @@ export function renderDeviceSelect(
                 },
             }}
             disabled={disable ? true : null}
+            style={{ minWidth: "170px" }}
         >
             {renderDeviceOptions()}
         </fast-select>
