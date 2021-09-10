@@ -23,10 +23,10 @@ import {
     neutralForegroundRest,
     neutralStrokeFocus,
     neutralStrokeHover,
-    neutralStrokeInputFillActive,
-    neutralStrokeInputFillFocus,
-    neutralStrokeInputFillHover,
-    neutralStrokeInputFillRest,
+    neutralStrokeInputFilledActive,
+    neutralStrokeInputFilledFocus,
+    neutralStrokeInputFilledHover,
+    neutralStrokeInputFilledRest,
     neutralStrokeRest,
     strokeWidth,
     typeRampBaseFontSize,
@@ -143,26 +143,26 @@ export const inputFilledStyles: (
 ) => css`
     :host ${rootSelector} {
         background: ${neutralFillRest};
-        border-color: ${neutralStrokeInputFillRest};
+        border-color: ${neutralStrokeInputFilledRest};
         color: ${neutralForegroundRest};
     }
     :host(:hover:not([disabled]):not(:focus-within)) ${rootSelector} {
       background: ${neutralFillHover};
-      border-color: ${neutralStrokeInputFillHover};
+      border-color: ${neutralStrokeInputFilledHover};
       box-shadow: none;
       color: ${neutralForegroundHover};
     }
     :host(:active:not([disabled])) ${rootSelector},
     :host(:focus-within:not([disabled])) ${rootSelector} {
       background: ${neutralFillRest};
-      border-color: ${neutralStrokeInputFillActive};
-      box-shadow: 0 0 0 calc(${strokeWidth} * 1px) ${neutralStrokeInputFillActive} inset;
+      border-color: ${neutralStrokeInputFilledActive};
+      box-shadow: 0 0 0 calc(${strokeWidth} * 1px) ${neutralStrokeInputFilledActive} inset;
       color: ${neutralForegroundActive};
     }
     :host(:${focusVisible}:not([disabled])) ${rootSelector} {
       background: ${neutralFillFocus};
-      border-color: ${neutralStrokeInputFillFocus};
-      box-shadow: 0 0 0 calc(${focusStrokeWidth} * 1px) ${neutralStrokeInputFillFocus} inset;
+      border-color: ${neutralStrokeInputFilledFocus};
+      box-shadow: 0 0 0 calc(${focusStrokeWidth} * 1px) ${neutralStrokeInputFilledFocus} inset;
       color: ${neutralForegroundFocus};
     }
 `;
