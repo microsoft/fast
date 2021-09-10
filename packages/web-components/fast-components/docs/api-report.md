@@ -1234,7 +1234,7 @@ export class TextField extends TextField_2 {
 export type TextFieldAppearance = "filled" | "outline";
 
 // @public
-export const textFieldStyles: (context: ElementDefinitionContext, definition: TextFieldOptions) => ElementStyles;
+export const textFieldStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
 
 // Warning: (ae-internal-missing-underscore) The name "Toolbar" should be prefixed with an underscore because the declaration is marked as @internal
 //
