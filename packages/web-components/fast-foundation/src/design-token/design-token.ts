@@ -776,11 +776,25 @@ class DesignTokenNode implements Behavior, Subscriber {
     public handleChange(source: DesignTokenNode, property: string) {
         const token = DesignTokenImpl.getTokenById(property);
 
+        // Original
+        // if (token && !this.has(token) && !this.bindingObservers.has(token)) {
+        //     token.notify(this.target);
+        // }
+        // Change
         // Propagate change notifications down to children
-        // Don't propagate changes for tokens with bindingObservers
-        // because the bindings are responsible for notifying themselves
-        if (token && !this.has(token) && !this.bindingObservers.has(token)) {
-            token.notify(this.target);
+        if (token && !this.has(token)) {
+            if (this.bindingObservers.has(token)) {
+                const observer = this.bindingObservers.get(token);
+
+                if (observer?.source !== this.getRaw(token)) {
+                    this.tearDownBindingObserver(token);
+                    token.notify(this.target);
+                } else {
+                    observer?.handleChange();
+                }
+            } else {
+                token.notify(this.target);
+            }
         }
     }
 

@@ -559,6 +559,100 @@ describe("A DesignToken", () => {
 
             expect(window.getComputedStyle(element).getPropertyValue(tokenB.cssCustomProperty)).to.equal('14');
         });
+        it("should update tokens when an element for which a token with dependencies is set is appended to the DOM FOO", async () => {
+            const tokenA = DesignToken.create<number>("token-a");
+            const tokenB = DesignToken.create<number>("token-b");
+
+            tokenA.withDefault(() => 6);
+            tokenB.withDefault(el => tokenA.getValueFor(el) * 2);
+
+            const parent = document.createElement(`fast-${elementName}`);
+            const child = document.createElement(`fast-${elementName}`);
+            parent.appendChild(child);
+
+            const handleChange = chia.spy(() => {});
+            const subscriber = { handleChange };
+
+            tokenB.subscribe(subscriber, child);
+            expect(tokenB.getValueFor(child)).to.equal(12);
+
+            document.body.appendChild(parent);
+
+            await DOM.nextUpdate();
+
+            expect(handleChange).not.to.have.been.called()
+
+            tokenA.setValueFor(parent, () => 7);
+            expect(tokenB.getValueFor(child)).to.equal(14);
+            await DOM.nextUpdate();
+            expect(handleChange).to.have.been.called()
+        });
+        it("should update tokens when an element for which a token with dependencies is set is appended to the DOM FOO", async () => {
+            const tokenA = DesignToken.create<number>("token-a");
+            const tokenB = DesignToken.create<number>("token-b");
+
+            tokenA.withDefault(() => 6);
+            tokenB.withDefault(el => tokenA.getValueFor(el) * 2);
+
+            const parent = addElement();
+            const child = addElement(parent);
+
+            const handleChange = chia.spy(() => {});
+            const subscriber = { handleChange };
+
+            tokenB.subscribe(subscriber, child);
+            expect(tokenB.getValueFor(child)).to.equal(12);
+
+            tokenA.setValueFor(parent, () => 7);
+            expect(tokenB.getValueFor(child)).to.equal(14);
+            await DOM.nextUpdate();
+            expect(handleChange).to.have.been.called()
+        });
+        it("should notify a subscriber for a token after being appended to a parent with a different token value than the previous context", async () => {
+            const tokenA = DesignToken.create<number>("token-a");
+            const tokenB = DesignToken.create<number>("token-b");
+
+            tokenA.withDefault(() => 6);
+            tokenB.withDefault(el => tokenA.getValueFor(el) * 2);
+
+            const parent = document.createElement(`fast-${elementName}`);
+            const child = document.createElement(`fast-${elementName}`);
+            document.body.appendChild(parent);
+            tokenA.setValueFor(parent, () => 7);
+
+            const handleChange = chia.spy(() => {});
+            const subscriber = { handleChange };
+
+            tokenB.subscribe(subscriber, child);
+            expect(tokenB.getValueFor(child)).to.equal(12);
+
+            expect(handleChange).not.to.have.been.called()
+            parent.appendChild(child);
+
+            expect(tokenB.getValueFor(child)).to.equal(14);
+            expect(handleChange).to.have.been.called()
+        });
+        it("should notify a subscriber for a token after being appended to a parent with a different token value than the previous context", async () => {
+            const tokenA = DesignToken.create<number>("token-a");
+            tokenA.withDefault(6);
+
+            const parent = document.createElement(`fast-${elementName}`);
+            const child = document.createElement(`fast-${elementName}`);
+            document.body.appendChild(parent);
+            tokenA.setValueFor(parent, 7);
+
+            const handleChange = chia.spy(() => {});
+            const subscriber = { handleChange };
+
+            tokenA.subscribe(subscriber, child);
+            expect(tokenA.getValueFor(child)).to.equal(6);
+
+            expect(handleChange).not.to.have.been.called()
+            parent.appendChild(child);
+
+            expect(tokenA.getValueFor(child)).to.equal(7);
+            expect(handleChange).to.have.been.called()
+        });
     })
     describe("deleting simple values", () => {
         it("should throw when deleted and no parent token value is set", () => {
