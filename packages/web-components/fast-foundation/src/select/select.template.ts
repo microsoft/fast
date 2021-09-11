@@ -56,7 +56,6 @@ export const selectTemplate: (
             id="listbox"
             part="listbox"
             role="listbox"
-            style="--max-height: ${x => x.maxHeight}px"
             ?disabled="${x => x.disabled}"
             ?hidden="${x => !x.open}"
         >

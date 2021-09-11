@@ -5,6 +5,7 @@ import {
     ElementDefinitionContext,
     focusVisible,
     forcedColorsStylesheetBehavior,
+    listboxMaxHeight,
     SelectOptions,
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
@@ -65,7 +66,7 @@ export const selectStyles: (
         display: inline-flex;
         flex-direction: column;
         left: 0;
-        max-height: calc(var(--max-height) - (${heightNumber} * 1px));
+        max-height: calc((${listboxMaxHeight} * 1px) - (${heightNumber} * 1px));
         padding: calc(${designUnit} * 1px) 0;
         overflow-y: auto;
         position: absolute;
