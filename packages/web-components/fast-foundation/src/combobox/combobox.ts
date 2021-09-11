@@ -10,7 +10,6 @@ import type { ListboxOption } from "../listbox-option/listbox-option";
 import { ARIAGlobalStatesAndProperties } from "../patterns/aria-global";
 import { StartEnd, StartEndOptions } from "../patterns/start-end";
 import { SelectPosition, SelectRole } from "../select/select.options";
-import { listboxMaxHeight } from "../select";
 import { applyMixins } from "../utilities/apply-mixins";
 import type { FoundationElementDefinition } from "../foundation-element";
 import { FormAssociatedCombobox } from "./combobox.form-associated";
@@ -569,8 +568,6 @@ export class Combobox extends FormAssociatedCombobox {
 
         this.maxHeight =
             this.position === SelectPosition.above ? ~~currentBox.top : ~~availableBottom;
-
-        listboxMaxHeight.setValueFor(this, this.maxHeight);
     }
 
     /**

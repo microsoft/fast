@@ -5,7 +5,6 @@ import {
     ElementDefinitionContext,
     focusVisible,
     forcedColorsStylesheetBehavior,
-    listboxMaxHeight,
     SelectOptions,
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
@@ -35,6 +34,7 @@ import {
 } from "../design-tokens";
 import { elevation } from "../styles/elevation";
 import { heightNumber } from "../styles/size";
+import { listboxMaxHeight } from "./index";
 
 export const selectStyles: (
     context: ElementDefinitionContext,

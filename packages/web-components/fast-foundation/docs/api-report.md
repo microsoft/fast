@@ -1234,9 +1234,6 @@ export class Listbox extends FoundationElement {
 export interface Listbox extends DelegatesARIAListbox {
 }
 
-// @public
-export const listboxMaxHeight: import("..").CSSDesignToken<number>;
-
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
 // Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "ListboxOption" because one of its declarations is marked as @internal
 //

@@ -21,7 +21,7 @@ import { Button as Button_2 } from '@microsoft/fast-foundation';
 import { Card as Card_2 } from '@microsoft/fast-foundation';
 import { Checkbox } from '@microsoft/fast-foundation';
 import { CheckboxOptions } from '@microsoft/fast-foundation';
-import { Combobox } from '@microsoft/fast-foundation';
+import { Combobox as Combobox_2 } from '@microsoft/fast-foundation';
 import { ComboboxOptions } from '@microsoft/fast-foundation';
 import { Container } from '@microsoft/fast-foundation';
 import { DataGrid } from '@microsoft/fast-foundation';
@@ -54,7 +54,7 @@ import { ProgressRingOptions } from '@microsoft/fast-foundation';
 import { Radio } from '@microsoft/fast-foundation';
 import { RadioGroup } from '@microsoft/fast-foundation';
 import { RadioOptions } from '@microsoft/fast-foundation';
-import { Select } from '@microsoft/fast-foundation';
+import { Select as Select_2 } from '@microsoft/fast-foundation';
 import { SelectOptions } from '@microsoft/fast-foundation';
 import { Skeleton } from '@microsoft/fast-foundation';
 import { Slider } from '@microsoft/fast-foundation';
@@ -282,7 +282,11 @@ export const checkboxStyles: (context: import("@microsoft/fast-foundation").Elem
 // @public (undocumented)
 export type ColorRecipe = Recipe<Swatch>;
 
-export { Combobox }
+// @public
+export class Combobox extends Combobox_2 {
+    // (undocumented)
+    setPositioning(): void;
+}
 
 // @public
 export const comboboxStyles: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: ComboboxOptions) => import("@microsoft/fast-element").ElementStyles;
@@ -660,6 +664,9 @@ export function isDark(color: Swatch): boolean;
 
 export { Listbox }
 
+// @public
+export const listboxMaxHeight: import("@microsoft/fast-foundation").CSSDesignToken<number>;
+
 export { ListboxOption }
 
 // @public
@@ -944,7 +951,11 @@ export interface Recipe<T> {
     evaluate(element: HTMLElement, reference?: Swatch): T;
 }
 
-export { Select }
+// @public
+export class Select extends Select_2 {
+    // (undocumented)
+    setPositioning(): void;
+}
 
 // @public
 export const selectStyles: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: SelectOptions) => import("@microsoft/fast-element").ElementStyles;

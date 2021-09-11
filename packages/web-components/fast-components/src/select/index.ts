@@ -1,9 +1,32 @@
 import {
-    Select,
+    DesignToken,
+    Select as FoundationSelect,
     SelectOptions,
     selectTemplate as template,
 } from "@microsoft/fast-foundation";
 import { selectStyles as styles } from "./select.styles";
+
+/**
+ * The design token to leverage for the listbox max height value. The
+ * max height token value is set in the select and comobobox component class.
+ *
+ * @public
+ * */
+export const listboxMaxHeight = DesignToken.create<number>(
+    "listbox-max-height"
+).withDefault(0);
+
+/**
+ * Base class for Select
+ * @public
+ */
+export class Select extends FoundationSelect {
+    public setPositioning(): void {
+        super.setPositioning();
+
+        listboxMaxHeight.setValueFor(this, this.maxHeight);
+    }
+}
 
 /**
  * A function that returns a {@link @microsoft/fast-foundation#Select} registration for configuring the component with a DesignSystem.
@@ -38,9 +61,3 @@ export const fastSelect = Select.compose<SelectOptions>({
  * @public
  */
 export const selectStyles = styles;
-
-/**
- * Base class for Select
- * @public
- */
-export { Select };

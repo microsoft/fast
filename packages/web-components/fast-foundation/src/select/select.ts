@@ -4,7 +4,6 @@ import {
     observable,
     SyntheticViewTemplate,
 } from "@microsoft/fast-element";
-import { DesignToken } from "../index";
 import type { FoundationElementDefinition } from "../foundation-element";
 import type { ListboxOption } from "../listbox-option/listbox-option";
 import { ARIAGlobalStatesAndProperties } from "../patterns/aria-global";
@@ -12,16 +11,6 @@ import { StartEnd, StartEndOptions } from "../patterns/start-end";
 import { applyMixins } from "../utilities/apply-mixins";
 import { FormAssociatedSelect } from "./select.form-associated";
 import { SelectPosition, SelectRole } from "./select.options";
-
-/**
- * The design token to leverage for the listbox max height value. The
- * max height token value is set in the select and comobobox component class.
- *
- * @public
- * */
-export const listboxMaxHeight = DesignToken.create<number>(
-    "listbox-max-height"
-).withDefault(0);
 
 /**
  * Select configuration options
@@ -193,8 +182,6 @@ export class Select extends FormAssociatedSelect {
 
         this.maxHeight =
             this.position === SelectPosition.above ? ~~currentBox.top : ~~availableBottom;
-
-        listboxMaxHeight.setValueFor(this, this.maxHeight);
     }
 
     /**
