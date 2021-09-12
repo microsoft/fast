@@ -2,6 +2,27 @@
   "name": "@microsoft/fast-components",
   "entries": [
     {
+      "date": "Sun, 12 Sep 2021 07:17:43 GMT",
+      "tag": "@microsoft/fast-components_v2.9.1",
+      "version": "2.9.1",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Remove commented CSS",
+            "author": "john.kreitlow@microsoft.com",
+            "commit": "54a90cb9b3b9b99bacc355bd99386fe4fa09b9d7",
+            "package": "@microsoft/fast-components"
+          },
+          {
+            "comment": "change default tab panel display; fixes #5171",
+            "author": "corylaviska@microsoft.com",
+            "commit": "9cbba55c5e860df0eec98a28b9948d98cfe7d306",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 09 Sep 2021 07:21:36 GMT",
       "tag": "@microsoft/fast-components_v2.9.0",
       "version": "2.9.0",

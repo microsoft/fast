@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "remove dependencies on keycode",
-  "packageName": "@microsoft/fast-tooling-react",
-  "email": "scomea@microsoft.com",
-  "dependentChangeType": "patch"
-}

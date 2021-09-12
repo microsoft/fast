@@ -1,8 +1,24 @@
 # Change Log - @microsoft/fast-tooling
 
-This log was last generated on Thu, 09 Sep 2021 07:21:36 GMT and should not be manually modified.
+This log was last generated on Sun, 12 Sep 2021 07:17:43 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.29.0
+
+Sun, 12 Sep 2021 07:17:43 GMT
+
+### Minor changes
+
+- added option to commit inline edit changes on blur (44823142+williamw2@users.noreply.github.com)
+
+### Patches
+
+- fixed exception in htmlrenderer in specific messaging scenarios (44823142+williamw2@users.noreply.github.com)
+- remove dependencies on keycode (scomea@microsoft.com)
+- Bump @microsoft/fast-components to v2.9.1 (john.kreitlow@microsoft.com)
+- Bump @microsoft/fast-foundation to v2.13.0 (scomea@microsoft.com)
+- Bump @microsoft/fast-web-utilities to v4.8.1 (scomea@microsoft.com)
 
 ## 0.28.0
 
