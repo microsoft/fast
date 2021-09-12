@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-web-utilities
 
-This log was last generated on Thu, 20 May 2021 07:24:10 GMT and should not be manually modified.
+This log was last generated on Sun, 12 Sep 2021 07:17:43 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 4.8.1
+
+Sun, 12 Sep 2021 07:17:43 GMT
+
+### Patches
+
+- remove dependencies on keycode (scomea@microsoft.com)
 
 ## 4.8.0
 

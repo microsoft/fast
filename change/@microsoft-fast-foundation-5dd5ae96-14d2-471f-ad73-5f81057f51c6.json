@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "remove dependencies on keycode",
-  "packageName": "@microsoft/fast-foundation",
-  "email": "scomea@microsoft.com",
-  "dependentChangeType": "patch"
-}
