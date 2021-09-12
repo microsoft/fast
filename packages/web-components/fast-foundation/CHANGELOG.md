@@ -1,8 +1,21 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Thu, 09 Sep 2021 07:21:36 GMT and should not be manually modified.
+This log was last generated on Sun, 12 Sep 2021 07:17:43 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.13.0
+
+Sun, 12 Sep 2021 07:17:43 GMT
+
+### Minor changes
+
+- use class method for radio click handler property (john.kreitlow@microsoft.com)
+
+### Patches
+
+- remove dependencies on keycode (scomea@microsoft.com)
+- Bump @microsoft/fast-web-utilities to v4.8.1 (scomea@microsoft.com)
 
 ## 2.12.0
 
