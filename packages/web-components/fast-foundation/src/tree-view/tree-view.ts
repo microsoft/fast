@@ -90,6 +90,7 @@ export class TreeView extends FoundationElement {
     }
 
     public handleKeyDown = (e: KeyboardEvent): void | boolean => {
+        console.log("Fires!!!!!!!!", e);
         if (!this.treeItems) {
             return true;
         }
@@ -106,6 +107,7 @@ export class TreeView extends FoundationElement {
                 }
                 break;
             case keyCodeArrowLeft:
+                e.preventDefault();
                 if (e.target && this.isFocusableElement(e.target as HTMLElement)) {
                     const item = e.target as HTMLElement;
                     if (item instanceof TreeItem && item.childItemLength() > 0) {
@@ -114,6 +116,7 @@ export class TreeView extends FoundationElement {
                 }
                 break;
             case keyCodeArrowRight:
+                e.preventDefault();
                 if (e.target && this.isFocusableElement(e.target as HTMLElement)) {
                     const item = e.target as HTMLElement;
                     if (item instanceof TreeItem && item.childItemLength() > 0) {
@@ -122,11 +125,13 @@ export class TreeView extends FoundationElement {
                 }
                 break;
             case keyCodeArrowDown:
+                e.preventDefault();
                 if (e.target && this.isFocusableElement(e.target as HTMLElement)) {
                     this.focusNextNode(1, e.target as HTMLElement);
                 }
                 break;
             case keyCodeArrowUp:
+                e.preventDefault();
                 if (e.target && this.isFocusableElement(e.target as HTMLElement)) {
                     this.focusNextNode(-1, e.target as HTMLElement);
                 }
@@ -136,8 +141,6 @@ export class TreeView extends FoundationElement {
                 // the default action is typically to select the focused node.
                 this.handleSelected(e.target as HTMLElement);
                 break;
-            default:
-                return true;
         }
     };
 
@@ -148,19 +151,7 @@ export class TreeView extends FoundationElement {
         }
 
         if (item instanceof TreeItem) {
-            let focusItem = visibleNodes[visibleNodes.indexOf(item) + delta];
-            while (focusItem && focusItem.hasAttribute("disabled")) {
-                const offset: number = delta >= 0 ? 1 : -1;
-                const nextHtmlItem = visibleNodes[
-                    delta + offset + visibleNodes.indexOf(item)
-                ] as HTMLElement;
-                if (isTreeItemElement(nextHtmlItem)) {
-                    focusItem = nextHtmlItem;
-                }
-                if (!focusItem) {
-                    break;
-                }
-            }
+            const focusItem = visibleNodes[visibleNodes.indexOf(item) + delta];
             if (isHTMLElement(focusItem)) {
                 TreeItem.focusItem(focusItem);
             }
@@ -171,7 +162,7 @@ export class TreeView extends FoundationElement {
         const focusIndex = this.treeItems.findIndex(this.isFocusableElement);
 
         for (let item: number = 0; item < this.treeItems.length; item++) {
-            if (item === focusIndex && !this.treeItems[item].hasAttribute("disabled")) {
+            if (item === focusIndex) {
                 this.treeItems[item].setAttribute("tabindex", "0");
             }
             this.treeItems[item].addEventListener(
@@ -196,7 +187,9 @@ export class TreeView extends FoundationElement {
                 if (this.currentSelected instanceof TreeItem) {
                     this.currentSelected.selected = false;
                 }
-                item.selected = true;
+                if (!item.disabled) {
+                    item.selected = true;
+                }
                 this.currentSelected = item;
             }
         }
@@ -213,14 +206,7 @@ export class TreeView extends FoundationElement {
      * check if the item is focusable
      */
     private isFocusableElement = (el: Element): el is HTMLElement => {
-        return isTreeItemElement(el) && !this.isDisabledElement(el);
-    };
-
-    /**
-     * check if the item is disabled
-     */
-    private isDisabledElement = (el: Element): el is HTMLElement => {
-        return isTreeItemElement(el) && el.getAttribute("aria-disabled") === "true";
+        return isTreeItemElement(el);
     };
 
     private getVisibleNodes(): HTMLElement[] {
