@@ -1,8 +1,18 @@
 # Change Log - @microsoft/fast-tooling-react
 
-This log was last generated on Thu, 09 Sep 2021 07:21:36 GMT and should not be manually modified.
+This log was last generated on Sun, 12 Sep 2021 07:17:43 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.11.4
+
+Sun, 12 Sep 2021 07:17:43 GMT
+
+### Patches
+
+- small update to layout styling to ensure components with display flex are displayed consistently (7559015+janechu@users.noreply.github.com)
+- allow linked data that has no default droppable location to drop onto other drop targets (7559015+janechu@users.noreply.github.com)
+- remove dependencies on keycode (scomea@microsoft.com)
 
 ## 2.11.3
 
