@@ -1,4 +1,3 @@
-
 import { css, DOM, FASTElement, html, Observable } from "@microsoft/fast-element";
 import chia, { expect } from "chai";
 import { DesignSystem } from "../design-system";
@@ -559,6 +558,100 @@ describe("A DesignToken", () => {
 
             expect(window.getComputedStyle(element).getPropertyValue(tokenB.cssCustomProperty)).to.equal('14');
         });
+        it("should update tokens when an element for which a token with dependencies is set is appended to the DOM FOO", async () => {
+            const tokenA = DesignToken.create<number>("token-a");
+            const tokenB = DesignToken.create<number>("token-b");
+
+            tokenA.withDefault(() => 6);
+            tokenB.withDefault(el => tokenA.getValueFor(el) * 2);
+
+            const parent = document.createElement(`fast-${elementName}`);
+            const child = document.createElement(`fast-${elementName}`);
+            parent.appendChild(child);
+
+            const handleChange = chia.spy(() => {});
+            const subscriber = { handleChange };
+
+            tokenB.subscribe(subscriber, child);
+            expect(tokenB.getValueFor(child)).to.equal(12);
+
+            document.body.appendChild(parent);
+
+            await DOM.nextUpdate();
+
+            expect(handleChange).not.to.have.been.called()
+
+            tokenA.setValueFor(parent, () => 7);
+            expect(tokenB.getValueFor(child)).to.equal(14);
+            await DOM.nextUpdate();
+            expect(handleChange).to.have.been.called()
+        });
+        it("should update tokens when an element for which a token with dependencies is set is appended to the DOM FOO", async () => {
+            const tokenA = DesignToken.create<number>("token-a");
+            const tokenB = DesignToken.create<number>("token-b");
+
+            tokenA.withDefault(() => 6);
+            tokenB.withDefault(el => tokenA.getValueFor(el) * 2);
+
+            const parent = addElement();
+            const child = addElement(parent);
+
+            const handleChange = chia.spy(() => {});
+            const subscriber = { handleChange };
+
+            tokenB.subscribe(subscriber, child);
+            expect(tokenB.getValueFor(child)).to.equal(12);
+
+            tokenA.setValueFor(parent, () => 7);
+            expect(tokenB.getValueFor(child)).to.equal(14);
+            await DOM.nextUpdate();
+            expect(handleChange).to.have.been.called()
+        });
+        it("should notify a subscriber for a token after being appended to a parent with a different token value than the previous context", async () => {
+            const tokenA = DesignToken.create<number>("token-a");
+            const tokenB = DesignToken.create<number>("token-b");
+
+            tokenA.withDefault(() => 6);
+            tokenB.withDefault(el => tokenA.getValueFor(el) * 2);
+
+            const parent = document.createElement(`fast-${elementName}`);
+            const child = document.createElement(`fast-${elementName}`);
+            document.body.appendChild(parent);
+            tokenA.setValueFor(parent, () => 7);
+
+            const handleChange = chia.spy(() => {});
+            const subscriber = { handleChange };
+
+            tokenB.subscribe(subscriber, child);
+            expect(tokenB.getValueFor(child)).to.equal(12);
+
+            expect(handleChange).not.to.have.been.called()
+            parent.appendChild(child);
+
+            expect(tokenB.getValueFor(child)).to.equal(14);
+            expect(handleChange).to.have.been.called()
+        });
+        it("should notify a subscriber for a token after being appended to a parent with a different token value than the previous context", async () => {
+            const tokenA = DesignToken.create<number>("token-a");
+            tokenA.withDefault(6);
+
+            const parent = document.createElement(`fast-${elementName}`);
+            const child = document.createElement(`fast-${elementName}`);
+            document.body.appendChild(parent);
+            tokenA.setValueFor(parent, 7);
+
+            const handleChange = chia.spy(() => {});
+            const subscriber = { handleChange };
+
+            tokenA.subscribe(subscriber, child);
+            expect(tokenA.getValueFor(child)).to.equal(6);
+
+            expect(handleChange).not.to.have.been.called()
+            parent.appendChild(child);
+
+            expect(tokenA.getValueFor(child)).to.equal(7);
+            expect(handleChange).to.have.been.called()
+        });
     })
     describe("deleting simple values", () => {
         it("should throw when deleted and no parent token value is set", () => {
@@ -740,50 +833,25 @@ describe("A DesignToken", () => {
 
             removeElement(ancestor);
         });
-        it("should notify a target-subscriber if the value is changed for a the provided target", () => {
-                let invoked = false;
+        it("should notify a target-subscriber if the value is changed for the provided target", () => {
                 const parent = addElement();
                 const target = addElement(parent);
                 const token = DesignToken.create<number>("test");
 
+                const handleChange = chia.spy(() => {});
                 const subscriber: DesignTokenSubscriber<typeof token>  = {
-                    handleChange(record: DesignTokenChangeRecord<typeof token>) {
-                        invoked = true;
-                    }
+                    handleChange
                 }
 
                 token.subscribe(subscriber, target);
 
                 token.setValueFor(parent, 12);
-                expect(invoked).to.be.false;
+                expect(handleChange).to.have.been.called.once;
 
                 token.setValueFor(target, 14);
-                expect(invoked).to.be.true;
+                expect(handleChange).to.have.been.called.twice;
 
                 removeElement(parent);
-        });
-        it("should not notify a target-subscriber if the value is changed for a different target", () => {
-                let invoked = false;
-                const ancestor = addElement();
-                const parent = addElement(ancestor);
-                const target = addElement(parent);
-                const token = DesignToken.create<number>("test");
-
-                const subscriber: DesignTokenSubscriber<typeof token>  = {
-                    handleChange(record: DesignTokenChangeRecord<typeof token>) {
-                        invoked = true;
-                    }
-                }
-
-                token.subscribe(subscriber, target);
-
-                token.setValueFor(ancestor, 12);
-                expect(invoked).to.be.false;
-
-                token.setValueFor(parent, 14);
-                expect(invoked).to.be.false;
-
-                removeElement(ancestor);
         });
 
         it("should not notify a subscriber after unsubscribing", () => {
@@ -882,5 +950,74 @@ describe("A DesignToken", () => {
             await DOM.nextUpdate();
             expect(handleChange).to.have.been.called();
         })
+        it("should notify a subscriber when a static-value dependency of subscribed token changes for a parent of the subscription target", async () => {
+            const tokenA = DesignToken.create<number>("a");
+            const tokenB = DesignToken.create<number>("b");
+
+            const parent = addElement();
+            const target = addElement(parent)
+
+            tokenA.withDefault(6);
+            tokenB.withDefault((el) => tokenA.getValueFor(el) * 2);
+
+            const handleChange = chia.spy(() => {})
+            const subscriber = {
+                handleChange
+            }
+
+
+            tokenB.subscribe(subscriber, target);
+
+            tokenA.setValueFor(parent, 7);
+            await DOM.nextUpdate();
+            expect(handleChange).to.have.been.called();
+            expect(tokenB.getValueFor(target)).to.equal(14)
+        });
+        it("should notify a subscriber when a derived-value dependency of subscribed token changes for a parent of the subscription target", async () => {
+            const tokenA = DesignToken.create<number>("a");
+            const tokenB = DesignToken.create<number>("b");
+
+            const parent = addElement();
+            const target = addElement(parent)
+
+            tokenA.withDefault(() => 6);
+            tokenB.withDefault((el) => tokenA.getValueFor(el) * 2);
+
+            const handleChange = chia.spy(() => {})
+            const subscriber = {
+                handleChange
+            }
+
+
+            tokenB.subscribe(subscriber, target);
+
+            tokenA.setValueFor(parent, () => 7);
+            await DOM.nextUpdate();
+            expect(handleChange).to.have.been.called();
+            expect(tokenB.getValueFor(target)).to.equal(14)
+        });
+        it("should notify a subscriber when a dependency of subscribed token changes for a parent of the subscription target", async () => {
+            const tokenA = DesignToken.create<number>("a");
+            const tokenB = DesignToken.create<number>("b");
+
+            const grandparent = addElement();
+            const parent = addElement(grandparent)
+            const child = addElement(parent)
+
+            tokenA.withDefault(() => 6);
+            tokenB.withDefault((el) => tokenA.getValueFor(el) * 2);
+
+            const handleChange = chia.spy(() => {})
+            const subscriber = {
+                handleChange
+            }
+
+
+            tokenB.subscribe(subscriber, child);
+
+            tokenA.setValueFor(grandparent, () => 7);
+            await DOM.nextUpdate();
+            expect(handleChange).to.have.been.called();
+        });
     });
 });
