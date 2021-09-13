@@ -13,7 +13,7 @@ export const pickerMenuOptionTemplate: (
         <template
             role="listitem"
             tabindex="-1"
-            @click="${(x, c) => x.handleOptionClick(c.event as MouseEvent)}"
+            @click="${(x, c) => x.handleClick(c.event as MouseEvent)}"
         >
             <slot></slot>
         </template>

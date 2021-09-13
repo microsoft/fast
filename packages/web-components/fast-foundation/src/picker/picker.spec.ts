@@ -18,7 +18,7 @@ import {
     keyArrowLeft,
     keyArrowRight,
     keyArrowUp,
-    keyBack,
+    keyBackspace,
     KeyCodes,
     keyDelete,
     keyEnd,
@@ -75,8 +75,8 @@ const arrowRightEvent = new KeyboardEvent("keydown", {
 } as KeyboardEventInit);
 
 const backEvent = new KeyboardEvent("keydown", {
-    key: keyBack,
-    keyCode: KeyCodes.back,
+    key: keyBackspace,
+    keyCode: KeyCodes.backspace,
     bubbles: true,
 } as KeyboardEventInit);
 

@@ -11,7 +11,7 @@ import {
     keyArrowLeft,
     keyArrowRight,
     keyArrowUp,
-    keyBack,
+    keyBackspace,
     keyDelete,
     keyEnter,
     keyEscape,
@@ -522,17 +522,17 @@ export class Picker extends FormAssociatedPicker {
     /**
      * Handle the menu options updated event from the child menu
      */
-    private handleMenuOptionsUpdated = (e: Event): void => {
+    private handleMenuOptionsUpdated(e: Event): void {
         e.preventDefault();
         if (this.flyoutOpen) {
             this.setFocusedOption(0);
         }
-    };
+    }
 
     /**
      * Handle key down events.
      */
-    public handleKeyDown = (e: KeyboardEvent): boolean => {
+    public handleKeyDown(e: KeyboardEvent): boolean {
         if (e.defaultPrevented) {
             return false;
         }
@@ -623,7 +623,7 @@ export class Picker extends FormAssociatedPicker {
             }
 
             case keyDelete:
-            case keyBack: {
+            case keyBackspace: {
                 if (document.activeElement === null) {
                     return true;
                 }
@@ -662,19 +662,19 @@ export class Picker extends FormAssociatedPicker {
         }
         this.toggleFlyout(true);
         return true;
-    };
+    }
 
     /**
      * Handle focus in events.
      */
-    public handleFocusIn = (e: FocusEvent): boolean => {
+    public handleFocusIn(e: FocusEvent): boolean {
         return false;
-    };
+    }
 
     /**
      * Handle focus out events.
      */
-    public handleFocusOut = (e: FocusEvent): boolean => {
+    public handleFocusOut(e: FocusEvent): boolean {
         if (
             this.menuElement === undefined ||
             !this.menuElement.contains(e.relatedTarget as Element)
@@ -683,7 +683,7 @@ export class Picker extends FormAssociatedPicker {
         }
 
         return false;
-    };
+    }
 
     /**
      * The list of selected items has changed
@@ -706,12 +706,12 @@ export class Picker extends FormAssociatedPicker {
     /**
      * Anchored region is loaded, menu and options exist in the DOM.
      */
-    public handleRegionLoaded = (e: Event): void => {
+    public handleRegionLoaded(e: Event): void {
         DOM.queueUpdate(() => {
             this.setFocusedOption(0);
             this.$emit("menuloaded", { bubbles: false });
         });
-    };
+    }
 
     /**
      * Sets properties on the anchored region once it is instanciated.
@@ -731,7 +731,7 @@ export class Picker extends FormAssociatedPicker {
     /**
      * Checks if the maximum number of items has been chosen and updates the ui.
      */
-    private checkMaxItems = (): void => {
+    private checkMaxItems(): void {
         if (this.listElement.inputElement === undefined) {
             return;
         }
@@ -751,12 +751,12 @@ export class Picker extends FormAssociatedPicker {
         } else {
             this.listElement.inputElement.hidden = false;
         }
-    };
+    }
 
     /**
      * A list item has been invoked.
      */
-    public handleItemInvoke = (e: Event): boolean => {
+    public handleItemInvoke(e: Event): boolean {
         if (e.defaultPrevented) {
             return false;
         }
@@ -774,12 +774,12 @@ export class Picker extends FormAssociatedPicker {
             return false;
         }
         return true;
-    };
+    }
 
     /**
      * A menu option has been invoked.
      */
-    public handleOptionInvoke = (e: Event): boolean => {
+    public handleOptionInvoke(e: Event): boolean {
         if (e.defaultPrevented) {
             return false;
         }
@@ -798,7 +798,7 @@ export class Picker extends FormAssociatedPicker {
         // const value: string = (e.target as PickerMenuOption).value;
 
         return true;
-    };
+    }
 
     /**
      * Increments the focused list item by the specified amount
@@ -846,18 +846,18 @@ export class Picker extends FormAssociatedPicker {
     /**
      * Disables the menu. Note that the menu can be open, just doens't have any valid options on display.
      */
-    private disableMenu = (): void => {
+    private disableMenu(): void {
         this.menuFocusIndex = -1;
         this.menuFocusOptionId = undefined;
         this.listElement?.inputElement?.removeAttribute("aria-activedescendant");
         this.listElement?.inputElement?.removeAttribute("aria-owns");
         this.listElement?.inputElement?.removeAttribute("aria-expanded");
-    };
+    }
 
     /**
      * Sets the currently focused menu option by index
      */
-    private setFocusedOption = (optionIndex: number): void => {
+    private setFocusedOption(optionIndex: number): void {
         if (
             !this.flyoutOpen ||
             optionIndex === -1 ||
@@ -895,7 +895,7 @@ export class Picker extends FormAssociatedPicker {
         focusedOption.setAttribute("aria-selected", "true");
 
         this.menuElement.scrollTo(0, focusedOption.offsetTop);
-    };
+    }
 
     /**
      * Updates the template used for the list item repeat behavior

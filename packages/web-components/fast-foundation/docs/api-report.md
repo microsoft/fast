@@ -1485,12 +1485,12 @@ export class Picker extends FormAssociatedPicker {
     flyoutOpen: boolean;
     // @public
     focus(): void;
-    handleFocusIn: (e: FocusEvent) => boolean;
-    handleFocusOut: (e: FocusEvent) => boolean;
-    handleItemInvoke: (e: Event) => boolean;
-    handleKeyDown: (e: KeyboardEvent) => boolean;
-    handleOptionInvoke: (e: Event) => boolean;
-    handleRegionLoaded: (e: Event) => void;
+    handleFocusIn(e: FocusEvent): boolean;
+    handleFocusOut(e: FocusEvent): boolean;
+    handleItemInvoke(e: Event): boolean;
+    handleKeyDown(e: KeyboardEvent): boolean;
+    handleOptionInvoke(e: Event): boolean;
+    handleRegionLoaded(e: Event): void;
     handleSelectionChange(): void;
     label: string;
     labelledBy: string;
@@ -1547,9 +1547,9 @@ export class PickerListItem extends FoundationElement {
     // @internal (undocumented)
     disconnectedCallback(): void;
     // (undocumented)
-    handleItemClick: (e: MouseEvent) => boolean;
+    handleClick(e: MouseEvent): boolean;
     // (undocumented)
-    handleItemKeyDown: (e: KeyboardEvent) => boolean;
+    handleKeyDown(e: KeyboardEvent): boolean;
     value: string;
 }
 
@@ -1565,8 +1565,6 @@ export const pickerListTemplate: (context: any, definition: any) => ViewTemplate
 
 // @alpha
 export class PickerMenu extends FoundationElement {
-    // @internal (undocumented)
-    connectedCallback(): void;
     // @internal
     footerElements: HTMLElement[];
     // (undocumented)
@@ -1592,7 +1590,7 @@ export class PickerMenuOption extends FoundationElement {
     // @internal (undocumented)
     disconnectedCallback(): void;
     // (undocumented)
-    handleOptionClick: (e: MouseEvent) => boolean;
+    handleClick(e: MouseEvent): boolean;
     value: string;
 }
 

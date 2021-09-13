@@ -35,6 +35,8 @@ export const pickerListStyles: (
             column-gap: calc(${designUnit} * 1px);
             row-gap: calc(${designUnit} * 1px);
             flex-wrap: wrap;
+            /* TODO: a mechanism to manage z-index across components
+            https://github.com/microsoft/fast/issues/3813 */
             z-index: 1000;
         }
 
@@ -55,12 +57,12 @@ export const pickerListStyles: (
             padding: 0 calc(${designUnit} * 2px + 1px);
         }
 
-        :active[role="combobox"] {
+        [role="combobox"]:active { {
             background: ${neutralFillInputHover};
             border-color: ${accentFillActive};
         }
 
-        :focus-within[role="combobox"] {
+        [role="combobox"]:focus-within {
             border-color: ${focusStrokeOuter};
             box-shadow: 0 0 0 1px ${focusStrokeOuter} inset;
         }

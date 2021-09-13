@@ -30,7 +30,6 @@ export const pickerListItemStyles: (
 ) =>
     css`
 :host {
-    min-width: 80px;
     display: flex;
     align-items: center;
     justify-items: center;
@@ -44,7 +43,6 @@ export const pickerListItemStyles: (
     font-size: ${typeRampBaseFontSize};
     height: calc(${heightNumber} * 1px);
     line-height: ${typeRampBaseLineHeight};
-    margin: 0 calc(${designUnit} * 1px);
     outline: none;
     overflow: hidden;
     padding: 0 calc(${designUnit} * 2.25px);
@@ -52,15 +50,14 @@ export const pickerListItemStyles: (
     white-space: nowrap;
 }
 
-:host(:${focusVisible}) {
-    border-color: ${focusStrokeOuter};
+:host(:${focusVisible}),
+:host(:hover) {
     background: ${neutralLayer3};
     color: ${neutralForegroundRest};
 }
 
-:host(:hover) {
-    background: ${neutralLayer3};
-    color: ${neutralForegroundRest};
+:host(:focusVisible) {
+    border-color: ${focusStrokeOuter};
 }
 
 :host([aria-selected="true"]) {

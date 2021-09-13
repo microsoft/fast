@@ -13,8 +13,8 @@ export const pickerListItemTemplate: (
         <template
             role="listitem"
             tabindex="0"
-            @click="${(x, c) => x.handleItemClick(c.event as MouseEvent)}"
-            @keydown="${(x, c) => x.handleItemKeyDown(c.event as KeyboardEvent)}"
+            @click="${(x, c) => x.handleClick(c.event as MouseEvent)}"
+            @keydown="${(x, c) => x.handleKeyDown(c.event as KeyboardEvent)}"
         >
             <slot></slot>
         </template>

@@ -55,37 +55,36 @@ export class PickerListItem extends FoundationElement {
         super.disconnectedCallback();
     }
 
-    public handleItemKeyDown = (e: KeyboardEvent): boolean => {
+    public handleKeyDown(e: KeyboardEvent): boolean {
         if (e.defaultPrevented) {
             return false;
         }
 
         if (e.key === keyEnter) {
-            this.handleItemInvoke();
+            this.handleInvoke();
             return false;
         }
 
         return true;
-    };
+    }
 
-    public handleItemClick = (e: MouseEvent): boolean => {
+    public handleClick(e: MouseEvent): boolean {
         if (!e.defaultPrevented) {
-            this.handleItemInvoke();
+            this.handleInvoke();
         }
         return false;
-    };
+    }
 
-    private handleItemInvoke = (): void => {
+    private handleInvoke(): void {
         this.$emit("pickeriteminvoked");
-    };
+    }
 
     private updateView(): void {
         this.disconnectView();
 
         this.customView =
-            this.contentsTemplate !== undefined
-                ? this.contentsTemplate.render(this, this)
-                : defaultContentsTemplate.render(this, this);
+            this.contentsTemplate?.render(this, this) ??
+            defaultContentsTemplate.render(this, this);
     }
 
     private disconnectView(): void {
