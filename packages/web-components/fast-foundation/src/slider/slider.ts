@@ -454,6 +454,7 @@ export class Slider extends FormAssociatedSlider implements SliderConfiguration 
     private stopDragging = (): void => {
         this.isDragging = false;
         window.removeEventListener("mouseup", this.handleWindowMouseUp);
+        window.document.removeEventListener("mouseleave", this.handleWindowMouseUp);
         window.removeEventListener("mousemove", this.handleMouseMove);
         window.removeEventListener("touchmove", this.handleMouseMove);
         window.removeEventListener("touchend", this.handleWindowMouseUp);
@@ -465,6 +466,7 @@ export class Slider extends FormAssociatedSlider implements SliderConfiguration 
             this.setupTrackConstraints();
             (e.target as HTMLElement).focus();
             window.addEventListener("mouseup", this.handleWindowMouseUp);
+            window.document.addEventListener("mouseleave", this.handleWindowMouseUp);
             window.addEventListener("mousemove", this.handleMouseMove);
 
             const controlValue: number =
