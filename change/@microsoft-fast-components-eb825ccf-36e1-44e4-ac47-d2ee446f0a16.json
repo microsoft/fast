@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "Adding PlayWright tests for button and anchor focus",
+  "packageName": "@microsoft/fast-components",
+  "email": "jumarroq@microsoft.com",
+  "dependentChangeType": "patch"
+}
