@@ -3,7 +3,12 @@ import {
     ElementDefinitionContext,
     FoundationElementDefinition,
 } from "@microsoft/fast-foundation";
-import { designUnit, neutralLayerFloating } from "../design-tokens";
+import {
+    bodyFont,
+    designUnit,
+    neutralLayerFloating,
+    typeRampBaseFontSize,
+} from "../design-tokens";
 import { heightNumber } from "../styles/index";
 
 export const pickerStyles: (
@@ -18,6 +23,8 @@ export const pickerStyles: (
             z-index: 1000;
             overflow: hidden;
             display: flex;
+            font-family: ${bodyFont};
+            font-size: ${typeRampBaseFontSize};
         }
 
         .loaded {

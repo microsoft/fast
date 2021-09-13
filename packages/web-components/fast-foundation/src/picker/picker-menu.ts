@@ -59,13 +59,6 @@ export class PickerMenu extends FoundationElement {
      */
     public optionElements: HTMLElement[] = [];
 
-    /**
-     * @internal
-     */
-    public connectedCallback(): void {
-        super.connectedCallback();
-    }
-
     private updateOptions(): void {
         this.optionElements.splice(0, this.optionElements.length);
         this.addSlottedListItems(this.headerElements);

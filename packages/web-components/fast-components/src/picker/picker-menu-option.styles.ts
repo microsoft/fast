@@ -7,15 +7,16 @@ import {
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
-    accentFillActive,
+    accentFillRest,
     bodyFont,
     controlCornerRadius,
     designUnit,
     focusStrokeOuter,
     focusStrokeWidth,
     foregroundOnAccentActive,
+    neutralFillHover,
+    neutralFillRest,
     neutralForegroundRest,
-    neutralLayer3,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
 } from "../design-tokens";
@@ -53,17 +54,17 @@ export const pickerMenuOptionStyles: (
 
 :host(:${focusVisible}[role="listitem"]) {
     border-color: ${focusStrokeOuter};
-    background: ${neutralLayer3};
+    background: ${neutralFillRest};
     color: ${neutralForegroundRest};
 }
 
 :host(:hover) {
-    background: ${neutralLayer3};
+    background: ${neutralFillHover};
     color: ${neutralForegroundRest};
 }
 
 :host([aria-selected="true"]) {
-    background: ${accentFillActive};
+    background: ${accentFillRest};
     color: ${foregroundOnAccentActive};
 }
 
