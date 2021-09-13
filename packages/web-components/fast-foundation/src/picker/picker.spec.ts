@@ -19,7 +19,6 @@ import {
     keyArrowRight,
     keyArrowUp,
     keyBackspace,
-    KeyCodes,
     keyDelete,
     keyEnd,
     keyEnter,
@@ -58,31 +57,26 @@ const FASTPicker = Picker.compose({
 
 const enterEvent = new KeyboardEvent("keydown", {
     key: keyEnter,
-    keyCode: KeyCodes.enter,
     bubbles: true,
 } as KeyboardEventInit);
 
 const arrowLeftEvent = new KeyboardEvent("keydown", {
     key: keyArrowLeft,
-    keyCode: KeyCodes.arrowLeft,
     bubbles: true,
 } as KeyboardEventInit);
 
 const arrowRightEvent = new KeyboardEvent("keydown", {
     key: keyArrowRight,
-    keyCode: KeyCodes.arrowRight,
     bubbles: true,
 } as KeyboardEventInit);
 
 const backEvent = new KeyboardEvent("keydown", {
     key: keyBackspace,
-    keyCode: KeyCodes.backspace,
     bubbles: true,
 } as KeyboardEventInit);
 
 const deleteEvent = new KeyboardEvent("keydown", {
     key: keyDelete,
-    keyCode: KeyCodes.delete,
     bubbles: true,
 } as KeyboardEventInit);
 
