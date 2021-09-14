@@ -571,20 +571,20 @@ describe("A DesignToken", () => {
 
             const handleChange = chia.spy(() => {});
             const subscriber = { handleChange };
+            expect(tokenB.getValueFor(child)).to.equal(12);
 
             tokenB.subscribe(subscriber, child);
-            expect(tokenB.getValueFor(child)).to.equal(12);
 
             document.body.appendChild(parent);
 
             await DOM.nextUpdate();
 
-            expect(handleChange).not.to.have.been.called()
+            expect(handleChange).not.to.have.been.called();
 
             tokenA.setValueFor(parent, () => 7);
             expect(tokenB.getValueFor(child)).to.equal(14);
             await DOM.nextUpdate();
-            expect(handleChange).to.have.been.called()
+            expect(handleChange).to.have.been.called.once;
         });
         it("should update tokens when an element for which a token with dependencies is set is appended to the DOM FOO", async () => {
             const tokenA = DesignToken.create<number>("token-a");
@@ -622,14 +622,14 @@ describe("A DesignToken", () => {
             const handleChange = chia.spy(() => {});
             const subscriber = { handleChange };
 
-            tokenB.subscribe(subscriber, child);
             expect(tokenB.getValueFor(child)).to.equal(12);
+            tokenB.subscribe(subscriber, child);
 
             expect(handleChange).not.to.have.been.called()
             parent.appendChild(child);
 
             expect(tokenB.getValueFor(child)).to.equal(14);
-            expect(handleChange).to.have.been.called()
+            expect(handleChange).to.have.been.called.once
         });
         it("should notify a subscriber for a token after being appended to a parent with a different token value than the previous context", async () => {
             const tokenA = DesignToken.create<number>("token-a");
@@ -643,14 +643,13 @@ describe("A DesignToken", () => {
             const handleChange = chia.spy(() => {});
             const subscriber = { handleChange };
 
-            tokenA.subscribe(subscriber, child);
             expect(tokenA.getValueFor(child)).to.equal(6);
-
+            tokenA.subscribe(subscriber, child);
             expect(handleChange).not.to.have.been.called()
             parent.appendChild(child);
 
+            expect(handleChange).to.have.been.called.once;
             expect(tokenA.getValueFor(child)).to.equal(7);
-            expect(handleChange).to.have.been.called()
         });
     })
     describe("deleting simple values", () => {
