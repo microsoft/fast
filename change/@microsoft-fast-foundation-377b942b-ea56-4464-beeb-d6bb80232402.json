@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "Using a manual focus to workaround delegatesFocus issues on Firefox for the button and anchor components",
-  "packageName": "@microsoft/fast-foundation",
-  "email": "jumarroq@microsoft.com",
-  "dependentChangeType": "patch"
-}
