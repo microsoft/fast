@@ -2,6 +2,21 @@
   "name": "@microsoft/site-utilities",
   "entries": [
     {
+      "date": "Tue, 14 Sep 2021 07:16:47 GMT",
+      "tag": "@microsoft/site-utilities_v0.9.0",
+      "version": "0.9.0",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-tooling-react to v2.11.4",
+            "author": "jumarroq@microsoft.com",
+            "commit": "8094ba315ab24b4dca9b2aea1f5ef0ba5afb7725",
+            "package": "@microsoft/site-utilities"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sun, 12 Sep 2021 07:17:43 GMT",
       "tag": "@microsoft/site-utilities_v0.9.0",
       "version": "0.9.0",

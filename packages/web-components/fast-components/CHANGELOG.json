@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-components",
   "entries": [
     {
+      "date": "Tue, 14 Sep 2021 07:16:47 GMT",
+      "tag": "@microsoft/fast-components_v2.9.2",
+      "version": "2.9.2",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Adding PlayWright tests for button and anchor focus",
+            "author": "jumarroq@microsoft.com",
+            "commit": "8094ba315ab24b4dca9b2aea1f5ef0ba5afb7725",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sun, 12 Sep 2021 07:17:43 GMT",
       "tag": "@microsoft/fast-components_v2.9.1",
       "version": "2.9.1",

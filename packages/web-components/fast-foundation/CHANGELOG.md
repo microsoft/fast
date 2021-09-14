@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Sun, 12 Sep 2021 07:17:43 GMT and should not be manually modified.
+This log was last generated on Tue, 14 Sep 2021 07:16:47 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.13.1
+
+Tue, 14 Sep 2021 07:16:47 GMT
+
+### Patches
+
+- Using a manual focus to workaround delegatesFocus issues on Firefox for the button and anchor components (jumarroq@microsoft.com)
 
 ## 2.13.0
 

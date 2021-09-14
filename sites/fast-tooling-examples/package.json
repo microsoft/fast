@@ -49,7 +49,7 @@
     "worker-loader": "^2.0.0"
   },
   "dependencies": {
-    "@microsoft/fast-components": "^2.9.1",
+    "@microsoft/fast-components": "^2.9.2",
     "@microsoft/fast-tooling": "^0.29.0",
     "@microsoft/fast-tooling-react": "^2.11.4",
     "focus-visible": "^4.1.5",
