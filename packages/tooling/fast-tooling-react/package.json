@@ -2,6 +2,7 @@
   "name": "@microsoft/fast-tooling-react",
   "description": "A React-specific set of components and utilities to assist in creating web UI",
   "sideEffects": false,
+  "private": true,
   "version": "2.11.4",
   "author": {
     "name": "Microsoft",
@@ -113,11 +114,11 @@
   },
   "dependencies": {
     "@microsoft/fast-colors": "^5.1.3",
-    "@microsoft/fast-components": "^2.9.1",
+    "@microsoft/fast-components": "^2.9.2",
     "@microsoft/fast-components-class-name-contracts-base": "^4.8.0",
     "@microsoft/fast-components-foundation-react": "^3.2.0",
     "@microsoft/fast-element": "^1.5.1",
-    "@microsoft/fast-foundation": "^2.13.0",
+    "@microsoft/fast-foundation": "^2.13.1",
     "@microsoft/fast-jss-manager-react": "^4.8.0",
     "@microsoft/fast-jss-utilities": "^4.8.0",
     "@microsoft/fast-tooling": "^0.29.0",

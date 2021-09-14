@@ -71,6 +71,8 @@ export const all: (key: any, searchAncestors?: boolean | undefined) => ReturnTyp
 //
 // @public
 export class Anchor extends FoundationElement {
+    // @internal (undocumented)
+    connectedCallback(): void;
     control: HTMLAnchorElement;
     // @internal
     defaultSlottedContent: HTMLElement[];
