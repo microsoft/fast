@@ -107,7 +107,7 @@ export class VirtualizingStack extends FoundationElement {
      * @public
      */
     @observable
-    public items: any[];
+    public items: object[];
     private itemsChanged(): void {
         if (this.$fastController.isConnected) {
             this.updateDimensions();
@@ -190,6 +190,9 @@ export class VirtualizingStack extends FoundationElement {
 
     private visibleRangeStart: number = 0;
     private visibleRangeEnd: number = 0;
+
+    private firstRenderedIndex: number = -1;
+    private lastRenderedIndex: number = -1;
 
     private viewportRect: ClientRect | DOMRect | undefined;
     private containerRect: ClientRect | DOMRect | undefined;
@@ -441,28 +444,72 @@ export class VirtualizingStack extends FoundationElement {
             this.bottomSpacerHeight = 0;
             this.itemStackHeight = 0;
         } else if (this.itemHeight !== undefined) {
-            let firstVisibleIndex: number = Math.floor(
+            let newFirstRenderedIndex: number = Math.floor(
                 this.visibleRangeStart / this.itemHeight
             );
             const visibleRangeLength = this.visibleRangeEnd - this.visibleRangeStart;
-            let lastVisibleIndex: number =
-                firstVisibleIndex + Math.ceil(visibleRangeLength / this.itemHeight);
+            let newLastRenderedIndex: number =
+                newFirstRenderedIndex + Math.ceil(visibleRangeLength / this.itemHeight);
 
-            if (firstVisibleIndex < 0) {
-                firstVisibleIndex = 0;
+            if (newFirstRenderedIndex < 0) {
+                newFirstRenderedIndex = 0;
             }
 
-            if (lastVisibleIndex >= this.items.length) {
-                lastVisibleIndex = this.items.length - 1;
+            if (newLastRenderedIndex >= this.items.length) {
+                newLastRenderedIndex = this.items.length - 1;
             }
 
-            this.topSpacerHeight = firstVisibleIndex * this.itemHeight;
+            this.topSpacerHeight = newFirstRenderedIndex * this.itemHeight;
             this.bottomSpacerHeight =
-                (this.items.length - lastVisibleIndex - 1) * this.itemHeight;
+                (this.items.length - newLastRenderedIndex - 1) * this.itemHeight;
             this.itemStackHeight =
                 this.totalHeight - this.topSpacerHeight - this.bottomSpacerHeight;
 
-            this.visibleItems = this.items.slice(firstVisibleIndex, lastVisibleIndex + 1);
+            if (this.firstRenderedIndex === newFirstRenderedIndex && this.lastRenderedIndex === newLastRenderedIndex){
+                return;
+            }
+
+            if (
+                this.firstRenderedIndex === -1 ||
+                this.visibleItems.length === 0 ||
+                newFirstRenderedIndex > this.lastRenderedIndex ||
+                newLastRenderedIndex < this.firstRenderedIndex
+            ) {
+                // full reset
+                this.visibleItems.splice(0)
+                this.visibleItems = this.items.slice(newFirstRenderedIndex, newLastRenderedIndex + 1);
+                this.firstRenderedIndex = newFirstRenderedIndex;
+                this.lastRenderedIndex = newLastRenderedIndex;
+                return;
+            }
+
+            let visibleItemIndex: number = this.visibleItems.length - 1;
+
+            for(let i: number = this.lastRenderedIndex; i >= this.firstRenderedIndex; i--){
+                if (
+                    i < newFirstRenderedIndex ||
+                    i > newLastRenderedIndex
+                ){
+                    this.visibleItems.splice(visibleItemIndex,1);
+                }
+                visibleItemIndex--;
+            }
+
+
+            if (newFirstRenderedIndex < this.firstRenderedIndex){
+                for(let i: number = this.firstRenderedIndex - 1; i >= newFirstRenderedIndex; i--){
+                    this.visibleItems.splice(0, 0, this.items[i]);
+                }
+            }
+
+            if (newLastRenderedIndex > this.lastRenderedIndex){
+                for(let i: number = this.lastRenderedIndex + 1; i <= newLastRenderedIndex; i++){
+                    this.visibleItems.push(this.items[i]);
+                }
+            }
+
+            this.firstRenderedIndex = newFirstRenderedIndex;
+            this.lastRenderedIndex = newLastRenderedIndex;
         }
     };
 

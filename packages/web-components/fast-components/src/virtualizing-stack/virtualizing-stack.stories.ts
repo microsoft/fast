@@ -7,7 +7,7 @@ import "./index";
 
 const imageItemTemplate = html`
     <fast-card style="height:100px; width:120px;">
-        <image style="height:100px; width:120px;" src="${x => x}"></image>
+        <image style="height:100px; width:120px;" src="${x => x.url}"></image>
     </fast-card>
 `;
 
@@ -24,13 +24,21 @@ addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
         stack2.itemTemplate = imageItemTemplate;
         stack2.itemHeight = 100;
         stack2.items = newDataSet(100000);
+
+        const stack3 = document.getElementById("stack3") as FoundationVirtualingStack;
+
+        stack3.itemTemplate = imageItemTemplate;
+        stack3.itemHeight = 100;
+        stack3.items = newDataSet(100000);
     }
 });
 
-function newDataSet(rowCount: number): string[] {
-    const newData: string[] = [];
+function newDataSet(rowCount: number): object[] {
+    const newData: object[] = [];
     for (let i = 0; i <= rowCount; i++) {
-        newData.push(`https://via.placeholder.com/120x100/414141/?text=${i + 1}`);
+        newData.push({
+            url: `https://via.placeholder.com/120x100/414141/?text=${i + 1}`,
+        });
     }
     return newData;
 }
