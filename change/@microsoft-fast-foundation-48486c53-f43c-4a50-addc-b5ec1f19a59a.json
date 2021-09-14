@@ -1,7 +1,0 @@
-{
-  "type": "minor",
-  "comment": "use class method for radio click handler property",
-  "packageName": "@microsoft/fast-foundation",
-  "email": "john.kreitlow@microsoft.com",
-  "dependentChangeType": "patch"
-}

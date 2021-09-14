@@ -2,6 +2,48 @@
   "name": "@microsoft/fast-tooling-react",
   "entries": [
     {
+      "date": "Tue, 14 Sep 2021 07:16:47 GMT",
+      "tag": "@microsoft/fast-tooling-react_v2.11.4",
+      "version": "2.11.4",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-tooling to v0.29.0",
+            "author": "jumarroq@microsoft.com",
+            "commit": "8094ba315ab24b4dca9b2aea1f5ef0ba5afb7725",
+            "package": "@microsoft/fast-tooling-react"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sun, 12 Sep 2021 07:17:43 GMT",
+      "tag": "@microsoft/fast-tooling-react_v2.11.4",
+      "version": "2.11.4",
+      "comments": {
+        "patch": [
+          {
+            "comment": "small update to layout styling to ensure components with display flex are displayed consistently",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "b2283a1a2c2f35a71cf8f87e0d65cce2b7f532be",
+            "package": "@microsoft/fast-tooling-react"
+          },
+          {
+            "comment": "allow linked data that has no default droppable location to drop onto other drop targets",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "5e6fa77c649954c7c1aff842b4b49d2d806af586",
+            "package": "@microsoft/fast-tooling-react"
+          },
+          {
+            "comment": "remove dependencies on keycode",
+            "author": "scomea@microsoft.com",
+            "commit": "e8602a247065b0c916bdc8e55314f2d3e3403fd1",
+            "package": "@microsoft/fast-tooling-react"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 09 Sep 2021 07:21:36 GMT",
       "tag": "@microsoft/fast-tooling-react_v2.11.3",
       "version": "2.11.3",
