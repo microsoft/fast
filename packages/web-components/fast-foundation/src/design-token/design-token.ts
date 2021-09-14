@@ -427,6 +427,10 @@ class Store {
         return this.values.get(token);
     }
 
+    delete<T>(token: DesignTokenImpl<T>) {
+        this.values.delete(token);
+    }
+
     all() {
         return this.values.entries();
     }
@@ -661,8 +665,13 @@ class DesignTokenNode implements Behavior, Subscriber {
     public delete<T>(token: DesignTokenImpl<T>): void {
         this.assignedValues.delete(token);
         this.tearDownBindingObserver(token);
-        this.children.forEach(x => x.purgeInheritedBindings(token));
-        token.notify(this.target);
+        const upstream = this.getRaw(token);
+
+        if (upstream) {
+            this.hydrate(token, upstream);
+        } else {
+            this.store.delete(token);
+        }
     }
 
     /**
