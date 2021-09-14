@@ -19,31 +19,6 @@ import type {
     StaticDesignTokenValue,
 } from "./interfaces";
 
-/**
- * Change Description:
- *
- * This change changes the way in which DesignToken stores and propagates value changes
- * through a node tree.
- *
- * Each DesignTokenNode will keep a store of DesignTokenImpl -> static value. Changes to these static values will
- * notify using Observable and DesignToken subscription. Statically assigned values can be kept 1-1 with the assign values.
- * Derived token values will be associated to a bindingObserver for the assigned raw value. Change notifications will *only* be
- * emitted when the derived value changes for a token.
- *
- * When a derived token value is assigned to a node, a code-path will execute that propagates down the node tree informing nodes that they
- * should fetch the binding and set up an observer.
- *
- * CSS reflection will be determined by:
- * 1. If token is a CSSDesignToken:
- * 2. Get current node's static value.
- * 3. Get the parent node's static value. If no parent node, reflect.
- * 4. If current value is !== parent value, reflect
- * 5. If current value is parent value and the node is reflecting, stop reflection.
- *
- *
- * Appending a node to a parent node will "hydrate" the node. This will force setup of all static values, setup and evaluation of binding observers, and propagation.
- */
-
 const defaultElement = document.body;
 
 /**
@@ -827,24 +802,6 @@ class DesignTokenNode implements Behavior, Subscriber {
                 }
 
                 this.store.set(token, value as StaticDesignTokenValue<T>);
-            }
-        }
-    }
-
-    /**
-     * Recursively purge binding observers for a token for descendent of the node.
-     * Bindings will only be purged for trees of nodes where no explicit value for the node
-     * is assigned.
-     *
-     * TODO - Do I need this?
-     * @param token - the token to purge bindings on
-     */
-    public purgeInheritedBindings<T>(token: DesignTokenImpl<T>) {
-        if (!this.has(token)) {
-            this.tearDownBindingObserver(token);
-
-            if (this.children.length) {
-                this.children.forEach(child => child.purgeInheritedBindings(token));
             }
         }
     }
