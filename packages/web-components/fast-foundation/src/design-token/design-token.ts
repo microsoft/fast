@@ -587,10 +587,6 @@ class DesignTokenNode implements Behavior, Subscriber {
         // Map store change notifications to token change notifications
         Observable.getNotifier(this.store).subscribe(this.tokenValueChangeHandler);
 
-        if (this.target !== defaultElement) {
-            DesignTokenNode.getOrCreate(defaultElement).appendChild(this);
-        }
-
         if (target instanceof FASTElement) {
             (target as FASTElement).$fastController.addBehaviors([this]);
         } else if (target.isConnected) {
@@ -612,7 +608,18 @@ class DesignTokenNode implements Behavior, Subscriber {
      * @returns
      */
     public get<T>(token: DesignTokenImpl<T>): StaticDesignTokenValue<T> | undefined {
-        return this.store.get(token);
+        const value = this.store.get(token);
+
+        if (value !== undefined) {
+            return value;
+        }
+
+        const raw = this.getRaw(token);
+
+        if (raw) {
+            this.hydrate(token, raw);
+            return this.get(token);
+        }
     }
 
     /**
@@ -634,11 +641,8 @@ class DesignTokenNode implements Behavior, Subscriber {
      * @param value - The value to set the token to
      */
     public set<T>(token: DesignTokenImpl<T>, value: DesignTokenValue<T>): void {
-        // Disconnect any existing binding observer
-        // And delete it
         if (DesignTokenImpl.isDerivedDesignTokenValue(this.assignedValues.get(token))) {
             this.tearDownBindingObserver(token);
-            this.children.forEach(x => x.purgeInheritedBindings(token));
         }
 
         this.assignedValues.set(token, value);
@@ -704,8 +708,11 @@ class DesignTokenNode implements Behavior, Subscriber {
         Observable.getNotifier(this.store).subscribe(child);
 
         // How can we not notify *every* subscriber?
-        for (const [token] of this.store.all()) {
-            Observable.notify(this.store, token.id);
+        for (const [token, value] of this.store.all()) {
+            child.hydrate(
+                token,
+                this.bindingObservers.has(token) ? this.getRaw(token) : value
+            );
         }
     }
 
@@ -782,27 +789,35 @@ class DesignTokenNode implements Behavior, Subscriber {
             return;
         }
 
+        this.hydrate(token, this.getRaw(token));
+    }
+
+    /**
+     * Hydrates a token with a DesignTokenValue, making retrieval available.
+     * @param token - The token to hydrate
+     * @param value - The value to hydrate
+     */
+    public hydrate<T>(token: DesignTokenImpl<T>, value: DesignTokenValue<T>) {
         if (!this.has(token)) {
-            const raw = this.getRaw(token);
             const observer = this.bindingObservers.get(token);
 
-            if (DesignTokenImpl.isDerivedDesignTokenValue(raw)) {
+            if (DesignTokenImpl.isDerivedDesignTokenValue(value)) {
                 if (observer) {
-                    if (observer.source === raw) {
+                    if ((observer.source as any) === value) {
                         // do nothing
                     } else {
                         this.tearDownBindingObserver(token);
-                        this.setupBindingObserver(token, raw);
+                        this.setupBindingObserver(token, value);
                     }
                 } else {
-                    this.setupBindingObserver(token, raw);
+                    this.setupBindingObserver(token, value);
                 }
             } else {
                 if (observer) {
                     this.tearDownBindingObserver(token);
                 }
 
-                this.store.set(token, raw);
+                this.store.set(token, value as StaticDesignTokenValue<T>);
             }
         }
     }
