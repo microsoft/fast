@@ -541,7 +541,7 @@ describe("A DesignToken", () => {
                 expect(tokenC.getValueFor(child)).to.equal(16);
                 expect(window.getComputedStyle(child).getPropertyValue(tokenC.cssCustomProperty)).to.equal("16");
         });
-        it("should update tokens when an element for which a token with dependencies is set is appended to the DOM", async () => {
+        it("should update tokens when an element for which a token with static dependencies is set is appended to the DOM", async () => {
             const tokenA = DesignToken.create<number>("token-a");
             const tokenB = DesignToken.create<number>("token-b");
 
@@ -558,7 +558,7 @@ describe("A DesignToken", () => {
 
             expect(window.getComputedStyle(element).getPropertyValue(tokenB.cssCustomProperty)).to.equal('14');
         });
-        it("should update tokens when an element for which a token with dependencies is set is appended to the DOM FOO", async () => {
+        it("should update tokens and notify when an element for which a token with dynamic dependencies is set is appended to the DOM", async () => {
             const tokenA = DesignToken.create<number>("token-a");
             const tokenB = DesignToken.create<number>("token-b");
 
@@ -585,27 +585,6 @@ describe("A DesignToken", () => {
             expect(tokenB.getValueFor(child)).to.equal(14);
             await DOM.nextUpdate();
             expect(handleChange).to.have.been.called.once;
-        });
-        it("should update tokens when an element for which a token with dependencies is set is appended to the DOM FOO", async () => {
-            const tokenA = DesignToken.create<number>("token-a");
-            const tokenB = DesignToken.create<number>("token-b");
-
-            tokenA.withDefault(() => 6);
-            tokenB.withDefault(el => tokenA.getValueFor(el) * 2);
-
-            const parent = addElement();
-            const child = addElement(parent);
-
-            const handleChange = chia.spy(() => {});
-            const subscriber = { handleChange };
-
-            tokenB.subscribe(subscriber, child);
-            expect(tokenB.getValueFor(child)).to.equal(12);
-
-            tokenA.setValueFor(parent, () => 7);
-            expect(tokenB.getValueFor(child)).to.equal(14);
-            await DOM.nextUpdate();
-            expect(handleChange).to.have.been.called()
         });
         it("should notify a subscriber for a token after being appended to a parent with a different token value than the previous context", async () => {
             const tokenA = DesignToken.create<number>("token-a");
