@@ -620,7 +620,7 @@ class DesignTokenNode implements Behavior, Subscriber {
 
         const raw = this.getRaw(token);
 
-        if (raw) {
+        if (raw !== undefined) {
             this.hydrate(token, raw);
             return this.get(token);
         }
