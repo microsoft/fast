@@ -25,4 +25,8 @@ export const virtualizingStackStyles: (
         flex-direction: column;
         overflow: hidden;
     }
+
+    .background {
+        background: repeating-linear-gradient(0deg, transparent, transparent 100px, darkgray 100px, darkgray 200px);
+    }
 `;
