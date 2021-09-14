@@ -16,19 +16,16 @@ addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
         const stack1 = document.getElementById("stack1") as FoundationVirtualingStack;
 
         stack1.itemTemplate = imageItemTemplate;
-        stack1.itemHeight = 100;
         stack1.items = newDataSet(100000);
 
         const stack2 = document.getElementById("stack2") as FoundationVirtualingStack;
 
         stack2.itemTemplate = imageItemTemplate;
-        stack2.itemHeight = 100;
         stack2.items = newDataSet(100000);
 
         const stack3 = document.getElementById("stack3") as FoundationVirtualingStack;
 
         stack3.itemTemplate = imageItemTemplate;
-        stack3.itemHeight = 100;
         stack3.items = newDataSet(100000);
     }
 });

@@ -20,7 +20,7 @@ export const virtualizingStackStyles: (
     }
 
     .item-stack {
-        width: 200px;
+        width: 100%;
         display: flex;
         flex-direction: column;
         overflow: hidden;

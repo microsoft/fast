@@ -186,7 +186,6 @@ export class VirtualizingStack extends FoundationElement {
     private resizeDetector: ResizeObserverClassDefinition | null = null;
 
     private pendingPositioningUpdate: boolean = false;
-    private delayLayoutUpdate: boolean = false;
 
     private visibleRangeStart: number = 0;
     private visibleRangeEnd: number = 0;
