@@ -587,13 +587,12 @@ class DesignTokenNode implements Behavior, Subscriber {
         // Map store change notifications to token change notifications
         Observable.getNotifier(this.store).subscribe(this.tokenValueChangeHandler);
 
+        if (this.target !== defaultElement) {
+            DesignTokenNode.getOrCreate(defaultElement).appendChild(this);
+        }
+
         if (target instanceof FASTElement) {
             (target as FASTElement).$fastController.addBehaviors([this]);
-
-            if (!target.isConnected) {
-                // This might be a perf bottle-neck
-                DesignTokenNode.getOrCreate(defaultElement).appendChild(this);
-            }
         } else if (target.isConnected) {
             this.bind();
         }
