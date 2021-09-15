@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-creator
 
-This log was last generated on Wed, 15 Sep 2021 07:18:53 GMT and should not be manually modified.
+This log was last generated on Wed, 15 Sep 2021 19:49:35 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.7.0
+
+Wed, 15 Sep 2021 19:49:35 GMT
+
+### Patches
+
+- Bump @microsoft/fast-tooling-react to v2.11.4 (john.kreitlow@microsoft.com)
 
 ## 0.7.0
 

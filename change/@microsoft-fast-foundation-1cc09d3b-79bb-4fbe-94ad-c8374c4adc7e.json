@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "Fix design-token subscription bugs where subscribers were not getting notified",
-  "packageName": "@microsoft/fast-foundation",
-  "email": "nicholasrice@users.noreply.github.com",
-  "dependentChangeType": "patch"
-}
