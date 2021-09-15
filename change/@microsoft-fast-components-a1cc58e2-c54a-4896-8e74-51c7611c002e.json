@@ -1,0 +1,7 @@
+{
+  "type": "none",
+  "comment": "remove unused math file",
+  "packageName": "@microsoft/fast-components",
+  "email": "nicholasrice@users.noreply.github.com",
+  "dependentChangeType": "none"
+}
