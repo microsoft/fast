@@ -497,7 +497,7 @@ class DesignTokenNode implements Behavior, Subscriber {
     /**
      * Stores all resolved token values for a node
      */
-    public readonly store: Store = new Store(this);
+    public readonly store: Store = new Store();
 
     /**
      * The parent DesignTokenNode, or null.
@@ -789,6 +789,8 @@ class DesignTokenNode implements Behavior, Subscriber {
 
             if (DesignTokenImpl.isDerivedDesignTokenValue(value)) {
                 if (observer) {
+                    // If the binding source doesn't match, we need
+                    // to update the binding
                     if ((observer.source as any) !== value) {
                         this.tearDownBindingObserver(token);
                         this.setupBindingObserver(token, value);
