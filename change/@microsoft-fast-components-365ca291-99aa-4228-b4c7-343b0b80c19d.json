@@ -1,7 +1,0 @@
-{
-  "type": "minor",
-  "comment": "add additional example in component explorer scenario",
-  "packageName": "@microsoft/fast-components",
-  "email": "v-dlesac@microsoft.com",
-  "dependentChangeType": "patch"
-}
