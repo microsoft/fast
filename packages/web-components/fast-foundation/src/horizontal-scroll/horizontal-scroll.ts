@@ -242,17 +242,20 @@ export class HorizontalScroll extends FoundationElement {
      */
     private updateScrollStops(): void {
         this.updatingItems = true;
-        let updatedItems: HTMLElement[] = [];
+        const updatedItems: HTMLElement[] = this.scrollItems.reduce(
+            (scrollItems, scrollItem) => {
+                if (scrollItem instanceof HTMLSlotElement) {
+                    return scrollItems.concat(
+                        scrollItem.assignedElements() as HTMLElement[]
+                    );
+                }
 
-        this.scrollItems.forEach(item => {
-            if (item instanceof HTMLSlotElement) {
-                updatedItems = updatedItems.concat(
-                    item.assignedElements() as HTMLElement[]
-                );
-            } else {
-                updatedItems.push(item);
-            }
-        });
+                scrollItems.push(scrollItem);
+
+                return scrollItems;
+            },
+            [] as HTMLElement[]
+        );
 
         this.scrollItems = updatedItems;
         this.updatingItems = false;
