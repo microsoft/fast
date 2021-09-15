@@ -78,14 +78,14 @@ export class TreeView extends FoundationElement {
         const { relatedTarget, target } = e;
 
         if (
-            relatedTarget === null ||
-            (relatedTarget instanceof HTMLElement &&
-                target instanceof HTMLElement &&
-                !this.contains(relatedTarget))
+            (relatedTarget === null || relatedTarget instanceof HTMLElement) &&
+            target instanceof HTMLElement &&
+            !this.contains(relatedTarget)
         ) {
             const treeView = this as HTMLElement;
             if (this.currentFocused instanceof TreeItem) {
                 TreeItem.focusItem(this.currentFocused);
+                this.currentFocused.setAttribute("tabindex", "0");
             }
             treeView.setAttribute("tabindex", "-1");
         }
@@ -115,11 +115,16 @@ export class TreeView extends FoundationElement {
             case keyCodeHome:
                 if (this.treeItems && this.treeItems.length) {
                     TreeItem.focusItem(this.treeItems[0]);
+                    this.treeItems[0].setAttribute("tabindex", "0");
                 }
                 break;
             case keyCodeEnd:
                 if (this.treeItems && this.treeItems.length) {
                     TreeItem.focusItem(this.treeItems[this.treeItems.length - 1]);
+                    this.treeItems[this.treeItems.length - 1].setAttribute(
+                        "tabindex",
+                        "0"
+                    );
                 }
                 break;
             case keyCodeArrowLeft:
@@ -169,17 +174,27 @@ export class TreeView extends FoundationElement {
         }
 
         if (item instanceof TreeItem) {
-            visibleNodes[visibleNodes.indexOf(item)].setAttribute("tabindex", "-1");
+            const index = visibleNodes.indexOf(item);
+            const lastItem = visibleNodes[index];
+            if (delta < 0 && index > 0) {
+                lastItem.setAttribute("tabindex", "-1");
+            } else if (delta > 0 && index < visibleNodes.length - 1) {
+                lastItem.setAttribute("tabindex", "-1");
+            }
             const focusItem = visibleNodes[visibleNodes.indexOf(item) + delta];
             if (isHTMLElement(focusItem)) {
                 TreeItem.focusItem(focusItem);
+                focusItem.setAttribute("tabindex", "0");
                 this.currentFocused = focusItem;
             }
         }
     }
 
     private setItems = (): void => {
-        const focusIndex = this.treeItems.findIndex(this.isFocusableElement);
+        let focusIndex = this.treeItems.findIndex(this.isSelectedElement);
+        if (focusIndex === -1) {
+            focusIndex = this.treeItems.findIndex(this.isFocusableElement);
+        }
 
         for (let item: number = 0; item < this.treeItems.length; item++) {
             if (item === focusIndex) {
@@ -205,9 +220,14 @@ export class TreeView extends FoundationElement {
     private handleSelected(item: HTMLElement): void {
         if (item instanceof TreeItem) {
             if (this.currentSelected !== item) {
-                if (this.currentSelected instanceof TreeItem) {
+                item.setAttribute("tabindex", "0");
+                if (this.currentSelected instanceof TreeItem && this.currentFocused) {
                     this.currentSelected.selected = false;
                     this.currentSelected.setAttribute("tabindex", "-1");
+                    // if(this.currentFocused !== item) {
+                    //     this.currentFocused.setAttribute("tabindex", "-1");
+                    //     console.log("hits after", this.currentFocused)
+                    // }
                 }
                 if (!this.currentSelected) {
                     this.slottedTreeItems.forEach((item: HTMLElement) => {
@@ -219,7 +239,6 @@ export class TreeView extends FoundationElement {
                 if (!item.disabled) {
                     item.selected = true;
                 }
-                item.setAttribute("tabindex", "0");
                 this.currentFocused = item;
                 this.currentSelected = item;
             }
@@ -238,6 +257,10 @@ export class TreeView extends FoundationElement {
      */
     private isFocusableElement = (el: Element): el is HTMLElement => {
         return isTreeItemElement(el);
+    };
+
+    private isSelectedElement = (el: TreeItem): el is TreeItem => {
+        return el.selected;
     };
 
     private getVisibleNodes(): HTMLElement[] {
