@@ -1,30 +1,17 @@
-import type { SyntheticViewTemplate } from "@microsoft/fast-element";
 import {
     attr,
     booleanConverter,
     nullableNumberConverter,
     observable,
 } from "@microsoft/fast-element";
-// TODO: the Resize Observer related files are a temporary stopgap measure until
-// Resize Observer types are pulled into TypeScript, which seems imminent
-// At that point these files should be deleted.
-// https://github.com/microsoft/TypeScript/issues/37861
-import type {
-    ConstructibleResizeObserver,
-    ResizeObserverClassDefinition,
-} from "../anchored-region/resize-observer";
+import type { SyntheticViewTemplate } from "@microsoft/fast-element";
+import { FoundationElement } from "../foundation-element";
 import type {
     FoundationElementDefinition,
     FoundationElementTemplate,
 } from "../foundation-element";
-import { FoundationElement } from "../foundation-element";
-import type { StartEndOptions } from "../patterns";
-
-declare global {
-    interface WindowWithResizeObserver extends Window {
-        ResizeObserver: ConstructibleResizeObserver;
-    }
-}
+import type { StartEndOptions } from "../patterns/start-end";
+import type { ResizeObserverClassDefinition } from "../utilities/resize-observer";
 
 /**
  * The views types for a horizontal-scroll {@link @microsoft/fast-foundation#(HorizontalScroll:class)}
