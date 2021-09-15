@@ -3,7 +3,7 @@ import { MenuItem, menuItemTemplate as template } from "./index";
 import { fixture } from "../test-utilities/fixture";
 import { DOM } from "@microsoft/fast-element";
 import { MenuItemRole } from "./menu-item";
-import { KeyCodes } from "@microsoft/fast-web-utilities";
+import { keyEnter, keySpace } from "@microsoft/fast-web-utilities";
 import { AnchoredRegion, anchoredRegionTemplate } from "../anchored-region";
 
 const FASTMenuItem = MenuItem.compose({
@@ -199,8 +199,7 @@ describe("Menu item", () => {
             const { element, connect, disconnect } = await setup();
             let wasInvoked: boolean = false;
             const event = new KeyboardEvent("keydown", {
-                key: "space",
-                keyCode: KeyCodes.space,
+                key: keySpace,
             } as KeyboardEventInit);
 
             await connect();
@@ -224,8 +223,7 @@ describe("Menu item", () => {
             const { element, connect, disconnect } = await setup();
             let wasInvoked: boolean = false;
             const event = new KeyboardEvent("keydown", {
-                key: "enter",
-                keyCode: KeyCodes.enter,
+                key: keyEnter,
             } as KeyboardEventInit);
 
             await connect();

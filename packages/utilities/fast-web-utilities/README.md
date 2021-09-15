@@ -47,24 +47,28 @@ import { convertStylePropertyPixelsToNumber } from "@microsoft/fast-web-utilitie
 const elementTopMargin = convertStylePropertyPixelsToNumber(style, "margin-top");
 ```
 
-### Key code utilities
+### Key utilities
 
-#### KeyCodes (enum)
+#### Key strings
+
+Commonly used `event.key` values are available as individual exports. Additional `key` values will be added as needed.  
 
 ```js
-import { KeyCodes } from "@microsoft/fast-web-utilities";
+import { keyEnter, keySpace } from "@microsoft/fast-web-utilities";
 
 handleKeyPress = (e) => {
-    const keyCode = getKeyCode(e);
-
-    switch (keyCode) {
-        case KeyCodes.space:
-        case KeyCodes.enter:
-            // Do something if keycode matches
+    switch (e.key) {
+        case keySpace:
+        case keyEnter:
+            // Do something if key matches
             break;
     }
 }
 ```
+
+#### KeyCodes (enum)
+
+Keycodes are deprecated and their use should be avoided. Use the individual string `key` values instead.
 
 ### Localization utilities
 

@@ -2,11 +2,11 @@ import { expect } from "chai";
 import { Dialog, dialogTemplate as template } from "./index";
 import { fixture } from "../test-utilities/fixture";
 import { DOM } from "@microsoft/fast-element";
-import { KeyCodes } from "@microsoft/fast-web-utilities";
+import { keyEscape } from "@microsoft/fast-web-utilities";
 
 const FASTDialog = Dialog.compose({
     baseName: "dialog",
-    template,  
+    template,
 })
 
 async function setup() {
@@ -266,8 +266,7 @@ describe("Dialog", () => {
             const { element, connect, disconnect, document } = await setup();
 
             const event = new KeyboardEvent("keydown", {
-                key: "Escape",
-                keyCode: KeyCodes.escape,
+                key: keyEscape,
             } as KeyboardEventInit);
 
             await connect();
