@@ -57,20 +57,37 @@ export class TreeView extends FoundationElement {
         });
     }
 
+    public currentFocused: HTMLElement | TreeItem | null;
+
     private treeItems: HTMLElement[];
 
     public handleBlur = (e: FocusEvent): void => {
         const { relatedTarget, target } = e;
-
-        /**
-         * Clean up previously focused item's tabindex if we've moved to another item in the tree
-         */
         if (
-            relatedTarget instanceof HTMLElement &&
-            target instanceof HTMLElement &&
-            this.contains(relatedTarget)
+            relatedTarget === null ||
+            (relatedTarget instanceof HTMLElement &&
+                target instanceof HTMLElement &&
+                !this.contains(relatedTarget))
         ) {
-            target.removeAttribute("tabindex");
+            const treeView = this as HTMLElement;
+            treeView.setAttribute("tabindex", "0");
+        }
+    };
+
+    public handleFocus = (e: FocusEvent): void => {
+        const { relatedTarget, target } = e;
+
+        if (
+            relatedTarget === null ||
+            (relatedTarget instanceof HTMLElement &&
+                target instanceof HTMLElement &&
+                !this.contains(relatedTarget))
+        ) {
+            const treeView = this as HTMLElement;
+            if (this.currentFocused instanceof TreeItem) {
+                TreeItem.focusItem(this.currentFocused);
+            }
+            treeView.setAttribute("tabindex", "-1");
         }
     };
 
@@ -90,7 +107,6 @@ export class TreeView extends FoundationElement {
     }
 
     public handleKeyDown = (e: KeyboardEvent): void | boolean => {
-        console.log("Fires!!!!!!!!", e);
         if (!this.treeItems) {
             return true;
         }
@@ -141,6 +157,8 @@ export class TreeView extends FoundationElement {
                 // the default action is typically to select the focused node.
                 this.handleSelected(e.target as HTMLElement);
                 break;
+            default:
+                return true;
         }
     };
 
@@ -151,9 +169,11 @@ export class TreeView extends FoundationElement {
         }
 
         if (item instanceof TreeItem) {
+            visibleNodes[visibleNodes.indexOf(item)].setAttribute("tabindex", "-1");
             const focusItem = visibleNodes[visibleNodes.indexOf(item) + delta];
             if (isHTMLElement(focusItem)) {
                 TreeItem.focusItem(focusItem);
+                this.currentFocused = focusItem;
             }
         }
     }
@@ -164,6 +184,7 @@ export class TreeView extends FoundationElement {
         for (let item: number = 0; item < this.treeItems.length; item++) {
             if (item === focusIndex) {
                 this.treeItems[item].setAttribute("tabindex", "0");
+                this.currentFocused = this.treeItems[item];
             }
             this.treeItems[item].addEventListener(
                 "selected-change",
@@ -186,10 +207,20 @@ export class TreeView extends FoundationElement {
             if (this.currentSelected !== item) {
                 if (this.currentSelected instanceof TreeItem) {
                     this.currentSelected.selected = false;
+                    this.currentSelected.setAttribute("tabindex", "-1");
+                }
+                if (!this.currentSelected) {
+                    this.slottedTreeItems.forEach((item: HTMLElement) => {
+                        if (item instanceof TreeItem) {
+                            item.setAttribute("tabindex", "-1");
+                        }
+                    });
                 }
                 if (!item.disabled) {
                     item.selected = true;
                 }
+                item.setAttribute("tabindex", "0");
+                this.currentFocused = item;
                 this.currentSelected = item;
             }
         }

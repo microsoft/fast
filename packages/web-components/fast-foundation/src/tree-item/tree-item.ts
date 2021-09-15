@@ -95,7 +95,6 @@ export class TreeItem extends FoundationElement {
      * @param el - the element to focus
      */
     public static focusItem(el: HTMLElement) {
-        el.setAttribute("tabindex", "0");
         (el as TreeItem).focusable = true;
         el.focus();
     }

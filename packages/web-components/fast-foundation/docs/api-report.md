@@ -2375,9 +2375,13 @@ export class TreeView extends FoundationElement {
     // (undocumented)
     connectedCallback(): void;
     // (undocumented)
+    currentFocused: HTMLElement | TreeItem | null;
+    // (undocumented)
     currentSelected: HTMLElement | TreeItem | null;
     // (undocumented)
     handleBlur: (e: FocusEvent) => void;
+    // (undocumented)
+    handleFocus: (e: FocusEvent) => void;
     // (undocumented)
     handleKeyDown: (e: KeyboardEvent) => void | boolean;
     // (undocumented)
