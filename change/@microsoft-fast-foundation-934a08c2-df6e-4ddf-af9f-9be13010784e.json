@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "use css transforms and transitions in horizontal scroll",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "john.kreitlow@microsoft.com",
+  "dependentChangeType": "patch"
+}
