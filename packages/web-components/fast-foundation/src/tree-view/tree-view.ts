@@ -64,10 +64,9 @@ export class TreeView extends FoundationElement {
     public handleBlur = (e: FocusEvent): void => {
         const { relatedTarget, target } = e;
         if (
-            relatedTarget === null ||
-            (relatedTarget instanceof HTMLElement &&
-                target instanceof HTMLElement &&
-                !this.contains(relatedTarget))
+            (relatedTarget === null || relatedTarget instanceof HTMLElement) &&
+            target instanceof HTMLElement &&
+            !this.contains(relatedTarget)
         ) {
             const treeView = this as HTMLElement;
             treeView.setAttribute("tabindex", "0");
