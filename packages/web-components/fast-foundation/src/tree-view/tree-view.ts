@@ -83,7 +83,7 @@ export class TreeView extends FoundationElement {
             !this.contains(relatedTarget)
         ) {
             const treeView = this as HTMLElement;
-            if (this.currentFocused instanceof TreeItem) {
+            if (target === this && this.currentFocused instanceof TreeItem) {
                 TreeItem.focusItem(this.currentFocused);
                 this.currentFocused.setAttribute("tabindex", "0");
             }
@@ -224,10 +224,6 @@ export class TreeView extends FoundationElement {
                 if (this.currentSelected instanceof TreeItem && this.currentFocused) {
                     this.currentSelected.selected = false;
                     this.currentSelected.setAttribute("tabindex", "-1");
-                    // if(this.currentFocused !== item) {
-                    //     this.currentFocused.setAttribute("tabindex", "-1");
-                    //     console.log("hits after", this.currentFocused)
-                    // }
                 }
                 if (!this.currentSelected) {
                     this.slottedTreeItems.forEach((item: HTMLElement) => {
