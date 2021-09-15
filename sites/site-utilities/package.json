@@ -58,7 +58,7 @@
   },
   "dependencies": {
     "@fluentui/web-components": "^1.2.3",
-    "@microsoft/fast-components": "^2.9.2",
+    "@microsoft/fast-components": "^2.10.0",
     "@microsoft/fast-foundation": "^2.13.1",
     "@microsoft/fast-tooling": "^0.29.0",
     "@microsoft/fast-tooling-react": "^2.11.4",
