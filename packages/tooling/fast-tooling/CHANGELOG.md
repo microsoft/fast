@@ -1,8 +1,93 @@
 # Change Log - @microsoft/fast-tooling
 
-This log was last generated on Fri, 27 Aug 2021 14:14:26 GMT and should not be manually modified.
+This log was last generated on Wed, 15 Sep 2021 07:18:53 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.29.0
+
+Wed, 15 Sep 2021 07:18:53 GMT
+
+### Patches
+
+- Bump @microsoft/fast-components to v2.10.0 (v-dlesac@microsoft.com)
+
+## 0.29.0
+
+Tue, 14 Sep 2021 07:16:47 GMT
+
+### Patches
+
+- Bump @microsoft/fast-components to v2.9.2 (jumarroq@microsoft.com)
+
+## 0.29.0
+
+Sun, 12 Sep 2021 07:17:43 GMT
+
+### Minor changes
+
+- added option to commit inline edit changes on blur (44823142+williamw2@users.noreply.github.com)
+
+### Patches
+
+- fixed exception in htmlrenderer in specific messaging scenarios (44823142+williamw2@users.noreply.github.com)
+- remove dependencies on keycode (scomea@microsoft.com)
+- Bump @microsoft/fast-components to v2.9.1 (john.kreitlow@microsoft.com)
+- Bump @microsoft/fast-foundation to v2.13.0 (scomea@microsoft.com)
+- Bump @microsoft/fast-web-utilities to v4.8.1 (scomea@microsoft.com)
+
+## 0.28.0
+
+Thu, 09 Sep 2021 07:21:36 GMT
+
+### Minor changes
+
+- add a message queue to the message system (7559015+janechu@users.noreply.github.com)
+
+### Patches
+
+- Bump @microsoft/fast-components to v2.9.0 (chhol@microsoft.com)
+- Bump @microsoft/fast-foundation to v2.12.0 (chhol@microsoft.com)
+
+## 0.27.11
+
+Wed, 08 Sep 2021 07:16:17 GMT
+
+### Patches
+
+- Bump @microsoft/fast-element to v1.5.1 (roeisenb@microsoft.com)
+
+## 0.27.10
+
+Thu, 02 Sep 2021 17:17:56 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.10.0 (roeisenb@microsoft.com)
+
+## 0.27.9
+
+Thu, 02 Sep 2021 07:15:21 GMT
+
+### Patches
+
+- Bump @microsoft/fast-components to v2.8.1 (47367562+bheston@users.noreply.github.com)
+
+## 0.27.8
+
+Wed, 01 Sep 2021 07:18:34 GMT
+
+### Patches
+
+- Bump @microsoft/fast-components to v2.8.0 (scomea@microsoft.com)
+
+## 0.27.7
+
+Mon, 30 Aug 2021 22:30:39 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.8.1 (nicholasrice@users.noreply.github.com)
 
 ## 0.27.6
 
