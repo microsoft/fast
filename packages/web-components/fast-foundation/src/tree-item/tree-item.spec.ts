@@ -179,19 +179,6 @@ describe("TreeItem", () => {
         await disconnect();
     });
 
-    it("should NOT set a tabindex when disabled is `true`", async () => {
-        const { element, connect, disconnect } = await setup();
-
-        element.disabled = true;
-
-        await connect();
-
-        expect(element.hasAttribute("tabindex")).to.equal(false);
-        expect(element.getAttribute("tabindex")).to.equal(null);
-
-        await disconnect();
-    });
-
     it("should set a tabindex when `focusable` is true", async () => {
         const { element, connect, disconnect } = await setup();
 
@@ -347,32 +334,6 @@ describe("TreeItem", () => {
             await DOM.nextUpdate();
 
             expect(wasClicked).to.equal(true);
-
-            await disconnect();
-        });
-
-        it("should toggle the selected state when the component is clicked", async () => {
-            const { element, connect, disconnect } = await setup();
-            const nestedItem = document.createElement("fast-tree-item");
-
-            element.appendChild(nestedItem);
-
-            await connect();
-            await DOM.nextUpdate();
-
-            element.click();
-
-            await DOM.nextUpdate();
-
-            expect(element.selected).to.equal(true);
-            expect(element.getAttribute("aria-selected")).to.equal("true");
-
-            element.click();
-
-            await DOM.nextUpdate();
-
-            expect(element.selected).to.equal(false);
-            expect(element.getAttribute("aria-selected")).to.equal("false");
 
             await disconnect();
         });
