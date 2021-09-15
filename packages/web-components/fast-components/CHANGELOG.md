@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-components
 
-This log was last generated on Tue, 14 Sep 2021 07:16:47 GMT and should not be manually modified.
+This log was last generated on Wed, 15 Sep 2021 07:18:53 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.10.0
+
+Wed, 15 Sep 2021 07:18:53 GMT
+
+### Minor changes
+
+- add additional example in component explorer scenario (v-dlesac@microsoft.com)
 
 ## 2.9.2
 
