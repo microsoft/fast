@@ -230,19 +230,19 @@ jobs:
   lighthouse-check:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@master
-    - run: mkdir /tmp/artifacts
-    - name: Run Lighthouse
-    uses: foo-software/lighthouse-check-action@master
-    with:
-      accessToken: ${{ secrets.GITHUB_TOKEN }}
-      author: ${{ github.actor }}
-      branch: ${{ github.ref }}
-      outputDirectory: /tmp/artifacts
-      urls: 'https://www.foo.software,https://www.foo.software/contact'
-
-    - name: Upload artifacts
-      uses: actions/upload-artifact@master
-      with:
-        name: Lighthouse reports
-        path: /tmp/artifacts
+      - uses: actions/checkout@master
+      - run: mkdir /tmp/artifacts
+      - name: Run Lighthouse
+        uses: foo-software/lighthouse-check-action@master
+        with:
+          accessToken: ${{ secrets.GITHUB_TOKEN }}
+          author: ${{ github.actor }}
+          branch: ${{ github.ref }}
+          outputDirectory: /tmp/artifacts
+          urls: 'https://www.foo.software,https://www.foo.software/contact'
+          
+      - name: Upload artifacts
+        uses: actions/upload-artifact@master
+        with:
+          name: Lighthouse reports
+          path: /tmp/artifacts
