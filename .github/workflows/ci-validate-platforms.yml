@@ -226,19 +226,23 @@ jobs:
         PLAYWRIGHT_BROWSER: webkit
 
 
+
   lighthouse-check:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@master
-      - run: npm install
-      - name: Run Lighthouse
-        uses: foo-software/lighthouse-check-action@master
-        id: lighthouseCheck
-        with:
-          urls: 'https://www.fast.design/'
-          # ... all your other inputs
-      - name: Handle Lighthouse Check results
-        uses: foo-software/lighthouse-check-status-action@master
-        with:
-          lighthouseCheckResults: ${{ steps.lighthouseCheck.outputs.lighthouseCheckResults }}
-          minAccessibilityScore: "90"
+    - uses: actions/checkout@master
+    - run: mkdir /tmp/artifacts
+    - name: Run Lighthouse
+    uses: foo-software/lighthouse-check-action@master
+    with:
+      accessToken: ${{ secrets.GITHUB_TOKEN }}
+      author: ${{ github.actor }}
+      branch: ${{ github.ref }}
+      outputDirectory: /tmp/artifacts
+      urls: 'https://www.foo.software,https://www.foo.software/contact'
+
+    - name: Upload artifacts
+      uses: actions/upload-artifact@master
+      with:
+        name: Lighthouse reports
+        path: /tmp/artifacts
