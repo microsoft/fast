@@ -312,14 +312,14 @@ export class HorizontalScroll extends FoundationElement {
      */
     private setFlippers(): void {
         const position: number = this.scrollContainer.scrollLeft;
-        if (this.previousFlipperContainer) {
-            this.previousFlipperContainer.classList.toggle("disabled", position === 0);
-        }
-        if (this.nextFlipperContainer && this.scrollStops) {
+        this.previousFlipperContainer?.classList.toggle("disabled", position === 0);
+
+        if (this.scrollStops) {
             const lastStop: number = Math.abs(
                 this.scrollStops[this.scrollStops.length - 1]
             );
-            this.nextFlipperContainer.classList.toggle(
+
+            this.nextFlipperContainer?.classList.toggle(
                 "disabled",
                 Math.abs(position) + this.width >= lastStop
             );
@@ -560,9 +560,7 @@ export class HorizontalScroll extends FoundationElement {
      * @internal
      */
     private getEasedFactor(easing: ScrollEasing, progress: number): number {
-        if (progress > 1) {
-            progress = 1;
-        }
+        progress = progress > 1 ? 1 : progress;
         switch (easing) {
             case "ease-in":
                 return Math.pow(progress, 1.675);
