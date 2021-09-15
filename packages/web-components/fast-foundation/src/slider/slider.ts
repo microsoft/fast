@@ -459,11 +459,8 @@ export class Slider extends FormAssociatedSlider implements SliderConfiguration 
 
     private stopDragging = (): void => {
         this.isDragging = false;
-        window.removeEventListener("mouseup", this.handleWindowMouseUp);
-        window.document.removeEventListener("mouseleave", this.handleWindowMouseUp);
-        window.removeEventListener("mousemove", this.handleMouseMove);
-        window.removeEventListener("touchmove", this.handleMouseMove);
-        window.removeEventListener("touchend", this.handleWindowMouseUp);
+        this.handleMouseDown(null, true);
+        this.handleThumbMouseDown(null, true);
     };
 
     private handleMouseDown = (e: MouseEvent | null, remove: boolean = false) => {
