@@ -239,8 +239,7 @@ jobs:
           author: ${{ github.actor }}
           branch: ${{ github.ref }}
           outputDirectory: /tmp/artifacts
-          urls: 'https://www.foo.software,https://www.foo.software/contact'
-          
+          urls: "https://www.fast.design/"
       - name: Upload artifacts
         uses: actions/upload-artifact@master
         with:
