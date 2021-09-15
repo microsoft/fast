@@ -1,8 +1,20 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Tue, 14 Sep 2021 07:16:47 GMT and should not be manually modified.
+This log was last generated on Wed, 15 Sep 2021 19:49:35 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.14.0
+
+Wed, 15 Sep 2021 19:49:35 GMT
+
+### Minor changes
+
+- fix type issue for FoundationElementTemplate (john.kreitlow@microsoft.com)
+
+### Patches
+
+- Fix design-token subscription bugs where subscribers were not getting notified (nicholasrice@users.noreply.github.com)
 
 ## 2.13.1
 
