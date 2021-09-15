@@ -6,6 +6,7 @@ import {
     accentForegroundActive,
     designUnit,
     foregroundOnAccentActive,
+    neutralForegroundRest,
     typeRampBaseLineHeight,
     typeRampPlus3FontSize,
 } from "../design-tokens";
@@ -25,6 +26,7 @@ export const CalendarStyles = css`
         --cell-padding: calc(${designUnit} * 1px);
         --cell-line-height: ${typeRampBaseLineHeight};
         text-align: center;
+        color: ${neutralForegroundRest};
     }
 
     .title {
