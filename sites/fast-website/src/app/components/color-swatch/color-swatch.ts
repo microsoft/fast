@@ -49,7 +49,7 @@ export class ColorSwatch extends Radio {
         }
     }
 
-    public clickHandler = (e: MouseEvent): boolean | void => {
+    public clickHandler(e: MouseEvent): boolean | void {
         if (!this.customValue || !this.eyedropper) {
             return super.clickHandler(e);
         }
@@ -57,7 +57,7 @@ export class ColorSwatch extends Radio {
         this.getColorFromEyeDropper().then(() => {
             return super.clickHandler(e);
         });
-    };
+    }
 
     public async getColorFromEyeDropper() {
         try {

@@ -174,7 +174,7 @@ export function FormAssociated<T extends ConstructableFormAssociated>(BaseCtor: 
          *
          * @alpha
          */
-        protected proxy: ProxyElement;
+        public proxy: ProxyElement;
 
         /**
          * Must evaluate to true to enable elementInternals.

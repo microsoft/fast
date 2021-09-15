@@ -387,8 +387,10 @@ class DesignTokenBindingObserver<T> {
     }
 }
 
+/**
+ * Stores resolved token/value pairs and notifies on changes
+ */
 class Store {
-    constructor(private context: DesignTokenNode) {}
     private values = new Map<DesignTokenImpl<any>, any>();
     set<T>(token: DesignTokenImpl<T>, value: StaticDesignTokenValue<T>) {
         if (this.values.get(token) !== value) {
@@ -787,9 +789,7 @@ class DesignTokenNode implements Behavior, Subscriber {
 
             if (DesignTokenImpl.isDerivedDesignTokenValue(value)) {
                 if (observer) {
-                    if ((observer.source as any) === value) {
-                        // do nothing
-                    } else {
+                    if ((observer.source as any) !== value) {
                         this.tearDownBindingObserver(token);
                         this.setupBindingObserver(token, value);
                     }
