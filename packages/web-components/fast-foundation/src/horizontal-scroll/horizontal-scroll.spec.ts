@@ -271,7 +271,7 @@ describe("HorinzontalScroll", () => {
                 await disconnect();
             }, 1);
         });
-        
+
         it("should change scroll stop on resize", async () => {
             const { element, connect, disconnect } = await setup();
 
