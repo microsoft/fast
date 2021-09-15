@@ -3,7 +3,7 @@ import { DOM } from "@microsoft/fast-element";
 import { fixture } from "../test-utilities/fixture";
 import { ColumnDefinition, dataGridRowTemplate, DataGridCell, dataGridCellTemplate, DataGridRow } from "./index";
 import { newDataRow } from "./data-grid.spec";
-import { KeyCodes } from "@microsoft/fast-web-utilities";
+import { keyArrowLeft, keyArrowRight, keyEnd, keyHome } from "@microsoft/fast-web-utilities";
 
 const FASTDataGridCell = DataGridCell.compose({
     baseName: "data-grid-cell",
@@ -23,26 +23,22 @@ async function setup() {
 }
 
 const arrowRightEvent = new KeyboardEvent("keydown", {
-    key: "ArrowRight",
-    keyCode: KeyCodes.arrowRight,
+    key: keyArrowRight,
     bubbles: true,
 } as KeyboardEventInit);
 
 const arrowLeftEvent = new KeyboardEvent("keydown", {
-    key: "ArrowLeft",
-    keyCode: KeyCodes.arrowLeft,
+    key: keyArrowLeft,
     bubbles: true,
 } as KeyboardEventInit);
 
 const homeEvent = new KeyboardEvent("keydown", {
-    key: "Home",
-    keyCode: KeyCodes.home,
+    key: keyHome,
     bubbles: true,
 } as KeyboardEventInit);
 
 const endEvent = new KeyboardEvent("keydown", {
-    key: "End",
-    keyCode: KeyCodes.end,
+    key: keyEnd,
     bubbles: true,
 } as KeyboardEventInit);
 

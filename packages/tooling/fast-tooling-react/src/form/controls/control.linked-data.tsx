@@ -1,15 +1,15 @@
 import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
 import React from "react";
-import { keyCodeEnter, keyCodeTab } from "@microsoft/fast-web-utilities";
+import { keyEnter, keyTab } from "@microsoft/fast-web-utilities";
 import { getDataFromSchema } from "@microsoft/fast-tooling";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
+import { DragItem } from "../templates";
+import { ArrayAction, LinkedDataActionType } from "../templates/types";
 import styles, { LinkedDataControlClassNameContract } from "./control.linked-data.style";
 import {
     LinkedDataControlProps,
     LinkedDataControlState,
 } from "./control.linked-data.props";
-import { DragItem } from "../templates";
-import { ArrayAction, LinkedDataActionType } from "../templates/types";
 
 /**
  * Form control definition
@@ -221,7 +221,7 @@ class LinkedDataControl extends React.Component<
     ): void => {
         if (e.target === e.currentTarget) {
             // Enter adds linked data if the input value matches a schema lazily or exactly
-            if (e.keyCode === keyCodeEnter) {
+            if (e.key === keyEnter) {
                 e.preventDefault();
 
                 const normalizedValue = e.currentTarget.value.toLowerCase();
@@ -246,7 +246,7 @@ class LinkedDataControl extends React.Component<
                     });
                 }
                 // Tab performs an auto-complete if there is a single schema it can match to
-            } else if (e.keyCode === keyCodeTab) {
+            } else if (e.key === keyTab) {
                 const normalizedValue = e.currentTarget.value.toLowerCase();
                 const matchedSchema = this.lazyMatchValueWithASingleSchema(
                     normalizedValue

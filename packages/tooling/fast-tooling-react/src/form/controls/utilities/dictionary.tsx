@@ -2,11 +2,12 @@ import React from "react";
 import { isPlainObject, uniqueId } from "lodash-es";
 import manageJss, { ManagedJSSProps } from "@microsoft/fast-jss-manager-react";
 import { ManagedClasses } from "@microsoft/fast-components-class-name-contracts-base";
+import { keyEnter } from "@microsoft/fast-web-utilities";
+import { PropertyKeyword } from "@microsoft/fast-tooling";
 import styles, { DictionaryClassNameContract } from "./dictionary.style";
 import { DictionaryProps, DictionaryState } from "./dictionary.props";
 import ControlSwitch from "./control-switch";
 import { generateExampleData, getErrorFromDataLocation } from "./form";
-import { PropertyKeyword } from "@microsoft/fast-tooling";
 
 /**
  *  control definition
@@ -244,7 +245,7 @@ class Dictionary extends React.Component<
 
     private handleKeyPress = (): ((e: React.KeyboardEvent<HTMLInputElement>) => void) => {
         return (e: React.KeyboardEvent<HTMLInputElement>): void => {
-            if (e.keyCode === 13) {
+            if (e.key === keyEnter) {
                 e.currentTarget.blur();
                 e.preventDefault();
             }

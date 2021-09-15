@@ -8,7 +8,7 @@ export interface MessageSystemServiceActionCallbackConfig {
 export interface MessageSystemServiceActionConfig<TCallback>
     extends MessageSystemServiceActionCallbackConfig {
     /**
-     * The action to take when the keycodes have been pressed
+     * The action to take when the key values have been pressed
      */
     action: (config: TCallback) => void;
 }
