@@ -1,8 +1,113 @@
 # Change Log - @microsoft/fast-tooling-react
 
-This log was last generated on Mon, 23 Aug 2021 07:14:54 GMT and should not be manually modified.
+This log was last generated on Wed, 15 Sep 2021 07:18:53 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.11.4
+
+Wed, 15 Sep 2021 07:18:53 GMT
+
+### Patches
+
+- Bump @microsoft/fast-tooling to v0.29.0 (v-dlesac@microsoft.com)
+
+## 2.11.4
+
+Tue, 14 Sep 2021 07:16:47 GMT
+
+### Patches
+
+- Bump @microsoft/fast-tooling to v0.29.0 (jumarroq@microsoft.com)
+
+## 2.11.4
+
+Sun, 12 Sep 2021 07:17:43 GMT
+
+### Patches
+
+- small update to layout styling to ensure components with display flex are displayed consistently (7559015+janechu@users.noreply.github.com)
+- allow linked data that has no default droppable location to drop onto other drop targets (7559015+janechu@users.noreply.github.com)
+- remove dependencies on keycode (scomea@microsoft.com)
+
+## 2.11.3
+
+Thu, 09 Sep 2021 07:21:36 GMT
+
+### Patches
+
+- Bump @microsoft/fast-tooling to v0.28.0 (chhol@microsoft.com)
+
+## 2.11.2
+
+Wed, 08 Sep 2021 07:16:17 GMT
+
+### Patches
+
+- Bump @microsoft/fast-tooling to v0.27.11 (roeisenb@microsoft.com)
+
+## 2.11.1
+
+Thu, 02 Sep 2021 17:17:56 GMT
+
+### Patches
+
+- Bump @microsoft/fast-tooling to v0.27.10 (roeisenb@microsoft.com)
+
+## 2.11.0
+
+Thu, 02 Sep 2021 07:15:21 GMT
+
+### Minor changes
+
+- allow an autocomplete in the form to use an alias (7559015+janechu@users.noreply.github.com)
+
+### Patches
+
+- Removed remaining 'use-defaults' which no longer exists (47367562+bheston@users.noreply.github.com)
+- Bump @microsoft/fast-components to v2.8.1 (47367562+bheston@users.noreply.github.com)
+- Bump @microsoft/fast-tooling to v0.27.9 (47367562+bheston@users.noreply.github.com)
+- Bump @microsoft/fast-foundation to v2.9.1 (nicholasrice@users.noreply.github.com)
+
+## 2.10.15
+
+Wed, 01 Sep 2021 07:18:34 GMT
+
+### Patches
+
+- Bump @microsoft/fast-tooling to v0.27.8 (scomea@microsoft.com)
+
+## 2.10.14
+
+Mon, 30 Aug 2021 22:30:39 GMT
+
+### Patches
+
+- Bump @microsoft/fast-tooling to v0.27.7 (nicholasrice@users.noreply.github.com)
+
+## 2.10.13
+
+Fri, 27 Aug 2021 14:14:26 GMT
+
+### Patches
+
+- Bump @microsoft/fast-tooling to v0.27.6 (nicholasrice@users.noreply.github.com)
+
+## 2.10.12
+
+Thu, 26 Aug 2021 07:17:43 GMT
+
+### Patches
+
+- the linked data removal button and the dropdown arrow will not display over absolutely positioned controls (7559015+janechu@users.noreply.github.com)
+
+## 2.10.11
+
+Wed, 25 Aug 2021 07:17:07 GMT
+
+### Patches
+
+- add a list of linked data that cannot be dropped to (7559015+janechu@users.noreply.github.com)
 
 ## 2.10.10
 

@@ -28,7 +28,7 @@ export const progressTemplate: (
                     <div
                         class="determinate"
                         part="determinate"
-                        style="width: ${x => x.value}%"
+                        style="width: ${x => x.percentComplete}%"
                     ></div>
                 </div>
             `

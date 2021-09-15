@@ -1,9 +1,9 @@
+import type { SyntheticViewTemplate } from "@microsoft/fast-element";
 import {
     attr,
     booleanConverter,
     nullableNumberConverter,
     observable,
-    SyntheticViewTemplate,
 } from "@microsoft/fast-element";
 // TODO: the Resize Observer related files are a temporary stopgap measure until
 // Resize Observer types are pulled into TypeScript, which seems imminent
@@ -13,7 +13,12 @@ import type {
     ConstructibleResizeObserver,
     ResizeObserverClassDefinition,
 } from "../anchored-region/resize-observer";
-import { FoundationElement, FoundationElementDefinition } from "../foundation-element";
+import type {
+    FoundationElementDefinition,
+    FoundationElementTemplate,
+} from "../foundation-element";
+import { FoundationElement } from "../foundation-element";
+import type { StartEndOptions } from "../patterns";
 
 declare global {
     interface WindowWithResizeObserver extends Window {
@@ -37,10 +42,23 @@ export type ScrollEasing = "linear" | "ease-in" | "ease-out" | "ease-in-out";
  * Horizontal scroll configuration options
  * @public
  */
-export type HorizontalScrollOptions = FoundationElementDefinition & {
-    nextFlipper?: string | SyntheticViewTemplate;
-    previousFlipper?: string | SyntheticViewTemplate;
-};
+export type HorizontalScrollOptions = FoundationElementDefinition &
+    StartEndOptions & {
+        nextFlipper?:
+            | FoundationElementTemplate<
+                  SyntheticViewTemplate<any, HorizontalScroll>,
+                  HorizontalScrollOptions
+              >
+            | SyntheticViewTemplate
+            | string;
+        previousFlipper?:
+            | FoundationElementTemplate<
+                  SyntheticViewTemplate<any, HorizontalScroll>,
+                  HorizontalScrollOptions
+              >
+            | SyntheticViewTemplate
+            | string;
+    };
 
 /**
  * A HorizontalScroll Custom HTML Element

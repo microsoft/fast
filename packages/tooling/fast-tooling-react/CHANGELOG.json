@@ -2,6 +2,224 @@
   "name": "@microsoft/fast-tooling-react",
   "entries": [
     {
+      "date": "Wed, 15 Sep 2021 07:18:53 GMT",
+      "tag": "@microsoft/fast-tooling-react_v2.11.4",
+      "version": "2.11.4",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-tooling to v0.29.0",
+            "author": "v-dlesac@microsoft.com",
+            "commit": "645b96448f115e5571f73e4d4a0357d150a23d49",
+            "package": "@microsoft/fast-tooling-react"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 14 Sep 2021 07:16:47 GMT",
+      "tag": "@microsoft/fast-tooling-react_v2.11.4",
+      "version": "2.11.4",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-tooling to v0.29.0",
+            "author": "jumarroq@microsoft.com",
+            "commit": "8094ba315ab24b4dca9b2aea1f5ef0ba5afb7725",
+            "package": "@microsoft/fast-tooling-react"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sun, 12 Sep 2021 07:17:43 GMT",
+      "tag": "@microsoft/fast-tooling-react_v2.11.4",
+      "version": "2.11.4",
+      "comments": {
+        "patch": [
+          {
+            "comment": "small update to layout styling to ensure components with display flex are displayed consistently",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "b2283a1a2c2f35a71cf8f87e0d65cce2b7f532be",
+            "package": "@microsoft/fast-tooling-react"
+          },
+          {
+            "comment": "allow linked data that has no default droppable location to drop onto other drop targets",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "5e6fa77c649954c7c1aff842b4b49d2d806af586",
+            "package": "@microsoft/fast-tooling-react"
+          },
+          {
+            "comment": "remove dependencies on keycode",
+            "author": "scomea@microsoft.com",
+            "commit": "e8602a247065b0c916bdc8e55314f2d3e3403fd1",
+            "package": "@microsoft/fast-tooling-react"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 09 Sep 2021 07:21:36 GMT",
+      "tag": "@microsoft/fast-tooling-react_v2.11.3",
+      "version": "2.11.3",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-tooling to v0.28.0",
+            "author": "chhol@microsoft.com",
+            "commit": "3ad50c8eec98b3156a4559586ca76e4abebefad8",
+            "package": "@microsoft/fast-tooling-react"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 08 Sep 2021 07:16:17 GMT",
+      "tag": "@microsoft/fast-tooling-react_v2.11.2",
+      "version": "2.11.2",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-tooling to v0.27.11",
+            "author": "roeisenb@microsoft.com",
+            "commit": "bdd28c8861b3523a9984ca8feda2af9019861a8a",
+            "package": "@microsoft/fast-tooling-react"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 02 Sep 2021 17:17:56 GMT",
+      "tag": "@microsoft/fast-tooling-react_v2.11.1",
+      "version": "2.11.1",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-tooling to v0.27.10",
+            "author": "roeisenb@microsoft.com",
+            "commit": "fe1db8607dce8c80fa83ad01ee2c8dbc9e845c98",
+            "package": "@microsoft/fast-tooling-react"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 02 Sep 2021 07:15:21 GMT",
+      "tag": "@microsoft/fast-tooling-react_v2.11.0",
+      "version": "2.11.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "allow an autocomplete in the form to use an alias",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "59a8320fd64682da4a4b30c4c9d1640716c39271",
+            "package": "@microsoft/fast-tooling-react"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "Removed remaining 'use-defaults' which no longer exists",
+            "author": "47367562+bheston@users.noreply.github.com",
+            "commit": "f34fa1b1bdbb0cf4c371b556c2486bd160646c53",
+            "package": "@microsoft/fast-tooling-react"
+          },
+          {
+            "comment": "Bump @microsoft/fast-components to v2.8.1",
+            "author": "47367562+bheston@users.noreply.github.com",
+            "commit": "f34fa1b1bdbb0cf4c371b556c2486bd160646c53",
+            "package": "@microsoft/fast-tooling-react"
+          },
+          {
+            "comment": "Bump @microsoft/fast-tooling to v0.27.9",
+            "author": "47367562+bheston@users.noreply.github.com",
+            "commit": "f34fa1b1bdbb0cf4c371b556c2486bd160646c53",
+            "package": "@microsoft/fast-tooling-react"
+          },
+          {
+            "comment": "Bump @microsoft/fast-foundation to v2.9.1",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "29cdc520f699eaf1f1669eaeacb4a7a8a7cfe1c2",
+            "package": "@microsoft/fast-tooling-react"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 01 Sep 2021 07:18:34 GMT",
+      "tag": "@microsoft/fast-tooling-react_v2.10.15",
+      "version": "2.10.15",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-tooling to v0.27.8",
+            "author": "scomea@microsoft.com",
+            "commit": "397d02d7bfc9b61bfafb44d4ccdf8db49fd25453",
+            "package": "@microsoft/fast-tooling-react"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Mon, 30 Aug 2021 22:30:39 GMT",
+      "tag": "@microsoft/fast-tooling-react_v2.10.14",
+      "version": "2.10.14",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-tooling to v0.27.7",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "c4fe4d0706dae02bc2d4c8ea37dafe6c79c03075",
+            "package": "@microsoft/fast-tooling-react"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 27 Aug 2021 14:14:26 GMT",
+      "tag": "@microsoft/fast-tooling-react_v2.10.13",
+      "version": "2.10.13",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-tooling to v0.27.6",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "e498f1e35232169d2bf80e366350d0cde812d76d",
+            "package": "@microsoft/fast-tooling-react"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 26 Aug 2021 07:17:43 GMT",
+      "tag": "@microsoft/fast-tooling-react_v2.10.12",
+      "version": "2.10.12",
+      "comments": {
+        "patch": [
+          {
+            "comment": "the linked data removal button and the dropdown arrow will not display over absolutely positioned controls",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "062b6642246a8bf54a1371daeee4328660672f3f",
+            "package": "@microsoft/fast-tooling-react"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 25 Aug 2021 07:17:07 GMT",
+      "tag": "@microsoft/fast-tooling-react_v2.10.11",
+      "version": "2.10.11",
+      "comments": {
+        "patch": [
+          {
+            "comment": "add a list of linked data that cannot be dropped to",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "eeff27a68288e4f4ff9fb368779dfd21ba1392ee",
+            "package": "@microsoft/fast-tooling-react"
+          }
+        ]
+      }
+    },
+    {
       "date": "Mon, 23 Aug 2021 07:14:54 GMT",
       "tag": "@microsoft/fast-tooling-react_v2.10.10",
       "version": "2.10.10",

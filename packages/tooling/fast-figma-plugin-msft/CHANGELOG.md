@@ -1,8 +1,104 @@
 # Change Log - @microsoft/fast-figma-plugin-msft
 
-This log was last generated on Mon, 23 Aug 2021 07:14:54 GMT and should not be manually modified.
+This log was last generated on Wed, 15 Sep 2021 07:18:53 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.8.16
+
+Wed, 15 Sep 2021 07:18:53 GMT
+
+### Patches
+
+- Bump @microsoft/fast-components to v2.10.0 (v-dlesac@microsoft.com)
+
+## 0.8.16
+
+Tue, 14 Sep 2021 07:16:47 GMT
+
+### Patches
+
+- Bump @microsoft/fast-components to v2.9.2 (jumarroq@microsoft.com)
+
+## 0.8.16
+
+Sun, 12 Sep 2021 07:17:43 GMT
+
+### Patches
+
+- Bump @microsoft/fast-components to v2.9.1 (john.kreitlow@microsoft.com)
+
+## 0.8.16
+
+Thu, 09 Sep 2021 07:21:36 GMT
+
+### Patches
+
+- Bump @microsoft/fast-components to v2.9.0 (chhol@microsoft.com)
+
+## 0.8.16
+
+Wed, 08 Sep 2021 07:16:17 GMT
+
+### Patches
+
+- Bump @microsoft/fast-element to v1.5.1 (roeisenb@microsoft.com)
+
+## 0.8.16
+
+Thu, 02 Sep 2021 17:17:56 GMT
+
+### Patches
+
+- Bump @microsoft/fast-components to v2.8.2 (roeisenb@microsoft.com)
+
+## 0.8.16
+
+Thu, 02 Sep 2021 07:15:21 GMT
+
+### Patches
+
+- Bump @microsoft/fast-components to v2.8.1 (47367562+bheston@users.noreply.github.com)
+
+## 0.8.16
+
+Wed, 01 Sep 2021 07:18:34 GMT
+
+### Patches
+
+- Bump @microsoft/fast-components to v2.8.0 (scomea@microsoft.com)
+
+## 0.8.16
+
+Mon, 30 Aug 2021 22:30:39 GMT
+
+### Patches
+
+- Bump @microsoft/fast-components to v2.7.3 (nicholasrice@users.noreply.github.com)
+
+## 0.8.16
+
+Fri, 27 Aug 2021 14:14:26 GMT
+
+### Patches
+
+- Bump @microsoft/fast-element to v1.5.0 (nicholasrice@users.noreply.github.com)
+
+## 0.8.16
+
+Thu, 26 Aug 2021 07:17:43 GMT
+
+### Patches
+
+- Bump @microsoft/fast-components to v2.7.1 (47367562+bheston@users.noreply.github.com)
+
+## 0.8.16
+
+Wed, 25 Aug 2021 07:17:07 GMT
+
+### Patches
+
+- Bump @microsoft/fast-components to v2.7.0 (john.kreitlow@microsoft.com)
 
 ## 0.8.16
 

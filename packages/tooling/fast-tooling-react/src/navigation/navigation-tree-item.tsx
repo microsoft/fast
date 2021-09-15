@@ -11,7 +11,7 @@ import {
     useDrag,
     useDrop,
 } from "react-dnd";
-import { HoverLocation } from "./navigation.props";
+import { getHoverLocation, refNode } from "./navigation-tree-item.utilities";
 
 function editableOverlay(
     className: string,
@@ -222,7 +222,7 @@ export const DraggableNavigationTreeItem: React.FC<NavigationTreeItemProps> = ({
     });
     const dragSource: ConnectDragSource = drag[1];
     const drop: [{}, DragElementWrapper<any>] = useDrop({
-        accept: [DragDropItemType.linkedData],
+        accept: [DragDropItemType.linkedData, DragDropItemType.linkedDataUndroppable],
         hover(item: DragObjectWithType, monitor: DropTargetMonitor): void {
             /**
              * When the hovered element changes, reset the cached ref and
@@ -234,47 +234,16 @@ export const DraggableNavigationTreeItem: React.FC<NavigationTreeItemProps> = ({
                 cachedRefBoundingClientRect = ref.getBoundingClientRect() as DOMRect;
             }
 
-            const dragItemOffsetY: number = monitor.getClientOffset().y;
-            let hoverLocation: HoverLocation = HoverLocation.center;
-
-            /**
-             * Divide the height of the clientRect into thirds, if its the top third the item should be placed before
-             * the hovered item, if it is the bottom third it should be placed after
-             */
-            const thirdOfTheDropedItemBoundingClientRect =
-                cachedRefBoundingClientRect.height / 3;
-            if (
-                cachedRefBoundingClientRect.y +
-                    thirdOfTheDropedItemBoundingClientRect * 2 <
-                dragItemOffsetY
-            ) {
-                hoverLocation = HoverLocation.after;
-            } else if (
-                cachedRefBoundingClientRect.y >
-                dragItemOffsetY - thirdOfTheDropedItemBoundingClientRect
-            ) {
-                hoverLocation = HoverLocation.before;
-            }
-
-            dragHover(type, dictionaryId, navigationConfigId, index, hoverLocation);
+            dragHover(
+                type,
+                dictionaryId,
+                navigationConfigId,
+                index,
+                getHoverLocation(type, monitor, cachedRefBoundingClientRect)
+            );
         },
     });
     const dropTarget: ConnectDropTarget = drop[1];
-
-    function refNode(node: HTMLSpanElement | HTMLAnchorElement): React.ReactElement {
-        switch (type) {
-            case DragDropItemType.linkedData:
-                return dragSource(dropTarget(node)); // this source can be dragged and dropped
-            case DragDropItemType.linkedDataUndroppable:
-                return dragSource(node); // this source can be dragged but not dropped
-            case DragDropItemType.linkedDataContainer:
-            case DragDropItemType.rootLinkedData:
-                return dropTarget(node); // this source can be dropped on but not dragged
-            case DragDropItemType.undraggableUndroppable:
-            case DragDropItemType.rootLinkedDataUndroppable:
-                return;
-        }
-    }
 
     return treeItem(
         handleClick,
@@ -295,7 +264,7 @@ export const DraggableNavigationTreeItem: React.FC<NavigationTreeItemProps> = ({
         inputRef,
         (node: HTMLSpanElement): React.ReactElement => {
             ref = node;
-            return refNode(node);
+            return refNode(node, type, dragSource, dropTarget);
         }
     );
 };
