@@ -241,7 +241,6 @@ jobs:
           outputDirectory: /tmp/artifacts
           emulatedFormFactor: "Desktop, Mobile"
           urls: "https://www.fast.design/"
-
       - name: Upload artifacts
         uses: actions/upload-artifact@master
         with:
