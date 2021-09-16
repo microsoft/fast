@@ -29,5 +29,6 @@
   "npm.packageManager": "yarn",
   "typescript.enablePromptUseWorkspaceTsdk": true,
   "typescript.format.enable": false,
-  "typescript.preferences.quoteStyle": "double"
+  "typescript.preferences.quoteStyle": "double",
+  "razor.disableBlazorDebugPrompt": true
 }
