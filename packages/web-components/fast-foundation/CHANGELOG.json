@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-foundation",
   "entries": [
     {
+      "date": "Thu, 16 Sep 2021 07:17:00 GMT",
+      "tag": "@microsoft/fast-foundation_v2.14.0",
+      "version": "2.14.0",
+      "comments": {
+        "none": [
+          {
+            "comment": "correct error in data grid spec document",
+            "author": "scomea@microsoft.com",
+            "commit": "529117085a9394c8ff9da4a0d16f8be21fc798d1",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 15 Sep 2021 19:49:35 GMT",
       "tag": "@microsoft/fast-foundation_v2.14.0",
       "version": "2.14.0",
