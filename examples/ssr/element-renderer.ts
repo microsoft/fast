@@ -18,12 +18,20 @@ export class FASTElementRenderer extends ElementRenderer {
     *renderLight(renderInfo: RenderInfo): IterableIterator<string> {
         yield "LIGHT DOM";
     }
-    *renderShadow(): IterableIterator<string> {
+    *renderShadow(renderInfo: RenderInfo): IterableIterator<string> {
+        try {
+            this.element.$fastController.onConnectedCallback();
+        } catch (e) {
+            console.log(e);
+        }
+
         yield "SHADOW DOM";
     }
     attributeChangedCallback(
         name: string,
         old: string | null,
         value: string | null
-    ): void {}
+    ): void {
+        console.log("attribute changed", name, old, value);
+    }
 }
