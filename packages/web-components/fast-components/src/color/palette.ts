@@ -172,7 +172,7 @@ class PaletteRGBImpl implements Palette<SwatchRGB> {
         index = this.swatches.indexOf(closest);
         this.closestIndexCache.set(reference.relativeLuminance, index);
 
-        return this.swatches.indexOf(closest);
+        return index;
     }
 
     /**
