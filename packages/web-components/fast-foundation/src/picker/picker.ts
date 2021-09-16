@@ -1,7 +1,10 @@
 import {
     attr,
     DOM,
+    html,
+    HTMLView,
     observable,
+    ref,
     RepeatBehavior,
     RepeatDirective,
     ViewTemplate,
@@ -19,10 +22,24 @@ import {
 import uniqueId from "lodash-es/uniqueId";
 import type { AnchoredRegion } from "../anchored-region";
 import type { PickerMenu } from "./picker-menu";
-import type { PickerList } from "./picker-list";
 import { PickerMenuOption } from "./picker-menu-option";
 import { PickerListItem } from "./picker-list-item";
 import { FormAssociatedPicker } from "./picker.form-associated";
+import type { PickerList } from ".";
+
+const pickerInputTemplate: ViewTemplate = html<Picker>`
+    <input
+        slot="input-region"
+        role="combobox"
+        type="text"
+        autocapitalize="off"
+        autocomplete="off"
+        haspopup="list"
+        aria-label="${x => x.label}"
+        aria-labelledby="${x => x.labelledBy}"
+        ${ref("inputElement")}
+    ></input>
+`;
 
 /**
  * A Picker Custom HTML Element.  This is an early "alpha" version of the component.
@@ -135,11 +152,6 @@ export class Picker extends FormAssociatedPicker {
      */
     @attr({ attribute: "label" })
     public label: string;
-    private labelChanged(): void {
-        if (this.$fastController.isConnected) {
-            this.listElement?.setAttribute("label", this.label);
-        }
-    }
 
     /**
      * Applied to the aria-labelledby attribute of the input element
@@ -150,11 +162,6 @@ export class Picker extends FormAssociatedPicker {
      */
     @attr({ attribute: "labelledby" })
     public labelledBy: string;
-    private labelledbyChanged(): void {
-        if (this.$fastController.isConnected) {
-            this.listElement?.setAttribute("labelledby", this.labelledBy);
-        }
-    }
 
     /**
      * Whether to display a loading state if the menu is opened.
@@ -271,8 +278,8 @@ export class Picker extends FormAssociatedPicker {
     public query: string;
     private queryChanged(): void {
         if (this.$fastController.isConnected) {
-            if (this.listElement.inputElement.value !== this.query) {
-                this.listElement.inputElement.value = this.query;
+            if (this.inputElement.value !== this.query) {
+                this.inputElement.value = this.query;
             }
             this.updateFilteredOptions();
             this.$emit("querychange", { bubbles: false });
@@ -331,7 +338,7 @@ export class Picker extends FormAssociatedPicker {
      * @internal
      */
     @observable
-    public pickerMenuTag: string;
+    public menuTag: string;
 
     /**
      *  Index of currently active menu option
@@ -365,6 +372,20 @@ export class Picker extends FormAssociatedPicker {
     }
 
     /**
+     *  Reference to the placeholder element for the repeat directive
+     *
+     * @alpha
+     */
+    public itemsPlaceholderElement: Node;
+
+    /**
+     * reference to the input element
+     *
+     * @internal
+     */
+    public inputElement: HTMLInputElement;
+
+    /**
      * reference to the selected list element
      *
      * @internal
@@ -396,6 +417,7 @@ export class Picker extends FormAssociatedPicker {
 
     private optionsRepeatBehavior: RepeatBehavior | null;
     private optionsPlaceholder: Node;
+    private inputElementView: HTMLView | null = null;
 
     /**
      * @internal
@@ -404,18 +426,19 @@ export class Picker extends FormAssociatedPicker {
         super.connectedCallback();
 
         this.listElement = document.createElement(this.selectedListTag) as PickerList;
-
-        this.listElement.label = this.label;
-        this.listElement.labelledby = this.labelledBy;
         this.appendChild(this.listElement);
+        this.itemsPlaceholderElement = document.createComment("");
+        this.listElement.append(this.itemsPlaceholderElement);
 
-        const match: string = this.pickerMenuTag.toUpperCase();
+        this.inputElementView = pickerInputTemplate.render(this, this.listElement);
+
+        const match: string = this.menuTag.toUpperCase();
         this.menuElement = Array.from(this.children).find((element: HTMLElement) => {
             return element.tagName === match;
         }) as PickerMenu;
 
         if (this.menuElement === undefined) {
-            this.menuElement = document.createElement(this.pickerMenuTag) as PickerMenu;
+            this.menuElement = document.createElement(this.menuTag) as PickerMenu;
             this.appendChild(this.menuElement);
         }
 
@@ -433,8 +456,12 @@ export class Picker extends FormAssociatedPicker {
     public disconnectedCallback() {
         super.disconnectedCallback();
         this.toggleFlyout(false);
-        this.listElement.inputElement.removeEventListener("input", this.handleTextInput);
-        this.listElement.inputElement.removeEventListener("click", this.handleInputClick);
+        this.inputElement.removeEventListener("input", this.handleTextInput);
+        this.inputElement.removeEventListener("click", this.handleInputClick);
+        if (this.inputElementView !== null) {
+            this.inputElementView.dispose();
+            this.inputElementView = null;
+        }
     }
 
     /**
@@ -442,7 +469,7 @@ export class Picker extends FormAssociatedPicker {
      * @public
      */
     public focus() {
-        this.listElement?.inputElement.focus();
+        this.inputElement.focus();
     }
 
     /**
@@ -456,10 +483,10 @@ export class Picker extends FormAssociatedPicker {
             x => x.selectedItems,
             x => x.activeListItemTemplate,
             { positioning: true }
-        ).createBehavior(this.listElement.itemsPlaceholderElement);
+        ).createBehavior(this.itemsPlaceholderElement);
 
-        this.listElement.inputElement.addEventListener("input", this.handleTextInput);
-        this.listElement.inputElement.addEventListener("click", this.handleInputClick);
+        this.inputElement.addEventListener("input", this.handleTextInput);
+        this.inputElement.addEventListener("click", this.handleInputClick);
         this.$fastController.addBehaviors([this.itemsRepeatBehavior!]);
 
         this.menuElement.suggestionsAvailableText = this.suggestionsAvailableText;
@@ -487,7 +514,7 @@ export class Picker extends FormAssociatedPicker {
             return;
         }
 
-        if (open && document.activeElement === this.listElement.inputElement) {
+        if (open && document.activeElement === this.inputElement) {
             this.flyoutOpen = open;
             DOM.queueUpdate(() => {
                 if (this.menuElement !== undefined) {
@@ -508,7 +535,7 @@ export class Picker extends FormAssociatedPicker {
      * Handle input event from input element
      */
     private handleTextInput = (e: InputEvent): void => {
-        this.query = this.listElement.inputElement.value;
+        this.query = this.inputElement.value;
     };
 
     /**
@@ -605,7 +632,7 @@ export class Picker extends FormAssociatedPicker {
             }
 
             case keyArrowRight: {
-                if (document.activeElement !== this.listElement.inputElement) {
+                if (document.activeElement !== this.inputElement) {
                     this.incrementFocusedItem(1);
                     return false;
                 }
@@ -614,7 +641,7 @@ export class Picker extends FormAssociatedPicker {
             }
 
             case keyArrowLeft: {
-                if (this.listElement.inputElement.selectionStart === 0) {
+                if (this.inputElement.selectionStart === 0) {
                     this.incrementFocusedItem(-1);
                     return false;
                 }
@@ -628,8 +655,8 @@ export class Picker extends FormAssociatedPicker {
                     return true;
                 }
 
-                if (document.activeElement === this.listElement.inputElement) {
-                    if (this.listElement.inputElement.selectionStart === 0) {
+                if (document.activeElement === this.inputElement) {
+                    if (this.inputElement.selectionStart === 0) {
                         this.selection = this.selectedItems
                             .slice(0, this.selectedItems.length - 1)
                             .toString();
@@ -725,21 +752,21 @@ export class Picker extends FormAssociatedPicker {
             DOM.queueUpdate(this.setRegionProps);
             return;
         }
-        this.region.anchorElement = this.listElement.inputElement;
+        this.region.anchorElement = this.inputElement;
     };
 
     /**
      * Checks if the maximum number of items has been chosen and updates the ui.
      */
     private checkMaxItems(): void {
-        if (this.listElement.inputElement === undefined) {
+        if (this.inputElement === undefined) {
             return;
         }
         if (
             this.maxSelected !== undefined &&
             this.selectedItems.length >= this.maxSelected
         ) {
-            if (document.activeElement === this.listElement.inputElement) {
+            if (document.activeElement === this.inputElement) {
                 const selectedItemInstances: Element[] = Array.from(
                     this.listElement.querySelectorAll("[role='listitem']")
                 );
@@ -747,9 +774,9 @@ export class Picker extends FormAssociatedPicker {
                     selectedItemInstances.length - 1
                 ] as HTMLElement).focus();
             }
-            this.listElement.inputElement.hidden = true;
+            this.inputElement.hidden = true;
         } else {
-            this.listElement.inputElement.hidden = false;
+            this.inputElement.hidden = false;
         }
     }
 
@@ -791,7 +818,7 @@ export class Picker extends FormAssociatedPicker {
                 }`;
             }
             this.toggleFlyout(false);
-            this.listElement.inputElement.value = "";
+            this.inputElement.value = "";
             return false;
         }
 
@@ -805,7 +832,7 @@ export class Picker extends FormAssociatedPicker {
      */
     private incrementFocusedItem(increment: number) {
         if (this.selectedItems.length === 0) {
-            this.listElement.inputElement.focus();
+            this.inputElement.focus();
             return;
         }
 
@@ -835,7 +862,7 @@ export class Picker extends FormAssociatedPicker {
                         newFocusedItemIndex - 1
                     ] as HTMLElement).focus();
                 } else {
-                    this.listElement.inputElement.focus();
+                    this.inputElement.focus();
                 }
             } else {
                 (selectedItemsAsElements[newFocusedItemIndex] as HTMLElement).focus();
@@ -849,9 +876,9 @@ export class Picker extends FormAssociatedPicker {
     private disableMenu(): void {
         this.menuFocusIndex = -1;
         this.menuFocusOptionId = undefined;
-        this.listElement?.inputElement?.removeAttribute("aria-activedescendant");
-        this.listElement?.inputElement?.removeAttribute("aria-owns");
-        this.listElement?.inputElement?.removeAttribute("aria-expanded");
+        this.inputElement?.removeAttribute("aria-activedescendant");
+        this.inputElement?.removeAttribute("aria-owns");
+        this.inputElement?.removeAttribute("aria-expanded");
     }
 
     /**
@@ -883,12 +910,9 @@ export class Picker extends FormAssociatedPicker {
 
         this.menuFocusOptionId = this.menuElement.optionElements[this.menuFocusIndex].id;
 
-        this.listElement.inputElement.setAttribute("aria-owns", this.menuId);
-        this.listElement.inputElement.setAttribute("aria-expanded", "true");
-        this.listElement.inputElement.setAttribute(
-            "aria-activedescendant",
-            this.menuFocusOptionId
-        );
+        this.inputElement.setAttribute("aria-owns", this.menuId);
+        this.inputElement.setAttribute("aria-expanded", "true");
+        this.inputElement.setAttribute("aria-activedescendant", this.menuFocusOptionId);
 
         const focusedOption = this.menuElement.optionElements[this.menuFocusIndex];
 

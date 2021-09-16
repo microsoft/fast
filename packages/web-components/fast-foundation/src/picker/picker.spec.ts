@@ -139,6 +139,16 @@ describe("Picker", () => {
         await disconnect();
     });
 
+    it("picker should include a text input with role of 'combobox'", async () => {
+        const { element, connect, disconnect } = await setupPicker();
+
+        await connect();
+
+        expect(element.inputElement?.getAttribute("role")).to.equal("combobox");
+
+        await disconnect();
+    });
+
     it("picker should create a menu element when instanciated", async () => {
         const { element, connect, disconnect } = await setupPicker();
         await connect();
@@ -147,7 +157,6 @@ describe("Picker", () => {
 
         await disconnect();
     });
-
     it("picker should generate list items for selected elements", async () => {
         const { element, connect, disconnect } = await setupPicker();
 
@@ -170,7 +179,7 @@ describe("Picker", () => {
 
         element.focus();
 
-        expect(document.activeElement === element.listElement.inputElement).to.equal(true);
+        expect(document.activeElement === element.inputElement).to.equal(true);
 
         await disconnect();
     });
@@ -185,7 +194,7 @@ describe("Picker", () => {
         await DOM.nextUpdate();
         element.focus();
 
-        expect(document.activeElement === element.listElement.inputElement).to.equal(true);
+        expect(document.activeElement === element.inputElement).to.equal(true);
 
         const listItems: Element[] = Array.from(element.querySelectorAll("fast-picker-list-item"));
 
@@ -208,10 +217,10 @@ describe("Picker", () => {
         expect(document.activeElement === listItems[2]).to.equal(true);
 
         element.dispatchEvent(arrowRightEvent);
-        expect(document.activeElement === element.listElement.inputElement).to.equal(true);
+        expect(document.activeElement === element.inputElement).to.equal(true);
 
         element.dispatchEvent(arrowRightEvent);
-        expect(document.activeElement === element.listElement.inputElement).to.equal(true);
+        expect(document.activeElement === element.inputElement).to.equal(true);
 
         await disconnect();
     });
@@ -254,19 +263,6 @@ describe("Picker", () => {
         await connect();
 
         expect(element.getAttribute("role")).to.equal("list");
-
-        await disconnect();
-    });
-
-
-    it("picker list should include a text input with role of 'combobox'", async () => {
-        const { element, connect, disconnect } = await setupPickerList();
-
-        await connect();
-
-        const inputElement: Element | null | undefined = element.querySelector('.input-element');
-
-        expect(inputElement?.getAttribute("role")).to.equal("combobox");
 
         await disconnect();
     });

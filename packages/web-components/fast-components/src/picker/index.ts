@@ -29,9 +29,7 @@ export const fastPicker = Picker.compose({
     baseName: "picker",
     template: pickerTemplate,
     styles: pickerStyles,
-    shadowOptions: {
-        delegatesFocus: true,
-    },
+    shadowOptions: {},
 });
 
 /**
@@ -99,7 +97,6 @@ export const fastPickerList = PickerList.compose({
     baseName: "picker-list",
     template: pickerListTemplate,
     styles: pickerListStyles,
-    shadowOptions: null,
 });
 
 /**

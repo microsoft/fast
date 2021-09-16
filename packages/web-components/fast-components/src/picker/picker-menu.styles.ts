@@ -24,6 +24,8 @@ export const pickerMenuStyles: (
         :host {
             background: ${neutralLayerFloating};
             --elevation: 11;
+            /* TODO: a mechanism to manage z-index across components
+            https://github.com/microsoft/fast/issues/3813 */
             z-index: 1000;
             display: flex;
             width: 100%;

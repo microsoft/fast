@@ -1492,6 +1492,9 @@ export class Picker extends FormAssociatedPicker {
     handleOptionInvoke(e: Event): boolean;
     handleRegionLoaded(e: Event): void;
     handleSelectionChange(): void;
+    // @internal
+    inputElement: HTMLInputElement;
+    itemsPlaceholderElement: Node;
     label: string;
     labelledBy: string;
     // @internal
@@ -1510,11 +1513,11 @@ export class Picker extends FormAssociatedPicker {
     menuId: string;
     menuOptionContentsTemplate: ViewTemplate;
     menuOptionTemplate: ViewTemplate;
+    // @internal
+    menuTag: string;
     noSuggestionsText: string;
     options: string;
     optionsList: string[];
-    // @internal
-    pickerMenuTag: string;
     query: string;
     // @internal
     region: AnchoredRegion;
@@ -1531,12 +1534,6 @@ export class Picker extends FormAssociatedPicker {
 
 // @alpha
 export class PickerList extends FoundationElement {
-    // @internal (undocumented)
-    connectedCallback(): void;
-    inputElement: HTMLInputElement;
-    itemsPlaceholderElement: Node;
-    label: string;
-    labelledby: string;
 }
 
 // @alpha

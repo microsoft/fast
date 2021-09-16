@@ -10,23 +10,9 @@ export const pickerListTemplate: (context, definition) => ViewTemplate<PickerLis
     definition
 ) => {
     return html<PickerList>`
-        <template 
-            slot="list-region"
-            role="list" 
-            class="picker-list"
-        >
-            <input
-                role="combobox"
-                type="text"
-                autocapitalize="off"
-                autocomplete="off"
-                haspopup="list"
-                class="input-element"
-                aria-label="${x => x.label}"
-                aria-labelledby="${x => x.labelledby}"
-                ${ref("inputElement")}
-            ></input>
+        <template slot="list-region" role="list" class="picker-list">
             <slot></slot>
+            <slot name="input-region"></slot>
         </template>
     `;
 };

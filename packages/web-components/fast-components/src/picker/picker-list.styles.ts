@@ -29,18 +29,15 @@ export const pickerListStyles: (
     definition: FoundationElementDefinition
 ) =>
     css`
-        .picker-list {
+        :host {
             display: flex;
             flex-direction: row;
             column-gap: calc(${designUnit} * 1px);
             row-gap: calc(${designUnit} * 1px);
             flex-wrap: wrap;
-            /* TODO: a mechanism to manage z-index across components
-            https://github.com/microsoft/fast/issues/3813 */
-            z-index: 1000;
         }
 
-        [role="combobox"] {
+        ::slotted([role="combobox"]) {
             min-width: 260px;
             width: auto;
             box-sizing: border-box;
@@ -57,27 +54,27 @@ export const pickerListStyles: (
             padding: 0 calc(${designUnit} * 2px + 1px);
         }
 
-        [role="combobox"]:active { {
+        ::slotted([role="combobox"]:active) { {
             background: ${neutralFillInputHover};
             border-color: ${accentFillActive};
         }
 
-        [role="combobox"]:focus-within {
+        ::slotted([role="combobox"]:focus-within) {
             border-color: ${focusStrokeOuter};
             box-shadow: 0 0 0 1px ${focusStrokeOuter} inset;
         }
     `.withBehaviors(
         forcedColorsStylesheetBehavior(
             css`
-                [role="combobox"]:active {
+                ::slotted([role="combobox"]:active) {
                     background: ${SystemColors.Field};
                     border-color: ${SystemColors.Highlight};
                 }
-                [role="combobox"]:focus-within {
+                ::slotted([role="combobox"]:focus-within) {
                     border-color: ${SystemColors.Highlight};
                     box-shadow: 0 0 0 1px ${SystemColors.Highlight} inset;
                 }
-                input:placeholder {
+                ::slotted(input:placeholder) {
                     color: ${SystemColors.GrayText};
                 }
             `
