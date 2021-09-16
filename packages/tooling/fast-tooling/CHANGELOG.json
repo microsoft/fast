@@ -2,6 +2,113 @@
   "name": "@microsoft/fast-tooling",
   "entries": [
     {
+      "date": "Thu, 16 Sep 2021 07:17:00 GMT",
+      "tag": "@microsoft/fast-tooling_v0.29.0",
+      "version": "0.29.0",
+      "comments": {
+        "none": [
+          {
+            "comment": "Bump @microsoft/fast-components to v2.10.1",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "b3c9009433cb1f940503797ed4727b4a04f0ee77",
+            "package": "@microsoft/fast-tooling"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 15 Sep 2021 19:49:35 GMT",
+      "tag": "@microsoft/fast-tooling_v0.29.0",
+      "version": "0.29.0",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-foundation to v2.14.0",
+            "author": "john.kreitlow@microsoft.com",
+            "commit": "89bf213b9e3693548b52f52d36cc0d36d208d4e6",
+            "package": "@microsoft/fast-tooling"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 15 Sep 2021 07:18:53 GMT",
+      "tag": "@microsoft/fast-tooling_v0.29.0",
+      "version": "0.29.0",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-components to v2.10.0",
+            "author": "v-dlesac@microsoft.com",
+            "commit": "645b96448f115e5571f73e4d4a0357d150a23d49",
+            "package": "@microsoft/fast-tooling"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 14 Sep 2021 07:16:47 GMT",
+      "tag": "@microsoft/fast-tooling_v0.29.0",
+      "version": "0.29.0",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-components to v2.9.2",
+            "author": "jumarroq@microsoft.com",
+            "commit": "8094ba315ab24b4dca9b2aea1f5ef0ba5afb7725",
+            "package": "@microsoft/fast-tooling"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sun, 12 Sep 2021 07:17:43 GMT",
+      "tag": "@microsoft/fast-tooling_v0.29.0",
+      "version": "0.29.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "added option to commit inline edit changes on blur",
+            "author": "44823142+williamw2@users.noreply.github.com",
+            "commit": "0ab121fc03b01f6675e08767979c69ea65822119",
+            "package": "@microsoft/fast-tooling"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "fixed exception in htmlrenderer in specific messaging scenarios",
+            "author": "44823142+williamw2@users.noreply.github.com",
+            "commit": "4b0ed1358c9a5d694908abdfebca6ef32607c29b",
+            "package": "@microsoft/fast-tooling"
+          },
+          {
+            "comment": "remove dependencies on keycode",
+            "author": "scomea@microsoft.com",
+            "commit": "e8602a247065b0c916bdc8e55314f2d3e3403fd1",
+            "package": "@microsoft/fast-tooling"
+          },
+          {
+            "comment": "Bump @microsoft/fast-components to v2.9.1",
+            "author": "john.kreitlow@microsoft.com",
+            "commit": "54a90cb9b3b9b99bacc355bd99386fe4fa09b9d7",
+            "package": "@microsoft/fast-tooling"
+          },
+          {
+            "comment": "Bump @microsoft/fast-foundation to v2.13.0",
+            "author": "scomea@microsoft.com",
+            "commit": "e8602a247065b0c916bdc8e55314f2d3e3403fd1",
+            "package": "@microsoft/fast-tooling"
+          },
+          {
+            "comment": "Bump @microsoft/fast-web-utilities to v4.8.1",
+            "author": "scomea@microsoft.com",
+            "commit": "e8602a247065b0c916bdc8e55314f2d3e3403fd1",
+            "package": "@microsoft/fast-tooling"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 09 Sep 2021 07:21:36 GMT",
       "tag": "@microsoft/fast-tooling_v0.28.0",
       "version": "0.28.0",

@@ -2,6 +2,81 @@
   "name": "@microsoft/fast-creator",
   "entries": [
     {
+      "date": "Thu, 16 Sep 2021 07:17:00 GMT",
+      "tag": "@microsoft/fast-creator_v0.7.0",
+      "version": "0.7.0",
+      "comments": {
+        "none": [
+          {
+            "comment": "Bump @microsoft/fast-tooling-react to v2.11.4",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "b3c9009433cb1f940503797ed4727b4a04f0ee77",
+            "package": "@microsoft/fast-creator"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 15 Sep 2021 19:49:35 GMT",
+      "tag": "@microsoft/fast-creator_v0.7.0",
+      "version": "0.7.0",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-tooling-react to v2.11.4",
+            "author": "john.kreitlow@microsoft.com",
+            "commit": "89bf213b9e3693548b52f52d36cc0d36d208d4e6",
+            "package": "@microsoft/fast-creator"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 15 Sep 2021 07:18:53 GMT",
+      "tag": "@microsoft/fast-creator_v0.7.0",
+      "version": "0.7.0",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-tooling-react to v2.11.4",
+            "author": "v-dlesac@microsoft.com",
+            "commit": "645b96448f115e5571f73e4d4a0357d150a23d49",
+            "package": "@microsoft/fast-creator"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 14 Sep 2021 07:16:47 GMT",
+      "tag": "@microsoft/fast-creator_v0.7.0",
+      "version": "0.7.0",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-tooling-react to v2.11.4",
+            "author": "jumarroq@microsoft.com",
+            "commit": "8094ba315ab24b4dca9b2aea1f5ef0ba5afb7725",
+            "package": "@microsoft/fast-creator"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sun, 12 Sep 2021 07:17:43 GMT",
+      "tag": "@microsoft/fast-creator_v0.7.0",
+      "version": "0.7.0",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-tooling to v0.29.0",
+            "author": "john.kreitlow@microsoft.com",
+            "commit": "54a90cb9b3b9b99bacc355bd99386fe4fa09b9d7",
+            "package": "@microsoft/fast-creator"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 09 Sep 2021 07:21:36 GMT",
       "tag": "@microsoft/fast-creator_v0.7.0",
       "version": "0.7.0",

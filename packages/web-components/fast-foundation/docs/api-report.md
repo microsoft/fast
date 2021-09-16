@@ -71,6 +71,8 @@ export const all: (key: any, searchAncestors?: boolean | undefined) => ReturnTyp
 //
 // @public
 export class Anchor extends FoundationElement {
+    // @internal (undocumented)
+    connectedCallback(): void;
     control: HTMLAnchorElement;
     // @internal
     defaultSlottedContent: HTMLElement[];
@@ -1080,7 +1082,7 @@ export class FoundationElementRegistry<TDefinition extends FoundationElementDefi
 // Warning: (ae-forgotten-export) The symbol "LazyFoundationOption" needs to be exported by the entry point index.d.ts
 //
 // @public
-export type FoundationElementTemplate<T, K = void> = LazyFoundationOption<T, K & FoundationElementDefinition>;
+export type FoundationElementTemplate<T, K extends FoundationElementDefinition = FoundationElementDefinition> = LazyFoundationOption<T, K>;
 
 // @public
 export enum GenerateHeaderOptions {

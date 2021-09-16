@@ -1,6 +1,6 @@
 {
   "type": "patch",
-  "comment": "change default tab panel display; fixes #5171",
+  "comment": "fix thumb position math",
   "packageName": "@microsoft/fast-components",
   "email": "corylaviska@microsoft.com",
   "dependentChangeType": "patch"

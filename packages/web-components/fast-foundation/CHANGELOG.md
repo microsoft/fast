@@ -1,8 +1,41 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Thu, 09 Sep 2021 07:21:36 GMT and should not be manually modified.
+This log was last generated on Wed, 15 Sep 2021 19:49:35 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.14.0
+
+Wed, 15 Sep 2021 19:49:35 GMT
+
+### Minor changes
+
+- fix type issue for FoundationElementTemplate (john.kreitlow@microsoft.com)
+
+### Patches
+
+- Fix design-token subscription bugs where subscribers were not getting notified (nicholasrice@users.noreply.github.com)
+
+## 2.13.1
+
+Tue, 14 Sep 2021 07:16:47 GMT
+
+### Patches
+
+- Using a manual focus to workaround delegatesFocus issues on Firefox for the button and anchor components (jumarroq@microsoft.com)
+
+## 2.13.0
+
+Sun, 12 Sep 2021 07:17:43 GMT
+
+### Minor changes
+
+- use class method for radio click handler property (john.kreitlow@microsoft.com)
+
+### Patches
+
+- remove dependencies on keycode (scomea@microsoft.com)
+- Bump @microsoft/fast-web-utilities to v4.8.1 (scomea@microsoft.com)
 
 ## 2.12.0
 
