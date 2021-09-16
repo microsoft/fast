@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "fix: AI doesn't update activeid attr is changed",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "jes@microsoft.com",
+  "dependentChangeType": "patch"
+}
