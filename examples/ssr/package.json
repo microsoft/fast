@@ -8,9 +8,9 @@
   "author": "",
   "license": "ISC",
   "scripts": {
-    "start": "node --es-module-specifier-resolution=node ./dist/server.js",
+    "execute": "node --es-module-specifier-resolution=node ./dist/server.js",
     "build": "tsc -p tsconfig.json",
-    "bns": "yarn build && yarn start"
+    "start": "yarn build && yarn execute"
   },
   "dependencies": {
     "@lit-labs/ssr": "^1.0.0-rc.2",
