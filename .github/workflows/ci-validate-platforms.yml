@@ -239,8 +239,9 @@ jobs:
           author: ${{ github.actor }}
           branch: ${{ github.ref }}
           outputDirectory: /tmp/artifacts
+          emulatedFormFactor: "Desktop"
           urls: "https://www.fast.design/"
-          emulatedFormFactor: "desktop"
+
       - name: Upload artifacts
         uses: actions/upload-artifact@master
         with:
