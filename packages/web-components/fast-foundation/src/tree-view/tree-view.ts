@@ -2,13 +2,13 @@ import { attr, DOM, observable } from "@microsoft/fast-element";
 import {
     getDisplayedNodes,
     isHTMLElement,
-    keyCodeArrowDown,
-    keyCodeArrowLeft,
-    keyCodeArrowRight,
-    keyCodeArrowUp,
-    keyCodeEnd,
-    keyCodeEnter,
-    keyCodeHome,
+    keyArrowDown,
+    keyArrowLeft,
+    keyArrowRight,
+    keyArrowUp,
+    keyEnd,
+    keyEnter,
+    keyHome,
 } from "@microsoft/fast-web-utilities";
 import { isTreeItemElement, TreeItem } from "../tree-item";
 import { FoundationElement } from "../foundation-element";
@@ -111,13 +111,13 @@ export class TreeView extends FoundationElement {
         }
 
         switch (e.key) {
-            case keyCodeHome:
+            case keyHome:
                 if (this.treeItems && this.treeItems.length) {
                     TreeItem.focusItem(this.treeItems[0]);
                     this.treeItems[0].setAttribute("tabindex", "0");
                 }
                 break;
-            case keyCodeEnd:
+            case keyEnd:
                 if (this.treeItems && this.treeItems.length) {
                     TreeItem.focusItem(this.treeItems[this.treeItems.length - 1]);
                     this.treeItems[this.treeItems.length - 1].setAttribute(
@@ -126,7 +126,7 @@ export class TreeView extends FoundationElement {
                     );
                 }
                 break;
-            case keyCodeArrowLeft:
+            case keyArrowLeft:
                 e.preventDefault();
                 if (e.target && this.isFocusableElement(e.target as HTMLElement)) {
                     const item = e.target as HTMLElement;
@@ -135,7 +135,7 @@ export class TreeView extends FoundationElement {
                     }
                 }
                 break;
-            case keyCodeArrowRight:
+            case keyArrowRight:
                 e.preventDefault();
                 if (e.target && this.isFocusableElement(e.target as HTMLElement)) {
                     const item = e.target as HTMLElement;
@@ -144,19 +144,19 @@ export class TreeView extends FoundationElement {
                     }
                 }
                 break;
-            case keyCodeArrowDown:
+            case keyArrowDown:
                 e.preventDefault();
                 if (e.target && this.isFocusableElement(e.target as HTMLElement)) {
                     this.focusNextNode(1, e.target as HTMLElement);
                 }
                 break;
-            case keyCodeArrowUp:
+            case keyArrowUp:
                 e.preventDefault();
                 if (e.target && this.isFocusableElement(e.target as HTMLElement)) {
                     this.focusNextNode(-1, e.target as HTMLElement);
                 }
                 break;
-            case keyCodeEnter:
+            case keyEnter:
                 // In single-select trees where selection does not follow focus (see note below),
                 // the default action is typically to select the focused node.
                 this.handleSelected(e.target as HTMLElement);

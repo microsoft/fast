@@ -1,10 +1,6 @@
-import {
-    attr,
-    observable,
-    SyntheticViewTemplate,
-} from "@microsoft/fast-element";
-import { StartEnd, StartEndOptions } from "../patterns/start-end";
+import { attr, observable, SyntheticViewTemplate } from "@microsoft/fast-element";
 import { isHTMLElement } from "@microsoft/fast-web-utilities";
+import { StartEnd, StartEndOptions } from "../patterns/start-end";
 import { applyMixins } from "../utilities/apply-mixins";
 import { FoundationElement, FoundationElementDefinition } from "../foundation-element";
 
