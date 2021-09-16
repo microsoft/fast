@@ -91,7 +91,7 @@ export class TreeItem extends FoundationElement {
     public renderCollapsedChildren: boolean;
 
     /**
-     * Places document focus on a tree item and adds the item to the sequential tab order.
+     * Places document focus on a tree item
      * @param el - the element to focus
      */
     public static focusItem(el: HTMLElement) {
