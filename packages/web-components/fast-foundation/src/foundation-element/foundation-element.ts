@@ -79,10 +79,10 @@ export interface FoundationElementDefinition {
  * A foundation element template function.
  * @public
  */
-export type FoundationElementTemplate<T, K = void> = LazyFoundationOption<
+export type FoundationElementTemplate<
     T,
-    K & FoundationElementDefinition
->;
+    K extends FoundationElementDefinition = FoundationElementDefinition
+> = LazyFoundationOption<T, K>;
 
 /**
  * A set of properties which the component consumer can override during the element registration process.

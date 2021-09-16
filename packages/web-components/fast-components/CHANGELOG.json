@@ -2,6 +2,57 @@
   "name": "@microsoft/fast-components",
   "entries": [
     {
+      "date": "Wed, 15 Sep 2021 07:18:53 GMT",
+      "tag": "@microsoft/fast-components_v2.10.0",
+      "version": "2.10.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "add additional example in component explorer scenario",
+            "author": "v-dlesac@microsoft.com",
+            "commit": "645b96448f115e5571f73e4d4a0357d150a23d49",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 14 Sep 2021 07:16:47 GMT",
+      "tag": "@microsoft/fast-components_v2.9.2",
+      "version": "2.9.2",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Adding PlayWright tests for button and anchor focus",
+            "author": "jumarroq@microsoft.com",
+            "commit": "8094ba315ab24b4dca9b2aea1f5ef0ba5afb7725",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sun, 12 Sep 2021 07:17:43 GMT",
+      "tag": "@microsoft/fast-components_v2.9.1",
+      "version": "2.9.1",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Remove commented CSS",
+            "author": "john.kreitlow@microsoft.com",
+            "commit": "54a90cb9b3b9b99bacc355bd99386fe4fa09b9d7",
+            "package": "@microsoft/fast-components"
+          },
+          {
+            "comment": "change default tab panel display; fixes #5171",
+            "author": "corylaviska@microsoft.com",
+            "commit": "9cbba55c5e860df0eec98a28b9948d98cfe7d306",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 09 Sep 2021 07:21:36 GMT",
       "tag": "@microsoft/fast-components_v2.9.0",
       "version": "2.9.0",

@@ -1,8 +1,33 @@
 # Change Log - @microsoft/fast-components
 
-This log was last generated on Thu, 09 Sep 2021 07:21:36 GMT and should not be manually modified.
+This log was last generated on Wed, 15 Sep 2021 07:18:53 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.10.0
+
+Wed, 15 Sep 2021 07:18:53 GMT
+
+### Minor changes
+
+- add additional example in component explorer scenario (v-dlesac@microsoft.com)
+
+## 2.9.2
+
+Tue, 14 Sep 2021 07:16:47 GMT
+
+### Patches
+
+- Adding PlayWright tests for button and anchor focus (jumarroq@microsoft.com)
+
+## 2.9.1
+
+Sun, 12 Sep 2021 07:17:43 GMT
+
+### Patches
+
+- Remove commented CSS (john.kreitlow@microsoft.com)
+- change default tab panel display; fixes #5171 (corylaviska@microsoft.com)
 
 ## 2.9.0
 
