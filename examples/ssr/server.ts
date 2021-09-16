@@ -1,17 +1,15 @@
 /* eslint-disable */
 import { render } from "@lit-labs/ssr/lib/render-with-global-dom-shim.js";
-import { ElementRenderer } from "@lit-labs/ssr/lib/element-renderer";
 import { Readable } from "stream";
-import { html } from "lit";
-
-function myTemplate() {
-    return html`
-        <my-element>foo</my-element>
-    `;
-}
+import { FASTElementRenderer } from "./element-renderer";
+import { myTemplate } from "./experience";
 
 const templateResult = myTemplate();
-const ssrResult = render(templateResult);
+const ssrResult = render(templateResult, {
+    elementRenderers: [FASTElementRenderer],
+    customElementHostStack: [],
+    customElementInstanceStack: [],
+});
 const stream = (Readable as any).from(ssrResult);
 
 stream.on("readable", function (this: any) {
