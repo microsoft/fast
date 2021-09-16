@@ -232,14 +232,24 @@ jobs:
     steps:
       - uses: actions/checkout@master
       - run: mkdir /tmp/artifacts
-      - name: Run Lighthouse
+      - name: Run Lighthouse for Mobile
         uses: foo-software/lighthouse-check-action@master
         with:
           accessToken: ${{ secrets.GITHUB_TOKEN }}
           author: ${{ github.actor }}
           branch: ${{ github.ref }}
           outputDirectory: /tmp/artifacts
-          emulatedFormFactor: "Desktop, Mobile"
+          emulatedFormFactor: "Mobile"
+          urls: "https://www.fast.design/"
+
+      - name: Run Lighthouse for Desktop
+        uses: foo-software/lighthouse-check-action@master
+        with:
+          accessToken: ${{ secrets.GITHUB_TOKEN }}
+          author: ${{ github.actor }}
+          branch: ${{ github.ref }}
+          outputDirectory: /tmp/artifacts
+          emulatedFormFactor: "Desktop"
           urls: "https://www.fast.design/"
       - name: Upload artifacts
         uses: actions/upload-artifact@master
