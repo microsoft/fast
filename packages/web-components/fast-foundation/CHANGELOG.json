@@ -2,6 +2,44 @@
   "name": "@microsoft/fast-foundation",
   "entries": [
     {
+      "date": "Thu, 16 Sep 2021 07:17:00 GMT",
+      "tag": "@microsoft/fast-foundation_v2.14.0",
+      "version": "2.14.0",
+      "comments": {
+        "none": [
+          {
+            "comment": "correct error in data grid spec document",
+            "author": "scomea@microsoft.com",
+            "commit": "529117085a9394c8ff9da4a0d16f8be21fc798d1",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 15 Sep 2021 19:49:35 GMT",
+      "tag": "@microsoft/fast-foundation_v2.14.0",
+      "version": "2.14.0",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Fix design-token subscription bugs where subscribers were not getting notified",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "b5891e7f1b816628f58e96c66d28235ab42c5bdf",
+            "package": "@microsoft/fast-foundation"
+          }
+        ],
+        "minor": [
+          {
+            "comment": "fix type issue for FoundationElementTemplate",
+            "author": "john.kreitlow@microsoft.com",
+            "commit": "89bf213b9e3693548b52f52d36cc0d36d208d4e6",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 14 Sep 2021 07:16:47 GMT",
       "tag": "@microsoft/fast-foundation_v2.13.1",
       "version": "2.13.1",
