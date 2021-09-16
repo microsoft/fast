@@ -240,6 +240,7 @@ jobs:
           branch: ${{ github.ref }}
           outputDirectory: /tmp/artifacts
           emulatedFormFactor: "Desktop"
+          emulatedFormFactor: "Mobile"
           urls: "https://www.fast.design/"
 
       - name: Upload artifacts
