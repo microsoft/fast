@@ -235,6 +235,52 @@ describe("MessageSystem", () => {
 
         expect(postMessageCallback).to.have.been.called.exactly(0);
     });
+    it("should store a message uuid if a post message has been called", () => {
+        const postMessageCallback: any = () => {};
+        class Worker {
+            public postMessage: any = postMessageCallback;
+        }
+        (window as any).Worker = Worker;
+
+        const messageSystem: MessageSystem = new MessageSystem({
+            webWorker: "",
+        });
+        messageSystem.postMessage({} as any);
+
+        expect(messageSystem["messageQueue"][1]).to.have.length(1);
+    });
+    it("should clear a message uuid if an onmessage has been called", () => {
+        const postMessageCallback: any = () => {};
+        class Worker {
+            public postMessage: any = postMessageCallback;
+        }
+        (window as any).Worker = Worker;
+
+        const messageSystem: MessageSystem = new MessageSystem({
+            webWorker: "",
+        });
+        messageSystem.postMessage({} as any);
+
+        messageSystem["onMessage"]({
+            data: ["foo", messageSystem["messageQueue"][1][0]],
+        } as any);
+        expect(messageSystem["messageQueue"][1]).to.have.length(0);
+    });
+    it("should not clear a message uuid if an onmessage has been called that is not the first uuid available", () => {
+        const postMessageCallback: any = () => {};
+        class Worker {
+            public postMessage: any = postMessageCallback;
+        }
+        (window as any).Worker = Worker;
+
+        const messageSystem: MessageSystem = new MessageSystem({
+            webWorker: "",
+        });
+        messageSystem.postMessage({} as any);
+
+        messageSystem["onMessage"]({ data: ["foo", "unmatchableuuid"] } as any);
+        expect(messageSystem["messageQueue"][1]).to.have.length(1);
+    });
     it("should post a message when the onmessage of the worker has been called", () => {
         const postMessageCallback: any = () => {};
         const onMessageCallback: any = () => {};
@@ -267,7 +313,8 @@ describe("MessageSystem", () => {
 
         expect(registeredCallback).to.have.been.called.exactly(0);
 
-        messageSystem["onMessage"]({ data: "foo" } as any);
+        messageSystem["messageQueue"] = [{}, ["bar"]];
+        messageSystem["onMessage"]({ data: ["foo", "bar"] } as any);
 
         expect(registeredCallback).to.have.been.called.exactly(1);
     });

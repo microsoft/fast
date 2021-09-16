@@ -2,6 +2,167 @@
   "name": "@microsoft/fast-foundation",
   "entries": [
     {
+      "date": "Wed, 15 Sep 2021 19:49:35 GMT",
+      "tag": "@microsoft/fast-foundation_v2.14.0",
+      "version": "2.14.0",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Fix design-token subscription bugs where subscribers were not getting notified",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "b5891e7f1b816628f58e96c66d28235ab42c5bdf",
+            "package": "@microsoft/fast-foundation"
+          }
+        ],
+        "minor": [
+          {
+            "comment": "fix type issue for FoundationElementTemplate",
+            "author": "john.kreitlow@microsoft.com",
+            "commit": "89bf213b9e3693548b52f52d36cc0d36d208d4e6",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 14 Sep 2021 07:16:47 GMT",
+      "tag": "@microsoft/fast-foundation_v2.13.1",
+      "version": "2.13.1",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Using a manual focus to workaround delegatesFocus issues on Firefox for the button and anchor components",
+            "author": "jumarroq@microsoft.com",
+            "commit": "8094ba315ab24b4dca9b2aea1f5ef0ba5afb7725",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sun, 12 Sep 2021 07:17:43 GMT",
+      "tag": "@microsoft/fast-foundation_v2.13.0",
+      "version": "2.13.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "use class method for radio click handler property",
+            "author": "john.kreitlow@microsoft.com",
+            "commit": "d1e2b8dbbe1daec68f69d8df741f06fa2c74414a",
+            "package": "@microsoft/fast-foundation"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "remove dependencies on keycode",
+            "author": "scomea@microsoft.com",
+            "commit": "e8602a247065b0c916bdc8e55314f2d3e3403fd1",
+            "package": "@microsoft/fast-foundation"
+          },
+          {
+            "comment": "Bump @microsoft/fast-web-utilities to v4.8.1",
+            "author": "scomea@microsoft.com",
+            "commit": "e8602a247065b0c916bdc8e55314f2d3e3403fd1",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 09 Sep 2021 07:21:36 GMT",
+      "tag": "@microsoft/fast-foundation_v2.12.0",
+      "version": "2.12.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "add start/end slot definitions to support default slotted content",
+            "author": "chhol@microsoft.com",
+            "commit": "3ad50c8eec98b3156a4559586ca76e4abebefad8",
+            "package": "@microsoft/fast-foundation"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "fix(design-system): make FoundationElement.compose safe to use directly",
+            "author": "roeisenb@microsoft.com",
+            "commit": "a508e1e08780d741300d4a03e2bf43ad53a2c017",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 08 Sep 2021 07:16:17 GMT",
+      "tag": "@microsoft/fast-foundation_v2.11.0",
+      "version": "2.11.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "fix: allow for base class",
+            "author": "mathieu.lavoie@logmein.com",
+            "commit": "5493d3ac1f0d2d854031f2211bc32c0bb9d2c234",
+            "package": "@microsoft/fast-foundation"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "force non-volatile binding and update docs to explain that DesignToken does not support volatile bindings",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "d48af06747dd8c9e1bd4265f8174ee81edc5fc07",
+            "package": "@microsoft/fast-foundation"
+          },
+          {
+            "comment": "Bump @microsoft/fast-element to v1.5.1",
+            "author": "roeisenb@microsoft.com",
+            "commit": "bdd28c8861b3523a9984ca8feda2af9019861a8a",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 02 Sep 2021 17:17:56 GMT",
+      "tag": "@microsoft/fast-foundation_v2.10.0",
+      "version": "2.10.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "feat(design-system): enable complete ignore of duplicate elements",
+            "author": "roeisenb@microsoft.com",
+            "commit": "fe1db8607dce8c80fa83ad01ee2c8dbc9e845c98",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 02 Sep 2021 07:15:21 GMT",
+      "tag": "@microsoft/fast-foundation_v2.9.1",
+      "version": "2.9.1",
+      "comments": {
+        "patch": [
+          {
+            "comment": "configure system to use a single CSSStyleSheet for custom property setting",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "29cdc520f699eaf1f1669eaeacb4a7a8a7cfe1c2",
+            "package": "@microsoft/fast-foundation"
+          },
+          {
+            "comment": "progress component bar width",
+            "author": "scomea@microsoft.com",
+            "commit": "21c6791f13b17e08d131358e423c86b73b77a79e",
+            "package": "@microsoft/fast-foundation"
+          },
+          {
+            "comment": "Removed remaining 'use-defaults' which no longer exists",
+            "author": "47367562+bheston@users.noreply.github.com",
+            "commit": "f34fa1b1bdbb0cf4c371b556c2486bd160646c53",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 01 Sep 2021 07:18:34 GMT",
       "tag": "@microsoft/fast-foundation_v2.9.0",
       "version": "2.9.0",

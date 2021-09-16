@@ -15,7 +15,6 @@ const styles: ComponentStyles<FormClassNameContract, {}> = {
         background: L4CSSProperty,
         color: textColorCSSProperty,
         height: "100%",
-        padding: `0 ${gutterCSSProperty}`,
         overflow: "auto",
         "font-size": defaultTextSizeCSSProperty,
         "&::-webkit-scrollbar": {
@@ -26,6 +25,11 @@ const styles: ComponentStyles<FormClassNameContract, {}> = {
         "&::-webkit-scrollbar-thumb": {
             background: L2CSSProperty,
             borderRadius: "8px",
+        },
+        display: "flex",
+        "& > form": {
+            padding: `0 ${gutterCSSProperty}`,
+            width: "100%",
         },
     },
     form_breadcrumbs: {

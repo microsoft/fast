@@ -2,6 +2,180 @@
   "name": "@microsoft/fast-tooling",
   "entries": [
     {
+      "date": "Wed, 15 Sep 2021 19:49:35 GMT",
+      "tag": "@microsoft/fast-tooling_v0.29.0",
+      "version": "0.29.0",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-foundation to v2.14.0",
+            "author": "john.kreitlow@microsoft.com",
+            "commit": "89bf213b9e3693548b52f52d36cc0d36d208d4e6",
+            "package": "@microsoft/fast-tooling"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 15 Sep 2021 07:18:53 GMT",
+      "tag": "@microsoft/fast-tooling_v0.29.0",
+      "version": "0.29.0",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-components to v2.10.0",
+            "author": "v-dlesac@microsoft.com",
+            "commit": "645b96448f115e5571f73e4d4a0357d150a23d49",
+            "package": "@microsoft/fast-tooling"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 14 Sep 2021 07:16:47 GMT",
+      "tag": "@microsoft/fast-tooling_v0.29.0",
+      "version": "0.29.0",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-components to v2.9.2",
+            "author": "jumarroq@microsoft.com",
+            "commit": "8094ba315ab24b4dca9b2aea1f5ef0ba5afb7725",
+            "package": "@microsoft/fast-tooling"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sun, 12 Sep 2021 07:17:43 GMT",
+      "tag": "@microsoft/fast-tooling_v0.29.0",
+      "version": "0.29.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "added option to commit inline edit changes on blur",
+            "author": "44823142+williamw2@users.noreply.github.com",
+            "commit": "0ab121fc03b01f6675e08767979c69ea65822119",
+            "package": "@microsoft/fast-tooling"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "fixed exception in htmlrenderer in specific messaging scenarios",
+            "author": "44823142+williamw2@users.noreply.github.com",
+            "commit": "4b0ed1358c9a5d694908abdfebca6ef32607c29b",
+            "package": "@microsoft/fast-tooling"
+          },
+          {
+            "comment": "remove dependencies on keycode",
+            "author": "scomea@microsoft.com",
+            "commit": "e8602a247065b0c916bdc8e55314f2d3e3403fd1",
+            "package": "@microsoft/fast-tooling"
+          },
+          {
+            "comment": "Bump @microsoft/fast-components to v2.9.1",
+            "author": "john.kreitlow@microsoft.com",
+            "commit": "54a90cb9b3b9b99bacc355bd99386fe4fa09b9d7",
+            "package": "@microsoft/fast-tooling"
+          },
+          {
+            "comment": "Bump @microsoft/fast-foundation to v2.13.0",
+            "author": "scomea@microsoft.com",
+            "commit": "e8602a247065b0c916bdc8e55314f2d3e3403fd1",
+            "package": "@microsoft/fast-tooling"
+          },
+          {
+            "comment": "Bump @microsoft/fast-web-utilities to v4.8.1",
+            "author": "scomea@microsoft.com",
+            "commit": "e8602a247065b0c916bdc8e55314f2d3e3403fd1",
+            "package": "@microsoft/fast-tooling"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 09 Sep 2021 07:21:36 GMT",
+      "tag": "@microsoft/fast-tooling_v0.28.0",
+      "version": "0.28.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "add a message queue to the message system",
+            "author": "7559015+janechu@users.noreply.github.com",
+            "commit": "04f863e9904cbd01ff7d39ee9449756334f2f925",
+            "package": "@microsoft/fast-tooling"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-components to v2.9.0",
+            "author": "chhol@microsoft.com",
+            "commit": "3ad50c8eec98b3156a4559586ca76e4abebefad8",
+            "package": "@microsoft/fast-tooling"
+          },
+          {
+            "comment": "Bump @microsoft/fast-foundation to v2.12.0",
+            "author": "chhol@microsoft.com",
+            "commit": "3ad50c8eec98b3156a4559586ca76e4abebefad8",
+            "package": "@microsoft/fast-tooling"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 08 Sep 2021 07:16:17 GMT",
+      "tag": "@microsoft/fast-tooling_v0.27.11",
+      "version": "0.27.11",
+      "comments": {
+        "none": [
+          {
+            "comment": "Bump @microsoft/fast-components to v2.8.3",
+            "author": "ben@platform5.ch",
+            "commit": "2581a5ec2daba8f448f6d34c00725105678ab5d4",
+            "package": "@microsoft/fast-tooling"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-element to v1.5.1",
+            "author": "roeisenb@microsoft.com",
+            "commit": "bdd28c8861b3523a9984ca8feda2af9019861a8a",
+            "package": "@microsoft/fast-tooling"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 02 Sep 2021 17:17:56 GMT",
+      "tag": "@microsoft/fast-tooling_v0.27.10",
+      "version": "0.27.10",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-foundation to v2.10.0",
+            "author": "roeisenb@microsoft.com",
+            "commit": "fe1db8607dce8c80fa83ad01ee2c8dbc9e845c98",
+            "package": "@microsoft/fast-tooling"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 02 Sep 2021 07:15:21 GMT",
+      "tag": "@microsoft/fast-tooling_v0.27.9",
+      "version": "0.27.9",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-components to v2.8.1",
+            "author": "47367562+bheston@users.noreply.github.com",
+            "commit": "f34fa1b1bdbb0cf4c371b556c2486bd160646c53",
+            "package": "@microsoft/fast-tooling"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 01 Sep 2021 07:18:34 GMT",
       "tag": "@microsoft/fast-tooling_v0.27.8",
       "version": "0.27.8",

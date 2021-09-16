@@ -2,6 +2,126 @@
   "name": "@microsoft/fast-component-explorer",
   "entries": [
     {
+      "date": "Wed, 15 Sep 2021 19:49:35 GMT",
+      "tag": "@microsoft/fast-component-explorer_v0.17.2",
+      "version": "0.17.2",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-tooling-react to v2.11.4",
+            "author": "john.kreitlow@microsoft.com",
+            "commit": "89bf213b9e3693548b52f52d36cc0d36d208d4e6",
+            "package": "@microsoft/fast-component-explorer"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 15 Sep 2021 07:18:53 GMT",
+      "tag": "@microsoft/fast-component-explorer_v0.17.2",
+      "version": "0.17.2",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-tooling-react to v2.11.4",
+            "author": "v-dlesac@microsoft.com",
+            "commit": "645b96448f115e5571f73e4d4a0357d150a23d49",
+            "package": "@microsoft/fast-component-explorer"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 14 Sep 2021 07:16:47 GMT",
+      "tag": "@microsoft/fast-component-explorer_v0.17.2",
+      "version": "0.17.2",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-tooling-react to v2.11.4",
+            "author": "jumarroq@microsoft.com",
+            "commit": "8094ba315ab24b4dca9b2aea1f5ef0ba5afb7725",
+            "package": "@microsoft/fast-component-explorer"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sun, 12 Sep 2021 07:17:43 GMT",
+      "tag": "@microsoft/fast-component-explorer_v0.17.2",
+      "version": "0.17.2",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-tooling to v0.29.0",
+            "author": "john.kreitlow@microsoft.com",
+            "commit": "54a90cb9b3b9b99bacc355bd99386fe4fa09b9d7",
+            "package": "@microsoft/fast-component-explorer"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 09 Sep 2021 07:21:36 GMT",
+      "tag": "@microsoft/fast-component-explorer_v0.17.2",
+      "version": "0.17.2",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-tooling-react to v2.11.3",
+            "author": "chhol@microsoft.com",
+            "commit": "3ad50c8eec98b3156a4559586ca76e4abebefad8",
+            "package": "@microsoft/fast-component-explorer"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 08 Sep 2021 07:16:17 GMT",
+      "tag": "@microsoft/fast-component-explorer_v0.17.2",
+      "version": "0.17.2",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-tooling-react to v2.11.2",
+            "author": "roeisenb@microsoft.com",
+            "commit": "bdd28c8861b3523a9984ca8feda2af9019861a8a",
+            "package": "@microsoft/fast-component-explorer"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 02 Sep 2021 17:17:56 GMT",
+      "tag": "@microsoft/fast-component-explorer_v0.17.2",
+      "version": "0.17.2",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-tooling-react to v2.11.1",
+            "author": "roeisenb@microsoft.com",
+            "commit": "fe1db8607dce8c80fa83ad01ee2c8dbc9e845c98",
+            "package": "@microsoft/fast-component-explorer"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 02 Sep 2021 07:15:21 GMT",
+      "tag": "@microsoft/fast-component-explorer_v0.17.2",
+      "version": "0.17.2",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-tooling-react to v2.11.0",
+            "author": "47367562+bheston@users.noreply.github.com",
+            "commit": "f34fa1b1bdbb0cf4c371b556c2486bd160646c53",
+            "package": "@microsoft/fast-component-explorer"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 01 Sep 2021 07:18:34 GMT",
       "tag": "@microsoft/fast-component-explorer_v0.17.2",
       "version": "0.17.2",
