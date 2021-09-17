@@ -739,7 +739,7 @@ export interface DesignSystem {
 export const DesignSystem: Readonly<{
     tagFor(type: Constructable): string;
     responsibleFor(element: HTMLElement): DesignSystem;
-    getOrCreate(element?: HTMLElement): DesignSystem;
+    getOrCreate(node?: Node | undefined): DesignSystem;
 }>;
 
 // @public
@@ -798,7 +798,7 @@ export const DI: Readonly<{
     createContainer(config?: Partial<ContainerConfiguration> | undefined): Container;
     findResponsibleContainer(node: Node): Container;
     findParentContainer(node: Node): Container;
-    getOrCreateDOMContainer(node?: Node, config?: Partial<Pick<ContainerConfiguration, "responsibleForOwnerRequests" | "defaultResolver">> | undefined): Container;
+    getOrCreateDOMContainer(node?: Node | undefined, config?: Partial<Pick<ContainerConfiguration, "responsibleForOwnerRequests" | "defaultResolver">> | undefined): Container;
     getDesignParamtypes: (Type: Constructable | Injectable) => readonly Key[] | undefined;
     getAnnotationParamtypes: (Type: Constructable | Injectable) => readonly Key[] | undefined;
     getOrCreateAnnotationParamTypes(Type: Constructable | Injectable): Key[];
@@ -1082,7 +1082,7 @@ export class FoundationElementRegistry<TDefinition extends FoundationElementDefi
 // Warning: (ae-forgotten-export) The symbol "LazyFoundationOption" needs to be exported by the entry point index.d.ts
 //
 // @public
-export type FoundationElementTemplate<T, K = void> = LazyFoundationOption<T, K & FoundationElementDefinition>;
+export type FoundationElementTemplate<T, K extends FoundationElementDefinition = FoundationElementDefinition> = LazyFoundationOption<T, K>;
 
 // @public
 export enum GenerateHeaderOptions {
@@ -1462,6 +1462,149 @@ export type OverrideFoundationElementDefinition<T extends FoundationElementDefin
 
 // @public
 export type ParentLocator = (owner: any) => Container | null;
+
+// Warning: (ae-forgotten-export) The symbol "FormAssociatedPicker" needs to be exported by the entry point index.d.ts
+//
+// @alpha
+export class Picker extends FormAssociatedPicker {
+    // @internal
+    activeListItemTemplate?: ViewTemplate;
+    // @internal
+    activeMenuOptionTemplate?: ViewTemplate;
+    // @internal (undocumented)
+    connectedCallback(): void;
+    defaultListItemTemplate?: ViewTemplate;
+    defaultMenuOptionTemplate?: ViewTemplate;
+    // (undocumented)
+    disconnectedCallback(): void;
+    // @internal
+    filteredOptionsList: string[];
+    filterQuery: boolean;
+    filterSelected: boolean;
+    // @internal
+    flyoutOpen: boolean;
+    // @public
+    focus(): void;
+    handleFocusIn(e: FocusEvent): boolean;
+    handleFocusOut(e: FocusEvent): boolean;
+    handleItemInvoke(e: Event): boolean;
+    handleKeyDown(e: KeyboardEvent): boolean;
+    handleOptionInvoke(e: Event): boolean;
+    handleRegionLoaded(e: Event): void;
+    handleSelectionChange(): void;
+    // @internal
+    inputElement: HTMLInputElement;
+    itemsPlaceholderElement: Node;
+    label: string;
+    labelledBy: string;
+    // @internal
+    listElement: PickerList;
+    listItemContentsTemplate: ViewTemplate;
+    listItemTemplate: ViewTemplate;
+    loadingText: string;
+    maxSelected: number | undefined;
+    // @internal
+    menuElement: PickerMenu;
+    // @internal
+    menuFocusIndex: number;
+    // @internal
+    menuFocusOptionId: string | undefined;
+    // @internal
+    menuId: string;
+    menuOptionContentsTemplate: ViewTemplate;
+    menuOptionTemplate: ViewTemplate;
+    // @internal
+    menuTag: string;
+    noSuggestionsText: string;
+    options: string;
+    optionsList: string[];
+    query: string;
+    // @internal
+    region: AnchoredRegion;
+    // @internal (undocumented)
+    selectedItems: string[];
+    // @internal
+    selectedListTag: string;
+    selection: string;
+    showLoading: boolean;
+    // @internal
+    showNoOptions: boolean;
+    suggestionsAvailableText: string;
+    }
+
+// @alpha
+export class PickerList extends FoundationElement {
+}
+
+// @alpha
+export class PickerListItem extends FoundationElement {
+    // @internal (undocumented)
+    connectedCallback(): void;
+    contentsTemplate: ViewTemplate;
+    // @internal (undocumented)
+    disconnectedCallback(): void;
+    // (undocumented)
+    handleClick(e: MouseEvent): boolean;
+    // (undocumented)
+    handleKeyDown(e: KeyboardEvent): boolean;
+    value: string;
+}
+
+// Warning: (ae-incompatible-release-tags) The symbol "pickerListItemTemplate" is marked as @public, but its signature references "PickerListItem" which is marked as @alpha
+//
+// @public (undocumented)
+export const pickerListItemTemplate: (context: any, definition: any) => ViewTemplate<PickerListItem>;
+
+// Warning: (ae-incompatible-release-tags) The symbol "pickerListTemplate" is marked as @public, but its signature references "PickerList" which is marked as @alpha
+//
+// @public (undocumented)
+export const pickerListTemplate: (context: any, definition: any) => ViewTemplate<PickerList>;
+
+// @alpha
+export class PickerMenu extends FoundationElement {
+    // @internal
+    footerElements: HTMLElement[];
+    // (undocumented)
+    footerElementsChanged(): void;
+    // @internal
+    headerElements: HTMLElement[];
+    // (undocumented)
+    headerElementsChanged(): void;
+    // @internal
+    menuElements: HTMLElement[];
+    // (undocumented)
+    menuElementsChanged(): void;
+    // @internal
+    optionElements: HTMLElement[];
+    suggestionsAvailableText: string;
+    }
+
+// @alpha
+export class PickerMenuOption extends FoundationElement {
+    // @internal (undocumented)
+    connectedCallback(): void;
+    contentsTemplate: ViewTemplate;
+    // @internal (undocumented)
+    disconnectedCallback(): void;
+    // (undocumented)
+    handleClick(e: MouseEvent): boolean;
+    value: string;
+}
+
+// Warning: (ae-incompatible-release-tags) The symbol "pickerMenuOptionTemplate" is marked as @public, but its signature references "PickerMenuOption" which is marked as @alpha
+//
+// @public (undocumented)
+export const pickerMenuOptionTemplate: (context: any, definition: any) => ViewTemplate<PickerMenuOption>;
+
+// Warning: (ae-incompatible-release-tags) The symbol "pickerMenuTemplate" is marked as @public, but its signature references "PickerMenu" which is marked as @alpha
+//
+// @public
+export const pickerMenuTemplate: (context: any, definition: any) => ViewTemplate<PickerMenu>;
+
+// Warning: (ae-incompatible-release-tags) The symbol "pickerTemplate" is marked as @public, but its signature references "Picker" which is marked as @alpha
+//
+// @public
+export const pickerTemplate: (context: any, definition: any) => ViewTemplate<Picker>;
 
 // @public
 export type ProgressOptions = FoundationElementDefinition & {

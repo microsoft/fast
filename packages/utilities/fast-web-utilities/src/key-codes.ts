@@ -435,6 +435,8 @@ export const keyPageDown: "PageDown" = "PageDown";
 export const keyPageUp: "PageUp" = "PageUp";
 export const keySpace: " " = " ";
 export const keyTab: "Tab" = "Tab";
+export const keyBackspace: "Backspace" = "Backspace";
+export const keyDelete: "Delete" = "Delete";
 
 export const ArrowKeys = {
     ArrowDown: keyArrowDown,
