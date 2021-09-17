@@ -1,9 +1,10 @@
 /* eslint-disable */
 import { ElementRenderer, RenderInfo } from "@lit-labs/ssr";
-import { FASTElement } from "@microsoft/fast-element";
+import { FASTElement, FASTElementDefinition } from "@microsoft/fast-element";
 
 export class FASTElementRenderer extends ElementRenderer {
     public element: HTMLElement & FASTElement;
+    private ctor: typeof HTMLElement & typeof FASTElement;
     static matchesClass(ctor: typeof HTMLElement): boolean {
         return ctor.prototype instanceof FASTElement;
     }
@@ -11,19 +12,16 @@ export class FASTElementRenderer extends ElementRenderer {
     constructor(tagName: string) {
         super(tagName);
 
-        this.element = new (customElements.get(this.tagName)!)() as HTMLElement &
-            FASTElement;
+        this.ctor = customElements.get(this.tagName!) as typeof HTMLElement &
+            typeof FASTElement;
+        this.element = new this.ctor() as HTMLElement & FASTElement;
     }
 
     *renderLight(renderInfo: RenderInfo): IterableIterator<string> {
         yield "LIGHT DOM";
     }
     *renderShadow(renderInfo: RenderInfo): IterableIterator<string> {
-        try {
-            this.element.$fastController.onConnectedCallback();
-        } catch (e) {
-            console.log(e);
-        }
+        const definition = FASTElementDefinition.forType(this.ctor);
 
         yield "SHADOW DOM";
     }
