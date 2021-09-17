@@ -92,16 +92,15 @@ export interface DesignSystem {
     withElementDisambiguation(callback: ElementDisambiguationCallback): DesignSystem;
 }
 
+let rootDesignSystem: DesignSystem | null = null;
+
 const designSystemKey = DI.createInterface<DesignSystem>(x =>
     x.cachedCallback(handler => {
-        const element = document.body as any;
-        const owned = element.$$designSystem$$ as DesignSystem;
-
-        if (owned) {
-            return owned;
+        if (rootDesignSystem === null) {
+            rootDesignSystem = new DefaultDesignSystem(null, handler);
         }
 
-        return (new DefaultDesignSystem(element, handler) as any) as DesignSystem;
+        return rootDesignSystem;
     })
 );
 
@@ -144,25 +143,30 @@ export const DesignSystem = Object.freeze({
      * @returns The design system.
      * @public
      */
-    getOrCreate(element: HTMLElement = document.body): DesignSystem {
-        const owned = (element as any).$$designSystem$$ as DesignSystem;
+    getOrCreate(node?: Node): DesignSystem {
+        if (!node) {
+            if (rootDesignSystem === null) {
+                rootDesignSystem = DI.getOrCreateDOMContainer().get(designSystemKey);
+            }
+
+            return rootDesignSystem;
+        }
+
+        const owned = (node as any).$$designSystem$$ as DesignSystem;
 
         if (owned) {
             return owned;
         }
 
-        const container = DI.getOrCreateDOMContainer(element);
+        const container = DI.getOrCreateDOMContainer(node);
 
-        if (!container.has(designSystemKey, false)) {
-            container.register(
-                Registration.instance(
-                    designSystemKey,
-                    new DefaultDesignSystem(element, container)
-                )
-            );
+        if (container.has(designSystemKey, false)) {
+            return container.get(designSystemKey);
+        } else {
+            const system = new DefaultDesignSystem(node, container);
+            container.register(Registration.instance(designSystemKey, system));
+            return system;
         }
-
-        return container.get(designSystemKey);
     },
 });
 
@@ -173,8 +177,10 @@ class DefaultDesignSystem implements DesignSystem {
     private disambiguate: ElementDisambiguationCallback = () =>
         ElementDisambiguation.definitionCallbackOnly;
 
-    constructor(private host: HTMLElement, private container: Container) {
-        (host as any).$$designSystem$$ = this;
+    constructor(private owner: any, private container: Container) {
+        if (owner !== null) {
+            owner.$$designSystem$$ = this;
+        }
 
         container.register(
             Registration.callback(DesignSystemRegistrationContext, () => this.context)

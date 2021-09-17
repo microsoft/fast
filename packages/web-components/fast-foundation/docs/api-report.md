@@ -739,7 +739,7 @@ export interface DesignSystem {
 export const DesignSystem: Readonly<{
     tagFor(type: Constructable): string;
     responsibleFor(element: HTMLElement): DesignSystem;
-    getOrCreate(element?: HTMLElement): DesignSystem;
+    getOrCreate(node?: Node | undefined): DesignSystem;
 }>;
 
 // @public
@@ -798,7 +798,7 @@ export const DI: Readonly<{
     createContainer(config?: Partial<ContainerConfiguration> | undefined): Container;
     findResponsibleContainer(node: Node): Container;
     findParentContainer(node: Node): Container;
-    getOrCreateDOMContainer(node?: Node, config?: Partial<Pick<ContainerConfiguration, "responsibleForOwnerRequests" | "defaultResolver">> | undefined): Container;
+    getOrCreateDOMContainer(node?: Node | undefined, config?: Partial<Pick<ContainerConfiguration, "responsibleForOwnerRequests" | "defaultResolver">> | undefined): Container;
     getDesignParamtypes: (Type: Constructable | Injectable) => readonly Key[] | undefined;
     getAnnotationParamtypes: (Type: Constructable | Injectable) => readonly Key[] | undefined;
     getOrCreateAnnotationParamTypes(Type: Constructable | Injectable): Key[];
