@@ -13,10 +13,12 @@
     "start": "yarn build && yarn execute"
   },
   "dependencies": {
+    "@happy-dom/global-registrator": "^2.22.0",
     "@lit-labs/ssr": "^1.0.0-rc.2",
     "@microsoft/fast-components": "^2.7.2",
     "@microsoft/fast-element": "^1.5.0",
     "@microsoft/fast-foundation": "^2.8.0",
+    "happy-dom": "^2.22.0",
     "lit": "^2.0.0-rc.3",
     "lit-element": "^2.5.1",
     "lodash-es": "4.17.15",
