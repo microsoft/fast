@@ -8,7 +8,13 @@ export class FASTElementRenderer extends ElementRenderer {
     static matchesClass(ctor: typeof HTMLElement): boolean {
         return ctor.prototype instanceof FASTElement;
     }
-    connectedCallback(): void {}
+    connectedCallback(): void {
+        try {
+            this.element.$fastController.onConnectedCallback();
+        } catch (e) {
+            console.log(e);
+        }
+    }
     constructor(tagName: string) {
         super(tagName);
 
