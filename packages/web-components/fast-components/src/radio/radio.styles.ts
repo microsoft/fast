@@ -23,8 +23,8 @@ import {
     strokeControlStrongHover,
     strokeControlStrongRest,
     strokeWidth,
-    typeRampBaseFontSize,
-    typeRampBaseLineHeight,
+    typeRampMinus1FontSize,
+    typeRampMinus1LineHeight,
 } from "../design-tokens";
 export const radioStyles: (
     context: ElementDefinitionContext,
@@ -32,7 +32,7 @@ export const radioStyles: (
 ) => ElementStyles = (context: ElementDefinitionContext, definition: RadioOptions) =>
     css`
     ${display("inline-flex")} :host {
-      --input-size: calc((${heightNumber} / 2) + ${designUnit});
+      --input-size: calc(${heightNumber} / 2);
       align-items: center;
       outline: none;
       margin: calc(${designUnit} * 1px) 0;
@@ -69,8 +69,8 @@ export const radioStyles: (
       } padding-inline-start: calc(${designUnit} * 2px + 2px);
       margin-inline-end: calc(${designUnit} * 2px + 2px);
       cursor: pointer;
-      font-size: ${typeRampBaseFontSize};
-      line-height: ${typeRampBaseLineHeight};
+      font-size: ${typeRampMinus1FontSize};
+      line-height: ${typeRampMinus1LineHeight};
     }
     .control,
     slot[name="checked-indicator"] {

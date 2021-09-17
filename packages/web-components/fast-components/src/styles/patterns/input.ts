@@ -7,6 +7,7 @@ import {
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
+    accentForegroundRest,
     bodyFont,
     controlCornerRadius,
     disabledOpacity,
@@ -23,7 +24,6 @@ import {
     neutralForegroundRest,
     neutralStrokeFocus,
     neutralStrokeHover,
-    neutralStrokeInputFilledActive,
     neutralStrokeInputFilledFocus,
     neutralStrokeInputFilledHover,
     neutralStrokeInputFilledRest,
@@ -113,13 +113,16 @@ export const inputStateStyles: (
     definition: FoundationElementDefinition,
     rootSelector: string
 ) => css`
-  :host(:hover:not([disabled]):not(:focus-within)) ${rootSelector},
-  :host(:active:not([disabled])) ${rootSelector},
-  :host(:focus-within:not([disabled])) ${rootSelector} {
+  :host(:hover:not([disabled]):not(:focus-within)) ${rootSelector} {
     background: ${neutralFillInputHover};
     border-color: ${neutralStrokeHover};
     box-shadow: 0 0 0 calc((${focusStrokeWidth} - ${strokeWidth}) * 1px) ${neutralStrokeHover} inset;
     color: ${neutralForegroundHover};
+  }
+  :host(:active:not([disabled])) ${rootSelector},
+  :host(:focus-within:not([disabled])) ${rootSelector} {
+    border-color: ${accentForegroundRest};
+    box-shadow: 0 0 0 calc((${focusStrokeWidth} - ${strokeWidth}) * 1px) ${accentForegroundRest} inset;
   }
   :host(:${focusVisible}:not([disabled])) ${rootSelector} {
     background: ${neutralFillInputFocus};
@@ -155,8 +158,8 @@ export const inputFilledStyles: (
     :host(:active:not([disabled])) ${rootSelector},
     :host(:focus-within:not([disabled])) ${rootSelector} {
       background: ${neutralFillRest};
-      border-color: ${neutralStrokeInputFilledActive};
-      box-shadow: 0 0 0 calc(${strokeWidth} * 1px) ${neutralStrokeInputFilledActive} inset;
+      border-color: ${accentForegroundRest};
+      box-shadow: 0 0 0 calc(${strokeWidth} * 1px) ${accentForegroundRest} inset;
       color: ${neutralForegroundActive};
     }
     :host(:${focusVisible}:not([disabled])) ${rootSelector} {

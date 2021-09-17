@@ -19,8 +19,8 @@ export const fastRadio = Radio.compose<RadioOptions>({
     template,
     styles,
     checkedIndicator: `
-    <svg width="16" height="16" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="8" cy="8" r="3"/>
+    <svg width="8" height="8" viewBox="0 0 8 8" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="4" cy="4" r="4"/>
     </svg>
     `,
 });

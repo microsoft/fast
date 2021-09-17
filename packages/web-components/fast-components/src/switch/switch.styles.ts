@@ -24,6 +24,8 @@ import {
     strokeWidth,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
+    typeRampMinus1FontSize,
+    typeRampMinus1LineHeight,
 } from "../design-tokens";
 import { DirectionalStyleSheetBehavior, heightNumber } from "../styles";
 
@@ -66,8 +68,8 @@ export const switchStyles: (
       position: relative;
       outline: none;
       box-sizing: border-box;
-      width: calc(((${heightNumber} / 2) + ${designUnit}) * 2px);
-      height: calc(((${heightNumber} / 2) + ${designUnit}) * 1px);
+      width: calc((${heightNumber} - (${designUnit} * 2 )) * 1px);
+      height: calc((${heightNumber} / 2) * 1px);
       background: ${neutralFillInputRest};
       border-radius: calc(${heightNumber} * 1px);
       border: calc(${strokeWidth} * 1px) solid ${strokeControlStrongRest};
@@ -109,8 +111,8 @@ export const switchStyles: (
     }
     .label {
       color: ${neutralForegroundRest};
-      font-size: ${typeRampBaseFontSize};
-      line-height: ${typeRampBaseLineHeight};
+      font-size: ${typeRampMinus1FontSize};
+      line-height: ${typeRampMinus1LineHeight};
       margin-inline-end: calc(${designUnit} * 2px + 2px);
       cursor: pointer;
     }
@@ -137,19 +139,21 @@ export const switchStyles: (
         new DirectionalStyleSheetBehavior(
             css`
                 slot[name="switch"] {
-                    left: 0;
+                    left: 2px;
+                    top: 2px;
                 }
                 :host([aria-checked="true"]) slot[name="switch"] {
-                    left: 100%;
+                    left: calc(100% - 2px);
                     transform: translateX(-100%);
                 }
             `,
             css`
                 slot[name="switch"] {
-                    right: 0;
+                    right: 2px;
+                    top: 2px;
                 }
                 :host([aria-checked="true"]) slot[name="switch"] {
-                    right: 100%;
+                    right: calc(100% - 2px);
                     transform: translateX(100%);
                 }
             `

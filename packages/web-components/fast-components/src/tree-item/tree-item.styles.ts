@@ -46,7 +46,7 @@ const ltr = css`
         left: calc(${focusStrokeWidth} * 1px);
     }
     :host([expanded]) > .positioning-region .expand-collapse-button svg {
-        transform: rotate(45deg);
+        transform: rotate(90deg);
     }
 `;
 
@@ -61,7 +61,7 @@ const rtl = css`
         right: calc(${focusStrokeWidth} * 1px);
     }
     :host([expanded]) > .positioning-region .expand-collapse-button svg {
-        transform: rotate(135deg);
+        transform: rotate(270deg);
     }
 `;
 

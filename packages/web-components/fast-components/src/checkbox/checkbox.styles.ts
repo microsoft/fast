@@ -11,7 +11,6 @@ import { SystemColors } from "@microsoft/fast-web-utilities";
 import { heightNumber } from "../styles";
 import {
     bodyFont,
-    controlCornerRadius,
     designUnit,
     disabledOpacity,
     focusStrokeWidth,
@@ -24,8 +23,8 @@ import {
     strokeControlStrongHover,
     strokeControlStrongRest,
     strokeWidth,
-    typeRampBaseFontSize,
-    typeRampBaseLineHeight,
+    typeRampMinus1FontSize,
+    typeRampMinus1LineHeight,
 } from "../design-tokens";
 
 /**
@@ -50,10 +49,10 @@ export const checkboxStyles: (
     }
     .control {
       position: relative;
-      width: calc((${heightNumber} / 2 + ${designUnit}) * 1px);
-      height: calc((${heightNumber} / 2 + ${designUnit}) * 1px);
+      width: calc((${heightNumber} / 2) * 1px);
+      height: calc((${heightNumber} / 2) * 1px);
       box-sizing: border-box;
-      border-radius: calc(${controlCornerRadius} * 1px);
+      border-radius: 3px;
       border: calc(${strokeWidth} * 1px) solid ${strokeControlStrongRest};
       background: ${neutralFillInputRest};
       outline: none;
@@ -71,8 +70,8 @@ export const checkboxStyles: (
       } padding-inline-start: calc(${designUnit} * 2px + 2px);
       margin-inline-end: calc(${designUnit} * 2px + 2px);
       cursor: pointer;
-      font-size: ${typeRampBaseFontSize};
-      line-height: ${typeRampBaseLineHeight};
+      font-size: ${typeRampMinus1FontSize};
+      line-height: ${typeRampMinus1LineHeight};
     }
     slot[name="checked-indicator"],
     slot[name="indeterminate-indicator"] {

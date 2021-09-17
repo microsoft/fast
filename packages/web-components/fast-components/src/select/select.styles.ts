@@ -12,6 +12,7 @@ import { elevationShadowFlyout } from "../styles/elevation";
 import { heightNumber } from "../styles/size";
 import { appearanceBehavior } from "../utilities/behaviors";
 import {
+    accentForegroundRest,
     bodyFont,
     controlCornerRadius,
     designUnit,
@@ -29,7 +30,6 @@ import {
     neutralForegroundFocus,
     neutralForegroundHover,
     neutralForegroundRest,
-    neutralStrokeInputFilledActive,
     neutralStrokeInputFilledHover,
     neutralStrokeInputFilledRest,
     strokeWidth,
@@ -128,9 +128,10 @@ export const selectStyles = (context, definition) =>
       color: ${neutralForegroundHover};
     }
     :host(:not([disabled]):active),
-    :host(:focus-within) {
+    :host(:focus-within),
+    :host(:focus-within:hover)  {
       background: ${neutralFillActive};
-      border-color: ${neutralStrokeInputFilledActive};
+      border-color: ${accentForegroundRest};
       color: ${neutralForegroundActive};
     }
     :host(:${focusVisible}) {

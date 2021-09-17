@@ -51,7 +51,7 @@ export const optionStyles: (
       font-size: ${typeRampBaseFontSize};
       height: calc(${heightNumber} * 1px);
       line-height: ${typeRampBaseLineHeight};
-      margin: 0 calc(${designUnit} * 1px);
+      margin: 0 calc((${designUnit} * 3) * 1px);
       outline: none;
       overflow: hidden;
       align-items: center;

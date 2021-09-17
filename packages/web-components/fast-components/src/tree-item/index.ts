@@ -20,8 +20,8 @@ export const fastTreeItem = TreeItem.compose<TreeItemOptions>({
     template,
     styles,
     expandCollapseGlyph: `
-    <svg width="16" height="16" xmlns="http://www.w3.org/2000/svg">
-        <path d="M5 12.33a1 1 0 001.63.77l4.27-4.26a1.5 1.5 0 000-2.35L6.63 2.22A1 1 0 005 3v9.33z"/>
+    <svg width="12" height="12" viewBox="0 0 12 12" xmlns="http://www.w3.org/2000/svg">
+        <path d="M4.5 8.94915C4.5 9.4861 5.13245 9.7731 5.53655 9.4195L8.6919 6.6586C9.0903 6.30995 9.0903 5.6902 8.6919 5.34155L5.53655 2.58066C5.13245 2.22706 4.5 2.51405 4.5 3.05102V8.94915Z"/>
     </svg>
     `,
 });
