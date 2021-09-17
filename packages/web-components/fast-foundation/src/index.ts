@@ -33,6 +33,7 @@ export * from "./form-associated/index";
 export * from "./foundation-element/index";
 export * from "./listbox-option/index";
 export * from "./listbox/index";
+export * from "./picker/index";
 export * from "./menu-item/index";
 export * from "./menu/index";
 export * from "./number-field/index";
