@@ -17,7 +17,7 @@ import type { ResizeObserverClassDefinition } from "../anchored-region/resize-ob
  *
  * @beta
  */
-export type VirtualizingStackAutoUpdateMode = "manual | resize-only" | "auto";
+export type VirtualizingStackAutoUpdateMode = "manual" | "resize-only" | "auto";
 
 const defaultItemTemplate: ViewTemplate<any> = html`
     <template>
@@ -63,6 +63,26 @@ export class VirtualizingStack extends FoundationElement {
             this.updateDimensions();
         }
     }
+
+    /**
+     *
+     *
+     * @beta
+     * @remarks
+     * HTML Attribute: viewport-buffer
+     */
+    @attr({ attribute: "viewport-buffer" })
+    public viewportBuffer: number = 100;
+
+    /**
+     *
+     *
+     * @beta
+     * @remarks
+     * HTML Attribute: layout-update-delay
+     */
+    @attr({ attribute: "layout-update-delay" })
+    public layoutUpdateDelay: number = 0;
 
     /**
      *
@@ -205,8 +225,6 @@ export class VirtualizingStack extends FoundationElement {
      */
     private scrollLayoutUpdateTimer: number | null = null;
 
-    private scrollLayoutUpdateDelay: number = 50;
-
     /**
      * @internal
      */
@@ -255,11 +273,35 @@ export class VirtualizingStack extends FoundationElement {
         this.requestPositionUpdates();
     }
 
+    /**
+     * initializes the instance's resize observer
+     */
+    private initializeResizeDetector(): void {
+        this.disconnectResizeDetector();
+        this.resizeDetector = new ((window as unknown) as WindowWithResizeObserver).ResizeObserver(
+            this.requestPositionUpdates
+        );
+    }
+
+    /**
+     * destroys the instance's resize observer
+     */
+    private disconnectResizeDetector(): void {
+        if (this.resizeDetector !== null) {
+            this.resizeDetector.disconnect();
+            this.resizeDetector = null;
+        }
+    }
+
     private startLayoutUpdateTimer(): void {
+        if (this.layoutUpdateDelay < 1) {
+            this.updateVisibleItems();
+            return;
+        }
         this.clearLayoutUpdateTimer();
         this.scrollLayoutUpdateTimer = window.setTimeout((): void => {
             this.updateVisibleItems();
-        }, this.scrollLayoutUpdateDelay);
+        }, this.layoutUpdateDelay);
     }
 
     private clearLayoutUpdateTimer(): void {
@@ -295,26 +337,6 @@ export class VirtualizingStack extends FoundationElement {
             this.resizeDetector.unobserve(this.viewportElement);
         }
     };
-
-    /**
-     * initializes the instance's resize observer
-     */
-    private initializeResizeDetector(): void {
-        this.disconnectResizeDetector();
-        this.resizeDetector = new ((window as unknown) as WindowWithResizeObserver).ResizeObserver(
-            this.requestPositionUpdates
-        );
-    }
-
-    /**
-     * destroys the instance's resize observer
-     */
-    private disconnectResizeDetector(): void {
-        if (this.resizeDetector !== null) {
-            this.resizeDetector.disconnect();
-            this.resizeDetector = null;
-        }
-    }
 
     /**
      * Gets the viewport element by id, or defaults to document root
@@ -423,10 +445,12 @@ export class VirtualizingStack extends FoundationElement {
             this.visibleRangeStart = 0;
             this.visibleRangeEnd = 0;
         } else {
-            this.visibleRangeStart = this.viewportRect.top - this.containerRect.top;
+            this.visibleRangeStart =
+                this.viewportRect.top - this.containerRect.top - this.viewportBuffer;
             this.visibleRangeEnd =
                 this.containerRect.height -
-                (this.containerRect.bottom - this.viewportRect.bottom);
+                (this.containerRect.bottom -
+                    (this.viewportRect.bottom + this.viewportBuffer));
 
             this.visibleRangeStart =
                 this.visibleRangeStart < 0 ? 0 : this.visibleRangeStart;
@@ -464,7 +488,10 @@ export class VirtualizingStack extends FoundationElement {
             this.itemStackHeight =
                 this.totalHeight - this.topSpacerHeight - this.bottomSpacerHeight;
 
-            if (this.firstRenderedIndex === newFirstRenderedIndex && this.lastRenderedIndex === newLastRenderedIndex){
+            if (
+                this.firstRenderedIndex === newFirstRenderedIndex &&
+                this.lastRenderedIndex === newLastRenderedIndex
+            ) {
                 return;
             }
 
@@ -475,8 +502,11 @@ export class VirtualizingStack extends FoundationElement {
                 newLastRenderedIndex < this.firstRenderedIndex
             ) {
                 // full reset
-                this.visibleItems.splice(0)
-                this.visibleItems = this.items.slice(newFirstRenderedIndex, newLastRenderedIndex + 1);
+                this.visibleItems.splice(0);
+                this.visibleItems = this.items.slice(
+                    newFirstRenderedIndex,
+                    newLastRenderedIndex + 1
+                );
                 this.firstRenderedIndex = newFirstRenderedIndex;
                 this.lastRenderedIndex = newLastRenderedIndex;
                 return;
@@ -484,25 +514,33 @@ export class VirtualizingStack extends FoundationElement {
 
             let visibleItemIndex: number = this.visibleItems.length - 1;
 
-            for(let i: number = this.lastRenderedIndex; i >= this.firstRenderedIndex; i--){
-                if (
-                    i < newFirstRenderedIndex ||
-                    i > newLastRenderedIndex
-                ){
-                    this.visibleItems.splice(visibleItemIndex,1);
+            for (
+                let i: number = this.lastRenderedIndex;
+                i >= this.firstRenderedIndex;
+                i--
+            ) {
+                if (i < newFirstRenderedIndex || i > newLastRenderedIndex) {
+                    this.visibleItems.splice(visibleItemIndex, 1);
                 }
                 visibleItemIndex--;
             }
 
-
-            if (newFirstRenderedIndex < this.firstRenderedIndex){
-                for(let i: number = this.firstRenderedIndex - 1; i >= newFirstRenderedIndex; i--){
+            if (newFirstRenderedIndex < this.firstRenderedIndex) {
+                for (
+                    let i: number = this.firstRenderedIndex - 1;
+                    i >= newFirstRenderedIndex;
+                    i--
+                ) {
                     this.visibleItems.splice(0, 0, this.items[i]);
                 }
             }
 
-            if (newLastRenderedIndex > this.lastRenderedIndex){
-                for(let i: number = this.lastRenderedIndex + 1; i <= newLastRenderedIndex; i++){
+            if (newLastRenderedIndex > this.lastRenderedIndex) {
+                for (
+                    let i: number = this.lastRenderedIndex + 1;
+                    i <= newLastRenderedIndex;
+                    i++
+                ) {
                     this.visibleItems.push(this.items[i]);
                 }
             }

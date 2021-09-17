@@ -2,10 +2,20 @@
 
 <h2>Default</h2>
 <div style="height: 400px; width: 400px; background: lightgray; overflow: scroll;">
-    <fast-tooltip anchor="anchor-default">
+    <fast-tooltip
+        anchor="anchor-default"
+        id="tooltip-default"
+        aria-label="tooltip label"
+        aria-description="tooltip description"
+    >
         Helpful text is helpful
     </fast-tooltip>
-    <fast-button id="anchor-default" style="margin: 200px; height: 150px; width: 150px;">
+    <fast-button
+        id="anchor-default"
+        style="margin: 200px; height: 150px; width: 150px;"
+        aria-labelledby="tooltip-default"
+        aria-describedby="tooltip-default"
+    >
         anchor
     </fast-button>
 </div>
