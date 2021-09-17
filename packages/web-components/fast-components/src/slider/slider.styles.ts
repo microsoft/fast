@@ -12,6 +12,7 @@ import { heightNumber } from "../styles";
 import {
     accentForegroundRest,
     controlCornerRadius,
+    density,
     designUnit,
     disabledOpacity,
     fillColor,
