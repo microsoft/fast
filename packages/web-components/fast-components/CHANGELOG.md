@@ -1,8 +1,23 @@
 # Change Log - @microsoft/fast-components
 
-This log was last generated on Wed, 15 Sep 2021 19:49:35 GMT and should not be manually modified.
+This log was last generated on Sun, 19 Sep 2021 07:17:17 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.11.0
+
+Sun, 19 Sep 2021 07:17:17 GMT
+
+### Minor changes
+
+- add picker component (scomea@microsoft.com)
+
+### Patches
+
+- fix thumb position math (corylaviska@microsoft.com)
+- implement caching mechanism for PaletteRGB.closestIndexOf (nicholasrice@users.noreply.github.com)
+- Bump @microsoft/fast-foundation to v2.15.0 (scomea@microsoft.com)
+- Bump @microsoft/fast-web-utilities to v5.0.0 (scomea@microsoft.com)
 
 ## 2.10.1
 

@@ -1,7 +1,0 @@
-{
-  "type": "minor",
-  "comment": "add picker component",
-  "packageName": "@microsoft/fast-foundation",
-  "email": "scomea@microsoft.com",
-  "dependentChangeType": "patch"
-}

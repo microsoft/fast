@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-web-utilities
 
-This log was last generated on Sun, 12 Sep 2021 07:17:43 GMT and should not be manually modified.
+This log was last generated on Sun, 19 Sep 2021 07:17:17 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 5.0.0
+
+Sun, 19 Sep 2021 07:17:17 GMT
+
+### Major changes
+
+- add picker component (scomea@microsoft.com)
 
 ## 4.8.1
 

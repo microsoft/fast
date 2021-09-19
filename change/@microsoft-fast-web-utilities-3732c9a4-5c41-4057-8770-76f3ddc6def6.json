@@ -1,7 +1,0 @@
-{
-  "type": "major",
-  "comment": "add picker component",
-  "packageName": "@microsoft/fast-web-utilities",
-  "email": "scomea@microsoft.com",
-  "dependentChangeType": "patch"
-}
