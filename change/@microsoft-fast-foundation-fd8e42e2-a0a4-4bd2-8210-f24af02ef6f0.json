@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "fix: remove dependency on document for root containers & design systems",
-  "packageName": "@microsoft/fast-foundation",
-  "email": "roeisenb@microsoft.com",
-  "dependentChangeType": "patch"
-}
