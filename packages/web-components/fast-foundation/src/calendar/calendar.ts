@@ -1,5 +1,6 @@
 import {
     attr,
+    booleanConverter,
     FASTElement,
     nullableNumberConverter,
     observable,
@@ -53,6 +54,13 @@ export class Calendar extends FoundationElement {
      * @public
      */
     public dateFormatter: DateFormatter = new DateFormatter();
+
+    /**
+     * Readonly attribute for turning off data-grid
+     * @public
+     */
+    @attr({ converter: booleanConverter })
+    public readonly: boolean = false;
 
     /**
      * String repesentation of the full locale including market, calendar type and numbering system

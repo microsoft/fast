@@ -1,4 +1,4 @@
-import { html, repeat } from "@microsoft/fast-element";
+import { html, repeat, when } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
 import { endTemplate, startTemplate } from "../patterns/start-end";
 import { DataGrid, DataGridCell, DataGridRow } from "../data-grid";
@@ -123,6 +123,97 @@ export const calendarRowTemplate: (
 };
 
 /**
+ * Interactive template using DataGrid
+ * @param context - The templates context
+ * @param todayString - string representation of todays date
+ * @returns - interactive calendar template
+ */
+export const interactiveCalendarGridTemplate: (
+    context: ElementDefinitionContext,
+    todayString: string
+) => ViewTemplate = (context: ElementDefinitionContext, todayString: string) => {
+    const gridTag: string = context.tagFor(DataGrid);
+    const rowTag: string = context.tagFor(DataGridRow);
+
+    return html`
+    <${gridTag} class="days" part="days" generate-header="none">
+        <${rowTag}
+            class="week-days"
+            part="week-days"
+            role="row"
+            row-type="header"
+            grid-template-columns="1fr 1fr 1fr 1fr 1fr 1fr 1fr"
+        >
+            ${repeat(x => x.getWeekdayText(), calendarWeekdayTemplate(context), {
+                positioning: true,
+            })}
+        </${rowTag}>
+        ${repeat(x => x.getDays(), calendarRowTemplate(context, todayString))}
+    </${gridTag}>
+`;
+};
+
+/**
+ * Non-interactive calendar template used for a readonly calendar
+ * @param todayString - string representation of todays date
+ * @returns - non-interactive calendar template
+ */
+export const noninteractiveCalendarTemplate: (todayString: string) => ViewTemplate = (
+    todayString: string
+) => {
+    return html`
+        <div class="days" part="days">
+            <div class="week-days" part="week-days">
+                ${repeat(
+                    x => x.getWeekdayText(),
+                    html`
+                        <div class="week-day" part="week-day" abbr="${x => x.abbr}">
+                            ${x => x.text}
+                        </div>
+                    `
+                )}
+            </div>
+            ${repeat(
+                x => x.getDays(),
+                html`
+                    <div class="week">
+                        ${repeat(
+                            x => x,
+                            html`
+                                <div
+                                    class="${(x, c) =>
+                                        c.parentContext.parent.getDayClassNames(
+                                            x,
+                                            todayString
+                                        )}"
+                                    part="day"
+                                    aria-label="${(x, c) =>
+                                        c.parentContext.parent.dateFormatter.getDate(
+                                            `${x.month}-${x.day}-${x.year}`,
+                                            { month: "long", day: "numeric" }
+                                        )}"
+                                >
+                                    <div class="date">
+                                        ${(x, c) =>
+                                            c.parentContext.parent.dateFormatter.getDay(
+                                                x.day
+                                            )}
+                                    </div>
+                                    <slot
+                                        name="${x => x.month}-${x => x.day}-${x =>
+                                            x.year}"
+                                    ></slot>
+                                </div>
+                            `
+                        )}
+                    </div>
+                `
+            )}
+        </div>
+    `;
+};
+
+/**
  * The template for the {@link @microsoft/fast-foundation#(Calendar:class)} component.
  *
  * @param context - Element definition context for getting the cell tag for calendar-cell
@@ -137,8 +228,6 @@ export const calendarTemplate: (
     context: ElementDefinitionContext,
     definition: FoundationElementDefinition
 ) => {
-    const gridTag: string = context.tagFor(DataGrid);
-    const rowTag: string = context.tagFor(DataGridRow);
     const today: Date = new Date();
     const todayString: string = `${
         today.getMonth() + 1
@@ -147,20 +236,11 @@ export const calendarTemplate: (
         <template>
             ${startTemplate} ${calendarTitleTemplate}
             <slot></slot>
-            <${gridTag} class="days" part="days" generate-header="none">
-                <${rowTag}
-                    class="week-days"
-                    part="week-days"
-                    role="row"
-                    row-type="header"
-                    grid-template-columns="1fr 1fr 1fr 1fr 1fr 1fr 1fr"
-                >
-                    ${repeat(x => x.getWeekdayText(), calendarWeekdayTemplate(context), {
-                        positioning: true,
-                    })}
-                </${rowTag}>
-                ${repeat(x => x.getDays(), calendarRowTemplate(context, todayString))}
-            </${gridTag}>
+            ${when(
+                x => x.readonly === false,
+                interactiveCalendarGridTemplate(context, todayString)
+            )}
+            ${when(x => x.readonly === true, noninteractiveCalendarTemplate(todayString))}
             ${endTemplate}
         </template>
     `;

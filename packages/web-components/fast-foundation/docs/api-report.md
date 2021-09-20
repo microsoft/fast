@@ -292,6 +292,7 @@ export class Calendar extends FoundationElement {
     minWeeks: number;
     month: number;
     monthFormat: MonthFormat;
+    readonly: boolean;
     selectedDates: string;
     weekdayFormat: WeekdayFormat;
     year: number;
@@ -1236,6 +1237,9 @@ export type Injectable<T = {}> = Constructable<T> & {
     inject?: Key[];
 };
 
+// @public (undocumented)
+export const interactiveCalendarGridTemplate: (context: ElementDefinitionContext, todayString: string) => ViewTemplate;
+
 // @public
 export interface InterfaceConfiguration {
     friendlyName?: string;
@@ -1497,6 +1501,9 @@ export const newInstanceForScope: (key: any) => any;
 
 // @public
 export const newInstanceOf: (key: any) => any;
+
+// @public (undocumented)
+export const noninteractiveCalendarTemplate: (todayString: string) => ViewTemplate;
 
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
 // Warning: (ae-forgotten-export) The symbol "FormAssociatedNumberField" needs to be exported by the entry point index.d.ts
