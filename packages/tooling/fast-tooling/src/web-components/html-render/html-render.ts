@@ -40,6 +40,8 @@ export class HTMLRender extends FoundationElement {
 
     private tabCounter: number = 1;
 
+    public renderContainerElement: HTMLElement;
+
     private currentElement: HTMLElement;
 
     private activeDictionaryId: string = "";
@@ -105,8 +107,14 @@ export class HTMLRender extends FoundationElement {
                     null
                 );
                 this.renderMarkup();
-                if (e.data.activeDictionaryId) {
-                    this.activeDictionaryId = e.data.activeDictionaryId;
+                if (
+                    typeof e.data.activeDictionaryId === "string" ||
+                    typeof e.data.dictionaryId === "string"
+                ) {
+                    this.activeDictionaryId =
+                        typeof e.data.activeDictionaryId === "string"
+                            ? e.data.activeDictionaryId
+                            : e.data.dictionaryId;
                     // give everything time to actually render
                     if (this.selectTimeout) {
                         window.clearTimeout(this.selectTimeout);
@@ -192,7 +200,7 @@ export class HTMLRender extends FoundationElement {
         let el: HTMLElement = this.shadowRoot.querySelector(
             `[${this.dataDictionaryAttr}=${this.activeDictionaryId}]`
         );
-        while (!el && this.dataDictionary[0][this.activeDictionaryId].parent) {
+        while (!el && this.dataDictionary[0][this.activeDictionaryId]?.parent) {
             this.activeDictionaryId = this.dataDictionary[0][
                 this.activeDictionaryId
             ].parent.id;
@@ -235,6 +243,9 @@ export class HTMLRender extends FoundationElement {
     }
 
     private layerCallback = (layerActivityId: string, activityType: ActivityType) => {
+        if (activityType === ActivityType.releaseFocus) {
+            this.renderContainerElement.focus();
+        }
         this.updateLayers(layerActivityId, activityType, "", null, null);
     };
 
@@ -407,7 +418,6 @@ export class HTMLRender extends FoundationElement {
                 ? 0
                 : this.tabCounter;
             const nextTab: number = e.shiftKey ? currTab + 1 : currTab - 1;
-
             if (nextTab > 0 && nextTab < this.tabCounter) {
                 const tabElements: Array<Element> = Array.from(
                     (e.composedPath()[0] as HTMLElement).getElementsByTagName("*")
@@ -424,7 +434,6 @@ export class HTMLRender extends FoundationElement {
                 e.stopPropagation();
                 return false;
             } else {
-                this.clearElement();
                 (e.composedPath()[0] as HTMLElement).blur();
             }
         }
@@ -444,7 +453,6 @@ export class HTMLRender extends FoundationElement {
         if (!this.interactiveMode) {
             return true;
         }
-        this.clearElement();
         e.stopPropagation();
         return false;
     }
@@ -473,6 +481,7 @@ export class HTMLRender extends FoundationElement {
 
     public renderMarkup(): void {
         if (this.markupDefinitions !== null) {
+            this.tabCounter = 1;
             this.markup = mapDataDictionary({
                 dataDictionary: this.dataDictionary,
                 schemaDictionary: this.schemaDictionary,

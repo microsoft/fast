@@ -40,6 +40,7 @@ export class Toolbar extends FoundationToolbar {
  */
 export const fastToolbar = Toolbar.compose({
     baseName: "toolbar",
+    baseClass: FoundationToolbar,
     template,
     styles,
     shadowOptions: {

@@ -1,3 +1,4 @@
+/* eslint-env node */
 /* eslint-disable @typescript-eslint/explicit-function-return-type, @typescript-eslint/typedef */
 
 /**
@@ -15,7 +16,7 @@ export function transformHTMLFragment(data) {
  * Reduces extra spaces in CSS tagged templates.
  *
  * Breakdown of this regex:
- *   (?:\s*\/\*(?:.|\s)+?\*\/\s*)  Remove comments (non-capturing)
+ *   (?:\s*\/\*(?:[\s\S])+?\*\/\s*)  Remove comments (non-capturing)
  *   (?:;)\s+(?=\})  Remove semicolons and spaces followed by property list end (non-capturing)
  *   \s+(?=\{)  Remove spaces before property list start (non-capturing)
  *   (?<=:)\s+  Remove spaces after property declarations (non-capturing)
@@ -25,8 +26,12 @@ export function transformHTMLFragment(data) {
  * @returns string
  */
 export function transformCSSFragment(data) {
+    if (/\/\*(?![\s\S]*\*\/)[\s\S]*/g.test(data)) {
+        throw new Error("Unterminated comment found in CSS tagged template literal");
+    }
+
     return data.replace(
-        /(?:\s*\/\*(?:.|\s)+?\*\/\s*)|(?:;)\s+(?=\})|\s+(?=\{)|(?<=:)\s+|\s*([{};,])\s*/g,
+        /(?:\s*\/\*(?:[\s\S])+?\*\/\s*)|(?:;)\s+(?=\})|\s+(?=\{)|(?<=:)\s+|\s*([{};,])\s*/g,
         "$1"
     );
 }

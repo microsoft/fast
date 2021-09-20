@@ -1,9 +1,9 @@
 import { attr, observable } from "@microsoft/fast-element";
 import {
-    keyCodeArrowDown,
-    keyCodeArrowUp,
-    keyCodeEnd,
-    keyCodeHome,
+    keyArrowDown,
+    keyArrowUp,
+    keyEnd,
+    keyHome,
     wrapInBounds,
 } from "@microsoft/fast-web-utilities";
 import { FoundationElement } from "../foundation-element";
@@ -133,22 +133,21 @@ export class Accordion extends FoundationElement {
         if (event.target !== event.currentTarget) {
             return;
         }
-        const keyCode: number = event.keyCode;
         this.accordionIds = this.getItemIds();
-        switch (keyCode) {
-            case keyCodeArrowUp:
+        switch (event.key) {
+            case keyArrowUp:
                 event.preventDefault();
                 this.adjust(-1);
                 break;
-            case keyCodeArrowDown:
+            case keyArrowDown:
                 event.preventDefault();
                 this.adjust(1);
                 break;
-            case keyCodeHome:
+            case keyHome:
                 this.activeItemIndex = 0;
                 this.focusItem();
                 break;
-            case keyCodeEnd:
+            case keyEnd:
                 this.activeItemIndex = this.accordionItems.length - 1;
                 this.focusItem();
                 break;

@@ -511,6 +511,8 @@ function getParamTypes(
     };
 }
 
+let rootDOMContainer: Container | null = null;
+
 /**
  * The gateway to dependency injection APIs.
  * @public
@@ -583,16 +585,27 @@ export const DI = Object.freeze({
      * already exist.
      */
     getOrCreateDOMContainer(
-        node: Node = document.body,
+        node?: Node,
         config?: Partial<Omit<ContainerConfiguration, "parentLocator">>
     ): Container {
+        if (!node) {
+            return (
+                rootDOMContainer ||
+                (rootDOMContainer = new ContainerImpl(
+                    null,
+                    Object.assign({}, ContainerConfiguration.default, config, {
+                        parentLocator: () => null,
+                    })
+                ))
+            );
+        }
+
         return (
             (node as any).$$container$$ ||
             new ContainerImpl(
                 node,
                 Object.assign({}, ContainerConfiguration.default, config, {
-                    parentLocator:
-                        node === document.body ? () => null : DI.findParentContainer,
+                    parentLocator: DI.findParentContainer,
                 })
             )
         );

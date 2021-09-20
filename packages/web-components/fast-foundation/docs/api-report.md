@@ -52,7 +52,7 @@ export interface AccordionItem extends StartEnd {
 }
 
 // @public
-export type AccordionItemOptions = FoundationElementDefinition & {
+export type AccordionItemOptions = FoundationElementDefinition & StartEndOptions & {
     expandedIcon?: string | SyntheticViewTemplate;
     collapsedIcon?: string | SyntheticViewTemplate;
 };
@@ -71,6 +71,8 @@ export const all: (key: any, searchAncestors?: boolean | undefined) => ReturnTyp
 //
 // @public
 export class Anchor extends FoundationElement {
+    // @internal (undocumented)
+    connectedCallback(): void;
     control: HTMLAnchorElement;
     // @internal
     defaultSlottedContent: HTMLElement[];
@@ -129,7 +131,10 @@ export type AnchoredRegionPositionLabel = "start" | "insetStart" | "insetEnd" | 
 export const anchoredRegionTemplate: (context: ElementDefinitionContext, definition: FoundationElementDefinition) => ViewTemplate<AnchoredRegion>;
 
 // @public
-export const anchorTemplate: (context: ElementDefinitionContext, definition: FoundationElementDefinition) => ViewTemplate<Anchor>;
+export type AnchorOptions = FoundationElementDefinition & StartEndOptions;
+
+// @public
+export const anchorTemplate: (context: ElementDefinitionContext, definition: AnchorOptions) => ViewTemplate<Anchor>;
 
 // @public
 export function applyMixins(derivedCtor: any, ...baseCtors: any[]): void;
@@ -198,11 +203,15 @@ export const badgeTemplate: (context: ElementDefinitionContext, definition: Foun
 
 // @public
 export class BaseProgress extends FoundationElement {
+    // @internal (undocumented)
+    connectedCallback(): void;
     max: number;
     min: number;
     paused: any;
+    // @internal
+    percentComplete: number;
     value: number | null;
-}
+    }
 
 // @public
 export class Breadcrumb extends FoundationElement {
@@ -226,7 +235,7 @@ export interface BreadcrumbItem extends StartEnd, DelegatesARIALink {
 }
 
 // @public
-export type BreadcrumbItemOptions = FoundationElementDefinition & {
+export type BreadcrumbItemOptions = FoundationElementDefinition & StartEndOptions & {
     separator?: string | SyntheticViewTemplate;
 };
 
@@ -262,7 +271,10 @@ export interface Button extends StartEnd, DelegatesARIAButton {
 }
 
 // @public
-export const buttonTemplate: (context: ElementDefinitionContext, definition: FoundationElementDefinition) => ViewTemplate<Button>;
+export type ButtonOptions = FoundationElementDefinition & StartEndOptions;
+
+// @public
+export const buttonTemplate: (context: ElementDefinitionContext, definition: ButtonOptions) => ViewTemplate<Button>;
 
 // @public
 export class Card extends FoundationElement {
@@ -391,7 +403,7 @@ export enum ComboboxAutocomplete {
 }
 
 // @public
-export type ComboboxOptions = FoundationElementDefinition & {
+export type ComboboxOptions = FoundationElementDefinition & StartEndOptions & {
     indicator?: string | SyntheticViewTemplate;
 };
 
@@ -727,13 +739,15 @@ export interface DesignSystem {
 export const DesignSystem: Readonly<{
     tagFor(type: Constructable): string;
     responsibleFor(element: HTMLElement): DesignSystem;
-    getOrCreate(element?: HTMLElement): DesignSystem;
+    getOrCreate(node?: Node | undefined): DesignSystem;
 }>;
 
 // @public
 export interface DesignSystemRegistrationContext {
     readonly elementPrefix: string;
+    // @deprecated
     tryDefineElement(name: string, type: Constructable, callback: ElementDefinitionCallback): any;
+    tryDefineElement(params: ElementDefinitionParams): any;
 }
 
 // @public
@@ -784,7 +798,7 @@ export const DI: Readonly<{
     createContainer(config?: Partial<ContainerConfiguration> | undefined): Container;
     findResponsibleContainer(node: Node): Container;
     findParentContainer(node: Node): Container;
-    getOrCreateDOMContainer(node?: Node, config?: Partial<Pick<ContainerConfiguration, "responsibleForOwnerRequests" | "defaultResolver">> | undefined): Container;
+    getOrCreateDOMContainer(node?: Node | undefined, config?: Partial<Pick<ContainerConfiguration, "responsibleForOwnerRequests" | "defaultResolver">> | undefined): Container;
     getDesignParamtypes: (Type: Constructable | Injectable) => readonly Key[] | undefined;
     getAnnotationParamtypes: (Type: Constructable | Injectable) => readonly Key[] | undefined;
     getOrCreateAnnotationParamTypes(Type: Constructable | Injectable): Key[];
@@ -877,9 +891,32 @@ export interface ElementDefinitionContext {
 }
 
 // @public
-export type ElementDisambiguationCallback = (nameAttempt: string, typeAttempt: Constructable, existingType: Constructable) => string | null;
+export interface ElementDefinitionParams extends Pick<ElementDefinitionContext, "name" | "type"> {
+    readonly baseClass?: Constructable;
+    callback: ElementDefinitionCallback;
+}
 
 // @public
+export const ElementDisambiguation: Readonly<{
+    definitionCallbackOnly: null;
+    ignoreDuplicate: symbol;
+}>;
+
+// @public
+export type ElementDisambiguationCallback = (nameAttempt: string, typeAttempt: Constructable, existingType: Constructable) => ElementDisambiguationResult;
+
+// @public
+export type ElementDisambiguationResult = string | typeof ElementDisambiguation.ignoreDuplicate | typeof ElementDisambiguation.definitionCallbackOnly;
+
+// @public
+export type EndOptions = {
+    end?: string | SyntheticViewTemplate;
+};
+
+// @public
+export const endSlotTemplate: (context: ElementDefinitionContext, definition: EndOptions) => ViewTemplate<StartEnd>;
+
+// @public @deprecated
 export const endTemplate: ViewTemplate<StartEnd>;
 
 // @public
@@ -1020,6 +1057,7 @@ export class FoundationElement extends FASTElement {
 // @public
 export interface FoundationElementDefinition {
     readonly attributes?: EagerOrLazyFoundationOption<(AttributeConfiguration | string)[], this>;
+    baseClass?: Constructable;
     baseName: string;
     readonly elementOptions?: EagerOrLazyFoundationOption<ElementDefinitionOptions, this>;
     readonly shadowOptions?: EagerOrLazyFoundationOption<Partial<ShadowRootInit> | null, this>;
@@ -1044,7 +1082,7 @@ export class FoundationElementRegistry<TDefinition extends FoundationElementDefi
 // Warning: (ae-forgotten-export) The symbol "LazyFoundationOption" needs to be exported by the entry point index.d.ts
 //
 // @public
-export type FoundationElementTemplate<T, K = void> = LazyFoundationOption<T, K & FoundationElementDefinition>;
+export type FoundationElementTemplate<T, K extends FoundationElementDefinition = FoundationElementDefinition> = LazyFoundationOption<T, K>;
 
 // @public
 export enum GenerateHeaderOptions {
@@ -1089,7 +1127,7 @@ export class HorizontalScroll extends FoundationElement {
     }
 
 // @public
-export type HorizontalScrollOptions = FoundationElementDefinition & {
+export type HorizontalScrollOptions = FoundationElementDefinition & StartEndOptions & {
     nextFlipper?: FoundationElementTemplate<SyntheticViewTemplate<any, HorizontalScroll>, HorizontalScrollOptions> | SyntheticViewTemplate | string;
     previousFlipper?: FoundationElementTemplate<SyntheticViewTemplate<any, HorizontalScroll>, HorizontalScrollOptions> | SyntheticViewTemplate | string;
 };
@@ -1238,7 +1276,10 @@ export interface ListboxOption extends StartEnd {
 }
 
 // @public
-export const listboxOptionTemplate: (context: ElementDefinitionContext, definition: FoundationElementDefinition) => ViewTemplate<ListboxOption>;
+export type ListboxOptionOptions = FoundationElementDefinition & StartEndOptions;
+
+// @public
+export const listboxOptionTemplate: (context: ElementDefinitionContext, definition: ListboxOptionOptions) => ViewTemplate<ListboxOption>;
 
 // @public
 export enum ListboxRole {
@@ -1334,7 +1375,7 @@ export interface MenuItem extends StartEnd {
 export type MenuItemColumnCount = 0 | 1 | 2;
 
 // @public
-export type MenuItemOptions = FoundationElementDefinition & {
+export type MenuItemOptions = FoundationElementDefinition & StartEndOptions & {
     checkboxIndicator?: string | SyntheticViewTemplate;
     expandCollapseGlyph?: string | SyntheticViewTemplate;
     radioIndicator?: string | SyntheticViewTemplate;
@@ -1403,7 +1444,7 @@ export interface NumberField extends StartEnd, DelegatesARIATextbox {
 }
 
 // @public
-export type NumberFieldOptions = FoundationElementDefinition & {
+export type NumberFieldOptions = FoundationElementDefinition & StartEndOptions & {
     stepDownGlyph?: string | SyntheticViewTemplate;
     stepUpGlyph?: string | SyntheticViewTemplate;
 };
@@ -1415,12 +1456,155 @@ export const numberFieldTemplate: (context: ElementDefinitionContext, definition
 export const optional: (key: any) => any;
 
 // @public
-export type OverrideFoundationElementDefinition<T extends FoundationElementDefinition> = Partial<Omit<T, "type">> & {
+export type OverrideFoundationElementDefinition<T extends FoundationElementDefinition> = Partial<Omit<T, "type" | "baseClass">> & {
     prefix?: string;
 };
 
 // @public
 export type ParentLocator = (owner: any) => Container | null;
+
+// Warning: (ae-forgotten-export) The symbol "FormAssociatedPicker" needs to be exported by the entry point index.d.ts
+//
+// @alpha
+export class Picker extends FormAssociatedPicker {
+    // @internal
+    activeListItemTemplate?: ViewTemplate;
+    // @internal
+    activeMenuOptionTemplate?: ViewTemplate;
+    // @internal (undocumented)
+    connectedCallback(): void;
+    defaultListItemTemplate?: ViewTemplate;
+    defaultMenuOptionTemplate?: ViewTemplate;
+    // (undocumented)
+    disconnectedCallback(): void;
+    // @internal
+    filteredOptionsList: string[];
+    filterQuery: boolean;
+    filterSelected: boolean;
+    // @internal
+    flyoutOpen: boolean;
+    // @public
+    focus(): void;
+    handleFocusIn(e: FocusEvent): boolean;
+    handleFocusOut(e: FocusEvent): boolean;
+    handleItemInvoke(e: Event): boolean;
+    handleKeyDown(e: KeyboardEvent): boolean;
+    handleOptionInvoke(e: Event): boolean;
+    handleRegionLoaded(e: Event): void;
+    handleSelectionChange(): void;
+    // @internal
+    inputElement: HTMLInputElement;
+    itemsPlaceholderElement: Node;
+    label: string;
+    labelledBy: string;
+    // @internal
+    listElement: PickerList;
+    listItemContentsTemplate: ViewTemplate;
+    listItemTemplate: ViewTemplate;
+    loadingText: string;
+    maxSelected: number | undefined;
+    // @internal
+    menuElement: PickerMenu;
+    // @internal
+    menuFocusIndex: number;
+    // @internal
+    menuFocusOptionId: string | undefined;
+    // @internal
+    menuId: string;
+    menuOptionContentsTemplate: ViewTemplate;
+    menuOptionTemplate: ViewTemplate;
+    // @internal
+    menuTag: string;
+    noSuggestionsText: string;
+    options: string;
+    optionsList: string[];
+    query: string;
+    // @internal
+    region: AnchoredRegion;
+    // @internal (undocumented)
+    selectedItems: string[];
+    // @internal
+    selectedListTag: string;
+    selection: string;
+    showLoading: boolean;
+    // @internal
+    showNoOptions: boolean;
+    suggestionsAvailableText: string;
+    }
+
+// @alpha
+export class PickerList extends FoundationElement {
+}
+
+// @alpha
+export class PickerListItem extends FoundationElement {
+    // @internal (undocumented)
+    connectedCallback(): void;
+    contentsTemplate: ViewTemplate;
+    // @internal (undocumented)
+    disconnectedCallback(): void;
+    // (undocumented)
+    handleClick(e: MouseEvent): boolean;
+    // (undocumented)
+    handleKeyDown(e: KeyboardEvent): boolean;
+    value: string;
+}
+
+// Warning: (ae-incompatible-release-tags) The symbol "pickerListItemTemplate" is marked as @public, but its signature references "PickerListItem" which is marked as @alpha
+//
+// @public (undocumented)
+export const pickerListItemTemplate: (context: any, definition: any) => ViewTemplate<PickerListItem>;
+
+// Warning: (ae-incompatible-release-tags) The symbol "pickerListTemplate" is marked as @public, but its signature references "PickerList" which is marked as @alpha
+//
+// @public (undocumented)
+export const pickerListTemplate: (context: any, definition: any) => ViewTemplate<PickerList>;
+
+// @alpha
+export class PickerMenu extends FoundationElement {
+    // @internal
+    footerElements: HTMLElement[];
+    // (undocumented)
+    footerElementsChanged(): void;
+    // @internal
+    headerElements: HTMLElement[];
+    // (undocumented)
+    headerElementsChanged(): void;
+    // @internal
+    menuElements: HTMLElement[];
+    // (undocumented)
+    menuElementsChanged(): void;
+    // @internal
+    optionElements: HTMLElement[];
+    suggestionsAvailableText: string;
+    }
+
+// @alpha
+export class PickerMenuOption extends FoundationElement {
+    // @internal (undocumented)
+    connectedCallback(): void;
+    contentsTemplate: ViewTemplate;
+    // @internal (undocumented)
+    disconnectedCallback(): void;
+    // (undocumented)
+    handleClick(e: MouseEvent): boolean;
+    value: string;
+}
+
+// Warning: (ae-incompatible-release-tags) The symbol "pickerMenuOptionTemplate" is marked as @public, but its signature references "PickerMenuOption" which is marked as @alpha
+//
+// @public (undocumented)
+export const pickerMenuOptionTemplate: (context: any, definition: any) => ViewTemplate<PickerMenuOption>;
+
+// Warning: (ae-incompatible-release-tags) The symbol "pickerMenuTemplate" is marked as @public, but its signature references "PickerMenu" which is marked as @alpha
+//
+// @public
+export const pickerMenuTemplate: (context: any, definition: any) => ViewTemplate<PickerMenu>;
+
+// Warning: (ae-incompatible-release-tags) The symbol "pickerTemplate" is marked as @public, but its signature references "Picker" which is marked as @alpha
+//
+// @public
+export const pickerTemplate: (context: any, definition: any) => ViewTemplate<Picker>;
 
 // @public
 export type ProgressOptions = FoundationElementDefinition & {
@@ -1460,7 +1644,7 @@ export class Radio extends FormAssociatedRadio implements RadioControl {
     checked: boolean;
     checkedAttribute: boolean;
     // @internal (undocumented)
-    clickHandler: (e: MouseEvent) => void;
+    clickHandler(e: MouseEvent): boolean | void;
     // @internal (undocumented)
     connectedCallback(): void;
     defaultChecked: boolean | undefined;
@@ -1650,7 +1834,7 @@ export interface Select extends StartEnd, DelegatesARIASelect {
 }
 
 // @public
-export type SelectOptions = FoundationElementDefinition & {
+export type SelectOptions = FoundationElementDefinition & StartEndOptions & {
     indicator?: string | SyntheticViewTemplate;
 };
 
@@ -1832,6 +2016,17 @@ export class StartEnd {
 }
 
 // @public
+export type StartEndOptions = StartOptions & EndOptions;
+
+// @public
+export type StartOptions = {
+    start?: string | SyntheticViewTemplate;
+};
+
+// @public
+export const startSlotTemplate: (context: ElementDefinitionContext, definition: StartOptions) => ViewTemplate<StartEnd>;
+
+// @public @deprecated
 export const startTemplate: ViewTemplate<StartEnd>;
 
 // @public
@@ -1916,6 +2111,9 @@ export interface Tabs extends StartEnd {
 }
 
 // @public
+export type TabsOptions = FoundationElementDefinition & StartEndOptions;
+
+// @public
 export enum TabsOrientation {
     // (undocumented)
     horizontal = "horizontal",
@@ -1924,7 +2122,7 @@ export enum TabsOrientation {
 }
 
 // @public
-export const tabsTemplate: (context: ElementDefinitionContext, definition: FoundationElementDefinition) => ViewTemplate<Tabs>;
+export const tabsTemplate: (context: ElementDefinitionContext, definition: TabsOptions) => ViewTemplate<Tabs>;
 
 // @public
 export const tabTemplate: (context: ElementDefinitionContext, definition: FoundationElementDefinition) => ViewTemplate<Tab>;
@@ -2005,7 +2203,10 @@ export interface TextField extends StartEnd, DelegatesARIATextbox {
 }
 
 // @public
-export const textFieldTemplate: (context: ElementDefinitionContext, definition: FoundationElementDefinition) => ViewTemplate<TextField>;
+export type TextFieldOptions = FoundationElementDefinition & StartEndOptions;
+
+// @public
+export const textFieldTemplate: (context: ElementDefinitionContext, definition: TextFieldOptions) => ViewTemplate<TextField>;
 
 // @public
 export enum TextFieldType {
@@ -2052,7 +2253,10 @@ export interface Toolbar extends StartEnd, DelegatesARIAToolbar {
 }
 
 // @public
-export const toolbarTemplate: (context: ElementDefinitionContext, definition: FoundationElementDefinition) => ViewTemplate<Toolbar>;
+export type ToolbarOptions = FoundationElementDefinition & StartEndOptions;
+
+// @public
+export const toolbarTemplate: (context: ElementDefinitionContext, definition: ToolbarOptions) => ViewTemplate<Toolbar>;
 
 // @public
 export class Tooltip extends FoundationElement {
@@ -2077,6 +2281,7 @@ export class Tooltip extends FoundationElement {
     horizontalPositioningMode: AxisPositioningMode;
     // @internal (undocumented)
     horizontalScaling: AxisScalingMode;
+    horizontalViewportLock: boolean;
     position: TooltipPosition;
     // @internal
     region: AnchoredRegion;
@@ -2090,6 +2295,7 @@ export class Tooltip extends FoundationElement {
     verticalPositioningMode: AxisPositioningMode;
     // @internal (undocumented)
     verticalScaling: AxisScalingMode;
+    verticalViewportLock: boolean;
     // @internal
     viewportElement: HTMLElement | null;
     visible: boolean;
@@ -2164,7 +2370,7 @@ export interface TreeItem extends StartEnd {
 }
 
 // @public
-export type TreeItemOptions = FoundationElementDefinition & {
+export type TreeItemOptions = FoundationElementDefinition & StartEndOptions & {
     expandCollapseGlyph?: string | SyntheticViewTemplate;
 };
 

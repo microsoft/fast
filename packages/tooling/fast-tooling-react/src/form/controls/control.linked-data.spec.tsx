@@ -5,17 +5,17 @@ import { configure, mount, ReactWrapper } from "enzyme";
 import HTML5Backend from "react-dnd-html5-backend";
 import { DndProvider } from "react-dnd";
 import {
-    keyCodeArrowDown,
-    keyCodeArrowUp,
-    keyCodeEnter,
-    keyCodeTab,
+    keyArrowDown,
+    keyArrowUp,
+    keyEnter,
+    keyTab,
 } from "@microsoft/fast-web-utilities";
-import { LinkedDataControl } from "./control.linked-data";
-import { LinkedDataControlProps } from "./control.linked-data.props";
-import { LinkedDataControlClassNameContract } from "./control.linked-data.style";
 import { ControlType } from "../templates";
 import { LinkedDataActionType } from "../templates/types";
 import defaultStrings from "../form.strings";
+import { LinkedDataControl } from "./control.linked-data";
+import { LinkedDataControlProps } from "./control.linked-data.props";
+import { LinkedDataControlClassNameContract } from "./control.linked-data.style";
 
 const LinkedDataFormControlWithDragAndDrop: React.FC<any> = (
     props: React.PropsWithChildren<any>
@@ -57,6 +57,7 @@ const linkedDataProps: LinkedDataControlProps = {
     schemaDictionary: {
         alpha: {
             title: "alpha",
+            alias: "A",
             id: "alpha",
             type: "object",
             properties: {},
@@ -149,6 +150,17 @@ describe("LinkedDataControl", () => {
 
         expect(inputAriaControls).toEqual(datalist);
     });
+    test("should add a `label` to an option if it's schema contains an `alias` property", () => {
+        const rendered: any = mount(
+            <LinkedDataFormControlWithDragAndDrop
+                {...linkedDataProps}
+                managedClasses={managedClasses}
+            />
+        );
+        const listboxItems: any = rendered.find("datalist option");
+
+        expect(listboxItems.at(0).prop("label")).toEqual("A");
+    });
     test("should generate options based on the schema items in the schema dictionary", () => {
         const rendered: any = mount(
             <LinkedDataFormControlWithDragAndDrop
@@ -183,7 +195,7 @@ describe("LinkedDataControl", () => {
         const targetValue: any = { value: "a" };
         const input: any = rendered.find("input");
         input.simulate("change", { target: targetValue });
-        input.simulate("keydown", { keyCode: keyCodeTab });
+        input.simulate("keydown", { key: keyTab });
 
         expect(input.getDOMNode().value).toEqual("a");
         expect(callback).not.toHaveBeenCalled();
@@ -200,7 +212,7 @@ describe("LinkedDataControl", () => {
         const targetValue: any = { value: "ome" };
         const input: any = rendered.find("input");
         input.simulate("change", { target: targetValue });
-        input.simulate("keydown", { keyCode: keyCodeTab });
+        input.simulate("keydown", { key: keyTab });
 
         expect(input.getDOMNode().value).toEqual("omega");
         expect(callback).not.toHaveBeenCalled();
@@ -217,7 +229,7 @@ describe("LinkedDataControl", () => {
         const targetValue: any = { value: "omega" };
         const input: any = rendered.find("input");
         input.simulate("change", { target: targetValue });
-        input.simulate("keydown", { keyCode: keyCodeEnter });
+        input.simulate("keydown", { key: keyEnter });
 
         expect(callback).toHaveBeenCalled();
         expect(callback.mock.calls[0][0]).toEqual({
@@ -267,7 +279,7 @@ describe("LinkedDataControl", () => {
         rendered
             .find("input")
             .simulate("change", { target: targetValue, currentTarget: targetValue });
-        rendered.find("input").simulate("keydown", { keyCode: keyCodeEnter });
+        rendered.find("input").simulate("keydown", { key: keyEnter });
 
         expect(callback).not.toHaveBeenCalled();
     });
