@@ -1,4 +1,4 @@
-import { DOM } from "@microsoft/fast-element";
+import { DOM, elements } from "@microsoft/fast-element";
 import { expect, assert } from "chai";
 import { fixture } from "../test-utilities/fixture";
 import { NumberField, numberFieldTemplate as template } from "./index";
@@ -828,6 +828,86 @@ describe("NumberField", () => {
             expect(element.proxy.value).to.equal(`${value - step}`);
 
             await disconnect();
+        });
+    });
+
+    describe("value validation", () => {
+        it("should allow number entry", async () => {
+            const { element, connect, disconnect } = await setup();
+
+            await connect();
+
+            element.setAttribute("value", "18");
+
+            expect(element.value).to.equal("18");
+        });
+
+        it("should not allow non-number entry", async () => {
+            const { element, connect, disconnect } = await setup();
+
+            await connect();
+
+            element.setAttribute("value", "11a");
+
+            expect(element.value).to.equal("11");
+        });
+
+        it("should allow float number entry", async () => {
+            const { element, connect, disconnect } = await setup();
+
+            await connect();
+
+            element.setAttribute("value", "37.");
+
+            expect(element.value).to.equal("37.");
+
+            element.setAttribute("value", ".");
+
+            expect(element.value).to.equal(".");
+        });
+
+        it("should allow positive and negative number entry", async () => {
+            const { element, connect, disconnect } = await setup();
+
+            await connect();
+
+            element.setAttribute("value", "-");
+
+            expect(element.value).to.equal("-");
+
+            element.setAttribute("value", "-1");
+
+            expect(element.value).to.equal("-1");
+
+            element.setAttribute("value", "+");
+
+            expect(element.value).to.equal("+");
+
+            element.setAttribute("value", "+3");
+
+            expect(element.value).to.equal("+3");
+        });
+
+        it("should allow positive and negative float entry", async () => {
+            const { element, connect, disconnect } = await setup();
+
+            await connect();
+
+            element.setAttribute("value", "-.");
+
+            expect(element.value).to.equal("-.");
+
+            element.setAttribute("value", "-.6");
+
+            expect(element.value).to.equal("-.6");
+
+            element.setAttribute("value", "+.");
+
+            expect(element.value).to.equal("+.");
+
+            element.setAttribute("value", "+.9");
+
+            expect(element.value).to.equal("+.9");
         });
     });
 

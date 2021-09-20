@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "fix: allowing decimal values in fast number field",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "robarb@microsoft.com",
+  "dependentChangeType": "patch"
+}
