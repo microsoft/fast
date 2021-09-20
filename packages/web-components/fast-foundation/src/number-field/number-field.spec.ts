@@ -860,10 +860,17 @@ describe("NumberField", () => {
             element.setAttribute("value", "37.");
 
             expect(element.value).to.equal("37.");
+            expect(element.proxy.value).to.equal("37");
 
             element.setAttribute("value", ".");
 
             expect(element.value).to.equal(".");
+            expect(element.proxy.value).to.equal("");
+
+            element.setAttribute("value", ".1");
+
+            expect(element.value).to.equal(".1");
+            expect(element.proxy.value).to.equal("0.1");
         });
 
         it("should allow positive and negative number entry", async () => {
@@ -874,21 +881,15 @@ describe("NumberField", () => {
             element.setAttribute("value", "-");
 
             expect(element.value).to.equal("-");
+            expect(element.proxy.value).to.equal("");
 
             element.setAttribute("value", "-1");
 
             expect(element.value).to.equal("-1");
-
-            element.setAttribute("value", "+");
-
-            expect(element.value).to.equal("+");
-
-            element.setAttribute("value", "+3");
-
-            expect(element.value).to.equal("+3");
+            expect(element.proxy.value).to.equal("-1");
         });
 
-        it("should allow positive and negative float entry", async () => {
+        it("should allow negative float entry", async () => {
             const { element, connect, disconnect } = await setup();
 
             await connect();
@@ -896,18 +897,12 @@ describe("NumberField", () => {
             element.setAttribute("value", "-.");
 
             expect(element.value).to.equal("-.");
+            expect(element.proxy.value).to.equal("");
 
             element.setAttribute("value", "-.6");
 
             expect(element.value).to.equal("-.6");
-
-            element.setAttribute("value", "+.");
-
-            expect(element.value).to.equal("+.");
-
-            element.setAttribute("value", "+.9");
-
-            expect(element.value).to.equal("+.9");
+            expect(element.proxy.value).to.equal("-0.6");
         });
     });
 

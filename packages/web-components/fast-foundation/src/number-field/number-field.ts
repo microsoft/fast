@@ -197,11 +197,12 @@ export class NumberField extends FormAssociatedNumberField {
             value = parseFloat(value.toPrecision(12));
         }
 
-        if (value != this.value && !this.value.match(/^([+-]?\.)|([+-]\.?)$/)) {
+        if (this.proxy instanceof HTMLInputElement) {
+            this.proxy.value = value;
+        }
+
+        if (value != this.value && !this.value.match(/^(-?\.)|(-\.?)$/)) {
             this.value = value.toString();
-            if (this.proxy instanceof HTMLInputElement) {
-                this.proxy.value = this.value;
-            }
             this.$emit("input");
             this.$emit("change");
         }
