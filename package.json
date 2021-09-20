@@ -13,9 +13,7 @@
       "packages/**/*",
       "sites/fast-color-explorer",
       "sites/fast-component-explorer",
-      "sites/fast-creator",
       "sites/site-utilities",
-      "sites/fast-tooling-examples",
       "sites/fast-website",
       "sites/website"
     ],
