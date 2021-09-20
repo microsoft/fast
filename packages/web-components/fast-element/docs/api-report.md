@@ -286,8 +286,14 @@ export interface FASTElement {
     $emit(type: string, detail?: any, options?: Omit<CustomEventInit, "detail">): boolean | void;
     readonly $fastController: Controller;
     attributeChangedCallback(name: string, oldValue: string, newValue: string): void;
+    // (undocumented)
+    bindEvents(target: Window | HTMLElement | any[], event: string | string[], handler: (e?: Event) => void, options?: any): void;
+    // (undocumented)
+    clearEventListeners(): void;
     connectedCallback(): void;
     disconnectedCallback(): void;
+    // (undocumented)
+    unbindEvents(target: Window | HTMLElement | any[], event: string | string[], handler?: (e?: Event) => void): void;
 }
 
 // @public

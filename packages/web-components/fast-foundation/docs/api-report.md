@@ -1903,8 +1903,6 @@ export class Slider extends FormAssociatedSlider implements SliderConfiguration 
     decrement(): void;
     // @internal (undocumented)
     direction: Direction;
-    // @internal (undocumented)
-    disconnectedCallback(): void;
     increment(): void;
     // @internal (undocumented)
     initialValue: string;

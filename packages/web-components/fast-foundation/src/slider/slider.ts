@@ -248,16 +248,6 @@ export class Slider extends FormAssociatedSlider implements SliderConfiguration 
     }
 
     /**
-     * @internal
-     */
-    public disconnectedCallback(): void {
-        this.removeEventListener("keydown", this.keypressHandler);
-        this.removeEventListener("mousedown", this.handleMouseDown);
-        this.thumb.removeEventListener("mousedown", this.handleThumbMouseDown);
-        this.thumb.removeEventListener("touchstart", this.handleThumbMouseDown);
-    }
-
-    /**
      * Increment the value by the step
      *
      * @public
@@ -362,10 +352,13 @@ export class Slider extends FormAssociatedSlider implements SliderConfiguration 
     };
 
     private setupListeners = (): void => {
-        this.addEventListener("keydown", this.keypressHandler);
-        this.addEventListener("mousedown", this.handleMouseDown);
-        this.thumb.addEventListener("mousedown", this.handleThumbMouseDown);
-        this.thumb.addEventListener("touchstart", this.handleThumbMouseDown);
+        this.bindEvents(this, "keydown", this.keypressHandler);
+        this.bindEvents(this, "mousedown", this.handleMouseDown);
+        this.bindEvents(
+            this.thumb,
+            ["mousedown", "touchstart"],
+            this.handleThumbMouseDown
+        );
     };
 
     /**
@@ -400,10 +393,8 @@ export class Slider extends FormAssociatedSlider implements SliderConfiguration 
         }
         event.preventDefault();
         (event.target as HTMLElement).focus();
-        window.addEventListener("mouseup", this.handleWindowMouseUp);
-        window.addEventListener("mousemove", this.handleMouseMove);
-        window.addEventListener("touchmove", this.handleMouseMove);
-        window.addEventListener("touchend", this.handleWindowMouseUp);
+        this.bindEvents(window, ["mousemove", "touchmove"], this.handleMouseMove);
+        this.bindEvents(window, ["mouseup", "touchend"], this.handleWindowMouseUp);
         this.isDragging = true;
     };
 
@@ -453,10 +444,7 @@ export class Slider extends FormAssociatedSlider implements SliderConfiguration 
 
     private stopDragging = (): void => {
         this.isDragging = false;
-        window.removeEventListener("mouseup", this.handleWindowMouseUp);
-        window.removeEventListener("mousemove", this.handleMouseMove);
-        window.removeEventListener("touchmove", this.handleMouseMove);
-        window.removeEventListener("touchend", this.handleWindowMouseUp);
+        this.unbindEvents(window, ["mouseup", "mousemove", "touchmove", "touchend"]);
     };
 
     private handleMouseDown = (e: MouseEvent) => {
@@ -464,8 +452,8 @@ export class Slider extends FormAssociatedSlider implements SliderConfiguration 
         if (!this.disabled && !this.readOnly) {
             this.setupTrackConstraints();
             (e.target as HTMLElement).focus();
-            window.addEventListener("mouseup", this.handleWindowMouseUp);
-            window.addEventListener("mousemove", this.handleMouseMove);
+            this.bindEvents(window, "mouseup", this.handleWindowMouseUp);
+            this.bindEvents(window, "mousemove", this.handleMouseMove);
 
             const controlValue: number =
                 this.orientation === Orientation.horizontal

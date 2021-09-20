@@ -52,6 +52,54 @@ export interface FASTElement {
      * attribute of FASTElement has a value change.
      */
     attributeChangedCallback(name: string, oldValue: string, newValue: string): void;
+
+    /**
+     * Custom addEventlistener that logs the events being added to the element
+     * @param type - event type
+     * @param callback - callback function attached to the listener
+     * @param options - event listener options
+     */
+    addEventListener(
+        type: string | string[],
+        callback: EventListenerOrEventListenerObject,
+        options?: EventListenerOptions
+    );
+
+    /**
+     * Custom removeEventListener that also removes the event listener from tracked event listeners
+     * @param type - event type
+     * @param callback - callback function attached to the listener
+     */
+    removeEventListener(
+        type: string | string[],
+        callback: EventListenerOrEventListenerObject
+    );
+
+    /**
+     * Custom method for binding multiple events to an element that are tracked
+     * @param target - node that has the event listener being bound to it
+     * @param type - event type
+     * @param callback - callback function for the event listener
+     * @param options - event listener options
+     */
+    bindEvents(
+        target: EventTarget,
+        type: string | string[],
+        callback: EventListenerOrEventListenerObject,
+        options?: EventListenerOptions
+    ): void;
+
+    /**
+     * Custom metho for removing attached events tracked by this element
+     * @param target - node that the event listener is attached to
+     * @param type - the event type
+     * @param callback - optional method attached, otherwise it will look it up
+     */
+    unbindEvents(
+        target: EventTarget,
+        type?: string | string[],
+        callback?: EventListenerOrEventListenerObject
+    ): void;
 }
 
 /* eslint-disable-next-line @typescript-eslint/explicit-function-return-type */
@@ -60,6 +108,12 @@ function createFASTElement<T extends typeof HTMLElement>(
 ): { new (): InstanceType<T> & FASTElement } {
     return class extends (BaseType as any) implements FASTElement {
         public readonly $fastController!: Controller;
+
+        private eventListeners: {
+            target: EventTarget;
+            type: string;
+            callback: EventListenerOrEventListenerObject;
+        }[] = [];
 
         public constructor() {
             /* eslint-disable-next-line */
@@ -81,6 +135,7 @@ function createFASTElement<T extends typeof HTMLElement>(
 
         public disconnectedCallback(): void {
             this.$fastController.onDisconnectedCallback();
+            this.unbindEvents();
         }
 
         public attributeChangedCallback(
@@ -89,6 +144,100 @@ function createFASTElement<T extends typeof HTMLElement>(
             newValue: string
         ): void {
             this.$fastController.onAttributeChangedCallback(name, oldValue, newValue);
+        }
+
+        public addEventListener(
+            type: string | string[],
+            callback: EventListenerOrEventListenerObject,
+            options?: any
+        ): void {
+            if (Array.isArray(type)) {
+                type.forEach((event: string) =>
+                    this.addEventListener(event, callback, options)
+                );
+                return;
+            }
+            super.addEventListener(type, callback, options);
+            this.eventListeners.push({ target: this as EventTarget, type, callback });
+        }
+
+        public removeEventListener(
+            type: string | string[],
+            callback: EventListenerOrEventListenerObject
+        ): void {
+            if (Array.isArray(type)) {
+                type.forEach((event: string) =>
+                    this.removeEventListener(event, callback)
+                );
+                return;
+            }
+            super.removeEventListener(type, callback);
+            this.eventListeners = this.eventListeners.filter(
+                (el: any) =>
+                    el.type !== type || el.callback != callback || el.target === this
+            );
+        }
+
+        /**
+         * Adds event listener to element and tracks it for this element
+         * @param target - node that the listener is bound to
+         * @param type - event type
+         * @param callback - callback function called on event
+         * @param options - event listener options
+         * @returns void
+         * @public
+         */
+        public bindEvents(
+            target: EventTarget = this as EventTarget,
+            type: string | string[],
+            callback: EventListenerOrEventListenerObject,
+            options?: EventListenerOptions
+        ): void {
+            if (Array.isArray(type)) {
+                type.forEach((event: string) =>
+                    this.bindEvents(target, event, callback, options)
+                );
+                return;
+            }
+            target.addEventListener(type, callback, options);
+            if (target !== (this as any)) {
+                this.eventListeners.push({ target, type, callback });
+            }
+        }
+
+        /**
+         * Removes an event listener from an element and removes the tracking
+         * @param target - node that has the listener bound to it
+         * @param type - event type
+         * @param callback - callback function for the event
+         * @returns void
+         * @public
+         */
+        public unbindEvents(
+            target?: EventTarget,
+            type?: string | string[],
+            callback?: EventListenerOrEventListenerObject
+        ): void {
+            if (Array.isArray(type)) {
+                type.forEach((type: string) => this.unbindEvents(target, type, callback));
+                return;
+            }
+
+            this.eventListeners = this.eventListeners.reduce(
+                (listeners: any[], el: any) => {
+                    if (
+                        (!el || el.target === target) &&
+                        (!type || el.type === type) &&
+                        (!callback || el.callback == callback)
+                    ) {
+                        el.target.removeEventListener(el.type, el.callback);
+                    } else {
+                        listeners.push(el);
+                    }
+                    return listeners;
+                },
+                []
+            );
         }
     } as any;
 }
