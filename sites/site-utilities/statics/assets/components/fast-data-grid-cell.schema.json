@@ -11,7 +11,8 @@
     "cell-type": {
       "enum": [
         "default",
-        "columnheader"
+        "columnheader",
+        "rowheader"
       ],
       "title": "Cell type",
       "description": "The type of cell",

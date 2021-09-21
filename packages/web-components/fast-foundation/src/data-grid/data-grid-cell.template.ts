@@ -19,10 +19,9 @@ export const dataGridCellTemplate: (
     return html<DataGridCell>`
         <template
             tabindex="-1"
-            role="${x => (x.cellType === undefined ? "gridcell" : x.cellType)}"
+            role="${x => x.cellType ?? "gridcell"}"
             class="
-                ${x => (x.cellType === "columnheader" ? "column-header" : "")}
-                ${x => (x.cellType === "rowheader" ? "row-header" : "")}
+            ${x => (x.cellType === "columnheader" ? "column-header" : x.cellType === "rowheader" ? "row-header" : "")}
             "
         >
             <slot></slot>
