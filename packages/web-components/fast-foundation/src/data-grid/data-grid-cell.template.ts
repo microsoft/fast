@@ -21,7 +21,12 @@ export const dataGridCellTemplate: (
             tabindex="-1"
             role="${x => x.cellType ?? "gridcell"}"
             class="
-            ${x => (x.cellType === "columnheader" ? "column-header" : x.cellType === "rowheader" ? "row-header" : "")}
+            ${x =>
+                x.cellType === "columnheader"
+                    ? "column-header"
+                    : x.cellType === "rowheader"
+                    ? "row-header"
+                    : ""}
             "
         >
             <slot></slot>
