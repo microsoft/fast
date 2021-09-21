@@ -136,7 +136,7 @@ export const interactiveCalendarGridTemplate: (
     const rowTag: string = context.tagFor(DataGridRow);
 
     return html`
-    <${gridTag} class="days" part="days" generate-header="none">
+    <${gridTag} class="days interact" part="days" generate-header="none">
         <${rowTag}
             class="week-days"
             part="week-days"
@@ -193,7 +193,14 @@ export const noninteractiveCalendarTemplate: (todayString: string) => ViewTempla
                                             { month: "long", day: "numeric" }
                                         )}"
                                 >
-                                    <div class="date">
+                                    <div
+                                        class="date"
+                                        part="${x =>
+                                            todayString ===
+                                            `${x.month}-${x.day}-${x.year}`
+                                                ? "today"
+                                                : "date"}"
+                                    >
                                         ${(x, c) =>
                                             c.parentContext.parent.dateFormatter.getDay(
                                                 x.day

@@ -1,6 +1,6 @@
 <style>
     fast-calendar {
-        width: 600px;
+        width: 304px;
         font-family: "Segoe UI", sans-serif;
         padding: 20px;
     }
@@ -28,10 +28,16 @@
         text-align: center;
     }
 
+    .borders::part(week) {
+        grid-gap: 0;
+        margin-top: 0;
+    }
+
     .borders::part(day) {
         background: #222;
         transition: all 0.5s linear;
         text-align: left;
+        border-radius: 0;
     }
 
     .borders::part(day):hover {
@@ -70,6 +76,15 @@
         font-size: 2em;
     }
 
+    .borders2::part(week) {
+        grid-gap: 0;
+        margin-top: 0;
+    }
+
+    .borders2::part(day) {
+        background: none;
+    }
+
     .borders2::part(date),
     .borders2::part(today) {
         text-align: center;
@@ -95,7 +110,7 @@
     }
 
     .borders3 {
-        width: 420px;
+        width: 600px;
         --cell-border: 1px dashed #666;
         --cell-height: 60px;
         --current-day-color: #0f0;
@@ -110,14 +125,25 @@
         border: 0;
     }
 
+    .borders3::part(week) {
+        grid-gap: 0;
+        margin-top: 0;
+    }
+
+    .borders3::part(day) {
+        background: none;
+        border-radius: 0;
+        height: auto;
+    }
+
     .borders3::part(date),
     .borders3::part(today) {
-        text-align: center;
-        line-height: 50px;
+        padding: 0;
+        text-align: left;
     }
 
     .borders3::part(week):hover {
-        background: #030;
+        background: rgba(0, 0, 0, 0.2);
         cursor: pointer;
     }
 
@@ -140,19 +166,25 @@
     }
 
     .borders4::part(month) {
-        color: purple;
+        color: yellow;
     }
 
     .borders4::part(week-days) {
-        border-bottom: 1px solid purple;
+        border-bottom: 1px solid #ff2a6a;
     }
 
     .borders4::part(week-day) {
-        color: purple;
+        color: #ff2a6a;
     }
 
     .borders4::part(week) {
         position: relative;
+        grid-gap: 0;
+        margin-top: 0;
+    }
+
+    .borders4::part(day) {
+        background: none;
     }
 
     .borders4::part(date),
@@ -165,8 +197,9 @@
     }
 
     .borders4::part(today) {
-        background: purple;
+        background: aqua;
         border-radius: 50%;
+        color: black;
     }
 
     .borders4::part(week):hover::before {
@@ -211,8 +244,24 @@
     }
 
     .compact {
-        width: 280px;
+        width: 164px;
         text-align: center;
+    }
+
+    .compact::part(title) {
+        font-size: 16px;
+    }
+
+    .compact::part(day),
+    .compact::part(week-day) {
+        height: 20px;
+        padding: 0;
+        line-height: 20px;
+    }
+
+    .compact::part(date),
+    .compact::part(today) {
+        padding: 0;
     }
 
     #click-output {
@@ -433,6 +482,7 @@
         const addMonth = (_, index) => {
             const monthCalendar = document.createElement("fast-calendar");
             monthCalendar.className = "compact";
+            monthCalendar.readonly = true;
             monthCalendar.weekdayFormat = "narrow";
             monthCalendar.minWeeks = 6;
             monthCalendar.month = index + 1;

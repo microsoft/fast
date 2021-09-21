@@ -6,6 +6,7 @@ import {
     accentForegroundActive,
     designUnit,
     foregroundOnAccentActive,
+    neutralFillRest,
     neutralForegroundRest,
     typeRampBaseLineHeight,
     typeRampPlus3FontSize,
@@ -21,8 +22,9 @@ export const CalendarStyles = css`
         --cell-height: calc(${heightNumber} * 1px);
         --inactive-day-color: ${SystemColors.GrayText};
         --disabled-day-color: ${SystemColors.GrayText};
+        --selected-day-border: 1px solid ${accentForegroundActive};
         --selected-day-color: ${accentForegroundActive};
-        --selected-day-outline: 1px solid ${accentForegroundActive};
+        --selected-day-background: ${neutralFillRest};
         --cell-padding: calc(${designUnit} * 1px);
         --cell-line-height: ${typeRampBaseLineHeight};
         text-align: center;
@@ -41,6 +43,11 @@ export const CalendarStyles = css`
         border-left: var(--cell-border, none);
         border-bottom: none;
         padding: 0;
+    }
+
+    .interact .week {
+        grid-gap: calc(${designUnit} * 1px);
+        margin-top: calc(${designUnit} * 1px);
     }
 
     .week-day {
@@ -67,9 +74,19 @@ export const CalendarStyles = css`
         white-space: normal;
     }
 
+    .interact .day {
+        background: ${neutralFillRest};
+        border-radius: calc(${designUnit} * 1px);
+        cursor: pointer;
+    }
+
     .day.off {
         color: var(--inactive-day-color);
         background: var(--inactive-day-background);
+    }
+
+    .interact .day.off {
+        background: none;
     }
 
     .day.disabled {
@@ -81,7 +98,7 @@ export const CalendarStyles = css`
     .day.selected {
         color: var(--selected-day-color);
         background: var(--selected-day-background);
-        outline: var(--selected-day-outline);
+        border: var(--selected-day-border);
     }
 
     .date {
@@ -89,11 +106,7 @@ export const CalendarStyles = css`
     }
 
     .today .date {
-        background: ${accentForegroundActive};
-        color: ${foregroundOnAccentActive};
-        border-radius: 50%;
-        margin: 0 auto;
-        width: var(--cell-line-height);
+        color: ${accentForegroundActive};
     }
 
     .today.off .date {

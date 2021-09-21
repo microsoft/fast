@@ -75,6 +75,14 @@
                     "required": false
                 },
                 {
+                    "name": "readonly",
+                    "title": "Read only",
+                    "description": "If there is not interactions for the calendar",
+                    "type": "boolean",
+                    "default": false,
+                    "required": false
+                },
+                {
                     "name": "selected-dates",
                     "title": "Selected dates",
                     "description": "A comma separated list of dates to show as highlighted.",
