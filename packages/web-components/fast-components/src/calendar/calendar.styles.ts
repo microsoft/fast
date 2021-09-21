@@ -27,13 +27,13 @@ export const CalendarStyles = css`
         --selected-day-background: ${neutralFillRest};
         --cell-padding: calc(${designUnit} * 1px);
         --cell-line-height: ${typeRampBaseLineHeight};
-        text-align: center;
         color: ${neutralForegroundRest};
     }
 
     .title {
         font-size: ${typeRampPlus3FontSize};
         padding: var(--cell-padding);
+        text-align: center;
     }
 
     .week-days,
@@ -103,6 +103,7 @@ export const CalendarStyles = css`
 
     .date {
         padding: var(--cell-padding);
+        text-align: center;
     }
 
     .today .date {
