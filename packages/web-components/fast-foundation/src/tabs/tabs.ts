@@ -60,6 +60,7 @@ export class Tabs extends FoundationElement {
             this.$fastController.isConnected &&
             this.tabs.length <= this.tabpanels.length
         ) {
+            this.prevActiveTabIndex = this.tabs.indexOf(this.activetab);
             this.setTabs();
             this.setTabPanels();
             this.handleActiveIndicatorPosition();
@@ -234,10 +235,6 @@ export class Tabs extends FoundationElement {
     private setComponent(): void {
         if (this.activeTabIndex !== this.prevActiveTabIndex) {
             this.activeid = this.tabIds[this.activeTabIndex] as string;
-            this.change();
-            this.setTabs();
-            this.handleActiveIndicatorPosition();
-            this.setTabPanels();
             this.focusTab();
             this.change();
         }
