@@ -2,6 +2,35 @@
   "name": "@microsoft/fast-foundation",
   "entries": [
     {
+      "date": "Sun, 19 Sep 2021 07:17:17 GMT",
+      "tag": "@microsoft/fast-foundation_v2.15.0",
+      "version": "2.15.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "add picker component",
+            "author": "scomea@microsoft.com",
+            "commit": "395775ca58b6529861aae2e2ab1a628e2d8db081",
+            "package": "@microsoft/fast-foundation"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "fix: remove dependency on document for root containers & design systems",
+            "author": "roeisenb@microsoft.com",
+            "commit": "88d50fadf907d12581c0faa7a08951b5e41bb2b2",
+            "package": "@microsoft/fast-foundation"
+          },
+          {
+            "comment": "Bump @microsoft/fast-web-utilities to v5.0.0",
+            "author": "scomea@microsoft.com",
+            "commit": "395775ca58b6529861aae2e2ab1a628e2d8db081",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 16 Sep 2021 07:17:00 GMT",
       "tag": "@microsoft/fast-foundation_v2.14.0",
       "version": "2.14.0",
