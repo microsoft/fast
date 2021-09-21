@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "fix thumb position math",
-  "packageName": "@microsoft/fast-components",
-  "email": "corylaviska@microsoft.com",
-  "dependentChangeType": "patch"
-}

@@ -193,7 +193,7 @@ describe("Anchor", () => {
             await disconnect();
         });
 
-        it("should set the `aria-describedBy` attribute on the internal anchor when provided", async () => {
+        it("should set the `aria-describedby` attribute on the internal anchor when provided", async () => {
             const { element, connect, disconnect } = await setup();
             const ariaDescribedby = "testId";
 
@@ -202,7 +202,7 @@ describe("Anchor", () => {
             await connect();
 
             expect(
-                element.shadowRoot?.querySelector("a")?.getAttribute("aria-describedBy")
+                element.shadowRoot?.querySelector("a")?.getAttribute("aria-describedby")
             ).to.equal(ariaDescribedby);
 
             await disconnect();

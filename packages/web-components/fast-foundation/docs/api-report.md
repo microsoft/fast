@@ -439,6 +439,7 @@ export interface Container extends ServiceLocator {
     registerFactory<T extends Constructable>(key: T, factory: Factory<T>): void;
     registerResolver<K extends Key, T = K>(key: K, resolver: Resolver<T>): Resolver<T>;
     registerTransformer<K extends Key, T = K>(key: K, transformer: Transformer_2<T>): boolean;
+    registerWithContext(context: any, ...params: any[]): Container;
 }
 
 // @public
@@ -489,6 +490,8 @@ export class ContainerImpl implements Container {
     registerResolver<K extends Key, T = K>(key: K, resolver: Resolver<T>): Resolver<T>;
     // (undocumented)
     registerTransformer<K extends Key, T = K>(key: K, transformer: Transformer_2<T>): boolean;
+    // (undocumented)
+    registerWithContext(context: any, ...params: any[]): Container;
     // (undocumented)
     get responsibleForOwnerRequests(): boolean;
 }
@@ -739,7 +742,7 @@ export interface DesignSystem {
 export const DesignSystem: Readonly<{
     tagFor(type: Constructable): string;
     responsibleFor(element: HTMLElement): DesignSystem;
-    getOrCreate(element?: HTMLElement): DesignSystem;
+    getOrCreate(node?: Node | undefined): DesignSystem;
 }>;
 
 // @public
@@ -749,9 +752,6 @@ export interface DesignSystemRegistrationContext {
     tryDefineElement(name: string, type: Constructable, callback: ElementDefinitionCallback): any;
     tryDefineElement(params: ElementDefinitionParams): any;
 }
-
-// @public
-export const DesignSystemRegistrationContext: InterfaceSymbol<DesignSystemRegistrationContext>;
 
 // @public
 export interface DesignToken<T extends string | number | boolean | BigInteger | null | Array<any> | symbol | {}> {
@@ -798,7 +798,7 @@ export const DI: Readonly<{
     createContainer(config?: Partial<ContainerConfiguration> | undefined): Container;
     findResponsibleContainer(node: Node): Container;
     findParentContainer(node: Node): Container;
-    getOrCreateDOMContainer(node?: Node, config?: Partial<Pick<ContainerConfiguration, "responsibleForOwnerRequests" | "defaultResolver">> | undefined): Container;
+    getOrCreateDOMContainer(node?: Node | undefined, config?: Partial<Pick<ContainerConfiguration, "responsibleForOwnerRequests" | "defaultResolver">> | undefined): Container;
     getDesignParamtypes: (Type: Constructable | Injectable) => readonly Key[] | undefined;
     getAnnotationParamtypes: (Type: Constructable | Injectable) => readonly Key[] | undefined;
     getOrCreateAnnotationParamTypes(Type: Constructable | Injectable): Key[];
@@ -1074,7 +1074,7 @@ export class FoundationElementRegistry<TDefinition extends FoundationElementDefi
     // (undocumented)
     readonly definition: OverrideFoundationElementDefinition<TDefinition>;
     // (undocumented)
-    register(container: Container): void;
+    register(container: Container, context: DesignSystemRegistrationContext): void;
     // (undocumented)
     readonly type: Constructable<FoundationElement>;
 }
@@ -1462,6 +1462,149 @@ export type OverrideFoundationElementDefinition<T extends FoundationElementDefin
 
 // @public
 export type ParentLocator = (owner: any) => Container | null;
+
+// Warning: (ae-forgotten-export) The symbol "FormAssociatedPicker" needs to be exported by the entry point index.d.ts
+//
+// @alpha
+export class Picker extends FormAssociatedPicker {
+    // @internal
+    activeListItemTemplate?: ViewTemplate;
+    // @internal
+    activeMenuOptionTemplate?: ViewTemplate;
+    // @internal (undocumented)
+    connectedCallback(): void;
+    defaultListItemTemplate?: ViewTemplate;
+    defaultMenuOptionTemplate?: ViewTemplate;
+    // (undocumented)
+    disconnectedCallback(): void;
+    // @internal
+    filteredOptionsList: string[];
+    filterQuery: boolean;
+    filterSelected: boolean;
+    // @internal
+    flyoutOpen: boolean;
+    // @public
+    focus(): void;
+    handleFocusIn(e: FocusEvent): boolean;
+    handleFocusOut(e: FocusEvent): boolean;
+    handleItemInvoke(e: Event): boolean;
+    handleKeyDown(e: KeyboardEvent): boolean;
+    handleOptionInvoke(e: Event): boolean;
+    handleRegionLoaded(e: Event): void;
+    handleSelectionChange(): void;
+    // @internal
+    inputElement: HTMLInputElement;
+    itemsPlaceholderElement: Node;
+    label: string;
+    labelledBy: string;
+    // @internal
+    listElement: PickerList;
+    listItemContentsTemplate: ViewTemplate;
+    listItemTemplate: ViewTemplate;
+    loadingText: string;
+    maxSelected: number | undefined;
+    // @internal
+    menuElement: PickerMenu;
+    // @internal
+    menuFocusIndex: number;
+    // @internal
+    menuFocusOptionId: string | undefined;
+    // @internal
+    menuId: string;
+    menuOptionContentsTemplate: ViewTemplate;
+    menuOptionTemplate: ViewTemplate;
+    // @internal
+    menuTag: string;
+    noSuggestionsText: string;
+    options: string;
+    optionsList: string[];
+    query: string;
+    // @internal
+    region: AnchoredRegion;
+    // @internal (undocumented)
+    selectedItems: string[];
+    // @internal
+    selectedListTag: string;
+    selection: string;
+    showLoading: boolean;
+    // @internal
+    showNoOptions: boolean;
+    suggestionsAvailableText: string;
+    }
+
+// @alpha
+export class PickerList extends FoundationElement {
+}
+
+// @alpha
+export class PickerListItem extends FoundationElement {
+    // @internal (undocumented)
+    connectedCallback(): void;
+    contentsTemplate: ViewTemplate;
+    // @internal (undocumented)
+    disconnectedCallback(): void;
+    // (undocumented)
+    handleClick(e: MouseEvent): boolean;
+    // (undocumented)
+    handleKeyDown(e: KeyboardEvent): boolean;
+    value: string;
+}
+
+// Warning: (ae-incompatible-release-tags) The symbol "pickerListItemTemplate" is marked as @public, but its signature references "PickerListItem" which is marked as @alpha
+//
+// @public (undocumented)
+export const pickerListItemTemplate: (context: any, definition: any) => ViewTemplate<PickerListItem>;
+
+// Warning: (ae-incompatible-release-tags) The symbol "pickerListTemplate" is marked as @public, but its signature references "PickerList" which is marked as @alpha
+//
+// @public (undocumented)
+export const pickerListTemplate: (context: any, definition: any) => ViewTemplate<PickerList>;
+
+// @alpha
+export class PickerMenu extends FoundationElement {
+    // @internal
+    footerElements: HTMLElement[];
+    // (undocumented)
+    footerElementsChanged(): void;
+    // @internal
+    headerElements: HTMLElement[];
+    // (undocumented)
+    headerElementsChanged(): void;
+    // @internal
+    menuElements: HTMLElement[];
+    // (undocumented)
+    menuElementsChanged(): void;
+    // @internal
+    optionElements: HTMLElement[];
+    suggestionsAvailableText: string;
+    }
+
+// @alpha
+export class PickerMenuOption extends FoundationElement {
+    // @internal (undocumented)
+    connectedCallback(): void;
+    contentsTemplate: ViewTemplate;
+    // @internal (undocumented)
+    disconnectedCallback(): void;
+    // (undocumented)
+    handleClick(e: MouseEvent): boolean;
+    value: string;
+}
+
+// Warning: (ae-incompatible-release-tags) The symbol "pickerMenuOptionTemplate" is marked as @public, but its signature references "PickerMenuOption" which is marked as @alpha
+//
+// @public (undocumented)
+export const pickerMenuOptionTemplate: (context: any, definition: any) => ViewTemplate<PickerMenuOption>;
+
+// Warning: (ae-incompatible-release-tags) The symbol "pickerMenuTemplate" is marked as @public, but its signature references "PickerMenu" which is marked as @alpha
+//
+// @public
+export const pickerMenuTemplate: (context: any, definition: any) => ViewTemplate<PickerMenu>;
+
+// Warning: (ae-incompatible-release-tags) The symbol "pickerTemplate" is marked as @public, but its signature references "Picker" which is marked as @alpha
+//
+// @public
+export const pickerTemplate: (context: any, definition: any) => ViewTemplate<Picker>;
 
 // @public
 export type ProgressOptions = FoundationElementDefinition & {
@@ -2270,7 +2413,7 @@ export function whitespaceFilter(value: Node, index: number, array: Node[]): boo
 // Warnings were encountered during analysis:
 //
 // dist/dts/design-token/design-token.d.ts:91:5 - (ae-forgotten-export) The symbol "create" needs to be exported by the entry point index.d.ts
-// dist/dts/di/di.d.ts:506:5 - (ae-forgotten-export) The symbol "SingletonOptions" needs to be exported by the entry point index.d.ts
+// dist/dts/di/di.d.ts:513:5 - (ae-forgotten-export) The symbol "SingletonOptions" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
 

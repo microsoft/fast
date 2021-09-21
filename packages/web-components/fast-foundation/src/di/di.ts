@@ -211,6 +211,14 @@ export interface Container extends ServiceLocator {
     register(...params: any[]): Container;
 
     /**
+     * Registers dependencies with the container via registration objects, providing
+     * the specified context to each register invocation.
+     * @param context - The context object to pass to the registration objects.
+     * @param params - The registration objects.
+     */
+    registerWithContext(context: any, ...params: any[]): Container;
+
+    /**
      * Registers a resolver with the container for the specified key.
      * @param key - The key to register the resolver under.
      * @param resolver - The resolver to register.
@@ -511,6 +519,8 @@ function getParamTypes(
     };
 }
 
+let rootDOMContainer: Container | null = null;
+
 /**
  * The gateway to dependency injection APIs.
  * @public
@@ -583,16 +593,27 @@ export const DI = Object.freeze({
      * already exist.
      */
     getOrCreateDOMContainer(
-        node: Node = document.body,
+        node?: Node,
         config?: Partial<Omit<ContainerConfiguration, "parentLocator">>
     ): Container {
+        if (!node) {
+            return (
+                rootDOMContainer ||
+                (rootDOMContainer = new ContainerImpl(
+                    null,
+                    Object.assign({}, ContainerConfiguration.default, config, {
+                        parentLocator: () => null,
+                    })
+                ))
+            );
+        }
+
         return (
             (node as any).$$container$$ ||
             new ContainerImpl(
                 node,
                 Object.assign({}, ContainerConfiguration.default, config, {
-                    parentLocator:
-                        node === document.body ? () => null : DI.findParentContainer,
+                    parentLocator: DI.findParentContainer,
                 })
             )
         );
@@ -1467,6 +1488,7 @@ export class ContainerImpl implements Container {
     private _parent: ContainerImpl | null | undefined = void 0;
     private registerDepth: number = 0;
     private resolvers: Map<Key, Resolver>;
+    private context: any = null;
 
     public get parent() {
         if (this._parent === void 0) {
@@ -1505,6 +1527,13 @@ export class ContainerImpl implements Container {
         }
     }
 
+    public registerWithContext(context: any, ...params: any[]): Container {
+        this.context = context;
+        this.register(...params);
+        this.context = null;
+        return this;
+    }
+
     public register(...params: any[]): Container {
         if (++this.registerDepth === 100) {
             throw new Error("Unable to autoregister dependency");
@@ -1517,6 +1546,7 @@ export class ContainerImpl implements Container {
         let value: Registry;
         let j: number;
         let jj: number;
+        const context = this.context;
 
         for (let i = 0, ii = params.length; i < ii; ++i) {
             current = params[i];
@@ -1526,7 +1556,7 @@ export class ContainerImpl implements Container {
             }
 
             if (isRegistry(current)) {
-                current.register(this);
+                current.register(this, context);
             } else if (isClass(current)) {
                 Registration.singleton(current, current as Constructable).register(this);
             } else {
@@ -1541,7 +1571,7 @@ export class ContainerImpl implements Container {
                     // note: we could remove this if-branch and call this.register directly
                     // - the extra check is just a perf tweak to create fewer unnecessary arrays by the spread operator
                     if (isRegistry(value)) {
-                        value.register(this);
+                        value.register(this, context);
                     } else {
                         this.register(value);
                     }
