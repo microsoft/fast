@@ -1,0 +1,7 @@
+{
+  "type": "minor",
+  "comment": "feat(di): add registerWithContext and use in design system",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "roeisenb@microsoft.com",
+  "dependentChangeType": "patch"
+}

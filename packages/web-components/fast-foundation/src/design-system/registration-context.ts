@@ -1,4 +1,4 @@
-import { Container, DI, InterfaceSymbol } from "../di/di";
+import type { Container } from "../di/di";
 import type {
     Constructable,
     PartialFASTElementDefinition,
@@ -126,12 +126,3 @@ export interface DesignSystemRegistrationContext {
      */
     tryDefineElement(params: ElementDefinitionParams);
 }
-
-/**
- * Design system contextual APIs and configuration usable within component
- * registries.
- * @public
- */
-export const DesignSystemRegistrationContext: InterfaceSymbol<DesignSystemRegistrationContext> = DI.createInterface<
-    DesignSystemRegistrationContext
->();
