@@ -338,7 +338,7 @@ describe("TreeItem", () => {
             await disconnect();
         });
 
-        it("should NOT toggle the selected state when the element is clicked when disabled", async () => {
+        it("should NOT set selected state when the element is clicked when disabled", async () => {
             const { element, connect, disconnect } = await setup();
             const nestedItem = document.createElement("fast-tree-item");
 

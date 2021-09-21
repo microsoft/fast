@@ -64,12 +64,10 @@ export class TreeView extends FoundationElement {
     public handleBlur = (e: FocusEvent): void => {
         const { relatedTarget, target } = e;
         if (
-            (relatedTarget === null || relatedTarget instanceof HTMLElement) &&
             target instanceof HTMLElement &&
-            !this.contains(relatedTarget)
+            (relatedTarget === null || !this.contains(relatedTarget as Node))
         ) {
-            const treeView = this as HTMLElement;
-            treeView.setAttribute("tabindex", "0");
+            this.setAttribute("tabindex", "0");
         }
     };
 
@@ -77,9 +75,8 @@ export class TreeView extends FoundationElement {
         const { relatedTarget, target } = e;
 
         if (
-            (relatedTarget === null || relatedTarget instanceof HTMLElement) &&
             target instanceof HTMLElement &&
-            !this.contains(relatedTarget)
+            (relatedTarget === null || !this.contains(relatedTarget as Node))
         ) {
             const treeView = this as HTMLElement;
             if (target === this && this.currentFocused instanceof TreeItem) {
@@ -147,45 +144,43 @@ export class TreeView extends FoundationElement {
             case keyArrowDown:
                 e.preventDefault();
                 if (e.target && this.isFocusableElement(e.target as HTMLElement)) {
-                    this.focusNextNode(1, e.target as HTMLElement);
+                    this.focusNextNode(1, e.target as TreeItem);
                 }
                 break;
             case keyArrowUp:
                 e.preventDefault();
                 if (e.target && this.isFocusableElement(e.target as HTMLElement)) {
-                    this.focusNextNode(-1, e.target as HTMLElement);
+                    this.focusNextNode(-1, e.target as TreeItem);
                 }
                 break;
             case keyEnter:
                 // In single-select trees where selection does not follow focus (see note below),
                 // the default action is typically to select the focused node.
-                this.handleSelected(e.target as HTMLElement);
+                this.handleSelected(e.target as TreeItem);
                 break;
             default:
                 return true;
         }
     };
 
-    private focusNextNode(delta: number, item: HTMLElement): void {
+    private focusNextNode(delta: number, item: TreeItem): void {
         const visibleNodes: HTMLElement[] | void = this.getVisibleNodes();
         if (!visibleNodes) {
             return;
         }
 
-        if (item instanceof TreeItem) {
-            const index = visibleNodes.indexOf(item);
-            const lastItem = visibleNodes[index];
-            if (delta < 0 && index > 0) {
-                lastItem.setAttribute("tabindex", "-1");
-            } else if (delta > 0 && index < visibleNodes.length - 1) {
-                lastItem.setAttribute("tabindex", "-1");
-            }
-            const focusItem = visibleNodes[visibleNodes.indexOf(item) + delta];
-            if (isHTMLElement(focusItem)) {
-                TreeItem.focusItem(focusItem);
-                focusItem.setAttribute("tabindex", "0");
-                this.currentFocused = focusItem;
-            }
+        const index = visibleNodes.indexOf(item);
+        const lastItem = visibleNodes[index];
+        if (delta < 0 && index > 0) {
+            lastItem.setAttribute("tabindex", "-1");
+        } else if (delta > 0 && index < visibleNodes.length - 1) {
+            lastItem.setAttribute("tabindex", "-1");
+        }
+        const focusItem = visibleNodes[visibleNodes.indexOf(item) + delta];
+        if (isHTMLElement(focusItem)) {
+            TreeItem.focusItem(focusItem);
+            focusItem.setAttribute("tabindex", "0");
+            this.currentFocused = focusItem;
         }
     }
 
@@ -216,32 +211,30 @@ export class TreeView extends FoundationElement {
         }
     };
 
-    private handleSelected(item: HTMLElement): void {
-        if (item instanceof TreeItem) {
-            if (this.currentSelected !== item) {
-                item.setAttribute("tabindex", "0");
-                if (this.currentSelected instanceof TreeItem && this.currentFocused) {
-                    this.currentSelected.selected = false;
-                    this.currentSelected.setAttribute("tabindex", "-1");
-                }
-                if (!this.currentSelected) {
-                    this.slottedTreeItems.forEach((item: HTMLElement) => {
-                        if (item instanceof TreeItem) {
-                            item.setAttribute("tabindex", "-1");
-                        }
-                    });
-                }
-                if (!item.disabled) {
-                    item.selected = true;
-                }
-                this.currentFocused = item;
-                this.currentSelected = item;
+    private handleSelected(item: TreeItem): void {
+        if (this.currentSelected !== item) {
+            item.setAttribute("tabindex", "0");
+            if (this.currentSelected instanceof TreeItem && this.currentFocused) {
+                this.currentSelected.selected = false;
+                this.currentSelected.setAttribute("tabindex", "-1");
             }
+            if (!this.currentSelected) {
+                this.slottedTreeItems.forEach((item: HTMLElement) => {
+                    if (item instanceof TreeItem) {
+                        item.setAttribute("tabindex", "-1");
+                    }
+                });
+            }
+            if (!item.disabled) {
+                item.selected = true;
+            }
+            this.currentFocused = item;
+            this.currentSelected = item;
         }
     }
 
     private handleItemSelected = (e: CustomEvent): void => {
-        const newSelection: HTMLElement = e.target as HTMLElement;
+        const newSelection: TreeItem = e.target as TreeItem;
         if (newSelection !== this.currentSelected) {
             this.handleSelected(newSelection);
         }
