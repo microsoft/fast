@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "fix: active indicator does not update when activeid attr is changed",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "jes@microsoft.com",
+  "dependentChangeType": "patch"
+}
