@@ -157,7 +157,7 @@ describe("Dialog", () => {
         await disconnect();
     });
 
-    it("should set the `aria-describedBy` attribute on the dialog control when provided", async () => {
+    it("should set the `aria-describedby` attribute on the dialog control when provided", async () => {
         const { element, connect, disconnect } = await setup();
         const ariaDescribedby = "testId";
 
@@ -168,7 +168,7 @@ describe("Dialog", () => {
         expect(
             element.shadowRoot
                 ?.querySelector("[role='dialog']")
-                ?.getAttribute("aria-describedBy")
+                ?.getAttribute("aria-describedby")
         ).to.equal(ariaDescribedby);
 
         await disconnect();

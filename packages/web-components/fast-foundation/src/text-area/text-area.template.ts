@@ -53,7 +53,7 @@ export const textAreaTemplate: (
             aria-busy="${x => x.ariaBusy}"
             aria-controls="${x => x.ariaControls}"
             aria-current="${x => x.ariaCurrent}"
-            aria-describedBy="${x => x.ariaDescribedby}"
+            aria-describedby="${x => x.ariaDescribedby}"
             aria-details="${x => x.ariaDetails}"
             aria-disabled="${x => x.ariaDisabled}"
             aria-errormessage="${x => x.ariaErrormessage}"
