@@ -59,8 +59,6 @@ jobs:
       with:
         coverageCommand: yarn lerna run coverage
         coverageLocations: |
-          ${{github.workspace}}/packages/tooling/fast-tooling-react/coverage/lcov.info:lcov
-          ${{github.workspace}}/packages/tooling/fast-tooling-wasm/coverage/lcov.info:lcov
           ${{github.workspace}}/packages/tooling/fast-figma-plugin-msft/coverage/lcov.info:lcov
           ${{github.workspace}}/packages/utilities/fast-animation/coverage/lcov.info:lcov
           ${{github.workspace}}/packages/utilities/fast-colors/coverage/lcov.info:lcov
