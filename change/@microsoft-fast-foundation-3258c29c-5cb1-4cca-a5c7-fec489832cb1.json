@@ -1,6 +1,6 @@
 {
   "type": "patch",
-  "comment": "fix: AI doesn't update activeid attr is changed",
+  "comment": "fix: active indicator does not update when activeid attr is changed",
   "packageName": "@microsoft/fast-foundation",
   "email": "jes@microsoft.com",
   "dependentChangeType": "patch"
