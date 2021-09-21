@@ -10,7 +10,7 @@
   "scripts": {
     "execute": "node --es-module-specifier-resolution=node ./dist/server.js",
     "build": "tsc -p tsconfig.json",
-    "start": "yarn build && yarn execute"
+    "start": "clear && yarn build && yarn execute"
   },
   "dependencies": {
     "@happy-dom/global-registrator": "^2.22.0",

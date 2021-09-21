@@ -13,7 +13,7 @@ const ssrResult = render(templateResult, {
 });
 const stream = (Readable as any).from(ssrResult);
 
-stream.on("readable", function(this: any) {
+stream.on("readable", function (this: any) {
     let data;
 
     while ((data = this.read())) {
@@ -21,4 +21,7 @@ stream.on("readable", function(this: any) {
     }
 });
 stream.on("close", () => process.exit(0));
-stream.on("error", () => process.exit(1));
+stream.on("error", (e: Error) => {
+    console.error(e);
+    process.exit(1);
+});
