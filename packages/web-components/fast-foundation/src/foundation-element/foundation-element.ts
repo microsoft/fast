@@ -9,7 +9,7 @@ import {
     ComponentPresentation,
     DefaultComponentPresentation,
 } from "../design-system/component-presentation";
-import {
+import type {
     DesignSystemRegistrationContext,
     ElementDefinitionContext,
 } from "../design-system/registration-context";
@@ -225,10 +225,9 @@ export class FoundationElementRegistry<
         } as OverrideFoundationElementDefinition<TDefinition>;
     }
 
-    public register(container: Container) {
+    public register(container: Container, context: DesignSystemRegistrationContext) {
         const definition = this.definition;
         const overrideDefinition = this.overrideDefinition;
-        const context = container.get(DesignSystemRegistrationContext);
         const prefix = definition.prefix || context.elementPrefix;
         const name = `${prefix}-${definition.baseName}`;
 
