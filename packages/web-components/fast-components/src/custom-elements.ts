@@ -1,7 +1,7 @@
 /**
  * Export all custom element definitions
  */
-import type { Container, ElementDefinitionContext } from "@microsoft/fast-foundation";
+import type { Container } from "@microsoft/fast-foundation";
 import { fastAccordion, fastAccordionItem } from "./accordion/index";
 import { fastAnchor } from "./anchor/index";
 import { fastAnchoredRegion } from "./anchored-region/index";
