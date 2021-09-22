@@ -2,7 +2,7 @@
   "name": "@microsoft/fast-components",
   "description": "A library of Web Components",
   "sideEffects": false,
-  "version": "2.11.1",
+  "version": "2.11.2",
   "author": {
     "name": "Microsoft",
     "url": "https://discord.gg/FcSNfg4"
