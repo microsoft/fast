@@ -124,7 +124,6 @@ export class TreeView extends FoundationElement {
                 }
                 break;
             case keyArrowLeft:
-                e.preventDefault();
                 if (e.target && this.isFocusableElement(e.target as HTMLElement)) {
                     const item = e.target as HTMLElement;
                     if (item instanceof TreeItem && item.childItemLength() > 0) {
@@ -133,7 +132,6 @@ export class TreeView extends FoundationElement {
                 }
                 break;
             case keyArrowRight:
-                e.preventDefault();
                 if (e.target && this.isFocusableElement(e.target as HTMLElement)) {
                     const item = e.target as HTMLElement;
                     if (item instanceof TreeItem && item.childItemLength() > 0) {
@@ -142,13 +140,11 @@ export class TreeView extends FoundationElement {
                 }
                 break;
             case keyArrowDown:
-                e.preventDefault();
                 if (e.target && this.isFocusableElement(e.target as HTMLElement)) {
                     this.focusNextNode(1, e.target as TreeItem);
                 }
                 break;
             case keyArrowUp:
-                e.preventDefault();
                 if (e.target && this.isFocusableElement(e.target as HTMLElement)) {
                     this.focusNextNode(-1, e.target as TreeItem);
                 }
