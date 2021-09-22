@@ -70,12 +70,28 @@ export class Accordion extends FoundationElement {
         this.$emit("change");
     };
 
+    private findExpandedItem(): AccordionItem | null {
+        for (let item: number = 0; item < this.accordionItems.length; item++) {
+            if (this.accordionItems[item].hasAttribute("expanded")) {
+                return this.accordionItems[item] as AccordionItem;
+            }
+        }
+        return null;
+    }
+
     private setItems = (): void => {
+        if (this.accordionItems.length === 0) {
+            return;
+        }
         this.accordionIds = this.getItemIds();
         this.accordionItems.forEach((item: HTMLElement, index: number) => {
             if (item instanceof AccordionItem) {
                 item.addEventListener("change", this.activeItemChange);
                 if (this.isSingleExpandMode()) {
+                    const expandedItem: AccordionItem | null =
+                        this.findExpandedItem() ??
+                        (this.accordionItems[0] as AccordionItem);
+                    expandedItem.setAttribute("aria-disabled", "true");
                     this.activeItemIndex !== index
                         ? (item.expanded = false)
                         : (item.expanded = true);
@@ -108,11 +124,17 @@ export class Accordion extends FoundationElement {
 
     private activeItemChange = (event): void => {
         const selectedItem = event.target as HTMLElement;
+        this.activeid = event.target.getAttribute("id");
         if (this.isSingleExpandMode()) {
             this.resetItems();
             event.target.expanded = true;
+            event.target.setAttribute("aria-disabled", "true");
+            this.accordionItems.forEach((item: HTMLElement) => {
+                if (!item.hasAttribute("disabled") && item.id !== this.activeid) {
+                    item.removeAttribute("aria-disabled");
+                }
+            });
         }
-        this.activeid = event.target.getAttribute("id");
         this.activeItemIndex = Array.from(this.accordionItems).indexOf(selectedItem);
         this.change();
     };
