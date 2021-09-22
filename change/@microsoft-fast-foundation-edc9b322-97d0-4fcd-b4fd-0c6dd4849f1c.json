@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "Horizontal-scroll tests cleanup",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "robarb@microsoft.com",
+  "dependentChangeType": "patch"
+}
