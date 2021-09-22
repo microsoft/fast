@@ -1,7 +1,8 @@
-import { children, elements, html } from "@microsoft/fast-element";
+import { children, elements, html, ref, when } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
 import type { FoundationElementTemplate } from "../foundation-element";
 import type { ElementDefinitionContext } from "../design-system";
+import { VirtualizingStack } from "../virtualizing-stack";
 import type { DataGrid } from "./data-grid";
 import { DataGridRow } from "./data-grid-row";
 
@@ -28,6 +29,7 @@ export const dataGridTemplate: FoundationElementTemplate<ViewTemplate<DataGrid>>
 ) => {
     const rowItemTemplate: ViewTemplate = createRowItemTemplate(context);
     const rowTag = context.tagFor(DataGridRow);
+    const stackTag = context.tagFor(VirtualizingStack);
     return html<DataGrid>`
         <template
             role="grid"
@@ -40,6 +42,17 @@ export const dataGridTemplate: FoundationElementTemplate<ViewTemplate<DataGrid>>
             })}
         >
             <slot></slot>
+            ${when(
+                x => x.virtualize,
+                html<DataGrid>`
+            <${stackTag}
+                item-height="${x => x.itemHeight}"
+                ${ref("stack")}
+            >
+            </${stackTag}>
+        </template>
+        `
+            )}
         </template>
     `;
 };

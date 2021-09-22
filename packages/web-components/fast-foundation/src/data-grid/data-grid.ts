@@ -17,6 +17,7 @@ import {
     keyPageDown,
     keyPageUp,
 } from "@microsoft/fast-web-utilities";
+import type { VirtualizingStack } from "../virtualizing-stack";
 import { FoundationElement } from "../foundation-element";
 import type { DataGridCell } from "./data-grid-cell";
 import type { DataGridRow } from "./data-grid-row";
@@ -140,6 +141,26 @@ export class DataGrid extends FoundationElement {
             this.toggleGeneratedHeader();
         }
     }
+
+    /**
+     *
+     *
+     * @public
+     * @remarks
+     * HTML Attribute: virtualize
+     */
+    @attr({ attribute: "virtualize" })
+    public virtualize: boolean = false;
+
+    /**
+     *
+     *
+     * @public
+     * @remarks
+     * HTML Attribute: item-height
+     */
+    @attr({ attribute: "item-height" })
+    public itemHeight: number = 100;
 
     /**
      * String that gets applied to the the css gridTemplateColumns attribute of child rows
@@ -279,6 +300,13 @@ export class DataGrid extends FoundationElement {
     @observable
     public rowElements: HTMLElement[];
 
+    /**
+     *
+     *
+     * @internal
+     */
+    public stack: VirtualizingStack;
+
     private rowsRepeatBehavior: RepeatBehavior | null;
     private rowsPlaceholder: Node | null = null;
 
@@ -308,19 +336,24 @@ export class DataGrid extends FoundationElement {
             this.rowItemTemplate = this.defaultRowItemTemplate;
         }
 
-        this.rowsPlaceholder = document.createComment("");
-        this.appendChild(this.rowsPlaceholder);
-
         this.toggleGeneratedHeader();
 
-        this.rowsRepeatBehavior = new RepeatDirective(
-            x => x.rowsData,
-            x => x.rowItemTemplate,
-            { positioning: true }
-        ).createBehavior(this.rowsPlaceholder);
+        if (this.virtualize) {
+            this.stack.items = this.rowsData;
+            this.stack.itemTemplate = this.rowItemTemplate;
+        } else {
+            this.rowsPlaceholder = document.createComment("");
+            this.appendChild(this.rowsPlaceholder);
 
-        /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */
-        this.$fastController.addBehaviors([this.rowsRepeatBehavior!]);
+            this.rowsRepeatBehavior = new RepeatDirective(
+                x => x.rowsData,
+                x => x.rowItemTemplate,
+                { positioning: true }
+            ).createBehavior(this.rowsPlaceholder);
+
+            /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */
+            this.$fastController.addBehaviors([this.rowsRepeatBehavior!]);
+        }
 
         this.addEventListener("row-focused", this.handleRowFocus);
         this.addEventListener(eventFocus, this.handleFocus);
