@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "fix aria-describedby typos",
-  "packageName": "@microsoft/fast-foundation",
-  "email": "v-dlesac@microsoft.com",
-  "dependentChangeType": "patch"
-}

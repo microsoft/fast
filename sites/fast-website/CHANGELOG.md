@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-website
 
-This log was last generated on Sun, 19 Sep 2021 07:17:17 GMT and should not be manually modified.
+This log was last generated on Wed, 22 Sep 2021 07:13:13 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.3.16
+
+Wed, 22 Sep 2021 07:13:13 GMT
+
+### Patches
+
+- Bump @microsoft/site-utilities to v0.9.0 (scomea@microsoft.com)
 
 ## 1.3.16
 

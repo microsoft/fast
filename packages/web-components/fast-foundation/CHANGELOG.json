@@ -2,6 +2,35 @@
   "name": "@microsoft/fast-foundation",
   "entries": [
     {
+      "date": "Wed, 22 Sep 2021 07:13:13 GMT",
+      "tag": "@microsoft/fast-foundation_v2.16.0",
+      "version": "2.16.0",
+      "comments": {
+        "patch": [
+          {
+            "comment": "fix: active indicator does not update when activeid attr is changed",
+            "author": "jes@microsoft.com",
+            "commit": "5e2956f319f4d2736e78c05e7e8fc6df7a266fff",
+            "package": "@microsoft/fast-foundation"
+          },
+          {
+            "comment": "fix aria-describedby typos",
+            "author": "v-dlesac@microsoft.com",
+            "commit": "41fc891045fd1c2b457319e2fa5b26144b79bd9b",
+            "package": "@microsoft/fast-foundation"
+          }
+        ],
+        "minor": [
+          {
+            "comment": "feat(di): add registerWithContext and use in design system",
+            "author": "roeisenb@microsoft.com",
+            "commit": "ede2a72a0be865346b52559400cbb685f3e4ad19",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sun, 19 Sep 2021 07:17:17 GMT",
       "tag": "@microsoft/fast-foundation_v2.15.0",
       "version": "2.15.0",
