@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-components",
   "entries": [
     {
+      "date": "Wed, 22 Sep 2021 07:13:13 GMT",
+      "tag": "@microsoft/fast-components_v2.11.1",
+      "version": "2.11.1",
+      "comments": {
+        "patch": [
+          {
+            "comment": "tooltip should not block hover",
+            "author": "scomea@microsoft.com",
+            "commit": "4ce34962fe29fc1d2157bd487ef66fabf77baed8",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sun, 19 Sep 2021 07:17:17 GMT",
       "tag": "@microsoft/fast-components_v2.11.0",
       "version": "2.11.0",
