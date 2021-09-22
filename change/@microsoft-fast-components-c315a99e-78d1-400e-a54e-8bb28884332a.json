@@ -1,7 +1,7 @@
 {
   "type": "patch",
-  "comment": "tooltip should not block hover",
+  "comment": "fix(allComponents): add missing param to registry",
   "packageName": "@microsoft/fast-components",
-  "email": "scomea@microsoft.com",
+  "email": "roeisenb@microsoft.com",
   "dependentChangeType": "patch"
 }
