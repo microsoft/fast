@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "fix(allComponents): add missing param to registry",
+  "packageName": "@microsoft/fast-components",
+  "email": "roeisenb@microsoft.com",
+  "dependentChangeType": "patch"
+}
