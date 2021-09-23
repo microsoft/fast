@@ -195,17 +195,13 @@ describe("HorinzontalScroll", () => {
         it("should not scroll past the last in view element", async () => {
             const { element, disconnect } = await setup();
 
-            element.setAttribute("style", `width: ${horizontalScrollWidth}px}`);
-            element.innerHTML = getCards(8);
+            element.scrollToNext();
+            element.scrollToNext();
+            element.scrollToNext();
+            element.scrollToNext();
+            element.scrollToNext();
+            element.scrollToNext();
 
-            await DOM.nextUpdate();
-
-            element.scrollToNext();
-            element.scrollToNext();
-            element.scrollToNext();
-            element.scrollToNext();
-            element.scrollToNext();
-            element.scrollToNext();
             await DOM.nextUpdate();
 
             let cardViewWidth: number = cardSpace * 5 * -1;
