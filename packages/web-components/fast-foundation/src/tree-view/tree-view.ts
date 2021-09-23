@@ -211,7 +211,7 @@ export class TreeView extends FoundationElement {
         if (this.currentSelected !== item) {
             item.setAttribute("tabindex", "0");
             if (this.currentSelected instanceof TreeItem && this.currentFocused) {
-                if(!item.disabled){
+                if (!item.disabled) {
                     this.currentSelected.selected = false;
                 }
                 this.currentFocused.setAttribute("tabindex", "-1");
