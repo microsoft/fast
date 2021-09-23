@@ -154,6 +154,13 @@ export class NumberField extends FormAssociatedNumberField {
     }
 
     /**
+     * Display text used in the input field
+     * @public
+     */
+    @observable
+    public displayText: string = "";
+
+    /**
      * @internal
      */
     @observable
@@ -201,7 +208,7 @@ export class NumberField extends FormAssociatedNumberField {
             this.proxy.value = value;
         }
 
-        if (value != this.value && !this.value.match(/^(-?\.)|(-\.?)$/)) {
+        if (value != this.value) {
             this.value = value.toString();
             this.$emit("input");
             this.$emit("change");
