@@ -180,6 +180,7 @@ export class NumberField extends FormAssociatedNumberField {
     public valueChanged(previousValue, nextValue): void {
         super.valueChanged(previousValue, nextValue);
 
+        this.displayText = nextValue;
         this.updateValue(nextValue);
     }
 
