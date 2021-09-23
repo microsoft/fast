@@ -103,7 +103,7 @@ export class TreeItem extends FoundationElement {
     };
 
     public handleClick = (e: MouseEvent): void => {
-        if (!e.defaultPrevented && !this.disabled) {
+        if (!e.defaultPrevented) {
             this.handleSelected(e);
         }
     };

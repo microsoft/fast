@@ -211,8 +211,10 @@ export class TreeView extends FoundationElement {
         if (this.currentSelected !== item) {
             item.setAttribute("tabindex", "0");
             if (this.currentSelected instanceof TreeItem && this.currentFocused) {
-                this.currentSelected.selected = false;
-                this.currentSelected.setAttribute("tabindex", "-1");
+                if(!item.disabled){
+                    this.currentSelected.selected = false;
+                }
+                this.currentFocused.setAttribute("tabindex", "-1");
             }
             if (!this.currentSelected) {
                 this.slottedTreeItems.forEach((item: HTMLElement) => {
@@ -223,9 +225,9 @@ export class TreeView extends FoundationElement {
             }
             if (!item.disabled) {
                 item.selected = true;
+                this.currentSelected = item;
             }
             this.currentFocused = item;
-            this.currentSelected = item;
         }
     }
 
