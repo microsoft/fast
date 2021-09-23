@@ -2,6 +2,57 @@
   "name": "@microsoft/fast-components",
   "entries": [
     {
+      "date": "Thu, 23 Sep 2021 07:14:34 GMT",
+      "tag": "@microsoft/fast-components_v2.11.3",
+      "version": "2.11.3",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Removing design-system-provider from storybook",
+            "author": "robarb@microsoft.com",
+            "commit": "02fa810f84c4b905789734102033f18e6573f301",
+            "package": "@microsoft/fast-components"
+          },
+          {
+            "comment": "remove duplicate display hidden style block from tree view",
+            "author": "chhol@microsoft.com",
+            "commit": "e5e4ecfade9ddcaec826c95274835e2811f21a8f",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 22 Sep 2021 17:37:48 GMT",
+      "tag": "@microsoft/fast-components_v2.11.2",
+      "version": "2.11.2",
+      "comments": {
+        "patch": [
+          {
+            "comment": "fix(allComponents): add missing param to registry",
+            "author": "roeisenb@microsoft.com",
+            "commit": "eef127dc29dbfa5686b2c99999474ee5532a8466",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 22 Sep 2021 07:13:13 GMT",
+      "tag": "@microsoft/fast-components_v2.11.1",
+      "version": "2.11.1",
+      "comments": {
+        "patch": [
+          {
+            "comment": "tooltip should not block hover",
+            "author": "scomea@microsoft.com",
+            "commit": "4ce34962fe29fc1d2157bd487ef66fabf77baed8",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sun, 19 Sep 2021 07:17:17 GMT",
       "tag": "@microsoft/fast-components_v2.11.0",
       "version": "2.11.0",
