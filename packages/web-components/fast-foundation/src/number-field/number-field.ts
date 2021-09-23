@@ -180,7 +180,6 @@ export class NumberField extends FormAssociatedNumberField {
     public valueChanged(previousValue, nextValue): void {
         super.valueChanged(previousValue, nextValue);
 
-        this.displayText = nextValue;
         this.updateValue(nextValue);
     }
 
@@ -242,6 +241,7 @@ export class NumberField extends FormAssociatedNumberField {
     public connectedCallback(): void {
         super.connectedCallback();
 
+        this.displayText = this.value;
         this.proxy.setAttribute("type", "number");
         this.validate();
 
