@@ -2,6 +2,66 @@
   "name": "@microsoft/site-utilities",
   "entries": [
     {
+      "date": "Wed, 22 Sep 2021 17:37:48 GMT",
+      "tag": "@microsoft/site-utilities_v0.9.0",
+      "version": "0.9.0",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-components to v2.11.2",
+            "author": "roeisenb@microsoft.com",
+            "commit": "eef127dc29dbfa5686b2c99999474ee5532a8466",
+            "package": "@microsoft/site-utilities"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 22 Sep 2021 07:13:13 GMT",
+      "tag": "@microsoft/site-utilities_v0.9.0",
+      "version": "0.9.0",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-components to v2.11.1",
+            "author": "scomea@microsoft.com",
+            "commit": "4ce34962fe29fc1d2157bd487ef66fabf77baed8",
+            "package": "@microsoft/site-utilities"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sun, 19 Sep 2021 07:17:17 GMT",
+      "tag": "@microsoft/site-utilities_v0.9.0",
+      "version": "0.9.0",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-tooling-react to v2.11.4",
+            "author": "scomea@microsoft.com",
+            "commit": "395775ca58b6529861aae2e2ab1a628e2d8db081",
+            "package": "@microsoft/site-utilities"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 16 Sep 2021 07:17:00 GMT",
+      "tag": "@microsoft/site-utilities_v0.9.0",
+      "version": "0.9.0",
+      "comments": {
+        "none": [
+          {
+            "comment": "Bump @microsoft/fast-tooling-react to v2.11.4",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "b3c9009433cb1f940503797ed4727b4a04f0ee77",
+            "package": "@microsoft/site-utilities"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 15 Sep 2021 19:49:35 GMT",
       "tag": "@microsoft/site-utilities_v0.9.0",
       "version": "0.9.0",

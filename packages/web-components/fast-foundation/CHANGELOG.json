@@ -2,6 +2,79 @@
   "name": "@microsoft/fast-foundation",
   "entries": [
     {
+      "date": "Wed, 22 Sep 2021 07:13:13 GMT",
+      "tag": "@microsoft/fast-foundation_v2.16.0",
+      "version": "2.16.0",
+      "comments": {
+        "patch": [
+          {
+            "comment": "fix: active indicator does not update when activeid attr is changed",
+            "author": "jes@microsoft.com",
+            "commit": "5e2956f319f4d2736e78c05e7e8fc6df7a266fff",
+            "package": "@microsoft/fast-foundation"
+          },
+          {
+            "comment": "fix aria-describedby typos",
+            "author": "v-dlesac@microsoft.com",
+            "commit": "41fc891045fd1c2b457319e2fa5b26144b79bd9b",
+            "package": "@microsoft/fast-foundation"
+          }
+        ],
+        "minor": [
+          {
+            "comment": "feat(di): add registerWithContext and use in design system",
+            "author": "roeisenb@microsoft.com",
+            "commit": "ede2a72a0be865346b52559400cbb685f3e4ad19",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sun, 19 Sep 2021 07:17:17 GMT",
+      "tag": "@microsoft/fast-foundation_v2.15.0",
+      "version": "2.15.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "add picker component",
+            "author": "scomea@microsoft.com",
+            "commit": "395775ca58b6529861aae2e2ab1a628e2d8db081",
+            "package": "@microsoft/fast-foundation"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "fix: remove dependency on document for root containers & design systems",
+            "author": "roeisenb@microsoft.com",
+            "commit": "88d50fadf907d12581c0faa7a08951b5e41bb2b2",
+            "package": "@microsoft/fast-foundation"
+          },
+          {
+            "comment": "Bump @microsoft/fast-web-utilities to v5.0.0",
+            "author": "scomea@microsoft.com",
+            "commit": "395775ca58b6529861aae2e2ab1a628e2d8db081",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 16 Sep 2021 07:17:00 GMT",
+      "tag": "@microsoft/fast-foundation_v2.14.0",
+      "version": "2.14.0",
+      "comments": {
+        "none": [
+          {
+            "comment": "correct error in data grid spec document",
+            "author": "scomea@microsoft.com",
+            "commit": "529117085a9394c8ff9da4a0d16f8be21fc798d1",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 15 Sep 2021 19:49:35 GMT",
       "tag": "@microsoft/fast-foundation_v2.14.0",
       "version": "2.14.0",

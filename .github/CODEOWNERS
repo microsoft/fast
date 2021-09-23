@@ -32,9 +32,6 @@ build/ @janechu @nicholasrice @chrisdholt @awentzel @EisenbergEffect
 
 # Tooling
 /packages/tooling/fast-figma-plugin-msft/ @nicholasrice @bheston @janechu @EisenbergEffect
-/packages/tooling/fast-tooling-react/ @janechu @nicholasrice @chrisdholt @EisenbergEffect
-/packages/tooling/fast-tooling-wasm/ @janechu @nicholasrice @chrisdholt @EisenbergEffect
-/packages/tooling/fast-tooling/ @janechu @nicholasrice @chrisdholt @EisenbergEffect
 
 # Utilities
 /packages/utilities/fast-animation/ @nicholasrice @chrisdholt
