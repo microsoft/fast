@@ -1,8 +1,17 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Wed, 22 Sep 2021 07:13:13 GMT and should not be manually modified.
+This log was last generated on Thu, 23 Sep 2021 07:14:34 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.16.1
+
+Thu, 23 Sep 2021 07:14:34 GMT
+
+### Patches
+
+- Removing design-system-provider from storybook (robarb@microsoft.com)
+- Horizontal-scroll tests cleanup (robarb@microsoft.com)
 
 ## 2.16.0
 
