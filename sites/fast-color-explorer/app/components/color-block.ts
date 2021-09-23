@@ -348,11 +348,11 @@ const formComponents = html<AppColorBlock>`
 const template = html<AppColorBlock>`
     <fast-design-system-provider
         class="color-block"
-        fill-color="${x => x.backgroundColor}"
-        id="${x => x.backgroundColor.toUpperCase().replace("#", "")}"
+        fill-color="${x => x.color}"
+        id="${x => x.color.toUpperCase().replace("#", "")}"
     >
         <p class="title">
-            BACKGROUND ${x => x.index} - ${x => x.backgroundColor.toUpperCase()}
+            SWATCH ${x => x.index} - ${x => x.color.toUpperCase()}
             ${when(
                 x => x.layerName,
                 html`
@@ -433,7 +433,7 @@ export class AppColorBlock extends FASTElement {
 
     @attr component: ComponentTypes;
 
-    @attr({ attribute: "background-color" }) backgroundColor: string;
+    @attr color: string;
 
     @attr({ attribute: "layer-name" }) layerName?: string;
 }

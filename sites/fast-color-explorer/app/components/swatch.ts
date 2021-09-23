@@ -40,8 +40,6 @@ const styles = css`
         grid-column-gap: 16px;
         justify-items: start;
     }
-    :host(.fill) {
-    }
     :host(.foreground) .icon {
         border: 1px solid black;
     }
@@ -49,8 +47,6 @@ const styles = css`
         font-size: 13px;
         content: "A";
         font-weight: 400;
-    }
-    :host(.outline) {
     }
     .icon {
         width: 20px;
