@@ -1,8 +1,17 @@
 # Change Log - @microsoft/fast-components
 
-This log was last generated on Wed, 22 Sep 2021 17:37:48 GMT and should not be manually modified.
+This log was last generated on Thu, 23 Sep 2021 07:14:34 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.11.3
+
+Thu, 23 Sep 2021 07:14:34 GMT
+
+### Patches
+
+- Removing design-system-provider from storybook (robarb@microsoft.com)
+- remove duplicate display hidden style block from tree view (chhol@microsoft.com)
 
 ## 2.11.2
 

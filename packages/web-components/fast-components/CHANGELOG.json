@@ -2,6 +2,27 @@
   "name": "@microsoft/fast-components",
   "entries": [
     {
+      "date": "Thu, 23 Sep 2021 07:14:34 GMT",
+      "tag": "@microsoft/fast-components_v2.11.3",
+      "version": "2.11.3",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Removing design-system-provider from storybook",
+            "author": "robarb@microsoft.com",
+            "commit": "02fa810f84c4b905789734102033f18e6573f301",
+            "package": "@microsoft/fast-components"
+          },
+          {
+            "comment": "remove duplicate display hidden style block from tree view",
+            "author": "chhol@microsoft.com",
+            "commit": "e5e4ecfade9ddcaec826c95274835e2811f21a8f",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 22 Sep 2021 17:37:48 GMT",
       "tag": "@microsoft/fast-components_v2.11.2",
       "version": "2.11.2",
