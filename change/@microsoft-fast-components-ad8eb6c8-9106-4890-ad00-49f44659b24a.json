@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "add function to support programmatic focus for firefox and added test",
+  "packageName": "@microsoft/fast-components",
+  "email": "khamu@microsoft.com",
+  "dependentChangeType": "patch"
+}
