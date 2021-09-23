@@ -169,6 +169,7 @@ export type AutoUpdateMode = "anchor" | "auto";
 export class Avatar extends FoundationElement {
     color: string;
     connectedCallback(): void;
+    control: HTMLAnchorElement;
     fill: string;
     link: string;
     // Warning: (ae-forgotten-export) The symbol "AvatarShape" needs to be exported by the entry point index.d.ts
@@ -2290,6 +2291,8 @@ export const tabTemplate: (context: ElementDefinitionContext, definition: Founda
 export class TextArea extends FormAssociatedTextArea {
     autofocus: boolean;
     cols: number;
+    // @internal (undocumented)
+    connectedCallback(): void;
     // @internal
     control: HTMLTextAreaElement;
     // @internal (undocumented)
@@ -2386,6 +2389,8 @@ export class Toolbar extends FoundationElement {
     clickHandler(e: MouseEvent): boolean | void;
     // @internal (undocumented)
     connectedCallback(): void;
+    // @internal
+    control: HTMLElement;
     // @internal
     direction: Direction;
     // @internal

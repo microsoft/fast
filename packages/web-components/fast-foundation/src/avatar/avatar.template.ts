@@ -1,4 +1,4 @@
-import { html } from "@microsoft/fast-element";
+import { html, ref } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
 import type { ElementDefinitionContext } from "../design-system";
 import type { Avatar, AvatarOptions } from "./avatar";
@@ -25,6 +25,7 @@ export const avatarTemplate: (
             part="link"
             href="${x => (x.link ? x.link : void 0)}"
             style="${x => (x.color ? `color: var(--avatar-color-${x.color});` : void 0)}"
+            ${ref("control")}
         >
             <slot name="media" part="media">${definition.media || ""}</slot>
             <slot class="content" part="content"><slot>

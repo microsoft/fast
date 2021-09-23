@@ -240,6 +240,8 @@ export class NumberField extends FormAssociatedNumberField {
                 this.focus();
             });
         }
+
+        this.handleUnsupportedDelegatesFocus();
     }
 
     /**
@@ -291,6 +293,24 @@ export class NumberField extends FormAssociatedNumberField {
      */
     public handleBlur(): void {
         this.control.value = this.value;
+    }
+
+    /**
+     * Overrides the focus call for where delegatesFocus is unsupported.
+     * This check works for Chrome, Edge Chromium, FireFox, and Safari
+     * Relevant PR on the Firefox browser: https://phabricator.services.mozilla.com/D123858
+     */
+    private handleUnsupportedDelegatesFocus = () => {
+        // Check to see if delegatesFocus is supported
+        if (
+            window.ShadowRoot &&
+            !window.ShadowRoot.prototype.hasOwnProperty("delegatesFocus") &&
+            this.$fastController.definition.shadowOptions?.delegatesFocus
+        ) {
+            this.focus = () => {
+                this.control.focus();
+            };
+        }
     }
 }
 

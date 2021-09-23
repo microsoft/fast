@@ -54,6 +54,11 @@ export class Avatar extends FoundationElement {
     @attr public shape: AvatarShape;
 
     /**
+     * References the root element
+     */
+    public control: HTMLAnchorElement;
+
+    /**
      * Internal
      */
     public connectedCallback(): void {
@@ -61,5 +66,25 @@ export class Avatar extends FoundationElement {
         if (!this.shape) {
             this.shape = "circle";
         }
+
+        this.handleUnsupportedDelegatesFocus();
     }
+
+    /**
+     * Overrides the focus call for where delegatesFocus is unsupported.
+     * This check works for Chrome, Edge Chromium, FireFox, and Safari
+     * Relevant PR on the Firefox browser: https://phabricator.services.mozilla.com/D123858
+     */
+    private handleUnsupportedDelegatesFocus = () => {
+        // Check to see if delegatesFocus is supported
+        if (
+            window.ShadowRoot &&
+            !window.ShadowRoot.prototype.hasOwnProperty("delegatesFocus") &&
+            this.$fastController.definition.shadowOptions?.delegatesFocus
+        ) {
+            this.focus = () => {
+                this.control.focus();
+            };
+        }
+    };
 }

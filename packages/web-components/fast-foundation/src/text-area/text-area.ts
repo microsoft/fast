@@ -168,6 +168,14 @@ export class TextArea extends FormAssociatedTextArea {
     /**
      * @internal
      */
+    public connectedCallback(): void {
+        super.connectedCallback();
+        this.handleUnsupportedDelegatesFocus();
+    }
+
+    /**
+     * @internal
+     */
     public handleTextInput = (): void => {
         this.value = this.control.value;
     };
@@ -184,6 +192,24 @@ export class TextArea extends FormAssociatedTextArea {
     public handleChange(): void {
         this.$emit("change");
     }
+
+    /**
+     * Overrides the focus call for where delegatesFocus is unsupported.
+     * This check works for Chrome, Edge Chromium, FireFox, and Safari
+     * Relevant PR on the Firefox browser: https://phabricator.services.mozilla.com/D123858
+     */
+    private handleUnsupportedDelegatesFocus = () => {
+        // Check to see if delegatesFocus is supported
+        if (
+            window.ShadowRoot &&
+            !window.ShadowRoot.prototype.hasOwnProperty("delegatesFocus") &&
+            this.$fastController.definition.shadowOptions?.delegatesFocus
+        ) {
+            this.focus = () => {
+                this.control.focus();
+            };
+        }
+    };
 }
 
 /**
