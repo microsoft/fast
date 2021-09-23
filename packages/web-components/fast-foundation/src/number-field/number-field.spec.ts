@@ -862,11 +862,6 @@ describe("NumberField", () => {
             expect(element.value).to.equal("37.");
             expect(element.proxy.value).to.equal("37");
 
-            element.setAttribute("value", ".");
-
-            expect(element.value).to.equal(".");
-            expect(element.proxy.value).to.equal("");
-
             element.setAttribute("value", ".1");
 
             expect(element.value).to.equal(".1");
@@ -878,11 +873,6 @@ describe("NumberField", () => {
 
             await connect();
 
-            element.setAttribute("value", "-");
-
-            expect(element.value).to.equal("-");
-            expect(element.proxy.value).to.equal("");
-
             element.setAttribute("value", "-1");
 
             expect(element.value).to.equal("-1");
@@ -893,11 +883,6 @@ describe("NumberField", () => {
             const { element, connect, disconnect } = await setup();
 
             await connect();
-
-            element.setAttribute("value", "-.");
-
-            expect(element.value).to.equal("-.");
-            expect(element.proxy.value).to.equal("");
 
             element.setAttribute("value", "-.6");
 
