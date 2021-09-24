@@ -107,6 +107,11 @@ export class Anchor extends FoundationElement {
     public control: HTMLAnchorElement;
 
     /**
+     * References the root element
+     */
+    public content: HTMLSpanElement;
+
+    /**
      * @internal
      */
     public connectedCallback(): void {
