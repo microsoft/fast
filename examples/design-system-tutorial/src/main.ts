@@ -8,6 +8,7 @@ import {
     fastTreeItem,
     fastTreeView,
     fillColor,
+    neutralFillLayerRecipe,
     neutralPalette,
     PaletteRGB,
     provideFASTDesignSystem,
@@ -77,7 +78,7 @@ const secondSection = containers[1];
  * Uncomment the code below to switch the design system into dark mode.
  */
 
-// baseLayerLuminance.withDefault(StandardLuminance.DarkMode);
+// baseLayerLuminance.withDefault(StandardLuminance.LightMode);
 
 /**
  * Demo 3 - Token Values for DOM Trees
@@ -90,13 +91,13 @@ const secondSection = containers[1];
  * Uncomment the code below to set the fill color only for the first card.
  */
 
-// fillColor.setValueFor(firstCard, (target: HTMLElement) => neutralPalette.getValueFor(target).get(73));
+// fillColor.setValueFor(firstCard, (target: HTMLElement) => neutralPalette.getValueFor(target).get(4));
 
 /**
  * Uncomment the code below to set the fill color for the entire first section.
  */
 
-// fillColor.setValueFor(firstSection, (target: HTMLElement) => neutralPalette.getValueFor(target).get(73));
+// fillColor.setValueFor(firstSection, (target: HTMLElement) => neutralPalette.getValueFor(target).get(4));
 
 /**
  * Demo 4 - Token Recipes
@@ -113,9 +114,9 @@ const secondSection = containers[1];
  */
 
 // const recipe: ColorRecipe = {
-//     evaluate: (target: HTMLElement) => neutralPalette.getValueFor(target).get(73)
+//     evaluate: (target: HTMLElement) => neutralPalette.getValueFor(target).get(4)
 // };
-
+//
 // neutralFillLayerRecipe.withDefault(recipe);
 
 /**
@@ -130,4 +131,4 @@ const secondSection = containers[1];
 // neutralPalette.withDefault(PaletteRGB.create(SwatchRGB.from(parseColorHexRGB("#0078D4")!)))
 // neutralPalette.setValueFor(firstSection, PaletteRGB.create(SwatchRGB.create(0, 1, 0)));
 // neutralPalette.setValueFor(secondSection, PaletteRGB.create(SwatchRGB.create(1, 0, 0)));
-// baseLayerLuminance.withDefault(StandardLuminance.DarkMode);
+// baseLayerLuminance.withDefault(StandardLuminance.LightMode);

@@ -15,11 +15,10 @@ import { DesignToken, display } from "@microsoft/fast-foundation";
  * Not only can we have system-wide design tokens, but we can
  * have component-specific tokens as well. This token enables
  * changing the corner radius of cards independently of other controls.
- * However, by default it aliases to the controlCornerRadius token.
  */
-export const cardCornerRadius = DesignToken.create<number>(
-    "card-corner-radius"
-).withDefault(controlCornerRadius);
+export const cardPadding = DesignToken.create<number>("card-padding").withDefault(
+    (el: HTMLElement) => designUnit.getValueFor(el) * 2
+);
 
 export const demoCardStyles = css`
     ${display("grid")} :host {
@@ -28,10 +27,13 @@ export const demoCardStyles = css`
         background-color: ${fillColor};
         width: calc(${designUnit} * 75px);
         height: calc(${designUnit} * 76px);
-        border-radius: calc(${cardCornerRadius} * 1px);
+        border-radius: calc(${controlCornerRadius} * 1px);
         contain: content;
         margin: calc(${designUnit} * 2px);
-        box-shadow: "0 0 calc((var(--elevation) * 0.225px) + 2px) rgba(0, 0, 0, calc(.11 * (2))), 0 calc(var(--elevation) * 0.4px) calc((var(--elevation) * 0.9px)) rgba(0, 0, 0, calc(.13))";
+        box-shadow: 0 0 calc((var(--elevation) * 0.225px) + 2px)
+                rgba(0, 0, 0, calc(0.11 * (2))),
+            0 calc(var(--elevation) * 0.4px) calc((var(--elevation) * 0.9px))
+                rgba(0, 0, 0, calc(0.13));
     }
 
     .feature-image {
@@ -48,7 +50,7 @@ export const demoCardStyles = css`
 
     .content,
     .footer {
-        padding: 0 calc(${designUnit} * 2px);
+        padding: 0 calc(${cardPadding} * 1px);
     }
 
     slot[name="heading"]::slotted(*) {
