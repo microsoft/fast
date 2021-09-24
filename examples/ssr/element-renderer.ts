@@ -2,6 +2,7 @@
 import { ElementRenderer, RenderInfo } from "@lit-labs/ssr";
 import { FASTElement, ViewTemplate } from "@microsoft/fast-element";
 import { test } from "./utilities";
+import { render } from "@lit-labs/ssr/lib/render-lit-html";
 
 export class FASTElementRenderer extends ElementRenderer {
     public readonly element!: HTMLElement & FASTElement;
@@ -23,8 +24,10 @@ export class FASTElementRenderer extends ElementRenderer {
         yield "LIGHT DOM";
     }
     *renderShadow(renderInfo: RenderInfo): IterableIterator<string> {
-        yield this.element.shadowRoot!.innerHTML;
+        const { innerHTML } = this.element.shadowRoot!;
+        yield* render(innerHTML, renderInfo);
     }
+
     attributeChangedCallback(
         name: string,
         old: string | null,
