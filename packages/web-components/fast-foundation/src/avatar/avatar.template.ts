@@ -1,4 +1,4 @@
-import { html } from "@microsoft/fast-element";
+import { html, ref } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
 import type { ElementDefinitionContext } from "../design-system";
 import type { Avatar, AvatarOptions } from "./avatar";
@@ -19,6 +19,7 @@ export const avatarTemplate: (
         part="backplate"
         style="${x =>
             x.fill ? `background-color: var(--avatar-fill-${x.fill});` : void 0}"
+        ${ref("backplate")}
     >
         <a
             class="link"

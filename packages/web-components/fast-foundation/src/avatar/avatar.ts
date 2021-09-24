@@ -18,6 +18,18 @@ export type AvatarOptions = FoundationElementDefinition & {
  */
 export class Avatar extends FoundationElement {
     /**
+     * Reference to the backplate part
+     * @public
+     */
+    public backplate: HTMLDivElement;
+
+    /**
+     * Reference to the link part
+     * @public
+     */
+    public link: HTMLAnchorElement;
+
+    /**
      * Indicates the Avatar should have a color fill.
      *
      * @public
