@@ -1,3 +1,7 @@
+/**
+ * This prevents elements that have not been defined from displaying, preventing
+ * a flash of un-styled content.
+ */
 :not(:defined) {
     display: none;
 }
