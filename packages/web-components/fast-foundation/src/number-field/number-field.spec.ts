@@ -247,7 +247,7 @@ describe("NumberField", () => {
             await disconnect();
         });
 
-        it("should set the `aria-describedBy` attribute on the internal control when provided", async () => {
+        it("should set the `aria-describedby` attribute on the internal control when provided", async () => {
             const { element, connect, disconnect } = await setup();
             const ariaDescribedby = "testId";
 
@@ -258,7 +258,7 @@ describe("NumberField", () => {
             expect(
                 element.shadowRoot
                     ?.querySelector(".control")
-                    ?.getAttribute("aria-describedBy")
+                    ?.getAttribute("aria-describedby")
             ).to.equal(ariaDescribedby);
 
             await disconnect();

@@ -1,4 +1,4 @@
-import { html, ref, slotted } from "@microsoft/fast-element";
+import { children, elements, html, ref, slotted } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
 import type { FoundationElementDefinition } from "../foundation-element";
 import type { ElementDefinitionContext } from "../design-system";
@@ -20,6 +20,7 @@ export const treeViewTemplate: (
         ${ref("treeView")}
         @keydown="${(x, c) => x.handleKeyDown(c.event as KeyboardEvent)}"
         @focusout="${(x, c) => x.handleBlur(c.event as FocusEvent)}"
+        @focusin="${(x, c) => x.handleFocus(c.event as FocusEvent)}"
     >
         <slot ${slotted("slottedTreeItems")}></slot>
     </template>
