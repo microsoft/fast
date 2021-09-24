@@ -7,7 +7,6 @@ import {
     typeRampMinus1LineHeight,
     typeRampPlus1FontSize,
     typeRampPlus1LineHeight,
-    elevation,
 } from "@microsoft/fast-components";
 import { css } from "@microsoft/fast-element";
 import { DesignToken, display } from "@microsoft/fast-foundation";
@@ -32,7 +31,7 @@ export const demoCardStyles = css`
         border-radius: calc(${cardCornerRadius} * 1px);
         contain: content;
         margin: calc(${designUnit} * 2px);
-        ${elevation}
+        box-shadow: "0 0 calc((var(--elevation) * 0.225px) + 2px) rgba(0, 0, 0, calc(.11 * (2))), 0 calc(var(--elevation) * 0.4px) calc((var(--elevation) * 0.9px)) rgba(0, 0, 0, calc(.13))";
     }
 
     .feature-image {
@@ -61,15 +60,15 @@ export const demoCardStyles = css`
         max-height: calc(${typeRampPlus1LineHeight} * 2);
     }
 
-    fluent-button::part(control) {
+    fast-button::part(control) {
         transition: padding 0.2s ease-in-out;
     }
 
-    fluent-button:not(:hover)::part(control) {
+    fast-button:not(:hover)::part(control) {
         padding: 0;
     }
 
-    ::slotted(fluent-attribution) {
+    ::slotted(fast-attribution) {
         margin-top: calc(${designUnit} * 2px);
         font-size: ${typeRampMinus1FontSize};
         line-height: ${typeRampMinus1LineHeight};

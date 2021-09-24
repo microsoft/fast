@@ -36,18 +36,18 @@ body {
     flex-wrap: wrap;
 }
 
-demo-navigation fluent-tree-view {
+demo-navigation fast-tree-view {
     margin-top: calc(var(--top-offset) + (var(--design-unit) * 2px));
 }
 
-fluent-demo-card {
+fast-demo-card {
     grid-row: 2;
 }
 
-fluent-demo-card:first-child {
+fast-demo-card:first-child {
     grid-column: 2;
 }
 
-fluent-demo-card:nth-of-type(2) {
+fast-demo-card:nth-of-type(2) {
     grid-column: 3;
 }

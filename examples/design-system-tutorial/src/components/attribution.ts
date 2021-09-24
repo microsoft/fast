@@ -20,7 +20,7 @@ import { display, FoundationElement } from "@microsoft/fast-foundation";
  * it defines the web component with the platform.
  */
 
-export const fluentAttribution = FoundationElement.compose({
+export const fastAttribution = FoundationElement.compose({
     baseName: "attribution",
     template: html`
         <slot name="icon"></slot>

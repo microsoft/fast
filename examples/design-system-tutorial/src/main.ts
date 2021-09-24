@@ -3,21 +3,21 @@ import {
     ColorRecipe,
     controlCornerRadius,
     density,
+    fastButton,
+    fastCard,
+    fastTreeItem,
+    fastTreeView,
     fillColor,
-    fluentButton,
-    fluentCard,
-    fluentTreeItem,
-    fluentTreeView,
     neutralLayerFloatingRecipe,
     neutralPalette,
     PaletteRGB,
-    provideFluentDesignSystem,
+    provideFASTDesignSystem,
     StandardLuminance,
     SwatchRGB,
 } from "@microsoft/fast-components";
 import { parseColorHexRGB } from "@microsoft/fast-colors";
 import { html } from "@microsoft/fast-element";
-import { demoCard, fluentAttribution, Navigation } from "./components";
+import { demoCard, fastAttribution, Navigation } from "./components";
 
 /**
  * This expression prevents tree-shaking. See the {@link Navigation} definition
@@ -25,16 +25,16 @@ import { demoCard, fluentAttribution, Navigation } from "./components";
  */
 Navigation;
 
-provideFluentDesignSystem().register(
-    fluentButton(),
-    fluentCard(),
-    fluentTreeView(),
-    fluentTreeItem(),
-    fluentAttribution(),
+provideFASTDesignSystem().register(
+    fastButton(),
+    fastCard(),
+    fastTreeView(),
+    fastTreeItem(),
+    fastAttribution(),
     demoCard()
 );
 
-const firstCard = document.querySelector("fluent-demo-card") as HTMLElement;
+const firstCard = document.querySelector("fast-demo-card") as HTMLElement;
 const containers = document.querySelectorAll(".container") as NodeListOf<HTMLElement>;
 const firstSection = containers[0];
 const secondSection = containers[1];
@@ -42,7 +42,7 @@ const secondSection = containers[1];
 /**
  * Demo 1 - Design Token Default Values
  *
- * Every token in Fluent and FAST's design system has a default value. They are set
+ * Every token in Fast and FAST's design system has a default value. They are set
  * to the system's defaults to start but you can change them by importing the token
  * and calling its 'withDefault' method. Each token is strongly typed so that you can
  * only pass valid values.
