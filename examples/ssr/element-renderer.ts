@@ -23,11 +23,6 @@ export class FASTElementRenderer extends ElementRenderer {
         yield "LIGHT DOM";
     }
     *renderShadow(renderInfo: RenderInfo): IterableIterator<string> {
-        console.log(this.element.shadowRoot);
-        const { template } = this.element.$fastController;
-        if (template instanceof ViewTemplate) {
-            // console.log(template.html);
-        }
         yield this.element.shadowRoot!.innerHTML;
     }
     attributeChangedCallback(
