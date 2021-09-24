@@ -14,7 +14,7 @@ import {
     provideFluentDesignSystem,
     StandardLuminance,
     SwatchRGB,
-} from "@fluentui/web-components";
+} from "@microsoft/fast-components";
 import { parseColorHexRGB } from "@microsoft/fast-colors";
 import { html } from "@microsoft/fast-element";
 import { demoCard, fluentAttribution, Navigation } from "./components";

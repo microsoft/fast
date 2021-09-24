@@ -5,7 +5,7 @@ import {
     neutralLayer4,
     neutralStrokeRest,
     strokeWidth,
-} from "@fluentui/web-components";
+} from "@microsoft/fast-components";
 import { css, customElement, FASTElement, html } from "@microsoft/fast-element";
 import { display } from "@microsoft/fast-foundation";
 

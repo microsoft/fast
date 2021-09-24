@@ -1,6 +1,6 @@
 import { Card, FoundationElementDefinition } from "@microsoft/fast-foundation";
 import { ViewTemplate } from "@microsoft/fast-element";
-import { fillColor, neutralLayerFloating } from "@fluentui/web-components";
+import { fillColor, neutralLayerFloating } from "@microsoft/fast-components";
 
 /**
  * We can provide custom configuration for a component by defining a type as

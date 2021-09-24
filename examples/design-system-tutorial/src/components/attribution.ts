@@ -1,4 +1,4 @@
-import { designUnit, neutralForegroundHint } from "@fluentui/web-components";
+import { designUnit, neutralForegroundHint } from "@microsoft/fast-components";
 import { css, html } from "@microsoft/fast-element";
 import { display, FoundationElement } from "@microsoft/fast-foundation";
 

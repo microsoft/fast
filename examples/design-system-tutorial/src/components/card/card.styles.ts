@@ -8,7 +8,7 @@ import {
     typeRampPlus1FontSize,
     typeRampPlus1LineHeight,
     elevation,
-} from "@fluentui/web-components";
+} from "@microsoft/fast-components";
 import { css } from "@microsoft/fast-element";
 import { DesignToken, display } from "@microsoft/fast-foundation";
 
