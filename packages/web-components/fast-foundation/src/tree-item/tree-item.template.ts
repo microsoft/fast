@@ -18,7 +18,7 @@ export const treeItemTemplate: (
     <template
         role="treeitem"
         slot="${x => (x.isNestedItem() ? "item" : void 0)}"
-        tabindex="${x => (x.disabled || !x.focusable ? void 0 : 0)}"
+        tabindex="${x => (!x.focusable ? -1 : 0)}"
         class="${x => (x.expanded ? "expanded" : "")} ${x =>
             x.selected ? "selected" : ""} ${x => (x.nested ? "nested" : "")}
             ${x => (x.disabled ? "disabled" : "")}"
@@ -26,7 +26,6 @@ export const treeItemTemplate: (
             x.childItems && x.childItemLength() > 0 ? x.expanded : void 0}"
         aria-selected="${x => x.selected}"
         aria-disabled="${x => x.disabled}"
-        @keydown="${(x, c) => x.handleKeyDown(c.event as KeyboardEvent)}"
         @click="${(x, c) => x.handleClick(c.event as MouseEvent)}"
         ${children({
             property: "childItems",
