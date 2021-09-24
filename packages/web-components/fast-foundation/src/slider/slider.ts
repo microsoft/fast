@@ -252,8 +252,6 @@ export class Slider extends FormAssociatedSlider implements SliderConfiguration 
      */
     public disconnectedCallback(): void {
         this.setupListeners(true);
-        this.handleThumbMouseDown(null);
-        this.handleMouseDown(null);
     }
 
     /**
@@ -366,6 +364,11 @@ export class Slider extends FormAssociatedSlider implements SliderConfiguration 
         this[eventAction]("mousedown", this.handleMouseDown);
         this.thumb[eventAction]("mousedown", this.handleThumbMouseDown);
         this.thumb[eventAction]("touchstart", this.handleThumbMouseDown);
+        // removes handlers attached by mousedown handlers
+        if (remove) {
+            this.handleMouseDown(null);
+            this.handleThumbMouseDown(null);
+        }
     };
 
     /**
