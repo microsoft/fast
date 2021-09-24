@@ -1,5 +1,6 @@
 import { Card, FoundationElementDefinition } from "@microsoft/fast-foundation";
 import { ViewTemplate } from "@microsoft/fast-element";
+import { fillColor, neutralLayerFloating } from "@fluentui/web-components";
 
 /**
  * We can provide custom configuration for a component by defining a type as
@@ -14,4 +15,10 @@ export type DemoCardDefinitionOptions = FoundationElementDefinition & {
  * While an empty class is technically not needed for use with FoundationElement.compose,
  * one is provided here as a demonstration of practices used in more complex components.
  */
-export class DemoCard extends Card {}
+export class DemoCard extends Card {
+    connectedCallback(): void {
+        super.connectedCallback();
+
+        fillColor.setValueFor(this, neutralLayerFloating);
+    }
+}

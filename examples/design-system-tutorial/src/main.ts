@@ -1,5 +1,4 @@
 import {
-    accentPalette,
     baseLayerLuminance,
     ColorRecipe,
     controlCornerRadius,
@@ -9,8 +8,7 @@ import {
     fluentCard,
     fluentTreeItem,
     fluentTreeView,
-    neutralFillLayerRecipe,
-    neutralLayer1,
+    neutralLayerFloatingRecipe,
     neutralPalette,
     PaletteRGB,
     provideFluentDesignSystem,
@@ -119,7 +117,7 @@ const secondSection = containers[1];
 //     evaluate: (target: HTMLElement) => neutralPalette.getValueFor(target).get(73)
 // };
 
-// neutralFillLayerRecipe.withDefault(recipe);
+// neutralLayerFloatingRecipe.withDefault(recipe);
 
 /**
  * Demo 5 - Design Overhaul
