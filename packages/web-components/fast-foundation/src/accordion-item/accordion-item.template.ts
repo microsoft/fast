@@ -24,6 +24,7 @@ export const accordionItemTemplate: (
             part="heading"
             role="heading"
             aria-level="${x => x.headinglevel}"
+            ${ref("heading")}
         >
             <button
                 class="button"
@@ -40,7 +41,7 @@ export const accordionItemTemplate: (
             </button>
             ${startSlotTemplate(context, definition)}
             ${endSlotTemplate(context, definition)}
-            <span class="icon" part="icon" aria-hidden="true">
+            <span class="icon" part="icon" aria-hidden="true" ${ref("icon")}>
                 <slot name="expanded-icon" part="expanded-icon">
                     ${definition.expandedIcon || ""}
                 </slot>
@@ -55,6 +56,7 @@ export const accordionItemTemplate: (
             id="${x => x.id}-panel"
             role="region"
             aria-labelledby="${x => x.id}"
+            ${ref("region")}
         >
             <slot></slot>
         </div>

@@ -59,9 +59,28 @@ export class AccordionItem extends FoundationElement {
     public id: string;
 
     /**
-     * @internal
+     * A reference to the expand button part
+     * @public
      */
-    public expandbutton: HTMLElement;
+    public expandbutton: HTMLButtonElement;
+
+    /**
+     * A reference to the heading part
+     * @public
+     */
+    public heading: HTMLDivElement;
+
+    /**
+     * A reference to the region part
+     * @public
+     */
+    public region: HTMLDivElement;
+
+    /**
+     * A reference to the icon part
+     * @public
+     */
+    public icon: HTMLSpanElement;
 
     /**
      * @internal
