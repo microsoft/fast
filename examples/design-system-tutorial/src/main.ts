@@ -21,7 +21,11 @@ import { parseColorHexRGB } from "@microsoft/fast-colors";
 import { html } from "@microsoft/fast-element";
 import { demoCard, fluentAttribution, Navigation } from "./components";
 
-Navigation; // Prevent tree shaking.
+/**
+ * This expression prevents tree-shaking. See the {@link Navigation} definition
+ * for more information.
+ */
+Navigation;
 
 provideFluentDesignSystem().register(
     fluentButton(),
