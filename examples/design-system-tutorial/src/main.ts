@@ -8,7 +8,6 @@ import {
     fastTreeItem,
     fastTreeView,
     fillColor,
-    neutralLayerFloatingRecipe,
     neutralPalette,
     PaletteRGB,
     provideFASTDesignSystem,
@@ -117,7 +116,7 @@ const secondSection = containers[1];
 //     evaluate: (target: HTMLElement) => neutralPalette.getValueFor(target).get(73)
 // };
 
-// neutralLayerFloatingRecipe.withDefault(recipe);
+// neutralFillLayerRecipe.withDefault(recipe);
 
 /**
  * Demo 5 - Design Overhaul

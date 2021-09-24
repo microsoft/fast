@@ -1,6 +1,6 @@
 import { Card, FoundationElementDefinition } from "@microsoft/fast-foundation";
 import { ViewTemplate } from "@microsoft/fast-element";
-import { fillColor, neutralLayerFloating } from "@microsoft/fast-components";
+import { fillColor, neutralFillLayerRecipe } from "@microsoft/fast-components";
 
 /**
  * We can provide custom configuration for a component by defining a type as
@@ -18,7 +18,14 @@ export type DemoCardDefinitionOptions = FoundationElementDefinition & {
 export class DemoCard extends Card {
     connectedCallback(): void {
         super.connectedCallback();
+        const { parentElement } = this;
 
-        fillColor.setValueFor(this, neutralLayerFloating);
+        if (parentElement) {
+            fillColor.setValueFor(this, (el: HTMLElement) =>
+                neutralFillLayerRecipe
+                    .getValueFor(this)
+                    .evaluate(el, fillColor.getValueFor(parentElement))
+            );
+        }
     }
 }
