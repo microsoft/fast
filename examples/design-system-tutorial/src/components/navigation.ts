@@ -45,7 +45,7 @@ const styles = css`
     styles,
 })
 export class Navigation extends FASTElement {
-    connectedCallback() {
+    connectedCallback(): void {
         super.connectedCallback();
 
         // When this element connects, it will alias the fillColor
