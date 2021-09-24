@@ -4,8 +4,8 @@ A heavily-commented demo of using FAST's Adaptive UI Design System and Design To
 
 ## Setup
 
-`npm install`
+`yarn install`
 
 ## Run
 
-`npm start`
+`yarn start`
