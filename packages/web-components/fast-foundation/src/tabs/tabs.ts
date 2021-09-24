@@ -171,8 +171,8 @@ export class Tabs extends FoundationElement {
     }
 
     private setTabs = (): void => {
-        const gridHorizontalProperty: string = "grid-column";
-        const gridVerticalProperty: string = "grid-row";
+        const gridHorizontalProperty: string = "gridColumn";
+        const gridVerticalProperty: string = "gridRow";
         const gridProperty: string = this.isHorizontal()
             ? gridHorizontalProperty
             : gridVerticalProperty;
