@@ -54,4 +54,27 @@ describe("TreeView", () => {
 
         await disconnect();
     });
+
+    it("should set the selected state on tree item when a tree item is clicked", async () => {
+        const { element, connect, disconnect } = await setup();
+        const item1 = document.createElement("fast-tree-item");
+        const item2 = document.createElement("fast-tree-item");
+        const item3 = document.createElement("fast-tree-item");
+
+        element.appendChild(item1);
+        element.appendChild(item2);
+        element.appendChild(item3);
+
+        await connect();
+        await DOM.nextUpdate();
+
+        item3.click();
+
+        await connect();
+        await DOM.nextUpdate();
+
+        expect(item3.getAttribute("aria-selected")).to.equal("true");
+
+        await disconnect();
+    });
 });
