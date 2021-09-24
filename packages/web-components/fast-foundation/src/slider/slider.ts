@@ -252,8 +252,8 @@ export class Slider extends FormAssociatedSlider implements SliderConfiguration 
      */
     public disconnectedCallback(): void {
         this.setupListeners(true);
-        this.handleThumbMouseDown(null, true);
-        this.handleMouseDown(null, true);
+        this.handleThumbMouseDown(null);
+        this.handleMouseDown(null);
     }
 
     /**
@@ -393,24 +393,22 @@ export class Slider extends FormAssociatedSlider implements SliderConfiguration 
 
     /**
      *  Handle mouse moves during a thumb drag operation
+     *  If the event handler is null it removes the events
      */
-    private handleThumbMouseDown = (
-        event: MouseEvent | null,
-        remove: boolean = false
-    ): void => {
-        if (this.readOnly || this.disabled || (event && event.defaultPrevented)) {
-            return;
-        }
+    private handleThumbMouseDown = (event: MouseEvent | null): void => {
         if (event) {
+            if (this.readOnly || this.disabled || event.defaultPrevented) {
+                return;
+            }
             event.preventDefault();
             (event.target as HTMLElement).focus();
         }
-        const eventAction = `${remove ? "remove" : "add"}EventListener`;
+        const eventAction = `${event !== null ? "add" : "remove"}EventListener`;
         window[eventAction]("mouseup", this.handleWindowMouseUp);
         window[eventAction]("mousemove", this.handleMouseMove);
         window[eventAction]("touchmove", this.handleMouseMove);
         window[eventAction]("touchend", this.handleWindowMouseUp);
-        this.isDragging = remove === false;
+        this.isDragging = event !== null;
     };
 
     /**
@@ -459,21 +457,23 @@ export class Slider extends FormAssociatedSlider implements SliderConfiguration 
 
     private stopDragging = (): void => {
         this.isDragging = false;
-        this.handleMouseDown(null, true);
-        this.handleThumbMouseDown(null, true);
+        this.handleMouseDown(null);
+        this.handleThumbMouseDown(null);
     };
 
-    private handleMouseDown = (e: MouseEvent | null, remove: boolean = false) => {
-        if (e) {
-            e.preventDefault();
-        }
-        if (!this.disabled && !this.readOnly) {
-            const eventAction = `${remove ? "remove" : "add"}EventListener`;
+    /**
+     *
+     * @param e - MouseEvent or null. If there is no event handler it will remove the events
+     */
+    private handleMouseDown = (e: MouseEvent | null) => {
+        const eventAction = `${e !== null ? "add" : "remove"}EventListener`;
+        if (e === null || (!this.disabled && !this.readOnly)) {
             window[eventAction]("mouseup", this.handleWindowMouseUp);
             window.document[eventAction]("mouseleave", this.handleWindowMouseUp);
             window[eventAction]("mousemove", this.handleMouseMove);
 
             if (e) {
+                e.preventDefault();
                 this.setupTrackConstraints();
                 (e.target as HTMLElement).focus();
                 const controlValue: number =
