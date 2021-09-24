@@ -1,5 +1,15 @@
 import { attr, DOM, observable } from "@microsoft/fast-element";
-import { keyEnd, keyHome } from "@microsoft/fast-web-utilities";
+import {
+    getDisplayedNodes,
+    isHTMLElement,
+    keyArrowDown,
+    keyArrowLeft,
+    keyArrowRight,
+    keyArrowUp,
+    keyEnd,
+    keyEnter,
+    keyHome,
+} from "@microsoft/fast-web-utilities";
 import { isTreeItemElement, TreeItem } from "../tree-item";
 import { FoundationElement } from "../foundation-element";
 
@@ -47,20 +57,33 @@ export class TreeView extends FoundationElement {
         });
     }
 
+    public currentFocused: HTMLElement | TreeItem | null;
+
     private treeItems: HTMLElement[];
 
     public handleBlur = (e: FocusEvent): void => {
         const { relatedTarget, target } = e;
-
-        /**
-         * Clean up previously focused item's tabindex if we've moved to another item in the tree
-         */
         if (
-            relatedTarget instanceof HTMLElement &&
             target instanceof HTMLElement &&
-            this.contains(relatedTarget)
+            (relatedTarget === null || !this.contains(relatedTarget as Node))
         ) {
-            target.removeAttribute("tabindex");
+            this.setAttribute("tabindex", "0");
+        }
+    };
+
+    public handleFocus = (e: FocusEvent): void => {
+        const { relatedTarget, target } = e;
+
+        if (
+            target instanceof HTMLElement &&
+            (relatedTarget === null || !this.contains(relatedTarget as Node))
+        ) {
+            const treeView = this as HTMLElement;
+            if (target === this && this.currentFocused instanceof TreeItem) {
+                TreeItem.focusItem(this.currentFocused);
+                this.currentFocused.setAttribute("tabindex", "0");
+            }
+            treeView.setAttribute("tabindex", "-1");
         }
     };
 
@@ -88,24 +111,85 @@ export class TreeView extends FoundationElement {
             case keyHome:
                 if (this.treeItems && this.treeItems.length) {
                     TreeItem.focusItem(this.treeItems[0]);
+                    this.treeItems[0].setAttribute("tabindex", "0");
                 }
                 break;
             case keyEnd:
                 if (this.treeItems && this.treeItems.length) {
                     TreeItem.focusItem(this.treeItems[this.treeItems.length - 1]);
+                    this.treeItems[this.treeItems.length - 1].setAttribute(
+                        "tabindex",
+                        "0"
+                    );
                 }
+                break;
+            case keyArrowLeft:
+                if (e.target && this.isFocusableElement(e.target as HTMLElement)) {
+                    const item = e.target as HTMLElement;
+                    if (item instanceof TreeItem && item.childItemLength() > 0) {
+                        item.expanded = false;
+                    }
+                }
+                break;
+            case keyArrowRight:
+                if (e.target && this.isFocusableElement(e.target as HTMLElement)) {
+                    const item = e.target as HTMLElement;
+                    if (item instanceof TreeItem && item.childItemLength() > 0) {
+                        item.expanded = true;
+                    }
+                }
+                break;
+            case keyArrowDown:
+                if (e.target && this.isFocusableElement(e.target as HTMLElement)) {
+                    this.focusNextNode(1, e.target as TreeItem);
+                }
+                break;
+            case keyArrowUp:
+                if (e.target && this.isFocusableElement(e.target as HTMLElement)) {
+                    this.focusNextNode(-1, e.target as TreeItem);
+                }
+                break;
+            case keyEnter:
+                // In single-select trees where selection does not follow focus (see note below),
+                // the default action is typically to select the focused node.
+                this.handleSelected(e.target as TreeItem);
                 break;
             default:
                 return true;
         }
     };
 
+    private focusNextNode(delta: number, item: TreeItem): void {
+        const visibleNodes: HTMLElement[] | void = this.getVisibleNodes();
+        if (!visibleNodes) {
+            return;
+        }
+
+        const index = visibleNodes.indexOf(item);
+        const lastItem = visibleNodes[index];
+        if (delta < 0 && index > 0) {
+            lastItem.setAttribute("tabindex", "-1");
+        } else if (delta > 0 && index < visibleNodes.length - 1) {
+            lastItem.setAttribute("tabindex", "-1");
+        }
+        const focusItem = visibleNodes[visibleNodes.indexOf(item) + delta];
+        if (isHTMLElement(focusItem)) {
+            TreeItem.focusItem(focusItem);
+            focusItem.setAttribute("tabindex", "0");
+            this.currentFocused = focusItem;
+        }
+    }
+
     private setItems = (): void => {
-        const focusIndex = this.treeItems.findIndex(this.isFocusableElement);
+        let focusIndex = this.treeItems.findIndex(this.isSelectedElement);
+        if (focusIndex === -1) {
+            focusIndex = this.treeItems.findIndex(this.isFocusableElement);
+        }
 
         for (let item: number = 0; item < this.treeItems.length; item++) {
-            if (item === focusIndex && !this.treeItems[item].hasAttribute("disabled")) {
+            if (item === focusIndex) {
                 this.treeItems[item].setAttribute("tabindex", "0");
+                this.currentFocused = this.treeItems[item];
             }
             this.treeItems[item].addEventListener(
                 "selected-change",
@@ -123,15 +207,34 @@ export class TreeView extends FoundationElement {
         }
     };
 
-    private handleItemSelected = (e: CustomEvent): void => {
-        const newSelection: HTMLElement = e.target as HTMLElement;
-        if (newSelection !== this.currentSelected) {
-            if (this.currentSelected) {
-                // TODO: fix this below, shouldn't need both
-                (this.currentSelected as HTMLElement).removeAttribute("selected");
-                (this.currentSelected as TreeItem).selected = false;
+    private handleSelected(item: TreeItem): void {
+        if (this.currentSelected !== item) {
+            item.setAttribute("tabindex", "0");
+            if (this.currentSelected instanceof TreeItem && this.currentFocused) {
+                if (!item.disabled) {
+                    this.currentSelected.selected = false;
+                }
+                this.currentFocused.setAttribute("tabindex", "-1");
             }
-            this.currentSelected = newSelection;
+            if (!this.currentSelected) {
+                this.slottedTreeItems.forEach((item: HTMLElement) => {
+                    if (item instanceof TreeItem) {
+                        item.setAttribute("tabindex", "-1");
+                    }
+                });
+            }
+            if (!item.disabled) {
+                item.selected = true;
+                this.currentSelected = item;
+            }
+            this.currentFocused = item;
+        }
+    }
+
+    private handleItemSelected = (e: CustomEvent): void => {
+        const newSelection: TreeItem = e.target as TreeItem;
+        if (newSelection !== this.currentSelected) {
+            this.handleSelected(newSelection);
         }
     };
 
@@ -139,25 +242,14 @@ export class TreeView extends FoundationElement {
      * check if the item is focusable
      */
     private isFocusableElement = (el: Element): el is HTMLElement => {
-        return isTreeItemElement(el) && !this.isDisabledElement(el);
+        return isTreeItemElement(el);
     };
 
-    /**
-     * check if the item is disabled
-     */
-    private isDisabledElement = (el: Element): el is HTMLElement => {
-        return isTreeItemElement(el) && el.getAttribute("aria-disabled") === "true";
+    private isSelectedElement = (el: TreeItem): el is TreeItem => {
+        return el.selected;
     };
 
     private getVisibleNodes(): HTMLElement[] {
-        const treeItems: HTMLElement[] = [];
-        if (this.slottedTreeItems !== undefined) {
-            this.slottedTreeItems.forEach((item: any) => {
-                if (isTreeItemElement(item)) {
-                    treeItems.push(item as any);
-                }
-            });
-        }
-        return treeItems;
+        return getDisplayedNodes(this, "[role='treeitem']") || [];
     }
 }
