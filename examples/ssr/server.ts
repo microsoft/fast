@@ -17,9 +17,12 @@ function handleRequest(req: Request, res: Response) {
     const stream = (Readable as any).from(ssrResult);
 
     stream.on("readable", function(this: any) {
-        let data;
+        let data: string;
 
         while ((data = this.read())) {
+            // I'm not 100% certain why lit's render is emitting element open and close tags
+            // as HTML entities, but it seems to be. Circumventing for now but this should be solved.
+            data = data.replaceAll("&gt;", ">").replaceAll("&lt;", "<");
             res.write(data);
         }
     });
