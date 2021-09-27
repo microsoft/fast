@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "anchored region force update",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "scomea@microsoft.com",
+  "dependentChangeType": "patch"
+}
