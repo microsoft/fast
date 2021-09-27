@@ -15,7 +15,8 @@
       "sites/fast-component-explorer",
       "sites/site-utilities",
       "sites/fast-website",
-      "sites/website"
+      "sites/website",
+      "examples/design-system-tutorial"
     ],
     "nohoist": [
       "**/@types/chai",
