@@ -161,7 +161,7 @@ jobs:
         PLAYWRIGHT_BROWSER: webkit
 
   macos_cross-platform_cross-browser:
-    runs-on: [macos-latest]
+    runs-on: [macos-11]
     env:
       PLAYWRIGHT_BROWSERS_PATH: 0
 

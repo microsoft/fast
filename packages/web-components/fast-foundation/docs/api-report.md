@@ -492,6 +492,7 @@ export interface Container extends ServiceLocator {
     registerFactory<T extends Constructable>(key: T, factory: Factory<T>): void;
     registerResolver<K extends Key, T = K>(key: K, resolver: Resolver<T>): Resolver<T>;
     registerTransformer<K extends Key, T = K>(key: K, transformer: Transformer_2<T>): boolean;
+    registerWithContext(context: any, ...params: any[]): Container;
 }
 
 // @public
@@ -542,6 +543,8 @@ export class ContainerImpl implements Container {
     registerResolver<K extends Key, T = K>(key: K, resolver: Resolver<T>): Resolver<T>;
     // (undocumented)
     registerTransformer<K extends Key, T = K>(key: K, transformer: Transformer_2<T>): boolean;
+    // (undocumented)
+    registerWithContext(context: any, ...params: any[]): Container;
     // (undocumented)
     get responsibleForOwnerRequests(): boolean;
 }
@@ -837,9 +840,6 @@ export interface DesignSystemRegistrationContext {
     tryDefineElement(name: string, type: Constructable, callback: ElementDefinitionCallback): any;
     tryDefineElement(params: ElementDefinitionParams): any;
 }
-
-// @public
-export const DesignSystemRegistrationContext: InterfaceSymbol<DesignSystemRegistrationContext>;
 
 // @public
 export interface DesignToken<T extends string | number | boolean | BigInteger | null | Array<any> | symbol | {}> {
@@ -1162,7 +1162,7 @@ export class FoundationElementRegistry<TDefinition extends FoundationElementDefi
     // (undocumented)
     readonly definition: OverrideFoundationElementDefinition<TDefinition>;
     // (undocumented)
-    register(container: Container): void;
+    register(container: Container, context: DesignSystemRegistrationContext): void;
     // (undocumented)
     readonly type: Constructable<FoundationElement>;
 }
@@ -2190,7 +2190,7 @@ export const tabPanelTemplate: (context: ElementDefinitionContext, definition: F
 export class Tabs extends FoundationElement {
     activeid: string;
     // @internal (undocumented)
-    activeidChanged(): void;
+    activeidChanged(oldValue: string, newValue: string): void;
     activeindicator: boolean;
     // @internal (undocumented)
     activeIndicatorRef: HTMLElement;
@@ -2199,6 +2199,8 @@ export class Tabs extends FoundationElement {
     // @internal (undocumented)
     connectedCallback(): void;
     orientation: TabsOrientation;
+    // @internal (undocumented)
+    orientationChanged(): void;
     // @internal (undocumented)
     showActiveIndicator: boolean;
     // @internal (undocumented)
@@ -2441,11 +2443,7 @@ export class TreeItem extends FoundationElement {
     childItemLength(): number;
     // (undocumented)
     childItems: HTMLElement[];
-    // @internal (undocumented)
-    connectedCallback(): void;
     disabled: boolean;
-    // @internal (undocumented)
-    disconnectedCallback(): void;
     // (undocumented)
     expandCollapseButton: HTMLDivElement;
     expanded: boolean;
@@ -2453,12 +2451,9 @@ export class TreeItem extends FoundationElement {
     focusable: boolean;
     static focusItem(el: HTMLElement): void;
     // (undocumented)
-    handleChange(source: any, propertyName: string): void;
-    // (undocumented)
     handleClick: (e: MouseEvent) => void;
     // (undocumented)
     handleExpandCollapseButtonClick: (e: MouseEvent) => void;
-    handleKeyDown: (e: KeyboardEvent) => void | boolean;
     // (undocumented)
     readonly isNestedItem: () => boolean;
     // (undocumented)
@@ -2487,9 +2482,13 @@ export class TreeView extends FoundationElement {
     // (undocumented)
     connectedCallback(): void;
     // (undocumented)
+    currentFocused: HTMLElement | TreeItem | null;
+    // (undocumented)
     currentSelected: HTMLElement | TreeItem | null;
     // (undocumented)
     handleBlur: (e: FocusEvent) => void;
+    // (undocumented)
+    handleFocus: (e: FocusEvent) => void;
     // (undocumented)
     handleKeyDown: (e: KeyboardEvent) => void | boolean;
     // (undocumented)
@@ -2524,7 +2523,7 @@ export type YearFormat = "2-digit" | "numeric";
 // Warnings were encountered during analysis:
 //
 // dist/dts/design-token/design-token.d.ts:91:5 - (ae-forgotten-export) The symbol "create" needs to be exported by the entry point index.d.ts
-// dist/dts/di/di.d.ts:506:5 - (ae-forgotten-export) The symbol "SingletonOptions" needs to be exported by the entry point index.d.ts
+// dist/dts/di/di.d.ts:513:5 - (ae-forgotten-export) The symbol "SingletonOptions" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
 
