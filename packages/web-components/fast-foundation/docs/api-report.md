@@ -2086,7 +2086,7 @@ export const tabPanelTemplate: (context: ElementDefinitionContext, definition: F
 export class Tabs extends FoundationElement {
     activeid: string;
     // @internal (undocumented)
-    activeidChanged(): void;
+    activeidChanged(oldValue: string, newValue: string): void;
     activeindicator: boolean;
     // @internal (undocumented)
     activeIndicatorRef: HTMLElement;
