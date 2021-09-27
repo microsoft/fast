@@ -6,6 +6,16 @@ import { Readable } from "stream";
 import { FASTElementRenderer } from "./element-renderer";
 import { myTemplate } from "./experience";
 
+const open = `
+<!DOCTYPE HTML>
+<html lang="en">
+<head><title>FAST SSR Demo</title></head>
+<body>
+`;
+const close = `
+</body>
+</html>
+`;
 function handleRequest(req: Request, res: Response) {
     res.set("Content-Type", "text/html");
     const templateResult = myTemplate();
@@ -14,8 +24,8 @@ function handleRequest(req: Request, res: Response) {
         customElementHostStack: [],
         customElementInstanceStack: [],
     });
+    res.write(open);
     const stream = (Readable as any).from(ssrResult);
-
     stream.on("readable", function(this: any) {
         let data: string;
 
@@ -26,7 +36,7 @@ function handleRequest(req: Request, res: Response) {
             res.write(data);
         }
     });
-    stream.on("close", () => res.end());
+    stream.on("close", () => res.write(close) && res.end());
     stream.on("error", (e: Error) => {
         console.error(e);
         process.exit(1);
