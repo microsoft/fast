@@ -189,7 +189,6 @@ export const allComponents = {
     fastTreeView,
     fastTreeItem,
     fastVirtualizingStack,
-    register(container?: Container) {
     register(container?: Container, ...rest: any[]) {
         if (!container) {
             // preserve backward compatibility with code that loops through

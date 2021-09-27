@@ -647,12 +647,18 @@ export class DataGrid extends FoundationElement {
     // @internal (undocumented)
     handleRowFocus(e: Event): void;
     headerCellItemTemplate?: ViewTemplate;
+    // (undocumented)
+    itemHeight: number;
     // @internal
     rowElements: HTMLElement[];
     rowElementTag: string;
     rowItemTemplate: ViewTemplate;
     rowsData: object[];
-    }
+    // @internal (undocumented)
+    stack: VirtualizingStack;
+    // (undocumented)
+    virtualize: boolean;
+}
 
 // @public
 export class DataGridCell extends FoundationElement {
@@ -2773,6 +2779,8 @@ export class VirtualizingStack extends FoundationElement {
     connectedCallback(): void;
     // @internal
     containerElement: HTMLDivElement;
+    // @beta (undocumented)
+    contextParent: FASTElement | null;
     // @internal (undocumented)
     disconnectedCallback(): void;
     // (undocumented)
@@ -2803,7 +2811,7 @@ export class VirtualizingStack extends FoundationElement {
     }
 
 // @beta
-export type VirtualizingStackAutoUpdateMode = "manual | resize-only" | "auto";
+export type VirtualizingStackAutoUpdateMode = "manual" | "resize-only" | "auto";
 
 // @public
 export const virtualizingStackTemplate: (context: ElementDefinitionContext, definition: FoundationElementDefinition) => ViewTemplate<VirtualizingStack>;

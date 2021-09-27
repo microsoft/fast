@@ -339,8 +339,8 @@ export class DataGrid extends FoundationElement {
         this.toggleGeneratedHeader();
 
         if (this.virtualize) {
-            this.stack.items = this.rowsData;
             this.stack.itemTemplate = this.rowItemTemplate;
+            this.stack.contextParent = this;
         } else {
             this.rowsPlaceholder = document.createComment("");
             this.appendChild(this.rowsPlaceholder);
@@ -364,7 +364,7 @@ export class DataGrid extends FoundationElement {
         // only observe if nodes are added or removed
         this.observer.observe(this, { childList: true });
 
-        DOM.queueUpdate(this.queueRowIndexUpdate);
+        DOM.queueUpdate(() => this.queueRowIndexUpdate());
     }
 
     /**
@@ -635,7 +635,7 @@ export class DataGrid extends FoundationElement {
     private queueRowIndexUpdate = (): void => {
         if (!this.rowindexUpdateQueued) {
             this.rowindexUpdateQueued = true;
-            DOM.queueUpdate(this.updateRowIndexes);
+            DOM.queueUpdate(() => this.updateRowIndexes());
         }
     };
 

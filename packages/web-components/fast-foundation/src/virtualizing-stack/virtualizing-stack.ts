@@ -1,6 +1,7 @@
 import {
     attr,
     DOM,
+    FASTElement,
     html,
     observable,
     RepeatBehavior,
@@ -124,6 +125,19 @@ export class VirtualizingStack extends FoundationElement {
     /**
      *
      *
+     * @beta
+     */
+    @observable
+    public contextParent: FASTElement | null = null;
+    private contextParentChanged(): void {
+        if ((this as FoundationElement).$fastController.isConnected) {
+            this.initializeRepeatBehavior();
+        }
+    }
+
+    /**
+     *
+     *
      * @public
      */
     @observable
@@ -141,7 +155,7 @@ export class VirtualizingStack extends FoundationElement {
      */
     @observable
     public heightMap: number[];
-    private itemEndsChanged(): void {
+    private heightMapChanged(): void {
         if (this.$fastController.isConnected) {
             this.updateDimensions();
         }
@@ -239,8 +253,20 @@ export class VirtualizingStack extends FoundationElement {
         this.updateDimensions();
         this.requestPositionUpdates();
 
-        this.itemsPlaceholder = document.createComment("");
-        this.appendChild(this.itemsPlaceholder);
+        DOM.queueUpdate(() => {
+            this.initializeRepeatBehavior();
+        });
+    }
+
+    private initializeRepeatBehavior(): void {
+        if (this.itemsPlaceholder === null) {
+            this.itemsPlaceholder = document.createComment("");
+            this.appendChild(this.itemsPlaceholder);
+        }
+        if (this.itemsRepeatBehavior !== null) {
+            // TODO: cleanup
+            this.itemsRepeatBehavior = null;
+        }
 
         this.itemsRepeatBehavior = new RepeatDirective(
             x => x.visibleItems,
@@ -248,7 +274,11 @@ export class VirtualizingStack extends FoundationElement {
             { positioning: true }
         ).createBehavior(this.itemsPlaceholder);
 
-        this.$fastController.addBehaviors([this.itemsRepeatBehavior!]);
+        if (this.contextParent !== null) {
+            this.$fastController.addBehaviors([this.itemsRepeatBehavior!]);
+        } else {
+            // this.$fastController.addBehaviors([this.itemsRepeatBehavior!]);
+        }
     }
 
     /**

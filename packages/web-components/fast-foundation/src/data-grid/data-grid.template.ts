@@ -46,6 +46,7 @@ export const dataGridTemplate: FoundationElementTemplate<ViewTemplate<DataGrid>>
                 x => x.virtualize,
                 html<DataGrid>`
             <${stackTag}
+                :items="${x => x.rowsData}"
                 item-height="${x => x.itemHeight}"
                 ${ref("stack")}
             >
