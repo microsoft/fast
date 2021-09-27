@@ -1,11 +1,13 @@
-import { css, ElementStyles } from "@microsoft/fast-element";
+import { css } from "@microsoft/fast-element";
+import type { ElementStyles } from "@microsoft/fast-element";
 import {
     disabledCursor,
     display,
-    ElementDefinitionContext,
     focusVisible,
     forcedColorsStylesheetBehavior,
-    FoundationElementDefinition,
+} from "@microsoft/fast-foundation";
+import type {
+    FoundationElementTemplate,
     ListboxOptionOptions,
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
@@ -28,24 +30,23 @@ import {
     neutralFillHover,
     neutralForegroundRest,
     neutralLayer3,
+    neutralLayerFloating,
+    neutralStrokeRest,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
 } from "../design-tokens";
 import { heightNumber } from "../styles/size";
 
-export const optionStyles: (
-    context: ElementDefinitionContext,
-    definition: ListboxOptionOptions
-) => ElementStyles = (
-    context: ElementDefinitionContext,
-    definition: ListboxOptionOptions
-) =>
+export const optionStyles: FoundationElementTemplate<
+    ElementStyles,
+    ListboxOptionOptions
+> = (context, definition) =>
     css`
     ${display("inline-flex")} :host {
         align-items: center;
         font-family: ${bodyFont};
         border-radius: calc(${controlCornerRadius} * 1px);
-        border: calc(${focusStrokeWidth} * 1px) solid transparent;
+        border: calc(${focusStrokeWidth} * 1px) solid ${neutralLayerFloating};
         box-sizing: border-box;
         color: ${neutralForegroundRest};
         cursor: pointer;
@@ -53,10 +54,10 @@ export const optionStyles: (
         font-size: ${typeRampBaseFontSize};
         height: calc(${heightNumber} * 1px);
         line-height: ${typeRampBaseLineHeight};
-        margin: 0 calc(${designUnit} * 1px);
+        margin: 0 calc((${designUnit} - ${focusStrokeWidth}) * 1px);
         outline: none;
         overflow: hidden;
-        padding: 0 calc(${designUnit} * 2.25px);
+        padding: 0 1ch;
         user-select: none;
         white-space: nowrap;
     }
@@ -83,11 +84,7 @@ export const optionStyles: (
         color: ${foregroundOnAccentActive};
     }
 
-    :host(:not([aria-selected="true"]):hover) {
-        background: ${neutralFillHover};
-        color: ${neutralForegroundRest};
-    }
-
+    :host(:not([aria-selected="true"]):hover),
     :host(:not([aria-selected="true"]):active) {
         background: ${neutralFillHover};
         color: ${neutralForegroundRest};
@@ -129,39 +126,39 @@ export const optionStyles: (
         margin-inline-end: 1ch;
     }
 
-    /* checked, not selected */
     :host([aria-checked="true"]:not([aria-selected="true"])) {
-        /* border-color: ${focusStrokeOuter}; */
+        border-color: ${neutralStrokeRest};
         background: ${neutralLayer3};
         color: ${neutralForegroundRest};
     }
 
-    /* checked, not selected, hover */
     :host([aria-checked="true"]:not([aria-selected="true"]):hover) {
         background: ${neutralFillHover};
     }
 
-    /* checked, selected */
     :host([aria-checked="true"][aria-selected="true"]) {
         border-color: ${focusStrokeOuter};
         background: ${accentFillFocus};
         color: ${foregroundOnAccentFocus};
     }
 
-    /* checked, selected, hover */
     :host([aria-checked="true"][aria-selected="true"]:hover) {
         background: ${accentFillHover};
         color: ${foregroundOnAccentHover};
     }
-
 `.withBehaviors(
         forcedColorsStylesheetBehavior(
             css`
                 :host {
                     border-color: transparent;
-                    forced-color-adjust: none;
                     color: ${SystemColors.ButtonText};
                     fill: currentcolor;
+                    forced-color-adjust: none;
+                }
+
+                :host(:active) {
+                    background: ${SystemColors.ButtonFace};
+                    color: ${SystemColors.ActiveText};
                 }
 
                 :host(:not([aria-selected="true"]):hover),
@@ -170,12 +167,30 @@ export const optionStyles: (
                     color: ${SystemColors.HighlightText};
                 }
 
+                :host(:not([aria-selected="true"]):hover),
+                :host([aria-selected="true"]) {
+                    border-color: ${SystemColors.HighlightText};
+                }
+
                 :host([disabled]),
                 :host([disabled]:not([aria-selected="true"]):hover) {
                     background: ${SystemColors.Canvas};
                     color: ${SystemColors.GrayText};
                     fill: currentcolor;
                     opacity: 1;
+                }
+
+                :host([aria-checked="true"][aria-selected="true"]),
+                :host([aria-checked="true"][aria-selected="true"]:hover) {
+                    background: ${SystemColors.Highlight};
+                    color: ${SystemColors.HighlightText};
+                    border-color: ${SystemColors.ButtonText};
+                }
+
+                :host([aria-checked="true"]:not([aria-selected="true"])) {
+                    background: ${SystemColors.ButtonFace};
+                    color: ${SystemColors.ButtonText};
+                    border-color: ${SystemColors.ButtonText};
                 }
             `
         )
