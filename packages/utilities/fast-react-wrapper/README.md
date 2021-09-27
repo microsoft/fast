@@ -25,7 +25,7 @@ Within your JavaScript or TypeScript code, you can then and use the wrapper like
 import React from 'react';
 import { provideReactWrapper } from '@microsoft/fast-react-wrapper';
 
-const { wrapper } = provideReactWrapper(React);
+const { wrap } = provideReactWrapper(React);
 
 const MyComponent = wrap(MyComponent);
 ```
