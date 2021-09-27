@@ -64,12 +64,14 @@ export class Tabs extends FoundationElement {
     /**
      * @internal
      */
-    public activeidChanged(): void {
+    public activeidChanged(oldValue: string, newValue: string): void {
         if (
             this.$fastController.isConnected &&
             this.tabs.length <= this.tabpanels.length
         ) {
-            this.prevActiveTabIndex = this.tabs.indexOf(this.activetab);
+            this.prevActiveTabIndex = this.tabs.findIndex(
+                (item: HTMLElement) => item.id === oldValue
+            );
             this.setTabs();
             this.setTabPanels();
             this.handleActiveIndicatorPosition();
