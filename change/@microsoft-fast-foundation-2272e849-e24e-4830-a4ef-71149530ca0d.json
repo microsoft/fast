@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "made orientation changed update child tab styles",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "marjon@microsoft.com",
+  "dependentChangeType": "patch"
+}

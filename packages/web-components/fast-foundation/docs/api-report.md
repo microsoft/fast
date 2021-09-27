@@ -2095,6 +2095,8 @@ export class Tabs extends FoundationElement {
     connectedCallback(): void;
     orientation: TabsOrientation;
     // @internal (undocumented)
+    orientationChanged(): void;
+    // @internal (undocumented)
     showActiveIndicator: boolean;
     // @internal (undocumented)
     tabpanels: HTMLElement[];
