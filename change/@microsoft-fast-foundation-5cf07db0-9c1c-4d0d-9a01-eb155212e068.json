@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "Fix: active indicator keyboarding issue in tabs",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "jes@microsoft.com",
+  "dependentChangeType": "patch"
+}
