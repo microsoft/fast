@@ -2096,6 +2096,8 @@ export class Tabs extends FoundationElement {
     connectedCallback(): void;
     orientation: TabsOrientation;
     // @internal (undocumented)
+    orientationChanged(): void;
+    // @internal (undocumented)
     showActiveIndicator: boolean;
     // @internal (undocumented)
     tabpanels: HTMLElement[];
@@ -2337,11 +2339,7 @@ export class TreeItem extends FoundationElement {
     childItemLength(): number;
     // (undocumented)
     childItems: HTMLElement[];
-    // @internal (undocumented)
-    connectedCallback(): void;
     disabled: boolean;
-    // @internal (undocumented)
-    disconnectedCallback(): void;
     // (undocumented)
     expandCollapseButton: HTMLDivElement;
     expanded: boolean;
@@ -2349,12 +2347,9 @@ export class TreeItem extends FoundationElement {
     focusable: boolean;
     static focusItem(el: HTMLElement): void;
     // (undocumented)
-    handleChange(source: any, propertyName: string): void;
-    // (undocumented)
     handleClick: (e: MouseEvent) => void;
     // (undocumented)
     handleExpandCollapseButtonClick: (e: MouseEvent) => void;
-    handleKeyDown: (e: KeyboardEvent) => void | boolean;
     // (undocumented)
     readonly isNestedItem: () => boolean;
     // (undocumented)
@@ -2383,9 +2378,13 @@ export class TreeView extends FoundationElement {
     // (undocumented)
     connectedCallback(): void;
     // (undocumented)
+    currentFocused: HTMLElement | TreeItem | null;
+    // (undocumented)
     currentSelected: HTMLElement | TreeItem | null;
     // (undocumented)
     handleBlur: (e: FocusEvent) => void;
+    // (undocumented)
+    handleFocus: (e: FocusEvent) => void;
     // (undocumented)
     handleKeyDown: (e: KeyboardEvent) => void | boolean;
     // (undocumented)
