@@ -3,12 +3,12 @@ import { css, html } from "@microsoft/fast-element";
 import { display, FoundationElement } from "@microsoft/fast-foundation";
 
 /**
- * The Fluent UI Web Components don't have an "attribution" component built-in.
+ * The FAST Web Components don't have an "attribution" component built-in.
  * The code below shows how you can build your own. Basing it on FoundationElement and
  * using the FoundationElement.compose API, you can create a brand new component that
  * has all the features and integrates into Design System registration in the same way as
- * our official Fluent UI components. Notice also how the styles leverage the design tokens
- * and style helpers provided by the existing Fluent UI Web Components.
+ * our official FAST components. Notice also how the styles leverage the design tokens
+ * and style helpers provided by the existing FAST Web Components.
  *
  * Since this is a simple component, we've chosen to keep all of its source in
  * this single file. For an example of how to organize code for a more complex component,

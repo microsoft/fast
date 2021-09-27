@@ -13,8 +13,7 @@ import { DesignToken, display } from "@microsoft/fast-foundation";
 
 /**
  * Not only can we have system-wide design tokens, but we can
- * have component-specific tokens as well. This token enables
- * changing the corner radius of cards independently of other controls.
+ * have component-specific tokens as well.
  */
 export const cardPadding = DesignToken.create<number>("card-padding").withDefault(
     (el: HTMLElement) => designUnit.getValueFor(el) * 2
