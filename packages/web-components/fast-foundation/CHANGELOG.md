@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Thu, 23 Sep 2021 07:14:34 GMT and should not be manually modified.
+This log was last generated on Mon, 27 Sep 2021 07:12:15 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.16.2
+
+Mon, 27 Sep 2021 07:12:15 GMT
+
+### Patches
+
+- fix: ensure tree item selection is only managed in tree view (jes@microsoft.com)
 
 ## 2.16.1
 
