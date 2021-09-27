@@ -194,7 +194,7 @@ export const buttonStyles = styles;
 
 As a practice, always be sure to export your styles independently as well. This enables the consumers of your components to build their own versions of your component, reusing and augmenting your styles as needed.
 
-When authoring your own styles, you'll also want to leverage design tokens. Please see [the design token documentation](docs/design-systems/design-tokens) for how to create and use design tokens.
+When authoring your own styles, you'll also want to leverage design tokens. Please see [the design token documentation](/docs/design-systems/design-tokens) for how to create and use design tokens.
 
 ### Creating a design system provider function
 
