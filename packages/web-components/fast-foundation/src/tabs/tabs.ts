@@ -42,7 +42,16 @@ export class Tabs extends FoundationElement {
      */
     @attr
     public orientation: TabsOrientation = TabsOrientation.horizontal;
-
+    /**
+     * @internal
+     */
+    public orientationChanged(): void {
+        if (this.$fastController.isConnected) {
+            this.setTabs();
+            this.setTabPanels();
+            this.handleActiveIndicatorPosition();
+        }
+    }
     /**
      * The id of the active tab
      *
@@ -60,6 +69,7 @@ export class Tabs extends FoundationElement {
             this.$fastController.isConnected &&
             this.tabs.length <= this.tabpanels.length
         ) {
+            this.prevActiveTabIndex = this.tabs.indexOf(this.activetab);
             this.setTabs();
             this.setTabPanels();
             this.handleActiveIndicatorPosition();
@@ -161,7 +171,11 @@ export class Tabs extends FoundationElement {
     }
 
     private setTabs = (): void => {
-        const gridProperty: string = this.isHorizontal() ? "gridColumn" : "gridRow";
+        const gridHorizontalProperty: string = "gridColumn";
+        const gridVerticalProperty: string = "gridRow";
+        const gridProperty: string = this.isHorizontal()
+            ? gridHorizontalProperty
+            : gridVerticalProperty;
         this.tabIds = this.getTabIds();
         this.tabpanelIds = this.getTabPanelIds();
         this.activeTabIndex = this.getActiveIndex();
@@ -192,6 +206,11 @@ export class Tabs extends FoundationElement {
                     this.activetab = tab;
                 }
             }
+
+            // If the original property isn't emptied out,
+            // the next set will morph into a grid-area style setting that is not what we want
+            tab.style[gridHorizontalProperty] = "";
+            tab.style[gridVerticalProperty] = "";
             tab.style[gridProperty] = `${index + 1}`;
             !this.isHorizontal()
                 ? tab.classList.add("vertical")
@@ -234,10 +253,6 @@ export class Tabs extends FoundationElement {
     private setComponent(): void {
         if (this.activeTabIndex !== this.prevActiveTabIndex) {
             this.activeid = this.tabIds[this.activeTabIndex] as string;
-            this.change();
-            this.setTabs();
-            this.handleActiveIndicatorPosition();
-            this.setTabPanels();
             this.focusTab();
             this.change();
         }

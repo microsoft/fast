@@ -101,10 +101,10 @@ For example a button handler on a `cellTemplate` could be implemented with a cli
         <fast-button @click="${x => cellTemplateButtonClick(x)}">
             ${x =>
                 x.rowData === null ||
-                x.columnData === null ||
-                x.columnData.columnDataKey === null
+                x.columnDefinition === null ||
+                x.columnDefinition.columnDataKey === null
                     ? null
-                    : x.rowData[x.columnData.columnDataKey]}
+                    : x.rowData[x.columnDefinition.columnDataKey]}
         </fast-button>
     </template>
 ```

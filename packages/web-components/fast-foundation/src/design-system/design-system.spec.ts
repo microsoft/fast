@@ -4,7 +4,7 @@ import { FoundationElement } from "..";
 import { Container, DI } from "../di";
 import { uniqueElementName } from "../test-utilities/fixture";
 import { DesignSystem, ElementDisambiguation } from "./design-system";
-import { DesignSystemRegistrationContext } from "./registration-context";
+import type { DesignSystemRegistrationContext } from "./registration-context";
 
 describe("DesignSystem", () => {
     it("Should return the same instance for the same element", () => {
@@ -32,8 +32,8 @@ describe("DesignSystem", () => {
 
         DesignSystem.getOrCreate(host)
             .register({
-                register(container: Container) {
-                    prefix = container.get(DesignSystemRegistrationContext).elementPrefix;
+                register(container: Container, context: DesignSystemRegistrationContext) {
+                    prefix = context.elementPrefix;
                 }
             });
 
@@ -47,8 +47,8 @@ describe("DesignSystem", () => {
         DesignSystem.getOrCreate(host)
             .withPrefix("custom")
             .register({
-                register(container: Container) {
-                    prefix = container.get(DesignSystemRegistrationContext).elementPrefix;
+                register(container: Container, context: DesignSystemRegistrationContext) {
+                    prefix = context.elementPrefix;
                 }
             });
 
@@ -75,9 +75,8 @@ describe("DesignSystem", () => {
         const host = document.createElement("div");
         DesignSystem.getOrCreate(host)
             .register({
-                register(container: Container) {
-                    capturedDefine = container.get(DesignSystemRegistrationContext)
-                        .tryDefineElement;
+                register(container: Container, context: DesignSystemRegistrationContext) {
+                    capturedDefine = context.tryDefineElement;
                 },
             });
 
@@ -90,9 +89,8 @@ describe("DesignSystem", () => {
         DesignSystem.getOrCreate(host)
             .withPrefix("custom")
             .register({
-                register(container: Container) {
-                    capturePrefix = container.get(DesignSystemRegistrationContext)
-                        .elementPrefix;
+                register(container: Container, context: DesignSystemRegistrationContext) {
+                    capturePrefix = context.elementPrefix;
                 },
             });
 
@@ -108,8 +106,7 @@ describe("DesignSystem", () => {
 
         DesignSystem.getOrCreate(host)
             .register({
-                register(container: Container) {
-                    const context = container.get(DesignSystemRegistrationContext);
+                register(container: Container, context: DesignSystemRegistrationContext) {
                     context.tryDefineElement({
                         name: elementName,
                         type: customElement,
@@ -130,8 +127,7 @@ describe("DesignSystem", () => {
 
         DesignSystem.getOrCreate(host)
             .register({
-                register(container: Container) {
-                    const context = container.get(DesignSystemRegistrationContext);
+                register(container: Container, context: DesignSystemRegistrationContext) {
                     context.tryDefineElement(elementName, customElement, x => x.defineElement());
                 },
             });
@@ -149,8 +145,7 @@ describe("DesignSystem", () => {
 
         DesignSystem.getOrCreate(host)
             .register({
-                register(container: Container) {
-                    const context = container.get(DesignSystemRegistrationContext);
+                register(container: Container, context: DesignSystemRegistrationContext) {
                     context.tryDefineElement({
                         name: elementName,
                         type: customElement,
@@ -177,8 +172,7 @@ describe("DesignSystem", () => {
             })
             .register(
                 {
-                    register(container: Container) {
-                        const context = container.get(DesignSystemRegistrationContext);
+                    register(container: Container, context: DesignSystemRegistrationContext) {
                         context.tryDefineElement({
                             name: elementName,
                             type: class extends HTMLElement {},
@@ -187,8 +181,7 @@ describe("DesignSystem", () => {
                     },
                 },
                 {
-                    register(container: Container) {
-                        const context = container.get(DesignSystemRegistrationContext);
+                    register(container: Container, context: DesignSystemRegistrationContext) {
                         context.tryDefineElement({
                             name: elementName,
                             type: class extends HTMLElement {},
@@ -213,8 +206,7 @@ describe("DesignSystem", () => {
         expect(() => {
             system.register(
                 {
-                    register(container: Container) {
-                        const context = container.get(DesignSystemRegistrationContext);
+                    register(container: Container, context: DesignSystemRegistrationContext) {
                         context.tryDefineElement({
                             name: elementName,
                             type: customElement,
@@ -223,8 +215,7 @@ describe("DesignSystem", () => {
                     },
                 },
                 {
-                    register(container: Container) {
-                        const context = container.get(DesignSystemRegistrationContext);
+                    register(container: Container, context: DesignSystemRegistrationContext) {
                         context.tryDefineElement({
                             name: elementName,
                             type: class extends HTMLElement {},
@@ -253,8 +244,7 @@ describe("DesignSystem", () => {
         expect(() => {
             system.register(
                 {
-                    register(container: Container) {
-                        const context = container.get(DesignSystemRegistrationContext);
+                    register(container: Container, context: DesignSystemRegistrationContext) {
                         context.tryDefineElement({
                             name: elementName,
                             type: customElement,
@@ -264,8 +254,7 @@ describe("DesignSystem", () => {
                     },
                 },
                 {
-                    register(container: Container) {
-                        const context = container.get(DesignSystemRegistrationContext);
+                    register(container: Container, context: DesignSystemRegistrationContext) {
                         context.tryDefineElement({
                             name: elementName,
                             type: class extends HTMLElement {},
@@ -289,8 +278,8 @@ describe("DesignSystem", () => {
 
         DesignSystem.getOrCreate(host)
             .register({
-                register(container: Container) {
-                    container.get(DesignSystemRegistrationContext)
+                register(container: Container, context: DesignSystemRegistrationContext) {
+                    context
                         .tryDefineElement(elementName, FoundationElement, x => {
                             x.defineElement();
                         });
@@ -312,8 +301,7 @@ describe("DesignSystem", () => {
 
         DesignSystem.getOrCreate(host)
             .register({
-                register(container: Container) {
-                    const context = container.get(DesignSystemRegistrationContext);
+                register(container: Container, context: DesignSystemRegistrationContext) {
                     context.tryDefineElement({
                         name: elementName,
                         type: customElement,
@@ -337,8 +325,7 @@ describe("DesignSystem", () => {
         DesignSystem.getOrCreate(host)
             .withShadowRootMode('open')
             .register({
-                register(container: Container) {
-                    const context = container.get(DesignSystemRegistrationContext);
+                register(container: Container, context: DesignSystemRegistrationContext) {
                     context.tryDefineElement({
                         name: elementName,
                         type: customElement,
@@ -362,8 +349,7 @@ describe("DesignSystem", () => {
         DesignSystem.getOrCreate(host)
             .withShadowRootMode('closed')
             .register({
-                register(container: Container) {
-                    const context = container.get(DesignSystemRegistrationContext);
+                register(container: Container, context: DesignSystemRegistrationContext) {
                     context.tryDefineElement({
                         name: elementName,
                         type: customElement,

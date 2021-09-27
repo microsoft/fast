@@ -1,8 +1,63 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Tue, 14 Sep 2021 07:16:47 GMT and should not be manually modified.
+This log was last generated on Mon, 27 Sep 2021 07:12:15 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.16.2
+
+Mon, 27 Sep 2021 07:12:15 GMT
+
+### Patches
+
+- fix: ensure tree item selection is only managed in tree view (jes@microsoft.com)
+
+## 2.16.1
+
+Thu, 23 Sep 2021 07:14:34 GMT
+
+### Patches
+
+- Removing design-system-provider from storybook (robarb@microsoft.com)
+- Horizontal-scroll tests cleanup (robarb@microsoft.com)
+
+## 2.16.0
+
+Wed, 22 Sep 2021 07:13:13 GMT
+
+### Minor changes
+
+- feat(di): add registerWithContext and use in design system (roeisenb@microsoft.com)
+
+### Patches
+
+- fix: active indicator does not update when activeid attr is changed (jes@microsoft.com)
+- fix aria-describedby typos (v-dlesac@microsoft.com)
+
+## 2.15.0
+
+Sun, 19 Sep 2021 07:17:17 GMT
+
+### Minor changes
+
+- add picker component (scomea@microsoft.com)
+
+### Patches
+
+- fix: remove dependency on document for root containers & design systems (roeisenb@microsoft.com)
+- Bump @microsoft/fast-web-utilities to v5.0.0 (scomea@microsoft.com)
+
+## 2.14.0
+
+Wed, 15 Sep 2021 19:49:35 GMT
+
+### Minor changes
+
+- fix type issue for FoundationElementTemplate (john.kreitlow@microsoft.com)
+
+### Patches
+
+- Fix design-token subscription bugs where subscribers were not getting notified (nicholasrice@users.noreply.github.com)
 
 ## 2.13.1
 
