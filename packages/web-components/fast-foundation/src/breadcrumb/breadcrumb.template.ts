@@ -1,4 +1,4 @@
-import { elements, html, slotted } from "@microsoft/fast-element";
+import { elements, html, ref, slotted } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
 import type { FoundationElementDefinition } from "../foundation-element";
 import type { ElementDefinitionContext } from "../design-system";
@@ -16,7 +16,7 @@ export const breadcrumbTemplate: (
     definition: FoundationElementDefinition
 ) => html`
     <template role="navigation">
-        <div role="list" class="list" part="list">
+        <div role="list" class="list" part="list" ${ref("list")}>
             <slot
                 ${slotted({ property: "slottedBreadcrumbItems", filter: elements() })}
             ></slot>

@@ -53,7 +53,7 @@ export const buttonTemplate: (
         ${ref("control")}
     >
         ${startSlotTemplate(context, definition)}
-        <span class="content" part="content">
+        <span class="content" part="content" ${ref("content")}>
             <slot ${slotted("defaultSlottedContent")}></slot>
         </span>
         ${endSlotTemplate(context, definition)}

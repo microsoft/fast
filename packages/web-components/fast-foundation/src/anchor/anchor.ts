@@ -102,7 +102,7 @@ export class Anchor extends FoundationElement {
     public defaultSlottedContent: HTMLElement[];
 
     /**
-     * Reference to the root part
+     * Reference to the control part
      * @public
      */
     public control: HTMLAnchorElement;

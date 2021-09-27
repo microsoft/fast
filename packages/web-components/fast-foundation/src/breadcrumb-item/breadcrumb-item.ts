@@ -20,6 +20,12 @@ export type BreadcrumbItemOptions = FoundationElementDefinition &
  */
 export class BreadcrumbItem extends Anchor {
     /**
+     * Reference to the listitem part
+     * @public
+     */
+    public listitem: HTMLDivElement;
+
+    /**
      * @internal
      */
     @observable

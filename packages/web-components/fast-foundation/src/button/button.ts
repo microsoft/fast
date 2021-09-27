@@ -191,7 +191,17 @@ export class Button extends FormAssociatedButton {
         this.form?.reset();
     };
 
+    /**
+     * Reference to the control part
+     * @public
+     */
     public control: HTMLButtonElement;
+
+    /**
+     * Reference to the content part
+     * @public
+     */
+    public content: HTMLSpanElement;
 
     /**
      * Overrides the focus call for where delegatesFocus is unsupported.

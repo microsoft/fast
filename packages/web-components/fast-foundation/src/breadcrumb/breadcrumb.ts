@@ -9,6 +9,12 @@ import { FoundationElement } from "../foundation-element";
  */
 export class Breadcrumb extends FoundationElement {
     /**
+     * Reference to the list part
+     * @public
+     */
+    public list: HTMLDivElement;
+
+    /**
      * @internal
      */
     @observable

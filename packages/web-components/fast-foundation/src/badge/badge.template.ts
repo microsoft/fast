@@ -1,4 +1,4 @@
-import { html } from "@microsoft/fast-element";
+import { html, ref } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
 import type { FoundationElementDefinition } from "../foundation-element";
 import type { ElementDefinitionContext } from "../design-system";
@@ -16,7 +16,12 @@ export const badgeTemplate: (
     definition: FoundationElementDefinition
 ) => html`
     <template class="${x => (x.circular ? "circular" : "")}">
-        <div class="control" part="control" style="${x => x.generateBadgeStyle()}">
+        <div
+            class="control"
+            part="control"
+            style="${x => x.generateBadgeStyle()}"
+            ${ref("control")}
+        >
             <slot></slot>
         </div>
     </template>

@@ -38,6 +38,12 @@ export class Badge extends FoundationElement {
     @attr({ mode: "boolean" })
     public circular: boolean;
 
+    /**
+     * Reference to the control part
+     * @public
+     */
+    public control: HTMLDivElement;
+
     public generateBadgeStyle = () => {
         if (!this.fill && !this.color) {
             return;

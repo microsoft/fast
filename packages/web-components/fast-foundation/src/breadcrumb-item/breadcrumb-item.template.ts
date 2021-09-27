@@ -1,4 +1,4 @@
-import { html, when } from "@microsoft/fast-element";
+import { html, ref, when } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
 import { anchorTemplate } from "../anchor";
 import { endSlotTemplate, startSlotTemplate } from "../patterns/start-end";
@@ -16,7 +16,7 @@ export const breadcrumbItemTemplate: (
     context: ElementDefinitionContext,
     definition: BreadcrumbItemOptions
 ) => html`
-    <div role="listitem" class="listitem" part="listitem">
+    <div role="listitem" class="listitem" part="listitem" ${ref("listitem")}>
         ${when(
             x => x.href && x.href.length > 0,
             html<BreadcrumbItem>`
