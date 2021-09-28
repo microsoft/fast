@@ -102,9 +102,11 @@ export class TreeItem extends FoundationElement {
         }
     };
 
-    public handleClick = (e: MouseEvent): void => {
+    public handleClick = (e: MouseEvent): void | boolean => {
         if (!e.defaultPrevented) {
             this.handleSelected(e);
+            // do not prevent default as it completely eats the click
+            return true;
         }
     };
 
