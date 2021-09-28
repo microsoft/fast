@@ -1,8 +1,15 @@
-/*require("./build/releasing/ts-node-register");
-module.exports = require("./build/releasing/index");*/
+require("./build/releasing/ts-node-register");
+/* .module.exports = require("./build/releasing/index");*/
 
 module.exports = {
+    bumpDeps: true,
     disallowedChangeTypes: ["major"],
+    groups: [
+        {
+            name: "excluded packages",
+            excludes: "sites/*",
+        },
+    ],
     ignorePatterns: [
         ".ignore",
         ".github/",
