@@ -257,12 +257,7 @@ export class Tooltip extends FoundationElement {
     /**
      * Indicates whether the anchor is currently being hovered
      */
-    private isAnchorHovered: boolean = false;
-
-    /**
-     * Indicates whether the anchor is currently being focused
-     */
-    private isAnchorFocused: boolean = false;
+    private isAnchorHoveredFocused: boolean = false;
 
     public connectedCallback(): void {
         super.connectedCallback();
@@ -315,10 +310,8 @@ export class Tooltip extends FoundationElement {
      * mouse leaves anchor
      */
     private handleAnchorMouseOut = (ev: Event): void => {
-        if (this.isAnchorHovered) {
-            this.isAnchorHovered = false;
-            this.updateTooltipVisibility();
-        }
+        this.isAnchorHoveredFocused = false;
+        this.updateTooltipVisibility();
         this.clearDelayTimer();
     };
 
@@ -327,10 +320,8 @@ export class Tooltip extends FoundationElement {
     };
 
     private handleAnchorFocusOut = (ev: Event): void => {
-        if (this.isAnchorHovered) {
-            this.isAnchorHovered = false;
-            this.updateTooltipVisibility();
-        }
+        this.isAnchorHoveredFocused = false;
+        this.updateTooltipVisibility();
         this.clearDelayTimer();
     };
 
@@ -338,7 +329,7 @@ export class Tooltip extends FoundationElement {
      * starts the hover timer if not currently running
      */
     private startHoverTimer = (): void => {
-        if (this.isAnchorHovered) {
+        if (this.isAnchorHoveredFocused) {
             return;
         }
 
@@ -357,7 +348,7 @@ export class Tooltip extends FoundationElement {
      * starts the hover delay timer
      */
     private startHover = (): void => {
-        this.isAnchorHovered = true;
+        this.isAnchorHoveredFocused = true;
         this.updateTooltipVisibility();
     };
 
@@ -435,7 +426,7 @@ export class Tooltip extends FoundationElement {
         if (!e.defaultPrevented && this.tooltipVisible) {
             switch (e.key) {
                 case keyEscape:
-                    this.isAnchorHovered = false;
+                    this.isAnchorHoveredFocused = false;
                     this.updateTooltipVisibility();
                     this.$emit("dismiss");
                     break;
@@ -452,7 +443,7 @@ export class Tooltip extends FoundationElement {
         } else if (this.visible === true) {
             this.showTooltip();
         } else {
-            if (this.isAnchorHovered) {
+            if (this.isAnchorHoveredFocused) {
                 this.showTooltip();
                 return;
             }
