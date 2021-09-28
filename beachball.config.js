@@ -6,7 +6,7 @@ module.exports = {
     groups: [
         {
             name: "excluded packages",
-            excludes: ["sites/website"],
+            include: ["packages/*"],
         },
     ],
     disallowedChangeTypes: ["major"],
