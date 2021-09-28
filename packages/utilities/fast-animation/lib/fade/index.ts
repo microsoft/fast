@@ -15,7 +15,6 @@ export const fadeOutKeyframes: Array<Partial<Keyframe>> = [
     { opacity: "1" },
     { opacity: "0" },
 ];
-
 /**
  * EffectTiming defaults for fade animations
  */

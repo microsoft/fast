@@ -1,0 +1,7 @@
+{
+  "type": "minor",
+  "comment": "Testing a change here",
+  "packageName": "@microsoft/fast-animation",
+  "email": "imaga75@hotmail.com",
+  "dependentChangeType": "patch"
+}
