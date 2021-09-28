@@ -3,13 +3,14 @@ require("./build/releasing/ts-node-register");
 
 module.exports = {
     bumpDeps: true,
-    disallowedChangeTypes: ["major"],
     groups: [
         {
             name: "excluded packages",
             excludes: "sites/*",
         },
     ],
+    disallowedChangeTypes: ["major"],
+
     ignorePatterns: [
         ".ignore",
         ".github/",
