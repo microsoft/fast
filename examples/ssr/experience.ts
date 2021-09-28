@@ -1,11 +1,19 @@
 /* eslint-disable */
 import { html } from "lit";
-import { MyElement } from "./element";
+import { Main } from "./components/main";
 
-MyElement;
+Main;
 
 export function myTemplate() {
     return html`
-        <fast-element>child content</fast-element>
+        <!DOCTYPE html>
+        <html lang="en">
+            <head>
+                <title>FAST SSR Demo</title>
+            </head>
+            <body>
+                <fast-main>child content</fast-main>
+            </body>
+        </html>
     `;
 }
