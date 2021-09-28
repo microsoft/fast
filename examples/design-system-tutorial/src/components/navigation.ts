@@ -14,7 +14,7 @@ const template = html`
 `;
 
 /**
- * Notice how the styles use design tokens imported from the Fluent system.
+ * Notice how the styles use design tokens imported from the FAST system.
  * Design tokens can be used anywhere you would use a CSS variable.
  */
 const styles = css`
