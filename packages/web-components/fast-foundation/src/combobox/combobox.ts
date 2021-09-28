@@ -281,6 +281,8 @@ export class Combobox extends FormAssociatedCombobox {
         if (this.value) {
             this.initialValue = this.value;
         }
+
+        this.handleUnsupportedDelegatesFocus();
     }
 
     /**
@@ -620,6 +622,24 @@ export class Combobox extends FormAssociatedCombobox {
             this.$emit("change");
         }
     }
+
+    /**
+     * Overrides the focus call for where delegatesFocus is unsupported.
+     * This check works for Chrome, Edge Chromium, FireFox, and Safari
+     * Relevant PR on the Firefox browser: https://phabricator.services.mozilla.com/D123858
+     */
+    private handleUnsupportedDelegatesFocus = () => {
+        // Check to see if delegatesFocus is supported
+        if (
+            window.ShadowRoot &&
+            !window.ShadowRoot.prototype.hasOwnProperty("delegatesFocus") &&
+            this.$fastController.definition.shadowOptions?.delegatesFocus
+        ) {
+            this.focus = () => {
+                this.control.focus();
+            };
+        }
+    };
 }
 
 /**

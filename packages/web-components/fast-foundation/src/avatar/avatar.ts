@@ -54,7 +54,8 @@ export class Avatar extends FoundationElement {
     @attr public shape: AvatarShape;
 
     /**
-     * References the root element
+     * A reference to the internal input element
+     * @internal
      */
     public control: HTMLAnchorElement;
 

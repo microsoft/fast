@@ -1,6 +1,6 @@
 {
   "type": "patch",
-  "comment": "add function to support programmatic focus for firefox and added test",
+  "comment": "added fallback function for browsers that do not support delegatesFocus",
   "packageName": "@microsoft/fast-foundation",
   "email": "khamu@microsoft.com",
   "dependentChangeType": "patch"
