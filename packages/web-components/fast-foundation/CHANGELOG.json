@@ -2,6 +2,27 @@
   "name": "@microsoft/fast-foundation",
   "entries": [
     {
+      "date": "Tue, 28 Sep 2021 07:10:49 GMT",
+      "tag": "@microsoft/fast-foundation_v2.16.3",
+      "version": "2.16.3",
+      "comments": {
+        "patch": [
+          {
+            "comment": "made orientation changed update child tab styles",
+            "author": "marjon@microsoft.com",
+            "commit": "2d07b6ab5a9500ced93e0c1d06eea4bcad430088",
+            "package": "@microsoft/fast-foundation"
+          },
+          {
+            "comment": "Fix: active indicator keyboarding issue in tabs",
+            "author": "jes@microsoft.com",
+            "commit": "997fcc5b17e0f27401e938ec87d295b86f5a872b",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
       "date": "Mon, 27 Sep 2021 07:12:15 GMT",
       "tag": "@microsoft/fast-foundation_v2.16.2",
       "version": "2.16.2",

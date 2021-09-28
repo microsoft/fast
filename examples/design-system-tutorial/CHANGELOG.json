@@ -1,0 +1,20 @@
+{
+  "name": "fast-design-system-demo",
+  "entries": [
+    {
+      "date": "Tue, 28 Sep 2021 07:10:49 GMT",
+      "tag": "fast-design-system-demo_v1.0.0",
+      "version": "1.0.0",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-components to v2.11.5",
+            "author": "marjon@microsoft.com",
+            "commit": "2d07b6ab5a9500ced93e0c1d06eea4bcad430088",
+            "package": "fast-design-system-demo"
+          }
+        ]
+      }
+    }
+  ]
+}
