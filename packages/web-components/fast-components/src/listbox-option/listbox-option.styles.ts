@@ -37,6 +37,15 @@ import {
 } from "../design-tokens";
 import { heightNumber } from "../styles/size";
 
+/**
+ * Styles for the {@link @microsoft/fast-components#fastOption | Listbox Option} component.
+ *
+ * @param context - the element definition context
+ * @param definition - the foundation element definition
+ * @returns The element styles for the listbox component
+ *
+ * @public
+ */
 export const optionStyles: FoundationElementTemplate<
     ElementStyles,
     ListboxOptionOptions

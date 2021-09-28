@@ -18,6 +18,15 @@ import {
     strokeWidth,
 } from "../design-tokens";
 
+/**
+ * Styles for the {@link @microsoft/fast-components#fastListbox | Listbox} component.
+ *
+ * @param context - the element definition context
+ * @param definition - the foundation element definition
+ * @returns The element styles for the listbox component
+ *
+ * @public
+ */
 export const listboxStyles: FoundationElementTemplate<ElementStyles> = (
     context,
     definition
