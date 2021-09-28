@@ -2085,7 +2085,7 @@ export const tabPanelTemplate: (context: ElementDefinitionContext, definition: F
 export class Tabs extends FoundationElement {
     activeid: string;
     // @internal (undocumented)
-    activeidChanged(): void;
+    activeidChanged(oldValue: string, newValue: string): void;
     activeindicator: boolean;
     // @internal (undocumented)
     activeIndicatorRef: HTMLElement;
@@ -2094,6 +2094,8 @@ export class Tabs extends FoundationElement {
     // @internal (undocumented)
     connectedCallback(): void;
     orientation: TabsOrientation;
+    // @internal (undocumented)
+    orientationChanged(): void;
     // @internal (undocumented)
     showActiveIndicator: boolean;
     // @internal (undocumented)
@@ -2336,11 +2338,7 @@ export class TreeItem extends FoundationElement {
     childItemLength(): number;
     // (undocumented)
     childItems: HTMLElement[];
-    // @internal (undocumented)
-    connectedCallback(): void;
     disabled: boolean;
-    // @internal (undocumented)
-    disconnectedCallback(): void;
     // (undocumented)
     expandCollapseButton: HTMLDivElement;
     expanded: boolean;
@@ -2348,12 +2346,9 @@ export class TreeItem extends FoundationElement {
     focusable: boolean;
     static focusItem(el: HTMLElement): void;
     // (undocumented)
-    handleChange(source: any, propertyName: string): void;
-    // (undocumented)
     handleClick: (e: MouseEvent) => void;
     // (undocumented)
     handleExpandCollapseButtonClick: (e: MouseEvent) => void;
-    handleKeyDown: (e: KeyboardEvent) => void | boolean;
     // (undocumented)
     readonly isNestedItem: () => boolean;
     // (undocumented)
@@ -2382,9 +2377,13 @@ export class TreeView extends FoundationElement {
     // (undocumented)
     connectedCallback(): void;
     // (undocumented)
+    currentFocused: HTMLElement | TreeItem | null;
+    // (undocumented)
     currentSelected: HTMLElement | TreeItem | null;
     // (undocumented)
     handleBlur: (e: FocusEvent) => void;
+    // (undocumented)
+    handleFocus: (e: FocusEvent) => void;
     // (undocumented)
     handleKeyDown: (e: KeyboardEvent) => void | boolean;
     // (undocumented)
