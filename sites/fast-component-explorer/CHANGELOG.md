@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-component-explorer
 
-This log was last generated on Mon, 27 Sep 2021 07:12:15 GMT and should not be manually modified.
+This log was last generated on Tue, 28 Sep 2021 07:10:49 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.17.2
+
+Tue, 28 Sep 2021 07:10:49 GMT
+
+### Patches
+
+- Bump @microsoft/site-utilities to v0.9.0 (marjon@microsoft.com)
 
 ## 0.17.2
 
