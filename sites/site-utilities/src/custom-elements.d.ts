@@ -32,7 +32,6 @@ declare namespace JSX {
         };
     }
 }
-
 /**
  * Satisfy TypeScript importing modules without typings
  */
