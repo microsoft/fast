@@ -1,8 +1,8 @@
 /* eslint-disable */
 import { ElementRenderer, RenderInfo } from "@lit-labs/ssr";
-import { FASTElement, ViewTemplate } from "@microsoft/fast-element";
-import { test } from "./utilities";
+import { FASTElement } from "@microsoft/fast-element";
 import { render } from "@lit-labs/ssr/lib/render-lit-html";
+import { html } from "lit";
 
 export class FASTElementRenderer extends ElementRenderer {
     public readonly element!: HTMLElement & FASTElement;
@@ -25,7 +25,17 @@ export class FASTElementRenderer extends ElementRenderer {
     }
     *renderShadow(renderInfo: RenderInfo): IterableIterator<string> {
         const { innerHTML } = this.element.shadowRoot!;
-        yield* render(innerHTML, renderInfo);
+        // render() does not support templates with interpolated DOM - it expects all DOM to be
+        // in the strings collection. This means the following will not create DOM
+        // when provided to render():
+        //
+        // const template = html`${innerHTML}`;
+        //
+        // Instead, trick html - this is fragile and we should probably work
+        // with lit to understand the limitation and find a better work-around
+        const template = html(([innerHTML] as unknown) as TemplateStringsArray);
+
+        yield* render(template, renderInfo);
     }
 
     attributeChangedCallback(
