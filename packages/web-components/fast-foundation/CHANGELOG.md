@@ -1,8 +1,17 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Mon, 27 Sep 2021 07:12:15 GMT and should not be manually modified.
+This log was last generated on Tue, 28 Sep 2021 07:10:49 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.16.3
+
+Tue, 28 Sep 2021 07:10:49 GMT
+
+### Patches
+
+- made orientation changed update child tab styles (marjon@microsoft.com)
+- Fix: active indicator keyboarding issue in tabs (jes@microsoft.com)
 
 ## 2.16.2
 

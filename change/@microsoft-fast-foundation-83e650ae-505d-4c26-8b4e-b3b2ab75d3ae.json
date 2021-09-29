@@ -1,7 +1,7 @@
 {
   "type": "patch",
-  "comment": "Fix: active indicator keyboarding issue in tabs",
+  "comment": "do not prevent default on tree item click",
   "packageName": "@microsoft/fast-foundation",
-  "email": "jes@microsoft.com",
+  "email": "chhol@microsoft.com",
   "dependentChangeType": "patch"
 }
