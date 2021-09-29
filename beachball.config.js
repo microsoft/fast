@@ -13,14 +13,4 @@ module.exports = {
         // This one is especially important (otherwise dependabot would be blocked by change file requirements)
         "yarn.lock",
     ],
-    groups: [
-        {
-            name: "Microsoft FAST",
-            include: [
-                "packages/tooling/*",
-                "packages/utilities/*",
-                "packages/web-components/*",
-            ],
-        },
-    ],
 };
