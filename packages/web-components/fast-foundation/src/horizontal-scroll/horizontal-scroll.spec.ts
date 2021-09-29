@@ -66,9 +66,9 @@ async function setup() {
         } = await fixture(FASTHorizontalScroll());
 
     // Removing animated scroll so that tests don't have to wait on DOM updates
-    element.speed = 0;
+    element.speed = -1;
 
-    element.setAttribute("style", `width: ${horizontalScrollWidth}px}`);
+    element.setAttribute("style", `width: ${horizontalScrollWidth}px; scroll-behavior: auto;`);
     element.innerHTML = getCards(8);
 
     await connect();
@@ -151,6 +151,7 @@ describe("HorinzontalScroll", () => {
             element.scrollToNext();
             await DOM.nextUpdate();
             element.scrollToNext();
+            await DOM.nextUpdate();
             element.scrollToPrevious();
             await DOM.nextUpdate();
 
