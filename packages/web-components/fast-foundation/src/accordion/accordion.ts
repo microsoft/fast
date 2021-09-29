@@ -87,10 +87,6 @@ export class Accordion extends FoundationElement {
             if (item instanceof AccordionItem) {
                 item.addEventListener("change", this.activeItemChange);
                 if (this.isSingleExpandMode()) {
-                    const expandedItem: AccordionItem | null =
-                        this.findExpandedItem() ??
-                        (this.accordionItems[0] as AccordionItem);
-                    expandedItem.setAttribute("aria-disabled", "true");
                     this.activeItemIndex !== index
                         ? (item.expanded = false)
                         : (item.expanded = true);
@@ -105,6 +101,11 @@ export class Accordion extends FoundationElement {
             item.addEventListener("keydown", this.handleItemKeyDown);
             item.addEventListener("focus", this.handleItemFocus);
         });
+        if (this.isSingleExpandMode()) {
+            const expandedItem: AccordionItem | null =
+                this.findExpandedItem() ?? (this.accordionItems[0] as AccordionItem);
+            expandedItem.setAttribute("aria-disabled", "true");
+        }
     };
 
     private resetItems(): void {
@@ -122,12 +123,12 @@ export class Accordion extends FoundationElement {
     };
 
     private activeItemChange = (event): void => {
-        const selectedItem = event.target as HTMLElement;
+        const selectedItem = event.target as AccordionItem;
         this.activeid = event.target.getAttribute("id");
         if (this.isSingleExpandMode()) {
             this.resetItems();
-            event.target.expanded = true;
-            event.target.setAttribute("aria-disabled", "true");
+            selectedItem.expanded = true;
+            selectedItem.setAttribute("aria-disabled", "true");
             this.accordionItems.forEach((item: HTMLElement) => {
                 if (!item.hasAttribute("disabled") && item.id !== this.activeid) {
                     item.removeAttribute("aria-disabled");
