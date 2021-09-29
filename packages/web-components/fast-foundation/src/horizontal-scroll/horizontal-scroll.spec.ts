@@ -68,7 +68,7 @@ async function setup() {
     // Removing animated scroll so that tests don't have to wait on DOM updates
     element.speed = 0;
 
-    element.setAttribute("style", `width: ${horizontalScrollWidth}px; scroll-behavior: auto;`);
+    element.setAttribute("style", `width: ${horizontalScrollWidth}px;`);
     element.innerHTML = getCards(8);
 
     await connect();
@@ -130,6 +130,7 @@ describe("HorinzontalScroll", () => {
         it("should disable the next flipper when it reaches the end of the content", async () => {
             const { element, disconnect } = await setup();
 
+            element.scrollToNext();
             element.scrollToNext();
             element.scrollToNext();
             element.scrollToNext();
