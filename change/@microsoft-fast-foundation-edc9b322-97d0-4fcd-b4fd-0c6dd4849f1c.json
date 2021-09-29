@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "fix: sliders mouseup is not firing when leaving the window",
-  "packageName": "@microsoft/fast-foundation",
-  "email": "robarb@microsoft.com",
-  "dependentChangeType": "patch"
-}
