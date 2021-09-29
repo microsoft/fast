@@ -131,7 +131,9 @@ describe("HorinzontalScroll", () => {
             const { element, disconnect } = await setup();
 
             element.scrollToNext();
+            await DOM.nextUpdate();
             element.scrollToNext();
+            await DOM.nextUpdate();
             element.scrollToNext();
             await DOM.nextUpdate();
 
@@ -143,8 +145,11 @@ describe("HorinzontalScroll", () => {
             const { element, disconnect } = await setup();
 
             element.scrollToNext();
+            await DOM.nextUpdate();
             element.scrollToNext();
+            await DOM.nextUpdate();
             element.scrollToNext();
+            await DOM.nextUpdate();
             element.scrollToNext();
             element.scrollToPrevious();
             await DOM.nextUpdate();
