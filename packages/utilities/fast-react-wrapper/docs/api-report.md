@@ -48,7 +48,7 @@ export type ReactWrapperConfig<TEvents> = {
 };
 
 // @public
-export type ReactWrapperProps<TElement extends HTMLElement, TEvents> = ReactModule.PropsWithChildren<ReactModule.PropsWithRef<Partial<Omit<TElement, 'children' | 'style'>> & ReactEvents<TEvents> & ReactModule.HTMLAttributes<HTMLElement>> & {
+export type ReactWrapperProps<TElement extends HTMLElement, TEvents> = ReactModule.PropsWithChildren<ReactModule.PropsWithRef<Partial<Omit<TElement, "children" | "style">> & ReactEvents<TEvents> & ReactModule.HTMLAttributes<HTMLElement>> & {
     style?: ReactModule.CSSProperties;
 }>;
 
