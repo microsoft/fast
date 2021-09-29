@@ -138,6 +138,9 @@ describe("HorinzontalScroll", () => {
 
             element.scrollToNext();
             await DOM.nextUpdate();
+
+            element.scrollToNext();
+            await DOM.nextUpdate();
             await DOM.nextUpdate();
 
             expect(element.shadowRoot?.querySelector(".scroll-next")?.classList.contains("disabled")).to.equal(true);
@@ -146,6 +149,9 @@ describe("HorinzontalScroll", () => {
 
         it("should re-enable the next flipper when its scrolled back from the end", async () => {
             const { element, disconnect } = await setup();
+
+            element.scrollToNext();
+            await DOM.nextUpdate();
 
             element.scrollToNext();
             await DOM.nextUpdate();
