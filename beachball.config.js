@@ -5,7 +5,6 @@ module.exports = {
         ".github/",
         ".prettierrc",
         ".vscode/",
-        "docs/**",
         "jest..js",
         "src/e2e/",
         "src/tests/",
