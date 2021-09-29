@@ -132,10 +132,10 @@ describe("HorinzontalScroll", () => {
 
             element.scrollToNext();
             await DOM.nextUpdate();
+
             element.scrollToNext();
             await DOM.nextUpdate();
-            element.scrollToNext();
-            await DOM.nextUpdate();
+
             element.scrollToNext();
             await DOM.nextUpdate();
             await DOM.nextUpdate();
@@ -149,12 +149,13 @@ describe("HorinzontalScroll", () => {
 
             element.scrollToNext();
             await DOM.nextUpdate();
+
             element.scrollToNext();
             await DOM.nextUpdate();
+
             element.scrollToNext();
             await DOM.nextUpdate();
-            element.scrollToNext();
-            await DOM.nextUpdate();
+
             element.scrollToPrevious();
             await DOM.nextUpdate();
             await DOM.nextUpdate();
