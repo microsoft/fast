@@ -88,10 +88,6 @@ Extends FAST Element
 - after-content - often times a glyph, icon, or button follows the input
 - clear-content - often times a glyph, icon, or button follows that clears the input field
 
-*Host Classes*
-- disabled
-- required
-
 *CSS Parts*
 - label
 - root
