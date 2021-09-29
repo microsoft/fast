@@ -230,29 +230,12 @@ jobs:
   lighthouse-check:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@master
-      - run: mkdir /tmp/artifacts
-      - name: Run Lighthouse for Mobile
-        uses: foo-software/lighthouse-check-action@master
+      - uses: actions/checkout@v2
+      - name: Audit URLs using Lighthouse
+        uses: treosh/lighthouse-ci-action@v8
         with:
-          accessToken: ${{ secrets.GITHUB_TOKEN }}
-          author: ${{ github.actor }}
-          branch: ${{ github.ref }}
-          outputDirectory: /tmp/artifacts
-          emulatedFormFactor: "Mobile"
-          urls: "https://www.fast.design/"
-
-      - name: Run Lighthouse for Desktop
-        uses: foo-software/lighthouse-check-action@master
-        with:
-          accessToken: ${{ secrets.GITHUB_TOKEN }}
-          author: ${{ github.actor }}
-          branch: ${{ github.ref }}
-          outputDirectory: /tmp/artifacts
-          emulatedFormFactor: "Desktop"
-          urls: "https://www.fast.design/"
-      - name: Upload artifacts
-        uses: actions/upload-artifact@master
-        with:
-          name: Lighthouse reports
-          path: /tmp/artifacts
+          urls: |
+            https://www.fast.design/
+          budgetPath: ./budget.json # test performance budgets
+          uploadArtifacts: true # save results as an action artifacts
+          temporaryPublicStorage: true # upload lighthouse report to the temporary storage
