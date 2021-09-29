@@ -111,6 +111,7 @@ describe("HorinzontalScroll", () => {
 
             element.scrollToNext();
             await DOM.nextUpdate();
+            await DOM.nextUpdate();
 
             expect(element.shadowRoot?.querySelector(".scroll-prev")?.classList.contains("disabled")).to.equal(false);
             await disconnect();
@@ -120,7 +121,10 @@ describe("HorinzontalScroll", () => {
             const { element, disconnect } = await setup();
 
             element.scrollToNext();
+            await DOM.nextUpdate();
+
             element.scrollToPrevious();
+            await DOM.nextUpdate();
             await DOM.nextUpdate();
 
             expect(element.shadowRoot?.querySelector(".scroll-prev")?.classList.contains("disabled")).to.equal(true);
