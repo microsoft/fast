@@ -15,7 +15,7 @@ Used anywhere an author might otherwise use:
 
 ### Risks and Challenges
 
-One challange with search forms is their accessibility; a common design pattern is to not provide a label for the search box (although there might be a magnifying glass icon or similar), as the purpose of a search forms is normally fairly obvious for sighted users due to placement.
+One challenge with search forms is their accessibility; a common design pattern is to not provide a label for the search box (although there might be a magnifying glass icon or similar), as the purpose of a search forms is normally obvious for sighted users due to placement.
 
 ### Prior Art/Examples
 
