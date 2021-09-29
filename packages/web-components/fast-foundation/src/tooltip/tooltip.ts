@@ -118,6 +118,8 @@ export class Tooltip extends FoundationElement {
             if (oldValue !== null && oldValue !== undefined) {
                 oldValue.removeEventListener("mouseover", this.handleAnchorMouseOver);
                 oldValue.removeEventListener("mouseout", this.handleAnchorMouseOut);
+                oldValue.removeEventListener("focusin", this.handleAnchorFocusIn);
+                oldValue.removeEventListener("focusout", this.handleAnchorFocusOut);
             }
 
             if (this.anchorElement !== null && this.anchorElement !== undefined) {
@@ -442,11 +444,8 @@ export class Tooltip extends FoundationElement {
             this.hideTooltip();
         } else if (this.visible === true) {
             this.showTooltip();
+            return;
         } else {
-            if (this.isAnchorHoveredFocused) {
-                this.showTooltip();
-                return;
-            }
             this.hideTooltip();
         }
     };
