@@ -116,7 +116,7 @@ Before and after content should swap in LTR presentations.
 
 ### Test Plan
 
-While testing is still TBD for our web components, I would expect this to align with the testing strategy and not require any additional test support.
+This component should have component testing in the @microsoft/fast-foundation package.
 
 ---
 
