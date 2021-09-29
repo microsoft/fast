@@ -2,6 +2,21 @@
   "name": "@microsoft/site-utilities",
   "entries": [
     {
+      "date": "Wed, 29 Sep 2021 07:13:40 GMT",
+      "tag": "@microsoft/site-utilities_v0.9.0",
+      "version": "0.9.0",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-components to v2.11.6",
+            "author": "chhol@microsoft.com",
+            "commit": "f027c065e7db66dceb53a762e40813587f166616",
+            "package": "@microsoft/site-utilities"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 28 Sep 2021 07:10:49 GMT",
       "tag": "@microsoft/site-utilities_v0.9.0",
       "version": "0.9.0",

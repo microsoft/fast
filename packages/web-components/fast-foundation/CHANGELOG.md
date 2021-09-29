@@ -1,8 +1,18 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Tue, 28 Sep 2021 07:10:49 GMT and should not be manually modified.
+This log was last generated on Wed, 29 Sep 2021 07:13:40 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.16.4
+
+Wed, 29 Sep 2021 07:13:40 GMT
+
+### Patches
+
+- do not prevent default on tree item click (chhol@microsoft.com)
+- fix: allowing decimal values in fast number field (robarb@microsoft.com)
+- fix: sliders mouseup is not firing when leaving the window (robarb@microsoft.com)
 
 ## 2.16.3
 
