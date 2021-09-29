@@ -24,7 +24,6 @@
         --weekday-background: #024;
         --current-day-color: orange;
         --current-day-border: 1px solid;
-        --inactive-day-color: transparent;
         text-align: center;
     }
 
@@ -38,6 +37,7 @@
         transition: all 0.5s linear;
         text-align: left;
         border-radius: 0;
+        --inactive-day-color: #666;
     }
 
     .borders::part(day):hover {
@@ -83,6 +83,7 @@
 
     .borders2::part(day) {
         background: none;
+        --inactive-day-color: #666;
     }
 
     .borders2::part(date),
@@ -134,6 +135,7 @@
         background: none;
         border-radius: 0;
         height: auto;
+        --inactive-day-color: #666;
     }
 
     .borders3::part(date),
@@ -246,6 +248,7 @@
     .compact {
         width: 164px;
         text-align: center;
+        font-size: 12px;
     }
 
     .compact::part(title) {

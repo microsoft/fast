@@ -30,6 +30,11 @@ export const CalendarStyles = css`
         color: ${neutralForegroundRest};
     }
 
+    :host .interact {
+        --inactive-day-color: currentcolor;
+        --inactive-day-background: none;
+    }
+
     .title {
         font-size: ${typeRampPlus3FontSize};
         padding: var(--cell-padding);
@@ -72,11 +77,11 @@ export const CalendarStyles = css`
         line-height: var(--cell-line-height);
         border-radius: 0;
         white-space: normal;
+        border-radius: calc(${designUnit} * 1px);
     }
 
     .interact .day {
         background: ${neutralFillRest};
-        border-radius: calc(${designUnit} * 1px);
         cursor: pointer;
     }
 
@@ -85,13 +90,8 @@ export const CalendarStyles = css`
         background: var(--inactive-day-background);
     }
 
-    .interact .day.off {
-        background: none;
-    }
-
     .day.disabled {
         color: var(--disabled-day-color);
-        background: var(--disabled-day-background);
         outline: var(--disabled-day-outline);
     }
 
@@ -106,8 +106,10 @@ export const CalendarStyles = css`
         text-align: center;
     }
 
-    .today .date {
-        color: ${accentForegroundActive};
+    .interact .today,
+    .today {
+        color: ${foregroundOnAccentActive};
+        background: ${accentForegroundActive};
     }
 
     .today.off .date {
