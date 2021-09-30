@@ -29,14 +29,6 @@ export const virtualizingStackTemplate: (
             ${ref("containerElement")}
         >
             <div
-                class="background"
-                style="
-                grid-column: 1;
-                grid-row-start: 1;
-                grid-row-end: 4;
-            "
-            ></div>
-            <div
                 class="item-stack"
                 style="
                     grid-column: 1;

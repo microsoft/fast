@@ -17,6 +17,13 @@ export const virtualizingStackStyles: (
 
     .container {
         overflow: hidden;
+        background: repeating-linear-gradient(
+            0deg,
+            gray,
+            gray 100px,
+            darkgray 100px,
+            darkgray 200px
+        );
     }
 
     .item-stack {
@@ -24,15 +31,5 @@ export const virtualizingStackStyles: (
         display: flex;
         flex-direction: column;
         overflow: hidden;
-    }
-
-    .background {
-        background: repeating-linear-gradient(
-            0deg,
-            transparent,
-            transparent 100px,
-            darkgray 100px,
-            darkgray 200px
-        );
     }
 `;

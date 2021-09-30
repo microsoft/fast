@@ -1,6 +1,8 @@
 import {
     attr,
+    defaultExecutionContext,
     DOM,
+    ExecutionContext,
     FASTElement,
     html,
     observable,
@@ -130,9 +132,7 @@ export class VirtualizingStack extends FoundationElement {
     @observable
     public contextParent: FASTElement | null = null;
     private contextParentChanged(): void {
-        if ((this as FoundationElement).$fastController.isConnected) {
-            this.initializeRepeatBehavior();
-        }
+        this.reset();
     }
 
     /**
@@ -143,9 +143,7 @@ export class VirtualizingStack extends FoundationElement {
     @observable
     public items: object[];
     private itemsChanged(): void {
-        if (this.$fastController.isConnected) {
-            this.updateDimensions();
-        }
+        this.reset();
     }
 
     /**
@@ -221,6 +219,8 @@ export class VirtualizingStack extends FoundationElement {
 
     private pendingPositioningUpdate: boolean = false;
 
+    private pendingReset: boolean = false;
+
     private visibleRangeStart: number = 0;
     private visibleRangeEnd: number = 0;
 
@@ -231,7 +231,7 @@ export class VirtualizingStack extends FoundationElement {
     private containerRect: ClientRect | DOMRect | undefined;
 
     private itemsRepeatBehavior: RepeatBehavior | null;
-    private itemsPlaceholder: Node | null = null;
+    private itemsPlaceholder: Node;
 
     /**
      * Delays updating ui during scrolling
@@ -248,37 +248,39 @@ export class VirtualizingStack extends FoundationElement {
         if (this.autoUpdateMode === "auto") {
             this.startAutoUpdateEventListeners();
         }
-        this.initializeResizeDetector();
-        this.startObservers();
-        this.updateDimensions();
-        this.requestPositionUpdates();
 
-        DOM.queueUpdate(() => {
-            this.initializeRepeatBehavior();
-        });
+        this.initializeResizeDetector();
+
+        this.itemsPlaceholder = document.createComment("");
+        this.appendChild(this.itemsPlaceholder);
     }
 
     private initializeRepeatBehavior(): void {
-        if (this.itemsPlaceholder === null) {
-            this.itemsPlaceholder = document.createComment("");
-            this.appendChild(this.itemsPlaceholder);
-        }
+        this.pendingReset = false;
+
         if (this.itemsRepeatBehavior !== null) {
             // TODO: cleanup
             this.itemsRepeatBehavior = null;
         }
 
-        this.itemsRepeatBehavior = new RepeatDirective(
-            x => x.visibleItems,
-            x => x.itemTemplate,
-            { positioning: true }
-        ).createBehavior(this.itemsPlaceholder);
-
         if (this.contextParent !== null) {
-            this.$fastController.addBehaviors([this.itemsRepeatBehavior!]);
+            this.itemsRepeatBehavior = new RepeatDirective(
+                () => this.visibleItems,
+                x => x.itemTemplate,
+                { positioning: true }
+            ).createBehavior(this.itemsPlaceholder);
+            this.contextParent.$fastController.addBehaviors([this.itemsRepeatBehavior!]);
         } else {
-            // this.$fastController.addBehaviors([this.itemsRepeatBehavior!]);
+            this.itemsRepeatBehavior = new RepeatDirective(
+                x => x.visibleItems,
+                x => x.itemTemplate,
+                { positioning: true }
+            ).createBehavior(this.itemsPlaceholder);
+            this.$fastController.addBehaviors([this.itemsRepeatBehavior!]);
         }
+
+        this.startObservers();
+        this.updateDimensions();
     }
 
     /**
@@ -301,6 +303,21 @@ export class VirtualizingStack extends FoundationElement {
      */
     public update(): void {
         this.requestPositionUpdates();
+    }
+
+    /**
+     *
+     */
+    private reset(): void {
+        if (this.pendingReset) {
+            return;
+        }
+
+        this.pendingReset = true;
+
+        DOM.queueUpdate(() => {
+            this.initializeRepeatBehavior();
+        });
     }
 
     /**
@@ -389,8 +406,6 @@ export class VirtualizingStack extends FoundationElement {
      */
     private startObservers = (): void => {
         this.stopObservers();
-
-        this.requestPositionUpdates();
 
         if (this.resizeDetector !== null) {
             this.resizeDetector.observe(this);
