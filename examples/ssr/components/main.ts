@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { css, customElement, FASTElement, html, when } from "@microsoft/fast-element";
 import { Leaf } from "./leaf";
 
@@ -30,6 +31,13 @@ import { Leaf } from "./leaf";
                     Shadow DOM slotted leaf:
                     <fast-leaf></fast-leaf>
                 </fast-slot>
+            </li>
+            <li>
+                <fast-bindings
+                    attribute="attribute-value"
+                    ?boolean=${x => true}
+                    :property=${x => "property-value"}
+                ></fast-bindings>
             </li>
         </ul>
     `,
