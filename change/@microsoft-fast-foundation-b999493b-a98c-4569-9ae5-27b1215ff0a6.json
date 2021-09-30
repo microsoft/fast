@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "Disabling scroll easing for speed=0",
-  "packageName": "@microsoft/fast-foundation",
-  "email": "robarb@microsoft.com",
-  "dependentChangeType": "patch"
-}
