@@ -1,8 +1,24 @@
 # Change Log - @microsoft/fast-components
 
-This log was last generated on Tue, 28 Sep 2021 07:10:49 GMT and should not be manually modified.
+This log was last generated on Thu, 30 Sep 2021 07:13:45 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.11.7
+
+Thu, 30 Sep 2021 07:13:45 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.16.5 (robarb@microsoft.com)
+
+## 2.11.6
+
+Wed, 29 Sep 2021 07:13:40 GMT
+
+### Patches
+
+- do not prevent default on tree item click (chhol@microsoft.com)
 
 ## 2.11.5
 
