@@ -12,6 +12,7 @@ export function myTemplate() {
             </head>
             <body>
                 <fast-main>child content</fast-main>
+                <fast-slot>Light dom slotted leaf<fast-leaf></fast-slot></fast-leaf>
             </body>
         </html>
     `;
