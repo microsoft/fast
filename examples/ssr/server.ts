@@ -15,13 +15,14 @@ function handleRequest(req: Request, res: Response) {
         customElementInstanceStack: [],
     });
     const stream = (Readable as any).from(ssrResult);
-    stream.on("readable", function(this: any) {
+    stream.on("readable", function (this: any) {
         let data: string;
 
         while ((data = this.read())) {
             res.write(data);
         }
     });
+
     stream.on("close", () => res.end());
     stream.on("error", (e: Error) => {
         console.error(e);

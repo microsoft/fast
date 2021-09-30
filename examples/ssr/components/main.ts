@@ -1,9 +1,9 @@
 import { css, customElement, FASTElement, html, when } from "@microsoft/fast-element";
 import { Leaf } from "./leaf";
 
-Leaf;
 @customElement({
     name: "fast-main",
+    /*html*/
     template: html<Main>`
         <ul>
             <li>Inline content</li>
@@ -23,6 +23,8 @@ Leaf;
                 `
             )}
             <li><fast-leaf></fast-leaf></li>
+            <li><fast-closed-shadow-root></fast-closed-shadow-root></li>
+            <li><fast-open-shadow-root></fast-open-shadow-root></li>
         </ul>
     `,
     styles: css`

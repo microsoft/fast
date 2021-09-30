@@ -1,8 +1,7 @@
 /* eslint-disable */
 import { html } from "lit";
-import { Main } from "./components/main";
-
-Main;
+import * as Components from "./components";
+Components;
 
 export function myTemplate() {
     return html`
