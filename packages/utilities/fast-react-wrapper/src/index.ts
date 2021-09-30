@@ -24,6 +24,7 @@ const emptyProps = Object.freeze(Object.create(null));
 
 /**
  * Event signatures for a React wrapper.
+ * @public
  */
 export type ReactEvents<T> = {
     [P in keyof T]?: (e: Event) => unknown;
@@ -31,6 +32,7 @@ export type ReactEvents<T> = {
 
 /**
  * Maps React event names to DOM event types for special handling.
+ * @public
  */
 export type ReactEventMap<T> = {
     [P in keyof T]: string;
@@ -38,6 +40,7 @@ export type ReactEventMap<T> = {
 
 /**
  * Optional configuration for the React wrapper.
+ * @public
  */
 export type ReactWrapperConfig<TEvents> = {
     /**
@@ -61,6 +64,7 @@ export type ReactWrapperConfig<TEvents> = {
 
 /**
  * The props used by a ReactWrapper.
+ * @public
  */
 export type ReactWrapperProps<
     TElement extends HTMLElement,
@@ -75,6 +79,7 @@ export type ReactWrapperProps<
 
 /**
  * A React component that wraps a Web Component.
+ * @public
  */
 export type ReactWrapper<TElement extends HTMLElement, TEvents> = Constructable<
     ReactModule.Component<ReactWrapperProps<TElement, TEvents>>
@@ -82,6 +87,7 @@ export type ReactWrapper<TElement extends HTMLElement, TEvents> = Constructable<
 
 /**
  * Extracts the element type from a FoundationElementRegistry
+ * @public
  */
 export type FoundationElementRegistryElement<
     TRegistry
@@ -182,6 +188,7 @@ function getElementKeys<TElement, TEvents>(
  * @param React - The React module, typically imported from the `react` npm
  * package
  * @param designSystem - A design system to register the components with.
+ * @public
  */
 export function provideReactWrapper(React: any, designSystem?: DesignSystem) {
     let registrations: Registry[] = [];
