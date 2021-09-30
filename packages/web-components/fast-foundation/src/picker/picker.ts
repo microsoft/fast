@@ -298,7 +298,7 @@ export class Picker extends FormAssociatedPicker {
             this.showNoOptions =
                 this.filteredOptionsList.length === 0 &&
                 this.menuElement.querySelectorAll('[role="listitem"]').length === 0;
-            this.setFocusedOption(this.filteredOptionsList.length === 0 ? -1 : 0);
+            this.setFocusedOption(this.showNoOptions ? -1 : 0);
         }
     }
 
