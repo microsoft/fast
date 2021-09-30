@@ -192,7 +192,7 @@ export class HorizontalScroll extends FoundationElement {
         super.connectedCallback();
 
         this.initializeResizeDetector();
-        this.getRefreshRate();
+        this.getFramesPerSecond();
     }
 
     public disconnectedCallback(): void {
@@ -349,9 +349,8 @@ export class HorizontalScroll extends FoundationElement {
      * @public
      */
     public scrollToPrevious(): void {
-        this.getRefreshRate();
+        const scrollPosition = this.scrollContainer.scrollLeft;
 
-        const scrollPosition: number = this.scrollContainer.scrollLeft;
         const current = this.scrollStops.findIndex(
             (stop, index) =>
                 stop <= scrollPosition &&
@@ -362,12 +361,14 @@ export class HorizontalScroll extends FoundationElement {
 
         const right = Math.abs(this.scrollStops[current + 1]);
 
-        let nextIndex: number = this.scrollStops.findIndex(
-            (stop: number): boolean => Math.abs(stop) + this.width > right
+        let nextIndex = this.scrollStops.findIndex(
+            stop => Math.abs(stop) + this.width > right
         );
+
         if (nextIndex > current || nextIndex === -1) {
             nextIndex = current > 0 ? current - 1 : 0;
         }
+
         this.scrollToPosition(this.scrollStops[nextIndex], scrollPosition);
     }
 
@@ -376,25 +377,25 @@ export class HorizontalScroll extends FoundationElement {
      * @public
      */
     public scrollToNext(): void {
-        this.getRefreshRate();
+        const scrollPosition = this.scrollContainer.scrollLeft;
 
-        const scrollPosition: number = this.scrollContainer.scrollLeft;
         const current = this.scrollStops.findIndex(
             stop => Math.abs(stop) >= Math.abs(scrollPosition)
         );
-        const outOfView: number = this.scrollStops.findIndex(
+
+        const outOfView = this.scrollStops.findIndex(
             stop => Math.abs(scrollPosition) + this.width <= Math.abs(stop)
         );
 
-        let nextIndex: number = current;
+        let nextIndex = current;
 
         if (outOfView > current + 2) {
             nextIndex = outOfView - 2;
         } else if (current < this.scrollStops.length - 2) {
             nextIndex = current + 1;
         }
-        const nextStop: number = this.scrollStops[nextIndex];
-        this.scrollToPosition(nextStop, scrollPosition);
+
+        this.scrollToPosition(this.scrollStops[nextIndex], scrollPosition);
     }
 
     /**
@@ -424,75 +425,63 @@ export class HorizontalScroll extends FoundationElement {
         const direction: number = position < newPosition ? 1 : -1;
         const scrollDistance: number = Math.abs(newPosition - position);
         const seconds = ~~((scrollDistance / this.speed) * 1000) / 1000;
-        const stepCount: number = ~~(this.framesPerSecond * seconds);
 
-        if (stepCount < 1) {
-            this.scrolling = false;
-            return;
-        }
+        this.getFramesPerSecond().then(() => {
+            const stepCount: number = ~~(this.framesPerSecond * seconds);
 
-        for (let i = 0; i < stepCount; i++) {
-            const progress = i / stepCount;
-            const easingFactor = this.getEasedFactor(this.easing, progress);
-            const travel = scrollDistance * easingFactor * direction;
-            steps.push(travel + position);
-        }
+            if (stepCount < 1) {
+                this.scrolling = false;
+                return;
+            }
 
-        steps.push(newPosition);
+            for (let i = 0; i < stepCount; i++) {
+                const progress = i / stepCount;
+                const easingFactor = this.getEasedFactor(this.easing, progress);
+                const travel = scrollDistance * easingFactor * direction;
+                steps.push(travel + position);
+            }
 
-        this.move(steps, this.frameTime);
+            steps.push(newPosition);
+
+            this.move(steps, this.frameTime);
+        });
     }
-
-    /**
-     * Holds the collection of timestamp values from requestAnimationFrame calls
-     *
-     * @internal
-     */
-    private timestamps: number[] = [];
-
-    /**
-     * Holds the set of potential frametimes.
-     *
-     * @internal
-     */
-    private frameTimes: Set<number> = new Set();
 
     /**
      * Calculates the screen refresh rate.
      *
-     * @param time - the animation frame timestamp
+     * @param timestamps - the collection of previous timestamps
+     * @param potentialRefreshRates - the set of previous potential frame times
      *
      * @internal
      * @remarks
      * Some browsers may reduce time precision to resist fingerprinting (https://developer.mozilla.org/en-US/docs/Web/API/DOMHighResTimeStamp#reduced_time_precision)
      */
-    private getRefreshRate: (time?: number) => void = time => {
-        if (!time) {
-            requestAnimationFrame(this.getRefreshRate);
-            return;
-        }
+    private async getFramesPerSecond(
+        timestamps: number[] = [],
+        potentialRefreshRates: Set<number> = new Set()
+    ): Promise<void> {
+        const time = await new Promise(requestAnimationFrame);
+        timestamps.unshift(time);
 
-        this.timestamps.unshift(time);
-
-        if (this.timestamps.length > 10) {
-            const lastTimestamp = this.timestamps.pop()!;
+        if (timestamps.length > 2) {
+            const lastTimestamp = timestamps.pop()!;
 
             // Math.round accounts for uneven refresh rates like 59.94hz
-            const potentialFrameTime = Math.round(
-                (1000 / (time - lastTimestamp)) * this.timestamps.length
+            const potentialRefreshRate = Math.round(
+                (1000 / (time - lastTimestamp)) * timestamps.length
             );
 
-            if (this.frameTimes.has(potentialFrameTime)) {
-                this.framesPerSecond = potentialFrameTime;
-                this.frameTimes.clear();
-                this.timestamps = [];
+            if (potentialRefreshRates.has(potentialRefreshRate)) {
+                this.framesPerSecond = potentialRefreshRate;
                 return;
             }
-            this.frameTimes.add(potentialFrameTime);
+
+            potentialRefreshRates.add(potentialRefreshRate);
         }
 
-        requestAnimationFrame(this.getRefreshRate);
-    };
+        return this.getFramesPerSecond(timestamps, potentialRefreshRates);
+    }
 
     /**
      * Holds the timestamp of the current animation frame.
