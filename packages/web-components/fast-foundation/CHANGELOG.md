@@ -1,8 +1,65 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Sun, 19 Sep 2021 07:17:17 GMT and should not be manually modified.
+This log was last generated on Thu, 30 Sep 2021 07:13:45 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.16.5
+
+Thu, 30 Sep 2021 07:13:45 GMT
+
+### Patches
+
+- Disabling scroll easing for speed=0 (robarb@microsoft.com)
+
+## 2.16.4
+
+Wed, 29 Sep 2021 07:13:40 GMT
+
+### Patches
+
+- do not prevent default on tree item click (chhol@microsoft.com)
+- fix: allowing decimal values in fast number field (robarb@microsoft.com)
+- fix: sliders mouseup is not firing when leaving the window (robarb@microsoft.com)
+
+## 2.16.3
+
+Tue, 28 Sep 2021 07:10:49 GMT
+
+### Patches
+
+- made orientation changed update child tab styles (marjon@microsoft.com)
+- Fix: active indicator keyboarding issue in tabs (jes@microsoft.com)
+
+## 2.16.2
+
+Mon, 27 Sep 2021 07:12:15 GMT
+
+### Patches
+
+- fix: ensure tree item selection is only managed in tree view (jes@microsoft.com)
+
+## 2.16.1
+
+Thu, 23 Sep 2021 07:14:34 GMT
+
+### Patches
+
+- Removing design-system-provider from storybook (robarb@microsoft.com)
+- Horizontal-scroll tests cleanup (robarb@microsoft.com)
+
+## 2.16.0
+
+Wed, 22 Sep 2021 07:13:13 GMT
+
+### Minor changes
+
+- feat(di): add registerWithContext and use in design system (roeisenb@microsoft.com)
+
+### Patches
+
+- fix: active indicator does not update when activeid attr is changed (jes@microsoft.com)
+- fix aria-describedby typos (v-dlesac@microsoft.com)
 
 ## 2.15.0
 

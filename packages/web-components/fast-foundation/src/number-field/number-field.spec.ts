@@ -247,7 +247,7 @@ describe("NumberField", () => {
             await disconnect();
         });
 
-        it("should set the `aria-describedBy` attribute on the internal control when provided", async () => {
+        it("should set the `aria-describedby` attribute on the internal control when provided", async () => {
             const { element, connect, disconnect } = await setup();
             const ariaDescribedby = "testId";
 
@@ -258,7 +258,7 @@ describe("NumberField", () => {
             expect(
                 element.shadowRoot
                     ?.querySelector(".control")
-                    ?.getAttribute("aria-describedBy")
+                    ?.getAttribute("aria-describedby")
             ).to.equal(ariaDescribedby);
 
             await disconnect();
@@ -828,6 +828,62 @@ describe("NumberField", () => {
             expect(element.proxy.value).to.equal(`${value - step}`);
 
             await disconnect();
+        });
+    });
+
+    describe("value validation", () => {
+        it("should allow number entry", async () => {
+            const { element, connect, disconnect } = await setup();
+
+            await connect();
+
+            element.setAttribute("value", "18");
+
+            expect(element.value).to.equal("18");
+        });
+
+        it("should not allow non-number entry", async () => {
+            const { element, connect, disconnect } = await setup();
+
+            await connect();
+
+            element.setAttribute("value", "11a");
+
+            expect(element.value).to.equal("11");
+        });
+
+        it("should allow float number entry", async () => {
+            const { element, connect, disconnect } = await setup();
+
+            await connect();
+
+            element.setAttribute("value", "37.");
+
+            expect(element.value).to.equal("37.");
+
+            element.setAttribute("value", ".1");
+
+            expect(element.value).to.equal(".1");
+        });
+
+        it("should allow positive and negative number entry", async () => {
+            const { element, connect, disconnect } = await setup();
+
+            await connect();
+
+            element.setAttribute("value", "-1");
+
+            expect(element.value).to.equal("-1");
+        });
+
+        it("should allow negative float entry", async () => {
+            const { element, connect, disconnect } = await setup();
+
+            await connect();
+
+            element.setAttribute("value", "-.6");
+
+            expect(element.value).to.equal("-.6");
         });
     });
 
