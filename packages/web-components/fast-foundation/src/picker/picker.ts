@@ -295,7 +295,9 @@ export class Picker extends FormAssociatedPicker {
     public filteredOptionsList: string[] = [];
     private filteredOptionsListChanged(): void {
         if (this.$fastController.isConnected) {
-            this.showNoOptions = this.filteredOptionsList.length === 0;
+            this.showNoOptions =
+                this.filteredOptionsList.length === 0 &&
+                this.menuElement.querySelectorAll('[role="listitem"]').length === 0;
             this.setFocusedOption(this.filteredOptionsList.length === 0 ? -1 : 0);
         }
     }
