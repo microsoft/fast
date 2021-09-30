@@ -25,6 +25,12 @@ import { Leaf } from "./leaf";
             <li><fast-leaf></fast-leaf></li>
             <li><fast-closed-shadow-root></fast-closed-shadow-root></li>
             <li><fast-open-shadow-root></fast-open-shadow-root></li>
+            <li>
+                <fast-slot>
+                    Shadow DOM slotted leaf:
+                    <fast-leaf></fast-leaf>
+                </fast-slot>
+            </li>
         </ul>
     `,
     styles: css`

@@ -3,8 +3,8 @@
 ## Test cases
 [x] Custom element rendered in light DOM
 [x] Custom element rendered into shadow DOM
-[] Custom element rendered into light DOM slot
-[] Custom element rendered into shadow DOM slot
+[x] Custom element rendered into light DOM slot
+[x] Custom element rendered into shadow DOM slot
 [x] Conditional template rendering
 [] Repeat template rendering
 [] Attribute value binding
