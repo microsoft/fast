@@ -3,7 +3,7 @@ import { provideReactWrapper, ReactWrapperProps } from './index';
 import React from "react";
 import ReactDOM from "react-dom";
 import { uniqueElementName } from '@microsoft/fast-foundation/dist/esm/test-utilities/fixture';
-import { expect, assert } from "chai";
+import { expect } from "chai";
 
 const elementName = uniqueElementName();
 @customElement({
@@ -71,21 +71,21 @@ describe('wrap', () => {
 
   it('wrapper renders custom element that updates', async () => {
     renderReactComponent();
-    assert.isOk(el);
-    assert.isOk(el.$fastController.isConnected);
+    expect(el).ok;
+    expect(el.$fastController.isConnected).ok;
   });
 
   it('can get ref to element', async () => {
     const elementRef1 = React.createRef();
     renderReactComponent({ref: elementRef1});
-    assert.equal(elementRef1.current, el);
+    expect(elementRef1.current).equal(el);
     const elementRef2 = React.createRef();
     renderReactComponent({ref: elementRef2});
-    assert.equal(elementRef1.current, null);
-    assert.equal(elementRef2.current, el);
+    expect(elementRef1.current).equal(null);
+    expect(elementRef2.current).equal(el);
     renderReactComponent({ref: elementRef1});
-    assert.equal(elementRef1.current, el);
-    assert.equal(elementRef2.current, null);
+    expect(elementRef1.current).equal(el);
+    expect(elementRef2.current).equal(null);
   });
 
   it('can get ref to element via callbacks', async () => {
@@ -94,22 +94,22 @@ describe('wrap', () => {
     const ref2Calls: Array<string | undefined> = [];
     const refCb2 = (e: Element | null) => ref2Calls.push(e?.localName);
     renderReactComponent({ref: refCb1});
-    assert.deepEqual(ref1Calls, [elementName]);
+    expect(ref1Calls).eql([elementName]);
     renderReactComponent({ref: refCb2});
-    assert.deepEqual(ref1Calls, [elementName, undefined]);
-    assert.deepEqual(ref2Calls, [elementName]);
+    expect(ref1Calls).eql([elementName, undefined]);
+    expect(ref2Calls).eql([elementName]);
     renderReactComponent({ref: refCb1});
-    assert.deepEqual(ref1Calls, [elementName, undefined, elementName]);
-    assert.deepEqual(ref2Calls, [elementName, undefined]);
+    expect(ref1Calls).eql([elementName, undefined, elementName]);
+    expect(ref2Calls).eql([elementName, undefined]);
   });
 
   it('can set attributes', async () => {
     await renderReactComponent({id: 'id'});
-    assert.equal(el.getAttribute('id'), 'id');
+    expect(el.getAttribute('id')).equal('id');
     await renderReactComponent({id: undefined});
-    assert.equal(el.getAttribute('id'), null);
+    expect(el.getAttribute('id')).equal(null);
     await renderReactComponent({id: 'id2'});
-    assert.equal(el.getAttribute('id'), 'id2');
+    expect(el.getAttribute('id')).equal('id2');
   });
 
   it('can set properties', async () => {
@@ -122,11 +122,11 @@ describe('wrap', () => {
       obj: o,
       arr: a,
     });
-    assert.equal(el.bool, true);
-    assert.equal(el.str, 'str');
-    assert.equal(el.num, 5);
-    assert.deepEqual(el.obj, o);
-    assert.deepEqual(el.arr, a);
+    expect(el.bool).equal(true);
+    expect(el.str).equal('str');
+    expect(el.num).equal(5);
+    expect(el.obj).eql(o);
+    expect(el.arr).eql(a);
     const firstEl = el;
     // update
     o = {foo: false};
@@ -138,12 +138,12 @@ describe('wrap', () => {
       obj: o,
       arr: a,
     });
-    assert.equal(firstEl, el);
-    assert.equal(el.bool, false);
-    assert.equal(el.str, 'str2');
-    assert.equal(el.num, 10);
-    assert.deepEqual(el.obj, o);
-    assert.deepEqual(el.arr, a);
+    expect(firstEl).equal(el);
+    expect(el.bool).equal(false);
+    expect(el.str).equal('str2');
+    expect(el.num).equal(10);
+    expect(el.obj).eql(o);
+    expect(el.arr).eql(a);
   });
 
   it('can set properties that reflect', async () => {
@@ -156,12 +156,12 @@ describe('wrap', () => {
     await DOM.nextUpdate();
 
     const firstEl = el;
-    assert.equal(el.rbool, true);
-    assert.equal(el.rstr, 'str');
-    assert.equal(el.rnum, 5);
-    assert.equal(el.getAttribute('rbool'), '');
-    assert.equal(el.getAttribute('rstr'), 'str');
-    assert.equal(el.getAttribute('rnum'), '5');
+    expect(el.rbool).equal(true);
+    expect(el.rstr).equal('str');
+    expect(el.rnum).equal(5);
+    expect(el.getAttribute('rbool')).equal('');
+    expect(el.getAttribute('rstr')).equal('str');
+    expect(el.getAttribute('rnum')).equal('5');
     // update
 
     renderReactComponent({
@@ -172,13 +172,13 @@ describe('wrap', () => {
 
     await DOM.nextUpdate();
 
-    assert.equal(firstEl, el);
-    assert.equal(el.rbool, false);
-    assert.equal(el.rstr, 'str2');
-    assert.equal(el.rnum, 10);
-    assert.equal(el.getAttribute('rbool'), null);
-    assert.equal(el.getAttribute('rstr'), 'str2');
-    assert.equal(el.getAttribute('rnum'), '10');
+    expect(firstEl).equal(el);
+    expect(el.rbool).equal(false);
+    expect(el.rstr).equal('str2');
+    expect(el.rnum).equal(10);
+    expect(el.getAttribute('rbool')).equal(null);
+    expect(el.getAttribute('rstr')).equal('str2');
+    expect(el.getAttribute('rnum')).equal('10');
   });
 
   it('can listen to events', async () => {
@@ -199,43 +199,43 @@ describe('wrap', () => {
       onBar,
     });
     el.$emit('foo');
-    assert.equal(fooEvent!.type, 'foo');
+    expect(fooEvent!.type).equal('foo');
     el.$emit('bar');
-    assert.equal(barEvent!.type, 'bar');
+    expect(barEvent!.type).equal('bar');
     fooEvent = undefined;
     barEvent = undefined;
     await renderReactComponent({
       onFoo: undefined,
     });
     el.$emit('foo');
-    assert.equal(fooEvent, undefined);
+    expect(fooEvent).equal(undefined);
     el.$emit('bar');
-    assert.equal(barEvent!.type, 'bar');
+    expect(barEvent!.type).equal('bar');
     fooEvent = undefined;
     barEvent = undefined;
     await renderReactComponent({
       onFoo,
     });
     el.$emit('foo');
-    assert.equal(fooEvent!.type, 'foo');
+    expect(fooEvent!.type).equal('foo');
     el.$emit('bar');
-    assert.equal(barEvent!.type, 'bar');
+    expect(barEvent!.type).equal('bar');
     await renderReactComponent({
       onFoo: onFoo2,
     });
     fooEvent = undefined;
     fooEvent2 = undefined;
     el.$emit('foo');
-    assert.equal(fooEvent, undefined);
-    assert.equal(fooEvent2!.type, 'foo');
+    expect(fooEvent).equal(undefined);
+    expect(fooEvent2!.type).equal('foo');
     await renderReactComponent({
       onFoo,
     });
     fooEvent = undefined;
     fooEvent2 = undefined;
     el.$emit('foo');
-    assert.equal(fooEvent!.type, 'foo');
-    assert.equal(fooEvent2, undefined);
+    expect(fooEvent!.type).equal('foo');
+    expect(fooEvent2).equal(undefined);
   });
 
   it('can listen to native events', async () => {
@@ -247,7 +247,7 @@ describe('wrap', () => {
       },
     });
     el.click();
-    assert.equal(clickEvent?.type, 'click');
+    expect(clickEvent?.type).equal('click');
   });
 
   it('can set children', async () => {
@@ -258,8 +258,8 @@ describe('wrap', () => {
       // `createElement`.
     ) as unknown) as HTMLCollection;
     await renderReactComponent({children});
-    assert.equal(el.childNodes.length, 1);
-    assert.equal(el.firstElementChild!.localName, 'div');
+    expect(el.childNodes.length).equal(1);
+    expect(el.firstElementChild!.localName).equal('div');
   });
 
   it('can set reserved React properties', async () => {
@@ -267,8 +267,8 @@ describe('wrap', () => {
       style: {display: 'block'},
       className: 'foo bar',
     } as any);
-    assert.equal(el.style.display, 'block');
-    assert.equal(el.getAttribute('class'), 'foo bar');
+    expect(el.style.display).equal('block');
+    expect(el.getAttribute('class')).equal('foo bar');
   });
 
   it('warns if element contains reserved props', async () => {
@@ -291,7 +291,7 @@ describe('wrap', () => {
       container
     );
 
-    assert.include(warning!, 'ref');
+    expect(warning!).include('ref')
     console.warn = warn;
   });
 });
