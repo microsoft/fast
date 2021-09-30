@@ -1,0 +1,7 @@
+{
+  "type": "minor",
+  "comment": "Emit scrollend in horizontal-scroll",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "beschmal@microsoft.com",
+  "dependentChangeType": "patch"
+}
