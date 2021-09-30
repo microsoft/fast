@@ -406,7 +406,7 @@ export class HorizontalScroll extends FoundationElement {
 
         if (this.speed < 1) {
             this.scrollContainer.scrollLeft = newPosition;
-            this.$emit("scrollend", newPosition);
+            this.$emit("scrollend");
             return;
         }
 
@@ -420,7 +420,7 @@ export class HorizontalScroll extends FoundationElement {
 
         if (stepCount < 1) {
             this.scrolling = false;
-            this.$emit("scrollend", newPosition);
+            this.$emit("scrollend");
             return;
         }
 
@@ -434,7 +434,6 @@ export class HorizontalScroll extends FoundationElement {
         steps.push(newPosition);
 
         this.move(steps, this.frameTime);
-        this.$emit("scrollend", newPosition);
     }
 
     /**
@@ -453,6 +452,7 @@ export class HorizontalScroll extends FoundationElement {
         if (!steps || steps.length <= 0) {
             this.setFlippers();
             this.scrolling = false;
+            this.$emit("scrollend");
             return;
         }
 
