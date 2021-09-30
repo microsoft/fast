@@ -40,6 +40,8 @@ import { Leaf } from "./leaf";
                 ></fast-bindings>
             </li>
         </ul>
+        <fast-repeater></fast-repeater>
+        <fast-repeater :data=${x => [1, 2, 3, 4].map(x => x.toString())}></fast-repeater>
     `,
     styles: css`
         :host {
