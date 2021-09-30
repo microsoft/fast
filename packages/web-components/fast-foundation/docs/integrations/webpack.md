@@ -103,9 +103,10 @@ module.exports = function(env, { mode }) {
     devServer: {
       port: 9000,
       historyApiFallback: true,
-      writeToDisk: true,
       open: !process.env.CI,
-      lazy: false
+      devMiddleware: {
+        writeToDisk: true,
+      },
     },
     plugins: [
       new CleanWebpackPlugin()
