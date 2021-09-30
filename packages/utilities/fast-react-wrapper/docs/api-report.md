@@ -44,7 +44,7 @@ export type ReactWrapper<TElement extends HTMLElement, TEvents> = Constructable<
 export type ReactWrapperConfig<TEvents> = {
     name?: string;
     events?: ReactEventMap<TEvents>;
-    properties?: Set<string>;
+    properties?: string[];
 };
 
 // @public

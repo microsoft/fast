@@ -47,12 +47,16 @@ export type ReactWrapperConfig<TEvents> = {
     /**
      * A mapping of React event name to DOM event type to be handled
      * by attaching event listeners to the underlying web component.
+     * @remarks
+     * Typically only needed for non-FAST web components.
      */
     events?: ReactEventMap<TEvents>;
     /**
-     * @internal
+     * A list of properties to be handled directly by the wrapper.
+     * @remarks
+     * Typically only needed for vanilla web components.
      */
-    properties?: Set<string>;
+    properties?: string[];
 };
 
 /**
@@ -144,28 +148,34 @@ function getElementKeys<TElement, TEvents>(
     type: Constructable<TElement>,
     config: ReactWrapperConfig<TEvents>
 ) {
-    if (!config.properties) {
-        const keys = new Set(Object.keys(getElementEvents(config)));
-        const accessors = Observable.getAccessors(type.prototype);
-
-        if (accessors.length > 0) {
-            for (const a of accessors) {
-                if (keyIsValid(type, config, a.name)) {
-                    keys.add(a.name);
-                }
-            }
+    if (!(config as any).keys) {
+        if (config.properties) {
+            (config as any).keys = new Set(
+                config.properties.concat(Object.keys(getElementEvents(config)))
+            );
         } else {
-            for (const p in type.prototype) {
-                if (!(p in HTMLElement.prototype) && keyIsValid(type, config, p)) {
-                    keys.add(p);
+            const keys = new Set(Object.keys(getElementEvents(config)));
+            const accessors = Observable.getAccessors(type.prototype);
+
+            if (accessors.length > 0) {
+                for (const a of accessors) {
+                    if (keyIsValid(type, config, a.name)) {
+                        keys.add(a.name);
+                    }
+                }
+            } else {
+                for (const p in type.prototype) {
+                    if (!(p in HTMLElement.prototype) && keyIsValid(type, config, p)) {
+                        keys.add(p);
+                    }
                 }
             }
-        }
 
-        config.properties = keys;
+            (config as any).keys = keys;
+        }
     }
 
-    return config.properties;
+    return (config as any).keys;
 }
 
 /**
