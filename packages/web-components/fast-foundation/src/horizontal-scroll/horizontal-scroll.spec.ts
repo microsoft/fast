@@ -68,7 +68,7 @@ async function setup() {
     // Removing animated scroll so that tests don't have to wait on DOM updates
     element.speed = 0;
 
-    element.setAttribute("style", `width: ${horizontalScrollWidth}px}`);
+    element.setAttribute("style", `width: ${horizontalScrollWidth}px;`);
     element.innerHTML = getCards(8);
 
     await connect();
@@ -111,6 +111,7 @@ describe("HorinzontalScroll", () => {
 
             element.scrollToNext();
             await DOM.nextUpdate();
+            await DOM.nextUpdate();
 
             expect(element.shadowRoot?.querySelector(".scroll-prev")?.classList.contains("disabled")).to.equal(false);
             await disconnect();
@@ -120,7 +121,10 @@ describe("HorinzontalScroll", () => {
             const { element, disconnect } = await setup();
 
             element.scrollToNext();
+            await DOM.nextUpdate();
+
             element.scrollToPrevious();
+            await DOM.nextUpdate();
             await DOM.nextUpdate();
 
             expect(element.shadowRoot?.querySelector(".scroll-prev")?.classList.contains("disabled")).to.equal(true);
@@ -131,8 +135,16 @@ describe("HorinzontalScroll", () => {
             const { element, disconnect } = await setup();
 
             element.scrollToNext();
+            await DOM.nextUpdate();
+
             element.scrollToNext();
+            await DOM.nextUpdate();
+
             element.scrollToNext();
+            await DOM.nextUpdate();
+
+            element.scrollToNext();
+            await DOM.nextUpdate();
             await DOM.nextUpdate();
 
             expect(element.shadowRoot?.querySelector(".scroll-next")?.classList.contains("disabled")).to.equal(true);
@@ -143,10 +155,19 @@ describe("HorinzontalScroll", () => {
             const { element, disconnect } = await setup();
 
             element.scrollToNext();
+            await DOM.nextUpdate();
+
             element.scrollToNext();
+            await DOM.nextUpdate();
+
             element.scrollToNext();
+            await DOM.nextUpdate();
+
             element.scrollToNext();
+            await DOM.nextUpdate();
+
             element.scrollToPrevious();
+            await DOM.nextUpdate();
             await DOM.nextUpdate();
 
             expect(element.shadowRoot?.querySelector(".scroll-next")?.classList.contains("disabled")).to.equal(false);

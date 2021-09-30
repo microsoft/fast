@@ -405,6 +405,7 @@ export class HorizontalScroll extends FoundationElement {
         }
 
         if (this.speed < 1) {
+            this.scrollContainer.style.scrollBehavior = "auto";
             this.scrollContainer.scrollLeft = newPosition;
             return;
         }
