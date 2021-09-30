@@ -25,6 +25,9 @@
       "**/@types/karma",
       "**/@types/mocha",
       "**/@types/node",
+      "**/@types/express",
+      "**/@types/connect",
+      "**/@types/body-parser",
       "**/chai",
       "**/html-minifier-terser",
       "**/react-syntax-highlighter"
