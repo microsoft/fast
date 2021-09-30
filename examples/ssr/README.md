@@ -7,8 +7,8 @@
 [x] Custom element rendered into shadow DOM slot
 [x] Conditional template rendering
 [] Repeat template rendering
-[] Attribute value binding
-[] Boolean attribute binding
+[x] Attribute value binding
+[x] Boolean attribute binding
 [] Property value binding
 [] Component stylesheet emission
 [] Design token custom property emission
@@ -26,3 +26,6 @@
 7. Lit's "render" method doesn't know how to process raw strings into declarative shadow-dom custom elements, so this preculdes us from simply calling `yield* render(innerHTML, context)` in the `renderShadow()` method.
 8. Lit-ssr's render() does not understand DOM that is interpolated into the html tagged-template literal, so this demo contains a work-around that may be un-safe.
 9. lit-ssr seems to [hard-code `shadow-mode="open"`](https://github.com/lit/lit/blob/main/packages/labs/ssr/src/lib/render-lit-html.ts#L728), so closed shadow roots are not currently supported.
+
+## TODO
+1. property bindings not working correctly for some reason
