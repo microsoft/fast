@@ -1,0 +1,7 @@
+{
+  "type": "none",
+  "comment": "Update webpack migration documentation",
+  "packageName": "@microsoft/fast-components",
+  "email": "meyunus@microsoft.com",
+  "dependentChangeType": "none"
+}
