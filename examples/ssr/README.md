@@ -13,7 +13,8 @@
 [] Component stylesheet emission
 [] Design token custom property emission
 [] Observable changes affecting template in connectedCallback
-[] Open and closed shadow roots
+[x] Open shadow roots
+~~[] Closed shadow roots~~
 
 ## Notes
 1. Using NodeJS module resolution, we need to enumerate fast-element (and the other packages) as `"type": "module"`. These currently export ES6 modules so this change is really a fix.
@@ -24,3 +25,4 @@
 6. happy-dom does not support `Node.hasChildNodes()` which is leveraged by `HTMLView.insertBefore()`, so that method must be changed to test child length.
 7. Lit's "render" method doesn't know how to process raw strings into declarative shadow-dom custom elements, so this preculdes us from simply calling `yield* render(innerHTML, context)` in the `renderShadow()` method.
 8. Lit-ssr's render() does not understand DOM that is interpolated into the html tagged-template literal, so this demo contains a work-around that may be un-safe.
+9. lit-ssr seems to [hard-code `shadow-mode="open"`](https://github.com/lit/lit/blob/main/packages/labs/ssr/src/lib/render-lit-html.ts#L728), so closed shadow roots are not currently supported.
