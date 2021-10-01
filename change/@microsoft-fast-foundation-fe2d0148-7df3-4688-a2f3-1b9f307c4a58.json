@@ -1,0 +1,7 @@
+{
+  "type": "none",
+  "comment": "docs: update React integration doc to use the new React wrapper",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "roeisenb@microsoft.com",
+  "dependentChangeType": "none"
+}
