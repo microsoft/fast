@@ -23,20 +23,12 @@ export const virtualizingStackTemplate: (
                 height: ${x => x.totalHeight}px;
                 display: grid;
                 grid-template-columns: 1fr;
-                grid-template-rows: ${x => x.topSpacerHeight}px 1fr ${x =>
-                x.bottomSpacerHeight}px;
+                grid-template-rows: ${x => x.topSpacerHeight}px repeat(${(x, c) =>
+                x.visibleItems.length}, 1fr) ${x => x.bottomSpacerHeight}px;
             "
             ${ref("containerElement")}
         >
-            <div
-                class="item-stack"
-                style="
-                    grid-column: 1;
-                    grid-row-start: 2;
-                "
-            >
-                <slot></slot>
-            </div>
+            <slot></slot>
         </div>
     </template>
 `;

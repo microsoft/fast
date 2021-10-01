@@ -19,6 +19,7 @@ import {
 } from "@microsoft/fast-web-utilities";
 import type { VirtualizingStack } from "../virtualizing-stack";
 import { FoundationElement } from "../foundation-element";
+import { VirtualizingStackBase } from "../virtualizing-stack";
 import type { DataGridCell } from "./data-grid-cell";
 import type { DataGridRow } from "./data-grid-row";
 import { DataGridRowTypes, GenerateHeaderOptions } from "./data-grid.options";
@@ -99,7 +100,7 @@ export interface ColumnDefinition {
  *
  * @public
  */
-export class DataGrid extends FoundationElement {
+export class DataGrid extends VirtualizingStackBase {
     /**
      *  generates a basic column definition by examining sample row data
      */
@@ -340,7 +341,6 @@ export class DataGrid extends FoundationElement {
 
         if (this.virtualize) {
             this.stack.itemTemplate = this.rowItemTemplate;
-            this.stack.contextParent = this;
         } else {
             this.rowsPlaceholder = document.createComment("");
             this.appendChild(this.rowsPlaceholder);

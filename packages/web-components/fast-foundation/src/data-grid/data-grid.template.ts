@@ -29,7 +29,6 @@ export const dataGridTemplate: FoundationElementTemplate<ViewTemplate<DataGrid>>
 ) => {
     const rowItemTemplate: ViewTemplate = createRowItemTemplate(context);
     const rowTag = context.tagFor(DataGridRow);
-    const stackTag = context.tagFor(VirtualizingStack);
     return html<DataGrid>`
         <template
             role="grid"
@@ -42,18 +41,6 @@ export const dataGridTemplate: FoundationElementTemplate<ViewTemplate<DataGrid>>
             })}
         >
             <slot></slot>
-            ${when(
-                x => x.virtualize,
-                html<DataGrid>`
-            <${stackTag}
-                :items="${x => x.rowsData}"
-                item-height="${x => x.itemHeight}"
-                ${ref("stack")}
-            >
-            </${stackTag}>
-        </template>
-        `
-            )}
         </template>
     `;
 };
