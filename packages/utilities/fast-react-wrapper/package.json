@@ -2,6 +2,7 @@
   "name": "@microsoft/fast-react-wrapper",
   "description": "A utility for wrapping web components for use in React.",
   "sideEffects": false,
+  "private": true,
   "version": "0.0.1",
   "author": {
     "name": "Microsoft",
