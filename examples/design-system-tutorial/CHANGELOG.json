@@ -1,0 +1,50 @@
+{
+  "name": "fast-design-system-demo",
+  "entries": [
+    {
+      "date": "Thu, 30 Sep 2021 07:13:45 GMT",
+      "tag": "fast-design-system-demo_v1.0.0",
+      "version": "1.0.0",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-components to v2.11.7",
+            "author": "robarb@microsoft.com",
+            "commit": "5646a82ad9cec5899f708b31cf8e41f513918920",
+            "package": "fast-design-system-demo"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 29 Sep 2021 07:13:40 GMT",
+      "tag": "fast-design-system-demo_v1.0.0",
+      "version": "1.0.0",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-components to v2.11.6",
+            "author": "chhol@microsoft.com",
+            "commit": "f027c065e7db66dceb53a762e40813587f166616",
+            "package": "fast-design-system-demo"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 28 Sep 2021 07:10:49 GMT",
+      "tag": "fast-design-system-demo_v1.0.0",
+      "version": "1.0.0",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-components to v2.11.5",
+            "author": "marjon@microsoft.com",
+            "commit": "2d07b6ab5a9500ced93e0c1d06eea4bcad430088",
+            "package": "fast-design-system-demo"
+          }
+        ]
+      }
+    }
+  ]
+}
