@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-component-explorer",
   "entries": [
     {
+      "date": "Sun, 03 Oct 2021 07:12:33 GMT",
+      "tag": "@microsoft/fast-component-explorer_v0.17.2",
+      "version": "0.17.2",
+      "comments": {
+        "none": [
+          {
+            "comment": "Bump @microsoft/site-utilities to v0.9.0",
+            "author": "meyunus@microsoft.com",
+            "commit": "83d2ace2b485b730cf8ea11512d5782cab381a1b",
+            "package": "@microsoft/fast-component-explorer"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 30 Sep 2021 07:13:45 GMT",
       "tag": "@microsoft/fast-component-explorer_v0.17.2",
       "version": "0.17.2",
