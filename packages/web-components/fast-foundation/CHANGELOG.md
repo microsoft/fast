@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Wed, 29 Sep 2021 07:13:40 GMT and should not be manually modified.
+This log was last generated on Thu, 30 Sep 2021 07:13:45 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.16.5
+
+Thu, 30 Sep 2021 07:13:45 GMT
+
+### Patches
+
+- Disabling scroll easing for speed=0 (robarb@microsoft.com)
 
 ## 2.16.4
 
