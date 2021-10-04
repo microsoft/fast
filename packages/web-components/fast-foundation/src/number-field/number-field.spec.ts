@@ -540,7 +540,7 @@ describe("NumberField", () => {
             expect(wasInput).to.equal(true);
 
             await disconnect();
-        })
+        });
     });
 
     describe("when the owning form's reset() method is invoked", () => {
@@ -718,7 +718,9 @@ describe("NumberField", () => {
 
             await disconnect();
         });
+    });
 
+    describe("step and increment/decrement", () => {
         it("should set step to a default of 1", async () => {
             const { element, connect, disconnect } = await setup();
             const step = 1;
@@ -826,6 +828,34 @@ describe("NumberField", () => {
             await connect();
             expect(element.value).to.equal(`${value - step}`);
             expect(element.proxy.value).to.equal(`${value - step}`);
+
+            await disconnect();
+        });
+
+        it("should update displayText when incrementing", async () => {
+            const { element, connect, disconnect } = await setup();
+            const value = 0;
+            element.value = `${value}`;
+
+            await connect();
+
+            element.stepUp();
+
+            expect(element.displayText).to.equal(1);
+
+            await disconnect();
+        });
+
+        it("should update displayText when decrementing", async () => {
+            const { element, connect, disconnect } = await setup();
+            const value = 0;
+            element.value = `${value}`;
+
+            await connect();
+
+            element.stepDown();
+
+            expect(element.displayText).to.equal(-1);
 
             await disconnect();
         });

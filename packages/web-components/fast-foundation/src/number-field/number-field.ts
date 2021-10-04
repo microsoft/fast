@@ -209,6 +209,7 @@ export class NumberField extends FormAssociatedNumberField {
         }
 
         if (value != this.value) {
+            this.displayText = value;
             this.value = value.toString();
             this.$emit("input");
             this.$emit("change");
