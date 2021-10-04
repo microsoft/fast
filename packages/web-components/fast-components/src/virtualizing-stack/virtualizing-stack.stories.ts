@@ -6,8 +6,20 @@ import VirtualizingStackTemplate from "./fixtures/base.html";
 import "./index";
 
 const imageItemTemplate = html`
-    <fast-card style="height:100px; width:120px;">
-        <image style="height:100px; width:120px;" src="${x => x.url}"></image>
+    <fast-card
+        style="
+            height:100px;
+            width:120px;
+            grid-row:${(x, c) => c.index + 2}
+        "
+    >
+        <image
+            style="
+                height:100px;
+                width:120px;
+            "
+            src="${x => x.url}"
+        ></image>
     </fast-card>
 `;
 

@@ -19,6 +19,7 @@ const columnWidths: string[] = ["1fr", "1fr", "1fr", "1fr"];
 
 const defaultRowItemTemplate = html`
     <fast-data-grid-row
+        style="grid-row:${(x, c) => c.index + 2};"
         :rowData="${x => x}"
         :cellItemTemplate="${(x, c) => c.parent.cellItemTemplate}"
         :headerCellItemTemplate="${(x, c) => c.parent.headerCellItemTemplate}"
@@ -27,11 +28,11 @@ const defaultRowItemTemplate = html`
 
 const customRowItemTemplate = html`
     <fast-data-grid-row
+        style="grid-row:${(x, c) => c.index + 2};"
         :rowData="${x => x}"
         :cellItemTemplate="${(x, c) => c.parent.cellItemTemplate}"
         :headerCellItemTemplate="${(x, c) => c.parent.headerCellItemTemplate}"
     ></fast-data-grid-row>
-    <fast-divider style="margin-bottom: 6px; margin-top: 6px;"></fast-divider>
 `;
 
 const customCellItemTemplate = html`

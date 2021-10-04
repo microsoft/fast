@@ -18,7 +18,6 @@ import {
     keyPageUp,
 } from "@microsoft/fast-web-utilities";
 import type { VirtualizingStack } from "../virtualizing-stack";
-import { FoundationElement } from "../foundation-element";
 import { VirtualizingStackBase } from "../virtualizing-stack";
 import type { DataGridCell } from "./data-grid-cell";
 import type { DataGridRow } from "./data-grid-row";

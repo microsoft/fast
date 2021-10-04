@@ -20,16 +20,14 @@ import type { ResizeObserverClassDefinition } from "../anchored-region/resize-ob
 export type VirtualizingStackAutoUpdateMode = "manual" | "resize-only" | "auto";
 
 const defaultItemTemplate: ViewTemplate<any> = html`
-    <template>
-        <div
-            style="
+    <div
+        style="
             height:20px;
-            grid-template-row:${(x, c) => c.index + 1}
+            grid-row:${(x, c) => c.index + 2}
         "
-        >
-            ${x => x}
-        </div>
-    </template>
+    >
+        ${x => x}
+    </div>
 `;
 
 /**

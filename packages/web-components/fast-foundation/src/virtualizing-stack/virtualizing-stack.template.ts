@@ -15,20 +15,17 @@ export const virtualizingStackTemplate: (
     context: ElementDefinitionContext,
     definition: FoundationElementDefinition
 ) => html`
-    <template>
-        <div
-            class="container"
-            style="
-                overflow: hidden;
-                height: ${x => x.totalHeight}px;
-                display: grid;
-                grid-template-columns: 1fr;
-                grid-template-rows: ${x => x.topSpacerHeight}px repeat(${(x, c) =>
-                x.visibleItems.length}, 1fr) ${x => x.bottomSpacerHeight}px;
+    <template
+        style="
+            overflow: hidden;
+            display: grid;
+            grid-template-columns: 1fr;
+            grid-template-rows: ${x => x.topSpacerHeight}px repeat(${(x, c) =>
+            x.visibleItems.length}, ${x => x.itemHeight}px) ${x =>
+            x.bottomSpacerHeight}px;
             "
-            ${ref("containerElement")}
-        >
-            <slot></slot>
-        </div>
+        ${ref("containerElement")}
+    >
+        <slot></slot>
     </template>
 `;
