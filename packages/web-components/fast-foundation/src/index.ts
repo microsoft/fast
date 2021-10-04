@@ -11,6 +11,7 @@ export * from "./card/index";
 export * from "./checkbox/index";
 export * from "./combobox/index";
 export * from "./data-grid/index";
+export * from "./date-picker";
 export * from "./design-system/index";
 export {
     DesignToken,

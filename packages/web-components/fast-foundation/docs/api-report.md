@@ -609,6 +609,56 @@ export enum DataGridRowTypes {
 // @public
 export const dataGridTemplate: (context: any, definition: any) => ViewTemplate<DataGrid>;
 
+// @public (undocumented)
+export class DatePicker extends FoundationElement {
+    allowTextInput: boolean;
+    appearance: string;
+    closeMenu(): void;
+    day: number;
+    disabled: boolean;
+    disabledDates: string;
+    getMatrix(type?: "month" | "year", start?: number, locale?: string, format?: string): any;
+    getTimes(): {
+        hours: number[];
+        minutes: number[];
+        meridian: string[];
+    };
+    handleClick(): void;
+    hour: number;
+    locale: string;
+    max: number;
+    menuOpen: boolean;
+    meridian: string;
+    min: number;
+    minute: number;
+    month: number;
+    monthView: number;
+    name: string;
+    openMenu(): void;
+    overMenu: boolean;
+    placeholder: string;
+    readonly: boolean;
+    required: boolean;
+    times: {
+        hours: number[];
+        minutes: number[];
+        meridian: string[];
+    };
+    toggleMenu(): void;
+    type: string;
+    value: string;
+    year: number;
+    // (undocumented)
+    yearsView: number;
+    yearView: number;
+}
+
+// @public (undocumented)
+export type DatePickerOptions = FoundationElementDefinition & {};
+
+// @public (undocumented)
+export const datePickerTemplate: (Context: ElementDefinitionContext, definition: DatePickerOptions) => ViewTemplate<DatePicker>;
+
 // @public
 export class DefaultComponentPresentation implements ComponentPresentation {
     constructor(template?: ElementViewTemplate, styles?: ComposableStyles | ComposableStyles[]);
@@ -2004,6 +2054,9 @@ export enum TextFieldType {
     text = "text",
     url = "url"
 }
+
+// @public
+export const timePickerTemplate: (context: ElementDefinitionContext, times: any) => ViewTemplate;
 
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
 // Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "Toolbar" because one of its declarations is marked as @internal
