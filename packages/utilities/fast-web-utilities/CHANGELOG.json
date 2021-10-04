@@ -2,6 +2,36 @@
   "name": "@microsoft/fast-web-utilities",
   "entries": [
     {
+      "date": "Sun, 19 Sep 2021 07:17:17 GMT",
+      "tag": "@microsoft/fast-web-utilities_v5.0.0",
+      "version": "5.0.0",
+      "comments": {
+        "major": [
+          {
+            "comment": "add picker component",
+            "author": "scomea@microsoft.com",
+            "commit": "395775ca58b6529861aae2e2ab1a628e2d8db081",
+            "package": "@microsoft/fast-web-utilities"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sun, 12 Sep 2021 07:17:43 GMT",
+      "tag": "@microsoft/fast-web-utilities_v4.8.1",
+      "version": "4.8.1",
+      "comments": {
+        "patch": [
+          {
+            "comment": "remove dependencies on keycode",
+            "author": "scomea@microsoft.com",
+            "commit": "e8602a247065b0c916bdc8e55314f2d3e3403fd1",
+            "package": "@microsoft/fast-web-utilities"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 20 May 2021 07:24:10 GMT",
       "tag": "@microsoft/fast-web-utilities_v4.8.0",
       "version": "4.8.0",

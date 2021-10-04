@@ -2,7 +2,7 @@ import { assert, expect } from "chai";
 import { Checkbox, checkboxTemplate as template } from "./index";
 import { fixture } from "../test-utilities/fixture";
 import { DOM, customElement } from "@microsoft/fast-element";
-import { KeyCodes } from "@microsoft/fast-web-utilities";
+import { keySpace } from "@microsoft/fast-web-utilities";
 
 const FASTCheckbox = Checkbox.compose({
     baseName: "checkbox",
@@ -295,8 +295,7 @@ describe("Checkbox", () => {
             const { element, connect, disconnect } = await setup();
 
             const event = new KeyboardEvent("keydown", {
-                key: "space",
-                keyCode: KeyCodes.space,
+                key: keySpace,
             } as KeyboardEventInit);
 
             await connect();

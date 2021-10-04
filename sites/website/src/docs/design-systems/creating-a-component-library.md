@@ -139,14 +139,15 @@ Here we provide the base component name of `counter`, which will be combined wit
 
 ### Registering Library Components in an Application
 
-To register the component, an application author will import the registration and register it in their `DesignSystem`, overriding any properties as necessary. For example, if this component had been created for the FAST Frame design system, then the the following code could be used:
+To register the component, an application author will import the registration and register it in their `DesignSystem`, overriding any properties as necessary. For example, if this component had been created for the FAST Frame design system, then the following code could be used:
 
 ```ts
 import { counter } from "your-package";
-import { provideFASTDesignSystem } from "@microsoft/fast-components";
+import { provideFASTDesignSystem, fastButton } from "@microsoft/fast-components";
 
 provideFASTDesignSystem()
     .register(
+        fastButton(),
         counter({ defaultButtonContent: "Please count." })
     );
 ```
@@ -193,7 +194,7 @@ export const buttonStyles = styles;
 
 As a practice, always be sure to export your styles independently as well. This enables the consumers of your components to build their own versions of your component, reusing and augmenting your styles as needed.
 
-When authoring your own styles, you'll also want to leverage design tokens. Please see [the design token documentation](docs/design-systems/design-tokens) for how to create and use design tokens.
+When authoring your own styles, you'll also want to leverage design tokens. Please see [the design token documentation](/docs/design-systems/design-tokens) for how to create and use design tokens.
 
 ### Creating a design system provider function
 

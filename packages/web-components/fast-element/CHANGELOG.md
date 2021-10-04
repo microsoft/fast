@@ -1,8 +1,33 @@
 # Change Log - @microsoft/fast-element
 
-This log was last generated on Wed, 28 Jul 2021 07:17:22 GMT and should not be manually modified.
+This log was last generated on Wed, 08 Sep 2021 07:16:17 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.5.1
+
+Wed, 08 Sep 2021 07:16:17 GMT
+
+### Patches
+
+- perf(Controller): reduce object allocation needed for isConnected prop (roeisenb@microsoft.com)
+
+## 1.5.0
+
+Fri, 27 Aug 2021 14:14:26 GMT
+
+### Minor changes
+
+- Adds capability to Observable to subscribe to any observable property change for an object (nicholasrice@users.noreply.github.com)
+- ensure HTMLStyleElement DOM order matches call addStylesTo() call order (nicholasrice@users.noreply.github.com)
+
+## 1.4.2
+
+Thu, 26 Aug 2021 07:17:43 GMT
+
+### Patches
+
+- feat(fast-element): make the task queue resilient to task exceptions (roeisenb@microsoft.com)
 
 ## 1.4.1
 

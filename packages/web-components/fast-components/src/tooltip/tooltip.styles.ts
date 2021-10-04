@@ -25,7 +25,7 @@ export const tooltipStyles: (
 ) =>
     css`
         :host {
-            contain: layout;
+            contain: size;
             overflow: visible;
             height: 0;
             width: 0;
@@ -56,6 +56,7 @@ export const tooltipStyles: (
             align-items: center;
             overflow: visible;
             flex-direction: row;
+            pointer-events: none;
         }
 
         ${context.tagFor(AnchoredRegion)}.right,

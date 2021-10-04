@@ -39,6 +39,7 @@ export class Card extends FoundationCard {
  */
 export const fastCard = Card.compose({
     baseName: "card",
+    baseClass: FoundationCard,
     template,
     styles,
 });

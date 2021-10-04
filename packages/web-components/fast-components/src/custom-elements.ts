@@ -26,6 +26,13 @@ import { fastListbox } from "./listbox/index";
 import { fastMenuItem } from "./menu-item/index";
 import { fastMenu } from "./menu/index";
 import { fastNumberField } from "./number-field/index";
+import {
+    fastPicker,
+    fastPickerList,
+    fastPickerListItem,
+    fastPickerMenu,
+    fastPickerMenuOption,
+} from "./picker/index";
 import { fastProgressRing } from "./progress-ring/index";
 import { fastProgress } from "./progress/index";
 import { fastRadioGroup } from "./radio-group/index";
@@ -91,6 +98,11 @@ export {
     fastMenu,
     fastMenuItem,
     fastNumberField,
+    fastPicker,
+    fastPickerList,
+    fastPickerListItem,
+    fastPickerMenu,
+    fastPickerMenuOption,
     fastProgress,
     fastProgressRing,
     fastRadio,
@@ -146,6 +158,11 @@ export const allComponents = {
     fastMenu,
     fastMenuItem,
     fastNumberField,
+    fastPicker,
+    fastPickerList,
+    fastPickerListItem,
+    fastPickerMenu,
+    fastPickerMenuOption,
     fastProgress,
     fastProgressRing,
     fastRadio,
@@ -164,7 +181,7 @@ export const allComponents = {
     fastToolbar,
     fastTreeView,
     fastTreeItem,
-    register(container?: Container) {
+    register(container?: Container, ...rest: any[]) {
         if (!container) {
             // preserve backward compatibility with code that loops through
             // the values of this object and calls them as funcs with no args
@@ -176,7 +193,7 @@ export const allComponents = {
                 continue;
             }
 
-            this[key]().register(container);
+            this[key]().register(container, ...rest);
         }
     },
 };

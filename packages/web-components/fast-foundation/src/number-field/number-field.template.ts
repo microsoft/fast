@@ -1,6 +1,6 @@
 import { html, ref, slotted, when } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
-import { endTemplate, startTemplate } from "../patterns";
+import { endSlotTemplate, startSlotTemplate } from "../patterns";
 import type { ElementDefinitionContext } from "../design-system";
 import type { NumberField, NumberFieldOptions } from "./number-field";
 
@@ -27,13 +27,14 @@ export const numberFieldTemplate: (
             <slot ${slotted("defaultSlottedNodes")}></slot>
         </label>
         <div class="root" part="root">
-            ${startTemplate}
+            ${startSlotTemplate(context, definition)}
             <input
                 class="control"
                 part="control"
                 id="control"
                 @input="${x => x.handleTextInput()}"
                 @change="${x => x.handleChange()}"
+                @keydown="${(x, c) => x.handleKeyDown(c.event as KeyboardEvent)}"
                 ?autofocus="${x => x.autofocus}"
                 ?disabled="${x => x.disabled}"
                 list="${x => x.list}"
@@ -43,7 +44,7 @@ export const numberFieldTemplate: (
                 ?readonly="${x => x.readOnly}"
                 ?required="${x => x.required}"
                 size="${x => x.size}"
-                :value="${x => x.value}"
+                :value="${x => x.displayText}"
                 type="text"
                 inputmode="numeric"
                 min="${x => x.min}"
@@ -53,7 +54,7 @@ export const numberFieldTemplate: (
                 aria-busy="${x => x.ariaBusy}"
                 aria-controls="${x => x.ariaControls}"
                 aria-current="${x => x.ariaCurrent}"
-                aria-describedBy="${x => x.ariaDescribedby}"
+                aria-describedby="${x => x.ariaDescribedby}"
                 aria-details="${x => x.ariaDetails}"
                 aria-disabled="${x => x.ariaDisabled}"
                 aria-errormessage="${x => x.ariaErrormessage}"
@@ -91,7 +92,7 @@ export const numberFieldTemplate: (
                     </div>
                 `
             )}
-            ${endTemplate}
+            ${endSlotTemplate(context, definition)}
         </div>
     </template>
 `;

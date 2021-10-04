@@ -274,7 +274,7 @@ describe("Breadcrumb item", () => {
             await disconnect();
         });
 
-        it("should set the `aria-describedBy` attribute on the internal anchor when `href` is passed", async () => {
+        it("should set the `aria-describedby` attribute on the internal anchor when `href` is passed", async () => {
             const { element, connect, disconnect } = await setup();
             const ariaDescribedby = "testId";
             const hrefExample: string = "https://fast.design";
@@ -286,7 +286,7 @@ describe("Breadcrumb item", () => {
 
             expect(element.href).to.equal(hrefExample);
             expect(
-                element.shadowRoot?.querySelector("a")?.getAttribute("aria-describedBy")
+                element.shadowRoot?.querySelector("a")?.getAttribute("aria-describedby")
             ).to.equal(ariaDescribedby);
 
             await disconnect();
