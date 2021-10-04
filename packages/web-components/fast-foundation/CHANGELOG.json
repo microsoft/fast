@@ -2,6 +2,27 @@
   "name": "@microsoft/fast-foundation",
   "entries": [
     {
+      "date": "Sun, 03 Oct 2021 07:12:33 GMT",
+      "tag": "@microsoft/fast-foundation_v2.16.5",
+      "version": "2.16.5",
+      "comments": {
+        "none": [
+          {
+            "comment": "Update webpack migration documentation",
+            "author": "meyunus@microsoft.com",
+            "commit": "83d2ace2b485b730cf8ea11512d5782cab381a1b",
+            "package": "@microsoft/fast-foundation"
+          },
+          {
+            "comment": "docs: update React integration doc to use the new React wrapper",
+            "author": "roeisenb@microsoft.com",
+            "commit": "75aae3d432e1bb633baa925f7ff093b7a19e4e72",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 30 Sep 2021 07:13:45 GMT",
       "tag": "@microsoft/fast-foundation_v2.16.5",
       "version": "2.16.5",

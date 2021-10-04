@@ -1,0 +1,7 @@
+{
+  "type": "minor",
+  "comment": "feat: add fast-react-wrapper package",
+  "packageName": "@microsoft/fast-react-wrapper",
+  "email": "roeisenb@microsoft.com",
+  "dependentChangeType": "patch"
+}
