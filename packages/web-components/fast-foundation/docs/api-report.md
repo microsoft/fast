@@ -169,6 +169,7 @@ export type AutoUpdateMode = "anchor" | "auto";
 export class Avatar extends FoundationElement {
     color: string;
     connectedCallback(): void;
+    // @internal
     control: HTMLAnchorElement;
     fill: string;
     link: string;
@@ -2389,8 +2390,6 @@ export class Toolbar extends FoundationElement {
     clickHandler(e: MouseEvent): boolean | void;
     // @internal (undocumented)
     connectedCallback(): void;
-    // @internal
-    control: HTMLElement;
     // @internal
     direction: Direction;
     // @internal

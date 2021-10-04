@@ -2,6 +2,7 @@ import type {
     Avatar as FASTAvatarType,
 } from "@microsoft/fast-foundation";
 import { expect } from "chai";
+import type { ElementHandle } from "playwright";
 
 type FASTAvatar = HTMLElement & FASTAvatarType;
 
@@ -20,6 +21,7 @@ describe("FASTAvatar", function () {
                 element.shape = "circle";
                 element.fill = "accent primary";
                 element.color = "bar";
+                element.id = "avatar1"
 
                 document.body.appendChild(element)
             },
@@ -41,7 +43,7 @@ describe("FASTAvatar", function () {
     });
 
     it("receive focus when focused programatically", async function () {
-        const element = await this.page.waitForSelector("fast-avatar");
+        const element = await (this.page.waitForSelector("fast-avatar")) as ElementHandle<FASTAvatar>;
 
         await this.page.evaluateHandle(element => element.focus(), element)
 
