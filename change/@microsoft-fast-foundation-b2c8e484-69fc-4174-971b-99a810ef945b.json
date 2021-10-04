@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "fix: nested tree items not selecting",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "jes@microsoft.com",
+  "dependentChangeType": "patch"
+}
