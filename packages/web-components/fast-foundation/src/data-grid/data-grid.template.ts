@@ -35,6 +35,15 @@ export const dataGridTemplate: FoundationElementTemplate<ViewTemplate<DataGrid>>
             tabindex="0"
             :rowElementTag="${() => rowTag}"
             :defaultRowItemTemplate="${rowItemTemplate}"
+            ${ref("containerElement")}
+            style="
+                overflow: hidden;
+                height: ${x => x.totalHeight}px;
+                display: grid;
+                grid-template-columns: 1fr;
+                grid-template-rows: ${x => x.topSpacerHeight}px repeat(${(x, c) =>
+                x.visibleItems.length}, 1fr) ${x => x.bottomSpacerHeight}px;
+            "
             ${children({
                 property: "rowElements",
                 filter: elements("[role=row]"),

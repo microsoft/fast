@@ -57,7 +57,6 @@ export class VirtualizingStackBase extends FoundationElement {
     @attr({ attribute: "virtualize" })
     public virtualize: boolean = true;
     // private virtualizeChanged(): void {
-
     // }
 
     /**
@@ -216,13 +215,6 @@ export class VirtualizingStackBase extends FoundationElement {
      */
     public containerElement: HTMLDivElement;
 
-    /**
-     * reference to the container element
-     *
-     * @internal
-     */
-    public stackElement: HTMLDivElement;
-
     private static intersectionService: IntersectionService = new IntersectionService();
     private resizeDetector: ResizeObserverClassDefinition | null = null;
 
@@ -268,7 +260,7 @@ export class VirtualizingStackBase extends FoundationElement {
         this.pendingReset = false;
 
         if (this.itemsRepeatBehavior !== null) {
-            // TODO: cleanup
+            this.$fastController.removeBehaviors([this.itemsRepeatBehavior]);
             this.itemsRepeatBehavior = null;
         }
 

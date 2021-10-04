@@ -144,26 +144,6 @@ export class DataGrid extends VirtualizingStackBase {
     }
 
     /**
-     *
-     *
-     * @public
-     * @remarks
-     * HTML Attribute: virtualize
-     */
-    @attr({ attribute: "virtualize" })
-    public virtualize: boolean = false;
-
-    /**
-     *
-     *
-     * @public
-     * @remarks
-     * HTML Attribute: item-height
-     */
-    @attr({ attribute: "item-height" })
-    public itemHeight: number = 100;
-
-    /**
      * String that gets applied to the the css gridTemplateColumns attribute of child rows
      *
      * @public
@@ -189,9 +169,11 @@ export class DataGrid extends VirtualizingStackBase {
         if (this.columnDefinitions === null && this.rowsData.length > 0) {
             this.columnDefinitions = DataGrid.generateColumns(this.rowsData[0]);
         }
+
         if (this.$fastController.isConnected) {
             this.toggleGeneratedHeader();
         }
+        this.items = this.rowsData;
     }
 
     /**
@@ -222,6 +204,9 @@ export class DataGrid extends VirtualizingStackBase {
      */
     @observable
     public rowItemTemplate: ViewTemplate;
+    private rowItemTemplateChanged(): void {
+        this.itemTemplate = this.rowItemTemplate;
+    }
 
     /**
      * The template used to render cells in generated rows.
@@ -339,9 +324,7 @@ export class DataGrid extends VirtualizingStackBase {
 
         this.toggleGeneratedHeader();
 
-        if (this.virtualize) {
-            this.stack.itemTemplate = this.rowItemTemplate;
-        } else {
+        if (!this.virtualize) {
             this.rowsPlaceholder = document.createComment("");
             this.appendChild(this.rowsPlaceholder);
 
