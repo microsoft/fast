@@ -7,7 +7,7 @@ import {
     RepeatDirective,
     ViewTemplate,
 } from "@microsoft/fast-element";
-import { eventResize, eventScroll } from "@microsoft/fast-web-utilities";
+import { eventResize, eventScroll, Orientation } from "@microsoft/fast-web-utilities";
 import { FoundationElement } from "../foundation-element";
 import { IntersectionService } from "../anchored-region/intersection-service";
 import type { ResizeObserverClassDefinition } from "../anchored-region/resize-observer";
@@ -22,8 +22,9 @@ export type VirtualizingStackAutoUpdateMode = "manual" | "resize-only" | "auto";
 const defaultItemTemplate: ViewTemplate<any> = html`
     <div
         style="
-            height:20px;
-            grid-row:${(x, c) => c.index + 2}
+            height: 100%;
+            width: 100%;
+            grid-row: ${(x, c) => c.index + 2};
         "
     >
         ${x => x}
@@ -78,11 +79,11 @@ export class VirtualizingStackBase extends FoundationElement {
      *
      * @beta
      * @remarks
-     * HTML Attribute: item-height
+     * HTML Attribute: item-span
      */
-    @attr({ attribute: "item-height" })
-    public itemHeight: number;
-    private itemHeightChanged(): void {
+    @attr({ attribute: "item-span" })
+    public itemSpan: number;
+    private itemSpanChanged(): void {
         if (this.$fastController.isConnected) {
             this.updateDimensions();
         }
@@ -103,10 +104,42 @@ export class VirtualizingStackBase extends FoundationElement {
      *
      * @beta
      * @remarks
+     * HTML Attribute: start-item-spans
+     */
+    @attr({ attribute: "start-item-spans" })
+    public startItemSpans: number[] = [];
+
+    /**
+     *
+     *
+     * @beta
+     * @remarks
+     * HTML Attribute: start-item-spans
+     */
+    @attr({ attribute: "end-item-spans" })
+    public endItemSpans: number[] = [];
+
+    /**
+     *
+     *
+     * @beta
+     * @remarks
      * HTML Attribute: layout-update-delay
      */
     @attr({ attribute: "layout-update-delay" })
     public layoutUpdateDelay: number = 0;
+
+    /**
+     *
+     *
+     * @beta
+     * @remarks
+     * HTML Attribute: orientation
+     */
+    @attr
+    public orientation: Orientation = Orientation.vertical;
+    //  private orientationChanged(): void {
+    //  }
 
     /**
      *
@@ -197,14 +230,6 @@ export class VirtualizingStackBase extends FoundationElement {
      */
     @observable
     public bottomSpacerHeight: number = 0;
-
-    /**
-     *
-     *
-     * @internal
-     */
-    @observable
-    public itemStackHeight: number = 0;
 
     /**
      * reference to the container element
@@ -437,8 +462,8 @@ export class VirtualizingStackBase extends FoundationElement {
                     //TODO: wire this up
                     this.totalHeight = 0;
                 }
-            } else if (this.itemHeight !== undefined) {
-                this.totalHeight = this.itemHeight * this.items.length;
+            } else if (this.itemSpan !== undefined) {
+                this.totalHeight = this.itemSpan * this.items.length;
             }
         }
 
@@ -467,7 +492,6 @@ export class VirtualizingStackBase extends FoundationElement {
             this.visibleItems = [];
             this.topSpacerHeight = 0;
             this.bottomSpacerHeight = 0;
-            this.itemStackHeight = 0;
             this.visibleRangeStart = -1;
             this.visibleRangeEnd = -1;
             return;
@@ -500,14 +524,13 @@ export class VirtualizingStackBase extends FoundationElement {
             this.visibleItems = [];
             this.topSpacerHeight = 0;
             this.bottomSpacerHeight = 0;
-            this.itemStackHeight = 0;
-        } else if (this.itemHeight !== undefined) {
+        } else if (this.itemSpan !== undefined) {
             let newFirstRenderedIndex: number = Math.floor(
-                this.visibleRangeStart / this.itemHeight
+                this.visibleRangeStart / this.itemSpan
             );
             const visibleRangeLength = this.visibleRangeEnd - this.visibleRangeStart;
             let newLastRenderedIndex: number =
-                newFirstRenderedIndex + Math.ceil(visibleRangeLength / this.itemHeight);
+                newFirstRenderedIndex + Math.ceil(visibleRangeLength / this.itemSpan);
 
             if (newFirstRenderedIndex < 0) {
                 newFirstRenderedIndex = 0;
@@ -517,12 +540,9 @@ export class VirtualizingStackBase extends FoundationElement {
                 newLastRenderedIndex = this.items.length - 1;
             }
 
-            this.topSpacerHeight = newFirstRenderedIndex * this.itemHeight;
+            this.topSpacerHeight = newFirstRenderedIndex * this.itemSpan;
             this.bottomSpacerHeight =
-                (this.items.length - newLastRenderedIndex - 1) * this.itemHeight;
-            this.itemStackHeight =
-                this.totalHeight - this.topSpacerHeight - this.bottomSpacerHeight;
-
+                (this.items.length - newLastRenderedIndex - 1) * this.itemSpan;
             if (
                 this.firstRenderedIndex === newFirstRenderedIndex &&
                 this.lastRenderedIndex === newLastRenderedIndex
@@ -615,8 +635,6 @@ export class VirtualizingStackBase extends FoundationElement {
         if (!this.pendingPositioningUpdate) {
             return;
         }
-
-        console.debug(`handleIntersection: ${this.containerRect?.top}`);
 
         this.pendingPositioningUpdate = false;
 

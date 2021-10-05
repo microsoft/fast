@@ -2784,20 +2784,24 @@ export class VirtualizingStackBase extends FoundationElement {
     containerElement: HTMLDivElement;
     // @internal (undocumented)
     disconnectedCallback(): void;
+    // @beta (undocumented)
+    endItemSpans: number[];
     // (undocumented)
     heightMap: number[];
-    // @beta (undocumented)
-    itemHeight: number;
     // (undocumented)
     items: object[];
-    // @internal (undocumented)
-    itemStackHeight: number;
+    // @beta (undocumented)
+    itemSpan: number;
     // (undocumented)
     itemTemplate: ViewTemplate;
     // @beta (undocumented)
     layoutUpdateDelay: number;
+    // @beta (undocumented)
+    orientation: Orientation;
     // (undocumented)
     protected reset(): void;
+    // @beta (undocumented)
+    startItemSpans: number[];
     // @internal (undocumented)
     topSpacerHeight: number;
     // @internal (undocumented)

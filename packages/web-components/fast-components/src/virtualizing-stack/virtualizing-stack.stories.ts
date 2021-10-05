@@ -8,8 +8,8 @@ import "./index";
 const imageItemTemplate = html`
     <fast-card
         style="
-            height:100px;
-            width:120px;
+            height:100%;
+            width:100%;
             grid-row:${(x, c) => c.index + 2}
         "
     >

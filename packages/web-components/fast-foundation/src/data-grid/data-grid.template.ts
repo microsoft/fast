@@ -9,7 +9,11 @@ function createRowItemTemplate(context: ElementDefinitionContext): ViewTemplate 
     const rowTag = context.tagFor(DataGridRow);
     return html`
     <${rowTag}
-        :grid-row:${(x, c) => c.index + 2}
+        style="
+            grid-row:${(x, c) => c.index + 2};
+            height:100%;
+            width: 100%;
+        "
         :rowData="${x => x}"
         :cellItemTemplate="${(x, c) => c.parent.cellItemTemplate}"
         :headerCellItemTemplate="${(x, c) => c.parent.headerCellItemTemplate}"
@@ -35,21 +39,23 @@ export const dataGridTemplate: FoundationElementTemplate<ViewTemplate<DataGrid>>
             tabindex="0"
             :rowElementTag="${() => rowTag}"
             :defaultRowItemTemplate="${rowItemTemplate}"
-            ${ref("containerElement")}
-            style="
-                overflow: hidden;
-                display: grid;
-                grid-template-columns: 1fr;
-                grid-template-rows: ${x => x.topSpacerHeight}px repeat(${(x, c) =>
-                x.visibleItems.length}, ${x => x.itemHeight}px) ${x =>
-                x.bottomSpacerHeight}px;
-            "
             ${children({
                 property: "rowElements",
                 filter: elements("[role=row]"),
             })}
         >
-            <slot></slot>
+            <div
+                style="
+                    height: ${x => x.totalHeight}px;
+                    display: grid;
+                    grid-template-rows: ${x => x.topSpacerHeight}px repeat(${(x, c) =>
+                    x.visibleItems.length}, ${x => x.itemSpan}px) ${x =>
+                    x.bottomSpacerHeight}px;
+                "
+                ${ref("containerElement")}
+            >
+                <slot></slot>
+            </div>
         </template>
     `;
 };

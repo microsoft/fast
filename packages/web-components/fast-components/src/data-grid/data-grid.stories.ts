@@ -19,7 +19,11 @@ const columnWidths: string[] = ["1fr", "1fr", "1fr", "1fr"];
 
 const defaultRowItemTemplate = html`
     <fast-data-grid-row
-        style="grid-row:${(x, c) => c.index + 2};"
+        style="
+            grid-row:${(x, c) => c.index + 2};
+            height: 100%;
+            width: 100%;
+        "
         :rowData="${x => x}"
         :cellItemTemplate="${(x, c) => c.parent.cellItemTemplate}"
         :headerCellItemTemplate="${(x, c) => c.parent.headerCellItemTemplate}"
@@ -28,7 +32,11 @@ const defaultRowItemTemplate = html`
 
 const customRowItemTemplate = html`
     <fast-data-grid-row
-        style="grid-row:${(x, c) => c.index + 2};"
+        style="
+            grid-row:${(x, c) => c.index + 2};
+            height: 100%;
+            width: 100%;
+        "
         :rowData="${x => x}"
         :cellItemTemplate="${(x, c) => c.parent.cellItemTemplate}"
         :headerCellItemTemplate="${(x, c) => c.parent.headerCellItemTemplate}"
@@ -242,7 +250,7 @@ function reset(): void {
         return;
     }
     defaultGridElement.columnDefinitions = null;
-    defaultGridElement.rowsData = newDataSet(10);
+    defaultGridElement.rowsData = newDataSet(50);
 }
 
 function setDefaultCols(): void {
