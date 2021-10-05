@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "picker menu shows with only custom options",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "scomea@microsoft.com",
+  "dependentChangeType": "patch"
+}
