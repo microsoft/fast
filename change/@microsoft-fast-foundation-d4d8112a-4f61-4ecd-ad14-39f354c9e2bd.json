@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "fix: number-field increment and decrement not working",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "robarb@microsoft.com",
+  "dependentChangeType": "patch"
+}
