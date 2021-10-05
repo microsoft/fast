@@ -126,9 +126,7 @@ export class Select extends FormAssociatedSelect {
             Listbox.slottedOptionFilter(child as HTMLElement)
         ) as ListboxOption[];
         const matchingOptionElement = optionElements.find(
-            child =>
-                child.getAttribute("value") === value ||
-                (child as ListboxOption).value === value
+            option => option.getAttribute("value") === value || option.value === value
         );
         if (matchingOptionElement) {
             matchingOptionElement.setAttribute("selected", "");
