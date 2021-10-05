@@ -146,6 +146,7 @@ describe("NumberField", () => {
 
         await connect();
         expect(element.value).to.equal(element["initialValue"]);
+        expect(element.displayText).to.equal(element["initialValue"]);
 
         await disconnect();
     });
@@ -157,6 +158,7 @@ describe("NumberField", () => {
         await connect();
 
         expect(element.value).to.equal("10");
+        expect(element.displayText).to.equal("10");
 
         await disconnect();
     });
@@ -168,6 +170,7 @@ describe("NumberField", () => {
         element.setAttribute("value", "10");
 
         expect(element.value).to.equal("10");
+        expect(element.displayText).to.equal("10");
 
         await disconnect();
     });
@@ -178,6 +181,7 @@ describe("NumberField", () => {
         await connect();
 
         expect(element.value).to.equal("10");
+        expect(element.displayText).to.equal("10");
 
         await disconnect();
     });
@@ -557,10 +561,12 @@ describe("NumberField", () => {
 
             assert(element.getAttribute("value") === null);
             assert(element.value === "10");
+            assert(element.displayText === "10");
 
             form.reset();
 
             assert(element.value === "");
+            expect(element.displayText === "");
 
             await disconnect();
         });
@@ -580,10 +586,12 @@ describe("NumberField", () => {
             assert(element.getAttribute("value") === "10");
 
             assert(element.value === "20");
+            assert(element.displayText === "20");
 
             form.reset();
 
             assert(element.value === "10");
+            assert(element.displayText === "10");
 
             await disconnect();
         });
@@ -600,14 +608,17 @@ describe("NumberField", () => {
             element.setAttribute("value", "20");
 
             assert(element.value === "10");
+            assert(element.displayText === "10");
 
             form.reset();
 
             assert(element.value === "20");
+            assert(element.displayText === "20");
 
             element.setAttribute("value", "30");
 
             assert(element.value === "30");
+            assert(element.displayText === "30");
             await disconnect();
         });
     });
@@ -650,6 +661,7 @@ describe("NumberField", () => {
 
             await connect();
             expect(element.value).to.equal(max.toString());
+            expect(element.displayText).to.equal(max.toString());
 
             await disconnect();
         });
@@ -663,11 +675,13 @@ describe("NumberField", () => {
 
             await connect();
             expect(element.value).to.equal(value.toString());
+            expect(element.displayText).to.equal(value.toString());
 
             element.setAttribute("max", max.toString());
             await DOM.nextUpdate();
 
             expect(element.value).to.equal(max.toString());
+            expect(element.displayText).to.equal(max.toString());
 
             await disconnect();
         });
@@ -681,6 +695,7 @@ describe("NumberField", () => {
 
             await connect();
             expect(element.value).to.equal(min.toString());
+            expect(element.displayText).to.equal(min.toString());
 
             await disconnect();
         });
@@ -694,11 +709,13 @@ describe("NumberField", () => {
 
             await connect();
             expect(element.value).to.equal(value.toString());
+            expect(element.displayText).to.equal(value.toString());
 
             element.setAttribute("min", min.toString());
             await DOM.nextUpdate();
 
             expect(element.value).to.equal(min.toString());
+            expect(element.displayText).to.equal(min.toString());
 
             await disconnect();
         });
@@ -758,7 +775,7 @@ describe("NumberField", () => {
             element.stepUp();
 
             expect(element.value).to.equal(`${value + step}`);
-            expect(element.value).to.equal(element.displayText);
+            expect(element.displayText).to.equal(`${value + step}`);
 
             await disconnect();
         });
@@ -775,7 +792,7 @@ describe("NumberField", () => {
             element.stepDown();
 
             expect(element.value).to.equal(`${value - step}`);
-            expect(element.value).to.equal(element.displayText);
+            expect(element.displayText).to.equal(`${value - step}`);
 
             await disconnect();
         });
@@ -789,7 +806,7 @@ describe("NumberField", () => {
             element.stepUp();
 
             expect(element.value).to.equal(`${step}`);
-            expect(element.value).to.equal(element.displayText);
+            expect(element.displayText).to.equal(`${step}`);
 
             await disconnect();
         });
@@ -804,7 +821,7 @@ describe("NumberField", () => {
             await DOM.nextUpdate();
 
             expect(element.value).to.equal(`${0 - step}`);
-            expect(element.value).to.equal(element.displayText);
+            expect(element.displayText).to.equal(`${0 - step}`);
 
             await disconnect();
         });
@@ -822,7 +839,7 @@ describe("NumberField", () => {
 
             expect(element.value).to.equal(`${value + step}`);
             expect(element.proxy.value).to.equal(`${value + step}`);
-            expect(element.value).to.equal(element.displayText);
+            expect(element.displayText).to.equal(`${value + step}`);
 
             await disconnect();
         });
@@ -840,7 +857,7 @@ describe("NumberField", () => {
 
             expect(element.value).to.equal(`${value - step}`);
             expect(element.proxy.value).to.equal(`${value - step}`);
-            expect(element.value).to.equal(element.displayText);
+            expect(element.displayText).to.equal(`${value - step}`);
 
             await disconnect();
         });
@@ -855,6 +872,7 @@ describe("NumberField", () => {
             element.setAttribute("value", "18");
 
             expect(element.value).to.equal("18");
+            expect(element.displayText).to.equal("18");
         });
 
         it("should not allow non-number entry", async () => {
@@ -865,6 +883,7 @@ describe("NumberField", () => {
             element.setAttribute("value", "11a");
 
             expect(element.value).to.equal("11");
+            expect(element.displayText).to.equal("11");
         });
 
         it("should allow float number entry", async () => {
@@ -875,10 +894,12 @@ describe("NumberField", () => {
             element.setAttribute("value", "37.");
 
             expect(element.value).to.equal("37.");
+            expect(element.displayText).to.equal("37.");
 
             element.setAttribute("value", ".1");
 
             expect(element.value).to.equal(".1");
+            expect(element.displayText).to.equal(".1");
         });
 
         it("should allow positive and negative number entry", async () => {
@@ -889,6 +910,7 @@ describe("NumberField", () => {
             element.setAttribute("value", "-1");
 
             expect(element.value).to.equal("-1");
+            expect(element.displayText).to.equal("-1");
         });
 
         it("should allow negative float entry", async () => {
@@ -899,6 +921,7 @@ describe("NumberField", () => {
             element.setAttribute("value", "-.6");
 
             expect(element.value).to.equal("-.6");
+            expect(element.displayText).to.equal("-.6");
         });
     });
 
