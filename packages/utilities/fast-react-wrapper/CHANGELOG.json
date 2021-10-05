@@ -1,0 +1,35 @@
+{
+  "name": "@microsoft/fast-react-wrapper",
+  "entries": [
+    {
+      "date": "Tue, 05 Oct 2021 00:45:07 GMT",
+      "tag": "@microsoft/fast-react-wrapper_v0.0.1",
+      "version": "0.0.1",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-foundation to v2.17.0",
+            "author": "robarb@microsoft.com",
+            "commit": "5f6c838b1511ebf26a34b3c4d26f82467de8a603",
+            "package": "@microsoft/fast-react-wrapper"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sun, 03 Oct 2021 07:12:33 GMT",
+      "tag": "@microsoft/fast-react-wrapper_v0.0.1",
+      "version": "0.0.1",
+      "comments": {
+        "none": [
+          {
+            "comment": "Bump @microsoft/fast-foundation to v2.16.5",
+            "author": "meyunus@microsoft.com",
+            "commit": "83d2ace2b485b730cf8ea11512d5782cab381a1b",
+            "package": "@microsoft/fast-react-wrapper"
+          }
+        ]
+      }
+    }
+  ]
+}
