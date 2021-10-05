@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "Fix initial select value when set early after connect",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "5454342+brianehenry@users.noreply.github.com",
+  "dependentChangeType": "patch"
+}
