@@ -2,6 +2,29 @@
   "name": "@microsoft/fast-foundation",
   "entries": [
     {
+      "date": "Tue, 05 Oct 2021 00:45:07 GMT",
+      "tag": "@microsoft/fast-foundation_v2.17.0",
+      "version": "2.17.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "feat: add scroll events to horizontal-scroll component",
+            "author": "robarb@microsoft.com",
+            "commit": "5f6c838b1511ebf26a34b3c4d26f82467de8a603",
+            "package": "@microsoft/fast-foundation"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "fix: nested tree items not selecting",
+            "author": "jes@microsoft.com",
+            "commit": "795ff6ab8e64b8b3474a8abe3018b5f76915de86",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sun, 03 Oct 2021 07:12:33 GMT",
       "tag": "@microsoft/fast-foundation_v2.16.5",
       "version": "2.16.5",
