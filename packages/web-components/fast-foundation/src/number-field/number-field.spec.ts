@@ -540,7 +540,7 @@ describe("NumberField", () => {
             expect(wasInput).to.equal(true);
 
             await disconnect();
-        })
+        });
     });
 
     describe("when the owning form's reset() method is invoked", () => {
@@ -718,7 +718,9 @@ describe("NumberField", () => {
 
             await disconnect();
         });
+    });
 
+    describe("step and increment/decrement", () => {
         it("should set step to a default of 1", async () => {
             const { element, connect, disconnect } = await setup();
             const step = 1;
@@ -751,10 +753,12 @@ describe("NumberField", () => {
 
             element.step = step;
             element.value = `${value}`;
+            await connect();
+
             element.stepUp();
 
-            await connect();
             expect(element.value).to.equal(`${value + step}`);
+            expect(element.value).to.equal(element.displayText);
 
             await disconnect();
         });
@@ -766,10 +770,12 @@ describe("NumberField", () => {
 
             element.step = step;
             element.value = `${value}`;
+            await connect();
+
             element.stepDown();
 
-            await connect();
             expect(element.value).to.equal(`${value - step}`);
+            expect(element.value).to.equal(element.displayText);
 
             await disconnect();
         });
@@ -778,10 +784,12 @@ describe("NumberField", () => {
             const { element, connect, disconnect } = await setup();
             const step = 2;
             element.step = step;
+            await connect();
+
             element.stepUp();
 
-            await connect();
             expect(element.value).to.equal(`${step}`);
+            expect(element.value).to.equal(element.displayText);
 
             await disconnect();
         });
@@ -790,10 +798,13 @@ describe("NumberField", () => {
             const { element, connect, disconnect } = await setup();
             const step = 2;
             element.step = step;
-            element.stepDown();
-
             await connect();
+
+            element.stepDown();
+            await DOM.nextUpdate();
+
             expect(element.value).to.equal(`${0 - step}`);
+            expect(element.value).to.equal(element.displayText);
 
             await disconnect();
         });
@@ -805,11 +816,13 @@ describe("NumberField", () => {
 
             element.step = step;
             element.value = `${value}`;
+            await connect();
+
             element.stepUp();
 
-            await connect();
             expect(element.value).to.equal(`${value + step}`);
             expect(element.proxy.value).to.equal(`${value + step}`);
+            expect(element.value).to.equal(element.displayText);
 
             await disconnect();
         });
@@ -821,11 +834,13 @@ describe("NumberField", () => {
 
             element.step = step;
             element.value = `${value}`;
+            await connect();
+
             element.stepDown();
 
-            await connect();
             expect(element.value).to.equal(`${value - step}`);
             expect(element.proxy.value).to.equal(`${value - step}`);
+            expect(element.value).to.equal(element.displayText);
 
             await disconnect();
         });

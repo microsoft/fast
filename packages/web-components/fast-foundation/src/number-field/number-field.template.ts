@@ -35,6 +35,7 @@ export const numberFieldTemplate: (
                 @input="${x => x.handleTextInput()}"
                 @change="${x => x.handleChange()}"
                 @keydown="${(x, c) => x.handleKeyDown(c.event as KeyboardEvent)}"
+                @blur="${(x, c) => x.handleBlur()}"
                 ?autofocus="${x => x.autofocus}"
                 ?disabled="${x => x.disabled}"
                 list="${x => x.list}"

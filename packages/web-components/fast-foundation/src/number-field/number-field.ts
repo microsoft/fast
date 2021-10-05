@@ -181,6 +181,7 @@ export class NumberField extends FormAssociatedNumberField {
         super.valueChanged(previousValue, nextValue);
 
         this.updateValue(nextValue);
+        this.displayText = this.value;
     }
 
     /**
@@ -291,6 +292,15 @@ export class NumberField extends FormAssociatedNumberField {
         }
 
         return true;
+    }
+
+    /**
+     * Handles populating the input field with a validated value when
+     *  leaving the input field.
+     * @public
+     */
+    public handleBlur(): void {
+        this.control.value = this.value;
     }
 }
 
