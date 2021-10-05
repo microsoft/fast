@@ -9,6 +9,7 @@ import type { ListboxOption } from "../listbox-option/listbox-option";
 import { ARIAGlobalStatesAndProperties } from "../patterns/aria-global";
 import { StartEnd, StartEndOptions } from "../patterns/start-end";
 import { applyMixins } from "../utilities/apply-mixins";
+import { Listbox } from "../listbox";
 import { FormAssociatedSelect } from "./select.form-associated";
 import { SelectPosition, SelectRole } from "./select.options";
 
@@ -66,7 +67,11 @@ export class Select extends FormAssociatedSelect {
     public set value(next: string) {
         const prev = `${this._value}`;
 
-        if (this.$fastController.isConnected && this.options) {
+        if (
+            this.$fastController.isConnected &&
+            this.options &&
+            this.options.length !== 0
+        ) {
             const selectedIndex = this.options.findIndex(el => el.value === next);
 
             const prevSelectedOption = this.options[this.selectedIndex];
@@ -88,6 +93,8 @@ export class Select extends FormAssociatedSelect {
             if (this.firstSelectedOption) {
                 next = this.firstSelectedOption.value;
             }
+        } else if (this.options.length === 0 && this.children.length !== 0) {
+            this.markInitialSelectedOptionElement(next);
         }
 
         if (prev !== next) {
@@ -111,6 +118,20 @@ export class Select extends FormAssociatedSelect {
                 bubbles: true,
                 composed: undefined,
             });
+        }
+    }
+
+    private markInitialSelectedOptionElement(value: string) {
+        const optionElements = Array.from(this.children).filter(child =>
+            Listbox.slottedOptionFilter(child as HTMLElement)
+        ) as ListboxOption[];
+        const matchingOptionElement = optionElements.find(
+            child =>
+                child.getAttribute("value") === value ||
+                (child as ListboxOption).value === value
+        );
+        if (matchingOptionElement) {
+            matchingOptionElement.setAttribute("selected", "");
         }
     }
 

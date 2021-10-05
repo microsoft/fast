@@ -136,6 +136,18 @@ describe("Select", () => {
         expect(element.value).to.equal("two");
     });
 
+    it('should return the same value when the value property is set during connect', async () => {
+        const { element, connect, disconnect } = await setup();
+
+        const connectTask = connect();
+        element.value = 'two';
+        await connectTask;
+
+        expect(element.value).to.equal('two');
+
+        await disconnect();
+    });
+
     it("should return the same value when the value property is set after connect", async () => {
         const { element, connect, disconnect } = await setup();
 
