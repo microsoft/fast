@@ -1,3 +1,5 @@
+import { css, ElementStyles } from "@microsoft/fast-element";
+
 /**
  * Define all possible CSS display values.
  * @public
@@ -31,7 +33,11 @@ export type CSSDisplayPropertyValue =
  * A CSS fragment to set `display: none;` when the host is hidden using the [hidden] attribute.
  * @public
  */
-export const hidden = `:host([hidden]){display:none}`;
+export const hidden = css`
+    :host([hidden]) {
+        display: none;
+    }
+`;
 
 /**
  * Applies a CSS display property.
@@ -39,6 +45,12 @@ export const hidden = `:host([hidden]){display:none}`;
  * @param display - The CSS display property value
  * @public
  */
-export function display(displayValue: CSSDisplayPropertyValue): string {
-    return `${hidden}:host{display:${displayValue}}`;
+export function display(displayValue: CSSDisplayPropertyValue): ElementStyles {
+    return css`
+        :host {
+            display: ${displayValue};
+        }
+
+        ${hidden}
+    `;
 }

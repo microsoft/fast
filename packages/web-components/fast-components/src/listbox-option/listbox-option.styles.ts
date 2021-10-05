@@ -141,7 +141,7 @@ export const optionStyles: FoundationElementTemplate<
         color: ${neutralForegroundRest};
     }
 
-    :host([aria-checked="true"]:not([aria-selected="true"]):hover) {
+    :host([aria-checked="true"]:not([aria-selected="true"]):not([disabled]):hover) {
         background: ${neutralFillHover};
     }
 

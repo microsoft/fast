@@ -174,6 +174,9 @@ export class ListboxOption extends FoundationElement {
             typeof next === "boolean" ? (String(next) as "true" | "false") : undefined;
     }
 
+    @observable
+    public content: HTMLElement;
+
     /**
      * Returns the text content of the option.
      *

@@ -2,9 +2,11 @@ import { css, ElementStyles } from "@microsoft/fast-element";
 import {
     disabledCursor,
     display,
-    ElementDefinitionContext,
     focusVisible,
     forcedColorsStylesheetBehavior,
+} from "@microsoft/fast-foundation";
+import type {
+    FoundationElementTemplate,
     SelectOptions,
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
@@ -26,19 +28,18 @@ import {
     neutralFillInputRest,
     neutralFillStealthRest,
     neutralForegroundRest,
-    neutralLayerFloating,
-    neutralStrokeRest,
     strokeWidth,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
 } from "../design-tokens";
+import { listboxStyles } from "../listbox/listbox.styles";
 import { elevation } from "../styles/elevation";
 import { heightNumber } from "../styles/size";
 
-export const selectStyles: (
-    context: ElementDefinitionContext,
-    definition: SelectOptions
-) => ElementStyles = (context: ElementDefinitionContext, definition: SelectOptions) =>
+export const selectStyles: FoundationElementTemplate<ElementStyles, SelectOptions> = (
+    context,
+    definition
+) =>
     css`
     ${display("inline-flex")} :host {
         --elevation: 14;
@@ -51,26 +52,37 @@ export const selectStyles: (
         height: calc(${heightNumber} * 1px);
         position: relative;
         user-select: none;
-        min-width: 250px;
         outline: none;
         vertical-align: top;
     }
 
+    :host([multiple]),
+    :host([size]:not([size="0"])) {
+        --elevation: 0;
+        border: 0;
+        height: auto;
+        min-width: 0;
+    }
+
+    ${listboxStyles(context, definition)}
+
     .listbox {
         ${elevation}
-        background: ${neutralLayerFloating};
-        border: calc(${strokeWidth} * 1px) solid ${neutralStrokeRest};
-        border-radius: calc(${controlCornerRadius} * 1px);
-        box-sizing: border-box;
         display: inline-flex;
         flex-direction: column;
         left: 0;
         max-height: calc(var(--max-height) - (${heightNumber} * 1px));
-        padding: calc(${designUnit} * 1px) 0;
         overflow-y: auto;
         position: absolute;
         width: 100%;
         z-index: 1;
+    }
+
+    :host([multiple]) .listbox,
+    :host([size]:not([size="0"])) .listbox {
+        left: auto;
+        max-height: none;
+        position: relative;
     }
 
     .listbox[hidden] {
@@ -97,10 +109,13 @@ export const selectStyles: (
 
     :host(:${focusVisible}) {
         border-color: ${focusStrokeOuter};
+    }
+
+    :host(:not([multiple]):not([open]):${focusVisible}) {
         box-shadow: 0 0 0 calc(${focusStrokeWidth} * 1px) ${focusStrokeOuter};
     }
 
-    :host(:${focusVisible}) ::slotted([aria-selected="true"][role="option"]:not([disabled])) {
+    :host(:not([multiple]):${focusVisible}) ::slotted([aria-selected="true"][role="option"]:not([disabled])) {
         box-shadow: 0 0 0 calc(${focusStrokeWidth} * 1px) inset ${focusStrokeInner};
         border-color: ${focusStrokeOuter};
         background: ${accentFillFocus};
@@ -129,22 +144,22 @@ export const selectStyles: (
         border-radius: calc(${controlCornerRadius} * 1px);
     }
 
-    :host([open][position="above"]) .listbox {
+    :host([open][position="above"]:not([multiple])) .listbox {
         border-bottom-left-radius: 0;
         border-bottom-right-radius: 0;
     }
 
-    :host([open][position="below"]) .listbox {
+    :host([open][position="below"]:not([multiple])) .listbox {
         border-top-left-radius: 0;
         border-top-right-radius: 0;
     }
 
-    :host([open][position="above"]) .listbox {
+    :host([open][position="above"]:not([multiple])) .listbox {
         border-bottom: 0;
         bottom: calc(${heightNumber} * 1px);
     }
 
-    :host([open][position="below"]) .listbox {
+    :host([open][position="below"]:not([multiple])) .listbox {
         border-top: 0;
         top: calc(${heightNumber} * 1px);
     }
@@ -195,7 +210,6 @@ export const selectStyles: (
     ::slotted(option) {
         flex: 0 0 auto;
     }
-
 `.withBehaviors(
         forcedColorsStylesheetBehavior(
             css`

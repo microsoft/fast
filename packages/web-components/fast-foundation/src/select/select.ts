@@ -1,11 +1,20 @@
 import {
     attr,
+    nullableNumberConverter,
     Observable,
     observable,
     SyntheticViewTemplate,
 } from "@microsoft/fast-element";
+import {
+    ArrowKeys,
+    keyEnter,
+    keyEscape,
+    keySpace,
+    keyTab,
+} from "@microsoft/fast-web-utilities";
 import type { FoundationElementDefinition } from "../foundation-element";
 import type { ListboxOption } from "../listbox-option/listbox-option";
+import { Listbox } from "../listbox/listbox";
 import { ARIAGlobalStatesAndProperties } from "../patterns/aria-global";
 import { StartEnd, StartEndOptions } from "../patterns/start-end";
 import { applyMixins } from "../utilities/apply-mixins";
@@ -34,6 +43,12 @@ export class Select extends FormAssociatedSelect {
      * @internal
      */
     private _value: string;
+
+    /**
+     * @internal
+     */
+    @observable
+    public control: HTMLElement;
 
     /**
      * The value displayed on the button.
@@ -67,6 +82,17 @@ export class Select extends FormAssociatedSelect {
     private indexWhenOpened: number;
 
     /**
+     * @internal
+     */
+    public listbox: HTMLElement;
+
+    /**
+     * @internal
+     */
+    @observable
+    public indicator: HTMLElement;
+
+    /**
      * The max height for the listbox when opened.
      *
      * @internal
@@ -81,9 +107,14 @@ export class Select extends FormAssociatedSelect {
      */
     @attr({ attribute: "open", mode: "boolean" })
     public open: boolean = false;
-    protected openChanged() {
-        this.ariaExpanded = this.open ? "true" : "false";
-        if (this.open) {
+    protected openChanged(prev, next): void {
+        if (this.multiple) {
+            return;
+        }
+
+        this.ariaExpanded = next ? "true" : "false";
+
+        if (next) {
             this.setPositioning();
             this.focusAndScrollOptionIntoView();
             this.indexWhenOpened = this.selectedIndex;
@@ -109,11 +140,45 @@ export class Select extends FormAssociatedSelect {
     /**
      * The role of the element.
      *
-     * @public
      * @remarks
      * HTML Attribute: role
+     *
+     * @public
      */
     public role: SelectRole = SelectRole.combobox;
+
+    @observable
+    public selectedValue: HTMLElement;
+
+    /**
+     * The number of options to display. Any value above zero will force the component to display as a listbox.
+     *
+     * @remarks
+     * HTML Attribute: size
+     *
+     * @public
+     */
+    @attr({
+        attribute: "size",
+        converter: nullableNumberConverter,
+        mode: "fromView",
+    })
+    public sizeAttribute: number;
+    public sizeAttributeChanged(prev, next): void {}
+
+    public size: number = 0;
+
+    /**
+     * The selection type for the component.
+     *
+     * @remarks
+     * See {@link https://developer.mozilla.org/en-US/docs/Web/API/HTMLSelectElement/type} for more information.
+     *
+     * @public
+     */
+    public get type(): string {
+        return this.proxy?.type ?? `select-${this.multiple ? "multiple" : "one"}`;
+    }
 
     /**
      * The value property.
@@ -183,7 +248,11 @@ export class Select extends FormAssociatedSelect {
 
         super.clickHandler(e);
 
-        this.open = !this.open;
+        if (this.multiple) {
+            this.open = true;
+        } else {
+            this.open = !this.open;
+        }
 
         if (!this.open && this.indexWhenOpened !== this.selectedIndex) {
             this.updateValue(true);
@@ -237,6 +306,24 @@ export class Select extends FormAssociatedSelect {
         }
     }
 
+    public handleChange(source: any, propertyName: string) {
+        switch (propertyName) {
+            // case "disabled": {
+            //     this.slottedOptionsChanged(null, this.slottedOptions);
+            //     this.options = this._options.filter(Listbox.slottedOptionFilter);
+            //     this.setSelectedOptions();
+            //     break;
+            // }
+            case "selected": {
+                if (Listbox.slottedOptionFilter(source)) {
+                    this.selectedIndex = this.options.indexOf(source);
+                }
+                this.setSelectedOptions();
+                break;
+            }
+        }
+    }
+
     /**
      * Handle keyboard interaction for the select.
      *
@@ -248,21 +335,23 @@ export class Select extends FormAssociatedSelect {
         const key = e.key || e.key.charCodeAt(0);
 
         switch (key) {
-            case " ": {
-                if (this.typeAheadExpired) {
-                    e.preventDefault();
-                    this.open = !this.open;
+            case keySpace: {
+                if (!this.multiple) {
+                    if (this.typeAheadExpired) {
+                        e.preventDefault();
+                        this.open = !this.open;
+                    }
                 }
                 break;
             }
 
-            case "Enter": {
+            case keyEnter: {
                 e.preventDefault();
                 this.open = !this.open;
                 break;
             }
 
-            case "Escape": {
+            case keyEscape: {
                 if (this.open) {
                     e.preventDefault();
                     this.open = false;
@@ -270,8 +359,8 @@ export class Select extends FormAssociatedSelect {
                 break;
             }
 
-            case "Tab": {
-                if (!this.open) {
+            case keyTab: {
+                if (this.multiple || !this.open) {
                     return true;
                 }
 
@@ -285,7 +374,15 @@ export class Select extends FormAssociatedSelect {
             this.indexWhenOpened = this.selectedIndex;
         }
 
-        return true;
+        return !(key in ArrowKeys);
+    }
+
+    public multipleChanged(prev, next): void {
+        super.multipleChanged(prev, next);
+
+        if (!this.sizeAttribute) {
+            this.size = 4;
+        }
     }
 
     /**
@@ -322,8 +419,14 @@ export class Select extends FormAssociatedSelect {
             ? this.positionAttribute
             : this.position;
 
-        this.maxHeight =
-            this.position === SelectPosition.above ? ~~currentBox.top : ~~availableBottom;
+        this.listbox.style.setProperty(
+            "max-height",
+            `${
+                this.position === SelectPosition.above
+                    ? ~~currentBox.top
+                    : ~~availableBottom
+            }px`
+        );
     }
 
     /**
@@ -368,10 +471,27 @@ export class Select extends FormAssociatedSelect {
      *
      * @internal
      */
-    public slottedOptionsChanged(prev, next): void {
+    public slottedOptionsChanged(prev: unknown, next: Element[]): void {
         super.slottedOptionsChanged(prev, next);
         this.setProxyOptions();
         this.updateValue();
+
+        if (!this.multiple) {
+            let maxOptionsWidth = 0;
+            this.listbox.style.setProperty("visibility", "hidden");
+            this.listbox.style.setProperty("width", "auto");
+            this.listbox.hidden = false;
+            this.options.forEach(o => {
+                const oWidth = o.content.offsetWidth;
+                maxOptionsWidth = Math.max(oWidth, maxOptionsWidth);
+            });
+
+            this.listbox.hidden = true;
+            this.listbox.style.removeProperty("visibility");
+            this.listbox.style.removeProperty("display");
+            this.listbox.style.removeProperty("width");
+            this.selectedValue?.style.setProperty("min-width", `${maxOptionsWidth}px`);
+        }
     }
 
     /**
@@ -407,19 +527,23 @@ export class Select extends FormAssociatedSelect {
  */
 export class DelegatesARIASelect {
     /**
-     * See {@link https://www.w3.org/WAI/PF/aria/roles#button} for more information
-     * @public
+     * See {@link https://www.w3.org/WAI/PF/aria/roles#button} for more information.
+     *
      * @remarks
      * HTML Attribute: aria-expanded
+     *
+     * @public
      */
     @observable
     public ariaExpanded: "true" | "false" | undefined;
 
     /**
-     * See {@link https://www.w3.org/WAI/PF/aria/roles#button} for more information
-     * @public
+     * See {@link https://www.w3.org/WAI/PF/aria/roles#button} for more information.
+     *
      * @remarks
      * HTML Attribute: aria-pressed
+     *
+     * @public
      */
     @attr({ attribute: "aria-pressed", mode: "fromView" })
     public ariaPressed: "true" | "false" | "mixed" | undefined;
@@ -429,6 +553,7 @@ export class DelegatesARIASelect {
  * Mark internal because exporting class and interface of the same name
  * confuses API documenter.
  * TODO: https://github.com/microsoft/fast/issues/3317
+ *
  * @internal
  */
 export interface DelegatesARIASelect extends ARIAGlobalStatesAndProperties {}

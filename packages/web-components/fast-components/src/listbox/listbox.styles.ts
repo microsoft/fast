@@ -4,6 +4,7 @@ import {
     display,
     focusVisible,
     forcedColorsStylesheetBehavior,
+    ListboxElement,
     ListboxOption,
 } from "@microsoft/fast-foundation";
 import type { FoundationElementTemplate } from "@microsoft/fast-foundation";
@@ -33,8 +34,13 @@ export const listboxStyles: FoundationElementTemplate<ElementStyles> = (
 ) => {
     const ListboxOptionTag = context.tagFor(ListboxOption);
 
+    let hostContext = "";
+    if (context.name !== context.tagFor(ListboxElement)) {
+        hostContext = ".listbox";
+    }
+
     return css`
-        ${display("inline-flex")} :host {
+        ${!hostContext ? display("inline-flex") : ""} :host ${hostContext} {
             background: ${neutralLayerFloating};
             border: calc(${strokeWidth} * 1px) solid ${neutralStrokeRest};
             border-radius: calc(${controlCornerRadius} * 1px);
@@ -43,7 +49,7 @@ export const listboxStyles: FoundationElementTemplate<ElementStyles> = (
             padding: calc(${designUnit} * 1px) 0;
         }
 
-        :host(:focus-within:not([disabled])) {
+        :host(:focus-within:not([disabled])) ${hostContext} {
             border-color: ${focusStrokeOuter};
             box-shadow: 0 0 0 calc((${focusStrokeWidth} - ${strokeWidth}) * 1px)
                 ${focusStrokeOuter} inset;

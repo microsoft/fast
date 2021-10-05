@@ -10,7 +10,6 @@ import { ComposableStyles } from '@microsoft/fast-element';
 import { Constructable } from '@microsoft/fast-element';
 import { CSSDirective } from '@microsoft/fast-element';
 import { Direction } from '@microsoft/fast-web-utilities';
-import { ElementsFilter } from '@microsoft/fast-element';
 import { ElementStyles } from '@microsoft/fast-element';
 import { ElementViewTemplate } from '@microsoft/fast-element';
 import { FASTElement } from '@microsoft/fast-element';
@@ -978,7 +977,7 @@ export class Disclosure extends FoundationElement {
 export const disclosureTemplate: (context: ElementDefinitionContext, definition: FoundationElementDefinition) => ViewTemplate<Disclosure>;
 
 // @public
-export function display(displayValue: CSSDisplayPropertyValue): string;
+export function display(displayValue: CSSDisplayPropertyValue): ElementStyles;
 
 // @public
 export class Divider extends FoundationElement {
@@ -1217,7 +1216,7 @@ export enum GenerateHeaderOptions {
 export const getDirection: (rootNode: HTMLElement) => Direction;
 
 // @public
-export const hidden = ":host([hidden]){display:none}";
+export const hidden: ElementStyles;
 
 // @beta
 export type HorizontalPosition = "start" | "end" | "left" | "right" | "center" | "unset";
@@ -1317,6 +1316,10 @@ export abstract class Listbox extends FoundationElement {
     focusinHandler(e: FocusEvent): void;
     // @internal (undocumented)
     protected getFilteredOptions(): ListboxOption[];
+    // (undocumented)
+    protected getSelectableIndex(prev: number | undefined, next: number): number;
+    // (undocumented)
+    handleChange(source: any, propertyName: string): void;
     handleTypeAhead: (key: string) => void;
     // @internal
     keydownHandler(e: KeyboardEvent): boolean | void;
@@ -1333,7 +1336,7 @@ export abstract class Listbox extends FoundationElement {
     selectedIndexChanged(prev: number, next: number): void;
     selectedOptions: ListboxOption[];
     // (undocumented)
-    protected selectedOptionsChanged(prev: any, next: any): void;
+    protected selectedOptionsChanged(prev: unknown, next: ListboxOption[]): void;
     selectFirstOption(): void;
     // @internal
     selectLastOption(): void;
@@ -1346,11 +1349,11 @@ export abstract class Listbox extends FoundationElement {
     protected setSelectedOptions(): void;
     // @internal
     protected shouldSkipFocus: boolean;
-    static slottedOptionFilter: ElementsFilter;
+    static slottedOptionFilter: (n: HTMLElement) => boolean;
     // @internal (undocumented)
     slottedOptions: HTMLElement[];
     // (undocumented)
-    slottedOptionsChanged(prev: any, next: any): void;
+    slottedOptionsChanged(prev: unknown, next: Element[]): void;
     // @internal
     protected static readonly TYPE_AHEAD_TIMEOUT_MS = 1000;
     // @internal (undocumented)
@@ -1422,6 +1425,8 @@ export class ListboxOption extends FoundationElement {
     checkedChanged(prev: unknown, next?: boolean): void;
     // (undocumented)
     connectedCallback(): void;
+    // (undocumented)
+    content: HTMLElement;
     defaultSelected: boolean;
     // (undocumented)
     protected defaultSelectedChanged(): void;
@@ -1456,7 +1461,7 @@ export interface ListboxOption extends DelegatesARIAListboxOption, StartEnd {
 export type ListboxOptionOptions = FoundationElementDefinition & StartEndOptions;
 
 // @public
-export const listboxOptionTemplate: (context: ElementDefinitionContext, definition: ListboxOptionOptions) => ViewTemplate<ListboxOption>;
+export const listboxOptionTemplate: FoundationElementTemplate<ViewTemplate<ListboxOption>, ListboxOptionOptions>;
 
 // @public
 export enum ListboxRole {
@@ -1465,7 +1470,7 @@ export enum ListboxRole {
 }
 
 // @public
-export const listboxTemplate: (context: ElementDefinitionContext, definition: FoundationElementDefinition) => ViewTemplate<Listbox>;
+export const listboxTemplate: FoundationElementTemplate<ViewTemplate<Listbox>>;
 
 // @public
 export abstract class MatchMediaBehavior implements Behavior {
@@ -2003,6 +2008,8 @@ export class Select extends FormAssociatedSelect {
     clickHandler(e: MouseEvent): boolean | void;
     // (undocumented)
     connectedCallback(): void;
+    // @internal (undocumented)
+    control: HTMLElement;
     // @internal
     disabledChanged(prev: boolean, next: boolean): void;
     displayValue: string;
@@ -2010,24 +2017,40 @@ export class Select extends FormAssociatedSelect {
     focusoutHandler(e: FocusEvent): boolean | void;
     // @internal
     formResetCallback: () => void;
+    // (undocumented)
+    handleChange(source: any, propertyName: string): void;
+    // @internal (undocumented)
+    indicator: HTMLElement;
     // @internal
     keydownHandler(e: KeyboardEvent): boolean | void;
+    // @internal (undocumented)
+    listbox: HTMLElement;
     // @internal
     listbox: HTMLDivElement;
     // @internal
     maxHeight: number;
+    // (undocumented)
+    multipleChanged(prev: any, next: any): void;
     // @internal
     open: boolean;
     // (undocumented)
-    protected openChanged(): void;
+    protected openChanged(prev: any, next: any): void;
     position: SelectPosition;
     positionAttribute: SelectPosition;
     role: SelectRole;
     // @internal
     selectedIndexChanged(prev: any, next: any): void;
+    // (undocumented)
+    selectedValue: HTMLElement;
     setPositioning(): void;
+    // (undocumented)
+    size: number;
+    sizeAttribute: number;
+    // (undocumented)
+    sizeAttributeChanged(prev: any, next: any): void;
     // @internal
-    slottedOptionsChanged(prev: any, next: any): void;
+    slottedOptionsChanged(prev: unknown, next: Element[]): void;
+    get type(): string;
     get value(): string;
     set value(next: string);
     }
@@ -2056,7 +2079,7 @@ export enum SelectRole {
 }
 
 // @public
-export const selectTemplate: (context: ElementDefinitionContext, definition: SelectOptions) => ViewTemplate<Select>;
+export const selectTemplate: FoundationElementTemplate<ViewTemplate<Select>, SelectOptions>;
 
 // @public
 export interface ServiceLocator {

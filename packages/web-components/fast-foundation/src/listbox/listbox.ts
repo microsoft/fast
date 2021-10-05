@@ -1,4 +1,4 @@
-import { attr, ElementsFilter, observable, Observable } from "@microsoft/fast-element";
+import { attr, observable, Observable } from "@microsoft/fast-element";
 import {
     keyArrowDown,
     keyArrowUp,
@@ -117,7 +117,53 @@ export abstract class Listbox extends FoundationElement {
     @observable
     public selectedIndex: number = -1;
     public selectedIndexChanged(prev: number, next: number): void {
+        if (this.options?.[this.selectedIndex]?.disabled) {
+            const selectableIndex = this.getSelectableIndex(prev, next);
+            this.selectedIndex = selectableIndex > -1 ? selectableIndex : prev;
+            return;
+        }
+
         this.setSelectedOptions();
+    }
+
+    protected getSelectableIndex(prev: number = this.selectedIndex, next: number) {
+        const direction = prev > next ? -1 : prev < next ? 1 : 0;
+        const potentialDirection = prev + direction;
+
+        let nextSelectableOption: ListboxOption | null = null;
+
+        switch (direction) {
+            case -1: {
+                nextSelectableOption = this.options.reduceRight(
+                    (nextSelectableOption, thisOption, index) =>
+                        !nextSelectableOption &&
+                        !thisOption.disabled &&
+                        index < potentialDirection
+                            ? thisOption
+                            : nextSelectableOption,
+                    nextSelectableOption
+                );
+                break;
+            }
+
+            case 1: {
+                nextSelectableOption = this.options.reduce(
+                    (nextSelectableOption, thisOption, index) =>
+                        !nextSelectableOption &&
+                        !thisOption.disabled &&
+                        index > potentialDirection
+                            ? thisOption
+                            : nextSelectableOption,
+                    nextSelectableOption
+                );
+                break;
+            }
+
+            default:
+            // impossible!
+        }
+
+        return this.options.indexOf(nextSelectableOption as any);
     }
 
     /**
@@ -180,7 +226,7 @@ export abstract class Listbox extends FoundationElement {
      */
     @observable
     public slottedOptions: HTMLElement[];
-    public slottedOptionsChanged(prev, next) {
+    public slottedOptionsChanged(prev: unknown, next: Element[]) {
         if (this.$fastController.isConnected) {
             this.options = next.reduce((options, item) => {
                 if (isListboxOption(item)) {
@@ -204,8 +250,8 @@ export abstract class Listbox extends FoundationElement {
      * @param n - element to filter
      * @public
      */
-    public static slottedOptionFilter: ElementsFilter = (n: HTMLElement) =>
-        isListboxOption(n) && !n.disabled && !n.hidden;
+    public static slottedOptionFilter = (n: HTMLElement) =>
+        isListboxOption(n) && !n.hidden;
 
     /**
      * A collection of the selected options.
@@ -214,10 +260,13 @@ export abstract class Listbox extends FoundationElement {
      */
     @observable
     public selectedOptions: ListboxOption[] = [];
-    protected selectedOptionsChanged(prev, next): void {
+    protected selectedOptionsChanged(prev: unknown, next: ListboxOption[]): void {
+        const filteredNext = next.filter(Listbox.slottedOptionFilter);
         if (this.$fastController.isConnected) {
             this.options.forEach(o => {
-                o.selected = next.includes(o);
+                Observable.getNotifier(o).unsubscribe(this);
+                o.selected = filteredNext.includes(o);
+                Observable.getNotifier(o).subscribe(this);
             });
         }
     }
@@ -236,7 +285,9 @@ export abstract class Listbox extends FoundationElement {
             return;
         }
 
-        this.selectedIndex = this.options.indexOf(captured);
+        this.selectedIndex = this.options
+            .filter(Listbox.slottedOptionFilter)
+            .indexOf(captured);
 
         return true;
     }
@@ -270,6 +321,24 @@ export abstract class Listbox extends FoundationElement {
         }
 
         this.shouldSkipFocus = false;
+    }
+
+    public handleChange(source: any, propertyName: string) {
+        switch (propertyName) {
+            // case "disabled": {
+            //     this.slottedOptionsChanged(null, this.slottedOptions);
+            //     this.options = this._options.filter(Listbox.slottedOptionFilter);
+            //     this.setSelectedOptions();
+            //     break;
+            // }
+            case "selected": {
+                if (Listbox.slottedOptionFilter(source)) {
+                    this.selectedIndex = this.options.indexOf(source);
+                }
+                this.setSelectedOptions();
+                break;
+            }
+        }
     }
 
     /**
@@ -364,8 +433,10 @@ export abstract class Listbox extends FoundationElement {
      * @public
      */
     public selectFirstOption(): void {
-        if (this.options?.length > 0) {
-            this.selectedIndex = 0;
+        const firstSelectableOption = this.options.find(o => !o.disabled);
+
+        if (firstSelectableOption) {
+            this.selectedIndex = this.options.indexOf(firstSelectableOption);
         }
     }
 
@@ -375,7 +446,14 @@ export abstract class Listbox extends FoundationElement {
      * @internal
      */
     public selectLastOption(): void {
-        this.selectedIndex = this.options.length - 1;
+        const lastSelectableOption = this.options
+            .slice()
+            .reverse()
+            .find(o => !o.disabled);
+
+        if (lastSelectableOption) {
+            this.selectedIndex = this.options.indexOf(lastSelectableOption);
+        }
     }
 
     /**
@@ -413,7 +491,7 @@ export abstract class Listbox extends FoundationElement {
      * @internal
      */
     protected setDefaultSelectedOption() {
-        if (this.options && this.$fastController.isConnected) {
+        if (this.$fastController.isConnected && this.options) {
             const selectedIndex = this.options.findIndex(o => o.hasAttribute("selected"));
 
             if (selectedIndex !== -1) {

@@ -1,20 +1,17 @@
-import { html } from "@microsoft/fast-element";
+import { html, ref } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
+import type { FoundationElementTemplate } from "../foundation-element";
 import { endSlotTemplate, startSlotTemplate } from "../patterns/start-end";
-import type { ElementDefinitionContext } from "../design-system";
 import type { ListboxOption, ListboxOptionOptions } from "./listbox-option";
 
 /**
  * The template for the {@link @microsoft/fast-foundation#(ListboxOption:class)} component.
  * @public
  */
-export const listboxOptionTemplate: (
-    context: ElementDefinitionContext,
-    definition: ListboxOptionOptions
-) => ViewTemplate<ListboxOption> = (
-    context: ElementDefinitionContext,
-    definition: ListboxOptionOptions
-) => html`
+export const listboxOptionTemplate: FoundationElementTemplate<
+    ViewTemplate<ListboxOption>,
+    ListboxOptionOptions
+> = (context, definition) => html`
     <template
         aria-checked="${x => x.ariaChecked}"
         aria-selected="${x => x.ariaSelected}"
@@ -25,7 +22,7 @@ export const listboxOptionTemplate: (
         role="option"
     >
         ${startSlotTemplate(context, definition)}
-        <span class="content" part="content">
+        <span class="content" part="content" ${ref("content")}>
             <slot></slot>
         </span>
         ${endSlotTemplate(context, definition)}

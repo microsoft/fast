@@ -1,19 +1,15 @@
 import { html, slotted } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
-import type { FoundationElementDefinition } from "../foundation-element";
-import type { ElementDefinitionContext } from "../design-system";
+import type { FoundationElementTemplate } from "../foundation-element";
 import { Listbox } from "./listbox";
 
 /**
  * The template for the {@link @microsoft/fast-foundation#(Listbox:class)} component.
  * @public
  */
-export const listboxTemplate: (
-    context: ElementDefinitionContext,
-    definition: FoundationElementDefinition
-) => ViewTemplate<Listbox> = (
-    context: ElementDefinitionContext,
-    definition: FoundationElementDefinition
+export const listboxTemplate: FoundationElementTemplate<ViewTemplate<Listbox>> = (
+    context,
+    definition
 ) => html`
     <template
         aria-activedescendant="${x => x.ariaActiveDescendant}"

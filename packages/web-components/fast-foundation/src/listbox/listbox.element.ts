@@ -394,7 +394,8 @@ export class ListboxElement extends Listbox {
      */
     protected setSelectedOptions() {
         if (!this.multiple) {
-            return super.setSelectedOptions();
+            super.setSelectedOptions();
+            return;
         }
 
         if (this.$fastController.isConnected && this.options) {
@@ -411,12 +412,13 @@ export class ListboxElement extends Listbox {
      * @internal
      */
     public toggleSelectedForAllCheckedOptions(): void {
-        const force = !this.checkedOptions.every(o => o.selected);
-        this.checkedOptions.forEach(o => (o.selected = force));
+        const enabledCheckedOptions = this.checkedOptions.filter(o => !o.disabled);
+        const force = !enabledCheckedOptions.every(o => o.selected);
+        enabledCheckedOptions.forEach(o => (o.selected = force));
         this.selectedIndex = this.options.indexOf(
-            this.checkedOptions[this.checkedOptions.length - 1]
+            enabledCheckedOptions[enabledCheckedOptions.length - 1]
         );
-        // this.activeIndex = this.selectedIndex;
+
         this.setSelectedOptions();
     }
 
