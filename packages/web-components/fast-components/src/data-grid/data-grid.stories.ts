@@ -250,7 +250,7 @@ function reset(): void {
         return;
     }
     defaultGridElement.columnDefinitions = null;
-    defaultGridElement.rowsData = newDataSet(50);
+    defaultGridElement.rowsData = newDataSet(100000);
 }
 
 function setDefaultCols(): void {
