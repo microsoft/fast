@@ -1,3 +1,4 @@
+export * from "./abbr/index";
 export * from "./accordion-item/index";
 export * from "./accordion/index";
 export * from "./anchor/index";

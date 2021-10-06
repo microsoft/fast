@@ -2,6 +2,7 @@
  * Export all custom element definitions
  */
 import type { Container } from "@microsoft/fast-foundation";
+import { fastAbbr } from "./abbr/index";
 import { fastAccordion, fastAccordionItem } from "./accordion/index";
 import { fastAnchor } from "./anchor/index";
 import { fastAnchoredRegion } from "./anchored-region/index";
@@ -70,6 +71,7 @@ import type { Toolbar } from "./toolbar/index";
 // throws for `export * as` expressions. https://github.com/microsoft/rushstack/pull/1796S
 
 export {
+    fastAbbr,
     fastAccordion,
     fastAccordionItem,
     fastAnchor,
@@ -129,6 +131,7 @@ export {
  * statically link and register all available components.
  */
 export const allComponents = {
+    fastAbbr,
     fastAccordion,
     fastAccordionItem,
     fastAnchor,

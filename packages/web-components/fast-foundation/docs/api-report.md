@@ -19,6 +19,31 @@ import { SyntheticViewTemplate } from '@microsoft/fast-element';
 import { ViewTemplate } from '@microsoft/fast-element';
 
 // @public
+export class Abbr extends FoundationElement {
+    // (undocumented)
+    connectedCallback(): void;
+    // (undocumented)
+    delay: number;
+    // @internal (undocumented)
+    handleMouseOut: (e: MouseEvent) => void;
+    // @internal (undocumented)
+    handleMouseOver: (e: MouseEvent) => void;
+    // (undocumented)
+    position: TooltipPosition;
+    // @internal (undocumented)
+    root: HTMLElement;
+    // @internal (undocumented)
+    showTooltip: boolean;
+    // (undocumented)
+    text: string;
+    // @internal (undocumented)
+    tooltip: Tooltip;
+}
+
+// @public
+export const abbrTemplate: (context: ElementDefinitionContext, definition: FoundationElementDefinition) => ViewTemplate<Abbr>;
+
+// @public
 export class Accordion extends FoundationElement {
     // @internal (undocumented)
     accordionItems: HTMLElement[];

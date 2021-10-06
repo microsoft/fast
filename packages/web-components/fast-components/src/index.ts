@@ -3,6 +3,7 @@
  */
 export * from "./custom-elements";
 export * from "./fast-design-system";
+export * from "./abbr/index";
 export * from "./accordion/index";
 export * from "./anchor/index";
 export * from "./anchored-region/index";
