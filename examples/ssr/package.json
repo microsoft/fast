@@ -9,6 +9,7 @@
   "license": "ISC",
   "scripts": {
     "execute": "node --es-module-specifier-resolution=node ./dist/server.js",
+    "debug": "clear && yarn build && node --inspect --es-module-specifier-resolution=node ./dist/server.js",
     "build": "tsc -p tsconfig.json",
     "start": "clear && yarn build && yarn execute"
   },
