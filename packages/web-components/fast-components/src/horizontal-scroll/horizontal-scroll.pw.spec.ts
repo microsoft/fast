@@ -40,9 +40,8 @@ describe("FASTHorizontalScroll", function () {
                 for (let i = 0; i <= cardCount; i++) {
                     const card = document.createElement("fast-card");
                     card.innerText = `card ${i}`;
-                    card.style.setProperty("width", `${cardWidth}px`);
                     card.style.setProperty("height", `${cardHeight}px`);
-                    card.style.setProperty("outline", "1px dashed #F0F");
+                    card.style.setProperty("width", `${cardWidth}px`);
                     element.appendChild(card);
                 }
 
