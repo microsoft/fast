@@ -171,6 +171,7 @@ export class Controller extends PropertyChangeNotifier {
     readonly element: HTMLElement;
     emit(type: string, detail?: any, options?: Omit<CustomEventInit, "detail">): void | boolean;
     static forCustomElement(element: HTMLElement): Controller;
+    getShadowRoot(): ShadowRoot | null;
     get isConnected(): boolean;
     onAttributeChangedCallback(name: string, oldValue: string, newValue: string): void;
     onConnectedCallback(): void;

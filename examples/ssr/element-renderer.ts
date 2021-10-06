@@ -23,16 +23,10 @@ export class FASTElementRenderer extends ElementRenderer {
     *renderLight(renderInfo: RenderInfo): IterableIterator<string> {
         yield "LIGHT DOM";
     }
+
     *renderShadow(renderInfo: RenderInfo): IterableIterator<string> {
-        const { innerHTML } = this.element.shadowRoot!;
-        // render() does not support templates with interpolated DOM - it expects all DOM to be
-        // in the strings collection. This means the following will not create DOM
-        // when provided to render():
-        //
-        // const template = html`${innerHTML}`;
-        //
-        // Instead, trick html - this is fragile and we should probably work
-        // with lit to understand the limitation and find a better work-around
+        const { innerHTML } = this.element.$fastController.getShadowRoot()!;
+
         const template = html(([innerHTML] as unknown) as TemplateStringsArray);
 
         yield* render(template, renderInfo);
@@ -43,6 +37,6 @@ export class FASTElementRenderer extends ElementRenderer {
         old: string | null,
         value: string | null
     ): void {
-        console.log("attribute changed", name, old, value);
+        this.element.attributeChangedCallback(name, old ?? "", value ?? "");
     }
 }
