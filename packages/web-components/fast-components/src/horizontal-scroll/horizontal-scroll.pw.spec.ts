@@ -281,9 +281,9 @@ describe("FASTHorizontalScroll", function () {
 
         await element.waitForElementState("stable");
 
-        expect(
-            await element.evaluate(node => node.scrollContainer.scrollLeft)
-        ).to.be.closeTo(0, 0.5);
+        expect(await element.evaluate(node => node.scrollContainer.scrollLeft)).to.equal(
+            0
+        );
 
         expect(
             await element.$eval(".scroll-prev", node =>
