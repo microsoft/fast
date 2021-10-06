@@ -22,8 +22,8 @@ describe("FASTHorizontalScroll", function () {
         await this.page.evaluateHandle(
             ({
                 cardCount,
-                cardWidth,
                 cardHeight,
+                cardWidth,
                 horizontalScrollWidth,
                 scrollItemSpacing,
             }) => {
@@ -54,8 +54,8 @@ describe("FASTHorizontalScroll", function () {
             },
             {
                 cardCount,
-                cardWidth,
                 cardHeight,
+                cardWidth,
                 horizontalScrollWidth,
                 scrollItemSpacing,
             }
