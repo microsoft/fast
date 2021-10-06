@@ -413,7 +413,7 @@ export class VirtualizingStackBase extends FoundationElement {
             return viewportElement;
         }
 
-        return document.documentElement;
+        return this;
     };
 
     /**
@@ -477,11 +477,8 @@ export class VirtualizingStackBase extends FoundationElement {
         this.clearLayoutUpdateTimer();
 
         if (this.pendingPositioningUpdate) {
-            console.debug("updateVisibleItems - return");
             return;
         }
-
-        console.debug("updateVisibleItems");
 
         if (
             this.items === undefined ||
@@ -612,7 +609,6 @@ export class VirtualizingStackBase extends FoundationElement {
         if (this.pendingPositioningUpdate) {
             return;
         }
-        console.debug("requestPositionUpdates");
         this.pendingPositioningUpdate = true;
         this.clearLayoutUpdateTimer();
 

@@ -1,7 +1,7 @@
 <h1>
     Virtualizing Stack
 </h1>
-<div style="width: 240px; display: grid; grid-template-columns: 1fr 1fr 1fr;">
+<div style="width: 360px; display: grid; grid-template-columns: 1fr 1fr 1fr;">
     <fast-virtualizing-stack
         item-span="100"
         id="stack1"
@@ -16,6 +16,7 @@
             height: 400px;
             grid-column: 2;
             overflow-y: scroll;
+            overflow-x: hidden;
             background: gray;
         "
     ></fast-virtualizing-stack>
@@ -29,6 +30,7 @@
             background: gray;
             grid-column: 3;
             overflow-y: scroll;
+            overflow-x: hidden;
         "
     ></fast-virtualizing-stack>
 </div>

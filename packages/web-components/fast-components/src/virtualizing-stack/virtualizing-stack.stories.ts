@@ -28,6 +28,7 @@ addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
         const stack1 = document.getElementById("stack1") as FoundationVirtualingStack;
 
         stack1.itemTemplate = imageItemTemplate;
+        stack1.viewportElement = document.documentElement;
         stack1.items = newDataSet(100000);
 
         const stack2 = document.getElementById("stack2") as FoundationVirtualingStack;

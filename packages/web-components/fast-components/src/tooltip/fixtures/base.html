@@ -1,8 +1,14 @@
 <h1>Tooltip</h1>
 
 <h2>Default</h2>
-<div style="height: 400px; width: 400px; background: lightgray; overflow: scroll;">
+<div
+    id="default-viewport"
+    style="height: 400px; width: 400px; background: lightgray; overflow: scroll;"
+>
     <fast-tooltip
+        viewport="default-viewport"
+        vertical-viewport-lock="true"
+        horizontal-viewport-lock="true"
         anchor="anchor-default"
         id="tooltip-default"
         aria-label="tooltip label"
@@ -12,7 +18,7 @@
     </fast-tooltip>
     <fast-button
         id="anchor-default"
-        style="margin: 200px; height: 150px; width: 150px;"
+        style="margin: 300px; height: 150px; width: 150px;"
         aria-labelledby="tooltip-default"
         aria-describedby="tooltip-default"
     >
@@ -21,51 +27,49 @@
 </div>
 
 <h2>Show/Hide with auto updating and lock to viewport</h2>
-<div style="height: 400px; width: 100%; background: lightgray; overflow: scroll;">
-    <fast-tooltip
-        id="tooltip-show-1"
-        anchor="anchor-show"
-        position="top"
-        auto-update-mode="auto"
-        vertical-viewport-lock="true"
-        horizontal-viewport-lock="true"
-    >
-        Helpful text is helpful
-    </fast-tooltip>
-    <fast-tooltip
-        id="tooltip-show-2"
-        anchor="anchor-show"
-        position="right"
-        auto-update-mode="auto"
-        vertical-viewport-lock="true"
-        horizontal-viewport-lock="true"
-    >
-        Helpful text is helpful
-    </fast-tooltip>
-    <fast-tooltip
-        id="tooltip-show-3"
-        anchor="anchor-show"
-        position="bottom"
-        auto-update-mode="auto"
-        vertical-viewport-lock="true"
-        horizontal-viewport-lock="true"
-    >
-        Helpful text is helpful
-    </fast-tooltip>
-    <fast-tooltip
-        id="tooltip-show-4"
-        anchor="anchor-show"
-        position="left"
-        auto-update-mode="auto"
-        vertical-viewport-lock="true"
-        horizontal-viewport-lock="true"
-    >
-        Helpful text is helpful
-    </fast-tooltip>
-    <fast-button id="anchor-show" style="margin: 600px 600px 600px 600px;">
-        Toggle tooltips
-    </fast-button>
-</div>
+<fast-tooltip
+    id="tooltip-show-1"
+    anchor="anchor-show"
+    position="top"
+    auto-update-mode="auto"
+    vertical-viewport-lock="true"
+    horizontal-viewport-lock="true"
+>
+    Helpful text is helpful
+</fast-tooltip>
+<fast-tooltip
+    id="tooltip-show-2"
+    anchor="anchor-show"
+    position="right"
+    auto-update-mode="auto"
+    vertical-viewport-lock="true"
+    horizontal-viewport-lock="true"
+>
+    Helpful text is helpful
+</fast-tooltip>
+<fast-tooltip
+    id="tooltip-show-3"
+    anchor="anchor-show"
+    position="bottom"
+    auto-update-mode="auto"
+    vertical-viewport-lock="true"
+    horizontal-viewport-lock="true"
+>
+    Helpful text is really, really super helpful
+</fast-tooltip>
+<fast-tooltip
+    id="tooltip-show-4"
+    anchor="anchor-show"
+    position="left"
+    auto-update-mode="auto"
+    vertical-viewport-lock="true"
+    horizontal-viewport-lock="true"
+>
+    Helpful text is helpful
+</fast-tooltip>
+<fast-button id="anchor-show" style="margin: 100px 200px 100px 0px;">
+    Toggle tooltips
+</fast-button>
 
 <h2>Show/Hide with auto updating and lock to viewport for Corner Positions</h2>
 <div style="height: 400px; width: 100%; background: lightgray; overflow: scroll;">
