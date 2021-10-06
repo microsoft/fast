@@ -1,8 +1,28 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Thu, 30 Sep 2021 07:13:45 GMT and should not be manually modified.
+This log was last generated on Wed, 06 Oct 2021 07:11:47 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.17.1
+
+Wed, 06 Oct 2021 07:11:47 GMT
+
+### Patches
+
+- picker menu shows with only custom options (scomea@microsoft.com)
+
+## 2.17.0
+
+Tue, 05 Oct 2021 00:45:07 GMT
+
+### Minor changes
+
+- feat: add scroll events to horizontal-scroll component (robarb@microsoft.com)
+
+### Patches
+
+- fix: nested tree items not selecting (jes@microsoft.com)
 
 ## 2.16.5
 
