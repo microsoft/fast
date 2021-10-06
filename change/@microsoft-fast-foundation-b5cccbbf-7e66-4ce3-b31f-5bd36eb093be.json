@@ -1,0 +1,7 @@
+{
+  "type": "minor",
+  "comment": "add abbr as a new component",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "chhol@microsoft.com",
+  "dependentChangeType": "patch"
+}
