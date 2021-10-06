@@ -5,12 +5,8 @@ import {
     FoundationElementDefinition,
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
-import {
-    controlCornerRadius,
-    designUnit,
-    neutralLayerFloating,
-    strokeWidth,
-} from "../design-tokens";
+import { fillColor, neutralForegroundRest } from "..";
+import { controlCornerRadius, designUnit, strokeWidth } from "../design-tokens";
 import { elevation } from "../styles/index";
 
 /**
@@ -26,7 +22,9 @@ export const pickerMenuStyles: (
 ) =>
     css`
         :host {
-            background: ${neutralLayerFloating};
+            background: ${fillColor};
+            color: ${neutralForegroundRest};
+            fill: currentcolor;
             --elevation: 11;
             /* TODO: a mechanism to manage z-index across components
             https://github.com/microsoft/fast/issues/3813 */

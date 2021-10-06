@@ -1,20 +1,27 @@
 import { css, ElementStyles } from "@microsoft/fast-element";
 import {
     ElementDefinitionContext,
+    focusVisible,
     forcedColorsStylesheetBehavior,
     FoundationElementDefinition,
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
-    accentFillActive,
-    accentFillRest,
+    accentForegroundRest,
     bodyFont,
     controlCornerRadius,
     designUnit,
     focusStrokeOuter,
-    neutralFillInputHover,
-    neutralFillInputRest,
+    focusStrokeWidth,
+    neutralFillActive,
+    neutralFillHover,
+    neutralFillRest,
+    neutralForegroundActive,
+    neutralForegroundFocus,
+    neutralForegroundHover,
     neutralForegroundRest,
+    neutralStrokeInputFilledHover,
+    neutralStrokeInputFilledRest,
     strokeWidth,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
@@ -40,15 +47,14 @@ export const pickerListStyles: (
             row-gap: calc(${designUnit} * 1px);
             flex-wrap: wrap;
         }
-
         ::slotted([role="combobox"]) {
             min-width: 260px;
             width: auto;
             box-sizing: border-box;
             color: ${neutralForegroundRest};
-            background: ${neutralFillInputRest};
+            background: ${neutralFillRest};
             border-radius: calc(${controlCornerRadius} * 1px);
-            border: calc(${strokeWidth} * 1px) solid ${accentFillRest};
+            border: calc(${strokeWidth} * 1px) solid ${neutralStrokeInputFilledRest};
             height: calc(${heightNumber} * 1px);
             font-family: ${bodyFont};
             outline: none;
@@ -57,16 +63,24 @@ export const pickerListStyles: (
             line-height: ${typeRampBaseLineHeight};
             padding: 0 calc(${designUnit} * 2px + 1px);
         }
-
-        ::slotted([role="combobox"]:active) { {
-            background: ${neutralFillInputHover};
-            border-color: ${accentFillActive};
+        :host(:not([disabled]):hover) ::slotted([role="combobox"]){
+            background:${neutralFillHover};
+            border-color: ${neutralStrokeInputFilledHover};
+            color: ${neutralForegroundHover};
         }
-
-        ::slotted([role="combobox"]:focus-within) {
+        :host(:not([disabled]):active) ::slotted([role="combobox"]),
+        :host(:focus-within) ::slotted([role="combobox"]),
+        :host(:focus-within:hover) ::slotted([role="combobox"]) {
+            background: ${neutralFillActive};
+            border-color: ${accentForegroundRest};
+            color: ${neutralForegroundActive};
+        }
+        :host(:${focusVisible}) {
+            outline: none;
             border-color: ${focusStrokeOuter};
-            box-shadow: 0 0 0 1px ${focusStrokeOuter} inset;
-        }
+            box-shadow: 0 0 0 calc(${focusStrokeWidth} * 1px) ${focusStrokeOuter} inset;
+            color: ${neutralForegroundFocus};
+          }
     `.withBehaviors(
         forcedColorsStylesheetBehavior(
             css`

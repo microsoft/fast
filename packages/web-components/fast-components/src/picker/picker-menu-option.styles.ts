@@ -7,15 +7,16 @@ import {
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
-    accentFillRest,
     bodyFont,
     controlCornerRadius,
     designUnit,
     focusStrokeOuter,
     focusStrokeWidth,
-    foregroundOnAccentActive,
-    neutralFillHover,
-    neutralFillRest,
+    neutralFillStealthActive,
+    neutralFillStealthHover,
+    neutralFillStealthRest,
+    neutralForegroundActive,
+    neutralForegroundHover,
     neutralForegroundRest,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
@@ -39,6 +40,7 @@ export const pickerMenuOptionStyles: (
         align-items: center;
         justify-items: center;
         font-family: ${bodyFont};
+        background: ${neutralFillStealthRest};
         border-radius: calc(${controlCornerRadius} * 1px);
         border: calc(${focusStrokeWidth} * 1px) solid transparent;
         box-sizing: border-box;
@@ -56,22 +58,20 @@ export const pickerMenuOptionStyles: (
         white-space: nowrap;
     }
 
+    :host(:hover) {
+        background: ${neutralFillStealthHover};
+        color: ${neutralForegroundHover};
+    }
+
+    :host(:active),
+    :host([aria-selected="true"]) {
+        background: ${neutralFillStealthActive};
+        color: ${neutralForegroundActive};
+    }
+
     :host(:${focusVisible}[role="listitem"]) {
         border-color: ${focusStrokeOuter};
-        background: ${neutralFillRest};
-        color: ${neutralForegroundRest};
     }
-
-    :host(:hover) {
-        background: ${neutralFillHover};
-        color: ${neutralForegroundRest};
-    }
-
-    :host([aria-selected="true"]) {
-        background: ${accentFillRest};
-        color: ${foregroundOnAccentActive};
-    }
-
     `.withBehaviors(
         forcedColorsStylesheetBehavior(
             css`
