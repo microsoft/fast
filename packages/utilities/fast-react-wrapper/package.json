@@ -1,8 +1,9 @@
 {
-  "name": "@microsoft/fast-foundation",
-  "description": "A library of Web Component building blocks",
+  "name": "@microsoft/fast-react-wrapper",
+  "description": "A utility for wrapping web components for use in React.",
   "sideEffects": false,
-  "version": "2.17.1",
+  "private": true,
+  "version": "0.0.1",
   "author": {
     "name": "Microsoft",
     "url": "https://discord.gg/FcSNfg4"
@@ -16,18 +17,15 @@
     "url": "https://github.com/Microsoft/fast/issues/new/choose"
   },
   "main": "dist/esm/index.js",
-  "types": "dist/fast-foundation.d.ts",
-  "unpkg": "dist/fast-foundation.min.js",
+  "types": "dist/fast-react-wrapper.d.ts",
+  "unpkg": "dist/fast-react-wrapper.min.js",
   "scripts": {
     "clean:dist": "node ../../../build/clean.js dist",
     "doc": "api-extractor run --local",
     "doc:ci": "api-extractor run",
-    "build:rollup": "rollup -c",
-    "build:tsc": "tsc -p ./tsconfig.json",
-    "build": "yarn build:tsc && yarn build:rollup && yarn doc",
+    "build": "tsc -p ./tsconfig.json && yarn rollup -c && yarn doc",
     "dev": "tsc -p ./tsconfig.json -w",
     "tdd": "yarn dev & yarn test-chrome:watch",
-    "tdd:firefox": "yarn dev & yarn test-firefox:watch",
     "prepare": "yarn clean:dist && yarn build",
     "prettier": "prettier --config ../../../.prettierrc --write \"**/*.ts\"",
     "prettier:diff": "prettier --config ../../../.prettierrc \"**/*.ts\" --list-different",
@@ -43,8 +41,7 @@
     "test-chrome:verbose:watch": "karma start karma.conf.js --browsers=ChromeHeadlessOpt --coverage --watch-extensions js --reporter=mocha",
     "test-chrome:verbose:debugger": "karma start karma.conf.js --browsers=ChromeDebugging --reporter=mocha",
     "test-firefox": "karma start karma.conf.js --browsers=FirefoxHeadless --single-run --coverage",
-    "test-firefox:verbose": "karma start karma.conf.js --browsers=FirefoxHeadless --single-run --coverage --reporter=mocha",
-    "test-firefox:watch": "karma start karma.conf.js --browsers=FirefoxHeadless   --coverage --watch-extensions js"
+    "test-firefox:verbose": "karma start karma.conf.js --browsers=FirefoxHeadless --single-run --coverage --reporter=mocha"
   },
   "devDependencies": {
     "@microsoft/api-extractor": "7.8.1",
@@ -53,7 +50,6 @@
     "@types/mocha": "^7.0.2",
     "@types/webpack-env": "^1.15.2",
     "chai": "^4.2.0",
-    "chai-spies": "^1.0.0",
     "esm": "^3.2.25",
     "ignore-loader": "^0.1.2",
     "istanbul": "^0.4.5",
@@ -70,9 +66,10 @@
     "karma-source-map-support": "^1.4.0",
     "karma-sourcemap-loader": "^0.3.7",
     "karma-webpack": "^4.0.2",
-    "lodash-es": "4.17.15",
     "mocha": "^7.1.2",
     "prettier": "2.0.2",
+    "react": "^16.9.0",
+    "react-dom": "^16.9.0",
     "rollup": "^2.7.6",
     "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-filesize": "^8.0.2",
@@ -90,9 +87,10 @@
   },
   "dependencies": {
     "@microsoft/fast-element": "^1.5.1",
-    "@microsoft/fast-web-utilities": "^5.0.0",
-    "@microsoft/tsdoc-config": "^0.13.4",
-    "tabbable": "^5.2.0",
-    "tslib": "^1.13.0"
+    "@microsoft/fast-foundation": "^2.17.1"
+  },
+  "peerDependencies": {
+    "lodash-es": "^4.0.0",
+    "react": "^16.9.0"
   }
 }

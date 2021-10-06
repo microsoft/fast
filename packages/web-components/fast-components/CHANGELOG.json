@@ -2,6 +2,51 @@
   "name": "@microsoft/fast-components",
   "entries": [
     {
+      "date": "Wed, 06 Oct 2021 07:11:47 GMT",
+      "tag": "@microsoft/fast-components_v2.11.9",
+      "version": "2.11.9",
+      "comments": {
+        "patch": [
+          {
+            "comment": "picker menu shows with only custom options",
+            "author": "scomea@microsoft.com",
+            "commit": "0d509e1bbd4f7e55b167986ea95497ef64bfd7ef",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 05 Oct 2021 00:45:07 GMT",
+      "tag": "@microsoft/fast-components_v2.11.8",
+      "version": "2.11.8",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-foundation to v2.17.0",
+            "author": "robarb@microsoft.com",
+            "commit": "5f6c838b1511ebf26a34b3c4d26f82467de8a603",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sun, 03 Oct 2021 07:12:33 GMT",
+      "tag": "@microsoft/fast-components_v2.11.7",
+      "version": "2.11.7",
+      "comments": {
+        "none": [
+          {
+            "comment": "Update webpack migration documentation",
+            "author": "meyunus@microsoft.com",
+            "commit": "83d2ace2b485b730cf8ea11512d5782cab381a1b",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 30 Sep 2021 07:13:45 GMT",
       "tag": "@microsoft/fast-components_v2.11.7",
       "version": "2.11.7",
