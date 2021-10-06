@@ -1,0 +1,51 @@
+{
+    "version": 1.1,
+    "tags": [
+        {
+            "name": "fast-abbr",
+            "title": "Abbr",
+            "description": "The FAST abbr element",
+            "attributes": [
+                {
+                    "name": "text",
+                    "title": "Text",
+                    "description": "The full text of the abbreviation",
+                    "type": "string",
+                    "required": false
+                },
+                {
+                    "name": "delay",
+                    "title": "Delay",
+                    "description":
+                        "The delay in milliseconds before a tooltip is shown after a hover event",
+                    "type": "number",
+                    "default": 300,
+                    "required": false
+                },
+                {
+                    "name": "position",
+                    "title": "Position",
+                    "description":
+                        "Controls the placement of the tooltip relative to the configured 'Anchor ID'",
+                    "values": [
+                        { "name": "top" },
+                        { "name": "right" },
+                        { "name": "bottom" },
+                        { "name": "left" },
+                        { "name": "start" },
+                        { "name": "end" }
+                    ],
+                    "type": "string",
+                    "required,": false
+                }
+            ],
+            "slots": [
+                {
+                    "name": "",
+                    "title": "Default slot",
+                    "description": "The abbreviation text"
+                }
+            ]
+        }
+    ]
+}
