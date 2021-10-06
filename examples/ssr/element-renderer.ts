@@ -9,6 +9,7 @@ export class FASTElementRenderer extends ElementRenderer {
     static matchesClass(ctor: typeof HTMLElement): boolean {
         return ctor.prototype instanceof FASTElement;
     }
+
     connectedCallback(): void {
         this.element.connectedCallback();
     }
@@ -37,6 +38,6 @@ export class FASTElementRenderer extends ElementRenderer {
         old: string | null,
         value: string | null
     ): void {
-        this.element.attributeChangedCallback(name, old ?? "", value ?? "");
+        this.element.attributeChangedCallback(name, old!, value!);
     }
 }
