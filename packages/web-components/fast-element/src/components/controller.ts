@@ -366,6 +366,16 @@ export class Controller extends PropertyChangeNotifier {
         return false;
     }
 
+    /**
+     * Retrieve the shadow root for the controller's element.
+     * This is a requirement for the existing SSR implementation
+     * that renders out the shadow root's innerHTML. If we can find
+     * an alternative, we can remove this code.
+     */
+    public getShadowRoot() {
+        return getShadowRoot(this.element);
+    }
+
     private finishInitialization(): void {
         const element = this.element;
         const boundObservables = this.boundObservables;

@@ -26,6 +26,7 @@
 7. Lit's "render" method doesn't know how to process raw strings into declarative shadow-dom custom elements, so this preculdes us from simply calling `yield* render(innerHTML, context)` in the `renderShadow()` method.
 8. Lit-ssr's render() does not understand DOM that is interpolated into the html tagged-template literal, so this demo contains a work-around that may be un-safe.
 9. lit-ssr seems to [hard-code `shadow-mode="open"`](https://github.com/lit/lit/blob/main/packages/labs/ssr/src/lib/render-lit-html.ts#L728), so closed shadow roots are not currently supported.
+10. Rendering out `innerHTML` requires access to the custom element's shadow root. A method retrieve the shadowRoot has been added to the controller so that this can be done safely. One work-around that may work is to render a view to a private element and read the `innerHTML` from there, but there could be significant performance detriments to this.
 
 ## TODO
 1. property bindings not working correctly for some reason
