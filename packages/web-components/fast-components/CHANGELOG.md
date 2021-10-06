@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-components
 
-This log was last generated on Tue, 05 Oct 2021 00:45:07 GMT and should not be manually modified.
+This log was last generated on Wed, 06 Oct 2021 07:11:47 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.11.9
+
+Wed, 06 Oct 2021 07:11:47 GMT
+
+### Patches
+
+- picker menu shows with only custom options (scomea@microsoft.com)
 
 ## 2.11.8
 
