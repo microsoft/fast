@@ -10,7 +10,7 @@ describe("FASTHorizontalScroll", function () {
     const cardWidth = 120;
     const horizontalScrollWidth = 400;
     const scrollItemSpacing = 5;
-    const allCardsWidth = cardCount * (cardWidth + scrollItemSpacing);
+    const allCardsWidth = cardCount * (cardWidth + scrollItemSpacing) - scrollItemSpacing;
     const maxScrolls = allCardsWidth / horizontalScrollWidth;
     const cardsPerScreen = Math.floor(cardCount / maxScrolls) - 1;
 
