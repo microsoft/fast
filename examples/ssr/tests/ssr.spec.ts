@@ -62,3 +62,19 @@ test(`should render a custom element into a shadow DOM`,  async ({page}) => {
 	const innerElement = await target.$("p");
 	expect(await innerElement.innerText()).toBe("Leaf node");
 });
+
+test(`should render a custom element registered with an open shadow root with an open shadow root`, async ({page}) => {
+	await page.goto(ROOT_URL);
+	const target = await page.$("fast-main #open-shadow-root");
+	const shadowRoot = await target.evaluate(node => node.shadowRoot);
+
+	expect(shadowRoot).not.toBeNull();
+});
+// This fails because lit hard-codes open shadow root
+test.skip(`should render a custom element registered with a closed shadow root with a closed shadow root`, async ({page}) => {
+	await page.goto(ROOT_URL);
+	const target = await page.$("fast-main #closed-shadow-root");
+	const shadowRoot = await target.evaluate(node => node.shadowRoot);
+
+	expect(shadowRoot).toBeNull();
+});

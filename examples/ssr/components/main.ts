@@ -27,9 +27,9 @@ FASTElement.define(Main, {
             `
         )}
         <fast-leaf id="nested-custom-element"></fast-leaf>
+        <fast-open-shadow-root id="open-shadow-root"></fast-open-shadow-root>
+        <fast-closed-shadow-root id="closed-shadow-root"></fast-closed-shadow-root>
         <ul>
-            <li><fast-closed-shadow-root></fast-closed-shadow-root></li>
-            <li><fast-open-shadow-root></fast-open-shadow-root></li>
             <li>
                 <fast-slot>
                     Shadow DOM slotted leaf:
