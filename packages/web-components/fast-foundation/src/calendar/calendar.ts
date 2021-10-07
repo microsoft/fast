@@ -4,9 +4,15 @@ import {
     FASTElement,
     nullableNumberConverter,
     observable,
+    SyntheticViewTemplate,
 } from "@microsoft/fast-element";
 import { keyEnter } from "@microsoft/fast-web-utilities";
+import type { StartEndOptions } from "..";
 import { FoundationElement } from "../foundation-element";
+import type {
+    FoundationElementDefinition,
+    FoundationElementTemplate,
+} from "../foundation-element";
 import type { DayFormat, MonthFormat, WeekdayFormat, YearFormat } from "./date-formatter";
 import { DateFormatter } from "./date-formatter";
 
@@ -43,6 +49,21 @@ export type CalendarDateInfo = {
     disabled?: boolean;
     selected?: boolean;
 };
+
+/**
+ * Calendar configuration options
+ * @public
+ */
+export type CalendarOptions = FoundationElementDefinition &
+    StartEndOptions & {
+        title?:
+            | FoundationElementTemplate<
+                  SyntheticViewTemplate<any, Calendar>,
+                  CalendarOptions
+              >
+            | SyntheticViewTemplate
+            | string;
+    };
 
 /**
  * Calendar component

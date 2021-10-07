@@ -2,32 +2,33 @@ import { html, repeat, when } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
 import { endTemplate, startTemplate } from "../patterns/start-end";
 import { DataGrid, DataGridCell, DataGridRow } from "../data-grid";
-import type { FoundationElementDefinition } from "../foundation-element";
+import type {
+    FoundationElementDefinition,
+    FoundationElementTemplate,
+} from "../foundation-element";
 import type { ElementDefinitionContext } from "../design-system";
-import type { Calendar, CalendarDateInfo } from "./calendar";
+import type { Calendar, CalendarDateInfo, CalendarOptions } from "./calendar";
 
 /**
  * A basic Calendar title template that includes the month and year
  * @returns - A calendar title template
  * @public
  */
-export const calendarTitleTemplate: ViewTemplate<Calendar> = html`
-    <slot name="title">
-        <div
-            class="title"
-            part="title"
-            aria-label="${(x: Calendar) =>
-                x.dateFormatter.getDate(`${x.month}-2-${x.year}`, {
-                    month: "long",
-                    year: "numeric",
-                })}"
-        >
-            <span part="month">
-                ${(x: Calendar) => x.dateFormatter.getMonth(x.month)}
-            </span>
-            <span part="year">${(x: Calendar) => x.dateFormatter.getYear(x.year)}</span>
-        </div>
-    </slot>
+export const CalendarTitleTemplate: ViewTemplate<Calendar> = html`
+    <div
+        class="title"
+        part="title"
+        aria-label="${(x: Calendar) =>
+            x.dateFormatter.getDate(`${x.month}-2-${x.year}`, {
+                month: "long",
+                year: "numeric",
+            })}"
+    >
+        <span part="month">
+            ${(x: Calendar) => x.dateFormatter.getMonth(x.month)}
+        </span>
+        <span part="year">${(x: Calendar) => x.dateFormatter.getYear(x.year)}</span>
+    </div>
 `;
 
 /**
@@ -228,20 +229,20 @@ export const noninteractiveCalendarTemplate: (todayString: string) => ViewTempla
  * @returns - a template for a calendar month
  * @public
  */
-export const calendarTemplate: (
-    context: ElementDefinitionContext,
-    definition: FoundationElementDefinition
-) => ViewTemplate<Calendar> = (
-    context: ElementDefinitionContext,
-    definition: FoundationElementDefinition
-) => {
+export const calendarTemplate: FoundationElementTemplate<
+    ViewTemplate<Calendar>,
+    CalendarOptions
+> = (context, definition) => {
     const today: Date = new Date();
     const todayString: string = `${
         today.getMonth() + 1
     }-${today.getDate()}-${today.getFullYear()}`;
     return html`
         <template>
-            ${startTemplate} ${calendarTitleTemplate}
+            ${startTemplate}
+            ${definition.title instanceof Function
+                ? definition.title(context, definition)
+                : definition.title ?? ""}
             <slot></slot>
             ${when(
                 x => x.readonly === false,

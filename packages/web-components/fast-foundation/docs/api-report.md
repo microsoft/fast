@@ -317,14 +317,19 @@ export type CalendarInfo = MonthInfo & {
     next: MonthInfo;
 };
 
+// @public
+export type CalendarOptions = FoundationElementDefinition & StartEndOptions & {
+    title?: FoundationElementTemplate<SyntheticViewTemplate<any, Calendar>, CalendarOptions> | SyntheticViewTemplate | string;
+};
+
 // @public (undocumented)
 export const calendarRowTemplate: (context: ElementDefinitionContext, todayString: string) => ViewTemplate;
 
 // @public
-export const calendarTemplate: (context: ElementDefinitionContext, definition: FoundationElementDefinition) => ViewTemplate<Calendar>;
+export const calendarTemplate: FoundationElementTemplate<ViewTemplate<Calendar>, CalendarOptions>;
 
 // @public
-export const calendarTitleTemplate: ViewTemplate<Calendar>;
+export const CalendarTitleTemplate: ViewTemplate<Calendar>;
 
 // @public
 export const calendarWeekdayTemplate: (context: any) => ViewTemplate;

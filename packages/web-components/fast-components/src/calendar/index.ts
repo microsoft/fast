@@ -1,4 +1,8 @@
-import { Calendar, calendarTemplate } from "@microsoft/fast-foundation";
+import {
+    Calendar,
+    calendarTemplate,
+    CalendarTitleTemplate,
+} from "@microsoft/fast-foundation";
 import { CalendarStyles as styles } from "./calendar.styles";
 
 /**
@@ -14,6 +18,7 @@ export const fastCalendar = Calendar.compose({
     baseName: "calendar",
     template: calendarTemplate,
     styles,
+    title: CalendarTitleTemplate,
 });
 
 /**
