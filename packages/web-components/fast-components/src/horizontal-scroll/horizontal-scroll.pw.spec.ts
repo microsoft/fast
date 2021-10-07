@@ -5,14 +5,11 @@ import { ElementHandle } from "playwright";
 type fastHorizontalScroll = HTMLElement & HorizontalScrollType;
 
 describe("FASTHorizontalScroll", function () {
-    const cardCount = 16;
-    const cardHeight = 200;
-    const cardWidth = 120;
-    const horizontalScrollWidth = 400;
-    const scrollItemSpacing = 5;
-    const allCardsWidth = cardCount * (cardWidth + scrollItemSpacing) - scrollItemSpacing;
-    const maxScrolls = allCardsWidth / horizontalScrollWidth;
-    const cardsPerScreen = Math.floor(cardCount / maxScrolls) - 1;
+    const componentWidth = 400;
+    const itemCount = 16;
+    const itemHeight = 200;
+    const itemWidth = 120;
+    const itemSpacing = 5;
 
     beforeEach(async function () {
         if (!this.page && !this.browser) {
@@ -20,28 +17,19 @@ describe("FASTHorizontalScroll", function () {
         }
 
         await this.page.evaluateHandle(
-            ({
-                cardCount,
-                cardHeight,
-                cardWidth,
-                horizontalScrollWidth,
-                scrollItemSpacing,
-            }) => {
+            ({ componentWidth, itemCount, itemHeight, itemSpacing, itemWidth }) => {
                 const element = document.createElement(
                     "fast-horizontal-scroll"
                 ) as fastHorizontalScroll;
 
-                element.style.setProperty("width", `${horizontalScrollWidth}px`);
-                element.style.setProperty(
-                    "--scroll-item-spacing",
-                    `${scrollItemSpacing}px`
-                );
+                element.style.setProperty("width", `${componentWidth}px`);
+                element.style.setProperty("--scroll-item-spacing", `${itemSpacing}px`);
 
-                for (let i = 0; i <= cardCount; i++) {
+                for (let i = 0; i <= itemCount; i++) {
                     const card = document.createElement("div");
                     card.innerText = `card ${i}`;
-                    card.style.setProperty("height", `${cardHeight}px`);
-                    card.style.setProperty("width", `${cardWidth}px`);
+                    card.style.setProperty("height", `${itemHeight}px`);
+                    card.style.setProperty("width", `${itemWidth}px`);
                     element.appendChild(card);
                 }
 
@@ -52,11 +40,11 @@ describe("FASTHorizontalScroll", function () {
                 return element;
             },
             {
-                cardCount,
-                cardHeight,
-                cardWidth,
-                horizontalScrollWidth,
-                scrollItemSpacing,
+                componentWidth,
+                itemCount,
+                itemHeight,
+                itemSpacing,
+                itemWidth,
             }
         );
     });
@@ -99,7 +87,7 @@ describe("FASTHorizontalScroll", function () {
         await element.waitForElementState("stable");
 
         expect(await element.evaluate(node => node.scrollContainer.scrollLeft)).to.equal(
-            cardsPerScreen * (cardWidth + scrollItemSpacing)
+            250
         );
     });
 
@@ -166,10 +154,10 @@ describe("FASTHorizontalScroll", function () {
         await element.waitForElementState("stable");
 
         await this.page.evaluate(
-            ({ element, horizontalScrollWidth }) => {
-                element.style.setProperty("width", `${horizontalScrollWidth * 2}px`);
+            ({ element, componentWidth }) => {
+                element.style.setProperty("width", `${componentWidth * 2}px`);
             },
-            { element, horizontalScrollWidth }
+            { element, componentWidth }
         );
 
         await element.waitForElementState("stable");
@@ -266,7 +254,7 @@ describe("FASTHorizontalScroll", function () {
         await element.waitForElementState("stable");
 
         expect(await element.evaluate(node => node.scrollContainer.scrollLeft)).to.equal(
-            cardsPerScreen * (cardWidth + scrollItemSpacing)
+            250
         );
 
         expect(
@@ -312,9 +300,9 @@ describe("FASTHorizontalScroll", function () {
 
         expect(await element.evaluate(node => node.scrollContainer.scrollLeft)).to.equal(
             await element.evaluate(
-                (node, horizontalScrollWidth) =>
-                    node.scrollContainer.scrollWidth - horizontalScrollWidth,
-                horizontalScrollWidth
+                (node, componentWidth) =>
+                    node.scrollContainer.scrollWidth - componentWidth,
+                componentWidth
             )
         );
 
