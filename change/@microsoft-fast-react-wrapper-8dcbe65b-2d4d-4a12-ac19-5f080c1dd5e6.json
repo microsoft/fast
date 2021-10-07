@@ -1,0 +1,7 @@
+{
+  "type": "minor",
+  "comment": "chore: update fast-react-wrapper package for pub",
+  "packageName": "@microsoft/fast-react-wrapper",
+  "email": "roeisenb@microsoft.com",
+  "dependentChangeType": "patch"
+}
