@@ -1,6 +1,8 @@
 import { customElement, FASTElement, html } from "@microsoft/fast-element";
 
-@customElement({
+export class ClosedShadowRoot extends FASTElement {}
+
+FASTElement.define(ClosedShadowRoot, {
     name: "fast-closed-shadow-root",
     template: html`
         <p>Closed shadow root</p>
@@ -8,13 +10,13 @@ import { customElement, FASTElement, html } from "@microsoft/fast-element";
     shadowOptions: {
         mode: "closed",
     },
-})
-export class ClosedShadowRoot extends FASTElement {}
+});
 
-@customElement({
+export class OpenShadowRoot extends FASTElement {}
+
+FASTElement.define(OpenShadowRoot, {
     name: "fast-open-shadow-root",
     template: html`
         <p>Closed shadow root</p>
     `,
-})
-export class OpenShadowRoot extends FASTElement {}
+});

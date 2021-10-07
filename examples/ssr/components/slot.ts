@@ -1,9 +1,10 @@
-import { customElement, FASTElement, html } from "@microsoft/fast-element";
+import { FASTElement, html } from "@microsoft/fast-element";
 
-@customElement({
+export class Slot extends FASTElement {}
+
+FASTElement.define(Slot, {
     name: "fast-slot",
     template: html`
         <slot></slot>
     `,
-})
-export class Slot extends FASTElement {}
+});

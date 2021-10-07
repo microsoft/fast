@@ -1,9 +1,10 @@
-import { customElement, FASTElement, html } from "@microsoft/fast-element";
+import { FASTElement, html } from "@microsoft/fast-element";
 
-@customElement({
+export class Leaf extends FASTElement {}
+
+FASTElement.define(Leaf, {
     name: "fast-leaf",
     template: html`
         <p>Leaf node</p>
     `,
-})
-export class Leaf extends FASTElement {}
+});

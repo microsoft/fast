@@ -1,8 +1,12 @@
 /* eslint-disable */
-import { css, customElement, FASTElement, html, when } from "@microsoft/fast-element";
-import { Leaf } from "./leaf";
+import { css, FASTElement, html, when } from "@microsoft/fast-element";
 
-@customElement({
+export class Main extends FASTElement {
+    public initializedString: string = "bar";
+    public initializedBool: boolean = true;
+}
+
+FASTElement.define(Main, {
     name: "fast-main",
     /*html*/
     template: html<Main>`
@@ -48,8 +52,4 @@ import { Leaf } from "./leaf";
             display: "block";
         }
     `,
-})
-export class Main extends FASTElement {
-    public initializedString: string = "bar";
-    public initializedBool: boolean = true;
-}
+});
