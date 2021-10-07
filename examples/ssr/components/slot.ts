@@ -6,5 +6,6 @@ FASTElement.define(Slot, {
     name: "fast-slot",
     template: html`
         <slot></slot>
+        <slot name="named-slot"></slot>
     `,
 });
