@@ -11,7 +11,8 @@
     "execute": "node --es-module-specifier-resolution=node ./dist/server.js",
     "debug": "clear && yarn build && node --inspect --es-module-specifier-resolution=node ./dist/server.js",
     "build": "tsc -p tsconfig.json",
-    "start": "clear && yarn build && yarn execute"
+    "start": "clear && yarn build && yarn execute",
+    "test": "playwright test"
   },
   "dependencies": {
     "@happy-dom/global-registrator": "^2.22.0",
@@ -30,6 +31,7 @@
     "tslib": "^1.11.1"
   },
   "devDependencies": {
+    "@playwright/test": "^1.15.2",
     "typescript": "^3.8.3"
   }
 }

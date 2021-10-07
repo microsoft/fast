@@ -19,5 +19,6 @@
       "dom",
       "esnext"
     ]
-  }
+  },
+  "exclude": ["tests"]
 }

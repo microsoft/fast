@@ -10,6 +10,7 @@ FASTElement.define(Main, {
     name: "fast-main",
     /*html*/
     template: html<Main>`
+        <p id="static-element">Static Element Content</p>
         <ul>
             <li>Inline content</li>
             <li>
