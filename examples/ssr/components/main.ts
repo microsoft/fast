@@ -2,7 +2,7 @@
 import { css, FASTElement, html, when } from "@microsoft/fast-element";
 
 export class Main extends FASTElement {
-    public initializedString: string = "bar";
+    public initializedString: string = "Initialized string content";
     public initializedBool: boolean = true;
 }
 
@@ -11,11 +11,10 @@ FASTElement.define(Main, {
     /*html*/
     template: html<Main>`
         <p id="static-element">Static Element Content</p>
+        <p id="static-element-bound-content">
+            ${(x: Main): string => x.initializedString}
+        </p>
         <ul>
-            <li>Inline content</li>
-            <li>
-                Initialized string binding: ${(x: Main): string => x.initializedString}
-            </li>
             ${when(
                 (x: Main): boolean => x.initializedBool,
                 html`
