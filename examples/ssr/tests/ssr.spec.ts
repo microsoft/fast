@@ -81,7 +81,7 @@ test.skip(`should render a custom element registered with a closed shadow root w
 
 test("should render text into the default slot of an element with a default slot", async ({page}) => {
 	await page.goto(ROOT_URL);
-	const target = await page.$("fast-main #slotted-text");
+	const target = await page.$("fast-main #default-slotted-text");
 	const text = await target.innerText();
 
 	expect(text).toBe("Shadow DOM slotted text");
@@ -89,7 +89,14 @@ test("should render text into the default slot of an element with a default slot
 
 test("should render an element into the default slot of an element with a default slot", async ({page}) => {
 	await page.goto(ROOT_URL);
-	const target = await page.$("fast-main #slotted-element > fast-leaf");
+	const target = await page.$("fast-main #default-slotted-element > fast-leaf");
+
+	expect(target).not.toBeNull();
+});
+
+test("should render an element into a named slot of an element with a named slot", async ({page}) => {
+	await page.goto(ROOT_URL);
+	const target = await page.$("fast-main #named-slotted-element > fast-leaf");
 
 	expect(target).not.toBeNull();
 });
