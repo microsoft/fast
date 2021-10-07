@@ -1,13 +1,12 @@
 /*eslint-disable*/
-import {
-    customElement,
-    FASTElement,
-    html,
-    observable,
-    repeat,
-} from "@microsoft/fast-element";
+import { FASTElement, html, observable, repeat } from "@microsoft/fast-element";
 
-@customElement({
+export class Repeater extends FASTElement {
+    @observable
+    data: string[] = ["A", "B", "C", "D"];
+}
+
+FASTElement.define(Repeater, {
     name: "fast-repeater",
     template: html<Repeater>`
         <ol>
@@ -19,8 +18,4 @@ import {
             )}
         </ol>
     `,
-})
-export class Repeater extends FASTElement {
-    @observable
-    data: string[] = ["A", "B", "C", "D"];
-}
+});
