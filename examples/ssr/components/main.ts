@@ -29,13 +29,15 @@ FASTElement.define(Main, {
         <fast-leaf id="nested-custom-element"></fast-leaf>
         <fast-open-shadow-root id="open-shadow-root"></fast-open-shadow-root>
         <fast-closed-shadow-root id="closed-shadow-root"></fast-closed-shadow-root>
+        <fast-slot id="slotted-text">
+            Shadow DOM slotted text
+        </fast-slot>
+        <fast-slot id="slotted-element">
+            <fast-leaf></fast-leaf>
+        </fast-slot>
+
         <ul>
-            <li>
-                <fast-slot>
-                    Shadow DOM slotted leaf:
-                    <fast-leaf></fast-leaf>
-                </fast-slot>
-            </li>
+            <li></li>
             <li>
                 <fast-bindings
                     attribute="attribute-value"
