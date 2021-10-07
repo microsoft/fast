@@ -15,12 +15,27 @@ test(`should render the 'fast-main' custom element with a shadow root`, async ({
 	expect(shadowRoot).not.toBeNull();
 });
 
-test(`should render static element into a shadow root`, async ({ page }) => {
-	await page.goto(ROOT_URL);
-	const target = await page.$("fast-main #static-element");
-	await expect(target).not.toBeNull();
+test.describe("should render a static element", () => {
+	test(`into a shadow root`, async ({ page }) => {
+		await page.goto(ROOT_URL);
+		const target = await page.$("fast-main #static-element");
+		await expect(target).not.toBeNull();
 
-	const rootNodeIsShadowRoot = await target.evaluate(node => node.getRootNode() instanceof ShadowRoot);
+		const rootNodeIsShadowRoot = await target.evaluate(node => node.getRootNode() instanceof ShadowRoot);
 
-	expect(rootNodeIsShadowRoot).toBe(true)
+		expect(rootNodeIsShadowRoot).toBe(true)
+	});
+	test(`with static content in a shadow root`, async ({ page }) => {
+		await page.goto(ROOT_URL);
+		const target = await page.$("fast-main #static-element");
+
+		await expect(await target.innerText()).toBe("Static Element Content")
+	});
+
+	test(`with text content bound from an initialized property`, async ({ page }) => {
+		await page.goto(ROOT_URL);
+		const target = await page.$("fast-main #static-element-bound-content");
+
+		await expect(await target.innerText()).toBe("Initialized string content")
+	});
 });
