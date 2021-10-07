@@ -14,19 +14,19 @@ FASTElement.define(Main, {
         <p id="static-element-bound-content">
             ${(x: Main): string => x.initializedString}
         </p>
+        ${when(
+            (x: Main): boolean => x.initializedBool,
+            html`
+                <p id="when-directive-true">When directive true</p>
+            `
+        )}
+        ${when(
+            (x: Main): boolean => !x.initializedBool,
+            html`
+                <p id="when-directive-false">When directive false</p>
+            `
+        )}
         <ul>
-            ${when(
-                (x: Main): boolean => x.initializedBool,
-                html`
-                    <li>When directive: should be emitted</li>
-                `
-            )}
-            ${when(
-                (x: Main): boolean => !x.initializedBool,
-                html`
-                    <li>When directive: should not be emitted</li>
-                `
-            )}
             <li><fast-leaf></fast-leaf></li>
             <li><fast-closed-shadow-root></fast-closed-shadow-root></li>
             <li><fast-open-shadow-root></fast-open-shadow-root></li>

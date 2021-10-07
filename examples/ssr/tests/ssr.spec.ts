@@ -39,3 +39,15 @@ test.describe("should render a static element", () => {
 		await expect(await target.innerText()).toBe("Initialized string content")
 	});
 });
+test(`should render an element in a 'when' directive when the binding evaluates true`, async ({ page }) => {
+	await page.goto(ROOT_URL);
+	const target = await page.$("fast-main #when-directive-true");
+	expect(target).not.toBeNull();
+
+	await expect(await target.innerText()).toBe("When directive true")
+});
+test(`should not render an element in a 'when' directive when the binding evaluates false`, async ({ page }) => {
+	await page.goto(ROOT_URL);
+	const target = await page.$("fast-main #when-directive-false");
+	expect(target).toBeNull();
+});
