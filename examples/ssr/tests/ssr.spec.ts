@@ -51,3 +51,14 @@ test(`should not render an element in a 'when' directive when the binding evalua
 	const target = await page.$("fast-main #when-directive-false");
 	expect(target).toBeNull();
 });
+test(`should render a custom element into a shadow DOM`,  async ({page}) => {
+	await page.goto(ROOT_URL);
+	const target = await page.$("fast-main #nested-custom-element");
+	expect(target).not.toBeNull();
+
+	const hasShadowRoot = await target.evaluate(node => node.shadowRoot instanceof ShadowRoot);
+	expect(hasShadowRoot).toBe(true);
+
+	const innerElement = await target.$("p");
+	expect(await innerElement.innerText()).toBe("Leaf node");
+});

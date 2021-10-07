@@ -26,8 +26,8 @@ FASTElement.define(Main, {
                 <p id="when-directive-false">When directive false</p>
             `
         )}
+        <fast-leaf id="nested-custom-element"></fast-leaf>
         <ul>
-            <li><fast-leaf></fast-leaf></li>
             <li><fast-closed-shadow-root></fast-closed-shadow-root></li>
             <li><fast-open-shadow-root></fast-open-shadow-root></li>
             <li>
