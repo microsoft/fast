@@ -3,12 +3,12 @@ import { expect } from "chai";
 import { fixture } from "../test-utilities/fixture";
 import { Calendar, calendarTemplate } from "./index";
 import { DateFormatter } from "./date-formatter";
-import { 
-    dataGridTemplate, 
+import {
+    dataGridTemplate,
     DataGrid,
     DataGridCell,
-    DataGridRow, 
-    dataGridRowTemplate, 
+    DataGridRow,
+    dataGridRowTemplate,
     dataGridCellTemplate
 } from "../data-grid/index";
 
@@ -182,7 +182,7 @@ describe("Calendar", () => {
             expect(formatter.getWeekday(2)).to.equal("Tuesday");
             expect(formatter.getWeekday(3, "short")).to.equal("Wed");
             expect(formatter.getWeekday(4, "narrow")).to.equal("T");
-        }); 
+        });
 
         it("Should return a list of formatted weekday labels with getWeekdays()", () => {
             const formatter = new DateFormatter();
@@ -213,13 +213,9 @@ describe("Calendar", () => {
             const { element, disconnect } = await setup();
             const today = new Date();
             const formatter = new DateFormatter();
-            const monthText = element.shadowRoot?.querySelector("[part='month']")?.innerHTML?.trim();
-            const yearText = element.shadowRoot?.querySelector("[part='year']")?.innerHTML?.trim();
 
             expect((element as Calendar).month).to.equal(today.getMonth() + 1 );
-            expect(monthText).to.equal(formatter.getDate(today, {month: 'long'}));
             expect((element as Calendar).year).to.equal(today.getFullYear());
-            expect(yearText).to.equal(formatter.getYear(today.getFullYear()));
 
             await disconnect();
         });
@@ -334,9 +330,6 @@ describe("Calendar", () => {
             const month = (element as Calendar).dateFormatter.getMonth((element as Calendar).month);
             expect(month).to.equal("January");
 
-            const monthLabel = element.shadowRoot?.querySelector("[part='month']")?.innerHTML?.trim();
-            expect(monthLabel).to.equal("January");
-
             await disconnect();
         });
 
@@ -345,9 +338,6 @@ describe("Calendar", () => {
 
             const month = (element as Calendar).dateFormatter.getMonth((element as Calendar).month);
             expect(month).to.equal("Jan");
-
-            const monthLabel = element.shadowRoot?.querySelector("[part='month']")?.innerHTML?.trim();
-            expect(monthLabel).to.equal("Jan");
 
             await disconnect();
         });
@@ -396,9 +386,6 @@ describe("Calendar", () => {
             const month = (element as Calendar).dateFormatter.getMonth((element as Calendar).month);
             expect(month).to.equal("mai");
 
-            const monthLabel = element.shadowRoot?.querySelector("[part='month']")?.innerHTML?.trim();
-            expect(monthLabel).to.equal("mai");
-
             await disconnect();
         });
 
@@ -424,8 +411,6 @@ describe("Calendar", () => {
             const year = (element as Calendar).dateFormatter.getYear((element as Calendar).year);
             expect(parseInt(year)).to.equal(1942);
 
-            expect(element.shadowRoot?.querySelector("[part='year']")?.innerHTML?.trim()).to.equal("1942 शक");
-
             await disconnect();
         });
 
@@ -435,8 +420,6 @@ describe("Calendar", () => {
             const year = (element as Calendar).dateFormatter.getYear((element as Calendar).year);
             const match = year.match(/\d+/);
             expect(match && parseInt(match[0])).to.equal(2564);
-
-            expect(element.shadowRoot?.querySelector("[part='year']")?.innerHTML?.trim()).to.equal("พ.ศ. 2564");
 
             await disconnect();
         });

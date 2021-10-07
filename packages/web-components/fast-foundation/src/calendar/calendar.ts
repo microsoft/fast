@@ -1,6 +1,5 @@
 import {
     attr,
-    booleanConverter,
     FASTElement,
     nullableNumberConverter,
     observable,
@@ -80,7 +79,7 @@ export class Calendar extends FoundationElement {
      * Readonly attribute for turning off data-grid
      * @public
      */
-    @attr({ converter: booleanConverter })
+    @attr({ mode: "boolean" })
     public readonly: boolean = false;
 
     /**

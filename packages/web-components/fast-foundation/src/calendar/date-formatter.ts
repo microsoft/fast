@@ -88,11 +88,18 @@ export class DateFormatter {
         date: { day: number; month: number; year: number } | string | Date
     ): Date {
         if (typeof date === "string") {
-            return new Date(date);
+            const dates = date.split(/[/-]/);
+            if (dates.length < 3) {
+                return new Date();
+            }
+            return new Date(
+                parseInt(dates[2]),
+                parseInt(dates[0]) - 1,
+                parseInt(dates[1])
+            );
         } else if ("day" in date && "month" in date && "year" in date) {
             const { day, month, year } = date;
-            const dateString = `${month}-${day}-${year}`;
-            return new Date(dateString);
+            return new Date(year, month - 1, day);
         }
 
         return date;
