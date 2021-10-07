@@ -1,8 +1,48 @@
 # Change Log - @microsoft/fast-components
 
-This log was last generated on Mon, 27 Sep 2021 07:12:15 GMT and should not be manually modified.
+This log was last generated on Wed, 06 Oct 2021 07:11:47 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.11.9
+
+Wed, 06 Oct 2021 07:11:47 GMT
+
+### Patches
+
+- picker menu shows with only custom options (scomea@microsoft.com)
+
+## 2.11.8
+
+Tue, 05 Oct 2021 00:45:07 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.17.0 (robarb@microsoft.com)
+
+## 2.11.7
+
+Thu, 30 Sep 2021 07:13:45 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.16.5 (robarb@microsoft.com)
+
+## 2.11.6
+
+Wed, 29 Sep 2021 07:13:40 GMT
+
+### Patches
+
+- do not prevent default on tree item click (chhol@microsoft.com)
+
+## 2.11.5
+
+Tue, 28 Sep 2021 07:10:49 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.16.3 (marjon@microsoft.com)
 
 ## 2.11.4
 

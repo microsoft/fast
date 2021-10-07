@@ -143,7 +143,19 @@ export class HorizontalScroll extends FoundationElement {
      * Scrolling state
      * @internal
      */
+    @observable
     private scrolling: boolean = false;
+
+    /**
+     * Firing scrollstart and scrollend events
+     * @internal
+     */
+    private scrollingChanged() {
+        if (this.scrollContainer) {
+            const event = this.scrolling == true ? "scrollstart" : "scrollend";
+            this.$emit(event, this.scrollContainer.scrollLeft);
+        }
+    }
 
     /**
      * Detects if the component has been resized
@@ -404,12 +416,14 @@ export class HorizontalScroll extends FoundationElement {
             return;
         }
 
+        this.scrolling = true;
+
         if (this.speed < 1) {
+            this.scrollContainer.style.scrollBehavior = "auto";
             this.scrollContainer.scrollLeft = newPosition;
+            this.scrolling = false;
             return;
         }
-
-        this.scrolling = true;
 
         const steps: number[] = [];
         const direction: number = position < newPosition ? 1 : -1;

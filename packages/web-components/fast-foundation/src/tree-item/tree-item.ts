@@ -102,9 +102,17 @@ export class TreeItem extends FoundationElement {
         }
     };
 
-    public handleClick = (e: MouseEvent): void => {
+    public handleClick = (e: MouseEvent): void | boolean => {
         if (!e.defaultPrevented) {
-            this.handleSelected(e);
+            const target = e.composedPath();
+            const clickedTreeItem = target.find(
+                (t: EventTarget) => t instanceof HTMLElement && isTreeItemElement(t)
+            );
+            if ((clickedTreeItem as any) === this) {
+                this.handleSelected();
+            }
+            // do not prevent default as it completely eats the click
+            return true;
         }
     };
 

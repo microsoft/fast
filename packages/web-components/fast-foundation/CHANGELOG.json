@@ -2,6 +2,128 @@
   "name": "@microsoft/fast-foundation",
   "entries": [
     {
+      "date": "Wed, 06 Oct 2021 07:11:47 GMT",
+      "tag": "@microsoft/fast-foundation_v2.17.1",
+      "version": "2.17.1",
+      "comments": {
+        "patch": [
+          {
+            "comment": "picker menu shows with only custom options",
+            "author": "scomea@microsoft.com",
+            "commit": "0d509e1bbd4f7e55b167986ea95497ef64bfd7ef",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 05 Oct 2021 00:45:07 GMT",
+      "tag": "@microsoft/fast-foundation_v2.17.0",
+      "version": "2.17.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "feat: add scroll events to horizontal-scroll component",
+            "author": "robarb@microsoft.com",
+            "commit": "5f6c838b1511ebf26a34b3c4d26f82467de8a603",
+            "package": "@microsoft/fast-foundation"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "fix: nested tree items not selecting",
+            "author": "jes@microsoft.com",
+            "commit": "795ff6ab8e64b8b3474a8abe3018b5f76915de86",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sun, 03 Oct 2021 07:12:33 GMT",
+      "tag": "@microsoft/fast-foundation_v2.16.5",
+      "version": "2.16.5",
+      "comments": {
+        "none": [
+          {
+            "comment": "Update webpack migration documentation",
+            "author": "meyunus@microsoft.com",
+            "commit": "83d2ace2b485b730cf8ea11512d5782cab381a1b",
+            "package": "@microsoft/fast-foundation"
+          },
+          {
+            "comment": "docs: update React integration doc to use the new React wrapper",
+            "author": "roeisenb@microsoft.com",
+            "commit": "75aae3d432e1bb633baa925f7ff093b7a19e4e72",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 30 Sep 2021 07:13:45 GMT",
+      "tag": "@microsoft/fast-foundation_v2.16.5",
+      "version": "2.16.5",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Disabling scroll easing for speed=0",
+            "author": "robarb@microsoft.com",
+            "commit": "5646a82ad9cec5899f708b31cf8e41f513918920",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 29 Sep 2021 07:13:40 GMT",
+      "tag": "@microsoft/fast-foundation_v2.16.4",
+      "version": "2.16.4",
+      "comments": {
+        "patch": [
+          {
+            "comment": "do not prevent default on tree item click",
+            "author": "chhol@microsoft.com",
+            "commit": "f027c065e7db66dceb53a762e40813587f166616",
+            "package": "@microsoft/fast-foundation"
+          },
+          {
+            "comment": "fix: allowing decimal values in fast number field",
+            "author": "robarb@microsoft.com",
+            "commit": "f3068d93920821a99fca2d8f4fb9ee6db5d0812f",
+            "package": "@microsoft/fast-foundation"
+          },
+          {
+            "comment": "fix: sliders mouseup is not firing when leaving the window",
+            "author": "robarb@microsoft.com",
+            "commit": "9105fb37edc3497a15939081b42c8dd5d63bed3f",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 28 Sep 2021 07:10:49 GMT",
+      "tag": "@microsoft/fast-foundation_v2.16.3",
+      "version": "2.16.3",
+      "comments": {
+        "patch": [
+          {
+            "comment": "made orientation changed update child tab styles",
+            "author": "marjon@microsoft.com",
+            "commit": "2d07b6ab5a9500ced93e0c1d06eea4bcad430088",
+            "package": "@microsoft/fast-foundation"
+          },
+          {
+            "comment": "Fix: active indicator keyboarding issue in tabs",
+            "author": "jes@microsoft.com",
+            "commit": "997fcc5b17e0f27401e938ec87d295b86f5a872b",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
       "date": "Mon, 27 Sep 2021 07:12:15 GMT",
       "tag": "@microsoft/fast-foundation_v2.16.2",
       "version": "2.16.2",

@@ -1,8 +1,55 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Mon, 27 Sep 2021 07:12:15 GMT and should not be manually modified.
+This log was last generated on Wed, 06 Oct 2021 07:11:47 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.17.1
+
+Wed, 06 Oct 2021 07:11:47 GMT
+
+### Patches
+
+- picker menu shows with only custom options (scomea@microsoft.com)
+
+## 2.17.0
+
+Tue, 05 Oct 2021 00:45:07 GMT
+
+### Minor changes
+
+- feat: add scroll events to horizontal-scroll component (robarb@microsoft.com)
+
+### Patches
+
+- fix: nested tree items not selecting (jes@microsoft.com)
+
+## 2.16.5
+
+Thu, 30 Sep 2021 07:13:45 GMT
+
+### Patches
+
+- Disabling scroll easing for speed=0 (robarb@microsoft.com)
+
+## 2.16.4
+
+Wed, 29 Sep 2021 07:13:40 GMT
+
+### Patches
+
+- do not prevent default on tree item click (chhol@microsoft.com)
+- fix: allowing decimal values in fast number field (robarb@microsoft.com)
+- fix: sliders mouseup is not firing when leaving the window (robarb@microsoft.com)
+
+## 2.16.3
+
+Tue, 28 Sep 2021 07:10:49 GMT
+
+### Patches
+
+- made orientation changed update child tab styles (marjon@microsoft.com)
+- Fix: active indicator keyboarding issue in tabs (jes@microsoft.com)
 
 ## 2.16.2
 
