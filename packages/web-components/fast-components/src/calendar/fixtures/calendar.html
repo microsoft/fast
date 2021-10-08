@@ -21,10 +21,13 @@
         width: 700px;
         --cell-height: 100px;
         --cell-border: 1px solid #666;
-        --weekday-background: #024;
         --current-day-color: orange;
         --current-day-border: 1px solid;
         text-align: center;
+    }
+
+    .borders::part(week-day) {
+        background: #024;
     }
 
     .borders::part(week) {
@@ -242,7 +245,10 @@
 
     .light-borders {
         --cell-border: 1px solid #333;
-        --weekday-background: #333;
+    }
+
+    .light-borders::part(week-day) {
+        background: #333;
     }
 
     .compact {
@@ -315,7 +321,10 @@
         --inactive-day-color: transparent;
         display: inline-block;
         color: #aaa;
-        --weekday-color: #fff;
+    }
+
+    #year fast-calendar::part(week-day) {
+        color: #fff;
     }
 
     #year fast-calendar::part(title) {
