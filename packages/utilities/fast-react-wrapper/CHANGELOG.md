@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-react-wrapper
 
-This log was last generated on Fri, 08 Oct 2021 19:53:11 GMT and should not be manually modified.
+This log was last generated on Fri, 08 Oct 2021 20:52:58 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.1.0
+
+Fri, 08 Oct 2021 20:52:58 GMT
+
+### Minor changes
+
+- Adding new fast-react-wrapper package (rob.eisenberg@microsoft.com)
 
 ## 0.0.1
 
