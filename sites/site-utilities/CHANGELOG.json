@@ -2,6 +2,36 @@
   "name": "@microsoft/site-utilities",
   "entries": [
     {
+      "date": "Fri, 08 Oct 2021 19:53:11 GMT",
+      "tag": "@microsoft/site-utilities_v0.9.0",
+      "version": "0.9.0",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-components to v2.11.10",
+            "author": "scomea@microsoft.com",
+            "commit": "2bf9005b895abe0828a4ebbc943ed0511c176d6f",
+            "package": "@microsoft/site-utilities"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 06 Oct 2021 07:11:47 GMT",
+      "tag": "@microsoft/site-utilities_v0.9.0",
+      "version": "0.9.0",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-components to v2.11.9",
+            "author": "scomea@microsoft.com",
+            "commit": "0d509e1bbd4f7e55b167986ea95497ef64bfd7ef",
+            "package": "@microsoft/site-utilities"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 05 Oct 2021 00:45:07 GMT",
       "tag": "@microsoft/site-utilities_v0.9.0",
       "version": "0.9.0",

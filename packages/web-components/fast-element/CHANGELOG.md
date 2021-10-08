@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-element
 
-This log was last generated on Wed, 08 Sep 2021 07:16:17 GMT and should not be manually modified.
+This log was last generated on Fri, 08 Oct 2021 19:53:11 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.6.0
+
+Fri, 08 Oct 2021 19:53:11 GMT
+
+### Minor changes
+
+- feat(fast-element): expose a method for processing the update queue (roeisenb@microsoft.com)
 
 ## 1.5.1
 

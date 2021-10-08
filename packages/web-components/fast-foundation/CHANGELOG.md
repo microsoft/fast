@@ -1,8 +1,24 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Tue, 05 Oct 2021 00:45:07 GMT and should not be manually modified.
+This log was last generated on Fri, 08 Oct 2021 19:53:11 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.17.2
+
+Fri, 08 Oct 2021 19:53:11 GMT
+
+### Patches
+
+- anchored region force update (scomea@microsoft.com)
+
+## 2.17.1
+
+Wed, 06 Oct 2021 07:11:47 GMT
+
+### Patches
+
+- picker menu shows with only custom options (scomea@microsoft.com)
 
 ## 2.17.0
 
