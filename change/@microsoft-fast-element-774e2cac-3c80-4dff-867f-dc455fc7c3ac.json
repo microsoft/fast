@@ -1,7 +1,0 @@
-{
-  "type": "minor",
-  "comment": "feat(fast-element): expose a method for processing the update queue",
-  "packageName": "@microsoft/fast-element",
-  "email": "roeisenb@microsoft.com",
-  "dependentChangeType": "patch"
-}

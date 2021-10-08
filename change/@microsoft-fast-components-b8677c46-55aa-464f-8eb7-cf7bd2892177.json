@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "anchored region force update",
-  "packageName": "@microsoft/fast-components",
-  "email": "scomea@microsoft.com",
-  "dependentChangeType": "patch"
-}
