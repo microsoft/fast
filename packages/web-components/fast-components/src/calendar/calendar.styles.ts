@@ -1,15 +1,23 @@
 import { css } from "@microsoft/fast-element";
-import { display, forcedColorsStylesheetBehavior } from "@microsoft/fast-foundation";
+import {
+    disabledCursor,
+    display,
+    forcedColorsStylesheetBehavior,
+} from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import { heightNumber } from "../styles/index";
 import {
     accentForegroundActive,
+    bodyFont,
     designUnit,
+    disabledOpacity,
     foregroundOnAccentActive,
     neutralFillRest,
     neutralForegroundRest,
+    typeRampBaseFontSize,
     typeRampBaseLineHeight,
     typeRampPlus3FontSize,
+    typeRampPlus3LineHeight,
 } from "../design-tokens";
 
 /**
@@ -20,23 +28,21 @@ export const CalendarStyles = css`
     ${display("block")} :host {
         --cell-border: none;
         --cell-height: calc(${heightNumber} * 1px);
-        --inactive-day-color: ${SystemColors.GrayText};
-        --disabled-day-color: ${SystemColors.GrayText};
-        --selected-day-border: 1px solid ${accentForegroundActive};
+        --selected-day-outline: 1px solid ${accentForegroundActive};
         --selected-day-color: ${accentForegroundActive};
         --selected-day-background: ${neutralFillRest};
         --cell-padding: calc(${designUnit} * 1px);
-        --cell-line-height: ${typeRampBaseLineHeight};
+        --disabled-day-opacity: ${disabledOpacity};
+        --inactive-day-opacity: ${disabledOpacity};
+        font-family: ${bodyFont};
+        font-size: ${typeRampBaseFontSize};
+        line-height: ${typeRampBaseLineHeight};
         color: ${neutralForegroundRest};
-    }
-
-    :host .interact {
-        --inactive-day-color: currentcolor;
-        --inactive-day-background: none;
     }
 
     .title {
         font-size: ${typeRampPlus3FontSize};
+        line-height: ${typeRampPlus3LineHeight};
         padding: var(--cell-padding);
         text-align: center;
     }
@@ -55,29 +61,25 @@ export const CalendarStyles = css`
         margin-top: calc(${designUnit} * 1px);
     }
 
+    .day,
     .week-day {
-        background-color: var(--weekday-background);
-        color: var(--weekday-color, inherit);
-        padding: var(--cell-padding);
-        text-align: center;
         border-bottom: var(--cell-border);
         border-right: var(--cell-border);
-        border-top: var(--cell-border);
+        padding: var(--cell-padding);
+    }
+
+    .week-day {
+        text-align: center;
         border-radius: 0;
+        border-top: var(--cell-border);
     }
 
     .day {
         box-sizing: border-box;
-        height: var(--cell-height);
-        padding: var(--cell-padding);
         vertical-align: top;
-        border-bottom: var(--cell-border);
-        border-right: var(--cell-border);
         outline-offset: -1px;
         line-height: var(--cell-line-height);
-        border-radius: 0;
         white-space: normal;
-        border-radius: calc(${designUnit} * 1px);
     }
 
     .interact .day {
@@ -86,19 +88,24 @@ export const CalendarStyles = css`
     }
 
     .day.off {
-        color: var(--inactive-day-color);
         background: var(--inactive-day-background);
+        color: var(--inactive-day-color);
+        opacity: var(--inactive-day-opacity);
+        outline: var(--inactive-day-outline);
     }
 
     .day.disabled {
+        background: var(--disabled-day-background);
         color: var(--disabled-day-color);
+        cursor: ${disabledCursor};
+        opacity: var(--disabled-day-opacity);
         outline: var(--disabled-day-outline);
     }
 
     .day.selected {
         color: var(--selected-day-color);
         background: var(--selected-day-background);
-        border: var(--selected-day-border);
+        outline: var(--selected-day-outline);
     }
 
     .date {
