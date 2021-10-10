@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "migrate horizontal-scroll tests to playwright",
-  "packageName": "@microsoft/fast-components",
-  "email": "john.kreitlow@microsoft.com",
-  "dependentChangeType": "patch"
-}

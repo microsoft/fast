@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-foundation",
   "entries": [
     {
+      "date": "Sun, 10 Oct 2021 07:12:26 GMT",
+      "tag": "@microsoft/fast-foundation_v2.17.3",
+      "version": "2.17.3",
+      "comments": {
+        "patch": [
+          {
+            "comment": "fix linting errors in horizontal-scroll tests",
+            "author": "john.kreitlow@microsoft.com",
+            "commit": "d3a5955c4feba0b355189a4b28dbe8befcfb89df",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 08 Oct 2021 19:53:11 GMT",
       "tag": "@microsoft/fast-foundation_v2.17.2",
       "version": "2.17.2",
