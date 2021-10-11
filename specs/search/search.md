@@ -10,8 +10,8 @@ Used anywhere an author might otherwise use:
 - input[type="search"]
 
 ### Features
-
-1. Focus Delegation
+- form association
+- focus delegation
 
 ### Risks and Challenges
 
@@ -32,7 +32,7 @@ One challenge with search forms is their accessibility; a common design pattern 
 Extends FAST Element
 
 *Component Name*
-- `fast-search-box`
+- `fast-search`
 
 *Attrs* - Adapted from [MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/search)
 - `autofocus` - automatically focuses the control
@@ -63,10 +63,10 @@ Extends FAST Element
 <!-- shadow root -->
 <label part="label"><slot></slot></label>
 <div part="root">
-  <slot name="before-content" part="before-content"></slot>
-  <input type="search" part="control" />
-  <slot name="clear-button" part="clear-button" aria-label="${x => x.label}"></slot>
-  <slot name="after-content" part="after-content"></slot>
+  <slot name="start" part="start"></slot>
+  <input type="search" part="control" aria-label="${x => x.label}"/>
+  <slot name="clear-button" part="clear-button"></slot>
+  <slot name="end" part="end"></slot>
 </div>
 <!-- end shadow root -->
 ```
@@ -84,9 +84,9 @@ Extends FAST Element
 
 *Slot Names*
 - default - the label content
-- before-content - often times a glyph, icon, or button precedes input
-- after-content - often times a glyph, icon, or button follows the input
-- clear-content - often times a glyph, icon, or button follows that clears the input field
+- end - often times a glyph, icon, or button that follows the input
+- clear-button - a button the clears the input
+- start - often times a glyph, icon, or button that precedes thr input
 
 *CSS Parts*
 - label
