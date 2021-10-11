@@ -69,15 +69,16 @@ class HeadStyleElementStyleSheetTarget extends QueuedStyleSheetTarget {
         document.head.appendChild(this.style);
         const { sheet } = this.style;
 
+        // Because the HTMLStyleElement has been appended,
+        // there shouldn't exist a case where `sheet` is null,
+        // but if-check it just in case.
         if (sheet) {
             const index = sheet.insertRule(":root{}");
             this.target = (sheet.rules[index] as CSSStyleRule).style;
-        } else {
-            throw new Error("This should never get thrown");
         }
     }
 }
-// How can StyleElementStyleSheetTarget be made to work with HTMLHeadElement types?
+
 /**
  * Handles setting properties for a FASTElement using an HTMLStyleElement
  */
