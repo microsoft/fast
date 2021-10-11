@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-element",
   "entries": [
     {
+      "date": "Fri, 08 Oct 2021 19:53:11 GMT",
+      "tag": "@microsoft/fast-element_v1.6.0",
+      "version": "1.6.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "feat(fast-element): expose a method for processing the update queue",
+            "author": "roeisenb@microsoft.com",
+            "commit": "d49d1ecc65ee74b7efb33b5a67fcad5fcead7342",
+            "package": "@microsoft/fast-element"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 08 Sep 2021 07:16:17 GMT",
       "tag": "@microsoft/fast-element_v1.5.1",
       "version": "1.5.1",

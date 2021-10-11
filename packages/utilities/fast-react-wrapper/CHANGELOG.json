@@ -2,6 +2,51 @@
   "name": "@microsoft/fast-react-wrapper",
   "entries": [
     {
+      "date": "Sun, 10 Oct 2021 07:12:26 GMT",
+      "tag": "@microsoft/fast-react-wrapper_v0.1.1",
+      "version": "0.1.1",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-foundation to v2.17.3",
+            "author": "john.kreitlow@microsoft.com",
+            "commit": "d3a5955c4feba0b355189a4b28dbe8befcfb89df",
+            "package": "@microsoft/fast-react-wrapper"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 08 Oct 2021 20:52:58 GMT",
+      "tag": "@microsoft/fast-react-wrapper_v0.1.0",
+      "version": "0.1.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "Adding new fast-react-wrapper package",
+            "author": "rob.eisenberg@microsoft.com",
+            "commit": "51a7cee314a27e8a17426462218d247024232e14",
+            "package": "@microsoft/fast-react-wrapper"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 08 Oct 2021 19:53:11 GMT",
+      "tag": "@microsoft/fast-react-wrapper_v0.0.1",
+      "version": "0.0.1",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-element to v1.6.0",
+            "author": "roeisenb@microsoft.com",
+            "commit": "d49d1ecc65ee74b7efb33b5a67fcad5fcead7342",
+            "package": "@microsoft/fast-react-wrapper"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 06 Oct 2021 07:11:47 GMT",
       "tag": "@microsoft/fast-react-wrapper_v0.0.1",
       "version": "0.0.1",

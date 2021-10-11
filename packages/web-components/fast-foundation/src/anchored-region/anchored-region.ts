@@ -399,6 +399,10 @@ export class AnchoredRegion extends FoundationElement {
     private currentDirection: Direction = Direction.ltr;
     private regionVisible: boolean = false;
 
+    // indicates that a layout update should occur even if geometry has not changed
+    // used to ensure some attribute changes are applied
+    private forceUpdate: boolean = false;
+
     // defines how big a difference in pixels there must be between states to
     // justify a layout update that affects the dom (prevents repeated sub-pixel corrections)
     private updateThreshold: number = 0.5;
@@ -472,6 +476,7 @@ export class AnchoredRegion extends FoundationElement {
             (this as FoundationElement).$fastController.isConnected &&
             this.initialLayoutComplete
         ) {
+            this.forceUpdate = true;
             this.update();
         }
     }
@@ -522,6 +527,8 @@ export class AnchoredRegion extends FoundationElement {
 
         this.style.opacity = "0";
         this.style.pointerEvents = "none";
+
+        this.forceUpdate = false;
 
         this.style.position = this.fixedPlacement ? "fixed" : "absolute";
         this.updatePositionClasses();
@@ -658,6 +665,7 @@ export class AnchoredRegion extends FoundationElement {
         // don't update the dom unless there is a significant difference in rect positions
         if (
             !this.regionVisible ||
+            this.forceUpdate ||
             this.regionRect === undefined ||
             this.anchorRect === undefined ||
             this.viewportRect === undefined ||
@@ -681,6 +689,8 @@ export class AnchoredRegion extends FoundationElement {
             }
 
             this.updateRegionOffset();
+
+            this.forceUpdate = false;
 
             return true;
         }
