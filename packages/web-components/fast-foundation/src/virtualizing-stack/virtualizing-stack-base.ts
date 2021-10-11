@@ -141,17 +141,8 @@ export class VirtualizingStackBase extends FoundationElement {
      */
     @attr
     public orientation: Orientation = Orientation.vertical;
-    private orientationChanged(): void {
-        //  if (this.orientation === Orientation.vertical){
-        //      this.gridTemplateRows = undefined;
-        //      this.gridTemplateColumns = "1fr";
-        //  } else {
-        //     this.gridTemplateRows = undefined;
-        //     this.gridTemplateColumns = `${x => x.topSpacerHeight}px repeat(${(x, c) =>
-        //         x.visibleItems.length}, ${x => x.itemSpan}px) ${x =>
-        //         x.bottomSpacerHeight}px`
-        //  }
-    }
+    // private orientationChanged(): void {
+    // }
 
     /**
      *
@@ -258,6 +249,14 @@ export class VirtualizingStackBase extends FoundationElement {
      */
     @observable
     public endSpacerSpan: number = 0;
+
+    /**
+     *
+     *
+     * @internal
+     */
+    @observable
+    public gridTemplateSpans: string;
 
     /**
      * reference to the container element
@@ -638,15 +637,7 @@ export class VirtualizingStackBase extends FoundationElement {
             this.firstRenderedIndex = newFirstRenderedIndex;
             this.lastRenderedIndex = newLastRenderedIndex;
 
-            const gridTemplateSpans = `${this.startSpacerSpan}px repeat(${this.visibleItems.length}, ${this.itemSpan}px) ${this.endSpacerSpan}px`;
-
-            if (this.orientation === Orientation.horizontal) {
-                this.containerElement.style.gridTemplateColumns = gridTemplateSpans;
-                // this.containerElement.style.width = `${this.totalStackSpan}px`
-            } else {
-                this.containerElement.style.gridTemplateRows = gridTemplateSpans;
-                // this.containerElement.style.height = `${this.totalStackSpan}px`
-            }
+            this.gridTemplateSpans = `${this.startSpacerSpan}px repeat(${this.visibleItems.length}, ${this.itemSpan}px) ${this.endSpacerSpan}px`;
         }
     };
 

@@ -41,16 +41,16 @@ addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
         stackv2.itemTemplate = imageItemTemplate;
         stackv2.items = newDataSet(100000);
 
-        // const stackh1 = document.getElementById("stackh1") as FoundationVirtualingStack;
+        const stackh1 = document.getElementById("stackh1") as FoundationVirtualingStack;
 
-        // stackh1.itemTemplate = imageItemTemplate;
-        // stackh1.viewportElement = document.documentElement;
-        // stackh1.items = newDataSet(100000);
+        stackh1.itemTemplate = imageItemTemplate;
+        stackh1.viewportElement = document.documentElement;
+        stackh1.items = newDataSet(100000);
 
-        // const stackh2 = document.getElementById("stackh2") as FoundationVirtualingStack;
+        const stackh2 = document.getElementById("stackh2") as FoundationVirtualingStack;
 
-        // stackh2.itemTemplate = imageItemTemplate;
-        // stackh2.items = newDataSet(100000);
+        stackh2.itemTemplate = imageItemTemplate;
+        stackh2.items = newDataSet(100000);
     }
 });
 
