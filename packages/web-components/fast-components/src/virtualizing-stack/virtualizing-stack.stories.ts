@@ -1,6 +1,7 @@
 import { html } from "@microsoft/fast-element";
 import addons from "@storybook/addons";
 import { STORY_RENDERED } from "@storybook/core-events";
+import { Orientation } from "@microsoft/fast-web-utilities";
 import { VirtualizingStack as FoundationVirtualingStack } from "@microsoft/fast-foundation";
 import VirtualizingStackTemplate from "./fixtures/base.html";
 import "./index";
@@ -10,7 +11,11 @@ const imageItemTemplate = html`
         style="
             height:100%;
             width:100%;
-            grid-row:${(x, c) => c.index + 2}
+            grid-row: ${(x, c) =>
+            c.parent.orientation === Orientation.vertical ? c.index + 2 : undefined};
+            grid-column: ${(x, c) =>
+            c.parent.orientation === Orientation.horizontal ? c.index + 2 : undefined};
+
         "
     >
         <image
@@ -25,21 +30,27 @@ const imageItemTemplate = html`
 
 addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
     if (name.toLowerCase().startsWith("virtualizing-stack")) {
-        const stack1 = document.getElementById("stack1") as FoundationVirtualingStack;
+        const stackv1 = document.getElementById("stackv1") as FoundationVirtualingStack;
 
-        stack1.itemTemplate = imageItemTemplate;
-        stack1.viewportElement = document.documentElement;
-        stack1.items = newDataSet(100000);
+        stackv1.itemTemplate = imageItemTemplate;
+        stackv1.viewportElement = document.documentElement;
+        stackv1.items = newDataSet(100000);
 
-        const stack2 = document.getElementById("stack2") as FoundationVirtualingStack;
+        const stackv2 = document.getElementById("stackv2") as FoundationVirtualingStack;
 
-        stack2.itemTemplate = imageItemTemplate;
-        stack2.items = newDataSet(100000);
+        stackv2.itemTemplate = imageItemTemplate;
+        stackv2.items = newDataSet(100000);
 
-        const stack3 = document.getElementById("stack3") as FoundationVirtualingStack;
+        // const stackh1 = document.getElementById("stackh1") as FoundationVirtualingStack;
 
-        stack3.itemTemplate = imageItemTemplate;
-        stack3.items = newDataSet(100000);
+        // stackh1.itemTemplate = imageItemTemplate;
+        // stackh1.viewportElement = document.documentElement;
+        // stackh1.items = newDataSet(100000);
+
+        // const stackh2 = document.getElementById("stackh2") as FoundationVirtualingStack;
+
+        // stackh2.itemTemplate = imageItemTemplate;
+        // stackh2.items = newDataSet(100000);
     }
 });
 

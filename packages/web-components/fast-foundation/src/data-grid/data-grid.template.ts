@@ -46,11 +46,7 @@ export const dataGridTemplate: FoundationElementTemplate<ViewTemplate<DataGrid>>
         >
             <div
                 style="
-                    height: ${x => x.totalHeight}px;
                     display: grid;
-                    grid-template-rows: ${x => x.topSpacerHeight}px repeat(${(x, c) =>
-                    x.visibleItems.length}, ${x => x.itemSpan}px) ${x =>
-                    x.bottomSpacerHeight}px;
                 "
                 ${ref("containerElement")}
             >

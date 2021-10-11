@@ -24,7 +24,10 @@ const defaultItemTemplate: ViewTemplate<any> = html`
         style="
             height: 100%;
             width: 100%;
-            grid-row: ${(x, c) => c.index + 2};
+            grid-row: ${(x, c) =>
+            c.parent.orientation === Orientation.vertical ? c.index + 2 : undefined};
+            grid-column: ${(x, c) =>
+            c.parent.orientation === Orientation.horizontal ? c.index + 2 : undefined};
         "
     >
         ${x => x}
@@ -138,8 +141,17 @@ export class VirtualizingStackBase extends FoundationElement {
      */
     @attr
     public orientation: Orientation = Orientation.vertical;
-    //  private orientationChanged(): void {
-    //  }
+    private orientationChanged(): void {
+        //  if (this.orientation === Orientation.vertical){
+        //      this.gridTemplateRows = undefined;
+        //      this.gridTemplateColumns = "1fr";
+        //  } else {
+        //     this.gridTemplateRows = undefined;
+        //     this.gridTemplateColumns = `${x => x.topSpacerHeight}px repeat(${(x, c) =>
+        //         x.visibleItems.length}, ${x => x.itemSpan}px) ${x =>
+        //         x.bottomSpacerHeight}px`
+        //  }
+    }
 
     /**
      *
@@ -184,7 +196,7 @@ export class VirtualizingStackBase extends FoundationElement {
      * @public
      */
     @observable
-    public heightMap: number[];
+    public spanMap: number[];
     private heightMapChanged(): void {
         if (this.$fastController.isConnected) {
             this.updateDimensions();
@@ -205,6 +217,22 @@ export class VirtualizingStackBase extends FoundationElement {
      * @internal
      */
     @observable
+    public gridTemplateRows: string;
+
+    /**
+     *
+     *
+     * @internal
+     */
+    @observable
+    public gridTemplateColumns: string;
+
+    /**
+     *
+     *
+     * @internal
+     */
+    @observable
     public visibleItems: any[] = [];
 
     /**
@@ -213,7 +241,7 @@ export class VirtualizingStackBase extends FoundationElement {
      * @internal
      */
     @observable
-    public totalHeight: number = 0;
+    public totalStackSpan: number = 0;
 
     /**
      *
@@ -221,7 +249,7 @@ export class VirtualizingStackBase extends FoundationElement {
      * @internal
      */
     @observable
-    public topSpacerHeight: number = 0;
+    public startSpacerSpan: number = 0;
 
     /**
      *
@@ -229,7 +257,7 @@ export class VirtualizingStackBase extends FoundationElement {
      * @internal
      */
     @observable
-    public bottomSpacerHeight: number = 0;
+    public endSpacerSpan: number = 0;
 
     /**
      * reference to the container element
@@ -453,17 +481,16 @@ export class VirtualizingStackBase extends FoundationElement {
      *
      */
     private updateDimensions = (): void => {
-        console.debug("updateDimensions");
         if (this.items === undefined) {
-            this.totalHeight = 0;
+            this.totalStackSpan = 0;
         } else {
-            if (this.heightMap !== undefined) {
-                if (this.heightMap.length === 0) {
+            if (this.spanMap !== undefined) {
+                if (this.spanMap.length === 0) {
                     //TODO: wire this up
-                    this.totalHeight = 0;
+                    this.totalStackSpan = 0;
                 }
             } else if (this.itemSpan !== undefined) {
-                this.totalHeight = this.itemSpan * this.items.length;
+                this.totalStackSpan = this.itemSpan * this.items.length;
             }
         }
 
@@ -487,40 +514,51 @@ export class VirtualizingStackBase extends FoundationElement {
             this.viewportRect === undefined
         ) {
             this.visibleItems = [];
-            this.topSpacerHeight = 0;
-            this.bottomSpacerHeight = 0;
+            this.startSpacerSpan = 0;
+            this.endSpacerSpan = 0;
             this.visibleRangeStart = -1;
             this.visibleRangeEnd = -1;
             return;
         }
 
-        if (this.viewportRect.top >= this.containerRect.bottom) {
-            this.visibleRangeStart = this.containerRect.height;
-            this.visibleRangeEnd = this.containerRect.height;
-        } else if (this.viewportRect.bottom <= this.containerRect.top) {
+        let viewportStart: number = this.viewportRect.top;
+        let viewportEnd: number = this.viewportRect.bottom;
+        let containerStart: number = this.containerRect.top;
+        let containerEnd: number = this.containerRect.bottom;
+        let containerSpan: number = this.containerRect.height;
+
+        if (this.orientation === Orientation.horizontal) {
+            viewportStart = this.viewportRect.left;
+            viewportEnd = this.viewportRect.right;
+            containerStart = this.containerRect.left;
+            containerEnd = this.containerRect.right;
+            containerSpan = this.containerRect.width;
+        }
+
+        if (viewportStart >= containerEnd) {
+            this.visibleRangeStart = containerSpan;
+            this.visibleRangeEnd = containerSpan;
+        } else if (viewportEnd <= containerStart) {
             this.visibleRangeStart = 0;
             this.visibleRangeEnd = 0;
         } else {
-            this.visibleRangeStart =
-                this.viewportRect.top - this.containerRect.top - this.viewportBuffer;
+            this.visibleRangeStart = viewportStart - containerStart - this.viewportBuffer;
             this.visibleRangeEnd =
-                this.containerRect.height -
-                (this.containerRect.bottom -
-                    (this.viewportRect.bottom + this.viewportBuffer));
+                containerSpan - (containerEnd - (viewportEnd + this.viewportBuffer));
 
             this.visibleRangeStart =
                 this.visibleRangeStart < 0 ? 0 : this.visibleRangeStart;
             this.visibleRangeEnd =
-                this.visibleRangeEnd > this.containerRect.height
-                    ? this.containerRect.height
+                this.visibleRangeEnd > containerSpan
+                    ? containerSpan
                     : this.visibleRangeEnd;
         }
 
-        if (this.heightMap !== undefined) {
+        if (this.spanMap !== undefined) {
             // TODO: scomea - wire this up
             this.visibleItems = [];
-            this.topSpacerHeight = 0;
-            this.bottomSpacerHeight = 0;
+            this.startSpacerSpan = 0;
+            this.endSpacerSpan = 0;
         } else if (this.itemSpan !== undefined) {
             let newFirstRenderedIndex: number = Math.floor(
                 this.visibleRangeStart / this.itemSpan
@@ -537,8 +575,8 @@ export class VirtualizingStackBase extends FoundationElement {
                 newLastRenderedIndex = this.items.length - 1;
             }
 
-            this.topSpacerHeight = newFirstRenderedIndex * this.itemSpan;
-            this.bottomSpacerHeight =
+            this.startSpacerSpan = newFirstRenderedIndex * this.itemSpan;
+            this.endSpacerSpan =
                 (this.items.length - newLastRenderedIndex - 1) * this.itemSpan;
             if (
                 this.firstRenderedIndex === newFirstRenderedIndex &&
@@ -599,6 +637,16 @@ export class VirtualizingStackBase extends FoundationElement {
 
             this.firstRenderedIndex = newFirstRenderedIndex;
             this.lastRenderedIndex = newLastRenderedIndex;
+
+            const gridTemplateSpans = `${this.startSpacerSpan}px repeat(${this.visibleItems.length}, ${this.itemSpan}px) ${this.endSpacerSpan}px`;
+
+            if (this.orientation === Orientation.horizontal) {
+                this.containerElement.style.gridTemplateColumns = gridTemplateSpans;
+                // this.containerElement.style.width = `${this.totalStackSpan}px`
+            } else {
+                this.containerElement.style.gridTemplateRows = gridTemplateSpans;
+                // this.containerElement.style.height = `${this.totalStackSpan}px`
+            }
         }
     };
 

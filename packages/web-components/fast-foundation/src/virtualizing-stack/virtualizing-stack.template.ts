@@ -18,12 +18,9 @@ export const virtualizingStackTemplate: (
     <template>
         <div
             style="
-                height: ${x => x.totalHeight}px;
+                height: ${x =>
+                x.orientation === "vertical" ? `${x.totalStackSpan}px` : undefined};
                 display: grid;
-                grid-template-columns: 1fr;
-                grid-template-rows: ${x => x.topSpacerHeight}px repeat(${(x, c) =>
-                x.visibleItems.length}, ${x => x.itemSpan}px) ${x =>
-                x.bottomSpacerHeight}px;
             "
             ${ref("containerElement")}
         >

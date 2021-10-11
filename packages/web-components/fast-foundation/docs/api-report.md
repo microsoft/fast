@@ -2777,8 +2777,6 @@ export class VirtualizingStackBase extends FoundationElement {
     // @beta (undocumented)
     autoUpdateMode: VirtualizingStackAutoUpdateMode;
     // @internal (undocumented)
-    bottomSpacerHeight: number;
-    // @internal (undocumented)
     connectedCallback(): void;
     // @internal
     containerElement: HTMLDivElement;
@@ -2786,8 +2784,12 @@ export class VirtualizingStackBase extends FoundationElement {
     disconnectedCallback(): void;
     // @beta (undocumented)
     endItemSpans: number[];
-    // (undocumented)
-    heightMap: number[];
+    // @internal (undocumented)
+    endSpacerSpan: number;
+    // @internal (undocumented)
+    gridTemplateColumns: string;
+    // @internal (undocumented)
+    gridTemplateRows: string;
     // (undocumented)
     items: object[];
     // @beta (undocumented)
@@ -2800,12 +2802,14 @@ export class VirtualizingStackBase extends FoundationElement {
     orientation: Orientation;
     // (undocumented)
     protected reset(): void;
+    // (undocumented)
+    spanMap: number[];
     // @beta (undocumented)
     startItemSpans: number[];
     // @internal (undocumented)
-    topSpacerHeight: number;
+    startSpacerSpan: number;
     // @internal (undocumented)
-    totalHeight: number;
+    totalStackSpan: number;
     update(): void;
     // @beta
     viewport: string;
