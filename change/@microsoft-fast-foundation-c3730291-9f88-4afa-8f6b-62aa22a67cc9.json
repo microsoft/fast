@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "add aria-disabled to accordion-item for single-mode",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "khamu@microsoft.com",
+  "dependentChangeType": "patch"
+}
