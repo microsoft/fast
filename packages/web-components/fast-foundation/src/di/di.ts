@@ -92,7 +92,7 @@ export interface Registration<K = any> {
      * @param container - The container to register the dependency within.
      * @param key - The key to register dependency under, if overridden.
      */
-    register(container: Container, key?: Key): Resolver<K>;
+    register(container: Container): Resolver<K>;
 }
 
 /**
@@ -933,7 +933,7 @@ export const DI = Object.freeze({
             container: Container
         ): Resolver<InstanceType<T>> {
             const registration = Registration.transient(target as T, target as T);
-            return registration.register(container, target);
+            return registration.register(container);
         };
         target.registerInRequestor = false;
         return target as T & RegisterSelf<T>;
@@ -970,7 +970,7 @@ export const DI = Object.freeze({
             container: Container
         ): Resolver<InstanceType<T>> {
             const registration = Registration.singleton(target, target);
-            return registration.register(container, target);
+            return registration.register(container);
         };
         target.registerInRequestor = options.scoped;
         return target as T & RegisterSelf<T>;
@@ -1323,8 +1323,8 @@ export class ResolverImpl implements Resolver, Registration {
 
     private resolving: boolean = false;
 
-    public register(container: Container, key?: Key): Resolver {
-        return container.registerResolver(key || this.key, this);
+    public register(container: Container): Resolver {
+        return container.registerResolver(this.key, this);
     }
 
     public resolve(handler: Container, requestor: Container): any {
@@ -1810,7 +1810,7 @@ export class ContainerImpl implements Container {
         }
 
         if (isRegistry(keyAsValue)) {
-            const registrationResolver = keyAsValue.register(handler, keyAsValue);
+            const registrationResolver = keyAsValue.register(handler);
             if (
                 !(registrationResolver instanceof Object) ||
                 (registrationResolver as Resolver).resolve == null
