@@ -110,7 +110,7 @@ export class Calendar extends FoundationElement {
      * Format style for the day
      * @public
      */
-    @attr({ attribute: "day-format" })
+    @attr({ attribute: "day-format", mode: "fromView" })
     public dayFormat: DayFormat = "numeric";
     private dayFormatChanged(): void {
         this.dateFormatter.dayFormat = this.dayFormat;
@@ -120,7 +120,7 @@ export class Calendar extends FoundationElement {
      * Format style for the week day labels
      * @public
      */
-    @attr({ attribute: "weekday-format" })
+    @attr({ attribute: "weekday-format", mode: "fromView" })
     public weekdayFormat: WeekdayFormat = "short";
     private weekdayFormatChanged(): void {
         this.dateFormatter.weekdayFormat = this.weekdayFormat;
@@ -130,7 +130,7 @@ export class Calendar extends FoundationElement {
      * Format style for the month label
      * @public
      */
-    @attr({ attribute: "month-format" })
+    @attr({ attribute: "month-format", mode: "fromView" })
     public monthFormat: MonthFormat = "long";
     private monthFormatChanged(): void {
         this.dateFormatter.monthFormat = this.monthFormat;
@@ -140,7 +140,7 @@ export class Calendar extends FoundationElement {
      * Format style for the year used in the title
      * @public
      */
-    @attr({ attribute: "year-format" })
+    @attr({ attribute: "year-format", mode: "fromView" })
     public yearFormat: YearFormat = "numeric";
     private yearFormatChanged(): void {
         this.dateFormatter.yearFormat = this.yearFormat;
