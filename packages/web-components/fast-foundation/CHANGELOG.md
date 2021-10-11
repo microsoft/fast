@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Fri, 08 Oct 2021 19:53:11 GMT and should not be manually modified.
+This log was last generated on Sun, 10 Oct 2021 07:12:26 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.17.3
+
+Sun, 10 Oct 2021 07:12:26 GMT
+
+### Patches
+
+- fix linting errors in horizontal-scroll tests (john.kreitlow@microsoft.com)
 
 ## 2.17.2
 
