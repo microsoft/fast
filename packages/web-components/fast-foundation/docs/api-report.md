@@ -1710,7 +1710,7 @@ export type RegisterSelf<T extends Constructable> = {
 
 // @public
 export interface Registration<K = any> {
-    register(container: Container, key?: Key): Resolver<K>;
+    register(container: Container): Resolver<K>;
 }
 
 // @public
@@ -1763,7 +1763,7 @@ export class ResolverImpl implements Resolver, Registration {
     // (undocumented)
     key: Key;
     // (undocumented)
-    register(container: Container, key?: Key): Resolver;
+    register(container: Container): Resolver;
     // (undocumented)
     resolve(handler: Container, requestor: Container): any;
     // (undocumented)

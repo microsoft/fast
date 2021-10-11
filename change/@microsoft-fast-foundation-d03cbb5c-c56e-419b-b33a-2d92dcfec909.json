@@ -1,0 +1,7 @@
+{
+  "type": "minor",
+  "comment": "fix(di): context confused for key with some registrations",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "roeisenb@microsoft.com",
+  "dependentChangeType": "patch"
+}
