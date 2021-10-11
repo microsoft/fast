@@ -18,8 +18,7 @@ import type {
     DesignTokenValue,
     StaticDesignTokenValue,
 } from "./interfaces";
-
-const defaultElement = document.body;
+import { defaultElement } from "./custom-property-manager";
 
 /**
  * Describes a DesignToken instance.
@@ -737,8 +736,6 @@ class DesignTokenNode implements Behavior, Subscriber {
                 token,
                 this.target
             );
-
-            DesignTokenNode.cssCustomPropertyReflector;
         }
     }
 
