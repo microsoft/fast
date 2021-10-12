@@ -1,13 +1,15 @@
-import { DOM } from "../dom.js";
-import type { Behavior } from "../observation/behavior.js";
+import type { BehaviorTargets } from "..";
+import { DOM } from "../dom";
+import type { Behavior } from "../observation/behavior";
 import {
     Binding,
     BindingObserver,
     ExecutionContext,
     Observable,
-} from "../observation/observable.js";
-import { TargetedHTMLDirective } from "./html-directive.js";
-import type { SyntheticView } from "./view.js";
+    setCurrentEvent,
+} from "../observation/observable";
+import { TargetedHTMLDirective } from "./html-directive";
+import type { SyntheticView } from "./view";
 
 function normalBind(
     this: BindingBehavior,
@@ -261,10 +263,10 @@ export class HTMLBindingDirective extends TargetedHTMLDirective {
      * information stored in the BindingDirective.
      * @param target - The target node that the binding behavior should attach to.
      */
-    createBehavior(target: Node): BindingBehavior {
+    createBehavior(targets: BehaviorTargets): BindingBehavior {
         /* eslint-disable-next-line @typescript-eslint/no-use-before-define */
         return new BindingBehavior(
-            target,
+            targets[this.targetId],
             this.binding,
             this.isBindingVolatile,
             this.bind,
@@ -359,9 +361,9 @@ export class BindingBehavior implements Behavior {
 
     /** @internal */
     public handleEvent(event: Event): void {
-        ExecutionContext.setEvent(event);
+        setCurrentEvent(event);
         const result = this.binding(this.source, this.context!);
-        ExecutionContext.setEvent(null);
+        setCurrentEvent(null);
 
         if (result !== true) {
             event.preventDefault();
