@@ -313,7 +313,7 @@ export class Menu extends FoundationElement {
             return;
         }
 
-        while (focusIndex < this.menuItems.length) {
+        while (focusIndex >= 0 && focusIndex < this.menuItems.length) {
             const child: Element = this.menuItems[focusIndex];
 
             if (this.isFocusableElement(child)) {
