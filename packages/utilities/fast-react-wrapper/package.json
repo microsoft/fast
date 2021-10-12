@@ -89,7 +89,6 @@
     "@microsoft/fast-foundation": "^2.18.0"
   },
   "peerDependencies": {
-    "lodash-es": "^4.0.0",
     "react": "^16.9.0"
   }
 }

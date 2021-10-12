@@ -22,7 +22,7 @@ npx create-react-app fast-app
 Next, we'll install the FAST packages, along with supporting libraries. To do that, run this command from your new project folder:
 
 ```shell
-npm install --save @microsoft/fast-components @microsoft/fast-foundation @microsoft/fast-element @microsoft/fast-react-wrapper lodash-es
+npm install --save @microsoft/fast-components @microsoft/fast-foundation @microsoft/fast-element @microsoft/fast-react-wrapper
 ```
 
 ## Configure create-react-app

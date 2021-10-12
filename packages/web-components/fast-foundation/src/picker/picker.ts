@@ -18,8 +18,8 @@ import {
     keyDelete,
     keyEnter,
     keyEscape,
+    uniqueId,
 } from "@microsoft/fast-web-utilities";
-import uniqueId from "lodash-es/uniqueId";
 import type { AnchoredRegion } from "../anchored-region";
 import type { PickerMenu } from "./picker-menu";
 import { PickerMenuOption } from "./picker-menu-option";

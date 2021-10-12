@@ -32,7 +32,7 @@ Follow the prompts from npm, answering each question in turn. You can always acc
 Next, we'll install the FAST packages, along with supporting libraries. To do that, run this command:
 
 ```shell
-npm install --save @microsoft/fast-components @microsoft/fast-element lodash-es
+npm install --save @microsoft/fast-components @microsoft/fast-element
 ```
 
 We also need to install the Webpack build tooling:

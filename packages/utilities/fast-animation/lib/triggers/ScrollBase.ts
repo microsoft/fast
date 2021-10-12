@@ -1,4 +1,4 @@
-import { throttle } from "lodash-es";
+import { throttle } from "@microsoft/fast-web-utilities";
 import isElementInView from "../utilities/isElementInView";
 import scrollY from "../utilities/scrollY";
 
