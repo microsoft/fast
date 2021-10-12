@@ -2,6 +2,35 @@
   "name": "@microsoft/fast-foundation",
   "entries": [
     {
+      "date": "Tue, 12 Oct 2021 07:15:14 GMT",
+      "tag": "@microsoft/fast-foundation_v2.18.0",
+      "version": "2.18.0",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Update design-token default value emission to emit to a stylesheet instead of inline styles on the document body",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "45ff23412ec8757e717cf2fa0c7bfb8ba719ec2c",
+            "package": "@microsoft/fast-foundation"
+          },
+          {
+            "comment": "add aria-disabled to accordion-item for single-mode",
+            "author": "khamu@microsoft.com",
+            "commit": "51f1bdad79fa66103bf9c78eb1f5b4e02fad65dc",
+            "package": "@microsoft/fast-foundation"
+          }
+        ],
+        "minor": [
+          {
+            "comment": "fix(di): context confused for key with some registrations",
+            "author": "roeisenb@microsoft.com",
+            "commit": "f9eeb257368aee0535ccfd4efd5a1dc25ab1a2fe",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sun, 10 Oct 2021 07:12:26 GMT",
       "tag": "@microsoft/fast-foundation_v2.17.3",
       "version": "2.17.3",

@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-components",
   "entries": [
     {
+      "date": "Tue, 12 Oct 2021 07:15:14 GMT",
+      "tag": "@microsoft/fast-components_v2.11.12",
+      "version": "2.11.12",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-foundation to v2.18.0",
+            "author": "roeisenb@microsoft.com",
+            "commit": "f9eeb257368aee0535ccfd4efd5a1dc25ab1a2fe",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sun, 10 Oct 2021 07:12:26 GMT",
       "tag": "@microsoft/fast-components_v2.11.11",
       "version": "2.11.11",
