@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-components
 
-This log was last generated on Sun, 10 Oct 2021 07:12:26 GMT and should not be manually modified.
+This log was last generated on Tue, 12 Oct 2021 07:15:14 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.11.12
+
+Tue, 12 Oct 2021 07:15:14 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.18.0 (roeisenb@microsoft.com)
 
 ## 2.11.11
 
