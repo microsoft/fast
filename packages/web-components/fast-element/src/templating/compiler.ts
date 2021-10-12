@@ -10,9 +10,14 @@ type InlineDirective = HTMLDirective & {
     targetAtContent(): void;
 };
 
-const descriptors: PropertyDescriptorMap = {};
+const descriptorCache: PropertyDescriptorMap = {};
 
-function addTargetDescriptor(parentId: string, targetId: string, targetIndex: number) {
+function addTargetDescriptor(
+    descriptors: PropertyDescriptorMap,
+    parentId: string,
+    targetId: string,
+    targetIndex: number
+) {
     if (
         targetId === "r" || // root
         targetId === "h" || // host
@@ -27,7 +32,7 @@ function addTargetDescriptor(parentId: string, targetId: string, targetIndex: nu
         if (index !== -1) {
             const grandparentId = parentId.substr(0, index);
             const childIndex = parseInt(parentId.substr(index));
-            addTargetDescriptor(grandparentId, parentId, childIndex);
+            addTargetDescriptor(descriptors, grandparentId, parentId, childIndex);
         }
     }
 
@@ -39,14 +44,22 @@ function createTargetDescriptor(
     targetId: string,
     targetIndex: number
 ): PropertyDescriptor {
-    const field = `_${targetId}`;
+    let descriptor = descriptorCache[targetId];
 
-    return {
-        configurable: false,
-        get: function () {
-            return this[field] || (this[field] = this[parentId].childNodes[targetIndex]);
-        },
-    };
+    if (!descriptor) {
+        const field = `_${targetId}`;
+
+        descriptorCache[targetId] = descriptor = {
+            configurable: false,
+            get: function () {
+                return (
+                    this[field] || (this[field] = this[parentId].childNodes[targetIndex])
+                );
+            },
+        };
+    }
+
+    return descriptor;
 }
 
 let sharedContext: CompilationContext | null = null;
@@ -61,6 +74,7 @@ class CompilationContext {
     public behaviorFactories!: NodeBehaviorFactory[];
     public directives: ReadonlyArray<HTMLDirective>;
     public targetIds!: string[];
+    public descriptors: PropertyDescriptorMap;
 
     public addFactory(
         factory: NodeBehaviorFactory,
@@ -72,7 +86,7 @@ class CompilationContext {
             this.targetIds.push(targetId);
         }
 
-        addTargetDescriptor(parentId, targetId, targetIndex);
+        addTargetDescriptor(this.descriptors, parentId, targetId, targetIndex);
         factory.targetId = targetId;
         this.behaviorFactories.push(factory);
     }
@@ -90,6 +104,7 @@ class CompilationContext {
     public reset(): void {
         this.behaviorFactories = [];
         this.targetIds = [];
+        this.descriptors = {};
     }
 
     public release(): void {
@@ -317,7 +332,8 @@ export class HTMLTemplateCompilationResult {
         public readonly fragment: DocumentFragment,
         public readonly viewBehaviorFactories: NodeBehaviorFactory[],
         public readonly hostBehaviorFactories: NodeBehaviorFactory[],
-        private targetIds: string[]
+        private targetIds: string[],
+        descriptors: PropertyDescriptorMap
     ) {
         this.proto = Object.create(null, descriptors);
     }
@@ -405,12 +421,14 @@ export function compileTemplate(
 
     const viewBehaviorFactories = context.behaviorFactories;
     const targetIds = context.targetIds;
+    const descriptors = context.descriptors;
     context.release();
 
     return new HTMLTemplateCompilationResult(
         fragment,
         viewBehaviorFactories,
         hostBehaviorFactories,
-        targetIds
+        targetIds,
+        descriptors
     );
 }
