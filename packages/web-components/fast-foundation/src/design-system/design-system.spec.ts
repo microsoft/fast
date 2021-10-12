@@ -1,7 +1,7 @@
 import type { Constructable } from "@microsoft/fast-element";
 import { expect } from "chai";
 import { FoundationElement } from "..";
-import { Container, DI } from "../di";
+import { Container, DI, Registration } from "../di";
 import { uniqueElementName } from "../test-utilities/fixture";
 import { DesignSystem, ElementDisambiguation } from "./design-system";
 import type { DesignSystemRegistrationContext } from "./registration-context";
@@ -362,5 +362,24 @@ describe("DesignSystem", () => {
             });
 
         expect(mode).to.equal('closed');
+    });
+
+    it("should enable DI service overrides through the design system", () => {
+        interface Test {}
+
+        class DefaultTest implements Test {}
+        class AltTest implements Test {}
+
+        const Test = DI.createInterface<Test>(x => x.singleton(DefaultTest));
+
+        const host = document.createElement("div");
+        DesignSystem.getOrCreate(host)
+            .register(
+                Registration.singleton(Test, AltTest)
+            );
+
+        const found = DI.getOrCreateDOMContainer(host).get(Test);
+
+        expect(found).to.be.instanceOf(AltTest);
     });
 });
