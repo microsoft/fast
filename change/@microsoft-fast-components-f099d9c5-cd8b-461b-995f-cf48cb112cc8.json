@@ -1,7 +1,7 @@
 {
   "type": "patch",
-  "comment": "picker menu shows with only custom options",
+  "comment": "refactor: remove lodash-es as a dependency",
   "packageName": "@microsoft/fast-components",
-  "email": "scomea@microsoft.com",
+  "email": "connor@peet.io",
   "dependentChangeType": "patch"
 }

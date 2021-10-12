@@ -30,7 +30,7 @@ Follow the prompts, answering each question in turn. When the CLI completes, you
 Next, we'll install the FAST packages, along with supporting libraries. To do that, run this command from your new project folder:
 
 ```shell
-npm install --save @microsoft/fast-components @microsoft/fast-element lodash-es
+npm install --save @microsoft/fast-components @microsoft/fast-element
 ```
 
 ## Using the components

@@ -2,6 +2,80 @@
   "name": "@microsoft/fast-foundation",
   "entries": [
     {
+      "date": "Tue, 12 Oct 2021 07:15:14 GMT",
+      "tag": "@microsoft/fast-foundation_v2.18.0",
+      "version": "2.18.0",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Update design-token default value emission to emit to a stylesheet instead of inline styles on the document body",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "45ff23412ec8757e717cf2fa0c7bfb8ba719ec2c",
+            "package": "@microsoft/fast-foundation"
+          },
+          {
+            "comment": "add aria-disabled to accordion-item for single-mode",
+            "author": "khamu@microsoft.com",
+            "commit": "51f1bdad79fa66103bf9c78eb1f5b4e02fad65dc",
+            "package": "@microsoft/fast-foundation"
+          }
+        ],
+        "minor": [
+          {
+            "comment": "fix(di): context confused for key with some registrations",
+            "author": "roeisenb@microsoft.com",
+            "commit": "f9eeb257368aee0535ccfd4efd5a1dc25ab1a2fe",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sun, 10 Oct 2021 07:12:26 GMT",
+      "tag": "@microsoft/fast-foundation_v2.17.3",
+      "version": "2.17.3",
+      "comments": {
+        "patch": [
+          {
+            "comment": "fix linting errors in horizontal-scroll tests",
+            "author": "john.kreitlow@microsoft.com",
+            "commit": "d3a5955c4feba0b355189a4b28dbe8befcfb89df",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 08 Oct 2021 19:53:11 GMT",
+      "tag": "@microsoft/fast-foundation_v2.17.2",
+      "version": "2.17.2",
+      "comments": {
+        "patch": [
+          {
+            "comment": "anchored region force update",
+            "author": "scomea@microsoft.com",
+            "commit": "2bf9005b895abe0828a4ebbc943ed0511c176d6f",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 06 Oct 2021 07:11:47 GMT",
+      "tag": "@microsoft/fast-foundation_v2.17.1",
+      "version": "2.17.1",
+      "comments": {
+        "patch": [
+          {
+            "comment": "picker menu shows with only custom options",
+            "author": "scomea@microsoft.com",
+            "commit": "0d509e1bbd4f7e55b167986ea95497ef64bfd7ef",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 05 Oct 2021 00:45:07 GMT",
       "tag": "@microsoft/fast-foundation_v2.17.0",
       "version": "2.17.0",

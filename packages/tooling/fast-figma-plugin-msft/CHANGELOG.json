@@ -2,6 +2,66 @@
   "name": "@microsoft/fast-figma-plugin-msft",
   "entries": [
     {
+      "date": "Tue, 12 Oct 2021 07:15:14 GMT",
+      "tag": "@microsoft/fast-figma-plugin-msft_v0.8.16",
+      "version": "0.8.16",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-components to v2.11.12",
+            "author": "roeisenb@microsoft.com",
+            "commit": "f9eeb257368aee0535ccfd4efd5a1dc25ab1a2fe",
+            "package": "@microsoft/fast-figma-plugin-msft"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sun, 10 Oct 2021 07:12:26 GMT",
+      "tag": "@microsoft/fast-figma-plugin-msft_v0.8.16",
+      "version": "0.8.16",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-components to v2.11.11",
+            "author": "john.kreitlow@microsoft.com",
+            "commit": "d3a5955c4feba0b355189a4b28dbe8befcfb89df",
+            "package": "@microsoft/fast-figma-plugin-msft"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 08 Oct 2021 19:53:11 GMT",
+      "tag": "@microsoft/fast-figma-plugin-msft_v0.8.16",
+      "version": "0.8.16",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-components to v2.11.10",
+            "author": "scomea@microsoft.com",
+            "commit": "2bf9005b895abe0828a4ebbc943ed0511c176d6f",
+            "package": "@microsoft/fast-figma-plugin-msft"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 06 Oct 2021 07:11:47 GMT",
+      "tag": "@microsoft/fast-figma-plugin-msft_v0.8.16",
+      "version": "0.8.16",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-components to v2.11.9",
+            "author": "scomea@microsoft.com",
+            "commit": "0d509e1bbd4f7e55b167986ea95497ef64bfd7ef",
+            "package": "@microsoft/fast-figma-plugin-msft"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 05 Oct 2021 00:45:07 GMT",
       "tag": "@microsoft/fast-figma-plugin-msft_v0.8.16",
       "version": "0.8.16",

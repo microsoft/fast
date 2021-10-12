@@ -114,23 +114,8 @@ addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
     }
 });
 
-const providerStyles = `
-fast-design-system-provider {
-    height: 100%;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-}
-`;
-
 export default {
     title: "Anchored Region",
-    decorators: [
-        Story => `
-            <style>${providerStyles}</style>
-            ${Story()}
-        `,
-    ],
 };
 
 export const AnchoredRegion = () => AnchoredRegionTemplate;

@@ -15,6 +15,7 @@ describe("DI.singleton", function () {
             const foo2 = root.get(fooSelfRegister);
 
             expect(foo1).to.equal(foo2);
+            expect(foo1).to.be.instanceOf(Foo);
         });
 
         it("children", function () {
@@ -25,6 +26,8 @@ describe("DI.singleton", function () {
             const foo2 = child2.get(fooSelfRegister);
 
             expect(foo1).not.equal(foo2);
+            expect(foo1).to.be.instanceOf(Foo);
+            expect(foo2).to.be.instanceOf(Foo);
         });
     });
 });

@@ -1,8 +1,45 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Tue, 05 Oct 2021 00:45:07 GMT and should not be manually modified.
+This log was last generated on Tue, 12 Oct 2021 07:15:14 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.18.0
+
+Tue, 12 Oct 2021 07:15:14 GMT
+
+### Minor changes
+
+- fix(di): context confused for key with some registrations (roeisenb@microsoft.com)
+
+### Patches
+
+- Update design-token default value emission to emit to a stylesheet instead of inline styles on the document body (nicholasrice@users.noreply.github.com)
+- add aria-disabled to accordion-item for single-mode (khamu@microsoft.com)
+
+## 2.17.3
+
+Sun, 10 Oct 2021 07:12:26 GMT
+
+### Patches
+
+- fix linting errors in horizontal-scroll tests (john.kreitlow@microsoft.com)
+
+## 2.17.2
+
+Fri, 08 Oct 2021 19:53:11 GMT
+
+### Patches
+
+- anchored region force update (scomea@microsoft.com)
+
+## 2.17.1
+
+Wed, 06 Oct 2021 07:11:47 GMT
+
+### Patches
+
+- picker menu shows with only custom options (scomea@microsoft.com)
 
 ## 2.17.0
 

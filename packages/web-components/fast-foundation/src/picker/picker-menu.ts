@@ -1,4 +1,4 @@
-import uniqueId from "lodash-es/uniqueId";
+import { uniqueId } from "@microsoft/fast-web-utilities";
 import { observable } from "@microsoft/fast-element";
 import { FoundationElement } from "../foundation-element";
 
