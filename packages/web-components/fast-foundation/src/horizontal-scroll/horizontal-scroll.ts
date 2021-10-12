@@ -23,7 +23,7 @@ export type HorizontalScrollView = "default" | "mobile";
  * The easing types available for the horizontal-scroll {@link @microsoft/fast-foundation#(HorizontalScroll:class)}
  * @public
  */
-export type ScrollEasing = "linear" | "ease-in" | "ease-out" | "ease-in-out";
+export type ScrollEasing = "linear" | "ease-in" | "ease-out" | "ease-in-out" | string;
 
 /**
  * Horizontal scroll configuration options
@@ -57,6 +57,12 @@ export class HorizontalScroll extends FoundationElement {
      * @public
      */
     public scrollContainer: HTMLDivElement;
+
+    /**
+     * Reference to DOM element that holds the slotted content
+     * @public
+     */
+    public content: HTMLDivElement;
 
     /**
      * Reference to flipper to scroll to previous content
@@ -113,6 +119,17 @@ export class HorizontalScroll extends FoundationElement {
     public speed: number = 600;
 
     /**
+     * The CSS time value for the scroll transition duration. Overrides the `speed` attribute.
+     *
+     * @remarks
+     * When `duration` is set, the `speed` attribute has no effect.
+     *
+     * @public
+     */
+    @attr
+    public duration: string;
+
+    /**
      * Attribute used for easing, defaults to ease-in-out
      * @public
      */
@@ -137,7 +154,7 @@ export class HorizontalScroll extends FoundationElement {
      * Firing scrollstart and scrollend events
      * @internal
      */
-    private scrollingChanged() {
+    public scrollingChanged(prev: unknown, next: boolean): void {
         if (this.scrollContainer) {
             const event = this.scrolling == true ? "scrollstart" : "scrollend";
             this.$emit(event, this.scrollContainer.scrollLeft);
@@ -190,15 +207,12 @@ export class HorizontalScroll extends FoundationElement {
 
     public connectedCallback(): void {
         super.connectedCallback();
-
         this.initializeResizeDetector();
-        this.getFramesPerSecond();
     }
 
     public disconnectedCallback(): void {
-        super.disconnectedCallback();
-
         this.disconnectResizeDetector();
+        super.disconnectedCallback();
     }
 
     /**
@@ -414,103 +428,69 @@ export class HorizontalScroll extends FoundationElement {
 
         this.scrolling = true;
 
-        if (this.speed < 1) {
-            this.scrollContainer.style.scrollBehavior = "auto";
+        const seconds = Math.abs(newPosition - position) / this.speed;
+
+        this.move(newPosition, seconds);
+    }
+
+    /**
+     * Applies the CSS transition and transform to the content, then sets the
+     * scroll position for the scroll container.
+     *
+     * @param newPosition - position to move towards
+     * @param duration - The default calculated transition duration in seconds
+     * @internal
+     */
+    private move(newPosition: number, duration: number): void {
+        const transitionendHandler = (e?: TransitionEvent) => {
+            if (e && e.target !== e.currentTarget) {
+                return;
+            }
+
+            this.content.style.setProperty("transition-duration", "0s");
+            this.content.style.removeProperty("transform");
+
+            this.scrollContainer.style.setProperty("scroll-behavior", "auto");
             this.scrollContainer.scrollLeft = newPosition;
-            this.scrolling = false;
-            return;
-        }
 
-        const steps: number[] = [];
-        const direction: number = position < newPosition ? 1 : -1;
-        const scrollDistance: number = Math.abs(newPosition - position);
-        const seconds = ~~((scrollDistance / this.speed) * 1000) / 1000;
-
-        this.getFramesPerSecond().then(() => {
-            const stepCount: number = ~~(this.framesPerSecond * seconds);
-
-            if (stepCount < 1) {
-                this.scrolling = false;
-                return;
-            }
-
-            for (let i = 0; i < stepCount; i++) {
-                const progress = i / stepCount;
-                const easingFactor = this.getEasedFactor(this.easing, progress);
-                const travel = scrollDistance * easingFactor * direction;
-                steps.push(travel + position);
-            }
-
-            steps.push(newPosition);
-
-            this.move(steps, this.frameTime);
-        });
-    }
-
-    /**
-     * Calculates the screen refresh rate.
-     *
-     * @param timestamps - the collection of previous timestamps
-     * @param potentialRefreshRates - the set of previous potential frame times
-     *
-     * @internal
-     * @remarks
-     * Some browsers may reduce time precision to resist fingerprinting (https://developer.mozilla.org/en-US/docs/Web/API/DOMHighResTimeStamp#reduced_time_precision)
-     */
-    private async getFramesPerSecond(
-        timestamps: number[] = [],
-        potentialRefreshRates: Set<number> = new Set()
-    ): Promise<void> {
-        const time = await new Promise(requestAnimationFrame);
-        timestamps.unshift(time);
-
-        if (timestamps.length > 2) {
-            const lastTimestamp = timestamps.pop()!;
-
-            // Math.round accounts for uneven refresh rates like 59.94hz
-            const potentialRefreshRate = Math.round(
-                (1000 / (time - lastTimestamp)) * timestamps.length
-            );
-
-            if (potentialRefreshRates.has(potentialRefreshRate)) {
-                this.framesPerSecond = potentialRefreshRate;
-                return;
-            }
-
-            potentialRefreshRates.add(potentialRefreshRate);
-        }
-
-        return this.getFramesPerSecond(timestamps, potentialRefreshRates);
-    }
-
-    /**
-     * Holds the timestamp of the current animation frame.
-     * @internal
-     */
-    private moveStartTime: number;
-
-    /**
-     *
-     * @param steps - An array of positions to move
-     * @param time - The duration between moves
-     * @internal
-     */
-    private move(steps: number[], time: number): void {
-        if (!steps || steps.length <= 0) {
             this.setFlippers();
+
+            this.content.removeEventListener("transitionend", transitionendHandler);
+
             this.scrolling = false;
+        };
+
+        this.content.style.setProperty(
+            "transition-duration",
+            this.duration ?? `${duration}s`
+        );
+
+        const computedDuration = parseFloat(
+            getComputedStyle(this.content).getPropertyValue("transition-duration")
+        );
+
+        if (computedDuration === 0) {
+            transitionendHandler();
             return;
         }
 
-        this.moveStartTime = requestAnimationFrame(timestamp => {
-            if (timestamp - this.moveStartTime >= time) {
-                const nextStep = steps.shift();
-                this.scrollContainer.scrollLeft =
-                    nextStep ?? this.scrollContainer.scrollLeft;
-            }
+        this.content.addEventListener("transitionend", transitionendHandler);
 
-            this.move(steps, time);
-        });
+        const maxScrollValue =
+            this.scrollContainer.scrollWidth - this.scrollContainer.clientWidth;
+
+        let transitionStop =
+            this.scrollContainer.scrollLeft - Math.min(newPosition, maxScrollValue);
+
+        if (this.isRtl) {
+            transitionStop =
+                this.scrollContainer.scrollLeft +
+                Math.min(Math.abs(newPosition), maxScrollValue);
+        }
+
+        this.content.style.setProperty("transition-property", "transform");
+        this.content.style.setProperty("transition-timing-function", this.easing);
+        this.content.style.setProperty("transform", `translateX(${transitionStop}px)`);
     }
 
     /**
@@ -540,25 +520,5 @@ export class HorizontalScroll extends FoundationElement {
         this.scrollTimeout = setTimeout(() => {
             this.setFlippers();
         }, this.frameTime);
-    }
-
-    /**
-     *
-     * @param easing - Type of easing
-     * @param progress - Progress completed, 0 - 1
-     * @internal
-     */
-    private getEasedFactor(easing: ScrollEasing, progress: number): number {
-        progress = progress > 1 ? 1 : progress;
-        switch (easing) {
-            case "ease-in":
-                return Math.pow(progress, 1.675);
-            case "ease-out":
-                return 1 - Math.pow(1 - progress, 1.675);
-            case "ease-in-out":
-                return 0.5 * (Math.sin((progress - 0.5) * Math.PI) + 1);
-            default:
-                return progress;
-        }
     }
 }

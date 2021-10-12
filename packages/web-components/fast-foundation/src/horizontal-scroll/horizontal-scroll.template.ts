@@ -29,7 +29,7 @@ export const horizontalScrollTemplate: FoundationElementTemplate<
                 @scroll="${x => x.scrolled()}"
                 ${ref("scrollContainer")}
             >
-                <div class="content-container" part="content-container">
+                <div class="content-container" part="content-container" ${ref("content")}>
                     <slot
                         ${slotted({
                             property: "scrollItems",
