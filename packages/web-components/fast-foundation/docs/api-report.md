@@ -733,6 +733,7 @@ export type DerivedDesignTokenValue<T> = T extends Function ? never : (target: H
 // @public
 export interface DesignSystem {
     register(...params: any[]): DesignSystem;
+    withDesignTokenRoot(root: HTMLElement | Document): DesignSystem;
     withElementDisambiguation(callback: ElementDisambiguationCallback): DesignSystem;
     withPrefix(prefix: string): DesignSystem;
     withShadowRootMode(mode: ShadowRootMode): DesignSystem;
@@ -770,6 +771,8 @@ export const DesignToken: Readonly<{
     create: typeof create;
     notifyConnection(element: HTMLElement): boolean;
     notifyDisconnection(element: HTMLElement): boolean;
+    registerRoot(target?: HTMLElement | Document): void;
+    deregisterRoot(target?: HTMLElement | Document): void;
 }>;
 
 // @public

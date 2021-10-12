@@ -11,4 +11,6 @@ export * from "./index";
  * Only available if the components are added through a script tag
  * rather than a module/build system.
  */
-export const FASTDesignSystem = provideFASTDesignSystem().register(allComponents);
+export const FASTDesignSystem = provideFASTDesignSystem()
+    .withDesignTokenRoot(document.body)
+    .register(allComponents);

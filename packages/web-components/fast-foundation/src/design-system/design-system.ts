@@ -9,6 +9,7 @@ import type {
     ElementDefinitionContext,
     ElementDefinitionParams,
 } from "./registration-context";
+import { DesignToken } from "../design-token/design-token";
 
 /**
  * Indicates what to do with an ambiguous (duplicate) element.
@@ -90,6 +91,15 @@ export interface DesignSystem {
      * @public
      */
     withElementDisambiguation(callback: ElementDisambiguationCallback): DesignSystem;
+
+    /**
+     * Overrides the {@link DesignToken} root, controlling where
+     * {@link DesignToken} default value CSS custom properties
+     * are emitted.
+     * @param root - the root to register
+     * @public
+     */
+    withDesignTokenRoot(root: HTMLElement | Document): DesignSystem;
 }
 
 let rootDesignSystem: DesignSystem | null = null;
@@ -187,6 +197,8 @@ function extractTryDefineElementParams(
 }
 
 class DefaultDesignSystem implements DesignSystem {
+    private designTokensInitialized: boolean = false;
+    private designTokenRoot: HTMLElement;
     private prefix: string = "fast";
     private shadowRootMode: ShadowRootMode | undefined = undefined;
     private disambiguate: ElementDisambiguationCallback = () =>
@@ -212,6 +224,11 @@ class DefaultDesignSystem implements DesignSystem {
         callback: ElementDisambiguationCallback
     ): DesignSystem {
         this.disambiguate = callback;
+        return this;
+    }
+
+    public withDesignTokenRoot(root: HTMLElement): DesignSystem {
+        this.designTokenRoot = root;
         return this;
     }
 
@@ -279,6 +296,11 @@ class DefaultDesignSystem implements DesignSystem {
                 );
             },
         };
+
+        if (!this.designTokensInitialized) {
+            this.designTokensInitialized = true;
+            DesignToken.registerRoot(this.designTokenRoot);
+        }
 
         container.registerWithContext(context, ...registrations);
 

@@ -11,7 +11,7 @@ import {
 } from "@microsoft/fast-element";
 import { composedParent } from "../utilities";
 import { composedContains } from "../utilities/composed-contains";
-import { PropertyTargetManager } from "./custom-property-manager";
+import { PropertyTargetManager, RootStyleSheetTarget } from "./custom-property-manager";
 import type {
     DerivedDesignTokenValue,
     DesignTokenConfiguration,
@@ -906,5 +906,24 @@ export const DesignToken = Object.freeze({
 
         DesignTokenNode.getOrCreate(element).unbind();
         return true;
+    },
+
+    /**
+     * Registers and element or document as a DesignToken root.
+     * {@link CSSDesignToken | CSSDesignTokens} with default values assigned via
+     * {@link DesignToken.withDefault} will emit CSS custom properties to all
+     * registered roots.
+     * @param target - The root to register
+     */
+    registerRoot(target: HTMLElement | Document = defaultElement) {
+        RootStyleSheetTarget.registerRoot(target);
+    },
+
+    /**
+     * Deregister an element or document as a DesignToken root.
+     * @param target - The root to deregister
+     */
+    deregisterRoot(target: HTMLElement | Document = defaultElement) {
+        RootStyleSheetTarget.deregisterRoot(target);
     },
 });
