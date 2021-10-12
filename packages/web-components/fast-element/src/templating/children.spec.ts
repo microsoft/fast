@@ -15,9 +15,11 @@ describe("The children", () => {
 
     context("directive", () => {
         it("creates a ChildrenBehavior", () => {
+            const targetId = 'r';
             const directive = children("test") as AttachedBehaviorHTMLDirective;
             const target = document.createElement("div");
-            const behavior = directive.createBehavior(target);
+            const targets = { [targetId]: target };
+            const behavior = directive.createBehavior(targets);
 
             expect(behavior).to.be.instanceOf(ChildrenBehavior);
         });
@@ -43,13 +45,15 @@ describe("The children", () => {
         function createDOM(elementName: string = "div") {
             const host = document.createElement("div");
             const children = createAndAppendChildren(host, elementName);
+            const targetId = 'r';
+            const targets = { [targetId]: host };
 
-            return { host, children };
+            return { host, children, targets, targetId };
         }
 
         it("gathers child nodes", () => {
-            const { host, children } = createDOM();
-            const behavior = new ChildrenBehavior(host, {
+            const { host, children, targets, targetId } = createDOM();
+            const behavior = new ChildrenBehavior(targets, targetId, {
                 property: "nodes",
             });
             const model = new Model();
@@ -60,8 +64,8 @@ describe("The children", () => {
         });
 
         it("gathers child nodes with a filter", () => {
-            const { host, children } = createDOM("foo-bar");
-            const behavior = new ChildrenBehavior(host, {
+            const { host, children, targets, targetId } = createDOM("foo-bar");
+            const behavior = new ChildrenBehavior(targets, targetId, {
                 property: "nodes",
                 filter: elements("foo-bar"),
             });
@@ -73,8 +77,8 @@ describe("The children", () => {
         });
 
         it("updates child nodes when they change", async () => {
-            const { host, children } = createDOM("foo-bar");
-            const behavior = new ChildrenBehavior(host, {
+            const { host, children, targets, targetId } = createDOM("foo-bar");
+            const behavior = new ChildrenBehavior(targets, targetId, {
                 property: "nodes",
             });
             const model = new Model();
@@ -91,8 +95,8 @@ describe("The children", () => {
         });
 
         it("updates child nodes when they change with a filter", async () => {
-            const { host, children } = createDOM("foo-bar");
-            const behavior = new ChildrenBehavior(host, {
+            const { host, children, targets, targetId } = createDOM("foo-bar");
+            const behavior = new ChildrenBehavior(targets, targetId, {
                 property: "nodes",
                 filter: elements("foo-bar"),
             });
@@ -110,7 +114,7 @@ describe("The children", () => {
         });
 
         it("updates subtree nodes when they change with a selector", async () => {
-            const { host, children } = createDOM("foo-bar");
+            const { host, children, targets, targetId } = createDOM("foo-bar");
             const subtreeElement = "foo-bar-baz";
             const subtreeChildren: HTMLElement[] = [];
 
@@ -122,7 +126,7 @@ describe("The children", () => {
                 }
             }
 
-            const behavior = new ChildrenBehavior(host, {
+            const behavior = new ChildrenBehavior(targets, targetId, {
                 property: "nodes",
                 subtree: true,
                 selector: subtreeElement,
@@ -150,8 +154,8 @@ describe("The children", () => {
         });
 
         it("clears and unwatches when unbound", async () => {
-            const { host, children } = createDOM("foo-bar");
-            const behavior = new ChildrenBehavior(host, {
+            const { host, children, targets, targetId } = createDOM("foo-bar");
+            const behavior = new ChildrenBehavior(targets, targetId, {
                 property: "nodes",
             });
             const model = new Model();
