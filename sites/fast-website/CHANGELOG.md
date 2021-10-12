@@ -1,8 +1,72 @@
 # Change Log - @microsoft/fast-website
 
-This log was last generated on Mon, 27 Sep 2021 07:12:15 GMT and should not be manually modified.
+This log was last generated on Tue, 12 Oct 2021 07:15:14 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.3.16
+
+Tue, 12 Oct 2021 07:15:14 GMT
+
+### Patches
+
+- Bump @microsoft/site-utilities to v0.9.0 (roeisenb@microsoft.com)
+
+## 1.3.16
+
+Sun, 10 Oct 2021 07:12:26 GMT
+
+### Patches
+
+- Bump @microsoft/site-utilities to v0.9.0 (john.kreitlow@microsoft.com)
+
+## 1.3.16
+
+Fri, 08 Oct 2021 19:53:11 GMT
+
+### Patches
+
+- Bump @microsoft/site-utilities to v0.9.0 (scomea@microsoft.com)
+
+## 1.3.16
+
+Wed, 06 Oct 2021 07:11:47 GMT
+
+### Patches
+
+- Bump @microsoft/site-utilities to v0.9.0 (scomea@microsoft.com)
+
+## 1.3.16
+
+Tue, 05 Oct 2021 00:45:07 GMT
+
+### Patches
+
+- Bump @microsoft/site-utilities to v0.9.0 (robarb@microsoft.com)
+
+## 1.3.16
+
+Thu, 30 Sep 2021 07:13:45 GMT
+
+### Patches
+
+- Bump @microsoft/site-utilities to v0.9.0 (robarb@microsoft.com)
+
+## 1.3.16
+
+Wed, 29 Sep 2021 07:13:40 GMT
+
+### Patches
+
+- Bump @microsoft/site-utilities to v0.9.0 (chhol@microsoft.com)
+
+## 1.3.16
+
+Tue, 28 Sep 2021 07:10:49 GMT
+
+### Patches
+
+- Bump @microsoft/site-utilities to v0.9.0 (marjon@microsoft.com)
 
 ## 1.3.16
 

@@ -1,4 +1,11 @@
-import { camelCase } from "lodash-es";
+let uniqueIdCounter: number = 0;
+
+/**
+ * Generates a unique ID based on incrementing a counter.
+ */
+export function uniqueId(prefix: string = ""): string {
+    return `fast-${prefix}${uniqueIdCounter++}`;
+}
 
 /**
  * Builds a string from a format specifier and replacement parameters.
@@ -38,6 +45,23 @@ export function startsWith(
 }
 
 /**
+ * Matches all instances of the RegExp in the string. Operates similarly to the
+ * native `String.matchAll`, which is not yet available on all supported
+ * browsers. Note that the regex *must* be global.
+ */
+function matchAll(re: RegExp, str: string): string[] {
+    const matches: string[] = [];
+
+    let match: RegExpExecArray;
+    while ((match = re.exec(str))) {
+        matches.push(match[1]);
+    }
+
+    re.lastIndex = 0;
+    return matches;
+}
+
+/**
  * Determines if the specified string is undefined, null, empty, or whitespace.
  * True if the value is undefined, null, empty, or whitespace, otherwise false.
  */
@@ -45,13 +69,18 @@ export function isNullOrWhiteSpace(value: string): boolean {
     return !value || !value.trim();
 }
 
+const wordRe = /([A-Z]+[a-z0-9]*|[A-Z]*[a-z0-9]+)/g;
+
 /**
  * Converts a string to Pascal Case
  */
 export function pascalCase(value: string): string {
-    const camelCased: string = camelCase(value);
-
-    return `${camelCased.charAt(0).toUpperCase()}${camelCased.slice(1)}`;
+    return matchAll(wordRe, value)
+        .map(
+            (word: string) =>
+                `${word.charAt(0).toUpperCase()}${word.slice(1).toLowerCase()}`
+        )
+        .join("");
 }
 
 /**

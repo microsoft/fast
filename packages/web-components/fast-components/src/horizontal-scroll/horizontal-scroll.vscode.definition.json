@@ -31,6 +31,14 @@
                     "required": false
                 },
                 {
+                    "name": "duration",
+                    "title": "duration",
+                    "description": "Transition duration in seconds or milliseconds. If present, overrides the `speed` attribute.",
+                    "type": "string",
+                    "default": false,
+                    "required": false
+                },
+                {
                     "name": "easing",
                     "title": "Easing",
                     "description": "Scroll easing",

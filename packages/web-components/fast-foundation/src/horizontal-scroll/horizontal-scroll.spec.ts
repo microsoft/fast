@@ -60,15 +60,15 @@ const getCards = (cnt: number): string => new Array(cnt).fill(cardTemplate).redu
 async function setup() {
     const { element, connect, disconnect }:
         {
-            element: HorizontalScroll & HTMLElement,
-            connect: () => void,
-            disconnect: () => void
+            element: HorizontalScroll & HTMLElement;
+            connect: () => void;
+            disconnect: () => void;
         } = await fixture(FASTHorizontalScroll());
 
     // Removing animated scroll so that tests don't have to wait on DOM updates
     element.speed = 0;
 
-    element.setAttribute("style", `width: ${horizontalScrollWidth}px}`);
+    element.setAttribute("style", `width: ${horizontalScrollWidth}px;`);
     element.innerHTML = getCards(8);
 
     await connect();
@@ -77,7 +77,7 @@ async function setup() {
     return { element, disconnect };
 }
 
-describe("HorinzontalScroll", () => {
+describe("HorizontalScroll", () => {
     describe("Flippers", () => {
         it("should enable the next flipper when content exceeds horizontal-scroll width", async () => {
             const { element, disconnect } = await setup();
@@ -111,6 +111,7 @@ describe("HorinzontalScroll", () => {
 
             element.scrollToNext();
             await DOM.nextUpdate();
+            await DOM.nextUpdate();
 
             expect(element.shadowRoot?.querySelector(".scroll-prev")?.classList.contains("disabled")).to.equal(false);
             await disconnect();
@@ -120,7 +121,10 @@ describe("HorinzontalScroll", () => {
             const { element, disconnect } = await setup();
 
             element.scrollToNext();
+            await DOM.nextUpdate();
+
             element.scrollToPrevious();
+            await DOM.nextUpdate();
             await DOM.nextUpdate();
 
             expect(element.shadowRoot?.querySelector(".scroll-prev")?.classList.contains("disabled")).to.equal(true);
@@ -131,8 +135,16 @@ describe("HorinzontalScroll", () => {
             const { element, disconnect } = await setup();
 
             element.scrollToNext();
+            await DOM.nextUpdate();
+
             element.scrollToNext();
+            await DOM.nextUpdate();
+
             element.scrollToNext();
+            await DOM.nextUpdate();
+
+            element.scrollToNext();
+            await DOM.nextUpdate();
             await DOM.nextUpdate();
 
             expect(element.shadowRoot?.querySelector(".scroll-next")?.classList.contains("disabled")).to.equal(true);
@@ -143,10 +155,19 @@ describe("HorinzontalScroll", () => {
             const { element, disconnect } = await setup();
 
             element.scrollToNext();
+            await DOM.nextUpdate();
+
             element.scrollToNext();
+            await DOM.nextUpdate();
+
             element.scrollToNext();
+            await DOM.nextUpdate();
+
             element.scrollToNext();
+            await DOM.nextUpdate();
+
             element.scrollToPrevious();
+            await DOM.nextUpdate();
             await DOM.nextUpdate();
 
             expect(element.shadowRoot?.querySelector(".scroll-next")?.classList.contains("disabled")).to.equal(false);
@@ -204,7 +225,7 @@ describe("HorinzontalScroll", () => {
 
             await DOM.nextUpdate();
 
-            let cardViewWidth: number = cardSpace * 5 * -1;
+            const cardViewWidth: number = cardSpace * 5 * -1;
             const scrollPosition: number | null = getXPosition(element);
 
             expect(scrollPosition).to.not.null;
