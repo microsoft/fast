@@ -2,21 +2,29 @@ import { DOM } from "../dom";
 import type { Behavior } from "../observation/behavior";
 
 /**
+ * The target nodes available to a behavior.
+ * @public
+ */
+export type BehaviorTargets = {
+    [id: string]: Node;
+};
+
+/**
  * A factory that can create a {@link Behavior} associated with a particular
  * location within a DOM fragment.
  * @public
  */
 export interface NodeBehaviorFactory {
     /**
-     * The index of the DOM node to which the created behavior will apply.
+     * The structural id of the DOM node to which the created behavior will apply.
      */
-    targetIndex: number;
+    targetId: string;
 
     /**
-     * Creates a behavior for the provided target node.
-     * @param target - The node instance to create the behavior for.
+     * Creates a behavior.
+     * @param target - The targets available for behaviors to be attached to.
      */
-    createBehavior(target: Node): Behavior;
+    createBehavior(targets: BehaviorTargets): Behavior;
 }
 
 /**
@@ -25,9 +33,9 @@ export interface NodeBehaviorFactory {
  */
 export abstract class HTMLDirective implements NodeBehaviorFactory {
     /**
-     * The index of the DOM node to which the created behavior will apply.
+     * The structural id of the DOM node to which the created behavior will apply.
      */
-    public targetIndex: number = 0;
+    public targetId: string = "h";
 
     /**
      * Creates a placeholder string based on the directive's index within the template.
@@ -36,10 +44,10 @@ export abstract class HTMLDirective implements NodeBehaviorFactory {
     public abstract createPlaceholder(index: number): string;
 
     /**
-     * Creates a behavior for the provided target node.
-     * @param target - The node instance to create the behavior for.
+     * Creates a behavior.
+     * @param targets - The targets available for behaviors to be attached to.
      */
-    public abstract createBehavior(target: Node): Behavior;
+    public abstract createBehavior(targets: BehaviorTargets): Behavior;
 }
 
 /**
@@ -66,7 +74,11 @@ export abstract class TargetedHTMLDirective extends HTMLDirective {
  * an {@link AttachedBehaviorHTMLDirective}.
  * @public
  */
-export type AttachedBehaviorType<T = any> = new (target: any, options: T) => Behavior;
+export type AttachedBehaviorType<T = any> = new (
+    targets: BehaviorTargets,
+    targetId: string,
+    options: T
+) => Behavior;
 
 /**
  * A directive that attaches special behavior to an element via a custom attribute.
@@ -98,13 +110,13 @@ export class AttachedBehaviorHTMLDirective<T = any> extends HTMLDirective {
     }
 
     /**
-     * Creates a behavior for the provided target node.
-     * @param target - The node instance to create the behavior for.
+     * Creates a behavior.
+     * @param targets - The targets available for behaviors to be attached to.
      * @remarks
      * Creates an instance of the `behavior` type this directive was constructed with
-     * and passes the target and options to that `behavior`'s constructor.
+     * and passes the targets, targetId, and options to that `behavior`'s constructor.
      */
-    public createBehavior(target: Node): Behavior {
-        return new this.behavior(target, this.options);
+    public createBehavior(targets: BehaviorTargets): Behavior {
+        return new this.behavior(targets, this.targetId, this.options);
     }
 }

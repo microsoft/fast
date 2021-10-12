@@ -1,18 +1,27 @@
 import type { Behavior } from "../observation/behavior";
 import type { CaptureType } from "./template";
 import { AttachedBehaviorHTMLDirective } from "./html-directive";
+import type { BehaviorTargets } from "..";
 
 /**
  * The runtime behavior for template references.
  * @public
  */
 export class RefBehavior implements Behavior {
+    private target: Node;
+
     /**
      * Creates an instance of RefBehavior.
      * @param target - The element to reference.
      * @param propertyName - The name of the property to assign the reference to.
      */
-    public constructor(private target: HTMLElement, private propertyName: string) {}
+    public constructor(
+        targets: BehaviorTargets,
+        targetId: string,
+        private propertyName: string
+    ) {
+        this.target = targets[targetId];
+    }
 
     /**
      * Bind this behavior to the source.
