@@ -1,8 +1,21 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Sun, 10 Oct 2021 07:12:26 GMT and should not be manually modified.
+This log was last generated on Tue, 12 Oct 2021 07:15:14 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.18.0
+
+Tue, 12 Oct 2021 07:15:14 GMT
+
+### Minor changes
+
+- fix(di): context confused for key with some registrations (roeisenb@microsoft.com)
+
+### Patches
+
+- Update design-token default value emission to emit to a stylesheet instead of inline styles on the document body (nicholasrice@users.noreply.github.com)
+- add aria-disabled to accordion-item for single-mode (khamu@microsoft.com)
 
 ## 2.17.3
 
