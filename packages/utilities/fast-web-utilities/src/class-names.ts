@@ -1,5 +1,3 @@
-import { isFunction, isString } from "lodash-es";
-
 type ClassNamesArg = string | (() => string) | [string | (() => string), boolean];
 
 export function classNames(...args: ClassNamesArg[]): string {
@@ -8,9 +6,9 @@ export function classNames(...args: ClassNamesArg[]): string {
         const normalizedValue: string =
             Array.isArray(value) && value[1]
                 ? classNames.call(null, value[0])
-                : isFunction(value)
+                : typeof value === "function"
                 ? value()
-                : isString(value)
+                : typeof value === "string"
                 ? value
                 : "";
 

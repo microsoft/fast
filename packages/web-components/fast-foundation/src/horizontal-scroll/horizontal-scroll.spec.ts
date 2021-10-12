@@ -60,9 +60,9 @@ const getCards = (cnt: number): string => new Array(cnt).fill(cardTemplate).redu
 async function setup() {
     const { element, connect, disconnect }:
         {
-            element: HorizontalScroll & HTMLElement,
-            connect: () => void,
-            disconnect: () => void
+            element: HorizontalScroll & HTMLElement;
+            connect: () => void;
+            disconnect: () => void;
         } = await fixture(FASTHorizontalScroll());
 
     // Removing animated scroll so that tests don't have to wait on DOM updates
@@ -77,7 +77,7 @@ async function setup() {
     return { element, disconnect };
 }
 
-describe("HorinzontalScroll", () => {
+describe("HorizontalScroll", () => {
     describe("Flippers", () => {
         it("should enable the next flipper when content exceeds horizontal-scroll width", async () => {
             const { element, disconnect } = await setup();
@@ -226,7 +226,7 @@ describe("HorinzontalScroll", () => {
 
             await DOM.nextUpdate();
 
-            let cardViewWidth: number = cardSpace * 5 * -1;
+            const cardViewWidth: number = cardSpace * 5 * -1;
             const scrollPosition: number | null = getXPosition(element);
 
             expect(scrollPosition).to.not.null;

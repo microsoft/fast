@@ -6,7 +6,10 @@ import {
     FASTElement,
     observable,
     Observable,
+    TargetedHTMLDirective,
 } from "@microsoft/fast-element";
+
+export const defaultElement = document.createElement("div");
 
 function isFastElement(element: HTMLElement | FASTElement): element is FASTElement {
     return element instanceof FASTElement;
@@ -17,22 +20,62 @@ interface PropertyTarget {
     removeProperty(name: string);
 }
 
-/**
- * Handles setting properties for a FASTElement using Constructable Stylesheets
- */
-class ConstructableStyleSheetTarget implements PropertyTarget {
-    private target: PropertyTarget;
-    constructor(source: HTMLElement & FASTElement) {
-        const sheet = new CSSStyleSheet();
-        this.target = (sheet.cssRules[sheet.insertRule(":host{}")] as CSSStyleRule).style;
-        source.$fastController.addStyles(ElementStyles.create([sheet]));
-    }
+abstract class QueuedStyleSheetTarget implements PropertyTarget {
+    protected abstract target: PropertyTarget;
 
     public setProperty(name: string, value: string) {
         DOM.queueUpdate(() => this.target.setProperty(name, value));
     }
     public removeProperty(name: string) {
         DOM.queueUpdate(() => this.target.removeProperty(name));
+    }
+}
+/**
+ * Handles setting properties for a FASTElement using Constructable Stylesheets
+ */
+class ConstructableStyleSheetTarget extends QueuedStyleSheetTarget {
+    protected target: PropertyTarget;
+    constructor(source: HTMLElement & FASTElement) {
+        super();
+
+        const sheet = new CSSStyleSheet();
+        this.target = (sheet.cssRules[sheet.insertRule(":host{}")] as CSSStyleRule).style;
+        source.$fastController.addStyles(ElementStyles.create([sheet]));
+    }
+}
+
+class DocumentStyleSheetTarget extends QueuedStyleSheetTarget {
+    protected target: PropertyTarget;
+    constructor() {
+        super();
+
+        const sheet = new CSSStyleSheet();
+        this.target = (sheet.cssRules[sheet.insertRule(":root{}")] as CSSStyleRule).style;
+        (document as any).adoptedStyleSheets = [
+            ...(document as any).adoptedStyleSheets,
+            sheet,
+        ];
+    }
+}
+
+class HeadStyleElementStyleSheetTarget extends QueuedStyleSheetTarget {
+    protected target: PropertyTarget;
+    private readonly style: HTMLStyleElement;
+
+    constructor() {
+        super();
+
+        this.style = document.createElement("style") as HTMLStyleElement;
+        document.head.appendChild(this.style);
+        const { sheet } = this.style;
+
+        // Because the HTMLStyleElement has been appended,
+        // there shouldn't exist a case where `sheet` is null,
+        // but if-check it just in case.
+        if (sheet) {
+            const index = sheet.insertRule(":root{}");
+            this.target = (sheet.rules[index] as CSSStyleRule).style;
+        }
     }
 }
 
@@ -138,9 +181,18 @@ export const PropertyTargetManager = Object.freeze({
             return propertyTargetCache.get(source)!;
         }
 
-        const target = isFastElement(source)
-            ? new propertyTargetCtor(source)
-            : new ElementStyleSheetTarget(source);
+        let target: PropertyTarget;
+
+        if (source === defaultElement) {
+            target = DOM.supportsAdoptedStyleSheets
+                ? new DocumentStyleSheetTarget()
+                : new HeadStyleElementStyleSheetTarget();
+        } else if (isFastElement(source)) {
+            target = new propertyTargetCtor(source);
+        } else {
+            target = new ElementStyleSheetTarget(source);
+        }
+
         propertyTargetCache.set(source, target);
 
         return target;

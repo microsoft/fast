@@ -308,13 +308,7 @@ describe(`The Resolver class`, function () {
     });
 
     describe(`register()`, function () {
-        it(`registers the resolver to the container with the provided key`, function () {
-            const sut = new ResolverImpl("foo", 0, null);
-            sut.register(container, "bar");
-            expect(container.registerResolver).called.with("bar", sut);
-        });
-
-        it(`registers the resolver to the container with its own`, function () {
+        it(`registers the resolver to the container with its own key`, function () {
             const sut = new ResolverImpl("foo", 0, null);
             sut.register(container);
             expect(container.registerResolver).called.with("foo", sut);
