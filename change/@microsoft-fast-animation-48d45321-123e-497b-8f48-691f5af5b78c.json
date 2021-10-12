@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "use requestAnimationFrame in fast-animation",
+  "packageName": "@microsoft/fast-animation",
+  "email": "john.kreitlow@microsoft.com",
+  "dependentChangeType": "patch"
+}
