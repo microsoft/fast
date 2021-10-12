@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "remove prefix from uniqueId function",
+  "packageName": "@microsoft/fast-web-utilities",
+  "email": "john.kreitlow@microsoft.com",
+  "dependentChangeType": "patch"
+}
