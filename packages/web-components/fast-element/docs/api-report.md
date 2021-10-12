@@ -339,7 +339,7 @@ export abstract class HTMLDirective implements NodeBehaviorFactory {
 
 // @public
 export class HTMLTemplateCompilationResult {
-    constructor(fragment: DocumentFragment, viewBehaviorFactories: NodeBehaviorFactory[], hostBehaviorFactories: NodeBehaviorFactory[], targetIds: string[]);
+    constructor(fragment: DocumentFragment, viewBehaviorFactories: NodeBehaviorFactory[], hostBehaviorFactories: NodeBehaviorFactory[], targetIds: string[], descriptors: PropertyDescriptorMap);
     // (undocumented)
     get behaviorCount(): number;
     createTargets(root: Node, host?: Node): BehaviorTargets;
