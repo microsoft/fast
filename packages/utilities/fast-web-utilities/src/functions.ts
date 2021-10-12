@@ -1,5 +1,5 @@
 /**
- * Higher-order throttler geenrator, used for testing.
+ * Higher-order throttler generator, used for testing.
  * @internal
  */
 export function makeThrottler(
