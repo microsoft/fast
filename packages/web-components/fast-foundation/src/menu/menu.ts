@@ -1,5 +1,4 @@
 import { observable } from "@microsoft/fast-element";
-import { inRange, invert } from "lodash-es";
 import {
     isHTMLElement,
     keyArrowDown,
@@ -7,7 +6,12 @@ import {
     keyEnd,
     keyHome,
 } from "@microsoft/fast-web-utilities";
-import { MenuItem, MenuItemColumnCount, MenuItemRole } from "../menu-item/index";
+import {
+    MenuItem,
+    MenuItemColumnCount,
+    MenuItemRole,
+    roleForMenuItem,
+} from "../menu-item/index";
 import { FoundationElement } from "../foundation-element";
 
 /**
@@ -40,9 +44,7 @@ export class Menu extends FoundationElement {
      */
     private focusIndex: number = -1;
 
-    private static focusableElementRoles: { [key: string]: string } = invert(
-        MenuItemRole
-    );
+    private static focusableElementRoles: { [key: string]: string } = roleForMenuItem;
 
     /**
      * @internal
@@ -311,7 +313,7 @@ export class Menu extends FoundationElement {
             return;
         }
 
-        while (inRange(focusIndex, this.menuItems.length)) {
+        while (focusIndex < this.menuItems.length) {
             const child: Element = this.menuItems[focusIndex];
 
             if (this.isFocusableElement(child)) {
