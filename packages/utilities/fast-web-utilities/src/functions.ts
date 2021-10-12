@@ -15,8 +15,7 @@ export function makeThrottler(
             if (scheduled) {
                 // explicit no-op. It is possible that `nextPossibleExecution`
                 // is >= now with a pending timeout.
-            }
-            if (now >= nextPossibleExecution) {
+            } else if (now >= nextPossibleExecution) {
                 lastExecutedAt = now;
                 fn();
             } else if (!scheduled) {
