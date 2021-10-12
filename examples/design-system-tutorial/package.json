@@ -15,7 +15,6 @@
     "@microsoft/fast-element": "^1.6.0",
     "@microsoft/fast-foundation": "^2.18.0",
     "@microsoft/fast-components": "^2.11.12",
-    "lodash-es": "4.17.15",
     "tslib": "^1.11.1"
   },
   "devDependencies": {

@@ -1,5 +1,5 @@
 import { attr, observable, Observable } from "@microsoft/fast-element";
-import uniqueId from "lodash-es/uniqueId";
+import { uniqueId } from "@microsoft/fast-web-utilities";
 import { FoundationElement } from "../foundation-element";
 import { isListboxOption, ListboxOption } from "../listbox-option/listbox-option";
 import { ARIAGlobalStatesAndProperties } from "../patterns/aria-global";
