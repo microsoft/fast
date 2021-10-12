@@ -428,21 +428,16 @@ export class HorizontalScroll extends FoundationElement {
 
         this.scrolling = true;
 
-        const seconds = Math.abs(newPosition - position) / this.speed;
+        const seconds =
+            this.duration ?? `${Math.abs(newPosition - position) / this.speed}s`;
 
-        this.move(newPosition, seconds);
-    }
+        this.content.style.setProperty("transition-duration", seconds);
 
-    /**
-     * Applies the CSS transition and transform to the content, then sets the
-     * scroll position for the scroll container.
-     *
-     * @param newPosition - position to move towards
-     * @param duration - The default calculated transition duration in seconds
-     * @internal
-     */
-    private move(newPosition: number, duration: number): void {
-        const transitionendHandler = (e?: TransitionEvent) => {
+        const computedDuration = parseFloat(
+            getComputedStyle(this.content).getPropertyValue("transition-duration")
+        );
+
+        const transitionendHandler = (e?: TransitionEvent): void => {
             if (e && e.target !== e.currentTarget) {
                 return;
             }
@@ -459,15 +454,6 @@ export class HorizontalScroll extends FoundationElement {
 
             this.scrolling = false;
         };
-
-        this.content.style.setProperty(
-            "transition-duration",
-            this.duration ?? `${duration}s`
-        );
-
-        const computedDuration = parseFloat(
-            getComputedStyle(this.content).getPropertyValue("transition-duration")
-        );
 
         if (computedDuration === 0) {
             transitionendHandler();

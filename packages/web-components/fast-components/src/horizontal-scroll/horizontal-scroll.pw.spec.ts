@@ -133,28 +133,33 @@ describe("FASTHorizontalScroll", function () {
             "fast-horizontal-scroll"
         )) as ElementHandle<fastHorizontalScroll>;
 
+        const doubleWidth = componentWidth * 2;
+
         await element.evaluateHandle(node => node.scrollToNext());
 
         await element.waitForElementState("stable");
 
         const firstXPos = await element.evaluate(node => node.scrollContainer.scrollLeft);
 
+        await element.evaluateHandle(node => node.scrollToPrevious());
+
+        await element.waitForElementState("stable");
+
+        await element.evaluateHandle((node, doubleWidth) => {
+            node.style.setProperty("width", `${doubleWidth}px`);
+        }, doubleWidth);
+
+        await element.waitForElementState("stable");
+
+        expect(await element.evaluate(node => node.clientWidth)).to.equal(doubleWidth);
+
         await element.evaluateHandle(node => node.scrollToNext());
 
         await element.waitForElementState("stable");
 
-        await this.page.evaluate(
-            ({ element, componentWidth }) => {
-                element.style.setProperty("width", `${componentWidth * 2}px`);
-            },
-            { element, componentWidth }
+        const secondXPos = await element.evaluate(
+            node => node.scrollContainer.scrollLeft
         );
-
-        await element.evaluateHandle(node => node.scrollToNext());
-
-        await element.waitForElementState("stable");
-
-        const secondXPos = await element.evaluate(node => node.scrollContainer.scrollLeft);
 
         expect(firstXPos).to.not.equal(secondXPos);
     });
