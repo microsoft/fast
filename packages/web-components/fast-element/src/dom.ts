@@ -227,17 +227,4 @@ export const DOM = Object.freeze({
             parent.removeChild(child);
         }
     },
-
-    /**
-     * Creates a TreeWalker configured to walk a template fragment.
-     * @param fragment - The fragment to walk.
-     */
-    createTemplateWalker(fragment: DocumentFragment): TreeWalker {
-        return document.createTreeWalker(
-            fragment,
-            133, // element, text, comment
-            null,
-            false
-        );
-    },
 });

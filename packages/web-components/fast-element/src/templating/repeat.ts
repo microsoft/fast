@@ -13,6 +13,7 @@ import { emptyArray } from "../platform";
 import { HTMLDirective } from "./html-directive";
 import { HTMLView, SyntheticView } from "./view";
 import type { CaptureType, SyntheticViewTemplate } from "./template";
+import type { BehaviorTargets } from "..";
 
 /**
  * Options for configuring repeat behavior.
@@ -321,9 +322,9 @@ export class RepeatDirective<TSource = any> extends HTMLDirective {
      * Creates a behavior for the provided target node.
      * @param target - The node instance to create the behavior for.
      */
-    public createBehavior(target: Node): RepeatBehavior<TSource> {
+    public createBehavior(targets: BehaviorTargets): RepeatBehavior<TSource> {
         return new RepeatBehavior<TSource>(
-            target,
+            targets[this.targetId],
             this.itemsBinding,
             this.isItemsBindingVolatile,
             this.templateBinding,

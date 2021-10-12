@@ -17,12 +17,12 @@ export interface Accessor {
 // @public
 export class AttachedBehaviorHTMLDirective<T = any> extends HTMLDirective {
     constructor(name: string, behavior: AttachedBehaviorType<T>, options: T);
-    createBehavior(target: Node): Behavior;
+    createBehavior(targets: BehaviorTargets): Behavior;
     createPlaceholder(index: number): string;
     }
 
 // @public
-export type AttachedBehaviorType<T = any> = new (target: any, options: T) => Behavior;
+export type AttachedBehaviorType<T = any> = new (targets: BehaviorTargets, targetId: string, options: T) => Behavior;
 
 // @public
 export function attr(config?: DecoratorAttributeConfiguration): (target: {}, property: string) => void;
@@ -62,6 +62,11 @@ export interface Behavior {
     bind(source: unknown, context: ExecutionContext): void;
     unbind(source: unknown): void;
 }
+
+// @public
+export type BehaviorTargets = {
+    [id: string]: Node;
+};
 
 // @public
 export type Binding<TSource = any, TReturn = any, TParent = any> = (source: TSource, context: ExecutionContext<TParent>) => TReturn;
@@ -131,7 +136,7 @@ export function children<T = any>(propertyOrOptions: (keyof T & string) | Childr
 //
 // @public
 export class ChildrenBehavior extends NodeObservationBehavior<ChildrenBehaviorOptions> {
-    constructor(target: HTMLElement, options: ChildrenBehaviorOptions);
+    constructor(targets: BehaviorTargets, targetId: string, options: ChildrenBehaviorOptions);
     disconnect(): void;
     protected getNodes(): ChildNode[];
     observe(): void;
@@ -140,18 +145,8 @@ export class ChildrenBehavior extends NodeObservationBehavior<ChildrenBehaviorOp
 // @public
 export type ChildrenBehaviorOptions<T = any> = ChildListBehaviorOptions<T> | SubtreeBehaviorOptions<T>;
 
-// @beta
-export interface CompilationResult {
-    fragment: DocumentFragment;
-    hostBehaviorFactories: NodeBehaviorFactory[];
-    targetOffset: number;
-    viewBehaviorFactories: NodeBehaviorFactory[];
-}
-
-// Warning: (ae-incompatible-release-tags) The symbol "compileTemplate" is marked as @public, but its signature references "CompilationResult" which is marked as @beta
-//
 // @public
-export function compileTemplate(template: HTMLTemplateElement, directives: ReadonlyArray<HTMLDirective>): CompilationResult;
+export function compileTemplate(template: HTMLTemplateElement, directives: ReadonlyArray<HTMLDirective>): HTMLTemplateCompilationResult;
 
 // @public
 export type ComposableStyles = string | ElementStyles | CSSStyleSheet;
@@ -221,7 +216,6 @@ export const DOM: Readonly<{
     setAttribute(element: HTMLElement, attributeName: string, value: any): void;
     setBooleanAttribute(element: HTMLElement, attributeName: string, value: boolean): void;
     removeChildNodes(parent: Node): void;
-    createTemplateWalker(fragment: DocumentFragment): TreeWalker;
 }>;
 
 // @public
@@ -330,7 +324,7 @@ export class HTMLBindingDirective extends TargetedHTMLDirective {
     constructor(binding: Binding);
     // (undocumented)
     binding: Binding;
-    createBehavior(target: Node): BindingBehavior;
+    createBehavior(targets: BehaviorTargets): BindingBehavior;
     targetAtContent(): void;
     get targetName(): string | undefined;
     set targetName(value: string | undefined);
@@ -338,9 +332,25 @@ export class HTMLBindingDirective extends TargetedHTMLDirective {
 
 // @public
 export abstract class HTMLDirective implements NodeBehaviorFactory {
-    abstract createBehavior(target: Node): Behavior;
+    abstract createBehavior(targets: BehaviorTargets): Behavior;
     abstract createPlaceholder(index: number): string;
-    targetIndex: number;
+    targetId: string;
+}
+
+// @public
+export class HTMLTemplateCompilationResult {
+    constructor(fragment: DocumentFragment, viewBehaviorFactories: NodeBehaviorFactory[], hostBehaviorFactories: NodeBehaviorFactory[], targetIds: string[]);
+    // (undocumented)
+    get behaviorCount(): number;
+    createTargets(root: Node, host?: Node): BehaviorTargets;
+    // (undocumented)
+    readonly fragment: DocumentFragment;
+    // (undocumented)
+    get hasHostBehaviors(): boolean;
+    // (undocumented)
+    readonly hostBehaviorFactories: NodeBehaviorFactory[];
+    // (undocumented)
+    readonly viewBehaviorFactories: NodeBehaviorFactory[];
 }
 
 // @public
@@ -368,8 +378,8 @@ export type Mutable<T> = {
 
 // @public
 export interface NodeBehaviorFactory {
-    createBehavior(target: Node): Behavior;
-    targetIndex: number;
+    createBehavior(targets: BehaviorTargets): Behavior;
+    targetId: string;
 }
 
 // @public
@@ -435,7 +445,7 @@ export function ref<T = any>(propertyName: keyof T & string): CaptureType<T>;
 
 // @public
 export class RefBehavior implements Behavior {
-    constructor(target: HTMLElement, propertyName: string);
+    constructor(targets: BehaviorTargets, targetId: string, propertyName: string);
     bind(source: any): void;
     unbind(): void;
 }
@@ -455,7 +465,7 @@ export class RepeatBehavior<TSource = any> implements Behavior, Subscriber {
 // @public
 export class RepeatDirective<TSource = any> extends HTMLDirective {
     constructor(itemsBinding: Binding, templateBinding: Binding<TSource, SyntheticViewTemplate>, options: RepeatOptions);
-    createBehavior(target: Node): RepeatBehavior<TSource>;
+    createBehavior(targets: BehaviorTargets): RepeatBehavior<TSource>;
     createPlaceholder: (index: number) => string;
     }
 
@@ -474,7 +484,7 @@ export function slotted<T = any>(propertyOrOptions: (keyof T & string) | Slotted
 
 // @public
 export class SlottedBehavior extends NodeObservationBehavior<SlottedBehaviorOptions> {
-    constructor(target: HTMLSlotElement, options: SlottedBehaviorOptions);
+    constructor(targets: BehaviorTargets, targetId: string, options: SlottedBehaviorOptions);
     disconnect(): void;
     protected getNodes(): Node[];
     observe(): void;

@@ -1,3 +1,4 @@
+import type { BehaviorTargets } from "..";
 import { DOM } from "../dom";
 import type { Behavior } from "../observation/behavior";
 import {
@@ -263,10 +264,10 @@ export class HTMLBindingDirective extends TargetedHTMLDirective {
      * information stored in the BindingDirective.
      * @param target - The target node that the binding behavior should attach to.
      */
-    createBehavior(target: Node): BindingBehavior {
+    createBehavior(targets: BehaviorTargets): BindingBehavior {
         /* eslint-disable-next-line @typescript-eslint/no-use-before-define */
         return new BindingBehavior(
-            target,
+            targets[this.targetId],
             this.binding,
             this.isBindingVolatile,
             this.bind,

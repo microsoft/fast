@@ -1,3 +1,4 @@
+import type { BehaviorTargets } from "..";
 import { _interpolationEnd, _interpolationStart, DOM } from "../dom";
 import type { Binding, ExecutionContext } from "../observation/observable";
 import { HTMLBindingDirective } from "./binding";
@@ -9,26 +10,86 @@ type InlineDirective = HTMLDirective & {
     targetAtContent(): void;
 };
 
+const descriptors: PropertyDescriptorMap = {};
+
+function addTargetDescriptor(parentId: string, targetId: string, targetIndex: number) {
+    if (
+        targetId === "r" || // root
+        targetId === "h" || // host
+        descriptors[targetId]
+    ) {
+        return;
+    }
+
+    if (!descriptors[parentId]) {
+        const index = parentId.lastIndexOf(".");
+
+        if (index !== -1) {
+            const grandparentId = parentId.substr(0, index);
+            const childIndex = parseInt(parentId.substr(index));
+            addTargetDescriptor(grandparentId, parentId, childIndex);
+        }
+    }
+
+    descriptors[targetId] = createTargetDescriptor(parentId, targetId, targetIndex);
+}
+
+function createTargetDescriptor(
+    parentId: string,
+    targetId: string,
+    targetIndex: number
+): PropertyDescriptor {
+    const field = `_${targetId}`;
+
+    return {
+        configurable: false,
+        get: function () {
+            return this[field] || (this[field] = this[parentId].childNodes[targetIndex]);
+        },
+    };
+}
+
 let sharedContext: CompilationContext | null = null;
 
+// used to prevent creating lots of objects just to track node and index while compiling
+const next = {
+    index: 0,
+    node: null as ChildNode | null,
+};
+
 class CompilationContext {
-    public targetIndex!: number;
     public behaviorFactories!: NodeBehaviorFactory[];
     public directives: ReadonlyArray<HTMLDirective>;
+    public targetIds!: string[];
 
-    public addFactory(factory: NodeBehaviorFactory): void {
-        factory.targetIndex = this.targetIndex;
+    public addFactory(
+        factory: NodeBehaviorFactory,
+        parentId: string,
+        targetId: string,
+        targetIndex: number
+    ): void {
+        if (this.targetIds.indexOf(targetId) === -1) {
+            this.targetIds.push(targetId);
+        }
+
+        addTargetDescriptor(parentId, targetId, targetIndex);
+        factory.targetId = targetId;
         this.behaviorFactories.push(factory);
     }
 
-    public captureContentBinding(directive: HTMLBindingDirective): void {
+    public captureContentBinding(
+        directive: HTMLBindingDirective,
+        parentId: string,
+        targetId: string,
+        targetIndex: number
+    ): void {
         directive.targetAtContent();
-        this.addFactory(directive);
+        this.addFactory(directive, parentId, targetId, targetIndex);
     }
 
     public reset(): void {
         this.behaviorFactories = [];
-        this.targetIndex = -1;
+        this.targetIds = [];
     }
 
     public release(): void {
@@ -48,7 +109,7 @@ function createAggregateBinding(
     parts: (string | InlineDirective)[]
 ): HTMLBindingDirective {
     if (parts.length === 1) {
-        return parts[0] as HTMLBindingDirective;
+        return (parts[0] as any) as HTMLBindingDirective;
     }
 
     let targetName: string | undefined;
@@ -114,7 +175,10 @@ function parseContent(
 
 function compileAttributes(
     context: CompilationContext,
+    parentId: string,
     node: HTMLElement,
+    nodeId: string,
+    nodeIndex: number,
     includeBasicValues: boolean = false
 ): void {
     const attributes = node.attributes;
@@ -138,7 +202,7 @@ function compileAttributes(
             node.removeAttributeNode(attr);
             i--;
             ii--;
-            context.addFactory(result);
+            context.addFactory(result, parentId, nodeId, nodeIndex);
         }
     }
 }
@@ -146,64 +210,146 @@ function compileAttributes(
 function compileContent(
     context: CompilationContext,
     node: Text,
-    walker: TreeWalker
-): void {
+    parentId,
+    nodeId,
+    nodeIndex
+) {
     const parseResult = parseContent(context, node.textContent!);
+    if (parseResult === null) {
+        next.node = node.nextSibling;
+        next.index = nodeIndex + 1;
+        return next;
+    }
 
-    if (parseResult !== null) {
-        let lastNode = node;
-        for (let i = 0, ii = parseResult.length; i < ii; ++i) {
-            const currentPart = parseResult[i];
-            const currentNode =
-                i === 0
-                    ? node
-                    : lastNode.parentNode!.insertBefore(
-                          document.createTextNode(""),
-                          lastNode.nextSibling
-                      );
+    let lastNode = node;
+    for (let i = 0, ii = parseResult.length; i < ii; ++i) {
+        const currentPart = parseResult[i];
+        let currentNode: Text;
 
-            if (typeof currentPart === "string") {
-                currentNode.textContent = currentPart;
-            } else {
-                currentNode.textContent = " ";
-                context.captureContentBinding(currentPart as HTMLBindingDirective);
-            }
-
-            lastNode = currentNode;
-            context.targetIndex++;
-
-            if (currentNode !== node) {
-                walker.nextNode();
-            }
+        if (i === 0) {
+            currentNode = node;
+        } else {
+            nodeIndex++;
+            nodeId = `${parentId}.${nodeIndex}`;
+            currentNode = lastNode.parentNode!.insertBefore(
+                document.createTextNode(""),
+                lastNode.nextSibling
+            );
         }
 
-        context.targetIndex--;
+        if (typeof currentPart === "string") {
+            currentNode.textContent = currentPart;
+        } else {
+            currentNode.textContent = " ";
+            context.captureContentBinding(
+                currentPart as HTMLBindingDirective,
+                parentId,
+                nodeId,
+                nodeIndex
+            );
+        }
+
+        lastNode = currentNode;
     }
+
+    next.index = nodeIndex + 1;
+    next.node = lastNode.nextSibling;
+    return next;
+}
+
+function compileNode(
+    context: CompilationContext,
+    parentId: string,
+    node: Node,
+    nodeIndex: number
+) {
+    const nodeId = `${parentId}.${nodeIndex}`;
+
+    switch (node.nodeType) {
+        case 1: // element node
+            compileAttributes(context, parentId, node as HTMLElement, nodeId, nodeIndex);
+
+            let child = node.firstChild;
+            let childIndex = 0;
+
+            while (child) {
+                const result = compileNode(context, nodeId, child, childIndex);
+                child = result.node;
+                childIndex = result.index;
+            }
+
+            break;
+        case 3: // text node
+            return compileContent(context, node as Text, parentId, nodeId, nodeIndex);
+        case 8: // comment
+            if (DOM.isMarker(node)) {
+                context.addFactory(
+                    context.directives[DOM.extractDirectiveIndexFromMarker(node)],
+                    parentId,
+                    nodeId,
+                    nodeIndex
+                );
+            }
+            break;
+    }
+
+    next.index = nodeIndex + 1;
+    next.node = node.nextSibling;
+    return next;
 }
 
 /**
  * The result of compiling a template and its directives.
- * @beta
+ * @public
  */
-export interface CompilationResult {
+export class HTMLTemplateCompilationResult {
+    private proto: any;
+
     /**
-     * A cloneable DocumentFragment representing the compiled HTML.
-     */
-    fragment: DocumentFragment;
-    /**
-     * The behaviors that should be applied to the template's HTML.
-     */
-    viewBehaviorFactories: NodeBehaviorFactory[];
-    /**
-     * The behaviors that should be applied to the host element that
+     *
+     * @param fragment - A cloneable DocumentFragment representing the compiled HTML.
+     * @param viewBehaviorFactories - The behaviors that should be applied to the template's HTML.
+     * @param hostBehaviorFactories - The behaviors that should be applied to the host element that
      * the template is rendered into.
+     * @param targetIds - The structural ids used by the behavior factories.
      */
-    hostBehaviorFactories: NodeBehaviorFactory[];
+    public constructor(
+        public readonly fragment: DocumentFragment,
+        public readonly viewBehaviorFactories: NodeBehaviorFactory[],
+        public readonly hostBehaviorFactories: NodeBehaviorFactory[],
+        private targetIds: string[]
+    ) {
+        this.proto = Object.create(null, descriptors);
+    }
+
+    get hasHostBehaviors() {
+        return this.hostBehaviorFactories.length > 0;
+    }
+
+    get behaviorCount() {
+        return this.viewBehaviorFactories.length + this.hostBehaviorFactories.length;
+    }
+
     /**
-     * An index offset to apply to BehaviorFactory target indexes when
-     * matching factories to targets.
+     * Creates a behavior target lookup object.
+     * @param host - The host element.
+     * @param root - The root element.
+     * @returns A lookup object for behavior targets.
      */
-    targetOffset: number;
+    public createTargets(root: Node, host?: Node): BehaviorTargets {
+        const targets = Object.create(this.proto, {
+            r: { value: root },
+            h: { value: host || root },
+        });
+
+        const ids = this.targetIds;
+
+        for (let i = 0, ii = ids.length; i < ii; ++i) {
+            targets[ids[i]]; // trigger locators
+        }
+
+        return targets;
+    }
 }
 
 /**
@@ -221,40 +367,15 @@ export interface CompilationResult {
 export function compileTemplate(
     template: HTMLTemplateElement,
     directives: ReadonlyArray<HTMLDirective>
-): CompilationResult {
+): HTMLTemplateCompilationResult {
     const fragment = template.content;
     // https://bugs.chromium.org/p/chromium/issues/detail?id=1111864
     document.adoptNode(fragment);
 
     const context = CompilationContext.borrow(directives);
-    compileAttributes(context, template, true);
+    compileAttributes(context, "", template, /* host */ "h", 0, true);
     const hostBehaviorFactories = context.behaviorFactories;
     context.reset();
-
-    const walker = DOM.createTemplateWalker(fragment);
-
-    let node: Node | null;
-
-    while ((node = walker.nextNode())) {
-        context.targetIndex++;
-
-        switch (node.nodeType) {
-            case 1: // element node
-                compileAttributes(context, node as HTMLElement);
-                break;
-            case 3: // text node
-                compileContent(context, node as Text, walker);
-                break;
-            case 8: // comment
-                if (DOM.isMarker(node)) {
-                    context.addFactory(
-                        directives[DOM.extractDirectiveIndexFromMarker(node)]
-                    );
-                }
-        }
-    }
-
-    let targetOffset = 0;
 
     if (
         // If the first node in a fragment is a marker, that means it's an unstable first node,
@@ -262,22 +383,34 @@ export function compileTemplate(
         // To mitigate this, we insert a stable first node. However, if we insert a node,
         // that will alter the result of the TreeWalker. So, we also need to offset the target index.
         DOM.isMarker(fragment.firstChild!) ||
-        // Or if there is only one node and a directive, it means the template's content
+        // Or if there is only one node, it means the template's content
         // is *only* the directive. In that case, HTMLView.dispose() misses any nodes inserted by
         // the directive. Inserting a new node ensures proper disposal of nodes added by the directive.
-        (fragment.childNodes.length === 1 && directives.length)
+        fragment.childNodes.length === 1
     ) {
         fragment.insertBefore(document.createComment(""), fragment.firstChild);
-        targetOffset = -1;
     }
 
+    let node = fragment.firstChild;
+    let nodeIndex = 0;
+    const parentId = "r"; //root
+
+    while (node) {
+        const result = compileNode(context, parentId, node, nodeIndex);
+        node = result.node;
+        nodeIndex = result.index;
+    }
+
+    next.node = null; // prevent leaks
+
     const viewBehaviorFactories = context.behaviorFactories;
+    const targetIds = context.targetIds;
     context.release();
 
-    return {
+    return new HTMLTemplateCompilationResult(
         fragment,
         viewBehaviorFactories,
         hostBehaviorFactories,
-        targetOffset,
-    };
+        targetIds
+    );
 }

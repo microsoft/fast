@@ -9,6 +9,7 @@ import {
     TargetedHTMLDirective,
 } from "./html-directive";
 import { HTMLBindingDirective } from "./binding";
+import type { HTMLTemplateCompilationResult } from "..";
 
 /**
  * A template capable of creating views specifically for rendering custom elements.
@@ -48,12 +49,7 @@ export interface SyntheticViewTemplate<TSource = any, TParent = any> {
  */
 export class ViewTemplate<TSource = any, TParent = any>
     implements ElementViewTemplate, SyntheticViewTemplate {
-    private behaviorCount: number = 0;
-    private hasHostBehaviors: boolean = false;
-    private fragment: DocumentFragment | null = null;
-    private targetOffset: number = 0;
-    private viewBehaviorFactories: NodeBehaviorFactory[] | null = null;
-    private hostBehaviorFactories: NodeBehaviorFactory[] | null = null;
+    private result: HTMLTemplateCompilationResult | null = null;
 
     /**
      * The html representing what this template will
@@ -84,7 +80,7 @@ export class ViewTemplate<TSource = any, TParent = any>
      * @param hostBindingTarget - The element that host behaviors will be bound to.
      */
     public create(hostBindingTarget?: Element): HTMLView {
-        if (this.fragment === null) {
+        if (this.result === null) {
             let template: HTMLTemplateElement;
             const html = this.html;
 
@@ -101,48 +97,26 @@ export class ViewTemplate<TSource = any, TParent = any>
                 template = html;
             }
 
-            const result = compileTemplate(template, this.directives);
-
-            this.fragment = result.fragment;
-            this.viewBehaviorFactories = result.viewBehaviorFactories;
-            this.hostBehaviorFactories = result.hostBehaviorFactories;
-            this.targetOffset = result.targetOffset;
-            this.behaviorCount =
-                this.viewBehaviorFactories.length + this.hostBehaviorFactories.length;
-            this.hasHostBehaviors = this.hostBehaviorFactories.length > 0;
+            this.result = compileTemplate(template, this.directives);
         }
 
-        const fragment = this.fragment.cloneNode(true) as DocumentFragment;
-        const viewFactories = this.viewBehaviorFactories!;
-        const behaviors = new Array<Behavior>(this.behaviorCount);
-        const walker = DOM.createTemplateWalker(fragment);
-
+        const result = this.result;
+        const fragment = result.fragment.cloneNode(true) as DocumentFragment;
+        const viewFactories = result.viewBehaviorFactories;
+        const behaviors = new Array<Behavior>(result.behaviorCount);
+        const targets = result.createTargets(fragment, hostBindingTarget);
         let behaviorIndex = 0;
-        let targetIndex = this.targetOffset;
-        let node = walker.nextNode();
 
         for (let ii = viewFactories.length; behaviorIndex < ii; ++behaviorIndex) {
             const factory = viewFactories[behaviorIndex];
-            const factoryIndex = factory.targetIndex;
-
-            while (node !== null) {
-                if (targetIndex === factoryIndex) {
-                    behaviors[behaviorIndex] = factory.createBehavior(node);
-                    break;
-                } else {
-                    node = walker.nextNode();
-                    targetIndex++;
-                }
-            }
+            behaviors[behaviorIndex] = factory.createBehavior(targets);
         }
 
-        if (this.hasHostBehaviors) {
-            const hostFactories = this.hostBehaviorFactories!;
+        if (result.hasHostBehaviors) {
+            const hostFactories = result.hostBehaviorFactories;
 
             for (let i = 0, ii = hostFactories.length; i < ii; ++i, ++behaviorIndex) {
-                behaviors[behaviorIndex] = hostFactories[i].createBehavior(
-                    hostBindingTarget!
-                );
+                behaviors[behaviorIndex] = hostFactories[i].createBehavior(targets);
             }
         }
 

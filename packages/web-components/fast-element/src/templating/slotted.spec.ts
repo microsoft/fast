@@ -15,9 +15,12 @@ describe("The slotted", () => {
 
     context("directive", () => {
         it("creates a SlottedBehavior", () => {
+            const targetId = 'r';
             const directive = slotted("test") as AttachedBehaviorHTMLDirective;
+            directive.targetId = targetId;
             const target = document.createElement("slot");
-            const behavior = directive.createBehavior(target);
+            const targets = { [targetId]: target }
+            const behavior = directive.createBehavior(targets);
 
             expect(behavior).to.be.instanceOf(SlottedBehavior);
         });
@@ -45,15 +48,17 @@ describe("The slotted", () => {
             const slot = document.createElement("slot");
             const shadowRoot = host.attachShadow({ mode: "open" });
             const children = createAndAppendChildren(host, elementName);
+            const targetId = 'r';
+            const targets = { [targetId]: slot };
 
             shadowRoot.appendChild(slot);
 
-            return { host, slot, children };
+            return { host, slot, children, targets, targetId };
         }
 
         it("gathers nodes from a slot", () => {
-            const { host, slot, children } = createDOM();
-            const behavior = new SlottedBehavior(slot, { property: "nodes" });
+            const { children, targets, targetId } = createDOM();
+            const behavior = new SlottedBehavior(targets, targetId, { property: "nodes" });
             const model = new Model();
 
             behavior.bind(model);
@@ -62,8 +67,8 @@ describe("The slotted", () => {
         });
 
         it("gathers nodes from a slot with a filter", () => {
-            const { host, slot, children } = createDOM("foo-bar");
-            const behavior = new SlottedBehavior(slot, {
+            const { targets, targetId, children } = createDOM("foo-bar");
+            const behavior = new SlottedBehavior(targets, targetId, {
                 property: "nodes",
                 filter: elements("foo-bar"),
             });
@@ -75,8 +80,8 @@ describe("The slotted", () => {
         });
 
         it("updates when slotted nodes change", async () => {
-            const { host, slot, children } = createDOM("foo-bar");
-            const behavior = new SlottedBehavior(slot, { property: "nodes" });
+            const { host, slot, children, targets, targetId } = createDOM("foo-bar");
+            const behavior = new SlottedBehavior(targets, targetId, { property: "nodes" });
             const model = new Model();
 
             behavior.bind(model);
@@ -91,8 +96,8 @@ describe("The slotted", () => {
         });
 
         it("updates when slotted nodes change with a filter", async () => {
-            const { host, slot, children } = createDOM("foo-bar");
-            const behavior = new SlottedBehavior(slot, {
+            const { host, slot, children, targets, targetId } = createDOM("foo-bar");
+            const behavior = new SlottedBehavior(targets, targetId, {
                 property: "nodes",
                 filter: elements("foo-bar"),
             });
@@ -110,8 +115,8 @@ describe("The slotted", () => {
         });
 
         it("clears and unwatches when unbound", async () => {
-            const { host, slot, children } = createDOM("foo-bar");
-            const behavior = new SlottedBehavior(slot, { property: "nodes" });
+            const { host, slot, children, targets, targetId } = createDOM("foo-bar");
+            const behavior = new SlottedBehavior(targets, targetId, { property: "nodes" });
             const model = new Model();
 
             behavior.bind(model);

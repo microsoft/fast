@@ -1,4 +1,4 @@
-import { AttachedBehaviorHTMLDirective } from "./html-directive";
+import { AttachedBehaviorHTMLDirective, BehaviorTargets } from "./html-directive";
 import { NodeBehaviorOptions, NodeObservationBehavior } from "./node-observation";
 import type { CaptureType } from "./template";
 
@@ -49,8 +49,12 @@ export class ChildrenBehavior extends NodeObservationBehavior<ChildrenBehaviorOp
      * @param target - The element target to observe children on.
      * @param options - The options to use when observing the element children.
      */
-    public constructor(target: HTMLElement, options: ChildrenBehaviorOptions) {
-        super(target, options);
+    public constructor(
+        targets: BehaviorTargets,
+        targetId: string,
+        options: ChildrenBehaviorOptions
+    ) {
+        super(targets[targetId] as HTMLElement, options);
         (options as MutationObserverInit).childList = true;
     }
 
