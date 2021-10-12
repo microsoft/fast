@@ -1107,8 +1107,10 @@ export type HorizontalPosition = "start" | "end" | "left" | "right" | "unset";
 export class HorizontalScroll extends FoundationElement {
     // (undocumented)
     connectedCallback(): void;
+    content: HTMLDivElement;
     // (undocumented)
     disconnectedCallback(): void;
+    duration: string;
     easing: ScrollEasing;
     flippersHiddenFromAT: boolean;
     keyupHandler(e: Event & KeyboardEvent): void;
@@ -1117,6 +1119,8 @@ export class HorizontalScroll extends FoundationElement {
     resized(): void;
     scrollContainer: HTMLDivElement;
     scrolled(): void;
+    // @internal
+    scrollingChanged(prev: unknown, next: boolean): void;
     scrollItems: HTMLElement[];
     scrollItemsChanged(previous: any, next: any): void;
     scrollToNext(): void;
@@ -1798,7 +1802,7 @@ export const roleForMenuItem: {
 };
 
 // @public
-export type ScrollEasing = "linear" | "ease-in" | "ease-out" | "ease-in-out";
+export type ScrollEasing = "linear" | "ease-in" | "ease-out" | "ease-in-out" | string;
 
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
 // Warning: (ae-forgotten-export) The symbol "FormAssociatedSelect" needs to be exported by the entry point index.d.ts

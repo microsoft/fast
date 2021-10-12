@@ -24,6 +24,7 @@ describe("FASTHorizontalScroll", function () {
 
                 element.style.setProperty("width", `${componentWidth}px`);
                 element.style.setProperty("--scroll-item-spacing", `${itemSpacing}px`);
+                element.duration = "0s";
 
                 for (let i = 0; i <= itemCount; i++) {
                     const card = document.createElement("div");
@@ -79,10 +80,7 @@ describe("FASTHorizontalScroll", function () {
             "fast-horizontal-scroll"
         )) as ElementHandle<fastHorizontalScroll>;
 
-        await element.evaluateHandle(node => {
-            node.speed = 0;
-            node.scrollToNext();
-        });
+        await element.evaluateHandle(node => node.scrollToNext());
 
         await element.waitForElementState("stable");
 
@@ -98,11 +96,7 @@ describe("FASTHorizontalScroll", function () {
 
         assert((await element.evaluate(node => node.scrollContainer.scrollLeft)) === 0);
 
-        await element.evaluateHandle(node => {
-            node.speed = 0;
-
-            node.scrollToPrevious();
-        });
+        await element.evaluateHandle(node => node.scrollToPrevious());
 
         expect(await element.evaluate(node => node.scrollContainer.scrollLeft)).to.equal(
             0
@@ -115,8 +109,6 @@ describe("FASTHorizontalScroll", function () {
         )) as ElementHandle<fastHorizontalScroll>;
 
         await element.evaluateHandle(node => {
-            node.speed = 0;
-
             node.scrollContainer.scrollLeft =
                 node.scrollContainer.scrollWidth - node.scrollContainer.offsetWidth;
         });
@@ -141,11 +133,11 @@ describe("FASTHorizontalScroll", function () {
             "fast-horizontal-scroll"
         )) as ElementHandle<fastHorizontalScroll>;
 
-        await element.evaluateHandle(node => {
-            node.speed = 0;
-        });
+        const doubleWidth = componentWidth * 2;
 
         await element.evaluateHandle(node => node.scrollToNext());
+
+        await element.waitForElementState("stable");
 
         const firstXPos = await element.evaluate(node => node.scrollContainer.scrollLeft);
 
@@ -153,22 +145,20 @@ describe("FASTHorizontalScroll", function () {
 
         await element.waitForElementState("stable");
 
-        await this.page.evaluate(
-            ({ element, componentWidth }) => {
-                element.style.setProperty("width", `${componentWidth * 2}px`);
-            },
-            { element, componentWidth }
-        );
+        await element.evaluateHandle((node, doubleWidth) => {
+            node.style.setProperty("width", `${doubleWidth}px`);
+        }, doubleWidth);
 
         await element.waitForElementState("stable");
+
+        expect(await element.evaluate(node => node.clientWidth)).to.equal(doubleWidth);
 
         await element.evaluateHandle(node => node.scrollToNext());
 
         await element.waitForElementState("stable");
 
-        const secondXPos = await this.page.evaluate(
-            element => element.scrollContainer.scrollLeft,
-            element
+        const secondXPos = await element.evaluate(
+            node => node.scrollContainer.scrollLeft
         );
 
         expect(firstXPos).to.not.equal(secondXPos);
@@ -225,13 +215,7 @@ describe("FASTHorizontalScroll", function () {
             "fast-horizontal-scroll"
         )) as ElementHandle<fastHorizontalScroll>;
 
-        await element.evaluateHandle(node => {
-            node.speed = 0;
-        });
-
         await element.evaluateHandle(node => node.scrollToNext());
-
-        await element.waitForElementState("stable");
 
         expect(
             await element.$eval(".scroll-prev", node =>
@@ -244,10 +228,6 @@ describe("FASTHorizontalScroll", function () {
         const element = (await this.page.waitForSelector(
             "fast-horizontal-scroll"
         )) as ElementHandle<fastHorizontalScroll>;
-
-        await element.evaluateHandle(node => {
-            node.speed = 0;
-        });
 
         await element.evaluateHandle(node => node.scrollToNext());
 
@@ -263,9 +243,7 @@ describe("FASTHorizontalScroll", function () {
             )
         ).to.be.false;
 
-        await element.evaluateHandle((node: fastHorizontalScroll) => {
-            node.scrollToPrevious();
-        });
+        await element.evaluateHandle(node => node.scrollToPrevious());
 
         await element.waitForElementState("stable");
 
@@ -286,8 +264,6 @@ describe("FASTHorizontalScroll", function () {
         )) as ElementHandle<fastHorizontalScroll>;
 
         await this.page.evaluateHandle(node => {
-            node.speed = 0;
-
             node.scrollContainer.scrollLeft =
                 node.scrollContainer.scrollWidth -
                 node.scrollContainer.offsetWidth -
@@ -319,8 +295,6 @@ describe("FASTHorizontalScroll", function () {
         )) as ElementHandle<fastHorizontalScroll>;
 
         await element.evaluateHandle(node => {
-            node.speed = 0;
-
             // Move the scrollLeft almost to the end
             node.scrollContainer.scrollLeft = node.firstElementChild!.clientWidth;
 

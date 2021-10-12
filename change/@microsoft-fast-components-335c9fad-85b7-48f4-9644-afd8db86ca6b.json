@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "Update playwright tests for horizontal-scroll",
+  "packageName": "@microsoft/fast-components",
+  "email": "john.kreitlow@microsoft.com",
+  "dependentChangeType": "patch"
+}
