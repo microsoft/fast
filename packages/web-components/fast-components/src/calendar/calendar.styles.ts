@@ -87,7 +87,7 @@ export const CalendarStyles = css`
         cursor: pointer;
     }
 
-    .day.off {
+    .day.inactive {
         background: var(--inactive-day-background);
         color: var(--inactive-day-color);
         opacity: var(--inactive-day-opacity);
@@ -119,7 +119,7 @@ export const CalendarStyles = css`
         background: ${accentForegroundActive};
     }
 
-    .today.off .date {
+    .today.inactive .date {
         background: transparent;
         color: inherit;
         width: auto;

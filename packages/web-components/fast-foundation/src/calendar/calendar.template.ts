@@ -128,6 +128,8 @@ export const calendarRowTemplate: (
  * @param context - The templates context
  * @param todayString - string representation of todays date
  * @returns - interactive calendar template
+ *
+ * @internal
  */
 export const interactiveCalendarGridTemplate: (
     context: ElementDefinitionContext,
@@ -158,6 +160,8 @@ export const interactiveCalendarGridTemplate: (
  * Non-interactive calendar template used for a readonly calendar
  * @param todayString - string representation of todays date
  * @returns - non-interactive calendar template
+ *
+ * @internal
  */
 export const noninteractiveCalendarTemplate: (todayString: string) => ViewTemplate = (
     todayString: string

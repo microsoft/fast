@@ -299,7 +299,7 @@ export class Calendar extends FoundationElement {
         }
 
         if (this.month !== month) {
-            className += " off";
+            className += " inactive";
         }
 
         if (disabled) {

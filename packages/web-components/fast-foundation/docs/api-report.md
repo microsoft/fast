@@ -1242,7 +1242,9 @@ export type Injectable<T = {}> = Constructable<T> & {
     inject?: Key[];
 };
 
-// @public
+// Warning: (ae-internal-missing-underscore) The name "interactiveCalendarGridTemplate" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal
 export const interactiveCalendarGridTemplate: (context: ElementDefinitionContext, todayString: string) => ViewTemplate;
 
 // @public
@@ -1507,7 +1509,9 @@ export const newInstanceForScope: (key: any) => any;
 // @public
 export const newInstanceOf: (key: any) => any;
 
-// @public
+// Warning: (ae-internal-missing-underscore) The name "noninteractiveCalendarTemplate" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal
 export const noninteractiveCalendarTemplate: (todayString: string) => ViewTemplate;
 
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
