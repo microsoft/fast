@@ -41,7 +41,7 @@ describe("The template compiler", () => {
                 html: `${inline(0)}`,
                 directives: [binding()],
                 fragment: ` `,
-                targetIndexes: [0],
+                targetIds: ['r.1'],
                 childCount: 2,
             },
             {
@@ -49,88 +49,88 @@ describe("The template compiler", () => {
                 html: `${inline(0)} end`,
                 directives: [binding()],
                 fragment: `  end`,
-                targetIndexes: [0],
-                childCount: 2,
+                targetIds: ['r.1'],
+                childCount: 3,
             },
             {
                 type: "a single middle",
                 html: `beginning ${inline(0)} end`,
                 directives: [binding()],
                 fragment: `beginning   end`,
-                targetIndexes: [1],
-                childCount: 3,
+                targetIds: ['r.2'],
+                childCount: 4,
             },
             {
                 type: "a single ending",
                 html: `${inline(0)} end`,
                 directives: [binding()],
                 fragment: `  end`,
-                targetIndexes: [0],
-                childCount: 2,
+                targetIds: ['r.1'],
+                childCount: 3,
             },
             {
                 type: "back-to-back",
                 html: `${inline(0)}${inline(1)}`,
                 directives: [binding(), binding()],
                 fragment: `  `,
-                targetIndexes: [0, 1],
-                childCount: 2,
+                targetIds: ['r.1', 'r.2'],
+                childCount: 3,
             },
             {
                 type: "back-to-back starting",
                 html: `${inline(0)}${inline(1)} end`,
                 directives: [binding(), binding()],
                 fragment: `   end`,
-                targetIndexes: [0, 1],
-                childCount: 3,
+                targetIds: ['r.1', 'r.2'],
+                childCount: 4,
             },
             {
                 type: "back-to-back middle",
                 html: `beginning ${inline(0)}${inline(1)} end`,
                 directives: [binding(), binding()],
                 fragment: `beginning    end`,
-                targetIndexes: [1, 2],
-                childCount: 4,
+                targetIds: ['r.2', 'r.3'],
+                childCount: 5,
             },
             {
                 type: "back-to-back ending",
                 html: `start ${inline(0)}${inline(1)}`,
                 directives: [binding(), binding()],
                 fragment: `start   `,
-                targetIndexes: [1, 2],
-                childCount: 3,
+                targetIds: ['r.2', 'r.3'],
+                childCount: 4,
             },
             {
                 type: "separated",
                 html: `${inline(0)}separator${inline(1)}`,
                 directives: [binding(), binding()],
                 fragment: ` separator `,
-                targetIndexes: [0, 2],
-                childCount: 3,
+                targetIds: ['r.1', 'r.3'],
+                childCount: 4,
             },
             {
                 type: "separated starting",
                 html: `${inline(0)}separator${inline(1)} end`,
                 directives: [binding(), binding()],
                 fragment: ` separator  end`,
-                targetIndexes: [0, 2],
-                childCount: 4,
+                targetIds: ['r.1', 'r.3'],
+                childCount: 5,
             },
             {
                 type: "separated middle",
                 html: `beginning ${inline(0)}separator${inline(1)} end`,
                 directives: [binding(), binding()],
                 fragment: `beginning  separator  end`,
-                targetIndexes: [1, 3],
-                childCount: 5,
+                targetIds: ['r.2', 'r.4'],
+                childCount: 6,
             },
             {
                 type: "separated ending",
                 html: `beginning ${inline(0)}separator${inline(1)}`,
                 directives: [binding(), binding()],
                 fragment: `beginning  separator `,
-                targetIndexes: [1, 3],
-                childCount: 4,
+                targetIds: ['r.2', 'r.4'],
+                childCount: 5,
             },
             {
                 type: "mixed content",
@@ -139,7 +139,7 @@ describe("The template compiler", () => {
                 )}</a> ${inline(3)} end`,
                 directives: [binding(), binding(), binding(), binding()],
                 fragment: "<div>start   end</div><a> </a>   end",
-                targetIndexes: [2, 4, 5, 7],
+                targetIds: ['r.0.1', 'r.1', 'r.1.0', 'r.3'],
                 childCount: 5,
             },
         ];
@@ -164,12 +164,12 @@ describe("The template compiler", () => {
 
                 expect(length).to.equal(x.directives.length);
 
-                if (x.targetIndexes) {
-                    expect(length).to.equal(x.targetIndexes.length);
+                if (x.targetIds) {
+                    expect(length).to.equal(x.targetIds.length);
 
                     for (let i = 0; i < length; ++i) {
-                        expect(viewBehaviorFactories[i].targetIndex).to.equal(
-                            x.targetIndexes[i]
+                        expect(viewBehaviorFactories[i].targetId).to.equal(
+                            x.targetIds[i]
                         );
                     }
                 }
@@ -191,7 +191,7 @@ describe("The template compiler", () => {
                 directives: [binding()],
                 fragment: `<a>Link</a>`,
                 result: "result",
-                targetIndexes: [0],
+                targetIds: ['r.1'],
             },
             {
                 type: "a single starting",
@@ -199,7 +199,7 @@ describe("The template compiler", () => {
                 directives: [binding()],
                 fragment: `<a>Link</a>`,
                 result: "result end",
-                targetIndexes: [0],
+                targetIds: ['r.1'],
             },
             {
                 type: "a single middle",
@@ -207,7 +207,7 @@ describe("The template compiler", () => {
                 directives: [binding()],
                 fragment: `<a>Link</a>`,
                 result: "beginning result end",
-                targetIndexes: [0],
+                targetIds: ['r.1'],
             },
             {
                 type: "a single ending",
@@ -215,7 +215,7 @@ describe("The template compiler", () => {
                 directives: [binding()],
                 fragment: `<a>Link</a>`,
                 result: "result end",
-                targetIndexes: [0],
+                targetIds: ['r.1'],
             },
             {
                 type: "back-to-back",
@@ -223,7 +223,7 @@ describe("The template compiler", () => {
                 directives: [binding(), binding()],
                 fragment: `<a>Link</a>`,
                 result: "resultresult",
-                targetIndexes: [0],
+                targetIds: ['r.1'],
             },
             {
                 type: "back-to-back starting",
@@ -231,7 +231,7 @@ describe("The template compiler", () => {
                 directives: [binding(), binding()],
                 fragment: `<a>Link</a>`,
                 result: "resultresult end",
-                targetIndexes: [0],
+                targetIds: ['r.1'],
             },
             {
                 type: "back-to-back middle",
@@ -239,7 +239,7 @@ describe("The template compiler", () => {
                 directives: [binding(), binding()],
                 fragment: `<a>Link</a>`,
                 result: "beginning resultresult end",
-                targetIndexes: [0],
+                targetIds: ['r.1'],
             },
             {
                 type: "back-to-back ending",
@@ -247,7 +247,7 @@ describe("The template compiler", () => {
                 directives: [binding(), binding()],
                 fragment: `<a>Link</a>`,
                 result: "start resultresult",
-                targetIndexes: [0],
+                targetIds: ['r.1'],
             },
             {
                 type: "separated",
@@ -255,7 +255,7 @@ describe("The template compiler", () => {
                 directives: [binding(), binding()],
                 fragment: `<a>Link</a>`,
                 result: "resultseparatorresult",
-                targetIndexes: [0],
+                targetIds: ['r.1'],
             },
             {
                 type: "separated starting",
@@ -263,7 +263,7 @@ describe("The template compiler", () => {
                 directives: [binding(), binding()],
                 fragment: `<a>Link</a>`,
                 result: "resultseparatorresult end",
-                targetIndexes: [0],
+                targetIds: ['r.1'],
             },
             {
                 type: "separated middle",
@@ -273,7 +273,7 @@ describe("The template compiler", () => {
                 directives: [binding(), binding()],
                 fragment: `<a>Link</a>`,
                 result: "beginning resultseparatorresult end",
-                targetIndexes: [0],
+                targetIds: ['r.1'],
             },
             {
                 type: "separated ending",
@@ -281,21 +281,21 @@ describe("The template compiler", () => {
                 directives: [binding(), binding()],
                 fragment: `<a>Link</a>`,
                 result: "beginning resultseparatorresult",
-                targetIndexes: [0],
+                targetIds: ['r.1'],
             },
             {
                 type: "multiple attributes on the same element with",
                 html: `<a href="${inline(0)}" target="${inline(1)}">Link</a>`,
                 directives: [binding(), binding()],
                 fragment: `<a>Link</a>`,
-                targetIndexes: [0, 0],
+                targetIds: ['r.1', 'r.1'],
             },
             {
                 type: "attributes on different elements with",
                 html: `<a href="${inline(0)}">Link</a><a href="${inline(1)}">Link</a>`,
                 directives: [binding(), binding()],
                 fragment: `<a>Link</a><a>Link</a>`,
-                targetIndexes: [0, 2],
+                targetIds: ['r.0', 'r.1'],
             },
             {
                 type: "multiple attributes on different elements with",
@@ -308,7 +308,7 @@ describe("The template compiler", () => {
           <a>Link</a>
           <a>Link</a>
         `,
-                targetIndexes: [1, 1, 4, 4],
+                targetIds: ['r.1', 'r.1', 'r.3', 'r.3'],
             },
         ];
 
@@ -330,14 +330,14 @@ describe("The template compiler", () => {
                     ).to.equal(x.result);
                 }
 
-                if (x.targetIndexes) {
+                if (x.targetIds) {
                     const length = viewBehaviorFactories.length;
 
-                    expect(length).to.equal(x.targetIndexes.length);
+                    expect(length).to.equal(x.targetIds.length);
 
                     for (let i = 0; i < length; ++i) {
-                        expect(viewBehaviorFactories[i].targetIndex).to.equal(
-                            x.targetIndexes[i]
+                        expect(viewBehaviorFactories[i].targetId).to.equal(
+                            x.targetIds[i]
                         );
                     }
                 }
