@@ -8,7 +8,6 @@ import type { DesignSystemRegistrationContext } from "./registration-context";
 import { DesignToken } from "../design-token/design-token";
 
 describe("DesignSystem", () => {
-    // afterEach(() => DesignToken.deregisterRoot())
     it("Should return the same instance for the same element", () => {
         const host = document.createElement("div");
         const ds1 = DesignSystem.getOrCreate(host);
@@ -374,7 +373,7 @@ describe("DesignSystem", () => {
         expect(found).to.be.instanceOf(AltTest);
     });
 
-    xit("should set the DesignToken root to the default root when register is invoked", async () => {
+    it("should set the DesignToken root to the default root when register is invoked", async () => {
         const token = DesignToken.create<number>("design-system-registration").withDefault(12);
         const host = document.createElement("div");
         expect(window.getComputedStyle(document.body).getPropertyValue(token.cssCustomProperty)).to.equal("");
@@ -388,16 +387,14 @@ describe("DesignSystem", () => {
         await DOM.nextUpdate();
         expect(window.getComputedStyle(document.body).getPropertyValue(token.cssCustomProperty)).to.equal("12");
 
-        // Clean up for next test
         DesignToken.deregisterRoot();
-        // await DOM.nextUpdate();
-        // expect(window.getComputedStyle(document.body).getPropertyValue(token.cssCustomProperty)).to.equal("");
+        await DOM.nextUpdate();
     });
 
-    xit("should provide a way to specify the DesignToken root", async () => {
+    it("should provide a way to specify the DesignToken root", async () => {
         const token = DesignToken.create<number>("custom-design-system-registration").withDefault(12);
         const host = document.createElement("div");
-        // expect(window.getComputedStyle(document.body).getPropertyValue(token.cssCustomProperty)).to.equal("");
+        expect(window.getComputedStyle(document.body).getPropertyValue(token.cssCustomProperty)).to.equal("");
 
         DesignSystem.getOrCreate(host)
             .withDesignTokenRoot(host)
@@ -408,9 +405,8 @@ describe("DesignSystem", () => {
 
         await DOM.nextUpdate();
         const value = host.style.getPropertyValue(token.cssCustomProperty)
-        console.log(value);
-        // expect(value).to.equal("12");
-        // expect(window.getComputedStyle(document.body).getPropertyValue(token.cssCustomProperty)).to.equal("");
+        expect(value).to.equal("12");
+        expect(window.getComputedStyle(document.body).getPropertyValue(token.cssCustomProperty)).to.equal("");
         DesignToken.deregisterRoot(host);
         await DOM.nextUpdate();
         expect(window.getComputedStyle(document.body).getPropertyValue(token.cssCustomProperty)).to.equal("");
