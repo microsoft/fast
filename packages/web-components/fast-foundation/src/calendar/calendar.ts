@@ -281,7 +281,7 @@ export class Calendar extends FoundationElement {
                 ? date
                 : `${date.getMonth() + 1}-${date.getDate()}-${date.getFullYear()}`;
 
-        return !!dates.find(d => d === date);
+        return dates.some(d => d === date);
     }
 
     /**
@@ -292,25 +292,18 @@ export class Calendar extends FoundationElement {
      */
     public getDayClassNames(date: CalendarDateInfo, todayString?: string): string {
         const { day, month, year, disabled, selected } = date;
-        let className: string = "day";
+        const today = todayString === `${month}-${day}-${year}`;
+        const inactive = this.month !== month;
 
-        if (todayString === `${month}-${day}-${year}`) {
-            className += " today";
-        }
-
-        if (this.month !== month) {
-            className += " inactive";
-        }
-
-        if (disabled) {
-            className += " disabled";
-        }
-
-        if (selected) {
-            className += " selected";
-        }
-
-        return className;
+        return [
+            "day",
+            today && "today",
+            inactive && "inactive",
+            disabled && "disabled",
+            selected && "selected",
+        ]
+            .filter(Boolean)
+            .join(" ");
     }
 
     /**
@@ -318,16 +311,16 @@ export class Calendar extends FoundationElement {
      * @returns An array of weekday text and full text if abbreviated
      * @public
      */
-    public getWeekdayText(): any[] {
-        const weekdayText: any[] = this.dateFormatter
-            .getWeekdays()
-            .map(text => ({ text }));
+    public getWeekdayText(): { text: string; abbr?: string }[] {
+        const weekdayText: {
+            text: string;
+            abbr?: string;
+        }[] = this.dateFormatter.getWeekdays().map(text => ({ text }));
 
         if (this.weekdayFormat !== "long") {
             const longText = this.dateFormatter.getWeekdays("long");
-            return weekdayText.map((weekday: any, index) => {
+            weekdayText.forEach((weekday, index) => {
                 weekday.abbr = longText[index];
-                return weekday;
             });
         }
 
@@ -341,7 +334,7 @@ export class Calendar extends FoundationElement {
      */
     public handleDateSelect(event: Event, day: CalendarDateInfo): void {
         event.preventDefault;
-        (this as FASTElement).$emit("dateselected", day);
+        this.$emit("dateselected", day);
     }
 
     /**

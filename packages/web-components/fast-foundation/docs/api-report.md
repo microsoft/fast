@@ -285,7 +285,10 @@ export class Calendar extends FoundationElement {
     getDayClassNames(date: CalendarDateInfo, todayString?: string): string;
     getDays(info?: CalendarInfo, minWeeks?: number): CalendarDateInfo[][];
     getMonthInfo(month?: number, year?: number): CalendarInfo;
-    getWeekdayText(): any[];
+    getWeekdayText(): {
+        text: string;
+        abbr?: string;
+    }[];
     handleDateSelect(event: Event, day: CalendarDateInfo): void;
     handleKeydown(event: KeyboardEvent, date: CalendarDateInfo): boolean;
     locale: string;

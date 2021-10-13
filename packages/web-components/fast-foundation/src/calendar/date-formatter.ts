@@ -93,9 +93,9 @@ export class DateFormatter {
                 return new Date();
             }
             return new Date(
-                parseInt(dates[2]),
-                parseInt(dates[0]) - 1,
-                parseInt(dates[1])
+                parseInt(dates[2], 10),
+                parseInt(dates[0], 10) - 1,
+                parseInt(dates[1], 10)
             );
         } else if ("day" in date && "month" in date && "year" in date) {
             const { day, month, year } = date;
@@ -124,7 +124,7 @@ export class DateFormatter {
         locale: string = this.locale
     ): string {
         const dateObj = this.getDateObject(date);
-        const optionsWithTimeZone = Object.assign({}, { timeZone: "utc" }, format);
+        const optionsWithTimeZone = { timeZone: "utc", ...format };
 
         return new Intl.DateTimeFormat(locale, optionsWithTimeZone).format(dateObj);
     }
