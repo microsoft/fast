@@ -51,26 +51,7 @@ Copy this to your `wwwroot/script` folder and reference it with a script tag as 
 
 ## Using the components
 
-Regardless of which path you've chosen above, you should be all set to start using the components. The first component we want to set up is the `<fast-design-system-provider>` component. This configures the design system that will govern the appearance of all of the components. The best place to put this is at the root of your app, wrapping all your HTML. Here's an example of what your `index.html` `<body>` might look like:
-
-```html
-<body>
-  <fast-design-system-provider use-defaults>
-    <app>Loading...</app>
-
-    <div id="blazor-error-ui">
-        An unhandled error has occurred.
-        <a href="" class="reload">Reload</a>
-        <a class="dismiss">🗙</a>
-    </div>
-  </fast-design-system-provider>
-
-  <script src="_framework/blazor.webassembly.js"></script>
-  <script type="module" src="script/fast-components.min.js"></script>
-</body>
-```
-
-With this in place, you can use any component in any of your views. For example, you could put something like this in your `Index.razor` file:
+With your script tag added, you can use any component in any of your views. For example, you could put something like this in your `Index.razor` file:
 
 ```html
 @page "/"
@@ -84,10 +65,6 @@ With this in place, you can use any component in any of your views. For example,
 For a splash of style, add the following to your `wwwroot/css/app.css` file:
 
 ```css
-fast-design-system-provider {
-  display: inline-block;
-}
-
 fast-card {
   padding: 16px;
   display: flex;
@@ -122,7 +99,7 @@ First, update the script tag to point to the FluentUI Web Components.
 <script type="module" src="https://unpkg.com/@fluentui/web-components"></script>
 ```
 
-Second, change the `fast-` prefix to `fluent-` in any CSS selectors and for the design system provider.
+Second, change the `fast-` prefix to `fluent-` in any CSS selectors.
 
 Third, you will want to install [the official Nuget package for FluentUI](https://www.nuget.org/packages/Microsoft.Fast.Components.FluentUI/). You can use the following command:
 

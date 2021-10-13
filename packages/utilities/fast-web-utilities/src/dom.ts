@@ -1,5 +1,4 @@
 import { canUseDOM } from "exenv-es6";
-import { isBoolean } from "lodash-es";
 
 /**
  * A test that ensures that all arguments are HTML Elements
@@ -53,7 +52,7 @@ function getNonce(): string | null {
  */
 let _canUseFocusVisible: boolean;
 export function canUseFocusVisible(): boolean {
-    if (isBoolean(_canUseFocusVisible)) {
+    if (typeof _canUseFocusVisible === "boolean") {
         return _canUseFocusVisible;
     }
 
@@ -88,7 +87,7 @@ export function canUseFocusVisible(): boolean {
 
 let _canUseCssGrid: boolean;
 export function canUseCssGrid(): boolean {
-    if (isBoolean(_canUseCssGrid)) {
+    if (typeof _canUseCssGrid === "boolean") {
         return _canUseCssGrid;
     }
 

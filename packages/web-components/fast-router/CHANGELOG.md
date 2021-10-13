@@ -1,8 +1,64 @@
 # Change Log - @microsoft/fast-router
 
-This log was last generated on Fri, 21 May 2021 17:48:08 GMT and should not be manually modified.
+This log was last generated on Wed, 13 Oct 2021 22:45:16 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.2.10
+
+Wed, 13 Oct 2021 22:45:16 GMT
+
+### Patches
+
+- Bump @microsoft/fast-element to v1.6.1 (markwhitfeld@users.noreply.github.com)
+
+## 0.2.9
+
+Fri, 08 Oct 2021 19:53:11 GMT
+
+### Patches
+
+- Bump @microsoft/fast-element to v1.6.0 (roeisenb@microsoft.com)
+
+## 0.2.8
+
+Wed, 08 Sep 2021 07:16:17 GMT
+
+### Patches
+
+- Bump @microsoft/fast-element to v1.5.1 (roeisenb@microsoft.com)
+
+## 0.2.7
+
+Thu, 02 Sep 2021 07:15:21 GMT
+
+### Patches
+
+- Removed remaining 'use-defaults' which no longer exists (47367562+bheston@users.noreply.github.com)
+
+## 0.2.6
+
+Fri, 27 Aug 2021 14:14:26 GMT
+
+### Patches
+
+- Bump @microsoft/fast-element to v1.5.0 (nicholasrice@users.noreply.github.com)
+
+## 0.2.5
+
+Thu, 26 Aug 2021 07:17:43 GMT
+
+### Patches
+
+- Bump @microsoft/fast-element to v1.4.2 (roeisenb@microsoft.com)
+
+## 0.2.4
+
+Wed, 28 Jul 2021 07:17:22 GMT
+
+### Patches
+
+- Bump @microsoft/fast-element to v1.4.1 (nicholasrice@users.noreply.github.com)
 
 ## 0.2.3
 

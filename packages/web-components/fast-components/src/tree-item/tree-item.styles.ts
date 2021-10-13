@@ -6,6 +6,7 @@ import {
     ElementDefinitionContext,
     focusVisible,
     forcedColorsStylesheetBehavior,
+    TreeItem,
     TreeItemOptions,
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
@@ -148,20 +149,16 @@ export const treeItemStyles: (
 
     .items {
         display: none;
-        ${
-            /* Font size should be based off calc(1em + (design-unit + glyph-size-number) * 1px) - 
-            update when density story is figured out */ ""
-        } font-size: calc(1em + (${designUnit} + 16) * 1px);
+        /* TODO: adaptive typography https://github.com/microsoft/fast/issues/2432 */
+        font-size: calc(1em + (${designUnit} + 16) * 1px);
     }
 
     .expand-collapse-button {
         background: none;
         border: none;
         outline: none;
-        ${
-            /* Width and Height should be based off calc(glyph-size-number + (design-unit * 4) * 1px) - 
-            update when density story is figured out */ ""
-        } width: calc((${expandCollapseButtonSize} + (${designUnit} * 2)) * 1px);
+        /* TODO: adaptive typography https://github.com/microsoft/fast/issues/2432 */
+        width: calc((${expandCollapseButtonSize} + (${designUnit} * 2)) * 1px);
         height: calc((${expandCollapseButtonSize} + (${designUnit} * 2)) * 1px);
         padding: 0;
         display: flex;
@@ -173,10 +170,8 @@ export const treeItemStyles: (
     }
 
     .expand-collapse-glyph {
-        ${
-            /* Glyph size is temporary - 
-            replace when glyph-size var is added */ ""
-        } width: 16px;
+        /* TODO: adaptive typography https://github.com/microsoft/fast/issues/2432 */
+        width: 16px;
         height: 16px;
         transition: transform 0.1s linear;
 
@@ -190,24 +185,20 @@ export const treeItemStyles: (
         fill: currentcolor;
     }
 
-     ::slotted(svg) {
-        ${
-            /* Glyph size is temporary - 
-            replace when glyph-size var is added */ ""
-        } width: 16px;
+    ::slotted(svg) {
+        /* TODO: adaptive typography https://github.com/microsoft/fast/issues/2432 */
+        width: 16px;
         height: 16px;
     }
 
     .start {
-        ${
-            /* need to swap out once we understand how horizontalSpacing will work */ ""
-        } margin-inline-end: calc(${designUnit} * 2px + 2px);
+        /* TODO: horizontalSpacing https://github.com/microsoft/fast/issues/2766 */
+        margin-inline-end: calc(${designUnit} * 2px + 2px);
     }
 
     .end {
-        ${
-            /* need to swap out once we understand how horizontalSpacing will work */ ""
-        } margin-inline-start: calc(${designUnit} * 2px + 2px);
+        /* TODO: horizontalSpacing https://github.com/microsoft/fast/issues/2766 */
+        margin-inline-start: calc(${designUnit} * 2px + 2px);
     }
 
     :host([expanded]) > .items {
@@ -231,7 +222,7 @@ export const treeItemStyles: (
     :host(.nested) .expand-collapse-button:hover {
         background: ${expandCollapseHoverBehavior};
     }
-    
+
     :host([selected]) .positioning-region {
         background: ${neutralFillRest};
     }
@@ -241,20 +232,20 @@ export const treeItemStyles: (
     }
 
     :host([selected])::after {
+        /* The background needs to be calculated based on the selected background state
+            for this control. We currently have no way of changing that, so setting to
+            accent-foreground-rest for the time being */
+        background: ${accentForegroundRest};
+        border-radius: calc(${controlCornerRadius} * 1px);
         content: "";
         display: block;
         position: absolute;
         top: calc((${heightNumber} / 4) * 1px);
         width: 3px;
         height: calc((${heightNumber} / 2) * 1px);
-        ${
-            /* The french fry background needs to be calculated based on the selected background state for this control.
-            We currently have no way of changing that, so setting to accent-foreground-rest for the time being */ ""
-        } background: ${accentForegroundRest};
-        border-radius: calc(${controlCornerRadius} * 1px);
     }
 
-    ::slotted(fast-tree-item) {
+    ::slotted(${context.tagFor(TreeItem)}) {
         --tree-item-nested-width: 1em;
         --expand-collapse-button-nested-width: calc(${heightNumber} * -1px);
     }
@@ -262,66 +253,66 @@ export const treeItemStyles: (
         new DirectionalStyleSheetBehavior(ltr, rtl),
         forcedColorsStylesheetBehavior(
             css`
-        :host {
-            forced-color-adjust: none;
-            border-color: transparent;
-            background: ${SystemColors.Field};
-            color: ${SystemColors.FieldText};
-        }
-        :host .content-region .expand-collapse-glyph {
-            fill: ${SystemColors.FieldText};
-        }
-        :host .positioning-region:hover,
-        :host([selected]) .positioning-region {
-            background: ${SystemColors.Highlight};
-        }
-        :host .positioning-region:hover .content-region,
-        :host([selected]) .positioning-region .content-region {
-            color: ${SystemColors.HighlightText};
-        }
-        :host .positioning-region:hover .content-region .expand-collapse-glyph,
-        :host .positioning-region:hover .content-region .start,
-        :host .positioning-region:hover .content-region .end,
-        :host([selected]) .content-region .expand-collapse-glyph,
-        :host([selected]) .content-region .start,
-        :host([selected]) .content-region .end {
-            fill: ${SystemColors.HighlightText};
-        }
-        :host([selected])::after {
-            background: ${SystemColors.Field};
-        }
-        :host(:${focusVisible}) .positioning-region {
-            border-color: ${SystemColors.FieldText};
-            box-shadow: 0 0 0 2px inset ${SystemColors.Field};
-            color: ${SystemColors.FieldText};
-        }
-        :host([disabled]) .content-region,
-        :host([disabled]) .positioning-region:hover .content-region {
-            opacity: 1;
-            color: ${SystemColors.GrayText};
-        }
-        :host([disabled]) .content-region .expand-collapse-glyph,
-        :host([disabled]) .content-region .start,
-        :host([disabled]) .content-region .end,
-        :host([disabled]) .positioning-region:hover .content-region .expand-collapse-glyph,
-        :host([disabled]) .positioning-region:hover .content-region .start,
-        :host([disabled]) .positioning-region:hover .content-region .end {
-            fill: ${SystemColors.GrayText};
-        }
-        :host([disabled]) .positioning-region:hover {
-            background: ${SystemColors.Field};
-        }
-        .expand-collapse-glyph,
-        .start,
-        .end {
-            fill: ${SystemColors.FieldText};
-        }
-        :host(.nested) .expand-collapse-button:hover {
-            background: ${SystemColors.Field};
-        }
-        :host(.nested) .expand-collapse-button:hover .expand-collapse-glyph {
-            fill: ${SystemColors.FieldText};
-        }
+            :host {
+                forced-color-adjust: none;
+                border-color: transparent;
+                background: ${SystemColors.Field};
+                color: ${SystemColors.FieldText};
+            }
+            :host .content-region .expand-collapse-glyph {
+                fill: ${SystemColors.FieldText};
+            }
+            :host .positioning-region:hover,
+            :host([selected]) .positioning-region {
+                background: ${SystemColors.Highlight};
+            }
+            :host .positioning-region:hover .content-region,
+            :host([selected]) .positioning-region .content-region {
+                color: ${SystemColors.HighlightText};
+            }
+            :host .positioning-region:hover .content-region .expand-collapse-glyph,
+            :host .positioning-region:hover .content-region .start,
+            :host .positioning-region:hover .content-region .end,
+            :host([selected]) .content-region .expand-collapse-glyph,
+            :host([selected]) .content-region .start,
+            :host([selected]) .content-region .end {
+                fill: ${SystemColors.HighlightText};
+            }
+            :host([selected])::after {
+                background: ${SystemColors.Field};
+            }
+            :host(:${focusVisible}) .positioning-region {
+                border-color: ${SystemColors.FieldText};
+                box-shadow: 0 0 0 2px inset ${SystemColors.Field};
+                color: ${SystemColors.FieldText};
+            }
+            :host([disabled]) .content-region,
+            :host([disabled]) .positioning-region:hover .content-region {
+                opacity: 1;
+                color: ${SystemColors.GrayText};
+            }
+            :host([disabled]) .content-region .expand-collapse-glyph,
+            :host([disabled]) .content-region .start,
+            :host([disabled]) .content-region .end,
+            :host([disabled]) .positioning-region:hover .content-region .expand-collapse-glyph,
+            :host([disabled]) .positioning-region:hover .content-region .start,
+            :host([disabled]) .positioning-region:hover .content-region .end {
+                fill: ${SystemColors.GrayText};
+            }
+            :host([disabled]) .positioning-region:hover {
+                background: ${SystemColors.Field};
+            }
+            .expand-collapse-glyph,
+            .start,
+            .end {
+                fill: ${SystemColors.FieldText};
+            }
+            :host(.nested) .expand-collapse-button:hover {
+                background: ${SystemColors.Field};
+            }
+            :host(.nested) .expand-collapse-button:hover .expand-collapse-glyph {
+                fill: ${SystemColors.FieldText};
+            }
         `
         )
     );

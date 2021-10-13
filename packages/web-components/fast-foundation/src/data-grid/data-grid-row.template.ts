@@ -1,14 +1,15 @@
 import { children, elements, html, slotted } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
+import type { ElementDefinitionContext } from "../design-system";
+import type { FoundationElementDefinition } from "../foundation-element";
 import type { DataGridRow } from "./data-grid-row";
 import { DataGridCell } from "./data-grid-cell";
-import type { FoundationElementDefinition } from "../foundation-element";
-import type { ElementDefinitionContext } from "../design-system";
 
 function createCellItemTemplate(context): ViewTemplate {
     const cellTag = context.tagFor(DataGridCell);
     return html`
     <${cellTag}
+        cell-type="${x => (x.isRowHeader ? "rowheader" : undefined)}"
         grid-column="${(x, c) => c.index + 1}"
         :rowData="${(x, c) => c.parent.rowData}"
         :columnDefinition="${x => x}"
@@ -50,7 +51,9 @@ export const dataGridRowTemplate: (
             :defaultHeaderCellItemTemplate="${headerCellItemTemplate}"
             ${children({
                 property: "cellElements",
-                filter: elements('[role="cell"],[role="gridcell"],[role="columnheader"]'),
+                filter: elements(
+                    '[role="cell"],[role="gridcell"],[role="columnheader"],[role="rowheader"]'
+                ),
             })}
         >
             <slot ${slotted("slottedCellElements")}></slot>

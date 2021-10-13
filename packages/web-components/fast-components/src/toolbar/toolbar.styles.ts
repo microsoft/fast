@@ -4,7 +4,7 @@ import {
     ElementDefinitionContext,
     focusVisible,
     forcedColorsStylesheetBehavior,
-    FoundationElementDefinition,
+    ToolbarOptions,
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
@@ -22,11 +22,8 @@ import {
  */
 export const toolbarStyles: (
     context: ElementDefinitionContext,
-    definition: FoundationElementDefinition
-) => ElementStyles = (
-    context: ElementDefinitionContext,
-    definition: FoundationElementDefinition
-) =>
+    definition: ToolbarOptions
+) => ElementStyles = (context: ElementDefinitionContext, definition: ToolbarOptions) =>
     css`
         ${display("inline-flex")} :host {
             --toolbar-item-gap: calc(
@@ -70,7 +67,7 @@ export const toolbarStyles: (
         }
 
         ::slotted(svg) {
-            ${/* Glyph size is temporary - replace when adaptive typography is figured out */ ""}
+            /* TODO: adaptive typography https://github.com/microsoft/fast/issues/2432 */
             width: 16px;
             height: 16px;
         }

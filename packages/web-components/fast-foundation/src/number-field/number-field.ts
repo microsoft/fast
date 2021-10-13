@@ -5,7 +5,8 @@ import {
     observable,
     SyntheticViewTemplate,
 } from "@microsoft/fast-element";
-import { StartEnd } from "../patterns/index";
+import { keyArrowDown, keyArrowUp } from "@microsoft/fast-web-utilities";
+import { StartEnd, StartEndOptions } from "../patterns/index";
 import { applyMixins } from "../utilities/index";
 import type { FoundationElementDefinition } from "../foundation-element";
 import { DelegatesARIATextbox } from "../text-field/index";
@@ -15,10 +16,11 @@ import { FormAssociatedNumberField } from "./number-field.form-associated";
  * Number Field configuration options
  * @public
  */
-export type NumberFieldOptions = FoundationElementDefinition & {
-    stepDownGlyph?: string | SyntheticViewTemplate;
-    stepUpGlyph?: string | SyntheticViewTemplate;
-};
+export type NumberFieldOptions = FoundationElementDefinition &
+    StartEndOptions & {
+        stepDownGlyph?: string | SyntheticViewTemplate;
+        stepUpGlyph?: string | SyntheticViewTemplate;
+    };
 
 /**
  * A Number Field Custom HTML Element.
@@ -127,6 +129,7 @@ export class NumberField extends FormAssociatedNumberField {
                 this.max = numb;
             }
         }
+        this.updateValue(this.value);
     }
 
     /**
@@ -147,7 +150,15 @@ export class NumberField extends FormAssociatedNumberField {
                 this.min = numb;
             }
         }
+        this.updateValue(this.value);
     }
+
+    /**
+     * Display text used in the input field
+     * @public
+     */
+    @observable
+    public displayText: string = "";
 
     /**
      * @internal
@@ -169,38 +180,39 @@ export class NumberField extends FormAssociatedNumberField {
     public valueChanged(previousValue, nextValue): void {
         super.valueChanged(previousValue, nextValue);
 
-        const numb = parseFloat(nextValue);
-        let out: number | string = numb == nextValue ? nextValue : numb;
-
-        if (nextValue === "" || isNaN(numb)) {
-            out = "";
-        } else {
-            out = this.getValidValue(numb);
-        }
-
-        this.value = out;
-
-        if (this.proxy instanceof HTMLElement) {
-            this.proxy.value = this.value;
-        }
+        this.updateValue(nextValue);
     }
 
     /**
-     * Ensures that the value is between the min and max values
+     * Updates the value. Validates that it's a number, between the min
+     *  and max, updates the proxy and emits events.
      *
-     * @param value - number to evaluate
-     * @returns - a string repesentation
-     *
+     * @param value - value to be validated
      * @internal
      */
-    private getValidValue(value: number): string {
-        if (this.min !== undefined && value < this.min) {
-            value = this.min;
-        } else if (this.max !== undefined && value > this.max) {
-            value = this.max;
+    private updateValue(value): void {
+        if (value === "" || isNaN(parseFloat(value))) {
+            value = "";
+        } else {
+            value = parseFloat(value);
+            if (this.min !== undefined && value < this.min) {
+                value = this.min;
+            } else if (this.max !== undefined && value > this.max) {
+                value = this.max;
+            }
+
+            value = parseFloat(value.toPrecision(12));
         }
 
-        return parseFloat(value.toPrecision(12)).toString();
+        if (this.proxy instanceof HTMLInputElement) {
+            this.proxy.value = value;
+        }
+
+        if (value != this.value) {
+            this.value = value.toString();
+            this.$emit("input");
+            this.$emit("change");
+        }
     }
 
     /**
@@ -210,9 +222,7 @@ export class NumberField extends FormAssociatedNumberField {
      */
     public stepUp(): void {
         const stepUpValue = this.step + (parseFloat(this.value) || 0);
-        this.value = this.getValidValue(stepUpValue);
-
-        this.$emit("input");
+        this.updateValue(stepUpValue);
     }
 
     /**
@@ -222,9 +232,7 @@ export class NumberField extends FormAssociatedNumberField {
      */
     public stepDown(): void {
         const stepDownValue = (parseFloat(this.value) || 0) - this.step;
-        this.value = this.getValidValue(stepDownValue);
-
-        this.$emit("input");
+        this.updateValue(stepDownValue);
     }
 
     /**
@@ -233,6 +241,7 @@ export class NumberField extends FormAssociatedNumberField {
     public connectedCallback(): void {
         super.connectedCallback();
 
+        this.displayText = this.value;
         this.proxy.setAttribute("type", "number");
         this.validate();
 
@@ -262,6 +271,26 @@ export class NumberField extends FormAssociatedNumberField {
      */
     public handleChange(): void {
         this.$emit("change");
+    }
+
+    /**
+     * Handles the internal control's `keydown` event
+     * @internal
+     */
+    public handleKeyDown(e: KeyboardEvent): boolean {
+        const key = e.key;
+
+        switch (key) {
+            case keyArrowUp:
+                this.stepUp();
+                return false;
+
+            case keyArrowDown:
+                this.stepDown();
+                return false;
+        }
+
+        return true;
     }
 }
 

@@ -1,8 +1,8 @@
 import { html, ref } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
-import { endTemplate, startTemplate } from "../patterns/start-end";
-import type { AccordionItem, AccordionItemOptions } from "./accordion-item";
+import { endSlotTemplate, startSlotTemplate } from "../patterns/start-end";
 import type { ElementDefinitionContext } from "../design-system";
+import type { AccordionItem, AccordionItemOptions } from "./accordion-item";
 
 /**
  * The template for the {@link @microsoft/fast-foundation#(AccordionItem:class)} component.
@@ -38,8 +38,8 @@ export const accordionItemTemplate: (
                     <slot name="heading" part="heading"></slot>
                 </span>
             </button>
-            ${startTemplate}
-            ${endTemplate}
+            ${startSlotTemplate(context, definition)}
+            ${endSlotTemplate(context, definition)}
             <span class="icon" part="icon" aria-hidden="true">
                 <slot name="expanded-icon" part="expanded-icon">
                     ${definition.expandedIcon || ""}

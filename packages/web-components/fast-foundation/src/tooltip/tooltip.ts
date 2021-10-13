@@ -1,7 +1,8 @@
 import { attr, DOM, FASTElement, observable } from "@microsoft/fast-element";
-import { Direction, keyCodeEscape } from "@microsoft/fast-web-utilities";
+import { Direction, keyEscape } from "@microsoft/fast-web-utilities";
 import type {
     AnchoredRegion,
+    AutoUpdateMode,
     AxisPositioningMode,
     AxisScalingMode,
 } from "../anchored-region";
@@ -17,8 +18,6 @@ export { TooltipPosition };
  * @public
  */
 export class Tooltip extends FoundationElement {
-    private static DirectionAttributeName: string = "dir";
-
     /**
      * Whether the tooltip is visible or not.
      * If undefined tooltip is shown when anchor element is hovered
@@ -78,6 +77,35 @@ export class Tooltip extends FoundationElement {
     }
 
     /**
+     * Controls when the tooltip updates its position, default is 'anchor' which only updates when
+     * the anchor is resized.  'auto' will update on scroll/resize events.
+     * Corresponds to anchored-region auto-update-mode.
+     * @public
+     * @remarks
+     * HTML Attribute: auto-update-mode
+     */
+    @attr({ attribute: "auto-update-mode" })
+    public autoUpdateMode: AutoUpdateMode = "anchor";
+
+    /**
+     * Controls if the tooltip will always remain fully in the viewport on the horizontal axis
+     * @public
+     * @remarks
+     * HTML Attribute: horizontal-viewport-lock
+     */
+    @attr({ attribute: "horizontal-viewport-lock" })
+    public horizontalViewportLock: boolean;
+
+    /**
+     * Controls if the tooltip will always remain fully in the viewport on the vertical axis
+     * @public
+     * @remarks
+     * HTML Attribute: vertical-viewport-lock
+     */
+    @attr({ attribute: "vertical-viewport-lock" })
+    public verticalViewportLock: boolean;
+
+    /**
      * the html element currently being used as anchor.
      * Setting this directly overrides the anchor attribute.
      *
@@ -90,6 +118,8 @@ export class Tooltip extends FoundationElement {
             if (oldValue !== null && oldValue !== undefined) {
                 oldValue.removeEventListener("mouseover", this.handleAnchorMouseOver);
                 oldValue.removeEventListener("mouseout", this.handleAnchorMouseOut);
+                oldValue.removeEventListener("focusin", this.handleAnchorFocusIn);
+                oldValue.removeEventListener("focusout", this.handleAnchorFocusOut);
             }
 
             if (this.anchorElement !== null && this.anchorElement !== undefined) {
@@ -101,6 +131,14 @@ export class Tooltip extends FoundationElement {
                 this.anchorElement.addEventListener(
                     "mouseout",
                     this.handleAnchorMouseOut,
+                    { passive: true }
+                );
+                this.anchorElement.addEventListener("focusin", this.handleAnchorFocusIn, {
+                    passive: true,
+                });
+                this.anchorElement.addEventListener(
+                    "focusout",
+                    this.handleAnchorFocusOut,
                     { passive: true }
                 );
 
@@ -221,7 +259,7 @@ export class Tooltip extends FoundationElement {
     /**
      * Indicates whether the anchor is currently being hovered
      */
-    private isAnchorHovered: boolean = false;
+    private isAnchorHoveredFocused: boolean = false;
 
     public connectedCallback(): void {
         super.connectedCallback();
@@ -243,23 +281,23 @@ export class Tooltip extends FoundationElement {
      * @internal
      */
     public handlePositionChange = (ev: Event): void => {
-        this.classList.toggle("top", this.region.verticalPosition === "top");
-        this.classList.toggle("bottom", this.region.verticalPosition === "bottom");
-        this.classList.toggle("inset-top", this.region.verticalPosition === "insetTop");
+        this.classList.toggle("top", this.region.verticalPosition === "start");
+        this.classList.toggle("bottom", this.region.verticalPosition === "end");
+        this.classList.toggle("inset-top", this.region.verticalPosition === "insetStart");
         this.classList.toggle(
             "inset-bottom",
-            this.region.verticalPosition === "insetBottom"
+            this.region.verticalPosition === "insetEnd"
         );
 
-        this.classList.toggle("left", this.region.horizontalPosition === "left");
-        this.classList.toggle("right", this.region.horizontalPosition === "right");
+        this.classList.toggle("left", this.region.horizontalPosition === "start");
+        this.classList.toggle("right", this.region.horizontalPosition === "end");
         this.classList.toggle(
             "inset-left",
-            this.region.horizontalPosition === "insetLeft"
+            this.region.horizontalPosition === "insetStart"
         );
         this.classList.toggle(
             "inset-right",
-            this.region.horizontalPosition === "insetRight"
+            this.region.horizontalPosition === "insetEnd"
         );
     };
 
@@ -274,10 +312,18 @@ export class Tooltip extends FoundationElement {
      * mouse leaves anchor
      */
     private handleAnchorMouseOut = (ev: Event): void => {
-        if (this.isAnchorHovered) {
-            this.isAnchorHovered = false;
-            this.updateTooltipVisibility();
-        }
+        this.isAnchorHoveredFocused = false;
+        this.updateTooltipVisibility();
+        this.clearDelayTimer();
+    };
+
+    private handleAnchorFocusIn = (ev: Event): void => {
+        this.startHoverTimer();
+    };
+
+    private handleAnchorFocusOut = (ev: Event): void => {
+        this.isAnchorHoveredFocused = false;
+        this.updateTooltipVisibility();
         this.clearDelayTimer();
     };
 
@@ -285,7 +331,7 @@ export class Tooltip extends FoundationElement {
      * starts the hover timer if not currently running
      */
     private startHoverTimer = (): void => {
-        if (this.isAnchorHovered) {
+        if (this.isAnchorHoveredFocused) {
             return;
         }
 
@@ -304,7 +350,7 @@ export class Tooltip extends FoundationElement {
      * starts the hover delay timer
      */
     private startHover = (): void => {
-        this.isAnchorHovered = true;
+        this.isAnchorHoveredFocused = true;
         this.updateTooltipVisibility();
     };
 
@@ -380,9 +426,9 @@ export class Tooltip extends FoundationElement {
      */
     private handleDocumentKeydown = (e: KeyboardEvent): void => {
         if (!e.defaultPrevented && this.tooltipVisible) {
-            switch (e.keyCode) {
-                case keyCodeEscape:
-                    this.isAnchorHovered = false;
+            switch (e.key) {
+                case keyEscape:
+                    this.isAnchorHoveredFocused = false;
                     this.updateTooltipVisibility();
                     this.$emit("dismiss");
                     break;
@@ -398,11 +444,8 @@ export class Tooltip extends FoundationElement {
             this.hideTooltip();
         } else if (this.visible === true) {
             this.showTooltip();
+            return;
         } else {
-            if (this.isAnchorHovered) {
-                this.showTooltip();
-                return;
-            }
             this.hideTooltip();
         }
     };
@@ -447,7 +490,6 @@ export class Tooltip extends FoundationElement {
         if (!this.tooltipVisible) {
             return;
         }
-        this.viewportElement = document.body;
         this.region.viewportElement = this.viewportElement;
         this.region.anchorElement = this.anchorElement;
         (this.region as any).addEventListener(

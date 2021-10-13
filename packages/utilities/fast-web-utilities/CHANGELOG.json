@@ -2,6 +2,63 @@
   "name": "@microsoft/fast-web-utilities",
   "entries": [
     {
+      "date": "Wed, 13 Oct 2021 01:53:37 GMT",
+      "tag": "@microsoft/fast-web-utilities_v5.0.1",
+      "version": "5.0.1",
+      "comments": {
+        "patch": [
+          {
+            "comment": "remove prefix from uniqueId function",
+            "author": "john.kreitlow@microsoft.com",
+            "commit": "d609cffb4657e8447fb65d3b52899f48b8bb87cb",
+            "package": "@microsoft/fast-web-utilities"
+          },
+          {
+            "comment": "remove throttle function",
+            "author": "john.kreitlow@microsoft.com",
+            "commit": "696d66c1382aebedc9410b83362c4dbda131a638",
+            "package": "@microsoft/fast-web-utilities"
+          },
+          {
+            "comment": "refactor: remove lodash-es as a dependency",
+            "author": "connor@peet.io",
+            "commit": "4ef4b325f8259dd0f648b5fe1b393ef8839e643e",
+            "package": "@microsoft/fast-web-utilities"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sun, 19 Sep 2021 07:17:17 GMT",
+      "tag": "@microsoft/fast-web-utilities_v5.0.0",
+      "version": "5.0.0",
+      "comments": {
+        "major": [
+          {
+            "comment": "add picker component",
+            "author": "scomea@microsoft.com",
+            "commit": "395775ca58b6529861aae2e2ab1a628e2d8db081",
+            "package": "@microsoft/fast-web-utilities"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sun, 12 Sep 2021 07:17:43 GMT",
+      "tag": "@microsoft/fast-web-utilities_v4.8.1",
+      "version": "4.8.1",
+      "comments": {
+        "patch": [
+          {
+            "comment": "remove dependencies on keycode",
+            "author": "scomea@microsoft.com",
+            "commit": "e8602a247065b0c916bdc8e55314f2d3e3403fd1",
+            "package": "@microsoft/fast-web-utilities"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 20 May 2021 07:24:10 GMT",
       "tag": "@microsoft/fast-web-utilities_v4.8.0",
       "version": "4.8.0",

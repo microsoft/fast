@@ -1,9 +1,9 @@
-import { html, slotted } from "@microsoft/fast-element";
+import { html, ref, slotted } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
 import { Listbox } from "../listbox/listbox";
-import { endTemplate, startTemplate } from "../patterns/start-end";
-import type { Select, SelectOptions } from "./select";
+import { endSlotTemplate, startSlotTemplate } from "../patterns/start-end";
 import type { ElementDefinitionContext } from "../design-system";
+import type { Select, SelectOptions } from "./select";
 
 /**
  * The template for the {@link @microsoft/fast-foundation#(Select:class)} component.
@@ -37,18 +37,18 @@ export const selectTemplate: (
             role="button"
             ?disabled="${x => x.disabled}"
         >
-            ${startTemplate}
+            ${startSlotTemplate(context, definition)}
             <slot name="button-container">
                 <div class="selected-value" part="selected-value">
                     <slot name="selected-value">${x => x.displayValue}</slot>
                 </div>
-                <div class="indicator" part="indicator" aria-hidden="true">
+                <div class="indicator" part="indicator">
                     <slot name="indicator">
                         ${definition.indicator || ""}
                     </slot>
                 </div>
             </slot>
-            ${endTemplate}
+            ${endSlotTemplate(context, definition)}
         </div>
         <div
             aria-disabled="${x => x.disabled}"
@@ -56,9 +56,9 @@ export const selectTemplate: (
             id="listbox"
             part="listbox"
             role="listbox"
-            style="--max-height: ${x => x.maxHeight}px"
             ?disabled="${x => x.disabled}"
             ?hidden="${x => !x.open}"
+            ${ref("listbox")}
         >
             <slot
                 ${slotted({

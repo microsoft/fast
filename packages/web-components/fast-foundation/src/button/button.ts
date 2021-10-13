@@ -1,7 +1,18 @@
 import { attr, observable } from "@microsoft/fast-element";
-import { ARIAGlobalStatesAndProperties, StartEnd } from "../patterns/index";
+import {
+    ARIAGlobalStatesAndProperties,
+    StartEnd,
+    StartEndOptions,
+} from "../patterns/index";
 import { applyMixins } from "../utilities/apply-mixins";
+import type { FoundationElementDefinition } from "../foundation-element";
 import { FormAssociatedButton } from "./button.form-associated";
+
+/**
+ * Button configuration options
+ * @public
+ */
+export type ButtonOptions = FoundationElementDefinition & StartEndOptions;
 
 /**
  * A Button Custom HTML Element.
@@ -145,6 +156,7 @@ export class Button extends FormAssociatedButton {
         super.connectedCallback();
 
         this.proxy.setAttribute("type", this.type);
+        this.handleUnsupportedDelegatesFocus();
     }
 
     /**
@@ -180,6 +192,24 @@ export class Button extends FormAssociatedButton {
     };
 
     public control: HTMLButtonElement;
+
+    /**
+     * Overrides the focus call for where delegatesFocus is unsupported.
+     * This check works for Chrome, Edge Chromium, FireFox, and Safari
+     * Relevant PR on the Firefox browser: https://phabricator.services.mozilla.com/D123858
+     */
+    private handleUnsupportedDelegatesFocus = () => {
+        // Check to see if delegatesFocus is supported
+        if (
+            window.ShadowRoot &&
+            !window.ShadowRoot.prototype.hasOwnProperty("delegatesFocus") &&
+            this.$fastController.definition.shadowOptions?.delegatesFocus
+        ) {
+            this.focus = () => {
+                this.control.focus();
+            };
+        }
+    };
 }
 
 /**

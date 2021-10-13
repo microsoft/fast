@@ -1,9 +1,8 @@
 import { html, ref, slotted } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
-import { endTemplate, startTemplate } from "../patterns/start-end";
-import type { Button } from "./button";
-import type { FoundationElementDefinition } from "../foundation-element";
+import { endSlotTemplate, startSlotTemplate } from "../patterns/start-end";
 import type { ElementDefinitionContext } from "../design-system";
+import type { Button, ButtonOptions } from "./button";
 
 /**
  * The template for the {@link @microsoft/fast-foundation#(Button:class)} component.
@@ -11,10 +10,10 @@ import type { ElementDefinitionContext } from "../design-system";
  */
 export const buttonTemplate: (
     context: ElementDefinitionContext,
-    definition: FoundationElementDefinition
+    definition: ButtonOptions
 ) => ViewTemplate<Button> = (
     context: ElementDefinitionContext,
-    definition: FoundationElementDefinition
+    definition: ButtonOptions
 ) => html`
     <button
         class="control"
@@ -34,7 +33,7 @@ export const buttonTemplate: (
         aria-busy="${x => x.ariaBusy}"
         aria-controls="${x => x.ariaControls}"
         aria-current="${x => x.ariaCurrent}"
-        aria-describedBy="${x => x.ariaDescribedby}"
+        aria-describedby="${x => x.ariaDescribedby}"
         aria-details="${x => x.ariaDetails}"
         aria-disabled="${x => x.ariaDisabled}"
         aria-errormessage="${x => x.ariaErrormessage}"
@@ -53,10 +52,10 @@ export const buttonTemplate: (
         aria-roledescription="${x => x.ariaRoledescription}"
         ${ref("control")}
     >
-        ${startTemplate}
+        ${startSlotTemplate(context, definition)}
         <span class="content" part="content">
             <slot ${slotted("defaultSlottedContent")}></slot>
         </span>
-        ${endTemplate}
+        ${endSlotTemplate(context, definition)}
     </button>
 `;

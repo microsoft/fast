@@ -92,7 +92,7 @@ export interface Registration<K = any> {
      * @param container - The container to register the dependency within.
      * @param key - The key to register dependency under, if overridden.
      */
-    register(container: Container, key?: Key): Resolver<K>;
+    register(container: Container): Resolver<K>;
 }
 
 /**
@@ -209,6 +209,14 @@ export interface Container extends ServiceLocator {
      * @param params - The registration objects.
      */
     register(...params: any[]): Container;
+
+    /**
+     * Registers dependencies with the container via registration objects, providing
+     * the specified context to each register invocation.
+     * @param context - The context object to pass to the registration objects.
+     * @param params - The registration objects.
+     */
+    registerWithContext(context: any, ...params: any[]): Container;
 
     /**
      * Registers a resolver with the container for the specified key.
@@ -495,7 +503,7 @@ export interface InterfaceConfiguration {
 
     /**
      * When true, the dependency will be re-resolved when FASTElement connection changes.
-     * If the resolved value changes due to connection change, a {@link @microsoft/fast-element#Observable.notify | notification }
+     * If the resolved value changes due to connection change, a {@link @microsoft/fast-element#Observable | notification }
      * will be emitted for the property, with the previous and next values provided to any subscriber.
      */
     respectConnection?: boolean;
@@ -510,6 +518,8 @@ function getParamTypes(
         return (Reflect as any).getOwnMetadata(key, Type);
     };
 }
+
+let rootDOMContainer: Container | null = null;
 
 /**
  * The gateway to dependency injection APIs.
@@ -583,16 +593,27 @@ export const DI = Object.freeze({
      * already exist.
      */
     getOrCreateDOMContainer(
-        node: Node = document.body,
+        node?: Node,
         config?: Partial<Omit<ContainerConfiguration, "parentLocator">>
     ): Container {
+        if (!node) {
+            return (
+                rootDOMContainer ||
+                (rootDOMContainer = new ContainerImpl(
+                    null,
+                    Object.assign({}, ContainerConfiguration.default, config, {
+                        parentLocator: () => null,
+                    })
+                ))
+            );
+        }
+
         return (
             (node as any).$$container$$ ||
             new ContainerImpl(
                 node,
                 Object.assign({}, ContainerConfiguration.default, config, {
-                    parentLocator:
-                        node === document.body ? () => null : DI.findParentContainer,
+                    parentLocator: DI.findParentContainer,
                 })
             )
         );
@@ -888,12 +909,16 @@ export const DI = Object.freeze({
      * @returns The same class, with a static `register` method that takes a container and returns the appropriate resolver.
      *
      * @example
+     * On an existing class
      * ```ts
-     * // On an existing class
      * class Foo { }
      * DI.transient(Foo);
+     * ```
      *
-     * // Inline declaration
+     * @example
+     * Inline declaration
+     *
+     * ```ts
      * const Foo = DI.transient(class { });
      * // Foo is now strongly typed with register
      * Foo.register(container);
@@ -908,7 +933,7 @@ export const DI = Object.freeze({
             container: Container
         ): Resolver<InstanceType<T>> {
             const registration = Registration.transient(target as T, target as T);
-            return registration.register(container, target);
+            return registration.register(container);
         };
         target.registerInRequestor = false;
         return target as T & RegisterSelf<T>;
@@ -921,12 +946,15 @@ export const DI = Object.freeze({
      * @param target - The class / constructor function to register as a singleton.
      * @returns The same class, with a static `register` method that takes a container and returns the appropriate resolver.
      * @example
+     * On an existing class
      * ```ts
-     * // On an existing class
      * class Foo { }
      * DI.singleton(Foo);
+     * ```
      *
-     * // Inline declaration
+     * @example
+     * Inline declaration
+     * ```ts
      * const Foo = DI.singleton(class { });
      * // Foo is now strongly typed with register
      * Foo.register(container);
@@ -942,7 +970,7 @@ export const DI = Object.freeze({
             container: Container
         ): Resolver<InstanceType<T>> {
             const registration = Registration.singleton(target, target);
-            return registration.register(container, target);
+            return registration.register(container);
         };
         target.registerInRequestor = options.scoped;
         return target as T & RegisterSelf<T>;
@@ -1009,7 +1037,7 @@ function transientDecorator<T extends Constructable>(
  *
  * @example
  * ```ts
- * &#64;transient()
+ * @transient()
  * class Foo { }
  * ```
  *
@@ -1025,7 +1053,7 @@ export function transient<T extends Constructable>(): typeof transientDecorator;
  *
  * @example
  * ```ts
- * &#64;transient()
+ * @transient()
  * class Foo { }
  * ```
  *
@@ -1056,7 +1084,7 @@ function singletonDecorator<T extends Constructable>(
  *
  * @example
  * ```ts
- * &#64;singleton()
+ * @singleton()
  * class Foo { }
  * ```
  *
@@ -1079,7 +1107,7 @@ export function singleton<T extends Constructable>(
  *
  * @example
  * ```ts
- * &#64;singleton()
+ * @singleton()
  * class Foo { }
  * ```
  *
@@ -1144,8 +1172,9 @@ export const all = createAllResolver(
 );
 
 /**
- * A decorator that lazily injects a dependency depending on whether the [[`Key`]] is present at the time of function call.
+ * A decorator that lazily injects a dependency depending on whether the `Key` is present at the time of function call.
  *
+ * @example
  * You need to make your argument a function that returns the type, for example
  * ```ts
  * class Foo {
@@ -1154,8 +1183,9 @@ export const all = createAllResolver(
  * const foo = container.get(Foo); // instanceof Foo
  * foo.random(); // throws
  * ```
- * would throw an exception because you haven't registered `'random'` before calling the method. This, would give you a
- * new [['Math.random()']] number each time.
+ * would throw an exception because you haven't registered `'random'` before calling the method.
+ * @example
+ * This, would give you a new 'Math.random()' number each time.
  * ```ts
  * class Foo {
  *   constructor( @lazy('random') public random: () => random )
@@ -1164,6 +1194,7 @@ export const all = createAllResolver(
  * container.get(Foo).random(); // some random number
  * container.get(Foo).random(); // another random number
  * ```
+ *
  * `@lazy` does not manage the lifecycle of the underlying key. If you want a singleton, you have to register as a
  * `singleton`, `transient` would also behave as you would expect, providing you a new instance each time.
  *
@@ -1179,7 +1210,8 @@ export const lazy = createResolver(
 );
 
 /**
- * A decorator that allows you to optionally inject a dependency depending on whether the [[`Key`]] is present, for example
+ * A decorator that allows you to optionally inject a dependency depending on whether the [[`Key`]] is present, for example:
+ * @example
  * ```ts
  * class Foo {
  *   constructor( @inject('mystring') public str: string = 'somestring' )
@@ -1187,6 +1219,8 @@ export const lazy = createResolver(
  * container.get(Foo); // throws
  * ```
  * would fail
+ *
+ * @example
  * ```ts
  * class Foo {
  *   constructor( @optional('mystring') public str: string = 'somestring' )
@@ -1289,8 +1323,8 @@ export class ResolverImpl implements Resolver, Registration {
 
     private resolving: boolean = false;
 
-    public register(container: Container, key?: Key): Resolver {
-        return container.registerResolver(key || this.key, this);
+    public register(container: Container): Resolver {
+        return container.registerResolver(this.key, this);
     }
 
     public resolve(handler: Container, requestor: Container): any {
@@ -1454,6 +1488,7 @@ export class ContainerImpl implements Container {
     private _parent: ContainerImpl | null | undefined = void 0;
     private registerDepth: number = 0;
     private resolvers: Map<Key, Resolver>;
+    private context: any = null;
 
     public get parent() {
         if (this._parent === void 0) {
@@ -1492,6 +1527,13 @@ export class ContainerImpl implements Container {
         }
     }
 
+    public registerWithContext(context: any, ...params: any[]): Container {
+        this.context = context;
+        this.register(...params);
+        this.context = null;
+        return this;
+    }
+
     public register(...params: any[]): Container {
         if (++this.registerDepth === 100) {
             throw new Error("Unable to autoregister dependency");
@@ -1504,6 +1546,7 @@ export class ContainerImpl implements Container {
         let value: Registry;
         let j: number;
         let jj: number;
+        const context = this.context;
 
         for (let i = 0, ii = params.length; i < ii; ++i) {
             current = params[i];
@@ -1513,7 +1556,7 @@ export class ContainerImpl implements Container {
             }
 
             if (isRegistry(current)) {
-                current.register(this);
+                current.register(this, context);
             } else if (isClass(current)) {
                 Registration.singleton(current, current as Constructable).register(this);
             } else {
@@ -1528,7 +1571,7 @@ export class ContainerImpl implements Container {
                     // note: we could remove this if-branch and call this.register directly
                     // - the extra check is just a perf tweak to create fewer unnecessary arrays by the spread operator
                     if (isRegistry(value)) {
-                        value.register(this);
+                        value.register(this, context);
                     } else {
                         this.register(value);
                     }
@@ -1767,7 +1810,7 @@ export class ContainerImpl implements Container {
         }
 
         if (isRegistry(keyAsValue)) {
-            const registrationResolver = keyAsValue.register(handler, keyAsValue);
+            const registrationResolver = keyAsValue.register(handler);
             if (
                 !(registrationResolver instanceof Object) ||
                 (registrationResolver as Resolver).resolve == null

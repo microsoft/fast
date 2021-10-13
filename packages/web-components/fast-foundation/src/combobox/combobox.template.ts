@@ -1,9 +1,9 @@
 import { html, ref, slotted } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
 import { Listbox } from "../listbox/listbox";
-import { endTemplate, startTemplate } from "../patterns/start-end";
-import type { Combobox, ComboboxOptions } from "./combobox";
+import { endSlotTemplate, startSlotTemplate } from "../patterns/start-end";
 import type { ElementDefinitionContext } from "../design-system";
+import type { Combobox, ComboboxOptions } from "./combobox";
 
 /**
  * The template for the {@link @microsoft/fast-foundation#(Combobox:class)} component.
@@ -26,7 +26,7 @@ export const comboboxTemplate: (
         @focusout="${(x, c) => x.focusoutHandler(c.event as FocusEvent)}"
     >
         <div class="control" part="control">
-            ${startTemplate}
+            ${startSlotTemplate(context, definition)}
             <slot name="control">
                 <input
                     class="selected-value"
@@ -52,7 +52,7 @@ export const comboboxTemplate: (
                     </slot>
                 </div>
             </slot>
-            ${endTemplate}
+            ${endSlotTemplate(context, definition)}
         </div>
         <div
             aria-disabled="${x => x.disabled}"
@@ -60,9 +60,9 @@ export const comboboxTemplate: (
             id="${x => x.listboxId}"
             part="listbox"
             role="listbox"
-            style="--max-height: ${x => x.maxHeight}px"
             ?disabled="${x => x.disabled}"
             ?hidden="${x => !x.open}"
+            ${ref("listbox")}
         >
             <slot
                 ${slotted({

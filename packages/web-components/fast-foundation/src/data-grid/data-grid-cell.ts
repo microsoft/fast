@@ -1,13 +1,13 @@
 import { attr, html, HTMLView, observable, ViewTemplate } from "@microsoft/fast-element";
-import { FoundationElement } from "../foundation-element";
 import {
     eventFocusIn,
     eventFocusOut,
     eventKeyDown,
-    keyCodeEnter,
-    keyCodeEscape,
-    keyCodeFunction2,
+    keyEnter,
+    keyEscape,
+    keyFunction2,
 } from "@microsoft/fast-web-utilities";
+import { FoundationElement } from "../foundation-element";
 import type { ColumnDefinition } from "./data-grid";
 import { DataGridCellTypes } from "./data-grid.options";
 
@@ -198,9 +198,9 @@ export class DataGridCell extends FoundationElement {
             return;
         }
 
-        switch (e.keyCode) {
-            case keyCodeEnter:
-            case keyCodeFunction2:
+        switch (e.key) {
+            case keyEnter:
+            case keyFunction2:
                 if (this.isInternalFocused || this.columnDefinition === undefined) {
                     return;
                 }
@@ -237,7 +237,7 @@ export class DataGridCell extends FoundationElement {
                 }
                 break;
 
-            case keyCodeEscape:
+            case keyEscape:
                 if (this.isInternalFocused) {
                     this.focus();
                     this.isInternalFocused = false;
@@ -270,6 +270,7 @@ export class DataGridCell extends FoundationElement {
                 break;
 
             case undefined:
+            case DataGridCellTypes.rowHeader:
             case DataGridCellTypes.default:
                 if (this.columnDefinition.cellTemplate !== undefined) {
                     this.customCellView = this.columnDefinition.cellTemplate.render(

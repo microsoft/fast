@@ -1,13 +1,14 @@
 // TODO: Is exporting Foundation still necessary with the updated API's?
 // export * from "@microsoft/fast-element";
-import { DesignSystem } from "@microsoft/fast-foundation";
 import { allComponents } from "./custom-elements";
+import { provideFASTDesignSystem } from "./fast-design-system";
 
 export * from "./index";
 
 /**
- * TODO rename this to FASTDesignSystem when {@link @FASTDesignSystem} interface is removed.
+ * The global FAST Design System.
+ * @remarks
+ * Only available if the components are added through a script tag
+ * rather than a module/build system.
  */
-export const fastDesignSystem = DesignSystem.getOrCreate().register(
-    ...Object.values(allComponents).map(definition => definition())
-);
+export const FASTDesignSystem = provideFASTDesignSystem().register(allComponents);

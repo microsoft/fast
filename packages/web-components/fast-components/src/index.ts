@@ -2,6 +2,7 @@
  * Export all custom element definitions.
  */
 export * from "./custom-elements";
+export * from "./fast-design-system";
 export * from "./accordion/index";
 export * from "./anchor/index";
 export * from "./anchored-region/index";
@@ -10,6 +11,7 @@ export * from "./badge/index";
 export * from "./breadcrumb/index";
 export * from "./breadcrumb-item/index";
 export * from "./button/index";
+export * from "./calendar/index";
 export * from "./card/index";
 export * from "./checkbox/index";
 export * from "./combobox/index";
@@ -31,6 +33,7 @@ export * from "./listbox-option/index";
 export * from "./menu/index";
 export * from "./menu-item/index";
 export * from "./number-field/index";
+export * from "./picker/index";
 export * from "./progress/index";
 export * from "./progress-ring/index";
 export * from "./radio/index";

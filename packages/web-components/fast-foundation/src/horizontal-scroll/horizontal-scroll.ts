@@ -3,23 +3,15 @@ import {
     booleanConverter,
     nullableNumberConverter,
     observable,
-    SyntheticViewTemplate,
 } from "@microsoft/fast-element";
-// TODO: the Resize Observer related files are a temporary stopgap measure until
-// Resize Observer types are pulled into TypeScript, which seems imminent
-// At that point these files should be deleted.
-// https://github.com/microsoft/TypeScript/issues/37861
+import type { SyntheticViewTemplate } from "@microsoft/fast-element";
+import { FoundationElement } from "../foundation-element";
 import type {
-    ConstructibleResizeObserver,
-    ResizeObserverClassDefinition,
-} from "../anchored-region/resize-observer";
-import { FoundationElement, FoundationElementDefinition } from "../foundation-element";
-
-declare global {
-    interface WindowWithResizeObserver extends Window {
-        ResizeObserver: ConstructibleResizeObserver;
-    }
-}
+    FoundationElementDefinition,
+    FoundationElementTemplate,
+} from "../foundation-element";
+import type { StartEndOptions } from "../patterns/start-end";
+import type { ResizeObserverClassDefinition } from "../utilities/resize-observer";
 
 /**
  * The views types for a horizontal-scroll {@link @microsoft/fast-foundation#(HorizontalScroll:class)}
@@ -31,16 +23,29 @@ export type HorizontalScrollView = "default" | "mobile";
  * The easing types available for the horizontal-scroll {@link @microsoft/fast-foundation#(HorizontalScroll:class)}
  * @public
  */
-export type ScrollEasing = "linear" | "ease-in" | "ease-out" | "ease-in-out";
+export type ScrollEasing = "linear" | "ease-in" | "ease-out" | "ease-in-out" | string;
 
 /**
  * Horizontal scroll configuration options
  * @public
  */
-export type HorizontalScrollOptions = FoundationElementDefinition & {
-    nextFlipper?: string | SyntheticViewTemplate;
-    previousFlipper?: string | SyntheticViewTemplate;
-};
+export type HorizontalScrollOptions = FoundationElementDefinition &
+    StartEndOptions & {
+        nextFlipper?:
+            | FoundationElementTemplate<
+                  SyntheticViewTemplate<any, HorizontalScroll>,
+                  HorizontalScrollOptions
+              >
+            | SyntheticViewTemplate
+            | string;
+        previousFlipper?:
+            | FoundationElementTemplate<
+                  SyntheticViewTemplate<any, HorizontalScroll>,
+                  HorizontalScrollOptions
+              >
+            | SyntheticViewTemplate
+            | string;
+    };
 
 /**
  * A HorizontalScroll Custom HTML Element
@@ -52,6 +57,12 @@ export class HorizontalScroll extends FoundationElement {
      * @public
      */
     public scrollContainer: HTMLDivElement;
+
+    /**
+     * Reference to DOM element that holds the slotted content
+     * @public
+     */
+    public content: HTMLDivElement;
 
     /**
      * Reference to flipper to scroll to previous content
@@ -68,7 +79,7 @@ export class HorizontalScroll extends FoundationElement {
     /**
      * @internal
      */
-    private framesPerSecond: number = 120;
+    private framesPerSecond: number = 60;
 
     /**
      * The calculated duration for a frame.
@@ -108,6 +119,17 @@ export class HorizontalScroll extends FoundationElement {
     public speed: number = 600;
 
     /**
+     * The CSS time value for the scroll transition duration. Overrides the `speed` attribute.
+     *
+     * @remarks
+     * When `duration` is set, the `speed` attribute has no effect.
+     *
+     * @public
+     */
+    @attr
+    public duration: string;
+
+    /**
      * Attribute used for easing, defaults to ease-in-out
      * @public
      */
@@ -125,7 +147,19 @@ export class HorizontalScroll extends FoundationElement {
      * Scrolling state
      * @internal
      */
+    @observable
     private scrolling: boolean = false;
+
+    /**
+     * Firing scrollstart and scrollend events
+     * @internal
+     */
+    public scrollingChanged(prev: unknown, next: boolean): void {
+        if (this.scrollContainer) {
+            const event = this.scrolling == true ? "scrollstart" : "scrollend";
+            this.$emit(event, this.scrollContainer.scrollLeft);
+        }
+    }
 
     /**
      * Detects if the component has been resized
@@ -173,14 +207,12 @@ export class HorizontalScroll extends FoundationElement {
 
     public connectedCallback(): void {
         super.connectedCallback();
-
         this.initializeResizeDetector();
     }
 
     public disconnectedCallback(): void {
-        super.disconnectedCallback();
-
         this.disconnectResizeDetector();
+        super.disconnectedCallback();
     }
 
     /**
@@ -224,17 +256,20 @@ export class HorizontalScroll extends FoundationElement {
      */
     private updateScrollStops(): void {
         this.updatingItems = true;
-        let updatedItems: HTMLElement[] = [];
+        const updatedItems: HTMLElement[] = this.scrollItems.reduce(
+            (scrollItems, scrollItem) => {
+                if (scrollItem instanceof HTMLSlotElement) {
+                    return scrollItems.concat(
+                        scrollItem.assignedElements() as HTMLElement[]
+                    );
+                }
 
-        this.scrollItems.forEach(item => {
-            if (item instanceof HTMLSlotElement) {
-                updatedItems = updatedItems.concat(
-                    item.assignedElements() as HTMLElement[]
-                );
-            } else {
-                updatedItems.push(item);
-            }
-        });
+                scrollItems.push(scrollItem);
+
+                return scrollItems;
+            },
+            [] as HTMLElement[]
+        );
 
         this.scrollItems = updatedItems;
         this.updatingItems = false;
@@ -291,14 +326,14 @@ export class HorizontalScroll extends FoundationElement {
      */
     private setFlippers(): void {
         const position: number = this.scrollContainer.scrollLeft;
-        if (this.previousFlipperContainer) {
-            this.previousFlipperContainer.classList.toggle("disabled", position === 0);
-        }
-        if (this.nextFlipperContainer && this.scrollStops) {
+        this.previousFlipperContainer?.classList.toggle("disabled", position === 0);
+
+        if (this.scrollStops) {
             const lastStop: number = Math.abs(
                 this.scrollStops[this.scrollStops.length - 1]
             );
-            this.nextFlipperContainer.classList.toggle(
+
+            this.nextFlipperContainer?.classList.toggle(
                 "disabled",
                 Math.abs(position) + this.width >= lastStop
             );
@@ -328,7 +363,8 @@ export class HorizontalScroll extends FoundationElement {
      * @public
      */
     public scrollToPrevious(): void {
-        const scrollPosition: number = this.scrollContainer.scrollLeft;
+        const scrollPosition = this.scrollContainer.scrollLeft;
+
         const current = this.scrollStops.findIndex(
             (stop, index) =>
                 stop <= scrollPosition &&
@@ -339,12 +375,14 @@ export class HorizontalScroll extends FoundationElement {
 
         const right = Math.abs(this.scrollStops[current + 1]);
 
-        let nextIndex: number = this.scrollStops.findIndex(
-            (stop: number): boolean => Math.abs(stop) + this.width > right
+        let nextIndex = this.scrollStops.findIndex(
+            stop => Math.abs(stop) + this.width > right
         );
+
         if (nextIndex > current || nextIndex === -1) {
             nextIndex = current > 0 ? current - 1 : 0;
         }
+
         this.scrollToPosition(this.scrollStops[nextIndex], scrollPosition);
     }
 
@@ -353,23 +391,25 @@ export class HorizontalScroll extends FoundationElement {
      * @public
      */
     public scrollToNext(): void {
-        const scrollPosition: number = this.scrollContainer.scrollLeft;
+        const scrollPosition = this.scrollContainer.scrollLeft;
+
         const current = this.scrollStops.findIndex(
             stop => Math.abs(stop) >= Math.abs(scrollPosition)
         );
-        const outOfView: number = this.scrollStops.findIndex(
+
+        const outOfView = this.scrollStops.findIndex(
             stop => Math.abs(scrollPosition) + this.width <= Math.abs(stop)
         );
 
-        let nextIndex: number = current;
+        let nextIndex = current;
 
         if (outOfView > current + 2) {
             nextIndex = outOfView - 2;
         } else if (current < this.scrollStops.length - 2) {
             nextIndex = current + 1;
         }
-        const nextStop: number = this.scrollStops[nextIndex];
-        this.scrollToPosition(nextStop, scrollPosition);
+
+        this.scrollToPosition(this.scrollStops[nextIndex], scrollPosition);
     }
 
     /**
@@ -388,57 +428,55 @@ export class HorizontalScroll extends FoundationElement {
 
         this.scrolling = true;
 
-        const steps: number[] = [];
-        const direction: number = position < newPosition ? 1 : -1;
-        const scrollDistance: number = Math.abs(newPosition - position);
-        const seconds: number = scrollDistance / this.speed;
-        const stepCount: number = Math.floor(this.framesPerSecond * seconds);
+        const seconds =
+            this.duration ?? `${Math.abs(newPosition - position) / this.speed}s`;
 
-        if (stepCount < 1) {
-            this.scrolling = false;
-            return;
-        }
+        this.content.style.setProperty("transition-duration", seconds);
 
-        for (let i = 0; i < stepCount; i++) {
-            const progress = i / stepCount;
-            const easingFactor = this.getEasedFactor(this.easing, progress);
-            const travel = scrollDistance * easingFactor * direction;
-            steps.push(travel + position);
-        }
+        const computedDuration = parseFloat(
+            getComputedStyle(this.content).getPropertyValue("transition-duration")
+        );
 
-        steps.push(newPosition);
-
-        this.move(steps, this.frameTime);
-    }
-
-    /**
-     * Holds the timestamp of the current animation frame.
-     * @internal
-     */
-    private moveStartTime: number;
-
-    /**
-     *
-     * @param steps - An array of positions to move
-     * @param time - The duration between moves
-     * @internal
-     */
-    private move(steps: number[], time: number): void {
-        if (!steps || steps.length <= 0) {
-            this.setFlippers();
-            this.scrolling = false;
-            return;
-        }
-
-        this.moveStartTime = requestAnimationFrame(timestamp => {
-            if (timestamp - this.moveStartTime >= time) {
-                const nextStep = steps.shift();
-                this.scrollContainer.scrollLeft =
-                    nextStep ?? this.scrollContainer.scrollLeft;
+        const transitionendHandler = (e?: TransitionEvent): void => {
+            if (e && e.target !== e.currentTarget) {
+                return;
             }
 
-            this.move(steps, time);
-        });
+            this.content.style.setProperty("transition-duration", "0s");
+            this.content.style.removeProperty("transform");
+
+            this.scrollContainer.style.setProperty("scroll-behavior", "auto");
+            this.scrollContainer.scrollLeft = newPosition;
+
+            this.setFlippers();
+
+            this.content.removeEventListener("transitionend", transitionendHandler);
+
+            this.scrolling = false;
+        };
+
+        if (computedDuration === 0) {
+            transitionendHandler();
+            return;
+        }
+
+        this.content.addEventListener("transitionend", transitionendHandler);
+
+        const maxScrollValue =
+            this.scrollContainer.scrollWidth - this.scrollContainer.clientWidth;
+
+        let transitionStop =
+            this.scrollContainer.scrollLeft - Math.min(newPosition, maxScrollValue);
+
+        if (this.isRtl) {
+            transitionStop =
+                this.scrollContainer.scrollLeft +
+                Math.min(Math.abs(newPosition), maxScrollValue);
+        }
+
+        this.content.style.setProperty("transition-property", "transform");
+        this.content.style.setProperty("transition-timing-function", this.easing);
+        this.content.style.setProperty("transform", `translateX(${transitionStop}px)`);
     }
 
     /**
@@ -468,27 +506,5 @@ export class HorizontalScroll extends FoundationElement {
         this.scrollTimeout = setTimeout(() => {
             this.setFlippers();
         }, this.frameTime);
-    }
-
-    /**
-     *
-     * @param easing - Type of easing
-     * @param progress - Progress completed, 0 - 1
-     * @internal
-     */
-    private getEasedFactor(easing: ScrollEasing, progress: number): number {
-        if (progress > 1) {
-            progress = 1;
-        }
-        switch (easing) {
-            case "ease-in":
-                return Math.pow(progress, 1.675);
-            case "ease-out":
-                return 1 - Math.pow(1 - progress, 1.675);
-            case "ease-in-out":
-                return 0.5 * (Math.sin((progress - 0.5) * Math.PI) + 1);
-            default:
-                return progress;
-        }
     }
 }

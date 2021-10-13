@@ -1,20 +1,20 @@
 import { attr, DOM, observable, SyntheticViewTemplate } from "@microsoft/fast-element";
 import {
     Direction,
-    keyCodeArrowLeft,
-    keyCodeArrowRight,
-    keyCodeEnter,
-    keyCodeSpace,
+    keyArrowLeft,
+    keyArrowRight,
+    keyEnter,
+    keySpace,
 } from "@microsoft/fast-web-utilities";
 import type { AnchoredRegion } from "../anchored-region";
 import { FoundationElement, FoundationElementDefinition } from "../foundation-element";
 import type { Menu } from "../menu/menu";
-import { StartEnd } from "../patterns/start-end";
+import { StartEnd, StartEndOptions } from "../patterns/start-end";
 import { getDirection } from "../utilities/";
 import { applyMixins } from "../utilities/apply-mixins";
-import { MenuItemRole } from "./menu-item.options";
+import { MenuItemRole, roleForMenuItem } from "./menu-item.options";
 
-export { MenuItemRole };
+export { MenuItemRole, roleForMenuItem };
 
 /**
  * Types of menu item column count.
@@ -26,11 +26,12 @@ export type MenuItemColumnCount = 0 | 1 | 2;
  * Menu Item configuration options
  * @public
  */
-export type MenuItemOptions = FoundationElementDefinition & {
-    checkboxIndicator?: string | SyntheticViewTemplate;
-    expandCollapseGlyph?: string | SyntheticViewTemplate;
-    radioIndicator?: string | SyntheticViewTemplate;
-};
+export type MenuItemOptions = FoundationElementDefinition &
+    StartEndOptions & {
+        checkboxIndicator?: string | SyntheticViewTemplate;
+        expandCollapseGlyph?: string | SyntheticViewTemplate;
+        radioIndicator?: string | SyntheticViewTemplate;
+    };
 
 /**
  * A Switch Custom HTML Element.
@@ -56,7 +57,7 @@ export class MenuItem extends FoundationElement {
      * @remarks
      * HTML Attribute: expanded
      */
-    @attr({ attribute: "expanded" })
+    @attr({ mode: "boolean" })
     public expanded: boolean;
     private expandedChanged(oldValue: boolean): void {
         if (this.$fastController.isConnected) {
@@ -95,7 +96,7 @@ export class MenuItem extends FoundationElement {
      * @remarks
      * HTML Attribute: checked
      */
-    @attr
+    @attr({ mode: "boolean" })
     public checked: boolean;
     private checkedChanged(oldValue, newValue): void {
         if (this.$fastController.isConnected) {
@@ -171,18 +172,18 @@ export class MenuItem extends FoundationElement {
             return false;
         }
 
-        switch (e.keyCode) {
-            case keyCodeEnter:
-            case keyCodeSpace:
+        switch (e.key) {
+            case keyEnter:
+            case keySpace:
                 this.invoke();
                 return false;
 
-            case keyCodeArrowRight:
+            case keyArrowRight:
                 //open/focus on submenu
                 this.expandAndFocus();
                 return false;
 
-            case keyCodeArrowLeft:
+            case keyArrowLeft:
                 //close submenu
                 if (this.expanded) {
                     this.expanded = false;

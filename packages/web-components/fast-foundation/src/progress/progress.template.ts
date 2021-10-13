@@ -1,7 +1,7 @@
 import { html, when } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
-import type { BaseProgress, ProgressOptions } from "./base-progress";
 import type { ElementDefinitionContext } from "../design-system";
+import type { BaseProgress, ProgressOptions } from "./base-progress";
 
 /**
  * The template for the {@link @microsoft/fast-foundation#BaseProgress} component.
@@ -28,7 +28,7 @@ export const progressTemplate: (
                     <div
                         class="determinate"
                         part="determinate"
-                        style="width: ${x => x.value}%"
+                        style="width: ${x => x.percentComplete}%"
                     ></div>
                 </div>
             `

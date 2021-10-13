@@ -3,7 +3,7 @@ import { Menu, menuTemplate as template } from "./index";
 import { MenuItem, menuItemTemplate as itemTemplate, MenuItemRole } from "../menu-item";
 import { fixture } from "../test-utilities/fixture";
 import { DOM, html } from "@microsoft/fast-element";
-import { KeyCodes } from "@microsoft/fast-web-utilities";
+import { keyArrowDown, keyArrowUp } from "@microsoft/fast-web-utilities";
 
 const FASTMenu = Menu.compose({
     baseName: "menu",
@@ -16,14 +16,12 @@ const FASTMenuItem = MenuItem.compose({
 })
 
 const arrowUpEvent = new KeyboardEvent("keydown", {
-    key: "ArrowUp",
-    keyCode: KeyCodes.arrowUp,
+    key: keyArrowUp,
     bubbles: true,
 } as KeyboardEventInit);
 
 const arrowDownEvent = new KeyboardEvent("keydown", {
-    key: "ArrowDown",
-    keyCode: KeyCodes.arrowDown,
+    key: keyArrowDown,
     bubbles: true,
 } as KeyboardEventInit);
 
@@ -147,13 +145,13 @@ describe("Menu", () => {
 
         menuItem1.textContent = "Foo";
         (menuItem1 as any).role = "menuitem";
-    
+
         menuItem2.textContent = "Bar";
         (menuItem2 as any).role = "menuitem";
-    
+
         menuItem3.textContent = "Baz";
         (menuItem3 as any).role = "menuitem";
-    
+
         element.appendChild(menuItem1);
         element.appendChild(menuItem2);
         element.appendChild(menuItem3);
@@ -177,7 +175,7 @@ describe("Menu", () => {
         menuItem1.textContent = "Foo";
         menuItem2.textContent = "Bar";
         menuItem3.textContent = "Baz";
-    
+
         element.appendChild(menuItem1);
         element.appendChild(menuItem2);
         element.appendChild(menuItem3);
@@ -206,7 +204,7 @@ describe("Menu", () => {
         menuItem1.textContent = "Foo";
         menuItem2.textContent = "Bar";
         menuItem3.textContent = "Baz";
-    
+
         element.appendChild(menuItem1);
         element.appendChild(menuItem2);
         element.appendChild(menuItem3);
@@ -387,7 +385,7 @@ describe("Menu", () => {
         const { element, connect, disconnect, menuItem1, menuItem2, menuItem3, menuItem4 } = await setup();
 
         element.removeChild(menuItem4);
-        
+
         (menuItem1 as MenuItem).role = MenuItemRole.menuitemradio;
         (menuItem2 as MenuItem).role = MenuItemRole.menuitemradio;
         (menuItem3 as MenuItem).role = MenuItemRole.menuitemradio;
@@ -426,7 +424,7 @@ describe("Menu", () => {
 
     it("should use elements with role='separator' to divide radio menu items into different radio groups ", async () => {
         const { element, connect, disconnect, menuItem1, menuItem2, menuItem3, menuItem4 } = await setup();
-        
+
         (menuItem1 as MenuItem).role = MenuItemRole.menuitemradio;
         (menuItem2 as MenuItem).role = MenuItemRole.menuitemradio;
         (menuItem3 as MenuItem).role = MenuItemRole.menuitemradio;

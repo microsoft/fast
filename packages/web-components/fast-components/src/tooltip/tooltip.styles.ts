@@ -1,5 +1,6 @@
 import { css, ElementStyles } from "@microsoft/fast-element";
 import {
+    AnchoredRegion,
     ElementDefinitionContext,
     forcedColorsStylesheetBehavior,
     FoundationElementDefinition,
@@ -24,7 +25,7 @@ export const tooltipStyles: (
 ) =>
     css`
         :host {
-            contain: layout;
+            contain: size;
             overflow: visible;
             height: 0;
             width: 0;
@@ -44,37 +45,38 @@ export const tooltipStyles: (
             font-size: ${typeRampBaseFontSize};
             line-height: ${typeRampBaseLineHeight};
             white-space: nowrap;
-            ${/* TODO: a mechanism to manage z-index across components
-            https://github.com/microsoft/fast/issues/3813 */ ""}
+            /* TODO: a mechanism to manage z-index across components
+                https://github.com/microsoft/fast/issues/3813 */
             z-index: 10000;
         }
 
-        fast-anchored-region {
+        ${context.tagFor(AnchoredRegion)} {
             display: flex;
             justify-content: center;
             align-items: center;
             overflow: visible;
             flex-direction: row;
+            pointer-events: none;
         }
 
-        fast-anchored-region.right,
-        fast-anchored-region.left {
+        ${context.tagFor(AnchoredRegion)}.right,
+        ${context.tagFor(AnchoredRegion)}.left {
             flex-direction: column;
         }
 
-        fast-anchored-region.top .tooltip {
+        ${context.tagFor(AnchoredRegion)}.top .tooltip {
             margin-bottom: 4px;
         }
 
-        fast-anchored-region.bottom .tooltip {
+        ${context.tagFor(AnchoredRegion)}.bottom .tooltip {
             margin-top: 4px;
         }
 
-        fast-anchored-region.left .tooltip {
+        ${context.tagFor(AnchoredRegion)}.left .tooltip {
             margin-right: 4px;
         }
 
-        fast-anchored-region.right .tooltip {
+        ${context.tagFor(AnchoredRegion)}.right .tooltip {
             margin-left: 4px;
         }
     `.withBehaviors(

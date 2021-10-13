@@ -14,37 +14,22 @@ const fastHTMLPolicy: TrustedTypesPolicy = $global.trustedTypes.createPolicy(
 
 let htmlPolicy: TrustedTypesPolicy = fastHTMLPolicy;
 
-function processQueue(): void {
-    const capacity = 1024;
-    let index = 0;
+// We use a queue so we can ensure errors are thrown in order.
+const pendingErrors: any[] = [];
 
-    while (index < updateQueue.length) {
-        const task = updateQueue[index];
-        (task as any).call();
-        index++;
-
-        // Prevent leaking memory for long chains of recursive calls to `queueMicroTask`.
-        // If we call `queueMicroTask` within a MicroTask scheduled by `queueMicroTask`, the queue will
-        // grow, but to avoid an O(n) walk for every MicroTask we execute, we don't
-        // shift MicroTasks off the queue after they have been executed.
-        // Instead, we periodically shift 1024 MicroTasks off the queue.
-        if (index > capacity) {
-            // Manually shift all values starting at the index back to the
-            // beginning of the queue.
-            for (
-                let scan = 0, newLength = updateQueue.length - index;
-                scan < newLength;
-                scan++
-            ) {
-                updateQueue[scan] = updateQueue[scan + index];
-            }
-
-            updateQueue.length -= index;
-            index = 0;
-        }
+function throwFirstError() {
+    if (pendingErrors.length) {
+        throw pendingErrors.shift();
     }
+}
 
-    updateQueue.length = 0;
+function tryRunTask(task: Callable) {
+    try {
+        (task as any).call();
+    } catch (error) {
+        pendingErrors.push(error);
+        setTimeout(throwFirstError, 0);
+    }
 }
 
 const marker = `fast-${Math.random().toString(36).substring(2, 8)}`;
@@ -148,10 +133,49 @@ export const DOM = Object.freeze({
      */
     queueUpdate(callable: Callable) {
         if (updateQueue.length < 1) {
-            window.requestAnimationFrame(processQueue);
+            window.requestAnimationFrame(DOM.processUpdates);
         }
 
         updateQueue.push(callable);
+    },
+
+    /**
+     * Immediately processes all work previously scheduled
+     * through queueUpdate.
+     * @remarks
+     * This also forces nextUpdate promises
+     * to resolve.
+     */
+    processUpdates(): void {
+        const capacity = 1024;
+        let index = 0;
+
+        while (index < updateQueue.length) {
+            tryRunTask(updateQueue[index]);
+            index++;
+
+            // Prevent leaking memory for long chains of recursive calls to `DOM.queueUpdate`.
+            // If we call `DOM.queueUpdate` within a task scheduled by `DOM.queueUpdate`, the queue will
+            // grow, but to avoid an O(n) walk for every task we execute, we don't
+            // shift tasks off the queue after they have been executed.
+            // Instead, we periodically shift 1024 tasks off the queue.
+            if (index > capacity) {
+                // Manually shift all values starting at the index back to the
+                // beginning of the queue.
+                for (
+                    let scan = 0, newLength = updateQueue.length - index;
+                    scan < newLength;
+                    scan++
+                ) {
+                    updateQueue[scan] = updateQueue[scan + index];
+                }
+
+                updateQueue.length -= index;
+                index = 0;
+            }
+        }
+
+        updateQueue.length = 0;
     },
 
     /**

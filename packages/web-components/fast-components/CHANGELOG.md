@@ -1,8 +1,397 @@
 # Change Log - @microsoft/fast-components
 
-This log was last generated on Sun, 18 Jul 2021 07:16:22 GMT and should not be manually modified.
+This log was last generated on Wed, 13 Oct 2021 22:45:16 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.13.0
+
+Wed, 13 Oct 2021 22:45:16 GMT
+
+### Minor changes
+
+- Adding fast-calendar component (robarb@microsoft.com)
+
+### Patches
+
+- Bump @microsoft/fast-element to v1.6.1 (markwhitfeld@users.noreply.github.com)
+- Bump @microsoft/fast-foundation to v2.20.0 (robarb@microsoft.com)
+
+## 2.12.0
+
+Wed, 13 Oct 2021 01:53:37 GMT
+
+### Minor changes
+
+- data-grid: add support for rowheader role (scomea@microsoft.com)
+
+### Patches
+
+- Update playwright tests for horizontal-scroll (john.kreitlow@microsoft.com)
+- Fill color design token update (skawian@gmail.com)
+- refactor: remove lodash-es as a dependency (connor@peet.io)
+- Bump @microsoft/fast-foundation to v2.19.0 (john.kreitlow@microsoft.com)
+- Bump @microsoft/fast-web-utilities to v5.0.1 (john.kreitlow@microsoft.com)
+
+## 2.11.12
+
+Tue, 12 Oct 2021 07:15:14 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.18.0 (roeisenb@microsoft.com)
+
+## 2.11.11
+
+Sun, 10 Oct 2021 07:12:26 GMT
+
+### Patches
+
+- migrate horizontal-scroll tests to playwright (john.kreitlow@microsoft.com)
+
+## 2.11.10
+
+Fri, 08 Oct 2021 19:53:11 GMT
+
+### Patches
+
+- anchored region force update (scomea@microsoft.com)
+
+## 2.11.9
+
+Wed, 06 Oct 2021 07:11:47 GMT
+
+### Patches
+
+- picker menu shows with only custom options (scomea@microsoft.com)
+
+## 2.11.8
+
+Tue, 05 Oct 2021 00:45:07 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.17.0 (robarb@microsoft.com)
+
+## 2.11.7
+
+Thu, 30 Sep 2021 07:13:45 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.16.5 (robarb@microsoft.com)
+
+## 2.11.6
+
+Wed, 29 Sep 2021 07:13:40 GMT
+
+### Patches
+
+- do not prevent default on tree item click (chhol@microsoft.com)
+
+## 2.11.5
+
+Tue, 28 Sep 2021 07:10:49 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.16.3 (marjon@microsoft.com)
+
+## 2.11.4
+
+Mon, 27 Sep 2021 07:12:15 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.16.2 (jes@microsoft.com)
+
+## 2.11.3
+
+Thu, 23 Sep 2021 07:14:34 GMT
+
+### Patches
+
+- Removing design-system-provider from storybook (robarb@microsoft.com)
+- remove duplicate display hidden style block from tree view (chhol@microsoft.com)
+
+## 2.11.2
+
+Wed, 22 Sep 2021 17:37:48 GMT
+
+### Patches
+
+- fix(allComponents): add missing param to registry (roeisenb@microsoft.com)
+
+## 2.11.1
+
+Wed, 22 Sep 2021 07:13:13 GMT
+
+### Patches
+
+- tooltip should not block hover (scomea@microsoft.com)
+
+## 2.11.0
+
+Sun, 19 Sep 2021 07:17:17 GMT
+
+### Minor changes
+
+- add picker component (scomea@microsoft.com)
+
+### Patches
+
+- fix thumb position math (corylaviska@microsoft.com)
+- implement caching mechanism for PaletteRGB.closestIndexOf (nicholasrice@users.noreply.github.com)
+- Bump @microsoft/fast-foundation to v2.15.0 (scomea@microsoft.com)
+- Bump @microsoft/fast-web-utilities to v5.0.0 (scomea@microsoft.com)
+
+## 2.10.1
+
+Wed, 15 Sep 2021 19:49:35 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.14.0 (john.kreitlow@microsoft.com)
+
+## 2.10.0
+
+Wed, 15 Sep 2021 07:18:53 GMT
+
+### Minor changes
+
+- add additional example in component explorer scenario (v-dlesac@microsoft.com)
+
+## 2.9.2
+
+Tue, 14 Sep 2021 07:16:47 GMT
+
+### Patches
+
+- Adding PlayWright tests for button and anchor focus (jumarroq@microsoft.com)
+
+## 2.9.1
+
+Sun, 12 Sep 2021 07:17:43 GMT
+
+### Patches
+
+- Remove commented CSS (john.kreitlow@microsoft.com)
+- change default tab panel display; fixes #5171 (corylaviska@microsoft.com)
+
+## 2.9.0
+
+Thu, 09 Sep 2021 07:21:36 GMT
+
+### Minor changes
+
+- add start/end slot definitions to support default slotted content (chhol@microsoft.com)
+- feat(fast-components): leverage FoundationElement.compose baseClass (roeisenb@microsoft.com)
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.12.0 (chhol@microsoft.com)
+
+## 2.8.3
+
+Wed, 08 Sep 2021 07:16:17 GMT
+
+### Patches
+
+- fix(breadcrumb-item): add display flex to separator (ben@platform5.ch)
+
+## 2.8.2
+
+Thu, 02 Sep 2021 17:17:56 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.10.0 (roeisenb@microsoft.com)
+
+## 2.8.1
+
+Thu, 02 Sep 2021 07:15:21 GMT
+
+### Patches
+
+- Removed remaining 'use-defaults' which no longer exists (47367562+bheston@users.noreply.github.com)
+- progress component bar width (scomea@microsoft.com)
+
+## 2.8.0
+
+Wed, 01 Sep 2021 07:18:34 GMT
+
+### Minor changes
+
+- Add viewport lock to tooltip (scomea@microsoft.com)
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.9.0 (scomea@microsoft.com)
+
+## 2.7.3
+
+Mon, 30 Aug 2021 22:30:39 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.8.1 (nicholasrice@users.noreply.github.com)
+
+## 2.7.2
+
+Fri, 27 Aug 2021 14:14:26 GMT
+
+### Patches
+
+- Bump @microsoft/fast-element to v1.5.0 (nicholasrice@users.noreply.github.com)
+
+## 2.7.1
+
+Thu, 26 Aug 2021 07:17:43 GMT
+
+### Patches
+
+- Updated the default fill color to neutral layer 1 (47367562+bheston@users.noreply.github.com)
+- fix typings so that PaletteRGB.from supports plain objects (nicholasrice@users.noreply.github.com)
+
+## 2.7.0
+
+Wed, 25 Aug 2021 07:17:07 GMT
+
+### Minor changes
+
+- use context.tagFor to generate flippers for horizontal scroller component (john.kreitlow@microsoft.com)
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.7.0 (john.kreitlow@microsoft.com)
+
+## 2.6.2
+
+Mon, 23 Aug 2021 07:14:54 GMT
+
+### Patches
+
+- fix menu-item checked-indicator foreground color (ben@platform5.ch)
+
+## 2.6.1
+
+Thu, 19 Aug 2021 07:15:21 GMT
+
+### Patches
+
+- update examples for toolbar focus sequence bug fix (sethdonohue@Admins-MBP.guest.corp.microsoft.com)
+
+## 2.6.0
+
+Sun, 15 Aug 2021 07:17:25 GMT
+
+### Minor changes
+
+- add new PaletteRGB.from() API to support easier creation of PaletteRGB instances (nicholasrice@users.noreply.github.com)
+
+## 2.5.8
+
+Thu, 12 Aug 2021 07:16:50 GMT
+
+### Patches
+
+- fix dialog focus on open (scomea@microsoft.com)
+
+## 2.5.7
+
+Sun, 08 Aug 2021 07:18:56 GMT
+
+### Patches
+
+- replace css comment expressions with normal css comments (john.kreitlow@microsoft.com)
+
+## 2.5.6
+
+Thu, 05 Aug 2021 07:17:32 GMT
+
+### Patches
+
+- add border to badge and adjust padding size (khamu@microsoft.com)
+
+## 2.5.5
+
+Wed, 04 Aug 2021 07:15:14 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.6.3 (chhol@microsoft.com)
+
+## 2.5.4
+
+Tue, 03 Aug 2021 07:17:33 GMT
+
+### Patches
+
+- add neutralForegroundRest color to host (khamu@microsoft.com)
+
+## 2.5.3
+
+Sun, 01 Aug 2021 07:17:15 GMT
+
+### Patches
+
+- Register design-system-provider (47367562+bheston@users.noreply.github.com)
+
+## 2.5.2
+
+Thu, 29 Jul 2021 07:18:18 GMT
+
+### Patches
+
+- remove unnecessary aria-hidden attributes (47367562+bheston@users.noreply.github.com)
+- fix select border styles when control is active (corylaviska@microsoft.com)
+
+## 2.5.1
+
+Wed, 28 Jul 2021 07:17:22 GMT
+
+### Patches
+
+- Bump @microsoft/fast-element to v1.4.1 (nicholasrice@users.noreply.github.com)
+
+## 2.5.0
+
+Sun, 25 Jul 2021 07:17:41 GMT
+
+### Minor changes
+
+- add auto position tracking to tooltip (scomea@microsoft.com)
+- anchored region uses transform (scomea@microsoft.com)
+
+### Patches
+
+- add layouts for 0 indent submenus (scomea@microsoft.com)
+- Bump @microsoft/fast-foundation to v2.6.0 (scomea@microsoft.com)
+
+## 2.4.0
+
+Thu, 22 Jul 2021 07:19:53 GMT
+
+### Minor changes
+
+- update component styles to leverage context.tagFor() for nested element styles (chhol@microsoft.com)
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.5.2 (47367562+bheston@users.noreply.github.com)
+
+## 2.3.0
+
+Wed, 21 Jul 2021 07:14:48 GMT
+
+### Minor changes
+
+- feat(fast-design-system): improve ergonomics of the fast design system (roeisenb@microsoft.com)
+
+### Patches
+
+- Hide step-up and step-down for number-field when readonly (robarb@microsoft.com)
+- Bump @microsoft/fast-foundation to v2.5.1 (robarb@microsoft.com)
 
 ## 2.2.3
 

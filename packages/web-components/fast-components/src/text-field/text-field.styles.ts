@@ -5,7 +5,7 @@ import {
     ElementDefinitionContext,
     focusVisible,
     forcedColorsStylesheetBehavior,
-    FoundationElementDefinition,
+    TextFieldOptions,
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
@@ -31,11 +31,8 @@ import { heightNumber } from "../styles/index";
 
 export const textFieldStyles: (
     context: ElementDefinitionContext,
-    definition: FoundationElementDefinition
-) => ElementStyles = (
-    context: ElementDefinitionContext,
-    definition: FoundationElementDefinition
-) =>
+    definition: TextFieldOptions
+) => ElementStyles = (context: ElementDefinitionContext, definition: TextFieldOptions) =>
     css`
     ${display("inline-block")} :host {
         font-family: ${bodyFont};
@@ -100,10 +97,8 @@ export const textFieldStyles: (
     }
 
     ::slotted(svg) {
-        ${
-            /* Glyph size and margin-left is temporary - 
-            replace when adaptive typography is figured out */ ""
-        } width: 16px;
+        /* TODO: adaptive typography https://github.com/microsoft/fast/issues/2432 */
+        width: 16px;
         height: 16px;
     }
 

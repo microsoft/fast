@@ -247,7 +247,7 @@ describe("NumberField", () => {
             await disconnect();
         });
 
-        it("should set the `aria-describedBy` attribute on the internal control when provided", async () => {
+        it("should set the `aria-describedby` attribute on the internal control when provided", async () => {
             const { element, connect, disconnect } = await setup();
             const ariaDescribedby = "testId";
 
@@ -258,7 +258,7 @@ describe("NumberField", () => {
             expect(
                 element.shadowRoot
                     ?.querySelector(".control")
-                    ?.getAttribute("aria-describedBy")
+                    ?.getAttribute("aria-describedby")
             ).to.equal(ariaDescribedby);
 
             await disconnect();
@@ -654,6 +654,24 @@ describe("NumberField", () => {
             await disconnect();
         });
 
+        it("should set value to max if the max changes to a value less than the value", async () => {
+            const { element, connect, disconnect } = await setup();
+            const max = 10;
+            const value = 10 + max;
+
+            element.setAttribute("value", `${value}`);
+
+            await connect();
+            expect(element.value).to.equal(value.toString());
+
+            element.setAttribute("max", max.toString());
+            await DOM.nextUpdate();
+
+            expect(element.value).to.equal(max.toString());
+
+            await disconnect();
+        });
+
         it("should set value to min when value is less than min", async () => {
             const { element, connect, disconnect } = await setup();
             const min = 10;
@@ -662,6 +680,24 @@ describe("NumberField", () => {
             element.setAttribute("value", `${min - 10}`);
 
             await connect();
+            expect(element.value).to.equal(min.toString());
+
+            await disconnect();
+        });
+
+        it("should set value to min when value is less than min", async () => {
+            const { element, connect, disconnect } = await setup();
+            const min = 10;
+            const value = min - 10;
+
+            element.setAttribute("value", `${value}`);
+
+            await connect();
+            expect(element.value).to.equal(value.toString());
+
+            element.setAttribute("min", min.toString());
+            await DOM.nextUpdate();
+
             expect(element.value).to.equal(min.toString());
 
             await disconnect();
@@ -762,7 +798,93 @@ describe("NumberField", () => {
             await disconnect();
         });
 
+        it("should update the proxy value when incrementing the value", async () => {
+            const { element, connect, disconnect } = await setup();
+            const step = 2;
+            const value = 5;
 
+            element.step = step;
+            element.value = `${value}`;
+            element.stepUp();
+
+            await connect();
+            expect(element.value).to.equal(`${value + step}`);
+            expect(element.proxy.value).to.equal(`${value + step}`);
+
+            await disconnect();
+        });
+
+        it("should update the proxy value when decrementing the value", async () => {
+            const { element, connect, disconnect } = await setup();
+            const step = 2;
+            const value = 5;
+
+            element.step = step;
+            element.value = `${value}`;
+            element.stepDown();
+
+            await connect();
+            expect(element.value).to.equal(`${value - step}`);
+            expect(element.proxy.value).to.equal(`${value - step}`);
+
+            await disconnect();
+        });
+    });
+
+    describe("value validation", () => {
+        it("should allow number entry", async () => {
+            const { element, connect, disconnect } = await setup();
+
+            await connect();
+
+            element.setAttribute("value", "18");
+
+            expect(element.value).to.equal("18");
+        });
+
+        it("should not allow non-number entry", async () => {
+            const { element, connect, disconnect } = await setup();
+
+            await connect();
+
+            element.setAttribute("value", "11a");
+
+            expect(element.value).to.equal("11");
+        });
+
+        it("should allow float number entry", async () => {
+            const { element, connect, disconnect } = await setup();
+
+            await connect();
+
+            element.setAttribute("value", "37.");
+
+            expect(element.value).to.equal("37.");
+
+            element.setAttribute("value", ".1");
+
+            expect(element.value).to.equal(".1");
+        });
+
+        it("should allow positive and negative number entry", async () => {
+            const { element, connect, disconnect } = await setup();
+
+            await connect();
+
+            element.setAttribute("value", "-1");
+
+            expect(element.value).to.equal("-1");
+        });
+
+        it("should allow negative float entry", async () => {
+            const { element, connect, disconnect } = await setup();
+
+            await connect();
+
+            element.setAttribute("value", "-.6");
+
+            expect(element.value).to.equal("-.6");
+        });
     });
 
     describe("hide step", () => {
@@ -774,6 +896,25 @@ describe("NumberField", () => {
             expect(element.shadowRoot?.querySelector(".controls")).not.to.equal(null);
 
             element.setAttribute("hide-step", "");
+
+            await DOM.nextUpdate();
+
+            expect(
+                element.shadowRoot?.querySelector(".controls")).to.equal(null);
+
+            await disconnect();
+        });
+    });
+
+    describe("readonly", () => {
+        it("should not render step controls when `readonly` attribute is present", async () => {
+            const { element, connect, disconnect } = await setup();
+
+            await connect();
+
+            expect(element.shadowRoot?.querySelector(".controls")).not.to.equal(null);
+
+            element.setAttribute("readonly", "");
 
             await DOM.nextUpdate();
 

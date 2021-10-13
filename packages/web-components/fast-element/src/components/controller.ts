@@ -29,7 +29,17 @@ export class Controller extends PropertyChangeNotifier {
     private needsInitialization: boolean = true;
     private _template: ElementViewTemplate | null = null;
     private _styles: ElementStyles | null = null;
-    private _isConnected = false;
+    private _isConnected: boolean = false;
+
+    /**
+     * This allows Observable.getNotifier(...) to return the Controller
+     * when the notifier for the Controller itself is being requested. The
+     * result is that the Observable system does not need to create a separate
+     * instance of Notifier for observables on the Controller. The component and
+     * the controller will now share the same notifier, removing one-object construct
+     * per web component instance.
+     */
+    private readonly $fastController = this;
 
     /**
      * The element being controlled by this controller.
@@ -58,7 +68,7 @@ export class Controller extends PropertyChangeNotifier {
         return this._isConnected;
     }
 
-    private setIsConnected(value: boolean) {
+    private setIsConnected(value: boolean): void {
         this._isConnected = value;
         Observable.notify(this, "isConnected");
     }
@@ -162,7 +172,7 @@ export class Controller extends PropertyChangeNotifier {
             ((this.element.getRootNode() as any) as StyleTarget);
 
         if (styles instanceof HTMLStyleElement) {
-            target.prepend(styles);
+            target.append(styles);
         } else if (!styles.isAttachedTo(target)) {
             const sourceBehaviors = styles.behaviors;
             styles.addStylesTo(target);

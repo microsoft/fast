@@ -10,7 +10,6 @@ import {
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
     controlCornerRadius,
-    density,
     designUnit,
     disabledOpacity,
     fillColor,
@@ -32,7 +31,7 @@ export const sliderStyles: (
 
     ${display("inline-grid")} :host {
         --thumb-size: calc(${heightNumber} * 0.5 - ${designUnit});
-        --thumb-translate: calc(var(--thumb-size) * 0.5);
+        --thumb-translate: calc(var(--thumb-size) * -0.5 + var(--track-width) / 2);
         --track-overhang: calc((${designUnit} / 2) * -1);
         --track-width: ${designUnit};
         --fast-slider-height: calc(var(--thumb-size) * 10);
@@ -86,10 +85,10 @@ export const sliderStyles: (
         background: ${neutralForegroundRest};
     }
     :host([orientation="horizontal"]) .thumb-container {
-        transform: translateX(calc(var(--thumb-translate) * 1px));
+        transform: translateX(calc(var(--thumb-size) * 0.5px)) translateY(calc(var(--thumb-translate) * 1px));
     }
     :host([orientation="vertical"]) .thumb-container {
-        transform: translateY(calc(var(--thumb-translate) * 1px));
+        transform: translateX(calc(var(--thumb-translate) * 1px)) translateY(calc(var(--thumb-size) * 0.5px));
     }
     :host([orientation="horizontal"]) {
         min-width: calc(var(--thumb-size) * 1px);
@@ -98,14 +97,12 @@ export const sliderStyles: (
         right: calc(var(--track-overhang) * 1px);
         left: calc(var(--track-overhang) * 1px);
         align-self: start;
-        margin-top: calc((${designUnit} + calc(${density} + 2)) * 1px);
         height: calc(var(--track-width) * 1px);
     }
     :host([orientation="vertical"]) .track {
         top: calc(var(--track-overhang) * 1px);
         bottom: calc(var(--track-overhang) * 1px);
         width: calc(var(--track-width) * 1px);
-        margin-inline-start: calc((${designUnit} + calc(${density} + 2)) * 1px);
         height: 100%;
     }
     .track {

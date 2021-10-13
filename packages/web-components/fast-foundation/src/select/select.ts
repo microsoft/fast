@@ -7,7 +7,7 @@ import {
 import type { FoundationElementDefinition } from "../foundation-element";
 import type { ListboxOption } from "../listbox-option/listbox-option";
 import { ARIAGlobalStatesAndProperties } from "../patterns/aria-global";
-import { StartEnd } from "../patterns/start-end";
+import { StartEnd, StartEndOptions } from "../patterns/start-end";
 import { applyMixins } from "../utilities/apply-mixins";
 import { FormAssociatedSelect } from "./select.form-associated";
 import { SelectPosition, SelectRole } from "./select.options";
@@ -16,9 +16,10 @@ import { SelectPosition, SelectRole } from "./select.options";
  * Select configuration options
  * @public
  */
-export type SelectOptions = FoundationElementDefinition & {
-    indicator?: string | SyntheticViewTemplate;
-};
+export type SelectOptions = FoundationElementDefinition &
+    StartEndOptions & {
+        indicator?: string | SyntheticViewTemplate;
+    };
 
 /**
  * A Select Custom HTML Element.
@@ -159,6 +160,13 @@ export class Select extends FormAssociatedSelect {
     public position: SelectPosition = SelectPosition.below;
 
     /**
+     * Reference to the internal listbox element.
+     *
+     * @internal
+     */
+    public listbox: HTMLDivElement;
+
+    /**
      * Calculate and apply listbox positioning based on available viewport space.
      *
      * @param force - direction to force the listbox to display
@@ -190,6 +198,11 @@ export class Select extends FormAssociatedSelect {
      */
     @observable
     public maxHeight: number = 0;
+    private maxHeightChanged(): void {
+        if (this.listbox) {
+            this.listbox.style.setProperty("--max-height", `${this.maxHeight}px`);
+        }
+    }
 
     /**
      * The value displayed on the button.

@@ -6,13 +6,13 @@ import {
 } from "@microsoft/fast-element";
 import {
     Direction,
-    keyCodeArrowDown,
-    keyCodeArrowLeft,
-    keyCodeArrowRight,
-    keyCodeArrowUp,
-    keyCodeEnd,
-    keyCodeHome,
-    keyCodeTab,
+    keyArrowDown,
+    keyArrowLeft,
+    keyArrowRight,
+    keyArrowUp,
+    keyEnd,
+    keyHome,
+    keyTab,
     Orientation,
 } from "@microsoft/fast-web-utilities";
 import type { FoundationElementDefinition } from "../foundation-element";
@@ -251,10 +251,7 @@ export class Slider extends FormAssociatedSlider implements SliderConfiguration 
      * @internal
      */
     public disconnectedCallback(): void {
-        this.removeEventListener("keydown", this.keypressHandler);
-        this.removeEventListener("mousedown", this.handleMouseDown);
-        this.thumb.removeEventListener("mousedown", this.handleThumbMouseDown);
-        this.thumb.removeEventListener("touchstart", this.handleThumbMouseDown);
+        this.setupListeners(true);
     }
 
     /**
@@ -290,22 +287,22 @@ export class Slider extends FormAssociatedSlider implements SliderConfiguration 
     }
 
     protected keypressHandler = (e: KeyboardEvent) => {
-        if (e.keyCode !== keyCodeTab) {
+        if (e.key === keyHome) {
             e.preventDefault();
-        }
-
-        if (e.keyCode === keyCodeHome) {
             this.value = `${this.min}`;
-        } else if (e.keyCode === keyCodeEnd) {
+        } else if (e.key === keyEnd) {
+            e.preventDefault();
             this.value = `${this.max}`;
         } else if (!e.shiftKey) {
-            switch (e.keyCode) {
-                case keyCodeArrowRight:
-                case keyCodeArrowUp:
+            switch (e.key) {
+                case keyArrowRight:
+                case keyArrowUp:
+                    e.preventDefault();
                     this.increment();
                     break;
-                case keyCodeArrowLeft:
-                case keyCodeArrowDown:
+                case keyArrowLeft:
+                case keyArrowDown:
+                    e.preventDefault();
                     this.decrement();
                     break;
             }
@@ -361,11 +358,17 @@ export class Slider extends FormAssociatedSlider implements SliderConfiguration 
         }
     };
 
-    private setupListeners = (): void => {
-        this.addEventListener("keydown", this.keypressHandler);
-        this.addEventListener("mousedown", this.handleMouseDown);
-        this.thumb.addEventListener("mousedown", this.handleThumbMouseDown);
-        this.thumb.addEventListener("touchstart", this.handleThumbMouseDown);
+    private setupListeners = (remove: boolean = false): void => {
+        const eventAction = `${remove ? "remove" : "add"}EventListener`;
+        this[eventAction]("keydown", this.keypressHandler);
+        this[eventAction]("mousedown", this.handleMouseDown);
+        this.thumb[eventAction]("mousedown", this.handleThumbMouseDown);
+        this.thumb[eventAction]("touchstart", this.handleThumbMouseDown);
+        // removes handlers attached by mousedown handlers
+        if (remove) {
+            this.handleMouseDown(null);
+            this.handleThumbMouseDown(null);
+        }
     };
 
     /**
@@ -393,18 +396,22 @@ export class Slider extends FormAssociatedSlider implements SliderConfiguration 
 
     /**
      *  Handle mouse moves during a thumb drag operation
+     *  If the event handler is null it removes the events
      */
-    private handleThumbMouseDown = (event: MouseEvent): void => {
-        if (this.readOnly || this.disabled || event.defaultPrevented) {
-            return;
+    private handleThumbMouseDown = (event: MouseEvent | null): void => {
+        if (event) {
+            if (this.readOnly || this.disabled || event.defaultPrevented) {
+                return;
+            }
+            event.preventDefault();
+            (event.target as HTMLElement).focus();
         }
-        event.preventDefault();
-        (event.target as HTMLElement).focus();
-        window.addEventListener("mouseup", this.handleWindowMouseUp);
-        window.addEventListener("mousemove", this.handleMouseMove);
-        window.addEventListener("touchmove", this.handleMouseMove);
-        window.addEventListener("touchend", this.handleWindowMouseUp);
-        this.isDragging = true;
+        const eventAction = `${event !== null ? "add" : "remove"}EventListener`;
+        window[eventAction]("mouseup", this.handleWindowMouseUp);
+        window[eventAction]("mousemove", this.handleMouseMove);
+        window[eventAction]("touchmove", this.handleMouseMove);
+        window[eventAction]("touchend", this.handleWindowMouseUp);
+        this.isDragging = event !== null;
     };
 
     /**
@@ -422,8 +429,8 @@ export class Slider extends FormAssociatedSlider implements SliderConfiguration 
                 : (e as MouseEvent);
         const eventValue: number =
             this.orientation === Orientation.horizontal
-                ? sourceEvent.pageX - this.trackLeft
-                : sourceEvent.pageY;
+                ? sourceEvent.pageX - document.documentElement.scrollLeft - this.trackLeft
+                : sourceEvent.pageY - document.documentElement.scrollTop;
 
         this.value = `${this.calculateNewValue(eventValue)}`;
     };
@@ -453,26 +460,32 @@ export class Slider extends FormAssociatedSlider implements SliderConfiguration 
 
     private stopDragging = (): void => {
         this.isDragging = false;
-        window.removeEventListener("mouseup", this.handleWindowMouseUp);
-        window.removeEventListener("mousemove", this.handleMouseMove);
-        window.removeEventListener("touchmove", this.handleMouseMove);
-        window.removeEventListener("touchend", this.handleWindowMouseUp);
+        this.handleMouseDown(null);
+        this.handleThumbMouseDown(null);
     };
 
-    private handleMouseDown = (e: MouseEvent) => {
-        e.preventDefault();
-        if (!this.disabled && !this.readOnly) {
-            this.setupTrackConstraints();
-            (e.target as HTMLElement).focus();
-            window.addEventListener("mouseup", this.handleWindowMouseUp);
-            window.addEventListener("mousemove", this.handleMouseMove);
+    /**
+     *
+     * @param e - MouseEvent or null. If there is no event handler it will remove the events
+     */
+    private handleMouseDown = (e: MouseEvent | null) => {
+        const eventAction = `${e !== null ? "add" : "remove"}EventListener`;
+        if (e === null || (!this.disabled && !this.readOnly)) {
+            window[eventAction]("mouseup", this.handleWindowMouseUp);
+            window.document[eventAction]("mouseleave", this.handleWindowMouseUp);
+            window[eventAction]("mousemove", this.handleMouseMove);
 
-            const controlValue: number =
-                this.orientation === Orientation.horizontal
-                    ? e.pageX - this.trackLeft
-                    : e.pageY;
+            if (e) {
+                e.preventDefault();
+                this.setupTrackConstraints();
+                (e.target as HTMLElement).focus();
+                const controlValue: number =
+                    this.orientation === Orientation.horizontal
+                        ? e.pageX - document.documentElement.scrollLeft - this.trackLeft
+                        : e.pageY - document.documentElement.scrollTop;
 
-            this.value = `${this.calculateNewValue(controlValue)}`;
+                this.value = `${this.calculateNewValue(controlValue)}`;
+            }
         }
     };
 
