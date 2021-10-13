@@ -416,6 +416,8 @@ export class Combobox extends FormAssociatedCombobox {
     // @internal
     keyupHandler(e: KeyboardEvent): boolean | void;
     // @internal
+    listbox: HTMLDivElement;
+    // @internal
     listboxId: string;
     // @internal
     maxHeight: number;
@@ -1940,6 +1942,8 @@ export class Select extends FormAssociatedSelect {
     formResetCallback: () => void;
     // @internal
     keydownHandler(e: KeyboardEvent): boolean | void;
+    // @internal
+    listbox: HTMLDivElement;
     // @internal
     maxHeight: number;
     // @internal
