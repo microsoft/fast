@@ -1,12 +1,14 @@
-import type { Constructable } from "@microsoft/fast-element";
+import { Constructable, DOM } from "@microsoft/fast-element";
 import { expect } from "chai";
 import { FoundationElement } from "..";
 import { Container, DI, Registration } from "../di";
 import { uniqueElementName } from "../test-utilities/fixture";
 import { DesignSystem, ElementDisambiguation } from "./design-system";
 import type { DesignSystemRegistrationContext } from "./registration-context";
+import { DesignToken } from "../design-token/design-token";
 
 describe("DesignSystem", () => {
+    // afterEach(() => DesignToken.deregisterRoot())
     it("Should return the same instance for the same element", () => {
         const host = document.createElement("div");
         const ds1 = DesignSystem.getOrCreate(host);
@@ -27,17 +29,6 @@ describe("DesignSystem", () => {
     });
 
     it("Should initialize with a default prefix of 'fast'", () => {
-        const host = document.createElement("div");
-        let prefix = '';
-
-        DesignSystem.getOrCreate(host)
-            .register({
-                register(container: Container, context: DesignSystemRegistrationContext) {
-                    prefix = context.elementPrefix;
-                }
-            });
-
-        expect(prefix).to.equal("fast");
     });
 
     it("Should initialize with a provided prefix", () => {
@@ -381,5 +372,47 @@ describe("DesignSystem", () => {
         const found = DI.getOrCreateDOMContainer(host).get(Test);
 
         expect(found).to.be.instanceOf(AltTest);
+    });
+
+    xit("should set the DesignToken root to the default root when register is invoked", async () => {
+        const token = DesignToken.create<number>("design-system-registration").withDefault(12);
+        const host = document.createElement("div");
+        expect(window.getComputedStyle(document.body).getPropertyValue(token.cssCustomProperty)).to.equal("");
+
+        DesignSystem.getOrCreate(host)
+            .register({
+                register(container: Container, context: DesignSystemRegistrationContext) {}
+            });
+
+
+        await DOM.nextUpdate();
+        expect(window.getComputedStyle(document.body).getPropertyValue(token.cssCustomProperty)).to.equal("12");
+
+        // Clean up for next test
+        DesignToken.deregisterRoot();
+        // await DOM.nextUpdate();
+        // expect(window.getComputedStyle(document.body).getPropertyValue(token.cssCustomProperty)).to.equal("");
+    });
+
+    xit("should provide a way to specify the DesignToken root", async () => {
+        const token = DesignToken.create<number>("custom-design-system-registration").withDefault(12);
+        const host = document.createElement("div");
+        // expect(window.getComputedStyle(document.body).getPropertyValue(token.cssCustomProperty)).to.equal("");
+
+        DesignSystem.getOrCreate(host)
+            .withDesignTokenRoot(host)
+            .register({
+                register(container: Container, context: DesignSystemRegistrationContext) {}
+            });
+
+
+        await DOM.nextUpdate();
+        const value = host.style.getPropertyValue(token.cssCustomProperty)
+        console.log(value);
+        // expect(value).to.equal("12");
+        // expect(window.getComputedStyle(document.body).getPropertyValue(token.cssCustomProperty)).to.equal("");
+        DesignToken.deregisterRoot(host);
+        await DOM.nextUpdate();
+        expect(window.getComputedStyle(document.body).getPropertyValue(token.cssCustomProperty)).to.equal("");
     });
 });

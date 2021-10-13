@@ -32,6 +32,13 @@ function removeElement(...els: HTMLElement[]) {
 }
 
 describe("A DesignToken", () => {
+    beforeEach(() => {
+        DesignToken.registerRoot();
+    });
+
+    after(() => {
+        DesignToken.deregisterRoot();
+    });
     it("should support declared types", () => {
         const number: DesignToken<number> = DesignToken.create<number>('number');
         const nil: DesignToken<null> = DesignToken.create<null>('number');
@@ -524,12 +531,13 @@ describe("A DesignToken", () => {
                 const tokenA = DesignToken.create<number>("token-a");
                 const tokenB = DesignToken.create<number>("token-b");
                 const tokenC = DesignToken.create<number>("token-c");
-                const parent = addElement();
+                const grandparent = addElement()
+                const parent = addElement(grandparent);
                 const child = addElement(parent);
 
-                tokenA.withDefault(3);
-                tokenB.withDefault((el: HTMLElement) => tokenA.getValueFor(el) * 2);
-                tokenC.withDefault((el) => tokenB.getValueFor(el) * 2)
+                tokenA.setValueFor(grandparent, 3);
+                tokenB.setValueFor(grandparent, (el: HTMLElement) => tokenA.getValueFor(el) * 2);
+                tokenC.setValueFor(grandparent, (el) => tokenB.getValueFor(el) * 2)
 
                 await DOM.nextUpdate();
 
@@ -543,6 +551,8 @@ describe("A DesignToken", () => {
                 expect(window.getComputedStyle(child).getPropertyValue(tokenC.cssCustomProperty)).to.equal("16");
         });
         it("should update tokens when an element for which a token with static dependencies is set is appended to the DOM", async () => {
+
+
             const tokenA = DesignToken.create<number>("token-a");
             const tokenB = DesignToken.create<number>("token-b");
 
@@ -1000,8 +1010,9 @@ describe("A DesignToken", () => {
         });
     });
 
-    describe("without a registered root", () => {
+    describe("with root registration", () => {
         it("should not emit CSS custom properties for the default value", () => {
+            DesignToken.deregisterRoot();
             const token = DesignToken.create<number>('default-no-root').withDefault(12);
             const styles = window.getComputedStyle(document.body);
 
@@ -1049,6 +1060,7 @@ describe("A DesignToken", () => {
             DesignToken.deregisterRoot(element);
         });
         it("should emit CSS custom properties to multiple roots", async () => {
+            DesignToken.deregisterRoot();
             const token = DesignToken.create<number>('default-with-multiple-roots').withDefault(12);
             const a = addElement();
             const b = addElement();
