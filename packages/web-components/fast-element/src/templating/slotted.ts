@@ -1,5 +1,4 @@
-import type { BehaviorTargets } from "..";
-import { AttachedBehaviorHTMLDirective } from "./html-directive";
+import { AttachedBehaviorHTMLDirective, BehaviorTargets } from "./html-directive";
 import { NodeBehaviorOptions, NodeObservationBehavior } from "./node-observation";
 import type { CaptureType } from "./template";
 
