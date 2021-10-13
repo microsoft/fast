@@ -4,6 +4,7 @@ import { DesignSystem } from "../design-system";
 import { uniqueElementName } from "../test-utilities/fixture";
 import { FoundationElement } from "../foundation-element";
 import { CSSDesignToken, DesignToken, DesignTokenChangeRecord, DesignTokenSubscriber } from "./design-token";
+import { defaultElement } from "./custom-property-manager";
 import spies from "chai-spies";
 
 chia.use(spies);
@@ -996,6 +997,64 @@ describe("A DesignToken", () => {
             tokenA.setValueFor(grandparent, () => 7);
             await DOM.nextUpdate();
             expect(handleChange).to.have.been.called();
+        });
+    });
+
+    describe("without a registered root", () => {
+        it("should not emit CSS custom properties for the default value", () => {
+            const token = DesignToken.create<number>('default-no-root').withDefault(12);
+            const styles = window.getComputedStyle(document.body);
+
+            expect(styles.getPropertyValue(token.cssCustomProperty)).to.equal("");
+        });
+
+        it("should emit CSS custom properties for the default value when a design token root is registered", async () => {
+            const token = DesignToken.create<number>('default-with-root').withDefault(12);
+            const styles = window.getComputedStyle(document.body);
+
+            DesignToken.registerRoot();
+
+            await DOM.nextUpdate();
+
+            expect(styles.getPropertyValue(token.cssCustomProperty)).to.equal("12");
+            DesignToken.deregisterRoot();
+        });
+
+        it("should emit CSS custom properties to an element when the element is provided as a root", async () => {
+            const token = DesignToken.create<number>('default-with-root').withDefault(12);
+            const element = addElement();
+
+            DesignToken.registerRoot(element);
+
+            await DOM.nextUpdate();
+            const styles = window.getComputedStyle(element);
+
+            expect(styles.getPropertyValue(token.cssCustomProperty)).to.equal("12");
+            DesignToken.deregisterRoot(element);
+        });
+        it("should emit CSS custom properties to multiple roots", async () => {
+            const token = DesignToken.create<number>('default-with-root').withDefault(12);
+            const a = addElement();
+            const b = addElement();
+
+            DesignToken.registerRoot(a);
+            await DOM.nextUpdate();
+
+            expect(window.getComputedStyle(a).getPropertyValue(token.cssCustomProperty)).to.equal("12");
+            expect(window.getComputedStyle(b).getPropertyValue(token.cssCustomProperty)).to.equal("");
+            expect(window.getComputedStyle(document.body).getPropertyValue(token.cssCustomProperty)).to.equal("");
+
+            DesignToken.registerRoot(b);
+            await DOM.nextUpdate();
+            expect(window.getComputedStyle(a).getPropertyValue(token.cssCustomProperty)).to.equal("12");
+            expect(window.getComputedStyle(b).getPropertyValue(token.cssCustomProperty)).to.equal("12");
+            expect(window.getComputedStyle(document.body).getPropertyValue(token.cssCustomProperty)).to.equal("");
+
+            DesignToken.registerRoot();
+            await DOM.nextUpdate();
+            expect(window.getComputedStyle(a).getPropertyValue(token.cssCustomProperty)).to.equal("12");
+            expect(window.getComputedStyle(b).getPropertyValue(token.cssCustomProperty)).to.equal("12");
+            expect(window.getComputedStyle(document.body).getPropertyValue(token.cssCustomProperty)).to.equal("12");
         });
     });
 });
