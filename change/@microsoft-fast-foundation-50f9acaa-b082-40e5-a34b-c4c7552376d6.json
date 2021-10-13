@@ -1,0 +1,7 @@
+{
+  "type": "minor",
+  "comment": "Add focus event handler to tooltip",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "v-dlesac@microsoft.com",
+  "dependentChangeType": "patch"
+}
