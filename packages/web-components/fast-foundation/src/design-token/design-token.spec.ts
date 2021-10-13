@@ -32,12 +32,14 @@ function removeElement(...els: HTMLElement[]) {
 }
 
 describe("A DesignToken", () => {
-    beforeEach(() => {
+    beforeEach(async () => {
         DesignToken.registerRoot();
+        await DOM.nextUpdate();
     });
 
-    after(() => {
+    after(async () => {
         DesignToken.deregisterRoot();
+        await DOM.nextUpdate();
     });
     it("should support declared types", () => {
         const number: DesignToken<number> = DesignToken.create<number>('number');
