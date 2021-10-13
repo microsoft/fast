@@ -10,10 +10,9 @@ import { enableArrayObservation } from "../observation/array-observer";
 import type { Splice } from "../observation/array-change-records";
 import type { Behavior } from "../observation/behavior";
 import { emptyArray } from "../platform";
-import { HTMLDirective } from "./html-directive";
+import { BehaviorTargets, HTMLDirective } from "./html-directive";
 import { HTMLView, SyntheticView } from "./view";
 import type { CaptureType, SyntheticViewTemplate } from "./template";
-import type { BehaviorTargets } from "..";
 
 /**
  * Options for configuring repeat behavior.
