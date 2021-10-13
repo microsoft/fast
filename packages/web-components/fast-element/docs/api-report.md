@@ -215,7 +215,6 @@ export const DOM: Readonly<{
     nextUpdate(): Promise<void>;
     setAttribute(element: HTMLElement, attributeName: string, value: any): void;
     setBooleanAttribute(element: HTMLElement, attributeName: string, value: boolean): void;
-    removeChildNodes(parent: Node): void;
 }>;
 
 // @public

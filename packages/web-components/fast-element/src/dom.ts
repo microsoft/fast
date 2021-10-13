@@ -217,14 +217,4 @@ export const DOM = Object.freeze({
             ? element.setAttribute(attributeName, "")
             : element.removeAttribute(attributeName);
     },
-
-    /**
-     * Removes all the child nodes of the provided parent node.
-     * @param parent - The node to remove the children from.
-     */
-    removeChildNodes(parent: Node) {
-        for (let child = parent.firstChild; child !== null; child = parent.firstChild) {
-            parent.removeChild(child);
-        }
-    },
 });

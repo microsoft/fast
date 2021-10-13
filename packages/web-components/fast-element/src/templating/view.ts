@@ -82,9 +82,19 @@ export interface SyntheticView extends View {
     dispose(): void;
 }
 
-// A singleton Range instance used to efficiently remove ranges of DOM nodes.
-// See the implementation of HTMLView below for further details.
-const range = document.createRange();
+function removeNodeSequence(firstNode: Node, lastNode: Node) {
+    const parent = firstNode.parentNode!;
+    let current = firstNode;
+    let next: ChildNode | null;
+
+    while (current !== lastNode) {
+        next = current.nextSibling;
+        parent.removeChild(current);
+        current = next!;
+    }
+
+    parent.removeChild(lastNode);
+}
 
 /**
  * The standard View implementation, which also implements ElementView and SyntheticView.
@@ -182,28 +192,8 @@ export class HTMLView implements ElementView, SyntheticView {
      * Once a view has been disposed, it cannot be inserted or bound again.
      */
     public dispose(): void {
-        const parent = this.firstChild.parentNode!;
-        const end = this.lastChild!;
-        let current = this.firstChild!;
-        let next;
-
-        while (current !== end) {
-            next = current.nextSibling;
-            parent.removeChild(current);
-            current = next!;
-        }
-
-        parent.removeChild(end);
-
-        const behaviors = this.behaviors;
-
-        if (behaviors !== null) {
-            const oldSource = this.source;
-
-            for (let i = 0, ii = behaviors.length; i < ii; ++i) {
-                behaviors[i].unbind(oldSource);
-            }
-        }
+        removeNodeSequence(this.firstChild, this.lastChild);
+        this.unbind();
     }
 
     /**
@@ -213,38 +203,34 @@ export class HTMLView implements ElementView, SyntheticView {
      */
     public bind(source: unknown, context: ExecutionContext): void {
         let behaviors = this.behaviors;
+        const oldSource = this.source;
 
-        if (this.source === source) {
+        if (oldSource === source) {
             return;
-        } else if (this.source !== null) {
-            const oldSource = this.source;
+        }
 
-            this.source = source;
-            this.context = context;
+        this.source = source;
+        this.context = context;
 
+        if (oldSource !== null) {
             for (let i = 0, ii = behaviors!.length; i < ii; ++i) {
                 const current = behaviors![i];
                 current.unbind(oldSource);
                 current.bind(source, context);
             }
+        } else if (behaviors === null) {
+            this.behaviors = behaviors = new Array<Behavior>(this.factories.length);
+            const targets = this.targets;
+            const factories = this.factories;
+
+            for (let i = 0, ii = factories.length; i < ii; ++i) {
+                const behavior = factories[i].createBehavior(targets);
+                behavior.bind(source, context);
+                behaviors[i] = behavior;
+            }
         } else {
-            this.source = source;
-            this.context = context;
-
-            if (behaviors === null) {
-                this.behaviors = behaviors = new Array<Behavior>(this.factories.length);
-                const targets = this.targets;
-                const factories = this.factories;
-
-                for (let i = 0, ii = factories.length; i < ii; ++i) {
-                    const behavior = factories[i].createBehavior(targets);
-                    behavior.bind(source, context);
-                    behaviors[i] = behavior;
-                }
-            } else {
-                for (let i = 0, ii = behaviors.length; i < ii; ++i) {
-                    behaviors[i].bind(source, context);
-                }
+            for (let i = 0, ii = behaviors.length; i < ii; ++i) {
+                behaviors[i].bind(source, context);
             }
         }
     }
@@ -277,18 +263,10 @@ export class HTMLView implements ElementView, SyntheticView {
             return;
         }
 
-        range.setStartBefore(views[0].firstChild);
-        range.setEndAfter(views[views.length - 1].lastChild);
-        range.deleteContents();
+        removeNodeSequence(views[0].firstChild, views[views.length - 1].lastChild);
 
         for (let i = 0, ii = views.length; i < ii; ++i) {
-            const view = views[i] as any;
-            const behaviors = view.behaviors as Behavior[];
-            const oldSource = view.source;
-
-            for (let j = 0, jj = behaviors.length; j < jj; ++j) {
-                behaviors[j].unbind(oldSource);
-            }
+            views[i].unbind();
         }
     }
 }

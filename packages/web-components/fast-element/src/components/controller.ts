@@ -434,7 +434,9 @@ export class Controller extends PropertyChangeNotifier {
             (this as Mutable<this>).view = null;
         } else if (!this.needsInitialization) {
             // If there was previous custom rendering, we need to clear out the host.
-            DOM.removeChildNodes(host);
+            for (let child = host.firstChild; child !== null; child = host.firstChild) {
+                host.removeChild(child);
+            }
         }
 
         if (template) {
