@@ -1,4 +1,3 @@
-import type { BehaviorTargets } from "..";
 import { DOM } from "../dom";
 import type { Behavior } from "../observation/behavior";
 import {
@@ -8,7 +7,7 @@ import {
     Observable,
     setCurrentEvent,
 } from "../observation/observable";
-import { TargetedHTMLDirective } from "./html-directive";
+import { BehaviorTargets, TargetedHTMLDirective } from "./html-directive";
 import type { SyntheticView } from "./view";
 
 function normalBind(
