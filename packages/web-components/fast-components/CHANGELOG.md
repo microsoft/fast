@@ -1,8 +1,21 @@
 # Change Log - @microsoft/fast-components
 
-This log was last generated on Wed, 13 Oct 2021 01:53:37 GMT and should not be manually modified.
+This log was last generated on Wed, 13 Oct 2021 22:45:16 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.13.0
+
+Wed, 13 Oct 2021 22:45:16 GMT
+
+### Minor changes
+
+- Adding fast-calendar component (robarb@microsoft.com)
+
+### Patches
+
+- Bump @microsoft/fast-element to v1.6.1 (markwhitfeld@users.noreply.github.com)
+- Bump @microsoft/fast-foundation to v2.20.0 (robarb@microsoft.com)
 
 ## 2.12.0
 

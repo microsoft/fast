@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "Code fixes for calendar",
-  "packageName": "@microsoft/fast-foundation",
-  "email": "robarb@microsoft.com",
-  "dependentChangeType": "patch"
-}

@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-element
 
-This log was last generated on Fri, 08 Oct 2021 19:53:11 GMT and should not be manually modified.
+This log was last generated on Wed, 13 Oct 2021 22:45:16 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.6.1
+
+Wed, 13 Oct 2021 22:45:16 GMT
+
+### Patches
+
+- build(fast-element): exclude empty js files from esm index.js (markwhitfeld@users.noreply.github.com)
 
 ## 1.6.0
 

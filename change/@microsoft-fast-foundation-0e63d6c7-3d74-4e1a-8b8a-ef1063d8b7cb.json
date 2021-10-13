@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "move style assignment for combobox and select into the class and off the DOM node",
-  "packageName": "@microsoft/fast-foundation",
-  "email": "chhol@microsoft.com",
-  "dependentChangeType": "patch"
-}

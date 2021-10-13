@@ -2,6 +2,41 @@
   "name": "@microsoft/fast-foundation",
   "entries": [
     {
+      "date": "Wed, 13 Oct 2021 22:45:16 GMT",
+      "tag": "@microsoft/fast-foundation_v2.20.0",
+      "version": "2.20.0",
+      "comments": {
+        "patch": [
+          {
+            "comment": "move style assignment for combobox and select into the class and off the DOM node",
+            "author": "chhol@microsoft.com",
+            "commit": "5c578249ef912e0bc49083ecbfa0993b3fe97fec",
+            "package": "@microsoft/fast-foundation"
+          },
+          {
+            "comment": "Code fixes for calendar",
+            "author": "robarb@microsoft.com",
+            "commit": "06fbb91d14e50812d893c4d0945e81cb42649df4",
+            "package": "@microsoft/fast-foundation"
+          },
+          {
+            "comment": "Bump @microsoft/fast-element to v1.6.1",
+            "author": "markwhitfeld@users.noreply.github.com",
+            "commit": "49d27d20bf430ea4639978ba363e017fc5aa88e4",
+            "package": "@microsoft/fast-foundation"
+          }
+        ],
+        "minor": [
+          {
+            "comment": "Adding fast-calendar component",
+            "author": "robarb@microsoft.com",
+            "commit": "44576902475e935878357bd6b116c224e4cf6342",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 13 Oct 2021 01:53:37 GMT",
       "tag": "@microsoft/fast-foundation_v2.19.0",
       "version": "2.19.0",

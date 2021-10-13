@@ -1,8 +1,16 @@
 # Change Log - fast-design-system-demo
 
-This log was last generated on Wed, 13 Oct 2021 01:53:37 GMT and should not be manually modified.
+This log was last generated on Wed, 13 Oct 2021 22:45:16 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.0.0
+
+Wed, 13 Oct 2021 22:45:16 GMT
+
+### Patches
+
+- Bump @microsoft/fast-components to v2.13.0 (robarb@microsoft.com)
 
 ## 1.0.0
 
