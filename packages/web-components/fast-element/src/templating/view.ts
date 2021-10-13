@@ -1,3 +1,4 @@
+import type { BehaviorTargets, NodeBehaviorFactory } from "..";
 import type { Behavior } from "../observation/behavior";
 import type { ExecutionContext } from "../observation/observable";
 
@@ -90,6 +91,8 @@ const range = document.createRange();
  * @public
  */
 export class HTMLView implements ElementView, SyntheticView {
+    private behaviors: Behavior[] | null = null;
+
     /**
      * The data that the view is bound to.
      */
@@ -117,7 +120,8 @@ export class HTMLView implements ElementView, SyntheticView {
      */
     public constructor(
         private fragment: DocumentFragment,
-        private behaviors: Behavior[]
+        private factories: NodeBehaviorFactory[],
+        private targets: BehaviorTargets
     ) {
         this.firstChild = fragment.firstChild!;
         this.lastChild = fragment.lastChild!;
@@ -192,10 +196,13 @@ export class HTMLView implements ElementView, SyntheticView {
         parent.removeChild(end);
 
         const behaviors = this.behaviors;
-        const oldSource = this.source;
 
-        for (let i = 0, ii = behaviors.length; i < ii; ++i) {
-            behaviors[i].unbind(oldSource);
+        if (behaviors !== null) {
+            const oldSource = this.source;
+
+            for (let i = 0, ii = behaviors.length; i < ii; ++i) {
+                behaviors[i].unbind(oldSource);
+            }
         }
     }
 
@@ -205,7 +212,7 @@ export class HTMLView implements ElementView, SyntheticView {
      * @param context - The execution context to run the behaviors within.
      */
     public bind(source: unknown, context: ExecutionContext): void {
-        const behaviors = this.behaviors;
+        let behaviors = this.behaviors;
 
         if (this.source === source) {
             return;
@@ -215,8 +222,8 @@ export class HTMLView implements ElementView, SyntheticView {
             this.source = source;
             this.context = context;
 
-            for (let i = 0, ii = behaviors.length; i < ii; ++i) {
-                const current = behaviors[i];
+            for (let i = 0, ii = behaviors!.length; i < ii; ++i) {
+                const current = behaviors![i];
                 current.unbind(oldSource);
                 current.bind(source, context);
             }
@@ -224,8 +231,20 @@ export class HTMLView implements ElementView, SyntheticView {
             this.source = source;
             this.context = context;
 
-            for (let i = 0, ii = behaviors.length; i < ii; ++i) {
-                behaviors[i].bind(source, context);
+            if (behaviors === null) {
+                this.behaviors = behaviors = new Array<Behavior>(this.factories.length);
+                const targets = this.targets;
+                const factories = this.factories;
+
+                for (let i = 0, ii = factories.length; i < ii; ++i) {
+                    const behavior = factories[i].createBehavior(targets);
+                    behavior.bind(source, context);
+                    behaviors[i] = behavior;
+                }
+            } else {
+                for (let i = 0, ii = behaviors.length; i < ii; ++i) {
+                    behaviors[i].bind(source, context);
+                }
             }
         }
     }
@@ -234,12 +253,13 @@ export class HTMLView implements ElementView, SyntheticView {
      * Unbinds a view's behaviors from its binding source.
      */
     public unbind(): void {
-        if (this.source === null) {
+        const oldSource = this.source;
+
+        if (oldSource === null) {
             return;
         }
 
-        const behaviors = this.behaviors;
-        const oldSource = this.source;
+        const behaviors = this.behaviors!;
 
         for (let i = 0, ii = behaviors.length; i < ii; ++i) {
             behaviors[i].unbind(oldSource);

@@ -102,15 +102,12 @@ export class ViewTemplate<TSource = any, TParent = any>
 
         const result = this.result;
         const fragment = result.fragment.cloneNode(true) as DocumentFragment;
-        const factories = result.factories;
-        const behaviors = new Array<Behavior>(factories.length);
-        const targets = result.createTargets(fragment, hostBindingTarget);
 
-        for (let i = 0, ii = factories.length; i < ii; ++i) {
-            behaviors[i] = factories[i].createBehavior(targets);
-        }
-
-        return new HTMLView(fragment, behaviors);
+        return new HTMLView(
+            fragment,
+            result.factories,
+            result.createTargets(fragment, hostBindingTarget)
+        );
     }
 
     /**

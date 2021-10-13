@@ -349,7 +349,7 @@ export class HTMLTemplateCompilationResult {
 
 // @public
 export class HTMLView implements ElementView, SyntheticView {
-    constructor(fragment: DocumentFragment, behaviors: Behavior[]);
+    constructor(fragment: DocumentFragment, factories: NodeBehaviorFactory[], targets: BehaviorTargets);
     appendTo(node: Node): void;
     bind(source: unknown, context: ExecutionContext): void;
     context: ExecutionContext | null;
