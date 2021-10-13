@@ -269,7 +269,6 @@ export class VirtualizingStackBase extends FoundationElement {
     private resizeDetector: ResizeObserverClassDefinition | null = null;
 
     private pendingPositioningUpdate: boolean = false;
-
     private pendingReset: boolean = false;
 
     private visibleRangeStart: number = 0;
@@ -383,12 +382,9 @@ export class VirtualizingStackBase extends FoundationElement {
     }
 
     private startLayoutUpdateTimer(): void {
-        if (this.layoutUpdateDelay < 1) {
-            this.updateVisibleItems();
-            return;
-        }
         this.clearLayoutUpdateTimer();
         this.scrollLayoutUpdateTimer = window.setTimeout((): void => {
+            this.clearLayoutUpdateTimer();
             this.updateVisibleItems();
         }, this.layoutUpdateDelay);
     }
@@ -404,16 +400,30 @@ export class VirtualizingStackBase extends FoundationElement {
      * starts event listeners that can trigger auto updating
      */
     private startAutoUpdateEventListeners = (): void => {
-        window.addEventListener(eventResize, this.requestPositionUpdates, {
+        window.addEventListener(eventResize, this.handleResizeEvent, {
             passive: true,
         });
-        window.addEventListener(eventScroll, this.requestPositionUpdates, {
+        window.addEventListener(eventScroll, this.handleScrollEvent, {
             passive: true,
             capture: true,
         });
         if (this.resizeDetector !== null && this.viewportElement !== null) {
             this.resizeDetector.observe(this.viewportElement);
         }
+    };
+
+    /**
+     *
+     */
+    private handleScrollEvent = (e: Event): void => {
+        this.requestPositionUpdates();
+    };
+
+    /**
+     *
+     */
+    private handleResizeEvent = (e: Event): void => {
+        this.requestPositionUpdates();
     };
 
     /**
@@ -500,8 +510,6 @@ export class VirtualizingStackBase extends FoundationElement {
      *
      */
     private updateVisibleItems = (): void => {
-        this.clearLayoutUpdateTimer();
-
         if (this.pendingPositioningUpdate) {
             return;
         }
@@ -598,6 +606,7 @@ export class VirtualizingStackBase extends FoundationElement {
                 );
                 this.firstRenderedIndex = newFirstRenderedIndex;
                 this.lastRenderedIndex = newLastRenderedIndex;
+                this.gridTemplateSpans = `${this.startSpacerSpan}px repeat(${this.visibleItems.length}, ${this.itemSpan}px) ${this.endSpacerSpan}px`;
                 return;
             }
 
@@ -696,6 +705,10 @@ export class VirtualizingStackBase extends FoundationElement {
             this.viewportRect = viewportEntry.boundingClientRect;
         }
 
-        this.startLayoutUpdateTimer();
+        if (this.layoutUpdateDelay > 0) {
+            this.startLayoutUpdateTimer();
+            return;
+        }
+        this.updateVisibleItems();
     };
 }

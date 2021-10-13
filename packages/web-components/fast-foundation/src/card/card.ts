@@ -11,7 +11,6 @@ export class Card extends FoundationElement {
      */
     connectedCallback() {
         super.connectedCallback();
-        console.debug("cardConnected");
     }
 
     /**
@@ -19,6 +18,5 @@ export class Card extends FoundationElement {
      */
     public disconnectedCallback(): void {
         super.disconnectedCallback();
-        console.debug("cardDisconnected");
     }
 }

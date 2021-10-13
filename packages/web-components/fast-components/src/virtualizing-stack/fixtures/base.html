@@ -1,12 +1,19 @@
 <h1>
     Virtualizing Stack
 </h1>
-<div style="height: 360px; display: grid; grid-template-rows: 1fr 1fr;">
+<div
+    style="
+        height: 200px;
+        display: grid;
+        grid-template-rows: 1fr 1fr;
+        margin-bottom: 120px;
+    "
+>
     <fast-virtualizing-stack
         orientation="horizontal"
         item-span="100"
         id="stackh1"
-        style="grid-row: 1; height: 120px; background: gray;"
+        style="grid-row: 1; height: 100px; background: gray;"
     ></fast-virtualizing-stack>
 
     <fast-virtualizing-stack
@@ -14,7 +21,7 @@
         item-span="100"
         id="stackh2"
         style="
-            height: 120px;
+            height: 100px;
             width: 400px;
             grid-row: 2;
             overflow-x: scroll;
@@ -23,18 +30,18 @@
         "
     ></fast-virtualizing-stack>
 </div>
-<div style="width: 240px; display: grid; grid-template-columns: 1fr 1fr;">
+<div style="width: 200px; display: grid; grid-template-columns: 1fr 1fr;">
     <fast-virtualizing-stack
         item-span="100"
         id="stackv1"
-        style="grid-column: 1; width: 120px; background: gray; height: auto;"
+        style="grid-column: 1; width: 100px; background: gray; height: auto;"
     ></fast-virtualizing-stack>
 
     <fast-virtualizing-stack
         item-span="100"
         id="stackv2"
         style="
-            width: 120px;
+            width: 100px;
             height: 400px;
             grid-column: 2;
             overflow-y: scroll;

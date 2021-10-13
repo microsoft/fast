@@ -21,7 +21,7 @@ const imageItemTemplate = html`
         <image
             style="
                 height:100px;
-                width:120px;
+                width:100px;
             "
             src="${x => x.url}"
         ></image>
