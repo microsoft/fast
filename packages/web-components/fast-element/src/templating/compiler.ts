@@ -10,6 +10,7 @@ type InlineDirective = HTMLDirective & {
     targetAtContent(): void;
 };
 
+const targetIdFrom = (parentId: string, nodeIndex: number) => `${parentId}.${nodeIndex}`;
 const descriptorCache: PropertyDescriptorMap = {};
 
 function addTargetDescriptor(
@@ -47,10 +48,9 @@ function createTargetDescriptor(
         const field = `_${targetId}`;
 
         descriptorCache[targetId] = descriptor = {
-            configurable: false,
-            get: function () {
+            get() {
                 return (
-                    this[field] || (this[field] = this[parentId].childNodes[targetIndex])
+                    this[field] ?? (this[field] = this[parentId].childNodes[targetIndex])
                 );
             },
         };
@@ -68,10 +68,10 @@ const next = {
 };
 
 class CompilationContext {
-    public factories!: NodeBehaviorFactory[];
+    public factories: NodeBehaviorFactory[] = [];
+    public targetIds: string[] = [];
+    public descriptors: PropertyDescriptorMap = {};
     public directives: ReadonlyArray<HTMLDirective>;
-    public targetIds!: string[];
-    public descriptors: PropertyDescriptorMap;
 
     public addFactory(
         factory: NodeBehaviorFactory,
@@ -81,9 +81,9 @@ class CompilationContext {
     ): void {
         if (this.targetIds.indexOf(targetId) === -1) {
             this.targetIds.push(targetId);
+            addTargetDescriptor(this.descriptors, parentId, targetId, targetIndex);
         }
 
-        addTargetDescriptor(this.descriptors, parentId, targetId, targetIndex);
         factory.targetId = targetId;
         this.factories.push(factory);
     }
@@ -98,22 +98,27 @@ class CompilationContext {
         this.addFactory(directive, parentId, targetId, targetIndex);
     }
 
-    public reset(): void {
+    public close(fragment: DocumentFragment): HTMLTemplateCompilationResult {
+        const result = new HTMLTemplateCompilationResult(
+            fragment,
+            this.factories,
+            this.targetIds,
+            this.descriptors
+        );
+
         this.factories = [];
         this.targetIds = [];
         this.descriptors = {};
-    }
-
-    public release(): void {
         sharedContext = this;
+
+        return result;
     }
 
-    public static borrow(directives: ReadonlyArray<HTMLDirective>): CompilationContext {
-        const shareable = sharedContext || new CompilationContext();
-        shareable.directives = directives;
-        shareable.reset();
+    public static open(directives: ReadonlyArray<HTMLDirective>): CompilationContext {
+        const context = sharedContext ?? new CompilationContext();
+        context.directives = directives;
         sharedContext = null;
-        return shareable;
+        return context;
     }
 }
 
@@ -233,16 +238,15 @@ function compileContent(
         return next;
     }
 
-    let lastNode = node;
+    let currentNode: Text;
+    let lastNode = (currentNode = node);
+
     for (let i = 0, ii = parseResult.length; i < ii; ++i) {
         const currentPart = parseResult[i];
-        let currentNode: Text;
 
-        if (i === 0) {
-            currentNode = node;
-        } else {
+        if (i !== 0) {
             nodeIndex++;
-            nodeId = `${parentId}.${nodeIndex}`;
+            nodeId = targetIdFrom(parentId, nodeIndex);
             currentNode = lastNode.parentNode!.insertBefore(
                 document.createTextNode(""),
                 lastNode.nextSibling
@@ -269,27 +273,29 @@ function compileContent(
     return next;
 }
 
+function compileChildren(context: CompilationContext, parent: Node, parentId: string) {
+    let nodeIndex = 0;
+    let childNode = parent.firstChild;
+
+    while (childNode) {
+        const result = compileNode(context, parentId, childNode, nodeIndex);
+        childNode = result.node;
+        nodeIndex = result.index;
+    }
+}
+
 function compileNode(
     context: CompilationContext,
     parentId: string,
     node: Node,
     nodeIndex: number
 ) {
-    const nodeId = `${parentId}.${nodeIndex}`;
+    const nodeId = targetIdFrom(parentId, nodeIndex);
 
     switch (node.nodeType) {
         case 1: // element node
             compileAttributes(context, parentId, node as HTMLElement, nodeId, nodeIndex);
-
-            let child = node.firstChild;
-            let childIndex = 0;
-
-            while (child) {
-                const result = compileNode(context, nodeId, child, childIndex);
-                child = result.node;
-                childIndex = result.index;
-            }
-
+            compileChildren(context, node, nodeId);
             break;
         case 3: // text node
             return compileContent(context, node as Text, parentId, nodeId, nodeIndex);
@@ -376,7 +382,7 @@ export function compileTemplate(
     // https://bugs.chromium.org/p/chromium/issues/detail?id=1111864
     document.adoptNode(fragment);
 
-    const context = CompilationContext.borrow(directives);
+    const context = CompilationContext.open(directives);
     compileAttributes(context, "", template, /* host */ "h", 0, true);
 
     if (
@@ -393,22 +399,7 @@ export function compileTemplate(
         fragment.insertBefore(document.createComment(""), fragment.firstChild);
     }
 
-    let node = fragment.firstChild;
-    let nodeIndex = 0;
-    const parentId = "r"; //root
-
-    while (node) {
-        const result = compileNode(context, parentId, node, nodeIndex);
-        node = result.node;
-        nodeIndex = result.index;
-    }
-
+    compileChildren(context, fragment, "r");
     next.node = null; // prevent leaks
-
-    const factories = context.factories;
-    const targetIds = context.targetIds;
-    const descriptors = context.descriptors;
-    context.release();
-
-    return new HTMLTemplateCompilationResult(fragment, factories, targetIds, descriptors);
+    return context.close(fragment);
 }
