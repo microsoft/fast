@@ -4,7 +4,7 @@ let uniqueIdCounter: number = 0;
  * Generates a unique ID based on incrementing a counter.
  */
 export function uniqueId(prefix: string = ""): string {
-    return `fast-${prefix}${uniqueIdCounter++}`;
+    return `${prefix}${uniqueIdCounter++}`;
 }
 
 /**
