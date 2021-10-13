@@ -1,6 +1,6 @@
-import type { BehaviorTargets, NodeBehaviorFactory } from "..";
 import type { Behavior } from "../observation/behavior";
 import type { ExecutionContext } from "../observation/observable";
+import type { BehaviorTargets, NodeBehaviorFactory } from "./html-directive";
 
 /**
  * Represents a collection of DOM nodes which can be bound to a data source.
