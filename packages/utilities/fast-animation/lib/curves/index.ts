@@ -64,5 +64,5 @@ export function cubicBezier(
         | "navPane"
         | /* @deprecated */ string
 ): string {
-    return bezierCurves.hasOwnProperty(name) ? formatCubicBezier(bezierCurves[name]) : "";
+    return name in bezierCurves ? formatCubicBezier(bezierCurves[name]) : "";
 }
