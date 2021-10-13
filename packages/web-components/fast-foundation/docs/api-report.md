@@ -384,6 +384,7 @@ export interface ColumnDefinition {
     headerCellFocusTargetCallback?: (cell: DataGridCell) => HTMLElement;
     headerCellInternalFocusQueue?: boolean;
     headerCellTemplate?: ViewTemplate;
+    isRowHeader?: boolean;
     title?: string;
 }
 
@@ -628,7 +629,9 @@ export enum DataGridCellTypes {
     // (undocumented)
     columnHeader = "columnheader",
     // (undocumented)
-    default = "default"
+    default = "default",
+    // (undocumented)
+    rowHeader = "rowheader"
 }
 
 // @public
@@ -1200,8 +1203,10 @@ export type HorizontalPosition = "start" | "end" | "left" | "right" | "unset";
 export class HorizontalScroll extends FoundationElement {
     // (undocumented)
     connectedCallback(): void;
+    content: HTMLDivElement;
     // (undocumented)
     disconnectedCallback(): void;
+    duration: string;
     easing: ScrollEasing;
     flippersHiddenFromAT: boolean;
     keyupHandler(e: Event & KeyboardEvent): void;
@@ -1210,6 +1215,8 @@ export class HorizontalScroll extends FoundationElement {
     resized(): void;
     scrollContainer: HTMLDivElement;
     scrolled(): void;
+    // @internal
+    scrollingChanged(prev: unknown, next: boolean): void;
     scrollItems: HTMLElement[];
     scrollItemsChanged(previous: any, next: any): void;
     scrollToNext(): void;
@@ -1904,8 +1911,15 @@ export const enum ResolverStrategy {
     transient = 2
 }
 
+// Warning: (ae-internal-missing-underscore) The name "roleForMenuItem" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal (undocumented)
+export const roleForMenuItem: {
+    [value in MenuItemRole]: keyof typeof MenuItemRole;
+};
+
 // @public
-export type ScrollEasing = "linear" | "ease-in" | "ease-out" | "ease-in-out";
+export type ScrollEasing = "linear" | "ease-in" | "ease-out" | "ease-in-out" | string;
 
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
 // Warning: (ae-forgotten-export) The symbol "FormAssociatedSelect" needs to be exported by the entry point index.d.ts

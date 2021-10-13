@@ -1,24 +1,12 @@
 import { attr, DOM, observable } from "@microsoft/fast-element";
 import { Direction, eventResize, eventScroll } from "@microsoft/fast-web-utilities";
 import { FoundationElement } from "../foundation-element";
-import { getDirection } from "../utilities";
-import { IntersectionService } from "./intersection-service";
+import { getDirection } from "../utilities/direction";
+import { IntersectionService } from "../utilities/intersection-service";
 import type {
-    ConstructibleResizeObserver,
     ResizeObserverClassDefinition,
-} from "./resize-observer";
-import type { ResizeObserverEntry } from "./resize-observer-entry";
-
-// TODO: the Resize Observer related files are a temporary stopgap measure until
-// Resize Observer types are pulled into TypeScript, which seems imminent
-// At that point these files should be deleted.
-// https://github.com/microsoft/TypeScript/issues/37861
-
-declare global {
-    interface WindowWithResizeObserver extends Window {
-        ResizeObserver: ConstructibleResizeObserver;
-    }
-}
+    ResizeObserverEntry,
+} from "../utilities/resize-observer";
 
 /**
  * Defines the base behavior of an anchored region on a particular axis
