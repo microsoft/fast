@@ -28,6 +28,17 @@ describe("DesignSystem", () => {
     });
 
     it("Should initialize with a default prefix of 'fast'", () => {
+        const host = document.createElement("div");
+        let prefix = '';
+
+        DesignSystem.getOrCreate(host)
+            .register({
+                register(container: Container, context: DesignSystemRegistrationContext) {
+                    prefix = context.elementPrefix;
+                }
+            });
+
+        expect(prefix).to.equal("fast");
     });
 
     it("Should initialize with a provided prefix", () => {
