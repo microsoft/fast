@@ -2,6 +2,41 @@
   "name": "@microsoft/fast-website",
   "entries": [
     {
+      "date": "Wed, 13 Oct 2021 01:53:37 GMT",
+      "tag": "@microsoft/fast-website_v1.3.16",
+      "version": "1.3.16",
+      "comments": {
+        "none": [
+          {
+            "comment": "Bump @microsoft/fast-components to v2.12.0",
+            "author": "scomea@microsoft.com",
+            "commit": "8f9b5ab92aec9f6f3214976e0284554158be6a70",
+            "package": "@microsoft/fast-website"
+          },
+          {
+            "comment": "Bump @microsoft/fast-element to v1.6.0",
+            "author": "skawian@gmail.com",
+            "commit": "1dd6243d7564f00d8af77d1335ab96b0e8153c2e",
+            "package": "@microsoft/fast-website"
+          },
+          {
+            "comment": "Bump @microsoft/fast-foundation to v2.19.0",
+            "author": "scomea@microsoft.com",
+            "commit": "8f9b5ab92aec9f6f3214976e0284554158be6a70",
+            "package": "@microsoft/fast-website"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "Bump @microsoft/site-utilities to v0.9.0",
+            "author": "scomea@microsoft.com",
+            "commit": "8f9b5ab92aec9f6f3214976e0284554158be6a70",
+            "package": "@microsoft/fast-website"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 12 Oct 2021 07:15:14 GMT",
       "tag": "@microsoft/fast-website_v1.3.16",
       "version": "1.3.16",

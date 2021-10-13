@@ -98,7 +98,7 @@ Adding these tags enables you to use the imported design system provider and its
 
 When you saved these changes, you might not have noticed much of an impact on the website. The background went a little darker, and the text brightened slightly. This is because the design system provider you added includes an implementation of the FAST design language. This is a dark theme, with magenta accents.
 
-You can access these colors using CSS variables, for the background `var(--background-color)`, with the main color of the page being `var(--neutral-foreground-rest)`. To learn more about how colors palettes are supported, see the [documentation](https://www.fast.design/docs/design-systems/fast-frame#adaptive-color).
+You can access these colors using CSS variables, for the background `var(--fill-color)`, with the main color of the page being `var(--neutral-foreground-rest)`. To learn more about how colors palettes are supported, see the [documentation](https://www.fast.design/docs/design-systems/fast-frame#adaptive-color).
 
 An advantage of using a FAST design system is that the color pallete is calculated. It has built-in support to create enough contrast between elements based on the [WCAG specification](https://www.w3.org/TR/WCAG21/#contrast-minimum).
 
@@ -465,7 +465,7 @@ In the CSS file, at line 38, change the declaration for `.hero-text` to this:
 ```css
 .hero-text {
   border-radius: calc(var(--corner-radius, 10) * 1px);
-  background-color: var(--background-color);
+  background-color: var(--fill-color);
   color: var(--neutral-foreground-rest);
   width: 400px;
   display: flex;
