@@ -634,12 +634,26 @@ export class DatePicker extends FoundationElement {
     disabledDates: string;
     getMatrix(type?: "month" | "year", start?: number, locale?: string, format?: string): any;
     getTimes(): {
-        hours: number[];
-        minutes: number[];
-        meridian: string[];
+        hours: {
+            value: number;
+            text: number;
+            action: () => number;
+        }[];
+        minutes: {
+            value: number;
+            text: string;
+            action: () => number;
+        }[];
+        meridians: {
+            value: string;
+            text: string;
+            action: () => void;
+        }[];
     };
     handleClick(): void;
     hour: number;
+    // (undocumented)
+    inputfield: any;
     locale: string;
     max: number;
     menuOpen: boolean;
@@ -672,7 +686,7 @@ export class DatePicker extends FoundationElement {
 export type DatePickerOptions = FoundationElementDefinition & {};
 
 // @public (undocumented)
-export const datePickerTemplate: (Context: ElementDefinitionContext, definition: DatePickerOptions) => ViewTemplate<DatePicker>;
+export const datePickerTemplate: (context: ElementDefinitionContext, definition: DatePickerOptions) => ViewTemplate<DatePicker>;
 
 // @public
 export class DefaultComponentPresentation implements ComponentPresentation {
@@ -2283,6 +2297,9 @@ export enum TextFieldType {
 
 // @public
 export const timePickerTemplate: (context: ElementDefinitionContext, times: any) => ViewTemplate;
+
+// @public
+export const timeSelectorTemplate: (context: any, reference: any, items: any) => ViewTemplate<any, any>;
 
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
 // Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "Toolbar" because one of its declarations is marked as @internal
