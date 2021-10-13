@@ -1,4 +1,3 @@
-import { throttle } from "@microsoft/fast-web-utilities";
 import isElementInView from "../utilities/isElementInView";
 import scrollY from "../utilities/scrollY";
 
@@ -22,12 +21,10 @@ export interface ScrollTriggerSubscription {
 export default abstract class ScrollTrigger {
     protected subscriptions: ScrollTriggerSubscription[] = [];
     protected scrollDistance: number = 0;
-    private openRequestAnimationFrame: boolean = false;
-    private useRequestAnimationFrame: boolean = false;
+    private requestedFrame: number | void;
     private lastScrollY: number;
 
     constructor() {
-        this.useRequestAnimationFrame = window.hasOwnProperty("requestAnimationFrame");
         this.lastScrollY = scrollY();
 
         // We need to use .bind instead of lambda (fat-arrow) syntax here because
@@ -49,13 +46,7 @@ export default abstract class ScrollTrigger {
         }
 
         if (this.subscriptions.length === 0) {
-            if (this.useRequestAnimationFrame) {
-                window.addEventListener("scroll", this.requestFrame);
-            } else {
-                // If we can't use window.requestAnimationFrame, just throttle the update method
-                this.update = throttle(this.update, 1000 / 60); // 60fps
-                window.addEventListener("scroll", this.update);
-            }
+            window.addEventListener("scroll", this.requestFrame);
         }
 
         this.subscriptions.push({
@@ -78,10 +69,7 @@ export default abstract class ScrollTrigger {
         );
 
         if (this.subscriptions.length === 0) {
-            window.removeEventListener(
-                "scroll",
-                this.useRequestAnimationFrame ? this.requestFrame : this.update
-            );
+            window.removeEventListener("scroll", this.requestFrame);
         }
     }
 
@@ -90,7 +78,6 @@ export default abstract class ScrollTrigger {
      */
     protected update(): void {
         const yOffset: number = scrollY();
-        this.openRequestAnimationFrame = false;
         this.scrollDistance = yOffset - this.lastScrollY;
         this.lastScrollY = yOffset;
     }
@@ -112,11 +99,10 @@ export default abstract class ScrollTrigger {
      * Request's an animation frame if there are currently no open animation frame requests
      */
     private requestFrame = (): void => {
-        if (this.openRequestAnimationFrame) {
-            return;
+        if (this.requestedFrame) {
+            cancelAnimationFrame(this.requestedFrame);
         }
 
-        this.openRequestAnimationFrame = true;
-        window.requestAnimationFrame(this.update);
+        this.requestedFrame = requestAnimationFrame(this.update);
     };
 }

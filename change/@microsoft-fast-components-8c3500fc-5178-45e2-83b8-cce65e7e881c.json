@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "Fill color design token update",
+  "packageName": "@microsoft/fast-components",
+  "email": "skawian@gmail.com",
+  "dependentChangeType": "patch"
+}
