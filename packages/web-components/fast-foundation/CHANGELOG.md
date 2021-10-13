@@ -1,8 +1,22 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Wed, 13 Oct 2021 01:53:37 GMT and should not be manually modified.
+This log was last generated on Wed, 13 Oct 2021 22:45:16 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.20.0
+
+Wed, 13 Oct 2021 22:45:16 GMT
+
+### Minor changes
+
+- Adding fast-calendar component (robarb@microsoft.com)
+
+### Patches
+
+- move style assignment for combobox and select into the class and off the DOM node (chhol@microsoft.com)
+- Code fixes for calendar (robarb@microsoft.com)
+- Bump @microsoft/fast-element to v1.6.1 (markwhitfeld@users.noreply.github.com)
 
 ## 2.19.0
 
