@@ -181,7 +181,7 @@ export class DesignSystemProvider extends FoundationElement {
      * @remarks
      * HTML attribute: background-color
      *
-     * CSS custom property: --background-color
+     * CSS custom property: --fill-color
      */
     @attr({
         attribute: "fill-color",
