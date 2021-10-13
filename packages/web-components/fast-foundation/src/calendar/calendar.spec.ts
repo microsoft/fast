@@ -46,7 +46,7 @@ async function setup(props?) {
         [FASTCalendar(), FASTDataGrid(), FASTDataGridRow(), FASTDataGridCell()]
     );
 
-    element.locale = "en-US-u-ca-gregory-nu-latn";
+    element.locale = "en-US";
 
     for(const key in props) {
         element.setAttribute(key, props[key]);
@@ -96,8 +96,11 @@ describe("Calendar", () => {
 
         it("Should be able to get a date string for a specific date", () => {
             const formatter = new DateFormatter();
-            const dateString = "1/2/2020";
-            const date = new Date(dateString);
+            const day = 2;
+            const month = 1;
+            const year = 2020;
+            const dateString = `${month}/${day}/${year}`;
+            const date = new Date(year, month -  1, day);
 
             expect(formatter.getDate(date, {month: 'numeric', day: 'numeric', year: 'numeric'})).to.equal(dateString,);
         });
@@ -112,7 +115,7 @@ describe("Calendar", () => {
             const formatter = new DateFormatter({
                 weekdayFormat: undefined,
                 monthFormat: "short",
-                date: new Date("1-1-2020")
+                date: new Date(2020, 0, 1)
             });
 
             expect(formatter.getDate()).to.equal("Jan 1, 2020");
@@ -266,8 +269,8 @@ describe("Calendar", () => {
             expect(info.length).to.equal(31);
 
             const daysTotal = element.shadowRoot?.querySelectorAll(".day");
-            const offDays = element.shadowRoot?.querySelectorAll(".off");
-            expect(daysTotal && offDays && daysTotal?.length - offDays?.length).to.equal(31);
+            const inactiveDays = element.shadowRoot?.querySelectorAll(".inactive");
+            expect(daysTotal && inactiveDays && daysTotal?.length - inactiveDays?.length).to.equal(31);
 
             await disconnect();
         });
@@ -279,8 +282,8 @@ describe("Calendar", () => {
             expect(info.length).to.equal(28);
 
             const daysTotal = element.shadowRoot?.querySelectorAll(".day");
-            const offDays = element.shadowRoot?.querySelectorAll(".off");
-            expect(daysTotal && offDays && daysTotal?.length - offDays?.length).to.equal(28);
+            const inactiveDays = element.shadowRoot?.querySelectorAll(".inactive");
+            expect(daysTotal && inactiveDays && daysTotal?.length - inactiveDays?.length).to.equal(28);
 
             await disconnect();
         });
@@ -292,8 +295,8 @@ describe("Calendar", () => {
             expect(info.length).to.equal(29);
 
             const daysTotal = element.shadowRoot?.querySelectorAll(".day");
-            const offDays = element.shadowRoot?.querySelectorAll(".off");
-            expect(daysTotal && offDays && daysTotal?.length - offDays?.length).to.equal(29);
+            const inactiveDays = element.shadowRoot?.querySelectorAll(".inactive");
+            expect(daysTotal && inactiveDays && daysTotal?.length - inactiveDays?.length).to.equal(29);
 
             await disconnect();
         });
