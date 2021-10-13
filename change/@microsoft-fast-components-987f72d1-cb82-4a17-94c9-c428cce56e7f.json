@@ -1,0 +1,7 @@
+{
+  "type": "minor",
+  "comment": "data-grid: add support for rowheader role",
+  "packageName": "@microsoft/fast-components",
+  "email": "scomea@microsoft.com",
+  "dependentChangeType": "patch"
+}

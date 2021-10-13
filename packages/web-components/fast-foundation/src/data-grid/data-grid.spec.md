@@ -109,6 +109,8 @@ For example a button handler on a `cellTemplate` could be implemented with a cli
     </template>
 ```
 
+- `isRowHeader`: A boolean that indicates whether this column contains row header cells.  When true cells in this column that are not in a header row will render with a role of 'rowheader'.
+
 **Data grid**
 - `<fast-data-grid>`
 
@@ -206,7 +208,7 @@ Default slot for items
 The grid column this cell is placed in.
 
 - `cell-type`  
-A cell can either be either "default" or "columnheader" type.
+A cell can either be either "default", "columnheader" or "rowheader" type.
 
 *properties:*
 - `rowData`  
