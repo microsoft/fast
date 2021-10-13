@@ -33,7 +33,7 @@ const styles = css`
     display: inline-block;
     contain: content;
     color: white;
-    background: var(--background-color);
+    background: var(--fill-color);
     border-radius: var(--border-radius);
     min-width: 325px;
     text-align: center;
@@ -75,7 +75,7 @@ const styles = css`
 
   .footer {
     height: 16px;
-    background: var(--background-color);
+    background: var(--fill-color);
     border-radius: 0 0 var(--border-radius) var(--border-radius);
   }
 `;
@@ -111,7 +111,7 @@ const styles = css`
     display: inline-block;
     contain: content;
     color: white;
-    background: var(--background-color);
+    background: var(--fill-color);
     border-radius: var(--border-radius);
     min-width: 325px;
     text-align: center;

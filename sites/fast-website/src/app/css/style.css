@@ -113,7 +113,7 @@
         left: 0;
         width: 100%;
         height: calc(100vh - 94px);
-        background-color: var(--background-color);
+        background-color: var(--fill-color);
         opacity: 0.95;
         transform: translateY(-100%);
         transition:
