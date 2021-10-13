@@ -146,7 +146,7 @@ describe("The template compiler", () => {
 
         scenarios.forEach(x => {
             it(`handles ${x.type} binding expression(s)`, () => {
-                const { fragment, viewBehaviorFactories } = compile(x.html, x.directives);
+                const { fragment, factories } = compile(x.html, x.directives);
 
                 expect(toHTML(fragment)).to.equal(x.fragment);
                 expect(toHTML(fragment.cloneNode(true) as DocumentFragment)).to.equal(
@@ -160,7 +160,7 @@ describe("The template compiler", () => {
                     );
                 }
 
-                const length = viewBehaviorFactories.length;
+                const length = factories.length;
 
                 expect(length).to.equal(x.directives.length);
 
@@ -168,7 +168,7 @@ describe("The template compiler", () => {
                     expect(length).to.equal(x.targetIds.length);
 
                     for (let i = 0; i < length; ++i) {
-                        expect(viewBehaviorFactories[i].targetId).to.equal(
+                        expect(factories[i].targetId).to.equal(
                             x.targetIds[i]
                         );
                     }
@@ -314,7 +314,7 @@ describe("The template compiler", () => {
 
         scenarios.forEach(x => {
             it(`handles ${x.type} binding expression(s)`, () => {
-                const { fragment, viewBehaviorFactories } = compile(x.html, x.directives);
+                const { fragment, factories } = compile(x.html, x.directives);
 
                 expect(toHTML(fragment)).to.equal(x.fragment);
                 expect(toHTML(fragment.cloneNode(true) as DocumentFragment)).to.equal(
@@ -323,7 +323,7 @@ describe("The template compiler", () => {
 
                 if (x.result) {
                     expect(
-                        (viewBehaviorFactories[0] as HTMLBindingDirective).binding(
+                        (factories[0] as HTMLBindingDirective).binding(
                             scope,
                             defaultExecutionContext
                         )
@@ -331,12 +331,12 @@ describe("The template compiler", () => {
                 }
 
                 if (x.targetIds) {
-                    const length = viewBehaviorFactories.length;
+                    const length = factories.length;
 
                     expect(length).to.equal(x.targetIds.length);
 
                     for (let i = 0; i < length; ++i) {
-                        expect(viewBehaviorFactories[i].targetId).to.equal(
+                        expect(factories[i].targetId).to.equal(
                             x.targetIds[i]
                         );
                     }

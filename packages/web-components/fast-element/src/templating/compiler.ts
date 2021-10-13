@@ -28,12 +28,9 @@ function addTargetDescriptor(
 
     if (!descriptors[parentId]) {
         const index = parentId.lastIndexOf(".");
-
-        if (index !== -1) {
-            const grandparentId = parentId.substr(0, index);
-            const childIndex = parseInt(parentId.substr(index + 1));
-            addTargetDescriptor(descriptors, grandparentId, parentId, childIndex);
-        }
+        const grandparentId = parentId.substr(0, index);
+        const childIndex = parseInt(parentId.substr(index + 1));
+        addTargetDescriptor(descriptors, grandparentId, parentId, childIndex);
     }
 
     descriptors[targetId] = createTargetDescriptor(parentId, targetId, targetIndex);
@@ -71,7 +68,7 @@ const next = {
 };
 
 class CompilationContext {
-    public behaviorFactories!: NodeBehaviorFactory[];
+    public factories!: NodeBehaviorFactory[];
     public directives: ReadonlyArray<HTMLDirective>;
     public targetIds!: string[];
     public descriptors: PropertyDescriptorMap;
@@ -88,7 +85,7 @@ class CompilationContext {
 
         addTargetDescriptor(this.descriptors, parentId, targetId, targetIndex);
         factory.targetId = targetId;
-        this.behaviorFactories.push(factory);
+        this.factories.push(factory);
     }
 
     public captureContentBinding(
@@ -102,7 +99,7 @@ class CompilationContext {
     }
 
     public reset(): void {
-        this.behaviorFactories = [];
+        this.factories = [];
         this.targetIds = [];
         this.descriptors = {};
     }
@@ -330,20 +327,11 @@ export class HTMLTemplateCompilationResult {
      */
     public constructor(
         public readonly fragment: DocumentFragment,
-        public readonly viewBehaviorFactories: NodeBehaviorFactory[],
-        public readonly hostBehaviorFactories: NodeBehaviorFactory[],
+        public readonly factories: NodeBehaviorFactory[],
         private targetIds: string[],
         descriptors: PropertyDescriptorMap
     ) {
         this.proto = Object.create(null, descriptors);
-    }
-
-    get hasHostBehaviors() {
-        return this.hostBehaviorFactories.length > 0;
-    }
-
-    get behaviorCount() {
-        return this.viewBehaviorFactories.length + this.hostBehaviorFactories.length;
     }
 
     /**
@@ -390,8 +378,6 @@ export function compileTemplate(
 
     const context = CompilationContext.borrow(directives);
     compileAttributes(context, "", template, /* host */ "h", 0, true);
-    const hostBehaviorFactories = context.behaviorFactories;
-    context.reset();
 
     if (
         // If the first node in a fragment is a marker, that means it's an unstable first node,
@@ -419,16 +405,10 @@ export function compileTemplate(
 
     next.node = null; // prevent leaks
 
-    const viewBehaviorFactories = context.behaviorFactories;
+    const factories = context.factories;
     const targetIds = context.targetIds;
     const descriptors = context.descriptors;
     context.release();
 
-    return new HTMLTemplateCompilationResult(
-        fragment,
-        viewBehaviorFactories,
-        hostBehaviorFactories,
-        targetIds,
-        descriptors
-    );
+    return new HTMLTemplateCompilationResult(fragment, factories, targetIds, descriptors);
 }

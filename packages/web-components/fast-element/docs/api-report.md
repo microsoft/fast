@@ -339,19 +339,13 @@ export abstract class HTMLDirective implements NodeBehaviorFactory {
 
 // @public
 export class HTMLTemplateCompilationResult {
-    constructor(fragment: DocumentFragment, viewBehaviorFactories: NodeBehaviorFactory[], hostBehaviorFactories: NodeBehaviorFactory[], targetIds: string[], descriptors: PropertyDescriptorMap);
-    // (undocumented)
-    get behaviorCount(): number;
+    constructor(fragment: DocumentFragment, factories: NodeBehaviorFactory[], targetIds: string[], descriptors: PropertyDescriptorMap);
     createTargets(root: Node, host?: Node): BehaviorTargets;
     // (undocumented)
+    readonly factories: NodeBehaviorFactory[];
+    // (undocumented)
     readonly fragment: DocumentFragment;
-    // (undocumented)
-    get hasHostBehaviors(): boolean;
-    // (undocumented)
-    readonly hostBehaviorFactories: NodeBehaviorFactory[];
-    // (undocumented)
-    readonly viewBehaviorFactories: NodeBehaviorFactory[];
-}
+    }
 
 // @public
 export class HTMLView implements ElementView, SyntheticView {
