@@ -26,7 +26,7 @@ function normalBind(
         );
     }
 
-    this.updateTarget(this.bindingObserver!.observe(source, context));
+    this.handleChange();
 }
 
 function triggerBind(
@@ -43,6 +43,7 @@ function normalUnbind(this: BindingBehavior): void {
     this.bindingObserver!.disconnect();
     this.source = null;
     this.context = null;
+    this.value = null;
 }
 
 type ComposableView = SyntheticView & {
@@ -51,9 +52,7 @@ type ComposableView = SyntheticView & {
 };
 
 function contentUnbind(this: BindingBehavior): void {
-    this.bindingObserver!.disconnect();
-    this.source = null;
-    this.context = null;
+    normalUnbind.call(this);
 
     const view = this.target.$fastView as ComposableView;
 
@@ -145,6 +144,10 @@ function updatePropertyTarget(this: BindingBehavior, value: unknown): void {
 }
 
 function updateClassTarget(this: BindingBehavior, value: string): void {
+    this.target.className = value;
+}
+
+function updateClassListTarget(this: BindingBehavior, value: string): void {
     const classVersions = this.classVersions || Object.create(null);
     const target = this.target;
     let version = this.version || 0;
@@ -222,11 +225,22 @@ export class HTMLBindingDirective extends TargetedHTMLDirective {
         switch (value[0]) {
             case ":":
                 this.cleanedTargetName = value.substr(1);
-                this.updateTarget = updatePropertyTarget;
-                if (this.cleanedTargetName === "innerHTML") {
-                    const binding = this.binding;
-                    /* eslint-disable-next-line */
-                    this.binding = (s, c) => DOM.createHTML(binding(s, c));
+                switch (this.cleanedTargetName) {
+                    case "innerHTML":
+                        const binding = this.binding;
+                        /* eslint-disable-next-line */
+                        this.binding = (s, c) => DOM.createHTML(binding(s, c));
+                        this.updateTarget = updatePropertyTarget;
+                        break;
+                    case "classList":
+                        this.updateTarget = updateClassListTarget;
+                        break;
+                    case "className":
+                        this.updateTarget = updateClassTarget;
+                        break;
+                    default:
+                        this.updateTarget = updatePropertyTarget;
+                        break;
                 }
                 break;
             case "?":
@@ -283,6 +297,9 @@ export class HTMLBindingDirective extends TargetedHTMLDirective {
  * @public
  */
 export class BindingBehavior implements Behavior {
+    /** @internal */
+    public value: any = null;
+
     /** @internal */
     public source: unknown = null;
 
@@ -356,7 +373,12 @@ export class BindingBehavior implements Behavior {
 
     /** @internal */
     public handleChange(): void {
-        this.updateTarget(this.bindingObserver!.observe(this.source, this.context!));
+        const newValue = this.bindingObserver!.observe(this.source, this.context!);
+
+        if (this.value !== newValue) {
+            this.value = newValue;
+            this.updateTarget(newValue);
+        }
     }
 
     /** @internal */
