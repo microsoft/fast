@@ -326,6 +326,7 @@ export interface ColumnDefinition {
     headerCellFocusTargetCallback?: (cell: DataGridCell) => HTMLElement;
     headerCellInternalFocusQueue?: boolean;
     headerCellTemplate?: ViewTemplate;
+    isRowHeader?: boolean;
     title?: string;
 }
 
@@ -570,7 +571,9 @@ export enum DataGridCellTypes {
     // (undocumented)
     columnHeader = "columnheader",
     // (undocumented)
-    default = "default"
+    default = "default",
+    // (undocumented)
+    rowHeader = "rowheader"
 }
 
 // @public

@@ -270,6 +270,7 @@ export class DataGridCell extends FoundationElement {
                 break;
 
             case undefined:
+            case DataGridCellTypes.rowHeader:
             case DataGridCellTypes.default:
                 if (this.columnDefinition.cellTemplate !== undefined) {
                     this.customCellView = this.columnDefinition.cellTemplate.render(
