@@ -1,4 +1,4 @@
-import type { BehaviorTargets } from "..";
+import type { BehaviorTargets } from "./html-directive";
 import { _interpolationEnd, _interpolationStart, DOM } from "../dom";
 import type { Binding, ExecutionContext } from "../observation/observable";
 import { HTMLBindingDirective } from "./binding";
@@ -31,7 +31,7 @@ function addTargetDescriptor(
 
         if (index !== -1) {
             const grandparentId = parentId.substr(0, index);
-            const childIndex = parseInt(parentId.substr(index));
+            const childIndex = parseInt(parentId.substr(index + 1));
             addTargetDescriptor(descriptors, grandparentId, parentId, childIndex);
         }
     }
