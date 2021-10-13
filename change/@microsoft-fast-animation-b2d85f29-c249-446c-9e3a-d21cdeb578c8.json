@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "refactor: remove lodash-es as a dependency",
-  "packageName": "@microsoft/fast-animation",
-  "email": "connor@peet.io",
-  "dependentChangeType": "patch"
-}

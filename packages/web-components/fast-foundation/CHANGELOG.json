@@ -2,6 +2,55 @@
   "name": "@microsoft/fast-foundation",
   "entries": [
     {
+      "date": "Wed, 13 Oct 2021 01:53:37 GMT",
+      "tag": "@microsoft/fast-foundation_v2.19.0",
+      "version": "2.19.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "data-grid: add support for rowheader role",
+            "author": "scomea@microsoft.com",
+            "commit": "8f9b5ab92aec9f6f3214976e0284554158be6a70",
+            "package": "@microsoft/fast-foundation"
+          },
+          {
+            "comment": "Add focus event handler to tooltip",
+            "author": "v-dlesac@microsoft.com",
+            "commit": "6c2d50e6d37650330fbc31d243b214c982958930",
+            "package": "@microsoft/fast-foundation"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "refactor: remove lodash-es as a dependency",
+            "author": "connor@peet.io",
+            "commit": "4ef4b325f8259dd0f648b5fe1b393ef8839e643e",
+            "package": "@microsoft/fast-foundation"
+          },
+          {
+            "comment": "use css transforms and transitions in horizontal scroll",
+            "author": "john.kreitlow@microsoft.com",
+            "commit": "6644314a87917703731503f1fd76596868d45c75",
+            "package": "@microsoft/fast-foundation"
+          },
+          {
+            "comment": "Bump @microsoft/fast-web-utilities to v5.0.1",
+            "author": "john.kreitlow@microsoft.com",
+            "commit": "d609cffb4657e8447fb65d3b52899f48b8bb87cb",
+            "package": "@microsoft/fast-foundation"
+          }
+        ],
+        "none": [
+          {
+            "comment": "Bump @microsoft/fast-element to v1.6.0",
+            "author": "skawian@gmail.com",
+            "commit": "1dd6243d7564f00d8af77d1335ab96b0e8153c2e",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 12 Oct 2021 07:15:14 GMT",
       "tag": "@microsoft/fast-foundation_v2.18.0",
       "version": "2.18.0",

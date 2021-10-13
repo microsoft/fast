@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "remove throttle function",
-  "packageName": "@microsoft/fast-web-utilities",
-  "email": "john.kreitlow@microsoft.com",
-  "dependentChangeType": "patch"
-}
