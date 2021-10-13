@@ -103,6 +103,8 @@ export class BindingBehavior implements Behavior {
     // @internal (undocumented)
     updateTarget: typeof updatePropertyTarget;
     // @internal (undocumented)
+    value: any;
+    // @internal (undocumented)
     version: number;
 }
 
