@@ -920,10 +920,10 @@ export const DesignToken = Object.freeze({
     },
 
     /**
-     * Deregister an element or document as a DesignToken root.
+     * Unregister an element or document as a DesignToken root.
      * @param target - The root to deregister
      */
-    deregisterRoot(target: HTMLElement | Document = defaultElement) {
-        RootStyleSheetTarget.deregisterRoot(target);
+    unregisterRoot(target: HTMLElement | Document = defaultElement) {
+        RootStyleSheetTarget.unregisterRoot(target);
     },
 });

@@ -398,7 +398,7 @@ describe("DesignSystem", () => {
         await DOM.nextUpdate();
         expect(window.getComputedStyle(document.body).getPropertyValue(token.cssCustomProperty)).to.equal("12");
 
-        DesignToken.deregisterRoot();
+        DesignToken.unregisterRoot();
         await DOM.nextUpdate();
     });
 
@@ -418,7 +418,21 @@ describe("DesignSystem", () => {
         const value = host.style.getPropertyValue(token.cssCustomProperty)
         expect(value).to.equal("12");
         expect(window.getComputedStyle(document.body).getPropertyValue(token.cssCustomProperty)).to.equal("");
-        DesignToken.deregisterRoot(host);
+        DesignToken.unregisterRoot(host);
+        await DOM.nextUpdate();
+        expect(window.getComputedStyle(document.body).getPropertyValue(token.cssCustomProperty)).to.equal("");
+    });
+    it("should provide a way to disable DesignToken root registration", async () => {
+        const token = DesignToken.create<number>("disabled-design-system-registration").withDefault(12);
+        expect(window.getComputedStyle(document.body).getPropertyValue(token.cssCustomProperty)).to.equal("");
+
+        DesignSystem.getOrCreate()
+            .withDesignTokenRoot(null)
+            .register({
+                register(container: Container, context: DesignSystemRegistrationContext) {}
+            });
+
+
         await DOM.nextUpdate();
         expect(window.getComputedStyle(document.body).getPropertyValue(token.cssCustomProperty)).to.equal("");
     });

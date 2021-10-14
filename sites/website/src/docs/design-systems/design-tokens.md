@@ -90,11 +90,26 @@ const root = document.querySelector("#root")! as HTMLDivElement;
 DesignToken.registerRoot(root);
 ```
 
-There also exists a `DesignToken.deregisterRoot()` method to remove default custom properties from a root.
+There also exists a `DesignToken.unregisterRoot()` method to remove default custom properties from a root.
 
 ```ts
 // ...
-DesignToken.deregisterRoot(root);
+DesignToken.unregisterRoot(root);
+```
+
+#### Usage With DesignSystem
+
+If you're using `DesignSystem` to register components and dependencies, then note that `DesignToken` root registration happens automatically when `DesignSystem.register()` is invoked. You can configure the root being registered with `DesignSystem.withDesignTokenRoot()` method:
+
+```ts
+const root = document.createElement("div");
+DesignSystem.getOrCreate().withDesignTokenRoot(root);
+```
+
+or you can disable registration by providing `null`:
+
+```ts
+DesignSystem.getOrCreate().withDesignTokenRoot(null);
 ```
 
 ### Customizing CSS Custom Property Name

@@ -199,7 +199,7 @@ export class RootStyleSheetTarget implements PropertyTarget {
         }
     }
 
-    public static deregisterRoot(root: HTMLElement | Document) {
+    public static unregisterRoot(root: HTMLElement | Document) {
         const { roots } = RootStyleSheetTarget;
         root = root === defaultElement ? document : root;
         if (roots.has(root)) {

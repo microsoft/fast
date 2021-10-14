@@ -873,7 +873,7 @@ export const DesignToken: Readonly<{
     notifyConnection(element: HTMLElement): boolean;
     notifyDisconnection(element: HTMLElement): boolean;
     registerRoot(target?: HTMLElement | Document): void;
-    deregisterRoot(target?: HTMLElement | Document): void;
+    unregisterRoot(target?: HTMLElement | Document): void;
 }>;
 
 // @public

@@ -96,10 +96,12 @@ export interface DesignSystem {
      * Overrides the {@link DesignToken} root, controlling where
      * {@link DesignToken} default value CSS custom properties
      * are emitted.
+     *
+     * Providing `null` disables automatic DesignToken registration.
      * @param root - the root to register
      * @public
      */
-    withDesignTokenRoot(root: HTMLElement | Document): DesignSystem;
+    withDesignTokenRoot(root: HTMLElement | Document | null): DesignSystem;
 }
 
 let rootDesignSystem: DesignSystem | null = null;
@@ -198,7 +200,7 @@ function extractTryDefineElementParams(
 
 class DefaultDesignSystem implements DesignSystem {
     private designTokensInitialized: boolean = false;
-    private designTokenRoot: HTMLElement;
+    private designTokenRoot: HTMLElement | null | undefined;
     private prefix: string = "fast";
     private shadowRootMode: ShadowRootMode | undefined = undefined;
     private disambiguate: ElementDisambiguationCallback = () =>
@@ -227,7 +229,7 @@ class DefaultDesignSystem implements DesignSystem {
         return this;
     }
 
-    public withDesignTokenRoot(root: HTMLElement): DesignSystem {
+    public withDesignTokenRoot(root: HTMLElement | null): DesignSystem {
         this.designTokenRoot = root;
         return this;
     }
@@ -299,7 +301,10 @@ class DefaultDesignSystem implements DesignSystem {
 
         if (!this.designTokensInitialized) {
             this.designTokensInitialized = true;
-            DesignToken.registerRoot(this.designTokenRoot);
+
+            if (this.designTokenRoot !== null) {
+                DesignToken.registerRoot(this.designTokenRoot);
+            }
         }
 
         container.registerWithContext(context, ...registrations);
