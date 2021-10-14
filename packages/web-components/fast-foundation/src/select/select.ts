@@ -107,8 +107,8 @@ export class Select extends FormAssociatedSelect {
      */
     @attr({ attribute: "open", mode: "boolean" })
     public open: boolean = false;
-    protected openChanged(prev, next): void {
-        if (this.multiple) {
+    protected openChanged(prev: unknown, next: boolean): void {
+        if (!this.collapsible) {
             return;
         }
 
@@ -164,9 +164,16 @@ export class Select extends FormAssociatedSelect {
         mode: "fromView",
     })
     public sizeAttribute: number;
-    public sizeAttributeChanged(prev, next): void {}
 
-    public size: number = 0;
+    @observable
+    public size: number;
+    public sizeChanged(prev: unknown, next: number) {
+        this.proxy.size = this.size;
+    }
+
+    public get collapsible(): boolean {
+        return !this.multiple && typeof this.sizeAttribute !== "number";
+    }
 
     /**
      * The selection type for the component.
@@ -248,9 +255,7 @@ export class Select extends FormAssociatedSelect {
 
         super.clickHandler(e);
 
-        if (this.multiple) {
-            this.open = true;
-        } else {
+        if (this.collapsible) {
             this.open = !this.open;
         }
 
@@ -299,7 +304,9 @@ export class Select extends FormAssociatedSelect {
         }
 
         if (!this.options?.includes(focusTarget as ListboxOption)) {
-            this.open = false;
+            if (this.collapsible) {
+                this.open = false;
+            }
             if (this.indexWhenOpened !== this.selectedIndex) {
                 this.updateValue(true);
             }
@@ -308,12 +315,12 @@ export class Select extends FormAssociatedSelect {
 
     public handleChange(source: any, propertyName: string) {
         switch (propertyName) {
-            // case "disabled": {
-            //     this.slottedOptionsChanged(null, this.slottedOptions);
-            //     this.options = this._options.filter(Listbox.slottedOptionFilter);
-            //     this.setSelectedOptions();
-            //     break;
-            // }
+            case "disabled": {
+                this.slottedOptionsChanged(null, this.slottedOptions);
+                this.options = this._options.filter(Listbox.slottedOptionFilter);
+                this.setSelectedOptions();
+                break;
+            }
             case "selected": {
                 if (Listbox.slottedOptionFilter(source)) {
                     this.selectedIndex = this.options.indexOf(source);
@@ -336,7 +343,7 @@ export class Select extends FormAssociatedSelect {
 
         switch (key) {
             case keySpace: {
-                if (!this.multiple) {
+                if (this.collapsible) {
                     if (this.typeAheadExpired) {
                         e.preventDefault();
                         this.open = !this.open;
@@ -360,7 +367,7 @@ export class Select extends FormAssociatedSelect {
             }
 
             case keyTab: {
-                if (this.multiple || !this.open) {
+                if (!this.collapsible || !this.open) {
                     return true;
                 }
 
@@ -369,7 +376,10 @@ export class Select extends FormAssociatedSelect {
             }
         }
 
-        if (!this.open && this.indexWhenOpened !== this.selectedIndex) {
+        if (
+            !this.collapsible ||
+            (!this.open && this.indexWhenOpened !== this.selectedIndex)
+        ) {
             this.updateValue(true);
             this.indexWhenOpened = this.selectedIndex;
         }
@@ -377,12 +387,16 @@ export class Select extends FormAssociatedSelect {
         return !(key in ArrowKeys);
     }
 
-    public multipleChanged(prev, next): void {
+    public multipleChanged(prev: unknown, next: boolean): void {
         super.multipleChanged(prev, next);
+        this.proxy.multiple = this.multiple;
 
-        if (!this.sizeAttribute) {
-            this.size = 4;
-        }
+        this.setDefaultSize();
+        this.setDimensions();
+    }
+
+    public setDefaultSize(): void {
+        this.size = this.sizeAttribute ?? (this.collapsible ? 0 : 4);
     }
 
     /**
@@ -438,7 +452,7 @@ export class Select extends FormAssociatedSelect {
         if (this.proxy instanceof HTMLSelectElement && this.options) {
             this.proxy.options.length = 0;
             this.options.forEach(option => {
-                let proxyOption;
+                let proxyOption: Node;
 
                 if (option instanceof HTMLOptionElement) {
                     proxyOption = option.cloneNode();
@@ -463,6 +477,46 @@ export class Select extends FormAssociatedSelect {
         }
     }
 
+    private setDimensions() {
+        requestAnimationFrame(() => {
+            let maxOptionsWidth = 0;
+            let firstOptionHeight = 0;
+
+            if (this.collapsible) {
+                this.listbox.style.setProperty("visibility", "hidden");
+                this.listbox.style.setProperty("width", "auto");
+                this.listbox.hidden = false;
+            }
+
+            this.options.forEach((o, i) => {
+                const oWidth = o.offsetWidth;
+                if (i === 0) {
+                    firstOptionHeight = o.offsetHeight;
+                }
+                maxOptionsWidth = Math.max(oWidth, maxOptionsWidth);
+            });
+
+            firstOptionHeight *= this.size;
+            if (firstOptionHeight !== 0) {
+                this.listbox.style.setProperty("max-height", `${firstOptionHeight}px`);
+            }
+
+            if (this.collapsible) {
+                this.listbox.hidden = true;
+                this.listbox.style.removeProperty("display");
+                this.listbox.style.removeProperty("visibility");
+                this.listbox.style.removeProperty("width");
+            }
+
+            if (!this.multiple) {
+                this.selectedValue?.style.setProperty(
+                    "min-width",
+                    `${maxOptionsWidth}px`
+                );
+            }
+        });
+    }
+
     /**
      * Synchronize the form-associated proxy and update the value property of the element.
      *
@@ -476,22 +530,8 @@ export class Select extends FormAssociatedSelect {
         this.setProxyOptions();
         this.updateValue();
 
-        if (!this.multiple) {
-            let maxOptionsWidth = 0;
-            this.listbox.style.setProperty("visibility", "hidden");
-            this.listbox.style.setProperty("width", "auto");
-            this.listbox.hidden = false;
-            this.options.forEach(o => {
-                const oWidth = o.content.offsetWidth;
-                maxOptionsWidth = Math.max(oWidth, maxOptionsWidth);
-            });
-
-            this.listbox.hidden = true;
-            this.listbox.style.removeProperty("visibility");
-            this.listbox.style.removeProperty("display");
-            this.listbox.style.removeProperty("width");
-            this.selectedValue?.style.setProperty("min-width", `${maxOptionsWidth}px`);
-        }
+        this.setDefaultSize();
+        this.setDimensions();
     }
 
     /**
@@ -505,9 +545,10 @@ export class Select extends FormAssociatedSelect {
     private updateValue(shouldEmit?: boolean) {
         if (this.$fastController.isConnected) {
             this.value = this.firstSelectedOption ? this.firstSelectedOption.value : "";
-            this.displayValue = this.firstSelectedOption
-                ? this.firstSelectedOption.textContent || this.firstSelectedOption.value
-                : this.value;
+            this.displayValue =
+                this.firstSelectedOption?.textContent ??
+                this.firstSelectedOption?.value ??
+                this.value;
         }
 
         if (shouldEmit) {

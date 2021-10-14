@@ -1053,7 +1053,7 @@ export interface Recipe<T> {
 export { Select }
 
 // @public
-export const selectStyles: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<SelectOptions>) => import("@microsoft/fast-element").ElementStyles;
+export const selectStyles: FoundationElementTemplate<ElementStyles, SelectOptions>;
 
 export { Skeleton }
 

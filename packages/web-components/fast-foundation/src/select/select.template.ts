@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-import { html, ref, slotted } from "@microsoft/fast-element";
-=======
-import { html, ref, slotted, when, children, elements } from "@microsoft/fast-element";
->>>>>>> 80447ce9c (add multiple mode and size to select)
+import { html, ref, slotted, when } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
 import type { FoundationElementTemplate } from "../foundation-element";
 import { Listbox } from "../listbox/listbox";
@@ -18,8 +14,15 @@ export const selectTemplate: FoundationElementTemplate<
     SelectOptions
 > = (context, definition) => html<Select>`
     <template
-        class="${x => (!x.multiple && x.open ? "open" : "")} ${x =>
-            x.disabled ? "disabled" : ""} ${x => x.position}"
+        class="${x =>
+            [
+                x.collapsible && "collapsible",
+                x.collapsible && x.open && "open",
+                x.disabled && "disabled",
+                x.collapsible && x.position,
+            ]
+                .filter(Boolean)
+                .join(" ")}"
         role="${x => x.role}"
         tabindex="${x => (!x.disabled ? "0" : null)}"
         aria-disabled="${x => x.ariaDisabled}"
@@ -31,7 +34,7 @@ export const selectTemplate: FoundationElementTemplate<
         @mousedown="${(x, c) => x.mousedownHandler(c.event as MouseEvent)}"
     >
         ${when(
-            x => x.size === 0,
+            x => x.collapsible,
             html<Select>`
                 <div
                     aria-activedescendant="${x =>
@@ -71,7 +74,7 @@ export const selectTemplate: FoundationElementTemplate<
             part="listbox"
             role="listbox"
             ?disabled="${x => x.disabled}"
-            ?hidden="${x => !x.multiple && !x.open}"
+            ?hidden="${x => x.collapsible && !x.open}"
             ${ref("listbox")}
         >
             <slot

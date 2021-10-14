@@ -1400,10 +1400,8 @@ export class ListboxElement extends Listbox {
     focusoutHandler(e: FocusEvent): void;
     // @internal @override
     keydownHandler(e: KeyboardEvent): boolean | void;
-    // @internal @override
-    mousedownHandler(e: MouseEvent): boolean | void;
     multiple: boolean;
-    // (undocumented)
+    // @internal
     multipleChanged(prev: unknown, next: boolean): void;
     // @override
     protected setSelectedOptions(): void;
@@ -2007,6 +2005,8 @@ export class Select extends FormAssociatedSelect {
     // @internal
     clickHandler(e: MouseEvent): boolean | void;
     // (undocumented)
+    get collapsible(): boolean;
+    // (undocumented)
     connectedCallback(): void;
     // @internal (undocumented)
     control: HTMLElement;
@@ -2026,15 +2026,13 @@ export class Select extends FormAssociatedSelect {
     // @internal (undocumented)
     listbox: HTMLElement;
     // @internal
-    listbox: HTMLDivElement;
-    // @internal
     maxHeight: number;
     // (undocumented)
-    multipleChanged(prev: any, next: any): void;
+    multipleChanged(prev: unknown, next: boolean): void;
     // @internal
     open: boolean;
     // (undocumented)
-    protected openChanged(prev: any, next: any): void;
+    protected openChanged(prev: unknown, next: boolean): void;
     position: SelectPosition;
     positionAttribute: SelectPosition;
     role: SelectRole;
@@ -2042,12 +2040,14 @@ export class Select extends FormAssociatedSelect {
     selectedIndexChanged(prev: any, next: any): void;
     // (undocumented)
     selectedValue: HTMLElement;
+    // (undocumented)
+    setDefaultSize(): void;
     setPositioning(): void;
     // (undocumented)
     size: number;
     sizeAttribute: number;
     // (undocumented)
-    sizeAttributeChanged(prev: any, next: any): void;
+    sizeChanged(prev: unknown, next: number): void;
     // @internal
     slottedOptionsChanged(prev: unknown, next: Element[]): void;
     get type(): string;

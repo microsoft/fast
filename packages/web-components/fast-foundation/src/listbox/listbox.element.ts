@@ -69,7 +69,15 @@ export class ListboxElement extends Listbox {
      */
     @attr({ mode: "boolean" })
     public multiple: boolean;
-    multipleChanged(prev: unknown, next: boolean): void {
+
+    /**
+     * Switches between single-selection and multi-selection mode.
+     *
+     * @param prev - the previous value
+     * @param next - the next value
+     * @internal
+     */
+    public multipleChanged(prev: unknown, next: boolean): void {
         if (this.$fastController.isConnected) {
             this.options.forEach(o => {
                 o.checked = next ? false : undefined;
@@ -369,21 +377,6 @@ export class ListboxElement extends Listbox {
                 return true;
             }
         }
-    }
-
-    /**
-     * Prevents `focusin` events from firing before `click` events when the
-     * element is unfocused.
-     *
-     * @internal
-     * @override
-     */
-    public mousedownHandler(e: MouseEvent): boolean | void {
-        if (!this.multiple) {
-            return super.mousedownHandler(e);
-        }
-
-        return true;
     }
 
     /**

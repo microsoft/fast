@@ -36,6 +36,10 @@ import { listboxStyles } from "../listbox/listbox.styles";
 import { elevation } from "../styles/elevation";
 import { heightNumber } from "../styles/size";
 
+/**
+ * Styles for Select
+ * @public
+ */
 export const selectStyles: FoundationElementTemplate<ElementStyles, SelectOptions> = (
     context,
     definition
@@ -57,7 +61,7 @@ export const selectStyles: FoundationElementTemplate<ElementStyles, SelectOption
     }
 
     :host([multiple]),
-    :host([size]:not([size="0"])) {
+    :host([size]) {
         --elevation: 0;
         border: 0;
         height: auto;
@@ -79,13 +83,14 @@ export const selectStyles: FoundationElementTemplate<ElementStyles, SelectOption
     }
 
     :host([multiple]) .listbox,
-    :host([size]:not([size="0"])) .listbox {
+    :host([size]) .listbox {
         left: auto;
         max-height: none;
-        position: relative;
+        position: static;
+        z-index: auto;
     }
 
-    .listbox[hidden] {
+    :host(:not([multiple]):not([size])) .listbox[hidden] {
         display: none;
     }
 
@@ -111,11 +116,11 @@ export const selectStyles: FoundationElementTemplate<ElementStyles, SelectOption
         border-color: ${focusStrokeOuter};
     }
 
-    :host(:not([multiple]):not([open]):${focusVisible}) {
+    :host(:not([multiple]):not([size]):not([open]):${focusVisible}) {
         box-shadow: 0 0 0 calc(${focusStrokeWidth} * 1px) ${focusStrokeOuter};
     }
 
-    :host(:not([multiple]):${focusVisible}) ::slotted([aria-selected="true"][role="option"]:not([disabled])) {
+    :host(:not([multiple]):not([size]):${focusVisible}) ::slotted([aria-selected="true"][role="option"]:not([disabled])) {
         box-shadow: 0 0 0 calc(${focusStrokeWidth} * 1px) inset ${focusStrokeInner};
         border-color: ${focusStrokeOuter};
         background: ${accentFillFocus};
@@ -144,23 +149,19 @@ export const selectStyles: FoundationElementTemplate<ElementStyles, SelectOption
         border-radius: calc(${controlCornerRadius} * 1px);
     }
 
-    :host([open][position="above"]:not([multiple])) .listbox {
+    :host(:not([multiple])[open][position="above"]) .listbox,
+    :host(:not([multiple]):not([size])[open][position="above"]) .listbox {
         border-bottom-left-radius: 0;
         border-bottom-right-radius: 0;
-    }
-
-    :host([open][position="below"]:not([multiple])) .listbox {
-        border-top-left-radius: 0;
-        border-top-right-radius: 0;
-    }
-
-    :host([open][position="above"]:not([multiple])) .listbox {
         border-bottom: 0;
         bottom: calc(${heightNumber} * 1px);
     }
 
-    :host([open][position="below"]:not([multiple])) .listbox {
+    :host(:not([multiple])[open][position="below"]) .listbox,
+    :host(:not([multiple]):not([size])[open][position="below"]) .listbox {
         border-top: 0;
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
         top: calc(${heightNumber} * 1px);
     }
 
