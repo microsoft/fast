@@ -1,4 +1,4 @@
-import { AttachedBehaviorHTMLDirective, BehaviorTargets } from "./html-directive";
+import { AttachedBehaviorHTMLDirective, ViewBehaviorTargets } from "./html-directive";
 import { NodeBehaviorOptions, NodeObservationBehavior } from "./node-observation";
 import type { CaptureType } from "./template";
 
@@ -50,7 +50,7 @@ export class ChildrenBehavior extends NodeObservationBehavior<ChildrenBehaviorOp
      * @param options - The options to use when observing the element children.
      */
     public constructor(
-        targets: BehaviorTargets,
+        targets: ViewBehaviorTargets,
         targetId: string,
         options: ChildrenBehaviorOptions
     ) {

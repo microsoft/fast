@@ -10,7 +10,7 @@ import { enableArrayObservation } from "../observation/array-observer";
 import type { Splice } from "../observation/array-change-records";
 import type { Behavior } from "../observation/behavior";
 import { emptyArray } from "../platform";
-import { BehaviorTargets, HTMLDirective } from "./html-directive";
+import { ViewBehaviorTargets, HTMLDirective } from "./html-directive";
 import { HTMLView, SyntheticView } from "./view";
 import type { CaptureType, SyntheticViewTemplate } from "./template";
 
@@ -321,7 +321,7 @@ export class RepeatDirective<TSource = any> extends HTMLDirective {
      * Creates a behavior for the provided target node.
      * @param target - The node instance to create the behavior for.
      */
-    public createBehavior(targets: BehaviorTargets): RepeatBehavior<TSource> {
+    public createBehavior(targets: ViewBehaviorTargets): RepeatBehavior<TSource> {
         return new RepeatBehavior<TSource>(
             targets[this.targetId],
             this.itemsBinding,

@@ -1,6 +1,7 @@
+import type { ViewBehavior } from "..";
 import type { Behavior } from "../observation/behavior";
 import type { ExecutionContext } from "../observation/observable";
-import type { BehaviorTargets, NodeBehaviorFactory } from "./html-directive";
+import type { ViewBehaviorTargets, ViewBehaviorFactory } from "./html-directive";
 
 /**
  * Represents a collection of DOM nodes which can be bound to a data source.
@@ -106,7 +107,7 @@ export class HTMLView<TSource = any, TParent = any, TGrandparent = any>
     implements
         ElementView<TSource, TParent, TGrandparent>,
         SyntheticView<TSource, TParent, TGrandparent> {
-    private behaviors: Behavior[] | null = null;
+    private behaviors: ViewBehavior[] | null = null;
 
     /**
      * The data that the view is bound to.
@@ -135,8 +136,8 @@ export class HTMLView<TSource = any, TParent = any, TGrandparent = any>
      */
     public constructor(
         private fragment: DocumentFragment,
-        private factories: NodeBehaviorFactory[],
-        private targets: BehaviorTargets
+        private factories: ViewBehaviorFactory[],
+        private targets: ViewBehaviorTargets
     ) {
         this.firstChild = fragment.firstChild!;
         this.lastChild = fragment.lastChild!;
@@ -216,26 +217,26 @@ export class HTMLView<TSource = any, TParent = any, TGrandparent = any>
 
         this.source = source;
         this.context = context;
+        const targets = this.targets;
 
         if (oldSource !== null) {
             for (let i = 0, ii = behaviors!.length; i < ii; ++i) {
                 const current = behaviors![i];
-                current.unbind(oldSource);
-                current.bind(source, context);
+                current.unbind(oldSource, context, targets);
+                current.bind(source, context, targets);
             }
         } else if (behaviors === null) {
             this.behaviors = behaviors = new Array<Behavior>(this.factories.length);
-            const targets = this.targets;
             const factories = this.factories;
 
             for (let i = 0, ii = factories.length; i < ii; ++i) {
                 const behavior = factories[i].createBehavior(targets);
-                behavior.bind(source, context);
+                behavior.bind(source, context, targets);
                 behaviors[i] = behavior;
             }
         } else {
             for (let i = 0, ii = behaviors.length; i < ii; ++i) {
-                behaviors[i].bind(source, context);
+                behaviors[i].bind(source, context, targets);
             }
         }
     }
@@ -250,13 +251,16 @@ export class HTMLView<TSource = any, TParent = any, TGrandparent = any>
             return;
         }
 
+        const targets = this.targets;
+        const context = this.context;
         const behaviors = this.behaviors!;
 
         for (let i = 0, ii = behaviors.length; i < ii; ++i) {
-            behaviors[i].unbind(oldSource);
+            behaviors[i].unbind(oldSource, context!, targets);
         }
 
         this.source = null;
+        this.context = null;
     }
 
     /**

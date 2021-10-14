@@ -17,12 +17,12 @@ export interface Accessor {
 // @public
 export class AttachedBehaviorHTMLDirective<T = any> extends HTMLDirective {
     constructor(name: string, behavior: AttachedBehaviorType<T>, options: T);
-    createBehavior(targets: BehaviorTargets): Behavior;
+    createBehavior(targets: ViewBehaviorTargets): ViewBehavior;
     createPlaceholder(index: number): string;
     }
 
 // @public
-export type AttachedBehaviorType<T = any> = new (targets: BehaviorTargets, targetId: string, options: T) => Behavior;
+export type AttachedBehaviorType<T = any> = new (targets: ViewBehaviorTargets, targetId: string, options: T) => Behavior;
 
 // @public
 export function attr(config?: DecoratorAttributeConfiguration): (target: {}, property: string) => void;
@@ -60,13 +60,8 @@ export type AttributeMode = "reflect" | "boolean" | "fromView";
 // @public
 export interface Behavior<TSource = any, TParent = any, TGrandparent = any> {
     bind(source: TSource, context: ExecutionContext<TParent, TGrandparent>): void;
-    unbind(source: TSource): void;
+    unbind(source: TSource, context: ExecutionContext<TParent, TGrandparent>): void;
 }
-
-// @public
-export type BehaviorTargets = {
-    [id: string]: Node;
-};
 
 // @public
 export type Binding<TSource = any, TReturn = any, TParent = any> = (source: TSource, context: ExecutionContext<TParent>) => TReturn;
@@ -138,7 +133,7 @@ export function children<T = any>(propertyOrOptions: (keyof T & string) | Childr
 //
 // @public
 export class ChildrenBehavior extends NodeObservationBehavior<ChildrenBehaviorOptions> {
-    constructor(targets: BehaviorTargets, targetId: string, options: ChildrenBehaviorOptions);
+    constructor(targets: ViewBehaviorTargets, targetId: string, options: ChildrenBehaviorOptions);
     disconnect(): void;
     protected getNodes(): ChildNode[];
     observe(): void;
@@ -328,32 +323,32 @@ export class HTMLBindingDirective extends TargetedHTMLDirective {
     constructor(binding: Binding);
     // (undocumented)
     binding: Binding;
-    createBehavior(targets: BehaviorTargets): BindingBehavior;
+    createBehavior(targets: ViewBehaviorTargets): BindingBehavior;
     targetAtContent(): void;
     get targetName(): string | undefined;
     set targetName(value: string | undefined);
     }
 
 // @public
-export abstract class HTMLDirective implements NodeBehaviorFactory {
-    abstract createBehavior(targets: BehaviorTargets): Behavior;
+export abstract class HTMLDirective implements ViewBehaviorFactory {
+    abstract createBehavior(targets: ViewBehaviorTargets): Behavior | ViewBehavior;
     abstract createPlaceholder(index: number): string;
     targetId: string;
 }
 
 // @public
 export class HTMLTemplateCompilationResult {
-    constructor(fragment: DocumentFragment, factories: NodeBehaviorFactory[], targetIds: string[], descriptors: PropertyDescriptorMap);
-    createTargets(root: Node, host?: Node): BehaviorTargets;
+    constructor(fragment: DocumentFragment, factories: ViewBehaviorFactory[], targetIds: string[], descriptors: PropertyDescriptorMap);
+    createTargets(root: Node, host?: Node): ViewBehaviorTargets;
     // (undocumented)
-    readonly factories: NodeBehaviorFactory[];
+    readonly factories: ViewBehaviorFactory[];
     // (undocumented)
     readonly fragment: DocumentFragment;
     }
 
 // @public
 export class HTMLView<TSource = any, TParent = any, TGrandparent = any> implements ElementView<TSource, TParent, TGrandparent>, SyntheticView<TSource, TParent, TGrandparent> {
-    constructor(fragment: DocumentFragment, factories: NodeBehaviorFactory[], targets: BehaviorTargets);
+    constructor(fragment: DocumentFragment, factories: ViewBehaviorFactory[], targets: ViewBehaviorTargets);
     appendTo(node: Node): void;
     bind(source: TSource, context: ExecutionContext<TParent, TGrandparent>): void;
     context: ExecutionContext<TParent, TGrandparent> | null;
@@ -373,12 +368,6 @@ export class HTMLView<TSource = any, TParent = any, TGrandparent = any> implemen
 export type Mutable<T> = {
     -readonly [P in keyof T]: T[P];
 };
-
-// @public
-export interface NodeBehaviorFactory {
-    createBehavior(targets: BehaviorTargets): Behavior;
-    targetId: string;
-}
 
 // @public
 export interface NodeBehaviorOptions<T = any> {
@@ -443,7 +432,7 @@ export function ref<T = any>(propertyName: keyof T & string): CaptureType<T>;
 
 // @public
 export class RefBehavior implements Behavior {
-    constructor(targets: BehaviorTargets, targetId: string, propertyName: string);
+    constructor(targets: ViewBehaviorTargets, targetId: string, propertyName: string);
     bind(source: any): void;
     unbind(): void;
 }
@@ -463,7 +452,7 @@ export class RepeatBehavior<TSource = any> implements Behavior, Subscriber {
 // @public
 export class RepeatDirective<TSource = any> extends HTMLDirective {
     constructor(itemsBinding: Binding, templateBinding: Binding<TSource, SyntheticViewTemplate>, options: RepeatOptions);
-    createBehavior(targets: BehaviorTargets): RepeatBehavior<TSource>;
+    createBehavior(targets: ViewBehaviorTargets): RepeatBehavior<TSource>;
     createPlaceholder: (index: number) => string;
     }
 
@@ -482,7 +471,7 @@ export function slotted<T = any>(propertyOrOptions: (keyof T & string) | Slotted
 
 // @public
 export class SlottedBehavior extends NodeObservationBehavior<SlottedBehaviorOptions> {
-    constructor(targets: BehaviorTargets, targetId: string, options: SlottedBehaviorOptions);
+    constructor(targets: ViewBehaviorTargets, targetId: string, options: SlottedBehaviorOptions);
     disconnect(): void;
     protected getNodes(): Node[];
     observe(): void;
@@ -577,6 +566,23 @@ export interface View<TSource = any, TParent = any, TGrandparent = any> {
     readonly source: TSource | null;
     unbind(): void;
 }
+
+// @public
+export interface ViewBehavior<TSource = any, TParent = any, TGrandparent = any> {
+    bind(source: TSource, context: ExecutionContext<TParent, TGrandparent>, targets: ViewBehaviorTargets): void;
+    unbind(source: TSource, context: ExecutionContext<TParent, TGrandparent>, targets: ViewBehaviorTargets): void;
+}
+
+// @public
+export interface ViewBehaviorFactory {
+    createBehavior(targets: ViewBehaviorTargets): Behavior | ViewBehavior;
+    targetId: string;
+}
+
+// @public
+export type ViewBehaviorTargets = {
+    [id: string]: Node;
+};
 
 // @public
 export class ViewTemplate<TSource = any, TParent = any, TGrandparent = any> implements ElementViewTemplate<TSource, TParent, TGrandparent>, SyntheticViewTemplate<TSource, TParent, TGrandparent> {

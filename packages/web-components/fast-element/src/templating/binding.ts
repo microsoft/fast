@@ -7,7 +7,7 @@ import {
     Observable,
     setCurrentEvent,
 } from "../observation/observable";
-import { BehaviorTargets, TargetedHTMLDirective } from "./html-directive";
+import { ViewBehaviorTargets, TargetedHTMLDirective } from "./html-directive";
 import type { SyntheticView } from "./view";
 
 function normalBind(
@@ -277,7 +277,7 @@ export class HTMLBindingDirective extends TargetedHTMLDirective {
      * information stored in the BindingDirective.
      * @param target - The target node that the binding behavior should attach to.
      */
-    createBehavior(targets: BehaviorTargets): BindingBehavior {
+    createBehavior(targets: ViewBehaviorTargets): BindingBehavior {
         /* eslint-disable-next-line @typescript-eslint/no-use-before-define */
         return new BindingBehavior(
             targets[this.targetId],
