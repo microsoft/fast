@@ -1,8 +1,8 @@
-import type { BehaviorTargets } from "./html-directive";
+import type { ViewBehaviorTargets } from "./html-directive";
 import { _interpolationEnd, _interpolationStart, DOM } from "../dom";
 import type { Binding, ExecutionContext } from "../observation/observable";
 import { HTMLBindingDirective } from "./binding";
-import type { HTMLDirective, NodeBehaviorFactory } from "./html-directive";
+import type { HTMLDirective, ViewBehaviorFactory } from "./html-directive";
 
 type InlineDirective = HTMLDirective & {
     targetName?: string;
@@ -68,13 +68,13 @@ const next = {
 };
 
 class CompilationContext {
-    public factories: NodeBehaviorFactory[] = [];
+    public factories: ViewBehaviorFactory[] = [];
     public targetIds: string[] = [];
     public descriptors: PropertyDescriptorMap = {};
     public directives: ReadonlyArray<HTMLDirective>;
 
     public addFactory(
-        factory: NodeBehaviorFactory,
+        factory: ViewBehaviorFactory,
         parentId: string,
         targetId: string,
         targetIndex: number
@@ -333,7 +333,7 @@ export class HTMLTemplateCompilationResult {
      */
     public constructor(
         public readonly fragment: DocumentFragment,
-        public readonly factories: NodeBehaviorFactory[],
+        public readonly factories: ViewBehaviorFactory[],
         private targetIds: string[],
         descriptors: PropertyDescriptorMap
     ) {
@@ -346,7 +346,7 @@ export class HTMLTemplateCompilationResult {
      * @param root - The root element.
      * @returns A lookup object for behavior targets.
      */
-    public createTargets(root: Node, host?: Node): BehaviorTargets {
+    public createTargets(root: Node, host?: Node): ViewBehaviorTargets {
         const targets = Object.create(this.proto, {
             r: { value: root },
             h: { value: host || root },
