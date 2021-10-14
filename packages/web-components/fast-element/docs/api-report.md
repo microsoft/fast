@@ -245,14 +245,14 @@ export abstract class ElementStyles {
 }
 
 // @public
-export interface ElementView extends View {
+export interface ElementView<TSource = any, TParent = any, TGrandparent = any> extends View<TSource, TParent, TGrandparent> {
     appendTo(node: Node): void;
 }
 
 // @public
-export interface ElementViewTemplate {
-    create(hostBindingTarget: Element): ElementView;
-    render(source: any, host: Node, hostBindingTarget?: Element): HTMLView;
+export interface ElementViewTemplate<TSource = any, TParent = any, TGrandparent = any> {
+    create(hostBindingTarget: Element): ElementView<TSource, TParent, TGrandparent>;
+    render(source: TSource, host: Node, hostBindingTarget?: Element): HTMLView<TSource, TParent, TGrandparent>;
 }
 
 // Warning: (ae-internal-missing-underscore) The name "emptyArray" should be prefixed with an underscore because the declaration is marked as @internal
@@ -318,7 +318,7 @@ export type Global = typeof globalThis & {
 };
 
 // @public
-export function html<TSource = any, TParent = any>(strings: TemplateStringsArray, ...values: TemplateValue<TSource, TParent>[]): ViewTemplate<TSource, TParent>;
+export function html<TSource = any, TParent = any, TGrandparent = any>(strings: TemplateStringsArray, ...values: TemplateValue<TSource, TParent>[]): ViewTemplate<TSource, TParent, TGrandparent>;
 
 // @public
 export class HTMLBindingDirective extends TargetedHTMLDirective {
@@ -349,18 +349,18 @@ export class HTMLTemplateCompilationResult {
     }
 
 // @public
-export class HTMLView implements ElementView, SyntheticView {
+export class HTMLView<TSource = any, TParent = any, TGrandparent = any> implements ElementView<TSource, TParent, TGrandparent>, SyntheticView<TSource, TParent, TGrandparent> {
     constructor(fragment: DocumentFragment, factories: NodeBehaviorFactory[], targets: BehaviorTargets);
     appendTo(node: Node): void;
-    bind(source: unknown, context: ExecutionContext): void;
-    context: ExecutionContext | null;
+    bind(source: TSource, context: ExecutionContext<TParent, TGrandparent>): void;
+    context: ExecutionContext<TParent, TGrandparent> | null;
     dispose(): void;
     static disposeContiguousBatch(views: SyntheticView[]): void;
     firstChild: Node;
     insertBefore(node: Node): void;
     lastChild: Node;
     remove(): void;
-    source: any | null;
+    source: TSource | null;
     unbind(): void;
 }
 
@@ -528,7 +528,7 @@ export interface SubtreeBehaviorOptions<T = any> extends Omit<NodeBehaviorOption
 }
 
 // @public
-export interface SyntheticView extends View {
+export interface SyntheticView<TSource = any, TParent = any, TGrandparent = any> extends View<TSource, TParent, TGrandparent> {
     dispose(): void;
     readonly firstChild: Node;
     insertBefore(node: Node): void;
@@ -537,8 +537,8 @@ export interface SyntheticView extends View {
 }
 
 // @public
-export interface SyntheticViewTemplate<TSource = any, TParent = any> {
-    create(): SyntheticView;
+export interface SyntheticViewTemplate<TSource = any, TParent = any, TGrandparent = any> {
+    create(): SyntheticView<TSource, TParent, TGrandparent>;
 }
 
 // @public
@@ -548,7 +548,7 @@ export abstract class TargetedHTMLDirective extends HTMLDirective {
 }
 
 // @public
-export type TemplateValue<TScope, TParent = any> = Binding<TScope, any, TParent> | string | number | HTMLDirective | CaptureType<TScope>;
+export type TemplateValue<TSource, TParent = any> = Binding<TSource, any, TParent> | string | number | HTMLDirective | CaptureType<TSource>;
 
 // @public
 export type TrustedTypes = {
@@ -567,21 +567,21 @@ export interface ValueConverter {
 }
 
 // @public
-export interface View {
-    bind(source: unknown, context: ExecutionContext): void;
-    readonly context: ExecutionContext | null;
+export interface View<TSource = any, TParent = any, TGrandparent = any> {
+    bind(source: TSource, context: ExecutionContext<TParent, TGrandparent>): void;
+    readonly context: ExecutionContext<TParent, TGrandparent> | null;
     dispose(): void;
-    readonly source: any | null;
+    readonly source: TSource | null;
     unbind(): void;
 }
 
 // @public
-export class ViewTemplate<TSource = any, TParent = any> implements ElementViewTemplate, SyntheticViewTemplate {
+export class ViewTemplate<TSource = any, TParent = any, TGrandparent = any> implements ElementViewTemplate<TSource, TParent, TGrandparent>, SyntheticViewTemplate<TSource, TParent, TGrandparent> {
     constructor(html: string | HTMLTemplateElement, directives: ReadonlyArray<HTMLDirective>);
-    create(hostBindingTarget?: Element): HTMLView;
+    create(hostBindingTarget?: Element): HTMLView<TSource, TParent, TGrandparent>;
     readonly directives: ReadonlyArray<HTMLDirective>;
     readonly html: string | HTMLTemplateElement;
-    render(source: TSource, host: Node | string, hostBindingTarget?: Element): HTMLView;
+    render(source: TSource, host: Node | string, hostBindingTarget?: Element): HTMLView<TSource, TParent, TGrandparent>;
     }
 
 // @public

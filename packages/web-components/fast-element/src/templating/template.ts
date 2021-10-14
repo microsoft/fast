@@ -10,12 +10,12 @@ import { HTMLBindingDirective } from "./binding";
  * A template capable of creating views specifically for rendering custom elements.
  * @public
  */
-export interface ElementViewTemplate {
+export interface ElementViewTemplate<TSource = any, TParent = any, TGrandparent = any> {
     /**
      * Creates an ElementView instance based on this template definition.
      * @param hostBindingTarget - The element that host behaviors will be bound to.
      */
-    create(hostBindingTarget: Element): ElementView;
+    create(hostBindingTarget: Element): ElementView<TSource, TParent, TGrandparent>;
 
     /**
      * Creates an HTMLView from this template, binds it to the source, and then appends it to the host.
@@ -24,26 +24,32 @@ export interface ElementViewTemplate {
      * @param hostBindingTarget - An HTML element to target the host bindings at if different from the
      * host that the template is being attached to.
      */
-    render(source: any, host: Node, hostBindingTarget?: Element): HTMLView;
+    render(
+        source: TSource,
+        host: Node,
+        hostBindingTarget?: Element
+    ): HTMLView<TSource, TParent, TGrandparent>;
 }
 
 /**
  * A template capable of rendering views not specifically connected to custom elements.
  * @public
  */
-export interface SyntheticViewTemplate<TSource = any, TParent = any> {
+export interface SyntheticViewTemplate<TSource = any, TParent = any, TGrandparent = any> {
     /**
      * Creates a SyntheticView instance based on this template definition.
      */
-    create(): SyntheticView;
+    create(): SyntheticView<TSource, TParent, TGrandparent>;
 }
 
 /**
  * A template capable of creating HTMLView instances or rendering directly to DOM.
  * @public
  */
-export class ViewTemplate<TSource = any, TParent = any>
-    implements ElementViewTemplate, SyntheticViewTemplate {
+export class ViewTemplate<TSource = any, TParent = any, TGrandparent = any>
+    implements
+        ElementViewTemplate<TSource, TParent, TGrandparent>,
+        SyntheticViewTemplate<TSource, TParent, TGrandparent> {
     private result: HTMLTemplateCompilationResult | null = null;
 
     /**
@@ -74,7 +80,7 @@ export class ViewTemplate<TSource = any, TParent = any>
      * Creates an HTMLView instance based on this template definition.
      * @param hostBindingTarget - The element that host behaviors will be bound to.
      */
-    public create(hostBindingTarget?: Element): HTMLView {
+    public create(hostBindingTarget?: Element): HTMLView<TSource, TParent, TGrandparent> {
         if (this.result === null) {
             let template: HTMLTemplateElement;
             const html = this.html;
@@ -98,7 +104,7 @@ export class ViewTemplate<TSource = any, TParent = any>
         const result = this.result;
         const fragment = result.fragment.cloneNode(true) as DocumentFragment;
 
-        return new HTMLView(
+        return new HTMLView<TSource, TParent, TGrandparent>(
             fragment,
             result.factories,
             result.createTargets(fragment, hostBindingTarget)
@@ -116,7 +122,7 @@ export class ViewTemplate<TSource = any, TParent = any>
         source: TSource,
         host: Node | string,
         hostBindingTarget?: Element
-    ): HTMLView {
+    ): HTMLView<TSource, TParent, TGrandparent> {
         if (typeof host === "string") {
             host = document.getElementById(host)!;
         }
@@ -150,12 +156,12 @@ export interface CaptureType<TSource> {}
  * Represents the types of values that can be interpolated into a template.
  * @public
  */
-export type TemplateValue<TScope, TParent = any> =
-    | Binding<TScope, any, TParent>
+export type TemplateValue<TSource, TParent = any> =
+    | Binding<TSource, any, TParent>
     | string
     | number
     | HTMLDirective
-    | CaptureType<TScope>;
+    | CaptureType<TSource>;
 
 /**
  * Transforms a template literal string into a renderable ViewTemplate.
@@ -166,10 +172,10 @@ export type TemplateValue<TScope, TParent = any> =
  * other template instances, and Directive instances.
  * @public
  */
-export function html<TSource = any, TParent = any>(
+export function html<TSource = any, TParent = any, TGrandparent = any>(
     strings: TemplateStringsArray,
     ...values: TemplateValue<TSource, TParent>[]
-): ViewTemplate<TSource, TParent> {
+): ViewTemplate<TSource, TParent, TGrandparent> {
     const directives: HTMLDirective[] = [];
     let html = "";
 
@@ -208,5 +214,5 @@ export function html<TSource = any, TParent = any>(
 
     html += strings[strings.length - 1];
 
-    return new ViewTemplate(html, directives);
+    return new ViewTemplate<TSource, TParent, TGrandparent>(html, directives);
 }
