@@ -120,21 +120,12 @@ export class ViewTemplate<TSource = any, TParent = any, TGrandparent = any>
      */
     public render(
         source: TSource,
-        host: Node | string,
+        host: Node,
         hostBindingTarget?: Element
     ): HTMLView<TSource, TParent, TGrandparent> {
-        if (typeof host === "string") {
-            host = document.getElementById(host)!;
-        }
-
-        if (hostBindingTarget === void 0) {
-            hostBindingTarget = host as Element;
-        }
-
-        const view = this.create(hostBindingTarget);
+        const view = this.create(hostBindingTarget ?? (host as any));
         view.bind(source, defaultExecutionContext);
         view.appendTo(host);
-
         return view;
     }
 }
