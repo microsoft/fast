@@ -3,7 +3,7 @@ import { html, ViewTemplate } from "./template";
 import { DOM } from "../dom";
 import { HTMLBindingDirective } from "./binding";
 import { HTMLDirective, TargetedHTMLDirective } from "./html-directive";
-import type { BehaviorTargets } from "..";
+import type { ViewBehaviorTargets } from "..";
 
 describe(`The html tag template helper`, () => {
     it(`transforms a string into a ViewTemplate.`, () => {
@@ -231,7 +231,7 @@ describe(`The html tag template helper`, () => {
     it(`captures a case-sensitive property name when used with a named target directive`, () => {
         class TestDirective extends TargetedHTMLDirective {
             targetName: string | undefined;
-            createBehavior(targets: BehaviorTargets) {
+            createBehavior(targets: ViewBehaviorTargets) {
                 return { bind() {}, unbind() {} };
             }
         }
