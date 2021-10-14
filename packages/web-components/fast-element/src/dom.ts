@@ -1,8 +1,6 @@
 import type { Callable } from "./interfaces";
 import { $global, TrustedTypesPolicy } from "./platform";
 
-const updateQueue = [] as Callable[];
-
 /* eslint-disable */
 const fastHTMLPolicy: TrustedTypesPolicy = $global.trustedTypes.createPolicy(
     "fast-html",
@@ -13,8 +11,7 @@ const fastHTMLPolicy: TrustedTypesPolicy = $global.trustedTypes.createPolicy(
 /* eslint-enable */
 
 let htmlPolicy: TrustedTypesPolicy = fastHTMLPolicy;
-
-// We use a queue so we can ensure errors are thrown in order.
+const updateQueue: Callable[] = [];
 const pendingErrors: any[] = [];
 
 function throwFirstError() {
@@ -133,10 +130,17 @@ export const DOM = Object.freeze({
      */
     queueUpdate(callable: Callable) {
         if (updateQueue.length < 1) {
-            window.requestAnimationFrame(DOM.processUpdates);
+            $global.requestAnimationFrame(DOM.processUpdates);
         }
 
         updateQueue.push(callable);
+    },
+
+    /**
+     * Resolves with the next DOM update.
+     */
+    nextUpdate(): Promise<void> {
+        return new Promise(DOM.queueUpdate);
     },
 
     /**
@@ -179,15 +183,6 @@ export const DOM = Object.freeze({
     },
 
     /**
-     * Resolves with the next DOM update.
-     */
-    nextUpdate(): Promise<void> {
-        return new Promise((resolve: () => void) => {
-            DOM.queueUpdate(resolve);
-        });
-    },
-
-    /**
      * Sets an attribute value on an element.
      * @param element - The element to set the attribute value on.
      * @param attributeName - The attribute name to set.
@@ -197,11 +192,9 @@ export const DOM = Object.freeze({
      * it is set to the provided value using the standard `setAttribute` API.
      */
     setAttribute(element: HTMLElement, attributeName: string, value: any) {
-        if (value === null || value === undefined) {
-            element.removeAttribute(attributeName);
-        } else {
-            element.setAttribute(attributeName, value);
-        }
+        value === null || value === undefined
+            ? element.removeAttribute(attributeName)
+            : element.setAttribute(attributeName, value);
     },
 
     /**

@@ -213,8 +213,8 @@ export const DOM: Readonly<{
     createCustomAttributePlaceholder(attributeName: string, index: number): string;
     createBlockPlaceholder(index: number): string;
     queueUpdate(callable: Callable): void;
-    processUpdates(): void;
     nextUpdate(): Promise<void>;
+    processUpdates(): void;
     setAttribute(element: HTMLElement, attributeName: string, value: any): void;
     setBooleanAttribute(element: HTMLElement, attributeName: string, value: boolean): void;
 }>;

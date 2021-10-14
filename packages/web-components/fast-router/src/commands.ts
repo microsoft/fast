@@ -90,9 +90,12 @@ function factoryFromElementInstance(element: HTMLElement): ViewFactory {
     const fragment = document.createDocumentFragment();
     fragment.appendChild(element);
 
-    const view = new HTMLView(fragment, [
-        navigationContributor().createBehavior(element),
-    ]);
+    const factory = navigationContributor();
+    factory.targetId = "h";
+
+    const view = new HTMLView(fragment, [factory], {
+        [factory.targetId]: element,
+    });
 
     return {
         create() {
