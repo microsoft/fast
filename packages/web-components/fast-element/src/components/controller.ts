@@ -25,7 +25,7 @@ function getShadowRoot(element: HTMLElement): ShadowRoot | null {
  */
 export class Controller extends PropertyChangeNotifier {
     private boundObservables: Record<string, any> | null = null;
-    private behaviors: Map<Behavior, number> | null = null;
+    private behaviors: Map<Behavior<HTMLElement>, number> | null = null;
     private needsInitialization: boolean = true;
     private _template: ElementViewTemplate | null = null;
     private _styles: ElementStyles | null = null;
@@ -209,10 +209,10 @@ export class Controller extends PropertyChangeNotifier {
      * Adds behaviors to this element.
      * @param behaviors - The behaviors to add.
      */
-    public addBehaviors(behaviors: ReadonlyArray<Behavior>): void {
+    public addBehaviors(behaviors: ReadonlyArray<Behavior<HTMLElement>>): void {
         const targetBehaviors = this.behaviors || (this.behaviors = new Map());
         const length = behaviors.length;
-        const behaviorsToBind: Behavior[] = [];
+        const behaviorsToBind: Behavior<HTMLElement>[] = [];
 
         for (let i = 0; i < length; ++i) {
             const behavior = behaviors[i];
@@ -240,7 +240,7 @@ export class Controller extends PropertyChangeNotifier {
      * @param force - Forces unbinding of behaviors.
      */
     public removeBehaviors(
-        behaviors: ReadonlyArray<Behavior>,
+        behaviors: ReadonlyArray<Behavior<HTMLElement>>,
         force: boolean = false
     ): void {
         const targetBehaviors = this.behaviors;
@@ -250,7 +250,7 @@ export class Controller extends PropertyChangeNotifier {
         }
 
         const length = behaviors.length;
-        const behaviorsToUnbind: Behavior[] = [];
+        const behaviorsToUnbind: Behavior<HTMLElement>[] = [];
 
         for (let i = 0; i < length; ++i) {
             const behavior = behaviors[i];

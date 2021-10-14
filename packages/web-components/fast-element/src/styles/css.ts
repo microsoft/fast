@@ -6,10 +6,10 @@ import { ComposableStyles, ElementStyles } from "./element-styles";
 function collectStyles(
     strings: TemplateStringsArray,
     values: (ComposableStyles | CSSDirective)[]
-): { styles: ComposableStyles[]; behaviors: Behavior[] } {
+): { styles: ComposableStyles[]; behaviors: Behavior<HTMLElement>[] } {
     const styles: ComposableStyles[] = [];
     let cssString = "";
-    const behaviors: Behavior[] = [];
+    const behaviors: Behavior<HTMLElement>[] = [];
 
     for (let i = 0, ii = strings.length - 1; i < ii; ++i) {
         cssString += strings[i];
@@ -71,10 +71,10 @@ export function css(
     return elementStyles;
 }
 
-class CSSPartial extends CSSDirective implements Behavior {
+class CSSPartial extends CSSDirective implements Behavior<HTMLElement> {
     private css: string = "";
     private styles?: ElementStyles;
-    constructor(styles: ComposableStyles[], private behaviors: Behavior[]) {
+    constructor(styles: ComposableStyles[], private behaviors: Behavior<HTMLElement>[]) {
         super();
 
         const stylesheets: ReadonlyArray<Exclude<
@@ -100,7 +100,7 @@ class CSSPartial extends CSSDirective implements Behavior {
         }
     }
 
-    createBehavior(): Behavior {
+    createBehavior(): Behavior<HTMLElement> {
         return this;
     }
 

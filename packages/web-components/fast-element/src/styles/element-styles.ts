@@ -62,7 +62,7 @@ export abstract class ElementStyles {
     public abstract readonly styles: ReadonlyArray<ComposableStyles>;
 
     /** @internal */
-    public abstract readonly behaviors: ReadonlyArray<Behavior> | null = null;
+    public abstract readonly behaviors: ReadonlyArray<Behavior<HTMLElement>> | null;
 
     /** @internal */
     public addStylesTo(target: StyleTarget): void {
@@ -83,7 +83,7 @@ export abstract class ElementStyles {
      * Associates behaviors with this set of styles.
      * @param behaviors - The behaviors to associate.
      */
-    public withBehaviors(...behaviors: Behavior[]): this {
+    public withBehaviors(...behaviors: Behavior<HTMLElement>[]): this {
         (this.behaviors as any) =
             this.behaviors === null ? behaviors : this.behaviors.concat(behaviors);
 
@@ -118,20 +118,26 @@ function reduceStyles(
 
 function reduceBehaviors(
     styles: ReadonlyArray<ComposableStyles>
-): ReadonlyArray<Behavior> | null {
+): ReadonlyArray<Behavior<HTMLElement>> | null {
     return styles
         .map((x: ComposableStyles) => (x instanceof ElementStyles ? x.behaviors : null))
-        .reduce((prev: Behavior[] | null, curr: Behavior[] | null) => {
-            if (curr === null) {
-                return prev;
-            }
+        .reduce(
+            (
+                prev: Behavior<HTMLElement>[] | null,
+                curr: Behavior<HTMLElement>[] | null
+            ) => {
+                if (curr === null) {
+                    return prev;
+                }
 
-            if (prev === null) {
-                prev = [];
-            }
+                if (prev === null) {
+                    prev = [];
+                }
 
-            return prev.concat(curr);
-        }, null as Behavior[] | null);
+                return prev.concat(curr);
+            },
+            null as Behavior<HTMLElement>[] | null
+        );
 }
 
 /**
@@ -167,7 +173,7 @@ export class AdoptedStyleSheetsStyles extends ElementStyles {
         return this._styleSheets;
     }
 
-    public readonly behaviors: ReadonlyArray<Behavior> | null;
+    public readonly behaviors: ReadonlyArray<Behavior<HTMLElement>> | null;
 
     public constructor(
         public styles: ComposableStyles[],
@@ -203,7 +209,7 @@ function getNextStyleClass(): string {
 export class StyleElementStyles extends ElementStyles {
     private readonly styleSheets: string[];
     private readonly styleClass: string;
-    public readonly behaviors: ReadonlyArray<Behavior> | null = null;
+    public readonly behaviors: ReadonlyArray<Behavior<HTMLElement>> | null = null;
 
     public constructor(public styles: ComposableStyles[]) {
         super();

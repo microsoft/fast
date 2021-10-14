@@ -10,6 +10,7 @@ import { CSSDirective } from "./css-directive";
 import { css, cssPartial } from "./css";
 import type { Behavior } from "../observation/behavior";
 import { defaultExecutionContext } from "../observation/observable";
+import type { FASTElement } from "..";
 
 if (DOM.supportsAdoptedStyleSheets) {
     describe("AdoptedStyleSheetsStyles", () => {
@@ -331,12 +332,12 @@ describe("cssPartial", () => {
         const partial = cssPartial`${new directive}${new directive2}`;
         const el = {
             $fastController: {
-                addBehaviors(behaviors: Behavior[]) {
+                addBehaviors(behaviors: Behavior<HTMLElement>[]) {
                     expect(behaviors[0]).to.equal(behavior);
                     expect(behaviors[1]).to.equal(behavior2);
                 }
             }
-        }
+        } as FASTElement;
 
         partial.createBehavior()?.bind(el, defaultExecutionContext)
     });
@@ -352,7 +353,7 @@ describe("cssPartial", () => {
                     called = true;
                 }
             }
-        }
+        } as FASTElement;
 
         partial.createBehavior()?.bind(el, defaultExecutionContext)
 

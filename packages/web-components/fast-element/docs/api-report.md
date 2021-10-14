@@ -58,9 +58,9 @@ export class AttributeDefinition implements Accessor {
 export type AttributeMode = "reflect" | "boolean" | "fromView";
 
 // @public
-export interface Behavior {
-    bind(source: unknown, context: ExecutionContext): void;
-    unbind(source: unknown): void;
+export interface Behavior<TSource = any, TParent = any, TGrandparent = any> {
+    bind(source: TSource, context: ExecutionContext<TParent, TGrandparent>): void;
+    unbind(source: TSource): void;
 }
 
 // @public
@@ -162,7 +162,7 @@ export type Constructable<T = {}> = {
 export class Controller extends PropertyChangeNotifier {
     // @internal
     constructor(element: HTMLElement, definition: FASTElementDefinition);
-    addBehaviors(behaviors: ReadonlyArray<Behavior>): void;
+    addBehaviors(behaviors: ReadonlyArray<Behavior<HTMLElement>>): void;
     addStyles(styles: ElementStyles | HTMLStyleElement): void;
     readonly definition: FASTElementDefinition;
     readonly element: HTMLElement;
@@ -172,7 +172,7 @@ export class Controller extends PropertyChangeNotifier {
     onAttributeChangedCallback(name: string, oldValue: string, newValue: string): void;
     onConnectedCallback(): void;
     onDisconnectedCallback(): void;
-    removeBehaviors(behaviors: ReadonlyArray<Behavior>, force?: boolean): void;
+    removeBehaviors(behaviors: ReadonlyArray<Behavior<HTMLElement>>, force?: boolean): void;
     removeStyles(styles: ElementStyles | HTMLStyleElement): void;
     get styles(): ElementStyles | null;
     set styles(value: ElementStyles | null);
@@ -186,7 +186,7 @@ export function css(strings: TemplateStringsArray, ...values: (ComposableStyles 
 
 // @public
 export class CSSDirective {
-    createBehavior(): Behavior | undefined;
+    createBehavior(): Behavior<HTMLElement> | undefined;
     createCSS(): ComposableStyles;
 }
 
@@ -233,7 +233,7 @@ export abstract class ElementStyles {
     // @internal (undocumented)
     addStylesTo(target: StyleTarget): void;
     // @internal (undocumented)
-    abstract readonly behaviors: ReadonlyArray<Behavior> | null;
+    abstract readonly behaviors: ReadonlyArray<Behavior<HTMLElement>> | null;
     static readonly create: ElementStyleFactory;
     // @internal (undocumented)
     isAttachedTo(target: StyleTarget): boolean;
@@ -241,7 +241,7 @@ export abstract class ElementStyles {
     removeStylesFrom(target: StyleTarget): void;
     // @internal (undocumented)
     abstract readonly styles: ReadonlyArray<ComposableStyles>;
-    withBehaviors(...behaviors: Behavior[]): this;
+    withBehaviors(...behaviors: Behavior<HTMLElement>[]): this;
 }
 
 // @public
@@ -278,7 +278,7 @@ export class ExecutionContext<TParent = any, TGrandparent = any> {
 }
 
 // @public
-export interface FASTElement {
+export interface FASTElement extends HTMLElement {
     $emit(type: string, detail?: any, options?: Omit<CustomEventInit, "detail">): boolean | void;
     readonly $fastController: Controller;
     attributeChangedCallback(name: string, oldValue: string, newValue: string): void;
