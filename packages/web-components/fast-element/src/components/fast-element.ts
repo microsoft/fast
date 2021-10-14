@@ -8,7 +8,7 @@ import {
  * Represents a custom element based on the FASTElement infrastructure.
  * @public
  */
-export interface FASTElement {
+export interface FASTElement extends HTMLElement {
     /**
      * The underlying controller that handles the lifecycle and rendering of
      * this FASTElement.
@@ -61,7 +61,7 @@ export interface FASTElement {
 function createFASTElement<T extends typeof HTMLElement>(
     BaseType: T
 ): { new (): InstanceType<T> & FASTElement } {
-    return class extends (BaseType as any) implements FASTElement {
+    return class extends (BaseType as any) {
         public readonly $fastController!: Controller;
 
         public constructor() {
