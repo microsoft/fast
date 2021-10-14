@@ -1,7 +1,7 @@
 import type { ExecutionContext } from "./observable";
 
 /**
- * Represents and object that can contribute behavior to a view or
+ * Represents an object that can contribute behavior to a view or
  * element's bind/unbind operations.
  * @public
  */
@@ -17,5 +17,5 @@ export interface Behavior<TSource = any, TParent = any, TGrandparent = any> {
      * Unbinds this behavior from the source.
      * @param source - The source to unbind from.
      */
-    unbind(source: TSource): void;
+    unbind(source: TSource, context: ExecutionContext<TParent, TGrandparent>): void;
 }

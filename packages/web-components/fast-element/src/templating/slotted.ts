@@ -1,4 +1,4 @@
-import { AttachedBehaviorHTMLDirective, BehaviorTargets } from "./html-directive";
+import { AttachedBehaviorHTMLDirective, ViewBehaviorTargets } from "./html-directive";
 import { NodeBehaviorOptions, NodeObservationBehavior } from "./node-observation";
 import type { CaptureType } from "./template";
 
@@ -21,7 +21,7 @@ export class SlottedBehavior extends NodeObservationBehavior<SlottedBehaviorOpti
      * @param options - The options to use when observing the slot.
      */
     public constructor(
-        targets: BehaviorTargets,
+        targets: ViewBehaviorTargets,
         targetId: string,
         options: SlottedBehaviorOptions
     ) {
