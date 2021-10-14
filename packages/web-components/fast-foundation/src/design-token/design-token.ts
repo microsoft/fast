@@ -911,7 +911,7 @@ export const DesignToken = Object.freeze({
     /**
      * Registers and element or document as a DesignToken root.
      * {@link CSSDesignToken | CSSDesignTokens} with default values assigned via
-     * {@link DesignToken.withDefault} will emit CSS custom properties to all
+     * {@link (DesignToken:interface).withDefault} will emit CSS custom properties to all
      * registered roots.
      * @param target - The root to register
      */

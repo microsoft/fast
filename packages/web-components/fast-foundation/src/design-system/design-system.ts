@@ -93,8 +93,8 @@ export interface DesignSystem {
     withElementDisambiguation(callback: ElementDisambiguationCallback): DesignSystem;
 
     /**
-     * Overrides the {@link DesignToken} root, controlling where
-     * {@link DesignToken} default value CSS custom properties
+     * Overrides the {@link (DesignToken:interface)} root, controlling where
+     * {@link (DesignToken:interface)} default value CSS custom properties
      * are emitted.
      *
      * Providing `null` disables automatic DesignToken registration.
