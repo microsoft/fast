@@ -268,7 +268,7 @@ export class Controller extends PropertyChangeNotifier {
             const element = this.element;
 
             for (let i = 0; i < behaviorsToUnbind.length; ++i) {
-                behaviorsToUnbind[i].unbind(element);
+                behaviorsToUnbind[i].unbind(element, defaultExecutionContext);
             }
         }
     }
@@ -321,7 +321,7 @@ export class Controller extends PropertyChangeNotifier {
         if (behaviors !== null) {
             const element = this.element;
             for (const [behavior] of behaviors) {
-                behavior.unbind(element);
+                behavior.unbind(element, defaultExecutionContext);
             }
         }
     }
