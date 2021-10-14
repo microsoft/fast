@@ -1,0 +1,7 @@
+{
+  "type": "minor",
+  "comment": "Implement DesignToken root-element registration for CSS custom property emission of default token values",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "nicholasrice@users.noreply.github.com",
+  "dependentChangeType": "patch"
+}
