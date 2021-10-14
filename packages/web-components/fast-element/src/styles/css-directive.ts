@@ -19,7 +19,7 @@ export class CSSDirective {
      * Creates a behavior to bind to the host element.
      * @returns - the behavior to bind to the host element, or undefined.
      */
-    public createBehavior(): Behavior | undefined {
+    public createBehavior(): Behavior<HTMLElement> | undefined {
         return undefined;
     }
 }
