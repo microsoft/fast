@@ -17,11 +17,11 @@ FASTElement.define(Bindings, {
     template: html<Bindings>`
         <dl>
             <dt>Attribute</dt>
-            <dd>${(x: Bindings): string => x.attribute}</dd>
+            <dd id="attribute-binding">${(x: Bindings): string => x.attribute}</dd>
             <dt>Boolean</dt>
-            <dd>${(x: Bindings): boolean => x.boolean}</dd>
+            <dd id="boolean-attribute-binding">${(x: Bindings): boolean => x.boolean}</dd>
             <dt>Property</dt>
-            <dd>${(x: Bindings): string => x.property}</dd>
+            <dd id="property-binding">${(x: Bindings): string => x.property}</dd>
         </dl>
     `,
 });

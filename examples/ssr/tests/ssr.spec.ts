@@ -100,3 +100,23 @@ test("should render an element into a named slot of an element with a named slot
 
 	expect(target).not.toBeNull();
 });
+
+test("should bind an attribute value to an element", async ({page}) => {
+	await page.goto(ROOT_URL);
+	const target = await page.$("fast-main > fast-bindings #attribute-binding");
+
+	expect(await target.innerText()).toBe("attribute-value");
+});
+
+test("should bind a boolean attribute value to an element", async ({page}) => {
+	await page.goto(ROOT_URL);
+	const target = await page.$("fast-main > fast-bindings #boolean-attribute-binding");
+
+	expect(await target.innerText()).toBe("true");
+});
+test("should bind a property value to an element", async ({page}) => {
+	await page.goto(ROOT_URL);
+	const target = await page.$("fast-main > fast-bindings #property-binding");
+
+	expect(await target.innerText()).toBe("property-value");
+});
