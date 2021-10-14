@@ -1,8 +1,50 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Sun, 10 Oct 2021 07:12:26 GMT and should not be manually modified.
+This log was last generated on Wed, 13 Oct 2021 22:45:16 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.20.0
+
+Wed, 13 Oct 2021 22:45:16 GMT
+
+### Minor changes
+
+- Adding fast-calendar component (robarb@microsoft.com)
+
+### Patches
+
+- move style assignment for combobox and select into the class and off the DOM node (chhol@microsoft.com)
+- Code fixes for calendar (robarb@microsoft.com)
+- Bump @microsoft/fast-element to v1.6.1 (markwhitfeld@users.noreply.github.com)
+
+## 2.19.0
+
+Wed, 13 Oct 2021 01:53:37 GMT
+
+### Minor changes
+
+- data-grid: add support for rowheader role (scomea@microsoft.com)
+- Add focus event handler to tooltip (v-dlesac@microsoft.com)
+
+### Patches
+
+- refactor: remove lodash-es as a dependency (connor@peet.io)
+- use css transforms and transitions in horizontal scroll (john.kreitlow@microsoft.com)
+- Bump @microsoft/fast-web-utilities to v5.0.1 (john.kreitlow@microsoft.com)
+
+## 2.18.0
+
+Tue, 12 Oct 2021 07:15:14 GMT
+
+### Minor changes
+
+- fix(di): context confused for key with some registrations (roeisenb@microsoft.com)
+
+### Patches
+
+- Update design-token default value emission to emit to a stylesheet instead of inline styles on the document body (nicholasrice@users.noreply.github.com)
+- add aria-disabled to accordion-item for single-mode (khamu@microsoft.com)
 
 ## 2.17.3
 

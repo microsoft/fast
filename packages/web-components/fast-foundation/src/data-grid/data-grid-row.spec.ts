@@ -42,7 +42,7 @@ const endEvent = new KeyboardEvent("keydown", {
     bubbles: true,
 } as KeyboardEventInit);
 
-const cellQueryString = '[role="cell"], [role="gridcell"], [role="columnheader"]';
+const cellQueryString = '[role="cell"], [role="gridcell"], [role="columnheader"], [role="rowheader"]';
 
 describe("Data grid row", () => {
     it("should set role to 'row'", async () => {
@@ -141,7 +141,7 @@ describe("Data grid row", () => {
         const { element, connect, disconnect } = await setup();
 
         element.columnDefinitions = [
-            { columnDataKey: "item1" },
+            { columnDataKey: "item1", isRowHeader: true },
             { columnDataKey: "item2" },
             { columnDataKey: "item3" },
         ] as ColumnDefinition[];
@@ -189,7 +189,7 @@ describe("Data grid row", () => {
         const { element, connect, disconnect } = await setup();
 
         element.columnDefinitions = [
-            { columnDataKey: "item1" },
+            { columnDataKey: "item1", isRowHeader: true },
             { columnDataKey: "item2" },
             { columnDataKey: "item3" },
         ] as ColumnDefinition[];

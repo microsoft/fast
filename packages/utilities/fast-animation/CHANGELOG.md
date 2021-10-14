@@ -1,8 +1,17 @@
 # Change Log - @microsoft/fast-animation
 
-This log was last generated on Thu, 08 Jul 2021 07:17:00 GMT and should not be manually modified.
+This log was last generated on Wed, 13 Oct 2021 01:53:37 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 4.1.5
+
+Wed, 13 Oct 2021 01:53:37 GMT
+
+### Patches
+
+- use requestAnimationFrame in fast-animation (john.kreitlow@microsoft.com)
+- refactor: remove lodash-es as a dependency (connor@peet.io)
 
 ## 4.1.4
 

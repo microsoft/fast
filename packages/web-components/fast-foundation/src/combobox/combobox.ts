@@ -4,8 +4,7 @@ import {
     observable,
     SyntheticViewTemplate,
 } from "@microsoft/fast-element";
-import { limit } from "@microsoft/fast-web-utilities";
-import uniqueId from "lodash-es/uniqueId";
+import { limit, uniqueId } from "@microsoft/fast-web-utilities";
 import type { ListboxOption } from "../listbox-option/listbox-option";
 import { ARIAGlobalStatesAndProperties } from "../patterns/aria-global";
 import { StartEnd, StartEndOptions } from "../patterns/start-end";
@@ -54,6 +53,13 @@ export class Combobox extends FormAssociatedCombobox {
      * @internal
      */
     public control: HTMLInputElement;
+
+    /**
+     * Reference to the internal listbox element.
+     *
+     * @internal
+     */
+    public listbox: HTMLDivElement;
 
     /**
      * The collection of currently filtered options.
@@ -116,6 +122,11 @@ export class Combobox extends FormAssociatedCombobox {
      */
     @observable
     public maxHeight: number = 0;
+    private maxHeightChanged(): void {
+        if (this.listbox) {
+            this.listbox.style.setProperty("--max-height", `${this.maxHeight}px`);
+        }
+    }
 
     /**
      * The open attribute.

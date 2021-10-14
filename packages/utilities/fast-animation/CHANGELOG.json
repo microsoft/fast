@@ -2,6 +2,27 @@
   "name": "@microsoft/fast-animation",
   "entries": [
     {
+      "date": "Wed, 13 Oct 2021 01:53:37 GMT",
+      "tag": "@microsoft/fast-animation_v4.1.5",
+      "version": "4.1.5",
+      "comments": {
+        "patch": [
+          {
+            "comment": "use requestAnimationFrame in fast-animation",
+            "author": "john.kreitlow@microsoft.com",
+            "commit": "696d66c1382aebedc9410b83362c4dbda131a638",
+            "package": "@microsoft/fast-animation"
+          },
+          {
+            "comment": "refactor: remove lodash-es as a dependency",
+            "author": "connor@peet.io",
+            "commit": "4ef4b325f8259dd0f648b5fe1b393ef8839e643e",
+            "package": "@microsoft/fast-animation"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 08 Jul 2021 07:17:00 GMT",
       "tag": "@microsoft/fast-animation_v4.1.4",
       "version": "4.1.4",
