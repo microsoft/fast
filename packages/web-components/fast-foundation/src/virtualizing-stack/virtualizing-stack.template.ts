@@ -18,7 +18,6 @@ export const virtualizingStackTemplate: (
 ) => html`
     <template>
         <div
-            day="Monday"
             style="
                 width: ${x =>
                 x.orientation !== Orientation.vertical

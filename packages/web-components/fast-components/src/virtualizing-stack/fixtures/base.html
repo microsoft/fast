@@ -3,9 +3,9 @@
 </h1>
 <div
     style="
-        height: 200px;
+        height: 240px;
         display: grid;
-        grid-template-rows: 1fr 1fr;
+        grid-template-rows: 1fr 20px 1fr;
         margin-bottom: 120px;
     "
 >
@@ -21,16 +21,16 @@
         item-span="100"
         id="stackh2"
         style="
-            height: 100px;
+            height: 120px;
             width: 400px;
-            grid-row: 2;
+            grid-row: 3;
             overflow-x: scroll;
             overflow-y: hidden;
             background: gray;
         "
     ></fast-virtualizing-stack>
 </div>
-<div style="width: 200px; display: grid; grid-template-columns: 1fr 1fr;">
+<div style="width: 240px; display: grid; grid-template-columns: 1fr 20px 1fr;">
     <fast-virtualizing-stack
         item-span="100"
         id="stackv1"
@@ -41,9 +41,9 @@
         item-span="100"
         id="stackv2"
         style="
-            width: 100px;
+            width: 120px;
             height: 400px;
-            grid-column: 2;
+            grid-column: 3;
             overflow-y: scroll;
             overflow-x: hidden;
             background: gray;
