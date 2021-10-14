@@ -590,7 +590,7 @@ export class ViewTemplate<TSource = any, TParent = any, TGrandparent = any> impl
     create(hostBindingTarget?: Element): HTMLView<TSource, TParent, TGrandparent>;
     readonly directives: ReadonlyArray<HTMLDirective>;
     readonly html: string | HTMLTemplateElement;
-    render(source: TSource, host: Node | string, hostBindingTarget?: Element): HTMLView<TSource, TParent, TGrandparent>;
+    render(source: TSource, host: Node, hostBindingTarget?: Element): HTMLView<TSource, TParent, TGrandparent>;
     }
 
 // @public
