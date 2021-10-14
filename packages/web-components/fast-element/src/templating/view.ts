@@ -6,23 +6,23 @@ import type { BehaviorTargets, NodeBehaviorFactory } from "./html-directive";
  * Represents a collection of DOM nodes which can be bound to a data source.
  * @public
  */
-export interface View {
+export interface View<TSource = any, TParent = any, TGrandparent = any> {
     /**
      * The execution context the view is running within.
      */
-    readonly context: ExecutionContext | null;
+    readonly context: ExecutionContext<TParent, TGrandparent> | null;
 
     /**
      * The data that the view is bound to.
      */
-    readonly source: any | null;
+    readonly source: TSource | null;
 
     /**
      * Binds a view's behaviors to its binding source.
      * @param source - The binding source for the view's binding behaviors.
      * @param context - The execution context to run the view within.
      */
-    bind(source: unknown, context: ExecutionContext): void;
+    bind(source: TSource, context: ExecutionContext<TParent, TGrandparent>): void;
 
     /**
      * Unbinds a view's behaviors from its binding source and context.
@@ -40,7 +40,8 @@ export interface View {
  * A View representing DOM nodes specifically for rendering the view of a custom element.
  * @public
  */
-export interface ElementView extends View {
+export interface ElementView<TSource = any, TParent = any, TGrandparent = any>
+    extends View<TSource, TParent, TGrandparent> {
     /**
      * Appends the view's DOM nodes to the referenced node.
      * @param node - The parent node to append the view's DOM nodes to.
@@ -52,7 +53,8 @@ export interface ElementView extends View {
  * A view representing a range of DOM nodes which can be added/removed ad hoc.
  * @public
  */
-export interface SyntheticView extends View {
+export interface SyntheticView<TSource = any, TParent = any, TGrandparent = any>
+    extends View<TSource, TParent, TGrandparent> {
     /**
      * The first DOM node in the range of nodes that make up the view.
      */
@@ -100,18 +102,21 @@ function removeNodeSequence(firstNode: Node, lastNode: Node) {
  * The standard View implementation, which also implements ElementView and SyntheticView.
  * @public
  */
-export class HTMLView implements ElementView, SyntheticView {
+export class HTMLView<TSource = any, TParent = any, TGrandparent = any>
+    implements
+        ElementView<TSource, TParent, TGrandparent>,
+        SyntheticView<TSource, TParent, TGrandparent> {
     private behaviors: Behavior[] | null = null;
 
     /**
      * The data that the view is bound to.
      */
-    public source: any | null = null;
+    public source: TSource | null = null;
 
     /**
      * The execution context the view is running within.
      */
-    public context: ExecutionContext | null = null;
+    public context: ExecutionContext<TParent, TGrandparent> | null = null;
 
     /**
      * The first DOM node in the range of nodes that make up the view.
@@ -201,7 +206,7 @@ export class HTMLView implements ElementView, SyntheticView {
      * @param source - The binding source for the view's binding behaviors.
      * @param context - The execution context to run the behaviors within.
      */
-    public bind(source: unknown, context: ExecutionContext): void {
+    public bind(source: TSource, context: ExecutionContext<TParent, TGrandparent>): void {
         let behaviors = this.behaviors;
         const oldSource = this.source;
 
