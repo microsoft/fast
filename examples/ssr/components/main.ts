@@ -38,17 +38,12 @@ FASTElement.define(Main, {
         <fast-slot id="named-slotted-element">
             <fast-leaf slot="named-slot"></fast-leaf>
         </fast-slot>
+        <fast-bindings
+            attribute="attribute-value"
+            ?boolean=${x => true}
+            :property=${x => "property-value"}
+        ></fast-bindings>
 
-        <ul>
-            <li></li>
-            <li>
-                <fast-bindings
-                    attribute="attribute-value"
-                    ?boolean=${x => true}
-                    :property=${x => "property-value"}
-                ></fast-bindings>
-            </li>
-        </ul>
         <fast-repeater></fast-repeater>
         <fast-repeater :data=${x => [1, 2, 3, 4].map(x => x.toString())}></fast-repeater>
     `,
