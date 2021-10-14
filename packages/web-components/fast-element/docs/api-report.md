@@ -230,17 +230,20 @@ export type ElementStyleFactory = (styles: ReadonlyArray<ComposableStyles>) => E
 
 // @public
 export abstract class ElementStyles {
+    constructor(
+    styles: ReadonlyArray<ComposableStyles>,
+    behaviors: ReadonlyArray<Behavior<HTMLElement>> | null);
     // @internal (undocumented)
     addStylesTo(target: StyleTarget): void;
     // @internal (undocumented)
-    abstract readonly behaviors: ReadonlyArray<Behavior<HTMLElement>> | null;
+    readonly behaviors: ReadonlyArray<Behavior<HTMLElement>> | null;
     static readonly create: ElementStyleFactory;
     // @internal (undocumented)
     isAttachedTo(target: StyleTarget): boolean;
     // @internal (undocumented)
     removeStylesFrom(target: StyleTarget): void;
     // @internal (undocumented)
-    abstract readonly styles: ReadonlyArray<ComposableStyles>;
+    readonly styles: ReadonlyArray<ComposableStyles>;
     withBehaviors(...behaviors: Behavior<HTMLElement>[]): this;
 }
 

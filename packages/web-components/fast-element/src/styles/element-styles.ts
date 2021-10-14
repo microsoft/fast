@@ -58,11 +58,12 @@ export type ElementStyleFactory = (
 export abstract class ElementStyles {
     private targets: WeakSet<StyleTarget> = new WeakSet();
 
-    /** @internal */
-    public abstract readonly styles: ReadonlyArray<ComposableStyles>;
-
-    /** @internal */
-    public abstract readonly behaviors: ReadonlyArray<Behavior<HTMLElement>> | null;
+    constructor(
+        /** @internal */
+        public readonly styles: ReadonlyArray<ComposableStyles>,
+        /** @internal */
+        public readonly behaviors: ReadonlyArray<Behavior<HTMLElement>> | null
+    ) {}
 
     /** @internal */
     public addStylesTo(target: StyleTarget): void {
@@ -173,14 +174,11 @@ export class AdoptedStyleSheetsStyles extends ElementStyles {
         return this._styleSheets;
     }
 
-    public readonly behaviors: ReadonlyArray<Behavior<HTMLElement>> | null;
-
     public constructor(
-        public styles: ComposableStyles[],
+        styles: ComposableStyles[],
         private styleSheetCache: Map<string, CSSStyleSheet>
     ) {
-        super();
-        this.behaviors = reduceBehaviors(styles);
+        super(styles, reduceBehaviors(styles));
     }
 
     public addStylesTo(target: StyleTarget): void {
@@ -209,11 +207,9 @@ function getNextStyleClass(): string {
 export class StyleElementStyles extends ElementStyles {
     private readonly styleSheets: string[];
     private readonly styleClass: string;
-    public readonly behaviors: ReadonlyArray<Behavior<HTMLElement>> | null = null;
 
-    public constructor(public styles: ComposableStyles[]) {
-        super();
-        this.behaviors = reduceBehaviors(styles);
+    public constructor(styles: ComposableStyles[]) {
+        super(styles, reduceBehaviors(styles));
         this.styleSheets = reduceStyles(styles) as string[];
         this.styleClass = getNextStyleClass();
     }
