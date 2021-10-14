@@ -69,9 +69,59 @@ specialColor.deleteValueFor(descendent);
 specialColor.getValueFor(descendent); // "#FFFFFF"
 ```
 
-## CSS Custom Property emission
+## CSS Custom Property Emission
 
 Unless configured not to, a DesignToken emits a token to CSS automatically whenever the value is set for an element. In the case when a DesignToken is assigned a [derived value](#derived-design-token-values), the CSS custom property will also be emitted when any dependent tokens change.
+
+### DesignToken Root Registration
+In order for *default* DesignToken values to be emitted to a CSS custom property, the
+DesignToken root will need to be configured:
+
+```ts
+DesignToken.create<number>('my-token').withDefault(2); // This will not immediately emit to a CSS custom property
+
+DesignToken.registerRoot(); // Default values are now emitted
+```
+
+Invoking `DesignToken.registerRoot()` will cause CSS custom properties to be emitted for the entire document. A root element can also be provided so that CSS custom properties are scoped to that root.
+
+```ts
+const root = document.querySelector("#root")! as HTMLDivElement;
+DesignToken.registerRoot(root);
+```
+
+There also exists a `DesignToken.unregisterRoot()` method to remove default custom properties from a root.
+
+```ts
+// ...
+DesignToken.unregisterRoot(root);
+```
+
+#### Usage With DesignSystem
+
+If you're using `DesignSystem` to register components and dependencies, then note that `DesignToken` root registration happens automatically when `DesignSystem.register()` is invoked. You can configure the root being registered with `DesignSystem.withDesignTokenRoot()` method:
+
+```ts
+const root = document.createElement("div");
+DesignSystem.getOrCreate().withDesignTokenRoot(root);
+```
+
+or you can disable registration by providing `null`:
+
+```ts
+DesignSystem.getOrCreate().withDesignTokenRoot(null);
+```
+
+### Customizing CSS Custom Property Name
+A DesignToken can also be configured to emit to a CSS custom property that is different than the provided name by providing a CSS custom property name to the configuration:
+
+```ts
+DesignToken.create<number>({
+    name: "my-token", 
+    cssCustomPropertyName: "my-css-custom-property-name" // Emits to --my-css-custom-property-name
+});
+```
+### Preventing CSS Custom Property Emission
 
 A DesignToken can be configured **not** to emit to a CSS custom property by passing a configuration with `cssCustomPropertyName` set to `null` during creation:
 
@@ -79,15 +129,6 @@ A DesignToken can be configured **not** to emit to a CSS custom property by pass
 DesignToken.create<number>({ 
     name: "my-token", 
     cssCustomPropertyName: null 
-});
-```
-
-A DesignToken can also be configured to emit to a CSS custom property that is different than the provided name by providing a CSS custom property name to the configuration:
-
-```ts
-DesignToken.create<number>({
-    name: "my-token", 
-    cssCustomPropertyName: "my-css-custom-property-name" // Emits to --my-css-custom-property-name
 });
 ```
 

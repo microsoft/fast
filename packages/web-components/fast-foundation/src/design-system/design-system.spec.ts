@@ -1,10 +1,11 @@
-import type { Constructable } from "@microsoft/fast-element";
+import { Constructable, DOM } from "@microsoft/fast-element";
 import { expect } from "chai";
 import { FoundationElement } from "..";
 import { Container, DI, Registration } from "../di";
 import { uniqueElementName } from "../test-utilities/fixture";
 import { DesignSystem, ElementDisambiguation } from "./design-system";
 import type { DesignSystemRegistrationContext } from "./registration-context";
+import { DesignToken } from "../design-token/design-token";
 
 describe("DesignSystem", () => {
     it("Should return the same instance for the same element", () => {
@@ -381,5 +382,58 @@ describe("DesignSystem", () => {
         const found = DI.getOrCreateDOMContainer(host).get(Test);
 
         expect(found).to.be.instanceOf(AltTest);
+    });
+
+    it("should set the DesignToken root to the default root when register is invoked", async () => {
+        const token = DesignToken.create<number>("design-system-registration").withDefault(12);
+        const host = document.createElement("div");
+        expect(window.getComputedStyle(document.body).getPropertyValue(token.cssCustomProperty)).to.equal("");
+
+        DesignSystem.getOrCreate(host)
+            .register({
+                register(container: Container, context: DesignSystemRegistrationContext) {}
+            });
+
+
+        await DOM.nextUpdate();
+        expect(window.getComputedStyle(document.body).getPropertyValue(token.cssCustomProperty)).to.equal("12");
+
+        DesignToken.unregisterRoot();
+        await DOM.nextUpdate();
+    });
+
+    it("should provide a way to specify the DesignToken root", async () => {
+        const token = DesignToken.create<number>("custom-design-system-registration").withDefault(12);
+        const host = document.createElement("div");
+        expect(window.getComputedStyle(document.body).getPropertyValue(token.cssCustomProperty)).to.equal("");
+
+        DesignSystem.getOrCreate(host)
+            .withDesignTokenRoot(host)
+            .register({
+                register(container: Container, context: DesignSystemRegistrationContext) {}
+            });
+
+
+        await DOM.nextUpdate();
+        const value = host.style.getPropertyValue(token.cssCustomProperty)
+        expect(value).to.equal("12");
+        expect(window.getComputedStyle(document.body).getPropertyValue(token.cssCustomProperty)).to.equal("");
+        DesignToken.unregisterRoot(host);
+        await DOM.nextUpdate();
+        expect(window.getComputedStyle(document.body).getPropertyValue(token.cssCustomProperty)).to.equal("");
+    });
+    it("should provide a way to disable DesignToken root registration", async () => {
+        const token = DesignToken.create<number>("disabled-design-system-registration").withDefault(12);
+        expect(window.getComputedStyle(document.body).getPropertyValue(token.cssCustomProperty)).to.equal("");
+
+        DesignSystem.getOrCreate()
+            .withDesignTokenRoot(null)
+            .register({
+                register(container: Container, context: DesignSystemRegistrationContext) {}
+            });
+
+
+        await DOM.nextUpdate();
+        expect(window.getComputedStyle(document.body).getPropertyValue(token.cssCustomProperty)).to.equal("");
     });
 });
