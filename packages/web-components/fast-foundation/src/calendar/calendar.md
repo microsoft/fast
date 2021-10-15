@@ -20,6 +20,7 @@ Can be used for a schedule.
 ### Features
 
 - A calendar month view.
+- Localized text for a given market, language and numbering system.
 - Coloring - fonts, borders, backgrounds, buttons.
 - Callback function for returning the clicked date.
 
@@ -43,10 +44,6 @@ There are 22 numbering systems.
 Calculating date/times can run into timezone issues.
 - Hour cycles: h11, h12, h23, h24
 
-Click handler
-Currently I'm using a function that takes the event and finds the date on the clicked element. The developer can attach a method to the calendar that uses the event to extract the date clicked.
-Is this the best way? I looked at attaching a method as a callback but would rely on something like the eval() function which isn't ideal.
-
 ### Prior Art/Examples
 
 *Screenshots and/or links to existing, canonical, or exemplary implementations of the component.*
@@ -57,9 +54,8 @@ Prototype: https://codepen.io/kungfukarl/pen/dcc7a25c745706ca71419db805936e44
 
 ## Design
 
-*Describe the design of the component, thinking through several perspectives:*
-
-TBD
+It uses a light gray background and rounded corners for the interactive version of the calandear.
+Non-interactive cells will have no background so that they don't appear as buttons.
 
 ### API
 
@@ -71,11 +67,23 @@ TBD
 *Attributes:*
 - `month`: number - default current month
 - `year`: number - default current year
-- `monthLabels`: string - comma separated list of months
-- `weekdayLabels`: string - comma separated list of week day labels (sun, mon, tue, etc.)
-- `locale`: string - a locale string which can include the market(country and language), calendar type and numbering system.
+- `locale`: string - a locale string which can include the market(country and language),
+  calendar type and numbering system.
+- `day-format`: enum - Day format used in calendar cells. 'numeric'(default) | '2-digit'
+- `weekday-format`: enum - Format for weekday labels. 'short'(default) | 'long' | 'narrow'
+- `month-format`: enum - Format for the month name in the title. 'long'(default) | '2-digit' | 'narrow' | 'numeric' | 'short'
+- `year-format`: enum - Format for the year in the title. 'numeric'(default) | '2-digit'
+- `min-weeks`: number - a minimum number of weeks to show. This allows for normalizing of 
+  calendars so that they take up the same vertical space.
+- `disabled-dates`: string - a comma separated list of dates to display as disabled.
+- `selected-dates`: string - a comma separated list of dates to display as selected.
+- `readonly`: boolean - readonly version of the calendar
+
 
 *Slots*
+- default - Slotted between the title and the calendar
+- `start` - Before the title
+- `end` - after the calendar
 - The calendar component will generate dynamic slots for each date to slot content onto the calendar.
 
 
@@ -93,8 +101,16 @@ Dynamically generated slots with the date as the name in the template.
 *Slotted Content/Slotted Classes*
 
 *CSS Parts*
-- `title` - the month name
-- `today` - the current day
+- `title` - the container that holds the month and year
+  - `month` - the calendar month in the title
+  - `year` - the calendar year in the title
+- `days` - the container that holds the weekday labels and all of the days
+- `week-days` - the row containing the week-day labels
+- `week-day` - each weekday label
+- `week` - each row of days
+- `day` - each numbered day
+- `date` - the number date in the day cell
+- `today` - the number date for the current date
 
 ---
 
@@ -103,7 +119,7 @@ Dynamically generated slots with the date as the name in the template.
 *Important aspects of the planned implementation with careful consideration of web standards and integration.*
 
 ```html
-<fast-calendar month="1" year="2025" action="datePicked" locale="th-TH-u-ca-bhuddist-nu-thai">
+<fast-calendar month="1" year="2025" locale="th-TH-u-ca-bhuddist-nu-thai" disabled-dates="1-10-2022,1-11-2022" selected-dates="1-20-2022,1-21-2022">
   <div slot="1-1-2022">Happy New Year!</div>
 </fast-calendar>
 ```
@@ -119,31 +135,65 @@ Dynamically generated slots with the date as the name in the template.
 *Consider the accessibility of the component, including:*
 
 - *Keyboard Navigation and Focus*
+  The interactive version uses fast-grid for keyboard interaction.
 - *Form Input*
 - *Use with Assistive Technology*
   - e.g. The implications shadow dom might have on how roles and attributes are presented to the AT. Components which delegate focus require all global aria-* attributes to be enumerated.
 
-- How does tabbing and navigation work?
-- Contrast for current date and selected date(s)
-- Manual input of dates
+- Includes abbr (abbreviation) attribute for abbreviated weekday labels.
 
 ### Globalization
 
 *Consider whether the component has any special globalization needs such as:*
 
 - *Special RTL handling*
-- *Swapping of internal icons/visuals*
+  Text in the title will be RTL [month] [year] -> [year] [month]
+  Cells are rendered right-to-left
 - *Localization*
+  locale attribute for capturing:
+    - market: a language-country code
+    - calendar type: a code representing the calendar type to use
+    - numbering system: a code for the numbering system to use
 
-- Localization of year, month and weekday labels and day numbering handled by Intl js library when setting the language.
-- RTL initiated when using 'ar' or 'he' language codes, 'arabic' or 'arabext' numbering, 'hebrew' or 'islamic' calendars. 'persian' calendars?
-- RTL, is it just reversed?
+
 
 ### Test Plan
 
-*What is the plan for testing the component, if different from the normal path?*
-Need to figure out how to test the different markets.
-How do I know what calendar and numbering systems to use with which market?
+Tests include
+- date-formatter
+  - Setting props: locale, dayFormat, monthFormat, yearFormat, weekdayFormat & date
+  - Defaults to current date
+  - Setting specific dates
+  - Defaults for formatting
+  - Changing formats
+  - Day formatting
+  - Month formatting
+  - Weekday formatting
+  - Year formatting
+  - Getting a list of weekdays
+  - Localized strings
+- calendar defaults
+  - Defaults to current month and year
+  - Returns the correct number of weeks
+  - Highlights the current date
+- month info
+  - Correct number of days. 31 for January, 28 for Febuary, 29 for Febuary on a leap year
+  - Month starts on the correct first day
+- labels
+  - Month labeling. Correct labeling in different formats
+  - Weekday labeling in different formats
+  - Day labeling in different formats
+- localization
+  - Correct language format for the month
+  - Correct year for different calendar types
+  - Correct weekday labeling for the month
+  - Recognize RTL markets
+- day states
+  - Should not show dates as disabled by default
+  - Should correctly show disabeld dates for a list
+  - Should not show dates as selected by default
+  - Should correctly show selected dates for a list
+
 
 ### Documentation
 
@@ -161,4 +211,4 @@ How do I know what calendar and numbering systems to use with which market?
 
 *What next steps, if any, are there? Is there some functionality that would be a nice-to-have or a common feature in other implementations that could be added but is not considered part of the MVP?*
 
-- Implement a date/date-picker component using the calendar component
+- Implement a date-picker component using the calendar component
