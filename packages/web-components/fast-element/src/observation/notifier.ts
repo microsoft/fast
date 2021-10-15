@@ -198,12 +198,7 @@ export class PropertyChangeNotifier implements Notifier {
      * @param propertyName - The property name, passed along to subscribers during notification.
      */
     public notify(propertyName: string): void {
-        const subscribers = this.subscribers[propertyName];
-
-        if (subscribers !== void 0) {
-            subscribers.notify(propertyName);
-        }
-
+        this.subscribers[propertyName]?.notify(propertyName);
         this.sourceSubscribers?.notify(propertyName);
     }
 
@@ -213,22 +208,19 @@ export class PropertyChangeNotifier implements Notifier {
      * @param propertyToWatch - The name of the property that the subscriber is interested in watching for changes.
      */
     public subscribe(subscriber: Subscriber, propertyToWatch?: string): void {
+        let subscribers: SubscriberSet;
+
         if (propertyToWatch) {
-            let subscribers = this.subscribers[propertyToWatch];
-
-            if (subscribers === void 0) {
-                this.subscribers[propertyToWatch] = subscribers = new SubscriberSet(
-                    this.source
-                );
-            }
-
-            subscribers.subscribe(subscriber);
+            subscribers =
+                this.subscribers[propertyToWatch] ??
+                (this.subscribers[propertyToWatch] = new SubscriberSet(this.source));
         } else {
-            this.sourceSubscribers =
-                this.sourceSubscribers ?? new SubscriberSet(this.source);
-
-            this.sourceSubscribers.subscribe(subscriber);
+            subscribers =
+                this.sourceSubscribers ??
+                (this.sourceSubscribers = new SubscriberSet(this.source));
         }
+
+        subscribers.subscribe(subscriber);
     }
 
     /**
@@ -238,10 +230,7 @@ export class PropertyChangeNotifier implements Notifier {
      */
     public unsubscribe(subscriber: Subscriber, propertyToUnwatch?: string): void {
         if (propertyToUnwatch) {
-            const subscribers = this.subscribers[propertyToUnwatch];
-            if (subscribers !== void 0) {
-                subscribers.unsubscribe(subscriber);
-            }
+            this.subscribers[propertyToUnwatch]?.unsubscribe(subscriber);
         } else {
             this.sourceSubscribers?.unsubscribe(subscriber);
         }
