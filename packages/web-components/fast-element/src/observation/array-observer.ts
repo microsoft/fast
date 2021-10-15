@@ -5,8 +5,6 @@ import { SubscriberSet } from "./notifier";
 import type { Notifier } from "./notifier";
 import { Observable } from "./observable";
 
-let arrayObservationEnabled = false;
-
 function adjustIndex(changeRecord: Splice, array: any[]): Splice {
     let index = changeRecord.index;
     const arrayLength = array.length;
@@ -44,19 +42,12 @@ class ArrayObserver extends SubscriberSet {
             this.splices.push(splice);
         }
 
-        if (this.needsQueue) {
-            this.needsQueue = false;
-            DOM.queueUpdate(this);
-        }
+        this.enqueue();
     }
 
     public reset(oldCollection: any[] | undefined): void {
         this.oldCollection = oldCollection;
-
-        if (this.needsQueue) {
-            this.needsQueue = false;
-            DOM.queueUpdate(this);
-        }
+        this.enqueue();
     }
 
     public flush(): void {
@@ -85,7 +76,131 @@ class ArrayObserver extends SubscriberSet {
 
         this.notify(finalSplices);
     }
+
+    private enqueue() {
+        if (this.needsQueue) {
+            this.needsQueue = false;
+            DOM.queueUpdate(this);
+        }
+    }
 }
+
+const proto = Array.prototype;
+const pop = proto.pop;
+const push = proto.push;
+const reverse = proto.reverse;
+const shift = proto.shift;
+const sort = proto.sort;
+const splice = proto.splice;
+const unshift = proto.unshift;
+const arrayOverrides = {
+    pop() {
+        const notEmpty = this.length > 0;
+        const result = pop.apply(this, arguments);
+        const o = this.$fastController as ArrayObserver;
+
+        if (o !== void 0 && notEmpty) {
+            o.addSplice(newSplice(this.length, [result], 0));
+        }
+
+        return result;
+    },
+
+    push() {
+        const result = push.apply(this, arguments);
+        const o = this.$fastController as ArrayObserver;
+
+        if (o !== void 0) {
+            o.addSplice(
+                adjustIndex(
+                    newSplice(this.length - arguments.length, [], arguments.length),
+                    this
+                )
+            );
+        }
+
+        return result;
+    },
+
+    reverse() {
+        let oldArray;
+        const o = this.$fastController as ArrayObserver;
+
+        if (o !== void 0) {
+            o.flush();
+            oldArray = this.slice();
+        }
+
+        const result = reverse.apply(this, arguments);
+
+        if (o !== void 0) {
+            o.reset(oldArray);
+        }
+
+        return result;
+    },
+
+    shift() {
+        const notEmpty = this.length > 0;
+        const result = shift.apply(this, arguments);
+        const o = this.$fastController as ArrayObserver;
+
+        if (o !== void 0 && notEmpty) {
+            o.addSplice(newSplice(0, [result], 0));
+        }
+
+        return result;
+    },
+
+    sort() {
+        let oldArray;
+        const o = this.$fastController as ArrayObserver;
+
+        if (o !== void 0) {
+            o.flush();
+            oldArray = this.slice();
+        }
+
+        const result = sort.apply(this, arguments);
+
+        if (o !== void 0) {
+            o.reset(oldArray);
+        }
+
+        return result;
+    },
+
+    splice() {
+        const result = splice.apply(this, arguments);
+        const o = this.$fastController as ArrayObserver;
+
+        if (o !== void 0) {
+            o.addSplice(
+                adjustIndex(
+                    newSplice(
+                        +arguments[0],
+                        result,
+                        arguments.length > 2 ? arguments.length - 2 : 0
+                    ),
+                    this
+                )
+            );
+        }
+
+        return result;
+    },
+
+    unshift() {
+        const result = unshift.apply(this, arguments);
+        const o = this.$fastController as ArrayObserver;
+
+        if (o !== void 0) {
+            o.addSplice(adjustIndex(newSplice(0, [], arguments.length), this));
+        }
+
+        return result;
+    },
+};
 
 /* eslint-disable prefer-rest-params */
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
@@ -98,11 +213,11 @@ class ArrayObserver extends SubscriberSet {
  * @public
  */
 export function enableArrayObservation(): void {
-    if (arrayObservationEnabled) {
+    if ((proto as any).$fastObservation) {
         return;
     }
 
-    arrayObservationEnabled = true;
+    (proto as any).$fastObservation = true;
 
     Observable.setArrayObserverFactory(
         (collection: any[]): Notifier => {
@@ -110,121 +225,7 @@ export function enableArrayObservation(): void {
         }
     );
 
-    const arrayProto = Array.prototype;
-    const pop = arrayProto.pop;
-    const push = arrayProto.push;
-    const reverse = arrayProto.reverse;
-    const shift = arrayProto.shift;
-    const sort = arrayProto.sort;
-    const splice = arrayProto.splice;
-    const unshift = arrayProto.unshift;
-
-    arrayProto.pop = function () {
-        const notEmpty = this.length > 0;
-        const methodCallResult = pop.apply(this, arguments as any);
-        const o = (this as any).$fastController as ArrayObserver;
-
-        if (o !== void 0 && notEmpty) {
-            o.addSplice(newSplice(this.length, [methodCallResult], 0));
-        }
-
-        return methodCallResult;
-    };
-
-    arrayProto.push = function () {
-        const methodCallResult = push.apply(this, arguments as any);
-        const o = (this as any).$fastController as ArrayObserver;
-
-        if (o !== void 0) {
-            o.addSplice(
-                adjustIndex(
-                    newSplice(this.length - arguments.length, [], arguments.length),
-                    this
-                )
-            );
-        }
-
-        return methodCallResult;
-    };
-
-    arrayProto.reverse = function () {
-        let oldArray;
-        const o = (this as any).$fastController as ArrayObserver;
-
-        if (o !== void 0) {
-            o.flush();
-            oldArray = this.slice();
-        }
-
-        const methodCallResult = reverse.apply(this, arguments as any);
-
-        if (o !== void 0) {
-            o.reset(oldArray);
-        }
-
-        return methodCallResult;
-    };
-
-    arrayProto.shift = function () {
-        const notEmpty = this.length > 0;
-        const methodCallResult = shift.apply(this, arguments as any);
-        const o = (this as any).$fastController as ArrayObserver;
-
-        if (o !== void 0 && notEmpty) {
-            o.addSplice(newSplice(0, [methodCallResult], 0));
-        }
-
-        return methodCallResult;
-    };
-
-    arrayProto.sort = function () {
-        let oldArray;
-        const o = (this as any).$fastController as ArrayObserver;
-
-        if (o !== void 0) {
-            o.flush();
-            oldArray = this.slice();
-        }
-
-        const methodCallResult = sort.apply(this, arguments as any);
-
-        if (o !== void 0) {
-            o.reset(oldArray);
-        }
-
-        return methodCallResult;
-    };
-
-    arrayProto.splice = function () {
-        const methodCallResult = splice.apply(this, arguments as any);
-        const o = (this as any).$fastController as ArrayObserver;
-
-        if (o !== void 0) {
-            o.addSplice(
-                adjustIndex(
-                    newSplice(
-                        +arguments[0],
-                        methodCallResult,
-                        arguments.length > 2 ? arguments.length - 2 : 0
-                    ),
-                    this
-                )
-            );
-        }
-
-        return methodCallResult;
-    };
-
-    arrayProto.unshift = function () {
-        const methodCallResult = unshift.apply(this, arguments as any);
-        const o = (this as any).$fastController as ArrayObserver;
-
-        if (o !== void 0) {
-            o.addSplice(adjustIndex(newSplice(0, [], arguments.length), this));
-        }
-
-        return methodCallResult;
-    };
+    Object.assign(proto, arrayOverrides);
 }
 /* eslint-enable prefer-rest-params */
 /* eslint-enable @typescript-eslint/explicit-function-return-type */
