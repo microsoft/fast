@@ -2,6 +2,29 @@
   "name": "@microsoft/fast-foundation",
   "entries": [
     {
+      "date": "Fri, 15 Oct 2021 23:24:14 GMT",
+      "tag": "@microsoft/fast-foundation_v2.21.0",
+      "version": "2.21.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "Implement DesignToken root-element registration for CSS custom property emission of default token values",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "5cc73663ee585062b130da6d57400fa15bcd3707",
+            "package": "@microsoft/fast-foundation"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "implement level-2 DOM support for DesignToken in browsers that don't support Constructable StyleSheets",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "d1a991480646a1d03babb3a539e308b74c777aa3",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 13 Oct 2021 22:45:16 GMT",
       "tag": "@microsoft/fast-foundation_v2.20.0",
       "version": "2.20.0",

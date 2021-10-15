@@ -1,8 +1,20 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Wed, 13 Oct 2021 22:45:16 GMT and should not be manually modified.
+This log was last generated on Fri, 15 Oct 2021 23:24:14 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.21.0
+
+Fri, 15 Oct 2021 23:24:14 GMT
+
+### Minor changes
+
+- Implement DesignToken root-element registration for CSS custom property emission of default token values (nicholasrice@users.noreply.github.com)
+
+### Patches
+
+- implement level-2 DOM support for DesignToken in browsers that don't support Constructable StyleSheets (nicholasrice@users.noreply.github.com)
 
 ## 2.20.0
 
