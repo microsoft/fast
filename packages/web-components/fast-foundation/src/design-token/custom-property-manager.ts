@@ -72,8 +72,10 @@ class HeadStyleElementStyleSheetTarget extends QueuedStyleSheetTarget {
         // there shouldn't exist a case where `sheet` is null,
         // but if-check it just in case.
         if (sheet) {
-            const index = sheet.insertRule(":root{}");
-            this.target = (sheet.rules[index] as CSSStyleRule).style;
+            // https://github.com/jsdom/jsdom uses https://github.com/NV/CSSOM for it's CSSOM implementation,
+            // which implements the DOM Level 2 spec for CSSStyleSheet where insertRule() requires an index argument.
+            const index = sheet.insertRule(":root{}", sheet.cssRules.length);
+            this.target = (sheet.cssRules[index] as CSSStyleRule).style;
         }
     }
 }
@@ -136,8 +138,10 @@ class StyleElementStyleSheetTarget implements PropertyTarget {
         if (sheet) {
             // Safari will throw if we try to use the return result of insertRule()
             // to index the rule inline, so store as a const prior to indexing.
-            const index = sheet.insertRule(":host{}");
-            this.target = (sheet.rules[index] as CSSStyleRule).style;
+            // https://github.com/jsdom/jsdom uses https://github.com/NV/CSSOM for it's CSSOM implementation,
+            // which implements the DOM Level 2 spec for CSSStyleSheet where insertRule() requires an index argument.
+            const index = sheet.insertRule(":root{}", sheet.cssRules.length);
+            this.target = (sheet.cssRules[index] as CSSStyleRule).style;
         } else {
             this.target = null;
         }
