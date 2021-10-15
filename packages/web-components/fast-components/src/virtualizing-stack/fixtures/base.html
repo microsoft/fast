@@ -3,9 +3,9 @@
 </h1>
 <div
     style="
-        height: 240px;
+        height: 360px;
         display: grid;
-        grid-template-rows: 1fr 20px 1fr;
+        grid-template-rows: 1fr 20px 1fr 20px 1fr;
         margin-bottom: 120px;
     "
 >
@@ -29,8 +29,29 @@
             background: gray;
         "
     ></fast-virtualizing-stack>
+
+    <fast-virtualizing-stack
+        orientation="horizontal"
+        item-span="100"
+        id="stackh3"
+        style="
+            height: 120px;
+            width: 400px;
+            grid-row: 5;
+            overflow-x: scroll;
+            overflow-y: hidden;
+            background: gray;
+        "
+    >
+        <fast-button style="grid-column: 1; height: 100%; width: 100%;">
+            Button 1
+        </fast-button>
+        <fast-button style="grid-column: 2; height: 100%; width: 100%;">
+            Button 2
+        </fast-button>
+    </fast-virtualizing-stack>
 </div>
-<div style="width: 240px; display: grid; grid-template-columns: 1fr 20px 1fr;">
+<div style="width: 240px; display: grid; grid-template-columns: 1fr 20px 1fr 20px 1fr;">
     <fast-virtualizing-stack
         item-span="100"
         id="stackv1"
@@ -49,4 +70,24 @@
             background: gray;
         "
     ></fast-virtualizing-stack>
+
+    <fast-virtualizing-stack
+        item-span="100"
+        id="stackv3"
+        style="
+            width: 120px;
+            height: 400px;
+            grid-column: 5;
+            overflow-y: scroll;
+            overflow-x: hidden;
+            background: gray;
+        "
+    >
+        <fast-button style="grid-row: 1; height: 100%; width: 100%;">
+            Button 1
+        </fast-button>
+        <fast-button style="grid-row: 2; height: 100%; width: 100%;">
+            Button 2
+        </fast-button>
+    </fast-virtualizing-stack>
 </div>

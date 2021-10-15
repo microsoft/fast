@@ -12,10 +12,13 @@ const imageItemTemplate = html`
             height:100%;
             width:100%;
             grid-row: ${(x, c) =>
-            c.parent.orientation === Orientation.vertical ? c.index + 2 : undefined};
+            c.parent.orientation === Orientation.vertical
+                ? c.index + c.parent.virtualizedIndexOffset
+                : 1};
             grid-column: ${(x, c) =>
-            c.parent.orientation === Orientation.horizontal ? c.index + 2 : undefined};
-
+            c.parent.orientation === Orientation.horizontal
+                ? c.index + c.parent.virtualizedIndexOffset
+                : 1};
         "
     >
         <image
@@ -31,26 +34,34 @@ const imageItemTemplate = html`
 addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
     if (name.toLowerCase().startsWith("virtualizing-stack")) {
         const stackv1 = document.getElementById("stackv1") as FoundationVirtualingStack;
-
         stackv1.itemTemplate = imageItemTemplate;
         stackv1.viewportElement = document.documentElement;
         stackv1.items = newDataSet(100000);
 
         const stackv2 = document.getElementById("stackv2") as FoundationVirtualingStack;
-
         stackv2.itemTemplate = imageItemTemplate;
         stackv2.items = newDataSet(100000);
 
-        const stackh1 = document.getElementById("stackh1") as FoundationVirtualingStack;
+        const stackv3 = document.getElementById("stackv3") as FoundationVirtualingStack;
+        stackv3.itemTemplate = imageItemTemplate;
+        stackv3.items = newDataSet(100000);
+        stackv3.startItemSpans = [100, 100];
+        stackv3.endItemSpans = [100];
 
+        const stackh1 = document.getElementById("stackh1") as FoundationVirtualingStack;
         stackh1.itemTemplate = imageItemTemplate;
         stackh1.viewportElement = document.documentElement;
         stackh1.items = newDataSet(100000);
 
         const stackh2 = document.getElementById("stackh2") as FoundationVirtualingStack;
-
         stackh2.itemTemplate = imageItemTemplate;
         stackh2.items = newDataSet(100000);
+
+        const stackh3 = document.getElementById("stackh3") as FoundationVirtualingStack;
+        stackh3.itemTemplate = imageItemTemplate;
+        stackh3.items = newDataSet(100000);
+        stackh3.startItemSpans = [100, 100];
+        stackh3.endItemSpans = [100];
     }
 });
 

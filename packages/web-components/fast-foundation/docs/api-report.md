@@ -2821,6 +2821,8 @@ export class VirtualizingStackBase extends FoundationElement {
     viewportElement: HTMLElement;
     // @beta (undocumented)
     virtualize: boolean;
+    // @internal
+    virtualizedIndexOffset: number;
     // @internal (undocumented)
     visibleItems: any[];
     }

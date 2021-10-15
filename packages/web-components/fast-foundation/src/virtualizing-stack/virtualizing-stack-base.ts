@@ -25,9 +25,13 @@ const defaultItemTemplate: ViewTemplate<any> = html`
             height: 100%;
             width: 100%;
             grid-row: ${(x, c) =>
-            c.parent.orientation === Orientation.vertical ? c.index + 2 : undefined};
+            c.parent.orientation === Orientation.vertical
+                ? c.index + c.parent.virtualizedIndexOffset
+                : 1};
             grid-column: ${(x, c) =>
-            c.parent.orientation === Orientation.horizontal ? c.index + 2 : undefined};
+            c.parent.orientation === Orientation.horizontal
+                ? c.index + c.parent.virtualizedIndexOffset
+                : 1};
         "
     >
         ${x => x}
@@ -101,26 +105,6 @@ export class VirtualizingStackBase extends FoundationElement {
      */
     @attr({ attribute: "viewport-buffer" })
     public viewportBuffer: number = 100;
-
-    /**
-     *
-     *
-     * @beta
-     * @remarks
-     * HTML Attribute: start-item-spans
-     */
-    @attr({ attribute: "start-item-spans" })
-    public startItemSpans: number[] = [];
-
-    /**
-     *
-     *
-     * @beta
-     * @remarks
-     * HTML Attribute: start-item-spans
-     */
-    @attr({ attribute: "end-item-spans" })
-    public endItemSpans: number[] = [];
 
     /**
      *
@@ -205,10 +189,58 @@ export class VirtualizingStackBase extends FoundationElement {
     /**
      *
      *
+     * @beta
+     */
+    @observable
+    public startItemSpans: number[] = [];
+    private startItemSpansChanged(): void {
+        this.startItemsTotalSpan = 0;
+        this.startItemsTemplateSpans = "";
+        this.startItemSpans.forEach((span: number) => {
+            this.startItemsTotalSpan = this.startItemsTotalSpan + span;
+            this.startItemsTemplateSpans = `${this.startItemsTemplateSpans} ${span}px `;
+            this.virtualizedIndexOffset = this.startItemSpans.length + 2;
+        });
+        if (this.$fastController.isConnected) {
+            this.updateDimensions();
+        }
+    }
+
+    /**
+     *
+     *
+     * @beta
+     */
+    @observable
+    public endItemSpans: number[] = [];
+    private endItemSpansChanged(): void {
+        this.endItemsTotalSpan = 0;
+        this.endItemsTemplateSpans = "";
+        this.endItemSpans.forEach((span: number) => {
+            this.endItemsTotalSpan = this.endItemsTotalSpan + span;
+            this.endItemsTemplateSpans = `${this.endItemsTemplateSpans} ${span}px `;
+        });
+        if (this.$fastController.isConnected) {
+            this.updateDimensions();
+        }
+    }
+
+    /**
+     *
+     *
      * @internal
      */
     @observable
     public gridTemplateRows: string;
+
+    /**
+     *
+     *  Accounts for css grids not being zero based, the spacer span, and any user defined start spans
+     *
+     * @internal
+     */
+    @observable
+    public virtualizedIndexOffset: number = 2;
 
     /**
      *
@@ -282,6 +314,12 @@ export class VirtualizingStackBase extends FoundationElement {
 
     private itemsRepeatBehavior: RepeatBehavior | null;
     private itemsPlaceholder: Node;
+
+    private startItemsTotalSpan: number = 0;
+    private startItemsTemplateSpans: string = "";
+
+    private endItemsTotalSpan: number = 0;
+    private endItemsTemplateSpans: string = "";
 
     /**
      * Delays updating ui during scrolling
@@ -503,6 +541,9 @@ export class VirtualizingStackBase extends FoundationElement {
             }
         }
 
+        this.totalStackSpan =
+            this.totalStackSpan + this.startItemsTotalSpan + this.endItemsTotalSpan;
+
         this.requestPositionUpdates();
     };
 
@@ -530,15 +571,15 @@ export class VirtualizingStackBase extends FoundationElement {
 
         let viewportStart: number = this.viewportRect.top;
         let viewportEnd: number = this.viewportRect.bottom;
-        let containerStart: number = this.containerRect.top;
-        let containerEnd: number = this.containerRect.bottom;
+        let containerStart: number = this.containerRect.top + this.startItemsTotalSpan;
+        let containerEnd: number = this.containerRect.bottom - this.endItemsTotalSpan;
         let containerSpan: number = this.containerRect.height;
 
         if (this.orientation === Orientation.horizontal) {
             viewportStart = this.viewportRect.left;
             viewportEnd = this.viewportRect.right;
-            containerStart = this.containerRect.left;
-            containerEnd = this.containerRect.right;
+            containerStart = this.containerRect.left + this.startItemsTotalSpan;
+            containerEnd = this.containerRect.right - this.endItemsTotalSpan;
             containerSpan = this.containerRect.width;
         }
 
@@ -585,12 +626,6 @@ export class VirtualizingStackBase extends FoundationElement {
             this.startSpacerSpan = newFirstRenderedIndex * this.itemSpan;
             this.endSpacerSpan =
                 (this.items.length - newLastRenderedIndex - 1) * this.itemSpan;
-            if (
-                this.firstRenderedIndex === newFirstRenderedIndex &&
-                this.lastRenderedIndex === newLastRenderedIndex
-            ) {
-                return;
-            }
 
             if (
                 this.firstRenderedIndex === -1 ||
@@ -606,7 +641,7 @@ export class VirtualizingStackBase extends FoundationElement {
                 );
                 this.firstRenderedIndex = newFirstRenderedIndex;
                 this.lastRenderedIndex = newLastRenderedIndex;
-                this.gridTemplateSpans = `${this.startSpacerSpan}px repeat(${this.visibleItems.length}, ${this.itemSpan}px) ${this.endSpacerSpan}px`;
+                this.updateGridTemplateSpans();
                 return;
             }
 
@@ -646,9 +681,13 @@ export class VirtualizingStackBase extends FoundationElement {
             this.firstRenderedIndex = newFirstRenderedIndex;
             this.lastRenderedIndex = newLastRenderedIndex;
 
-            this.gridTemplateSpans = `${this.startSpacerSpan}px repeat(${this.visibleItems.length}, ${this.itemSpan}px) ${this.endSpacerSpan}px`;
+            this.updateGridTemplateSpans();
         }
     };
+
+    private updateGridTemplateSpans(): void {
+        this.gridTemplateSpans = `${this.startItemsTemplateSpans}${this.startSpacerSpan}px repeat(${this.visibleItems.length}, ${this.itemSpan}px) ${this.endSpacerSpan}px${this.endItemsTemplateSpans}`;
+    }
 
     /**
      * get position updates
