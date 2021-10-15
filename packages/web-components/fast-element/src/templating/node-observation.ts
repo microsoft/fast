@@ -29,21 +29,17 @@ export interface NodeBehaviorOptions<T = any> {
  */
 export type ElementsFilter = (value: Node, index: number, array: Node[]) => boolean;
 
+const selectElements = value => value.nodeType === 1;
+
 /**
  * Creates a function that can be used to filter a Node array, selecting only elements.
  * @param selector - An optional selector to restrict the filter to.
  * @public
  */
 export function elements(selector?: string): ElementsFilter {
-    if (selector) {
-        return function (value: Node, index: number, array: Node[]): boolean {
-            return value.nodeType === 1 && (value as HTMLElement).matches(selector);
-        };
-    }
-
-    return function (value: Node, index: number, array: Node[]): boolean {
-        return value.nodeType === 1;
-    };
+    return selector
+        ? value => value.nodeType === 1 && (value as HTMLElement).matches(selector)
+        : selectElements;
 }
 
 /**
