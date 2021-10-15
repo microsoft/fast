@@ -110,7 +110,7 @@ export const DOM = Object.freeze({
      * @remarks
      * Used internally by attribute directives such as `ref`, `slotted`, and `children`.
      */
-    createCustomAttributePlaceholder(attributeName: string, index: number) {
+    createCustomAttributePlaceholder(attributeName: string, index: number): string {
         return `${attributeName}="${this.createInterpolationPlaceholder(index)}"`;
     },
 
@@ -120,7 +120,7 @@ export const DOM = Object.freeze({
      * @remarks
      * Used internally by structural directives such as `repeat`.
      */
-    createBlockPlaceholder(index: number) {
+    createBlockPlaceholder(index: number): string {
         return `<!--${marker}:${index}-->`;
     },
 
