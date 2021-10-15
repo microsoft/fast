@@ -8,20 +8,24 @@ const FASTNumberField = NumberField.compose({
     template,
 })
 
-async function setup() {
+async function setup(props?) {
     const { element, connect, disconnect, parent } = await fixture(FASTNumberField());
+
+    if(props) {
+        for(let key in props) {
+            element[key] = props[key].toString();
+        }
+    }
+
+    await connect();
 
     return { element, connect, disconnect, parent };
 }
 
 describe("NumberField", () => {
     it("should set the `autofocus` attribute on the internal control equal to the value provided", async () => {
-        const { element, connect, disconnect } = await setup();
-        const autofocus = true;
+        const { element, disconnect } = await setup({autofocus: true});
 
-        element.autofocus = autofocus;
-
-        await connect();
         expect(
             element.shadowRoot?.querySelector(".control")?.hasAttribute("autofocus")
         ).to.equal(true);
@@ -30,12 +34,8 @@ describe("NumberField", () => {
     });
 
     it("should set the `disabled` attribute on the internal control equal to the value provided", async () => {
-        const { element, connect, disconnect } = await setup();
-        const disabled = true;
+        const { element, disconnect } = await setup({disabled: true});
 
-        element.disabled = disabled;
-
-        await connect();
         expect(
             element.shadowRoot?.querySelector(".control")?.hasAttribute("disabled")
         ).to.equal(true);
@@ -44,12 +44,9 @@ describe("NumberField", () => {
     });
 
     it("should set the `list` attribute on the internal control equal to the value provided", async () => {
-        const { element, connect, disconnect } = await setup();
         const list = "listId";
+        const { element, disconnect } = await setup({list});
 
-        element.list = list;
-
-        await connect();
         expect(
             element.shadowRoot?.querySelector(".control")?.getAttribute("list")
         ).to.equal(list);
@@ -58,12 +55,9 @@ describe("NumberField", () => {
     });
 
     it("should set the `maxlength` attribute on the internal control equal to the value provided", async () => {
-        const { element, connect, disconnect } = await setup();
         const maxlength = 14;
+        const { element, disconnect } = await setup({maxlength});
 
-        element.maxlength = maxlength;
-
-        await connect();
         expect(
             element.shadowRoot?.querySelector(".control")?.getAttribute("maxlength")
         ).to.equal(maxlength.toString());
@@ -72,12 +66,9 @@ describe("NumberField", () => {
     });
 
     it("should set the `minlength` attribute on the internal control equal to the value provided", async () => {
-        const { element, connect, disconnect } = await setup();
         const minlength = 8;
+        const { element, disconnect } = await setup({minlength});
 
-        element.minlength = minlength;
-
-        await connect();
         expect(
             element.shadowRoot?.querySelector(".control")?.getAttribute("minlength")
         ).to.equal(minlength.toString());
@@ -86,12 +77,9 @@ describe("NumberField", () => {
     });
 
     it("should set the `placeholder` attribute on the internal control equal to the value provided", async () => {
-        const { element, connect, disconnect } = await setup();
         const placeholder = "placeholder";
+        const { element, disconnect } = await setup({placeholder});
 
-        element.placeholder = placeholder;
-
-        await connect();
         expect(
             element.shadowRoot?.querySelector(".control")?.getAttribute("placeholder")
         ).to.equal(placeholder);
@@ -100,12 +88,8 @@ describe("NumberField", () => {
     });
 
     it("should set the `readonly` attribute on the internal control equal to the value provided", async () => {
-        const { element, connect, disconnect } = await setup();
-        const readonly = true;
+        const { element, disconnect } = await setup({readOnly: true});
 
-        element.readOnly = readonly;
-
-        await connect();
         expect(
             element.shadowRoot?.querySelector(".control")?.hasAttribute("readonly")
         ).to.equal(true);
@@ -114,12 +98,8 @@ describe("NumberField", () => {
     });
 
     it("should set the `required` attribute on the internal control equal to the value provided", async () => {
-        const { element, connect, disconnect } = await setup();
-        const required = true;
+        const { element, disconnect } = await setup({required: true});
 
-        element.required = required;
-
-        await connect();
         expect(
             element.shadowRoot?.querySelector(".control")?.hasAttribute("required")
         ).to.equal(true);
@@ -128,12 +108,8 @@ describe("NumberField", () => {
     });
 
     it("should set the `size` attribute on the internal control equal to the value provided", async () => {
-        const { element, connect, disconnect } = await setup();
-        const size = 8;
+        const { element, disconnect } = await setup({size: 8});
 
-        element.size = size;
-
-        await connect();
         expect(
             element.shadowRoot?.querySelector(".control")?.hasAttribute("size")
         ).to.equal(true);
@@ -142,58 +118,46 @@ describe("NumberField", () => {
     });
 
     it("should initialize to the initial value if no value property is set", async () => {
-        const { element, connect, disconnect } = await setup();
+        const { element, disconnect } = await setup();
 
-        await connect();
         expect(element.value).to.equal(element["initialValue"]);
-        expect(element.displayText).to.equal(element["initialValue"]);
 
         await disconnect();
     });
 
     it("should initialize to the provided value attribute if set pre-connection", async () => {
-        const { element, connect, disconnect } = await setup();
+        const value = "10";
+        const { element, disconnect } = await setup({value});
 
-        element.setAttribute("value", "10");
-        await connect();
-
-        expect(element.value).to.equal("10");
-        expect(element.displayText).to.equal("10");
+        expect(element.value).to.equal(value);
 
         await disconnect();
     });
 
     it("should initialize to the provided value attribute if set post-connection", async () => {
-        const { element, connect, disconnect } = await setup();
+        const value = "10";
+        const { element, disconnect } = await setup();
 
-        await connect();
-        element.setAttribute("value", "10");
+        element.setAttribute("value", value);
 
-        expect(element.value).to.equal("10");
-        expect(element.displayText).to.equal("10");
+        expect(element.value).to.equal(value);
 
         await disconnect();
     });
 
     it("should initialize to the provided value property if set pre-connection", async () => {
-        const { element, connect, disconnect } = await setup();
-        element.value = "10";
-        await connect();
+        const value = "10";
+        const { element, disconnect } = await setup({value});
 
-        expect(element.value).to.equal("10");
-        expect(element.displayText).to.equal("10");
+        expect(element.value).to.equal(value);
 
         await disconnect();
     });
 
     describe("Delegates ARIA textbox", () => {
         it("should set the `aria-atomic` attribute on the internal control when provided", async () => {
-            const { element, connect, disconnect } = await setup();
             const ariaAtomic = "true";
-
-            element.ariaAtomic = ariaAtomic;
-
-            await connect();
+            const { element, disconnect } = await setup({ariaAtomic});
 
             expect(
                 element.shadowRoot?.querySelector(".control")?.getAttribute("aria-atomic")
@@ -203,12 +167,8 @@ describe("NumberField", () => {
         });
 
         it("should set the `aria-busy` attribute on the internal control when provided", async () => {
-            const { element, connect, disconnect } = await setup();
             const ariaBusy = "false";
-
-            element.ariaBusy = ariaBusy;
-
-            await connect();
+            const { element, disconnect } = await setup({ariaBusy});
 
             expect(
                 element.shadowRoot?.querySelector(".control")?.getAttribute("aria-busy")
@@ -218,12 +178,8 @@ describe("NumberField", () => {
         });
 
         it("should set the `aria-controls` attribute on the internal control when provided", async () => {
-            const { element, connect, disconnect } = await setup();
             const ariaControls = "testId";
-
-            element.ariaControls = ariaControls;
-
-            await connect();
+            const { element, disconnect } = await setup({ariaControls});
 
             expect(
                 element.shadowRoot
@@ -235,12 +191,8 @@ describe("NumberField", () => {
         });
 
         it("should set the `aria-current` attribute on the internal control when provided", async () => {
-            const { element, connect, disconnect } = await setup();
             const ariaCurrent = "page";
-
-            element.ariaCurrent = ariaCurrent;
-
-            await connect();
+            const { element, disconnect } = await setup({ariaCurrent});
 
             expect(
                 element.shadowRoot
@@ -252,12 +204,8 @@ describe("NumberField", () => {
         });
 
         it("should set the `aria-describedby` attribute on the internal control when provided", async () => {
-            const { element, connect, disconnect } = await setup();
             const ariaDescribedby = "testId";
-
-            element.ariaDescribedby = ariaDescribedby;
-
-            await connect();
+            const { element, disconnect } = await setup({ariaDescribedby});
 
             expect(
                 element.shadowRoot
@@ -269,12 +217,8 @@ describe("NumberField", () => {
         });
 
         it("should set the `aria-details` attribute on the internal control when provided", async () => {
-            const { element, connect, disconnect } = await setup();
             const ariaDetails = "testId";
-
-            element.ariaDetails = ariaDetails;
-
-            await connect();
+            const { element, disconnect } = await setup({ariaDetails});
 
             expect(
                 element.shadowRoot
@@ -286,12 +230,8 @@ describe("NumberField", () => {
         });
 
         it("should set the `aria-disabled` attribute on the internal control when provided", async () => {
-            const { element, connect, disconnect } = await setup();
             const ariaDisabled = "true";
-
-            element.ariaDisabled = ariaDisabled;
-
-            await connect();
+            const { element, disconnect } = await setup({ariaDisabled});
 
             expect(
                 element.shadowRoot
@@ -303,12 +243,8 @@ describe("NumberField", () => {
         });
 
         it("should set the `aria-errormessage` attribute on the internal control when provided", async () => {
-            const { element, connect, disconnect } = await setup();
             const ariaErrormessage = "test";
-
-            element.ariaErrormessage = ariaErrormessage;
-
-            await connect();
+            const { element, disconnect } = await setup({ariaErrormessage});
 
             expect(
                 element.shadowRoot
@@ -320,12 +256,8 @@ describe("NumberField", () => {
         });
 
         it("should set the `aria-flowto` attribute on the internal control when provided", async () => {
-            const { element, connect, disconnect } = await setup();
             const ariaFlowto = "testId";
-
-            element.ariaFlowto = ariaFlowto;
-
-            await connect();
+            const { element, disconnect } = await setup({ariaFlowto});
 
             expect(
                 element.shadowRoot?.querySelector(".control")?.getAttribute("aria-flowto")
@@ -335,12 +267,8 @@ describe("NumberField", () => {
         });
 
         it("should set the `aria-haspopup` attribute on the internal control when provided", async () => {
-            const { element, connect, disconnect } = await setup();
             const ariaHaspopup = "true";
-
-            element.ariaHaspopup = ariaHaspopup;
-
-            await connect();
+            const { element, disconnect } = await setup({ariaHaspopup});
 
             expect(
                 element.shadowRoot
@@ -352,12 +280,8 @@ describe("NumberField", () => {
         });
 
         it("should set the `aria-hidden` attribute on the internal control when provided", async () => {
-            const { element, connect, disconnect } = await setup();
             const ariaHidden = "true";
-
-            element.ariaHidden = ariaHidden;
-
-            await connect();
+            const { element, disconnect } = await setup({ariaHidden});
 
             expect(
                 element.shadowRoot?.querySelector(".control")?.getAttribute("aria-hidden")
@@ -367,12 +291,8 @@ describe("NumberField", () => {
         });
 
         it("should set the `aria-invalid` attribute on the internal control when provided", async () => {
-            const { element, connect, disconnect } = await setup();
             const ariaInvalid = "spelling";
-
-            element.ariaInvalid = ariaInvalid;
-
-            await connect();
+            const { element, disconnect } = await setup({ariaInvalid});
 
             expect(
                 element.shadowRoot
@@ -384,12 +304,8 @@ describe("NumberField", () => {
         });
 
         it("should set the `aria-keyshortcuts` attribute on the internal control when provided", async () => {
-            const { element, connect, disconnect } = await setup();
             const ariaKeyshortcuts = "F4";
-
-            element.ariaKeyshortcuts = ariaKeyshortcuts;
-
-            await connect();
+            const { element, disconnect } = await setup({ariaKeyshortcuts});
 
             expect(
                 element.shadowRoot
@@ -401,12 +317,8 @@ describe("NumberField", () => {
         });
 
         it("should set the `aria-label` attribute on the internal control when provided", async () => {
-            const { element, connect, disconnect } = await setup();
             const ariaLabel = "Foo label";
-
-            element.ariaLabel = ariaLabel;
-
-            await connect();
+            const { element, disconnect } = await setup({ariaLabel});
 
             expect(
                 element.shadowRoot?.querySelector(".control")?.getAttribute("aria-label")
@@ -416,12 +328,8 @@ describe("NumberField", () => {
         });
 
         it("should set the `aria-labelledby` attribute on the internal control when provided", async () => {
-            const { element, connect, disconnect } = await setup();
             const ariaLabelledby = "testId";
-
-            element.ariaLabelledby = ariaLabelledby;
-
-            await connect();
+            const { element, disconnect } = await setup({ariaLabelledby});
 
             expect(
                 element.shadowRoot
@@ -433,12 +341,8 @@ describe("NumberField", () => {
         });
 
         it("should set the `aria-live` attribute on the internal control when provided", async () => {
-            const { element, connect, disconnect } = await setup();
             const ariaLive = "polite";
-
-            element.ariaLive = ariaLive;
-
-            await connect();
+            const { element, disconnect } = await setup({ariaLive});
 
             expect(
                 element.shadowRoot?.querySelector(".control")?.getAttribute("aria-live")
@@ -448,12 +352,8 @@ describe("NumberField", () => {
         });
 
         it("should set the `aria-owns` attribute on the internal control when provided", async () => {
-            const { element, connect, disconnect } = await setup();
             const ariaOwns = "testId";
-
-            element.ariaOwns = ariaOwns;
-
-            await connect();
+            const { element, disconnect } = await setup({ariaOwns});
 
             expect(
                 element.shadowRoot?.querySelector(".control")?.getAttribute("aria-owns")
@@ -463,12 +363,8 @@ describe("NumberField", () => {
         });
 
         it("should set the `aria-relevant` attribute on the internal control when provided", async () => {
-            const { element, connect, disconnect } = await setup();
             const ariaRelevant = "removals";
-
-            element.ariaRelevant = ariaRelevant;
-
-            await connect();
+            const { element, disconnect } = await setup({ariaRelevant});
 
             expect(
                 element.shadowRoot
@@ -480,12 +376,8 @@ describe("NumberField", () => {
         });
 
         it("should set the `aria-roledescription` attribute on the internal control when provided", async () => {
-            const { element, connect, disconnect } = await setup();
             const ariaRoledescription = "slide";
-
-            element.ariaRoledescription = ariaRoledescription;
-
-            await connect();
+            const { element, disconnect } = await setup({ariaRoledescription});
 
             expect(
                 element.shadowRoot
@@ -498,14 +390,12 @@ describe("NumberField", () => {
     });
 
     describe("events", () => {
-        it("should fire a change event the internal control emits a change event", async () => {
-            const { element, connect, disconnect } = await setup();
+        it("should fire a change event when the internal control emits a change event", async () => {
+            const { element, disconnect } = await setup();
             const event = new Event("change", {
                 key: "1",
             } as KeyboardEventInit);
             let wasChanged: boolean = false;
-
-            await connect();
 
             element.addEventListener("change", e => {
                 e.preventDefault();
@@ -516,13 +406,14 @@ describe("NumberField", () => {
             let textarea = element.shadowRoot?.querySelector("input");
             textarea?.dispatchEvent(event);
 
+            await DOM.nextUpdate();
             expect(wasChanged).to.equal(true);
 
             await disconnect();
         });
 
         it("should fire an input event when incrementing or decrementing", async () => {
-            const { element, connect, disconnect } = await setup();
+            const { element, disconnect } = await setup();
             let wasInput: boolean = false;
 
             element.addEventListener("input", e => {
@@ -530,8 +421,6 @@ describe("NumberField", () => {
 
                 wasInput = true;
             });
-
-            await connect();
 
             element.stepUp();
 
@@ -549,88 +438,68 @@ describe("NumberField", () => {
 
     describe("when the owning form's reset() method is invoked", () => {
         it("should reset it's value property to an empty string if no value attribute is set", async () => {
-            const { element, connect, disconnect, parent } = await setup();
+            const { element, disconnect, parent } = await setup();
 
             const form = document.createElement("form");
             form.appendChild(element);
             parent.appendChild(form);
 
-            await connect();
-
-            element.value = "10";
-
-            assert(element.getAttribute("value") === null);
-            assert(element.value === "10");
-            assert(element.displayText === "10");
+            const value = "10";
+            element.value = value;
+            expect(element.value).to.equal(value);
 
             form.reset();
 
-            assert(element.value === "");
-            expect(element.displayText === "");
+            expect(element.value).to.equal("");
 
             await disconnect();
         });
 
         it("should reset it's value property to the value of the value attribute if it is set", async () => {
-            const { element, connect, disconnect, parent } = await setup();
+            const { element, disconnect, parent } = await setup();
 
             const form = document.createElement("form");
             form.appendChild(element);
             parent.appendChild(form);
-            await connect();
 
             element.setAttribute("value", "10");
 
             element.value = "20";
-
-            assert(element.getAttribute("value") === "10");
-
-            assert(element.value === "20");
-            assert(element.displayText === "20");
+            expect(element.getAttribute("value")).to.equal("10");
+            expect(element.value).to.equal("20");
 
             form.reset();
-
-            assert(element.value === "10");
-            assert(element.displayText === "10");
+            expect(element.value).to.equal("10");
 
             await disconnect();
         });
 
-        it("should put the control into a clean state, where value attribute changes change the property value prior to user or programmatic interaction", async () => {
-            const { element, connect, disconnect, parent } = await setup();
+        it("should put the control into a clean state, where value attribute changes the property value prior to user or programmatic interaction", async () => {
+            const { element, disconnect, parent } = await setup();
             const form = document.createElement("form");
             form.appendChild(element);
             parent.appendChild(form);
+            element.setAttribute("value", "10");
 
-            await connect();
-
-            element.value = "10";
-            element.setAttribute("value", "20");
-
-            assert(element.value === "10");
-            assert(element.displayText === "10");
+            element.value = "20";
+            expect(element.value).to.equal("20");
 
             form.reset();
 
-            assert(element.value === "20");
-            assert(element.displayText === "20");
+            expect(element.value).to.equal("10");
 
             element.setAttribute("value", "30");
+            expect(element.value).to.equal("30");
 
-            assert(element.value === "30");
-            assert(element.displayText === "30");
             await disconnect();
         });
     });
 
     describe("min and max values", () => {
         it("should set min value", async () => {
-            const { element, connect, disconnect } = await setup();
             const min = 1;
+            const { element, disconnect } = await setup({min});
 
-            element.min = min;
-
-            await connect();
             expect(
                 element.shadowRoot?.querySelector(".control")?.getAttribute("min")
             ).to.equal(min.toString());
@@ -639,12 +508,9 @@ describe("NumberField", () => {
         });
 
         it("should set max value", async () => {
-            const { element, connect, disconnect } = await setup();
             const max = 10;
+            const { element, connect, disconnect } = await setup({max});
 
-            element.max = max;
-
-            await connect();
             expect(
                 element.shadowRoot?.querySelector(".control")?.getAttribute("max")
             ).to.equal(max.toString());
@@ -653,82 +519,63 @@ describe("NumberField", () => {
         });
 
         it("should set value to max when value is greater than max", async () => {
-            const { element, connect, disconnect } = await setup();
             const max = 10;
+            const value = 20;
+            const { element, disconnect } = await setup({value, max});
 
-            element.max = max;
-            element.setAttribute("value", `${max + 10}`);
-
-            await connect();
             expect(element.value).to.equal(max.toString());
-            expect(element.displayText).to.equal(max.toString());
 
             await disconnect();
         });
 
         it("should set value to max if the max changes to a value less than the value", async () => {
-            const { element, connect, disconnect } = await setup();
             const max = 10;
             const value = 10 + max;
+            const { element, disconnect } = await setup({value});
 
-            element.setAttribute("value", `${value}`);
-
-            await connect();
             expect(element.value).to.equal(value.toString());
-            expect(element.displayText).to.equal(value.toString());
 
             element.setAttribute("max", max.toString());
             await DOM.nextUpdate();
 
             expect(element.value).to.equal(max.toString());
-            expect(element.displayText).to.equal(max.toString());
 
             await disconnect();
         });
 
         it("should set value to min when value is less than min", async () => {
-            const { element, connect, disconnect } = await setup();
-            const min = 10;
-
-            element.min = min;
-            element.setAttribute("value", `${min - 10}`);
-
-            await connect();
-            expect(element.value).to.equal(min.toString());
-            expect(element.displayText).to.equal(min.toString());
-
-            await disconnect();
-        });
-
-        it("should set value to min when value is less than min", async () => {
-            const { element, connect, disconnect } = await setup();
             const min = 10;
             const value = min - 10;
+            const { element, disconnect } = await setup({value, min});
 
-            element.setAttribute("value", `${value}`);
+            expect(element.value).to.equal(min.toString());
 
-            await connect();
+            element.value = `${min - 100}`
+
+            expect(element.value).to.equal(min.toString());
+            await disconnect();
+        });
+
+        it("should set value to min when value is less than min", async () => {
+            const min = 10;
+            const value = min - 10;
+            const { element, disconnect } = await setup({value});
+
             expect(element.value).to.equal(value.toString());
-            expect(element.displayText).to.equal(value.toString());
 
             element.setAttribute("min", min.toString());
             await DOM.nextUpdate();
 
             expect(element.value).to.equal(min.toString());
-            expect(element.displayText).to.equal(min.toString());
 
             await disconnect();
         });
 
         it("should set max to highest when min is greater than max", async () => {
-            const { element, connect, disconnect } = await setup();
             const min = 10;
             const max = 1;
+            const { element, disconnect } = await setup({min, max});
 
-            element.min = min;
-            element.max = max;
-
-            await connect();
             expect(
                 element.shadowRoot?.querySelector(".control")?.getAttribute("max")
             ).to.equal(min.toString());
@@ -739,23 +586,19 @@ describe("NumberField", () => {
 
     describe("step and increment/decrement", () => {
         it("should set step to a default of 1", async () => {
-            const { element, connect, disconnect } = await setup();
-            const step = 1;
-            await connect();
+            const { element, disconnect } = await setup();
+
             expect(
                 element.shadowRoot?.querySelector(".control")?.getAttribute("step")
-            ).to.equal(step.toString());
+            ).to.equal("1");
 
             await disconnect();
         });
 
         it("should update step", async () => {
-            const { element, connect, disconnect } = await setup();
             const step = 2;
+            const { element, disconnect } = await setup({step});
 
-            element.step = step;
-
-            await connect();
             expect(
                 element.shadowRoot?.querySelector(".control")?.getAttribute("step")
             ).to.equal(step.toString());
@@ -764,100 +607,74 @@ describe("NumberField", () => {
         });
 
         it("should increment the value by the step amount", async () => {
-            const { element, connect, disconnect } = await setup();
             const step = 2;
             const value = 5;
-
-            element.step = step;
-            element.value = `${value}`;
-            await connect();
+            const { element, disconnect } = await setup({step, value});
 
             element.stepUp();
 
             expect(element.value).to.equal(`${value + step}`);
-            expect(element.displayText).to.equal(`${value + step}`);
 
             await disconnect();
         });
 
         it("should decrement the value by the step amount", async () => {
-            const { element, connect, disconnect } = await setup();
             const step = 2;
             const value = 5;
-
-            element.step = step;
-            element.value = `${value}`;
-            await connect();
+            const { element, disconnect } = await setup({step, value});
 
             element.stepDown();
 
             expect(element.value).to.equal(`${value - step}`);
-            expect(element.displayText).to.equal(`${value - step}`);
 
             await disconnect();
         });
 
         it("should increment no value to the step amount", async () => {
-            const { element, connect, disconnect } = await setup();
             const step = 2;
-            element.step = step;
-            await connect();
+            const { element, disconnect } = await setup({step});
 
             element.stepUp();
 
             expect(element.value).to.equal(`${step}`);
-            expect(element.displayText).to.equal(`${step}`);
 
             await disconnect();
         });
 
         it("should decrement no value to the negative step amount", async () => {
-            const { element, connect, disconnect } = await setup();
             const step = 2;
-            element.step = step;
-            await connect();
+            const { element, disconnect } = await setup({step});
 
             element.stepDown();
             await DOM.nextUpdate();
 
             expect(element.value).to.equal(`${0 - step}`);
-            expect(element.displayText).to.equal(`${0 - step}`);
 
             await disconnect();
         });
 
         it("should update the proxy value when incrementing the value", async () => {
-            const { element, connect, disconnect } = await setup();
             const step = 2;
             const value = 5;
-
-            element.step = step;
-            element.value = `${value}`;
-            await connect();
+            const { element, disconnect } = await setup({step, value});
 
             element.stepUp();
 
             expect(element.value).to.equal(`${value + step}`);
             expect(element.proxy.value).to.equal(`${value + step}`);
-            expect(element.displayText).to.equal(`${value + step}`);
 
             await disconnect();
         });
 
         it("should update the proxy value when decrementing the value", async () => {
-            const { element, connect, disconnect } = await setup();
             const step = 2;
             const value = 5;
-
-            element.step = step;
-            element.value = `${value}`;
-            await connect();
+            const { element, disconnect } = await setup({step, value});
 
             element.stepDown();
 
             expect(element.value).to.equal(`${value - step}`);
             expect(element.proxy.value).to.equal(`${value - step}`);
-            expect(element.displayText).to.equal(`${value - step}`);
 
             await disconnect();
         });
@@ -865,71 +682,59 @@ describe("NumberField", () => {
 
     describe("value validation", () => {
         it("should allow number entry", async () => {
-            const { element, connect, disconnect } = await setup();
+            const value = "18";
+            const { element, disconnect } = await setup();
 
-            await connect();
+            element.setAttribute("value", value);
 
-            element.setAttribute("value", "18");
+            expect(element.value).to.equal(value);
 
-            expect(element.value).to.equal("18");
-            expect(element.displayText).to.equal("18");
+            await disconnect();
         });
 
         it("should not allow non-number entry", async () => {
-            const { element, connect, disconnect } = await setup();
-
-            await connect();
+            const { element, disconnect } = await setup();
 
             element.setAttribute("value", "11a");
-
             expect(element.value).to.equal("11");
-            expect(element.displayText).to.equal("11");
+
+            await disconnect();
         });
 
         it("should allow float number entry", async () => {
-            const { element, connect, disconnect } = await setup();
-
-            await connect();
+            const { element, disconnect } = await setup();
 
             element.setAttribute("value", "37.");
-
             expect(element.value).to.equal("37.");
-            expect(element.displayText).to.equal("37.");
 
             element.setAttribute("value", ".1");
-
             expect(element.value).to.equal(".1");
-            expect(element.displayText).to.equal(".1");
+
+            await disconnect();
         });
 
-        it("should allow positive and negative number entry", async () => {
-            const { element, connect, disconnect } = await setup();
-
-            await connect();
+        it("should allow negative number entry", async () => {
+            const { element, disconnect } = await setup();
 
             element.setAttribute("value", "-1");
-
             expect(element.value).to.equal("-1");
-            expect(element.displayText).to.equal("-1");
+
+            await disconnect();
         });
 
         it("should allow negative float entry", async () => {
-            const { element, connect, disconnect } = await setup();
-
-            await connect();
+            const { element, disconnect } = await setup();
 
             element.setAttribute("value", "-.6");
-
             expect(element.value).to.equal("-.6");
-            expect(element.displayText).to.equal("-.6");
+
+            await disconnect();
         });
     });
 
     describe("hide step", () => {
         it("should not render step controls when `hide-step` attribute is present", async () => {
-            const { element, connect, disconnect } = await setup();
-
-            await connect();
+            const { element, disconnect } = await setup();
 
             expect(element.shadowRoot?.querySelector(".controls")).not.to.equal(null);
 
@@ -946,9 +751,7 @@ describe("NumberField", () => {
 
     describe("readonly", () => {
         it("should not render step controls when `readonly` attribute is present", async () => {
-            const { element, connect, disconnect } = await setup();
-
-            await connect();
+            const { element, disconnect } = await setup();
 
             expect(element.shadowRoot?.querySelector(".controls")).not.to.equal(null);
 

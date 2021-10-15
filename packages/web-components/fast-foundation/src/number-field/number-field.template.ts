@@ -45,7 +45,6 @@ export const numberFieldTemplate: (
                 ?readonly="${x => x.readOnly}"
                 ?required="${x => x.required}"
                 size="${x => x.size}"
-                :value="${x => x.displayText}"
                 type="text"
                 inputmode="numeric"
                 min="${x => x.min}"

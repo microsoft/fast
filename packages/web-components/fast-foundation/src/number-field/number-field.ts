@@ -154,13 +154,6 @@ export class NumberField extends FormAssociatedNumberField {
     }
 
     /**
-     * Display text used in the input field
-     * @public
-     */
-    @observable
-    public displayText: string = "";
-
-    /**
      * @internal
      */
     @observable
@@ -178,10 +171,10 @@ export class NumberField extends FormAssociatedNumberField {
      * @param nextValue - value being updated
      */
     public valueChanged(previousValue, nextValue): void {
-        super.valueChanged(previousValue, nextValue);
-
-        this.updateValue(nextValue);
-        this.displayText = this.value;
+        if (nextValue && this.control) {
+            this.updateValue(nextValue);
+            this.control.value = this.value;
+        }
     }
 
     /**
@@ -191,7 +184,7 @@ export class NumberField extends FormAssociatedNumberField {
      * @param value - value to be validated
      * @internal
      */
-    private updateValue(value): void {
+    private updateValue(value, shouldEmit = true): void {
         if (value === "" || isNaN(parseFloat(value))) {
             value = "";
         } else {
@@ -209,7 +202,7 @@ export class NumberField extends FormAssociatedNumberField {
             this.proxy.value = value;
         }
 
-        if (value != this.value) {
+        if (shouldEmit && value != this.value) {
             this.value = value.toString();
             this.$emit("input");
             this.$emit("change");
@@ -224,6 +217,7 @@ export class NumberField extends FormAssociatedNumberField {
     public stepUp(): void {
         const stepUpValue = this.step + (parseFloat(this.value) || 0);
         this.updateValue(stepUpValue);
+        this.control.value = this.value;
     }
 
     /**
@@ -234,6 +228,7 @@ export class NumberField extends FormAssociatedNumberField {
     public stepDown(): void {
         const stepDownValue = (parseFloat(this.value) || 0) - this.step;
         this.updateValue(stepDownValue);
+        this.control.value = this.value;
     }
 
     /**
@@ -242,7 +237,8 @@ export class NumberField extends FormAssociatedNumberField {
     public connectedCallback(): void {
         super.connectedCallback();
 
-        this.displayText = this.value;
+        this.updateValue(this.value, false);
+        this.control.value = this.value;
         this.proxy.setAttribute("type", "number");
         this.validate();
 
@@ -258,7 +254,8 @@ export class NumberField extends FormAssociatedNumberField {
      * @internal
      */
     public handleTextInput(): void {
-        this.value = this.control.value;
+        this.control.value = this.control.value.replace(/[^0-9\-+e.]/g, "");
+        this.updateValue(this.control.value);
     }
 
     /**
