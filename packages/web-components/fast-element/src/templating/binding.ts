@@ -143,10 +143,6 @@ function updatePropertyTarget(this: BindingBehavior, value: unknown): void {
     this.target[this.targetName!] = value;
 }
 
-function updateClassTarget(this: BindingBehavior, value: string): void {
-    this.target.className = value;
-}
-
 function updateClassListTarget(this: BindingBehavior, value: string): void {
     const classVersions = this.classVersions || Object.create(null);
     const target = this.target;
@@ -235,9 +231,6 @@ export class HTMLBindingDirective extends TargetedHTMLDirective {
                     case "classList":
                         this.updateTarget = updateClassListTarget;
                         break;
-                    case "className":
-                        this.updateTarget = updateClassTarget;
-                        break;
                     default:
                         this.updateTarget = updatePropertyTarget;
                         break;
@@ -256,7 +249,8 @@ export class HTMLBindingDirective extends TargetedHTMLDirective {
                 this.cleanedTargetName = value;
 
                 if (value === "class") {
-                    this.updateTarget = updateClassTarget;
+                    this.cleanedTargetName = "className";
+                    this.updateTarget = updatePropertyTarget;
                 }
 
                 break;
