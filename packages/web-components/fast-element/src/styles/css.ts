@@ -61,14 +61,8 @@ export function css(
     ...values: (ComposableStyles | CSSDirective)[]
 ): ElementStyles {
     const { styles, behaviors } = collectStyles(strings, values);
-
     const elementStyles = ElementStyles.create(styles);
-
-    if (behaviors.length) {
-        elementStyles.withBehaviors(...behaviors);
-    }
-
-    return elementStyles;
+    return behaviors.length ? elementStyles.withBehaviors(...behaviors) : elementStyles;
 }
 
 class CSSPartial extends CSSDirective implements Behavior<HTMLElement> {
@@ -140,6 +134,5 @@ export function cssPartial(
     ...values: (ComposableStyles | CSSDirective)[]
 ): CSSDirective {
     const { styles, behaviors } = collectStyles(strings, values);
-
     return new CSSPartial(styles, behaviors);
 }
