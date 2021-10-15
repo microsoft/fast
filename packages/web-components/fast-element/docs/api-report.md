@@ -431,9 +431,11 @@ export class PropertyChangeNotifier implements Notifier {
 export function ref<T = any>(propertyName: keyof T & string): CaptureType<T>;
 
 // @public
-export class RefBehavior implements Behavior {
-    constructor(targets: ViewBehaviorTargets, targetId: string, propertyName: string);
-    bind(source: any): void;
+export class RefDirective extends HTMLDirective implements ViewBehavior {
+    constructor(propertyName: string);
+    bind(source: any, context: ExecutionContext, targets: ViewBehaviorTargets): void;
+    createBehavior(): this;
+    createPlaceholder(index: number): string;
     unbind(): void;
 }
 
