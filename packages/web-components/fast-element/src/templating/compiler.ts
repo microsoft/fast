@@ -69,7 +69,7 @@ const next = {
 
 class CompilationContext {
     public factories: ViewBehaviorFactory[] = [];
-    public targetIds: string[] = [];
+    public targetIds = new Set<string>();
     public descriptors: PropertyDescriptorMap = {};
     public directives: ReadonlyArray<HTMLDirective>;
 
@@ -79,8 +79,8 @@ class CompilationContext {
         targetId: string,
         targetIndex: number
     ): void {
-        if (this.targetIds.indexOf(targetId) === -1) {
-            this.targetIds.push(targetId);
+        if (!this.targetIds.has(targetId)) {
+            this.targetIds.add(targetId);
             addTargetDescriptor(this.descriptors, parentId, targetId, targetIndex);
         }
 
@@ -107,7 +107,7 @@ class CompilationContext {
         );
 
         this.factories = [];
-        this.targetIds = [];
+        this.targetIds = new Set<string>();
         this.descriptors = {};
         sharedContext = this;
 
@@ -334,7 +334,7 @@ export class HTMLTemplateCompilationResult {
     public constructor(
         public readonly fragment: DocumentFragment,
         public readonly factories: ViewBehaviorFactory[],
-        private targetIds: string[],
+        private targetIds: Set<string>,
         descriptors: PropertyDescriptorMap
     ) {
         this.proto = Object.create(null, descriptors);
@@ -347,15 +347,12 @@ export class HTMLTemplateCompilationResult {
      * @returns A lookup object for behavior targets.
      */
     public createTargets(root: Node, host?: Node): ViewBehaviorTargets {
-        const targets = Object.create(this.proto, {
-            r: { value: root },
-            h: { value: host || root },
-        });
+        const targets = Object.create(this.proto);
+        targets.r = root;
+        targets.h = host ?? root;
 
-        const ids = this.targetIds;
-
-        for (let i = 0, ii = ids.length; i < ii; ++i) {
-            targets[ids[i]]; // trigger locators
+        for (const id of this.targetIds) {
+            targets[id]; // trigger locator
         }
 
         return targets;
@@ -378,10 +375,8 @@ export function compileTemplate(
     template: HTMLTemplateElement,
     directives: ReadonlyArray<HTMLDirective>
 ): HTMLTemplateCompilationResult {
-    const fragment = template.content;
     // https://bugs.chromium.org/p/chromium/issues/detail?id=1111864
-    document.adoptNode(fragment);
-
+    const fragment = document.adoptNode(template.content);
     const context = CompilationContext.open(directives);
     compileAttributes(context, "", template, /* host */ "h", 0, true);
 
@@ -399,7 +394,7 @@ export function compileTemplate(
         fragment.insertBefore(document.createComment(""), fragment.firstChild);
     }
 
-    compileChildren(context, fragment, "r");
+    compileChildren(context, fragment, /* root */ "r");
     next.node = null; // prevent leaks
     return context.close(fragment);
 }

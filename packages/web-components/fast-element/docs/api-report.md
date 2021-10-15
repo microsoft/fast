@@ -338,7 +338,7 @@ export abstract class HTMLDirective implements ViewBehaviorFactory {
 
 // @public
 export class HTMLTemplateCompilationResult {
-    constructor(fragment: DocumentFragment, factories: ViewBehaviorFactory[], targetIds: string[], descriptors: PropertyDescriptorMap);
+    constructor(fragment: DocumentFragment, factories: ViewBehaviorFactory[], targetIds: Set<string>, descriptors: PropertyDescriptorMap);
     createTargets(root: Node, host?: Node): ViewBehaviorTargets;
     // (undocumented)
     readonly factories: ViewBehaviorFactory[];
