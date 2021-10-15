@@ -45,8 +45,8 @@ addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
         const stackv3 = document.getElementById("stackv3") as FoundationVirtualingStack;
         stackv3.itemTemplate = imageItemTemplate;
         stackv3.items = newDataSet(100000);
-        stackv3.startItemSpans = [100, 100];
-        stackv3.endItemSpans = [100];
+        stackv3.startRegionSpan = 100;
+        stackv3.endRegionSpan = 100;
 
         const stackh1 = document.getElementById("stackh1") as FoundationVirtualingStack;
         stackh1.itemTemplate = imageItemTemplate;
@@ -60,8 +60,8 @@ addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
         const stackh3 = document.getElementById("stackh3") as FoundationVirtualingStack;
         stackh3.itemTemplate = imageItemTemplate;
         stackh3.items = newDataSet(100000);
-        stackh3.startItemSpans = [100, 100];
-        stackh3.endItemSpans = [100];
+        stackh3.startRegionSpan = 100;
+        stackh3.endRegionSpan = 100;
     }
 });
 

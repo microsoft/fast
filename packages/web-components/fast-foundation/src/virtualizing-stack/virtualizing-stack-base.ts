@@ -125,8 +125,11 @@ export class VirtualizingStackBase extends FoundationElement {
      */
     @attr
     public orientation: Orientation = Orientation.vertical;
-    // private orientationChanged(): void {
-    // }
+    private orientationChanged(): void {
+        if (this.$fastController.isConnected) {
+            this.updateDimensions();
+        }
+    }
 
     /**
      *
@@ -149,6 +152,36 @@ export class VirtualizingStackBase extends FoundationElement {
             if (newMode === "auto") {
                 this.startAutoUpdateEventListeners();
             }
+        }
+    }
+
+    /**
+     *
+     *
+     * @beta
+     * @remarks
+     * HTML Attribute: start-region-span
+     */
+    @attr({ attribute: "start-region-span" })
+    public startRegionSpan: number = 0;
+    private startRegionSpanChanged(): void {
+        if (this.$fastController.isConnected) {
+            this.updateDimensions();
+        }
+    }
+
+    /**
+     *
+     *
+     * @beta
+     * @remarks
+     * HTML Attribute: end-region-span
+     */
+    @attr({ attribute: "end-region-span" })
+    public endRegionSpan: number = 0;
+    private endItemSpansChanged(): void {
+        if (this.$fastController.isConnected) {
+            this.updateDimensions();
         }
     }
 
@@ -188,67 +221,12 @@ export class VirtualizingStackBase extends FoundationElement {
 
     /**
      *
-     *
-     * @beta
-     */
-    @observable
-    public startItemSpans: number[] = [];
-    private startItemSpansChanged(): void {
-        this.startItemsTotalSpan = 0;
-        this.startItemsTemplateSpans = "";
-        this.startItemSpans.forEach((span: number) => {
-            this.startItemsTotalSpan = this.startItemsTotalSpan + span;
-            this.startItemsTemplateSpans = `${this.startItemsTemplateSpans} ${span}px `;
-            this.virtualizedIndexOffset = this.startItemSpans.length + 2;
-        });
-        if (this.$fastController.isConnected) {
-            this.updateDimensions();
-        }
-    }
-
-    /**
-     *
-     *
-     * @beta
-     */
-    @observable
-    public endItemSpans: number[] = [];
-    private endItemSpansChanged(): void {
-        this.endItemsTotalSpan = 0;
-        this.endItemsTemplateSpans = "";
-        this.endItemSpans.forEach((span: number) => {
-            this.endItemsTotalSpan = this.endItemsTotalSpan + span;
-            this.endItemsTemplateSpans = `${this.endItemsTemplateSpans} ${span}px `;
-        });
-        if (this.$fastController.isConnected) {
-            this.updateDimensions();
-        }
-    }
-
-    /**
-     *
+     *  Accounts for css grids not being zero based, the spacer span, and the start region
      *
      * @internal
      */
     @observable
-    public gridTemplateRows: string;
-
-    /**
-     *
-     *  Accounts for css grids not being zero based, the spacer span, and any user defined start spans
-     *
-     * @internal
-     */
-    @observable
-    public virtualizedIndexOffset: number = 2;
-
-    /**
-     *
-     *
-     * @internal
-     */
-    @observable
-    public gridTemplateColumns: string;
+    public virtualizedIndexOffset: number = 3;
 
     /**
      *
@@ -314,12 +292,6 @@ export class VirtualizingStackBase extends FoundationElement {
 
     private itemsRepeatBehavior: RepeatBehavior | null;
     private itemsPlaceholder: Node;
-
-    private startItemsTotalSpan: number = 0;
-    private startItemsTemplateSpans: string = "";
-
-    private endItemsTotalSpan: number = 0;
-    private endItemsTemplateSpans: string = "";
 
     /**
      * Delays updating ui during scrolling
@@ -542,7 +514,7 @@ export class VirtualizingStackBase extends FoundationElement {
         }
 
         this.totalStackSpan =
-            this.totalStackSpan + this.startItemsTotalSpan + this.endItemsTotalSpan;
+            this.totalStackSpan + this.startRegionSpan + this.endRegionSpan;
 
         this.requestPositionUpdates();
     };
@@ -571,15 +543,15 @@ export class VirtualizingStackBase extends FoundationElement {
 
         let viewportStart: number = this.viewportRect.top;
         let viewportEnd: number = this.viewportRect.bottom;
-        let containerStart: number = this.containerRect.top + this.startItemsTotalSpan;
-        let containerEnd: number = this.containerRect.bottom - this.endItemsTotalSpan;
+        let containerStart: number = this.containerRect.top + this.startRegionSpan;
+        let containerEnd: number = this.containerRect.bottom - this.endRegionSpan;
         let containerSpan: number = this.containerRect.height;
 
         if (this.orientation === Orientation.horizontal) {
             viewportStart = this.viewportRect.left;
             viewportEnd = this.viewportRect.right;
-            containerStart = this.containerRect.left + this.startItemsTotalSpan;
-            containerEnd = this.containerRect.right - this.endItemsTotalSpan;
+            containerStart = this.containerRect.left + this.startRegionSpan;
+            containerEnd = this.containerRect.right - this.endRegionSpan;
             containerSpan = this.containerRect.width;
         }
 
@@ -686,7 +658,7 @@ export class VirtualizingStackBase extends FoundationElement {
     };
 
     private updateGridTemplateSpans(): void {
-        this.gridTemplateSpans = `${this.startItemsTemplateSpans}${this.startSpacerSpan}px repeat(${this.visibleItems.length}, ${this.itemSpan}px) ${this.endSpacerSpan}px${this.endItemsTemplateSpans}`;
+        this.gridTemplateSpans = `[start]${this.startRegionSpan}px ${this.startSpacerSpan}px repeat(${this.visibleItems.length}, ${this.itemSpan}px) ${this.endSpacerSpan}px [end]${this.endRegionSpan}px`;
     }
 
     /**

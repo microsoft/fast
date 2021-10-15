@@ -10,7 +10,7 @@ function createRowItemTemplate(context: ElementDefinitionContext): ViewTemplate 
     return html`
     <${rowTag}
         style="
-            grid-row:${(x, c) => c.index + 2};
+            grid-row:${(x, c) => c.index + c.parent.virtualizedIndexOffset};
             height:100%;
             width: 100%;
         "
