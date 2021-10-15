@@ -236,7 +236,7 @@ export function volatile(
     descriptor: PropertyDescriptor
 ): PropertyDescriptor {
     return Object.assign({}, descriptor, {
-        get: function (this: any) {
+        get(this: any) {
             trackVolatile();
             return descriptor.get!.apply(this);
         },
