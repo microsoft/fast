@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "implement level-2 DOM support for DesignToken in browsers that don't support Constructable StyleSheets",
-  "packageName": "@microsoft/fast-foundation",
-  "email": "nicholasrice@users.noreply.github.com",
-  "dependentChangeType": "patch"
-}
