@@ -406,7 +406,6 @@ describe("NumberField", () => {
             let textarea = element.shadowRoot?.querySelector("input");
             textarea?.dispatchEvent(event);
 
-            await DOM.nextUpdate();
             expect(wasChanged).to.equal(true);
 
             await disconnect();
