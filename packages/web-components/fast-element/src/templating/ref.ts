@@ -1,34 +1,50 @@
-import type { Behavior } from "../observation/behavior";
 import type { CaptureType } from "./template";
-import { AttachedBehaviorHTMLDirective, ViewBehaviorTargets } from "./html-directive";
+import { HTMLDirective, ViewBehavior, ViewBehaviorTargets } from "./html-directive";
+import type { ExecutionContext } from "../observation/observable";
+import { DOM } from "../dom";
 
 /**
  * The runtime behavior for template references.
  * @public
  */
-export class RefBehavior implements Behavior {
-    private target: Node;
-
+export class RefDirective extends HTMLDirective implements ViewBehavior {
     /**
-     * Creates an instance of RefBehavior.
-     * @param target - The element to reference.
+     * Creates an instance of RefDirective.
      * @param propertyName - The name of the property to assign the reference to.
      */
-    public constructor(
-        targets: ViewBehaviorTargets,
-        targetId: string,
-        private propertyName: string
-    ) {
-        this.target = targets[targetId];
+    public constructor(private propertyName: string) {
+        super();
+    }
+
+    /**
+     * Creates a behavior.
+     */
+    createBehavior() {
+        return this;
+    }
+
+    /**
+     * Creates a placeholder string based on the directive's index within the template.
+     * @param index - The index of the directive within the template.
+     * @remarks
+     * Creates a custom attribute placeholder.
+     */
+    public createPlaceholder(index: number): string {
+        return DOM.createCustomAttributePlaceholder("fast-ref", index);
     }
 
     /**
      * Bind this behavior to the source.
      * @param source - The source to bind to.
      * @param context - The execution context that the binding is operating within.
+     * @param targets - The targets that behaviors in a view can attach to.
      */
-    public bind(source: any): void {
-        source[this.propertyName] = this.target;
+    public bind(
+        source: any,
+        context: ExecutionContext,
+        targets: ViewBehaviorTargets
+    ): void {
+        source[this.propertyName] = targets[this.targetId];
     }
 
     /**
@@ -45,5 +61,5 @@ export class RefBehavior implements Behavior {
  * @public
  */
 export function ref<T = any>(propertyName: keyof T & string): CaptureType<T> {
-    return new AttachedBehaviorHTMLDirective("fast-ref", RefBehavior, propertyName);
+    return new RefDirective(propertyName);
 }
