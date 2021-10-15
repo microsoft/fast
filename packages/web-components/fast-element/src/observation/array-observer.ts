@@ -64,7 +64,9 @@ class ArrayObserver extends SubscriberSet {
 
         const finalSplices =
             oldCollection === void 0
-                ? projectArraySplices(this.source, splices!)
+                ? splices!.length > 1
+                    ? projectArraySplices(this.source, splices!)
+                    : splices
                 : calcSplices(
                       this.source,
                       0,
