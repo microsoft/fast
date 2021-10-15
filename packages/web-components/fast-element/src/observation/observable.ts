@@ -88,14 +88,15 @@ export const Observable = Object.freeze({
      * @param source - The object or Array to get the notifier for.
      */
     getNotifier(source: any): Notifier {
-        let found = source.$fastController || notifierLookup.get(source);
+        let found = source.$fastController ?? notifierLookup.get(source);
 
         if (found === void 0) {
-            if (Array.isArray(source)) {
-                found = createArrayObserver(source);
-            } else {
-                notifierLookup.set(source, (found = new PropertyChangeNotifier(source)));
-            }
+            Array.isArray(source)
+                ? (found = createArrayObserver(source))
+                : notifierLookup.set(
+                      source,
+                      (found = new PropertyChangeNotifier(source))
+                  );
         }
 
         return found;
@@ -107,9 +108,7 @@ export const Observable = Object.freeze({
      * @param propertyName - The property to track as changed.
      */
     track(source: unknown, propertyName: string): void {
-        if (watcher !== void 0) {
-            watcher.watch(source, propertyName);
-        }
+        watcher && watcher.watch(source, propertyName);
     },
 
     /**
@@ -117,9 +116,7 @@ export const Observable = Object.freeze({
      * with respect to its observable dependencies.
      */
     trackVolatile(): void {
-        if (watcher !== void 0) {
-            watcher.needsRefresh = true;
-        }
+        watcher && (watcher.needsRefresh = true);
     },
 
     /**
@@ -147,10 +144,10 @@ export const Observable = Object.freeze({
 
         Reflect.defineProperty(target, nameOrAccessor.name, {
             enumerable: true,
-            get: function (this: any) {
+            get(this: any) {
                 return (nameOrAccessor as Accessor).getValue(this);
             },
-            set: function (this: any, newValue: any) {
+            set(this: any, newValue: any) {
                 (nameOrAccessor as Accessor).setValue(this, newValue);
             },
         });
@@ -172,11 +169,7 @@ export const Observable = Object.freeze({
                 currentTarget = Reflect.getPrototypeOf(currentTarget);
             }
 
-            if (accessors === void 0) {
-                accessors = [];
-            } else {
-                accessors = accessors.slice(0);
-            }
+            accessors = accessors === void 0 ? [] : accessors.slice(0);
 
             accessorLookup.set(target, accessors);
         }
@@ -367,6 +360,7 @@ export interface ObservationRecord {
      */
     propertyName: string;
 }
+
 interface SubscriptionRecord extends ObservationRecord {
     notifier: Notifier;
     next: SubscriptionRecord | undefined;
@@ -497,26 +491,12 @@ class BindingObserverImplementation<TSource = any, TReturn = any, TParent = any>
         }
     }
 
-    public records(): IterableIterator<ObservationRecord> {
+    public *records(): IterableIterator<ObservationRecord> {
         let next = this.first;
 
-        return {
-            next: () => {
-                const current = next;
-
-                if (current === undefined) {
-                    return { value: void 0, done: true };
-                } else {
-                    next = next.next!;
-                    return {
-                        value: current,
-                        done: false,
-                    };
-                }
-            },
-            [Symbol.iterator]: function () {
-                return this;
-            },
-        };
+        while (next !== void 0) {
+            yield next;
+            next = next.next!;
+        }
     }
 }
