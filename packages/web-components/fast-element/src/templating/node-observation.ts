@@ -1,7 +1,9 @@
-import { DOM } from "../dom";
 import type { ExecutionContext } from "../observation/observable";
 import { emptyArray } from "../platform";
-import { HTMLDirective, ViewBehavior, ViewBehaviorTargets } from "./html-directive";
+import {
+    StatelessAttachedAttributeDirective,
+    ViewBehaviorTargets,
+} from "./html-directive";
 
 /**
  * Options for configuring node observation behavior.
@@ -47,35 +49,9 @@ export function elements(selector?: string): ElementsFilter {
  * A base class for node observation.
  * @internal
  */
-export abstract class NodeObservationDirective<T extends NodeBehaviorOptions>
-    extends HTMLDirective
-    implements ViewBehavior {
-    /**
-     * Creates an instance of NodeObservationDirective.
-     * @param options - The options to use in configuring node observation.
-     */
-    constructor(protected options: T) {
-        super();
-    }
-
-    /**
-     * Creates a placeholder string based on the directive's index within the template.
-     * @param index - The index of the directive within the template.
-     * @remarks
-     * Creates a custom attribute placeholder.
-     */
-    createPlaceholder(index: number): string {
-        return DOM.createCustomAttributePlaceholder(index);
-    }
-
-    /**
-     * Creates a behavior.
-     * @param targets - The targets available for behaviors to be attached to.
-     */
-    createBehavior(targets: ViewBehaviorTargets): ViewBehavior<any, any, any> {
-        return this;
-    }
-
+export abstract class NodeObservationDirective<
+    T extends NodeBehaviorOptions
+> extends StatelessAttachedAttributeDirective<T> {
     /**
      * Bind this behavior to the source.
      * @param source - The source to bind to.
