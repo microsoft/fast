@@ -1,27 +1,25 @@
 import { expect } from "chai";
-import { children, ChildrenBehavior } from "./children";
-import { AttachedBehaviorHTMLDirective } from "./html-directive";
-import { observable } from "../observation/observable";
+import { children, ChildrenDirective } from "./children";
+import { defaultExecutionContext, observable } from "../observation/observable";
 import { elements } from "./node-observation";
 import { DOM } from "../dom";
 
 describe("The children", () => {
     context("template function", () => {
-        it("returns an AttachedBehaviorDirective", () => {
+        it("returns an ChildrenDirective", () => {
             const directive = children("test");
-            expect(directive).to.be.instanceOf(AttachedBehaviorHTMLDirective);
+            expect(directive).to.be.instanceOf(ChildrenDirective);
         });
     });
 
     context("directive", () => {
-        it("creates a ChildrenBehavior", () => {
+        it("creates a behavior by returning itself", () => {
             const targetId = 'r';
-            const directive = children("test") as AttachedBehaviorHTMLDirective;
+            const directive = children("test") as ChildrenDirective;
             const target = document.createElement("div");
             const targets = { [targetId]: target };
             const behavior = directive.createBehavior(targets);
-
-            expect(behavior).to.be.instanceOf(ChildrenBehavior);
+            expect(behavior).to.equal(behavior);
         });
     });
 
@@ -53,37 +51,40 @@ describe("The children", () => {
 
         it("gathers child nodes", () => {
             const { host, children, targets, targetId } = createDOM();
-            const behavior = new ChildrenBehavior(targets, targetId, {
+            const behavior = new ChildrenDirective({
                 property: "nodes",
             });
+            behavior.targetId = targetId;
             const model = new Model();
 
-            behavior.bind(model);
+            behavior.bind(model, defaultExecutionContext, targets);
 
             expect(model.nodes).members(children);
         });
 
         it("gathers child nodes with a filter", () => {
             const { host, children, targets, targetId } = createDOM("foo-bar");
-            const behavior = new ChildrenBehavior(targets, targetId, {
+            const behavior = new ChildrenDirective({
                 property: "nodes",
                 filter: elements("foo-bar"),
             });
+            behavior.targetId = targetId;
             const model = new Model();
 
-            behavior.bind(model);
+            behavior.bind(model, defaultExecutionContext, targets);
 
             expect(model.nodes).members(children.filter(elements("foo-bar")));
         });
 
         it("updates child nodes when they change", async () => {
             const { host, children, targets, targetId } = createDOM("foo-bar");
-            const behavior = new ChildrenBehavior(targets, targetId, {
+            const behavior = new ChildrenDirective({
                 property: "nodes",
             });
+            behavior.targetId = targetId;
             const model = new Model();
 
-            behavior.bind(model);
+            behavior.bind(model, defaultExecutionContext, targets);
 
             expect(model.nodes).members(children);
 
@@ -96,13 +97,14 @@ describe("The children", () => {
 
         it("updates child nodes when they change with a filter", async () => {
             const { host, children, targets, targetId } = createDOM("foo-bar");
-            const behavior = new ChildrenBehavior(targets, targetId, {
+            const behavior = new ChildrenDirective({
                 property: "nodes",
                 filter: elements("foo-bar"),
             });
+            behavior.targetId = targetId;
             const model = new Model();
 
-            behavior.bind(model);
+            behavior.bind(model, defaultExecutionContext, targets);
 
             expect(model.nodes).members(children);
 
@@ -126,15 +128,16 @@ describe("The children", () => {
                 }
             }
 
-            const behavior = new ChildrenBehavior(targets, targetId, {
+            const behavior = new ChildrenDirective({
                 property: "nodes",
                 subtree: true,
                 selector: subtreeElement,
             });
+            behavior.targetId = targetId;
 
             const model = new Model();
 
-            behavior.bind(model);
+            behavior.bind(model, defaultExecutionContext, targets);
 
             expect(model.nodes).members(subtreeChildren);
 
@@ -155,16 +158,17 @@ describe("The children", () => {
 
         it("clears and unwatches when unbound", async () => {
             const { host, children, targets, targetId } = createDOM("foo-bar");
-            const behavior = new ChildrenBehavior(targets, targetId, {
+            const behavior = new ChildrenDirective({
                 property: "nodes",
             });
+            behavior.targetId = targetId;
             const model = new Model();
 
-            behavior.bind(model);
+            behavior.bind(model, defaultExecutionContext, targets);
 
             expect(model.nodes).members(children);
 
-            behavior.unbind();
+            behavior.unbind(model, defaultExecutionContext, targets);
 
             expect(model.nodes).members([]);
 
