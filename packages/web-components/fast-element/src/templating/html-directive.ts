@@ -118,15 +118,10 @@ export type AttachedBehaviorType<T = any> = new (
 export class AttachedBehaviorHTMLDirective<T = any> extends HTMLDirective {
     /**
      *
-     * @param name - The name of the behavior; used as a custom attribute on the element.
      * @param behavior - The behavior to instantiate and attach to the element.
      * @param options - Options to pass to the behavior during creation.
      */
-    public constructor(
-        private name: string,
-        private behavior: AttachedBehaviorType<T>,
-        private options: T
-    ) {
+    public constructor(private behavior: AttachedBehaviorType<T>, private options: T) {
         super();
     }
 
@@ -137,7 +132,7 @@ export class AttachedBehaviorHTMLDirective<T = any> extends HTMLDirective {
      * Creates a custom attribute placeholder.
      */
     public createPlaceholder(index: number): string {
-        return DOM.createCustomAttributePlaceholder(this.name, index);
+        return DOM.createCustomAttributePlaceholder(index);
     }
 
     /**
