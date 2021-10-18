@@ -1,28 +1,27 @@
 import { expect } from "chai";
-import { slotted, SlottedBehavior } from "./slotted";
-import { AttachedBehaviorHTMLDirective } from "./html-directive";
-import { observable } from "../observation/observable";
+import { slotted, SlottedDirective } from "./slotted";
+import { defaultExecutionContext, observable } from "../observation/observable";
 import { elements } from "./node-observation";
 import { DOM } from "../dom";
 
 describe("The slotted", () => {
     context("template function", () => {
-        it("returns an AttachedBehaviorDirective", () => {
+        it("returns an ChildrenDirective", () => {
             const directive = slotted("test");
-            expect(directive).to.be.instanceOf(AttachedBehaviorHTMLDirective);
+            expect(directive).to.be.instanceOf(SlottedDirective);
         });
     });
 
     context("directive", () => {
-        it("creates a SlottedBehavior", () => {
+        it("creates a behavior by returning itself", () => {
             const targetId = 'r';
-            const directive = slotted("test") as AttachedBehaviorHTMLDirective;
+            const directive = slotted("test") as SlottedDirective;
             directive.targetId = targetId;
             const target = document.createElement("slot");
             const targets = { [targetId]: target }
             const behavior = directive.createBehavior(targets);
 
-            expect(behavior).to.be.instanceOf(SlottedBehavior);
+            expect(behavior).to.equal(directive);
         });
     });
 
@@ -58,33 +57,36 @@ describe("The slotted", () => {
 
         it("gathers nodes from a slot", () => {
             const { children, targets, targetId } = createDOM();
-            const behavior = new SlottedBehavior(targets, targetId, { property: "nodes" });
+            const behavior = new SlottedDirective({ property: "nodes" });
+            behavior.targetId = targetId;
             const model = new Model();
 
-            behavior.bind(model);
+            behavior.bind(model, defaultExecutionContext, targets);
 
             expect(model.nodes).members(children);
         });
 
         it("gathers nodes from a slot with a filter", () => {
             const { targets, targetId, children } = createDOM("foo-bar");
-            const behavior = new SlottedBehavior(targets, targetId, {
+            const behavior = new SlottedDirective({
                 property: "nodes",
                 filter: elements("foo-bar"),
             });
+            behavior.targetId = targetId;
             const model = new Model();
 
-            behavior.bind(model);
+            behavior.bind(model, defaultExecutionContext, targets);
 
             expect(model.nodes).members(children.filter(elements("foo-bar")));
         });
 
         it("updates when slotted nodes change", async () => {
             const { host, slot, children, targets, targetId } = createDOM("foo-bar");
-            const behavior = new SlottedBehavior(targets, targetId, { property: "nodes" });
+            const behavior = new SlottedDirective({ property: "nodes" });
+            behavior.targetId = targetId;
             const model = new Model();
 
-            behavior.bind(model);
+            behavior.bind(model, defaultExecutionContext, targets);
 
             expect(model.nodes).members(children);
 
@@ -97,13 +99,14 @@ describe("The slotted", () => {
 
         it("updates when slotted nodes change with a filter", async () => {
             const { host, slot, children, targets, targetId } = createDOM("foo-bar");
-            const behavior = new SlottedBehavior(targets, targetId, {
+            const behavior = new SlottedDirective({
                 property: "nodes",
                 filter: elements("foo-bar"),
             });
+            behavior.targetId = targetId;
             const model = new Model();
 
-            behavior.bind(model);
+            behavior.bind(model, defaultExecutionContext, targets);
 
             expect(model.nodes).members(children);
 
@@ -116,14 +119,15 @@ describe("The slotted", () => {
 
         it("clears and unwatches when unbound", async () => {
             const { host, slot, children, targets, targetId } = createDOM("foo-bar");
-            const behavior = new SlottedBehavior(targets, targetId, { property: "nodes" });
+            const behavior = new SlottedDirective({ property: "nodes" });
+            behavior.targetId = targetId;
             const model = new Model();
 
-            behavior.bind(model);
+            behavior.bind(model, defaultExecutionContext, targets);
 
             expect(model.nodes).members(children);
 
-            behavior.unbind();
+            behavior.unbind(model, defaultExecutionContext, targets);
 
             expect(model.nodes).members([]);
 
