@@ -15,16 +15,6 @@ export interface Accessor {
 }
 
 // @public
-export class AttachedBehaviorHTMLDirective<T = any> extends HTMLDirective {
-    constructor(behavior: AttachedBehaviorType<T>, options: T);
-    createBehavior(targets: ViewBehaviorTargets): ViewBehavior;
-    createPlaceholder(index: number): string;
-    }
-
-// @public
-export type AttachedBehaviorType<T = any> = new (targets: ViewBehaviorTargets, targetId: string, options: T) => Behavior;
-
-// @public
 export function attr(config?: DecoratorAttributeConfiguration): (target: {}, property: string) => void;
 
 // @public
@@ -123,24 +113,24 @@ export interface CaptureType<TSource> {
 }
 
 // @public
-export interface ChildListBehaviorOptions<T = any> extends NodeBehaviorOptions<T>, Omit<MutationObserverInit, "subtree" | "childList"> {
+export interface ChildListDirectiveOptions<T = any> extends NodeBehaviorOptions<T>, Omit<MutationObserverInit, "subtree" | "childList"> {
 }
 
 // @public
-export function children<T = any>(propertyOrOptions: (keyof T & string) | ChildrenBehaviorOptions<keyof T & string>): CaptureType<T>;
+export function children<T = any>(propertyOrOptions: (keyof T & string) | ChildListDirectiveOptions<keyof T & string>): CaptureType<T>;
 
-// Warning: (ae-forgotten-export) The symbol "NodeObservationBehavior" needs to be exported by the entry point index.d.ts
+// Warning: (ae-forgotten-export) The symbol "NodeObservationDirective" needs to be exported by the entry point index.d.ts
 //
 // @public
-export class ChildrenBehavior extends NodeObservationBehavior<ChildrenBehaviorOptions> {
-    constructor(targets: ViewBehaviorTargets, targetId: string, options: ChildrenBehaviorOptions);
-    disconnect(): void;
-    protected getNodes(): ChildNode[];
-    observe(): void;
-    }
+export class ChildrenDirective extends NodeObservationDirective<ChildrenDirectiveOptions> {
+    constructor(options: ChildrenDirectiveOptions);
+    disconnect(target: any): void;
+    getNodes(target: Element): Node[];
+    observe(target: any): void;
+}
 
 // @public
-export type ChildrenBehaviorOptions<T = any> = ChildListBehaviorOptions<T> | SubtreeBehaviorOptions<T>;
+export type ChildrenDirectiveOptions<T = any> = ChildListDirectiveOptions<T> | SubtreeDirectiveOptions<T>;
 
 // @public
 export function compileTemplate(template: HTMLTemplateElement, directives: ReadonlyArray<HTMLDirective>): HTMLTemplateCompilationResult;
@@ -469,18 +459,19 @@ export interface RepeatOptions {
 export function setCurrentEvent(event: Event | null): void;
 
 // @public
-export function slotted<T = any>(propertyOrOptions: (keyof T & string) | SlottedBehaviorOptions<keyof T & string>): CaptureType<T>;
+export function slotted<T = any>(propertyOrOptions: (keyof T & string) | SlottedDirectiveOptions<keyof T & string>): CaptureType<T>;
 
 // @public
-export class SlottedBehavior extends NodeObservationBehavior<SlottedBehaviorOptions> {
-    constructor(targets: ViewBehaviorTargets, targetId: string, options: SlottedBehaviorOptions);
-    disconnect(): void;
-    protected getNodes(): Node[];
-    observe(): void;
+export class SlottedDirective extends NodeObservationDirective<SlottedDirectiveOptions> {
+    disconnect(target: EventSource): void;
+    getNodes(target: HTMLSlotElement): Node[];
+    // @internal (undocumented)
+    handleEvent(event: Event): void;
+    observe(target: EventSource): void;
 }
 
 // @public
-export interface SlottedBehaviorOptions<T = any> extends NodeBehaviorOptions<T>, AssignedNodesOptions {
+export interface SlottedDirectiveOptions<T = any> extends NodeBehaviorOptions<T>, AssignedNodesOptions {
 }
 
 // @public
@@ -516,7 +507,7 @@ export class SubscriberSet implements Notifier {
 }
 
 // @public
-export interface SubtreeBehaviorOptions<T = any> extends Omit<NodeBehaviorOptions<T>, "filter">, Omit<MutationObserverInit, "subtree" | "childList"> {
+export interface SubtreeDirectiveOptions<T = any> extends Omit<NodeBehaviorOptions<T>, "filter">, Omit<MutationObserverInit, "subtree" | "childList"> {
     selector: string;
     subtree: boolean;
 }
