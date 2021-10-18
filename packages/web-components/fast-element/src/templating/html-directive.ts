@@ -99,3 +99,55 @@ export abstract class TargetedHTMLDirective extends HTMLDirective {
     public createPlaceholder: (index: number) => string =
         DOM.createInterpolationPlaceholder;
 }
+
+/** @internal */
+export abstract class StatelessAttachedAttributeDirective<T> extends HTMLDirective
+    implements ViewBehavior {
+    /**
+     * Creates an instance of RefDirective.
+     * @param options - The options to use in configuring the directive.
+     */
+    public constructor(protected options: T) {
+        super();
+    }
+
+    /**
+     * Creates a behavior.
+     * @param targets - The targets available for behaviors to be attached to.
+     */
+    createBehavior(targets: ViewBehaviorTargets): ViewBehavior {
+        return this;
+    }
+
+    /**
+     * Creates a placeholder string based on the directive's index within the template.
+     * @param index - The index of the directive within the template.
+     * @remarks
+     * Creates a custom attribute placeholder.
+     */
+    public createPlaceholder(index: number): string {
+        return DOM.createCustomAttributePlaceholder(index);
+    }
+
+    /**
+     * Bind this behavior to the source.
+     * @param source - The source to bind to.
+     * @param context - The execution context that the binding is operating within.
+     * @param targets - The targets that behaviors in a view can attach to.
+     */
+    abstract bind(
+        source: any,
+        context: ExecutionContext,
+        targets: ViewBehaviorTargets
+    ): void;
+
+    /**
+     * Unbinds this behavior from the source.
+     * @param source - The source to unbind from.
+     */
+    abstract unbind(
+        source: any,
+        context: ExecutionContext,
+        targets: ViewBehaviorTargets
+    ): void;
+}
