@@ -30,6 +30,7 @@ function tryRunTask(task: Callable): void {
 }
 
 const marker = `fast-${Math.random().toString(36).substring(2, 8)}`;
+let attrId = 0;
 
 /** @internal */
 export const _interpolationStart = `${marker}{`;
@@ -110,8 +111,8 @@ export const DOM = Object.freeze({
      * @remarks
      * Used internally by attribute directives such as `ref`, `slotted`, and `children`.
      */
-    createCustomAttributePlaceholder(attributeName: string, index: number): string {
-        return `${attributeName}="${this.createInterpolationPlaceholder(index)}"`;
+    createCustomAttributePlaceholder(index: number): string {
+        return `${marker}-${++attrId}="${this.createInterpolationPlaceholder(index)}"`;
     },
 
     /**

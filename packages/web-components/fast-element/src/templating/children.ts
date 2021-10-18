@@ -103,9 +103,5 @@ export function children<T = any>(
         };
     }
 
-    return new AttachedBehaviorHTMLDirective(
-        "fast-children",
-        ChildrenBehavior,
-        propertyOrOptions as any
-    );
+    return new AttachedBehaviorHTMLDirective(ChildrenBehavior, propertyOrOptions as any);
 }

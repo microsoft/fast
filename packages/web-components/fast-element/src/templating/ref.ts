@@ -30,7 +30,7 @@ export class RefDirective extends HTMLDirective implements ViewBehavior {
      * Creates a custom attribute placeholder.
      */
     public createPlaceholder(index: number): string {
-        return DOM.createCustomAttributePlaceholder("fast-ref", index);
+        return DOM.createCustomAttributePlaceholder(index);
     }
 
     /**
