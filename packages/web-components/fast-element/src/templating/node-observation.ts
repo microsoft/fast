@@ -1,6 +1,7 @@
-import type { Behavior } from "../observation/behavior.js";
-import { Accessor, Observable } from "../observation/observable.js";
-import { emptyArray } from "../platform.js";
+import { DOM } from "../dom";
+import type { ExecutionContext } from "../observation/observable";
+import { emptyArray } from "../platform";
+import { HTMLDirective, ViewBehavior, ViewBehaviorTargets } from "./html-directive";
 
 /**
  * Options for configuring node observation behavior.
@@ -46,80 +47,110 @@ export function elements(selector?: string): ElementsFilter {
  * A base class for node observation.
  * @internal
  */
-export abstract class NodeObservationBehavior<T extends NodeBehaviorOptions>
-    implements Behavior {
-    private source: any = null;
-    private shouldUpdate!: boolean;
-
+export abstract class NodeObservationDirective<T extends NodeBehaviorOptions>
+    extends HTMLDirective
+    implements ViewBehavior {
     /**
-     * Creates an instance of NodeObservationBehavior.
-     * @param target - The target to assign the nodes property on.
+     * Creates an instance of NodeObservationDirective.
      * @param options - The options to use in configuring node observation.
      */
-    constructor(protected target: HTMLElement, protected options: T) {}
+    constructor(protected options: T) {
+        super();
+    }
 
     /**
-     * Begins observation of the nodes.
+     * Creates a placeholder string based on the directive's index within the template.
+     * @param index - The index of the directive within the template.
+     * @remarks
+     * Creates a custom attribute placeholder.
      */
-    public abstract observe(): void;
+    createPlaceholder(index: number): string {
+        return DOM.createCustomAttributePlaceholder(index);
+    }
 
     /**
-     * Disconnects observation of the nodes.
+     * Creates a behavior.
+     * @param targets - The targets available for behaviors to be attached to.
      */
-    public abstract disconnect(): void;
-
-    /**
-     * Retrieves the nodes that should be assigned to the target.
-     */
-    protected abstract getNodes(): Node[];
+    createBehavior(targets: ViewBehaviorTargets): ViewBehavior<any, any, any> {
+        return this;
+    }
 
     /**
      * Bind this behavior to the source.
      * @param source - The source to bind to.
      * @param context - The execution context that the binding is operating within.
+     * @param targets - The targets that behaviors in a view can attach to.
      */
-    public bind(source: any): void {
-        const name = this.options.property;
-        this.shouldUpdate = Observable.getAccessors(source).some(
-            (x: Accessor) => x.name === name
-        );
-        this.source = source;
-        this.updateTarget(this.computeNodes());
-
-        if (this.shouldUpdate) {
-            this.observe();
-        }
+    bind(
+        source: any,
+        context: ExecutionContext<any, any>,
+        targets: ViewBehaviorTargets
+    ): void {
+        const target = targets[this.targetId] as any;
+        target.$fastSource = source;
+        this.updateTarget(source, this.computeNodes(target));
+        this.observe(target);
     }
 
     /**
      * Unbinds this behavior from the source.
      * @param source - The source to unbind from.
+     * @param context - The execution context that the binding is operating within.
+     * @param targets - The targets that behaviors in a view can attach to.
      */
-    public unbind(): void {
-        this.updateTarget(emptyArray);
-        this.source = null;
-
-        if (this.shouldUpdate) {
-            this.disconnect();
-        }
+    unbind(
+        source: any,
+        context: ExecutionContext<any, any>,
+        targets: ViewBehaviorTargets
+    ): void {
+        const target = targets[this.targetId] as any;
+        this.updateTarget(source, emptyArray);
+        this.disconnect(target);
+        target.$fastSource = null;
     }
 
-    /** @internal */
-    public handleEvent(): void {
-        this.updateTarget(this.computeNodes());
+    /**
+     * Updates the source property with the computed nodes.
+     * @param source - The source object to assign the nodes property to.
+     * @param value - The nodes to assign to the source object property.
+     */
+    protected updateTarget(source: any, value: ReadonlyArray<any>): void {
+        source[this.options.property] = value;
     }
 
-    private computeNodes(): Node[] {
-        let nodes = this.getNodes();
+    /**
+     * Computes the set of nodes that should be assigned to the source property.
+     * @param target - The target to compute the nodes for.
+     * @returns The computed nodes.
+     * @remarks
+     * Applies filters if provided.
+     */
+    protected computeNodes(target: any): Node[] {
+        let nodes = this.getNodes(target);
 
-        if (this.options.filter !== void 0) {
+        if ("filter" in this.options) {
             nodes = nodes.filter(this.options.filter!);
         }
 
         return nodes;
     }
 
-    private updateTarget(value: ReadonlyArray<any>): void {
-        this.source[this.options.property] = value;
-    }
+    /**
+     * Begins observation of the nodes.
+     * @param target - The target to observe.
+     */
+    protected abstract observe(target: any): void;
+
+    /**
+     * Disconnects observation of the nodes.
+     * @param target - The target to unobserve.
+     */
+    protected abstract disconnect(target: any): void;
+
+    /**
+     * Retrieves the raw nodes that should be assigned to the source property.
+     * @param target - The target to get the node to.
+     */
+    protected abstract getNodes(target: any): Node[];
 }
