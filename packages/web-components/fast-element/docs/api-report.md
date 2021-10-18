@@ -16,7 +16,7 @@ export interface Accessor {
 
 // @public
 export class AttachedBehaviorHTMLDirective<T = any> extends HTMLDirective {
-    constructor(name: string, behavior: AttachedBehaviorType<T>, options: T);
+    constructor(behavior: AttachedBehaviorType<T>, options: T);
     createBehavior(targets: ViewBehaviorTargets): ViewBehavior;
     createPlaceholder(index: number): string;
     }
@@ -205,7 +205,7 @@ export const DOM: Readonly<{
     isMarker(node: Node): node is Comment;
     extractDirectiveIndexFromMarker(node: Comment): number;
     createInterpolationPlaceholder(index: number): string;
-    createCustomAttributePlaceholder(attributeName: string, index: number): string;
+    createCustomAttributePlaceholder(index: number): string;
     createBlockPlaceholder(index: number): string;
     queueUpdate(callable: Callable): void;
     nextUpdate(): Promise<void>;

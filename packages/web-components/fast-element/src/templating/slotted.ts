@@ -63,9 +63,5 @@ export function slotted<T = any>(
         propertyOrOptions = { property: propertyOrOptions };
     }
 
-    return new AttachedBehaviorHTMLDirective(
-        "fast-slotted",
-        SlottedBehavior,
-        propertyOrOptions as any
-    );
+    return new AttachedBehaviorHTMLDirective(SlottedBehavior, propertyOrOptions as any);
 }
