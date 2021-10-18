@@ -1,38 +1,15 @@
 import type { CaptureType } from "./template";
-import { HTMLDirective, ViewBehavior, ViewBehaviorTargets } from "./html-directive";
+import {
+    StatelessAttachedAttributeDirective,
+    ViewBehaviorTargets,
+} from "./html-directive";
 import type { ExecutionContext } from "../observation/observable";
-import { DOM } from "../dom";
 
 /**
  * The runtime behavior for template references.
  * @public
  */
-export class RefDirective extends HTMLDirective implements ViewBehavior {
-    /**
-     * Creates an instance of RefDirective.
-     * @param propertyName - The name of the property to assign the reference to.
-     */
-    public constructor(private propertyName: string) {
-        super();
-    }
-
-    /**
-     * Creates a behavior.
-     */
-    createBehavior() {
-        return this;
-    }
-
-    /**
-     * Creates a placeholder string based on the directive's index within the template.
-     * @param index - The index of the directive within the template.
-     * @remarks
-     * Creates a custom attribute placeholder.
-     */
-    public createPlaceholder(index: number): string {
-        return DOM.createCustomAttributePlaceholder(index);
-    }
-
+export class RefDirective extends StatelessAttachedAttributeDirective<string> {
     /**
      * Bind this behavior to the source.
      * @param source - The source to bind to.
@@ -44,7 +21,7 @@ export class RefDirective extends HTMLDirective implements ViewBehavior {
         context: ExecutionContext,
         targets: ViewBehaviorTargets
     ): void {
-        source[this.propertyName] = targets[this.targetId];
+        source[this.options] = targets[this.targetId];
     }
 
     /**
