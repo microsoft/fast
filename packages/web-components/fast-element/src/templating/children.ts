@@ -1,12 +1,11 @@
-import { AttachedBehaviorHTMLDirective, ViewBehaviorTargets } from "./html-directive";
-import { NodeBehaviorOptions, NodeObservationBehavior } from "./node-observation";
+import { NodeObservationDirective, NodeBehaviorOptions } from "./node-observation";
 import type { CaptureType } from "./template";
 
 /**
  * The options used to configure child list observation.
  * @public
  */
-export interface ChildListBehaviorOptions<T = any>
+export interface ChildListDirectiveOptions<T = any>
     extends NodeBehaviorOptions<T>,
         Omit<MutationObserverInit, "subtree" | "childList"> {}
 
@@ -14,7 +13,7 @@ export interface ChildListBehaviorOptions<T = any>
  * The options used to configure subtree observation.
  * @public
  */
-export interface SubtreeBehaviorOptions<T = any>
+export interface SubtreeDirectiveOptions<T = any>
     extends Omit<NodeBehaviorOptions<T>, "filter">,
         Omit<MutationObserverInit, "subtree" | "childList"> {
     /**
@@ -33,59 +32,67 @@ export interface SubtreeBehaviorOptions<T = any>
  * The options used to configure child/subtree node observation.
  * @public
  */
-export type ChildrenBehaviorOptions<T = any> =
-    | ChildListBehaviorOptions<T>
-    | SubtreeBehaviorOptions<T>;
+export type ChildrenDirectiveOptions<T = any> =
+    | ChildListDirectiveOptions<T>
+    | SubtreeDirectiveOptions<T>;
 
 /**
  * The runtime behavior for child node observation.
  * @public
  */
-export class ChildrenBehavior extends NodeObservationBehavior<ChildrenBehaviorOptions> {
-    private observer: MutationObserver | null = null;
-
+export class ChildrenDirective extends NodeObservationDirective<
+    ChildrenDirectiveOptions
+> {
     /**
-     * Creates an instance of ChildrenBehavior.
-     * @param target - The element target to observe children on.
-     * @param options - The options to use when observing the element children.
+     * Creates an instance of ChildrenDirective.
+     * @param options - The options to use in configuring the child observation behavior.
      */
-    public constructor(
-        targets: ViewBehaviorTargets,
-        targetId: string,
-        options: ChildrenBehaviorOptions
-    ) {
-        super(targets[targetId] as HTMLElement, options);
+    constructor(options: ChildrenDirectiveOptions) {
+        super(options);
         (options as MutationObserverInit).childList = true;
     }
 
     /**
      * Begins observation of the nodes.
+     * @param target - The target to observe.
      */
-    public observe(): void {
-        if (this.observer === null) {
-            this.observer = new MutationObserver(this.handleEvent.bind(this));
-        }
-
-        this.observer.observe(this.target, this.options);
+    observe(target: any) {
+        const observerId = `${this.targetId}-observer`;
+        const observer =
+            target[observerId] ??
+            (target[observerId] = new MutationObserver(this.handleEvent));
+        observer.$fastTarget = target;
+        observer.observe(target, this.options);
     }
 
     /**
      * Disconnects observation of the nodes.
+     * @param target - The target to unobserve.
      */
-    public disconnect(): void {
-        this.observer!.disconnect();
+    disconnect(target: any) {
+        const observerId = `${this.targetId}-observer`;
+        const observer = target[observerId];
+        observer.$fastTarget = null;
+        observer.disconnect();
     }
 
     /**
-     * Retrieves the nodes that should be assigned to the target.
+     * Retrieves the raw nodes that should be assigned to the source property.
+     * @param target - The target to get the node to.
      */
-    protected getNodes(): ChildNode[] {
+    getNodes(target: Element): Node[] {
         if ("subtree" in this.options) {
-            return Array.from(this.target.querySelectorAll(this.options.selector));
+            return Array.from(target.querySelectorAll(this.options.selector));
         }
 
-        return Array.from(this.target.childNodes);
+        return Array.from(target.childNodes);
     }
+
+    private handleEvent = (mutations: MutationRecord[], observer: any): void => {
+        const target = observer.$fastTarget;
+        const source = target.$fastSource;
+        this.updateTarget(source, this.computeNodes(target));
+    };
 }
 
 /**
@@ -95,7 +102,7 @@ export class ChildrenBehavior extends NodeObservationBehavior<ChildrenBehaviorOp
  * @public
  */
 export function children<T = any>(
-    propertyOrOptions: (keyof T & string) | ChildrenBehaviorOptions<keyof T & string>
+    propertyOrOptions: (keyof T & string) | ChildListDirectiveOptions<keyof T & string>
 ): CaptureType<T> {
     if (typeof propertyOrOptions === "string") {
         propertyOrOptions = {
@@ -103,5 +110,7 @@ export function children<T = any>(
         };
     }
 
-    return new AttachedBehaviorHTMLDirective(ChildrenBehavior, propertyOrOptions as any);
+    return new ChildrenDirective(
+        propertyOrOptions as ChildListDirectiveOptions<keyof T & string>
+    );
 }
