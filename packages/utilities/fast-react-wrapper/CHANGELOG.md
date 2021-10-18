@@ -1,8 +1,32 @@
 # Change Log - @microsoft/fast-react-wrapper
 
-This log was last generated on Tue, 12 Oct 2021 07:15:14 GMT and should not be manually modified.
+This log was last generated on Fri, 15 Oct 2021 23:24:14 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.1.5
+
+Fri, 15 Oct 2021 23:24:14 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.21.0 (nicholasrice@users.noreply.github.com)
+
+## 0.1.4
+
+Wed, 13 Oct 2021 22:45:16 GMT
+
+### Patches
+
+- Bump @microsoft/fast-element to v1.6.1 (markwhitfeld@users.noreply.github.com)
+
+## 0.1.3
+
+Wed, 13 Oct 2021 01:53:37 GMT
+
+### Patches
+
+- refactor: remove lodash-es as a dependency (connor@peet.io)
 
 ## 0.1.2
 

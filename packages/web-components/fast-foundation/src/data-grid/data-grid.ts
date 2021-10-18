@@ -86,6 +86,11 @@ export interface ColumnDefinition {
      */
 
     cellFocusTargetCallback?: (cell: DataGridCell) => HTMLElement;
+
+    /**
+     * Whether this column is the row header
+     */
+    isRowHeader?: boolean;
 }
 
 /**
@@ -501,7 +506,7 @@ export class DataGrid extends FoundationElement {
         const focusRow: Element = this.rowElements[focusRowIndex];
 
         const cells: NodeListOf<Element> = focusRow.querySelectorAll(
-            '[role="cell"], [role="gridcell"], [role="columnheader"]'
+            '[role="cell"], [role="gridcell"], [role="columnheader"], [role="rowheader"]'
         );
 
         const focusColumnIndex = Math.max(0, Math.min(cells.length - 1, columnIndex));

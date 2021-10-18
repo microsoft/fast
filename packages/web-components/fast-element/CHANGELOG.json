@@ -2,6 +2,36 @@
   "name": "@microsoft/fast-element",
   "entries": [
     {
+      "date": "Wed, 13 Oct 2021 22:45:16 GMT",
+      "tag": "@microsoft/fast-element_v1.6.1",
+      "version": "1.6.1",
+      "comments": {
+        "patch": [
+          {
+            "comment": "build(fast-element): exclude empty js files from esm index.js",
+            "author": "markwhitfeld@users.noreply.github.com",
+            "commit": "49d27d20bf430ea4639978ba363e017fc5aa88e4",
+            "package": "@microsoft/fast-element"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 13 Oct 2021 01:53:37 GMT",
+      "tag": "@microsoft/fast-element_v1.6.0",
+      "version": "1.6.0",
+      "comments": {
+        "none": [
+          {
+            "comment": "Fill color design token update",
+            "author": "skawian@gmail.com",
+            "commit": "1dd6243d7564f00d8af77d1335ab96b0e8153c2e",
+            "package": "@microsoft/fast-element"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 08 Oct 2021 19:53:11 GMT",
       "tag": "@microsoft/fast-element_v1.6.0",
       "version": "1.6.0",

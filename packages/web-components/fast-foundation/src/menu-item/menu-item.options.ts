@@ -18,3 +18,12 @@ export enum MenuItemRole {
      */
     menuitemradio = "menuitemradio",
 }
+
+/**
+ * @internal
+ */
+export const roleForMenuItem: { [value in MenuItemRole]: keyof typeof MenuItemRole } = {
+    [MenuItemRole.menuitem]: "menuitem",
+    [MenuItemRole.menuitemcheckbox]: "menuitemcheckbox",
+    [MenuItemRole.menuitemradio]: "menuitemradio",
+};

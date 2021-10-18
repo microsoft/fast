@@ -1,4 +1,4 @@
-import { html, slotted } from "@microsoft/fast-element";
+import { html, ref, slotted } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
 import { Listbox } from "../listbox/listbox";
 import { endSlotTemplate, startSlotTemplate } from "../patterns/start-end";
@@ -56,9 +56,9 @@ export const selectTemplate: (
             id="listbox"
             part="listbox"
             role="listbox"
-            style="--max-height: ${x => x.maxHeight}px"
             ?disabled="${x => x.disabled}"
             ?hidden="${x => !x.open}"
+            ${ref("listbox")}
         >
             <slot
                 ${slotted({

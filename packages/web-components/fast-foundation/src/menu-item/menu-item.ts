@@ -12,9 +12,9 @@ import type { Menu } from "../menu/menu";
 import { StartEnd, StartEndOptions } from "../patterns/start-end";
 import { getDirection } from "../utilities/";
 import { applyMixins } from "../utilities/apply-mixins";
-import { MenuItemRole } from "./menu-item.options";
+import { MenuItemRole, roleForMenuItem } from "./menu-item.options";
 
-export { MenuItemRole };
+export { MenuItemRole, roleForMenuItem };
 
 /**
  * Types of menu item column count.

@@ -1,8 +1,49 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Tue, 12 Oct 2021 07:15:14 GMT and should not be manually modified.
+This log was last generated on Fri, 15 Oct 2021 23:24:14 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.21.0
+
+Fri, 15 Oct 2021 23:24:14 GMT
+
+### Minor changes
+
+- Implement DesignToken root-element registration for CSS custom property emission of default token values (nicholasrice@users.noreply.github.com)
+
+### Patches
+
+- implement level-2 DOM support for DesignToken in browsers that don't support Constructable StyleSheets (nicholasrice@users.noreply.github.com)
+
+## 2.20.0
+
+Wed, 13 Oct 2021 22:45:16 GMT
+
+### Minor changes
+
+- Adding fast-calendar component (robarb@microsoft.com)
+
+### Patches
+
+- move style assignment for combobox and select into the class and off the DOM node (chhol@microsoft.com)
+- Code fixes for calendar (robarb@microsoft.com)
+- Bump @microsoft/fast-element to v1.6.1 (markwhitfeld@users.noreply.github.com)
+
+## 2.19.0
+
+Wed, 13 Oct 2021 01:53:37 GMT
+
+### Minor changes
+
+- data-grid: add support for rowheader role (scomea@microsoft.com)
+- Add focus event handler to tooltip (v-dlesac@microsoft.com)
+
+### Patches
+
+- refactor: remove lodash-es as a dependency (connor@peet.io)
+- use css transforms and transitions in horizontal scroll (john.kreitlow@microsoft.com)
+- Bump @microsoft/fast-web-utilities to v5.0.1 (john.kreitlow@microsoft.com)
 
 ## 2.18.0
 

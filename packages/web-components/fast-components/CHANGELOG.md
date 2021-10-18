@@ -1,8 +1,45 @@
 # Change Log - @microsoft/fast-components
 
-This log was last generated on Tue, 12 Oct 2021 07:15:14 GMT and should not be manually modified.
+This log was last generated on Fri, 15 Oct 2021 23:24:14 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.13.1
+
+Fri, 15 Oct 2021 23:24:14 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.21.0 (nicholasrice@users.noreply.github.com)
+
+## 2.13.0
+
+Wed, 13 Oct 2021 22:45:16 GMT
+
+### Minor changes
+
+- Adding fast-calendar component (robarb@microsoft.com)
+
+### Patches
+
+- Bump @microsoft/fast-element to v1.6.1 (markwhitfeld@users.noreply.github.com)
+- Bump @microsoft/fast-foundation to v2.20.0 (robarb@microsoft.com)
+
+## 2.12.0
+
+Wed, 13 Oct 2021 01:53:37 GMT
+
+### Minor changes
+
+- data-grid: add support for rowheader role (scomea@microsoft.com)
+
+### Patches
+
+- Update playwright tests for horizontal-scroll (john.kreitlow@microsoft.com)
+- Fill color design token update (skawian@gmail.com)
+- refactor: remove lodash-es as a dependency (connor@peet.io)
+- Bump @microsoft/fast-foundation to v2.19.0 (john.kreitlow@microsoft.com)
+- Bump @microsoft/fast-web-utilities to v5.0.1 (john.kreitlow@microsoft.com)
 
 ## 2.11.12
 

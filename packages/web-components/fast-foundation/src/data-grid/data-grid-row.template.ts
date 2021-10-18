@@ -9,6 +9,7 @@ function createCellItemTemplate(context): ViewTemplate {
     const cellTag = context.tagFor(DataGridCell);
     return html`
     <${cellTag}
+        cell-type="${x => (x.isRowHeader ? "rowheader" : undefined)}"
         grid-column="${(x, c) => c.index + 1}"
         :rowData="${(x, c) => c.parent.rowData}"
         :columnDefinition="${x => x}"
@@ -50,7 +51,9 @@ export const dataGridRowTemplate: (
             :defaultHeaderCellItemTemplate="${headerCellItemTemplate}"
             ${children({
                 property: "cellElements",
-                filter: elements('[role="cell"],[role="gridcell"],[role="columnheader"]'),
+                filter: elements(
+                    '[role="cell"],[role="gridcell"],[role="columnheader"],[role="rowheader"]'
+                ),
             })}
         >
             <slot ${slotted("slottedCellElements")}></slot>

@@ -425,7 +425,7 @@ function newDataRow(id: string): object {
 }
 
 const baseColumns: ColumnDefinition[] = [
-    { columnDataKey: "rowId" },
+    { columnDataKey: "rowId", isRowHeader: true },
     { columnDataKey: "item1" },
     { columnDataKey: "item2" },
     { columnDataKey: "item3" },
@@ -434,6 +434,7 @@ const baseColumns: ColumnDefinition[] = [
 const templateColumns: ColumnDefinition[] = [
     {
         title: "RowID",
+        isRowHeader: true,
         columnDataKey: "rowId",
         cellTemplate: buttonCellTemplate,
         cellFocusTargetCallback: getFocusTarget,
