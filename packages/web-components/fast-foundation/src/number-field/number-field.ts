@@ -271,7 +271,7 @@ export class NumberField extends FormAssociatedNumberField {
     /**
      * Handles populating the input field with a validated value when
      *  leaving the input field.
-     * @public
+     * @internal
      */
     public handleBlur(): void {
         this.control.value = this.value;

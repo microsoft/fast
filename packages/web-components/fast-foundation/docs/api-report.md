@@ -1542,6 +1542,7 @@ export class NumberField extends FormAssociatedNumberField {
     control: HTMLInputElement;
     // @internal (undocumented)
     defaultSlottedNodes: Node[];
+    // @internal
     handleBlur(): void;
     // @internal
     handleChange(): void;
