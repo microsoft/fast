@@ -205,7 +205,7 @@ export class VirtualizingStackBase extends FoundationElement {
      */
     @observable
     public spanMap: number[];
-    private heightMapChanged(): void {
+    private spanChanged(): void {
         if (this.$fastController.isConnected) {
             this.updateDimensions();
         }
@@ -269,6 +269,21 @@ export class VirtualizingStackBase extends FoundationElement {
     public gridTemplateSpans: string;
 
     /**
+     *
+     *
+     * @internal
+     */
+    @observable
+    public firstRenderedIndex: number = -1;
+
+    /**
+     *
+     *
+     * @internal
+     */
+    public lastRenderedIndex: number = -1;
+
+    /**
      * reference to the container element
      *
      * @internal
@@ -283,9 +298,6 @@ export class VirtualizingStackBase extends FoundationElement {
 
     private visibleRangeStart: number = 0;
     private visibleRangeEnd: number = 0;
-
-    private firstRenderedIndex: number = -1;
-    private lastRenderedIndex: number = -1;
 
     private viewportRect: ClientRect | DOMRect | undefined;
     private containerRect: ClientRect | DOMRect | undefined;
@@ -314,6 +326,8 @@ export class VirtualizingStackBase extends FoundationElement {
         this.itemsPlaceholder = document.createComment("");
         this.appendChild(this.itemsPlaceholder);
     }
+
+    public getI;
 
     private initializeRepeatBehavior(): void {
         this.pendingReset = false;
@@ -354,6 +368,29 @@ export class VirtualizingStackBase extends FoundationElement {
      */
     public update(): void {
         this.requestPositionUpdates();
+    }
+
+    /**
+     * the position in the stack (in pixels) of a particular item
+     *
+     * @public
+     */
+    public getItemPosition(itemIndex: number): number {
+        if (itemIndex < 0 || itemIndex >= this.items.length) {
+            // out of range
+            return -1;
+        }
+
+        let returnVal = 0;
+
+        if (this.spanMap !== undefined) {
+            // todo
+            returnVal = 0;
+        } else {
+            returnVal = this.startRegionSpan + itemIndex * this.itemSpan;
+        }
+
+        return returnVal;
     }
 
     /**

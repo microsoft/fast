@@ -14,6 +14,8 @@ function createRowItemTemplate(context: ElementDefinitionContext): ViewTemplate 
             height:100%;
             width: 100%;
         "
+        slot="generated-rows"
+        :rowIndex="${(x, c) => c.parent.authoredRowCount + c.index}"
         :rowData="${x => x}"
         :cellItemTemplate="${(x, c) => c.parent.cellItemTemplate}"
         :headerCellItemTemplate="${(x, c) => c.parent.headerCellItemTemplate}"
@@ -53,6 +55,7 @@ export const dataGridTemplate: FoundationElementTemplate<ViewTemplate<DataGrid>>
                 ${ref("containerElement")}
             >
                 <slot></slot>
+                <slot name="generated-rows"></slot>
             </div>
         </template>
     `;
