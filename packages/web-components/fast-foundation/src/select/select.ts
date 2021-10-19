@@ -45,6 +45,8 @@ export class Select extends FormAssociatedSelect {
     private _value: string;
 
     /**
+     * The ref to the internal `.control` element.
+     *
      * @internal
      */
     @observable
@@ -82,11 +84,15 @@ export class Select extends FormAssociatedSelect {
     private indexWhenOpened: number;
 
     /**
+     * The ref to the internal `.listbox` element.
+     *
      * @internal
      */
     public listbox: HTMLElement;
 
     /**
+     * The ref to the internal `.indicator` element.
+     *
      * @internal
      */
     @observable
@@ -395,6 +401,10 @@ export class Select extends FormAssociatedSelect {
         this.setDimensions();
     }
 
+    /**
+     * @override
+     * @internal
+     */
     public setDefaultSize(): void {
         this.size = this.sizeAttribute ?? (this.collapsible ? 0 : 4);
     }

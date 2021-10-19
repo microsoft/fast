@@ -19,6 +19,15 @@ import { ListboxRole } from "./listbox.options";
 /**
  * The abstract class for Listbox-based components.
  *
+ * @remarks
+ *
+ * This abstract class is the basis for the {@link ListboxElement}, {@link Select}, and
+ * {@link Combobox} classes. These components all have a similar interaction model, but
+ * differ in how they express ARIA-driven accessibility features. For instance,
+ * {@link ListboxElement} and {@link Select} support `size` and `multiple`, while
+ * {@link Combobox} does not. Similarly, {@link Select} and {@link Combobox} are both
+ * {@link FormAssociated|form-associated}, but {@link ListboxElement} is not.
+ *
  * @public
  */
 export abstract class Listbox extends FoundationElement {
@@ -282,7 +291,7 @@ export abstract class Listbox extends FoundationElement {
         );
 
         if (!captured || captured.disabled) {
-            return;
+            return true;
         }
 
         this.selectedIndex = this.options
@@ -314,23 +323,18 @@ export abstract class Listbox extends FoundationElement {
     /**
      * @internal
      */
-    public focusinHandler(e: FocusEvent): void {
+    public focusinHandler(e: FocusEvent): boolean | void {
         if (!this.shouldSkipFocus && e.target === e.currentTarget) {
             this.setSelectedOptions();
             this.focusAndScrollOptionIntoView();
         }
 
         this.shouldSkipFocus = false;
+        return true;
     }
 
     public handleChange(source: any, propertyName: string) {
         switch (propertyName) {
-            // case "disabled": {
-            //     this.slottedOptionsChanged(null, this.slottedOptions);
-            //     this.options = this._options.filter(Listbox.slottedOptionFilter);
-            //     this.setSelectedOptions();
-            //     break;
-            // }
             case "selected": {
                 if (Listbox.slottedOptionFilter(source)) {
                     this.selectedIndex = this.options.indexOf(source);

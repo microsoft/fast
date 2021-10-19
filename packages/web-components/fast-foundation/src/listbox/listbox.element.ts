@@ -1,4 +1,4 @@
-import { attr, observable } from "@microsoft/fast-element";
+import { attr, DOM, nullableNumberConverter, observable } from "@microsoft/fast-element";
 import {
     keyArrowDown,
     keyArrowUp,
@@ -31,25 +31,17 @@ export class ListboxElement extends Listbox {
     private activeIndex: number = -1;
 
     /**
+     * Updates the `ariaActiveDescendant` property when the active index changes.
+     *
+     * @param prev - the previous active index
+     * @param next - the next active index
+     *
      * @internal
      */
-    protected activeIndexChanged(prev, next): void {
+    protected activeIndexChanged(prev: unknown, next: number): void {
         this.ariaActiveDescendant = this.options[next]?.id ?? "";
         this.focusAndScrollOptionIntoView();
     }
-
-    /**
-     * @internal
-     */
-    private get checkedOptions(): ListboxOption[] {
-        return this.options?.filter(o => o.checked);
-    }
-
-    public get firstSelectedOptionIndex(): number {
-        return this.options.indexOf(this.firstSelectedOption);
-    }
-
-    private rangeStartIndex: number = -1;
 
     /**
      * Returns the last checked option.
@@ -61,11 +53,30 @@ export class ListboxElement extends Listbox {
     }
 
     /**
+     * Returns the list of checked options.
+     *
+     * @internal
+     */
+    private get checkedOptions(): ListboxOption[] {
+        return this.options?.filter(o => o.checked);
+    }
+
+    /**
+     * Returns the index of the first selected option.
+     *
+     * @internal
+     */
+    public get firstSelectedOptionIndex(): number {
+        return this.options.indexOf(this.firstSelectedOption);
+    }
+
+    /**
      * Indicates if the listbox is in multi-selection mode.
      *
-     * @public
      * @remarks
      * HTML Attribute: `multiple`
+     *
+     * @public
      */
     @attr({ mode: "boolean" })
     public multiple: boolean;
@@ -73,8 +84,9 @@ export class ListboxElement extends Listbox {
     /**
      * Switches between single-selection and multi-selection mode.
      *
-     * @param prev - the previous value
-     * @param next - the next value
+     * @param prev - the previous value of the `multiple` attribute
+     * @param next - the next value of the `multiple` attribute
+     *
      * @internal
      */
     public multipleChanged(prev: unknown, next: boolean): void {
@@ -95,6 +107,8 @@ export class ListboxElement extends Listbox {
      * @internal
      * @remarks
      * Multiple-selection mode only.
+     *
+     * @internal
      */
     private checkActiveIndex(): void {
         const activeItem = this.options[this.activeIndex];
@@ -104,10 +118,14 @@ export class ListboxElement extends Listbox {
     }
 
     /**
+     * Sets the active index to the first option and marks it as checked.
      *
-     * @internal
      * @remarks
      * Multi-selection mode only.
+     *
+     * @param preserveChecked - mark all options unchecked before changing the active index
+     *
+     * @internal
      */
     protected checkFirstOption(preserveChecked: boolean = false): void {
         if (preserveChecked) {
@@ -127,12 +145,14 @@ export class ListboxElement extends Listbox {
     }
 
     /**
-     * Decrement the active index and set the matching option as checked.
+     * Decrements the active index and sets the matching option as checked.
      *
-     * @param preserveChecked - mark all options unchecked before changing the active index
-     * @internal
      * @remarks
      * Multi-selection mode only.
+     *
+     * @param preserveChecked - mark all options unchecked before changing the active index
+     *
+     * @internal
      */
     protected checkLastOption(preserveChecked: boolean = false): void {
         if (preserveChecked) {
@@ -158,20 +178,19 @@ export class ListboxElement extends Listbox {
     }
 
     /**
-     * Increments the active index.
+     * Increments the active index and marks the matching option as checked.
      *
-     * @internal
      * @remarks
      * Multiple-selection mode only.
+     *
+     * @param preserveChecked - mark all options unchecked before changing the active index
+     *
+     * @internal
      */
     protected checkNextOption(preserveChecked: boolean = false): void {
         if (preserveChecked) {
             if (this.rangeStartIndex === -1) {
                 this.rangeStartIndex = this.activeIndex;
-            }
-
-            if (this.checkedOptions.length === 1) {
-                // this.rangeStartIndex -= 1;
             }
 
             this.options.forEach((o, i) => {
@@ -192,11 +211,14 @@ export class ListboxElement extends Listbox {
     }
 
     /**
-     * Decrements the active index.
+     * Decrements the active index and marks the matching option as checked.
      *
-     * @internal
      * @remarks
      * Multiple-selection mode only.
+     *
+     * @param preserveChecked - mark all options unchecked before changing the active index
+     *
+     * @internal
      */
     protected checkPreviousOption(preserveChecked: boolean = false): void {
         if (preserveChecked) {
@@ -229,8 +251,9 @@ export class ListboxElement extends Listbox {
      * Handles click events for listbox options.
      *
      * @param e - the event object
-     * @internal
+     *
      * @override
+     * @internal
      */
     public clickHandler(e: MouseEvent): boolean | void {
         if (!this.multiple) {
@@ -253,16 +276,26 @@ export class ListboxElement extends Listbox {
         return true;
     }
 
+    /**
+     * @override
+     * @internal
+     */
     public connectedCallback(): void {
         super.connectedCallback();
         this.addEventListener("focusout", this.focusoutHandler);
     }
 
+    /**
+     * @override
+     * @internal
+     */
     public disconnectedCallback(): void {
         this.removeEventListener("focusout", this.focusoutHandler);
+        super.disconnectedCallback();
     }
 
     /**
+     * @override
      * @internal
      */
     protected focusAndScrollOptionIntoView(): void {
@@ -275,9 +308,8 @@ export class ListboxElement extends Listbox {
      * the listbox receives focus. If no options are selected, the first
      * selectable option is checked.
      *
+     * @override
      * @internal
-     * @remarks
-     * Overrides
      */
     public focusinHandler(e: FocusEvent): void {
         if (!this.multiple) {
@@ -310,8 +342,8 @@ export class ListboxElement extends Listbox {
     /**
      * Handles keydown actions for listbox navigation and typeahead
      *
-     * @internal
      * @override
+     * @internal
      */
     public keydownHandler(e: KeyboardEvent): boolean | void {
         if (!this.multiple) {
@@ -416,9 +448,8 @@ export class ListboxElement extends Listbox {
     }
 
     /**
-     *
-     * @param prev - previous typeahead value
-     * @param next - new typeahead value
+     * @override
+     * @internal
      */
     public typeaheadBufferChanged(prev: string, next: string): void {
         if (!this.multiple) {
