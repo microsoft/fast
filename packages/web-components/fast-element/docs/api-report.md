@@ -53,44 +53,43 @@ export interface Behavior<TSource = any, TParent = any, TGrandparent = any> {
     unbind(source: TSource, context: ExecutionContext<TParent, TGrandparent>): void;
 }
 
+// @public (undocumented)
+export function bind<T = any>(binding: Binding, config?: BindingConfig | DefaultBindingOptions): CaptureType<T>;
+
 // @public
 export type Binding<TSource = any, TReturn = any, TParent = any> = (source: TSource, context: ExecutionContext<TParent>) => TReturn;
 
-// @public
-export class BindingBehavior implements Behavior {
-    constructor(target: any, binding: Binding, isBindingVolatile: boolean, bind: typeof normalBind, unbind: typeof normalUnbind, updateTarget: typeof updatePropertyTarget, targetName?: string);
-    // Warning: (ae-forgotten-export) The symbol "normalBind" needs to be exported by the entry point index.d.ts
-    bind: typeof normalBind;
-    // @internal (undocumented)
-    binding: Binding;
-    // @internal (undocumented)
-    bindingObserver: BindingObserver | null;
-    // @internal (undocumented)
-    classVersions: Record<string, number>;
-    // @internal (undocumented)
-    context: ExecutionContext | null;
-    // @internal (undocumented)
-    handleChange(): void;
-    // @internal (undocumented)
-    handleEvent(event: Event): void;
-    // @internal (undocumented)
-    isBindingVolatile: boolean;
-    // @internal (undocumented)
-    source: unknown;
-    // @internal (undocumented)
-    target: any;
-    // @internal (undocumented)
-    targetName?: string;
-    // Warning: (ae-forgotten-export) The symbol "normalUnbind" needs to be exported by the entry point index.d.ts
-    unbind: typeof normalUnbind;
-    // Warning: (ae-forgotten-export) The symbol "updatePropertyTarget" needs to be exported by the entry point index.d.ts
-    //
-    // @internal (undocumented)
-    updateTarget: typeof updatePropertyTarget;
-    // @internal (undocumented)
-    value: any;
-    // @internal (undocumented)
-    version: number;
+// @public (undocumented)
+export type BindingBehaviorFactory = {
+    readonly directive: HTMLBindingDirective;
+    createBehavior(targets: ViewBehaviorTargets): ViewBehavior;
+};
+
+// @public (undocumented)
+export interface BindingConfig {
+    // (undocumented)
+    mode: BindingMode;
+    // (undocumented)
+    options: any;
+}
+
+// @public (undocumented)
+export type BindingFactory = new (directive: HTMLBindingDirective) => BindingBehaviorFactory;
+
+// @public (undocumented)
+export interface BindingMode {
+    // (undocumented)
+    attribute?: BindingFactory;
+    // (undocumented)
+    booleanAttribute?: BindingFactory;
+    // (undocumented)
+    content?: BindingFactory;
+    // (undocumented)
+    event?: BindingFactory;
+    // (undocumented)
+    property?: BindingFactory;
+    // (undocumented)
+    tokenList?: BindingFactory;
 }
 
 // @public
@@ -183,6 +182,11 @@ export function customElement(nameOrDef: string | PartialFASTElementDefinition):
 
 // @public
 export type DecoratorAttributeConfiguration = Omit<AttributeConfiguration, "property">;
+
+// @public (undocumented)
+export type DefaultBindingOptions = {
+    capture?: boolean;
+};
 
 // @public
 export const defaultExecutionContext: ExecutionContext<any, any>;
@@ -308,16 +312,24 @@ export type Global = typeof globalThis & {
 // @public
 export function html<TSource = any, TParent = any, TGrandparent = any>(strings: TemplateStringsArray, ...values: TemplateValue<TSource, TParent>[]): ViewTemplate<TSource, TParent, TGrandparent>;
 
-// @public
+// @public (undocumented)
 export class HTMLBindingDirective extends TargetedHTMLDirective {
-    constructor(binding: Binding);
+    constructor(binding: Binding, mode: BindingMode, options: any);
     // (undocumented)
     binding: Binding;
-    createBehavior(targets: ViewBehaviorTargets): BindingBehavior;
+    // (undocumented)
+    cleanedTargetName?: string;
+    // (undocumented)
+    createBehavior(targets: ViewBehaviorTargets): ViewBehavior;
+    // (undocumented)
+    mode: BindingMode;
+    // (undocumented)
+    options: any;
+    // (undocumented)
     targetAtContent(): void;
     get targetName(): string | undefined;
     set targetName(value: string | undefined);
-    }
+}
 
 // @public
 export abstract class HTMLDirective implements ViewBehaviorFactory {
@@ -394,6 +406,9 @@ export interface ObservationRecord {
     propertyName: string;
     propertySource: any;
 }
+
+// @public (undocumented)
+export const oneTime: BindingConfig & ((options?: DefaultBindingOptions) => BindingConfig);
 
 // @public
 export interface PartialFASTElementDefinition {
@@ -554,6 +569,9 @@ export type TrustedTypes = {
 export type TrustedTypesPolicy = {
     createHTML(html: string): string;
 };
+
+// @public (undocumented)
+export const updateView: BindingConfig & ((options?: DefaultBindingOptions) => BindingConfig);
 
 // @public
 export interface ValueConverter {

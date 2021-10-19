@@ -5,7 +5,7 @@ import { defaultExecutionContext } from "../observation/observable";
 import { css } from "../styles/css";
 import type { StyleTarget } from "../styles/element-styles";
 import { toHTML, uniqueElementName } from "../__test__/helpers";
-import { HTMLBindingDirective } from "./binding";
+import { bind, HTMLBindingDirective } from "./binding";
 import { compileTemplate } from "./compiler";
 import type { HTMLDirective } from "./html-directive";
 import { html } from "./template";
@@ -22,7 +22,7 @@ describe("The template compiler", () => {
     }
 
     function binding(result = "result") {
-        return new HTMLBindingDirective(() => result);
+        return bind(() => result) as HTMLBindingDirective;
     }
 
     const scope = {};
