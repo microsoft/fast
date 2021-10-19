@@ -136,7 +136,7 @@ export class HTMLView<TSource = any, TParent = any, TGrandparent = any>
      */
     public constructor(
         private fragment: DocumentFragment,
-        private factories: ViewBehaviorFactory[],
+        private factories: ReadonlyArray<ViewBehaviorFactory>,
         private targets: ViewBehaviorTargets
     ) {
         this.firstChild = fragment.firstChild!;

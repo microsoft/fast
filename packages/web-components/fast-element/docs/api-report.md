@@ -327,18 +327,15 @@ export abstract class HTMLDirective implements ViewBehaviorFactory {
 }
 
 // @public
-export class HTMLTemplateCompilationResult {
-    constructor(fragment: DocumentFragment, factories: ViewBehaviorFactory[], targetIds: Set<string>, descriptors: PropertyDescriptorMap);
+export interface HTMLTemplateCompilationResult {
     createTargets(root: Node, host?: Node): ViewBehaviorTargets;
-    // (undocumented)
-    readonly factories: ViewBehaviorFactory[];
-    // (undocumented)
+    readonly factories: ReadonlyArray<ViewBehaviorFactory>;
     readonly fragment: DocumentFragment;
-    }
+}
 
 // @public
 export class HTMLView<TSource = any, TParent = any, TGrandparent = any> implements ElementView<TSource, TParent, TGrandparent>, SyntheticView<TSource, TParent, TGrandparent> {
-    constructor(fragment: DocumentFragment, factories: ViewBehaviorFactory[], targets: ViewBehaviorTargets);
+    constructor(fragment: DocumentFragment, factories: ReadonlyArray<ViewBehaviorFactory>, targets: ViewBehaviorTargets);
     appendTo(node: Node): void;
     bind(source: TSource, context: ExecutionContext<TParent, TGrandparent>): void;
     context: ExecutionContext<TParent, TGrandparent> | null;
