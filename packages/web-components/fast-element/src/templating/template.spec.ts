@@ -3,7 +3,7 @@ import { html, ViewTemplate } from "./template";
 import { DOM } from "../dom";
 import { HTMLBindingDirective } from "./binding";
 import { HTMLDirective, TargetedHTMLDirective } from "./html-directive";
-import type { ViewBehaviorTargets } from "..";
+import { bind, ViewBehaviorTargets } from "..";
 
 describe(`The html tag template helper`, () => {
     it(`transforms a string into a ViewTemplate.`, () => {
@@ -217,7 +217,7 @@ describe(`The html tag template helper`, () => {
     });
 
     it(`captures a case-sensitive property name when used with a binding`, () => {
-        const template = html<Model>`<my-element :someAttribute=${new HTMLBindingDirective(x => x.value)}></my-element>`;
+        const template = html<Model>`<my-element :someAttribute=${bind(x => x.value)}></my-element>`;
         const placeholder = DOM.createInterpolationPlaceholder(0);
 
         expect(template.html).to.equal(

@@ -4,7 +4,7 @@ import { compileTemplate } from "./compiler";
 import type { HTMLTemplateCompilationResult } from "./compiler";
 import { ElementView, HTMLView, SyntheticView } from "./view";
 import { HTMLDirective, TargetedHTMLDirective } from "./html-directive";
-import { HTMLBindingDirective } from "./binding";
+import { bind } from "./binding";
 
 /**
  * A template capable of creating views specifically for rendering custom elements.
@@ -182,7 +182,7 @@ export function html<TSource = any, TParent = any, TGrandparent = any>(
         }
 
         if (typeof value === "function") {
-            value = new HTMLBindingDirective(value as Binding);
+            value = bind(value as Binding);
         }
 
         if (value instanceof TargetedHTMLDirective) {
