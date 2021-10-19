@@ -13,65 +13,46 @@ type InlineDirective = HTMLDirective & {
 const targetIdFrom = (parentId: string, nodeIndex: number) => `${parentId}.${nodeIndex}`;
 const descriptorCache: PropertyDescriptorMap = {};
 
-function addTargetDescriptor(
-    descriptors: PropertyDescriptorMap,
-    parentId: string,
-    targetId: string,
-    targetIndex: number
-) {
-    if (
-        targetId === "r" || // root
-        targetId === "h" || // host
-        descriptors[targetId]
-    ) {
-        return;
-    }
-
-    if (!descriptors[parentId]) {
-        const index = parentId.lastIndexOf(".");
-        const grandparentId = parentId.substr(0, index);
-        const childIndex = parseInt(parentId.substr(index + 1));
-        addTargetDescriptor(descriptors, grandparentId, parentId, childIndex);
-    }
-
-    descriptors[targetId] = createTargetDescriptor(parentId, targetId, targetIndex);
-}
-
-function createTargetDescriptor(
-    parentId: string,
-    targetId: string,
-    targetIndex: number
-): PropertyDescriptor {
-    let descriptor = descriptorCache[targetId];
-
-    if (!descriptor) {
-        const field = `_${targetId}`;
-
-        descriptorCache[targetId] = descriptor = {
-            get() {
-                return (
-                    this[field] ?? (this[field] = this[parentId].childNodes[targetIndex])
-                );
-            },
-        };
-    }
-
-    return descriptor;
-}
-
-let sharedContext: CompilationContext | null = null;
-
 // used to prevent creating lots of objects just to track node and index while compiling
 const next = {
     index: 0,
     node: null as ChildNode | null,
 };
 
-class CompilationContext {
-    public factories: ViewBehaviorFactory[] = [];
-    public targetIds = new Set<string>();
-    public descriptors: PropertyDescriptorMap = {};
-    public directives: ReadonlyArray<HTMLDirective>;
+/**
+ * The result of compiling a template and its directives.
+ * @public
+ */
+export interface HTMLTemplateCompilationResult {
+    /**
+     * A cloneable DocumentFragment representing the compiled HTML.
+     */
+    readonly fragment: DocumentFragment;
+
+    /**
+     * The behaviors that should be applied to the template's HTML.
+     */
+    readonly factories: ReadonlyArray<ViewBehaviorFactory>;
+
+    /**
+     * Creates a behavior target lookup object.
+     * @param host - The host element.
+     * @param root - The root element.
+     * @returns A lookup object for behavior targets.
+     */
+    createTargets(root: Node, host?: Node): ViewBehaviorTargets;
+}
+
+class CompilationContext implements HTMLTemplateCompilationResult {
+    private proto: any = null;
+    private targetIds = new Set<string>();
+    private descriptors: PropertyDescriptorMap = {};
+    public readonly factories: ViewBehaviorFactory[] = [];
+
+    constructor(
+        public readonly fragment: DocumentFragment,
+        public readonly directives: ReadonlyArray<HTMLDirective>
+    ) {}
 
     public addFactory(
         factory: ViewBehaviorFactory,
@@ -81,7 +62,7 @@ class CompilationContext {
     ): void {
         if (!this.targetIds.has(targetId)) {
             this.targetIds.add(targetId);
-            addTargetDescriptor(this.descriptors, parentId, targetId, targetIndex);
+            this.addTargetDescriptor(parentId, targetId, targetIndex);
         }
 
         factory.targetId = targetId;
@@ -98,27 +79,57 @@ class CompilationContext {
         this.addFactory(directive, parentId, targetId, targetIndex);
     }
 
-    public close(fragment: DocumentFragment): HTMLTemplateCompilationResult {
-        const result = new HTMLTemplateCompilationResult(
-            fragment,
-            this.factories,
-            this.targetIds,
-            this.descriptors
-        );
-
-        this.factories = [];
-        this.targetIds = new Set<string>();
-        this.descriptors = {};
-        sharedContext = this;
-
-        return result;
+    public freeze(): HTMLTemplateCompilationResult {
+        this.proto = Object.create(null, this.descriptors);
+        return this;
     }
 
-    public static open(directives: ReadonlyArray<HTMLDirective>): CompilationContext {
-        const context = sharedContext ?? new CompilationContext();
-        context.directives = directives;
-        sharedContext = null;
-        return context;
+    public createTargets(root: Node, host?: Node): ViewBehaviorTargets {
+        const targets = Object.create(this.proto);
+        targets.r = root;
+        targets.h = host ?? root;
+
+        for (const id of this.targetIds) {
+            targets[id]; // trigger locator
+        }
+
+        return targets;
+    }
+
+    private addTargetDescriptor(parentId: string, targetId: string, targetIndex: number) {
+        const descriptors = this.descriptors;
+
+        if (
+            targetId === "r" || // root
+            targetId === "h" || // host
+            descriptors[targetId]
+        ) {
+            return;
+        }
+
+        if (!descriptors[parentId]) {
+            const index = parentId.lastIndexOf(".");
+            const grandparentId = parentId.substr(0, index);
+            const childIndex = parseInt(parentId.substr(index + 1));
+            this.addTargetDescriptor(grandparentId, parentId, childIndex);
+        }
+
+        let descriptor = descriptorCache[targetId];
+
+        if (!descriptor) {
+            const field = `_${targetId}`;
+
+            descriptorCache[targetId] = descriptor = {
+                get() {
+                    return (
+                        this[field] ??
+                        (this[field] = this[parentId].childNodes[targetIndex])
+                    );
+                },
+            };
+        }
+
+        descriptors[targetId] = descriptor;
     }
 }
 
@@ -317,49 +328,6 @@ function compileNode(
 }
 
 /**
- * The result of compiling a template and its directives.
- * @public
- */
-export class HTMLTemplateCompilationResult {
-    private proto: any;
-
-    /**
-     *
-     * @param fragment - A cloneable DocumentFragment representing the compiled HTML.
-     * @param viewBehaviorFactories - The behaviors that should be applied to the template's HTML.
-     * @param hostBehaviorFactories - The behaviors that should be applied to the host element that
-     * the template is rendered into.
-     * @param targetIds - The structural ids used by the behavior factories.
-     */
-    public constructor(
-        public readonly fragment: DocumentFragment,
-        public readonly factories: ViewBehaviorFactory[],
-        private targetIds: Set<string>,
-        descriptors: PropertyDescriptorMap
-    ) {
-        this.proto = Object.create(null, descriptors);
-    }
-
-    /**
-     * Creates a behavior target lookup object.
-     * @param host - The host element.
-     * @param root - The root element.
-     * @returns A lookup object for behavior targets.
-     */
-    public createTargets(root: Node, host?: Node): ViewBehaviorTargets {
-        const targets = Object.create(this.proto);
-        targets.r = root;
-        targets.h = host ?? root;
-
-        for (const id of this.targetIds) {
-            targets[id]; // trigger locator
-        }
-
-        return targets;
-    }
-}
-
-/**
  * Compiles a template and associated directives into a raw compilation
  * result which include a cloneable DocumentFragment and factories capable
  * of attaching runtime behavior to nodes within the fragment.
@@ -377,7 +345,7 @@ export function compileTemplate(
 ): HTMLTemplateCompilationResult {
     // https://bugs.chromium.org/p/chromium/issues/detail?id=1111864
     const fragment = document.adoptNode(template.content);
-    const context = CompilationContext.open(directives);
+    const context = new CompilationContext(fragment, directives);
     compileAttributes(context, "", template, /* host */ "h", 0, true);
 
     if (
@@ -396,5 +364,5 @@ export function compileTemplate(
 
     compileChildren(context, fragment, /* root */ "r");
     next.node = null; // prevent leaks
-    return context.close(fragment);
+    return context.freeze();
 }
