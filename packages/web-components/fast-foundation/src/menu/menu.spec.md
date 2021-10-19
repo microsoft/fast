@@ -63,9 +63,6 @@ The third item in the menu has a glyph, which would inset the text from the othe
 *Attributes:*
 - extends HTML Element attributes
 
-*Slots:*
-- default slot for items
-
 *Events*
 - none
 
