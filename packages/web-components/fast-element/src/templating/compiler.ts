@@ -1,8 +1,9 @@
 import type { ViewBehaviorTargets } from "./html-directive";
 import { _interpolationEnd, _interpolationStart, DOM } from "../dom";
 import type { Binding, ExecutionContext } from "../observation/observable";
-import { HTMLBindingDirective } from "./binding";
+import { bind, HTMLBindingDirective } from "./binding";
 import type { HTMLDirective, ViewBehaviorFactory } from "./html-directive";
+import { oneTime } from "..";
 
 type InlineDirective = HTMLDirective & {
     targetName?: string;
@@ -161,7 +162,7 @@ function createAggregateBinding(
         return output;
     };
 
-    const directive = new HTMLBindingDirective(binding);
+    const directive = bind(binding) as HTMLBindingDirective;
     directive.targetName = targetName;
     return directive;
 }
@@ -219,7 +220,7 @@ function compileAttributes(
 
         if (parseResult === null) {
             if (includeBasicValues) {
-                result = new HTMLBindingDirective(() => attrValue);
+                result = bind(() => attrValue, oneTime) as HTMLBindingDirective;
                 result.targetName = attr.name;
             }
         } else {
