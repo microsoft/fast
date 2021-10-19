@@ -21,6 +21,7 @@ export const comboboxTemplate: (
         class="${x => (x.disabled ? "disabled" : "")} ${x => x.position}"
         tabindex="${x => (!x.disabled ? "0" : null)}"
         aria-disabled="${x => x.ariaDisabled}"
+        aria-expanded="${x => x.ariaExpanded}"
         aria-autocomplete="${x => x.autocomplete}"
         @click="${(x, c) => x.clickHandler(c.event as MouseEvent)}"
         @focusout="${(x, c) => x.focusoutHandler(c.event as FocusEvent)}"

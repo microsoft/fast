@@ -26,7 +26,7 @@ export const selectTemplate: FoundationElementTemplate<
         role="${x => x.role}"
         tabindex="${x => (!x.disabled ? "0" : null)}"
         aria-disabled="${x => x.ariaDisabled}"
-        aria-expanded="${x => x.ariaExpanded}"
+        aria-expanded="${x => (x.collapsible ? x.ariaExpanded : null)}"
         @click="${(x, c) => x.clickHandler(c.event as MouseEvent)}"
         @focusin="${(x, c) => x.focusinHandler(c.event as FocusEvent)}"
         @focusout="${(x, c) => x.focusoutHandler(c.event as FocusEvent)}"
