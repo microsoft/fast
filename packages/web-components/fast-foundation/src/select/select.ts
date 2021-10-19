@@ -1,6 +1,5 @@
 import {
     attr,
-    nullableNumberConverter,
     Observable,
     observable,
     SyntheticViewTemplate,
@@ -153,28 +152,18 @@ export class Select extends FormAssociatedSelect {
      */
     public role: SelectRole = SelectRole.combobox;
 
+    /**
+     * The ref to the internal `.selected-value` element.
+     */
     @observable
     public selectedValue: HTMLElement;
+    protected sizeChanged(prev: unknown, next: number) {
+        super.sizeChanged(prev, next ?? 0);
+        if (this.proxy) {
+            this.proxy.size = next;
+        }
 
-    /**
-     * The number of options to display. Any value above zero will force the component to display as a listbox.
-     *
-     * @remarks
-     * HTML Attribute: size
-     *
-     * @public
-     */
-    @attr({
-        attribute: "size",
-        converter: nullableNumberConverter,
-        mode: "fromView",
-    })
-    public sizeAttribute: number;
-
-    @observable
-    public size: number;
-    public sizeChanged(prev: unknown, next: number) {
-        this.proxy.size = this.size;
+        this.updateDimensions();
     }
 
     public get collapsible(): boolean {
@@ -299,6 +288,10 @@ export class Select extends FormAssociatedSelect {
      * @internal
      */
     public focusoutHandler(e: FocusEvent): boolean | void {
+        if (this.multiple) {
+            this.uncheckAllOptions(true);
+        }
+
         if (!this.open) {
             return true;
         }
@@ -396,16 +389,14 @@ export class Select extends FormAssociatedSelect {
     public multipleChanged(prev: unknown, next: boolean): void {
         super.multipleChanged(prev, next);
         this.proxy.multiple = this.multiple;
-
-        this.setDefaultSize();
-        this.setDimensions();
+        this.updateDimensions();
     }
 
     /**
      * @override
      * @internal
      */
-    public setDefaultSize(): void {
+    public updateDefaultSize(): void {
         this.size = this.sizeAttribute ?? (this.collapsible ? 0 : 4);
     }
 
@@ -487,42 +478,44 @@ export class Select extends FormAssociatedSelect {
         }
     }
 
-    private setDimensions() {
+    /**
+     * @override
+     * @internal
+     */
+    protected updateDimensions() {
         requestAnimationFrame(() => {
             let maxOptionsWidth = 0;
             let firstOptionHeight = 0;
 
             if (this.collapsible) {
                 this.listbox.style.setProperty("visibility", "hidden");
+                this.listbox.style.setProperty("overflow", "visible");
+                this.listbox.style.setProperty("display", "flex");
                 this.listbox.style.setProperty("width", "auto");
                 this.listbox.hidden = false;
             }
 
-            this.options.forEach((o, i) => {
-                const oWidth = o.offsetWidth;
-                if (i === 0) {
-                    firstOptionHeight = o.offsetHeight;
-                }
-                maxOptionsWidth = Math.max(oWidth, maxOptionsWidth);
-            });
-
-            firstOptionHeight *= this.size;
-            if (firstOptionHeight !== 0) {
-                this.listbox.style.setProperty("max-height", `${firstOptionHeight}px`);
-            }
+            maxOptionsWidth = this.listbox.scrollWidth;
+            firstOptionHeight = this.options[0]?.offsetHeight;
 
             if (this.collapsible) {
                 this.listbox.hidden = true;
                 this.listbox.style.removeProperty("display");
+                this.listbox.style.removeProperty("overflow");
                 this.listbox.style.removeProperty("visibility");
                 this.listbox.style.removeProperty("width");
             }
 
-            if (!this.multiple) {
-                this.selectedValue?.style.setProperty(
-                    "min-width",
-                    `${maxOptionsWidth}px`
-                );
+            firstOptionHeight *= this.size;
+
+            this.listbox.style.removeProperty("--max-height");
+
+            if (!isNaN(firstOptionHeight) && firstOptionHeight > 0) {
+                this.listbox.style.setProperty("--max-height", `${firstOptionHeight}px`);
+            }
+
+            if (this.collapsible) {
+                this.control.style.setProperty("--option-width", `${maxOptionsWidth}px`);
             }
         });
     }
@@ -539,9 +532,7 @@ export class Select extends FormAssociatedSelect {
         super.slottedOptionsChanged(prev, next);
         this.setProxyOptions();
         this.updateValue();
-
-        this.setDefaultSize();
-        this.setDimensions();
+        this.updateDimensions();
     }
 
     /**

@@ -1,4 +1,4 @@
-import { attr, DOM, nullableNumberConverter, observable } from "@microsoft/fast-element";
+import { attr, nullableNumberConverter, observable } from "@microsoft/fast-element";
 import {
     keyArrowDown,
     keyArrowUp,
@@ -90,21 +90,67 @@ export class ListboxElement extends Listbox {
      * @internal
      */
     public multipleChanged(prev: unknown, next: boolean): void {
-        if (this.$fastController.isConnected) {
-            this.options.forEach(o => {
-                o.checked = next ? false : undefined;
-            });
+        this.options?.forEach(o => {
+            o.checked = next ? false : undefined;
+        });
 
-            this.ariaMultiselectable = next ? "true" : undefined;
+        this.ariaMultiselectable = next ? "true" : undefined;
 
-            this.setSelectedOptions();
+        this.setSelectedOptions();
+        this.updateDefaultSize();
+    }
+
+    /**
+     * The start index when checking a range of options.
+     *
+     * @internal
+     */
+    private rangeStartIndex: number = -1;
+
+    /**
+     * The attribute to set the size property.
+     *
+     * @remarks
+     * HTML Attribute: `size`.
+     *
+     * The value of the `size` attribute is reflected by the `size` property.
+     *
+     * @public
+     */
+    @attr({
+        attribute: "size",
+        converter: nullableNumberConverter,
+        mode: "fromView",
+    })
+    public sizeAttribute: number;
+    public sizeAttributeChanged(prev: unknown, next: number): void {
+        this.size = next;
+    }
+
+    /**
+     * The number of options to display.
+     *
+     * @remarks
+     * Setting `size` property does not change the value via the `size` attribute.
+     *
+     * Any value above zero will force the component to display as a listbox.
+     *
+     * @public
+     */
+    @observable
+    public size: number = 0;
+    protected sizeChanged(prev: unknown, next: number): void {
+        if (next < 0) {
+            this.size = 0;
+            return;
         }
+
+        this.updateDimensions();
     }
 
     /**
      * Toggles the checked state for the currently active option.
      *
-     * @internal
      * @remarks
      * Multiple-selection mode only.
      *
@@ -134,7 +180,7 @@ export class ListboxElement extends Listbox {
             }
 
             this.options.forEach((o, i) => {
-                o.checked = inRange(i, 0, this.rangeStartIndex);
+                o.checked = inRange(i, this.rangeStartIndex + 1);
             });
         } else {
             this.uncheckAllOptions();
@@ -311,15 +357,21 @@ export class ListboxElement extends Listbox {
      * @override
      * @internal
      */
-    public focusinHandler(e: FocusEvent): void {
+    public focusinHandler(e: FocusEvent): boolean | void {
         if (!this.multiple) {
             return super.focusinHandler(e);
         }
 
         if (!this.shouldSkipFocus && e.target === e.currentTarget) {
             this.uncheckAllOptions();
-            this.activeIndex =
-                this.firstSelectedOptionIndex !== -1 ? this.firstSelectedOptionIndex : 0;
+
+            if (this.activeIndex === -1) {
+                this.activeIndex =
+                    this.firstSelectedOptionIndex !== -1
+                        ? this.firstSelectedOptionIndex
+                        : 0;
+            }
+
             this.checkActiveIndex();
             this.setSelectedOptions();
             this.focusAndScrollOptionIntoView();
@@ -411,6 +463,12 @@ export class ListboxElement extends Listbox {
         }
     }
 
+    public mousedownHandler(e: MouseEvent): boolean | void {
+        if (e.offsetX >= 0 && e.offsetX <= this.scrollWidth) {
+            return super.mousedownHandler(e);
+        }
+    }
+
     /**
      * Sets an option as selected and gives it focus.
      *
@@ -475,12 +533,58 @@ export class ListboxElement extends Listbox {
     /**
      * Unchecks all options.
      *
-     * @internal
      * @remarks
      * Multiple-selection mode only.
+     *
+     * @param preserveChecked - reset the rangeStartIndex
+     *
+     * @internal
      */
-    private uncheckAllOptions(): void {
+    protected uncheckAllOptions(preserveChecked: boolean = false): void {
         this.options.forEach(o => (o.checked = false));
-        this.rangeStartIndex = -1;
+        if (!preserveChecked) {
+            this.rangeStartIndex = -1;
+        }
+    }
+
+    /**
+     * Sets the the size property to either the size attribute or 0.
+     *
+     * @internal
+     */
+    protected updateDefaultSize(): void {
+        this.size = this.sizeAttribute ?? 0;
+    }
+
+    /**
+     * Sets the max-height based on the height of the first option and the `size` attribute.
+     *
+     * @internal
+     */
+    protected updateDimensions() {
+        requestAnimationFrame(() => {
+            const originalOverflow = this.style.getPropertyValue("overflow");
+            const originalWidth = this.style.getPropertyValue("width");
+            this.style.setProperty("overflow", "auto");
+            this.style.setProperty("width", "auto");
+
+            const firstOptionHeight = this.options?.[0]?.offsetHeight * this.size;
+
+            if (originalOverflow) {
+                this.style.setProperty("overflow", originalOverflow);
+            } else {
+                this.style.removeProperty("overflow");
+            }
+
+            if (originalWidth) {
+                this.style.setProperty("width", originalWidth);
+            } else {
+                this.style.removeProperty("width");
+            }
+
+            if (!isNaN(firstOptionHeight) && firstOptionHeight > 0) {
+                this.style.setProperty("--max-height", `${firstOptionHeight}px`);
+            }
+        });
     }
 }
