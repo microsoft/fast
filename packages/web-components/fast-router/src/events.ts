@@ -4,6 +4,7 @@ import { NavigationPhase } from "./phases";
 import { RecognizedRoute } from "./recognizer";
 import { Router } from "./router";
 
+/* eslint-disable @typescript-eslint/no-empty-function */
 /**
  * @alpha
  */
@@ -41,3 +42,4 @@ export class DefaultRoutingEventSink implements RoutingEventSink {
         command: NavigationCommand
     ): void {}
 }
+/* eslint-disable @typescript-eslint/no-empty-function */
