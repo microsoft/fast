@@ -27,14 +27,14 @@ export type AxisScalingMode = "anchor" | "fill" | "content";
  *
  * @beta
  */
-export type HorizontalPosition = "start" | "end" | "left" | "right" | "unset";
+export type HorizontalPosition = "start" | "end" | "left" | "right" | "center" | "unset";
 
 /**
  * Defines the vertical positioning options for an anchored region
  *
  * @beta
  */
-export type VerticalPosition = "top" | "bottom" | "unset";
+export type VerticalPosition = "top" | "bottom" | "center" | "unset";
 
 /**
  * Defines if the component updates its position automatically. Calling update() always provokes an update.
@@ -56,7 +56,12 @@ export type AutoUpdateMode = "anchor" | "auto";
  *
  * @beta
  */
-export type AnchoredRegionPositionLabel = "start" | "insetStart" | "insetEnd" | "end";
+export type AnchoredRegionPositionLabel =
+    | "start"
+    | "insetStart"
+    | "insetEnd"
+    | "end"
+    | "center";
 
 /**
  * @internal
@@ -763,7 +768,9 @@ export class AnchoredRegion extends FoundationElement {
                 this.horizontalInset
             );
 
-            if (this.horizontalDefaultPosition !== "unset") {
+            if (this.horizontalDefaultPosition === "center") {
+                desiredHorizontalPosition = "center";
+            } else if (this.horizontalDefaultPosition !== "unset") {
                 let dirCorrectedHorizontalDefaultPosition: string = this
                     .horizontalDefaultPosition;
 
@@ -863,7 +870,9 @@ export class AnchoredRegion extends FoundationElement {
             const verticalOptions: AnchoredRegionPositionLabel[] = this.getPositioningOptions(
                 this.verticalInset
             );
-            if (this.verticalDefaultPosition !== "unset") {
+            if (this.verticalDefaultPosition === "center") {
+                desiredVerticalPosition = "center";
+            } else if (this.verticalDefaultPosition !== "unset") {
                 switch (this.verticalDefaultPosition) {
                     case "top":
                         desiredVerticalPosition = this.verticalInset
@@ -983,11 +992,13 @@ export class AnchoredRegion extends FoundationElement {
         this.classList.toggle("bottom", this.verticalPosition === "end");
         this.classList.toggle("inset-top", this.verticalPosition === "insetStart");
         this.classList.toggle("inset-bottom", this.verticalPosition === "insetEnd");
+        this.classList.toggle("vertical-center", this.verticalPosition === "center");
 
         this.classList.toggle("left", this.horizontalPosition === "start");
         this.classList.toggle("right", this.horizontalPosition === "end");
         this.classList.toggle("inset-left", this.horizontalPosition === "insetStart");
         this.classList.toggle("inset-right", this.horizontalPosition === "insetEnd");
+        this.classList.toggle("horizontal-center", this.horizontalPosition === "center");
     };
 
     /**
@@ -1020,6 +1031,8 @@ export class AnchoredRegion extends FoundationElement {
                 this.regionWidth = "unset";
                 break;
         }
+
+        let sizeDelta: number = 0;
 
         switch (desiredHorizontalPosition) {
             case "start":
@@ -1069,6 +1082,29 @@ export class AnchoredRegion extends FoundationElement {
                         (this.anchorRect.right - this.viewportRect.left);
                 }
                 break;
+
+            case "center":
+                sizeDelta = (this.anchorRect.width - nextRegionWidth) / 2;
+                this.translateX = this.baseHorizontalOffset + sizeDelta;
+                if (this.horizontalViewportLock) {
+                    const regionLeft: number = this.anchorRect.left + sizeDelta;
+                    const regionRight: number = this.anchorRect.right - sizeDelta;
+
+                    if (
+                        regionLeft < this.viewportRect.left &&
+                        !(regionRight > this.viewportRect.right)
+                    ) {
+                        this.translateX =
+                            this.translateX - (regionLeft - this.viewportRect.left);
+                    } else if (
+                        regionRight > this.viewportRect.right &&
+                        !(regionLeft < this.viewportRect.left)
+                    ) {
+                        this.translateX =
+                            this.translateX - (regionRight - this.viewportRect.right);
+                    }
+                }
+                break;
         }
 
         this.horizontalPosition = desiredHorizontalPosition;
@@ -1104,6 +1140,8 @@ export class AnchoredRegion extends FoundationElement {
                 this.regionHeight = "unset";
                 break;
         }
+
+        let sizeDelta: number = 0;
 
         switch (desiredVerticalPosition) {
             case "start":
@@ -1153,6 +1191,28 @@ export class AnchoredRegion extends FoundationElement {
                         (this.anchorRect.bottom - this.viewportRect.top);
                 }
                 break;
+
+            case "center":
+                sizeDelta = (this.anchorRect.height - nextRegionHeight) / 2;
+                this.translateY = this.baseVerticalOffset + sizeDelta;
+                if (this.verticalViewportLock) {
+                    const regionTop: number = this.anchorRect.top + sizeDelta;
+                    const regionBottom: number = this.anchorRect.bottom - sizeDelta;
+
+                    if (
+                        regionTop < this.viewportRect.top &&
+                        !(regionBottom > this.viewportRect.bottom)
+                    ) {
+                        this.translateY =
+                            this.translateY - (regionTop - this.viewportRect.top);
+                    } else if (
+                        regionBottom > this.viewportRect.bottom &&
+                        !(regionTop < this.viewportRect.top)
+                    ) {
+                        this.translateY =
+                            this.translateY - (regionBottom - this.viewportRect.bottom);
+                    }
+                }
         }
 
         this.verticalPosition = desiredVerticalPosition;
@@ -1191,6 +1251,8 @@ export class AnchoredRegion extends FoundationElement {
                 return spaceEnd + anchorSpan;
             case "end":
                 return spaceEnd;
+            case "center":
+                return Math.min(spaceStart, spaceEnd) * 2 + anchorSpan;
         }
     };
 
