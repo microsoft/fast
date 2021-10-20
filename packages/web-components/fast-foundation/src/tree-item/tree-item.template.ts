@@ -26,7 +26,6 @@ export const treeItemTemplate: (
             x.childItems && x.childItemLength() > 0 ? x.expanded : void 0}"
         aria-selected="${x => x.selected}"
         aria-disabled="${x => x.disabled}"
-        @click="${(x, c) => x.handleClick(c.event as MouseEvent)}"
         ${children({
             property: "childItems",
             filter: elements(),

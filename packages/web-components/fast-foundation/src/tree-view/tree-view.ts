@@ -35,7 +35,6 @@ export class TreeView extends FoundationElement {
     private slottedTreeItemsChanged(oldValue, newValue): void {
         if (this.$fastController.isConnected) {
             // filter the tree items until that's done for us in the framework
-            this.resetItems();
             this.treeItems = this.getVisibleNodes();
             this.setItems();
 
@@ -103,6 +102,10 @@ export class TreeView extends FoundationElement {
     }
 
     public handleKeyDown = (e: KeyboardEvent): void | boolean => {
+        if (e.defaultPrevented) {
+            return false;
+        }
+
         if (!this.treeItems) {
             return true;
         }
@@ -152,7 +155,7 @@ export class TreeView extends FoundationElement {
             case keyEnter:
                 // In single-select trees where selection does not follow focus (see note below),
                 // the default action is typically to select the focused node.
-                this.handleSelected(e.target as TreeItem);
+                this.handleClick(e as Event);
                 break;
             default:
                 return true;
@@ -191,23 +194,20 @@ export class TreeView extends FoundationElement {
                 this.treeItems[item].setAttribute("tabindex", "0");
                 this.currentFocused = this.treeItems[item];
             }
-            this.treeItems[item].addEventListener(
-                "selected-change",
-                this.handleItemSelected
-            );
         }
     };
 
-    private resetItems = (): void => {
-        for (let item: number = 0; item < this.treeItems.length; item++) {
-            this.treeItems[item].removeEventListener(
-                "selected-change",
-                this.handleItemSelected
-            );
+    public handleClick(e: Event): boolean {
+        if (
+            e.defaultPrevented ||
+            !(e.target instanceof HTMLElement) ||
+            !isTreeItemElement(e.target as HTMLElement)
+        ) {
+            return true;
         }
-    };
 
-    private handleSelected(item: TreeItem): void {
+        const item: TreeItem = e.target as TreeItem;
+
         if (this.currentSelected !== item) {
             item.setAttribute("tabindex", "0");
             if (this.currentSelected instanceof TreeItem && this.currentFocused) {
@@ -229,14 +229,9 @@ export class TreeView extends FoundationElement {
             }
             this.currentFocused = item;
         }
-    }
 
-    private handleItemSelected = (e: CustomEvent): void => {
-        const newSelection: TreeItem = e.target as TreeItem;
-        if (newSelection !== this.currentSelected) {
-            this.handleSelected(newSelection);
-        }
-    };
+        return false;
+    }
 
     /**
      * check if the item is focusable
