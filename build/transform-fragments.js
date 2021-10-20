@@ -1,6 +1,3 @@
-/* eslint-env node */
-/* eslint-disable @typescript-eslint/explicit-function-return-type, @typescript-eslint/typedef */
-
 /**
  * Reduces extra spaces in HTML tagged templates.
  *

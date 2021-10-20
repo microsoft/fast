@@ -1,6 +1,3 @@
-/* eslint-env node */
-/* eslint-disable @typescript-eslint/no-var-requires */
-
 import path from "path";
 import commonJS from "rollup-plugin-commonjs";
 import resolve from "rollup-plugin-node-resolve";

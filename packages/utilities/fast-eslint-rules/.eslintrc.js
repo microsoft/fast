@@ -11,7 +11,10 @@ module.exports = {
         "no-unused-vars": "off",
         "no-extra-boolean-cast": "off",
         "no-empty-function": "off",
-        "@typescript-eslint/no-empty-function": "error",
+        "@typescript-eslint/no-empty-function": [
+            "error",
+            { allow: ["asyncMethods", "methods"] },
+        ],
         "@typescript-eslint/no-use-before-define": "off",
         "@typescript-eslint/typedef": "off",
         "@typescript-eslint/explicit-function-return-type": "off",
@@ -66,4 +69,17 @@ module.exports = {
         "@typescript-eslint/no-unused-vars": ["warn", { args: "none" }],
         "@typescript-eslint/no-explicit-any": "off",
     },
+    overrides: [
+        {
+            files: ["**/*.js"],
+            extends: ["eslint:recommended"],
+            env: {
+                node: true,
+                "shared-node-browser": true,
+            },
+            rules: {
+                "@typescript-eslint/no-var-requires": "off",
+            },
+        },
+    ],
 };

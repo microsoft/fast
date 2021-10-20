@@ -79,7 +79,6 @@ interface ResolverLike<C, K = any> {
  * custom logic for resolution.
  * @public
  */
-/* eslint-disable-next-line */
 export interface Resolver<K = any> extends ResolverLike<Container, K> {}
 
 /**
@@ -1654,7 +1653,7 @@ export class ContainerImpl implements Container {
             return (key as unknown) as Resolver;
         }
 
-        /* eslint-disable-next-line */
+        /* eslint-disable-next-line @typescript-eslint/no-this-alias */
         let current: ContainerImpl = this;
         let resolver: Resolver | undefined;
 
@@ -1695,7 +1694,7 @@ export class ContainerImpl implements Container {
             return (key as Resolver).resolve(this, this);
         }
 
-        /* eslint-disable-next-line */
+        /* eslint-disable-next-line @typescript-eslint/no-this-alias */
         let current: ContainerImpl = this;
         let resolver: Resolver | undefined;
 
@@ -1728,7 +1727,7 @@ export class ContainerImpl implements Container {
     ): readonly Resolved<K>[] {
         validateKey(key);
 
-        /* eslint-disable-next-line */
+        /* eslint-disable-next-line @typescript-eslint/no-this-alias */
         const requestor = this;
         let current: ContainerImpl | null = requestor;
         let resolver: Resolver | undefined;
@@ -1741,7 +1740,7 @@ export class ContainerImpl implements Container {
 
                 if (resolver != null) {
                     resolutions = resolutions.concat(
-                        buildAllResponse(resolver, current, requestor)
+                        buildAllResponse(resolver, current, requestor!)
                     );
                 }
 
@@ -2026,7 +2025,6 @@ interface DOMParentLocatorEventDetail {
     container: Container | void;
 }
 
-/* eslint-disable-next-line */
 function isObject<T extends object = Object | Function>(value: unknown): value is T {
     return (typeof value === "object" && value !== null) || typeof value === "function";
 }
@@ -2038,14 +2036,12 @@ function isObject<T extends object = Object | Function>(value: unknown): value i
  * @returns `true` is the function is a native function, otherwise `false`
  */
 const isNativeFunction = (function () {
-    // eslint-disable-next-line @typescript-eslint/ban-types
     const lookup: WeakMap<Function, boolean> = new WeakMap();
 
     let isNative = false as boolean | undefined;
     let sourceText = "";
     let i = 0;
 
-    // eslint-disable-next-line @typescript-eslint/ban-types
     return function (fn: Function) {
         isNative = lookup.get(fn);
         if (isNative === void 0) {
