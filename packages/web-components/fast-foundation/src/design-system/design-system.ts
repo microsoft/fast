@@ -1,6 +1,7 @@
 import { Constructable, FASTElementDefinition } from "@microsoft/fast-element";
 import { FoundationElement } from "../foundation-element/foundation-element";
 import { Container, DI, Registration } from "../di/di";
+import { DesignToken } from "../design-token/design-token";
 import { ComponentPresentation } from "./component-presentation";
 import type {
     ContextualElementDefinition,
@@ -9,7 +10,6 @@ import type {
     ElementDefinitionContext,
     ElementDefinitionParams,
 } from "./registration-context";
-import { DesignToken } from "../design-token/design-token";
 
 /**
  * Indicates what to do with an ambiguous (duplicate) element.
