@@ -42,6 +42,7 @@
     "chalk": "^4.1.0",
     "csstype": "^2.5.8",
     "eslint-config-prettier": "6.10.1",
+    "eslint-plugin-react": "^7.19.0",
     "favicons": "^6.1.0",
     "fs-extra": "^9.0.1",
     "jest": "^25.4.0",
