@@ -1,0 +1,7 @@
+{
+  "type": "minor",
+  "comment": "add centered positioning to anchored region",
+  "packageName": "@microsoft/fast-components",
+  "email": "scomea@microsoft.com",
+  "dependentChangeType": "patch"
+}

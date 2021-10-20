@@ -282,12 +282,33 @@
             </div>
         </fast-anchored-region>
 
+        <fast-anchored-region
+            anchor="anchor-pos1"
+            vertical-positioning-mode="locktodefault"
+            vertical-default-position="center"
+            horizontal-positioning-mode="locktodefault"
+            horizontal-default-position="center"
+            auto-update-mode="auto"
+        >
+            <div
+                style="
+                    height: 100px;
+                    width: 100px;
+                    background: lightblue;
+                    padding: 12px;
+                    border: 2px solid white;
+                "
+            >
+                center / center
+            </div>
+        </fast-anchored-region>
+
         <h2>Inset</h2>
         <span>
             Setting "inset on a particular axis changes the anchor point from the outer
             edge, to the inner edge. The anchored region always grows "away" from the edge
             it is anchored to (a "top" oriented region would always grow upwards if it
-            were to get taller).
+            were to get taller). Inset has no effect when position is "center".
         </span>
 
         <div
@@ -551,6 +572,55 @@
                         "
                     >
                         Vertical inset
+                    </div>
+                </fast-anchored-region>
+                <fast-anchored-region
+                    anchor="anchor-vloc1"
+                    viewport="viewport-vloc1"
+                    vertical-positioning-mode="locktodefault"
+                    vertical-default-position="center"
+                    horizontal-positioning-mode="locktodefault"
+                    horizontal-default-position="center"
+                    auto-update-mode="auto"
+                    vertical-viewport-lock="true"
+                    horizontal-viewport-lock="true"
+                >
+                    <div
+                        style="
+                            opacity: 0.8;
+                            height: 150px;
+                            width: 150px;
+                            background: lightblue;
+                            padding: 12px;
+                            border: 2px solid white;
+                        "
+                    >
+                        Centered big
+                    </div>
+                </fast-anchored-region>
+
+                <fast-anchored-region
+                    anchor="anchor-vloc1"
+                    viewport="viewport-vloc1"
+                    vertical-positioning-mode="locktodefault"
+                    vertical-default-position="center"
+                    horizontal-positioning-mode="locktodefault"
+                    horizontal-default-position="center"
+                    auto-update-mode="auto"
+                    vertical-viewport-lock="true"
+                    horizontal-viewport-lock="true"
+                >
+                    <div
+                        style="
+                            opacity: 0.8;
+                            height: 50px;
+                            width: 50px;
+                            background: lightblue;
+                            padding: 12px;
+                            border: 2px solid white;
+                        "
+                    >
+                        Centered small
                     </div>
                 </fast-anchored-region>
             </div>

@@ -38,7 +38,8 @@
         "end",
         "left",
         "right",
-        "unset"
+        "unset",
+        "center"
       ],
       "default": "unset",
       "title": "Horizontal default position",
@@ -92,7 +93,8 @@
       "enum": [
         "top",
         "bottom",
-        "unset"
+        "unset",
+        "center"
       ],
       "default": "unset",
       "title": "Vertical default position",
