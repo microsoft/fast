@@ -1,8 +1,6 @@
 import {
     attr,
-    FASTElement,
     nullableNumberConverter,
-    observable,
     SyntheticViewTemplate,
 } from "@microsoft/fast-element";
 import { keyEnter } from "@microsoft/fast-web-utilities";

@@ -835,7 +835,7 @@ class DesignTokenNode implements Behavior, Subscriber {
         return false;
     }
 }
-
+/* eslint-disable @typescript-eslint/no-unused-vars */
 function create<T extends Function>(
     nameOrConfig: string | DesignTokenConfiguration
 ): never;
@@ -854,7 +854,7 @@ function create<T>(
 function create<T>(nameOrConfig: string | DesignTokenConfiguration): any {
     return DesignTokenImpl.from(nameOrConfig);
 }
-
+/* eslint-enable @typescript-eslint/no-unused-vars */
 /**
  * Factory object for creating {@link (DesignToken:interface)} instances.
  * @public

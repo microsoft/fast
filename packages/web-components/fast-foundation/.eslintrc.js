@@ -10,5 +10,16 @@ module.exports = {
                 leadingUnderscore: "allow",
             },
         ],
+        "@typescript-eslint/ban-types": [
+            "error",
+            {
+                types: {
+                    "{}": false,
+                    Function: false,
+                    Object: false,
+                },
+                extendDefaults: true,
+            },
+        ],
     },
 };

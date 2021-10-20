@@ -8,6 +8,7 @@ module.exports = {
         "plugin:@typescript-eslint/recommended",
     ],
     rules: {
+        "no-unused-vars": "off",
         "no-extra-boolean-cast": "off",
         "no-empty-function": "off",
         "@typescript-eslint/no-empty-function": "error",

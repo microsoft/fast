@@ -57,6 +57,7 @@ export type ResolveCallback<T = any> = (
  * resolving the associated, registered dependency.
  * @public
  */
+/* eslint-disable-next-line @typescript-eslint/no-unused-vars */
 export type InterfaceSymbol<K = any> = (
     target: any,
     property: string,
@@ -1043,6 +1044,7 @@ function transientDecorator<T extends Constructable>(
  *
  * @public
  */
+/* eslint-disable-next-line @typescript-eslint/no-unused-vars */
 export function transient<T extends Constructable>(): typeof transientDecorator;
 
 /**
@@ -1090,11 +1092,13 @@ function singletonDecorator<T extends Constructable>(
  *
  * @public
  */
+/* eslint-disable-next-line @typescript-eslint/no-unused-vars */
 export function singleton<T extends Constructable>(): typeof singletonDecorator;
 
 /**
  * @public
  */
+/* eslint-disable-next-line @typescript-eslint/no-unused-vars */
 export function singleton<T extends Constructable>(
     options?: SingletonOptions
 ): typeof singletonDecorator;
