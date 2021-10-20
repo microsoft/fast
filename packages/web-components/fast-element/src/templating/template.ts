@@ -35,6 +35,7 @@ export interface ElementViewTemplate {
  * A template capable of rendering views not specifically connected to custom elements.
  * @public
  */
+/* eslint-disable-next-line @typescript-eslint/no-unused-vars */
 export interface SyntheticViewTemplate<TSource = any, TParent = any> {
     /**
      * Creates a SyntheticView instance based on this template definition.
@@ -46,6 +47,7 @@ export interface SyntheticViewTemplate<TSource = any, TParent = any> {
  * A template capable of creating HTMLView instances or rendering directly to DOM.
  * @public
  */
+/* eslint-disable-next-line @typescript-eslint/no-unused-vars */
 export class ViewTemplate<TSource = any, TParent = any>
     implements ElementViewTemplate, SyntheticViewTemplate {
     private behaviorCount: number = 0;
@@ -187,7 +189,7 @@ const lastAttributeNameRegex =
  * into templates.
  * @public
  */
-/* eslint-disable-next-line @typescript-eslint/no-empty-interface */
+/* eslint-disable-next-line */
 export interface CaptureType<TSource> {}
 
 /**

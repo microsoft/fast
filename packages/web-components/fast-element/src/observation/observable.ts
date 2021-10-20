@@ -376,6 +376,7 @@ interface SubscriptionRecord extends ObservationRecord {
  * Enables evaluation of and subscription to a binding.
  * @public
  */
+/* eslint-disable-next-line @typescript-eslint/no-unused-vars */
 export interface BindingObserver<TSource = any, TReturn = any, TParent = any>
     extends Notifier {
     /**
