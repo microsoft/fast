@@ -4,17 +4,15 @@ module.exports = {
     plugins: ["@typescript-eslint", "import"],
     extends: [
         "eslint:recommended",
-        "plugin:react/recommended",
         "plugin:@typescript-eslint/eslint-recommended",
         "plugin:@typescript-eslint/recommended",
     ],
-    settings: {
-        react: {
-            version: "latest",
-        },
-    },
     rules: {
-        "@typescript-eslint/interface-name-prefix": ["error", { prefixWithI: "never" }],
+        "no-extra-boolean-cast": "off",
+        "@typescript-eslint/no-use-before-define": "off",
+        "@typescript-eslint/typedef": "off",
+        "@typescript-eslint/explicit-function-return-type": "off",
+        "@typescript-eslint/no-non-null-assertion": "off",
         "max-len": ["error", 140],
         "import/order": "error",
         "sort-imports": [
@@ -25,16 +23,12 @@ module.exports = {
             },
         ],
         "comma-dangle": "off",
-        "@typescript-eslint/typedef": [
+        "@typescript-eslint/no-empty-interface": [
             "error",
             {
-                parameter: true,
-                propertyDeclaration: true,
-                memberVariableDeclaration: true,
-                variableDeclarationIgnoreFunction: true,
+                allowSingleExtends: true,
             },
         ],
-        "@typescript-eslint/explicit-function-return-type": "error",
         "@typescript-eslint/camelcase": "off",
         "@typescript-eslint/naming-convention": [
             "error",
@@ -53,13 +47,20 @@ module.exports = {
                 format: null, // disable for variable names because of our foo__expanded convention for JSS
                 // TODO: I think we can come up with a regex that ignores variables with __ in them
             },
+            {
+                selector: "interface",
+                format: ["PascalCase"],
+                custom: {
+                    regex: "^I[A-Z]",
+                    match: false,
+                },
+            },
         ],
         "@typescript-eslint/no-inferrable-types": "off",
         "no-prototype-builtins": "off",
         "no-fallthrough": "off",
         "no-unexpected-multiline": "off",
         "@typescript-eslint/no-unused-vars": ["warn", { args: "none" }],
-        "react/no-children-prop": "off",
         "@typescript-eslint/no-explicit-any": "off",
     },
 };
