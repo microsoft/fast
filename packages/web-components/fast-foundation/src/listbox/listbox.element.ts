@@ -463,6 +463,13 @@ export class ListboxElement extends Listbox {
         }
     }
 
+    /**
+     * Prevents `focusin` events from firing before `click` events when the
+     * element is unfocused.
+     *
+     * @override
+     * @internal
+     */
     public mousedownHandler(e: MouseEvent): boolean | void {
         if (e.offsetX >= 0 && e.offsetX <= this.scrollWidth) {
             return super.mousedownHandler(e);
@@ -472,8 +479,8 @@ export class ListboxElement extends Listbox {
     /**
      * Sets an option as selected and gives it focus.
      *
-     * @public
      * @override
+     * @public
      */
     protected setSelectedOptions() {
         if (!this.multiple) {

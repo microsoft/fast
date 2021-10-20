@@ -31,7 +31,9 @@ export type SelectOptions = FoundationElementDefinition &
 
 /**
  * A Select Custom HTML Element.
- * Implements the {@link https://www.w3.org/TR/wai-aria-1.1/#select | ARIA select }.
+ *
+ * @remarks
+ * Implements the {@link https://www.w3.org/TR/wai-aria-practices-1.2/#combobox | ARIA combobox} role.
  *
  * @public
  */
@@ -166,6 +168,11 @@ export class Select extends FormAssociatedSelect {
         this.updateDimensions();
     }
 
+    /**
+     * The component is collapsible when in single-selection mode with no size attribute.
+     *
+     * @internal
+     */
     public get collapsible(): boolean {
         return !this.multiple && typeof this.sizeAttribute !== "number";
     }
@@ -312,6 +319,14 @@ export class Select extends FormAssociatedSelect {
         }
     }
 
+    /**
+     * Handles parent-level observations which occur on child options.
+     *
+     * @param source - the source object
+     * @param propertyName - the observed property
+     *
+     * @internal
+     */
     public handleChange(source: any, propertyName: string) {
         switch (propertyName) {
             case "disabled": {
@@ -386,6 +401,15 @@ export class Select extends FormAssociatedSelect {
         return !(key in ArrowKeys);
     }
 
+    /**
+     * Sets the multiple attribute on the proxy element to match the current value.
+     *
+     * @param prev - the previous value
+     * @param next - the current value
+     *
+     * @override
+     * @internal
+     */
     public multipleChanged(prev: unknown, next: boolean): void {
         super.multipleChanged(prev, next);
         this.proxy.multiple = this.multiple;
@@ -393,6 +417,8 @@ export class Select extends FormAssociatedSelect {
     }
 
     /**
+     * Sets the default size based on the size attribute and the collapsible state.
+     *
      * @override
      * @internal
      */

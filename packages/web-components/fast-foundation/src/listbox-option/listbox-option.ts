@@ -15,7 +15,7 @@ import { applyMixins } from "../utilities/apply-mixins";
 export type ListboxOptionOptions = FoundationElementDefinition & StartEndOptions;
 
 /**
- * Determines if the element is a {@link (ListboxOption:class)}
+ * Determines if the element is a {@link (ListboxOption:class)}.
  *
  * @param element - the element to test.
  * @public
@@ -30,7 +30,9 @@ export function isListboxOption(el: Element): el is ListboxOption {
 
 /**
  * An Option Custom HTML Element.
- * Implements {@link https://www.w3.org/TR/wai-aria-1.1/#option | ARIA option }.
+ *
+ * @remarks
+ * Implements {@link https://www.w3.org/TR/wai-aria-1.2/#option | ARIA option }.
  *
  * @public
  */

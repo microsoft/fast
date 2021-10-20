@@ -21,12 +21,13 @@ import { ListboxRole } from "./listbox.options";
  *
  * @remarks
  *
- * This abstract class is the basis for the {@link ListboxElement}, {@link Select}, and
- * {@link Combobox} classes. These components all have a similar interaction model, but
- * differ in how they express ARIA-driven accessibility features. For instance,
- * {@link ListboxElement} and {@link Select} support `size` and `multiple`, while
- * {@link Combobox} does not. Similarly, {@link Select} and {@link Combobox} are both
- * {@link FormAssociated|form-associated}, but {@link ListboxElement} is not.
+ * This abstract class is the basis for the {@link (ListboxElement:class)},
+ * {@link (Select:class)}, and {@link (Combobox:class)} classes. These components all have
+ * a similar interaction model, but differ in how they express ARIA-driven accessibility
+ * features. For instance, {@link (ListboxElement:class)} and {@link (Select:class)}
+ * support `size` and `multiple`, while {@link (Combobox:class)} does not. Similarly,
+ * {@link (Select:class)} and {@link (Combobox:class)} are both
+ * {@link (FormAssociated:function)|form-associated}, but {@link (ListboxElement:class)} is not.
  *
  * @public
  */
