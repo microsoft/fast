@@ -21,6 +21,9 @@
   },
   "main": ".eslintrc.js",
   "homepage": "https://github.com/Microsoft/fast-eslint-rules#readme",
+  "beachball": {
+    "disallowedChangeTypes": []
+  },
   "dependencies": {
     "@typescript-eslint/eslint-plugin": "^5.0.0",
     "@typescript-eslint/parser": "^5.0.0",
