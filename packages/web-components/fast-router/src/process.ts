@@ -50,7 +50,7 @@ class NavigationPhaseImpl<TSettings = any> implements NavigationCommitPhase<TSet
     }
 
     setTitle(title: string) {
-        let level = this.router.level;
+        const level = this.router.level;
 
         while (this.titles.length < level + 1) {
             this.titles.push([]);

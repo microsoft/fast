@@ -9,6 +9,8 @@ module.exports = {
     ],
     rules: {
         "no-extra-boolean-cast": "off",
+        "no-empty-function": "off",
+        "@typescript-eslint/no-empty-function": "error",
         "@typescript-eslint/no-use-before-define": "off",
         "@typescript-eslint/typedef": "off",
         "@typescript-eslint/explicit-function-return-type": "off",
