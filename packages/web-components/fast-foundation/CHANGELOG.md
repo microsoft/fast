@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Fri, 15 Oct 2021 23:24:14 GMT and should not be manually modified.
+This log was last generated on Wed, 20 Oct 2021 07:13:46 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.22.0
+
+Wed, 20 Oct 2021 07:13:46 GMT
+
+### Minor changes
+
+- add centered positioning option to anchored region (scomea@microsoft.com)
 
 ## 2.21.0
 
