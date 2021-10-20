@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-color-explorer",
   "entries": [
     {
+      "date": "Wed, 20 Oct 2021 07:13:46 GMT",
+      "tag": "@microsoft/fast-color-explorer_v1.6.19",
+      "version": "1.6.19",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-components to v2.14.0",
+            "author": "scomea@microsoft.com",
+            "commit": "a495df7f2f95ccbd2c6b98c66465d3646ab4d015",
+            "package": "@microsoft/fast-color-explorer"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 15 Oct 2021 23:24:14 GMT",
       "tag": "@microsoft/fast-color-explorer_v1.6.19",
       "version": "1.6.19",
