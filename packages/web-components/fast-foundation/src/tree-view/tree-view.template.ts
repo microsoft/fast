@@ -17,6 +17,7 @@ export const treeViewTemplate: FoundationElementTemplate<ViewTemplate<TreeView>>
         @keydown="${(x, c) => x.handleKeyDown(c.event as KeyboardEvent)}"
         @focusout="${(x, c) => x.handleBlur(c.event as FocusEvent)}"
         @focusin="${(x, c) => x.handleFocus(c.event as FocusEvent)}"
+        @click="${(x, c) => x.handleClick(c.event as MouseEvent)}"
     >
         <slot ${slotted("slottedTreeItems")}></slot>
     </template>

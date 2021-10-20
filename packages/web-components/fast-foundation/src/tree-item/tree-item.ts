@@ -37,6 +37,11 @@ export class TreeItem extends FoundationElement {
      */
     @attr({ mode: "boolean" })
     public expanded: boolean = false;
+    private expandedChanged(): void {
+        if (this.$fastController.isConnected) {
+            this.$emit("expanded-change", this);
+        }
+    }
 
     /**
      * When true, the control will appear selected by user interaction.
@@ -46,6 +51,11 @@ export class TreeItem extends FoundationElement {
      */
     @attr({ mode: "boolean" })
     public selected: boolean;
+    private selectedChanged(): void {
+        if (this.$fastController.isConnected) {
+            this.$emit("selected-change", this);
+        }
+    }
 
     /**
      * When true, the control will be immutable by user interaction. See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/disabled | disabled HTML attribute} for more information.
@@ -96,23 +106,8 @@ export class TreeItem extends FoundationElement {
     }
 
     public handleExpandCollapseButtonClick = (e: MouseEvent): void => {
-        if (!this.disabled) {
-            e.preventDefault();
-            this.setExpanded(!this.expanded);
-        }
-    };
-
-    public handleClick = (e: MouseEvent): void | boolean => {
-        if (!e.defaultPrevented) {
-            const target = e.composedPath();
-            const clickedTreeItem = target.find(
-                (t: EventTarget) => t instanceof HTMLElement && isTreeItemElement(t)
-            );
-            if ((clickedTreeItem as any) === this) {
-                this.handleSelected();
-            }
-            // do not prevent default as it completely eats the click
-            return true;
+        if (!this.disabled && !e.defaultPrevented) {
+            this.expanded = !this.expanded;
         }
     };
 
@@ -128,21 +123,6 @@ export class TreeItem extends FoundationElement {
     public readonly isNestedItem = (): boolean => {
         return isTreeItemElement(this.parentElement as Element);
     };
-
-    private handleSelected(e?: Event): void {
-        if (e?.defaultPrevented) {
-            return;
-        }
-        e?.preventDefault();
-        if (!this.disabled) {
-            this.$emit("selected-change", e);
-        }
-    }
-
-    private setExpanded(expanded: boolean): void {
-        this.expanded = expanded;
-        this.$emit("expanded-change", this);
-    }
 }
 
 /**
