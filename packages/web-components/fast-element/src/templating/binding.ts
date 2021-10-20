@@ -103,7 +103,7 @@ abstract class ViewUpdateBinding implements ViewBinding {
     }
 
     /** @internal */
-    public handleChange(observer: BindingObserver): void {
+    public handleChange(binding: Binding, observer: BindingObserver): void {
         const target = (observer as any).target;
         const source = (observer as any).source;
         const context = (observer as any).context;
