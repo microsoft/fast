@@ -1,8 +1,49 @@
 # Change Log - @microsoft/fast-components
 
-This log was last generated on Wed, 13 Oct 2021 01:53:37 GMT and should not be manually modified.
+This log was last generated on Thu, 21 Oct 2021 07:11:42 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.14.1
+
+Thu, 21 Oct 2021 07:11:42 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.22.1 (scomea@microsoft.com)
+
+## 2.14.0
+
+Wed, 20 Oct 2021 07:13:46 GMT
+
+### Minor changes
+
+- add centered positioning to anchored region (scomea@microsoft.com)
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.22.0 (scomea@microsoft.com)
+
+## 2.13.1
+
+Fri, 15 Oct 2021 23:24:14 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.21.0 (nicholasrice@users.noreply.github.com)
+
+## 2.13.0
+
+Wed, 13 Oct 2021 22:45:16 GMT
+
+### Minor changes
+
+- Adding fast-calendar component (robarb@microsoft.com)
+
+### Patches
+
+- Bump @microsoft/fast-element to v1.6.1 (markwhitfeld@users.noreply.github.com)
+- Bump @microsoft/fast-foundation to v2.20.0 (robarb@microsoft.com)
 
 ## 2.12.0
 

@@ -60,9 +60,9 @@ export const comboboxTemplate: (
             id="${x => x.listboxId}"
             part="listbox"
             role="listbox"
-            style="--max-height: ${x => x.maxHeight}px"
             ?disabled="${x => x.disabled}"
             ?hidden="${x => !x.open}"
+            ${ref("listbox")}
         >
             <slot
                 ${slotted({

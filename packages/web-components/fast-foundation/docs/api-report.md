@@ -125,7 +125,7 @@ export class AnchoredRegion extends FoundationElement {
     }
 
 // @beta
-export type AnchoredRegionPositionLabel = "start" | "insetStart" | "insetEnd" | "end";
+export type AnchoredRegionPositionLabel = "start" | "insetStart" | "insetEnd" | "end" | "center";
 
 // @beta
 export const anchoredRegionTemplate: (context: ElementDefinitionContext, definition: FoundationElementDefinition) => ViewTemplate<AnchoredRegion>;
@@ -277,6 +277,67 @@ export type ButtonOptions = FoundationElementDefinition & StartEndOptions;
 export const buttonTemplate: (context: ElementDefinitionContext, definition: ButtonOptions) => ViewTemplate<Button>;
 
 // @public
+export class Calendar extends FoundationElement {
+    dateFormatter: DateFormatter;
+    dateInString(date: Date | string, datesString: string): boolean;
+    dayFormat: DayFormat;
+    disabledDates: string;
+    getDayClassNames(date: CalendarDateInfo, todayString?: string): string;
+    getDays(info?: CalendarInfo, minWeeks?: number): CalendarDateInfo[][];
+    getMonthInfo(month?: number, year?: number): CalendarInfo;
+    getWeekdayText(): {
+        text: string;
+        abbr?: string;
+    }[];
+    handleDateSelect(event: Event, day: CalendarDateInfo): void;
+    handleKeydown(event: KeyboardEvent, date: CalendarDateInfo): boolean;
+    locale: string;
+    minWeeks: number;
+    month: number;
+    monthFormat: MonthFormat;
+    readonly: boolean;
+    selectedDates: string;
+    weekdayFormat: WeekdayFormat;
+    year: number;
+    yearFormat: YearFormat;
+    }
+
+// @public
+export const calendarCellTemplate: (context: ElementDefinitionContext, todayString: string) => ViewTemplate<CalendarDateInfo>;
+
+// @public
+export type CalendarDateInfo = {
+    day: number;
+    month: number;
+    year: number;
+    disabled?: boolean;
+    selected?: boolean;
+};
+
+// @public
+export type CalendarInfo = MonthInfo & {
+    previous: MonthInfo;
+    next: MonthInfo;
+};
+
+// @public
+export type CalendarOptions = FoundationElementDefinition & StartEndOptions & {
+    title?: FoundationElementTemplate<SyntheticViewTemplate<any, Calendar>, CalendarOptions> | SyntheticViewTemplate | string;
+};
+
+// @public (undocumented)
+export const calendarRowTemplate: (context: ElementDefinitionContext, todayString: string) => ViewTemplate;
+
+// @public
+export const calendarTemplate: FoundationElementTemplate<ViewTemplate<Calendar>, CalendarOptions>;
+
+// @public
+export const CalendarTitleTemplate: ViewTemplate<Calendar>;
+
+// @public
+export const calendarWeekdayTemplate: (context: any) => ViewTemplate;
+
+// @public
 export class Card extends FoundationElement {
 }
 
@@ -357,6 +418,8 @@ export class Combobox extends FormAssociatedCombobox {
     keydownHandler(e: Event & KeyboardEvent): boolean | void;
     // @internal
     keyupHandler(e: KeyboardEvent): boolean | void;
+    // @internal
+    listbox: HTMLDivElement;
     // @internal
     listboxId: string;
     // @internal
@@ -692,6 +755,41 @@ export type DatePickerOptions = FoundationElementDefinition & {};
 export const datePickerTemplate: (context: ElementDefinitionContext, definition: DatePickerOptions) => ViewTemplate<DatePicker>;
 
 // @public
+export class DateFormatter {
+    constructor(config?: any);
+    date: Date;
+    dayFormat: DayFormat;
+    // (undocumented)
+    getDate(date?: {
+        day: number;
+        month: number;
+        year: number;
+    } | string | Date, format?: Intl.DateTimeFormatOptions, locale?: string): string;
+    getDateObject(date: {
+        day: number;
+        month: number;
+        year: number;
+    } | string | Date): Date;
+    // (undocumented)
+    getDay(day?: number, format?: DayFormat, locale?: string): string;
+    // (undocumented)
+    getMonth(month?: number, format?: MonthFormat, locale?: string): string;
+    // (undocumented)
+    getWeekday(weekday?: number, format?: WeekdayFormat, locale?: string): string;
+    // (undocumented)
+    getWeekdays(format?: WeekdayFormat, locale?: string): string[];
+    // (undocumented)
+    getYear(year?: number, format?: YearFormat, locale?: string): string;
+    locale: string;
+    monthFormat: MonthFormat;
+    weekdayFormat: WeekdayFormat;
+    yearFormat: YearFormat;
+}
+
+// @public
+export type DayFormat = "2-digit" | "numeric";
+
+// @public
 export class DefaultComponentPresentation implements ComponentPresentation {
     constructor(template?: ElementViewTemplate, styles?: ComposableStyles | ComposableStyles[]);
     applyTo(element: FASTElement): void;
@@ -800,6 +898,7 @@ export type DerivedDesignTokenValue<T> = T extends Function ? never : (target: H
 // @public
 export interface DesignSystem {
     register(...params: any[]): DesignSystem;
+    withDesignTokenRoot(root: HTMLElement | Document | null): DesignSystem;
     withElementDisambiguation(callback: ElementDisambiguationCallback): DesignSystem;
     withPrefix(prefix: string): DesignSystem;
     withShadowRootMode(mode: ShadowRootMode): DesignSystem;
@@ -837,6 +936,8 @@ export const DesignToken: Readonly<{
     create: typeof create;
     notifyConnection(element: HTMLElement): boolean;
     notifyDisconnection(element: HTMLElement): boolean;
+    registerRoot(target?: HTMLElement | Document): void;
+    unregisterRoot(target?: HTMLElement | Document): void;
 }>;
 
 // @public
@@ -1168,7 +1269,7 @@ export const getDirection: (rootNode: HTMLElement) => Direction;
 export const hidden = ":host([hidden]){display:none}";
 
 // @beta
-export type HorizontalPosition = "start" | "end" | "left" | "right" | "unset";
+export type HorizontalPosition = "start" | "end" | "left" | "right" | "center" | "unset";
 
 // @public
 export class HorizontalScroll extends FoundationElement {
@@ -1219,6 +1320,11 @@ export const inject: (...dependencies: Key[]) => (target: any, key?: string | nu
 export type Injectable<T = {}> = Constructable<T> & {
     inject?: Key[];
 };
+
+// Warning: (ae-internal-missing-underscore) The name "interactiveCalendarGridTemplate" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal
+export const interactiveCalendarGridTemplate: (context: ElementDefinitionContext, todayString: string) => ViewTemplate;
 
 // @public
 export interface InterfaceConfiguration {
@@ -1466,10 +1572,26 @@ export const menuItemTemplate: (context: ElementDefinitionContext, definition: M
 export const menuTemplate: (context: ElementDefinitionContext, definition: FoundationElementDefinition) => ViewTemplate<Menu>;
 
 // @public
+export type MonthFormat = "2-digit" | "long" | "narrow" | "numeric" | "short";
+
+// @public
+export type MonthInfo = {
+    month: number;
+    year: number;
+    length: number;
+    start: number;
+};
+
+// @public
 export const newInstanceForScope: (key: any) => any;
 
 // @public
 export const newInstanceOf: (key: any) => any;
+
+// Warning: (ae-internal-missing-underscore) The name "noninteractiveCalendarTemplate" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal
+export const noninteractiveCalendarTemplate: (todayString: string) => ViewTemplate;
 
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
 // Warning: (ae-forgotten-export) The symbol "FormAssociatedNumberField" needs to be exported by the entry point index.d.ts
@@ -1890,6 +2012,8 @@ export class Select extends FormAssociatedSelect {
     formResetCallback: () => void;
     // @internal
     keydownHandler(e: KeyboardEvent): boolean | void;
+    // @internal
+    listbox: HTMLDivElement;
     // @internal
     maxHeight: number;
     // @internal
@@ -2488,10 +2612,16 @@ export const treeViewTemplate: (context: ElementDefinitionContext, definition: F
 export function validateKey(key: any): void;
 
 // @beta
-export type VerticalPosition = "top" | "bottom" | "unset";
+export type VerticalPosition = "top" | "bottom" | "center" | "unset";
+
+// @public
+export type WeekdayFormat = "long" | "narrow" | "short";
 
 // @public
 export function whitespaceFilter(value: Node, index: number, array: Node[]): boolean;
+
+// @public
+export type YearFormat = "2-digit" | "numeric";
 
 
 // Warnings were encountered during analysis:

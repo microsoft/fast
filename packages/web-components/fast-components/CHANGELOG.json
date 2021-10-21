@@ -2,6 +2,88 @@
   "name": "@microsoft/fast-components",
   "entries": [
     {
+      "date": "Thu, 21 Oct 2021 07:11:42 GMT",
+      "tag": "@microsoft/fast-components_v2.14.1",
+      "version": "2.14.1",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-foundation to v2.22.1",
+            "author": "scomea@microsoft.com",
+            "commit": "87f26acd2aedde19c15a434932ec5de23f5bc021",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 20 Oct 2021 07:13:46 GMT",
+      "tag": "@microsoft/fast-components_v2.14.0",
+      "version": "2.14.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "add centered positioning to anchored region",
+            "author": "scomea@microsoft.com",
+            "commit": "a495df7f2f95ccbd2c6b98c66465d3646ab4d015",
+            "package": "@microsoft/fast-components"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-foundation to v2.22.0",
+            "author": "scomea@microsoft.com",
+            "commit": "a495df7f2f95ccbd2c6b98c66465d3646ab4d015",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 15 Oct 2021 23:24:14 GMT",
+      "tag": "@microsoft/fast-components_v2.13.1",
+      "version": "2.13.1",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-foundation to v2.21.0",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "5cc73663ee585062b130da6d57400fa15bcd3707",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 13 Oct 2021 22:45:16 GMT",
+      "tag": "@microsoft/fast-components_v2.13.0",
+      "version": "2.13.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "Adding fast-calendar component",
+            "author": "robarb@microsoft.com",
+            "commit": "44576902475e935878357bd6b116c224e4cf6342",
+            "package": "@microsoft/fast-components"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-element to v1.6.1",
+            "author": "markwhitfeld@users.noreply.github.com",
+            "commit": "49d27d20bf430ea4639978ba363e017fc5aa88e4",
+            "package": "@microsoft/fast-components"
+          },
+          {
+            "comment": "Bump @microsoft/fast-foundation to v2.20.0",
+            "author": "robarb@microsoft.com",
+            "commit": "44576902475e935878357bd6b116c224e4cf6342",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 13 Oct 2021 01:53:37 GMT",
       "tag": "@microsoft/fast-components_v2.12.0",
       "version": "2.12.0",

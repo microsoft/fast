@@ -55,6 +55,13 @@ export class Combobox extends FormAssociatedCombobox {
     public control: HTMLInputElement;
 
     /**
+     * Reference to the internal listbox element.
+     *
+     * @internal
+     */
+    public listbox: HTMLDivElement;
+
+    /**
      * The collection of currently filtered options.
      *
      * @public
@@ -115,6 +122,11 @@ export class Combobox extends FormAssociatedCombobox {
      */
     @observable
     public maxHeight: number = 0;
+    private maxHeightChanged(): void {
+        if (this.listbox) {
+            this.listbox.style.setProperty("--max-height", `${this.maxHeight}px`);
+        }
+    }
 
     /**
      * The open attribute.
