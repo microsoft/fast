@@ -36,6 +36,9 @@
     "unit-tests": "jest --runInBand",
     "watch": "yarn build -- -w --preserveWatchOutput"
   },
+  "beachball": {
+    "disallowedChangeTypes": []
+  },
   "jest": {
     "collectCoverage": true,
     "coverageReporters": [
