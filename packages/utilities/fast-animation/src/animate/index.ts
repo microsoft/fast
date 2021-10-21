@@ -1,5 +1,6 @@
 /**
  * Describes the animation properties
+ *
  * @public
  */
 export interface AnimateConfig {
@@ -61,6 +62,7 @@ export interface AnimateConfig {
 
 /**
  * Enumerates all properties that can be animated, outside of properties supplied directly via Animate.addKeyframes()
+ *
  * @public
  */
 export interface AnimationProperties {
@@ -99,7 +101,7 @@ interface PropertyMap {
  *
  * @public
  */
-export default abstract class Animate {
+export abstract class Animate {
     /**
      * A mapping between animation options and the css property names they apply to
      */

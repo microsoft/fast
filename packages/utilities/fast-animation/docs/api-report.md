@@ -19,12 +19,26 @@ export abstract class Animate {
     // (undocumented)
     get onFinish(): () => void;
     set onFinish(callback: () => void);
-    // Warning: (ae-forgotten-export) The symbol "AnimateConfig" needs to be exported by the entry point index.d.ts
     options: AnimateConfig;
     pause: () => void;
     play: () => void;
     reverse: () => void;
     }
+
+// @public
+export interface AnimateConfig {
+    bottom?: number | string;
+    left?: number | string;
+    opacity?: number;
+    right?: number | string;
+    rotate?: number;
+    scale?: number | [number, number];
+    top?: number | string;
+    transformOrigin?: string;
+    transformStyle?: string;
+    x?: number | string;
+    y?: number | string;
+}
 
 // @public
 export class AnimateFrom extends Animate {
@@ -70,20 +84,20 @@ export function fadeIn(element: HTMLElement, effectTiming?: EffectTiming): Anima
 // @public
 export function fadeOut(element: HTMLElement, effectTiming?: EffectTiming): AnimateTo;
 
-// Warning: (ae-forgotten-export) The symbol "ScrollTrigger" needs to be exported by the entry point index.d.ts
+// Warning: (ae-forgotten-export) The symbol "ScrollTriggerBase" needs to be exported by the entry point index.d.ts
 //
 // @public
-export class ScrollTrigger extends ScrollTrigger_2 {
+export class ScrollTrigger extends ScrollTriggerBase {
     protected update(): void;
 }
 
 // @public
-export class ViewEnterTrigger extends ScrollTrigger_2 {
+export class ViewEnterTrigger extends ScrollTriggerBase {
     protected update(): void;
 }
 
 // @public
-export class ViewExitTrigger extends ScrollTrigger_2 {
+export class ViewExitTrigger extends ScrollTriggerBase {
     protected update(): void;
 }
 

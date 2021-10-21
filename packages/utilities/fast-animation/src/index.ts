@@ -1,26 +1,12 @@
-import AnimateTo from "./animateTo";
-import AnimateFrom from "./animateFrom";
-import AnimateGroup from "./animateGroup";
-import AnimateSequence from "./animateSequence";
-import Animate from "./animate";
+export { AnimateTo } from "./animateTo";
+export { AnimateFrom } from "./animateFrom";
+export { AnimateGroup } from "./animateGroup";
+export { AnimateSequence } from "./animateSequence";
+export { Animate, AnimateConfig } from "./animate";
 
-import { fadeIn, fadeOut } from "./fade";
-import { cubicBezier } from "./curves";
+export { fadeIn, fadeOut } from "./fade";
+export { cubicBezier } from "./curves";
 
-import ScrollTrigger from "./triggers/ScrollTrigger";
-import ViewEnterTrigger from "./triggers/ViewEnterTrigger";
-import ViewExitTrigger from "./triggers/ViewExitTrigger";
-
-export {
-    Animate,
-    AnimateFrom,
-    AnimateGroup,
-    AnimateSequence,
-    AnimateTo,
-    cubicBezier,
-    fadeIn,
-    fadeOut,
-    ScrollTrigger,
-    ViewEnterTrigger,
-    ViewExitTrigger,
-};
+export { ScrollTrigger } from "./triggers/ScrollTrigger";
+export { ViewEnterTrigger } from "./triggers/ViewEnterTrigger";
+export { ViewExitTrigger } from "./triggers/ViewExitTrigger";

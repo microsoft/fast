@@ -1,4 +1,4 @@
-import Animate, { AnimationMode } from "../animate";
+import { Animate, AnimationMode } from "../animate";
 
 /**
  * An animation from provided property values to the element's current values.
@@ -6,6 +6,6 @@ import Animate, { AnimationMode } from "../animate";
  *
  * @public
  */
-export default class AnimateFrom extends Animate {
+export class AnimateFrom extends Animate {
     protected mode: AnimationMode = AnimationMode.animateFrom;
 }

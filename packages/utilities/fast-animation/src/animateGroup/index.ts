@@ -1,12 +1,12 @@
-import AnimateTo from "../animateTo";
-import AnimateFrom from "../animateFrom";
+import { AnimateTo } from "../animateTo";
+import { AnimateFrom } from "../animateFrom";
 import { invokeFunctionForEach } from "../utilities/invokeFunctionForEach";
 
 /**
  * Groups {@link @microsoft/fast-animation#AnimateTo} and {@link @microsoft/fast-animation#AnimateFrom} instances, providing a single API to operate on all of them.
  * @public
  */
-class AnimateGroup {
+export class AnimateGroup {
     /**
      * Stores the onFinish callback
      */
@@ -113,5 +113,3 @@ class AnimateGroup {
         return (effectTiming.delay || 0) + (sanitizedDuration || 0);
     }
 }
-
-export default AnimateGroup;

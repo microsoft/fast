@@ -1,13 +1,17 @@
-import isElementInView from "../utilities/isElementInView";
-import scrollY from "../utilities/scrollY";
+import { isElementInView } from "../utilities/isElementInView";
+import { scrollY } from "../utilities/scrollY";
 
 /**
  * AnimationTrigger callback contract
+ *
+ * @public
  */
 export type ScrollTriggerCallback = (distance: any) => void;
 
 /**
  * Export subscription interface
+ *
+ * @public
  */
 export interface ScrollTriggerSubscription {
     element: HTMLElement;
@@ -17,8 +21,10 @@ export interface ScrollTriggerSubscription {
 
 /**
  * Scroll trigger base-class that handles event binding and element/callback registration.
+ *
+ * @internal
  */
-export default abstract class ScrollTrigger {
+export abstract class ScrollTriggerBase {
     protected subscriptions: ScrollTriggerSubscription[] = [];
     protected scrollDistance: number = 0;
     private requestedFrame: number | void;

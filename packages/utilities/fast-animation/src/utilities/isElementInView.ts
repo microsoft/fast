@@ -1,7 +1,9 @@
 /**
  * Checks to see if any part of an element is within the viewport
+ *
+ * @public
  */
-export default function isElementInView(el: HTMLElement): boolean {
+export function isElementInView(el: HTMLElement): boolean {
     const rect: ClientRect = el.getBoundingClientRect();
 
     return (

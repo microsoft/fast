@@ -1,13 +1,15 @@
 import React from "react";
-import ScrollTrigger from "../../../../lib/triggers/ScrollTrigger";
-import ViewEnterTrigger from "../../../../lib/triggers/ViewEnterTrigger";
-import ViewExitTrigger from "../../../../lib/triggers/ViewExitTrigger";
-import { AnimateConfig } from "../../../../lib/animate";
-import AnimateTo from "../../../../lib/animateTo";
-import AnimateFrom from "../../../../lib/animateFrom";
-import { cubicBezier } from "../../../../lib/curves";
-import AnimateGroup from "../../../../lib/animateGroup";
-import AnimateSequence from "../../../../lib/animateSequence";
+import {
+    AnimateConfig,
+    AnimateFrom,
+    AnimateGroup,
+    AnimateSequence,
+    AnimateTo,
+    cubicBezier,
+    ScrollTrigger,
+    ViewEnterTrigger,
+    ViewExitTrigger,
+} from "../../../../src";
 
 /* eslint-disable */
 const sass: string = require("../assets/styles/test-page.css");

@@ -3,14 +3,12 @@
   "compilerOptions": {
     "declarationDir": "dist/dts",
     "outDir": "dist/esm",
-    "emitDecoratorMetadata": true,
     "esModuleInterop": true,
     "experimentalDecorators": true,
     "jsx": "react",
     "target": "es2015",
     "module": "ESNext",
     "moduleResolution": "node",
-    "removeComments": true,
     "sourceMap": true,
     "lib": [ "es2015", "es2017", "dom", "scripthost" ]
   },

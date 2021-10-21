@@ -1,7 +1,9 @@
 /**
  * Gets the document's scrollY
+ *
+ * @public
  */
-export default function scrollY(): number {
+export function scrollY(): number {
     if (typeof window === "undefined") {
         return NaN;
     }

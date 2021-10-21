@@ -1,12 +1,12 @@
-import isElementInView from "../utilities/isElementInView";
-import ScrollBase, { ScrollTriggerSubscription } from "./ScrollBase";
+import { isElementInView } from "../utilities/isElementInView";
+import { ScrollTriggerBase, ScrollTriggerSubscription } from "./ScrollBase";
 
 /**
  * Utility for registering element/callback pairs where the callback will be called when the element enters the view-port
  *
  * @public
  */
-export default class ViewEnterTrigger extends ScrollBase {
+export class ViewEnterTrigger extends ScrollTriggerBase {
     /**
      * Check if elements are in view-port and apply scroll method if they are
      */
