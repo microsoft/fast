@@ -48,17 +48,19 @@ export const listboxStyles: FoundationElementTemplate<ElementStyles> = (
             padding: var(--padding-height) 0;
         }
 
-        :host(:focus-within:not([disabled])) ${hostContext} {
-            border-color: ${focusStrokeOuter};
-            box-shadow: 0 0 0 calc((${focusStrokeWidth} - ${strokeWidth}) * 1px)
-                ${focusStrokeOuter} inset;
-        }
-
-        ::slotted([aria-selected="true"]:not([aria-checked="true"])) {
+        ${!hostContext
+            ? css`
+                  :host(:focus-within:not([disabled])) {
+                      border-color: ${focusStrokeOuter};
+                      box-shadow: 0 0 0 calc((${focusStrokeWidth} - ${strokeWidth}) * 1px)
+                          ${focusStrokeOuter} inset;
+                  }
+              `
+            : ""} ::slotted ([aria-selected="true"]:not([aria-checked="true"])) {
             border-color: ${neutralLayerFloating};
         }
 
-        :host([size]) ${hostContext} {
+        ${hostContext || `:host([size])`} {
             max-height: calc(
                 (var(--size) * ${heightNumber} + ((${designUnit} + ${strokeWidth}) * 2)) *
                     1px

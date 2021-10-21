@@ -80,11 +80,9 @@ export const selectStyles: FoundationElementTemplate<ElementStyles, SelectOption
 
         .listbox {
             ${elevation}
-            display: inline-flex;
-            flex-direction: column;
+            border: none;
+            display: flex;
             left: 0;
-            max-height: calc(var(--max-height) - (${heightNumber} * 1px));
-            overflow-y: auto;
             position: absolute;
             width: 100%;
             z-index: 1;
