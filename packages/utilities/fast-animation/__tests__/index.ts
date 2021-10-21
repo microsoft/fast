@@ -1,4 +1,4 @@
-import Animate, { AnimateConfig } from "../lib/animate";
+import { Animate, AnimateConfig } from "../src/animate";
 class AnimateMock extends Animate {}
 
 describe("Animate initilization", () => {

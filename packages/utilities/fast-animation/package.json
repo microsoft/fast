@@ -29,7 +29,7 @@
     "prepare": "yarn clean:dist && yarn build",
     "prettier": "prettier --config ../../../.prettierrc --write \"**/*.{ts,tsx,html}\"",
     "prettier:diff": "prettier --config ../../../.prettierrc \"**/*.{ts,tsx,html}\" --list-different",
-    "start": "node_modules/.bin/webpack-dev-server --progress",
+    "start": "webpack-dev-server --progress",
     "test": "yarn unit-tests && yarn build:app && yarn doc:ci",
     "eslint": "eslint . --ext .ts,.tsx",
     "eslint:fix": "eslint . --ext .ts,.tsx --fix",
@@ -53,10 +53,10 @@
     ],
     "coverageThreshold": {
       "global": {
-        "statements": 72,
+        "statements": 70,
         "branches": 57,
         "functions": 67,
-        "lines": 72
+        "lines": 70
       }
     },
     "rootDir": "./",
