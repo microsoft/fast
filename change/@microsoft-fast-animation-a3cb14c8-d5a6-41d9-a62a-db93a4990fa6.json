@@ -1,0 +1,7 @@
+{
+  "type": "major",
+  "comment": "update fast animmation to export es modules",
+  "packageName": "@microsoft/fast-animation",
+  "email": "chhol@microsoft.com",
+  "dependentChangeType": "patch"
+}
