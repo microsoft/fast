@@ -60,6 +60,7 @@ export const optionStyles: FoundationElementTemplate<
         color: ${neutralForegroundRest};
         cursor: pointer;
         fill: currentcolor;
+        flex: 0 0 auto;
         font-size: ${typeRampBaseFontSize};
         height: calc(${heightNumber} * 1px);
         line-height: ${typeRampBaseLineHeight};

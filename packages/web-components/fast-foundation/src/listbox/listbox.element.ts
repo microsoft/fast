@@ -1,9 +1,14 @@
-import { attr, nullableNumberConverter, observable } from "@microsoft/fast-element";
+import {
+    attr,
+    css,
+    ElementStyles,
+    nullableNumberConverter,
+    observable,
+} from "@microsoft/fast-element";
 import {
     keyArrowDown,
     keyArrowUp,
     keyEnd,
-    keyEnter,
     keyEscape,
     keyHome,
     keySpace,
@@ -156,7 +161,11 @@ export class ListboxElement extends Listbox {
      *
      * @internal
      */
-    private checkActiveIndex(): void {
+    protected checkActiveIndex(): void {
+        if (!this.multiple) {
+            return;
+        }
+
         const activeItem = this.options[this.activeIndex];
         if (activeItem) {
             activeItem.checked = true;
@@ -440,8 +449,11 @@ export class ListboxElement extends Listbox {
                 return true;
             }
 
-            case keyEnter:
             case keyEscape: {
+                if (this.multiple) {
+                    this.uncheckAllOptions();
+                    this.checkActiveIndex();
+                }
                 return true;
             }
 
@@ -449,8 +461,8 @@ export class ListboxElement extends Listbox {
                 e.preventDefault();
                 if (this.typeAheadExpired) {
                     this.toggleSelectedForAllCheckedOptions();
-                    return;
                 }
+                return;
             }
 
             // Send key to Typeahead handler
@@ -548,7 +560,7 @@ export class ListboxElement extends Listbox {
      * @internal
      */
     protected uncheckAllOptions(preserveChecked: boolean = false): void {
-        this.options.forEach(o => (o.checked = false));
+        this.options.forEach(o => (o.checked = this.multiple ? false : undefined));
         if (!preserveChecked) {
             this.rangeStartIndex = -1;
         }
@@ -563,35 +575,24 @@ export class ListboxElement extends Listbox {
         this.size = this.sizeAttribute ?? 0;
     }
 
+    private sizeStylesheet: ElementStyles | void;
+
     /**
      * Sets the max-height based on the height of the first option and the `size` attribute.
      *
      * @internal
      */
     protected updateDimensions() {
-        requestAnimationFrame(() => {
-            const originalOverflow = this.style.getPropertyValue("overflow");
-            const originalWidth = this.style.getPropertyValue("width");
-            this.style.setProperty("overflow", "auto");
-            this.style.setProperty("width", "auto");
+        if (this.sizeStylesheet) {
+            this.sizeStylesheet = this.$fastController.removeStyles(this.sizeStylesheet);
+        }
 
-            const firstOptionHeight = this.options?.[0]?.offsetHeight * this.size;
-
-            if (originalOverflow) {
-                this.style.setProperty("overflow", originalOverflow);
-            } else {
-                this.style.removeProperty("overflow");
+        this.sizeStylesheet = css`
+            :host {
+                --size: ${"" + this.size};
             }
+        `;
 
-            if (originalWidth) {
-                this.style.setProperty("width", originalWidth);
-            } else {
-                this.style.removeProperty("width");
-            }
-
-            if (!isNaN(firstOptionHeight) && firstOptionHeight > 0) {
-                this.style.setProperty("--max-height", `${firstOptionHeight}px`);
-            }
-        });
+        this.$fastController.addStyles(this.sizeStylesheet);
     }
 }

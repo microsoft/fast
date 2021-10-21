@@ -330,7 +330,7 @@ export type ColorRecipe = Recipe<Swatch>;
 export { Combobox }
 
 // @public
-export const comboboxStyles: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: ComboboxOptions) => import("@microsoft/fast-element").ElementStyles;
+export const comboboxStyles: FoundationElementTemplate<ElementStyles, ComboboxOptions>;
 
 // @public (undocumented)
 export const controlCornerRadius: import("@microsoft/fast-foundation").CSSDesignToken<number>;

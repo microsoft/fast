@@ -120,11 +120,6 @@ export class ListboxOption extends FoundationElement {
     /**
      * @internal
      */
-    private parentListbox: Listbox | null;
-
-    /**
-     * @internal
-     */
     public proxy: HTMLOptionElement;
 
     /**
@@ -212,8 +207,7 @@ export class ListboxOption extends FoundationElement {
 
     public connectedCallback(): void {
         super.connectedCallback();
-        this.parentListbox = this.closest("[role=listbox]");
-        if (this.parentListbox?.getAttribute("multiple") !== null) {
+        if (this.closest("[multiple]")) {
             this.checked = false;
         }
     }

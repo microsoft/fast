@@ -12,7 +12,8 @@ export const listboxTemplate: FoundationElementTemplate<ViewTemplate<Listbox>> =
     definition
 ) => html`
     <template
-        aria-activedescendant="${x => x.ariaActiveDescendant}"
+        aria-activedescendant="${x =>
+            x.ariaActiveDescendant ? x.ariaActiveDescendant : null}"
         aria-multiselectable="${x => x.ariaMultiselectable}"
         class="listbox"
         role="${x => x.role}"

@@ -1,13 +1,16 @@
 import {
     attr,
+    DOM,
     Observable,
     observable,
     SyntheticViewTemplate,
 } from "@microsoft/fast-element";
 import {
     ArrowKeys,
+    keyEnd,
     keyEnter,
     keyEscape,
+    keyHome,
     keySpace,
     keyTab,
 } from "@microsoft/fast-web-utilities";
@@ -44,6 +47,15 @@ export class Select extends FormAssociatedSelect {
      * @internal
      */
     private _value: string;
+
+    /**
+     * The component is collapsible when in single-selection mode with no size attribute.
+     *
+     * @internal
+     */
+    public get collapsible(): boolean {
+        return !this.multiple && typeof this.sizeAttribute !== "number";
+    }
 
     /**
      * The ref to the internal `.control` element.
@@ -169,15 +181,6 @@ export class Select extends FormAssociatedSelect {
     }
 
     /**
-     * The component is collapsible when in single-selection mode with no size attribute.
-     *
-     * @internal
-     */
-    public get collapsible(): boolean {
-        return !this.multiple && typeof this.sizeAttribute !== "number";
-    }
-
-    /**
      * The selection type for the component.
      *
      * @remarks
@@ -200,9 +203,13 @@ export class Select extends FormAssociatedSelect {
     }
 
     public set value(next: string) {
-        const prev = `${this._value}`;
+        const prev = `${this._value ?? ""}`;
 
         if (this.$fastController.isConnected && this.options) {
+            if (!this.hasSelectableOptions) {
+                this.selectedIndex = -1;
+            }
+
             const selectedIndex = this.options.findIndex(el => el.value === next);
 
             const prevSelectedOption = this.options[this.selectedIndex];
@@ -218,7 +225,9 @@ export class Select extends FormAssociatedSelect {
 
             if (selectedIndex === -1 || prevSelectedValue !== nextSelectedValue) {
                 next = "";
-                this.selectedIndex = selectedIndex;
+                if (this.hasSelectableOptions) {
+                    this.selectedIndex = selectedIndex;
+                }
             }
 
             if (this.firstSelectedOption) {
@@ -357,12 +366,17 @@ export class Select extends FormAssociatedSelect {
 
         switch (key) {
             case keySpace: {
-                if (this.collapsible) {
-                    if (this.typeAheadExpired) {
-                        e.preventDefault();
-                        this.open = !this.open;
-                    }
+                e.preventDefault();
+                if (this.collapsible && this.typeAheadExpired) {
+                    this.open = !this.open;
                 }
+
+                break;
+            }
+
+            case keyHome:
+            case keyEnd: {
+                e.preventDefault();
                 break;
             }
 
@@ -373,7 +387,7 @@ export class Select extends FormAssociatedSelect {
             }
 
             case keyEscape: {
-                if (this.open) {
+                if (this.collapsible && this.open) {
                     e.preventDefault();
                     this.open = false;
                 }
@@ -381,24 +395,38 @@ export class Select extends FormAssociatedSelect {
             }
 
             case keyTab: {
-                if (!this.collapsible || !this.open) {
-                    return true;
+                if (this.collapsible && this.open) {
+                    e.preventDefault();
+                    this.open = false;
                 }
 
-                e.preventDefault();
-                this.open = false;
+                return true;
             }
         }
 
-        if (
-            !this.collapsible ||
-            (!this.open && this.indexWhenOpened !== this.selectedIndex)
-        ) {
+        if (!this.open && this.indexWhenOpened !== this.selectedIndex) {
             this.updateValue(true);
             this.indexWhenOpened = this.selectedIndex;
         }
 
         return !(key in ArrowKeys);
+    }
+
+    /**
+     * Prevents focus when size is set and a scrollbar is clicked.
+     *
+     * @param e - the event object
+     *
+     * @override
+     *
+     * @internal
+     */
+    public mousedownHandler(e: MouseEvent): boolean | void {
+        if (e.offsetX >= 0 && e.offsetX <= this.listbox?.scrollWidth) {
+            return super.mousedownHandler(e);
+        }
+
+        return this.collapsible;
     }
 
     /**
@@ -509,9 +537,10 @@ export class Select extends FormAssociatedSelect {
      * @internal
      */
     protected updateDimensions() {
+        super.updateDimensions();
+
         requestAnimationFrame(() => {
             let maxOptionsWidth = 0;
-            let firstOptionHeight = 0;
 
             if (this.collapsible) {
                 this.listbox.style.setProperty("visibility", "hidden");
@@ -522,7 +551,6 @@ export class Select extends FormAssociatedSelect {
             }
 
             maxOptionsWidth = this.listbox.scrollWidth;
-            firstOptionHeight = this.options[0]?.offsetHeight;
 
             if (this.collapsible) {
                 this.listbox.hidden = true;
@@ -532,16 +560,13 @@ export class Select extends FormAssociatedSelect {
                 this.listbox.style.removeProperty("width");
             }
 
-            firstOptionHeight *= this.size;
-
-            this.listbox.style.removeProperty("--max-height");
-
-            if (!isNaN(firstOptionHeight) && firstOptionHeight > 0) {
-                this.listbox.style.setProperty("--max-height", `${firstOptionHeight}px`);
-            }
-
             if (this.collapsible) {
-                this.control.style.setProperty("--option-width", `${maxOptionsWidth}px`);
+                DOM.queueUpdate(() => {
+                    this.control.style.setProperty(
+                        "--option-width",
+                        `${maxOptionsWidth}px`
+                    );
+                });
             }
         });
     }
@@ -571,11 +596,8 @@ export class Select extends FormAssociatedSelect {
      */
     private updateValue(shouldEmit?: boolean) {
         if (this.$fastController.isConnected) {
-            this.value = this.firstSelectedOption ? this.firstSelectedOption.value : "";
-            this.displayValue =
-                this.firstSelectedOption?.textContent ??
-                this.firstSelectedOption?.value ??
-                this.value;
+            this.value = this.firstSelectedOption?.value ?? "";
+            this.displayValue = this.firstSelectedOption?.textContent ?? this.value;
         }
 
         if (shouldEmit) {

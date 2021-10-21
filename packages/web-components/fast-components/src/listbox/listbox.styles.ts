@@ -18,9 +18,10 @@ import {
     neutralStrokeRest,
     strokeWidth,
 } from "../design-tokens";
+import { heightNumber } from "../styles/size";
 
 /**
- * Styles for the {@link @microsoft/fast-components#fastListbox | Listbox} component.
+ * Styles for the {@link fastListbox} component.
  *
  * @param context - the element definition context
  * @param definition - the foundation element definition
@@ -33,20 +34,18 @@ export const listboxStyles: FoundationElementTemplate<ElementStyles> = (
     definition
 ) => {
     const ListboxOptionTag = context.tagFor(ListboxOption);
-
-    let hostContext = "";
-    if (context.name !== context.tagFor(ListboxElement)) {
-        hostContext = ".listbox";
-    }
+    const hostContext = context.name === context.tagFor(ListboxElement) ? "" : ".listbox";
 
     return css`
         ${!hostContext ? display("inline-flex") : ""} :host ${hostContext} {
+            --padding-height: calc(${designUnit} * 1px);
+            --border-width: calc(${strokeWidth} * 1px);
             background: ${neutralLayerFloating};
-            border: calc(${strokeWidth} * 1px) solid ${neutralStrokeRest};
+            border: var(--border-width) solid ${neutralStrokeRest};
             border-radius: calc(${controlCornerRadius} * 1px);
             box-sizing: border-box;
             flex-direction: column;
-            padding: calc(${designUnit} * 1px) 0;
+            padding: var(--padding-height) 0;
         }
 
         :host(:focus-within:not([disabled])) ${hostContext} {
@@ -57,6 +56,14 @@ export const listboxStyles: FoundationElementTemplate<ElementStyles> = (
 
         ::slotted([aria-selected="true"]:not([aria-checked="true"])) {
             border-color: ${neutralLayerFloating};
+        }
+
+        :host([size]) ${hostContext} {
+            max-height: calc(
+                (var(--size) * ${heightNumber} + ((${designUnit} + ${strokeWidth}) * 2)) *
+                    1px
+            );
+            overflow-y: auto;
         }
     `.withBehaviors(
         forcedColorsStylesheetBehavior(

@@ -86,6 +86,15 @@ export abstract class Listbox extends FoundationElement {
     };
 
     /**
+     * Returns true if there is one or more selectable option.
+     *
+     * @internal
+     */
+    protected get hasSelectableOptions(): boolean {
+        return this.options.length === 0 || !this.options.every(o => o.disabled);
+    }
+
+    /**
      * The count of available options.
      *
      * @public
@@ -126,10 +135,19 @@ export abstract class Listbox extends FoundationElement {
      */
     @observable
     public selectedIndex: number = -1;
-    public selectedIndexChanged(prev: number, next: number): void {
-        if (this.options?.[this.selectedIndex]?.disabled) {
+    public selectedIndexChanged(prev: number | unknown, next: number): void {
+        if (!this.hasSelectableOptions) {
+            this.selectedIndex = -1;
+            return;
+        }
+
+        if (this.options[this.selectedIndex]?.disabled && typeof prev === "number") {
             const selectableIndex = this.getSelectableIndex(prev, next);
-            this.selectedIndex = selectableIndex > -1 ? selectableIndex : prev;
+            const newNext = selectableIndex > -1 ? selectableIndex : prev;
+            this.selectedIndex = newNext;
+            if (next === newNext) {
+                return this.selectedIndexChanged(next, newNext);
+            }
             return;
         }
 
@@ -272,13 +290,11 @@ export abstract class Listbox extends FoundationElement {
     public selectedOptions: ListboxOption[] = [];
     protected selectedOptionsChanged(prev: unknown, next: ListboxOption[]): void {
         const filteredNext = next.filter(Listbox.slottedOptionFilter);
-        if (this.$fastController.isConnected) {
-            this.options.forEach(o => {
-                Observable.getNotifier(o).unsubscribe(this);
-                o.selected = filteredNext.includes(o);
-                Observable.getNotifier(o).subscribe(this);
-            });
-        }
+        this.options?.forEach(o => {
+            Observable.getNotifier(o).unsubscribe(this);
+            o.selected = filteredNext.includes(o);
+            Observable.getNotifier(o).subscribe(this);
+        });
     }
 
     /**
@@ -497,6 +513,11 @@ export abstract class Listbox extends FoundationElement {
      */
     protected setDefaultSelectedOption() {
         if (this.$fastController.isConnected && this.options) {
+            if (this.options.length === 0 || this.options.every(o => o.disabled)) {
+                this.selectedIndex = -1;
+                return;
+            }
+
             const selectedIndex = this.options.findIndex(o => o.hasAttribute("selected"));
 
             if (selectedIndex !== -1) {
@@ -517,7 +538,7 @@ export abstract class Listbox extends FoundationElement {
     protected setSelectedOptions() {
         if (this.$fastController.isConnected && this.options) {
             this.selectedOptions = [this.options[this.selectedIndex]];
-            this.ariaActiveDescendant = this.firstSelectedOption?.id ?? "";
+            this.ariaActiveDescendant = this.firstSelectedOption?.id;
             this.focusAndScrollOptionIntoView();
         }
     }
@@ -536,7 +557,7 @@ export class DelegatesARIAListbox {
      * HTML Attribute: `aria-activedescendant`
      */
     @observable
-    public ariaActiveDescendant: string = "";
+    public ariaActiveDescendant?: string;
 
     /**
      * See {@link https://w3c.github.io/aria/#listbox} for more information

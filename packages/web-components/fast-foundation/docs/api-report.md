@@ -782,7 +782,7 @@ export interface DelegatesARIALink extends ARIAGlobalStatesAndProperties {
 //
 // @public
 export class DelegatesARIAListbox {
-    ariaActiveDescendant: string;
+    ariaActiveDescendant?: string;
     ariaDisabled: "true" | "false";
     ariaExpanded: "true" | "false" | undefined;
     ariaMultiselectable: "true" | "false" | undefined;
@@ -1313,7 +1313,7 @@ export abstract class Listbox extends FoundationElement {
     // @internal
     protected focusAndScrollOptionIntoView(optionToFocus?: ListboxOption | null): void;
     // @internal (undocumented)
-    focusinHandler(e: FocusEvent): void;
+    focusinHandler(e: FocusEvent): boolean | void;
     // @internal (undocumented)
     protected getFilteredOptions(): ListboxOption[];
     // (undocumented)
@@ -1321,6 +1321,8 @@ export abstract class Listbox extends FoundationElement {
     // (undocumented)
     handleChange(source: any, propertyName: string): void;
     handleTypeAhead: (key: string) => void;
+    // @internal
+    protected get hasSelectableOptions(): boolean;
     // @internal
     keydownHandler(e: KeyboardEvent): boolean | void;
     get length(): number;
@@ -1333,7 +1335,7 @@ export abstract class Listbox extends FoundationElement {
     role: string;
     selectedIndex: number;
     // (undocumented)
-    selectedIndexChanged(prev: number, next: number): void;
+    selectedIndexChanged(prev: number | unknown, next: number): void;
     selectedOptions: ListboxOption[];
     // (undocumented)
     protected selectedOptionsChanged(prev: unknown, next: ListboxOption[]): void;
@@ -1372,11 +1374,13 @@ export interface Listbox extends DelegatesARIAListbox {
 
 // @public
 export class ListboxElement extends Listbox {
-    // @internal (undocumented)
-    protected activeIndexChanged(prev: any, next: any): void;
+    // @internal
+    protected activeIndexChanged(prev: unknown, next: number): void;
     // @internal
     get activeOption(): ListboxOption | null;
-    // @internal (undocumented)
+    // @internal
+    protected checkActiveIndex(): void;
+    // @internal
     protected checkFirstOption(preserveChecked?: boolean): void;
     // @internal
     protected checkLastOption(preserveChecked?: boolean): void;
@@ -1386,30 +1390,44 @@ export class ListboxElement extends Listbox {
     protected checkPreviousOption(preserveChecked?: boolean): void;
     // @internal @override
     clickHandler(e: MouseEvent): boolean | void;
-    // (undocumented)
+    // @internal @override (undocumented)
     connectedCallback(): void;
-    // (undocumented)
+    // @internal @override (undocumented)
     disconnectedCallback(): void;
-    // (undocumented)
-    get firstSelectedOptionIndex(): number;
-    // @internal (undocumented)
-    protected focusAndScrollOptionIntoView(): void;
     // @internal
-    focusinHandler(e: FocusEvent): void;
+    get firstSelectedOptionIndex(): number;
+    // @internal @override (undocumented)
+    protected focusAndScrollOptionIntoView(): void;
+    // @internal @override
+    focusinHandler(e: FocusEvent): boolean | void;
     // @internal
     focusoutHandler(e: FocusEvent): void;
     // @internal @override
     keydownHandler(e: KeyboardEvent): boolean | void;
+    // @internal @override
+    mousedownHandler(e: MouseEvent): boolean | void;
     multiple: boolean;
     // @internal
     multipleChanged(prev: unknown, next: boolean): void;
     // @override
     protected setSelectedOptions(): void;
+    size: number;
+    sizeAttribute: number;
+    // (undocumented)
+    sizeAttributeChanged(prev: unknown, next: number): void;
+    // (undocumented)
+    protected sizeChanged(prev: unknown, next: number): void;
     // @internal
     toggleSelectedForAllCheckedOptions(): void;
-    // (undocumented)
+    // @internal @override (undocumented)
     typeaheadBufferChanged(prev: string, next: string): void;
-    }
+    // @internal
+    protected uncheckAllOptions(preserveChecked?: boolean): void;
+    // @internal
+    protected updateDefaultSize(): void;
+    // @internal
+    protected updateDimensions(): void;
+}
 
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
 // Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "ListboxOption" because one of its declarations is marked as @internal
@@ -2004,11 +2022,11 @@ export type ScrollEasing = "linear" | "ease-in" | "ease-out" | "ease-in-out" | s
 export class Select extends FormAssociatedSelect {
     // @internal
     clickHandler(e: MouseEvent): boolean | void;
-    // (undocumented)
+    // @internal
     get collapsible(): boolean;
     // (undocumented)
     connectedCallback(): void;
-    // @internal (undocumented)
+    // @internal
     control: HTMLElement;
     // @internal
     disabledChanged(prev: boolean, next: boolean): void;
@@ -2017,17 +2035,19 @@ export class Select extends FormAssociatedSelect {
     focusoutHandler(e: FocusEvent): boolean | void;
     // @internal
     formResetCallback: () => void;
-    // (undocumented)
+    // @internal
     handleChange(source: any, propertyName: string): void;
-    // @internal (undocumented)
+    // @internal
     indicator: HTMLElement;
     // @internal
     keydownHandler(e: KeyboardEvent): boolean | void;
-    // @internal (undocumented)
+    // @internal
     listbox: HTMLElement;
     // @internal
     maxHeight: number;
-    // (undocumented)
+    // @internal @override
+    mousedownHandler(e: MouseEvent): boolean | void;
+    // @internal @override
     multipleChanged(prev: unknown, next: boolean): void;
     // @internal
     open: boolean;
@@ -2038,19 +2058,17 @@ export class Select extends FormAssociatedSelect {
     role: SelectRole;
     // @internal
     selectedIndexChanged(prev: any, next: any): void;
-    // (undocumented)
     selectedValue: HTMLElement;
-    // (undocumented)
-    setDefaultSize(): void;
     setPositioning(): void;
     // (undocumented)
-    size: number;
-    sizeAttribute: number;
-    // (undocumented)
-    sizeChanged(prev: unknown, next: number): void;
+    protected sizeChanged(prev: unknown, next: number): void;
     // @internal
     slottedOptionsChanged(prev: unknown, next: Element[]): void;
     get type(): string;
+    // @internal @override
+    updateDefaultSize(): void;
+    // @internal @override (undocumented)
+    protected updateDimensions(): void;
     get value(): string;
     set value(next: string);
     }

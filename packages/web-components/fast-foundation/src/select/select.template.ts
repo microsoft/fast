@@ -41,6 +41,7 @@ export const selectTemplate: FoundationElementTemplate<
                         x.open ? x.ariaActiveDescendant : null}"
                     aria-controls="listbox"
                     aria-expanded="${x => x.ariaExpanded}"
+                    aria-multiselectable="${x => x.ariaMultiselectable}"
                     aria-haspopup="listbox"
                     class="control"
                     part="control"

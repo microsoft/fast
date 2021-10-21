@@ -290,10 +290,6 @@ describe("FASTSelect", function () {
                 }
             });
 
-            const selectedOption = (await element.$(".listbox")) as ElementHandle<
-                FASTOption
-            >;
-
             await element.evaluate(node => (node.selectedIndex = 35));
 
             expect(
@@ -302,18 +298,18 @@ describe("FASTSelect", function () {
 
             await element.click();
 
-            await selectedOption.waitForElementState("visible");
+            await element.waitForElementState("stable");
 
             expect(
-                await selectedOption.evaluate(node => node.scrollTop)
-            ).to.be.closeTo(811, 16);
+                await element.evaluate(node => node.listbox.scrollTop)
+            ).to.be.closeTo(411, 16);
 
             await element.evaluate(node => (node.selectedIndex = 0));
 
             await element.waitForElementState("stable");
 
             expect(
-                await selectedOption.evaluate(node => node.scrollTop)
+                await element.evaluate(node => node.listbox.scrollTop)
             ).to.be.closeTo(6, 16);
         });
     });
