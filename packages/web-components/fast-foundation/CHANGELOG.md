@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Wed, 20 Oct 2021 07:13:46 GMT and should not be manually modified.
+This log was last generated on Thu, 21 Oct 2021 07:11:42 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.22.1
+
+Thu, 21 Oct 2021 07:11:42 GMT
+
+### Patches
+
+- fix broken tooltip (scomea@microsoft.com)
 
 ## 2.22.0
 
