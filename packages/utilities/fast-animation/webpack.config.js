@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
+/* eslint-disable no-undef */
 const path = require("path");
 const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 const MiniCSSExtractPlugin = require("mini-css-extract-plugin");
@@ -11,6 +13,7 @@ const modernizrConfig = {
     options: ["setClasses"],
 };
 
+/* eslint-disable-next-line */
 module.exports = (env, args) => {
     const isProduction = args.mode === "production";
 

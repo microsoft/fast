@@ -1,21 +1,19 @@
 {
   "compilerOptions": {
+    "declarationDir": "dist/dts",
+    "outDir": "dist/esm",
     "emitDecoratorMetadata": true,
     "esModuleInterop": true,
     "experimentalDecorators": true,
     "jsx": "react",
-    "target": "es5",
-    "module": "es2015",
+    "target": "es2015",
+    "module": "ESNext",
     "moduleResolution": "node",
     "removeComments": true,
     "sourceMap": true,
     "rootDir": "./",
     "baseUrl": ".",
-    "lib": [ "es2015", "es2017", "dom", "scripthost" ],
-    "paths": {
-      "[lib]/*": [
-        "./lib/*"
-      ]
-    }
-  }
+    "lib": [ "es2015", "es2017", "dom", "scripthost" ]
+  },
+  "include": ["src"]
 }

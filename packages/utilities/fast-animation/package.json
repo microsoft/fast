@@ -14,9 +14,10 @@
   "bugs": {
     "url": "https://github.com/Microsoft/fast/issues/new/choose"
   },
-  "main": "dist/index.js",
+  "main": "dist/esm/index.js",
+  "types": "dist/fast-animation.d.ts",
   "scripts": {
-    "build": "tsc -p ./lib/tsconfig.json && yarn doc",
+    "build": "tsc -p ./tsconfig.json && yarn doc",
     "build:app": "webpack --mode=production",
     "coverage": "jest --coverage",
     "doc": "api-extractor run --local",
