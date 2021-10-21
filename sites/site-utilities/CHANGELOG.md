@@ -1,8 +1,16 @@
 # Change Log - @microsoft/site-utilities
 
-This log was last generated on Wed, 20 Oct 2021 07:13:46 GMT and should not be manually modified.
+This log was last generated on Thu, 21 Oct 2021 07:11:42 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.9.0
+
+Thu, 21 Oct 2021 07:11:42 GMT
+
+### Patches
+
+- Bump @microsoft/fast-components to v2.14.1 (scomea@microsoft.com)
 
 ## 0.9.0
 
