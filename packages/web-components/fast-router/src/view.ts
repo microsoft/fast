@@ -8,7 +8,6 @@ import {
 } from "@microsoft/fast-element";
 import { isFASTElementHost, Router } from "./router";
 
-/* eslint-disable @typescript-eslint/no-empty-function */
 /**
  * @alpha
  */
@@ -137,4 +136,3 @@ export const Layout = Object.freeze({
         `
     ) as Readonly<Layout>,
 });
-/* eslint-enable @typescript-eslint/no-empty-function */
