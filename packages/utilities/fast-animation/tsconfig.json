@@ -1,4 +1,5 @@
 {
+  "extends": "../../../tsconfig.json",
   "compilerOptions": {
     "declarationDir": "dist/dts",
     "outDir": "dist/esm",
@@ -11,8 +12,6 @@
     "moduleResolution": "node",
     "removeComments": true,
     "sourceMap": true,
-    "rootDir": "./",
-    "baseUrl": ".",
     "lib": [ "es2015", "es2017", "dom", "scripthost" ]
   },
   "include": ["src"]
