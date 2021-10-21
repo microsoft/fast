@@ -1,4 +1,5 @@
-import { html } from "@microsoft/fast-element";
+import { html, repeat } from "@microsoft/fast-element";
+import { linkTemplate } from "./link.template";
 
 const frameworkTemplate = html`
     <site-content-placement>
@@ -7,6 +8,7 @@ const frameworkTemplate = html`
             <small class="headerSubscript">${x => x.headerSubscript}</small>
         </h3>
         <p slot="body">${x => x.body}</p>
+        ${repeat(x => x.links, linkTemplate("action"))}
     </site-content-placement>
 `;
 
