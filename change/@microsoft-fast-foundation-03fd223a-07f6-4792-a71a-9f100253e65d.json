@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "picker clear query on selection",
-  "packageName": "@microsoft/fast-foundation",
-  "email": "scomea@microsoft.com",
-  "dependentChangeType": "patch"
-}
