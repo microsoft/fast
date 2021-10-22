@@ -821,6 +821,7 @@ export class Picker extends FormAssociatedPicker {
             }
             this.toggleFlyout(false);
             this.inputElement.value = "";
+            this.query = "";
             return false;
         }
 
