@@ -1,4 +1,4 @@
-import { attr, DOM, emptyArray, observable } from "@microsoft/fast-element";
+import { attr, DOM, emptyArray, observable, Observable } from "@microsoft/fast-element";
 import type { Constructable, FASTElement } from "@microsoft/fast-element";
 import { keyEnter } from "@microsoft/fast-web-utilities";
 
@@ -109,6 +109,7 @@ export interface FormAssociated extends Omit<ElementInternals, "labels"> {
     name: string;
     required: boolean;
     value: string;
+    currentValue: string;
     attachProxy(): void;
     detachProxy(): void;
     disabledChanged?(previous: boolean, next: boolean): void;
@@ -292,8 +293,22 @@ export function FormAssociated<T extends ConstructableFormAssociated>(BaseCtor: 
                 this.proxy.value = this.value;
             }
 
+            this.currentValue = this.value;
+
             this.setFormValue(this.value);
             this.validate();
+        }
+
+        /**
+         * The current value of the element. This property serves as a mechanism
+         * to set the `value` property through both property assignment and the
+         * .setAttribute() method. This is useful for setting the field's value
+         * in UI libraries that bind data through the .setAttribute() API
+         * and don't support IDL attribute binding.
+         */
+        public currentValue: string;
+        public currentValueChanged() {
+            this.value = this.currentValue;
         }
 
         /**
@@ -623,6 +638,7 @@ export function FormAssociated<T extends ConstructableFormAssociated>(BaseCtor: 
 
     attr({ mode: "boolean" })(C.prototype, "disabled");
     attr({ mode: "fromView", attribute: "value" })(C.prototype, "initialValue");
+    attr({ attribute: "current-value" })(C.prototype, "currentValue");
     attr(C.prototype, "name");
     attr({ mode: "boolean" })(C.prototype, "required");
     observable(C.prototype, "value");
