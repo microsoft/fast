@@ -4,7 +4,7 @@ import { compileTemplate } from "./compiler";
 import type { HTMLTemplateCompilationResult } from "./compiler";
 import { ElementView, HTMLView, SyntheticView } from "./view";
 import { HTMLDirective, TargetedHTMLDirective } from "./html-directive";
-import { bind } from "./binding";
+import { bind, oneTime } from "./binding";
 
 /**
  * A template capable of creating views specifically for rendering custom elements.
@@ -149,8 +149,6 @@ export interface CaptureType<TSource> {}
  */
 export type TemplateValue<TSource, TParent = any> =
     | Binding<TSource, any, TParent>
-    | string
-    | number
     | HTMLDirective
     | CaptureType<TSource>;
 
@@ -172,34 +170,33 @@ export function html<TSource = any, TParent = any, TGrandparent = any>(
 
     for (let i = 0, ii = strings.length - 1; i < ii; ++i) {
         const currentString = strings[i];
-        let value = values[i];
+        let currentValue = values[i];
+        const valueType = typeof currentValue;
 
         html += currentString;
 
-        if (value instanceof ViewTemplate) {
-            const template = value;
-            value = (): ViewTemplate => template;
+        if (valueType === "function") {
+            currentValue = bind(currentValue as Binding);
+        } else if (valueType !== "string" && !(currentValue instanceof HTMLDirective)) {
+            const capturedValue = currentValue;
+            currentValue = bind(() => capturedValue, oneTime);
         }
 
-        if (typeof value === "function") {
-            value = bind(value as Binding);
-        }
-
-        if (value instanceof TargetedHTMLDirective) {
-            const match = lastAttributeNameRegex.exec(currentString);
-            if (match !== null) {
-                value.targetName = match[2];
+        if (currentValue instanceof HTMLDirective) {
+            if (currentValue instanceof TargetedHTMLDirective) {
+                const match = lastAttributeNameRegex.exec(currentString);
+                if (match !== null) {
+                    currentValue.targetName = match[2];
+                }
             }
-        }
 
-        if (value instanceof HTMLDirective) {
             // Since not all values are directives, we can't use i
             // as the index for the placeholder. Instead, we need to
             // use directives.length to get the next index.
-            html += value.createPlaceholder(directives.length);
-            directives.push(value);
+            html += currentValue.createPlaceholder(directives.length);
+            directives.push(currentValue);
         } else {
-            html += value;
+            html += currentValue;
         }
     }
 
