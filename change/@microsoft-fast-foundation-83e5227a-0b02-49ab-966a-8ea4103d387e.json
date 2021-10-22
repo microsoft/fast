@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "Improving number field interactions and tests",
-  "packageName": "@microsoft/fast-foundation",
-  "email": "robarb@microsoft.com",
-  "dependentChangeType": "patch"
-}

@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-components
 
-This log was last generated on Thu, 21 Oct 2021 07:11:42 GMT and should not be manually modified.
+This log was last generated on Fri, 22 Oct 2021 17:40:52 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.14.2
+
+Fri, 22 Oct 2021 17:40:52 GMT
+
+### Patches
+
+- Improving number field interactions and tests (robarb@microsoft.com)
 
 ## 2.14.1
 

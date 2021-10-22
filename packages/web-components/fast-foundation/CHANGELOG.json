@@ -2,6 +2,35 @@
   "name": "@microsoft/fast-foundation",
   "entries": [
     {
+      "date": "Fri, 22 Oct 2021 17:40:52 GMT",
+      "tag": "@microsoft/fast-foundation_v2.23.0",
+      "version": "2.23.0",
+      "comments": {
+        "patch": [
+          {
+            "comment": "picker clear query on selection",
+            "author": "scomea@microsoft.com",
+            "commit": "7f5e056e3baeceac7ce398fba513718309931497",
+            "package": "@microsoft/fast-foundation"
+          },
+          {
+            "comment": "Improving number field interactions and tests",
+            "author": "robarb@microsoft.com",
+            "commit": "c1d594dc1ac40f6d2ae3710bc269843c4a4f179f",
+            "package": "@microsoft/fast-foundation"
+          }
+        ],
+        "minor": [
+          {
+            "comment": "adds a currentValue property to form-associated to facilitate attribute-based data binding for form values",
+            "author": "chhol@microsoft.com",
+            "commit": "35c227a146ba73ce81a820c187c2834fa0c95a00",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 21 Oct 2021 07:11:42 GMT",
       "tag": "@microsoft/fast-foundation_v2.22.1",
       "version": "2.22.1",
