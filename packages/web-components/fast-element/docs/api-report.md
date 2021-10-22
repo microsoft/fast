@@ -408,7 +408,7 @@ export interface ObservationRecord {
 }
 
 // @public (undocumented)
-export const oneTime: BindingConfig & ((options?: DefaultBindingOptions) => BindingConfig);
+export const oneTime: BindingConfig & ((options?: DefaultBindingOptions | undefined) => BindingConfig);
 
 // @public
 export interface PartialFASTElementDefinition {
@@ -570,7 +570,7 @@ export type TrustedTypesPolicy = {
 };
 
 // @public (undocumented)
-export const updateView: BindingConfig & ((options?: DefaultBindingOptions) => BindingConfig);
+export const updateView: BindingConfig & ((options?: DefaultBindingOptions | undefined) => BindingConfig);
 
 // @public
 export interface ValueConverter {
