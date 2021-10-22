@@ -51,19 +51,19 @@ describe(`The html tag template helper`, () => {
             type: "number",
             location: "at the beginning",
             template: html`${numberValue} end`,
-            result: `${numberValue} end`,
+            result: `${DOM.createInterpolationPlaceholder(0)} end`,
         },
         {
             type: "number",
             location: "in the middle",
             template: html`beginning ${numberValue} end`,
-            result: `beginning ${numberValue} end`,
+            result: `beginning ${DOM.createInterpolationPlaceholder(0)} end`,
         },
         {
             type: "number",
             location: "at the end",
             template: html`beginning ${numberValue}`,
-            result: `beginning ${numberValue}`,
+            result: `beginning ${DOM.createInterpolationPlaceholder(0)}`,
         },
         // expression interpolation
         {
@@ -136,58 +136,70 @@ describe(`The html tag template helper`, () => {
             type: "mixed, back-to-back string, number, expression, and directive",
             location: "at the beginning",
             template: html<Model>`${stringValue}${numberValue}${x => x.value}${new TestDirective()} end`,
-            result: `${stringValue}${numberValue}${DOM.createInterpolationPlaceholder(
+            result: `${stringValue}${DOM.createInterpolationPlaceholder(
                 0
-            )}${DOM.createBlockPlaceholder(1)} end`,
-            expectDirectives: [HTMLBindingDirective, TestDirective],
+            )}${DOM.createInterpolationPlaceholder(
+                1
+            )}${DOM.createBlockPlaceholder(2)} end`,
+            expectDirectives: [HTMLBindingDirective, HTMLBindingDirective, TestDirective],
         },
         {
             type: "mixed, back-to-back string, number, expression, and directive",
             location: "in the middle",
             template: html<Model>`beginning ${stringValue}${numberValue}${x => x.value}${new TestDirective()} end`,
-            result: `beginning ${stringValue}${numberValue}${DOM.createInterpolationPlaceholder(
+            result: `beginning ${stringValue}${DOM.createInterpolationPlaceholder(
                 0
-            )}${DOM.createBlockPlaceholder(1)} end`,
-            expectDirectives: [HTMLBindingDirective, TestDirective],
+            )}${DOM.createInterpolationPlaceholder(
+                1
+            )}${DOM.createBlockPlaceholder(2)} end`,
+            expectDirectives: [HTMLBindingDirective, HTMLBindingDirective, TestDirective],
         },
         {
             type: "mixed, back-to-back string, number, expression, and directive",
             location: "at the end",
             template: html<Model>`beginning ${stringValue}${numberValue}${x => x.value}${new TestDirective()}`,
-            result: `beginning ${stringValue}${numberValue}${DOM.createInterpolationPlaceholder(
+            result: `beginning ${stringValue}${DOM.createInterpolationPlaceholder(
                 0
-            )}${DOM.createBlockPlaceholder(1)}`,
-            expectDirectives: [HTMLBindingDirective, TestDirective],
+            )}${DOM.createInterpolationPlaceholder(
+                1
+            )}${DOM.createBlockPlaceholder(2)}`,
+            expectDirectives: [HTMLBindingDirective, HTMLBindingDirective, TestDirective],
         },
         {
             type: "mixed, separated string, number, expression, and directive",
             location: "at the beginning",
             template: html<Model>`${stringValue}separator${numberValue}separator${x =>
                     x.value}separator${new TestDirective()} end`,
-            result: `${stringValue}separator${numberValue}separator${DOM.createInterpolationPlaceholder(
+            result: `${stringValue}separator${DOM.createInterpolationPlaceholder(
                 0
-            )}separator${DOM.createBlockPlaceholder(1)} end`,
-            expectDirectives: [HTMLBindingDirective, TestDirective],
+            )}separator${DOM.createInterpolationPlaceholder(
+                1
+            )}separator${DOM.createBlockPlaceholder(2)} end`,
+            expectDirectives: [HTMLBindingDirective, HTMLBindingDirective, TestDirective],
         },
         {
             type: "mixed, separated string, number, expression, and directive",
             location: "in the middle",
             template: html<Model>`beginning ${stringValue}separator${numberValue}separator${x =>
                     x.value}separator${new TestDirective()} end`,
-            result: `beginning ${stringValue}separator${numberValue}separator${DOM.createInterpolationPlaceholder(
+            result: `beginning ${stringValue}separator${DOM.createInterpolationPlaceholder(
                 0
-            )}separator${DOM.createBlockPlaceholder(1)} end`,
-            expectDirectives: [HTMLBindingDirective, TestDirective],
+            )}separator${DOM.createInterpolationPlaceholder(
+                1
+            )}separator${DOM.createBlockPlaceholder(2)} end`,
+            expectDirectives: [HTMLBindingDirective, HTMLBindingDirective, TestDirective],
         },
         {
             type: "mixed, separated string, number, expression, and directive",
             location: "at the end",
             template: html<Model>`beginning ${stringValue}separator${numberValue}separator${x =>
                     x.value}separator${new TestDirective()}`,
-            result: `beginning ${stringValue}separator${numberValue}separator${DOM.createInterpolationPlaceholder(
+            result: `beginning ${stringValue}separator${DOM.createInterpolationPlaceholder(
                 0
-            )}separator${DOM.createBlockPlaceholder(1)}`,
-            expectDirectives: [HTMLBindingDirective, TestDirective],
+            )}separator${DOM.createInterpolationPlaceholder(
+                1
+            )}separator${DOM.createBlockPlaceholder(2)}`,
+            expectDirectives: [HTMLBindingDirective, HTMLBindingDirective, TestDirective],
         },
     ];
 
