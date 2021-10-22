@@ -1,7 +1,0 @@
-{
-  "type": "minor",
-  "comment": "adds a currentValue property to form-associated to facilitate attribute-based data binding for form values",
-  "packageName": "@microsoft/fast-foundation",
-  "email": "chhol@microsoft.com",
-  "dependentChangeType": "patch"
-}
