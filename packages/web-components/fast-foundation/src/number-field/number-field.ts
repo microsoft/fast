@@ -120,16 +120,12 @@ export class NumberField extends FormAssociatedNumberField {
     @attr({ converter: nullableNumberConverter })
     public max: number;
     public maxChanged(previousValue, nextValue): void {
-        const numb: number = parseFloat(nextValue);
-        if (numb !== undefined) {
-            if (this.min !== undefined && numb < this.min) {
-                this.max = this.min;
-                this.min = numb;
-            } else {
-                this.max = numb;
-            }
+        this.max = Math.max(nextValue, this.min ?? nextValue);
+        const min = Math.min(this.min, this.max);
+        if (this.min !== undefined && this.min !== min) {
+            this.min = min;
         }
-        this.updateValue(this.value);
+        this.valueChanged(this.value, this.value);
     }
 
     /**
@@ -141,24 +137,13 @@ export class NumberField extends FormAssociatedNumberField {
     @attr({ converter: nullableNumberConverter })
     public min: number;
     public minChanged(previousValue, nextValue): void {
-        const numb: number = parseFloat(nextValue);
-        if (numb !== undefined) {
-            if (this.max !== undefined && numb > this.max) {
-                this.min = this.max;
-                this.max = numb;
-            } else {
-                this.min = numb;
-            }
+        this.min = Math.min(nextValue, this.max ?? nextValue);
+        const max = Math.max(this.min, this.max);
+        if (this.max !== undefined && this.max !== max) {
+            this.max = max;
         }
-        this.updateValue(this.value);
+        this.valueChanged(this.value, this.value);
     }
-
-    /**
-     * Display text used in the input field
-     * @public
-     */
-    @observable
-    public displayText: string = "";
 
     /**
      * @internal
@@ -178,38 +163,21 @@ export class NumberField extends FormAssociatedNumberField {
      * @param nextValue - value being updated
      */
     public valueChanged(previousValue, nextValue): void {
-        super.valueChanged(previousValue, nextValue);
-
-        this.updateValue(nextValue);
-    }
-
-    /**
-     * Updates the value. Validates that it's a number, between the min
-     *  and max, updates the proxy and emits events.
-     *
-     * @param value - value to be validated
-     * @internal
-     */
-    private updateValue(value): void {
-        if (value === "" || isNaN(parseFloat(value))) {
+        let value: number | string = parseFloat(nextValue);
+        if (isNaN(value)) {
             value = "";
         } else {
-            value = parseFloat(value);
-            if (this.min !== undefined && value < this.min) {
-                value = this.min;
-            } else if (this.max !== undefined && value > this.max) {
-                value = this.max;
-            }
-
-            value = parseFloat(value.toPrecision(12));
+            value = Math.min(value, this.max ?? value);
+            value = Math.max(value, this.min ?? value);
         }
+
+        this.value = value.toString();
 
         if (this.proxy instanceof HTMLInputElement) {
-            this.proxy.value = value;
+            this.proxy.value = this.value;
         }
 
-        if (value != this.value) {
-            this.value = value.toString();
+        if (previousValue !== undefined) {
             this.$emit("input");
             this.$emit("change");
         }
@@ -221,8 +189,10 @@ export class NumberField extends FormAssociatedNumberField {
      * @public
      */
     public stepUp(): void {
-        const stepUpValue = this.step + (parseFloat(this.value) || 0);
-        this.updateValue(stepUpValue);
+        const value = parseFloat(this.value);
+        const stepUpValue = isNaN(value) ? this.min ?? this.step : value + this.step;
+        this.value = stepUpValue.toString();
+        this.control.value = this.value;
     }
 
     /**
@@ -231,8 +201,12 @@ export class NumberField extends FormAssociatedNumberField {
      * @public
      */
     public stepDown(): void {
-        const stepDownValue = (parseFloat(this.value) || 0) - this.step;
-        this.updateValue(stepDownValue);
+        const value = parseFloat(this.value);
+        const stepDownValue = isNaN(value)
+            ? this.max ?? 0 - this.step
+            : value - this.step;
+        this.value = stepDownValue.toString();
+        this.control.value = this.value;
     }
 
     /**
@@ -241,9 +215,9 @@ export class NumberField extends FormAssociatedNumberField {
     public connectedCallback(): void {
         super.connectedCallback();
 
-        this.displayText = this.value;
         this.proxy.setAttribute("type", "number");
         this.validate();
+        this.control.value = this.value;
 
         if (this.autofocus) {
             DOM.queueUpdate(() => {
@@ -257,6 +231,7 @@ export class NumberField extends FormAssociatedNumberField {
      * @internal
      */
     public handleTextInput(): void {
+        this.control.value = this.control.value.replace(/[^0-9\-+e.]/g, "");
         this.value = this.control.value;
     }
 
@@ -274,28 +249,6 @@ export class NumberField extends FormAssociatedNumberField {
     }
 
     /**
-<<<<<<< HEAD
-     * Handle keyboard events for the input.
-     *
-     * @param e - the keyboard event
-     * @internal
-     */
-    public handleKeyDown(e: Event & KeyboardEvent): void | boolean {
-        if (e.defaultPrevented) {
-            return;
-        }
-
-        switch (e.key) {
-            case "ArrowUp":
-                this.stepUp();
-                return;
-            case "ArrowDown":
-                this.stepDown();
-                return;
-            default:
-                return true;
-        }
-=======
      * Handles the internal control's `keydown` event
      * @internal
      */
@@ -313,7 +266,15 @@ export class NumberField extends FormAssociatedNumberField {
         }
 
         return true;
->>>>>>> 0dd749b39 (Add up/down support to number field (#5081))
+    }
+
+    /**
+     * Handles populating the input field with a validated value when
+     *  leaving the input field.
+     * @internal
+     */
+    public handleBlur(): void {
+        this.control.value = this.value;
     }
 }
 
