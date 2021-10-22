@@ -8,11 +8,6 @@ export const ContentPlacementTemplate = html<ContentPlacement>`
         </div>
         <slot></slot>
         <slot name="body"></slot>
-        ${when(
-            x => x.icon,
-            html`
-                <slot name="action"></slot>
-            `
-        )}
+        <slot name="action"></slot>
     </fast-card>
 `;

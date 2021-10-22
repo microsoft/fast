@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "Improving number field interactions and tests",
+  "packageName": "@microsoft/fast-components",
+  "email": "robarb@microsoft.com",
+  "dependentChangeType": "patch"
+}
