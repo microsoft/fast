@@ -4,7 +4,7 @@ import { endSlotTemplate, startSlotTemplate } from "../patterns";
 import { whitespaceFilter } from "../utilities";
 import type { ElementDefinitionContext } from "../design-system";
 import { Button } from "../button";
-import type { Search, SearchOptions } from "./search"
+import type { Search, SearchOptions } from "./search";
 
 /**
  * The template for the {@link @microsoft/fast-foundation#(search:class)} component.
@@ -34,7 +34,7 @@ export const searchTemplate: (
                 ${slotted({ property: "defaultSlottedNodes", filter: whitespaceFilter })}
             ></slot>
         </label>
-        <div class="root" part="root" ${ref('root')}>
+        <div class="root" part="root" ${ref("root")}>
             ${startSlotTemplate(context, definition)}
             <div class="input-wrapper" part="input-wrapper">
                 <input
@@ -77,15 +77,21 @@ export const searchTemplate: (
                     aria-roledescription="${x => x.ariaRoledescription}"
                     ${ref("control")}
                 />
-                ${when(x => x.value && !x.readOnly,
-                    html<Search>`<${context.tagFor(Button)} appearance="stealth" class="clear-button" part="clear-button" @click=${x => x.handleClearInput()}>
-                    <slot name="close-glyph">
-                        <svg width="9" height="9" viewBox="0 0 9 9" xmlns="http://www.w3.org/2000/svg">
-                           <path d="M0.146447 0.146447C0.338683 -0.0478972 0.645911 -0.0270359 0.853553 0.146447L4.5 3.793L8.14645 0.146447C8.34171 -0.0488155 8.65829 -0.0488155 8.85355 0.146447C9.04882 0.341709 9.04882 0.658291 8.85355 0.853553L5.207 4.5L8.85355 8.14645C9.05934 8.35223 9.03129 8.67582 8.85355 8.85355C8.67582 9.03129 8.35409 9.02703 8.14645 8.85355L4.5 5.207L0.853553 8.85355C0.658291 9.04882 0.341709 9.04882 0.146447 8.85355C-0.0488155 8.65829 -0.0488155 8.34171 0.146447 8.14645L3.793 4.5L0.146447 0.853553C-0.0268697 0.680237 -0.0457894 0.34079 0.146447 0.146447Z"/>
-                        </svg>
-                    </slot>
-                    </${context.tagFor(Button)}>`
-                )}
+                <slot name="close-button">
+                    <${context.tagFor(
+                        Button
+                    )} appearance="stealth" class="clear-button ${x =>
+    x.value
+        ? ""
+        : "clear-button__hidden"}" part="clear-button" tabindex="-1" @click=${x =>
+    x.handleClearInput()}>
+                        <slot name="close-glyph">
+                            <svg width="9" height="9" viewBox="0 0 9 9" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M0.146447 0.146447C0.338683 -0.0478972 0.645911 -0.0270359 0.853553 0.146447L4.5 3.793L8.14645 0.146447C8.34171 -0.0488155 8.65829 -0.0488155 8.85355 0.146447C9.04882 0.341709 9.04882 0.658291 8.85355 0.853553L5.207 4.5L8.85355 8.14645C9.05934 8.35223 9.03129 8.67582 8.85355 8.85355C8.67582 9.03129 8.35409 9.02703 8.14645 8.85355L4.5 5.207L0.853553 8.85355C0.658291 9.04882 0.341709 9.04882 0.146447 8.85355C-0.0488155 8.65829 -0.0488155 8.34171 0.146447 8.14645L3.793 4.5L0.146447 0.853553C-0.0268697 0.680237 -0.0457894 0.34079 0.146447 0.146447Z"/>
+                            </svg>
+                        </slot>
+                    </${context.tagFor(Button)}>
+                </slot>
             </div>
             ${endSlotTemplate(context, definition)}
         </div>

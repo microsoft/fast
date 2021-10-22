@@ -150,11 +150,20 @@ export const searchStyles: (
         box-shadow: 0 0 0 1px ${focusStrokeOuter} inset;
     }
 
+    .clear-button__hidden {
+        opacity: 0;
+    }
 
-    :host(:hover:not([disabled])) .clear-button,
-    :host(:active:not([disabled])) .clear-button,
-    :host(:focus-within:not([disabled])) .clear-button {
+    :host(:hover:not([disabled], [readOnly])) .clear-button,
+    :host(:active:not([disabled], [readOnly])) .clear-button,
+    :host(:focus-within:not([disabled], [readOnly])) .clear-button {
         opacity: 1;
+    }
+
+    :host(:hover:not([disabled], [readOnly])) .clear-button__hidden,
+    :host(:active:not([disabled], [readOnly])) .clear-button__hidden,
+    :host(:focus-within:not([disabled], [readOnly])) .clear-button__hidden {
+        opacity: 0;
     }
 
     :host([appearance="filled"]) .root {
