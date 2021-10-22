@@ -311,11 +311,16 @@ function createContentBindingFactory<
     };
 }
 
+type FASTEventSource = Node & {
+    $fastSource: any;
+    $fastContext: ExecutionContext | null;
+};
+
 class EventListener implements BindingBehaviorFactory {
     constructor(public directive: HTMLBindingDirective) {}
 
     bind(source: any, context: ExecutionContext, targets: ViewBehaviorTargets): void {
-        const target = targets[this.directive.targetId] as any;
+        const target = targets[this.directive.targetId] as FASTEventSource;
         target.$fastSource = source;
         target.$fastContext = context;
         target.addEventListener(
@@ -326,7 +331,10 @@ class EventListener implements BindingBehaviorFactory {
     }
 
     unbind(source: any, context: ExecutionContext, targets: ViewBehaviorTargets): void {
-        const target = targets[this.directive.targetId] as any;
+        this.removeEventListener(targets[this.directive.targetId] as FASTEventSource);
+    }
+
+    protected removeEventListener(target: FASTEventSource) {
         target.$fastSource = null;
         target.$fastContext = null;
         target.removeEventListener(
@@ -358,14 +366,7 @@ class EventListener implements BindingBehaviorFactory {
 class OneTimeEventListener extends EventListener {
     handleEvent(event: Event) {
         super.handleEvent(event);
-        const target = event.currentTarget as any;
-        target.$fastSource = null;
-        target.$fastContext = null;
-        target.removeEventListener(
-            this.directive.cleanedTargetName!,
-            this,
-            this.directive.options
-        );
+        this.removeEventListener(event.currentTarget as FASTEventSource);
     }
 }
 
