@@ -558,7 +558,7 @@ export abstract class TargetedHTMLDirective extends HTMLDirective {
 }
 
 // @public
-export type TemplateValue<TSource, TParent = any> = Binding<TSource, any, TParent> | string | number | HTMLDirective | CaptureType<TSource>;
+export type TemplateValue<TSource, TParent = any> = Binding<TSource, any, TParent> | HTMLDirective | CaptureType<TSource>;
 
 // @public
 export type TrustedTypes = {
