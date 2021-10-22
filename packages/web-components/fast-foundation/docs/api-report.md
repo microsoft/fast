@@ -1084,6 +1084,8 @@ export interface FormAssociated extends Omit<ElementInternals, "labels"> {
     // (undocumented)
     attachProxy(): void;
     // (undocumented)
+    currentValue: string;
+    // (undocumented)
     detachProxy(): void;
     // (undocumented)
     dirtyValue: boolean;
