@@ -16,15 +16,28 @@
         "Programming Languages"
     ],
     "contributes": {
-        "grammars": [{
-            "embeddedLanguages": {
-                "meta.embedded.block.css": "css",
-                "meta.embedded.block.html": "html"
+        "grammars": [
+            {
+                "embeddedLanguages": {
+                    "meta.embedded.block.css": "css",
+                    "meta.embedded.block.html": "html"
+                },
+                "injectTo": [
+                    "source.js",
+                    "source.ts"
+                ],
+                "path": "./syntaxes/fast-tagged-templates.tmLanguage.json",
+                "scopeName": "source.js.tagged-templates.injection"
             },
-            "injectTo": [ "source.js", "source.ts" ],
-            "path": "./syntaxes/fast-tagged-templates.tmLanguage.json",
-            "scopeName": "source.js.tagged-templates.injection"
-        }]
+            {
+                "path": "./syntaxes/injection.json",
+                "scopeName": "invalid-expression-comment.injection",
+                "injectTo": [
+                    "source.js",
+                    "source.ts"
+                ]
+            }
+        ]
     },
     "repository": {
         "type": "git",

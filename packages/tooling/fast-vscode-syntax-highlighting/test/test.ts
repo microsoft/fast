@@ -63,6 +63,10 @@ html<TBase, any>`
     <div></div>
 `;
 
+// should not match
+let a = `${something}.html`;
+a = `something else`;
+
 /* CSS */
 
 // empty string
@@ -117,6 +121,13 @@ css`
 `;
 
 css`
+/* ${invalid} */
+.asdf {
+    /* color: ${invalid}; */
+}
+`;
+
+css`
     :root {
         ${behavior.propertyName}: #000;
         background-image: url("strings ${within.Strings?.work}");
@@ -147,3 +158,7 @@ css`
         color: ${tokenValue};
     }
 `;
+
+// should not match
+let b = `${something}.css`;
+b = `something else`;
