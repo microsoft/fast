@@ -378,45 +378,34 @@ const defaultBindingOptions: DefaultBindingOptions = {
     capture: false,
 };
 
-export const updateView: BindingConfig &
-    ((options?: DefaultBindingOptions) => BindingConfig) = (
-    options: DefaultBindingOptions
-): BindingConfig => {
-    return {
-        mode: updateView.mode,
-        options: Object.assign({}, defaultBindingOptions, options),
+function createBindingConfig<T extends Constructable<BindingFactory & ViewBinding>>(
+    BindingBase: T,
+    EventListener: Constructable<EventListener>
+) {
+    const config: BindingConfig & ((options?: DefaultBindingOptions) => BindingConfig) = (
+        options: DefaultBindingOptions
+    ): BindingConfig => {
+        return {
+            mode: config.mode,
+            options: Object.assign({}, defaultBindingOptions, options),
+        };
     };
-};
 
-updateView.options = defaultBindingOptions;
-updateView.mode = Object.freeze({
-    attribute: createAttributeBindingFactory(ViewUpdateBinding as any),
-    booleanAttribute: createBooleanAttributeBindingFactory(ViewUpdateBinding as any),
-    property: createPropertyBindingFactory(ViewUpdateBinding as any),
-    content: createContentBindingFactory(ViewUpdateBinding as any),
-    tokenList: createTokenListBindingFactory(ViewUpdateBinding as any),
-    event: EventListener,
-});
+    config.options = defaultBindingOptions;
+    config.mode = Object.freeze({
+        attribute: createAttributeBindingFactory(BindingBase),
+        booleanAttribute: createBooleanAttributeBindingFactory(BindingBase),
+        property: createPropertyBindingFactory(BindingBase),
+        content: createContentBindingFactory(BindingBase),
+        tokenList: createTokenListBindingFactory(BindingBase),
+        event: EventListener,
+    });
 
-export const oneTime: BindingConfig &
-    ((options?: DefaultBindingOptions) => BindingConfig) = (
-    options: DefaultBindingOptions
-): BindingConfig => {
-    return {
-        mode: oneTime.mode,
-        options: Object.assign({}, defaultBindingOptions, options),
-    };
-};
+    return config;
+}
 
-oneTime.options = defaultBindingOptions;
-oneTime.mode = Object.freeze({
-    attribute: createAttributeBindingFactory(ViewSetBinding as any),
-    booleanAttribute: createBooleanAttributeBindingFactory(ViewSetBinding as any),
-    property: createPropertyBindingFactory(ViewSetBinding as any),
-    content: createContentBindingFactory(ViewSetBinding as any),
-    tokenList: createTokenListBindingFactory(ViewSetBinding as any),
-    event: OneTimeEventListener,
-});
+export const updateView = createBindingConfig(ViewUpdateBinding as any, EventListener);
+export const oneTime = createBindingConfig(ViewSetBinding as any, OneTimeEventListener);
 
 export class HTMLBindingDirective extends TargetedHTMLDirective {
     private originalTargetName?: string;
