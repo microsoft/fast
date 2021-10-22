@@ -57,6 +57,7 @@ describe("FormAssociated:", () => {
             const { element } = await setup();
 
             expect(element.value).to.equal("");
+            expect(element.currentValue).to.equal(element.value);
         });
 
         it("should initialize to the initial value if no value property is set", async () => {
@@ -65,6 +66,7 @@ describe("FormAssociated:", () => {
             await connect();
 
             expect(element.value).to.equal(element.initialValue);
+            expect(element.currentValue).to.equal(element.value);
 
             await disconnect();
         });
@@ -77,6 +79,7 @@ describe("FormAssociated:", () => {
             await connect();
 
             expect(element.value).to.equal("foobar");
+            expect(element.currentValue).to.equal(element.value);
 
             await disconnect();
         });
@@ -89,6 +92,7 @@ describe("FormAssociated:", () => {
             element.setAttribute("value", "foobar");
 
             expect(element.value).to.equal("foobar");
+            expect(element.currentValue).to.equal(element.value);
 
             await disconnect();
         });
@@ -101,6 +105,7 @@ describe("FormAssociated:", () => {
             await connect();
 
             expect(element.value).to.equal("foobar");
+            expect(element.currentValue).to.equal(element.value);
 
             await disconnect();
         });
@@ -113,6 +118,7 @@ describe("FormAssociated:", () => {
             element.value = "foobar";
 
             expect(element.value).to.equal("foobar");
+            expect(element.currentValue).to.equal(element.value);
 
             await disconnect();
         });
@@ -123,6 +129,7 @@ describe("FormAssociated:", () => {
             await connect();
 
             expect(element.value).to.equal("foobar");
+            expect(element.currentValue).to.equal(element.value);
 
             await disconnect();
         });
@@ -157,10 +164,12 @@ describe("FormAssociated:", () => {
             element.setAttribute("value", "foobar");
 
             expect(element.value).to.equal("foobar");
+            expect(element.currentValue).to.equal(element.value);
 
             element.setAttribute("value", "barbat");
 
             expect(element.value).to.equal("barbat");
+            expect(element.currentValue).to.equal(element.value);
 
             await disconnect();
         });
@@ -173,10 +182,12 @@ describe("FormAssociated:", () => {
             element.value = "foobar";
 
             expect(element.value).to.equal("foobar");
+            expect(element.currentValue).to.equal(element.value);
 
             element.setAttribute("value", "barbat");
 
             expect(element.value).to.equal("foobar");
+            expect(element.currentValue).to.equal(element.value);
 
             await disconnect();
         });
@@ -227,6 +238,38 @@ describe("FormAssociated:", () => {
 
             await disconnect();
         });
+
+        it("assigning the currentValue property should set the controls value property to the same value", async () => {
+            const { connect, disconnect, element } = await setup();
+
+            await connect();
+
+            expect(element.value).to.equal("");
+            expect(element.currentValue).to.equal(element.value);
+
+            element.currentValue = "foobar";
+
+            expect(element.value).to.equal("foobar");
+            expect(element.currentValue).to.equal(element.value);
+
+            await disconnect();
+        });
+
+        it("setting the current-value property should set the controls value property to the same value", async () => {
+            const { connect, disconnect, element } = await setup();
+
+            await connect();
+
+            expect(element.value).to.equal("");
+            expect(element.currentValue).to.equal(element.value);
+
+            element.setAttribute('current-value', "foobar")
+
+            expect(element.value).to.equal("foobar");
+            expect(element.currentValue).to.equal(element.value);
+
+            await disconnect();
+        });
     });
 
     describe("when the owning form's reset() method is invoked", () => {
@@ -244,10 +287,12 @@ describe("FormAssociated:", () => {
             assert(element.getAttribute("value") === null);
 
             assert(element.value === "test-value");
+            expect(element.currentValue).to.equal(element.value);
 
             form.reset();
 
             assert(element.value === "");
+            expect(element.currentValue).to.equal(element.value);
 
             await disconnect();
         });
@@ -262,16 +307,18 @@ describe("FormAssociated:", () => {
             await connect();
 
             element.setAttribute("value", "attr-value");
+            expect(element.currentValue).to.equal(element.value);
 
             element.value = "test-value";
 
             assert(element.getAttribute("value") === "attr-value");
-
             assert(element.value === "test-value");
+            expect(element.currentValue).to.equal(element.value);
 
             form.reset();
 
             assert(element.value === "attr-value");
+            expect(element.currentValue).to.equal(element.value);
 
             await disconnect();
         });
@@ -290,14 +337,17 @@ describe("FormAssociated:", () => {
             element.setAttribute("value", "attr-value");
 
             assert(element.value === "test-value");
+            expect(element.currentValue).to.equal(element.value);
 
             form.reset();
 
             assert(element.value === "attr-value");
+            expect(element.currentValue).to.equal(element.value);
 
             element.setAttribute("value", "new-attr-value");
 
             assert(element.value === "new-attr-value");
+            expect(element.currentValue).to.equal(element.value);
 
             await disconnect();
         });
