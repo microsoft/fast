@@ -16,21 +16,18 @@ import type { CaptureType } from "./template";
 import type { SyntheticView } from "./view";
 
 export type BindingBehaviorFactory = {
-    readonly directive: HTMLBindingDirective;
     createBehavior(targets: ViewBehaviorTargets): ViewBehavior;
 };
 
-export type BindingFactory = new (
-    directive: HTMLBindingDirective
-) => BindingBehaviorFactory;
+export type BindingType = (directive: HTMLBindingDirective) => BindingBehaviorFactory;
 
 export interface BindingMode {
-    attribute?: BindingFactory;
-    booleanAttribute?: BindingFactory;
-    property?: BindingFactory;
-    content?: BindingFactory;
-    tokenList?: BindingFactory;
-    event?: BindingFactory;
+    attribute?: BindingType;
+    booleanAttribute?: BindingType;
+    property?: BindingType;
+    content?: BindingType;
+    tokenList?: BindingType;
+    event?: BindingType;
 }
 
 export interface BindingConfig {
@@ -38,13 +35,40 @@ export interface BindingConfig {
     options: any;
 }
 
-interface ViewBinding extends BindingBehaviorFactory, ViewBehavior {
-    updateTarget(target: Node, value: any, source: any, context: ExecutionContext): void;
+interface UpdateTargetThis {
+    directive: HTMLBindingDirective;
 }
 
-abstract class ViewSetBinding implements ViewBinding {
+type UpdateTarget = (
+    this: UpdateTargetThis,
+    target,
+    value,
+    source: any,
+    context: ExecutionContext
+) => void;
+
+class BindingBase {
     constructor(public readonly directive: HTMLBindingDirective) {}
 
+    bind(source: any, context: ExecutionContext, targets: ViewBehaviorTargets): void {}
+    unbind(source: any, context: ExecutionContext, targets: ViewBehaviorTargets): void {}
+
+    createBehavior(): ViewBehavior {
+        return this;
+    }
+}
+
+class TargetUpdateBinding extends BindingBase {
+    constructor(directive: HTMLBindingDirective, protected updateTarget: UpdateTarget) {
+        super(directive);
+    }
+
+    static createType(updateTarget: UpdateTarget) {
+        return directive => new this(directive, updateTarget);
+    }
+}
+
+class OneTimeBinding extends TargetUpdateBinding {
     bind(source: any, context: ExecutionContext, targets: ViewBehaviorTargets): void {
         const target = targets[this.directive.targetId];
         this.updateTarget(
@@ -54,25 +78,13 @@ abstract class ViewSetBinding implements ViewBinding {
             context
         );
     }
-
-    unbind(): void {}
-
-    createBehavior(): ViewBehavior {
-        return this;
-    }
-
-    abstract updateTarget(
-        target: Node,
-        value: any,
-        source: any,
-        context: ExecutionContext
-    ): void;
 }
 
-abstract class ViewUpdateBinding implements ViewBinding {
+class OnChangeBinding extends TargetUpdateBinding {
     private isBindingVolatile: boolean;
 
-    constructor(public readonly directive: HTMLBindingDirective) {
+    constructor(directive: HTMLBindingDirective, updateTarget: UpdateTarget) {
+        super(directive, updateTarget);
         this.isBindingVolatile = Observable.isVolatileBinding(directive.binding);
     }
 
@@ -109,109 +121,76 @@ abstract class ViewUpdateBinding implements ViewBinding {
         const context = (observer as any).context;
         this.updateTarget(target, observer.observe(source, context!), source, context);
     }
+}
 
-    abstract updateTarget(
-        target: Node,
-        value: any,
-        source: any,
-        context: ExecutionContext
-    ): void;
+function setPropertyTarget(this: UpdateTargetThis, target, value) {
+    target[this.directive.targetAspect!] = value;
+}
 
-    createBehavior(): ViewBehavior {
-        return this;
+function setAttributeTarget(this: UpdateTargetThis, target, value) {
+    DOM.setAttribute(target as HTMLElement, this.directive.targetAspect!, value);
+}
+
+function setBooleanAttributeTarget(this: UpdateTargetThis, target, value) {
+    DOM.setBooleanAttribute(
+        target as HTMLElement,
+        this.directive.targetAspect!,
+        value as boolean
+    );
+}
+
+interface UpdateTokenListThis extends UpdateTargetThis {
+    classVersions: any;
+    version: number;
+}
+
+function updateTokenListTarget(
+    this: UpdateTokenListThis,
+    target: Element,
+    value: any
+): void {
+    const classVersions = this.classVersions;
+    const tokenList = target[this.directive.targetAspect!] as DOMTokenList;
+    let version = this.version;
+
+    // Add the classes, tracking the version at which they were added.
+    if (value !== null && value !== undefined && value.length) {
+        const names = value.split(/\s+/);
+
+        for (let i = 0, ii = names.length; i < ii; ++i) {
+            const currentName = names[i];
+
+            if (currentName === "") {
+                continue;
+            }
+
+            classVersions[currentName] = version;
+            tokenList.add(currentName);
+        }
+    }
+
+    this.classVersions = classVersions;
+    this.version = version + 1;
+
+    // If this is the first call to add classes, there's no need to remove old ones.
+    if (version === 0) {
+        return;
+    }
+
+    // Remove classes from the previous version.
+    version -= 1;
+
+    for (const name in classVersions) {
+        if (classVersions[name] === version) {
+            tokenList.remove(name);
+        }
     }
 }
 
-function createPropertyBindingFactory<
-    T extends Constructable<BindingFactory & ViewBinding>
->(BindingBase: T): BindingFactory {
-    return class extends BindingBase {
-        updateTarget(target: Node, value: any): void {
-            target[this.directive.cleanedTargetName!] = value;
-        }
-    };
-}
-
-function createAttributeBindingFactory<
-    T extends Constructable<BindingFactory & ViewBinding>
->(BindingBase: T): BindingFactory {
-    return class extends BindingBase {
-        updateTarget(target: Node, value: any): void {
-            DOM.setAttribute(
-                target as HTMLElement,
-                this.directive.cleanedTargetName!,
-                value
-            );
-        }
-    };
-}
-
-function createBooleanAttributeBindingFactory<
-    T extends Constructable<BindingFactory & ViewBinding>
->(BindingBase: T): BindingFactory {
-    return class extends BindingBase {
-        updateTarget(target: Node, value: any): void {
-            DOM.setBooleanAttribute(
-                target as HTMLElement,
-                this.directive.cleanedTargetName!,
-                value as boolean
-            );
-        }
-    };
-}
-
-function createTokenListBindingFactory<T extends Constructable<ViewBinding>>(
-    BindingBase: T
-): BindingFactory {
-    class TokenListBinding extends BindingBase {
+function createTokenListBinding(BaseType: typeof TargetUpdateBinding) {
+    return class TokenListBinding extends BaseType implements UpdateTokenListThis {
         classVersions = Object.create(null);
         version = 0;
-
-        updateTarget(target: Element, value: any): void {
-            const classVersions = this.classVersions;
-            const tokenList = target[this.directive.cleanedTargetName!] as DOMTokenList;
-            let version = this.version;
-
-            // Add the classes, tracking the version at which they were added.
-            if (value !== null && value !== undefined && value.length) {
-                const names = value.split(/\s+/);
-
-                for (let i = 0, ii = names.length; i < ii; ++i) {
-                    const currentName = names[i];
-
-                    if (currentName === "") {
-                        continue;
-                    }
-
-                    classVersions[currentName] = version;
-                    tokenList.add(currentName);
-                }
-            }
-
-            this.classVersions = classVersions;
-            this.version = version + 1;
-
-            // If this is the first call to add classes, there's no need to remove old ones.
-            if (version === 0) {
-                return;
-            }
-
-            // Remove classes from the previous version.
-            version -= 1;
-
-            for (const name in classVersions) {
-                if (classVersions[name] === version) {
-                    tokenList.remove(name);
-                }
-            }
-        }
-    }
-
-    return class implements BindingBehaviorFactory {
-        constructor(public directive: HTMLBindingDirective) {}
-        createBehavior() {
-            return new TokenListBinding(this.directive);
-        }
     };
 }
 
@@ -225,10 +204,76 @@ type ContentTarget = Node & {
     $fastTemplate?: { create(): SyntheticView };
 };
 
-function createContentBindingFactory<
-    T extends Constructable<BindingFactory & ViewBinding>
->(BindingBase: T): BindingFactory {
-    return class extends BindingBase {
+function updateContentTarget(
+    target: ContentTarget,
+    value: any,
+    source: any,
+    context: ExecutionContext
+): void {
+    // If there's no actual value, then this equates to the
+    // empty string for the purposes of content bindings.
+    if (value === null || value === undefined) {
+        value = "";
+    }
+
+    // If the value has a "create" method, then it's a template-like.
+    if (value.create) {
+        target.textContent = "";
+        let view = target.$fastView as ComposableView;
+
+        // If there's no previous view that we might be able to
+        // reuse then create a new view from the template.
+        if (view === void 0) {
+            view = value.create() as SyntheticView;
+        } else {
+            // If there is a previous view, but it wasn't created
+            // from the same template as the new value, then we
+            // need to remove the old view if it's still in the DOM
+            // and create a new view from the template.
+            if (target.$fastTemplate !== value) {
+                if (view.isComposed) {
+                    view.remove();
+                    view.unbind();
+                }
+
+                view = value.create() as SyntheticView;
+            }
+        }
+
+        // It's possible that the value is the same as the previous template
+        // and that there's actually no need to compose it.
+        if (!view.isComposed) {
+            view.isComposed = true;
+            view.bind(source, context!);
+            view.insertBefore(target);
+            target.$fastView = view;
+            target.$fastTemplate = value;
+        } else if (view.needsBindOnly) {
+            view.needsBindOnly = false;
+            view.bind(source, context!);
+        }
+    } else {
+        const view = target.$fastView as ComposableView;
+
+        // If there is a view and it's currently composed into
+        // the DOM, then we need to remove it.
+        if (view !== void 0 && view.isComposed) {
+            view.isComposed = false;
+            view.remove();
+
+            if (view.needsBindOnly) {
+                view.needsBindOnly = false;
+            } else {
+                view.unbind();
+            }
+        }
+
+        target.textContent = value;
+    }
+}
+
+function createContentBinding(BaseType: typeof TargetUpdateBinding) {
+    return class extends BaseType {
         unbind(source: any, context: ExecutionContext, targets: ViewBehaviorTargets) {
             super.unbind(source, context, targets);
 
@@ -240,74 +285,6 @@ function createContentBindingFactory<
                 view.needsBindOnly = true;
             }
         }
-
-        updateTarget(
-            target: ContentTarget,
-            value: any,
-            source: any,
-            context: ExecutionContext
-        ): void {
-            // If there's no actual value, then this equates to the
-            // empty string for the purposes of content bindings.
-            if (value === null || value === undefined) {
-                value = "";
-            }
-
-            // If the value has a "create" method, then it's a template-like.
-            if (value.create) {
-                target.textContent = "";
-                let view = target.$fastView as ComposableView;
-
-                // If there's no previous view that we might be able to
-                // reuse then create a new view from the template.
-                if (view === void 0) {
-                    view = value.create() as SyntheticView;
-                } else {
-                    // If there is a previous view, but it wasn't created
-                    // from the same template as the new value, then we
-                    // need to remove the old view if it's still in the DOM
-                    // and create a new view from the template.
-                    if (target.$fastTemplate !== value) {
-                        if (view.isComposed) {
-                            view.remove();
-                            view.unbind();
-                        }
-
-                        view = value.create() as SyntheticView;
-                    }
-                }
-
-                // It's possible that the value is the same as the previous template
-                // and that there's actually no need to compose it.
-                if (!view.isComposed) {
-                    view.isComposed = true;
-                    view.bind(source, context!);
-                    view.insertBefore(target);
-                    target.$fastView = view;
-                    target.$fastTemplate = value;
-                } else if (view.needsBindOnly) {
-                    view.needsBindOnly = false;
-                    view.bind(source, context!);
-                }
-            } else {
-                const view = target.$fastView as ComposableView;
-
-                // If there is a view and it's currently composed into
-                // the DOM, then we need to remove it.
-                if (view !== void 0 && view.isComposed) {
-                    view.isComposed = false;
-                    view.remove();
-
-                    if (view.needsBindOnly) {
-                        view.needsBindOnly = false;
-                    } else {
-                        view.unbind();
-                    }
-                }
-
-                target.textContent = value;
-            }
-        }
     };
 }
 
@@ -316,15 +293,13 @@ type FASTEventSource = Node & {
     $fastContext: ExecutionContext | null;
 };
 
-class EventListener implements BindingBehaviorFactory {
-    constructor(public directive: HTMLBindingDirective) {}
-
+class EventListener extends BindingBase {
     bind(source: any, context: ExecutionContext, targets: ViewBehaviorTargets): void {
         const target = targets[this.directive.targetId] as FASTEventSource;
         target.$fastSource = source;
         target.$fastContext = context;
         target.addEventListener(
-            this.directive.cleanedTargetName!,
+            this.directive.targetAspect!,
             this,
             this.directive.options
         );
@@ -338,7 +313,7 @@ class EventListener implements BindingBehaviorFactory {
         target.$fastSource = null;
         target.$fastContext = null;
         target.removeEventListener(
-            this.directive.cleanedTargetName!,
+            this.directive.targetAspect!,
             this,
             this.directive.options
         );
@@ -357,10 +332,6 @@ class EventListener implements BindingBehaviorFactory {
             event.preventDefault();
         }
     }
-
-    createBehavior(targets: ViewBehaviorTargets): ViewBehavior {
-        return this;
-    }
 }
 
 class OneTimeEventListener extends EventListener {
@@ -378,8 +349,8 @@ const defaultBindingOptions: DefaultBindingOptions = {
     capture: false,
 };
 
-function createBindingConfig<T extends Constructable<BindingFactory & ViewBinding>>(
-    BindingBase: T,
+function createBindingConfig(
+    BaseType: typeof TargetUpdateBinding,
     EventListener: Constructable<EventListener>
 ) {
     const config: BindingConfig & ((options?: DefaultBindingOptions) => BindingConfig) = (
@@ -393,25 +364,25 @@ function createBindingConfig<T extends Constructable<BindingFactory & ViewBindin
 
     config.options = defaultBindingOptions;
     config.mode = Object.freeze({
-        attribute: createAttributeBindingFactory(BindingBase),
-        booleanAttribute: createBooleanAttributeBindingFactory(BindingBase),
-        property: createPropertyBindingFactory(BindingBase),
-        content: createContentBindingFactory(BindingBase),
-        tokenList: createTokenListBindingFactory(BindingBase),
-        event: EventListener,
+        attribute: BaseType.createType(setAttributeTarget),
+        booleanAttribute: BaseType.createType(setBooleanAttributeTarget),
+        property: BaseType.createType(setPropertyTarget),
+        content: createContentBinding(BaseType).createType(updateContentTarget),
+        tokenList: createTokenListBinding(BaseType).createType(updateTokenListTarget),
+        event: directive => new EventListener(directive),
     });
 
     return config;
 }
 
-export const updateView = createBindingConfig(ViewUpdateBinding as any, EventListener);
-export const oneTime = createBindingConfig(ViewSetBinding as any, OneTimeEventListener);
+export const onChange = createBindingConfig(OnChangeBinding, EventListener);
+export const oneTime = createBindingConfig(OneTimeBinding, OneTimeEventListener);
 
 export class HTMLBindingDirective extends TargetedHTMLDirective {
-    private originalTargetName?: string;
+    private originalTargetAspect?: string;
     private factory!: BindingBehaviorFactory;
 
-    public cleanedTargetName?: string;
+    public targetAspect?: string;
 
     public constructor(
         public binding: Binding,
@@ -426,11 +397,11 @@ export class HTMLBindingDirective extends TargetedHTMLDirective {
      * binding is targeting.
      */
     public get targetName(): string | undefined {
-        return this.originalTargetName;
+        return this.originalTargetAspect;
     }
 
     public set targetName(value: string | undefined) {
-        this.originalTargetName = value;
+        this.originalTargetAspect = value;
 
         if (value === void 0) {
             return;
@@ -438,46 +409,44 @@ export class HTMLBindingDirective extends TargetedHTMLDirective {
 
         switch (value[0]) {
             case ":":
-                this.cleanedTargetName = value.substr(1);
-                switch (this.cleanedTargetName) {
+                this.targetAspect = value.substr(1);
+                switch (this.targetAspect) {
                     case "innerHTML":
                         const binding = this.binding;
                         /* eslint-disable-next-line */
                         this.binding = (s, c) => DOM.createHTML(binding(s, c));
-                        this.factory = new this.mode.property!(this);
+                        this.factory = this.mode.property!(this);
                         break;
                     case "classList":
-                        this.factory = new this.mode.tokenList!(this);
+                        this.factory = this.mode.tokenList!(this);
                         break;
                     default:
-                        this.factory = new this.mode.property!(this);
+                        this.factory = this.mode.property!(this);
                         break;
                 }
                 break;
             case "?":
-                this.cleanedTargetName = value.substr(1);
-                this.factory = new this.mode.booleanAttribute!(this);
+                this.targetAspect = value.substr(1);
+                this.factory = this.mode.booleanAttribute!(this);
                 break;
             case "@":
-                this.cleanedTargetName = value.substr(1);
-                this.factory = new this.mode.event!(this);
+                this.targetAspect = value.substr(1);
+                this.factory = this.mode.event!(this);
                 break;
             default:
-                this.cleanedTargetName = value;
-
                 if (value === "class") {
-                    this.cleanedTargetName = "className";
-                    this.factory = new this.mode.property!(this);
+                    this.targetAspect = "className";
+                    this.factory = this.mode.property!(this);
                 } else {
-                    this.factory = new this.mode.attribute!(this);
+                    this.targetAspect = value;
+                    this.factory = this.mode.attribute!(this);
                 }
-
                 break;
         }
     }
 
     public targetAtContent(): void {
-        this.factory = new this.mode.content!(this);
+        this.factory = this.mode.content!(this);
     }
 
     createBehavior(targets: ViewBehaviorTargets): ViewBehavior {
@@ -487,10 +456,10 @@ export class HTMLBindingDirective extends TargetedHTMLDirective {
 
 export function bind<T = any>(
     binding: Binding,
-    config: BindingConfig | DefaultBindingOptions = updateView
+    config: BindingConfig | DefaultBindingOptions = onChange
 ): CaptureType<T> {
     if (!("mode" in config)) {
-        config = updateView(config);
+        config = onChange(config);
     }
 
     return new HTMLBindingDirective(binding, config.mode, config.options);
