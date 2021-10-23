@@ -61,7 +61,6 @@ export type Binding<TSource = any, TReturn = any, TParent = any> = (source: TSou
 
 // @public (undocumented)
 export type BindingBehaviorFactory = {
-    readonly directive: HTMLBindingDirective;
     createBehavior(targets: ViewBehaviorTargets): ViewBehavior;
 };
 
@@ -74,22 +73,19 @@ export interface BindingConfig {
 }
 
 // @public (undocumented)
-export type BindingFactory = new (directive: HTMLBindingDirective) => BindingBehaviorFactory;
-
-// @public (undocumented)
 export interface BindingMode {
     // (undocumented)
-    attribute?: BindingFactory;
+    attribute?: BindingType;
     // (undocumented)
-    booleanAttribute?: BindingFactory;
+    booleanAttribute?: BindingType;
     // (undocumented)
-    content?: BindingFactory;
+    content?: BindingType;
     // (undocumented)
-    event?: BindingFactory;
+    event?: BindingType;
     // (undocumented)
-    property?: BindingFactory;
+    property?: BindingType;
     // (undocumented)
-    tokenList?: BindingFactory;
+    tokenList?: BindingType;
 }
 
 // @public
@@ -98,6 +94,9 @@ export interface BindingObserver<TSource = any, TReturn = any, TParent = any> ex
     observe(source: TSource, context: ExecutionContext): TReturn;
     records(): IterableIterator<ObservationRecord>;
 }
+
+// @public (undocumented)
+export type BindingType = (directive: HTMLBindingDirective) => BindingBehaviorFactory;
 
 // @public
 export const booleanConverter: ValueConverter;
@@ -318,13 +317,13 @@ export class HTMLBindingDirective extends TargetedHTMLDirective {
     // (undocumented)
     binding: Binding;
     // (undocumented)
-    cleanedTargetName?: string;
-    // (undocumented)
     createBehavior(targets: ViewBehaviorTargets): ViewBehavior;
     // (undocumented)
     mode: BindingMode;
     // (undocumented)
     options: any;
+    // (undocumented)
+    targetAspect?: string;
     // (undocumented)
     targetAtContent(): void;
     get targetName(): string | undefined;
@@ -406,6 +405,9 @@ export interface ObservationRecord {
     propertyName: string;
     propertySource: any;
 }
+
+// @public (undocumented)
+export const onChange: BindingConfig & ((options?: DefaultBindingOptions | undefined) => BindingConfig);
 
 // @public (undocumented)
 export const oneTime: BindingConfig & ((options?: DefaultBindingOptions | undefined) => BindingConfig);
@@ -568,9 +570,6 @@ export type TrustedTypes = {
 export type TrustedTypesPolicy = {
     createHTML(html: string): string;
 };
-
-// @public (undocumented)
-export const updateView: BindingConfig & ((options?: DefaultBindingOptions | undefined) => BindingConfig);
 
 // @public
 export interface ValueConverter {
