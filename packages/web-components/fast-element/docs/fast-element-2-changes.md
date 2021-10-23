@@ -12,3 +12,4 @@
 * `RefBehavior` has been replaced with `RefDirective`. The directive also implements `ViewBehavior` allowing a single directive instance to be shared across all template instances that use the ref.
 * Removed `SlottedBehavior` and `ChildrenBehavior` have been replaced with `SlottedDirective` and `ChildrenDirective`. These directives allow a single directive instance to be shared across all template instances that use the ref.
 * Removed `AttachedBehaviorHTMLDirective` and `AttachedBehaviorType` since they are no longer used in the new directive/behavior architecture for ref, slotted, and children.
+* Renamed `Notifier#source` to `Notifier#subject` to align with other observable terminology and prevent name clashes with `BindingObserver` properties.

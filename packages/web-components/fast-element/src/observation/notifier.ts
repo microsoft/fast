@@ -4,22 +4,22 @@
  */
 export interface Subscriber {
     /**
-     * Called when a source this instance has subscribed to changes.
-     * @param source - The source of the change.
+     * Called when a subject this instance has subscribed to changes.
+     * @param subject - The subject of the change.
      * @param args - The event args detailing the change that occurred.
      */
-    handleChange(source: any, args: any): void;
+    handleChange(subject: any, args: any): void;
 }
 
 /**
- * Provides change notification for a source object.
+ * Provides change notifications for an observed subject.
  * @public
  */
 export interface Notifier {
     /**
-     * The source object that this notifier provides change notification for.
+     * The object that subscribers will receive notifications for.
      */
-    readonly source: any;
+    readonly subject: any;
 
     /**
      * Notifies all subscribers, based on the args.
@@ -70,10 +70,10 @@ const spilloverMethods = {
 
     notify(this: SubscriberSet, args: any): void {
         const spillover = (this as any).spillover as Subscriber[];
-        const source = this.source;
+        const subject = this.subject;
 
         for (let i = 0, ii = spillover.length; i < ii; ++i) {
-            spillover[i].handleChange(source, args);
+            spillover[i].handleChange(subject, args);
         }
     },
 
@@ -85,7 +85,7 @@ const spilloverMethods = {
 /**
  * An implementation of {@link Notifier} that efficiently keeps track of
  * subscribers interested in a specific change notification on an
- * observable source.
+ * observable subject.
  *
  * @remarks
  * This set is optimized for the most common scenario of 1 or 2 subscribers.
@@ -99,17 +99,17 @@ export class SubscriberSet implements Notifier {
     private spillover: Subscriber[] | undefined = void 0;
 
     /**
-     * The source that this subscriber set is reporting changes for.
+     * The object that subscribers will receive notifications for.
      */
-    public readonly source: any;
+    public readonly subject: any;
 
     /**
-     * Creates an instance of SubscriberSet for the specified source.
-     * @param source - The object source that subscribers will receive notifications from.
+     * Creates an instance of SubscriberSet for the specified subject.
+     * @param subject - The subject that subscribers will receive notifications from.
      * @param initialSubscriber - An initial subscriber to changes.
      */
-    public constructor(source: any, initialSubscriber?: Subscriber) {
-        this.source = source;
+    public constructor(subject: any, initialSubscriber?: Subscriber) {
+        this.subject = subject;
         this.sub1 = initialSubscriber;
     }
 
@@ -164,11 +164,11 @@ export class SubscriberSet implements Notifier {
      */
     public notify(args: any): void {
         if (this.sub1 !== void 0) {
-            this.sub1.handleChange(this.source, args);
+            this.sub1.handleChange(this.subject, args);
         }
 
         if (this.sub2 !== void 0) {
-            this.sub2.handleChange(this.source, args);
+            this.sub2.handleChange(this.subject, args);
         }
     }
 }
@@ -180,19 +180,19 @@ export class SubscriberSet implements Notifier {
  */
 export class PropertyChangeNotifier implements Notifier {
     private subscribers: Record<string, SubscriberSet> = {};
-    private sourceSubscribers: SubscriberSet | null = null;
+    private subjectSubscribers: SubscriberSet | null = null;
 
     /**
-     * The source that property changes are being notified for.
+     * The subject that property changes are being notified for.
      */
-    public readonly source: any;
+    public readonly subject: any;
 
     /**
-     * Creates an instance of PropertyChangeNotifier for the specified source.
-     * @param source - The object source that subscribers will receive notifications from.
+     * Creates an instance of PropertyChangeNotifier for the specified subject.
+     * @param subject - The object that subscribers will receive notifications for.
      */
-    public constructor(source: any) {
-        this.source = source;
+    public constructor(subject: any) {
+        this.subject = subject;
     }
 
     /**
@@ -201,7 +201,7 @@ export class PropertyChangeNotifier implements Notifier {
      */
     public notify(propertyName: string): void {
         this.subscribers[propertyName]?.notify(propertyName);
-        this.sourceSubscribers?.notify(propertyName);
+        this.subjectSubscribers?.notify(propertyName);
     }
 
     /**
@@ -215,11 +215,11 @@ export class PropertyChangeNotifier implements Notifier {
         if (propertyToWatch) {
             subscribers =
                 this.subscribers[propertyToWatch] ??
-                (this.subscribers[propertyToWatch] = new SubscriberSet(this.source));
+                (this.subscribers[propertyToWatch] = new SubscriberSet(this.subject));
         } else {
             subscribers =
-                this.sourceSubscribers ??
-                (this.sourceSubscribers = new SubscriberSet(this.source));
+                this.subjectSubscribers ??
+                (this.subjectSubscribers = new SubscriberSet(this.subject));
         }
 
         subscribers.subscribe(subscriber);
@@ -234,7 +234,7 @@ export class PropertyChangeNotifier implements Notifier {
         if (propertyToUnwatch) {
             this.subscribers[propertyToUnwatch]?.unsubscribe(subscriber);
         } else {
-            this.sourceSubscribers?.unsubscribe(subscriber);
+            this.subjectSubscribers?.unsubscribe(subscriber);
         }
     }
 }
