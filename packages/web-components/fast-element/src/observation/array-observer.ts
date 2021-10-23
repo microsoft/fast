@@ -30,9 +30,9 @@ class ArrayObserver extends SubscriberSet {
     private needsQueue: boolean = true;
     call: () => void = this.flush;
 
-    constructor(source: any[]) {
-        super(source);
-        (source as any).$fastController = this;
+    constructor(subject: any[]) {
+        super(subject);
+        (subject as any).$fastController = this;
     }
 
     public subscribe(subscriber: Subscriber): void {
@@ -70,12 +70,12 @@ class ArrayObserver extends SubscriberSet {
         const finalSplices =
             oldCollection === void 0
                 ? splices!.length > 1
-                    ? projectArraySplices(this.source, splices!)
+                    ? projectArraySplices(this.subject, splices!)
                     : splices
                 : calcSplices(
-                      this.source,
+                      this.subject,
                       0,
-                      this.source.length,
+                      this.subject.length,
                       oldCollection,
                       0,
                       oldCollection.length
