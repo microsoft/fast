@@ -3,7 +3,7 @@ import { Binding, defaultExecutionContext } from "../observation/observable";
 import { compileTemplate } from "./compiler";
 import type { HTMLTemplateCompilationResult } from "./compiler";
 import { ElementView, HTMLView, SyntheticView } from "./view";
-import { HTMLDirective, TargetedHTMLDirective } from "./html-directive";
+import { HTMLDirective, AspectedHTMLDirective } from "./html-directive";
 import { bind, oneTime } from "./binding";
 
 /**
@@ -183,10 +183,10 @@ export function html<TSource = any, TParent = any, TGrandparent = any>(
         }
 
         if (currentValue instanceof HTMLDirective) {
-            if (currentValue instanceof TargetedHTMLDirective) {
+            if (currentValue instanceof AspectedHTMLDirective) {
                 const match = lastAttributeNameRegex.exec(currentString);
                 if (match !== null) {
-                    currentValue.targetName = match[2];
+                    currentValue.setAspect(match[2]);
                 }
             }
 

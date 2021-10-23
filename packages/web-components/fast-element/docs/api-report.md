@@ -15,6 +15,13 @@ export interface Accessor {
 }
 
 // @public
+export abstract class AspectedHTMLDirective extends HTMLDirective {
+    createPlaceholder: (index: number) => string;
+    // (undocumented)
+    abstract setAspect(value: string): void;
+}
+
+// @public
 export function attr(config?: DecoratorAttributeConfiguration): (target: {}, property: string) => void;
 
 // @public
@@ -312,8 +319,10 @@ export type Global = typeof globalThis & {
 export function html<TSource = any, TParent = any, TGrandparent = any>(strings: TemplateStringsArray, ...values: TemplateValue<TSource, TParent>[]): ViewTemplate<TSource, TParent, TGrandparent>;
 
 // @public (undocumented)
-export class HTMLBindingDirective extends TargetedHTMLDirective {
+export class HTMLBindingDirective extends InlinableHTMLDirective {
     constructor(binding: Binding, mode: BindingMode, options: any);
+    // (undocumented)
+    readonly aspect?: string;
     // (undocumented)
     binding: Binding;
     // (undocumented)
@@ -323,11 +332,9 @@ export class HTMLBindingDirective extends TargetedHTMLDirective {
     // (undocumented)
     options: any;
     // (undocumented)
-    targetAspect?: string;
+    readonly rawAspect?: string;
     // (undocumented)
-    targetAtContent(): void;
-    get targetName(): string | undefined;
-    set targetName(value: string | undefined);
+    setAspect(value: string): void;
 }
 
 // @public
@@ -358,6 +365,14 @@ export class HTMLView<TSource = any, TParent = any, TGrandparent = any> implemen
     remove(): void;
     source: TSource | null;
     unbind(): void;
+}
+
+// @public (undocumented)
+export abstract class InlinableHTMLDirective extends AspectedHTMLDirective {
+    // (undocumented)
+    abstract binding: Binding;
+    // (undocumented)
+    abstract rawAspect?: string;
 }
 
 // Warning: (ae-internal-missing-underscore) The name "Mutable" should be prefixed with an underscore because the declaration is marked as @internal
@@ -550,12 +565,6 @@ export interface SyntheticView<TSource = any, TParent = any, TGrandparent = any>
 // @public
 export interface SyntheticViewTemplate<TSource = any, TParent = any, TGrandparent = any> {
     create(): SyntheticView<TSource, TParent, TGrandparent>;
-}
-
-// @public
-export abstract class TargetedHTMLDirective extends HTMLDirective {
-    createPlaceholder: (index: number) => string;
-    abstract targetName: string | undefined;
 }
 
 // @public

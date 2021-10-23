@@ -1,6 +1,6 @@
 import { DOM } from "../dom";
 import type { Behavior } from "../observation/behavior";
-import type { ExecutionContext } from "../observation/observable";
+import type { Binding, ExecutionContext } from "../observation/observable";
 
 /**
  * The target nodes available to a behavior.
@@ -82,15 +82,12 @@ export abstract class HTMLDirective implements ViewBehaviorFactory {
 }
 
 /**
- * A {@link HTMLDirective} that targets a named attribute or property on a node.
+ * A {@link HTMLDirective} that targets a particular aspect
+ * (attribute, property, event, etc.) of a node.
  * @public
  */
-export abstract class TargetedHTMLDirective extends HTMLDirective {
-    /**
-     * Gets/sets the name of the attribute or property that this
-     * directive is targeting on the associated node.
-     */
-    public abstract targetName: string | undefined;
+export abstract class AspectedHTMLDirective extends HTMLDirective {
+    abstract setAspect(value: string): void;
 
     /**
      * Creates a placeholder string based on the directive's index within the template.
@@ -98,6 +95,11 @@ export abstract class TargetedHTMLDirective extends HTMLDirective {
      */
     public createPlaceholder: (index: number) => string =
         DOM.createInterpolationPlaceholder;
+}
+
+export abstract class InlinableHTMLDirective extends AspectedHTMLDirective {
+    abstract binding: Binding;
+    abstract rawAspect?: string;
 }
 
 /** @internal */

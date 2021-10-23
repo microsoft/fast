@@ -1,15 +1,8 @@
-import type { ViewBehaviorTargets } from "./html-directive";
+import type { InlinableHTMLDirective, ViewBehaviorTargets } from "./html-directive";
 import { _interpolationEnd, _interpolationStart, DOM } from "../dom";
-import type { Binding, ExecutionContext } from "../observation/observable";
-import { bind, HTMLBindingDirective } from "./binding";
+import type { ExecutionContext } from "../observation/observable";
+import { bind, HTMLBindingDirective, oneTime } from "./binding";
 import type { HTMLDirective, ViewBehaviorFactory } from "./html-directive";
-import { oneTime } from "..";
-
-type InlineDirective = HTMLDirective & {
-    targetName?: string;
-    binding: Binding;
-    targetAtContent(): void;
-};
 
 const targetIdFrom = (parentId: string, nodeIndex: number) => `${parentId}.${nodeIndex}`;
 const descriptorCache: PropertyDescriptorMap = {};
@@ -70,16 +63,6 @@ class CompilationContext implements HTMLTemplateCompilationResult {
         this.factories.push(factory);
     }
 
-    public captureContentBinding(
-        directive: HTMLBindingDirective,
-        parentId: string,
-        targetId: string,
-        targetIndex: number
-    ): void {
-        directive.targetAtContent();
-        this.addFactory(directive, parentId, targetId, targetIndex);
-    }
-
     public freeze(): HTMLTemplateCompilationResult {
         this.proto = Object.create(null, this.descriptors);
         return this;
@@ -134,21 +117,19 @@ class CompilationContext implements HTMLTemplateCompilationResult {
     }
 }
 
-function createAggregateBinding(
-    parts: (string | InlineDirective)[]
-): HTMLBindingDirective {
+function createAggregateBinding(parts: (string | HTMLDirective)[]): HTMLDirective {
     if (parts.length === 1) {
-        return (parts[0] as any) as HTMLBindingDirective;
+        return parts[0] as HTMLDirective;
     }
 
-    let targetName: string | undefined;
+    let aspect: string | undefined;
     const partCount = parts.length;
-    const finalParts = parts.map((x: string | InlineDirective) => {
+    const finalParts = parts.map((x: string | InlinableHTMLDirective) => {
         if (typeof x === "string") {
             return (): string => x;
         }
 
-        targetName = x.targetName || targetName;
+        aspect = x.rawAspect || aspect;
         return x.binding;
     });
 
@@ -163,7 +144,7 @@ function createAggregateBinding(
     };
 
     const directive = bind(binding) as HTMLBindingDirective;
-    directive.targetName = targetName;
+    directive.setAspect(aspect!);
     return directive;
 }
 
@@ -172,7 +153,7 @@ const interpolationEndLength = _interpolationEnd.length;
 function parseContent(
     context: CompilationContext,
     value: string
-): (string | InlineDirective)[] | null {
+): (string | HTMLDirective)[] | null {
     const valueParts = value.split(_interpolationStart);
 
     if (valueParts.length === 1) {
@@ -216,12 +197,12 @@ function compileAttributes(
         const attr = attributes[i];
         const attrValue = attr.value;
         const parseResult = parseContent(context, attrValue);
-        let result: HTMLBindingDirective | null = null;
+        let result: HTMLDirective | null = null;
 
         if (parseResult === null) {
             if (includeBasicValues) {
                 result = bind(() => attrValue, oneTime) as HTMLBindingDirective;
-                result.targetName = attr.name;
+                (result as HTMLBindingDirective).setAspect(attr.name);
             }
         } else {
             result = createAggregateBinding(parseResult);
@@ -269,7 +250,7 @@ function compileContent(
             currentNode.textContent = currentPart;
         } else {
             currentNode.textContent = " ";
-            context.captureContentBinding(
+            context.addFactory(
                 currentPart as HTMLBindingDirective,
                 parentId,
                 nodeId,
