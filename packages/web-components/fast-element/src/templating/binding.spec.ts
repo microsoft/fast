@@ -28,7 +28,6 @@ describe("The HTML binding directive", () => {
 
     function contentBinding(propertyName: keyof Model = "value") {
         const directive = bind(x => x[propertyName]) as HTMLBindingDirective;
-        directive.targetAtContent();
         directive.targetId = 'r';
 
         const node = document.createTextNode(" ");
