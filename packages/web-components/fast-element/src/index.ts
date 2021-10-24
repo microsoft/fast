@@ -24,7 +24,16 @@ export { Splice } from "./observation/array-change-records";
 export { enableArrayObservation } from "./observation/array-observer";
 export { DOM } from "./dom";
 export type { Behavior } from "./observation/behavior";
-export * from "./templating/binding";
+export {
+    bind,
+    oneTime,
+    onChange,
+    BindingConfig,
+    BindingMode,
+    BindingType,
+    BindingBehaviorFactory,
+    DefaultBindingOptions,
+} from "./templating/binding";
 export * from "./templating/html-directive";
 export * from "./templating/ref";
 export * from "./templating/when";

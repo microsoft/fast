@@ -369,6 +369,9 @@ function createBindingConfig(
 export const onChange = createBindingConfig(OnChangeBinding, EventListener);
 export const oneTime = createBindingConfig(OneTimeBinding, OneTimeEventListener);
 
+/**
+ * @internal
+ */
 export class HTMLBindingDirective extends InlinableHTMLDirective {
     private factory!: BindingBehaviorFactory;
 
