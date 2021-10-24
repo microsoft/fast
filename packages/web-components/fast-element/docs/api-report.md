@@ -102,6 +102,8 @@ export interface BindingObserver<TSource = any, TReturn = any, TParent = any> ex
     records(): IterableIterator<ObservationRecord>;
 }
 
+// Warning: (ae-forgotten-export) The symbol "HTMLBindingDirective" needs to be exported by the entry point index.d.ts
+//
 // @public (undocumented)
 export type BindingType = (directive: HTMLBindingDirective) => BindingBehaviorFactory;
 
@@ -317,25 +319,6 @@ export type Global = typeof globalThis & {
 
 // @public
 export function html<TSource = any, TParent = any, TGrandparent = any>(strings: TemplateStringsArray, ...values: TemplateValue<TSource, TParent>[]): ViewTemplate<TSource, TParent, TGrandparent>;
-
-// @public (undocumented)
-export class HTMLBindingDirective extends InlinableHTMLDirective {
-    constructor(binding: Binding, mode: BindingMode, options: any);
-    // (undocumented)
-    readonly aspect?: string;
-    // (undocumented)
-    binding: Binding;
-    // (undocumented)
-    createBehavior(targets: ViewBehaviorTargets): ViewBehavior;
-    // (undocumented)
-    mode: BindingMode;
-    // (undocumented)
-    options: any;
-    // (undocumented)
-    readonly rawAspect?: string;
-    // (undocumented)
-    setAspect(value: string): void;
-}
 
 // @public
 export abstract class HTMLDirective implements ViewBehaviorFactory {
