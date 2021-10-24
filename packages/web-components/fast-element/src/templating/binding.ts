@@ -139,20 +139,24 @@ class OnChangeBinding extends TargetUpdateBinding {
     }
 }
 
-interface UpdateTokenListThis extends UpdateTargetThis {
-    classVersions: any;
-    version: number;
+interface TokenListState {
+    v: {};
+    c: number;
 }
 
 function updateTokenListTarget(
-    this: UpdateTokenListThis,
+    this: UpdateTargetThis,
     target: Element,
     aspect: string,
     value: any
 ): void {
-    const classVersions = this.classVersions;
+    const directive = this.directive;
+    const state: TokenListState =
+        target[directive.uniqueId] ??
+        (target[directive.uniqueId] = { c: 0, v: Object.create(null) });
+    const versions = state.v;
+    let currentVersion = state.c;
     const tokenList = target[aspect] as DOMTokenList;
-    let version = this.version;
 
     // Add the classes, tracking the version at which they were added.
     if (value !== null && value !== undefined && value.length) {
@@ -165,34 +169,26 @@ function updateTokenListTarget(
                 continue;
             }
 
-            classVersions[currentName] = version;
+            versions[currentName] = currentVersion;
             tokenList.add(currentName);
         }
     }
 
-    this.classVersions = classVersions;
-    this.version = version + 1;
+    state.v = currentVersion + 1;
 
     // If this is the first call to add classes, there's no need to remove old ones.
-    if (version === 0) {
+    if (currentVersion === 0) {
         return;
     }
 
     // Remove classes from the previous version.
-    version -= 1;
+    currentVersion -= 1;
 
-    for (const name in classVersions) {
-        if (classVersions[name] === version) {
+    for (const name in versions) {
+        if (versions[name] === currentVersion) {
             tokenList.remove(name);
         }
     }
-}
-
-function createTokenListBinding(BaseType: typeof TargetUpdateBinding) {
-    return class TokenListBinding extends BaseType implements UpdateTokenListThis {
-        classVersions = Object.create(null);
-        version = 0;
-    };
 }
 
 type ComposableView = SyntheticView & {
@@ -363,7 +359,7 @@ function createBindingConfig(
         booleanAttribute: Base.createType(DOM.setBooleanAttribute),
         property: Base.createType((target, aspect, value) => (target[aspect] = value)),
         content: createContentBinding(Base).createType(updateContentTarget),
-        tokenList: createTokenListBinding(Base).createType(updateTokenListTarget),
+        tokenList: Base.createType(updateTokenListTarget),
         event: directive => new Listener(directive),
     });
 
