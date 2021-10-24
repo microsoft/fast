@@ -190,7 +190,16 @@ export class NumberField extends FormAssociatedNumberField {
      */
     public stepUp(): void {
         const value = parseFloat(this.value);
-        const stepUpValue = isNaN(value) ? this.min ?? this.step : value + this.step;
+        const stepUpValue = !isNaN(value)
+            ? value + this.step
+            : this.min > 0
+            ? this.min
+            : this.max < 0
+            ? this.max
+            : !this.min
+            ? this.step
+            : 0;
+
         this.value = stepUpValue.toString();
         this.control.value = this.value;
     }
@@ -202,9 +211,16 @@ export class NumberField extends FormAssociatedNumberField {
      */
     public stepDown(): void {
         const value = parseFloat(this.value);
-        const stepDownValue = isNaN(value)
-            ? this.max ?? 0 - this.step
-            : value - this.step;
+        const stepDownValue = !isNaN(value)
+            ? value - this.step
+            : this.min > 0
+            ? this.min
+            : this.max < 0
+            ? this.max
+            : !this.min
+            ? 0 - this.step
+            : 0;
+
         this.value = stepDownValue.toString();
         this.control.value = this.value;
     }

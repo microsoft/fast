@@ -653,6 +653,80 @@ describe("NumberField", () => {
             await disconnect();
         });
 
+        it("should decrement to zero when no value and negative min", async () => {
+            const min = -10;
+            const { element, disconnect } = await setup({min});
+
+            element.stepDown();
+            await DOM.nextUpdate();
+
+            expect(element.value).to.equal(`0`);
+
+            await disconnect();
+        });
+
+        it("should increment to zero when no value and negative min", async () => {
+            const min = -10;
+            const { element, disconnect } = await setup({min});
+
+            element.stepUp();
+            await DOM.nextUpdate();
+
+            expect(element.value).to.equal(`0`);
+
+            await disconnect();
+        });
+
+        it("should decrement to min when no value and min > 0", async () => {
+            const min = 10;
+            const { element, disconnect } = await setup({min});
+
+            element.stepDown();
+            await DOM.nextUpdate();
+
+            expect(element.value).to.equal(min.toString());
+
+            await disconnect();
+        });
+
+        it("should increment to min when no value and min > 0", async () => {
+            const min = 10;
+            const { element, disconnect } = await setup({min});
+
+            element.stepUp();
+            await DOM.nextUpdate();
+
+            expect(element.value).to.equal(min.toString());
+
+            await disconnect();
+        });
+
+        it("should decrement to max when no value and min and max < 0", async () => {
+            const min = -100;
+            const max = -10;
+            const { element, disconnect } = await setup({min, max});
+
+            element.stepDown();
+            await DOM.nextUpdate();
+
+            expect(element.value).to.equal(max.toString());
+
+            await disconnect();
+        });
+
+        it("should increment to mx when no value and min and max < 0", async () => {
+            const min = -100;
+            const max = -10;
+            const { element, disconnect } = await setup({min, max});
+
+            element.stepUp();
+            await DOM.nextUpdate();
+
+            expect(element.value).to.equal(max.toString());
+
+            await disconnect();
+        });
+
         it("should update the proxy value when incrementing the value", async () => {
             const step = 2;
             const value = 5;
