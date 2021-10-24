@@ -342,6 +342,7 @@ export abstract class HTMLDirective implements ViewBehaviorFactory {
     abstract createBehavior(targets: ViewBehaviorTargets): Behavior | ViewBehavior;
     abstract createPlaceholder(index: number): string;
     targetId: string;
+    uniqueId: string;
 }
 
 // @public
