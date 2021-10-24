@@ -1,8 +1,13 @@
-import type { InlinableHTMLDirective, ViewBehaviorTargets } from "./html-directive";
+import type {
+    AspectedHTMLDirective,
+    HTMLDirective,
+    InlinableHTMLDirective,
+    ViewBehaviorFactory,
+    ViewBehaviorTargets,
+} from "./html-directive";
 import { _interpolationEnd, _interpolationStart, DOM } from "../dom";
 import type { ExecutionContext } from "../observation/observable";
-import { bind, HTMLBindingDirective, oneTime } from "./binding";
-import type { HTMLDirective, ViewBehaviorFactory } from "./html-directive";
+import { bind, oneTime } from "./binding";
 
 const targetIdFrom = (parentId: string, nodeIndex: number) => `${parentId}.${nodeIndex}`;
 const descriptorCache: PropertyDescriptorMap = {};
@@ -143,7 +148,7 @@ function createAggregateBinding(parts: (string | HTMLDirective)[]): HTMLDirectiv
         return output;
     };
 
-    const directive = bind(binding) as HTMLBindingDirective;
+    const directive = bind(binding) as AspectedHTMLDirective;
     directive.setAspect(aspect!);
     return directive;
 }
@@ -201,8 +206,8 @@ function compileAttributes(
 
         if (parseResult === null) {
             if (includeBasicValues) {
-                result = bind(() => attrValue, oneTime) as HTMLBindingDirective;
-                (result as HTMLBindingDirective).setAspect(attr.name);
+                result = bind(() => attrValue, oneTime) as AspectedHTMLDirective;
+                (result as AspectedHTMLDirective).setAspect(attr.name);
             }
         } else {
             result = createAggregateBinding(parseResult);
@@ -250,12 +255,7 @@ function compileContent(
             currentNode.textContent = currentPart;
         } else {
             currentNode.textContent = " ";
-            context.addFactory(
-                currentPart as HTMLBindingDirective,
-                parentId,
-                nodeId,
-                nodeIndex
-            );
+            context.addFactory(currentPart, parentId, nodeId, nodeIndex);
         }
 
         lastNode = currentNode;
