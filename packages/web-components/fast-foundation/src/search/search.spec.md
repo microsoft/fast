@@ -40,7 +40,6 @@ lerna run prepare
 - `label` - `aria-label` for the input when a <label> is not present
 - `required` - boolean value that sets the field as required
 - `value` - string value of the text field, can be an empty string
-- `incremental` - boolean that if true emits event for each keydown event 
 - `disabled` - disables the control
 - `list` - the id of the `<datalist>` element that contains the optional pre-defined autocomplete options
 - `maxlength`	- the maximum number of characters the input should accept

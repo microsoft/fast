@@ -138,6 +138,18 @@
                     "title": "End slot",
                     "description":
                         "Contents of the end slot are positioned after the option content"
+                },
+                {
+                    "name": "close-button",
+                    "title": "Close button slot",
+                    "description":
+                        "Contents of the close button slot are positioned after the content and is what clears the value when a value is set"
+                },
+                {
+                    "name": "close-glyph",
+                    "title": "Close glyph slot",
+                    "description":
+                        "Contents of the close button"
                 }
             ]
         }
