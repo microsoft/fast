@@ -1835,6 +1835,41 @@ export type RadioOptions = FoundationElementDefinition & {
 export const radioTemplate: (context: ElementDefinitionContext, definition: RadioOptions) => ViewTemplate<Radio>;
 
 // @public
+export class Rating extends RadioGroup {
+    // @internal (undocumented)
+    connectedCallback(): void;
+    // (undocumented)
+    disconnectedCallback(): void;
+    // (undocumented)
+    indicators: boolean[];
+    // (undocumented)
+    onMouseout(e: MouseEvent): void;
+    // (undocumented)
+    onMouseover(e: MouseEvent): void;
+    // (undocumented)
+    radioGroup: RadioGroup;
+}
+
+// @public (undocumented)
+export class RatingItem extends Radio {
+}
+
+// @public
+export type RatingItemOptions = FoundationElementDefinition & StartEndOptions & {
+    emptyIcon?: string | SyntheticViewTemplate;
+    filledIcon?: string | SyntheticViewTemplate;
+};
+
+// @public
+export const ratingItemTemplate: (context: ElementDefinitionContext, definition: RatingItemOptions) => ViewTemplate<RatingItem>;
+
+// @public
+export type RatingOptions = FoundationElementDefinition & StartEndOptions & {};
+
+// @public
+export const ratingTemplate: (context: ElementDefinitionContext, definition: any) => ViewTemplate<Rating>;
+
+// @public
 export type RegisterSelf<T extends Constructable> = {
     register(container: Container): Resolver<InstanceType<T>>;
     registerInRequestor: boolean;

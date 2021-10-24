@@ -37,6 +37,8 @@ import { fastProgressRing } from "./progress-ring/index";
 import { fastProgress } from "./progress/index";
 import { fastRadioGroup } from "./radio-group/index";
 import { fastRadio } from "./radio/index";
+import { fastRating } from "./rating/index";
+import { fastRatingItem } from "./rating-item/index";
 import { fastSelect } from "./select/index";
 import { fastSkeleton } from "./skeleton/index";
 import { fastSliderLabel } from "./slider-label/index";
@@ -107,6 +109,8 @@ export {
     fastProgressRing,
     fastRadio,
     fastRadioGroup,
+    fastRating,
+    fastRatingItem,
     fastSelect,
     fastSkeleton,
     fastSlider,
@@ -167,6 +171,8 @@ export const allComponents = {
     fastProgressRing,
     fastRadio,
     fastRadioGroup,
+    fastRating,
+    fastRatingItem,
     fastSelect,
     fastSkeleton,
     fastSlider,

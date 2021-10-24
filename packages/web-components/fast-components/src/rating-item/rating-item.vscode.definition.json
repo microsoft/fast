@@ -1,0 +1,14 @@
+{
+    "version": 1.1,
+    "tags": [
+        {
+            "name": "fast-rating-item",
+            "title": "Rating item",
+            "description": "The FAST rating item element",
+            "attributes": [
+            ],
+            "slots": [
+            ]
+        }
+    ]
+}
