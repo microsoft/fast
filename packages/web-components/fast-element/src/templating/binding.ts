@@ -42,6 +42,7 @@ interface UpdateTargetThis {
 type UpdateTarget = (
     this: UpdateTargetThis,
     target,
+    aspect: string,
     value,
     source: any,
     context: ExecutionContext
@@ -70,10 +71,12 @@ class TargetUpdateBinding extends BindingBase {
 
 class OneTimeBinding extends TargetUpdateBinding {
     bind(source: any, context: ExecutionContext, targets: ViewBehaviorTargets): void {
-        const target = targets[this.directive.targetId];
+        const directive = this.directive;
+        const target = targets[directive.targetId];
         this.updateTarget(
             target,
-            this.directive.binding(source, context),
+            directive.aspect!,
+            directive.binding(source, context),
             source,
             context
         );
@@ -89,11 +92,12 @@ class OnChangeBinding extends TargetUpdateBinding {
     }
 
     bind(source: any, context: ExecutionContext, targets: ViewBehaviorTargets): void {
-        const target = targets[this.directive.targetId];
+        const directive = this.directive;
+        const target = targets[directive.targetId];
         const observer: BindingObserver =
-            target[this.directive.targetId] ??
-            (target[this.directive.targetId] = Observable.binding(
-                this.directive.binding,
+            target[directive.uniqueId] ??
+            (target[directive.uniqueId] = Observable.binding(
+                directive.binding,
                 this,
                 this.isBindingVolatile
             ));
@@ -102,12 +106,18 @@ class OnChangeBinding extends TargetUpdateBinding {
         (observer as any).source = source;
         (observer as any).context = context;
 
-        this.updateTarget(target, observer.observe(source, context), source, context);
+        this.updateTarget(
+            target,
+            directive.aspect!,
+            observer.observe(source, context),
+            source,
+            context
+        );
     }
 
     unbind(source: any, context: ExecutionContext, targets: ViewBehaviorTargets): void {
         const target = targets[this.directive.targetId];
-        const observer = target[this.directive.targetId];
+        const observer = target[this.directive.uniqueId];
         observer.disconnect();
         observer.target = null;
         observer.source = null;
@@ -119,24 +129,14 @@ class OnChangeBinding extends TargetUpdateBinding {
         const target = (observer as any).target;
         const source = (observer as any).source;
         const context = (observer as any).context;
-        this.updateTarget(target, observer.observe(source, context!), source, context);
+        this.updateTarget(
+            target,
+            this.directive.aspect!,
+            observer.observe(source, context!),
+            source,
+            context
+        );
     }
-}
-
-function setPropertyTarget(this: UpdateTargetThis, target, value) {
-    target[this.directive.aspect!] = value;
-}
-
-function setAttributeTarget(this: UpdateTargetThis, target, value) {
-    DOM.setAttribute(target as HTMLElement, this.directive.aspect!, value);
-}
-
-function setBooleanAttributeTarget(this: UpdateTargetThis, target, value) {
-    DOM.setBooleanAttribute(
-        target as HTMLElement,
-        this.directive.aspect!,
-        value as boolean
-    );
 }
 
 interface UpdateTokenListThis extends UpdateTargetThis {
@@ -147,10 +147,11 @@ interface UpdateTokenListThis extends UpdateTargetThis {
 function updateTokenListTarget(
     this: UpdateTokenListThis,
     target: Element,
+    aspect: string,
     value: any
 ): void {
     const classVersions = this.classVersions;
-    const tokenList = target[this.directive.aspect!] as DOMTokenList;
+    const tokenList = target[aspect] as DOMTokenList;
     let version = this.version;
 
     // Add the classes, tracking the version at which they were added.
@@ -206,6 +207,7 @@ type ContentTarget = Node & {
 
 function updateContentTarget(
     target: ContentTarget,
+    aspect: string,
     value: any,
     source: any,
     context: ExecutionContext
@@ -295,10 +297,11 @@ type FASTEventSource = Node & {
 
 class EventListener extends BindingBase {
     bind(source: any, context: ExecutionContext, targets: ViewBehaviorTargets): void {
-        const target = targets[this.directive.targetId] as FASTEventSource;
+        const directive = this.directive;
+        const target = targets[directive.targetId] as FASTEventSource;
         target.$fastSource = source;
         target.$fastContext = context;
-        target.addEventListener(this.directive.aspect!, this, this.directive.options);
+        target.addEventListener(directive.aspect!, this, directive.options);
     }
 
     unbind(source: any, context: ExecutionContext, targets: ViewBehaviorTargets): void {
@@ -342,8 +345,8 @@ const defaultBindingOptions: DefaultBindingOptions = {
 };
 
 function createBindingConfig(
-    BaseType: typeof TargetUpdateBinding,
-    EventListener: Constructable<EventListener>
+    Base: typeof TargetUpdateBinding,
+    Listener: Constructable<EventListener>
 ) {
     const config: BindingConfig & ((options?: DefaultBindingOptions) => BindingConfig) = (
         options: DefaultBindingOptions
@@ -356,12 +359,12 @@ function createBindingConfig(
 
     config.options = defaultBindingOptions;
     config.mode = Object.freeze({
-        attribute: BaseType.createType(setAttributeTarget),
-        booleanAttribute: BaseType.createType(setBooleanAttributeTarget),
-        property: BaseType.createType(setPropertyTarget),
-        content: createContentBinding(BaseType).createType(updateContentTarget),
-        tokenList: createTokenListBinding(BaseType).createType(updateTokenListTarget),
-        event: directive => new EventListener(directive),
+        attribute: Base.createType(DOM.setAttribute),
+        booleanAttribute: Base.createType(DOM.setBooleanAttribute),
+        property: Base.createType((target, aspect, value) => (target[aspect] = value)),
+        content: createContentBinding(Base).createType(updateContentTarget),
+        tokenList: createTokenListBinding(Base).createType(updateTokenListTarget),
+        event: directive => new Listener(directive),
     });
 
     return config;
