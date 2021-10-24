@@ -1,38 +1,47 @@
-export * from "./platform.js";
-export * from "./templating/template.js";
-export * from "./components/fast-element.js";
+export * from "./platform";
+export * from "./templating/template";
+export * from "./components/fast-element";
 export {
     FASTElementDefinition,
     PartialFASTElementDefinition,
-} from "./components/fast-definitions.js";
-export * from "./components/attributes.js";
-export * from "./components/controller.js";
-export type { Callable, Constructable, Mutable } from "./interfaces.js";
-export * from "./templating/compiler.js";
+} from "./components/fast-definitions";
+export * from "./components/attributes";
+export * from "./components/controller";
+export type { Callable, Constructable, Mutable } from "./interfaces";
+export * from "./templating/compiler";
 export {
     ElementStyles,
     ElementStyleFactory,
     ComposableStyles,
     StyleTarget,
-} from "./styles/element-styles.js";
-export { css, cssPartial } from "./styles/css.js";
-export { CSSDirective } from "./styles/css-directive.js";
-export * from "./templating/view.js";
-export * from "./observation/observable.js";
-export * from "./observation/notifier.js";
-export { Splice } from "./observation/array-change-records.js";
-export { enableArrayObservation } from "./observation/array-observer.js";
-export { DOM } from "./dom.js";
-export type { Behavior } from "./observation/behavior.js";
-export * from "./templating/binding.js";
-export * from "./templating/html-directive.js";
-export * from "./templating/ref.js";
-export * from "./templating/when.js";
-export * from "./templating/repeat.js";
-export * from "./templating/slotted.js";
-export * from "./templating/children.js";
+} from "./styles/element-styles";
+export { css, cssPartial } from "./styles/css";
+export { CSSDirective } from "./styles/css-directive";
+export * from "./templating/view";
+export * from "./observation/observable";
+export * from "./observation/notifier";
+export { Splice } from "./observation/array-change-records";
+export { enableArrayObservation } from "./observation/array-observer";
+export { DOM } from "./dom";
+export type { Behavior } from "./observation/behavior";
+export {
+    bind,
+    oneTime,
+    onChange,
+    BindingConfig,
+    BindingMode,
+    BindingType,
+    BindingBehaviorFactory,
+    DefaultBindingOptions,
+} from "./templating/binding";
+export * from "./templating/html-directive";
+export * from "./templating/ref";
+export * from "./templating/when";
+export * from "./templating/repeat";
+export * from "./templating/slotted";
+export * from "./templating/children";
 export {
     elements,
     ElementsFilter,
     NodeBehaviorOptions,
-} from "./templating/node-observation.js";
+} from "./templating/node-observation";
