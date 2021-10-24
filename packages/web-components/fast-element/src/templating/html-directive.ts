@@ -58,15 +58,26 @@ export interface ViewBehaviorFactory {
     createBehavior(targets: ViewBehaviorTargets): Behavior | ViewBehavior;
 }
 
+let directiveId = 0;
+function nextId() {
+    return `fast-${++directiveId}`;
+}
+
 /**
  * Instructs the template engine to apply behavior to a node.
  * @public
  */
 export abstract class HTMLDirective implements ViewBehaviorFactory {
     /**
-     * The structural id of the DOM node to which the created behavior will apply.
+     * The structural id of the directive based on the DOM node
+     * that it applies to.
      */
     public targetId: string = "h";
+
+    /**
+     * The unique id of the directive instance.
+     */
+    public uniqueId: string = nextId();
 
     /**
      * Creates a placeholder string based on the directive's index within the template.
