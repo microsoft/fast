@@ -58,10 +58,9 @@ export class ChildrenDirective extends NodeObservationDirective<
      * @param target - The target to observe.
      */
     observe(target: any) {
-        const observerId = `${this.targetId}-observer`;
         const observer =
-            target[observerId] ??
-            (target[observerId] = new MutationObserver(this.handleEvent));
+            target[this.uniqueId] ??
+            (target[this.uniqueId] = new MutationObserver(this.handleEvent));
         observer.$fastTarget = target;
         observer.observe(target, this.options);
     }
@@ -71,8 +70,7 @@ export class ChildrenDirective extends NodeObservationDirective<
      * @param target - The target to unobserve.
      */
     disconnect(target: any) {
-        const observerId = `${this.targetId}-observer`;
-        const observer = target[observerId];
+        const observer = target[this.uniqueId];
         observer.$fastTarget = null;
         observer.disconnect();
     }
