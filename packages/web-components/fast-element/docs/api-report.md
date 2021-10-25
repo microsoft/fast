@@ -433,7 +433,7 @@ export class PropertyChangeNotifier implements Notifier {
 // @public
 export function ref<T = any>(propertyName: keyof T & string): CaptureType<T>;
 
-// Warning: (ae-incompatible-release-tags) The symbol "RefDirective" is marked as @public, but its signature references "StatelessAttachedAttributeDirective" which is marked as @internal
+// Warning: (ae-forgotten-export) The symbol "StatelessAttachedAttributeDirective" needs to be exported by the entry point index.d.ts
 //
 // @public
 export class RefDirective extends StatelessAttachedAttributeDirective<string> {
@@ -492,19 +492,6 @@ export interface Splice {
     addedCount: number;
     index: number;
     removed: any[];
-}
-
-// Warning: (ae-internal-missing-underscore) The name "StatelessAttachedAttributeDirective" should be prefixed with an underscore because the declaration is marked as @internal
-//
-// @internal (undocumented)
-export abstract class StatelessAttachedAttributeDirective<T> extends HTMLDirective implements ViewBehavior {
-    constructor(options: T);
-    abstract bind(source: any, context: ExecutionContext, targets: ViewBehaviorTargets): void;
-    createBehavior(targets: ViewBehaviorTargets): ViewBehavior;
-    createPlaceholder(index: number): string;
-    // (undocumented)
-    protected options: T;
-    abstract unbind(source: any, context: ExecutionContext, targets: ViewBehaviorTargets): void;
 }
 
 // @public
