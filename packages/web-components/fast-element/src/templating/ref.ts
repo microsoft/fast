@@ -37,6 +37,5 @@ export class RefDirective extends StatelessAttachedAttributeDirective<string> {
  * @param propertyName - The name of the property to assign the reference to.
  * @public
  */
-export function ref<T = any>(propertyName: keyof T & string): CaptureType<T> {
-    return new RefDirective(propertyName);
-}
+export const ref = <T = any>(propertyName: keyof T & string): CaptureType<T> =>
+    new RefDirective(propertyName);
