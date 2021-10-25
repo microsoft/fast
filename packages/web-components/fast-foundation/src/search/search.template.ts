@@ -1,4 +1,5 @@
-import { html, ref, slotted, ViewTemplate } from "@microsoft/fast-element";
+import { html, ref, slotted } from "@microsoft/fast-element";
+import type { ViewTemplate } from "@microsoft/fast-element";
 import { endSlotTemplate, startSlotTemplate } from "../patterns";
 import { whitespaceFilter } from "../utilities";
 import type { ElementDefinitionContext } from "../design-system";
