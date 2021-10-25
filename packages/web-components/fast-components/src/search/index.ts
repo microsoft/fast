@@ -1,10 +1,10 @@
 import { attr } from "@microsoft/fast-element";
 import {
-    composedParent,
     Search as FoundationSearch,
     searchTemplate as template,
 } from "@microsoft/fast-foundation";
-import { fillColor, neutralFillRecipe, Swatch } from "..";
+import { Swatch } from "../color/swatch";
+import { fillColor, neutralFillRecipe } from "../design-tokens";
 import { searchStyles as styles } from "./search.styles";
 
 /**

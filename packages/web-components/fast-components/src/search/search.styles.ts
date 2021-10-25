@@ -8,21 +8,19 @@ import {
     TextFieldOptions,
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
-import { fillColor } from "..";
 import {
     accentFillActive,
     accentFillHover,
     accentFillRest,
     bodyFont,
     controlCornerRadius,
-    density,
     designUnit,
     disabledOpacity,
+    fillColor,
     focusStrokeOuter,
     neutralFillHover,
     neutralFillInputHover,
     neutralFillInputRest,
-    neutralFillRest,
     neutralForegroundRest,
     neutralStrokeRest,
     strokeWidth,

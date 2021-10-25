@@ -6,7 +6,6 @@ import {
 } from "../patterns/index";
 import { applyMixins } from "../utilities/index";
 import type { FoundationElementDefinition } from "../foundation-element";
-import type { Button } from "..";
 import { FormAssociatedSearch } from "./search.form-associated";
 /**
  * Search configuration options
@@ -195,6 +194,10 @@ export class Search extends FormAssociatedSearch {
         this.value = this.control.value;
     }
 
+    /**
+     * Handles the control's clear value event
+     * @public
+     */
     public handleClearInput(): void {
         this.value = "";
         this.control.focus();

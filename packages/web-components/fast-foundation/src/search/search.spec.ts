@@ -1,4 +1,5 @@
 import { expect, assert } from "chai";
+import { Button, buttonTemplate } from "../button";
 import { fixture } from "../test-utilities/fixture";
 import { Search, searchTemplate as template } from "./index";
 
@@ -7,8 +8,13 @@ const FASTSearch = Search.compose({
     template,
 })
 
+const FASTButton = Button.compose({
+    baseName: "button",
+    template: buttonTemplate,
+})
+
 async function setup() {
-    const { element, connect, disconnect, parent } = await fixture(FASTSearch());
+    const { element, connect, disconnect, parent } = await fixture([FASTSearch(), FASTButton()]);
 
     return { element, connect, disconnect, parent };
 }
