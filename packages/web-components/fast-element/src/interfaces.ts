@@ -20,3 +20,14 @@ export type Constructable<T = {}> = {
 export type Mutable<T> = {
     -readonly [P in keyof T]: T[P];
 };
+
+/**
+ * @internal
+ */
+export const isFunction = (object: any): object is Function =>
+    typeof object === "function";
+
+/**
+ * @internal
+ */
+export const isString = (object: any): object is string => typeof object === "string";
