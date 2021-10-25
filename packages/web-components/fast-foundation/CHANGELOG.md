@@ -1,8 +1,49 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Wed, 13 Oct 2021 22:45:16 GMT and should not be manually modified.
+This log was last generated on Fri, 22 Oct 2021 17:40:52 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.23.0
+
+Fri, 22 Oct 2021 17:40:52 GMT
+
+### Minor changes
+
+- adds a currentValue property to form-associated to facilitate attribute-based data binding for form values (chhol@microsoft.com)
+
+### Patches
+
+- picker clear query on selection (scomea@microsoft.com)
+- Improving number field interactions and tests (robarb@microsoft.com)
+
+## 2.22.1
+
+Thu, 21 Oct 2021 07:11:42 GMT
+
+### Patches
+
+- fix broken tooltip (scomea@microsoft.com)
+
+## 2.22.0
+
+Wed, 20 Oct 2021 07:13:46 GMT
+
+### Minor changes
+
+- add centered positioning option to anchored region (scomea@microsoft.com)
+
+## 2.21.0
+
+Fri, 15 Oct 2021 23:24:14 GMT
+
+### Minor changes
+
+- Implement DesignToken root-element registration for CSS custom property emission of default token values (nicholasrice@users.noreply.github.com)
+
+### Patches
+
+- implement level-2 DOM support for DesignToken in browsers that don't support Constructable StyleSheets (nicholasrice@users.noreply.github.com)
 
 ## 2.20.0
 

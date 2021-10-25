@@ -2,6 +2,88 @@
   "name": "@microsoft/fast-foundation",
   "entries": [
     {
+      "date": "Fri, 22 Oct 2021 17:40:52 GMT",
+      "tag": "@microsoft/fast-foundation_v2.23.0",
+      "version": "2.23.0",
+      "comments": {
+        "patch": [
+          {
+            "comment": "picker clear query on selection",
+            "author": "scomea@microsoft.com",
+            "commit": "7f5e056e3baeceac7ce398fba513718309931497",
+            "package": "@microsoft/fast-foundation"
+          },
+          {
+            "comment": "Improving number field interactions and tests",
+            "author": "robarb@microsoft.com",
+            "commit": "c1d594dc1ac40f6d2ae3710bc269843c4a4f179f",
+            "package": "@microsoft/fast-foundation"
+          }
+        ],
+        "minor": [
+          {
+            "comment": "adds a currentValue property to form-associated to facilitate attribute-based data binding for form values",
+            "author": "chhol@microsoft.com",
+            "commit": "35c227a146ba73ce81a820c187c2834fa0c95a00",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 21 Oct 2021 07:11:42 GMT",
+      "tag": "@microsoft/fast-foundation_v2.22.1",
+      "version": "2.22.1",
+      "comments": {
+        "patch": [
+          {
+            "comment": "fix broken tooltip",
+            "author": "scomea@microsoft.com",
+            "commit": "87f26acd2aedde19c15a434932ec5de23f5bc021",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 20 Oct 2021 07:13:46 GMT",
+      "tag": "@microsoft/fast-foundation_v2.22.0",
+      "version": "2.22.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "add centered positioning option to anchored region",
+            "author": "scomea@microsoft.com",
+            "commit": "a495df7f2f95ccbd2c6b98c66465d3646ab4d015",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 15 Oct 2021 23:24:14 GMT",
+      "tag": "@microsoft/fast-foundation_v2.21.0",
+      "version": "2.21.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "Implement DesignToken root-element registration for CSS custom property emission of default token values",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "5cc73663ee585062b130da6d57400fa15bcd3707",
+            "package": "@microsoft/fast-foundation"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "implement level-2 DOM support for DesignToken in browsers that don't support Constructable StyleSheets",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "d1a991480646a1d03babb3a539e308b74c777aa3",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 13 Oct 2021 22:45:16 GMT",
       "tag": "@microsoft/fast-foundation_v2.20.0",
       "version": "2.20.0",

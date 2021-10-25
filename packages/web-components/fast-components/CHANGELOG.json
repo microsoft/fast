@@ -2,6 +2,74 @@
   "name": "@microsoft/fast-components",
   "entries": [
     {
+      "date": "Fri, 22 Oct 2021 17:40:52 GMT",
+      "tag": "@microsoft/fast-components_v2.14.2",
+      "version": "2.14.2",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Improving number field interactions and tests",
+            "author": "robarb@microsoft.com",
+            "commit": "c1d594dc1ac40f6d2ae3710bc269843c4a4f179f",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 21 Oct 2021 07:11:42 GMT",
+      "tag": "@microsoft/fast-components_v2.14.1",
+      "version": "2.14.1",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-foundation to v2.22.1",
+            "author": "scomea@microsoft.com",
+            "commit": "87f26acd2aedde19c15a434932ec5de23f5bc021",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 20 Oct 2021 07:13:46 GMT",
+      "tag": "@microsoft/fast-components_v2.14.0",
+      "version": "2.14.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "add centered positioning to anchored region",
+            "author": "scomea@microsoft.com",
+            "commit": "a495df7f2f95ccbd2c6b98c66465d3646ab4d015",
+            "package": "@microsoft/fast-components"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-foundation to v2.22.0",
+            "author": "scomea@microsoft.com",
+            "commit": "a495df7f2f95ccbd2c6b98c66465d3646ab4d015",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 15 Oct 2021 23:24:14 GMT",
+      "tag": "@microsoft/fast-components_v2.13.1",
+      "version": "2.13.1",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-foundation to v2.21.0",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "5cc73663ee585062b130da6d57400fa15bcd3707",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 13 Oct 2021 22:45:16 GMT",
       "tag": "@microsoft/fast-components_v2.13.0",
       "version": "2.13.0",
