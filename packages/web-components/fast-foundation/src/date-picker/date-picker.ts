@@ -86,7 +86,7 @@ export class DatePicker extends FoundationElement {
      * @public
      */
     @attr
-    public type: string;
+    public type: string = "date";
 
     /**
      * Selected hour
@@ -181,6 +181,12 @@ export class DatePicker extends FoundationElement {
         meridian: string[];
     };
 
+    public connectedCallback() {
+        super.connectedCallback();
+
+        window.addEventListener("click", () => this.closeMenu());
+    }
+
     /**
      * Method used to return hours, minutes and meridians for the time selector
      * @returns
@@ -227,32 +233,44 @@ export class DatePicker extends FoundationElement {
 
     /**
      * Method used to open the flyout menu
-     * @public
+     * @internal
      */
     public openMenu() {
-        this.overMenu = true;
-        this.menuOpen = true;
+        if (!this.menuOpen && this.overMenu) {
+            this.menuOpen = true;
+            console.log("opening menu");
+        }
     }
 
     /**
      * Method used to close the flyout menu
-     * @public
+     * @internal
      */
-    public closeMenu() {
-        this.menuOpen = false;
-        this.overMenu = false;
+    public closeMenu(force: boolean = false) {
+        if (this.menuOpen && (!this.overMenu || force)) {
+            this.menuOpen = false;
+            console.log("closing menu");
+        }
     }
 
     /**
      * Method to open the menu if closed otherwise, close the menu
-     * @public
+     * @internal
      */
-    public toggleMenu() {
-        this[this.menuOpen ? "closeMenu" : "openMenu"]();
+    public toggleMenu(force: boolean = false, e?: Event) {
+        e?.preventDefault();
+        console.log("toggling menu");
+        if (this.menuOpen) {
+            this.closeMenu(force);
+        } else {
+            this.openMenu();
+        }
     }
 
     /**
      * Handles closing the menu if it's not being interacted with
+     *
+     * @internal
      */
     handleClick() {
         if (!this.overMenu) {
@@ -277,43 +295,38 @@ export class DatePicker extends FoundationElement {
         start = type === "month" ? 1 : this.yearsView;
         format = type === "month" ? "short" : "numeric";
 
-        const values = new Array(12).fill(null).reduce(
-            (matrix, _, index) => {
-                const value = start + index;
-                const options = {};
-                options[type] = format;
-                const text = new Intl.DateTimeFormat(locale, options).format(
-                    new Date(
-                        `${type === "month" ? value : 2}-2-${
-                            type === "year" ? value : 2020
-                        }`
-                    )
-                );
-                const last = matrix[matrix.length - 1];
-                const action =
-                    type === "month"
-                        ? () => {
-                              this.monthView = value;
-                          }
-                        : () => {
-                              this.yearView = value;
-                          };
+        const values = new Array(12).fill(null).reduce((matrix, _, index) => {
+            if (index % 4 === 0) {
+                matrix.push([]);
+            }
 
-                last.push({
-                    value,
-                    text,
-                    action,
-                    selected: this[type] === value,
-                });
+            const value = start + index;
+            const options = {};
+            options[type] = format;
+            const text = new Intl.DateTimeFormat(locale, options).format(
+                new Date(
+                    `${type === "month" ? value : 2}-2-${type === "year" ? value : 2020}`
+                )
+            );
+            const last = matrix[matrix.length - 1];
+            const action =
+                type === "month"
+                    ? () => {
+                          this.monthView = value;
+                      }
+                    : () => {
+                          this.yearView = value;
+                      };
 
-                if (last.length % 4 === 0) {
-                    matrix.push([]);
-                }
+            last.push({
+                value,
+                text,
+                action,
+                selected: this[type] === value,
+            });
 
-                return matrix;
-            },
-            [[]]
-        );
+            return matrix;
+        }, []);
 
         return values;
     }

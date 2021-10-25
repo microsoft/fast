@@ -690,6 +690,38 @@ export enum DataGridRowTypes {
 // @public
 export const dataGridTemplate: (context: any, definition: any) => ViewTemplate<DataGrid>;
 
+// @public
+export class DateFormatter {
+    constructor(config?: any);
+    date: Date;
+    dayFormat: DayFormat;
+    // (undocumented)
+    getDate(date?: {
+        day: number;
+        month: number;
+        year: number;
+    } | string | Date, format?: Intl.DateTimeFormatOptions, locale?: string): string;
+    getDateObject(date: {
+        day: number;
+        month: number;
+        year: number;
+    } | string | Date): Date;
+    // (undocumented)
+    getDay(day?: number, format?: DayFormat, locale?: string): string;
+    // (undocumented)
+    getMonth(month?: number, format?: MonthFormat, locale?: string): string;
+    // (undocumented)
+    getWeekday(weekday?: number, format?: WeekdayFormat, locale?: string): string;
+    // (undocumented)
+    getWeekdays(format?: WeekdayFormat, locale?: string): string[];
+    // (undocumented)
+    getYear(year?: number, format?: YearFormat, locale?: string): string;
+    locale: string;
+    monthFormat: MonthFormat;
+    weekdayFormat: WeekdayFormat;
+    yearFormat: YearFormat;
+}
+
 // @public (undocumented)
 export class DatePicker extends FoundationElement {
     allowTextInput: boolean;
@@ -753,38 +785,6 @@ export type DatePickerOptions = FoundationElementDefinition & {};
 
 // @public (undocumented)
 export const datePickerTemplate: (context: ElementDefinitionContext, definition: DatePickerOptions) => ViewTemplate<DatePicker>;
-
-// @public
-export class DateFormatter {
-    constructor(config?: any);
-    date: Date;
-    dayFormat: DayFormat;
-    // (undocumented)
-    getDate(date?: {
-        day: number;
-        month: number;
-        year: number;
-    } | string | Date, format?: Intl.DateTimeFormatOptions, locale?: string): string;
-    getDateObject(date: {
-        day: number;
-        month: number;
-        year: number;
-    } | string | Date): Date;
-    // (undocumented)
-    getDay(day?: number, format?: DayFormat, locale?: string): string;
-    // (undocumented)
-    getMonth(month?: number, format?: MonthFormat, locale?: string): string;
-    // (undocumented)
-    getWeekday(weekday?: number, format?: WeekdayFormat, locale?: string): string;
-    // (undocumented)
-    getWeekdays(format?: WeekdayFormat, locale?: string): string[];
-    // (undocumented)
-    getYear(year?: number, format?: YearFormat, locale?: string): string;
-    locale: string;
-    monthFormat: MonthFormat;
-    weekdayFormat: WeekdayFormat;
-    yearFormat: YearFormat;
-}
 
 // @public
 export type DayFormat = "2-digit" | "numeric";

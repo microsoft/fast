@@ -2,6 +2,7 @@ import { html, ref, repeat, when } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
 import { AnchoredRegion } from "../anchored-region";
 import { Button } from "../button";
+import { Calendar } from "../calendar";
 import { DataGrid, DataGridCell, DataGridRow } from "../data-grid";
 import { Listbox } from "../listbox";
 import { ListboxOption } from "../listbox-option";
@@ -105,16 +106,17 @@ const pickerTemplate = (
                 &uparrow;
             </${button}>
         </div>
-        <${dataGrid} generate-hdeader="none">
+        <${dataGrid} class="picker-grid" part="picker-grid" generate-header="none">
             ${repeat(
                 x => items,
                 html`
-                <${dataGridRow} role="row" role-type="default" grid-template-columns="1fr 1fr 1fr 1fr">
+                <${dataGridRow} class="picker-row" part="picker-row" role="row" role-type="default" grid-template-columns="1fr 1fr 1fr 1fr">
                     ${repeat(
                         x => x,
                         html`
                         <${dataGridCell}
-                            class="cell ${x => (x.selected ? "selected" : "")}"
+                            class="picker-cell ${x => (x.selected ? "selected" : "")}"
+                            part="picker-cell"
                             tab-index="-1"
                             grid-column="${(x, c) => c.index + 1}"
                             @click="${x => x.action()}"
@@ -152,6 +154,7 @@ export const datePickerTemplate: (
     definition: DatePickerOptions
 ) => {
     const anchoredRegion: string = context.tagFor(AnchoredRegion);
+    const calendar: string = context.tagFor(Calendar);
 
     return html`
         <template
@@ -159,21 +162,27 @@ export const datePickerTemplate: (
             @mouseout="${x => (x.overMenu = false)}"
         >
             <div class="label"><slot></slot></div>
-            <div class="input-field" @click="${x => x.toggleMenu()}" ref="inputfield">
-                <div class="date">${x => x.value || x.placeholder}</div>
-                <span class="icon">
+            <div class="root" part="root" @click="${x => x.openMenu()}" ref="inputfield">
+                <input
+                    type="text"
+                    class="control"
+                    part="control"
+                    value="${x => x.value}"
+                    placeholder="${x => x.placeholder}"
+                />
+                <span class="icon" @click="${(x, c) => x.toggleMenu(true, c.event)}">
                     <slot name="icon" aria-label="Choose date">&#128197;</slot>
                 </span>
             </div>
-            <div class="flyout">
+            <div class="flyout ${x => (x.menuOpen ? "open" : "")}">
                 ${when(
-                    x => x.type === "time" || x.type === "datetime-local",
+                    x => x.type === "date" || x.type === "datetime-local",
                     html`
-                        ${x => timePickerTemplate(context, x.getTimes())}
+                        <${calendar} class="calendar"></${calendar}>
                     `
                 )}
                 ${when(
-                    x => x.type !== "time",
+                    x => x.type === "date" || x.type === "month",
                     html`
                         ${x => {
                             return pickerTemplate(context, x.getMatrix(), {
@@ -183,6 +192,11 @@ export const datePickerTemplate: (
                                 action: () => void 0,
                             });
                         }}
+                    `
+                )}
+                ${when(
+                    x => x.type === "month" || x.type === "year",
+                    html`
                         ${x => {
                             return pickerTemplate(context, x.getMatrix("year"), {
                                 text: `${x.yearsView} - ${x.yearsView + 11}`,
@@ -191,6 +205,12 @@ export const datePickerTemplate: (
                                 action: () => void 0,
                             });
                         }}
+                    `
+                )}
+                ${when(
+                    x => x.type === "time" || x.type === "datetime-local",
+                    html`
+                        ${x => timePickerTemplate(context, x.getTimes())}
                     `
                 )}
             </div>
