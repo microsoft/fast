@@ -1,6 +1,7 @@
 import { DOM } from "../dom";
 import { PropertyChangeNotifier, SubscriberSet } from "./notifier";
 import type { Notifier, Subscriber } from "./notifier";
+import { isFunction, isString } from "../interfaces";
 
 const volatileRegex = /(:|&&|\|\||if)/;
 const notifierLookup = new WeakMap<any, Notifier>();
@@ -60,7 +61,7 @@ class DefaultObservableAccessor implements Accessor {
 
             const callback = source[this.callback];
 
-            if (typeof callback === "function") {
+            if (isFunction(callback)) {
                 callback.call(source, oldValue, newValue);
             }
 
@@ -136,7 +137,7 @@ export const Observable = Object.freeze({
      * or a custom accessor that specifies the property name and accessor implementation.
      */
     defineProperty(target: {}, nameOrAccessor: string | Accessor): void {
-        if (typeof nameOrAccessor === "string") {
+        if (isString(nameOrAccessor)) {
             nameOrAccessor = new DefaultObservableAccessor(nameOrAccessor);
         }
 

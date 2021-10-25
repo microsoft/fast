@@ -1,3 +1,4 @@
+import { isString } from "../interfaces";
 import { NodeObservationDirective, NodeBehaviorOptions } from "./node-observation";
 import type { CaptureType } from "./template";
 
@@ -55,7 +56,7 @@ export class SlottedDirective extends NodeObservationDirective<SlottedDirectiveO
 export function slotted<T = any>(
     propertyOrOptions: (keyof T & string) | SlottedDirectiveOptions<keyof T & string>
 ): CaptureType<T> {
-    if (typeof propertyOrOptions === "string") {
+    if (isString(propertyOrOptions)) {
         propertyOrOptions = { property: propertyOrOptions };
     }
 

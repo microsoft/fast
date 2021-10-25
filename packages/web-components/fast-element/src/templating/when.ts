@@ -1,3 +1,4 @@
+import { isFunction } from "../interfaces";
 import type { Binding, ExecutionContext } from "../observation/observable";
 import type { CaptureType, SyntheticViewTemplate } from "./template";
 
@@ -14,10 +15,9 @@ export function when<TSource = any, TReturn = any>(
         | SyntheticViewTemplate
         | Binding<TSource, SyntheticViewTemplate>
 ): CaptureType<TSource> {
-    const getTemplate =
-        typeof templateOrTemplateBinding === "function"
-            ? templateOrTemplateBinding
-            : (): SyntheticViewTemplate => templateOrTemplateBinding;
+    const getTemplate = isFunction(templateOrTemplateBinding)
+        ? templateOrTemplateBinding
+        : (): SyntheticViewTemplate => templateOrTemplateBinding;
 
     return (source: TSource, context: ExecutionContext): SyntheticViewTemplate | null =>
         binding(source, context) ? getTemplate(source, context) : null;

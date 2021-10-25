@@ -1,4 +1,5 @@
 import type { FASTElement } from "../components/fast-element";
+import { isString } from "../interfaces";
 import type { Behavior } from "../observation/behavior";
 import { CSSDirective } from "./css-directive";
 import { ComposableStyles, ElementStyles } from "./element-styles";
@@ -79,7 +80,7 @@ class CSSPartial extends CSSDirective implements Behavior<HTMLElement> {
                 accumulated: Exclude<ComposableStyles, string>[],
                 current: ComposableStyles
             ) => {
-                if (typeof current === "string") {
+                if (isString(current)) {
                     this.css += current;
                 } else {
                     accumulated.push(current);

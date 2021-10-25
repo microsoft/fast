@@ -1,4 +1,4 @@
-import type { Mutable } from "../interfaces";
+import { isString, Mutable } from "../interfaces";
 import { Observable } from "../observation/observable";
 import { ComposableStyles, ElementStyles } from "../styles/element-styles";
 import type { ElementViewTemplate } from "../templating/template";
@@ -111,7 +111,7 @@ export class FASTElementDefinition<TType extends Function = Function> {
         type: TType,
         nameOrConfig: PartialFASTElementDefinition | string = (type as any).definition
     ) {
-        if (typeof nameOrConfig === "string") {
+        if (isString(nameOrConfig)) {
             nameOrConfig = { name: nameOrConfig };
         }
 

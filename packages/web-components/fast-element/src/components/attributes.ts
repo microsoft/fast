@@ -1,6 +1,7 @@
 import { Accessor, Observable } from "../observation/observable";
 import { DOM } from "../dom";
 import type { Notifier } from "../observation/notifier";
+import { isString } from "../interfaces";
 
 /**
  * Represents objects that can convert values to and from
@@ -271,7 +272,7 @@ export class AttributeDefinition implements Accessor {
             for (let j = 0, jj = list.length; j < jj; ++j) {
                 const config = list[j];
 
-                if (typeof config === "string") {
+                if (isString(config)) {
                     attributes.push(new AttributeDefinition(Owner, config));
                 } else {
                     attributes.push(

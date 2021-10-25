@@ -5,6 +5,7 @@ import type { HTMLTemplateCompilationResult } from "./compiler";
 import { ElementView, HTMLView, SyntheticView } from "./view";
 import { HTMLDirective, AspectedHTMLDirective } from "./html-directive";
 import { bind, oneTime } from "./binding";
+import { isFunction, isString } from "../interfaces";
 
 /**
  * A template capable of creating views specifically for rendering custom elements.
@@ -85,7 +86,7 @@ export class ViewTemplate<TSource = any, TParent = any, TGrandparent = any>
             let template: HTMLTemplateElement;
             const html = this.html;
 
-            if (typeof html === "string") {
+            if (isString(html)) {
                 template = document.createElement("template");
                 template.innerHTML = DOM.createHTML(html);
 
@@ -171,13 +172,11 @@ export function html<TSource = any, TParent = any, TGrandparent = any>(
     for (let i = 0, ii = strings.length - 1; i < ii; ++i) {
         const currentString = strings[i];
         let currentValue = values[i];
-        const valueType = typeof currentValue;
-
         html += currentString;
 
-        if (valueType === "function") {
+        if (isFunction(currentValue)) {
             currentValue = bind(currentValue as Binding);
-        } else if (valueType !== "string" && !(currentValue instanceof HTMLDirective)) {
+        } else if (!isString(currentValue) && !(currentValue instanceof HTMLDirective)) {
             const capturedValue = currentValue;
             currentValue = bind(() => capturedValue, oneTime);
         }
