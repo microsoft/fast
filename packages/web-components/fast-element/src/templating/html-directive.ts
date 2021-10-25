@@ -1,4 +1,4 @@
-import { DOM } from "../dom";
+import { DOM, nextId } from "../dom";
 import type { Behavior } from "../observation/behavior";
 import type { Binding, ExecutionContext } from "../observation/observable";
 
@@ -56,11 +56,6 @@ export interface ViewBehaviorFactory {
      * @param target - The targets available for behaviors to be attached to.
      */
     createBehavior(targets: ViewBehaviorTargets): Behavior | ViewBehavior;
-}
-
-let directiveId = 0;
-function nextId() {
-    return `fast-${++directiveId}`;
 }
 
 /**
