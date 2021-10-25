@@ -217,7 +217,7 @@ export const DOM: Readonly<{
 }>;
 
 // @public
-export function elements(selector?: string): ElementsFilter;
+export const elements: (selector?: string | undefined) => ElementsFilter;
 
 // @public
 export type ElementsFilter = (value: Node, index: number, array: Node[]) => boolean;
@@ -325,7 +325,7 @@ export abstract class HTMLDirective implements ViewBehaviorFactory {
     abstract createBehavior(targets: ViewBehaviorTargets): Behavior | ViewBehavior;
     abstract createPlaceholder(index: number): string;
     targetId: string;
-    uniqueId: string;
+    readonly uniqueId: string;
 }
 
 // @public
@@ -354,9 +354,9 @@ export class HTMLView<TSource = any, TParent = any, TGrandparent = any> implemen
 // @public (undocumented)
 export abstract class InlinableHTMLDirective extends AspectedHTMLDirective {
     // (undocumented)
-    abstract binding: Binding;
+    abstract readonly binding: Binding;
     // (undocumented)
-    abstract rawAspect?: string;
+    abstract readonly rawAspect?: string;
 }
 
 // Warning: (ae-internal-missing-underscore) The name "Mutable" should be prefixed with an underscore because the declaration is marked as @internal
@@ -431,7 +431,7 @@ export class PropertyChangeNotifier implements Notifier {
 }
 
 // @public
-export function ref<T = any>(propertyName: keyof T & string): CaptureType<T>;
+export const ref: <T = any>(propertyName: keyof T & string) => CaptureType<T>;
 
 // Warning: (ae-forgotten-export) The symbol "StatelessAttachedAttributeDirective" needs to be exported by the entry point index.d.ts
 //
