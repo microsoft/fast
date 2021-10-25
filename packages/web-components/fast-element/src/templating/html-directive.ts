@@ -72,7 +72,7 @@ export abstract class HTMLDirective implements ViewBehaviorFactory {
     /**
      * The unique id of the directive instance.
      */
-    public uniqueId: string = nextId();
+    public readonly uniqueId: string = nextId();
 
     /**
      * Creates a placeholder string based on the directive's index within the template.
@@ -104,8 +104,8 @@ export abstract class AspectedHTMLDirective extends HTMLDirective {
 }
 
 export abstract class InlinableHTMLDirective extends AspectedHTMLDirective {
-    abstract binding: Binding;
-    abstract rawAspect?: string;
+    abstract readonly binding: Binding;
+    abstract readonly rawAspect?: string;
 }
 
 /** @internal */
