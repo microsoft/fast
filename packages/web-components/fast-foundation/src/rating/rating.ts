@@ -1,4 +1,15 @@
+import { attr } from "@microsoft/fast-element";
+import type { RatingItem } from "..";
 import { RadioGroup } from "../radio-group/radio-group";
+
+/**
+ * Rating type for {@link Rating}
+ * @public
+ */
+export enum RatingMode {
+    multiple = "multiple",
+    single = "single",
+}
 
 /**
  * An Rating Custom HTML Element.
@@ -14,6 +25,16 @@ export class Rating extends RadioGroup {
     // }
 
     /**
+     * Set the rating component to be a multiple or single selected item system.
+     * @public
+     *
+     * @remarks
+     * HTML attribute: rating-mode
+     */
+    @attr({ attribute: "rating-mode" })
+    public ratingmode: RatingMode = RatingMode.multiple;
+
+    /**
      * @internal
      */
     protected slottedRadioButtonsChanged(oldValue, newValue): void {
@@ -22,6 +43,19 @@ export class Rating extends RadioGroup {
             this.slottedRadioButtons.forEach((rating: HTMLInputElement) => {
                 rating.addEventListener("mouseover", this.onMouseover);
                 rating.addEventListener("mouseout", this.onMouseout);
+            });
+        }
+    }
+
+    protected valueChanged(): void {
+        super.valueChanged();
+        if (this.$fastController.isConnected) {
+            this.slottedRadioButtons.forEach((rating: HTMLInputElement) => {
+                if (rating.value <= this.value) {
+                    rating.classList.add("rating-checked");
+                } else {
+                    rating.classList.remove("rating-checked");
+                }
             });
         }
     }
@@ -50,6 +84,10 @@ export class Rating extends RadioGroup {
             rating.classList.remove("highlight");
         });
     };
+
+    private isSingleRatingMode(): boolean {
+        return this.ratingmode === RatingMode.single;
+    }
 
     /**
      * @internal

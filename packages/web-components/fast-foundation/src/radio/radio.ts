@@ -102,7 +102,7 @@ export class Radio extends FormAssociatedRadio implements RadioControl {
      */
     @observable
     public checked: boolean;
-    private checkedChanged(): void {
+    protected checkedChanged(): void {
         if (this.$fastController.isConnected) {
             // changing the value via code and from radio-group
             if (!this.dirtyChecked) {

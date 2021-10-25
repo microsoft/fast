@@ -1818,6 +1818,8 @@ export class RadioGroup extends FoundationElement {
     readOnly: boolean;
     // @internal (undocumented)
     slottedRadioButtons: HTMLElement[];
+    // (undocumented)
+    protected slottedRadioButtonsChanged(oldValue: any, newValue: any): void;
     value: string;
     // (undocumented)
     protected valueChanged(): void;
@@ -1837,17 +1839,11 @@ export const radioTemplate: (context: ElementDefinitionContext, definition: Radi
 // @public
 export class Rating extends RadioGroup {
     // @internal (undocumented)
-    connectedCallback(): void;
-    // (undocumented)
-    disconnectedCallback(): void;
-    // (undocumented)
-    indicators: boolean[];
-    // (undocumented)
-    onMouseout(e: MouseEvent): void;
-    // (undocumented)
-    onMouseover(e: MouseEvent): void;
-    // (undocumented)
-    radioGroup: RadioGroup;
+    onMouseout: (e: MouseEvent) => void;
+    // @internal (undocumented)
+    onMouseover: (e: MouseEvent) => void;
+    // @internal (undocumented)
+    protected slottedRadioButtonsChanged(oldValue: any, newValue: any): void;
 }
 
 // @public (undocumented)
@@ -1864,10 +1860,7 @@ export type RatingItemOptions = FoundationElementDefinition & StartEndOptions & 
 export const ratingItemTemplate: (context: ElementDefinitionContext, definition: RatingItemOptions) => ViewTemplate<RatingItem>;
 
 // @public
-export type RatingOptions = FoundationElementDefinition & StartEndOptions & {};
-
-// @public
-export const ratingTemplate: (context: ElementDefinitionContext, definition: any) => ViewTemplate<Rating>;
+export const ratingTemplate: (context: ElementDefinitionContext, definition: FoundationElementDefinition) => ViewTemplate<Rating>;
 
 // @public
 export type RegisterSelf<T extends Constructable> = {
