@@ -8,6 +8,7 @@ import type {
 import { _interpolationEnd, _interpolationStart, DOM } from "../dom";
 import type { ExecutionContext } from "../observation/observable";
 import { bind, oneTime } from "./binding";
+import { isString } from "../interfaces";
 
 const targetIdFrom = (parentId: string, nodeIndex: number) => `${parentId}.${nodeIndex}`;
 const descriptorCache: PropertyDescriptorMap = {};
@@ -130,7 +131,7 @@ function createAggregateBinding(parts: (string | HTMLDirective)[]): HTMLDirectiv
     let aspect: string | undefined;
     const partCount = parts.length;
     const finalParts = parts.map((x: string | InlinableHTMLDirective) => {
-        if (typeof x === "string") {
+        if (isString(x)) {
             return (): string => x;
         }
 
@@ -251,7 +252,7 @@ function compileContent(
             );
         }
 
-        if (typeof currentPart === "string") {
+        if (isString(currentPart)) {
             currentNode.textContent = currentPart;
         } else {
             currentNode.textContent = " ";

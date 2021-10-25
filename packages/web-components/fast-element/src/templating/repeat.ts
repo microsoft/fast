@@ -13,6 +13,7 @@ import { emptyArray } from "../platform";
 import { ViewBehaviorTargets, HTMLDirective } from "./html-directive";
 import { HTMLView, SyntheticView } from "./view";
 import type { CaptureType, SyntheticViewTemplate } from "./template";
+import { isFunction } from "../interfaces";
 
 /**
  * Options for configuring repeat behavior.
@@ -356,10 +357,9 @@ export function repeat<TSource = any, TItem = any>(
         | Binding<TSource, SyntheticViewTemplate>,
     options: RepeatOptions = defaultRepeatOptions
 ): CaptureType<TSource> {
-    const templateBinding =
-        typeof templateOrTemplateBinding === "function"
-            ? templateOrTemplateBinding
-            : (): SyntheticViewTemplate => templateOrTemplateBinding;
+    const templateBinding = isFunction(templateOrTemplateBinding)
+        ? templateOrTemplateBinding
+        : (): SyntheticViewTemplate => templateOrTemplateBinding;
 
     return new RepeatDirective<TSource>(itemsBinding, templateBinding, options);
 }
