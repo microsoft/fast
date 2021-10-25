@@ -1148,6 +1148,8 @@ export interface FormAssociated extends Omit<ElementInternals, "labels"> {
     // (undocumented)
     attachProxy(): void;
     // (undocumented)
+    currentValue: string;
+    // (undocumented)
     detachProxy(): void;
     // (undocumented)
     dirtyValue: boolean;
@@ -1606,7 +1608,8 @@ export class NumberField extends FormAssociatedNumberField {
     control: HTMLInputElement;
     // @internal (undocumented)
     defaultSlottedNodes: Node[];
-    displayText: string;
+    // @internal
+    handleBlur(): void;
     // @internal
     handleChange(): void;
     // @internal
