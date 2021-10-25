@@ -34,7 +34,14 @@ export {
     BindingBehaviorFactory,
     DefaultBindingOptions,
 } from "./templating/binding";
-export * from "./templating/html-directive";
+export {
+    ViewBehaviorTargets,
+    ViewBehavior,
+    ViewBehaviorFactory,
+    HTMLDirective,
+    AspectedHTMLDirective,
+    InlinableHTMLDirective,
+} from "./templating/html-directive";
 export * from "./templating/ref";
 export * from "./templating/when";
 export * from "./templating/repeat";
