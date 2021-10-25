@@ -39,11 +39,10 @@ const selectElements = value => value.nodeType === 1;
  * @param selector - An optional selector to restrict the filter to.
  * @public
  */
-export function elements(selector?: string): ElementsFilter {
-    return selector
+export const elements = (selector?: string): ElementsFilter =>
+    selector
         ? value => value.nodeType === 1 && (value as HTMLElement).matches(selector)
         : selectElements;
-}
 
 /**
  * A base class for node observation.
