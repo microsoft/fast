@@ -136,6 +136,7 @@ export interface FormAssociated extends Omit<ElementInternals, "labels"> {
  * @alpha
  */
 export interface CheckableFormAssociated extends FormAssociated {
+    currentChecked: boolean;
     dirtyChecked: boolean;
     checkedAttribute: boolean;
     defaultChecked: boolean;
