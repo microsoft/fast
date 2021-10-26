@@ -729,6 +729,7 @@ export function CheckableFormAssociated<T extends ConstructableFormAssociated>(
                 this.dirtyChecked = true;
             }
 
+            this.currentChecked = this.checked;
             this.updateForm();
 
             if (this.proxy instanceof HTMLInputElement) {
@@ -740,9 +741,15 @@ export function CheckableFormAssociated<T extends ConstructableFormAssociated>(
             }
 
             this.validate();
-            this.currentChecked = this.checked;
         }
 
+        /**
+         * The current checkedness of the element. This property serves as a mechanism
+         * to set the `checked` property through both property assignment and the
+         * .setAttribute() method. This is useful for setting the field's checkedness
+         * in UI libraries that bind data through the .setAttribute() API
+         * and don't support IDL attribute binding.
+         */
         public currentChecked: boolean;
         public currentCheckedChanged(prev: boolean | undefined, next: boolean) {
             this.checked = this.currentChecked;
