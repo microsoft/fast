@@ -66,6 +66,11 @@ export class TreeItem extends FoundationElement {
     @attr({ mode: "boolean" })
     public disabled: boolean;
 
+    /**
+     *  Reference to the expand/collapse button
+     *
+     * @internal
+     */
     public expandCollapseButton: HTMLDivElement;
 
     @observable
