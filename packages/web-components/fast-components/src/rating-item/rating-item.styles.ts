@@ -1,9 +1,5 @@
 import { css, ElementStyles } from "@microsoft/fast-element";
-import {
-    disabledCursor,
-    display,
-    ElementDefinitionContext,
-} from "@microsoft/fast-foundation";
+import { display, ElementDefinitionContext } from "@microsoft/fast-foundation";
 import { accentForegroundRest } from "..";
 import {
     bodyFont,
@@ -25,17 +21,7 @@ export const ratingItemStyles: (context: ElementDefinitionContext) => ElementSty
             line-height: ${typeRampBaseLineHeight};
         }
 
-        .control {
-            background: transparent;
-            background-color: transparent;
-            border: none;
-            padding: 0;
-            margin: 0;
-            color: ${neutralForegroundRest};
-            fill: currentcolor;
-        }
-
-        .icon-container {
+        .indicators {
             display: inline-block;
             position: relative;
             height: inherit;
@@ -62,11 +48,13 @@ export const ratingItemStyles: (context: ElementDefinitionContext) => ElementSty
             transition: 0.5s;
         }
 
-        :host(.highlight) slot[name="empty-icon"] {
+        :host(.highlight) slot[name="empty-icon"],
+        :host(.rating-checked) slot[name="empty-icon"] {
             opacity: 0;
         }
 
-        :host(.highlight) slot[name="fill-icon"] {
+        :host(.highlight) slot[name="fill-icon"],
+        :host(.rating-checked) slot[name="fill-icon"] {
             cursor: pointer;
             opacity: 1;
         }

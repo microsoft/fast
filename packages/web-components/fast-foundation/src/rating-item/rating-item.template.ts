@@ -25,7 +25,7 @@ export const ratingItemTemplate: (
         @keypress="${(x, c) => x.keypressHandler(c.event as KeyboardEvent)}"
         @click="${(x, c) => x.clickHandler(c.event as MouseEvent)}"
     >
-        <div class="icon-container" part="icon-container">
+        <div class="indicators" part="indicators">
             <slot name="empty-icon" part="empty-icon">
                 ${definition.emptyIcon || ""}
             </slot>

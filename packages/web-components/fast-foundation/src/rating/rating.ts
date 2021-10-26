@@ -3,37 +3,11 @@ import type { RatingItem } from "..";
 import { RadioGroup } from "../radio-group/radio-group";
 
 /**
- * Rating type for {@link Rating}
- * @public
- */
-export enum RatingMode {
-    multiple = "multiple",
-    single = "single",
-}
-
-/**
  * An Rating Custom HTML Element.
  *
  * @public
  */
 export class Rating extends RadioGroup {
-    // public ratingChangeHandler(e: CustomEvent): void {
-    //     (e.target as RadioGroup).value;
-    //     this.value = (e.target as RadioGroup).value;
-    //     this.$emit("change");
-    //     console.log("blah", (e.target as RadioGroup).value);
-    // }
-
-    /**
-     * Set the rating component to be a multiple or single selected item system.
-     * @public
-     *
-     * @remarks
-     * HTML attribute: rating-mode
-     */
-    @attr({ attribute: "rating-mode" })
-    public ratingmode: RatingMode = RatingMode.multiple;
-
     /**
      * @internal
      */
@@ -49,6 +23,10 @@ export class Rating extends RadioGroup {
 
     protected valueChanged(): void {
         super.valueChanged();
+        this.setValueChangedClass();
+    }
+
+    public setValueChangedClass(): void {
         if (this.$fastController.isConnected) {
             this.slottedRadioButtons.forEach((rating: HTMLInputElement) => {
                 if (rating.value <= this.value) {
@@ -85,16 +63,13 @@ export class Rating extends RadioGroup {
         });
     };
 
-    private isSingleRatingMode(): boolean {
-        return this.ratingmode === RatingMode.single;
-    }
-
     /**
      * @internal
      */
-    // public connectedCallback(): void {
-    //     super.connectedCallback();
-    // }
+    public connectedCallback(): void {
+        super.connectedCallback();
+        this.setValueChangedClass();
+    }
 
     /**
      * @internal
