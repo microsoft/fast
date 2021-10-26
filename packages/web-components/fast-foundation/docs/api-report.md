@@ -354,6 +354,8 @@ export interface CheckableFormAssociated extends FormAssociated {
     // (undocumented)
     checkedAttribute: boolean;
     // (undocumented)
+    currentChecked: boolean;
+    // (undocumented)
     defaultChecked: boolean;
     // (undocumented)
     defaultCheckedChanged(oldValue: boolean | undefined, newValue: boolean): void;

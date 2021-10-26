@@ -482,6 +482,13 @@ export function FormAssociated<T extends ConstructableFormAssociated>(BaseCtor: 
 
             this.required = false;
             this.initialValue = this.initialValue || "";
+
+            if (!this.elementInternals) {
+                // When elementInternals is not supported, formResetCallback is
+                // bound to an event listener, so ensure the handler's `this`
+                // context is correct.
+                this.formResetCallback = this.formResetCallback.bind(this);
+            }
         }
 
         /**
@@ -499,10 +506,10 @@ export function FormAssociated<T extends ConstructableFormAssociated>(BaseCtor: 
 
             if (!this.elementInternals) {
                 this.attachProxy();
-            }
 
-            if (this.form) {
-                this.form.addEventListener("reset", this.formResetCallback);
+                if (this.form) {
+                    this.form.addEventListener("reset", this.formResetCallback);
+                }
             }
         }
 
@@ -514,7 +521,7 @@ export function FormAssociated<T extends ConstructableFormAssociated>(BaseCtor: 
                 this.proxy.removeEventListener(name, this.stopPropagation)
             );
 
-            if (this.form) {
+            if (!this.elementInternals && this.form) {
                 this.form.removeEventListener("reset", this.formResetCallback);
             }
         }
@@ -564,14 +571,14 @@ export function FormAssociated<T extends ConstructableFormAssociated>(BaseCtor: 
          * state changed.
          * @param disabled - the disabled value of the form / fieldset
          */
-        public formDisabledCallback = (disabled: boolean): void => {
+        public formDisabledCallback(disabled: boolean): void {
             this.disabled = disabled;
-        };
+        }
 
-        public formResetCallback = (): void => {
+        public formResetCallback(): void {
             this.value = this.initialValue;
             this.dirtyValue = false;
-        };
+        }
 
         protected proxyInitialized: boolean = false;
 
@@ -682,7 +689,8 @@ export function CheckableFormAssociated<T extends ConstructableFormAssociated>(
     BaseCtor: T
 ): T {
     interface C extends FormAssociatedElement {}
-    class C extends FormAssociated(BaseCtor) {
+    class C extends FormAssociated(BaseCtor) {}
+    class D extends C {
         /**
          * Tracks whether the "checked" property has been changed.
          * This is necessary to provide consistent behavior with
@@ -777,13 +785,13 @@ export function CheckableFormAssociated<T extends ConstructableFormAssociated>(
         }
     }
 
-    attr({ attribute: "checked", mode: "boolean" })(C.prototype, "checkedAttribute");
+    attr({ attribute: "checked", mode: "boolean" })(D.prototype, "checkedAttribute");
     attr({ attribute: "current-checked", converter: booleanConverter })(
-        C.prototype,
+        D.prototype,
         "currentChecked"
     );
-    observable(C.prototype, "defaultChecked");
-    observable(C.prototype, "checked");
+    observable(D.prototype, "defaultChecked");
+    observable(D.prototype, "checked");
 
-    return C;
+    return D;
 }
