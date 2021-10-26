@@ -2,7 +2,7 @@ import { expect, assert } from "chai";
 import { Switch, switchTemplate as template } from "./index";
 import { fixture } from "../test-utilities/fixture";
 import { DOM } from "@microsoft/fast-element";
-import { keySpace } from "@microsoft/fast-web-utilities";
+import { keySpace, keyEnter } from "@microsoft/fast-web-utilities";
 
 const FASTSwitch = Switch.compose({
     baseName: "switch",
@@ -265,7 +265,32 @@ describe("Switch", () => {
 
             await disconnect();
         });
+
+        it("should fire an event when enter is invoked", async () => {
+            const { element, connect, disconnect } = await setup();
+            let wasInvoked: boolean = false;
+            const event = new KeyboardEvent("keydown", {
+                key: keyEnter,
+            } as KeyboardEventInit);
+
+            await connect();
+
+            element.addEventListener("keydown", e => {
+                e.preventDefault();
+
+                wasInvoked = true;
+            });
+
+            await DOM.nextUpdate();
+
+            element.dispatchEvent(event);
+
+            expect(wasInvoked).to.equal(true);
+
+            await disconnect();
+        });
     });
+
 
     describe("that is required", () => {
         it("should be invalid when unchecked", async () => {
