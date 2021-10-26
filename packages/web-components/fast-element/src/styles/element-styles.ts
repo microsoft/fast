@@ -1,5 +1,5 @@
 import type { Behavior } from "../observation/behavior";
-import { DOM } from "../dom";
+import { DOM, nextId } from "../dom";
 
 /**
  * A node that can be targeted by styles.
@@ -195,12 +195,6 @@ export class AdoptedStyleSheetsStyles extends ElementStyles {
     }
 }
 
-let styleClassId = 0;
-
-function getNextStyleClass(): string {
-    return `fast-style-class-${++styleClassId}`;
-}
-
 /**
  * @internal
  */
@@ -211,7 +205,7 @@ export class StyleElementStyles extends ElementStyles {
     public constructor(styles: ComposableStyles[]) {
         super(styles, reduceBehaviors(styles));
         this.styleSheets = reduceStyles(styles) as string[];
-        this.styleClass = getNextStyleClass();
+        this.styleClass = nextId();
     }
 
     public addStylesTo(target: StyleTarget): void {
