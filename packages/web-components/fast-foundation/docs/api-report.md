@@ -1651,6 +1651,7 @@ export class Picker extends FormAssociatedPicker {
     noSuggestionsText: string;
     options: string;
     optionsList: string[];
+    placeholder: string;
     query: string;
     // @internal
     region: AnchoredRegion;

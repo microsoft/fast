@@ -37,6 +37,7 @@ const pickerInputTemplate: ViewTemplate = html<Picker>`
         haspopup="list"
         aria-label="${x => x.label}"
         aria-labelledby="${x => x.labelledBy}"
+        placeholder="${x => x.placeholder}"
         ${ref("inputElement")}
     ></input>
 `;
@@ -162,6 +163,16 @@ export class Picker extends FormAssociatedPicker {
      */
     @attr({ attribute: "labelledby" })
     public labelledBy: string;
+
+    /**
+     * Applied to the placeholder attribute of the input element
+     *
+     * @alpha
+     * @remarks
+     * HTML Attribute: placholder
+     */
+    @attr({ attribute: "placeholder" })
+    public placeholder: string;
 
     /**
      * Whether to display a loading state if the menu is opened.

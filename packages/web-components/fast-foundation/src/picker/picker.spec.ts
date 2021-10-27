@@ -149,6 +149,22 @@ describe("Picker", () => {
         await disconnect();
     });
 
+    it("picker 'combobox' should reflect label/labbelledby/placeholder attributes on picker", async () => {
+        const { element, connect, disconnect } = await setupPicker();
+
+        element.label = "test label";
+        element.labelledBy = "test labelledby";
+        element.placeholder = "test placeholder";
+
+        await connect();
+
+        expect(element.inputElement?.getAttribute("aria-label")).to.equal("test label");
+        expect(element.inputElement?.getAttribute("aria-labelledby")).to.equal("test labelledby");
+        expect(element.inputElement?.getAttribute("placeholder")).to.equal("test placeholder");
+
+        await disconnect();
+    });
+
     it("picker should create a menu element when instanciated", async () => {
         const { element, connect, disconnect } = await setupPicker();
         await connect();
