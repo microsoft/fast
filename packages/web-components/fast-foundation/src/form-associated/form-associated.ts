@@ -780,6 +780,7 @@ export function CheckableFormAssociated<T extends ConstructableFormAssociated>(
         }
 
         public formResetCallback() {
+            super.formResetCallback();
             this.checked = !!this.checkedAttribute;
             this.dirtyChecked = false;
         }
