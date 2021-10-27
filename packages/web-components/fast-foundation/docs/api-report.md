@@ -354,6 +354,8 @@ export interface CheckableFormAssociated extends FormAssociated {
     // (undocumented)
     checkedAttribute: boolean;
     // (undocumented)
+    checkedChanged(oldValue: boolean | undefined, newValue: boolean): void;
+    // (undocumented)
     currentChecked: boolean;
     // (undocumented)
     defaultChecked: boolean;
@@ -375,8 +377,6 @@ export class Checkbox extends FormAssociatedCheckbox {
     constructor();
     // @internal (undocumented)
     clickHandler: (e: MouseEvent) => void;
-    // @internal (undocumented)
-    connectedCallback(): void;
     // @internal (undocumented)
     defaultSlottedNodes: Node[];
     indeterminate: boolean;
@@ -430,7 +430,7 @@ export class Combobox extends FormAssociatedCombobox {
     // @internal
     focusoutHandler(e: FocusEvent): boolean | void;
     // @internal
-    formResetCallback: () => void;
+    formResetCallback(): void;
     // @internal
     inputHandler(e: InputEvent): boolean | void;
     // @internal
@@ -1792,13 +1792,12 @@ export type ProxyElement = HTMLSelectElement | HTMLTextAreaElement | HTMLInputEl
 //
 // @public
 export class Radio extends FormAssociatedRadio implements RadioControl {
-    checkedAttribute: boolean;
+    constructor();
     // @internal (undocumented)
     clickHandler(e: MouseEvent): boolean | void;
     // @internal (undocumented)
     connectedCallback(): void;
-    defaultChecked: boolean;
-    // (undocumented)
+    // @internal (undocumented)
     defaultCheckedChanged(): void;
     // @internal (undocumented)
     defaultSlottedNodes: Node[];
@@ -1965,7 +1964,7 @@ export class Select extends FormAssociatedSelect {
     // @internal
     focusoutHandler(e: FocusEvent): boolean | void;
     // @internal
-    formResetCallback: () => void;
+    formResetCallback(): void;
     // @internal
     keydownHandler(e: KeyboardEvent): boolean | void;
     // @internal
@@ -2200,9 +2199,9 @@ export const supportsElementInternals: boolean;
 export class Switch extends FormAssociatedSwitch {
     constructor();
     // @internal (undocumented)
-    clickHandler: (e: MouseEvent) => void;
+    checkedChanged(prev: boolean | undefined, next: boolean): void;
     // @internal (undocumented)
-    connectedCallback(): void;
+    clickHandler: (e: MouseEvent) => void;
     // @internal (undocumented)
     defaultSlottedNodes: Node[];
     // @internal
