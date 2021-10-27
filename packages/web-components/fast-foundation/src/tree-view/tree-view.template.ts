@@ -16,6 +16,7 @@ export const treeViewTemplate: FoundationElementTemplate<ViewTemplate<TreeView>>
         ${ref("treeView")}
         @keydown="${(x, c) => x.handleKeyDown(c.event as KeyboardEvent)}"
         @focusin="${(x, c) => x.handleFocus(c.event as FocusEvent)}"
+        @focusout="${(x, c) => x.handleBlur(c.event as FocusEvent)}"
         @click="${(x, c) => x.handleClick(c.event as MouseEvent)}"
         @selected-change="${(x, c) => x.handleSelectedChange(c.event)}"
     >

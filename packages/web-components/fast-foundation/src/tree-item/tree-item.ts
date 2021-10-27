@@ -73,12 +73,27 @@ export class TreeItem extends FoundationElement {
      */
     public expandCollapseButton: HTMLDivElement;
 
+    /**
+     * Whether the item is focusable
+     *
+     * @internal
+     */
     @observable
     public focusable: boolean = false;
 
+    /**
+     *
+     *
+     * @internal
+     */
     @observable
     public childItems: HTMLElement[];
 
+    /**
+     * The slotted child tree items
+     *
+     * @internal
+     */
     @observable
     public items: HTMLElement[];
     private itemsChanged(oldValue: unknown, newValue: HTMLElement[]): void {
@@ -93,16 +108,25 @@ export class TreeItem extends FoundationElement {
     }
 
     /**
+     * Indicates if the tree item is nested
+     *
      * @internal
      */
     @observable
     public nested: boolean;
 
+    /**
+     *
+     *
+     * @internal
+     */
     @observable
     public renderCollapsedChildren: boolean;
 
     /**
      * Places document focus on a tree item
+     *
+     * @public
      * @param el - the element to focus
      */
     public static focusItem(el: HTMLElement) {
@@ -110,12 +134,31 @@ export class TreeItem extends FoundationElement {
         el.focus();
     }
 
+    /**
+     * Whether the tree is nested
+     *
+     * @public
+     */
+    public readonly isNestedItem = (): boolean => {
+        return isTreeItemElement(this.parentElement as Element);
+    };
+
+    /**
+     * Handle expand button click
+     *
+     * @internal
+     */
     public handleExpandCollapseButtonClick = (e: MouseEvent): void => {
         if (!this.disabled && !e.defaultPrevented) {
             this.expanded = !this.expanded;
         }
     };
 
+    /**
+     * Gets number of children
+     *
+     * @internal
+     */
     public childItemLength(): number {
         const treeChildren: HTMLElement[] = this.childItems.filter(
             (item: HTMLElement) => {
@@ -124,10 +167,6 @@ export class TreeItem extends FoundationElement {
         );
         return treeChildren ? treeChildren.length : 0;
     }
-
-    public readonly isNestedItem = (): boolean => {
-        return isTreeItemElement(this.parentElement as Element);
-    };
 }
 
 /**

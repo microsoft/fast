@@ -21,11 +21,12 @@ import { FoundationElement } from "../foundation-element";
  */
 export class TreeView extends FoundationElement {
     /**
-     * When true, the control will be appear expanded by user interaction.
-     * @public
-     * @remarks
-     * HTML Attribute: render-collapsed-nodes
-     */
+   /**
+    * When true, the control will be appear expanded by user interaction.
+    * @public
+    * @remarks
+    * HTML Attribute: render-collapsed-nodes
+    */
     @attr({ attribute: "render-collapsed-nodes" })
     public renderCollapsedNodes: boolean;
 
@@ -42,14 +43,9 @@ export class TreeView extends FoundationElement {
     @observable slottedTreeItems: HTMLElement[];
     private slottedTreeItemsChanged(oldValue: unknown, newValue: HTMLElement[]): void {
         if (this.$fastController.isConnected) {
-            // enforce single select
-            this.treeItems.forEach((item: HTMLElement) => {
-                if (item instanceof TreeItem) {
-                    if (item !== newValue) {
-                        (item as TreeItem).selected = false;
-                    }
-                }
-            });
+            if (isTreeItemElement(oldValue)) {
+                (oldValue as TreeItem).selected = false;
+            }
         }
     }
 
@@ -62,74 +58,58 @@ export class TreeView extends FoundationElement {
     private slottedTreeItemsChanged(): void {
         if (this.$fastController.isConnected) {
             // update for slotted children change
-            this.treeItems = this.getVisibleNodes();
             this.setItems();
         }
     }
 
     /**
      * The tree item that is designated to be in the tab queue.
-     * If there is no currentFocused element the tree itself is in
-     * the tab queue (ie. tabindex = 0)
      *
      * @internal
      */
     @observable
     public currentFocused: HTMLElement | TreeItem | null = null;
-    private currentFocusedChanged(oldFocusItem, newFocusItemj): void {
-        if (this.$fastController.isConnected) {
-            this.treeItems.forEach((item: HTMLElement) => {
-                if (item instanceof TreeItem) {
-                    if (item !== newFocusItemj) {
-                        item.setAttribute("tabindex", "-1");
-                    }
-                }
-            });
-            if (isTreeItemElement(newFocusItemj)) {
-                (newFocusItemj as HTMLElement).setAttribute("tabindex", "0");
-                this.setAttribute("tabindex", "-1");
-            } else {
-                // make the tree focusable
-                this.setAttribute("tabindex", "0");
-            }
-        }
-    }
 
     /**
-     * Handle a bubbled focus event
+     * Handle focus events
      *
      * @internal
      */
     public handleFocus = (e: FocusEvent): void => {
-        if (e.target === this) {
-            // if the tree view gets focus shift it to a valid tree item if possible
-
-            // if we have a currentFocus element
-            // focus on that
-            if (this.currentFocused !== null) {
-                this.currentFocused.focus();
-                return;
-            }
-
-            // otherwise use the first one we find
-            const newFocusItem:
-                | null
-                | HTMLElement
-                | TreeItem = this.getValidFocusableItem();
-            if (newFocusItem !== null) {
-                newFocusItem.focus();
-            }
+        if (this.slottedTreeItems.length < 1) {
+            // no child items, nothing to do
             return;
         }
 
-        if (
-            this.contains(e.target as Element) &&
-            this.isFocusableElement(e.target as Element)
-        ) {
-            // focus event is from a valid tree item child
-            //  it becomes currentFocused
-            this.currentFocused = e.target as HTMLElement;
+        if (e.target === this) {
+            if (this.currentFocused === null) {
+                this.currentFocused = this.getValidFocusableItem();
+            }
+
+            if (this.currentFocused !== null) {
+                TreeItem.focusItem(this.currentFocused);
+            }
+
             return;
+        }
+
+        if (this.contains(e.target as Node)) {
+            this.setAttribute("tabindex", "-1");
+            this.currentFocused = e.target as HTMLElement;
+        }
+    };
+
+    /**
+     * Handle blur events
+     *
+     * @internal
+     */
+    public handleBlur = (e: FocusEvent): void => {
+        if (
+            e.target instanceof HTMLElement &&
+            (e.relatedTarget === null || !this.contains(e.relatedTarget as Node))
+        ) {
+            this.setAttribute("tabindex", "0");
         }
     };
 
@@ -140,13 +120,14 @@ export class TreeView extends FoundationElement {
      */
     public treeView: HTMLElement;
 
-    private treeItems: HTMLElement[];
     private nested: boolean;
 
     public connectedCallback(): void {
         super.connectedCallback();
         this.setAttribute("tabindex", "0");
-        this.setItems();
+        DOM.queueUpdate(() => {
+            this.setItems();
+        });
     }
 
     /**
@@ -159,19 +140,21 @@ export class TreeView extends FoundationElement {
             return;
         }
 
-        if (!this.treeItems) {
+        if (this.slottedTreeItems.length < 1) {
             return true;
         }
 
+        const treeItems: HTMLElement[] | void = this.getVisibleNodes();
+
         switch (e.key) {
             case keyHome:
-                if (this.treeItems && this.treeItems.length) {
-                    TreeItem.focusItem(this.treeItems[0]);
+                if (treeItems.length) {
+                    TreeItem.focusItem(treeItems[0]);
                 }
                 return;
             case keyEnd:
-                if (this.treeItems && this.treeItems.length) {
-                    TreeItem.focusItem(this.treeItems[this.treeItems.length - 1]);
+                if (treeItems.length) {
+                    TreeItem.focusItem(treeItems[treeItems.length - 1]);
                 }
                 return;
             case keyArrowLeft:
@@ -283,8 +266,6 @@ export class TreeView extends FoundationElement {
      * Updates the tree view when slottedTreeItems changes
      */
     private setItems = (): void => {
-        this.treeItems = this.getVisibleNodes();
-
         // force single selection
         // defaults to first one found
         const selectedItem: HTMLElement | null = this.treeView.querySelector(
@@ -297,9 +278,11 @@ export class TreeView extends FoundationElement {
             this.currentFocused = this.getValidFocusableItem();
         }
 
-        // toggle the nested attribute on child elements
+        // toggle properties on child elements
         this.nested = this.checkForNestedItems();
-        this.slottedTreeItems.forEach(node => {
+
+        const treeItems: HTMLElement[] | void = this.getVisibleNodes();
+        treeItems.forEach(node => {
             if (isTreeItemElement(node)) {
                 (node as TreeItem).nested = this.nested;
             }
@@ -310,14 +293,15 @@ export class TreeView extends FoundationElement {
      * checks if there are any nested tree items
      */
     private getValidFocusableItem(): null | HTMLElement | TreeItem {
+        const treeItems: HTMLElement[] | void = this.getVisibleNodes();
         // default to selected element if there is one
-        let focusIndex = this.treeItems.findIndex(this.isSelectedElement);
+        let focusIndex = treeItems.findIndex(this.isSelectedElement);
         if (focusIndex === -1) {
             // otherwise first focusable tree item
-            focusIndex = this.treeItems.findIndex(this.isFocusableElement);
+            focusIndex = treeItems.findIndex(this.isFocusableElement);
         }
         if (focusIndex !== -1) {
-            return this.treeItems[focusIndex];
+            return treeItems[focusIndex];
         }
 
         return null;
