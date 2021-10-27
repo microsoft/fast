@@ -186,7 +186,7 @@ describe("Tooltip", () => {
         await disconnect();
     });
 
-    it("should set default vertical position to top when position is set to top", async () => {
+    it("should set default vertical position to bottom when position is set to bottom", async () => {
         const { element, connect, disconnect } = await setup();
         const tooltip: Tooltip = element;
 
