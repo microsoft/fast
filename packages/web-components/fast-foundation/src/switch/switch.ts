@@ -55,14 +55,7 @@ export class Switch extends FormAssociatedSwitch {
 
         this.defaultChecked = !!this.checkedAttribute;
         this.checked = this.defaultChecked;
-    }
-
-    /**
-     * @internal
-     */
-    public connectedCallback() {
         this.proxy.setAttribute("type", "checkbox");
-        super.connectedCallback();
     }
 
     /**

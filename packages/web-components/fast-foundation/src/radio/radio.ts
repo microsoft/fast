@@ -95,13 +95,16 @@ export class Radio extends FormAssociatedRadio implements RadioControl {
         }
     }
 
+    constructor() {
+        super();
+        this.proxy.setAttribute("type", "radio");
+    }
+
     /**
      * @internal
      */
     public connectedCallback(): void {
-        this.proxy.setAttribute("type", "radio");
         super.connectedCallback();
-
         this.validate();
 
         if (

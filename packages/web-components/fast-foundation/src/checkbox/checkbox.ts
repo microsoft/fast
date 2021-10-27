@@ -58,6 +58,7 @@ export class Checkbox extends FormAssociatedCheckbox {
 
         this.defaultChecked = !!this.checkedAttribute;
         this.checked = this.defaultChecked;
+        this.proxy.setAttribute("type", "checkbox");
     }
 
     /**
@@ -79,12 +80,4 @@ export class Checkbox extends FormAssociatedCheckbox {
             this.checked = !this.checked;
         }
     };
-
-    /**
-     * @internal
-     */
-    public connectedCallback() {
-        this.proxy.setAttribute("type", "checkbox");
-        super.connectedCallback();
-    }
 }
