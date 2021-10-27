@@ -1,5 +1,5 @@
 import { attr, observable, SyntheticViewTemplate } from "@microsoft/fast-element";
-import { keySpace } from "@microsoft/fast-web-utilities";
+import { keySpace, keyEnter } from "@microsoft/fast-web-utilities";
 import type { FoundationElementDefinition } from "../foundation-element";
 import { FormAssociatedSwitch } from "./switch.form-associated";
 
@@ -61,6 +61,7 @@ export class Switch extends FormAssociatedSwitch {
      */
     public keypressHandler = (e: KeyboardEvent) => {
         switch (e.key) {
+            case keyEnter:
             case keySpace:
                 this.checked = !this.checked;
                 break;
