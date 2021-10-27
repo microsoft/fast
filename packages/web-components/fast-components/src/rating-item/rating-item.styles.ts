@@ -1,8 +1,14 @@
 import { css, ElementStyles } from "@microsoft/fast-element";
-import { display, ElementDefinitionContext } from "@microsoft/fast-foundation";
+import {
+    display,
+    ElementDefinitionContext,
+    focusVisible,
+} from "@microsoft/fast-foundation";
 import { accentForegroundRest } from "..";
 import {
     bodyFont,
+    fillColor,
+    focusStrokeOuter,
     neutralForegroundRest,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
@@ -21,10 +27,14 @@ export const ratingItemStyles: (context: ElementDefinitionContext) => ElementSty
             line-height: ${typeRampBaseLineHeight};
         }
 
-        .indicators {
+        .rating-items {
             display: inline-block;
             position: relative;
             height: inherit;
+        }
+
+        :host(:${focusVisible}) .rating-items {
+            box-shadow: 0 0 0 2px ${fillColor}, 0 0 0 4px ${focusStrokeOuter};
         }
 
         :host slot[name="empty-icon"] {

@@ -14,9 +14,6 @@ export const fastRating = Rating.compose({
     baseName: "rating",
     template,
     styles,
-    shadowOptions: {
-        delegatesFocus: true,
-    },
 });
 
 /**

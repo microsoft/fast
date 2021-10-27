@@ -1,5 +1,4 @@
-import { attr } from "@microsoft/fast-element";
-import type { RatingItem } from "..";
+import { DOM } from "@microsoft/fast-element";
 import { RadioGroup } from "../radio-group/radio-group";
 
 /**
@@ -23,19 +22,15 @@ export class Rating extends RadioGroup {
 
     protected valueChanged(): void {
         super.valueChanged();
-        this.setValueChangedClass();
+        if (this.$fastController.isConnected) {
+            this.setValueChangedClass();
+        }
     }
 
     public setValueChangedClass(): void {
-        if (this.$fastController.isConnected) {
-            this.slottedRadioButtons.forEach((rating: HTMLInputElement) => {
-                if (rating.value <= this.value) {
-                    rating.classList.add("rating-checked");
-                } else {
-                    rating.classList.remove("rating-checked");
-                }
-            });
-        }
+        this.slottedRadioButtons.forEach((rating: HTMLInputElement) => {
+            rating.classList.toggle("rating-checked", rating.value <= this.value);
+        });
     }
 
     /**
@@ -45,11 +40,7 @@ export class Rating extends RadioGroup {
         if (this.slottedRadioButtons) {
             const targetValue = (e.target as HTMLInputElement).value;
             this.slottedRadioButtons.forEach((rating: HTMLInputElement) => {
-                if (rating.value <= targetValue) {
-                    rating.classList.add("highlight");
-                } else {
-                    rating.classList.remove("highlight");
-                }
+                rating.classList.toggle("highlight", rating.value <= targetValue);
             });
         }
     };
@@ -68,15 +59,20 @@ export class Rating extends RadioGroup {
      */
     public connectedCallback(): void {
         super.connectedCallback();
-        this.setValueChangedClass();
+        DOM.queueUpdate(() => {
+            this.setValueChangedClass();
+        });
     }
 
     /**
      * @internal
      */
-    // public disconnectedCallback(): void {
-    //     this.slottedRadioButtons.forEach((rating: HTMLInputElement) => {
-    //         rating.removeEventListener("mouseover", this.onMouseover);
-    //     });
-    // }
+    public disconnectedCallback(): void {
+        if (this.slottedRadioButtons && this.slottedRadioButtons.length > 0) {
+            this.slottedRadioButtons.forEach((rating: HTMLInputElement) => {
+                rating.removeEventListener("mouseover", this.onMouseover);
+                rating.removeEventListener("mouseout", this.onMouseout);
+            });
+        }
+    }
 }
