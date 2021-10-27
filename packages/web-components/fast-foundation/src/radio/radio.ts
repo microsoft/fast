@@ -56,33 +56,14 @@ export class Radio extends FormAssociatedRadio implements RadioControl {
     public initialValue: string = "on";
 
     /**
-     * Provides the default checkedness of the input element
-     * Passed down to proxy
-     *
-     * @public
-     * @remarks
-     * HTML Attribute: checked
-     */
-    @attr({ attribute: "checked", mode: "boolean" })
-    public checkedAttribute: boolean = false;
-    private checkedAttributeChanged(): void {
-        this.defaultChecked = this.checkedAttribute;
-    }
-
-    /**
      * @internal
      */
     @observable
     public defaultSlottedNodes: Node[];
 
     /**
-     * Initialized to the value of the checked attribute. Can be changed independently of the "checked" attribute,
-     * but changing the "checked" attribute always additionally sets this value.
-     *
-     * @public
+     * @internal
      */
-    @observable
-    public defaultChecked: boolean;
     public defaultCheckedChanged(): void {
         if (this.$fastController.isConnected && !this.dirtyChecked) {
             // Setting this.checked will cause us to enter a dirty state,

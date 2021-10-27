@@ -707,7 +707,7 @@ export function CheckableFormAssociated<T extends ConstructableFormAssociated>(
          * @remarks
          * HTML Attribute: checked
          */
-        public checkedAttribute: boolean;
+        public checkedAttribute: boolean = false;
         private checkedAttributeChanged(): void {
             this.defaultChecked = this.checkedAttribute;
         }
@@ -767,6 +767,8 @@ export function CheckableFormAssociated<T extends ConstructableFormAssociated>(
         constructor(...args: any[]) {
             super(args);
 
+            // Re-initialize dirtyChecked because initialization of other values
+            // causes it to become true
             this.dirtyChecked = false;
         }
 

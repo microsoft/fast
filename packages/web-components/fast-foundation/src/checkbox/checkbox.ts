@@ -56,8 +56,6 @@ export class Checkbox extends FormAssociatedCheckbox {
     constructor() {
         super();
 
-        this.defaultChecked = !!this.checkedAttribute;
-        this.checked = this.defaultChecked;
         this.proxy.setAttribute("type", "checkbox");
     }
 

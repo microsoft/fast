@@ -53,8 +53,6 @@ export class Switch extends FormAssociatedSwitch {
     public constructor() {
         super();
 
-        this.defaultChecked = !!this.checkedAttribute;
-        this.checked = this.defaultChecked;
         this.proxy.setAttribute("type", "checkbox");
     }
 
