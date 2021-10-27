@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "switch should check when using both enter and space",
-  "packageName": "@microsoft/fast-foundation",
-  "email": "chhol@microsoft.com",
-  "dependentChangeType": "patch"
-}
