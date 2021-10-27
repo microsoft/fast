@@ -17,14 +17,10 @@ As defined by the [W3C](https://w3c.github.io/aria-practices/#combobox):
 import {
     provideFASTDesignSystem,
     fastCombobox,
-    fastOption
+    fastOption,
 } from "@microsoft/fast-components";
 
-provideFASTDesignSystem()
-    .register(
-        fastCombobox(),
-        fastOption()
-    );
+provideFASTDesignSystem().register(fastCombobox(), fastOption());
 ```
 
 ### Customizing the indicator
@@ -33,27 +29,26 @@ provideFASTDesignSystem()
 import {
     provideFASTDesignSystem,
     fastCombobox,
-    fastOption
+    fastOption,
 } from "@microsoft/fast-components";
 
-provideFASTDesignSystem()
-    .register(
-        fastCombobox({
-          indicator: `...your indicator...`
-        }),
-        fastOption()
-    );
+provideFASTDesignSystem().register(
+    fastCombobox({
+        indicator: `...your indicator...`,
+    }),
+    fastOption()
+);
 ```
 
 ## Usage
 
 ```html live
 <fast-combobox autocomplete="both">
-  <fast-option>Christopher Eccleston</fast-option>
-  <fast-option>David Tenant</fast-option>
-  <fast-option>Matt Smith</fast-option>
-  <fast-option>Peter Capaldi</fast-option>
-  <fast-option>Jodie Whittaker</fast-option>
+    <fast-option>Christopher Eccleston</fast-option>
+    <fast-option>David Tenant</fast-option>
+    <fast-option>Matt Smith</fast-option>
+    <fast-option>Peter Capaldi</fast-option>
+    <fast-option>Jodie Whittaker</fast-option>
 </fast-combobox>
 ```
 
@@ -86,10 +81,10 @@ This component is built with the expectation that focus is delegated to the inpu
 
 ### Option
 
-See [listbox-option](/docs/components/listbox-option) for more information.
+See [listbox-option](../listbox-option/README.md) for more information.
 
 ## Additional resources
 
-* [Component explorer examples](https://explore.fast.design/components/fast-combobox)
-* [Component technical specification](https://github.com/microsoft/fast/tree/master/packages/web-components/fast-foundation/src/combobox)
-* [W3C Component Aria Practices](https://w3c.github.io/aria-practices/#combobox)
+-   [Component explorer examples](https://explore.fast.design/components/fast-combobox)
+-   [Component technical specification](https://github.com/microsoft/fast/tree/master/packages/web-components/fast-foundation/src/combobox)
+-   [W3C Component Aria Practices](https://w3c.github.io/aria-practices/#combobox)
