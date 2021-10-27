@@ -31,6 +31,14 @@
                     "required": false
                 },
                 {
+                    "name": "neutral-base-color",
+                    "title": "Neutral base color",
+                    "description": "The neutral palette base color",
+                    "type": "string",
+                    "default": "#808080",
+                    "required": false
+                },
+                {
                     "name": "density",
                     "title": "Density",
                     "description": "The density offset",

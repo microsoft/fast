@@ -5,7 +5,6 @@ import {
     html,
     nullableNumberConverter,
     Observable,
-    observable,
     ValueConverter,
 } from "@microsoft/fast-element";
 import {
@@ -18,9 +17,9 @@ import {
     FoundationElementDefinition,
 } from "@microsoft/fast-foundation";
 import { Direction, SystemColors } from "@microsoft/fast-web-utilities";
-import { Palette } from "../color/palette";
 import { Swatch, SwatchRGB } from "../color/swatch";
 import {
+    accentBaseColor,
     accentFillActiveDelta,
     accentFillFocusDelta,
     accentFillHoverDelta,
@@ -29,7 +28,6 @@ import {
     accentForegroundFocusDelta,
     accentForegroundHoverDelta,
     accentForegroundRestDelta,
-    accentPalette,
     baseHeightMultiplier,
     baseHorizontalSpacingMultiplier,
     baseLayerLuminance,
@@ -40,6 +38,7 @@ import {
     disabledOpacity,
     fillColor,
     focusStrokeWidth,
+    neutralBaseColor,
     neutralFillActiveDelta,
     neutralFillFocusDelta,
     neutralFillHoverDelta,
@@ -57,7 +56,6 @@ import {
     neutralFillStrongFocusDelta,
     neutralFillStrongHoverDelta,
     neutralForegroundRest,
-    neutralPalette,
     neutralStrokeActiveDelta,
     neutralStrokeDividerRestDelta,
     neutralStrokeFocusDelta,
@@ -149,14 +147,13 @@ export class DesignSystemProvider extends FoundationElement {
     constructor() {
         super();
 
-        // If fillColor changes or is removed, we need to
+        // If fillColor or baseLayerLuminance change, we need to
         // re-evaluate whether we should have paint styles applied
-        Observable.getNotifier(this).subscribe(
-            {
-                handleChange: this.noPaintChanged.bind(this),
-            },
-            "fillColor"
-        );
+        const subscriber = {
+            handleChange: this.noPaintChanged.bind(this),
+        };
+        Observable.getNotifier(this).subscribe(subscriber, "fillColor");
+        Observable.getNotifier(this).subscribe(subscriber, "baseLayerLuminance");
     }
     /**
      * Used to instruct the FASTDesignSystemProvider
@@ -169,7 +166,7 @@ export class DesignSystemProvider extends FoundationElement {
     @attr({ attribute: "no-paint", mode: "boolean" })
     public noPaint = false;
     private noPaintChanged() {
-        if (!this.noPaint && this.fillColor !== void 0) {
+        if (!this.noPaint && (this.fillColor !== void 0 || this.baseLayerLuminance)) {
             this.$fastController.addStyles(backgroundStyles);
         } else {
             this.$fastController.removeStyles(backgroundStyles);
@@ -191,26 +188,30 @@ export class DesignSystemProvider extends FoundationElement {
     public fillColor: Swatch;
 
     /**
-     * Defines the palette that all neutral color recipes are derived from.
-     * This is an array for hexadecimal color strings ordered from light to dark.
-     *
+     * A convenience to recreate the accentPalette
      * @remarks
-     * HTML attribute: N/A
+     * HTML attribute: accent-base-color
      */
-    @observable
-    @designToken(neutralPalette)
-    public neutralPalette: Palette;
+    @attr({
+        attribute: "accent-base-color",
+        converter: swatchConverter,
+        mode: "fromView",
+    })
+    @designToken(accentBaseColor)
+    public accentBaseColor: Swatch;
 
     /**
-     * Defines the palette that all accent color recipes are derived from.
-     * This is an array for hexadecimal color strings ordered from light to dark.
-     *
+     * A convenience to recreate the neutralPalette
      * @remarks
-     * HTML attribute: N/A
+     * HTML attribute: neutral-base-color
      */
-    @observable
-    @designToken(accentPalette)
-    public accentPalette: Palette;
+    @attr({
+        attribute: "neutral-base-color",
+        converter: swatchConverter,
+        mode: "fromView",
+    })
+    @designToken(neutralBaseColor)
+    public neutralBaseColor: Swatch;
 
     /**
      *
