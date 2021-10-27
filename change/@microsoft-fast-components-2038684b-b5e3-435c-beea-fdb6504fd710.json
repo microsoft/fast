@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "Added accent and neutral base color attributes to the design system provider Updated DSP to handle a change in base layer luminance Cleaned up the delta tokens to not render in css",
+  "packageName": "@microsoft/fast-components",
+  "email": "47367562+bheston@users.noreply.github.com",
+  "dependentChangeType": "patch"
+}

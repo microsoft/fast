@@ -28,6 +28,13 @@
       "mapsToAttribute": "accent-base-color",
       "type": "string"
     },
+    "neutral-base-color": {
+      "default": "#808080",
+      "title": "Neutral base color",
+      "description": "The neutral palette base color",
+      "mapsToAttribute": "neutral-base-color",
+      "type": "string"
+    },
     "density": {
       "title": "Density",
       "description": "The density offset",
