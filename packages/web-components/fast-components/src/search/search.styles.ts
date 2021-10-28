@@ -92,6 +92,7 @@ export const searchStyles: (
     .input-wrapper {
         display: flex;
         position: relative;
+        width: 100%;
     }
 
     .label {
