@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "fixes emission of CSS custom properties in FireFox and Safari",
-  "packageName": "@microsoft/fast-foundation",
-  "email": "nicholasrice@users.noreply.github.com",
-  "dependentChangeType": "patch"
-}
