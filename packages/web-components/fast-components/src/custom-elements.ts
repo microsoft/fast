@@ -61,6 +61,7 @@ import type { Disclosure } from "./disclosure/index";
 import type { HorizontalScroll } from "./horizontal-scroll/index";
 import type { Listbox } from "./listbox/index";
 import type { Menu } from "./menu/index";
+import type { Picker, PickerMenu } from "./picker/index";
 import type { SliderLabel } from "./slider-label/index";
 import type { Tabs } from "./tabs/index";
 import type { TextArea } from "./text-area/index";
