@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "picker focus on input after selection",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "scomea@microsoft.com",
+  "dependentChangeType": "patch"
+}
