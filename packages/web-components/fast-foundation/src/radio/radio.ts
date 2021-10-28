@@ -56,34 +56,15 @@ export class Radio extends FormAssociatedRadio implements RadioControl {
     public initialValue: string = "on";
 
     /**
-     * Provides the default checkedness of the input element
-     * Passed down to proxy
-     *
-     * @public
-     * @remarks
-     * HTML Attribute: checked
-     */
-    @attr({ attribute: "checked", mode: "boolean" })
-    public checkedAttribute: boolean = false;
-    private checkedAttributeChanged(): void {
-        this.defaultChecked = this.checkedAttribute;
-    }
-
-    /**
      * @internal
      */
     @observable
     public defaultSlottedNodes: Node[];
 
     /**
-     * Initialized to the value of the checked attribute. Can be changed independently of the "checked" attribute,
-     * but changing the "checked" attribute always additionally sets this value.
-     *
-     * @public
+     * @internal
      */
-    @observable
-    public defaultChecked: boolean | undefined;
-    private defaultCheckedChanged(): void {
+    public defaultCheckedChanged(): void {
         if (this.$fastController.isConnected && !this.dirtyChecked) {
             // Setting this.checked will cause us to enter a dirty state,
             // but if we are clean when defaultChecked is changed, we want to stay
@@ -95,46 +76,16 @@ export class Radio extends FormAssociatedRadio implements RadioControl {
         }
     }
 
-    /**
-     * The checked state of the control
-     *
-     * @public
-     */
-    @observable
-    public checked: boolean;
-    private checkedChanged(): void {
-        if (this.$fastController.isConnected) {
-            // changing the value via code and from radio-group
-            if (!this.dirtyChecked) {
-                this.dirtyChecked = true;
-            }
-
-            this.updateForm();
-
-            if (this.proxy instanceof HTMLInputElement) {
-                this.proxy.checked = this.checked;
-            }
-
-            this.$emit("change");
-
-            this.validate();
-        }
+    constructor() {
+        super();
+        this.proxy.setAttribute("type", "radio");
     }
-
-    /**
-     * Tracks whether the "checked" property has been changed.
-     * This is necessary to provide consistent behavior with
-     * normal input radios
-     */
-    private dirtyChecked: boolean = false;
 
     /**
      * @internal
      */
     public connectedCallback(): void {
         super.connectedCallback();
-
-        this.proxy.setAttribute("type", "radio");
         this.validate();
 
         if (
@@ -145,8 +96,6 @@ export class Radio extends FormAssociatedRadio implements RadioControl {
                 this.setAttribute("tabindex", "0");
             }
         }
-
-        this.updateForm();
 
         if (this.checkedAttribute) {
             if (!this.dirtyChecked) {
@@ -161,29 +110,11 @@ export class Radio extends FormAssociatedRadio implements RadioControl {
         }
     }
 
-    constructor() {
-        super();
-        this.checked = this.defaultChecked ?? false;
-    }
-
-    /**
-     * @internal
-     */
-    public formResetCallback = (): void => {
-        this.checked = !!this.defaultChecked;
-        this.dirtyChecked = false;
-    };
-
     private isInsideRadioGroup(): boolean {
         const parent: HTMLElement | null = (this as HTMLElement).closest(
             "[role=radiogroup]"
         );
         return parent !== null;
-    }
-
-    private updateForm(): void {
-        const value = this.checked ? this.value : null;
-        this.setFormValue(value, value);
     }
 
     /**

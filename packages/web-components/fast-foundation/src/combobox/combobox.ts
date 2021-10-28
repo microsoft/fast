@@ -87,12 +87,11 @@ export class Combobox extends FormAssociatedCombobox {
      *
      * @internal
      */
-    public formResetCallback = (): void => {
-        this.value = this.initialValue;
-        this.dirtyValue = false;
+    public formResetCallback(): void {
+        super.formResetCallback();
         this.setDefaultSelectedOption();
         this.updateValue();
-    };
+    }
 
     private get isAutocompleteInline(): boolean {
         return (
