@@ -26,6 +26,9 @@ export class Search extends FoundationSearch {
      */
     @attr
     public appearance: SearchAppearance;
+    private appearanceChanged(): void {
+        this.setFillColor();
+    }
 
     /**
      * @internal
@@ -37,6 +40,10 @@ export class Search extends FoundationSearch {
             this.appearance = "outline";
         }
 
+        this.setFillColor();
+    }
+
+    private setFillColor(): void {
         if (this.appearance === "filled") {
             fillColor.setValueFor(
                 this.root,
