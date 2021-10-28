@@ -10,7 +10,7 @@ import type {
     ElementDefinitionContext,
     ElementDefinitionParams,
 } from "./registration-context";
-
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 /**
  * Indicates what to do with an ambiguous (duplicate) element.
  * @public
@@ -348,3 +348,4 @@ class ElementDefinitionEntry implements ElementDefinitionContext {
         return DesignSystem.tagFor(type)!;
     }
 }
+/* eslint-enable @typescript-eslint/no-non-null-assertion */

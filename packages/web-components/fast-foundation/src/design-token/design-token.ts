@@ -19,7 +19,7 @@ import type {
     StaticDesignTokenValue,
 } from "./interfaces";
 import { defaultElement } from "./custom-property-manager";
-
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 /**
  * Describes a DesignToken instance.
  * @public
@@ -927,3 +927,4 @@ export const DesignToken = Object.freeze({
         RootStyleSheetTarget.unregisterRoot(target);
     },
 });
+/* eslint-enable @typescript-eslint/no-non-null-assertion */

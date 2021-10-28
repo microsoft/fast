@@ -343,6 +343,7 @@ export class ResolverBuilder<K> {
 
     private registerResolver(strategy: ResolverStrategy, state: unknown): Resolver<K> {
         const { container, key } = this;
+        /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */
         this.container = this.key = (void 0)!;
         return container.registerResolver(key, new ResolverImpl(key, strategy, state));
     }
@@ -1155,6 +1156,7 @@ function createAllResolver(
 
         resolver.$isResolver = true;
         resolver.resolve = function (handler: Container, requestor: Container): any {
+            /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */
             return getter(key, handler, requestor, searchAncestors!);
         };
 
@@ -1299,6 +1301,7 @@ export const newInstanceOf = createResolver(
 );
 
 function createNewInstance(key: any, handler: Container) {
+    /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */
     return handler.getFactory(key)!.construct(handler);
 }
 
@@ -1740,6 +1743,7 @@ export class ContainerImpl implements Container {
 
                 if (resolver != null) {
                     resolutions = resolutions.concat(
+                        /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */
                         buildAllResponse(resolver, current, requestor!)
                     );
                 }

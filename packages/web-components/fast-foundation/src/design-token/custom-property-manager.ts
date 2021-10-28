@@ -249,6 +249,7 @@ const propertyTargetCtor: Constructable<PropertyTarget> = DOM.supportsAdoptedSty
 export const PropertyTargetManager = Object.freeze({
     getOrCreate(source: HTMLElement | Document): PropertyTarget {
         if (propertyTargetCache.has(source)) {
+            /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */
             return propertyTargetCache.get(source)!;
         }
 
