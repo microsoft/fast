@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Wed, 27 Oct 2021 07:11:58 GMT and should not be manually modified.
+This log was last generated on Thu, 28 Oct 2021 07:15:32 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.23.2
+
+Thu, 28 Oct 2021 07:15:32 GMT
+
+### Patches
+
+- fixes emission of CSS custom properties in FireFox and Safari (nicholasrice@users.noreply.github.com)
 
 ## 2.23.1
 
