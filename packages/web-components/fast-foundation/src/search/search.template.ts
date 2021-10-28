@@ -25,7 +25,6 @@ export const searchTemplate: (
         <label
             part="label"
             for="control"
-            aria-label="${x => x.label}"
             class="${x =>
                 x.defaultSlottedNodes && x.defaultSlottedNodes.length
                     ? "label"
