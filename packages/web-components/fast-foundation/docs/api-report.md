@@ -13,6 +13,8 @@ import { Direction } from '@microsoft/fast-web-utilities';
 import { ElementStyles } from '@microsoft/fast-element';
 import { ElementViewTemplate } from '@microsoft/fast-element';
 import { FASTElement } from '@microsoft/fast-element';
+import { FormAssociated as FormAssociated_2 } from '@microsoft/fast-foundation';
+import { FoundationElement as FoundationElement_2 } from '@microsoft/fast-foundation';
 import { Orientation } from '@microsoft/fast-web-utilities';
 import { PartialFASTElementDefinition } from '@microsoft/fast-element';
 import { SyntheticViewTemplate } from '@microsoft/fast-element';
@@ -1072,6 +1074,31 @@ export class FactoryImpl<T extends Constructable = any> implements Factory<T> {
     // (undocumented)
     Type: T;
 }
+
+// Warning: (ae-forgotten-export) The symbol "FormAssociatedFile" needs to be exported by the entry point index.d.ts
+//
+// @public
+class File_2 extends FormAssociatedFile {
+    accept: string;
+    capture: string;
+    connectedCallback(): void;
+    fileReferences: string[];
+    files: any;
+    // (undocumented)
+    fileSelectorButton: HTMLSlotElement;
+    // (undocumented)
+    handleChange(e: Event): void;
+    // @internal
+    handleClick(): void;
+    multiple: boolean;
+    progressCallback: (progress: number) => Promise<void>;
+    value: string;
+}
+
+export { File_2 as File }
+
+// @public
+export const fileTemplate: (context: ElementDefinitionContext) => ViewTemplate<File_2>;
 
 // @public
 export class Flipper extends FoundationElement {

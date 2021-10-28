@@ -29,6 +29,7 @@ export * from "./di/index";
 export * from "./dialog/index";
 export * from "./disclosure/index";
 export * from "./divider/index";
+export * from "./file/index";
 export * from "./flipper/index";
 export * from "./form-associated/index";
 export * from "./foundation-element/index";

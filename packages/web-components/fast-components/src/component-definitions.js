@@ -36,6 +36,8 @@ import fastDisclosureDefinition from "./disclosure/disclosure.vscode.definition.
 export { fastDisclosureDefinition };
 import fastDividerDefinition from "./divider/divider.vscode.definition.json";
 export { fastDividerDefinition };
+import fastFileDefinition from "./file/file.vscode.definition.json";
+export { fastFileDefinition };
 import fastFlipperDefinition from "./flipper/flipper.vscode.definition.json";
 export { fastFlipperDefinition };
 import fastListboxDefinition from "./listbox/listbox.vscode.definition.json";

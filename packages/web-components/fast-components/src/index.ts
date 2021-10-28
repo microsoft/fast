@@ -26,6 +26,7 @@ export * from "./design-tokens";
 export * from "./dialog/index";
 export * from "./disclosure/index";
 export * from "./divider/index";
+export * from "./file/index";
 export * from "./flipper/index";
 export * from "./horizontal-scroll/index";
 export * from "./listbox/index";
