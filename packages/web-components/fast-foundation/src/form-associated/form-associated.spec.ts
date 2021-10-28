@@ -1,7 +1,7 @@
-import { FormAssociated } from "./form-associated";
+import { FormAssociated, CheckableFormAssociated } from "./form-associated";
 import { assert, expect } from "chai";
 import { fixture } from "../test-utilities/fixture";
-import { customElement, FASTElement, html } from "@microsoft/fast-element";
+import { customElement, FASTElement, html, elements, DOM } from "@microsoft/fast-element";
 
 const template = html`
     <slot></slot>
@@ -45,12 +45,29 @@ class CustomInitialValue extends FormAssociated(
 
 interface CustomInitialValue extends FormAssociated {}
 
-async function setup(el: string = "test-element") {
-    const { connect, disconnect, element, parent } = await fixture<TestElement>(el);
+async function setup<T = TestElement>(el: string = "test-element") {
+    const { connect, disconnect, element, parent } = await fixture<T>(el);
 
     return { connect, disconnect, element, parent };
 }
 
+@customElement({
+    name: "checkable-form-associated",
+    template,
+})
+class Checkable extends CheckableFormAssociated(
+    class extends FASTElement {
+        proxy = document.createElement("input");
+
+        constructor() {
+            super();
+
+            this.proxy.setAttribute("type", "checkbox");
+        }
+    }
+) {}
+
+interface Checkable extends CheckableFormAssociated {}
 describe("FormAssociated:", () => {
     describe("construction and connection:", () => {
         it("should have an empty string value prior to connectedCallback", async () => {
@@ -351,5 +368,59 @@ describe("FormAssociated:", () => {
 
             await disconnect();
         });
+    });
+});
+
+describe("CheckableFormAssociated:", () => {
+    function assertChecked(element: Checkable) {
+        return (value: boolean) => {
+            expect(element.checked, `checked property is ${value}`).to.equal(value);
+            expect(element.currentChecked, `currentChecked property is ${value}`).to.equal(value);
+            expect(element.getAttribute("current-checked"), `current-checked attribute is ${value}`).to.equal(`${value}`);
+        }
+    }
+    it("should have a 'checked' property that is initialized to false", async () => {
+        const { connect, element } = await setup<Checkable>("checkable-form-associated");
+
+        await connect();
+        await DOM.nextUpdate();
+
+        assertChecked(element)(false);
+    });
+    it("should align the `currentChecked` property and `current-checked` attribute with `checked` property changes", async () => {
+        const { connect, element } = await setup<Checkable>("checkable-form-associated");
+
+        await connect();
+        await DOM.nextUpdate();
+        const test = assertChecked(element);
+
+        test(false);
+
+        element.checked = true;
+
+        await DOM.nextUpdate();
+        test(true);
+
+        element.checked = false;
+        await DOM.nextUpdate();
+        test(false)
+    });
+    it("should align the `checked` property and `current-checked` attribute with `currentChecked` property changes", async () => {
+        const { connect, element } = await setup<Checkable>("checkable-form-associated");
+
+        await connect();
+        await DOM.nextUpdate();
+        const test = assertChecked(element);
+
+        test(false);
+
+        element.setAttribute("current-checked", "true");
+
+        await DOM.nextUpdate();
+        test(true);
+
+        element.setAttribute("current-checked", "false");
+        await DOM.nextUpdate();
+        test(false)
     });
 });

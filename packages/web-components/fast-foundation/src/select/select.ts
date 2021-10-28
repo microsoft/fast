@@ -232,11 +232,11 @@ export class Select extends FormAssociatedSelect {
      *
      * @internal
      */
-    public formResetCallback = (): void => {
+    public formResetCallback(): void {
         this.setProxyOptions();
         this.setDefaultSelectedOption();
         this.value = this.firstSelectedOption.value;
-    };
+    }
 
     /**
      * Handle opening and closing the listbox when the select is clicked.
