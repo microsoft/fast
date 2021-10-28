@@ -1,4 +1,5 @@
 import { DOM } from "@microsoft/fast-element";
+import type { RatingItem } from "..";
 import { RadioGroup } from "../radio-group/radio-group";
 
 /**
@@ -37,7 +38,7 @@ export class Rating extends RadioGroup {
      * @internal
      */
     public onMouseover = (e: MouseEvent): void => {
-        if (this.slottedRadioButtons) {
+        if (this.slottedRadioButtons && !this.readOnly) {
             const targetValue = (e.target as HTMLInputElement).value;
             this.slottedRadioButtons.forEach((rating: HTMLInputElement) => {
                 rating.classList.toggle("highlight", rating.value <= targetValue);

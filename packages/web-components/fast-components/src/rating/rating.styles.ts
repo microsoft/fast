@@ -1,9 +1,7 @@
 import { css, ElementStyles } from "@microsoft/fast-element";
 import { disabledCursor } from "@microsoft/fast-foundation";
 import { display, ElementDefinitionContext } from "@microsoft/fast-foundation";
-import { accentForegroundRest } from "..";
 import {
-    accentFillRest,
     bodyFont,
     disabledOpacity,
     neutralForegroundRest,
@@ -44,5 +42,6 @@ export const ratingStyles: (context: ElementDefinitionContext) => ElementStyles 
 
         :host([orientation="horizontal"]) .positioning-region {
             flex-direction: row;
+            align-items: center;
         }
     `;

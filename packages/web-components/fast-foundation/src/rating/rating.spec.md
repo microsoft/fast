@@ -6,37 +6,46 @@ The Rating component is used to provide feedback from a user's opinion on a part
 
 ### Use Cases
 
+Scenario 1
 Carl has purchased a coffee machine online and he wants to share his opinion about the machine with others. In addition to writing a review, Carl also rates the product by giving it a rating of 4 out of 5 stars.
+
+Scenario 2
+Wendy just finished her companies survey and in the end she is asked to rate how she felt about the survey. She is given a line of emojis to pick from.
 
 ### Prior Art/Examples
 
--   [Office Fabric](https://developer.microsoft.com/en-us/fluentui#/controls/web/rating)
--   [Ant Design](https://ant.design/components/rate/)
--   [Atlassian](https://atlaskit.atlassian.com/packages/design-system/rating)
--   [Windows (UWP)](https://docs.microsoft.com/en-us/windows/apps/design/controls/rating)
+- [Office Fabric](https://developer.microsoft.com/en-us/fluentui#/controls/web/rating)
+- [Ant Design](https://ant.design/components/rate/)
+- [Atlassian](https://atlaskit.atlassian.com/packages/design-system/rating)
+- [Windows (UWP)](https://docs.microsoft.com/en-us/windows/apps/design/controls/rating)
 
 ---
 
 ### API
 
+Extends [RadioGroup](../radio-group/radio-group.spec.md).
+
 _Component name:_
 
--   `fast-rating`
+- `fast-rating`
 
 _Attributes:_
 
--   `disabled` - Unabled to interact with the component
--   `readonly` - A boolean to remove interaction on the component
--   `value` - The current value of the item selected
+- `disabled` - A boolean to remove interaction with the component.
+- `readonly` - A boolean to remove interaction with the component.
+- `value` - The current value of the item selected.
+- `mode` - enum
+  - multiple: This is the default mode. A mode where multiple items are highlighted for rating.
+  - single: This mode is set to choose only one item to rate.
 
 _Slots:_
 
--   `default` - Default slot is the label used to count the amount of ratings provided by the users.
--   `label` - Optional label. Some examples would be to indicate rating counts, or average ratings.
+- `default` - Default slot is the label used to count the amount of ratings provided by the users.
+- `label` - Optional label. Some examples would be to indicate rating counts, or average ratings.
 
 ### Anatomy and Appearance
 
-The Rating component is extended from RadioGroup
+The Rating component template is extended from RadioGroup.
 
 _Template:_
 
@@ -90,7 +99,7 @@ Keyboard interaction
 Assistive Technology
 
 - When focused is on the component, the reader will announce the component, the current item and the the total amount of items. Example: "rating, 1 of 5 stars".
-As focused is moved to the next item, the reader will read out the current value and the amount of total items. Example: "2 of 5 stars, 3 of 5 stars, 4 of 5 stars, 5 of 5 stars"
+As focused is moved to the next item, the reader will read out the current value and the amount of total items. Example: "2 of 5 stars, 3 of 5 stars, 4 of 5 stars, 5 of 5 stars".
 
 
 
@@ -101,26 +110,28 @@ The `fast-rating-item` is to used inside the `fast-rating` component.
 
 ### API
 
+Extends [Radio](../radio/radio.spec.md).
+
 _Component name:_
 
--   `fast-rating-item`
+- `fast-rating-item`
 
 _Attributes:_
 
--   `disabled` - Unabled to interact with the component
--   `readonly` - A boolean to remove interaction on the component
+- `disabled` - A boolean to remove interaction on the item.
+- `readonly` - A boolean to remove interaction on the item.
 
 
 _Properties:_
 
 _Slots:_
 
--   `empty-icon` - The first icon item. It is visible when the item is part of the selected items.
--   `fill-icon` - The second icon item. Is visible when the item is hovered or selected.
+- `unchecked-icon` - The icon rendered when the rating item is unchecked.
+- `checked-icon` - The Icon rendered when the rating item is checked.
 
 ### Anatomy and Appearance
 
-The Rating item component is extended from Radio
+The Rating item template is extended from Radio.
 
 _Template:_
 
@@ -136,12 +147,12 @@ _Template:_
         @keypress="${(x, c) => x.keypressHandler(c.event as KeyboardEvent)}"
         @click="${(x, c) => x.clickHandler(c.event as MouseEvent)}"
     >
-        <div class="indicators" part="indicators">
-            <slot name="empty-icon" part="empty-icon">
-                ${definition.emptyIcon || ""}
+        <div class="rating-icons" part="rating-icons">
+            <slot name="unchecked-icon" part="unchecked-icon" aria-hidden="true">
+                ${definition.uncheckedIcon || ""}
             </slot>
-            <slot name="fill-icon" part="fill-icon">
-                ${definition.filledIcon || ""}
+            <slot name="checked-icon" part="checked-icon" aria-hidden="true">
+                ${definition.checkedIcon || ""}
             </slot>
         </div>
     </template>

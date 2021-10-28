@@ -1776,6 +1776,8 @@ export class Radio extends FormAssociatedRadio implements RadioControl {
     constructor();
     checked: boolean;
     checkedAttribute: boolean;
+    // (undocumented)
+    protected checkedChanged(): void;
     // @internal (undocumented)
     clickHandler(e: MouseEvent): boolean | void;
     // @internal (undocumented)
@@ -1839,11 +1841,19 @@ export const radioTemplate: (context: ElementDefinitionContext, definition: Radi
 // @public
 export class Rating extends RadioGroup {
     // @internal (undocumented)
+    connectedCallback(): void;
+    // @internal (undocumented)
+    disconnectedCallback(): void;
+    // @internal (undocumented)
     onMouseout: (e: MouseEvent) => void;
     // @internal (undocumented)
     onMouseover: (e: MouseEvent) => void;
+    // (undocumented)
+    setValueChangedClass(): void;
     // @internal (undocumented)
     protected slottedRadioButtonsChanged(oldValue: any, newValue: any): void;
+    // (undocumented)
+    protected valueChanged(): void;
 }
 
 // @public (undocumented)
@@ -1852,8 +1862,8 @@ export class RatingItem extends Radio {
 
 // @public
 export type RatingItemOptions = FoundationElementDefinition & StartEndOptions & {
-    emptyIcon?: string | SyntheticViewTemplate;
-    filledIcon?: string | SyntheticViewTemplate;
+    uncheckedIcon?: string | SyntheticViewTemplate;
+    checkedIcon?: string | SyntheticViewTemplate;
 };
 
 // @public

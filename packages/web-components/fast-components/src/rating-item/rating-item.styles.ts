@@ -1,5 +1,6 @@
 import { css, ElementStyles } from "@microsoft/fast-element";
 import {
+    disabledCursor,
     display,
     ElementDefinitionContext,
     focusVisible,
@@ -18,7 +19,7 @@ export const ratingItemStyles: (context: ElementDefinitionContext) => ElementSty
     context: ElementDefinitionContext
 ) =>
     css`
-        ${display("inline-flex")} :host {
+        ${display("inline-block")} :host {
             box-sizing: border-box;
             color: ${neutralForegroundRest};
             fill: currentcolor;
@@ -27,24 +28,30 @@ export const ratingItemStyles: (context: ElementDefinitionContext) => ElementSty
             line-height: ${typeRampBaseLineHeight};
         }
 
-        .rating-items {
+        .rating-icons {
             display: inline-block;
             position: relative;
-            height: inherit;
         }
 
         :host(:${focusVisible}) .rating-items {
             box-shadow: 0 0 0 2px ${fillColor}, 0 0 0 4px ${focusStrokeOuter};
         }
 
-        :host slot[name="empty-icon"] {
+        :host([readonly]) slot[name="unchecked-icon"],
+        :host([readonly]) slot[name="checked-icon"],
+        :host([readonly].rating-checked) slot[name="unchecked-icon"],
+        :host([readonly].rating-checked) slot[name="checked-icon"] {
+            cursor: ${disabledCursor};
+        }
+
+        :host slot[name="unchecked-icon"] {
             display: inline-block;
             width: 100%;
             opacity: 1;
             transition: 0.5s;
         }
 
-        :host slot[name="fill-icon"] {
+        :host slot[name="checked-icon"] {
             display: inline-block;
             position: absolute;
             left: 0px;
@@ -58,13 +65,13 @@ export const ratingItemStyles: (context: ElementDefinitionContext) => ElementSty
             transition: 0.5s;
         }
 
-        :host(.highlight) slot[name="empty-icon"],
-        :host(.rating-checked) slot[name="empty-icon"] {
+        :host(.highlight) slot[name="unchecked-icon"],
+        :host(.rating-checked) slot[name="unchecked-icon"] {
             opacity: 0;
         }
 
-        :host(.highlight) slot[name="fill-icon"],
-        :host(.rating-checked) slot[name="fill-icon"] {
+        :host(.highlight) slot[name="checked-icon"],
+        :host(.rating-checked) slot[name="checked-icon"] {
             cursor: pointer;
             opacity: 1;
         }

@@ -25,12 +25,12 @@ export const ratingItemTemplate: (
         @keypress="${(x, c) => x.keypressHandler(c.event as KeyboardEvent)}"
         @click="${(x, c) => x.clickHandler(c.event as MouseEvent)}"
     >
-        <div class="rating-items" part="rating-items">
-            <slot name="empty-icon" part="empty-icon">
-                ${definition.emptyIcon || ""}
+        <div class="rating-icons" part="rating-icons">
+            <slot name="unchecked-icon" part="unchecked-icon" aria-hidden="true">
+                ${definition.uncheckedIcon || ""}
             </slot>
-            <slot name="fill-icon" part="fill-icon">
-                ${definition.filledIcon || ""}
+            <slot name="checked-icon" part="checked-icon" aria-hidden="true">
+                ${definition.checkedIcon || ""}
             </slot>
         </div>
     </template>

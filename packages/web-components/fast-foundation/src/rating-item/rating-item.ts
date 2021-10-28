@@ -9,8 +9,8 @@ import { Radio } from "../radio/index";
  */
 export type RatingItemOptions = FoundationElementDefinition &
     StartEndOptions & {
-        emptyIcon?: string | SyntheticViewTemplate;
-        filledIcon?: string | SyntheticViewTemplate;
+        uncheckedIcon?: string | SyntheticViewTemplate;
+        checkedIcon?: string | SyntheticViewTemplate;
     };
 
 export class RatingItem extends Radio {}
