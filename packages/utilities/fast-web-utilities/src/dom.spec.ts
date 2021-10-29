@@ -29,6 +29,7 @@ describe("isHTMLElement", () => {
         expect(isHTMLElement(document.getElementById("element"))).to.equal(true);
     });
     it("should return false if all arguments are NOT HTML elements", () => {
+        /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */
         expect(isHTMLElement(document.getElementById("element")!.childNodes)).to.equal(
             false
         );

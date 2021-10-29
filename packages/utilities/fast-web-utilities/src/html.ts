@@ -8,8 +8,8 @@ export interface ClientRectWithMargin {
 }
 
 export function convertStylePropertyPixelsToNumber(
-    computedStyle: CSSStyleDeclaration,
-    property: string
+    computedStyle: CSSStyleDeclaration | null | undefined,
+    property: string | null | undefined
 ): number | void {
     if (!computedStyle || !property) {
         return;
@@ -27,7 +27,7 @@ export function convertStylePropertyPixelsToNumber(
  * Gets the client bounding rectangle including any margins of an element.
  */
 export function getClientRectWithMargin(
-    element: HTMLElement
+    element: HTMLElement | null | undefined
 ): ClientRectWithMargin | undefined {
     if (!element) {
         return;
