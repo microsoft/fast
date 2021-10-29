@@ -11,10 +11,10 @@ export function isHTMLElement(...args: any[]): boolean {
  * Returns all displayed elements inside of a root node that match a provided selector
  */
 export function getDisplayedNodes(
-    rootNode: HTMLElement,
-    selector: string
+    rootNode: HTMLElement | null | undefined,
+    selector: string | null | undefined
 ): HTMLElement[] | void {
-    if (!isHTMLElement(rootNode)) {
+    if (!rootNode || !selector || !isHTMLElement(rootNode)) {
         return;
     }
 
@@ -29,7 +29,7 @@ export function getDisplayedNodes(
  * Gets the numeric key code associated with a keyboard event. This method is for use with DOM level 3 events
  * that still use the deprecated keyCode property.
  */
-export function getKeyCode(event: KeyboardEvent): number | null {
+export function getKeyCode(event: KeyboardEvent | null): number | null {
     return event === null ? null : event.which || event.keyCode || event.charCode;
 }
 

@@ -29,7 +29,7 @@ describe("isHTMLElement", () => {
         expect(isHTMLElement(document.getElementById("element"))).to.equal(true);
     });
     it("should return false if all arguments are NOT HTML elements", () => {
-        expect(isHTMLElement(document.getElementById("element").childNodes)).to.equal(
+        expect(isHTMLElement(document.getElementById("element")!.childNodes)).to.equal(
             false
         );
     });
