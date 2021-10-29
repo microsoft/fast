@@ -199,6 +199,7 @@ export interface ColorsDesignSystem {
 const neutralPalette = PaletteRGB.create(
     SwatchRGB.create(0.5, 0.5, 0.5)
 ).swatches.map((x: SwatchRGB) => x.toColorString());
+/* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */
 const accentColor = parseColor(defaultAccentColor)!;
 const accentPalette = PaletteRGB.create(
     SwatchRGB.create(accentColor.r, accentColor.g, accentColor.b)
