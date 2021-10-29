@@ -20,12 +20,21 @@ import {
     keyEscape,
     uniqueId,
 } from "@microsoft/fast-web-utilities";
-import type { AnchoredRegion } from "../anchored-region";
+import {
+    AnchoredRegion,
+    AnchoredRegionConfig,
+    FlyoutPosBottom,
+    FlyoutPosBottomFill,
+    FlyoutPosTallest,
+    FlyoutPosTallestFill,
+    FlyoutPosTop,
+    FlyoutPosTopFill,
+} from "../anchored-region";
 import type { PickerMenu } from "./picker-menu";
 import { PickerMenuOption } from "./picker-menu-option";
 import { PickerListItem } from "./picker-list-item";
 import { FormAssociatedPicker } from "./picker.form-associated";
-import type { PickerList } from ".";
+import type { PickerList } from "./picker-list";
 
 const pickerInputTemplate: ViewTemplate = html<Picker>`
     <input
@@ -41,6 +50,19 @@ const pickerInputTemplate: ViewTemplate = html<Picker>`
         ${ref("inputElement")}
     ></input>
 `;
+
+/**
+ * Defines the vertical positioning options for an anchored region
+ *
+ * @beta
+ */
+export type menuConfigs =
+    | "bottom"
+    | "bottom-fill"
+    | "tallest"
+    | "tallest-fill"
+    | "top"
+    | "top-fill";
 
 /**
  * A Picker Custom HTML Element.  This is an early "alpha" version of the component.
@@ -173,6 +195,21 @@ export class Picker extends FormAssociatedPicker {
      */
     @attr({ attribute: "placeholder" })
     public placeholder: string;
+
+    /**
+     * Controls menu placement
+     *
+     * @alpha
+     * @remarks
+     * HTML Attribute: menu-placement
+     */
+    @attr({ attribute: "menu-placement" })
+    public menuPlacement: menuConfigs = "bottom-fill";
+    private menuPlacementChanged(): void {
+        if (this.$fastController.isConnected) {
+            this.updateMenuConfig();
+        }
+    }
 
     /**
      * Whether to display a loading state if the menu is opened.
@@ -385,6 +422,14 @@ export class Picker extends FormAssociatedPicker {
     }
 
     /**
+     *  The anchored region config to apply.
+     *
+     * @internal
+     */
+    @observable
+    public menuConfig: AnchoredRegionConfig = FlyoutPosBottom;
+
+    /**
      *  Reference to the placeholder element for the repeat directive
      *
      * @alpha
@@ -462,6 +507,8 @@ export class Picker extends FormAssociatedPicker {
         this.menuId = this.menuElement.id;
         this.optionsPlaceholder = document.createComment("");
         this.menuElement.append(this.optionsPlaceholder);
+
+        this.updateMenuConfig();
 
         DOM.queueUpdate(() => this.initialize());
     }
@@ -968,6 +1015,41 @@ export class Picker extends FormAssociatedPicker {
             this.filteredOptionsList = this.filteredOptionsList.filter(
                 el => el.indexOf(this.query) !== -1
             );
+        }
+    }
+
+    /**
+     * Updates the menu configuration
+     */
+    private updateMenuConfig(): void {
+        switch (this.menuPlacement) {
+            case "top":
+                this.menuConfig = FlyoutPosTop;
+                break;
+
+            case "bottom":
+                this.menuConfig = FlyoutPosBottom;
+                break;
+
+            case "tallest":
+                this.menuConfig = FlyoutPosTallest;
+                break;
+
+            case "top-fill":
+                this.menuConfig = FlyoutPosTopFill;
+                break;
+
+            case "bottom-fill":
+                this.menuConfig = FlyoutPosBottomFill;
+                break;
+
+            case "tallest-fill":
+                this.menuConfig = FlyoutPosTallestFill;
+                break;
+
+            default:
+                this.menuConfig = FlyoutPosBottom;
+                break;
         }
     }
 }
