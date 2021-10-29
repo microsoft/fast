@@ -1,11 +1,11 @@
-import { attr, FASTElement, customElement, observable, nullableNumberConverter, html, DOM } from '@microsoft/fast-element';
-import { provideReactWrapper } from './index';
+import { attr, customElement, DOM, FASTElement, html, nullableNumberConverter, observable } from '@microsoft/fast-element';
 import React from "react";
 import ReactDOM from "react-dom";
 import { uniqueElementName } from '@microsoft/fast-foundation/dist/esm/test-utilities/fixture';
 import { expect } from "chai";
 import { DesignSystem, FoundationElement } from "@microsoft/fast-foundation";
-
+import { provideReactWrapper } from './index';
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 type CustomElementProperties = {
   bool: boolean;
   str: string;
@@ -120,21 +120,21 @@ const scenarios = [
   {
     description: 'Wrapping a decorated FASTElement',
     elementName: decoratedElementName,
-    wrap: x => x(DecoratedTestElement, {
+    wrap: (x: any) => x(DecoratedTestElement, {
       events: restTestEvents
     })
   },
   {
     description: 'Wrapping a composed FoundationElement',
     elementName: `fast-${composedElementName}`,
-    wrap: x => x(composedTestElement(), {
+    wrap: (x: any) => x(composedTestElement(), {
       events: restTestEvents
     })
   },
   {
     description: 'Wrapping a vanilla Web Component',
     elementName: vanillaElementName,
-    wrap: x => x(VanillaElement, {
+    wrap: (x: any) => x(VanillaElement, {
       name: vanillaElementName,
       events: restTestEvents,
       properties: [
@@ -172,6 +172,7 @@ for (const scenario of scenarios) {
     let el: HTMLElement & CustomElementProperties;
 
     const renderReactComponent = (
+      /* eslint-disable-next-line @typescript-eslint/ban-types */
       props?: {}
     ) => {
       ReactDOM.render(
@@ -419,3 +420,4 @@ for (const scenario of scenarios) {
     });
   });
 }
+/* eslint-enable @typescript-eslint/no-non-null-assertion */
