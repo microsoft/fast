@@ -5,6 +5,7 @@ import { uniqueElementName } from '@microsoft/fast-foundation/dist/esm/test-util
 import { expect } from "chai";
 import { DesignSystem, FoundationElement } from "@microsoft/fast-foundation";
 import { provideReactWrapper } from './index';
+
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 type CustomElementProperties = {
   bool: boolean;
@@ -16,6 +17,8 @@ type CustomElementProperties = {
   rstr: string;
   rnum: number;
 };
+
+type CustomElement = HTMLElement & CustomElementProperties;
 
 const restTestEvents = {
   onFoo: 'foo',
@@ -169,7 +172,7 @@ for (const scenario of scenarios) {
     const { wrap } = provideReactWrapper(React, DesignSystem.getOrCreate());
     const WrappedComponent = scenario.wrap(wrap);
 
-    let el: HTMLElement & CustomElementProperties;
+    let el: CustomElement;
 
     const renderReactComponent = (
       /* eslint-disable-next-line @typescript-eslint/ban-types */
@@ -180,7 +183,7 @@ for (const scenario of scenarios) {
         container
       );
 
-      el = container.querySelector(scenario.elementName)!;
+      el = container.querySelector(scenario.elementName)! as CustomElement;
     };
 
     it('works with text children', async () => {
@@ -189,7 +192,7 @@ for (const scenario of scenarios) {
         <WrappedComponent>Hello {name}</WrappedComponent>,
         container
       );
-      el = container.querySelector(scenario.elementName)!;
+      el = container.querySelector(scenario.elementName)! as CustomElement;
       expect(el.textContent).to.equal('Hello World');
     });
 
