@@ -15,6 +15,7 @@ export type MappedRecipeTypes<T> = { [K in keyof typeof RecipeTypes]: T };
 /**
  * Defines a generic recipe
  */
+/* eslint-disable-next-line @typescript-eslint/ban-types */
 export interface RecipeDefinition<T extends {} = any> {
     /**
      * The name of the recipe
@@ -40,6 +41,7 @@ export interface RecipeDefinition<T extends {} = any> {
 /**
  * Defines all data associated with a recipe
  */
+/* eslint-disable-next-line @typescript-eslint/ban-types */
 export interface RecipeData<T extends {} = any>
     extends Omit<RecipeDefinition<T>, "evaluate"> {
     value?: T;
@@ -69,6 +71,8 @@ export class RecipeRegistry {
      * @param id - the ID of the recipe to unregister
      */
     public unregister(id: string): void {
+        /* eslint-disable @typescript-eslint/ban-ts-comment */
+        /* @ts-ignore-next-line no-implicit-any */
         delete this.register[id];
     }
 

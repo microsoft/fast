@@ -8,9 +8,9 @@ export interface ClientRectWithMargin {
 }
 
 export function convertStylePropertyPixelsToNumber(
-    computedStyle: CSSStyleDeclaration,
-    property: string
-): number {
+    computedStyle: CSSStyleDeclaration | null | undefined,
+    property: string | null | undefined
+): number | void {
     if (!computedStyle || !property) {
         return;
     }
@@ -26,7 +26,9 @@ export function convertStylePropertyPixelsToNumber(
 /**
  * Gets the client bounding rectangle including any margins of an element.
  */
-export function getClientRectWithMargin(element: HTMLElement): ClientRectWithMargin {
+export function getClientRectWithMargin(
+    element: HTMLElement | null | undefined
+): ClientRectWithMargin | undefined {
     if (!element) {
         return;
     }
@@ -42,10 +44,10 @@ export function getClientRectWithMargin(element: HTMLElement): ClientRectWithMar
         right: rect.right,
     };
 
-    clone.width += convertStylePropertyPixelsToNumber(style, "margin-left");
-    clone.width += convertStylePropertyPixelsToNumber(style, "margin-right");
-    clone.height += convertStylePropertyPixelsToNumber(style, "margin-top");
-    clone.height += convertStylePropertyPixelsToNumber(style, "margin-bottom");
+    clone.width += convertStylePropertyPixelsToNumber(style, "margin-left") as number;
+    clone.width += convertStylePropertyPixelsToNumber(style, "margin-right") as number;
+    clone.height += convertStylePropertyPixelsToNumber(style, "margin-top") as number;
+    clone.height += convertStylePropertyPixelsToNumber(style, "margin-bottom") as number;
 
     return clone;
 }

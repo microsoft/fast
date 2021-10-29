@@ -5,7 +5,6 @@
         "target": "ES6",
         "baseUrl": ".",
         "jsx": "react",
-        "strictNullChecks": true,
         "esModuleInterop": true,
         "allowSyntheticDefaultImports": true
     },

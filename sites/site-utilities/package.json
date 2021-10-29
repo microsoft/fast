@@ -42,6 +42,7 @@
     "chalk": "^4.1.0",
     "csstype": "^2.5.8",
     "eslint-config-prettier": "6.10.1",
+    "eslint-plugin-react": "^7.19.0",
     "favicons": "^6.1.0",
     "fs-extra": "^9.0.1",
     "jest": "^25.4.0",
@@ -58,8 +59,8 @@
   },
   "dependencies": {
     "@fluentui/web-components": "^1.2.3",
-    "@microsoft/fast-components": "^2.14.2",
-    "@microsoft/fast-foundation": "^2.23.0",
+    "@microsoft/fast-components": "^2.14.3",
+    "@microsoft/fast-foundation": "^2.23.2",
     "@microsoft/fast-tooling": "^0.29.0",
     "@microsoft/fast-tooling-react": "^2.11.4",
     "@skatejs/val": "^0.5.0",

@@ -187,7 +187,7 @@ class Preview extends Foundation<{}, PreviewUnhandledProps, PreviewState> {
 
             innerDiv.appendChild(
                 mapDataDictionary({
-                    dataDictionary: this.state.dataDictionary,
+                    dataDictionary: this.state.dataDictionary as any,
                     schemaDictionary: this.state.schemaDictionary,
                     mapper: htmlMapper({
                         version: 1,

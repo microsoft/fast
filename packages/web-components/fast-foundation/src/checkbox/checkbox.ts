@@ -42,67 +42,10 @@ export class Checkbox extends FormAssociatedCheckbox {
     public initialValue: string = "on";
 
     /**
-     * Provides the default checkedness of the input element
-     * Passed down to proxy
-     *
-     * @public
-     * @remarks
-     * HTML Attribute: checked
-     */
-    @attr({ attribute: "checked", mode: "boolean" })
-    public checkedAttribute: boolean;
-    private checkedAttributeChanged(): void {
-        this.defaultChecked = this.checkedAttribute;
-    }
-
-    /**
      * @internal
      */
     @observable
     public defaultSlottedNodes: Node[];
-
-    /**
-     * Initialized to the value of the checked attribute. Can be changed independently of the "checked" attribute,
-     * but changing the "checked" attribute always additionally sets this value.
-     *
-     * @public
-     */
-    @observable
-    public defaultChecked: boolean;
-    private defaultCheckedChanged(): void {
-        if (!this.dirtyChecked) {
-            // Setting this.checked will cause us to enter a dirty state,
-            // but if we are clean when defaultChecked is changed, we want to stay
-            // in a clean state, so reset this.dirtyChecked
-            this.checked = this.defaultChecked;
-            this.dirtyChecked = false;
-        }
-    }
-
-    /**
-     * The checked state of the control.
-     *
-     * @public
-     */
-    @observable
-    public checked: boolean;
-    private checkedChanged(): void {
-        if (!this.dirtyChecked) {
-            this.dirtyChecked = true;
-        }
-
-        this.updateForm();
-
-        if (this.proxy instanceof HTMLInputElement) {
-            this.proxy.checked = this.checked;
-        }
-
-        if (this.constructed) {
-            this.$emit("change");
-        }
-
-        this.validate();
-    }
 
     /**
      * The indeterminate state of the control
@@ -110,49 +53,10 @@ export class Checkbox extends FormAssociatedCheckbox {
     @observable
     public indeterminate: boolean = false;
 
-    /**
-     * Tracks whether the "checked" property has been changed.
-     * This is necessary to provide consistent behavior with
-     * normal input checkboxes
-     */
-    private dirtyChecked: boolean = false;
-
-    /**
-     * Set to true when the component has constructed
-     */
-    private constructed: boolean = false;
-
     constructor() {
         super();
 
-        this.defaultChecked = !!this.checkedAttribute;
-        this.checked = this.defaultChecked;
-
-        this.constructed = true;
-    }
-
-    /**
-     * @internal
-     */
-    public connectedCallback(): void {
-        super.connectedCallback();
-
         this.proxy.setAttribute("type", "checkbox");
-
-        this.updateForm();
-    }
-
-    /**
-     * @internal
-     */
-    public formResetCallback = (): void => {
-        this.checked = this.checkedAttribute;
-        this.dirtyChecked = false;
-    };
-
-    private updateForm(): void {
-        const value = this.checked ? this.value : null;
-        this.setFormValue(value, value);
     }
 
     /**

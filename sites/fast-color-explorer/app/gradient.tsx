@@ -54,6 +54,7 @@ class BaseGradient extends React.Component<GradientProps, {}> {
     private createItems(): React.ReactNode {
         return this.props.colors.map((item: string, index: number) => {
             let classNames: string = this.props.managedClasses.gradient_item;
+            /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */
             const bg = parseColor(this.props.colors[index])!;
             const darkMode = isDark(SwatchRGB.create(bg.r, bg.g, bg.b));
 

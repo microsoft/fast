@@ -1,5 +1,3 @@
-import { attr } from "@microsoft/fast-element";
-
 import { FoundationElement } from "../foundation-element";
 
 /**
