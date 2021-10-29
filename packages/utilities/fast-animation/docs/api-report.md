@@ -76,7 +76,7 @@ export class AnimateTo extends Animate {
 }
 
 // @public
-export function cubicBezier(name: "linear" | "easeOut" | "easeOutSmooth" | "easeIn" | "drillIn" | "backToApp" | "appToApp" | "fastIn" | "fastOut" | "fastInOut" | "exponential" | "fastInFortySevenPercent" | "exponentialReversed" | "navPane" | /* @deprecated */ string): string;
+export function cubicBezier(name: "linear" | "easeOut" | "easeOutSmooth" | "easeIn" | "drillIn" | "backToApp" | "appToApp" | "fastIn" | "fastOut" | "fastInOut" | "exponential" | "fastInFortySevenPercent" | "exponentialReversed" | "navPane"): string;
 
 // @public
 export function fadeIn(element: HTMLElement, effectTiming?: EffectTiming): AnimateTo;

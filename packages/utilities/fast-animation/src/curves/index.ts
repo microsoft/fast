@@ -62,7 +62,6 @@ export function cubicBezier(
         | "fastInFortySevenPercent"
         | "exponentialReversed"
         | "navPane"
-        | /* @deprecated */ string
 ): string {
     return name in bezierCurves ? formatCubicBezier(bezierCurves[name]) : "";
 }
