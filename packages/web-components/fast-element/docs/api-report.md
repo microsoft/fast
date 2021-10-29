@@ -61,7 +61,7 @@ export interface Behavior<TSource = any, TParent = any, TGrandparent = any> {
 }
 
 // @public (undocumented)
-export function bind<T = any>(binding: Binding, config?: BindingConfig | DefaultBindingOptions): CaptureType<T>;
+export function bind<T = any>(binding: Binding<T>, config?: BindingConfig<T> | DefaultBindingOptions): CaptureType<T>;
 
 // @public
 export type Binding<TSource = any, TReturn = any, TParent = any> = (source: TSource, context: ExecutionContext<TParent>) => TReturn;
@@ -72,7 +72,7 @@ export type BindingBehaviorFactory = {
 };
 
 // @public (undocumented)
-export interface BindingConfig {
+export interface BindingConfig<T = any> {
     // (undocumented)
     mode: BindingMode;
     // (undocumented)
@@ -82,17 +82,17 @@ export interface BindingConfig {
 // @public (undocumented)
 export interface BindingMode {
     // (undocumented)
-    attribute?: BindingType;
+    attribute: BindingType;
     // (undocumented)
-    booleanAttribute?: BindingType;
+    booleanAttribute: BindingType;
     // (undocumented)
-    content?: BindingType;
+    content: BindingType;
     // (undocumented)
-    event?: BindingType;
+    event: BindingType;
     // (undocumented)
-    property?: BindingType;
+    property: BindingType;
     // (undocumented)
-    tokenList?: BindingType;
+    tokenList: BindingType;
 }
 
 // @public
@@ -406,10 +406,10 @@ export interface ObservationRecord {
 }
 
 // @public (undocumented)
-export const onChange: BindingConfig & ((options?: DefaultBindingOptions | undefined) => BindingConfig);
+export const onChange: BindingConfig<any> & ((options?: DefaultBindingOptions | undefined) => BindingConfig);
 
 // @public (undocumented)
-export const oneTime: BindingConfig & ((options?: DefaultBindingOptions | undefined) => BindingConfig);
+export const oneTime: BindingConfig<any> & ((options?: DefaultBindingOptions | undefined) => BindingConfig);
 
 // @public
 export interface PartialFASTElementDefinition {
