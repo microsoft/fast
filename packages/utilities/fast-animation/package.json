@@ -14,6 +14,7 @@
   "bugs": {
     "url": "https://github.com/Microsoft/fast/issues/new/choose"
   },
+  "type": "module",
   "main": "dist/esm/index.js",
   "types": "dist/esm/index.d.ts",
   "unpkg": "dist/fast-animation.min.js",
