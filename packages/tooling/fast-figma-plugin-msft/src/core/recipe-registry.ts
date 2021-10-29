@@ -71,6 +71,8 @@ export class RecipeRegistry {
      * @param id - the ID of the recipe to unregister
      */
     public unregister(id: string): void {
+        /* eslint-disable @typescript-eslint/ban-ts-comment */
+        /* @ts-ignore-next-line no-implicit-any */
         delete this.register[id];
     }
 

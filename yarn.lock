@@ -4723,6 +4723,14 @@
   dependencies:
     "@types/react" "*"
 
+"@types/react-color@^2.0.0":
+  version "2.17.6"
+  resolved "https://registry.yarnpkg.com/@types/react-color/-/react-color-2.17.6.tgz#584946f17c40fcd0828fde5f72a9c23ccea6f037"
+  integrity sha512-5CEKnrpvgZz8v5UYbpLgBeK+V6K7KdszksSDK6mNjL/8wrsqQfIyKB45CQOAEYtRgn+tWqTeqbUtvFWjXDpURQ==
+  dependencies:
+    "@types/react" "*"
+    "@types/reactcss" "*"
+
 "@types/react-dom@^16.0.11", "@types/react-dom@^16.3.0", "@types/react-dom@^16.9.4":
   version "16.9.10"
   resolved "https://registry.yarnpkg.com/@types/react-dom/-/react-dom-16.9.10.tgz#4485b0bec3d41f856181b717f45fd7831101156f"
@@ -4760,6 +4768,13 @@
   dependencies:
     "@types/prop-types" "*"
     csstype "^2.2.0"
+
+"@types/reactcss@*":
+  version "1.2.6"
+  resolved "https://registry.yarnpkg.com/@types/reactcss/-/reactcss-1.2.6.tgz#133c1e7e896f2726370d1d5a26bf06a30a038bcc"
+  integrity sha512-qaIzpCuXNWomGR1Xq8SCFTtF4v8V27Y6f+b9+bzHiv087MylI/nTCqqdChNeWS7tslgROmYB7yeiruWX7WnqNg==
+  dependencies:
+    "@types/react" "*"
 
 "@types/resolve@0.0.8":
   version "0.0.8"
