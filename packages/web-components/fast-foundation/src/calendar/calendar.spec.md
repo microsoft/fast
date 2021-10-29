@@ -14,17 +14,15 @@ use on it's own or with the date picker to add some additional reuse.
 Will be used for a date-picker component.
 Can be used for a schedule.
 
-### Non-goals
-
-*A list of use cases, features, or functionality which are **not** goals for the component*
-  
+ 
 ### Features
 
 - A calendar month view.
 - Localized text for a given market, language and numbering system.
 - Coloring - fonts, borders, backgrounds, buttons.
+- Ability to add to specific dates.
 - Custom event fired when selecting a date.
-
+- Styling for disabled and selected dates.
 
 ### Risks and Challenges
 
@@ -50,7 +48,7 @@ Calculating date/times can run into timezone issues.
 ### Prior Art/Examples
 
 Prototype: https://codepen.io/kungfukarl/pen/dcc7a25c745706ca71419db805936e44
-
+FluentUI calendar: https://developer.microsoft.com/en-us/fluentui#/controls/web/calendar
 
 ---
 
@@ -58,6 +56,7 @@ Prototype: https://codepen.io/kungfukarl/pen/dcc7a25c745706ca71419db805936e44
 
 It uses a light gray background and rounded corners for the interactive version of the calandear.
 Non-interactive cells will have no background so that they don't appear as buttons.
+The current date will use accent color as the background.
 
 ### API
 
@@ -84,21 +83,12 @@ Non-interactive cells will have no background so that they don't appear as butto
 - default - Slotted between the title and the calendar
 - `start` - Before the title
 - `end` - after the calendar
+- `title` - Slot with defaulted content as the month and year
 - The calendar component will generate dynamic slots for each date to slot content onto the calendar.
-
-
-*Consider high and low-level APIs. Attempt to design a powerful and extensible low-level API with a high-level API for developer/designer ergonomics and simplicity.*
 
 ### Anatomy and Appearance
 
 *Screenshots and/or description of the basic appearance of the component. Outline its structure with a diagram of its visual tree (shadow dom). Enumerate key areas of visual customization, such as:*
-
-*Slot Names*
-Dynamically generated slots with the date as the name in the template.
-
-*Host Classes*
-
-*Slotted Content/Slotted Classes*
 
 *CSS Parts*
 - `title` - the container that holds the month and year
@@ -110,13 +100,11 @@ Dynamically generated slots with the date as the name in the template.
 - `week` - each row of days
 - `day` - each numbered day
 - `date` - the number date in the day cell
-- `today` - the number date for the current date
+- `today` - the current dates cell
 
 ---
 
 ## Implementation
-
-*Important aspects of the planned implementation with careful consideration of web standards and integration.*
 
 ```html
 <fast-calendar 
@@ -125,9 +113,9 @@ Dynamically generated slots with the date as the name in the template.
   month-format="short"
   weekday-format="narrow"
   locale="th-TH-u-ca-bhuddist-nu-thai"
-  disabled-dates="1-5-2022,1-6-2022,1-7-2022"
-  selected-dates="1-20-2022,1-30-2022">
-  <div slot="1-1-2022">Happy New Year!</div>
+  disabled-dates="1-5-2025,1-6-2025,1-7-2025"
+  selected-dates="1-20-2025,1-30-2025">
+  <div slot="1-1-2025">Happy New Year!</div>
 </fast-calendar>
 ```
 
@@ -141,24 +129,22 @@ Dynamically generated slots with the date as the name in the template.
 
 ### Accessibility
 
-*Consider the accessibility of the component, including:*
 - Dates have an aria-label to denote the month and day for more semantic meaning rather than just the day number.
 
 *Keyboard Navigation and Focus*
 - Users can tab to the first date in the calendar.
 - The underlying markup uses a form of data-grid so that you can arrow around the calendar.
-*Use with Assistive Technology*
-  - e.g. The implications shadow dom might have on how roles and attributes are presented to the AT. Components which delegate focus require all global aria-* attributes to be enumerated.
 
+*Use with Assistive Technology*
 - Includes abbr (abbreviation) attribute for abbreviated weekday labels.
+
 *Keyboard Navigation and Focus*
+- Uses data-grid for navigating the calendar.
 
 ### Globalization
 *Special RTL handling*
-- RTL initiated when using 'ar' or 'he' language codes, 'arabic' or 'arabext' numbering, 'hebrew' or 'islamic' calendars.
-- Loads numbering in reverse for each week.
-
-*Consider whether the component has any special globalization needs such as:*
+- Supports Arabic and Hebrew languages and numbering.
+- Because it uses display: grid, cells flow in reverse order for direction: rtl.
 
 *Special RTL handling*
   Text in the title will be RTL [month] [year] -> [year] [month]
@@ -169,8 +155,6 @@ Dynamically generated slots with the date as the name in the template.
     - market: a language-country code
     - calendar type: a code representing the calendar type to use
     - numbering system: a code for the numbering system to use
-
-
 
 ### Test Plan
 
@@ -212,18 +196,16 @@ Tests include
 
 ### Documentation
 
-*What additions or changes are needed for user documentation and demos? Are there any architectural/engineering docs we should create as well, perhaps due to some interesting technical challenge or design decisions related to this component?*
-
----
+- Write up a doc that covers all of the parts and how to style it.
+- Show examples using capturing clicking on dates.
+- Show examples of localized calendars with links to more info on locale settings.
 
 ## Resources
 
-*Any related resource links such as web standards, discussion threads, diagrams, etc.*
 - W3 spec for date-picker: https://www.w3.org/TR/wai-aria-practices/examples/dialog-modal/datepicker-dialog.html
 - Intl object used for formatting and getting localized month and day labels: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl
 
 ## Next Steps
 
-*What next steps, if any, are there? Is there some functionality that would be a nice-to-have or a common feature in other implementations that could be added but is not considered part of the MVP?*
-
 - Implement a date-picker component using the calendar component
+- Extend date-formatter to include support for time
