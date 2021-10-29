@@ -1,6 +1,7 @@
 import { Constructable, FASTElementDefinition } from "@microsoft/fast-element";
 import { FoundationElement } from "../foundation-element/foundation-element";
 import { Container, DI, Registration } from "../di/di";
+import { DesignToken } from "../design-token/design-token";
 import { ComponentPresentation } from "./component-presentation";
 import type {
     ContextualElementDefinition,
@@ -9,8 +10,7 @@ import type {
     ElementDefinitionContext,
     ElementDefinitionParams,
 } from "./registration-context";
-import { DesignToken } from "../design-token/design-token";
-
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 /**
  * Indicates what to do with an ambiguous (duplicate) element.
  * @public
@@ -348,3 +348,4 @@ class ElementDefinitionEntry implements ElementDefinitionContext {
         return DesignSystem.tagFor(type)!;
     }
 }
+/* eslint-enable @typescript-eslint/no-non-null-assertion */

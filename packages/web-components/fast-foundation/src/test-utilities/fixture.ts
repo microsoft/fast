@@ -111,6 +111,7 @@ export function uniqueElementName(): string {
     return `fast-unique-${Math.random().toString(36).substring(7)}`;
 }
 
+/* eslint-disable @typescript-eslint/no-unused-vars */
 function isElementRegistry<T>(
     obj: any
 ): obj is FoundationElementRegistry<FoundationElementDefinition, any> {

@@ -36,6 +36,7 @@
     "@types/figma": "^1.0.2",
     "@types/node": "^10.12.12",
     "@types/react": "^16.9.17",
+    "@types/react-color": "^2.0.0",
     "@types/react-dom": "^16.9.4",
     "babel-loader": "^8.2.2",
     "clean-webpack-plugin": "^3.0.0",

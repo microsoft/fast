@@ -19,7 +19,7 @@ export interface LinkHandler {
  */
 export class DefaultLinkHandler implements LinkHandler {
     private handler = (e: MouseEvent) => {
-        let { shouldHandleEvent, href } = this.getEventInfo(e);
+        const { shouldHandleEvent, href } = this.getEventInfo(e);
 
         if (shouldHandleEvent) {
             e.preventDefault();

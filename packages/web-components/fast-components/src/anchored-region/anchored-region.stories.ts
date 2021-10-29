@@ -5,6 +5,7 @@ import { AnchoredRegion as FoundationAnchoredRegion } from "@microsoft/fast-foun
 import AnchoredRegionTemplate from "./fixtures/base.html";
 import "./index";
 
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
     if (name.toLowerCase().startsWith("anchored-region")) {
         //scroll stuff into view
@@ -119,3 +120,4 @@ export default {
 };
 
 export const AnchoredRegion = () => AnchoredRegionTemplate;
+/* eslint-enable @typescript-eslint/no-non-null-assertion */

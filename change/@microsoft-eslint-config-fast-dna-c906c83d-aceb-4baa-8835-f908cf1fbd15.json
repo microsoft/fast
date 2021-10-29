@@ -1,0 +1,7 @@
+{
+  "type": "major",
+  "comment": "update eslint-config-rules to leverage latest versions of eslint and remove react",
+  "packageName": "@microsoft/eslint-config-fast-dna",
+  "email": "chhol@microsoft.com",
+  "dependentChangeType": "patch"
+}

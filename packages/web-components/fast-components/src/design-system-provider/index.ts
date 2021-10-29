@@ -104,7 +104,7 @@ const swatchConverter: ValueConverter = {
             return null;
         }
         const color = parseColorHexRGB(value);
-        return color ? SwatchRGB.create(color!.r, color!.g, color!.b) : null;
+        return color ? SwatchRGB.create(color.r, color.g, color.b) : null;
     },
 };
 

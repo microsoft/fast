@@ -131,7 +131,7 @@ export class Swatch extends FASTElement {
     public orientation: "horizontal" | "vertical" = "vertical";
 
     @attr
-    public label: string;
+    public label?: string;
 
     @attr({ mode: "boolean" })
     public interactive: boolean = false;

@@ -5,7 +5,6 @@ import {
     ElementDefinitionContext,
     focusVisible,
     forcedColorsStylesheetBehavior,
-    FoundationElementDefinition,
     ListboxOptionOptions,
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
