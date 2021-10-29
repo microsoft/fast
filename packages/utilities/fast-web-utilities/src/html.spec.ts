@@ -32,7 +32,9 @@ describe("getClientRectWithMargin", () => {
             <div id="element" style="margin: 10px 20px;"></div>
         `;
 
-        const element: HTMLElement | undefined | null = document.getElementById("element");
+        const element: HTMLElement | undefined | null = document.getElementById(
+            "element"
+        );
         const expectedWidth: number = mockWidth + 40;
         const expectedHeight: number = mockHeight + 20;
 
