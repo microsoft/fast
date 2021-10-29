@@ -1,5 +1,6 @@
 import { DOM } from "../dom";
-import type { Constructable, Mutable } from "../interfaces";
+import { isString, Mutable } from "../interfaces";
+import { PropertyChangeNotifier } from "../observation/notifier";
 import {
     Binding,
     BindingObserver,
@@ -20,17 +21,20 @@ export type BindingBehaviorFactory = {
 };
 
 export type BindingType = (directive: HTMLBindingDirective) => BindingBehaviorFactory;
+export const notSupportedBindingType: BindingType = () => {
+    throw new Error();
+};
 
 export interface BindingMode {
-    attribute?: BindingType;
-    booleanAttribute?: BindingType;
-    property?: BindingType;
-    content?: BindingType;
-    tokenList?: BindingType;
-    event?: BindingType;
+    attribute: BindingType;
+    booleanAttribute: BindingType;
+    property: BindingType;
+    content: BindingType;
+    tokenList: BindingType;
+    event: BindingType;
 }
 
-export interface BindingConfig {
+export interface BindingConfig<T = any> {
     mode: BindingMode;
     options: any;
 }
@@ -64,7 +68,39 @@ class TargetUpdateBinding extends BindingBase {
         super(directive);
     }
 
-    static createType(updateTarget: UpdateTarget) {
+    static createBindingConfig<T>(defaultOptions: T, eventType?: BindingType) {
+        const config: BindingConfig &
+            ((options?: typeof defaultOptions) => BindingConfig) = (
+            options: typeof defaultOptions
+        ): BindingConfig => {
+            return {
+                mode: config.mode,
+                options: Object.assign({}, defaultOptions, options),
+            };
+        };
+
+        config.options = defaultOptions;
+        config.mode = this.createBindingMode(eventType);
+
+        return config;
+    }
+
+    static createBindingMode(
+        eventType: BindingType = notSupportedBindingType
+    ): BindingMode {
+        return Object.freeze({
+            attribute: this.createType(DOM.setAttribute),
+            booleanAttribute: this.createType(DOM.setBooleanAttribute),
+            property: this.createType(
+                (target, aspect, value) => (target[aspect] = value)
+            ),
+            content: createContentBinding(this).createType(updateContentTarget),
+            tokenList: this.createType(updateTokenListTarget),
+            event: eventType,
+        });
+    }
+
+    private static createType(updateTarget: UpdateTarget) {
         return directive => new this(directive, updateTarget);
     }
 }
@@ -80,6 +116,69 @@ class OneTimeBinding extends TargetUpdateBinding {
             source,
             context
         );
+    }
+}
+
+const signals = new PropertyChangeNotifier({});
+
+export function sendSignal(signal: string) {
+    signals.notify(signal);
+}
+
+class OnSignalBinding extends TargetUpdateBinding {
+    bind(
+        source: any,
+        context: ExecutionContext<any, any>,
+        targets: ViewBehaviorTargets
+    ): void {
+        const handler = this.getOrCreateHandler(source, context, targets);
+        handler.handleChange();
+        signals.subscribe(handler, this.getSignal(source, context));
+    }
+
+    unbind(
+        source: any,
+        context: ExecutionContext<any, any>,
+        targets: ViewBehaviorTargets
+    ): void {
+        const directive = this.directive;
+        const target = targets[directive.targetId];
+        signals.unsubscribe(target[directive.uniqueId], this.getSignal(source, context));
+    }
+
+    private getSignal(source: any, context: ExecutionContext<any, any>) {
+        const options = this.directive.options;
+        return isString(options) ? options : options(source, context);
+    }
+
+    private getOrCreateHandler(
+        source: any,
+        context: ExecutionContext<any, any>,
+        targets: ViewBehaviorTargets
+    ) {
+        const directive = this.directive;
+        const target = targets[directive.targetId];
+        let handler = target[directive.uniqueId];
+
+        if (!handler) {
+            handler = {
+                target,
+                directive,
+                handleChange() {
+                    this.directive.updateTarget(
+                        this.target,
+                        this.directive.aspect,
+                        this.directive.binding(this.source, this.context),
+                        this.source,
+                        this.context
+                    );
+                },
+            };
+        }
+
+        handler.source = source;
+        handler.context = context;
+        return handler;
     }
 }
 
@@ -340,34 +439,21 @@ const defaultBindingOptions: DefaultBindingOptions = {
     capture: false,
 };
 
-function createBindingConfig(
-    Base: typeof TargetUpdateBinding,
-    Listener: Constructable<EventListener>
-) {
-    const config: BindingConfig & ((options?: DefaultBindingOptions) => BindingConfig) = (
-        options: DefaultBindingOptions
-    ): BindingConfig => {
-        return {
-            mode: config.mode,
-            options: Object.assign({}, defaultBindingOptions, options),
-        };
-    };
+export const onChange = OnChangeBinding.createBindingConfig(
+    defaultBindingOptions,
+    directive => new EventListener(directive)
+);
 
-    config.options = defaultBindingOptions;
-    config.mode = Object.freeze({
-        attribute: Base.createType(DOM.setAttribute),
-        booleanAttribute: Base.createType(DOM.setBooleanAttribute),
-        property: Base.createType((target, aspect, value) => (target[aspect] = value)),
-        content: createContentBinding(Base).createType(updateContentTarget),
-        tokenList: Base.createType(updateTokenListTarget),
-        event: directive => new Listener(directive),
-    });
+export const oneTime = OneTimeBinding.createBindingConfig(
+    defaultBindingOptions,
+    directive => new OneTimeEventListener(directive)
+);
 
-    return config;
-}
+const signalMode: BindingMode = OnSignalBinding.createBindingMode();
 
-export const onChange = createBindingConfig(OnChangeBinding, EventListener);
-export const oneTime = createBindingConfig(OneTimeBinding, OneTimeEventListener);
+export const signal = <T = any>(options: string | Binding<T>): BindingConfig<T> => {
+    return { mode: signalMode, options };
+};
 
 /**
  * @internal
@@ -401,44 +487,44 @@ export class HTMLBindingDirective extends InlinableHTMLDirective {
                         const binding = this.binding;
                         /* eslint-disable-next-line */
                         this.binding = (s, c) => DOM.createHTML(binding(s, c));
-                        this.factory = this.mode.property!(this);
+                        this.factory = this.mode.property(this);
                         break;
                     case "classList":
-                        this.factory = this.mode.tokenList!(this);
+                        this.factory = this.mode.tokenList(this);
                         break;
                     default:
-                        this.factory = this.mode.property!(this);
+                        this.factory = this.mode.property(this);
                         break;
                 }
                 break;
             case "?":
                 (this as Mutable<this>).aspect = value.substr(1);
-                this.factory = this.mode.booleanAttribute!(this);
+                this.factory = this.mode.booleanAttribute(this);
                 break;
             case "@":
                 (this as Mutable<this>).aspect = value.substr(1);
-                this.factory = this.mode.event!(this);
+                this.factory = this.mode.event(this);
                 break;
             default:
                 if (value === "class") {
                     (this as Mutable<this>).aspect = "className";
-                    this.factory = this.mode.property!(this);
+                    this.factory = this.mode.property(this);
                 } else {
                     (this as Mutable<this>).aspect = value;
-                    this.factory = this.mode.attribute!(this);
+                    this.factory = this.mode.attribute(this);
                 }
                 break;
         }
     }
 
     createBehavior(targets: ViewBehaviorTargets): ViewBehavior {
-        return (this.factory ?? this.mode.content!(this)).createBehavior(targets);
+        return (this.factory ?? this.mode.content(this)).createBehavior(targets);
     }
 }
 
 export function bind<T = any>(
-    binding: Binding,
-    config: BindingConfig | DefaultBindingOptions = onChange
+    binding: Binding<T>,
+    config: BindingConfig<T> | DefaultBindingOptions = onChange
 ): CaptureType<T> {
     if (!("mode" in config)) {
         config = onChange(config);
