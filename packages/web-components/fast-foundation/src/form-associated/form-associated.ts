@@ -265,7 +265,7 @@ export function FormAssociated<T extends ConstructableFormAssociated>(BaseCtor: 
          */
         public get labels(): ReadonlyArray<Node> {
             if (this.elementInternals) {
-                return Object.freeze(Array.from(this.elementInternals!.labels));
+                return Object.freeze(Array.from(this.elementInternals.labels));
             } else if (
                 this.proxy instanceof HTMLElement &&
                 this.proxy.ownerDocument &&

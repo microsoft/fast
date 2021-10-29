@@ -389,5 +389,6 @@ export function backgroundColor(d?: ColorsDesignSystem): string {
  * @internal
  */
 export function contrast(a: string, b: string): number {
+    /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */
     return contrastRatio(parseColor(a)!, parseColor(b)!);
 }

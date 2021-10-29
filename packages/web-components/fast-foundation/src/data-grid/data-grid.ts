@@ -316,6 +316,7 @@ export class DataGrid extends FoundationElement {
             { positioning: true }
         ).createBehavior(this.rowsPlaceholder);
 
+        /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */
         this.$fastController.addBehaviors([this.rowsRepeatBehavior!]);
 
         this.addEventListener("row-focused", this.handleRowFocus);
@@ -576,7 +577,7 @@ export class DataGrid extends FoundationElement {
         /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
         observer: MutationObserver
     ): void => {
-        if (mutations!.length) {
+        if (mutations && mutations.length) {
             mutations.forEach((mutation: MutationRecord): void => {
                 mutation.addedNodes.forEach((newNode: Node): void => {
                     if (

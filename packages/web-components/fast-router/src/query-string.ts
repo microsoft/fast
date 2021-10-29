@@ -13,7 +13,7 @@ function buildParam(key: string, value: any, traditional?: boolean): Array<strin
             if (traditional) {
                 result.push(`${encodeKey(key)}=${encode(value[i])}`);
             } else {
-                let arrayKey =
+                const arrayKey =
                     key +
                     "[" +
                     (typeof value[i] === "object" && value[i] !== null ? i : "") +
@@ -22,7 +22,7 @@ function buildParam(key: string, value: any, traditional?: boolean): Array<strin
             }
         }
     } else if (typeof value === "object" && !traditional) {
-        for (let propertyName in value) {
+        for (const propertyName in value) {
             result = result.concat(
                 buildParam(key + "[" + propertyName + "]", value[propertyName])
             );
@@ -56,11 +56,11 @@ function parseComplexParam(queryParams: Object, keys: string[], value: any): voi
     const keysLastIndex = keys.length - 1;
 
     for (let j = 0; j <= keysLastIndex; j++) {
-        let key = keys[j] === "" ? currentParams.length : keys[j];
+        const key = keys[j] === "" ? currentParams.length : keys[j];
         if (j < keysLastIndex) {
             // The value has to be an array or a false value
             // It can happen that the value is no array if the key was repeated with traditional style like `list=1&list[]=2`
-            let prevValue =
+            const prevValue =
                 !currentParams[key] || typeof currentParams[key] === "object"
                     ? currentParams[key]
                     : [currentParams[key]];
@@ -92,7 +92,7 @@ export const QueryString = Object.freeze({
         const keys = Object.keys(params || {}).sort();
 
         for (let i = 0, len = keys.length; i < len; i++) {
-            let key = keys[i];
+            const key = keys[i];
             pairs = pairs.concat(buildParam(key, params[key], traditional));
         }
 
@@ -142,8 +142,8 @@ export const QueryString = Object.freeze({
         const pairs = query.replace(/\+/g, " ").split("&");
 
         for (let i = 0; i < pairs.length; i++) {
-            let pair = pairs[i].split("=");
-            let key = decodeURIComponent(pair[0]);
+            const pair = pairs[i].split("=");
+            const key = decodeURIComponent(pair[0]);
             if (!key) {
                 continue;
             }
@@ -163,7 +163,7 @@ export const QueryString = Object.freeze({
             }
 
             if (pair.length >= 2) {
-                let value = pair[1] ? decodeURIComponent(pair[1]) : "";
+                const value = pair[1] ? decodeURIComponent(pair[1]) : "";
 
                 if (keysLastIndex) {
                     parseComplexParam(queryParams, keys, value);

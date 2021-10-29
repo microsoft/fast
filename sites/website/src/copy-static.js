@@ -1,9 +1,5 @@
 // FIXME: #3298 Merge fast-website and website projects to replace temporary build/copy script
 
-/* eslint-env node */
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
-/* eslint-disable @typescript-eslint/typedef */
-/* eslint-disable @typescript-eslint/no-var-requires */
 const path = require("path");
 const copy = require("../../../build/copy");
 

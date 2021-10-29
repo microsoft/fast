@@ -114,6 +114,7 @@ function getTagName<TElement, TEvents>(
     config: ReactWrapperConfig<TEvents>
 ) {
     if (!config.name) {
+        /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */
         const definition = FASTElementDefinition.forType(type)!;
 
         if (definition) {
