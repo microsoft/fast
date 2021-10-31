@@ -1,7 +1,0 @@
-{
-  "type": "minor",
-  "comment": "Added the CheckableFormAssociated mixin to better support the addition of current-checked property/attribute that allows for setting checked state via the .setAttribute() API. This change also converts two lifecycle hooks to methods from properties so that they can be handled correctly by the browser.",
-  "packageName": "@microsoft/fast-foundation",
-  "email": "nicholasrice@users.noreply.github.com",
-  "dependentChangeType": "patch"
-}

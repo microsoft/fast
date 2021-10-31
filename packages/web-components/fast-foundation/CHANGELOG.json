@@ -2,6 +2,61 @@
   "name": "@microsoft/fast-foundation",
   "entries": [
     {
+      "date": "Sun, 31 Oct 2021 07:17:45 GMT",
+      "tag": "@microsoft/fast-foundation_v2.24.0",
+      "version": "2.24.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "Added the CheckableFormAssociated mixin to better support the addition of current-checked property/attribute that allows for setting checked state via the .setAttribute() API. This change also converts two lifecycle hooks to methods from properties so that they can be handled correctly by the browser.",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "e92a16b95e8410d59b46978bce1b02d5b80fc004",
+            "package": "@microsoft/fast-foundation"
+          }
+        ],
+        "none": [
+          {
+            "comment": "Adding calendar component spec",
+            "author": "robarb@microsoft.com",
+            "commit": "5acf6b4e040fc32ba3bb00c38ceb437b42af9eb9",
+            "package": "@microsoft/fast-foundation"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "fix: number-field increment decrement logic",
+            "author": "robarb@microsoft.com",
+            "commit": "1bb8f9783a48c8eef8c7d84c4d833a39f4f2d0d8",
+            "package": "@microsoft/fast-foundation"
+          },
+          {
+            "comment": "picker focus on input after selection",
+            "author": "scomea@microsoft.com",
+            "commit": "e0910d1c1dfe64702695794d9976350ffd53a77d",
+            "package": "@microsoft/fast-foundation"
+          },
+          {
+            "comment": "update fast eslint package version",
+            "author": "chhol@microsoft.com",
+            "commit": "a150068ee196e73fe7a4f7b538a38752e0e506ba",
+            "package": "@microsoft/fast-foundation"
+          },
+          {
+            "comment": "Bump @microsoft/fast-element to v1.6.2",
+            "author": "chhol@microsoft.com",
+            "commit": "a150068ee196e73fe7a4f7b538a38752e0e506ba",
+            "package": "@microsoft/fast-foundation"
+          },
+          {
+            "comment": "Bump @microsoft/fast-web-utilities to v5.0.2",
+            "author": "chhol@microsoft.com",
+            "commit": "a150068ee196e73fe7a4f7b538a38752e0e506ba",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 28 Oct 2021 07:15:32 GMT",
       "tag": "@microsoft/fast-foundation_v2.23.2",
       "version": "2.23.2",

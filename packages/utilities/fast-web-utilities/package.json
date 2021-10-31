@@ -1,7 +1,7 @@
 {
   "name": "@microsoft/fast-web-utilities",
   "description": "FAST web utilities",
-  "version": "5.0.1",
+  "version": "5.0.2",
   "sideEffects": false,
   "author": {
     "name": "Microsoft",
@@ -45,7 +45,7 @@
     "@types/chai": "^4.2.11",
     "@types/karma": "^5.0.0",
     "@types/mocha": "^7.0.2",
-    "@microsoft/eslint-config-fast-dna": "^1.2.0",
+    "@microsoft/eslint-config-fast-dna": "^2.0.0",
     "babel-core": "^7.0.0-bridge.0",
     "chai": "^4.2.0",
     "chai-spies": "^1.0.0",

@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "update fast eslint package version",
-  "packageName": "@microsoft/fast-web-utilities",
-  "email": "chhol@microsoft.com",
-  "dependentChangeType": "patch"
-}

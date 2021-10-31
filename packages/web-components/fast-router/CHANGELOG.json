@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-router",
   "entries": [
     {
+      "date": "Sun, 31 Oct 2021 07:17:45 GMT",
+      "tag": "@microsoft/fast-router_v0.2.11",
+      "version": "0.2.11",
+      "comments": {
+        "patch": [
+          {
+            "comment": "update fast eslint package version",
+            "author": "chhol@microsoft.com",
+            "commit": "a150068ee196e73fe7a4f7b538a38752e0e506ba",
+            "package": "@microsoft/fast-router"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 13 Oct 2021 22:45:16 GMT",
       "tag": "@microsoft/fast-router_v0.2.10",
       "version": "0.2.10",
