@@ -131,20 +131,20 @@ export interface AnchoredRegionConfig {
     readonly fixedPlacement?: boolean;
     // Warning: (ae-incompatible-release-tags) The symbol "horizontalDefaultPosition" is marked as @public, but its signature references "HorizontalPosition" which is marked as @beta
     readonly horizontalDefaultPosition?: HorizontalPosition;
-    readonly horizontalInset: boolean;
+    readonly horizontalInset?: boolean;
     // Warning: (ae-incompatible-release-tags) The symbol "horizontalPositioningMode" is marked as @public, but its signature references "AxisPositioningMode" which is marked as @beta
-    readonly horizontalPositioningMode: AxisPositioningMode;
+    readonly horizontalPositioningMode?: AxisPositioningMode;
     // Warning: (ae-incompatible-release-tags) The symbol "horizontalScaling" is marked as @public, but its signature references "AxisScalingMode" which is marked as @beta
-    readonly horizontalScaling: AxisScalingMode;
+    readonly horizontalScaling?: AxisScalingMode;
     readonly horizontalThreshold?: number;
     readonly horizontalViewportLock?: boolean;
     // Warning: (ae-incompatible-release-tags) The symbol "verticalDefaultPosition" is marked as @public, but its signature references "VerticalPosition" which is marked as @beta
     readonly verticalDefaultPosition?: VerticalPosition;
-    readonly verticalInset: boolean;
+    readonly verticalInset?: boolean;
     // Warning: (ae-incompatible-release-tags) The symbol "verticalPositioningMode" is marked as @public, but its signature references "AxisPositioningMode" which is marked as @beta
-    readonly verticalPositioningMode: AxisPositioningMode;
+    readonly verticalPositioningMode?: AxisPositioningMode;
     // Warning: (ae-incompatible-release-tags) The symbol "verticalScaling" is marked as @public, but its signature references "AxisScalingMode" which is marked as @beta
-    readonly verticalScaling: AxisScalingMode;
+    readonly verticalScaling?: AxisScalingMode;
     readonly verticalThreshold?: number;
     readonly verticalViewportLock?: boolean;
 }

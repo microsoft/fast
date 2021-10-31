@@ -29,7 +29,7 @@ export interface AnchoredRegionConfig {
     /**
      * Sets what logic the component uses to determine vertical placement.
      */
-    readonly verticalPositioningMode: AxisPositioningMode;
+    readonly verticalPositioningMode?: AxisPositioningMode;
 
     /**
      * The default vertical position of the region relative to the anchor element
@@ -39,12 +39,12 @@ export interface AnchoredRegionConfig {
     /**
      * Whether the region overlaps the anchor on the vertical axis
      */
-    readonly verticalInset: boolean;
+    readonly verticalInset?: boolean;
 
     /**
      * Defines how the height of the region is calculated
      */
-    readonly verticalScaling: AxisScalingMode;
+    readonly verticalScaling?: AxisScalingMode;
 
     /**
      * How short the space allocated to the default position has to be before the tallest area
@@ -60,7 +60,7 @@ export interface AnchoredRegionConfig {
     /**
      * Sets what logic the component uses to determine horizontal placement.
      */
-    readonly horizontalPositioningMode: AxisPositioningMode;
+    readonly horizontalPositioningMode?: AxisPositioningMode;
 
     /**
      * The default horizontal position of the region relative to the anchor element
@@ -70,12 +70,12 @@ export interface AnchoredRegionConfig {
     /**
      *  hether the region overlaps the anchor on the horizontal axis
      */
-    readonly horizontalInset: boolean;
+    readonly horizontalInset?: boolean;
 
     /**
      * Defines how the width of the region is calculate
      */
-    readonly horizontalScaling: AxisScalingMode;
+    readonly horizontalScaling?: AxisScalingMode;
 
     /**
      * Whether the region remains in the viewport (ie. detaches from the anchor) on the horizontal axis
@@ -90,17 +90,13 @@ export interface AnchoredRegionConfig {
 }
 
 /**
- * A region that always places itself above the anchor, has
- * a width to match the anchor, and is sized vertically by content
- *
- * @public
+ * Building blocks - partial configs
  */
-export const FlyoutPosTop: AnchoredRegionConfig = {
-    verticalDefaultPosition: "top",
-    verticalPositioningMode: "locktodefault",
-    verticalInset: false,
-    verticalScaling: "content",
 
+/**
+ * A region that matches the size and position of the anchor horizontally
+ */
+const horizontalAnchorOverlay: AnchoredRegionConfig = {
     horizontalDefaultPosition: "center",
     horizontalPositioningMode: "locktodefault",
     horizontalInset: false,
@@ -108,22 +104,40 @@ export const FlyoutPosTop: AnchoredRegionConfig = {
 };
 
 /**
+ * Exported configs
+ */
+
+/**
+ * A region that always places itself above the anchor, has
+ * a width to match the anchor, and is sized vertically by content
+ *
+ * @public
+ */
+export const FlyoutPosTop: AnchoredRegionConfig = Object.assign(
+    {
+        verticalDefaultPosition: "top",
+        verticalPositioningMode: "locktodefault",
+        verticalInset: false,
+        verticalScaling: "content",
+    },
+    horizontalAnchorOverlay
+);
+
+/**
  * A region that always places itself below the anchor, has
  * a width to match the anchor, and is sized vertically by content
  *
  * @public
  */
-export const FlyoutPosBottom: AnchoredRegionConfig = {
-    verticalDefaultPosition: "bottom",
-    verticalPositioningMode: "locktodefault",
-    verticalInset: false,
-    verticalScaling: "content",
-
-    horizontalDefaultPosition: "center",
-    horizontalPositioningMode: "locktodefault",
-    horizontalInset: false,
-    horizontalScaling: "anchor",
-};
+export const FlyoutPosBottom: AnchoredRegionConfig = Object.assign(
+    {
+        verticalDefaultPosition: "bottom",
+        verticalPositioningMode: "locktodefault",
+        verticalInset: false,
+        verticalScaling: "content",
+    },
+    horizontalAnchorOverlay
+);
 
 /**
  * A region that places itself above or below the anchor
@@ -132,16 +146,15 @@ export const FlyoutPosBottom: AnchoredRegionConfig = {
  *
  * @public
  */
-export const FlyoutPosTallest: AnchoredRegionConfig = {
-    verticalPositioningMode: "dynamic",
-    verticalInset: false,
-    verticalScaling: "content",
-
-    horizontalDefaultPosition: "center",
-    horizontalPositioningMode: "locktodefault",
-    horizontalInset: false,
-    horizontalScaling: "anchor",
-};
+export const FlyoutPosTallest: AnchoredRegionConfig = Object.assign(
+    {
+        verticalDefaultPosition: undefined,
+        verticalPositioningMode: "dynamic",
+        verticalInset: false,
+        verticalScaling: "content",
+    },
+    horizontalAnchorOverlay
+);
 
 /**
  * A region that always places itself above the anchor, has
@@ -149,17 +162,9 @@ export const FlyoutPosTallest: AnchoredRegionConfig = {
  *
  * @public
  */
-export const FlyoutPosTopFill: AnchoredRegionConfig = {
-    verticalDefaultPosition: "top",
-    verticalPositioningMode: "locktodefault",
-    verticalInset: false,
+export const FlyoutPosTopFill: AnchoredRegionConfig = Object.assign({}, FlyoutPosTop, {
     verticalScaling: "fill",
-
-    horizontalDefaultPosition: "center",
-    horizontalPositioningMode: "locktodefault",
-    horizontalInset: false,
-    horizontalScaling: "anchor",
-};
+});
 
 /**
  * A region that always places itself below the anchor, has
@@ -167,17 +172,11 @@ export const FlyoutPosTopFill: AnchoredRegionConfig = {
  *
  * @public
  */
-export const FlyoutPosBottomFill: AnchoredRegionConfig = {
-    verticalDefaultPosition: "bottom",
-    verticalPositioningMode: "locktodefault",
-    verticalInset: false,
-    verticalScaling: "fill",
-
-    horizontalDefaultPosition: "center",
-    horizontalPositioningMode: "locktodefault",
-    horizontalInset: false,
-    horizontalScaling: "anchor",
-};
+export const FlyoutPosBottomFill: AnchoredRegionConfig = Object.assign(
+    {},
+    FlyoutPosBottom,
+    { verticalScaling: "fill" }
+);
 
 /**
  * A region that places itself above or below the anchor
@@ -186,13 +185,8 @@ export const FlyoutPosBottomFill: AnchoredRegionConfig = {
  *
  * @public
  */
-export const FlyoutPosTallestFill: AnchoredRegionConfig = {
-    verticalPositioningMode: "dynamic",
-    verticalInset: false,
-    verticalScaling: "fill",
-
-    horizontalDefaultPosition: "center",
-    horizontalPositioningMode: "locktodefault",
-    horizontalInset: false,
-    horizontalScaling: "anchor",
-};
+export const FlyoutPosTallestFill: AnchoredRegionConfig = Object.assign(
+    {},
+    FlyoutPosTallest,
+    { verticalScaling: "fill" }
+);
