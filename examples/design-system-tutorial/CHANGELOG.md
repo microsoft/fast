@@ -1,8 +1,16 @@
 # Change Log - fast-design-system-demo
 
-This log was last generated on Thu, 28 Oct 2021 07:15:32 GMT and should not be manually modified.
+This log was last generated on Sun, 31 Oct 2021 07:17:45 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.0.0
+
+Sun, 31 Oct 2021 07:17:45 GMT
+
+### Patches
+
+- Bump @microsoft/fast-colors to v5.1.4 (chhol@microsoft.com)
 
 ## 1.0.0
 

@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "fix: number-field increment decrement logic",
-  "packageName": "@microsoft/fast-foundation",
-  "email": "robarb@microsoft.com",
-  "dependentChangeType": "patch"
-}

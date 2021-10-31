@@ -1,7 +1,16 @@
-# Change Log
+# Change Log - @microsoft/fast-colors
 
-All notable changes to this project will be documented in this file.
-See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
+This log was last generated on Sun, 31 Oct 2021 07:17:45 GMT and should not be manually modified.
+
+<!-- Start content -->
+
+## 5.1.4
+
+Sun, 31 Oct 2021 07:17:45 GMT
+
+### Patches
+
+- update fast eslint package version (chhol@microsoft.com)
 
 ## [5.1.3](https://github.com/Microsoft/fast/compare/@microsoft/fast-colors@5.1.2...@microsoft/fast-colors@5.1.3) (2021-04-06)
 

@@ -1,0 +1,20 @@
+{
+  "name": "@microsoft/eslint-config-fast-dna",
+  "entries": [
+    {
+      "date": "Sun, 31 Oct 2021 07:17:45 GMT",
+      "tag": "@microsoft/eslint-config-fast-dna_v2.0.0",
+      "version": "2.0.0",
+      "comments": {
+        "major": [
+          {
+            "comment": "update eslint-config-rules to leverage latest versions of eslint and remove react",
+            "author": "chhol@microsoft.com",
+            "commit": "a150068ee196e73fe7a4f7b538a38752e0e506ba",
+            "package": "@microsoft/eslint-config-fast-dna"
+          }
+        ]
+      }
+    }
+  ]
+}
