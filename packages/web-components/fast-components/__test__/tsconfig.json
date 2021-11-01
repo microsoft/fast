@@ -6,10 +6,7 @@
         "target": "ES2017",
         "outDir": "dist",
         "importsNotUsedAsValues": "preserve",
-        "types": [
-            "mocha",
-            "node"
-        ],
+        "types": ["mocha", "node"]
     },
-    "include": ["../src/**/*.pw.spec.ts"]
+    "include": ["../src/**/*.pw.spec.ts", "../src/mocha-typings.d.ts"]
 }

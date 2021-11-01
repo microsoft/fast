@@ -1,7 +1,7 @@
 import { ArrowKeys } from "@microsoft/fast-web-utilities";
 import type {
     ListboxOption as FASTOption,
-    Select as FASTSelectType,
+    Select as FASTSelectType
 } from "@microsoft/fast-foundation";
 import { expect } from "chai";
 import type { ElementHandle } from "playwright";
@@ -178,12 +178,7 @@ describe("FASTSelect", function () {
 
                 await this.page.click("body");
 
-                expect(
-                    await this.page.evaluate(
-                        element => element.isSameNode(document.activeElement),
-                        element
-                    )
-                ).to.be.false;
+                expect(element).to.equal(document.activeElement)
 
                 expect(await element.evaluate(node => node.open)).to.be.false;
             });
@@ -200,19 +195,20 @@ describe("FASTSelect", function () {
                                 "fast-select"
                             )) as ElementHandle<FASTSelect>;
 
-                            await this.page.exposeFunction("sendEvent", type =>
-                                expect(type).to.equal(eventName)
+                            const elementEvaluate = element.evaluate(
+                                (node, eventName) => {
+                                    return new Promise(resolve => {
+                                        node.addEventListener(eventName, ({ type }) =>
+                                            resolve(type)
+                                        );
+                                    });
+                                },
+                                eventName
                             );
 
-                            await element.evaluate((node, eventName) => {
-                                node.addEventListener(
-                                    eventName,
-                                    async (e: CustomEvent) =>
-                                        await window["sendEvent"](e.type)
-                                );
-                            }, eventName);
-
                             await element.press(direction);
+
+                            expect(await elementEvaluate).to.equal(eventName);
                         });
                     }
                 });

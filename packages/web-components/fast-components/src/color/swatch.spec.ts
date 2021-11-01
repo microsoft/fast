@@ -18,21 +18,22 @@ describe("isSwatchRGB", () => {
 
 	it("should return true when called with an object conforming to the interface", () => {
 		expect(isSwatchRGB(test)).to.be.true;
-	})
+	});
 
-	for (const key in test ) {
-		it(`should return false when called with an object missing the ${key} property`, () => {
-			const _test = {...test};
-			delete _test[key];
+	(Object.keys(test) as [keyof SwatchRGB]).forEach(key => {
+        it(`should return false when called with an object missing the ${key} property`, () => {
+            const { [key]: _, ..._test } = test;
 
-			expect(isSwatchRGB(_test)).to.be.false;
-		});
+            expect(isSwatchRGB(_test)).to.be.false;
+        });
 
 		it(`should return false when called with an object with the ${key} property assigned to a mismatching type`, () => {
-			const _test = {...test};
-			_test[key] = "foobar";
+			const _test: SwatchRGB = {
+				...test,
+				[key]: "foobar"
+			};
 
 			expect(isSwatchRGB(_test)).to.be.false;
 		})
-	}
+	});
 });

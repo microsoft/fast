@@ -1,0 +1,7 @@
+{
+  "type": "minor",
+  "comment": "remove noImplicitAny from fast-components",
+  "packageName": "@microsoft/fast-components",
+  "email": "mathieu.lavoie@shopify.com",
+  "dependentChangeType": "patch"
+}

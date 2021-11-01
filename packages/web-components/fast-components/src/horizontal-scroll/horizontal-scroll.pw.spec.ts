@@ -17,7 +17,8 @@ describe("FASTHorizontalScroll", function () {
         }
 
         await this.page.evaluateHandle(
-            ({ componentWidth, itemCount, itemHeight, itemSpacing, itemWidth }) => {
+            ({ componentWidth, itemCount, itemHeight, itemSpacing, itemWidth }:
+                { componentWidth: number, itemCount: number, itemHeight: number, itemSpacing: number, itemWidth: number }) => {
                 const element = document.createElement(
                     "fast-horizontal-scroll"
                 ) as fastHorizontalScroll;

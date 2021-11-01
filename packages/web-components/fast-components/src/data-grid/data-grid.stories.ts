@@ -6,7 +6,7 @@ import type {
     DataGridCell,
     DataGridRow,
 } from "@microsoft/fast-foundation";
-import { GenerateHeaderOptions } from "@microsoft/fast-foundation/dist/esm/data-grid/data-grid.options";
+import { GenerateHeaderOptions } from "@microsoft/fast-foundation";
 import addons from "@storybook/addons";
 import { STORY_RENDERED } from "@storybook/core-events";
 import DataGridTemplate from "./fixtures/base.html";
@@ -387,7 +387,7 @@ function cellTemplateButtonClick(cell: DataGridCell): void {
     ) {
         return;
     }
-    const newRowData: object = { ...cell.rowData };
+    const newRowData: Record<string, unknown> = { ...cell.rowData };
     newRowData[cell.columnDefinition.columnDataKey] = "clicked";
 
     const rowIndex: number = defaultGridElement.rowsData.indexOf(cell.rowData);

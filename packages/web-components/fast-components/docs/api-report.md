@@ -239,7 +239,7 @@ export class Anchor extends Anchor_2 {
     // (undocumented)
     connectedCallback(): void;
     // @internal
-    defaultSlottedContentChanged(oldValue: any, newValue: any): void;
+    defaultSlottedContentChanged(oldValue: unknown, newValue: SVGElement): void;
 }
 
 // @public
@@ -302,7 +302,7 @@ export class Button extends Button_2 {
     // (undocumented)
     connectedCallback(): void;
     // @public
-    defaultSlottedContentChanged(oldValue: any, newValue: any): void;
+    defaultSlottedContentChanged(oldValue: unknown, newValue: SVGElement): void;
 }
 
 // @public

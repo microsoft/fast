@@ -50,7 +50,7 @@ export class Anchor extends FoundationAnchor {
      * @internal
      *
      */
-    public defaultSlottedContentChanged(oldValue, newValue): void {
+    public defaultSlottedContentChanged(oldValue: unknown, newValue: SVGElement): void {
         const slottedElements = this.defaultSlottedContent.filter(
             x => x.nodeType === Node.ELEMENT_NODE
         );

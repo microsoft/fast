@@ -43,7 +43,7 @@ export class Button extends FoundationButton {
      * @public
      * @remarks
      */
-    public defaultSlottedContentChanged(oldValue, newValue): void {
+    public defaultSlottedContentChanged(oldValue: unknown, newValue: SVGElement): void {
         const slottedElements = this.defaultSlottedContent.filter(
             x => x.nodeType === Node.ELEMENT_NODE
         );
