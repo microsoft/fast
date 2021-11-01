@@ -7,7 +7,7 @@ import { Button } from "../button";
 import type { Search, SearchOptions } from "./search";
 
 /**
- * The template for the {@link @microsoft/fast-foundation#(search:class)} component.
+ * The template for the {@link @microsoft/fast-foundation#(Search:class)} component.
  * @public
  */
 export const searchTemplate: (
