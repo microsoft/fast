@@ -9,8 +9,7 @@ addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
             el.onsubmit = event => {
                 console.log(event, "event");
                 event.preventDefault();
-                const form: HTMLFormElement = document.forms["myForm"];
-
+                const form: HTMLFormElement = event.target as HTMLFormElement;
                 console.log(form.elements["fname"].value, "value of input");
             };
         });
