@@ -63,20 +63,22 @@ export const pickerTemplate: (context, definition) => ViewTemplate<Picker> = (
                 html<Picker>`
                 <${anchoredRegionTag}
                     class="region"
-                    auto-update-mode="auto"
-                    fixed-placement="true"
+                    auto-update-mode="${x => x.menuConfig.autoUpdateMode}"
+                    fixed-placement="${x => x.menuConfig.fixedPlacement}"
                     vertical-positioning-mode="${x =>
                         x.menuConfig.verticalPositioningMode}"
                     vertical-default-position="${x =>
                         x.menuConfig.verticalDefaultPosition}"
                     vertical-scaling="${x => x.menuConfig.verticalScaling}"
                     vertical-inset="${x => x.menuConfig.verticalInset}"
+                    vertical-viewport-lock="${x => x.menuConfig.horizontalViewportLock}"
                     horizontal-positioning-mode="${x =>
                         x.menuConfig.horizontalPositioningMode}"
                     horizontal-default-position="${x =>
                         x.menuConfig.horizontalDefaultPosition}"
                     horizontal-scaling="${x => x.menuConfig.horizontalScaling}"
                     horizontal-inset="${x => x.menuConfig.horizontalInset}"
+                    horizontal-viewport-lock="${x => x.menuConfig.horizontalViewportLock}"
                     @loaded="${(x, c) => x.handleRegionLoaded(c.event as Event)}"
                     ${ref("region")}
                 >

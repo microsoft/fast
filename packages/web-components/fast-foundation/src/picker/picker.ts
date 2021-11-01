@@ -1022,34 +1022,43 @@ export class Picker extends FormAssociatedPicker {
      * Updates the menu configuration
      */
     private updateMenuConfig(): void {
+        let newConfig = FlyoutPosBottomFill;
+
         switch (this.menuPlacement) {
             case "top":
-                this.menuConfig = FlyoutPosTop;
+                newConfig = FlyoutPosTop;
                 break;
 
             case "bottom":
-                this.menuConfig = FlyoutPosBottom;
+                newConfig = FlyoutPosBottom;
                 break;
 
             case "tallest":
-                this.menuConfig = FlyoutPosTallest;
+                newConfig = FlyoutPosTallest;
                 break;
 
             case "top-fill":
-                this.menuConfig = FlyoutPosTopFill;
+                newConfig = FlyoutPosTopFill;
                 break;
 
             case "bottom-fill":
-                this.menuConfig = FlyoutPosBottomFill;
+                newConfig = FlyoutPosBottomFill;
                 break;
 
             case "tallest-fill":
-                this.menuConfig = FlyoutPosTallestFill;
+                newConfig = FlyoutPosTallestFill;
                 break;
 
             default:
-                this.menuConfig = FlyoutPosBottom;
+                newConfig = FlyoutPosBottom;
                 break;
         }
+
+        this.menuConfig = Object.assign({}, newConfig, {
+            autoUpdateMode: "auto",
+            fixedPlacement: true,
+            horizontalViewportLock: true,
+            verticalViewportLock: false,
+        });
     }
 }
