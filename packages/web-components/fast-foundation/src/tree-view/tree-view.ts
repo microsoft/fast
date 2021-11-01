@@ -274,7 +274,7 @@ export class TreeView extends FoundationElement {
         this.currentSelected = selectedItem;
 
         // invalidate the current focused item if it is no longer valid
-        if (this.currentFocused !== null && !this.contains(this.currentFocused)) {
+        if (this.currentFocused === null || !this.contains(this.currentFocused)) {
             this.currentFocused = this.getValidFocusableItem();
         }
 

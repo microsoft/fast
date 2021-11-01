@@ -179,15 +179,13 @@ describe("TreeItem", () => {
         await disconnect();
     });
 
-    it("should set a tabindex when `focusable` is true", async () => {
+    it("should set a tabindex of -1", async () => {
         const { element, connect, disconnect } = await setup();
-
-        element.focusable = true;
 
         await connect();
 
         expect(element.hasAttribute("tabindex")).to.equal(true);
-        expect(element.getAttribute("tabindex")).to.equal("0");
+        expect(element.getAttribute("tabindex")).to.equal("-1");
 
         await disconnect();
     });
@@ -315,25 +313,20 @@ describe("TreeItem", () => {
             const nestedItem = document.createElement("fast-tree-item");
             element.appendChild(nestedItem);
 
-            let wasClicked = false;
+            let wasSelected = false;
 
             element.addEventListener("selected-change", e => {
                 e.preventDefault();
 
-                wasClicked = true;
+                wasSelected = true;
             });
 
             await connect();
+
+            element.setAttribute("selected", "true");
             await DOM.nextUpdate();
 
-            let container = element.shadowRoot?.querySelector(
-                ".positioning-region"
-            ) as any;
-            container?.click();
-
-            await DOM.nextUpdate();
-
-            expect(wasClicked).to.equal(true);
+            expect(wasSelected).to.equal(true);
 
             await disconnect();
         });
