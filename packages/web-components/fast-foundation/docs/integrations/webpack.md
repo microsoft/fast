@@ -84,6 +84,7 @@ Next, create a `webpack.config.js` file in the root of your project folder with 
 
 ```js
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
+const path = require('path');
 
 module.exports = function(env, { mode }) {
   const production = mode === 'production';
@@ -94,7 +95,8 @@ module.exports = function(env, { mode }) {
       app: ['./src/main.ts']
     },
     output: {
-      filename: 'bundle.js'
+      filename: 'bundle.js',
+      publicPath:'/'
     },
     resolve: {
       extensions: ['.ts', '.js'],
@@ -107,6 +109,9 @@ module.exports = function(env, { mode }) {
       devMiddleware: {
         writeToDisk: true,
       },
+      static: {
+        directory: path.join(__dirname, './')
+      }
     },
     plugins: [
       new CleanWebpackPlugin()
