@@ -39,12 +39,6 @@ export class NumberField extends FoundationNumberField {
 }
 
 /**
- * Styles for NumberField
- * @public
- */
-export const numberFieldStyles = styles;
-
-/**
  * A function that returns a {@link @microsoft/fast-foundation#NumberField} registration for configuring the component with a DesignSystem.
  * Implements {@link @microsoft/fast-foundation#numberFieldTemplate}
  *
@@ -70,3 +64,5 @@ export const fastNumberField = NumberField.compose<NumberFieldOptions>({
         <span class="step-up-glyph" part="step-up-glyph"></span>
     `,
 });
+
+export { styles as numberFieldStyles };
