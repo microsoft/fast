@@ -41,4 +41,8 @@ export const fastSliderLabel = SliderLabel.compose({
     styles,
 });
 
-export { horizontalSliderLabelStyles, styles as sliderStyles, verticalSliderLabelStyles };
+export {
+    horizontalSliderLabelStyles,
+    styles as sliderLabelStyles,
+    verticalSliderLabelStyles,
+};
