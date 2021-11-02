@@ -17,13 +17,9 @@ export const fastBadge = Badge.compose({
 });
 
 /**
- * Styles for Badge
- * @public
- */
-export const badgeStyles = styles;
-
-/**
  * Base class for Badge
  * @public
  */
 export { Badge };
+
+export { styles as badgeStyles };
