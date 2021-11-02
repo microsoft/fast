@@ -72,8 +72,4 @@ export const fastAvatar = Avatar.compose<AvatarOptions>({
     },
 });
 
-/**
- * Styles for Badge
- * @public
- */
-export const avatarStyles = styles;
+export { styles as avatarStyles };
