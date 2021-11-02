@@ -54,3 +54,5 @@ export const fastHorizontalScroll = HorizontalScroll.compose<HorizontalScrollOpt
         ></${context.tagFor(Flipper)}>
     `,
 });
+
+export { ActionsStyles, styles as horizontalScrollStyles };
