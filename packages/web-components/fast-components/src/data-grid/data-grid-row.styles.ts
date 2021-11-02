@@ -5,6 +5,10 @@ import {
 } from "@microsoft/fast-foundation";
 import { neutralFillRest, neutralStrokeDividerRest, strokeWidth } from "../design-tokens";
 
+/**
+ * Styles for Data Grid row
+ * @public
+ */
 export const dataGridRowStyles: (
     context: ElementDefinitionContext,
     definition: FoundationElementDefinition

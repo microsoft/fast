@@ -30,6 +30,10 @@ import {
 } from "../design-tokens";
 import { heightNumber } from "../styles";
 
+/**
+ * Styles for Tab
+ * @public
+ */
 export const tabStyles: (
     context: ElementDefinitionContext,
     definition: FoundationElementDefinition

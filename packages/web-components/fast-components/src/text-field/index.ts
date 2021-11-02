@@ -58,8 +58,4 @@ export const fastTextField = TextField.compose({
     },
 });
 
-/**
- * Styles for TextField
- * @public
- */
-export const textFieldStyles = styles;
+export { styles as textFieldStyles };

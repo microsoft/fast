@@ -51,7 +51,7 @@ const rtlActionsStyles = css`
 `;
 
 /**
- * Styles used for the flipper container and gradient fade
+ * Styles used for the flipper container and gradient fade actions
  * @public
  */
 export const ActionsStyles = css`
@@ -100,7 +100,7 @@ export const ActionsStyles = css`
 `.withBehaviors(new DirectionalStyleSheetBehavior(ltrActionsStyles, rtlActionsStyles));
 
 /**
- * Styles handling the scroll container and content
+ * Horizontal Scroll styles
  * @public
  */
 export const horizontalScrollStyles: (

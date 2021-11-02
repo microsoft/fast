@@ -20,13 +20,9 @@ export const fastAnchoredRegion = AnchoredRegion.compose({
 });
 
 /**
- * Styles for AnchoredRegion
- * @public
- */
-export const anchoredRegionStyles = styles;
-
-/**
  * Base class for AnchoredRegion
  * @public
  */
 export { AnchoredRegion };
+
+export { styles as anchoredRegionStyles };

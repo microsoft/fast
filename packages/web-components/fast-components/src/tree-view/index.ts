@@ -18,13 +18,9 @@ export const fastTreeView = TreeView.compose({
 });
 
 /**
- * Styles for TreeView
- * @public
- */
-export const treeViewStyles = styles;
-
-/**
  * Base class for TreeView
  * @public
  */
 export { TreeView };
+
+export { styles as treeViewStyles };

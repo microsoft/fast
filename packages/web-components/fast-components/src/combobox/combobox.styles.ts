@@ -12,6 +12,10 @@ import {
 } from "../design-tokens";
 import { selectStyles } from "../select/select.styles";
 
+/**
+ * Styles for Combobox
+ * @public
+ */
 export const comboboxStyles: (
     context: ElementDefinitionContext,
     definition: ComboboxOptions

@@ -29,6 +29,10 @@ import {
 } from "../design-tokens";
 import { heightNumber } from "../styles/index";
 
+/**
+ * Styles for Number Field
+ * @public
+ */
 export const numberFieldStyles: (
     context: ElementDefinitionContext,
     definition: NumberFieldOptions

@@ -28,6 +28,10 @@ import {
 } from "../design-tokens";
 import { DirectionalStyleSheetBehavior, heightNumber } from "../styles/index";
 
+/**
+ * Styles for Menu item
+ * @public
+ */
 export const menuItemStyles: (
     context: ElementDefinitionContext,
     definition: MenuItemOptions
