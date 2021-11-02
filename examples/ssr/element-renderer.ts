@@ -1,8 +1,9 @@
 /* eslint-disable */
 import { ElementRenderer, RenderInfo } from "@lit-labs/ssr";
 import { FASTElement } from "@microsoft/fast-element";
-import { render } from "@lit-labs/ssr/lib/render-lit-html";
+// import { render } from "@lit-labs/ssr/lib/render-lit-html";
 import { html } from "lit";
+import { render } from "./render";
 
 export class FASTElementRenderer extends ElementRenderer {
     public readonly element!: HTMLElement & FASTElement;
@@ -26,11 +27,7 @@ export class FASTElementRenderer extends ElementRenderer {
     }
 
     *renderShadow(renderInfo: RenderInfo): IterableIterator<string> {
-        const { innerHTML } = this.element.$fastController.getShadowRoot()!;
-
-        const template = html(([innerHTML] as unknown) as TemplateStringsArray);
-
-        yield* render(template, renderInfo);
+        yield* render(this.element.$fastController.getShadowRoot()!);
     }
 
     attributeChangedCallback(
