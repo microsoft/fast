@@ -34,6 +34,10 @@ import {
 } from "../design-tokens";
 import { heightNumber } from "../styles/index";
 
+/**
+ * Styles for Checkbox
+ * @public
+ */
 export const checkboxStyles: (
     context: ElementDefinitionContext,
     definition: CheckboxOptions
