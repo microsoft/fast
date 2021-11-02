@@ -16,7 +16,7 @@ const defaultEventOptions: CustomEventInit = {
 };
 
 function getShadowRoot(element: HTMLElement): ShadowRoot | null {
-    return element.shadowRoot || shadowRoots.get(element) || null;
+    return element.shadowRoot ?? shadowRoots.get(element) ?? null;
 }
 
 /**
@@ -210,7 +210,7 @@ export class Controller extends PropertyChangeNotifier {
      * @param behaviors - The behaviors to add.
      */
     public addBehaviors(behaviors: ReadonlyArray<Behavior<HTMLElement>>): void {
-        const targetBehaviors = this.behaviors || (this.behaviors = new Map());
+        const targetBehaviors = this.behaviors ?? (this.behaviors = new Map());
         const length = behaviors.length;
         const behaviorsToBind: Behavior<HTMLElement>[] = [];
 
@@ -292,7 +292,7 @@ export class Controller extends PropertyChangeNotifier {
         const behaviors = this.behaviors;
 
         if (behaviors !== null) {
-            for (const [behavior] of behaviors) {
+            for (const behavior of behaviors.keys()) {
                 behavior.bind(element, defaultExecutionContext);
             }
         }
@@ -320,7 +320,7 @@ export class Controller extends PropertyChangeNotifier {
 
         if (behaviors !== null) {
             const element = this.element;
-            for (const [behavior] of behaviors) {
+            for (const behavior of behaviors.keys()) {
                 behavior.unbind(element, defaultExecutionContext);
             }
         }
@@ -391,7 +391,7 @@ export class Controller extends PropertyChangeNotifier {
                 this._template = (this.element as any).resolveTemplate();
             } else if (definition.template) {
                 // 3. Default to the static definition.
-                this._template = definition.template || null;
+                this._template = definition.template ?? null;
             }
         }
 
@@ -409,7 +409,7 @@ export class Controller extends PropertyChangeNotifier {
                 this._styles = (this.element as any).resolveStyles();
             } else if (definition.styles) {
                 // 3. Default to the static definition.
-                this._styles = definition.styles || null;
+                this._styles = definition.styles ?? null;
             }
         }
 
@@ -426,7 +426,7 @@ export class Controller extends PropertyChangeNotifier {
         // When getting the host to render to, we start by looking
         // up the shadow root. If there isn't one, then that means
         // we're doing a Light DOM render to the element's direct children.
-        const host = getShadowRoot(element) || element;
+        const host = getShadowRoot(element) ?? element;
 
         if (this.view !== null) {
             // If there's already a view, we need to unbind and remove through dispose.
