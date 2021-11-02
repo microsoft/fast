@@ -22,13 +22,9 @@ export const fastCalendar = Calendar.compose({
 });
 
 /**
- * Styles for Calendar
- * @public
- */
-export const CalendarStyles = styles;
-
-/**
  * Base class for fastCalendar
  * @public
  */
 export { Calendar };
+
+export { styles as calendarStyles };
