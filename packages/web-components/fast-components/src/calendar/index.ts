@@ -27,4 +27,4 @@ export const fastCalendar = Calendar.compose({
  */
 export { Calendar };
 
-export { styles as calendarStyles };
+export { styles as CalendarStyles };
