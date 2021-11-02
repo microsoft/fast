@@ -6,6 +6,10 @@ import {
 import { controlCornerRadius, fillColor, strokeWidth } from "../design-tokens";
 import { elevation } from "../styles/elevation";
 
+/**
+ * Styles for Dialog
+ * @public
+ */
 export const dialogStyles: (
     context: ElementDefinitionContext,
     definition: FoundationElementDefinition
