@@ -33,13 +33,9 @@ export const fastTreeItem = TreeItem.compose<TreeItemOptions>({
 });
 
 /**
- * Styles for TreeItem
- * @public
- */
-export const treeItemStyles = styles;
-
-/**
  * Base class for TreeItem
  * @public
  */
 export { TreeItem };
+
+export { styles as treeItemStyles };
