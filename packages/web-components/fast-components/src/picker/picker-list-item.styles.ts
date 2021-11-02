@@ -21,6 +21,10 @@ import {
 } from "../design-tokens";
 import { heightNumber } from "../styles/index";
 
+/**
+ * Styles for Picker list item
+ * @public
+ */
 export const pickerListItemStyles: (
     context: ElementDefinitionContext,
     definition: FoundationElementDefinition
