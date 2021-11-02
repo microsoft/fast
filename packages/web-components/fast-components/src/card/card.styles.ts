@@ -9,6 +9,10 @@ import { SystemColors } from "@microsoft/fast-web-utilities";
 import { controlCornerRadius, fillColor } from "../design-tokens";
 import { elevation } from "../styles/index";
 
+/**
+ * Styles for Card
+ * @public
+ */
 export const cardStyles: (
     context: ElementDefinitionContext,
     definition: FoundationElementDefinition
