@@ -11,6 +11,10 @@ import {
     typeRampBaseLineHeight,
 } from "../design-tokens";
 
+/**
+ * Styles for Tab Panel
+ * @public
+ */
 export const tabPanelStyles: (
     context: ElementDefinitionContext,
     definition: FoundationElementDefinition

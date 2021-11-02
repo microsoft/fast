@@ -17,6 +17,10 @@ import {
 } from "../design-tokens";
 import { heightNumber } from "../styles/index";
 
+/**
+ * Styles for Tabs
+ * @public
+ */
 export const tabsStyles: (
     context: ElementDefinitionContext,
     definition: TabsOptions
