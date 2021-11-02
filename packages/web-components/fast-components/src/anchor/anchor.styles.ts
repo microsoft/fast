@@ -10,6 +10,10 @@ import {
 } from "../styles/index";
 import { appearanceBehavior } from "../utilities/behaviors";
 
+/**
+ * Styles for Anchor
+ * @public
+ */
 export const anchorStyles: (
     context: ElementDefinitionContext,
     definition: AnchorOptions
