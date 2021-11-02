@@ -1006,7 +1006,7 @@ export const pickerMenuOptionStyles: (context: ElementDefinitionContext, definit
 // @public
 export const pickerMenuStyles: (context: ElementDefinitionContext, definition: FoundationElementDefinition) => ElementStyles;
 
-// @public (undocumented)
+// @public
 export const pickerStyles: (context: ElementDefinitionContext, definition: FoundationElementDefinition) => ElementStyles;
 
 // @public
