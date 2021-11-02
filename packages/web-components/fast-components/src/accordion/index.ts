@@ -19,13 +19,9 @@ export const fastAccordion = Accordion.compose({
 });
 
 /**
- * Styles for Accordion
- * @public
- */
-export const accordionStyles = styles;
-
-/**
  * Base class for Accordion
  * @public
  */
 export { Accordion };
+
+export { styles as accordionStyles };
