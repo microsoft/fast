@@ -245,7 +245,7 @@ export function calcSplices(
     oldEnd -= suffixCount;
 
     if (currentEnd - currentStart === 0 && oldEnd - oldStart === 0) {
-        return emptyArray;
+        return emptyArray as any;
     }
 
     if (currentStart === currentEnd) {
