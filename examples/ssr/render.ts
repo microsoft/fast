@@ -69,6 +69,10 @@ function* renderCustomElementNode(
         renderer.setAttribute(name, value);
     }
 
+    Object.getOwnPropertyNames(node).forEach((name: string) =>
+        renderer.setProperty(name, (node as any)[name])
+    );
+
     renderInfo.customElementInstanceStack.push(renderer);
 
     renderer.connectedCallback();
@@ -87,6 +91,8 @@ function* renderCustomElementNode(
         renderInfo.customElementHostStack.pop();
     }
 
+    // eslint-disable-next-line
+    yield* renderTree(walker, renderInfo);
     yield `</${tagName}>`;
     renderInfo.customElementInstanceStack.pop();
 }
