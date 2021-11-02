@@ -164,8 +164,9 @@ class OnSignalBinding extends TargetUpdateBinding {
             handler = {
                 target,
                 directive,
+                updateTarget: this.updateTarget,
                 handleChange() {
-                    this.directive.updateTarget(
+                    this.updateTarget(
                         this.target,
                         this.directive.aspect,
                         this.directive.binding(this.source, this.context),
