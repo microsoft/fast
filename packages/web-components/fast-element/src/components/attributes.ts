@@ -64,19 +64,23 @@ export const booleanConverter: ValueConverter = {
     },
 
     fromView(value: any): any {
-        if (
-            value === null ||
+        return value === null ||
             value === void 0 ||
             value === "false" ||
             value === false ||
             value === 0
-        ) {
-            return false;
-        }
-
-        return true;
+            ? false
+            : true;
     },
 };
+
+function toNumber(value: any): any {
+    if (value === null || value === undefined) {
+        return null;
+    }
+    const number: number = value * 1;
+    return isNaN(number) ? null : number;
+}
 
 /**
  * A {@link ValueConverter} that converts to and from `number` values.
@@ -87,20 +91,11 @@ export const booleanConverter: ValueConverter = {
  */
 export const nullableNumberConverter: ValueConverter = {
     toView(value: any): string | null {
-        if (value === null || value === undefined) {
-            return null;
-        }
-        const number: number = value * 1;
-        return isNaN(number) ? null : number.toString();
+        const output = toNumber(value);
+        return output ? output.toString() : output;
     },
 
-    fromView(value: any): any {
-        if (value === null || value === undefined) {
-            return null;
-        }
-        const number: number = value * 1;
-        return isNaN(number) ? null : number;
-    },
+    fromView: toNumber,
 };
 
 /**
