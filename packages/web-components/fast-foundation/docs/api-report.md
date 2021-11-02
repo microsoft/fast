@@ -1091,14 +1091,19 @@ class File_2 extends FormAssociatedFile {
     // @internal
     handleClick(): void;
     multiple: boolean;
-    progressCallback: (progress: number) => Promise<void>;
     value: string;
 }
 
 export { File_2 as File }
 
 // @public
-export const fileTemplate: (context: ElementDefinitionContext) => ViewTemplate<File_2>;
+export type FileOptions = FoundationElementDefinition & {
+    fileList?: string | SyntheticViewTemplate;
+    controlElement?: string | SyntheticViewTemplate;
+};
+
+// @public
+export const fileTemplate: (context: ElementDefinitionContext, definition: FileOptions) => ViewTemplate<File_2>;
 
 // @public
 export class Flipper extends FoundationElement {

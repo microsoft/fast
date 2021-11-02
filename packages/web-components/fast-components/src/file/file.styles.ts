@@ -5,6 +5,7 @@ import {
 } from "@microsoft/fast-foundation";
 import {
     bodyFont,
+    density,
     designUnit,
     neutralForegroundRest,
     typeRampBaseFontSize,
@@ -19,13 +20,16 @@ export const fileStyles: (
     definition: FoundationElementDefinition
 ) =>
     css`
-        .label {
+        .file-list ul {
+            list-style: none;
+            padding: 0 calc((10 + (${designUnit} * 2 * ${density})) * 1px);
             font-family: ${bodyFont};
             color: ${neutralForegroundRest};
-            padding-inline-start: calc(${designUnit} * 2px + 2px);
-            margin-inline-end: calc(${designUnit} * 2px + 2px);
-            cursor: pointer;
             font-size: ${typeRampBaseFontSize};
             line-height: ${typeRampBaseLineHeight};
+        }
+
+        .file-list ul li {
+            margin: calc(${designUnit} * 1px) 0;
         }
     `;

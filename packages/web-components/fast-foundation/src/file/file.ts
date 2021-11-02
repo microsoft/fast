@@ -1,5 +1,15 @@
-import { attr, observable } from "@microsoft/fast-element";
+import { attr, observable, SyntheticViewTemplate } from "@microsoft/fast-element";
+import type { FoundationElementDefinition } from "../foundation-element";
 import { FormAssociatedFile } from "./file.form-associated";
+
+/**
+ * File configuration options
+ * @public
+ */
+export type FileOptions = FoundationElementDefinition & {
+    fileList?: string | SyntheticViewTemplate;
+    controlElement?: string | SyntheticViewTemplate;
+};
 
 /**
  * A File Custom HTML Element.
@@ -54,13 +64,6 @@ export class File extends FormAssociatedFile {
     public multiple: boolean;
 
     /**
-     * Callback method for reporting progress of long running FileAction.
-     * The progress value is calculated by the FileAction but should be a number between 0 and 1.
-     */
-    @attr
-    public progressCallback: (progress: number) => Promise<void>;
-
-    /**
      * After file(s) are selected this property will contain a string array with the references
      * to the selected files based on the action (i.e. file name, objectUrl, http url, base64 blob, etc).
      */
@@ -75,7 +78,6 @@ export class File extends FormAssociatedFile {
      */
     public connectedCallback(): void {
         super.connectedCallback();
-        console.log(this.fileReferences);
         this.proxy.onchange = e => {
             this.handleChange(e);
         };
@@ -98,10 +100,6 @@ export class File extends FormAssociatedFile {
 
     public handleChange(e: Event): void {
         this.files = (e.composedPath()[0] as HTMLInputElement).files;
-        this.getFileList();
-    }
-
-    private getFileList(): void {
         Array.from(this.files).forEach((value: File) => {
             this.fileReferences.push(URL.createObjectURL(value));
         });
