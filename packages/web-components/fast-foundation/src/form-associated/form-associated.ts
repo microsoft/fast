@@ -1,4 +1,11 @@
-import { attr, DOM, emptyArray, observable, Observable } from "@microsoft/fast-element";
+import {
+    attr,
+    DOM,
+    emptyArray,
+    observable,
+    Observable,
+    booleanConverter,
+} from "@microsoft/fast-element";
 import type { Constructable, FASTElement } from "@microsoft/fast-element";
 import { keyEnter } from "@microsoft/fast-web-utilities";
 
@@ -124,6 +131,21 @@ export interface FormAssociated extends Omit<ElementInternals, "labels"> {
 }
 
 /**
+ * Base class for providing Custom Element Form Association with checkable features.
+ *
+ * @alpha
+ */
+export interface CheckableFormAssociated extends FormAssociated {
+    currentChecked: boolean;
+    dirtyChecked: boolean;
+    checkedAttribute: boolean;
+    defaultChecked: boolean;
+    defaultCheckedChanged(oldValue: boolean | undefined, newValue: boolean): void;
+    checked: boolean;
+    checkedChanged(oldValue: boolean | undefined, newValue: boolean): void;
+}
+
+/**
  * Avaiable types for the `proxy` property.
  * @alpha
  */
@@ -154,6 +176,14 @@ export type FormAssociatedElement = FormAssociated &
     FASTElement &
     HTMLElement &
     FormAssociatedProxy;
+
+/**
+ * Combined type to describe a checkable Form-associated element.
+ *
+ * @alpha
+ */
+export type CheckableFormAssociatedElement = FormAssociatedElement &
+    CheckableFormAssociated & { proxy: HTMLInputElement };
 
 /**
  * Combined type to describe a Constructable Form-Associated type.
@@ -235,7 +265,7 @@ export function FormAssociated<T extends ConstructableFormAssociated>(BaseCtor: 
          */
         public get labels(): ReadonlyArray<Node> {
             if (this.elementInternals) {
-                return Object.freeze(Array.from(this.elementInternals!.labels));
+                return Object.freeze(Array.from(this.elementInternals.labels));
             } else if (
                 this.proxy instanceof HTMLElement &&
                 this.proxy.ownerDocument &&
@@ -453,6 +483,13 @@ export function FormAssociated<T extends ConstructableFormAssociated>(BaseCtor: 
 
             this.required = false;
             this.initialValue = this.initialValue || "";
+
+            if (!this.elementInternals) {
+                // When elementInternals is not supported, formResetCallback is
+                // bound to an event listener, so ensure the handler's `this`
+                // context is correct.
+                this.formResetCallback = this.formResetCallback.bind(this);
+            }
         }
 
         /**
@@ -470,10 +507,10 @@ export function FormAssociated<T extends ConstructableFormAssociated>(BaseCtor: 
 
             if (!this.elementInternals) {
                 this.attachProxy();
-            }
 
-            if (this.form) {
-                this.form.addEventListener("reset", this.formResetCallback);
+                if (this.form) {
+                    this.form.addEventListener("reset", this.formResetCallback);
+                }
             }
         }
 
@@ -485,7 +522,7 @@ export function FormAssociated<T extends ConstructableFormAssociated>(BaseCtor: 
                 this.proxy.removeEventListener(name, this.stopPropagation)
             );
 
-            if (this.form) {
+            if (!this.elementInternals && this.form) {
                 this.form.removeEventListener("reset", this.formResetCallback);
             }
         }
@@ -535,14 +572,14 @@ export function FormAssociated<T extends ConstructableFormAssociated>(BaseCtor: 
          * state changed.
          * @param disabled - the disabled value of the form / fieldset
          */
-        public formDisabledCallback = (disabled: boolean): void => {
+        public formDisabledCallback(disabled: boolean): void {
             this.disabled = disabled;
-        };
+        }
 
-        public formResetCallback = (): void => {
+        public formResetCallback(): void {
             this.value = this.initialValue;
             this.dirtyValue = false;
-        };
+        }
 
         protected proxyInitialized: boolean = false;
 
@@ -644,4 +681,121 @@ export function FormAssociated<T extends ConstructableFormAssociated>(BaseCtor: 
     observable(C.prototype, "value");
 
     return C;
+}
+
+/**
+ * @alpha
+ */
+export function CheckableFormAssociated<T extends ConstructableFormAssociated>(
+    BaseCtor: T
+): T {
+    interface C extends FormAssociatedElement {}
+    class C extends FormAssociated(BaseCtor) {}
+    class D extends C {
+        /**
+         * Tracks whether the "checked" property has been changed.
+         * This is necessary to provide consistent behavior with
+         * normal input checkboxes
+         */
+        protected dirtyChecked: boolean = false;
+
+        /**
+         * Provides the default checkedness of the input element
+         * Passed down to proxy
+         *
+         * @public
+         * @remarks
+         * HTML Attribute: checked
+         */
+        public checkedAttribute: boolean = false;
+        private checkedAttributeChanged(): void {
+            this.defaultChecked = this.checkedAttribute;
+        }
+
+        public defaultChecked: boolean;
+
+        /**
+         * @internal
+         */
+        public defaultCheckedChanged(): void {
+            if (!this.dirtyChecked) {
+                // Setting this.checked will cause us to enter a dirty state,
+                // but if we are clean when defaultChecked is changed, we want to stay
+                // in a clean state, so reset this.dirtyChecked
+                this.checked = this.defaultChecked;
+                this.dirtyChecked = false;
+            }
+        }
+
+        /**
+         * The checked state of the control.
+         *
+         * @public
+         */
+        public checked: boolean = false;
+        public checkedChanged(prev: boolean | undefined, next: boolean): void {
+            if (!this.dirtyChecked) {
+                this.dirtyChecked = true;
+            }
+
+            this.currentChecked = this.checked;
+            this.updateForm();
+
+            if (this.proxy instanceof HTMLInputElement) {
+                this.proxy.checked = this.checked;
+            }
+
+            if (prev !== undefined) {
+                this.$emit("change");
+            }
+
+            this.validate();
+        }
+
+        /**
+         * The current checkedness of the element. This property serves as a mechanism
+         * to set the `checked` property through both property assignment and the
+         * .setAttribute() method. This is useful for setting the field's checkedness
+         * in UI libraries that bind data through the .setAttribute() API
+         * and don't support IDL attribute binding.
+         */
+        public currentChecked: boolean;
+        public currentCheckedChanged(prev: boolean | undefined, next: boolean) {
+            this.checked = this.currentChecked;
+        }
+
+        constructor(...args: any[]) {
+            super(args);
+
+            // Re-initialize dirtyChecked because initialization of other values
+            // causes it to become true
+            this.dirtyChecked = false;
+        }
+
+        private updateForm(): void {
+            const value = this.checked ? this.value : null;
+            this.setFormValue(value, value);
+        }
+
+        public connectedCallback() {
+            super.connectedCallback();
+            this.updateForm();
+        }
+
+        public formResetCallback() {
+            super.formResetCallback();
+            this.checked = !!this.checkedAttribute;
+            this.dirtyChecked = false;
+        }
+    }
+
+    attr({ attribute: "checked", mode: "boolean" })(D.prototype, "checkedAttribute");
+    attr({ attribute: "current-checked", converter: booleanConverter })(
+        D.prototype,
+        "currentChecked"
+    );
+    observable(D.prototype, "defaultChecked");
+    observable(D.prototype, "checked");
+
+    return D;
 }

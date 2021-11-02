@@ -422,21 +422,21 @@ export const keyCodeWindowsRight: number = 92;
 /**
  * String values for use with KeyboardEvent.key
  */
-export const keyArrowDown: "ArrowDown" = "ArrowDown";
-export const keyArrowLeft: "ArrowLeft" = "ArrowLeft";
-export const keyArrowRight: "ArrowRight" = "ArrowRight";
-export const keyArrowUp: "ArrowUp" = "ArrowUp";
-export const keyEnter: "Enter" = "Enter";
-export const keyEscape: "Escape" = "Escape";
-export const keyHome: "Home" = "Home";
-export const keyEnd: "End" = "End";
-export const keyFunction2: "F2" = "F2";
-export const keyPageDown: "PageDown" = "PageDown";
-export const keyPageUp: "PageUp" = "PageUp";
-export const keySpace: " " = " ";
-export const keyTab: "Tab" = "Tab";
-export const keyBackspace: "Backspace" = "Backspace";
-export const keyDelete: "Delete" = "Delete";
+export const keyArrowDown: "ArrowDown" = "ArrowDown" as const;
+export const keyArrowLeft: "ArrowLeft" = "ArrowLeft" as const;
+export const keyArrowRight: "ArrowRight" = "ArrowRight" as const;
+export const keyArrowUp: "ArrowUp" = "ArrowUp" as const;
+export const keyEnter: "Enter" = "Enter" as const;
+export const keyEscape: "Escape" = "Escape" as const;
+export const keyHome: "Home" = "Home" as const;
+export const keyEnd: "End" = "End" as const;
+export const keyFunction2: "F2" = "F2" as const;
+export const keyPageDown: "PageDown" = "PageDown" as const;
+export const keyPageUp: "PageUp" = "PageUp" as const;
+export const keySpace: " " = " " as const;
+export const keyTab: "Tab" = "Tab" as const;
+export const keyBackspace: "Backspace" = "Backspace" as const;
+export const keyDelete: "Delete" = "Delete" as const;
 
 export const ArrowKeys = {
     ArrowDown: keyArrowDown,

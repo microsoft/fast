@@ -1,8 +1,32 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Wed, 27 Oct 2021 07:11:58 GMT and should not be manually modified.
+This log was last generated on Sun, 31 Oct 2021 07:17:45 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.24.0
+
+Sun, 31 Oct 2021 07:17:45 GMT
+
+### Minor changes
+
+- Added the CheckableFormAssociated mixin to better support the addition of current-checked property/attribute that allows for setting checked state via the .setAttribute() API. This change also converts two lifecycle hooks to methods from properties so that they can be handled correctly by the browser. (nicholasrice@users.noreply.github.com)
+
+### Patches
+
+- fix: number-field increment decrement logic (robarb@microsoft.com)
+- picker focus on input after selection (scomea@microsoft.com)
+- update fast eslint package version (chhol@microsoft.com)
+- Bump @microsoft/fast-element to v1.6.2 (chhol@microsoft.com)
+- Bump @microsoft/fast-web-utilities to v5.0.2 (chhol@microsoft.com)
+
+## 2.23.2
+
+Thu, 28 Oct 2021 07:15:32 GMT
+
+### Patches
+
+- fixes emission of CSS custom properties in FireFox and Safari (nicholasrice@users.noreply.github.com)
 
 ## 2.23.1
 

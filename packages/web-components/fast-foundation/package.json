@@ -2,7 +2,7 @@
   "name": "@microsoft/fast-foundation",
   "description": "A library of Web Component building blocks",
   "sideEffects": false,
-  "version": "2.23.1",
+  "version": "2.24.0",
   "author": {
     "name": "Microsoft",
     "url": "https://discord.gg/FcSNfg4"
@@ -88,8 +88,8 @@
     "webpack": "^4.44.0"
   },
   "dependencies": {
-    "@microsoft/fast-element": "^1.6.1",
-    "@microsoft/fast-web-utilities": "^5.0.1",
+    "@microsoft/fast-element": "^1.6.2",
+    "@microsoft/fast-web-utilities": "^5.0.2",
     "@microsoft/tsdoc-config": "^0.13.4",
     "tabbable": "^5.2.0",
     "tslib": "^1.13.0"

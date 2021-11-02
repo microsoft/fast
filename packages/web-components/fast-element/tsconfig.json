@@ -3,9 +3,10 @@
     "compilerOptions": {
         "declarationDir": "dist/dts",
         "outDir": "dist/esm",
-        "strictNullChecks": true,
         "importsNotUsedAsValues": "error",
         "experimentalDecorators": true,
+        "noImplicitAny": false,
+        "strictPropertyInitialization": false,
         "target": "es2015",
         "module": "ESNext",
         "types": [

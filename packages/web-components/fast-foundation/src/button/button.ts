@@ -243,7 +243,6 @@ export class DelegatesARIAButton {
  * TODO: https://github.com/microsoft/fast/issues/3317
  * @internal
  */
-/* eslint-disable-next-line */
 export interface DelegatesARIAButton extends ARIAGlobalStatesAndProperties {}
 applyMixins(DelegatesARIAButton, ARIAGlobalStatesAndProperties);
 

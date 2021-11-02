@@ -140,7 +140,7 @@ class StyleElementStyleSheetTarget implements PropertyTarget {
             // to index the rule inline, so store as a const prior to indexing.
             // https://github.com/jsdom/jsdom uses https://github.com/NV/CSSOM for it's CSSOM implementation,
             // which implements the DOM Level 2 spec for CSSStyleSheet where insertRule() requires an index argument.
-            const index = sheet.insertRule(":root{}", sheet.cssRules.length);
+            const index = sheet.insertRule(":host{}", sheet.cssRules.length);
             this.target = (sheet.cssRules[index] as CSSStyleRule).style;
         } else {
             this.target = null;
@@ -249,6 +249,7 @@ const propertyTargetCtor: Constructable<PropertyTarget> = DOM.supportsAdoptedSty
 export const PropertyTargetManager = Object.freeze({
     getOrCreate(source: HTMLElement | Document): PropertyTarget {
         if (propertyTargetCache.has(source)) {
+            /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */
             return propertyTargetCache.get(source)!;
         }
 

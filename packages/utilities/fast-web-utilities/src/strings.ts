@@ -52,7 +52,7 @@ export function startsWith(
 function matchAll(re: RegExp, str: string): string[] {
     const matches: string[] = [];
 
-    let match: RegExpExecArray;
+    let match: RegExpExecArray | null;
     while ((match = re.exec(str))) {
         matches.push(match[1]);
     }

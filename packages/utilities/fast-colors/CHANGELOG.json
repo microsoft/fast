@@ -1,0 +1,20 @@
+{
+  "name": "@microsoft/fast-colors",
+  "entries": [
+    {
+      "date": "Sun, 31 Oct 2021 07:17:45 GMT",
+      "tag": "@microsoft/fast-colors_v5.1.4",
+      "version": "5.1.4",
+      "comments": {
+        "patch": [
+          {
+            "comment": "update fast eslint package version",
+            "author": "chhol@microsoft.com",
+            "commit": "a150068ee196e73fe7a4f7b538a38752e0e506ba",
+            "package": "@microsoft/fast-colors"
+          }
+        ]
+      }
+    }
+  ]
+}

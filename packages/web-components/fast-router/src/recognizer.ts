@@ -412,7 +412,7 @@ export class DefaultRouteRecognizer<TSettings> implements RouteRecognizer<TSetti
         const paramTypes: string[] = [];
 
         let state = this.rootState as AnyState<TSettings>;
-        let segments: AnySegment<any>[] = [];
+        const segments: AnySegment<any>[] = [];
 
         for (const part of parts) {
             // Each segment always begins with a slash, so we represent this with a non-segment state
@@ -589,7 +589,7 @@ export class DefaultRouteRecognizer<TSettings> implements RouteRecognizer<TSetti
         }
 
         // remove params used in the path and add the rest to the querystring
-        for (let param in consumed) {
+        for (const param in consumed) {
             delete routeParams[param];
         }
 

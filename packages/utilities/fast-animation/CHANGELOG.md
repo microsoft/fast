@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-animation
 
-This log was last generated on Wed, 13 Oct 2021 01:53:37 GMT and should not be manually modified.
+This log was last generated on Sun, 31 Oct 2021 07:17:45 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 4.1.6
+
+Sun, 31 Oct 2021 07:17:45 GMT
+
+### Patches
+
+- Bump @microsoft/eslint-config-fast-dna to v2.0.0 (chhol@microsoft.com)
 
 ## 4.1.5
 

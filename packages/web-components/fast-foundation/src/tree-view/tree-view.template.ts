@@ -1,4 +1,4 @@
-import { children, elements, html, ref, slotted } from "@microsoft/fast-element";
+import { html, ref, slotted } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
 import type { FoundationElementDefinition } from "../foundation-element";
 import type { ElementDefinitionContext } from "../design-system";

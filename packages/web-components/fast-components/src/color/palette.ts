@@ -58,6 +58,7 @@ function create(r: number, g: number, b: number): PaletteRGB;
 function create(source: SwatchRGB): PaletteRGB;
 function create(rOrSource: SwatchRGB | number, g?: number, b?: number): PaletteRGB {
     if (typeof rOrSource === "number") {
+        /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */
         return PaletteRGB.from(SwatchRGB.create(rOrSource, g!, b!));
     } else {
         return PaletteRGB.from(rOrSource);
@@ -152,6 +153,7 @@ class PaletteRGBImpl implements Palette<SwatchRGB> {
      */
     public closestIndexOf(reference: Swatch): number {
         if (this.closestIndexCache.has(reference.relativeLuminance)) {
+            /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */
             return this.closestIndexCache.get(reference.relativeLuminance)!;
         }
 
@@ -185,8 +187,10 @@ class PaletteRGBImpl implements Palette<SwatchRGB> {
             source,
             Object.freeze(
                 new ComponentStateColorPalette({
+                    /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */
                     baseColor: ColorRGBA64.fromObject(source)!,
                 }).palette.map(x => {
+                    /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */
                     const _x = parseColorHexRGB(x.toStringHexRGB())!;
                     return SwatchRGB.create(_x.r, _x.g, _x.b);
                 })

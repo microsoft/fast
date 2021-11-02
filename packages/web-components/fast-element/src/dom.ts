@@ -17,13 +17,13 @@ let htmlPolicy: TrustedTypesPolicy = fastHTMLPolicy;
 // We use a queue so we can ensure errors are thrown in order.
 const pendingErrors: any[] = [];
 
-function throwFirstError() {
+function throwFirstError(): void {
     if (pendingErrors.length) {
         throw pendingErrors.shift();
     }
 }
 
-function tryRunTask(task: Callable) {
+function tryRunTask(task: Callable): void {
     try {
         (task as any).call();
     } catch (error) {

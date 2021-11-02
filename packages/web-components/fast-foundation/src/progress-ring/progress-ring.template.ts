@@ -43,7 +43,7 @@ export const progressRingTemplate: (
                         class="determinate"
                         part="determinate"
                         style="stroke-dasharray: ${x =>
-                            (progressSegments * x.percentComplete!) /
+                            (progressSegments * x.percentComplete) /
                             100}px ${progressSegments}px"
                         cx="8px"
                         cy="8px"

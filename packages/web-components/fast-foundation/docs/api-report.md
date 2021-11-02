@@ -344,22 +344,41 @@ export class Card extends FoundationElement {
 // @public
 export const cardTemplate: (context: ElementDefinitionContext, definition: FoundationElementDefinition) => ViewTemplate<Card>;
 
+// @alpha (undocumented)
+export function CheckableFormAssociated<T extends ConstructableFormAssociated>(BaseCtor: T): T;
+
+// @alpha
+export interface CheckableFormAssociated extends FormAssociated {
+    // (undocumented)
+    checked: boolean;
+    // (undocumented)
+    checkedAttribute: boolean;
+    // (undocumented)
+    checkedChanged(oldValue: boolean | undefined, newValue: boolean): void;
+    // (undocumented)
+    currentChecked: boolean;
+    // (undocumented)
+    defaultChecked: boolean;
+    // (undocumented)
+    defaultCheckedChanged(oldValue: boolean | undefined, newValue: boolean): void;
+    // (undocumented)
+    dirtyChecked: boolean;
+}
+
+// @alpha
+export type CheckableFormAssociatedElement = FormAssociatedElement & CheckableFormAssociated & {
+    proxy: HTMLInputElement;
+};
+
 // Warning: (ae-forgotten-export) The symbol "FormAssociatedCheckbox" needs to be exported by the entry point index.d.ts
 //
 // @public
 export class Checkbox extends FormAssociatedCheckbox {
     constructor();
-    checked: boolean;
-    checkedAttribute: boolean;
     // @internal (undocumented)
     clickHandler: (e: MouseEvent) => void;
     // @internal (undocumented)
-    connectedCallback(): void;
-    defaultChecked: boolean;
-    // @internal (undocumented)
     defaultSlottedNodes: Node[];
-    // @internal (undocumented)
-    formResetCallback: () => void;
     indeterminate: boolean;
     // @internal
     initialValue: string;
@@ -411,7 +430,7 @@ export class Combobox extends FormAssociatedCombobox {
     // @internal
     focusoutHandler(e: FocusEvent): boolean | void;
     // @internal
-    formResetCallback: () => void;
+    formResetCallback(): void;
     // @internal
     inputHandler(e: InputEvent): boolean | void;
     // @internal
@@ -1775,17 +1794,14 @@ export type ProxyElement = HTMLSelectElement | HTMLTextAreaElement | HTMLInputEl
 // @public
 export class Radio extends FormAssociatedRadio implements RadioControl {
     constructor();
-    checked: boolean;
-    checkedAttribute: boolean;
     // @internal (undocumented)
     clickHandler(e: MouseEvent): boolean | void;
     // @internal (undocumented)
     connectedCallback(): void;
-    defaultChecked: boolean | undefined;
+    // @internal (undocumented)
+    defaultCheckedChanged(): void;
     // @internal (undocumented)
     defaultSlottedNodes: Node[];
-    // @internal (undocumented)
-    formResetCallback: () => void;
     // @internal
     initialValue: string;
     // @internal (undocumented)
@@ -1949,7 +1965,7 @@ export class Select extends FormAssociatedSelect {
     // @internal
     focusoutHandler(e: FocusEvent): boolean | void;
     // @internal
-    formResetCallback: () => void;
+    formResetCallback(): void;
     // @internal
     keydownHandler(e: KeyboardEvent): boolean | void;
     // @internal
@@ -2183,17 +2199,12 @@ export const supportsElementInternals: boolean;
 // @public
 export class Switch extends FormAssociatedSwitch {
     constructor();
-    checked: boolean;
-    checkedAttribute: boolean;
+    // @internal (undocumented)
+    checkedChanged(prev: boolean | undefined, next: boolean): void;
     // @internal (undocumented)
     clickHandler: (e: MouseEvent) => void;
     // @internal (undocumented)
-    connectedCallback(): void;
-    defaultChecked: boolean;
-    // @internal (undocumented)
     defaultSlottedNodes: Node[];
-    // @internal (undocumented)
-    formResetCallback: () => void;
     // @internal
     initialValue: string;
     // @internal (undocumented)

@@ -521,7 +521,7 @@ export class PluginUI extends React.Component<PluginUIProps> {
                     <p>Accent color</p>
                     <BlockPicker
                         color={values.length ? values[0] : DesignSystemDefaults[type]}
-                        onChangeComplete={onChange}
+                        onChangeComplete={onChange as any}
                         colors={[
                             "#128475",
                             "#1C881E",

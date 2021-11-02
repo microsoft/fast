@@ -1,5 +1,3 @@
-/* eslint-disable */
-
 function percentChange(a, b) {
     return ((a - b) / b) * 100;
 }

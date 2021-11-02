@@ -1,4 +1,4 @@
-import { html, ref, ViewTemplate } from "@microsoft/fast-element";
+import { html, ViewTemplate } from "@microsoft/fast-element";
 import type { PickerList } from "./picker-list";
 
 /**
