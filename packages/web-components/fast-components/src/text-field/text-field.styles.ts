@@ -29,6 +29,10 @@ import {
 } from "../design-tokens";
 import { heightNumber } from "../styles/index";
 
+/**
+ * Styles for Text Field
+ * @public
+ */
 export const textFieldStyles: (
     context: ElementDefinitionContext,
     definition: TextFieldOptions
