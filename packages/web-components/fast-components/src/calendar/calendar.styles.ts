@@ -7,12 +7,18 @@ import {
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import { heightNumber } from "../styles/index";
 import {
+    accentFillHover,
+    accentFillRest,
     accentForegroundActive,
     bodyFont,
     designUnit,
     disabledOpacity,
-    foregroundOnAccentActive,
+    fillColor,
+    foregroundOnAccentHover,
+    foregroundOnAccentRest,
+    neutralFillHover,
     neutralFillRest,
+    neutralForegroundHover,
     neutralForegroundRest,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
@@ -38,6 +44,7 @@ export const CalendarStyles = css`
         font-size: ${typeRampBaseFontSize};
         line-height: ${typeRampBaseLineHeight};
         color: ${neutralForegroundRest};
+        background: ${fillColor};
     }
 
     .title {
@@ -84,7 +91,13 @@ export const CalendarStyles = css`
 
     .interact .day {
         background: ${neutralFillRest};
+        color: ${neutralForegroundRest};
         cursor: pointer;
+    }
+
+    .interact .day:not(.disabled):hover {
+        background: ${neutralFillHover};
+        color: ${neutralForegroundHover};
     }
 
     .day.inactive {
@@ -102,7 +115,8 @@ export const CalendarStyles = css`
         outline: var(--disabled-day-outline);
     }
 
-    .day.selected {
+    .day.selected,
+    .day.selected:not(.disabled):hover {
         color: var(--selected-day-color);
         background: var(--selected-day-background);
         outline: var(--selected-day-outline);
@@ -115,8 +129,13 @@ export const CalendarStyles = css`
 
     .interact .today,
     .today {
-        color: ${foregroundOnAccentActive};
-        background: ${accentForegroundActive};
+        background: ${accentFillRest};
+        color: ${foregroundOnAccentRest};
+    }
+
+    .interact .today:not(.disabled):hover {
+        background: ${accentFillHover};
+        color: ${foregroundOnAccentHover};
     }
 
     .today.inactive .date {

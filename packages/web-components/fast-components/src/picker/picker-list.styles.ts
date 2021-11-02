@@ -46,6 +46,7 @@ export const pickerListStyles: (
             column-gap: calc(${designUnit} * 1px);
             row-gap: calc(${designUnit} * 1px);
             flex-wrap: wrap;
+            width: max-content;
         }
         ::slotted([role="combobox"]) {
             min-width: 260px;
@@ -75,12 +76,13 @@ export const pickerListStyles: (
             border-color: ${accentForegroundRest};
             color: ${neutralForegroundActive};
         }
-        :host(:${focusVisible}) {
+        :host(:${focusVisible}) ::slotted([role="combobox"]) {
             outline: none;
+            background: ${neutralFillActive};
             border-color: ${focusStrokeOuter};
             box-shadow: 0 0 0 calc(${focusStrokeWidth} * 1px) ${focusStrokeOuter} inset;
             color: ${neutralForegroundFocus};
-          }
+        }
     `.withBehaviors(
         forcedColorsStylesheetBehavior(
             css`

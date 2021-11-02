@@ -123,7 +123,7 @@ export const selectStyles = (context, definition) =>
       width: 100%;
     }
     :host(:not([disabled]):hover) {
-      background:${neutralFillHover};
+      background: ${neutralFillHover};
       border-color: ${neutralStrokeInputFilledHover};
       color: ${neutralForegroundHover};
     }

@@ -1,9 +1,25 @@
 import {
-    Calendar,
     calendarTemplate,
     CalendarTitleTemplate,
+    Calendar as FoundationCalendar,
 } from "@microsoft/fast-foundation";
+import { fillColor, neutralLayerFloating } from "../design-tokens";
 import { CalendarStyles as styles } from "./calendar.styles";
+
+/**
+ * The FAST listbox class
+ * @public
+ */
+export class Calendar extends FoundationCalendar {
+    /**
+     * @internal
+     */
+    public connectedCallback(): void {
+        super.connectedCallback();
+
+        fillColor.setValueFor(this, neutralLayerFloating);
+    }
+}
 
 /**
  * The FAST Calendar Element. Implements {@link @microsoft/fast-foundation#Calendar},
@@ -22,9 +38,7 @@ export const fastCalendar = Calendar.compose({
 });
 
 /**
- * Base class for fastCalendar
+ * Styles for Calendar
  * @public
  */
-export { Calendar };
-
-export { styles as CalendarStyles };
+export const CalendarStyles = styles;

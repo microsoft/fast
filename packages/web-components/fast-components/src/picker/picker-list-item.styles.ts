@@ -14,8 +14,14 @@ import {
     focusStrokeOuter,
     focusStrokeWidth,
     foregroundOnAccentActive,
+    neutralFillStealthActive,
+    neutralFillStealthFocus,
+    neutralFillStealthHover,
+    neutralFillStealthRest,
+    neutralForegroundActive,
+    neutralForegroundFocus,
+    neutralForegroundHover,
     neutralForegroundRest,
-    neutralLayer3,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
 } from "../design-tokens";
@@ -52,16 +58,23 @@ export const pickerListItemStyles: (
     padding: 0 calc(${designUnit} * 2.25px);
     user-select: none;
     white-space: nowrap;
+    background: ${neutralFillStealthRest};
 }
 
-:host(:${focusVisible}),
 :host(:hover) {
-    background: ${neutralLayer3};
-    color: ${neutralForegroundRest};
+    background: ${neutralFillStealthHover};
+    color: ${neutralForegroundHover};
 }
 
-:host(:focusVisible) {
+:host(:active) {
+    background: ${neutralFillStealthActive};
+    color: ${neutralForegroundActive};
+}
+
+:host(:${focusVisible}) {
+    background: ${neutralFillStealthFocus};
     border-color: ${focusStrokeOuter};
+    color: ${neutralForegroundFocus};
 }
 
 :host([aria-selected="true"]) {
