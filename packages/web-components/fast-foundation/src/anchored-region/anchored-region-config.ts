@@ -144,7 +144,6 @@ export const FlyoutPosBottom: AnchoredRegionConfig = {
  */
 export const FlyoutPosTallest: AnchoredRegionConfig = {
     ...horizontalAnchorOverlay,
-    verticalDefaultPosition: undefined,
     verticalPositioningMode: "dynamic",
     verticalInset: false,
     verticalScaling: "content",
