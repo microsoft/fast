@@ -113,15 +113,13 @@ const horizontalAnchorOverlay: AnchoredRegionConfig = {
  *
  * @public
  */
-export const FlyoutPosTop: AnchoredRegionConfig = Object.assign(
-    {
-        verticalDefaultPosition: "top",
-        verticalPositioningMode: "locktodefault",
-        verticalInset: false,
-        verticalScaling: "content",
-    },
-    horizontalAnchorOverlay
-);
+export const FlyoutPosTop: AnchoredRegionConfig = {
+    ...horizontalAnchorOverlay,
+    verticalDefaultPosition: "top",
+    verticalPositioningMode: "locktodefault",
+    verticalInset: false,
+    verticalScaling: "content",
+};
 
 /**
  * A region that always places itself below the anchor, has
@@ -129,15 +127,13 @@ export const FlyoutPosTop: AnchoredRegionConfig = Object.assign(
  *
  * @public
  */
-export const FlyoutPosBottom: AnchoredRegionConfig = Object.assign(
-    {
-        verticalDefaultPosition: "bottom",
-        verticalPositioningMode: "locktodefault",
-        verticalInset: false,
-        verticalScaling: "content",
-    },
-    horizontalAnchorOverlay
-);
+export const FlyoutPosBottom: AnchoredRegionConfig = {
+    ...horizontalAnchorOverlay,
+    verticalDefaultPosition: "bottom",
+    verticalPositioningMode: "locktodefault",
+    verticalInset: false,
+    verticalScaling: "content",
+};
 
 /**
  * A region that places itself above or below the anchor
@@ -146,15 +142,13 @@ export const FlyoutPosBottom: AnchoredRegionConfig = Object.assign(
  *
  * @public
  */
-export const FlyoutPosTallest: AnchoredRegionConfig = Object.assign(
-    {
-        verticalDefaultPosition: undefined,
-        verticalPositioningMode: "dynamic",
-        verticalInset: false,
-        verticalScaling: "content",
-    },
-    horizontalAnchorOverlay
-);
+export const FlyoutPosTallest: AnchoredRegionConfig = {
+    ...horizontalAnchorOverlay,
+    verticalDefaultPosition: undefined,
+    verticalPositioningMode: "dynamic",
+    verticalInset: false,
+    verticalScaling: "content",
+};
 
 /**
  * A region that always places itself above the anchor, has
@@ -162,9 +156,10 @@ export const FlyoutPosTallest: AnchoredRegionConfig = Object.assign(
  *
  * @public
  */
-export const FlyoutPosTopFill: AnchoredRegionConfig = Object.assign({}, FlyoutPosTop, {
+export const FlyoutPosTopFill: AnchoredRegionConfig = {
+    ...FlyoutPosTop,
     verticalScaling: "fill",
-});
+};
 
 /**
  * A region that always places itself below the anchor, has
@@ -172,11 +167,10 @@ export const FlyoutPosTopFill: AnchoredRegionConfig = Object.assign({}, FlyoutPo
  *
  * @public
  */
-export const FlyoutPosBottomFill: AnchoredRegionConfig = Object.assign(
-    {},
-    FlyoutPosBottom,
-    { verticalScaling: "fill" }
-);
+export const FlyoutPosBottomFill: AnchoredRegionConfig = {
+    ...FlyoutPosBottom,
+    verticalScaling: "fill",
+};
 
 /**
  * A region that places itself above or below the anchor
@@ -185,8 +179,7 @@ export const FlyoutPosBottomFill: AnchoredRegionConfig = Object.assign(
  *
  * @public
  */
-export const FlyoutPosTallestFill: AnchoredRegionConfig = Object.assign(
-    {},
-    FlyoutPosTallest,
-    { verticalScaling: "fill" }
-);
+export const FlyoutPosTallestFill: AnchoredRegionConfig = {
+    ...FlyoutPosTallest,
+    verticalScaling: "fill",
+};

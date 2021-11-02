@@ -427,7 +427,7 @@ export class Picker extends FormAssociatedPicker {
      * @internal
      */
     @observable
-    public menuConfig: AnchoredRegionConfig = FlyoutPosBottom;
+    public menuConfig: AnchoredRegionConfig;
 
     /**
      *  Reference to the placeholder element for the repeat directive
@@ -1022,43 +1022,30 @@ export class Picker extends FormAssociatedPicker {
      * Updates the menu configuration
      */
     private updateMenuConfig(): void {
-        let newConfig = FlyoutPosBottomFill;
+        let newConfig = this.configLookup[this.menuPlacement];
 
-        switch (this.menuPlacement) {
-            case "top":
-                newConfig = FlyoutPosTop;
-                break;
-
-            case "bottom":
-                newConfig = FlyoutPosBottom;
-                break;
-
-            case "tallest":
-                newConfig = FlyoutPosTallest;
-                break;
-
-            case "top-fill":
-                newConfig = FlyoutPosTopFill;
-                break;
-
-            case "bottom-fill":
-                newConfig = FlyoutPosBottomFill;
-                break;
-
-            case "tallest-fill":
-                newConfig = FlyoutPosTallestFill;
-                break;
-
-            default:
-                newConfig = FlyoutPosBottom;
-                break;
+        if (newConfig === null) {
+            newConfig = FlyoutPosBottomFill;
         }
 
-        this.menuConfig = Object.assign({}, newConfig, {
+        this.menuConfig = {
+            ...newConfig,
             autoUpdateMode: "auto",
             fixedPlacement: true,
-            horizontalViewportLock: true,
+            horizontalViewportLock: false,
             verticalViewportLock: false,
-        });
+        };
     }
+
+    /**
+     * matches menu placement values with the associated menu config
+     */
+    private configLookup: object = {
+        top: FlyoutPosTop,
+        bottom: FlyoutPosBottom,
+        tallest: FlyoutPosTallest,
+        "top-fill": FlyoutPosTopFill,
+        "bottom-fill": FlyoutPosBottomFill,
+        "tallest-fill": FlyoutPosTallestFill,
+    };
 }
