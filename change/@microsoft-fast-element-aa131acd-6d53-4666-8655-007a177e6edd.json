@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "remove noImplicitAny in fast-element",
+  "packageName": "@microsoft/fast-element",
+  "email": "mathieu.lavoie@shopify.com",
+  "dependentChangeType": "patch"
+}
