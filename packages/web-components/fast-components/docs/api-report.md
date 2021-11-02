@@ -551,8 +551,6 @@ export class Anchor extends Anchor_2 {
     appearance: AnchorAppearance;
     // (undocumented)
     appearanceChanged(oldValue: AnchorAppearance, newValue: AnchorAppearance): void;
-    // (undocumented)
-    connectedCallback(): void;
     // @internal
     defaultSlottedContentChanged(oldValue: any, newValue: any): void;
 }
@@ -614,8 +612,6 @@ export const breadcrumbStyles: FoundationElementTemplate<ElementStyles>;
 export class Button extends Button_2 {
     // @public
     appearance: ButtonAppearance;
-    // (undocumented)
-    connectedCallback(): void;
     // @public
     defaultSlottedContentChanged(oldValue: any, newValue: any): void;
 }
@@ -1625,8 +1621,6 @@ export const neutralStrokeRestDelta: DesignToken<number>;
 export class NumberField extends NumberField_2 {
     // @public
     appearance: NumberFieldAppearance;
-    // (undocumented)
-    connectedCallback(): void;
 }
 
 // @public
@@ -1803,8 +1797,6 @@ export const tabStyles: FoundationElementTemplate<ElementStyles>;
 export class TextArea extends TextArea_2 {
     // @public
     appearance: TextAreaAppearance;
-    // (undocumented)
-    connectedCallback(): void;
 }
 
 // @public
@@ -1819,8 +1811,6 @@ export const textAreaStyles: FoundationElementTemplate<ElementStyles>;
 export class TextField extends TextField_2 {
     // @public
     appearance: TextFieldAppearance;
-    // (undocumented)
-    connectedCallback(): void;
 }
 
 // @public

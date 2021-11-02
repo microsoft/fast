@@ -20,7 +20,7 @@ export class Avatar extends FoundationAvatar {
      * HTML Attribute: src
      */
     @attr({ attribute: "src" })
-    public imgSrc: string;
+    public imgSrc = "";
 
     /**
      * Indicates the Avatar should have alt text
@@ -29,7 +29,7 @@ export class Avatar extends FoundationAvatar {
      * @remarks
      * HTML Attribute: alt
      */
-    @attr public alt: string;
+    @attr public alt = "";
 }
 
 /**
