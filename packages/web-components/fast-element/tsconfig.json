@@ -5,19 +5,11 @@
         "outDir": "dist/esm",
         "importsNotUsedAsValues": "error",
         "experimentalDecorators": true,
-        "noImplicitAny": false,
         "strictPropertyInitialization": false,
         "target": "es2015",
         "module": "ESNext",
-        "types": [
-            "mocha",
-            "webpack-env"
-        ],
-        "lib": [
-            "DOM",
-            "ES2015",
-            "ES2016.Array.Include"
-        ]
+        "types": ["mocha", "webpack-env"],
+        "lib": ["DOM", "ES2015", "ES2016.Array.Include"]
     },
     "include": ["src"]
 }

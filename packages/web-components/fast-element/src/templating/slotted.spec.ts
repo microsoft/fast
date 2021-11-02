@@ -25,19 +25,15 @@ describe("The slotted", () => {
 
     context("behavior", () => {
         class Model {
-            @observable nodes;
+            @observable nodes: HTMLElement[];
         }
 
         function createAndAppendChildren(host: HTMLElement, elementName = "div") {
-            const children = new Array(10);
-
-            for (let i = 0, ii = children.length; i < ii; ++i) {
+            return [...Array(10)].map((_item: number, i: number) => {
                 const child = document.createElement(i % 1 === 0 ? elementName : "div");
-                children[i] = child;
                 host.appendChild(child);
-            }
-
-            return children;
+                return child;
+            })
         }
 
         function createDOM(elementName: string = "div") {

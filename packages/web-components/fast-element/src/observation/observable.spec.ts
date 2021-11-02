@@ -64,7 +64,7 @@ describe("The Observable", () => {
         it("can set an array observer factory", () => {
             const fakeObserver = new SubscriberSet([]);
             Observable.setArrayObserverFactory((array: any[]) => fakeObserver);
-            const array = [];
+            const array: unknown[] = [];
             const observer = Observable.getNotifier(array);
             expect(observer).to.equal(fakeObserver);
         });
@@ -86,14 +86,14 @@ describe("The Observable", () => {
 
         it("can get a notifier for an array", () => {
             enableArrayObservation();
-            const array = [];
+            const array: unknown[] = [];
             const notifier = Observable.getNotifier(array);
             expect(notifier).to.be.instanceOf(SubscriberSet);
         });
 
         it("gets the same notifier for the same array", () => {
             enableArrayObservation();
-            const array = [];
+            const array: unknown[] = [];
             const notifier = Observable.getNotifier(array);
             const notifier2 = Observable.getNotifier(array);
             expect(notifier).to.equal(notifier2);

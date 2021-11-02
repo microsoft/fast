@@ -78,7 +78,7 @@ describe("The repeat", () => {
             size: number,
             filter: (index: number) => boolean = () => true,
             prefix = "",
-            wrapper = input => input
+            wrapper = (input: string) => input
         ) {
             let output = "";
 
