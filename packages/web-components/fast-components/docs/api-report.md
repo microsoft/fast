@@ -9,6 +9,7 @@ import { AccordionItem } from '@microsoft/fast-foundation';
 import { AccordionItemOptions } from '@microsoft/fast-foundation';
 import { Anchor as Anchor_2 } from '@microsoft/fast-foundation';
 import { AnchoredRegion } from '@microsoft/fast-foundation';
+import { AnchorOptions } from '@microsoft/fast-foundation';
 import { Avatar as Avatar_2 } from '@microsoft/fast-foundation';
 import { AvatarOptions } from '@microsoft/fast-foundation';
 import { Badge } from '@microsoft/fast-foundation';
@@ -18,6 +19,7 @@ import { Breadcrumb } from '@microsoft/fast-foundation';
 import { BreadcrumbItem } from '@microsoft/fast-foundation';
 import { BreadcrumbItemOptions } from '@microsoft/fast-foundation';
 import { Button as Button_2 } from '@microsoft/fast-foundation';
+import { ButtonOptions } from '@microsoft/fast-foundation';
 import { Calendar } from '@microsoft/fast-foundation';
 import { Card as Card_2 } from '@microsoft/fast-foundation';
 import { Checkbox } from '@microsoft/fast-foundation';
@@ -45,6 +47,7 @@ import { HorizontalScroll as HorizontalScroll_2 } from '@microsoft/fast-foundati
 import { HorizontalScrollOptions } from '@microsoft/fast-foundation';
 import { Listbox } from '@microsoft/fast-foundation';
 import { ListboxOption } from '@microsoft/fast-foundation';
+import { ListboxOptionOptions } from '@microsoft/fast-foundation';
 import { Menu } from '@microsoft/fast-foundation';
 import { MenuItem } from '@microsoft/fast-foundation';
 import { MenuItemOptions } from '@microsoft/fast-foundation';
@@ -71,9 +74,12 @@ import { SwitchOptions } from '@microsoft/fast-foundation';
 import { Tab } from '@microsoft/fast-foundation';
 import { TabPanel } from '@microsoft/fast-foundation';
 import { Tabs } from '@microsoft/fast-foundation';
+import { TabsOptions } from '@microsoft/fast-foundation';
 import { TextArea as TextArea_2 } from '@microsoft/fast-foundation';
 import { TextField as TextField_2 } from '@microsoft/fast-foundation';
+import { TextFieldOptions } from '@microsoft/fast-foundation';
 import { Toolbar as Toolbar_2 } from '@microsoft/fast-foundation';
+import { ToolbarOptions } from '@microsoft/fast-foundation';
 import { Tooltip } from '@microsoft/fast-foundation';
 import { TreeItem } from '@microsoft/fast-foundation';
 import { TreeItemOptions } from '@microsoft/fast-foundation';
@@ -141,10 +147,13 @@ export { Accordion }
 export { AccordionItem }
 
 // @public
-export const accordionItemStyles: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: AccordionItemOptions) => import("@microsoft/fast-element").ElementStyles;
+export const accordionItemStyles: (context: ElementDefinitionContext, definition: AccordionItemOptions) => ElementStyles;
 
 // @public
-export const accordionStyles: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: import("@microsoft/fast-foundation").FoundationElementDefinition) => import("@microsoft/fast-element").ElementStyles;
+export const accordionStyles: (context: ElementDefinitionContext, definition: FoundationElementDefinition) => ElementStyles;
+
+// @public
+export const ActionsStyles: ElementStyles;
 
 // @public
 export const allComponents: {
@@ -228,10 +237,10 @@ export type AnchorAppearance = ButtonAppearance | "hypertext";
 export { AnchoredRegion }
 
 // @public
-export const anchoredRegionStyles: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: import("@microsoft/fast-foundation").FoundationElementDefinition) => import("@microsoft/fast-element").ElementStyles;
+export const anchoredRegionStyles: (context: ElementDefinitionContext, definition: FoundationElementDefinition) => ElementStyles;
 
 // @public
-export const anchorStyles: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: import("@microsoft/fast-foundation").AnchorOptions) => import("@microsoft/fast-element").ElementStyles;
+export const anchorStyles: (context: ElementDefinitionContext, definition: AnchorOptions) => ElementStyles;
 
 // @public
 export class Avatar extends Avatar_2 {
@@ -240,12 +249,12 @@ export class Avatar extends Avatar_2 {
 }
 
 // @public
-export const avatarStyles: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: AvatarOptions) => import("@microsoft/fast-element").ElementStyles;
+export const avatarStyles: (context: ElementDefinitionContext, definition: AvatarOptions) => ElementStyles;
 
 export { Badge }
 
 // @public
-export const badgeStyles: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: import("@microsoft/fast-foundation").FoundationElementDefinition) => import("@microsoft/fast-element").ElementStyles;
+export const badgeStyles: (context: ElementDefinitionContext, definition: FoundationElementDefinition) => ElementStyles;
 
 // @public (undocumented)
 export const baseHeightMultiplier: import("@microsoft/fast-foundation").CSSDesignToken<number>;
@@ -267,6 +276,12 @@ export { Breadcrumb }
 
 export { BreadcrumbItem }
 
+// @public
+export const breadcrumbItemStyles: (context: ElementDefinitionContext, definition: BreadcrumbItemOptions) => ElementStyles;
+
+// @public
+export const breadcrumbStyles: (context: ElementDefinitionContext, definition: FoundationElementDefinition) => ElementStyles;
+
 // Warning: (ae-internal-missing-underscore) The name "Button" should be prefixed with an underscore because the declaration is marked as @internal
 //
 // @internal (undocumented)
@@ -283,7 +298,7 @@ export class Button extends Button_2 {
 export type ButtonAppearance = "accent" | "lightweight" | "neutral" | "outline" | "stealth";
 
 // @public
-export const buttonStyles: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: import("@microsoft/fast-foundation").AnchorOptions) => import("@microsoft/fast-element").ElementStyles;
+export const buttonStyles: (context: ElementDefinitionContext, definition: ButtonOptions) => ElementStyles;
 
 export { Calendar }
 
@@ -299,12 +314,12 @@ export class Card extends Card_2 {
 }
 
 // @public
-export const cardStyles: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: import("@microsoft/fast-foundation").FoundationElementDefinition) => import("@microsoft/fast-element").ElementStyles;
+export const cardStyles: (context: ElementDefinitionContext, definition: FoundationElementDefinition) => ElementStyles;
 
 export { Checkbox }
 
 // @public
-export const checkboxStyles: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: CheckboxOptions) => import("@microsoft/fast-element").ElementStyles;
+export const checkboxStyles: (context: ElementDefinitionContext, definition: CheckboxOptions) => ElementStyles;
 
 // @public (undocumented)
 export type ColorRecipe = Recipe<Swatch>;
@@ -312,7 +327,7 @@ export type ColorRecipe = Recipe<Swatch>;
 export { Combobox }
 
 // @public
-export const comboboxStyles: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: ComboboxOptions) => import("@microsoft/fast-element").ElementStyles;
+export const comboboxStyles: (context: ElementDefinitionContext, definition: ComboboxOptions) => ElementStyles;
 
 // @public (undocumented)
 export const controlCornerRadius: import("@microsoft/fast-foundation").CSSDesignToken<number>;
@@ -322,15 +337,15 @@ export { DataGrid }
 export { DataGridCell }
 
 // @public
-export const dataGridCellStyles: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: import("@microsoft/fast-foundation").FoundationElementDefinition) => import("@microsoft/fast-element").ElementStyles;
+export const dataGridCellStyles: (context: ElementDefinitionContext, definition: FoundationElementDefinition) => ElementStyles;
 
 export { DataGridRow }
 
 // @public
-export const dataGridRowStyles: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: import("@microsoft/fast-foundation").FoundationElementDefinition) => import("@microsoft/fast-element").ElementStyles;
+export const dataGridRowStyles: (context: ElementDefinitionContext, definition: FoundationElementDefinition) => ElementStyles;
 
 // @public
-export const dataGridStyles: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: import("@microsoft/fast-foundation").FoundationElementDefinition) => import("@microsoft/fast-element").ElementStyles;
+export const dataGridStyles: (context: ElementDefinitionContext, definition: FoundationElementDefinition) => ElementStyles;
 
 // @public (undocumented)
 export const density: import("@microsoft/fast-foundation").CSSDesignToken<number>;
@@ -415,7 +430,7 @@ export const designUnit: import("@microsoft/fast-foundation").CSSDesignToken<num
 export { Dialog }
 
 // @public
-export const dialogStyles: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: import("@microsoft/fast-foundation").FoundationElementDefinition) => import("@microsoft/fast-element").ElementStyles;
+export const dialogStyles: (context: ElementDefinitionContext, definition: FoundationElementDefinition) => ElementStyles;
 
 // @public (undocumented)
 export const direction: import("@microsoft/fast-foundation").CSSDesignToken<Direction>;
@@ -452,12 +467,12 @@ export class Disclosure extends Disclosure_2 {
 export type DisclosureAppearance = "accent" | "lightweight";
 
 // @public
-export const disclosureStyles: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: import("@microsoft/fast-foundation").FoundationElementDefinition) => import("@microsoft/fast-element").ElementStyles;
+export const disclosureStyles: (context: ElementDefinitionContext, definition: FoundationElementDefinition) => ElementStyles;
 
 export { Divider }
 
 // @public
-export const dividerStyles: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: import("@microsoft/fast-foundation").FoundationElementDefinition) => import("@microsoft/fast-element").ElementStyles;
+export const dividerStyles: (context: ElementDefinitionContext, definition: FoundationElementDefinition) => ElementStyles;
 
 // @public
 export const fastAccordion: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FoundationElementDefinition, typeof Accordion>;
@@ -641,7 +656,7 @@ export const fillColor: import("@microsoft/fast-foundation").CSSDesignToken<Swat
 export { Flipper }
 
 // @public
-export const flipperStyles: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: FlipperOptions) => import("@microsoft/fast-element").ElementStyles;
+export const flipperStyles: (context: ElementDefinitionContext, definition: FlipperOptions) => ElementStyles;
 
 // @public (undocumented)
 export const focusStrokeInner: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
@@ -697,6 +712,12 @@ export class HorizontalScroll extends HorizontalScroll_2 {
 }
 
 // @public
+export const horizontalScrollStyles: (context: ElementDefinitionContext, definition: HorizontalScrollOptions) => ElementStyles;
+
+// @public
+export const horizontalSliderLabelStyles: ElementStyles;
+
+// @public
 export const imgTemplate: import("@microsoft/fast-element").ViewTemplate<Avatar, any>;
 
 // @public (undocumented)
@@ -718,17 +739,17 @@ export { Listbox }
 export { ListboxOption }
 
 // @public
-export const listboxStyles: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: import("@microsoft/fast-foundation").FoundationElementDefinition) => import("@microsoft/fast-element").ElementStyles;
+export const listboxStyles: (context: ElementDefinitionContext, definition: FoundationElementDefinition) => ElementStyles;
 
 export { Menu }
 
 export { MenuItem }
 
 // @public
-export const menuItemStyles: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: MenuItemOptions) => import("@microsoft/fast-element").ElementStyles;
+export const menuItemStyles: (context: ElementDefinitionContext, definition: MenuItemOptions) => ElementStyles;
 
 // @public
-export const menuStyles: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: import("@microsoft/fast-foundation").FoundationElementDefinition) => import("@microsoft/fast-element").ElementStyles;
+export const menuStyles: (context: ElementDefinitionContext, definition: FoundationElementDefinition) => ElementStyles;
 
 // @public (undocumented)
 export const neutralFillActive: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
@@ -948,10 +969,10 @@ export class NumberField extends NumberField_2 {
 export type NumberFieldAppearance = "filled" | "outline";
 
 // @public
-export const numberFieldStyles: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: NumberFieldOptions) => import("@microsoft/fast-element").ElementStyles;
+export const numberFieldStyles: (context: ElementDefinitionContext, definition: NumberFieldOptions) => ElementStyles;
 
 // @public
-export const optionStyles: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: import("@microsoft/fast-foundation").AnchorOptions) => import("@microsoft/fast-element").ElementStyles;
+export const optionStyles: (context: ElementDefinitionContext, definition: ListboxOptionOptions) => ElementStyles;
 
 // @public
 export interface Palette<T extends Swatch = Swatch> {
@@ -977,25 +998,22 @@ export const PaletteRGB: Readonly<{
 export { Picker }
 
 // @public
-export const PickerListItemStyles: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: import("@microsoft/fast-foundation").FoundationElementDefinition) => import("@microsoft/fast-element").ElementStyles;
+export const pickerListItemStyles: (context: ElementDefinitionContext, definition: FoundationElementDefinition) => ElementStyles;
 
 // @public
-export const PickerListStyles: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: import("@microsoft/fast-foundation").FoundationElementDefinition) => import("@microsoft/fast-element").ElementStyles;
+export const pickerMenuOptionStyles: (context: ElementDefinitionContext, definition: FoundationElementDefinition) => ElementStyles;
 
 // @public
-export const PickerMenuOptionStyles: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: import("@microsoft/fast-foundation").FoundationElementDefinition) => import("@microsoft/fast-element").ElementStyles;
+export const pickerMenuStyles: (context: ElementDefinitionContext, definition: FoundationElementDefinition) => ElementStyles;
+
+// @public (undocumented)
+export const pickerStyles: (context: ElementDefinitionContext, definition: FoundationElementDefinition) => ElementStyles;
 
 // @public
-export const PickerMenuStyles: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: import("@microsoft/fast-foundation").FoundationElementDefinition) => import("@microsoft/fast-element").ElementStyles;
+export const progressRingStyles: (context: ElementDefinitionContext, definition: ProgressRingOptions) => ElementStyles;
 
 // @public
-export const PickerStyles: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: import("@microsoft/fast-foundation").FoundationElementDefinition) => import("@microsoft/fast-element").ElementStyles;
-
-// @public
-export const progressRingStyles: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: ProgressRingOptions) => import("@microsoft/fast-element").ElementStyles;
-
-// @public
-export const progressStyles: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: ProgressOptions) => import("@microsoft/fast-element").ElementStyles;
+export const progressStyles: (context: ElementDefinitionContext, definition: ProgressOptions) => ElementStyles;
 
 // @public
 export function provideFASTDesignSystem(element?: HTMLElement): DesignSystem;
@@ -1005,10 +1023,10 @@ export { Radio }
 export { RadioGroup }
 
 // @public
-export const radioGroupStyles: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: import("@microsoft/fast-foundation").FoundationElementDefinition) => import("@microsoft/fast-element").ElementStyles;
+export const radioGroupStyles: (context: ElementDefinitionContext, definition: FoundationElementDefinition) => ElementStyles;
 
 // @public
-export const radioStyles: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: RadioOptions) => import("@microsoft/fast-element").ElementStyles;
+export const radioStyles: (context: ElementDefinitionContext, definition: RadioOptions) => ElementStyles;
 
 // @public (undocumented)
 export interface Recipe<T> {
@@ -1019,12 +1037,12 @@ export interface Recipe<T> {
 export { Select }
 
 // @public
-export const selectStyles: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: SelectOptions) => import("@microsoft/fast-element").ElementStyles;
+export const selectStyles: (context: ElementDefinitionContext, definition: SelectOptions) => ElementStyles;
 
 export { Skeleton }
 
 // @public
-export const skeletonStyles: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: import("@microsoft/fast-foundation").FoundationElementDefinition) => import("@microsoft/fast-element").ElementStyles;
+export const skeletonStyles: (context: ElementDefinitionContext, definition: FoundationElementDefinition) => ElementStyles;
 
 export { Slider }
 
@@ -1037,10 +1055,10 @@ export class SliderLabel extends SliderLabel_2 {
 }
 
 // @public
-export const sliderLabelStyles: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: import("@microsoft/fast-foundation").FoundationElementDefinition) => import("@microsoft/fast-element").ElementStyles;
+export const sliderLabelStyles: (context: ElementDefinitionContext, definition: FoundationElementDefinition) => ElementStyles;
 
 // @public
-export const sliderStyles: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: SliderOptions) => import("@microsoft/fast-element").ElementStyles;
+export const sliderStyles: (context: ElementDefinitionContext, definition: SliderOptions) => ElementStyles;
 
 // @public
 export enum StandardLuminance {
@@ -1084,22 +1102,22 @@ export const SwatchRGB: Readonly<{
 export { Switch }
 
 // @public
-export const switchStyles: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: SwitchOptions) => import("@microsoft/fast-element").ElementStyles;
+export const switchStyles: (context: ElementDefinitionContext, definition: SwitchOptions) => ElementStyles;
 
 export { Tab }
 
 export { TabPanel }
 
 // @public
-export const tabPanelStyles: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: import("@microsoft/fast-foundation").FoundationElementDefinition) => import("@microsoft/fast-element").ElementStyles;
+export const tabPanelStyles: (context: ElementDefinitionContext, definition: FoundationElementDefinition) => ElementStyles;
 
 export { Tabs }
 
 // @public
-export const tabsStyles: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: import("@microsoft/fast-foundation").AnchorOptions) => import("@microsoft/fast-element").ElementStyles;
+export const tabsStyles: (context: ElementDefinitionContext, definition: TabsOptions) => ElementStyles;
 
 // @public
-export const tabStyles: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: import("@microsoft/fast-foundation").FoundationElementDefinition) => import("@microsoft/fast-element").ElementStyles;
+export const tabStyles: (context: ElementDefinitionContext, definition: FoundationElementDefinition) => ElementStyles;
 
 // Warning: (ae-internal-missing-underscore) The name "TextArea" should be prefixed with an underscore because the declaration is marked as @internal
 //
@@ -1115,7 +1133,7 @@ export class TextArea extends TextArea_2 {
 export type TextAreaAppearance = "filled" | "outline";
 
 // @public
-export const textAreaStyles: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: import("@microsoft/fast-foundation").FoundationElementDefinition) => import("@microsoft/fast-element").ElementStyles;
+export const textAreaStyles: (context: ElementDefinitionContext, definition: FoundationElementDefinition) => ElementStyles;
 
 // Warning: (ae-internal-missing-underscore) The name "TextField" should be prefixed with an underscore because the declaration is marked as @internal
 //
@@ -1131,7 +1149,7 @@ export class TextField extends TextField_2 {
 export type TextFieldAppearance = "filled" | "outline";
 
 // @public
-export const textFieldStyles: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: import("@microsoft/fast-foundation").AnchorOptions) => import("@microsoft/fast-element").ElementStyles;
+export const textFieldStyles: (context: ElementDefinitionContext, definition: TextFieldOptions) => ElementStyles;
 
 // Warning: (ae-internal-missing-underscore) The name "Toolbar" should be prefixed with an underscore because the declaration is marked as @internal
 //
@@ -1142,22 +1160,22 @@ export class Toolbar extends Toolbar_2 {
 }
 
 // @public
-export const toolbarStyles: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: import("@microsoft/fast-foundation").AnchorOptions) => import("@microsoft/fast-element").ElementStyles;
+export const toolbarStyles: (context: ElementDefinitionContext, definition: ToolbarOptions) => ElementStyles;
 
 export { Tooltip }
 
 // @public
-export const tooltipStyles: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: import("@microsoft/fast-foundation").FoundationElementDefinition) => import("@microsoft/fast-element").ElementStyles;
+export const tooltipStyles: (context: ElementDefinitionContext, definition: FoundationElementDefinition) => ElementStyles;
 
 export { TreeItem }
 
 // @public
-export const treeItemStyles: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: TreeItemOptions) => import("@microsoft/fast-element").ElementStyles;
+export const treeItemStyles: (context: ElementDefinitionContext, definition: TreeItemOptions) => ElementStyles;
 
 export { TreeView }
 
 // @public
-export const treeViewStyles: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: import("@microsoft/fast-foundation").FoundationElementDefinition) => import("@microsoft/fast-element").ElementStyles;
+export const treeViewStyles: (context: ElementDefinitionContext, definition: FoundationElementDefinition) => ElementStyles;
 
 // @public (undocumented)
 export const typeRampBaseFontSize: import("@microsoft/fast-foundation").CSSDesignToken<string>;
@@ -1212,6 +1230,9 @@ export const typeRampPlus6FontSize: import("@microsoft/fast-foundation").CSSDesi
 
 // @public (undocumented)
 export const typeRampPlus6LineHeight: import("@microsoft/fast-foundation").CSSDesignToken<string>;
+
+// @public
+export const verticalSliderLabelStyles: ElementStyles;
 
 
 // Warnings were encountered during analysis:
