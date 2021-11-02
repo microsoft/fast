@@ -47,8 +47,5 @@ export const fastToolbar = Toolbar.compose({
         delegatesFocus: true,
     },
 });
-/**
- * Styles for Toolbar.
- * @public
- */
-export const toolbarStyles = styles;
+
+export { styles as toolbarStyles };

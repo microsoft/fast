@@ -16,7 +16,7 @@ import {
 } from "../design-tokens";
 
 /**
- * Styles for the {@link (FASTToolbar:class)|FASTToolbar component}.
+ * Styles for the Toolbar
  *
  * @public
  */
