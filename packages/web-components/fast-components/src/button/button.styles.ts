@@ -22,6 +22,10 @@ import {
 } from "../styles/index";
 import { appearanceBehavior } from "../utilities/behaviors";
 
+/**
+ * Styles for Button
+ * @public
+ */
 export const buttonStyles: (
     context: ElementDefinitionContext,
     definition: ButtonOptions

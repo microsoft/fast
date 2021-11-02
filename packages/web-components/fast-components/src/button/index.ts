@@ -76,8 +76,4 @@ export const fastButton = Button.compose({
     },
 });
 
-/**
- * Styles for Button
- * @public
- */
-export const buttonStyles = styles;
+export { styles as buttonStyles };
