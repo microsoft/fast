@@ -4,6 +4,10 @@ import {
     FoundationElementDefinition,
 } from "@microsoft/fast-foundation";
 
+/**
+ * Styles for AnchoredRegion
+ * @public
+ */
 export const anchoredRegionStyles: (
     context: ElementDefinitionContext,
     definition: FoundationElementDefinition
