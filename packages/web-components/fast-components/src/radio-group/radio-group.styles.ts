@@ -6,6 +6,10 @@ import {
 } from "@microsoft/fast-foundation";
 import { designUnit } from "../design-tokens";
 
+/**
+ * Styles for Radio Group
+ * @public
+ */
 export const radioGroupStyles: (
     context: ElementDefinitionContext,
     definition: FoundationElementDefinition
