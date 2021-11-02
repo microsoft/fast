@@ -35,6 +35,10 @@ import {
 import { elevation } from "../styles/elevation";
 import { heightNumber } from "../styles/size";
 
+/**
+ * Styles for Select
+ * @public
+ */
 export const selectStyles: (
     context: ElementDefinitionContext,
     definition: SelectOptions

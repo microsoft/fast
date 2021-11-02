@@ -17,13 +17,9 @@ export const fastMenu = Menu.compose({
 });
 
 /**
- * Styles for Menu
- * @public
- */
-export const menuStyles = styles;
-
-/**
  * Base class for Menu
  * @public
  */
 export { Menu };
+
+export { styles as menuStyles };

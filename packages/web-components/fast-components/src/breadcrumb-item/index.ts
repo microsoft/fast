@@ -29,3 +29,5 @@ export const fastBreadcrumbItem = BreadcrumbItem.compose<BreadcrumbItemOptions>(
  * @public
  */
 export { BreadcrumbItem };
+
+export { styles as breadcrumbItemStyles };

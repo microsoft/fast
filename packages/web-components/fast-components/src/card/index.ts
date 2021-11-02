@@ -44,8 +44,4 @@ export const fastCard = Card.compose({
     styles,
 });
 
-/**
- * Styles for Card
- * @public
- */
-export const cardStyles = styles;
+export { styles as cardStyles };

@@ -21,3 +21,5 @@ export const fastBreadcrumb = Breadcrumb.compose({
  * @public
  */
 export { Breadcrumb };
+
+export { styles as breadcrumbStyles };

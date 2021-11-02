@@ -63,12 +63,6 @@ export class Anchor extends FoundationAnchor {
 }
 
 /**
- * Styles for Anchor
- * @public
- */
-export const anchorStyles = styles;
-
-/**
  * A function that returns a {@link @microsoft/fast-foundation#Anchor} registration for configuring the component with a DesignSystem.
  * Implements {@link @microsoft/fast-foundation#anchorTemplate}
  *
@@ -88,3 +82,5 @@ export const fastAnchor = Anchor.compose({
         delegatesFocus: true,
     },
 });
+
+export { styles as anchorStyles };

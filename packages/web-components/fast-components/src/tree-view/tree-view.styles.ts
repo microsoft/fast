@@ -5,6 +5,10 @@ import {
     FoundationElementDefinition,
 } from "@microsoft/fast-foundation";
 
+/**
+ * Styles for Tree View
+ * @public
+ */
 export const treeViewStyles: (
     context: ElementDefinitionContext,
     definition: FoundationElementDefinition

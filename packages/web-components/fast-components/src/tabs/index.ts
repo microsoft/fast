@@ -18,14 +18,11 @@ export const fastTabs = Tabs.compose({
 
 export * from "../tab";
 export * from "../tab-panel";
-/**
- * Styles for Tabs
- * @public
- */
-export const tabsStyles = styles;
 
 /**
  * Base class for Tabs
  * @public
  */
 export { Tabs };
+
+export { styles as tabsStyles };

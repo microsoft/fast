@@ -36,13 +36,9 @@ export const fastCombobox = Combobox.compose<ComboboxOptions>({
 });
 
 /**
- * Styles for combobox
- * @public
- */
-export const comboboxStyles = styles;
-
-/**
  * Base class for Combobox
  * @public
  */
 export { Combobox };
+
+export { styles as comboboxStyles };
