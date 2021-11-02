@@ -18,6 +18,7 @@ export const virtualizingStackTemplate: (
 ) => html`
     <template>
         <div
+            class="container"
             style="
                 width: ${x =>
                 x.orientation !== Orientation.vertical

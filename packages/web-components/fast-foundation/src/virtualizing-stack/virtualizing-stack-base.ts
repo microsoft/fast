@@ -2,6 +2,7 @@ import {
     attr,
     DOM,
     html,
+    nullableNumberConverter,
     observable,
     RepeatBehavior,
     RepeatDirective,
@@ -113,7 +114,7 @@ export class VirtualizingStackBase extends FoundationElement {
      * @remarks
      * HTML Attribute: layout-update-delay
      */
-    @attr({ attribute: "layout-update-delay" })
+    @attr({ attribute: "layout-update-delay", converter: nullableNumberConverter })
     public layoutUpdateDelay: number = 0;
 
     /**
@@ -162,7 +163,7 @@ export class VirtualizingStackBase extends FoundationElement {
      * @remarks
      * HTML Attribute: start-region-span
      */
-    @attr({ attribute: "start-region-span" })
+    @attr({ attribute: "start-region-span", converter: nullableNumberConverter })
     public startRegionSpan: number = 0;
     private startRegionSpanChanged(): void {
         if (this.$fastController.isConnected) {
@@ -177,7 +178,7 @@ export class VirtualizingStackBase extends FoundationElement {
      * @remarks
      * HTML Attribute: end-region-span
      */
-    @attr({ attribute: "end-region-span" })
+    @attr({ attribute: "end-region-span", converter: nullableNumberConverter })
     public endRegionSpan: number = 0;
     private endItemSpansChanged(): void {
         if (this.$fastController.isConnected) {
