@@ -2,6 +2,35 @@
   "name": "@microsoft/fast-components",
   "entries": [
     {
+      "date": "Wed, 03 Nov 2021 07:12:39 GMT",
+      "tag": "@microsoft/fast-components_v2.15.0",
+      "version": "2.15.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "add placeholder attr to picker",
+            "author": "scomea@microsoft.com",
+            "commit": "449315688a794e702936ba73ce5d2b23aa660720",
+            "package": "@microsoft/fast-components"
+          },
+          {
+            "comment": "fixes style export typings by removing duplicate export and rename picker styles to follow existing convention",
+            "author": "chhol@microsoft.com",
+            "commit": "6d3dfcc7250a323e13e2168e4335a79e7ccebc66",
+            "package": "@microsoft/fast-components"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-foundation to v2.25.0",
+            "author": "scomea@microsoft.com",
+            "commit": "449315688a794e702936ba73ce5d2b23aa660720",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sun, 31 Oct 2021 07:17:45 GMT",
       "tag": "@microsoft/fast-components_v2.14.4",
       "version": "2.14.4",

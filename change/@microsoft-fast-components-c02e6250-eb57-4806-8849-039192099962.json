@@ -1,7 +1,0 @@
-{
-  "type": "minor",
-  "comment": "fixes style export typings by removing duplicate export and rename picker styles to follow existing convention",
-  "packageName": "@microsoft/fast-components",
-  "email": "chhol@microsoft.com",
-  "dependentChangeType": "patch"
-}

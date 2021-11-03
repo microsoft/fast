@@ -1,7 +1,0 @@
-{
-  "type": "minor",
-  "comment": "add placeholder attr to picker",
-  "packageName": "@microsoft/fast-foundation",
-  "email": "scomea@microsoft.com",
-  "dependentChangeType": "patch"
-}

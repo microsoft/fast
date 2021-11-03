@@ -1,8 +1,21 @@
 # Change Log - @microsoft/fast-components
 
-This log was last generated on Sun, 31 Oct 2021 07:17:45 GMT and should not be manually modified.
+This log was last generated on Wed, 03 Nov 2021 07:12:39 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.15.0
+
+Wed, 03 Nov 2021 07:12:39 GMT
+
+### Minor changes
+
+- add placeholder attr to picker (scomea@microsoft.com)
+- fixes style export typings by removing duplicate export and rename picker styles to follow existing convention (chhol@microsoft.com)
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.25.0 (scomea@microsoft.com)
 
 ## 2.14.4
 
