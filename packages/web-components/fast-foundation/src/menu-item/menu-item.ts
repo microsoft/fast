@@ -269,7 +269,6 @@ export class MenuItem extends FoundationElement {
         switch (this.role) {
             case MenuItemRole.menuitemcheckbox:
                 this.checked = !this.checked;
-                this.$emit("change");
                 break;
 
             case MenuItemRole.menuitem:
