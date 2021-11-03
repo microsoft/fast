@@ -111,7 +111,7 @@ function* renderElementNode(
         yield* renderAttributeString(node);
         yield ">";
         // eslint-disable-next-line
-        yield* renderTree(walker, renderInfo);
+        yield* renderTree(walker, renderInfo); // This should probably be renderLight().
         yield `</${tagName}>`;
     }
 }
