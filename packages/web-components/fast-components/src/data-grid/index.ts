@@ -15,7 +15,7 @@ import { dataGridCellStyles } from "./data-grid-cell.styles";
  *
  * @public
  * @remarks
- * Generates HTML Element: \<fast-data-grid-cell\>
+ * Generates HTML Element: `<fast-data-grid-cell>`
  */
 export const fastDataGridCell = DataGridCell.compose({
     baseName: "data-grid-cell",
@@ -28,7 +28,7 @@ export const fastDataGridCell = DataGridCell.compose({
  *
  * @public
  * @remarks
- * Generates HTML Element: \<fast-data-grid-row\>
+ * Generates HTML Element: `<fast-data-grid-row>`
  */
 export const fastDataGridRow = DataGridRow.compose({
     baseName: "data-grid-row",
@@ -41,7 +41,7 @@ export const fastDataGridRow = DataGridRow.compose({
  *
  * @public
  * @remarks
- * Generates HTML Element: \<fast-data-grid\>
+ * Generates HTML Element: `<fast-data-grid>`
  */
 export const fastDataGrid = DataGrid.compose({
     baseName: "data-grid",

@@ -12,7 +12,7 @@ import { radioStyles as styles } from "./radio.styles";
  *
  * @public
  * @remarks
- * Generates HTML Element: \<fast-radio\>
+ * Generates HTML Element: `<fast-radio>`
  */
 export const fastRadio = Radio.compose<RadioOptions>({
     baseName: "radio",

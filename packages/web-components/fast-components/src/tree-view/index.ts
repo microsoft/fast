@@ -8,7 +8,7 @@ import { treeViewStyles as styles } from "./tree-view.styles";
  *
  * @public
  * @remarks
- * Generates HTML Element: \<fast-tree-view\>
+ * Generates HTML Element: `<fast-tree-view>`
  *
  */
 export const fastTreeView = TreeView.compose({

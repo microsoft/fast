@@ -45,7 +45,7 @@ export class NumberField extends FoundationNumberField {
  *
  * @public
  * @remarks
- * Generates HTML Element: \<fast-number-field\>
+ * Generates HTML Element: `<fast-number-field>`
  *
  * {@link https://developer.mozilla.org/en-US/docs/Web/API/ShadowRoot/delegatesFocus | delegatesFocus}
  */
