@@ -50,3 +50,17 @@ jobs:
         app-name: ${{ env.AZURE_WEBAPP_PASSIVE_STAGE_NAME }}
         package: ${{ env.AZURE_WEBAPP_DIST_PATH }}
         slot-name: ${{ env.AZURE_WEBAPP_SLOT_NAME }}
+
+  notify:
+    runs-on: ubuntu-latest
+    needs: build_deploy_linux
+
+    steps:
+    - name: Notify on Discord
+      uses: appleboy/discord-action@master
+      with:
+        webhook_id: ${{ secrets.DISCORD_NOTIFICATION_WEBHOOK_ID }}
+        webhook_token: ${{ secrets.DISCORD_NOTIFICATION_WEBHOOK_TOKEN }}
+        color: '#DE2D6D'
+        username: 'FAST DevOps Component Explorer Bot'
+        message: 'Deployment has completed to Staging on https://github.com/microsoft/fast/actions/workflows/cd-publish.yml'

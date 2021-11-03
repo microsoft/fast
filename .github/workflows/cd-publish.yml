@@ -46,11 +46,16 @@ jobs:
         NPM_SECRET_TOKEN: ${{ secrets.NPM_TOKEN }}
       run: yarn publish-ci -n $NPM_SECRET_TOKEN
 
-    - name: send notification message on failure
-      if: failure()
+  notify:
+    runs-on: ubuntu-latest
+    needs: build_linux
+
+    steps:
+    - name: Notify on Discord
       uses: appleboy/discord-action@master
       with:
-        webhook_id: ${{ secrets.WEBHOOK_ID }}
-        webhook_token: ${{ secrets.WEBHOOK_TOKEN }}
-        username: "GitHub Automated notification"
-        message: "FAST publishing failed"
+        webhook_id: ${{ secrets.DISCORD_NOTIFICATION_WEBHOOK_ID }}
+        webhook_token: ${{ secrets.DISCORD_NOTIFICATION_WEBHOOK_TOKEN }}
+        color: '#DE2D6D'
+        username: 'FAST DevOps Packages Bot'
+        message: 'Release has published to NPM on https://github.com/microsoft/fast/actions/workflows/cd-publish.yml'
