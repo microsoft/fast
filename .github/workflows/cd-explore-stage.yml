@@ -1,4 +1,4 @@
-name: CD - Component Explorer
+name: Deploy Component Explorer
 
 on:
   push:
@@ -25,12 +25,12 @@ jobs:
 
     - name: Install package dependencies / prepare workspaces
       run: yarn install --frozen-lockfile
-    
+
     - name: Build & Prepare Web Application
       run: |
         cd ${{ env.AZURE_WEBAPP_BUILD_PATH }}
         yarn build:app
-        cp ../site-utilities/statics/server/package.json ../site-utilities/statics/server/server.js www 
+        cp ../site-utilities/statics/server/package.json ../site-utilities/statics/server/server.js www
         cd www
         npm i
         ls -lta
@@ -50,3 +50,17 @@ jobs:
         app-name: ${{ env.AZURE_WEBAPP_PASSIVE_STAGE_NAME }}
         package: ${{ env.AZURE_WEBAPP_DIST_PATH }}
         slot-name: ${{ env.AZURE_WEBAPP_SLOT_NAME }}
+
+  notify:
+    runs-on: ubuntu-latest
+    needs: build_deploy_linux
+
+    steps:
+    - name: Notify on Discord
+      uses: appleboy/discord-action@master
+      with:
+        webhook_id: ${{ secrets.DISCORD_NOTIFICATION_WEBHOOK_ID }}
+        webhook_token: ${{ secrets.DISCORD_NOTIFICATION_WEBHOOK_TOKEN }}
+        color: '#DE2D6D'
+        username: 'FAST DevOps Component Explorer Bot'
+        message: 'Deployment has completed to Staging on https://github.com/microsoft/fast/actions/workflows/cd-explore-stage.yml'
