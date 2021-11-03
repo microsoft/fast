@@ -12,7 +12,7 @@ import { CalendarStyles as styles } from "./calendar.styles";
  *
  * @public
  * @remarks
- * HTML Element: \<fast-calendar\>
+ * HTML Element: `<fast-calendar>`
  */
 export const fastCalendar = Calendar.compose({
     baseName: "calendar",

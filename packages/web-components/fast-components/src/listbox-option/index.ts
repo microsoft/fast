@@ -11,7 +11,7 @@ import { optionStyles as styles } from "./listbox-option.styles";
  *
  * @public
  * @remarks
- * Generates HTML Element: \<fast-option\>
+ * Generates HTML Element: `<fast-option>`
  *
  */
 export const fastOption = ListboxOption.compose({

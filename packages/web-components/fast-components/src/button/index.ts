@@ -62,7 +62,7 @@ export class Button extends FoundationButton {
  *
  * @public
  * @remarks
- * Generates HTML Element: \<fast-button\>
+ * Generates HTML Element: `<fast-button>`
  *
  * {@link https://developer.mozilla.org/en-US/docs/Web/API/ShadowRoot/delegatesFocus | delegatesFocus}
  */

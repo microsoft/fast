@@ -59,7 +59,7 @@ export const imgTemplate = html<Avatar>`
  *
  * @public
  * @remarks
- * Generates HTML Element: \<fast-avatar\>
+ * Generates HTML Element: `<fast-avatar>`
  */
 export const fastAvatar = Avatar.compose<AvatarOptions>({
     baseName: "avatar",

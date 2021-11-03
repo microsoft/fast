@@ -44,7 +44,7 @@ export class TextField extends FoundationTextField {
  *
  * @public
  * @remarks
- * Generates HTML Element: \<fast-text-field\>
+ * Generates HTML Element: `<fast-text-field>`
  *
  * {@link https://developer.mozilla.org/en-US/docs/Web/API/ShadowRoot/delegatesFocus | delegatesFocus}
  */
