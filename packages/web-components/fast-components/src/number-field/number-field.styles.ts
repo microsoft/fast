@@ -32,6 +32,10 @@ export const numberFieldFilledStyles: (
         )
     );
 
+/**
+ * Styles for Number Field
+ * @public
+ */
 export const numberFieldStyles = (context, definition) =>
     css`
     ${display("inline-block")}

@@ -12,6 +12,10 @@ import { appearanceBehavior } from "../utilities/behaviors";
 
 const interactivitySelector: string = "[href]";
 
+/**
+ * Styles for Anchor
+ * @public
+ */
 export const anchorStyles: (
     context: ElementDefinitionContext,
     definition: AnchorOptions

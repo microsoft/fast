@@ -33,6 +33,10 @@ export const textAreaFilledStyles: (
         )
     );
 
+/**
+ * Styles for Text Area
+ * @public
+ */
 export const textAreaStyles = (context, definition) =>
     css`
     ${display("inline-flex")}

@@ -29,6 +29,10 @@ export const textFieldFilledStyles: (
         )
     );
 
+/**
+ * Styles for Text Field
+ * @public
+ */
 export const textFieldStyles = (context, definition) =>
     css`
     ${display("inline-block")}

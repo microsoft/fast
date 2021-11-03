@@ -26,6 +26,11 @@ import {
     typeRampMinus1FontSize,
     typeRampMinus1LineHeight,
 } from "../design-tokens";
+
+/**
+ * Styles for Radio
+ * @public
+ */
 export const radioStyles: (
     context: ElementDefinitionContext,
     definition: RadioOptions
