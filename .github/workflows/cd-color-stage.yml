@@ -63,4 +63,4 @@ jobs:
         webhook_token: ${{ secrets.DISCORD_NOTIFICATION_WEBHOOK_TOKEN }}
         color: '#DE2D6D'
         username: 'FAST DevOps Color Explorer Bot'
-        message: 'Deployment has completed to Staging on https://github.com/microsoft/fast/actions/workflows/cd-publish.yml'
+        message: 'Deployment has completed to Staging on https://github.com/microsoft/fast/actions/workflows/cd-color-stage.yml'
