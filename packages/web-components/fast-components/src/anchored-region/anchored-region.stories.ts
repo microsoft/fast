@@ -89,7 +89,7 @@ addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
         ].forEach(({ id, attribute, firstValue, secondValue }) => {
             const toggleElement = document.getElementById(id);
             if (toggleElement) {
-                toggleElement.addEventListener("click", (e: MouseEvent) => {
+                toggleElement.addEventListener("click", () => {
                     if (togglesRegion?.getAttribute(attribute) === firstValue) {
                         togglesRegion.setAttribute(attribute, secondValue);
                     } else {
