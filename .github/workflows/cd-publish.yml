@@ -1,4 +1,4 @@
-name: CI - FAST Publish
+name: Release Packages
 
 on:
   workflow_dispatch:
@@ -9,7 +9,7 @@ env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   GITHUB_SERVICE_USER: "Microsoft FAST Builds"
   GITHUB_SERVICE_EMAIL: "fastsvc@microsoft.com"
-      
+
 jobs:
   build_linux:
     runs-on: ubuntu-latest
@@ -28,7 +28,7 @@ jobs:
       run: |
         git config --global user.name "${{ env.GITHUB_SERVICE_USER }}"
         git config --global user.email "${{ env.GITHUB_SERVICE_EMAIL }}"
-   
+
     - name: Install package dependencies / prepare workspaces
       run: yarn install --frozen-lockfile
 
@@ -40,12 +40,12 @@ jobs:
 
     - name: Testing unit tests
       run: lerna run test --stream
-   
+
     - name: Publish NPM packages
       env:
         NPM_SECRET_TOKEN: ${{ secrets.NPM_TOKEN }}
       run: yarn publish-ci -n $NPM_SECRET_TOKEN
-    
+
     - name: send notification message on failure
       if: failure()
       uses: appleboy/discord-action@master
@@ -54,5 +54,3 @@ jobs:
         webhook_token: ${{ secrets.WEBHOOK_TOKEN }}
         username: "GitHub Automated notification"
         message: "FAST publishing failed"
-
-        

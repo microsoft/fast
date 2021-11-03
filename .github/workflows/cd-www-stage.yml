@@ -1,4 +1,4 @@
-name: CD - FAST
+name: Deploy Documentation
 on:
   push:
     branches:
@@ -24,13 +24,13 @@ jobs:
 
     - name: Install package dependencies / prepare workspaces
       run: yarn install --frozen-lockfile
-    
+
     - name: Build & Prepare Web Application
       run: |
         cd ${{ env.AZURE_WEBAPP_BUILD_PATH }}
         yarn install
         yarn build
-        cp ../site-utilities/statics/server/package.json ../site-utilities/statics/server/server.js build 
+        cp ../site-utilities/statics/server/package.json ../site-utilities/statics/server/server.js build
         cd build
         npm i
         ls -lta

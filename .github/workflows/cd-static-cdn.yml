@@ -1,4 +1,4 @@
-name: CD - Static Assets
+name: Deploy CDN
 
 on:
   push:
@@ -8,12 +8,12 @@ on:
 jobs:
   deploy_linux:
     runs-on: ubuntu-latest
-  
+
     steps:
     - name: Checkout Branch
       uses: actions/checkout@master
 
-    - name: Upload static assets to CDN 
+    - name: Upload static assets to CDN
       uses: lauchacarro/Azure-Storage-Action@master
       with:
         folder: 'sites/site-utilities/statics/assets'
