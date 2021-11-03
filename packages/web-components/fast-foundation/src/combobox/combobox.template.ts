@@ -19,7 +19,6 @@ export const comboboxTemplate: (
     <template
         autocomplete="${x => x.autocomplete}"
         class="${x => (x.disabled ? "disabled" : "")} ${x => x.position}"
-        tabindex="${x => (!x.disabled ? "0" : null)}"
         aria-disabled="${x => x.ariaDisabled}"
         aria-autocomplete="${x => x.autocomplete}"
         @click="${(x, c) => x.clickHandler(c.event as MouseEvent)}"
