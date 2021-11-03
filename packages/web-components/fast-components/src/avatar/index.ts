@@ -29,7 +29,7 @@ export class Avatar extends FoundationAvatar {
      * @remarks
      * HTML Attribute: alt
      */
-    @attr public alt = "";
+    @attr public alt: string = "";
 }
 
 /**
