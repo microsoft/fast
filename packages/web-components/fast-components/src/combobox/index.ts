@@ -11,7 +11,7 @@ import { comboboxStyles as styles } from "./combobox.styles";
  *
  * @public
  * @remarks
- * Generates HTML Element: \<fast-combobox\>
+ * Generates HTML Element: `<fast-combobox>`
  *
  */
 export const fastCombobox = Combobox.compose<ComboboxOptions>({

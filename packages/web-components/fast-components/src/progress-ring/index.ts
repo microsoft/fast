@@ -12,7 +12,7 @@ import { progressRingStyles as styles } from "./progress-ring.styles";
  *
  * @public
  * @remarks
- * Generates HTML Element: \<fast-progress-ring\>
+ * Generates HTML Element: `<fast-progress-ring>`
  */
 export const fastProgressRing = ProgressRing.compose<ProgressRingOptions>({
     baseName: "progress-ring",

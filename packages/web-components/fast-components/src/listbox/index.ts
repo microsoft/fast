@@ -8,7 +8,7 @@ import { listboxStyles as styles } from "./listbox.styles";
  *
  * @public
  * @remarks
- * Generates HTML Element: \<fast-listbox\>
+ * Generates HTML Element: `<fast-listbox>`
  *
  */
 export const fastListbox = Listbox.compose({

@@ -44,7 +44,7 @@ export class TextArea extends FoundationTextArea {
  *
  * @public
  * @remarks
- * Generates HTML Element: \<fast-text-area\>
+ * Generates HTML Element: `<fast-text-area>`
  *
  * {@link https://developer.mozilla.org/en-US/docs/Web/API/ShadowRoot/delegatesFocus | delegatesFocus}
  */

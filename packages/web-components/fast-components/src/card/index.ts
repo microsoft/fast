@@ -35,7 +35,7 @@ export class Card extends FoundationCard {
  *
  * @public
  * @remarks
- * Generates HTML Element: \<fast-card\>
+ * Generates HTML Element: `<fast-card>`
  */
 export const fastCard = Card.compose({
     baseName: "card",
