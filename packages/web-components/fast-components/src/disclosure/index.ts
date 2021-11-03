@@ -17,7 +17,7 @@ export class Disclosure extends FoundationDisclosure {
     /**
      * Disclosure default height
      */
-    private height = 0;
+    private height: number = 0;
     /**
      * Disclosure height after it's expanded
      */
