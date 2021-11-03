@@ -1,4 +1,4 @@
-name: Release Packages
+name: Release NPM Packages
 
 on:
   workflow_dispatch:
