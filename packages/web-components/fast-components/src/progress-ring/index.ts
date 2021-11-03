@@ -39,13 +39,9 @@ export const fastProgressRing = ProgressRing.compose<ProgressRingOptions>({
 });
 
 /**
- * Styles for ProgressRing
- * @public
- */
-export const progressRingStyles = styles;
-
-/**
  * Base class for ProgressRing
  * @public
  */
 export { ProgressRing };
+
+export { styles as progressRingStyles };

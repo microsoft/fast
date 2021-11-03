@@ -58,8 +58,4 @@ export const fastTextArea = TextArea.compose({
     },
 });
 
-/**
- * Styles for TextArea
- * @public
- */
-export const textAreaStyles = styles;
+export { styles as textAreaStyles };

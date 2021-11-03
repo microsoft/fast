@@ -19,6 +19,10 @@ import {
     typeRampBaseFontSize,
 } from "../design-tokens";
 
+/**
+ * Styles for Disclosure
+ * @public
+ */
 export const disclosureStyles: (
     context: ElementDefinitionContext,
     definition: FoundationElementDefinition

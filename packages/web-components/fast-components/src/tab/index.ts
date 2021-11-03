@@ -17,13 +17,9 @@ export const fastTab = Tab.compose({
 });
 
 /**
- * Styles for Tab
- * @public
- */
-export const tabStyles = styles;
-
-/**
  * Base class for Tab
  * @public
  */
 export { Tab };
+
+export { styles as tabStyles };

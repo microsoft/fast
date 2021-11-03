@@ -27,6 +27,10 @@ const ltr = (context, definition) => css`
     }
 `;
 
+/**
+ * Styles for Avatar
+ * @public
+ */
 export const avatarStyles: (
     context: ElementDefinitionContext,
     definition: AvatarOptions

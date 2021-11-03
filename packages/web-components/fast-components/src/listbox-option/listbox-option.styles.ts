@@ -31,6 +31,10 @@ import {
 } from "../design-tokens";
 import { heightNumber } from "../styles/size";
 
+/**
+ * Styles for Option
+ * @public
+ */
 export const optionStyles: (
     context: ElementDefinitionContext,
     definition: ListboxOptionOptions

@@ -20,6 +20,10 @@ import {
 } from "../design-tokens";
 import { heightNumber } from "../styles/index";
 
+/**
+ * Styles for Slider
+ * @public
+ */
 export const sliderStyles: (
     context: ElementDefinitionContext,
     definition: SliderOptions
@@ -61,7 +65,7 @@ export const sliderStyles: (
     :host(:${focusVisible}) .thumb-cursor {
         box-shadow: 0 0 0 2px ${fillColor}, 0 0 0 4px ${focusStrokeOuter};
     }
-    
+
     .thumb-container {
         position: absolute;
         height: calc(var(--thumb-size) * 1px);
@@ -152,7 +156,7 @@ export const sliderStyles: (
             :host(:${focusVisible}) .thumb-cursor {
                 background: ${SystemColors.Highlight};
                 border-color: ${SystemColors.Highlight};
-                box-shadow: 0 0 0 2px ${SystemColors.Field}, 0 0 0 4px ${SystemColors.FieldText};    
+                box-shadow: 0 0 0 2px ${SystemColors.Field}, 0 0 0 4px ${SystemColors.FieldText};
             }
         `
         )

@@ -13,6 +13,10 @@ import {
 } from "../design-tokens";
 import { elevation } from "../styles/index";
 
+/**
+ * Styles for Picker menu
+ * @public
+ */
 export const pickerMenuStyles: (
     context: ElementDefinitionContext,
     definition: FoundationElementDefinition

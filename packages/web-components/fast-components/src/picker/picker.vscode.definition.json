@@ -75,6 +75,13 @@
                     "type": "string",
                     "default": "",
                     "required": false
+                },
+                {
+                    "name": "placeholder",
+                    "description": "The placeholder attribute",
+                    "type": "string",
+                    "default": "",
+                    "required": false
                 }
             ],
             "slots": [

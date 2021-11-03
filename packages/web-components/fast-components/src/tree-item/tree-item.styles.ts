@@ -64,6 +64,10 @@ const rtl = css`
     }
 `;
 
+/**
+ * Tree item expand collapse button size CSS Partial
+ * @public
+ */
 export const expandCollapseButtonSize = cssPartial`((${baseHeightMultiplier} / 2) * ${designUnit}) + ((${designUnit} * ${density}) / 2)`;
 
 const expandCollapseHoverBehavior = DesignToken.create<Swatch>(
@@ -81,6 +85,10 @@ const selectedExpandCollapseHoverBehavior = DesignToken.create<Swatch>(
     return buttonRecipe.evaluate(target, baseRecipe.evaluate(target).rest).hover;
 });
 
+/**
+ * Styles for Tree Item
+ * @public
+ */
 export const treeItemStyles: (
     context: ElementDefinitionContext,
     definition: TreeItemOptions

@@ -22,8 +22,4 @@ export const fastTooltip = Tooltip.compose({
  */
 export { Tooltip };
 
-/**
- * Styles for Tooltip
- * @public
- */
-export const tooltipStyles = styles;
+export { styles as tooltipStyles };

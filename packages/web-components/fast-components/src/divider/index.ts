@@ -17,13 +17,9 @@ export const fastDivider = Divider.compose({
 });
 
 /**
- * Styles for Divider
- * @public
- */
-export const dividerStyles = styles;
-
-/**
  * Base class for Divider
  * @public
  */
 export { Divider };
+
+export { styles as dividerStyles };

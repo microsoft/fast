@@ -32,7 +32,10 @@ import {
     typeRampBaseLineHeight,
 } from "../design-tokens";
 import { heightNumber } from "../styles/index";
-
+/**
+ * Styles for Radio
+ * @public
+ */
 export const radioStyles: (
     context: ElementDefinitionContext,
     definition: RadioOptions

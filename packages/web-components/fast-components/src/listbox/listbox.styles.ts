@@ -17,6 +17,10 @@ import {
     strokeWidth,
 } from "../design-tokens";
 
+/**
+ * Styles for Listbox
+ * @public
+ */
 export const listboxStyles: (
     context: ElementDefinitionContext,
     definition: FoundationElementDefinition

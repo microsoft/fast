@@ -33,12 +33,6 @@ export const fastPicker = Picker.compose({
 });
 
 /**
- * Styles for Picker
- * @public
- */
-export const PickerStyles = pickerStyles;
-
-/**
  * Base class for Picker
  * @alpha
  */
@@ -59,12 +53,6 @@ export const fastPickerMenu = PickerMenu.compose({
 });
 
 /**
- * Styles for PickerMenu
- * @public
- */
-export const PickerMenuStyles = pickerMenuStyles;
-
-/**
  *  Component that displays available picker menu options
  *
  *
@@ -77,12 +65,6 @@ export const fastPickerMenuOption = PickerMenuOption.compose({
     template: pickerMenuOptionTemplate,
     styles: pickerMenuOptionStyles,
 });
-
-/**
- * Styles for PickerMenuOption
- * @public
- */
-export const PickerMenuOptionStyles = pickerMenuOptionStyles;
 
 /**
  * Component that displays the list of selected picker items along
@@ -100,12 +82,6 @@ export const fastPickerList = PickerList.compose({
 });
 
 /**
- * Styles for PickerList
- * @public
- */
-export const PickerListStyles = pickerListStyles;
-
-/**
  * Component that displays selected items
  *
  * @alpha
@@ -118,8 +94,4 @@ export const fastPickerListItem = PickerListItem.compose({
     styles: pickerListItemStyles,
 });
 
-/**
- * Styles for PickerListItem
- * @public
- */
-export const PickerListItemStyles = pickerListItemStyles;
+export { pickerStyles, pickerListItemStyles, pickerMenuOptionStyles, pickerMenuStyles };

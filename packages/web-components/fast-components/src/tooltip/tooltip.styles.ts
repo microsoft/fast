@@ -16,6 +16,10 @@ import {
     typeRampBaseLineHeight,
 } from "../design-tokens";
 
+/**
+ * Styles for Tooltip
+ * @public
+ */
 export const tooltipStyles: (
     context: ElementDefinitionContext,
     definition: FoundationElementDefinition
