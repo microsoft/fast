@@ -21,7 +21,7 @@ export class Disclosure extends FoundationDisclosure {
     /**
      * Disclosure height after it's expanded
      */
-    private totalHeight = 0;
+    private totalHeight: number = 0;
 
     /**
      * The appearance the anchor should have.
