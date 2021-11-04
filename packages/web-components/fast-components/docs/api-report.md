@@ -237,7 +237,7 @@ export { AnchoredRegion }
 // @public
 export const anchoredRegionStyles: (context: ElementDefinitionContext, definition: FoundationElementDefinition) => ElementStyles;
 
-// @public (undocumented)
+// @public
 export const anchorStyles: (context: ElementDefinitionContext, definition: AnchorOptions) => ElementStyles;
 
 // @public
@@ -1032,7 +1032,7 @@ export class NumberField extends NumberField_2 {
 // @public
 export type NumberFieldAppearance = "filled" | "outline";
 
-// @public (undocumented)
+// @public
 export const numberFieldStyles: (context: any, definition: any) => ElementStyles;
 
 // @public
@@ -1097,7 +1097,7 @@ export { RadioGroup }
 // @public
 export const radioGroupStyles: (context: ElementDefinitionContext, definition: FoundationElementDefinition) => ElementStyles;
 
-// @public (undocumented)
+// @public
 export const radioStyles: (context: ElementDefinitionContext, definition: RadioOptions) => ElementStyles;
 
 // @public (undocumented)
@@ -1229,7 +1229,7 @@ export class TextArea extends TextArea_2 {
 // @public
 export type TextAreaAppearance = "filled" | "outline";
 
-// @public (undocumented)
+// @public
 export const textAreaStyles: (context: any, definition: any) => ElementStyles;
 
 // Warning: (ae-internal-missing-underscore) The name "TextField" should be prefixed with an underscore because the declaration is marked as @internal
@@ -1245,7 +1245,7 @@ export class TextField extends TextField_2 {
 // @public
 export type TextFieldAppearance = "filled" | "outline";
 
-// @public (undocumented)
+// @public
 export const textFieldStyles: (context: any, definition: any) => ElementStyles;
 
 // Warning: (ae-internal-missing-underscore) The name "Toolbar" should be prefixed with an underscore because the declaration is marked as @internal
