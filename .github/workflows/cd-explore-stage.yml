@@ -80,7 +80,7 @@ jobs:
 
     steps:
     - name: Deploy PR
-      uses: actions/download-artifact@2
+      uses: actions/download-artifact@v2
       with:
         name: ${{ env.ARTIFACT_NAME }}
         path: ${{ env.AZURE_WEBAPP_DIST_PATH }}
