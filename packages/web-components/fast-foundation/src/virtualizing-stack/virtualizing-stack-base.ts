@@ -372,14 +372,14 @@ export class VirtualizingStackBase extends FoundationElement {
     }
 
     /**
-     * the position in the stack (in pixels) of a particular item
+     * the position in the stack (in pixels) of the top of a particular item
      *
      * @public
      */
     public getItemPosition(itemIndex: number): number {
         if (itemIndex < 0 || itemIndex >= this.items.length) {
             // out of range
-            return -1;
+            return 0;
         }
 
         let returnVal = 0;

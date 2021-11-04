@@ -381,17 +381,20 @@ export class DataGrid extends VirtualizingStackBase {
     public handleRowFocus(e: Event): void {
         this.isUpdatingFocus = true;
         const focusRow: DataGridRow = e.target as DataGridRow;
-        this.focusRowIndex = this.rowElements.indexOf(focusRow);
+        this.focusRowIndex = focusRow.rowIndex;
         this.focusColumnIndex = focusRow.focusColumnIndex;
         this.setAttribute("tabIndex", "-1");
         this.isUpdatingFocus = false;
+        console.debug(`focusrow: ${this.focusRowIndex}`);
     }
 
     /**
      * @internal
      */
     public handleFocus(e: FocusEvent): void {
-        this.queueFocusUpdate();
+        if (e.target === this) {
+            this.focusOnCell(this.focusRowIndex, this.focusColumnIndex, false);
+        }
     }
 
     /**
@@ -420,23 +423,23 @@ export class DataGrid extends VirtualizingStackBase {
             case keyArrowUp:
                 e.preventDefault();
                 // focus up one row
-                this.focusOnCell(this.focusRowIndex - 1, this.focusColumnIndex, false);
+                this.focusOnCell(this.focusRowIndex - 1, this.focusColumnIndex, true);
                 break;
 
             case keyArrowDown:
                 e.preventDefault();
                 // focus down one row
-                this.focusOnCell(this.focusRowIndex + 1, this.focusColumnIndex, false);
+                this.focusOnCell(this.focusRowIndex + 1, this.focusColumnIndex, true);
                 break;
 
             case keyPageUp:
                 e.preventDefault();
                 if (this.rowElements.length === 0) {
-                    this.focusOnCell(0, 0, true);
+                    this.focusOnCell(0, 0, false);
                     break;
                 }
                 if (this.focusRowIndex === 0) {
-                    this.focusOnCell(0, this.focusColumnIndex, true);
+                    this.focusOnCell(0, this.focusColumnIndex, false);
                     return;
                 }
 
@@ -450,13 +453,13 @@ export class DataGrid extends VirtualizingStackBase {
                     }
                 }
 
-                this.focusOnCell(newFocusRowIndex, this.focusColumnIndex, true);
+                this.focusOnCell(newFocusRowIndex, this.focusColumnIndex, false);
                 break;
 
             case keyPageDown:
                 e.preventDefault();
                 if (this.rowElements.length === 0) {
-                    this.focusOnCell(0, 0, true);
+                    this.focusOnCell(0, 0, false);
                     break;
                 }
 
@@ -465,7 +468,7 @@ export class DataGrid extends VirtualizingStackBase {
                     this.focusRowIndex >= maxIndex ||
                     this.containerElement.clientHeight <= currentGridBottom
                 ) {
-                    this.focusOnCell(maxIndex, this.focusColumnIndex, true);
+                    this.focusOnCell(maxIndex, this.focusColumnIndex, false);
                     break;
                 }
 
@@ -488,7 +491,7 @@ export class DataGrid extends VirtualizingStackBase {
                 //     }
                 // }
 
-                this.focusOnCell(newFocusRowIndex, this.focusColumnIndex, true);
+                this.focusOnCell(newFocusRowIndex, this.focusColumnIndex, false);
 
                 break;
 
@@ -517,7 +520,7 @@ export class DataGrid extends VirtualizingStackBase {
     private focusOnCell = (
         rowIndex: number,
         columnIndex: number,
-        forceScrollToTop: boolean
+        scrollIntoView: boolean
     ): void => {
         if (this.rowElements.length === 0) {
             this.focusRowIndex = 0;
@@ -525,56 +528,59 @@ export class DataGrid extends VirtualizingStackBase {
             return;
         }
 
-        const focusRowIndex = Math.max(
-            0,
-            Math.min(this.rowsData.length + this.authoredRowCount - 1, rowIndex)
-        );
+        // constrain to number of total rows
+        const maxRowIndex = this.rowsData.length + this.authoredRowCount - 1;
+        if (rowIndex < 0) {
+            rowIndex = 0;
+        } else if (rowIndex >= maxRowIndex) {
+            rowIndex = maxRowIndex;
+        }
 
         let focusRow: Element | null = null;
 
-        if (focusRowIndex < this.authoredRowCount || !this.virtualize) {
-            focusRow = this.rowElements[focusRowIndex];
+        if (rowIndex < this.authoredRowCount || !this.virtualize) {
+            focusRow = this.rowElements[rowIndex];
         } else if (
-            focusRowIndex > this.firstRenderedIndex + this.authoredRowCount &&
-            focusRowIndex < this.lastRenderedIndex + this.authoredRowCount
+            rowIndex >= this.firstRenderedIndex + this.authoredRowCount &&
+            rowIndex <= this.lastRenderedIndex + this.authoredRowCount
         ) {
-            focusRow = this.rowElements[focusRowIndex - this.firstRenderedIndex];
+            focusRow = this.rowElements[rowIndex - this.firstRenderedIndex];
         }
 
-        const focusRowPosition: number =
-            rowIndex < this.authoredRowCount && focusRow !== null
-                ? (focusRow as HTMLElement).offsetTop
-                : this.getItemPosition(focusRowIndex - this.authoredRowCount);
+        if (focusRow !== null && focusRow !== undefined) {
+            const cells: NodeListOf<Element> = focusRow.querySelectorAll(
+                '[role="cell"], [role="gridcell"], [role="columnheader"]'
+            );
 
-        if (
-            !forceScrollToTop &&
-            this.scrollHeight !== this.clientHeight &&
-            ((focusRowIndex < this.focusRowIndex && this.scrollTop > 0) ||
-                (focusRowIndex > this.focusRowIndex &&
-                    this.scrollTop < this.scrollHeight - this.clientHeight))
-        ) {
-            this.scrollTo({
-                top: focusRowPosition,
-                left: this.scrollLeft,
-                behavior: "smooth",
-            });
-        }
+            const focusColumnIndex = Math.max(0, Math.min(cells.length - 1, columnIndex));
 
-        if (focusRow === null) {
-            // wait for it to scroll into view
-            this.focusRowIndex = focusRowIndex;
+            const focusTarget: HTMLElement = cells[focusColumnIndex] as HTMLElement;
+
+            if (
+                scrollIntoView &&
+                this.scrollHeight !== this.clientHeight &&
+                ((rowIndex < this.focusRowIndex && this.scrollTop > 0) ||
+                    (rowIndex > this.focusRowIndex &&
+                        this.scrollTop < this.scrollHeight - this.clientHeight))
+            ) {
+                focusTarget.scrollIntoView({ block: "center", inline: "center" });
+            }
+
+            if (document.activeElement !== focusTarget) {
+                focusTarget.focus();
+            }
+
             return;
         }
 
-        const cells: NodeListOf<Element> = focusRow.querySelectorAll(
-            '[role="cell"], [role="gridcell"], [role="columnheader"]'
+        // the focus row is virtualized
+        // scroll to it and queue a focus update
+        const focusRowPosition: number = this.getItemPosition(
+            rowIndex - this.authoredRowCount
         );
-
-        const focusColumnIndex = Math.max(0, Math.min(cells.length - 1, columnIndex));
-
-        const focusTarget: HTMLElement = cells[focusColumnIndex] as HTMLElement;
-
-        focusTarget.focus();
+        this.scrollTop = focusRowPosition;
+        console.debug(`queue virtual focus - focusrow: ${rowIndex}`);
+        DOM.queueUpdate(() => this.focusOnCell(rowIndex, columnIndex, false));
     };
 
     private queueFocusUpdate(): void {
@@ -671,18 +677,21 @@ export class DataGrid extends VirtualizingStackBase {
         }
 
         const rowCount: number = this.rowElements.length;
+        let newAuthoredRowCount: number = 0;
         for (let i: number = 0; i < rowCount; i++) {
             const thisRow = this.rowElements[i] as DataGridRow;
             if (thisRow.getAttribute("slot") === "generated-rows") {
                 break;
             }
-            this.authoredRowCount = i + 1;
+            newAuthoredRowCount = i + 1;
             thisRow.rowIndex = i;
             thisRow.gridTemplateColumns = newGridTemplateColumns;
             if (this.columnDefinitionsStale) {
                 thisRow.columnDefinitions = this.columnDefinitions;
             }
         }
+
+        this.authoredRowCount = newAuthoredRowCount;
 
         this.rowindexUpdateQueued = false;
         this.columnDefinitionsStale = false;
