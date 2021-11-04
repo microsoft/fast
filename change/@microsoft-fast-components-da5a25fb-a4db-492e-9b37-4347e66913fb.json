@@ -1,7 +1,0 @@
-{
-  "type": "none",
-  "comment": "fix: Inline tags in tsdoc blocks use escaped characters",
-  "packageName": "@microsoft/fast-components",
-  "email": "srdsecond@gmail.com",
-  "dependentChangeType": "none"
-}
