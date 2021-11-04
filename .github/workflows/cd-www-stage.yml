@@ -2,12 +2,11 @@ name: Deploy Documentation
 on:
   push:
     branches:
-    - master
+      - master
   pull_request:
     types: [opened, synchronize, reopened, closed]
     branches:
-      - '!master'
-      -  '*'
+      - master
 
 env:
   AZURE_WEBAPP_ACTIVE_STAGE_NAME: www-west-app
