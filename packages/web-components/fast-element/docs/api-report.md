@@ -488,9 +488,15 @@ export interface SlottedDirectiveOptions<T = any> extends NodeBehaviorOptions<T>
 }
 
 // @public
-export interface Splice {
+export class Splice {
+    constructor(
+    index: number,
+    removed: any[],
+    addedCount: number);
     addedCount: number;
     index: number;
+    // (undocumented)
+    static normalize(previous: unknown[] | undefined, current: unknown[], changes: Splice[] | undefined): Splice[] | undefined;
     removed: any[];
 }
 

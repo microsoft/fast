@@ -16,17 +16,13 @@ function adjustIndex(changeRecord: Splice, array: any[]): Splice {
             arrayLength + changeRecord.removed.length + index - changeRecord.addedCount;
     }
 
-    if (index < 0) {
-        index = 0;
-    }
-
-    changeRecord.index = index;
+    changeRecord.index = index < 0 ? 0 : index;
     return changeRecord;
 }
 
 class ArrayObserver extends SubscriberSet {
     private oldCollection: any[] | undefined = void 0;
-    private splices: any[] | undefined = void 0;
+    private splices: Splice[] | undefined = void 0;
     private needsQueue: boolean = true;
     call: () => void = this.flush;
 
@@ -67,21 +63,7 @@ class ArrayObserver extends SubscriberSet {
         this.splices = void 0;
         this.oldCollection = void 0;
 
-        const finalSplices =
-            oldCollection === void 0
-                ? splices!.length > 1
-                    ? projectArraySplices(this.subject, splices!)
-                    : splices
-                : calcSplices(
-                      this.subject,
-                      0,
-                      this.subject.length,
-                      oldCollection,
-                      0,
-                      oldCollection.length
-                  );
-
-        this.notify(finalSplices);
+        this.notify(Splice.normalize(oldCollection, this.subject, splices));
     }
 
     private enqueue() {
@@ -107,7 +89,7 @@ const arrayOverrides = {
         const o = this.$fastController as ArrayObserver;
 
         if (o !== void 0 && notEmpty) {
-            o.addSplice(newSplice(this.length, [result], 0));
+            o.addSplice(new Splice(this.length, [result], 0));
         }
 
         return result;
@@ -120,7 +102,7 @@ const arrayOverrides = {
         if (o !== void 0) {
             o.addSplice(
                 adjustIndex(
-                    newSplice(this.length - arguments.length, [], arguments.length),
+                    new Splice(this.length - arguments.length, [], arguments.length),
                     this
                 )
             );
@@ -153,7 +135,7 @@ const arrayOverrides = {
         const o = this.$fastController as ArrayObserver;
 
         if (o !== void 0 && notEmpty) {
-            o.addSplice(newSplice(0, [result], 0));
+            o.addSplice(new Splice(0, [result], 0));
         }
 
         return result;
@@ -184,7 +166,7 @@ const arrayOverrides = {
         if (o !== void 0) {
             o.addSplice(
                 adjustIndex(
-                    newSplice(
+                    new Splice(
                         +arguments[0],
                         result,
                         arguments.length > 2 ? arguments.length - 2 : 0
@@ -202,7 +184,7 @@ const arrayOverrides = {
         const o = this.$fastController as ArrayObserver;
 
         if (o !== void 0) {
-            o.addSplice(adjustIndex(newSplice(0, [], arguments.length), this));
+            o.addSplice(adjustIndex(new Splice(0, [], arguments.length), this));
         }
 
         return result;
