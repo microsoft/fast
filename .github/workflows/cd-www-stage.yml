@@ -14,6 +14,7 @@ env:
   AZURE_WEBAPP_BUILD_PATH: sites/website
   AZURE_WEBAPP_DIST_PATH: sites/website/build
   AZURE_WEBAPP_SLOT_NAME: stage
+  ARTIFACT_NAME: documentation-site
 
 jobs:
   build:
@@ -41,7 +42,7 @@ jobs:
 
     - uses: actions/upload-artifact@v2
       with:
-        name: documentation-site
+        name: ${{ env.ARTIFACT_NAME }}
         path: ${{ env.AZURE_WEBAPP_DIST_PATH }}
 
   deploy_to_staging:
@@ -51,9 +52,9 @@ jobs:
 
     steps:
     - name: Deploy PR
-      uses: actions/download-artifact@v1
+      uses: actions/download-artifact@v2
       with:
-        name: documentation-site
+        name: ${{ env.ARTIFACT_NAME }}
         path: ${{ env.AZURE_WEBAPP_DIST_PATH }}
 
     - name: 'Deploy to Active Azure Region'
@@ -79,9 +80,9 @@ jobs:
 
     steps:
       - name: Deploy PR
-        uses: actions/download-artifact@v1
+        uses: actions/download-artifact@v2
         with:
-          name: documentation-site
+          name: ${{ env.ARTIFACT_NAME }}
           path: ${{ env.AZURE_WEBAPP_DIST_PATH }}
 
       - name: Deploy Documentation
@@ -104,7 +105,7 @@ jobs:
         id: closepullrequest
         uses: Azure/static-web-apps-deploy@v1
         with:
-          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APP_PR_TOKEN }}
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APP_WWW_PR_TOKEN }}
           action: 'close'
 
   notify:
