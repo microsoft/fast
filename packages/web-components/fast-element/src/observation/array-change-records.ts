@@ -1,39 +1,11 @@
 import { emptyArray } from "../platform.js";
 
-/**
- * Represents a set of splice-based changes against an Array.
- * @public
- */
-export interface Splice {
-    /**
-     * The index that the splice occurs at.
-     */
-    index: number;
-
-    /**
-     * The items that were removed.
-     */
-    removed: any[];
-
-    /**
-     * The  number of items that were added.
-     */
-    addedCount: number;
+const enum Edit {
+    leave = 0,
+    update = 1,
+    add = 2,
+    delete = 3,
 }
-
-/** @internal */
-export function newSplice(index: number, removed: any[], addedCount: number): Splice {
-    return {
-        index: index,
-        removed: removed,
-        addedCount: addedCount,
-    };
-}
-
-const EDIT_LEAVE = 0;
-const EDIT_UPDATE = 1;
-const EDIT_ADD = 2;
-const EDIT_DELETE = 3;
 
 // Note: This function is *based* on the computation of the Levenshtein
 // "edit" distance. The one change is that "updates" are treated as two
@@ -98,12 +70,12 @@ function spliceOperationsFromEditDistances(distances: number[][]): number[] {
 
     while (i > 0 || j > 0) {
         if (i === 0) {
-            edits.push(EDIT_ADD);
+            edits.push(Edit.add);
             j--;
             continue;
         }
         if (j === 0) {
-            edits.push(EDIT_DELETE);
+            edits.push(Edit.delete);
             i--;
             continue;
         }
@@ -121,19 +93,19 @@ function spliceOperationsFromEditDistances(distances: number[][]): number[] {
 
         if (min === northWest) {
             if (northWest === current) {
-                edits.push(EDIT_LEAVE);
+                edits.push(Edit.leave);
             } else {
-                edits.push(EDIT_UPDATE);
+                edits.push(Edit.update);
                 current = northWest;
             }
             i--;
             j--;
         } else if (min === west) {
-            edits.push(EDIT_DELETE);
+            edits.push(Edit.delete);
             i--;
             current = west;
         } else {
-            edits.push(EDIT_ADD);
+            edits.push(Edit.add);
             j--;
             current = north;
         }
@@ -194,21 +166,6 @@ function intersect(start1: number, end1: number, start2: number, end2: number): 
 }
 
 /**
- * Splice Projection functions:
- *
- * A splice map is a representation of how a previous array of items
- * was transformed into a new array of items. Conceptually it is a list of
- * tuples of
- *
- *   <index, removed, addedCount>
- *
- * which are kept in ascending index order of. The tuple represents that at
- * the |index|, |removed| sequence of items were removed, and counting forward
- * from |index|, |addedCount| items were added.
- */
-
-/**
- * @internal
  * @remarks
  * Lacking individual splice mutation information, the minimal set of
  * splices can be synthesized given the previous state and final state of an
@@ -219,14 +176,14 @@ function intersect(start1: number, end1: number, start2: number, end2: number): 
  *   l: The length of the current array
  *   p: The length of the old array
  */
-export function calcSplices(
-    current: any[],
+function calc(
+    current: unknown[],
     currentStart: number,
     currentEnd: number,
-    old: any[],
+    old: unknown[],
     oldStart: number,
     oldEnd: number
-): ReadonlyArray<never> | Splice[] {
+): Splice[] {
     let prefixCount = 0;
     let suffixCount = 0;
 
@@ -249,7 +206,7 @@ export function calcSplices(
     }
 
     if (currentStart === currentEnd) {
-        const splice = newSplice(currentStart, [], 0);
+        const splice = new Splice(currentStart, [], 0);
 
         while (oldStart < oldEnd) {
             splice.removed.push(old[oldStart++]);
@@ -257,7 +214,7 @@ export function calcSplices(
 
         return [splice];
     } else if (oldStart === oldEnd) {
-        return [newSplice(currentStart, [], currentEnd - currentStart)];
+        return [new Splice(currentStart, [], currentEnd - currentStart)];
     }
 
     const ops = spliceOperationsFromEditDistances(
@@ -271,7 +228,7 @@ export function calcSplices(
 
     for (let i = 0; i < ops.length; ++i) {
         switch (ops[i]) {
-            case EDIT_LEAVE:
+            case Edit.leave:
                 if (splice !== void 0) {
                     splices.push(splice);
                     splice = void 0;
@@ -280,9 +237,9 @@ export function calcSplices(
                 index++;
                 oldIndex++;
                 break;
-            case EDIT_UPDATE:
+            case Edit.update:
                 if (splice === void 0) {
-                    splice = newSplice(index, [], 0);
+                    splice = new Splice(index, [], 0);
                 }
 
                 splice.addedCount++;
@@ -291,17 +248,17 @@ export function calcSplices(
                 splice.removed.push(old[oldIndex]);
                 oldIndex++;
                 break;
-            case EDIT_ADD:
+            case Edit.add:
                 if (splice === void 0) {
-                    splice = newSplice(index, [], 0);
+                    splice = new Splice(index, [], 0);
                 }
 
                 splice.addedCount++;
                 index++;
                 break;
-            case EDIT_DELETE:
+            case Edit.delete:
                 if (splice === void 0) {
-                    splice = newSplice(index, [], 0);
+                    splice = new Splice(index, [], 0);
                 }
 
                 splice.removed.push(old[oldIndex]);
@@ -318,15 +275,7 @@ export function calcSplices(
     return splices;
 }
 
-const $push = Array.prototype.push;
-
-function mergeSplice(
-    splices: Splice[],
-    index: number,
-    removed: any[],
-    addedCount: number
-): void {
-    const splice = newSplice(index, removed, addedCount);
+function merge(splice: Splice, splices: Splice[]): void {
     let inserted = false;
     let insertionOffset = 0;
 
@@ -366,7 +315,7 @@ function mergeSplice(
                 if (splice.index < current.index) {
                     // some prefix of splice.removed is prepended to current.removed.
                     const prepend = splice.removed.slice(0, current.index - splice.index);
-                    $push.apply(prepend, currentRemoved);
+                    prepend.push(...currentRemoved);
                     currentRemoved = prepend;
                 }
 
@@ -378,7 +327,7 @@ function mergeSplice(
                     const append = splice.removed.slice(
                         current.index + current.addedCount - splice.index
                     );
-                    $push.apply(currentRemoved, append);
+                    currentRemoved.push(...append);
                 }
 
                 splice.removed = currentRemoved;
@@ -389,7 +338,6 @@ function mergeSplice(
             }
         } else if (splice.index < current.index) {
             // Insert splice here.
-
             inserted = true;
 
             splices.splice(i, 0, splice);
@@ -406,21 +354,13 @@ function mergeSplice(
     }
 }
 
-function createInitialSplices(changeRecords: Splice[]): Splice[] {
-    const splices: Splice[] = [];
-
-    for (let i = 0, ii = changeRecords.length; i < ii; i++) {
-        const record = changeRecords[i];
-        mergeSplice(splices, record.index, record.removed, record.addedCount);
-    }
-
-    return splices;
-}
-
-/** @internal */
-export function projectArraySplices(array: any[], changeRecords: any[]): Splice[] {
+function project(array: unknown[], changes: Splice[]): Splice[] {
     let splices: Splice[] = [];
-    const initialSplices = createInitialSplices(changeRecords);
+    const initialSplices: Splice[] = [];
+
+    for (let i = 0, ii = changes.length; i < ii; i++) {
+        merge(changes[i], initialSplices);
+    }
 
     for (let i = 0, ii = initialSplices.length; i < ii; ++i) {
         const splice = initialSplices[i];
@@ -434,7 +374,7 @@ export function projectArraySplices(array: any[], changeRecords: any[]): Splice[
         }
 
         splices = splices.concat(
-            calcSplices(
+            calc(
                 array,
                 splice.index,
                 splice.index + splice.addedCount,
@@ -446,4 +386,47 @@ export function projectArraySplices(array: any[], changeRecords: any[]): Splice[
     }
 
     return splices;
+}
+
+/**
+ * A splice map is a representation of how a previous array of items
+ * was transformed into a new array of items. Conceptually it is a list of
+ * tuples of
+ *
+ *   <index, removed, addedCount>
+ *
+ * which are kept in ascending index order of. The tuple represents that at
+ * the |index|, |removed| sequence of items were removed, and counting forward
+ * from |index|, |addedCount| items were added.
+ * @public
+ */
+export class Splice {
+    constructor(
+        /**
+         * The index that the splice occurs at.
+         */
+        public index: number,
+
+        /**
+         * The items that were removed.
+         */
+        public removed: any[],
+
+        /**
+         * The  number of items that were added.
+         */
+        public addedCount: number
+    ) {}
+
+    static normalize(
+        previous: unknown[] | undefined,
+        current: unknown[],
+        changes: Splice[] | undefined
+    ) {
+        return previous === void 0
+            ? changes!.length > 1
+                ? project(current, changes!)
+                : changes
+            : calc(current, 0, current.length, previous, 0, previous.length);
+    }
 }
