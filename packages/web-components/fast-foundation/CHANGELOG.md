@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Wed, 03 Nov 2021 07:12:39 GMT and should not be manually modified.
+This log was last generated on Thu, 04 Nov 2021 07:11:59 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.25.1
+
+Thu, 04 Nov 2021 07:11:59 GMT
+
+### Patches
+
+- fix: change event emitted twice (jes@microsoft.com)
 
 ## 2.25.0
 

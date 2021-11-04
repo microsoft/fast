@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "fix: change event emitted twice",
-  "packageName": "@microsoft/fast-foundation",
-  "email": "jes@microsoft.com",
-  "dependentChangeType": "patch"
-}
