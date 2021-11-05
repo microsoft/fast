@@ -473,6 +473,25 @@ describe("NumberField", () => {
             await disconnect();
         });
 
+        it("should update input field when script sets value", async () => {
+            const { element, disconnect, parent } = await setup();
+            const value = "10";
+
+            expect(
+                (element.shadowRoot?.querySelector(".control") as HTMLInputElement).value
+            ).to.be.empty;
+
+            element.setAttribute('value', value);
+
+            await DOM.nextUpdate();
+
+            expect(
+                (element.shadowRoot?.querySelector(".control") as HTMLInputElement).value
+            ).to.equal(value);
+
+            await disconnect();
+        });
+
         it("should put the control into a clean state, where value attribute changes the property value prior to user or programmatic interaction", async () => {
             const { element, disconnect, parent } = await setup();
             const form = document.createElement("form");
