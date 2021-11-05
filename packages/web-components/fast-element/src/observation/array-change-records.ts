@@ -111,8 +111,7 @@ function spliceOperationsFromEditDistances(distances: number[][]): number[] {
         }
     }
 
-    edits.reverse();
-    return edits;
+    return edits.reverse();
 }
 
 function sharedPrefix(current: any[], old: any[], searchLength: number): number {
