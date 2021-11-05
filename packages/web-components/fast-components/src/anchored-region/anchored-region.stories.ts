@@ -90,7 +90,12 @@ addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
             const toggleElement = document.getElementById(id);
             if (toggleElement) {
                 toggleElement.addEventListener("click", () => {
-                    togglesRegion.setAttribute(attribute, togglesRegion.getAttribute(attribute) === firstValue ? secondValue : firstValue);
+                    togglesRegion.setAttribute(
+                        attribute,
+                        togglesRegion.getAttribute(attribute) === firstValue
+                            ? secondValue
+                            : firstValue
+                    );
                 });
             }
         });
