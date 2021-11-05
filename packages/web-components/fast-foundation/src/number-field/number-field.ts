@@ -203,7 +203,10 @@ export class NumberField extends FormAssociatedNumberField {
                 this.proxy.value = value;
             }
 
-            if (this.control && this.control.value != nextValue) {
+            if (
+                this.control &&
+                (this.control.value != nextValue || previousValue === null)
+            ) {
                 this.control.value = value;
             }
 
