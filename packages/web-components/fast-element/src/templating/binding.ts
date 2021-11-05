@@ -1,6 +1,5 @@
 import { DOM } from "../dom";
 import { isString, Mutable } from "../interfaces";
-import { PropertyChangeNotifier } from "../observation/notifier";
 import {
     Binding,
     BindingObserver,
@@ -119,10 +118,13 @@ class OneTimeBinding extends TargetUpdateBinding {
     }
 }
 
-const signals = new PropertyChangeNotifier({});
+const signals: Record<string, undefined | Function | Function[]> = Object.create(null);
 
 export function sendSignal(signal: string) {
-    signals.notify(signal);
+    const found = signals[signal];
+    if (found) {
+        Array.isArray(found) ? found.forEach(x => x()) : found();
+    }
 }
 
 class OnSignalBinding extends TargetUpdateBinding {
@@ -131,9 +133,30 @@ class OnSignalBinding extends TargetUpdateBinding {
         context: ExecutionContext<any, any>,
         targets: ViewBehaviorTargets
     ): void {
-        const handler = this.getOrCreateHandler(source, context, targets);
-        handler.handleChange();
-        signals.subscribe(handler, this.getSignal(source, context));
+        const directive = this.directive;
+        const target = targets[directive.targetId];
+        const signal = this.getSignal(source, context);
+        const handler = (target[directive.uniqueId] = () => {
+            this.updateTarget(
+                target,
+                directive.aspect!,
+                directive.binding(source, context),
+                source,
+                context
+            );
+        });
+
+        handler();
+
+        const found = signals[signal];
+
+        if (found) {
+            Array.isArray(found)
+                ? found.push(handler)
+                : (signals[signal] = [found, handler]);
+        } else {
+            signals[signal] = handler;
+        }
     }
 
     unbind(
@@ -141,45 +164,25 @@ class OnSignalBinding extends TargetUpdateBinding {
         context: ExecutionContext<any, any>,
         targets: ViewBehaviorTargets
     ): void {
-        const directive = this.directive;
-        const target = targets[directive.targetId];
-        signals.unsubscribe(target[directive.uniqueId], this.getSignal(source, context));
+        const signal = this.getSignal(source, context);
+        const found = signals[signal];
+
+        if (found && Array.isArray(found)) {
+            const directive = this.directive;
+            const target = targets[directive.targetId];
+            const handler = target[directive.uniqueId];
+            const index = found.indexOf(handler);
+            if (index !== -1) {
+                found.splice(index, 1);
+            }
+        } else {
+            signals[signal] = void 0;
+        }
     }
 
     private getSignal(source: any, context: ExecutionContext<any, any>) {
         const options = this.directive.options;
         return isString(options) ? options : options(source, context);
-    }
-
-    private getOrCreateHandler(
-        source: any,
-        context: ExecutionContext<any, any>,
-        targets: ViewBehaviorTargets
-    ) {
-        const directive = this.directive;
-        const target = targets[directive.targetId];
-        let handler = target[directive.uniqueId];
-
-        if (!handler) {
-            handler = {
-                target,
-                directive,
-                updateTarget: this.updateTarget,
-                handleChange() {
-                    this.updateTarget(
-                        this.target,
-                        this.directive.aspect,
-                        this.directive.binding(this.source, this.context),
-                        this.source,
-                        this.context
-                    );
-                },
-            };
-        }
-
-        handler.source = source;
-        handler.context = context;
-        return handler;
     }
 }
 
