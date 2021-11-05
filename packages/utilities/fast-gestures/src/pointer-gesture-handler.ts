@@ -76,8 +76,18 @@ const DEFAULT_OPTIONS: PointerGestureOptions = {
  * @public
  */
 export class PointerGestureHandler extends DefaultDisposable implements Disposable {
-    private options: PointerGestureOptions = DEFAULT_OPTIONS;
-    private target: PointerTarget;
+    constructor(
+        private _target: PointerTarget = window,
+        private options: PointerGestureOptions = DEFAULT_OPTIONS
+    ) {
+        super();
+
+        this.options =
+            options !== undefined ? { ...DEFAULT_OPTIONS, ...options } : DEFAULT_OPTIONS;
+
+        this.addEventListeners();
+    }
+
     private activePointer: PointerInfoInternal;
     private previousPosition: Point = { x: 0, y: 0 };
     private previousPointerType: string | undefined = undefined;
@@ -133,6 +143,18 @@ export class PointerGestureHandler extends DefaultDisposable implements Disposab
         [PointerGestureFeature.Rotate]: false,
     };
 
+    public get target(): PointerTarget {
+        return this._target;
+    }
+
+    public set target(target: PointerTarget) {
+        if (this._target !== target) {
+            this.removeEventListeners();
+            this._target = target;
+            this.addEventListeners();
+        }
+    }
+
     private _pointers: Map<number, PointerInfoInternal> = new Map();
 
     public get pointers(): Map<number, PointerInfoInternal> {
@@ -149,38 +171,48 @@ export class PointerGestureHandler extends DefaultDisposable implements Disposab
         );
     }
 
-    constructor(
-        _target: Window | HTMLElement | null = window,
-        options?: PointerGestureOptions
-    ) {
-        super();
-
-        this.target = _target;
-        this.options =
-            options !== undefined ? { ...DEFAULT_OPTIONS, ...options } : DEFAULT_OPTIONS;
-        this.target?.addEventListener(PointerEventType.Down, this.handlePointerStart, {
+    private addEventListeners(): void {
+        this._target?.addEventListener(PointerEventType.Down, this.handlePointerStart, {
             passive: false,
         });
-        this.target?.addEventListener(PointerEventType.Move, this.handlePointerMove, {
+        this._target?.addEventListener(PointerEventType.Move, this.handlePointerMove, {
             passive: false,
         });
-        this.target?.addEventListener(PointerEventType.Up, this.handlePointerEnd, {
+        this._target?.addEventListener(PointerEventType.Up, this.handlePointerEnd, {
             passive: false,
         });
-        this.target?.addEventListener(PointerEventType.Cancel, this.handlePointerEnd, {
+        this._target?.addEventListener(PointerEventType.Cancel, this.handlePointerEnd, {
             passive: false,
         });
 
         if (this.options.isHoverEnabled) {
-            this.target?.addEventListener(
+            this._target?.addEventListener(
                 PointerEventType.Enter,
                 this.handlePointerEnter,
                 { passive: false }
             );
-            this.target?.addEventListener(
+            this._target?.addEventListener(
                 PointerEventType.Leave,
                 this.handlePointerLeave,
                 { passive: false }
+            );
+        }
+    }
+
+    private removeEventListeners(): void {
+        this._target?.removeEventListener(PointerEventType.Down, this.handlePointerStart);
+        this._target?.removeEventListener(PointerEventType.Move, this.handlePointerMove);
+        this._target?.removeEventListener(PointerEventType.Up, this.handlePointerEnd);
+        this._target?.removeEventListener(PointerEventType.Cancel, this.handlePointerEnd);
+
+        if (this.options.isHoverEnabled) {
+            this._target?.removeEventListener(
+                PointerEventType.Enter,
+                this.handlePointerEnter
+            );
+            this._target?.removeEventListener(
+                PointerEventType.Leave,
+                this.handlePointerLeave
             );
         }
     }
@@ -191,12 +223,16 @@ export class PointerGestureHandler extends DefaultDisposable implements Disposab
         shouldFireGeneralEvent: boolean = false
     ): void {
         if (shouldFireGeneralEvent) {
-            this.handlers[PointerGesture.General].fire({
-                pointerInfo,
-                target: this.target,
-            });
+            window.requestAnimationFrame(() =>
+                this.handlers[PointerGesture.General].fire({
+                    pointerInfo,
+                    target: this._target,
+                })
+            );
         }
-        this.handlers[type].fire({ pointerInfo, target: this.target });
+        window.requestAnimationFrame(() =>
+            this.handlers[type].fire({ pointerInfo, target: this._target })
+        );
     }
 
     private isHtmlElement(obj: any): obj is HTMLElement {
@@ -433,7 +469,7 @@ export class PointerGestureHandler extends DefaultDisposable implements Disposab
     }
 
     private handlePointerStart = (e: PointerEvent): void => {
-        if (this.isHtmlElement(this.target) && this.isHtmlElement(e.target)) {
+        if (this.isHtmlElement(this._target) && this.isHtmlElement(e.target)) {
             this.activePointer = this.updatePointerInfo(e);
 
             // If there is a primary pointer, ensure it's set as the active pointer
@@ -456,8 +492,8 @@ export class PointerGestureHandler extends DefaultDisposable implements Disposab
                 this.startLongPress();
             }
 
-            if (this.options.shouldSetFocusOnActiveElement && this.target.tabIndex) {
-                this.target.tabIndex = -1;
+            if (this.options.shouldSetFocusOnActiveElement && this._target.tabIndex) {
+                this._target.tabIndex = -1;
             }
 
             this.emit(PointerGesture.Start, this.activePointer, true);
@@ -507,8 +543,8 @@ export class PointerGestureHandler extends DefaultDisposable implements Disposab
 
             if (isDrag) {
                 // Set target as the capture element to prevent other listeners to capture future pointer events.
-                if (this.isHtmlElement(this.target)) {
-                    this.target.setPointerCapture(this.activePointer.id);
+                if (this.isHtmlElement(this._target)) {
+                    this._target.setPointerCapture(this.activePointer.id);
                 }
 
                 // Stop detecting long press when dragging.
@@ -541,8 +577,8 @@ export class PointerGestureHandler extends DefaultDisposable implements Disposab
         this.activePointer = this.updatePointerInfo(e);
         this.activePointer.gestureType = PointerGesture.End;
 
-        if (this.isHtmlElement(this.target)) {
-            this.target.releasePointerCapture(this.activePointer.id);
+        if (this.isHtmlElement(this._target)) {
+            this._target.releasePointerCapture(this.activePointer.id);
         }
 
         if (this._pointers.size > 1) {
@@ -582,8 +618,8 @@ export class PointerGestureHandler extends DefaultDisposable implements Disposab
                 this.activePointer.gestureType = PointerGesture.DoubleTap;
                 this.emit(PointerGesture.DoubleTap, this.activePointer);
 
-                if (this.target && this.options.shouldSetFocusOnActiveElement) {
-                    this.target.focus();
+                if (this._target && this.options.shouldSetFocusOnActiveElement) {
+                    this._target.focus();
                 }
             }
 
@@ -615,8 +651,8 @@ export class PointerGestureHandler extends DefaultDisposable implements Disposab
                     this.activePointer.gestureType = PointerGesture.Tap;
                     this.emit(PointerGesture.Tap, this.activePointer);
 
-                    if (this.target && this.options.shouldSetFocusOnActiveElement) {
-                        this.target.focus();
+                    if (this._target && this.options.shouldSetFocusOnActiveElement) {
+                        this._target.focus();
                     }
                 }
             }
@@ -692,8 +728,8 @@ export class PointerGestureHandler extends DefaultDisposable implements Disposab
             this.activePointer.gestureType = PointerGesture.LongPressComplete;
             this.emit(PointerGesture.LongPressComplete, this.activePointer, true);
 
-            if (this.target && this.options.shouldSetFocusOnActiveElement) {
-                this.target.focus();
+            if (this._target && this.options.shouldSetFocusOnActiveElement) {
+                this._target.focus();
             }
         } else {
             this.emit(PointerGesture.LongPressProgress, this.activePointer, true);
@@ -714,39 +750,7 @@ export class PointerGestureHandler extends DefaultDisposable implements Disposab
             this.handlers[pointerGestureKey].dispose();
         });
 
-        if (this.options.isHoverEnabled) {
-            this.target?.removeEventListener(
-                PointerEventType.Enter,
-                this.handlePointerEnter,
-                false
-            );
-            this.target?.removeEventListener(
-                PointerEventType.Leave,
-                this.handlePointerLeave,
-                false
-            );
-        }
-
-        this.target?.removeEventListener(
-            PointerEventType.Down,
-            this.handlePointerStart,
-            false
-        );
-        this.target?.removeEventListener(
-            PointerEventType.Move,
-            this.handlePointerMove,
-            false
-        );
-        this.target?.removeEventListener(
-            PointerEventType.Up,
-            this.handlePointerEnd,
-            false
-        );
-        this.target?.removeEventListener(
-            PointerEventType.Cancel,
-            this.handlePointerEnd,
-            false
-        );
+        this.removeEventListeners();
 
         super.dispose();
     }

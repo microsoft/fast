@@ -235,7 +235,7 @@ export enum PointerGestureFeature {
 
 // @public
 export class PointerGestureHandler extends Disposable implements IDisposable {
-    constructor(_target?: Window | HTMLElement | null, options?: IPointerGestureOptions);
+    constructor(_target?: PointerTarget, options?: IPointerGestureOptions);
     // (undocumented)
     dispose(): void;
     onGesture(gesture: PointerGesture, listener: (args: IPointerGestureInfo) => any): IDisposable;
@@ -243,6 +243,9 @@ export class PointerGestureHandler extends Disposable implements IDisposable {
     get pointers(): Map<number, IPointerInfoInternal>;
     // (undocumented)
     get pointersArray(): Pointer[];
+    // (undocumented)
+    get target(): PointerTarget;
+    set target(target: PointerTarget);
     }
 
 // @public (undocumented)
