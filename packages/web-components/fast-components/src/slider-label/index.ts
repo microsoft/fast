@@ -31,7 +31,7 @@ export class SliderLabel extends FoundationSliderLabel {
  *
  * @public
  * @remarks
- * Generates HTML Element: \<fast-slider-label\>
+ * Generates HTML Element: `<fast-slider-label>`
  */
 
 export const fastSliderLabel = SliderLabel.compose({

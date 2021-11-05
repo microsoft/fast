@@ -84,7 +84,7 @@ export class Disclosure extends FoundationDisclosure {
  *
  * @public
  * @remarks
- * Generates HTML Element: \<fast-Disclosure\>
+ * Generates HTML Element: `<fast-Disclosure>`
  *
  */
 export const fastDisclosure = Disclosure.compose({

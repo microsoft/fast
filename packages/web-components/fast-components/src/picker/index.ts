@@ -23,7 +23,7 @@ import { pickerListItemStyles } from "./picker-list-item.styles";
  *
  * @alpha
  * @remarks
- * * Generates HTML Element: \<fast-picker\>
+ * * Generates HTML Element: `<fast-picker>`
  */
 export const fastPicker = Picker.compose({
     baseName: "picker",

@@ -8,7 +8,7 @@ import { menuStyles as styles } from "./menu.styles";
  *
  * @public
  * @remarks
- * Generates HTML Element: \<fast-menu\>
+ * Generates HTML Element: `<fast-menu>`
  */
 export const fastMenu = Menu.compose({
     baseName: "menu",

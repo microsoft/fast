@@ -8,7 +8,7 @@ import { badgeStyles as styles } from "./badge.styles";
  *
  * @public
  * @remarks
- * Generates HTML Element: \<fast-badge\>
+ * Generates HTML Element: `<fast-badge>`
  */
 export const fastBadge = Badge.compose({
     baseName: "badge",

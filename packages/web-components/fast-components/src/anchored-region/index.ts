@@ -11,7 +11,7 @@ import { anchoredRegionStyles as styles } from "./anchored-region.styles";
  *
  * @beta
  * @remarks
- * Generates HTML Element: \<fast-anchored-region\>
+ * Generates HTML Element: `<fast-anchored-region>`
  */
 export const fastAnchoredRegion = AnchoredRegion.compose({
     baseName: "anchored-region",

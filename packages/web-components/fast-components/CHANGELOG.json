@@ -2,6 +2,29 @@
   "name": "@microsoft/fast-components",
   "entries": [
     {
+      "date": "Thu, 04 Nov 2021 07:11:59 GMT",
+      "tag": "@microsoft/fast-components_v2.15.1",
+      "version": "2.15.1",
+      "comments": {
+        "none": [
+          {
+            "comment": "fix: Inline tags in tsdoc blocks use escaped characters",
+            "author": "srdsecond@gmail.com",
+            "commit": "961f25e034b6cc1ed8d6b1544172841e9be88922",
+            "package": "@microsoft/fast-components"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-foundation to v2.25.1",
+            "author": "jes@microsoft.com",
+            "commit": "58db7046b41b9318e02a8c49a70392c7504c8c28",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 03 Nov 2021 07:12:39 GMT",
       "tag": "@microsoft/fast-components_v2.15.0",
       "version": "2.15.0",

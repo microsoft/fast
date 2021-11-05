@@ -12,7 +12,7 @@ import { accordionItemStyles as styles } from "./accordion-item.styles";
  *
  * @public
  * @remarks
- * Generates HTML Element: \<fast-accordion-item\>
+ * Generates HTML Element: `<fast-accordion-item>`
  */
 export const fastAccordionItem = AccordionItem.compose<AccordionItemOptions>({
     baseName: "accordion-item",

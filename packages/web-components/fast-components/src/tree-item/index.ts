@@ -12,7 +12,7 @@ import { treeItemStyles as styles } from "./tree-item.styles";
  *
  * @public
  * @remarks
- * Generates HTML Element: \<fast-tree-item\>
+ * Generates HTML Element: `<fast-tree-item>`
  *
  */
 export const fastTreeItem = TreeItem.compose<TreeItemOptions>({

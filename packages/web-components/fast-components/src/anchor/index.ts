@@ -69,7 +69,7 @@ export class Anchor extends FoundationAnchor {
  *
  * @public
  * @remarks
- * Generates HTML Element: \<fast-anchor\>
+ * Generates HTML Element: `<fast-anchor>`
  *
  * {@link https://developer.mozilla.org/en-US/docs/Web/API/ShadowRoot/delegatesFocus | delegatesFocus}
  */
