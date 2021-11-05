@@ -8,7 +8,7 @@ import {
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
     AccentButtonStyles,
-    baseButtonStyles,
+    BaseButtonStyles,
     LightweightButtonStyles,
     OutlineButtonStyles,
     StealthButtonStyles,
@@ -31,7 +31,7 @@ export const buttonStyles: (
             opacity: ${disabledOpacity};
             cursor: ${disabledCursor};
         }
-        ${baseButtonStyles(context, definition, interactivitySelector)}
+        ${BaseButtonStyles(context, definition, interactivitySelector)}
     `.withBehaviors(
         forcedColorsStylesheetBehavior(
             css`

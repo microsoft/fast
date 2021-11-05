@@ -44,7 +44,7 @@ import {
 /**
  * @internal
  */
-export const baseButtonStyles = (
+export const BaseButtonStyles = (
     context: ElementDefinitionContext,
     definition: FoundationElementDefinition,
     interactivitySelector: string = ""

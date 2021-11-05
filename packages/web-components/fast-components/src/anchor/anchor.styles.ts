@@ -2,7 +2,7 @@ import { css, ElementStyles } from "@microsoft/fast-element";
 import { AnchorOptions, ElementDefinitionContext } from "@microsoft/fast-foundation";
 import {
     AccentButtonStyles,
-    baseButtonStyles,
+    BaseButtonStyles,
     HypertextStyles,
     LightweightButtonStyles,
     OutlineButtonStyles,
@@ -24,7 +24,7 @@ export const anchorStyles: (
         :host .control:not([href]) {
             cursor: default;
         }
-        ${baseButtonStyles(context, definition, interactivitySelector)}
+        ${BaseButtonStyles(context, definition, interactivitySelector)}
     `.withBehaviors(
         appearanceBehavior(
             "accent",

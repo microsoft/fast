@@ -77,7 +77,7 @@ export const direction = create<Direction>("direction").withDefault(Direction.lt
 /** @public */
 export const disabledOpacity = create<number>("disabled-opacity").withDefault(0.3);
 /** @public */
-export const layerCornerRadius = create<number>("layer-corner-radius").withDefault(4);
+export const layerCornerRadius = create<number>("layer-corner-radius").withDefault(6);
 /** @public */
 export const strokeWidth = create<number>("stroke-width").withDefault(1);
 /** @public */

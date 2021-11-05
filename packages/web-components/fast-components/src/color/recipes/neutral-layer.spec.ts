@@ -33,8 +33,6 @@ describe("neutralLayer", (): void => {
             expect(neutralLayer1(neutralPalette, StandardLuminance.LightMode)).to.equal(neutralPalette.get(NeutralPaletteLightModeOffsets.L1))
         });
         it("should return values from 1 when in dark mode", (): void => {
-            console.log("neutralHAPPY", neutralLayer1(neutralPalette, StandardLuminance.DarkMode));
-            console.log("neutralPAL", neutralPalette.get(NeutralPaletteDarkModeOffsets.L1));
             expect(neutralLayer1(neutralPalette, StandardLuminance.DarkMode)).to.equal(neutralPalette.get(NeutralPaletteDarkModeOffsets.L1))
         });
     });
@@ -53,8 +51,6 @@ describe("neutralLayer", (): void => {
             expect(neutralLayer3(neutralPalette, StandardLuminance.LightMode, 3, 7, 10, 5)).to.equal(neutralPalette.get(NeutralPaletteLightModeOffsets.L3))
         });
         it("should return values from 3 when in dark mode", (): void => {
-            console.log("neutralHAPPY3", neutralLayer1(neutralPalette, StandardLuminance.DarkMode));
-            console.log("neutralPAL3", neutralPalette.get(NeutralPaletteDarkModeOffsets.L3));
             expect(neutralLayer3(neutralPalette, StandardLuminance.DarkMode, 3, 7, 10, 5)).to.equal(neutralPalette.get(NeutralPaletteDarkModeOffsets.L3))
         });
     });
