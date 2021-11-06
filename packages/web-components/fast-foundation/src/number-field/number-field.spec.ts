@@ -771,6 +771,32 @@ describe("NumberField", () => {
 
             await disconnect();
         });
+
+        it("should correct rounding errors", async () => {
+            const step = .1;
+            let value = .2.toString();
+            const { element, disconnect } = await setup({step, value});
+            const incrementValue = () => {
+                element.stepUp();
+                value = (parseFloat(value) + step).toPrecision(1);
+            }
+
+            expect(element.value).to.equal(value);
+
+            incrementValue();
+            expect(element.value).to.equal(value);
+
+            incrementValue();
+            expect(element.value).to.equal(value);
+
+            incrementValue();
+            expect(element.value).to.equal(value);
+
+            incrementValue();
+            expect(element.value).to.equal(value);
+
+            await disconnect();
+        })
     });
 
     describe("value validation", () => {

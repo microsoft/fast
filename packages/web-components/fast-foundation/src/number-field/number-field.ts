@@ -123,18 +123,18 @@ export class NumberField extends FormAssociatedNumberField {
     /**
      * Ensures that the max is greater than the min and that the value
      *  is less than the max
-     * @param previousValue - the previous max value
-     * @param nextValue - updated max value
+     * @param previous - the previous max value
+     * @param next - updated max value
      *
      * @internal
      */
-    public maxChanged(previousValue, nextValue): void {
-        this.max = Math.max(nextValue, this.min ?? nextValue);
+    public maxChanged(previous: number, next: number): void {
+        this.max = Math.max(next, this.min ?? next);
         const min = Math.min(this.min, this.max);
         if (this.min !== undefined && this.min !== min) {
             this.min = min;
         }
-        this.valueChanged(null, this.value);
+        this.value = this.getValidValue(this.value);
     }
 
     /**
@@ -149,18 +149,18 @@ export class NumberField extends FormAssociatedNumberField {
     /**
      * Ensures that the min is less than the max and that the value
      *  is greater than the min
-     * @param previousValue - previous min value
-     * @param nextValue - updated min value
+     * @param previous - previous min value
+     * @param next - updated min value
      *
      * @internal
      */
-    public minChanged(previousValue, nextValue): void {
-        this.min = Math.min(nextValue, this.max ?? nextValue);
+    public minChanged(previous: number, next: number): void {
+        this.min = Math.min(next, this.max ?? next);
         const max = Math.max(this.min, this.max);
         if (this.max !== undefined && this.max !== max) {
             this.max = max;
         }
-        this.valueChanged(null, this.value);
+        this.value = this.getValidValue(this.value);
     }
 
     /**
@@ -177,48 +177,48 @@ export class NumberField extends FormAssociatedNumberField {
     public control: HTMLInputElement;
 
     /**
-     * Gate that prevents valueChanged from calling itself while updating this.value
+     * Validates that the value is a number between the min and max
+     * @param previous - previous stored value
+     * @param next - value being updated
+     * @param updateControl - should the text field be updated with value, defaults to true
      * @internal
      */
-    private updatingValue: boolean = false;
+    public valueChanged(
+        previous: string,
+        next: string,
+        updateControl: boolean = true
+    ): void {
+        this.value = this.getValidValue(next);
+
+        if (this.control && updateControl) {
+            this.control.value = this.value;
+        }
+
+        super.valueChanged(previous, this.value);
+
+        if (previous !== undefined) {
+            this.$emit("input");
+            this.$emit("change");
+        }
+    }
 
     /**
-     * Validates that the value is a number between the min and max
-     * @param previousValue - previous stored value
-     * @param nextValue - value being updated
+     * Sets the internal value to a valid number between the min and max properties
+     * @param value - user input
+     * @param updateControl - should the text field update to the valid value
+     *
      * @internal
      */
-    public valueChanged(previousValue, nextValue): void {
-        if (previousValue != nextValue && this.updatingValue === false) {
-            this.updatingValue = true;
-            let value: number | string = parseFloat(nextValue);
-            if (isNaN(value)) {
-                value = "";
-            } else {
-                value = Math.min(value, this.max ?? value);
-                value = Math.max(value, this.min ?? value).toString();
-            }
-
-            if (this.proxy instanceof HTMLInputElement) {
-                this.proxy.value = value;
-            }
-
-            if (
-                this.control &&
-                (this.control.value != nextValue || previousValue === null)
-            ) {
-                this.control.value = value;
-            }
-
-            this.value = value;
-
-            if (previousValue !== undefined) {
-                this.$emit("input");
-                this.$emit("change");
-            }
-            this.updatingValue = false;
-            super.valueChanged(previousValue, nextValue);
+    private getValidValue(value: string): string {
+        let validValue: number | string = parseFloat(parseFloat(value).toPrecision(12));
+        if (isNaN(validValue)) {
+            validValue = "";
+        } else {
+            validValue = Math.min(validValue, this.max ?? validValue);
+            validValue = Math.max(validValue, this.min ?? validValue).toString();
         }
+
+        return validValue;
     }
 
     /**
@@ -239,7 +239,6 @@ export class NumberField extends FormAssociatedNumberField {
             : 0;
 
         this.value = stepUpValue.toString();
-        this.control.value = this.value;
     }
 
     /**
@@ -260,7 +259,6 @@ export class NumberField extends FormAssociatedNumberField {
             : 0;
 
         this.value = stepDownValue.toString();
-        this.control.value = this.value;
     }
 
     /**
@@ -287,7 +285,7 @@ export class NumberField extends FormAssociatedNumberField {
      */
     public handleTextInput(): void {
         this.control.value = this.control.value.replace(/[^0-9\-+e.]/g, "");
-        this.value = this.control.value;
+        this.valueChanged(this.value, this.control.value, false);
     }
 
     /**

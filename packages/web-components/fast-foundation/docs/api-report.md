@@ -1575,11 +1575,11 @@ export class NumberField extends FormAssociatedNumberField {
     list: string;
     max: number;
     // @internal
-    maxChanged(previousValue: any, nextValue: any): void;
+    maxChanged(previous: number, next: number): void;
     maxlength: number;
     min: number;
     // @internal
-    minChanged(previousValue: any, nextValue: any): void;
+    minChanged(previous: number, next: number): void;
     minlength: number;
     placeholder: string;
     readOnly: boolean;
@@ -1588,7 +1588,7 @@ export class NumberField extends FormAssociatedNumberField {
     stepDown(): void;
     stepUp(): void;
     // @internal
-    valueChanged(previousValue: any, nextValue: any): void;
+    valueChanged(previous: string, next: string, updateControl?: boolean): void;
 }
 
 // @internal
