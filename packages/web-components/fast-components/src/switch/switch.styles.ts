@@ -34,6 +34,10 @@ import {
 } from "../design-tokens";
 import { DirectionalStyleSheetBehavior, heightNumber } from "../styles/index";
 
+/**
+ * Styles for Switch
+ * @public
+ */
 export const switchStyles: (
     context: ElementDefinitionContext,
     definition: SwitchOptions

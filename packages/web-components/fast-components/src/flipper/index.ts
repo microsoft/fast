@@ -12,7 +12,7 @@ import { flipperStyles as styles } from "./flipper.styles";
  *
  * @public
  * @remarks
- * Generates HTML Element: \<fast-flipper\>
+ * Generates HTML Element: `<fast-flipper>`
  */
 export const fastFlipper = Flipper.compose<FlipperOptions>({
     baseName: "flipper",
@@ -35,13 +35,9 @@ export const fastFlipper = Flipper.compose<FlipperOptions>({
 });
 
 /**
- * Styles for Flipper
- * @public
- */
-export const flipperStyles = styles;
-
-/**
  * Base class for Flipper
  * @public
  */
 export { Flipper };
+
+export { styles as flipperStyles };

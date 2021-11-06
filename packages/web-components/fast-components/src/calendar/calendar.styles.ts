@@ -21,7 +21,7 @@ import {
 } from "../design-tokens";
 
 /**
- * Styles used by the calendar title and contents
+ * Styles for Calendar
  * @public
  */
 export const CalendarStyles = css`

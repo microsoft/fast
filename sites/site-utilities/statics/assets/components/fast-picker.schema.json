@@ -60,6 +60,11 @@
       "mapsToAttribute": "labelledby",
       "type": "string"
     },
+    "placeholder": {
+      "description": "The placeholder attribute",
+      "mapsToAttribute": "placeholder",
+      "type": "string"
+    },
     "SlotListRegion": {
       "description": "The list-region slot",
       "mapsToSlot": "list-region",

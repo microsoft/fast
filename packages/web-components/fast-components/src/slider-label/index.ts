@@ -4,9 +4,9 @@ import {
 } from "@microsoft/fast-foundation";
 import { Orientation } from "@microsoft/fast-web-utilities";
 import {
-    horizontalSliderStyles,
+    horizontalSliderLabelStyles,
     sliderLabelStyles as styles,
-    verticalSliderStyles,
+    verticalSliderLabelStyles,
 } from "./slider-label.styles";
 
 /**
@@ -15,11 +15,11 @@ import {
 export class SliderLabel extends FoundationSliderLabel {
     protected sliderOrientationChanged(): void {
         if (this.sliderOrientation === Orientation.horizontal) {
-            this.$fastController.addStyles(horizontalSliderStyles);
-            this.$fastController.removeStyles(verticalSliderStyles);
+            this.$fastController.addStyles(horizontalSliderLabelStyles);
+            this.$fastController.removeStyles(verticalSliderLabelStyles);
         } else {
-            this.$fastController.addStyles(verticalSliderStyles);
-            this.$fastController.removeStyles(horizontalSliderStyles);
+            this.$fastController.addStyles(verticalSliderLabelStyles);
+            this.$fastController.removeStyles(horizontalSliderLabelStyles);
         }
     }
 }
@@ -31,7 +31,7 @@ export class SliderLabel extends FoundationSliderLabel {
  *
  * @public
  * @remarks
- * Generates HTML Element: \<fast-slider-label\>
+ * Generates HTML Element: `<fast-slider-label>`
  */
 
 export const fastSliderLabel = SliderLabel.compose({
@@ -41,8 +41,8 @@ export const fastSliderLabel = SliderLabel.compose({
     styles,
 });
 
-/**
- * Styles for SliderLabel
- * @public
- */
-export const sliderLabelStyles = styles;
+export {
+    horizontalSliderLabelStyles,
+    styles as sliderLabelStyles,
+    verticalSliderLabelStyles,
+};

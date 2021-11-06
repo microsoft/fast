@@ -1,4 +1,4 @@
-name: CI - FAST Validation
+name: Validate Platforms/Browsers
 
 on:
   push:

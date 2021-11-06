@@ -29,6 +29,10 @@ import {
 } from "../design-tokens";
 import { heightNumber } from "../styles/index";
 
+/**
+ * Styles for Text Area
+ * @public
+ */
 export const textAreaStyles: (
     context: ElementDefinitionContext,
     definition: FoundationElementDefinition

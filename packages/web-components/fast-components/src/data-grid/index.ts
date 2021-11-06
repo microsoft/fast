@@ -6,66 +6,48 @@ import {
     dataGridRowTemplate,
     dataGridTemplate,
 } from "@microsoft/fast-foundation";
-import { dataGridStyles as gridStyles } from "./data-grid.styles";
-import { dataGridRowStyles as rowStyles } from "./data-grid-row.styles";
-import { dataGridCellStyles as cellStyles } from "./data-grid-cell.styles";
+import { dataGridStyles } from "./data-grid.styles";
+import { dataGridRowStyles } from "./data-grid-row.styles";
+import { dataGridCellStyles } from "./data-grid-cell.styles";
 
 /**
  * A function that returns a {@link @microsoft/fast-foundation#DataGridCell} registration for configuring the component with a DesignSystem.
  *
  * @public
  * @remarks
- * Generates HTML Element: \<fast-data-grid-cell\>
+ * Generates HTML Element: `<fast-data-grid-cell>`
  */
 export const fastDataGridCell = DataGridCell.compose({
     baseName: "data-grid-cell",
     template: dataGridCellTemplate,
-    styles: cellStyles,
+    styles: dataGridCellStyles,
 });
-
-/**
- * Styles for DataGrid cell
- * @public
- */
-export const dataGridCellStyles = cellStyles;
 
 /**
  * A function that returns a {@link @microsoft/fast-foundation#DataGridRow} registration for configuring the component with a DesignSystem.
  *
  * @public
  * @remarks
- * Generates HTML Element: \<fast-data-grid-row\>
+ * Generates HTML Element: `<fast-data-grid-row>`
  */
 export const fastDataGridRow = DataGridRow.compose({
     baseName: "data-grid-row",
     template: dataGridRowTemplate,
-    styles: rowStyles,
+    styles: dataGridRowStyles,
 });
-
-/**
- * Styles for DataGrid row
- * @public
- */
-export const dataGridRowStyles = rowStyles;
 
 /**
  * A function that returns a {@link @microsoft/fast-foundation#DataGrid} registration for configuring the component with a DesignSystem.
  *
  * @public
  * @remarks
- * Generates HTML Element: \<fast-data-grid\>
+ * Generates HTML Element: `<fast-data-grid>`
  */
 export const fastDataGrid = DataGrid.compose({
     baseName: "data-grid",
     template: dataGridTemplate,
-    styles: gridStyles,
+    styles: dataGridStyles,
 });
-
-/**
- * Styles for DataGrid
- * @public
- */
-export const dataGridStyles = gridStyles;
 
 /**
  * Base class for DataGrid
@@ -84,3 +66,5 @@ export { DataGridRow };
  * @public
  */
 export { DataGridCell };
+
+export { dataGridCellStyles, dataGridStyles, dataGridRowStyles };

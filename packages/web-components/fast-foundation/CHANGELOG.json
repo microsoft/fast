@@ -2,6 +2,36 @@
   "name": "@microsoft/fast-foundation",
   "entries": [
     {
+      "date": "Thu, 04 Nov 2021 07:11:59 GMT",
+      "tag": "@microsoft/fast-foundation_v2.25.1",
+      "version": "2.25.1",
+      "comments": {
+        "patch": [
+          {
+            "comment": "fix: change event emitted twice",
+            "author": "jes@microsoft.com",
+            "commit": "58db7046b41b9318e02a8c49a70392c7504c8c28",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 03 Nov 2021 07:12:39 GMT",
+      "tag": "@microsoft/fast-foundation_v2.25.0",
+      "version": "2.25.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "add placeholder attr to picker",
+            "author": "scomea@microsoft.com",
+            "commit": "449315688a794e702936ba73ce5d2b23aa660720",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sun, 31 Oct 2021 07:17:45 GMT",
       "tag": "@microsoft/fast-foundation_v2.24.0",
       "version": "2.24.0",

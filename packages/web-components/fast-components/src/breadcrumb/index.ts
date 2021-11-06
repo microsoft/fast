@@ -8,7 +8,7 @@ import { breadcrumbStyles as styles } from "./breadcrumb.styles";
  *
  * @public
  * @remarks
- * Generates HTML Element: \<fast-breadcrumb\>
+ * Generates HTML Element: `<fast-breadcrumb>`
  */
 export const fastBreadcrumb = Breadcrumb.compose({
     baseName: "breadcrumb",
@@ -21,3 +21,5 @@ export const fastBreadcrumb = Breadcrumb.compose({
  * @public
  */
 export { Breadcrumb };
+
+export { styles as breadcrumbStyles };

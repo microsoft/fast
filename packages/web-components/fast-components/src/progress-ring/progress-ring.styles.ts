@@ -13,6 +13,10 @@ import {
 } from "../design-tokens";
 import { heightNumber } from "../styles";
 
+/**
+ * Styles for Progress Ring
+ * @public
+ */
 export const progressRingStyles: (
     context: ElementDefinitionContext,
     definition: ProgressRingOptions

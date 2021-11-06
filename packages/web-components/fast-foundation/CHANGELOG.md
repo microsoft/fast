@@ -1,8 +1,24 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Sun, 31 Oct 2021 07:17:45 GMT and should not be manually modified.
+This log was last generated on Thu, 04 Nov 2021 07:11:59 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.25.1
+
+Thu, 04 Nov 2021 07:11:59 GMT
+
+### Patches
+
+- fix: change event emitted twice (jes@microsoft.com)
+
+## 2.25.0
+
+Wed, 03 Nov 2021 07:12:39 GMT
+
+### Minor changes
+
+- add placeholder attr to picker (scomea@microsoft.com)
 
 ## 2.24.0
 
