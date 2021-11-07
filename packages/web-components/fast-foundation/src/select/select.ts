@@ -126,7 +126,7 @@ export class Select extends FormAssociatedSelect {
      *
      * @internal
      */
-    public selectedIndexChanged(prev, next): void {
+    public selectedIndexChanged(prev: number, next: number): void {
         super.selectedIndexChanged(prev, next);
         this.updateValue();
     }
@@ -299,7 +299,7 @@ export class Select extends FormAssociatedSelect {
      *
      * @internal
      */
-    public slottedOptionsChanged(prev, next): void {
+    public slottedOptionsChanged(prev: unknown, next: ListboxOption[]): void {
         super.slottedOptionsChanged(prev, next);
         this.setProxyOptions();
         this.updateValue();

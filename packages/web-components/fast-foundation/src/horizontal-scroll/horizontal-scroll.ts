@@ -222,7 +222,7 @@ export class HorizontalScroll extends FoundationElement {
      * @param next - new updated scroll items
      * @public
      */
-    public scrollItemsChanged(previous, next) {
+    public scrollItemsChanged(previous: HTMLElement[], next: HTMLElement[]) {
         if (next && !this.updatingItems) {
             DOM.queueUpdate(() => this.setStops());
         }

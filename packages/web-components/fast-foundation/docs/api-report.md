@@ -23,7 +23,7 @@ export class Accordion extends FoundationElement {
     // @internal (undocumented)
     accordionItems: HTMLElement[];
     // @internal (undocumented)
-    accordionItemsChanged(oldValue: any, newValue: any): void;
+    accordionItemsChanged(oldValue: HTMLElement[], newValue: HTMLElement[]): void;
     expandmode: AccordionExpandMode;
     }
 
@@ -207,7 +207,7 @@ export class BaseProgress extends FoundationElement {
     connectedCallback(): void;
     max: number;
     min: number;
-    paused: any;
+    paused: boolean;
     // @internal
     percentComplete: number;
     value: number | null;
@@ -337,7 +337,7 @@ export const calendarTemplate: FoundationElementTemplate<ViewTemplate<Calendar>,
 export const CalendarTitleTemplate: ViewTemplate<Calendar>;
 
 // @public
-export const calendarWeekdayTemplate: (context: any) => ViewTemplate;
+export const calendarWeekdayTemplate: (context: ElementDefinitionContext) => ViewTemplate;
 
 // @public
 export class Card extends FoundationElement {
@@ -460,14 +460,14 @@ export class Combobox extends FormAssociatedCombobox {
     // @internal
     selectedIndexChanged(prev: number, next: number): void;
     // @internal
-    selectedOptionsChanged(prev: any, next: any): void;
+    selectedOptionsChanged(prev: unknown, next: HTMLElement[]): void;
     // @internal
     selectPreviousOption(): void;
     // @internal
     setDefaultSelectedOption(): void;
     setPositioning(): void;
     // @internal
-    slottedOptionsChanged(prev: any, next: any): void;
+    slottedOptionsChanged(prev: unknown, next: HTMLElement[]): void;
     get value(): string;
     set value(next: string);
     }
@@ -710,11 +710,11 @@ export enum DataGridRowTypes {
 }
 
 // @public
-export const dataGridTemplate: FoundationElementTemplate<ViewTemplate<DataGrid>>;
+export const dataGridTemplate: (context: ElementDefinitionContext, definition: FoundationElementDefinition) => ViewTemplate<DataGrid>;
 
 // @public
 export class DateFormatter {
-    constructor(config?: any);
+    constructor(config?: {});
     date: Date;
     dayFormat: DayFormat;
     // (undocumented)
@@ -899,8 +899,8 @@ export const DesignSystem: Readonly<{
 export interface DesignSystemRegistrationContext {
     readonly elementPrefix: string;
     // @deprecated
-    tryDefineElement(name: string, type: Constructable, callback: ElementDefinitionCallback): any;
-    tryDefineElement(params: ElementDefinitionParams): any;
+    tryDefineElement(name: string, type: Constructable, callback: ElementDefinitionCallback): void;
+    tryDefineElement(params: ElementDefinitionParams): void;
 }
 
 // @public
@@ -1153,13 +1153,13 @@ export interface FormAssociated extends Omit<ElementInternals, "labels"> {
     // (undocumented)
     initialValue: string;
     // (undocumented)
-    initialValueChanged?(previous: any, next: any): void;
+    initialValueChanged?(previous: string, next: string): void;
     // (undocumented)
     readonly labels: ReadonlyArray<Node[]>;
     // (undocumented)
     name: string;
     // (undocumented)
-    nameChanged?(previous: any, next: any): void;
+    nameChanged?(previous: string, next: string): void;
     // (undocumented)
     required: boolean;
     // (undocumented)
@@ -1171,7 +1171,7 @@ export interface FormAssociated extends Omit<ElementInternals, "labels"> {
     // (undocumented)
     value: string;
     // (undocumented)
-    valueChanged(previous: any, next: any): void;
+    valueChanged(previous: string, next: string): void;
 }
 
 // @alpha
@@ -1186,13 +1186,13 @@ export interface FormAssociatedProxy {
     // (undocumented)
     formResetCallback?(): void;
     // (undocumented)
-    initialValueChanged?(previous: any, next: any): void;
+    initialValueChanged?(previous: string, next: string): void;
     // (undocumented)
-    nameChanged?(previous: any, next: any): void;
+    nameChanged?(previous: string, next: string): void;
     // (undocumented)
     proxy: ProxyElement;
     // (undocumented)
-    valueChanged?(previous: any, next: any): void;
+    valueChanged?(previous: string, next: string): void;
 }
 
 // @public
@@ -1277,7 +1277,7 @@ export class HorizontalScroll extends FoundationElement {
     // @internal
     scrollingChanged(prev: unknown, next: boolean): void;
     scrollItems: HTMLElement[];
-    scrollItemsChanged(previous: any, next: any): void;
+    scrollItemsChanged(previous: HTMLElement[], next: HTMLElement[]): void;
     scrollToNext(): void;
     scrollToPosition(newPosition: number, position?: number): void;
     scrollToPrevious(): void;
@@ -1426,7 +1426,7 @@ export class ListboxOption extends FoundationElement {
     dirtyValue: boolean;
     disabled: boolean;
     // (undocumented)
-    protected disabledChanged(prev: any, next: any): void;
+    protected disabledChanged(prev: boolean, next: boolean): void;
     // (undocumented)
     get form(): HTMLFormElement | null;
     protected initialValue: string;
@@ -1746,12 +1746,12 @@ export class PickerListItem extends FoundationElement {
 // Warning: (ae-incompatible-release-tags) The symbol "pickerListItemTemplate" is marked as @public, but its signature references "PickerListItem" which is marked as @alpha
 //
 // @public (undocumented)
-export const pickerListItemTemplate: FoundationElementTemplate<ViewTemplate<PickerListItem>>;
+export const pickerListItemTemplate: (context: ElementDefinitionContext, definition: FoundationElementDefinition) => ViewTemplate<PickerListItem>;
 
 // Warning: (ae-incompatible-release-tags) The symbol "pickerListTemplate" is marked as @public, but its signature references "PickerList" which is marked as @alpha
 //
 // @public (undocumented)
-export const pickerListTemplate: FoundationElementTemplate<ViewTemplate<PickerList>>;
+export const pickerListTemplate: (context: ElementDefinitionContext, definition: FoundationElementDefinition) => ViewTemplate<PickerList>;
 
 // @alpha
 export class PickerMenu extends FoundationElement {
@@ -1787,17 +1787,17 @@ export class PickerMenuOption extends FoundationElement {
 // Warning: (ae-incompatible-release-tags) The symbol "pickerMenuOptionTemplate" is marked as @public, but its signature references "PickerMenuOption" which is marked as @alpha
 //
 // @public (undocumented)
-export const pickerMenuOptionTemplate: FoundationElementTemplate<ViewTemplate<PickerMenuOption>>;
+export const pickerMenuOptionTemplate: (context: ElementDefinitionContext, definition: FoundationElementDefinition) => ViewTemplate<PickerMenuOption>;
 
 // Warning: (ae-incompatible-release-tags) The symbol "pickerMenuTemplate" is marked as @public, but its signature references "PickerMenu" which is marked as @alpha
 //
 // @public
-export const pickerMenuTemplate: FoundationElementTemplate<ViewTemplate<PickerMenu>>;
+export const pickerMenuTemplate: (context: ElementDefinitionContext, definition: FoundationElementDefinition) => ViewTemplate<PickerMenu>;
 
 // Warning: (ae-incompatible-release-tags) The symbol "pickerTemplate" is marked as @public, but its signature references "Picker" which is marked as @alpha
 //
 // @public
-export const pickerTemplate: FoundationElementTemplate<ViewTemplate<Picker>>;
+export const pickerTemplate: (context: ElementDefinitionContext, definition: FoundationElementDefinition) => ViewTemplate<Picker>;
 
 // @public
 export type ProgressOptions = FoundationElementDefinition & {
@@ -1821,7 +1821,7 @@ export class PropertyStyleSheetBehavior implements Behavior {
     constructor(propertyName: string, value: any, styles: ElementStyles);
     bind(elementInstance: FASTElement): void;
     // @internal
-    handleChange(source: FASTElement, key: any): void;
+    handleChange(source: FASTElement, key: string): void;
     // @internal
     unbind(source: typeof FASTElement & HTMLElement): void;
     }
@@ -2059,10 +2059,10 @@ export class Select extends FormAssociatedSelect {
     position: SelectPosition;
     positionAttribute: SelectPosition;
     // @internal
-    selectedIndexChanged(prev: any, next: any): void;
+    selectedIndexChanged(prev: number, next: number): void;
     setPositioning(): void;
     // @internal
-    slottedOptionsChanged(prev: any, next: any): void;
+    slottedOptionsChanged(prev: unknown, next: ListboxOption[]): void;
     get value(): string;
     set value(next: string);
     }
@@ -2171,7 +2171,7 @@ export class Slider extends FormAssociatedSlider implements SliderConfiguration 
     get valueAsNumber(): number;
     set valueAsNumber(next: number);
     // @internal (undocumented)
-    valueChanged(previous: any, next: any): void;
+    valueChanged(previous: string, next: string): void;
     valueTextFormatter: (value: string) => string | null;
 }
 

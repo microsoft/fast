@@ -36,7 +36,7 @@ const FASTCalendar = Calendar.compose({
     template: calendarTemplate
 })
 
-async function setup(props?) {
+async function setup(props?: {}) {
     const { document, element, connect, disconnect }: {
         document: Document,
         element: HTMLElement & Calendar,

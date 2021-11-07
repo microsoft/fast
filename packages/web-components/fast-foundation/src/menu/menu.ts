@@ -26,7 +26,7 @@ export class Menu extends FoundationElement {
      */
     @observable
     public items: HTMLSlotElement;
-    private itemsChanged(oldValue, newValue): void {
+    private itemsChanged(oldValue: HTMLElement[], newValue: HTMLElement[]): void {
         if (this.$fastController.isConnected) {
             this.menuItems = this.domChildren();
             this.resetItems(oldValue);

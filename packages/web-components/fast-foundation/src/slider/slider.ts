@@ -156,7 +156,7 @@ export class Slider extends FormAssociatedSlider implements SliderConfiguration 
     /**
      * @internal
      */
-    public valueChanged(previous, next): void {
+    public valueChanged(previous: string, next: string): void {
         super.valueChanged(previous, next);
 
         if (this.$fastController.isConnected) {

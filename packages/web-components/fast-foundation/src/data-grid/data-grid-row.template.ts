@@ -4,7 +4,7 @@ import type { FoundationElementTemplate } from "../foundation-element";
 import type { DataGridRow } from "./data-grid-row";
 import { DataGridCell } from "./data-grid-cell";
 
-function createCellItemTemplate(context): ViewTemplate {
+function createCellItemTemplate(context: ElementDefinitionContext): ViewTemplate {
     const cellTag = context.tagFor(DataGridCell);
     return html`
     <${cellTag}
@@ -16,7 +16,7 @@ function createCellItemTemplate(context): ViewTemplate {
 `;
 }
 
-function createHeaderCellItemTemplate(context): ViewTemplate {
+function createHeaderCellItemTemplate(context: ElementDefinitionContext): ViewTemplate {
     const cellTag = context.tagFor(DataGridCell);
     return html`
     <${cellTag}
