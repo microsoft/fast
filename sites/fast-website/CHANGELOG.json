@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-website",
   "entries": [
     {
+      "date": "Sun, 07 Nov 2021 07:12:36 GMT",
+      "tag": "@microsoft/fast-website_v1.3.16",
+      "version": "1.3.16",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/site-utilities to v0.9.0",
+            "author": "mathieu.lavoie@shopify.com",
+            "commit": "e4ddc05446b3c5b93da010b06826eaa2368f7fce",
+            "package": "@microsoft/fast-website"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 04 Nov 2021 07:11:59 GMT",
       "tag": "@microsoft/fast-website_v1.3.16",
       "version": "1.3.16",
