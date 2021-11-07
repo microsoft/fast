@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "remove non-null assertion in anchored region",
-  "packageName": "@microsoft/fast-components",
-  "email": "mathieu.lavoie@shopify.com",
-  "dependentChangeType": "patch"
-}
