@@ -1,10 +1,9 @@
 import {
     attr,
+    booleanConverter,
     DOM,
     emptyArray,
     observable,
-    Observable,
-    booleanConverter,
 } from "@microsoft/fast-element";
 import type { Constructable, FASTElement } from "@microsoft/fast-element";
 import { keyEnter } from "@microsoft/fast-web-utilities";
@@ -113,7 +112,7 @@ export interface FormAssociated extends Omit<ElementInternals, "labels"> {
     readonly formAssociated: boolean;
     initialValue: string;
     readonly labels: ReadonlyArray<Node[]>;
-    name: string;
+    name: string | undefined;
     required: boolean;
     value: string;
     currentValue: string;
@@ -205,7 +204,7 @@ export function FormAssociated<T extends ConstructableFormAssociated>(BaseCtor: 
          *
          * @alpha
          */
-        public proxy: ProxyElement;
+        public proxy: ProxyElement | undefined;
 
         /**
          * Must evaluate to true to enable elementInternals.
@@ -222,10 +221,10 @@ export function FormAssociated<T extends ConstructableFormAssociated>(BaseCtor: 
          *
          * @alpha
          */
-        public get validity(): ValidityState {
+        public get validity(): ValidityState | undefined {
             return this.elementInternals
                 ? this.elementInternals.validity
-                : this.proxy.validity;
+                : this.proxy?.validity;
         }
 
         /**
@@ -235,7 +234,9 @@ export function FormAssociated<T extends ConstructableFormAssociated>(BaseCtor: 
          * @alpha
          */
         public get form(): HTMLFormElement | null {
-            return this.elementInternals ? this.elementInternals.form : this.proxy.form;
+            return this.elementInternals
+                ? this.elementInternals.form
+                : this.proxy?.form ?? null;
         }
 
         /**
@@ -247,7 +248,7 @@ export function FormAssociated<T extends ConstructableFormAssociated>(BaseCtor: 
         public get validationMessage(): string {
             return this.elementInternals
                 ? this.elementInternals.validationMessage
-                : this.proxy.validationMessage;
+                : this.proxy?.validationMessage ?? "";
         }
 
         /**
@@ -257,7 +258,7 @@ export function FormAssociated<T extends ConstructableFormAssociated>(BaseCtor: 
         public get willValidate(): boolean {
             return this.elementInternals
                 ? this.elementInternals.willValidate
-                : this.proxy.willValidate;
+                : this.proxy?.willValidate ?? false;
         }
 
         /**
@@ -299,12 +300,12 @@ export function FormAssociated<T extends ConstructableFormAssociated>(BaseCtor: 
          * Stores a reference to the slot element that holds the proxy
          * element when it is appended.
          */
-        private proxySlot: HTMLSlotElement | void;
+        private proxySlot: HTMLSlotElement | void | undefined;
 
         /**
          * The value of the element to be associated with the form.
          */
-        public value: string;
+        public value: string | undefined;
 
         /**
          * Invoked when the `value` property changes
@@ -319,13 +320,16 @@ export function FormAssociated<T extends ConstructableFormAssociated>(BaseCtor: 
         public valueChanged(previous: string, next: string) {
             this.dirtyValue = true;
 
-            if (this.proxy instanceof HTMLElement) {
-                this.proxy.value = this.value;
+            if (this.value) {
+                if (this.proxy instanceof HTMLElement) {
+                    this.proxy.value = this.value;
+                }
+
+                this.currentValue = this.value;
+
+                this.setFormValue(this.value);
             }
 
-            this.currentValue = this.value;
-
-            this.setFormValue(this.value);
             this.validate();
         }
 
@@ -336,7 +340,7 @@ export function FormAssociated<T extends ConstructableFormAssociated>(BaseCtor: 
          * in UI libraries that bind data through the .setAttribute() API
          * and don't support IDL attribute binding.
          */
-        public currentValue: string;
+        public currentValue: string | undefined;
         public currentValueChanged() {
             this.value = this.currentValue;
         }
@@ -348,7 +352,7 @@ export function FormAssociated<T extends ConstructableFormAssociated>(BaseCtor: 
          * @remarks
          * HTML Attribute: value
          */
-        public initialValue: string;
+        public initialValue: string | undefined;
 
         /**
          * Invoked when the `initialValue` property changes
@@ -403,7 +407,7 @@ export function FormAssociated<T extends ConstructableFormAssociated>(BaseCtor: 
          * @remarks
          * HTML Attribute: name
          */
-        public name: string;
+        public name: string | undefined;
 
         /**
          * Invoked when the `name` property changes
@@ -418,7 +422,7 @@ export function FormAssociated<T extends ConstructableFormAssociated>(BaseCtor: 
          */
         public nameChanged(previous, next): void {
             if (this.proxy instanceof HTMLElement) {
-                this.proxy.name = this.name;
+                this.proxy.name = this.name ?? "";
             }
         }
 
@@ -482,7 +486,7 @@ export function FormAssociated<T extends ConstructableFormAssociated>(BaseCtor: 
             super(...args);
 
             this.required = false;
-            this.initialValue = this.initialValue || "";
+            this.initialValue = this.initialValue ?? "";
 
             if (!this.elementInternals) {
                 // When elementInternals is not supported, formResetCallback is
@@ -519,7 +523,7 @@ export function FormAssociated<T extends ConstructableFormAssociated>(BaseCtor: 
          */
         public disconnectedCallback(): void {
             this.proxyEventsToBlock.forEach(name =>
-                this.proxy.removeEventListener(name, this.stopPropagation)
+                this.proxy?.removeEventListener(name, this.stopPropagation)
             );
 
             if (!this.elementInternals && this.form) {
@@ -533,7 +537,7 @@ export function FormAssociated<T extends ConstructableFormAssociated>(BaseCtor: 
         public checkValidity(): boolean {
             return this.elementInternals
                 ? this.elementInternals.checkValidity()
-                : this.proxy.checkValidity();
+                : this.proxy?.checkValidity() ?? false;
         }
 
         /**
@@ -543,7 +547,7 @@ export function FormAssociated<T extends ConstructableFormAssociated>(BaseCtor: 
         public reportValidity(): boolean {
             return this.elementInternals
                 ? this.elementInternals.reportValidity()
-                : this.proxy.reportValidity();
+                : this.proxy?.reportValidity() ?? false;
         }
 
         /**
@@ -563,7 +567,7 @@ export function FormAssociated<T extends ConstructableFormAssociated>(BaseCtor: 
             if (this.elementInternals) {
                 this.elementInternals.setValidity(flags, message, anchor);
             } else if (typeof message === "string") {
-                this.proxy.setCustomValidity(message);
+                this.proxy?.setCustomValidity(message);
             }
         }
 
@@ -587,11 +591,15 @@ export function FormAssociated<T extends ConstructableFormAssociated>(BaseCtor: 
          * Attach the proxy element to the DOM
          */
         public attachProxy(): void {
+            if (!this.proxy) {
+                return;
+            }
+
             if (!this.proxyInitialized) {
                 this.proxyInitialized = true;
                 this.proxy.style.display = "none";
                 this.proxyEventsToBlock.forEach(name =>
-                    this.proxy.addEventListener(name, this.stopPropagation)
+                    this.proxy?.addEventListener(name, this.stopPropagation)
                 );
 
                 // These are typically mapped to the proxy during
@@ -622,7 +630,9 @@ export function FormAssociated<T extends ConstructableFormAssociated>(BaseCtor: 
          * Detach the proxy element from the DOM
          */
         public detachProxy(): void {
-            this.removeChild(this.proxy);
+            if (this.proxy) {
+                this.removeChild(this.proxy);
+            }
             this.shadowRoot?.removeChild(this.proxySlot as HTMLSlotElement);
         }
 
@@ -712,7 +722,7 @@ export function CheckableFormAssociated<T extends ConstructableFormAssociated>(
             this.defaultChecked = this.checkedAttribute;
         }
 
-        public defaultChecked: boolean;
+        public defaultChecked: boolean = false;
 
         /**
          * @internal
@@ -759,7 +769,7 @@ export function CheckableFormAssociated<T extends ConstructableFormAssociated>(
          * in UI libraries that bind data through the .setAttribute() API
          * and don't support IDL attribute binding.
          */
-        public currentChecked: boolean;
+        public currentChecked: boolean = false;
         public currentCheckedChanged(prev: boolean | undefined, next: boolean) {
             this.checked = this.currentChecked;
         }

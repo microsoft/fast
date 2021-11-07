@@ -56,12 +56,12 @@ export class AccordionItem extends FoundationElement {
      * HTML Attribute: id
      */
     @attr
-    public id: string;
+    public id: string | undefined;
 
     /**
      * @internal
      */
-    public expandbutton: HTMLElement;
+    public expandbutton: HTMLElement | undefined;
 
     /**
      * @internal

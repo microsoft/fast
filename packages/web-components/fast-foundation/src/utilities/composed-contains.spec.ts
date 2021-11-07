@@ -10,7 +10,7 @@ import { html, customElement, ref, FASTElement, observable, DOM } from "@microso
 })
 class TestElement extends FASTElement {
     @observable
-    public root: HTMLElement;
+    public root?: HTMLElement;
 }
 
 describe("The composedContains function", () => {

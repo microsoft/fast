@@ -27,7 +27,7 @@ export class Tooltip extends FoundationElement {
      * HTML Attribute: visible
      */
     @attr({ mode: "boolean" })
-    public visible: boolean;
+    public visible: boolean = false;
     private visibleChanged(): void {
         if ((this as FASTElement).$fastController.isConnected) {
             this.updateTooltipVisibility();
@@ -69,7 +69,7 @@ export class Tooltip extends FoundationElement {
      * HTML Attribute: position
      */
     @attr
-    public position: TooltipPosition;
+    public position: TooltipPosition | undefined;
     private positionChanged(): void {
         if ((this as FASTElement).$fastController.isConnected) {
             this.updateLayout();
@@ -94,7 +94,7 @@ export class Tooltip extends FoundationElement {
      * HTML Attribute: horizontal-viewport-lock
      */
     @attr({ attribute: "horizontal-viewport-lock" })
-    public horizontalViewportLock: boolean;
+    public horizontalViewportLock: boolean = false;
 
     /**
      * Controls if the tooltip will always remain fully in the viewport on the vertical axis
@@ -103,7 +103,7 @@ export class Tooltip extends FoundationElement {
      * HTML Attribute: vertical-viewport-lock
      */
     @attr({ attribute: "vertical-viewport-lock" })
-    public verticalViewportLock: boolean;
+    public verticalViewportLock: boolean = false;
 
     /**
      * the html element currently being used as anchor.
@@ -249,7 +249,7 @@ export class Tooltip extends FoundationElement {
      *
      * @internal
      */
-    public region: AnchoredRegion;
+    public region: AnchoredRegion | undefined;
 
     /**
      * The timer that tracks delay time before the tooltip is shown on hover
@@ -281,6 +281,10 @@ export class Tooltip extends FoundationElement {
      * @internal
      */
     public handlePositionChange = (ev: Event): void => {
+        if (!this.region) {
+            return;
+        }
+
         this.classList.toggle("top", this.region.verticalPosition === "start");
         this.classList.toggle("bottom", this.region.verticalPosition === "end");
         this.classList.toggle("inset-top", this.region.verticalPosition === "insetStart");
@@ -491,14 +495,12 @@ export class Tooltip extends FoundationElement {
      * added to the DOM
      */
     private setRegionProps = (): void => {
-        if (!this.tooltipVisible) {
+        if (!this.tooltipVisible || !this.region) {
             return;
         }
+
         this.region.viewportElement = this.viewportElement;
         this.region.anchorElement = this.anchorElement;
-        (this.region as any).addEventListener(
-            "positionchange",
-            this.handlePositionChange
-        );
+        this.region.addEventListener("positionchange", this.handlePositionChange);
     };
 }

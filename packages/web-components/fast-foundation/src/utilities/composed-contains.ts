@@ -11,8 +11,11 @@ import { composedParent } from "./composed-parent";
  *
  * @public
  */
-export function composedContains(reference: HTMLElement, test: HTMLElement): boolean {
-    let current: HTMLElement | null = test;
+export function composedContains(
+    reference: HTMLElement,
+    test: HTMLElement | undefined
+): boolean {
+    let current: HTMLElement | null = test ?? null;
 
     while (current !== null) {
         if (current === reference) {

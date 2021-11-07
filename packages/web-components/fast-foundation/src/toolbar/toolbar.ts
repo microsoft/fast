@@ -84,7 +84,7 @@ export class Toolbar extends FoundationElement {
      *
      * @internal
      */
-    private focusableElements: HTMLElement[];
+    private focusableElements: HTMLElement[] = [];
 
     /**
      * The orientation of the toolbar.
@@ -102,7 +102,7 @@ export class Toolbar extends FoundationElement {
      * @internal
      */
     @observable
-    public slottedItems: HTMLElement[];
+    public slottedItems: HTMLElement[] | undefined;
     protected slottedItemsChanged(): void {
         if (this.$fastController.isConnected) {
             this.reduceFocusableElements();
@@ -115,7 +115,7 @@ export class Toolbar extends FoundationElement {
      * @internal
      */
     @observable
-    public slottedLabel: HTMLElement[];
+    public slottedLabel: HTMLElement[] | undefined;
 
     /**
      * Set the activeIndex when a focusable element in the toolbar is clicked.
@@ -202,7 +202,7 @@ export class Toolbar extends FoundationElement {
     protected get allSlottedItems(): (HTMLElement | Node)[] {
         return [
             ...this.start.assignedElements(),
-            ...this.slottedItems,
+            ...(this.slottedItems ?? []),
             ...this.end.assignedElements(),
         ];
     }
@@ -295,7 +295,7 @@ export class DelegatesARIAToolbar {
      * HTML Attribute: aria-labelledby
      */
     @attr({ attribute: "aria-labelledby" })
-    public ariaLabelledby: string;
+    public ariaLabelledby?: string;
 
     /**
      * The label surfaced to assistive technologies.
@@ -305,7 +305,7 @@ export class DelegatesARIAToolbar {
      * HTML Attribute: aria-label
      */
     @attr({ attribute: "aria-label" })
-    public ariaLabel: string;
+    public ariaLabel?: string;
 }
 
 /**

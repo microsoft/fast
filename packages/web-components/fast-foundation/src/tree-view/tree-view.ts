@@ -20,18 +20,18 @@ import { FoundationElement } from "../foundation-element";
  * @public
  */
 export class TreeView extends FoundationElement {
-    public treeView: HTMLElement;
+    public treeView?: HTMLElement;
 
     @attr({ attribute: "render-collapsed-nodes" })
-    public renderCollapsedNodes: boolean;
+    public renderCollapsedNodes: boolean = false;
 
     @observable
-    public currentSelected: HTMLElement | TreeItem | null;
+    public currentSelected: HTMLElement | TreeItem | null = null;
 
     @observable
-    private nested: boolean;
+    private nested: boolean = false;
 
-    @observable slottedTreeItems: HTMLElement[];
+    @observable slottedTreeItems: HTMLElement[] = [];
     private slottedTreeItemsChanged(oldValue, newValue): void {
         if (this.$fastController.isConnected) {
             // filter the tree items until that's done for us in the framework
@@ -57,9 +57,9 @@ export class TreeView extends FoundationElement {
         });
     }
 
-    public currentFocused: HTMLElement | TreeItem | null;
+    public currentFocused: HTMLElement | TreeItem | null = null;
 
-    private treeItems: HTMLElement[];
+    private treeItems: HTMLElement[] = [];
 
     public handleBlur = (e: FocusEvent): void => {
         const { relatedTarget, target } = e;
@@ -93,9 +93,8 @@ export class TreeView extends FoundationElement {
 
         DOM.queueUpdate(() => {
             //only supporting single select
-            const node: HTMLElement | null = this.treeView.querySelector(
-                "[aria-selected='true']"
-            );
+            const node: HTMLElement | null =
+                this.treeView?.querySelector("[aria-selected='true']") ?? null;
             if (node) {
                 this.currentSelected = node;
             }

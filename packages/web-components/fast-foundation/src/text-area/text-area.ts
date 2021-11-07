@@ -20,7 +20,7 @@ export class TextArea extends FormAssociatedTextArea {
      * HTML Attribute: readonly
      */
     @attr({ mode: "boolean" })
-    public readOnly: boolean;
+    public readOnly: boolean = false;
     private readOnlyChanged(): void {
         if (this.proxy instanceof HTMLTextAreaElement) {
             this.proxy.readOnly = this.readOnly;
@@ -40,7 +40,7 @@ export class TextArea extends FormAssociatedTextArea {
      * A reference to the internal textarea element
      * @internal
      */
-    public control: HTMLTextAreaElement;
+    public control: HTMLTextAreaElement | undefined;
 
     /**
      * Indicates that this element should get focus after the page finishes loading.
@@ -49,7 +49,7 @@ export class TextArea extends FormAssociatedTextArea {
      * HTML Attribute: autofocus
      */
     @attr({ mode: "boolean" })
-    public autofocus: boolean;
+    public autofocus: boolean = false;
     private autofocusChanged(): void {
         if (this.proxy instanceof HTMLTextAreaElement) {
             this.proxy.autofocus = this.autofocus;
@@ -61,7 +61,7 @@ export class TextArea extends FormAssociatedTextArea {
      * @public
      */
     @attr({ attribute: "form" })
-    public formId: string;
+    public formId: string | undefined;
 
     /**
      * Allows associating a {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/datalist | datalist} to the element by {@link https://developer.mozilla.org/en-US/docs/Web/API/Element/id}.
@@ -70,10 +70,10 @@ export class TextArea extends FormAssociatedTextArea {
      * HTML Attribute: list
      */
     @attr
-    public list: string;
+    public list: string | undefined;
     private listChanged(): void {
         if (this.proxy instanceof HTMLTextAreaElement) {
-            this.proxy.setAttribute("list", this.list);
+            this.proxy.setAttribute("list", this.list ?? "");
         }
     }
 
@@ -84,10 +84,10 @@ export class TextArea extends FormAssociatedTextArea {
      * HTMLAttribute: maxlength
      */
     @attr({ converter: nullableNumberConverter })
-    public maxlength: number;
+    public maxlength: number | undefined;
     private maxlengthChanged(): void {
         if (this.proxy instanceof HTMLTextAreaElement) {
-            this.proxy.maxLength = this.maxlength;
+            this.proxy.maxLength = this.maxlength ?? 0;
         }
     }
 
@@ -98,10 +98,10 @@ export class TextArea extends FormAssociatedTextArea {
      * HTMLAttribute: minlength
      */
     @attr({ converter: nullableNumberConverter })
-    public minlength: number;
+    public minlength: number | undefined;
     private minlengthChanged(): void {
         if (this.proxy instanceof HTMLTextAreaElement) {
-            this.proxy.minLength = this.minlength;
+            this.proxy.minLength = this.minlength ?? 0;
         }
     }
 
@@ -112,7 +112,7 @@ export class TextArea extends FormAssociatedTextArea {
      * HTML Attribute: name
      */
     @attr
-    public name: string;
+    public name: string | undefined;
 
     /**
      * Sets the placeholder value of the element, generally used to provide a hint to the user.
@@ -122,7 +122,7 @@ export class TextArea extends FormAssociatedTextArea {
      * Using this attribute does is not a valid substitute for a labeling element.
      */
     @attr
-    public placeholder: string;
+    public placeholder: string | undefined;
 
     /**
      * Sizes the element horizontally by a number of character columns.
@@ -142,7 +142,7 @@ export class TextArea extends FormAssociatedTextArea {
      * HTML Attribute: rows
      */
     @attr({ converter: nullableNumberConverter, mode: "fromView" })
-    public rows: number;
+    public rows: number | undefined;
 
     /**
      * Sets if the element is eligible for spell checking
@@ -152,7 +152,7 @@ export class TextArea extends FormAssociatedTextArea {
      * HTML Attribute: spellcheck
      */
     @attr({ mode: "boolean" })
-    public spellcheck: boolean;
+    public spellcheck: boolean = false;
     private spellcheckChanged(): void {
         if (this.proxy instanceof HTMLTextAreaElement) {
             this.proxy.spellcheck = this.spellcheck;
@@ -163,13 +163,13 @@ export class TextArea extends FormAssociatedTextArea {
      * @internal
      */
     @observable
-    public defaultSlottedNodes: Node[];
+    public defaultSlottedNodes: Node[] | undefined;
 
     /**
      * @internal
      */
     public handleTextInput = (): void => {
-        this.value = this.control.value;
+        this.value = this.control?.value ?? "";
     };
 
     /**

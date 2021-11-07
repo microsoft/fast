@@ -45,7 +45,7 @@ export class TreeItem extends FoundationElement {
      * HTML Attribute: selected
      */
     @attr({ mode: "boolean" })
-    public selected: boolean;
+    public selected: boolean = false;
 
     /**
      * When true, the control will be immutable by user interaction. See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/disabled | disabled HTML attribute} for more information.
@@ -54,21 +54,21 @@ export class TreeItem extends FoundationElement {
      * HTML Attribute: disabled
      */
     @attr({ mode: "boolean" })
-    public disabled: boolean;
+    public disabled: boolean = false;
 
-    public expandCollapseButton: HTMLDivElement;
+    public expandCollapseButton: HTMLDivElement | undefined;
 
     @observable
     public focusable: boolean = false;
 
     @observable
-    public childItems: HTMLElement[];
+    public childItems: HTMLElement[] | undefined;
 
     @observable
-    public items: HTMLElement[];
+    public items: HTMLElement[] | undefined;
     private itemsChanged(oldValue, newValue): void {
         if (this.$fastController.isConnected) {
-            this.items.forEach((node: HTMLElement) => {
+            this.items?.forEach((node: HTMLElement) => {
                 if (isTreeItemElement(node)) {
                     // TODO: maybe not require it to be a TreeItem?
                     (node as TreeItem).nested = true;
@@ -81,10 +81,10 @@ export class TreeItem extends FoundationElement {
      * @internal
      */
     @observable
-    public nested: boolean;
+    public nested: boolean = false;
 
     @observable
-    public renderCollapsedChildren: boolean;
+    public renderCollapsedChildren: boolean = false;
 
     /**
      * Places document focus on a tree item
@@ -117,7 +117,7 @@ export class TreeItem extends FoundationElement {
     };
 
     public childItemLength(): number {
-        const treeChildren: HTMLElement[] = this.childItems.filter(
+        const treeChildren: HTMLElement[] | undefined = this.childItems?.filter(
             (item: HTMLElement) => {
                 return isTreeItemElement(item);
             }

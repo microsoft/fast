@@ -181,7 +181,7 @@ export class ARIAGlobalStatesAndProperties {
      * HTML Attribute: aria-label
      */
     @attr({ attribute: "aria-label", mode: "fromView" })
-    public ariaLabel: string;
+    public ariaLabel?: string;
 
     /**
      * Identifies the element (or elements) that labels the current element.
@@ -192,7 +192,7 @@ export class ARIAGlobalStatesAndProperties {
      * HTML Attribute: aria-labelledby
      */
     @attr({ attribute: "aria-labelledby", mode: "fromView" })
-    public ariaLabelledby: string;
+    public ariaLabelledby?: string;
 
     /**
      * Indicates that an element will be updated, and describes the types of updates the user agents,

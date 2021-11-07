@@ -27,7 +27,7 @@ export class Anchor extends FoundationElement {
      * HTML Attribute: download
      */
     @attr
-    public download: string;
+    public download: string | undefined;
 
     /**
      * The URL the hyperlink references. See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a | <a> element } for more information.
@@ -36,7 +36,7 @@ export class Anchor extends FoundationElement {
      * HTML Attribute: href
      */
     @attr
-    public href: string;
+    public href: string | undefined;
 
     /**
      * Hints at the language of the referenced resource. See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a | <a> element } for more information.
@@ -45,7 +45,7 @@ export class Anchor extends FoundationElement {
      * HTML Attribute: hreflang
      */
     @attr
-    public hreflang: string;
+    public hreflang: string | undefined;
 
     /**
      * See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a | <a> element } for more information.
@@ -54,7 +54,7 @@ export class Anchor extends FoundationElement {
      * HTML Attribute: ping
      */
     @attr
-    public ping: string;
+    public ping: string | undefined;
 
     /**
      * See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a | <a> element } for more information.
@@ -63,7 +63,7 @@ export class Anchor extends FoundationElement {
      * HTML Attribute: referrerpolicy
      */
     @attr
-    public referrerpolicy: string;
+    public referrerpolicy: string | undefined;
 
     /**
      * See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a | <a> element } for more information.
@@ -72,7 +72,7 @@ export class Anchor extends FoundationElement {
      * HTML Attribute: rel
      */
     @attr
-    public rel: string;
+    public rel: string | undefined;
 
     /**
      * See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a | <a> element } for more information.
@@ -81,7 +81,7 @@ export class Anchor extends FoundationElement {
      * HTML Attribute: target
      */
     @attr
-    public target: "_self" | "_blank" | "_parent" | "_top";
+    public target: "_self" | "_blank" | "_parent" | "_top" | undefined;
 
     /**
      * See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a | <a> element } for more information.
@@ -90,7 +90,7 @@ export class Anchor extends FoundationElement {
      * HTML Attribute: type
      */
     @attr
-    public type: string;
+    public type: string | undefined;
 
     /**
      *
@@ -99,12 +99,12 @@ export class Anchor extends FoundationElement {
      * @internal
      */
     @observable
-    public defaultSlottedContent: HTMLElement[];
+    public defaultSlottedContent: HTMLElement[] | undefined;
 
     /**
      * References the root element
      */
-    public control: HTMLAnchorElement;
+    public control: HTMLAnchorElement | undefined;
 
     /**
      * @internal
@@ -128,7 +128,7 @@ export class Anchor extends FoundationElement {
             this.$fastController.definition.shadowOptions?.delegatesFocus
         ) {
             this.focus = () => {
-                this.control.focus();
+                this.control?.focus();
             };
         }
     };

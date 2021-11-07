@@ -44,14 +44,14 @@ export class Select extends FormAssociatedSelect {
         }
     }
 
-    private indexWhenOpened: number;
+    private indexWhenOpened: number = -1;
 
     /**
      * The internal value property.
      *
      * @internal
      */
-    private _value: string;
+    private _value: string = "";
 
     /**
      * The value property.
@@ -133,7 +133,7 @@ export class Select extends FormAssociatedSelect {
      * @public
      */
     @attr({ attribute: "position" })
-    public positionAttribute: SelectPosition;
+    public positionAttribute: SelectPosition = SelectPosition.above;
 
     /**
      * Indicates the initial state of the position attribute.
@@ -164,7 +164,7 @@ export class Select extends FormAssociatedSelect {
      *
      * @internal
      */
-    public listbox: HTMLDivElement;
+    public listbox: HTMLDivElement | undefined;
 
     /**
      * Calculate and apply listbox positioning based on available viewport space.

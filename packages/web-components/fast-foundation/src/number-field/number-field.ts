@@ -36,7 +36,7 @@ export class NumberField extends FormAssociatedNumberField {
      * HTML Attribute: readonly
      */
     @attr({ attribute: "readonly", mode: "boolean" })
-    public readOnly: boolean;
+    public readOnly: boolean = false;
 
     /**
      * Indicates that this element should get focus after the page finishes loading. See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#htmlattrdefautofocus | autofocus HTML attribute} for more information.
@@ -45,7 +45,7 @@ export class NumberField extends FormAssociatedNumberField {
      * HTML Attribute: autofocus
      */
     @attr({ mode: "boolean" })
-    public autofocus: boolean;
+    public autofocus: boolean = false;
 
     /**
      * When true, spin buttons will not be rendered
@@ -64,7 +64,7 @@ export class NumberField extends FormAssociatedNumberField {
      * Using this attribute does is not a valid substitute for a labeling element.
      */
     @attr
-    public placeholder: string;
+    public placeholder: string | undefined;
 
     /**
      * Allows associating a {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/datalist | datalist} to the element by {@link https://developer.mozilla.org/en-US/docs/Web/API/Element/id}.
@@ -73,7 +73,7 @@ export class NumberField extends FormAssociatedNumberField {
      * HTML Attribute: list
      */
     @attr
-    public list: string;
+    public list: string | undefined;
 
     /**
      * The maximum number of characters a user can enter.
@@ -82,7 +82,7 @@ export class NumberField extends FormAssociatedNumberField {
      * HTMLAttribute: maxlength
      */
     @attr({ converter: nullableNumberConverter })
-    public maxlength: number;
+    public maxlength: number | undefined;
 
     /**
      * The minimum number of characters a user can enter.
@@ -91,7 +91,7 @@ export class NumberField extends FormAssociatedNumberField {
      * HTMLAttribute: minlength
      */
     @attr({ converter: nullableNumberConverter })
-    public minlength: number;
+    public minlength: number | undefined;
 
     /**
      * Sets the width of the element to a specified number of characters.
@@ -100,7 +100,7 @@ export class NumberField extends FormAssociatedNumberField {
      * HTMLAttribute: size
      */
     @attr({ converter: nullableNumberConverter })
-    public size: number;
+    public size: number | undefined;
 
     /**
      * Amount to increment or decrement the value by
@@ -168,13 +168,13 @@ export class NumberField extends FormAssociatedNumberField {
      * @internal
      */
     @observable
-    public defaultSlottedNodes: Node[];
+    public defaultSlottedNodes: Node[] | undefined;
 
     /**
      * A reference to the internal input element
      * @internal
      */
-    public control: HTMLInputElement;
+    public control: HTMLInputElement | undefined;
 
     /**
      * Flag to indicate that the value change is from the user input
@@ -235,6 +235,10 @@ export class NumberField extends FormAssociatedNumberField {
      * @public
      */
     public stepUp(): void {
+        if (!this.control) {
+            return;
+        }
+
         const value = parseFloat(this.value);
         const stepUpValue = !isNaN(value)
             ? value + this.step
@@ -255,6 +259,10 @@ export class NumberField extends FormAssociatedNumberField {
      * @public
      */
     public stepDown(): void {
+        if (!this.control) {
+            return;
+        }
+
         const value = parseFloat(this.value);
         const stepDownValue = !isNaN(value)
             ? value - this.step
@@ -278,7 +286,9 @@ export class NumberField extends FormAssociatedNumberField {
 
         this.proxy.setAttribute("type", "number");
         this.validate();
-        this.control.value = this.value;
+        if (this.control) {
+            this.control.value = this.value;
+        }
 
         if (this.autofocus) {
             DOM.queueUpdate(() => {
@@ -292,6 +302,9 @@ export class NumberField extends FormAssociatedNumberField {
      * @internal
      */
     public handleTextInput(): void {
+        if (!this.control) {
+            return;
+        }
         this.control.value = this.control.value.replace(/[^0-9\-+e.]/g, "");
         this.isUserInput = true;
         this.value = this.control.value;
@@ -336,6 +349,9 @@ export class NumberField extends FormAssociatedNumberField {
      * @internal
      */
     public handleBlur(): void {
+        if (!this.control) {
+            return;
+        }
         this.control.value = this.value;
     }
 }

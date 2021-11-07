@@ -31,7 +31,7 @@ export class TextField extends FormAssociatedTextField {
      * HTML Attribute: readonly
      */
     @attr({ attribute: "readonly", mode: "boolean" })
-    public readOnly: boolean;
+    public readOnly: boolean = false;
     private readOnlyChanged(): void {
         if (this.proxy instanceof HTMLInputElement) {
             this.proxy.readOnly = this.readOnly;
@@ -46,7 +46,7 @@ export class TextField extends FormAssociatedTextField {
      * HTML Attribute: autofocus
      */
     @attr({ mode: "boolean" })
-    public autofocus: boolean;
+    public autofocus: boolean = false;
     private autofocusChanged(): void {
         if (this.proxy instanceof HTMLInputElement) {
             this.proxy.autofocus = this.autofocus;
@@ -62,10 +62,10 @@ export class TextField extends FormAssociatedTextField {
      * Using this attribute does is not a valid substitute for a labeling element.
      */
     @attr
-    public placeholder: string;
+    public placeholder: string | undefined;
     private placeholderChanged(): void {
         if (this.proxy instanceof HTMLInputElement) {
-            this.proxy.placeholder = this.placeholder;
+            this.proxy.placeholder = this.placeholder ?? "";
         }
     }
 
@@ -91,10 +91,10 @@ export class TextField extends FormAssociatedTextField {
      * HTML Attribute: list
      */
     @attr
-    public list: string;
+    public list: string | undefined;
     private listChanged(): void {
         if (this.proxy instanceof HTMLInputElement) {
-            this.proxy.setAttribute("list", this.list);
+            this.proxy.setAttribute("list", this.list ?? "");
             this.validate();
         }
     }
@@ -106,10 +106,10 @@ export class TextField extends FormAssociatedTextField {
      * HTMLAttribute: maxlength
      */
     @attr({ converter: nullableNumberConverter })
-    public maxlength: number;
+    public maxlength: number | undefined;
     private maxlengthChanged(): void {
         if (this.proxy instanceof HTMLInputElement) {
-            this.proxy.maxLength = this.maxlength;
+            this.proxy.maxLength = this.maxlength ?? 524288;
             this.validate();
         }
     }
@@ -121,10 +121,10 @@ export class TextField extends FormAssociatedTextField {
      * HTMLAttribute: minlength
      */
     @attr({ converter: nullableNumberConverter })
-    public minlength: number;
+    public minlength: number | undefined;
     private minlengthChanged(): void {
         if (this.proxy instanceof HTMLInputElement) {
-            this.proxy.minLength = this.minlength;
+            this.proxy.minLength = this.minlength ?? 0;
             this.validate();
         }
     }
@@ -136,10 +136,10 @@ export class TextField extends FormAssociatedTextField {
      * HTMLAttribute: pattern
      */
     @attr
-    public pattern: string;
+    public pattern: string | undefined;
     private patternChanged(): void {
         if (this.proxy instanceof HTMLInputElement) {
-            this.proxy.pattern = this.pattern;
+            this.proxy.pattern = this.pattern ?? "";
             this.validate();
         }
     }
@@ -151,9 +151,9 @@ export class TextField extends FormAssociatedTextField {
      * HTMLAttribute: size
      */
     @attr({ converter: nullableNumberConverter })
-    public size: number;
+    public size: number | undefined;
     private sizeChanged(): void {
-        if (this.proxy instanceof HTMLInputElement) {
+        if (this.proxy instanceof HTMLInputElement && this.size) {
             this.proxy.size = this.size;
         }
     }
@@ -165,7 +165,7 @@ export class TextField extends FormAssociatedTextField {
      * HTMLAttribute: size
      */
     @attr({ mode: "boolean" })
-    public spellcheck: boolean;
+    public spellcheck: boolean = false;
     private spellcheckChanged(): void {
         if (this.proxy instanceof HTMLInputElement) {
             this.proxy.spellcheck = this.spellcheck;
@@ -176,13 +176,13 @@ export class TextField extends FormAssociatedTextField {
      * @internal
      */
     @observable
-    public defaultSlottedNodes: Node[];
+    public defaultSlottedNodes: Node[] | undefined;
 
     /**
      * A reference to the internal input element
      * @internal
      */
-    public control: HTMLInputElement;
+    public control: HTMLInputElement | undefined;
 
     /**
      * @internal
@@ -205,7 +205,7 @@ export class TextField extends FormAssociatedTextField {
      * @internal
      */
     public handleTextInput(): void {
-        this.value = this.control.value;
+        this.value = this.control?.value ?? "";
     }
 
     /**
