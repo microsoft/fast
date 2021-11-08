@@ -25,6 +25,3 @@
 6. happy-dom does not support `Node.hasChildNodes()` which is leveraged by `HTMLView.insertBefore()`, so that method must be changed to test child length.
 7. I believe we'll need to only support open shadow roots for SSR because if we declaratively create a closed shadow root there will be no mechanism to obtain it during element hydration.
 8. Rendering out `innerHTML` requires access to the custom element's shadow root. A method retrieve the shadowRoot has been added to the controller so that this can be done safely. One work-around that may work is to render a view to a private element and read the `innerHTML` from there, but there could be significant performance detriments to this.
-
-## TODO
-1. property bindings not working correctly for some reason
