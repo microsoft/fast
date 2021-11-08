@@ -6,7 +6,7 @@
 [x] Custom element rendered into light DOM slot
 [x] Custom element rendered into shadow DOM slot
 [x] Conditional template rendering
-[] Repeat template rendering
+[x] Repeat template rendering
 [x] Attribute value binding
 [x] Boolean attribute binding
 [] Property value binding

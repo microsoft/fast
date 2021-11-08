@@ -28,7 +28,9 @@ export class FASTElementRenderer extends ElementRenderer {
     }
 
     *renderShadow(renderInfo: RenderInfo): IterableIterator<string> {
-        yield* render(this.element.$fastController.getShadowRoot()!, renderInfo);
+        const { $fastController } = this.element;
+
+        yield* render($fastController.getShadowRoot()!, renderInfo);
     }
 
     attributeChangedCallback(
