@@ -202,7 +202,8 @@ export const defaultExecutionContext: ExecutionContext<any, any>;
 
 // @public
 export const DOM: Readonly<{
-    supportsAdoptedStyleSheets: boolean;
+    readonly supportsAdoptedStyleSheets: boolean;
+    disableAdoptedStyleSheets(): void;
     setHTMLPolicy(policy: TrustedTypesPolicy): void;
     createHTML(html: string): string;
     isMarker(node: Node): node is Comment;

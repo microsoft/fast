@@ -41,6 +41,10 @@ export const _interpolationStart = `${marker}{`;
 /** @internal */
 export const _interpolationEnd = `}${marker}`;
 
+let supportsAdoptedStyleSheets =
+    Array.isArray((document as any).adoptedStyleSheets) &&
+    "replace" in CSSStyleSheet.prototype;
+
 /**
  * Common DOM APIs.
  * @public
@@ -49,9 +53,16 @@ export const DOM = Object.freeze({
     /**
      * Indicates whether the DOM supports the adoptedStyleSheets feature.
      */
-    supportsAdoptedStyleSheets:
-        Array.isArray((document as any).adoptedStyleSheets) &&
-        "replace" in CSSStyleSheet.prototype,
+    get supportsAdoptedStyleSheets() {
+        return supportsAdoptedStyleSheets;
+    },
+
+    /**
+     * Explicitly disables adoptedStyleSheet support
+     */
+    disableAdoptedStyleSheets(): void {
+        supportsAdoptedStyleSheets = false;
+    },
 
     /**
      * Sets the HTML trusted types policy used by the templating engine.
