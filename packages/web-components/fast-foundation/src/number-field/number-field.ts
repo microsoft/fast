@@ -267,7 +267,6 @@ export class NumberField extends FormAssociatedNumberField {
 
         this.proxy.setAttribute("type", "number");
         this.validate();
-        this.control.value = this.value;
 
         if (this.autofocus) {
             DOM.queueUpdate(() => {
@@ -282,7 +281,7 @@ export class NumberField extends FormAssociatedNumberField {
      */
     public handleTextInput(): void {
         this.control.value = this.control.value.replace(/[^0-9\-+e.]/g, "");
-        this.valueChanged(this.value, this.control.value, false);
+        this.updateValue();
     }
 
     /**
@@ -334,7 +333,7 @@ export class NumberField extends FormAssociatedNumberField {
      * @internal
      */
     public handleBlur(): void {
-        this.control.value = this.value;
+        this.value = this.control.value;
     }
 }
 

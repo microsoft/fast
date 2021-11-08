@@ -50,6 +50,7 @@ export const numberFieldTemplate: (
                 min="${x => x.min}"
                 max="${x => x.max}"
                 step="${x => x.step}"
+                :value="${x => x.value}"
                 aria-atomic="${x => x.ariaAtomic}"
                 aria-busy="${x => x.ariaBusy}"
                 aria-controls="${x => x.ariaControls}"
