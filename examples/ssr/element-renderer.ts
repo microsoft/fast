@@ -1,8 +1,6 @@
 /* eslint-disable */
 import { ElementRenderer, RenderInfo } from "@lit-labs/ssr";
 import { FASTElement } from "@microsoft/fast-element";
-// import { render } from "@lit-labs/ssr/lib/render-lit-html";
-import { html } from "lit";
 import { render } from "./render";
 
 export class FASTElementRenderer extends ElementRenderer {

@@ -1,6 +1,6 @@
 /* eslint-disable */
 import express, { Request, Response } from "express";
-import "./dom";
+import "./fast-element-dom-shim";
 import { render } from "@lit-labs/ssr/lib/render-lit-html";
 import { Readable } from "stream";
 import { FASTElementRenderer } from "./element-renderer";
