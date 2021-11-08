@@ -23,10 +23,8 @@
 4. `ViewTemplate.create()` uses a HTMLTemplateElement, however the minimal DOM shim does not create a real HTML element, instead returning an object without the required "content.firstElementChild" property required by the ViewTemplate. This prevents us from invoking `Controller.onConnectedCallback()` on the server.
 5. We will need a mechanism to retrieve component CSS as a string so that it can be emitted to shadow DOM.
 6. happy-dom does not support `Node.hasChildNodes()` which is leveraged by `HTMLView.insertBefore()`, so that method must be changed to test child length.
-7. Lit's "render" method doesn't know how to process raw strings into declarative shadow-dom custom elements, so this preculdes us from simply calling `yield* render(innerHTML, context)` in the `renderShadow()` method.
-8. Lit-ssr's render() does not understand DOM that is interpolated into the html tagged-template literal, so this demo contains a work-around that may be un-safe.
-9. lit-ssr seems to [hard-code `shadow-mode="open"`](https://github.com/lit/lit/blob/main/packages/labs/ssr/src/lib/render-lit-html.ts#L728), so closed shadow roots are not currently supported.
-10. Rendering out `innerHTML` requires access to the custom element's shadow root. A method retrieve the shadowRoot has been added to the controller so that this can be done safely. One work-around that may work is to render a view to a private element and read the `innerHTML` from there, but there could be significant performance detriments to this.
+7. I believe we'll need to only support open shadow roots for SSR because if we declaratively create a closed shadow root there will be no mechanism to obtain it during element hydration.
+8. Rendering out `innerHTML` requires access to the custom element's shadow root. A method retrieve the shadowRoot has been added to the controller so that this can be done safely. One work-around that may work is to render a view to a private element and read the `innerHTML` from there, but there could be significant performance detriments to this.
 
 ## TODO
 1. property bindings not working correctly for some reason

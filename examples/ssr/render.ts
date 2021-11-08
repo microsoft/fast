@@ -85,6 +85,9 @@ function* renderCustomElementNode(
 
     if (shadowContent) {
         renderInfo.customElementHostStack.push(renderer);
+        // hard-code open shadow root because otherwise
+        // the custom element doesn't have a mechanism to
+        // obtain the element's shadow root during hydration
         yield `<template shadowroot="open">`;
         yield* shadowContent;
         yield "</template>";
