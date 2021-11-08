@@ -23,7 +23,8 @@ export class FASTElementRenderer extends ElementRenderer {
     }
 
     *renderLight(renderInfo: RenderInfo): IterableIterator<string> {
-        yield "LIGHT DOM";
+        // This is for rendering to the custom element's host DOM instead of
+        // to a shadow-root attached to the host element. no-op this for now.
     }
 
     *renderShadow(renderInfo: RenderInfo): IterableIterator<string> {
