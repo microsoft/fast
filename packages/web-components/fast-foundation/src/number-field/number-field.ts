@@ -133,8 +133,9 @@ export class NumberField extends FormAssociatedNumberField {
         const min = Math.min(this.min, this.max);
         if (this.min !== undefined && this.min !== min) {
             this.min = min;
+            return;
         }
-        this.value = this.getValidValue(this.value);
+        this.updateValue();
     }
 
     /**
@@ -159,8 +160,9 @@ export class NumberField extends FormAssociatedNumberField {
         const max = Math.max(this.min, this.max);
         if (this.max !== undefined && this.max !== max) {
             this.max = max;
+            return;
         }
-        this.value = this.getValidValue(this.value);
+        this.updateValue();
     }
 
     /**
@@ -183,15 +185,10 @@ export class NumberField extends FormAssociatedNumberField {
      * @param updateControl - should the text field be updated with value, defaults to true
      * @internal
      */
-    public valueChanged(
-        previous: string,
-        next: string,
-        updateControl: boolean = true
-    ): void {
-        this.value = this.getValidValue(next);
-
-        if (this.control && updateControl) {
-            this.control.value = this.value;
+    public valueChanged(previous: string, next: string): void {
+        this.updateValue();
+        if (next !== this.value) {
+            return;
         }
 
         super.valueChanged(previous, this.value);
@@ -204,21 +201,21 @@ export class NumberField extends FormAssociatedNumberField {
 
     /**
      * Sets the internal value to a valid number between the min and max properties
-     * @param value - user input
-     * @param updateControl - should the text field update to the valid value
      *
      * @internal
      */
-    private getValidValue(value: string): string {
-        let validValue: number | string = parseFloat(parseFloat(value).toPrecision(12));
+    private updateValue(): void {
+        let validValue: number = parseFloat(parseFloat(this.value).toPrecision(12));
+
         if (isNaN(validValue)) {
-            validValue = "";
+            this.value = "";
+            return;
         } else {
             validValue = Math.min(validValue, this.max ?? validValue);
-            validValue = Math.max(validValue, this.min ?? validValue).toString();
+            validValue = Math.max(validValue, this.min ?? validValue);
         }
 
-        return validValue;
+        this.value = `${validValue}`;
     }
 
     /**
