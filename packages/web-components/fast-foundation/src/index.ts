@@ -32,6 +32,7 @@ export * from "./divider/index";
 export * from "./flipper/index";
 export * from "./form-associated/index";
 export * from "./foundation-element/index";
+export * from "./gauge/index";
 export * from "./listbox-option/index";
 export * from "./listbox/index";
 export * from "./picker/index";

@@ -1210,6 +1210,31 @@ export class FoundationElementRegistry<TDefinition extends FoundationElementDefi
 export type FoundationElementTemplate<T, K extends FoundationElementDefinition = FoundationElementDefinition> = LazyFoundationOption<T, K>;
 
 // @public
+export class Gauge extends FoundationElement {
+    connectedCallback(): void;
+    // @internal
+    displayedText: string;
+    // @internal
+    face: HTMLElement;
+    label: string;
+    max: number;
+    // @internal
+    meterCircle: HTMLElement;
+    min: number;
+    title: string;
+    titleDisplay: string;
+    units: string;
+    value: number;
+    // @internal
+    valueChanged(previous: any, next: any): void;
+    // @internal
+    valueCircle: HTMLElement;
+}
+
+// @public
+export const gaugeTemplate: FoundationElementTemplate<ViewTemplate<Gauge>>;
+
+// @public
 export enum GenerateHeaderOptions {
     // (undocumented)
     default = "default",

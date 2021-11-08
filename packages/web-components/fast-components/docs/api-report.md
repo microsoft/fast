@@ -41,6 +41,7 @@ import { Flipper } from '@microsoft/fast-foundation';
 import { FlipperOptions } from '@microsoft/fast-foundation';
 import { FoundationElement } from '@microsoft/fast-foundation';
 import { FoundationElementDefinition } from '@microsoft/fast-foundation';
+import { Gauge } from '@microsoft/fast-foundation';
 import { HorizontalScroll as HorizontalScroll_2 } from '@microsoft/fast-foundation';
 import { HorizontalScrollOptions } from '@microsoft/fast-foundation';
 import { Listbox } from '@microsoft/fast-foundation';
@@ -540,6 +541,17 @@ export const fastDivider: (overrideDefinition?: import("@microsoft/fast-foundati
 // @public
 export const fastFlipper: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<FlipperOptions> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<FlipperOptions, import("@microsoft/fast-element").Constructable<import("@microsoft/fast-foundation").FoundationElement>>;
 
+// @public (undocumented)
+export const fastGauge: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<{
+    baseName: string;
+    template: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition>) => import("@microsoft/fast-element").ViewTemplate<Gauge, any>;
+    styles: import("@microsoft/fast-element").ElementStyles;
+}> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<{
+    baseName: string;
+    template: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition>) => import("@microsoft/fast-element").ViewTemplate<Gauge, any>;
+    styles: import("@microsoft/fast-element").ElementStyles;
+}, typeof Gauge>;
+
 // @public
 export const fastHorizontalScroll: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<HorizontalScrollOptions> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<HorizontalScrollOptions, import("@microsoft/fast-element").Constructable<import("@microsoft/fast-foundation").FoundationElement>>;
 
@@ -687,6 +699,11 @@ export const foregroundOnAccentRest: import("@microsoft/fast-foundation").CSSDes
 
 // @public (undocumented)
 export const foregroundOnAccentRestLarge: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
+
+export { Gauge }
+
+// @public
+export const gaugeStyles: import("@microsoft/fast-element").ElementStyles;
 
 // Warning: (ae-internal-missing-underscore) The name "HorizontalScroll" should be prefixed with an underscore because the declaration is marked as @internal
 //

@@ -1,0 +1,411 @@
+<h1>Gauge</h1>
+<style>
+    body {
+        font-family: sans-serif;
+        font-size: small;
+    }
+
+    .card {
+        --card-border: 1px solid rgba(125, 125, 125, 0.5);
+        display: inline-block;
+        padding: 10px;
+        margin: 10px;
+        border: var(--card-border);
+        border-radius: 4px;
+        background: var(--fill-color);
+        min-height: 300px;
+        vertical-align: top;
+        position: relative;
+        box-shadow: 0 0 4px rgba(0, 0, 0, 0.3);
+    }
+
+    .card label {
+        color: var(--neutral-foreground-rest);
+        margin: 0 5px 0 10px;
+    }
+
+    .card .controls {
+        padding: 10px;
+        border-top: var(--card-border);
+        background: rgba(125, 125, 125, 0.5);
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        min-height: 40px;
+    }
+</style>
+
+<script>
+    var setEvent = (el, evt, func) => {
+        (typeof el === "string" ? document.getElementById(el) : el).addEventListener(
+            evt,
+            func
+        );
+    };
+</script>
+<h2>Default</h2>
+<fast-gauge value="45"></fast-gauge>
+
+<h2>Gauge with custom min and max</h2>
+<fast-gauge value="77" min="32" max="120"></fast-gauge>
+<fast-gauge value=".8" min="0" max="1"></fast-gauge>
+<fast-gauge min="-100" max="100" value="-43"></fast-gauge>
+<h2>Gauge with titles and units</h2>
+<fast-gauge value="77" units="&deg;" label="Temperature" min="32" max="120"></fast-gauge>
+<fast-gauge value=".8" min="0" max="1" label="Opacity"></fast-gauge>
+<fast-gauge value="65" min="0" max="155" units=" MPH" label="Speed"></fast-gauge>
+
+<h2>Partial gauge</h2>
+<fast-gauge value="63" style="--gauge-size: 270;" label="270&deg;"></fast-gauge>
+<fast-gauge value="47" style="--gauge-size: 180;" label="180&deg;"></fast-gauge>
+<fast-gauge value="78" style="--gauge-size: 90;" label="90&deg;"></fast-gauge>
+
+<style>
+    .rotate180::part(value) {
+        transform: rotate(180deg);
+    }
+    .rotate90::part(value) {
+        transform: rotate(90deg);
+    }
+    .rotate270::part(value) {
+        transform: rotate(270deg);
+    }
+</style>
+<h2>Gauge with starting point rotated</h2>
+<fast-gauge class="rotate180" value="61" label="180deg"></fast-gauge>
+<fast-gauge class="rotate90" value="34" label="90deg"></fast-gauge>
+<fast-gauge class="rotate270" value="45" label="270deg"></fast-gauge>
+
+<h2>Gauge with direction -1</h2>
+<fast-gauge style="--gauge-direction: -1;" value="88"></fast-gauge>
+
+<style>
+    .slow::part(value) {
+        transition-duration: 3s;
+    }
+</style>
+<h2>Changing transition duration (3s)</h2>
+<fast-gauge class="slow" value="68"></fast-gauge>
+
+<style>
+    .dial {
+        stroke: rgba(0, 150, 150, 1);
+        color: rgba(0, 150, 150, 1);
+        width: 150px;
+        height: 150px;
+    }
+
+    .dial::part(meter),
+    .dial::part(value) {
+        stroke-width: 25px;
+        r: calc(50% - 25px);
+    }
+
+    .dial::part(face) {
+        width: 76px;
+        height: 76px;
+        font-size: 20px;
+        background: var(--fill-color);
+        box-shadow: -4px 4px 20px rgba(0, 0, 0, 1);
+    }
+
+    .style2 {
+        stroke: orange;
+        color: var(--fill-color);
+        font-size: 20px;
+    }
+
+    .style2::part(face) {
+        background: orange;
+        font-weight: bold;
+    }
+
+    .style3 {
+        stroke: var(--fill-color);
+        color: white;
+    }
+
+    .style3::part(value) {
+        r: calc(50% - 30px);
+    }
+
+    .style3::part(meter) {
+        stroke: maroon;
+        box-shadow: -4px 4px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .style3::part(face) {
+        box-shadow: none;
+        background: maroon;
+    }
+
+    .style4 {
+        stroke: rgb(0, 100, 50);
+        color: var(--neutral-foreground-rest);
+    }
+
+    .style4::part(meter) {
+        stroke: transparent;
+    }
+
+    .style4::part(face) {
+        background: rgb(0, 100, 50);
+        box-shadow: none;
+    }
+
+    .style5 {
+        stroke: var(--fill-color);
+        width: 200px;
+        height: 200px;
+        font-size: 24px;
+        color: rgba(255, 100, 255, 1);
+    }
+
+    .style5::part(meter) {
+        stroke-width: 10px;
+        r: calc(50% - 10px);
+        stroke: rgba(255, 100, 255, 0.5);
+    }
+
+    .style5::part(value) {
+        r: calc(50% - 10px);
+    }
+
+    .small-value {
+        stroke: #0f0;
+        width: 150px;
+        height: 150px;
+    }
+
+    .small-value::part(meter) {
+        stroke-width: 6px;
+        r: calc(50% - 6px);
+    }
+
+    .small-value::part(value) {
+        r: calc(50% - 6px);
+        stroke-width: 2px;
+    }
+
+    .small-value::part(label) {
+        font-weight: bold;
+    }
+
+    .small-value::part(text) {
+        font-size: 32px;
+        color: #999;
+        margin: 10px 0 0;
+    }
+
+    .corner-value {
+        color: orange;
+        stroke: orange;
+        width: 150px;
+        height: 150px;
+        font-size: 48px;
+        --gauge-size: 270;
+    }
+
+    .corner-value::part(meter),
+    .corner-value::part(value) {
+        transform: rotate(-45deg);
+        stroke-width: 20px;
+        r: calc(50% - 20px);
+    }
+
+    .corner-value::part(face) {
+        margin: 90px 0 0 75px;
+    }
+
+    .double {
+        width: 200px;
+        height: 200px;
+        stroke: purple;
+    }
+
+    .double fast-gauge {
+        width: 80px;
+        height: 80px;
+        margin: auto;
+        stroke: red;
+    }
+
+    .double fast-gauge::part(meter),
+    .double fast-gauge::part(value) {
+        stroke-width: 15px;
+        r: calc(50% - 15px);
+    }
+
+    .double fast-gauge + fast-gauge {
+        stroke: blue;
+    }
+</style>
+<h2>Styled gauges</h2>
+<div class="card add-controls">
+    <fast-gauge
+        style="
+            stroke: navy;
+            width: 150px;
+            height: 150px;
+            --gauge-size: 180;
+            font-size: 24px;
+            line-height: 32px;
+        "
+        value="65"
+        label="Output"
+        units="%"
+    ></fast-gauge>
+</div>
+<div class="card add-controls">
+    <fast-gauge
+        class="small-value"
+        value="72"
+        min="32"
+        max="110"
+        units="&deg;"
+        label="Temperature"
+    ></fast-gauge>
+</div>
+<div class="card add-controls">
+    <fast-gauge class="corner-value" value="65"></fast-gauge>
+</div>
+<div class="card add-controls">
+    <fast-gauge class="dial" value="88"></fast-gauge>
+</div>
+<div class="card add-controls">
+    <fast-gauge class="dial style2" value="54"></fast-gauge>
+</div>
+<div class="card add-controls">
+    <fast-gauge class="dial style3" value="42"></fast-gauge>
+</div>
+<div class="card add-controls">
+    <fast-gauge class="dial style4" value="63"></fast-gauge>
+</div>
+<div class="card add-controls">
+    <fast-gauge class="style5" value="42"></fast-gauge>
+</div>
+
+<h2>Scripted gauges</h2>
+<div class="card">
+    <fast-gauge class="double" id="double-gauge">
+        <fast-gauge value="20"></fast-gauge>
+        <fast-gauge value="76"></fast-gauge>
+    </fast-gauge>
+    <div class="controls">
+        <label>Value 1:</label>
+        <select id="select1">
+            <option>20</option>
+            <option>33</option>
+            <option>52</option>
+            <option>76</option>
+            <option>82</option>
+        </select>
+        <br />
+        <label>Value 2:</label>
+        <select id="select2">
+            <option>20</option>
+            <option>33</option>
+            <option>52</option>
+            <option selected>76</option>
+            <option>82</option>
+        </select>
+    </div>
+</div>
+<script>
+    var doubleGauge = document.getElementById("double-gauge");
+    var children = Array.from(doubleGauge.children);
+    var updateDoubleGauge = () => {
+        doubleGauge.value = children.reduce((sum, child) => (sum += child.value), 0) / 2;
+    };
+    children.forEach(child => child.addEventListener("change", updateDoubleGauge));
+    updateDoubleGauge();
+    var select1 = document.getElementById("select1");
+    setEvent(select1, "change", () => (children[0].value = select1.value));
+    var select2 = document.getElementById("select2");
+    setEvent(select2, "change", () => (children[1].value = select2.value));
+</script>
+<div class="card add-controls">
+    <style>
+        #color-change {
+            stroke: green;
+            width: 150px;
+            height: 150px;
+            --gauge-size: 270;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        #color-change::part(meter),
+        #color-change::part(value) {
+            stroke-width: 20px;
+            r: calc(50% - 20px);
+        }
+    </style>
+    <fast-gauge
+        value="31"
+        units="%"
+        id="color-change"
+        style="stroke: green;"
+    ></fast-gauge>
+    <script>
+        var change = document.getElementById("color-change");
+        var updateColor = elm =>
+            (elm.style.stroke =
+                elm.value < 20
+                    ? "purple"
+                    : elm.value < 30
+                    ? "blue"
+                    : elm.value < 50
+                    ? "green"
+                    : elm.value < 70
+                    ? "yellow"
+                    : elm.value < 80
+                    ? "orange"
+                    : "red");
+        change.addEventListener("change", e => updateColor(e.target));
+    </script>
+</div>
+
+<script>
+    var cardControls = Array.from(document.querySelectorAll(".add-controls"));
+    cardControls.forEach(card => {
+        const gauges = Array.from(card.getElementsByTagName("fast-gauge"));
+        const controlContainer = document.createElement("div");
+        controlContainer.className = "controls";
+        card.appendChild(controlContainer);
+        gauges.forEach((gauge, index) => {
+            const { min = 0, max = 100 } = gauge;
+            const range = max - min;
+            const steps = Math.floor(range / 10);
+            const label = document.createElement("label");
+            label.innerText = `Value ${gauges.length > 1 ? index + 1 : ""}`;
+            controlContainer.appendChild(label);
+            const select = document.createElement("select");
+            select.addEventListener("change", () => (gauge.value = select.value));
+            controlContainer.appendChild(select);
+            let options = [min]
+                .concat(
+                    new Array(steps)
+                        .fill(null)
+                        .map(
+                            (_, index) => index * 10 + Math.floor(Math.random() * 9) + min
+                        )
+                )
+                .concat([max]);
+            let inserted = false;
+            options = options.map(count =>
+                Math.floor(count / 10) == Math.floor(gauge.value / 10)
+                    ? gauge.value
+                    : count
+            );
+            options.forEach(count => {
+                const option = document.createElement("option");
+                option.innerText = count;
+                if (count === gauge.value) {
+                    option.selected = true;
+                }
+                select.appendChild(option);
+            });
+        });
+    });
+</script>
