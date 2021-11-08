@@ -5,11 +5,11 @@ import {
     observable,
     SyntheticViewTemplate,
 } from "@microsoft/fast-element";
-import { keyArrowDown, keyArrowUp } from "@microsoft/fast-web-utilities";
-import { StartEnd, StartEndOptions } from "../patterns/index";
-import { applyMixins } from "../utilities/index";
+import { keyArrowDown, keyArrowUp, keyTab } from "@microsoft/fast-web-utilities";
 import type { FoundationElementDefinition } from "../foundation-element";
-import { DelegatesARIATextbox } from "../text-field/index";
+import { StartEnd, StartEndOptions } from "../patterns/start-end";
+import { DelegatesARIATextbox } from "../text-field/text-field";
+import { applyMixins } from "../utilities/apply-mixins";
 import { FormAssociatedNumberField } from "./number-field.form-associated";
 
 /**
@@ -309,16 +309,26 @@ export class NumberField extends FormAssociatedNumberField {
         const key = e.key;
 
         switch (key) {
-            case keyArrowUp:
-                this.stepUp();
+            case keyArrowUp: {
+                if (!this.readOnly) {
+                    this.stepUp();
+                }
                 return false;
+            }
 
-            case keyArrowDown:
-                this.stepDown();
+            case keyArrowDown: {
+                if (!this.readOnly) {
+                    this.stepDown();
+                }
                 return false;
+            }
+
+            case keyTab: {
+                return true;
+            }
         }
 
-        return true;
+        return !this.readOnly;
     }
 
     /**
