@@ -40,12 +40,6 @@ export type ColorRecipe = Recipe<Swatch>;
 /** @public */
 export type InteractiveColorRecipe = Recipe<InteractiveSwatchSet>;
 
-/** @public */
-export type InteractiveSet = Record<"rest" | "hover" | "active" | "focus", string>;
-
-/** @public */
-export type InteractiveRecipe = Recipe<InteractiveSet>;
-
 const { create } = DesignToken;
 
 // General tokens

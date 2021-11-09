@@ -731,12 +731,6 @@ export const imgTemplate: import("@microsoft/fast-element").ViewTemplate<Avatar,
 export type InteractiveColorRecipe = Recipe<InteractiveSwatchSet>;
 
 // @public (undocumented)
-export type InteractiveRecipe = Recipe<InteractiveSet>;
-
-// @public (undocumented)
-export type InteractiveSet = Record<"rest" | "hover" | "active" | "focus", string>;
-
-// @public (undocumented)
 export interface InteractiveSwatchSet {
     active: Swatch;
     focus: Swatch;
