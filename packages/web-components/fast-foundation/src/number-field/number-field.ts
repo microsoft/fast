@@ -200,6 +200,10 @@ export class NumberField extends FormAssociatedNumberField {
             return;
         }
 
+        if (this.control) {
+            this.control.value = this.value;
+        }
+
         super.valueChanged(previous, this.value);
 
         if (previous !== undefined) {
@@ -221,10 +225,10 @@ export class NumberField extends FormAssociatedNumberField {
         if (isNaN(validValue)) {
             this.value = "";
             return;
-        } else {
-            validValue = Math.min(validValue, this.max ?? validValue);
-            validValue = Math.max(validValue, this.min ?? validValue);
         }
+
+        validValue = Math.min(validValue, this.max ?? validValue);
+        validValue = Math.max(validValue, this.min ?? validValue);
 
         this.value = `${validValue}`;
     }
@@ -318,6 +322,7 @@ export class NumberField extends FormAssociatedNumberField {
         switch (key) {
             case keyArrowUp: {
                 if (!this.readOnly) {
+                    this.value = this.control.value;
                     this.stepUp();
                 }
                 return false;
@@ -325,6 +330,7 @@ export class NumberField extends FormAssociatedNumberField {
 
             case keyArrowDown: {
                 if (!this.readOnly) {
+                    this.value = this.control.value;
                     this.stepDown();
                 }
                 return false;
