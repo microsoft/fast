@@ -70,7 +70,8 @@ test(`should render a custom element registered with an open shadow root with an
 
 	expect(shadowRoot).not.toBeNull();
 });
-// This fails because lit hard-codes open shadow root
+// This fails because open shadow roots are hard-coded. The reason for that is so that hydrated elements can get access
+// to the generated shadow root.
 test.skip(`should render a custom element registered with a closed shadow root with a closed shadow root`, async ({page}) => {
 	await page.goto(ROOT_URL);
 	const target = await page.$("fast-main #closed-shadow-root");
@@ -119,4 +120,17 @@ test("should bind a property value to an element", async ({page}) => {
 	const target = await page.$("fast-main > fast-bindings #property-binding");
 
 	expect(await target.innerText()).toBe("property-value");
+});
+test("should produce a style element for styles an element is defined with", async ({page}) => {
+	await page.goto(ROOT_URL);
+	const target = await page.$("fast-main > #definition-styles style");
+
+	expect(await (await target.innerText()).replaceAll(/\s/g, "")).toBe(":host{color:red;}");
+});
+test("should produce a style element for styles an element adding dynamically", async ({page}) => {
+	await page.goto(ROOT_URL);
+	const targets = await page.$$("fast-main > #instance-styles style");
+	const target = targets[0]
+
+	expect(await (await target.innerText()).replaceAll(/\s/g, "")).toBe(":host{color:blue;}");
 });

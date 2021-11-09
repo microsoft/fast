@@ -43,10 +43,11 @@ FASTElement.define(Main, {
             ?boolean=${x => true}
             :property=${x => "property-value"}
         ></fast-bindings>
+        <fast-styles id="definition-styles"></fast-styles>
+        <fast-styles id="instance-styles" instance-styles></fast-styles>
 
         <fast-repeater></fast-repeater>
         <fast-repeater :data=${x => [1, 2, 3, 4].map(x => x.toString())}></fast-repeater>
-        <fast-styles></fast-styles>
     `,
     styles: css`
         :host {
