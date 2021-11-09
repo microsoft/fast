@@ -6,12 +6,10 @@ const instanceStyles = css`
     }
 `;
 export class Styles extends FASTElement {
-    @attr({ mode: "boolean", attribute: "instance-styles" })
-    instanceStyles: boolean = false;
-    instanceStylesChanged(): void {
-        this.instanceStyles
-            ? instanceStyles.addStylesTo(this)
-            : instanceStyles.removeStylesFrom(this);
+    connectedCallback(): void {
+        super.connectedCallback();
+
+        this.$fastController.addStyles(instanceStyles);
     }
 }
 
