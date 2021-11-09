@@ -46,8 +46,11 @@ FASTElement.define(Main, {
         <fast-styles id="definition-styles"></fast-styles>
         <fast-styles id="instance-styles" instance-styles></fast-styles>
 
-        <fast-repeater></fast-repeater>
-        <fast-repeater :data=${x => [1, 2, 3, 4].map(x => x.toString())}></fast-repeater>
+        <fast-repeater id="default-repeater"></fast-repeater>
+        <fast-repeater
+            id="data-bound-repeater"
+            :data=${x => [1, 2, 3, 4].map(x => x.toString())}
+        ></fast-repeater>
     `,
     styles: css`
         :host {
