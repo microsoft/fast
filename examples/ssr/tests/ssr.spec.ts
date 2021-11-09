@@ -130,7 +130,7 @@ test("should produce a style element for styles an element is defined with", asy
 test("should produce a style element for styles an element adding dynamically", async ({page}) => {
 	await page.goto(ROOT_URL);
 	const targets = await page.$$("fast-main > #instance-styles style");
-	const target = targets[0]
+	const target = targets[1]
 
 	expect(await (await target.innerText()).replaceAll(/\s/g, "")).toBe(":host{color:blue;}");
 });
