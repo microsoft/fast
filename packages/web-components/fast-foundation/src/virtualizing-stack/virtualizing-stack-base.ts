@@ -18,7 +18,7 @@ import type { ResizeObserverClassDefinition } from "../anchored-region/resize-ob
  *
  * @beta
  */
-export type VirtualizingStackAutoUpdateMode = "manual" | "resize-only" | "auto";
+export type VirtualizingStackAutoUpdateMode = "manual" | "viewport-resize" | "auto";
 
 const defaultItemTemplate: ViewTemplate<any> = html`
     <div
@@ -146,13 +146,7 @@ export class VirtualizingStackBase extends FoundationElement {
         newMode: VirtualizingStackAutoUpdateMode
     ): void {
         if (this.$fastController.isConnected) {
-            if (prevMode === "auto") {
-                this.stopAutoUpdateEventListeners();
-            }
-
-            if (newMode === "auto") {
-                this.startAutoUpdateEventListeners();
-            }
+            this.resetAutoUpdateMode(prevMode, newMode);
         }
     }
 
@@ -195,7 +189,7 @@ export class VirtualizingStackBase extends FoundationElement {
     public viewportElement: HTMLElement;
     private viewportElementChanged(): void {
         if ((this as FoundationElement).$fastController.isConnected) {
-            // this.initialize();
+            this.resetAutoUpdateMode(this.autoUpdateMode, this.autoUpdateMode);
         }
     }
 
@@ -236,6 +230,9 @@ export class VirtualizingStackBase extends FoundationElement {
      */
     @observable
     public visibleItems: any[] = [];
+    protected visibleItemsChanged(): void {
+        this.$emit("visibleitemschanged ", this, { bubbles: false });
+    }
 
     /**
      *
@@ -318,17 +315,13 @@ export class VirtualizingStackBase extends FoundationElement {
     connectedCallback() {
         super.connectedCallback();
         this.viewportElement = this.getViewport();
-        if (this.autoUpdateMode === "auto") {
-            this.startAutoUpdateEventListeners();
-        }
+        this.resetAutoUpdateMode("manual", this.autoUpdateMode);
 
         this.initializeResizeDetector();
 
         this.itemsPlaceholder = document.createComment("");
         this.appendChild(this.itemsPlaceholder);
     }
-
-    public getI;
 
     private initializeRepeatBehavior(): void {
         this.pendingReset = false;
@@ -354,7 +347,7 @@ export class VirtualizingStackBase extends FoundationElement {
      */
     public disconnectedCallback(): void {
         if (this.autoUpdateMode === "auto") {
-            this.stopAutoUpdateEventListeners();
+            this.stopViewportResizeDetector();
         }
         this.stopObservers();
         this.disconnectResizeDetector();
@@ -372,7 +365,7 @@ export class VirtualizingStackBase extends FoundationElement {
     }
 
     /**
-     * the position in the stack (in pixels) of the top of a particular item
+     * the position in the stack (in pixels) of the a particular item
      *
      * @public
      */
@@ -395,6 +388,28 @@ export class VirtualizingStackBase extends FoundationElement {
     }
 
     /**
+     * get position updates
+     */
+    public requestPositionUpdates = (): void => {
+        if (this.pendingPositioningUpdate) {
+            return;
+        }
+        this.pendingPositioningUpdate = true;
+        this.clearLayoutUpdateTimer();
+
+        DOM.queueUpdate(() => {
+            VirtualizingStackBase.intersectionService.requestPosition(
+                this.containerElement,
+                this.handleIntersection
+            );
+            VirtualizingStackBase.intersectionService.requestPosition(
+                this.viewportElement,
+                this.handleIntersection
+            );
+        });
+    };
+
+    /**
      *
      */
     protected reset(): void {
@@ -407,6 +422,33 @@ export class VirtualizingStackBase extends FoundationElement {
         DOM.queueUpdate(() => {
             this.initializeRepeatBehavior();
         });
+    }
+
+    private resetAutoUpdateMode(
+        prevMode: VirtualizingStackAutoUpdateMode,
+        newMode: VirtualizingStackAutoUpdateMode
+    ): void {
+        switch (prevMode) {
+            case "auto":
+                this.stopViewportResizeDetector();
+                this.stopWindowEventListeners();
+                break;
+
+            case "viewport-resize":
+                this.stopViewportResizeDetector();
+                break;
+        }
+
+        switch (newMode) {
+            case "auto":
+                this.startViewportResizeDetector();
+                this.startWindowUpdateEventListeners();
+                break;
+
+            case "viewport-resize":
+                this.startViewportResizeDetector();
+                break;
+        }
     }
 
     /**
@@ -447,7 +489,16 @@ export class VirtualizingStackBase extends FoundationElement {
     /**
      * starts event listeners that can trigger auto updating
      */
-    private startAutoUpdateEventListeners = (): void => {
+    private startViewportResizeDetector = (): void => {
+        if (this.resizeDetector !== null && this.viewportElement !== null) {
+            this.resizeDetector.observe(this.viewportElement);
+        }
+    };
+
+    /**
+     * starts event listeners that can trigger auto updating
+     */
+    private startWindowUpdateEventListeners = (): void => {
         window.addEventListener(eventResize, this.handleResizeEvent, {
             passive: true,
         });
@@ -455,9 +506,6 @@ export class VirtualizingStackBase extends FoundationElement {
             passive: true,
             capture: true,
         });
-        if (this.resizeDetector !== null && this.viewportElement !== null) {
-            this.resizeDetector.observe(this.viewportElement);
-        }
     };
 
     /**
@@ -477,16 +525,22 @@ export class VirtualizingStackBase extends FoundationElement {
     /**
      * stops event listeners that can trigger auto updating
      */
-    private stopAutoUpdateEventListeners = (): void => {
-        window.removeEventListener(eventResize, this.requestPositionUpdates);
-        window.removeEventListener(eventScroll, this.requestPositionUpdates);
+    private stopViewportResizeDetector = (): void => {
         if (this.resizeDetector !== null && this.viewportElement !== null) {
             this.resizeDetector.unobserve(this.viewportElement);
         }
     };
 
     /**
-     * Gets the viewport element by id, or defaults to document root
+     * stops event listeners that can trigger auto updating
+     */
+    private stopWindowEventListeners = (): void => {
+        window.removeEventListener(eventResize, this.requestPositionUpdates);
+        window.removeEventListener(eventScroll, this.requestPositionUpdates);
+    };
+
+    /**
+     * Gets the viewport element by id, or defaults to element
      */
     private getViewport = (): HTMLElement => {
         let viewportElement: HTMLElement | null = null;
@@ -645,13 +699,18 @@ export class VirtualizingStackBase extends FoundationElement {
             ) {
                 // full reset
                 this.visibleItems.splice(0);
-                this.visibleItems = this.items.slice(
-                    newFirstRenderedIndex,
-                    newLastRenderedIndex + 1
-                );
-                this.firstRenderedIndex = newFirstRenderedIndex;
-                this.lastRenderedIndex = newLastRenderedIndex;
-                this.updateGridTemplateSpans();
+                for (
+                    let i: number = newFirstRenderedIndex;
+                    i <= newLastRenderedIndex;
+                    i++
+                ) {
+                    this.visibleItems.push(this.items[i]);
+                }
+                // this.visibleItems = this.items.slice(
+                //     newFirstRenderedIndex,
+                //     newLastRenderedIndex + 1
+                // );
+                this.updateRenderedRange(newFirstRenderedIndex, newLastRenderedIndex);
                 return;
             }
 
@@ -688,38 +747,30 @@ export class VirtualizingStackBase extends FoundationElement {
                 }
             }
 
-            this.firstRenderedIndex = newFirstRenderedIndex;
-            this.lastRenderedIndex = newLastRenderedIndex;
-
-            this.updateGridTemplateSpans();
+            this.updateRenderedRange(newFirstRenderedIndex, newLastRenderedIndex);
         }
     };
+
+    private updateRenderedRange(
+        newFirstRenderedIndex: number,
+        newLastRenderedIndex: number
+    ): void {
+        if (
+            newFirstRenderedIndex === this.firstRenderedIndex &&
+            newLastRenderedIndex === this.lastRenderedIndex
+        ) {
+            return;
+        }
+
+        this.firstRenderedIndex = newFirstRenderedIndex;
+        this.lastRenderedIndex = newLastRenderedIndex;
+
+        this.updateGridTemplateSpans();
+    }
 
     private updateGridTemplateSpans(): void {
         this.gridTemplateSpans = `[start]${this.startRegionSpan}px ${this.startSpacerSpan}px repeat(${this.visibleItems.length}, ${this.itemSpan}px) ${this.endSpacerSpan}px [end]${this.endRegionSpan}px`;
     }
-
-    /**
-     * get position updates
-     */
-    private requestPositionUpdates = (): void => {
-        if (this.pendingPositioningUpdate) {
-            return;
-        }
-        this.pendingPositioningUpdate = true;
-        this.clearLayoutUpdateTimer();
-
-        DOM.queueUpdate(() => {
-            VirtualizingStackBase.intersectionService.requestPosition(
-                this.containerElement,
-                this.handleIntersection
-            );
-            VirtualizingStackBase.intersectionService.requestPosition(
-                this.viewportElement,
-                this.handleIntersection
-            );
-        });
-    };
 
     /**
      *  Handle intersections

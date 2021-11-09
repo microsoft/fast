@@ -6,6 +6,7 @@ import {
     RepeatDirective,
     ViewTemplate,
 } from "@microsoft/fast-element";
+import { eventScroll } from "@microsoft/fast-web-utilities";
 import {
     eventFocus,
     eventFocusOut,
@@ -307,6 +308,7 @@ export class DataGrid extends VirtualizingStackBase {
 
     private isUpdatingFocus: boolean = false;
     private pendingFocusUpdate: boolean = false;
+    private setFocusOnItemsChanged: boolean = false;
 
     private observer: MutationObserver;
 
@@ -323,6 +325,7 @@ export class DataGrid extends VirtualizingStackBase {
      * @internal
      */
     public connectedCallback(): void {
+        this.autoUpdateMode = "viewport-resize";
         super.connectedCallback();
 
         if (this.rowItemTemplate === undefined) {
@@ -331,24 +334,24 @@ export class DataGrid extends VirtualizingStackBase {
 
         this.toggleGeneratedHeader();
 
-        if (!this.virtualize) {
-            this.rowsPlaceholder = document.createComment("");
-            this.appendChild(this.rowsPlaceholder);
+        // if (!this.virtualize) {
+        //     this.rowsPlaceholder = document.createComment("");
+        //     this.appendChild(this.rowsPlaceholder);
 
-            this.rowsRepeatBehavior = new RepeatDirective(
-                x => x.rowsData,
-                x => x.rowItemTemplate,
-                { positioning: true }
-            ).createBehavior(this.rowsPlaceholder);
-
-            /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */
-            this.$fastController.addBehaviors([this.rowsRepeatBehavior!]);
-        }
+        //     this.rowsRepeatBehavior = new RepeatDirective(
+        //         x => x.rowsData,
+        //         x => x.rowItemTemplate,
+        //         { positioning: true }
+        //     ).createBehavior(this.rowsPlaceholder);
+        // /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */
+        //this.$fastController.addBehaviors([this.rowsRepeatBehavior!]);
+        // }
 
         this.addEventListener("row-focused", this.handleRowFocus);
         this.addEventListener(eventFocus, this.handleFocus);
         this.addEventListener(eventKeyDown, this.handleKeydown);
         this.addEventListener(eventFocusOut, this.handleFocusOut);
+        this.addEventListener(eventScroll, this.handleScroll);
 
         this.observer = new MutationObserver(this.onChildListChange);
         // only observe if nodes are added or removed
@@ -367,6 +370,7 @@ export class DataGrid extends VirtualizingStackBase {
         this.removeEventListener(eventFocus, this.handleFocus);
         this.removeEventListener(eventKeyDown, this.handleKeydown);
         this.removeEventListener(eventFocusOut, this.handleFocusOut);
+        this.removeEventListener(eventScroll, this.handleScroll);
 
         // disconnect observer
         this.observer.disconnect();
@@ -393,7 +397,30 @@ export class DataGrid extends VirtualizingStackBase {
      */
     public handleFocus(e: FocusEvent): void {
         if (e.target === this) {
-            this.focusOnCell(this.focusRowIndex, this.focusColumnIndex, false);
+            if (!this.isRowindexVirtualized(this.focusRowIndex)) {
+                const focusRowElement = this.getRowElement(this.focusRowIndex);
+                if (
+                    focusRowElement !== null &&
+                    focusRowElement.offsetTop >= this.scrollTop &&
+                    focusRowElement.offsetTop <= this.scrollTop + this.clientHeight
+                ) {
+                    this.focusOnCell(this.focusRowIndex, this.focusColumnIndex, false);
+                    return;
+                }
+            }
+
+            // focus row is out of view, pick row at top of visual display
+            for (let i: number = 0; i <= this.rowElements.length; i++) {
+                const thisRow: HTMLElement = this.rowElements[i];
+                if (thisRow.offsetTop >= this.scrollTop) {
+                    this.focusOnCell(
+                        (thisRow as DataGridRow).rowIndex,
+                        this.focusColumnIndex,
+                        false
+                    );
+                    break;
+                }
+            }
         }
     }
 
@@ -404,6 +431,13 @@ export class DataGrid extends VirtualizingStackBase {
         if (e.relatedTarget === null || !this.contains(e.relatedTarget as Element)) {
             this.setAttribute("tabIndex", "0");
         }
+    }
+
+    /**
+     * @internal
+     */
+    public handleScroll(e: Event): void {
+        this.requestPositionUpdates();
     }
 
     /**
@@ -517,14 +551,46 @@ export class DataGrid extends VirtualizingStackBase {
         }
     }
 
+    protected visibleItemsChanged(): void {
+        super.visibleItemsChanged();
+        if (this.setFocusOnItemsChanged) {
+            this.setFocusOnItemsChanged = false;
+            this.focusOnCell(this.focusRowIndex, this.focusColumnIndex, false);
+        }
+    }
+
+    private isRowindexVirtualized(rowIndex: number): boolean {
+        if (
+            !this.virtualize ||
+            rowIndex < this.authoredRowCount ||
+            (rowIndex >= this.firstRenderedIndex + this.authoredRowCount &&
+                rowIndex <= this.lastRenderedIndex + this.authoredRowCount)
+        ) {
+            return false;
+        }
+
+        return true;
+    }
+
+    private getRowElement(rowIndex: number): DataGridRow | null {
+        if (rowIndex < this.authoredRowCount || !this.virtualize) {
+            return this.rowElements[rowIndex] as DataGridRow;
+        } else if (
+            rowIndex >= this.firstRenderedIndex + this.authoredRowCount &&
+            rowIndex <= this.lastRenderedIndex + this.authoredRowCount
+        ) {
+            return this.rowElements[rowIndex - this.firstRenderedIndex] as DataGridRow;
+        }
+
+        return null;
+    }
+
     private focusOnCell = (
         rowIndex: number,
         columnIndex: number,
         scrollIntoView: boolean
     ): void => {
         if (this.rowElements.length === 0) {
-            this.focusRowIndex = 0;
-            this.focusColumnIndex = 0;
             return;
         }
 
@@ -536,19 +602,10 @@ export class DataGrid extends VirtualizingStackBase {
             rowIndex = maxRowIndex;
         }
 
-        let focusRow: Element | null = null;
+        let focusRowElement: Element | null = this.getRowElement(rowIndex);
 
-        if (rowIndex < this.authoredRowCount || !this.virtualize) {
-            focusRow = this.rowElements[rowIndex];
-        } else if (
-            rowIndex >= this.firstRenderedIndex + this.authoredRowCount &&
-            rowIndex <= this.lastRenderedIndex + this.authoredRowCount
-        ) {
-            focusRow = this.rowElements[rowIndex - this.firstRenderedIndex];
-        }
-
-        if (focusRow !== null && focusRow !== undefined) {
-            const cells: NodeListOf<Element> = focusRow.querySelectorAll(
+        if (focusRowElement !== null && focusRowElement !== undefined) {
+            const cells: NodeListOf<Element> = focusRowElement.querySelectorAll(
                 '[role="cell"], [role="gridcell"], [role="columnheader"]'
             );
 
@@ -579,15 +636,13 @@ export class DataGrid extends VirtualizingStackBase {
             rowIndex - this.authoredRowCount
         );
         this.scrollTop = focusRowPosition;
+        this.setFocusOnItemsChanged = true;
         console.debug(`queue virtual focus - focusrow: ${rowIndex}`);
-        DOM.queueUpdate(() => this.focusOnCell(rowIndex, columnIndex, false));
+        // DOM.queueUpdate(() => this.focusOnCell(rowIndex, columnIndex, false));
     };
 
     private queueFocusUpdate(): void {
-        if (
-            this.isUpdatingFocus &&
-            (this.contains(document.activeElement) || this === document.activeElement)
-        ) {
+        if (this.isUpdatingFocus) {
             return;
         }
         if (this.pendingFocusUpdate === false) {

@@ -60,12 +60,12 @@ export class DataGridRow extends FoundationElement {
      */
     @observable
     public rowData: object | null = null;
-    private rowDataChanged(): void {
-        if (this.rowData !== null && this.isActiveRow) {
-            this.refocusOnLoad = true;
-            return;
-        }
-    }
+    // private rowDataChanged(): void {
+    //     if (this.rowData !== null && this.isActiveRow) {
+    //         this.refocusOnLoad = true;
+    //         return;
+    //     }
+    // }
 
     /**
      * The column definitions of the row
@@ -159,7 +159,7 @@ export class DataGridRow extends FoundationElement {
      */
     public focusColumnIndex: number = 0;
 
-    private refocusOnLoad: boolean = false;
+    // private refocusOnLoad: boolean = false;
 
     /**
      * @internal
@@ -190,13 +190,15 @@ export class DataGridRow extends FoundationElement {
 
         this.updateRowStyle();
 
-        if (this.refocusOnLoad) {
-            // if focus was on the row when data changed try to refocus on same cell
-            this.refocusOnLoad = false;
-            if (this.cellElements.length > this.focusColumnIndex) {
-                (this.cellElements[this.focusColumnIndex] as HTMLElement).focus();
-            }
-        }
+        console.debug(`row connected: ${this.rowData}`);
+
+        // if (this.refocusOnLoad) {
+        //     // if focus was on the row when data changed try to refocus on same cell
+        //     this.refocusOnLoad = false;
+        //     if (this.cellElements.length > this.focusColumnIndex) {
+        //         (this.cellElements[this.focusColumnIndex] as HTMLElement).focus();
+        //     }
+        // }
     }
 
     /**
@@ -208,6 +210,8 @@ export class DataGridRow extends FoundationElement {
         this.removeEventListener("cell-focused", this.handleCellFocus);
         this.removeEventListener(eventFocusOut, this.handleFocusout);
         this.removeEventListener(eventKeyDown, this.handleKeydown);
+
+        console.debug(`row disconnected: ${this.rowData}`);
     }
 
     public handleFocusout(e: FocusEvent): void {

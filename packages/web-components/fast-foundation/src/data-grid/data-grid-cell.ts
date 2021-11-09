@@ -140,6 +140,7 @@ export class DataGridCell extends FoundationElement {
         }
 
         this.isActiveCell = true;
+        this.setAttribute("tabindex", "0");
 
         switch (this.cellType) {
             case DataGridCellTypes.columnHeader:
@@ -182,6 +183,7 @@ export class DataGridCell extends FoundationElement {
     public handleFocusout(e: FocusEvent): void {
         if (this !== document.activeElement && !this.contains(document.activeElement)) {
             this.isActiveCell = false;
+            this.setAttribute("tabindex", "-1");
             this.isInternalFocused = false;
         }
     }
