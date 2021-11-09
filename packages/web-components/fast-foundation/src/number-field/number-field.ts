@@ -192,7 +192,7 @@ export class NumberField extends FormAssociatedNumberField {
     public valueChanged(previous: string, next: string): void {
         this.value = this.getValidValue(next);
 
-        if (next != this.value) {
+        if (next !== this.value) {
             return;
         }
 
@@ -202,8 +202,7 @@ export class NumberField extends FormAssociatedNumberField {
 
         super.valueChanged(previous, this.value);
 
-        if (previous !== undefined && !this.isUserInput) {
-            this.$emit("input");
+        if (previous !== undefined) {
             this.$emit("change");
         }
 
