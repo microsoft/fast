@@ -202,7 +202,7 @@ export class NumberField extends FormAssociatedNumberField {
 
         super.valueChanged(previous, this.value);
 
-        if (previous !== undefined) {
+        if (previous !== undefined && !this.isUserInput) {
             this.$emit("change");
         }
 
