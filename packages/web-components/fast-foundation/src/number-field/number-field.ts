@@ -112,6 +112,15 @@ export class NumberField extends FormAssociatedNumberField {
     public step: number = 1;
 
     /**
+     * The floating precision of the step attribute.
+     *
+     * @internal
+     */
+    private get stepPrecision(): number {
+        return this.step?.toString().split(".")[1]?.length ?? 12;
+    }
+
+    /**
      * The maximum the value can be
      * @public
      * @remarks
@@ -205,7 +214,9 @@ export class NumberField extends FormAssociatedNumberField {
      * @internal
      */
     private updateValue(): void {
-        let validValue: number = parseFloat(parseFloat(this.value).toPrecision(12));
+        let validValue = parseFloat(
+            parseFloat(this.value).toPrecision(this.stepPrecision)
+        );
 
         if (isNaN(validValue)) {
             this.value = "";
