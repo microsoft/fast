@@ -1568,11 +1568,11 @@ export const noninteractiveCalendarTemplate: (todayString: string) => ViewTempla
 // @public
 export class NumberField extends FormAssociatedNumberField {
     autofocus: boolean;
-    // @internal (undocumented)
+    // @internal
     connectedCallback(): void;
     // @internal
     control: HTMLInputElement;
-    // @internal (undocumented)
+    // @internal
     defaultSlottedNodes: Node[];
     // @internal
     handleBlur(): void;
@@ -1585,12 +1585,12 @@ export class NumberField extends FormAssociatedNumberField {
     hideStep: boolean;
     list: string;
     max: number;
-    // (undocumented)
-    maxChanged(previousValue: any, nextValue: any): void;
+    // @internal
+    maxChanged(previous: number, next: number): void;
     maxlength: number;
     min: number;
-    // (undocumented)
-    minChanged(previousValue: any, nextValue: any): void;
+    // @internal
+    minChanged(previous: number, next: number): void;
     minlength: number;
     placeholder: string;
     readOnly: boolean;
@@ -1598,8 +1598,8 @@ export class NumberField extends FormAssociatedNumberField {
     step: number;
     stepDown(): void;
     stepUp(): void;
-    // (undocumented)
-    valueChanged(previousValue: any, nextValue: any): void;
+    // @internal
+    valueChanged(previous: string, next: string): void;
 }
 
 // @internal
