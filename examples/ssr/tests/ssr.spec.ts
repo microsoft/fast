@@ -134,3 +134,25 @@ test("should produce a style element for styles an element adding dynamically", 
 
 	expect(await (await target.innerText()).replaceAll(/\s/g, "")).toBe(":host{color:blue;}");
 });
+
+test("should render an element that uses the repeat directive", async ({page}) => {
+	await page.goto(ROOT_URL);
+	const items = await page.$$("fast-main > #default-repeater li");
+
+	expect(items.length).toBe(4);
+	expect(await items[0].innerText()).toBe("A");
+	expect(await items[1].innerText()).toBe("B");
+	expect(await items[2].innerText()).toBe("C");
+	expect(await items[3].innerText()).toBe("D");
+});
+
+test("should render an element that uses the repeat directive with bound data", async ({page}) => {
+	await page.goto(ROOT_URL);
+	const items = await page.$$("fast-main > #data-bound-repeater li");
+
+	expect(items.length).toBe(4);
+	expect(await items[0].innerText()).toBe("1");
+	expect(await items[1].innerText()).toBe("2");
+	expect(await items[2].innerText()).toBe("3");
+	expect(await items[3].innerText()).toBe("4");
+});
