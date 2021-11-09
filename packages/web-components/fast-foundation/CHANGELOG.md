@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Thu, 04 Nov 2021 07:11:59 GMT and should not be manually modified.
+This log was last generated on Tue, 09 Nov 2021 07:14:09 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.26.0
+
+Tue, 09 Nov 2021 07:14:09 GMT
+
+### Minor changes
+
+- feat: add search web component (jes@microsoft.com)
 
 ## 2.25.1
 
