@@ -1599,7 +1599,7 @@ export class NumberField extends FormAssociatedNumberField {
     stepDown(): void;
     stepUp(): void;
     // @internal
-    valueChanged(previous: string, next: string, updateControl?: boolean): void;
+    valueChanged(previous: string, next: string): void;
 }
 
 // @internal

@@ -177,29 +177,37 @@ export class NumberField extends FormAssociatedNumberField {
     public control: HTMLInputElement;
 
     /**
+     * Flag to indicate that the value change is from the user input
+     * @internal
+     */
+    private isUserInput: boolean = false;
+
+    /**
      * Validates that the value is a number between the min and max
      * @param previous - previous stored value
      * @param next - value being updated
      * @param updateControl - should the text field be updated with value, defaults to true
      * @internal
      */
-    public valueChanged(
-        previous: string,
-        next: string,
-        updateControl: boolean = true
-    ): void {
+    public valueChanged(previous: string, next: string): void {
         this.value = this.getValidValue(next);
 
-        if (this.control && updateControl) {
+        if (next != this.value) {
+            return;
+        }
+
+        if (this.control && !this.isUserInput) {
             this.control.value = this.value;
         }
 
         super.valueChanged(previous, this.value);
 
-        if (previous !== undefined) {
+        if (previous !== undefined && !this.isUserInput) {
             this.$emit("input");
             this.$emit("change");
         }
+
+        this.isUserInput = false;
     }
 
     /**
@@ -285,7 +293,8 @@ export class NumberField extends FormAssociatedNumberField {
      */
     public handleTextInput(): void {
         this.control.value = this.control.value.replace(/[^0-9\-+e.]/g, "");
-        this.valueChanged(this.value, this.control.value, false);
+        this.isUserInput = true;
+        this.value = this.control.value;
     }
 
     /**
