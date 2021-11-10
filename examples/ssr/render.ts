@@ -79,6 +79,11 @@ function* renderCustomElementNode(
 
     yield `<${tagName}`;
     yield* renderer.renderAttributes();
+    // If the element is nested inside another, add the `defer-hydration` attribute
+    // this aligns with lit's behavior
+    if (renderInfo.customElementHostStack.length > 0) {
+        yield " defer-hydration";
+    }
     yield `>`;
 
     const shadowContent = renderer.renderShadow(renderInfo);

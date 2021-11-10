@@ -3,6 +3,10 @@ import { test, expect, ElementHandle } from '@playwright/test';
 const PORT = 8080;
 const ROOT_URL = `http://localhost:${PORT}/`
 
+async function isCustomElementHandle(handle: ElementHandle<HTMLElement | SVGElement>) {
+	return await handle.evaluate(el => el.tagName.includes("-"));
+}
+
 test(`should render the 'fast-main' custom element with a shadow root`, async ({ page }) => {
 	await page.goto(ROOT_URL);
 	const target = await page.$("fast-main");
@@ -14,6 +18,53 @@ test(`should render the 'fast-main' custom element with a shadow root`, async ({
 
 	expect(shadowRoot).not.toBeNull();
 });
+
+test.describe('defer-hydration behavior', () => {
+	test("all light-dom custom elements should not have the `defer-hydration` attribute", async ({page }) => {
+		await page.goto(ROOT_URL);
+		const nodes = await page.$$("body :light(*)");
+		const customElementNodes: ElementHandle<HTMLElement>[] = []
+
+		for (const node of nodes) {
+			if (await isCustomElementHandle(node)) {
+
+				customElementNodes.push(node as ElementHandle<HTMLElement>);
+			}
+		}
+
+		expect(nodes.length).toBeGreaterThan(0);
+
+		for (const ce of customElementNodes) {
+			expect(await ce.getAttribute('defer-hydration')).toBe(null)
+		}
+	});
+
+	test("all shadow-dom custom elements should have the `defer-hydration` attribute", async ({page }) => {
+		await page.goto(ROOT_URL);
+		const nodes = await page.$$("*");
+		const shadowedCustomElementNodes: ElementHandle<HTMLElement>[] = []
+
+		for (const node of nodes) {
+			const shadowed = await node.evaluate(element => { return element.getRootNode() !== document});
+
+			if (!shadowed) {
+				continue;
+			}
+
+			const tagname = await node.evaluate(element => element.tagName)
+
+			if (await isCustomElementHandle(node)) {
+				shadowedCustomElementNodes.push(node as ElementHandle<HTMLElement>);
+			}
+		}
+
+		expect(nodes.length).toBeGreaterThan(0);
+
+		for (const ce of shadowedCustomElementNodes) {
+			expect(await ce.getAttribute('defer-hydration')).toBe("")
+		}
+	});
+})
 
 test.describe("should render a static element", () => {
 	test(`into a shadow root`, async ({ page }) => {
