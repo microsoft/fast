@@ -20,4 +20,4 @@ export const middleGrey = SwatchRGB.from(parseColorHexRGB("#808080")!);
  * @internal
  */
 /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */
-export const accentBase = SwatchRGB.from(parseColorHexRGB("#DA1A5F")!);
+export const accentBase = SwatchRGB.from(parseColorHexRGB("#80DEEA")!);

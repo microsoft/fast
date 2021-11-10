@@ -21,10 +21,10 @@ const enum NeutralPaletteLightModeOffsets {
 }
 
 const enum NeutralPaletteDarkModeOffsets {
-    L1 = 76,
-    L2 = 79,
-    L3 = 82,
-    L4 = 85,
+    L1 = 89,
+    L2 = 92,
+    L3 = 95,
+    L4 = 98,
 }
 
 describe("neutralLayer", (): void => {
