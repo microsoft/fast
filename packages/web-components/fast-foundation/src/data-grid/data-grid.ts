@@ -399,29 +399,37 @@ export class DataGrid extends VirtualizingStackBase {
         if (e.target === this) {
             if (!this.isRowindexVirtualized(this.focusRowIndex)) {
                 const focusRowElement = this.getRowElement(this.focusRowIndex);
-                if (
-                    focusRowElement !== null &&
-                    focusRowElement.offsetTop >= this.scrollTop &&
-                    focusRowElement.offsetTop <= this.scrollTop + this.clientHeight
-                ) {
+                if (focusRowElement !== null && this.isRowInView(focusRowElement)) {
                     this.focusOnCell(this.focusRowIndex, this.focusColumnIndex, false);
                     return;
                 }
             }
 
             // focus row is out of view, pick row at top of visual display
-            for (let i: number = 0; i <= this.rowElements.length; i++) {
-                const thisRow: HTMLElement = this.rowElements[i];
-                if (thisRow.offsetTop >= this.scrollTop) {
-                    this.focusOnCell(
-                        (thisRow as DataGridRow).rowIndex,
-                        this.focusColumnIndex,
-                        false
-                    );
-                    break;
-                }
+            this.focusOnCell(this.getFirstRowIndexInView(), this.focusColumnIndex, false);
+        }
+    }
+
+    private getFirstRowIndexInView(): number {
+        for (let i: number = 0; i < this.rowElements.length; i++) {
+            const thisRow: HTMLElement = this.rowElements[i];
+            if (thisRow !== null && thisRow.offsetTop >= this.scrollTop) {
+                return (this.rowElements[i] as DataGridRow).rowIndex;
             }
         }
+        return 0;
+    }
+
+    private isRowInView(rowElement: DataGridRow): boolean {
+        if (
+            rowElement !== null &&
+            rowElement.offsetTop >= this.scrollTop &&
+            rowElement.offsetTop <= this.scrollTop + this.clientHeight
+        ) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -448,7 +456,12 @@ export class DataGrid extends VirtualizingStackBase {
             return;
         }
 
-        let newFocusRowIndex: number;
+        let newFocusRowIndex: number = this.focusRowIndex;
+        const focusRowElement = this.getRowElement(newFocusRowIndex);
+        if (focusRowElement === null || !this.isRowInView(focusRowElement)) {
+            newFocusRowIndex = this.getFirstRowIndexInView();
+        }
+
         const maxIndex = this.rowsData.length + this.authoredRowCount - 1;
         const currentGridBottom: number = this.offsetHeight + this.scrollTop;
         // const lastRow: HTMLElement = this.rowElements[maxIndex] as HTMLElement;
@@ -457,13 +470,13 @@ export class DataGrid extends VirtualizingStackBase {
             case keyArrowUp:
                 e.preventDefault();
                 // focus up one row
-                this.focusOnCell(this.focusRowIndex - 1, this.focusColumnIndex, true);
+                this.focusOnCell(newFocusRowIndex - 1, this.focusColumnIndex, true);
                 break;
 
             case keyArrowDown:
                 e.preventDefault();
                 // focus down one row
-                this.focusOnCell(this.focusRowIndex + 1, this.focusColumnIndex, true);
+                this.focusOnCell(newFocusRowIndex + 1, this.focusColumnIndex, true);
                 break;
 
             case keyPageUp:
@@ -477,7 +490,7 @@ export class DataGrid extends VirtualizingStackBase {
                     return;
                 }
 
-                newFocusRowIndex = this.focusRowIndex - 1;
+                newFocusRowIndex = newFocusRowIndex - 1;
 
                 for (newFocusRowIndex; newFocusRowIndex >= 0; newFocusRowIndex--) {
                     const thisRow: HTMLElement = this.rowElements[newFocusRowIndex];
@@ -499,14 +512,14 @@ export class DataGrid extends VirtualizingStackBase {
 
                 // focus down one "page"
                 if (
-                    this.focusRowIndex >= maxIndex ||
+                    newFocusRowIndex >= maxIndex ||
                     this.containerElement.clientHeight <= currentGridBottom
                 ) {
                     this.focusOnCell(maxIndex, this.focusColumnIndex, false);
                     break;
                 }
 
-                newFocusRowIndex = this.focusRowIndex + 1;
+                newFocusRowIndex = newFocusRowIndex + 1;
 
                 // for (newFocusRowIndex; newFocusRowIndex <= maxIndex; newFocusRowIndex++) {
                 //     const thisRow: HTMLElement = this.rowElements[
@@ -638,7 +651,6 @@ export class DataGrid extends VirtualizingStackBase {
         this.scrollTop = focusRowPosition;
         this.setFocusOnItemsChanged = true;
         console.debug(`queue virtual focus - focusrow: ${rowIndex}`);
-        // DOM.queueUpdate(() => this.focusOnCell(rowIndex, columnIndex, false));
     };
 
     private queueFocusUpdate(): void {
