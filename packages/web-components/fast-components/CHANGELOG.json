@@ -2,6 +2,44 @@
   "name": "@microsoft/fast-components",
   "entries": [
     {
+      "date": "Wed, 10 Nov 2021 07:12:54 GMT",
+      "tag": "@microsoft/fast-components_v2.16.1",
+      "version": "2.16.1",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-foundation to v2.26.1",
+            "author": "robarb@microsoft.com",
+            "commit": "14151d5ffa234babf237c5ea32282c5514e94b96",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 09 Nov 2021 07:14:09 GMT",
+      "tag": "@microsoft/fast-components_v2.16.0",
+      "version": "2.16.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "feat: add search web component",
+            "author": "jes@microsoft.com",
+            "commit": "1a510ffa425375688d06fd7d696666745d1b367e",
+            "package": "@microsoft/fast-components"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-foundation to v2.26.0",
+            "author": "jes@microsoft.com",
+            "commit": "1a510ffa425375688d06fd7d696666745d1b367e",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sun, 07 Nov 2021 07:12:36 GMT",
       "tag": "@microsoft/fast-components_v2.15.2",
       "version": "2.15.2",

@@ -811,6 +811,17 @@ export interface DelegatesARIAListbox extends ARIAGlobalStatesAndProperties {
 }
 
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
+// Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "DelegatesARIASearch" because one of its declarations is marked as @internal
+//
+// @public
+export class DelegatesARIASearch {
+}
+
+// @internal
+export interface DelegatesARIASearch extends ARIAGlobalStatesAndProperties {
+}
+
+// Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
 // Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "DelegatesARIASelect" because one of its declarations is marked as @internal
 //
 // @public
@@ -1557,11 +1568,11 @@ export const noninteractiveCalendarTemplate: (todayString: string) => ViewTempla
 // @public
 export class NumberField extends FormAssociatedNumberField {
     autofocus: boolean;
-    // @internal (undocumented)
+    // @internal
     connectedCallback(): void;
     // @internal
     control: HTMLInputElement;
-    // @internal (undocumented)
+    // @internal
     defaultSlottedNodes: Node[];
     // @internal
     handleBlur(): void;
@@ -1574,12 +1585,12 @@ export class NumberField extends FormAssociatedNumberField {
     hideStep: boolean;
     list: string;
     max: number;
-    // (undocumented)
-    maxChanged(previousValue: any, nextValue: any): void;
+    // @internal
+    maxChanged(previous: number, next: number): void;
     maxlength: number;
     min: number;
-    // (undocumented)
-    minChanged(previousValue: any, nextValue: any): void;
+    // @internal
+    minChanged(previous: number, next: number): void;
     minlength: number;
     placeholder: string;
     readOnly: boolean;
@@ -1587,8 +1598,8 @@ export class NumberField extends FormAssociatedNumberField {
     step: number;
     stepDown(): void;
     stepUp(): void;
-    // (undocumented)
-    valueChanged(previousValue: any, nextValue: any): void;
+    // @internal
+    valueChanged(previous: string, next: string): void;
 }
 
 // @internal
@@ -1948,6 +1959,46 @@ export const roleForMenuItem: {
 
 // @public
 export type ScrollEasing = "linear" | "ease-in" | "ease-out" | "ease-in-out" | string;
+
+// Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
+// Warning: (ae-forgotten-export) The symbol "FormAssociatedSearch" needs to be exported by the entry point index.d.ts
+// Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "Search" because one of its declarations is marked as @internal
+//
+// @public
+export class Search extends FormAssociatedSearch {
+    autofocus: boolean;
+    // @internal (undocumented)
+    connectedCallback(): void;
+    // @internal
+    control: HTMLInputElement;
+    // @internal (undocumented)
+    defaultSlottedNodes: Node[];
+    // @internal
+    handleChange(): void;
+    handleClearInput(): void;
+    // @internal
+    handleTextInput(): void;
+    list: string;
+    maxlength: number;
+    minlength: number;
+    pattern: string;
+    placeholder: string;
+    readOnly: boolean;
+    // @internal
+    root: HTMLDivElement;
+    size: number;
+    spellcheck: boolean;
+    }
+
+// @internal
+export interface Search extends StartEnd, DelegatesARIASearch {
+}
+
+// @public
+export type SearchOptions = FoundationElementDefinition & StartEndOptions;
+
+// @public
+export const searchTemplate: (context: ElementDefinitionContext, definition: SearchOptions) => ViewTemplate<Search>;
 
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
 // Warning: (ae-forgotten-export) The symbol "FormAssociatedSelect" needs to be exported by the entry point index.d.ts

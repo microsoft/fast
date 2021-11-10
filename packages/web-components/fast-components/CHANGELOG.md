@@ -1,8 +1,28 @@
 # Change Log - @microsoft/fast-components
 
-This log was last generated on Sun, 07 Nov 2021 07:12:36 GMT and should not be manually modified.
+This log was last generated on Wed, 10 Nov 2021 07:12:54 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.16.1
+
+Wed, 10 Nov 2021 07:12:54 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.26.1 (robarb@microsoft.com)
+
+## 2.16.0
+
+Tue, 09 Nov 2021 07:14:09 GMT
+
+### Minor changes
+
+- feat: add search web component (jes@microsoft.com)
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.26.0 (jes@microsoft.com)
 
 ## 2.15.2
 
