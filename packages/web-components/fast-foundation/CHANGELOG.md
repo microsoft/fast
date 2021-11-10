@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Tue, 09 Nov 2021 07:14:09 GMT and should not be manually modified.
+This log was last generated on Wed, 10 Nov 2021 07:12:54 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.26.1
+
+Wed, 10 Nov 2021 07:12:54 GMT
+
+### Patches
+
+- Enabling setting number-field value through script (robarb@microsoft.com)
 
 ## 2.26.0
 
