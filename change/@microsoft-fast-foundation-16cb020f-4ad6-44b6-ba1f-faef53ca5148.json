@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "convert tsdoc-config dependency to dev-dependency",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "nicholasrice@users.noreply.github.com",
+  "dependentChangeType": "patch"
+}
