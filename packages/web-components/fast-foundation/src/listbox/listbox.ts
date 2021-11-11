@@ -24,109 +24,33 @@ import { ListboxRole } from "./listbox.options";
  */
 export class Listbox extends FoundationElement {
     /**
-     * The index of the selected option
-     *
-     * @public
-     */
-    @observable
-    public selectedIndex: number = -1;
-    public selectedIndexChanged(prev: number, next: number): void {
-        this.setSelectedOptions();
-    }
-
-    /**
-     * Typeahead timeout in milliseconds.
-     *
-     * @internal
-     */
-    protected static readonly TYPE_AHEAD_TIMEOUT_MS = 1000;
-
-    /**
-     * @internal
-     */
-    @observable
-    protected typeaheadBuffer: string = "";
-    public typeaheadBufferChanged(prev: string, next: string): void {
-        if (this.$fastController.isConnected) {
-            const pattern = this.typeaheadBuffer.replace(/[.*+\-?^${}()|[\]\\]/g, "\\$&");
-            const re = new RegExp(`^${pattern}`, "gi");
-
-            const filteredOptions = this.options.filter((o: ListboxOption) =>
-                o.text.trim().match(re)
-            );
-
-            if (filteredOptions.length) {
-                const selectedIndex = this.options.indexOf(filteredOptions[0]);
-                if (selectedIndex > -1) {
-                    this.selectedIndex = selectedIndex;
-                }
-            }
-
-            this.typeAheadExpired = false;
-        }
-    }
-
-    /**
-     * @internal
-     */
-    protected typeaheadTimeout: number = -1;
-
-    /**
-     * Flag for the typeahead timeout expiration.
-     *
-     * @internal
-     */
-    protected typeAheadExpired: boolean = true;
-
-    /**
-     * The role of the element.
-     *
-     * @public
-     * @remarks
-     * HTML Attribute: role
-     */
-    @attr
-    public role: string = ListboxRole.listbox;
-
-    /**
-     * The disabled state of the listbox.
-     *
-     * @public
-     * @remarks
-     * HTML Attribute: disabled
-     */
-    @attr({ mode: "boolean" })
-    public disabled: boolean;
-
-    /**
-     * @internal
-     */
-    @observable
-    public slottedOptions: HTMLElement[];
-    public slottedOptionsChanged(prev, next) {
-        if (this.$fastController.isConnected) {
-            this.options = next.reduce((options, item) => {
-                if (isListboxOption(item)) {
-                    options.push(item);
-                }
-                return options;
-            }, [] as ListboxOption[]);
-
-            this.options.forEach(o => {
-                o.id = o.id || uniqueId("option-");
-            });
-
-            this.setSelectedOptions();
-            this.setDefaultSelectedOption();
-        }
-    }
-
-    /**
      * The internal unfiltered list of selectable options.
      *
      * @internal
      */
     protected _options: ListboxOption[] = [];
+
+    /**
+     * The first selected option.
+     *
+     * @internal
+     */
+    public get firstSelectedOption(): ListboxOption {
+        return this.selectedOptions[0] ?? null;
+    }
+
+    /**
+     * The number of options.
+     *
+     * @public
+     */
+    public get length(): number {
+        if (this.options) {
+            return this.options.length;
+        }
+
+        return 0;
+    }
 
     /**
      * The list of options.
@@ -144,38 +68,40 @@ export class Listbox extends FoundationElement {
     }
 
     /**
+     * The disabled state of the listbox.
+     *
+     * @public
+     * @remarks
+     * HTML Attribute: disabled
+     */
+    @attr({ mode: "boolean" })
+    public disabled: boolean;
+
+    /**
+     * The role of the element.
+     *
+     * @public
+     * @remarks
+     * HTML Attribute: role
+     */
+    @attr
+    public role: string = ListboxRole.listbox;
+
+    /**
+     * The index of the selected option
+     *
+     * @public
+     */
+    @observable
+    public selectedIndex: number = -1;
+
+    /**
      * A collection of the selected options.
      *
      * @public
      */
     @observable
     public selectedOptions: ListboxOption[] = [];
-    protected selectedOptionsChanged(prev, next): void {
-        if (this.$fastController.isConnected) {
-            this.options.forEach(o => {
-                o.selected = next.includes(o);
-            });
-        }
-    }
-
-    /**
-     * @internal
-     */
-    public get firstSelectedOption(): ListboxOption {
-        return this.selectedOptions[0];
-    }
-
-    /**
-     * @internal
-     */
-    protected focusAndScrollOptionIntoView(): void {
-        if (this.contains(document.activeElement) && this.firstSelectedOption) {
-            this.firstSelectedOption.focus();
-            requestAnimationFrame(() => {
-                this.firstSelectedOption.scrollIntoView({ block: "nearest" });
-            });
-        }
-    }
 
     /**
      * A standard `click` event creates a `focus` event before firing, so a
@@ -184,67 +110,6 @@ export class Listbox extends FoundationElement {
      * @internal
      */
     private shouldSkipFocus: boolean = false;
-
-    /**
-     * @internal
-     */
-    public focusinHandler(e: FocusEvent): void {
-        if (!this.shouldSkipFocus && e.target === e.currentTarget) {
-            this.setSelectedOptions();
-            this.focusAndScrollOptionIntoView();
-        }
-
-        this.shouldSkipFocus = false;
-    }
-
-    /**
-     * Prevents `focusin` events from firing before `click` events when the
-     * element is unfocused.
-     *
-     * @internal
-     */
-    public mousedownHandler(e: MouseEvent): boolean | void {
-        this.shouldSkipFocus = !this.contains(document.activeElement);
-        return true;
-    }
-
-    /**
-     * @internal
-     */
-    protected setDefaultSelectedOption() {
-        if (this.options && this.$fastController.isConnected) {
-            const selectedIndex = this.options.findIndex(
-                el => el.getAttribute("selected") !== null
-            );
-
-            if (selectedIndex !== -1) {
-                this.selectedIndex = selectedIndex;
-                return;
-            }
-
-            this.selectedIndex = 0;
-        }
-    }
-
-    /**
-     * Sets an option as selected and gives it focus.
-     *
-     * @param index - option index to select
-     * @public
-     */
-    protected setSelectedOptions() {
-        if (this.$fastController.isConnected && this.options) {
-            const selectedOption = this.options[this.selectedIndex] || null;
-
-            this.selectedOptions = this.options.filter(el =>
-                el.isSameNode(selectedOption)
-            );
-            this.ariaActiveDescendant = this.firstSelectedOption
-                ? this.firstSelectedOption.id
-                : "";
-            this.focusAndScrollOptionIntoView();
-        }
-    }
 
     /**
      * A static filter to include only enabled elements
@@ -256,60 +121,41 @@ export class Listbox extends FoundationElement {
         isListboxOption(n) && !n.disabled && !n.hidden;
 
     /**
-     * Moves focus to the first selectable option
-     *
-     * @public
-     */
-    public selectFirstOption(): void {
-        if (!this.disabled) {
-            this.selectedIndex = 0;
-        }
-    }
-
-    /**
-     * Moves focus to the last selectable option
+     * The default slotted elements.
      *
      * @internal
      */
-    public selectLastOption(): void {
-        if (!this.disabled) {
-            this.selectedIndex = this.options.length - 1;
-        }
-    }
+    @observable
+    public slottedOptions: Element[];
 
     /**
-     * Moves focus to the next selectable option
+     * Typeahead timeout in milliseconds.
      *
      * @internal
      */
-    public selectNextOption(): void {
-        if (
-            !this.disabled &&
-            this.options &&
-            this.selectedIndex < this.options.length - 1
-        ) {
-            this.selectedIndex += 1;
-        }
-    }
-
-    public get length(): number {
-        if (this.options) {
-            return this.options.length;
-        }
-
-        return 0;
-    }
+    protected static readonly TYPE_AHEAD_TIMEOUT_MS = 1000;
 
     /**
-     * Moves focus to the previous selectable option
+     * The current typeahead buffer string.
      *
      * @internal
      */
-    public selectPreviousOption(): void {
-        if (!this.disabled && this.selectedIndex > 0) {
-            this.selectedIndex = this.selectedIndex - 1;
-        }
-    }
+    @observable
+    protected typeaheadBuffer: string = "";
+
+    /**
+     * Flag for the typeahead timeout expiration.
+     *
+     * @internal
+     */
+    protected typeaheadExpired: boolean = true;
+
+    /**
+     * The timeout ID for the typeahead handler.
+     *
+     * @internal
+     */
+    protected typeaheadTimeout: number = -1;
 
     /**
      * Handles click events for listbox options
@@ -325,6 +171,62 @@ export class Listbox extends FoundationElement {
             this.selectedIndex = this.options.indexOf(captured);
             return true;
         }
+    }
+
+    /**
+     * Focus the first selected option and scroll it into view.
+     *
+     * @internal
+     */
+    protected focusAndScrollOptionIntoView(): void {
+        if (this.contains(document.activeElement) && this.firstSelectedOption) {
+            this.firstSelectedOption.focus();
+            requestAnimationFrame(() => {
+                this.firstSelectedOption.scrollIntoView({ block: "nearest" });
+            });
+        }
+    }
+
+    /**
+     * Handles focus-in actions for the component. When the component receives focus,
+     * refresh the list of selected options and scroll the first selected option into view.
+     *
+     * @internal
+     */
+    public focusinHandler(e: FocusEvent): void {
+        if (!this.shouldSkipFocus && e.target === e.currentTarget) {
+            this.setSelectedOptions();
+            this.focusAndScrollOptionIntoView();
+        }
+
+        this.shouldSkipFocus = false;
+    }
+
+    /**
+     * Move focus to an option whose label matches characters typed by the user.
+     * Consecutive keystrokes are batched into a buffer of search text used
+     * to match against the set of options.  If TYPE_AHEAD_TIMEOUT_MS passes
+     * between consecutive keystrokes, the search restarts.
+     *
+     * @param key - the key to be evaluated
+     */
+    public handleTypeAhead(key: string): void {
+        if (this.typeaheadTimeout) {
+            window.clearTimeout(this.typeaheadTimeout);
+        }
+
+        this.typeaheadTimeout = window.setTimeout(
+            () => (this.typeaheadExpired = true),
+            Listbox.TYPE_AHEAD_TIMEOUT_MS
+        );
+
+        if (key.length > 1) {
+            return;
+        }
+
+        this.typeaheadBuffer = `${
+            this.typeaheadExpired ? "" : this.typeaheadBuffer
+        }${key}`;
     }
 
     /**
@@ -387,7 +289,7 @@ export class Listbox extends FoundationElement {
             }
 
             case keySpace: {
-                if (this.typeAheadExpired) {
+                if (this.typeaheadExpired) {
                     return true;
                 }
             }
@@ -403,31 +305,188 @@ export class Listbox extends FoundationElement {
     }
 
     /**
-     * Move focus to an option whose label matches characters typed by the user.
-     * Consecutive keystrokes are batched into a buffer of search text used
-     * to match against the set of options.  If TYPE_AHEAD_TIMEOUT_MS passes
-     * between consecutive keystrokes, the search restarts.
+     * Prevents `focusin` events from firing before `click` events when the
+     * element is unfocused.
      *
-     * @param key - the key to be evaluated
+     * @internal
      */
-    public handleTypeAhead = (key: string): void => {
-        if (this.typeaheadTimeout) {
-            window.clearTimeout(this.typeaheadTimeout);
+    public mousedownHandler(e: MouseEvent): boolean | void {
+        this.shouldSkipFocus = !this.contains(document.activeElement);
+        return true;
+    }
+
+    /**
+     * Updates the list of selected options when the selected index changes.
+     *
+     * @param prev the previous selected index value
+     * @param next the current selected index value
+     *
+     * @internal
+     */
+    public selectedIndexChanged(prev: number, next: number): void {
+        this.setSelectedOptions();
+    }
+
+    /**
+     * Updates the selectedness of each option when the list of selected options changes.
+     *
+     * @param prev the previous list of selected options
+     * @param next the current list of selected options
+     *
+     * @internal
+     */
+    protected selectedOptionsChanged(
+        prev: ListboxOption[] | undefined,
+        next: ListboxOption[]
+    ): void {
+        if (this.$fastController.isConnected) {
+            this.options.forEach(o => {
+                o.selected = next.includes(o);
+            });
         }
+    }
 
-        this.typeaheadTimeout = window.setTimeout(
-            () => (this.typeAheadExpired = true),
-            Listbox.TYPE_AHEAD_TIMEOUT_MS
-        );
-
-        if (key.length > 1) {
-            return;
+    /**
+     * Moves focus to the first selectable option
+     *
+     * @public
+     */
+    public selectFirstOption(): void {
+        if (!this.disabled) {
+            this.selectedIndex = 0;
         }
+    }
 
-        this.typeaheadBuffer = `${
-            this.typeAheadExpired ? "" : this.typeaheadBuffer
-        }${key}`;
-    };
+    /**
+     * Moves focus to the last selectable option
+     *
+     * @internal
+     */
+    public selectLastOption(): void {
+        if (!this.disabled) {
+            this.selectedIndex = this.options.length - 1;
+        }
+    }
+
+    /**
+     * Moves focus to the next selectable option
+     *
+     * @internal
+     */
+    public selectNextOption(): void {
+        if (
+            !this.disabled &&
+            this.options &&
+            this.selectedIndex < this.options.length - 1
+        ) {
+            this.selectedIndex += 1;
+        }
+    }
+
+    /**
+     * Moves focus to the previous selectable option
+     *
+     * @internal
+     */
+    public selectPreviousOption(): void {
+        if (!this.disabled && this.selectedIndex > 0) {
+            this.selectedIndex = this.selectedIndex - 1;
+        }
+    }
+
+    /**
+     * Updates the selected index to match the first selected option.
+     *
+     * @internal
+     */
+    protected setDefaultSelectedOption() {
+        if (this.options && this.$fastController.isConnected) {
+            const selectedIndex = this.options.findIndex(
+                el => el.getAttribute("selected") !== null
+            );
+
+            if (selectedIndex !== -1) {
+                this.selectedIndex = selectedIndex;
+                return;
+            }
+
+            this.selectedIndex = 0;
+        }
+    }
+
+    /**
+     * Sets an option as selected and gives it focus.
+     *
+     * @param index - option index to select
+     * @public
+     */
+    protected setSelectedOptions() {
+        if (this.$fastController.isConnected && this.options) {
+            const selectedOption = this.options[this.selectedIndex] || null;
+
+            this.selectedOptions = this.options.filter(el =>
+                el.isSameNode(selectedOption)
+            );
+            this.ariaActiveDescendant = this.firstSelectedOption
+                ? this.firstSelectedOption.id
+                : "";
+            this.focusAndScrollOptionIntoView();
+        }
+    }
+
+    /**
+     * Updates the list of options and resets the selected option when the slotted option content changes.
+     *
+     * @param prev the previous list of slotted options
+     * @param next the current list of slotted options
+     *
+     * @internal
+     */
+    public slottedOptionsChanged(prev: Element[] | undefined, next: Element[]) {
+        if (this.$fastController.isConnected) {
+            this.options = next.reduce((options, item) => {
+                if (isListboxOption(item)) {
+                    options.push(item);
+                }
+                return options;
+            }, [] as ListboxOption[]);
+
+            this.options.forEach(o => {
+                o.id = o.id || uniqueId("option-");
+            });
+
+            this.setSelectedOptions();
+            this.setDefaultSelectedOption();
+        }
+    }
+
+    /**
+     * Updates the filtered list of options when the typeahead buffer changes.
+     *
+     * @param prev the previous typeahead buffer value
+     * @param next the current typeahead buffer value
+     *
+     * @internal
+     */
+    public typeaheadBufferChanged(prev: string, next: string): void {
+        if (this.$fastController.isConnected) {
+            const pattern = this.typeaheadBuffer.replace(/[.*+\-?^${}()|[\]\\]/g, "\\$&");
+            const re = new RegExp(`^${pattern}`, "gi");
+
+            const filteredOptions = this.options.filter((o: ListboxOption) =>
+                o.text.trim().match(re)
+            );
+
+            if (filteredOptions.length) {
+                const selectedIndex = this.options.indexOf(filteredOptions[0]);
+                if (selectedIndex > -1) {
+                    this.selectedIndex = selectedIndex;
+                }
+            }
+
+            this.typeaheadExpired = false;
+        }
+    }
 }
 
 /**
