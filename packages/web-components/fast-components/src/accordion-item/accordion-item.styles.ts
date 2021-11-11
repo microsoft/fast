@@ -136,6 +136,10 @@ export const accordionItemStyles: (
                     border-color: ${SystemColors.Highlight};
                     box-shadow: 0 0 0 calc(${focusStrokeWidth} * 1px) ${SystemColors.Highlight};
                 }
+                slot[name="collapsed-icon"],
+                slot[name="expanded-icon"] {
+                    fill: ${SystemColors.ButtonText}
+                }
             `
         )
     );
