@@ -7,8 +7,10 @@ import {
     LightweightButtonStyles,
     OutlineButtonStyles,
     StealthButtonStyles,
-} from "../styles/index";
+} from "../styles/";
 import { appearanceBehavior } from "../utilities/behaviors";
+
+const interactivitySelector: string = "[href]";
 
 /**
  * Styles for Anchor
@@ -19,11 +21,29 @@ export const anchorStyles: (
     definition: AnchorOptions
 ) => ElementStyles = (context: ElementDefinitionContext, definition: AnchorOptions) =>
     css`
-        ${BaseButtonStyles}
+        :host .control:not([href]) {
+            cursor: default;
+        }
+        ${BaseButtonStyles(context, definition, interactivitySelector)}
     `.withBehaviors(
-        appearanceBehavior("accent", AccentButtonStyles),
-        appearanceBehavior("hypertext", HypertextStyles),
-        appearanceBehavior("lightweight", LightweightButtonStyles),
-        appearanceBehavior("outline", OutlineButtonStyles),
-        appearanceBehavior("stealth", StealthButtonStyles)
+        appearanceBehavior(
+            "accent",
+            AccentButtonStyles(context, definition, interactivitySelector)
+        ),
+        appearanceBehavior(
+            "hypertext",
+            HypertextStyles(context, definition, interactivitySelector)
+        ),
+        appearanceBehavior(
+            "lightweight",
+            LightweightButtonStyles(context, definition, interactivitySelector)
+        ),
+        appearanceBehavior(
+            "outline",
+            OutlineButtonStyles(context, definition, interactivitySelector)
+        ),
+        appearanceBehavior(
+            "stealth",
+            StealthButtonStyles(context, definition, interactivitySelector)
+        )
     );
