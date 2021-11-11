@@ -2,6 +2,29 @@
   "name": "@microsoft/fast-components",
   "entries": [
     {
+      "date": "Thu, 11 Nov 2021 07:15:33 GMT",
+      "tag": "@microsoft/fast-components_v2.16.2",
+      "version": "2.16.2",
+      "comments": {
+        "none": [
+          {
+            "comment": "update playwright from 1.11.0 to 1.16.3",
+            "author": "john.kreitlow@microsoft.com",
+            "commit": "7ce6d00f24147385bfbd242bd4b6b1d41f5f0cb0",
+            "package": "@microsoft/fast-components"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-foundation to v2.26.2",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "116f30b236deffd48ede5488d167934cf848c492",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 10 Nov 2021 07:12:54 GMT",
       "tag": "@microsoft/fast-components_v2.16.1",
       "version": "2.16.1",
