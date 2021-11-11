@@ -269,9 +269,11 @@ export const HypertextStyles = (
         }
         :host .control${interactivitySelector}:active {
             background: transparent;
+            text-decoration: none;
         }
         :host .control:${focusVisible} {
-            box-shadow: 0 0 0 calc(${focusStrokeWidth} * 1px) ${focusStrokeOuter} !important;
+            box-shadow: none !important;
+            text-decoration: underline 3px;
         }
     `.withBehaviors(
         forcedColorsStylesheetBehavior(
@@ -317,7 +319,7 @@ export const LightweightButtonStyles = (
             background: ${neutralForegroundHover};
         }
         :host .control${interactivitySelector}:active .content::before {
-            background: ${neutralForegroundActive};
+            background: transparent;
         }
         :host .control${interactivitySelector}:${focusVisible} .content::before {
             background: ${neutralForegroundFocus};
