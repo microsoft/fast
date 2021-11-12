@@ -1,5 +1,3 @@
-/* eslint-env node */
-/* eslint-disable @typescript-eslint/explicit-function-return-type,@typescript-eslint/no-var-requires,@typescript-eslint/typedef */
 /**
  * Utility for cleaning directories.
  * Usage: node build/clean.js %path%

@@ -46,7 +46,8 @@
                         { "name": "end" },
                         { "name": "left" },
                         { "name": "right" },
-                        { "name": "unset" }
+                        { "name": "unset" },
+                        { "name": "center" }
                     ],
                     "default": "unset",
                     "required": false
@@ -105,7 +106,7 @@
                     "description":
                         "The default vertical position of the region relative to the configured 'Anchor ID'",
                     "type": "string",
-                    "values": [{ "name": "top" }, { "name": "bottom" }, { "name": "unset" }],
+                    "values": [{ "name": "top" }, { "name": "bottom" }, { "name": "unset" }, { "name": "center" }],
                     "default": "unset",
                     "required": false
                 },

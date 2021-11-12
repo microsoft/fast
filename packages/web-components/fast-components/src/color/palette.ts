@@ -58,6 +58,7 @@ function create(r: number, g: number, b: number): PaletteRGB;
 function create(source: SwatchRGB): PaletteRGB;
 function create(rOrSource: SwatchRGB | number, g?: number, b?: number): PaletteRGB {
     if (typeof rOrSource === "number") {
+        /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */
         return PaletteRGB.from(SwatchRGB.create(rOrSource, g!, b!));
     } else {
         return PaletteRGB.from(rOrSource);
@@ -69,7 +70,8 @@ function create(rOrSource: SwatchRGB | number, g?: number, b?: number): PaletteR
  * @param source - The source color
  */
 function from(source: SwatchRGB): PaletteRGB;
-function from(source: Pick<SwatchRGB, "r" | "g" | "b">): PaletteRGB {
+function from(source: Record<"r" | "g" | "b", number>): PaletteRGB;
+function from(source: any): PaletteRGB {
     return isSwatchRGB(source)
         ? PaletteRGBImpl.from(source)
         : PaletteRGBImpl.from(SwatchRGB.create(source.r, source.g, source.b));
@@ -92,6 +94,8 @@ class PaletteRGBImpl implements Palette<SwatchRGB> {
     public readonly swatches: ReadonlyArray<SwatchRGB>;
     private lastIndex: number;
     private reversedSwatches: ReadonlyArray<SwatchRGB>;
+    private closestIndexCache = new Map<number, number>();
+
     /**
      *
      * @param source - The source color for the palette
@@ -148,9 +152,15 @@ class PaletteRGBImpl implements Palette<SwatchRGB> {
      * {@inheritdoc Palette.closestIndexOf}
      */
     public closestIndexOf(reference: Swatch): number {
-        const index = this.swatches.indexOf(reference as SwatchRGB);
+        if (this.closestIndexCache.has(reference.relativeLuminance)) {
+            /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */
+            return this.closestIndexCache.get(reference.relativeLuminance)!;
+        }
+
+        let index = this.swatches.indexOf(reference as SwatchRGB);
 
         if (index !== -1) {
+            this.closestIndexCache.set(reference.relativeLuminance, index);
             return index;
         }
 
@@ -161,7 +171,10 @@ class PaletteRGBImpl implements Palette<SwatchRGB> {
                 : previous
         );
 
-        return this.swatches.indexOf(closest);
+        index = this.swatches.indexOf(closest);
+        this.closestIndexCache.set(reference.relativeLuminance, index);
+
+        return index;
     }
 
     /**
@@ -174,8 +187,10 @@ class PaletteRGBImpl implements Palette<SwatchRGB> {
             source,
             Object.freeze(
                 new ComponentStateColorPalette({
+                    /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */
                     baseColor: ColorRGBA64.fromObject(source)!,
                 }).palette.map(x => {
+                    /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */
                     const _x = parseColorHexRGB(x.toStringHexRGB())!;
                     return SwatchRGB.create(_x.r, _x.g, _x.b);
                 })

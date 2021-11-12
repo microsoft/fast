@@ -2,11 +2,11 @@ import { expect } from "chai";
 import { Dialog, dialogTemplate as template } from "./index";
 import { fixture } from "../test-utilities/fixture";
 import { DOM } from "@microsoft/fast-element";
-import { KeyCodes } from "@microsoft/fast-web-utilities";
+import { keyEscape } from "@microsoft/fast-web-utilities";
 
 const FASTDialog = Dialog.compose({
     baseName: "dialog",
-    template,  
+    template,
 })
 
 async function setup() {
@@ -157,7 +157,7 @@ describe("Dialog", () => {
         await disconnect();
     });
 
-    it("should set the `aria-describedBy` attribute on the dialog control when provided", async () => {
+    it("should set the `aria-describedby` attribute on the dialog control when provided", async () => {
         const { element, connect, disconnect } = await setup();
         const ariaDescribedby = "testId";
 
@@ -168,7 +168,7 @@ describe("Dialog", () => {
         expect(
             element.shadowRoot
                 ?.querySelector("[role='dialog']")
-                ?.getAttribute("aria-describedBy")
+                ?.getAttribute("aria-describedby")
         ).to.equal(ariaDescribedby);
 
         await disconnect();
@@ -266,8 +266,7 @@ describe("Dialog", () => {
             const { element, connect, disconnect, document } = await setup();
 
             const event = new KeyboardEvent("keydown", {
-                key: "Escape",
-                keyCode: KeyCodes.escape,
+                key: keyEscape,
             } as KeyboardEventInit);
 
             await connect();

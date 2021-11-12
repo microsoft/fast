@@ -68,7 +68,7 @@ Let’s take a closer look at what the two arguments to these lazily evaluated f
 The first argument is the `ElementDefinitionContext`. This context object provides information that is available *during* the attempt to register the element. For example, it will tell you the HTML element tag `name` that the component will be defined as. You can also see what the default `shadowRootMode` of the `DesignSystem` is. Most of the other APIs are used internally by `FoundationElement.compose` (see below) to define the element, but one particular API of note is the `tagFor()` method of the context. This API is used to inspect the tag-name of other components and allows usage of other library components in a template or stylesheet without knowing ahead of time what the tag-name for the element will be. Here's an example of how the reusable `Counter` component would leverage this to ensure that the `Button`'s tag name is correct, even if the app developer decides to rename `Button` in some way.
 
 ```ts
-import { html } from "@microsoft/fast-element";
+import { html, css } from "@microsoft/fast-element";
 import { Button } from "@microsoft/fast-components";
 import type { ElementDefinitionContext } from "@microsoft/fast-foundation";
 
@@ -139,14 +139,15 @@ Here we provide the base component name of `counter`, which will be combined wit
 
 ### Registering Library Components in an Application
 
-To register the component, an application author will import the registration and register it in their `DesignSystem`, overriding any properties as necessary. For example, if this component had been created for the FAST Frame design system, then the the following code could be used:
+To register the component, an application author will import the registration and register it in their `DesignSystem`, overriding any properties as necessary. For example, if this component had been created for the FAST Frame design system, then the following code could be used:
 
 ```ts
 import { counter } from "your-package";
-import { provideFASTDesignSystem } from "@microsoft/fast-components";
+import { provideFASTDesignSystem, fastButton } from "@microsoft/fast-components";
 
 provideFASTDesignSystem()
     .register(
+        fastButton(),
         counter({ defaultButtonContent: "Please count." })
     );
 ```
@@ -193,7 +194,7 @@ export const buttonStyles = styles;
 
 As a practice, always be sure to export your styles independently as well. This enables the consumers of your components to build their own versions of your component, reusing and augmenting your styles as needed.
 
-When authoring your own styles, you'll also want to leverage design tokens. Please see [the design token documentation](docs/design-systems/design-tokens) for how to create and use design tokens.
+When authoring your own styles, you'll also want to leverage design tokens. Please see [the design token documentation](/docs/design-systems/design-tokens) for how to create and use design tokens.
 
 ### Creating a design system provider function
 

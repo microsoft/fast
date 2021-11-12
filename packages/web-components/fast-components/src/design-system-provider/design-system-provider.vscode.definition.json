@@ -7,15 +7,6 @@
             "description": "The FAST design system provider element",
             "attributes": [
                 {
-                    "name": "use-defaults",
-                    "title": "Use defaults",
-                    "description":
-                        "When true, sets all design system values default - does not inherit",
-                    "type": "boolean",
-                    "default": true,
-                    "required": false
-                },
-                {
                     "name": "no-paint",
                     "title": "No paint",
                     "description": "Do not paint the background",

@@ -1,13 +1,17 @@
 import { observable } from "@microsoft/fast-element";
-import { inRange, invert } from "lodash-es";
 import {
     isHTMLElement,
-    keyCodeArrowDown,
-    keyCodeArrowUp,
-    keyCodeEnd,
-    keyCodeHome,
+    keyArrowDown,
+    keyArrowUp,
+    keyEnd,
+    keyHome,
 } from "@microsoft/fast-web-utilities";
-import { MenuItem, MenuItemColumnCount, MenuItemRole } from "../menu-item/index";
+import {
+    MenuItem,
+    MenuItemColumnCount,
+    MenuItemRole,
+    roleForMenuItem,
+} from "../menu-item/index";
 import { FoundationElement } from "../foundation-element";
 
 /**
@@ -40,9 +44,7 @@ export class Menu extends FoundationElement {
      */
     private focusIndex: number = -1;
 
-    private static focusableElementRoles: { [key: string]: string } = invert(
-        MenuItemRole
-    );
+    private static focusableElementRoles: { [key: string]: string } = roleForMenuItem;
 
     /**
      * @internal
@@ -102,20 +104,20 @@ export class Menu extends FoundationElement {
         if (e.defaultPrevented) {
             return;
         }
-        switch (e.keyCode) {
-            case keyCodeArrowDown:
+        switch (e.key) {
+            case keyArrowDown:
                 // go forward one index
                 this.setFocus(this.focusIndex + 1, 1);
                 return;
-            case keyCodeArrowUp:
+            case keyArrowUp:
                 // go back one index
                 this.setFocus(this.focusIndex - 1, -1);
                 return;
-            case keyCodeEnd:
+            case keyEnd:
                 // set focus on last item
                 this.setFocus(this.menuItems.length - 1, -1);
                 return;
-            case keyCodeHome:
+            case keyHome:
                 // set focus on first item
                 this.setFocus(0, 1);
                 return;
@@ -311,7 +313,7 @@ export class Menu extends FoundationElement {
             return;
         }
 
-        while (inRange(focusIndex, this.menuItems.length)) {
+        while (focusIndex >= 0 && focusIndex < this.menuItems.length) {
             const child: Element = this.menuItems[focusIndex];
 
             if (this.isFocusableElement(child)) {

@@ -216,6 +216,7 @@ export const DOM: Readonly<{
     createCustomAttributePlaceholder(attributeName: string, index: number): string;
     createBlockPlaceholder(index: number): string;
     queueUpdate(callable: Callable): void;
+    processUpdates(): void;
     nextUpdate(): Promise<void>;
     setAttribute(element: HTMLElement, attributeName: string, value: any): void;
     setBooleanAttribute(element: HTMLElement, attributeName: string, value: boolean): void;
@@ -425,8 +426,8 @@ export class PropertyChangeNotifier implements Notifier {
     constructor(source: any);
     notify(propertyName: string): void;
     readonly source: any;
-    subscribe(subscriber: Subscriber, propertyToWatch: string): void;
-    unsubscribe(subscriber: Subscriber, propertyToUnwatch: string): void;
+    subscribe(subscriber: Subscriber, propertyToWatch?: string): void;
+    unsubscribe(subscriber: Subscriber, propertyToUnwatch?: string): void;
 }
 
 // @public
@@ -493,6 +494,8 @@ export interface Splice {
 // @public
 export interface StyleTarget {
     adoptedStyleSheets?: CSSStyleSheet[];
+    append(styles: HTMLStyleElement): void;
+    // @deprecated
     prepend(styles: HTMLStyleElement): void;
     querySelectorAll<E extends Element = Element>(selectors: string): NodeListOf<E>;
     removeChild(styles: HTMLStyleElement): void;

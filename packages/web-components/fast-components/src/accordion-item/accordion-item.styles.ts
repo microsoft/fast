@@ -23,6 +23,10 @@ import {
 } from "../design-tokens";
 import { heightNumber } from "../styles/size";
 
+/**
+ * Styles for AccordionItem
+ * @public
+ */
 export const accordionItemStyles: (
     context: ElementDefinitionContext,
     definition: AccordionItemOptions
@@ -39,7 +43,7 @@ export const accordionItemStyles: (
         line-height: ${typeRampMinus1LineHeight};
         border-bottom: calc(${strokeWidth} * 1px) solid ${neutralStrokeDividerRest};
     }
-    
+
     .region {
         display: none;
         padding: calc((6 + (${designUnit} * 2 * ${density})) * 1px);
@@ -121,7 +125,7 @@ export const accordionItemStyles: (
     slot[name="expanded-icon"] {
         display: none;
     }
-    
+
     :host([expanded]) slot[name="expanded-icon"] {
         display: flex;
     }

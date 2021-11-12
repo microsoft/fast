@@ -25,3 +25,12 @@ To run all benchmarks against the established baseline, run `yarn start -a` or `
 
 #### Running a single Benchmark
 To run a single benchmark, supply the name of the directory for the benchmark to the name argument: `yarn start -n my-benchmark` or `yarn start --name=my-benchmark`.
+
+### Results
+
+|metric|description|
+|------|-----------|
+|hz change|The change in operations per second between the baseline and the benchmark.|
+|hz percentage change|The change in operations per second between the baseline and the benchmark, expressed as a percentage.|
+|mean change|The change in the average number of seconds the benchmark took.|
+|mean percentage change|The change in the average number of seconds the benchmark took, expressed as a percentage.|

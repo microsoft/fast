@@ -4,6 +4,10 @@ import {
     FoundationElementDefinition,
 } from "@microsoft/fast-foundation";
 
+/**
+ * Styles for Data Grid
+ * @public
+ */
 export const dataGridStyles: (
     context: ElementDefinitionContext,
     definition: FoundationElementDefinition

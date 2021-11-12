@@ -11,6 +11,10 @@ import {
     typeRampBaseLineHeight,
 } from "../design-tokens";
 
+/**
+ * Styles for Tab Panel
+ * @public
+ */
 export const tabPanelStyles: (
     context: ElementDefinitionContext,
     definition: FoundationElementDefinition
@@ -18,7 +22,7 @@ export const tabPanelStyles: (
     context: ElementDefinitionContext,
     definition: FoundationElementDefinition
 ) => css`
-    ${display("flex")} :host {
+    ${display("block")} :host {
         box-sizing: border-box;
         font-size: ${typeRampBaseFontSize};
         line-height: ${typeRampBaseLineHeight};

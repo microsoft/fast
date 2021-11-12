@@ -45,6 +45,10 @@ _Attributes:_
 
 - auto-update-mode - Corresponds to anchored region's auto update mode and governs when the tooltip checks its position.  Default is "auto".
 
+- horizontal-viewport-lock - Controls if the tooltip will always remain fully in the viewport on the horizontal axis
+
+- vertical-viewport-lock - Controls if the tooltip will always remain fully in the viewport on the vertical axis
+
 _Properties:_
 
 -   `anchorElement` - Holds a reference to the HTMLElement currently being used as the anchor. Can be set directly or be populated by setting the anchor attribute.

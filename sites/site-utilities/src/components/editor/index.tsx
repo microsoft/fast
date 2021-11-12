@@ -125,7 +125,8 @@ abstract class Editor<P, S extends EditorState> extends React.Component<P, S> {
 
     public createMonacoEditor = (
         monacoRef: any,
-        alternateContainerRef?: HTMLElement
+        alternateContainerRef?: HTMLElement,
+        editorOptions?: any
     ): void => {
         if ((alternateContainerRef || this.editorContainerRef.current) && !this.editor) {
             this.editor = monacoRef.editor.create(
@@ -145,6 +146,7 @@ abstract class Editor<P, S extends EditorState> extends React.Component<P, S> {
                     minimap: {
                         showSlider: "mouseover",
                     },
+                    ...editorOptions,
                 }
             );
 

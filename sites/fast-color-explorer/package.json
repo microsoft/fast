@@ -29,7 +29,7 @@
     "@babel/core": "^7.12.13",
     "@babel/preset-env": "^7.12.13",
     "@babel/preset-react": "^7.12.13",
-    "@microsoft/eslint-config-fast-dna": "^1.2.0",
+    "@microsoft/eslint-config-fast-dna": "^2.0.0",
     "@microsoft/site-utilities": "^0.9.0",
     "@types/lodash": "^4.14.120",
     "@types/node": "^10.12.12",
@@ -42,6 +42,7 @@
     "css-loader": "^4.2.1",
     "csstype": "^2.5.8",
     "eslint-config-prettier": "6.10.1",
+    "eslint-plugin-react": "^7.19.0",
     "exenv-es6": "^1.0.0",
     "focus-visible": "^4.1.5",
     "html-webpack-plugin": "^3.2.0",
@@ -69,14 +70,14 @@
     "workbox-webpack-plugin": "^3.6.3"
   },
   "dependencies": {
-    "@microsoft/fast-colors": "^5.1.3",
-    "@microsoft/fast-components": "^2.6.0",
+    "@microsoft/fast-colors": "^5.1.4",
+    "@microsoft/fast-components": "^2.16.2",
     "@microsoft/fast-components-react-base": "^4.27.0",
     "@microsoft/fast-components-react-msft": "^4.32.0",
     "@microsoft/fast-components-styles-msft": "^4.29.0",
     "@microsoft/fast-jss-manager-react": "^4.8.0",
     "@microsoft/fast-jss-utilities": "^4.8.0",
     "@microsoft/fast-layouts-react": "^4.12.0",
-    "@microsoft/fast-web-utilities": "^4.8.0"
+    "@microsoft/fast-web-utilities": "^5.0.2"
   }
 }

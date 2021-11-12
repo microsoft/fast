@@ -12,7 +12,7 @@ import { switchStyles as styles } from "./switch.styles";
  *
  * @public
  * @remarks
- * Generates HTML Element: \<fast-switch\>
+ * Generates HTML Element: `<fast-switch>`
  */
 export const fastSwitch = Switch.compose<SwitchOptions>({
     baseName: "switch",
@@ -24,13 +24,9 @@ export const fastSwitch = Switch.compose<SwitchOptions>({
 });
 
 /**
- * Styles for Switch
- * @public
- */
-export const switchStyles = styles;
-
-/**
  * Base class for Switch
  * @public
  */
 export { Switch };
+
+export { styles as switchStyles };

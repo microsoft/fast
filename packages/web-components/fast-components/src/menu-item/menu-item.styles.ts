@@ -16,6 +16,7 @@ import {
     disabledOpacity,
     focusStrokeOuter,
     focusStrokeWidth,
+    foregroundOnAccentRest,
     neutralFillStealthRest,
     neutralForegroundHint,
     neutralForegroundRest,
@@ -27,6 +28,10 @@ import {
 } from "../design-tokens";
 import { DirectionalStyleSheetBehavior, heightNumber } from "../styles/index";
 
+/**
+ * Styles for Menu item
+ * @public
+ */
 export const menuItemStyles: (
     context: ElementDefinitionContext,
     definition: MenuItemOptions
@@ -256,7 +261,7 @@ export const menuItemStyles: (
         width: 100%;
         height: 100%;
         display: block;
-        fill: ${neutralForegroundRest};
+        fill: ${foregroundOnAccentRest};
         pointer-events: none;
     }
 
@@ -268,7 +273,7 @@ export const menuItemStyles: (
         bottom: 4px;
         border-radius: 999px;
         display: block;
-        background: ${neutralForegroundRest};
+        background: ${foregroundOnAccentRest};
         pointer-events: none;
     }
 

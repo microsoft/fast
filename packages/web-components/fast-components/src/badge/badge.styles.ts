@@ -15,6 +15,10 @@ import {
 } from "../design-tokens";
 import { heightNumber } from "../styles/index";
 
+/**
+ * Styles for Badge
+ * @public
+ */
 export const badgeStyles: (
     context: ElementDefinitionContext,
     definition: FoundationElementDefinition

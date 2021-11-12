@@ -27,6 +27,8 @@ export abstract class Controller {
     /**
      * Track the currently selected node.
      */
+    /* eslint-disable-next-line @typescript-eslint/ban-ts-comment */
+    /* @ts-ignore-next-line */
     private _selectedNode: string[];
 
     /**
@@ -86,7 +88,9 @@ export abstract class Controller {
             ),
             recipeOptions: selectedNodes.length
                 ? allSupported
-                      .filter((type): type is RecipeTypes => !!RecipeTypes[type])
+                      .filter(
+                          (type: RecipeTypes): type is RecipeTypes => !!RecipeTypes[type]
+                      )
                       .map(type => {
                           return {
                               type,

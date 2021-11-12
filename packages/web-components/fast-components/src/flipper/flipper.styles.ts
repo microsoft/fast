@@ -26,6 +26,10 @@ import {
 } from "../design-tokens";
 import { heightNumber } from "../styles/index";
 
+/**
+ * Styles for Flipper
+ * @public
+ */
 export const flipperStyles: (
     context: ElementDefinitionContext,
     definition: FlipperOptions

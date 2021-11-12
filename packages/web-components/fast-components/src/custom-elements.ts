@@ -10,6 +10,7 @@ import { fastBadge } from "./badge/index";
 import { fastBreadcrumbItem } from "./breadcrumb-item/index";
 import { fastBreadcrumb } from "./breadcrumb/index";
 import { fastButton } from "./button/index";
+import { fastCalendar } from "./calendar/index";
 import { fastCard } from "./card/index";
 import { fastCheckbox } from "./checkbox/index";
 import { fastCombobox } from "./combobox/index";
@@ -25,10 +26,18 @@ import { fastListbox } from "./listbox/index";
 import { fastMenuItem } from "./menu-item/index";
 import { fastMenu } from "./menu/index";
 import { fastNumberField } from "./number-field/index";
+import {
+    fastPicker,
+    fastPickerList,
+    fastPickerListItem,
+    fastPickerMenu,
+    fastPickerMenuOption,
+} from "./picker/index";
 import { fastProgressRing } from "./progress-ring/index";
 import { fastProgress } from "./progress/index";
 import { fastRadioGroup } from "./radio-group/index";
 import { fastRadio } from "./radio/index";
+import { fastSearch } from "./search/index";
 import { fastSelect } from "./select/index";
 import { fastSkeleton } from "./skeleton/index";
 import { fastSliderLabel } from "./slider-label/index";
@@ -51,6 +60,7 @@ import type { Card } from "./card/index";
 import type { DesignSystemProvider } from "./design-system-provider/index";
 import type { Disclosure } from "./disclosure/index";
 import type { HorizontalScroll } from "./horizontal-scroll/index";
+import type { Search } from "./search/index";
 import type { SliderLabel } from "./slider-label/index";
 import type { TextArea } from "./text-area/index";
 import type { TextField } from "./text-field/index";
@@ -72,6 +82,7 @@ export {
     fastBreadcrumb,
     fastBreadcrumbItem,
     fastButton,
+    fastCalendar,
     fastCard,
     fastCheckbox,
     fastCombobox,
@@ -89,10 +100,16 @@ export {
     fastMenu,
     fastMenuItem,
     fastNumberField,
+    fastPicker,
+    fastPickerList,
+    fastPickerListItem,
+    fastPickerMenu,
+    fastPickerMenuOption,
     fastProgress,
     fastProgressRing,
     fastRadio,
     fastRadioGroup,
+    fastSearch,
     fastSelect,
     fastSkeleton,
     fastSlider,
@@ -126,6 +143,7 @@ export const allComponents = {
     fastBreadcrumb,
     fastBreadcrumbItem,
     fastButton,
+    fastCalendar,
     fastCard,
     fastCheckbox,
     fastCombobox,
@@ -143,10 +161,16 @@ export const allComponents = {
     fastMenu,
     fastMenuItem,
     fastNumberField,
+    fastPicker,
+    fastPickerList,
+    fastPickerListItem,
+    fastPickerMenu,
+    fastPickerMenuOption,
     fastProgress,
     fastProgressRing,
     fastRadio,
     fastRadioGroup,
+    fastSearch,
     fastSelect,
     fastSkeleton,
     fastSlider,
@@ -161,7 +185,7 @@ export const allComponents = {
     fastToolbar,
     fastTreeView,
     fastTreeItem,
-    register(container?: Container) {
+    register(container?: Container, ...rest: any[]) {
         if (!container) {
             // preserve backward compatibility with code that loops through
             // the values of this object and calls them as funcs with no args
@@ -173,7 +197,7 @@ export const allComponents = {
                 continue;
             }
 
-            this[key]().register(container);
+            this[key]().register(container, ...rest);
         }
     },
 };

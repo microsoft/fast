@@ -1,8 +1,402 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Thu, 12 Aug 2021 07:16:50 GMT and should not be manually modified.
+This log was last generated on Thu, 11 Nov 2021 07:15:33 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.26.2
+
+Thu, 11 Nov 2021 07:15:33 GMT
+
+### Patches
+
+- convert tsdoc-config dependency to dev-dependency (nicholasrice@users.noreply.github.com)
+
+## 2.26.1
+
+Wed, 10 Nov 2021 07:12:54 GMT
+
+### Patches
+
+- Enabling setting number-field value through script (robarb@microsoft.com)
+
+## 2.26.0
+
+Tue, 09 Nov 2021 07:14:09 GMT
+
+### Minor changes
+
+- feat: add search web component (jes@microsoft.com)
+
+## 2.25.1
+
+Thu, 04 Nov 2021 07:11:59 GMT
+
+### Patches
+
+- fix: change event emitted twice (jes@microsoft.com)
+
+## 2.25.0
+
+Wed, 03 Nov 2021 07:12:39 GMT
+
+### Minor changes
+
+- add placeholder attr to picker (scomea@microsoft.com)
+
+## 2.24.0
+
+Sun, 31 Oct 2021 07:17:45 GMT
+
+### Minor changes
+
+- Added the CheckableFormAssociated mixin to better support the addition of current-checked property/attribute that allows for setting checked state via the .setAttribute() API. This change also converts two lifecycle hooks to methods from properties so that they can be handled correctly by the browser. (nicholasrice@users.noreply.github.com)
+
+### Patches
+
+- fix: number-field increment decrement logic (robarb@microsoft.com)
+- picker focus on input after selection (scomea@microsoft.com)
+- update fast eslint package version (chhol@microsoft.com)
+- Bump @microsoft/fast-element to v1.6.2 (chhol@microsoft.com)
+- Bump @microsoft/fast-web-utilities to v5.0.2 (chhol@microsoft.com)
+
+## 2.23.2
+
+Thu, 28 Oct 2021 07:15:32 GMT
+
+### Patches
+
+- fixes emission of CSS custom properties in FireFox and Safari (nicholasrice@users.noreply.github.com)
+
+## 2.23.1
+
+Wed, 27 Oct 2021 07:11:58 GMT
+
+### Patches
+
+- switch should check when using both enter and space (chhol@microsoft.com)
+
+## 2.23.0
+
+Fri, 22 Oct 2021 17:40:52 GMT
+
+### Minor changes
+
+- adds a currentValue property to form-associated to facilitate attribute-based data binding for form values (chhol@microsoft.com)
+
+### Patches
+
+- picker clear query on selection (scomea@microsoft.com)
+- Improving number field interactions and tests (robarb@microsoft.com)
+
+## 2.22.1
+
+Thu, 21 Oct 2021 07:11:42 GMT
+
+### Patches
+
+- fix broken tooltip (scomea@microsoft.com)
+
+## 2.22.0
+
+Wed, 20 Oct 2021 07:13:46 GMT
+
+### Minor changes
+
+- add centered positioning option to anchored region (scomea@microsoft.com)
+
+## 2.21.0
+
+Fri, 15 Oct 2021 23:24:14 GMT
+
+### Minor changes
+
+- Implement DesignToken root-element registration for CSS custom property emission of default token values (nicholasrice@users.noreply.github.com)
+
+### Patches
+
+- implement level-2 DOM support for DesignToken in browsers that don't support Constructable StyleSheets (nicholasrice@users.noreply.github.com)
+
+## 2.20.0
+
+Wed, 13 Oct 2021 22:45:16 GMT
+
+### Minor changes
+
+- Adding fast-calendar component (robarb@microsoft.com)
+
+### Patches
+
+- move style assignment for combobox and select into the class and off the DOM node (chhol@microsoft.com)
+- Code fixes for calendar (robarb@microsoft.com)
+- Bump @microsoft/fast-element to v1.6.1 (markwhitfeld@users.noreply.github.com)
+
+## 2.19.0
+
+Wed, 13 Oct 2021 01:53:37 GMT
+
+### Minor changes
+
+- data-grid: add support for rowheader role (scomea@microsoft.com)
+- Add focus event handler to tooltip (v-dlesac@microsoft.com)
+
+### Patches
+
+- refactor: remove lodash-es as a dependency (connor@peet.io)
+- use css transforms and transitions in horizontal scroll (john.kreitlow@microsoft.com)
+- Bump @microsoft/fast-web-utilities to v5.0.1 (john.kreitlow@microsoft.com)
+
+## 2.18.0
+
+Tue, 12 Oct 2021 07:15:14 GMT
+
+### Minor changes
+
+- fix(di): context confused for key with some registrations (roeisenb@microsoft.com)
+
+### Patches
+
+- Update design-token default value emission to emit to a stylesheet instead of inline styles on the document body (nicholasrice@users.noreply.github.com)
+- add aria-disabled to accordion-item for single-mode (khamu@microsoft.com)
+
+## 2.17.3
+
+Sun, 10 Oct 2021 07:12:26 GMT
+
+### Patches
+
+- fix linting errors in horizontal-scroll tests (john.kreitlow@microsoft.com)
+
+## 2.17.2
+
+Fri, 08 Oct 2021 19:53:11 GMT
+
+### Patches
+
+- anchored region force update (scomea@microsoft.com)
+
+## 2.17.1
+
+Wed, 06 Oct 2021 07:11:47 GMT
+
+### Patches
+
+- picker menu shows with only custom options (scomea@microsoft.com)
+
+## 2.17.0
+
+Tue, 05 Oct 2021 00:45:07 GMT
+
+### Minor changes
+
+- feat: add scroll events to horizontal-scroll component (robarb@microsoft.com)
+
+### Patches
+
+- fix: nested tree items not selecting (jes@microsoft.com)
+
+## 2.16.5
+
+Thu, 30 Sep 2021 07:13:45 GMT
+
+### Patches
+
+- Disabling scroll easing for speed=0 (robarb@microsoft.com)
+
+## 2.16.4
+
+Wed, 29 Sep 2021 07:13:40 GMT
+
+### Patches
+
+- do not prevent default on tree item click (chhol@microsoft.com)
+- fix: allowing decimal values in fast number field (robarb@microsoft.com)
+- fix: sliders mouseup is not firing when leaving the window (robarb@microsoft.com)
+
+## 2.16.3
+
+Tue, 28 Sep 2021 07:10:49 GMT
+
+### Patches
+
+- made orientation changed update child tab styles (marjon@microsoft.com)
+- Fix: active indicator keyboarding issue in tabs (jes@microsoft.com)
+
+## 2.16.2
+
+Mon, 27 Sep 2021 07:12:15 GMT
+
+### Patches
+
+- fix: ensure tree item selection is only managed in tree view (jes@microsoft.com)
+
+## 2.16.1
+
+Thu, 23 Sep 2021 07:14:34 GMT
+
+### Patches
+
+- Removing design-system-provider from storybook (robarb@microsoft.com)
+- Horizontal-scroll tests cleanup (robarb@microsoft.com)
+
+## 2.16.0
+
+Wed, 22 Sep 2021 07:13:13 GMT
+
+### Minor changes
+
+- feat(di): add registerWithContext and use in design system (roeisenb@microsoft.com)
+
+### Patches
+
+- fix: active indicator does not update when activeid attr is changed (jes@microsoft.com)
+- fix aria-describedby typos (v-dlesac@microsoft.com)
+
+## 2.15.0
+
+Sun, 19 Sep 2021 07:17:17 GMT
+
+### Minor changes
+
+- add picker component (scomea@microsoft.com)
+
+### Patches
+
+- fix: remove dependency on document for root containers & design systems (roeisenb@microsoft.com)
+- Bump @microsoft/fast-web-utilities to v5.0.0 (scomea@microsoft.com)
+
+## 2.14.0
+
+Wed, 15 Sep 2021 19:49:35 GMT
+
+### Minor changes
+
+- fix type issue for FoundationElementTemplate (john.kreitlow@microsoft.com)
+
+### Patches
+
+- Fix design-token subscription bugs where subscribers were not getting notified (nicholasrice@users.noreply.github.com)
+
+## 2.13.1
+
+Tue, 14 Sep 2021 07:16:47 GMT
+
+### Patches
+
+- Using a manual focus to workaround delegatesFocus issues on Firefox for the button and anchor components (jumarroq@microsoft.com)
+
+## 2.13.0
+
+Sun, 12 Sep 2021 07:17:43 GMT
+
+### Minor changes
+
+- use class method for radio click handler property (john.kreitlow@microsoft.com)
+
+### Patches
+
+- remove dependencies on keycode (scomea@microsoft.com)
+- Bump @microsoft/fast-web-utilities to v4.8.1 (scomea@microsoft.com)
+
+## 2.12.0
+
+Thu, 09 Sep 2021 07:21:36 GMT
+
+### Minor changes
+
+- add start/end slot definitions to support default slotted content (chhol@microsoft.com)
+
+### Patches
+
+- fix(design-system): make FoundationElement.compose safe to use directly (roeisenb@microsoft.com)
+
+## 2.11.0
+
+Wed, 08 Sep 2021 07:16:17 GMT
+
+### Minor changes
+
+- fix: allow for base class (mathieu.lavoie@logmein.com)
+
+### Patches
+
+- force non-volatile binding and update docs to explain that DesignToken does not support volatile bindings (nicholasrice@users.noreply.github.com)
+- Bump @microsoft/fast-element to v1.5.1 (roeisenb@microsoft.com)
+
+## 2.10.0
+
+Thu, 02 Sep 2021 17:17:56 GMT
+
+### Minor changes
+
+- feat(design-system): enable complete ignore of duplicate elements (roeisenb@microsoft.com)
+
+## 2.9.1
+
+Thu, 02 Sep 2021 07:15:21 GMT
+
+### Patches
+
+- configure system to use a single CSSStyleSheet for custom property setting (nicholasrice@users.noreply.github.com)
+- progress component bar width (scomea@microsoft.com)
+- Removed remaining 'use-defaults' which no longer exists (47367562+bheston@users.noreply.github.com)
+
+## 2.9.0
+
+Wed, 01 Sep 2021 07:18:34 GMT
+
+### Minor changes
+
+- add viewport lock to tooltip (scomea@microsoft.com)
+
+### Patches
+
+- don't block all keys while focused (corylaviska@microsoft.com)
+
+## 2.8.1
+
+Mon, 30 Aug 2021 22:30:39 GMT
+
+### Patches
+
+- fixing issue where a token would subscribe to itself, causing max-callstack-exceded in certain scenarios (nicholasrice@users.noreply.github.com)
+
+## 2.8.0
+
+Fri, 27 Aug 2021 14:14:26 GMT
+
+### Minor changes
+
+- Refactor DesignToken implementation to support deep token dependency hierarchies (nicholasrice@users.noreply.github.com)
+
+### Patches
+
+- add up/down key support to number-field (corylaviska@microsoft.com)
+- Bump @microsoft/fast-element to v1.5.0 (nicholasrice@users.noreply.github.com)
+
+## 2.7.1
+
+Thu, 26 Aug 2021 07:17:43 GMT
+
+### Patches
+
+- fix slider dragging when page is scrolled (corylaviska@microsoft.com)
+
+## 2.7.0
+
+Wed, 25 Aug 2021 07:17:07 GMT
+
+### Minor changes
+
+- allow context for partials on component compositions (john.kreitlow@microsoft.com)
+
+## 2.6.5
+
+Thu, 19 Aug 2021 07:15:21 GMT
+
+### Patches
+
+- add reducefocusableElements and all slotted items to keyboard interaction (sethdonohue@Admins-MBP.guest.corp.microsoft.com)
 
 ## 2.6.4
 

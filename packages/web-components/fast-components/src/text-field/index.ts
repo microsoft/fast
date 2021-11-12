@@ -44,12 +44,13 @@ export class TextField extends FoundationTextField {
  *
  * @public
  * @remarks
- * Generates HTML Element: \<fast-text-field\>
+ * Generates HTML Element: `<fast-text-field>`
  *
  * {@link https://developer.mozilla.org/en-US/docs/Web/API/ShadowRoot/delegatesFocus | delegatesFocus}
  */
 export const fastTextField = TextField.compose({
     baseName: "text-field",
+    baseClass: FoundationTextField,
     template,
     styles,
     shadowOptions: {
@@ -57,8 +58,4 @@ export const fastTextField = TextField.compose({
     },
 });
 
-/**
- * Styles for TextField
- * @public
- */
-export const textFieldStyles = styles;
+export { styles as textFieldStyles };

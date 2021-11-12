@@ -20,6 +20,7 @@ export const treeViewTemplate: (
         ${ref("treeView")}
         @keydown="${(x, c) => x.handleKeyDown(c.event as KeyboardEvent)}"
         @focusout="${(x, c) => x.handleBlur(c.event as FocusEvent)}"
+        @focusin="${(x, c) => x.handleFocus(c.event as FocusEvent)}"
     >
         <slot ${slotted("slottedTreeItems")}></slot>
     </template>

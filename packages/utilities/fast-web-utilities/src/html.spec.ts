@@ -32,7 +32,9 @@ describe("getClientRectWithMargin", () => {
             <div id="element" style="margin: 10px 20px;"></div>
         `;
 
-        const element: HTMLElement = document.getElementById("element");
+        const element: HTMLElement | undefined | null = document.getElementById(
+            "element"
+        );
         const expectedWidth: number = mockWidth + 40;
         const expectedHeight: number = mockHeight + 20;
 
@@ -40,13 +42,14 @@ describe("getClientRectWithMargin", () => {
             width: expectedWidth,
             height: expectedHeight,
         });
-
-        expect(getClientRectWithMargin(element).bottom).to.equal(expectedRect.bottom);
-        expect(getClientRectWithMargin(element).height).to.equal(expectedRect.height);
-        expect(getClientRectWithMargin(element).left).to.equal(expectedRect.left);
-        expect(getClientRectWithMargin(element).right).to.equal(expectedRect.right);
-        expect(getClientRectWithMargin(element).top).to.equal(expectedRect.top);
-        expect(getClientRectWithMargin(element).width).to.equal(expectedRect.width);
+        /* eslint-disable @typescript-eslint/no-non-null-assertion */
+        expect(getClientRectWithMargin(element)!.bottom).to.equal(expectedRect.bottom);
+        expect(getClientRectWithMargin(element)!.height).to.equal(expectedRect.height);
+        expect(getClientRectWithMargin(element)!.left).to.equal(expectedRect.left);
+        expect(getClientRectWithMargin(element)!.right).to.equal(expectedRect.right);
+        expect(getClientRectWithMargin(element)!.top).to.equal(expectedRect.top);
+        expect(getClientRectWithMargin(element)!.width).to.equal(expectedRect.width);
+        /* eslint-enable @typescript-eslint/no-non-null-assertion */
     });
 });
 
@@ -63,8 +66,8 @@ describe("convertStylePropertyPixelsToNumber", () => {
         document.body.innerHTML = `
             <div id="element" style="margin: 20px 5px 12px 8px;"></div>
         `;
-
-        const element: HTMLElement = document.getElementById("element");
+        /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */
+        const element: HTMLElement = document.getElementById("element")!;
 
         expect(
             convertStylePropertyPixelsToNumber(

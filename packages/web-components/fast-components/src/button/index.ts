@@ -62,12 +62,13 @@ export class Button extends FoundationButton {
  *
  * @public
  * @remarks
- * Generates HTML Element: \<fast-button\>
+ * Generates HTML Element: `<fast-button>`
  *
  * {@link https://developer.mozilla.org/en-US/docs/Web/API/ShadowRoot/delegatesFocus | delegatesFocus}
  */
 export const fastButton = Button.compose({
     baseName: "button",
+    baseClass: FoundationButton,
     template,
     styles,
     shadowOptions: {
@@ -75,8 +76,4 @@ export const fastButton = Button.compose({
     },
 });
 
-/**
- * Styles for Button
- * @public
- */
-export const buttonStyles = styles;
+export { styles as buttonStyles };

@@ -13,6 +13,10 @@ import {
     typeRampMinus1LineHeight,
 } from "../design-tokens";
 
+/**
+ * Styles for Accordion
+ * @public
+ */
 export const accordionStyles: (
     context: ElementDefinitionContext,
     definition: FoundationElementDefinition

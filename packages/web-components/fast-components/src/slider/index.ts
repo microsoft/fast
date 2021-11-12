@@ -12,7 +12,7 @@ import { sliderStyles as styles } from "./slider.styles";
  *
  * @public
  * @remarks
- * Generates HTML Element: \<fast-slider\>
+ * Generates HTML Element: `<fast-slider>`
  */
 export const fastSlider = Slider.compose<SliderOptions>({
     baseName: "slider",
@@ -24,13 +24,9 @@ export const fastSlider = Slider.compose<SliderOptions>({
 });
 
 /**
- * Styles for Slider
- * @public
- */
-export const sliderStyles = styles;
-
-/**
  * Base class for Slider
  * @public
  */
 export { Slider };
+
+export { styles as sliderStyles };

@@ -1,7 +1,17 @@
 import { attr, observable } from "@microsoft/fast-element";
-import { FoundationElement } from "../foundation-element";
-import { ARIAGlobalStatesAndProperties, StartEnd } from "../patterns/index";
+import { FoundationElement, FoundationElementDefinition } from "../foundation-element";
+import {
+    ARIAGlobalStatesAndProperties,
+    StartEnd,
+    StartEndOptions,
+} from "../patterns/index";
 import { applyMixins } from "../utilities/apply-mixins";
+
+/**
+ * Anchor configuration options
+ * @public
+ */
+export type AnchorOptions = FoundationElementDefinition & StartEndOptions;
 
 /**
  * An Anchor Custom HTML Element.
@@ -95,6 +105,33 @@ export class Anchor extends FoundationElement {
      * References the root element
      */
     public control: HTMLAnchorElement;
+
+    /**
+     * @internal
+     */
+    public connectedCallback(): void {
+        super.connectedCallback();
+
+        this.handleUnsupportedDelegatesFocus();
+    }
+
+    /**
+     * Overrides the focus call for where delegatesFocus is unsupported.
+     * This check works for Chrome, Edge Chromium, FireFox, and Safari
+     * Relevant PR on the Firefox browser: https://phabricator.services.mozilla.com/D123858
+     */
+    private handleUnsupportedDelegatesFocus = () => {
+        // Check to see if delegatesFocus is supported
+        if (
+            window.ShadowRoot &&
+            !window.ShadowRoot.prototype.hasOwnProperty("delegatesFocus") &&
+            this.$fastController.definition.shadowOptions?.delegatesFocus
+        ) {
+            this.focus = () => {
+                this.control.focus();
+            };
+        }
+    };
 }
 
 /**
@@ -119,7 +156,6 @@ export class DelegatesARIALink {
  * TODO: https://github.com/microsoft/fast/issues/3317
  * @internal
  */
-/* eslint-disable-next-line */
 export interface DelegatesARIALink extends ARIAGlobalStatesAndProperties {}
 applyMixins(DelegatesARIALink, ARIAGlobalStatesAndProperties);
 
@@ -129,6 +165,5 @@ applyMixins(DelegatesARIALink, ARIAGlobalStatesAndProperties);
  * TODO: https://github.com/microsoft/fast/issues/3317
  * @internal
  */
-/* eslint-disable-next-line */
 export interface Anchor extends StartEnd, DelegatesARIALink {}
 applyMixins(Anchor, StartEnd, DelegatesARIALink);

@@ -1,4 +1,3 @@
-/* eslint-env node */
 module.exports = {
     docs: [
         {
@@ -80,6 +79,11 @@ module.exports = {
         },
         {
             type: "category",
+            label: "Apps and Experiences",
+            items: ["apps-and-experiences/dependency-injection"],
+        },
+        {
+            type: "category",
             label: "Integrations",
             items: [
                 "integrations/introduction",
@@ -87,6 +91,7 @@ module.exports = {
                 "integrations/aspnet",
                 "integrations/aurelia",
                 "integrations/blazor",
+                "integrations/ember",
                 "integrations/react",
                 "integrations/vue",
                 "integrations/webpack",
@@ -126,6 +131,7 @@ module.exports = {
             type: "category",
             label: "Resources",
             items: [
+                "resources/why-web-components",
                 "resources/license",
                 "resources/security",
                 "resources/browser-support",

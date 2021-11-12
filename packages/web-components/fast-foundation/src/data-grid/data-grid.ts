@@ -10,12 +10,12 @@ import {
     eventFocus,
     eventFocusOut,
     eventKeyDown,
-    keyCodeArrowDown,
-    keyCodeArrowUp,
-    keyCodeEnd,
-    keyCodeHome,
-    keyCodePageDown,
-    keyCodePageUp,
+    keyArrowDown,
+    keyArrowUp,
+    keyEnd,
+    keyHome,
+    keyPageDown,
+    keyPageUp,
 } from "@microsoft/fast-web-utilities";
 import { FoundationElement } from "../foundation-element";
 import type { DataGridCell } from "./data-grid-cell";
@@ -86,6 +86,11 @@ export interface ColumnDefinition {
      */
 
     cellFocusTargetCallback?: (cell: DataGridCell) => HTMLElement;
+
+    /**
+     * Whether this column is the row header
+     */
+    isRowHeader?: boolean;
 }
 
 /**
@@ -311,6 +316,7 @@ export class DataGrid extends FoundationElement {
             { positioning: true }
         ).createBehavior(this.rowsPlaceholder);
 
+        /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */
         this.$fastController.addBehaviors([this.rowsRepeatBehavior!]);
 
         this.addEventListener("row-focused", this.handleRowFocus);
@@ -384,20 +390,20 @@ export class DataGrid extends FoundationElement {
         const currentGridBottom: number = this.offsetHeight + this.scrollTop;
         const lastRow: HTMLElement = this.rowElements[maxIndex] as HTMLElement;
 
-        switch (e.keyCode) {
-            case keyCodeArrowUp:
+        switch (e.key) {
+            case keyArrowUp:
                 e.preventDefault();
                 // focus up one row
                 this.focusOnCell(this.focusRowIndex - 1, this.focusColumnIndex, true);
                 break;
 
-            case keyCodeArrowDown:
+            case keyArrowDown:
                 e.preventDefault();
                 // focus down one row
                 this.focusOnCell(this.focusRowIndex + 1, this.focusColumnIndex, true);
                 break;
 
-            case keyCodePageUp:
+            case keyPageUp:
                 e.preventDefault();
                 if (this.rowElements.length === 0) {
                     this.focusOnCell(0, 0, false);
@@ -422,7 +428,7 @@ export class DataGrid extends FoundationElement {
                 this.focusOnCell(newFocusRowIndex, this.focusColumnIndex, false);
                 break;
 
-            case keyCodePageDown:
+            case keyPageDown:
                 e.preventDefault();
                 if (this.rowElements.length === 0) {
                     this.focusOnCell(0, 0, false);
@@ -461,7 +467,7 @@ export class DataGrid extends FoundationElement {
 
                 break;
 
-            case keyCodeHome:
+            case keyHome:
                 if (e.ctrlKey) {
                     e.preventDefault();
                     // focus first cell of first row
@@ -469,7 +475,7 @@ export class DataGrid extends FoundationElement {
                 }
                 break;
 
-            case keyCodeEnd:
+            case keyEnd:
                 if (e.ctrlKey && this.columnDefinitions !== null) {
                     e.preventDefault();
                     // focus last cell of last row
@@ -501,7 +507,7 @@ export class DataGrid extends FoundationElement {
         const focusRow: Element = this.rowElements[focusRowIndex];
 
         const cells: NodeListOf<Element> = focusRow.querySelectorAll(
-            '[role="cell"], [role="gridcell"], [role="columnheader"]'
+            '[role="cell"], [role="gridcell"], [role="columnheader"], [role="rowheader"]'
         );
 
         const focusColumnIndex = Math.max(0, Math.min(cells.length - 1, columnIndex));
@@ -571,7 +577,7 @@ export class DataGrid extends FoundationElement {
         /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
         observer: MutationObserver
     ): void => {
-        if (mutations!.length) {
+        if (mutations && mutations.length) {
             mutations.forEach((mutation: MutationRecord): void => {
                 mutation.addedNodes.forEach((newNode: Node): void => {
                     if (

@@ -1,10 +1,21 @@
 import { attr, DOM, nullableNumberConverter, observable } from "@microsoft/fast-element";
-import { ARIAGlobalStatesAndProperties, StartEnd } from "../patterns/index";
+import {
+    ARIAGlobalStatesAndProperties,
+    StartEnd,
+    StartEndOptions,
+} from "../patterns/index";
 import { applyMixins } from "../utilities/index";
+import type { FoundationElementDefinition } from "../foundation-element";
 import { FormAssociatedTextField } from "./text-field.form-associated";
 import { TextFieldType } from "./text-field.options";
 
 export { TextFieldType };
+
+/**
+ * Text field configuration options
+ * @public
+ */
+export type TextFieldOptions = FoundationElementDefinition & StartEndOptions;
 
 /**
  * A Text Field Custom HTML Element.
