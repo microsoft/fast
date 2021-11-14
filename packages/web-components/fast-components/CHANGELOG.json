@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-components",
   "entries": [
     {
+      "date": "Sun, 14 Nov 2021 07:11:13 GMT",
+      "tag": "@microsoft/fast-components_v2.16.3",
+      "version": "2.16.3",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Fixing z-indexing problem when using fast-select",
+            "author": "robarb@microsoft.com",
+            "commit": "ec0a853a7d1a6f20443cfa332f9f9fbe5d723cc3",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 11 Nov 2021 07:15:33 GMT",
       "tag": "@microsoft/fast-components_v2.16.2",
       "version": "2.16.2",

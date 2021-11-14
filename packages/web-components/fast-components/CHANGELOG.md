@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-components
 
-This log was last generated on Thu, 11 Nov 2021 07:15:33 GMT and should not be manually modified.
+This log was last generated on Sun, 14 Nov 2021 07:11:13 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.16.3
+
+Sun, 14 Nov 2021 07:11:13 GMT
+
+### Patches
+
+- Fixing z-indexing problem when using fast-select (robarb@microsoft.com)
 
 ## 2.16.2
 
