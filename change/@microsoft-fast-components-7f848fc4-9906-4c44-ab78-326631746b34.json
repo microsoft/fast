@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "Fixing z-indexing problem when using fast-select",
-  "packageName": "@microsoft/fast-components",
-  "email": "robarb@microsoft.com",
-  "dependentChangeType": "patch"
-}
