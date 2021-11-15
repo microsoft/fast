@@ -40,10 +40,12 @@
     "@babel/preset-env": "^7.12.13",
     "@babel/preset-typescript": "^7.12.13",
     "@microsoft/api-extractor": "^7.7.13",
+    "@microsoft/eslint-config-fast-dna": "^1.2.0",
     "@types/chai": "^4.2.11",
     "@types/jest": "^26.0.22",
     "@types/webpack-env": "^1.15.2",
     "chai": "^4.2.0",
+    "eslint-config-prettier": "^6.10.1",
     "esm": "^3.2.25",
     "ignore-loader": "^0.1.2",
     "istanbul": "^0.4.5",
@@ -79,9 +81,12 @@
       ]
     ],
     "coveragePathIgnorePatterns": [
-      "pixel-blob.ts"
+      "./base/",
+      "./pointer-gesture-handler.ts"
     ],
-    "modulePathIgnorePatterns": ["<rootDir>/dist/"],
+    "modulePathIgnorePatterns": [
+      "<rootDir>/dist/"
+    ],
     "testURL": "http://localhost",
     "coverageThreshold": {
       "global": {

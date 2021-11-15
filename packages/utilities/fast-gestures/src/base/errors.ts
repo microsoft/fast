@@ -30,22 +30,10 @@ export class ErrorHandler {
         };
     }
 
-    public addListener(listener: ErrorListenerCallback): ErrorListenerUnbind {
-        this.listeners.push(listener);
-
-        return () => {
-            this._removeListener(listener);
-        };
-    }
-
     private emit(e: any): void {
         this.listeners.forEach(listener => {
             listener(e);
         });
-    }
-
-    private _removeListener(listener: ErrorListenerCallback): void {
-        this.listeners.splice(this.listeners.indexOf(listener), 1);
     }
 
     public onUnexpectedError(e: any): void {
