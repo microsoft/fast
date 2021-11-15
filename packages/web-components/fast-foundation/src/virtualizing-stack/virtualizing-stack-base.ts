@@ -89,7 +89,7 @@ export class VirtualizingStackBase extends FoundationElement {
      * @remarks
      * HTML Attribute: item-span
      */
-    @attr({ attribute: "item-span" })
+    @attr({ attribute: "item-span", converter: nullableNumberConverter })
     public itemSpan: number;
     private itemSpanChanged(): void {
         if (this.$fastController.isConnected) {
@@ -104,7 +104,7 @@ export class VirtualizingStackBase extends FoundationElement {
      * @remarks
      * HTML Attribute: viewport-buffer
      */
-    @attr({ attribute: "viewport-buffer" })
+    @attr({ attribute: "viewport-buffer", converter: nullableNumberConverter })
     public viewportBuffer: number = 100;
 
     /**
@@ -230,9 +230,6 @@ export class VirtualizingStackBase extends FoundationElement {
      */
     @observable
     public visibleItems: any[] = [];
-    protected visibleItemsChanged(): void {
-        this.$emit("visibleitemschanged ", this, { bubbles: false });
-    }
 
     /**
      *
@@ -365,11 +362,12 @@ export class VirtualizingStackBase extends FoundationElement {
     }
 
     /**
-     * the position in the stack (in pixels) of the a particular item
+     * the position in the stack (in pixels) of the a particular item index in the
+     * base source data
      *
      * @public
      */
-    public getItemPosition(itemIndex: number): number {
+    public getGeneratedItemPosition = (itemIndex: number): number => {
         if (itemIndex < 0 || itemIndex >= this.items.length) {
             // out of range
             return 0;
@@ -385,7 +383,7 @@ export class VirtualizingStackBase extends FoundationElement {
         }
 
         return returnVal;
-    }
+    };
 
     /**
      * get position updates
