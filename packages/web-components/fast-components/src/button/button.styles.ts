@@ -16,8 +16,6 @@ import {
 import { appearanceBehavior } from "../utilities/behaviors";
 import { disabledOpacity } from "../design-tokens";
 
-const interactivitySelector: string = ":not([disabled])";
-
 /**
  * Styles for Button
  * @public
@@ -31,7 +29,7 @@ export const buttonStyles: (
             opacity: ${disabledOpacity};
             cursor: ${disabledCursor};
         }
-        ${BaseButtonStyles(context, definition, interactivitySelector)}
+        ${BaseButtonStyles(context, definition)}
     `.withBehaviors(
         forcedColorsStylesheetBehavior(
             css`
@@ -46,14 +44,11 @@ export const buttonStyles: (
                 }
             `
         ),
-        appearanceBehavior(
-            "accent",
-            AccentButtonStyles(context, definition, interactivitySelector)
-        ),
+        appearanceBehavior("accent", AccentButtonStyles(context, definition)),
         appearanceBehavior(
             "lightweight",
             css`
-                ${LightweightButtonStyles(context, definition, interactivitySelector)}
+                ${LightweightButtonStyles(context, definition)}
             `.withBehaviors(
                 forcedColorsStylesheetBehavior(
                     css`
@@ -65,14 +60,11 @@ export const buttonStyles: (
                 )
             )
         ),
-        appearanceBehavior(
-            "outline",
-            OutlineButtonStyles(context, definition, interactivitySelector)
-        ),
+        appearanceBehavior("outline", OutlineButtonStyles(context, definition)),
         appearanceBehavior(
             "stealth",
             css`
-                ${StealthButtonStyles(context, definition, interactivitySelector)}
+                ${StealthButtonStyles(context, definition)}
             `.withBehaviors(
                 forcedColorsStylesheetBehavior(
                     css`
