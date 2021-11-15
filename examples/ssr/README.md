@@ -9,10 +9,10 @@
 [x] Repeat template rendering
 [x] Attribute value binding
 [x] Boolean attribute binding
-[] Property value binding
-[] Component stylesheet emission
-[] Design token custom property emission
-[] Observable changes affecting template in connectedCallback
+[x] Property value binding
+[x] Component stylesheet emission
+[x] Instance stylesheet emission
+[x] Observable changes affecting template in connectedCallback
 [x] Open shadow roots
 ~~[] Closed shadow roots~~
 
