@@ -2767,9 +2767,6 @@ export function validateKey(key: any): void;
 export type VerticalPosition = "top" | "bottom" | "center" | "unset";
 
 // @public
-export type WeekdayFormat = "long" | "narrow" | "short";
-
-// @public
 export class VirtualizingStack extends VirtualizingStackBase {
 }
 
@@ -2835,6 +2832,9 @@ export class VirtualizingStackBase extends FoundationElement {
 
 // @public
 export const virtualizingStackTemplate: (context: ElementDefinitionContext, definition: FoundationElementDefinition) => ViewTemplate<VirtualizingStack>;
+
+// @public
+export type WeekdayFormat = "long" | "narrow" | "short";
 
 // @public
 export function whitespaceFilter(value: Node, index: number, array: Node[]): boolean;

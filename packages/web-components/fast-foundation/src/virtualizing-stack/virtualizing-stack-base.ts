@@ -10,8 +10,8 @@ import {
 } from "@microsoft/fast-element";
 import { eventResize, eventScroll, Orientation } from "@microsoft/fast-web-utilities";
 import { FoundationElement } from "../foundation-element";
-import { IntersectionService } from "../anchored-region/intersection-service";
-import type { ResizeObserverClassDefinition } from "../anchored-region/resize-observer";
+import { IntersectionService } from "../utilities/intersection-service";
+import type { ResizeObserverClassDefinition } from "../utilities/resize-observer";
 
 /**
  * Defines if the component updates its position automatically. Calling update() always provokes an update.
