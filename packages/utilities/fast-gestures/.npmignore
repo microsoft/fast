@@ -10,12 +10,11 @@ src/
 # config files
 .eslintignore
 .eslintrc.js
-.mocharc.json
 .prettierignore
 api-extractor.json
-karma.conf.js
 rollup.config.js
 tsconfig.json
+babel.config.js
 
 # cache
 .rollupcache
