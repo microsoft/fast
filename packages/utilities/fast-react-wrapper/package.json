@@ -89,6 +89,6 @@
     "@microsoft/fast-foundation": "^2.26.2"
   },
   "peerDependencies": {
-    "react": "^16.9.0"
+    "react": ">=16.9.0"
   }
 }
