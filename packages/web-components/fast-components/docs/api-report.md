@@ -43,6 +43,7 @@ import { Flipper } from '@microsoft/fast-foundation';
 import { FlipperOptions } from '@microsoft/fast-foundation';
 import { FoundationElement } from '@microsoft/fast-foundation';
 import { FoundationElementDefinition } from '@microsoft/fast-foundation';
+import { FoundationElementTemplate } from '@microsoft/fast-foundation';
 import { HorizontalScroll as HorizontalScroll_2 } from '@microsoft/fast-foundation';
 import { HorizontalScrollOptions } from '@microsoft/fast-foundation';
 import { ListboxElement as Listbox } from '@microsoft/fast-foundation';
@@ -746,7 +747,7 @@ export { Listbox }
 export { ListboxOption }
 
 // @public
-export const listboxStyles: (context: ElementDefinitionContext, definition: FoundationElementDefinition) => ElementStyles;
+export const listboxStyles: FoundationElementTemplate<ElementStyles>;
 
 export { Menu }
 
@@ -979,7 +980,7 @@ export type NumberFieldAppearance = "filled" | "outline";
 export const numberFieldStyles: (context: ElementDefinitionContext, definition: NumberFieldOptions) => ElementStyles;
 
 // @public
-export const optionStyles: (context: ElementDefinitionContext, definition: ListboxOptionOptions) => ElementStyles;
+export const optionStyles: FoundationElementTemplate<ElementStyles, ListboxOptionOptions>;
 
 // @public
 export interface Palette<T extends Swatch = Swatch> {
