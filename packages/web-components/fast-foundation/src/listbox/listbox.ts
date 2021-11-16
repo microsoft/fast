@@ -68,6 +68,20 @@ export abstract class Listbox extends FoundationElement {
     }
 
     /**
+     * Flag for the typeahead timeout expiration.
+     *
+     * @deprecated use `Listbox.typeaheadExpired`
+     * @internal
+     */
+    protected get typeAheadExpired(): boolean {
+        return this.typeaheadExpired;
+    }
+
+    protected set typeAheadExpired(value: boolean) {
+        this.typeaheadExpired = value;
+    }
+
+    /**
      * The disabled state of the listbox.
      *
      * @public
