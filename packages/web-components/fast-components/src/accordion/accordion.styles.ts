@@ -4,13 +4,7 @@ import {
     ElementDefinitionContext,
     FoundationElementDefinition,
 } from "@microsoft/fast-foundation";
-import {
-    bodyFont,
-    designUnit,
-    neutralForegroundRest,
-    typeRampBaseFontSize,
-    typeRampBaseLineHeight,
-} from "../design-tokens";
+import { designUnit } from "../design-tokens";
 
 /**
  * Styles for Accordion
@@ -27,10 +21,6 @@ export const accordionStyles: (
         ${display("flex")} :host {
             box-sizing: border-box;
             flex-direction: column;
-            font-family: ${bodyFont};
-            font-size: ${typeRampBaseFontSize};
-            line-height: ${typeRampBaseLineHeight};
-            color: ${neutralForegroundRest};
             gap: calc(${designUnit} * 1px);
         }
     `;

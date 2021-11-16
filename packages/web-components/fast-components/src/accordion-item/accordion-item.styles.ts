@@ -64,7 +64,6 @@ export const accordionItemStyles: (
             outline: none;
             padding: 0 calc((6 + (${designUnit} * 2 * ${density})) * 1px);
             text-align: left;
-            height: calc(${heightNumber} * 1px);
             color: inherit;
             cursor: pointer;
             font-family: inherit;
@@ -95,7 +94,6 @@ export const accordionItemStyles: (
             grid-column: 4;
             z-index: 2;
             pointer-events: none;
-            border-radius: calc(${controlCornerRadius} * 1px);
             fill: currentcolor;
             width: calc(${heightNumber} * 1px);
             height: calc(${heightNumber} * 1px);
