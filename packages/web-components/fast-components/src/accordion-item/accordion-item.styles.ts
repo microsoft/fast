@@ -41,7 +41,6 @@ export const accordionItemStyles: (
             font-size: ${typeRampBaseFontSize};
             line-height: ${typeRampBaseLineHeight};
             color: ${neutralForegroundRest};
-            border-top: calc(${strokeWidth} * 1px) solid ${neutralFillActive};
             border-bottom: calc(${strokeWidth} * 1px) solid ${neutralFillActive};
             position: relative;
         }

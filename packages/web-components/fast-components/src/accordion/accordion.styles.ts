@@ -4,7 +4,7 @@ import {
     ElementDefinitionContext,
     FoundationElementDefinition,
 } from "@microsoft/fast-foundation";
-import { designUnit } from "../design-tokens";
+import { designUnit, neutralFillActive, strokeWidth } from "../design-tokens";
 
 /**
  * Styles for Accordion
@@ -22,5 +22,6 @@ export const accordionStyles: (
             box-sizing: border-box;
             flex-direction: column;
             gap: calc(${designUnit} * 1px);
+            border-top: calc(${strokeWidth} * 1px) solid ${neutralFillActive};
         }
     `;
