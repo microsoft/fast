@@ -3,9 +3,9 @@ import { assert, expect } from "chai";
 import { fixture } from "../test-utilities/fixture";
 import { ListboxOption } from "../listbox-option/listbox-option";
 import { listboxOptionTemplate as itemTemplate } from "../listbox-option/listbox-option.template";
-import { Listbox, listboxTemplate as template } from "./index";
+import { ListboxElement, listboxTemplate as template } from "./index";
 
-const FASTListbox = Listbox.compose({
+const FASTListbox = ListboxElement.compose({
     baseName: "listbox",
     template
 })

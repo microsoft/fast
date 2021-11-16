@@ -1,4 +1,7 @@
-import { Listbox, listboxTemplate as template } from "@microsoft/fast-foundation";
+import {
+    ListboxElement as Listbox,
+    listboxTemplate as template,
+} from "@microsoft/fast-foundation";
 import { listboxStyles as styles } from "./listbox.styles";
 
 /**

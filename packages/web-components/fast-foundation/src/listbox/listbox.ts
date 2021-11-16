@@ -22,7 +22,7 @@ import { ListboxRole } from "./listbox.options";
  *
  * @public
  */
-export class Listbox extends FoundationElement {
+export abstract class Listbox extends FoundationElement {
     /**
      * The internal unfiltered list of selectable options.
      *
@@ -109,7 +109,7 @@ export class Listbox extends FoundationElement {
      *
      * @internal
      */
-    private shouldSkipFocus: boolean = false;
+    protected shouldSkipFocus: boolean = false;
 
     /**
      * A static filter to include only enabled elements
@@ -442,7 +442,7 @@ export class Listbox extends FoundationElement {
      *
      * @internal
      */
-    public slottedOptionsChanged(prev: Element[] | undefined, next: Element[]) {
+    public slottedOptionsChanged(prev: Element[] | unknown, next: Element[]) {
         if (this.$fastController.isConnected) {
             this.options = next.reduce((options, item) => {
                 if (isListboxOption(item)) {
