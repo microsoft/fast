@@ -86,7 +86,7 @@ export abstract class Listbox extends FoundationElement {
      *
      * @public
      * @remarks
-     * HTML Attribute: disabled
+     * HTML Attribute: `disabled`
      */
     @attr({ mode: "boolean" })
     public disabled: boolean;
@@ -96,13 +96,13 @@ export abstract class Listbox extends FoundationElement {
      *
      * @public
      * @remarks
-     * HTML Attribute: role
+     * HTML Attribute: `role`
      */
     @attr
     public role: string = ListboxRole.listbox;
 
     /**
-     * The index of the selected option
+     * The index of the selected option.
      *
      * @public
      */
@@ -126,7 +126,7 @@ export abstract class Listbox extends FoundationElement {
     protected shouldSkipFocus: boolean = false;
 
     /**
-     * A static filter to include only enabled elements
+     * A static filter to include only selectable options.
      *
      * @param n - element to filter
      * @public
@@ -172,7 +172,7 @@ export abstract class Listbox extends FoundationElement {
     protected typeaheadTimeout: number = -1;
 
     /**
-     * Handles click events for listbox options
+     * Handle click events for listbox options.
      *
      * @internal
      */
@@ -202,8 +202,9 @@ export abstract class Listbox extends FoundationElement {
     }
 
     /**
-     * Handles focus-in actions for the component. When the component receives focus,
-     * refresh the list of selected options and scroll the first selected option into view.
+     * Handles `focusin` actions for the component. When the component receives focus,
+     * the list of selected options is refreshed and the first selected option is scrolled
+     * into view.
      *
      * @internal
      */
@@ -217,9 +218,9 @@ export abstract class Listbox extends FoundationElement {
     }
 
     /**
-     * Move focus to an option whose label matches characters typed by the user.
+     * Moves focus to an option whose label matches characters typed by the user.
      * Consecutive keystrokes are batched into a buffer of search text used
-     * to match against the set of options.  If TYPE_AHEAD_TIMEOUT_MS passes
+     * to match against the set of options.  If `TYPE_AHEAD_TIMEOUT_MS` passes
      * between consecutive keystrokes, the search restarts.
      *
      * @param key - the key to be evaluated
@@ -244,7 +245,7 @@ export abstract class Listbox extends FoundationElement {
     }
 
     /**
-     * Handles keydown actions for listbox navigation and typeahead
+     * Handles `keydown` actions for listbox navigation and typeahead.
      *
      * @internal
      */
@@ -330,10 +331,10 @@ export abstract class Listbox extends FoundationElement {
     }
 
     /**
-     * Updates the list of selected options when the selected index changes.
+     * Updates the list of selected options when the `selectedIndex` changes.
      *
-     * @param prev the previous selected index value
-     * @param next the current selected index value
+     * @param prev - the previous selected index value
+     * @param next - the current selected index value
      *
      * @internal
      */
@@ -344,8 +345,8 @@ export abstract class Listbox extends FoundationElement {
     /**
      * Updates the selectedness of each option when the list of selected options changes.
      *
-     * @param prev the previous list of selected options
-     * @param next the current list of selected options
+     * @param prev - the previous list of selected options
+     * @param next - the current list of selected options
      *
      * @internal
      */
@@ -361,7 +362,7 @@ export abstract class Listbox extends FoundationElement {
     }
 
     /**
-     * Moves focus to the first selectable option
+     * Moves focus to the first selectable option.
      *
      * @public
      */
@@ -372,7 +373,7 @@ export abstract class Listbox extends FoundationElement {
     }
 
     /**
-     * Moves focus to the last selectable option
+     * Moves focus to the last selectable option.
      *
      * @internal
      */
@@ -383,7 +384,7 @@ export abstract class Listbox extends FoundationElement {
     }
 
     /**
-     * Moves focus to the next selectable option
+     * Moves focus to the next selectable option.
      *
      * @internal
      */
@@ -398,7 +399,7 @@ export abstract class Listbox extends FoundationElement {
     }
 
     /**
-     * Moves focus to the previous selectable option
+     * Moves focus to the previous selectable option.
      *
      * @internal
      */
@@ -451,8 +452,8 @@ export abstract class Listbox extends FoundationElement {
     /**
      * Updates the list of options and resets the selected option when the slotted option content changes.
      *
-     * @param prev the previous list of slotted options
-     * @param next the current list of slotted options
+     * @param prev - the previous list of slotted options
+     * @param next - the current list of slotted options
      *
      * @internal
      */
@@ -477,8 +478,8 @@ export abstract class Listbox extends FoundationElement {
     /**
      * Updates the filtered list of options when the typeahead buffer changes.
      *
-     * @param prev the previous typeahead buffer value
-     * @param next the current typeahead buffer value
+     * @param prev - the previous typeahead buffer value
+     * @param next - the current typeahead buffer value
      *
      * @internal
      */
