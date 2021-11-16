@@ -5,13 +5,13 @@ import {
 import { listboxStyles as styles } from "./listbox.styles";
 
 /**
- * A function that returns a {@link @microsoft/fast-foundation#Listbox} registration for configuring the component with a DesignSystem.
+ * A function that returns a {@link @microsoft/fast-foundation#ListboxElement} registration for configuring the component with a DesignSystem.
  * Implements {@link @microsoft/fast-foundation#listboxTemplate}
  *
- *
- * @public
  * @remarks
  * Generates HTML Element: `<fast-listbox>`
+ *
+ * @public
  *
  */
 export const fastListbox = Listbox.compose({
@@ -21,7 +21,8 @@ export const fastListbox = Listbox.compose({
 });
 
 /**
- * Base class for Listbox
+ * Base class for Listbox.
+ *
  * @public
  */
 export { Listbox };

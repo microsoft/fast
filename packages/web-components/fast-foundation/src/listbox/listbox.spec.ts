@@ -1,5 +1,5 @@
 import { DOM } from "@microsoft/fast-element";
-import { assert, expect } from "chai";
+import { expect } from "chai";
 import { fixture } from "../test-utilities/fixture";
 import { ListboxOption } from "../listbox-option/listbox-option";
 import { listboxOptionTemplate as itemTemplate } from "../listbox-option/listbox-option.template";
@@ -65,7 +65,7 @@ describe("Listbox", () => {
 
         await DOM.nextUpdate();
 
-        assert.isNull(element.getAttribute("tabindex"));
+        expect(element.getAttribute("tabindex")).to.be.null;
 
         await disconnect();
     });
@@ -96,6 +96,60 @@ describe("Listbox", () => {
         expect(element.selectedOptions).to.not.contain(option1);
         expect(element.selectedOptions).to.contain(option2);
         expect(element.selectedOptions).to.not.contain(option3);
+
+        await disconnect();
+    });
+
+    it("should set the `size` property to match the `size` attribute", async () => {
+        const { element, connect, disconnect } = await setup();
+
+        await connect();
+
+        element.setAttribute("size", "4");
+
+        expect(element.size).to.equal(4);
+
+        await disconnect();
+    });
+
+    it("should NOT set the `size` attribute to match the `size` property", async () => {
+        const { element, connect, disconnect } = await setup();
+
+        await connect();
+
+        element.size = 4;
+
+        expect(element.getAttribute("size")).to.be.null;
+
+        await disconnect();
+    });
+
+    it("should reset set the `size` property to 0 when a negative `size` value is set", async () => {
+        const { element, connect, disconnect } = await setup();
+
+        await connect();
+
+        element.size = 1;
+
+        expect(element.size).to.equal(1);
+
+        element.size = -1;
+
+        expect(element.size).to.equal(0);
+
+        await disconnect();
+    });
+
+    it("should set the `--size` custom property to match the value of the `size` property with a stylesheet", async () => {
+        const { element, connect, disconnect } = await setup();
+
+        await connect();
+
+        element.size = 4;
+
+        expect(element.style.getPropertyValue("--size")).to.be.empty;
+
+        expect(getComputedStyle(element).getPropertyValue("--size").trim()).to.equal("4");
 
         await disconnect();
     });

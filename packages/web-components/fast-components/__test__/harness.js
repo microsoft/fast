@@ -13,7 +13,12 @@ export const mochaHooks = {
     },
 
     async beforeEach() {
-        this.page = await this.browser.newPage();
+        this.page = await this.browser.newPage({
+            viewport: {
+                width: 1920,
+                height: 1080,
+            },
+        });
         const fixtureUrl = FixtureURL || `http://localhost:${expressPort}/${fixture}`;
         await this.page.goto(fixtureUrl);
     },
