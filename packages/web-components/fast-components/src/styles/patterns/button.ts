@@ -215,8 +215,12 @@ export const HypertextStyles = (
             line-height: inherit;
             min-width: 0;
         }
+        :host(:not([href])) .control {
+            background: transparent;
+        }
         :host .control {
-            display: inline;
+            display: inline-flex;
+            align-items: baseline;
             padding: 0;
             background: transparent;
             border: none;
