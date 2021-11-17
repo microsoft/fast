@@ -54,7 +54,7 @@ export const breadcrumbItemStyles: (
     }
     .separator {
         margin: 0 20px;
-        display:flex;
+        display: flex;
       }
     .control {
       position: relative;
@@ -144,7 +144,7 @@ export const breadcrumbItemStyles: (
                 display: block;
                 height: calc(${strokeWidth} * 1px);
               }
-              .control:hover .content::after ,
+              .control:hover .content::after,
               .control:active .content::after,
               .control:${focusVisible} .content::after {
                   background: ${SystemColors.LinkText};
