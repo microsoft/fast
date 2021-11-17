@@ -18,6 +18,7 @@ import {
 import { appearanceBehavior } from "../utilities/behaviors";
 
 const interactivitySelector: string = "[href]";
+const nonInteractivitySelector: string = ":not([href])";
 
 /**
  * Styles for Anchor
@@ -31,7 +32,12 @@ export const anchorStyles: (
         :host .control:not([href]) {
             cursor: default;
         }
-        ${BaseButtonStyles(context, definition, interactivitySelector)}
+        ${BaseButtonStyles(
+            context,
+            definition,
+            interactivitySelector,
+            nonInteractivitySelector
+        )}
     `.withBehaviors(
         forcedColorsStylesheetBehavior(
             css`
@@ -60,7 +66,12 @@ export const anchorStyles: (
         appearanceBehavior(
             "accent",
             css`
-                ${AccentButtonStyles(context, definition, interactivitySelector)}
+                ${AccentButtonStyles(
+                    context,
+                    definition,
+                    interactivitySelector,
+                    nonInteractivitySelector
+                )}
             `.withBehaviors(
                 forcedColorsStylesheetBehavior(
                     css`
@@ -86,7 +97,12 @@ export const anchorStyles: (
         appearanceBehavior(
             "hypertext",
             css`
-                ${HypertextStyles(context, definition, interactivitySelector)}
+                ${HypertextStyles(
+                    context,
+                    definition,
+                    interactivitySelector,
+                    nonInteractivitySelector
+                )}
             `.withBehaviors(
                 forcedColorsStylesheetBehavior(
                     css`
@@ -102,7 +118,12 @@ export const anchorStyles: (
         appearanceBehavior(
             "lightweight",
             css`
-                ${LightweightButtonStyles(context, definition, interactivitySelector)}
+                ${LightweightButtonStyles(
+                    context,
+                    definition,
+                    interactivitySelector,
+                    nonInteractivitySelector
+                )}
             `.withBehaviors(
                 forcedColorsStylesheetBehavior(
                     css`
@@ -127,7 +148,12 @@ export const anchorStyles: (
         appearanceBehavior(
             "outline",
             css`
-                ${OutlineButtonStyles(context, definition, interactivitySelector)}
+                ${OutlineButtonStyles(
+                    context,
+                    definition,
+                    interactivitySelector,
+                    nonInteractivitySelector
+                )}
             `.withBehaviors(
                 forcedColorsStylesheetBehavior(
                     css`
@@ -147,7 +173,12 @@ export const anchorStyles: (
         appearanceBehavior(
             "stealth",
             css`
-                ${StealthButtonStyles(context, definition, interactivitySelector)}
+                ${StealthButtonStyles(
+                    context,
+                    definition,
+                    interactivitySelector,
+                    nonInteractivitySelector
+                )}
             `.withBehaviors(
                 forcedColorsStylesheetBehavior(
                     css`

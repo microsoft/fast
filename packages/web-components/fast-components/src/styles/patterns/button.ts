@@ -48,7 +48,8 @@ import {
 export const BaseButtonStyles = (
     context: ElementDefinitionContext,
     definition: FoundationElementDefinition,
-    interactivitySelector: string = ":not([disabled])"
+    interactivitySelector: string = "",
+    nonInteractivitySelector: string = ""
 ) =>
     css`
         ${display("inline-flex")} :host {
@@ -154,7 +155,8 @@ export const BaseButtonStyles = (
 export const AccentButtonStyles = (
     context: ElementDefinitionContext,
     definition: FoundationElementDefinition,
-    interactivitySelector: string = ":not([disabled])"
+    interactivitySelector: string = "",
+    nonInteractivitySelector: string = ""
 ) =>
     css`
         :host .control {
@@ -205,7 +207,8 @@ export const AccentButtonStyles = (
 export const HypertextStyles = (
     context: ElementDefinitionContext,
     definition: FoundationElementDefinition,
-    interactivitySelector: string = ":not([disabled])"
+    interactivitySelector: string = "",
+    nonInteractivitySelector: string = ""
 ) =>
     css`
         :host {
@@ -248,7 +251,8 @@ export const HypertextStyles = (
 export const LightweightButtonStyles = (
     context: ElementDefinitionContext,
     definition: FoundationElementDefinition,
-    interactivitySelector: string = ":not([disabled])"
+    interactivitySelector: string = "",
+    nonInteractivitySelector: string = ""
 ) =>
     css`
         :host .control {
@@ -260,6 +264,9 @@ export const LightweightButtonStyles = (
             position: relative;
         }
         :host .control${interactivitySelector}:hover {
+            background: transparent;
+        }
+        :host .control${interactivitySelector}:active {
             background: transparent;
         }
         :host .control:${focusVisible} {
@@ -298,6 +305,7 @@ export const LightweightButtonStyles = (
                     background: ${SystemColors.ButtonFace};
                     border-color: ${SystemColors.ButtonFace} ;
                     color: ${SystemColors.Highlight};
+                    box-shadow: none;
                 }
                 :host .control${interactivitySelector}:hover .content::before,
                 :host .control${interactivitySelector}:active .content::before,
@@ -314,7 +322,8 @@ export const LightweightButtonStyles = (
 export const OutlineButtonStyles = (
     context: ElementDefinitionContext,
     definition: FoundationElementDefinition,
-    interactivitySelector: string = ":not([disabled])"
+    interactivitySelector: string = "",
+    nonInteractivitySelector: string = ""
 ) =>
     css`
         :host .control {
@@ -355,7 +364,8 @@ export const OutlineButtonStyles = (
 export const StealthButtonStyles = (
     context: ElementDefinitionContext,
     definition: FoundationElementDefinition,
-    interactivitySelector: string = ":not([disabled])"
+    interactivitySelector: string = "",
+    nonInteractivitySelector: string = ""
 ) =>
     css`
         :host .control {

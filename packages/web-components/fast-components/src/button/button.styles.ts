@@ -16,6 +16,9 @@ import {
 import { appearanceBehavior } from "../utilities/behaviors";
 import { disabledOpacity } from "../design-tokens";
 
+const interactivitySelector: string = ":not([disabled])";
+const nonInteractivitySelector: string = "[disabled]";
+
 /**
  * Styles for Button
  * @public
@@ -29,7 +32,12 @@ export const buttonStyles: (
             opacity: ${disabledOpacity};
             cursor: ${disabledCursor};
         }
-        ${BaseButtonStyles(context, definition)}
+        ${BaseButtonStyles(
+            context,
+            definition,
+            interactivitySelector,
+            nonInteractivitySelector
+        )}
     `.withBehaviors(
         forcedColorsStylesheetBehavior(
             css`
@@ -44,11 +52,24 @@ export const buttonStyles: (
                 }
             `
         ),
-        appearanceBehavior("accent", AccentButtonStyles(context, definition)),
+        appearanceBehavior(
+            "accent",
+            AccentButtonStyles(
+                context,
+                definition,
+                interactivitySelector,
+                nonInteractivitySelector
+            )
+        ),
         appearanceBehavior(
             "lightweight",
             css`
-                ${LightweightButtonStyles(context, definition)}
+                ${LightweightButtonStyles(
+                    context,
+                    definition,
+                    interactivitySelector,
+                    nonInteractivitySelector
+                )}
             `.withBehaviors(
                 forcedColorsStylesheetBehavior(
                     css`
@@ -60,11 +81,24 @@ export const buttonStyles: (
                 )
             )
         ),
-        appearanceBehavior("outline", OutlineButtonStyles(context, definition)),
+        appearanceBehavior(
+            "outline",
+            OutlineButtonStyles(
+                context,
+                definition,
+                interactivitySelector,
+                nonInteractivitySelector
+            )
+        ),
         appearanceBehavior(
             "stealth",
             css`
-                ${StealthButtonStyles(context, definition)}
+                ${StealthButtonStyles(
+                    context,
+                    definition,
+                    interactivitySelector,
+                    nonInteractivitySelector
+                )}
             `.withBehaviors(
                 forcedColorsStylesheetBehavior(
                     css`
