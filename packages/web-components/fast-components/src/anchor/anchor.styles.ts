@@ -47,9 +47,7 @@ export const anchorStyles: (
                   color: ${SystemColors.LinkText};
                   fill: currentcolor;
               }
-              :host([href]) .control:hover,
-              :host(.neutral[href]) .control:hover,
-              :host(.outline[href]) .control:hover {
+              :host([href]) .control:hover {
                   forced-color-adjust: none;
                   border-color: ${SystemColors.LinkText} ;
                   box-shadow: 0 0 0 1px ${SystemColors.LinkText} ;
@@ -164,6 +162,13 @@ export const anchorStyles: (
                             forced-color-adjust: none;
                             border-color: ${SystemColors.LinkText} ;
                             box-shadow: 0 0 0 calc(${focusStrokeWidth} * 1px) ${SystemColors.LinkText} ;
+                            color: ${SystemColors.LinkText};
+                        }
+                        :host([href]) .control:hover {
+                            forced-color-adjust: none;
+                            border-color: ${SystemColors.LinkText} ;
+                            box-shadow: 0 0 0 1px ${SystemColors.LinkText} ;
+                            background: ${SystemColors.ButtonFace};
                             color: ${SystemColors.LinkText};
                         }
                     `
