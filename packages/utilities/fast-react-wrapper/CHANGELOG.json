@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-react-wrapper",
   "entries": [
     {
+      "date": "Wed, 17 Nov 2021 07:12:14 GMT",
+      "tag": "@microsoft/fast-react-wrapper_v0.1.16",
+      "version": "0.1.16",
+      "comments": {
+        "patch": [
+          {
+            "comment": "fix(react-wrapper): change peer dependency for `react`",
+            "author": "vaibhavkshinde20@gmail.com",
+            "commit": "ac96e70317ce56e38bc1e8bad5deb5018f20ab81",
+            "package": "@microsoft/fast-react-wrapper"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 11 Nov 2021 07:15:33 GMT",
       "tag": "@microsoft/fast-react-wrapper_v0.1.15",
       "version": "0.1.15",
