@@ -165,6 +165,9 @@ export function* render(
     fragment: DocumentFragment,
     renderInfo: RenderInfo
 ): IterableIterator<string> {
-    const walker = DOM.createTemplateWalker(fragment);
+    const walker = document.createTreeWalker(
+        fragment,
+        NodeFilter.SHOW_TEXT + NodeFilter.SHOW_COMMENT + NodeFilter.SHOW_ELEMENT
+    );
     yield* renderTree(walker, renderInfo);
 }
