@@ -61,7 +61,7 @@ export const breadcrumbItemStyles: (
       align-items: center;
       box-sizing: border-box;
       background: transparent;
-      border: calc(${strokeWidth} * 1px) solid transparent;
+      border: calc(${focusStrokeWidth} * 1px) solid transparent;
       color: ${neutralForegroundRest};
       cursor: pointer;
       display: flex;
@@ -81,30 +81,14 @@ export const breadcrumbItemStyles: (
     }
     .control:${focusVisible} {
       border-color: ${focusStrokeOuter};
-      box-shadow: 0 0 0 calc(${focusStrokeWidth} * 1px) ${focusStrokeOuter} inset;
       color: ${neutralForegroundFocus};
     }
-    .control .content {
-      position: relative;
+    .control:hover .content,
+    .control:${focusVisible} .content {
+      text-decoration: underline;
     }
-    .control .content::before {
-      content: "";
-      display: block;
-      height: calc(${strokeWidth} * 1px);
-      left: 0;
-      position: absolute;
-      right: 0;
-      top: calc(1em + 4px);
-      width: 100%;
-    }
-    .control:hover .content::before {
-      background: ${neutralForegroundHover};
-    }
-    .control:active .content::before {
-      background: transparent;
-    }
-    .control:${focusVisible} .content::before {
-      background: ${neutralForegroundHover};
+    .control:active .content {
+      text-decoration: none;
     }
     :host(:not([href])),
     :host([aria-current]) .control {
@@ -138,16 +122,6 @@ export const breadcrumbItemStyles: (
                 color: ${SystemColors.LinkText};
                 fill: ${SystemColors.ButtonText};
                 border-color: ${SystemColors.LinkText};
-              }
-              .control .content::after {
-                content: "";
-                display: block;
-                height: calc(${strokeWidth} * 1px);
-              }
-              .control:hover .content::after,
-              .control:active .content::after,
-              .control:${focusVisible} .content::after {
-                  background: ${SystemColors.LinkText};
               }
               :host(:not([href])) {
                   color: ${SystemColors.ButtonText};
