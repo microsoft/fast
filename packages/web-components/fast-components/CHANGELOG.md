@@ -1,8 +1,52 @@
 # Change Log - @microsoft/fast-components
 
-This log was last generated on Thu, 04 Nov 2021 07:11:59 GMT and should not be manually modified.
+This log was last generated on Sun, 14 Nov 2021 07:11:13 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.16.3
+
+Sun, 14 Nov 2021 07:11:13 GMT
+
+### Patches
+
+- Fixing z-indexing problem when using fast-select (robarb@microsoft.com)
+
+## 2.16.2
+
+Thu, 11 Nov 2021 07:15:33 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.26.2 (nicholasrice@users.noreply.github.com)
+
+## 2.16.1
+
+Wed, 10 Nov 2021 07:12:54 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.26.1 (robarb@microsoft.com)
+
+## 2.16.0
+
+Tue, 09 Nov 2021 07:14:09 GMT
+
+### Minor changes
+
+- feat: add search web component (jes@microsoft.com)
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.26.0 (jes@microsoft.com)
+
+## 2.15.2
+
+Sun, 07 Nov 2021 07:12:36 GMT
+
+### Patches
+
+- remove non-null assertion in anchored region (mathieu.lavoie@shopify.com)
 
 ## 2.15.1
 
