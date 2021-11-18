@@ -3,6 +3,7 @@ import {
     ListboxElement as FoundationListboxElement,
     listboxTemplate as template,
 } from "@microsoft/fast-foundation";
+import { fillColor, neutralLayerFloating } from "../design-tokens";
 import { listboxStyles as styles } from "./listbox.styles";
 
 /**
@@ -11,6 +12,15 @@ import { listboxStyles as styles } from "./listbox.styles";
  * @public
  */
 export class Listbox extends FoundationListboxElement {
+    /**
+     * @internal
+     */
+    public connectedCallback(): void {
+        super.connectedCallback();
+
+        fillColor.setValueFor(this, neutralLayerFloating);
+    }
+
     /**
      * The internal stylesheet which holds the `--size` custom property.
      *
