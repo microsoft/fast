@@ -18,6 +18,7 @@
 
 
 ## Todo
+[] implement `renderLight()` for elements that render to light DOM instead of shadow
 [] Function that can render app root HTML (doctype, html tag, head, tag, body tag, etc)
 [] Client-side custom element upgrading.
 [] Hydrating custom element's with server state.
