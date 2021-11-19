@@ -14,6 +14,7 @@ import {
     designUnit,
     disabledOpacity,
     focusStrokeWidth,
+    foregroundOnAccentRest,
     neutralFillInputActive,
     neutralFillInputRest,
     neutralForegroundActive,
@@ -23,9 +24,16 @@ import {
     strokeControlStrongHover,
     strokeControlStrongRest,
     strokeWidth,
-    typeRampMinus1FontSize,
-    typeRampMinus1LineHeight,
+    typeRampBaseFontSize,
+    typeRampBaseLineHeight,
 } from "../design-tokens";
+import {
+    accentFillActive,
+    accentFillFocus,
+    accentFillHover,
+    accentFillRest,
+    neutralFillInputHover,
+} from "..";
 
 /**
  * Styles for Checkbox
@@ -49,14 +57,45 @@ export const checkboxStyles: (
     }
     .control {
         position: relative;
-        width: calc((${heightNumber} / 2) * 1px);
-        height: calc((${heightNumber} / 2) * 1px);
+        width: calc((${heightNumber} / 2) + (${strokeWidth} * 2) * 1px);
+        height: calc((${heightNumber} / 2) + (${strokeWidth} * 2) * 1px);
         box-sizing: border-box;
         border-radius: 3px;
         border: calc(${strokeWidth} * 1px) solid ${strokeControlStrongRest};
         background: ${neutralFillInputRest};
         outline: none;
         cursor: pointer;
+    }
+    :host(:hover) .control {
+        background: ${neutralFillInputHover};
+        border-color: ${strokeControlStrongHover};
+    }
+    :host(:active) .control {
+        background: ${neutralFillInputActive};
+        border-color: ${strokeControlStrongActive};
+    }
+    :host(:${focusVisible}) .control {
+        border-color: ${strokeControlStrongFocus};
+        box-shadow: 0 0 0 calc(${strokeWidth} * 1px) ${neutralFillInputRest},
+        0 0 0 calc(${focusStrokeWidth} * 1px) ${strokeControlStrongFocus};
+    }
+    :host([aria-checked="true"]) .control {
+        background: ${accentFillRest};
+        border-color: ${accentFillRest};
+    }
+    :host([aria-checked="true"]:enabled:hover) .control {
+        background: ${accentFillHover};
+        border-color: ${accentFillHover};
+    }
+    :host([aria-checked="true"]:enabled:active) .control {
+        background: ${accentFillActive};
+        border-color: ${accentFillActive};
+    }
+    :host([aria-checked="true"]:enabled:${focusVisible}) .control {
+        background: ${accentFillFocus};
+        border-color: ${accentFillFocus};
+        box-shadow: 0 0 0 calc(${strokeWidth} * 1px) ${neutralFillInputRest},
+        0 0 0 calc(${focusStrokeWidth} * 1px) ${strokeControlStrongFocus};
     }
     .label__hidden {
         display: none;
@@ -67,11 +106,12 @@ export const checkboxStyles: (
         color: ${neutralForegroundRest};
         ${
             /* Need to discuss with Brian how HorizontalSpacingNumber can work. https://github.com/microsoft/fast/issues/2766 */ ""
-        } padding-inline-start: calc(${designUnit} * 2px + 2px);
+        }
+        padding-inline-start: calc(${designUnit} * 2px + 2px);
         margin-inline-end: calc(${designUnit} * 2px + 2px);
         cursor: pointer;
-        font-size: ${typeRampMinus1FontSize};
-        line-height: ${typeRampMinus1LineHeight};
+        font-size: ${typeRampBaseFontSize};
+        line-height: ${typeRampBaseLineHeight};
     }
     slot[name="checked-indicator"],
     slot[name="indeterminate-indicator"] {
@@ -80,31 +120,17 @@ export const checkboxStyles: (
         justify-content: center;
         width: 100%;
         height: 100%;
-        fill: ${neutralForegroundActive};
+        fill: ${foregroundOnAccentRest};
         opacity: 0;
         pointer-events: none;
     }
+    slot[name="checked-indicator"] {
+        fill: ${foregroundOnAccentRest};
+    }
     slot[name="indeterminate-indicator"] {
+        fill: ${neutralForegroundActive};
         position: absolute;
         top: 0;
-    }
-    :host([aria-checked="true"]) .control {
-        background: ${neutralFillInputActive};
-        border-color: ${strokeControlStrongRest};
-    }
-    :host(:hover) .control,
-    :host([aria-checked="true"]:enabled:hover) .control {
-        border-color: ${strokeControlStrongHover};
-    }
-    :host(:active) .control,
-    :host([aria-checked="true"]:enabled:active) .control {
-        background: ${neutralFillInputActive};
-        border-color: ${strokeControlStrongActive};
-    }
-    :host(:${focusVisible}) .control,
-    :host([aria-checked="true"]:enabled:${focusVisible}) .control {
-        border-color: ${strokeControlStrongFocus};
-        box-shadow: 0 0 0 calc(${focusStrokeWidth} * 1px) ${strokeControlStrongFocus};
     }
     :host(.disabled) .label,
     :host(.readonly) .label,
@@ -118,6 +144,24 @@ export const checkboxStyles: (
     }
     :host(.disabled) {
         opacity: ${disabledOpacity};
+    }
+    :host([aria-checked="true"].indeterminate) .control {
+        background: ${neutralFillInputActive};
+        border-color: ${strokeControlStrongRest};
+    }
+    :host([aria-checked="true"].indeterminate:hover) .control {
+        background: ${neutralFillInputActive};
+        border-color: ${strokeControlStrongHover};
+    }
+    :host([aria-checked="true"].indeterminate:active) .control {
+        background: ${neutralFillInputActive};
+        border-color: ${strokeControlStrongActive};
+    }
+    :host([aria-checked="true"].indeterminate:${focusVisible}) .control {
+        background: ${neutralFillInputActive};
+        border-color: ${strokeControlStrongFocus};
+        box-shadow: 0 0 0 calc(${strokeWidth} * 1px) ${neutralFillInputRest},
+        0 0 0 calc(${focusStrokeWidth} * 1px) ${strokeControlStrongFocus};
     }
   `.withBehaviors(
         forcedColorsStylesheetBehavior(

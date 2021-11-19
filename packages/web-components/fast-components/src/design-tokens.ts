@@ -75,7 +75,7 @@ export const layerCornerRadius = create<number>("layer-corner-radius").withDefau
 /** @public */
 export const strokeWidth = create<number>("stroke-width").withDefault(1);
 /** @public */
-export const focusStrokeWidth = create<number>("focus-stroke-width").withDefault(2);
+export const focusStrokeWidth = create<number>("focus-stroke-width").withDefault(3);
 
 // Typography values
 
