@@ -155,6 +155,24 @@ export class TreeItem extends FoundationElement {
     };
 
     /**
+     * Handle focus events
+     *
+     * @internal
+     */
+    public handleFocus = (e: FocusEvent): void => {
+        this.setAttribute("tabindex", "0");
+    };
+
+    /**
+     * Handle blur events
+     *
+     * @internal
+     */
+    public handleBlur = (e: FocusEvent): void => {
+        this.setAttribute("tabindex", "-1");
+    };
+
+    /**
      * Gets number of children
      *
      * @internal

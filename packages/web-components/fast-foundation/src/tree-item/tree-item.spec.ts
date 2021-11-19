@@ -190,6 +190,19 @@ describe("TreeItem", () => {
         await disconnect();
     });
 
+    it("should set a tabindex of 0 when focused", async () => {
+        const { element, connect, disconnect } = await setup();
+
+        await connect();
+
+        element.focus();
+        await DOM.nextUpdate();
+        expect(element.hasAttribute("tabindex")).to.equal(true);
+        expect(element.getAttribute("tabindex")).to.equal("0");
+
+        await disconnect();
+    });
+
     it("should render an element with a class of `expand-collapse-button` when nested tree items exist", async () => {
         const { element, connect, disconnect } = await setup();
         const nestedItem = document.createElement("fast-tree-item");
@@ -347,6 +360,42 @@ describe("TreeItem", () => {
 
             expect(element.selected).to.not.equal(true);
             expect(element.getAttribute("aria-selected")).to.equal(null);
+
+            await disconnect();
+        });
+
+        it("should fire an event when expanded state changes", async () => {
+            const { element, connect, disconnect } = await setup();
+
+            await connect();
+
+            const wasExpanded = await new Promise(resolve => {
+                element.addEventListener("expanded-change", () => resolve(true));
+
+                element.setAttribute("expanded", "true");
+
+                DOM.queueUpdate(() => resolve(false));
+            });
+
+            expect(wasExpanded).to.equal(true);
+
+            await disconnect();
+        });
+
+        it("should fire an event when selected state changes", async () => {
+            const { element, connect, disconnect } = await setup();
+
+            await connect();
+
+            const wasSelected = await new Promise(resolve => {
+                element.addEventListener("selected-change", () => resolve(true));
+
+                element.setAttribute("selected", "true");
+
+                DOM.queueUpdate(() => resolve(false));
+            });
+
+            expect(wasSelected).to.equal(true);
 
             await disconnect();
         });
