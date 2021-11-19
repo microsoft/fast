@@ -76,8 +76,8 @@ export const checkboxStyles: (
     }
     :host(:${focusVisible}) .control {
         border-color: ${strokeControlStrongFocus};
-        box-shadow: 0 0 0 calc(${strokeWidth} * 1px) ${neutralFillInputRest},
-        0 0 0 calc(${focusStrokeWidth} * 1px) ${strokeControlStrongFocus};
+        outline: calc(${focusStrokeWidth} * 1px) solid ${strokeControlStrongFocus};
+        outline-offset: calc(${strokeWidth} * 1px);
     }
     :host([aria-checked="true"]) .control {
         background: ${accentFillRest};
@@ -94,8 +94,6 @@ export const checkboxStyles: (
     :host([aria-checked="true"]:enabled:${focusVisible}) .control {
         background: ${accentFillFocus};
         border-color: ${accentFillFocus};
-        box-shadow: 0 0 0 calc(${strokeWidth} * 1px) ${neutralFillInputRest},
-        0 0 0 calc(${focusStrokeWidth} * 1px) ${strokeControlStrongFocus};
     }
     .label__hidden {
         display: none;
@@ -120,7 +118,6 @@ export const checkboxStyles: (
         justify-content: center;
         width: 100%;
         height: 100%;
-        fill: ${foregroundOnAccentRest};
         opacity: 0;
         pointer-events: none;
     }
