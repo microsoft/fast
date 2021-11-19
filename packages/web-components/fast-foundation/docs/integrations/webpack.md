@@ -80,6 +80,10 @@ Next, in the root of your project folder, add a `tsconfig.json` file to configur
 
 You can learn more about `tsconfig.json` options in [the official TypeScript documentation](https://www.typescriptlang.org/docs/handbook/tsconfig-json.html).
 
+:::note
+Do not set `useDefineForClassFields` to `true` in your `tsconfig.json` if you are using decorators. These two features conflict at present. This will be resolved in future versions of TypeScript and FAST.
+:::
+
 Next, create a `webpack.config.js` file in the root of your project folder with the following source:
 
 ```js
