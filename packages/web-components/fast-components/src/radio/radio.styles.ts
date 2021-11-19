@@ -14,18 +14,19 @@ import {
     designUnit,
     disabledOpacity,
     focusStrokeWidth,
+    foregroundOnAccentRest,
     neutralFillInputActive,
     neutralFillInputRest,
-    neutralForegroundActive,
     neutralForegroundRest,
     strokeControlStrongActive,
     strokeControlStrongFocus,
     strokeControlStrongHover,
     strokeControlStrongRest,
     strokeWidth,
-    typeRampMinus1FontSize,
-    typeRampMinus1LineHeight,
+    typeRampBaseFontSize,
+    typeRampBaseLineHeight,
 } from "../design-tokens";
+import { accentFillActive, accentFillFocus, accentFillHover, accentFillRest } from "..";
 
 /**
  * Styles for Radio
@@ -37,7 +38,7 @@ export const radioStyles: (
 ) => ElementStyles = (context: ElementDefinitionContext, definition: RadioOptions) =>
     css`
     ${display("inline-flex")} :host {
-        --input-size: calc(${heightNumber} / 2);
+        --input-size: calc((${heightNumber} / 2) + (${strokeWidth} * 2));
         align-items: center;
         outline: none;
         margin: calc(${designUnit} * 1px) 0;
@@ -46,7 +47,8 @@ export const radioStyles: (
              * Chromium likes to select label text or the default slot when
              * the radio button is clicked. Maybe there is a better solution here?
              */ ""
-        } user-select: none;
+        }
+        user-select: none;
         position: relative;
         flex-direction: row;
         transition: all 0.2s ease-in-out;
@@ -62,6 +64,34 @@ export const radioStyles: (
         outline: none;
         cursor: pointer;
     }
+    :host(:enabled:hover) .control {
+        border-color: ${strokeControlStrongHover};
+    }
+    :host(:enabled:active) .control {
+        background: ${neutralFillInputActive};
+        border-color: ${strokeControlStrongActive};
+    }
+    :host(:${focusVisible}) .control {
+        border-color: ${strokeControlStrongFocus};
+        outline: calc(${focusStrokeWidth} * 1px) solid ${strokeControlStrongFocus};
+        outline-offset: calc(${strokeWidth} * 1px);
+    }
+    :host(.checked) .control {
+        background: ${accentFillRest};
+        border-color: ${accentFillRest};
+    }
+    :host(.checked:enabled:hover) .control {
+        background: ${accentFillHover};
+        border-color: ${accentFillHover};
+    }
+    :host(.checked:enabled:active) .control {
+        background: ${accentFillActive};
+        border-color: ${accentFillActive};
+    }
+    :host(.checked:enabled:${focusVisible}) .control {
+        background: ${accentFillFocus};
+        border-color: ${accentFillFocus};
+    }
     .label__hidden {
         display: none;
         visibility: hidden;
@@ -71,13 +101,13 @@ export const radioStyles: (
         color: ${neutralForegroundRest};
         ${
             /* Need to discuss with Brian how HorizontalSpacingNumber can work. https://github.com/microsoft/fast/issues/2766 */ ""
-        } padding-inline-start: calc(${designUnit} * 2px + 2px);
+        }
+        padding-inline-start: calc(${designUnit} * 2px + 2px);
         margin-inline-end: calc(${designUnit} * 2px + 2px);
         cursor: pointer;
-        font-size: ${typeRampMinus1FontSize};
-        line-height: ${typeRampMinus1LineHeight};
+        font-size: ${typeRampBaseFontSize};
+        line-height: ${typeRampBaseLineHeight};
     }
-    .control,
     slot[name="checked-indicator"] {
         flex-shrink: 0;
     }
@@ -87,27 +117,9 @@ export const radioStyles: (
         justify-content: center;
         width: 100%;
         height: 100%;
-        fill: ${neutralForegroundActive};
+        fill: ${foregroundOnAccentRest};
         opacity: 0;
         pointer-events: none;
-    }
-    :host(.checked) .control {
-        background: ${neutralFillInputActive};
-        border-color: ${strokeControlStrongRest};
-    }
-    :host(:enabled:hover) .control,
-    :host(.checked:enabled:hover) .control {
-        border-color: ${strokeControlStrongHover};
-    }
-    :host(:enabled:active) .control,
-    :host(.checked:enabled:active) .control {
-        background: ${neutralFillInputActive};
-        border-color: ${strokeControlStrongActive};
-    }
-    :host(:${focusVisible}) .control,
-    :host(.checked:enabled:${focusVisible}) .control {
-        border-color: ${strokeControlStrongFocus};
-        box-shadow: 0 0 0 calc(${focusStrokeWidth} * 1px) ${strokeControlStrongFocus};
     }
     :host(:enabled:active) slot[name="checked-indicator"] {
         opacity: 1;
@@ -147,10 +159,10 @@ export const radioStyles: (
                 }
                 :host(:${focusVisible}) .control,
                 :host(.checked:enabled:${focusVisible}) .control {
-                    forced-color-adjust: none;
                     background: ${SystemColors.Field};
                     border-color: ${SystemColors.FieldText};
-                    box-shadow: 0 0 0 calc(${focusStrokeWidth} * 1px) ${SystemColors.FieldText};
+                    outline: calc(${focusStrokeWidth} * 1px) solid ${SystemColors.FieldText};
+                    outline-offset: calc(${strokeWidth} * 1px);
                 }
                 :host(.checked) slot[name='checked-indicator'] {
                     fill: ${SystemColors.HighlightText};
