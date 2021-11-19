@@ -13,7 +13,10 @@ import {
     bodyFont,
     designUnit,
     disabledOpacity,
+<<<<<<< HEAD
     focusStrokeOuter,
+=======
+>>>>>>> chore: visual refresh on checkbox component (#5400)
     focusStrokeWidth,
     foregroundOnAccentRest,
     neutralFillInputActive,
