@@ -20,20 +20,17 @@ export const fastCheckbox = Checkbox.compose<CheckboxOptions>({
     styles,
     checkedIndicator: `
         <svg
-            part="checked-indicator"
-            class="checked-indicator"
-            viewBox="0 0 20 20"
+            width="16"
+            height="16"
             xmlns="http://www.w3.org/2000/svg"
         >
-            <path
-                fill-rule="evenodd"
-                clip-rule="evenodd"
-                d="M8.143 12.6697L15.235 4.5L16.8 5.90363L8.23812 15.7667L3.80005 11.2556L5.27591 9.7555L8.143 12.6697Z"
-            />
+            <path d="m6.38 10.04-1.9-1.9a.5.5 0 0 0-.7.71l2.24 2.25c.2.2.51.2.7 0l5.5-5.5a.5.5 0 1 0-.7-.7l-5.14 5.14Z"/>
         </svg>
     `,
     indeterminateIndicator: `
-        <div part="indeterminate-indicator" class="indeterminate-indicator"></div>
+        <svg width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+            <rect x="4" y="7" width="8" height="2" rx="1"/>
+        </svg>
     `,
 });
 
