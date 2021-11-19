@@ -67,7 +67,6 @@ export class TreeView extends FoundationElement {
      *
      * @internal
      */
-    @observable
     public currentFocused: HTMLElement | TreeItem | null = null;
 
     /**
