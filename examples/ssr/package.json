@@ -28,6 +28,7 @@
     "lit": "^2.0.0-rc.3",
     "lit-element": "^2.5.1",
     "lodash-es": "4.17.15",
+    "parse5": "^6.0.1",
     "tslib": "^1.11.1"
   },
   "devDependencies": {

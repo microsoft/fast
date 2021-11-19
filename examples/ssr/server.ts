@@ -4,9 +4,11 @@ import "./fast-element-dom-shim";
 import { render } from "@lit-labs/ssr/lib/render-lit-html";
 import { Readable } from "stream";
 import { FASTElementRenderer } from "./element-renderer";
-import { myTemplate } from "./experience";
+import { myTemplate, myViewTemplate } from "./experience";
+import { renderViewTemplate } from "./view-template-renderer";
 
 function handleRequest(req: Request, res: Response) {
+    renderViewTemplate(myViewTemplate()).next();
     res.set("Content-Type", "text/html");
     const templateResult = myTemplate();
     const ssrResult = render(templateResult, {

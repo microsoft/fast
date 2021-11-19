@@ -1,4 +1,4 @@
-import { DOM } from "@microsoft/fast-element";
+import { DOM, ViewTemplate } from "@microsoft/fast-element";
 import { getElementRenderer } from "@lit-labs/ssr/lib/element-renderer";
 import { RenderInfo } from "@lit-labs/ssr";
 

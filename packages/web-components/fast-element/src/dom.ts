@@ -51,6 +51,13 @@ let supportsAdoptedStyleSheets =
  */
 export const DOM = Object.freeze({
     /**
+     * Marker string used for template compiling.
+     */
+    get marker(): string {
+        return marker;
+    },
+
+    /**
      * Indicates whether the DOM supports the adoptedStyleSheets feature.
      */
     get supportsAdoptedStyleSheets() {

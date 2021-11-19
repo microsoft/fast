@@ -202,6 +202,7 @@ export const defaultExecutionContext: ExecutionContext<any, any>;
 
 // @public
 export const DOM: Readonly<{
+    readonly marker: string;
     readonly supportsAdoptedStyleSheets: boolean;
     disableAdoptedStyleSheets(): void;
     setHTMLPolicy(policy: TrustedTypesPolicy): void;
