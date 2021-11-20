@@ -430,21 +430,19 @@ export abstract class Listbox extends FoundationElement {
     }
 
     /**
-     * Sets an option as selected and gives it focus.
+     * Sets the selected option and gives it focus.
      *
-     * @param index - option index to select
      * @public
      */
     protected setSelectedOptions() {
         if (this.$fastController.isConnected && this.options) {
-            const selectedOption = this.options[this.selectedIndex] || null;
+            const selectedOption = this.options[this.selectedIndex] ?? null;
 
             this.selectedOptions = this.options.filter(el =>
                 el.isSameNode(selectedOption)
             );
-            this.ariaActiveDescendant = this.firstSelectedOption
-                ? this.firstSelectedOption.id
-                : "";
+
+            this.ariaActiveDescendant = this.firstSelectedOption?.id ?? "";
             this.focusAndScrollOptionIntoView();
         }
     }

@@ -1390,13 +1390,8 @@ export class ListboxElement extends Listbox {
     // @internal @override
     mousedownHandler(e: MouseEvent): boolean | void;
     size: number;
-    sizeAttribute: number;
-    // @internal
-    protected sizeAttributeChanged(prev: number | unknown, next: number): void;
     // @internal
     protected sizeChanged(prev: number | unknown, next: number): void;
-    // @internal
-    updateDimensions(): void;
 }
 
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
@@ -1451,7 +1446,7 @@ export enum ListboxRole {
 }
 
 // @public
-export const listboxTemplate: (context: ElementDefinitionContext, definition: FoundationElementDefinition) => ViewTemplate<Listbox>;
+export const listboxTemplate: FoundationElementTemplate<ViewTemplate<ListboxElement>>;
 
 // @public
 export abstract class MatchMediaBehavior implements Behavior {
