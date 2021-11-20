@@ -1,0 +1,7 @@
+{
+  "type": "minor",
+  "comment": "add fast-file component",
+  "packageName": "@microsoft/fast-components",
+  "email": "v-dlesac@microsoft.com",
+  "dependentChangeType": "patch"
+}
