@@ -4,6 +4,7 @@ import {
     FoundationElementDefinition,
 } from "@microsoft/fast-foundation";
 import {
+    baseHeightMultiplier,
     bodyFont,
     density,
     designUnit,
@@ -20,6 +21,15 @@ export const fileStyles: (
     definition: FoundationElementDefinition
 ) =>
     css`
+        :host {
+            --default-preview-width: calc(
+                (
+                        (var(--base-height-multiplier) + var(--density)) *
+                            var(--design-unit) + ((var(--design-unit) * 16))
+                    ) * 1px
+            );
+        }
+
         .file-list ul {
             list-style: none;
             padding: 0 calc((10 + (${designUnit} * 2 * ${density})) * 1px);
@@ -31,5 +41,9 @@ export const fileStyles: (
 
         .file-list ul li {
             margin: calc(${designUnit} * 1px) 0;
+        }
+
+        .preview {
+            width: var(--default-preview-width);
         }
     `;

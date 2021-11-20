@@ -1,30 +1,11 @@
-import { html, repeat } from "@microsoft/fast-element";
-import { File, fileTemplate as template } from "@microsoft/fast-foundation";
+import {
+    FileSelect as File,
+    fileTemplate as template,
+    defaultFileListTemplate as fileListTemplate,
+    defaultControlElementTemplate as controlElementTemplate,
+} from "@microsoft/fast-foundation";
 import { FileOptions } from "@microsoft/fast-foundation";
 import { fileStyles as styles } from "./file.styles";
-
-/**
- * The default FAST File Template for a file-list
- *  @public
- */
-export const defaultFileListTemplate = html<File>`
-    <ul>
-        ${repeat(
-            x => x.fileReferences,
-            html<string>`
-                <li>${x => x}</li>
-            `
-        )}
-    </ul>
-`;
-
-/**
- * The default FAST File Template for a contol-element
- *  @public
- */
-export const defaultControlElementTemplate = html<File>`
-    <fast-button>Choose a file</fast-button>
-`;
 
 /**
  * A function that returns a {@link @microsoft/fast-foundation#File} registration for configuring the component with a DesignSystem.
@@ -39,8 +20,8 @@ export const fastFile = File.compose<FileOptions>({
     baseName: "file",
     template,
     styles,
-    fileList: defaultFileListTemplate,
-    controlElement: defaultControlElementTemplate,
+    fileList: fileListTemplate,
+    controlElement: controlElementTemplate,
 });
 
 /**

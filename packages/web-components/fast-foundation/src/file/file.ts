@@ -17,7 +17,7 @@ export type FileOptions = FoundationElementDefinition & {
  *
  * @public
  */
-export class File extends FormAssociatedFile {
+export class FileSelect extends FormAssociatedFile {
     /**
      * One or more unique file type specifiers describing file types to allow.
      * @public
@@ -52,7 +52,7 @@ export class File extends FormAssociatedFile {
      * HTML Attribute: files
      */
     @attr
-    public files: any;
+    public files: FileList | any;
 
     /**
      * When true the file picker will allow the selection of multiple files.
@@ -63,24 +63,39 @@ export class File extends FormAssociatedFile {
     @attr({ mode: "boolean" })
     public multiple: boolean;
 
+    @attr({ mode: "boolean" })
+    public preview: boolean;
+
     /**
-     * After file(s) are selected this property will contain a string array with the references
-     * to the selected files based on the action (i.e. file name, objectUrl, http url, base64 blob, etc).
+     * After file(s) are selected this property will contain a string array with the their filenames
      */
     @observable
-    public fileReferences: string[] = [];
+    public fileListBuffer: any[] = [];
 
     @observable
     public fileSelectorButton: HTMLSlotElement;
+
+    @observable
+    public listItems: Element[];
 
     /**
      * Fast Element lifecycle hook
      */
     public connectedCallback(): void {
         super.connectedCallback();
+
         this.proxy.onchange = e => {
-            this.handleChange(e);
+            this.handleChange();
         };
+    }
+
+    /**
+     * @internal
+     */
+    public disconnectedCallback(): void {
+        super.disconnectedCallback();
+        this.files = [];
+        this.fileListBuffer = [];
     }
 
     /**
@@ -94,14 +109,18 @@ export class File extends FormAssociatedFile {
         this.proxy.accept = this.accept;
         this.proxy.multiple = this.multiple;
         this.proxy.value = this.value;
-        this.proxy.files = this.files;
         this.proxy.click();
     }
 
-    public handleChange(e: Event): void {
-        this.files = (e.composedPath()[0] as HTMLInputElement).files;
-        Array.from(this.files).forEach((value: File) => {
-            this.fileReferences.push(URL.createObjectURL(value));
+    public handleChange(): void {
+        this.files = this.proxy.files;
+
+        this.files.forEach((value: File) => {
+            if (this.preview) {
+                this.fileListBuffer.push(URL.createObjectURL(value));
+            } else {
+                this.fileListBuffer.push(value.name);
+            }
         });
     }
 }

@@ -755,6 +755,12 @@ export class DefaultComponentPresentation implements ComponentPresentation {
 }
 
 // @public
+export const defaultControlElementTemplate: ViewTemplate<FileSelect, any>;
+
+// @public
+export const defaultFileListTemplate: ViewTemplate<FileSelect, any>;
+
+// @public
 export const DefaultResolver: Readonly<{
     none(key: Key): Resolver;
     singleton(key: Key): Resolver;
@@ -1075,35 +1081,39 @@ export class FactoryImpl<T extends Constructable = any> implements Factory<T> {
     Type: T;
 }
 
-// Warning: (ae-forgotten-export) The symbol "FormAssociatedFile" needs to be exported by the entry point index.d.ts
-//
-// @public
-class File_2 extends FormAssociatedFile {
-    accept: string;
-    capture: string;
-    connectedCallback(): void;
-    fileReferences: string[];
-    files: any;
-    // (undocumented)
-    fileSelectorButton: HTMLSlotElement;
-    // (undocumented)
-    handleChange(e: Event): void;
-    // @internal
-    handleClick(): void;
-    multiple: boolean;
-    value: string;
-}
-
-export { File_2 as File }
-
 // @public
 export type FileOptions = FoundationElementDefinition & {
     fileList?: string | SyntheticViewTemplate;
     controlElement?: string | SyntheticViewTemplate;
 };
 
+// Warning: (ae-forgotten-export) The symbol "FormAssociatedFile" needs to be exported by the entry point index.d.ts
+//
 // @public
-export const fileTemplate: (context: ElementDefinitionContext, definition: FileOptions) => ViewTemplate<File_2>;
+export class FileSelect extends FormAssociatedFile {
+    accept: string;
+    capture: string;
+    connectedCallback(): void;
+    // @internal (undocumented)
+    disconnectedCallback(): void;
+    fileListBuffer: any[];
+    files: FileList | any;
+    // (undocumented)
+    fileSelectorButton: HTMLSlotElement;
+    // (undocumented)
+    handleChange(): void;
+    // @internal
+    handleClick(): void;
+    // (undocumented)
+    listItems: Element[];
+    multiple: boolean;
+    // (undocumented)
+    preview: boolean;
+    value: string;
+}
+
+// @public
+export const fileTemplate: (context: ElementDefinitionContext, definition: FileOptions) => ViewTemplate<FileSelect>;
 
 // @public
 export class Flipper extends FoundationElement {
