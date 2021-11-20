@@ -9,13 +9,17 @@ import {
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
+    accentFillActive,
+    accentFillFocus,
+    accentFillHover,
+    accentFillRest,
     bodyFont,
     designUnit,
     disabledOpacity,
     focusStrokeWidth,
+    foregroundOnAccentRest,
     neutralFillInputActive,
     neutralFillInputRest,
-    neutralForegroundActive,
     neutralForegroundRest,
     strokeControlStrongActive,
     strokeControlStrongFocus,
@@ -24,8 +28,6 @@ import {
     strokeWidth,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
-    typeRampMinus1FontSize,
-    typeRampMinus1LineHeight,
 } from "../design-tokens";
 import { DirectionalStyleSheetBehavior, heightNumber } from "../styles";
 
@@ -70,29 +72,39 @@ export const switchStyles: (
         position: relative;
         outline: none;
         box-sizing: border-box;
-        width: calc((${heightNumber} - (${designUnit} * 2 )) * 1px);
-        height: calc((${heightNumber} / 2) * 1px);
+        width: calc((${heightNumber} - (${designUnit} * 2 ) + ${designUnit}) * 1px);
+        height: calc(((${heightNumber} / 2) + (${strokeWidth} * 2)) * 1px);
         background: ${neutralFillInputRest};
         border-radius: calc(${heightNumber} * 1px);
         border: calc(${strokeWidth} * 1px) solid ${strokeControlStrongRest};
     }
-    :host([aria-checked="true"]) .switch {
-        border-color: ${strokeControlStrongRest};
-        background: ${neutralFillInputActive};
-    }
-    :host(:enabled:hover) .switch,
-    :host([aria-checked="true"]:enabled:hover) .switch {
+    :host(:enabled:hover) .switch {
         border-color: ${strokeControlStrongHover};
     }
-    :host(:enabled:active) .switch,
-    :host([aria-checked="true"]:enabled:active) .switch {
+    :host(:enabled:active) .switch {
         background: ${neutralFillInputActive};
         border-color: ${strokeControlStrongActive};
     }
-    :host(:${focusVisible}) .switch,
-    :host([aria-checked="true"]:${focusVisible}:enabled) .switch {
+    :host(:${focusVisible}) .switch {
         border-color: ${strokeControlStrongFocus};
-        box-shadow: 0 0 0 calc(${focusStrokeWidth} * 1px) ${strokeControlStrongFocus};
+        outline: calc(${focusStrokeWidth} * 1px) solid ${strokeControlStrongFocus};
+        outline-offset: calc(${strokeWidth} * 1px);
+    }
+    :host([aria-checked="true"]) .switch {
+        background: ${accentFillRest};
+        border-color: ${accentFillRest};
+    }
+    :host([aria-checked="true"]:enabled:hover) .switch {
+        background: ${accentFillHover};
+        border-color: ${accentFillHover};
+    }
+    :host([aria-checked="true"]:enabled:active) .switch {
+        background: ${accentFillActive};
+        border-color: ${accentFillActive};
+    }
+    :host([aria-checked="true"]:${focusVisible}:enabled) .switch {
+        background: ${accentFillFocus};
+        border-color: ${accentFillFocus};
     }
     slot[name="switch"] {
         position: absolute;
@@ -117,8 +129,8 @@ export const switchStyles: (
     }
     .label {
         color: ${neutralForegroundRest};
-        font-size: ${typeRampMinus1FontSize};
-        line-height: ${typeRampMinus1LineHeight};
+        font-size: ${typeRampBaseFontSize};
+        line-height: ${typeRampBaseLineHeight};
         margin-inline-end: calc(${designUnit} * 2px + 2px);
         cursor: pointer;
     }
@@ -127,7 +139,7 @@ export const switchStyles: (
     }
     :host([aria-checked="true"]) .switch slot[name='switch'],
     :host([aria-checked="true"]:enabled:hover) .switch slot[name='switch'] {
-        fill: ${neutralForegroundActive};
+        fill: ${foregroundOnAccentRest};
     }
     .unchecked-message {
         display: block;
@@ -145,21 +157,21 @@ export const switchStyles: (
         new DirectionalStyleSheetBehavior(
             css`
                 slot[name="switch"] {
-                    left: 2px;
-                    top: 2px;
+                    left: 3px;
+                    top: 3px;
                 }
                 :host([aria-checked="true"]) slot[name="switch"] {
-                    left: calc(100% - 2px);
+                    left: calc(100% - 3px);
                     transform: translateX(-100%);
                 }
             `,
             css`
                 slot[name="switch"] {
-                    right: 2px;
-                    top: 2px;
+                    right: 3px;
+                    top: 3px;
                 }
                 :host([aria-checked="true"]) slot[name="switch"] {
-                    right: calc(100% - 2px);
+                    right: calc(100% - 3px);
                     transform: translateX(100%);
                 }
             `
