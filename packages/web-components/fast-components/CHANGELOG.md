@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-components
 
-This log was last generated on Sun, 14 Nov 2021 07:11:13 GMT and should not be manually modified.
+This log was last generated on Sun, 21 Nov 2021 07:10:36 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.16.4
+
+Sun, 21 Nov 2021 07:10:36 GMT
+
+### Patches
+
+- fix: proper css targeting for flipper (jes@microsoft.com)
 
 ## 2.16.3
 

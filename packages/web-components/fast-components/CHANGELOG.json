@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-components",
   "entries": [
     {
+      "date": "Sun, 21 Nov 2021 07:10:36 GMT",
+      "tag": "@microsoft/fast-components_v2.16.4",
+      "version": "2.16.4",
+      "comments": {
+        "patch": [
+          {
+            "comment": "fix: proper css targeting for flipper",
+            "author": "jes@microsoft.com",
+            "commit": "15b8789f5aff1852bfcd037cf5661c13ee8affea",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sun, 14 Nov 2021 07:11:13 GMT",
       "tag": "@microsoft/fast-components_v2.16.3",
       "version": "2.16.3",
