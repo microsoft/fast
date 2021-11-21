@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-color-explorer
 
-This log was last generated on Sun, 14 Nov 2021 07:11:13 GMT and should not be manually modified.
+This log was last generated on Sun, 21 Nov 2021 07:10:36 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.6.19
+
+Sun, 21 Nov 2021 07:10:36 GMT
+
+### Patches
+
+- Bump @microsoft/fast-components to v2.16.4 (jes@microsoft.com)
 
 ## 1.6.19
 
