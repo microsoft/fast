@@ -30,7 +30,7 @@
                 {
                     "name": "size",
                     "title": "Size",
-                    "description": "The number of visible options",
+                    "description": "The maximum number of visible options",
                     "type": "string",
                     "required": false
                 }
