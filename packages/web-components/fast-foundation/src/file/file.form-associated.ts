@@ -1,11 +1,11 @@
-import { FormAssociated, FoundationElement } from "@microsoft/fast-foundation";
+import { FormAssociated } from "../form-associated/form-associated";
+import { FoundationElement } from "../foundation-element";
 
 class _File extends FoundationElement {}
 interface _File extends FormAssociated {}
 
 /**
- * A form-associated base class for the {@link @microsoft/fast-tooling#(File:class)} component.
- *
+ * A form-associated base class for the {@link @microsoft/fast-foundation#(File:class)} component.
  * @internal
  */
 export class FormAssociatedFile extends FormAssociated(_File) {
