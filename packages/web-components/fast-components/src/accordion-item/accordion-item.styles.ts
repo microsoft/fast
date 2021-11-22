@@ -41,12 +41,22 @@ export const accordionItemStyles: (
             font-size: ${typeRampBaseFontSize};
             line-height: ${typeRampBaseLineHeight};
             color: ${neutralForegroundRest};
-            border-bottom: calc(${strokeWidth} * 1px) solid ${neutralFillActive};
+            padding: 0 20px;
             position: relative;
+        }
+        :host::after {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            content: "";
+            background: ${neutralFillActive};
+            width: calc(100% - 40px);
+            height: 1px;
         }
         .region {
             display: none;
-            padding: calc((6 + (${designUnit} * 2 * ${density})) * 1px);
+            padding-bottom: 16px;
         }
         .heading {
             display: grid;
@@ -61,7 +71,6 @@ export const accordionItemStyles: (
             grid-column: 2;
             grid-row: 1;
             outline: none;
-            padding: 0 calc((6 + (${designUnit} * 2 * ${density})) * 1px);
             text-align: left;
             color: inherit;
             cursor: pointer;
