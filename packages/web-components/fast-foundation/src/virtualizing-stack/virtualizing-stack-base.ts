@@ -1,11 +1,16 @@
 import {
     attr,
     DOM,
+    enableArrayObservation,
     html,
+    Notifier,
     nullableNumberConverter,
+    Observable,
     observable,
     RepeatBehavior,
     RepeatDirective,
+    Splice,
+    Subscriber,
     ViewTemplate,
 } from "@microsoft/fast-element";
 import { eventResize, eventScroll, Orientation } from "@microsoft/fast-web-utilities";
@@ -300,6 +305,8 @@ export class VirtualizingStackBase extends FoundationElement {
     private itemsRepeatBehavior: RepeatBehavior | null;
     private itemsPlaceholder: Node;
 
+    private itemsObserver: Notifier | null = null;
+
     /**
      * Delays updating ui during scrolling
      * (to avoid rendering of items that just scroll by)
@@ -318,10 +325,43 @@ export class VirtualizingStackBase extends FoundationElement {
 
         this.itemsPlaceholder = document.createComment("");
         this.appendChild(this.itemsPlaceholder);
+        enableArrayObservation();
+        this.observeItems();
+    }
+
+    private observeItems(force: boolean = false): void {
+        if (!this.items) {
+            return;
+        }
+
+        const oldObserver = this.itemsObserver;
+        const newObserver = (this.itemsObserver = Observable.getNotifier(this.items));
+        const hasNewObserver = oldObserver !== newObserver;
+
+        if (hasNewObserver && oldObserver !== null) {
+            oldObserver.unsubscribe(this);
+        }
+
+        if (hasNewObserver || force) {
+            newObserver.subscribe(this);
+        }
+    }
+
+    /** @internal */
+    public handleChange(source: any, splices: Splice[]): void {
+        // const visibleRangeStart = this.visibleRangeStart;
+        // const visibleRangeEnd = this.visibleRangeEnd;
+
+        // for (let i = 0, ii = this.visibleRangeEnd - this.visibleRangeStart; i <= ii; ++i) {
+        //     const newItem = this.items[this.vi]
+        // }
+        this.requestPositionUpdates();
     }
 
     private initializeRepeatBehavior(): void {
         this.pendingReset = false;
+
+        this.observeItems();
 
         if (this.itemsRepeatBehavior !== null) {
             this.$fastController.removeBehaviors([this.itemsRepeatBehavior]);

@@ -3,7 +3,6 @@ import {
     DOM,
     observable,
     RepeatBehavior,
-    RepeatDirective,
     ViewTemplate,
 } from "@microsoft/fast-element";
 import { eventScroll } from "@microsoft/fast-web-utilities";

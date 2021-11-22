@@ -16,6 +16,7 @@ import { ElementViewTemplate } from '@microsoft/fast-element';
 import { FASTElement } from '@microsoft/fast-element';
 import { Orientation } from '@microsoft/fast-web-utilities';
 import { PartialFASTElementDefinition } from '@microsoft/fast-element';
+import { Splice } from '@microsoft/fast-element';
 import { SyntheticViewTemplate } from '@microsoft/fast-element';
 import { ViewTemplate } from '@microsoft/fast-element';
 
@@ -2792,6 +2793,8 @@ export class VirtualizingStackBase extends FoundationElement {
     getGeneratedItemPosition: (itemIndex: number) => number;
     // @internal (undocumented)
     gridTemplateSpans: string;
+    // @internal (undocumented)
+    handleChange(source: any, args: Splice[]): void;
     // (undocumented)
     items: object[];
     // @beta (undocumented)
