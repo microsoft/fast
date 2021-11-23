@@ -1,14 +1,11 @@
-import {
-    attr,
-    Observable,
-    observable,
-    SyntheticViewTemplate,
-} from "@microsoft/fast-element";
+import { attr, Observable, observable } from "@microsoft/fast-element";
+import type { SyntheticViewTemplate } from "@microsoft/fast-element";
 import { limit, uniqueId } from "@microsoft/fast-web-utilities";
 import type { FoundationElementDefinition } from "../foundation-element";
 import type { ListboxOption } from "../listbox-option/listbox-option";
 import { ARIAGlobalStatesAndProperties } from "../patterns/aria-global";
-import { StartEnd, StartEndOptions } from "../patterns/start-end";
+import { StartEnd } from "../patterns/start-end";
+import type { StartEndOptions } from "../patterns/start-end";
 import { SelectPosition, SelectRole } from "../select/select.options";
 import { applyMixins } from "../utilities/apply-mixins";
 import { FormAssociatedCombobox } from "./combobox.form-associated";

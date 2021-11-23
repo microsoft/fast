@@ -1,21 +1,18 @@
 import { html, ref, slotted } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
+import type { FoundationElementTemplate } from "../foundation-element";
 import { Listbox } from "../listbox/listbox";
 import { endSlotTemplate, startSlotTemplate } from "../patterns/start-end";
-import type { ElementDefinitionContext } from "../design-system";
 import type { Select, SelectOptions } from "./select";
 
 /**
  * The template for the {@link @microsoft/fast-foundation#(Select:class)} component.
  * @public
  */
-export const selectTemplate: (
-    context: ElementDefinitionContext,
-    definition: SelectOptions
-) => ViewTemplate<Select> = (
-    context: ElementDefinitionContext,
-    definition: SelectOptions
-) => html`
+export const selectTemplate: FoundationElementTemplate<
+    ViewTemplate<Select>,
+    SelectOptions
+> = (context, definition) => html`
     <template
         class="${x => (x.open ? "open" : "")} ${x =>
             x.disabled ? "disabled" : ""} ${x => x.position}"

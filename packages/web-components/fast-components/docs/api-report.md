@@ -1079,7 +1079,7 @@ export const searchStyles: (context: import("@microsoft/fast-foundation").Elemen
 export { Select }
 
 // @public
-export const selectStyles: (context: ElementDefinitionContext, definition: SelectOptions) => ElementStyles;
+export const selectStyles: FoundationElementTemplate<ElementStyles, SelectOptions>;
 
 export { Skeleton }
 

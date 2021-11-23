@@ -495,7 +495,7 @@ export type ComboboxOptions = FoundationElementDefinition & StartEndOptions & {
 };
 
 // @public
-export const comboboxTemplate: (context: ElementDefinitionContext, definition: ComboboxOptions) => ViewTemplate<Combobox>;
+export const comboboxTemplate: FoundationElementTemplate<ViewTemplate<Combobox>, ComboboxOptions>;
 
 // @public
 export interface ComponentPresentation {
@@ -2080,7 +2080,7 @@ export enum SelectRole {
 }
 
 // @public
-export const selectTemplate: (context: ElementDefinitionContext, definition: SelectOptions) => ViewTemplate<Select>;
+export const selectTemplate: FoundationElementTemplate<ViewTemplate<Select>, SelectOptions>;
 
 // @public
 export interface ServiceLocator {
