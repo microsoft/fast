@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "fix: disabled flipper button clicks",
-  "packageName": "@microsoft/fast-components",
-  "email": "jes@microsoft.com",
-  "dependentChangeType": "patch"
-}

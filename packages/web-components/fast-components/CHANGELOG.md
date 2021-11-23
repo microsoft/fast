@@ -1,8 +1,17 @@
 # Change Log - @microsoft/fast-components
 
-This log was last generated on Sun, 21 Nov 2021 07:10:36 GMT and should not be manually modified.
+This log was last generated on Tue, 23 Nov 2021 07:12:23 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.16.5
+
+Tue, 23 Nov 2021 07:12:23 GMT
+
+### Patches
+
+- add `size` attribute to listbox element (john.kreitlow@microsoft.com)
+- fix: disabled flipper button clicks (jes@microsoft.com)
 
 ## 2.16.4
 
