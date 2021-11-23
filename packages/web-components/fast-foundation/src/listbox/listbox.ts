@@ -14,7 +14,6 @@ import { FoundationElement } from "../foundation-element";
 import { isListboxOption, ListboxOption } from "../listbox-option/listbox-option";
 import { ARIAGlobalStatesAndProperties } from "../patterns/aria-global";
 import { applyMixins } from "../utilities/apply-mixins";
-import { ListboxRole } from "./listbox.options";
 
 /**
  * A Listbox Custom HTML Element.
@@ -90,16 +89,6 @@ export abstract class Listbox extends FoundationElement {
      */
     @attr({ mode: "boolean" })
     public disabled: boolean;
-
-    /**
-     * The role of the element.
-     *
-     * @public
-     * @remarks
-     * HTML Attribute: `role`
-     */
-    @attr
-    public role: string = ListboxRole.listbox;
 
     /**
      * The index of the selected option.

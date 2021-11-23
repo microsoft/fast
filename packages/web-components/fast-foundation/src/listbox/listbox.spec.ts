@@ -36,16 +36,6 @@ describe("Listbox", () => {
         return { element, connect, disconnect, option1, option2, option3 };
     }
 
-    it("should have a role of `listbox`", async () => {
-        const { element, connect, disconnect } = await setup();
-
-        await connect();
-
-        expect(element.getAttribute("role")).to.equal("listbox");
-
-        await disconnect();
-    });
-
     it("should have a tabindex of 0 when `disabled` is not defined", async () => {
         const { element, connect, disconnect } = await setup();
 

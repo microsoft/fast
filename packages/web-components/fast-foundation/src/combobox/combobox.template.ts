@@ -29,7 +29,7 @@ export const comboboxTemplate: FoundationElementTemplate<
                     class="selected-value"
                     part="selected-value"
                     placeholder="${x => x.placeholder}"
-                    role="${x => x.role}"
+                    role="combobox"
                     type="text"
                     aria-activedescendant="${x =>
                         x.open ? x.ariaActiveDescendant : null}"

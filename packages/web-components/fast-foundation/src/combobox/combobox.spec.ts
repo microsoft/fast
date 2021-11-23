@@ -1,6 +1,6 @@
 import { DOM } from "@microsoft/fast-element";
 import { keyArrowDown, keyArrowUp } from "@microsoft/fast-web-utilities";
-import { assert, expect } from "chai";
+import { expect } from "chai";
 import { ListboxOption, listboxOptionTemplate } from "../listbox-option";
 import { fixture } from "../test-utilities/fixture";
 import { Combobox, comboboxTemplate as template } from "./index";
@@ -40,16 +40,6 @@ async function setup() {
 
 // TODO: Need to add tests for keyboard handling & focus management
 describe("Combobox", () => {
-    it("should include a control with a role of `combobox`", async () => {
-        const { element, connect, disconnect } = await setup();
-
-        await connect();
-
-        assert.strictEqual(element.control.getAttribute("role"), "combobox");
-
-        await disconnect();
-    });
-
     it("should set the `aria-disabled` attribute equal to the `disabled` value", async () => {
         const { element, connect, disconnect } = await setup();
 

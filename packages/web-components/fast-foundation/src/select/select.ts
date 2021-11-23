@@ -7,7 +7,7 @@ import { StartEnd } from "../patterns/start-end";
 import type { StartEndOptions } from "../patterns/start-end";
 import { applyMixins } from "../utilities/apply-mixins";
 import { FormAssociatedSelect } from "./select.form-associated";
-import { SelectPosition, SelectRole } from "./select.options";
+import { SelectPosition } from "./select.options";
 
 /**
  * Select configuration options
@@ -138,15 +138,6 @@ export class Select extends FormAssociatedSelect {
      * @internal
      */
     private forcedPosition: boolean = false;
-
-    /**
-     * The role of the element.
-     *
-     * @public
-     * @remarks
-     * HTML Attribute: role
-     */
-    public role: SelectRole = SelectRole.combobox;
 
     /**
      * Holds the current state for the calculated position of the listbox.

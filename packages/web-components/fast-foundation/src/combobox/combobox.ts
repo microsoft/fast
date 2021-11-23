@@ -6,7 +6,7 @@ import type { ListboxOption } from "../listbox-option/listbox-option";
 import { ARIAGlobalStatesAndProperties } from "../patterns/aria-global";
 import { StartEnd } from "../patterns/start-end";
 import type { StartEndOptions } from "../patterns/start-end";
-import { SelectPosition, SelectRole } from "../select/select.options";
+import { SelectPosition } from "../select/select.options";
 import { applyMixins } from "../utilities/apply-mixins";
 import { FormAssociatedCombobox } from "./combobox.form-associated";
 import { ComboboxAutocomplete } from "./combobox.options";
@@ -193,15 +193,6 @@ export class Combobox extends FormAssociatedCombobox {
      */
     @observable
     public position: SelectPosition = SelectPosition.below;
-
-    /**
-     * The role of the element.
-     *
-     * @public
-     * @remarks
-     * HTML Attribute: role
-     */
-    public role: SelectRole = SelectRole.combobox;
 
     /**
      * The value property.

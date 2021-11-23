@@ -16,7 +16,7 @@ export const selectTemplate: FoundationElementTemplate<
     <template
         class="${x => (x.open ? "open" : "")} ${x =>
             x.disabled ? "disabled" : ""} ${x => x.position}"
-        role="${x => x.role}"
+        role="combobox"
         tabindex="${x => (!x.disabled ? "0" : null)}"
         aria-disabled="${x => x.ariaDisabled}"
         aria-expanded="${x => x.ariaExpanded}"
@@ -27,7 +27,6 @@ export const selectTemplate: FoundationElementTemplate<
         <div
             aria-activedescendant="${x => (x.open ? x.ariaActiveDescendant : null)}"
             aria-controls="listbox"
-            aria-expanded="${x => x.ariaExpanded}"
             aria-haspopup="listbox"
             class="control"
             part="control"
