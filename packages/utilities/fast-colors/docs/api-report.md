@@ -332,7 +332,7 @@ export class ColorXYZ {
     readonly z: number;
 }
 
-// @public
+// @public @deprecated
 export class ComponentStateColorPalette {
     constructor(config?: ComponentStateColorPaletteConfig);
     // (undocumented)
