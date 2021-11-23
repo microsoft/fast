@@ -1374,7 +1374,11 @@ export function isDark(color: Swatch): boolean;
 // @public (undocumented)
 export const layerCornerRadius: import("@microsoft/fast-foundation").CSSDesignToken<number>;
 
-export { Listbox }
+// @public
+export class Listbox extends ListboxElement {
+    // @internal
+    protected sizeChanged(prev: number | unknown, next: number): void;
+    }
 
 export { ListboxOption }
 
