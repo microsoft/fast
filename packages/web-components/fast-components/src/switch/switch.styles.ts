@@ -16,6 +16,7 @@ import {
     bodyFont,
     designUnit,
     disabledOpacity,
+    focusStrokeOuter,
     focusStrokeWidth,
     foregroundOnAccentRest,
     neutralFillInputActive,
@@ -57,14 +58,14 @@ export const switchStyles: (
         user-select: none;
         width: max-content;
     }
-    :host(.disabled) {
+    :host([disabled]) {
         opacity: ${disabledOpacity};
     }
-    :host(.disabled) .label,
+    :host([disabled]) .label,
     :host(.readonly) .label,
-    :host(.disabled) .switch,
+    :host([disabled]) .switch,
     :host(.readonly) .switch,
-    :host(.disabled) .status-message,
+    :host([disabled]) .status-message,
     :host(.readonly) .status-message {
         cursor: ${disabledCursor};
     }
@@ -87,7 +88,7 @@ export const switchStyles: (
     }
     :host(:${focusVisible}) .switch {
         border-color: ${strokeControlStrongFocus};
-        outline: calc(${focusStrokeWidth} * 1px) solid ${strokeControlStrongFocus};
+        outline: calc(${focusStrokeWidth} * 1px) solid ${focusStrokeOuter};
         outline-offset: calc(${strokeWidth} * 1px);
     }
     :host([aria-checked="true"]) .switch {
@@ -211,14 +212,14 @@ export const switchStyles: (
                 :host([aria-checked='true']:enabled) .switch:hover slot[name='switch'] {
                     fill: ${SystemColors.Highlight};
                 }
-                :host(.disabled) {
+                :host([disabled]) {
                     opacity: 1;
                 }
-                :host(.disabled) .switch {
+                :host([disabled]) .switch {
                     background: ${SystemColors.Field};
                     border-color: ${SystemColors.GrayText};
                 }
-                :host(.disabled) slot[name='switch'] {
+                :host([disabled]) slot[name='switch'] {
                     fill: ${SystemColors.GrayText};
                 }
             `
