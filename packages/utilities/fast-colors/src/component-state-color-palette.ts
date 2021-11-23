@@ -25,6 +25,7 @@ export interface ComponentStateColorPaletteConfig {
 /**
  * Creates a color palette for UI components
  * @public
+ * @deprecated This is a very specific palette for the utilities package. ColorPalette is the closest replacement.
  */
 export class ComponentStateColorPalette {
     public static readonly defaultPaletteConfig: ComponentStateColorPaletteConfig = {
