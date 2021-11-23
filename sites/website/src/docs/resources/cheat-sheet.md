@@ -69,3 +69,330 @@ Visit our [Getting Started Guide](https://www.fast.design/docs/components/gettin
 | [fast-toolbar](https://www.fast.design/docs/components/toolbar) | `fastToolbar()` | [Toolbar](https://explore.fast.design/components/fast-toolbar) | An implementation of a [toolbar](https://w3c.github.io/aria-practices/#toolbar) as a web-component. | [example](#fast-toolbar) |
 | [fast-tooltip](https://www.fast.design/docs/components/tooltip) | `fastTooltip()` | [Tooltip](https://explore.fast.design/components/fast-tooltip) | An implementation of a [tooltip](https://w3c.github.io/aria-practices/#tooltip) web-component. | [example](#fast-tooltip) |
 | [fast-tree-view](https://www.fast.design/docs/components/tree-view) | `fastTreeItem()` `fastTreeView()` | [Tree view](https://explore.fast.design/components/fast-tree-view) | An implementation of a [tree-item](https://w3c.github.io/aria-practices/#TreeView) as a web-component. | [example](#fast-fast-tree-view) |
+
+## Examples
+### fast-accordian
+
+```html
+<!-- ... -->
+<div>
+    <fast-accordian>
+        <fast-accordian-item>Item</fast-accordion-item>
+    </fast-accordian>
+</div>
+<!-- ... -->
+```
+
+--- 
+
+### fast-anchor
+
+```html
+<!-- ... -->
+<fast-anchor>Anchor</fast-anchor>
+<!-- ... -->
+```
+
+---
+
+### fast-anchored-region
+
+```html
+<!-- ... -->
+
+<!-- ... -->
+```
+
+---
+
+### fast-avatar
+
+```html
+<!-- ... -->
+
+<!-- ... -->
+```
+
+---
+
+### fast-badge
+
+```html
+<!-- ... -->
+
+<!-- ... -->
+```
+
+---
+
+### fast-breadcrumb
+
+```html
+<!-- ... -->
+
+<!-- ... -->
+```
+
+---
+
+### fast-button
+
+```html
+<!-- ... -->
+<fast-button>Submit</fast-button>
+<!-- ... -->
+```
+
+<fast-button href="#">Submit</fast-button>
+
+---
+
+### fast-card
+
+```html
+<!-- ... -->
+
+<!-- ... -->
+```
+
+---
+
+### fast-checkbox
+
+```html
+<!-- ... -->
+
+<!-- ... -->
+```
+
+---
+
+### fast-combobox
+
+```html
+<!-- ... -->
+
+<!-- ... -->
+```
+
+---
+
+### fast-data-grid
+
+```html
+<!-- ... -->
+
+<!-- ... -->
+```
+
+---
+
+### fast-dialog
+
+```html
+<!-- ... -->
+
+<!-- ... -->
+```
+
+---
+
+### fast-disclosure
+
+```html
+<!-- ... -->
+
+<!-- ... -->
+```
+
+---
+
+### fast-divider
+
+```html
+<!-- ... -->
+
+<!-- ... -->
+```
+
+---
+
+### fast-flipper
+
+```html
+<!-- ... -->
+
+<!-- ... -->
+```
+
+---
+
+### fast-horizontal-scroll
+
+```html
+<!-- ... -->
+
+<!-- ... -->
+```
+
+---
+
+### fast-listbox
+
+```html
+<!-- ... -->
+
+<!-- ... -->
+```
+
+---
+
+### fast-menu
+
+```html
+<!-- ... -->
+
+<!-- ... -->
+```
+
+---
+
+### fast-number-field
+
+```html
+<!-- ... -->
+
+<!-- ... -->
+```
+
+---
+
+### fast-progress
+
+```html
+<!-- ... -->
+
+<!-- ... -->
+```
+
+---
+
+### fast-radio
+
+```html
+<!-- ... -->
+
+<!-- ... -->
+```
+
+---
+
+### fast-radio-group
+
+```html
+<!-- ... -->
+ 
+<!-- ... -->
+```
+
+---
+
+### fast-select
+
+```html
+<!-- ... -->
+
+<!-- ... -->
+```
+
+---
+
+### fast-skeleton
+
+```html
+<!-- ... -->
+
+<!-- ... -->
+```
+
+---
+
+### fast-slider
+
+```html
+<!-- ... -->
+
+<!-- ... -->
+```
+
+---
+
+### fast-switch
+
+```html
+<!-- ... -->
+
+<!-- ... -->
+```
+
+---
+
+### fast-tabs
+
+```html
+<!-- ... -->
+
+<!-- ... -->
+```
+
+---
+
+### fast-text-area
+
+```html
+<!-- ... -->
+
+<!-- ... -->
+```
+
+---
+
+### fast-text-field
+
+```html
+<!-- ... -->
+
+<!-- ... -->
+```
+
+---
+
+### fast-toolbar
+
+```html
+<!-- ... -->
+
+<!-- ... -->
+```
+
+---
+
+### fast-tooltip
+
+```html
+<!-- ... -->
+
+<!-- ... -->
+```
+
+---
+
+### fast-tree-view
+
+```html
+<!-- ... -->
+
+<!-- ... -->
+```
+
+---
