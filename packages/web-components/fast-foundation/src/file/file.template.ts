@@ -48,7 +48,7 @@ export const defaultControlElementTemplate = html<File>`
 `;
 
 /**
- * The template for {@link @microsoft/fast-foundation#file}  component
+ * The template for the {@link @microsoft/fast-foundation#(File:class)} component
  * @public
  */
 export const fileTemplate: (
