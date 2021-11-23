@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "fix: proper css targeting for flipper",
-  "packageName": "@microsoft/fast-components",
-  "email": "jes@microsoft.com",
-  "dependentChangeType": "patch"
-}
