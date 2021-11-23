@@ -12,18 +12,19 @@ import type {
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
+    accentFillRest,
     bodyFont,
     controlCornerRadius,
     designUnit,
     disabledOpacity,
     focusStrokeOuter,
-    focusStrokeWidth,
     neutralFillStealthActive,
     neutralFillStealthHover,
     neutralFillStealthRest,
     neutralForegroundActive,
     neutralForegroundHover,
     neutralForegroundRest,
+    strokeWidth,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
 } from "../design-tokens";
@@ -43,7 +44,7 @@ export const optionStyles: FoundationElementTemplate<
             font-family: ${bodyFont};
             background: ${neutralFillStealthRest};
             border-radius: calc(${controlCornerRadius} * 1px);
-            border: calc(${focusStrokeWidth} * 1px) solid transparent;
+            border: calc(${strokeWidth} * 1px) solid transparent;
             box-sizing: border-box;
             color: ${neutralForegroundRest};
             cursor: pointer;
@@ -52,11 +53,10 @@ export const optionStyles: FoundationElementTemplate<
             font-size: ${typeRampBaseFontSize};
             height: calc(${heightNumber} * 1px);
             line-height: ${typeRampBaseLineHeight};
-            margin: 0 calc((${designUnit} * 3) * 1px);
             outline: none;
             overflow: hidden;
             align-items: center;
-            padding: 0 calc(${designUnit} * 2.25px);
+            padding: 0 calc(((${designUnit} * 3) - 3) * 1px );
             user-select: none;
             white-space: nowrap;
         }
@@ -71,6 +71,7 @@ export const optionStyles: FoundationElementTemplate<
         :host(:not([disabled])[aria-selected="true"]:hover),
         :host(:not([disabled])[aria-selected="true"]:active) {
             background: ${neutralFillStealthActive};
+            border-color: ${accentFillRest};
             color: ${neutralForegroundActive};
         }
         :host(:${focusVisible}) {

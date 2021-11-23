@@ -32,7 +32,7 @@ export const listboxStyles: FoundationElementTemplate<ElementStyles> = (
             border-radius: calc(${controlCornerRadius} * 1px);
             box-sizing: border-box;
             flex-direction: column;
-            padding: calc(${designUnit} * 1px) 0;
+            padding: calc((${designUnit} * 2) * 1px);
             outline: none;
         }
         :host(:focus-within:not([disabled])) {

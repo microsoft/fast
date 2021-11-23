@@ -13,15 +13,6 @@ import { listboxStyles as styles } from "./listbox.styles";
  */
 export class Listbox extends FoundationListboxElement {
     /**
-     * @internal
-     */
-    public connectedCallback(): void {
-        super.connectedCallback();
-
-        fillColor.setValueFor(this, neutralLayerFloating);
-    }
-
-    /**
      * The internal stylesheet which holds the `--size` custom property.
      *
      * @internal
