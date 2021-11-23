@@ -763,6 +763,8 @@ export const layerCornerRadius: import("@microsoft/fast-foundation").CSSDesignTo
 
 // @public
 export class Listbox extends ListboxElement {
+    // @internal (undocumented)
+    connectedCallback(): void;
     // @internal
     protected sizeChanged(prev: number | unknown, next: number): void;
     }
