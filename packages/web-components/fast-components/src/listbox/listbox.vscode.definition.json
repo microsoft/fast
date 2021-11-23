@@ -26,6 +26,13 @@
                     "type": "boolean",
                     "default": false,
                     "required": false
+                },
+                {
+                    "name": "size",
+                    "title": "Size",
+                    "description": "The maximum number of visible options",
+                    "type": "string",
+                    "required": false
                 }
             ],
             "slots": [
