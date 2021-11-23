@@ -13,6 +13,7 @@ import {
     fillColor,
     focusStrokeOuter,
     focusStrokeWidth,
+    neutralStrokeRest,
     strokeWidth,
 } from "../design-tokens";
 import { heightNumber } from "../styles/size";
@@ -28,7 +29,7 @@ export const listboxStyles: FoundationElementTemplate<ElementStyles> = (
     css`
         ${display("inline-flex")} :host {
             background: ${fillColor};
-            border: calc(${strokeWidth} * 1px) solid transparent;
+            border: calc(${strokeWidth} * 1px) solid ${neutralStrokeRest};
             border-radius: calc(${controlCornerRadius} * 1px);
             box-sizing: border-box;
             flex-direction: column;
