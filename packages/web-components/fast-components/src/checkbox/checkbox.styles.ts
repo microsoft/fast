@@ -13,6 +13,7 @@ import {
     bodyFont,
     designUnit,
     disabledOpacity,
+    focusStrokeOuter,
     focusStrokeWidth,
     foregroundOnAccentRest,
     neutralFillInputActive,
@@ -76,7 +77,7 @@ export const checkboxStyles: (
     }
     :host(:${focusVisible}) .control {
         border-color: ${strokeControlStrongFocus};
-        outline: calc(${focusStrokeWidth} * 1px) solid ${strokeControlStrongFocus};
+        outline: calc(${focusStrokeWidth} * 1px) solid ${focusStrokeOuter};
         outline-offset: calc(${strokeWidth} * 1px);
     }
     :host([aria-checked="true"]) .control {
