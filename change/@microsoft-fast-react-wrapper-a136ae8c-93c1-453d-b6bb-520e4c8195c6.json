@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "fix(react-wrapper): change peer dependency for `react`",
-  "packageName": "@microsoft/fast-react-wrapper",
-  "email": "vaibhavkshinde20@gmail.com",
-  "dependentChangeType": "patch"
-}

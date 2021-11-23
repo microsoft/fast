@@ -1,11 +1,11 @@
 import { DOM } from "@microsoft/fast-element";
-import { assert, expect } from "chai";
-import { fixture } from "../test-utilities/fixture";
+import { expect } from "chai";
 import { ListboxOption } from "../listbox-option/listbox-option";
 import { listboxOptionTemplate as itemTemplate } from "../listbox-option/listbox-option.template";
-import { Listbox, listboxTemplate as template } from "./index";
+import { fixture } from "../test-utilities/fixture";
+import { ListboxElement, listboxTemplate as template } from "./index";
 
-const FASTListbox = Listbox.compose({
+const FASTListbox = ListboxElement.compose({
     baseName: "listbox",
     template
 })
@@ -65,7 +65,7 @@ describe("Listbox", () => {
 
         await DOM.nextUpdate();
 
-        assert.isNull(element.getAttribute("tabindex"));
+        expect(element.getAttribute("tabindex")).to.be.null;
 
         await disconnect();
     });
@@ -98,5 +98,75 @@ describe("Listbox", () => {
         expect(element.selectedOptions).to.not.contain(option3);
 
         await disconnect();
+    });
+
+    it("should set the `size` property to match the `size` attribute", async () => {
+        const { element, connect, disconnect } = await setup();
+
+        await connect();
+
+        element.setAttribute("size", "4");
+
+        expect(element.size).to.equal(4);
+
+        await disconnect();
+    });
+
+    it("should set the `size` attribute to match the `size` property", async () => {
+        const { element, connect, disconnect } = await setup();
+
+        await connect();
+
+        element.size = 4;
+
+        await DOM.nextUpdate();
+
+        expect(element.getAttribute("size")).to.equal("4");
+
+        await disconnect();
+    });
+
+    describe("should set the `size` property to 0 when a negative value is set", () => {
+        it("via the `size` property", async () => {
+            const { element, connect, disconnect } = await setup();
+
+            await connect();
+
+            element.size = 1;
+
+            await DOM.nextUpdate();
+
+            expect(element.size).to.equal(1);
+            expect(element.getAttribute("size")).to.equal("1");
+
+            element.size = -1;
+
+            await DOM.nextUpdate();
+
+            expect(element.size).to.equal(0);
+            expect(element.getAttribute("size")).to.equal("0");
+
+            await disconnect();
+        });
+
+        it("via the `size` attribute", async () => {
+            const { element, connect, disconnect } = await setup();
+
+            await connect();
+
+            element.setAttribute("size", "1");
+
+            expect(element.size).to.equal(1);
+            expect(element.getAttribute("size")).to.equal("1");
+
+            element.setAttribute("size", "-1");
+
+            await DOM.nextUpdate();
+
+            expect(element.size).to.equal(0);
+            expect(element.getAttribute("size")).to.equal("0");
+
+            await disconnect();
+        });
     });
 });
