@@ -1,10 +1,10 @@
 import {
+    FileOptions,
     FileSelect as File,
     fileTemplate as template,
     defaultFileListTemplate as fileListTemplate,
     defaultControlElementTemplate as controlElementTemplate,
 } from "@microsoft/fast-foundation";
-import { FileOptions } from "@microsoft/fast-foundation";
 import { fileStyles as styles } from "./file.styles";
 
 /**
