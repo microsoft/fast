@@ -1097,7 +1097,7 @@ export class FileSelect extends FormAssociatedFile {
     fileListBuffer: any[];
     files: FileList | any;
     // (undocumented)
-    fileSelectorButton: HTMLSlotElement;
+    fileSelectorControl: HTMLSlotElement;
     // (undocumented)
     handleChange(): void;
     // @internal
@@ -1105,7 +1105,6 @@ export class FileSelect extends FormAssociatedFile {
     // (undocumented)
     listItems: Element[];
     multiple: boolean;
-    // (undocumented)
     preview: boolean;
     value: string;
 }

@@ -63,6 +63,12 @@ export class FileSelect extends FormAssociatedFile {
     @attr({ mode: "boolean" })
     public multiple: boolean;
 
+    /**
+     * Determines the file list display mode.
+     * @public
+     * @remarks
+     * HTML Attribute: multiple
+     */
     @attr({ mode: "boolean" })
     public preview: boolean;
 
@@ -73,7 +79,7 @@ export class FileSelect extends FormAssociatedFile {
     public fileListBuffer: any[] = [];
 
     @observable
-    public fileSelectorButton: HTMLSlotElement;
+    public fileSelectorControl: HTMLSlotElement;
 
     @observable
     public listItems: Element[];

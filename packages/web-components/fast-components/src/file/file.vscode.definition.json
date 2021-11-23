@@ -1,0 +1,62 @@
+{
+  "version": 1.1,
+  "tags": [
+      {
+          "name": "fast-file",
+          "title": "File",
+          "description": "The FAST file element",
+          "attributes": [
+              {
+                  "name": "accept",
+                  "title": "Accept",
+                  "type": "string",
+                  "description": "One or more unique file type specifiers describing file types to allow.",
+                  "required": false
+              },
+              {
+                  "name": "capture",
+                  "title": "Capture",
+                  "type": "string",
+                  "description": "What source to use for capturing image or video data (`user` or `environment`)",
+                  "required": false
+              },
+              {
+                  "name": "files",
+                  "title": "Files",
+                  "type": "string",
+                  "description": "A `FileList` listing the chosen files",
+                  "required": false
+              },
+              {
+                  "name": "multiple",
+                  "title": "Multiple",
+                  "type": "boolean",
+                  "description": "When true the file picker will allow the selection of multiple files.",
+                  "required": false
+              },
+              {
+                  "name": "preview",
+                  "title": "Preview",
+                  "type": "boolean",
+                  "description": "Determines the file list display mode",
+                  "required": false
+              }
+
+          ],
+          "slots": [
+              {
+                  "name": "file-selector-control",
+                  "title": "File Selector Control",
+                  "description":
+                      "Slot to provide a file selector control"
+              },
+              {
+                  "name": "file-list",
+                  "title": "File List",
+                  "description":
+                      "Slot to provide a file-list"
+              }
+          ]
+      }
+  ]
+}

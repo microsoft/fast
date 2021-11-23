@@ -60,10 +60,10 @@ export const fileTemplate: (
 ) => {
     return html<File>`
         <template>
-            <span part="file-selector-button">
+            <span part="file-selector-control">
                 <slot
-                    name="file-selector-button"
-                    ${slotted("fileSelectorButton")}
+                    name="file-selector-control"
+                    ${slotted("fileSelectorControl")}
                     @click="${x => x.handleClick()}"
                 >
                     ${definition.controlElement || ""}
