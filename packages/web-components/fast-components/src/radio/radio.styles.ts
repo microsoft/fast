@@ -10,9 +10,14 @@ import {
 } from "@microsoft/fast-foundation";
 import { heightNumber } from "../styles";
 import {
+    accentFillActive,
+    accentFillFocus,
+    accentFillHover,
+    accentFillRest,
     bodyFont,
     designUnit,
     disabledOpacity,
+    focusStrokeOuter,
     focusStrokeWidth,
     foregroundOnAccentRest,
     neutralFillInputActive,
@@ -26,7 +31,6 @@ import {
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
 } from "../design-tokens";
-import { accentFillActive, accentFillFocus, accentFillHover, accentFillRest } from "..";
 
 /**
  * Styles for Radio
@@ -73,7 +77,7 @@ export const radioStyles: (
     }
     :host(:${focusVisible}) .control {
         border-color: ${strokeControlStrongFocus};
-        outline: calc(${focusStrokeWidth} * 1px) solid ${strokeControlStrongFocus};
+        outline: calc(${focusStrokeWidth} * 1px) solid ${focusStrokeOuter};
         outline-offset: calc(${strokeWidth} * 1px);
     }
     :host(.checked) .control {
