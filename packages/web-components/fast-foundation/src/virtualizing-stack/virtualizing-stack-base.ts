@@ -10,7 +10,6 @@ import {
     RepeatBehavior,
     RepeatDirective,
     Splice,
-    Subscriber,
     ViewTemplate,
 } from "@microsoft/fast-element";
 import { eventResize, eventScroll, Orientation } from "@microsoft/fast-web-utilities";
@@ -349,12 +348,22 @@ export class VirtualizingStackBase extends FoundationElement {
 
     /** @internal */
     public handleChange(source: any, splices: Splice[]): void {
-        // const visibleRangeStart = this.visibleRangeStart;
-        // const visibleRangeEnd = this.visibleRangeEnd;
+        const firstRenderedIndex =
+            this.firstRenderedIndex > this.items.length
+                ? this.items.length
+                : this.firstRenderedIndex;
+        const lastRenderedIndex =
+            this.lastRenderedIndex > this.items.length
+                ? this.items.length
+                : this.lastRenderedIndex;
 
-        // for (let i = 0, ii = this.visibleRangeEnd - this.visibleRangeStart; i <= ii; ++i) {
-        //     const newItem = this.items[this.vi]
-        // }
+        const newVisibleItems: object[] = this.items.slice(
+            firstRenderedIndex,
+            lastRenderedIndex
+        );
+
+        this.visibleItems.splice(0, this.visibleItems.length, ...newVisibleItems);
+
         this.requestPositionUpdates();
     }
 

@@ -2794,7 +2794,7 @@ export class VirtualizingStackBase extends FoundationElement {
     // @internal (undocumented)
     gridTemplateSpans: string;
     // @internal (undocumented)
-    handleChange(source: any, args: Splice[]): void;
+    handleChange(source: any, splices: Splice[]): void;
     // (undocumented)
     items: object[];
     // @beta (undocumented)
