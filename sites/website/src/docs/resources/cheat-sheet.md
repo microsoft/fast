@@ -4,7 +4,10 @@ title: Cheat Sheet
 sidebar_label: Cheat Sheet
 custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/src/docs/resources/cheat-sheet.md
 ---
-## Setup
+
+# Cheat Sheet
+## Using Components
+### Setup
 
 To register custom components:
 
@@ -22,7 +25,8 @@ provideFASTDesignSystem()
 
 Visit our [Getting Started Guide](https://www.fast.design/docs/components/getting-started) for more details, Tips, and Notes.
 
-## fast-components
+
+### fast-components
 
 | Component | Name | Component Explorer | Guidance |
 | :--- | :--- | :--- | :--- |
@@ -58,3 +62,21 @@ Visit our [Getting Started Guide](https://www.fast.design/docs/components/gettin
 | [fast-toolbar](https://www.fast.design/docs/components/toolbar) | `fastToolbar()` | [Toolbar](https://explore.fast.design/components/fast-toolbar) | An implementation of a [toolbar](https://w3c.github.io/aria-practices/#toolbar) as a web-component. |
 | [fast-tooltip](https://www.fast.design/docs/components/tooltip) | `fastTooltip()` | [Tooltip](https://explore.fast.design/components/fast-tooltip) | An implementation of a [tooltip](https://w3c.github.io/aria-practices/#tooltip) web-component. |
 | [fast-tree-view](https://www.fast.design/docs/components/tree-view) | `fastTreeItem()` `fastTreeView()` | [Tree view](https://explore.fast.design/components/fast-tree-view) | An implementation of a [tree-item](https://w3c.github.io/aria-practices/#TreeView) as a web-component. |
+
+---
+## Building Components
+
+### Setup
+
+To define a custom element:
+
+```ts
+import { FASTElement, customElement } from '@microsoft/fast-element';
+
+@customElement('name-tag')
+export class NameTag extends FASTElement {
+
+}
+```
+
+### fast-element
