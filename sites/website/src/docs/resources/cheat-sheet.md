@@ -4,18 +4,8 @@ title: Cheat Sheet
 sidebar_label: Cheat Sheet
 custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/src/docs/resources/cheat-sheet.md
 ---
+
 ## Setup
-
-To register all available components:
-
-```ts
-import { 
-    allComponents, 
-    provideFASTDesignSystem 
-} from "@microsoft/fast-components";
-
-provideFASTDesignSystem().register(allComponents);
-```
 
 To register custom components:
 
@@ -75,11 +65,9 @@ Visit our [Getting Started Guide](https://www.fast.design/docs/components/gettin
 
 ```html
 <!-- ... -->
-<div>
-    <fast-accordian>
-        <fast-accordian-item>Item</fast-accordion-item>
-    </fast-accordian>
-</div>
+<fast-accordian>
+    <fast-accordian-item>Item</fast-accordion-item>
+</fast-accordian>
 <!-- ... -->
 ```
 
@@ -119,7 +107,7 @@ Visit our [Getting Started Guide](https://www.fast.design/docs/components/gettin
 
 ```html
 <!-- ... -->
-
+<fast-badge fill="primary" color="white">Badge</fast-badge>
 <!-- ... -->
 ```
 
