@@ -82,8 +82,6 @@ export const optionStyles: FoundationElementTemplate<
             opacity: ${disabledOpacity};
         }
         .content {
-            grid-column-start: 2;
-            justify-self: start;
             overflow: hidden;
             text-overflow: ellipsis;
         }
