@@ -233,6 +233,9 @@ export class TreeView extends FoundationElement {
 
     private handleItemSelected = (e: CustomEvent): void => {
         const newSelection: TreeItem = e.target as TreeItem;
+        if (newSelection.disabled) {
+            e.stopPropagation();
+        }
         if (newSelection !== this.currentSelected) {
             this.handleSelected(newSelection);
         }
