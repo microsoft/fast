@@ -192,27 +192,6 @@ addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
         if (customHeaderCellTemplateButton) {
             customHeaderCellTemplateButton.onclick = setCustomHeaderCellItemTemplate;
         }
-
-        // note: we use mouse enter because clicking to move focus seems to confuse focus-visible
-        const focusLeftButton = document.getElementById("btnfocusleft") as Button;
-        if (focusLeftButton) {
-            focusLeftButton.onmouseenter = moveFocus;
-        }
-
-        const focusRightButton = document.getElementById("btnfocusright") as Button;
-        if (focusRightButton) {
-            focusRightButton.onmouseenter = moveFocus;
-        }
-
-        const focusUpButton = document.getElementById("btnfocusup") as Button;
-        if (focusUpButton) {
-            focusUpButton.onmouseenter = moveFocus;
-        }
-
-        const focusDownButton = document.getElementById("btnfocusdown") as Button;
-        if (focusDownButton) {
-            focusDownButton.onmouseenter = moveFocus;
-        }
     }
 });
 

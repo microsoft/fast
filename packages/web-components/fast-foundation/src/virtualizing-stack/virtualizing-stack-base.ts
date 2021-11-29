@@ -333,6 +333,9 @@ export class VirtualizingStackBase extends FoundationElement {
             return;
         }
 
+        // TODO:  we don't use splices calculated by array change events
+        // look for cheaper observer implementation later
+
         const oldObserver = this.itemsObserver;
         const newObserver = (this.itemsObserver = Observable.getNotifier(this.items));
         const hasNewObserver = oldObserver !== newObserver;
@@ -349,17 +352,17 @@ export class VirtualizingStackBase extends FoundationElement {
     /** @internal */
     public handleChange(source: any, splices: Splice[]): void {
         const firstRenderedIndex =
-            this.firstRenderedIndex > this.items.length
-                ? this.items.length
+            this.firstRenderedIndex >= this.items.length
+                ? this.items.length - 1
                 : this.firstRenderedIndex;
         const lastRenderedIndex =
-            this.lastRenderedIndex > this.items.length
-                ? this.items.length
+            this.lastRenderedIndex >= this.items.length
+                ? this.items.length - 1
                 : this.lastRenderedIndex;
 
         const newVisibleItems: object[] = this.items.slice(
             firstRenderedIndex,
-            lastRenderedIndex
+            lastRenderedIndex + 1
         );
 
         this.visibleItems.splice(0, this.visibleItems.length, ...newVisibleItems);
