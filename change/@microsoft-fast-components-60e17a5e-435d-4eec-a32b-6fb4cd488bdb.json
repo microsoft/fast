@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "fix: vertical tabs fromm jumping",
+  "packageName": "@microsoft/fast-components",
+  "email": "jes@microsoft.com",
+  "dependentChangeType": "patch"
+}
