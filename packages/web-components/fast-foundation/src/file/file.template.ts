@@ -18,7 +18,7 @@ export const defaultFileListTemplate = html<File>`
         ${repeat(
             x => x.fileListBuffer,
             html`
-                <li @click="${(x, c) => c.parent.removeItem(c.event)}">
+                <li>
                     ${when(
                         (x, c) => c.parent.preview,
                         html`
@@ -48,7 +48,7 @@ export const defaultControlElementTemplate = html<File>`
 `;
 
 /**
- * The template for the {@link @microsoft/fast-foundation#(File:class)} component
+ * The template for the {@link @microsoft/fast-foundation#File} component
  * @public
  */
 export const fileTemplate: (
