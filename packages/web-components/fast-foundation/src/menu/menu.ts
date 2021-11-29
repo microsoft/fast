@@ -27,11 +27,13 @@ export class Menu extends FoundationElement {
     @observable
     public items: HTMLSlotElement;
     private itemsChanged(oldValue, newValue): void {
-        if (this.$fastController.isConnected) {
-            this.menuItems = this.domChildren();
-            this.resetItems(oldValue);
-            this.setItems();
+        if (oldValue) {
+            oldValue.forEach((item: HTMLElement) => {
+                item.removeEventListener("expanded-change", this.handleExpandedChanged);
+                item.removeEventListener("focus", this.handleItemFocus);
+            });
         }
+        this.setItems();
     }
 
     private menuItems: Element[];
@@ -51,7 +53,7 @@ export class Menu extends FoundationElement {
      */
     public connectedCallback(): void {
         super.connectedCallback();
-        this.menuItems = this.domChildren();
+        this.setItems();
 
         this.addEventListener("change", this.changeHandler);
     }
@@ -190,6 +192,11 @@ export class Menu extends FoundationElement {
     };
 
     private setItems = (): void => {
+        if (!this.$fastController.isConnected) {
+            return;
+        }
+
+        this.menuItems = this.domChildren();
         const menuItems = this.menuItems.filter(this.isMenuItemElement);
 
         // if our focus index is not -1 we have items
@@ -235,13 +242,6 @@ export class Menu extends FoundationElement {
             if (item instanceof MenuItem) {
                 item.startColumnCount = indent;
             }
-        });
-    };
-
-    private resetItems = (oldValue: HTMLElement[]): void => {
-        oldValue.forEach((item: HTMLElement) => {
-            item.removeEventListener("expanded-change", this.handleExpandedChanged);
-            item.removeEventListener("focus", this.handleItemFocus);
         });
     };
 
