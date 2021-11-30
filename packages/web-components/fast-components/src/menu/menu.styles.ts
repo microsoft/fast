@@ -36,7 +36,7 @@ export const menuStyles: (
             box-shadow: ${elevationShadowFlyout};
             margin: 0;
             border-radius: calc(${controlCornerRadius} * 1px);
-            padding: calc(${designUnit} * 1px) 0;
+            padding: calc((${designUnit} * 2) * 1px);
             max-width: 368px;
             min-width: 64px;
             color: ${neutralForegroundRest};
