@@ -3,6 +3,7 @@ import {
     ListboxElement as FoundationListboxElement,
     listboxTemplate as template,
 } from "@microsoft/fast-foundation";
+import { fillColor, neutralLayerFloating } from "../design-tokens";
 import { listboxStyles as styles } from "./listbox.styles";
 
 /**
