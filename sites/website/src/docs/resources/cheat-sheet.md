@@ -82,11 +82,18 @@ To define a custom element:
 ```ts
 import { FASTElement, customElement } from '@microsoft/fast-element';
 
-@customElement('name-tag')
+@customElement('name-tag') // custom element being created
 export class NameTag extends FASTElement {
 
 }
 ```
+
+With this in place, you can now use your name-tag element anywhere in HTML with the following markup:
+
+```html
+<name-tag></name-tag>
+```
+
 
 Visit our Building Components [Getting Started Guide](https://www.fast.design/docs/components/getting-started) for more details, Tips, and Notes.
 
@@ -94,5 +101,21 @@ Visit our Building Components [Getting Started Guide](https://www.fast.design/do
 
 <details>
     <summary>Click to expand!</summary>
+
+## Adding Attributes
+
+| Decorator | API | Property | 
+| :--- | :--- | :-- |
+| `@attr` | `setAttribute` | `mode` |
+
+### Customizing Attributes
+
+There are three modes available through the `mode` property of the attribute configuration:
+
+| Mode | Description |
+| :-- | :-- |
+| `reflect` | The default mode that is used if none is specified. This reflects property changes to the DOM. If a `converter` is supplied, it will invoke the converter before calling the `setAttribute` DOM API. |
+| `boolean` | This mode causes your attribute to function using the HTML boolean attribute behavior. When your attribute is present in the DOM or equal to its own name, the value will be true. When the attribute is absent from the DOM, the value of the property will be false. Setting the property will also update the DOM by adding/removing the attribute. |
+| `fromView` | This mode skips reflecting the value of the property back to the HTML attribute, but does receive updates when changed through `setAttribute`. |
 
 </details>
