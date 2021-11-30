@@ -4,14 +4,7 @@ import {
     ElementDefinitionContext,
     FoundationElementDefinition,
 } from "@microsoft/fast-foundation";
-import {
-    bodyFont,
-    neutralForegroundRest,
-    neutralStrokeDividerRest,
-    strokeWidth,
-    typeRampMinus1FontSize,
-    typeRampMinus1LineHeight,
-} from "../design-tokens";
+import { designUnit, neutralFillActive } from "../design-tokens";
 
 /**
  * Styles for Accordion
@@ -28,10 +21,17 @@ export const accordionStyles: (
         ${display("flex")} :host {
             box-sizing: border-box;
             flex-direction: column;
-            font-family: ${bodyFont};
-            font-size: ${typeRampMinus1FontSize};
-            line-height: ${typeRampMinus1LineHeight};
-            color: ${neutralForegroundRest};
-            border-top: calc(${strokeWidth} * 1px) solid ${neutralStrokeDividerRest};
+            gap: calc(${designUnit} * 1px);
+            position: relative;
+        }
+        :host::before {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            content: "";
+            background: ${neutralFillActive};
+            width: calc(100% - 40px);
+            height: 1px;
         }
     `;
