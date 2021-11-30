@@ -38,10 +38,10 @@ export const skeletonStyles: (
             );
             --skeleton-animation-timing-default: ease-in-out;
         }
-        :host(.rect) {
+        :host([shape="rect"]) {
             border-radius: calc(${controlCornerRadius} * 1px);
         }
-        :host(.circle) {
+        :host([shape="circle"]) {
             border-radius: 100%;
             overflow: hidden;
         }
