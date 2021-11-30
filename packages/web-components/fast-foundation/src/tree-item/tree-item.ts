@@ -130,7 +130,13 @@ export class TreeItem extends FoundationElement {
     };
 
     private handleSelected(e?: Event): void {
-        this.$emit("selected-change", e);
+        e?.preventDefault();
+        if (e?.defaultPrevented) {
+            return;
+        }
+        if (!this.disabled) {
+            this.$emit("selected-change", e);
+        }
     }
 
     private setExpanded(expanded: boolean): void {
