@@ -51,14 +51,14 @@ export const listboxStyles: FoundationElementTemplate<ElementStyles> = (
     `.withBehaviors(
         forcedColorsStylesheetBehavior(
             css`
-                :host(:${focusVisible}) ::slotted([aria-selected="true"][role="option"]) {
+                :host(:${focusVisible}) ::slotted([role="option"][aria-selected="true"]) {
                     background: ${SystemColors.Highlight};
                     border-color: ${SystemColors.ButtonText};
                     box-shadow: 0 0 0 calc(${focusStrokeWidth} * 1px) inset ${SystemColors.HighlightText};
                     color: ${SystemColors.HighlightText};
                     fill: currentcolor;
                 }
-                :host(:${focusVisible}) ::slotted([aria-selected="true"][role="option"]) {
+                :host(:${focusVisible}) ::slotted([role="option"][aria-selected="true"]) {
                     background: ${SystemColors.Highlight};
                     border-color: ${SystemColors.ButtonText};
                     box-shadow: 0 0 0 calc(${focusStrokeWidth} * 1px) inset ${SystemColors.HighlightText};
