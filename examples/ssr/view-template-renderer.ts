@@ -3,7 +3,7 @@
  * A big thank you to those who contributed to that code.
  */
 import { DOM, HTMLDirective, ViewTemplate } from "@microsoft/fast-element";
-import { parseFragment } from "parse5";
+import { Attribute, DefaultTreeNode, DefaultTreeParentNode, parseFragment } from "parse5";
 import {
     getLast,
     isCommentNode,
@@ -70,7 +70,7 @@ function getTemplateOpCodes(template: ViewTemplate): Op[] {
      * opcode (if already `text`) or by creating a new `text` opcode (if the
      * previous opcode was not `text)
      */
-    function flush(value: string) {
+    function flush(value: string): void {
         const last = getLast(ops);
 
         if (last !== undefined && last.type === "text") {
@@ -87,7 +87,7 @@ function getTemplateOpCodes(template: ViewTemplate): Op[] {
      * Creates or appends to a text opcode with a substring of the html from the
      * `lastOffset` flushed to `offset`.
      */
-    const flushTo = (offset?: number) => {
+    function flushTo(offset?: number): void {
         if (lastOffset === undefined) {
             throw new Error("lastOffset is undefined");
         }
@@ -95,10 +95,10 @@ function getTemplateOpCodes(template: ViewTemplate): Op[] {
         lastOffset = offset;
         const value = String(html).substring(previousLastOffset, offset);
         flush(value);
-    };
+    }
 
     traverse(ast as any, {
-        pre(node, parent) {
+        pre(node: DefaultTreeNode, parent: DefaultTreeParentNode | undefined) {
             // We need to check text nodes, comment nodes, and attributes for directive placeholers (these follow different formats).
             // When we find one, we need to retrieve the directive for it so that we can evalute it.
             if (
@@ -121,7 +121,7 @@ function getTemplateOpCodes(template: ViewTemplate): Op[] {
                 let ctor: typeof HTMLElement | undefined;
 
                 const attributes = node.attrs.reduce(
-                    (prev, current) => {
+                    (prev: CategorizedAttributes, current: Attribute) => {
                         prev[isInterpolationMarker(current) ? "dynamic" : "static"][
                             current.name
                         ] = current.value;
@@ -149,7 +149,7 @@ function getTemplateOpCodes(template: ViewTemplate): Op[] {
                 }
             }
         },
-        post(node) {
+        post(node: DefaultTreeNode) {
             // console.log(node.nodeName);
         },
     });
@@ -163,7 +163,7 @@ export function* renderViewTemplate(
     template: ViewTemplate<undefined, undefined, undefined>
 ): IterableIterator<string> {
     const opCodes = getTemplateOpCodes(template);
-    opCodes.forEach(code => {
+    opCodes.forEach((code: Op) => {
         if (code.type === "text") {
             console.log(code.value);
         }
