@@ -102,13 +102,13 @@ Visit our Building Components [Getting Started Guide](https://www.fast.design/do
 <details>
     <summary>Click to expand!</summary>
 
-## Adding Attributes
+#### Adding Attributes
 
 | Decorator | API | Property | 
 | :--- | :--- | :-- |
 | `@attr` | `setAttribute` | `mode` |
 
-### Customizing Attributes
+#### Customizing Attributes
 
 There are three modes available through the `mode` property of the attribute configuration:
 
@@ -117,5 +117,21 @@ There are three modes available through the `mode` property of the attribute con
 | `reflect` | The default mode that is used if none is specified. This reflects property changes to the DOM. If a `converter` is supplied, it will invoke the converter before calling the `setAttribute` DOM API. |
 | `boolean` | This mode causes your attribute to function using the HTML boolean attribute behavior. When your attribute is present in the DOM or equal to its own name, the value will be true. When the attribute is absent from the DOM, the value of the property will be false. Setting the property will also update the DOM by adding/removing the attribute. |
 | `fromView` | This mode skips reflecting the value of the property back to the HTML attribute, but does receive updates when changed through `setAttribute`. |
+
+</details>
+
+---
+
+## Design Tokens
+
+A Design Token is a semantic, named variable used to describe a Design System. They often describe design concepts like typography, color, sizes, UI spacing, etc. 
+
+Visit our [Design Tokens Guide](https://www.fast.design/docs/design-systems/design-tokens) for more details, Tips, and Notes.
+
+
+<details>
+    <summary>Click to expand!</summary>
+
+||
 
 </details>
