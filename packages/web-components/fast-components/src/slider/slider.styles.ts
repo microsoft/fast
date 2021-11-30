@@ -49,13 +49,13 @@ export const sliderStyles: (
         outline: none;
         cursor: pointer;
     }
-    :host(.horizontal) .positioning-region {
+    :host([orientation="horizontal"]) .positioning-region {
         position: relative;
         margin: 0 8px;
         display: grid;
         grid-template-rows: calc(var(--thumb-size) * 1px) 1fr;
     }
-    :host(.vertical) .positioning-region {
+    :host([orientation="vertical"]) .positioning-region {
         position: relative;
         margin: 0 8px;
         display: grid;
