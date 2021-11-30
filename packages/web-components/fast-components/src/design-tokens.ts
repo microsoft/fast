@@ -45,9 +45,12 @@ const { create } = DesignToken;
 // General tokens
 
 /** @public */
-export const bodyFont = create<string>("body-font").withDefault(
-    'aktiv-grotesk, "Segoe UI", Arial, Helvetica, sans-serif'
-);
+export const direction = create<Direction>("direction").withDefault(Direction.ltr);
+/** @public */
+export const disabledOpacity = create<number>("disabled-opacity").withDefault(0.3);
+
+// Density tokens
+
 /** @public */
 export const baseHeightMultiplier = create<number>("base-height-multiplier").withDefault(
     8
@@ -57,21 +60,17 @@ export const baseHorizontalSpacingMultiplier = create<number>(
     "base-horizontal-spacing-multiplier"
 ).withDefault(3);
 /** @public */
-export const baseLayerLuminance = create<number>("base-layer-luminance").withDefault(
-    StandardLuminance.DarkMode
-);
-/** @public */
-export const controlCornerRadius = create<number>("control-corner-radius").withDefault(6);
-/** @public */
 export const density = create<number>("density").withDefault(0);
 /** @public */
 export const designUnit = create<number>("design-unit").withDefault(4);
+
+// Appearance tokens
+
 /** @public */
-export const direction = create<Direction>("direction").withDefault(Direction.ltr);
-/** @public */
-export const disabledOpacity = create<number>("disabled-opacity").withDefault(0.3);
+export const controlCornerRadius = create<number>("control-corner-radius").withDefault(6);
 /** @public */
 export const layerCornerRadius = create<number>("layer-corner-radius").withDefault(6);
+
 /** @public */
 export const strokeWidth = create<number>("stroke-width").withDefault(1);
 /** @public */
@@ -79,6 +78,10 @@ export const focusStrokeWidth = create<number>("focus-stroke-width").withDefault
 
 // Typography values
 
+/** @public */
+export const bodyFont = create<string>("body-font").withDefault(
+    'aktiv-grotesk, "Segoe UI", Arial, Helvetica, sans-serif'
+);
 /** @public */
 export const typeRampBaseFontSize = create<string>(
     "type-ramp-base-font-size"
@@ -153,6 +156,11 @@ export const typeRampPlus6LineHeight = create<string>(
 ).withDefault("72px");
 
 // Color recipe values
+
+/** @public */
+export const baseLayerLuminance = create<number>("base-layer-luminance").withDefault(
+    StandardLuminance.DarkMode
+);
 
 /** @public */
 export const accentFillRestDelta = create<number>("accent-fill-rest-delta").withDefault(
@@ -276,23 +284,6 @@ export const neutralStrokeActiveDelta = create<number>(
 /** @public */
 export const neutralStrokeFocusDelta = create<number>(
     "neutral-stroke-focus-delta"
-).withDefault(49);
-
-/** @public */
-export const neutralStrokeInputFilledRestDelta = create<number>(
-    "neutral-stroke-input-filled-rest-delta"
-).withDefault(4);
-/** @public */
-export const neutralStrokeInputFilledHoverDelta = create<number>(
-    "neutral-stroke-input-filled-hover-delta"
-).withDefault(10);
-/** @public */
-export const neutralStrokeInputFilledActiveDelta = create<number>(
-    "neutral-stroke-input-filled-active-delta"
-).withDefault(10);
-/** @public */
-export const neutralStrokeInputFilledFocusDelta = create<number>(
-    "neutral-stroke-input-filled-focus-delta"
 ).withDefault(49);
 
 /** @public */
@@ -1036,53 +1027,6 @@ export const neutralStrokeActive = create<Swatch>("neutral-stroke-active").withD
 export const neutralStrokeFocus = create<Swatch>("neutral-stroke-focus").withDefault(
     (element: HTMLElement) =>
         neutralStrokeRecipe.getValueFor(element).evaluate(element).focus
-);
-
-// Neutral Stroke Input Filled
-/** @public */
-export const neutralStrokeInputFilledRecipe = create<InteractiveColorRecipe>({
-    name: "neutral-stroke-input-filled-recipe",
-    cssCustomPropertyName: null,
-}).withDefault({
-    evaluate: (element: HTMLElement): InteractiveSwatchSet => {
-        return neutralStrokeAlgorithm(
-            neutralPalette.getValueFor(element),
-            fillColor.getValueFor(element),
-            neutralStrokeInputFilledRestDelta.getValueFor(element),
-            neutralStrokeInputFilledHoverDelta.getValueFor(element),
-            neutralStrokeInputFilledActiveDelta.getValueFor(element),
-            neutralStrokeInputFilledFocusDelta.getValueFor(element)
-        );
-    },
-});
-
-/** @public */
-export const neutralStrokeInputFilledRest = create<Swatch>(
-    "neutral-stroke-input-filled-rest"
-).withDefault(
-    (element: HTMLElement) =>
-        neutralStrokeInputFilledRecipe.getValueFor(element).evaluate(element).rest
-);
-/** @public */
-export const neutralStrokeInputFilledHover = create<Swatch>(
-    "neutral-stroke-input-filled-hover"
-).withDefault(
-    (element: HTMLElement) =>
-        neutralStrokeInputFilledRecipe.getValueFor(element).evaluate(element).hover
-);
-/** @public */
-export const neutralStrokeInputFilledActive = create<Swatch>(
-    "neutral-stroke-input-filled-active"
-).withDefault(
-    (element: HTMLElement) =>
-        neutralStrokeInputFilledRecipe.getValueFor(element).evaluate(element).active
-);
-/** @public */
-export const neutralStrokeInputFilledFocus = create<Swatch>(
-    "neutral-stroke-input-filled-focus"
-).withDefault(
-    (element: HTMLElement) =>
-        neutralStrokeInputFilledRecipe.getValueFor(element).evaluate(element).focus
 );
 
 // Neutral Stroke Divider
