@@ -27,8 +27,10 @@ provideFASTDesignSystem()
 
 Visit our Using Components [Getting Started Guide](https://www.fast.design/docs/components/getting-started) for more details, Tips, and Notes.
 
-
 ### fast-components
+
+<details>
+    <summary>Click to expand!</summary>
 
 | Component | Name | Component Explorer | Guidance |
 | :--- | :--- | :--- | :--- |
@@ -65,6 +67,8 @@ Visit our Using Components [Getting Started Guide](https://www.fast.design/docs/
 | [fast-tooltip](https://www.fast.design/docs/components/tooltip) | `fastTooltip()` | [Tooltip](https://explore.fast.design/components/fast-tooltip) | An implementation of a [tooltip](https://w3c.github.io/aria-practices/#tooltip) web-component. |
 | [fast-tree-view](https://www.fast.design/docs/components/tree-view) | `fastTreeItem()` `fastTreeView()` | [Tree view](https://explore.fast.design/components/fast-tree-view) | An implementation of a [tree-item](https://w3c.github.io/aria-practices/#TreeView) as a web-component. |
 
+</details>
+
 ---
 ## Building Components
 
@@ -87,3 +91,8 @@ export class NameTag extends FASTElement {
 Visit our Building Components [Getting Started Guide](https://www.fast.design/docs/components/getting-started) for more details, Tips, and Notes.
 
 ### fast-element
+
+<details>
+    <summary>Click to expand!</summary>
+
+</details>
