@@ -21,7 +21,7 @@
 [] implement `renderLight()` for elements that render to light DOM instead of shadow
 [] Function that can render app root HTML (doctype, html tag, head, tag, body tag, etc)
 [] Client-side custom element upgrading.
-[] Hydrating custom element's with server state.
+[] Hydrating custom elements with server state.
 
 ## Notes
 1. Using NodeJS module resolution, we need to enumerate fast-element (and the other packages) as `"type": "module"`. These currently export ES6 modules so this change is really a fix.
