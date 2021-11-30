@@ -7,6 +7,8 @@ custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/src
 
 # Cheat Sheet
 ## Using Components
+
+The `@microsoft/fast-components` library contains Web Components built on top of our standard component and design system foundation. `microsoft/fast-components` expresses the FAST design language [(FAST Frame)](https://www.fast.design/docs/design-systems/fast-frame).
 ### Setup
 
 To register custom components:
@@ -23,7 +25,7 @@ provideFASTDesignSystem()
     );
 ```
 
-Visit our [Getting Started Guide](https://www.fast.design/docs/components/getting-started) for more details, Tips, and Notes.
+Visit our Using Components [Getting Started Guide](https://www.fast.design/docs/components/getting-started) for more details, Tips, and Notes.
 
 
 ### fast-components
@@ -66,6 +68,9 @@ Visit our [Getting Started Guide](https://www.fast.design/docs/components/gettin
 ---
 ## Building Components
 
+The `fast-element` library is a lightweight means to easily build performant, memory-efficient, standards-compliant Web Components. FAST Elements work in every major browser and can be used in combination with any front-end framework or even without a framework.
+
+
 ### Setup
 
 To define a custom element:
@@ -78,5 +83,7 @@ export class NameTag extends FASTElement {
 
 }
 ```
+
+Visit our Building Components [Getting Started Guide](https://www.fast.design/docs/components/getting-started) for more details, Tips, and Notes.
 
 ### fast-element
