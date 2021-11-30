@@ -1049,53 +1049,6 @@ export const neutralStrokeFocus = create<Swatch>("neutral-stroke-focus").withDef
         neutralStrokeRecipe.getValueFor(element).evaluate(element).focus
 );
 
-// Neutral Stroke Input Filled
-/** @public */
-export const neutralStrokeInputFilledRecipe = create<InteractiveColorRecipe>({
-    name: "neutral-stroke-input-filled-recipe",
-    cssCustomPropertyName: null,
-}).withDefault({
-    evaluate: (element: HTMLElement): InteractiveSwatchSet => {
-        return neutralStrokeAlgorithm(
-            neutralPalette.getValueFor(element),
-            fillColor.getValueFor(element),
-            neutralStrokeInputFilledRestDelta.getValueFor(element),
-            neutralStrokeInputFilledHoverDelta.getValueFor(element),
-            neutralStrokeInputFilledActiveDelta.getValueFor(element),
-            neutralStrokeInputFilledFocusDelta.getValueFor(element)
-        );
-    },
-});
-
-/** @public */
-export const neutralStrokeInputFilledRest = create<Swatch>(
-    "neutral-stroke-input-filled-rest"
-).withDefault(
-    (element: HTMLElement) =>
-        neutralStrokeInputFilledRecipe.getValueFor(element).evaluate(element).rest
-);
-/** @public */
-export const neutralStrokeInputFilledHover = create<Swatch>(
-    "neutral-stroke-input-filled-hover"
-).withDefault(
-    (element: HTMLElement) =>
-        neutralStrokeInputFilledRecipe.getValueFor(element).evaluate(element).hover
-);
-/** @public */
-export const neutralStrokeInputFilledActive = create<Swatch>(
-    "neutral-stroke-input-filled-active"
-).withDefault(
-    (element: HTMLElement) =>
-        neutralStrokeInputFilledRecipe.getValueFor(element).evaluate(element).active
-);
-/** @public */
-export const neutralStrokeInputFilledFocus = create<Swatch>(
-    "neutral-stroke-input-filled-focus"
-).withDefault(
-    (element: HTMLElement) =>
-        neutralStrokeInputFilledRecipe.getValueFor(element).evaluate(element).focus
-);
-
 // Neutral Stroke Divider
 /** @public */
 export const neutralStrokeDividerRecipe = createNonCss<ColorRecipe>(
