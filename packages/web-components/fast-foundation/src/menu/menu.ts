@@ -27,12 +27,6 @@ export class Menu extends FoundationElement {
     @observable
     public items: HTMLSlotElement;
     private itemsChanged(oldValue, newValue): void {
-        if (oldValue) {
-            oldValue.forEach((item: HTMLElement) => {
-                item.removeEventListener("expanded-change", this.handleExpandedChanged);
-                item.removeEventListener("focus", this.handleItemFocus);
-            });
-        }
         this.setItems();
     }
 
@@ -63,6 +57,7 @@ export class Menu extends FoundationElement {
      */
     public disconnectedCallback(): void {
         super.disconnectedCallback();
+        this.removeItemListeners();
         this.menuItems = [];
         this.removeEventListener("change", this.changeHandler);
     }
@@ -191,12 +186,32 @@ export class Menu extends FoundationElement {
         }
     };
 
+    private removeItemListeners = (): void => {
+        if (this.menuItems) {
+            this.menuItems.forEach((item: HTMLElement) => {
+                item.removeEventListener("expanded-change", this.handleExpandedChanged);
+                item.removeEventListener("focus", this.handleItemFocus);
+            });
+        }
+    };
+
     private setItems = (): void => {
         if (!this.$fastController.isConnected) {
             return;
         }
 
-        this.menuItems = this.domChildren();
+        const newItems: Element[] = this.domChildren();
+        if (
+            this.menuItems !== undefined &&
+            newItems.length === this.menuItems.length &&
+            newItems.every((value, index) => value === this.menuItems[index])
+        ) {
+            return;
+        }
+
+        this.removeItemListeners();
+        this.menuItems = newItems;
+
         const menuItems = this.menuItems.filter(this.isMenuItemElement);
 
         // if our focus index is not -1 we have items
