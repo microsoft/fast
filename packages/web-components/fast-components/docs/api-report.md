@@ -65,7 +65,7 @@ import { Radio } from '@microsoft/fast-foundation';
 import { RadioGroup } from '@microsoft/fast-foundation';
 import { RadioOptions } from '@microsoft/fast-foundation';
 import { Search as Search_2 } from '@microsoft/fast-foundation';
-import { Select } from '@microsoft/fast-foundation';
+import { Select as Select_2 } from '@microsoft/fast-foundation';
 import { SelectOptions } from '@microsoft/fast-foundation';
 import { Skeleton } from '@microsoft/fast-foundation';
 import { Slider } from '@microsoft/fast-foundation';
@@ -1114,10 +1114,16 @@ export type SearchAppearance = "filled" | "outline";
 // @public
 export const searchStyles: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: import("@microsoft/fast-foundation").AnchorOptions) => import("@microsoft/fast-element").ElementStyles;
 
-export { Select }
+// Warning: (ae-internal-missing-underscore) The name "Select" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal
+export class Select extends Select_2 {
+    // (undocumented)
+    connectedCallback(): void;
+}
 
 // @public
-export const selectStyles: (context: ElementDefinitionContext, definition: SelectOptions) => ElementStyles;
+export const selectStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
 
 export { Skeleton }
 

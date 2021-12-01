@@ -308,6 +308,23 @@ export const neutralStrokeDividerRestDelta = create<number>(
     "neutral-stroke-divider-rest-delta"
 ).withDefault(8);
 
+/** @public */
+export const neutralStrokeInputFilledRestDelta = create<number>(
+    "neutral-stroke-input-filled-rest-delta"
+).withDefault(4);
+/** @public */
+export const neutralStrokeInputFilledHoverDelta = create<number>(
+    "neutral-stroke-input-filled-hover-delta"
+).withDefault(10);
+/** @public */
+export const neutralStrokeInputFilledActiveDelta = create<number>(
+    "neutral-stroke-input-filled-active-delta"
+).withDefault(10);
+/** @public */
+export const neutralStrokeInputFilledFocusDelta = create<number>(
+    "neutral-stroke-input-filled-focus-delta"
+).withDefault(49);
+
 // Color recipes
 
 /** @public */
