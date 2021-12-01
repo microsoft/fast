@@ -36,7 +36,7 @@ A pre-bundled script that contains all APIs needed to use FAST Router and FAST E
 <html lang="en">
     <head>
         <script type="module">
-          import { FASTRouter } from "https://unpkg.com/@microsoft/fast-router";
+          import { FASTRouter } from "https://cdn.jsdelivr.net/npm/@microsoft/fast-router/dist/fast-router.min.js";
 
           // your code here
         </script>
@@ -45,9 +45,11 @@ A pre-bundled script that contains all APIs needed to use FAST Router and FAST E
 </html>
 ```
 
-:::important
-The above CDN location points to the latest release of `fast-router`. It is advised that when you deploy your site or app, you import the specific version you have developed and tested with.
-:::
+The markup above always references the latest release. When deploying to production, you will want to ship with a specific version. Here's an example of the markup for that:
+
+```html
+<script type="module" src="https://cdn.jsdelivr.net/npm/@microsoft/fast-router@0.2.11/dist/fast-router.min.js"></script>
+```
 
 :::note
 For simplicity, examples throughout the documentation will assume the library has been installed from NPM, but you can always replace the import location with the CDN URL.
@@ -134,17 +136,13 @@ export class AppRouterConfiguration extends RouterConfiguration<RouteSettings> {
 
 ```ts
 import { FASTElement, customElement, html, css } from '@microsoft/fast-element';
-import { FASTDesignSystemProvider } from '@microsoft/fast-components';
 import { FASTRouter } from '@microsoft/fast-router';
 import { AppRouterConfiguration } from './routes';
 
-FASTDesignSystemProvider;
 FASTRouter;
 
 const template = html<MainApplication>`
-  <fast-design-system-provider>
     <fast-router :config=${x => x.routerConfiguration}></fast-router>
-  </fast-design-system-provider>
 `;
 
 const styles = css`
@@ -152,7 +150,7 @@ const styles = css`
     contain: content;
   }
 
-  :host, fast-design-system-provider, fast-router {  
+  :host, fast-router {  
     display: block;
     width: 100%;
     height: 100%;
