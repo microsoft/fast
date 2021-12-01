@@ -1,0 +1,7 @@
+{
+  "type": "none",
+  "comment": "update react itegration docs to address Windows specific setup steps",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "nicholasrice@users.noreply.github.com",
+  "dependentChangeType": "none"
+}
