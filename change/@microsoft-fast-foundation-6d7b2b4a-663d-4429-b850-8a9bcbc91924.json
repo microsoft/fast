@@ -1,0 +1,7 @@
+{
+  "type": "none",
+  "comment": "corrections to Blazor, webpack, and cdn links",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "roeisenb@microsoft.com",
+  "dependentChangeType": "none"
+}
