@@ -29,9 +29,6 @@ Visit our Using Components [Getting Started Guide](https://www.fast.design/docs/
 
 ### fast-components
 
-<details>
-    <summary>Click to expand!</summary>
-
 | Component | Name | Component Explorer | Guidance |
 | :--- | :--- | :--- | :--- |
 | [fast-accordian](https://www.fast.design/docs/components/accordion) | `fastAccordion()` `fastAccordionItem()` | [Accordian](https://explore.fast.design/components/fast-accordion) | fast-accordion is a web component implementation of an [Accordion](https://w3c.github.io/aria-practices/#accordion). |
@@ -67,8 +64,6 @@ Visit our Using Components [Getting Started Guide](https://www.fast.design/docs/
 | [fast-tooltip](https://www.fast.design/docs/components/tooltip) | `fastTooltip()` | [Tooltip](https://explore.fast.design/components/fast-tooltip) | An implementation of a [tooltip](https://w3c.github.io/aria-practices/#tooltip) web-component. |
 | [fast-tree-view](https://www.fast.design/docs/components/tree-view) | `fastTreeItem()` `fastTreeView()` | [Tree view](https://explore.fast.design/components/fast-tree-view) | An implementation of a [tree-item](https://w3c.github.io/aria-practices/#TreeView) as a web-component. |
 
-</details>
-
 ---
 ## Building Components
 
@@ -98,10 +93,6 @@ With this in place, you can now use your name-tag element anywhere in HTML with 
 Visit our Building Components [Getting Started Guide](https://www.fast.design/docs/components/getting-started) for more details, Tips, and Notes.
 
 ### fast-element
-
-<details>
-    <summary>Click to expand!</summary>
-
 #### Adding Attributes
 
 | Decorator | API | Property | 
@@ -118,7 +109,6 @@ There are three modes available through the `mode` property of the attribute con
 | `boolean` | This mode causes your attribute to function using the HTML boolean attribute behavior. When your attribute is present in the DOM or equal to its own name, the value will be true. When the attribute is absent from the DOM, the value of the property will be false. Setting the property will also update the DOM by adding/removing the attribute. |
 | `fromView` | This mode skips reflecting the value of the property back to the HTML attribute, but does receive updates when changed through `setAttribute`. |
 
-</details>
 
 ---
 
@@ -128,10 +118,49 @@ A Design Token is a semantic, named variable used to describe a Design System. T
 
 Visit our [Design Tokens Guide](https://www.fast.design/docs/design-systems/design-tokens) for more details, Tips, and Notes.
 
+### FAST Frame Design Tokens
 
-<details>
-    <summary>Click to expand!</summary>
+FAST exposes the following Design Tokens that can be used to configure components stylistically.
 
-||
 
-</details>
+| Token Name                        | Level                 |
+|-----------------------------------|-----------------------|
+| `typeRampMinus2FontSize`          | Minus 2 (smallest)    |
+| `typeRampMinus1FontSize`          | Minus 1               |
+| `typeRampBaseFontSize`            | Base (body)           |
+| `typeRampPlus1FontSize`           | Plus 1                |
+| `typeRampPlus2FontSize`           | Plus 2                |
+| `typeRampPlus3FontSize`           | Plus 3                |
+| `typeRampPlus4FontSize`           | Plus 4                |
+| `typeRampPlus5FontSize`           | Plus 5                |
+| `typeRampPlus6FontSize`           | Plus 6 (largest)      |
+
+
+| Token Name                          | Level                 |
+|-------------------------------------|-----------------------|
+| `typeRampMinus2LineHeight`          | Minus 2 (smallest)    |
+| `typeRampMinus1LineHeight`          | Minus 1               |
+| `typeRampBaseLineHeight`            | Base (body)           |
+| `typeRampPlus1LineHeight`           | Plus 1                |
+| `typeRampPlus2LineHeight`           | Plus 2                |
+| `typeRampPlus3LineHeight`           | Plus 3                |
+| `typeRampPlus4LineHeight`           | Plus 4                |
+| `typeRampPlus5LineHeight`           | Plus 5                |
+| `typeRampPlus6LineHeight`           | Plus 6 (largest)      |
+
+
+| Token Name | Guidance |
+| :-- |:-- |
+| `baseHeightMultiplier` | This value, multiplied by designUnit, sets the base height of most controls. Works with adaptive density values. |
+| `baseHorizontalSpacingMultiplier` | (future): This value, multiplied by designUnit, sets the internal horizontal padding of most controls. Works with adaptive density values | 
+| `controlCornerRadius` | Sets the corner radius used by controls with backplates. |
+| `density` | (in process): An adjustment to sizing tokens baseHeightMultiplier and baseHorizontalSpacingMultiplier. |
+| `designUnit` | The unit size of the Design Grid. Used to calculate height and spacing sizes for controls. |
+
+
+| Token Name | Guidance |
+| :-- |:-- |
+| `direction` | The primary document direction (LTR or RTL). |
+| `disabledOpacity` | The opacity of disabled controls. |
+| `strokeWidth` | Controls the width of the stroke of a component that has a stroke. |
+| `focusStrokeWidth` | Controls with width of the stroke of a component that has a stroke when it has document focus. |
