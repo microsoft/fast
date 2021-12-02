@@ -84,6 +84,8 @@ interface CategorizedAttributes {
     dynamic: Map<string, string>;
 }
 
+const attributeTypeRegExp = /([:?@])?(.*)/;
+
 // Cache template operations
 const templateCache = new Map<ViewTemplate, Op[]>();
 function getTemplateOpCodes(template: ViewTemplate): Op[] {
@@ -209,7 +211,7 @@ function getTemplateOpCodes(template: ViewTemplate): Op[] {
                         ];
                         flushTo(attributeSourceLocation.startOffset);
                         const directiveId = extractInterpolationMarkerId(attribute)!;
-                        const [, prefix, caseSensitiveName] = /([:?@])?(.*)/.exec(
+                        const [, prefix, caseSensitiveName] = attributeTypeRegExp.exec(
                             attribute.name
                         )!;
 
