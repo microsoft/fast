@@ -101,7 +101,7 @@ If the author does not post a response within **7 days**, the issue may be close
 ### PR: Needs Author Input
 
 Similar to the `status:needs-information` process above, PRs also require author input from time to time. When a member of our team asks for some follow-up changes from the author, we mark these PRs with `status:needs-author-input` label. After doing so, we expect the author to respond within 14 days.
-If the author does not post a response or updates the PR within **14 days**, the issue will be closed. If the author responds within **7 days** after the issue is closed, the issue will be re-opened. We recognize that you may not be able to respond immediately to our requests, we're happy to hear from you whenever you're able to provide the new information.
+If the author does not post a response or updates the PR within **14 days**, the issue may be closed. If the author responds within **7 days** after the issue is closed, the issue will be re-opened. We recognize that you may not be able to respond immediately to our requests, we're happy to hear from you whenever you're able to provide the new information.
 
 ### Duplicate Issues
 
