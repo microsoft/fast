@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "fix: clicking on disabled fast-button events should behave like native button (#4884)",
+  "packageName": "@microsoft/fast-components",
+  "email": "email not defined",
+  "dependentChangeType": "patch"
+}
