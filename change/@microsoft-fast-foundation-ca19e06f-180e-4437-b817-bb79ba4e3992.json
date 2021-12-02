@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "fix: disabled tree items fire",
-  "packageName": "@microsoft/fast-foundation",
-  "email": "jes@microsoft.com",
-  "dependentChangeType": "patch"
-}

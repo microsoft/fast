@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Tue, 23 Nov 2021 07:12:23 GMT and should not be manually modified.
+This log was last generated on Thu, 02 Dec 2021 07:11:13 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.27.1
+
+Thu, 02 Dec 2021 07:11:13 GMT
+
+### Patches
+
+- fix: disabled tree items fire (jes@microsoft.com)
 
 ## 2.27.0
 
