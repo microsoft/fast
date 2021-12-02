@@ -86,7 +86,7 @@
   },
   "dependencies": {
     "@microsoft/fast-element": "^1.6.2",
-    "@microsoft/fast-foundation": "^2.27.0"
+    "@microsoft/fast-foundation": "^2.27.1"
   },
   "peerDependencies": {
     "react": ">=16.9.0"

@@ -111,7 +111,7 @@
   "dependencies": {
     "@microsoft/fast-colors": "^5.1.4",
     "@microsoft/fast-element": "^1.6.2",
-    "@microsoft/fast-foundation": "^2.27.0",
+    "@microsoft/fast-foundation": "^2.27.1",
     "@microsoft/fast-web-utilities": "^5.0.2",
     "tslib": "^1.13.0",
     "vscode-html-languageservice": "^4.0.3"
