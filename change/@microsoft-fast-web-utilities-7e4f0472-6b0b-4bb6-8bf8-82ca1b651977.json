@@ -1,0 +1,7 @@
+{
+  "type": "minor",
+  "comment": "Turn on strictNullChecks, strictPropertyInitialization for fast-web-utilities",
+  "packageName": "@microsoft/fast-web-utilities",
+  "email": "srdsecond@gmail.com",
+  "dependentChangeType": "patch"
+}
