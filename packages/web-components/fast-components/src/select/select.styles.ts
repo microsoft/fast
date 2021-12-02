@@ -46,10 +46,12 @@ export const selectFilledStyles: (
             background: ${neutralFillRest};
             border-color: transparent;
         }
+
         :host(:not([disabled]):hover) {
             background: ${neutralFillHover};
             border-color: transparent;
         }
+
         :host(:not([disabled]):active) {
             background: ${neutralFillActive};
             border-color: transparent;
@@ -65,10 +67,12 @@ export const selectStealthStyles: (
             background: ${neutralFillStealthRest};
             border-color: transparent;
         }
+
         :host(:not([disabled]):hover) {
             background: ${neutralFillStealthHover};
             border-color: transparent;
         }
+
         :host(:not([disabled]):active) {
             background: ${neutralFillStealthActive};
             border-color: transparent;
@@ -91,6 +95,7 @@ export const selectStyles = (context, definition) =>
         min-width: 250px;
         vertical-align: top;
     }
+
     :host .listbox {
         box-shadow: ${elevationShadowFlyout};
         background: ${fillColor};
@@ -107,9 +112,11 @@ export const selectStyles = (context, definition) =>
         z-index: 1;
         margin: 1px 0;
     }
+
     :host .listbox[hidden] {
         display: none;
     }
+
     :host .control {
         align-items: center;
         box-sizing: border-box;
@@ -122,11 +129,13 @@ export const selectStyles = (context, definition) =>
         padding: 0 calc(${designUnit} * 2.25px);
         width: 100%;
     }
+
     :host(:not([disabled]):hover) {
         background: ${neutralFillHover};
         border-color: ${neutralStrokeInputFilledHover};
         color: ${neutralForegroundHover};
     }
+
     :host(:not([disabled]):active),
     :host(:focus-within),
     :host(:focus-within:hover)  {
@@ -134,55 +143,68 @@ export const selectStyles = (context, definition) =>
         border-color: ${accentForegroundRest};
         color: ${neutralForegroundActive};
     }
+
     :host(:${focusVisible}) {
         outline: none;
         border-color: ${focusStrokeOuter};
         box-shadow: 0 0 0 calc(${focusStrokeWidth} * 1px) ${focusStrokeOuter} inset;
         color: ${neutralForegroundFocus};
     }
+
     :host([disabled]) {
         cursor: ${disabledCursor};
         opacity: ${disabledOpacity};
     }
+
     :host([disabled]) .control {
         cursor: ${disabledCursor};
         user-select: none;
     }
+
     :host([open][position="above"]) .listbox {
         bottom: calc((${heightNumber} + ${designUnit} * 2) * 1px);
     }
+
     :host([open][position="below"]) .listbox {
         top: calc((${heightNumber} + ${designUnit} * 2) * 1px);
     }
+
     .selected-value {
         font-family: inherit;
         flex: 1 1 auto;
         text-align: start;
     }
+
     .indicator {
         flex: 0 0 auto;
         margin-inline-start: 1em;
     }
+
     slot[name="listbox"] {
         display: none;
         width: 100%;
     }
+
     :host([open]) slot[name="listbox"] {
         display: flex;
         position: absolute;
     }
+
     .start {
         margin-inline-end: 11px;
     }
+
     .end {
         margin-inline-start: 11px;
     }
+
     .start,
     .end,
     .indicator,
     ::slotted(svg) {
         display: flex;
     }
+
     ::slotted([role="option"]) {
         flex: 0 0 auto;
     }
@@ -198,17 +220,21 @@ export const selectStyles = (context, definition) =>
                     color: ${SystemColors.GrayText};
                     opacity: 1;
                 }
+
                 :host([disabled]:hover) {
                     background: ${SystemColors.ButtonFace};
                 }
+
                 :host([disabled]) .control {
                     color: ${SystemColors.GrayText};
                     border-color: ${SystemColors.GrayText};
                 }
+
                 :host(:not([disabled]):hover) {
                     background: ${SystemColors.ButtonFace};
                     border-color: ${SystemColors.Highlight};
                 }
+
                 :host(:${focusVisible}) {
                     forced-color-adjust: none;
                     background: ${SystemColors.ButtonFace};
@@ -217,10 +243,12 @@ export const selectStyles = (context, definition) =>
                     color: ${SystemColors.ButtonText};
                     fill: currentcolor;
                 }
+
                 :host([open]) .listbox {
                     background: ${SystemColors.ButtonFace};
                     border: 1px solid ${SystemColors.ButtonText};
                 }
+
                 :host(:${focusVisible}) ::slotted([aria-selected="true"][role="option"]:not([disabled])) {
                     background: ${SystemColors.Highlight};
                     border-color: ${SystemColors.ButtonText};
@@ -228,6 +256,7 @@ export const selectStyles = (context, definition) =>
                     color: ${SystemColors.HighlightText};
                     fill: currentcolor;
                 }
+
                 ::slotted([role="option"]:not([aria-selected="true"]):not([disabled]):hover) {
                     forced-color-adjust: none;
                     color: ${SystemColors.ButtonText};
