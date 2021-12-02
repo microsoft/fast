@@ -12,6 +12,7 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
+    if: contains('chrisdholt,janechu,nicholasrice,awentzel,eisenbergeffect', github.actor)
 
     steps:
     - name: Checkout Branch
