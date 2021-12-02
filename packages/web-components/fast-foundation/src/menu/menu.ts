@@ -27,7 +27,9 @@ export class Menu extends FoundationElement {
     @observable
     public items: HTMLSlotElement;
     private itemsChanged(oldValue, newValue): void {
-        this.setItems();
+        if (this.$fastController.isConnected) {
+            this.setItems();
+        }
     }
 
     private menuItems: Element[];
@@ -196,18 +198,7 @@ export class Menu extends FoundationElement {
     };
 
     private setItems = (): void => {
-        if (!this.$fastController.isConnected) {
-            return;
-        }
-
         const newItems: Element[] = this.domChildren();
-        if (
-            this.menuItems !== undefined &&
-            newItems.length === this.menuItems.length &&
-            newItems.every((value, index) => value === this.menuItems[index])
-        ) {
-            return;
-        }
 
         this.removeItemListeners();
         this.menuItems = newItems;
