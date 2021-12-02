@@ -1,4 +1,4 @@
-name: Deploy Documentation
+name: Deploy Documentation (staging)
 on:
   push:
     branches:
