@@ -104,6 +104,8 @@ describe("Menu", () => {
 
         await connect();
 
+        await DOM.nextUpdate();
+
         expect(document.getElementById("id1")?.getAttribute("tabindex")).to.equal("0");
 
         await disconnect();
@@ -130,6 +132,7 @@ describe("Menu", () => {
         (menuItem1 as MenuItem).disabled = true;
 
         await connect();
+        await DOM.nextUpdate();
 
         expect(document.getElementById("id1")?.getAttribute("tabindex")).to.equal("0");
 
@@ -157,6 +160,8 @@ describe("Menu", () => {
         element.appendChild(menuItem3);
 
         await connect();
+
+        await DOM.nextUpdate();
 
         expect(
             element.querySelector("[role='menuitem']")?.getAttribute("tabindex")
