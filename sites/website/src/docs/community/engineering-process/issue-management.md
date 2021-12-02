@@ -16,7 +16,7 @@ The goals of these rules are listed below in priority order:
 
 - Make it easy to make triage decisions for each issue filed in this repository
 - Be able to easily prioritize issues
-- Set proper expectations with customers regarding how issues are going to be handled
+- Set proper expectations with the community regarding how issues are going to be handled
 
 ## Triage Process Details
 
