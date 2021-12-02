@@ -38,23 +38,28 @@ export const skeletonStyles: (
             );
             --skeleton-animation-timing-default: ease-in-out;
         }
+
         :host([shape="rect"]) {
             border-radius: calc(${controlCornerRadius} * 1px);
         }
+
         :host([shape="circle"]) {
             border-radius: 100%;
             overflow: hidden;
         }
+
         object {
             position: absolute;
             width: 100%;
             height: auto;
             z-index: 2;
         }
+
         object img {
             width: 100%;
             height: auto;
         }
+
         ${display("block")} span.shimmer {
             position: absolute;
             width: 100%;
@@ -74,13 +79,16 @@ export const skeletonStyles: (
             animation-direction: normal;
             z-index: 1;
         }
+
         ::slotted(svg) {
             z-index: 2;
         }
+
         ::slotted(.pattern) {
             width: 100%;
             height: 100%;
         }
+
         @keyframes shimmer {
             0% {
                 transform: translateX(-100%);
