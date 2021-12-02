@@ -89,9 +89,10 @@ export const tabsStyles: (
             position: relative;
             width: max-content;
             justify-self: end;
+            align-self: flex-start;
             width: 100%;
-            padding: calc((${heightNumber} - ${designUnit}) * 1px)
-                calc(${designUnit} * 4px) calc((${heightNumber} - ${designUnit}) * 1px) 0;
+            padding: 0 calc(${designUnit} * 4px)
+                calc((${heightNumber} - ${designUnit}) * 1px) 0;
         }
 
         :host([orientation="vertical"]) .tabpanel {

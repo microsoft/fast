@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-components
 
-This log was last generated on Tue, 23 Nov 2021 07:12:23 GMT and should not be manually modified.
+This log was last generated on Tue, 30 Nov 2021 07:13:40 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.16.6
+
+Tue, 30 Nov 2021 07:13:40 GMT
+
+### Patches
+
+- fix: vertical tabs fromm jumping (jes@microsoft.com)
 
 ## 2.16.5
 

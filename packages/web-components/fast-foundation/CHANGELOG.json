@@ -2,6 +2,41 @@
   "name": "@microsoft/fast-foundation",
   "entries": [
     {
+      "date": "Thu, 02 Dec 2021 07:11:13 GMT",
+      "tag": "@microsoft/fast-foundation_v2.27.1",
+      "version": "2.27.1",
+      "comments": {
+        "none": [
+          {
+            "comment": "corrections to Blazor, webpack, and cdn links",
+            "author": "roeisenb@microsoft.com",
+            "commit": "2ec536794820959f771ebbfe25efd5a4489e7a76",
+            "package": "@microsoft/fast-foundation"
+          },
+          {
+            "comment": "update react itegration docs to address Windows specific setup steps",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "5600019854840e196060023b1b095bbb544d9d1a",
+            "package": "@microsoft/fast-foundation"
+          },
+          {
+            "comment": "Bump @microsoft/fast-element to v1.6.2",
+            "author": "roeisenb@microsoft.com",
+            "commit": "2ec536794820959f771ebbfe25efd5a4489e7a76",
+            "package": "@microsoft/fast-foundation"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "fix: disabled tree items fire",
+            "author": "jes@microsoft.com",
+            "commit": "a0545ff0a7209c43460fc07913aa18685a4851fd",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 23 Nov 2021 07:12:23 GMT",
       "tag": "@microsoft/fast-foundation_v2.27.0",
       "version": "2.27.0",
