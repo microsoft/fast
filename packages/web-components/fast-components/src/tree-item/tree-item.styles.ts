@@ -230,7 +230,7 @@ export const treeItemStyles: (
 
         :host(:not([disabled])[selected]) .positioning-region {
             background: ${neutralFillStealthActive};
-            color: ${neutralForegroundActive}
+            color: ${neutralForegroundActive};
         }
 
         :host(:not([disabled])[selected]) .expand-collapse-button:hover {
