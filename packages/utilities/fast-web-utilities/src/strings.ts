@@ -19,7 +19,7 @@ export function format(formatSpecifier: string, ...parameters: string[]): string
             return match;
         }
 
-        const value: string = parameters[index];
+        const value = parameters[index];
 
         if (typeof value !== "number" && !value) {
             return "";
@@ -65,7 +65,7 @@ function matchAll(re: RegExp, str: string): string[] {
  * Determines if the specified string is undefined, null, empty, or whitespace.
  * True if the value is undefined, null, empty, or whitespace, otherwise false.
  */
-export function isNullOrWhiteSpace(value: string): boolean {
+export function isNullOrWhiteSpace(value?: string | undefined | null): boolean {
     return !value || !value.trim();
 }
 

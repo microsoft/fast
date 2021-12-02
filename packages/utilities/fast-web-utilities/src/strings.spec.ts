@@ -8,18 +8,6 @@ import {
 } from "./strings";
 
 describe("format", (): void => {
-    it("should correctly manage undefined by returning an unformatted string", (): void => {
-        const formatterString: string = "Hello {0} world";
-
-        expect(format(formatterString, undefined)).to.equal("Hello  world");
-    });
-
-    it("should correctly manage null by returning an unformatted string", (): void => {
-        const formatterString: string = "Hello {0} world";
-
-        expect(format(formatterString, null)).to.equal("Hello  world");
-    });
-
     it("should correctly manage having too many parameters", (): void => {
         const formatterString: string = "View {0} {1}";
 
@@ -106,14 +94,6 @@ describe("spinalCase", () => {
 });
 
 describe("startsWith", (): void => {
-    it("should correctly manage undefined", () => {
-        expect(startsWith(undefined, undefined)).to.equal(false);
-        expect(startsWith("Hello", undefined)).to.equal(false);
-    });
-    it("should correctly manage null", () => {
-        expect(startsWith(null, null)).to.equal(false);
-        expect(startsWith("Hello", null)).to.equal(false);
-    });
     it("should correctly manage searching for an empty string", () => {
         expect(startsWith("Helloworld", "")).to.equal(false);
     });

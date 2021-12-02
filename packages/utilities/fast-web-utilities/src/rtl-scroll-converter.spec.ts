@@ -182,8 +182,8 @@ describe("RtlScrollConverter", (): void => {
     });
 
     it("applyDirectScrollConverters applies correct converters", () => {
-        RtlScrollConverter["getRtlScrollLeftConverter"] = null;
-        RtlScrollConverter["setRtlScrollLeftConverter"] = null;
+        RtlScrollConverter["getRtlScrollLeftConverter"] = RtlScrollConverter["reverseGetRtlScrollConverter"];
+        RtlScrollConverter["setRtlScrollLeftConverter"] = RtlScrollConverter["reverseSetRtlScrollConverter"];
 
         expect(RtlScrollConverter["getRtlScrollLeftConverter"]).not.to.equal(
             RtlScrollConverter["directGetRtlScrollConverter"]
@@ -203,9 +203,6 @@ describe("RtlScrollConverter", (): void => {
     });
 
     it("applyInvertedScrollConverters applies correct converters", () => {
-        RtlScrollConverter["getRtlScrollLeftConverter"] = null;
-        RtlScrollConverter["setRtlScrollLeftConverter"] = null;
-
         expect(RtlScrollConverter["getRtlScrollLeftConverter"]).not.to.equal(
             RtlScrollConverter["invertedGetRtlScrollConverter"]
         );
@@ -224,9 +221,6 @@ describe("RtlScrollConverter", (): void => {
     });
 
     it("applyReverseScrollConverters applies correct converters", () => {
-        RtlScrollConverter["getRtlScrollLeftConverter"] = null;
-        RtlScrollConverter["setRtlScrollLeftConverter"] = null;
-
         expect(RtlScrollConverter["getRtlScrollLeftConverter"]).not.to.equal(
             RtlScrollConverter["reverseGetRtlScrollConverter"]
         );
@@ -281,9 +275,6 @@ describe("RtlScrollConverter", (): void => {
             scrollLeft: 1,
         } as HTMLDivElement;
 
-        RtlScrollConverter["getRtlScrollLeftConverter"] = null;
-        RtlScrollConverter["setRtlScrollLeftConverter"] = null;
-
         RtlScrollConverter["checkForScrollType"](testElement);
 
         expect(RtlScrollConverter["getRtlScrollLeftConverter"]).to.equal(
@@ -298,9 +289,6 @@ describe("RtlScrollConverter", (): void => {
         const testElement: HTMLDivElement = {
             scrollLeft: 0,
         } as HTMLDivElement;
-
-        RtlScrollConverter["getRtlScrollLeftConverter"] = null;
-        RtlScrollConverter["setRtlScrollLeftConverter"] = null;
 
         RtlScrollConverter["checkForScrollType"](testElement);
 
@@ -325,9 +313,6 @@ describe("RtlScrollConverter", (): void => {
                 this._value = Math.abs(newValue);
             },
         });
-
-        RtlScrollConverter["getRtlScrollLeftConverter"] = null;
-        RtlScrollConverter["setRtlScrollLeftConverter"] = null;
 
         RtlScrollConverter["checkForScrollType"](testElement);
 
