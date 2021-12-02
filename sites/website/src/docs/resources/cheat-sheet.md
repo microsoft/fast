@@ -6,6 +6,18 @@ custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/src
 ---
 
 # Cheat Sheet
+
+Testing
+
+
+| Name| Definition | Notes | When to Use
+| :-- | :-- | :-- | :-- |
+| [@microsoft/fast-components](https://www.fast.design/docs/components/getting-started) | Assembles the building blocks of `@microsoft/fast-foundation` to create their component sets. | expresses the FAST design language (FAST Frame). | When you want to integrate FAST components into an existing site or app, or if you need more control over the theme of the components.
+| [@fluentui/web-components](https://www.fast.design/docs/components/getting-started) | Assembles the building blocks of `@microsoft/fast-foundation` to create their component sets. | Expresses Microsoft's Fluent Design System. | When you want components to look and feel like those found in Windows, Office, Teams, and Edge products. |
+| @microsoft/fast-foundation | Provides foundational building blocks that can be assembled to create new design systems and component libraries. | | When you want to implement something like Google's Material Design or Twitter Bootstrap.
+| [@microsoft/fast-element](https://www.fast.design/docs/fast-element/getting-started) | The fast-element library is a lightweight means to easily build performant, memory-efficient, standards-compliant Web Components. | FAST Elements work in every major browser and can be used in combination with any front-end framework or even without a framework. | When you want to create completely new web components.
+| [FAST Frame Design System](https://www.fast.design/docs/design-systems/fast-frame) | FAST Frame is a highly configurable Design System composed of Web Components, Design Tokens, stylesheets, and styling tools.  | | |
+
 ## Using Components
 
 The `@microsoft/fast-components` library contains Web Components built on top of our standard component and design system foundation. `microsoft/fast-components` expresses the FAST design language [(FAST Frame)](https://www.fast.design/docs/design-systems/fast-frame).
@@ -109,8 +121,22 @@ There are three modes available through the `mode` property of the attribute con
 | `boolean` | This mode causes your attribute to function using the HTML boolean attribute behavior. When your attribute is present in the DOM or equal to its own name, the value will be true. When the attribute is absent from the DOM, the value of the property will be false. Setting the property will also update the DOM by adding/removing the attribute. |
 | `fromView` | This mode skips reflecting the value of the property back to the HTML attribute, but does receive updates when changed through `setAttribute`. |
 
+#### observables
+
+Add content
+#### templates
+
+Add content
+#### styles
+
+Add content
 
 ---
+
+
+## fast-foundation
+
+
 
 ## Design Tokens
 
