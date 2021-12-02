@@ -92,6 +92,15 @@ export const BaseButtonStyles = css`
         border: 0;
     }
 
+    .control:disabled span
+    {
+        pointer-events: none;
+    }
+
+    ::slotted(*) {
+        pointer-events: auto;
+    }
+
     .start,
     .end {
         display: flex;
@@ -127,7 +136,7 @@ export const BaseButtonStyles = css`
               color: ${SystemColors.ButtonText};
               fill: currentColor;
             }
-    
+
             :host(:hover) .control {
               forced-color-adjust: none;
               background-color: ${SystemColors.Highlight};
