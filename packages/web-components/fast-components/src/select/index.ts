@@ -17,7 +17,9 @@ export class Select extends FoundationSelect {
     public connectedCallback(): void {
         super.connectedCallback();
 
-        fillColor.setValueFor(this, neutralLayerFloating);
+        if (this.listbox) {
+            fillColor.setValueFor(this.listbox, neutralLayerFloating);
+        }
     }
 }
 
@@ -43,7 +45,7 @@ export const fastSelect = Select.compose<SelectOptions>({
             xmlns="http://www.w3.org/2000/svg"
         >
             <path
-                d="M3.44084 6.7154C2.96937 6.1766 3.35203 5.33333 4.06799 5.33333H11.9322C12.6481 5.33333 13.0308 6.1766 12.5593 6.7154L8.87809 10.9225C8.41322 11.4537 7.58689 11.4537 7.12202 10.9225L3.44084 6.7154ZM4.43528 6.33333L7.87462 10.264C7.94102 10.3399 8.05909 10.3399 8.12549 10.264L11.5648 6.33333H4.43528Z"
+                d="M3.44 6.72a.83.83 0 0 1 .63-1.39h7.86c.72 0 1.1.85.63 1.39l-3.68 4.2c-.47.53-1.3.53-1.76 0l-3.68-4.2Zm1-.39 3.43 3.93c.07.08.19.08.26 0l3.43-3.93H4.44Z"
             />
         </svg>
     `,
