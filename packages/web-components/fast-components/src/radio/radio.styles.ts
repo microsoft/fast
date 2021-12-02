@@ -46,12 +46,10 @@ export const radioStyles: (
         align-items: center;
         outline: none;
         margin: calc(${designUnit} * 1px) 0;
-        ${
-            /*
-             * Chromium likes to select label text or the default slot when
-             * the radio button is clicked. Maybe there is a better solution here?
-             */ ""
-        }
+        /*
+        * Chromium likes to select label text or the default slot when
+        * the radio button is clicked. Maybe there is a better solution here?
+        */
         user-select: none;
         position: relative;
         flex-direction: row;
@@ -103,9 +101,7 @@ export const radioStyles: (
     .label {
         font-family: ${bodyFont};
         color: ${neutralForegroundRest};
-        ${
-            /* Need to discuss with Brian how HorizontalSpacingNumber can work. https://github.com/microsoft/fast/issues/2766 */ ""
-        }
+        /* Need to discuss with Brian how HorizontalSpacingNumber can work. https://github.com/microsoft/fast/issues/2766 */
         padding-inline-start: calc(${designUnit} * 2px + 2px);
         margin-inline-end: calc(${designUnit} * 2px + 2px);
         cursor: pointer;
@@ -168,11 +164,11 @@ export const radioStyles: (
                     outline: calc(${focusStrokeWidth} * 1px) solid ${SystemColors.FieldText};
                     outline-offset: calc(${strokeWidth} * 1px);
                 }
-                :host(.checked) slot[name='checked-indicator'] {
+                :host(.checked) slot[name="checked-indicator"] {
                     fill: ${SystemColors.HighlightText};
                 }
-                :host(.checked:enabled:hover) slot[name='checked-indicator'],
-                :host(.checked:enabled:${focusVisible}) slot[name='checked-indicator'] {
+                :host(.checked:enabled:hover) slot[name="checked-indicator"],
+                :host(.checked:enabled:${focusVisible}) slot[name="checked-indicator"] {
                     fill: ${SystemColors.Highlight};
                 }
                 :host(.disabled) {
@@ -187,8 +183,8 @@ export const radioStyles: (
                     background: ${SystemColors.Field};
                     border-color: ${SystemColors.GrayText};
                 }
-                :host(.disabled) slot[name='checked-indicator'],
-                :host(.checked.disabled) .control:hover slot[name='checked-indicator'] {
+                :host(.disabled) slot[name="checked-indicator"],
+                :host(.checked.disabled) .control:hover slot[name="checked-indicator"] {
                     fill: ${SystemColors.GrayText};
                 }
             `
