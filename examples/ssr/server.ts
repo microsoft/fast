@@ -8,14 +8,29 @@ import { myTemplate, myViewTemplate } from "./experience";
 import { renderViewTemplate } from "./view-template-renderer";
 
 function handleRequest(req: Request, res: Response) {
-    renderViewTemplate(myViewTemplate()).next();
-    res.set("Content-Type", "text/html");
-    const templateResult = myTemplate();
-    const ssrResult = render(templateResult, {
+    const renderInfo = {
         elementRenderers: [FASTElementRenderer],
         customElementHostStack: [],
         customElementInstanceStack: [],
-    });
+    };
+
+    const viewTemplateRenderer = renderViewTemplate(
+        myViewTemplate(),
+        undefined,
+        renderInfo
+    );
+    let currentValue = viewTemplateRenderer.next();
+    let output = "";
+
+    while (!currentValue.done) {
+        console.log(currentValue.value);
+        output = output + currentValue.value;
+        currentValue = viewTemplateRenderer.next();
+    }
+
+    res.set("Content-Type", "text/html");
+    const templateResult = myTemplate();
+    const ssrResult = render(templateResult, renderInfo);
     const stream = (Readable as any).from(ssrResult);
     stream.on("readable", function (this: any) {
         let data: string;

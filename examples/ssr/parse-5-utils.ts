@@ -1,11 +1,9 @@
 /**
- * Much of this code borrows heavily from lit's rendering implementation: https://github.com/lit/lit/blob/main/packages/labs/ssr/src/lib/render-lit-html.ts
- * A big thank you to those who contributed to that code.
+ * This code is largely a fork of lit's rendering implementation: https://github.com/lit/lit/blob/main/packages/labs/ssr/src/lib/render-lit-html.ts
+ * with changes as necessary to render FAST components. A big thank you to those who contributed to lit's code above.
  */
-
 import { DOM } from "@microsoft/fast-element";
 import {
-    Attribute,
     DefaultTreeCommentNode,
     DefaultTreeDocumentFragment,
     DefaultTreeElement,
@@ -73,7 +71,13 @@ export function isMarkerComment(node: DefaultTreeCommentNode): boolean {
     return blockMarker.test(node.data);
 }
 
-const interpolationMarker = new RegExp(`${DOM.marker}\\{\\d+\\}${DOM.marker}`);
+const interpolationMarker = new RegExp(`${DOM.marker}\\{(?<id>\\d+)\\}${DOM.marker}`);
 export function isInterpolationMarker(node: { value: string }): boolean {
     return interpolationMarker.test(node.value);
+}
+
+export function extractInterpolationMarkerId(node: { value: string }): number | null {
+    const id = interpolationMarker.exec(node.value)?.groups?.id;
+
+    return id === undefined ? null : parseInt(id, 10);
 }

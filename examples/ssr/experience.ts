@@ -2,7 +2,6 @@
 import { html } from "lit";
 import { html as fhtml, when, repeat } from "@microsoft/fast-element";
 import * as Components from "./components";
-import exp from "constants";
 Components;
 
 export function myTemplate() {
@@ -29,8 +28,13 @@ export function myViewTemplate() {
                 <title>FAST SSR Demo</title>
             </head>
             <body>
-                <p :property-bind=${x => "property bind"}></p>
-                <p attribute-bind=${x => "attribute bind"}></p>
+                <p :property-bind=${x => "property bind"}>idl attr binding</p>
+                <p attribute-bind=${x => "attribute bind"}>content attr binding</p>
+                <p ?boolean-attribute-bind-true=${x =>
+                    true}>boolean attr binding: true</p>
+                <p ?boolean-attribute-bind-false=${x =>
+                    false}>boolean attr binding: false</p>
+                <p @click=${() => console.log("foobar")}></p>
                 <!-- when directive -->
                 ${when(x => true, fhtml``)}
 

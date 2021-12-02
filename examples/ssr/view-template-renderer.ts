@@ -1,10 +1,13 @@
 /**
- * Much of this code borrows heavily from lit's rendering implementation: https://github.com/lit/lit/blob/main/packages/labs/ssr/src/lib/render-lit-html.ts
- * A big thank you to those who contributed to that code.
+ * This code is largely a fork of lit's rendering implementation: https://github.com/lit/lit/blob/main/packages/labs/ssr/src/lib/render-lit-html.ts
+ * with changes as necessary to render FAST components. A big thank you to those who contributed to lit's code above.
  */
+import { ElementRenderer, RenderInfo } from "@lit-labs/ssr";
+import { getElementRenderer } from "@lit-labs/ssr/lib/element-renderer";
 import { DOM, HTMLDirective, ViewTemplate } from "@microsoft/fast-element";
 import { Attribute, DefaultTreeNode, DefaultTreeParentNode, parseFragment } from "parse5";
 import {
+    extractInterpolationMarkerId,
     getLast,
     isCommentNode,
     isElementNode,
@@ -34,17 +37,51 @@ type CustomElementOpenOp = {
     type: "custom-element-open";
     tagName: string;
     ctor: typeof HTMLElement;
-    staticAttributes: Record<string, string>;
+    staticAttributes: Map<string, string>;
+};
+
+type CustomElementCloseOp = {
+    type: "custom-element-close";
+};
+
+type CustomElementShadow = {
+    type: "custom-element-shadow";
+};
+
+enum AttributeTypes {
+    content,
+    booleanContent,
+    idl,
+    event,
+}
+
+type AttributeOp = {
+    type: "attribute-part";
+    attributeType: AttributeTypes;
+    name: string;
+    binding: HTMLDirective;
+    useCustomElementInstance: boolean;
+};
+
+type CustomElementAttributes = {
+    type: "custom-element-attributes";
 };
 
 /**
  * A custom
  */
-type Op = TextOp | DirectiveOp | CustomElementOpenOp;
+type Op =
+    | TextOp
+    | DirectiveOp
+    | CustomElementOpenOp
+    | CustomElementCloseOp
+    | CustomElementShadow
+    | AttributeOp
+    | CustomElementAttributes;
 
 interface CategorizedAttributes {
-    static: Record<string, string>;
-    dynamic: Record<string, string>;
+    static: Map<string, string>;
+    dynamic: Map<string, string>;
 }
 
 // Cache template operations
@@ -97,10 +134,24 @@ function getTemplateOpCodes(template: ViewTemplate): Op[] {
         flush(value);
     }
 
+    function skipTo(offset: number): void {
+        if (lastOffset === undefined) {
+            throw new Error("lastOffset is undefined");
+        }
+        if (offset < lastOffset) {
+            throw new Error(`offset must be greater than lastOffset.
+                offset: ${offset}
+                lastOffset: ${lastOffset}
+            `);
+        }
+
+        lastOffset = offset;
+    }
+
     traverse(ast as any, {
         pre(node: DefaultTreeNode, parent: DefaultTreeParentNode | undefined) {
-            // We need to check text nodes, comment nodes, and attributes for directive placeholers (these follow different formats).
-            // When we find one, we need to retrieve the directive for it so that we can evalute it.
+            // We need to check text nodes, comment nodes, and attributes for directive placeholders (these follow different formats).
+            // When we find one, we need to retrieve the directive for it so that we can evaluate it.
             if (
                 isTextNode(node) &&
                 node.sourceCodeLocation !== undefined &&
@@ -122,13 +173,14 @@ function getTemplateOpCodes(template: ViewTemplate): Op[] {
 
                 const attributes = node.attrs.reduce(
                     (prev: CategorizedAttributes, current: Attribute) => {
-                        prev[isInterpolationMarker(current) ? "dynamic" : "static"][
-                            current.name
-                        ] = current.value;
+                        prev[isInterpolationMarker(current) ? "dynamic" : "static"].set(
+                            current.name,
+                            current.value
+                        );
 
                         return prev;
                     },
-                    { static: {}, dynamic: {} } as CategorizedAttributes
+                    { static: new Map(), dynamic: new Map() } as CategorizedAttributes
                 );
 
                 // Is custom element
@@ -137,7 +189,6 @@ function getTemplateOpCodes(template: ViewTemplate): Op[] {
 
                     if (ctor !== undefined) {
                         writeTag = true;
-                        flushTo(node.sourceCodeLocation!.startOffset);
                         const op: CustomElementOpenOp = {
                             type: "custom-element-open",
                             tagName,
@@ -147,26 +198,172 @@ function getTemplateOpCodes(template: ViewTemplate): Op[] {
                         ops.push(op);
                     }
                 }
+
+                node.attrs.forEach((attribute: Attribute): void => {
+                    const isBinding = isInterpolationMarker(attribute);
+
+                    if (isBinding) {
+                        writeTag = true;
+                        const attributeSourceLocation = node.sourceCodeLocation!.attrs[
+                            attribute.name
+                        ];
+                        flushTo(attributeSourceLocation.startOffset);
+                        const directiveId = extractInterpolationMarkerId(attribute)!;
+                        const [, prefix, caseSensitiveName] = /([:?@])?(.*)/.exec(
+                            attribute.name
+                        )!;
+
+                        const op: AttributeOp = {
+                            type: "attribute-part",
+                            name: caseSensitiveName,
+                            binding: template.directives[directiveId],
+                            attributeType:
+                                prefix === ":"
+                                    ? AttributeTypes.idl
+                                    : prefix === "?"
+                                    ? AttributeTypes.booleanContent
+                                    : prefix === "@"
+                                    ? AttributeTypes.event
+                                    : AttributeTypes.content,
+                            useCustomElementInstance: ctor !== undefined,
+                        };
+                        ops.push(op);
+                        skipTo(attributeSourceLocation.endOffset);
+                    }
+                });
+
+                if (writeTag) {
+                    if (ctor) {
+                        flushTo(node.sourceCodeLocation!.startTag.endOffset - 1);
+                        ops.push({ type: "custom-element-attributes" });
+                        flush(">");
+                        skipTo(node.sourceCodeLocation!.startTag.endOffset);
+                    } else {
+                        flushTo(node.sourceCodeLocation!.startTag.endOffset);
+                    }
+                }
             }
         },
         post(node: DefaultTreeNode) {
-            // console.log(node.nodeName);
+            if (isElementNode(node) && customElements.get(node.tagName)) {
+                ops.push({ type: "custom-element-close" });
+            }
         },
     });
 
-    flushTo();
+    // Disable this to test
+    // flushTo();
 
     return ops;
 }
 
+function* renderPropertyPart(
+    instance: ElementRenderer | undefined,
+    op: AttributeOp,
+    value: unknown
+): IterableIterator<string> {
+    if (instance !== undefined) {
+        instance.setProperty(op.name, value);
+    }
+
+    yield "";
+}
+
+function* renderBooleanAttributePart(
+    instance: ElementRenderer | undefined,
+    op: AttributeOp,
+    value: boolean
+): IterableIterator<string> {
+    if (value) {
+        if (instance !== undefined) {
+            instance.setAttribute(op.name, "");
+        } else {
+            yield op.name;
+        }
+    }
+}
+
+function* renderAttributePart(
+    instance: ElementRenderer | undefined,
+    op: AttributeOp,
+    value: unknown
+): IterableIterator<string> {
+    if (instance) {
+        instance.setAttribute(op.name, value as string);
+    } else {
+        yield `${op.name}="${value}"`;
+    }
+}
+
 export function* renderViewTemplate(
-    template: ViewTemplate<undefined, undefined, undefined>
+    template: ViewTemplate<undefined, undefined, undefined>,
+    source: any,
+    renderInfo: RenderInfo
 ): IterableIterator<string> {
     const opCodes = getTemplateOpCodes(template);
-    opCodes.forEach((code: Op) => {
-        if (code.type === "text") {
-            console.log(code.value);
+
+    for (const op of opCodes) {
+        switch (op.type) {
+            case "text":
+                yield op.value;
+                break;
+            case "attribute-part":
+                {
+                    if (op.attributeType === AttributeTypes.event) {
+                        // Skip any event binding
+                        break;
+                    }
+
+                    // TODO: This doesn't seem safe, but need access the binding. We will want to clean that up.
+                    const directive = (op.binding as any).binding;
+                    const value = directive(source);
+                    const instance = op.useCustomElementInstance
+                        ? getLast(renderInfo.customElementInstanceStack)
+                        : undefined;
+                    yield* (op.attributeType === AttributeTypes.idl
+                        ? renderPropertyPart
+                        : op.attributeType === AttributeTypes.booleanContent
+                        ? renderBooleanAttributePart
+                        : renderAttributePart)(instance, op, value);
+                }
+                break;
+            case "custom-element-open": {
+                const instance = getElementRenderer(
+                    renderInfo,
+                    op.tagName,
+                    op.ctor,
+                    op.staticAttributes
+                );
+
+                if (instance !== undefined) {
+                    for (const [name, value] of op.staticAttributes) {
+                        instance.setAttribute(name, value);
+                    }
+
+                    renderInfo.customElementInstanceStack.push(instance);
+                }
+                break;
+            }
+
+            case "custom-element-close": {
+                renderInfo.customElementInstanceStack.pop();
+                break;
+            }
+
+            case "custom-element-attributes": {
+                const instance = getLast(renderInfo.customElementInstanceStack);
+
+                if (instance !== undefined) {
+                    // Connect instance
+                    instance.connectedCallback();
+
+                    yield* instance.renderAttributes();
+
+                    if (renderInfo.customElementHostStack.length > 0) {
+                        yield " defer-hydration";
+                    }
+                }
+            }
         }
-    });
-    yield "";
+    }
 }
