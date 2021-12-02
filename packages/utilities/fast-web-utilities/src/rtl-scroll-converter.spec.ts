@@ -182,8 +182,10 @@ describe("RtlScrollConverter", (): void => {
     });
 
     it("applyDirectScrollConverters applies correct converters", () => {
-        RtlScrollConverter["getRtlScrollLeftConverter"] = RtlScrollConverter["reverseGetRtlScrollConverter"];
-        RtlScrollConverter["setRtlScrollLeftConverter"] = RtlScrollConverter["reverseSetRtlScrollConverter"];
+        RtlScrollConverter["getRtlScrollLeftConverter"] =
+            RtlScrollConverter["reverseGetRtlScrollConverter"];
+        RtlScrollConverter["setRtlScrollLeftConverter"] =
+            RtlScrollConverter["reverseSetRtlScrollConverter"];
 
         expect(RtlScrollConverter["getRtlScrollLeftConverter"]).not.to.equal(
             RtlScrollConverter["directGetRtlScrollConverter"]
