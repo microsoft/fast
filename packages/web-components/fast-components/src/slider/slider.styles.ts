@@ -79,8 +79,8 @@ export const sliderStyles: (
         border-radius: 50%;
         box-sizing: border-box;
     }
-    :host(:not(.disabled)) .thumb-cursor:hover,
-    :host(:not(.disabled)) .thumb-cursor:active {
+    :host(:not([disabled])) .thumb-cursor:hover,
+    :host(:not([disabled])) .thumb-cursor:active {
         background: ${neutralForegroundHover};
         border-color: ${strokeControlStrongActive};
     }
@@ -136,11 +136,11 @@ export const sliderStyles: (
         width: 100%;
         top: 0;
     }
-    :host(.disabled),
+    :host([disabled]),
     :host(.readonly) {
         cursor: ${disabledCursor};
     }
-    :host(.disabled) {
+    :host([disabled]) {
         opacity: ${disabledOpacity};
     }
     ::slotted([slot="thumb"]) {
@@ -155,8 +155,8 @@ export const sliderStyles: (
                     border-color: ${SystemColors.FieldText};
                     background: ${SystemColors.FieldText};
                 }
-                :host(:not(.disabled)) .thumb-cursor:hover,
-                :host(:not(.disabled)) .thumb-cursor:active {
+                :host(:not([disabled])) .thumb-cursor:hover,
+                :host(:not([disabled])) .thumb-cursor:active {
                     background: ${SystemColors.Highlight};
                     border-color: ${SystemColors.Highlight};
                 }
@@ -168,11 +168,11 @@ export const sliderStyles: (
                     border-color: ${SystemColors.Highlight};
                     box-shadow: 0 0 0 2px ${SystemColors.Field}, 0 0 0 4px ${SystemColors.FieldText};
                 }
-                :host(.disabled) {
+                :host([disabled]) {
                     opacity: 1;
                 }
-                :host(.disabled) .track,
-                :host(.disabled) .thumb-cursor {
+                :host([disabled]) .track,
+                :host([disabled]) .thumb-cursor {
                     forced-color-adjust: none;
                     background: ${SystemColors.GrayText};
                 }
