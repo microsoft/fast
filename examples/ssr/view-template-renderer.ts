@@ -160,14 +160,20 @@ function getTemplateOpCodes(template: ViewTemplate): Op[] {
                 isInterpolationMarker(node)
             ) {
                 flushTo(node.sourceCodeLocation.startOffset);
+                const directiveId = extractInterpolationMarkerId(node)!;
+                const directive = template.directives[directiveId];
+                // console.log(directive)
                 // TODO: Do something with interpolation.
             } else if (isCommentNode(node) && isMarkerComment(node)) {
+                flushTo(node.sourceCodeLocation!.startOffset);
                 const directiveId = DOM.extractDirectiveIndexFromMarker(
                     (node as unknown) as Comment
                 );
                 const directive = template.directives[directiveId];
                 // TODO: Process directive. We'll need to implement some mechanism to
                 // supply renderers for user-defined directives
+
+                // console.log(directive)
             } else if (isElementNode(node)) {
                 let writeTag = false;
                 const tagName = node.tagName;
@@ -243,6 +249,10 @@ function getTemplateOpCodes(template: ViewTemplate): Op[] {
                     } else {
                         flushTo(node.sourceCodeLocation!.startTag.endOffset);
                     }
+                }
+
+                if (ctor !== undefined) {
+                    ops.push({ type: "custom-element-shadow" });
                 }
             }
         },
