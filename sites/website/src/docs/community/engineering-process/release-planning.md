@@ -7,7 +7,7 @@ custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/src
 
 In order to both provide features and fixes to our community, while not creating unnecessary breaking changes or churn, FAST has adopted the following release planning process and policies.
 
-## Quarterly Planning
+## Quarterly planning
 
 As mentioned in [Issue Management](https://www.fast.design/docs/engineering/issue-management), feature teams engage in a quarterly planning exercise. During this exercise engineers look at the big picture and make plans to address broader "themes" that we see emerging which can't be handled week-to-week. The quarterly planning is then used to shape the weekly planning sessions that happen over the following three months. 
 
@@ -31,7 +31,7 @@ For issues which don't have a clear description of the associated work, it's imp
 
 **Note**: while costing issues, it's important to reevaluate costs for those, which already have cost applied. Those are most probably from the past and may be outdated, not properly representing the cost any more.
 
-### Team Review & Priority adjustment
+### Team review & priority adjustment
 
 Now that all the issues are prepared, the team reviews each issue starting from the highest priority ones. We discuss the issues and agree on the priority at this point. Sometimes we make adjustments to the suggested individual priorities. After discussing each issue the work is summarized in the quarterly plan document, where we double check our alignment to team mission, pillars, and OKRs.
 
@@ -44,17 +44,21 @@ We usually reserve only 50% of the team capacity for the defined quarterly work.
 At this point we have all the candidate issues that we think are worth considering for the upcoming quarter. This number is quite large, so the teams usually won't have enough capacity to handle all this.
 We start stack ranking issues so the most important work remains on the top of the list. We then draw the cut line and that defines the rough list of things the team will work on during the upcoming quarter. If there are any issues we think may be at risk, we indicate those as well.
 
-## Release Cadence
+## Release cadence
 
 Our quarterly planning enables us to tackle larger projects and strategic work while our weekly planning enables us to be adaptive and responsive to the changing needs of the community and project. As a result, each week typically produces PRs to the project, which triggers releases.
 
-### Minor and Patch Releases
+### Minor and patch releases
 
 The majority of the work coming from the quarterly planning process and the weekly planning process results in minor features and bug fixes. Once a PR for a `minor` or `patch` change is merged to master it will be automatically published in the nightly release. Releases are published Sunday through Thursday evenings (Pacific). Unless there is an emergency need, we avoid releasing on Fridays or the weekend (manual intervention required by us).
 
-### Major Releases
+### Major releases
 
-Major releases signal breaking changes in libraries. We strive to have only 1-2 major releases per year, so that we don't destabilize the community. This means that we will often delay certain issues from one quarter to the next in order to explicitly batch the work together into a single breaking-change release. Sometimes component libraries undergo significant visual refreshes. In this case, even though there is no breaking API change, we bump the major version to avoid surprises for the community.
+Major releases signal breaking changes in libraries. We strive to have only 1-2 major releases per year, so that we don't destabilize the community. This means that we will often delay certain issues from one quarter to the next in order to explicitly batch the work together into a single breaking-change release. 
+
+### Major visual update releases
+
+Sometimes component libraries undergo significant visual refreshes. In this case, even though there is no breaking API change, we bump the major version to avoid surprises for the community.
 
 ## Acknowledgements
 
