@@ -12,7 +12,6 @@ import { elevationShadowFlyout } from "../styles/elevation";
 import { heightNumber } from "../styles/size";
 import { appearanceBehavior } from "../utilities/behaviors";
 import {
-    accentForegroundRest,
     bodyFont,
     controlCornerRadius,
     designUnit,
@@ -21,6 +20,7 @@ import {
     focusStrokeOuter,
     focusStrokeWidth,
     neutralFillActive,
+    neutralFillFocus,
     neutralFillHover,
     neutralFillRest,
     neutralFillStealthActive,
@@ -30,6 +30,8 @@ import {
     neutralForegroundFocus,
     neutralForegroundHover,
     neutralForegroundRest,
+    neutralStrokeInputFilledActive,
+    neutralStrokeInputFilledFocus,
     neutralStrokeInputFilledHover,
     neutralStrokeInputFilledRest,
     strokeWidth,
@@ -136,17 +138,16 @@ export const selectStyles = (context, definition) =>
         color: ${neutralForegroundHover};
     }
 
-    :host(:not([disabled]):active),
-    :host(:focus-within),
-    :host(:focus-within:hover)  {
+    :host(:not([disabled]):active)  {
         background: ${neutralFillActive};
-        border-color: ${accentForegroundRest};
+        border-color: ${neutralStrokeInputFilledActive};
         color: ${neutralForegroundActive};
     }
 
     :host(:${focusVisible}) {
         outline: none;
-        border-color: ${focusStrokeOuter};
+        background: ${neutralFillFocus};
+        border-color: ${neutralStrokeInputFilledFocus};
         box-shadow: 0 0 0 calc(${focusStrokeWidth} * 1px) ${focusStrokeOuter} inset;
         color: ${neutralForegroundFocus};
     }
@@ -159,6 +160,10 @@ export const selectStyles = (context, definition) =>
     :host([disabled]) .control {
         cursor: ${disabledCursor};
         user-select: none;
+    }
+
+    :host([open]) .control {
+        color: ${neutralForegroundActive};
     }
 
     :host([open][position="above"]) .listbox {

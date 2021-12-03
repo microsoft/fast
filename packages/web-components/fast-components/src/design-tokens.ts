@@ -323,7 +323,7 @@ export const neutralStrokeInputFilledActiveDelta = create<number>(
 /** @public */
 export const neutralStrokeInputFilledFocusDelta = create<number>(
     "neutral-stroke-input-filled-focus-delta"
-).withDefault(49);
+).withDefault(4);
 
 // Color recipes
 
