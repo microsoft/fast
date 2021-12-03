@@ -12,6 +12,7 @@ import {
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import { Swatch } from "../color/swatch";
 import {
+    accentFillRest,
     baseHeightMultiplier,
     bodyFont,
     controlCornerRadius,
@@ -133,17 +134,22 @@ export const treeItemStyles: (
             color: ${neutralForegroundHover};
         }
 
-        :host(:not([disabled])) .positioning-region:active,
-        :host(:not([disabled])[selected]) .positioning-region {
+        :host(:not([disabled])) .positioning-region:active {
             background: ${neutralFillStealthActive};
             color: ${neutralForegroundActive};
         }
 
         :host(:${focusVisible}) .positioning-region {
-            background: ${neutralFillStealthFocus}
+            background: ${neutralFillStealthFocus};
             border-color: ${focusStrokeOuter};
             box-shadow: 0 0 0 calc(${focusStrokeWidth} * 1px) ${focusStrokeOuter} inset;
             color: ${neutralForegroundHover};
+        }
+
+        :host(:not([disabled])[selected]) .positioning-region {
+            background: ${neutralFillStealthActive};
+            border-color: ${accentFillRest};
+            color: ${neutralForegroundActive};
         }
 
         .positioning-region::before {
