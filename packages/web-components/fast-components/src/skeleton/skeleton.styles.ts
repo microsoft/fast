@@ -100,12 +100,6 @@ export const skeletonStyles: (
     `.withBehaviors(
         forcedColorsStylesheetBehavior(
             css`
-                :host {
-                    forced-color-adjust: none;
-                    background-color: ${SystemColors.Canvas};
-                    box-shadow: 0 0 0 1px ${SystemColors.CanvasText};
-                }
-
                 ${display("block")} span.shimmer {
                     display: none;
                 }
