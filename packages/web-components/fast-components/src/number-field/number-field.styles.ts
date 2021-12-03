@@ -57,6 +57,7 @@ export const numberFieldStyles: (
         border-radius: calc(${controlCornerRadius} * 1px);
         border: calc(${strokeWidth} * 1px) solid ${accentFillRest};
         height: calc(${heightNumber} * 1px);
+        align-items: baseline;
     }
 
     .control {
@@ -98,6 +99,13 @@ export const numberFieldStyles: (
     .label__hidden {
         display: none;
         visibility: hidden;
+    }
+
+    .start,
+    .control,
+    .controls,
+    .end {
+        align-self: center;
     }
 
     .start,
