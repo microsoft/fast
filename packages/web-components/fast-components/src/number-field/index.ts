@@ -58,10 +58,14 @@ export const fastNumberField = NumberField.compose<NumberFieldOptions>({
         delegatesFocus: true,
     },
     stepDownGlyph: `
-        <span class="step-down-glyph" part="step-down-glyph"></span>
+        <svg width="10" height="9" viewBox="0 0 10 9" xmlns="http://www.w3.org/2000/svg">
+            <path d="M2.79 3c-.4 0-.62.47-.35.78L4.5 6.14c.26.3.72.3.98 0l2.07-2.36A.47.47 0 0 0 7.21 3H2.8Z"/>
+        </svg>
     `,
     stepUpGlyph: `
-        <span class="step-up-glyph" part="step-up-glyph"></span>
+        <svg width="10" height="9" viewBox="0 0 10 9" xmlns="http://www.w3.org/2000/svg">
+            <path d="M2.79 6.37a.47.47 0 0 1-.35-.78L4.5 3.22c.26-.3.72-.3.98 0L7.56 5.6c.27.3.05.78-.35.78H2.8Z"/>
+        </svg>
     `,
 });
 
