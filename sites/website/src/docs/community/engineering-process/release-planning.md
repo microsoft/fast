@@ -59,7 +59,3 @@ Major releases signal breaking changes in libraries. We strive to have only 1-2 
 ### Major visual update releases
 
 Sometimes component libraries undergo significant visual refreshes. In this case, even though there is no breaking API change, we bump the major version to avoid surprises for the community.
-
-## Acknowledgements
-
-Many thanks to the .NET team for sharing their policies and practices upon which this document was based.

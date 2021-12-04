@@ -114,7 +114,3 @@ If we determine that the issue is a question, we will label it with `community:q
 ### Locking closed issues
 
 After an issue has been closed and had no activity for **30 days** it may be locked. This is done in order to reduce confusion as to where to post new comments. If you are still encountering the problem reported in an issue, or have a related question or bug report, feel free to open a *new issue* and link to the original (now locked) issue!
-
-## Acknowledgements
-
-Many thanks to the .NET team for sharing their policies and practices upon which this document was based.
