@@ -2,7 +2,7 @@
 
 There are many great open source projects that have inspired us and enabled us to build FAST. Below are a few that stand out.
 
-* [.NET]() - Many thanks to the .NET team for sharing their policies and practices upon which our issue management and release planning docs and practices were based.
+* [.NET](https://dotnet.microsoft.com/) - Many thanks to the .NET team for sharing their policies and practices upon which our issue management and release planning docs and practices were based.
 * [asap](https://github.com/kriskowal/asap) - An awesome, time-tested async task queue implementation that heavily inspired our DOM update system.
 * [Aurelia 1 and Aurelia 2](https://aurelia.io/) - Various details of Aurelia 2's decorator and metadata model inspired us in the design of `fast-element`. Additionally, Aurelia 1's mechanisms for array observation, binding, and template compilation also guided us in our work.
 * [faastjs](https://github.com/faastjs) - A project with a similar name but a very different purpose. Their API documentation approach leveraging [api-extractor](https://api-extractor.com/) was a huge help to us.
