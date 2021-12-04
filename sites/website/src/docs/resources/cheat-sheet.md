@@ -37,76 +37,30 @@ custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/src
 
 **Getting started**:
 
+<details>
+    <summary>temporary toggle to be replaced with fast-accordian - expand for content</summary>
+
 To work with the FAST monorepo you'll need Git, Node.js, Yarn, and Lerna setup on your machine.
 
-- **Git**: download here: [https://git-scm.com/downloads](https://git-scm.com/downloads)
-- **Node.js**: download here: [https://nodejs.org/en/](https://nodejs.org/en/)
-- **Yarn**: install by running this command in the terminal `npm install -g yarn`
-- **Lerna**: install by running this command in the terminal `yarn global add lerna`
+| Name | Instructions |
+|:-- | :-- |
+| Git | download here: [https://git-scm.com/downloads](https://git-scm.com/downloads) |
+| Node.js | download here: [https://nodejs.org/en/](https://nodejs.org/en/)
+| Yarn | install by running this command in the terminal: `npm install -g yarn`
+| Lerna | install by running this command in the terminal: `yarn global add lerna`
 
-**Cloning the repo**: 
-
-Run this commmand in the terminal: `git clone https://github.com/microsoft/fast.git`
-
-**Installing and Building**:
-
-- Open up VS Code (or the code editor of your choice)
-
-- Locate the `fast` folder where the repo was cloned
-
-- In the root folder (fast), install dependencies by running this command in the terminal: `yarn`
-
-** Creating a branch**:
-
-`git checkout -b users/{your github handle}/{your-branch-name}`
-
-**Contributing to the `fast-component` design system**:
-
-Run these commands in the terminal:
-
-- `cd packages/web-components/fast-components`
-- `yarn start`
-
-[Storybook](https://www.notion.so/FAST-Community-Contribution-32ffbe4dc8274669a5a3349044c854a9#b98876e483ce4432a59622dcb383249b) will open in a browser window at `localhost:6006`
-
-
-**Contributing to the documentation**:
-
-Run these commands in the terminal:
-
-- `cd sites/website`
-- `yarn start`
-
-[Docusaurus](https://docusaurus.io/) will open in a browser window at `localhost:3000`
-
-**Committing your changes**:
-
-- `git status` (shows you which files were changed)
-- `git diff` (shows you the changes)
-- `git add .` (adds all files changed to the staging area)
-- `git commit -m "{your commit message}"` (saves your changes) 
-
-**Submitting a pull request**:
-
-- rebase your branch from master
-    - run these commands in the terminal
-        - from your branch:
-            - `git checkout master`
-        - from the master branch:
-            - `git pull`
-            - `yarn`
-            - `git checkout {your-branch-name}`
-        - from your branch:
-            - `git rebase master`
-
-- run these commands in the terminal
-    - `yarn change` in the root of the repository
-    - `git push origin {your-branch-name}`
-    - In GitHub: complete the pull request template
-
-**Merging a pull request**:
-
-- use the pull request title as the commit title
+| Next Steps | Instructions |
+| :--------- | :----------- |
+| 1. Cloning the repo| Run this commmand in the terminal: `git clone https://github.com/microsoft/fast.git` |
+| 2. Installing and Building | <ul><li>Open up VS Code (or the code editor of your choice)</li><li>Locate the **fast** folder where the repo was cloned</li><li>In the root folder (fast), install dependencies by running this command in the terminal: `yarn`</li></ul> |
+| 3. Creating a branch | Run this command in the terminal: `git checkout -b users/{your github handle}/{your-branch-name}` |
+| 4(a). Contributing to the @fast-component design system | Run these commands in the terminal: <ul><li>`cd packages/web-components/fast-components`</li><li>`yarn start`</li></ul> [Storybook](https://www.notion.so/FAST-Community-Contribution-32ffbe4dc8274669a5a3349044c854a9#b98876e483ce4432a59622dcb383249b) will open in a browser window at `localhost:6006` |
+| 4(b). Contributing to the documentation | Run these commands in the terminal: <ul><li>`cd sites/website`</li><li>`yarn start`</li></ul> [Docusaurus](https://docusaurus.io/) will open in a browser window at `localhost:3000` |
+| 5. Committing your changes | <ul></li>`git status` (shows you which files were changed)<li>`git diff` (shows you the changes)</li><li>`git add .` (adds all files changed to the staging area)</li><li>`git commit -m "{your commit message}"` (saves your changes)</li></ul> |
+| 6. Submitting a pull request | rebase your branch from master<ul><li>from your branch: `git checkout master`</li></ul>from the master branch:<ul><li>`git pull`</li><li>`yarn`</li></li>`git checkout {your-branch-name}`</li></ul>from your branch: </li>`git rebase master`</li></ul> |
+| 7. Generate a change file | run these commands in the terminal: <ul><li>`yarn change` in the root of the repository</li><li>`git push origin {your-branch-name}`</li></ul>In GitHub: complete the pull request template
+| 8. Merging a pull request | use the pull request title as the commit title |
+</details>
 
 ---
 
@@ -133,7 +87,7 @@ provideFASTDesignSystem()
 Visit our Using Components [Getting Started Guide](https://www.fast.design/docs/components/getting-started) for more details, Tips, and Notes.
 
 <details>
-    <summary>temporary toggle to be replaced with fast-accordian - open for content</summary>
+    <summary>temporary toggle to be replaced with fast-accordian - expand for content</summary>
 
 | Component | Name | Component Explorer | Guidance |
 | :--- | :--- | :--- | :--- |
@@ -198,7 +152,7 @@ With this in place, you can now use your name-tag element anywhere in HTML with 
 Visit our Building Components [Getting Started Guide](https://www.fast.design/docs/components/getting-started) for more details, Tips, and Notes.
 
 <details>
-    <summary>temporary toggle to be replaced with fast-accordian - open for content</summary>
+    <summary>temporary toggle to be replaced with fast-accordian - expand for content</summary>
 
 #### Adding Attributes
 
@@ -239,7 +193,7 @@ A Design Token is a semantic, named variable used to describe a Design System. T
 Visit our [Design Tokens Guide](https://www.fast.design/docs/design-systems/design-tokens) for more details, Tips, and Notes.
 
 <details>
-    <summary>temporary toggle to be replaced with fast-accordian - open for content</summary>
+    <summary>temporary toggle to be replaced with fast-accordian - expand for content</summary>
 
 FAST exposes the following Design Tokens that can be used to configure components stylistically.
 
