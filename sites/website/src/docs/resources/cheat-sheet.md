@@ -9,16 +9,111 @@ custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/src
 
 | Name| Definition | Notes | When to Use
 | :-- | :-- | :-- | :-- |
-| [FAST](https://github.com/microsoft/fast)| A collection of technologies built on [Web Components](https://www.fast.design/docs/resources/why-web-components) and modern Web Standards. | You do not need a framework to use FAST components, but you can use them in combination with any framework or library of your choice. | See libraries below.
-| [@microsoft/fast-components](https://www.fast.design/docs/components/getting-started) |A library that includes a common set of components found in many websites and apps.   | Assembles the building blocks of @microsoft/fast-foundation to create their component sets. Expresses the FAST design language [(FAST Frame)](https://www.fast.design/docs/design-systems/fast-frame/). | When you want to integrate FAST components into an existing site or app, or if you need more control over the theme of the components.
-| [@fluentui/web-components](https://www.fast.design/docs/components/getting-started) | A library that includes a common set of components found in many websites and apps. | Assembles the building blocks of @microsoft/fast-foundation to create their component sets. Expresses Microsoft's [Fluent Design System](https://www.microsoft.com/design/fluent/#/). | When you want components to look and feel like those found in Windows, Office, Teams, and Edge products. |
+| [FAST](https://github.com/microsoft/fast)| A collection of technologies built on [Web Components](https://www.fast.design/docs/resources/why-web-components) and modern Web Standards. | You do not need a framework to use FAST components, but you can use them in combination with any framework or library of your choice. | See FAST libraries below. Interested in [contributing to FAST](#contributing-to-fast)?
+| [@microsoft/fast-components](https://www.fast.design/docs/components/getting-started) |A library that includes a common set of components found in many websites and apps.   | Assembles the building blocks of @microsoft/fast-foundation to create its component set. Expresses Microsoft's [FAST Frame Design System](https://www.fast.design/docs/design-systems/fast-frame/). | When you want to integrate FAST components into an existing site or app, or if you need more control over the theme of the components. See [Using Components.](#using-components)
+| [@fluentui/web-components](https://www.fast.design/docs/components/getting-started) | A library that includes a common set of components found in many websites and apps. | Assembles the building blocks of @microsoft/fast-foundation to create its component set. Expresses Microsoft's [Fluent Design System](https://www.microsoft.com/design/fluent/#/). | When you want components to look and feel like those found in Windows, Office, Teams, and Edge products. |
 | [@microsoft/fast-foundation](https://www.fast.design/docs/introduction) | A library that provides foundational building blocks that can be assembled to create new design systems and component libraries. |  Exports of this package can generally be thought of as un-styled base components that implement semantic and accessible markup and behavior. | When you want to implement something like Google's Material Design or Twitter Bootstrap.
-| [@microsoft/fast-element](https://www.fast.design/docs/fast-element/getting-started) | A library that is a lightweight means to easily build performant, memory-efficient, standards-compliant Web Components. | FAST Elements work in every major browser and can be used in combination with any front-end framework or even without a framework. | When you want to create completely new web components.
-| [FAST Frame Design System](https://www.fast.design/docs/design-systems/fast-frame) | A highly configurable Design System composed of Web Components, Design Tokens, stylesheets, and styling tools. | Provides a highly configurable design system that you can drop into any app. Also provides a set of building blocks you can use to construct your own design system from scratch. | When you have an existing app, or want to create your own design system.|
+| [@microsoft/fast-element](https://www.fast.design/docs/fast-element/getting-started) | A library that is a lightweight means to easily build performant, memory-efficient, standards-compliant Web Components. | FAST Elements work in every major browser.  You do not need a framework to use FAST components, but you can use them in combination with any framework or library of your choice. | When you want to create completely new web components. See [Building Components](#building-components). |  
+| [FAST Frame Design System](https://www.fast.design/docs/design-systems/fast-frame) | A Design System composed of Web Components, Design Tokens, stylesheets, and styling tools. | Provides a highly configurable design system that you can drop into any app. Also provides a set of building blocks you can use to construct your own design system from scratch. | When you have an existing app, or want to create your own [Design System](#design-system).|
+| |
+
+---
+
+## Contributing to FAST
+
+**There are two ways to contribute**:
+
+1. Contribute changes to the `fast-components` design system.
+2. Contribute changes to the documentation.
+
+**Unsure of what to work on?**
+
+- Here are [good first issues](https://github.com/Microsoft/fast/labels/community:good-first-issue).
+
+**Connect with us**:
+
+- Join our [Discord](https://discord.gg/FcSNfg4) server.
+- Report bugs, request features through [Github](https://github.com/Microsoft/fast/issues/new/choose).
+
+**Getting started**:
+
+To work with the FAST monorepo you'll need Git, Node.js, Yarn, and Lerna setup on your machine.
+
+- **Git**: download here: [https://git-scm.com/downloads](https://git-scm.com/downloads)
+- **Node.js**: download here: [https://nodejs.org/en/](https://nodejs.org/en/)
+- **Yarn**: install by running this command in the terminal `npm install -g yarn`
+- **Lerna**: install by running this command in the terminal `yarn global add lerna`
+
+**Cloning the repo**: 
+
+Run this commmand in the terminal: `git clone https://github.com/microsoft/fast.git`
+
+**Installing and Building**:
+
+- Open up VS Code (or the code editor of your choice)
+
+- Locate the `fast` folder where the repo was cloned
+
+- In the root folder (fast), install dependencies by running this command in the terminal: `yarn`
+
+** Creating a branch**:
+
+`git checkout -b users/{your github handle}/{your-branch-name}`
+
+**Contributing to the `fast-component` design system**:
+
+Run these commands in the terminal:
+
+- `cd packages/web-components/fast-components`
+- `yarn start`
+
+[Storybook](https://www.notion.so/FAST-Community-Contribution-32ffbe4dc8274669a5a3349044c854a9#b98876e483ce4432a59622dcb383249b) will open in a browser window at `localhost:6006`
+
+
+**Contributing to the documentation**:
+
+Run these commands in the terminal:
+
+- `cd sites/website`
+- `yarn start`
+
+[Docusaurus](https://docusaurus.io/) will open in a browser window at `localhost:3000`
+
+**Committing your changes**:
+
+- `git status` (shows you which files were changed)
+- `git diff` (shows you the changes)
+- `git add .` (adds all files changed to the staging area)
+- `git commit -m "{your commit message}"` (saves your changes) 
+
+**Submitting a pull request**:
+
+- rebase your branch from master
+    - run these commands in the terminal
+        - from your branch:
+            - `git checkout master`
+        - from the master branch:
+            - `git pull`
+            - `yarn`
+            - `git checkout {your-branch-name}`
+        - from your branch:
+            - `git rebase master`
+
+- run these commands in the terminal
+    - `yarn change` in the root of the repository
+    - `git push origin {your-branch-name}`
+    - In GitHub: complete the pull request template
+
+**Merging a pull request**:
+
+- use the pull request title as the commit title
+
+---
 
 ## Using Components
 
-The `@microsoft/fast-components` library contains Web Components built on top of our standard component and design system foundation. `microsoft/fast-components` expresses the FAST design language [(FAST Frame)](https://www.fast.design/docs/design-systems/fast-frame).
+[@microsoft/fast-components]: A library that includes a common set of components found in many websites and apps.
+
 ### Setup
 
 To register custom components:
@@ -37,7 +132,8 @@ provideFASTDesignSystem()
 
 Visit our Using Components [Getting Started Guide](https://www.fast.design/docs/components/getting-started) for more details, Tips, and Notes.
 
-### fast-components
+<details>
+    <summary>temporary toggle to be replaced with fast-accordian - open for content</summary>
 
 | Component | Name | Component Explorer | Guidance |
 | :--- | :--- | :--- | :--- |
@@ -73,13 +169,12 @@ Visit our Using Components [Getting Started Guide](https://www.fast.design/docs/
 | [fast-toolbar](https://www.fast.design/docs/components/toolbar) | `fastToolbar()` | [Toolbar](https://explore.fast.design/components/fast-toolbar) | An implementation of a [toolbar](https://w3c.github.io/aria-practices/#toolbar) as a web-component. |
 | [fast-tooltip](https://www.fast.design/docs/components/tooltip) | `fastTooltip()` | [Tooltip](https://explore.fast.design/components/fast-tooltip) | An implementation of a [tooltip](https://w3c.github.io/aria-practices/#tooltip) web-component. |
 | [fast-tree-view](https://www.fast.design/docs/components/tree-view) | `fastTreeItem()` `fastTreeView()` | [Tree view](https://explore.fast.design/components/fast-tree-view) | An implementation of a [tree-item](https://w3c.github.io/aria-practices/#TreeView) as a web-component. |
+</details>
 
 ---
 ## Building Components
 
-The `fast-element` library is a lightweight means to easily build performant, memory-efficient, standards-compliant Web Components. FAST Elements work in every major browser and can be used in combination with any front-end framework or even without a framework.
-
-
+@microsoft/fast-element
 ### Setup
 
 To define a custom element:
@@ -102,7 +197,9 @@ With this in place, you can now use your name-tag element anywhere in HTML with 
 
 Visit our Building Components [Getting Started Guide](https://www.fast.design/docs/components/getting-started) for more details, Tips, and Notes.
 
-### fast-element
+<details>
+    <summary>temporary toggle to be replaced with fast-accordian - open for content</summary>
+
 #### Adding Attributes
 
 | Decorator | API | Property | 
@@ -129,20 +226,20 @@ Add content
 
 Add content
 
+</details>
+
 ---
+## Design System
 
-
-## fast-foundation
-
-
-
-## Design Tokens
+FAST Frame
+### Design Tokens
 
 A Design Token is a semantic, named variable used to describe a Design System. They often describe design concepts like typography, color, sizes, UI spacing, etc. 
 
 Visit our [Design Tokens Guide](https://www.fast.design/docs/design-systems/design-tokens) for more details, Tips, and Notes.
 
-### FAST Frame Design Tokens
+<details>
+    <summary>temporary toggle to be replaced with fast-accordian - open for content</summary>
 
 FAST exposes the following Design Tokens that can be used to configure components stylistically.
 
@@ -188,3 +285,4 @@ FAST exposes the following Design Tokens that can be used to configure component
 | `disabledOpacity` | The opacity of disabled controls. |
 | `strokeWidth` | Controls the width of the stroke of a component that has a stroke. |
 | `focusStrokeWidth` | Controls with width of the stroke of a component that has a stroke when it has document focus. |
+</details>
