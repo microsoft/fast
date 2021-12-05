@@ -190,7 +190,7 @@ export class DataGridRow extends FoundationElement {
 
         this.updateRowStyle();
 
-        console.debug(`row connected: ${this.rowData}`);
+        // console.debug(`row connected: ${this.rowData}`);
 
         // if (this.refocusOnLoad) {
         //     // if focus was on the row when data changed try to refocus on same cell
@@ -211,7 +211,7 @@ export class DataGridRow extends FoundationElement {
         this.removeEventListener(eventFocusOut, this.handleFocusout);
         this.removeEventListener(eventKeyDown, this.handleKeydown);
 
-        console.debug(`row disconnected: ${this.rowData}`);
+        // console.debug(`row disconnected: ${this.rowData}`);
     }
 
     public handleFocusout(e: FocusEvent): void {

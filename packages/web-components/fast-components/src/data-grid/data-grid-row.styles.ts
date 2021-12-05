@@ -20,6 +20,7 @@ export const dataGridRowStyles: FoundationElementTemplate<ElementStyles> = (
     }
 
     :host(.header) {
+        grid-row: 1;
     }
 
     :host(.sticky-header) {

@@ -306,6 +306,8 @@ export class VirtualizingStackBase extends FoundationElement {
 
     private itemsObserver: Notifier | null = null;
 
+    private finalUpdate: boolean = false;
+
     /**
      * Delays updating ui during scrolling
      * (to avoid rendering of items that just scroll by)
@@ -442,8 +444,10 @@ export class VirtualizingStackBase extends FoundationElement {
      */
     public requestPositionUpdates = (): void => {
         if (this.pendingPositioningUpdate) {
+            this.finalUpdate = true;
             return;
         }
+        this.finalUpdate = false;
         this.pendingPositioningUpdate = true;
         this.clearLayoutUpdateTimer();
 
@@ -669,6 +673,8 @@ export class VirtualizingStackBase extends FoundationElement {
             return;
         }
 
+        console.debug("updateVisibleItemsStart");
+
         if (
             this.items === undefined ||
             this.items.length === 0 ||
@@ -756,10 +762,9 @@ export class VirtualizingStackBase extends FoundationElement {
                 ) {
                     this.visibleItems.push(this.items[i]);
                 }
-                // this.visibleItems = this.items.slice(
-                //     newFirstRenderedIndex,
-                //     newLastRenderedIndex + 1
-                // );
+                console.debug(
+                    `full reset ${this.firstRenderedIndex} - ${newFirstRenderedIndex} - ${this.lastRenderedIndex} - ${newLastRenderedIndex}`
+                );
                 this.updateRenderedRange(newFirstRenderedIndex, newLastRenderedIndex);
                 return;
             }
@@ -797,6 +802,8 @@ export class VirtualizingStackBase extends FoundationElement {
                 }
             }
 
+            console.debug(`visibleRangeStart = ${this.visibleRangeStart}`);
+
             this.updateRenderedRange(newFirstRenderedIndex, newLastRenderedIndex);
         }
     };
@@ -809,8 +816,11 @@ export class VirtualizingStackBase extends FoundationElement {
             newFirstRenderedIndex === this.firstRenderedIndex &&
             newLastRenderedIndex === this.lastRenderedIndex
         ) {
+            console.debug("bail on rendered range update");
             return;
         }
+
+        console.debug(`updateRenderedRange`);
 
         this.firstRenderedIndex = newFirstRenderedIndex;
         this.lastRenderedIndex = newLastRenderedIndex;
@@ -830,7 +840,14 @@ export class VirtualizingStackBase extends FoundationElement {
             return;
         }
 
+        console.debug("handleIntersection");
+
         this.pendingPositioningUpdate = false;
+
+        if (this.finalUpdate) {
+            console.debug("finalupdate");
+            this.requestPositionUpdates();
+        }
 
         const containerEntry: IntersectionObserverEntry | undefined = entries.find(
             x => x.target === this.containerElement
