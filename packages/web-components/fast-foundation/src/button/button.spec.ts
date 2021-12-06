@@ -565,7 +565,7 @@ describe("Button", () => {
         });
     });
 
-    describe.only("of 'disabled'", () => {
+    describe("of 'disabled'", () => {
         it("should not propagate when clicked", async () => {
             const { connect, disconnect, element, parent } = await setup();
 
