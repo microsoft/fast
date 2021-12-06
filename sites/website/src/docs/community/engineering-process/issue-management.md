@@ -25,7 +25,7 @@ We will first categorize the issues and further handle these depending on the ca
 
 ### Information gathering
 
-In this phase we instruct the user on how to collect the appropriate diagnostics and see if they are able to address the issue with that additional information.  When we need user input we will mark the issue with the `status:needs-information` label. Issues in this phase may be closed automatically if we do not receive timely responses; they often do not provide enough information for us to investigate further.
+In this phase we instruct the user on how to collect the appropriate diagnostics and see if they are able to address the issue with that additional information.  When we need user input we will mark the issue with the [`status:needs-information`](#needs-information) label. Issues in this phase may be closed automatically if we do not receive timely responses; they often do not provide enough information for us to investigate further.
 We'll try to respond quickly to such issues (within days). If a user has collected all of the relevant diagnostics and the issue is still not apparent, then we will consider it for further [investigation](#investigations) by the team.
 
 ### Feature requests
