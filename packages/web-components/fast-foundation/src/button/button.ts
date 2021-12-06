@@ -157,13 +157,13 @@ export class Button extends FormAssociatedButton {
 
         this.proxy.setAttribute("type", this.type);
         this.handleUnsupportedDelegatesFocus();
-        document.addEventListener('click', this.handleClick, true)
+        document.addEventListener("click", this.handleClick, true);
     }
 
     /**
      * @internal
      */
-     public disconnectedCallback(): void {
+    public disconnectedCallback(): void {
         super.disconnectedCallback();
         document.removeEventListener("click", this.handleClick);
     }
@@ -172,11 +172,11 @@ export class Button extends FormAssociatedButton {
      * Prevents events to propagate if disabled
      * @internal
      */
-    private handleClick= (e: Event) => {
+    private handleClick = (e: Event) => {
         if (this.disabled && e.target === this) {
-            e.stopPropagation()
+            e.stopPropagation();
         }
-    }
+    };
 
     /**
      * Submits the parent form
