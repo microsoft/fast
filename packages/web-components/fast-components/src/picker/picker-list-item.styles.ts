@@ -14,8 +14,14 @@ import {
     focusStrokeOuter,
     focusStrokeWidth,
     foregroundOnAccentActive,
+    neutralFillStealthActive,
+    neutralFillStealthFocus,
+    neutralFillStealthHover,
+    neutralFillStealthRest,
+    neutralForegroundActive,
+    neutralForegroundFocus,
+    neutralForegroundHover,
     neutralForegroundRest,
-    neutralLayer3,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
 } from "../design-tokens";
@@ -33,40 +39,47 @@ export const pickerListItemStyles: (
     definition: FoundationElementDefinition
 ) =>
     css`
-:host {
-    display: flex;
-    align-items: center;
-    justify-items: center;
-    font-family: ${bodyFont};
-    border-radius: calc(${controlCornerRadius} * 1px);
-    border: calc(${focusStrokeWidth} * 1px) solid transparent;
-    box-sizing: border-box;
-    color: ${neutralForegroundRest};
-    cursor: pointer;
-    fill: currentcolor;
-    font-size: ${typeRampBaseFontSize};
-    height: calc(${heightNumber} * 1px);
-    line-height: ${typeRampBaseLineHeight};
-    outline: none;
-    overflow: hidden;
-    padding: 0 calc(${designUnit} * 2.25px);
-    user-select: none;
-    white-space: nowrap;
-}
+        :host {
+            display: flex;
+            align-items: center;
+            justify-items: center;
+            font-family: ${bodyFont};
+            border-radius: calc(${controlCornerRadius} * 1px);
+            border: calc(${focusStrokeWidth} * 1px) solid transparent;
+            box-sizing: border-box;
+            color: ${neutralForegroundRest};
+            cursor: pointer;
+            fill: currentcolor;
+            font-size: ${typeRampBaseFontSize};
+            height: calc(${heightNumber} * 1px);
+            line-height: ${typeRampBaseLineHeight};
+            outline: none;
+            overflow: hidden;
+            padding: 0 calc(${designUnit} * 2.25px);
+            user-select: none;
+            white-space: nowrap;
+            background: ${neutralFillStealthRest};
+        }
 
-:host(:${focusVisible}),
-:host(:hover) {
-    background: ${neutralLayer3};
-    color: ${neutralForegroundRest};
-}
+        :host(:hover) {
+            background: ${neutralFillStealthHover};
+            color: ${neutralForegroundHover};
+        }
 
-:host(:focusVisible) {
-    border-color: ${focusStrokeOuter};
-}
+        :host(:active) {
+            background: ${neutralFillStealthActive};
+            color: ${neutralForegroundActive};
+        }
 
-:host([aria-selected="true"]) {
-    background: ${accentFillActive};
-    color: ${foregroundOnAccentActive};
+        :host(:${focusVisible}) {
+            background: ${neutralFillStealthFocus};
+            border-color: ${focusStrokeOuter};
+            color: ${neutralForegroundFocus};
+        }
+
+        :host([aria-selected="true"]) {
+            background: ${accentFillActive};
+            color: ${foregroundOnAccentActive};
 }`.withBehaviors(
         forcedColorsStylesheetBehavior(
             css`
