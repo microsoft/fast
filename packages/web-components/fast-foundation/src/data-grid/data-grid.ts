@@ -389,9 +389,13 @@ export class DataGrid extends VirtualizingStackBase {
         const focusRow: DataGridRow = e.target as DataGridRow;
         this.focusRowIndex = focusRow.rowIndex;
         this.focusColumnIndex = focusRow.focusColumnIndex;
-        this.setAttribute("tabIndex", "-1");
+        this.removeAttribute("tabIndex");
         this.isUpdatingFocus = false;
         console.debug(`focusrow: ${this.focusRowIndex}`);
+    }
+
+    public focus(): void {
+        this.moveGridFocusToCell();
     }
 
     /**
@@ -399,27 +403,30 @@ export class DataGrid extends VirtualizingStackBase {
      */
     public handleFocus(e: FocusEvent): void {
         if (!this.setFocusOnItemsChanged && e.target === this) {
-            if (!this.isRowindexVirtualized(this.focusRowIndex)) {
-                const focusRowElement: DataGridRow | null = this.getRowElement(
-                    this.focusRowIndex
-                );
-                if (focusRowElement !== null && this.isRowInView(focusRowElement)) {
-                    this.focusOnCell(this.focusRowIndex, this.focusColumnIndex, false);
-                    return;
-                }
-            }
+            this.moveGridFocusToCell();
+        }
+    }
 
-            console.debug("handleFocus");
-
-            // focus row is out of view, pick row at top of visual display
-            const newFocusRowIndex: number = this.getFirstRowIndexInView();
-            if (newFocusRowIndex > -1) {
-                this.focusOnCell(
-                    this.getFirstRowIndexInView(),
-                    this.focusColumnIndex,
-                    false
-                );
+    private moveGridFocusToCell(): void {
+        if (
+            !this.isRowindexVirtualized(this.focusRowIndex) &&
+            this.isRowInView(this.getRowElement(this.focusRowIndex) as DataGridRow)
+        ) {
+            const focusRowElement: DataGridRow | null = this.getRowElement(
+                this.focusRowIndex
+            );
+            if (focusRowElement !== null && this.isRowInView(focusRowElement)) {
+                this.focusOnCell(this.focusRowIndex, this.focusColumnIndex, false);
+                return;
             }
+        }
+
+        console.debug("handleFocus");
+
+        // focus row is out of view, pick row at top of visual display
+        const newFocusRowIndex: number = this.getFirstRowIndexInView();
+        if (newFocusRowIndex > -1) {
+            this.focusOnCell(this.getFirstRowIndexInView(), this.focusColumnIndex, false);
         }
     }
 
@@ -436,8 +443,8 @@ export class DataGrid extends VirtualizingStackBase {
     private isRowInView(rowElement: DataGridRow): boolean {
         if (
             rowElement !== null &&
-            (rowElement.offsetTop + rowElement.offsetHeight > this.scrollTop ||
-                rowElement.offsetTop < this.scrollTop + this.clientHeight)
+            rowElement.offsetTop + rowElement.offsetHeight > this.scrollTop &&
+            rowElement.offsetTop < this.scrollTop + this.clientHeight
         ) {
             return true;
         }
@@ -458,7 +465,6 @@ export class DataGrid extends VirtualizingStackBase {
      * @internal
      */
     public handleScroll(e: Event): void {
-        console.debug("scroll");
         this.requestPositionUpdates();
     }
 
@@ -665,14 +671,12 @@ export class DataGrid extends VirtualizingStackBase {
 
             if (forceScrollToTop) {
                 this.scrollTop = focusTarget.offsetTop;
-            } else if (
-                this.scrollHeight !== this.clientHeight &&
-                ((rowIndex < this.focusRowIndex && this.scrollTop > 0) ||
-                    (rowIndex > this.focusRowIndex &&
-                        this.scrollTop < this.scrollHeight - this.clientHeight))
-            ) {
-                focusTarget.scrollIntoView({ block: "center", inline: "center" });
             }
+            // else if (
+            //     !this.isRowInView(focusRowElement)
+            // ) {
+            //     focusTarget.scrollIntoView({ block: "center", inline: "center" });
+            // }
 
             if (document.activeElement !== focusTarget) {
                 focusTarget.focus();
