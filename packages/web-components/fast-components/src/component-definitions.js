@@ -66,6 +66,8 @@ import fastRadioDefinition from "./radio/radio.vscode.definition.json";
 export { fastRadioDefinition };
 import fastRadioGroupDefinition from "./radio-group/radio-group.vscode.definition.json";
 export { fastRadioGroupDefinition };
+import fastSearchDefinition from "./search/search.vscode.definition.json";
+export { fastSearchDefinition };
 import fastSelectDefinition from "./select/select.vscode.definition.json";
 export { fastSelectDefinition };
 import fastSkeletonDefinition from "./skeleton/skeleton.vscode.definition.json";

@@ -141,10 +141,9 @@ export const switchStyles: (
         visibility: hidden;
     }
 
-    ::slotted(*) {
-        ${
-            /* Need to discuss with Brian how HorizontalSpacingNumber can work. https://github.com/microsoft/fast/issues/2766 */ ""
-        } margin-inline-start: calc(${designUnit} * 2px + 2px);
+    ::slotted([slot="checked-message"]),
+    ::slotted([slot="unchecked-message"]) {
+        margin-inline-start: calc(${designUnit} * 2px + 2px);
     }
 
     :host([aria-checked="true"]) .checked-indicator {

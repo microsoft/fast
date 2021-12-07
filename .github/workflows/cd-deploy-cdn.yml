@@ -33,4 +33,4 @@ jobs:
         webhook_token: ${{ secrets.DISCORD_NOTIFICATION_WEBHOOK_TOKEN }}
         color: '#DE2D6D'
         username: 'FAST DevOps CDN Bot'
-        message: 'Deployment has completed to CDN on https://github.com/microsoft/fast/actions/workflows/cd-static-cdn.yml'
+        message: 'Deployment has completed to CDN on https://github.com/microsoft/fast/actions/workflows/cd-deploy-cdn.yml'

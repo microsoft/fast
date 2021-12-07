@@ -51,15 +51,21 @@ A pre-bundled script that contains all APIs needed to use FAST Foundation is ava
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <script type="module" src="https://unpkg.com/@microsoft/fast-components"></script>
+        <script type="module" src="https://cdn.jsdelivr.net/npm/@microsoft/fast-components/dist/fast-components.min.js"></script>
     </head>
     <!-- ... -->
 </html>
 ```
 
-The above CDN location points to the latest release of `fast-components`. It is advised that when you deploy your site or app, you import the specific version you have developed and tested with.
+The markup above always references the latest release. When deploying to production, you will want to ship with a specific version. Here's an example of the markup for that:
 
+```html
+<script type="module" src="https://cdn.jsdelivr.net/npm/@microsoft/fast-components@2.16.0/dist/fast-components.min.js"></script>
+```
+
+:::note
 For simplicity, examples throughout the documentation will assume the library has been installed from NPM, but you can always replace the import location with the CDN URL.
+:::
 
 ## Development
 
