@@ -1322,20 +1322,19 @@ export const lightModeStylesheetBehavior: (styles: ElementStyles) => MatchMediaS
 // Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "Listbox" because one of its declarations is marked as @internal
 //
 // @public
-export class Listbox extends FoundationElement {
+export abstract class Listbox extends FoundationElement {
     // @internal
     clickHandler(e: MouseEvent): boolean | void;
     disabled: boolean;
-    // @internal (undocumented)
+    // @internal
     get firstSelectedOption(): ListboxOption;
-    // @internal (undocumented)
+    // @internal
     protected focusAndScrollOptionIntoView(): void;
-    // @internal (undocumented)
+    // @internal
     focusinHandler(e: FocusEvent): void;
-    handleTypeAhead: (key: string) => void;
+    handleTypeAhead(key: string): void;
     // @internal
     keydownHandler(e: KeyboardEvent): boolean | void;
-    // (undocumented)
     get length(): number;
     // @internal
     mousedownHandler(e: MouseEvent): boolean | void;
@@ -1345,11 +1344,11 @@ export class Listbox extends FoundationElement {
     protected _options: ListboxOption[];
     role: string;
     selectedIndex: number;
-    // (undocumented)
+    // @internal
     selectedIndexChanged(prev: number, next: number): void;
     selectedOptions: ListboxOption[];
-    // (undocumented)
-    protected selectedOptionsChanged(prev: any, next: any): void;
+    // @internal
+    protected selectedOptionsChanged(prev: ListboxOption[] | undefined, next: ListboxOption[]): void;
     selectFirstOption(): void;
     // @internal
     selectLastOption(): void;
@@ -1357,28 +1356,42 @@ export class Listbox extends FoundationElement {
     selectNextOption(): void;
     // @internal
     selectPreviousOption(): void;
-    // @internal (undocumented)
+    // @internal
     protected setDefaultSelectedOption(): void;
     protected setSelectedOptions(): void;
+    // @internal
+    protected shouldSkipFocus: boolean;
     static slottedOptionFilter: (n: HTMLElement) => boolean;
-    // @internal (undocumented)
-    slottedOptions: HTMLElement[];
-    // (undocumented)
-    slottedOptionsChanged(prev: any, next: any): void;
+    // @internal
+    slottedOptions: Element[];
+    // @internal
+    slottedOptionsChanged(prev: Element[] | unknown, next: Element[]): void;
     // @internal
     protected static readonly TYPE_AHEAD_TIMEOUT_MS = 1000;
-    // @internal (undocumented)
-    protected typeaheadBuffer: string;
-    // (undocumented)
-    typeaheadBufferChanged(prev: string, next: string): void;
     // @internal
-    protected typeAheadExpired: boolean;
-    // @internal (undocumented)
+    protected typeaheadBuffer: string;
+    // @internal
+    typeaheadBufferChanged(prev: string, next: string): void;
+    // @internal @deprecated
+    protected get typeAheadExpired(): boolean;
+    protected set typeAheadExpired(value: boolean);
+    // @internal
+    protected typeaheadExpired: boolean;
+    // @internal
     protected typeaheadTimeout: number;
 }
 
 // @internal (undocumented)
 export interface Listbox extends DelegatesARIAListbox {
+}
+
+// @public
+export class ListboxElement extends Listbox {
+    // @internal @override
+    mousedownHandler(e: MouseEvent): boolean | void;
+    size: number;
+    // @internal
+    protected sizeChanged(prev: number | unknown, next: number): void;
 }
 
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
@@ -1433,7 +1446,7 @@ export enum ListboxRole {
 }
 
 // @public
-export const listboxTemplate: (context: ElementDefinitionContext, definition: FoundationElementDefinition) => ViewTemplate<Listbox>;
+export const listboxTemplate: FoundationElementTemplate<ViewTemplate<ListboxElement>>;
 
 // @public
 export abstract class MatchMediaBehavior implements Behavior {

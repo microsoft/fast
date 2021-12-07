@@ -2,6 +2,110 @@
   "name": "@microsoft/fast-components",
   "entries": [
     {
+      "date": "Thu, 02 Dec 2021 07:11:13 GMT",
+      "tag": "@microsoft/fast-components_v2.16.6",
+      "version": "2.16.6",
+      "comments": {
+        "none": [
+          {
+            "comment": "docs: corrections to Blazor, webpack, and cdn links",
+            "author": "roeisenb@microsoft.com",
+            "commit": "2ec536794820959f771ebbfe25efd5a4489e7a76",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 30 Nov 2021 07:13:40 GMT",
+      "tag": "@microsoft/fast-components_v2.16.6",
+      "version": "2.16.6",
+      "comments": {
+        "patch": [
+          {
+            "comment": "fix: vertical tabs fromm jumping",
+            "author": "jes@microsoft.com",
+            "commit": "17d3b0af07625b075721a440e932442c45a10044",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 23 Nov 2021 07:12:23 GMT",
+      "tag": "@microsoft/fast-components_v2.16.5",
+      "version": "2.16.5",
+      "comments": {
+        "patch": [
+          {
+            "comment": "add `size` attribute to listbox element",
+            "author": "john.kreitlow@microsoft.com",
+            "commit": "caa956557ea1d8b7722665d228898df629d46cc2",
+            "package": "@microsoft/fast-components"
+          },
+          {
+            "comment": "fix: disabled flipper button clicks",
+            "author": "jes@microsoft.com",
+            "commit": "208eb38c6bd4099ddd340e250da677766951cd17",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sun, 21 Nov 2021 07:10:36 GMT",
+      "tag": "@microsoft/fast-components_v2.16.4",
+      "version": "2.16.4",
+      "comments": {
+        "patch": [
+          {
+            "comment": "fix: proper css targeting for flipper",
+            "author": "jes@microsoft.com",
+            "commit": "15b8789f5aff1852bfcd037cf5661c13ee8affea",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sun, 14 Nov 2021 07:11:13 GMT",
+      "tag": "@microsoft/fast-components_v2.16.3",
+      "version": "2.16.3",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Fixing z-indexing problem when using fast-select",
+            "author": "robarb@microsoft.com",
+            "commit": "ec0a853a7d1a6f20443cfa332f9f9fbe5d723cc3",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 11 Nov 2021 07:15:33 GMT",
+      "tag": "@microsoft/fast-components_v2.16.2",
+      "version": "2.16.2",
+      "comments": {
+        "none": [
+          {
+            "comment": "update playwright from 1.11.0 to 1.16.3",
+            "author": "john.kreitlow@microsoft.com",
+            "commit": "7ce6d00f24147385bfbd242bd4b6b1d41f5f0cb0",
+            "package": "@microsoft/fast-components"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-foundation to v2.26.2",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "116f30b236deffd48ede5488d167934cf848c492",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 10 Nov 2021 07:12:54 GMT",
       "tag": "@microsoft/fast-components_v2.16.1",
       "version": "2.16.1",

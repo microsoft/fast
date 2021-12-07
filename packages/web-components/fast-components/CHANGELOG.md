@@ -1,8 +1,49 @@
 # Change Log - @microsoft/fast-components
 
-This log was last generated on Wed, 10 Nov 2021 07:12:54 GMT and should not be manually modified.
+This log was last generated on Tue, 30 Nov 2021 07:13:40 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.16.6
+
+Tue, 30 Nov 2021 07:13:40 GMT
+
+### Patches
+
+- fix: vertical tabs fromm jumping (jes@microsoft.com)
+
+## 2.16.5
+
+Tue, 23 Nov 2021 07:12:23 GMT
+
+### Patches
+
+- add `size` attribute to listbox element (john.kreitlow@microsoft.com)
+- fix: disabled flipper button clicks (jes@microsoft.com)
+
+## 2.16.4
+
+Sun, 21 Nov 2021 07:10:36 GMT
+
+### Patches
+
+- fix: proper css targeting for flipper (jes@microsoft.com)
+
+## 2.16.3
+
+Sun, 14 Nov 2021 07:11:13 GMT
+
+### Patches
+
+- Fixing z-indexing problem when using fast-select (robarb@microsoft.com)
+
+## 2.16.2
+
+Thu, 11 Nov 2021 07:15:33 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.26.2 (nicholasrice@users.noreply.github.com)
 
 ## 2.16.1
 
