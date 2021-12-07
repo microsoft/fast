@@ -602,35 +602,12 @@ describe("Button", () => {
             })
 
             await DOM.nextUpdate();
-            const shadowSpan = element.shadowRoot?.querySelector('span.content') as HTMLElement
+            const shadowSpan = element.shadowRoot?.querySelector('span.content') as HTMLSpanElement
             shadowSpan?.click()
 
             expect(wasClicked).to.equal(false);
 
             await disconnect();
         });
-
-        it("should propagate when children is clicked", async ()=> {
-            const { connect, disconnect, element, parent } = await setup();
-            const children = document.createElement("span")
-
-            element.disabled = true;
-            parent.appendChild(element);
-            element.appendChild(children)
-
-            let wasClicked: boolean = false;
-            await connect();
-
-            parent.addEventListener(eventClick, () => {
-                wasClicked = true;
-            })
-
-            await DOM.nextUpdate();
-            children.click()
-
-            expect(wasClicked).to.equal(true);
-
-            await disconnect();
-        })
     });
 });

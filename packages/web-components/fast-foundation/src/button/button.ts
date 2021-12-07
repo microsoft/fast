@@ -157,7 +157,11 @@ export class Button extends FormAssociatedButton {
 
         this.proxy.setAttribute("type", this.type);
         this.handleUnsupportedDelegatesFocus();
-        document.addEventListener("click", this.handleClick, true);
+
+        const spans = this.shadowRoot?.querySelectorAll("span");
+        spans?.forEach((span: HTMLSpanElement) => {
+            span.addEventListener("click", this.handleClick);
+        });
     }
 
     /**
@@ -165,15 +169,18 @@ export class Button extends FormAssociatedButton {
      */
     public disconnectedCallback(): void {
         super.disconnectedCallback();
-        document.removeEventListener("click", this.handleClick);
+        const spans = this.shadowRoot?.querySelectorAll("span");
+        spans?.forEach((span: HTMLSpanElement) => {
+            span.removeEventListener("click", this.handleClick);
+        });
     }
 
     /**
-     * Prevents events to propagate if disabled
+     * Prevents events to propagate if disabled and has no slotted content wrapped in HTML elements
      * @internal
      */
     private handleClick = (e: Event) => {
-        if (this.disabled && e.target === this) {
+        if (this.disabled && this.defaultSlottedContent?.length <= 1) {
             e.stopPropagation();
         }
     };
