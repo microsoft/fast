@@ -142,7 +142,7 @@ Integrate FAST Element into your existing or preferred stack:
 
 ---
 
-## Contributing to FAST
+## [Contributing to FAST](https://www.fast.design/docs/community/join)
 
 **There are two ways to contribute**:
 
@@ -158,20 +158,54 @@ Integrate FAST Element into your existing or preferred stack:
 - Join our [Discord](https://discord.gg/FcSNfg4) server.
 - Report bugs, request features through [Github](https://github.com/Microsoft/fast/issues/new/choose).
 
-**Getting started**:
+### Setup
 
 To work with the FAST monorepo you'll need Git, Node.js, Yarn, and Lerna setup on your machine.
 
-| Name                          | Instructions                                                                                  |
-| :---------------------------- | :-------------------------------------------------------------------------------------------- |
-| Git                           | download here: [https://git-scm.com/downloads](https://git-scm.com/downloads)                 |
-| Node.js                       | download here: [https://nodejs.org/en/](https://nodejs.org/en/)                               |
-| Yarn                          | install by running this command in the terminal: `npm install -g yarn`                        |
-| Lerna                         | install by running this command in the terminal: `yarn global add lerna`                      |
+* Git: [download](https://git-scm.com/downloads)
+* Node.js: [download](https://nodejs.org/en/) 
+* Yarn: `npm install -g yarn`
+* Lerna: `yarn global add lerna`
 
-| Next Steps                    | Instructions                                                                                  |
-| :---------------------------- | :-------------------------------------------------------------------------------------------- |
-| 1. Cloning the repo           | Run this commmand in the terminal: `git clone https://github.com/microsoft/fast.git`          |
+### Cloning the repo
+
+`git clone https://github.com/microsoft/fast.git`
+
+### Installing and building
+
+`yarn`
+
+### Creating a branch
+
+```shell
+git checkout -b users/{your github handle}/{your-branch-name}
+```
+
+### Contributing to fast-component
+
+```shell
+cd packages/web-components/fast-components
+yarn start
+```
+
+[Storybook](https://storybook.js.org/) will open in a browser window at localhost:6006
+
+### Contributing to documentation
+
+```shell
+`cd sites/website`
+`yarn start`
+```
+
+[Docusaurus](https://docusaurus.io/) will open in a browser window at `localhost:3000`
+
+### Submitting a pull request
+
+```shell
+git rebase master
+yarn change
+git push origin {your-branch-name}
+```
 
 ---
 
