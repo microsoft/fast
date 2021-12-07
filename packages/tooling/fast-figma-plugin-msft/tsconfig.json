@@ -6,7 +6,6 @@
         "outDir": "./dist",
         "declaration": false,
         "jsx": "react",
-        "strictNullChecks": true,
         "experimentalDecorators": true
     },
     "include": ["./src"]

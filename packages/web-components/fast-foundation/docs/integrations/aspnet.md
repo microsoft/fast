@@ -26,7 +26,13 @@ Now that we've got our basic project setup, we need to add our web components sc
 To add a CDN script for `fast-components` use the following markup:
 
 ```html
-<script type="module" src="https://unpkg.com/@@microsoft/fast-components"></script>
+<script type="module" src="https://cdn.jsdelivr.net/npm/@microsoft/fast-components/dist/fast-components.min.js"></script>
+```
+
+The markup above always references the latest release of the components. When deploying to production, you will want to ship with a specific version. Here's an example of the markup for that:
+
+```html
+<script type="module" src="https://cdn.jsdelivr.net/npm/@microsoft/fast-components@2.16.0/dist/fast-components.min.js"></script>
 ```
 
 The best place to put this is typically in your `_Layout.cshtml` file in the script section at the bottom of the `<body>`.

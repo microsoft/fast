@@ -306,7 +306,7 @@ describe("FASTSelect", function () {
 
             expect(
                 await selectedOption.evaluate(node => node.scrollTop)
-            ).to.be.closeTo(811, 16);
+            ).to.be.closeTo(451, 16);
 
             await element.evaluate(node => (node.selectedIndex = 0));
 

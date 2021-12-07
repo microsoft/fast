@@ -1,17 +1,17 @@
 import {
+    FASTElementDefinition,
     html,
     HTMLView,
     ViewTemplate,
-    FASTElementDefinition,
 } from "@microsoft/fast-element";
 import { RenderOperation, Router } from "./router";
 import { RouterConfiguration } from "./configuration";
 import { FASTElementLayout, Layout, RouteView, Transition } from "./view";
 import {
-    ElementRouteDefinition,
-    TemplateRouteDefinition,
     ElementFallbackRouteDefinition,
+    ElementRouteDefinition,
     TemplateFallbackRouteDefinition,
+    TemplateRouteDefinition,
 } from "./routes";
 import { Route } from "./navigation";
 import { RecognizedRoute } from "./recognizer";

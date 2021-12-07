@@ -104,7 +104,7 @@ const swatchConverter: ValueConverter = {
             return null;
         }
         const color = parseColorHexRGB(value);
-        return color ? SwatchRGB.create(color!.r, color!.g, color!.b) : null;
+        return color ? SwatchRGB.create(color.r, color.g, color.b) : null;
     },
 };
 
@@ -1077,7 +1077,7 @@ export const designSystemProviderStyles = (
  * A function that returns a {@link DesignSystemProvider} registration for configuring the component with a DesignSystem.
  * @public
  * @remarks
- * Generates HTML Element: \<fast-design-system-provider\>
+ * Generates HTML Element: `<fast-design-system-provider>`
  */
 export const fastDesignSystemProvider = DesignSystemProvider.compose({
     baseName: "design-system-provider",

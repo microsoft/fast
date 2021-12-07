@@ -13,6 +13,10 @@ import {
     neutralForegroundHint,
 } from "../design-tokens";
 
+/**
+ * Styles for Progress
+ * @public
+ */
 export const progressStyles: (
     context: ElementDefinitionContext,
     definition: ProgressOptions

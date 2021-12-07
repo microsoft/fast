@@ -20,6 +20,10 @@ import {
 } from "../design-tokens";
 import { heightNumber } from "../styles/index";
 
+/**
+ * Styles for Breadcrumb item
+ * @public
+ */
 export const breadcrumbItemStyles: (
     context: ElementDefinitionContext,
     definition: BreadcrumbItemOptions

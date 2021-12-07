@@ -45,60 +45,60 @@ addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
         const regionScalingUpdate = document.getElementById(
             "region-upd1"
         ) as FoundationAnchoredRegion;
-        document
-            .getElementById("viewport-upd1")!
-            .addEventListener("scroll", () => regionScalingUpdate.update());
-
+        const viewPort = document.getElementById("viewport-upd1");
         const togglesRegion = document.getElementById("toggles-region");
+
+        if (!togglesRegion || !viewPort) {
+            return;
+        }
+
+        viewPort.addEventListener("scroll", () => regionScalingUpdate.update());
 
         // toggle anchor example
         document.querySelectorAll("[id^=toggles1-anchor").forEach(anchor => {
             anchor.addEventListener("click", (e: MouseEvent) => {
-                togglesRegion!.setAttribute("anchor", (e.target as HTMLElement).id);
+                togglesRegion.setAttribute("anchor", (e.target as HTMLElement).id);
             });
         });
 
-        document
-            .getElementById("toggle-positions-horizontal")!
-            .addEventListener("click", (e: MouseEvent) => {
-                if (
-                    togglesRegion?.getAttribute("horizontal-default-position") === "right"
-                ) {
-                    togglesRegion!.setAttribute("horizontal-default-position", "left");
-                } else {
-                    togglesRegion!.setAttribute("horizontal-default-position", "right");
-                }
-            });
-
-        document
-            .getElementById("toggle-positions-vertical")!
-            .addEventListener("click", (e: MouseEvent) => {
-                if (togglesRegion?.getAttribute("vertical-default-position") === "top") {
-                    togglesRegion!.setAttribute("vertical-default-position", "bottom");
-                } else {
-                    togglesRegion!.setAttribute("vertical-default-position", "top");
-                }
-            });
-
-        document
-            .getElementById("toggle-inset-vertical")!
-            .addEventListener("click", (e: MouseEvent) => {
-                if (togglesRegion?.getAttribute("vertical-inset") === "true") {
-                    togglesRegion!.setAttribute("vertical-inset", "false");
-                } else {
-                    togglesRegion!.setAttribute("vertical-inset", "true");
-                }
-            });
-
-        document
-            .getElementById("toggle-inset-horizontal")!
-            .addEventListener("click", (e: MouseEvent) => {
-                if (togglesRegion?.getAttribute("horizontal-inset") === "true") {
-                    togglesRegion!.setAttribute("horizontal-inset", "false");
-                } else {
-                    togglesRegion!.setAttribute("horizontal-inset", "true");
-                }
-            });
+        [
+            {
+                id: "toggle-positions-horizontal",
+                attribute: "horizontal-default-position",
+                firstValue: "right",
+                secondValue: "left",
+            },
+            {
+                id: "toggle-positions-vertical",
+                attribute: "vertical-default-position",
+                firstValue: "top",
+                secondValue: "bottom",
+            },
+            {
+                id: "toggle-inset-vertical",
+                attribute: "vertical-inset",
+                firstValue: "true",
+                secondValue: "false",
+            },
+            {
+                id: "toggle-inset-horizontal",
+                attribute: "horizontal-inset",
+                firstValue: "true",
+                secondValue: "false",
+            },
+        ].forEach(({ id, attribute, firstValue, secondValue }) => {
+            const toggleElement = document.getElementById(id);
+            if (toggleElement) {
+                toggleElement.addEventListener("click", () => {
+                    togglesRegion.setAttribute(
+                        attribute,
+                        togglesRegion.getAttribute(attribute) === firstValue
+                            ? secondValue
+                            : firstValue
+                    );
+                });
+            }
+        });
 
         document
             .querySelectorAll("[id^=anchor-menu-many]")

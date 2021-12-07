@@ -37,6 +37,7 @@ const pickerInputTemplate: ViewTemplate = html<Picker>`
         haspopup="list"
         aria-label="${x => x.label}"
         aria-labelledby="${x => x.labelledBy}"
+        placeholder="${x => x.placeholder}"
         ${ref("inputElement")}
     ></input>
 `;
@@ -162,6 +163,16 @@ export class Picker extends FormAssociatedPicker {
      */
     @attr({ attribute: "labelledby" })
     public labelledBy: string;
+
+    /**
+     * Applied to the placeholder attribute of the input element
+     *
+     * @alpha
+     * @remarks
+     * HTML Attribute: placholder
+     */
+    @attr({ attribute: "placeholder" })
+    public placeholder: string;
 
     /**
      * Whether to display a loading state if the menu is opened.
@@ -489,6 +500,7 @@ export class Picker extends FormAssociatedPicker {
 
         this.inputElement.addEventListener("input", this.handleTextInput);
         this.inputElement.addEventListener("click", this.handleInputClick);
+        /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */
         this.$fastController.addBehaviors([this.itemsRepeatBehavior!]);
 
         this.menuElement.suggestionsAvailableText = this.suggestionsAvailableText;
@@ -503,6 +515,7 @@ export class Picker extends FormAssociatedPicker {
             { positioning: true }
         ).createBehavior(this.optionsPlaceholder);
 
+        /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */
         this.$fastController.addBehaviors([this.optionsRepeatBehavior!]);
 
         this.handleSelectionChange();
@@ -819,8 +832,10 @@ export class Picker extends FormAssociatedPicker {
                     e.target.value
                 }`;
             }
-            this.toggleFlyout(false);
             this.inputElement.value = "";
+            this.query = "";
+            this.inputElement.focus();
+            this.toggleFlyout(false);
             return false;
         }
 

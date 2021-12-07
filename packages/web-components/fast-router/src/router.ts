@@ -1,4 +1,4 @@
-import { Constructable, FASTElement } from "@microsoft/fast-element";
+import { FASTElement } from "@microsoft/fast-element";
 import { RenderCommand } from "./commands";
 import { RouterConfiguration } from "./configuration";
 import { NavigationContributor } from "./contributors";

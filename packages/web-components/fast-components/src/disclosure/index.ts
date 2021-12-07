@@ -78,19 +78,13 @@ export class Disclosure extends FoundationDisclosure {
 }
 
 /**
- * Styles for Disclosure
- * @public
- */
-export const disclosureStyles = styles;
-
-/**
  * A function that returns a {@link @microsoft/fast-foundation#Disclosure} registration for configuring the component with a DesignSystem.
  * Implements {@link @microsoft/fast-foundation#disclosureTemplate}
  *
  *
  * @public
  * @remarks
- * Generates HTML Element: \<fast-Disclosure\>
+ * Generates HTML Element: `<fast-Disclosure>`
  *
  */
 export const fastDisclosure = Disclosure.compose({
@@ -99,3 +93,5 @@ export const fastDisclosure = Disclosure.compose({
     template,
     styles,
 });
+
+export { styles as disclosureStyles };

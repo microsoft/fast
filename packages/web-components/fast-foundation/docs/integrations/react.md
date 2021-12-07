@@ -43,6 +43,10 @@ npm install --save @microsoft/fast-components @microsoft/fast-foundation @micros
 }
 ```
 
+:::note
+The above will not work on Windows. You can adjust the scripts to use [cross-env](https://www.npmjs.com/package/cross-env) to add Windows support.
+:::
+
 **Override the `eslintConfig` field to turn off the 'no-unused-expressions' rule**
 
 ```jsonc

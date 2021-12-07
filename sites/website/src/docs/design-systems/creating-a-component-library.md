@@ -31,7 +31,7 @@ export class Counter extends FoundationElement {
 }
 ```
 
-One important detail to note is that we do not use the `@customElement` decorator in this case. The `@customElement` decorator forces immediate template and style resolution, and platform component element name registration. This is fine when building application components, or components not intended to be used as part of a library in another application. However, if used for library components, it prevents the consumer of the component from having the opportunity to customize the component in ways that me be critical for their app. `FoundationElement` helps address this challenge.
+One important detail to note is that we do not use the `@customElement` decorator in this case. The `@customElement` decorator forces immediate template and style resolution, and platform component element name registration. This is fine when building application components, or components not intended to be used as part of a library in another application. However, if used for library components, it prevents the consumer of the component from having the opportunity to customize the component in ways that might be critical for their app. `FoundationElement` helps address this challenge.
 
 ### Define Templates and Styles 
 
@@ -68,7 +68,7 @@ Let’s take a closer look at what the two arguments to these lazily evaluated f
 The first argument is the `ElementDefinitionContext`. This context object provides information that is available *during* the attempt to register the element. For example, it will tell you the HTML element tag `name` that the component will be defined as. You can also see what the default `shadowRootMode` of the `DesignSystem` is. Most of the other APIs are used internally by `FoundationElement.compose` (see below) to define the element, but one particular API of note is the `tagFor()` method of the context. This API is used to inspect the tag-name of other components and allows usage of other library components in a template or stylesheet without knowing ahead of time what the tag-name for the element will be. Here's an example of how the reusable `Counter` component would leverage this to ensure that the `Button`'s tag name is correct, even if the app developer decides to rename `Button` in some way.
 
 ```ts
-import { html } from "@microsoft/fast-element";
+import { html, css } from "@microsoft/fast-element";
 import { Button } from "@microsoft/fast-components";
 import type { ElementDefinitionContext } from "@microsoft/fast-foundation";
 

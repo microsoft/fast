@@ -8,7 +8,7 @@ import { tooltipStyles as styles } from "./tooltip.styles";
  *
  * @public
  * @remarks
- * Generates HTML Element: \<fast-tooltip\>
+ * Generates HTML Element: `<fast-tooltip>`
  */
 export const fastTooltip = Tooltip.compose({
     baseName: "tooltip",
@@ -22,8 +22,4 @@ export const fastTooltip = Tooltip.compose({
  */
 export { Tooltip };
 
-/**
- * Styles for Tooltip
- * @public
- */
-export const tooltipStyles = styles;
+export { styles as tooltipStyles };

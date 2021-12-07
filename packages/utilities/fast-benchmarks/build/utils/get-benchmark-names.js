@@ -1,6 +1,5 @@
-/* eslint-disable */
-const glob = require("glob");
 const path = require("path");
+const glob = require("glob");
 
 module.exports = function getBenchmarkNames(src) {
     return glob.sync(path.resolve(src, "**/index.ts")).map(x => {

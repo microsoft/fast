@@ -1,6 +1,7 @@
 import { Constructable, FASTElementDefinition } from "@microsoft/fast-element";
 import { FoundationElement } from "../foundation-element/foundation-element";
 import { Container, DI, Registration } from "../di/di";
+import { DesignToken } from "../design-token/design-token";
 import { ComponentPresentation } from "./component-presentation";
 import type {
     ContextualElementDefinition,
@@ -9,7 +10,7 @@ import type {
     ElementDefinitionContext,
     ElementDefinitionParams,
 } from "./registration-context";
-
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 /**
  * Indicates what to do with an ambiguous (duplicate) element.
  * @public
@@ -90,6 +91,17 @@ export interface DesignSystem {
      * @public
      */
     withElementDisambiguation(callback: ElementDisambiguationCallback): DesignSystem;
+
+    /**
+     * Overrides the {@link (DesignToken:interface)} root, controlling where
+     * {@link (DesignToken:interface)} default value CSS custom properties
+     * are emitted.
+     *
+     * Providing `null` disables automatic DesignToken registration.
+     * @param root - the root to register
+     * @public
+     */
+    withDesignTokenRoot(root: HTMLElement | Document | null): DesignSystem;
 }
 
 let rootDesignSystem: DesignSystem | null = null;
@@ -187,6 +199,8 @@ function extractTryDefineElementParams(
 }
 
 class DefaultDesignSystem implements DesignSystem {
+    private designTokensInitialized: boolean = false;
+    private designTokenRoot: HTMLElement | null | undefined;
     private prefix: string = "fast";
     private shadowRootMode: ShadowRootMode | undefined = undefined;
     private disambiguate: ElementDisambiguationCallback = () =>
@@ -212,6 +226,11 @@ class DefaultDesignSystem implements DesignSystem {
         callback: ElementDisambiguationCallback
     ): DesignSystem {
         this.disambiguate = callback;
+        return this;
+    }
+
+    public withDesignTokenRoot(root: HTMLElement | null): DesignSystem {
+        this.designTokenRoot = root;
         return this;
     }
 
@@ -280,6 +299,14 @@ class DefaultDesignSystem implements DesignSystem {
             },
         };
 
+        if (!this.designTokensInitialized) {
+            this.designTokensInitialized = true;
+
+            if (this.designTokenRoot !== null) {
+                DesignToken.registerRoot(this.designTokenRoot);
+            }
+        }
+
         container.registerWithContext(context, ...registrations);
 
         for (const entry of elementDefinitionEntries) {
@@ -321,3 +348,4 @@ class ElementDefinitionEntry implements ElementDefinitionContext {
         return DesignSystem.tagFor(type)!;
     }
 }
+/* eslint-enable @typescript-eslint/no-non-null-assertion */

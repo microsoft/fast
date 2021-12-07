@@ -446,6 +446,10 @@ export class Tooltip extends FoundationElement {
             this.showTooltip();
             return;
         } else {
+            if (this.isAnchorHoveredFocused) {
+                this.showTooltip();
+                return;
+            }
             this.hideTooltip();
         }
     };

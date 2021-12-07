@@ -15,6 +15,10 @@ import {
 } from "../design-tokens";
 import { elevation } from "../styles/index";
 
+/**
+ * Styles for Menu
+ * @public
+ */
 export const menuStyles: (
     context: ElementDefinitionContext,
     definition: FoundationElementDefinition

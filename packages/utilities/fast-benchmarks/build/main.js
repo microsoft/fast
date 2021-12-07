@@ -1,16 +1,16 @@
-/* eslint-disable */
-const getBenchmarkPaths = require("./utils/get-benchmark-names");
-const path = require("path");
-const { program } = require("commander");
+/* global bench */
 const fs = require("fs");
+const path = require("path");
+const { default: chalk } = require("chalk");
+const mkdirp = require("mkdirp");
+const { chromium } = require("playwright");
 const webpack = require("webpack");
+const { program } = require("commander");
 const WebpackDevServer = require("webpack-dev-server");
 let webpackConfig = require("../webpack.config");
+const getBenchmarkPaths = require("./utils/get-benchmark-names");
 const resultEmitter = require("./loggers/console");
 const diff = require("./diff");
-const { chromium } = require("playwright");
-const mkdirp = require("mkdirp");
-const { default: chalk } = require("chalk");
 process.env.BENCHMARK_SRC = path.resolve(__dirname, "../benchmarks");
 
 program

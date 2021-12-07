@@ -1,4 +1,4 @@
-import { Behavior, HTMLDirective, DOM } from "@microsoft/fast-element";
+import { Behavior, DOM, HTMLDirective } from "@microsoft/fast-element";
 import {
     NavigationCommitPhaseHook,
     NavigationPhaseHook,

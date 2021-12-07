@@ -12,7 +12,7 @@ import { menuItemStyles as styles } from "./menu-item.styles";
  *
  * @public
  * @remarks
- * Generates HTML Element: \<fast-menu-item\>
+ * Generates HTML Element: `<fast-menu-item>`
  */
 export const fastMenuItem = MenuItem.compose<MenuItemOptions>({
     baseName: "menu-item",
@@ -50,13 +50,9 @@ export const fastMenuItem = MenuItem.compose<MenuItemOptions>({
 });
 
 /**
- * Styles for MenuItem
- * @public
- */
-export const menuItemStyles = styles;
-
-/**
  * Base class for MenuItem
  * @public
  */
 export { MenuItem };
+
+export { styles as menuItemStyles };

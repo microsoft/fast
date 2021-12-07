@@ -1,5 +1,5 @@
 import { Constructable } from "@microsoft/fast-element";
-import { NavigationQueue, DefaultNavigationQueue } from "./navigation";
+import { DefaultNavigationQueue, NavigationQueue } from "./navigation";
 import { Layout, Transition } from "./view";
 import { RouteCollection, RouteMatch } from "./routes";
 import { DefaultLinkHandler, LinkHandler } from "./links";

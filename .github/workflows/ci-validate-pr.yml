@@ -1,4 +1,4 @@
-name: CI - FAST
+name: Validate PRs
 
 on:
   push:

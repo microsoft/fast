@@ -38,7 +38,7 @@ A pre-bundled script that contains all APIs needed to build web components with 
 <html lang="en">
     <head>
         <script type="module">
-          import { FASTElement } from "https://unpkg.com/@microsoft/fast-element";
+          import { FASTElement } from "https://cdn.jsdelivr.net/npm/@microsoft/fast-element/dist/fast-element.min.js";
 
           // your code here
         </script>
@@ -47,9 +47,11 @@ A pre-bundled script that contains all APIs needed to build web components with 
 </html>
 ```
 
-:::important
-The above CDN location points to the latest release of `fast-element`. It is advised that when you deploy your site or app, you import the specific version you have developed and tested with.
-:::
+The markup above always references the latest release. When deploying to production, you will want to ship with a specific version. Here's an example of the markup for that:
+
+```html
+<script type="module" src="https://cdn.jsdelivr.net/npm/@microsoft/fast-element@1.6.2/dist/fast-element.min.js"></script>
+```
 
 :::note
 For simplicity, examples throughout the documentation will assume the library has been installed from NPM, but you can always replace the import location with the CDN URL.

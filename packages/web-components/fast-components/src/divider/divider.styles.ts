@@ -6,6 +6,10 @@ import {
 } from "@microsoft/fast-foundation";
 import { designUnit, neutralStrokeDividerRest, strokeWidth } from "../design-tokens";
 
+/**
+ * Styles for Divider
+ * @public
+ */
 export const dividerStyles: (
     context: ElementDefinitionContext,
     definition: FoundationElementDefinition

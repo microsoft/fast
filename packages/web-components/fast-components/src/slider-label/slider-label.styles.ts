@@ -15,7 +15,11 @@ import {
 } from "../design-tokens";
 import { heightNumber } from "../styles/index";
 
-export const horizontalSliderStyles = css`
+/**
+ * Styles for Horizontal Slider label
+ * @public
+ */
+export const horizontalSliderLabelStyles = css`
     :host {
         align-self: start;
         grid-row: 2;
@@ -32,7 +36,11 @@ export const horizontalSliderStyles = css`
     }
 `;
 
-export const verticalSliderStyles = css`
+/**
+ * Styles for Vertical slider label
+ * @public
+ */
+export const verticalSliderLabelStyles = css`
     :host {
         justify-self: start;
         grid-column: 2;
@@ -56,6 +64,10 @@ export const verticalSliderStyles = css`
     }
 `;
 
+/**
+ * Styles for Slider Label
+ * @public
+ */
 export const sliderLabelStyles: (
     context: ElementDefinitionContext,
     definition: FoundationElementDefinition
