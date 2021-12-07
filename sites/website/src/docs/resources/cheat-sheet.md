@@ -6,70 +6,123 @@ custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/src
 ---
 
 # Cheat Sheet
-### [FAST](https://github.com/microsoft/fast)                                                 
+## [FAST](https://github.com/microsoft/fast)                                                 
 
-A collection of technologies built on [Web Components](https://www.fast.design/docs/resources/why-web-components) and modern Web Standards.
+**A collection of technologies built on [Web Components](https://www.fast.design/docs/resources/why-web-components) and modern Web Standards.**
 
-* **Notes**: 
-    * You do not need a framework to use FAST components.
-    * Can be used in combination with any framework or library of your choice. 
 
-* **When to use**: 
-    * See FAST libraries.
+* Designed to help you efficiently tackle some of the most common challenges in website and application design and development. FAST components do not require a framework, but can be used in combination with any framework or library.
+* FAST packages:
+    * @microsoft/fast-components
+    * @fluentui/web-components
+    * @microsoft/fast-foundation
+    * @microsoft/fast-element
+* FAST Frame:
+    * A highly configurable [Design System](https://www.fast.design/docs/design-systems/overview) composed of Web Components, Design Tokens, stylesheets, and styling tools. Has a robust component library, and an adaptive and accessible UI system that can be dropped into any app.
 
+--- 
 ### [@microsoft/fast-components](https://www.fast.design/docs/components/getting-started)     
 
-A library that includes a common set of components found in many websites and apps.       
+**A library that includes a common set of components found in many websites and apps.**       
 
-* **Notes**:
-    * Assembles the building blocks of @microsoft/fast-foundation to create its component set. 
-    * Expresses Microsoft's [FAST Frame Design System](https://www.fast.design/docs/design-systems/fast-frame/).   
+* Assembles the building blocks of `@microsoft/fast-foundation` to create its component set. 
+* Expresses Microsoft's [FAST Frame Design System](https://www.fast.design/docs/design-systems/fast-frame/).
+* Use this library when you want to integrate FAST components into an existing site or app.
+* See [Using Components](#using-components).
 
-* **When to use**:
-    * When you want to integrate FAST components into an existing site or app, or if you need more control over the theme of the components. 
-    * See [Using Components](#using-components).
+To install the components, use either npm or yarn:
+```shell
+    npm install --save @microsoft/fast-components
+``` 
+```shell
+    yarn add @microsoft/fast-components
+```
 
+To use a Web Component as a custom element in HTML, the custom element must be registered.
+
+```ts
+import { 
+    fastButton, 
+    provideFASTDesignSystem 
+} from "@microsoft/fast-components";
+
+provideFASTDesignSystem()
+    .register(
+        fastButton() // custom element
+    );
+```
+
+---
 ### [@fluentui/web-components](https://www.fast.design/docs/components/getting-started)
-A library that includes a common set of components found in many websites and apps.
 
-* **Notes**:
-    * Assembles the building blocks of @microsoft/fast-foundation to create its component set. 
-    * Expresses Microsoft's [Fluent Design System](https://www.microsoft.com/design/fluent/#/).      
+**A library that includes a common set of components found in many websites and apps.**
 
-* **When to use**:
-    * When you want components to look and feel like those found in Windows, Office, Teams, and Edge products.
+* Assembles the building blocks of `@microsoft/fast-foundation` to create its component set. 
+* Expresses Microsoft's [Fluent Design System](https://www.microsoft.com/design/fluent/#/).      
+* Use this library when you want components to look and feel like those found in Windows, Office, Teams, and Edge products.
 
+To install the components, use either npm or yarn:
+```shell
+    npm install --save @microsoft/fast-components
+``` 
+```shell
+    yarn add @microsoft/fast-components
+```
+
+To use a Web Component as a custom element in HTML, the custom element must be registered.
+
+```ts
+import { 
+    fluentButton, 
+    provideFluentDesignSystem 
+} from "@fluentui/web-components";
+
+provideFluentDesignSystem()
+    .register(
+        fluentButton()
+    );
+```
+---
 ### [@microsoft/fast-foundation](https://www.fast.design/docs/introduction)
 
-A library that provides foundational building blocks that can be assembled to create new design systems and component libraries.
+**A library that provides foundational building blocks that can be assembled to create new design systems and component libraries.**
 
-* **Notes**:
-    * Exports of this package can generally be thought of as un-styled base components that implement semantic and accessible markup and behavior.   
+* Exports of this package can generally be thought of as un-styled base components that implement semantic and accessible markup and behavior.   
+* Use this library when you want to implement something like Google's Material Design or Twitter Bootstrap.
 
-* **When to use**:
-    * When you want to implement something like Google's Material Design or Twitter Bootstrap.
-
+---
 ### [@microsoft/fast-element](https://www.fast.design/docs/fast-element/getting-started)
-A library that is a lightweight means to easily build performant, memory-efficient, standards-compliant Web Components.
 
-* **Notes**:
-    * FAST Elements work in every major browser.  
-    * You do not need a framework to use FAST components.
-    * You can use them in combination with any framework or library of your choice.    
+**A library that is a lightweight means to easily build performant, memory-efficient, standards-compliant Web Components.**
 
-* **When to use**: 
-    * When you want to create completely new web components. 
-    * See [Building Components](#building-components).
+* Provides a thin layer of opinions on top of Web Components, lifting the level of abstraction just enough to make it easier and FASTer to build components   
+* When you want to create completely new web components. 
+* See [Building Components](#building-components).
 
+To install the components, use either npm or yarn:
+
+```shell
+npm install --save @microsoft/fast-element
+```
+
+```shell
+yarn add @microsoft/fast-element
+```
+
+Within your JavaScript or TypeScript code, you can then import library APIs like this:
+
+```ts
+import { FASTElement } from '@microsoft/fast-element';
+```
+
+---
 ### [FAST Frame Design System](https://www.fast.design/docs/design-systems/fast-frame)
-A Design System composed of Web Components, Design Tokens, stylesheets, and styling tools.
 
-* **Notes**:
-    * Provides a highly configurable design system that you can drop into any app. 
-    * Provides a set of building blocks that you can use to construct your own design system from scratch.   
-      
-* **When to use**:
-    * When you have an existing app, or want to create your own [Design System](#design-system).
+**A Design System composed of Web Components, Design Tokens, stylesheets, and styling tools.**
+
+* Provides a highly configurable design system that you can drop into any app. 
+* Provides a set of building blocks that you can use to construct your own design system.   
+* Use FAST Frame when you have an existing app, or want to create your own [Design System](#design-system).
 
 ---
 
