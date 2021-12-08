@@ -8,7 +8,7 @@ import { selectStyles as styles } from "./select.styles";
 
 /**
  * The FAST select class
- * @internal
+ * @public
  */
 export class Select extends FoundationSelect {
     /**

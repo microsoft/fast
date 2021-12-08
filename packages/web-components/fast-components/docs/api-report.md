@@ -1114,11 +1114,9 @@ export type SearchAppearance = "filled" | "outline";
 // @public
 export const searchStyles: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: import("@microsoft/fast-foundation").AnchorOptions) => import("@microsoft/fast-element").ElementStyles;
 
-// Warning: (ae-internal-missing-underscore) The name "Select" should be prefixed with an underscore because the declaration is marked as @internal
-//
-// @internal
+// @public
 export class Select extends Select_2 {
-    // (undocumented)
+    // @internal (undocumented)
     connectedCallback(): void;
 }
 

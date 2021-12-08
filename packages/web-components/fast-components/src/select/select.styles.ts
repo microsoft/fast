@@ -107,7 +107,7 @@ export const selectStyles = (context, definition) =>
         flex-direction: column;
         left: 0;
         max-height: calc(var(--max-height) - (${heightNumber} * 1px));
-        padding: calc((${designUnit} * 2) * 1px);
+        padding: calc(${designUnit} * 2px);
         overflow-y: auto;
         position: absolute;
         width: 100%;
@@ -128,7 +128,7 @@ export const selectStyles = (context, definition) =>
         font-family: inherit;
         min-height: 100%;
         line-height: ${typeRampBaseLineHeight};
-        padding: 0 calc(${designUnit} * 2.25px);
+        padding: 0 calc(${designUnit} * 3px);
         width: 100%;
     }
 
@@ -167,11 +167,11 @@ export const selectStyles = (context, definition) =>
     }
 
     :host([open][position="above"]) .listbox {
-        bottom: calc((${heightNumber} + ${designUnit} * 2) * 1px);
+        bottom: calc((${heightNumber} + ${designUnit}) * 1px);
     }
 
     :host([open][position="below"]) .listbox {
-        top: calc((${heightNumber} + ${designUnit} * 2) * 1px);
+        top: calc((${heightNumber} + ${designUnit}) * 1px);
     }
 
     .selected-value {
@@ -219,20 +219,9 @@ export const selectStyles = (context, definition) =>
         forcedColorsStylesheetBehavior(
             css`
                 :host([disabled]) {
-                    forced-color-adjust: none;
                     border-color: ${SystemColors.GrayText};
-                    background-color: ${SystemColors.ButtonFace};
                     color: ${SystemColors.GrayText};
                     opacity: 1;
-                }
-
-                :host([disabled]:hover) {
-                    background: ${SystemColors.ButtonFace};
-                }
-
-                :host([disabled]) .control {
-                    color: ${SystemColors.GrayText};
-                    border-color: ${SystemColors.GrayText};
                 }
 
                 :host(:not([disabled]):hover) {
@@ -244,7 +233,7 @@ export const selectStyles = (context, definition) =>
                     forced-color-adjust: none;
                     background: ${SystemColors.ButtonFace};
                     border-color: ${SystemColors.Highlight};
-                    box-shadow: 0 0 0 1px inset ${SystemColors.Highlight};
+                    box-shadow: 0 0 0 calc(${focusStrokeWidth} * 1px) inset ${SystemColors.Highlight};
                     color: ${SystemColors.ButtonText};
                     fill: currentcolor;
                 }
@@ -254,16 +243,14 @@ export const selectStyles = (context, definition) =>
                     border: 1px solid ${SystemColors.ButtonText};
                 }
 
-                :host(:${focusVisible}) ::slotted([aria-selected="true"][role="option"]:not([disabled])) {
+                :host(:${focusVisible}) ::slotted([role="option"][aria-selected="true"]:not([disabled])) {
                     background: ${SystemColors.Highlight};
                     border-color: ${SystemColors.ButtonText};
-                    box-shadow: 0 0 0 calc(var(--focus-outline-width) * 1px) inset ${SystemColors.HighlightText};
+                    box-shadow: 0 0 0 calc(${focusStrokeWidth} * 1px) inset ${SystemColors.HighlightText};
                     color: ${SystemColors.HighlightText};
-                    fill: currentcolor;
                 }
 
                 ::slotted([role="option"]:not([aria-selected="true"]):not([disabled]):hover) {
-                    forced-color-adjust: none;
                     color: ${SystemColors.ButtonText};
                     background: ${SystemColors.ButtonFace};
                     border-color: ${SystemColors.Highlight};
