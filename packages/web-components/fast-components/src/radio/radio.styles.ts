@@ -120,13 +120,10 @@ export const radioStyles: (
         }
 
         slot[name="checked-indicator"] {
-            flex-shrink: 0;
-        }
-
-        slot[name="checked-indicator"] {
             display: flex;
             align-items: center;
             justify-content: center;
+            flex-shrink: 0;
             width: 100%;
             height: 100%;
             fill: ${foregroundOnAccentRest};
@@ -138,10 +135,10 @@ export const radioStyles: (
             opacity: 1;
         }
 
-        :host(.disabled) .label,
-        :host(.readonly) .label,
-        :host(.readonly) .control,
-        :host(.disabled) .control {
+        :host([disabled]) .label,
+        :host([readonly]) .label,
+        :host([readonly]) .control,
+        :host([disabled]) .control {
             cursor: ${disabledCursor};
         }
 
@@ -149,7 +146,7 @@ export const radioStyles: (
             opacity: 1;
         }
 
-        :host(.disabled) {
+        :host([disabled]) {
             opacity: ${disabledOpacity};
         }
   `.withBehaviors(
@@ -194,23 +191,23 @@ export const radioStyles: (
                     fill: ${SystemColors.Highlight};
                 }
 
-                :host(.disabled) {
+                :host([disabled]) {
                     opacity: 1;
                 }
 
-                :host(.disabled) .label {
+                :host([disabled]) .label {
                     color: ${SystemColors.GrayText};
                 }
 
-                :host(.disabled) .control,
-                :host(.checked.disabled:hover) .control,
+                :host([disabled]) .control,
+                :host(.checked[disabled]:hover) .control,
                 .control:active {
                     background: ${SystemColors.Field};
                     border-color: ${SystemColors.GrayText};
                 }
 
-                :host(.disabled) slot[name="checked-indicator"],
-                :host(.checked.disabled) .control:hover slot[name="checked-indicator"] {
+                :host([disabled]) slot[name="checked-indicator"],
+                :host(.checked[disabled]) .control:hover slot[name="checked-indicator"] {
                     fill: ${SystemColors.GrayText};
                 }
             `
