@@ -5,35 +5,14 @@ sidebar_label: Cheat Sheet
 custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/src/docs/resources/cheat-sheet.md
 ---
 
-# Cheat Sheet
-## [FAST](https://github.com/microsoft/fast)                                                 
-
-**A collection of technologies built on [Web Components](https://www.fast.design/docs/resources/why-web-components) and modern Web Standards.**
-
-
-* Designed to help you efficiently tackle some of the most common challenges in website and application design and development. [FAST Components](#fast-components) do not require a framework, but can be used in combination with any framework or library.
-
-* FAST libraries can be used on their own to build modern web sites and applications, but they are also designed to be used in combination with a wide variety of [existing technologies](https://www.fast.design/docs/integrations/introduction).
-
-    * FAST libraries:
-        * @microsoft/fast-components
-        * @fluentui/web-components
-        * @microsoft/fast-foundation
-        * @microsoft/fast-element
-
-* FAST Frame:
-    * A highly configurable [Design System](https://www.fast.design/docs/design-systems/overview) composed of Web Components, Design Tokens, stylesheets, and styling tools.
-    * Has a robust component library, and an adaptive and accessible UI system that can be dropped into any app.
-
---- 
+# Cheat Sheet                                 
 ### [@microsoft/fast-components](https://www.fast.design/docs/components/getting-started)     
 
 **A library that includes a common set of components found in many websites and apps.**       
 
 * Assembles the building blocks of `@microsoft/fast-foundation` to create its component set. 
 * Expresses Microsoft's [FAST Frame Design System](https://www.fast.design/docs/design-systems/fast-frame/).
-* Use this library when you want to integrate FAST components into an existing site or app.
-* See [Using Components](#using-components).
+* Use this library when you want to integrate [FAST Components](#using-components) into an existing site or app.
 
 To install the components, use either npm or yarn:
 ```shell
@@ -95,6 +74,8 @@ provideFluentDesignSystem()
 * Exports of this package can generally be thought of as un-styled base components that implement semantic and accessible markup and behavior.   
 * Use this library when you want to implement something like Google's Material Design or Twitter Bootstrap.
 
+
+
 ---
 ### [@microsoft/fast-element](https://www.fast.design/docs/fast-element/getting-started)
 
@@ -104,7 +85,7 @@ provideFluentDesignSystem()
 * Use this library when you want to create completely new web components. 
 * See [Building Components](#building-components).
 
-To install the components, use either npm or yarn:
+To install the fast-element library, use either npm or yarn:
 
 ```shell
 npm install --save @microsoft/fast-element
@@ -119,17 +100,6 @@ Within your JavaScript or TypeScript code, you can then import library APIs like
 ```ts
 import { FASTElement } from '@microsoft/fast-element';
 ```
-
-Integrate FAST Element into your existing or preferred stack:
-
-* [Angular](https://www.fast.design/docs/integrations/angular)
-* [ASP.NET](https://www.fast.design/docs/integrations/aspnet)
-* [Aurelia](https://www.fast.design/docs/integrations/aurelia)
-* [Blazor](https://www.fast.design/docs/integrations/blazor)
-* [Ember](https://www.fast.design/docs/integrations/ember)
-* [React](https://www.fast.design/docs/integrations/react)
-* [Vue](https://www.fast.design/docs/integrations/vue)
-* [Webpack](https://www.fast.design/docs/integrations/webpack)
 
 ---
 ### [FAST Frame Design System](https://www.fast.design/docs/design-systems/fast-frame)
@@ -162,50 +132,23 @@ provideFASTDesignSystem()
     );
 ```
 
+Or, register all available components:
+
+```ts
+import { 
+    allComponents, 
+    provideFASTDesignSystem 
+} from "@microsoft/fast-components";
+
+provideFASTDesignSystem().register(allComponents);
+```
+
 Visit our Using Components [Getting Started Guide](https://www.fast.design/docs/components/getting-started) for more details, Tips, and Notes.
 
-### FAST Components
-
-| Component                                                                                 | Name                                                          | Component Explorer                                                                                                                                    |                                                                                                                                                                                                                         |
-| :---------------------------------------------------------------------------------------- | :------------------------------------------------------------ | :---------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [fast-accordian](https://www.fast.design/docs/components/accordion)                       | `fastAccordion()` `fastAccordionItem()`                       | [Accordian](https://explore.fast.design/components/fast-accordion)                                                                                    |
-| [fast-anchor](https://www.fast.design/docs/components/anchor)                             | `fastAnchor()`                                                | [Anchor](https://explore.fast.design/components/fast-anchor)                                                                                          |
-| [fast-anchored-region](https://www.fast.design/docs/components/anchored-region)           | `fastAnchoredRegion()`                                        | [Anchored region](https://explore.fast.design/components/fast-anchored-region)                                                                        |
-| [fast-avatar](https://www.fast.design/docs/components/avatar)                             | `fastAvatar()`                                                | [Avatar](https://explore.fast.design/components/fast-avatar)                                                                                          |            
-| [fast-badge](https://www.fast.design/docs/components/badge)                               | `fastBadge()`                                                 | [Badge](https://explore.fast.design/components/fast-badge)                                                                                            |                                                                                                                                                
-| [fast-breadcrumb](https://www.fast.design/docs/components/breadcrumb)                     | `fastBreadcrumb()` `fastBreadcrumbItem()`                     | [Breadcrumb](https://explore.fast.design/components/fast-breadcrumb)                                                                                  |                                                                         
-| [fast-button](https://explore.fast.design/components/fast-button)                         | `fastButton()`                                                | [Button](https://explore.fast.design/components/fast-button)                                                                                          |                                                                                        
-| [fast-card](https://www.fast.design/docs/components/card)                                 | `fastCard()`                                                  | [Card](https://explore.fast.design/components/fast-card)                                                                                              |                                                                                                                                                       
-| [fast-checkbox](https://www.fast.design/docs/components/checkbox)                         | `fastCheckbox()`                                              | [Checkbox](https://explore.fast.design/components/fast-checkbox)                                                                                      |                                                                                                                                                              
-| [fast-combobox](https://www.fast.design/docs/components/combobox)                         | `fastCheckbox()` `fastOption()`                               | [Combobox](https://explore.fast.design/components/fast-combobox)                                                                                      |    
-| [fast-data-grid](https://www.fast.design/docs/components/data-grid)                       | `fastDataGridCell()` `fastDataGridRow()` `fastDataGrid()`     | [Data grid](https://explore.fast.design/components/fast-data-grid)                                                                                    |                  
-| [fast-dialog](https://www.fast.design/docs/components/dialog)                             | `fastDialog()`                                                | [Dialog](https://explore.fast.design/components/fast-dialog)                                                                                          |
-| [fast-disclosure](https://www.fast.design/docs/components/disclosure)                     | `fastDisclosure()`                                            | [Disclosure](https://explore.fast.design/components/fast-disclosure)                                                                                  |
-| [fast-divider](https://www.fast.design/docs/components/divider)                           | `fastDivider()`                                               | [Divider](https://explore.fast.design/components/fast-divider)                                                                                        |
-| [fast-flipper](https://www.fast.design/docs/components/flipper)                           | `fastFlipper()`                                               | [Flipper](https://explore.fast.design/components/fast-flipper)                                                                                        |
-| [fast-horizontal-scroll](https://www.fast.design/docs/components/horizontal-scroll)       | `fastHorizontalScroll()`                                      |                                                                                                                                                       |                                                                                                                                                                                                       |
-| [fast-listbox](https://www.fast.design/docs/components/listbox)                           | `fastListbox()` `fastOption()`                                | [Listbox](https://explore.fast.design/components/fast-listbox)                                                                                        |                                                                                                                                                            
-| [fast-menu](https://www.fast.design/docs/components/menu)                                 | `fastMenu()` `fastMenuItem()`                                 | [Menu](https://explore.fast.design/components/fast-menu)                                                                                              |                                                                                                 
-| [fast-number-field](https://www.fast.design/docs/components/number-field)                 | `fastNumberField()`                                           | [Number field](https://explore.fast.design/components/fast-number-field)                                                                              |                                                                                                  
-| [fast-progress](https://www.fast.design/docs/components/progress)                         | `fastProgress()` `fastProgressRing()`                         | [Progress ring](https://explore.fast.design/components/fast-progress-ring)  / [Progress](https://explore.fast.design/components/fast-progress)        |
-| [fast-radio](https://www.fast.design/docs/components/radio)                               | `fastRadio()`                                                 | [Radio](https://explore.fast.design/components/fast-radio)                                                                                            |                                                                                                    
-| [fast-radio-group](https://www.fast.design/docs/components/radio-group)                   | `fastRadio()` `fastRadioGroup()`                              | [Radio group](https://explore.fast.design/components/fast-radio-group)                                                                                |                                                                                                                                                    
-| [fast-select](https://www.fast.design/docs/components/select)                             | `fastSelect()` `fastOption()`                                 | [Select](https://explore.fast.design/components/fast-select)                                                                                          |                                                                                                                              
-| [fast-skeleton](https://www.fast.design/docs/components/skeleton)                         | `fastSkeleton()`                                              | [Skeleton](https://explore.fast.design/components/fast-skeleton)                                                                                      |                                                                                                                             
-| [fast-slider](https://www.fast.design/docs/components/slider)                             | `fastSlider()` `fastSliderLabel()`                            | [Slider](https://explore.fast.design/components/fast-slider)                                                                                          |                                                                                               
-| [fast-switch](https://www.fast.design/docs/components/switch)                             | `fastSwitch()`                                                | [Switch](https://explore.fast.design/components/fast-switch)                                                                                          |                                                                                                                           
-| [fast-tabs](https://www.fast.design/docs/components/tabs)                                 | `fastTab()` `fastTabPanel()` `fastTabs()`                     | [Tabs](https://explore.fast.design/components/fast-tabs)                                                                                              |                                                                                                                              
-| [fast-text-area](https://www.fast.design/docs/components/text-area)                       | `fastTextArea()`                                              | [Text area](https://explore.fast.design/components/fast-text-area)                                                                                    |                                                                                         
-| [fast-text-field](https://www.fast.design/docs/components/text-field)                     | `fastTextField()`                                             | [Text field](https://explore.fast.design/components/fast-text-field)                                                                                  |                                                                                                
-| [fast-toolbar](https://www.fast.design/docs/components/toolbar)                           | `fastToolbar()`                                               | [Toolbar](https://explore.fast.design/components/fast-toolbar)                                                                                        |                                                                                                                                          
-| [fast-tooltip](https://www.fast.design/docs/components/tooltip)                           | `fastTooltip()`                                               | [Tooltip](https://explore.fast.design/components/fast-tooltip)                                                                                        |                                                                                                                                             
-| [fast-tree-view](https://www.fast.design/docs/components/tree-view)                       | `fastTreeItem()` `fastTreeView()`                             | [Tree view](https://explore.fast.design/components/fast-tree-view)                                                                                    |                                                                                                                                      
-
+Launch our [Component Explorer](https://explore.fast.design/) to experience our [FAST Components](https://www.npmjs.com/package/@microsoft/fast-components) and development tools.
 
 ---
 ## Building Components
-
-@microsoft/fast-element
 ### Setup
 
 To define a custom element:
@@ -244,15 +187,55 @@ Add content
 
 ---
 ## Design System
+### [Creating a Design System](https://www.fast.design/docs/design-systems/creating-a-component-library#defining-a-design-system)
 
-FAST Frame
-### Design Tokens
+* Start with the base components defined in `@microsoft/fast-foundation` and compose them with your own styles.
 
-A Design Token is a semantic, named variable used to describe a Design System. They often describe design concepts like typography, color, sizes, UI spacing, etc. 
+```ts
+import {
+    Button,
+    buttonTemplate as template,
+} from "@microsoft/fast-foundation";
+import { buttonStyles as styles } from "./special-button.styles";
 
-Visit our [Design Tokens Guide](https://www.fast.design/docs/design-systems/design-tokens) for more details, Tips, and Notes.
+export const specialButton = Button.compose({
+    baseName: "button",
+    template,
+    styles,
+    shadowOptions: {
+        delegatesFocus: true,
+    },
+});
 
-FAST exposes the following Design Tokens that can be used to configure components stylistically.
+export const buttonStyles = styles;
+```
+
+* Define your own DesignTokens to be used within your styles.
+
+```ts
+import { DesignToken } from "@microsoft/fast-foundation";
+
+export const specialColor = DesignToken.create<string>("special-color");
+```
+
+
+* Export a "provider function" for your community to use in setting everything up.
+
+```ts
+export function provideSpecialDesignSystem(element?: HTMLElement): DesignSystem {
+    return DesignSystem.getOrCreate(element).withPrefix("special");
+}
+```
+
+### [Design Tokens](https://www.fast.design/docs/design-systems/design-tokens)
+
+Creating a token:
+
+```ts
+import { DesignToken } from "@microsoft/fast-foundation";
+
+export const specialColor = DesignToken.create<string>("special-color");
+```
 
 ---
 
@@ -278,7 +261,7 @@ cd packages/web-components/fast-components
 yarn start
 ```
 
-[Storybook](https://storybook.js.org/) will open in a browser window at `localhost:6006`
+[Storybook](https://storybook.js.org/) will open in a browser window at `localhost:6006`.
 
 ### Contributing to documentation
 
@@ -287,4 +270,4 @@ cd sites/website
 yarn start
 ```
 
-[Docusaurus](https://docusaurus.io/) will open in a browser window at `localhost:3000`
+[Docusaurus](https://docusaurus.io/) will open in a browser window at `localhost:3000`.
