@@ -106,9 +106,8 @@ export const tabStyles: (
         :host([aria-selected="true"]:${focusVisible}),
         :host(.vertical[aria-selected="true"]:${focusVisible}) {
             background: ${neutralFillFocus};
-            border-color: ${accentFillFocus};
-            box-shadow: 0 0 0 calc((${focusStrokeWidth} - ${strokeWidth}) * 1px) ${focusStrokeOuter} inset,
-              0 0 0 calc(((${focusStrokeWidth} * 2) - ${strokeWidth}) * 1px) ${focusStrokeInner} inset ;
+            border-color: ${focusStrokeOuter} ;
+            box-shadow: 0 0 0 calc(${focusStrokeWidth} * 1px) ${focusStrokeOuter} inset ;
             color: ${neutralForegroundFocus};
         }
 
