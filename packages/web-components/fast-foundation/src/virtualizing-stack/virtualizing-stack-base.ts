@@ -673,8 +673,6 @@ export class VirtualizingStackBase extends FoundationElement {
             return;
         }
 
-        console.debug("updateVisibleItemsStart");
-
         if (
             this.items === undefined ||
             this.items.length === 0 ||
@@ -747,62 +745,12 @@ export class VirtualizingStackBase extends FoundationElement {
             this.endSpacerSpan =
                 (this.items.length - newLastRenderedIndex - 1) * this.itemSpan;
 
-            if (
-                this.firstRenderedIndex === -1 ||
-                this.visibleItems.length === 0 ||
-                newFirstRenderedIndex > this.lastRenderedIndex ||
-                newLastRenderedIndex < this.firstRenderedIndex
-            ) {
-                // full reset
-                this.visibleItems.splice(0);
-                for (
-                    let i: number = newFirstRenderedIndex;
-                    i <= newLastRenderedIndex;
-                    i++
-                ) {
-                    this.visibleItems.push(this.items[i]);
-                }
-                console.debug(
-                    `full reset ${this.firstRenderedIndex} - ${newFirstRenderedIndex} - ${this.lastRenderedIndex} - ${newLastRenderedIndex}`
-                );
-                this.updateRenderedRange(newFirstRenderedIndex, newLastRenderedIndex);
-                return;
-            }
+            const newVisibleItems: object[] = this.items.slice(
+                newFirstRenderedIndex,
+                newLastRenderedIndex + 1
+            );
 
-            let visibleItemIndex: number = this.visibleItems.length - 1;
-
-            for (
-                let i: number = this.lastRenderedIndex;
-                i >= this.firstRenderedIndex;
-                i--
-            ) {
-                if (i < newFirstRenderedIndex || i > newLastRenderedIndex) {
-                    this.visibleItems.splice(visibleItemIndex, 1);
-                }
-                visibleItemIndex--;
-            }
-
-            if (newFirstRenderedIndex < this.firstRenderedIndex) {
-                for (
-                    let i: number = this.firstRenderedIndex - 1;
-                    i >= newFirstRenderedIndex;
-                    i--
-                ) {
-                    this.visibleItems.splice(0, 0, this.items[i]);
-                }
-            }
-
-            if (newLastRenderedIndex > this.lastRenderedIndex) {
-                for (
-                    let i: number = this.lastRenderedIndex + 1;
-                    i <= newLastRenderedIndex;
-                    i++
-                ) {
-                    this.visibleItems.push(this.items[i]);
-                }
-            }
-
-            console.debug(`visibleRangeStart = ${this.visibleRangeStart}`);
+            this.visibleItems.splice(0, this.visibleItems.length, ...newVisibleItems);
 
             this.updateRenderedRange(newFirstRenderedIndex, newLastRenderedIndex);
         }
@@ -816,11 +764,8 @@ export class VirtualizingStackBase extends FoundationElement {
             newFirstRenderedIndex === this.firstRenderedIndex &&
             newLastRenderedIndex === this.lastRenderedIndex
         ) {
-            console.debug("bail on rendered range update");
             return;
         }
-
-        console.debug(`updateRenderedRange`);
 
         this.firstRenderedIndex = newFirstRenderedIndex;
         this.lastRenderedIndex = newLastRenderedIndex;
@@ -840,12 +785,9 @@ export class VirtualizingStackBase extends FoundationElement {
             return;
         }
 
-        console.debug("handleIntersection");
-
         this.pendingPositioningUpdate = false;
 
         if (this.finalUpdate) {
-            console.debug("finalupdate");
             this.requestPositionUpdates();
         }
 
