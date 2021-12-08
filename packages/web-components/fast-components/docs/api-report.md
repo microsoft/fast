@@ -79,7 +79,6 @@ import { Tabs } from '@microsoft/fast-foundation';
 import { TabsOptions } from '@microsoft/fast-foundation';
 import { TextArea as TextArea_2 } from '@microsoft/fast-foundation';
 import { TextField as TextField_2 } from '@microsoft/fast-foundation';
-import { TextFieldOptions } from '@microsoft/fast-foundation';
 import { Toolbar as Toolbar_2 } from '@microsoft/fast-foundation';
 import { ToolbarOptions } from '@microsoft/fast-foundation';
 import { Tooltip } from '@microsoft/fast-foundation';
@@ -1631,6 +1630,33 @@ export const neutralStrokeInputFilledHover: import("@microsoft/fast-foundation")
 
 // @public (undocumented)
 export const neutralStrokeInputFilledHoverDelta: DesignToken<number>;
+
+// @public (undocumented)
+export const neutralStrokeInputFilledRecipe: DesignToken<InteractiveColorRecipe>;
+
+// @public (undocumented)
+export const neutralStrokeInputFilledRest: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
+
+// @public (undocumented)
+export const neutralStrokeInputFilledRestDelta: import("@microsoft/fast-foundation").CSSDesignToken<number>;
+
+// @public (undocumented)
+export const neutralStrokeInputFilledActive: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
+
+// @public (undocumented)
+export const neutralStrokeInputFilledActiveDelta: import("@microsoft/fast-foundation").CSSDesignToken<number>;
+
+// @public (undocumented)
+export const neutralStrokeInputFilledFocus: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
+
+// @public (undocumented)
+export const neutralStrokeInputFilledFocusDelta: import("@microsoft/fast-foundation").CSSDesignToken<number>;
+
+// @public (undocumented)
+export const neutralStrokeInputFilledHover: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
+
+// @public (undocumented)
+export const neutralStrokeInputFilledHoverDelta: import("@microsoft/fast-foundation").CSSDesignToken<number>;
 
 // @public (undocumented)
 export const neutralStrokeInputFilledRecipe: DesignToken<InteractiveColorRecipe>;

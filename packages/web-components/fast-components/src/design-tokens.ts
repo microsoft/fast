@@ -295,6 +295,23 @@ export const neutralStrokeFocusDelta = createNonCss<number>(
 ).withDefault(49);
 
 /** @public */
+export const neutralStrokeInputFilledRestDelta = create<number>(
+    "neutral-stroke-input-filled-rest-delta"
+).withDefault(4);
+/** @public */
+export const neutralStrokeInputFilledHoverDelta = create<number>(
+    "neutral-stroke-input-filled-hover-delta"
+).withDefault(10);
+/** @public */
+export const neutralStrokeInputFilledActiveDelta = create<number>(
+    "neutral-stroke-input-filled-active-delta"
+).withDefault(10);
+/** @public */
+export const neutralStrokeInputFilledFocusDelta = create<number>(
+    "neutral-stroke-input-filled-focus-delta"
+).withDefault(49);
+
+/** @public */
 export const neutralStrokeDividerRestDelta = create<number>(
     "neutral-stroke-divider-rest-delta"
 ).withDefault(8);
@@ -1047,6 +1064,53 @@ export const neutralStrokeActive = create<Swatch>("neutral-stroke-active").withD
 export const neutralStrokeFocus = create<Swatch>("neutral-stroke-focus").withDefault(
     (element: HTMLElement) =>
         neutralStrokeRecipe.getValueFor(element).evaluate(element).focus
+);
+
+// Neutral Stroke Input Filled
+/** @public */
+export const neutralStrokeInputFilledRecipe = create<InteractiveColorRecipe>({
+    name: "neutral-stroke-input-filled-recipe",
+    cssCustomPropertyName: null,
+}).withDefault({
+    evaluate: (element: HTMLElement): InteractiveSwatchSet => {
+        return neutralStrokeAlgorithm(
+            neutralPalette.getValueFor(element),
+            fillColor.getValueFor(element),
+            neutralStrokeInputFilledRestDelta.getValueFor(element),
+            neutralStrokeInputFilledHoverDelta.getValueFor(element),
+            neutralStrokeInputFilledActiveDelta.getValueFor(element),
+            neutralStrokeInputFilledFocusDelta.getValueFor(element)
+        );
+    },
+});
+
+/** @public */
+export const neutralStrokeInputFilledRest = create<Swatch>(
+    "neutral-stroke-input-filled-rest"
+).withDefault(
+    (element: HTMLElement) =>
+        neutralStrokeInputFilledRecipe.getValueFor(element).evaluate(element).rest
+);
+/** @public */
+export const neutralStrokeInputFilledHover = create<Swatch>(
+    "neutral-stroke-input-filled-hover"
+).withDefault(
+    (element: HTMLElement) =>
+        neutralStrokeInputFilledRecipe.getValueFor(element).evaluate(element).hover
+);
+/** @public */
+export const neutralStrokeInputFilledActive = create<Swatch>(
+    "neutral-stroke-input-filled-active"
+).withDefault(
+    (element: HTMLElement) =>
+        neutralStrokeInputFilledRecipe.getValueFor(element).evaluate(element).active
+);
+/** @public */
+export const neutralStrokeInputFilledFocus = create<Swatch>(
+    "neutral-stroke-input-filled-focus"
+).withDefault(
+    (element: HTMLElement) =>
+        neutralStrokeInputFilledRecipe.getValueFor(element).evaluate(element).focus
 );
 
 // Neutral Stroke Divider
