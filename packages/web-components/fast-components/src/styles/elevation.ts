@@ -100,3 +100,16 @@ export const elevationShadowCardFocus = DesignToken.create<string>(
         .getValueFor(element)
         .evaluate(element, elevationShadowCardFocusSize.getValueFor(element))
 );
+
+/** @public */
+export const elevationShadowFlyoutSize = DesignToken.create<number>(
+    "elevation-shadow-flyout-size"
+).withDefault(32);
+/** @public */
+export const elevationShadowFlyout = DesignToken.create<string>(
+    "elevation-shadow-flyout"
+).withDefault((element: HTMLElement) =>
+    elevationShadowRecipe
+        .getValueFor(element)
+        .evaluate(element, elevationShadowFlyoutSize.getValueFor(element))
+);
