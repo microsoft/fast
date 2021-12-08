@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-foundation",
   "entries": [
     {
+      "date": "Wed, 08 Dec 2021 07:10:04 GMT",
+      "tag": "@microsoft/fast-foundation_v2.27.1",
+      "version": "2.27.1",
+      "comments": {
+        "none": [
+          {
+            "comment": "Bump @microsoft/fast-element to v1.6.2",
+            "author": "roeisenb@microsoft.com",
+            "commit": "bd7d84152a823cc21aab0dfa196da9d663ad0778",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 02 Dec 2021 07:11:13 GMT",
       "tag": "@microsoft/fast-foundation_v2.27.1",
       "version": "2.27.1",
