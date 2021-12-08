@@ -1,13 +1,31 @@
 import {
-    Select,
+    Select as FoundationSelect,
     SelectOptions,
     selectTemplate as template,
 } from "@microsoft/fast-foundation";
+import { fillColor, neutralLayerFloating } from "../design-tokens";
 import { selectStyles as styles } from "./select.styles";
 
 /**
- * A function that returns a {@link @microsoft/fast-foundation#Select} registration for configuring the component with a DesignSystem.
- * Implements {@link @microsoft/fast-foundation#selectTemplate}
+ * The FAST select class
+ * @public
+ */
+export class Select extends FoundationSelect {
+    /**
+     * @internal
+     */
+    public connectedCallback(): void {
+        super.connectedCallback();
+
+        if (this.listbox) {
+            fillColor.setValueFor(this.listbox, neutralLayerFloating);
+        }
+    }
+}
+
+/**
+ * The FAST select Custom Element. Implements, {@link @microsoft/fast-foundation#Select}
+ * {@link @microsoft/fast-foundation#selectTemplate}
  *
  *
  * @public
@@ -21,22 +39,19 @@ export const fastSelect = Select.compose<SelectOptions>({
     styles,
     indicator: `
         <svg
-            class="select-indicator"
-            part="select-indicator"
-            viewBox="0 0 12 7"
+            width="16"
+            height="16"
+            viewBox="0 0 16 16"
             xmlns="http://www.w3.org/2000/svg"
         >
             <path
-                d="M11.85.65c.2.2.2.5 0 .7L6.4 6.84a.55.55 0 01-.78 0L.14 1.35a.5.5 0 11.71-.7L6 5.8 11.15.65c.2-.2.5-.2.7 0z"
-            />
+                d="M4.14 6.57A1 1 0 0 1 4.96 5h6.08a1 1 0 0 1 .82 1.57l-2.63 3.79a1.5 1.5 0 0 1-2.46 0L4.14 6.57ZM4.96 6l2.63 3.78c.2.29.62.29.82 0L11.04 6H4.96Z"/>
         </svg>
     `,
 });
 
 /**
- * Base class for Select
+ * Styles for Select
  * @public
  */
-export { Select };
-
-export { styles as selectStyles };
+export const selectStyles = styles;

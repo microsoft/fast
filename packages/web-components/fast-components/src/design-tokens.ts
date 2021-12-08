@@ -287,6 +287,11 @@ export const neutralStrokeFocusDelta = create<number>(
 ).withDefault(49);
 
 /** @public */
+export const neutralStrokeDividerRestDelta = create<number>(
+    "neutral-stroke-divider-rest-delta"
+).withDefault(8);
+
+/** @public */
 export const neutralStrokeInputFilledRestDelta = create<number>(
     "neutral-stroke-input-filled-rest-delta"
 ).withDefault(4);
@@ -301,12 +306,7 @@ export const neutralStrokeInputFilledActiveDelta = create<number>(
 /** @public */
 export const neutralStrokeInputFilledFocusDelta = create<number>(
     "neutral-stroke-input-filled-focus-delta"
-).withDefault(49);
-
-/** @public */
-export const neutralStrokeDividerRestDelta = create<number>(
-    "neutral-stroke-divider-rest-delta"
-).withDefault(8);
+).withDefault(4);
 
 // Color recipes
 
