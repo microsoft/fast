@@ -1,5 +1,5 @@
 {
-  "type": "chore",
+  "type": "patch",
   "comment": "add horizontal scroll example for use with fast-components",
   "packageName": "@microsoft/fast-components",
   "email": "sethdonohue@Admins-MBP.guest.corp.microsoft.com",
