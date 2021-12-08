@@ -79,7 +79,6 @@ import { Tabs } from '@microsoft/fast-foundation';
 import { TabsOptions } from '@microsoft/fast-foundation';
 import { TextArea as TextArea_2 } from '@microsoft/fast-foundation';
 import { TextField as TextField_2 } from '@microsoft/fast-foundation';
-import { TextFieldOptions } from '@microsoft/fast-foundation';
 import { Toolbar as Toolbar_2 } from '@microsoft/fast-foundation';
 import { ToolbarOptions } from '@microsoft/fast-foundation';
 import { Tooltip } from '@microsoft/fast-foundation';
@@ -987,6 +986,33 @@ export const neutralStrokeHover: import("@microsoft/fast-foundation").CSSDesignT
 export const neutralStrokeHoverDelta: import("@microsoft/fast-foundation").CSSDesignToken<number>;
 
 // @public (undocumented)
+export const neutralStrokeInputFilledActive: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
+
+// @public (undocumented)
+export const neutralStrokeInputFilledActiveDelta: import("@microsoft/fast-foundation").CSSDesignToken<number>;
+
+// @public (undocumented)
+export const neutralStrokeInputFilledFocus: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
+
+// @public (undocumented)
+export const neutralStrokeInputFilledFocusDelta: import("@microsoft/fast-foundation").CSSDesignToken<number>;
+
+// @public (undocumented)
+export const neutralStrokeInputFilledHover: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
+
+// @public (undocumented)
+export const neutralStrokeInputFilledHoverDelta: import("@microsoft/fast-foundation").CSSDesignToken<number>;
+
+// @public (undocumented)
+export const neutralStrokeInputFilledRecipe: DesignToken<InteractiveColorRecipe>;
+
+// @public (undocumented)
+export const neutralStrokeInputFilledRest: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
+
+// @public (undocumented)
+export const neutralStrokeInputFilledRestDelta: import("@microsoft/fast-foundation").CSSDesignToken<number>;
+
+// @public (undocumented)
 export const neutralStrokeRecipe: DesignToken<InteractiveColorRecipe>;
 
 // @public (undocumented)
@@ -1009,7 +1035,7 @@ export class NumberField extends NumberField_2 {
 export type NumberFieldAppearance = "filled" | "outline";
 
 // @public
-export const numberFieldStyles: (context: ElementDefinitionContext, definition: NumberFieldOptions) => ElementStyles;
+export const numberFieldStyles: (context: any, definition: any) => ElementStyles;
 
 // @public
 export const optionStyles: FoundationElementTemplate<ElementStyles, ListboxOptionOptions>;
@@ -1202,7 +1228,7 @@ export class TextArea extends TextArea_2 {
 export type TextAreaAppearance = "filled" | "outline";
 
 // @public
-export const textAreaStyles: (context: ElementDefinitionContext, definition: FoundationElementDefinition) => ElementStyles;
+export const textAreaStyles: (context: any, definition: any) => ElementStyles;
 
 // Warning: (ae-internal-missing-underscore) The name "TextField" should be prefixed with an underscore because the declaration is marked as @internal
 //
@@ -1218,7 +1244,7 @@ export class TextField extends TextField_2 {
 export type TextFieldAppearance = "filled" | "outline";
 
 // @public
-export const textFieldStyles: (context: ElementDefinitionContext, definition: TextFieldOptions) => ElementStyles;
+export const textFieldStyles: (context: any, definition: any) => ElementStyles;
 
 // Warning: (ae-internal-missing-underscore) The name "Toolbar" should be prefixed with an underscore because the declaration is marked as @internal
 //
