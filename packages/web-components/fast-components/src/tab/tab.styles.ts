@@ -21,14 +21,15 @@ import {
     focusStrokeInner,
     focusStrokeOuter,
     focusStrokeWidth,
-    foregroundOnAccentActive,
-    foregroundOnAccentFocus,
-    foregroundOnAccentHover,
-    foregroundOnAccentRest,
+    neutralFillActive,
+    neutralFillFocus,
+    neutralFillHover,
+    neutralFillRest,
     neutralFillStealthActive,
     neutralFillStealthHover,
     neutralFillStealthRest,
     neutralForegroundActive,
+    neutralForegroundFocus,
     neutralForegroundHover,
     neutralForegroundRest,
     strokeWidth,
@@ -83,29 +84,32 @@ export const tabStyles: (
         :host([aria-selected="true"]),
         :host(.vertical[aria-selected="true"]) {
             z-index: 2;
-            background: ${accentFillRest};
-            color: ${foregroundOnAccentRest};
+            background: ${neutralFillRest};
+            border-color: ${accentFillRest};
+            color: ${neutralForegroundRest};
         }
 
         :host([aria-selected="true"]:hover),
         :host(.vertical[aria-selected="true"]:hover) {
-            background: ${accentFillHover};
-            color: ${foregroundOnAccentHover};
+            background: ${neutralFillHover};
+            border-color: ${accentFillHover};
+            color: ${neutralForegroundHover};
         }
 
         :host([aria-selected="true"]:active),
         :host(.vertical[aria-selected="true"]:active) {
-            background: ${accentFillActive};
-            color: ${foregroundOnAccentActive};
+            background: ${neutralFillActive};
+            border-color: ${accentFillActive};
+            color: ${neutralForegroundActive};
         }
 
         :host([aria-selected="true"]:${focusVisible}),
         :host(.vertical[aria-selected="true"]:${focusVisible}) {
-            background: ${accentFillFocus};
-            border-color: ${focusStrokeOuter};
+            background: ${neutralFillFocus};
+            border-color: ${accentFillFocus};
             box-shadow: 0 0 0 calc((${focusStrokeWidth} - ${strokeWidth}) * 1px) ${focusStrokeOuter} inset,
               0 0 0 calc(((${focusStrokeWidth} * 2) - ${strokeWidth}) * 1px) ${focusStrokeInner} inset ;
-            color: ${foregroundOnAccentFocus};
+            color: ${neutralForegroundFocus};
         }
 
         :host([disabled]) {
