@@ -37,10 +37,10 @@ custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/src
 
 To install the components, use either npm or yarn:
 ```shell
-    npm install --save @microsoft/fast-components
+npm install --save @microsoft/fast-components
 ``` 
 ```shell
-    yarn add @microsoft/fast-components
+yarn add @microsoft/fast-components
 ```
 
 To use a Web Component as a custom element in HTML, the custom element must be registered.
@@ -68,10 +68,10 @@ provideFASTDesignSystem()
 
 To install the components, use either npm or yarn:
 ```shell
-    npm install --save @microsoft/fast-components
+npm install --save @microsoft/fast-components
 ``` 
 ```shell
-    yarn add @microsoft/fast-components
+yarn add @microsoft/fast-components
 ```
 
 To use a Web Component as a custom element in HTML, the custom element must be registered.
@@ -101,7 +101,7 @@ provideFluentDesignSystem()
 **A library that is a lightweight means to easily build performant, memory-efficient, standards-compliant Web Components.**
 
 * Provides a thin layer of opinions on top of Web Components, lifting the level of abstraction just enough to make it easier and FASTer to build components   
-* When you want to create completely new web components. 
+* Use this library when you want to create completely new web components. 
 * See [Building Components](#building-components).
 
 To install the components, use either npm or yarn:
@@ -139,73 +139,6 @@ Integrate FAST Element into your existing or preferred stack:
 * Provides a highly configurable design system that you can drop into any app. 
 * Provides a set of building blocks that you can use to construct your own design system.   
 * Use FAST Frame when you have an existing app, or want to create your own [Design System](#design-system).
-
----
-
-## [Contributing to FAST](https://www.fast.design/docs/community/join)
-
-**There are two ways to contribute**:
-
-1. Contribute changes to the `fast-components` design system.
-2. Contribute changes to the documentation.
-
-**Unsure of what to work on?**
-
-- Here are [good first issues](https://github.com/Microsoft/fast/labels/community:good-first-issue).
-
-**Connect with us**:
-
-- Join our [Discord](https://discord.gg/FcSNfg4) server.
-- Report bugs, request features through [Github](https://github.com/Microsoft/fast/issues/new/choose).
-
-### Setup
-
-To work with the FAST monorepo you'll need Git, Node.js, Yarn, and Lerna setup on your machine.
-
-* Git: [download](https://git-scm.com/downloads)
-* Node.js: [download](https://nodejs.org/en/) 
-* Yarn: `npm install -g yarn`
-* Lerna: `yarn global add lerna`
-
-### Cloning the repo
-
-`git clone https://github.com/microsoft/fast.git`
-
-### Installing and building
-
-`yarn`
-
-### Creating a branch
-
-```shell
-git checkout -b users/{your github handle}/{your-branch-name}
-```
-
-### Contributing to fast-component
-
-```shell
-cd packages/web-components/fast-components
-yarn start
-```
-
-[Storybook](https://storybook.js.org/) will open in a browser window at localhost:6006
-
-### Contributing to documentation
-
-```shell
-`cd sites/website`
-`yarn start`
-```
-
-[Docusaurus](https://docusaurus.io/) will open in a browser window at `localhost:3000`
-
-### Submitting a pull request
-
-```shell
-git rebase master
-yarn change
-git push origin {your-branch-name}
-```
 
 ---
 
@@ -295,29 +228,16 @@ With this in place, you can now use your name-tag element anywhere in HTML with 
 
 Visit our Building Components [Getting Started Guide](https://www.fast.design/docs/components/getting-started) for more details, Tips, and Notes.
 
-#### Adding Attributes
-
-| Decorator         | API               | Property           | 
-| :---------------- | :---------------- | :----------------- |
-| `@attr`           | `setAttribute`    | `mode`             |
-
-#### Customizing Attributes
-
-There are three modes available through the `mode` property of the attribute configuration:
-
-| Mode              | Description                                                                                                                                                                                                                                            |
-| :---------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `reflect`         | The default mode that is used if none is specified. This reflects property changes to the DOM. If a `converter` is supplied, it will invoke the converter before calling the `setAttribute` DOM API. |
-| `boolean`         | This mode causes your attribute to function using the HTML boolean attribute behavior. When your attribute is present in the DOM or equal to its own name, the value will be true. When the attribute is absent from the DOM, the value of the property will be false. Setting the property will also update the DOM by adding/removing the attribute. |
-| `fromView`        | This mode skips reflecting the value of the property back to the HTML attribute, but does receive updates when changed through `setAttribute`.                                                                                                                        |
-
-#### observables
+### Attributes
 
 Add content
-#### templates
+### Observables
 
 Add content
-#### styles
+### Templates
+
+Add content
+### Styles
 
 Add content
 
@@ -334,44 +254,37 @@ Visit our [Design Tokens Guide](https://www.fast.design/docs/design-systems/desi
 
 FAST exposes the following Design Tokens that can be used to configure components stylistically.
 
-| Token Name                                | Guidance (Level)                  |
-| :---------------------------------------- | :-------------------------------- |
-| `typeRampMinus2FontSize`                  | Minus 2 (smallest)                |
-| `typeRampMinus1FontSize`                  | Minus 1                           |
-| `typeRampBaseFontSize`                    | Base (body)                       |
-| `typeRampPlus1FontSize`                   | Plus 1                            |
-| `typeRampPlus2FontSize`                   | Plus 2                            |
-| `typeRampPlus3FontSize`                   | Plus 3                            |
-| `typeRampPlus4FontSize`                   | Plus 4                            |
-| `typeRampPlus5FontSize`                   | Plus 5                            |
-| `typeRampPlus6FontSize`                   | Plus 6 (largest)                  |
+---
 
+## [Contributing to FAST](https://www.fast.design/docs/community/join)
 
-| Token Name                                | Guidance (Level)                  |
-| :---------------------------------------- | :-------------------------------- |
-| `typeRampMinus2LineHeight`                | Minus 2 (smallest)                |
-| `typeRampMinus1LineHeight`                | Minus 1                           |
-| `typeRampBaseLineHeight`                  | Base (body)                       |
-| `typeRampPlus1LineHeight`                 | Plus 1                            |
-| `typeRampPlus2LineHeight`                 | Plus 2                            |
-| `typeRampPlus3LineHeight`                 | Plus 3                            |
-| `typeRampPlus4LineHeight`                 | Plus 4                            |
-| `typeRampPlus5LineHeight`                 | Plus 5                            |
-| `typeRampPlus6LineHeight`                 | Plus 6 (largest)                  |
+**There are two ways to contribute**:
 
+1. Contribute changes to the `fast-components` design system.
+2. Contribute changes to the documentation.
 
-| Token Name                                | Guidance                                                                                                                                          |
-| :---------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `baseHeightMultiplier`                    | This value, multiplied by designUnit, sets the base height of most controls. Works with adaptive density values.                                  |
-| `baseHorizontalSpacingMultiplier`         | (future): This value, multiplied by designUnit, sets the internal horizontal padding of most controls. Works with adaptive density values.        | 
-| `controlCornerRadius`                     | Sets the corner radius used by controls with backplates.                                                                                          |
-| `density`                                 | (in process): An adjustment to sizing tokens baseHeightMultiplier and baseHorizontalSpacingMultiplier.                                            |
-| `designUnit`                              | The unit size of the Design Grid. Used to calculate height and spacing sizes for controls.                                                        |
+**Unsure of what to work on?**
 
+- Here are [good first issues](https://github.com/Microsoft/fast/labels/community:good-first-issue).
 
-| Token Name                                | Guidance                                                                                                                                          |
-| :---------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `direction`                               | The primary document direction (LTR or RTL).                                                                                                      |
-| `disabledOpacity`                         | The opacity of disabled controls.                                                                                                                 |
-| `strokeWidth`                             | Controls the width of the stroke of a component that has a stroke.                                                                                |
-| `focusStrokeWidth`                        | Controls with width of the stroke of a component that has a stroke when it has document focus.                                                    |
+**Connect with us**:
+
+- Join our [Discord](https://discord.gg/FcSNfg4) server.
+- Report bugs, request features through [Github](https://github.com/Microsoft/fast/issues/new/choose).
+### Contributing to fast-component
+
+```shell
+cd packages/web-components/fast-components
+yarn start
+```
+
+[Storybook](https://storybook.js.org/) will open in a browser window at `localhost:6006`
+
+### Contributing to documentation
+
+```shell
+cd sites/website
+yarn start
+```
+
+[Docusaurus](https://docusaurus.io/) will open in a browser window at `localhost:3000`
