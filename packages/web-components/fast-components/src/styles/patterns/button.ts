@@ -5,7 +5,7 @@ import {
     ElementDefinitionContext,
     focusVisible,
     forcedColorsStylesheetBehavior,
-    FoundationElementDefinition,
+    OverrideFoundationElementDefinition,
 } from "@microsoft/fast-foundation";
 import { heightNumber } from "../size";
 import {
@@ -47,7 +47,7 @@ import {
  */
 export const BaseButtonStyles = (
     context: ElementDefinitionContext,
-    definition: FoundationElementDefinition,
+    definition: OverrideFoundationElementDefinition<any>,
     interactivitySelector: string = "",
     nonInteractivitySelector: string = ""
 ) =>
@@ -162,7 +162,7 @@ export const BaseButtonStyles = (
  */
 export const AccentButtonStyles = (
     context: ElementDefinitionContext,
-    definition: FoundationElementDefinition,
+    definition: OverrideFoundationElementDefinition<any>,
     interactivitySelector: string = "",
     nonInteractivitySelector: string = ""
 ) =>
@@ -214,7 +214,7 @@ export const AccentButtonStyles = (
  */
 export const HypertextStyles = (
     context: ElementDefinitionContext,
-    definition: FoundationElementDefinition,
+    definition: OverrideFoundationElementDefinition<any>,
     interactivitySelector: string = "",
     nonInteractivitySelector: string = ""
 ) =>
@@ -258,7 +258,7 @@ export const HypertextStyles = (
  */
 export const LightweightButtonStyles = (
     context: ElementDefinitionContext,
-    definition: FoundationElementDefinition,
+    definition: OverrideFoundationElementDefinition<any>,
     interactivitySelector: string = "",
     nonInteractivitySelector: string = ""
 ) =>
@@ -329,7 +329,7 @@ export const LightweightButtonStyles = (
  */
 export const OutlineButtonStyles = (
     context: ElementDefinitionContext,
-    definition: FoundationElementDefinition,
+    definition: OverrideFoundationElementDefinition<any>,
     interactivitySelector: string = "",
     nonInteractivitySelector: string = ""
 ) =>
@@ -371,7 +371,7 @@ export const OutlineButtonStyles = (
  */
 export const StealthButtonStyles = (
     context: ElementDefinitionContext,
-    definition: FoundationElementDefinition,
+    definition: OverrideFoundationElementDefinition<any>,
     interactivitySelector: string = "",
     nonInteractivitySelector: string = ""
 ) =>

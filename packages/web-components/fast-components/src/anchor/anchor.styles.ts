@@ -1,7 +1,6 @@
 import { css, ElementStyles } from "@microsoft/fast-element";
 import {
     AnchorOptions,
-    ElementDefinitionContext,
     focusVisible,
     forcedColorsStylesheetBehavior,
     FoundationElementTemplate,
