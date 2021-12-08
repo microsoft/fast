@@ -147,7 +147,7 @@ export const treeItemStyles: (
         }
 
         :host(:not([disabled])[selected]) .positioning-region {
-            background: ${neutralFillStealthActive};
+            background: ${neutralFillStealthRest};
             border-color: ${accentFillRest};
             color: ${neutralForegroundActive};
         }
