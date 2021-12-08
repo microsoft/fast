@@ -1622,6 +1622,33 @@ export const neutralStrokeHover: import("@microsoft/fast-foundation").CSSDesignT
 export const neutralStrokeHoverDelta: DesignToken<number>;
 
 // @public (undocumented)
+export const neutralStrokeInputFilledActive: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
+
+// @public (undocumented)
+export const neutralStrokeInputFilledActiveDelta: DesignToken<number>;
+
+// @public (undocumented)
+export const neutralStrokeInputFilledFocus: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
+
+// @public (undocumented)
+export const neutralStrokeInputFilledFocusDelta: DesignToken<number>;
+
+// @public (undocumented)
+export const neutralStrokeInputFilledHover: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
+
+// @public (undocumented)
+export const neutralStrokeInputFilledHoverDelta: DesignToken<number>;
+
+// @public (undocumented)
+export const neutralStrokeInputFilledRecipe: DesignToken<InteractiveColorRecipe>;
+
+// @public (undocumented)
+export const neutralStrokeInputFilledRest: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
+
+// @public (undocumented)
+export const neutralStrokeInputFilledRestDelta: DesignToken<number>;
+
+// @public (undocumented)
 export const neutralStrokeRecipe: DesignToken<InteractiveColorRecipe>;
 
 // @public (undocumented)
