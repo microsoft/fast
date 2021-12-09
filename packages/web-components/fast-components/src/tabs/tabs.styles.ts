@@ -7,10 +7,10 @@ import {
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
-    accentFillRest,
     bodyFont,
     controlCornerRadius,
     designUnit,
+    fillColor,
     neutralForegroundRest,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
@@ -38,34 +38,24 @@ export const tabsStyles: FoundationElementTemplate<ElementStyles, TabsOptions> =
 
         .tablist {
             display: grid;
-            grid-template-rows: auto auto;
+            grid-template-rows: calc(${heightNumber} * 1px) auto;
             grid-template-columns: auto;
+            grid-column-gap: calc(${designUnit} * 2px);
             position: relative;
             width: max-content;
             align-self: end;
-            padding: calc(${designUnit} * 4px) calc(${designUnit} * 4px) 0;
-            box-sizing: border-box;
+            background: ${fillColor};
+            border-radius: calc(${controlCornerRadius} * 1px);
+            padding: calc(${designUnit} * 1px);
+        }
+
+        :host([disabled]) {
+            background: transparent;
         }
 
         .start,
         .end {
             align-self: center;
-        }
-
-        .activeIndicator {
-            grid-row: 2;
-            grid-column: 1;
-            width: 100%;
-            height: 5px;
-            justify-self: center;
-            background: ${accentFillRest};
-            margin-top: 10px;
-            border-radius: calc(${controlCornerRadius} * 1px)
-                calc(${controlCornerRadius} * 1px) 0 0;
-        }
-
-        .activeIndicatorTransition {
-            transition: transform 0.2s ease-in-out;
         }
 
         .tabpanel {
@@ -86,13 +76,12 @@ export const tabsStyles: FoundationElementTemplate<ElementStyles, TabsOptions> =
             display: grid;
             grid-template-rows: auto;
             grid-template-columns: auto 1fr;
+            grid-row-gap: calc(${designUnit} * 2px);
+            grid-column-gap: 0;
             position: relative;
             width: max-content;
             justify-self: end;
-            align-self: flex-start;
             width: 100%;
-            padding: 0 calc(${designUnit} * 4px)
-                calc((${heightNumber} - ${designUnit}) * 1px) 0;
         }
 
         :host([orientation="vertical"]) .tabpanel {
@@ -103,23 +92,6 @@ export const tabsStyles: FoundationElementTemplate<ElementStyles, TabsOptions> =
 
         :host([orientation="vertical"]) .end {
             grid-row: 3;
-        }
-
-        :host([orientation="vertical"]) .activeIndicator {
-            grid-column: 1;
-            grid-row: 1;
-            width: 5px;
-            height: 100%;
-            margin-inline-end: 10px;
-            align-self: center;
-            background: ${accentFillRest};
-            margin-top: 0;
-            border-radius: 0 calc(${controlCornerRadius} * 1px)
-                calc(${controlCornerRadius} * 1px) 0;
-        }
-
-        :host([orientation="vertical"]) .activeIndicatorTransition {
-            transition: transform 0.2s linear;
         }
     `.withBehaviors(
         forcedColorsStylesheetBehavior(
