@@ -62,6 +62,10 @@ function identifyPackage(path) {
 }
 
 async function safeCopy(source, dest) {
+    if (!fs.existsSync(source)) {
+        return;
+    }
+
     if (fs.existsSync(dest)) {
         await fs.copyFile(source, dest);
     } else {
@@ -179,17 +183,17 @@ async function copyArticleMarkdown() {
                     "https://github.com/microsoft/fast/edit/master/packages/web-components/fast-element/README.md",
             },
         },
-        {
-            src: path.resolve(root, "examples/site-rebrand-tutorial/README.md"),
-            dest: path.resolve(outputDir, "tutorials/site-rebrand.md"),
-            metadata: {
-                id: "site-rebrand",
-                title: "Using FAST to Rebrand an Existing Website",
-                sidebar_label: "Rebranding an Existing Site",
-                custom_edit_url:
-                    "https://github.com/microsoft/fast/blob/master/examples/site-rebrand-tutorial/README.md",
-            },
-        },
+        // {
+        //     src: path.resolve(root, "examples/site-rebrand-tutorial/README.md"),
+        //     dest: path.resolve(outputDir, "tutorials/site-rebrand.md"),
+        //     metadata: {
+        //         id: "site-rebrand",
+        //         title: "Using FAST to Rebrand an Existing Website",
+        //         sidebar_label: "Rebranding an Existing Site",
+        //         custom_edit_url:
+        //             "https://github.com/microsoft/fast/blob/master/examples/site-rebrand-tutorial/README.md",
+        //     },
+        // },
     ];
 
     for (const file of mergeDocs) {
@@ -355,50 +359,49 @@ async function buildAPIMarkdown() {
 }
 
 async function copyImages() {
-    const images = [
-        {
-            src: path.resolve(root, "examples/site-rebrand-tutorial/website.png"),
-            dest: path.resolve(
-                staticOutputDir,
-                "examples/site-rebrand-tutorial/website.png"
-            ),
-        },
-        {
-            src: path.resolve(root, "examples/site-rebrand-tutorial/site-structure.png"),
-            dest: path.resolve(
-                staticOutputDir,
-                "examples/site-rebrand-tutorial/site-structure.png"
-            ),
-        },
-        {
-            src: path.resolve(
-                root,
-                "examples/site-rebrand-tutorial/example-controls.png"
-            ),
-            dest: path.resolve(
-                staticOutputDir,
-                "examples/site-rebrand-tutorial/example-controls.png"
-            ),
-        },
-        {
-            src: path.resolve(root, "examples/site-rebrand-tutorial/side-by-side.png"),
-            dest: path.resolve(
-                staticOutputDir,
-                "examples/site-rebrand-tutorial/side-by-side.png"
-            ),
-        },
-        {
-            src: path.resolve(root, "examples/site-rebrand-tutorial/design-panel.png"),
-            dest: path.resolve(
-                staticOutputDir,
-                "examples/site-rebrand-tutorial/design-panel.png"
-            ),
-        },
-    ];
-
-    for (const img of images) {
-        await safeCopy(img.src, img.dest);
-    }
+    // const images = [
+    //     {
+    //         src: path.resolve(root, "examples/site-rebrand-tutorial/website.png"),
+    //         dest: path.resolve(
+    //             staticOutputDir,
+    //             "examples/site-rebrand-tutorial/website.png"
+    //         ),
+    //     },
+    //     {
+    //         src: path.resolve(root, "examples/site-rebrand-tutorial/site-structure.png"),
+    //         dest: path.resolve(
+    //             staticOutputDir,
+    //             "examples/site-rebrand-tutorial/site-structure.png"
+    //         ),
+    //     },
+    //     {
+    //         src: path.resolve(
+    //             root,
+    //             "examples/site-rebrand-tutorial/example-controls.png"
+    //         ),
+    //         dest: path.resolve(
+    //             staticOutputDir,
+    //             "examples/site-rebrand-tutorial/example-controls.png"
+    //         ),
+    //     },
+    //     {
+    //         src: path.resolve(root, "examples/site-rebrand-tutorial/side-by-side.png"),
+    //         dest: path.resolve(
+    //             staticOutputDir,
+    //             "examples/site-rebrand-tutorial/side-by-side.png"
+    //         ),
+    //     },
+    //     {
+    //         src: path.resolve(root, "examples/site-rebrand-tutorial/design-panel.png"),
+    //         dest: path.resolve(
+    //             staticOutputDir,
+    //             "examples/site-rebrand-tutorial/design-panel.png"
+    //         ),
+    //     },
+    // ];
+    // for (const img of images) {
+    //     await safeCopy(img.src, img.dest);
+    // }
 }
 
 async function main() {
