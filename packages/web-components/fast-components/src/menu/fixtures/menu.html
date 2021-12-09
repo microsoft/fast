@@ -308,3 +308,56 @@
         </svg>
     </fast-menu-item>
 </fast-menu>
+
+<h4>Z-index handling</h4>
+<div style="display: inline-block; width: 100%;">
+    <fast-menu style="float: left; width: 370px;">
+        <fast-menu-item>Menu item 1</fast-menu-item>
+        <fast-menu-item>Menu item 2</fast-menu-item>
+        <fast-menu-item disabled="true">Menu item 3</fast-menu-item>
+        <fast-menu-item>
+            Menu item 4
+            <div slot="end">
+                Shortcut text
+            </div>
+        </fast-menu-item>
+        <fast-menu-item>
+            Menu item 5
+            <fast-menu>
+                <fast-menu-item>Nested Menu item 1.1</fast-menu-item>
+                <fast-menu-item>Nested Menu item 1.2</fast-menu-item>
+                <fast-menu-item>Nested Menu item 1.3</fast-menu-item>
+            </fast-menu>
+        </fast-menu-item>
+        <fast-menu-item>
+            Menu item 6
+            <div slot="end">
+                Shortcut text
+            </div>
+            <fast-menu>
+                <fast-menu-item>Nested Menu item 1.1</fast-menu-item>
+                <fast-menu-item>Nested Menu item 1.2</fast-menu-item>
+                <fast-menu-item>Nested Menu item 1.3</fast-menu-item>
+            </fast-menu>
+        </fast-menu-item>
+    </fast-menu>
+
+    <div
+        style="
+            padding: 20px;
+            margin: 0 0 0 380px;
+            width: 200px;
+            height: 210px;
+            background: var(--neutral-layer-floating);
+            color: var(--neutral-foreground-rest);
+            font-size: small;
+            line-height: 1.5em;
+            position: absolute;
+            font-family: sans-serif;
+        "
+    >
+        Div with absolute position next to a menu. No z-index is declared on this block.
+        Flyout menus will go over elements with position set to relative or absolute so
+        long as they don't have a z-index set or if z-index is less than 1.
+    </div>
+</div>

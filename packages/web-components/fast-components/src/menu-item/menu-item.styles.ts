@@ -58,6 +58,8 @@ export const menuItemStyles: (
         line-height: ${typeRampBaseLineHeight};
         border-radius: calc(${controlCornerRadius} * 1px);
         border: calc(${focusStrokeWidth} * 1px) solid transparent;
+        position: relative;
+        z-index: 1;
     }
 
     :host(.indent-0) {
@@ -215,7 +217,6 @@ export const menuItemStyles: (
         display: flex;
         align-items: center;
         justify-content: center;
-        position: relative;
         width: 20px;
         height: 20px;
         box-sizing: border-box;
@@ -266,7 +267,6 @@ export const menuItemStyles: (
     }
 
     :host([aria-checked="true"]) .radio-indicator {
-        position: absolute;
         top: 4px;
         left: 4px;
         right: 4px;
