@@ -27,7 +27,7 @@ export const fastTreeItem = TreeItem.compose<TreeItemOptions>({
             xmlns="http://www.w3.org/2000/svg"
         >
             <path
-                d="M4.5 8.95c0 .54.63.82 1.04.47l3.15-2.76c.4-.35.4-.97 0-1.32L5.54 2.58a.62.62 0 0 0-1.04.47v5.9Z"
+                d="M5.7 3.28A1 1 0 0 0 4 4v4.02a1 1 0 0 0 1.7.7l2.04-2a1 1 0 0 0 0-1.42l-2.04-2Z"
             />
         </svg>
     `,
