@@ -58,6 +58,9 @@ export const menuItemStyles: (
         line-height: ${typeRampBaseLineHeight};
         border-radius: calc(${controlCornerRadius} * 1px);
         border: calc(${focusStrokeWidth} * 1px) solid transparent;
+    }
+
+    :host(:hover) {
         position: relative;
         z-index: 1;
     }
