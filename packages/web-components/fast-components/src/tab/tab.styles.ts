@@ -152,7 +152,7 @@ export const tabStyles: (
                 :host(.vertical[aria-selected="true"]:${focusVisible}) {
                     forced-color-adjust: none;
                     background: ${SystemColors.Highlight};
-                    border-color: ${SystemColors.Highlight};
+                    border-color: ${SystemColors.ButtonText};
                     box-shadow: 0 0 0 calc((${focusStrokeWidth} - ${strokeWidth}) * 1px) ${SystemColors.ButtonText} inset,
                       0 0 0 calc(((${focusStrokeWidth} * 2) - ${strokeWidth}) * 1px) ${SystemColors.HighlightText} inset;
                     color: ${SystemColors.HighlightText};
@@ -161,7 +161,7 @@ export const tabStyles: (
                 :host([disabled]),
                 :host([disabled]:hover) {
                     opacity: 1;
-                    border-color: ${SystemColors.GrayText};
+                    border-color: currentcolor;
                     color: ${SystemColors.GrayText};
                     fill: currentcolor;
                 }

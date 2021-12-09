@@ -38,9 +38,9 @@ export const tabsStyles: (
 
         .tablist {
             display: grid;
-            grid-template-rows: calc(${heightNumber} * 1px); auto;
+            grid-template-rows: calc(${heightNumber} * 1px) auto;
             grid-template-columns: auto;
-            grid-column-gap: 8px;
+            grid-column-gap: calc(${designUnit} * 2px);
             position: relative;
             width: max-content;
             align-self: end;
@@ -76,7 +76,7 @@ export const tabsStyles: (
             display: grid;
             grid-template-rows: auto;
             grid-template-columns: auto 1fr;
-            grid-row-gap: 8px;
+            grid-row-gap: calc(${designUnit} * 2px);
             grid-column-gap: 0;
             position: relative;
             width: max-content;
