@@ -257,6 +257,8 @@ export class Button extends FormAssociatedButton {
     // (undocumented)
     control: HTMLButtonElement;
     defaultSlottedContent: HTMLElement[];
+    // @internal (undocumented)
+    disconnectedCallback(): void;
     formaction: string;
     formenctype: string;
     formId: string;
