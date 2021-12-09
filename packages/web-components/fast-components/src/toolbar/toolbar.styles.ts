@@ -10,8 +10,9 @@ import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
     controlCornerRadius,
     fillColor,
+    focusStrokeOuter,
     focusStrokeWidth,
-    neutralStrokeFocus,
+    neutralForegroundRest,
     strokeWidth,
 } from "../design-tokens.js";
 
@@ -31,12 +32,13 @@ export const toolbarStyles: FoundationElementTemplate<ElementStyles, ToolbarOpti
             );
             background-color: ${fillColor};
             border-radius: calc(${controlCornerRadius} * 1px);
+            color: ${neutralForegroundRest};
             fill: currentcolor;
             padding: var(--toolbar-item-gap);
         }
 
         :host(${focusVisible}) {
-            outline: calc(${strokeWidth} * 1px) solid ${neutralStrokeFocus};
+            outline: calc(${strokeWidth} * 1px) solid ${focusStrokeOuter};
         }
 
         .positioning-region {
