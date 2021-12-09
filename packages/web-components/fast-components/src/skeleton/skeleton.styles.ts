@@ -1,11 +1,14 @@
 import { css, ElementStyles } from "@microsoft/fast-element";
 import {
+    display,
     forcedColorsStylesheetBehavior,
     FoundationElementTemplate,
 } from "@microsoft/fast-foundation";
-import { SystemColors } from "@microsoft/fast-web-utilities";
-import { display } from "@microsoft/fast-foundation";
-import { controlCornerRadius, neutralFillRest } from "../design-tokens.js";
+import {
+    controlCornerRadius,
+    neutralFillActive,
+    neutralFillRest,
+} from "../design-tokens.js";
 
 /**
  * Styles for Skeleton
@@ -17,7 +20,7 @@ export const skeletonStyles: FoundationElementTemplate<ElementStyles> = (
 ) =>
     css`
         ${display("block")} :host {
-            --skeleton-fill-default: #e1dfdd;
+            --skeleton-fill-default: ${neutralFillRest};
             overflow: hidden;
             width: 100%;
             position: relative;
@@ -25,7 +28,7 @@ export const skeletonStyles: FoundationElementTemplate<ElementStyles> = (
             --skeleton-animation-gradient-default: linear-gradient(
                 270deg,
                 var(--skeleton-fill, var(--skeleton-fill-default)) 0%,
-                #f3f2f1 51.13%,
+                ${neutralFillActive} 51.13%,
                 var(--skeleton-fill, var(--skeleton-fill-default)) 100%
             );
             --skeleton-animation-timing-default: ease-in-out;
@@ -62,7 +65,7 @@ export const skeletonStyles: FoundationElementTemplate<ElementStyles> = (
             );
             background-size: 0px 0px / 90% 100%;
             background-repeat: no-repeat;
-            background-color: var(--skeleton-animation-fill, ${neutralFillRest});
+            background-color: var(--skeleton-animation-fill, ${neutralFillActive});
             animation: shimmer 2s infinite;
             animation-timing-function: var(
                 --skeleton-animation-timing,
@@ -92,12 +95,6 @@ export const skeletonStyles: FoundationElementTemplate<ElementStyles> = (
     `.withBehaviors(
         forcedColorsStylesheetBehavior(
             css`
-                :host {
-                    forced-color-adjust: none;
-                    background-color: ${SystemColors.ButtonFace};
-                    box-shadow: 0 0 0 1px ${SystemColors.ButtonText};
-                }
-
                 ${display("block")} span.shimmer {
                     display: none;
                 }
