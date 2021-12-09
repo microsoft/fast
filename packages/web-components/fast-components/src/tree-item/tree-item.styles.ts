@@ -213,7 +213,7 @@ export const treeItemStyles: (
             margin-inline-start: calc(${designUnit} * 2px + 2px);
         }
 
-        :host(.expanded) > .items {
+        :host([expanded]) .items {
             display: block;
         }
 
