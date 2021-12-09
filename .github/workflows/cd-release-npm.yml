@@ -58,4 +58,4 @@ jobs:
         webhook_token: ${{ secrets.DISCORD_NOTIFICATION_WEBHOOK_TOKEN }}
         color: '#DE2D6D'
         username: 'FAST DevOps Packages Bot'
-        message: 'Release has published to NPM on https://github.com/microsoft/fast/actions/workflows/cd-publish.yml'
+        message: 'Release has published to NPM on https://github.com/microsoft/fast/actions/workflows/cd-release-npm.yml'

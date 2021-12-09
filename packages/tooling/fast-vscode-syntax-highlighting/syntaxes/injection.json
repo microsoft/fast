@@ -1,0 +1,16 @@
+{
+    "scopeName": "invalid-expression-comment.injection",
+    "injectionSelector": "L:comment.block",
+    "patterns": [
+        {
+            "include": "#illegal-template-substitution-element"
+        }
+    ],
+    "repository": {
+        "illegal-template-substitution-element": {
+            "begin": "\\$\\{",
+            "end": "\\}",
+            "name": "invalid.illegal.template-subsitution-element.css"
+        }
+    }
+}

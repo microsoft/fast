@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-router",
   "entries": [
     {
+      "date": "Wed, 08 Dec 2021 07:10:04 GMT",
+      "tag": "@microsoft/fast-router_v0.2.11",
+      "version": "0.2.11",
+      "comments": {
+        "none": [
+          {
+            "comment": "Bump @microsoft/fast-element to v1.6.2",
+            "author": "roeisenb@microsoft.com",
+            "commit": "bd7d84152a823cc21aab0dfa196da9d663ad0778",
+            "package": "@microsoft/fast-router"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 02 Dec 2021 07:11:13 GMT",
       "tag": "@microsoft/fast-router_v0.2.11",
       "version": "0.2.11",

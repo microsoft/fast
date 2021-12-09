@@ -125,6 +125,11 @@ module.exports = {
                 "community/code-of-conduct",
                 "community/contributor-guide",
                 "community/writing-documentation",
+                {
+                    type: "category",
+                    label: "Engineering Process",
+                    items: ["community/issue-management", "community/release-planning"],
+                },
             ],
         },
         {
