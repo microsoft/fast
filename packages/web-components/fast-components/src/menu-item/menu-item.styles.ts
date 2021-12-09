@@ -220,6 +220,7 @@ export const menuItemStyles: (
         display: flex;
         align-items: center;
         justify-content: center;
+        position: relative;
         width: 20px;
         height: 20px;
         box-sizing: border-box;
@@ -270,6 +271,7 @@ export const menuItemStyles: (
     }
 
     :host([aria-checked="true"]) .radio-indicator {
+        position: absolute;
         top: 4px;
         left: 4px;
         right: 4px;
