@@ -18,7 +18,7 @@ import { IntersectionService } from "../utilities/intersection-service";
 import type { ResizeObserverClassDefinition } from "../utilities/resize-observer";
 
 /**
- * Defines if the component updates its position automatically. Calling update() always provokes an update.
+ * Defines if the component updates its position automatically.
  *
  * @beta
  */
@@ -137,14 +137,15 @@ export class VirtualizingStackBase extends FoundationElement {
     }
 
     /**
-     *
+     * Auto update mode defines what prompts the component to check the dimensions of elements
+     * in the DOM and reset the visible items accordingly.  Calling update() always provokes an update.
      *
      * @beta
      * @remarks
      * HTML Attribute: auto-update-mode
      */
     @attr({ attribute: "auto-update-mode" })
-    public autoUpdateMode: VirtualizingStackAutoUpdateMode = "auto";
+    public autoUpdateMode: VirtualizingStackAutoUpdateMode = "manual";
     private autoUpdateModeChanged(
         prevMode: VirtualizingStackAutoUpdateMode,
         newMode: VirtualizingStackAutoUpdateMode

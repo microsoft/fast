@@ -16,20 +16,20 @@ export const virtualizingStackTemplate: (
     context: ElementDefinitionContext,
     definition: FoundationElementDefinition
 ) => html`
-    <template>
+    <template auto-update-mode="auto">
         <div
             class="container"
             style="
                 width: ${x =>
                 x.orientation !== Orientation.vertical
                     ? `${x.totalStackSpan}px`
-                    : undefined};
+                    : "100%"};
                 grid-template-columns:${x =>
                 x.orientation !== Orientation.vertical ? x.gridTemplateSpans : undefined};
                 height: ${x =>
                 x.orientation === Orientation.vertical
                     ? `${x.totalStackSpan}px`
-                    : undefined};
+                    : "100%"};
                 grid-template-rows:${x =>
                 x.orientation === Orientation.vertical ? x.gridTemplateSpans : undefined};
                 display: grid;

@@ -324,7 +324,6 @@ export class DataGrid extends VirtualizingStackBase {
      * @internal
      */
     public connectedCallback(): void {
-        this.autoUpdateMode = "viewport-resize";
         super.connectedCallback();
 
         if (this.rowItemTemplate === undefined) {

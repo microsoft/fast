@@ -10,4 +10,9 @@ export const virtualizingStackStyles: (
 ) => ElementStyles = (
     context: ElementDefinitionContext,
     definition: FoundationElementDefinition
-) => css``;
+) => css`
+    :host {
+        display: block;
+        contain: size;
+    }
+`;
