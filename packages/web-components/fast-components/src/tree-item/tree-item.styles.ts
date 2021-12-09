@@ -45,10 +45,6 @@ const ltr = css`
         left: var(--expand-collapse-button-nested-width, calc(${heightNumber} * -1px));
     }
 
-    :host([selected])::after {
-        left: calc(${focusStrokeWidth} * 1px);
-    }
-
     :host([expanded]) > .positioning-region .expand-collapse-button svg {
         transform: rotate(90deg);
     }
@@ -61,10 +57,6 @@ const rtl = css`
 
     :host(.nested) .expand-collapse-button {
         right: var(--expand-collapse-button-nested-width, calc(${heightNumber} * -1px));
-    }
-
-    :host([selected])::after {
-        right: calc(${focusStrokeWidth} * 1px);
     }
 
     :host([expanded]) > .positioning-region .expand-collapse-button svg {
@@ -261,15 +253,13 @@ export const treeItemStyles: (
                 :host(:not([disabled])) .positioning-region:hover,
                 :host(:not([disabled])[selected]) .positioning-region {
                     background: ${SystemColors.Highlight};
+                    border-color: ${SystemColors.Highlight};
                     color: ${SystemColors.HighlightText};
                 }
 
-                :host([selected])::after {
-                    background: ${SystemColors.HighlightText};
-                }
-
                 :host(:${focusVisible}) .positioning-region {
-                    border-color: ${SystemColors.ButtonText};
+                    background: ${SystemColors.ButtonFace};
+                    border-color: currentcolor;
                     box-shadow: 0 0 0 2px inset ${SystemColors.ButtonFace};
                     color: ${SystemColors.ButtonText};
                 }
@@ -284,7 +274,6 @@ export const treeItemStyles: (
                 }
 
                 :host([disabled]:${focusVisible}) .positioning-region {
-                    border-color: ${SystemColors.GrayText};
                     box-shadow: none;
                     background: ${SystemColors.ButtonFace};
                     color:  ${SystemColors.GrayText};
