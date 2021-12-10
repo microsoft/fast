@@ -191,7 +191,7 @@ Specific *collaborators* or *code owners*  can be added to a pull request by inc
 
 ## Stability policy
 
-An essential consideration in every pull request is its impact on the system. To manage impacts, we work collectively to ensure that we do not introduce unnecessary breaking changes, performance or functional regressions, or negative impacts on usability for users or supported partners. To learn more about our approaches to planning and releases, see [our release planning document](https://www.fast.design/docs/engineering/release-planning).
+An essential consideration in every pull request is its impact on the system. To manage impacts, we work collectively to ensure that we do not introduce unnecessary breaking changes, performance or functional regressions, or negative impacts on usability for users or supported partners. To learn more about our approaches to planning and releases, see [our release planning document](https://www.fast.design/docs/community/release-planning).
 
 ## Developer's Certificate of Origin 1.1
 
