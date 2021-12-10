@@ -6,14 +6,11 @@ import {
     FoundationElementDefinition,
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
+import {} from "..";
 import {
-    accentFillActive,
     bodyFont,
     controlCornerRadius,
     designUnit,
-    focusStrokeOuter,
-    focusStrokeWidth,
-    foregroundOnAccentActive,
     neutralFillStealthActive,
     neutralFillStealthFocus,
     neutralFillStealthHover,
@@ -22,6 +19,7 @@ import {
     neutralForegroundFocus,
     neutralForegroundHover,
     neutralForegroundRest,
+    strokeWidth,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
 } from "../design-tokens";
@@ -40,25 +38,25 @@ export const pickerListItemStyles: (
 ) =>
     css`
         :host {
-            display: flex;
             align-items: center;
-            justify-items: center;
-            font-family: ${bodyFont};
+            background: ${neutralFillStealthRest};
             border-radius: calc(${controlCornerRadius} * 1px);
-            border: calc(${focusStrokeWidth} * 1px) solid transparent;
+            border: calc(${strokeWidth} * 1px) solid transparent;
             box-sizing: border-box;
+            display: flex;
             color: ${neutralForegroundRest};
             cursor: pointer;
             fill: currentcolor;
+            font-family: ${bodyFont};
             font-size: ${typeRampBaseFontSize};
             height: calc(${heightNumber} * 1px);
+            justify-items: center;
             line-height: ${typeRampBaseLineHeight};
             outline: none;
             overflow: hidden;
             padding: 0 calc(${designUnit} * 2.25px);
             user-select: none;
             white-space: nowrap;
-            background: ${neutralFillStealthRest};
         }
 
         :host(:hover) {
@@ -73,13 +71,8 @@ export const pickerListItemStyles: (
 
         :host(:${focusVisible}) {
             background: ${neutralFillStealthFocus};
-            border-color: ${focusStrokeOuter};
             color: ${neutralForegroundFocus};
         }
-
-        :host([aria-selected="true"]) {
-            background: ${accentFillActive};
-            color: ${foregroundOnAccentActive};
 }`.withBehaviors(
         forcedColorsStylesheetBehavior(
             css`

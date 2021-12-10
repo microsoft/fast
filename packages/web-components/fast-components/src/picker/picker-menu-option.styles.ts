@@ -6,12 +6,13 @@ import {
     FoundationElementDefinition,
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
+import { neutralFillStealthFocus, neutralForegroundFocus, strokeWidth } from "..";
 import {
+    accentFillRest,
     bodyFont,
     controlCornerRadius,
     designUnit,
     focusStrokeOuter,
-    focusStrokeWidth,
     neutralFillStealthActive,
     neutralFillStealthHover,
     neutralFillStealthRest,
@@ -42,7 +43,7 @@ export const pickerMenuOptionStyles: (
             font-family: ${bodyFont};
             background: ${neutralFillStealthRest};
             border-radius: calc(${controlCornerRadius} * 1px);
-            border: calc(${focusStrokeWidth} * 1px) solid transparent;
+            border: calc(${strokeWidth} * 1px) solid transparent;
             box-sizing: border-box;
             color: ${neutralForegroundRest};
             cursor: pointer;
@@ -50,10 +51,9 @@ export const pickerMenuOptionStyles: (
             font-size: ${typeRampBaseFontSize};
             min-height: calc(${heightNumber} * 1px);
             line-height: ${typeRampBaseLineHeight};
-            margin: 0 calc(${designUnit} * 1px);
             outline: none;
             overflow: hidden;
-            padding: 0 calc(${designUnit} * 2.25px);
+            padding: 0 calc(((${designUnit} * 3) - 3) * 1px );
             user-select: none;
             white-space: nowrap;
         }
@@ -63,14 +63,15 @@ export const pickerMenuOptionStyles: (
             color: ${neutralForegroundHover};
         }
 
-        :host(:active),
-        :host([aria-selected="true"]) {
+        :host(:active) {
             background: ${neutralFillStealthActive};
             color: ${neutralForegroundActive};
         }
 
         :host(:${focusVisible}[role="listitem"]) {
+            background: ${neutralFillStealthFocus};
             border-color: ${focusStrokeOuter};
+            color: ${neutralForegroundFocus};
         }
     `.withBehaviors(
         forcedColorsStylesheetBehavior(

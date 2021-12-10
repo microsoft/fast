@@ -7,19 +7,20 @@ import {
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
-    accentForegroundRest,
     bodyFont,
     controlCornerRadius,
     designUnit,
     focusStrokeOuter,
     focusStrokeWidth,
     neutralFillActive,
+    neutralFillFocus,
     neutralFillHover,
     neutralFillRest,
     neutralForegroundActive,
     neutralForegroundFocus,
     neutralForegroundHover,
     neutralForegroundRest,
+    neutralStrokeInputFilledActive,
     neutralStrokeInputFilledHover,
     neutralStrokeInputFilledRest,
     strokeWidth,
@@ -66,25 +67,24 @@ export const pickerListStyles: (
             padding: 0 calc(${designUnit} * 2px + 1px);
         }
 
-        :host(:not([disabled]):hover) ::slotted([role="combobox"]){
-            background:${neutralFillHover};
+        :host(:not([disabled]):hover) ::slotted([role="combobox"]) {
+            background: ${neutralFillHover};
             border-color: ${neutralStrokeInputFilledHover};
             color: ${neutralForegroundHover};
         }
 
-        :host(:not([disabled]):active) ::slotted([role="combobox"]),
-        :host(:focus-within) ::slotted([role="combobox"]),
-        :host(:focus-within:hover) ::slotted([role="combobox"]) {
+        :host(:not([disabled]):active) ::slotted([role="combobox"]) {
             background: ${neutralFillActive};
-            border-color: ${accentForegroundRest};
+            border-color: ${neutralStrokeInputFilledActive};
             color: ${neutralForegroundActive};
         }
 
-        :host(:${focusVisible}) ::slotted([role="combobox"]) {
-            outline: none;
-            background: ${neutralFillActive};
+        :host(:focus-within) ::slotted([role="combobox"]),
+        :host(:focus-within:hover) ::slotted([role="combobox"]) {
+            background: ${neutralFillFocus};
             border-color: ${focusStrokeOuter};
-            box-shadow: 0 0 0 calc(${focusStrokeWidth} * 1px) ${focusStrokeOuter} inset;
+            box-shadow: 0 0 0 calc((${focusStrokeWidth} - ${strokeWidth}) * 1px)
+                ${focusStrokeOuter} inset;
             color: ${neutralForegroundFocus};
         }
     `.withBehaviors(
