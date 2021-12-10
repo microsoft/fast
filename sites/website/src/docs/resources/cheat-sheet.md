@@ -265,6 +265,25 @@ interface ValueConverter {
 }
 ```
 
+Example:
+
+```ts
+const numberConverter: ValueConverter = {
+  toView(value: number): string {
+    return String(value);
+  },
+
+  fromView(value: string): number {
+    return Number(value);
+  }
+};
+
+@customElement('my-counter')
+export class MyCounter extends FASTElement {
+  @attr({ mode: 'reflect', converter: numberConverter }) count: number = 0;
+}
+```
+
 ### [Templates](https://www.fast.design/docs/fast-element/declaring-templates)
 
 To create an HTML template for an element, import and use the html tagged template helper and pass the template to the @customElement decorator.
@@ -288,7 +307,7 @@ const template = html<NameTag>`
   template
 })
 export class NameTag extends FASTElement {
-  @attr greeting: string = 'Hello';
+  ...
 }
 ```
 
@@ -319,7 +338,15 @@ const template = html<MyApp>`
     Loading...
   `)}
 `;
-...
+
+@customElement({
+  name: 'my-app',
+  template
+})
+export class MyApp extends FASTElement {
+  @observable ready: boolean = false;
+  ...
+}
 ```
 
 To render a list of data, use the `repeat` directive, providing the list to render and a template to use in rendering each item.
@@ -333,7 +360,15 @@ const template = html<FriendList>`
       <li>${x => x}</li>
     `)}
 `;
-...
+
+@customElement({
+  name: 'friend-list',
+  template
+})
+export class FriendList extends FASTElement {
+  @observable friends: Person[] = [];
+  ...
+}
 ```
 
 Properties available on the context object within a `repeat` block:
@@ -364,17 +399,20 @@ Using the css helper, we're able to create `ElementStyles`. We configure this wi
 Adding CSS to a `FASTElement`:
 
 ```ts
+import { FASTElement, customElement } from '@microsoft/fast-element';
 import { css } from "@microsoft/fast-element";
+import { disabledOpacity } from "../design-tokens";
 
 const styles = css`
-  :host {
-    ...
+  :host([disabled])] {
+    opacity: ${disabledOpacity};
   }
 `;
 
 @customElement({
   styles
 })
+export class MyElement extends FASTElement {}
 ```
 ##### Composing styles
 
@@ -412,7 +450,7 @@ import { CSSDirective }  from "@microsoft/fast-element"
 class RandomWidth extends CSSDirective {}
 ```
 
-createCSS method:
+**createCSS method:**
 
 ```ts
 class RandomWidth extends CSSDirective {
@@ -422,13 +460,29 @@ class RandomWidth extends CSSDirective {
 }
 ```
 
-createBehavior method:
+**createBehavior method:**
 
+The createBehavior() method can be used to create a Behavior that is bound to the element using the CSSDirective:
 
+```ts
+class RandomWidth extends CSSDirective {
+  private property = "--random-width";
+  createCSS() {
+    return `width: var(${this.property});`
+  }
 
-
-
-
+  createBehavior() {
+    return {
+      bind(el) {
+        el.style.setProperty(this.property, Math.random() * 100)
+      }
+      unbind(el) {
+        el.style.removeProperty(this.property);
+      }
+    }
+  }
+}
+```
 
 ### [Observables](https://www.fast.design/docs/fast-element/observables-and-state#observable-features)
 
