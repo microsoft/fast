@@ -111,10 +111,10 @@ provideFASTDesignSystem()
 
 To install the components, use either `npm` or `yarn`:
 ```shell
-npm install --save @microsoft/fast-components
+npm install --save @fluentui/web-components
 ``` 
 ```shell
-yarn add @microsoft/fast-components
+yarn add @fluentui/web-components
 ```
 
 To use a Web Component as a custom element in HTML, the custom element must be registered:
