@@ -15,4 +15,14 @@ export const virtualizingStackStyles: (
         display: block;
         contain: size;
     }
+
+    .container {
+        background: repeating-linear-gradient(
+            90deg,
+            transparent,
+            transparent 100px,
+            darkgray 100px,
+            darkgray 200px
+        );
+    }
 `;

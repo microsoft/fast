@@ -14,4 +14,14 @@ export const dataGridStyles: FoundationElementTemplate<ElementStyles> = (
         position: relative;
         flex-direction: column;
     }
+
+    .container {
+        background: repeating-linear-gradient(
+            0deg,
+            gray,
+            gray 40px,
+            darkgray 40px,
+            darkgray 80px
+        );
+    }
 `;
