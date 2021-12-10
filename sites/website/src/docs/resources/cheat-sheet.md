@@ -8,6 +8,69 @@ custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/src
 # Cheat Sheet
 
 ## Packages
+
+
+### [@microsoft/fast-element](https://www.fast.design/docs/fast-element/getting-started)
+
+**A library that is a lightweight means to easily build performant, memory-efficient, standards-compliant Web Components.**
+
+* Provides a thin layer of opinions on top of Web Components, lifting the level of abstraction just enough to make it easier and FASTer to build components   
+* Use this library when you want to create completely new web components. 
+* See [Building Components](#building-components).
+
+To install the fast-element library, use either npm or yarn:
+
+```shell
+npm install --save @microsoft/fast-element
+```
+
+```shell
+yarn add @microsoft/fast-element
+```
+
+Within your JavaScript or TypeScript code, you can then import library APIs like this:
+
+```ts
+import { FASTElement } from '@microsoft/fast-element';
+```
+
+---
+### [@microsoft/fast-foundation](https://www.fast.design/docs/introduction)
+
+**A library that provides foundational building blocks that can be assembled to create new design systems and component libraries.**
+
+* Exports of this package can generally be thought of as un-styled base components that implement semantic and accessible markup and behavior.   
+* Use this library when you want to implement something like Google's Material Design or Twitter Bootstrap.
+
+```ts
+import {
+  Button as FoundationButton,
+  buttonTemplate as template,
+} from "@microsoft/fast-foundation";
+import { css } from "@microsoft/fast-element";
+
+export class MyButton extends FoundationButton {
+  ...
+}
+
+export const buttonStyles = css`
+  :host {
+    background-color: azure;
+  }
+`;
+
+export const myButton = MyButton.compose({
+  baseName: "button",
+  baseClass: FoundationButton,
+  template,
+  styles: buttonStyles,
+  shadowOptions: {
+    delegatesFocus: true,
+  },
+});
+```
+---
+
 ### [@microsoft/fast-components](https://www.fast.design/docs/components/getting-started)     
 
 **A component library that implements Microsoft's [FAST Frame Design System](https://www.fast.design/docs/design-systems/fast-frame/).**
@@ -84,67 +147,7 @@ If you are attempting to configure the components for integration into a specifi
 
 
 ---
-### [@microsoft/fast-foundation](https://www.fast.design/docs/introduction)
 
-**A library that provides foundational building blocks that can be assembled to create new design systems and component libraries.**
-
-* Exports of this package can generally be thought of as un-styled base components that implement semantic and accessible markup and behavior.   
-* Use this library when you want to implement something like Google's Material Design or Twitter Bootstrap.
-
-```ts
-import {
-  Button as FoundationButton,
-  buttonTemplate as template,
-} from "@microsoft/fast-foundation";
-import { css } from "@microsoft/fast-element";
-
-export class MyButton extends FoundationButton {
-  ...
-}
-
-export const buttonStyles = css`
-  :host {
-    background-color: azure;
-  }
-`;
-
-export const myButton = MyButton.compose({
-  baseName: "button",
-  baseClass: FoundationButton,
-  template,
-  styles: buttonStyles,
-  shadowOptions: {
-    delegatesFocus: true,
-  },
-});
-```
-
----
-### [@microsoft/fast-element](https://www.fast.design/docs/fast-element/getting-started)
-
-**A library that is a lightweight means to easily build performant, memory-efficient, standards-compliant Web Components.**
-
-* Provides a thin layer of opinions on top of Web Components, lifting the level of abstraction just enough to make it easier and FASTer to build components   
-* Use this library when you want to create completely new web components. 
-* See [Building Components](#building-components).
-
-To install the fast-element library, use either npm or yarn:
-
-```shell
-npm install --save @microsoft/fast-element
-```
-
-```shell
-yarn add @microsoft/fast-element
-```
-
-Within your JavaScript or TypeScript code, you can then import library APIs like this:
-
-```ts
-import { FASTElement } from '@microsoft/fast-element';
-```
-
----
 
 ## Using Components
 ### Setup
@@ -594,30 +597,33 @@ For Design Tokens related to color, see the [adaptive color system](https://www.
 
 ## [Contributing to FAST](https://www.fast.design/docs/community/join)
 
-**There are two ways to contribute**:
-
-1. Contribute changes to the `fast-components` design system.
-2. Contribute changes to the documentation.
-
-**Unsure of what to work on?**
-
-- Here are [good first issues](https://github.com/Microsoft/fast/labels/community:good-first-issue).
-
 **Connect with us**:
 
 - Join our [Discord](https://discord.gg/FcSNfg4) server.
 - Report bugs, request features through [Github](https://github.com/Microsoft/fast/issues/new/choose).
 
-### [Contributing to fast-component](https://www.fast.design/docs/community/contributor-guide)
+
+**Unsure of what to work on?**
+
+- Here are [good first issues](https://github.com/Microsoft/fast/labels/community:good-first-issue).
+
+---
+#### [Contributing to fast-component](https://www.fast.design/docs/community/contributor-guide)
+
+
 
 ```shell
 cd packages/web-components/fast-components
 yarn start
 ```
 
+
 [Storybook](https://storybook.js.org/) will open in a browser window at `localhost:6006`.
 
-### [Contributing to documentation](https://www.fast.design/docs/community/writing-documentation)
+
+---
+
+#### [Contributing to documentation](https://www.fast.design/docs/community/writing-documentation)
 
 ```shell
 cd sites/website
