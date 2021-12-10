@@ -14,11 +14,10 @@ custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/src
 
 **A library that is a lightweight means to easily build performant, memory-efficient, standards-compliant Web Components.**
 
-* Provides a thin layer of opinions on top of Web Components, lifting the level of abstraction just enough to make it easier and FASTer to build components   
+* Provides a thin layer of opinions on top of [Web Components](https://www.fast.design/docs/resources/why-web-components), lifting the level of abstraction just enough to make it easier and FASTer to [build components]((#building-components)).   
 * Use this library when you want to create completely new web components. 
-* See [Building Components](#building-components).
 
-To install the fast-element library, use either npm or yarn:
+To install the fast-element library, use either `npm` or `yarn`:
 
 ```shell
 npm install --save @microsoft/fast-element
@@ -79,7 +78,7 @@ export const myButton = MyButton.compose({
 
 * Use this library when you want to integrate [FAST Components](#using-components) into an existing site or app.
 
-To install the components, use either npm or yarn:
+To install the components, use either `npm` or `yarn`:
 ```shell
 npm install --save @microsoft/fast-components
 ``` 
@@ -87,7 +86,7 @@ npm install --save @microsoft/fast-components
 yarn add @microsoft/fast-components
 ```
 
-To use a Web Component as a custom element in HTML, the custom element must be registered.
+To use a Web Component as a custom element in HTML, the custom element must be registered:
 
 ```ts
 import { 
@@ -110,7 +109,7 @@ provideFASTDesignSystem()
 
 * Use this library when you want components to look and feel like those found in Microsoft products.
 
-To install the components, use either npm or yarn:
+To install the components, use either `npm` or `yarn`:
 ```shell
 npm install --save @microsoft/fast-components
 ``` 
@@ -118,7 +117,7 @@ npm install --save @microsoft/fast-components
 yarn add @microsoft/fast-components
 ```
 
-To use a Web Component as a custom element in HTML, the custom element must be registered.
+To use a Web Component as a custom element in HTML, the custom element must be registered:
 
 ```ts
 import { 
@@ -128,23 +127,23 @@ import {
 
 provideFluentDesignSystem()
     .register(
-        fluentButton()
+        fluentButton() // custom element
     );
 ```
 
 ---
 If you are attempting to configure the components for integration into a specific Microsoft product, the following table provides `AccentBaseColor` values you can use:
 
-| Product     | AccentBaseColor |
-| :---------- | :-------------- |
-| Office      | #D83B01         |
-| Word        | #185ABD         |
-| Excel       | #107C41         |
-| PowerPoint  | #C43E1C         |
-| Teams       | #6264A7         |
-| OneNote     | #7719AA         |
-| SharePoint  | #03787C         |
-| Stream      | #BC1948         |
+| Product     | AccentBaseColor | 
+| :---        | :---            | 
+| Office      | #D83B01         | 
+| Word        | #185ABD         | 
+| Excel       | #107C41         | 
+| PowerPoint  | #C43E1C         | 
+| Teams       | #6264A7         | 
+| OneNote     | #7719AA         | 
+| SharePoint  | #03787C         | 
+| Stream      | #BC1948         | 
 
 ---
 
@@ -177,7 +176,7 @@ import {
 provideFASTDesignSystem().register(allComponents);
 ```
 
-With the components registered, add any component to the HTML.
+With the components registered, add any component to the HTML:
 
 ```html
 <fast-button>Hello world</fast-button>
@@ -246,7 +245,7 @@ Not seeing an integration for your preferred technology?  Open an issue on [GitH
 
 ---
 ## [Building Components](https://www.fast.design/docs/components/getting-started)
-#### Setup
+### Setup
 
 To define a custom element:
 
@@ -294,17 +293,17 @@ To use a Web Component with Attributes:
 
 #### [Customizing attributes](https://www.fast.design/docs/fast-element/defining-elements#customizing-attributes):
 
-There are three modes available through the `mode` property of the attribute configuration:
+The three modes available through the `mode` property of the attribute configuration:
 
 | Mode | Guidance |
 | :-- | :-- | 
-| reflect | The default mode that is used if none is specified. This reflects property changes to the DOM. If a converter is supplied, it will invoke the converter before calling the setAttribute DOM API. |
-| boolean |  This mode causes your attribute to function using the HTML boolean attribute behavior. When your attribute is present in the DOM or equal to its own name, the value will be true. When the attribute is absent from the DOM, the value of the property will be false. Setting the property will also update the DOM by adding/removing the attribute. |
-| fromView |  This mode skips reflecting the value of the property back to the HTML attribute, but does receive updates when changed through setAttribute. |
+| reflect | The default mode that is used if none is specified. 
+| boolean |  This mode causes your attribute to function using the HTML boolean attribute behavior.|
+| fromView |  This mode skips reflecting the value of the property back to the HTML attribute.
 
 ---
 
-In addition to setting the mode, you can also supply a custom `ValueConverter` by setting the converter property of the attribute configuration. The converter must implement the following interface:
+Supply a custom `ValueConverter` by setting the converter property of the attribute configuration:
 
 ```ts
 interface ValueConverter {
@@ -335,7 +334,7 @@ export class MyCounter extends FASTElement {
 ---
 ### [Templates](https://www.fast.design/docs/fast-element/declaring-templates)
 
-To create an HTML template for an element, import and use the html tagged template helper and pass the template to the `@customElement` decorator.
+To create an HTML template for an element, import and use the html tagged template helper and pass the template to the `@customElement` decorator:
 
 ```ts
 import { FASTElement, customElement, attr, html } from '@microsoft/fast-element';
@@ -361,6 +360,29 @@ export class NameTag extends FASTElement {
 ```
 
 ---
+
+
+### [Observables](https://www.fast.design/docs/fast-element/observables-and-state#observable-features)
+
+To enable binding tracking and change notification, properties must be decorated with either `@attr` or `@observable`. 
+
+Use `@attr` for primitive properties (string, bool, number) that are intended to be surfaced on your element as HTML [attributes](#attributes). Use `@observable` for all other property types on an HTMLElement and all observable properties on plain classes.
+
+
+```ts
+import { Observable } from '@microsoft/fast-element';
+
+export class Person {
+  @observable firstName = '';
+  @observable lastName = '';
+
+  get fullName() {
+    return `${this.firstName} ${this.LastName}`;
+  }
+}
+```
+
+---
 ### [Bindings](https://www.fast.design/docs/fast-element/declaring-templates#understanding-bindings)
 
 | Binding Type | Example | Notes |
@@ -375,9 +397,9 @@ export class NameTag extends FASTElement {
 | Child Node Capture | `<div ${children('divChildren')}></div>` | Watches the element's children or changes and synchronizes those to an array, assigned to the named property on the data source. |
 
 ---
-### [Using directives](https://www.fast.design/docs/fast-element/using-directives)
+### [Directives](https://www.fast.design/docs/fast-element/using-directives)
 
-To conditionally render blocks of HTML, use the [`when`](https://www.fast.design/docs/fast-element/using-directives#the-when-directive) directive:
+Use the [`when`](https://www.fast.design/docs/fast-element/using-directives#the-when-directive) directive to conditionally render blocks of HTML:
 
 ```ts
 import { FASTElement, customElement, observable, html, when } from '@microsoft/fast-element';
@@ -401,7 +423,8 @@ export class MyApp extends FASTElement {
 
 ---
 
-To render a list of data, use the [`repeat`](https://www.fast.design/docs/fast-element/using-directives#the-repeat-directive) directive, providing the list to render and a template to use in rendering each item.
+Use the [`repeat`](https://www.fast.design/docs/fast-element/using-directives#the-repeat-directive) directive to render a list of data:
+
 
 ```ts
 import { FASTElement, customElement, observable, html, repeat } from '@microsoft/fast-element';
@@ -444,9 +467,7 @@ isLast | True if the current item is last in the array inside a repeat block (op
 
 ### [Styles](https://www.fast.design/docs/fast-element/leveraging-css#basic-styles)
 
-`FASTElement` provides a css tagged template helper to allow creating and re-using CSS.
-
-Using the css helper, we're able to create `ElementStyles`. We configure this with the element through the styles option of the decorator.
+`FASTElement` provides a css tagged template helper that allows for the creation of `ElementStyles`.
 
 Adding CSS to a `FASTElement`:
 
@@ -470,7 +491,7 @@ export class MyElement extends FASTElement {}
 ---
 #### [Composing styles](https://www.fast.design/docs/fast-element/leveraging-css#composing-styles)
 
-`ElementStyles` can be composed with other styles.
+`ElementStyles` can be composed with other styles:
 
 ```ts
 import { normalize } from './normalize';
@@ -487,7 +508,7 @@ const styles = css`
 
 #### [Partial CSS](https://www.fast.design/docs/fast-element/leveraging-css#partial-css)
 
-Using the `cssPartial` tagged template literal:
+Use the `cssPartial` tagged template literal to create reusable blocks of partial CSS:
 
 ```ts
 import { css, cssPartial } from "@microsoft/fast-element";
@@ -508,6 +529,8 @@ class RandomWidth extends CSSDirective {}
 
 #### [createCSS method](https://www.fast.design/docs/fast-element/leveraging-css#createcss):
 
+`CSSDirective` has a `createCSS()` method that returns a string to be interpolated into an `ElementStyles`:
+
 ```ts
 class RandomWidth extends CSSDirective {
   createCSS() {
@@ -518,7 +541,7 @@ class RandomWidth extends CSSDirective {
 
 #### [createBehavior method](https://www.fast.design/docs/fast-element/leveraging-css#createbehavior):
 
-The createBehavior() method can be used to create a Behavior that is bound to the element using the CSSDirective:
+The `createBehavior()` method can be used to create a `Behavior` that is bound to the element using the `CSSDirective`:
 
 ```ts
 class RandomWidth extends CSSDirective {
@@ -541,32 +564,10 @@ class RandomWidth extends CSSDirective {
 ```
 
 ---
-
-### [Observables](https://www.fast.design/docs/fast-element/observables-and-state#observable-features)
-
-To enable binding tracking and change notification, properties must be decorated with either @attr or @observable. 
-
-Use `@attr` for primitive properties (string, bool, number) that are intended to be surfaced on your element as HTML attributes. Use `@observable` for all other property types on an HTMLElement and all observable properties on plain classes.
-
-
-```ts
-import { Observable } from '@microsoft/fast-element';
-
-export class Person {
-  @observable firstName = '';
-  @observable lastName = '';
-
-  get fullName() {
-    return `${this.firstName} ${this.LastName}`;
-  }
-}
-```
-
----
 ## Design System
 ### [Creating a Design System](https://www.fast.design/docs/design-systems/creating-a-component-library#defining-a-design-system)
 
-1. Start with the base components defined in `@microsoft/fast-foundation` and compose them with your own styles.
+1. Start with the base components defined in `@microsoft/fast-foundation` and compose them with your own styles:
 
 ```ts
 import {
@@ -590,7 +591,7 @@ export const buttonStyles = styles;
 
 
 
-2. Export a "provider function" for your community to use in setting everything up.
+2. Export a `provider function` for your community to use in setting everything up:
 
 ```ts
 export function provideSpecialDesignSystem(element?: HTMLElement): DesignSystem {
@@ -674,6 +675,15 @@ For Design Tokens related to color, see the [adaptive color system](https://www.
 **Unsure of what to work on?**
 
 - Here are [good first issues](https://github.com/Microsoft/fast/labels/community:good-first-issue).
+
+---
+### [Contributor Guide](https://www.fast.design/docs/community/contributor-guide/)
+- [Machine setup](https://www.fast.design/docs/community/contributor-guide/#machine-setup)
+- [Cloning the repository](https://www.fast.design/docs/community/contributor-guide/#cloning-the-repository)
+- [Installing & building](https://www.fast.design/docs/community/contributor-guide/#installing-and-building)
+- [Testing](https://www.fast.design/docs/community/contributor-guide/#testing)
+- [Submitting a pull request](https://www.fast.design/docs/community/contributor-guide/#submitting-a-pull-request)
+- [Merging a pull request](https://www.fast.design/docs/community/contributor-guide/#merging-a-pull-request)
 
 ---
 ### [Contributing to fast-component](https://www.fast.design/docs/community/contributor-guide)
