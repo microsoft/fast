@@ -5,7 +5,9 @@ sidebar_label: Cheat Sheet
 custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/src/docs/resources/cheat-sheet.md
 ---
 
-# Cheat Sheet                                 
+# Cheat Sheet
+
+## Packages
 ### [@microsoft/fast-components](https://www.fast.design/docs/components/getting-started)     
 
 **A component library that implements Microsoft's [FAST Frame Design System](https://www.fast.design/docs/design-systems/fast-frame/).**
@@ -66,6 +68,21 @@ provideFluentDesignSystem()
         fluentButton()
     );
 ```
+
+If you are attempting to configure the components for integration into a specific Microsoft product, the following table provides AccentBaseColor values you can use:
+
+| Product     | AccentBaseColor |
+| :---------- | :-------------- |
+| Office      | #D83B01         |
+| Word        | #185ABD         |
+| Excel       | #107C41         |
+| PowerPoint  | #C43E1C         |
+| Teams       | #6264A7         |
+| OneNote     | #7719AA         |
+| SharePoint  | #03787C         |
+| Stream      | #BC1948         |
+
+
 ---
 ### [@microsoft/fast-foundation](https://www.fast.design/docs/introduction)
 
@@ -128,22 +145,11 @@ import { FASTElement } from '@microsoft/fast-element';
 ```
 
 ---
-### [FAST Frame Design System](https://www.fast.design/docs/design-systems/fast-frame)
-
-**A Design System composed of Web Components, Design Tokens, stylesheets, and styling tools.**
-
-* Provides a highly configurable design system that you can drop into any app. 
-* Provides a set of building blocks that you can customize to your own brand. 
-* Use FAST Frame when you want a robust, adaptive, and accessible component library.
-
-
-
----
 
 ## Using Components
 ### Setup
 
-To register custom components:
+To register design system components:
 
 ```ts
 import { 
@@ -157,7 +163,7 @@ provideFASTDesignSystem()
     );
 ```
 
-Or, register all available components:
+Or, register all system components:
 
 ```ts
 import { 
@@ -174,10 +180,24 @@ With the components registered, add any component to the HTML.
 <fast-button>Hello world</fast-button>
 ```
 
-
 Visit our Using Components [Getting Started Guide](https://www.fast.design/docs/components/getting-started) for more details, Tips, and Notes.
 
 Launch our [Component Explorer](https://explore.fast.design/) to experience our [FAST Components](https://www.npmjs.com/package/@microsoft/fast-components) and development tools.
+
+### Integrations
+
+FAST libraries can also be used in combination with a wide variety of existing technologies.
+
+[Angular](https://www.fast.design/docs/integrations/angular)
+[ASP.NET](https://www.fast.design/docs/integrations/aspnet)
+[Aurelia](https://www.fast.design/docs/integrations/aurelia)
+[Blazor](https://www.fast.design/docs/integrations/blazor)
+[Ember](https://www.fast.design/docs/integrations/ember)
+[React](https://www.fast.design/docs/integrations/react)
+[Vue](https://www.fast.design/docs/integrations/vue)
+[Webpack](https://www.fast.design/docs/integrations/webpack)
+
+Not seeing an integration for your preferred technology?  Open an issue on [GitHub](https://github.com/microsoft/fast/issues).
 
 ---
 ## Building Components
@@ -226,7 +246,24 @@ To use a Web Component with Attributes:
 <name-tag greeting="Hola"></name-tag>
 ```
 
-See [Customizing attributes](https://www.fast.design/docs/fast-element/defining-elements#customizing-attributes).
+#### [Customizing attributes](https://www.fast.design/docs/fast-element/defining-elements#customizing-attributes):
+
+There are three modes available through the `mode` property of the attribute configuration:
+
+| Mode | Guidance |
+| :-- | :-- | 
+| reflect | The default mode that is used if none is specified. This reflects property changes to the DOM. If a converter is supplied, it will invoke the converter before calling the setAttribute DOM API. |
+| boolean |  This mode causes your attribute to function using the HTML boolean attribute behavior. When your attribute is present in the DOM or equal to its own name, the value will be true. When the attribute is absent from the DOM, the value of the property will be false. Setting the property will also update the DOM by adding/removing the attribute. |
+| fromView |  This mode skips reflecting the value of the property back to the HTML attribute, but does receive updates when changed through setAttribute. |
+
+In addition to setting the mode, you can also supply a custom `ValueConverter` by setting the converter property of the attribute configuration. The converter must implement the following interface:
+
+```ts
+interface ValueConverter {
+    toView(value: any): string;
+    fromView(value: string): any;
+}
+```
 
 ### [Templates](https://www.fast.design/docs/fast-element/declaring-templates)
 
@@ -255,86 +292,160 @@ export class NameTag extends FASTElement {
 }
 ```
 
+
+#### [Bindings](https://www.fast.design/docs/fast-element/declaring-templates#understanding-bindings):
+
+| Binding Type | Example | Notes |
+| --- | --- | --- |
+| Content | `<a>${…}</a>` | Creates a binding to interpolate text or child templates into element content. |
+| HTML Attribute | `<a href=${…}></a>` | Creates a binding that uses the setAttribute API. Attribute bindings also support interpolation with text and other bindings. |
+| HTML Boolean Attribute | `<input ?disabled=${…}>` | Creates a binding that adds or removes the attribute based on truthy/falsey values. |
+| JS Property | `<input :value=${…}>` | Creates a binding that sets a JavaScript property on the element. |
+| Event Handler | `<button @click=${…}>...</button>` | Registers an event handler using addEventListener. The listener is automatically removed when the template is unbound. |
+| HTML Element Reference | `<button ${ref('myButton')}>...</button>` | Captures a reference to the element and assigns it to the named property on the data source. |
+| Slotted Node Capture | `<slot ${slotted('defaultSlotNodes')}></slot>` | Watches the slot for changes and synchronizes those to an array, assigned to the named property on the data source. |
+| Child Node Capture | `<div ${children('divChildren')}></div>` | Watches the element's children or changes and synchronizes those to an array, assigned to the named property on the data source. |
+
+#### [Using directives](https://www.fast.design/docs/fast-element/using-directives):
+
+To conditionally render blocks of HTML, use the `when` directive:
+
+```ts
+import { FASTElement, customElement, observable, html, when } from '@microsoft/fast-element';
+
+const template = html<MyApp>`
+ ...
+  ${when(x => !x.ready, html<MyApp>`
+    Loading...
+  `)}
+`;
+...
+```
+
+To render a list of data, use the `repeat` directive, providing the list to render and a template to use in rendering each item.
+
+```ts
+import { FASTElement, customElement, observable, html, repeat } from '@microsoft/fast-element';
+
+const template = html<FriendList>`
+  ...
+    ${repeat(x => x.friends, html<string>`
+      <li>${x => x}</li>
+    `)}
+`;
+...
+```
+
+Properties available on the context object within a `repeat` block:
+
+| Property | Definition |
+| :-- | :-- |
+| event | The event object when inside an event handler. |
+| parent | The parent view-model when inside a repeat block. |
+| parentContext | The parent ExecutionContext when inside a repeat block. This is useful when repeats are nested and the inner-most repeat needs access to the root view-model. |
+| index | The index of the current item when inside a repeat block (opt-in). |
+| length | The length of the array when inside a repeat block (opt-in). |
+| isEven | True if the index of the current item is even when inside a repeat block (opt-in). |
+| isOdd | True if the index of the current item is odd when inside a repeat block (opt-in). |
+isFirst | True if the current item is first in the array inside a repeat block (opt-in). |
+isInMiddle | True if the current item is somewhere in the middle of the array inside a repeat block (opt-in). |
+isLast | True if the current item is last in the array inside a repeat block (opt-in). |
+
+
+
+
+
 ### [Styles](https://www.fast.design/docs/fast-element/leveraging-css)
 
-`FASTElement` provides a css tagged template helper to allow creating and re-using CSS. 
+`FASTElement` provides a css tagged template helper to allow creating and re-using CSS.
+
+Using the css helper, we're able to create `ElementStyles`. We configure this with the element through the styles option of the decorator.
 
 Adding CSS to a `FASTElement`:
 
 ```ts
-import { html, css, customElement, attr, FASTElement } from "@microsoft/fast-element";
-
-const template = html<NameTag>`
-  ...
-`;
+import { css } from "@microsoft/fast-element";
 
 const styles = css`
   :host {
-    display: inline-block;
-    background: var(--fill-color);
-    box-shadow: 0 0 calc(var(--depth) * 1px) rgba(0,0,0,.5);
-  }
-
-  :host([hidden]) { 
-    display: none;
-  }
-
-  .header {
-    margin: 16px 0;
-    position: relative;
-  }
-
-  h3 {
-    font-weight: bold;
-    font-family: 'Source Sans Pro';
-    font-size: 32px;
+    ...
   }
 `;
 
 @customElement({
-  name: 'name-tag',
-  template,
   styles
 })
-export class NameTag extends FASTElement {
-  @attr greeting: string = 'Hello';
+```
+##### Composing styles
+
+`ElementStyles` can be composed with other styles.
+
+```ts
+import { normalize } from './normalize';
+
+const styles = css`
+  ${normalize}
+  :host {
+    ...
+  }
+`;
+```
+
+##### Partial CSS
+
+Using the `cssPartial` tagged template literal:
+
+```ts
+import { css, cssPartial } from "@microsoft/fast-element";
+
+const partial = cssPartial`color: red;`;
+const styles = css`:host{ ${partial} }`;
+```
+
+#### CSSDirective
+
+To create a `CSSDirective`, import and extend `CSSDirective` from `@microsoft/fast-element`:
+
+```ts
+import { CSSDirective }  from "@microsoft/fast-element"
+
+class RandomWidth extends CSSDirective {}
+```
+
+createCSS method:
+
+```ts
+class RandomWidth extends CSSDirective {
+  createCSS() {
+    return "width: var(--random-width);"
+  }
 }
 ```
 
+createBehavior method:
+
+
+
+
+
+
+
 ### [Observables](https://www.fast.design/docs/fast-element/observables-and-state#observable-features)
 
-To enable binding tracking and change notification, properties must be decorated with either @attr or @observable. Use @attr for primitive properties (string, bool, number) that are intended to be surfaced on your element as HTML attributes. Use @observable for all other properties.
+To enable binding tracking and change notification, properties must be decorated with either @attr or @observable. 
+
+Use `@attr` for primitive properties (string, bool, number) that are intended to be surfaced on your element as HTML attributes. Use `@observable` for all other property types on an HTMLElement and all observable properties on plain classes.
 
 
 ```ts
 import { Observable } from '@microsoft/fast-element';
 
 export class Person {
-  private _firstName: string;
-  private _lastName: string;
-
-  get firstName() {
-    Observable.track(this, 'firstName');
-    return this._firstName;
-  }
-
-  set firstName(value: string) {
-    this._firstName = value;
-    Observable.notify(this, 'firstName');
-  }
-
-  get lastName() {
-    Observable.track(this, 'lastName');
-    return this._lastName;
-  }
-
-  set lastName(value: string) {
-    this._lastName = value;
-    Observable.notify(this, 'lastName');
-  }
+  @observable firstName = '';
+  @observable lastName = '';
 
   get fullName() {
-    return `${this.firstName} ${this.lastName}`;
+    return `${this.firstName} ${this.LastName}`;
   }
 }
 ```
