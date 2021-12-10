@@ -342,7 +342,7 @@ export class Select extends FormAssociatedSelect {
 
         switch (key) {
             case " ": {
-                if (this.typeAheadExpired) {
+                if (this.typeaheadExpired) {
                     e.preventDefault();
                     this.open = !this.open;
                 }

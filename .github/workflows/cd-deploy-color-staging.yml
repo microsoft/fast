@@ -1,20 +1,21 @@
-name: Deploy Documentation
+name: Deploy Color Explorer
+
 on:
   push:
     branches:
-      - master
+    - master
   pull_request:
     types: [opened, synchronize, reopened, closed]
     branches:
       - master
 
 env:
-  AZURE_WEBAPP_ACTIVE_STAGE_NAME: www-west-app
-  AZURE_WEBAPP_PASSIVE_STAGE_NAME: www-east-app
-  AZURE_WEBAPP_BUILD_PATH: sites/website
-  AZURE_WEBAPP_DIST_PATH: sites/website/build
+  AZURE_WEBAPP_ACTIVE_STAGE_NAME: color-west-app
+  AZURE_WEBAPP_PASSIVE_STAGE_NAME: color-east-app
+  AZURE_WEBAPP_BUILD_PATH: sites/fast-color-explorer
+  AZURE_WEBAPP_DIST_PATH: sites/fast-color-explorer/www
   AZURE_WEBAPP_SLOT_NAME: stage
-  ARTIFACT_NAME: documentation-site
+  ARTIFACT_NAME: color-explorer-site
 
 jobs:
   build:
@@ -33,10 +34,9 @@ jobs:
     - name: Build & Prepare Web Application
       run: |
         cd ${{ env.AZURE_WEBAPP_BUILD_PATH }}
-        yarn install
         yarn build
-        cp ../site-utilities/statics/server/package.json ../site-utilities/statics/server/server.js build
-        cd build
+        cp ../site-utilities/statics/server/package.json ../site-utilities/statics/server/server.js www
+        cd www
         npm i
         ls -lta
 
@@ -60,7 +60,7 @@ jobs:
     - name: 'Deploy to Active Azure Region'
       uses: azure/webapps-deploy@v2
       with:
-        publish-profile: ${{ secrets.AZURE_PUBLISH_PROFILE_WWW_ACTIVE }}
+        publish-profile: ${{ secrets.AZURE_PUBLISH_PROFILE_COLOR_ACTIVE }}
         app-name: ${{ env.AZURE_WEBAPP_ACTIVE_STAGE_NAME }}
         package: ${{ env.AZURE_WEBAPP_DIST_PATH }}
         slot-name: ${{ env.AZURE_WEBAPP_SLOT_NAME }}
@@ -68,7 +68,7 @@ jobs:
     - name: 'Deploy to Passive Azure Region'
       uses: azure/webapps-deploy@v2
       with:
-        publish-profile: ${{ secrets.AZURE_PUBLISH_PROFILE_WWW_PASSIVE }}
+        publish-profile: ${{ secrets.AZURE_PUBLISH_PROFILE_COLOR_PASSIVE }}
         app-name: ${{ env.AZURE_WEBAPP_PASSIVE_STAGE_NAME }}
         package: ${{ env.AZURE_WEBAPP_DIST_PATH }}
         slot-name: ${{ env.AZURE_WEBAPP_SLOT_NAME }}
@@ -79,34 +79,22 @@ jobs:
     needs: build
 
     steps:
-      - name: Deploy PR
-        uses: actions/download-artifact@v2
-        with:
-          name: ${{ env.ARTIFACT_NAME }}
-          path: ${{ env.AZURE_WEBAPP_DIST_PATH }}
+    - name: Deploy PR
+      uses: actions/download-artifact@v2
+      with:
+        name: ${{ env.ARTIFACT_NAME }}
+        path: ${{ env.AZURE_WEBAPP_DIST_PATH }}
 
-      - name: Deploy Documentation
-        id: deploypr
-        uses: Azure/static-web-apps-deploy@v0.0.1-preview
-        with:
-          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APP_WWW_PR_TOKEN }}
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          action: 'upload'
-          app_location: ${{ env.AZURE_WEBAPP_DIST_PATH }}
-          output_location: ''
-          skip_app_build: true
-
-  destroy_pr:
-    if: github.event_name == 'pull_request' && github.event.action == 'closed'
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Destroy PR
-        id: closepullrequest
-        uses: Azure/static-web-apps-deploy@v1
-        with:
-          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APP_WWW_PR_TOKEN }}
-          action: 'close'
+    - name: Deploy Component Explorer
+      id: deploypr
+      uses: Azure/static-web-apps-deploy@v0.0.1-preview
+      with:
+        azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APP_COLOR_PR_TOKEN }}
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        action: 'upload'
+        app_location: ${{ env.AZURE_WEBAPP_DIST_PATH }}
+        output_location: ''
+        skip_app_build: true
 
   notify:
     runs-on: ubuntu-latest
@@ -119,5 +107,5 @@ jobs:
         webhook_id: ${{ secrets.DISCORD_NOTIFICATION_WEBHOOK_ID }}
         webhook_token: ${{ secrets.DISCORD_NOTIFICATION_WEBHOOK_TOKEN }}
         color: '#DE2D6D'
-        username: 'FAST DevOps Documentation Bot'
-        message: 'Deployment has completed to Staging on https://github.com/microsoft/fast/actions/workflows/cd-www-stage.yml'
+        username: 'FAST DevOps Color Explorer Bot'
+        message: 'Deployment has completed to Staging on https://github.com/microsoft/fast/actions/workflows/cd-deploy-color-staging.yml'

@@ -1,24 +1,7 @@
 <h1>Combobox</h1>
 
 <h2>Default</h2>
-<fast-combobox id="combobox">
-    <fast-option>Please Please Me</fast-option>
-    <fast-option>With The Beatles</fast-option>
-    <fast-option>A Hard Day's Night</fast-option>
-    <fast-option>Beatles for Sale</fast-option>
-    <fast-option>Help!</fast-option>
-    <fast-option>Rubber Soul</fast-option>
-    <fast-option>Revolver</fast-option>
-    <fast-option>Sgt. Pepper's Lonely Hearts Club Band</fast-option>
-    <fast-option>Magical Mystery Tour</fast-option>
-    <fast-option>The Beatles</fast-option>
-    <fast-option>Yellow Submarine</fast-option>
-    <fast-option>Abbey Road</fast-option>
-    <fast-option>Let It Be</fast-option>
-</fast-combobox>
-
-<h2>Default Selected</h2>
-<fast-combobox id="combobox-with-default">
+<fast-combobox id="combobox-default">
     <fast-option>William Hartnell</fast-option>
     <fast-option>Patrick Troughton</fast-option>
     <fast-option>Jon Pertwee</fast-option>
@@ -31,10 +14,41 @@
     <fast-option>David Tenant</fast-option>
     <fast-option>Matt Smith</fast-option>
     <fast-option>Peter Capaldi</fast-option>
-    <fast-option selected>Jodie Whittaker</fast-option>
+    <fast-option>Jodie Whittaker</fast-option>
 </fast-combobox>
 
-<h2>Initial Value</h2>
+<h2>Combobox with no options</h2>
+<fast-combobox id="combobox-empty"></fast-combobox>
+
+<h2>Combobox with adjacent label</h2>
+<label for="combobox-with-adjacent-label">Adjacent Label:</label>
+<fast-combobox id="combobox-with-adjacent-label">
+    <fast-option>Small</fast-option>
+    <fast-option>Medium</fast-option>
+    <fast-option>Large</fast-option>
+    <fast-option>Extra Large</fast-option>
+</fast-combobox>
+
+<h2>Combobox with wrapping label</h2>
+<label>
+    Wrapping label:
+    <fast-combobox id="combobox-with-wrapping-label">
+        <fast-option>Small</fast-option>
+        <fast-option>Medium</fast-option>
+        <fast-option>Large</fast-option>
+        <fast-option>Extra Large</fast-option>
+    </fast-combobox>
+</label>
+
+<h2>Combobox with a default selected item</h2>
+<fast-combobox id="combobox-with-default-selected-item">
+    <fast-option>John</fast-option>
+    <fast-option>Paul</fast-option>
+    <fast-option selected>George</fast-option>
+    <fast-option>Ringo</fast-option>
+</fast-combobox>
+
+<h2>Combobox with an initial value</h2>
 <fast-combobox id="combobox-with-initial-value" value="Christopher Eccleston">
     <fast-option>William Hartnell</fast-option>
     <fast-option>Patrick Troughton</fast-option>
@@ -51,9 +65,9 @@
     <fast-option>Jodie Whittaker</fast-option>
 </fast-combobox>
 
-<h2>Combobox with Autocomplete</h2>
+<h2>Combobox with autocomplete</h2>
 
-<h3>Inline Autocomplete</h3>
+<h3>Inline autocomplete</h3>
 <fast-combobox id="combobox-with-inline-autocomplete" autocomplete="inline">
     <fast-option>William Hartnell</fast-option>
     <fast-option>Patrick Troughton</fast-option>
@@ -70,7 +84,7 @@
     <fast-option>Jodie Whittaker</fast-option>
 </fast-combobox>
 
-<h3>List Autocomplete</h3>
+<h3>List autocomplete</h3>
 <fast-combobox id="combobox-with-list-autocomplete" autocomplete="list">
     <fast-option>William Hartnell</fast-option>
     <fast-option>Patrick Troughton</fast-option>
@@ -87,7 +101,7 @@
     <fast-option>Jodie Whittaker</fast-option>
 </fast-combobox>
 
-<h3>Both Autocomplete</h3>
+<h3>Both autocomplete</h3>
 <fast-combobox id="combobox-with-both-autocomplete" autocomplete="both">
     <fast-option>William Hartnell</fast-option>
     <fast-option>Patrick Troughton</fast-option>
@@ -104,85 +118,38 @@
     <fast-option>Jodie Whittaker</fast-option>
 </fast-combobox>
 
-<h2>Disabled Combobox</h2>
-<fast-combobox disabled>
-    <fast-option>Extra Small</fast-option>
-    <fast-option>Small</fast-option>
-    <fast-option>Medium</fast-option>
-    <fast-option>Large</fast-option>
-    <fast-option>Extra Large</fast-option>
+<h2>Disabled combobox</h2>
+<fast-combobox id="combobox-disabled" disabled>
+    <fast-option>This option is not selectable</fast-option>
 </fast-combobox>
 
-<h2>Combobox with disabled items</h2>
-
-<h3>Combobox with alternating disabled items</h3>
-<fast-combobox id="combobox-with-every-other-disabled">
-    <fast-option>Extra Small</fast-option>
-    <fast-option disabled>Small</fast-option>
-    <fast-option>Medium</fast-option>
-    <fast-option disabled>Large</fast-option>
-    <fast-option>Extra Large</fast-option>
+<h2>Combobox with forced position above</h2>
+<fast-combobox id="combobox-with-forced-position-above" position="above">
+    <fast-option>Position forced above</fast-option>
+    <fast-option>Option Two</fast-option>
 </fast-combobox>
 
-<h3>Combobox with adjacent disabled items at start of list</h3>
-<fast-combobox id="combobox-with-adjacent-disabled-start">
-    <fast-option disabled>Extra Small</fast-option>
-    <fast-option disabled>Small</fast-option>
-    <fast-option>Medium</fast-option>
-    <fast-option>Large</fast-option>
-    <fast-option>Extra Large</fast-option>
+<h2>Combobox with forced position below</h2>
+<fast-combobox id="combobox-with-forced-position-below" position="below">
+    <fast-option>Position forced below</fast-option>
+    <fast-option>Option Two</fast-option>
 </fast-combobox>
 
-<h3>Combobox with adjacent disabled items in middle of list</h3>
-<fast-combobox id="combobox-with-adjacent-disabled-middle">
-    <fast-option>Extra Small</fast-option>
-    <fast-option disabled>Small</fast-option>
-    <fast-option disabled>Medium</fast-option>
-    <fast-option>Large</fast-option>
-    <fast-option>Extra Large</fast-option>
+<h2>Combobox with custom indicator</h2>
+<fast-combobox id="combobox-with-custom-indicator">
+    <svg slot="indicator" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+        <path
+            d="M6.5 7.7h-1v-1h1v1zm4.1 0h-1v-1h1v1zm4.1-1v2.1h-1v2.6l-.1.6-.3.5c-.1.1-.3.3-.5.3l-.6.1H10l-3.5 3v-3H3.9l-.6-.1-.5-.3c-.1-.1-.3-.3-.3-.5l-.1-.6V8.8h-1V6.7h1V5.2l.1-.6.3-.5c.1-.1.3-.3.5-.3l.6-.1h3.6V1.9a.8.8 0 01-.4-.4L7 1V.6l.2-.3.3-.2L8 0l.4.1.3.2.3.3V1l-.1.5-.4.4v1.7h3.6l.6.1.5.3c.1.1.3.3.3.5l.1.6v1.5h1.1zm-2.1-1.5l-.2-.4-.4-.2H3.9l-.4.2-.1.4v6.2l.2.4.4.2h3.6v1.8L9.7 12h2.5l.4-.2.2-.4V5.2zM5.8 8.9l1 .7 1.2.2a5 5 0 001.2-.2l1-.7.7.7c-.4.4-.8.7-1.4.9-.5.2-1 .3-1.6.3s-1.1-.1-1.6-.3A3 3 0 015 9.6l.8-.7z"
+        />
+    </svg>
+    <fast-option>Option One</fast-option>
+    <fast-option>Option Two</fast-option>
+    <fast-option>Option Three</fast-option>
+    <fast-option>Option Four</fast-option>
 </fast-combobox>
 
-<h3>Combobox with adjacent disabled items at end of list</h3>
-<fast-combobox id="combobox-with-adjacent-disabled-end">
-    <fast-option>Extra Small</fast-option>
-    <fast-option>Small</fast-option>
-    <fast-option>Medium</fast-option>
-    <fast-option disabled>Large</fast-option>
-    <fast-option disabled>Extra Large</fast-option>
-</fast-combobox>
-
-<h3>Combobox with all but one item disabled</h3>
-<fast-combobox id="combobox-with-all-but-one-disabled">
-    <fast-option disabled>Extra Small</fast-option>
-    <fast-option disabled>Small</fast-option>
-    <fast-option disabled>Medium</fast-option>
-    <fast-option disabled>Large</fast-option>
-    <fast-option>Extra Large</fast-option>
-</fast-combobox>
-
-<h3>Combobox with all items disabled</h3>
-<fast-combobox id="combobox-with-all-disabled">
-    <fast-option disabled>Extra Small</fast-option>
-    <fast-option disabled>Small</fast-option>
-    <fast-option disabled>Medium</fast-option>
-    <fast-option disabled>Large</fast-option>
-    <fast-option disabled>Extra Large</fast-option>
-</fast-combobox>
-
-<h2>Combobox with placeholder</h2>
-<fast-combobox placeholder="Please select a size" id="combobox-with-placeholder">
-    <fast-option>Extra Small</fast-option>
-    <fast-option>Small</fast-option>
-    <fast-option>Medium</fast-option>
-    <fast-option>Large</fast-option>
-    <fast-option>Extra Large</fast-option>
-</fast-combobox>
-
-<h2>Combobox with no items</h2>
-<fast-combobox id="combobox-with-no-items"></fast-combobox>
-
-<h2>Combobox with long list</h2>
-<fast-combobox id="combobox-with-long-list" autocomplete="both">
+<h2>Combobox with very long list</h2>
+<fast-combobox id="combobox-with-long-list" name="state" autocomplete="both">
     <fast-option>Alabama</fast-option>
     <fast-option>Alaska</fast-option>
     <fast-option>Arizona</fast-option>
@@ -203,8 +170,8 @@
     <fast-option>Louisiana</fast-option>
     <fast-option>Maine</fast-option>
     <fast-option>Maryland</fast-option>
-    <fast-option>Massachussets</fast-option>
-    <fast-option>Michigain</fast-option>
+    <fast-option>Massachusetts</fast-option>
+    <fast-option>Michigan</fast-option>
     <fast-option>Minnesota</fast-option>
     <fast-option>Mississippi</fast-option>
     <fast-option>Missouri</fast-option>
@@ -235,16 +202,9 @@
     <fast-option>Wyoming</fast-option>
 </fast-combobox>
 
-<h2>Forced positions</h2>
-
-<h3>Combobox with forced position above</h3>
-<fast-combobox id="combobox-with-forced-position-above" position="above">
-    <fast-option>Position forced above</fast-option>
-    <fast-option>Option Two</fast-option>
-</fast-combobox>
-
-<h3>Combobox with forced position below</h3>
-<fast-combobox id="combobox-with-forced-position-below" position="below">
-    <fast-option>Position forced below</fast-option>
-    <fast-option>Option Two</fast-option>
+<h2>Combobox with custom styles</h2>
+<fast-combobox id="combobox-with-custom-styles" style="--design-unit: 2;">
+    <fast-option>This option is short</fast-option>
+    <fast-option>In a visual height sense</fast-option>
+    <fast-option>Not character count</fast-option>
 </fast-combobox>

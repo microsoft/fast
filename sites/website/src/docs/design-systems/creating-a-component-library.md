@@ -31,7 +31,7 @@ export class Counter extends FoundationElement {
 }
 ```
 
-One important detail to note is that we do not use the `@customElement` decorator in this case. The `@customElement` decorator forces immediate template and style resolution, and platform component element name registration. This is fine when building application components, or components not intended to be used as part of a library in another application. However, if used for library components, it prevents the consumer of the component from having the opportunity to customize the component in ways that me be critical for their app. `FoundationElement` helps address this challenge.
+One important detail to note is that we do not use the `@customElement` decorator in this case. The `@customElement` decorator forces immediate template and style resolution, and platform component element name registration. This is fine when building application components, or components not intended to be used as part of a library in another application. However, if used for library components, it prevents the consumer of the component from having the opportunity to customize the component in ways that might be critical for their app. `FoundationElement` helps address this challenge.
 
 ### Define Templates and Styles 
 
