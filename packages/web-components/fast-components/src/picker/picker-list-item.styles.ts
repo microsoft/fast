@@ -11,6 +11,8 @@ import {
     bodyFont,
     controlCornerRadius,
     designUnit,
+    focusStrokeOuter,
+    focusStrokeWidth,
     neutralFillStealthActive,
     neutralFillStealthFocus,
     neutralFillStealthHover,
@@ -71,14 +73,17 @@ export const pickerListItemStyles: (
 
         :host(:${focusVisible}) {
             background: ${neutralFillStealthFocus};
+            border-color: ${focusStrokeOuter};
+            box-shadow: 0 0 0 calc((${focusStrokeWidth} - ${strokeWidth}) * 1px) ${focusStrokeOuter} inset;
             color: ${neutralForegroundFocus};
         }
 }`.withBehaviors(
         forcedColorsStylesheetBehavior(
             css`
                 :host {
-                    border-color: transparent;
                     forced-color-adjust: none;
+                    background: ${SystemColors.ButtonFace};
+                    border-color: transparent;
                     color: ${SystemColors.ButtonText};
                     fill: currentcolor;
                 }
@@ -86,6 +91,13 @@ export const pickerListItemStyles: (
                 :host(:not([aria-selected="true"]):hover),
                 :host([aria-selected="true"]) {
                     background: ${SystemColors.Highlight};
+                    color: ${SystemColors.HighlightText};
+                }
+
+                :host(:${focusVisible}) {
+                    background: ${SystemColors.Highlight};
+                    border-color: ${SystemColors.Highlight};
+                    box-shadow: 0 0 0 calc((${focusStrokeWidth} - ${strokeWidth}) * 1px) ${SystemColors.HighlightText} inset;
                     color: ${SystemColors.HighlightText};
                 }
 

@@ -1,18 +1,15 @@
 import { css, ElementStyles } from "@microsoft/fast-element";
 import {
     ElementDefinitionContext,
-    focusVisible,
     forcedColorsStylesheetBehavior,
     FoundationElementDefinition,
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import { neutralFillStealthFocus, neutralForegroundFocus, strokeWidth } from "..";
 import {
-    accentFillRest,
     bodyFont,
     controlCornerRadius,
     designUnit,
-    focusStrokeOuter,
     neutralFillStealthActive,
     neutralFillStealthHover,
     neutralFillStealthRest,
@@ -53,7 +50,7 @@ export const pickerMenuOptionStyles: (
             line-height: ${typeRampBaseLineHeight};
             outline: none;
             overflow: hidden;
-            padding: 0 calc(((${designUnit} * 3) - 3) * 1px );
+            padding: 0 calc(((${designUnit} * 3) - 3) * 1px);
             user-select: none;
             white-space: nowrap;
         }
@@ -68,17 +65,18 @@ export const pickerMenuOptionStyles: (
             color: ${neutralForegroundActive};
         }
 
-        :host(:${focusVisible}[role="listitem"]) {
+        :host(:not([aria-selected="true"]):hover),
+        :host([aria-selected="true"]) {
             background: ${neutralFillStealthFocus};
-            border-color: ${focusStrokeOuter};
             color: ${neutralForegroundFocus};
         }
     `.withBehaviors(
         forcedColorsStylesheetBehavior(
             css`
                 :host {
-                    border-color: transparent;
                     forced-color-adjust: none;
+                    background: ${SystemColors.ButtonFace};
+                    border-color: transparent;
                     color: ${SystemColors.ButtonText};
                     fill: currentcolor;
                 }

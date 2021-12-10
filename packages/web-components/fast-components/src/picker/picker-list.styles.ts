@@ -1,7 +1,6 @@
 import { css, ElementStyles } from "@microsoft/fast-element";
 import {
     ElementDefinitionContext,
-    focusVisible,
     forcedColorsStylesheetBehavior,
     FoundationElementDefinition,
 } from "@microsoft/fast-foundation";
@@ -67,20 +66,19 @@ export const pickerListStyles: (
             padding: 0 calc(${designUnit} * 2px + 1px);
         }
 
-        :host(:not([disabled]):hover) ::slotted([role="combobox"]) {
+        ::slotted([role="combobox"]:hover) {
             background: ${neutralFillHover};
             border-color: ${neutralStrokeInputFilledHover};
             color: ${neutralForegroundHover};
         }
 
-        :host(:not([disabled]):active) ::slotted([role="combobox"]) {
+        ::slotted([role="combobox"]:active) {
             background: ${neutralFillActive};
             border-color: ${neutralStrokeInputFilledActive};
             color: ${neutralForegroundActive};
         }
 
-        :host(:focus-within) ::slotted([role="combobox"]),
-        :host(:focus-within:hover) ::slotted([role="combobox"]) {
+        ::slotted([role="combobox"]:focus-within) {
             background: ${neutralFillFocus};
             border-color: ${focusStrokeOuter};
             box-shadow: 0 0 0 calc((${focusStrokeWidth} - ${strokeWidth}) * 1px)
@@ -90,16 +88,6 @@ export const pickerListStyles: (
     `.withBehaviors(
         forcedColorsStylesheetBehavior(
             css`
-                ::slotted([role="combobox"]:active) {
-                    background: ${SystemColors.Field};
-                    border-color: ${SystemColors.Highlight};
-                }
-
-                ::slotted([role="combobox"]:focus-within) {
-                    border-color: ${SystemColors.Highlight};
-                    box-shadow: 0 0 0 1px ${SystemColors.Highlight} inset;
-                }
-
                 ::slotted(input:placeholder) {
                     color: ${SystemColors.GrayText};
                 }
