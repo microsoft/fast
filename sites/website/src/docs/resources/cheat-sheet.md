@@ -7,8 +7,8 @@ custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/src
 
 # Cheat Sheet
 
-## Packages
 
+## Packages:
 
 ### [@microsoft/fast-element](https://www.fast.design/docs/fast-element/getting-started)
 
@@ -132,7 +132,8 @@ provideFluentDesignSystem()
     );
 ```
 
-If you are attempting to configure the components for integration into a specific Microsoft product, the following table provides AccentBaseColor values you can use:
+---
+If you are attempting to configure the components for integration into a specific Microsoft product, the following table provides `AccentBaseColor` values you can use:
 
 | Product     | AccentBaseColor |
 | :---------- | :-------------- |
@@ -145,11 +146,10 @@ If you are attempting to configure the components for integration into a specifi
 | SharePoint  | #03787C         |
 | Stream      | #BC1948         |
 
-
 ---
 
 
-## Using Components
+## [Using Components](https://www.fast.design/docs/components/getting-started)
 ### Setup
 
 To register design system components:
@@ -183,28 +183,70 @@ With the components registered, add any component to the HTML.
 <fast-button>Hello world</fast-button>
 ```
 
-Visit our Using Components [Getting Started Guide](https://www.fast.design/docs/components/getting-started) for more details, Tips, and Notes.
+---
 
-Launch our [Component Explorer](https://explore.fast.design/) to experience our [FAST Components](https://www.npmjs.com/package/@microsoft/fast-components) and development tools.
+### [FAST Components](https://explore.fast.design/)
 
-### Integrations
+| Component | Name | Component Explorer |
+| :--- | :--- | :--- |
+| [fast-accordian](https://www.fast.design/docs/components/accordion)                       | `fastAccordion()` `fastAccordionItem()`                       | [Accordian](https://explore.fast.design/components/fast-accordion)                                                                                    |
+| [fast-anchor](https://www.fast.design/docs/components/anchor)                             | `fastAnchor()`                                                | [Anchor](https://explore.fast.design/components/fast-anchor)                                                                                          |
+| [fast-anchored-region](https://www.fast.design/docs/components/anchored-region)           | `fastAnchoredRegion()`                                        | [Anchored region](https://explore.fast.design/components/fast-anchored-region)                                                                        |
+| [fast-avatar](https://www.fast.design/docs/components/avatar)                             | `fastAvatar()`                                                | [Avatar](https://explore.fast.design/components/fast-avatar)                                                                                          |            
+| [fast-badge](https://www.fast.design/docs/components/badge)                               | `fastBadge()`                                                 | [Badge](https://explore.fast.design/components/fast-badge)                                                                                            |                                                                                                                                                
+| [fast-breadcrumb](https://www.fast.design/docs/components/breadcrumb)                     | `fastBreadcrumb()` `fastBreadcrumbItem()`                     | [Breadcrumb](https://explore.fast.design/components/fast-breadcrumb)                                                                                  |                                                                         
+| [fast-button](https://explore.fast.design/components/fast-button)                         | `fastButton()`                                                | [Button](https://explore.fast.design/components/fast-button)                                                                                          |                                                                                        
+| [fast-card](https://www.fast.design/docs/components/card)                                 | `fastCard()`                                                  | [Card](https://explore.fast.design/components/fast-card)                                                                                              |                                                                                                                                                       
+| [fast-checkbox](https://www.fast.design/docs/components/checkbox)                         | `fastCheckbox()`                                              | [Checkbox](https://explore.fast.design/components/fast-checkbox)                                                                                      |                                                                                                                                                              
+| [fast-combobox](https://www.fast.design/docs/components/combobox)                         | `fastCheckbox()` `fastOption()`                               | [Combobox](https://explore.fast.design/components/fast-combobox)                                                                                      |    
+| [fast-data-grid](https://www.fast.design/docs/components/data-grid)                       | `fastDataGridCell()` `fastDataGridRow()` `fastDataGrid()`     | [Data grid](https://explore.fast.design/components/fast-data-grid)                                                                                    |                  
+| [fast-dialog](https://www.fast.design/docs/components/dialog)                             | `fastDialog()`                                                | [Dialog](https://explore.fast.design/components/fast-dialog)                                                                                          |
+| [fast-disclosure](https://www.fast.design/docs/components/disclosure)                     | `fastDisclosure()`                                            | [Disclosure](https://explore.fast.design/components/fast-disclosure)                                                                                  |
+| [fast-divider](https://www.fast.design/docs/components/divider)                           | `fastDivider()`                                               | [Divider](https://explore.fast.design/components/fast-divider)                                                                                        |
+| [fast-flipper](https://www.fast.design/docs/components/flipper)                           | `fastFlipper()`                                               | [Flipper](https://explore.fast.design/components/fast-flipper)                                                                                        |
+| [fast-horizontal-scroll](https://www.fast.design/docs/components/horizontal-scroll)       | `fastHorizontalScroll()`                                      |                                                                                                                                                       |                                                                                                                                                                                                       |
+| [fast-listbox](https://www.fast.design/docs/components/listbox)                           | `fastListbox()` `fastOption()`                                | [Listbox](https://explore.fast.design/components/fast-listbox)                                                                                        |                                                                                                                                                            
+| [fast-menu](https://www.fast.design/docs/components/menu)                                 | `fastMenu()` `fastMenuItem()`                                 | [Menu](https://explore.fast.design/components/fast-menu)                                                                                              |                                                                                                 
+| [fast-number-field](https://www.fast.design/docs/components/number-field)                 | `fastNumberField()`                                           | [Number field](https://explore.fast.design/components/fast-number-field)                                                                              |                                                                                                  
+| [fast-progress](https://www.fast.design/docs/components/progress)                         | `fastProgress()` `fastProgressRing()`                         | [Progress ring](https://explore.fast.design/components/fast-progress-ring)  / [Progress](https://explore.fast.design/components/fast-progress)        |
+| [fast-radio](https://www.fast.design/docs/components/radio)                               | `fastRadio()`                                                 | [Radio](https://explore.fast.design/components/fast-radio)                                                                                            |                                                                                                    
+| [fast-radio-group](https://www.fast.design/docs/components/radio-group)                   | `fastRadio()` `fastRadioGroup()`                              | [Radio group](https://explore.fast.design/components/fast-radio-group)                                                                                |                                                                                                                                                    
+| [fast-select](https://www.fast.design/docs/components/select)                             | `fastSelect()` `fastOption()`                                 | [Select](https://explore.fast.design/components/fast-select)                                                                                          |                                                                                                                              
+| [fast-skeleton](https://www.fast.design/docs/components/skeleton)                         | `fastSkeleton()`                                              | [Skeleton](https://explore.fast.design/components/fast-skeleton)                                                                                      |                                                                                                                             
+| [fast-slider](https://www.fast.design/docs/components/slider)                             | `fastSlider()` `fastSliderLabel()`                            | [Slider](https://explore.fast.design/components/fast-slider)                                                                                          |                                                                                               
+| [fast-switch](https://www.fast.design/docs/components/switch)                             | `fastSwitch()`                                                | [Switch](https://explore.fast.design/components/fast-switch)                                                                                          |                                                                                                                           
+| [fast-tabs](https://www.fast.design/docs/components/tabs)                                 | `fastTab()` `fastTabPanel()` `fastTabs()`                     | [Tabs](https://explore.fast.design/components/fast-tabs)                                                                                              |                                                                                                                              
+| [fast-text-area](https://www.fast.design/docs/components/text-area)                       | `fastTextArea()`                                              | [Text area](https://explore.fast.design/components/fast-text-area)                                                                                    |                                                                                         
+| [fast-text-field](https://www.fast.design/docs/components/text-field)                     | `fastTextField()`                                             | [Text field](https://explore.fast.design/components/fast-text-field)                                                                                  |                                                                                                
+| [fast-toolbar](https://www.fast.design/docs/components/toolbar)                           | `fastToolbar()`                                               | [Toolbar](https://explore.fast.design/components/fast-toolbar)                                                                                        |                                                                                                                                          
+| [fast-tooltip](https://www.fast.design/docs/components/tooltip)                           | `fastTooltip()`                                               | [Tooltip](https://explore.fast.design/components/fast-tooltip)                                                                                        |                                                                                                                                             
+| [fast-tree-view](https://www.fast.design/docs/components/tree-view)                       | `fastTreeItem()` `fastTreeView()`                             | [Tree view](https://explore.fast.design/components/fast-tree-view)                                                                                    |                                                                                                                                      
+---
+### [Integrations](https://www.fast.design/docs/integrations/introduction)
 
 FAST libraries can also be used in combination with a wide variety of existing technologies.
 
 [Angular](https://www.fast.design/docs/integrations/angular)
+
 [ASP.NET](https://www.fast.design/docs/integrations/aspnet)
+
 [Aurelia](https://www.fast.design/docs/integrations/aurelia)
+
 [Blazor](https://www.fast.design/docs/integrations/blazor)
+
 [Ember](https://www.fast.design/docs/integrations/ember)
+
 [React](https://www.fast.design/docs/integrations/react)
+
 [Vue](https://www.fast.design/docs/integrations/vue)
+
 [Webpack](https://www.fast.design/docs/integrations/webpack)
 
 Not seeing an integration for your preferred technology?  Open an issue on [GitHub](https://github.com/microsoft/fast/issues).
 
 ---
-## Building Components
-### Setup
+## [Building Components](https://www.fast.design/docs/components/getting-started)
+#### Setup
 
 To define a custom element:
 
@@ -223,12 +265,11 @@ With this in place, you can now use your name-tag element anywhere in HTML with 
 <name-tag></name-tag>
 ```
 
-
-Visit our Building Components [Getting Started Guide](https://www.fast.design/docs/components/getting-started) for more details, Tips, and Notes.
+---
 
 ### [Attributes](https://www.fast.design/docs/fast-element/defining-elements#customizing-attributes)
 
-To add attributes to your HTML element, create properties decorated by the @attr decorator:
+To add attributes to your HTML element, create properties decorated by the `@attr` decorator:
 
 ```ts
 import { FASTElement, customElement, attr } from '@microsoft/fast-element';
@@ -249,6 +290,8 @@ To use a Web Component with Attributes:
 <name-tag greeting="Hola"></name-tag>
 ```
 
+---
+
 #### [Customizing attributes](https://www.fast.design/docs/fast-element/defining-elements#customizing-attributes):
 
 There are three modes available through the `mode` property of the attribute configuration:
@@ -258,6 +301,8 @@ There are three modes available through the `mode` property of the attribute con
 | reflect | The default mode that is used if none is specified. This reflects property changes to the DOM. If a converter is supplied, it will invoke the converter before calling the setAttribute DOM API. |
 | boolean |  This mode causes your attribute to function using the HTML boolean attribute behavior. When your attribute is present in the DOM or equal to its own name, the value will be true. When the attribute is absent from the DOM, the value of the property will be false. Setting the property will also update the DOM by adding/removing the attribute. |
 | fromView |  This mode skips reflecting the value of the property back to the HTML attribute, but does receive updates when changed through setAttribute. |
+
+---
 
 In addition to setting the mode, you can also supply a custom `ValueConverter` by setting the converter property of the attribute configuration. The converter must implement the following interface:
 
@@ -287,9 +332,10 @@ export class MyCounter extends FASTElement {
 }
 ```
 
+---
 ### [Templates](https://www.fast.design/docs/fast-element/declaring-templates)
 
-To create an HTML template for an element, import and use the html tagged template helper and pass the template to the @customElement decorator.
+To create an HTML template for an element, import and use the html tagged template helper and pass the template to the `@customElement` decorator.
 
 ```ts
 import { FASTElement, customElement, attr, html } from '@microsoft/fast-element';
@@ -314,11 +360,11 @@ export class NameTag extends FASTElement {
 }
 ```
 
-
-#### [Bindings](https://www.fast.design/docs/fast-element/declaring-templates#understanding-bindings):
+---
+### [Bindings](https://www.fast.design/docs/fast-element/declaring-templates#understanding-bindings)
 
 | Binding Type | Example | Notes |
-| --- | --- | --- |
+| :--- | :--- | :--- |
 | Content | `<a>${…}</a>` | Creates a binding to interpolate text or child templates into element content. |
 | HTML Attribute | `<a href=${…}></a>` | Creates a binding that uses the setAttribute API. Attribute bindings also support interpolation with text and other bindings. |
 | HTML Boolean Attribute | `<input ?disabled=${…}>` | Creates a binding that adds or removes the attribute based on truthy/falsey values. |
@@ -328,9 +374,10 @@ export class NameTag extends FASTElement {
 | Slotted Node Capture | `<slot ${slotted('defaultSlotNodes')}></slot>` | Watches the slot for changes and synchronizes those to an array, assigned to the named property on the data source. |
 | Child Node Capture | `<div ${children('divChildren')}></div>` | Watches the element's children or changes and synchronizes those to an array, assigned to the named property on the data source. |
 
-#### [Using directives](https://www.fast.design/docs/fast-element/using-directives):
+---
+### [Using directives](https://www.fast.design/docs/fast-element/using-directives)
 
-To conditionally render blocks of HTML, use the `when` directive:
+To conditionally render blocks of HTML, use the [`when`](https://www.fast.design/docs/fast-element/using-directives#the-when-directive) directive:
 
 ```ts
 import { FASTElement, customElement, observable, html, when } from '@microsoft/fast-element';
@@ -352,7 +399,9 @@ export class MyApp extends FASTElement {
 }
 ```
 
-To render a list of data, use the `repeat` directive, providing the list to render and a template to use in rendering each item.
+---
+
+To render a list of data, use the [`repeat`](https://www.fast.design/docs/fast-element/using-directives#the-repeat-directive) directive, providing the list to render and a template to use in rendering each item.
 
 ```ts
 import { FASTElement, customElement, observable, html, repeat } from '@microsoft/fast-element';
@@ -374,6 +423,8 @@ export class FriendList extends FASTElement {
 }
 ```
 
+---
+
 Properties available on the context object within a `repeat` block:
 
 | Property | Definition |
@@ -389,11 +440,9 @@ isFirst | True if the current item is first in the array inside a repeat block (
 isInMiddle | True if the current item is somewhere in the middle of the array inside a repeat block (opt-in). |
 isLast | True if the current item is last in the array inside a repeat block (opt-in). |
 
+---
 
-
-
-
-### [Styles](https://www.fast.design/docs/fast-element/leveraging-css)
+### [Styles](https://www.fast.design/docs/fast-element/leveraging-css#basic-styles)
 
 `FASTElement` provides a css tagged template helper to allow creating and re-using CSS.
 
@@ -417,7 +466,9 @@ const styles = css`
 })
 export class MyElement extends FASTElement {}
 ```
-##### Composing styles
+
+---
+#### [Composing styles](https://www.fast.design/docs/fast-element/leveraging-css#composing-styles)
 
 `ElementStyles` can be composed with other styles.
 
@@ -432,7 +483,9 @@ const styles = css`
 `;
 ```
 
-##### Partial CSS
+---
+
+#### [Partial CSS](https://www.fast.design/docs/fast-element/leveraging-css#partial-css)
 
 Using the `cssPartial` tagged template literal:
 
@@ -442,8 +495,8 @@ import { css, cssPartial } from "@microsoft/fast-element";
 const partial = cssPartial`color: red;`;
 const styles = css`:host{ ${partial} }`;
 ```
-
-#### CSSDirective
+---
+### [CSSDirective](https://www.fast.design/docs/fast-element/leveraging-css#cssdirective)
 
 To create a `CSSDirective`, import and extend `CSSDirective` from `@microsoft/fast-element`:
 
@@ -453,7 +506,7 @@ import { CSSDirective }  from "@microsoft/fast-element"
 class RandomWidth extends CSSDirective {}
 ```
 
-**createCSS method:**
+#### [createCSS method](https://www.fast.design/docs/fast-element/leveraging-css#createcss):
 
 ```ts
 class RandomWidth extends CSSDirective {
@@ -463,7 +516,7 @@ class RandomWidth extends CSSDirective {
 }
 ```
 
-**createBehavior method:**
+#### [createBehavior method](https://www.fast.design/docs/fast-element/leveraging-css#createbehavior):
 
 The createBehavior() method can be used to create a Behavior that is bound to the element using the CSSDirective:
 
@@ -486,6 +539,8 @@ class RandomWidth extends CSSDirective {
   }
 }
 ```
+
+---
 
 ### [Observables](https://www.fast.design/docs/fast-element/observables-and-state#observable-features)
 
@@ -543,16 +598,23 @@ export function provideSpecialDesignSystem(element?: HTMLElement): DesignSystem 
 }
 ```
 
+---
+
 ### [Design Tokens](https://www.fast.design/docs/design-systems/design-tokens)
 
-Creating/configuring a custom design token:
+
+[Creating a token](https://www.fast.design/docs/design-systems/design-tokens#create-a-token):
 
 ```ts
 import { DesignToken } from "@microsoft/fast-foundation";
 
 // create a design token
 export const specialColor = DesignToken.create<string>("special-color");
+```
 
+
+[Using design tokens in CSS](https://www.fast.design/docs/design-systems/design-tokens#using-design-tokens-in-css):
+```ts
 // use the design token to build styles
 const styles = css`
   :host {
@@ -562,21 +624,31 @@ const styles = css`
 
 const ancestor = document.querySelector("my-ancestor") as FASTElement;
 const descendent = ancestor.querySelector("my-descendent") as FASTElement;
+```
 
+[Setting values](https://www.fast.design/docs/design-systems/design-tokens#setting-values):
+```ts
 // change the value for a given element
 specialColor.setValueFor(ancestor, "#FFF");
 specialColor.setValueFor(descendent, "#000");
+```
 
+[Getting values](https://www.fast.design/docs/design-systems/design-tokens#getting-values):
+```ts
 // get the value
 specialColor.getValueFor(ancestor); // "#FFF"
 specialColor.getValueFor(descendent); // "#000"
+```
 
+[Deleting values](https://www.fast.design/docs/design-systems/design-tokens#deleting-values):
+```ts
 // unset the value (inherits from ancestor)
 specialColor.deleteValueFor(descendent);
 specialColor.getValueFor(descendent); // "#FFF"
 ```
 
-Configuring a FAST Design Token:
+---
+#### Configuring a FAST Design Token:
 
 ```ts
 // change the value for the typeRampBaseFontSize design token
@@ -585,13 +657,9 @@ const myElement = document.querySelector("my-element") as FASTElement;
 typeRampBaseFontSize.setValueFor(myElement, "20px");
 ```
 
-
-
 FAST exposes non-color related [Design Tokens](https://www.fast.design/docs/design-systems/fast-frame#fast-frame-design-tokens) that can be used to configure components stylistically. 
 
 For Design Tokens related to color, see the [adaptive color system](https://www.fast.design/docs/design-systems/fast-frame/#adaptive-color-system).
-
-
 
 ---
 
@@ -608,7 +676,7 @@ For Design Tokens related to color, see the [adaptive color system](https://www.
 - Here are [good first issues](https://github.com/Microsoft/fast/labels/community:good-first-issue).
 
 ---
-#### [Contributing to fast-component](https://www.fast.design/docs/community/contributor-guide)
+### [Contributing to fast-component](https://www.fast.design/docs/community/contributor-guide)
 
 
 
@@ -623,7 +691,7 @@ yarn start
 
 ---
 
-#### [Contributing to documentation](https://www.fast.design/docs/community/writing-documentation)
+### [Contributing to documentation](https://www.fast.design/docs/community/writing-documentation)
 
 ```shell
 cd sites/website
