@@ -165,7 +165,7 @@ export const treeItemStyles: (
 
         .items {
             display: none;
-            /* Font size should be based off calc(1em + (design-unit + glyph-size-number) * 1px) - update when density story is figured out */
+            /* TODO: adaptive typography https://github.com/microsoft/fast/issues/2432 */
             font-size: calc(1em + (${designUnit} + 16) * 1px);
         }
 
@@ -174,7 +174,7 @@ export const treeItemStyles: (
             border: none;
             border-radius: calc(${controlCornerRadius} * 1px);
             outline: none;
-            /* Width and Height should be based off calc(glyph-size-number + (design-unit * 4) * 1px) - update when density story is figured out */
+            /* TODO: adaptive typography https://github.com/microsoft/fast/issues/2432 */
             width: calc((${expandCollapseButtonSize} + (${designUnit} * 2)) * 1px);
             height: calc((${expandCollapseButtonSize} + (${designUnit} * 2)) * 1px);
             padding: 0;
@@ -196,12 +196,12 @@ export const treeItemStyles: (
         }
 
         .start {
-            /* need to swap out once we understand how horizontalSpacing will work */
+            /* TODO: horizontalSpacing https://github.com/microsoft/fast/issues/2766 */
             margin-inline-end: calc(${designUnit} * 2px + 2px);
         }
 
         .end {
-            /* need to swap out once we understand how horizontalSpacing will work */
+            /* TODO: horizontalSpacing https://github.com/microsoft/fast/issues/2766 */
             margin-inline-start: calc(${designUnit} * 2px + 2px);
         }
 
