@@ -17,6 +17,8 @@ let expectedFill = (fill?: string) => `background-color: var(--badge-fill-${fill
 
 let expectedColor = (color?: string) => `color: var(--badge-color-${color});`;
 
+let expectCssText = (cssText?: string) => `div.control { ${cssText ? `${cssText} ` : '' }}`
+
 describe("Badge", () => {
     it("should set both the background-color and fill on the control as an inline style when `fill` and `color` are provided", async () => {
         const { element, connect, disconnect } = await setup();
@@ -29,8 +31,8 @@ describe("Badge", () => {
         await connect();
 
         expect(
-            element.shadowRoot?.querySelector(".control")?.getAttribute("style")
-        ).to.equal(`${expectedColor(color)} ${expectedFill(fill)}`);
+            element.shadowRoot?.styleSheets[0].cssRules[0].cssText
+        ).to.equal(expectCssText(`${expectedColor(color)} ${expectedFill(fill)}`));
 
         await disconnect();
     });
@@ -44,8 +46,8 @@ describe("Badge", () => {
         await connect();
 
         expect(
-            element.shadowRoot?.querySelector(".control")?.getAttribute("style")
-        ).to.equal(expectedFill(fill));
+            element.shadowRoot?.styleSheets[0].cssRules[0].cssText
+        ).to.equal(expectCssText(expectedFill(fill)));
 
         await disconnect();
     });
@@ -56,8 +58,8 @@ describe("Badge", () => {
         await connect();
 
         expect(
-            element.shadowRoot?.querySelector(".control")?.getAttribute("style")
-        ).to.equal(null);
+            element.shadowRoot?.styleSheets[0].cssRules[0].cssText
+        ).to.equal(expectCssText());
 
         await disconnect();
     });
@@ -71,8 +73,8 @@ describe("Badge", () => {
         await connect();
 
         expect(
-            element.shadowRoot?.querySelector(".control")?.getAttribute("style")
-        ).to.equal(expectedColor(color));
+            element.shadowRoot?.styleSheets[0].cssRules[0].cssText
+        ).to.equal(expectCssText(expectedColor(color)));
 
         await disconnect();
     });
@@ -83,8 +85,8 @@ describe("Badge", () => {
         await connect();
 
         expect(
-            element.shadowRoot?.querySelector(".control")?.getAttribute("style")
-        ).to.equal(null);
+            element.shadowRoot?.styleSheets[0].cssRules[0].cssText
+        ).to.equal(expectCssText());
 
         await disconnect();
     });
@@ -95,8 +97,8 @@ describe("Badge", () => {
         await connect();
 
         expect(
-            element.shadowRoot?.querySelector(".control")?.getAttribute("style")
-        ).to.equal(null);
+            element.shadowRoot?.styleSheets[0].cssRules[0].cssText
+        ).to.equal(expectCssText());
 
         await disconnect();
     });
