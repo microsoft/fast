@@ -192,6 +192,7 @@ export const menuItemStyles: (
             css`
                 :host,
                 ::slotted([slot='end']:not(svg)) {
+                    background: ${SystemColors.ButtonFace};
                     border-color: ${SystemColors.ButtonFace};
                     color: ${SystemColors.ButtonText};
                     fill: ${SystemColors.ButtonText};
