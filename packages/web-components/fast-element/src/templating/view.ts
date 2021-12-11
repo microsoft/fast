@@ -1,3 +1,4 @@
+import { getNonce } from "@microsoft/fast-web-utilities";
 import type { Behavior } from "../observation/behavior";
 import type { ExecutionContext } from "../observation/observable";
 
@@ -124,10 +125,23 @@ export class HTMLView implements ElementView, SyntheticView {
     }
 
     /**
+     * If nonces are present on the page, set it when creating the style elements.
+     */
+    trySetNonce(): void {
+        const nonce = getNonce();
+        if (nonce) {
+            this.fragment.querySelectorAll("style").forEach(element => {
+                element.nonce = nonce;
+            });
+        }
+    }
+
+    /**
      * Appends the view's DOM nodes to the referenced node.
      * @param node - The parent node to append the view's DOM nodes to.
      */
     public appendTo(node: Node): void {
+        this.trySetNonce();
         node.appendChild(this.fragment);
     }
 
@@ -136,6 +150,7 @@ export class HTMLView implements ElementView, SyntheticView {
      * @param node - The node to insert the view's DOM before.
      */
     public insertBefore(node: Node): void {
+        this.trySetNonce();
         if (this.fragment.hasChildNodes()) {
             node.parentNode!.insertBefore(this.fragment, node);
         } else {

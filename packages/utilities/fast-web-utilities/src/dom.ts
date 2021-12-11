@@ -38,7 +38,7 @@ export function getKeyCode(event: KeyboardEvent | null): number | null {
  *
  * Based on https://github.com/cssinjs/jss/blob/master/packages/jss/src/DomRenderer.js
  */
-function getNonce(): string | null {
+export function getNonce(): string | null {
     const node = document.querySelector('meta[property="csp-nonce"]');
     if (node) {
         return node.getAttribute("content");
