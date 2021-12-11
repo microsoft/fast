@@ -21,7 +21,10 @@ export const sliderLabelTemplate: (
         class="${x => x.sliderOrientation || Orientation.horizontal}
             ${x => (x.disabled ? "disabled" : "")}"
     >
-        <div ${ref("root")} part="root" class="root" style="${x => x.positionStyle}">
+        <style>
+            div.root{${x => x.positionStyle}}
+        </style>
+        <div ${ref("root")} part="root" class="root">
             <div class="container">
                 ${when(
                     x => !x.hideMark,

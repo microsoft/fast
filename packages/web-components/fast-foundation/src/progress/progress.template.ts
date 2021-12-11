@@ -24,12 +24,13 @@ export const progressTemplate: (
         ${when(
             x => typeof x.value === "number",
             html<BaseProgress>`
+                <style>
+                    div.determinate {
+                        width: ${x => x.percentComplete}%;
+                    }
+                </style>
                 <div class="progress" part="progress" slot="determinate">
-                    <div
-                        class="determinate"
-                        part="determinate"
-                        style="width: ${x => x.percentComplete}%"
-                    ></div>
+                    <div class="determinate" part="determinate"></div>
                 </div>
             `
         )}

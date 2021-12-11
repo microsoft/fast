@@ -29,17 +29,20 @@ export const sliderTemplate: (
         aria-orientation="${x => x.orientation}"
         class="${x => x.orientation}"
     >
+        <style>
+            ${x =>
+                `:host([orientation="${
+                    x.orientation || Orientation.horizontal
+                }"])`} div.thumb-container {
+                ${x => x.position}
+            }
+        </style>
         <div part="positioning-region" class="positioning-region">
             <div ${ref("track")} part="track-container" class="track">
                 <slot name="track"></slot>
             </div>
             <slot></slot>
-            <div
-                ${ref("thumb")}
-                part="thumb-container"
-                class="thumb-container"
-                style="${x => x.position}"
-            >
+            <div ${ref("thumb")} part="thumb-container" class="thumb-container">
                 <slot name="thumb">${definition.thumb || ""}</slot>
             </div>
         </div>

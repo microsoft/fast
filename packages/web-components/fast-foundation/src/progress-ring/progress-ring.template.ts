@@ -26,6 +26,13 @@ export const progressRingTemplate: (
         ${when(
             x => typeof x.value === "number",
             html<BaseProgress>`
+                <style>
+                    circle.determinate {
+                        stroke-dasharray: ${x =>
+                                (progressSegments * x.percentComplete) / 100}px
+                            ${progressSegments}px;
+                    }
+                </style>
                 <svg
                     class="progress"
                     part="progress"
@@ -42,9 +49,6 @@ export const progressRingTemplate: (
                     <circle
                         class="determinate"
                         part="determinate"
-                        style="stroke-dasharray: ${x =>
-                            (progressSegments * x.percentComplete) /
-                            100}px ${progressSegments}px"
                         cx="8px"
                         cy="8px"
                         r="7px"

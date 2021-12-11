@@ -14,11 +14,17 @@ export const avatarTemplate: (
     context: ElementDefinitionContext,
     definition: AvatarOptions
 ) => html`
+    <style>
+        div.backplate {
+            ${x => (x.fill ? `background-color: var(--avatar-fill-${x.fill});` : void 0)}
+        }
+        a.link {
+            ${x => (x.color ? `color: var(--avatar-color-${x.color});` : void 0)}
+        }
+    </style>
     <div
         class="backplate ${x => x.shape}"
         part="backplate"
-        style="${x =>
-            x.fill ? `background-color: var(--avatar-fill-${x.fill});` : void 0}"
     >
         <a
             class="link"

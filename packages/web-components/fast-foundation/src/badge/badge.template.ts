@@ -16,7 +16,12 @@ export const badgeTemplate: (
     definition: FoundationElementDefinition
 ) => html`
     <template class="${x => (x.circular ? "circular" : "")}">
-        <div class="control" part="control" style="${x => x.generateBadgeStyle()}">
+        <style>
+            ${x => (x.circular ? ":host([circular])" : "")} div.control {
+                ${x => x.generateBadgeStyle()}
+            }
+        </style>
+        <div class="control" part="control">
             <slot></slot>
         </div>
     </template>
