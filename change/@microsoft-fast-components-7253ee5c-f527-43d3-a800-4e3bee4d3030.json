@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "fix: incorrect z-index in fast-menu slot=\"submenu\"",
-  "packageName": "@microsoft/fast-components",
-  "email": "email not defined",
-  "dependentChangeType": "patch"
-}
