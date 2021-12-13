@@ -30,7 +30,7 @@ yarn add @microsoft/fast-element
 Within your JavaScript or TypeScript code, you can then import library APIs like this:
 
 ```ts
-import { FASTElement } from '@microsoft/fast-element';
+import { FASTElement } from "@microsoft/fast-element";
 ```
 
 ---
@@ -244,9 +244,9 @@ Not seeing an integration for your preferred technology?  Open an issue on [GitH
 To define a custom element:
 
 ```ts
-import { FASTElement, customElement } from '@microsoft/fast-element';
+import { FASTElement, customElement } from "@microsoft/fast-element";
 
-@customElement('name-tag') // custom element being created
+@customElement("name-tag") // custom element being created
 export class NameTag extends FASTElement {
 
 }
@@ -265,11 +265,11 @@ With this in place, you can now use your name-tag element anywhere in HTML with 
 To add attributes to your HTML element, create properties decorated by the `@attr` decorator:
 
 ```ts
-import { FASTElement, customElement, attr } from '@microsoft/fast-element';
+import { FASTElement, customElement, attr } from "@microsoft/fast-element";
 
-@customElement('name-tag')
+@customElement("name-tag")
 export class NameTag extends FASTElement {
-  @attr greeting: string = 'Hello';
+  @attr greeting: string = "Hello";
 
   greetingChanged() {
     this.shadowRoot!.innerHTML = this.greeting;
@@ -319,9 +319,9 @@ const numberConverter: ValueConverter = {
   }
 };
 
-@customElement('my-counter')
+@customElement("my-counter")
 export class MyCounter extends FASTElement {
-  @attr({ mode: 'reflect', converter: numberConverter }) count: number = 0;
+  @attr({ mode: "reflect", converter: numberConverter }) count: number = 0;
 }
 ```
 
@@ -331,7 +331,7 @@ export class MyCounter extends FASTElement {
 To create an HTML template for an element, import and use the html tagged template helper and pass the template to the `@customElement` decorator:
 
 ```ts
-import { FASTElement, customElement, attr, html } from '@microsoft/fast-element';
+import { FASTElement, customElement, attr, html } from "@microsoft/fast-element";
 
 const template = html<NameTag>`
   <div class="header">
@@ -345,7 +345,7 @@ const template = html<NameTag>`
 `;
 
 @customElement({
-  name: 'name-tag',
+  name: "name-tag",
   template
 })
 export class NameTag extends FASTElement {
@@ -364,11 +364,11 @@ Use `@attr` for primitive properties (string, bool, number) that are intended to
 
 
 ```ts
-import { Observable } from '@microsoft/fast-element';
+import { Observable } from "@microsoft/fast-element";
 
 export class Person {
-  @observable firstName = '';
-  @observable lastName = '';
+  @observable firstName = "";
+  @observable lastName = "";
 
   get fullName() {
     return `${this.firstName} ${this.LastName}`;
@@ -386,9 +386,9 @@ export class Person {
 | HTML Boolean Attribute | `<input ?disabled=${…}>` | Creates a binding that adds or removes the attribute based on truthy/falsey values. |
 | JS Property | `<input :value=${…}>` | Creates a binding that sets a JavaScript property on the element. |
 | Event Handler | `<button @click=${…}>...</button>` | Registers an event handler using addEventListener. The listener is automatically removed when the template is unbound. |
-| HTML Element Reference | `<button ${ref('myButton')}>...</button>` | Captures a reference to the element and assigns it to the named property on the data source. |
-| Slotted Node Capture | `<slot ${slotted('defaultSlotNodes')}></slot>` | Watches the slot for changes and synchronizes those to an array, assigned to the named property on the data source. |
-| Child Node Capture | `<div ${children('divChildren')}></div>` | Watches the element's children or changes and synchronizes those to an array, assigned to the named property on the data source. |
+| HTML Element Reference | `<button ${ref("myButton")}>...</button>` | Captures a reference to the element and assigns it to the named property on the data source. |
+| Slotted Node Capture | `<slot ${slotted("defaultSlotNodes")}></slot>` | Watches the slot for changes and synchronizes those to an array, assigned to the named property on the data source. |
+| Child Node Capture | `<div ${children("divChildren")}></div>` | Watches the element's children or changes and synchronizes those to an array, assigned to the named property on the data source. |
 
 ---
 ### [Directives](https://www.fast.design/docs/fast-element/using-directives)
@@ -396,7 +396,7 @@ export class Person {
 Use the [`when`](https://www.fast.design/docs/fast-element/using-directives#the-when-directive) directive to conditionally render blocks of HTML:
 
 ```ts
-import { FASTElement, customElement, observable, html, when } from '@microsoft/fast-element';
+import { FASTElement, customElement, observable, html, when } from "@microsoft/fast-element";
 
 const template = html<MyApp>`
  ...
@@ -406,7 +406,7 @@ const template = html<MyApp>`
 `;
 
 @customElement({
-  name: 'my-app',
+  name: "my-app",
   template
 })
 export class MyApp extends FASTElement {
@@ -421,7 +421,7 @@ Use the [`repeat`](https://www.fast.design/docs/fast-element/using-directives#th
 
 
 ```ts
-import { FASTElement, customElement, observable, html, repeat } from '@microsoft/fast-element';
+import { FASTElement, customElement, observable, html, repeat } from "@microsoft/fast-element";
 
 const template = html<FriendList>`
   ...
@@ -431,7 +431,7 @@ const template = html<FriendList>`
 `;
 
 @customElement({
-  name: 'friend-list',
+  name: "friend-list",
   template
 })
 export class FriendList extends FASTElement {
@@ -466,7 +466,7 @@ isLast | True if the current item is last in the array inside a repeat block (op
 Adding CSS to a `FASTElement`:
 
 ```ts
-import { FASTElement, customElement } from '@microsoft/fast-element';
+import { FASTElement, customElement } from "@microsoft/fast-element";
 import { css } from "@microsoft/fast-element";
 import { disabledOpacity } from "../design-tokens";
 
@@ -488,7 +488,7 @@ export class MyElement extends FASTElement {}
 `ElementStyles` can be composed with other styles:
 
 ```ts
-import { normalize } from './normalize';
+import { normalize } from "./normalize";
 
 const styles = css`
   ${normalize}
