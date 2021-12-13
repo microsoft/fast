@@ -321,7 +321,11 @@ const numberConverter: ValueConverter = {
 
 @customElement("my-counter")
 export class MyCounter extends FASTElement {
-  @attr({ mode: "reflect", converter: numberConverter }) count: number = 0;
+  @attr({
+    mode: "reflect",
+    converter: numberConverter
+  })
+  count: number = 0;
 }
 ```
 
