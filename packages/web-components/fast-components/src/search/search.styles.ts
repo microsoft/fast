@@ -1,4 +1,5 @@
 import { css, ElementStyles } from "@microsoft/fast-element";
+import { DesignToken } from "@microsoft/fast-foundation";
 import {
     disabledCursor,
     display,
@@ -8,12 +9,14 @@ import {
     TextFieldOptions,
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
+import { Swatch } from "../color/swatch";
 import {
     accentFillActive,
     accentFillHover,
     accentFillRest,
     bodyFont,
     controlCornerRadius,
+    density,
     designUnit,
     disabledOpacity,
     fillColor,
@@ -21,13 +24,53 @@ import {
     neutralFillHover,
     neutralFillInputHover,
     neutralFillInputRest,
+    neutralFillRecipe,
+    neutralFillStealthActive,
+    neutralFillStealthHover,
+    neutralFillStealthRecipe,
     neutralForegroundRest,
     neutralStrokeRest,
     strokeWidth,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
 } from "../design-tokens";
-import { heightNumber } from "../styles/index";
+import { DirectionalStyleSheetBehavior, heightNumber } from "../styles/index";
+
+/**
+ * LTR styles for search
+ * @internal
+ */
+const ltrStyles = css`
+    .clear-button {
+        right: 1px;
+    }
+`;
+
+/**
+ * RTL styles for search
+ * @internal
+ */
+const rtlStyles = css`
+    .clear-button {
+        left: 1px;
+    }
+`;
+
+const closeButtonHover = DesignToken.create<Swatch>("close-button-hover").withDefault(
+    (target: HTMLElement) => {
+        const buttonRecipe = neutralFillStealthRecipe.getValueFor(target);
+        const inputRecipe = neutralFillRecipe.getValueFor(target);
+        return buttonRecipe.evaluate(target, inputRecipe.evaluate(target).hover).hover;
+    }
+);
+
+const closeButtonActive = DesignToken.create<Swatch>("close-button-active").withDefault(
+    (target: HTMLElement) => {
+        const buttonRecipe = neutralFillStealthRecipe.getValueFor(target);
+        const inputRecipe = neutralFillRecipe.getValueFor(target);
+        return buttonRecipe.evaluate(target, inputRecipe.evaluate(target).hover).active;
+    }
+);
 
 export const searchStyles: FoundationElementTemplate<ElementStyles, TextFieldOptions> = (
     context,
@@ -84,10 +127,36 @@ export const searchStyles: FoundationElementTemplate<ElementStyles, TextFieldOpt
 
     .clear-button {
         position: absolute;
-        right: 0;
         top: 1px;
         height: calc(100% - 2px);
         opacity: 0;
+        background: transparent;
+        color: ${neutralForegroundRest};
+        fill: currentcolor;
+        border: none;
+        border-radius: calc(${controlCornerRadius} * 1px);
+        min-width: calc(${heightNumber} * 1px);
+        font-size: ${typeRampBaseFontSize};
+        line-height: ${typeRampBaseLineHeight};
+        outline: none;
+        font-family: ${bodyFont};
+        padding: 0 calc((10 + (${designUnit} * 2 * ${density})) * 1px);
+    }
+
+    .clear-button:hover {
+        background: ${neutralFillStealthHover};
+    }
+
+    .clear-button:active {
+        background: ${neutralFillStealthActive};
+    }
+
+    :host([appearance="filled"]) .clear-button:hover {
+        background: ${closeButtonHover};
+    }
+
+    :host([appearance="filled"]) .clear-button:active {
+        background: ${closeButtonActive};
     }
 
     .input-wrapper {
@@ -229,5 +298,6 @@ export const searchStyles: FoundationElementTemplate<ElementStyles, TextFieldOpt
                     color: ${SystemColors.GrayText};
                 }
             `
-        )
+        ),
+        new DirectionalStyleSheetBehavior(ltrStyles, rtlStyles)
     );
