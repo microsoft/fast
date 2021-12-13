@@ -121,6 +121,8 @@ describe("Menu", () => {
 
         await connect();
 
+        await DOM.nextUpdate();
+
         expect(document.getElementById("not-an-item")?.hasAttribute("tabindex")).to.equal(false);
 
         await disconnect();
