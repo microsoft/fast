@@ -300,7 +300,7 @@ export class DataGrid extends VirtualizingStackBase {
      */
     public stack: VirtualizingStack;
 
-    private rowsRepeatBehavior: RepeatBehavior | null;
+    // private rowsRepeatBehavior: RepeatBehavior | null;
     private rowsPlaceholder: Node | null = null;
 
     private generatedHeader: DataGridRow | null = null;
