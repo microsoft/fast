@@ -252,7 +252,7 @@ export class NameTag extends FASTElement {
 }
 ```
 
-With this in place, you can now use your name-tag element anywhere in HTML with the following markup:
+With this in place, you can now use your `<name-tag>` element anywhere in HTML with the following markup:
 
 ```html
 <name-tag></name-tag>
