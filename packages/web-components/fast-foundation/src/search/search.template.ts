@@ -3,7 +3,6 @@ import type { ViewTemplate } from "@microsoft/fast-element";
 import { endSlotTemplate, startSlotTemplate } from "../patterns";
 import { whitespaceFilter } from "../utilities";
 import type { FoundationElementTemplate } from "../foundation-element";
-import { Button } from "../button";
 import type { Search, SearchOptions } from "./search";
 
 /**
