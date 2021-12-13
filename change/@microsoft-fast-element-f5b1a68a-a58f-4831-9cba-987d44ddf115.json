@@ -1,0 +1,7 @@
+{
+  "type": "none",
+  "comment": "docs(using-directives): clarify slotted directive practices",
+  "packageName": "@microsoft/fast-element",
+  "email": "roeisenb@microsoft.com",
+  "dependentChangeType": "none"
+}
