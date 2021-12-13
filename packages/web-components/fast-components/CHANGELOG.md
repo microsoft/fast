@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-components
 
-This log was last generated on Tue, 30 Nov 2021 07:13:40 GMT and should not be manually modified.
+This log was last generated on Sun, 12 Dec 2021 07:12:52 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.16.7
+
+Sun, 12 Dec 2021 07:12:52 GMT
+
+### Patches
+
+- fix: incorrect z-index in fast-menu slot="submenu" (email not defined)
 
 ## 2.16.6
 

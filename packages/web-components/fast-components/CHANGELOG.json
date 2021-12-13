@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-components",
   "entries": [
     {
+      "date": "Sun, 12 Dec 2021 07:12:52 GMT",
+      "tag": "@microsoft/fast-components_v2.16.7",
+      "version": "2.16.7",
+      "comments": {
+        "patch": [
+          {
+            "comment": "fix: incorrect z-index in fast-menu slot=\"submenu\"",
+            "author": "email not defined",
+            "commit": "66dca809bacc382b5d355ef6d49e975ce3e5b3b6",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 08 Dec 2021 07:10:04 GMT",
       "tag": "@microsoft/fast-components_v2.16.6",
       "version": "2.16.6",
