@@ -471,11 +471,11 @@ Adding CSS to a `FASTElement`:
 
 ```ts
 import { FASTElement, customElement } from "@microsoft/fast-element";
-import { css } from "@microsoft/fast-element";
+import { css, customElement, FASTElement } from "@microsoft/fast-element";
 import { disabledOpacity } from "../design-tokens";
 
 const styles = css`
-  :host([disabled])] {
+  :host([disabled]) {
     opacity: ${disabledOpacity};
   }
 `;
