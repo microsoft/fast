@@ -34,9 +34,29 @@ import {
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
 } from "../design-tokens";
-import { heightNumber } from "../styles/index";
+import { DirectionalStyleSheetBehavior, heightNumber } from "../styles/index";
 
-const closeButtonHover = DesignToken.create<Swatch>("close-button-hover").withDefault(
+/**
+ * LTR styles for search
+ * @internal
+ */
+const ltrStyles = css`
+    .clear-button {
+        right: 1px;
+    }
+`;
+
+/**
+ * RTL styles for search
+ * @internal
+ */
+const rtlStyles = css`
+    .clear-button {
+        left: 1px;
+    }
+`;
+
+const clearButtonHover = DesignToken.create<Swatch>("close-button-hover").withDefault(
     (target: HTMLElement) => {
         const buttonRecipe = neutralFillStealthRecipe.getValueFor(target);
         const inputRecipe = neutralFillRecipe.getValueFor(target);
@@ -44,7 +64,7 @@ const closeButtonHover = DesignToken.create<Swatch>("close-button-hover").withDe
     }
 );
 
-const closeButtonActive = DesignToken.create<Swatch>("close-button-active").withDefault(
+const clearButtonActive = DesignToken.create<Swatch>("close-button-active").withDefault(
     (target: HTMLElement) => {
         const buttonRecipe = neutralFillStealthRecipe.getValueFor(target);
         const inputRecipe = neutralFillRecipe.getValueFor(target);
@@ -105,6 +125,8 @@ export const searchStyles: FoundationElementTemplate<ElementStyles, TextFieldOpt
 
     .clear-button {
         margin: 1px;
+        position: absolute;
+        top: 1px;
         height: calc(100% - 2px);
         opacity: 0;
         background: transparent;
@@ -129,11 +151,11 @@ export const searchStyles: FoundationElementTemplate<ElementStyles, TextFieldOpt
     }
 
     :host([appearance="filled"]) .clear-button:hover {
-        background: ${closeButtonHover};
+        background: ${clearButtonHover};
     }
 
     :host([appearance="filled"]) .clear-button:active {
-        background: ${closeButtonActive};
+        background: ${clearButtonActive};
     }
 
     .input-wrapper {
@@ -275,5 +297,6 @@ export const searchStyles: FoundationElementTemplate<ElementStyles, TextFieldOpt
                     color: ${SystemColors.GrayText};
                 }
             `
-        )
+        ),
+        new DirectionalStyleSheetBehavior(ltrStyles, rtlStyles)
     );
