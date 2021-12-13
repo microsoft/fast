@@ -1,6 +1,11 @@
 {
+<<<<<<< HEAD
   "type": "minor",
   "comment": "BREAKING CHANGE: replace WC button with stock HTML button",
+=======
+  "type": "patch",
+  "comment": "search: replace WC button with stock HTML button",
+>>>>>>> Change files
   "packageName": "@microsoft/fast-foundation",
   "email": "jes@microsoft.com",
   "dependentChangeType": "patch"
