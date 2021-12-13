@@ -15,7 +15,7 @@ custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/src
 **A library that is a lightweight means to easily build performant, memory-efficient, standards-compliant Web Components.**
 
 * Provides a thin layer of opinions on top of [Web Components](https://www.fast.design/docs/resources/why-web-components), lifting the level of abstraction just enough to make it easier and FASTer to [build components]((#building-components)).   
-* Use this library when you want to create completely new web components. 
+* Use this library when you want to create new custom web components. 
 
 To install the fast-element library, use either `npm` or `yarn`:
 
@@ -75,7 +75,6 @@ export const myButton = MyButton.compose({
 **A component library that implements Microsoft's [FAST Frame Design System](https://www.fast.design/docs/design-systems/fast-frame/).**
 
 * Assembles the building blocks of `@microsoft/fast-foundation` to create its component set. 
-
 * Use this library when you want to integrate [FAST Components](#using-components) into an existing site or app.
 
 To install the components, use either `npm` or `yarn`:
@@ -106,7 +105,6 @@ provideFASTDesignSystem()
 **A component library that implements Microsoft's [Fluent Design System](https://www.microsoft.com/design/fluent/#/).**
 
 * Assembles the building blocks of `@microsoft/fast-foundation` to create its component set. 
-
 * Use this library when you want components to look and feel like those found in Microsoft products.
 
 To install the components, use either `npm` or `yarn`:
@@ -203,7 +201,7 @@ FAST libraries can also be used in combination with a wide variety of existing t
 Not seeing an integration for your preferred technology?  Open an issue on [GitHub](https://github.com/microsoft/fast/issues).
 
 ---
-## [Building Components](https://www.fast.design/docs/components/getting-started)
+## [Building Components](https://www.fast.design/docs/fast-element/getting-started)
 ### Setup
 
 To define a custom element:
@@ -550,9 +548,6 @@ export const specialButton = Button.compose({
 
 export const buttonStyles = styles;
 ```
-
-
-
 
 2. Export a `provider function` for your community to use in setting everything up:
 
