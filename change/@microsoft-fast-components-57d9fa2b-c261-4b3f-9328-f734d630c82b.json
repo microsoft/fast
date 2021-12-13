@@ -1,7 +1,7 @@
 {
-  "type": "patch",
-  "comment": "search: replace WC button with stock HTML button",
+  "type": "major",
+  "comment": "BREAKING CHANGE: replace WC button with stock HTML button",
   "packageName": "@microsoft/fast-components",
   "email": "jes@microsoft.com",
-  "dependentChangeType": "patch"
+  "dependentChangeType": "major"
 }
