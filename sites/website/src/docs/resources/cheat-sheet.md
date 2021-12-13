@@ -225,21 +225,14 @@ With the components registered, add any component to the HTML:
 
 FAST libraries can also be used in combination with a wide variety of existing technologies.
 
-[Angular](https://www.fast.design/docs/integrations/angular)
-
-[ASP.NET](https://www.fast.design/docs/integrations/aspnet)
-
-[Aurelia](https://www.fast.design/docs/integrations/aurelia)
-
-[Blazor](https://www.fast.design/docs/integrations/blazor)
-
-[Ember](https://www.fast.design/docs/integrations/ember)
-
-[React](https://www.fast.design/docs/integrations/react)
-
-[Vue](https://www.fast.design/docs/integrations/vue)
-
-[Webpack](https://www.fast.design/docs/integrations/webpack)
+- [Angular](https://www.fast.design/docs/integrations/angular)
+- [ASP.NET](https://www.fast.design/docs/integrations/aspnet)
+- [Aurelia](https://www.fast.design/docs/integrations/aurelia)
+- [Blazor](https://www.fast.design/docs/integrations/blazor)
+- [Ember](https://www.fast.design/docs/integrations/ember)
+- [React](https://www.fast.design/docs/integrations/react)
+- [Vue](https://www.fast.design/docs/integrations/vue)
+- [Webpack](https://www.fast.design/docs/integrations/webpack)
 
 Not seeing an integration for your preferred technology?  Open an issue on [GitHub](https://github.com/microsoft/fast/issues).
 
