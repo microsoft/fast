@@ -107,9 +107,7 @@ export const searchStyles: FoundationElementTemplate<ElementStyles, TextFieldOpt
         margin-top: auto;
         margin-bottom: auto;
         border: none;
-        padding: 0;
-        padding-inline-start: calc(${designUnit} * 2px + 1px);
-        padding-inline-end: calc((${designUnit} * 2px) + (${heightNumber} * 1px) + 1px);
+        padding: 0 calc(${designUnit} * 2px + 1px);
         font-size: ${typeRampBaseFontSize};
         line-height: ${typeRampBaseLineHeight};
     }
@@ -126,8 +124,7 @@ export const searchStyles: FoundationElementTemplate<ElementStyles, TextFieldOpt
     }
 
     .clear-button {
-        position: absolute;
-        top: 1px;
+        margin: 1px 1px 1px 0;
         height: calc(100% - 2px);
         opacity: 0;
         background: transparent;
