@@ -127,6 +127,7 @@ export const searchStyles: FoundationElementTemplate<ElementStyles, TextFieldOpt
         margin: 1px;
         position: absolute;
         top: 1px;
+        margin: 1px 1px 1px 0;
         height: calc(100% - 2px);
         opacity: 0;
         background: transparent;
