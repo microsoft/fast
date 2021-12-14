@@ -73,7 +73,7 @@ export const myButton = MyButton.compose({
 
 ### [@microsoft/fast-components](https://www.fast.design/docs/components/getting-started)     
 
-**A component library that implements Microsoft's [FAST Frame Design System](https://www.fast.design/docs/design-systems/fast-frame/).**
+**The FAST component library and visual system [FAST Frame](https://www.fast.design/docs/design-systems/fast-frame/), which implements fast-foundation.**
 
 * Assembles the building blocks of `@microsoft/fast-foundation` to create its component set. 
 * Use this library when you want to integrate [FAST Components](#using-components) into an existing site or app.
