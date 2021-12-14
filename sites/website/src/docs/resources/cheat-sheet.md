@@ -103,7 +103,7 @@ provideFASTDesignSystem()
 ```
 
 ---
-### [@fluentui/web-components](https://www.fast.design/docs/components/getting-started)
+### [@fluentui/web-components](https://docs.microsoft.com/en-us/fluent-ui/web-components/)
 
 **A component library that implements Microsoft's [Fluent Design System](https://www.microsoft.com/design/fluent/#/).**
 
