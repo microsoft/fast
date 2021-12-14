@@ -13,7 +13,7 @@ custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/src
 
 **A library that is a lightweight means to easily build performant, memory-efficient, standards-compliant Web Components.**
 
-* Provides a thin layer of opinions on top of [Web Components](https://www.fast.design/docs/resources/why-web-components), lifting the level of abstraction just enough to make it easier and FASTer to [build components]((#building-components)).   
+* Provides a thin layer of opinion on top of [Web Components](https://www.fast.design/docs/resources/why-web-components), lifting the level of abstraction just enough to make it easier and faster to [build components]((#building-components)).   
 * Use this library when you want to create new custom web components. 
 
 To install the fast-element library, use either `npm` or `yarn`:
@@ -88,7 +88,7 @@ npm install --save @microsoft/fast-components
 yarn add @microsoft/fast-components
 ```
 
-To use a Web Component as a custom element in HTML, the custom element must be registered:
+To use a component as a custom element in HTML, the custom element must be registered:
 
 ```ts
 import { 
