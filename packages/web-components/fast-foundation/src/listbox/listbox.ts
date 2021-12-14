@@ -503,28 +503,28 @@ export abstract class Listbox extends FoundationElement {
  */
 export class DelegatesARIAListbox {
     /**
-     * See {@link https://www.w3.org/WAI/PF/aria/roles#listbox} for more information
+     * See {@link https://www.w3.org/TR/wai-aria-1.2/#listbox} for more information
      * @public
      * @remarks
-     * HTML Attribute: aria-activedescendant
+     * HTML Attribute: `aria-activedescendant`
      */
     @observable
-    public ariaActiveDescendant: string = "";
+    public ariaActiveDescendant: string;
 
     /**
-     * See {@link https://www.w3.org/WAI/PF/aria/roles#listbox} for more information
+     * See {@link https://www.w3.org/TR/wai-aria-1.2/#listbox} for more information
      * @public
      * @remarks
-     * HTML Attribute: aria-disabled
+     * HTML Attribute: `aria-disabled`
      */
     @observable
     public ariaDisabled: "true" | "false";
 
     /**
-     * See {@link https://www.w3.org/WAI/PF/aria/roles#listbox} for more information
+     * See {@link https://www.w3.org/TR/wai-aria-1.2/#listbox} for more information
      * @public
      * @remarks
-     * HTML Attribute: aria-expanded
+     * HTML Attribute: `aria-expanded`
      */
     @observable
     public ariaExpanded: "true" | "false" | undefined;

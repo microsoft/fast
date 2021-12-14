@@ -843,12 +843,11 @@ export interface DelegatesARIASearch extends ARIAGlobalStatesAndProperties {
 //
 // @public
 export class DelegatesARIASelect {
-    ariaExpanded: "true" | "false" | undefined;
-    ariaPressed: "true" | "false" | "mixed" | undefined;
+    ariaControls: string;
 }
 
 // @internal
-export interface DelegatesARIASelect extends ARIAGlobalStatesAndProperties {
+export interface DelegatesARIASelect extends DelegatesARIAListbox {
 }
 
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag

@@ -1,8 +1,9 @@
 import { attr, Observable, observable } from "@microsoft/fast-element";
 import type { SyntheticViewTemplate } from "@microsoft/fast-element";
+import { uniqueId } from "@microsoft/fast-web-utilities";
 import type { FoundationElementDefinition } from "../foundation-element";
+import { DelegatesARIAListbox } from "../listbox";
 import type { ListboxOption } from "../listbox-option/listbox-option";
-import { ARIAGlobalStatesAndProperties } from "../patterns/aria-global";
 import { StartEnd } from "../patterns/start-end";
 import type { StartEndOptions } from "../patterns/start-end";
 import { applyMixins } from "../utilities/apply-mixins";
@@ -33,12 +34,18 @@ export class Select extends FormAssociatedSelect {
     @attr({ attribute: "open", mode: "boolean" })
     public open: boolean = false;
     protected openChanged() {
-        this.ariaExpanded = this.open ? "true" : "false";
         if (this.open) {
+            this.ariaControls = this.listbox.id;
+            this.ariaExpanded = "true";
+
             this.setPositioning();
             this.focusAndScrollOptionIntoView();
             this.indexWhenOpened = this.selectedIndex;
+            return;
         }
+
+        this.ariaControls = "";
+        this.ariaExpanded = "false";
     }
 
     private indexWhenOpened: number;
@@ -372,6 +379,10 @@ export class Select extends FormAssociatedSelect {
     public connectedCallback() {
         super.connectedCallback();
         this.forcedPosition = !!this.positionAttribute;
+
+        if (!this.listbox.id) {
+            this.listbox.id = uniqueId("listbox-");
+        }
     }
 }
 
@@ -382,22 +393,13 @@ export class Select extends FormAssociatedSelect {
  */
 export class DelegatesARIASelect {
     /**
-     * See {@link https://www.w3.org/WAI/PF/aria/roles#button} for more information
+     * See {@link https://www.w3.org/TR/wai-aria-1.2/#combobox} for more information
      * @public
      * @remarks
-     * HTML Attribute: aria-expanded
+     * HTML Attribute: `aria-controls`
      */
     @observable
-    public ariaExpanded: "true" | "false" | undefined;
-
-    /**
-     * See {@link https://www.w3.org/WAI/PF/aria/roles#button} for more information
-     * @public
-     * @remarks
-     * HTML Attribute: aria-pressed
-     */
-    @attr({ attribute: "aria-pressed", mode: "fromView" })
-    public ariaPressed: "true" | "false" | "mixed" | undefined;
+    public ariaControls: string;
 }
 
 /**
@@ -406,8 +408,8 @@ export class DelegatesARIASelect {
  * TODO: https://github.com/microsoft/fast/issues/3317
  * @internal
  */
-export interface DelegatesARIASelect extends ARIAGlobalStatesAndProperties {}
-applyMixins(DelegatesARIASelect, ARIAGlobalStatesAndProperties);
+export interface DelegatesARIASelect extends DelegatesARIAListbox {}
+applyMixins(DelegatesARIASelect, DelegatesARIAListbox);
 
 /**
  * @internal
