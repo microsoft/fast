@@ -5,15 +5,29 @@ import {
     forcedColorsStylesheetBehavior,
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
+import { focusVisible } from "@microsoft/fast-foundation";
 import { heightNumber } from "../styles/index";
 import {
+    accentFillHover,
+    accentFillRest,
     accentForegroundActive,
+    accentForegroundRest,
     bodyFont,
+    controlCornerRadius,
     designUnit,
     disabledOpacity,
-    foregroundOnAccentActive,
+    fillColor,
+    focusStrokeInner,
+    focusStrokeOuter,
+    focusStrokeWidth,
+    foregroundOnAccentHover,
+    foregroundOnAccentRest,
+    neutralFillHover,
     neutralFillRest,
+    neutralForegroundHint,
+    neutralForegroundHover,
     neutralForegroundRest,
+    strokeWidth,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
     typeRampPlus3FontSize,
@@ -28,16 +42,19 @@ export const CalendarStyles = css`
     ${display("block")} :host {
         --cell-border: none;
         --cell-height: calc(${heightNumber} * 1px);
-        --selected-day-outline: 1px solid ${accentForegroundActive};
-        --selected-day-color: ${accentForegroundActive};
+        --selected-day-outline: 1px solid ${accentForegroundRest};
+        --selected-day-color: ${accentForegroundRest};
         --selected-day-background: ${neutralFillRest};
         --cell-padding: calc(${designUnit} * 1px);
         --disabled-day-opacity: ${disabledOpacity};
-        --inactive-day-opacity: ${disabledOpacity};
+        --disabled-day-outline: 1px solid  ${neutralForegroundHint};
+        --inactive-day-outline: 1px solid transparent;
+        border-radius: calc(${controlCornerRadius} * 1px);
         font-family: ${bodyFont};
         font-size: ${typeRampBaseFontSize};
         line-height: ${typeRampBaseLineHeight};
         color: ${neutralForegroundRest};
+        background: ${fillColor};
     }
 
     .title {
@@ -82,9 +99,27 @@ export const CalendarStyles = css`
         white-space: normal;
     }
 
+    .day:${focusVisible},
+    .week-day:${focusVisible} {
+        box-shadow: 0 0 0 calc(${focusStrokeWidth} * 1px) ${focusStrokeOuter} inset;
+        outline: none;
+    }
+
+    .today:not(.disabled, .inactive):${focusVisible} {
+        box-shadow: 0 0 0 calc((${focusStrokeWidth} - ${strokeWidth}) * 1px) ${focusStrokeOuter} inset,
+              0 0 0 calc(((${focusStrokeWidth} * 2) - ${strokeWidth}) * 1px) ${focusStrokeInner} inset ;
+    }
+
     .interact .day {
         background: ${neutralFillRest};
+        color: ${neutralForegroundRest};
         cursor: pointer;
+    }
+
+    .interact .day:not(.disabled, .inactive):hover {
+        background: ${neutralFillHover};
+        color: ${neutralForegroundHover};
+        outline: none;
     }
 
     .day.inactive {
@@ -102,9 +137,10 @@ export const CalendarStyles = css`
         outline: var(--disabled-day-outline);
     }
 
-    .day.selected {
-        color: var(--selected-day-color);
+    .day.selected,
+    .day.selected:not(.disabled, .inactive):hover {
         background: var(--selected-day-background);
+        color: var(--selected-day-color);
         outline: var(--selected-day-outline);
     }
 
@@ -114,9 +150,11 @@ export const CalendarStyles = css`
     }
 
     .interact .today,
-    .today {
-        color: ${foregroundOnAccentActive};
-        background: ${accentForegroundActive};
+    .today,
+    .interact .today:not(.disabled, .inactive):hover {
+        background: ${accentFillRest};
+        color: ${foregroundOnAccentRest};
+        border-radius: calc(${controlCornerRadius} * 1px);
     }
 
     .today.inactive .date {
@@ -128,23 +166,64 @@ export const CalendarStyles = css`
     forcedColorsStylesheetBehavior(
         css`
             :host {
-                --selected-day-outline: 1px solid ${SystemColors.Highlight};
+                background: ${SystemColors.ButtonFace};
+                outline: 1px solid ${SystemColors.CanvasText};
             }
 
             .day,
+            .interact .day,
             .week-day {
                 background: ${SystemColors.Canvas};
                 color: ${SystemColors.CanvasText};
                 fill: currentcolor;
             }
 
-            .day.selected {
-                color: ${SystemColors.Highlight};
+            .interact .day:not(.disabled, .inactive):hover {
+                background: ${SystemColors.ButtonFace};
+                color: ${SystemColors.ButtonText};
+                outline: 1px solid ${SystemColors.Highlight};
             }
 
-            .today .date {
+            .week-day:${focusVisible},
+            .interact .day:not(.disabled, .inactive):${focusVisible} {
+                forced-color-adjust: none;
+                background: :${SystemColors.ButtonFace};
+                border-color: transparent;
+                box-shadow: 0 0 0 calc(${focusStrokeWidth} * 1px) ${SystemColors.Highlight} inset;
+                outline: none;
+            }
+
+            .day.disabled,
+            .day.inactive {
+                color: ${SystemColors.GrayText};
+                opacity:1;
+                outline: none;
+            }
+
+            .day.inactive:${focusVisible} {
+                outline: calc(${focusStrokeWidth} * 1px) solid ${SystemColors.GrayText};
+                box-shadow: none;
+            }
+
+            .day.selected,
+            .day.selected:not(.disabled, .inactive):hover {
+                color: ${SystemColors.Highlight};
+                outline: 1px solid ${SystemColors.Highlight}
+            }
+
+            .interact .today,
+            .today,
+            .today .date ,
+            .interact .today:not(.disabled, .inactive):hover {
+                forced-color-adjust: none;
                 background: ${SystemColors.Highlight};
                 color: ${SystemColors.HighlightText};
+                fill: currentcolor;
+            }
+
+            .interact .today:not(.disabled, .inactive):${focusVisible} {
+                box-shadow: 0 0 0 calc((${focusStrokeWidth} - ${strokeWidth}) * 1px) ${SystemColors.Highlight} inset,
+                    0 0 0 calc(((${focusStrokeWidth} * 2) - ${strokeWidth}) * 1px) ${SystemColors.HighlightText} inset ;
             }
         `
     )
