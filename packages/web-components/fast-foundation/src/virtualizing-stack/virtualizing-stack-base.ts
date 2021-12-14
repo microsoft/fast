@@ -69,8 +69,11 @@ export class VirtualizingStackBase extends FoundationElement {
      */
     @attr({ attribute: "virtualize" })
     public virtualize: boolean = true;
-    // private virtualizeChanged(): void {
-    // }
+    private virtualizeChanged(): void {
+        if (this.$fastController.isConnected) {
+            this.reset();
+        }
+    }
 
     /**
      * The HTML ID of the viewport element
@@ -330,6 +333,7 @@ export class VirtualizingStackBase extends FoundationElement {
         this.itemsPlaceholder = document.createComment("");
         this.appendChild(this.itemsPlaceholder);
         enableArrayObservation();
+        this.initializeRepeatBehavior();
         this.doReset();
     }
 
@@ -342,8 +346,8 @@ export class VirtualizingStackBase extends FoundationElement {
             this.stopViewportResizeDetector();
         }
         this.cancelPendingPositionUpdates();
-        this.stopResizeObserver();
         this.unobserveItems();
+        this.clearRepeatBehavior();
         this.disconnectResizeDetector();
         this.clearLayoutUpdateTimer();
     }
@@ -396,24 +400,23 @@ export class VirtualizingStackBase extends FoundationElement {
         this.pendingReset = false;
         this.cancelPendingPositionUpdates();
         this.observeItems();
-        this.initializeRepeatBehavior();
+        this.updateDimensions();
     }
 
     private initializeRepeatBehavior(): void {
-        if (this.itemsRepeatBehavior !== null) {
-            this.$fastController.removeBehaviors([this.itemsRepeatBehavior]);
-            this.itemsRepeatBehavior = null;
-        }
-
         this.itemsRepeatBehavior = new RepeatDirective(
             x => x.visibleItems,
             x => x.itemTemplate,
             { positioning: true }
         ).createBehavior(this.itemsPlaceholder);
         this.$fastController.addBehaviors([this.itemsRepeatBehavior!]);
+    }
 
-        this.startResizeObserver();
-        this.updateDimensions();
+    private clearRepeatBehavior(): void {
+        if (this.itemsRepeatBehavior !== null) {
+            this.$fastController.removeBehaviors([this.itemsRepeatBehavior]);
+            this.itemsRepeatBehavior = null;
+        }
     }
 
     /**
@@ -535,10 +538,10 @@ export class VirtualizingStackBase extends FoundationElement {
      * initializes the instance's resize observer
      */
     private initializeResizeDetector(): void {
-        this.disconnectResizeDetector();
         this.resizeDetector = new ((window as unknown) as WindowWithResizeObserver).ResizeObserver(
             this.requestPositionUpdates
         );
+        this.resizeDetector.observe(this);
     }
 
     /**
@@ -546,6 +549,7 @@ export class VirtualizingStackBase extends FoundationElement {
      */
     private disconnectResizeDetector(): void {
         if (this.resizeDetector !== null) {
+            this.resizeDetector.unobserve(this);
             this.resizeDetector.disconnect();
             this.resizeDetector = null;
         }
@@ -633,26 +637,6 @@ export class VirtualizingStackBase extends FoundationElement {
         }
 
         return this;
-    };
-
-    /**
-     * starts observers
-     */
-    private startResizeObserver = (): void => {
-        this.stopResizeObserver();
-
-        if (this.resizeDetector !== null) {
-            this.resizeDetector.observe(this);
-        }
-    };
-
-    /**
-     * stops observers
-     */
-    private stopResizeObserver = (): void => {
-        if (this.resizeDetector !== null) {
-            this.resizeDetector.disconnect();
-        }
     };
 
     /**
