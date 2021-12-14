@@ -39,7 +39,7 @@ import { FASTElement } from "@microsoft/fast-element";
 **A library that provides foundational building blocks that can be assembled to create new design systems and component libraries.**
 
 * Exports of this package can generally be thought of as un-styled base components that implement semantic and accessible markup and behavior.   
-* Use this library when you want to implement something like Google's Material Design or Twitter Bootstrap.
+* Use this library when you want to create something like Google's Material Design or Bootstrap.
 
 ```ts
 import {
