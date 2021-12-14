@@ -295,6 +295,8 @@ export class VirtualizingStackBase extends FoundationElement {
      */
     public containerElement: HTMLDivElement;
 
+    protected allowLayoutUpdateDelay: boolean = true;
+
     private static intersectionService: IntersectionService = new IntersectionService();
     private resizeDetector: ResizeObserverClassDefinition | null = null;
 
@@ -463,7 +465,7 @@ export class VirtualizingStackBase extends FoundationElement {
     };
 
     /**
-     *
+     * request reset
      */
     protected reset(): void {
         if (this.pendingReset) {
@@ -477,6 +479,9 @@ export class VirtualizingStackBase extends FoundationElement {
         });
     }
 
+    /**
+     * execute reset
+     */
     private doReset(): void {
         this.pendingReset = false;
         this.cancelPendingPositionUpdates();
@@ -820,7 +825,7 @@ export class VirtualizingStackBase extends FoundationElement {
             this.viewportRect = viewportEntry.boundingClientRect;
         }
 
-        if (this.layoutUpdateDelay > 0) {
+        if (this.layoutUpdateDelay > 0 && this.allowLayoutUpdateDelay) {
             this.startLayoutUpdateTimer();
             return;
         }
