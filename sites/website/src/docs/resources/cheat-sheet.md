@@ -98,7 +98,7 @@ import {
 
 provideFASTDesignSystem()
   .register(
-    fastButton() // custom element
+    fastButton() // custom element registration
   );
 ```
 
