@@ -664,38 +664,46 @@ export class DataGrid extends VirtualizingStackBase {
                 '[role="cell"], [role="gridcell"], [role="columnheader"]'
             );
 
-            const focusColumnIndex = Math.max(0, Math.min(cells.length - 1, columnIndex));
+            if (cells.length > 0) {
+                const focusColumnIndex = Math.max(
+                    0,
+                    Math.min(cells.length - 1, columnIndex)
+                );
 
-            const focusTarget: HTMLElement = cells[focusColumnIndex] as HTMLElement;
+                const focusTarget: HTMLElement = cells[focusColumnIndex] as HTMLElement;
 
-            if (forceScrollToTop) {
-                this.scrollTop = focusTarget.offsetTop;
+                if (forceScrollToTop) {
+                    this.scrollTop = focusTarget.offsetTop;
+                }
+
+                if (document.activeElement !== focusTarget) {
+                    focusTarget.focus();
+                }
+                return;
             }
-            // else if (
-            //     !this.isRowInView(focusRowElement)
-            // ) {
-            //     focusTarget.scrollIntoView({ block: "center", inline: "center" });
-            // }
+        }
 
-            if (document.activeElement !== focusTarget) {
-                focusTarget.focus();
-            }
-
+        const focusRowPosition: number = this.getGeneratedItemPosition(
+            rowIndex - this.authoredRowCount
+        );
+        console.debug(`Rowindex: ${rowIndex}`);
+        if (focusRowPosition === this.scrollTop && rowIndex === this.focusRowIndex) {
+            // waiting for cells to load
+            DOM.nextUpdate().then(() => this.updateFocus());
+            console.debug("wait for cells to load");
             return;
         }
 
         // the focus row is virtualized
         // scroll to it and queue a focus update
-        const focusRowPosition: number = this.getGeneratedItemPosition(
-            rowIndex - this.authoredRowCount
-        );
+
         this.scrollTop = focusRowPosition;
         this.setFocusOnItemsChanged = true;
         this.allowLayoutUpdateDelay = false;
         this.isUpdatingFocus = true;
         this.focusRowIndex = rowIndex;
         this.isUpdatingFocus = false;
-        console.debug(`queue virtual focus - focusrow: ${rowIndex}`);
+        console.debug("virtualized row");
     };
 
     private queueFocusUpdate(): void {

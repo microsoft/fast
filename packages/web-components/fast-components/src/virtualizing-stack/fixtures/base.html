@@ -36,11 +36,11 @@
 <div style="height: 120px; width: 100%; display: grid; justify-items: center;">
     <fast-virtualizing-stack
         orientation="horizontal"
-        grid-row="1"
         item-span="100"
         id="stackh2"
         viewport="viewporth2"
         style="
+            grid-row: 1;
             height: 120px;
             width: 100%;
             overflow-x: scroll;
@@ -50,8 +50,8 @@
     ></fast-virtualizing-stack>
     <div
         id="viewporth2"
-        grid-row="1"
         style="
+            grid-row: 1;
             pointer-events: none;
             position: absolute;
             height: 120px;
@@ -119,7 +119,7 @@
     <fast-virtualizing-stack
         item-span="100"
         id="stackv1"
-        style="grid-column: 1; width: 100px; background: gray; height: auto;"
+        style="grid-column: 1; width: 100px; background: gray;"
     ></fast-virtualizing-stack>
 
     <fast-virtualizing-stack
