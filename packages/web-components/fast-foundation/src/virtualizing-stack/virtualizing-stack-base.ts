@@ -311,6 +311,7 @@ export class VirtualizingStackBase extends FoundationElement {
     private itemsPlaceholder: Node;
 
     private itemsObserver: Notifier | null = null;
+    private itemCount: number = 0;
 
     private finalUpdate: boolean = false;
 
@@ -375,7 +376,11 @@ export class VirtualizingStackBase extends FoundationElement {
         }
     }
 
-    /** @internal */
+    /**
+     * The items list has mutated
+     *
+     * @internal
+     */
     public handleChange(source: any, splices: Splice[]): void {
         const firstRenderedIndex =
             this.firstRenderedIndex >= this.items.length
@@ -393,30 +398,11 @@ export class VirtualizingStackBase extends FoundationElement {
 
         this.visibleItems.splice(0, this.visibleItems.length, ...newVisibleItems);
 
-        this.requestPositionUpdates();
-    }
-
-    private doReset(): void {
-        this.pendingReset = false;
-        this.cancelPendingPositionUpdates();
-        this.observeItems();
-        this.updateDimensions();
-    }
-
-    private initializeRepeatBehavior(): void {
-        this.itemsRepeatBehavior = new RepeatDirective(
-            x => x.visibleItems,
-            x => x.itemTemplate,
-            { positioning: true }
-        ).createBehavior(this.itemsPlaceholder);
-        this.$fastController.addBehaviors([this.itemsRepeatBehavior!]);
-    }
-
-    private clearRepeatBehavior(): void {
-        if (this.itemsRepeatBehavior !== null) {
-            this.$fastController.removeBehaviors([this.itemsRepeatBehavior]);
-            this.itemsRepeatBehavior = null;
+        if (this.itemCount !== this.items.length) {
+            this.itemCount = this.items.length;
+            this.updateDimensions();
         }
+        this.requestPositionUpdates();
     }
 
     /**
@@ -489,6 +475,29 @@ export class VirtualizingStackBase extends FoundationElement {
         DOM.queueUpdate(() => {
             this.doReset();
         });
+    }
+
+    private doReset(): void {
+        this.pendingReset = false;
+        this.cancelPendingPositionUpdates();
+        this.observeItems();
+        this.updateDimensions();
+    }
+
+    private initializeRepeatBehavior(): void {
+        this.itemsRepeatBehavior = new RepeatDirective(
+            x => x.visibleItems,
+            x => x.itemTemplate,
+            { positioning: true }
+        ).createBehavior(this.itemsPlaceholder);
+        this.$fastController.addBehaviors([this.itemsRepeatBehavior!]);
+    }
+
+    private clearRepeatBehavior(): void {
+        if (this.itemsRepeatBehavior !== null) {
+            this.$fastController.removeBehaviors([this.itemsRepeatBehavior]);
+            this.itemsRepeatBehavior = null;
+        }
     }
 
     private cancelPendingPositionUpdates(): void {
