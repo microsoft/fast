@@ -55,9 +55,11 @@ export class VirtualizingStackBase extends FoundationElement {
      * @public
      */
     @observable
-    public items: object[];
+    public items: object[] = [];
     private itemsChanged(): void {
-        this.reset();
+        if (this.$fastController.isConnected) {
+            this.reset();
+        }
     }
 
     /**
@@ -328,27 +330,44 @@ export class VirtualizingStackBase extends FoundationElement {
         this.itemsPlaceholder = document.createComment("");
         this.appendChild(this.itemsPlaceholder);
         enableArrayObservation();
-        this.observeItems();
+        this.doReset();
     }
 
-    private observeItems(force: boolean = false): void {
+    /**
+     * @internal
+     */
+    public disconnectedCallback(): void {
+        super.disconnectedCallback();
+        if (this.autoUpdateMode === "auto") {
+            this.stopViewportResizeDetector();
+        }
+        this.cancelPendingPositionUpdates();
+        this.stopResizeObserver();
+        this.unobserveItems();
+        this.disconnectResizeDetector();
+        this.clearLayoutUpdateTimer();
+    }
+
+    private observeItems(): void {
         if (!this.items) {
             return;
+        }
+
+        if (this.itemsObserver !== null) {
+            this.unobserveItems();
         }
 
         // TODO:  we don't use splices calculated by array change events
         // look for cheaper observer implementation later
 
-        const oldObserver = this.itemsObserver;
         const newObserver = (this.itemsObserver = Observable.getNotifier(this.items));
-        const hasNewObserver = oldObserver !== newObserver;
+        newObserver.subscribe(this);
+    }
 
-        if (hasNewObserver && oldObserver !== null) {
-            oldObserver.unsubscribe(this);
-        }
-
-        if (hasNewObserver || force) {
-            newObserver.subscribe(this);
+    private unobserveItems(): void {
+        if (this.itemsObserver !== null) {
+            this.itemsObserver.unsubscribe(this);
+            this.itemsObserver = null;
         }
     }
 
@@ -373,11 +392,14 @@ export class VirtualizingStackBase extends FoundationElement {
         this.requestPositionUpdates();
     }
 
-    private initializeRepeatBehavior(): void {
+    private doReset(): void {
         this.pendingReset = false;
-
+        this.cancelPendingPositionUpdates();
         this.observeItems();
+        this.initializeRepeatBehavior();
+    }
 
+    private initializeRepeatBehavior(): void {
         if (this.itemsRepeatBehavior !== null) {
             this.$fastController.removeBehaviors([this.itemsRepeatBehavior]);
             this.itemsRepeatBehavior = null;
@@ -390,21 +412,8 @@ export class VirtualizingStackBase extends FoundationElement {
         ).createBehavior(this.itemsPlaceholder);
         this.$fastController.addBehaviors([this.itemsRepeatBehavior!]);
 
-        this.startObservers();
+        this.startResizeObserver();
         this.updateDimensions();
-    }
-
-    /**
-     * @internal
-     */
-    public disconnectedCallback(): void {
-        if (this.autoUpdateMode === "auto") {
-            this.stopViewportResizeDetector();
-        }
-        this.stopObservers();
-        this.disconnectResizeDetector();
-        super.disconnectedCallback();
-        this.clearLayoutUpdateTimer();
     }
 
     /**
@@ -475,8 +484,24 @@ export class VirtualizingStackBase extends FoundationElement {
         this.pendingReset = true;
 
         DOM.queueUpdate(() => {
-            this.initializeRepeatBehavior();
+            this.doReset();
         });
+    }
+
+    private cancelPendingPositionUpdates(): void {
+        if (this.pendingPositioningUpdate) {
+            this.pendingPositioningUpdate = false;
+            VirtualizingStackBase.intersectionService.cancelRequestPosition(
+                this.containerElement,
+                this.handleIntersection
+            );
+            if (this.viewportElement !== null) {
+                VirtualizingStackBase.intersectionService.cancelRequestPosition(
+                    this.viewportElement,
+                    this.handleIntersection
+                );
+            }
+        }
     }
 
     private resetAutoUpdateMode(
@@ -613,8 +638,8 @@ export class VirtualizingStackBase extends FoundationElement {
     /**
      * starts observers
      */
-    private startObservers = (): void => {
-        this.stopObservers();
+    private startResizeObserver = (): void => {
+        this.stopResizeObserver();
 
         if (this.resizeDetector !== null) {
             this.resizeDetector.observe(this);
@@ -624,20 +649,7 @@ export class VirtualizingStackBase extends FoundationElement {
     /**
      * stops observers
      */
-    private stopObservers = (): void => {
-        if (this.pendingPositioningUpdate) {
-            this.pendingPositioningUpdate = false;
-            VirtualizingStackBase.intersectionService.cancelRequestPosition(
-                this.containerElement,
-                this.handleIntersection
-            );
-            if (this.viewportElement !== null) {
-                VirtualizingStackBase.intersectionService.cancelRequestPosition(
-                    this.viewportElement,
-                    this.handleIntersection
-                );
-            }
-        }
+    private stopResizeObserver = (): void => {
         if (this.resizeDetector !== null) {
             this.resizeDetector.disconnect();
         }
