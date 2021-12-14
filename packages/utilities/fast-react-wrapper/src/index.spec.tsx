@@ -3,7 +3,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { uniqueElementName } from '@microsoft/fast-foundation/dist/esm/test-utilities/fixture';
 import { expect } from "chai";
-import { DesignSystem, FoundationElement } from "@microsoft/fast-foundation";
+import { DesignSystem, FoundationElement, FoundationElementDefinition } from "@microsoft/fast-foundation";
 import { provideReactWrapper } from './index';
 
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
@@ -114,9 +114,14 @@ class ComposedTestElement extends FoundationElement {
   @attr({ converter: nullableNumberConverter }) rnum = -1;
 }
 
-const composedTestElement = ComposedTestElement.compose({
+interface ComposedTestOptions extends FoundationElementDefinition {
+  defaultContent: string;
+}
+
+const composedTestElement = ComposedTestElement.compose<ComposedTestOptions>({
   baseName: composedElementName,
-  template: html`<slot></slot>`
+  template: (context, def) => html`<slot>${def.defaultContent!}</slot>`,
+  defaultContent: 'Hello'
 });
 
 const scenarios = [
