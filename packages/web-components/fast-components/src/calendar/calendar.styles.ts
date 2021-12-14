@@ -8,9 +8,7 @@ import { SystemColors } from "@microsoft/fast-web-utilities";
 import { focusVisible } from "@microsoft/fast-foundation";
 import { heightNumber } from "../styles/index";
 import {
-    accentFillHover,
     accentFillRest,
-    accentForegroundActive,
     accentForegroundRest,
     bodyFont,
     controlCornerRadius,
@@ -20,7 +18,6 @@ import {
     focusStrokeInner,
     focusStrokeOuter,
     focusStrokeWidth,
-    foregroundOnAccentHover,
     foregroundOnAccentRest,
     neutralFillHover,
     neutralFillRest,
@@ -49,6 +46,7 @@ export const CalendarStyles = css`
         --disabled-day-opacity: ${disabledOpacity};
         --disabled-day-outline: 1px solid  ${neutralForegroundHint};
         --inactive-day-outline: 1px solid transparent;
+        --inactive-day-color: ${neutralForegroundHint};
         border-radius: calc(${controlCornerRadius} * 1px);
         font-family: ${bodyFont};
         font-size: ${typeRampBaseFontSize};
