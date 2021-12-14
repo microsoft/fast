@@ -159,4 +159,23 @@ describe("Listbox", () => {
             await disconnect();
         });
     });
+
+    it("should set the `aria-setsize` and `aria-posinset` properties on slotted options", async () => {
+        const { connect, disconnect, option1, option2, option3 } = await setup();
+
+        await connect();
+
+        await DOM.nextUpdate();
+
+        expect(option1.getAttribute("aria-posinset")).to.equal("1");
+        expect(option1.getAttribute("aria-setsize")).to.equal("3");
+
+        expect(option2.getAttribute("aria-posinset")).to.equal("2");
+        expect(option2.getAttribute("aria-setsize")).to.equal("3");
+
+        expect(option3.getAttribute("aria-posinset")).to.equal("3");
+        expect(option3.getAttribute("aria-setsize")).to.equal("3");
+
+        await disconnect();
+    });
 });

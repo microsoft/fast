@@ -814,6 +814,20 @@ export interface DelegatesARIAListbox extends ARIAGlobalStatesAndProperties {
 }
 
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
+// Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "DelegatesARIAListboxOption" because one of its declarations is marked as @internal
+//
+// @public
+export class DelegatesARIAListboxOption {
+    ariaPosInSet: string;
+    ariaSelected: "true" | "false" | undefined;
+    ariaSetSize: string;
+}
+
+// @internal (undocumented)
+export interface DelegatesARIAListboxOption extends ARIAGlobalStatesAndProperties {
+}
+
+// Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
 // Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "DelegatesARIASearch" because one of its declarations is marked as @internal
 //
 // @public
@@ -1432,14 +1446,14 @@ export class ListboxOption extends FoundationElement {
     }
 
 // @internal (undocumented)
-export interface ListboxOption extends StartEnd {
+export interface ListboxOption extends StartEnd, DelegatesARIAListboxOption {
 }
 
 // @public
 export type ListboxOptionOptions = FoundationElementDefinition & StartEndOptions;
 
 // @public
-export const listboxOptionTemplate: (context: ElementDefinitionContext, definition: ListboxOptionOptions) => ViewTemplate<ListboxOption>;
+export const listboxOptionTemplate: FoundationElementTemplate<ViewTemplate<ListboxOption>, ListboxOptionOptions>;
 
 // @public
 export const listboxTemplate: FoundationElementTemplate<ViewTemplate<ListboxElement>>;

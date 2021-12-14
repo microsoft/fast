@@ -445,18 +445,23 @@ export abstract class Listbox extends FoundationElement {
      * @internal
      */
     public slottedOptionsChanged(prev: Element[] | unknown, next: Element[]) {
+        this.options = next.reduce<ListboxOption[]>((options, item) => {
+            if (isListboxOption(item)) {
+                options.push(item);
+            }
+            return options;
+        }, []);
+
+        const setSize = `${this.options.length}`;
+        this.options.forEach((option, index) => {
+            if (!option.id) {
+                option.id = uniqueId("option-");
+            }
+            option.ariaPosInSet = `${index + 1}`;
+            option.ariaSetSize = setSize;
+        });
+
         if (this.$fastController.isConnected) {
-            this.options = next.reduce((options, item) => {
-                if (isListboxOption(item)) {
-                    options.push(item);
-                }
-                return options;
-            }, [] as ListboxOption[]);
-
-            this.options.forEach(o => {
-                o.id = o.id || uniqueId("option-");
-            });
-
             this.setSelectedOptions();
             this.setDefaultSelectedOption();
         }
