@@ -416,13 +416,30 @@ Properties available on the context object within a `repeat` block:
 | event | The event object when inside an event handler. |
 | parent | The parent view-model when inside a repeat block. |
 | parentContext | The parent ExecutionContext when inside a repeat block. This is useful when repeats are nested and the inner-most repeat needs access to the root view-model. |
-| index | The index of the current item when inside a repeat block (opt-in). |
-| length | The length of the array when inside a repeat block (opt-in). |
-| isEven | True if the index of the current item is even when inside a repeat block (opt-in). |
-| isOdd | True if the index of the current item is odd when inside a repeat block (opt-in). |
-isFirst | True if the current item is first in the array inside a repeat block (opt-in). |
-isInMiddle | True if the current item is somewhere in the middle of the array inside a repeat block (opt-in). |
-isLast | True if the current item is last in the array inside a repeat block (opt-in). |
+
+`Opt-in` properties that are not available by default:
+
+| Opt-in Properties  | Definition |
+| :-- | :-- |
+| index | The index of the current item when inside a repeat block. |
+| length | The length of the array when inside a repeat block. |
+| isEven | True if the index of the current item is even when inside a repeat block. |
+| isOdd | True if the index of the current item is odd when inside a repeat block. |
+isFirst | True if the current item is first in the array inside a repeat block. |
+isInMiddle | True if the current item is somewhere in the middle of the array inside a repeat block. |
+isLast | True if the current item is last in the array inside a repeat block. |
+
+ To opt into the positioning properties, pass options to the `repeat` directive, with the setting `positioning: true`.
+
+Rendering a list with Item Index:
+
+```ts
+<ul>
+  ${repeat(x => x.friends, html<string>`
+    <li>${(x, c) => c.index} ${x => x}</li>
+  `, { positioning: true })}
+</ul>
+```
 
 ---
 
