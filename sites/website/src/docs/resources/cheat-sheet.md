@@ -130,24 +130,11 @@ import {
 
 provideFluentDesignSystem()
   .register(
-    fluentButton() // custom element
+    fluentButton() // custom element registration
   );
 ```
 
----
-
-If you are attempting to configure the components for integration into a specific Microsoft product, the following table provides `AccentBaseColor` values you can use:
-
-| Product     | AccentBaseColor | 
-| :---        | :---            | 
-| Office      | #D83B01         | 
-| Word        | #185ABD         | 
-| Excel       | #107C41         | 
-| PowerPoint  | #C43E1C         | 
-| Teams       | #6264A7         | 
-| OneNote     | #7719AA         | 
-| SharePoint  | #03787C         | 
-| Stream      | #BC1948         | 
+Learn more about [Fluent UI Web](https://github.com/microsoft/fluentui).
 
 ---
 
