@@ -780,11 +780,12 @@ export interface DelegatesARIAButton extends ARIAGlobalStatesAndProperties {
 //
 // @public
 export class DelegatesARIACombobox {
-    ariaAutocomplete: "inline" | "list" | "both" | "none" | undefined;
+    ariaAutoComplete: "inline" | "list" | "both" | "none" | undefined;
+    ariaControls: string;
 }
 
 // @internal
-export interface DelegatesARIACombobox extends ARIAGlobalStatesAndProperties {
+export interface DelegatesARIACombobox extends DelegatesARIAListbox {
 }
 
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
