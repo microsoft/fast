@@ -362,16 +362,18 @@ export class Person {
 
 ### [Bindings](https://www.fast.design/docs/fast-element/declaring-templates#understanding-bindings)
 
-| Binding Type | Example | Notes |
+(`x` refers to the custom-element class instance in the examples below.)
+
+| Binding Type | Example  | Notes |
 | :--- | :--- | :--- |
-| Content | `<a>${…}</a>` | Creates a binding to interpolate text or child templates into element content. |
-| HTML Attribute | `<a href=${…}></a>` | Creates a binding that uses the setAttribute API. Attribute bindings also support interpolation with text and other bindings. |
-| HTML Boolean Attribute | `<input ?disabled=${…}>` | Creates a binding that adds or removes the attribute based on truthy/falsey values. |
-| JS Property | `<input :value=${…}>` | Creates a binding that sets a JavaScript property on the element. |
-| Event Handler | `<button @click=${…}>...</button>` | Registers an event handler using addEventListener. The listener is automatically removed when the template is unbound. |
-| HTML Element Reference | `<button ${ref("myButton")}>...</button>` | Captures a reference to the element and assigns it to the named property on the data source. |
-| Slotted Node Capture | `<slot ${slotted("defaultSlotNodes")}></slot>` | Watches the slot for changes and synchronizes those to an array, assigned to the named property on the data source. |
-| Child Node Capture | `<div ${children("divChildren")}></div>` | Watches the element's children or changes and synchronizes those to an array, assigned to the named property on the data source. |
+| Content | `<p>${x => x.greeting} friend!</p>` | Creates a binding to interpolate text or child templates into element content. |
+| HTML Attribute | `<a href=${x => x.aboutLink}></a>` | Creates a binding that uses the setAttribute API. Attribute bindings also support interpolation with text and other bindings. |
+| HTML Boolean Attribute | `<input ?disabled=${x => x.isDisabled}>` | Creates a binding that adds or removes the attribute based on truthy/falsey values. |
+| JS Property | `<input :value=${x => x.name}>` | Creates a binding that sets a JavaScript property on the element. |
+| Event Handler | `<button @click=${x => x.handleClick()}>Button</button>` | Registers an event handler using addEventListener. The listener is automatically removed when the template is unbound. <br /><br />After your event handler is executed, preventDefault() will be called on the event object by default. You can return true from your handler to opt-out of this behavior.|
+| HTML Element Reference | `<button ${ref("myButton")}>Button</button>` | Captures a reference to the element and assigns it to the named property on the element instance. |
+| Slotted Node Capture | `<slot ${slotted("defaultSlotNodes")}></slot>` | Watches the slot for changes and synchronizes those to an array, assigned to the named property on the element instance. |
+| Child Node Capture | `<div ${children("divChildren")}></div>` | Watches the element's children or changes and synchronizes those to an array, assigned to the named property on the element instance. |
 
 ---
 
