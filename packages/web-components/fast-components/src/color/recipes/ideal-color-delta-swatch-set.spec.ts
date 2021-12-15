@@ -3,15 +3,16 @@ import { parseColorHexRGB } from "@microsoft/fast-colors";
 import { PaletteRGB } from "../palette";
 import { SwatchRGB } from "../swatch";
 import { accentBase, black, middleGrey, white } from "../utilities/color-constants";
-import { accentForeground } from "./accent-foreground";
+import { idealColorDeltaSwatchSet } from "./ideal-color-delta-swatch-set";
 
-describe("accentForeground", (): void => {
-    const neutralPalette = PaletteRGB.create(middleGrey)
-    const accentPalette = PaletteRGB.create(accentBase);
+describe("idealColorDeltaSwatchSet", (): void => {
+    const neutralPalette = PaletteRGB.from(middleGrey)
+    const accentPalette = PaletteRGB.from(accentBase);
 
     it("should increase contrast on hover state and decrease contrast on active state in either mode", (): void => {
-        const lightModeColors = accentForeground(
+        const lightModeColors = idealColorDeltaSwatchSet(
             accentPalette,
+            accentPalette.source,
             white,
             4.5,
             0,
@@ -19,8 +20,9 @@ describe("accentForeground", (): void => {
             -4,
             0
         );
-        const darkModeColors = accentForeground(
+        const darkModeColors = idealColorDeltaSwatchSet(
             accentPalette,
+            accentPalette.source,
             black,
             4.5,
             0,
@@ -56,8 +58,9 @@ describe("accentForeground", (): void => {
                 const accentPalette = PaletteRGB.create(accent);
 
                 neutralPalette.swatches.forEach((swatch): void => {
-                    const smallColors = accentForeground(
+                    const smallColors = idealColorDeltaSwatchSet(
                         accentPalette,
+                        accentPalette.source,
                         swatch,
                         4.5,
                         0,
@@ -65,8 +68,9 @@ describe("accentForeground", (): void => {
                         -4,
                         0
                     );
-                    const largeColors = accentForeground(
+                    const largeColors = idealColorDeltaSwatchSet(
                         accentPalette,
+                        accentPalette.source,
                         swatch,
                         3,
                         0,

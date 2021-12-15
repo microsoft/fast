@@ -5,15 +5,11 @@ import {
     Calendar as FoundationCalendar,
 } from "@microsoft/fast-foundation";
 import { Swatch } from "../color/swatch";
-import {
-    fillColor,
-    neutralFillLayerRecipe,
-    neutralFillLayerRest,
-} from "../design-tokens";
+import { fillColor, neutralFillLayerRecipe } from "../design-tokens";
 import { CalendarStyles as styles } from "./calendar.styles";
 
 /**
- * The FAST listbox class
+ * The FAST Calendar class
  * @public
  */
 export class Calendar extends FoundationCalendar {
@@ -31,7 +27,7 @@ export class Calendar extends FoundationCalendar {
                 (target: HTMLElement): Swatch =>
                     neutralFillLayerRecipe
                         .getValueFor(target)
-                        .evaluate(target, fillColor.getValueFor(parent))
+                        .evaluate(target, fillColor.getValueFor(parent)).rest
             );
         }
     }

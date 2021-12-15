@@ -1,27 +1,14 @@
 import { Palette } from "../palette";
 import { Swatch } from "../swatch";
-import { neutralLayer2Index } from "./neutral-layer-2";
+import { neutralLayer1Index } from "./neutral-layer-1";
 
 /**
  * @internal
  */
 export function neutralLayer4(
     palette: Palette,
-    luminance: number,
-    layerDelta: number,
-    fillRestDelta: number,
-    fillHoverDelta: number,
-    fillActiveDelta: number
+    baseLayerLuminance: number,
+    layerDelta: number
 ): Swatch {
-    return palette.get(
-        neutralLayer2Index(
-            palette,
-            luminance,
-            layerDelta,
-            fillRestDelta,
-            fillHoverDelta,
-            fillActiveDelta
-        ) +
-            layerDelta * 2
-    );
+    return palette.get(neutralLayer1Index(palette, baseLayerLuminance) + layerDelta * 3);
 }
