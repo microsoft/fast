@@ -99,11 +99,14 @@ export const CalendarStyles = css`
 
     .day:${focusVisible},
     .week-day:${focusVisible} {
+        border-color: transparent;
+        border-radius: calc(${controlCornerRadius} * 1px);
         box-shadow: 0 0 0 calc(${focusStrokeWidth} * 1px) ${focusStrokeOuter} inset;
         outline: none;
     }
 
     .today:not(.disabled, .inactive):${focusVisible} {
+        border-color: ${focusStrokeOuter};
         box-shadow: 0 0 0 calc((${focusStrokeWidth} - ${strokeWidth}) * 1px) ${focusStrokeOuter} inset,
               0 0 0 calc(((${focusStrokeWidth} * 2) - ${strokeWidth}) * 1px) ${focusStrokeInner} inset ;
     }
@@ -164,6 +167,7 @@ export const CalendarStyles = css`
     forcedColorsStylesheetBehavior(
         css`
             :host {
+                forced-color-adjust: auto;
                 background: ${SystemColors.ButtonFace};
                 outline: 1px solid ${SystemColors.CanvasText};
             }
