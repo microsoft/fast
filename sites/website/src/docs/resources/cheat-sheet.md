@@ -171,7 +171,6 @@ Not seeing an integration for your preferred technology?  Open an issue on [GitH
 ---
 
 ## [Building Components](https://www.fast.design/docs/fast-element/getting-started)
-
 ### Setup
 
 
@@ -273,7 +272,7 @@ export class MyCounter extends FASTElement {
 
 ### [Templates](https://www.fast.design/docs/fast-element/declaring-templates)
 
-To create an HTML template for an element, import and use the html tagged template helper and pass the template to the `@customElement` decorator.
+To create an HTML template for an element, import and use the `html` tagged template helper and pass the template to the `@customElement` decorator.
 
 **Example:**
 
