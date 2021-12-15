@@ -171,6 +171,11 @@ Not seeing an integration for your preferred technology?  Open an issue on [GitH
 ---
 
 ## [Building Components](https://www.fast.design/docs/fast-element/getting-started)
+
+There are two main approaches to building a component:
+- The first approach is for simple declarations of non-shared components.
+- The second approach is for components designed to be published in [shareable libraries](#design-system).
+
 ### Setup
 
 
