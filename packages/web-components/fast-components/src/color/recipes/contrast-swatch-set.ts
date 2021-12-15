@@ -6,46 +6,34 @@ import { directionByIsDark } from "../utilities/direction-by-is-dark";
 /**
  * @internal
  */
-export function accentForeground(
+export function contrastSwatchSet(
     palette: Palette,
     reference: Swatch,
-    contrastTarget: number,
+    baseContrast: number,
     restDelta: number,
     hoverDelta: number,
     activeDelta: number,
     focusDelta: number
 ): InteractiveSwatchSet {
-    const accent = palette.source;
-    const accentIndex = palette.closestIndexOf(accent);
     const direction = directionByIsDark(reference);
-    const startIndex =
-        accentIndex +
-        (direction === 1
-            ? Math.min(restDelta, hoverDelta)
-            : Math.max(direction * restDelta, direction * hoverDelta));
-    const accessibleSwatch = palette.colorContrast(
-        reference,
-        contrastTarget,
-        startIndex,
-        direction
+    const accessibleIndex = palette.closestIndexOf(
+        palette.colorContrast(reference, baseContrast)
     );
-    const accessibleIndex1 = palette.closestIndexOf(accessibleSwatch);
     const accessibleIndex2 =
-        accessibleIndex1 + direction * Math.abs(restDelta - hoverDelta);
-    const indexOneIsRestState =
+        accessibleIndex + direction * Math.abs(restDelta - hoverDelta);
+    const indexOneIsRest =
         direction === 1
             ? restDelta < hoverDelta
             : direction * restDelta > direction * hoverDelta;
-
     let restIndex: number;
     let hoverIndex: number;
 
-    if (indexOneIsRestState) {
-        restIndex = accessibleIndex1;
+    if (indexOneIsRest) {
+        restIndex = accessibleIndex;
         hoverIndex = accessibleIndex2;
     } else {
         restIndex = accessibleIndex2;
-        hoverIndex = accessibleIndex1;
+        hoverIndex = accessibleIndex;
     }
 
     return {

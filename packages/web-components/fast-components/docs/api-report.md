@@ -847,7 +847,22 @@ export const neutralFillInputRest: import("@microsoft/fast-foundation").CSSDesig
 export const neutralFillInputRestDelta: import("@microsoft/fast-foundation").CSSDesignToken<number>;
 
 // @public (undocumented)
-export const neutralFillLayerRecipe: DesignToken<ColorRecipe>;
+export const neutralFillLayerActive: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
+
+// @public (undocumented)
+export const neutralFillLayerActiveDelta: import("@microsoft/fast-foundation").CSSDesignToken<number>;
+
+// @public (undocumented)
+export const neutralFillLayerFocus: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
+
+// @public (undocumented)
+export const neutralFillLayerHover: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
+
+// @public (undocumented)
+export const neutralFillLayerHoverDelta: import("@microsoft/fast-foundation").CSSDesignToken<number>;
+
+// @public (undocumented)
+export const neutralFillLayerRecipe: DesignToken<InteractiveColorRecipe>;
 
 // @public (undocumented)
 export const neutralFillLayerRest: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;

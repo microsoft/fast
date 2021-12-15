@@ -1,45 +1,14 @@
 import { Palette } from "../palette";
 import { Swatch } from "../swatch";
-import { baseLayerLuminanceSwatch } from "../utilities/base-layer-luminance";
-
-/**
- * @internal
- */
-export function neutralLayer2Index(
-    palette: Palette,
-    luminance: number,
-    layerDelta: number,
-    fillRestDelta: number,
-    fillHoverDelta: number,
-    fillActiveDelta: number
-): number {
-    return Math.max(
-        palette.closestIndexOf(baseLayerLuminanceSwatch(luminance)) + layerDelta,
-        fillRestDelta,
-        fillHoverDelta,
-        fillActiveDelta
-    );
-}
+import { neutralLayer1Index } from "./neutral-layer-1";
 
 /**
  * @internal
  */
 export function neutralLayer2(
     palette: Palette,
-    luminance: number,
-    layerDelta: number,
-    fillRestDelta: number,
-    fillHoverDelta: number,
-    fillActiveDelta: number
+    baseLayerLuminance: number,
+    layerDelta: number
 ): Swatch {
-    return palette.get(
-        neutralLayer2Index(
-            palette,
-            luminance,
-            layerDelta,
-            fillRestDelta,
-            fillHoverDelta,
-            fillActiveDelta
-        )
-    );
+    return palette.get(neutralLayer1Index(palette, baseLayerLuminance) + layerDelta);
 }
