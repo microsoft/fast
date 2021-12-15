@@ -105,9 +105,12 @@ export const searchStyles: FoundationElementTemplate<ElementStyles, TextFieldOpt
 
     .clear-button {
         margin: 1px;
+<<<<<<< HEAD
         position: absolute;
         top: 1px;
         margin: 1px 1px 1px 0;
+=======
+>>>>>>> set amrgin to 1 all around
         height: calc(100% - 2px);
         opacity: 0;
         background: transparent;
