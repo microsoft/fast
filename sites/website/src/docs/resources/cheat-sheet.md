@@ -107,42 +107,7 @@ provideFASTDesignSystem()
 ```
 
 ---
-### [@fluentui/web-components](https://docs.microsoft.com/en-us/fluent-ui/web-components/)
 
-**A component library that implements Microsoft's [Fluent Design System](https://www.microsoft.com/design/fluent/#/).**
-
-* Assembles the building blocks of `@microsoft/fast-foundation` to create its component set. 
-* Use this library when you want components to look and feel like those found in Microsoft products.
-
-To install the components, use either `npm` or `yarn`:
-
-```shell
-npm install --save @fluentui/web-components
-``` 
-
-```shell
-yarn add @fluentui/web-components
-```
-
-To use a Web Component as a custom element in HTML, the custom element must be registered.
-
-**Example:**
-
-```ts
-import { 
-  fluentButton, 
-  provideFluentDesignSystem 
-} from "@fluentui/web-components";
-
-provideFluentDesignSystem()
-  .register(
-    fluentButton() // custom element registration
-  );
-```
-
-Learn more about [Fluent UI Web](https://github.com/microsoft/fluentui).
-
----
 
 ## [Using Components](https://www.fast.design/docs/components/getting-started)
 
@@ -560,15 +525,15 @@ The `createBehavior()` method can be used to create a `Behavior` that is bound t
 
 ```ts
 class RandomWidth extends CSSDirective {
-  private property = "--random-width";
+  private property = "20px";
   createCSS() {
-    return `width: var(${this.property});`
+    return `width: ${this.property};`
   }
 
   createBehavior() {
     return {
       bind(el) {
-        el.style.setProperty(this.property, Math.random() * 100)
+        el.style.setProperty(this.property, Math.floor(Math.random() * 100) + "px")
       }
       unbind(el) {
         el.style.removeProperty(this.property);
