@@ -330,6 +330,50 @@
     #year fast-calendar::part(title) {
         color: #fff;
     }
+
+    @media (forced-colors: active) {
+        .borders::part(week-day),
+        .borders::part(day),
+        .borders2::part(date),
+        .borders3::part(week-day),
+        .light-borders::part(week-day),
+        #click::part(day):hover,
+        #click::part(today):hover {
+            background: buttonface;
+        }
+
+        .borders2::part(week-day),
+        .borders4::part(week-day) {
+            color: buttontext;
+        }
+
+        .borders2::part(date):hover {
+            background: buttonface;
+            color: buttontext;
+            outline: none;
+        }
+
+        .borders::part(today),
+        .borders2::part(today),
+        .borders2::part(today):hover,
+        .borders3::part(today),
+        .borders3::part(day):hover,
+        .borders3::part(today):hover {
+            background: highlight;
+            color: highlighttext;
+        }
+
+        .borders4::part(day):hover::before,
+        .borders4::part(today):hover::before,
+        .borders4::part(week):hover::before {
+            background: buttontext;
+        }
+
+        .borders4::part(day):hover::after,
+        .borders4::part(today):hover::after {
+            border-color: buttontext;
+        }
+    }
 </style>
 <h1>Calendar</h1>
 
