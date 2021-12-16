@@ -14,7 +14,7 @@ import { flipperStyles as styles } from "./flipper.styles";
  * @remarks
  * Generates HTML Element: `<fast-flipper>`
  */
-export const fastFlipper = Flipper.compose<FlipperOptions>({
+export const fastFlipper = Flipper.compose<FlipperOptions, typeof Flipper>({
     baseName: "flipper",
     template,
     styles,

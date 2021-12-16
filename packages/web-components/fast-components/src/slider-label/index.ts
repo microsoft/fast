@@ -1,4 +1,5 @@
 import {
+    FoundationElementDefinition,
     SliderLabel as FoundationSliderLabel,
     sliderLabelTemplate as template,
 } from "@microsoft/fast-foundation";
@@ -34,7 +35,10 @@ export class SliderLabel extends FoundationSliderLabel {
  * Generates HTML Element: `<fast-slider-label>`
  */
 
-export const fastSliderLabel = SliderLabel.compose({
+export const fastSliderLabel = SliderLabel.compose<
+    FoundationElementDefinition,
+    typeof SliderLabel
+>({
     baseName: "slider-label",
     baseClass: FoundationSliderLabel,
     template,

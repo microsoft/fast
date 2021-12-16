@@ -14,7 +14,7 @@ import { radioStyles as styles } from "./radio.styles";
  * @remarks
  * Generates HTML Element: `<fast-radio>`
  */
-export const fastRadio = Radio.compose<RadioOptions>({
+export const fastRadio = Radio.compose<RadioOptions, typeof Radio>({
     baseName: "radio",
     template,
     styles,

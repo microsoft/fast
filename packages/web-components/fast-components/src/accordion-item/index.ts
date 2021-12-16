@@ -14,7 +14,10 @@ import { accordionItemStyles as styles } from "./accordion-item.styles";
  * @remarks
  * Generates HTML Element: `<fast-accordion-item>`
  */
-export const fastAccordionItem = AccordionItem.compose<AccordionItemOptions>({
+export const fastAccordionItem = AccordionItem.compose<
+    AccordionItemOptions,
+    typeof AccordionItem
+>({
     baseName: "accordion-item",
     template,
     styles,

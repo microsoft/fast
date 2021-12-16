@@ -14,7 +14,7 @@ import { progressStyles as styles } from "./progress.styles";
  * @remarks
  * Generates HTML Element: `<fast-progress>`
  */
-export const fastProgress = Progress.compose<ProgressOptions>({
+export const fastProgress = Progress.compose<ProgressOptions, typeof Progress>({
     baseName: "progress",
     template,
     styles,

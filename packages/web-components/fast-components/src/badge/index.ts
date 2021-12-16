@@ -1,4 +1,8 @@
-import { Badge, badgeTemplate as template } from "@microsoft/fast-foundation";
+import {
+    Badge,
+    FoundationElementDefinition,
+    badgeTemplate as template,
+} from "@microsoft/fast-foundation";
 import { badgeStyles as styles } from "./badge.styles";
 
 /**
@@ -10,7 +14,7 @@ import { badgeStyles as styles } from "./badge.styles";
  * @remarks
  * Generates HTML Element: `<fast-badge>`
  */
-export const fastBadge = Badge.compose({
+export const fastBadge = Badge.compose<FoundationElementDefinition, typeof Badge>({
     baseName: "badge",
     template,
     styles,

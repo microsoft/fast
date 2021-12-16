@@ -1,4 +1,8 @@
-import { Breadcrumb, breadcrumbTemplate as template } from "@microsoft/fast-foundation";
+import {
+    Breadcrumb,
+    FoundationElementDefinition,
+    breadcrumbTemplate as template,
+} from "@microsoft/fast-foundation";
 import { breadcrumbStyles as styles } from "./breadcrumb.styles";
 
 /**
@@ -10,7 +14,10 @@ import { breadcrumbStyles as styles } from "./breadcrumb.styles";
  * @remarks
  * Generates HTML Element: `<fast-breadcrumb>`
  */
-export const fastBreadcrumb = Breadcrumb.compose({
+export const fastBreadcrumb = Breadcrumb.compose<
+    FoundationElementDefinition,
+    typeof Breadcrumb
+>({
     baseName: "breadcrumb",
     template,
     styles,

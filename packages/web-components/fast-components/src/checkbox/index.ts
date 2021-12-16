@@ -14,7 +14,7 @@ import { checkboxStyles as styles } from "./checkbox.styles";
  * @remarks
  * Generates HTML Element: `<fast-checkbox>`
  */
-export const fastCheckbox = Checkbox.compose<CheckboxOptions>({
+export const fastCheckbox = Checkbox.compose<CheckboxOptions, typeof Checkbox>({
     baseName: "checkbox",
     template,
     styles,

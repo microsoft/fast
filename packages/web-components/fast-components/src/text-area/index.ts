@@ -1,5 +1,6 @@
 import { attr } from "@microsoft/fast-element";
 import {
+    FoundationElementDefinition,
     TextArea as FoundationTextArea,
     textAreaTemplate as template,
 } from "@microsoft/fast-foundation";
@@ -48,7 +49,10 @@ export class TextArea extends FoundationTextArea {
  *
  * {@link https://developer.mozilla.org/en-US/docs/Web/API/ShadowRoot/delegatesFocus | delegatesFocus}
  */
-export const fastTextArea = TextArea.compose({
+export const fastTextArea = TextArea.compose<
+    FoundationElementDefinition,
+    typeof TextArea
+>({
     baseName: "text-area",
     baseClass: FoundationTextArea,
     template,

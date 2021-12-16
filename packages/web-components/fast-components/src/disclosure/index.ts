@@ -1,6 +1,7 @@
 import { attr } from "@microsoft/fast-element";
 import {
     Disclosure as FoundationDisclosure,
+    FoundationElementDefinition,
     disclosureTemplate as template,
 } from "@microsoft/fast-foundation";
 import { disclosureStyles as styles } from "./disclosure.styles";
@@ -87,7 +88,10 @@ export class Disclosure extends FoundationDisclosure {
  * Generates HTML Element: `<fast-Disclosure>`
  *
  */
-export const fastDisclosure = Disclosure.compose({
+export const fastDisclosure = Disclosure.compose<
+    FoundationElementDefinition,
+    typeof Disclosure
+>({
     baseName: "disclosure",
     baseClass: FoundationDisclosure,
     template,

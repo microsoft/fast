@@ -1,5 +1,6 @@
 import { css, ElementStyles } from "@microsoft/fast-element";
 import {
+    FoundationElementDefinition,
     ListboxElement as FoundationListboxElement,
     listboxTemplate as template,
 } from "@microsoft/fast-foundation";
@@ -55,7 +56,7 @@ export class Listbox extends FoundationListboxElement {
  * @public
  *
  */
-export const fastListbox = Listbox.compose({
+export const fastListbox = Listbox.compose<FoundationElementDefinition, typeof Listbox>({
     baseName: "listbox",
     template,
     styles,

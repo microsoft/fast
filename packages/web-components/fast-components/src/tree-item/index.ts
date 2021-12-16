@@ -15,7 +15,7 @@ import { treeItemStyles as styles } from "./tree-item.styles";
  * Generates HTML Element: `<fast-tree-item>`
  *
  */
-export const fastTreeItem = TreeItem.compose<TreeItemOptions>({
+export const fastTreeItem = TreeItem.compose<TreeItemOptions, typeof TreeItem>({
     baseName: "tree-item",
     template,
     styles,

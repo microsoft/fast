@@ -1,6 +1,7 @@
 import { attr } from "@microsoft/fast-element";
 import {
     Anchor as FoundationAnchor,
+    FoundationElementDefinition,
     anchorTemplate as template,
 } from "@microsoft/fast-foundation";
 import { ButtonAppearance } from "../button";
@@ -73,7 +74,7 @@ export class Anchor extends FoundationAnchor {
  *
  * {@link https://developer.mozilla.org/en-US/docs/Web/API/ShadowRoot/delegatesFocus | delegatesFocus}
  */
-export const fastAnchor = Anchor.compose({
+export const fastAnchor = Anchor.compose<FoundationElementDefinition, typeof Anchor>({
     baseName: "anchor",
     baseClass: FoundationAnchor,
     template,

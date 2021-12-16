@@ -49,7 +49,10 @@ export class NumberField extends FoundationNumberField {
  *
  * {@link https://developer.mozilla.org/en-US/docs/Web/API/ShadowRoot/delegatesFocus | delegatesFocus}
  */
-export const fastNumberField = NumberField.compose<NumberFieldOptions>({
+export const fastNumberField = NumberField.compose<
+    NumberFieldOptions,
+    typeof NumberField
+>({
     baseName: "number-field",
     baseClass: FoundationNumberField,
     styles,

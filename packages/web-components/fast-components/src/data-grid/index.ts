@@ -5,6 +5,8 @@ import {
     DataGridRow,
     dataGridRowTemplate,
     dataGridTemplate,
+    FoundationElement,
+    FoundationElementDefinition,
 } from "@microsoft/fast-foundation";
 import { dataGridStyles } from "./data-grid.styles";
 import { dataGridRowStyles } from "./data-grid-row.styles";
@@ -17,7 +19,10 @@ import { dataGridCellStyles } from "./data-grid-cell.styles";
  * @remarks
  * Generates HTML Element: `<fast-data-grid-cell>`
  */
-export const fastDataGridCell = DataGridCell.compose({
+export const fastDataGridCell = DataGridCell.compose<
+    FoundationElementDefinition,
+    typeof DataGridCell
+>({
     baseName: "data-grid-cell",
     template: dataGridCellTemplate,
     styles: dataGridCellStyles,
@@ -30,7 +35,10 @@ export const fastDataGridCell = DataGridCell.compose({
  * @remarks
  * Generates HTML Element: `<fast-data-grid-row>`
  */
-export const fastDataGridRow = DataGridRow.compose({
+export const fastDataGridRow = DataGridRow.compose<
+    FoundationElementDefinition,
+    typeof DataGridRow
+>({
     baseName: "data-grid-row",
     template: dataGridRowTemplate,
     styles: dataGridRowStyles,
@@ -43,7 +51,10 @@ export const fastDataGridRow = DataGridRow.compose({
  * @remarks
  * Generates HTML Element: `<fast-data-grid>`
  */
-export const fastDataGrid = DataGrid.compose({
+export const fastDataGrid = DataGrid.compose<
+    FoundationElementDefinition,
+    typeof DataGrid
+>({
     baseName: "data-grid",
     template: dataGridTemplate,
     styles: dataGridStyles,

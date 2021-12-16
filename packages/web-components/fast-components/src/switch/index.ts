@@ -14,7 +14,7 @@ import { switchStyles as styles } from "./switch.styles";
  * @remarks
  * Generates HTML Element: `<fast-switch>`
  */
-export const fastSwitch = Switch.compose<SwitchOptions>({
+export const fastSwitch = Switch.compose<SwitchOptions, typeof Switch>({
     baseName: "switch",
     template,
     styles,

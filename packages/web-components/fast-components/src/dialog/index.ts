@@ -1,4 +1,8 @@
-import { Dialog, dialogTemplate as template } from "@microsoft/fast-foundation";
+import {
+    Dialog,
+    FoundationElementDefinition,
+    dialogTemplate as template,
+} from "@microsoft/fast-foundation";
 import { dialogStyles as styles } from "./dialog.styles";
 
 /**
@@ -10,7 +14,7 @@ import { dialogStyles as styles } from "./dialog.styles";
  * @remarks
  * Generates HTML Element: `<fast-dialog>`
  */
-export const fastDialog = Dialog.compose({
+export const fastDialog = Dialog.compose<FoundationElementDefinition, typeof Dialog>({
     baseName: "dialog",
     template,
     styles,

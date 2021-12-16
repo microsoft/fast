@@ -1,4 +1,8 @@
-import { Accordion, accordionTemplate as template } from "@microsoft/fast-foundation";
+import {
+    Accordion,
+    FoundationElementDefinition,
+    accordionTemplate as template,
+} from "@microsoft/fast-foundation";
 import { accordionStyles as styles } from "./accordion.styles";
 
 export * from "../accordion-item/index";
@@ -12,7 +16,10 @@ export * from "../accordion-item/index";
  * @remarks
  * Generates HTML Element: `<fast-accordion>`
  */
-export const fastAccordion = Accordion.compose({
+export const fastAccordion = Accordion.compose<
+    FoundationElementDefinition,
+    typeof Accordion
+>({
     baseName: "accordion",
     template,
     styles,

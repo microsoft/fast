@@ -1,4 +1,8 @@
-import { treeViewTemplate as template, TreeView } from "@microsoft/fast-foundation";
+import {
+    FoundationElementDefinition,
+    treeViewTemplate as template,
+    TreeView,
+} from "@microsoft/fast-foundation";
 import { treeViewStyles as styles } from "./tree-view.styles";
 
 /**
@@ -11,7 +15,10 @@ import { treeViewStyles as styles } from "./tree-view.styles";
  * Generates HTML Element: `<fast-tree-view>`
  *
  */
-export const fastTreeView = TreeView.compose({
+export const fastTreeView = TreeView.compose<
+    FoundationElementDefinition,
+    typeof TreeView
+>({
     baseName: "tree-view",
     template,
     styles,

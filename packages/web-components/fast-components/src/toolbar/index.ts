@@ -1,5 +1,6 @@
 import {
     composedParent,
+    FoundationElementDefinition,
     Toolbar as FoundationToolbar,
     toolbarTemplate as template,
 } from "@microsoft/fast-foundation";
@@ -38,7 +39,7 @@ export class Toolbar extends FoundationToolbar {
  * Generates HTML Element: `<fast-toolbar>`
  *
  */
-export const fastToolbar = Toolbar.compose({
+export const fastToolbar = Toolbar.compose<FoundationElementDefinition, typeof Toolbar>({
     baseName: "toolbar",
     baseClass: FoundationToolbar,
     template,

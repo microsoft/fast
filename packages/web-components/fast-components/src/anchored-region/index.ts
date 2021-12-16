@@ -1,5 +1,6 @@
 import {
     AnchoredRegion,
+    FoundationElementDefinition,
     anchoredRegionTemplate as template,
 } from "@microsoft/fast-foundation";
 import { anchoredRegionStyles as styles } from "./anchored-region.styles";
@@ -13,7 +14,10 @@ import { anchoredRegionStyles as styles } from "./anchored-region.styles";
  * @remarks
  * Generates HTML Element: `<fast-anchored-region>`
  */
-export const fastAnchoredRegion = AnchoredRegion.compose({
+export const fastAnchoredRegion = AnchoredRegion.compose<
+    FoundationElementDefinition,
+    typeof AnchoredRegion
+>({
     baseName: "anchored-region",
     template,
     styles,

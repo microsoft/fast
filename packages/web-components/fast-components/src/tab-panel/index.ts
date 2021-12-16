@@ -1,4 +1,8 @@
-import { TabPanel, tabPanelTemplate as template } from "@microsoft/fast-foundation";
+import {
+    FoundationElementDefinition,
+    TabPanel,
+    tabPanelTemplate as template,
+} from "@microsoft/fast-foundation";
 import { tabPanelStyles as styles } from "./tab-panel.styles";
 
 /**
@@ -10,7 +14,10 @@ import { tabPanelStyles as styles } from "./tab-panel.styles";
  * @remarks
  * Generates HTML Element: `<fast-tab-panel>`
  */
-export const fastTabPanel = TabPanel.compose({
+export const fastTabPanel = TabPanel.compose<
+    FoundationElementDefinition,
+    typeof TabPanel
+>({
     baseName: "tab-panel",
     template,
     styles,

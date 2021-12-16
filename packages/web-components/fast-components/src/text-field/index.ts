@@ -1,5 +1,6 @@
 import { attr } from "@microsoft/fast-element";
 import {
+    FoundationElementDefinition,
     TextField as FoundationTextField,
     textFieldTemplate as template,
 } from "@microsoft/fast-foundation";
@@ -48,7 +49,10 @@ export class TextField extends FoundationTextField {
  *
  * {@link https://developer.mozilla.org/en-US/docs/Web/API/ShadowRoot/delegatesFocus | delegatesFocus}
  */
-export const fastTextField = TextField.compose({
+export const fastTextField = TextField.compose<
+    FoundationElementDefinition,
+    typeof TextField
+>({
     baseName: "text-field",
     baseClass: FoundationTextField,
     template,

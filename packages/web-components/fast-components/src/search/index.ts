@@ -1,5 +1,6 @@
 import { attr, DOM } from "@microsoft/fast-element";
 import {
+    FoundationElementDefinition,
     Search as FoundationSearch,
     searchTemplate as template,
 } from "@microsoft/fast-foundation";
@@ -55,7 +56,7 @@ export class Search extends FoundationSearch {
  *
  * {@link https://developer.mozilla.org/en-US/docs/Web/API/ShadowRoot/delegatesFocus | delegatesFocus}
  */
-export const fastSearch = Search.compose({
+export const fastSearch = Search.compose<FoundationElementDefinition, typeof Search>({
     baseName: "search",
     baseClass: FoundationSearch,
     template,

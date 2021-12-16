@@ -1,6 +1,7 @@
 import {
     composedParent,
     Card as FoundationCard,
+    FoundationElementDefinition,
     cardTemplate as template,
 } from "@microsoft/fast-foundation";
 import { Swatch } from "../color/swatch";
@@ -37,7 +38,7 @@ export class Card extends FoundationCard {
  * @remarks
  * Generates HTML Element: `<fast-card>`
  */
-export const fastCard = Card.compose({
+export const fastCard = Card.compose<FoundationElementDefinition, typeof Card>({
     baseName: "card",
     baseClass: FoundationCard,
     template,

@@ -14,7 +14,7 @@ import { menuItemStyles as styles } from "./menu-item.styles";
  * @remarks
  * Generates HTML Element: `<fast-menu-item>`
  */
-export const fastMenuItem = MenuItem.compose<MenuItemOptions>({
+export const fastMenuItem = MenuItem.compose<MenuItemOptions, typeof MenuItem>({
     baseName: "menu-item",
     template,
     styles,

@@ -1,9 +1,9 @@
-import { attr, customElement, DOM, FASTElement, html, nullableNumberConverter, observable } from '@microsoft/fast-element';
+import { attr, css, customElement, DOM, FASTElement, html, nullableNumberConverter, observable } from '@microsoft/fast-element';
 import React from "react";
 import ReactDOM from "react-dom";
 import { uniqueElementName } from '@microsoft/fast-foundation/dist/esm/test-utilities/fixture';
 import { expect } from "chai";
-import { DesignSystem, FoundationElement, FoundationElementDefinition } from "@microsoft/fast-foundation";
+import { Button, ButtonOptions, DesignSystem, FoundationElement, FoundationElementDefinition } from "@microsoft/fast-foundation";
 import { provideReactWrapper } from './index';
 
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
@@ -122,6 +122,22 @@ const composedTestElement = ComposedTestElement.compose<ComposedTestOptions>({
   baseName: composedElementName,
   template: (context, def) => html`<slot>${def.defaultContent!}</slot>`,
   defaultContent: 'Hello'
+});
+
+
+const buttonTemplate = html<MyButton>`<button>${x => x.answer}</button>`;
+const buttonStyles = css``;
+
+class MyButton extends Button {
+  @attr answer: number = 42;
+}
+export const myButton = MyButton.compose<ButtonOptions, typeof MyButton>({
+	baseName: 'button',
+	template: buttonTemplate,
+	styles: buttonStyles,
+	shadowOptions: {
+		delegatesFocus: true,
+	},
 });
 
 const scenarios = [
@@ -429,3 +445,28 @@ for (const scenario of scenarios) {
   });
 }
 /* eslint-enable @typescript-eslint/no-non-null-assertion */
+
+describe('Type Correctness of wrapped components', () => {
+    let container: HTMLElement;
+
+    beforeEach(() => {
+      container = document.createElement('div');
+      document.body.appendChild(container);
+    });
+
+    afterEach(() => {
+      if (container && container.parentNode) {
+        container.parentNode.removeChild(container);
+      }
+    });
+
+    it('handles component with options', () => {
+        // Note: Test exists only to compile.
+        const { wrap } = provideReactWrapper(React, DesignSystem.getOrCreate());
+        const MyReactButton = wrap(myButton());
+        ReactDOM.render(
+          <MyReactButton answer={42}></MyReactButton>,
+          container
+        );
+    });
+})

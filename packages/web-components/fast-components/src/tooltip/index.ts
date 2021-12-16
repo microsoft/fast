@@ -1,4 +1,8 @@
-import { tooltipTemplate as template, Tooltip } from "@microsoft/fast-foundation";
+import {
+    FoundationElementDefinition,
+    tooltipTemplate as template,
+    Tooltip,
+} from "@microsoft/fast-foundation";
 import { tooltipStyles as styles } from "./tooltip.styles";
 
 /**
@@ -10,7 +14,7 @@ import { tooltipStyles as styles } from "./tooltip.styles";
  * @remarks
  * Generates HTML Element: `<fast-tooltip>`
  */
-export const fastTooltip = Tooltip.compose({
+export const fastTooltip = Tooltip.compose<FoundationElementDefinition, typeof Tooltip>({
     baseName: "tooltip",
     template,
     styles,

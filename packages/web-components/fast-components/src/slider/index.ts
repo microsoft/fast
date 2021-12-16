@@ -14,7 +14,7 @@ import { sliderStyles as styles } from "./slider.styles";
  * @remarks
  * Generates HTML Element: `<fast-slider>`
  */
-export const fastSlider = Slider.compose<SliderOptions>({
+export const fastSlider = Slider.compose<SliderOptions, typeof Slider>({
     baseName: "slider",
     template,
     styles,

@@ -1,4 +1,5 @@
 import {
+    FoundationElementDefinition,
     Picker,
     PickerList,
     PickerListItem,
@@ -25,7 +26,7 @@ import { pickerListItemStyles } from "./picker-list-item.styles";
  * @remarks
  * * Generates HTML Element: `<fast-picker>`
  */
-export const fastPicker = Picker.compose({
+export const fastPicker = Picker.compose<FoundationElementDefinition, typeof Picker>({
     baseName: "picker",
     template: pickerTemplate,
     styles: pickerStyles,

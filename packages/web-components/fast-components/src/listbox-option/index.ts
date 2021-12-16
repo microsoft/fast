@@ -1,4 +1,5 @@
 import {
+    FoundationElementDefinition,
     ListboxOption,
     listboxOptionTemplate as template,
 } from "@microsoft/fast-foundation";
@@ -14,7 +15,10 @@ import { optionStyles as styles } from "./listbox-option.styles";
  * Generates HTML Element: `<fast-option>`
  *
  */
-export const fastOption = ListboxOption.compose({
+export const fastOption = ListboxOption.compose<
+    FoundationElementDefinition,
+    typeof ListboxOption
+>({
     baseName: "option",
     template,
     styles,

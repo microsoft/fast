@@ -1,4 +1,8 @@
-import { Tab, tabTemplate as template } from "@microsoft/fast-foundation";
+import {
+    FoundationElementDefinition,
+    Tab,
+    tabTemplate as template,
+} from "@microsoft/fast-foundation";
 import { tabStyles as styles } from "./tab.styles";
 
 /**
@@ -10,7 +14,7 @@ import { tabStyles as styles } from "./tab.styles";
  * @remarks
  * Generates HTML Element: `<fast-tab>`
  */
-export const fastTab = Tab.compose({
+export const fastTab = Tab.compose<FoundationElementDefinition, typeof Tab>({
     baseName: "tab",
     template,
     styles,

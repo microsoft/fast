@@ -1,4 +1,8 @@
-import { Menu, menuTemplate as template } from "@microsoft/fast-foundation";
+import {
+    FoundationElementDefinition,
+    Menu,
+    menuTemplate as template,
+} from "@microsoft/fast-foundation";
 import { menuStyles as styles } from "./menu.styles";
 
 /**
@@ -10,7 +14,7 @@ import { menuStyles as styles } from "./menu.styles";
  * @remarks
  * Generates HTML Element: `<fast-menu>`
  */
-export const fastMenu = Menu.compose({
+export const fastMenu = Menu.compose<FoundationElementDefinition, typeof Menu>({
     baseName: "menu",
     template,
     styles,

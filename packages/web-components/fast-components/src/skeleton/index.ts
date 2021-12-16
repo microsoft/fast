@@ -1,4 +1,8 @@
-import { Skeleton, skeletonTemplate as template } from "@microsoft/fast-foundation";
+import {
+    FoundationElementDefinition,
+    Skeleton,
+    skeletonTemplate as template,
+} from "@microsoft/fast-foundation";
 import { skeletonStyles as styles } from "./skeleton.styles";
 
 /**
@@ -10,7 +14,10 @@ import { skeletonStyles as styles } from "./skeleton.styles";
  * @remarks
  * Generates HTML Element: `<fast-skeleton>`
  */
-export const fastSkeleton = Skeleton.compose({
+export const fastSkeleton = Skeleton.compose<
+    FoundationElementDefinition,
+    typeof Skeleton
+>({
     baseName: "skeleton",
     template,
     styles,

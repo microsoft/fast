@@ -1079,7 +1079,10 @@ export const designSystemProviderStyles = (
  * @remarks
  * Generates HTML Element: `<fast-design-system-provider>`
  */
-export const fastDesignSystemProvider = DesignSystemProvider.compose({
+export const fastDesignSystemProvider = DesignSystemProvider.compose<
+    FoundationElementDefinition,
+    typeof DesignSystemProvider
+>({
     baseName: "design-system-provider",
     template: designSystemProviderTemplate,
     styles: designSystemProviderStyles,
