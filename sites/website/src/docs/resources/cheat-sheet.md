@@ -204,6 +204,10 @@ With this in place, you can now use your `<name-tag>` element anywhere in HTML w
 
 To add attributes to your HTML element, create properties decorated by the `@attr` decorator.
 
+All attributes defined this way will be automatically registered with the platform so that they can be updated through the browser's native `setAttribute` API as well as the property. 
+
+You can optionally add a method with the naming convention *propertyName*Changed to your class, and this method will be called whenever your property changes, whether it changes through the property or the attribute API.
+
 **Example:**
 
 ```ts
@@ -212,7 +216,11 @@ import { FASTElement, customElement, attr } from "@microsoft/fast-element";
 @customElement("name-tag")
 export class NameTag extends FASTElement {
   @attr greeting: string = "Hello";
-  ...
+
+  // optional method 
+  greetingChanged() {
+    ...
+  }
 }
 ```
 
