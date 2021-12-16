@@ -664,18 +664,18 @@ specialColor.getValueFor(descendent); // "#FFF"
 
 #### Configuring a FAST Design Token:
 
-**Example**:
+FAST exposes non-color related [Design Tokens](https://www.fast.design/docs/design-systems/fast-frame#fast-frame-design-tokens) that can be used to configure components stylistically.  For Design Tokens related to color, see the [adaptive color system](https://www.fast.design/docs/design-systems/fast-frame/#adaptive-color-system).
+
+**Example**: Changing the value for the `typeRampBaseFontSize` design token:
 
 ```ts
-// change the value for the typeRampBaseFontSize design token
+import { typeRampBaseFontSize } from "@microsoft/fast-components";
+import { FASTElement } from '@microsoft/fast-element';
+
 const myElement = document.querySelector("my-element") as FASTElement;
 
 typeRampBaseFontSize.setValueFor(myElement, "20px");
 ```
-
-FAST exposes non-color related [Design Tokens](https://www.fast.design/docs/design-systems/fast-frame#fast-frame-design-tokens) that can be used to configure components stylistically. 
-
-For Design Tokens related to color, see the [adaptive color system](https://www.fast.design/docs/design-systems/fast-frame/#adaptive-color-system).
 
 ---
 
