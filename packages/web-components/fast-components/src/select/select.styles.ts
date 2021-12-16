@@ -42,10 +42,10 @@ import {
     typeRampBaseLineHeight,
 } from "../design-tokens";
 
-export const selectFilledStyles: (
-    context: ElementDefinitionContext,
-    definition: SelectOptions
-) => ElementStyles = (context: ElementDefinitionContext, definition: SelectOptions) =>
+export const selectFilledStyles: FoundationElementTemplate<
+    ElementStyles,
+    SelectOptions
+> = (context, definition) =>
     css`
         ${display("inline-flex")} :host {
             background: ${neutralFillRest};
@@ -63,10 +63,10 @@ export const selectFilledStyles: (
         }
     `;
 
-export const selectStealthStyles: (
-    context: ElementDefinitionContext,
-    definition: SelectOptions
-) => ElementStyles = (context: ElementDefinitionContext, definition: SelectOptions) =>
+export const selectStealthStyles: FoundationElementTemplate<
+    ElementStyles,
+    SelectOptions
+> = (context, definition) =>
     css`
         :host {
             background: ${neutralFillStealthRest};
@@ -84,7 +84,10 @@ export const selectStealthStyles: (
         }
     `;
 
-export const selectStyles = (context, definition) =>
+export const selectStyles: FoundationElementTemplate<ElementStyles, SelectOptions> = (
+    context,
+    definition
+) =>
     css`
     ${display("inline-flex")} :host {
         background: ${neutralFillRest};
