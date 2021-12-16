@@ -1,0 +1,7 @@
+{
+  "type": "minor",
+  "comment": "fix(fast-components): add missing type info",
+  "packageName": "@microsoft/fast-components",
+  "email": "roeisenb@microsoft.com",
+  "dependentChangeType": "patch"
+}

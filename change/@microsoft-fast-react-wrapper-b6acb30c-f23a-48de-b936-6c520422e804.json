@@ -1,0 +1,7 @@
+{
+  "type": "none",
+  "comment": "test: add code to type check wrapped components",
+  "packageName": "@microsoft/fast-react-wrapper",
+  "email": "roeisenb@microsoft.com",
+  "dependentChangeType": "none"
+}
