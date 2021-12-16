@@ -1142,7 +1142,7 @@ export class Search extends Search_2 {
 export type SearchAppearance = "filled" | "outline";
 
 // @public
-export const searchStyles: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: import("@microsoft/fast-foundation").AnchorOptions) => import("@microsoft/fast-element").ElementStyles;
+export const searchStyles: (context: any, definition: any) => import("@microsoft/fast-element").ElementStyles;
 
 // @public
 export class Select extends Select_2 {
