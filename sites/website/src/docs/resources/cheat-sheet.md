@@ -16,7 +16,7 @@ custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/src
 * Provides a thin layer of opinion on top of [Web Components](https://www.fast.design/docs/resources/why-web-components), lifting the level of abstraction just enough to make it easier and faster to [build components]((#building-components)).   
 * Use this library when you want to create new custom web components. 
 
-To install the fast-element library, use either `npm` or `yarn`:
+To install the `fast-element` library, use either `npm` or `yarn`:
 
 ```shell
 npm install --save @microsoft/fast-element
@@ -125,7 +125,7 @@ import {
 
 provideFASTDesignSystem()
   .register(
-    fastButton() // desired custom component
+    fastButton() // custom element registration
   );
 ```
 
@@ -188,7 +188,7 @@ import { FASTElement, customElement } from "@microsoft/fast-element";
 
 @customElement("name-tag") // custom element being created
 export class NameTag extends FASTElement {
-
+  ...
 }
 ```
 
@@ -224,9 +224,7 @@ export class NameTag extends FASTElement {
 }
 ```
 
-To use a Web Component with Attributes:
-
-**Example:**
+**Example:** To use a Web Component with Attributes:
 
 ```html
 <name-tag greeting="Hola"></name-tag>
@@ -536,8 +534,9 @@ import { CSSDirective }  from "@microsoft/fast-element"
 class RandomWidth extends CSSDirective {}
 ```
 
-#### [createCSS method](https://www.fast.design/docs/fast-element/leveraging-css#createcss).
+---
 
+#### [createCSS method](https://www.fast.design/docs/fast-element/leveraging-css#createcss):
 
 
 `CSSDirective` has a `createCSS()` method that returns a string to be interpolated into an `ElementStyles`.
@@ -552,6 +551,7 @@ class RandomWidth extends CSSDirective {
 }
 ```
 
+---
 #### [createBehavior method](https://www.fast.design/docs/fast-element/leveraging-css#createbehavior):
 
 The `createBehavior()` method can be used to create a `Behavior` that is bound to the element using the `CSSDirective`.
