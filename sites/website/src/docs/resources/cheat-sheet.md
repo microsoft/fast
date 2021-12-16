@@ -7,7 +7,7 @@ custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/src
 
 # Cheat Sheet
 
-## Packages:
+## Packages
 
 ### [@microsoft/fast-element](https://www.fast.design/docs/fast-element/getting-started)
 
@@ -109,7 +109,7 @@ provideFASTDesignSystem()
 ---
 
 
-## [Using Components](https://www.fast.design/docs/components/getting-started)
+## [Using components](https://www.fast.design/docs/components/getting-started)
 
 ### Setup
 
@@ -170,7 +170,7 @@ Not seeing an integration for your preferred technology?  Open an issue on [GitH
 
 ---
 
-## [Building Components](https://www.fast.design/docs/fast-element/getting-started)
+## [Building components](https://www.fast.design/docs/fast-element/getting-started)
 
 There are two main approaches to building a component:
 - The first approach is for simple declarations of non-shared components.
@@ -232,7 +232,7 @@ export class NameTag extends FASTElement {
 
 ---
 
-#### [Customizing attributes](https://www.fast.design/docs/fast-element/defining-elements#customizing-attributes):
+#### [Customizing attributes](https://www.fast.design/docs/fast-element/defining-elements#customizing-attributes)
 
 There are three modes available through the `mode` property of the attribute configuration:
 
@@ -536,7 +536,7 @@ class RandomWidth extends CSSDirective {}
 
 ---
 
-#### [createCSS method](https://www.fast.design/docs/fast-element/leveraging-css#createcss):
+#### [createCSS method](https://www.fast.design/docs/fast-element/leveraging-css#createcss)
 
 
 `CSSDirective` has a `createCSS()` method that returns a string to be interpolated into an `ElementStyles`.
@@ -552,7 +552,7 @@ class RandomWidth extends CSSDirective {
 ```
 
 ---
-#### [createBehavior method](https://www.fast.design/docs/fast-element/leveraging-css#createbehavior):
+#### [createBehavior method](https://www.fast.design/docs/fast-element/leveraging-css#createbehavior)
 
 The `createBehavior()` method can be used to create a `Behavior` that is bound to the element using the `CSSDirective`.
 
@@ -580,9 +580,9 @@ class RandomWidth extends CSSDirective {
 
 ---
 
-## Design System
+## Design system
 
-### [Creating a Design System](https://www.fast.design/docs/design-systems/creating-a-component-library#defining-a-design-system)
+### [Creating a design system](https://www.fast.design/docs/design-systems/creating-a-component-library#defining-a-design-system)
 
 1. Start with the base components defined in `@microsoft/fast-foundation` and compose them with your own styles.
 
@@ -619,7 +619,7 @@ export function provideSpecialDesignSystem(element?: HTMLElement): DesignSystem 
 
 ---
 
-### [Design Tokens](https://www.fast.design/docs/design-systems/design-tokens)
+### [Design tokens](https://www.fast.design/docs/design-systems/design-tokens)
 
 **Example:** [Creating a token](https://www.fast.design/docs/design-systems/design-tokens#create-a-token):
 
@@ -667,7 +667,7 @@ specialColor.getValueFor(descendent); // "#FFF"
 
 ---
 
-#### Configuring a FAST Design Token:
+#### Configuring a FAST design token
 
 FAST exposes non-color related [Design Tokens](https://www.fast.design/docs/design-systems/fast-frame#fast-frame-design-tokens) that can be used to configure components stylistically.  For Design Tokens related to color, see the [adaptive color system](https://www.fast.design/docs/design-systems/fast-frame/#adaptive-color-system).
 
@@ -696,7 +696,7 @@ typeRampBaseFontSize.setValueFor(myElement, "20px");
 - Here are [good first issues](https://github.com/Microsoft/fast/labels/community:good-first-issue).
 
 ---
-### [Contributor Guide](https://www.fast.design/docs/community/contributor-guide/)
+### [Contributor guide](https://www.fast.design/docs/community/contributor-guide/)
 - [Machine setup](https://www.fast.design/docs/community/contributor-guide/#machine-setup)
 - [Cloning the repository](https://www.fast.design/docs/community/contributor-guide/#cloning-the-repository)
 - [Installing & building](https://www.fast.design/docs/community/contributor-guide/#installing-and-building)
@@ -706,7 +706,7 @@ typeRampBaseFontSize.setValueFor(myElement, "20px");
 
 ---
 
-### [Contributing to fast-component](https://www.fast.design/docs/community/contributor-guide)
+### [Contributing to `fast-component`](https://www.fast.design/docs/community/contributor-guide)
 
 ```shell
 cd packages/web-components/fast-components
