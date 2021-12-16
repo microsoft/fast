@@ -127,7 +127,7 @@ When the library author creates the registration function (see next section), th
 The final step in the process is to create and export the registration function so that application authors can register the component in their `DesignSystem`. Here's how we would create the registration function for `Counter`, using our extended `CounterDefinition` configuration:
 
 ```ts
-export const counter = Counter.compose<CounterDefinition>({
+export const counter = Counter.compose<CounterDefinition, typeof Counter>({
     baseName: 'counter',
     template,
     styles,
@@ -136,6 +136,10 @@ export const counter = Counter.compose<CounterDefinition>({
 ```
 
 Here we provide the base component name of `counter`, which will be combined with the `DesignSystem` element prefix during registration. We also provide our lazy template and styles. Finally, we specify the `defaultButtonContent` value.
+
+:::important
+When specifying a custom configuration like `CounterDefinition`, you should also specify the type of component as the second type param. Unfortunately, TypeScript's type inference capabilities are not able to infer the second type param, once the first param is added. If you don't need custom configuration, you can leave off both type params, but if you need a custom configuration, you must provide both params.
+:::
 
 ### Registering Library Components in an Application
 
