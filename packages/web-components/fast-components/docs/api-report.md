@@ -20,7 +20,7 @@ import { BreadcrumbItem } from '@microsoft/fast-foundation';
 import { BreadcrumbItemOptions } from '@microsoft/fast-foundation';
 import { Button as Button_2 } from '@microsoft/fast-foundation';
 import { ButtonOptions } from '@microsoft/fast-foundation';
-import { Calendar } from '@microsoft/fast-foundation';
+import { Calendar as Calendar_2 } from '@microsoft/fast-foundation';
 import { Card as Card_2 } from '@microsoft/fast-foundation';
 import { Checkbox } from '@microsoft/fast-foundation';
 import { CheckboxOptions } from '@microsoft/fast-foundation';
@@ -245,7 +245,7 @@ export const allComponents: {
         template: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").CalendarOptions>) => import("@microsoft/fast-element").ViewTemplate<import("@microsoft/fast-foundation").Calendar, any>;
         styles: import("@microsoft/fast-element").ElementStyles;
         title: import("@microsoft/fast-element").ViewTemplate<import("@microsoft/fast-foundation").Calendar, any>;
-    }, typeof import("@microsoft/fast-foundation").Calendar>;
+    }, typeof Calendar>;
     fastCard: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<{
         baseName: string;
         baseClass: typeof import("@microsoft/fast-foundation").Card;
@@ -618,7 +618,11 @@ export type ButtonAppearance = "accent" | "lightweight" | "neutral" | "outline" 
 // @public
 export const buttonStyles: FoundationElementTemplate<ElementStyles, ButtonOptions>;
 
-export { Calendar }
+// @public
+export class Calendar extends Calendar_2 {
+    // @internal (undocumented)
+    connectedCallback(): void;
+}
 
 // @public
 export const CalendarStyles: import("@microsoft/fast-element").ElementStyles;
@@ -899,14 +903,14 @@ export const fastButton: (overrideDefinition?: import("@microsoft/fast-foundatio
 // @public
 export const fastCalendar: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<{
     baseName: string;
-    template: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").CalendarOptions>) => import("@microsoft/fast-element").ViewTemplate<Calendar, any>;
+    template: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").CalendarOptions>) => import("@microsoft/fast-element").ViewTemplate<Calendar_2, any>;
     styles: import("@microsoft/fast-element").ElementStyles;
-    title: import("@microsoft/fast-element").ViewTemplate<Calendar, any>;
+    title: import("@microsoft/fast-element").ViewTemplate<Calendar_2, any>;
 }> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<{
     baseName: string;
-    template: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").CalendarOptions>) => import("@microsoft/fast-element").ViewTemplate<Calendar, any>;
+    template: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").CalendarOptions>) => import("@microsoft/fast-element").ViewTemplate<Calendar_2, any>;
     styles: import("@microsoft/fast-element").ElementStyles;
-    title: import("@microsoft/fast-element").ViewTemplate<Calendar, any>;
+    title: import("@microsoft/fast-element").ViewTemplate<Calendar_2, any>;
 }, typeof Calendar>;
 
 // Warning: (ae-incompatible-release-tags) The symbol "fastCard" is marked as @public, but its signature references "Card" which is marked as @internal
@@ -1978,15 +1982,15 @@ export const verticalSliderLabelStyles: ElementStyles;
 //
 // dist/dts/color/palette.d.ts:71:5 - (ae-forgotten-export) The symbol "create" needs to be exported by the entry point index.d.ts
 // dist/dts/color/palette.d.ts:72:5 - (ae-forgotten-export) The symbol "from" needs to be exported by the entry point index.d.ts
-// dist/dts/custom-elements.d.ts:123:5 - (ae-incompatible-release-tags) The symbol "fastButton" is marked as @public, but its signature references "Button" which is marked as @internal
-// dist/dts/custom-elements.d.ts:151:5 - (ae-incompatible-release-tags) The symbol "fastCard" is marked as @public, but its signature references "Card" which is marked as @internal
-// dist/dts/custom-elements.d.ts:191:5 - (ae-incompatible-release-tags) The symbol "fastDesignSystemProvider" is marked as @public, but its signature references "DesignSystemProvider" which is marked as @internal
-// dist/dts/custom-elements.d.ts:201:5 - (ae-incompatible-release-tags) The symbol "fastDisclosure" is marked as @public, but its signature references "Disclosure" which is marked as @internal
-// dist/dts/custom-elements.d.ts:313:5 - (ae-incompatible-release-tags) The symbol "fastSearch" is marked as @public, but its signature references "Search" which is marked as @internal
-// dist/dts/custom-elements.d.ts:341:5 - (ae-incompatible-release-tags) The symbol "fastSliderLabel" is marked as @public, but its signature references "SliderLabel" which is marked as @internal
-// dist/dts/custom-elements.d.ts:380:5 - (ae-incompatible-release-tags) The symbol "fastTextArea" is marked as @public, but its signature references "TextArea" which is marked as @internal
-// dist/dts/custom-elements.d.ts:397:5 - (ae-incompatible-release-tags) The symbol "fastTextField" is marked as @public, but its signature references "TextField" which is marked as @internal
-// dist/dts/custom-elements.d.ts:415:5 - (ae-incompatible-release-tags) The symbol "fastToolbar" is marked as @public, but its signature references "Toolbar" which is marked as @internal
+// dist/dts/custom-elements.d.ts:124:5 - (ae-incompatible-release-tags) The symbol "fastButton" is marked as @public, but its signature references "Button" which is marked as @internal
+// dist/dts/custom-elements.d.ts:152:5 - (ae-incompatible-release-tags) The symbol "fastCard" is marked as @public, but its signature references "Card" which is marked as @internal
+// dist/dts/custom-elements.d.ts:192:5 - (ae-incompatible-release-tags) The symbol "fastDesignSystemProvider" is marked as @public, but its signature references "DesignSystemProvider" which is marked as @internal
+// dist/dts/custom-elements.d.ts:202:5 - (ae-incompatible-release-tags) The symbol "fastDisclosure" is marked as @public, but its signature references "Disclosure" which is marked as @internal
+// dist/dts/custom-elements.d.ts:314:5 - (ae-incompatible-release-tags) The symbol "fastSearch" is marked as @public, but its signature references "Search" which is marked as @internal
+// dist/dts/custom-elements.d.ts:342:5 - (ae-incompatible-release-tags) The symbol "fastSliderLabel" is marked as @public, but its signature references "SliderLabel" which is marked as @internal
+// dist/dts/custom-elements.d.ts:381:5 - (ae-incompatible-release-tags) The symbol "fastTextArea" is marked as @public, but its signature references "TextArea" which is marked as @internal
+// dist/dts/custom-elements.d.ts:398:5 - (ae-incompatible-release-tags) The symbol "fastTextField" is marked as @public, but its signature references "TextField" which is marked as @internal
+// dist/dts/custom-elements.d.ts:416:5 - (ae-incompatible-release-tags) The symbol "fastToolbar" is marked as @public, but its signature references "Toolbar" which is marked as @internal
 
 // (No @packageDocumentation comment for this package)
 

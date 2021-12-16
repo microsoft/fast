@@ -56,6 +56,7 @@ import { fastTreeView } from "./tree-view/index.js";
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import type { Anchor } from "./anchor/index.js";
 import type { Button } from "./button/index.js";
+import type { Calendar } from "./calendar/index.js";
 import type { Card } from "./card/index.js";
 import type { DesignSystemProvider } from "./design-system-provider/index.js";
 import type { Disclosure } from "./disclosure/index.js";
