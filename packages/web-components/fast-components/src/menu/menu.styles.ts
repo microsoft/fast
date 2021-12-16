@@ -32,7 +32,7 @@ export const menuStyles: (
         ${display("block")} :host {
             background: ${fillColor};
             border: calc(${strokeWidth} * 1px) solid transparent;
-            border-radius: ${layerCornerRadius};
+            border-radius: calc(${layerCornerRadius} * 1px);
             box-shadow: ${elevationShadowFlyout};
             margin: 0;
             border-radius: calc(${controlCornerRadius} * 1px);

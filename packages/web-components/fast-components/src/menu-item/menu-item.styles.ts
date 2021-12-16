@@ -66,9 +66,9 @@ export const menuItemStyles: (
     }
 
     :host(.indent-0) .content {
-      grid-column: 1;
-      grid-row: 1;
-      margin-inline-start: 10px;
+        grid-column: 1;
+        grid-row: 1;
+        margin-inline-start: 10px;
     }
 
     :host(.indent-0[aria-haspopup="menu"]) {
