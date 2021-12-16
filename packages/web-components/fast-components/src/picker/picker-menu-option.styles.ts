@@ -5,17 +5,19 @@ import {
     FoundationElementDefinition,
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
-import { neutralFillStealthFocus, neutralForegroundFocus, strokeWidth } from "..";
 import {
+    accentFillRest,
     bodyFont,
     controlCornerRadius,
     designUnit,
+    neutralFillRest,
     neutralFillStealthActive,
     neutralFillStealthHover,
     neutralFillStealthRest,
     neutralForegroundActive,
     neutralForegroundHover,
     neutralForegroundRest,
+    strokeWidth,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
 } from "../design-tokens";
@@ -65,10 +67,10 @@ export const pickerMenuOptionStyles: (
             color: ${neutralForegroundActive};
         }
 
-        :host(:not([aria-selected="true"]):hover),
         :host([aria-selected="true"]) {
-            background: ${neutralFillStealthFocus};
-            color: ${neutralForegroundFocus};
+            background: ${neutralFillRest};
+            border-color: ${accentFillRest};
+            color: ${neutralForegroundRest};
         }
     `.withBehaviors(
         forcedColorsStylesheetBehavior(

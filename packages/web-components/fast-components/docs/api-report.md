@@ -604,8 +604,6 @@ export const fastPickerList: (overrideDefinition?: import("@microsoft/fast-found
 // @alpha
 export const fastPickerListItem: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FoundationElementDefinition, typeof PickerListItem>;
 
-// Warning: (ae-incompatible-release-tags) The symbol "fastPickerMenu" is marked as @alpha, but its signature references "PickerMenu" which is marked as @internal
-//
 // @alpha
 export const fastPickerMenu: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FoundationElementDefinition, typeof PickerMenu>;
 
@@ -1072,11 +1070,9 @@ export { Picker }
 // @public
 export const pickerListItemStyles: (context: ElementDefinitionContext, definition: FoundationElementDefinition) => ElementStyles;
 
-// Warning: (ae-internal-missing-underscore) The name "PickerMenu" should be prefixed with an underscore because the declaration is marked as @internal
-//
-// @internal
+// @public
 export class PickerMenu extends PickerMenu_2 {
-    // (undocumented)
+    // @internal (undocumented)
     connectedCallback(): void;
 }
 

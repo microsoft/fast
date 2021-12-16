@@ -19,7 +19,7 @@ import { pickerListItemStyles } from "./picker-list-item.styles";
 
 /**
  * The FAST picker menu class
- * @internal
+ * @public
  */
 export class PickerMenu extends FoundationPickerMenu {
     /**
