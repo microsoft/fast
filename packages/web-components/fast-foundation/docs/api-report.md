@@ -428,6 +428,8 @@ export class Combobox extends FormAssociatedCombobox {
     filteredOptions: ListboxOption[];
     filterOptions(): void;
     // @internal
+    protected focusAndScrollOptionIntoView(): void;
+    // @internal
     focusoutHandler(e: FocusEvent): boolean | void;
     // @internal
     formResetCallback(): void;
