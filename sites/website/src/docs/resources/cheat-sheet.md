@@ -166,7 +166,7 @@ FAST libraries can also be used in combination with a wide variety of existing t
 - [Vue](https://www.fast.design/docs/integrations/vue)
 - [Webpack](https://www.fast.design/docs/integrations/webpack)
 
-Not seeing an integration for your preferred technology?  Open an issue on [GitHub](https://github.com/microsoft/fast/issues).
+Not seeing an integration for your preferred technology?  Open an issue on [GitHub](https://github.com/microsoft/fast/issues/new/choose).
 
 ---
 
@@ -703,7 +703,7 @@ typeRampBaseFontSize.setValueFor(myElement, "20px");
 
 ---
 
-### [Contributing to `fast-components`](https://www.fast.design/docs/community/contributor-guide)
+### [Contributing to `fast-components`](https://www.fast.design/docs/community/contributor-guide/#developing-in-fast-components)
 
 ```shell
 cd packages/web-components/fast-components
