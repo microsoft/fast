@@ -48,7 +48,7 @@ export class NameTag extends FASTElement {
   @attr greeting: string = 'Hello';
 
   greetingChanged() {
-    this.shadowRoot!.innerHTML = this.greeting;
+    ...
   }
 }
 ```
@@ -59,7 +59,7 @@ To add attributes to your HTML element, create properties decorated by the `@att
 All properties decorated with `@attr` are also *observable*. See [observables and state](./observables-and-state) for information about how observables enable efficient rendering.
 :::
 
-By default, anything extending from `FASTElement` will automatically have a `ShadowRoot` attached in order to enable encapsulated rendering. The example above references the `shadowRoot` to set its `innerHTML` any time the `greeting` property changes.
+By default, anything extending from `FASTElement` will automatically have a `ShadowRoot` attached in order to enable encapsulated rendering. 
 
 To see it in action, you can use the same HTML as above, or change the default `greeting` with the following:
 
