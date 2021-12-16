@@ -639,9 +639,6 @@ const styles = css`
     background: ${specialColor};
   }
 `;
-
-const ancestor = document.querySelector("my-ancestor") as FASTElement;
-const descendent = ancestor.querySelector("my-descendent") as FASTElement;
 ```
 
 **Example: [Setting values](https://www.fast.design/docs/design-systems/design-tokens#setting-values)**
