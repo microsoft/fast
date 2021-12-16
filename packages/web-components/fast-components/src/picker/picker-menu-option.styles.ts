@@ -1,6 +1,5 @@
 import { css, ElementStyles } from "@microsoft/fast-element";
 import {
-    focusVisible,
     forcedColorsStylesheetBehavior,
     FoundationElementTemplate,
 } from "@microsoft/fast-foundation";
@@ -10,12 +9,14 @@ import {
     bodyFont,
     controlCornerRadius,
     designUnit,
-    focusStrokeOuter,
-    focusStrokeWidth,
-    foregroundOnAccentActive,
-    neutralFillHover,
     neutralFillRest,
+    neutralFillStealthActive,
+    neutralFillStealthHover,
+    neutralFillStealthRest,
+    neutralForegroundActive,
+    neutralForegroundHover,
     neutralForegroundRest,
+    strokeWidth,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
 } from "../design-tokens.js";
@@ -31,49 +32,49 @@ export const pickerMenuOptionStyles: FoundationElementTemplate<ElementStyles> = 
 ) =>
     css`
         :host {
-        display: flex;
-        align-items: center;
-        justify-items: center;
-        font-family: ${bodyFont};
-        border-radius: calc(${controlCornerRadius} * 1px);
-        border: calc(${focusStrokeWidth} * 1px) solid transparent;
-        box-sizing: border-box;
-        color: ${neutralForegroundRest};
-        cursor: pointer;
-        fill: currentcolor;
-        font-size: ${typeRampBaseFontSize};
-        min-height: calc(${heightNumber} * 1px);
-        line-height: ${typeRampBaseLineHeight};
-        margin: 0 calc(${designUnit} * 1px);
-        outline: none;
-        overflow: hidden;
-        padding: 0 calc(${designUnit} * 2.25px);
-        user-select: none;
-        white-space: nowrap;
-    }
+            display: flex;
+            align-items: center;
+            justify-items: center;
+            font-family: ${bodyFont};
+            background: ${neutralFillStealthRest};
+            border-radius: calc(${controlCornerRadius} * 1px);
+            border: calc(${strokeWidth} * 1px) solid transparent;
+            box-sizing: border-box;
+            color: ${neutralForegroundRest};
+            cursor: pointer;
+            fill: currentcolor;
+            font-size: ${typeRampBaseFontSize};
+            min-height: calc(${heightNumber} * 1px);
+            line-height: ${typeRampBaseLineHeight};
+            outline: none;
+            overflow: hidden;
+            padding: 0 calc(((${designUnit} * 3) - 3) * 1px);
+            user-select: none;
+            white-space: nowrap;
+        }
 
-    :host(:${focusVisible}[role="listitem"]) {
-        border-color: ${focusStrokeOuter};
-        background: ${neutralFillRest};
-        color: ${neutralForegroundRest};
-    }
+        :host(:hover) {
+            background: ${neutralFillStealthHover};
+            color: ${neutralForegroundHover};
+        }
 
-    :host(:hover) {
-        background: ${neutralFillHover};
-        color: ${neutralForegroundRest};
-    }
+        :host(:active) {
+            background: ${neutralFillStealthActive};
+            color: ${neutralForegroundActive};
+        }
 
-    :host([aria-selected="true"]) {
-        background: ${accentFillRest};
-        color: ${foregroundOnAccentActive};
-    }
-
+        :host([aria-selected="true"]) {
+            background: ${neutralFillRest};
+            border-color: ${accentFillRest};
+            color: ${neutralForegroundRest};
+        }
     `.withBehaviors(
         forcedColorsStylesheetBehavior(
             css`
                 :host {
-                    border-color: transparent;
                     forced-color-adjust: none;
+                    background: ${SystemColors.ButtonFace};
+                    border-color: transparent;
                     color: ${SystemColors.ButtonText};
                     fill: currentcolor;
                 }

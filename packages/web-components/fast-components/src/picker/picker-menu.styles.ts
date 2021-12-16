@@ -7,10 +7,11 @@ import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
     controlCornerRadius,
     designUnit,
-    neutralLayerFloating,
+    fillColor,
+    neutralForegroundRest,
     strokeWidth,
 } from "../design-tokens.js";
-import { elevation } from "../styles/index.js";
+import { elevationShadowFlyout } from "../styles/index.js";
 
 /**
  * Styles for Picker menu
@@ -22,24 +23,26 @@ export const pickerMenuStyles: FoundationElementTemplate<ElementStyles> = (
 ) =>
     css`
         :host {
-            background: ${neutralLayerFloating};
-            --elevation: 11;
-            /* TODO: a mechanism to manage z-index across components
-            https://github.com/microsoft/fast/issues/3813 */
-            z-index: 1000;
+            background: ${fillColor};
+            border: calc(${strokeWidth} * 1px) solid transparent;
+            box-shadow: ${elevationShadowFlyout};
+            box-sizing: border-box;
+            color: ${neutralForegroundRest};
             display: flex;
-            width: 100%;
+            fill: currentcolor;
+            flex-direction: column;
+            margin-top: calc(${designUnit} * 2px);
             max-height: 100%;
             min-height: 58px;
-            box-sizing: border-box;
-            flex-direction: column;
             overflow-y: auto;
             overflow-x: hidden;
             pointer-events: auto;
             border-radius: calc(${controlCornerRadius} * 1px);
-            padding: calc(${designUnit} * 1px) 0;
-            border: calc(${strokeWidth} * 1px) solid transparent;
-            ${elevation}
+            padding: calc(${designUnit} * 2px);
+            width: 100%;
+            /* TODO: a mechanism to manage z-index across components
+            https://github.com/microsoft/fast/issues/3813 */
+            z-index: 1000;
         }
 
         .suggestions-available-alert {
