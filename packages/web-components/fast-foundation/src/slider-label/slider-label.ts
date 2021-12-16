@@ -179,7 +179,7 @@ export class SliderLabel extends FoundationElement {
         );
         let rightNum: number = Math.round((1 - pct) * 100);
         let leftNum: number = Math.round(pct * 100);
-        if (leftNum === Number.NaN && rightNum === Number.NaN) {
+        if (Number.isNaN(leftNum) && Number.isNaN(rightNum)) {
             rightNum = 50;
             leftNum = 50;
         }
