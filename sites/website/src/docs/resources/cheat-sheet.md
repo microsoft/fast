@@ -34,9 +34,9 @@ import { FASTElement } from "@microsoft/fast-element";
 
 ---
 
-### [@microsoft/fast-foundation](https://www.fast.design/docs/introduction)
+### [@microsoft/fast-foundation](https://www.fast.design/docs/introduction/#how-can-fast-help-me)
 
-**A library that provides foundational building blocks that can be assembled to create new design systems and component libraries.**
+**This package is a library of Web Component classes, templates, and other utilities intended to be composed into registered Web Components by design systems.**
 
 * Exports of this package can generally be thought of as un-styled base components that implement semantic and accessible markup and behavior.   
 * Use this library when you want to create something like Google's Material Design or Bootstrap.
