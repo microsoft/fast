@@ -41,7 +41,7 @@ import { FASTElement } from "@microsoft/fast-element";
 * Exports of this package can generally be thought of as un-styled base components that implement semantic and accessible markup and behavior.   
 * Use this library when you want to create something like Google's Material Design or Bootstrap.
 
-**Example:**
+**Example**
 
 ```ts
 import {
@@ -92,7 +92,7 @@ yarn add @microsoft/fast-components
 
 To use a component as a custom element in HTML, the custom element must be registered.
 
-**Example:**
+**Example**
 
 ```ts
 import { 
@@ -113,7 +113,7 @@ provideFASTDesignSystem()
 
 ### Setup
 
-**Example:** 
+**Example** 
 
 To register design system components:
 
@@ -140,9 +140,9 @@ import {
 provideFASTDesignSystem().register(allComponents);
 ```
 
-With the components registered, add any component to the HTML:
+With the components registered, add any component to the HTML.
 
-**Example:**
+**Example**
 
 ```html
 <fast-button>Hello world</fast-button>
@@ -155,7 +155,7 @@ Launch our [Component Explorer](https://explore.fast.design/) for a comprehensiv
 ---
 ### [Integrations](https://www.fast.design/docs/integrations/introduction)
 
-FAST libraries can also be used in combination with a wide variety of existing technologies.
+FAST libraries can also be used in combination with a wide variety of existing technologies:
 
 - [Angular](https://www.fast.design/docs/integrations/angular)
 - [ASP.NET](https://www.fast.design/docs/integrations/aspnet)
@@ -179,7 +179,7 @@ There are two main approaches to building a component:
 ### Setup
 
 
-**Example:** 
+**Example** 
 
 To define a custom element:
 
@@ -208,7 +208,7 @@ All attributes defined this way will be automatically registered with the platfo
 
 You can optionally add a method with the naming convention *propertyName*Changed to your class, and this method will be called whenever your property changes, whether it changes through the property or the attribute API.
 
-**Example:**
+**Example**
 
 ```ts
 import { FASTElement, customElement, attr } from "@microsoft/fast-element";
@@ -224,7 +224,7 @@ export class NameTag extends FASTElement {
 }
 ```
 
-**Example:** To use a Web Component with Attributes:
+**Example: To use a Web Component with Attributes**
 
 ```html
 <name-tag greeting="Hola"></name-tag>
@@ -255,7 +255,7 @@ interface ValueConverter {
 }
 ```
 
-**Example:** An Attribute in `Reflect` Mode with No Special Conversion:
+**Example: An Attribute in `Reflect` Mode with No Special Conversion**
 
 ```ts
 import { FASTElement, customElement, attr } from '@microsoft/fast-element';
@@ -266,7 +266,7 @@ export class NameTag extends FASTElement {
 }
 ```
 
-**Example:** An Attribute in `Boolean` Mode with Boolean Conversion:
+**Example: An Attribute in `Boolean` Mode with Boolean Conversion**
 
 ```ts
 import { FASTElement, customElement, attr } from '@microsoft/fast-element';
@@ -277,7 +277,7 @@ export class MyCheckbox extends FASTElement {
 }
 ```
 
-**Example:** An Attribute in `Reflect` Mode with Custom Conversion:
+**Example: An Attribute in `Reflect` Mode with Custom Conversion**
 
 ```ts
 import { FASTElement, customElement, attr, ValueConverter } from '@microsoft/fast-element';
@@ -308,7 +308,7 @@ export class MyCounter extends FASTElement {
 
 To create an HTML template for an element, import and use the `html` tagged template helper and pass the template to the `@customElement` decorator.
 
-**Example:**
+**Example**
 
 ```ts
 import { FASTElement, customElement, attr, html } from "@microsoft/fast-element";
@@ -341,7 +341,7 @@ To enable binding tracking and change notification, properties must be decorated
 
 Use `@attr` for primitive properties (string, bool, number) that are intended to be surfaced on your element as HTML [attributes](#attributes). Use `@observable` for all other property types on an HTMLElement and all observable properties on plain classes.
 
-**Example:**
+**Example**
 
 ```ts
 import { Observable } from "@microsoft/fast-element";
@@ -379,7 +379,7 @@ export class Person {
 
 Use the [`when`](https://www.fast.design/docs/fast-element/using-directives#the-when-directive) directive to conditionally render blocks of HTML.
 
-**Example:**
+**Example**
 
 ```ts
 import { FASTElement, customElement, observable, html, when } from "@microsoft/fast-element";
@@ -405,7 +405,7 @@ export class MyApp extends FASTElement {
 
 Use the [`repeat`](https://www.fast.design/docs/fast-element/using-directives#the-repeat-directive) directive to render a list of data.
 
-**Example:**
+**Example**
 
 ```ts
 import { FASTElement, customElement, observable, html, repeat } from "@microsoft/fast-element";
@@ -451,7 +451,7 @@ Properties available on the context object within a `repeat` block:
 
 To opt into the positioning properties, pass options to the `repeat` directive, with the setting `positioning: true`.
 
-**Example**: Rendering a list with Item Index:
+**Example: Rendering a list with Item Index**
 
 ```ts
 <ul>
@@ -467,7 +467,7 @@ To opt into the positioning properties, pass options to the `repeat` directive, 
 
 `FASTElement` provides a css tagged template helper that allows for the creation of `ElementStyles`.
 
-**Example**: Adding CSS to a `FASTElement`:
+**Example: Adding CSS to a `FASTElement`**
 
 ```ts
 import { FASTElement, customElement } from "@microsoft/fast-element";
@@ -492,7 +492,7 @@ export class MyElement extends FASTElement {}
 
 `ElementStyles` can be composed with other styles.
 
-**Example:**
+**Example**
 
 ```ts
 import { normalize } from "./normalize";
@@ -511,7 +511,7 @@ const styles = css`
 
 Use the `cssPartial` tagged template literal to create reusable blocks of partial CSS.
 
-**Example:**
+**Example**
 
 ```ts
 import { css, cssPartial } from "@microsoft/fast-element";
@@ -526,7 +526,7 @@ const styles = css`:host{ ${partial} }`;
 
 To create a `CSSDirective`, import and extend `CSSDirective` from `@microsoft/fast-element`.
 
-**Example:**
+**Example**
 
 ```ts
 import { CSSDirective }  from "@microsoft/fast-element"
@@ -541,7 +541,7 @@ class RandomWidth extends CSSDirective {}
 
 `CSSDirective` has a `createCSS()` method that returns a string to be interpolated into an `ElementStyles`.
 
-**Example:**
+**Example**
 
 ```ts
 class RandomWidth extends CSSDirective {
@@ -556,7 +556,7 @@ class RandomWidth extends CSSDirective {
 
 The `createBehavior()` method can be used to create a `Behavior` that is bound to the element using the `CSSDirective`.
 
-**Example:**
+**Example**
 
 ```ts
 class RandomWidth extends CSSDirective {
@@ -586,7 +586,7 @@ class RandomWidth extends CSSDirective {
 
 1. Start with the base components defined in `@microsoft/fast-foundation` and compose them with your own styles.
 
-**Example:**
+**Example**
 
 ```ts
 import {
@@ -607,9 +607,9 @@ export const specialButton = Button.compose({
 export const buttonStyles = styles;
 ```
 
-2. Export a `provider function` for your community to use in setting everything up:
+2. Export a `provider function` for your community to use in setting everything up.
 
-**Example:**
+**Example**
 
 ```ts
 export function provideSpecialDesignSystem(element?: HTMLElement): DesignSystem {
@@ -621,7 +621,7 @@ export function provideSpecialDesignSystem(element?: HTMLElement): DesignSystem 
 
 ### [Design tokens](https://www.fast.design/docs/design-systems/design-tokens)
 
-**Example:** [Creating a token](https://www.fast.design/docs/design-systems/design-tokens#create-a-token):
+**Example: [Creating a token](https://www.fast.design/docs/design-systems/design-tokens#create-a-token)**
 
 ```ts
 import { DesignToken } from "@microsoft/fast-foundation";
@@ -630,7 +630,7 @@ import { DesignToken } from "@microsoft/fast-foundation";
 export const specialColor = DesignToken.create<string>("special-color");
 ```
 
-**Example:** [Using design tokens in CSS](https://www.fast.design/docs/design-systems/design-tokens#using-design-tokens-in-css):
+**Example: [Using design tokens in CSS](https://www.fast.design/docs/design-systems/design-tokens#using-design-tokens-in-css)**
 
 ```ts
 // use the design token to build styles
@@ -644,21 +644,21 @@ const ancestor = document.querySelector("my-ancestor") as FASTElement;
 const descendent = ancestor.querySelector("my-descendent") as FASTElement;
 ```
 
-**Example:** [Setting values](https://www.fast.design/docs/design-systems/design-tokens#setting-values):
+**Example: [Setting values](https://www.fast.design/docs/design-systems/design-tokens#setting-values)**
 ```ts
 // change the value for a given element
 specialColor.setValueFor(ancestor, "#FFF");
 specialColor.setValueFor(descendent, "#000");
 ```
 
-**Example:** [Getting values](https://www.fast.design/docs/design-systems/design-tokens#getting-values):
+**Example: [Getting values](https://www.fast.design/docs/design-systems/design-tokens#getting-values)**
 ```ts
 // get the value
 specialColor.getValueFor(ancestor); // "#FFF"
 specialColor.getValueFor(descendent); // "#000"
 ```
 
-**Example:** [Deleting values](https://www.fast.design/docs/design-systems/design-tokens#deleting-values):
+**Example: [Deleting values](https://www.fast.design/docs/design-systems/design-tokens#deleting-values)**
 ```ts
 // unset the value (inherits from ancestor)
 specialColor.deleteValueFor(descendent);
@@ -671,7 +671,7 @@ specialColor.getValueFor(descendent); // "#FFF"
 
 FAST exposes non-color related [Design Tokens](https://www.fast.design/docs/design-systems/fast-frame#fast-frame-design-tokens) that can be used to configure components stylistically.  For Design Tokens related to color, see the [adaptive color system](https://www.fast.design/docs/design-systems/fast-frame/#adaptive-color-system).
 
-**Example**: Changing the value for the `typeRampBaseFontSize` design token:
+**Example: Changing the value for the `typeRampBaseFontSize` design token**
 
 ```ts
 import { typeRampBaseFontSize } from "@microsoft/fast-components";
