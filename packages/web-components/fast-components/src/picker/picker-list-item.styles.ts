@@ -7,15 +7,20 @@ import {
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
-    accentFillActive,
     bodyFont,
     controlCornerRadius,
     designUnit,
     focusStrokeOuter,
     focusStrokeWidth,
-    foregroundOnAccentActive,
+    neutralFillStealthActive,
+    neutralFillStealthFocus,
+    neutralFillStealthHover,
+    neutralFillStealthRest,
+    neutralForegroundActive,
+    neutralForegroundFocus,
+    neutralForegroundHover,
     neutralForegroundRest,
-    neutralLayer3,
+    strokeWidth,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
 } from "../design-tokens";
@@ -33,46 +38,51 @@ export const pickerListItemStyles: (
     definition: FoundationElementDefinition
 ) =>
     css`
-:host {
-    display: flex;
-    align-items: center;
-    justify-items: center;
-    font-family: ${bodyFont};
-    border-radius: calc(${controlCornerRadius} * 1px);
-    border: calc(${focusStrokeWidth} * 1px) solid transparent;
-    box-sizing: border-box;
-    color: ${neutralForegroundRest};
-    cursor: pointer;
-    fill: currentcolor;
-    font-size: ${typeRampBaseFontSize};
-    height: calc(${heightNumber} * 1px);
-    line-height: ${typeRampBaseLineHeight};
-    outline: none;
-    overflow: hidden;
-    padding: 0 calc(${designUnit} * 2.25px);
-    user-select: none;
-    white-space: nowrap;
-}
+        :host {
+            align-items: center;
+            background: ${neutralFillStealthRest};
+            border-radius: calc(${controlCornerRadius} * 1px);
+            border: calc(${strokeWidth} * 1px) solid transparent;
+            box-sizing: border-box;
+            display: flex;
+            color: ${neutralForegroundRest};
+            cursor: pointer;
+            fill: currentcolor;
+            font-family: ${bodyFont};
+            font-size: ${typeRampBaseFontSize};
+            height: calc(${heightNumber} * 1px);
+            justify-items: center;
+            line-height: ${typeRampBaseLineHeight};
+            outline: none;
+            overflow: hidden;
+            padding: 0 calc(${designUnit} * 2.25px);
+            user-select: none;
+            white-space: nowrap;
+        }
 
-:host(:${focusVisible}),
-:host(:hover) {
-    background: ${neutralLayer3};
-    color: ${neutralForegroundRest};
-}
+        :host(:hover) {
+            background: ${neutralFillStealthHover};
+            color: ${neutralForegroundHover};
+        }
 
-:host(:focusVisible) {
-    border-color: ${focusStrokeOuter};
-}
+        :host(:active) {
+            background: ${neutralFillStealthActive};
+            color: ${neutralForegroundActive};
+        }
 
-:host([aria-selected="true"]) {
-    background: ${accentFillActive};
-    color: ${foregroundOnAccentActive};
+        :host(:${focusVisible}) {
+            background: ${neutralFillStealthFocus};
+            border-color: ${focusStrokeOuter};
+            box-shadow: 0 0 0 calc((${focusStrokeWidth} - ${strokeWidth}) * 1px) ${focusStrokeOuter} inset;
+            color: ${neutralForegroundFocus};
+        }
 }`.withBehaviors(
         forcedColorsStylesheetBehavior(
             css`
                 :host {
-                    border-color: transparent;
                     forced-color-adjust: none;
+                    background: ${SystemColors.ButtonFace};
+                    border-color: transparent;
                     color: ${SystemColors.ButtonText};
                     fill: currentcolor;
                 }
@@ -80,6 +90,13 @@ export const pickerListItemStyles: (
                 :host(:not([aria-selected="true"]):hover),
                 :host([aria-selected="true"]) {
                     background: ${SystemColors.Highlight};
+                    color: ${SystemColors.HighlightText};
+                }
+
+                :host(:${focusVisible}) {
+                    background: ${SystemColors.Highlight};
+                    border-color: ${SystemColors.Highlight};
+                    box-shadow: 0 0 0 calc((${focusStrokeWidth} - ${strokeWidth}) * 1px) ${SystemColors.HighlightText} inset;
                     color: ${SystemColors.HighlightText};
                 }
 
