@@ -11,7 +11,7 @@ custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/src
 
 ### [@microsoft/fast-element](https://www.fast.design/docs/fast-element/getting-started)
 
-**A library that is a lightweight means to easily build performant, memory-efficient, standards-compliant Web Components.**
+**A lightweight library for building performant, memory-efficient, standards-compliant Web Components.**
 
 * Provides a thin layer of opinion on top of [Web Components](https://www.fast.design/docs/resources/why-web-components), lifting the level of abstraction just enough to make it easier and faster to [build components]((#building-components)).   
 * Use this library when you want to create new custom web components. 
