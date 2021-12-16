@@ -95,6 +95,7 @@ export const CalendarStyles = css`
         outline-offset: -1px;
         line-height: var(--cell-line-height);
         white-space: normal;
+        border-radius: calc(${controlCornerRadius} * 1px);
     }
 
     .day:${focusVisible},
@@ -155,7 +156,6 @@ export const CalendarStyles = css`
     .interact .today:not(.disabled, .inactive):hover {
         background: ${accentFillRest};
         color: ${foregroundOnAccentRest};
-        border-radius: calc(${controlCornerRadius} * 1px);
     }
 
     .today.inactive .date {

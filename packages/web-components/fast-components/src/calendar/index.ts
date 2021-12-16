@@ -1,9 +1,15 @@
 import {
     calendarTemplate,
     CalendarTitleTemplate,
+    composedParent,
     Calendar as FoundationCalendar,
 } from "@microsoft/fast-foundation";
-import { fillColor, neutralLayerFloating } from "../design-tokens";
+import { Swatch } from "../color/swatch";
+import {
+    fillColor,
+    neutralFillLayerRecipe,
+    neutralFillLayerRest,
+} from "../design-tokens";
 import { CalendarStyles as styles } from "./calendar.styles";
 
 /**
@@ -17,7 +23,17 @@ export class Calendar extends FoundationCalendar {
     public connectedCallback(): void {
         super.connectedCallback();
 
-        fillColor.setValueFor(this, neutralLayerFloating);
+        const parent = composedParent(this);
+
+        if (parent) {
+            fillColor.setValueFor(
+                this,
+                (target: HTMLElement): Swatch =>
+                    neutralFillLayerRecipe
+                        .getValueFor(target)
+                        .evaluate(target, fillColor.getValueFor(parent))
+            );
+        }
     }
 }
 
