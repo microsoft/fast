@@ -6,37 +6,46 @@ import { fixture } from "../test-utilities/fixture";
 import { timeout } from "../test-utilities/timeout";
 import { Select, selectTemplate as template } from "./index";
 
-const FASTSelect = Select.compose({
-    baseName: "select",
-    template
-})
-
-const FASTOption = ListboxOption.compose({
-    baseName: "option",
-    template: listboxOptionTemplate,
-})
-
-async function setup() {
-    const { element, connect, disconnect, parent } = await fixture([FASTSelect(), FASTOption()]);
-
-    const option1 = document.createElement("fast-option") as ListboxOption;
-    option1.value = "one";
-
-    const option2 = document.createElement("fast-option") as ListboxOption;
-    option2.value = "two";
-
-    const option3 = document.createElement("fast-option") as ListboxOption;
-    option3.value = "three";
-
-    element.appendChild(option1);
-    element.appendChild(option2);
-    element.appendChild(option3);
-
-    return { element, connect, disconnect, document, option1, option2, option3, parent };
-}
-
-// TODO: Need to add tests for keyboard handling & focus management
 describe("Select", () => {
+    const FASTSelect = Select.compose({
+        baseName: "select",
+        template
+    })
+
+    const FASTOption = ListboxOption.compose({
+        baseName: "option",
+        template: listboxOptionTemplate,
+    });
+
+    async function setup() {
+        const { element, connect, disconnect, parent } = await fixture([FASTSelect(), FASTOption()]);
+
+        const option1 = document.createElement("fast-option") as ListboxOption;
+        option1.value = "one";
+
+        const option2 = document.createElement("fast-option") as ListboxOption;
+        option2.value = "two";
+
+        const option3 = document.createElement("fast-option") as ListboxOption;
+        option3.value = "three";
+
+        element.appendChild(option1);
+        element.appendChild(option2);
+        element.appendChild(option3);
+
+        return { element, connect, disconnect, document, option1, option2, option3, parent };
+    }
+
+    it("should have a role of `combobox`", async () => {
+        const { element, connect, disconnect } = await setup();
+
+        await connect();
+
+        expect(element.getAttribute("role")).to.equal("combobox");
+
+        await disconnect();
+    });
+
     it("should set the `aria-disabled` attribute equal to the `disabled` value", async () => {
         const { element, connect, disconnect } = await setup();
 
@@ -749,5 +758,57 @@ describe("Select", () => {
 
             await disconnect();
         });
+    });
+
+    it("should set the `aria-activedescendant` attribute to the ID of the currently selected option", async () => {
+        const { connect, disconnect, element, option1, option2, option3 } = await setup();
+
+        await connect();
+
+        await DOM.nextUpdate();
+
+        expect(element.getAttribute("aria-activedescendant")).to.exist.and.equal(option1.id);
+
+        element.selectNextOption();
+
+        await DOM.nextUpdate();
+
+        expect(element.getAttribute("aria-activedescendant")).to.equal(option2.id);
+
+        element.selectNextOption();
+
+        await DOM.nextUpdate();
+
+        expect(element.getAttribute("aria-activedescendant")).to.equal(option3.id);
+
+        await disconnect();
+    });
+
+    it("should set the `aria-controls` attribute to the ID of the internal listbox element while open", async () => {
+        const { connect, disconnect, element } = await setup();
+
+        await connect();
+
+        expect(element.listbox).to.exist;
+
+        const listboxId = element.listbox.id;
+
+        expect(element.getAttribute("aria-controls")).to.exist;
+
+        expect(element.getAttribute("aria-controls")).to.be.empty;
+
+        element.open = true;
+
+        await DOM.nextUpdate();
+
+        expect(element.getAttribute("aria-controls")).to.equal(listboxId);
+
+        element.open = false;
+
+        await DOM.nextUpdate();
+
+        expect(element.getAttribute("aria-controls")).to.be.empty;
+
+        await disconnect();
     });
 });

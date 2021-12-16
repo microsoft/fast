@@ -5,41 +5,52 @@ import { ListboxOption, listboxOptionTemplate } from "../listbox-option";
 import { fixture } from "../test-utilities/fixture";
 import { Combobox, comboboxTemplate as template } from "./index";
 
-const FASTCombobox = Combobox.compose({
-    baseName: "combobox",
-    template
-})
-
-const FASTOption = ListboxOption.compose({
-    baseName: "option",
-    template: listboxOptionTemplate
-})
-
-async function setup() {
-    const { element, connect, disconnect, parent } = await fixture(
-        [FASTCombobox(), FASTOption()]
-    );
-
-    element.id = "combobox";
-
-    const option1 = document.createElement("fast-option") as ListboxOption;
-    option1.textContent = "one";
-
-    const option2 = document.createElement("fast-option") as ListboxOption;
-    option2.textContent = "two";
-
-    const option3 = document.createElement("fast-option") as ListboxOption;
-    option3.textContent = "three";
-
-    element.appendChild(option1);
-    element.appendChild(option2);
-    element.appendChild(option3);
-
-    return { element, connect, disconnect, document, option1, option2, option3, parent };
-}
-
-// TODO: Need to add tests for keyboard handling & focus management
 describe("Combobox", () => {
+    const FASTCombobox = Combobox.compose({
+        baseName: "combobox",
+        template
+    })
+
+    const FASTOption = ListboxOption.compose({
+        baseName: "option",
+        template: listboxOptionTemplate
+    })
+
+    async function setup() {
+        const { element, connect, disconnect, parent } = await fixture(
+            [FASTCombobox(), FASTOption()]
+        );
+
+        element.id = "combobox";
+
+        const option1 = document.createElement("fast-option") as ListboxOption;
+        option1.textContent = "one";
+
+        const option2 = document.createElement("fast-option") as ListboxOption;
+        option2.textContent = "two";
+
+        const option3 = document.createElement("fast-option") as ListboxOption;
+        option3.textContent = "three";
+
+        element.appendChild(option1);
+        element.appendChild(option2);
+        element.appendChild(option3);
+
+        return { element, connect, disconnect, document, option1, option2, option3, parent };
+    }
+
+    it("should include a control with a role of `combobox`", async () => {
+        const { element, connect, disconnect } = await setup();
+
+        await connect();
+
+        expect(element.control).to.exist;
+
+        expect(element.control.getAttribute("role")).to.equal("combobox");
+
+        await disconnect();
+    });
+
     it("should set the `aria-disabled` attribute equal to the `disabled` value", async () => {
         const { element, connect, disconnect } = await setup();
 
@@ -297,6 +308,86 @@ describe("Combobox", () => {
         label.click();
 
         expect(document.activeElement).to.equal(element);
+
+        await disconnect();
+    });
+
+    it("should set the control's `aria-activedescendant` property to the ID of the currently selected option while open", async () => {
+        const { connect, disconnect, element, option1, option2, option3 } = await setup();
+
+        await connect();
+
+        await DOM.nextUpdate();
+
+        expect(element.control).to.exist;
+
+        expect(option1.id).to.exist;
+
+        expect(option2.id).to.exist;
+
+        expect(option3.id).to.exist;
+
+        expect(element.control.getAttribute("aria-activedescendant")).to.be.null;
+
+        element.open = true;
+
+        await DOM.nextUpdate();
+
+        expect(element.control.getAttribute("aria-activedescendant")).to.exist.and.be.empty;
+
+        element.selectNextOption();
+
+        await DOM.nextUpdate();
+
+        expect(element.control.getAttribute("aria-activedescendant")).to.equal(option1.id);
+
+        element.selectNextOption();
+
+        await DOM.nextUpdate();
+
+        expect(element.control.getAttribute("aria-activedescendant")).to.equal(option2.id);
+
+        element.selectNextOption();
+
+        await DOM.nextUpdate();
+
+        expect(element.control.getAttribute("aria-activedescendant")).to.equal(option3.id);
+
+        element.value = "other";
+
+        await DOM.nextUpdate();
+
+        expect(element.control.getAttribute("aria-activedescendant")).to.be.empty;
+
+        await disconnect();
+    });
+
+    it("should set the control's `aria-controls` attribute to the ID of the internal listbox element while open", async () => {
+        const { connect, disconnect, element } = await setup();
+
+        await connect();
+
+        expect(element.control).to.exist;
+
+        expect(element.listbox).to.exist;
+
+        const listboxId = element.listbox.id;
+
+        expect(element.control.getAttribute("aria-controls")).to.exist;
+
+        expect(element.control.getAttribute("aria-controls")).to.be.empty;
+
+        element.open = true;
+
+        await DOM.nextUpdate();
+
+        expect(element.control.getAttribute("aria-controls")).to.equal(listboxId);
+
+        element.open = false;
+
+        await DOM.nextUpdate();
+
+        expect(element.control.getAttribute("aria-controls")).to.be.empty;
 
         await disconnect();
     });
