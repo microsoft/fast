@@ -231,7 +231,7 @@ To use a Web Component with Attributes:
 
 #### [Customizing attributes](https://www.fast.design/docs/fast-element/defining-elements#customizing-attributes):
 
-The three modes available through the `mode` property of the attribute configuration:
+There are three modes available through the `mode` property of the attribute configuration:
 
 | Mode | Guidance |
 | :-- | :-- | 
@@ -241,7 +241,9 @@ The three modes available through the `mode` property of the attribute configura
 
 ---
 
-Supply a custom `ValueConverter` by setting the converter property of the attribute configuration:
+In addition to setting the mode, you can also supply a custom `ValueConverter` by setting the `converter` property of the attribute configuration. 
+
+The converter must implement the following interface:
 
 ```ts
 interface ValueConverter {
@@ -250,9 +252,33 @@ interface ValueConverter {
 }
 ```
 
-**Example:**
+**Example:** An Attribute in `Reflect` Mode with No Special Conversion:
 
 ```ts
+import { FASTElement, customElement, attr } from '@microsoft/fast-element';
+
+@customElement('name-tag')
+export class NameTag extends FASTElement {
+  @attr greeting: string = 'Hello';
+}
+```
+
+**Example:** An Attribute in `Boolean` Mode with Boolean Conversion:
+
+```ts
+import { FASTElement, customElement, attr } from '@microsoft/fast-element';
+
+@customElement('my-checkbox')
+export class MyCheckbox extends FASTElement {
+  @attr({ mode: 'boolean' }) disabled: boolean = false;
+}
+```
+
+**Example:** An Attribute in `Reflect` Mode with Custom Conversion:
+
+```ts
+import { FASTElement, customElement, attr, ValueConverter } from '@microsoft/fast-element';
+
 const numberConverter: ValueConverter = {
   toView(value: number): string {
     return String(value);
