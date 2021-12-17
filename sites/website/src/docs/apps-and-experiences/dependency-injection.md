@@ -19,6 +19,8 @@ To address these challenges, FAST introduces the concept of a *dependency inject
 DI Containers can exist in a hierarchy, allowing child containers to override the dependencies of the parent, but typically there is one root container in which all the system's services are registered. In a typical FAST application, you will want this container to be associated with the `document.body` so that all UI component children can gain access to its capabilities. Here's how you would create that root container:
 
 ```ts
+import { DI } from "@microsoft/fast-foundation";
+
 const container = DI.getOrCreateDOMContainer();
 ```
 
@@ -42,6 +44,8 @@ Once you have a container, you can use it to register and retrieve system depend
 The FAST DI can handle any kind of dependency, including primitive values like strings. Simply register a `ServiceBaseURL` with the container and any HTTP service that needs it can simply request it by key. This allows for a centralized configuration, making it easy to swap out in different environments. Here's how you define a strongly typed *key* that symbolizes an interface to a dependency.
 
 ```ts
+import { DI } from "@microsoft/fast-foundation";
+
 export const ServiceBaseURL = DI.createInterface<string>();
 ```
 

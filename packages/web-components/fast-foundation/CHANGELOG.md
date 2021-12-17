@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Thu, 02 Dec 2021 07:11:13 GMT and should not be manually modified.
+This log was last generated on Wed, 15 Dec 2021 07:14:44 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.27.2
+
+Wed, 15 Dec 2021 07:14:44 GMT
+
+### Patches
+
+- focus on combobox control when clicking an associated label (john.kreitlow@microsoft.com)
 
 ## 2.27.1
 

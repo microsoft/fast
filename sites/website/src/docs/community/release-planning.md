@@ -2,7 +2,7 @@
 id: release-planning
 title: Release Planning
 sidebar_label: Release Planning
-custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/src/docs/engineering/release-planning.md
+custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/src/docs/community/release-planning.md
 ---
 
 In order to both provide features and fixes to our community, while not creating unnecessary breaking changes or churn, FAST has adopted the following release planning process and policies.

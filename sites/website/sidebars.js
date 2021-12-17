@@ -128,10 +128,7 @@ module.exports = {
                 {
                     type: "category",
                     label: "Engineering Process",
-                    items: [
-                        "engineering/issue-management",
-                        "engineering/release-planning",
-                    ],
+                    items: ["community/issue-management", "community/release-planning"],
                 },
             ],
         },
@@ -145,6 +142,7 @@ module.exports = {
                 "resources/browser-support",
                 "resources/acknowledgements",
                 "resources/glossary",
+                "resources/cheat-sheet",
                 "resources/faq",
             ],
         },
