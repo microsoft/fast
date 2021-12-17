@@ -142,6 +142,7 @@ module.exports = {
                 "resources/browser-support",
                 "resources/acknowledgements",
                 "resources/glossary",
+                "resources/cheat-sheet",
                 "resources/faq",
             ],
         },
