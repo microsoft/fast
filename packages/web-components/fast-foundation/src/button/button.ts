@@ -158,7 +158,7 @@ export class Button extends FormAssociatedButton {
         this.proxy.setAttribute("type", this.type);
         this.handleUnsupportedDelegatesFocus();
 
-        const elements = Array.from(this.control?.children) as HTMLSpanElement[]
+        const elements = Array.from(this.control?.children) as HTMLSpanElement[];
         if (elements) {
             elements.forEach((span: HTMLSpanElement) => {
                 span.addEventListener("click", this.handleClick);
@@ -172,7 +172,7 @@ export class Button extends FormAssociatedButton {
     public disconnectedCallback(): void {
         super.disconnectedCallback();
 
-        const elements = Array.from(this.control?.children) as HTMLSpanElement[]
+        const elements = Array.from(this.control?.children) as HTMLSpanElement[];
         if (elements) {
             elements.forEach((span: HTMLSpanElement) => {
                 span.removeEventListener("click", this.handleClick);

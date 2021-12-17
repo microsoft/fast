@@ -605,7 +605,7 @@ describe("Button", () => {
 
             const elements = element.shadowRoot?.querySelectorAll("span");
             if (elements) {
-               const spans : HTMLSpanElement[]=  Array.from(elements)
+               const spans : HTMLSpanElement[] = Array.from(elements)
                spans.forEach((span: HTMLSpanElement) => {
                    span.click()
                    expect(wasClicked).to.equal(false);
