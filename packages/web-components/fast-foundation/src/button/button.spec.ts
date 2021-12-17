@@ -587,7 +587,7 @@ describe("Button", () => {
             await disconnect();
         });
 
-        it("should not propagate when contents of shadowRoot is clicked", async () => {
+        it("should not propagate when spans within shadowRoot are clicked", async () => {
             const { connect, disconnect, element, parent } = await setup();
 
             element.disabled = true;
@@ -606,6 +606,19 @@ describe("Button", () => {
             shadowSpan?.click()
 
             expect(wasClicked).to.equal(false);
+
+            const spans = element.shadowRoot?.querySelectorAll('span')
+            if (spans) {
+                const shadowStartSpan = spans[0] as HTMLSpanElement
+                shadowStartSpan?.click()
+
+                expect(wasClicked).to.equal(false);
+
+                const shadowEndSpan = spans[spans.length-1] as HTMLSpanElement
+                shadowEndSpan?.click()
+
+                expect(wasClicked).to.equal(false);
+            }
 
             await disconnect();
         });
