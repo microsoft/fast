@@ -140,7 +140,7 @@ export class HorizontalScroll extends FoundationElement {
      * Attribute to hide flippers from assistive technology
      * @public
      */
-    @attr({ attribute: "aria-hidden", converter: booleanConverter })
+    @attr({ attribute: "hide-flippers", converter: booleanConverter })
     public flippersHiddenFromAT: boolean = false;
 
     /**
