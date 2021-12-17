@@ -602,22 +602,14 @@ describe("Button", () => {
             })
 
             await DOM.nextUpdate();
-            const shadowSpan = element.shadowRoot?.querySelector('span.content') as HTMLSpanElement
-            shadowSpan?.click()
 
-            expect(wasClicked).to.equal(false);
-
-            const spans = element.shadowRoot?.querySelectorAll('span')
-            if (spans) {
-                const shadowStartSpan = spans[0] as HTMLSpanElement
-                shadowStartSpan?.click()
-
-                expect(wasClicked).to.equal(false);
-
-                const shadowEndSpan = spans[spans.length-1] as HTMLSpanElement
-                shadowEndSpan?.click()
-
-                expect(wasClicked).to.equal(false);
+            const elements = element.shadowRoot?.querySelectorAll("span");
+            if (elements) {
+               const spans : HTMLSpanElement[]=  Array.from(elements)
+               spans.forEach((span: HTMLSpanElement) => {
+                   span.click()
+                   expect(wasClicked).to.equal(false);
+               }) 
             }
 
             await disconnect();

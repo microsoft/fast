@@ -38,7 +38,6 @@ export class StartEnd {
             this.start.assignedNodes().length > 0
         );
     }
-    public handleClick;
     public end: HTMLSlotElement;
     public endContainer: HTMLSpanElement;
     public handleEndContentChange(): void {
@@ -63,7 +62,6 @@ export const endSlotTemplate: (
         part="end"
         ${ref("endContainer")}
         class=${x => (definition.end ? "end" : void 0)}
-        @click="${(x, c) => x.handleClick(c.event as Event)}"
     >
         <slot name="end" ${ref("end")} @slotchange="${x => x.handleEndContentChange()}">
             ${definition.end || ""}
@@ -88,7 +86,6 @@ export const startSlotTemplate: (
         part="start"
         ${ref("startContainer")}
         class="${x => (definition.start ? "start" : void 0)}"
-        @click="${(x, c) => x.handleClick(c.event as Event)}"
     >
         <slot
             name="start"

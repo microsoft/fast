@@ -254,6 +254,8 @@ export class Button extends FormAssociatedButton {
     autofocus: boolean;
     // @internal (undocumented)
     connectedCallback(): void;
+    // @internal (undocumented)
+    disconnectedCallback(): void;
     // (undocumented)
     control: HTMLButtonElement;
     defaultSlottedContent: HTMLElement[];

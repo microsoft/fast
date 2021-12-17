@@ -56,7 +56,6 @@ export const buttonTemplate: (
         <span
             class="content"
             part="content"
-            @click="${(x, c) => x.handleClick(c.event as Event)}"
         >
             <slot ${slotted("defaultSlottedContent")}></slot>
         </span>
