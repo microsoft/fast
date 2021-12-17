@@ -38,6 +38,7 @@ export class StartEnd {
             this.start.assignedNodes().length > 0
         );
     }
+    
     public end: HTMLSlotElement;
     public endContainer: HTMLSpanElement;
     public handleEndContentChange(): void {
