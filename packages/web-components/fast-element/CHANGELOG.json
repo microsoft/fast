@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-element",
   "entries": [
     {
+      "date": "Sun, 19 Dec 2021 07:12:39 GMT",
+      "tag": "@microsoft/fast-element_v1.6.2",
+      "version": "1.6.2",
+      "comments": {
+        "none": [
+          {
+            "comment": "minor fixes",
+            "author": "steph@huynhicode.dev",
+            "commit": "5056e83234e1c758375fa4882943d104fb476ca2",
+            "package": "@microsoft/fast-element"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 14 Dec 2021 07:12:12 GMT",
       "tag": "@microsoft/fast-element_v1.6.2",
       "version": "1.6.2",

@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-components
 
-This log was last generated on Wed, 15 Dec 2021 07:14:44 GMT and should not be manually modified.
+This log was last generated on Sun, 19 Dec 2021 07:12:39 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.16.9
+
+Sun, 19 Dec 2021 07:12:39 GMT
+
+### Patches
+
+- add horizontal scroll example for use with fast-components (sethdonohue@Admins-MBP.guest.corp.microsoft.com)
 
 ## 2.16.8
 
