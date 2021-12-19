@@ -1,7 +1,0 @@
-{
-  "type": "none",
-  "comment": "add link to issue describing decorator incompatibility issues with create-react-app",
-  "packageName": "@microsoft/fast-foundation",
-  "email": "nicholasrice@users.noreply.github.com",
-  "dependentChangeType": "none"
-}
