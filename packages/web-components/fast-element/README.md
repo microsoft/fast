@@ -56,3 +56,7 @@ The markup above always references the latest release. When deploying to product
 :::note
 For simplicity, examples throughout the documentation will assume the library has been installed from NPM, but you can always replace the import location with the CDN URL.
 :::
+
+:::tip
+Looking for a quick guide on building components?  Check out [our Sheet Cheat](https://www.fast.design/docs/resources/cheat-sheet).
+:::
