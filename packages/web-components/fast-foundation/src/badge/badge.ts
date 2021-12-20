@@ -17,7 +17,7 @@ export class Badge extends FoundationElement {
     public fill: string;
 
     /**
-     * Indicates the badge should have a filled style.
+     * Indicates the badge's color.
      *
      * @public
      * @remarks
