@@ -1,8 +1,8 @@
-import type { Container } from "../di/di";
 import type {
     Constructable,
     PartialFASTElementDefinition,
 } from "@microsoft/fast-element";
+import type { Container } from "../di/di";
 import type { ComponentPresentation } from "./component-presentation";
 
 /**

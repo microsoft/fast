@@ -1,8 +1,26 @@
 # Change Log - @microsoft/fast-web-utilities
 
-This log was last generated on Sun, 19 Sep 2021 07:17:17 GMT and should not be manually modified.
+This log was last generated on Sun, 31 Oct 2021 07:17:45 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 5.0.2
+
+Sun, 31 Oct 2021 07:17:45 GMT
+
+### Patches
+
+- update fast eslint package version (chhol@microsoft.com)
+
+## 5.0.1
+
+Wed, 13 Oct 2021 01:53:37 GMT
+
+### Patches
+
+- remove prefix from uniqueId function (john.kreitlow@microsoft.com)
+- remove throttle function (john.kreitlow@microsoft.com)
+- refactor: remove lodash-es as a dependency (connor@peet.io)
 
 ## 5.0.0
 

@@ -12,7 +12,7 @@ import { selectStyles as styles } from "./select.styles";
  *
  * @public
  * @remarks
- * Generates HTML Element: \<fast-select\>
+ * Generates HTML Element: `<fast-select>`
  *
  */
 export const fastSelect = Select.compose<SelectOptions>({
@@ -34,13 +34,9 @@ export const fastSelect = Select.compose<SelectOptions>({
 });
 
 /**
- * Styles for Select
- * @public
- */
-export const selectStyles = styles;
-
-/**
  * Base class for Select
  * @public
  */
 export { Select };
+
+export { styles as selectStyles };

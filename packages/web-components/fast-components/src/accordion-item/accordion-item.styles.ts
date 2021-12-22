@@ -23,6 +23,10 @@ import {
 } from "../design-tokens";
 import { heightNumber } from "../styles/size";
 
+/**
+ * Styles for AccordionItem
+ * @public
+ */
 export const accordionItemStyles: (
     context: ElementDefinitionContext,
     definition: AccordionItemOptions
@@ -39,7 +43,7 @@ export const accordionItemStyles: (
         line-height: ${typeRampMinus1LineHeight};
         border-bottom: calc(${strokeWidth} * 1px) solid ${neutralStrokeDividerRest};
     }
-    
+
     .region {
         display: none;
         padding: calc((6 + (${designUnit} * 2 * ${density})) * 1px);
@@ -49,7 +53,6 @@ export const accordionItemStyles: (
         display: grid;
         position: relative;
         grid-template-columns: auto 1fr auto calc(${heightNumber} * 1px);
-        z-index: 2;
     }
 
     .button {
@@ -82,7 +85,6 @@ export const accordionItemStyles: (
         left: 0;
         right: 0;
         bottom: 0;
-        z-index: 1;
         cursor: pointer;
     }
 
@@ -101,8 +103,8 @@ export const accordionItemStyles: (
         align-items: center;
         justify-content: center;
         grid-column: 4;
-        z-index: 2;
         pointer-events: none;
+        position: relative;
     }
 
     slot[name="expanded-icon"],
@@ -121,7 +123,7 @@ export const accordionItemStyles: (
     slot[name="expanded-icon"] {
         display: none;
     }
-    
+
     :host([expanded]) slot[name="expanded-icon"] {
         display: flex;
     }
@@ -132,7 +134,7 @@ export const accordionItemStyles: (
         padding-inline-start: calc(${designUnit} * 1px);
         justify-content: center;
         grid-column: 1;
-        z-index: 2;
+        position: relative;
     }
 
     .end {
@@ -140,7 +142,7 @@ export const accordionItemStyles: (
         align-items: center;
         justify-content: center;
         grid-column: 3;
-        z-index: 2;
+        position: relative;
     }
 `.withBehaviors(
         forcedColorsStylesheetBehavior(

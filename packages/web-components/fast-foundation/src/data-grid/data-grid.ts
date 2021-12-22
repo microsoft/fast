@@ -86,6 +86,11 @@ export interface ColumnDefinition {
      */
 
     cellFocusTargetCallback?: (cell: DataGridCell) => HTMLElement;
+
+    /**
+     * Whether this column is the row header
+     */
+    isRowHeader?: boolean;
 }
 
 /**
@@ -311,6 +316,7 @@ export class DataGrid extends FoundationElement {
             { positioning: true }
         ).createBehavior(this.rowsPlaceholder);
 
+        /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */
         this.$fastController.addBehaviors([this.rowsRepeatBehavior!]);
 
         this.addEventListener("row-focused", this.handleRowFocus);
@@ -501,7 +507,7 @@ export class DataGrid extends FoundationElement {
         const focusRow: Element = this.rowElements[focusRowIndex];
 
         const cells: NodeListOf<Element> = focusRow.querySelectorAll(
-            '[role="cell"], [role="gridcell"], [role="columnheader"]'
+            '[role="cell"], [role="gridcell"], [role="columnheader"], [role="rowheader"]'
         );
 
         const focusColumnIndex = Math.max(0, Math.min(cells.length - 1, columnIndex));
@@ -571,7 +577,7 @@ export class DataGrid extends FoundationElement {
         /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
         observer: MutationObserver
     ): void => {
-        if (mutations!.length) {
+        if (mutations && mutations.length) {
             mutations.forEach((mutation: MutationRecord): void => {
                 mutation.addedNodes.forEach((newNode: Node): void => {
                     if (

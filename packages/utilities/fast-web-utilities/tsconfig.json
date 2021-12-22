@@ -3,6 +3,8 @@
     "compilerOptions": {
         "baseUrl": ".",
         "outDir": "./dist",
+        "strictNullChecks": false,
+        "strictPropertyInitialization": false,
         "allowJs": true,
         "types": [
             "mocha",

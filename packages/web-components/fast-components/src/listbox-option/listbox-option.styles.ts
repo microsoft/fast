@@ -1,11 +1,13 @@
-import { css, ElementStyles } from "@microsoft/fast-element";
+import { css } from "@microsoft/fast-element";
+import type { ElementStyles } from "@microsoft/fast-element";
 import {
     disabledCursor,
     display,
-    ElementDefinitionContext,
     focusVisible,
     forcedColorsStylesheetBehavior,
-    FoundationElementDefinition,
+} from "@microsoft/fast-foundation";
+import type {
+    FoundationElementTemplate,
     ListboxOptionOptions,
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
@@ -32,13 +34,14 @@ import {
 } from "../design-tokens";
 import { heightNumber } from "../styles/size";
 
-export const optionStyles: (
-    context: ElementDefinitionContext,
-    definition: ListboxOptionOptions
-) => ElementStyles = (
-    context: ElementDefinitionContext,
-    definition: ListboxOptionOptions
-) =>
+/**
+ * Styles for Option
+ * @public
+ */
+export const optionStyles: FoundationElementTemplate<
+    ElementStyles,
+    ListboxOptionOptions
+> = (context, definition) =>
     css`
     ${display("inline-flex")} :host {
         align-items: center;
@@ -48,6 +51,7 @@ export const optionStyles: (
         box-sizing: border-box;
         color: ${neutralForegroundRest};
         cursor: pointer;
+        flex: 0 0 auto;
         fill: currentcolor;
         font-size: ${typeRampBaseFontSize};
         height: calc(${heightNumber} * 1px);
@@ -82,11 +86,7 @@ export const optionStyles: (
         color: ${foregroundOnAccentActive};
     }
 
-    :host(:not([aria-selected="true"]):hover) {
-        background: ${neutralFillHover};
-        color: ${neutralForegroundRest};
-    }
-
+    :host(:not([aria-selected="true"]):hover),
     :host(:not([aria-selected="true"]):active) {
         background: ${neutralFillHover};
         color: ${neutralForegroundRest};
@@ -127,7 +127,6 @@ export const optionStyles: (
     ::slotted([slot="start"]) {
         margin-inline-end: 1ch;
     }
-
 `.withBehaviors(
         forcedColorsStylesheetBehavior(
             css`

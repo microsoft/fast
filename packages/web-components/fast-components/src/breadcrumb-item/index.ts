@@ -12,7 +12,7 @@ import { breadcrumbItemStyles as styles } from "./breadcrumb-item.styles";
  *
  * @public
  * @remarks
- * Generates HTML Element: \<fast-breadcrumb-item\>
+ * Generates HTML Element: `<fast-breadcrumb-item>`
  */
 export const fastBreadcrumbItem = BreadcrumbItem.compose<BreadcrumbItemOptions>({
     baseName: "breadcrumb-item",
@@ -29,3 +29,5 @@ export const fastBreadcrumbItem = BreadcrumbItem.compose<BreadcrumbItemOptions>(
  * @public
  */
 export { BreadcrumbItem };
+
+export { styles as breadcrumbItemStyles };

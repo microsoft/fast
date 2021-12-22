@@ -15,7 +15,7 @@ export function wrapInBounds(min: number, max: number, value: number): number {
 
 /**
  * Ensures that a value is between a min and max value. If value is lower than min, min will be returned.
- * If value is greater than max, max will be retured.
+ * If value is greater than max, max will be returned.
  */
 export function limit(min: number, max: number, value: number): number {
     return Math.min(Math.max(value, min), max);

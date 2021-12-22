@@ -49,7 +49,7 @@ const styles = css`
         left: 6px;
         right: 6px;
         box-sizing: border-box;
-        background: var(--background-color);
+        background: var(--fill-color);
         border: 1px solid var(--swatch-border-color, #e8e8e8);
         border-radius: calc(${controlCornerRadius} * 2px);
     }
@@ -131,7 +131,7 @@ export class Swatch extends FASTElement {
     public orientation: "horizontal" | "vertical" = "vertical";
 
     @attr
-    public label: string;
+    public label?: string;
 
     @attr({ mode: "boolean" })
     public interactive: boolean = false;

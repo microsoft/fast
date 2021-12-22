@@ -4,14 +4,13 @@ import {
     observable,
     SyntheticViewTemplate,
 } from "@microsoft/fast-element";
-import { limit } from "@microsoft/fast-web-utilities";
-import uniqueId from "lodash-es/uniqueId";
+import { limit, uniqueId } from "@microsoft/fast-web-utilities";
+import type { FoundationElementDefinition } from "../foundation-element";
 import type { ListboxOption } from "../listbox-option/listbox-option";
 import { ARIAGlobalStatesAndProperties } from "../patterns/aria-global";
 import { StartEnd, StartEndOptions } from "../patterns/start-end";
 import { SelectPosition, SelectRole } from "../select/select.options";
 import { applyMixins } from "../utilities/apply-mixins";
-import type { FoundationElementDefinition } from "../foundation-element";
 import { FormAssociatedCombobox } from "./combobox.form-associated";
 import { ComboboxAutocomplete } from "./combobox.options";
 
@@ -56,6 +55,13 @@ export class Combobox extends FormAssociatedCombobox {
     public control: HTMLInputElement;
 
     /**
+     * Reference to the internal listbox element.
+     *
+     * @internal
+     */
+    public listbox: HTMLDivElement;
+
+    /**
      * The collection of currently filtered options.
      *
      * @public
@@ -81,12 +87,11 @@ export class Combobox extends FormAssociatedCombobox {
      *
      * @internal
      */
-    public formResetCallback = (): void => {
-        this.value = this.initialValue;
-        this.dirtyValue = false;
+    public formResetCallback(): void {
+        super.formResetCallback();
         this.setDefaultSelectedOption();
         this.updateValue();
-    };
+    }
 
     private get isAutocompleteInline(): boolean {
         return (
@@ -116,6 +121,11 @@ export class Combobox extends FormAssociatedCombobox {
      */
     @observable
     public maxHeight: number = 0;
+    private maxHeightChanged(): void {
+        if (this.listbox) {
+            this.listbox.style.setProperty("--max-height", `${this.maxHeight}px`);
+        }
+    }
 
     /**
      * The open attribute.
@@ -254,12 +264,13 @@ export class Combobox extends FormAssociatedCombobox {
 
             this.selectedOptions = [captured];
             this.control.value = captured.text;
+            this.updateValue(true);
         }
 
         this.open = !this.open;
 
-        if (!this.open) {
-            this.updateValue(true);
+        if (this.open) {
+            this.control.focus();
         }
 
         return true;
@@ -312,6 +323,24 @@ export class Combobox extends FormAssociatedCombobox {
             this._options.forEach(o => {
                 o.hidden = !this.filteredOptions.includes(o);
             });
+        }
+    }
+
+    /**
+     * Focus the control and scroll the first selected option into view.
+     *
+     * @internal
+     * @remarks
+     * Overrides: `Listbox.focusAndScrollOptionIntoView`
+     */
+    protected focusAndScrollOptionIntoView(): void {
+        if (this.contains(document.activeElement)) {
+            this.control.focus();
+            if (this.firstSelectedOption) {
+                requestAnimationFrame(() => {
+                    this.firstSelectedOption.scrollIntoView({ block: "nearest" });
+                });
+            }
         }
     }
 

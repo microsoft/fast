@@ -28,6 +28,10 @@ import {
 } from "../design-tokens";
 import { DirectionalStyleSheetBehavior, heightNumber } from "../styles/index";
 
+/**
+ * Styles for Menu item
+ * @public
+ */
 export const menuItemStyles: (
     context: ElementDefinitionContext,
     definition: MenuItemOptions
@@ -54,6 +58,11 @@ export const menuItemStyles: (
         line-height: ${typeRampBaseLineHeight};
         border-radius: calc(${controlCornerRadius} * 1px);
         border: calc(${focusStrokeWidth} * 1px) solid transparent;
+    }
+
+    :host(:hover) {
+        position: relative;
+        z-index: 1;
     }
 
     :host(.indent-0) {

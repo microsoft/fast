@@ -1,12 +1,12 @@
+import { Constructable, FASTElement, ViewTemplate } from "@microsoft/fast-element";
 import {
-    RouteRecognizer,
-    RecognizedRoute,
-    Endpoint,
     ConfigurableRoute,
+    Endpoint,
+    RecognizedRoute,
     RouteParameterConverter,
+    RouteRecognizer,
 } from "./recognizer";
-import { NavigationCommand, Redirect, Render, Ignore } from "./commands";
-import { ViewTemplate, FASTElement, Constructable } from "@microsoft/fast-element";
+import { Ignore, NavigationCommand, Redirect, Render } from "./commands";
 import { Layout, Transition } from "./view";
 import { RouterConfiguration } from "./configuration";
 import { Router } from "./router";

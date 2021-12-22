@@ -57,6 +57,7 @@ export type ResolveCallback<T = any> = (
  * resolving the associated, registered dependency.
  * @public
  */
+/* eslint-disable-next-line @typescript-eslint/no-unused-vars */
 export type InterfaceSymbol<K = any> = (
     target: any,
     property: string,
@@ -78,7 +79,6 @@ interface ResolverLike<C, K = any> {
  * custom logic for resolution.
  * @public
  */
-/* eslint-disable-next-line */
 export interface Resolver<K = any> extends ResolverLike<Container, K> {}
 
 /**
@@ -92,7 +92,7 @@ export interface Registration<K = any> {
      * @param container - The container to register the dependency within.
      * @param key - The key to register dependency under, if overridden.
      */
-    register(container: Container, key?: Key): Resolver<K>;
+    register(container: Container): Resolver<K>;
 }
 
 /**
@@ -343,6 +343,7 @@ export class ResolverBuilder<K> {
 
     private registerResolver(strategy: ResolverStrategy, state: unknown): Resolver<K> {
         const { container, key } = this;
+        /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */
         this.container = this.key = (void 0)!;
         return container.registerResolver(key, new ResolverImpl(key, strategy, state));
     }
@@ -933,7 +934,7 @@ export const DI = Object.freeze({
             container: Container
         ): Resolver<InstanceType<T>> {
             const registration = Registration.transient(target as T, target as T);
-            return registration.register(container, target);
+            return registration.register(container);
         };
         target.registerInRequestor = false;
         return target as T & RegisterSelf<T>;
@@ -970,7 +971,7 @@ export const DI = Object.freeze({
             container: Container
         ): Resolver<InstanceType<T>> {
             const registration = Registration.singleton(target, target);
-            return registration.register(container, target);
+            return registration.register(container);
         };
         target.registerInRequestor = options.scoped;
         return target as T & RegisterSelf<T>;
@@ -1043,6 +1044,7 @@ function transientDecorator<T extends Constructable>(
  *
  * @public
  */
+/* eslint-disable-next-line @typescript-eslint/no-unused-vars */
 export function transient<T extends Constructable>(): typeof transientDecorator;
 
 /**
@@ -1090,11 +1092,13 @@ function singletonDecorator<T extends Constructable>(
  *
  * @public
  */
+/* eslint-disable-next-line @typescript-eslint/no-unused-vars */
 export function singleton<T extends Constructable>(): typeof singletonDecorator;
 
 /**
  * @public
  */
+/* eslint-disable-next-line @typescript-eslint/no-unused-vars */
 export function singleton<T extends Constructable>(
     options?: SingletonOptions
 ): typeof singletonDecorator;
@@ -1152,6 +1156,7 @@ function createAllResolver(
 
         resolver.$isResolver = true;
         resolver.resolve = function (handler: Container, requestor: Container): any {
+            /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */
             return getter(key, handler, requestor, searchAncestors!);
         };
 
@@ -1296,6 +1301,7 @@ export const newInstanceOf = createResolver(
 );
 
 function createNewInstance(key: any, handler: Container) {
+    /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */
     return handler.getFactory(key)!.construct(handler);
 }
 
@@ -1323,8 +1329,8 @@ export class ResolverImpl implements Resolver, Registration {
 
     private resolving: boolean = false;
 
-    public register(container: Container, key?: Key): Resolver {
-        return container.registerResolver(key || this.key, this);
+    public register(container: Container): Resolver {
+        return container.registerResolver(this.key, this);
     }
 
     public resolve(handler: Container, requestor: Container): any {
@@ -1650,7 +1656,7 @@ export class ContainerImpl implements Container {
             return (key as unknown) as Resolver;
         }
 
-        /* eslint-disable-next-line */
+        /* eslint-disable-next-line @typescript-eslint/no-this-alias */
         let current: ContainerImpl = this;
         let resolver: Resolver | undefined;
 
@@ -1691,7 +1697,7 @@ export class ContainerImpl implements Container {
             return (key as Resolver).resolve(this, this);
         }
 
-        /* eslint-disable-next-line */
+        /* eslint-disable-next-line @typescript-eslint/no-this-alias */
         let current: ContainerImpl = this;
         let resolver: Resolver | undefined;
 
@@ -1724,7 +1730,7 @@ export class ContainerImpl implements Container {
     ): readonly Resolved<K>[] {
         validateKey(key);
 
-        /* eslint-disable-next-line */
+        /* eslint-disable-next-line @typescript-eslint/no-this-alias */
         const requestor = this;
         let current: ContainerImpl | null = requestor;
         let resolver: Resolver | undefined;
@@ -1737,7 +1743,8 @@ export class ContainerImpl implements Container {
 
                 if (resolver != null) {
                     resolutions = resolutions.concat(
-                        buildAllResponse(resolver, current, requestor)
+                        /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */
+                        buildAllResponse(resolver, current, requestor!)
                     );
                 }
 
@@ -1810,7 +1817,7 @@ export class ContainerImpl implements Container {
         }
 
         if (isRegistry(keyAsValue)) {
-            const registrationResolver = keyAsValue.register(handler, keyAsValue);
+            const registrationResolver = keyAsValue.register(handler);
             if (
                 !(registrationResolver instanceof Object) ||
                 (registrationResolver as Resolver).resolve == null
@@ -2022,7 +2029,6 @@ interface DOMParentLocatorEventDetail {
     container: Container | void;
 }
 
-/* eslint-disable-next-line */
 function isObject<T extends object = Object | Function>(value: unknown): value is T {
     return (typeof value === "object" && value !== null) || typeof value === "function";
 }
@@ -2034,14 +2040,12 @@ function isObject<T extends object = Object | Function>(value: unknown): value i
  * @returns `true` is the function is a native function, otherwise `false`
  */
 const isNativeFunction = (function () {
-    // eslint-disable-next-line @typescript-eslint/ban-types
     const lookup: WeakMap<Function, boolean> = new WeakMap();
 
     let isNative = false as boolean | undefined;
     let sourceText = "";
     let i = 0;
 
-    // eslint-disable-next-line @typescript-eslint/ban-types
     return function (fn: Function) {
         isNative = lookup.get(fn);
         if (isNative === void 0) {

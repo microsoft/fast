@@ -367,11 +367,11 @@ describe("Radio", () => {
 
             element.setAttribute("checked", "");
 
-            assert(element.getAttribute("checked") === "");
-            assert(element.checked);
+            expect(element.getAttribute("checked")).to.equal("");
+            expect(element.checked).to.be.true;
 
             element.checked = false;
-            assert(!element.checked);
+            expect(element.checked).to.be.false;
             form.reset();
 
             assert(element.checked);

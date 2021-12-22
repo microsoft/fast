@@ -3,8 +3,9 @@
     "compilerOptions": {
         "declarationDir": "dist/dts",
         "outDir": "dist/esm",
-        "strictNullChecks": true,
         "experimentalDecorators": true,
+        "noImplicitAny": false,
+        "strictPropertyInitialization": false,
         "target": "es2015",
         "module": "ESNext",
         "allowJs": true,

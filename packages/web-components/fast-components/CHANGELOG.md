@@ -1,8 +1,235 @@
 # Change Log - @microsoft/fast-components
 
-This log was last generated on Tue, 05 Oct 2021 00:45:07 GMT and should not be manually modified.
+This log was last generated on Sun, 19 Dec 2021 07:12:39 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.16.9
+
+Sun, 19 Dec 2021 07:12:39 GMT
+
+### Patches
+
+- add horizontal scroll example for use with fast-components (sethdonohue@Admins-MBP.guest.corp.microsoft.com)
+
+## 2.16.8
+
+Wed, 15 Dec 2021 07:14:44 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.27.2 (john.kreitlow@microsoft.com)
+
+## 2.16.7
+
+Sun, 12 Dec 2021 07:12:52 GMT
+
+### Patches
+
+- fix: incorrect z-index in fast-menu slot="submenu" (email not defined)
+
+## 2.16.6
+
+Tue, 30 Nov 2021 07:13:40 GMT
+
+### Patches
+
+- fix: vertical tabs fromm jumping (jes@microsoft.com)
+
+## 2.16.5
+
+Tue, 23 Nov 2021 07:12:23 GMT
+
+### Patches
+
+- add `size` attribute to listbox element (john.kreitlow@microsoft.com)
+- fix: disabled flipper button clicks (jes@microsoft.com)
+
+## 2.16.4
+
+Sun, 21 Nov 2021 07:10:36 GMT
+
+### Patches
+
+- fix: proper css targeting for flipper (jes@microsoft.com)
+
+## 2.16.3
+
+Sun, 14 Nov 2021 07:11:13 GMT
+
+### Patches
+
+- Fixing z-indexing problem when using fast-select (robarb@microsoft.com)
+
+## 2.16.2
+
+Thu, 11 Nov 2021 07:15:33 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.26.2 (nicholasrice@users.noreply.github.com)
+
+## 2.16.1
+
+Wed, 10 Nov 2021 07:12:54 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.26.1 (robarb@microsoft.com)
+
+## 2.16.0
+
+Tue, 09 Nov 2021 07:14:09 GMT
+
+### Minor changes
+
+- feat: add search web component (jes@microsoft.com)
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.26.0 (jes@microsoft.com)
+
+## 2.15.2
+
+Sun, 07 Nov 2021 07:12:36 GMT
+
+### Patches
+
+- remove non-null assertion in anchored region (mathieu.lavoie@shopify.com)
+
+## 2.15.1
+
+Thu, 04 Nov 2021 07:11:59 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.25.1 (jes@microsoft.com)
+
+## 2.15.0
+
+Wed, 03 Nov 2021 07:12:39 GMT
+
+### Minor changes
+
+- add placeholder attr to picker (scomea@microsoft.com)
+- fixes style export typings by removing duplicate export and rename picker styles to follow existing convention (chhol@microsoft.com)
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.25.0 (scomea@microsoft.com)
+
+## 2.14.4
+
+Sun, 31 Oct 2021 07:17:45 GMT
+
+### Patches
+
+- update fast eslint package version (chhol@microsoft.com)
+
+## 2.14.3
+
+Thu, 28 Oct 2021 07:15:32 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.23.2 (nicholasrice@users.noreply.github.com)
+
+## 2.14.2
+
+Fri, 22 Oct 2021 17:40:52 GMT
+
+### Patches
+
+- Improving number field interactions and tests (robarb@microsoft.com)
+
+## 2.14.1
+
+Thu, 21 Oct 2021 07:11:42 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.22.1 (scomea@microsoft.com)
+
+## 2.14.0
+
+Wed, 20 Oct 2021 07:13:46 GMT
+
+### Minor changes
+
+- add centered positioning to anchored region (scomea@microsoft.com)
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.22.0 (scomea@microsoft.com)
+
+## 2.13.1
+
+Fri, 15 Oct 2021 23:24:14 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.21.0 (nicholasrice@users.noreply.github.com)
+
+## 2.13.0
+
+Wed, 13 Oct 2021 22:45:16 GMT
+
+### Minor changes
+
+- Adding fast-calendar component (robarb@microsoft.com)
+
+### Patches
+
+- Bump @microsoft/fast-element to v1.6.1 (markwhitfeld@users.noreply.github.com)
+- Bump @microsoft/fast-foundation to v2.20.0 (robarb@microsoft.com)
+
+## 2.12.0
+
+Wed, 13 Oct 2021 01:53:37 GMT
+
+### Minor changes
+
+- data-grid: add support for rowheader role (scomea@microsoft.com)
+
+### Patches
+
+- Update playwright tests for horizontal-scroll (john.kreitlow@microsoft.com)
+- Fill color design token update (skawian@gmail.com)
+- refactor: remove lodash-es as a dependency (connor@peet.io)
+- Bump @microsoft/fast-foundation to v2.19.0 (john.kreitlow@microsoft.com)
+- Bump @microsoft/fast-web-utilities to v5.0.1 (john.kreitlow@microsoft.com)
+
+## 2.11.12
+
+Tue, 12 Oct 2021 07:15:14 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.18.0 (roeisenb@microsoft.com)
+
+## 2.11.11
+
+Sun, 10 Oct 2021 07:12:26 GMT
+
+### Patches
+
+- migrate horizontal-scroll tests to playwright (john.kreitlow@microsoft.com)
+
+## 2.11.10
+
+Fri, 08 Oct 2021 19:53:11 GMT
+
+### Patches
+
+- anchored region force update (scomea@microsoft.com)
+
+## 2.11.9
+
+Wed, 06 Oct 2021 07:11:47 GMT
+
+### Patches
+
+- picker menu shows with only custom options (scomea@microsoft.com)
 
 ## 2.11.8
 

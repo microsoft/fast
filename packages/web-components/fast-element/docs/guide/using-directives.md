@@ -513,14 +513,17 @@ const template = html<MyElement>`
 export class MyElement extends FASTElement {
   @observable slottedNodes: Node[];
 
-  connectedCallback() {
-    super.connectedCallback();
-    console.log(this.slottedNodes);
+  slottedNodesChanged() {
+    // respond to changes in slotted node
   }
 }
 ```
 
 Similar to the `children` directive, the `slotted` directive will populate the `slottedNodes` property with nodes assigned to the slot. If `slottedNodes` is decorated with `@observable` then it will be updated dynamically as the assigned nodes change. Like any observable, you can optionally implement a *propertyName*Changed method to be notified when the nodes change. Additionally, you can provide an `options` object to the `slotted` directive to specify a customized configuration for the underlying [assignedNodes() API call](https://developer.mozilla.org/en-US/docs/Web/API/HTMLSlotElement/assignedNodes) or specify a `filter`.
+
+:::tip
+It's best to leverage a change handler for slotted nodes rather than assuming that the nodes will be present in the `connectedCallback`.
+:::
 
 ## Host directives
 

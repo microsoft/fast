@@ -1,4 +1,3 @@
-/* eslint-env node */
 module.exports = {
     docs: [
         {
@@ -126,6 +125,11 @@ module.exports = {
                 "community/code-of-conduct",
                 "community/contributor-guide",
                 "community/writing-documentation",
+                {
+                    type: "category",
+                    label: "Engineering Process",
+                    items: ["community/issue-management", "community/release-planning"],
+                },
             ],
         },
         {
@@ -138,6 +142,7 @@ module.exports = {
                 "resources/browser-support",
                 "resources/acknowledgements",
                 "resources/glossary",
+                "resources/cheat-sheet",
                 "resources/faq",
             ],
         },

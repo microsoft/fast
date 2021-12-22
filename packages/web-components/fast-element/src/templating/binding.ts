@@ -225,7 +225,6 @@ export class HTMLBindingDirective extends TargetedHTMLDirective {
                 this.updateTarget = updatePropertyTarget;
                 if (this.cleanedTargetName === "innerHTML") {
                     const binding = this.binding;
-                    /* eslint-disable-next-line */
                     this.binding = (s, c) => DOM.createHTML(binding(s, c));
                 }
                 break;

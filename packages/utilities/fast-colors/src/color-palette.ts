@@ -33,7 +33,7 @@ export interface ColorPaletteConfig {
  */
 export class ColorPalette {
     public static readonly defaultPaletteConfig: ColorPaletteConfig = {
-        baseColor: parseColorHexRGB("#808080"),
+        baseColor: parseColorHexRGB("#808080")!,
         steps: 11,
         interpolationMode: ColorInterpolationSpace.RGB,
         scaleColorLight: new ColorRGBA64(1, 1, 1, 1),
@@ -50,7 +50,7 @@ export class ColorPalette {
         baseScalePosition: 0.5,
     };
     public static readonly greyscalePaletteConfig: ColorPaletteConfig = {
-        baseColor: parseColorHexRGB("#808080"),
+        baseColor: parseColorHexRGB("#808080")!,
         steps: 11,
         interpolationMode: ColorInterpolationSpace.RGB,
         scaleColorLight: new ColorRGBA64(1, 1, 1, 1),

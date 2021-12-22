@@ -179,6 +179,13 @@ export class Select extends FormAssociatedSelect {
     public position: SelectPosition = SelectPosition.below;
 
     /**
+     * Reference to the internal listbox element.
+     *
+     * @internal
+     */
+    public listbox: HTMLDivElement;
+
+    /**
      * Calculate and apply listbox positioning based on available viewport space.
      *
      * @param force - direction to force the listbox to display
@@ -210,6 +217,11 @@ export class Select extends FormAssociatedSelect {
      */
     @observable
     public maxHeight: number = 0;
+    private maxHeightChanged(): void {
+        if (this.listbox) {
+            this.listbox.style.setProperty("--max-height", `${this.maxHeight}px`);
+        }
+    }
 
     /**
      * The value displayed on the button.
@@ -239,11 +251,11 @@ export class Select extends FormAssociatedSelect {
      *
      * @internal
      */
-    public formResetCallback = (): void => {
+    public formResetCallback(): void {
         this.setProxyOptions();
         this.setDefaultSelectedOption();
         this.value = this.firstSelectedOption.value;
-    };
+    }
 
     /**
      * Handle opening and closing the listbox when the select is clicked.
@@ -349,7 +361,7 @@ export class Select extends FormAssociatedSelect {
 
         switch (key) {
             case " ": {
-                if (this.typeAheadExpired) {
+                if (this.typeaheadExpired) {
                     e.preventDefault();
                     this.open = !this.open;
                 }

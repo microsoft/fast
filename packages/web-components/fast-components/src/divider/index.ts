@@ -8,7 +8,7 @@ import { dividerStyles as styles } from "./divider.styles";
  *
  * @public
  * @remarks
- * Generates HTML Element: \<fast-divider\>
+ * Generates HTML Element: `<fast-divider>`
  */
 export const fastDivider = Divider.compose({
     baseName: "divider",
@@ -17,13 +17,9 @@ export const fastDivider = Divider.compose({
 });
 
 /**
- * Styles for Divider
- * @public
- */
-export const dividerStyles = styles;
-
-/**
  * Base class for Divider
  * @public
  */
 export { Divider };
+
+export { styles as dividerStyles };

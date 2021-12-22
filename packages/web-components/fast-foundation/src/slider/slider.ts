@@ -12,7 +12,6 @@ import {
     keyArrowUp,
     keyEnd,
     keyHome,
-    keyTab,
     Orientation,
 } from "@microsoft/fast-web-utilities";
 import type { FoundationElementDefinition } from "../foundation-element";

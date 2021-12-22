@@ -8,7 +8,7 @@ import { tabsStyles as styles } from "./tabs.styles";
  *
  * @public
  * @remarks
- * Generates HTML Element: \<fast-tabs\>
+ * Generates HTML Element: `<fast-tabs>`
  */
 export const fastTabs = Tabs.compose({
     baseName: "tabs",
@@ -18,14 +18,11 @@ export const fastTabs = Tabs.compose({
 
 export * from "../tab";
 export * from "../tab-panel";
-/**
- * Styles for Tabs
- * @public
- */
-export const tabsStyles = styles;
 
 /**
  * Base class for Tabs
  * @public
  */
 export { Tabs };
+
+export { styles as tabsStyles };
