@@ -8,14 +8,15 @@
     bounds of the "viewport" element and the definable buffer region are actually
     rendered. The default viewport is the stack element itself.
     <p>
-        The item templates in each of the examples consist of a fast-card element with an
-        olive background containing an image element bound to sample image url.
+        The item templates in each of the examples consist of a fast-card element with a
+        title and a skeleton.
     </p>
 </h3>
 
 <fast-virtualizing-stack
     orientation="horizontal"
     item-span="100"
+    viewport-buffer="800"
     id="stackh1"
     style="
         height: 120px;
@@ -107,6 +108,35 @@
         Button 2
     </fast-button>
 </fast-virtualizing-stack>
+
+<h3>
+    Grid test
+</h3>
+<div
+    id="gridcontainer"
+    style="height: 800px; width: 800px; overflow-x: scroll; overflow-y: scroll;"
+>
+    <fast-virtualizing-stack
+        viewport="gridcontainer"
+        orientation="vertical"
+        item-span="100"
+        id="stackgrid"
+        style="background: gray;"
+    ></fast-virtualizing-stack>
+
+    <div
+        id="gridviewport"
+        style="
+            pointer-events: none;
+            position: absolute;
+            margin: 300px;
+            height: 200px;
+            width: 200px;
+            background: green;
+            opacity: 0.3;
+        "
+    ></div>
+</div>
 
 <div
     style="

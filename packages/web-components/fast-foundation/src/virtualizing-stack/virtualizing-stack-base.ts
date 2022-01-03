@@ -309,7 +309,7 @@ export class VirtualizingStackBase extends FoundationElement {
     private viewportRect: ClientRect | DOMRect | undefined;
     private containerRect: ClientRect | DOMRect | undefined;
 
-    private itemsRepeatBehavior: RepeatBehavior | null;
+    private itemsRepeatBehavior: RepeatBehavior | null = null;
     private itemsPlaceholder: Node;
 
     private itemsObserver: Notifier | null = null;
@@ -328,7 +328,9 @@ export class VirtualizingStackBase extends FoundationElement {
      */
     connectedCallback() {
         super.connectedCallback();
-        this.viewportElement = this.getViewport();
+        if (this.viewportElement === undefined) {
+            this.viewportElement = this.getViewport();
+        }
         this.resetAutoUpdateMode("manual", this.autoUpdateMode);
 
         this.initializeResizeDetector();
@@ -490,6 +492,9 @@ export class VirtualizingStackBase extends FoundationElement {
     }
 
     private initializeRepeatBehavior(): void {
+        if (this.itemsRepeatBehavior !== null) {
+            return;
+        }
         this.itemsRepeatBehavior = new RepeatDirective(
             x => x.visibleItems,
             x => x.itemTemplate,
@@ -499,10 +504,14 @@ export class VirtualizingStackBase extends FoundationElement {
     }
 
     private clearRepeatBehavior(): void {
-        if (this.itemsRepeatBehavior !== null) {
-            this.$fastController.removeBehaviors([this.itemsRepeatBehavior]);
-            this.itemsRepeatBehavior = null;
-        }
+        this.visibleItems = [];
+
+        // TODO: What is right way to handle this?
+        //       removing the behavior leaves the nodes in the dom
+        // if (this.itemsRepeatBehavior !== null) {
+        //     this.$fastController.removeBehaviors([this.itemsRepeatBehavior]);
+        //     this.itemsRepeatBehavior = null;
+        // }
     }
 
     private cancelPendingPositionUpdates(): void {

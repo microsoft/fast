@@ -9,7 +9,6 @@ import "./index";
 const imageItemTemplate = html`
     <fast-card
         style="
-            background: olive;
             height:100%;
             width:100%;
             grid-row: ${(x, c) =>
@@ -22,19 +21,72 @@ const imageItemTemplate = html`
                 : 1};
         "
     >
-        <image
+        <!-- <image
             style="
                 height:100%;
                 width:100%;
             "
             src="${x => x.url}"
-        ></image>
+        ></image> -->
+        <div style="margin: 10px;">
+            ${x => x.value}
+        </div>
+        <fast-skeleton
+            style="border-radius: 4px;  height: 50px; margin:10px; width:auto;"
+            shape="rect"
+            shimmer
+        ></fast-skeleton>
     </fast-card>
+`;
+
+const gridItemTemplate = html`
+    <div
+        style="
+            height:100px;
+            width:100px;
+            padding: 20px;
+            grid-row: 1;
+            grid-column: ${(x, c) => c.index + c.parent.virtualizedIndexOffset};
+        "
+    >
+        ${x => x.value}
+    </div>
+`;
+
+const rowItemTemplate = html`
+    <fast-virtualizing-stack
+        orientation="horizontal"
+        ;
+        item-span="100"
+        ;
+        :viewportElement="${(x, c) => c.parent.viewportElement}"
+        ;
+        :itemTemplate="${gridItemTemplate}"
+        ;
+        :items="${x => x.items}"
+        ;
+        style="
+            contain: none;
+            display: block;
+            height:100%;
+            width:100%;
+            grid-row: ${(x, c) => c.index + c.parent.virtualizedIndexOffset};
+            grid-column: 1;
+        "
+    ></fast-virtualizing-stack>
 `;
 
 addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
     if (name.toLowerCase().startsWith("virtualizing-stack")) {
-        const data = newDataSet(100000);
+        const data = newDataSet(100000, "id - ");
+
+        const gridData: object[] = [];
+
+        for (let i = 1; i <= 100; i++) {
+            gridData.push({
+                items: newDataSet(100, `${i} - `),
+            });
+        }
 
         const stackh1 = document.getElementById("stackh1") as FoundationVirtualizingStack;
         stackh1.itemTemplate = imageItemTemplate;
@@ -51,6 +103,15 @@ addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
         const stackh4 = document.getElementById("stackh4") as FoundationVirtualizingStack;
         stackh4.itemTemplate = imageItemTemplate;
         stackh4.items = data;
+
+        const stackGrid = document.getElementById(
+            "stackgrid"
+        ) as FoundationVirtualizingStack;
+        stackGrid.viewportElement = document.getElementById(
+            "gridviewport"
+        ) as HTMLElement;
+        stackGrid.itemTemplate = rowItemTemplate;
+        stackGrid.items = gridData;
 
         const stackv1 = document.getElementById("stackv1") as FoundationVirtualizingStack;
         stackv1.itemTemplate = imageItemTemplate;
@@ -69,10 +130,11 @@ addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
     }
 });
 
-function newDataSet(rowCount: number): object[] {
+function newDataSet(rowCount: number, prefix: string): object[] {
     const newData: object[] = [];
     for (let i = 1; i <= rowCount; i++) {
         newData.push({
+            value: `${prefix}${i}`,
             url: `https://via.placeholder.com/100x100/414141/?text=${i}`,
         });
     }
