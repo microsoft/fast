@@ -393,6 +393,28 @@ export class Tooltip extends FoundationElement {
                 this.horizontalDefaultPosition = this.position;
                 break;
 
+            case TooltipPosition.topLeft:
+                this.verticalPositioningMode = "locktodefault";
+                this.horizontalPositioningMode = "locktodefault";
+                this.verticalDefaultPosition = "top";
+                this.horizontalDefaultPosition = "left";
+                this.horizontalInset = "false";
+                this.verticalInset = "false";
+                this.horizontalScaling = "content";
+                this.verticalScaling = "anchor";
+                break;
+
+            case TooltipPosition.topRight:
+                this.verticalPositioningMode = "dynamic";
+                this.horizontalPositioningMode = "locktodefault";
+                this.verticalDefaultPosition = "top";
+                this.horizontalDefaultPosition = undefined;
+                this.horizontalInset = "false";
+                this.verticalInset = "false";
+                this.horizontalScaling = "content";
+                this.verticalScaling = "anchor";
+                break;
+
             default:
                 this.verticalPositioningMode = "dynamic";
                 this.horizontalPositioningMode = "dynamic";

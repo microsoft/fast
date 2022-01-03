@@ -33,4 +33,24 @@ export enum TooltipPosition {
      * The tooltip is positioned after the element
      */
     end = "end",
+
+    /**
+     * The tooltip is positioned above the element
+     */
+    topLeft = "top-left",
+
+    /**
+     * The tooltip is positioned to the right of the element
+     */
+    topRight = "top-right",
+
+    /**
+     * The tooltip is positioned below the element
+     */
+    bottomLeft = "bottom-left",
+
+    /**
+     * The tooltip is positioned to the left of the element
+     */
+    bottomRight = "bottom-right",
 }
