@@ -26,7 +26,7 @@ export class Search extends FoundationSearch {
      */
     @attr
     public appearance: SearchAppearance = "outline";
-    private appearanceChanged(oldValue, newValue): void {
+    private appearanceChanged(oldValue: string, newValue: string): void {
         // queueUpdate waits for this.root to be defined
         DOM.queueUpdate(() => {
             if (newValue === "filled") {
