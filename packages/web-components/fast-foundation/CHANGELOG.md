@@ -1,8 +1,17 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Wed, 15 Dec 2021 07:14:44 GMT and should not be manually modified.
+This log was last generated on Sun, 19 Dec 2021 07:12:39 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.27.3
+
+Sun, 19 Dec 2021 07:12:39 GMT
+
+### Patches
+
+- Replace equality check with NaN with the Number.isNan function (anthonystewart@google.com)
+- add queueUpdate for setStops in horzontal scroll (sethdonohue@Admins-MBP.guest.corp.microsoft.com)
 
 ## 2.27.2
 
