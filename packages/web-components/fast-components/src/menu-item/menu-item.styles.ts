@@ -60,6 +60,11 @@ export const menuItemStyles: (
         border: calc(${focusStrokeWidth} * 1px) solid transparent;
     }
 
+    :host(:hover) {
+        position: relative;
+        z-index: 1;
+    }
+
     :host(.indent-0) {
         grid-template-columns: auto 1fr minmax(42px, auto);
     }

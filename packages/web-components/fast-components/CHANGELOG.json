@@ -2,6 +2,80 @@
   "name": "@microsoft/fast-components",
   "entries": [
     {
+      "date": "Sun, 19 Dec 2021 07:12:39 GMT",
+      "tag": "@microsoft/fast-components_v2.16.9",
+      "version": "2.16.9",
+      "comments": {
+        "patch": [
+          {
+            "comment": "add horizontal scroll example for use with fast-components",
+            "author": "sethdonohue@Admins-MBP.guest.corp.microsoft.com",
+            "commit": "610fa12d4b88d98c333817f0649407d0ad61f5c6",
+            "package": "@microsoft/fast-components"
+          }
+        ],
+        "none": [
+          {
+            "comment": "Bump @microsoft/fast-element to v1.6.2",
+            "author": "steph@huynhicode.dev",
+            "commit": "5056e83234e1c758375fa4882943d104fb476ca2",
+            "package": "@microsoft/fast-components"
+          },
+          {
+            "comment": "Bump @microsoft/fast-foundation to v2.27.3",
+            "author": "anthonystewart@google.com",
+            "commit": "e11044f4aa3552398d5d1a0eeee82b1596a83486",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 15 Dec 2021 07:14:44 GMT",
+      "tag": "@microsoft/fast-components_v2.16.8",
+      "version": "2.16.8",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-foundation to v2.27.2",
+            "author": "john.kreitlow@microsoft.com",
+            "commit": "2c538ea8bcf3fd63d07521d9c8a9b889653cd889",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 14 Dec 2021 07:12:12 GMT",
+      "tag": "@microsoft/fast-components_v2.16.7",
+      "version": "2.16.7",
+      "comments": {
+        "none": [
+          {
+            "comment": "Bump @microsoft/fast-element to v1.6.2",
+            "author": "roeisenb@microsoft.com",
+            "commit": "babdb99e832319eaee76465765f9e6b72911d473",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sun, 12 Dec 2021 07:12:52 GMT",
+      "tag": "@microsoft/fast-components_v2.16.7",
+      "version": "2.16.7",
+      "comments": {
+        "patch": [
+          {
+            "comment": "fix: incorrect z-index in fast-menu slot=\"submenu\"",
+            "author": "email not defined",
+            "commit": "66dca809bacc382b5d355ef6d49e975ce3e5b3b6",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 08 Dec 2021 07:10:04 GMT",
       "tag": "@microsoft/fast-components_v2.16.6",
       "version": "2.16.6",
