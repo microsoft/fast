@@ -6,6 +6,7 @@ import {
     FlipperOptions,
     focusVisible,
     forcedColorsStylesheetBehavior,
+    FoundationElementTemplate,
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
@@ -30,10 +31,10 @@ import { heightNumber } from "../styles/index";
  * Styles for Flipper
  * @public
  */
-export const flipperStyles: (
+export const flipperStyles: FoundationElementTemplate<ElementStyles, FlipperOptions> = (
     context: ElementDefinitionContext,
     definition: FlipperOptions
-) => ElementStyles = (context: ElementDefinitionContext, definition: FlipperOptions) =>
+) =>
     css`
     ${display("inline-flex")} :host {
         width: calc(${heightNumber} * 1px);

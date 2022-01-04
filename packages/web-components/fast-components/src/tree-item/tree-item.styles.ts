@@ -6,6 +6,7 @@ import {
     ElementDefinitionContext,
     focusVisible,
     forcedColorsStylesheetBehavior,
+    FoundationElementTemplate,
     TreeItem,
     TreeItemOptions,
 } from "@microsoft/fast-foundation";
@@ -89,10 +90,10 @@ const selectedExpandCollapseHoverBehavior = DesignToken.create<Swatch>(
  * Styles for Tree Item
  * @public
  */
-export const treeItemStyles: (
+export const treeItemStyles: FoundationElementTemplate<ElementStyles, TreeItemOptions> = (
     context: ElementDefinitionContext,
     definition: TreeItemOptions
-) => ElementStyles = (context: ElementDefinitionContext, definition: TreeItemOptions) =>
+) =>
     css`
     ${display("block")} :host {
         contain: content;

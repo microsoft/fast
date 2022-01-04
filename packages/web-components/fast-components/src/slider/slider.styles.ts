@@ -5,6 +5,7 @@ import {
     ElementDefinitionContext,
     focusVisible,
     forcedColorsStylesheetBehavior,
+    FoundationElementTemplate,
     SliderOptions,
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
@@ -24,10 +25,10 @@ import { heightNumber } from "../styles/index";
  * Styles for Slider
  * @public
  */
-export const sliderStyles: (
+export const sliderStyles: FoundationElementTemplate<ElementStyles, SliderOptions> = (
     context: ElementDefinitionContext,
     definition: SliderOptions
-) => ElementStyles = (context: ElementDefinitionContext, definition: SliderOptions) =>
+) =>
     css`
     :host([hidden]) {
         display: none;

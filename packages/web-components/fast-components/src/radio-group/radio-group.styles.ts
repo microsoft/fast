@@ -3,6 +3,7 @@ import {
     display,
     ElementDefinitionContext,
     FoundationElementDefinition,
+    FoundationElementTemplate,
 } from "@microsoft/fast-foundation";
 import { designUnit } from "../design-tokens";
 
@@ -10,10 +11,7 @@ import { designUnit } from "../design-tokens";
  * Styles for Radio Group
  * @public
  */
-export const radioGroupStyles: (
-    context: ElementDefinitionContext,
-    definition: FoundationElementDefinition
-) => ElementStyles = (
+export const radioGroupStyles: FoundationElementTemplate<ElementStyles> = (
     context: ElementDefinitionContext,
     definition: FoundationElementDefinition
 ) => css`

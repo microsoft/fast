@@ -1,5 +1,6 @@
 import { children, elements, html } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
+import type { FoundationElementTemplate } from "../foundation-element";
 import type { DataGrid } from "./data-grid";
 import { DataGridRow } from "./data-grid-row";
 
@@ -20,7 +21,7 @@ function createRowItemTemplate(context): ViewTemplate {
  *
  * @public
  */
-export const dataGridTemplate: (context, definition) => ViewTemplate<DataGrid> = (
+export const dataGridTemplate: FoundationElementTemplate<ViewTemplate<DataGrid>> = (
     context,
     definition
 ) => {

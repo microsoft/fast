@@ -3,6 +3,7 @@ import {
     display,
     ElementDefinitionContext,
     FoundationElementDefinition,
+    FoundationElementTemplate,
 } from "@microsoft/fast-foundation";
 import {
     bodyFont,
@@ -17,10 +18,7 @@ import {
  * Styles for Accordion
  * @public
  */
-export const accordionStyles: (
-    context: ElementDefinitionContext,
-    definition: FoundationElementDefinition
-) => ElementStyles = (
+export const accordionStyles: FoundationElementTemplate<ElementStyles> = (
     context: ElementDefinitionContext,
     definition: FoundationElementDefinition
 ) =>

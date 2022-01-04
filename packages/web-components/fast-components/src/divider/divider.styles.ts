@@ -3,6 +3,7 @@ import {
     display,
     ElementDefinitionContext,
     FoundationElementDefinition,
+    FoundationElementTemplate,
 } from "@microsoft/fast-foundation";
 import { designUnit, neutralStrokeDividerRest, strokeWidth } from "../design-tokens";
 
@@ -10,10 +11,7 @@ import { designUnit, neutralStrokeDividerRest, strokeWidth } from "../design-tok
  * Styles for Divider
  * @public
  */
-export const dividerStyles: (
-    context: ElementDefinitionContext,
-    definition: FoundationElementDefinition
-) => ElementStyles = (
+export const dividerStyles: FoundationElementTemplate<ElementStyles> = (
     context: ElementDefinitionContext,
     definition: FoundationElementDefinition
 ) =>

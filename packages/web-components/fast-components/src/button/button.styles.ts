@@ -4,6 +4,7 @@ import {
     disabledCursor,
     ElementDefinitionContext,
     forcedColorsStylesheetBehavior,
+    FoundationElementTemplate,
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
@@ -26,10 +27,10 @@ import { appearanceBehavior } from "../utilities/behaviors";
  * Styles for Button
  * @public
  */
-export const buttonStyles: (
+export const buttonStyles: FoundationElementTemplate<ElementStyles, ButtonOptions> = (
     context: ElementDefinitionContext,
     definition: ButtonOptions
-) => ElementStyles = (context: ElementDefinitionContext, definition: ButtonOptions) =>
+) =>
     css`
         :host([disabled]),
         :host([disabled]:hover),

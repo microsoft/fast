@@ -5,6 +5,7 @@ import {
     ElementDefinitionContext,
     focusVisible,
     forcedColorsStylesheetBehavior,
+    FoundationElementTemplate,
     MenuItemOptions,
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
@@ -32,10 +33,10 @@ import { DirectionalStyleSheetBehavior, heightNumber } from "../styles/index";
  * Styles for Menu item
  * @public
  */
-export const menuItemStyles: (
+export const menuItemStyles: FoundationElementTemplate<ElementStyles, MenuItemOptions> = (
     context: ElementDefinitionContext,
     definition: MenuItemOptions
-) => ElementStyles = (context: ElementDefinitionContext, definition: MenuItemOptions) =>
+) =>
     css`
     ${display("grid")} :host {
         contain: layout;

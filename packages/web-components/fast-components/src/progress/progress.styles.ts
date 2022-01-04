@@ -3,6 +3,7 @@ import {
     display,
     ElementDefinitionContext,
     forcedColorsStylesheetBehavior,
+    FoundationElementTemplate,
     ProgressOptions,
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
@@ -17,10 +18,10 @@ import {
  * Styles for Progress
  * @public
  */
-export const progressStyles: (
+export const progressStyles: FoundationElementTemplate<ElementStyles, ProgressOptions> = (
     context: ElementDefinitionContext,
     definition: ProgressOptions
-) => ElementStyles = (context: ElementDefinitionContext, definition: ProgressOptions) =>
+) =>
     css`
         ${display("flex")} :host {
             align-items: center;

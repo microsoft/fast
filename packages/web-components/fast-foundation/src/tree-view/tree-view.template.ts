@@ -1,6 +1,9 @@
 import { html, ref, slotted } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
-import type { FoundationElementDefinition } from "../foundation-element";
+import type {
+    FoundationElementDefinition,
+    FoundationElementTemplate,
+} from "../foundation-element";
 import type { ElementDefinitionContext } from "../design-system";
 import type { TreeView } from "./tree-view";
 
@@ -8,10 +11,7 @@ import type { TreeView } from "./tree-view";
  * The template for the {@link @microsoft/fast-foundation#TreeView} component.
  * @public
  */
-export const treeViewTemplate: (
-    context: ElementDefinitionContext,
-    definition: FoundationElementDefinition
-) => ViewTemplate<TreeView> = (
+export const treeViewTemplate: FoundationElementTemplate<ViewTemplate<TreeView>> = (
     context: ElementDefinitionContext,
     definition: FoundationElementDefinition
 ) => html`

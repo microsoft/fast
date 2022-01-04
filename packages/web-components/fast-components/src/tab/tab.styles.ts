@@ -6,6 +6,7 @@ import {
     focusVisible,
     forcedColorsStylesheetBehavior,
     FoundationElementDefinition,
+    FoundationElementTemplate,
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
@@ -34,10 +35,7 @@ import { heightNumber } from "../styles";
  * Styles for Tab
  * @public
  */
-export const tabStyles: (
-    context: ElementDefinitionContext,
-    definition: FoundationElementDefinition
-) => ElementStyles = (
+export const tabStyles: FoundationElementTemplate<ElementStyles> = (
     context: ElementDefinitionContext,
     definition: FoundationElementDefinition
 ) =>

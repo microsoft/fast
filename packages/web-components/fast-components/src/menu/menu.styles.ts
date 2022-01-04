@@ -4,6 +4,7 @@ import {
     ElementDefinitionContext,
     forcedColorsStylesheetBehavior,
     FoundationElementDefinition,
+    FoundationElementTemplate,
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
@@ -19,10 +20,7 @@ import { elevation } from "../styles/index";
  * Styles for Menu
  * @public
  */
-export const menuStyles: (
-    context: ElementDefinitionContext,
-    definition: FoundationElementDefinition
-) => ElementStyles = (
+export const menuStyles: FoundationElementTemplate<ElementStyles> = (
     context: ElementDefinitionContext,
     definition: FoundationElementDefinition
 ) =>

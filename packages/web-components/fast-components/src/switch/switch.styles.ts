@@ -5,6 +5,7 @@ import {
     ElementDefinitionContext,
     focusVisible,
     forcedColorsStylesheetBehavior,
+    FoundationElementTemplate,
     SwitchOptions,
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
@@ -38,10 +39,10 @@ import { DirectionalStyleSheetBehavior, heightNumber } from "../styles/index";
  * Styles for Switch
  * @public
  */
-export const switchStyles: (
+export const switchStyles: FoundationElementTemplate<ElementStyles, SwitchOptions> = (
     context: ElementDefinitionContext,
     definition: SwitchOptions
-) => ElementStyles = (context: ElementDefinitionContext, definition: SwitchOptions) =>
+) =>
     css`
     :host([hidden]) {
         display: none;

@@ -5,6 +5,7 @@ import {
     ElementDefinitionContext,
     focusVisible,
     forcedColorsStylesheetBehavior,
+    FoundationElementTemplate,
     SelectOptions,
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
@@ -39,10 +40,10 @@ import { heightNumber } from "../styles/size";
  * Styles for Select
  * @public
  */
-export const selectStyles: (
+export const selectStyles: FoundationElementTemplate<ElementStyles, SelectOptions> = (
     context: ElementDefinitionContext,
     definition: SelectOptions
-) => ElementStyles = (context: ElementDefinitionContext, definition: SelectOptions) =>
+) =>
     css`
     ${display("inline-flex")} :host {
         --elevation: 14;

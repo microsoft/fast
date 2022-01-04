@@ -3,6 +3,7 @@ import {
     display,
     ElementDefinitionContext,
     FoundationElementDefinition,
+    FoundationElementTemplate,
 } from "@microsoft/fast-foundation";
 import {
     accentForegroundRest,
@@ -19,10 +20,7 @@ import { heightNumber } from "../styles/index";
  * Styles for Badge
  * @public
  */
-export const badgeStyles: (
-    context: ElementDefinitionContext,
-    definition: FoundationElementDefinition
-) => ElementStyles = (
+export const badgeStyles: FoundationElementTemplate<ElementStyles> = (
     context: ElementDefinitionContext,
     definition: FoundationElementDefinition
 ) =>

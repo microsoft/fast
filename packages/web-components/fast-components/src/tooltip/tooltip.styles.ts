@@ -4,6 +4,7 @@ import {
     ElementDefinitionContext,
     forcedColorsStylesheetBehavior,
     FoundationElementDefinition,
+    FoundationElementTemplate,
 } from "@microsoft/fast-foundation";
 import {
     bodyFont,
@@ -20,10 +21,7 @@ import {
  * Styles for Tooltip
  * @public
  */
-export const tooltipStyles: (
-    context: ElementDefinitionContext,
-    definition: FoundationElementDefinition
-) => ElementStyles = (
+export const tooltipStyles: FoundationElementTemplate<ElementStyles> = (
     context: ElementDefinitionContext,
     definition: FoundationElementDefinition
 ) =>

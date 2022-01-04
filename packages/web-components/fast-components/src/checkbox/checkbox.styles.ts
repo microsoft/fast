@@ -6,6 +6,7 @@ import {
     ElementDefinitionContext,
     focusVisible,
     forcedColorsStylesheetBehavior,
+    FoundationElementTemplate,
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
@@ -38,10 +39,10 @@ import { heightNumber } from "../styles/index";
  * Styles for Checkbox
  * @public
  */
-export const checkboxStyles: (
+export const checkboxStyles: FoundationElementTemplate<ElementStyles, CheckboxOptions> = (
     context: ElementDefinitionContext,
     definition: CheckboxOptions
-) => ElementStyles = (context: ElementDefinitionContext, definition: CheckboxOptions) =>
+) =>
     css`
     ${display("inline-flex")} :host {
         align-items: center;

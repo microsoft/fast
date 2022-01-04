@@ -3,16 +3,14 @@ import {
     display,
     ElementDefinitionContext,
     FoundationElementDefinition,
+    FoundationElementTemplate,
 } from "@microsoft/fast-foundation";
 
 /**
  * Styles for Tree View
  * @public
  */
-export const treeViewStyles: (
-    context: ElementDefinitionContext,
-    definition: FoundationElementDefinition
-) => ElementStyles = (
+export const treeViewStyles: FoundationElementTemplate<ElementStyles> = (
     context: ElementDefinitionContext,
     definition: FoundationElementDefinition
 ) => css`

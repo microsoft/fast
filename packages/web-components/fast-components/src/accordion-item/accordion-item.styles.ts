@@ -5,6 +5,7 @@ import {
     ElementDefinitionContext,
     focusVisible,
     forcedColorsStylesheetBehavior,
+    FoundationElementTemplate,
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
@@ -27,13 +28,10 @@ import { heightNumber } from "../styles/size";
  * Styles for AccordionItem
  * @public
  */
-export const accordionItemStyles: (
-    context: ElementDefinitionContext,
-    definition: AccordionItemOptions
-) => ElementStyles = (
-    context: ElementDefinitionContext,
-    definition: AccordionItemOptions
-) =>
+export const accordionItemStyles: FoundationElementTemplate<
+    ElementStyles,
+    AccordionItemOptions
+> = (context: ElementDefinitionContext, definition: AccordionItemOptions) =>
     css`
     ${display("flex")} :host {
         box-sizing: border-box;

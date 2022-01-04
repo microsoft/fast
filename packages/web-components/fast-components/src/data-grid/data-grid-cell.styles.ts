@@ -5,6 +5,7 @@ import {
     focusVisible,
     forcedColorsStylesheetBehavior,
     FoundationElementDefinition,
+    FoundationElementTemplate,
 } from "@microsoft/fast-foundation";
 import {
     bodyFont,
@@ -21,10 +22,7 @@ import {
  * Styles for Data Grid cell
  * @public
  */
-export const dataGridCellStyles: (
-    context: ElementDefinitionContext,
-    definition: FoundationElementDefinition
-) => ElementStyles = (
+export const dataGridCellStyles: FoundationElementTemplate<ElementStyles> = (
     context: ElementDefinitionContext,
     definition: FoundationElementDefinition
 ) =>

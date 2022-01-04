@@ -5,6 +5,7 @@ import {
     ElementDefinitionContext,
     focusVisible,
     forcedColorsStylesheetBehavior,
+    FoundationElementTemplate,
     TextFieldOptions,
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
@@ -29,10 +30,10 @@ import {
 } from "../design-tokens";
 import { heightNumber } from "../styles/index";
 
-export const searchStyles: (
+export const searchStyles: FoundationElementTemplate<ElementStyles, TextFieldOptions> = (
     context: ElementDefinitionContext,
     definition: TextFieldOptions
-) => ElementStyles = (context: ElementDefinitionContext, definition: TextFieldOptions) =>
+) =>
     css`
     ${display("inline-block")} :host {
         font-family: ${bodyFont};

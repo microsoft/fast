@@ -2,19 +2,17 @@ import { html, ref } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
 import { Orientation } from "@microsoft/fast-web-utilities";
 import type { ElementDefinitionContext } from "../design-system";
+import type { FoundationElementTemplate } from "../foundation-element";
 import type { Slider, SliderOptions } from "./slider";
 
 /**
  * The template for the {@link @microsoft/fast-foundation#(Slider:class)} component.
  * @public
  */
-export const sliderTemplate: (
-    context: ElementDefinitionContext,
-    definition: SliderOptions
-) => ViewTemplate<Slider> = (
-    context: ElementDefinitionContext,
-    definition: SliderOptions
-) => html`
+export const sliderTemplate: FoundationElementTemplate<
+    ViewTemplate<Slider>,
+    SliderOptions
+> = (context: ElementDefinitionContext, definition: SliderOptions) => html`
     <template
         role="slider"
         class="${x => (x.readOnly ? "readonly" : "")}

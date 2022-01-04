@@ -1,6 +1,9 @@
 import { html, ref, when } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
-import type { FoundationElementDefinition } from "../foundation-element";
+import type {
+    FoundationElementDefinition,
+    FoundationElementTemplate,
+} from "../foundation-element";
 import type { ElementDefinitionContext } from "../design-system";
 import type { Dialog } from "./dialog";
 
@@ -8,10 +11,7 @@ import type { Dialog } from "./dialog";
  * The template for the {@link @microsoft/fast-foundation#Dialog} component.
  * @public
  */
-export const dialogTemplate: (
-    context: ElementDefinitionContext,
-    definition: FoundationElementDefinition
-) => ViewTemplate<Dialog> = (
+export const dialogTemplate: FoundationElementTemplate<ViewTemplate<Dialog>> = (
     context: ElementDefinitionContext,
     definition: FoundationElementDefinition
 ) => html`

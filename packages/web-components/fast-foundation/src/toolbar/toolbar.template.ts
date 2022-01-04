@@ -1,6 +1,7 @@
 import { elements, html, slotted } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
 import type { ElementDefinitionContext } from "../design-system";
+import type { FoundationElementTemplate } from "../foundation-element";
 import { endSlotTemplate, startSlotTemplate } from "../patterns";
 import type { Toolbar, ToolbarOptions } from "./toolbar";
 
@@ -9,13 +10,10 @@ import type { Toolbar, ToolbarOptions } from "./toolbar";
  *
  * @public
  */
-export const toolbarTemplate: (
-    context: ElementDefinitionContext,
-    definition: ToolbarOptions
-) => ViewTemplate<Toolbar> = (
-    context: ElementDefinitionContext,
-    definition: ToolbarOptions
-) => html`
+export const toolbarTemplate: FoundationElementTemplate<
+    ViewTemplate<Toolbar>,
+    ToolbarOptions
+> = (context: ElementDefinitionContext, definition: ToolbarOptions) => html`
     <template
         aria-label="${x => x.ariaLabel}"
         aria-labelledby="${x => x.ariaLabelledby}"

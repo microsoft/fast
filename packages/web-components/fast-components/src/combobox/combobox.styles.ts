@@ -4,6 +4,7 @@ import {
     disabledCursor,
     ElementDefinitionContext,
     focusVisible,
+    FoundationElementTemplate,
 } from "@microsoft/fast-foundation";
 import {
     strokeWidth,
@@ -16,10 +17,7 @@ import { selectStyles } from "../select/select.styles";
  * Styles for Combobox
  * @public
  */
-export const comboboxStyles: (
-    context: ElementDefinitionContext,
-    definition: ComboboxOptions
-) => ElementStyles = (
+export const comboboxStyles: FoundationElementTemplate<ElementStyles, ComboboxOptions> = (
     context: ElementDefinitionContext,
     definition: ComboboxOptions
 ) => css`

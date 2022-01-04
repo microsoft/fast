@@ -5,6 +5,7 @@ import {
     ElementDefinitionContext,
     focusVisible,
     forcedColorsStylesheetBehavior,
+    FoundationElementTemplate,
     NumberFieldOptions,
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
@@ -33,13 +34,10 @@ import { heightNumber } from "../styles/index";
  * Styles for Number Field
  * @public
  */
-export const numberFieldStyles: (
-    context: ElementDefinitionContext,
-    definition: NumberFieldOptions
-) => ElementStyles = (
-    context: ElementDefinitionContext,
-    definition: NumberFieldOptions
-) =>
+export const numberFieldStyles: FoundationElementTemplate<
+    ElementStyles,
+    NumberFieldOptions
+> = (context: ElementDefinitionContext, definition: NumberFieldOptions) =>
     css`
     ${display("inline-block")} :host {
         font-family: ${bodyFont};

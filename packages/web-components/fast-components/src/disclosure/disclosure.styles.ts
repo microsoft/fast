@@ -2,6 +2,7 @@ import { css, ElementStyles } from "@microsoft/fast-element";
 import {
     ElementDefinitionContext,
     FoundationElementDefinition,
+    FoundationElementTemplate,
 } from "@microsoft/fast-foundation";
 import {
     accentFillActive,
@@ -23,10 +24,7 @@ import {
  * Styles for Disclosure
  * @public
  */
-export const disclosureStyles: (
-    context: ElementDefinitionContext,
-    definition: FoundationElementDefinition
-) => ElementStyles = (
+export const disclosureStyles: FoundationElementTemplate<ElementStyles> = (
     context: ElementDefinitionContext,
     definition: FoundationElementDefinition
 ) => css`

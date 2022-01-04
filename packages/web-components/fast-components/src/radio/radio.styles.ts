@@ -5,6 +5,7 @@ import {
     ElementDefinitionContext,
     focusVisible,
     forcedColorsStylesheetBehavior,
+    FoundationElementTemplate,
     RadioOptions,
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
@@ -36,10 +37,10 @@ import { heightNumber } from "../styles/index";
  * Styles for Radio
  * @public
  */
-export const radioStyles: (
+export const radioStyles: FoundationElementTemplate<ElementStyles, RadioOptions> = (
     context: ElementDefinitionContext,
     definition: RadioOptions
-) => ElementStyles = (context: ElementDefinitionContext, definition: RadioOptions) =>
+) =>
     css`
     ${display("inline-flex")} :host {
         --input-size: calc((${heightNumber} / 2) + ${designUnit});

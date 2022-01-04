@@ -2,6 +2,7 @@ import { css, ElementStyles } from "@microsoft/fast-element";
 import {
     ElementDefinitionContext,
     FoundationElementDefinition,
+    FoundationElementTemplate,
 } from "@microsoft/fast-foundation";
 import { neutralFillRest, neutralStrokeDividerRest, strokeWidth } from "../design-tokens";
 
@@ -9,10 +10,7 @@ import { neutralFillRest, neutralStrokeDividerRest, strokeWidth } from "../desig
  * Styles for Data Grid row
  * @public
  */
-export const dataGridRowStyles: (
-    context: ElementDefinitionContext,
-    definition: FoundationElementDefinition
-) => ElementStyles = (
+export const dataGridRowStyles: FoundationElementTemplate<ElementStyles> = (
     context: ElementDefinitionContext,
     definition: FoundationElementDefinition
 ) => css`

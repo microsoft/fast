@@ -6,6 +6,7 @@ import {
     focusVisible,
     forcedColorsStylesheetBehavior,
     FoundationElementDefinition,
+    FoundationElementTemplate,
 } from "@microsoft/fast-foundation";
 import {
     accentFillActive,
@@ -33,10 +34,7 @@ import { heightNumber } from "../styles/index";
  * Styles for Text Area
  * @public
  */
-export const textAreaStyles: (
-    context: ElementDefinitionContext,
-    definition: FoundationElementDefinition
-) => ElementStyles = (
+export const textAreaStyles: FoundationElementTemplate<ElementStyles> = (
     context: ElementDefinitionContext,
     definition: FoundationElementDefinition
 ) =>

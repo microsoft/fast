@@ -3,6 +3,7 @@ import {
     display,
     ElementDefinitionContext,
     forcedColorsStylesheetBehavior,
+    FoundationElementTemplate,
     TabsOptions,
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
@@ -21,10 +22,10 @@ import { heightNumber } from "../styles/index";
  * Styles for Tabs
  * @public
  */
-export const tabsStyles: (
+export const tabsStyles: FoundationElementTemplate<ElementStyles, TabsOptions> = (
     context: ElementDefinitionContext,
     definition: TabsOptions
-) => ElementStyles = (context: ElementDefinitionContext, definition: TabsOptions) =>
+) =>
     css`
         ${display("grid")} :host {
             box-sizing: border-box;

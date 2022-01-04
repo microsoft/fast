@@ -1,6 +1,9 @@
 import { html, slotted } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
-import type { FoundationElementDefinition } from "../foundation-element";
+import type {
+    FoundationElementDefinition,
+    FoundationElementTemplate,
+} from "../foundation-element";
 import type { ElementDefinitionContext } from "../design-system";
 import type { Menu } from "./menu";
 
@@ -8,10 +11,7 @@ import type { Menu } from "./menu";
  * The template for the {@link @microsoft/fast-foundation#Menu} component.
  * @public
  */
-export const menuTemplate: (
-    context: ElementDefinitionContext,
-    definition: FoundationElementDefinition
-) => ViewTemplate<Menu> = (
+export const menuTemplate: FoundationElementTemplate<ViewTemplate<Menu>> = (
     context: ElementDefinitionContext,
     definition: FoundationElementDefinition
 ) => html`

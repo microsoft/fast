@@ -1,5 +1,9 @@
 import { css, ElementStyles } from "@microsoft/fast-element";
-import { AnchorOptions, ElementDefinitionContext } from "@microsoft/fast-foundation";
+import {
+    AnchorOptions,
+    ElementDefinitionContext,
+    FoundationElementTemplate,
+} from "@microsoft/fast-foundation";
 import {
     AccentButtonStyles,
     BaseButtonStyles,
@@ -14,10 +18,10 @@ import { appearanceBehavior } from "../utilities/behaviors";
  * Styles for Anchor
  * @public
  */
-export const anchorStyles: (
+export const anchorStyles: FoundationElementTemplate<ElementStyles, AnchorOptions> = (
     context: ElementDefinitionContext,
     definition: AnchorOptions
-) => ElementStyles = (context: ElementDefinitionContext, definition: AnchorOptions) =>
+) =>
     css`
         ${BaseButtonStyles}
     `.withBehaviors(

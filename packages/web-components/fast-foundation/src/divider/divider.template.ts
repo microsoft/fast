@@ -1,6 +1,9 @@
 import { html } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
-import type { FoundationElementDefinition } from "../foundation-element";
+import type {
+    FoundationElementDefinition,
+    FoundationElementTemplate,
+} from "../foundation-element";
 import type { ElementDefinitionContext } from "../design-system";
 import type { Divider } from "./divider";
 
@@ -8,10 +11,7 @@ import type { Divider } from "./divider";
  * The template for the {@link @microsoft/fast-foundation#Divider} component.
  * @public
  */
-export const dividerTemplate: (
-    context: ElementDefinitionContext,
-    definition: FoundationElementDefinition
-) => ViewTemplate<Divider> = (
+export const dividerTemplate: FoundationElementTemplate<ViewTemplate<Divider>> = (
     context: ElementDefinitionContext,
     definition: FoundationElementDefinition
 ) => html`

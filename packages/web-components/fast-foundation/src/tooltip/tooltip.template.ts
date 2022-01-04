@@ -1,7 +1,10 @@
 import { html, ref, when } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
 import { AnchoredRegion } from "../anchored-region";
-import type { FoundationElementDefinition } from "../foundation-element";
+import type {
+    FoundationElementDefinition,
+    FoundationElementTemplate,
+} from "../foundation-element";
 import type { ElementDefinitionContext } from "../design-system";
 import type { Tooltip } from "./tooltip";
 
@@ -9,10 +12,7 @@ import type { Tooltip } from "./tooltip";
  * Creates a template for the {@link @microsoft/fast-foundation#(Tooltip:class)} component using the provided prefix.
  * @public
  */
-export const tooltipTemplate: (
-    context: ElementDefinitionContext,
-    definition: FoundationElementDefinition
-) => ViewTemplate = (
+export const tooltipTemplate: FoundationElementTemplate<ViewTemplate<Tooltip>> = (
     context: ElementDefinitionContext,
     definition: FoundationElementDefinition
 ) => {

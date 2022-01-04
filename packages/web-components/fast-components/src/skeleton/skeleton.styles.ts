@@ -3,6 +3,7 @@ import {
     ElementDefinitionContext,
     forcedColorsStylesheetBehavior,
     FoundationElementDefinition,
+    FoundationElementTemplate,
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import { display } from "@microsoft/fast-foundation";
@@ -12,10 +13,7 @@ import { controlCornerRadius, neutralFillRest } from "../design-tokens";
  * Styles for Skeleton
  * @public
  */
-export const skeletonStyles: (
-    context: ElementDefinitionContext,
-    definition: FoundationElementDefinition
-) => ElementStyles = (
+export const skeletonStyles: FoundationElementTemplate<ElementStyles> = (
     context: ElementDefinitionContext,
     definition: FoundationElementDefinition
 ) =>
