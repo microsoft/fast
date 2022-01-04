@@ -58,9 +58,54 @@
     </fast-button>
 </div>
 
+<h2>Show/Hide with auto updating and lock to viewport for Corner Positions</h2>
+<fast-tooltip
+    id="tooltip-show-1"
+    anchor="anchor-show-corners"
+    position="top-left"
+    auto-update-mode="auto"
+    vertical-viewport-lock="true"
+    horizontal-viewport-lock="true"
+>
+    Helpful text is helpful
+</fast-tooltip>
+<fast-tooltip
+    id="tooltip-show-2"
+    anchor="anchor-show-corners"
+    position="top-right"
+    auto-update-mode="auto"
+    vertical-viewport-lock="true"
+    horizontal-viewport-lock="true"
+>
+    Helpful text is helpful
+</fast-tooltip>
+<fast-tooltip
+    id="tooltip-show-3"
+    anchor="anchor-show-corners"
+    position="bottom-left"
+    auto-update-mode="auto"
+    vertical-viewport-lock="true"
+    horizontal-viewport-lock="true"
+>
+    Helpful text is helpful
+</fast-tooltip>
+<fast-tooltip
+    id="tooltip-show-4"
+    anchor="anchor-show-corners"
+    position="bottom-right"
+    auto-update-mode="auto"
+    vertical-viewport-lock="true"
+    horizontal-viewport-lock="true"
+>
+    Helpful text is helpful
+</fast-tooltip>
+<fast-button id="anchor-show-corners" style="margin: 100px 200px 100px 200px;">
+    Toggle tooltips
+</fast-button>
+
 <h2>Fixed positions</h2>
 <div style="height: 400px; width: 400px; background: lightgray; overflow: scroll;">
-    <!-- <fast-tooltip position="top" anchor="anchor-positions">
+    <fast-tooltip position="top" anchor="anchor-positions">
         Top
     </fast-tooltip>
 
@@ -74,7 +119,7 @@
 
     <fast-tooltip anchor="anchor-positions" position="left">
         Left
-    </fast-tooltip> -->
+    </fast-tooltip>
 
     <fast-tooltip anchor="anchor-positions" position="top-left">
         Top Left
@@ -84,13 +129,13 @@
         Top Right
     </fast-tooltip>
 
-    <!-- <fast-tooltip anchor="anchor-positions" position="bottom-left">
+    <fast-tooltip anchor="anchor-positions" position="bottom-left">
         Bottom Left
     </fast-tooltip>
 
     <fast-tooltip anchor="anchor-positions" position="bottom-right">
         Bottom Right
-    </fast-tooltip> -->
+    </fast-tooltip>
 
     <fast-button id="anchor-positions" style="margin: 200px;">
         anchor
@@ -117,16 +162,28 @@
     <div style="height: 40px; width: 40px; background-color: orange;"></div>
     <div style="height: 40px; width: 40px; background-color: yellow;"></div>
     <fast-tooltip anchor="anchor-flex" position="top">
-        Helpful text is helpful
+        Tooltip
     </fast-tooltip>
     <fast-tooltip anchor="anchor-flex" position="bottom">
-        Helpful text is helpful
+        Tooltip
     </fast-tooltip>
     <fast-tooltip anchor="anchor-flex" position="left">
-        Helpful text is helpful
+        Tooltip
     </fast-tooltip>
     <fast-tooltip anchor="anchor-flex" position="right">
-        Helpful text is helpful
+        Tooltip
+    </fast-tooltip>
+    <fast-tooltip anchor="anchor-flex" position="top-left">
+        Tooltip
+    </fast-tooltip>
+    <fast-tooltip anchor="anchor-flex" position="top-right">
+        Tooltip
+    </fast-tooltip>
+    <fast-tooltip anchor="anchor-flex" position="bottom-left">
+        Tooltip
+    </fast-tooltip>
+    <fast-tooltip anchor="anchor-flex" position="bottom-right">
+        Tooltip
     </fast-tooltip>
 </div>
 
@@ -200,6 +257,22 @@
     <fast-tooltip anchor="anchor-se" position="end">
         End
     </fast-tooltip>
+
+    <fast-tooltip anchor="anchor-se" position="top-start">
+        Top Start
+    </fast-tooltip>
+
+    <fast-tooltip anchor="anchor-se" position="top-end">
+        Top End
+    </fast-tooltip>
+
+    <fast-tooltip anchor="anchor-se" position="bottom-start">
+        Bottom Start
+    </fast-tooltip>
+
+    <fast-tooltip anchor="anchor-se" position="bottom-end">
+        Bottom End
+    </fast-tooltip>
 </div>
 
 <h2>start/end RTL</h2>
@@ -217,5 +290,21 @@
 
     <fast-tooltip anchor="anchor-sertl" position="end">
         End
+    </fast-tooltip>
+
+    <fast-tooltip anchor="anchor-sertl" position="top-start">
+        Top Start
+    </fast-tooltip>
+
+    <fast-tooltip anchor="anchor-sertl" position="top-end">
+        Top End
+    </fast-tooltip>
+
+    <fast-tooltip anchor="anchor-sertl" position="bottom-start">
+        Bottom Start
+    </fast-tooltip>
+
+    <fast-tooltip anchor="anchor-sertl" position="bottom-end">
+        Bottom End
     </fast-tooltip>
 </div>

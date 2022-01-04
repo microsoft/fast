@@ -79,6 +79,27 @@ export const tooltipStyles: FoundationElementTemplate<ElementStyles> = (
         ${context.tagFor(AnchoredRegion)}.right .tooltip {
             margin-left: 4px;
         }
+
+        ${context.tagFor(AnchoredRegion)}.top.left .tooltip,
+        ${context.tagFor(AnchoredRegion)}.top.right .tooltip {
+            margin-bottom: 0px;
+        }
+
+        ${context.tagFor(AnchoredRegion)}.bottom.left .tooltip,
+        ${context.tagFor(AnchoredRegion)}.bottom.right .tooltip {
+            margin-top: 0px;
+        }
+
+        ${context.tagFor(AnchoredRegion)}.top.left .tooltip,
+        ${context.tagFor(AnchoredRegion)}.bottom.left .tooltip {
+            margin-right: 0px;
+        }
+
+        ${context.tagFor(AnchoredRegion)}.top.right .tooltip,
+        ${context.tagFor(AnchoredRegion)}.bottom.right .tooltip {
+            margin-left: 0px;
+        }
+
     `.withBehaviors(
         forcedColorsStylesheetBehavior(
             css`
