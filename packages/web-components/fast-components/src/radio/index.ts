@@ -1,3 +1,4 @@
+import { html } from "@microsoft/fast-element";
 import {
     Radio,
     RadioOptions,
@@ -18,7 +19,7 @@ export const fastRadio = Radio.compose<RadioOptions>({
     baseName: "radio",
     template,
     styles,
-    checkedIndicator: `
+    checkedIndicator: html`
         <div part="checked-indicator" class="checked-indicator"></div>
     `,
 });
