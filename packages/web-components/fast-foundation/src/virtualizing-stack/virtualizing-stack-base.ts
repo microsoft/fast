@@ -335,8 +335,11 @@ export class VirtualizingStackBase extends FoundationElement {
 
         this.initializeResizeDetector();
 
-        this.itemsPlaceholder = document.createComment("");
-        this.appendChild(this.itemsPlaceholder);
+        if (this.itemsPlaceholder === undefined) {
+            this.itemsPlaceholder = document.createComment("");
+            this.appendChild(this.itemsPlaceholder);
+        }
+
         enableArrayObservation();
         this.initializeRepeatBehavior();
         this.doReset();

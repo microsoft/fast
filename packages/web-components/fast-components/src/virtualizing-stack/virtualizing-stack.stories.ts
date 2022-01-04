@@ -26,7 +26,7 @@ const imageItemTemplate = html`
                 height:100%;
                 width:100%;
             "
-            src="${x => x.url}"
+            src="https://source.unsplash.com/random/300x200"
         ></image> -->
         <div style="margin: 10px;">
             ${x => x.value}
@@ -44,12 +44,18 @@ const gridItemTemplate = html`
         style="
             height:100px;
             width:100px;
-            padding: 20px;
             grid-row: 1;
             grid-column: ${(x, c) => c.index + c.parent.virtualizedIndexOffset};
         "
     >
-        ${x => x.value}
+        <image
+            style="
+                background: olive;
+                height:100%;
+                width:100%;
+            "
+            src="${x => x.url}"
+        ></image>
     </div>
 `;
 
@@ -59,6 +65,7 @@ const rowItemTemplate = html`
         ;
         item-span="100"
         ;
+        viewport-buffer="600"
         :viewportElement="${(x, c) => c.parent.viewportElement}"
         ;
         :itemTemplate="${gridItemTemplate}"
@@ -78,13 +85,13 @@ const rowItemTemplate = html`
 
 addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
     if (name.toLowerCase().startsWith("virtualizing-stack")) {
-        const data = newDataSet(100000, "id - ");
+        const data = newDataSet(100000, 1);
 
         const gridData: object[] = [];
 
         for (let i = 1; i <= 100; i++) {
             gridData.push({
-                items: newDataSet(100, `${i} - `),
+                items: newDataSet(100, i),
             });
         }
 
@@ -107,9 +114,9 @@ addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
         const stackGrid = document.getElementById(
             "stackgrid"
         ) as FoundationVirtualizingStack;
-        stackGrid.viewportElement = document.getElementById(
-            "gridviewport"
-        ) as HTMLElement;
+        // stackGrid.viewportElement = document.getElementById(
+        //     "gridcontainer"
+        // ) as HTMLElement;
         stackGrid.itemTemplate = rowItemTemplate;
         stackGrid.items = gridData;
 
@@ -130,12 +137,12 @@ addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
     }
 });
 
-function newDataSet(rowCount: number, prefix: string): object[] {
+function newDataSet(rowCount: number, prefix: number): object[] {
     const newData: object[] = [];
     for (let i = 1; i <= rowCount; i++) {
         newData.push({
             value: `${prefix}${i}`,
-            url: `https://via.placeholder.com/100x100/414141/?text=${i}`,
+            url: `https://picsum.photos/200/300?random=${prefix * 1000 + i}`,
         });
     }
     return newData;

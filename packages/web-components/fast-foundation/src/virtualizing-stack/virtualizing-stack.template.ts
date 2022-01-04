@@ -24,14 +24,14 @@ export const virtualizingStackTemplate: (
                 x.orientation !== Orientation.vertical
                     ? `${x.totalStackSpan}px`
                     : "100%"};
-                grid-template-columns:${x =>
-                x.orientation !== Orientation.vertical ? x.gridTemplateSpans : undefined};
+                grid-template-columns: ${x =>
+                x.orientation !== Orientation.vertical ? x.gridTemplateSpans : "1fr"};
                 height: ${x =>
                 x.orientation === Orientation.vertical
                     ? `${x.totalStackSpan}px`
                     : "100%"};
                 grid-template-rows:${x =>
-                x.orientation === Orientation.vertical ? x.gridTemplateSpans : undefined};
+                x.orientation === Orientation.vertical ? x.gridTemplateSpans : "1fr"};
                 display: grid;
             "
             ${ref("containerElement")}

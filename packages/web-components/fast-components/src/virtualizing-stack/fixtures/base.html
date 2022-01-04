@@ -117,25 +117,13 @@
     style="height: 800px; width: 800px; overflow-x: scroll; overflow-y: scroll;"
 >
     <fast-virtualizing-stack
+        viewport-buffer="600"
         viewport="gridcontainer"
         orientation="vertical"
         item-span="100"
         id="stackgrid"
-        style="background: gray;"
+        style="width: fit-content; background: gray; contain: none;"
     ></fast-virtualizing-stack>
-
-    <div
-        id="gridviewport"
-        style="
-            pointer-events: none;
-            position: absolute;
-            margin: 300px;
-            height: 200px;
-            width: 200px;
-            background: green;
-            opacity: 0.3;
-        "
-    ></div>
 </div>
 
 <div
