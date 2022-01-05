@@ -1,9 +1,9 @@
-import { assert, expect } from "chai";
 import { DOM } from "@microsoft/fast-element";
-import { listboxOptionTemplate, ListboxOption } from "../listbox-option";
+import { keyArrowDown, keyArrowUp } from "@microsoft/fast-web-utilities";
+import { assert, expect } from "chai";
+import { ListboxOption, listboxOptionTemplate } from "../listbox-option";
 import { fixture } from "../test-utilities/fixture";
 import { Combobox, comboboxTemplate as template } from "./index";
-import { keyArrowDown, keyArrowUp } from "@microsoft/fast-web-utilities";
 
 const FASTCombobox = Combobox.compose({
     baseName: "combobox",
@@ -19,6 +19,8 @@ async function setup() {
     const { element, connect, disconnect, parent } = await fixture(
         [FASTCombobox(), FASTOption()]
     );
+
+    element.id = "combobox";
 
     const option1 = document.createElement("fast-option") as ListboxOption;
     option1.textContent = "one";
@@ -288,5 +290,24 @@ describe("Combobox", () => {
 
             await disconnect();
         });
+    });
+
+    it("should focus the control when an associated label is clicked", async () => {
+        const { element, connect, disconnect, parent } = await setup();
+
+        const label = document.createElement("label");
+        label.setAttribute("for", element.id);
+
+        parent.insertBefore(label, element);
+
+        await connect();
+
+        expect(element.labels).to.contain(label);
+
+        label.click();
+
+        expect(document.activeElement).to.equal(element);
+
+        await disconnect();
     });
 });

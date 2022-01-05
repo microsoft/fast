@@ -1,8 +1,32 @@
 # Change Log - @microsoft/fast-react-wrapper
 
-This log was last generated on Thu, 11 Nov 2021 07:15:33 GMT and should not be manually modified.
+This log was last generated on Wed, 15 Dec 2021 07:14:44 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.1.18
+
+Wed, 15 Dec 2021 07:14:44 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.27.2 (john.kreitlow@microsoft.com)
+
+## 0.1.17
+
+Tue, 23 Nov 2021 07:12:23 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.27.0 (john.kreitlow@microsoft.com)
+
+## 0.1.16
+
+Wed, 17 Nov 2021 07:12:14 GMT
+
+### Patches
+
+- fix(react-wrapper): change peer dependency for `react` (vaibhavkshinde20@gmail.com)
 
 ## 0.1.15
 

@@ -1,8 +1,64 @@
 # Change Log - @microsoft/site-utilities
 
-This log was last generated on Thu, 11 Nov 2021 07:15:33 GMT and should not be manually modified.
+This log was last generated on Sun, 19 Dec 2021 07:12:39 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.9.0
+
+Sun, 19 Dec 2021 07:12:39 GMT
+
+### Patches
+
+- Bump @microsoft/fast-components to v2.16.9 (anthonystewart@google.com)
+
+## 0.9.0
+
+Wed, 15 Dec 2021 07:14:44 GMT
+
+### Patches
+
+- Bump @microsoft/fast-components to v2.16.8 (john.kreitlow@microsoft.com)
+
+## 0.9.0
+
+Sun, 12 Dec 2021 07:12:52 GMT
+
+### Patches
+
+- Bump @microsoft/fast-components to v2.16.7 (email not defined)
+
+## 0.9.0
+
+Tue, 30 Nov 2021 07:13:40 GMT
+
+### Patches
+
+- Bump @microsoft/fast-components to v2.16.6 (jes@microsoft.com)
+
+## 0.9.0
+
+Tue, 23 Nov 2021 07:12:23 GMT
+
+### Patches
+
+- Bump @microsoft/fast-components to v2.16.5 (john.kreitlow@microsoft.com)
+
+## 0.9.0
+
+Sun, 21 Nov 2021 07:10:36 GMT
+
+### Patches
+
+- Bump @microsoft/fast-components to v2.16.4 (jes@microsoft.com)
+
+## 0.9.0
+
+Sun, 14 Nov 2021 07:11:13 GMT
+
+### Patches
+
+- Bump @microsoft/fast-components to v2.16.3 (robarb@microsoft.com)
 
 ## 0.9.0
 

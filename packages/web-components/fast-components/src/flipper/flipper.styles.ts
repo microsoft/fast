@@ -77,6 +77,7 @@ export const flipperStyles: (
         cursor: ${disabledCursor};
         fill: currentcolor;
         color: ${neutralForegroundRest};
+        pointer-events: none;
     }
 
     :host([disabled])::before,

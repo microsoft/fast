@@ -1,8 +1,41 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Thu, 11 Nov 2021 07:15:33 GMT and should not be manually modified.
+This log was last generated on Sun, 19 Dec 2021 07:12:39 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.27.3
+
+Sun, 19 Dec 2021 07:12:39 GMT
+
+### Patches
+
+- Replace equality check with NaN with the Number.isNan function (anthonystewart@google.com)
+- add queueUpdate for setStops in horzontal scroll (sethdonohue@Admins-MBP.guest.corp.microsoft.com)
+
+## 2.27.2
+
+Wed, 15 Dec 2021 07:14:44 GMT
+
+### Patches
+
+- focus on combobox control when clicking an associated label (john.kreitlow@microsoft.com)
+
+## 2.27.1
+
+Thu, 02 Dec 2021 07:11:13 GMT
+
+### Patches
+
+- fix: disabled tree items fire (jes@microsoft.com)
+
+## 2.27.0
+
+Tue, 23 Nov 2021 07:12:23 GMT
+
+### Minor changes
+
+- add `size` attribute to listbox element (john.kreitlow@microsoft.com)
 
 ## 2.26.2
 

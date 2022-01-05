@@ -2,6 +2,136 @@
   "name": "@microsoft/fast-foundation",
   "entries": [
     {
+      "date": "Sun, 19 Dec 2021 07:12:39 GMT",
+      "tag": "@microsoft/fast-foundation_v2.27.3",
+      "version": "2.27.3",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Replace equality check with NaN with the Number.isNan function",
+            "author": "anthonystewart@google.com",
+            "commit": "e11044f4aa3552398d5d1a0eeee82b1596a83486",
+            "package": "@microsoft/fast-foundation"
+          },
+          {
+            "comment": "add queueUpdate for setStops in horzontal scroll",
+            "author": "sethdonohue@Admins-MBP.guest.corp.microsoft.com",
+            "commit": "610fa12d4b88d98c333817f0649407d0ad61f5c6",
+            "package": "@microsoft/fast-foundation"
+          }
+        ],
+        "none": [
+          {
+            "comment": "add link to issue describing decorator incompatibility issues with create-react-app",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "927fcebb788e42d94464143f603c33700ec3fa0e",
+            "package": "@microsoft/fast-foundation"
+          },
+          {
+            "comment": "Bump @microsoft/fast-element to v1.6.2",
+            "author": "steph@huynhicode.dev",
+            "commit": "5056e83234e1c758375fa4882943d104fb476ca2",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 15 Dec 2021 07:14:44 GMT",
+      "tag": "@microsoft/fast-foundation_v2.27.2",
+      "version": "2.27.2",
+      "comments": {
+        "patch": [
+          {
+            "comment": "focus on combobox control when clicking an associated label",
+            "author": "john.kreitlow@microsoft.com",
+            "commit": "2c538ea8bcf3fd63d07521d9c8a9b889653cd889",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 14 Dec 2021 07:12:12 GMT",
+      "tag": "@microsoft/fast-foundation_v2.27.1",
+      "version": "2.27.1",
+      "comments": {
+        "none": [
+          {
+            "comment": "Bump @microsoft/fast-element to v1.6.2",
+            "author": "roeisenb@microsoft.com",
+            "commit": "babdb99e832319eaee76465765f9e6b72911d473",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 08 Dec 2021 07:10:04 GMT",
+      "tag": "@microsoft/fast-foundation_v2.27.1",
+      "version": "2.27.1",
+      "comments": {
+        "none": [
+          {
+            "comment": "Bump @microsoft/fast-element to v1.6.2",
+            "author": "roeisenb@microsoft.com",
+            "commit": "bd7d84152a823cc21aab0dfa196da9d663ad0778",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 02 Dec 2021 07:11:13 GMT",
+      "tag": "@microsoft/fast-foundation_v2.27.1",
+      "version": "2.27.1",
+      "comments": {
+        "none": [
+          {
+            "comment": "corrections to Blazor, webpack, and cdn links",
+            "author": "roeisenb@microsoft.com",
+            "commit": "2ec536794820959f771ebbfe25efd5a4489e7a76",
+            "package": "@microsoft/fast-foundation"
+          },
+          {
+            "comment": "update react itegration docs to address Windows specific setup steps",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "5600019854840e196060023b1b095bbb544d9d1a",
+            "package": "@microsoft/fast-foundation"
+          },
+          {
+            "comment": "Bump @microsoft/fast-element to v1.6.2",
+            "author": "roeisenb@microsoft.com",
+            "commit": "2ec536794820959f771ebbfe25efd5a4489e7a76",
+            "package": "@microsoft/fast-foundation"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "fix: disabled tree items fire",
+            "author": "jes@microsoft.com",
+            "commit": "a0545ff0a7209c43460fc07913aa18685a4851fd",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 23 Nov 2021 07:12:23 GMT",
+      "tag": "@microsoft/fast-foundation_v2.27.0",
+      "version": "2.27.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "add `size` attribute to listbox element",
+            "author": "john.kreitlow@microsoft.com",
+            "commit": "caa956557ea1d8b7722665d228898df629d46cc2",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 11 Nov 2021 07:15:33 GMT",
       "tag": "@microsoft/fast-foundation_v2.26.2",
       "version": "2.26.2",
