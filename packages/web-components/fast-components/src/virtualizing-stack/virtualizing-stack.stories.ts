@@ -62,6 +62,7 @@ const gridItemTemplate = html`
 
 const rowItemTemplate = html`
     <fast-virtualizing-stack
+        auto-update-mode="auto"
         orientation="horizontal"
         item-span="100"
         viewport-buffer="200"

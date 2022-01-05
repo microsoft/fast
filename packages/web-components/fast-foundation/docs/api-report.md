@@ -2776,8 +2776,8 @@ export class VirtualizingStack extends VirtualizingStackBase {
 // @beta
 export type VirtualizingStackAutoUpdateMode = "manual" | "viewport-resize" | "auto";
 
-// @public (undocumented)
-export class VirtualizingStackBase extends FoundationElement {
+// @public
+export abstract class VirtualizingStackBase extends FoundationElement {
     // (undocumented)
     protected allowLayoutUpdateDelay: boolean;
     // @beta

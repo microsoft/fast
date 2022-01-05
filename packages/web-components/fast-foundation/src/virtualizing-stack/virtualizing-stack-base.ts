@@ -44,11 +44,11 @@ const defaultItemTemplate: ViewTemplate<any> = html`
 `;
 
 /**
- *
+ *  The VirtualizingStackBase class
  *
  * @public
  */
-export class VirtualizingStackBase extends FoundationElement {
+export abstract class VirtualizingStackBase extends FoundationElement {
     /**
      *
      *
