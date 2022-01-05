@@ -99,7 +99,7 @@ export class VirtualizingStackBase extends FoundationElement {
      * HTML Attribute: item-span
      */
     @attr({ attribute: "item-span", converter: nullableNumberConverter })
-    public itemSpan: number;
+    public itemSpan: number = 50;
     private itemSpanChanged(): void {
         if (this.$fastController.isConnected) {
             this.updateDimensions();
@@ -286,6 +286,7 @@ export class VirtualizingStackBase extends FoundationElement {
      *
      * @internal
      */
+    @observable
     public lastRenderedIndex: number = -1;
 
     /**
@@ -677,7 +678,7 @@ export class VirtualizingStackBase extends FoundationElement {
                     //TODO: wire this up
                     this.totalStackSpan = 0;
                 }
-            } else if (this.itemSpan !== undefined) {
+            } else {
                 this.totalStackSpan = this.itemSpan * this.items.length;
             }
         }

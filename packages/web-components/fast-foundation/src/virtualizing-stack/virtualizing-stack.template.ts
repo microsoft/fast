@@ -16,7 +16,7 @@ export const virtualizingStackTemplate: (
     context: ElementDefinitionContext,
     definition: FoundationElementDefinition
 ) => html`
-    <template auto-update-mode="auto">
+    <template>
         <div
             class="container"
             style="

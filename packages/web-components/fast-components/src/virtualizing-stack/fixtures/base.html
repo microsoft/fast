@@ -17,6 +17,7 @@
     orientation="horizontal"
     item-span="100"
     viewport-buffer="800"
+    auto-update-mode="auto"
     id="stackh1"
     style="
         height: 120px;
@@ -37,6 +38,7 @@
 <div style="height: 120px; width: 100%; display: grid; justify-items: center;">
     <fast-virtualizing-stack
         orientation="horizontal"
+        auto-update-mode="auto"
         item-span="100"
         id="stackh2"
         viewport="viewporth2"
@@ -70,6 +72,7 @@
 </h3>
 
 <fast-virtualizing-stack
+    auto-update-mode="auto"
     orientation="horizontal"
     item-span="100"
     id="stackh3"
@@ -88,6 +91,7 @@
     regions. These are not virtualized and remain in the DOM even when out of view.
 </h3>
 <fast-virtualizing-stack
+    auto-update-mode="auto"
     orientation="horizontal"
     item-span="100"
     id="stackh4"
@@ -117,7 +121,8 @@
     style="height: 800px; width: 800px; overflow-x: scroll; overflow-y: scroll;"
 >
     <fast-virtualizing-stack
-        viewport-buffer="600"
+        auto-update-mode="auto"
+        viewport-buffer="800"
         viewport="gridcontainer"
         orientation="vertical"
         item-span="100"
@@ -135,12 +140,14 @@
     "
 >
     <fast-virtualizing-stack
+        auto-update-mode="auto"
         item-span="100"
         id="stackv1"
         style="grid-column: 1; width: 100px; background: gray;"
     ></fast-virtualizing-stack>
 
     <fast-virtualizing-stack
+        auto-update-mode="auto"
         item-span="100"
         id="stackv2"
         style="
@@ -154,6 +161,7 @@
     ></fast-virtualizing-stack>
 
     <fast-virtualizing-stack
+        auto-update-mode="auto"
         item-span="100"
         id="stackv3"
         style="

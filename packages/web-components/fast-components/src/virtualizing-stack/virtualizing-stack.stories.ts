@@ -42,6 +42,7 @@ const imageItemTemplate = html`
 const gridItemTemplate = html`
     <div
         style="
+            contain: strict;
             height:100px;
             width:100px;
             grid-row: 1;
@@ -62,16 +63,11 @@ const gridItemTemplate = html`
 const rowItemTemplate = html`
     <fast-virtualizing-stack
         orientation="horizontal"
-        ;
         item-span="100"
-        ;
-        viewport-buffer="600"
+        viewport-buffer="200"
         :viewportElement="${(x, c) => c.parent.viewportElement}"
-        ;
         :itemTemplate="${gridItemTemplate}"
-        ;
         :items="${x => x.items}"
-        ;
         style="
             contain: none;
             display: block;
