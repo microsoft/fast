@@ -18,7 +18,7 @@ import { IntersectionService } from "../utilities/intersection-service";
 import type { ResizeObserverClassDefinition } from "../utilities/resize-observer";
 
 /**
- * Defines if the component updates its position automatically.
+ * Defines when the component updates its position automatically.
  *
  * @beta
  */
@@ -92,7 +92,8 @@ export abstract class VirtualizingStackBase extends FoundationElement {
     }
 
     /**
-     *
+     * The span in pixels of each item along the virtualization axis
+     * Note used when a spanMap is provided
      *
      * @beta
      * @remarks
@@ -107,7 +108,8 @@ export abstract class VirtualizingStackBase extends FoundationElement {
     }
 
     /**
-     *
+     * Defines an area in pixels on either end of the viewport where items outside the viewport
+     * will still be rendered.
      *
      * @beta
      * @remarks
@@ -117,7 +119,9 @@ export abstract class VirtualizingStackBase extends FoundationElement {
     public viewportBuffer: number = 100;
 
     /**
-     *
+     * Defines an interval in ms where layout updates are delayed if another position update is
+     * triggered before the interval passes. May be useful for preventing transient elements from
+     * rendering during long scroll operations.
      *
      * @beta
      * @remarks
@@ -127,7 +131,8 @@ export abstract class VirtualizingStackBase extends FoundationElement {
     public layoutUpdateDelay: number = 0;
 
     /**
-     *
+     * Whether the stack is oriented vertically or horizontally.
+     * Default is vertical
      *
      * @beta
      * @remarks
@@ -161,7 +166,7 @@ export abstract class VirtualizingStackBase extends FoundationElement {
     }
 
     /**
-     *
+     * The span in pixels of the start region.
      *
      * @beta
      * @remarks
@@ -176,7 +181,7 @@ export abstract class VirtualizingStackBase extends FoundationElement {
     }
 
     /**
-     *
+     * The span in pixels of the end region.
      *
      * @beta
      * @remarks
@@ -204,7 +209,7 @@ export abstract class VirtualizingStackBase extends FoundationElement {
     }
 
     /**
-     *
+     * tbd
      *
      * @public
      */
@@ -217,7 +222,7 @@ export abstract class VirtualizingStackBase extends FoundationElement {
     }
 
     /**
-     *
+     * The ViewTemplate used to render items.
      *
      * @public
      */
@@ -225,8 +230,7 @@ export abstract class VirtualizingStackBase extends FoundationElement {
     public itemTemplate: ViewTemplate = defaultItemTemplate;
 
     /**
-     *
-     *  Accounts for css grids not being zero based, the spacer span, and the start region
+     * Accounts for css grids not being zero based, the spacer span, and the start region
      *
      * @internal
      */
@@ -234,7 +238,7 @@ export abstract class VirtualizingStackBase extends FoundationElement {
     public virtualizedIndexOffset: number = 3;
 
     /**
-     *
+     * The items that are currently visible (includes buffer regions)
      *
      * @internal
      */
@@ -242,7 +246,8 @@ export abstract class VirtualizingStackBase extends FoundationElement {
     public visibleItems: any[] = [];
 
     /**
-     *
+     * The calculated span of the total stack.
+     * (ie. all items + start/end regions)
      *
      * @internal
      */
@@ -250,7 +255,8 @@ export abstract class VirtualizingStackBase extends FoundationElement {
     public totalStackSpan: number = 0;
 
     /**
-     *
+     * The size in pixels of the start "spacer"
+     * (ie. the grid region that holds space for non-rendered elements at the start of the stack)
      *
      * @internal
      */
@@ -258,15 +264,16 @@ export abstract class VirtualizingStackBase extends FoundationElement {
     public startSpacerSpan: number = 0;
 
     /**
-     *
-     *
+     * The size in pixels of the end "spacer"
+     * (ie. the grid region that holds space for non-rendered elements at the end of the stack)*
      * @internal
      */
     @observable
     public endSpacerSpan: number = 0;
 
     /**
-     *
+     * Depending on orientation, the "grid-template-columns" or "grid-template-rows" value
+     * applied to the stack
      *
      * @internal
      */
