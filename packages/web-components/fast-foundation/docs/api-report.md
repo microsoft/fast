@@ -2788,42 +2788,40 @@ export abstract class VirtualizingStackBase extends FoundationElement {
     containerElement: HTMLDivElement;
     // @internal (undocumented)
     disconnectedCallback(): void;
-    // @beta (undocumented)
+    // @beta
     endRegionSpan: number;
-    // @internal (undocumented)
+    // @internal
     endSpacerSpan: number;
-    // @internal (undocumented)
+    // @internal
     firstRenderedIndex: number;
     getGeneratedItemPosition: (itemIndex: number) => number;
-    // @internal (undocumented)
+    // @internal
     gridTemplateSpans: string;
     // @internal
     handleChange(source: any, splices: Splice[]): void;
     items: object[];
-    // @beta (undocumented)
+    // @beta
     itemSpan: number;
-    // (undocumented)
     itemTemplate: ViewTemplate;
-    // @internal (undocumented)
+    // @internal
     lastRenderedIndex: number;
-    // @beta (undocumented)
+    // @beta
     layoutUpdateDelay: number;
-    // @beta (undocumented)
+    // @beta
     orientation: Orientation;
     requestPositionUpdates: () => void;
     protected reset(): void;
-    // (undocumented)
     spanMap: number[];
-    // @beta (undocumented)
+    // @beta
     startRegionSpan: number;
-    // @internal (undocumented)
+    // @internal
     startSpacerSpan: number;
-    // @internal (undocumented)
+    // @internal
     totalStackSpan: number;
     update(): void;
     // @beta
     viewport: string;
-    // @beta (undocumented)
+    // @beta
     viewportBuffer: number;
     // @beta
     viewportElement: HTMLElement;
@@ -2831,7 +2829,7 @@ export abstract class VirtualizingStackBase extends FoundationElement {
     virtualize: boolean;
     // @internal
     virtualizedIndexOffset: number;
-    // @internal (undocumented)
+    // @internal
     visibleItems: any[];
     }
 

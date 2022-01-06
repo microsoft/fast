@@ -28,6 +28,16 @@ const itemTemplate = html`
     </div>
 `;
 
+function newDataSet(rowCount: number): object[] {
+    const newData: object[] = [];
+    for (let i = 1; i <= rowCount; i++) {
+        newData.push({
+            value: i,
+        });
+    }
+    return newData;
+}
+
 async function setup() {
     const { element, connect, disconnect } = await fixture([FASTVirtualizingStack()]);
 
@@ -124,6 +134,18 @@ describe("VirtualizingStack", () => {
         await connect();
 
         expect(element.itemTemplate).to.not.equal(undefined);
+
+        await disconnect();
+    });
+
+    it("should render all items when virtualize is false", async () => {
+        const { element, connect, disconnect } = await setup();
+
+        element.items = newDataSet(100);
+        element.virtualize = false;
+        await connect();
+
+        expect(element.visibleItems.length).to.equal(100);
 
         await disconnect();
     });

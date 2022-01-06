@@ -265,7 +265,8 @@ export abstract class VirtualizingStackBase extends FoundationElement {
 
     /**
      * The size in pixels of the end "spacer"
-     * (ie. the grid region that holds space for non-rendered elements at the end of the stack)*
+     * (ie. the grid region that holds space for non-rendered elements at the end of the stack)
+     *
      * @internal
      */
     @observable
@@ -281,7 +282,7 @@ export abstract class VirtualizingStackBase extends FoundationElement {
     public gridTemplateSpans: string;
 
     /**
-     *
+     * The index of the first item in the array to be rendered
      *
      * @internal
      */
@@ -289,7 +290,7 @@ export abstract class VirtualizingStackBase extends FoundationElement {
     public firstRenderedIndex: number = -1;
 
     /**
-     *
+     * The index of the last item in the array to be rendered
      *
      * @internal
      */
@@ -366,6 +367,9 @@ export abstract class VirtualizingStackBase extends FoundationElement {
         this.clearLayoutUpdateTimer();
     }
 
+    /**
+     * starts observing the items array
+     */
     private observeItems(): void {
         if (!this.items) {
             return;
@@ -382,6 +386,9 @@ export abstract class VirtualizingStackBase extends FoundationElement {
         newObserver.subscribe(this);
     }
 
+    /**
+     * stops observing the items array
+     */
     private unobserveItems(): void {
         if (this.itemsObserver !== null) {
             this.itemsObserver.unsubscribe(this);
@@ -600,6 +607,10 @@ export abstract class VirtualizingStackBase extends FoundationElement {
         }
     }
 
+    /**
+     * starts the layout update timer
+     * clears existing timer beforehand
+     */
     private startLayoutUpdateTimer(): void {
         this.clearLayoutUpdateTimer();
         this.scrollLayoutUpdateTimer = window.setTimeout((): void => {
@@ -608,6 +619,9 @@ export abstract class VirtualizingStackBase extends FoundationElement {
         }, this.layoutUpdateDelay);
     }
 
+    /**
+     * clears the layout update timer
+     */
     private clearLayoutUpdateTimer(): void {
         if (this.scrollLayoutUpdateTimer !== null) {
             window.clearTimeout(this.scrollLayoutUpdateTimer);
@@ -616,7 +630,7 @@ export abstract class VirtualizingStackBase extends FoundationElement {
     }
 
     /**
-     * starts event listeners that can trigger auto updating
+     * starts the viewport resize detector
      */
     private startViewportResizeDetector = (): void => {
         if (this.resizeDetector !== null && this.viewportElement !== null) {
@@ -625,7 +639,17 @@ export abstract class VirtualizingStackBase extends FoundationElement {
     };
 
     /**
-     * starts event listeners that can trigger auto updating
+     * stops the viewport resize detector
+     */
+    private stopViewportResizeDetector = (): void => {
+        if (this.resizeDetector !== null && this.viewportElement !== null) {
+            this.resizeDetector.unobserve(this.viewportElement);
+        }
+    };
+
+    /**
+     * starts window level event listeners that can trigger auto updating
+     * (scroll and resize)
      */
     private startWindowUpdateEventListeners = (): void => {
         window.addEventListener(eventResize, this.handleResizeEvent, {
@@ -638,26 +662,17 @@ export abstract class VirtualizingStackBase extends FoundationElement {
     };
 
     /**
-     *
+     * handle scroll events
      */
     private handleScrollEvent = (e: Event): void => {
         this.requestPositionUpdates();
     };
 
     /**
-     *
+     * handle resize events
      */
     private handleResizeEvent = (e: Event): void => {
         this.requestPositionUpdates();
-    };
-
-    /**
-     * stops event listeners that can trigger auto updating
-     */
-    private stopViewportResizeDetector = (): void => {
-        if (this.resizeDetector !== null && this.viewportElement !== null) {
-            this.resizeDetector.unobserve(this.viewportElement);
-        }
     };
 
     /**
@@ -798,6 +813,9 @@ export abstract class VirtualizingStackBase extends FoundationElement {
         }
     };
 
+    /**
+     *  Updates the range of rendered items
+     */
     private updateRenderedRange(
         newFirstRenderedIndex: number,
         newLastRenderedIndex: number
