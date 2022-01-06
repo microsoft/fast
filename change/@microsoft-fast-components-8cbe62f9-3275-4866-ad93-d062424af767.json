@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "tooltip uses \"center\"",
+  "packageName": "@microsoft/fast-components",
+  "email": "scomea@microsoft.com",
+  "dependentChangeType": "patch"
+}
