@@ -1,8 +1,20 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Sun, 19 Dec 2021 07:12:39 GMT and should not be manually modified.
+This log was last generated on Thu, 06 Jan 2022 07:11:52 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.28.0
+
+Thu, 06 Jan 2022 07:11:52 GMT
+
+### Minor changes
+
+- fix: prevent events to propagate from disabled button (#4884) (email not defined)
+
+### Patches
+
+- tooltip uses "center" (scomea@microsoft.com)
 
 ## 2.27.3
 

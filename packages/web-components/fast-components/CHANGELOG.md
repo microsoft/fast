@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-components
 
-This log was last generated on Sun, 19 Dec 2021 07:12:39 GMT and should not be manually modified.
+This log was last generated on Thu, 06 Jan 2022 07:11:52 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.16.10
+
+Thu, 06 Jan 2022 07:11:52 GMT
+
+### Patches
+
+- tooltip uses "center" (scomea@microsoft.com)
 
 ## 2.16.9
 
