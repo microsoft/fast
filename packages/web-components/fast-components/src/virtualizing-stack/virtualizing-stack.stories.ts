@@ -108,12 +108,14 @@ addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
         stackh4.itemTemplate = imageItemTemplate;
         stackh4.items = data;
 
+        const stackh5 = document.getElementById("stackh5") as FoundationVirtualizingStack;
+        stackh5.itemTemplate = imageItemTemplate;
+        stackh5.items = newDataSet(100, 1);
+
         const stackGrid = document.getElementById(
             "stackgrid"
         ) as FoundationVirtualizingStack;
-        // stackGrid.viewportElement = document.getElementById(
-        //     "gridcontainer"
-        // ) as HTMLElement;
+
         stackGrid.itemTemplate = rowItemTemplate;
         stackGrid.items = gridData;
 
@@ -138,7 +140,7 @@ function newDataSet(rowCount: number, prefix: number): object[] {
     const newData: object[] = [];
     for (let i = 1; i <= rowCount; i++) {
         newData.push({
-            value: `${prefix}${i}`,
+            value: `${i}`,
             url: `https://picsum.photos/200/300?random=${prefix * 1000 + i}`,
         });
     }

@@ -44,13 +44,13 @@ const defaultItemTemplate: ViewTemplate<any> = html`
 `;
 
 /**
- *  The VirtualizingStackBase class
+ *  The VirtualizingStackBase abstract class
  *
  * @public
  */
 export abstract class VirtualizingStackBase extends FoundationElement {
     /**
-     *
+     *  The array of items to be displayed
      *
      * @public
      */
@@ -63,11 +63,11 @@ export abstract class VirtualizingStackBase extends FoundationElement {
     }
 
     /**
-     *
+     *  Whether or not the display should virtualize
      *
      * @beta
      */
-    @attr({ attribute: "virtualize" })
+    @attr({ attribute: "virtualize", mode: "boolean" })
     public virtualize: boolean = true;
     private virtualizeChanged(): void {
         if (this.$fastController.isConnected) {
@@ -334,8 +334,6 @@ export abstract class VirtualizingStackBase extends FoundationElement {
         }
         this.resetAutoUpdateMode("manual", this.autoUpdateMode);
 
-        this.initializeResizeDetector();
-
         if (this.itemsPlaceholder === undefined) {
             this.itemsPlaceholder = document.createComment("");
             this.appendChild(this.itemsPlaceholder);
@@ -450,7 +448,7 @@ export abstract class VirtualizingStackBase extends FoundationElement {
      * get position updates
      */
     public requestPositionUpdates = (): void => {
-        if (this.pendingPositioningUpdate) {
+        if (!this.virtualize || this.pendingPositioningUpdate) {
             this.finalUpdate = true;
             return;
         }
@@ -491,8 +489,18 @@ export abstract class VirtualizingStackBase extends FoundationElement {
     private doReset(): void {
         this.pendingReset = false;
         this.cancelPendingPositionUpdates();
-        this.observeItems();
-        this.updateDimensions();
+
+        if (this.virtualize) {
+            this.initializeResizeDetector();
+            this.observeItems();
+            this.updateDimensions();
+        } else {
+            this.disconnectResizeDetector();
+            this.unobserveItems();
+            this.visibleItems.splice(0, this.visibleItems.length, ...this.items);
+            this.updateDimensions();
+            this.updateRenderedRange(0, this.visibleItems.length - 1);
+        }
     }
 
     private initializeRepeatBehavior(): void {
@@ -565,6 +573,9 @@ export abstract class VirtualizingStackBase extends FoundationElement {
      * initializes the instance's resize observer
      */
     private initializeResizeDetector(): void {
+        if (this.resizeDetector !== null) {
+            return;
+        }
         this.resizeDetector = new ((window as unknown) as WindowWithResizeObserver).ResizeObserver(
             this.requestPositionUpdates
         );
@@ -667,7 +678,7 @@ export abstract class VirtualizingStackBase extends FoundationElement {
     };
 
     /**
-     *
+     * updates the dimensions of the stack
      */
     private updateDimensions = (): void => {
         if (this.items === undefined) {
@@ -690,7 +701,7 @@ export abstract class VirtualizingStackBase extends FoundationElement {
     };
 
     /**
-     *
+     *  Updates the visible items
      */
     private updateVisibleItems = (): void => {
         if (this.pendingPositioningUpdate) {
