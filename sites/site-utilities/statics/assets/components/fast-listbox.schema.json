@@ -8,16 +8,6 @@
   "version": 1.1,
   "mapsToTagName": "fast-listbox",
   "properties": {
-    "role": {
-      "enum": [
-        "listbox"
-      ],
-      "default": "listbox",
-      "title": "Role",
-      "description": "The ARIA role for the listbox",
-      "mapsToAttribute": "role",
-      "type": "string"
-    },
     "disabled": {
       "title": "Disabled",
       "description": "Sets the disabled state of the listbox",
