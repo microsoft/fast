@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-components",
   "entries": [
     {
+      "date": "Thu, 06 Jan 2022 07:11:52 GMT",
+      "tag": "@microsoft/fast-components_v2.16.10",
+      "version": "2.16.10",
+      "comments": {
+        "patch": [
+          {
+            "comment": "tooltip uses \"center\"",
+            "author": "scomea@microsoft.com",
+            "commit": "a4c2a7e9a3f94c7079b56ae324223e10457c042e",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sun, 19 Dec 2021 07:12:39 GMT",
       "tag": "@microsoft/fast-components_v2.16.9",
       "version": "2.16.9",

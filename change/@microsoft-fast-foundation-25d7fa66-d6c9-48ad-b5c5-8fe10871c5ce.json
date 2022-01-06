@@ -1,7 +1,0 @@
-{
-  "type": "minor",
-  "comment": "fix: prevent events to propagate from disabled button (#4884)",
-  "packageName": "@microsoft/fast-foundation",
-  "email": "email not defined",
-  "dependentChangeType": "patch"
-}
