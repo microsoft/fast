@@ -11,10 +11,7 @@ import type { Button, ButtonOptions } from "./button";
 export const buttonTemplate: (
     context: ElementDefinitionContext,
     definition: ButtonOptions
-) => ViewTemplate<Button> = (
-    context: ElementDefinitionContext,
-    definition: ButtonOptions
-) => html`
+) => ViewTemplate<Button> = () => html`
     <button
         class="control"
         part="control"
@@ -52,10 +49,10 @@ export const buttonTemplate: (
         aria-roledescription="${x => x.ariaRoledescription}"
         ${ref("control")}
     >
-        ${startSlotTemplate(context, definition)}
+        ${startSlotTemplate}
         <span class="content" part="content">
             <slot ${slotted("defaultSlottedContent")}></slot>
         </span>
-        ${endSlotTemplate(context, definition)}
+        ${endSlotTemplate}
     </button>
 `;
