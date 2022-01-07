@@ -394,91 +394,59 @@ export class Tooltip extends FoundationElement {
                 break;
 
             case TooltipPosition.topLeft:
-                this.verticalPositioningMode = "dynamic";
+                this.verticalPositioningMode = "locktodefault";
                 this.horizontalPositioningMode = "locktodefault";
                 this.verticalDefaultPosition = "top";
                 this.horizontalDefaultPosition = "left";
-                this.horizontalInset = "false";
-                this.verticalInset = "false";
-                this.horizontalScaling = "content";
-                this.verticalScaling = "content";
-                break;
-
-            case TooltipPosition.topStart:
-                this.verticalPositioningMode = "dynamic";
-                this.horizontalPositioningMode = "locktodefault";
-                this.verticalDefaultPosition = "top";
-                this.horizontalDefaultPosition = "start";
-                this.horizontalInset = "false";
-                this.verticalInset = "false";
-                this.horizontalScaling = "content";
-                this.verticalScaling = "content";
-                break;
-
-            case TooltipPosition.topEnd:
-                this.verticalPositioningMode = "dynamic";
-                this.horizontalPositioningMode = "locktodefault";
-                this.verticalDefaultPosition = "top";
-                this.horizontalDefaultPosition = "end";
-                this.horizontalInset = "false";
-                this.verticalInset = "false";
-                this.horizontalScaling = "content";
-                this.verticalScaling = "content";
-                break;
-
-            case TooltipPosition.bottomStart:
-                this.verticalPositioningMode = "dynamic";
-                this.horizontalPositioningMode = "locktodefault";
-                this.verticalDefaultPosition = "bottom";
-                this.horizontalDefaultPosition = "start";
-                this.horizontalInset = "false";
-                this.verticalInset = "false";
-                this.horizontalScaling = "content";
-                this.verticalScaling = "content";
-                break;
-
-            case TooltipPosition.bottomEnd:
-                this.verticalPositioningMode = "dynamic";
-                this.horizontalPositioningMode = "locktodefault";
-                this.verticalDefaultPosition = "bottom";
-                this.horizontalDefaultPosition = "end";
-                this.horizontalInset = "false";
-                this.verticalInset = "false";
-                this.horizontalScaling = "content";
-                this.verticalScaling = "content";
                 break;
 
             case TooltipPosition.topRight:
-                this.verticalPositioningMode = "dynamic";
+                this.verticalPositioningMode = "locktodefault";
                 this.horizontalPositioningMode = "locktodefault";
                 this.verticalDefaultPosition = "top";
                 this.horizontalDefaultPosition = "right";
-                this.horizontalInset = "false";
-                this.verticalInset = "false";
-                this.horizontalScaling = "content";
-                this.verticalScaling = "content";
                 break;
 
             case TooltipPosition.bottomLeft:
-                this.verticalPositioningMode = "dynamic";
+                this.verticalPositioningMode = "locktodefault";
                 this.horizontalPositioningMode = "locktodefault";
                 this.verticalDefaultPosition = "bottom";
                 this.horizontalDefaultPosition = "left";
-                this.horizontalInset = "false";
-                this.verticalInset = "false";
-                this.horizontalScaling = "content";
-                this.verticalScaling = "content";
                 break;
 
             case TooltipPosition.bottomRight:
-                this.verticalPositioningMode = "dynamic";
+                this.verticalPositioningMode = "locktodefault";
                 this.horizontalPositioningMode = "locktodefault";
                 this.verticalDefaultPosition = "bottom";
                 this.horizontalDefaultPosition = "right";
-                this.horizontalInset = "false";
-                this.verticalInset = "false";
-                this.horizontalScaling = "content";
-                this.verticalScaling = "content";
+                break;
+
+            case TooltipPosition.topStart:
+                this.verticalPositioningMode = "locktodefault";
+                this.horizontalPositioningMode = "locktodefault";
+                this.verticalDefaultPosition = "top";
+                this.horizontalDefaultPosition = "start";
+                break;
+
+            case TooltipPosition.topEnd:
+                this.verticalPositioningMode = "locktodefault";
+                this.horizontalPositioningMode = "locktodefault";
+                this.verticalDefaultPosition = "top";
+                this.horizontalDefaultPosition = "end";
+                break;
+
+            case TooltipPosition.bottomStart:
+                this.verticalPositioningMode = "locktodefault";
+                this.horizontalPositioningMode = "locktodefault";
+                this.verticalDefaultPosition = "bottom";
+                this.horizontalDefaultPosition = "start";
+                break;
+
+            case TooltipPosition.bottomEnd:
+                this.verticalPositioningMode = "locktodefault";
+                this.horizontalPositioningMode = "locktodefault";
+                this.verticalDefaultPosition = "bottom";
+                this.horizontalDefaultPosition = "end";
                 break;
 
             default:
