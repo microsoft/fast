@@ -5,8 +5,6 @@ import {
     display,
     focusVisible,
     forcedColorsStylesheetBehavior,
-} from "@microsoft/fast-foundation";
-import type {
     FoundationElementTemplate,
     SelectOptions,
 } from "@microsoft/fast-foundation";
