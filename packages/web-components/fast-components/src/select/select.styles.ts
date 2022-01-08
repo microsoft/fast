@@ -3,11 +3,9 @@ import type { ElementStyles } from "@microsoft/fast-element";
 import {
     disabledCursor,
     display,
+    ElementDefinitionContext,
     focusVisible,
     forcedColorsStylesheetBehavior,
-} from "@microsoft/fast-foundation";
-import type {
-    FoundationElementTemplate,
     SelectOptions,
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
