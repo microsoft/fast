@@ -1,7 +1,0 @@
-{
-  "type": "minor",
-  "comment": "remove configurable role attribute from listbox, select, and combobox",
-  "packageName": "@microsoft/fast-components",
-  "email": "john.kreitlow@microsoft.com",
-  "dependentChangeType": "patch"
-}
