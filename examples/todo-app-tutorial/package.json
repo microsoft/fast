@@ -18,7 +18,7 @@
     "tslib": "^1.11.1"
   },
   "devDependencies": {
-    "http-server": "^0.12.1",
+    "http-server": "^14.1.0",
     "rimraf": "^3.0.2",
     "ts-loader": "^7.0.1",
     "typescript": "^3.8.3",
