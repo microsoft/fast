@@ -6,12 +6,13 @@ import {
     NumberFieldOptions,
 } from "@microsoft/fast-foundation";
 import {
+    densityComponentHorizontalBetweenPadding,
     inputFilledForcedColorStyles,
     inputFilledStyles,
     inputForcedColorStyles,
     inputStateStyles,
     inputStyles,
-} from "../styles/index";
+} from "../styles";
 import { appearanceBehavior } from "../utilities/behaviors";
 import { designUnit } from "../design-tokens";
 
@@ -44,6 +45,7 @@ export const numberFieldStyles = (context, definition) =>
         .root {
             display: flex;
             flex-direction: row;
+            gap: calc(${densityComponentHorizontalBetweenPadding} * 1px);
         }
 
         .control {

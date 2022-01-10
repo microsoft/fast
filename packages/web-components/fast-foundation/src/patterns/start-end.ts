@@ -33,16 +33,13 @@ export class StartEnd {
     public start: HTMLSlotElement;
     public startContainer: HTMLSpanElement;
     public handleStartContentChange(): void {
-        this.startContainer.classList.toggle(
-            "start",
-            this.start.assignedNodes().length > 0
-        );
+        this.start.classList.toggle("start", this.start.assignedNodes().length > 0);
     }
 
     public end: HTMLSlotElement;
     public endContainer: HTMLSpanElement;
     public handleEndContentChange(): void {
-        this.endContainer.classList.toggle("end", this.end.assignedNodes().length > 0);
+        this.end.classList.toggle("end", this.end.assignedNodes().length > 0);
     }
 }
 
@@ -59,15 +56,15 @@ export const endSlotTemplate: (
     context: ElementDefinitionContext,
     definition: EndOptions
 ) => html`
-    <span
+    <slot
+        name="end"
         part="end"
-        ${ref("endContainer")}
-        class=${x => (definition.end ? "end" : void 0)}
+        class="${x => (definition.end ? "end" : void 0)}"
+        ${ref("end")}
+        @slotchange="${x => x.handleEndContentChange()}"
     >
-        <slot name="end" ${ref("end")} @slotchange="${x => x.handleEndContentChange()}">
-            ${definition.end || ""}
-        </slot>
-    </span>
+        ${definition.end || ""}
+    </slot>
 `;
 
 /**
@@ -83,19 +80,15 @@ export const startSlotTemplate: (
     context: ElementDefinitionContext,
     definition: StartOptions
 ) => html`
-    <span
+    <slot
+        name="start"
         part="start"
-        ${ref("startContainer")}
         class="${x => (definition.start ? "start" : void 0)}"
+        ${ref("start")}
+        @slotchange="${x => x.handleStartContentChange()}"
     >
-        <slot
-            name="start"
-            ${ref("start")}
-            @slotchange="${x => x.handleStartContentChange()}"
-        >
-            ${definition.start || ""}
-        </slot>
-    </span>
+        ${definition.start || ""}
+    </slot>
 `;
 
 /**

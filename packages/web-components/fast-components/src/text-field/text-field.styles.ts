@@ -5,13 +5,15 @@ import {
     forcedColorsStylesheetBehavior,
     TextFieldOptions,
 } from "@microsoft/fast-foundation";
-import { designUnit } from "../design-tokens";
+import { typeRampBaseLineHeight } from "../design-tokens";
 import {
+    densityComponentHorizontalBetweenPadding,
     inputFilledForcedColorStyles,
     inputFilledStyles,
     inputForcedColorStyles,
     inputStateStyles,
     inputStyles,
+    typeRampBaseVisualHeight,
 } from "../styles";
 import { appearanceBehavior } from "../utilities/behaviors";
 
@@ -38,9 +40,11 @@ export const textFieldStyles = (context, definition) =>
         ${display("inline-block")}
         ${inputStyles(context, definition, ".root")}
         ${inputStateStyles(context, definition, ".root")}
+
         .root {
             display: flex;
             flex-direction: row;
+            gap: calc(${densityComponentHorizontalBetweenPadding} * 1px);
         }
 
         .control {
@@ -48,10 +52,9 @@ export const textFieldStyles = (context, definition) =>
             color: inherit;
             background: transparent;
             border: 0;
-            height: calc(100% - 4px);
-            margin-top: auto;
-            margin-bottom: auto;
-            padding: 0 calc(${designUnit} * 2px + 1px);
+            margin-top: calc((${typeRampBaseVisualHeight} - ${typeRampBaseLineHeight}) / 2);
+            margin-bottom: calc((${typeRampBaseVisualHeight} - ${typeRampBaseLineHeight}) / 2);
+            padding: 0;
             font-family: inherit;
             font-size: inherit;
             line-height: inherit;
@@ -61,16 +64,6 @@ export const textFieldStyles = (context, definition) =>
         .end {
             display: flex;
             margin: auto;
-        }
-
-        .start {
-            display: flex;
-            margin-inline-start: 11px;
-        }
-
-        .end {
-            display: flex;
-            margin-inline-end: 11px;
         }
   `.withBehaviors(
         appearanceBehavior("filled", textFieldFilledStyles(context, definition)),

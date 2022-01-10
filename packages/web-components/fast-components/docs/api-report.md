@@ -391,6 +391,8 @@ export class DesignSystemProvider extends FoundationElement {
     baseLayerLuminance: number;
     controlCornerRadius: number;
     density: number;
+    densityComponentHorizontalAdjustmentUnits: number;
+    densityComponentVerticalAdjustmentUnits: number;
     designUnit: number;
     direction: Direction;
     disabledOpacity: number;

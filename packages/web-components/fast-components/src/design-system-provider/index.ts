@@ -83,6 +83,10 @@ import {
     typeRampPlus6FontSize,
     typeRampPlus6LineHeight,
 } from "../design-tokens";
+import {
+    densityComponentHorizontalAdjustmentUnits,
+    densityComponentVerticalAdjustmentUnits,
+} from "../styles/density";
 
 /**
  * A {@link ValueConverter} that converts to and from `Swatch` values.
@@ -226,6 +230,38 @@ export class DesignSystemProvider extends FoundationElement {
     })
     @designToken(density)
     public density: number;
+
+    /**
+     *
+     * The density offset, used with designUnit to calculate height and spacing.
+     *
+     * @remarks
+     * HTML attribute: density-component-vertical-adjustment-units
+     *
+     * CSS custom property: --density-component-vertical-adjustment-units
+     */
+    @attr({
+        attribute: "density-component-vertical-adjustment-units",
+        converter: nullableNumberConverter,
+    })
+    @designToken(densityComponentVerticalAdjustmentUnits)
+    public densityComponentVerticalAdjustmentUnits: number;
+
+    /**
+     *
+     * The density offset, used with designUnit to calculate width and spacing.
+     *
+     * @remarks
+     * HTML attribute: density-component-horizontal-adjustment-units
+     *
+     * CSS custom property: --density-component-horizontal-adjustment-units
+     */
+    @attr({
+        attribute: "density-component-horizontal-adjustment-units",
+        converter: nullableNumberConverter,
+    })
+    @designToken(densityComponentHorizontalAdjustmentUnits)
+    public densityComponentHorizontalAdjustmentUnits: number;
 
     /**
      * The grid-unit that UI dimensions are derived from in pixels.

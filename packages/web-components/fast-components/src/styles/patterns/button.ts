@@ -7,7 +7,6 @@ import {
     forcedColorsStylesheetBehavior,
     FoundationElementDefinition,
 } from "@microsoft/fast-foundation";
-import { heightNumber } from "../size";
 import {
     accentFillActive,
     accentFillFocus,
@@ -15,8 +14,6 @@ import {
     accentFillRest,
     bodyFont,
     controlCornerRadius,
-    density,
-    designUnit,
     focusStrokeInner,
     focusStrokeOuter,
     focusStrokeWidth,
@@ -39,8 +36,13 @@ import {
     strokeControlStrongRest,
     strokeWidth,
     typeRampBaseFontSize,
-    typeRampBaseLineHeight,
 } from "../../design-tokens";
+import {
+    densityComponentHorizontalBetweenPadding,
+    densityComponentHorizontalOuterPadding,
+    densityComponentVerticalOuterPadding,
+    typeRampBaseVisualHeight,
+} from "../density";
 
 /**
  * @internal
@@ -58,9 +60,7 @@ export const BaseButtonStyles = (
             font-family: ${bodyFont};
             outline: none;
             font-size: ${typeRampBaseFontSize};
-            line-height: ${typeRampBaseLineHeight};
-            height: calc(${heightNumber} * 1px);
-            min-width: calc(${heightNumber} * 1px);
+            line-height: ${typeRampBaseVisualHeight};
             color: ${neutralForegroundRest};
             border-radius: calc(${controlCornerRadius} * 1px);
             fill: currentcolor;
@@ -74,7 +74,8 @@ export const BaseButtonStyles = (
             display: inline-flex;
             justify-content: center;
             align-items: center;
-            padding: 0 calc((10 + (${designUnit} * 2 * ${density})) * 1px);
+            padding: calc(${densityComponentVerticalOuterPadding} * 1px) calc(${densityComponentHorizontalOuterPadding} * 1px);
+            gap: calc(${densityComponentHorizontalBetweenPadding} * 1px);
             white-space: nowrap;
             outline: none;
             text-decoration: none;
@@ -90,7 +91,9 @@ export const BaseButtonStyles = (
             font: inherit;
         }
         .control.icon-only {
-            padding: 0;
+            ${densityComponentHorizontalOuterPadding.cssCustomProperty}: var(${
+        densityComponentVerticalOuterPadding.cssCustomProperty
+    });
             line-height: 0;
         }
         :host .control${interactivitySelector}:hover {
@@ -117,12 +120,6 @@ export const BaseButtonStyles = (
         .end {
             display: flex;
             pointer-events: none;
-        }
-        .start {
-            margin-inline-end: 11px;
-        }
-        .end {
-            margin-inline-start: 11px;
         }
   `.withBehaviors(
         forcedColorsStylesheetBehavior(

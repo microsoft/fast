@@ -43,6 +43,7 @@ export * from "./select/index";
 export * from "./skeleton/index";
 export * from "./slider/index";
 export * from "./slider-label/index";
+export * from "./styles/density";
 export * from "./styles/direction";
 export * from "./switch/index";
 export * from "./tabs/index";

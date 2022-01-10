@@ -31,7 +31,10 @@ import {
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
 } from "../../design-tokens";
-import { heightNumber } from "../size";
+import {
+    densityComponentHorizontalOuterPadding,
+    densityComponentVerticalOuterPadding,
+} from "../density";
 
 /**
  * @internal
@@ -64,7 +67,7 @@ export const inputStyles: (
             background: ${neutralFillInputRest};
             border: calc(${strokeWidth} * 1px) solid ${neutralStrokeRest};
             border-radius: calc(${controlCornerRadius} * 1px);
-            height: calc(${heightNumber} * 1px);
+            padding: calc(${densityComponentVerticalOuterPadding} * 1px) calc(${densityComponentHorizontalOuterPadding} * 1px);
             font-family: inherit;
             font-size: inherit;
             line-height: inherit;
