@@ -6,11 +6,3 @@ export enum SelectPosition {
     above = "above",
     below = "below",
 }
-
-/**
- * Select role.
- * @public
- */
-export enum SelectRole {
-    combobox = "combobox",
-}
