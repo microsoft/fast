@@ -1,7 +1,6 @@
 import { html, slotted } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
 import type { FoundationElementTemplate } from "../foundation-element";
-import type { ElementDefinitionContext } from "../design-system";
 import type { Radio, RadioOptions } from "./radio";
 
 /**
@@ -11,7 +10,7 @@ import type { Radio, RadioOptions } from "./radio";
 export const radioTemplate: FoundationElementTemplate<
     ViewTemplate<Radio>,
     RadioOptions
-> = (context: ElementDefinitionContext, definition: RadioOptions) => html`
+> = (context, definition) => html`
     <template
         role="radio"
         class="${x => (x.checked ? "checked" : "")} ${x =>

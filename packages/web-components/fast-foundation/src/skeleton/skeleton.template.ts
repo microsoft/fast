@@ -1,10 +1,6 @@
 import { html, when } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
-import type {
-    FoundationElementDefinition,
-    FoundationElementTemplate,
-} from "../foundation-element";
-import type { ElementDefinitionContext } from "../design-system";
+import type { FoundationElementTemplate } from "../foundation-element";
 import type { Skeleton } from "./skeleton";
 
 /**
@@ -12,8 +8,8 @@ import type { Skeleton } from "./skeleton";
  * @public
  */
 export const skeletonTemplate: FoundationElementTemplate<ViewTemplate<Skeleton>> = (
-    context: ElementDefinitionContext,
-    definition: FoundationElementDefinition
+    context,
+    definition
 ) => html`
     <template
         class="${x => (x.shape === "circle" ? "circle" : "rect")}"

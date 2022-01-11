@@ -1,11 +1,7 @@
 import { html, ref, when } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
 import { Orientation } from "@microsoft/fast-web-utilities";
-import type {
-    FoundationElementDefinition,
-    FoundationElementTemplate,
-} from "../foundation-element";
-import type { ElementDefinitionContext } from "../design-system";
+import type { FoundationElementTemplate } from "../foundation-element";
 import type { SliderLabel } from "./slider-label";
 
 /**
@@ -13,8 +9,8 @@ import type { SliderLabel } from "./slider-label";
  * @public
  */
 export const sliderLabelTemplate: FoundationElementTemplate<ViewTemplate<SliderLabel>> = (
-    context: ElementDefinitionContext,
-    definition: FoundationElementDefinition
+    context,
+    definition
 ) => html`
     <template
         aria-disabled="${x => x.disabled}"

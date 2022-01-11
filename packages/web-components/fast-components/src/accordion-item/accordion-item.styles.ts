@@ -2,7 +2,6 @@ import { css, ElementStyles } from "@microsoft/fast-element";
 import {
     AccordionItemOptions,
     display,
-    ElementDefinitionContext,
     focusVisible,
     forcedColorsStylesheetBehavior,
     FoundationElementTemplate,
@@ -31,7 +30,7 @@ import { heightNumber } from "../styles/size";
 export const accordionItemStyles: FoundationElementTemplate<
     ElementStyles,
     AccordionItemOptions
-> = (context: ElementDefinitionContext, definition: AccordionItemOptions) =>
+> = (context, definition) =>
     css`
     ${display("flex")} :host {
         box-sizing: border-box;

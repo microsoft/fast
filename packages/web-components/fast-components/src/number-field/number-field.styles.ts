@@ -2,7 +2,6 @@ import { css, ElementStyles } from "@microsoft/fast-element";
 import {
     disabledCursor,
     display,
-    ElementDefinitionContext,
     focusVisible,
     forcedColorsStylesheetBehavior,
     FoundationElementTemplate,
@@ -37,7 +36,7 @@ import { heightNumber } from "../styles/index";
 export const numberFieldStyles: FoundationElementTemplate<
     ElementStyles,
     NumberFieldOptions
-> = (context: ElementDefinitionContext, definition: NumberFieldOptions) =>
+> = (context, definition) =>
     css`
     ${display("inline-block")} :host {
         font-family: ${bodyFont};

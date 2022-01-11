@@ -2,7 +2,6 @@ import { html, ref, slotted } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
 import { endSlotTemplate, startSlotTemplate } from "../patterns";
 import { whitespaceFilter } from "../utilities";
-import type { ElementDefinitionContext } from "../design-system";
 import type { FoundationElementTemplate } from "../foundation-element";
 import { Button } from "../button";
 import type { Search, SearchOptions } from "./search";
@@ -14,7 +13,7 @@ import type { Search, SearchOptions } from "./search";
 export const searchTemplate: FoundationElementTemplate<
     ViewTemplate<Search>,
     SearchOptions
-> = (context: ElementDefinitionContext, definition: SearchOptions) => html`
+> = (context, definition) => html`
     <template
         class="
             ${x => (x.readOnly ? "readonly" : "")}

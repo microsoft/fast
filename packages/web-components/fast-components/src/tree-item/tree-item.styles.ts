@@ -3,7 +3,6 @@ import {
     DesignToken,
     disabledCursor,
     display,
-    ElementDefinitionContext,
     focusVisible,
     forcedColorsStylesheetBehavior,
     FoundationElementTemplate,
@@ -91,8 +90,8 @@ const selectedExpandCollapseHoverBehavior = DesignToken.create<Swatch>(
  * @public
  */
 export const treeItemStyles: FoundationElementTemplate<ElementStyles, TreeItemOptions> = (
-    context: ElementDefinitionContext,
-    definition: TreeItemOptions
+    context,
+    definition
 ) =>
     css`
     ${display("block")} :host {

@@ -1,9 +1,7 @@
 import { css, ElementStyles } from "@microsoft/fast-element";
 import {
-    ElementDefinitionContext,
     focusVisible,
     forcedColorsStylesheetBehavior,
-    FoundationElementDefinition,
     FoundationElementTemplate,
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
@@ -28,8 +26,8 @@ import { heightNumber } from "../styles/index";
  * @public
  */
 export const pickerMenuOptionStyles: FoundationElementTemplate<ElementStyles> = (
-    context: ElementDefinitionContext,
-    definition: FoundationElementDefinition
+    context,
+    definition
 ) =>
     css`
         :host {

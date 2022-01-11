@@ -1,9 +1,5 @@
 import { css, ElementStyles } from "@microsoft/fast-element";
-import {
-    ElementDefinitionContext,
-    FoundationElementDefinition,
-    FoundationElementTemplate,
-} from "@microsoft/fast-foundation";
+import { FoundationElementTemplate } from "@microsoft/fast-foundation";
 import {
     accentFillActive,
     accentFillHover,
@@ -25,8 +21,8 @@ import {
  * @public
  */
 export const disclosureStyles: FoundationElementTemplate<ElementStyles> = (
-    context: ElementDefinitionContext,
-    definition: FoundationElementDefinition
+    context,
+    definition
 ) => css`
     .disclosure {
         transition: height 0.35s;

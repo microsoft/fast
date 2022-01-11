@@ -1,10 +1,6 @@
 import { html } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
-import type { ElementDefinitionContext } from "../design-system";
-import type {
-    FoundationElementDefinition,
-    FoundationElementTemplate,
-} from "../foundation-element";
+import type { FoundationElementTemplate } from "../foundation-element";
 import type { Card } from "./card";
 
 /**
@@ -12,8 +8,8 @@ import type { Card } from "./card";
  * @public
  */
 export const cardTemplate: FoundationElementTemplate<ViewTemplate<Card>> = (
-    context: ElementDefinitionContext,
-    definition: FoundationElementDefinition
+    context,
+    definition
 ) => html`
     <slot></slot>
 `;

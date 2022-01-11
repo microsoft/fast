@@ -1,10 +1,6 @@
 import { html, ref, slotted } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
-import type { ElementDefinitionContext } from "../design-system";
-import type {
-    FoundationElementDefinition,
-    FoundationElementTemplate,
-} from "../foundation-element";
+import type { FoundationElementTemplate } from "../foundation-element";
 import { TextAreaResize } from "./text-area";
 import type { TextArea } from "./text-area";
 
@@ -13,8 +9,8 @@ import type { TextArea } from "./text-area";
  * @public
  */
 export const textAreaTemplate: FoundationElementTemplate<ViewTemplate<TextArea>> = (
-    context: ElementDefinitionContext,
-    definition: FoundationElementDefinition
+    context,
+    definition
 ) => html`
     <template
         class="

@@ -1,7 +1,6 @@
 import { css, ElementStyles } from "@microsoft/fast-element";
 import {
     display,
-    ElementDefinitionContext,
     FoundationElementTemplate,
     HorizontalScrollOptions,
 } from "@microsoft/fast-foundation";
@@ -107,7 +106,7 @@ export const ActionsStyles = css`
 export const horizontalScrollStyles: FoundationElementTemplate<
     ElementStyles,
     HorizontalScrollOptions
-> = (context: ElementDefinitionContext, definition: HorizontalScrollOptions) => css`
+> = (context, definition) => css`
     ${display("block")} :host {
         --scroll-align: center;
         --scroll-item-spacing: 5px;

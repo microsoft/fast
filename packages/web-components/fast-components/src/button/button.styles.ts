@@ -2,7 +2,6 @@ import { css, ElementStyles } from "@microsoft/fast-element";
 import {
     ButtonOptions,
     disabledCursor,
-    ElementDefinitionContext,
     forcedColorsStylesheetBehavior,
     FoundationElementTemplate,
 } from "@microsoft/fast-foundation";
@@ -28,8 +27,8 @@ import { appearanceBehavior } from "../utilities/behaviors";
  * @public
  */
 export const buttonStyles: FoundationElementTemplate<ElementStyles, ButtonOptions> = (
-    context: ElementDefinitionContext,
-    definition: ButtonOptions
+    context,
+    definition
 ) =>
     css`
         :host([disabled]),

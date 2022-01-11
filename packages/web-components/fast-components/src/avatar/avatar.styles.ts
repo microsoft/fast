@@ -3,7 +3,6 @@ import {
     AvatarOptions,
     Badge,
     display,
-    ElementDefinitionContext,
     FoundationElementTemplate,
 } from "@microsoft/fast-foundation";
 import {
@@ -33,8 +32,8 @@ const ltr = (context, definition) => css`
  * @public
  */
 export const avatarStyles: FoundationElementTemplate<ElementStyles, AvatarOptions> = (
-    context: ElementDefinitionContext,
-    definition: AvatarOptions
+    context,
+    definition
 ) =>
     css`
         ${display("flex")} :host {

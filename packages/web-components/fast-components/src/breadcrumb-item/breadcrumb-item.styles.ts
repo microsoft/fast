@@ -2,7 +2,6 @@ import { css, ElementStyles } from "@microsoft/fast-element";
 import {
     BreadcrumbItemOptions,
     display,
-    ElementDefinitionContext,
     focusVisible,
     forcedColorsStylesheetBehavior,
     FoundationElementTemplate,
@@ -28,7 +27,7 @@ import { heightNumber } from "../styles/index";
 export const breadcrumbItemStyles: FoundationElementTemplate<
     ElementStyles,
     BreadcrumbItemOptions
-> = (context: ElementDefinitionContext, definition: BreadcrumbItemOptions) =>
+> = (context, definition) =>
     css`
     ${display("inline-flex")} :host {
         background: transparent;

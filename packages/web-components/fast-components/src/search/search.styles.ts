@@ -2,7 +2,6 @@ import { css, ElementStyles } from "@microsoft/fast-element";
 import {
     disabledCursor,
     display,
-    ElementDefinitionContext,
     focusVisible,
     forcedColorsStylesheetBehavior,
     FoundationElementTemplate,
@@ -31,8 +30,8 @@ import {
 import { heightNumber } from "../styles/index";
 
 export const searchStyles: FoundationElementTemplate<ElementStyles, TextFieldOptions> = (
-    context: ElementDefinitionContext,
-    definition: TextFieldOptions
+    context,
+    definition
 ) =>
     css`
     ${display("inline-block")} :host {

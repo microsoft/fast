@@ -1,7 +1,6 @@
 import { html, ref, slotted, when } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
 import { endSlotTemplate, startSlotTemplate } from "../patterns/start-end";
-import type { ElementDefinitionContext } from "../design-system";
 import type { FoundationElementTemplate } from "../foundation-element";
 import type { Tabs, TabsOptions } from "./tabs";
 
@@ -10,8 +9,8 @@ import type { Tabs, TabsOptions } from "./tabs";
  * @public
  */
 export const tabsTemplate: FoundationElementTemplate<ViewTemplate<Tabs>, TabsOptions> = (
-    context: ElementDefinitionContext,
-    definition: TabsOptions
+    context,
+    definition
 ) => html`
     <template class="${x => x.orientation}">
         ${startSlotTemplate(context, definition)}

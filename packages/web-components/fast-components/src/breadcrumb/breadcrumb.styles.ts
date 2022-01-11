@@ -1,10 +1,5 @@
 import { css, ElementStyles } from "@microsoft/fast-element";
-import {
-    display,
-    ElementDefinitionContext,
-    FoundationElementDefinition,
-    FoundationElementTemplate,
-} from "@microsoft/fast-foundation";
+import { display, FoundationElementTemplate } from "@microsoft/fast-foundation";
 import { bodyFont, typeRampBaseFontSize, typeRampBaseLineHeight } from "../design-tokens";
 
 /**
@@ -12,8 +7,8 @@ import { bodyFont, typeRampBaseFontSize, typeRampBaseLineHeight } from "../desig
  * @public
  */
 export const breadcrumbStyles: FoundationElementTemplate<ElementStyles> = (
-    context: ElementDefinitionContext,
-    definition: FoundationElementDefinition
+    context,
+    definition
 ) => css`
     ${display("inline-block")} :host {
         box-sizing: border-box;

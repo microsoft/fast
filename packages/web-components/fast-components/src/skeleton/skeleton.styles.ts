@@ -1,8 +1,6 @@
 import { css, ElementStyles } from "@microsoft/fast-element";
 import {
-    ElementDefinitionContext,
     forcedColorsStylesheetBehavior,
-    FoundationElementDefinition,
     FoundationElementTemplate,
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
@@ -14,8 +12,8 @@ import { controlCornerRadius, neutralFillRest } from "../design-tokens";
  * @public
  */
 export const skeletonStyles: FoundationElementTemplate<ElementStyles> = (
-    context: ElementDefinitionContext,
-    definition: FoundationElementDefinition
+    context,
+    definition
 ) =>
     css`
         ${display("block")} :host {

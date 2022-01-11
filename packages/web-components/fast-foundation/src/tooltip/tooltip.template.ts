@@ -1,11 +1,7 @@
 import { html, ref, when } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
 import { AnchoredRegion } from "../anchored-region";
-import type {
-    FoundationElementDefinition,
-    FoundationElementTemplate,
-} from "../foundation-element";
-import type { ElementDefinitionContext } from "../design-system";
+import type { FoundationElementTemplate } from "../foundation-element";
 import type { Tooltip } from "./tooltip";
 
 /**
@@ -13,8 +9,8 @@ import type { Tooltip } from "./tooltip";
  * @public
  */
 export const tooltipTemplate: FoundationElementTemplate<ViewTemplate<Tooltip>> = (
-    context: ElementDefinitionContext,
-    definition: FoundationElementDefinition
+    context,
+    definition
 ) => {
     return html<Tooltip>`
         ${when(

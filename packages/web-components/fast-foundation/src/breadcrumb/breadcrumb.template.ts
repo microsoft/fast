@@ -1,10 +1,6 @@
 import { elements, html, slotted } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
-import type {
-    FoundationElementDefinition,
-    FoundationElementTemplate,
-} from "../foundation-element";
-import type { ElementDefinitionContext } from "../design-system";
+import type { FoundationElementTemplate } from "../foundation-element";
 import type { Breadcrumb } from "./breadcrumb";
 
 /**
@@ -12,8 +8,8 @@ import type { Breadcrumb } from "./breadcrumb";
  * @public
  */
 export const breadcrumbTemplate: FoundationElementTemplate<ViewTemplate<Breadcrumb>> = (
-    context: ElementDefinitionContext,
-    definition: FoundationElementDefinition
+    context,
+    definition
 ) => html`
     <template role="navigation">
         <div role="list" class="list" part="list">

@@ -1,6 +1,5 @@
 import { html, slotted } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
-import type { ElementDefinitionContext } from "../design-system";
 import type { FoundationElementTemplate } from "../foundation-element";
 import type { Switch, SwitchOptions } from "./switch";
 
@@ -11,7 +10,7 @@ import type { Switch, SwitchOptions } from "./switch";
 export const switchTemplate: FoundationElementTemplate<
     ViewTemplate<Switch>,
     SwitchOptions
-> = (context: ElementDefinitionContext, definition: SwitchOptions) => html`
+> = (context, definition) => html`
     <template
         role="switch"
         aria-checked="${x => x.checked}"

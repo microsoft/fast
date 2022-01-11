@@ -1,9 +1,7 @@
 import { css, ElementStyles } from "@microsoft/fast-element";
 import {
     AnchoredRegion,
-    ElementDefinitionContext,
     forcedColorsStylesheetBehavior,
-    FoundationElementDefinition,
     FoundationElementTemplate,
 } from "@microsoft/fast-foundation";
 import {
@@ -22,8 +20,8 @@ import {
  * @public
  */
 export const tooltipStyles: FoundationElementTemplate<ElementStyles> = (
-    context: ElementDefinitionContext,
-    definition: FoundationElementDefinition
+    context,
+    definition
 ) =>
     css`
         :host {

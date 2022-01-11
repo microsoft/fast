@@ -1,7 +1,6 @@
 import { html, ref, slotted } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
 import { endSlotTemplate, startSlotTemplate } from "../patterns/start-end";
-import type { ElementDefinitionContext } from "../design-system";
 import type { FoundationElementTemplate } from "../foundation-element";
 import type { Anchor, AnchorOptions } from "./anchor";
 
@@ -12,7 +11,7 @@ import type { Anchor, AnchorOptions } from "./anchor";
 export const anchorTemplate: FoundationElementTemplate<
     ViewTemplate<Anchor>,
     AnchorOptions
-> = (context: ElementDefinitionContext, definition: AnchorOptions) => html`
+> = (context, definition) => html`
     <a
         class="control"
         part="control"

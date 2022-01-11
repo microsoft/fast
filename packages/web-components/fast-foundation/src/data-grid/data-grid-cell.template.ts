@@ -1,10 +1,6 @@
 import { html } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
-import type {
-    FoundationElementDefinition,
-    FoundationElementTemplate,
-} from "../foundation-element";
-import type { ElementDefinitionContext } from "../design-system";
+import type { FoundationElementTemplate } from "../foundation-element";
 import type { DataGridCell } from "./data-grid-cell";
 
 /**
@@ -14,7 +10,7 @@ import type { DataGridCell } from "./data-grid-cell";
  */
 export const dataGridCellTemplate: FoundationElementTemplate<ViewTemplate<
     DataGridCell
->> = (context: ElementDefinitionContext, definition: FoundationElementDefinition) => {
+>> = (context, definition) => {
     return html<DataGridCell>`
         <template
             tabindex="-1"

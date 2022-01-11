@@ -1,10 +1,6 @@
 import { html, ref, when } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
-import type {
-    FoundationElementDefinition,
-    FoundationElementTemplate,
-} from "../foundation-element";
-import type { ElementDefinitionContext } from "../design-system";
+import type { FoundationElementTemplate } from "../foundation-element";
 import type { Dialog } from "./dialog";
 
 /**
@@ -12,8 +8,8 @@ import type { Dialog } from "./dialog";
  * @public
  */
 export const dialogTemplate: FoundationElementTemplate<ViewTemplate<Dialog>> = (
-    context: ElementDefinitionContext,
-    definition: FoundationElementDefinition
+    context,
+    definition
 ) => html`
     <div class="positioning-region" part="positioning-region">
         ${when(

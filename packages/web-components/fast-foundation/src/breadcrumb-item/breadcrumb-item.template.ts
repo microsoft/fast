@@ -2,7 +2,6 @@ import { html, when } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
 import { anchorTemplate } from "../anchor";
 import { endSlotTemplate, startSlotTemplate } from "../patterns/start-end";
-import type { ElementDefinitionContext } from "../design-system";
 import type { FoundationElementTemplate } from "../foundation-element";
 import type { BreadcrumbItem, BreadcrumbItemOptions } from "./breadcrumb-item";
 
@@ -13,7 +12,7 @@ import type { BreadcrumbItem, BreadcrumbItemOptions } from "./breadcrumb-item";
 export const breadcrumbItemTemplate: FoundationElementTemplate<
     ViewTemplate<BreadcrumbItem>,
     BreadcrumbItemOptions
-> = (context: ElementDefinitionContext, definition: BreadcrumbItemOptions) => html`
+> = (context, definition) => html`
     <div role="listitem" class="listitem" part="listitem">
         ${when(
             x => x.href && x.href.length > 0,

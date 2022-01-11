@@ -1,10 +1,5 @@
 import { css, ElementStyles } from "@microsoft/fast-element";
-import {
-    display,
-    ElementDefinitionContext,
-    FoundationElementDefinition,
-    FoundationElementTemplate,
-} from "@microsoft/fast-foundation";
+import { display, FoundationElementTemplate } from "@microsoft/fast-foundation";
 import {
     bodyFont,
     neutralForegroundRest,
@@ -19,8 +14,8 @@ import {
  * @public
  */
 export const accordionStyles: FoundationElementTemplate<ElementStyles> = (
-    context: ElementDefinitionContext,
-    definition: FoundationElementDefinition
+    context,
+    definition
 ) =>
     css`
         ${display("flex")} :host {

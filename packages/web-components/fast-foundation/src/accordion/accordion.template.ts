@@ -1,10 +1,6 @@
 import { html, slotted } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
-import type { ElementDefinitionContext } from "../design-system";
-import type {
-    FoundationElementDefinition,
-    FoundationElementTemplate,
-} from "../foundation-element";
+import type { FoundationElementTemplate } from "../foundation-element";
 import type { Accordion } from "./accordion";
 
 /**
@@ -12,8 +8,8 @@ import type { Accordion } from "./accordion";
  * @public
  */
 export const accordionTemplate: FoundationElementTemplate<ViewTemplate<Accordion>> = (
-    context: ElementDefinitionContext,
-    definition: FoundationElementDefinition
+    context,
+    definition
 ) => html`
     <template>
         <slot name="item" part="item" ${slotted("accordionItems")}></slot>

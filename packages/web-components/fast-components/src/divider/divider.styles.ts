@@ -1,10 +1,5 @@
 import { css, ElementStyles } from "@microsoft/fast-element";
-import {
-    display,
-    ElementDefinitionContext,
-    FoundationElementDefinition,
-    FoundationElementTemplate,
-} from "@microsoft/fast-foundation";
+import { display, FoundationElementTemplate } from "@microsoft/fast-foundation";
 import { designUnit, neutralStrokeDividerRest, strokeWidth } from "../design-tokens";
 
 /**
@@ -12,8 +7,8 @@ import { designUnit, neutralStrokeDividerRest, strokeWidth } from "../design-tok
  * @public
  */
 export const dividerStyles: FoundationElementTemplate<ElementStyles> = (
-    context: ElementDefinitionContext,
-    definition: FoundationElementDefinition
+    context,
+    definition
 ) =>
     css`
         ${display("block")} :host {

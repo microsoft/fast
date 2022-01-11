@@ -1,9 +1,5 @@
 import { css, ElementStyles } from "@microsoft/fast-element";
-import {
-    ElementDefinitionContext,
-    FoundationElementDefinition,
-    FoundationElementTemplate,
-} from "@microsoft/fast-foundation";
+import { FoundationElementTemplate } from "@microsoft/fast-foundation";
 import {
     bodyFont,
     designUnit,
@@ -17,8 +13,8 @@ import { heightNumber } from "../styles/index";
  * @public
  */
 export const pickerStyles: FoundationElementTemplate<ElementStyles> = (
-    context: ElementDefinitionContext,
-    definition: FoundationElementDefinition
+    context,
+    definition
 ) =>
     css`
         .region {

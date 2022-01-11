@@ -2,7 +2,6 @@ import { css, ElementStyles } from "@microsoft/fast-element";
 import {
     disabledCursor,
     display,
-    ElementDefinitionContext,
     focusVisible,
     forcedColorsStylesheetBehavior,
     FoundationElementTemplate,
@@ -38,8 +37,8 @@ import { heightNumber } from "../styles/index";
  * @public
  */
 export const radioStyles: FoundationElementTemplate<ElementStyles, RadioOptions> = (
-    context: ElementDefinitionContext,
-    definition: RadioOptions
+    context,
+    definition
 ) =>
     css`
     ${display("inline-flex")} :host {

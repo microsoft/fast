@@ -2,7 +2,6 @@ import { css, ElementStyles } from "@microsoft/fast-element";
 import {
     disabledCursor,
     display,
-    ElementDefinitionContext,
     focusVisible,
     forcedColorsStylesheetBehavior,
     FoundationElementTemplate,
@@ -34,8 +33,8 @@ import { DirectionalStyleSheetBehavior, heightNumber } from "../styles/index";
  * @public
  */
 export const menuItemStyles: FoundationElementTemplate<ElementStyles, MenuItemOptions> = (
-    context: ElementDefinitionContext,
-    definition: MenuItemOptions
+    context,
+    definition
 ) =>
     css`
     ${display("grid")} :host {

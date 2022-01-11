@@ -1,10 +1,6 @@
 import { html, slotted } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
-import type {
-    FoundationElementDefinition,
-    FoundationElementTemplate,
-} from "../foundation-element";
-import type { ElementDefinitionContext } from "../design-system";
+import type { FoundationElementTemplate } from "../foundation-element";
 import type { Menu } from "./menu";
 
 /**
@@ -12,8 +8,8 @@ import type { Menu } from "./menu";
  * @public
  */
 export const menuTemplate: FoundationElementTemplate<ViewTemplate<Menu>> = (
-    context: ElementDefinitionContext,
-    definition: FoundationElementDefinition
+    context,
+    definition
 ) => html`
     <template
         slot="${x => (x.slot ? x.slot : x.isNestedMenu() ? "submenu" : void 0)}"

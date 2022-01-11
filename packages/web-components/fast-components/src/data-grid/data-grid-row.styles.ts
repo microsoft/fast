@@ -1,9 +1,5 @@
 import { css, ElementStyles } from "@microsoft/fast-element";
-import {
-    ElementDefinitionContext,
-    FoundationElementDefinition,
-    FoundationElementTemplate,
-} from "@microsoft/fast-foundation";
+import { FoundationElementTemplate } from "@microsoft/fast-foundation";
 import { neutralFillRest, neutralStrokeDividerRest, strokeWidth } from "../design-tokens";
 
 /**
@@ -11,8 +7,8 @@ import { neutralFillRest, neutralStrokeDividerRest, strokeWidth } from "../desig
  * @public
  */
 export const dataGridRowStyles: FoundationElementTemplate<ElementStyles> = (
-    context: ElementDefinitionContext,
-    definition: FoundationElementDefinition
+    context,
+    definition
 ) => css`
     :host {
         display: grid;

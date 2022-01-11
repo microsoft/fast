@@ -1,7 +1,6 @@
 import { html, ref } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
 import { endSlotTemplate, startSlotTemplate } from "../patterns/start-end";
-import type { ElementDefinitionContext } from "../design-system";
 import type { FoundationElementTemplate } from "../foundation-element";
 import type { AccordionItem, AccordionItemOptions } from "./accordion-item";
 
@@ -12,7 +11,7 @@ import type { AccordionItem, AccordionItemOptions } from "./accordion-item";
 export const accordionItemTemplate: FoundationElementTemplate<
     ViewTemplate<AccordionItem>,
     AccordionItemOptions
-> = (context: ElementDefinitionContext, definition: AccordionItemOptions) => html`
+> = (context, definition) => html`
     <template
         class="${x => (x.expanded ? "expanded" : "")}"
         slot="item"

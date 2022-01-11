@@ -1,7 +1,6 @@
 import { css, ElementStyles } from "@microsoft/fast-element";
 import {
     display,
-    ElementDefinitionContext,
     focusVisible,
     forcedColorsStylesheetBehavior,
     FoundationElementTemplate,
@@ -22,8 +21,8 @@ import {
  * @public
  */
 export const toolbarStyles: FoundationElementTemplate<ElementStyles, ToolbarOptions> = (
-    context: ElementDefinitionContext,
-    definition: ToolbarOptions
+    context,
+    definition
 ) =>
     css`
         ${display("inline-flex")} :host {

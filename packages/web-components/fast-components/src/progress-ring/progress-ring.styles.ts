@@ -1,7 +1,6 @@
 import { css, ElementStyles } from "@microsoft/fast-element";
 import {
     display,
-    ElementDefinitionContext,
     forcedColorsStylesheetBehavior,
     FoundationElementTemplate,
     ProgressRingOptions,
@@ -21,7 +20,7 @@ import { heightNumber } from "../styles";
 export const progressRingStyles: FoundationElementTemplate<
     ElementStyles,
     ProgressRingOptions
-> = (context: ElementDefinitionContext, definition: ProgressRingOptions) =>
+> = (context, definition) =>
     css`
         ${display("flex")} :host {
             align-items: center;

@@ -2,7 +2,6 @@ import { css, ElementStyles } from "@microsoft/fast-element";
 import {
     disabledCursor,
     display,
-    ElementDefinitionContext,
     FlipperOptions,
     focusVisible,
     forcedColorsStylesheetBehavior,
@@ -32,8 +31,8 @@ import { heightNumber } from "../styles/index";
  * @public
  */
 export const flipperStyles: FoundationElementTemplate<ElementStyles, FlipperOptions> = (
-    context: ElementDefinitionContext,
-    definition: FlipperOptions
+    context,
+    definition
 ) =>
     css`
     ${display("inline-flex")} :host {

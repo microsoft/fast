@@ -3,7 +3,6 @@ import {
     CheckboxOptions,
     disabledCursor,
     display,
-    ElementDefinitionContext,
     focusVisible,
     forcedColorsStylesheetBehavior,
     FoundationElementTemplate,
@@ -40,8 +39,8 @@ import { heightNumber } from "../styles/index";
  * @public
  */
 export const checkboxStyles: FoundationElementTemplate<ElementStyles, CheckboxOptions> = (
-    context: ElementDefinitionContext,
-    definition: CheckboxOptions
+    context,
+    definition
 ) =>
     css`
     ${display("inline-flex")} :host {

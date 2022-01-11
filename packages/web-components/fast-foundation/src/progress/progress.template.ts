@@ -1,6 +1,5 @@
 import { html, when } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
-import type { ElementDefinitionContext } from "../design-system";
 import type { FoundationElementTemplate } from "../foundation-element";
 import type { BaseProgress, ProgressOptions } from "./base-progress";
 
@@ -11,7 +10,7 @@ import type { BaseProgress, ProgressOptions } from "./base-progress";
 export const progressTemplate: FoundationElementTemplate<
     ViewTemplate<BaseProgress>,
     ProgressOptions
-> = (context: ElementDefinitionContext, defintion: ProgressOptions) => html`
+> = (context, defintion) => html`
     <template
         role="progressbar"
         aria-valuenow="${x => x.value}"

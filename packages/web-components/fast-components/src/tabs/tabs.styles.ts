@@ -1,7 +1,6 @@
 import { css, ElementStyles } from "@microsoft/fast-element";
 import {
     display,
-    ElementDefinitionContext,
     forcedColorsStylesheetBehavior,
     FoundationElementTemplate,
     TabsOptions,
@@ -23,8 +22,8 @@ import { heightNumber } from "../styles/index";
  * @public
  */
 export const tabsStyles: FoundationElementTemplate<ElementStyles, TabsOptions> = (
-    context: ElementDefinitionContext,
-    definition: TabsOptions
+    context,
+    definition
 ) =>
     css`
         ${display("grid")} :host {

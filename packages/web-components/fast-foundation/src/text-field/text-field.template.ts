@@ -2,7 +2,6 @@ import { html, ref, slotted } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
 import { endSlotTemplate, startSlotTemplate } from "../patterns";
 import { whitespaceFilter } from "../utilities";
-import type { ElementDefinitionContext } from "../design-system";
 import type { FoundationElementTemplate } from "../foundation-element";
 import type { TextField, TextFieldOptions } from "./text-field";
 
@@ -13,7 +12,7 @@ import type { TextField, TextFieldOptions } from "./text-field";
 export const textFieldTemplate: FoundationElementTemplate<
     ViewTemplate<TextField>,
     TextFieldOptions
-> = (context: ElementDefinitionContext, definition: TextFieldOptions) => html`
+> = (context, definition) => html`
     <template
         class="
             ${x => (x.readOnly ? "readonly" : "")}

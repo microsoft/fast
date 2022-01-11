@@ -2,7 +2,6 @@ import { css, ElementStyles } from "@microsoft/fast-element";
 import {
     disabledCursor,
     display,
-    ElementDefinitionContext,
     focusVisible,
     forcedColorsStylesheetBehavior,
     FoundationElementTemplate,
@@ -40,8 +39,8 @@ import { DirectionalStyleSheetBehavior, heightNumber } from "../styles/index";
  * @public
  */
 export const switchStyles: FoundationElementTemplate<ElementStyles, SwitchOptions> = (
-    context: ElementDefinitionContext,
-    definition: SwitchOptions
+    context,
+    definition
 ) =>
     css`
     :host([hidden]) {

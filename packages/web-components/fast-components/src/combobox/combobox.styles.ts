@@ -2,7 +2,6 @@ import { css, ElementStyles } from "@microsoft/fast-element";
 import {
     ComboboxOptions,
     disabledCursor,
-    ElementDefinitionContext,
     focusVisible,
     FoundationElementTemplate,
 } from "@microsoft/fast-foundation";
@@ -18,8 +17,8 @@ import { selectStyles } from "../select/select.styles";
  * @public
  */
 export const comboboxStyles: FoundationElementTemplate<ElementStyles, ComboboxOptions> = (
-    context: ElementDefinitionContext,
-    definition: ComboboxOptions
+    context,
+    definition
 ) => css`
     ${selectStyles(context, definition)}
 

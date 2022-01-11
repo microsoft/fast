@@ -1,7 +1,6 @@
 import { css, ElementStyles } from "@microsoft/fast-element";
 import {
     display,
-    ElementDefinitionContext,
     forcedColorsStylesheetBehavior,
     FoundationElementTemplate,
     ProgressOptions,
@@ -19,8 +18,8 @@ import {
  * @public
  */
 export const progressStyles: FoundationElementTemplate<ElementStyles, ProgressOptions> = (
-    context: ElementDefinitionContext,
-    definition: ProgressOptions
+    context,
+    definition
 ) =>
     css`
         ${display("flex")} :host {
