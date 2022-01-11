@@ -17,8 +17,7 @@ import {
     keyPageDown,
     keyPageUp,
 } from "@microsoft/fast-web-utilities";
-import type { VirtualizingStack } from "../virtualizing-stack";
-import { VirtualizingStackBase } from "../virtualizing-stack";
+import { VirtualizingStack } from "../virtualizing-stack";
 import type { DataGridCell } from "./data-grid-cell";
 import type { DataGridRow } from "./data-grid-row";
 import { DataGridRowTypes, GenerateHeaderOptions } from "./data-grid.options";
@@ -99,7 +98,7 @@ export interface ColumnDefinition {
  *
  * @public
  */
-export class DataGrid extends VirtualizingStackBase {
+export class DataGrid extends VirtualizingStack {
     /**
      *  generates a basic column definition by examining sample row data
      */
@@ -419,8 +418,6 @@ export class DataGrid extends VirtualizingStackBase {
                 return;
             }
         }
-
-        console.debug("handleFocus");
 
         // focus row is out of view, pick row at top of visual display
         const newFocusRowIndex: number = this.getFirstRowIndexInView();

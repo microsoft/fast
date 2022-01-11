@@ -67,6 +67,7 @@ import type { SliderLabel } from "./slider-label/index";
 import type { TextArea } from "./text-area/index";
 import type { TextField } from "./text-field/index";
 import type { Toolbar } from "./toolbar/index";
+import type { VirtualizingStack } from "./virtualizing-stack/index";
 /* eslint-enable @typescript-eslint/no-unused-vars */
 
 // When adding new components, make sure to add the component to the `allComponents` object

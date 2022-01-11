@@ -22,6 +22,7 @@ import fastTabsDefinition from "@microsoft/fast-components/dist/esm/tabs/tabs.vs
 import fastTextAreaDefinition from "@microsoft/fast-components/dist/esm/text-area/text-area.vscode.definition.json";
 import fastTextFieldDefinition from "@microsoft/fast-components/dist/esm/text-field/text-field.vscode.definition.json";
 import fastTooltipDefinition from "@microsoft/fast-components/dist/esm/tooltip/tooltip.vscode.definition.json";
+import fastVirtualizingStackDefinition from "@microsoft/fast-components/dist/esm/virtualizing-stack/virtualizing-stack.vscode.definition.json";
 
 export const componentCategories: FormCategoryDictionary = {
     [fastAccordionItemDefinition.tags[0].name]: {
@@ -179,6 +180,14 @@ export const componentCategories: FormCategoryDictionary = {
             },
         ],
     },
+    [fastDataGridDefinition.tags[0].name]: {
+        "": [
+            {
+                title: "Advanced",
+                dataLocations: [],
+            },
+        ],
+    },
     [fastDataGridCellDefinition.tags[0].name]: {
         "": [
             {
@@ -316,6 +325,14 @@ export const componentCategories: FormCategoryDictionary = {
             {
                 title: "Advanced",
                 dataLocations: ["anchor"],
+            },
+        ],
+    },
+    [fastVirtualizingStackDefinition.tags[0].name]: {
+        "": [
+            {
+                title: "Advanced",
+                dataLocations: [],
             },
         ],
     },

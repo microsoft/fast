@@ -1,7 +1,4 @@
-import {
-    VirtualizingStack,
-    virtualizingStackTemplate as template,
-} from "@microsoft/fast-foundation";
+import { VirtualizingStack, virtualizingStackTemplate } from "@microsoft/fast-foundation";
 import { virtualizingStackStyles as styles } from "./virtualizing-stack.styles";
 
 /**
@@ -11,11 +8,12 @@ import { virtualizingStackStyles as styles } from "./virtualizing-stack.styles";
  *
  * @beta
  * @remarks
- * Generates HTML Element: \<fast-virtualizing-stack\>
+ * Generates HTML Element: `<fast-virtualizing-stack>`
  */
 export const fastVirtualizingStack = VirtualizingStack.compose({
     baseName: "virtualizing-stack",
-    template,
+    baseClass: VirtualizingStack,
+    template: virtualizingStackTemplate,
     styles,
 });
 

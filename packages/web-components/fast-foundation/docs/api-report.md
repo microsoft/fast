@@ -624,7 +624,7 @@ export type CSSDisplayPropertyValue = "block" | "contents" | "flex" | "grid" | "
 export const darkModeStylesheetBehavior: (styles: ElementStyles) => MatchMediaStyleSheetBehavior;
 
 // @public
-export class DataGrid extends VirtualizingStackBase {
+export class DataGrid extends VirtualizingStack {
     constructor();
     // @internal (undocumented)
     authoredRowCount: number;
@@ -2770,14 +2770,7 @@ export function validateKey(key: any): void;
 export type VerticalPosition = "top" | "bottom" | "center" | "unset";
 
 // @public
-export class VirtualizingStack extends VirtualizingStackBase {
-}
-
-// @beta
-export type VirtualizingStackAutoUpdateMode = "manual" | "viewport-resize" | "auto";
-
-// @public
-export abstract class VirtualizingStackBase extends FoundationElement {
+export class VirtualizingStack extends FoundationElement {
     // (undocumented)
     protected allowLayoutUpdateDelay: boolean;
     // @beta
@@ -2832,6 +2825,9 @@ export abstract class VirtualizingStackBase extends FoundationElement {
     // @internal
     visibleItems: any[];
     }
+
+// @beta
+export type VirtualizingStackAutoUpdateMode = "manual" | "viewport-resize" | "auto";
 
 // @public
 export const virtualizingStackTemplate: (context: ElementDefinitionContext, definition: FoundationElementDefinition) => ViewTemplate<VirtualizingStack>;
