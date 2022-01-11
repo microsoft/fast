@@ -257,6 +257,8 @@ export class Button extends FormAssociatedButton {
     // (undocumented)
     control: HTMLButtonElement;
     defaultSlottedContent: HTMLElement[];
+    // @internal (undocumented)
+    disconnectedCallback(): void;
     formaction: string;
     formenctype: string;
     formId: string;
@@ -455,7 +457,6 @@ export class Combobox extends FormAssociatedCombobox {
     protected placeholderChanged(): void;
     position: SelectPosition;
     positionAttribute: SelectPosition;
-    role: SelectRole;
     // @internal
     selectedIndexChanged(prev: number, next: number): void;
     // @internal
@@ -493,7 +494,7 @@ export type ComboboxOptions = FoundationElementDefinition & StartEndOptions & {
 };
 
 // @public
-export const comboboxTemplate: (context: ElementDefinitionContext, definition: ComboboxOptions) => ViewTemplate<Combobox>;
+export const comboboxTemplate: FoundationElementTemplate<ViewTemplate<Combobox>, ComboboxOptions>;
 
 // @public
 export interface ComponentPresentation {
@@ -779,11 +780,12 @@ export interface DelegatesARIAButton extends ARIAGlobalStatesAndProperties {
 //
 // @public
 export class DelegatesARIACombobox {
-    ariaAutocomplete: "inline" | "list" | "both" | "none" | undefined;
+    ariaAutoComplete: "inline" | "list" | "both" | "none" | undefined;
+    ariaControls: string;
 }
 
 // @internal
-export interface DelegatesARIACombobox extends ARIAGlobalStatesAndProperties {
+export interface DelegatesARIACombobox extends DelegatesARIAListbox {
 }
 
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
@@ -813,6 +815,20 @@ export interface DelegatesARIAListbox extends ARIAGlobalStatesAndProperties {
 }
 
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
+// Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "DelegatesARIAListboxOption" because one of its declarations is marked as @internal
+//
+// @public
+export class DelegatesARIAListboxOption {
+    ariaPosInSet: string;
+    ariaSelected: "true" | "false" | undefined;
+    ariaSetSize: string;
+}
+
+// @internal (undocumented)
+export interface DelegatesARIAListboxOption extends ARIAGlobalStatesAndProperties {
+}
+
+// Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
 // Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "DelegatesARIASearch" because one of its declarations is marked as @internal
 //
 // @public
@@ -828,12 +844,11 @@ export interface DelegatesARIASearch extends ARIAGlobalStatesAndProperties {
 //
 // @public
 export class DelegatesARIASelect {
-    ariaExpanded: "true" | "false" | undefined;
-    ariaPressed: "true" | "false" | "mixed" | undefined;
+    ariaControls: string;
 }
 
 // @internal
-export interface DelegatesARIASelect extends ARIAGlobalStatesAndProperties {
+export interface DelegatesARIASelect extends DelegatesARIAListbox {
 }
 
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
@@ -1344,7 +1359,6 @@ export abstract class Listbox extends FoundationElement {
     set options(value: ListboxOption[]);
     // @internal
     protected _options: ListboxOption[];
-    role: string;
     selectedIndex: number;
     // @internal
     selectedIndexChanged(prev: number, next: number): void;
@@ -1432,20 +1446,14 @@ export class ListboxOption extends FoundationElement {
     }
 
 // @internal (undocumented)
-export interface ListboxOption extends StartEnd {
+export interface ListboxOption extends StartEnd, DelegatesARIAListboxOption {
 }
 
 // @public
 export type ListboxOptionOptions = FoundationElementDefinition & StartEndOptions;
 
 // @public
-export const listboxOptionTemplate: (context: ElementDefinitionContext, definition: ListboxOptionOptions) => ViewTemplate<ListboxOption>;
-
-// @public
-export enum ListboxRole {
-    // (undocumented)
-    listbox = "listbox"
-}
+export const listboxOptionTemplate: FoundationElementTemplate<ViewTemplate<ListboxOption>, ListboxOptionOptions>;
 
 // @public
 export const listboxTemplate: FoundationElementTemplate<ViewTemplate<ListboxElement>>;
@@ -2044,7 +2052,6 @@ export class Select extends FormAssociatedSelect {
     protected openChanged(): void;
     position: SelectPosition;
     positionAttribute: SelectPosition;
-    role: SelectRole;
     // @internal
     selectedIndexChanged(prev: any, next: any): void;
     setPositioning(): void;
@@ -2072,13 +2079,7 @@ export enum SelectPosition {
 }
 
 // @public
-export enum SelectRole {
-    // (undocumented)
-    combobox = "combobox"
-}
-
-// @public
-export const selectTemplate: (context: ElementDefinitionContext, definition: SelectOptions) => ViewTemplate<Select>;
+export const selectTemplate: FoundationElementTemplate<ViewTemplate<Select>, SelectOptions>;
 
 // @public
 export interface ServiceLocator {

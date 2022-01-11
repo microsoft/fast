@@ -2,6 +2,7 @@ import { expect } from "chai";
 import { DOM } from "@microsoft/fast-element";
 import { fixture } from "../test-utilities/fixture";
 import { Button, buttonTemplate as template } from "./index";
+import { eventClick } from "@microsoft/fast-web-utilities";
 
 const FASTButton = Button.compose({
     baseName: "button",
@@ -559,6 +560,57 @@ describe("Button", () => {
             });
 
             expect(wasReset).to.equal(true);
+
+            await disconnect();
+        });
+    });
+
+    describe("of 'disabled'", () => {
+        it("should not propagate when clicked", async () => {
+            const { connect, disconnect, element, parent } = await setup();
+
+            element.disabled = true;
+            parent.appendChild(element);
+
+            let wasClicked: boolean = false;
+            await connect();
+
+            parent.addEventListener(eventClick, () => {
+                wasClicked = true;
+            })
+
+            await DOM.nextUpdate();
+            element.click()
+
+            expect(wasClicked).to.equal(false);
+
+            await disconnect();
+        });
+
+        it("should not propagate when spans within shadowRoot are clicked", async () => {
+            const { connect, disconnect, element, parent } = await setup();
+
+            element.disabled = true;
+            parent.appendChild(element);
+
+            let wasClicked: boolean = false;
+
+            await connect();
+
+            parent.addEventListener(eventClick, () => {
+                wasClicked = true;
+            })
+
+            await DOM.nextUpdate();
+
+            const elements = element.shadowRoot?.querySelectorAll("span");
+            if (elements) {
+               const spans : HTMLSpanElement[] = Array.from(elements)
+               spans.forEach((span: HTMLSpanElement) => {
+                   span.click()
+                   expect(wasClicked).to.equal(false);
+               }) 
+            }
 
             await disconnect();
         });
