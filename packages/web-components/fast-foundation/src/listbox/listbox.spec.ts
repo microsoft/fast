@@ -5,17 +5,16 @@ import { listboxOptionTemplate as itemTemplate } from "../listbox-option/listbox
 import { fixture } from "../test-utilities/fixture";
 import { ListboxElement, listboxTemplate as template } from "./index";
 
-const FASTListbox = ListboxElement.compose({
-    baseName: "listbox",
-    template
-})
-
-// TODO: Need to add tests for keyboard handling & focus management
 describe("Listbox", () => {
+    const FASTListbox = ListboxElement.compose({
+        baseName: "listbox",
+        template
+    });
+
     const FASTOption = ListboxOption.compose({
         baseName: "option",
         template: itemTemplate
-    })
+    });
 
     async function setup() {
         const { element, connect, disconnect } = await fixture([FASTListbox(), FASTOption()]);
@@ -35,16 +34,6 @@ describe("Listbox", () => {
 
         return { element, connect, disconnect, option1, option2, option3 };
     }
-
-    it("should have a role of `listbox`", async () => {
-        const { element, connect, disconnect } = await setup();
-
-        await connect();
-
-        expect(element.getAttribute("role")).to.equal("listbox");
-
-        await disconnect();
-    });
 
     it("should have a tabindex of 0 when `disabled` is not defined", async () => {
         const { element, connect, disconnect } = await setup();
@@ -168,5 +157,66 @@ describe("Listbox", () => {
 
             await disconnect();
         });
+    });
+
+    it("should set the `aria-setsize` and `aria-posinset` properties on slotted options", async () => {
+        const { connect, disconnect, option1, option2, option3 } = await setup();
+
+        await connect();
+
+        await DOM.nextUpdate();
+
+        expect(option1.getAttribute("aria-posinset")).to.equal("1");
+        expect(option1.getAttribute("aria-setsize")).to.equal("3");
+
+        expect(option2.getAttribute("aria-posinset")).to.equal("2");
+        expect(option2.getAttribute("aria-setsize")).to.equal("3");
+
+        expect(option3.getAttribute("aria-posinset")).to.equal("3");
+        expect(option3.getAttribute("aria-setsize")).to.equal("3");
+
+        await disconnect();
+    });
+
+    it("should set a unique ID for each slotted option without an ID", async () => {
+        const { connect, disconnect, option1, option2, option3 } = await setup();
+
+        option2.id = "unique-id";
+
+        await connect();
+
+        await DOM.nextUpdate();
+
+        expect(option1.id).to.match(/option-\d+/);
+
+        expect(option2.id).to.equal("unique-id");
+
+        expect(option3.id).to.match(/option-\d+/);
+
+        await disconnect();
+    });
+
+    it("should set the `aria-activedescendant` property to the ID of the currently selected option", async () => {
+        const { connect, disconnect, element, option1, option2, option3 } = await setup();
+
+        await connect();
+
+        await DOM.nextUpdate();
+
+        expect(element.getAttribute("aria-activedescendant")).to.exist.and.equal(option1.id);
+
+        element.selectNextOption();
+
+        await DOM.nextUpdate();
+
+        expect(element.getAttribute("aria-activedescendant")).to.equal(option2.id);
+
+        element.selectNextOption();
+
+        await DOM.nextUpdate();
+
+        expect(element.getAttribute("aria-activedescendant")).to.equal(option3.id);
+
+        await disconnect();
     });
 });

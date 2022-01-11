@@ -1,8 +1,11 @@
 import { attr, observable, Observable } from "@microsoft/fast-element";
 import { isHTMLElement } from "@microsoft/fast-web-utilities";
-import { StartEnd, StartEndOptions } from "../patterns/start-end";
+import { FoundationElement } from "../foundation-element";
+import type { FoundationElementDefinition } from "../foundation-element";
+import { ARIAGlobalStatesAndProperties } from "../patterns";
+import { StartEnd } from "../patterns/start-end";
+import type { StartEndOptions } from "../patterns/start-end";
 import { applyMixins } from "../utilities/apply-mixins";
-import { FoundationElement, FoundationElementDefinition } from "../foundation-element";
 
 /**
  * Listbox option configuration options
@@ -72,6 +75,8 @@ export class ListboxOption extends FoundationElement {
     @attr({ mode: "boolean" })
     public disabled: boolean;
     protected disabledChanged(prev, next): void {
+        this.ariaDisabled = this.disabled ? "true" : "false";
+
         if (this.proxy instanceof HTMLOptionElement) {
             this.proxy.disabled = this.disabled;
         }
@@ -102,14 +107,14 @@ export class ListboxOption extends FoundationElement {
     @observable
     public selected: boolean = this.defaultSelected;
     protected selectedChanged(): void {
-        if (this.$fastController.isConnected) {
-            if (!this.dirtySelected) {
-                this.dirtySelected = true;
-            }
+        this.ariaSelected = this.selected ? "true" : "false";
 
-            if (this.proxy instanceof HTMLOptionElement) {
-                this.proxy.selected = this.selected;
-            }
+        if (!this.dirtySelected) {
+            this.dirtySelected = true;
+        }
+
+        if (this.proxy instanceof HTMLOptionElement) {
+            this.proxy.selected = this.selected;
         }
     }
 
@@ -201,7 +206,55 @@ export class ListboxOption extends FoundationElement {
 }
 
 /**
- * @internal
+ * States and properties relating to the ARIA `option` role.
+ *
+ * @public
  */
-export interface ListboxOption extends StartEnd {}
-applyMixins(ListboxOption, StartEnd);
+export class DelegatesARIAListboxOption {
+    /**
+     * See {@link https://www.w3.org/TR/wai-aria-1.2/#option} for more information.
+     * @public
+     * @remarks
+     * HTML Attribute: `aria-posinset`
+     */
+    @observable
+    ariaPosInSet: string;
+
+    /**
+     * See {@link https://www.w3.org/TR/wai-aria-1.2/#option} for more information.
+     * @public
+     * @remarks
+     * HTML Attribute: `aria-selected`
+     */
+    @observable
+    ariaSelected: "true" | "false" | undefined;
+
+    /**
+     * See {@link https://www.w3.org/TR/wai-aria-1.2/#option} for more information.
+     * @public
+     * @remarks
+     * HTML Attribute: `aria-setsize`
+     */
+    @observable
+    ariaSetSize: string;
+}
+
+/**
+ * @internal
+ * @privateRemarks
+ * Mark internal because exporting class and interface of the same name
+ * confuses API documenter.
+ * TODO: https://github.com/microsoft/fast/issues/3317
+ */
+export interface DelegatesARIAListboxOption extends ARIAGlobalStatesAndProperties {}
+applyMixins(DelegatesARIAListboxOption, ARIAGlobalStatesAndProperties);
+
+/**
+ * @internal
+ * @privateRemarks
+ * Mark internal because exporting class and interface of the same name
+ * confuses API documenter.
+ * TODO: https://github.com/microsoft/fast/issues/3317
+ */
+export interface ListboxOption extends StartEnd, DelegatesARIAListboxOption {}
+applyMixins(ListboxOption, StartEnd, DelegatesARIAListboxOption);
