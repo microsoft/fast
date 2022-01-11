@@ -17,6 +17,7 @@ function newDataSet(rowCount: number): object[] {
 describe("FASTVirtualizingStack", function () {
     const baseData = newDataSet(100);
     const componentWidth = 400;
+    const componentHeight = 400;
 
     beforeEach(async function () {
         if (!this.page && !this.browser) {
@@ -24,22 +25,24 @@ describe("FASTVirtualizingStack", function () {
         }
 
         await this.page.evaluateHandle(
-            ({ baseData, componentWidth }) => {
+            ({ baseData, componentWidth, componentHeight }) => {
                 const element = document.createElement(
                     "fast-virtualizing-stack"
                 ) as fastVirtualizingStack;
 
-                // element.items = baseData;
-                // element.virtualize = false;
-                // element.style.setProperty("width", `${componentWidth}px`);
+                element.items = baseData;
+                element.virtualize = false;
+                element.style.setProperty("width", `${componentWidth}px`);
+                element.style.setProperty("height", `${componentHeight}px`);
 
-                // element.id = "VirtualizingStack1";
+                element.id = "VirtualizingStack1";
 
                 document.body.appendChild(element);
+
                 return element;
             },
             {
-                baseData,componentWidth,
+                baseData,componentWidth,componentHeight,
             }
         );
     });

@@ -21,13 +21,6 @@ const imageItemTemplate = html`
                 : 1};
         "
     >
-        <!-- <image
-            style="
-                height:100%;
-                width:100%;
-            "
-            src="https://source.unsplash.com/random/300x200"
-        ></image> -->
         <div style="margin: 10px;">
             ${x => x.value}
         </div>
