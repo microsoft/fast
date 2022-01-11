@@ -1,0 +1,7 @@
+{
+  "type": "none",
+  "comment": "update rollup-plugin-filesize from 8.0.2 to 9.1.2",
+  "packageName": "@microsoft/fast-element",
+  "email": "john.kreitlow@microsoft.com",
+  "dependentChangeType": "none"
+}

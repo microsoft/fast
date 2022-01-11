@@ -1,10 +1,12 @@
-import { css, ElementStyles } from "@microsoft/fast-element";
+import { css } from "@microsoft/fast-element";
+import type { ElementStyles } from "@microsoft/fast-element";
 import {
     disabledCursor,
     display,
-    ElementDefinitionContext,
     focusVisible,
     forcedColorsStylesheetBehavior,
+} from "@microsoft/fast-foundation";
+import type {
     FoundationElementTemplate,
     SelectOptions,
 } from "@microsoft/fast-foundation";
@@ -41,8 +43,8 @@ import { heightNumber } from "../styles/size";
  * @public
  */
 export const selectStyles: FoundationElementTemplate<ElementStyles, SelectOptions> = (
-    context: ElementDefinitionContext,
-    definition: SelectOptions
+    context,
+    definition
 ) =>
     css`
     ${display("inline-flex")} :host {

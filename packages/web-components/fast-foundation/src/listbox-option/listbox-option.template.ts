@@ -1,8 +1,7 @@
 import { html } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
-import { endSlotTemplate, startSlotTemplate } from "../patterns/start-end";
-import type { ElementDefinitionContext } from "../design-system";
 import type { FoundationElementTemplate } from "../foundation-element";
+import { endSlotTemplate, startSlotTemplate } from "../patterns/start-end";
 import type { ListboxOption, ListboxOptionOptions } from "./listbox-option";
 
 /**
@@ -12,11 +11,16 @@ import type { ListboxOption, ListboxOptionOptions } from "./listbox-option";
 export const listboxOptionTemplate: FoundationElementTemplate<
     ViewTemplate<ListboxOption>,
     ListboxOptionOptions
-> = (context: ElementDefinitionContext, definition: ListboxOptionOptions) => html`
+> = (context, definition) => html`
     <template
-        aria-selected="${x => x.selected}"
-        class="${x => (x.selected ? "selected" : "")} ${x =>
-            x.disabled ? "disabled" : ""}"
+        aria-disabled="${x => x.ariaDisabled}"
+        aria-posinset="${x => x.ariaPosInSet}"
+        aria-selected="${x => x.ariaSelected}"
+        aria-setsize="${x => x.ariaSetSize}"
+        class="${x =>
+            [x.selected && "selected", x.disabled && "disabled"]
+                .filter(Boolean)
+                .join(" ")}"
         role="option"
     >
         ${startSlotTemplate(context, definition)}

@@ -1,9 +1,8 @@
 import { html, ref, slotted } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
+import type { FoundationElementTemplate } from "../foundation-element";
 import { Listbox } from "../listbox/listbox";
 import { endSlotTemplate, startSlotTemplate } from "../patterns/start-end";
-import type { ElementDefinitionContext } from "../design-system";
-import type { FoundationElementTemplate } from "../foundation-element";
 import type { Select, SelectOptions } from "./select";
 
 /**
@@ -13,34 +12,28 @@ import type { Select, SelectOptions } from "./select";
 export const selectTemplate: FoundationElementTemplate<
     ViewTemplate<Select>,
     SelectOptions
-> = (context: ElementDefinitionContext, definition: SelectOptions) => html`
+> = (context, definition) => html`
     <template
         class="${x => (x.open ? "open" : "")} ${x =>
             x.disabled ? "disabled" : ""} ${x => x.position}"
-        role="${x => x.role}"
-        tabindex="${x => (!x.disabled ? "0" : null)}"
+        aria-activedescendant="${x => x.ariaActiveDescendant}"
+        aria-controls="${x => x.ariaControls}"
         aria-disabled="${x => x.ariaDisabled}"
         aria-expanded="${x => x.ariaExpanded}"
+        aria-haspopup="listbox"
+        role="combobox"
+        tabindex="${x => (!x.disabled ? "0" : null)}"
         @click="${(x, c) => x.clickHandler(c.event as MouseEvent)}"
         @focusout="${(x, c) => x.focusoutHandler(c.event as FocusEvent)}"
         @keydown="${(x, c) => x.keydownHandler(c.event as KeyboardEvent)}"
     >
-        <div
-            aria-activedescendant="${x => (x.open ? x.ariaActiveDescendant : null)}"
-            aria-controls="listbox"
-            aria-expanded="${x => x.ariaExpanded}"
-            aria-haspopup="listbox"
-            class="control"
-            part="control"
-            role="button"
-            ?disabled="${x => x.disabled}"
-        >
+        <div class="control" part="control" ?disabled="${x => x.disabled}">
             ${startSlotTemplate(context, definition)}
             <slot name="button-container">
                 <div class="selected-value" part="selected-value">
                     <slot name="selected-value">${x => x.displayValue}</slot>
                 </div>
-                <div class="indicator" part="indicator">
+                <div aria-hidden="true" class="indicator" part="indicator">
                     <slot name="indicator">
                         ${definition.indicator || ""}
                     </slot>
@@ -49,9 +42,7 @@ export const selectTemplate: FoundationElementTemplate<
             ${endSlotTemplate(context, definition)}
         </div>
         <div
-            aria-disabled="${x => x.disabled}"
             class="listbox"
-            id="listbox"
             part="listbox"
             role="listbox"
             ?disabled="${x => x.disabled}"
