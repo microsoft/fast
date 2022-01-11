@@ -372,6 +372,54 @@ export const dataGridStyles: (context: ElementDefinitionContext, definition: Fou
 // @public (undocumented)
 export const density: import("@microsoft/fast-foundation").CSSDesignToken<number>;
 
+// @public
+export const densityComponentHorizontalAdjustmentUnits: import("@microsoft/fast-foundation").CSSDesignToken<number>;
+
+// @public
+export const densityComponentHorizontalAdjustmentUnitsCumulative: import("@microsoft/fast-foundation").CSSDesignToken<number>;
+
+// @public
+export const densityComponentHorizontalBetweenPadding: import("@microsoft/fast-foundation").CSSDesignToken<number>;
+
+// @public
+export const densityComponentHorizontalBetweenUnits: import("@microsoft/fast-foundation").CSSDesignToken<number>;
+
+// @public
+export const densityComponentHorizontalOuterInverse: import("@microsoft/fast-foundation").CSSDesignToken<number>;
+
+// @public
+export const densityComponentHorizontalOuterPadding: import("@microsoft/fast-foundation").CSSDesignToken<number>;
+
+// @public
+export const densityComponentHorizontalOuterUnits: import("@microsoft/fast-foundation").CSSDesignToken<number>;
+
+// @public
+export const densityComponentHorizontalOuterValue: import("@microsoft/fast-foundation").CSSDesignToken<number>;
+
+// @public (undocumented)
+export const densityComponentVerticalAdjustmentUnits: import("@microsoft/fast-foundation").CSSDesignToken<number>;
+
+// @public (undocumented)
+export const densityComponentVerticalAdjustmentUnitsCumulative: import("@microsoft/fast-foundation").CSSDesignToken<number>;
+
+// @public (undocumented)
+export const densityComponentVerticalBetweenPadding: import("@microsoft/fast-foundation").CSSDesignToken<number>;
+
+// @public (undocumented)
+export const densityComponentVerticalBetweenUnits: import("@microsoft/fast-foundation").CSSDesignToken<number>;
+
+// @public (undocumented)
+export const densityComponentVerticalOuterInverse: import("@microsoft/fast-foundation").CSSDesignToken<number>;
+
+// @public (undocumented)
+export const densityComponentVerticalOuterPadding: import("@microsoft/fast-foundation").CSSDesignToken<number>;
+
+// @public (undocumented)
+export const densityComponentVerticalOuterUnits: import("@microsoft/fast-foundation").CSSDesignToken<number>;
+
+// @public (undocumented)
+export const densityComponentVerticalOuterValue: import("@microsoft/fast-foundation").CSSDesignToken<number>;
+
 // Warning: (ae-internal-missing-underscore) The name "DesignSystemProvider" should be prefixed with an underscore because the declaration is marked as @internal
 //
 // @internal
@@ -1325,6 +1373,9 @@ export const typeRampBaseFontSize: import("@microsoft/fast-foundation").CSSDesig
 // @public (undocumented)
 export const typeRampBaseLineHeight: import("@microsoft/fast-foundation").CSSDesignToken<string>;
 
+// @public
+export const typeRampBaseVisualHeight: import("@microsoft/fast-foundation").CSSDesignToken<string>;
+
 // @public (undocumented)
 export const typeRampMinus1FontSize: import("@microsoft/fast-foundation").CSSDesignToken<string>;
 
@@ -1381,15 +1432,15 @@ export const verticalSliderLabelStyles: ElementStyles;
 //
 // dist/dts/color/palette.d.ts:71:5 - (ae-forgotten-export) The symbol "create" needs to be exported by the entry point index.d.ts
 // dist/dts/color/palette.d.ts:72:5 - (ae-forgotten-export) The symbol "from" needs to be exported by the entry point index.d.ts
-// dist/dts/custom-elements.d.ts:76:5 - (ae-incompatible-release-tags) The symbol "fastButton" is marked as @public, but its signature references "Button" which is marked as @internal
-// dist/dts/custom-elements.d.ts:88:5 - (ae-incompatible-release-tags) The symbol "fastCard" is marked as @public, but its signature references "Card" which is marked as @internal
-// dist/dts/custom-elements.d.ts:94:5 - (ae-incompatible-release-tags) The symbol "fastDesignSystemProvider" is marked as @public, but its signature references "DesignSystemProvider" which is marked as @internal
-// dist/dts/custom-elements.d.ts:96:5 - (ae-incompatible-release-tags) The symbol "fastDisclosure" is marked as @public, but its signature references "Disclosure" which is marked as @internal
-// dist/dts/custom-elements.d.ts:122:5 - (ae-incompatible-release-tags) The symbol "fastSearch" is marked as @public, but its signature references "Search" which is marked as @internal
-// dist/dts/custom-elements.d.ts:126:5 - (ae-incompatible-release-tags) The symbol "fastSliderLabel" is marked as @public, but its signature references "SliderLabel" which is marked as @internal
-// dist/dts/custom-elements.d.ts:131:5 - (ae-incompatible-release-tags) The symbol "fastTextArea" is marked as @public, but its signature references "TextArea" which is marked as @internal
-// dist/dts/custom-elements.d.ts:132:5 - (ae-incompatible-release-tags) The symbol "fastTextField" is marked as @public, but its signature references "TextField" which is marked as @internal
-// dist/dts/custom-elements.d.ts:134:5 - (ae-incompatible-release-tags) The symbol "fastToolbar" is marked as @public, but its signature references "Toolbar" which is marked as @internal
+// dist/dts/custom-elements.d.ts:77:5 - (ae-incompatible-release-tags) The symbol "fastButton" is marked as @public, but its signature references "Button" which is marked as @internal
+// dist/dts/custom-elements.d.ts:89:5 - (ae-incompatible-release-tags) The symbol "fastCard" is marked as @public, but its signature references "Card" which is marked as @internal
+// dist/dts/custom-elements.d.ts:95:5 - (ae-incompatible-release-tags) The symbol "fastDesignSystemProvider" is marked as @public, but its signature references "DesignSystemProvider" which is marked as @internal
+// dist/dts/custom-elements.d.ts:97:5 - (ae-incompatible-release-tags) The symbol "fastDisclosure" is marked as @public, but its signature references "Disclosure" which is marked as @internal
+// dist/dts/custom-elements.d.ts:131:5 - (ae-incompatible-release-tags) The symbol "fastSearch" is marked as @public, but its signature references "Search" which is marked as @internal
+// dist/dts/custom-elements.d.ts:135:5 - (ae-incompatible-release-tags) The symbol "fastSliderLabel" is marked as @public, but its signature references "SliderLabel" which is marked as @internal
+// dist/dts/custom-elements.d.ts:140:5 - (ae-incompatible-release-tags) The symbol "fastTextArea" is marked as @public, but its signature references "TextArea" which is marked as @internal
+// dist/dts/custom-elements.d.ts:141:5 - (ae-incompatible-release-tags) The symbol "fastTextField" is marked as @public, but its signature references "TextField" which is marked as @internal
+// dist/dts/custom-elements.d.ts:143:5 - (ae-incompatible-release-tags) The symbol "fastToolbar" is marked as @public, but its signature references "Toolbar" which is marked as @internal
 
 // (No @packageDocumentation comment for this package)
 
