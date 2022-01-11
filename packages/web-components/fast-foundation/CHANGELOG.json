@@ -2,6 +2,59 @@
   "name": "@microsoft/fast-foundation",
   "entries": [
     {
+      "date": "Tue, 11 Jan 2022 07:09:27 GMT",
+      "tag": "@microsoft/fast-foundation_v2.29.0",
+      "version": "2.29.0",
+      "comments": {
+        "none": [
+          {
+            "comment": "update rollup-plugin-filesize from 8.0.2 to 9.1.2",
+            "author": "john.kreitlow@microsoft.com",
+            "commit": "af847f2749ff605cced426e55a1580ea85c89cb0",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sun, 09 Jan 2022 07:11:51 GMT",
+      "tag": "@microsoft/fast-foundation_v2.29.0",
+      "version": "2.29.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "fix accessibility for listbox, select, and combobox",
+            "author": "john.kreitlow@microsoft.com",
+            "commit": "256fe07122c2838e6bf0edd639a539b9ceeaa1bf",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 06 Jan 2022 07:11:52 GMT",
+      "tag": "@microsoft/fast-foundation_v2.28.0",
+      "version": "2.28.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "fix: prevent events to propagate from disabled button (#4884)",
+            "author": "email not defined",
+            "commit": "fb22059b2594cc8a7ca32a1f14570b6393ecb68f",
+            "package": "@microsoft/fast-foundation"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "tooltip uses \"center\"",
+            "author": "scomea@microsoft.com",
+            "commit": "a4c2a7e9a3f94c7079b56ae324223e10457c042e",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sun, 19 Dec 2021 07:12:39 GMT",
       "tag": "@microsoft/fast-foundation_v2.27.3",
       "version": "2.27.3",
