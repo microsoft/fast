@@ -101,7 +101,7 @@ export class ListboxOption extends FoundationElement {
      */
     @attr({ mode: "boolean" })
     public disabled: boolean;
-    protected disabledChanged(prev, next): void {
+    protected disabledChanged(prev: boolean, next: boolean): void {
         this.ariaDisabled = this.disabled ? "true" : "false";
 
         if (this.proxy instanceof HTMLOptionElement) {
