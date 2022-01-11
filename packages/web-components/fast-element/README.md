@@ -58,5 +58,5 @@ For simplicity, examples throughout the documentation will assume the library ha
 :::
 
 :::tip
-Looking for a quick guide on building components?  Check out [our Sheet Cheat](https://www.fast.design/docs/resources/cheat-sheet#building-components).
+Looking for a quick guide on building components?  Check out [our Cheat Sheet](https://www.fast.design/docs/resources/cheat-sheet#building-components).
 :::

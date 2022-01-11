@@ -41,7 +41,7 @@ We hope you're excited by the possibilities that FAST presents. But, you may be 
   * [Jump to the fast-element docs.](/docs/fast-element/getting-started)
 * "I need to integrate FAST with another framework or build system."
   * [Jump to the integration docs.](/docs/integrations/introduction)
-* "I want to look at a quick guide."
+* "I want to look at a quick reference."
   * [Jump to the Cheat Sheet](https://www.fast.design/docs/resources/cheat-sheet)
 
 ## Joining the community

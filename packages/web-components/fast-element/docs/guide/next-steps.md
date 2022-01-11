@@ -9,6 +9,6 @@ We've seen how to use `FASTElement` to declaratively build Web Components. In ad
 
 Now that you're familiar with the robust and powerful features of `FASTElement`, you're ready to build your own components and apps. But you don't have to start from scratch there either! If you haven't already explored them, check out our [FAST Components](../components/getting-started), which provide all the basic UI building-blocks you'd expect in a modern component library. You can also leverage the same adaptive design system that our own components use to enable robust theming throughout all you create. Read more on that in [Styling Components](../design/introduction). Finally, you'll want to take advantage of a modern toolset by installing [a powerful editor and plugins](../tools/vscode).
 
-For a quick guide, check out [our Cheat Sheet](https://www.fast.design/docs/resources/cheat-sheet).
+For a quick reference on what you've learned, check out [our Cheat Sheet](https://www.fast.design/docs/resources/cheat-sheet).
 
 Happy componenting!
