@@ -34,6 +34,10 @@ jobs:
       - name: Checkout Branch
         uses: actions/checkout@v2
 
+      - if: ${{ github.event_name == 'pull_request' }}
+        run: |
+          git fetch --no-tags --prune --depth=1 origin +refs/heads/master:refs/remotes/origin/master
+
       - name: Get yarn cache directory path
         id: yarn-cache-dir-path
         run: echo '::set-output name=dir::$(yarn cache dir)'
@@ -61,7 +65,7 @@ jobs:
 
       - name: Run tests in changed packages
         if: ${{ github.event_name == 'pull_request' }}
-        run: yarn lerna run test --stream --since=${{ github.base_ref }}
+        run: yarn lerna run test --stream --since=origin/master
 
       - name: Run tests in all Lerna Packages
         if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
