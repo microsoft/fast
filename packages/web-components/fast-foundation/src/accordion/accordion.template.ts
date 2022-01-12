@@ -14,7 +14,7 @@ export const accordionTemplate: (
 ) => ViewTemplate<Accordion> = (
     context: ElementDefinitionContext,
     definition: FoundationElementDefinition
-) => /* TODO: deprecate slot name `item` to only support default slot https://github.com/microsoft/fast/issues/XXXX */ html`
+) => /* TODO: deprecate slot name `item` to only support default slot https://github.com/microsoft/fast/issues/5515 */ html`
     <template>
         <slot ${slotted({ property: "accordionItems", filter: elements() })}></slot>
         <slot name="item" part="item" ${slotted("accordionItems")}></slot>
