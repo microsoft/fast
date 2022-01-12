@@ -86,7 +86,7 @@ addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
         }
 
         const stackh1 = document.getElementById("stackh1") as FoundationVirtualizingStack;
-        stackh1.itemTemplate = imageItemTemplate;
+        // stackh1.itemTemplate = imageItemTemplate;
         stackh1.items = data;
 
         const stackh2 = document.getElementById("stackh2") as FoundationVirtualizingStack;

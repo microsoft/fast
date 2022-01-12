@@ -39,7 +39,7 @@ const defaultItemTemplate: ViewTemplate<any> = html`
                 : 1};
         "
     >
-        ${x => x}
+        ${x => JSON.stringify(x)}
     </div>
 `;
 
