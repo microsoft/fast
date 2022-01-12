@@ -14,7 +14,6 @@ import { FoundationElement } from "../foundation-element";
 import { isListboxOption, ListboxOption } from "../listbox-option/listbox-option";
 import { ARIAGlobalStatesAndProperties } from "../patterns/aria-global";
 import { applyMixins } from "../utilities/apply-mixins";
-import { ListboxRole } from "./listbox.options";
 
 /**
  * A Listbox Custom HTML Element.
@@ -90,16 +89,6 @@ export abstract class Listbox extends FoundationElement {
      */
     @attr({ mode: "boolean" })
     public disabled: boolean;
-
-    /**
-     * The role of the element.
-     *
-     * @public
-     * @remarks
-     * HTML Attribute: `role`
-     */
-    @attr
-    public role: string = ListboxRole.listbox;
 
     /**
      * The index of the selected option.
@@ -456,18 +445,23 @@ export abstract class Listbox extends FoundationElement {
      * @internal
      */
     public slottedOptionsChanged(prev: Element[] | unknown, next: Element[]) {
+        this.options = next.reduce<ListboxOption[]>((options, item) => {
+            if (isListboxOption(item)) {
+                options.push(item);
+            }
+            return options;
+        }, []);
+
+        const setSize = `${this.options.length}`;
+        this.options.forEach((option, index) => {
+            if (!option.id) {
+                option.id = uniqueId("option-");
+            }
+            option.ariaPosInSet = `${index + 1}`;
+            option.ariaSetSize = setSize;
+        });
+
         if (this.$fastController.isConnected) {
-            this.options = next.reduce((options, item) => {
-                if (isListboxOption(item)) {
-                    options.push(item);
-                }
-                return options;
-            }, [] as ListboxOption[]);
-
-            this.options.forEach(o => {
-                o.id = o.id || uniqueId("option-");
-            });
-
             this.setSelectedOptions();
             this.setDefaultSelectedOption();
         }
@@ -509,28 +503,28 @@ export abstract class Listbox extends FoundationElement {
  */
 export class DelegatesARIAListbox {
     /**
-     * See {@link https://www.w3.org/WAI/PF/aria/roles#listbox} for more information
+     * See {@link https://www.w3.org/TR/wai-aria-1.2/#listbox} for more information
      * @public
      * @remarks
-     * HTML Attribute: aria-activedescendant
+     * HTML Attribute: `aria-activedescendant`
      */
     @observable
-    public ariaActiveDescendant: string = "";
+    public ariaActiveDescendant: string;
 
     /**
-     * See {@link https://www.w3.org/WAI/PF/aria/roles#listbox} for more information
+     * See {@link https://www.w3.org/TR/wai-aria-1.2/#listbox} for more information
      * @public
      * @remarks
-     * HTML Attribute: aria-disabled
+     * HTML Attribute: `aria-disabled`
      */
     @observable
     public ariaDisabled: "true" | "false";
 
     /**
-     * See {@link https://www.w3.org/WAI/PF/aria/roles#listbox} for more information
+     * See {@link https://www.w3.org/TR/wai-aria-1.2/#listbox} for more information
      * @public
      * @remarks
-     * HTML Attribute: aria-expanded
+     * HTML Attribute: `aria-expanded`
      */
     @observable
     public ariaExpanded: "true" | "false" | undefined;
