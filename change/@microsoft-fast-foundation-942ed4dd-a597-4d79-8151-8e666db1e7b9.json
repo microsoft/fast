@@ -1,0 +1,7 @@
+{
+  "type": "none",
+  "comment": "update verbiage and add FAST snippets plugin to vs code page",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "steph@huynhicode.dev",
+  "dependentChangeType": "none"
+}
