@@ -61,7 +61,7 @@ jobs:
 
       - name: Run tests in changed packages
         if: ${{ github.event_name == 'pull_request' }}
-        run: yarn lerna run test --stream --since=${{ github.ref }}
+        run: yarn lerna run test --stream --since=${{ github.base_ref }}
 
       - name: Run tests in all Lerna Packages
         if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
