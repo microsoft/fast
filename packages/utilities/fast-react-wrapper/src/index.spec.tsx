@@ -196,6 +196,11 @@ for (const scenario of scenarios) {
       expect(el.textContent).to.equal('Hello World');
     });
 
+    it('does not recreate the same component twice', async () => {
+      const SameWrappedComponent = scenario.wrap(wrap);
+      expect(WrappedComponent).to.eq(SameWrappedComponent);
+    });
+
     it('wrapper renders custom element that updates', async () => {
       renderReactComponent();
       expect(el).ok;

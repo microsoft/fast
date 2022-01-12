@@ -199,6 +199,7 @@ export function provideReactWrapper(React: any, designSystem?: DesignSystem) {
             registrations = [];
         },
     };
+    const wrappersCache = new Map();
 
     /**
      * Creates a React component for a custom element. Properties are distinguished
@@ -334,17 +335,22 @@ export function provideReactWrapper(React: any, designSystem?: DesignSystem) {
             }
         }
 
-        return React.forwardRef(
-            (
-                props?: ReactWrapperProps<TElement, TEvents>,
-                ref?: ReactModule.Ref<unknown>
-            ) =>
-                React.createElement(
-                    ReactComponent,
-                    { ...props, __forwardedRef: ref } as InternalProps,
-                    props?.children
-                )
-        ) as ReactWrapper<TElement, TEvents>;
+        if (!wrappersCache.has(type)) {
+            const reactComponent = React.forwardRef(
+                (
+                    props?: ReactWrapperProps<TElement, TEvents>,
+                    ref?: ReactModule.Ref<unknown>
+                ) =>
+                    React.createElement(
+                        ReactComponent,
+                        { ...props, __forwardedRef: ref } as InternalProps,
+                        props?.children
+                    )
+            ) as ReactWrapper<TElement, TEvents>;
+            wrappersCache.set(type, reactComponent);
+        }
+
+        return wrappersCache.get(type);
     }
 
     return { wrap, registry };
