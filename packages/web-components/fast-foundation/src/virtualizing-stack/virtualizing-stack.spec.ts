@@ -3,6 +3,7 @@ import { VirtualizingStack, virtualizingStackTemplate as template } from "./inde
 import { fixture } from "../test-utilities/fixture";
 import { Orientation } from "@microsoft/fast-web-utilities";
 import { DOM, customElement, html } from "@microsoft/fast-element";
+import { timeout } from "../test-utilities/timeout";
 
 const FASTVirtualizingStack = VirtualizingStack.compose({
     baseName: "virtualizing-stack",
@@ -146,6 +147,24 @@ describe("VirtualizingStack", () => {
         await connect();
 
         expect(element.visibleItems.length).to.equal(100);
+
+        await disconnect();
+    });
+
+    it("should emit an event when rendered range changes", async () => {
+        const { element, connect, disconnect } = await setup();
+
+        await connect();
+
+        const eventEmitted = await Promise.race([
+            new Promise(resolve => {
+                element.addEventListener("rendered-range-change", () => resolve(true));
+                element.items = newDataSet(100);
+            }),
+            timeout().then(() => false),
+        ]);
+
+        expect(eventEmitted).to.be.false;
 
         await disconnect();
     });

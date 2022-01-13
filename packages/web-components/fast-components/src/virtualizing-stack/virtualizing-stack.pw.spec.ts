@@ -113,4 +113,27 @@ describe("FASTVirtualizingStack", function () {
         expect(await element.evaluate(node => (node as fastVirtualizingStack).lastRenderedIndex)).to.equal(8);
     });
 
+    it("should correctly calculate total stack span and account for start/end regions", async function () {
+        let element = (await this.page.waitForSelector(
+            "fast-virtualizing-stack"
+        )) as ElementHandle<fastVirtualizingStack>;
+
+
+        expect(await element.evaluate(node => (node as fastVirtualizingStack).totalStackSpan)).to.equal(10000);
+
+        await element.evaluateHandle(node => {
+            (node as fastVirtualizingStack).startRegionSpan = 100;
+        });
+        await element.waitForElementState("stable");
+
+        expect(await element.evaluate(node => (node as fastVirtualizingStack).totalStackSpan)).to.equal(10100);
+
+        await element.evaluateHandle(node => {
+            (node as fastVirtualizingStack).endRegionSpan = 100;
+        });
+        await element.waitForElementState("stable");
+
+        expect(await element.evaluate(node => (node as fastVirtualizingStack).totalStackSpan)).to.equal(10200);
+    });
+
 });

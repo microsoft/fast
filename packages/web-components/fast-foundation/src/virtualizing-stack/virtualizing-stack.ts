@@ -24,9 +24,17 @@ import type { ResizeObserverClassDefinition } from "../utilities/resize-observer
  */
 export type VirtualizingStackAutoUpdateMode = "manual" | "viewport-resize" | "auto";
 
+/**
+ * The default item template
+ * Authors will typically want to provide a template specific to their needs
+ * as the default one
+ *
+ */
 const defaultItemTemplate: ViewTemplate<any> = html`
     <div
         style="
+            overflow-wrap: anywhere;
+            overflow: hidden;
             height: 100%;
             width: 100%;
             grid-row: ${(x, c) =>
@@ -189,7 +197,7 @@ export class VirtualizingStack extends FoundationElement {
      */
     @attr({ attribute: "end-region-span", converter: nullableNumberConverter })
     public endRegionSpan: number = 0;
-    private endItemSpansChanged(): void {
+    private endRegionSpanChanged(): void {
         if (this.$fastController.isConnected) {
             this.updateDimensions();
         }
@@ -831,6 +839,8 @@ export class VirtualizingStack extends FoundationElement {
         this.lastRenderedIndex = newLastRenderedIndex;
 
         this.updateGridTemplateSpans();
+
+        this.$emit("rendered-range-change", this, { bubbles: false });
     }
 
     private updateGridTemplateSpans(): void {
