@@ -1,12 +1,12 @@
 import { html, repeat, when } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
-import type { DatePicker, DatePickerOptions } from "./date-picker";
 import type { ElementDefinitionContext } from "../design-system";
-import { TextField } from "../text-field";
 import { AnchoredRegion } from "../anchored-region";
-import { Listbox } from "../listbox";
-import { ListboxOption } from "../listbox-option";
-import { DataGrid, DataGridRow, DataGridCell } from "../data-grid";
+import { Button } from "../button";
+import { Calendar } from "../calendar";
+import { DataGrid, DataGridCell, DataGridRow } from "../data-grid";
+import { TextField } from "../text-field";
+import type { DatePicker, DatePickerOptions } from "./date-picker";
 
 /**
  * Template to render a time picker menu
@@ -15,48 +15,65 @@ import { DataGrid, DataGridRow, DataGridCell } from "../data-grid";
  * @param times - labels and values for times, hours, minutes and meridian
  * @returns - A ViewTemplate
  */
-export const timePickerTemplate: (
-    listbox: string,
-    listboxOption: string,
-    times: any
-) => ViewTemplate = (listbox: string, listboxOption: string, times: any) => {
+export const timePickerTemplate = (context, times) => {
     return html`
         <div class="time-picker"></div>
     `;
 };
 
-/**
- *
- * @param dataGrid - tagname for a data-grid
- * @param dataGridRow - tagname for a data-grid-row
- * @param dataGridCell - tagname for a data-grid-cell
- * @returns - A ViewTemplate
- */
-export const monthPickerTemplate: (
-    dataGrid: string,
-    dataGridRow: string,
-    dataGridCell: string
-) => ViewTemplate = (dataGrid: string, dataGridRow: string, dataGridCell: string) => {
+export const pickerTemplate = (
+    context,
+    items,
+    title,
+    previousAction,
+    nextAction,
+    action
+) => {
+    const button = context.tagFor(Button);
+    const grid = context.tagFor(DataGrid);
+    const row = context.tagFor(DataGridRow);
+    const cell = context.tagFor(DataGridCell);
     return html`
-        <div class="month-picker"></div>
-    `;
-};
-
-/**
- *
- * @param dataGrid - tagname for a data-grid
- * @param dataGridRow - tagname for a data-grid-row
- * @param dataGridCell - tagname for a data-grid-cell
- * @returns - A ViewTemplate
- */
-export const yearPickerTemplate: (
-    dataGrid: string,
-    dataGridRow: string,
-    dataGridCell: string
-) => ViewTemplate = (dataGrid: string, dataGridRow: string, dataGridCell: string) => {
-    return html`
-        <div class="year-picerk"></div>
-    `;
+      <div class="picker" part="picker">
+        <div class="picker-title" part="picker-title">
+            <${button} class="title-action" @click="${x => title.action()}">
+            ${x => title.text}
+            </${button}>
+            <${button} class="arrow" part="arrow-previous" @click="${x =>
+        previousAction()}">
+            &downarrow;
+            </${button}>
+            <${button} class="arrow" part="arrow-next" @click="${x => nextAction()}">
+            &uparrow;
+            </${button}>
+        </div>
+      <${grid} class="picker-grid" part="picker-grid" generate-header="none">
+        ${repeat(
+            x => items,
+            html`
+          <${row} role="row" role-type="default" class="picker-row" part="picker-row" grid-template-columns="1fr 1fr 1fr 1fr">
+            ${repeat(
+                x => x,
+                html`
+              <${cell}
+                tabindex="-1"
+                class="picker-cell ${x => (x.selected ? "selected" : "")}"
+                part="picker-cell"
+                grid-column="${(x, c) => c.index + 1}"
+                @click="${x => x.action()}"
+                @keydown="${(x, c) => action()}"
+              >
+                ${x => x.text}
+              </${cell}>
+            `,
+                { positioning: true }
+            )}
+          </${row}>
+        `
+        )}
+      </${grid}>
+    </div>
+  `;
 };
 
 /**
@@ -74,21 +91,45 @@ export const datePickerTemplate: (
 ) => {
     const textField = context.tagFor(TextField);
     const anchoredRegion = context.tagFor(AnchoredRegion);
-    const listbox = context.tagFor(Listbox);
-    const listboxOption = context.tagFor(ListboxOption);
-    const dataGrid = context.tagFor(DataGrid);
-    const dataGridRow = context.tagFor(DataGridRow);
-    const dataGridCell = context.tagFor(DataGridCell);
+    const calendar = context.tagFor(Calendar);
 
     return html`
     <template>
-        <${textField}></${textField}>
-        <${anchoredRegion}>
-            ${when(
-                x => x.type === "time" || x.type === "datetime-local",
-                timePickerTemplate(listbox, listboxOption, x => x.getTimes())
-            )}
-        </${anchoredRegion}>
+        <${textField} value=${x => x.value}></${textField}>
+        <div class="flyout" part="flyout">
+            ${x => timePickerTemplate(context, x.getTimes())}
+            <${calendar} selected-dates="${x =>
+        `${x.month}-${x.day}-${x.year}`}" class="calendar" @dateselected="${(x, c) =>
+        x.datePicked(c.event as MouseEvent)}" part="calendar" month=${x =>
+        x.month} year=${x => x.year} min-weeks="6"></${calendar}>
+            ${x =>
+                pickerTemplate(
+                    context,
+                    x.arrayToMatrix(x.getMonths(), 4),
+                    { text: x.yearView, action: () => {} },
+                    () => {
+                        x.yearView -= 1;
+                    },
+                    () => {
+                        x.yearView += 1;
+                    },
+                    () => {}
+                )}
+            ${x => {
+                const years = x.getYears();
+                const start = years[0].text;
+                const end = years[years.length - 1].text;
+                console.log(x.yearRangeView);
+                return pickerTemplate(
+                    context,
+                    x.arrayToMatrix(years, 4),
+                    { text: `${start} - ${end}` },
+                    () => (x.yearRangeView -= 12),
+                    () => (x.yearRangeView += 13),
+                    () => {}
+                );
+            }}
+        </div>
     </template>
 `;
 };

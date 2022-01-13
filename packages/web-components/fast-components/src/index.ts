@@ -16,6 +16,7 @@ export * from "./card/index";
 export * from "./checkbox/index";
 export * from "./combobox/index";
 export * from "./data-grid/index";
+export * from "./date-picker/index";
 export * from "./design-system-provider/index";
 export { Palette, PaletteRGB } from "./color/palette";
 export { InteractiveSwatchSet } from "./color/recipe";

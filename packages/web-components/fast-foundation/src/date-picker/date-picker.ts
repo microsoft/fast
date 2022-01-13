@@ -1,5 +1,6 @@
-import { attr, nullableNumberConverter } from "@microsoft/fast-element";
+import { attr, nullableNumberConverter, observable } from "@microsoft/fast-element";
 import { FoundationElement, FoundationElementDefinition } from "../foundation-element";
+import { DateFormatter } from "../calendar/date-formatter";
 
 export type DatePickerOptions = FoundationElementDefinition & {};
 
@@ -12,11 +13,20 @@ export class DatePicker extends FoundationElement {
     public value: string;
 
     /**
+     * date formatter utitlity for getting localized strings
+     * @public
+     */
+    public dateFormatter: DateFormatter = new DateFormatter();
+
+    /**
      * Locale information including market(language and country), calendar type and numbering system
      * @public
      */
     @attr
-    public locale: string;
+    public locale: string = "en-US";
+    private localeChanged(): void {
+        this.dateFormatter.locale = this.locale;
+    }
 
     /**
      * Name of the form element
@@ -93,21 +103,21 @@ export class DatePicker extends FoundationElement {
      * @public
      */
     @attr
-    public hour: number;
+    public hour: number = new Date().getHours();
 
     /**
      * Selected minute
      * @public
      */
     @attr
-    public minute: number;
+    public minute: number = new Date().getMinutes();
 
     /**
      * The meridian: AM | PM
      * @public
      */
     @attr
-    public meridian: string;
+    public meridian: string = new Date().getHours() > 12 ? "PM" : "AM";
 
     /**
      * The selected day
@@ -121,14 +131,20 @@ export class DatePicker extends FoundationElement {
      * @public
      */
     @attr
-    public month: number;
+    public month: number = new Date().getMonth() + 1;
 
     /**
      * The selected year
      * @public
      */
     @attr
-    public year: number;
+    public year: number = new Date().getFullYear();
+
+    @observable
+    public yearView: number = new Date().getFullYear();
+
+    @observable
+    public yearRangeView: number = Math.floor(new Date().getFullYear() / 10) * 10;
 
     /**
      * Dates that are not selectable
@@ -144,9 +160,21 @@ export class DatePicker extends FoundationElement {
      * @public
      */
     public getTimes() {
-        let hours = [];
-        let minutes = [];
-        let meridian = "";
+        const hours = new Array(12).fill(null).map((_, index) => {
+            let value = this.hour - (this.hour > 12 ? 12 : 0) + index;
+            if (value > 12) {
+                value -= 12;
+            }
+            return { text: value.toString(), value };
+        });
+        const minutes = new Array(60).fill(null).map((_, index) => {
+            const value = (this.minute + index) % 60;
+            return { text: `${value < 10 ? "0" : ""}${value}`, value };
+        });
+        const meridian = [{ text: "AM" }, { text: "PM" }];
+        if (this.meridian === "PM") {
+            meridian.reverse();
+        }
 
         return {
             hours,
@@ -156,7 +184,65 @@ export class DatePicker extends FoundationElement {
     }
 
     /**
-     * Method used to get a list of months
+     * Helper function used to create a matrix as a multi-dimensional array from a flat array
+     * @param array - a flat array to build into a multi-demensional array
+     * @param itemsPerRow - the maximum numer of items in each array row
+     * @returns
      */
-    public getMonths() {}
+    public arrayToMatrix(array, itemsPerRow) {
+        return array.reduce((matrix, item, index) => {
+            if (index % itemsPerRow === 0) {
+                matrix.push([item]);
+            } else {
+                matrix[matrix.length - 1].push(item);
+            }
+            return matrix;
+        }, []);
+    }
+
+    /**
+     * Creates an array of selectable months for the month picker
+     * @returns an array of month labels
+     */
+    public getMonths() {
+        return new Array(12).fill(null).map((_, index) => {
+            return {
+                action: () => {
+                    this.month = index + 1;
+                    this.year = this.yearView;
+                },
+                selected: this.month === index + 1 && this.year === this.yearView,
+                text: this.dateFormatter.getMonth(index + 1, "short"),
+            };
+        });
+    }
+
+    /**
+     * Creates an array of selectable years for the year picker
+     * @returns an array of years starting from this.yearRange
+     */
+    public getYears() {
+        return new Array(12).fill(null).map((_, index) => {
+            const text = this.yearRangeView + index;
+            return {
+                action: () => (this.yearView = text),
+                text,
+            };
+        });
+    }
+
+    /**
+     * Handler for selected date in the calendar
+     * @param event - The mouse event for the date clicked
+     */
+    public datePicked(event: MouseEvent) {
+        const { day, month, year } = event.detail as any;
+        this.day = day;
+        this.month = month;
+        this.year = year;
+        this.value = this.dateFormatter.getDate(
+            { day, month, year },
+            { day: "numeric", month: "long", year: "numeric" }
+        );
+    }
 }
