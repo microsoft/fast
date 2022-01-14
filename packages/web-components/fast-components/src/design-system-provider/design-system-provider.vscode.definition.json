@@ -23,17 +23,17 @@
                     "required": false
                 },
                 {
-                    "name": "accent-base-color",
-                    "title": "Accent base color",
-                    "description": "The accent palette base color",
+                    "name": "accent-color",
+                    "title": "Accent color",
+                    "description": "The accent color",
                     "type": "string",
                     "default": "#DA1A5F",
                     "required": false
                 },
                 {
-                    "name": "neutral-base-color",
-                    "title": "Neutral base color",
-                    "description": "The neutral palette base color",
+                    "name": "neutral-color",
+                    "title": "Neutral color",
+                    "description": "The neutral color",
                     "type": "string",
                     "default": "#808080",
                     "required": false

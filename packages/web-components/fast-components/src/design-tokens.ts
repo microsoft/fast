@@ -291,25 +291,23 @@ export const neutralStrokeDividerRestDelta = createNonCss<number>(
 // Color recipes
 
 /** @public */
-export const neutralBaseColor = create<Swatch>("neutral-base-color").withDefault(
-    middleGrey
-);
+export const neutralColor = create<Swatch>("neutral-color").withDefault(middleGrey);
+
 /** @public */
 export const neutralPalette = createNonCss<Palette>(
     "neutral-palette"
 ).withDefault((element: HTMLElement) =>
-    PaletteRGB.from(neutralBaseColor.getValueFor(element) as SwatchRGB)
+    PaletteRGB.from(neutralColor.getValueFor(element) as SwatchRGB)
 );
 
 /** @public */
-export const accentBaseColor = create<Swatch>("accent-base-color").withDefault(
-    accentBase
-);
+export const accentColor = create<Swatch>("accent-color").withDefault(accentBase);
+
 /** @public */
 export const accentPalette = createNonCss<Palette>(
     "accent-palette"
 ).withDefault((element: HTMLElement) =>
-    PaletteRGB.from(accentBaseColor.getValueFor(element) as SwatchRGB)
+    PaletteRGB.from(accentColor.getValueFor(element) as SwatchRGB)
 );
 
 // Neutral Layer Card Container

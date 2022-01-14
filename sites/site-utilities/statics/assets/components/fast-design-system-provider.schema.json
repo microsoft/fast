@@ -21,18 +21,18 @@
       "mapsToAttribute": "fill-color",
       "type": "string"
     },
-    "accent-base-color": {
+    "accent-color": {
       "default": "#DA1A5F",
-      "title": "Accent base color",
-      "description": "The accent palette base color",
-      "mapsToAttribute": "accent-base-color",
+      "title": "Accent color",
+      "description": "The accent color",
+      "mapsToAttribute": "accent-color",
       "type": "string"
     },
-    "neutral-base-color": {
+    "neutral-color": {
       "default": "#808080",
-      "title": "Neutral base color",
-      "description": "The neutral palette base color",
-      "mapsToAttribute": "neutral-base-color",
+      "title": "Neutral color",
+      "description": "The neutral color",
+      "mapsToAttribute": "neutral-color",
       "type": "string"
     },
     "density": {

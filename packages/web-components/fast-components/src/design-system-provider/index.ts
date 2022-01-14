@@ -19,7 +19,7 @@ import {
 import { Direction, SystemColors } from "@microsoft/fast-web-utilities";
 import { Swatch, SwatchRGB } from "../color/swatch";
 import {
-    accentBaseColor,
+    accentColor,
     accentFillActiveDelta,
     accentFillFocusDelta,
     accentFillHoverDelta,
@@ -38,7 +38,7 @@ import {
     disabledOpacity,
     fillColor,
     focusStrokeWidth,
-    neutralBaseColor,
+    neutralColor,
     neutralFillActiveDelta,
     neutralFillFocusDelta,
     neutralFillHoverDelta,
@@ -188,30 +188,30 @@ export class DesignSystemProvider extends FoundationElement {
     public fillColor: Swatch;
 
     /**
-     * A convenience to recreate the accentPalette
+     * Set the accent color
      * @remarks
-     * HTML attribute: accent-base-color
+     * HTML attribute: accent-color
      */
     @attr({
-        attribute: "accent-base-color",
+        attribute: "accent-color",
         converter: swatchConverter,
         mode: "fromView",
     })
-    @designToken(accentBaseColor)
-    public accentBaseColor: Swatch;
+    @designToken(accentColor)
+    public accentColor: Swatch;
 
     /**
-     * A convenience to recreate the neutralPalette
+     * Set the neutral color
      * @remarks
-     * HTML attribute: neutral-base-color
+     * HTML attribute: neutral-color
      */
     @attr({
-        attribute: "neutral-base-color",
+        attribute: "neutral-color",
         converter: swatchConverter,
         mode: "fromView",
     })
-    @designToken(neutralBaseColor)
-    public neutralBaseColor: Swatch;
+    @designToken(neutralColor)
+    public neutralColor: Swatch;
 
     /**
      *

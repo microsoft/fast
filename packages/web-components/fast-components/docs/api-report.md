@@ -88,7 +88,7 @@ import { TreeItemOptions } from '@microsoft/fast-foundation';
 import { TreeView } from '@microsoft/fast-foundation';
 
 // @public (undocumented)
-export const accentBaseColor: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
+export const accentColor: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
 
 // @public (undocumented)
 export const accentFillActive: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
@@ -380,7 +380,7 @@ export const density: import("@microsoft/fast-foundation").CSSDesignToken<number
 // @internal
 export class DesignSystemProvider extends FoundationElement {
     constructor();
-    accentBaseColor: Swatch;
+    accentColor: Swatch;
     accentFillActiveDelta: number;
     accentFillFocusDelta: number;
     accentFillHoverDelta: number;
@@ -399,7 +399,7 @@ export class DesignSystemProvider extends FoundationElement {
     disabledOpacity: number;
     fillColor: Swatch;
     focusStrokeWidth: number;
-    neutralBaseColor: Swatch;
+    neutralColor: Swatch;
     neutralFillActiveDelta: number;
     neutralFillFocusDelta: number;
     neutralFillHoverDelta: number;
@@ -805,7 +805,7 @@ export const menuItemStyles: (context: ElementDefinitionContext, definition: Men
 export const menuStyles: (context: ElementDefinitionContext, definition: FoundationElementDefinition) => ElementStyles;
 
 // @public (undocumented)
-export const neutralBaseColor: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
+export const neutralColor: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
 
 // @public (undocumented)
 export const neutralFillActive: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
