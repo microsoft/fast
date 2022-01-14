@@ -155,7 +155,7 @@
     "jest": "^25.4.0",
     "lerna": "^3.20.2",
     "lint-staged": "^10.1.2",
-    "markdown-it": "^12.3.2",
+    "markdown-it": "^8.4.1",
     "prettier": "2.0.2",
     "rimraf": "^3.0.2",
     "ts-jest": "^25.4.0",
