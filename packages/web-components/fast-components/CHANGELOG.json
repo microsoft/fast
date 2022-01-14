@@ -2,6 +2,74 @@
   "name": "@microsoft/fast-components",
   "entries": [
     {
+      "date": "Wed, 12 Jan 2022 07:11:42 GMT",
+      "tag": "@microsoft/fast-components_v2.17.0",
+      "version": "2.17.0",
+      "comments": {
+        "none": [
+          {
+            "comment": "Bump @microsoft/fast-element to v1.6.2",
+            "author": "steph@huynhicode.dev",
+            "commit": "962ca2a330f8c277ac489613f0ff55cac08896e8",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 11 Jan 2022 07:09:27 GMT",
+      "tag": "@microsoft/fast-components_v2.17.0",
+      "version": "2.17.0",
+      "comments": {
+        "none": [
+          {
+            "comment": "update rollup-plugin-filesize from 8.0.2 to 9.1.2",
+            "author": "john.kreitlow@microsoft.com",
+            "commit": "af847f2749ff605cced426e55a1580ea85c89cb0",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sun, 09 Jan 2022 07:11:51 GMT",
+      "tag": "@microsoft/fast-components_v2.17.0",
+      "version": "2.17.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "remove configurable role attribute from listbox, select, and combobox",
+            "author": "john.kreitlow@microsoft.com",
+            "commit": "256fe07122c2838e6bf0edd639a539b9ceeaa1bf",
+            "package": "@microsoft/fast-components"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-foundation to v2.29.0",
+            "author": "john.kreitlow@microsoft.com",
+            "commit": "256fe07122c2838e6bf0edd639a539b9ceeaa1bf",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 06 Jan 2022 07:11:52 GMT",
+      "tag": "@microsoft/fast-components_v2.16.10",
+      "version": "2.16.10",
+      "comments": {
+        "patch": [
+          {
+            "comment": "tooltip uses \"center\"",
+            "author": "scomea@microsoft.com",
+            "commit": "a4c2a7e9a3f94c7079b56ae324223e10457c042e",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sun, 19 Dec 2021 07:12:39 GMT",
       "tag": "@microsoft/fast-components_v2.16.9",
       "version": "2.16.9",

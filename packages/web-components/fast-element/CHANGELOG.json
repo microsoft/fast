@@ -2,6 +2,36 @@
   "name": "@microsoft/fast-element",
   "entries": [
     {
+      "date": "Wed, 12 Jan 2022 07:11:42 GMT",
+      "tag": "@microsoft/fast-element_v1.6.2",
+      "version": "1.6.2",
+      "comments": {
+        "none": [
+          {
+            "comment": "add links back to cheat sheet",
+            "author": "steph@huynhicode.dev",
+            "commit": "962ca2a330f8c277ac489613f0ff55cac08896e8",
+            "package": "@microsoft/fast-element"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 11 Jan 2022 07:09:27 GMT",
+      "tag": "@microsoft/fast-element_v1.6.2",
+      "version": "1.6.2",
+      "comments": {
+        "none": [
+          {
+            "comment": "update rollup-plugin-filesize from 8.0.2 to 9.1.2",
+            "author": "john.kreitlow@microsoft.com",
+            "commit": "af847f2749ff605cced426e55a1580ea85c89cb0",
+            "package": "@microsoft/fast-element"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sun, 19 Dec 2021 07:12:39 GMT",
       "tag": "@microsoft/fast-element_v1.6.2",
       "version": "1.6.2",
