@@ -2,6 +2,36 @@
   "name": "fast-design-system-demo",
   "entries": [
     {
+      "date": "Wed, 12 Jan 2022 07:11:42 GMT",
+      "tag": "fast-design-system-demo_v1.0.0",
+      "version": "1.0.0",
+      "comments": {
+        "none": [
+          {
+            "comment": "Bump @microsoft/fast-components to v2.17.0",
+            "author": "steph@huynhicode.dev",
+            "commit": "962ca2a330f8c277ac489613f0ff55cac08896e8",
+            "package": "fast-design-system-demo"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 11 Jan 2022 07:09:27 GMT",
+      "tag": "fast-design-system-demo_v1.0.0",
+      "version": "1.0.0",
+      "comments": {
+        "none": [
+          {
+            "comment": "Bump @microsoft/fast-components to v2.17.0",
+            "author": "john.kreitlow@microsoft.com",
+            "commit": "af847f2749ff605cced426e55a1580ea85c89cb0",
+            "package": "fast-design-system-demo"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sun, 09 Jan 2022 07:11:51 GMT",
       "tag": "fast-design-system-demo_v1.0.0",
       "version": "1.0.0",
