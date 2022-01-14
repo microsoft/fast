@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-foundation",
   "entries": [
     {
+      "date": "Wed, 12 Jan 2022 07:11:42 GMT",
+      "tag": "@microsoft/fast-foundation_v2.29.0",
+      "version": "2.29.0",
+      "comments": {
+        "none": [
+          {
+            "comment": "update verbiage and add FAST snippets plugin to vs code page",
+            "author": "steph@huynhicode.dev",
+            "commit": "cf702d75b566afb396ceead5378d13d8a6b7c432",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 11 Jan 2022 07:09:27 GMT",
       "tag": "@microsoft/fast-foundation_v2.29.0",
       "version": "2.29.0",
