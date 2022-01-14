@@ -5,6 +5,9 @@ import { DateFormatter } from "../calendar/date-formatter";
 export type DatePickerOptions = FoundationElementDefinition & {};
 
 export class DatePicker extends FoundationElement {
+    @attr
+    public type: "date" | "datetime-local" | "month" | "year" | "time" = "date";
+
     /**
      * Value for the date-picker
      * @public
@@ -92,32 +95,25 @@ export class DatePicker extends FoundationElement {
     public allowTextInput: boolean;
 
     /**
-     * Picker type: date | month | week | time | datetime-local
-     * @public
-     */
-    @attr
-    public type: string;
-
-    /**
      * Selected hour
      * @public
      */
     @attr
-    public hour: number = new Date().getHours();
+    public hour: number;
 
     /**
      * Selected minute
      * @public
      */
     @attr
-    public minute: number = new Date().getMinutes();
+    public minute: number;
 
     /**
      * The meridian: AM | PM
      * @public
      */
     @attr
-    public meridian: string = new Date().getHours() > 12 ? "PM" : "AM";
+    public meridian: "AM" | "PM";
 
     /**
      * The selected day
@@ -125,6 +121,9 @@ export class DatePicker extends FoundationElement {
      */
     @attr
     public day: number;
+
+    @attr
+    public date: string;
 
     /**
      * The selected month
@@ -161,25 +160,39 @@ export class DatePicker extends FoundationElement {
      */
     public getTimes() {
         const hours = new Array(12).fill(null).map((_, index) => {
-            let value = this.hour - (this.hour > 12 ? 12 : 0) + index;
+            const hour = this.hour || new Date().getHours();
+            let value = hour - (hour > 12 ? 12 : 0) + index;
             if (value > 12) {
                 value -= 12;
             }
-            return { text: value.toString(), value };
+            return {
+                text: value.toString(),
+                value,
+                action: () => this.handleHourClicked(value),
+            };
         });
         const minutes = new Array(60).fill(null).map((_, index) => {
-            const value = (this.minute + index) % 60;
-            return { text: `${value < 10 ? "0" : ""}${value}`, value };
+            const minute = this.minute ?? new Date().getMinutes();
+            const value = (minute + index) % 60;
+            return {
+                text: `${value < 10 ? "0" : ""}${value}`,
+                value,
+                action: () => this.handleMinuteClicked(value),
+            };
         });
-        const meridian = [{ text: "AM" }, { text: "PM" }];
-        if (this.meridian === "PM") {
-            meridian.reverse();
+        let meridians = [
+            { text: "AM", action: () => this.handleMeridianClicked("AM") },
+            { text: "PM", action: () => this.handleMeridianClicked("PM") },
+        ];
+        const meridian = this.meridian ?? new Date().getHours() >= 12 ? "PM" : "AM";
+        if (meridian === "PM") {
+            meridians = meridians.reverse();
         }
 
         return {
             hours,
             minutes,
-            meridian,
+            meridians,
         };
     }
 
@@ -207,10 +220,7 @@ export class DatePicker extends FoundationElement {
     public getMonths() {
         return new Array(12).fill(null).map((_, index) => {
             return {
-                action: () => {
-                    this.month = index + 1;
-                    this.year = this.yearView;
-                },
+                action: () => this.handleMonthClicked(index + 1),
                 selected: this.month === index + 1 && this.year === this.yearView,
                 text: this.dateFormatter.getMonth(index + 1, "short"),
             };
@@ -225,24 +235,126 @@ export class DatePicker extends FoundationElement {
         return new Array(12).fill(null).map((_, index) => {
             const text = this.yearRangeView + index;
             return {
-                action: () => (this.yearView = text),
+                action: () => this.handleYearClicked(text),
                 text,
             };
         });
     }
 
+    public overFlyout: boolean = false;
+
+    @observable
+    public flyoutOpen: boolean = false;
+
+    public openFlyout(force = false) {
+        this.flyoutOpen = force || !!this.overFlyout;
+    }
+
+    public closeFlyout(force = false) {
+        if (force || !this.overFlyout) {
+            this.flyoutOpen = false;
+        }
+    }
+
+    public toggleFlyout(force = false) {
+        this[`${this.flyoutOpen ? "close" : "open"}Flyout`](force);
+    }
+
     /**
      * Handler for selected date in the calendar
-     * @param event - The mouse event for the date clicked
+     * @param date - The date clicked
      */
-    public datePicked(event: MouseEvent) {
-        const { day, month, year } = event.detail as any;
+    public handleDateClicked(date) {
+        const { day, month, year } = date;
         this.day = day;
         this.month = month;
         this.year = year;
-        this.value = this.dateFormatter.getDate(
-            { day, month, year },
-            { day: "numeric", month: "long", year: "numeric" }
-        );
+
+        this.date = `${month}-${day}-${year}`;
+
+        if (this.type === "date") {
+            this.value = this.dateFormatter.getDate(
+                { day, month, year },
+                { day: "numeric", month: "long", year: "numeric" }
+            );
+            this.closeFlyout(true);
+        } else {
+            const { hour, minute, meridian } = this;
+            if (hour && minute !== undefined && meridian) {
+                // Set date and time here
+            }
+        }
+    }
+
+    public handleMonthClicked(month) {
+        this.month = month;
+        this.year = this.yearView;
+
+        if (this.type === "month") {
+            this.value = this.dateFormatter.getDate(
+                { day: 2, month, year: this.yearView },
+                { month: "long", year: "numeric" }
+            );
+
+            this.closeFlyout(true);
+        }
+    }
+
+    public handleYearClicked(year) {
+        this.yearView = year;
+
+        if (this.type === "year") {
+            this.value = this.dateFormatter.getDate(
+                { day: 2, month: 1, year: this.yearView },
+                { year: "numeric" }
+            );
+
+            this.closeFlyout(true);
+        }
+    }
+
+    public handleHourClicked(hour) {
+        this.hour = hour;
+        if (this.minute !== undefined && this.meridian) {
+            this.value = `${this.hour}:${this.minute < 10 ? 0 : ""}${this.minute} ${
+                this.meridian
+            }`;
+
+            if (this.type === "time") {
+                this.closeFlyout(true);
+            }
+        }
+    }
+
+    public handleMinuteClicked(minute) {
+        this.minute = minute;
+        if (this.hour && this.meridian) {
+            this.value = `${this.hour}:${this.minute < 10 ? 0 : ""}${this.minute} ${
+                this.meridian
+            }`;
+
+            if (this.type === "time") {
+                this.closeFlyout(true);
+            }
+        }
+    }
+
+    public handleMeridianClicked(meridian) {
+        this.meridian = meridian;
+        if (this.hour && this.minute !== undefined) {
+            this.value = `${this.hour}:${this.minute < 10 ? 0 : ""}${this.minute} ${
+                this.meridian
+            }`;
+
+            if (this.type === "time") {
+                this.closeFlyout(true);
+            }
+        }
+    }
+
+    connectedCallback(): void {
+        super.connectedCallback();
+
+        window.addEventListener("click", () => this.closeFlyout());
     }
 }

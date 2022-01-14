@@ -748,15 +748,34 @@ export class DateFormatter {
 export class DatePicker extends FoundationElement {
     allowTextInput: boolean;
     appearance: string;
+    arrayToMatrix(array: any, itemsPerRow: any): any;
+    dateFormatter: DateFormatter;
+    datePicked(event: MouseEvent): void;
     day: number;
     disabled: boolean;
     disabledDates: string;
-    getMonths(): void;
+    getMonths(): {
+        action: () => void;
+        selected: boolean;
+        text: string;
+    }[];
     getTimes(): {
-        hours: never[];
-        minutes: never[];
-        meridian: string;
+        hours: {
+            text: string;
+            value: number;
+        }[];
+        minutes: {
+            text: string;
+            value: number;
+        }[];
+        meridian: {
+            text: string;
+        }[];
     };
+    getYears(): {
+        action: () => number;
+        text: number;
+    }[];
     hour: number;
     locale: string;
     max: number;
@@ -771,6 +790,10 @@ export class DatePicker extends FoundationElement {
     type: string;
     value: string;
     year: number;
+    // (undocumented)
+    yearRangeView: number;
+    // (undocumented)
+    yearView: number;
 }
 
 // @public (undocumented)
@@ -1607,9 +1630,6 @@ export type MonthInfo = {
     length: number;
     start: number;
 };
-
-// @public (undocumented)
-export const monthPickerTemplate: (dataGrid: string, dataGridRow: string, dataGridCell: string) => ViewTemplate;
 
 // @public
 export const newInstanceForScope: (key: any) => any;
@@ -2479,7 +2499,7 @@ export enum TextFieldType {
 }
 
 // @public
-export const timePickerTemplate: (listbox: string, listboxOption: string, times: any) => ViewTemplate;
+export const timePickerTemplate: (context: any, times: any) => ViewTemplate<any, any>;
 
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
 // Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "Toolbar" because one of its declarations is marked as @internal
@@ -2675,9 +2695,6 @@ export function whitespaceFilter(value: Node, index: number, array: Node[]): boo
 
 // @public
 export type YearFormat = "2-digit" | "numeric";
-
-// @public (undocumented)
-export const yearPickerTemplate: (dataGrid: string, dataGridRow: string, dataGridCell: string) => ViewTemplate;
 
 
 // Warnings were encountered during analysis:
