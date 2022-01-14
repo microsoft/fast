@@ -2,9 +2,9 @@
     "version": 1.1,
     "tags": [
         {
-            "name": "fast-virtualizing-stack",
-            "title": "Virtualizing stack",
-            "description": "The FAST virtualizing stack element",
+            "name": "fast-virtual-list",
+            "title": "Virtual list",
+            "description": "The FAST virtual list element",
             "attributes": [
                 {
                     "name": "viewport",

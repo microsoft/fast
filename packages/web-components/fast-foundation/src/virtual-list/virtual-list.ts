@@ -22,7 +22,7 @@ import type { ResizeObserverClassDefinition } from "../utilities/resize-observer
  *
  * @beta
  */
-export type VirtualizingStackAutoUpdateMode = "manual" | "viewport-resize" | "auto";
+export type VirtualListAutoUpdateMode = "manual" | "viewport-resize" | "auto";
 
 /**
  * The default item template
@@ -52,11 +52,11 @@ const defaultItemTemplate: ViewTemplate<any> = html`
 `;
 
 /**
- *  The VirtualizingStack class
+ *  The VirtualList class
  *
  * @public
  */
-export class VirtualizingStack extends FoundationElement {
+export class VirtualList extends FoundationElement {
     /**
      *  The array of items to be displayed
      *
@@ -163,10 +163,10 @@ export class VirtualizingStack extends FoundationElement {
      * HTML Attribute: auto-update-mode
      */
     @attr({ attribute: "auto-update-mode" })
-    public autoUpdateMode: VirtualizingStackAutoUpdateMode = "manual";
+    public autoUpdateMode: VirtualListAutoUpdateMode = "manual";
     private autoUpdateModeChanged(
-        prevMode: VirtualizingStackAutoUpdateMode,
-        newMode: VirtualizingStackAutoUpdateMode
+        prevMode: VirtualListAutoUpdateMode,
+        newMode: VirtualListAutoUpdateMode
     ): void {
         if (this.$fastController.isConnected) {
             this.resetAutoUpdateMode(prevMode, newMode);
@@ -479,11 +479,11 @@ export class VirtualizingStack extends FoundationElement {
         this.clearLayoutUpdateTimer();
 
         DOM.queueUpdate(() => {
-            VirtualizingStack.intersectionService.requestPosition(
+            VirtualList.intersectionService.requestPosition(
                 this.containerElement,
                 this.handleIntersection
             );
-            VirtualizingStack.intersectionService.requestPosition(
+            VirtualList.intersectionService.requestPosition(
                 this.viewportElement,
                 this.handleIntersection
             );
@@ -551,12 +551,12 @@ export class VirtualizingStack extends FoundationElement {
     private cancelPendingPositionUpdates(): void {
         if (this.pendingPositioningUpdate) {
             this.pendingPositioningUpdate = false;
-            VirtualizingStack.intersectionService.cancelRequestPosition(
+            VirtualList.intersectionService.cancelRequestPosition(
                 this.containerElement,
                 this.handleIntersection
             );
             if (this.viewportElement !== null) {
-                VirtualizingStack.intersectionService.cancelRequestPosition(
+                VirtualList.intersectionService.cancelRequestPosition(
                     this.viewportElement,
                     this.handleIntersection
                 );
@@ -565,8 +565,8 @@ export class VirtualizingStack extends FoundationElement {
     }
 
     private resetAutoUpdateMode(
-        prevMode: VirtualizingStackAutoUpdateMode,
-        newMode: VirtualizingStackAutoUpdateMode
+        prevMode: VirtualListAutoUpdateMode,
+        newMode: VirtualListAutoUpdateMode
     ): void {
         switch (prevMode) {
             case "auto":

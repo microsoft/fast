@@ -4,7 +4,7 @@ import {
     FoundationElementDefinition,
 } from "@microsoft/fast-foundation";
 
-export const virtualizingStackStyles: (
+export const virtualListStyles: (
     context: ElementDefinitionContext,
     definition: FoundationElementDefinition
 ) => ElementStyles = (

@@ -2,8 +2,8 @@ import { html } from "@microsoft/fast-element";
 import addons from "@storybook/addons";
 import { STORY_RENDERED } from "@storybook/core-events";
 import { Orientation } from "@microsoft/fast-web-utilities";
-import { VirtualizingStack as FoundationVirtualizingStack } from "@microsoft/fast-foundation";
-import VirtualizingStackTemplate from "./fixtures/base.html";
+import { VirtualList as FoundationVirtualList } from "@microsoft/fast-foundation";
+import VirtualListTemplate from "./fixtures/base.html";
 import "./index";
 
 const imageItemTemplate = html`
@@ -54,7 +54,7 @@ const gridItemTemplate = html`
 `;
 
 const rowItemTemplate = html`
-    <fast-virtualizing-stack
+    <fast-virtual-list
         auto-update-mode="auto"
         orientation="horizontal"
         item-span="100"
@@ -70,11 +70,11 @@ const rowItemTemplate = html`
             grid-row: ${(x, c) => c.index + c.parent.virtualizedIndexOffset};
             grid-column: 1;
         "
-    ></fast-virtualizing-stack>
+    ></fast-virtual-list>
 `;
 
 addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
-    if (name.toLowerCase().startsWith("virtualizing-stack")) {
+    if (name.toLowerCase().startsWith("virtual-list")) {
         const data = newDataSet(100000, 1);
 
         const gridData: object[] = [];
@@ -85,43 +85,41 @@ addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
             });
         }
 
-        const stackh1 = document.getElementById("stackh1") as FoundationVirtualizingStack;
-        // stackh1.itemTemplate = imageItemTemplate;
+        const stackh1 = document.getElementById("stackh1") as FoundationVirtualList;
+        stackh1.itemTemplate = imageItemTemplate;
         stackh1.items = data;
 
-        const stackh2 = document.getElementById("stackh2") as FoundationVirtualizingStack;
+        const stackh2 = document.getElementById("stackh2") as FoundationVirtualList;
         stackh2.itemTemplate = imageItemTemplate;
         stackh2.items = data;
 
-        const stackh3 = document.getElementById("stackh3") as FoundationVirtualizingStack;
+        const stackh3 = document.getElementById("stackh3") as FoundationVirtualList;
         stackh3.itemTemplate = imageItemTemplate;
         stackh3.items = data;
 
-        const stackh4 = document.getElementById("stackh4") as FoundationVirtualizingStack;
+        const stackh4 = document.getElementById("stackh4") as FoundationVirtualList;
         stackh4.itemTemplate = imageItemTemplate;
         stackh4.items = data;
 
-        const stackh5 = document.getElementById("stackh5") as FoundationVirtualizingStack;
+        const stackh5 = document.getElementById("stackh5") as FoundationVirtualList;
         stackh5.itemTemplate = imageItemTemplate;
         stackh5.items = newDataSet(100, 1);
 
-        const stackGrid = document.getElementById(
-            "stackgrid"
-        ) as FoundationVirtualizingStack;
+        const stackGrid = document.getElementById("stackgrid") as FoundationVirtualList;
 
         stackGrid.itemTemplate = rowItemTemplate;
         stackGrid.items = gridData;
 
-        const stackv1 = document.getElementById("stackv1") as FoundationVirtualizingStack;
+        const stackv1 = document.getElementById("stackv1") as FoundationVirtualList;
         stackv1.itemTemplate = imageItemTemplate;
         stackv1.viewportElement = document.documentElement;
         stackv1.items = data;
 
-        const stackv2 = document.getElementById("stackv2") as FoundationVirtualizingStack;
+        const stackv2 = document.getElementById("stackv2") as FoundationVirtualList;
         stackv2.itemTemplate = imageItemTemplate;
         stackv2.items = data;
 
-        const stackv3 = document.getElementById("stackv3") as FoundationVirtualizingStack;
+        const stackv3 = document.getElementById("stackv3") as FoundationVirtualList;
         stackv3.itemTemplate = imageItemTemplate;
         stackv3.items = data;
         stackv3.startRegionSpan = 100;
@@ -141,7 +139,7 @@ function newDataSet(rowCount: number, prefix: number): object[] {
 }
 
 export default {
-    title: "Virtualizing Stack",
+    title: "Virtual List",
 };
 
-export const VirtualizingStack = () => VirtualizingStackTemplate;
+export const VirtualList = () => VirtualListTemplate;

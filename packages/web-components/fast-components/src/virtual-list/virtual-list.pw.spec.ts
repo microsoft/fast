@@ -1,9 +1,8 @@
-import type { VirtualizingStack as VirtualizingStackType } from "@microsoft/fast-foundation";
+import type { VirtualList as VirtualListType } from "@microsoft/fast-foundation";
 import { assert, expect } from "chai";
 import { ElementHandle, Locator } from "playwright";
-import { options } from "yargs";
 
-type fastVirtualizingStack = HTMLElement & VirtualizingStackType;
+type fastVirtualList = HTMLElement & VirtualListType;
 
 function newDataSet(rowCount: number): object[] {
     const newData: object[] = [];
@@ -15,7 +14,7 @@ function newDataSet(rowCount: number): object[] {
     return newData;
 }
 
-describe("FASTVirtualizingStack", function () {
+describe("FASTVirtualList", function () {
     const baseData = newDataSet(100);
     const componentWidth = 400;
     const componentHeight = 400;
@@ -30,8 +29,8 @@ describe("FASTVirtualizingStack", function () {
         await this.page.evaluateHandle(
             ({ baseData, componentWidth, componentHeight, viewportBuffer, itemSpan }) => {
                 const element = document.createElement(
-                    "fast-virtualizing-stack"
-                ) as fastVirtualizingStack;
+                    "fast-virtual-list"
+                ) as fastVirtualList;
 
                 element.items = baseData;
                 element.viewportBuffer = viewportBuffer;
@@ -61,79 +60,79 @@ describe("FASTVirtualizingStack", function () {
 
     it("should render on the page", async function () {
         const element = (await this.page.waitForSelector(
-            "fast-virtualizing-stack"
-        )) as ElementHandle<fastVirtualizingStack>;
+            "fast-virtual-list"
+        )) as ElementHandle<fastVirtualList>;
         expect(element).to.exist;
     });
 
     it("should only render items in the viewport", async function () {
         let element = (await this.page.waitForSelector(
-            "fast-virtualizing-stack"
-        )) as ElementHandle<fastVirtualizingStack>;
+            "fast-virtual-list"
+        )) as ElementHandle<fastVirtualList>;
 
-        expect(await element.evaluate(node => (node as fastVirtualizingStack).firstRenderedIndex)).to.equal(0);
-        expect(await element.evaluate(node => (node as fastVirtualizingStack).lastRenderedIndex)).to.equal(4);
+        expect(await element.evaluate(node => (node as fastVirtualList).firstRenderedIndex)).to.equal(0);
+        expect(await element.evaluate(node => (node as fastVirtualList).lastRenderedIndex)).to.equal(4);
     });
 
     it("should update the visible items when component is scrolled", async function () {
         let element = (await this.page.waitForSelector(
-            "fast-virtualizing-stack"
-        )) as ElementHandle<fastVirtualizingStack>;
+            "fast-virtual-list"
+        )) as ElementHandle<fastVirtualList>;
 
 
-        expect(await element.evaluate(node => (node as fastVirtualizingStack).firstRenderedIndex)).to.equal(0);
-        expect(await element.evaluate(node => (node as fastVirtualizingStack).lastRenderedIndex)).to.equal(4);
+        expect(await element.evaluate(node => (node as fastVirtualList).firstRenderedIndex)).to.equal(0);
+        expect(await element.evaluate(node => (node as fastVirtualList).lastRenderedIndex)).to.equal(4);
 
         await element.evaluateHandle(node => {
             node.scrollTop=800;
         });
         await element.waitForElementState("stable");
 
-        expect(await element.evaluate(node => (node as fastVirtualizingStack).scrollTop)).to.equal(800);
+        expect(await element.evaluate(node => (node as fastVirtualList).scrollTop)).to.equal(800);
 
-        expect(await element.evaluate(node => (node as fastVirtualizingStack).firstRenderedIndex)).to.equal(8);
-        expect(await element.evaluate(node => (node as fastVirtualizingStack).lastRenderedIndex)).to.equal(12);
+        expect(await element.evaluate(node => (node as fastVirtualList).firstRenderedIndex)).to.equal(8);
+        expect(await element.evaluate(node => (node as fastVirtualList).lastRenderedIndex)).to.equal(12);
     });
 
     it("should update the visible items when component is resized", async function () {
         let element = (await this.page.waitForSelector(
-            "fast-virtualizing-stack"
-        )) as ElementHandle<fastVirtualizingStack>;
+            "fast-virtual-list"
+        )) as ElementHandle<fastVirtualList>;
 
 
-        expect(await element.evaluate(node => (node as fastVirtualizingStack).firstRenderedIndex)).to.equal(0);
-        expect(await element.evaluate(node => (node as fastVirtualizingStack).lastRenderedIndex)).to.equal(4);
+        expect(await element.evaluate(node => (node as fastVirtualList).firstRenderedIndex)).to.equal(0);
+        expect(await element.evaluate(node => (node as fastVirtualList).lastRenderedIndex)).to.equal(4);
 
         await element.evaluateHandle(node => {
             node.style.height="800px";
         });
         await element.waitForElementState("stable");
 
-        expect(await element.evaluate(node => (node as fastVirtualizingStack).firstRenderedIndex)).to.equal(0);
-        expect(await element.evaluate(node => (node as fastVirtualizingStack).lastRenderedIndex)).to.equal(8);
+        expect(await element.evaluate(node => (node as fastVirtualList).firstRenderedIndex)).to.equal(0);
+        expect(await element.evaluate(node => (node as fastVirtualList).lastRenderedIndex)).to.equal(8);
     });
 
     it("should correctly calculate total stack span and account for start/end regions", async function () {
         let element = (await this.page.waitForSelector(
-            "fast-virtualizing-stack"
-        )) as ElementHandle<fastVirtualizingStack>;
+            "fast-virtual-list"
+        )) as ElementHandle<fastVirtualList>;
 
 
-        expect(await element.evaluate(node => (node as fastVirtualizingStack).totalStackSpan)).to.equal(10000);
+        expect(await element.evaluate(node => (node as fastVirtualList).totalStackSpan)).to.equal(10000);
 
         await element.evaluateHandle(node => {
-            (node as fastVirtualizingStack).startRegionSpan = 100;
+            (node as fastVirtualList).startRegionSpan = 100;
         });
         await element.waitForElementState("stable");
 
-        expect(await element.evaluate(node => (node as fastVirtualizingStack).totalStackSpan)).to.equal(10100);
+        expect(await element.evaluate(node => (node as fastVirtualList).totalStackSpan)).to.equal(10100);
 
         await element.evaluateHandle(node => {
-            (node as fastVirtualizingStack).endRegionSpan = 100;
+            (node as fastVirtualList).endRegionSpan = 100;
         });
         await element.waitForElementState("stable");
 
-        expect(await element.evaluate(node => (node as fastVirtualizingStack).totalStackSpan)).to.equal(10200);
+        expect(await element.evaluate(node => (node as fastVirtualList).totalStackSpan)).to.equal(10200);
     });
 
 });

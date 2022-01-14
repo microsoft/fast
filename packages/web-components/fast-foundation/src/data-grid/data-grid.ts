@@ -17,7 +17,7 @@ import {
     keyPageDown,
     keyPageUp,
 } from "@microsoft/fast-web-utilities";
-import { VirtualizingStack } from "../virtualizing-stack";
+import { VirtualList } from "../virtual-list";
 import type { DataGridCell } from "./data-grid-cell";
 import type { DataGridRow } from "./data-grid-row";
 import { DataGridRowTypes, GenerateHeaderOptions } from "./data-grid.options";
@@ -98,7 +98,7 @@ export interface ColumnDefinition {
  *
  * @public
  */
-export class DataGrid extends VirtualizingStack {
+export class DataGrid extends VirtualList {
     /**
      *  generates a basic column definition by examining sample row data
      */
@@ -297,7 +297,7 @@ export class DataGrid extends VirtualizingStack {
      *
      * @internal
      */
-    public stack: VirtualizingStack;
+    public stack: VirtualList;
 
     // private rowsRepeatBehavior: RepeatBehavior | null;
     private rowsPlaceholder: Node | null = null;

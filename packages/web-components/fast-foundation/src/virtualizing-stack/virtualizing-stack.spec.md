@@ -1,3 +1,0 @@
-# Virtualizing stack
-
-## Overview

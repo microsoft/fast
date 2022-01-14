@@ -1,12 +1,12 @@
 import { expect } from "chai";
-import { VirtualizingStack, virtualizingStackTemplate as template } from "./index";
+import { VirtualList, virtualListTemplate as template } from "./index";
 import { fixture } from "../test-utilities/fixture";
 import { Orientation } from "@microsoft/fast-web-utilities";
 import { DOM, customElement, html } from "@microsoft/fast-element";
 import { timeout } from "../test-utilities/timeout";
 
-const FASTVirtualizingStack = VirtualizingStack.compose({
-    baseName: "virtualizing-stack",
+const FASTVirtualList = VirtualList.compose({
+    baseName: "virtual-list",
     template
 })
 
@@ -40,14 +40,14 @@ function newDataSet(rowCount: number): object[] {
 }
 
 async function setup() {
-    const { element, connect, disconnect } = await fixture([FASTVirtualizingStack()]);
+    const { element, connect, disconnect } = await fixture([FASTVirtualList()]);
 
     element.itemTemplate = itemTemplate;
 
     return { element, connect, disconnect };
 }
 
-describe("VirtualizingStack", () => {
+describe("VirtualList", () => {
     it("should have a default auto-update-mode of 'manual'", async () => {
         const { element, connect, disconnect } = await setup();
 

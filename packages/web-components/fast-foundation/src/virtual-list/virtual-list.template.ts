@@ -3,16 +3,16 @@ import type { ViewTemplate } from "@microsoft/fast-element";
 import { Orientation } from "@microsoft/fast-web-utilities";
 import type { ElementDefinitionContext } from "../design-system";
 import type { FoundationElementDefinition } from "../foundation-element";
-import type { VirtualizingStack } from "./virtualizing-stack";
+import type { VirtualList } from "./virtual-list";
 
 /**
- * The template for the {@link @microsoft/fast-foundation#VirtualizingPanel} component.
+ * The template for the {@link @microsoft/fast-foundation#VirtualList} component.
  * @public
  */
-export const virtualizingStackTemplate: (
+export const virtualListTemplate: (
     context: ElementDefinitionContext,
     definition: FoundationElementDefinition
-) => ViewTemplate<VirtualizingStack> = (
+) => ViewTemplate<VirtualList> = (
     context: ElementDefinitionContext,
     definition: FoundationElementDefinition
 ) => html`
