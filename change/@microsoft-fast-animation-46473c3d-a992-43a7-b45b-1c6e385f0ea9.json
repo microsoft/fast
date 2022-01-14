@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "remove webpack-modernizr-plugin from fast-animation",
+  "packageName": "@microsoft/fast-animation",
+  "email": "john.kreitlow@microsoft.com",
+  "dependentChangeType": "patch"
+}
