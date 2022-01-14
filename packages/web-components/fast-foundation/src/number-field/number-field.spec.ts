@@ -883,4 +883,26 @@ describe("NumberField", () => {
             await disconnect();
         });
     });
+
+    describe("valueAsNumber", () => {
+        it("should allow setting value with number", async () => {
+            const { element, disconnect } = await setup();
+
+            element.valueAsNumber = 18;
+
+            expect(element.value).to.equal("18");
+
+            await disconnect();
+        });
+
+        it("should allow reading value as number", async () => {
+            const { element, disconnect } = await setup();
+
+            element.value = "18";
+
+            expect(element.valueAsNumber).to.equal(18);
+
+            await disconnect();
+        });
+    });
 });
