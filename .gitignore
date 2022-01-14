@@ -45,6 +45,9 @@ storybook-static
 !.vscode/extensions.json
 *.code-workspace
 
+#Ignore VS in Root
+.vs/*
+
 # Local History for Visual Studio Code
 .history/
 
