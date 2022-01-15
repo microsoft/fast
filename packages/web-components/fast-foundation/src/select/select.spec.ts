@@ -135,6 +135,38 @@ describe("Select", () => {
         expect(element.value).to.equal("two");
     });
 
+    it("should return the same value when the value property is set during connect", async () => {
+        const { element, connect, disconnect, option1, option2, option3 } = await setup();
+
+        const connectTask = connect();
+
+        element.value = "two";
+
+        await connectTask;
+
+        expect(element.value).to.equal("two");
+
+        expect(option1.selected).to.be.false;
+        expect(option2.selected).to.be.true;
+        expect(option3.selected).to.be.false;
+
+        await disconnect();
+    });
+
+    it("should select the first selectable option when an invalid value is set before connect", async () => {
+        const { element, connect, disconnect } = await setup();
+
+        const connectTask = connect();
+
+        element.value = "four";
+
+        await connectTask;
+
+        expect(element.value).to.equal("one");
+
+        await disconnect();
+    });
+
     it("should return the same value when the value property is set after connect", async () => {
         const { element, connect, disconnect } = await setup();
 
