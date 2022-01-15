@@ -60,10 +60,22 @@ export const datePickerStyles: (
 
     .calendar {
         width: 240px;
+        position: relative;
     }
 
     .calendar::part(title) {
         font-size: ${typeRampBaseFontSize};
+        text-align: left;
+    }
+
+    .calendar-controls {
+        position: absolute;
+        right: 0;
+        top: 0;
+    }
+
+    .calendar-control {
+        background: transparent;
     }
 
     .picker {
@@ -108,6 +120,12 @@ export const datePickerStyles: (
     .picker-title .arrow:hover,
     .picker-cell:hover {
         background: ${neutralFillRest};
+    }
+
+    .reset {
+        float: right;
+        background: transparent;
+        margin: 30px 0 0;
     }
 
     .time-picker {

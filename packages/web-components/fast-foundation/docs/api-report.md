@@ -748,12 +748,17 @@ export class DateFormatter {
 export class DatePicker extends FoundationElement {
     allowTextInput: boolean;
     appearance: string;
-    arrayToMatrix(array: any, itemsPerRow: any): any;
+    arrayToMatrix(array: any[], itemsPerRow: number): any[][];
+    closeFlyout(force?: boolean): void;
+    connectedCallback(): void;
+    // (undocumented)
+    date: string;
     dateFormatter: DateFormatter;
-    datePicked(event: MouseEvent): void;
     day: number;
     disabled: boolean;
     disabledDates: string;
+    disconnectedCallback(): void;
+    flyoutOpen: boolean;
     getMonths(): {
         action: () => void;
         selected: boolean;
@@ -763,36 +768,53 @@ export class DatePicker extends FoundationElement {
         hours: {
             text: string;
             value: number;
+            action: () => void;
         }[];
         minutes: {
             text: string;
             value: number;
+            action: () => void;
         }[];
-        meridian: {
+        meridians: {
             text: string;
+            action: () => void;
         }[];
     };
     getYears(): {
-        action: () => number;
+        action: () => void;
         text: number;
     }[];
+    handleDateClicked(date: {
+        day: number;
+        month: number;
+        year: number;
+    }): void;
+    handleHourClicked(hour: number): void;
+    handleMeridianClicked(meridian: "AM" | "PM"): void;
+    handleMinuteClicked(minute: number): void;
+    handleMonthClicked(month: number): void;
+    handleYearClicked(year: number): void;
     hour: number;
     locale: string;
     max: number;
-    meridian: string;
+    meridian: "AM" | "PM";
     min: number;
     minute: number;
     month: number;
     name: string;
+    openFlyout(force?: boolean): void;
+    overFlyout: boolean;
     placeholder: string;
     readonly: boolean;
     required: boolean;
-    type: string;
+    toggleFlyout(force?: boolean): void;
+    // (undocumented)
+    type: "date" | "datetime-local" | "month" | "year" | "time";
     value: string;
+    // (undocumented)
+    valueChanged(previous: string, next: string): void;
     year: number;
-    // (undocumented)
     yearRangeView: number;
-    // (undocumented)
     yearView: number;
 }
 

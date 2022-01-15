@@ -52,7 +52,7 @@ export const timePickerTemplate = (context, times) => {
     `;
 };
 
-const pickerTemplate = (context, items, title, previousAction, nextAction, action) => {
+const pickerTemplate = (context, items, title, previousAction, nextAction, reset) => {
     const button = context.tagFor(Button);
     const grid = context.tagFor(DataGrid);
     const row = context.tagFor(DataGridRow);
@@ -96,6 +96,7 @@ const pickerTemplate = (context, items, title, previousAction, nextAction, actio
         `
         )}
       </${grid}>
+      ${reset}
     </div>
   `;
 };
@@ -115,7 +116,10 @@ export const datePickerTemplate: (
 ) => {
     const textField = context.tagFor(TextField);
     const anchoredRegion = context.tagFor(AnchoredRegion);
+    const button = context.tagFor(Button);
     const calendar = context.tagFor(Calendar);
+    const resetButton = html`<${button} class="reset" part="reset" @click="${x =>
+        x.resetCalendar()}">${x => x.reset}</${button}>`;
 
     return html`
     <template @mouseover="${x => (x.overFlyout = true)}" @mouseout="${x =>
@@ -134,35 +138,47 @@ export const datePickerTemplate: (
                 x => x.type === "date" || x.type === "datetime-local",
                 html`
                 <${calendar}
-                    selected-dates="${x => `${x.date}`}"
+                    selected-dates="${x => `${x.date || ""}`}"
                     class="calendar"
                     @dateselected="${(x, c) =>
                         x.handleDateClicked((c.event as MouseEvent).detail)}"
                     part="calendar"
                     locale="${x => x.locale}"
-                    month="${x => x.month}"
-                    year="${x => x.year}"
-                    min-weeks="6"></${calendar}>
+                    month="${x => x.monthView}"
+                    year="${x => x.yearView}"
+                    min-weeks="6">
+                        <div class="calendar-controls" part="calendar-controls">
+                            <${button} @click="${x =>
+                    x.previousCalendar()}" class="calendar-control">&downarrow;</${button}>
+                            <${button} @click="${x =>
+                    x.nextCalendar()}" class="calendar-control">&uparrow;</${button}>
+                        </div>
+                    </${calendar}>
             `
             )}
             ${when(
-                x => x.type === "date" || x.type === "month",
+                x => (x.type === "date" && !x.showYearPicker) || x.type === "month",
                 x =>
                     pickerTemplate(
                         context,
                         x.arrayToMatrix(x.getMonths(), 4),
-                        { text: x.yearView, action: () => {} },
+                        {
+                            text: x.yearView,
+                            action: () => {
+                                x.showYearPicker = true;
+                            },
+                        },
                         () => {
                             x.yearView -= 1;
                         },
                         () => {
                             x.yearView += 1;
                         },
-                        () => {}
+                        x.type.indexOf("date") >= 0 ? resetButton : () => {}
                     )
             )}
             ${when(
-                x => x.type === "month" || x.type === "year",
+                x => x.type === "month" || x.type === "year" || x.showYearPicker,
                 x => {
                     const years = x.getYears();
                     const start = years[0].text;
@@ -170,10 +186,15 @@ export const datePickerTemplate: (
                     return pickerTemplate(
                         context,
                         x.arrayToMatrix(years, 4),
-                        { text: `${start} - ${end}` },
+                        {
+                            text: `${start} - ${end}`,
+                            action: () => {
+                                x.showYearPicker = false;
+                            },
+                        },
                         () => (x.yearRangeView -= 12),
                         () => (x.yearRangeView += 12),
-                        () => {}
+                        x.type.indexOf("date") >= 0 ? resetButton : () => {}
                     );
                 }
             )}
