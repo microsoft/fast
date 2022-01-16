@@ -58,19 +58,6 @@ const defaultItemTemplate: ViewTemplate<any> = html`
  */
 export class VirtualList extends FoundationElement {
     /**
-     *  The array of items to be displayed
-     *
-     * @public
-     */
-    @observable
-    public items: object[] = [];
-    private itemsChanged(): void {
-        if (this.$fastController.isConnected) {
-            this.reset();
-        }
-    }
-
-    /**
      *  Whether or not the display should virtualize
      *
      * @beta
@@ -200,6 +187,19 @@ export class VirtualList extends FoundationElement {
     private endRegionSpanChanged(): void {
         if (this.$fastController.isConnected) {
             this.updateDimensions();
+        }
+    }
+
+    /**
+     *  The array of items to be displayed
+     *
+     * @public
+     */
+    @observable
+    public items: object[] = [];
+    private itemsChanged(): void {
+        if (this.$fastController.isConnected) {
+            this.reset();
         }
     }
 

@@ -24,11 +24,6 @@ const imageItemTemplate = html`
         <div style="margin: 10px;">
             ${x => x.value}
         </div>
-        <fast-skeleton
-            style="border-radius: 4px;  height: 50px; margin:10px; width:auto;"
-            shape="rect"
-            shimmer
-        ></fast-skeleton>
     </fast-card>
 `;
 
