@@ -1573,6 +1573,18 @@ export const listboxOptionTemplate: FoundationElementTemplate<ViewTemplate<Listb
 export const listboxTemplate: FoundationElementTemplate<ViewTemplate<ListboxElement>>;
 
 // @public
+export class LoaderCard extends Card {
+    // @internal (undocumented)
+    connectedCallback(): void;
+    // @internal (undocumented)
+    disconnectedCallback(): void;
+    preLoad: boolean;
+    }
+
+// @public
+export const loaderCardTemplate: (context: ElementDefinitionContext, definition: FoundationElementDefinition) => ViewTemplate<LoaderCard>;
+
+// @public
 export abstract class MatchMediaBehavior implements Behavior {
     constructor(query: MediaQueryList);
     bind(source: typeof FASTElement & HTMLElement): void;

@@ -7,7 +7,7 @@ import VirtualListTemplate from "./fixtures/base.html";
 import "./index";
 
 const imageItemTemplate = html`
-    <fast-card
+    <fast-loader-card
         style="
             height:100%;
             width:100%;
@@ -24,7 +24,13 @@ const imageItemTemplate = html`
         <div style="margin: 10px;">
             ${x => x.value}
         </div>
-    </fast-card>
+
+        <fast-skeleton
+            slot="load-anim"
+            style="border-radius: 4px;  height: 50px; margin:10px; width:auto;"
+            shape="rect"
+        ></fast-skeleton>
+    </fast-loader-card>
 `;
 
 const gridItemTemplate = html`

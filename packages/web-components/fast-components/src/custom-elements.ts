@@ -22,6 +22,7 @@ import { fastDivider } from "./divider/index";
 import { fastFlipper } from "./flipper/index";
 import { fastHorizontalScroll } from "./horizontal-scroll/index";
 import { fastOption } from "./listbox-option/index";
+import { fastLoaderCard } from "./loader-card/index";
 import { fastListbox } from "./listbox/index";
 import { fastMenuItem } from "./menu-item/index";
 import { fastMenu } from "./menu/index";
@@ -61,6 +62,7 @@ import type { Card } from "./card/index";
 import type { DesignSystemProvider } from "./design-system-provider/index";
 import type { Disclosure } from "./disclosure/index";
 import type { HorizontalScroll } from "./horizontal-scroll/index";
+import type { LoaderCard } from "./loader-card/index";
 import type { Listbox } from "./listbox/index";
 import type { Search } from "./search/index";
 import type { SliderLabel } from "./slider-label/index";
@@ -98,6 +100,7 @@ export {
     fastDivider,
     fastFlipper,
     fastHorizontalScroll,
+    fastLoaderCard,
     fastListbox,
     fastOption,
     fastMenu,
@@ -160,6 +163,7 @@ export const allComponents = {
     fastDivider,
     fastFlipper,
     fastHorizontalScroll,
+    fastLoaderCard,
     fastListbox,
     fastOption,
     fastMenu,

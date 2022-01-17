@@ -1,0 +1,18 @@
+{
+    "version": 1.1,
+    "tags": [
+        {
+            "name": "fast-loader-card",
+            "title": "Loader Card",
+            "description": "The FAST loader card element",
+            "attributes": [],
+            "slots": [
+                {
+                    "name": "",
+                    "title": "Default slot",
+                    "description": "The content of the card"
+                }
+            ]
+        }
+    ]
+}

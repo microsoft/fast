@@ -49,6 +49,7 @@ import { HorizontalScrollOptions } from '@microsoft/fast-foundation';
 import { ListboxElement } from '@microsoft/fast-foundation';
 import { ListboxOption } from '@microsoft/fast-foundation';
 import { ListboxOptionOptions } from '@microsoft/fast-foundation';
+import { LoaderCard as LoaderCard_2 } from '@microsoft/fast-foundation';
 import { Menu } from '@microsoft/fast-foundation';
 import { MenuItem } from '@microsoft/fast-foundation';
 import { MenuItemOptions } from '@microsoft/fast-foundation';
@@ -319,6 +320,7 @@ export const allComponents: {
     }, typeof import("@microsoft/fast-foundation").Divider>;
     fastFlipper: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FlipperOptions> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FlipperOptions, import("@microsoft/fast-element").Constructable<import("@microsoft/fast-foundation").FoundationElement>>;
     fastHorizontalScroll: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").HorizontalScrollOptions> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").HorizontalScrollOptions, import("@microsoft/fast-element").Constructable<import("@microsoft/fast-foundation").FoundationElement>>;
+    fastLoaderCard: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FoundationElementDefinition, typeof LoaderCard>;
     fastListbox: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<{
         baseName: string;
         template: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition>) => import("@microsoft/fast-element").ViewTemplate<import("@microsoft/fast-foundation").ListboxElement, any>;
@@ -1012,6 +1014,11 @@ export const fastListbox: (overrideDefinition?: import("@microsoft/fast-foundati
     styles: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition>) => ElementStyles;
 }, typeof Listbox>;
 
+// Warning: (ae-incompatible-release-tags) The symbol "fastLoaderCard" is marked as @public, but its signature references "LoaderCard" which is marked as @internal
+//
+// @public
+export const fastLoaderCard: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FoundationElementDefinition, typeof LoaderCard>;
+
 // @public
 export const fastMenu: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<{
     baseName: string;
@@ -1386,6 +1393,17 @@ export { ListboxOption }
 
 // @public
 export const listboxStyles: FoundationElementTemplate<ElementStyles>;
+
+// Warning: (ae-internal-missing-underscore) The name "LoaderCard" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal (undocumented)
+export class LoaderCard extends LoaderCard_2 {
+    // (undocumented)
+    connectedCallback(): void;
+}
+
+// @public
+export const loaderCardStyles: (context: ElementDefinitionContext, definition: FoundationElementDefinition) => ElementStyles;
 
 export { Menu }
 
@@ -1901,15 +1919,16 @@ export const virtualListStyles: (context: import("@microsoft/fast-foundation").E
 //
 // dist/dts/color/palette.d.ts:48:5 - (ae-forgotten-export) The symbol "create" needs to be exported by the entry point index.d.ts
 // dist/dts/color/palette.d.ts:49:5 - (ae-forgotten-export) The symbol "from" needs to be exported by the entry point index.d.ts
-// dist/dts/custom-elements.d.ts:77:5 - (ae-incompatible-release-tags) The symbol "fastButton" is marked as @public, but its signature references "Button" which is marked as @internal
-// dist/dts/custom-elements.d.ts:89:5 - (ae-incompatible-release-tags) The symbol "fastCard" is marked as @public, but its signature references "Card" which is marked as @internal
-// dist/dts/custom-elements.d.ts:95:5 - (ae-incompatible-release-tags) The symbol "fastDesignSystemProvider" is marked as @public, but its signature references "DesignSystemProvider" which is marked as @internal
-// dist/dts/custom-elements.d.ts:97:5 - (ae-incompatible-release-tags) The symbol "fastDisclosure" is marked as @public, but its signature references "Disclosure" which is marked as @internal
-// dist/dts/custom-elements.d.ts:131:5 - (ae-incompatible-release-tags) The symbol "fastSearch" is marked as @public, but its signature references "Search" which is marked as @internal
-// dist/dts/custom-elements.d.ts:135:5 - (ae-incompatible-release-tags) The symbol "fastSliderLabel" is marked as @public, but its signature references "SliderLabel" which is marked as @internal
-// dist/dts/custom-elements.d.ts:140:5 - (ae-incompatible-release-tags) The symbol "fastTextArea" is marked as @public, but its signature references "TextArea" which is marked as @internal
-// dist/dts/custom-elements.d.ts:141:5 - (ae-incompatible-release-tags) The symbol "fastTextField" is marked as @public, but its signature references "TextField" which is marked as @internal
-// dist/dts/custom-elements.d.ts:143:5 - (ae-incompatible-release-tags) The symbol "fastToolbar" is marked as @public, but its signature references "Toolbar" which is marked as @internal
+// dist/dts/custom-elements.d.ts:79:5 - (ae-incompatible-release-tags) The symbol "fastButton" is marked as @public, but its signature references "Button" which is marked as @internal
+// dist/dts/custom-elements.d.ts:91:5 - (ae-incompatible-release-tags) The symbol "fastCard" is marked as @public, but its signature references "Card" which is marked as @internal
+// dist/dts/custom-elements.d.ts:97:5 - (ae-incompatible-release-tags) The symbol "fastDesignSystemProvider" is marked as @public, but its signature references "DesignSystemProvider" which is marked as @internal
+// dist/dts/custom-elements.d.ts:99:5 - (ae-incompatible-release-tags) The symbol "fastDisclosure" is marked as @public, but its signature references "Disclosure" which is marked as @internal
+// dist/dts/custom-elements.d.ts:103:5 - (ae-incompatible-release-tags) The symbol "fastLoaderCard" is marked as @public, but its signature references "LoaderCard" which is marked as @internal
+// dist/dts/custom-elements.d.ts:134:5 - (ae-incompatible-release-tags) The symbol "fastSearch" is marked as @public, but its signature references "Search" which is marked as @internal
+// dist/dts/custom-elements.d.ts:138:5 - (ae-incompatible-release-tags) The symbol "fastSliderLabel" is marked as @public, but its signature references "SliderLabel" which is marked as @internal
+// dist/dts/custom-elements.d.ts:143:5 - (ae-incompatible-release-tags) The symbol "fastTextArea" is marked as @public, but its signature references "TextArea" which is marked as @internal
+// dist/dts/custom-elements.d.ts:144:5 - (ae-incompatible-release-tags) The symbol "fastTextField" is marked as @public, but its signature references "TextField" which is marked as @internal
+// dist/dts/custom-elements.d.ts:146:5 - (ae-incompatible-release-tags) The symbol "fastToolbar" is marked as @public, but its signature references "Toolbar" which is marked as @internal
 
 // (No @packageDocumentation comment for this package)
 
