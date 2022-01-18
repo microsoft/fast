@@ -1,0 +1,7 @@
+{
+  "type": "none",
+  "comment": "docs(dialog): clarify the need for z-index #5461",
+  "packageName": "@microsoft/fast-animation",
+  "email": "yinon@hotmail.com",
+  "dependentChangeType": "none"
+}
