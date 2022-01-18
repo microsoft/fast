@@ -2370,6 +2370,16 @@ export type SliderOptions = FoundationElementDefinition & {
 // @public
 export const sliderTemplate: FoundationElementTemplate<ViewTemplate<Slider>, SliderOptions>;
 
+// @public (undocumented)
+export interface SpanMap {
+    // (undocumented)
+    end: number;
+    // (undocumented)
+    span: number;
+    // (undocumented)
+    start: number;
+}
+
 // @public
 export class StartEnd {
     // (undocumented)
@@ -2793,15 +2803,11 @@ export class VirtualList extends FoundationElement {
     containerElement: HTMLDivElement;
     // @internal (undocumented)
     disconnectedCallback(): void;
-    // @beta
-    endRegionSpan: number;
     // @internal
     endSpacerSpan: number;
     // @internal
     firstRenderedIndex: number;
     getGeneratedItemPosition: (itemIndex: number) => number;
-    // @internal
-    gridTemplateSpans: string;
     // @internal
     handleChange(source: any, splices: Splice[]): void;
     items: object[];
@@ -2816,9 +2822,7 @@ export class VirtualList extends FoundationElement {
     orientation: Orientation;
     requestPositionUpdates: () => void;
     protected reset(): void;
-    spanMap: number[];
-    // @beta
-    startRegionSpan: number;
+    spanMap: SpanMap[];
     // @internal
     startSpacerSpan: number;
     // @internal
@@ -2832,8 +2836,6 @@ export class VirtualList extends FoundationElement {
     viewportElement: HTMLElement;
     // @beta
     virtualize: boolean;
-    // @internal
-    virtualizedIndexOffset: number;
     // @internal
     visibleItems: any[];
     }

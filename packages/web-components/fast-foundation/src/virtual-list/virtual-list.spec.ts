@@ -108,17 +108,6 @@ describe("VirtualList", () => {
         await disconnect();
     });
 
-    it("should have a default regionSpan's of '0'", async () => {
-        const { element, connect, disconnect } = await setup();
-
-        await connect();
-
-        expect(element.startRegionSpan).to.equal(0);
-        expect(element.endRegionSpan).to.equal(0);
-
-        await disconnect();
-    });
-
     it("should have a default spanMap of 'undefined'", async () => {
         const { element, connect, disconnect } = await setup();
 

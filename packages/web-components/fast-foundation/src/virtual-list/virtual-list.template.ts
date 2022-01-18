@@ -21,18 +21,16 @@ export const virtualListTemplate: (
             class="container"
             style="
                 width: ${x =>
-                x.orientation !== Orientation.vertical
-                    ? `${x.totalStackSpan}px`
-                    : "100%"};
-                grid-template-columns: ${x =>
-                x.orientation !== Orientation.vertical ? x.gridTemplateSpans : "1fr"};
-                height: ${x =>
                 x.orientation === Orientation.vertical
-                    ? `${x.totalStackSpan}px`
-                    : "100%"};
-                grid-template-rows:${x =>
-                x.orientation === Orientation.vertical ? x.gridTemplateSpans : "1fr"};
+                    ? "100%"
+                    : `${x.totalStackSpan}px`};
+                height: ${x =>
+                x.orientation !== Orientation.vertical
+                    ? "100%"
+                    : `${x.totalStackSpan}px`};
                 display: grid;
+                grid-template-rows: 1fr;
+                grid-template-columns: 1fr;
             "
             ${ref("containerElement")}
         >

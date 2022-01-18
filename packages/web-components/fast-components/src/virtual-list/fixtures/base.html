@@ -87,33 +87,6 @@
 ></fast-virtual-list>
 
 <h3>
-    Developers can define start/end regions and insert their own elements into those
-    regions. These are not virtualized and remain in the DOM even when out of view.
-</h3>
-<fast-virtual-list
-    auto-update-mode="auto"
-    orientation="horizontal"
-    item-span="100"
-    id="stackh4"
-    start-region-span="100"
-    end-region-span="100"
-    style="
-        height: 120px;
-        width: 100%;
-        overflow-x: scroll;
-        overflow-y: hidden;
-        background: gray;
-    "
->
-    <fast-button style="grid-column: start; height: 100%; width: 100%;">
-        Button 1
-    </fast-button>
-    <fast-button style="grid-column: end; height: 100%; width: 100%;">
-        Button 2
-    </fast-button>
-</fast-virtual-list>
-
-<h3>
     Virtualization off
 </h3>
 
@@ -178,25 +151,4 @@
             background: gray;
         "
     ></fast-virtual-list>
-
-    <fast-virtual-list
-        auto-update-mode="auto"
-        item-span="100"
-        id="stackv3"
-        style="
-            width: 120px;
-            height: 400px;
-            grid-column: 5;
-            overflow-y: scroll;
-            overflow-x: hidden;
-            background: gray;
-        "
-    >
-        <fast-button style="grid-row: start; height: 100%; width: 100%;">
-            Button 1
-        </fast-button>
-        <fast-button style="grid-row: end; height: 100%; width: 100%;">
-            Button 2
-        </fast-button>
-    </fast-virtual-list>
 </div>

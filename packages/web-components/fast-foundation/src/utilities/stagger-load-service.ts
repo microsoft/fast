@@ -7,7 +7,7 @@ import { $global } from "@microsoft/fast-element";
  */
 export class StaggerLoadService {
     private updateTimer: number | null = null;
-    private updateDelay: number = 20;
+    private updateDelay: number = 10;
 
     private queuedElements: Element[] = [];
     private callBacks: any[] = [];

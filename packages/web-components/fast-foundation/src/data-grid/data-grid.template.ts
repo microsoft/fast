@@ -49,16 +49,19 @@ export const dataGridTemplate: FoundationElementTemplate<ViewTemplate<DataGrid>>
                 filter: elements("[role=row]"),
             })}
         >
+            <slot></slot>
             <div
                 class="container"
                 style="
+                    grid-template-columns: 1fr;
                     display: grid;
                     height: ${x => x.totalStackSpan}px;
-                    grid-template-rows:${x => x.gridTemplateSpans};
+                    grid-template-rows: ${x => x.startSpacerSpan}px repeat(${x =>
+                    x.visibleItems.length}, ${x => x.itemSpan}px) ${x =>
+                    x.endSpacerSpan}px;
                 "
                 ${ref("containerElement")}
             >
-                <slot></slot>
                 <slot name="generated-rows"></slot>
             </div>
         </template>

@@ -9,16 +9,20 @@ import "./index";
 const imageItemTemplate = html`
     <fast-loader-card
         style="
-            height:100%;
-            width:100%;
-            grid-row: ${(x, c) =>
+            grid-row: 1;
+            grid-column: 1;
+            height:  ${(x, c) =>
             c.parent.orientation === Orientation.vertical
-                ? c.index + c.parent.virtualizedIndexOffset
-                : 1};
-            grid-column: ${(x, c) =>
+                ? `${c.parent.spanMap[c.index]?.span}px`
+                : `100%`};
+            width:  ${(x, c) =>
+            c.parent.orientation === Orientation.vertical
+                ? `100%`
+                : `${c.parent.spanMap[c.index]?.span}px`};
+            transform: ${(x, c) =>
             c.parent.orientation === Orientation.horizontal
-                ? c.index + c.parent.virtualizedIndexOffset
-                : 1};
+                ? `translateX(${c.parent.spanMap[c.index]?.start}px)`
+                : `translateY(${c.parent.spanMap[c.index]?.start}px)`};
         "
     >
         <div style="margin: 10px;">
@@ -37,10 +41,20 @@ const gridItemTemplate = html`
     <div
         style="
             contain: strict;
-            height:100px;
-            width:100px;
             grid-row: 1;
-            grid-column: ${(x, c) => c.index + c.parent.virtualizedIndexOffset};
+            grid-column: 1;
+            height:  ${(x, c) =>
+            c.parent.orientation === Orientation.vertical
+                ? `${c.parent.spanMap[c.index]?.span}px`
+                : `100%`};
+            width:  ${(x, c) =>
+            c.parent.orientation === Orientation.vertical
+                ? `100%`
+                : `${c.parent.spanMap[c.index]?.span}px`};
+            transform: ${(x, c) =>
+            c.parent.orientation === Orientation.horizontal
+                ? `translateX(${c.parent.spanMap[c.index]?.start}px)`
+                : `translateY(${c.parent.spanMap[c.index]?.start}px)`};
         "
     >
         <image
@@ -66,10 +80,20 @@ const rowItemTemplate = html`
         style="
             contain: none;
             display: block;
-            height:100%;
-            width:100%;
-            grid-row: ${(x, c) => c.index + c.parent.virtualizedIndexOffset};
+            grid-row: 1;
             grid-column: 1;
+            height:  ${(x, c) =>
+            c.parent.orientation === Orientation.vertical
+                ? `${c.parent.spanMap[c.index]?.span}px`
+                : `100%`};
+            width:  ${(x, c) =>
+            c.parent.orientation === Orientation.vertical
+                ? `100%`
+                : `${c.parent.spanMap[c.index]?.span}px`};
+            transform: ${(x, c) =>
+            c.parent.orientation === Orientation.horizontal
+                ? `translateX(${c.parent.spanMap[c.index]?.start}px)`
+                : `translateY(${c.parent.spanMap[c.index]?.start}px)`};
         "
     ></fast-virtual-list>
 `;
@@ -98,10 +122,6 @@ addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
         stackh3.itemTemplate = imageItemTemplate;
         stackh3.items = data;
 
-        const stackh4 = document.getElementById("stackh4") as FoundationVirtualList;
-        stackh4.itemTemplate = imageItemTemplate;
-        stackh4.items = data;
-
         const stackh5 = document.getElementById("stackh5") as FoundationVirtualList;
         stackh5.itemTemplate = imageItemTemplate;
         stackh5.items = newDataSet(100, 1);
@@ -119,12 +139,6 @@ addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
         const stackv2 = document.getElementById("stackv2") as FoundationVirtualList;
         stackv2.itemTemplate = imageItemTemplate;
         stackv2.items = data;
-
-        const stackv3 = document.getElementById("stackv3") as FoundationVirtualList;
-        stackv3.itemTemplate = imageItemTemplate;
-        stackv3.items = data;
-        stackv3.startRegionSpan = 100;
-        stackv3.endRegionSpan = 100;
     }
 });
 

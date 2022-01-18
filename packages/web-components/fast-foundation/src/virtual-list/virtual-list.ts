@@ -24,6 +24,12 @@ import type { ResizeObserverClassDefinition } from "../utilities/resize-observer
  */
 export type VirtualListAutoUpdateMode = "manual" | "viewport-resize" | "auto";
 
+export interface SpanMap {
+    start: number;
+    end: number;
+    span: number;
+}
+
 /**
  * The default item template
  * Authors will typically want to provide a template specific to their needs
@@ -35,16 +41,20 @@ const defaultItemTemplate: ViewTemplate<any> = html`
         style="
             overflow-wrap: anywhere;
             overflow: hidden;
-            height: 100%;
-            width: 100%;
-            grid-row: ${(x, c) =>
+            grid-row: 1;
+            grid-column: 1;
+            height:  ${(x, c) =>
             c.parent.orientation === Orientation.vertical
-                ? c.index + c.parent.virtualizedIndexOffset
-                : 1};
-            grid-column: ${(x, c) =>
+                ? `${c.parent.spanMap[c.index]?.span}px`
+                : `100%`};
+            width:  ${(x, c) =>
+            c.parent.orientation === Orientation.vertical
+                ? `100%`
+                : `${c.parent.spanMap[c.index]?.span}px`};
+            transform: ${(x, c) =>
             c.parent.orientation === Orientation.horizontal
-                ? c.index + c.parent.virtualizedIndexOffset
-                : 1};
+                ? `translateX(${c.parent.spanMap[c.index]?.start}px)`
+                : `translateY(${c.parent.spanMap[c.index]?.start}px)`};
         "
     >
         ${x => JSON.stringify(x)}
@@ -160,35 +170,35 @@ export class VirtualList extends FoundationElement {
         }
     }
 
-    /**
-     * The span in pixels of the start region.
-     *
-     * @beta
-     * @remarks
-     * HTML Attribute: start-region-span
-     */
-    @attr({ attribute: "start-region-span", converter: nullableNumberConverter })
-    public startRegionSpan: number = 0;
-    private startRegionSpanChanged(): void {
-        if (this.$fastController.isConnected) {
-            this.updateDimensions();
-        }
-    }
+    // /**
+    //  * The span in pixels of the start region.
+    //  *
+    //  * @beta
+    //  * @remarks
+    //  * HTML Attribute: start-region-span
+    //  */
+    // @attr({ attribute: "start-region-span", converter: nullableNumberConverter })
+    // public startRegionSpan: number = 0;
+    // private startRegionSpanChanged(): void {
+    //     if (this.$fastController.isConnected) {
+    //         this.updateDimensions();
+    //     }
+    // }
 
-    /**
-     * The span in pixels of the end region.
-     *
-     * @beta
-     * @remarks
-     * HTML Attribute: end-region-span
-     */
-    @attr({ attribute: "end-region-span", converter: nullableNumberConverter })
-    public endRegionSpan: number = 0;
-    private endRegionSpanChanged(): void {
-        if (this.$fastController.isConnected) {
-            this.updateDimensions();
-        }
-    }
+    // /**
+    //  * The span in pixels of the end region.
+    //  *
+    //  * @beta
+    //  * @remarks
+    //  * HTML Attribute: end-region-span
+    //  */
+    // @attr({ attribute: "end-region-span", converter: nullableNumberConverter })
+    // public endRegionSpan: number = 0;
+    // private endRegionSpanChanged(): void {
+    //     if (this.$fastController.isConnected) {
+    //         this.updateDimensions();
+    //     }
+    // }
 
     /**
      *  The array of items to be displayed
@@ -222,12 +232,7 @@ export class VirtualList extends FoundationElement {
      * @public
      */
     @observable
-    public spanMap: number[];
-    private spanChanged(): void {
-        if (this.$fastController.isConnected) {
-            this.updateDimensions();
-        }
-    }
+    public spanMap: SpanMap[] = [];
 
     /**
      * The ViewTemplate used to render items.
@@ -237,13 +242,13 @@ export class VirtualList extends FoundationElement {
     @observable
     public itemTemplate: ViewTemplate = defaultItemTemplate;
 
-    /**
-     * Accounts for css grids not being zero based, the spacer span, and the start region
-     *
-     * @internal
-     */
-    @observable
-    public virtualizedIndexOffset: number = 3;
+    // /**
+    //  * Accounts for css grids not being zero based, the spacer span, and the start region
+    //  *
+    //  * @internal
+    //  */
+    // @observable
+    // public virtualizedIndexOffset: number = 3;
 
     /**
      * The items that are currently visible (includes buffer regions)
@@ -279,15 +284,6 @@ export class VirtualList extends FoundationElement {
      */
     @observable
     public endSpacerSpan: number = 0;
-
-    /**
-     * Depending on orientation, the "grid-template-columns" or "grid-template-rows" value
-     * applied to the stack
-     *
-     * @internal
-     */
-    @observable
-    public gridTemplateSpans: string;
 
     /**
      * The index of the first item in the array to be rendered
@@ -357,6 +353,7 @@ export class VirtualList extends FoundationElement {
 
         enableArrayObservation();
         this.initializeRepeatBehavior();
+        this.initializeResizeDetector();
         this.doReset();
     }
 
@@ -460,7 +457,7 @@ export class VirtualList extends FoundationElement {
             // todo
             returnVal = 0;
         } else {
-            returnVal = this.startRegionSpan + itemIndex * this.itemSpan;
+            returnVal = itemIndex * this.itemSpan;
         }
 
         return returnVal;
@@ -472,6 +469,7 @@ export class VirtualList extends FoundationElement {
     public requestPositionUpdates = (): void => {
         if (!this.virtualize || this.pendingPositioningUpdate) {
             this.finalUpdate = true;
+            this.updateVisibleItems();
             return;
         }
         this.finalUpdate = false;
@@ -511,18 +509,12 @@ export class VirtualList extends FoundationElement {
     private doReset(): void {
         this.pendingReset = false;
         this.cancelPendingPositionUpdates();
+        this.observeItems();
+        this.updateDimensions();
 
-        if (this.virtualize) {
-            this.initializeResizeDetector();
-            this.observeItems();
-            this.updateDimensions();
-        } else {
-            this.disconnectResizeDetector();
-            this.unobserveItems();
-            this.visibleItems.splice(0, this.visibleItems.length, ...this.items);
-            this.updateDimensions();
-            this.updateRenderedRange(0, this.visibleItems.length - 1);
-        }
+        // this.visibleItems.splice(0, this.visibleItems.length, ...this.items);
+        // this.updateSpanMap(0, this.visibleItems.length, 0, this.totalStackSpan);
+        // this.updateRenderedRange(0, this.visibleItems.length - 1);
     }
 
     private initializeRepeatBehavior(): void {
@@ -534,11 +526,12 @@ export class VirtualList extends FoundationElement {
             x => x.itemTemplate,
             { positioning: true }
         ).createBehavior(this.itemsPlaceholder);
-        this.$fastController.addBehaviors([this.itemsRepeatBehavior!]);
+        this.$fastController.addBehaviors([this.itemsRepeatBehavior]);
     }
 
     private clearRepeatBehavior(): void {
         this.visibleItems = [];
+        this.spanMap = [];
 
         // TODO: What is right way to handle this?
         //       removing the behavior leaves the nodes in the dom
@@ -599,7 +592,7 @@ export class VirtualList extends FoundationElement {
             return;
         }
         this.resizeDetector = new ((window as unknown) as WindowWithResizeObserver).ResizeObserver(
-            this.requestPositionUpdates
+            this.requestPositionUpdates.bind(this)
         );
         this.resizeDetector.observe(this);
     }
@@ -714,18 +707,8 @@ export class VirtualList extends FoundationElement {
         if (this.items === undefined) {
             this.totalStackSpan = 0;
         } else {
-            if (this.spanMap !== undefined) {
-                if (this.spanMap.length === 0) {
-                    //TODO: wire this up
-                    this.totalStackSpan = 0;
-                }
-            } else {
-                this.totalStackSpan = this.itemSpan * this.items.length;
-            }
+            this.totalStackSpan = this.itemSpan * this.items.length;
         }
-
-        this.totalStackSpan =
-            this.totalStackSpan + this.startRegionSpan + this.endRegionSpan;
 
         this.requestPositionUpdates();
     };
@@ -734,13 +717,9 @@ export class VirtualList extends FoundationElement {
      *  Updates the visible items
      */
     private updateVisibleItems = (): void => {
-        if (
-            this.items === undefined ||
-            this.items.length === 0 ||
-            this.containerRect === undefined ||
-            this.viewportRect === undefined
-        ) {
+        if (this.items === undefined) {
             this.visibleItems = [];
+            this.spanMap = [];
             this.startSpacerSpan = 0;
             this.endSpacerSpan = 0;
             this.visibleRangeStart = -1;
@@ -748,17 +727,27 @@ export class VirtualList extends FoundationElement {
             return;
         }
 
+        if (!this.virtualize) {
+            this.visibleItems.splice(0, this.visibleItems.length, ...this.items);
+            this.updateSpanMap(0, this.visibleItems.length - 1);
+            return;
+        }
+
+        if (this.containerRect === undefined || this.viewportRect === undefined) {
+            return;
+        }
+
         let viewportStart: number = this.viewportRect.top;
         let viewportEnd: number = this.viewportRect.bottom;
-        let containerStart: number = this.containerRect.top + this.startRegionSpan;
-        let containerEnd: number = this.containerRect.bottom - this.endRegionSpan;
+        let containerStart: number = this.containerRect.top;
+        let containerEnd: number = this.containerRect.bottom;
         let containerSpan: number = this.containerRect.height;
 
         if (this.orientation === Orientation.horizontal) {
             viewportStart = this.viewportRect.left;
             viewportEnd = this.viewportRect.right;
-            containerStart = this.containerRect.left + this.startRegionSpan;
-            containerEnd = this.containerRect.right - this.endRegionSpan;
+            containerStart = this.containerRect.left;
+            containerEnd = this.containerRect.right;
             containerSpan = this.containerRect.width;
         }
 
@@ -781,41 +770,58 @@ export class VirtualList extends FoundationElement {
                     : this.visibleRangeEnd;
         }
 
-        if (this.spanMap !== undefined) {
-            // TODO: scomea - wire this up
-            this.visibleItems = [];
-            this.startSpacerSpan = 0;
-            this.endSpacerSpan = 0;
-        } else if (this.itemSpan !== undefined) {
-            let newFirstRenderedIndex: number = Math.floor(
-                this.visibleRangeStart / this.itemSpan
-            );
-            const visibleRangeLength = this.visibleRangeEnd - this.visibleRangeStart;
-            let newLastRenderedIndex: number =
-                newFirstRenderedIndex + Math.ceil(visibleRangeLength / this.itemSpan);
+        let newFirstRenderedIndex: number = Math.floor(
+            this.visibleRangeStart / this.itemSpan
+        );
+        const visibleRangeLength = this.visibleRangeEnd - this.visibleRangeStart;
+        let newLastRenderedIndex: number =
+            newFirstRenderedIndex + Math.ceil(visibleRangeLength / this.itemSpan);
 
-            if (newFirstRenderedIndex < 0) {
-                newFirstRenderedIndex = 0;
-            }
-
-            if (newLastRenderedIndex >= this.items.length) {
-                newLastRenderedIndex = this.items.length - 1;
-            }
-
-            this.startSpacerSpan = newFirstRenderedIndex * this.itemSpan;
-            this.endSpacerSpan =
-                (this.items.length - newLastRenderedIndex - 1) * this.itemSpan;
-
-            const newVisibleItems: object[] = this.items.slice(
-                newFirstRenderedIndex,
-                newLastRenderedIndex + 1
-            );
-
-            this.visibleItems.splice(0, this.visibleItems.length, ...newVisibleItems);
-
-            this.updateRenderedRange(newFirstRenderedIndex, newLastRenderedIndex);
+        if (newFirstRenderedIndex < 0) {
+            newFirstRenderedIndex = 0;
         }
+
+        if (newLastRenderedIndex >= this.items.length) {
+            newLastRenderedIndex = this.items.length - 1;
+        }
+
+        this.startSpacerSpan = newFirstRenderedIndex * this.itemSpan;
+        this.endSpacerSpan =
+            (this.items.length - newLastRenderedIndex - 1) * this.itemSpan;
+
+        const newVisibleItems: object[] = this.items.slice(
+            newFirstRenderedIndex,
+            newLastRenderedIndex + 1
+        );
+
+        this.visibleItems.splice(0, this.visibleItems.length, ...newVisibleItems);
+        this.updateSpanMap(newFirstRenderedIndex, newLastRenderedIndex);
     };
+
+    /**
+     *  Updates the span map
+     */
+    private updateSpanMap(
+        newFirstRenderedIndex: number,
+        newLastRenderedIndex: number
+    ): void {
+        const newSpanMap: SpanMap[] = [];
+
+        let top: number = this.startSpacerSpan;
+
+        for (let i: number = newFirstRenderedIndex; i <= newLastRenderedIndex; i++) {
+            const thisSpanMap: SpanMap = {
+                start: top,
+                end: top + this.itemSpan,
+                span: this.itemSpan,
+            };
+            top = thisSpanMap.end;
+            newSpanMap.push(thisSpanMap);
+        }
+
+        this.spanMap.splice(0, this.spanMap.length, ...newSpanMap);
+        this.updateRenderedRange(newFirstRenderedIndex, newLastRenderedIndex);
+    }
 
     /**
      *  Updates the range of rendered items
@@ -834,13 +840,7 @@ export class VirtualList extends FoundationElement {
         this.firstRenderedIndex = newFirstRenderedIndex;
         this.lastRenderedIndex = newLastRenderedIndex;
 
-        this.updateGridTemplateSpans();
-
         this.$emit("rendered-range-change", this, { bubbles: false });
-    }
-
-    private updateGridTemplateSpans(): void {
-        this.gridTemplateSpans = `[start]${this.startRegionSpan}px ${this.startSpacerSpan}px repeat(${this.visibleItems.length}, ${this.itemSpan}px) ${this.endSpacerSpan}px [end]${this.endRegionSpan}px`;
     }
 
     /**

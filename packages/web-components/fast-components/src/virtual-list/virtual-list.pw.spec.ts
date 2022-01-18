@@ -112,27 +112,13 @@ describe("FASTVirtualList", function () {
         expect(await element.evaluate(node => (node as fastVirtualList).lastRenderedIndex)).to.equal(8);
     });
 
-    it("should correctly calculate total stack span and account for start/end regions", async function () {
+    it("should correctly calculate total stack span", async function () {
         let element = (await this.page.waitForSelector(
             "fast-virtual-list"
         )) as ElementHandle<fastVirtualList>;
 
 
         expect(await element.evaluate(node => (node as fastVirtualList).totalStackSpan)).to.equal(10000);
-
-        await element.evaluateHandle(node => {
-            (node as fastVirtualList).startRegionSpan = 100;
-        });
-        await element.waitForElementState("stable");
-
-        expect(await element.evaluate(node => (node as fastVirtualList).totalStackSpan)).to.equal(10100);
-
-        await element.evaluateHandle(node => {
-            (node as fastVirtualList).endRegionSpan = 100;
-        });
-        await element.waitForElementState("stable");
-
-        expect(await element.evaluate(node => (node as fastVirtualList).totalStackSpan)).to.equal(10200);
     });
 
 });
