@@ -2,6 +2,51 @@
   "name": "@microsoft/fast-router",
   "entries": [
     {
+      "date": "Wed, 12 Jan 2022 07:11:42 GMT",
+      "tag": "@microsoft/fast-router_v0.2.11",
+      "version": "0.2.11",
+      "comments": {
+        "none": [
+          {
+            "comment": "Bump @microsoft/fast-element to v1.6.2",
+            "author": "steph@huynhicode.dev",
+            "commit": "962ca2a330f8c277ac489613f0ff55cac08896e8",
+            "package": "@microsoft/fast-router"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 11 Jan 2022 07:09:27 GMT",
+      "tag": "@microsoft/fast-router_v0.2.11",
+      "version": "0.2.11",
+      "comments": {
+        "none": [
+          {
+            "comment": "update rollup-plugin-filesize from 8.0.2 to 9.1.2",
+            "author": "john.kreitlow@microsoft.com",
+            "commit": "af847f2749ff605cced426e55a1580ea85c89cb0",
+            "package": "@microsoft/fast-router"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sun, 19 Dec 2021 07:12:39 GMT",
+      "tag": "@microsoft/fast-router_v0.2.11",
+      "version": "0.2.11",
+      "comments": {
+        "none": [
+          {
+            "comment": "Bump @microsoft/fast-element to v1.6.2",
+            "author": "steph@huynhicode.dev",
+            "commit": "5056e83234e1c758375fa4882943d104fb476ca2",
+            "package": "@microsoft/fast-router"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 14 Dec 2021 07:12:12 GMT",
       "tag": "@microsoft/fast-router_v0.2.11",
       "version": "0.2.11",

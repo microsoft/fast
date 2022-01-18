@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "Replace equality check with NaN with the Number.isNan function",
-  "packageName": "@microsoft/fast-foundation",
-  "email": "anthonystewart@google.com",
-  "dependentChangeType": "patch"
-}

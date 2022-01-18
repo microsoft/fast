@@ -1,8 +1,45 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Wed, 15 Dec 2021 07:14:44 GMT and should not be manually modified.
+This log was last generated on Sun, 16 Jan 2022 07:11:36 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.30.0
+
+Sun, 16 Jan 2022 07:11:36 GMT
+
+### Minor changes
+
+- Add valueAsNumber to number field and slider (5454342+brianehenry@users.noreply.github.com)
+
+## 2.29.0
+
+Sun, 09 Jan 2022 07:11:51 GMT
+
+### Minor changes
+
+- fix accessibility for listbox, select, and combobox (john.kreitlow@microsoft.com)
+
+## 2.28.0
+
+Thu, 06 Jan 2022 07:11:52 GMT
+
+### Minor changes
+
+- fix: prevent events to propagate from disabled button (#4884) (email not defined)
+
+### Patches
+
+- tooltip uses "center" (scomea@microsoft.com)
+
+## 2.27.3
+
+Sun, 19 Dec 2021 07:12:39 GMT
+
+### Patches
+
+- Replace equality check with NaN with the Number.isNan function (anthonystewart@google.com)
+- add queueUpdate for setStops in horzontal scroll (sethdonohue@Admins-MBP.guest.corp.microsoft.com)
 
 ## 2.27.2
 
