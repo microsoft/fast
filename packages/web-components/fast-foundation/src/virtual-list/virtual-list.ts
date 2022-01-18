@@ -185,21 +185,6 @@ export class VirtualList extends FoundationElement {
     //     }
     // }
 
-    // /**
-    //  * The span in pixels of the end region.
-    //  *
-    //  * @beta
-    //  * @remarks
-    //  * HTML Attribute: end-region-span
-    //  */
-    // @attr({ attribute: "end-region-span", converter: nullableNumberConverter })
-    // public endRegionSpan: number = 0;
-    // private endRegionSpanChanged(): void {
-    //     if (this.$fastController.isConnected) {
-    //         this.updateDimensions();
-    //     }
-    // }
-
     /**
      *  The array of items to be displayed
      *
@@ -241,14 +226,6 @@ export class VirtualList extends FoundationElement {
      */
     @observable
     public itemTemplate: ViewTemplate = defaultItemTemplate;
-
-    // /**
-    //  * Accounts for css grids not being zero based, the spacer span, and the start region
-    //  *
-    //  * @internal
-    //  */
-    // @observable
-    // public virtualizedIndexOffset: number = 3;
 
     /**
      * The items that are currently visible (includes buffer regions)

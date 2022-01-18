@@ -661,7 +661,9 @@ export class DataGrid extends VirtualList {
     rowsData: object[];
     // @internal (undocumented)
     stack: VirtualList;
-    }
+    // @internal
+    virtualizedIndexOffset: number;
+}
 
 // @public
 export class DataGridCell extends FoundationElement {
