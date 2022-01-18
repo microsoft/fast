@@ -1,8 +1,44 @@
 # Change Log - @microsoft/fast-components
 
-This log was last generated on Wed, 15 Dec 2021 07:14:44 GMT and should not be manually modified.
+This log was last generated on Sun, 16 Jan 2022 07:11:36 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.17.1
+
+Sun, 16 Jan 2022 07:11:36 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.30.0 (5454342+brianehenry@users.noreply.github.com)
+
+## 2.17.0
+
+Sun, 09 Jan 2022 07:11:51 GMT
+
+### Minor changes
+
+- remove configurable role attribute from listbox, select, and combobox (john.kreitlow@microsoft.com)
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.29.0 (john.kreitlow@microsoft.com)
+
+## 2.16.10
+
+Thu, 06 Jan 2022 07:11:52 GMT
+
+### Patches
+
+- tooltip uses "center" (scomea@microsoft.com)
+
+## 2.16.9
+
+Sun, 19 Dec 2021 07:12:39 GMT
+
+### Patches
+
+- add horizontal scroll example for use with fast-components (sethdonohue@Admins-MBP.guest.corp.microsoft.com)
 
 ## 2.16.8
 

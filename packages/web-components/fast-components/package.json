@@ -2,7 +2,7 @@
   "name": "@microsoft/fast-components",
   "description": "A library of Web Components",
   "sideEffects": false,
-  "version": "2.16.8",
+  "version": "2.17.1",
   "author": {
     "name": "Microsoft",
     "url": "https://discord.gg/FcSNfg4"
@@ -95,7 +95,7 @@
     "prettier": "2.0.2",
     "rollup": "^2.7.6",
     "rollup-plugin-commonjs": "^10.1.0",
-    "rollup-plugin-filesize": "^8.0.2",
+    "rollup-plugin-filesize": "^9.1.2",
     "rollup-plugin-node-resolve": "^5.2.0",
     "rollup-plugin-terser": "^5.3.0",
     "rollup-plugin-transform-tagged-template": "^0.0.3",
@@ -111,7 +111,7 @@
   "dependencies": {
     "@microsoft/fast-colors": "^5.1.4",
     "@microsoft/fast-element": "^1.6.2",
-    "@microsoft/fast-foundation": "^2.27.2",
+    "@microsoft/fast-foundation": "^2.30.0",
     "@microsoft/fast-web-utilities": "^5.0.2",
     "tslib": "^1.13.0",
     "vscode-html-languageservice": "^4.0.3"

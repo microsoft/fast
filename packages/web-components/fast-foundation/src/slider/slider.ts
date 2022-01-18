@@ -133,6 +133,19 @@ export class Slider extends FormAssociatedSlider implements SliderConfiguration 
     public trackMinHeight: number = 0;
 
     /**
+     * The value property, typed as a number.
+     *
+     * @public
+     */
+    public get valueAsNumber(): number {
+        return parseFloat(super.value);
+    }
+
+    public set valueAsNumber(next: number) {
+        this.value = next.toString();
+    }
+
+    /**
      * Custom function that generates a string for the component's "aria-valuetext" attribute based on the current value.
      *
      * @public
