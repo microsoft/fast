@@ -1,4 +1,4 @@
-import { html, repeat, when } from "@microsoft/fast-element";
+import { html, ref, repeat, when } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
 import type { ElementDefinitionContext } from "../design-system";
 import { AnchoredRegion } from "../anchored-region";
@@ -122,12 +122,29 @@ export const datePickerTemplate: (
         x.resetCalendar()}">${x => x.reset}</${button}>`;
 
     return html`
-    <template @mouseover="${x => (x.overFlyout = true)}" @mouseout="${x =>
-        (x.overFlyout = false)}">
-        <${textField} value=${x => x.value} @click="${x => x.toggleFlyout(true)}">
+    <template
+        @mouseover="${x => (x.overFlyout = true)}"
+        @mouseout="${x => (x.overFlyout = false)}"
+    >
+        <${textField}
+            ${ref("textField")}
+            value=${x => x.value}
+            @click="${x => (!x.readonly ? x.toggleFlyout(true) : () => {})}"
+            ?readonly="${x => x.readonly}"
+            placeholder="${x => x.placeholder}"
+        >
             <div slot="end">&#128197;</div>
         </${textField}>
-        <div class="flyout ${x => (x.flyoutOpen ? "show" : "")}" part="flyout">
+        <${context.tagFor(AnchoredRegion)}
+            class="flyout ${x => (x.flyoutOpen ? "show" : "")}"
+            part="flyout"
+            :anchorElement="${x => x.textField}"
+            vertical-positioning-mode="dynamic"
+            vertical-default-position="bottom"
+            horizontal-positioning-mode="dynamic"
+            horizontal-inset="true"
+            horizontal-default-position="start"
+        >
             ${when(
                 x => x.type === "datetime-local" || x.type === "time",
                 html`
@@ -163,7 +180,7 @@ export const datePickerTemplate: (
                         context,
                         x.arrayToMatrix(x.getMonths(), 4),
                         {
-                            text: x.yearView,
+                            text: x.dateFormatter.getYear(x.yearView),
                             action: () => {
                                 x.showYearPicker = true;
                             },
@@ -198,7 +215,7 @@ export const datePickerTemplate: (
                     );
                 }
             )}
-        </div>
+        </${context.tagFor(AnchoredRegion)}>
     </template>
 `;
 };

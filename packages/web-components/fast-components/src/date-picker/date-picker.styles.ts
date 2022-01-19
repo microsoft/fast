@@ -42,10 +42,6 @@ export const datePickerStyles: (
         padding: calc(${designUnit} * 5px);
         background-color: ${fillColor};
         ${elevation}
-        position: absolute;
-        transform: translateY(100%);
-        left: 0;
-        bottom: 0;
         z-index: 1;
         display: none;
     }

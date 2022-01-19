@@ -1,6 +1,12 @@
 import { attr, nullableNumberConverter, observable } from "@microsoft/fast-element";
 import { FoundationElement, FoundationElementDefinition } from "../foundation-element";
-import { DateFormatter } from "../calendar/date-formatter";
+import {
+    DateFormatter,
+    DayFormat,
+    MonthFormat,
+    WeekdayFormat,
+    YearFormat,
+} from "../calendar/date-formatter";
 
 export type DatePickerOptions = FoundationElementDefinition & {};
 
@@ -14,6 +20,20 @@ export class DatePicker extends FoundationElement {
      */
     @attr
     public value: string;
+    public valueChanged(previous, next) {
+        if (previous !== next) {
+            const date = new Date(next);
+            if (date.getTime()) {
+                this.day = date.getDate();
+                this.month = date.getMonth() + 1;
+                this.year = date.getFullYear();
+                this.date = `${this.month}-${this.day}-${this.year}`;
+                this.monthView = this.month;
+                this.yearView = this.year;
+                this.yearRangeView = Math.floor(this.year / 10) * 10;
+            }
+        }
+    }
 
     @attr
     public reset: string = "Go to today";
@@ -95,48 +115,76 @@ export class DatePicker extends FoundationElement {
      * @public
      */
     @attr({ attribute: "allow-text-input" })
-    public allowTextInput: boolean;
+    public allowTextInput: boolean = false;
+
+    /**
+     * Formatting of the day string
+     * @public
+     */
+    @attr({ attribute: "day-format" })
+    public dayFormat: DayFormat = "numeric";
+
+    /**
+     * Formatting for the weekday
+     * @public
+     */
+    @attr({ attribute: "weekday-format" })
+    public weekdayFormat: WeekdayFormat;
+
+    /**
+     * Formatting for the month
+     * @public
+     */
+    @attr({ attribute: "month-format" })
+    public monthFormat: MonthFormat = "numeric";
+
+    /**
+     * Formatting for the year
+     * @public
+     */
+    @attr({ attribute: "year-format" })
+    public yearFormat: YearFormat = "numeric";
 
     /**
      * Selected hour
      * @public
      */
-    @attr
+    @observable
     public hour: number;
 
     /**
      * Selected minute
      * @public
      */
-    @attr
+    @observable
     public minute: number;
 
     /**
      * The meridian: AM | PM
      * @public
      */
-    @attr
+    @observable
     public meridian: "AM" | "PM";
 
     /**
      * The selected day
      * @public
      */
-    @attr
+    @observable
     public day: number;
 
     /**
      * The Calendar month
      * @public
      */
-    @attr
+    @observable
     public month: number;
 
     /**
      * The Calendar year
      * @public
      */
-    @attr
+    @observable
     public year: number;
 
     /**
@@ -169,6 +217,9 @@ export class DatePicker extends FoundationElement {
      */
     @attr({ attribute: "disabled-dates" })
     public disabledDates: string;
+
+    @observable
+    public textField;
 
     /**
      * Switches the calendar to the previous month
@@ -306,9 +357,10 @@ export class DatePicker extends FoundationElement {
      */
     public getYears() {
         return new Array(12).fill(null).map((_, index) => {
-            const text = this.yearRangeView + index;
+            const year = this.yearRangeView + index;
+            const text = this.dateFormatter.getYear(year);
             return {
-                action: () => this.handleYearClicked(text),
+                action: () => this.handleYearClicked(year),
                 text,
             };
         });
@@ -451,14 +503,17 @@ export class DatePicker extends FoundationElement {
                 if (!hasProperties || this[key] === undefined) {
                     hasProperties = false;
                 }
-                // these should pull form local formatting
-                formatting[key] =
-                    key === "month"
-                        ? this.type === "datetime-local"
-                            ? "short"
-                            : "long"
-                        : "numeric";
+                const formatKey = `${key}Format`;
+                formatting[key] = this[formatKey];
             }
+
+            if (
+                (this.type === "date" || this.type === "datetime-local") &&
+                this.weekdayFormat
+            ) {
+                formatting["weekday"] = this.weekdayFormat;
+            }
+
             if (!hasProperties && this.type !== "datetime-local") {
                 return "";
             }
