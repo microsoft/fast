@@ -1624,6 +1624,8 @@ export class NumberField extends FormAssociatedNumberField {
     step: number;
     stepDown(): void;
     stepUp(): void;
+    get valueAsNumber(): number;
+    set valueAsNumber(next: number);
     // @internal
     valueChanged(previous: string, next: string): void;
 }
@@ -2165,6 +2167,8 @@ export class Slider extends FormAssociatedSlider implements SliderConfiguration 
     trackMinWidth: number;
     // @internal (undocumented)
     trackWidth: number;
+    get valueAsNumber(): number;
+    set valueAsNumber(next: number);
     // @internal (undocumented)
     valueChanged(previous: any, next: any): void;
     valueTextFormatter: (value: string) => string | null;
