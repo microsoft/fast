@@ -1,0 +1,7 @@
+{
+  "type": "minor",
+  "comment": "style(button): point-free style function call",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "yinon@hotmail.com",
+  "dependentChangeType": "patch"
+}
