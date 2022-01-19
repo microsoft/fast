@@ -46,6 +46,7 @@ export * from "./toolbar/index.js";
 export * from "./tooltip/index.js";
 export * from "./tree-item/index.js";
 export * from "./tree-view/index.js";
+export * from "./virtual-list/index.js";
 
 // export our utilities
 export * from "./utilities/index.js";
