@@ -71,8 +71,8 @@ const rowItemTemplate = html`
     <fast-virtual-list
         auto-update-mode="auto"
         orientation="horizontal"
-        item-span="100"
-        viewport-buffer="200"
+        item-span="200"
+        viewport-buffer="100"
         :viewportElement="${(x, c) => c.parent.viewportElement}"
         :itemTemplate="${gridItemTemplate}"
         :items="${x => x.items}"
