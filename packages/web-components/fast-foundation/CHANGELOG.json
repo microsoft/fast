@@ -2,6 +2,66 @@
   "name": "@microsoft/fast-foundation",
   "entries": [
     {
+      "date": "Sun, 16 Jan 2022 07:11:36 GMT",
+      "tag": "@microsoft/fast-foundation_v2.30.0",
+      "version": "2.30.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "Add valueAsNumber to number field and slider",
+            "author": "5454342+brianehenry@users.noreply.github.com",
+            "commit": "53475edb39a2f87f603858718fb2abd8095ab5f9",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 12 Jan 2022 07:11:42 GMT",
+      "tag": "@microsoft/fast-foundation_v2.29.0",
+      "version": "2.29.0",
+      "comments": {
+        "none": [
+          {
+            "comment": "update verbiage and add FAST snippets plugin to vs code page",
+            "author": "steph@huynhicode.dev",
+            "commit": "cf702d75b566afb396ceead5378d13d8a6b7c432",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 11 Jan 2022 07:09:27 GMT",
+      "tag": "@microsoft/fast-foundation_v2.29.0",
+      "version": "2.29.0",
+      "comments": {
+        "none": [
+          {
+            "comment": "update rollup-plugin-filesize from 8.0.2 to 9.1.2",
+            "author": "john.kreitlow@microsoft.com",
+            "commit": "af847f2749ff605cced426e55a1580ea85c89cb0",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sun, 09 Jan 2022 07:11:51 GMT",
+      "tag": "@microsoft/fast-foundation_v2.29.0",
+      "version": "2.29.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "fix accessibility for listbox, select, and combobox",
+            "author": "john.kreitlow@microsoft.com",
+            "commit": "256fe07122c2838e6bf0edd639a539b9ceeaa1bf",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 06 Jan 2022 07:11:52 GMT",
       "tag": "@microsoft/fast-foundation_v2.28.0",
       "version": "2.28.0",

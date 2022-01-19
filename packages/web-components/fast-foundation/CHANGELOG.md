@@ -1,8 +1,24 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Thu, 06 Jan 2022 07:11:52 GMT and should not be manually modified.
+This log was last generated on Sun, 16 Jan 2022 07:11:36 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.30.0
+
+Sun, 16 Jan 2022 07:11:36 GMT
+
+### Minor changes
+
+- Add valueAsNumber to number field and slider (5454342+brianehenry@users.noreply.github.com)
+
+## 2.29.0
+
+Sun, 09 Jan 2022 07:11:51 GMT
+
+### Minor changes
+
+- fix accessibility for listbox, select, and combobox (john.kreitlow@microsoft.com)
 
 ## 2.28.0
 
