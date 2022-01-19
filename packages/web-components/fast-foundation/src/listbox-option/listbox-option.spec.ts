@@ -61,4 +61,33 @@ describe("ListboxOption", () => {
 
         await disconnect();
     });
+
+    it("should set the `aria-checked` attribute to match the `checked` property", async () => {
+        const { element, connect, disconnect } = await setup();
+
+
+        await connect();
+
+        expect(element.hasAttribute("aria-checked")).to.be.false;
+
+        element.checked = true;
+
+        await DOM.nextUpdate();
+
+        expect(element.getAttribute("aria-checked")).to.equal("true");
+
+        element.checked = false;
+
+        await DOM.nextUpdate();
+
+        expect(element.getAttribute("aria-checked")).to.equal("false");
+
+        element.checked = undefined;
+
+        await DOM.nextUpdate();
+
+        expect(element.hasAttribute("aria-checked")).to.be.false;
+
+        await disconnect();
+    });
 });
