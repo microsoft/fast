@@ -136,7 +136,7 @@ export class VirtualList extends FoundationElement {
     public layoutUpdateDelay: number = 0;
 
     /**
-     * Whether the stack is oriented vertically or horizontally.
+     * Whether the list is oriented vertically or horizontally.
      * Default is vertical
      *
      * @beta
@@ -197,14 +197,6 @@ export class VirtualList extends FoundationElement {
     }
 
     /**
-     * The positions of the currently rendered items in the list
-     *
-     * @public
-     */
-    @observable
-    public spanMap: SpanMap[] = [];
-
-    /**
      * The ViewTemplate used to render items.
      *
      * @public
@@ -219,6 +211,14 @@ export class VirtualList extends FoundationElement {
      */
     @observable
     public visibleItems: any[] = [];
+
+    /**
+     * The positions of the currently rendered items in the list
+     *
+     * @internal
+     */
+    @observable
+    public spanMap: SpanMap[] = [];
 
     /**
      * The calculated span of the total stack.
