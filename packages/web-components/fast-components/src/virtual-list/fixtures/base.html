@@ -1,0 +1,154 @@
+<h1>
+    Virtual List
+</h1>
+
+<h3>
+    Virtual Lists render a vertical or horizontal stack of elements based on an author
+    provided array of data and a FAST template. Only elements that are in the bounds of
+    the "viewport" element and the definable buffer region are actually rendered. The
+    default viewport is the stack element itself.
+    <p>
+        The item templates in each of the examples consist of a fast-card element with a
+        title.
+    </p>
+</h3>
+
+<fast-virtual-list
+    orientation="horizontal"
+    item-span="200"
+    viewport-buffer="800"
+    auto-update-mode="auto"
+    id="stackh1"
+    style="
+        height: 220px;
+        width: 100%;
+        overflow-x: scroll;
+        overflow-y: hidden;
+        background: gray;
+    "
+></fast-virtual-list>
+
+<h3>
+    There is considerable flexibility as to what element can be the viewport. In this case
+    the green div overlay acts as the viewport and only items near it are rendered. An
+    obvious use for this is to have a common viewport for nested horizontal and vertical
+    stacks.
+</h3>
+
+<div style="height: 220px; width: 100%; display: grid; justify-items: center;">
+    <fast-virtual-list
+        orientation="horizontal"
+        auto-update-mode="auto"
+        item-span="200"
+        id="stackh2"
+        viewport="viewporth2"
+        style="
+            grid-row: 1;
+            height: 220px;
+            width: 100%;
+            overflow-x: scroll;
+            overflow-y: hidden;
+            background: gray;
+        "
+    ></fast-virtual-list>
+    <div
+        id="viewporth2"
+        style="
+            grid-row: 1;
+            pointer-events: none;
+            position: absolute;
+            height: 220px;
+            width: 15%;
+            background: green;
+            opacity: 0.3;
+        "
+    ></div>
+</div>
+
+<h3>
+    With a 50 ms layout-update-delay timer. The idea with layout-update-delay is to give
+    developers a way to prevent the creation of intermediate elements during big scroll
+    operations. Could be useful if initializing child elements is expensive.
+</h3>
+
+<fast-virtual-list
+    auto-update-mode="auto"
+    orientation="horizontal"
+    item-span="200"
+    id="stackh3"
+    layout-update-delay="50"
+    style="
+        height: 220px;
+        width: 100%;
+        overflow-x: scroll;
+        overflow-y: hidden;
+        background: gray;
+    "
+></fast-virtual-list>
+
+<h3>
+    Virtualization off
+</h3>
+
+<fast-virtual-list
+    virtualize="false"
+    orientation="horizontal"
+    item-span="200"
+    auto-update-mode="auto"
+    id="stackh5"
+    style="
+        height: 220px;
+        width: 100%;
+        overflow-x: scroll;
+        overflow-y: hidden;
+        background: gray;
+    "
+></fast-virtual-list>
+
+<h3>
+    Grid test
+</h3>
+<div
+    id="gridcontainer"
+    style="height: 800px; width: 800px; overflow-x: scroll; overflow-y: scroll;"
+>
+    <fast-virtual-list
+        auto-update-mode="auto"
+        viewport-buffer="800"
+        viewport="gridcontainer"
+        orientation="vertical"
+        item-span="100"
+        id="stackgrid"
+        style="width: fit-content; background: gray; contain: none;"
+    ></fast-virtual-list>
+</div>
+
+<div
+    style="
+        margin-top: 100px;
+        width: 240px;
+        display: grid;
+        grid-template-columns: 1fr 20px 1fr 20px 1fr;
+    "
+>
+    <fast-virtual-list
+        auto-update-mode="auto"
+        item-span="200"
+        id="stackv1"
+        style="grid-column: 1; width: 200px; background: gray;"
+    ></fast-virtual-list>
+
+    <fast-virtual-list
+        auto-update-mode="auto"
+        item-span="200"
+        id="stackv2"
+        style="
+            width: 220px;
+            height: 400px;
+            grid-column: 3;
+            overflow-y: scroll;
+            overflow-x: hidden;
+            background: gray;
+        "
+    ></fast-virtual-list>
+</div>
