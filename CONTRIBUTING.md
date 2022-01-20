@@ -54,7 +54,7 @@ lerna run prepare
 ```
 
 ### Developing in `fast-components`
-If you're interested in contributing changes to the `fast-component` design system start by navigating to the `fast-components` directory and starting the Storybook local server there.
+If you're interested in contributing changes to the `fast-component` design system start, by navigating to the `fast-components` directory and starting the Storybook local server there.
 
 ```bash
 cd packages/web-components/fast-components
@@ -99,7 +99,7 @@ When working across feature branches, you'll need to target the branch using the
 }
 ```
 
-Running `yarn change` will walk you through a CLI process for generating change files. The process will walk you through selecting the type of change as well as ask you to provide a description of any changes. As a convenience, the utiliity looks to provide recent commit messages for use in the description. *For changes which do not affect the published package(s), please use "none" when selecting the change type*.
+Running `yarn change` will walk you through a CLI process for generating change files. The process will walk you through selecting the type of change as well as ask you to provide a description of any changes. As a convenience, the utility looks to provide recent commit messages for use in the description. *For changes which do not affect the published package(s), please use "none" when selecting the change type*.
 
 More information on the change process and change types can be found on the [beachball website](https://microsoft.github.io/beachball/cli/change.html#change).
 
