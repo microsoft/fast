@@ -1,7 +1,0 @@
-{
-  "type": "minor",
-  "comment": "add checked property to listbox-option",
-  "packageName": "@microsoft/fast-components",
-  "email": "john.kreitlow@microsoft.com",
-  "dependentChangeType": "patch"
-}
