@@ -1,0 +1,7 @@
+{
+  "type": "minor",
+  "comment": "add virtual list",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "scomea@microsoft.com",
+  "dependentChangeType": "patch"
+}
