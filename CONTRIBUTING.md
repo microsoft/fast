@@ -54,7 +54,7 @@ lerna run prepare
 ```
 
 ### Developing in `fast-components`
-If you're interested in contributing changes to the `fast-component` design system start, by navigating to the `fast-components` directory and starting the Storybook local server there.
+If you're interested in contributing changes to the `fast-component` design system, start by navigating to the `fast-components` directory and starting the Storybook local server there.
 
 ```bash
 cd packages/web-components/fast-components
