@@ -19,16 +19,16 @@ export const virtualListTemplate: (
     <template>
         <div
             class="container"
-            part="container'
+            part="container"
             style="
                 width: ${x =>
-                    x.orientation === Orientation.vertical
-                        ? "100%"
-                        : `${x.totalStackSpan}px`};
+                x.orientation === Orientation.vertical
+                    ? "100%"
+                    : `${x.totalStackSpan}px`};
                 height: ${x =>
-                    x.orientation !== Orientation.vertical
-                        ? "100%"
-                        : `${x.totalStackSpan}px`};
+                x.orientation !== Orientation.vertical
+                    ? "100%"
+                    : `${x.totalStackSpan}px`};
                 display: grid;
                 grid-template-rows: 1fr;
                 grid-template-columns: 1fr;
