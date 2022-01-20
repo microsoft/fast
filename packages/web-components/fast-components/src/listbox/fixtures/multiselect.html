@@ -1,7 +1,7 @@
-<h1>Listbox in single-selection mode</h1>
+<h1>Listbox in multiple-selection mode</h1>
 
 <h2>Default</h2>
-<fast-listbox id="listbox">
+<fast-listbox id="listbox-multiple" multiple>
     <fast-option>William Hartnell</fast-option>
     <fast-option>Patrick Troughton</fast-option>
     <fast-option>Jon Pertwee</fast-option>
@@ -18,35 +18,35 @@
 </fast-listbox>
 
 <h2>Listboxes with size attribute</h2>
-<fast-listbox id="listbox-with-size-1" size="1">
+<fast-listbox id="listbox-with-size-1" size="1" multiple>
     <fast-option>option 1</fast-option>
     <fast-option>option 2</fast-option>
     <fast-option>option 3</fast-option>
     <fast-option>option 4</fast-option>
     <fast-option>option 5</fast-option>
 </fast-listbox>
-<fast-listbox id="listbox-with-size-2" size="2">
+<fast-listbox id="listbox-with-size-2" size="2" multiple>
     <fast-option>option 1</fast-option>
     <fast-option>option 2</fast-option>
     <fast-option>option 3</fast-option>
     <fast-option>option 4</fast-option>
     <fast-option>option 5</fast-option>
 </fast-listbox>
-<fast-listbox id="listbox-with-size-3" size="3">
+<fast-listbox id="listbox-with-size-3" size="3" multiple>
     <fast-option>option 1</fast-option>
     <fast-option>option 2</fast-option>
     <fast-option>option 3</fast-option>
     <fast-option>option 4</fast-option>
     <fast-option>option 5</fast-option>
 </fast-listbox>
-<fast-listbox id="listbox-with-size-4" size="4">
+<fast-listbox id="listbox-with-size-4" size="4" multiple>
     <fast-option>option 1</fast-option>
     <fast-option>option 2</fast-option>
     <fast-option>option 3</fast-option>
     <fast-option>option 4</fast-option>
     <fast-option>option 5</fast-option>
 </fast-listbox>
-<fast-listbox id="listbox-with-size-5" size="5">
+<fast-listbox id="listbox-with-size-5" size="5" multiple>
     <fast-option>option 1</fast-option>
     <fast-option>option 2</fast-option>
     <fast-option>option 3</fast-option>
@@ -55,14 +55,14 @@
 </fast-listbox>
 
 <h2>Listbox with a default selected item</h2>
-<fast-listbox id="listbox-with-default">
+<fast-listbox id="listbox-with-default" multiple>
     <fast-option>John</fast-option>
     <fast-option>Paul</fast-option>
     <fast-option selected>George</fast-option>
     <fast-option>Ringo</fast-option>
 </fast-listbox>
 
-<fast-listbox id="listbox-with-two-default-selected">
+<fast-listbox id="listbox-with-two-default-selected" multiple>
     <fast-option>John</fast-option>
     <fast-option selected>Paul</fast-option>
     <fast-option selected>George</fast-option>
@@ -70,42 +70,42 @@
 </fast-listbox>
 
 <h2>Listbox with disabled items</h2>
-<fast-listbox id="listbox-with-every-other-disabled">
+<fast-listbox id="listbox-with-every-other-disabled" multiple>
     <fast-option>Extra Small</fast-option>
     <fast-option disabled>Small</fast-option>
     <fast-option>Medium</fast-option>
     <fast-option disabled>Large</fast-option>
     <fast-option>Extra Large</fast-option>
 </fast-listbox>
-<fast-listbox id="listbox-with-adjacent-disabled-start">
+<fast-listbox id="listbox-with-adjacent-disabled-start" multiple>
     <fast-option disabled>Extra Small</fast-option>
     <fast-option disabled>Small</fast-option>
     <fast-option>Medium</fast-option>
     <fast-option>Large</fast-option>
     <fast-option>Extra Large</fast-option>
 </fast-listbox>
-<fast-listbox id="listbox-with-adjacent-disabled-middle">
+<fast-listbox id="listbox-with-adjacent-disabled-middle" multiple>
     <fast-option>Extra Small</fast-option>
     <fast-option disabled>Small</fast-option>
     <fast-option disabled>Medium</fast-option>
     <fast-option>Large</fast-option>
     <fast-option>Extra Large</fast-option>
 </fast-listbox>
-<fast-listbox id="listbox-with-adjacent-disabled-end">
+<fast-listbox id="listbox-with-adjacent-disabled-end" multiple>
     <fast-option>Extra Small</fast-option>
     <fast-option>Small</fast-option>
     <fast-option>Medium</fast-option>
     <fast-option disabled>Large</fast-option>
     <fast-option disabled>Extra Large</fast-option>
 </fast-listbox>
-<fast-listbox id="listbox-with-all-but-one-disabled">
+<fast-listbox id="listbox-with-all-but-one-disabled" multiple>
     <fast-option disabled>Extra Small</fast-option>
     <fast-option disabled>Small</fast-option>
     <fast-option disabled>Medium</fast-option>
     <fast-option disabled>Large</fast-option>
     <fast-option>Extra Large</fast-option>
 </fast-listbox>
-<fast-listbox id="listbox-with-all-disabled">
+<fast-listbox id="listbox-with-all-disabled" multiple>
     <fast-option disabled>Extra Small</fast-option>
     <fast-option disabled>Small</fast-option>
     <fast-option disabled>Medium</fast-option>
@@ -114,4 +114,4 @@
 </fast-listbox>
 
 <h2>Empty Listbox</h2>
-<fast-listbox id="listbox-empty"></fast-listbox>
+<fast-listbox id="listbox-empty" multiple></fast-listbox>

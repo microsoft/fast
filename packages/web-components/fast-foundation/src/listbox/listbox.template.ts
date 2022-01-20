@@ -13,6 +13,7 @@ export const listboxTemplate: FoundationElementTemplate<ViewTemplate<ListboxElem
 ) => html`
     <template
         aria-activedescendant="${x => x.ariaActiveDescendant}"
+        aria-multiselectable="${x => x.ariaMultiselectable}"
         class="listbox"
         role="listbox"
         tabindex="${x => (!x.disabled ? "0" : null)}"

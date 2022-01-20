@@ -1,5 +1,6 @@
 import { attr, observable, Observable } from "@microsoft/fast-element";
 import {
+    findLastIndex,
     keyArrowDown,
     keyArrowUp,
     keyEnd,
@@ -39,16 +40,21 @@ export abstract class Listbox extends FoundationElement {
     }
 
     /**
+     * Returns true if there is one or more selectable option.
+     *
+     * @internal
+     */
+    protected get hasSelectableOptions(): boolean {
+        return this.options.length > 0 && !this.options.every(o => o.disabled);
+    }
+
+    /**
      * The number of options.
      *
      * @public
      */
     public get length(): number {
-        if (this.options) {
-            return this.options.length;
-        }
-
-        return 0;
+        return this.options?.length ?? 0;
     }
 
     /**
@@ -89,6 +95,17 @@ export abstract class Listbox extends FoundationElement {
      */
     @attr({ mode: "boolean" })
     public disabled: boolean;
+
+    /**
+     * Indicates if the listbox is in multi-selection mode.
+     *
+     * @remarks
+     * HTML Attribute: `multiple`
+     *
+     * @public
+     */
+    @attr({ mode: "boolean" })
+    public multiple: boolean;
 
     /**
      * The index of the selected option.
@@ -177,16 +194,21 @@ export abstract class Listbox extends FoundationElement {
     }
 
     /**
-     * Focus the first selected option and scroll it into view.
+     * Ensures that the provided option is focused and scrolled into view.
      *
+     * @param optionToFocus - The option to focus
      * @internal
      */
-    protected focusAndScrollOptionIntoView(): void {
-        if (this.contains(document.activeElement) && this.firstSelectedOption) {
-            this.firstSelectedOption.focus();
-            requestAnimationFrame(() => {
-                this.firstSelectedOption.scrollIntoView({ block: "nearest" });
-            });
+    protected focusAndScrollOptionIntoView(
+        optionToFocus: ListboxOption | null = this.firstSelectedOption
+    ): void {
+        if (this.contains(document.activeElement)) {
+            if (optionToFocus) {
+                optionToFocus.focus();
+                requestAnimationFrame(() => {
+                    optionToFocus.scrollIntoView({ block: "nearest" });
+                });
+            }
         }
     }
 
@@ -207,12 +229,93 @@ export abstract class Listbox extends FoundationElement {
     }
 
     /**
+     * Returns the options which match the current typeahead buffer.
+     *
+     * @internal
+     */
+    protected getTypeaheadMatches(): ListboxOption[] {
+        const pattern = this.typeaheadBuffer.replace(/[.*+\-?^${}()|[\]\\]/g, "\\$&");
+        const re = new RegExp(`^${pattern}`, "gi");
+        return this.options.filter((o: ListboxOption) => o.text.trim().match(re));
+    }
+
+    /**
+     * Determines the index of the next option which is selectable, if any.
+     *
+     * @param prev - the previous selected index
+     * @param next - the next index to select
+     *
+     * @internal
+     */
+    protected getSelectableIndex(prev: number = this.selectedIndex, next: number) {
+        const direction = prev > next ? -1 : prev < next ? 1 : 0;
+        const potentialDirection = prev + direction;
+
+        let nextSelectableOption: ListboxOption | null = null;
+
+        switch (direction) {
+            case -1: {
+                nextSelectableOption = this.options.reduceRight(
+                    (nextSelectableOption, thisOption, index) =>
+                        !nextSelectableOption &&
+                        !thisOption.disabled &&
+                        index < potentialDirection
+                            ? thisOption
+                            : nextSelectableOption,
+                    nextSelectableOption
+                );
+                break;
+            }
+
+            case 1: {
+                nextSelectableOption = this.options.reduce(
+                    (nextSelectableOption, thisOption, index) =>
+                        !nextSelectableOption &&
+                        !thisOption.disabled &&
+                        index > potentialDirection
+                            ? thisOption
+                            : nextSelectableOption,
+                    nextSelectableOption
+                );
+                break;
+            }
+
+            default:
+            // impossible!
+        }
+
+        return this.options.indexOf(nextSelectableOption as any);
+    }
+
+    /**
+     * Handles external changes to child options.
+     *
+     * @param source - the source object
+     * @param propertyName - the property
+     *
+     * @internal
+     */
+    public handleChange(source: any, propertyName: string) {
+        switch (propertyName) {
+            case "selected": {
+                if (Listbox.slottedOptionFilter(source)) {
+                    this.selectedIndex = this.options.indexOf(source);
+                }
+                this.setSelectedOptions();
+                break;
+            }
+        }
+    }
+
+    /**
      * Moves focus to an option whose label matches characters typed by the user.
      * Consecutive keystrokes are batched into a buffer of search text used
      * to match against the set of options.  If `TYPE_AHEAD_TIMEOUT_MS` passes
      * between consecutive keystrokes, the search restarts.
      *
      * @param key - the key to be evaluated
+     *
+     * @internal
      */
     public handleTypeAhead(key: string): void {
         if (this.typeaheadTimeout) {
@@ -320,6 +423,18 @@ export abstract class Listbox extends FoundationElement {
     }
 
     /**
+     * Switches between single-selection and multi-selection mode.
+     *
+     * @param prev - the previous value of the `multiple` attribute
+     * @param next - the next value of the `multiple` attribute
+     *
+     * @internal
+     */
+    public multipleChanged(prev: boolean | undefined, next: boolean): void {
+        this.ariaMultiselectable = next ? "true" : undefined;
+    }
+
+    /**
      * Updates the list of selected options when the `selectedIndex` changes.
      *
      * @param prev - the previous selected index value
@@ -327,7 +442,22 @@ export abstract class Listbox extends FoundationElement {
      *
      * @internal
      */
-    public selectedIndexChanged(prev: number, next: number): void {
+    public selectedIndexChanged(prev: number | undefined, next: number): void {
+        if (!this.hasSelectableOptions) {
+            this.selectedIndex = -1;
+            return;
+        }
+
+        if (this.options[this.selectedIndex]?.disabled && typeof prev === "number") {
+            const selectableIndex = this.getSelectableIndex(prev, next);
+            const newNext = selectableIndex > -1 ? selectableIndex : prev;
+            this.selectedIndex = newNext;
+            if (next === newNext) {
+                this.selectedIndexChanged(next, newNext);
+            }
+            return;
+        }
+
         this.setSelectedOptions();
     }
 
@@ -343,11 +473,12 @@ export abstract class Listbox extends FoundationElement {
         prev: ListboxOption[] | undefined,
         next: ListboxOption[]
     ): void {
-        if (this.$fastController.isConnected) {
-            this.options.forEach(o => {
-                o.selected = next.includes(o);
-            });
-        }
+        const filteredNext = next.filter(Listbox.slottedOptionFilter);
+        this.options?.forEach(o => {
+            Observable.getNotifier(o).unsubscribe(this, "selected");
+            o.selected = filteredNext.includes(o);
+            Observable.getNotifier(o).subscribe(this, "selected");
+        });
     }
 
     /**
@@ -357,7 +488,7 @@ export abstract class Listbox extends FoundationElement {
      */
     public selectFirstOption(): void {
         if (!this.disabled) {
-            this.selectedIndex = 0;
+            this.selectedIndex = this.options?.findIndex(o => !o.disabled) ?? -1;
         }
     }
 
@@ -368,7 +499,7 @@ export abstract class Listbox extends FoundationElement {
      */
     public selectLastOption(): void {
         if (!this.disabled) {
-            this.selectedIndex = this.options.length - 1;
+            this.selectedIndex = findLastIndex(this.options, o => !o.disabled);
         }
     }
 
@@ -378,11 +509,7 @@ export abstract class Listbox extends FoundationElement {
      * @internal
      */
     public selectNextOption(): void {
-        if (
-            !this.disabled &&
-            this.options &&
-            this.selectedIndex < this.options.length - 1
-        ) {
+        if (!this.disabled && this.selectedIndex < this.options.length - 1) {
             this.selectedIndex += 1;
         }
     }
@@ -404,8 +531,8 @@ export abstract class Listbox extends FoundationElement {
      * @internal
      */
     protected setDefaultSelectedOption() {
-        if (this.options && this.$fastController.isConnected) {
-            const selectedIndex = this.options.findIndex(
+        if (this.$fastController.isConnected) {
+            const selectedIndex = this.options?.findIndex(
                 el => el.getAttribute("selected") !== null
             );
 
@@ -419,18 +546,13 @@ export abstract class Listbox extends FoundationElement {
     }
 
     /**
-     * Sets the selected option and gives it focus.
+     * Sets an option as selected and gives it focus.
      *
      * @public
      */
     protected setSelectedOptions() {
-        if (this.$fastController.isConnected && this.options) {
-            const selectedOption = this.options[this.selectedIndex] ?? null;
-
-            this.selectedOptions = this.options.filter(el =>
-                el.isSameNode(selectedOption)
-            );
-
+        if (this.options?.length) {
+            this.selectedOptions = [this.options[this.selectedIndex]];
             this.ariaActiveDescendant = this.firstSelectedOption?.id ?? "";
             this.focusAndScrollOptionIntoView();
         }
@@ -444,7 +566,7 @@ export abstract class Listbox extends FoundationElement {
      *
      * @internal
      */
-    public slottedOptionsChanged(prev: Element[] | unknown, next: Element[]) {
+    public slottedOptionsChanged(prev: Element[] | undefined, next: Element[]) {
         this.options = next.reduce<ListboxOption[]>((options, item) => {
             if (isListboxOption(item)) {
                 options.push(item);
@@ -477,15 +599,10 @@ export abstract class Listbox extends FoundationElement {
      */
     public typeaheadBufferChanged(prev: string, next: string): void {
         if (this.$fastController.isConnected) {
-            const pattern = this.typeaheadBuffer.replace(/[.*+\-?^${}()|[\]\\]/g, "\\$&");
-            const re = new RegExp(`^${pattern}`, "gi");
+            const typeaheadMatches = this.getTypeaheadMatches();
 
-            const filteredOptions = this.options.filter((o: ListboxOption) =>
-                o.text.trim().match(re)
-            );
-
-            if (filteredOptions.length) {
-                const selectedIndex = this.options.indexOf(filteredOptions[0]);
+            if (typeaheadMatches.length) {
+                const selectedIndex = this.options.indexOf(typeaheadMatches[0]);
                 if (selectedIndex > -1) {
                     this.selectedIndex = selectedIndex;
                 }
@@ -528,6 +645,15 @@ export class DelegatesARIAListbox {
      */
     @observable
     public ariaExpanded: "true" | "false" | undefined;
+
+    /**
+     * See {@link https://w3c.github.io/aria/#listbox} for more information
+     * @public
+     * @remarks
+     * HTML Attribute: `aria-multiselectable`
+     */
+    @observable
+    public ariaMultiselectable: "true" | "false" | undefined;
 }
 
 /**
