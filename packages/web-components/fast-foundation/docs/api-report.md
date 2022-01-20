@@ -2826,8 +2826,6 @@ export type WeekdayText = {
     abbr?: string;
 };
 export class VirtualList extends FoundationElement {
-    // (undocumented)
-    protected allowLayoutUpdateDelay: boolean;
     // @beta
     autoUpdateMode: VirtualListAutoUpdateMode;
     // @internal (undocumented)
@@ -2849,8 +2847,6 @@ export class VirtualList extends FoundationElement {
     itemTemplate: ViewTemplate;
     // @internal
     lastRenderedIndex: number;
-    // @beta
-    layoutUpdateDelay: number;
     // @beta
     orientation: Orientation;
     requestPositionUpdates: () => void;

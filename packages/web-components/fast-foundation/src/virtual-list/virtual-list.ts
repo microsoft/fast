@@ -124,18 +124,6 @@ export class VirtualList extends FoundationElement {
     public viewportBuffer: number = 100;
 
     /**
-     * Defines an interval in ms where layout updates are delayed if another position update is
-     * triggered before the interval passes. May be useful for preventing transient elements from
-     * rendering during long scroll operations.
-     *
-     * @beta
-     * @remarks
-     * HTML Attribute: layout-update-delay
-     */
-    @attr({ attribute: "layout-update-delay", converter: nullableNumberConverter })
-    public layoutUpdateDelay: number = 0;
-
-    /**
      * Whether the list is oriented vertically or horizontally.
      * Default is vertical
      *
@@ -270,8 +258,6 @@ export class VirtualList extends FoundationElement {
      */
     public containerElement: HTMLDivElement;
 
-    protected allowLayoutUpdateDelay: boolean = true;
-
     private static intersectionService: IntersectionService = new IntersectionService();
     private resizeDetector: ResizeObserverClassDefinition | null = null;
 
@@ -291,12 +277,6 @@ export class VirtualList extends FoundationElement {
     private itemCount: number = 0;
 
     private finalUpdate: boolean = false;
-
-    /**
-     * Delays updating ui during scrolling
-     * (to avoid rendering of items that just scroll by)
-     */
-    private scrollLayoutUpdateTimer: number | null = null;
 
     /**
      * @internal
@@ -331,7 +311,6 @@ export class VirtualList extends FoundationElement {
         this.unobserveItems();
         this.clearRepeatBehavior();
         this.disconnectResizeDetector();
-        this.clearLayoutUpdateTimer();
     }
 
     /**
@@ -436,7 +415,6 @@ export class VirtualList extends FoundationElement {
         }
         this.finalUpdate = false;
         this.pendingPositioningUpdate = true;
-        this.clearLayoutUpdateTimer();
 
         DOM.queueUpdate(() => {
             VirtualList.intersectionService.requestPosition(
@@ -556,28 +534,6 @@ export class VirtualList extends FoundationElement {
             this.resizeDetector.unobserve(this);
             this.resizeDetector.disconnect();
             this.resizeDetector = null;
-        }
-    }
-
-    /**
-     * starts the layout update timer
-     * clears existing timer beforehand
-     */
-    private startLayoutUpdateTimer(): void {
-        this.clearLayoutUpdateTimer();
-        this.scrollLayoutUpdateTimer = window.setTimeout((): void => {
-            this.clearLayoutUpdateTimer();
-            this.updateVisibleItems();
-        }, this.layoutUpdateDelay);
-    }
-
-    /**
-     * clears the layout update timer
-     */
-    private clearLayoutUpdateTimer(): void {
-        if (this.scrollLayoutUpdateTimer !== null) {
-            window.clearTimeout(this.scrollLayoutUpdateTimer);
-            this.scrollLayoutUpdateTimer = null;
         }
     }
 
@@ -831,10 +787,6 @@ export class VirtualList extends FoundationElement {
             this.viewportRect = viewportEntry.boundingClientRect;
         }
 
-        if (this.layoutUpdateDelay > 0 && this.allowLayoutUpdateDelay) {
-            this.startLayoutUpdateTimer();
-            return;
-        }
         this.updateVisibleItems();
     };
 }
