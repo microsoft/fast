@@ -751,10 +751,10 @@ export class DatePicker extends FoundationElement {
     arrayToMatrix(array: any[], itemsPerRow: number): any[][];
     closeFlyout(force?: boolean): void;
     connectedCallback(): void;
-    // (undocumented)
     date: string;
     dateFormatter: DateFormatter;
     day: number;
+    dayFormat: DayFormat;
     disabled: boolean;
     disabledDates: string;
     disconnectedCallback(): void;
@@ -782,12 +782,12 @@ export class DatePicker extends FoundationElement {
     };
     getYears(): {
         action: () => void;
-        text: number;
+        text: string;
     }[];
-    handleDateClicked(date: {
-        day: number;
-        month: number;
-        year: number;
+    handleDateClicked({ day, month, year }: {
+        day: any;
+        month: any;
+        year: any;
     }): void;
     handleHourClicked(hour: number): void;
     handleMeridianClicked(meridian: "AM" | "PM"): void;
@@ -801,19 +801,32 @@ export class DatePicker extends FoundationElement {
     min: number;
     minute: number;
     month: number;
+    monthFormat: MonthFormat;
+    monthView: number;
     name: string;
+    nextCalendar(): void;
     openFlyout(force?: boolean): void;
     overFlyout: boolean;
     placeholder: string;
+    previousCalendar(): void;
     readonly: boolean;
     required: boolean;
+    // (undocumented)
+    reset: string;
+    resetCalendar(): void;
+    setValue(values: any): void;
+    showYearPicker: boolean;
+    // (undocumented)
+    textField: any;
     toggleFlyout(force?: boolean): void;
     // (undocumented)
     type: "date" | "datetime-local" | "month" | "year" | "time";
     value: string;
     // (undocumented)
-    valueChanged(previous: string, next: string): void;
+    valueChanged(previous: any, next: any): void;
+    weekdayFormat: WeekdayFormat;
     year: number;
+    yearFormat: YearFormat;
     yearRangeView: number;
     yearView: number;
 }
@@ -2521,7 +2534,7 @@ export enum TextFieldType {
 }
 
 // @public
-export const timePickerTemplate: (context: any, times: any) => ViewTemplate<any, any>;
+export const timePickerTemplate: (context: ElementDefinitionContext, times: any) => ViewTemplate<any, any>;
 
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
 // Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "Toolbar" because one of its declarations is marked as @internal

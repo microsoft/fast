@@ -493,7 +493,7 @@ export class DatePicker extends FoundationElement {
         }
         const timeString: string =
             hour && minute !== undefined && meridian
-                ? `${hour}:${minute < 10 ? "0" : ""}${minute}${meridian}`
+                ? `${hour}:${minute < 10 ? "0" : ""}${minute} ${meridian}`
                 : "";
         const getDateString = properties => {
             let hasProperties = true;

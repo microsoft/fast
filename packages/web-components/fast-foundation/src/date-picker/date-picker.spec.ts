@@ -105,9 +105,17 @@ async function setup(props?) {
 }
 
 describe("Defaults", () => {
-    it("Should default to today's date", async () => {
+    it("Should default to type='date'", async () => {
         const { element, disconnect } = await setup();
-        const now = new Date()
+
+        expect(element.type).to.equal("date");
+
+        await disconnect();
+    });
+
+    it("Should default the calendar to today's date", async () => {
+        const { element, disconnect } = await setup();
+        const now = new Date();
 
         await disconnect();
     });

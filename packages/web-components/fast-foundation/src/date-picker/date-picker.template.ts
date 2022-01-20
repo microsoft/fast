@@ -5,7 +5,7 @@ import { AnchoredRegion } from "../anchored-region";
 import { Button } from "../button";
 import { Calendar } from "../calendar";
 import { DataGrid, DataGridCell, DataGridRow } from "../data-grid";
-import { ListboxElement } from "../listbox/listbox.element";
+import { ListboxElement } from "../listbox/";
 import { ListboxOption } from "../listbox-option";
 import { TextField } from "../text-field";
 import type { DatePicker, DatePickerOptions } from "./date-picker";
@@ -16,8 +16,8 @@ import type { DatePicker, DatePickerOptions } from "./date-picker";
  * @param times - labels and values for times, hours, minutes and meridian
  * @returns - A ViewTemplate
  */
-export const timePickerTemplate = (context, times) => {
-    const listbox = context.tagFor(ListboxElement) || "fast-listbox";
+export const timePickerTemplate = (context: ElementDefinitionContext, times) => {
+    const listbox = context.tagFor(ListboxElement);
     const listboxOption = context.tagFor(ListboxOption);
     return html`
         <div class="time-picker">
@@ -30,6 +30,7 @@ export const timePickerTemplate = (context, times) => {
                 `
                 )}
             </${listbox}>
+            <div class="time-separate">:</div>
             <${listbox} class="time-list" size="7">
                 ${repeat(
                     () => times.minutes,
@@ -85,7 +86,7 @@ const pickerTemplate = (context, items, title, previousAction, nextAction, reset
                 part="picker-cell"
                 grid-column="${(x, c) => c.index + 1}"
                 @click="${x => x.action()}"
-                @keydown="${(x, c) => action()}"
+                @keydown="${(x, c) => x.action()}"
               >
                 ${x => x.text}
               </${cell}>

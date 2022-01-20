@@ -4,7 +4,6 @@ import { datePickerStyles as styles } from "./date-picker.styles";
 
 export const fastDatePicker = DatePicker.compose({
     baseName: "date-picker",
-    baseClass: DatePicker,
     template,
     styles,
 });

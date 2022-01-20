@@ -57,6 +57,7 @@ export class Listbox extends FoundationListboxElement {
  */
 export const fastListbox = Listbox.compose({
     baseName: "listbox",
+    baseClass: FoundationListboxElement,
     template,
     styles,
 });

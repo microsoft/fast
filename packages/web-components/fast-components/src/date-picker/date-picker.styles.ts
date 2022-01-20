@@ -44,6 +44,7 @@ export const datePickerStyles: (
         ${elevation}
         z-index: 1;
         display: none;
+        color: ${neutralForegroundRest};
     }
 
     .flyout.show {
@@ -129,9 +130,18 @@ export const datePickerStyles: (
         box-sizing: border-box;
         padding: 10px;
         display: grid;
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: 1fr 20px 1fr 1fr;
     }
 
     .time-list {
+        overflow-y: hidden;
+    }
+
+    .time-list:hover {
+        overflow-y: auto;
+    }
+
+    .time-separate {
+        padding: 15px 8px;
     }
 `;
