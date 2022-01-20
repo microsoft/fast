@@ -1,1 +1,18 @@
-<template title="Default"></template>
+<template title="Default">
+    <div>
+        <script>
+            (function () {
+                const sampleList = document.getElementById("samplelist");
+                const itemData = [];
+                for (let i = 1; i <= 10000; i++) {
+                    itemData.push({ item: `item ${i}` });
+                }
+                sampleList.items = itemData;
+            })();
+        </script>
+        <fast-virtual-list id="samplelist" item-span="200"></fast-virtual-list>
+        <p></p>
+        <h1>A basic virtual-list</h1>
+        <h2>A row is generated for each object in the rowsData array.</h2>
+    </div>
+</template>

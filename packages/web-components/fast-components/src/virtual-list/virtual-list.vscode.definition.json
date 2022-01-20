@@ -60,20 +60,6 @@
                     "values": [{ "name": "manual" }, { "name": "viewport-resize" }, { "name": "auto" }],
                     "default": "manual",
                     "required": false
-                },
-                {
-                    "name": "start-region-span",
-                    "title": "Start regionspan",
-                    "description": "The span in pixels of the 'start' grid region for placing custom elements at the start of the list. Default is 0.",
-                    "type": "number",
-                    "required": false
-                },
-                {
-                    "name": "end-region-span",
-                    "title": "End regionspan",
-                    "description": "The span in pixels of the 'end' grid region for placing custom elements at the start of the list. Default is 0.",
-                    "type": "number",
-                    "required": false
                 }
             ],
             "slots": [
