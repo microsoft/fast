@@ -1,4 +1,4 @@
-import { observable } from "@microsoft/fast-element";
+import { attr, nullableNumberConverter, observable } from "@microsoft/fast-element";
 import { StaggerLoadService } from "../utilities/stagger-load-service";
 import { Card } from "../card";
 
@@ -11,33 +11,89 @@ export class LoaderCard extends Card {
     private static staggerLoadService: StaggerLoadService = new StaggerLoadService();
 
     /**
-     *  The array of items to be displayed
+     *
+     *
+     * @beta
+     * @remarks
+     * HTML Attribute: stagger-load
+     */
+    @attr({ attribute: "stagger-load", mode: "boolean" })
+    public staggerLoad: boolean = true;
+
+    /**
+     *
+     *
+     * @beta
+     * @remarks
+     * HTML Attribute: load-delay
+     */
+    @attr({ attribute: "load-delay", converter: nullableNumberConverter })
+    public loadDelay: number = 0;
+
+    /**
+     *
      *
      * @public
      */
     @observable
-    public preLoad: boolean = false;
+    public canLoad: boolean = false;
+
+    /**
+     * The timer that tracks delay time
+     */
+    private delayTimer: number | null = null;
 
     /**
      * @internal
      */
     connectedCallback() {
         super.connectedCallback();
-        LoaderCard.staggerLoadService.addToQueue(this, this.startPreload);
+
+        if (this.loadDelay > 0) {
+            this.startLoadDelayTimer();
+            return;
+        }
+
+        this.queueLoad();
     }
 
     /**
      * @internal
      */
     public disconnectedCallback(): void {
-        if (!this.preLoad) {
+        if (this.delayTimer === null && !this.canLoad) {
             LoaderCard.staggerLoadService.removeFromQueue(this);
         }
-        this.preLoad = false;
+
+        this.clearLoadDelayTimer();
+        this.canLoad = false;
+
         super.disconnectedCallback();
     }
 
-    private startPreload = (): void => {
-        this.preLoad = true;
+    private startLoadDelayTimer(): void {
+        if (this.delayTimer === null) {
+            this.delayTimer = window.setTimeout((): void => {
+                this.queueLoad();
+            }, this.loadDelay);
+        }
+    }
+
+    private clearLoadDelayTimer(): void {
+        if (this.delayTimer !== null) {
+            this.delayTimer = null;
+        }
+    }
+
+    private queueLoad = (): void => {
+        if (this.staggerLoad) {
+            LoaderCard.staggerLoadService.addToQueue(this, this.load);
+            return;
+        }
+        this.load();
+    };
+
+    private load = (): void => {
+        this.canLoad = true;
     };
 }

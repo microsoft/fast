@@ -339,19 +339,6 @@ export class DataGrid extends VirtualList {
 
         this.toggleGeneratedHeader();
 
-        // if (!this.virtualize) {
-        //     this.rowsPlaceholder = document.createComment("");
-        //     this.appendChild(this.rowsPlaceholder);
-
-        //     this.rowsRepeatBehavior = new RepeatDirective(
-        //         x => x.rowsData,
-        //         x => x.rowItemTemplate,
-        //         { positioning: true }
-        //     ).createBehavior(this.rowsPlaceholder);
-        // /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */
-        //this.$fastController.addBehaviors([this.rowsRepeatBehavior!]);
-        // }
-
         this.addEventListener("row-focused", this.handleRowFocus);
         this.addEventListener(eventFocus, this.handleFocus);
         this.addEventListener(eventKeyDown, this.handleKeydown);
@@ -576,23 +563,6 @@ export class DataGrid extends VirtualList {
                     }
                 }
 
-                // for (newFocusRowIndex; newFocusRowIndex <= maxIndex; newFocusRowIndex++) {
-                //     const thisRow: HTMLElement = this.rowElements[
-                //         newFocusRowIndex
-                //     ] as HTMLElement;
-                //     if (thisRow.offsetTop + thisRow.offsetHeight > currentGridBottom) {
-                //         let stickyHeaderOffset: number = 0;
-                //         if (
-                //             this.generateHeader === GenerateHeaderOptions.sticky &&
-                //             this.generatedHeader !== null
-                //         ) {
-                //             stickyHeaderOffset = this.generatedHeader.clientHeight;
-                //         }
-                //         this.scrollTop = thisRow.offsetTop - stickyHeaderOffset;
-                //         break;
-                //     }
-                // }
-
                 break;
 
             case keyHome:
@@ -662,7 +632,7 @@ export class DataGrid extends VirtualList {
             rowIndex = maxRowIndex;
         }
 
-        let focusRowElement: DataGridRow | null = this.getRowElement(rowIndex);
+        const focusRowElement: DataGridRow | null = this.getRowElement(rowIndex);
 
         if (focusRowElement !== null && focusRowElement !== undefined) {
             const cells: NodeListOf<Element> = focusRowElement.querySelectorAll(

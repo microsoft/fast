@@ -88,16 +88,6 @@ describe("VirtualList", () => {
         await disconnect();
     });
 
-    it("should have a default layoutUpdateDelay of '0'", async () => {
-        const { element, connect, disconnect } = await setup();
-
-        await connect();
-
-        expect(element.layoutUpdateDelay).to.equal(0);
-
-        await disconnect();
-    });
-
     it("should have a default orientation of 'vertical'", async () => {
         const { element, connect, disconnect } = await setup();
 

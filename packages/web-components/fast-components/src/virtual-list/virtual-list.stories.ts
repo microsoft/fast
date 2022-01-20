@@ -8,6 +8,7 @@ import "./index";
 
 const imageItemTemplate = html`
     <fast-loader-card
+        load-delay="100"
         style="
             grid-row: 1;
             grid-column: 1;
@@ -25,20 +26,37 @@ const imageItemTemplate = html`
                 : `translateY(${c.parent.spanMap[c.index]?.start}px)`};
         "
     >
-        <div style="margin: 10px;">
-            ${x => x.value}
+        <div style="position: absolute; margin: 5px 20px 0 20px;">
+            ${x => x.title}
         </div>
 
         <fast-skeleton
-            slot="load-anim"
-            style="border-radius: 4px;  height: 50px; margin:10px; width:auto;"
+            style="
+                position: absolute;
+                border-radius: 4px;
+                height: 160px;
+                margin:30px 20px 10px 20px;;
+                width:160px;
+            "
             shape="rect"
         ></fast-skeleton>
+
+        <image
+            slot="delay-load"
+            ;
+            style="
+                margin:30px 20px 10px 20px;
+                position: absolute;
+                height: 160px;
+                width: 160px;
+            "
+            src="${x => x.url}"
+        ></image>
     </fast-loader-card>
 `;
 
 const gridItemTemplate = html`
-    <div
+    <fast-loader-card
         style="
             contain: strict;
             grid-row: 1;
@@ -59,20 +77,19 @@ const gridItemTemplate = html`
     >
         <image
             style="
-                background: olive;
                 height:100%;
                 width:100%;
             "
             src="${x => x.url}"
         ></image>
-    </div>
+    </fast-loader-card>
 `;
 
 const rowItemTemplate = html`
     <fast-virtual-list
         auto-update-mode="auto"
         orientation="horizontal"
-        item-span="100"
+        item-span="200"
         viewport-buffer="200"
         :viewportElement="${(x, c) => c.parent.viewportElement}"
         :itemTemplate="${gridItemTemplate}"
@@ -147,6 +164,7 @@ function newDataSet(rowCount: number, prefix: number): object[] {
     for (let i = 1; i <= rowCount; i++) {
         newData.push({
             value: `${i}`,
+            title: `item number ${i}`,
             url: `https://picsum.photos/200/300?random=${prefix * 1000 + i}`,
         });
     }

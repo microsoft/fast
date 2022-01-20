@@ -17,9 +17,9 @@ export const loaderCardTemplate: (
 ) => html`
     <slot></slot>
     ${when(
-        x => x.preLoad,
+        x => x.canLoad,
         html<LoaderCard>`
-            <slot name="load-anim"></slot>
+            <slot name="delay-load"></slot>
         `
     )}
 `;

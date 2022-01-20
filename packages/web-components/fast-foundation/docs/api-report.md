@@ -1576,11 +1576,16 @@ export const listboxTemplate: FoundationElementTemplate<ViewTemplate<ListboxElem
 
 // @public
 export class LoaderCard extends Card {
+    // (undocumented)
+    canLoad: boolean;
     // @internal (undocumented)
     connectedCallback(): void;
     // @internal (undocumented)
     disconnectedCallback(): void;
-    preLoad: boolean;
+    // @beta (undocumented)
+    loadDelay: number;
+    // @beta (undocumented)
+    staggerLoad: boolean;
     }
 
 // @public
@@ -2818,8 +2823,6 @@ export class VirtualList extends FoundationElement {
     itemTemplate: ViewTemplate;
     // @internal
     lastRenderedIndex: number;
-    // @beta
-    layoutUpdateDelay: number;
     // @beta
     orientation: Orientation;
     requestPositionUpdates: () => void;

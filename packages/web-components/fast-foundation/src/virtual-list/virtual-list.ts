@@ -124,18 +124,6 @@ export class VirtualList extends FoundationElement {
     public viewportBuffer: number = 100;
 
     /**
-     * Defines an interval in ms where layout updates are delayed if another position update is
-     * triggered before the interval passes. May be useful for preventing transient elements from
-     * rendering during long scroll operations.
-     *
-     * @beta
-     * @remarks
-     * HTML Attribute: layout-update-delay
-     */
-    @attr({ attribute: "layout-update-delay", converter: nullableNumberConverter })
-    public layoutUpdateDelay: number = 0;
-
-    /**
      * Whether the stack is oriented vertically or horizontally.
      * Default is vertical
      *
@@ -169,21 +157,6 @@ export class VirtualList extends FoundationElement {
             this.resetAutoUpdateMode(prevMode, newMode);
         }
     }
-
-    // /**
-    //  * The span in pixels of the start region.
-    //  *
-    //  * @beta
-    //  * @remarks
-    //  * HTML Attribute: start-region-span
-    //  */
-    // @attr({ attribute: "start-region-span", converter: nullableNumberConverter })
-    // public startRegionSpan: number = 0;
-    // private startRegionSpanChanged(): void {
-    //     if (this.$fastController.isConnected) {
-    //         this.updateDimensions();
-    //     }
-    // }
 
     /**
      *  The array of items to be displayed
@@ -308,12 +281,6 @@ export class VirtualList extends FoundationElement {
     private finalUpdate: boolean = false;
 
     /**
-     * Delays updating ui during scrolling
-     * (to avoid rendering of items that just scroll by)
-     */
-    private scrollLayoutUpdateTimer: number | null = null;
-
-    /**
      * @internal
      */
     connectedCallback() {
@@ -344,9 +311,9 @@ export class VirtualList extends FoundationElement {
         }
         this.cancelPendingPositionUpdates();
         this.unobserveItems();
-        this.clearRepeatBehavior();
+        this.visibleItems = [];
+        this.spanMap = [];
         this.disconnectResizeDetector();
-        this.clearLayoutUpdateTimer();
     }
 
     /**
@@ -428,16 +395,7 @@ export class VirtualList extends FoundationElement {
             return 0;
         }
 
-        let returnVal = 0;
-
-        if (this.spanMap !== undefined) {
-            // todo
-            returnVal = 0;
-        } else {
-            returnVal = itemIndex * this.itemSpan;
-        }
-
-        return returnVal;
+        return itemIndex * this.itemSpan;
     };
 
     /**
@@ -451,7 +409,6 @@ export class VirtualList extends FoundationElement {
         }
         this.finalUpdate = false;
         this.pendingPositioningUpdate = true;
-        this.clearLayoutUpdateTimer();
 
         DOM.queueUpdate(() => {
             VirtualList.intersectionService.requestPosition(
@@ -488,10 +445,6 @@ export class VirtualList extends FoundationElement {
         this.cancelPendingPositionUpdates();
         this.observeItems();
         this.updateDimensions();
-
-        // this.visibleItems.splice(0, this.visibleItems.length, ...this.items);
-        // this.updateSpanMap(0, this.visibleItems.length, 0, this.totalStackSpan);
-        // this.updateRenderedRange(0, this.visibleItems.length - 1);
     }
 
     private initializeRepeatBehavior(): void {
@@ -504,18 +457,6 @@ export class VirtualList extends FoundationElement {
             { positioning: true }
         ).createBehavior(this.itemsPlaceholder);
         this.$fastController.addBehaviors([this.itemsRepeatBehavior]);
-    }
-
-    private clearRepeatBehavior(): void {
-        this.visibleItems = [];
-        this.spanMap = [];
-
-        // TODO: What is right way to handle this?
-        //       removing the behavior leaves the nodes in the dom
-        // if (this.itemsRepeatBehavior !== null) {
-        //     this.$fastController.removeBehaviors([this.itemsRepeatBehavior]);
-        //     this.itemsRepeatBehavior = null;
-        // }
     }
 
     private cancelPendingPositionUpdates(): void {
@@ -582,28 +523,6 @@ export class VirtualList extends FoundationElement {
             this.resizeDetector.unobserve(this);
             this.resizeDetector.disconnect();
             this.resizeDetector = null;
-        }
-    }
-
-    /**
-     * starts the layout update timer
-     * clears existing timer beforehand
-     */
-    private startLayoutUpdateTimer(): void {
-        this.clearLayoutUpdateTimer();
-        this.scrollLayoutUpdateTimer = window.setTimeout((): void => {
-            this.clearLayoutUpdateTimer();
-            this.updateVisibleItems();
-        }, this.layoutUpdateDelay);
-    }
-
-    /**
-     * clears the layout update timer
-     */
-    private clearLayoutUpdateTimer(): void {
-        if (this.scrollLayoutUpdateTimer !== null) {
-            window.clearTimeout(this.scrollLayoutUpdateTimer);
-            this.scrollLayoutUpdateTimer = null;
         }
     }
 
@@ -857,10 +776,6 @@ export class VirtualList extends FoundationElement {
             this.viewportRect = viewportEntry.boundingClientRect;
         }
 
-        if (this.layoutUpdateDelay > 0 && this.allowLayoutUpdateDelay) {
-            this.startLayoutUpdateTimer();
-            return;
-        }
         this.updateVisibleItems();
     };
 }

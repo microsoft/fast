@@ -15,12 +15,12 @@
 
 <fast-virtual-list
     orientation="horizontal"
-    item-span="100"
+    item-span="200"
     viewport-buffer="800"
     auto-update-mode="auto"
     id="stackh1"
     style="
-        height: 120px;
+        height: 220px;
         width: 100%;
         overflow-x: scroll;
         overflow-y: hidden;
@@ -35,16 +35,16 @@
     stacks.
 </h3>
 
-<div style="height: 120px; width: 100%; display: grid; justify-items: center;">
+<div style="height: 220px; width: 100%; display: grid; justify-items: center;">
     <fast-virtual-list
         orientation="horizontal"
         auto-update-mode="auto"
-        item-span="100"
+        item-span="200"
         id="stackh2"
         viewport="viewporth2"
         style="
             grid-row: 1;
-            height: 120px;
+            height: 220px;
             width: 100%;
             overflow-x: scroll;
             overflow-y: hidden;
@@ -57,7 +57,7 @@
             grid-row: 1;
             pointer-events: none;
             position: absolute;
-            height: 120px;
+            height: 220px;
             width: 15%;
             background: green;
             opacity: 0.3;
@@ -74,11 +74,11 @@
 <fast-virtual-list
     auto-update-mode="auto"
     orientation="horizontal"
-    item-span="100"
+    item-span="200"
     id="stackh3"
     layout-update-delay="50"
     style="
-        height: 120px;
+        height: 220px;
         width: 100%;
         overflow-x: scroll;
         overflow-y: hidden;
@@ -93,11 +93,11 @@
 <fast-virtual-list
     virtualize="false"
     orientation="horizontal"
-    item-span="100"
+    item-span="200"
     auto-update-mode="auto"
     id="stackh5"
     style="
-        height: 120px;
+        height: 220px;
         width: 100%;
         overflow-x: scroll;
         overflow-y: hidden;
@@ -114,10 +114,10 @@
 >
     <fast-virtual-list
         auto-update-mode="auto"
-        viewport-buffer="800"
+        viewport-buffer="100"
         viewport="gridcontainer"
         orientation="vertical"
-        item-span="100"
+        item-span="200"
         id="stackgrid"
         style="width: fit-content; background: gray; contain: none;"
     ></fast-virtual-list>
@@ -126,24 +126,24 @@
 <div
     style="
         margin-top: 100px;
-        width: 240px;
+        width: 440px;
         display: grid;
         grid-template-columns: 1fr 20px 1fr 20px 1fr;
     "
 >
     <fast-virtual-list
         auto-update-mode="auto"
-        item-span="100"
+        item-span="200"
         id="stackv1"
-        style="grid-column: 1; width: 100px; background: gray;"
+        style="grid-column: 1; width: 200px; background: gray;"
     ></fast-virtual-list>
 
     <fast-virtual-list
         auto-update-mode="auto"
-        item-span="100"
+        item-span="200"
         id="stackv2"
         style="
-            width: 120px;
+            width: 220px;
             height: 400px;
             grid-column: 3;
             overflow-y: scroll;

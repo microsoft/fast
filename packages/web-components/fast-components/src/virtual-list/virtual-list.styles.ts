@@ -20,9 +20,9 @@ export const virtualListStyles: (
         background: repeating-linear-gradient(
             90deg,
             transparent,
-            transparent 100px,
-            darkgray 100px,
-            darkgray 200px
+            transparent 200px,
+            darkgray 200px,
+            darkgray 400px
         );
     }
 `;
