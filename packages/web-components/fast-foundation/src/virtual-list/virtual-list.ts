@@ -1,7 +1,6 @@
 import {
     attr,
     DOM,
-    enableArrayObservation,
     html,
     Notifier,
     nullableNumberConverter,
@@ -98,7 +97,6 @@ export class VirtualList extends FoundationElement {
 
     /**
      * The span in pixels of each item along the virtualization axis
-     * Note used when a spanMap is provided
      *
      * @beta
      * @remarks
@@ -293,7 +291,6 @@ export class VirtualList extends FoundationElement {
             this.appendChild(this.itemsPlaceholder);
         }
 
-        enableArrayObservation();
         this.initializeRepeatBehavior();
         this.initializeResizeDetector();
         this.doReset();

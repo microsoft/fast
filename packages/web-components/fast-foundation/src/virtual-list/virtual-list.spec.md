@@ -12,8 +12,49 @@ Additionally, the component is able to render only the elements in or near a 'vi
 - A developer wants to display an array of data with templates.
 - A developer want to display a very large number of items while maintaining a fast and responsive ui.
 
-### Features
+### How it works
 
+Whenever prompted to update its layout, either by having the `update()` function called or by one of the events specified by the current `auto-update-mode` setting, the component will request position updates for the viewport element and its internal item container from the intersection service.
+
+When the positioning information is updated on the next frame the component determines which portion of the item container overlaps with the viewport and calculates which items would fall into that range.  Those items are then used to populate the observable `visibleItems` property which is bound to a repeat directive which renders the visible items using the provided `itemTemplate`.  
+
+The component also populates a `spanMap` observable property with the positioning information for each object in the `visibleItems` array using the SpanMap interface.    
+
+```
+export interface SpanMap {
+    start: number;
+    end: number;
+    span: number;
+}
+```
+
+The item templates can then bind to the appropriate `SpanMap` using its index and use that to position itself correctly in the layout.
+
+```
+const defaultItemTemplate: ViewTemplate<any> = html`
+    <div
+        style="
+            overflow-wrap: anywhere;
+            overflow: hidden;
+            grid-row: 1;
+            grid-column: 1;
+            height:  ${(x, c) =>
+            c.parent.orientation === Orientation.vertical
+                ? `${c.parent.spanMap[c.index]?.span}px`
+                : `100%`};
+            width:  ${(x, c) =>
+            c.parent.orientation === Orientation.vertical
+                ? `100%`
+                : `${c.parent.spanMap[c.index]?.span}px`};
+            transform: ${(x, c) =>
+            c.parent.orientation === Orientation.horizontal
+                ? `translateX(${c.parent.spanMap[c.index]?.start}px)`
+                : `translateY(${c.parent.spanMap[c.index]?.start}px)`};
+        "
+    >
+        ${x => JSON.stringify(x)}
+    </div>
+```
 
 ### Non-goals
 
@@ -39,8 +80,11 @@ _Attributes:_
 
 - `orientation` - Whether the list is oriented vertically or horizontally. Default is vertical.
 
-- `auto-update-mode` - Auto update mode defines what prompts the component to check the dimensions of elements in the DOM and reset the visible items accordingly.  Calling update() always provokes an update.  Default is 'manual'.
+- `auto-update-mode` - Auto update mode defines what prompts the component to check the dimensions of elements in the DOM and reset the visible items accordingly.  Calling update() always provokes an update.  Default is 'manual'.  Note that an 
 
+    - manual: checks only when update() is called.
+    - viewport-resize: checks on viewport resize.
+    - auto: checks on viewport resize as well as any bubbled scroll/resize events 
 
 
 _Properties:_
