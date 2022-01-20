@@ -23,6 +23,9 @@ import type { ResizeObserverClassDefinition } from "../utilities/resize-observer
  */
 export type VirtualListAutoUpdateMode = "manual" | "viewport-resize" | "auto";
 
+/**
+ * Used to describe the position of an element within the list
+ */
 export interface SpanMap {
     start: number;
     end: number;
@@ -32,8 +35,7 @@ export interface SpanMap {
 /**
  * The default item template
  * Authors will typically want to provide a template specific to their needs
- * as the default one
- *
+ * as the default display isn't particularly useful
  */
 const defaultItemTemplate: ViewTemplate<any> = html`
     <div
@@ -306,7 +308,8 @@ export class VirtualList extends FoundationElement {
         }
         this.cancelPendingPositionUpdates();
         this.unobserveItems();
-        this.clearRepeatBehavior();
+        this.visibleItems = [];
+        this.spanMap = [];
         this.disconnectResizeDetector();
     }
 
@@ -450,6 +453,9 @@ export class VirtualList extends FoundationElement {
         this.updateDimensions();
     }
 
+    /**
+     * initialize repeat behavior for visible items
+     */
     private initializeRepeatBehavior(): void {
         if (this.itemsRepeatBehavior !== null) {
             return;
@@ -462,11 +468,9 @@ export class VirtualList extends FoundationElement {
         this.$fastController.addBehaviors([this.itemsRepeatBehavior]);
     }
 
-    private clearRepeatBehavior(): void {
-        this.visibleItems = [];
-        this.spanMap = [];
-    }
-
+    /**
+     * cancel any pending position update requests
+     */
     private cancelPendingPositionUpdates(): void {
         if (this.pendingPositioningUpdate) {
             this.pendingPositioningUpdate = false;
@@ -483,6 +487,9 @@ export class VirtualList extends FoundationElement {
         }
     }
 
+    /**
+     * Handles changes to auto-update-mode
+     */
     private resetAutoUpdateMode(
         prevMode: VirtualListAutoUpdateMode,
         newMode: VirtualListAutoUpdateMode
