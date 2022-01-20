@@ -258,8 +258,6 @@ export class VirtualList extends FoundationElement {
      */
     public containerElement: HTMLDivElement;
 
-    protected allowLayoutUpdateDelay: boolean = true;
-
     private static intersectionService: IntersectionService = new IntersectionService();
     private resizeDetector: ResizeObserverClassDefinition | null = null;
 

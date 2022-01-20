@@ -20,10 +20,13 @@ const columnWidths: string[] = ["1fr", "1fr", "1fr", "1fr"];
 const defaultRowItemTemplate = html`
     <fast-data-grid-row
         style="
-            grid-row:${(x, c) => c.index + 2};
-            height: 100%;
+            grid-row:${(x, c) => c.index + c.parent.virtualizedIndexOffset};
+            height:100%;
             width: 100%;
         "
+        slot="generated-rows"
+        :rowIndex="${(x, c) =>
+            c.parent.authoredRowCount + c.parent.firstRenderedIndex + c.index}"
         :rowData="${x => x}"
         :cellItemTemplate="${(x, c) => c.parent.cellItemTemplate}"
         :headerCellItemTemplate="${(x, c) => c.parent.headerCellItemTemplate}"
@@ -33,10 +36,14 @@ const defaultRowItemTemplate = html`
 const customRowItemTemplate = html`
     <fast-data-grid-row
         style="
-            grid-row:${(x, c) => c.index + 2};
-            height: 100%;
+            background: grey;
+            grid-row:${(x, c) => c.index + c.parent.virtualizedIndexOffset};
+            height:100%;
             width: 100%;
         "
+        slot="generated-rows"
+        :rowIndex="${(x, c) =>
+            c.parent.authoredRowCount + c.parent.firstRenderedIndex + c.index}"
         :rowData="${x => x}"
         :cellItemTemplate="${(x, c) => c.parent.cellItemTemplate}"
         :headerCellItemTemplate="${(x, c) => c.parent.headerCellItemTemplate}"
@@ -322,28 +329,28 @@ function setCustomHeaderCellItemTemplate(): void {
     defaultGridElement.headerCellItemTemplate = customHeaderCellItemTemplate;
 }
 
-function moveFocus(e: MouseEvent): void {
-    if (defaultGridElement === null) {
-        return;
-    }
-    switch ((e.target as HTMLElement).id) {
-        case "btnfocusleft":
-            defaultGridElement.focusColumnIndex = defaultGridElement.focusColumnIndex - 1;
-            break;
+// function moveFocus(e: MouseEvent): void {
+//     if (defaultGridElement === null) {
+//         return;
+//     }
+//     switch ((e.target as HTMLElement).id) {
+//         case "btnfocusleft":
+//             defaultGridElement.focusColumnIndex = defaultGridElement.focusColumnIndex - 1;
+//             break;
 
-        case "btnfocusright":
-            defaultGridElement.focusColumnIndex = defaultGridElement.focusColumnIndex + 1;
-            break;
+//         case "btnfocusright":
+//             defaultGridElement.focusColumnIndex = defaultGridElement.focusColumnIndex + 1;
+//             break;
 
-        case "btnfocusup":
-            defaultGridElement.focusRowIndex = defaultGridElement.focusRowIndex - 1;
-            break;
+//         case "btnfocusup":
+//             defaultGridElement.focusRowIndex = defaultGridElement.focusRowIndex - 1;
+//             break;
 
-        case "btnfocusdown":
-            defaultGridElement.focusRowIndex = defaultGridElement.focusRowIndex + 1;
-            break;
-    }
-}
+//         case "btnfocusdown":
+//             defaultGridElement.focusRowIndex = defaultGridElement.focusRowIndex + 1;
+//             break;
+//     }
+// }
 
 function headerTemplateButtonClick(cell: DataGridCell): void {
     if (

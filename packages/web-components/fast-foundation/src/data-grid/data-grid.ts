@@ -183,8 +183,11 @@ export class DataGrid extends VirtualList {
     public columnDefinitions: ColumnDefinition[] | null = null;
     private columnDefinitionsChanged(): void {
         if (this.columnDefinitions === null) {
-            this.generatedGridTemplateColumns = "";
-            return;
+            if (this.rowsData.length === 0) {
+                this.generatedGridTemplateColumns = "";
+                return;
+            }
+            this.columnDefinitions = DataGrid.generateColumns(this.rowsData[0]);
         }
         this.generatedGridTemplateColumns = DataGrid.generateTemplateColumns(
             this.columnDefinitions
@@ -674,7 +677,6 @@ export class DataGrid extends VirtualList {
 
         this.scrollTop = focusRowPosition;
         this.setFocusOnItemsChanged = true;
-        this.allowLayoutUpdateDelay = false;
         this.isUpdatingFocus = true;
         this.focusRowIndex = rowIndex;
         this.isUpdatingFocus = false;
@@ -775,10 +777,9 @@ export class DataGrid extends VirtualList {
         let newAuthoredRowCount: number = 0;
         for (let i: number = 0; i < rowCount; i++) {
             const thisRow = this.rowElements[i] as DataGridRow;
-            if (thisRow.getAttribute("slot") === "generated-rows") {
-                break;
+            if (thisRow.getAttribute("slot") !== "generated-rows") {
+                newAuthoredRowCount = i + 1;
             }
-            newAuthoredRowCount = i + 1;
             thisRow.rowIndex = i;
             thisRow.gridTemplateColumns = newGridTemplateColumns;
             if (this.columnDefinitionsStale) {
@@ -796,7 +797,6 @@ export class DataGrid extends VirtualList {
             !this.isRowindexVirtualized(this.focusRowIndex)
         ) {
             this.setFocusOnItemsChanged = false;
-            this.allowLayoutUpdateDelay = true;
             this.focusOnCell(this.focusRowIndex, this.focusColumnIndex, false);
         }
     };

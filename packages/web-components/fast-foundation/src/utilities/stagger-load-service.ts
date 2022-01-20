@@ -13,9 +13,9 @@ export class StaggerLoadService {
     private callBacks: any[] = [];
 
     /**
+     * Adds an item to the callback queue
      *
-     *
-     * @internal
+     * @public
      */
     public addToQueue = (target: Element, callback: () => void): void => {
         this.removeFromQueue(target);
@@ -25,9 +25,9 @@ export class StaggerLoadService {
     };
 
     /**
+     * Removes an item from the callback queue
      *
-     *
-     * @internal
+     * @public
      */
     public removeFromQueue = (target: Element): void => {
         const elementIndex: number = this.queuedElements.indexOf(target);
@@ -38,6 +38,9 @@ export class StaggerLoadService {
         }
     };
 
+    /**
+     * starts the layout update timer
+     */
     private startUpdateTimer(): void {
         if (this.updateTimer === null) {
             this.updateTimer = window.setTimeout((): void => {
@@ -58,7 +61,7 @@ export class StaggerLoadService {
     }
 
     /**
-     *
+     * invoke the next item
      */
     private processQueue = (): void => {
         if (this.queuedElements.length === 0) {
