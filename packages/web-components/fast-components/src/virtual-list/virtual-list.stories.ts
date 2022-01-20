@@ -8,7 +8,7 @@ import "./index";
 
 const imageItemTemplate = html`
     <fast-loader-card
-        load-delay="100"
+        load-delay="200"
         style="
             grid-row: 1;
             grid-column: 1;
@@ -134,10 +134,6 @@ addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
         const stackh2 = document.getElementById("stackh2") as FoundationVirtualList;
         stackh2.itemTemplate = imageItemTemplate;
         stackh2.items = data;
-
-        const stackh3 = document.getElementById("stackh3") as FoundationVirtualList;
-        stackh3.itemTemplate = imageItemTemplate;
-        stackh3.items = data;
 
         const stackh5 = document.getElementById("stackh5") as FoundationVirtualList;
         stackh5.itemTemplate = imageItemTemplate;
