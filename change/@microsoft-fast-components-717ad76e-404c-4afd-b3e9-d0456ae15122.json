@@ -1,0 +1,7 @@
+{
+  "type": "minor",
+  "comment": "add virtual list",
+  "packageName": "@microsoft/fast-components",
+  "email": "scomea@microsoft.com",
+  "dependentChangeType": "patch"
+}
