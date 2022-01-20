@@ -12,6 +12,8 @@ Additionally, the component is able to render only the elements in or near a 'vi
 - A developer wants to display an array of data with templates.
 - A developer want to display a very large number of items while maintaining a fast and responsive ui.
 
+### Features
+
 
 ### Non-goals
 
@@ -34,8 +36,6 @@ _Attributes:_
 - `item-span` - The size in pixels of each item along the choosen axis (ie. vertical or horizontal).  Default is 50.
 
 - `viewport-buffer` - Defines an area in pixels on either end of the viewport where items outside the viewport will still be rendered.
-
-- `layout-update-delay` - Defines an interval in ms where layout updates are delayed if another position update is triggered before the interval passes. May be useful for preventing transient elements from rendering during long scroll operations.
 
 - `orientation` - Whether the list is oriented vertically or horizontally. Default is vertical.
 
