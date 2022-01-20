@@ -40,13 +40,6 @@
                     "required": false
                 },
                 {
-                    "name": "layout-update-delay",
-                    "title": "Layout update delay",
-                    "description": "The duration in milliseconds the visible items in the list must be stable before the DOM is updated.  Defaults to 0.",
-                    "type": "number",
-                    "required": false
-                },
-                {
                     "name": "orientation",
                     "title": "Orientation",
                     "description": "The orientation of the list",
