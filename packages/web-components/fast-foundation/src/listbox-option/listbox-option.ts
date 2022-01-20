@@ -45,6 +45,33 @@ export class ListboxOption extends FoundationElement {
     public proxy: HTMLOptionElement;
 
     /**
+     * The checked state is used when the parent listbox is in multiple selection mode.
+     * To avoid accessibility conflicts, the checked state should not be present in
+     * single selection mode.
+     *
+     * @public
+     */
+    @observable
+    public checked?: boolean;
+
+    /**
+     * Updates the ariaChecked property when the checked property changes.
+     *
+     * @param prev - the previous checked value
+     * @param next - the current checked value
+     *
+     * @public
+     */
+    protected checkedChanged(prev: boolean | unknown, next?: boolean): void {
+        if (typeof next === "boolean") {
+            this.ariaChecked = next ? "true" : "false";
+            return;
+        }
+
+        this.ariaChecked = undefined;
+    }
+
+    /**
      * The defaultSelected state of the option.
      * @public
      */
@@ -211,6 +238,15 @@ export class ListboxOption extends FoundationElement {
  * @public
  */
 export class DelegatesARIAListboxOption {
+    /**
+     * See {@link https://www.w3.org/TR/wai-aria-1.2/#option} for more information.
+     * @public
+     * @remarks
+     * HTML Attribute: `aria-checked`
+     */
+    @observable
+    public ariaChecked: "true" | "false" | undefined;
+
     /**
      * See {@link https://www.w3.org/TR/wai-aria-1.2/#option} for more information.
      * @public

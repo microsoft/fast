@@ -15,10 +15,7 @@ export const accordionItemTemplate: (
     context: ElementDefinitionContext,
     definition: AccordionItemOptions
 ) => html`
-    <template
-        class="${x => (x.expanded ? "expanded" : "")}"
-        slot="item"
-    >
+    <template class="${x => (x.expanded ? "expanded" : "")}">
         <div
             class="heading"
             part="heading"
