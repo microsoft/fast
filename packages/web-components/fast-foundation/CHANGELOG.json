@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-foundation",
   "entries": [
     {
+      "date": "Thu, 20 Jan 2022 07:12:04 GMT",
+      "tag": "@microsoft/fast-foundation_v2.31.0",
+      "version": "2.31.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "add checked property to listbox-option",
+            "author": "john.kreitlow@microsoft.com",
+            "commit": "89cb932580c74aa070e05a9cc04a3fbe1495c1f3",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sun, 16 Jan 2022 07:11:36 GMT",
       "tag": "@microsoft/fast-foundation_v2.30.0",
       "version": "2.30.0",

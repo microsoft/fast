@@ -71,7 +71,7 @@
   },
   "dependencies": {
     "@microsoft/fast-colors": "^5.1.4",
-    "@microsoft/fast-components": "^2.17.1",
+    "@microsoft/fast-components": "^2.18.0",
     "@microsoft/fast-components-react-base": "^4.27.0",
     "@microsoft/fast-components-react-msft": "^4.32.0",
     "@microsoft/fast-components-styles-msft": "^4.29.0",
