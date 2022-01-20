@@ -11,6 +11,10 @@ import {
 export type DatePickerOptions = FoundationElementDefinition & {};
 
 export class DatePicker extends FoundationElement {
+    /**
+     * Date picker type
+     * @public
+     */
     @attr
     public type: "date" | "datetime-local" | "month" | "year" | "time" = "date";
 
@@ -21,16 +25,15 @@ export class DatePicker extends FoundationElement {
     @attr
     public value: string;
     public valueChanged(previous, next) {
-        if (previous !== next) {
+        if (previous !== next && next) {
             const date = new Date(next);
             if (date.getTime()) {
-                this.day = date.getDate();
-                this.month = date.getMonth() + 1;
-                this.year = date.getFullYear();
-                this.date = `${this.month}-${this.day}-${this.year}`;
-                this.monthView = this.month;
-                this.yearView = this.year;
-                this.yearRangeView = Math.floor(this.year / 10) * 10;
+                this.selectedDate = Object.assign({}, this.selectedDate, {
+                    year: date.getFullYear(),
+                    month: date.getMonth() + 1,
+                    day: date.getDate(),
+                });
+                this.setViews();
             }
         }
     }
@@ -146,46 +149,37 @@ export class DatePicker extends FoundationElement {
     public yearFormat: YearFormat = "numeric";
 
     /**
-     * Selected hour
-     * @public
+     * Formatting for hour used in timestamps
      */
-    @observable
-    public hour: number;
+    @attr({ attribute: "hour-format" })
+    public hourFormat = "numeric";
 
     /**
-     * Selected minute
+     * Formatting for mintues used in timestamps
      * @public
      */
-    @observable
-    public minute: number;
+    @attr({ attribute: "minute-format" })
+    public minuteFormat = "numeric";
 
     /**
-     * The meridian: AM | PM
-     * @public
+     * Wether there should time output should be 24hour formatted
      */
-    @observable
-    public meridian: "AM" | "PM";
+    @attr({ attribute: "hour-12" })
+    public hour12: boolean = true;
 
     /**
-     * The selected day
-     * @public
+     * Selected date object
+     *
      */
     @observable
-    public day: number;
-
-    /**
-     * The Calendar month
-     * @public
-     */
-    @observable
-    public month: number;
-
-    /**
-     * The Calendar year
-     * @public
-     */
-    @observable
-    public year: number;
+    private selectedDate: {
+        day: number;
+        month: number;
+        year: number;
+        hour: number;
+        minute: number;
+        meridian: "AM" | "PM";
+    };
 
     /**
      * Currently selected date
@@ -197,19 +191,13 @@ export class DatePicker extends FoundationElement {
      * The month of the calendar to show
      */
     @observable
-    public monthView: number = new Date().getMonth() + 1;
+    public monthView: number = new Date().getFullYear();
 
     /**
      * The year for the month selector
      */
     @observable
-    public yearView: number = new Date().getFullYear();
-
-    /**
-     * The starting year for the year selector
-     */
-    @observable
-    public yearRangeView: number = Math.floor(new Date().getFullYear() / 10) * 10;
+    public yearView: number = Math.floor(new Date().getFullYear() / 10) * 10;
 
     /**
      * Dates that are not selectable
@@ -222,14 +210,28 @@ export class DatePicker extends FoundationElement {
     public textField;
 
     /**
+     * The Calendar month
+     * @public
+     */
+    @observable
+    public calendarMonth: number = new Date().getMonth() + 1;
+
+    /**
+     * The Calendar year
+     * @public
+     */
+    @observable
+    public calendarYear: number = new Date().getFullYear();
+
+    /**
      * Switches the calendar to the previous month
      */
     public previousCalendar(): void {
-        if (this.monthView === 1) {
-            this.monthView = 12;
-            this.yearView -= 1;
+        if (this.calendarMonth <= 1) {
+            this.calendarMonth = 12;
+            this.calendarYear -= 1;
         } else {
-            this.monthView -= 1;
+            this.calendarMonth -= 1;
         }
     }
 
@@ -237,11 +239,11 @@ export class DatePicker extends FoundationElement {
      * Switches the calendar to the next month
      */
     public nextCalendar(): void {
-        if (this.monthView < 11) {
-            this.monthView += 1;
+        if (this.calendarMonth >= 12) {
+            this.calendarMonth = 1;
+            this.calendarYear += 1;
         } else {
-            this.monthView = 1;
-            this.yearView += 1;
+            this.calendarMonth += 1;
         }
     }
 
@@ -250,8 +252,23 @@ export class DatePicker extends FoundationElement {
      */
     public resetCalendar(): void {
         const now = new Date();
-        this.monthView = now.getMonth() + 1;
-        this.yearView = now.getFullYear();
+        const month = now.getMonth() + 1;
+        const year = now.getFullYear();
+        this.calendarMonth = month;
+        this.calendarYear = year;
+        this.monthView = year;
+        this.yearView = Math.floor(year / 10) * 10;
+    }
+
+    setViews(): void {
+        const { year, month, day } = this.selectedDate;
+        if (year && month && day) {
+            this.date = `${month}-${day}-${year}`;
+        }
+        this.calendarMonth = month;
+        this.calendarYear = year;
+        this.monthView = year;
+        this.yearView = Math.floor(year / 10) * 10;
     }
 
     /**
@@ -276,17 +293,23 @@ export class DatePicker extends FoundationElement {
             action: () => void;
         }[];
     } {
+        const date = Date.bind(Date, 2000, 1, 1);
         /* Creates an array of hours data */
         const hours: { text: string; value: number; action: () => void }[] = new Array(12)
             .fill(null)
             .map((_, index) => {
-                const hour = this.hour || new Date().getHours();
+                const hour = this.selectedDate?.hour || new Date().getHours();
                 let value = hour - (hour > 12 ? 12 : 0) + index;
                 if (value > 12) {
                     value -= 12;
                 }
+                const hourDate = new date(value, 1);
+                const text = this.dateFormatter
+                    .getDate(hourDate, { hour: "numeric" })
+                    .replace(/ *[ap][m]/i, "");
+
                 return {
-                    text: value.toString(),
+                    text,
                     value,
                     action: () => this.handleHourClicked(value),
                 };
@@ -294,23 +317,27 @@ export class DatePicker extends FoundationElement {
 
         /* Creates an arry of minutes data */
         const minutes = new Array(60).fill(null).map((_, index) => {
-            const minute = this.minute ?? new Date().getMinutes();
+            const minute = this.selectedDate?.minute ?? new Date().getMinutes();
             const value = (minute + index) % 60;
+            const minuteDate = new date(1, value);
+            const text = this.dateFormatter.getDate(minuteDate, { minute: "2-digit" });
+
             return {
-                text: `${value < 10 ? "0" : ""}${value}`,
+                text,
                 value,
                 action: () => this.handleMinuteClicked(value),
             };
         });
 
         /* An array of meridians */
-        let meridians = [
+        const meridians = [
             { text: "AM", action: () => this.handleMeridianClicked("AM") },
             { text: "PM", action: () => this.handleMeridianClicked("PM") },
         ];
-        const meridian = this.meridian ?? new Date().getHours() >= 12 ? "PM" : "AM";
+        const meridian =
+            this.selectedDate?.meridian || (new Date().getHours() >= 12 ? "PM" : "AM");
         if (meridian === "PM") {
-            meridians = meridians.reverse();
+            meridians.reverse();
         }
 
         return {
@@ -344,8 +371,10 @@ export class DatePicker extends FoundationElement {
     public getMonths() {
         return new Array(12).fill(null).map((_, index) => {
             return {
-                action: () => this.handleMonthClicked(index + 1),
-                selected: this.month === index + 1 && this.year === this.yearView,
+                action: () => this.handleMonthClicked(index + 1, this.monthView),
+                selected:
+                    this.calendarMonth === index + 1 &&
+                    this.calendarYear === this.yearView,
                 text: this.dateFormatter.getMonth(index + 1, "short"),
             };
         });
@@ -357,7 +386,7 @@ export class DatePicker extends FoundationElement {
      */
     public getYears() {
         return new Array(12).fill(null).map((_, index) => {
-            const year = this.yearRangeView + index;
+            const year = this.yearView + index;
             const text = this.dateFormatter.getYear(year);
             return {
                 action: () => this.handleYearClicked(year),
@@ -369,13 +398,13 @@ export class DatePicker extends FoundationElement {
     /**
      * Boolean to indicate if the user is interacting with the date-picker
      */
-    public overFlyout: boolean = false;
+    private overFlyout: boolean = false;
 
     /**
      * Boolean to indicate the flyout is open
      */
     @observable
-    public flyoutOpen: boolean = false;
+    private flyoutOpen: boolean = false;
 
     /**
      * Opens the flyout used for picking a date or time
@@ -421,11 +450,12 @@ export class DatePicker extends FoundationElement {
      * Handler for selecting a month in the month picker
      * @param month - The month clicked
      */
-    public handleMonthClicked(month: number): void {
-        this.monthView = month;
+    public handleMonthClicked(month: number, year: number): void {
+        this.calendarMonth = month;
+        this.calendarYear = year;
 
         if (this.type === "month") {
-            this.setValue({ month, year: this.yearView });
+            this.setValue({ month, year });
         }
     }
 
@@ -434,7 +464,7 @@ export class DatePicker extends FoundationElement {
      * @param year - The year clicked
      */
     public handleYearClicked(year: number): void {
-        this.yearView = year;
+        this.monthView = year;
 
         if (this.type === "year") {
             this.setValue({ year });
@@ -472,86 +502,62 @@ export class DatePicker extends FoundationElement {
      * @param values - object containing key-values to update
      */
     public setValue(values) {
-        for (const key in values) {
-            this[key] = values[key];
+        this.selectedDate = Object.assign({}, this.selectedDate, values);
+        const now = new Date();
+        const {
+            year = now.getFullYear(),
+            month = now.getMonth() + 1,
+            day = now.getDate(),
+            minute = now.getMinutes(),
+            meridian,
+        } = this.selectedDate;
+        let hour = this.selectedDate.hour || now.getHours();
+        if (meridian === "PM" && hour <= 12) {
+            hour += 12;
         }
-        let { hour, minute, meridian, day, month, year, monthView, yearView } = this;
-        if (this.type === "datetime-local") {
-            const now = new Date();
-            let hourNow = now.getHours();
-            let meridianNow = "AM";
-            if (hourNow > 12) {
-                hourNow = hourNow - 12;
-                meridianNow = "PM";
-            }
-            day = day || now.getDate();
-            month = month || monthView;
-            year = year || yearView;
-            hour = values[hour] || hour || hourNow;
-            minute = values[minute] ?? minute ?? new Date().getMinutes();
-            meridian = values[meridian] || meridian || meridianNow;
+        const date = new Date(year, month - 1, day, hour, minute);
+        const formatting: {
+            year?: YearFormat;
+            month?: MonthFormat;
+            day?: DayFormat;
+            weekday?: WeekdayFormat;
+            hour?;
+            minute?;
+        } = {};
+
+        const keys =
+            this.type === "time"
+                ? { hour, minute }
+                : this.type === "datetime-local"
+                ? { year, month, day, hour, minute }
+                : values;
+
+        for (const key in keys) {
+            const formatKey = `${key}Format`;
+            formatting[key] = this[formatKey];
         }
-        const timeString: string =
-            hour && minute !== undefined && meridian
-                ? `${hour}:${minute < 10 ? "0" : ""}${minute} ${meridian}`
-                : "";
-        const getDateString = properties => {
-            let hasProperties = true;
-            const formatting = {};
 
-            for (const key in properties) {
-                if (!hasProperties || this[key] === undefined) {
-                    hasProperties = false;
-                }
-                const formatKey = `${key}Format`;
-                formatting[key] = this[formatKey];
-            }
+        if (this.weekdayFormat && this.type.indexOf("date") >= 0) {
+            formatting.weekday = this.weekdayFormat;
+        }
 
+        const dateString = this.dateFormatter.getDate(date, formatting);
+        if (this.type === "time") {
             if (
-                (this.type === "date" || this.type === "datetime-local") &&
-                this.weekdayFormat
+                !this.selectedDate.hour ||
+                this.selectedDate.minute === undefined ||
+                !this.selectedDate.meridian
             ) {
-                formatting["weekday"] = this.weekdayFormat;
+                return;
             }
 
-            if (!hasProperties && this.type !== "datetime-local") {
-                return "";
-            }
-            if (!properties.day) {
-                properties.day = 2;
-            }
-            if (!properties.month) {
-                properties.month = 2;
-            }
-
-            return this.dateFormatter.getDate(properties, formatting);
-        };
-        let value = getDateString({ day, month, year });
-        if (month && day !== undefined && year) {
-            this.date = `${month}-${day}-${year}`;
+            this.closeFlyout(true);
         }
 
-        switch (this.type) {
-            case "month":
-                value = getDateString({ month, year });
-                break;
-            case "year":
-                value = getDateString({ year });
-                break;
-            case "time":
-                value = timeString;
-                break;
-            case "datetime-local":
-                value = `${timeString} ${value}`;
-                break;
-        }
+        this.value = dateString;
 
-        if (value) {
-            this.value = value;
-
-            if (this.type !== "datetime-local") {
-                this.closeFlyout(true);
-            }
+        if (this.type !== "datetime-local") {
+            this.closeFlyout(true);
         }
     }
 

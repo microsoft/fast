@@ -137,6 +137,10 @@ export const datePickerStyles: (
         overflow-y: hidden;
     }
 
+    .time-list + .time-list {
+        margin-left: 10px;
+    }
+
     .time-list:hover {
         overflow-y: auto;
     }

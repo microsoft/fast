@@ -162,8 +162,8 @@ export const datePickerTemplate: (
                         x.handleDateClicked((c.event as MouseEvent).detail)}"
                     part="calendar"
                     locale="${x => x.locale}"
-                    month="${x => x.monthView}"
-                    year="${x => x.yearView}"
+                    month="${x => x.calendarMonth}"
+                    year="${x => x.calendarYear}"
                     min-weeks="6">
                         <div class="calendar-controls" part="calendar-controls">
                             <${button} @click="${x =>
@@ -181,16 +181,16 @@ export const datePickerTemplate: (
                         context,
                         x.arrayToMatrix(x.getMonths(), 4),
                         {
-                            text: x.dateFormatter.getYear(x.yearView),
+                            text: x.dateFormatter.getYear(x.monthView),
                             action: () => {
                                 x.showYearPicker = true;
                             },
                         },
                         () => {
-                            x.yearView -= 1;
+                            x.monthView -= 1;
                         },
                         () => {
-                            x.yearView += 1;
+                            x.monthView += 1;
                         },
                         x.type.indexOf("date") >= 0 ? resetButton : () => {}
                     )
@@ -210,8 +210,8 @@ export const datePickerTemplate: (
                                 x.showYearPicker = false;
                             },
                         },
-                        () => (x.yearRangeView -= 12),
-                        () => (x.yearRangeView += 12),
+                        () => (x.yearView -= 12),
+                        () => (x.yearView += 12),
                         x.type.indexOf("date") >= 0 ? resetButton : () => {}
                     );
                 }
