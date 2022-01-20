@@ -56,18 +56,6 @@
       "mapsToAttribute": "auto-update-mode",
       "type": "string"
     },
-    "start-region-span": {
-      "title": "Start regionspan",
-      "description": "The span in pixels of the 'start' grid region for placing custom elements at the start of the list. Default is 0.",
-      "mapsToAttribute": "start-region-span",
-      "type": "number"
-    },
-    "end-region-span": {
-      "title": "End regionspan",
-      "description": "The span in pixels of the 'end' grid region for placing custom elements at the start of the list. Default is 0.",
-      "mapsToAttribute": "end-region-span",
-      "type": "number"
-    },
     "Slot": {
       "title": "Default slot",
       "description": "The default slot",
