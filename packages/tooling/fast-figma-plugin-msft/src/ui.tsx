@@ -1,7 +1,11 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import { DesignSystem } from "@microsoft/fast-foundation";
+import { fastDesignSystemProvider } from "@microsoft/fast-components";
 import { PluginUI, PluginUIProps } from "./core/ui";
 import { UIMessage } from "./core/messaging";
+
+DesignSystem.getOrCreate().register(fastDesignSystemProvider());
 
 /* eslint-disable */
 const styles = require("./global.css");

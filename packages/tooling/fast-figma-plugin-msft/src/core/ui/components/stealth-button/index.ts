@@ -69,6 +69,7 @@ export class StealthButton extends FASTElement {
     public glyph?: HTMLSlotElement;
     public content?: HTMLSlotElement;
     public connectedCallback(): void {
+        super.connectedCallback();
         if (this.hasGlyph()) {
             this.classList.add("has-glyph");
         }
