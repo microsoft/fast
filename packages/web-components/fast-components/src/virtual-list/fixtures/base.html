@@ -9,14 +9,37 @@
     default viewport is the stack element itself.
     <p>
         The item templates in each of the examples consist of a fast-card element with a
-        title.
+        title, a skeleton element and an image.
     </p>
+</h3>
+
+<h3>
+    Virtualization off
+</h3>
+
+<fast-virtual-list
+    virtualize="false"
+    orientation="horizontal"
+    item-span="200"
+    auto-update-mode="auto"
+    id="stackh5"
+    style="
+        height: 220px;
+        width: 100%;
+        overflow-x: scroll;
+        overflow-y: hidden;
+        background: gray;
+    "
+></fast-virtual-list>
+
+<h3>
+    Virtualization on
 </h3>
 
 <fast-virtual-list
     orientation="horizontal"
     item-span="200"
-    viewport-buffer="800"
+    viewport-buffer="200"
     auto-update-mode="auto"
     id="stackh1"
     style="
@@ -66,27 +89,13 @@
 </div>
 
 <h3>
-    Virtualization off
-</h3>
-
-<fast-virtual-list
-    virtualize="false"
-    orientation="horizontal"
-    item-span="200"
-    auto-update-mode="auto"
-    id="stackh5"
-    style="
-        height: 220px;
-        width: 100%;
-        overflow-x: scroll;
-        overflow-y: hidden;
-        background: gray;
-    "
-></fast-virtual-list>
-
-<h3>
     Grid test
 </h3>
+
+<h4>
+    A vertical virtual list containing 1000 rows, each row is an horizontal virtual list
+    with 1000 images. The grid virtualizes on both axis using a common viewport.
+</h4>
 <div
     id="gridcontainer"
     style="height: 800px; width: 800px; overflow-x: scroll; overflow-y: scroll;"

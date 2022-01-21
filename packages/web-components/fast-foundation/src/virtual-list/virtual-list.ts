@@ -463,7 +463,7 @@ export class VirtualList extends FoundationElement {
         this.itemsRepeatBehavior = new RepeatDirective(
             x => x.visibleItems,
             x => x.itemTemplate,
-            { positioning: true }
+            { positioning: true, recycle: false }
         ).createBehavior(this.itemsPlaceholder);
         this.$fastController.addBehaviors([this.itemsRepeatBehavior]);
     }
