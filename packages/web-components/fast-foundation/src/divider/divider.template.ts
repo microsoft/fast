@@ -11,5 +11,5 @@ export const dividerTemplate: FoundationElementTemplate<ViewTemplate<Divider>> =
     context,
     definition
 ) => html`
-    <template role="${x => x.role}"></template>
+    <template role="${x => x.role}" aria-orientation="${x => x.orientation}"></template>
 `;

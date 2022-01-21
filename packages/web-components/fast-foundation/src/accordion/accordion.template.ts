@@ -1,4 +1,4 @@
-import { html, slotted } from "@microsoft/fast-element";
+import { elements, html, slotted } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
 import type { FoundationElementTemplate } from "../foundation-element";
 import type { Accordion } from "./accordion";
@@ -10,8 +10,9 @@ import type { Accordion } from "./accordion";
 export const accordionTemplate: FoundationElementTemplate<ViewTemplate<Accordion>> = (
     context,
     definition
-) => html`
+) => /* TODO: deprecate slot name `item` to only support default slot https://github.com/microsoft/fast/issues/5515 */ html`
     <template>
+        <slot ${slotted({ property: "accordionItems", filter: elements() })}></slot>
         <slot name="item" part="item" ${slotted("accordionItems")}></slot>
     </template>
 `;

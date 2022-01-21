@@ -819,6 +819,7 @@ export interface DelegatesARIAListbox extends ARIAGlobalStatesAndProperties {
 //
 // @public
 export class DelegatesARIAListboxOption {
+    ariaChecked: "true" | "false" | undefined;
     ariaPosInSet: string;
     ariaSelected: "true" | "false" | undefined;
     ariaSetSize: string;
@@ -1014,6 +1015,7 @@ export function display(displayValue: CSSDisplayPropertyValue): string;
 
 // @public
 export class Divider extends FoundationElement {
+    orientation: Orientation;
     role: DividerRole;
 }
 
@@ -1416,6 +1418,8 @@ export class ListboxElement extends Listbox {
 // @public
 export class ListboxOption extends FoundationElement {
     constructor(text?: string, value?: string, defaultSelected?: boolean, selected?: boolean);
+    checked?: boolean;
+    protected checkedChanged(prev: boolean | unknown, next?: boolean): void;
     defaultSelected: boolean;
     // (undocumented)
     protected defaultSelectedChanged(): void;

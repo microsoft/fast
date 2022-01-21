@@ -13,12 +13,13 @@ export const listboxOptionTemplate: FoundationElementTemplate<
     ListboxOptionOptions
 > = (context, definition) => html`
     <template
+        aria-checked="${x => x.ariaChecked}"
         aria-disabled="${x => x.ariaDisabled}"
         aria-posinset="${x => x.ariaPosInSet}"
         aria-selected="${x => x.ariaSelected}"
         aria-setsize="${x => x.ariaSetSize}"
         class="${x =>
-            [x.selected && "selected", x.disabled && "disabled"]
+            [x.checked && "checked", x.selected && "selected", x.disabled && "disabled"]
                 .filter(Boolean)
                 .join(" ")}"
         role="option"

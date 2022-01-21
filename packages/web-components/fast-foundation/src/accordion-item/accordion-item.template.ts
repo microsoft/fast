@@ -12,10 +12,7 @@ export const accordionItemTemplate: FoundationElementTemplate<
     ViewTemplate<AccordionItem>,
     AccordionItemOptions
 > = (context, definition) => html`
-    <template
-        class="${x => (x.expanded ? "expanded" : "")}"
-        slot="item"
-    >
+    <template class="${x => (x.expanded ? "expanded" : "")}">
         <div
             class="heading"
             part="heading"
