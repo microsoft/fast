@@ -3,6 +3,7 @@ import { DOM } from "@microsoft/fast-element";
 import { fixture } from "../test-utilities/fixture";
 import { DividerRole } from "./divider.options";
 import { Divider, dividerTemplate as template } from "./index";
+import { Orientation } from "@microsoft/fast-web-utilities";
 
 const FASTDivider = Divider.compose({
     baseName: "divider",
@@ -41,6 +42,28 @@ describe("Divider", () => {
         await DOM.nextUpdate();
 
         expect(element.getAttribute("role")).to.equal(`${DividerRole.separator}`);
+
+        await disconnect();
+    });
+
+    it("should set the `aria-orientation` attribute equal to the `orientation` value", async () => {
+        const { element, connect, disconnect } = await setup();
+
+        element.orientation = Orientation.horizontal;
+
+        await connect();
+
+        expect(element.getAttribute("aria-orientation")).to.equal(
+            `${Orientation.horizontal}`
+        );
+
+        element.orientation = Orientation.vertical;
+
+        await DOM.nextUpdate();
+
+        expect(element.getAttribute("aria-orientation")).to.equal(
+            `${Orientation.vertical}`
+        );
 
         await disconnect();
     });
