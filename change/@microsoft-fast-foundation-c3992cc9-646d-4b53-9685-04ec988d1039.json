@@ -1,7 +1,7 @@
 {
   "type": "minor",
-  "comment": "add checked property to listbox-option",
+  "comment": "feat: add `orientation` to divider",
   "packageName": "@microsoft/fast-foundation",
-  "email": "john.kreitlow@microsoft.com",
+  "email": "jes@microsoft.com",
   "dependentChangeType": "patch"
 }
