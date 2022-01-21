@@ -25,14 +25,31 @@ const imageItemTemplate = html`
                 : `translateY(${c.parent.spanMap[c.index]?.start}px)`};
         "
     >
-        <div style="margin: 10px;">
-            ${x => x.value}
+        <div style="margin: 5px 20px 0 20px; color: white">
+            ${x => x.title}
         </div>
 
         <fast-skeleton
-            style="border-radius: 4px;  height: 140px; margin:10px; width:auto;"
+            style="
+                border-radius: 4px;
+                height: 160px;
+                width:160px;
+                margin:10px 20px 10px 20px;
+                position: absolute
+            "
             shape="rect"
         ></fast-skeleton>
+
+        <image
+            style="
+                background: gray;
+                height: 160px;
+                width:160px;
+                margin:10px 20px 10px 20px;
+                position: absolute
+            "
+            src="${x => x.url}"
+        ></image>
     </fast-card>
 `;
 
@@ -56,9 +73,19 @@ const gridItemTemplate = html`
                 : `translateY(${c.parent.spanMap[c.index]?.start}px)`};
         "
     >
+        <div
+            style="
+            position: absolute;
+            margin: 90px 20px 0 20px;
+            color: white
+        "
+        >
+            ${x => x.title}
+        </div>
+
         <image
             style="
-                background: olive;
+                background: gray;
                 height:100%;
                 width:100%;
             "
@@ -103,9 +130,9 @@ addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
 
         const gridData: object[] = [];
 
-        for (let i = 1; i <= 100; i++) {
+        for (let i = 1; i <= 1000; i++) {
             gridData.push({
-                items: newDataSet(100, i),
+                items: newDataSet(1000, i),
             });
         }
 
@@ -142,7 +169,8 @@ function newDataSet(rowCount: number, prefix: number): object[] {
     for (let i = 1; i <= rowCount; i++) {
         newData.push({
             value: `${i}`,
-            url: `https://picsum.photos/200/300?random=${prefix * 1000 + i}`,
+            title: `item #${i}`,
+            url: `https://picsum.photos/200/200?random=${prefix * 1000 + i}`,
         });
     }
     return newData;
