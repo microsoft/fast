@@ -1015,6 +1015,7 @@ export function display(displayValue: CSSDisplayPropertyValue): string;
 
 // @public
 export class Divider extends FoundationElement {
+    orientation: Orientation;
     role: DividerRole;
 }
 
