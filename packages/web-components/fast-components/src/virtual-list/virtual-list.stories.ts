@@ -8,7 +8,6 @@ import "./index";
 
 const imageItemTemplate = html`
     <fast-loader-card
-        load-delay="200"
         style="
             grid-row: 1;
             grid-column: 1;
@@ -43,7 +42,6 @@ const imageItemTemplate = html`
 
         <image
             slot="delay-load"
-            ;
             style="
                 margin:30px 20px 10px 20px;
                 position: absolute;
@@ -57,7 +55,9 @@ const imageItemTemplate = html`
 
 const gridItemTemplate = html`
     <fast-loader-card
+        load-delay="100"
         style="
+            background: transparent;
             contain: strict;
             grid-row: 1;
             grid-column: 1;
@@ -121,9 +121,9 @@ addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
 
         const gridData: object[] = [];
 
-        for (let i = 1; i <= 100; i++) {
+        for (let i = 1; i <= 1000; i++) {
             gridData.push({
-                items: newDataSet(100, i),
+                items: newDataSet(1000, i),
             });
         }
 
@@ -137,7 +137,7 @@ addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
 
         const stackh5 = document.getElementById("stackh5") as FoundationVirtualList;
         stackh5.itemTemplate = imageItemTemplate;
-        stackh5.items = newDataSet(100, 1);
+        stackh5.items = newDataSet(30, 1);
 
         const stackGrid = document.getElementById("stackgrid") as FoundationVirtualList;
 
@@ -160,7 +160,7 @@ function newDataSet(rowCount: number, prefix: number): object[] {
     for (let i = 1; i <= rowCount; i++) {
         newData.push({
             value: `${i}`,
-            title: `item number ${i}`,
+            title: `item #${i}`,
             url: `https://picsum.photos/200/300?random=${prefix * 1000 + i}`,
         });
     }
