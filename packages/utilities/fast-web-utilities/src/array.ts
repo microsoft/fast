@@ -6,7 +6,7 @@
  */
 export function findLastIndex<T>(
     array: Array<T>,
-    predicate: (value: T, index?: number, obj?: T[]) => unknown
+    predicate: (value: T, index: number, obj: T[]) => unknown
 ): number {
     let k = array.length;
     while (k--) {
