@@ -8,10 +8,6 @@ export function findLastIndex<T>(
     array: Array<T>,
     predicate: (value: T, index?: number, obj?: T[]) => unknown
 ): number {
-    if (!(predicate instanceof Function)) {
-        throw new TypeError();
-    }
-
     let k = array.length;
     while (k--) {
         if (predicate(array[k], k, array)) {
