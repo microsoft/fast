@@ -29,9 +29,7 @@ export const virtualListTemplate: (
                 x.orientation !== Orientation.vertical
                     ? "100%"
                     : `${x.totalStackSpan}px`};
-                display: grid;
-                grid-template-rows: 1fr;
-                grid-template-columns: 1fr;
+                position: relative;
             "
             ${ref("containerElement")}
         >
