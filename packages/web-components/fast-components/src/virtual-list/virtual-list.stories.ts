@@ -58,24 +58,20 @@ const gridItemTemplate = html`
         load-delay="100"
         style="
             position: absolute;
-            background: transparent;
-            contain: size;
-            height:  ${(x, c) =>
-            c.parent.orientation === Orientation.vertical
-                ? `${c.parent.spanMap[c.index]?.span}px`
-                : `100%`};
-            width:  ${(x, c) =>
-            c.parent.orientation === Orientation.vertical
-                ? `100%`
-                : `${c.parent.spanMap[c.index]?.span}px`};
-            transform: ${(x, c) =>
-            c.parent.orientation === Orientation.horizontal
-                ? `translateX(${c.parent.spanMap[c.index]?.start}px)`
-                : `translateY(${c.parent.spanMap[c.index]?.start}px)`};
+            background: lightblue;
+            contain: strict;
+            height:  100%;
+            width:  ${(x, c) => `${c.parent.spanMap[c.index]?.span}px`};
+            transform: ${(x, c) => `translateX(${c.parent.spanMap[c.index]?.start}px)`};
         "
     >
+        <div style="position: absolute; margin: 5px 20px 0 20px;">
+            ${x => x.title}
+        </div>
         <image
+            slot="delay-load"
             style="
+                position:absolute;
                 height:100%;
                 width:100%;
             "
