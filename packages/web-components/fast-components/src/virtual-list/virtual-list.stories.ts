@@ -9,8 +9,7 @@ import "./index";
 const imageItemTemplate = html`
     <fast-card
         style="
-            grid-row: 1;
-            grid-column: 1;
+            position: absolute;
             height:  ${(x, c) =>
             c.parent.orientation === Orientation.vertical
                 ? `${c.parent.spanMap[c.index]?.span}px`
@@ -57,8 +56,7 @@ const gridItemTemplate = html`
     <div
         style="
             contain: strict;
-            grid-row: 1;
-            grid-column: 1;
+            position: absolute;
             height:  ${(x, c) =>
             c.parent.orientation === Orientation.vertical
                 ? `${c.parent.spanMap[c.index]?.span}px`
@@ -104,22 +102,11 @@ const rowItemTemplate = html`
         :itemTemplate="${gridItemTemplate}"
         :items="${x => x.items}"
         style="
-            contain: none;
             display: block;
-            grid-row: 1;
-            grid-column: 1;
-            height:  ${(x, c) =>
-            c.parent.orientation === Orientation.vertical
-                ? `${c.parent.spanMap[c.index]?.span}px`
-                : `100%`};
-            width:  ${(x, c) =>
-            c.parent.orientation === Orientation.vertical
-                ? `100%`
-                : `${c.parent.spanMap[c.index]?.span}px`};
-            transform: ${(x, c) =>
-            c.parent.orientation === Orientation.horizontal
-                ? `translateX(${c.parent.spanMap[c.index]?.start}px)`
-                : `translateY(${c.parent.spanMap[c.index]?.start}px)`};
+            position: absolute;
+            height:  ${(x, c) => `${c.parent.spanMap[c.index]?.span}px`};
+            width:  100%;
+            transform: ${(x, c) => `translateY(${c.parent.spanMap[c.index]?.start}px)`};
         "
     ></fast-virtual-list>
 `;

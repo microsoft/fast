@@ -42,8 +42,7 @@ const defaultItemTemplate: ViewTemplate<any> = html`
         style="
             overflow-wrap: anywhere;
             overflow: hidden;
-            grid-row: 1;
-            grid-column: 1;
+            position: absolute;
             height:  ${(x, c) =>
             c.parent.orientation === Orientation.vertical
                 ? `${c.parent.spanMap[c.index]?.span}px`
