@@ -1,0 +1,19 @@
+{
+    "version": 1.1,
+    "tags": [
+        {
+            "name": "fast-tooltip",
+            "title": "Tooltip",
+            "description": "The FAST tooltip element",
+            "attributes": [
+            ],
+            "slots": [
+                {
+                    "name": "",
+                    "title": "Default slot",
+                    "description": "The tooltip content"
+                }
+            ]
+        }
+    ]
+}

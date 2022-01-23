@@ -1293,6 +1293,45 @@ export class FoundationElementRegistry<TDefinition extends FoundationElementDefi
 // @public
 export type FoundationElementTemplate<T, K extends FoundationElementDefinition = FoundationElementDefinition> = LazyFoundationOption<T, K>;
 
+// @public (undocumented)
+export interface GalleryData {
+    // (undocumented)
+    items: GalleryItemData[];
+    // (undocumented)
+    title: string;
+}
+
+// @public (undocumented)
+export interface GalleryItemData {
+    // (undocumented)
+    image: string;
+    // (undocumented)
+    title: string;
+}
+
+// @public (undocumented)
+export class GalleryPanel extends FoundationElement {
+    // (undocumented)
+    connectedCallback(): void;
+    // (undocumented)
+    disconnectedCallback(): void;
+    // (undocumented)
+    panelData: GalleryPanelData;
+    // @internal (undocumented)
+    testButton: HTMLElement;
+}
+
+// @public (undocumented)
+export interface GalleryPanelData {
+    // (undocumented)
+    galleries: GalleryData[];
+    // (undocumented)
+    title: string;
+}
+
+// @public
+export const galleryPanelTemplate: (context: ElementDefinitionContext, definition: FoundationElementDefinition) => ViewTemplate;
+
 // @public
 export enum GenerateHeaderOptions {
     // (undocumented)

@@ -9,15 +9,15 @@ import "./index";
 const imageItemTemplate = html`
     <fast-loader-card
         style="
-            grid-row: 1;
-            grid-column: 1;
+            position: absolute;
+            contain: size;
             height:  ${(x, c) =>
             c.parent.orientation === Orientation.vertical
                 ? `${c.parent.spanMap[c.index]?.span}px`
-                : `100%`};
+                : `200px`};
             width:  ${(x, c) =>
             c.parent.orientation === Orientation.vertical
-                ? `100%`
+                ? `200px`
                 : `${c.parent.spanMap[c.index]?.span}px`};
             transform: ${(x, c) =>
             c.parent.orientation === Orientation.horizontal
@@ -57,10 +57,9 @@ const gridItemTemplate = html`
     <fast-loader-card
         load-delay="100"
         style="
+            position: absolute;
             background: transparent;
-            contain: strict;
-            grid-row: 1;
-            grid-column: 1;
+            contain: size;
             height:  ${(x, c) =>
             c.parent.orientation === Orientation.vertical
                 ? `${c.parent.spanMap[c.index]?.span}px`
@@ -95,22 +94,11 @@ const rowItemTemplate = html`
         :itemTemplate="${gridItemTemplate}"
         :items="${x => x.items}"
         style="
-            contain: none;
-            display: block;
-            grid-row: 1;
-            grid-column: 1;
-            height:  ${(x, c) =>
-            c.parent.orientation === Orientation.vertical
-                ? `${c.parent.spanMap[c.index]?.span}px`
-                : `100%`};
-            width:  ${(x, c) =>
-            c.parent.orientation === Orientation.vertical
-                ? `100%`
-                : `${c.parent.spanMap[c.index]?.span}px`};
-            transform: ${(x, c) =>
-            c.parent.orientation === Orientation.horizontal
-                ? `translateX(${c.parent.spanMap[c.index]?.start}px)`
-                : `translateY(${c.parent.spanMap[c.index]?.start}px)`};
+            contain: size;
+            position: absolute;
+            width:  100%;
+            height:  ${(x, c) => `${c.parent.spanMap[c.index]?.span}px`};
+            transform: ${(x, c) => `translateY(${c.parent.spanMap[c.index]?.start}px)`};
         "
     ></fast-virtual-list>
 `;

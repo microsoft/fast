@@ -38,6 +38,8 @@ import fastDividerDefinition from "./divider/divider.vscode.definition.json";
 export { fastDividerDefinition };
 import fastFlipperDefinition from "./flipper/flipper.vscode.definition.json";
 export { fastFlipperDefinition };
+import fastGalleryPanelDefinition from "./gallery-panel/gallery-panel.vscode.definition.json";
+export { fastGalleryPanelDefinition };
 import fastLoaderCardDefinition from "./loader-card/loader-card.vscode.definition.json";
 export { fastLoaderCardDefinition };
 import fastListboxDefinition from "./listbox/listbox.vscode.definition.json";
