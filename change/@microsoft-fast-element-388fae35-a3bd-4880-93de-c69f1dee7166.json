@@ -1,7 +1,0 @@
-{
-  "type": "minor",
-  "comment": "add recyle option to repeat directive",
-  "packageName": "@microsoft/fast-element",
-  "email": "scomea@microsoft.com",
-  "dependentChangeType": "patch"
-}
