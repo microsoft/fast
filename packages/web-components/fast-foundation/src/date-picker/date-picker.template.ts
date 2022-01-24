@@ -147,6 +147,9 @@ export const datePickerTemplate: (
             @click="${x => (!x.readonly ? x.toggleFlyout(true) : () => {})}"
             ?readonly="${x => x.readonly}"
             placeholder="${x => x.placeholder}"
+            appearance="${x => x.appearance}"
+            ?disabled="${x => x.disabled}"
+            ?required="${x => x.required}"
             @blur="${x => x.handleBlur()}"
             @focus="${x => x.handleFocus()}"
             @keyup="${(x, c) => x.handleKeyup(c.event)}"
@@ -154,7 +157,7 @@ export const datePickerTemplate: (
             <div slot="end">&#128197;</div>
         </${textField}>
         ${when(
-            x => !x.readonly,
+            x => !x.readonly && !x.disabled,
             html`
             <${anchoredRegion}
                 class="flyout ${x => (x.flyoutOpen ? "show" : "")}"

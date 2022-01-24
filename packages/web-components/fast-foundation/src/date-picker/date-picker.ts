@@ -133,15 +133,15 @@ export class DatePicker extends FormAssociatedDatePicker {
      * Minimum allowed date
      * @public
      */
-    @attr({ converter: nullableNumberConverter })
-    public min: number;
+    @attr
+    public min: string;
 
     /**
      * Maximum allowed date
      * @public
      */
-    @attr({ converter: nullableNumberConverter })
-    public max: number;
+    @attr
+    public max: string;
 
     /**
      * Should the text field be editable or only the picker allowed
@@ -240,6 +240,16 @@ export class DatePicker extends FormAssociatedDatePicker {
      */
     @attr({ attribute: "disabled-dates" })
     public disabledDates: string;
+
+    public setDisabledDates() {
+        if (this.min || this.max) {
+            const start = new Date(this.min) || null;
+            const end = new Date(this.max) || null;
+        }
+    }
+
+    @observable
+    public disabledYears: string;
 
     /**
      * The text field used for date entry

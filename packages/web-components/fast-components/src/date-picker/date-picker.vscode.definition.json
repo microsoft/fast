@@ -28,59 +28,192 @@
                             "name": "datetime-local"
                         }
                     ],
-                    "default": false,
-                    "required": false
+                    "default": "date",
+                    "required": true
                 },
                 {
-                    "name": "speed",
-                    "title": "Speed",
-                    "description": "Scroll speed in pixels per second",
-                    "type": "number",
-                    "default": false,
-                    "required": false
-                },
-                {
-                    "name": "duration",
-                    "title": "duration",
-                    "description": "Transition duration in seconds or milliseconds. If present, overrides the `speed` attribute.",
+                    "name": "value",
+                    "title": "Value",
+                    "description": "Date and/or time selected",
                     "type": "string",
                     "default": false,
                     "required": false
                 },
                 {
-                    "name": "easing",
-                    "title": "Easing",
-                    "description": "Scroll easing",
+                    "name": "reset-text",
+                    "title": "Reset text",
+                    "description": "Text that resets the views to the current date",
+                    "type": "string",
+                    "default": "Go to today",
+                    "required": false
+                },
+                {
+                    "name": "locale",
+                    "title": "Locale",
+                    "description": "String representing localization. Market, language, calendar type and numbering system",
+                    "type": "string",
+                    "default": "en-US",
+                    "required": false
+                },
+                {
+                    "name": "name",
+                    "title": "Name",
+                    "description": "Name of the form element",
+                    "type": "string",
+                    "default": false,
+                    "required": false
+                },
+                {
+                    "name": "placeholder",
+                    "title": "Placeholder",
+                    "description": "Text used for placeholder when a date and/or time is not selected",
+                    "type": "string",
+                    "default": false,
+                    "required": false
+                },
+                {
+                    "name": "appearance",
+                    "title": "Appearance",
+                    "description": "The text field's visual treatment",
+                    "type": "string",
+                    "values": [{ "name": "outline" }, { "name": "filled" }],
+                    "default": "outline",
+                    "required": false
+                },
+                {
+                    "name": "readonly",
+                    "title": "Readonly",
+                    "description": "If the date is editable",
+                    "type": "boolean",
+                    "default": false,
+                    "required": false
+                },
+                {
+                    "name": "disabled",
+                    "title": "Disabled",
+                    "description": "If the date is disabled",
+                    "type": "boolean",
+                    "default": false,
+                    "required": false
+                },
+                {
+                    "name": "required",
+                    "title": "Required",
+                    "description": "If the date is required",
+                    "type": "boolean",
+                    "default": false,
+                    "required": false
+                },
+                {
+                    "name": "min",
+                    "title": "Minumum date",
+                    "description": "Earliest date allowed",
+                    "type": "string",
+                    "default": false,
+                    "required": false
+                },
+                {
+                    "name": "max",
+                    "title": "Maximum date",
+                    "description": "Latest date allowed",
+                    "type": "string",
+                    "default": false,
+                    "required": false
+                },
+                {
+                    "name": "allow-text-input",
+                    "title": "Allow text input",
+                    "description": "If the control allows text entry or just date picking",
+                    "type": "boolean",
+                    "default": false,
+                    "required": false
+                },
+                {
+                    "name": "day-format",
+                    "title": "Day format",
+                    "description": "The formatting for the day in the outputted date.",
                     "type": "string",
                     "values": [
-                        {
-                            "name": "linear"
-                        },
-                        {
-                            "name": "ease-in"
-                        },
-                        {
-                            "name": "ease-out"
-                        },
-                        {
-                            "name": "ease-in-out"
-                        }
+                        { "name": "2-digit" },
+                        { "name": "numeric" }
                     ],
+                    "default": "numeric",
+                    "required": false
+                },
+                {
+                    "name": "weekday-format",
+                    "title": "Weekday format",
+                    "description": "The formatting for the weekday in the outputted date.",
+                    "type": "string",
+                    "values": [
+                        { "name": "long" },
+                        { "name": "narrow" },
+                        { "name": "short" }
+                    ],
+                    "default": false,
+                    "required": false
+                },
+                {
+                    "name": "month-format",
+                    "title": "Month format",
+                    "description": "The formatting for the month in the outputted date.",
+                    "type": "string",
+                    "values": [
+                        { "name": "2-digit" },
+                        { "name": "long" },
+                        { "name": "narrow" },
+                        { "name": "numeric" },
+                        { "name": "short" }
+                    ],
+                    "default": "numeric",
+                    "required": false
+                },
+                {
+                    "name": "year-format",
+                    "title": "Year format",
+                    "description": "The formatting for the year in the outputted date.",
+                    "type": "string",
+                    "values": [
+                        { "name": "2-digit" },
+                        { "name": "numeric" }
+                    ],
+                    "default": "numeric",
+                    "required": false
+                },
+                {
+                    "name": "hour-format",
+                    "title": "Hour format",
+                    "description": "The formatting for the hour in the outputted time.",
+                    "type": "string",
+                    "values": [
+                        { "name": "2-digit" },
+                        { "name": "numeric" }
+                    ],
+                    "default": "numeric",
+                    "required": false
+                },
+                {
+                    "name": "minute-format",
+                    "title": "Minute format",
+                    "description": "The formatting for the minutes in the outputted time.",
+                    "type": "string",
+                    "values": [
+                        { "name": "2-digit" },
+                        { "name": "numeric" }
+                    ],
+                    "default": "numeric",
+                    "required": false
+                },
+                {
+                    "name": "placeholder",
+                    "title": "Placeholder",
+                    "description": "Text used for placeholder when a date and/or time is not selected",
+                    "type": "string",
                     "default": false,
                     "required": false
                 }
             ],
             "slots": [
-                {
-                    "name": "previousFlipper",
-                    "title": "Prevous flipper slot",
-                    "description": "Flipper used to scroll to previous content"
-                },
-                {
-                    "name": "nextFlipper",
-                    "title": "Next flipper slot",
-                    "description": "Flipper used to scroll to next content"
-                },
                 {
                     "name": "",
                     "title": "Default slot",
