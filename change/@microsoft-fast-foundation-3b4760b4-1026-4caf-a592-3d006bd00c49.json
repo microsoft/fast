@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "use default slot in accordion",
-  "packageName": "@microsoft/fast-foundation",
-  "email": "mathieulavoie94@gmail.com",
-  "dependentChangeType": "patch"
-}
