@@ -124,6 +124,9 @@ export class DateFormatter {
         locale: string = this.locale
     ): string {
         const dateObj = this.getDateObject(date);
+        if (!dateObj.getTime()) {
+            return "";
+        }
         const optionsWithTimeZone = {
             timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
             ...format,

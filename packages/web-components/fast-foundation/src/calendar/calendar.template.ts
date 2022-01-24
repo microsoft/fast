@@ -238,9 +238,11 @@ export const calendarTemplate: FoundationElementTemplate<
     return html`
         <template>
             ${startTemplate}
-            ${definition.title instanceof Function
-                ? definition.title(context, definition)
-                : definition.title ?? ""}
+            <slot name="title">
+                ${definition.title instanceof Function
+                    ? definition.title(context, definition)
+                    : definition.title ?? ""}
+            </slot>
             <slot></slot>
             ${when(
                 x => x.readonly === false,

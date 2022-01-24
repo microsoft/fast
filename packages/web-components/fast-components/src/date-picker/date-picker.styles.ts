@@ -34,6 +34,7 @@ export const datePickerStyles: (
 ) => css`
     :host {
         --elevation: 14;
+        --panel-size: 240px;
         position: relative;
     }
     .flyout {
@@ -52,23 +53,29 @@ export const datePickerStyles: (
     }
 
     .flyout > * + * {
-        margin: 0 0 0 20px;
+        margin: 0 0 0 calc(${designUnit} * 5px);
     }
 
     .calendar {
-        width: 240px;
+        width: var(--panel-size);
         position: relative;
     }
 
-    .calendar::part(title) {
-        font-size: ${typeRampBaseFontSize};
-        text-align: left;
+    .calendar-title-wrap {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        align-items: center;
     }
 
-    .calendar-controls {
-        position: absolute;
-        right: 0;
-        top: 0;
+    .calendar-title {
+        background: transparent;
+        cursor: default;
+    }
+
+    .calendar-title::part(control) {
+        aign-items: left;
+        justify-content: left;
+        font-weight: bold;
     }
 
     .calendar-control {
@@ -76,7 +83,7 @@ export const datePickerStyles: (
     }
 
     .picker {
-        width: 240px;
+        width: var(--panel-size);
     }
 
     .picker-title {
@@ -98,7 +105,7 @@ export const datePickerStyles: (
 
     .picker-grid {
         display: grid;
-        height: 210px;
+        height: var(--panel-size);
     }
 
     .picker-row {
@@ -113,22 +120,30 @@ export const datePickerStyles: (
         cursor: pointer;
     }
 
-    .picker-title .title-action:hover,
+    .title-action {
+        cursor: default;
+    }
+
+    .interactive-title {
+        cursor: pointer;
+    }
+
+    .interactive-title:hover,
     .picker-title .arrow:hover,
     .picker-cell:hover {
         background: ${neutralFillRest};
     }
 
-    .reset {
+    .reset-text {
         float: right;
         background: transparent;
         margin: 30px 0 0;
     }
 
     .time-picker {
-        width: 260px;
+        width: var(--panel-size);
         box-sizing: border-box;
-        padding: 10px;
+        padding: calc(${designUnit} * 2px);
         display: grid;
         grid-template-columns: 1fr 20px 1fr 1fr;
     }
@@ -138,7 +153,7 @@ export const datePickerStyles: (
     }
 
     .time-list + .time-list {
-        margin-left: 10px;
+        margin-left: calc(${designUnit} * 2px);
     }
 
     .time-list:hover {
@@ -146,6 +161,6 @@ export const datePickerStyles: (
     }
 
     .time-separate {
-        padding: 15px 8px;
+        padding: 15px calc(${designUnit} * 2px) 0;
     }
 `;

@@ -104,29 +104,248 @@ async function setup(props?) {
     return { connect, disconnect, document, element };
 }
 
-describe("Defaults", () => {
-    it("Should default to type='date'", async () => {
-        const { element, disconnect } = await setup();
+describe("DatePicker", () => {
+    describe("Defaults", () => {
+        it("Should default to type='date'", async () => {
+            const { element, disconnect } = await setup();
 
-        expect(element.type).to.equal("date");
+            expect(element.type).to.equal("date");
 
-        await disconnect();
+            await disconnect();
+        });
+
+        it("Should default locale to 'en-us'", async () => {
+            const { element, disconnect } = await setup();
+
+            expect(element.locale.toLocaleLowerCase()).to.equal("en-us");
+
+            await disconnect();
+        });
+
+        it("Should default day format to numeric", async () => {
+            const { element, disconnect } = await setup();
+
+            expect(element.dayFormat).to.equal("numeric");
+
+            await disconnect();
+        });
+
+        it("Should default month format to numeric", async () => {
+            const { element, disconnect } = await setup();
+
+            expect(element.monthFormat).to.equal("numeric");
+
+            await disconnect();
+        });
+
+        it("Should default year format to numeric", async () => {
+            const { element, disconnect } = await setup();
+
+            expect(element.yearFormat).to.equal("numeric");
+
+            await disconnect();
+        });
+
+        it("Should default hour format to numeric", async () => {
+            const { element, disconnect } = await setup();
+
+            expect(element.hourFormat).to.equal("numeric");
+
+            await disconnect();
+        });
+
+        it("Should default minute format to 2-digit", async () => {
+            const { element, disconnect } = await setup();
+
+            expect(element.minuteFormat).to.equal("2-digit");
+
+            await disconnect();
+        });
+
+        it("Should default the calendar to today's month and year", async () => {
+            const { element, disconnect } = await setup();
+            const now = new Date();
+
+            expect(element.calendarMonth).to.equal(now.getMonth() + 1);
+            expect(element.calendarYear).to.equal(now.getFullYear());
+
+            await disconnect();
+        });
+
+        it("Should default the month picker view to today's year", async () => {
+            const { element, disconnect } = await setup();
+            const now = new Date();
+
+            expect(element.monthView).to.equal(now.getFullYear());
+
+            await disconnect();
+        });
+
+        it("Should default the year picker view to today's year's decade", async () => {
+            const { element, disconnect } = await setup();
+            const now = new Date();
+
+            expect(element.yearView).to.equal(Math.floor(now.getFullYear() / 10) * 10);
+
+            await disconnect();
+        });
+
+        /*
+        it("", async () => {
+            const { element, disconnect } = await setup();
+
+            expect(element).to.equal();
+
+            await disconnect();
+        });
+        */
     });
 
-    it("Should default the calendar to today's date", async () => {
-        const { element, disconnect } = await setup();
-        const now = new Date();
+    describe("Date picker types", () => {
+        it("Should default to display [xx]/[xx]/[xxxx] for type='date'", async () => {
+            const { element, disconnect } = await setup({type: 'date', value: "August 17, 2023"});
 
-        await disconnect();
+            expect(element.value).to.equal("8/17/2023");
+
+            await disconnect();
+        });
+
+        it("Should display [xx]/[xxxx] for type='month'", async () => {
+            const { element, disconnect } = await setup({type: 'month', value: "August 17, 2023"});
+
+            expect(element.value).to.equal("8/2023");
+
+            await disconnect();
+        });
+
+        it("Should display [xxxx] for type='year'", async () => {
+            const { element, disconnect } = await setup({type: 'year', value: "August 17, 2023"});
+
+            expect(element.value).to.equal("2023");
+
+            await disconnect();
+        });
+
+        it("Should display [xx]:[xx] [AM|PM] for type='time'", async () => {
+            const { element, disconnect } = await setup({type: 'time', value: "3:30 AM"});
+
+            expect(element.value).to.equal("3:30 AM");
+
+            await disconnect();
+        });
+
+        it("Should display '[xx]/[xx]/[xxxx], [xx]:[xx] [AM|PM]' for type='datetime-local'", async () => {
+            const { element, disconnect } = await setup({type: 'datetime-local', value: "15:20 dec 17 2018"});
+
+            expect(element.value).to.equal("12/17/2018, 3:20 PM");
+
+            await disconnect();
+        });
     });
 
-    /*
-    it("", async () => {
-        const { element, disconnect } = await setup();
+    describe("Formatting", () => {
+        it("Should display default formatting as [xx]/[xx]/[xxxx] for setting a date", async () => {
+            const { element, disconnect } = await setup({value: "January 2, 2020"});
 
-        expect(element).to.equal();
+            expect(element.value).to.equal("1/2/2020");
 
-        await disconnect();
+            await disconnect();
+        });
+
+        it("Should display '[weekday], [xx]/[xx]/[xxxx]' when weekday-format='long'", async () => {
+            const { element, disconnect } = await setup({'weekday-format': 'long', value: "jan 13 2021"});
+
+            expect(element.value).to.equal("Wednesday, 1/13/2021");
+
+            await disconnect();
+        });
+
+        it("Should display '[three letter weekday], [xx]/[xx]/[xxxx] for weekday-format='short'", async () => {
+            const { element, disconnect } = await setup({'weekday-format': 'short', value: "March 17, 2011"});
+
+            expect(element.value).to.equal("Thu, 3/17/2011");
+
+            await disconnect();
+        });
+
+        it("Should display '[first letter of weekday], [xx]/[xx]/[xxxx]' for weekday-format='narrow'", async () => {
+            const { element, disconnect } = await setup({'weekday-format': 'narrow', value: "dec 12, 2014"});
+
+            expect(element.value).to.equal("F, 12/12/2014");
+
+            await disconnect();
+        });
+
+        it("Should display '[full month name] [day], [full year]' when month-format='long'", async () => {
+            const { element, disconnect } = await setup({'month-format': 'long', value: "2/14/2024"});
+
+            expect(element.value).to.equal("February 14, 2024");
+
+            await disconnect();
+        });
+
+        it("Should display '[first letter of month] [day], [full year]' when month-format='narrow'", async () => {
+            const { element, disconnect } = await setup({'month-format': 'narrow', value: "5/18/2016"});
+
+            expect(element.value).to.equal("M 18, 2016");
+
+            await disconnect();
+        });
+
+        it("Should display '[xx]/[xx]/[xx] for year-format='2-digit'", async () => {
+            const { element, disconnect } = await setup({'year-format': '2-digit', value: "sep 25, 1990"});
+
+            expect(element.value).to.equal("9/25/90");
+
+            await disconnect();
+        });
+
+        it("Should display default formatting for setting a date", async () => {
+            const { element, disconnect } = await setup({value: "January 2, 2020"});
+
+            expect(element.value).to.equal("1/2/2020");
+
+            await disconnect();
+        });
     });
-    */
+
+    describe("Localization", () => {
+        it("Should display display French text when using locale='fr-fr'", async () => {
+            const { element, disconnect } = await setup({locale: "fr-fr"});
+
+            const months = element.getMonths().map(x => x.text);
+
+            // Testing that it returns French month names
+            expect(months[0]).to.equal("janv.");
+            expect(months[1]).to.equal("févr.");
+            expect(months[2]).to.equal("mars");
+            expect(months[3]).to.equal("avr.");
+            expect(months[4]).to.equal("mai");
+            expect(months[5]).to.equal("juin");
+            expect(months[6]).to.equal("juil.");
+            expect(months[7]).to.equal("août");
+            expect(months[8]).to.equal("sept.");
+            expect(months[9]).to.equal("oct.");
+            expect(months[10]).to.equal("nov.");
+            expect(months[11]).to.equal("déc.");
+
+            await disconnect();
+        });
+
+        it("Should display [dd]/[mm]/[yyyy] for French date picker using locale='fr-fr'", async () => {
+            const { element, disconnect } = await setup({locale: "fr-fr", value: "3/14/2018"});
+
+            expect(element.value).to.equal("14/03/2018");
+
+            await disconnect();
+        });
+
+        it("Should display [dd].[mm].[yyyy] for German date picker using locale='de-de'", async () => {
+            const { element, disconnect } = await setup({locale: "de-de", value: "10/17/2025"});
+
+            expect(element.value).to.equal("17.10.2025");
+
+            await disconnect();
+        });
+    });
 });

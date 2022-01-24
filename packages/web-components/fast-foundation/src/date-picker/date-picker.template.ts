@@ -14,7 +14,8 @@ import type { DatePicker, DatePickerOptions } from "./date-picker";
  * Template to render a time picker menu
  * @param context - Control context
  * @param times - labels and values for times, hours, minutes and meridian
- * @returns - A ViewTemplate
+ * @returns - A time picker template
+ * @public
  */
 export const timePickerTemplate = (context: ElementDefinitionContext, times) => {
     const listbox = context.tagFor(ListboxElement);
@@ -53,6 +54,17 @@ export const timePickerTemplate = (context: ElementDefinitionContext, times) => 
     `;
 };
 
+/**
+ *
+ * @param context - The date picker context
+ * @param items  - An array of items to display
+ * @param title - The picker title text
+ * @param previousAction - Action to show previous options
+ * @param nextAction - Action to show next options
+ * @param reset - Reset views action
+ * @returns - A picker template used by month and year pickers
+ * @public
+ */
 const pickerTemplate = (context, items, title, previousAction, nextAction, reset) => {
     const button = context.tagFor(Button);
     const grid = context.tagFor(DataGrid);
@@ -61,7 +73,8 @@ const pickerTemplate = (context, items, title, previousAction, nextAction, reset
     return html`
       <div class="picker" part="picker">
         <div class="picker-title" part="picker-title">
-            <${button} class="title-action" @click="${x => title.action()}">
+            <${button} class="title-action ${x =>
+        title.isInteractive ? "interactive-title" : ""}" @click="${x => title.action()}">
             ${x => title.text}
             </${button}>
             <${button} class="arrow" part="arrow-previous" @click="${x =>
@@ -104,9 +117,10 @@ const pickerTemplate = (context, items, title, previousAction, nextAction, reset
 
 /**
  *
- * @param context
- * @param definition
+ * @param context - The date-picker class context
+ * @param definition - Date-picker options
  * @returns - A ViewTemplate
+ * @public
  */
 export const datePickerTemplate: (
     Context: ElementDefinitionContext,
@@ -119,8 +133,8 @@ export const datePickerTemplate: (
     const anchoredRegion = context.tagFor(AnchoredRegion);
     const button = context.tagFor(Button);
     const calendar = context.tagFor(Calendar);
-    const resetButton = html`<${button} class="reset" part="reset" @click="${x =>
-        x.resetCalendar()}">${x => x.reset}</${button}>`;
+    const resetButton = html`<${button} class="reset-text" part="reset-text" @click="${x =>
+        x.resetCalendar()}">${x => x.resetText}</${button}>`;
 
     return html`
     <template
@@ -129,94 +143,112 @@ export const datePickerTemplate: (
     >
         <${textField}
             ${ref("textField")}
-            value=${x => x.value}
+            name=${x => x.name}
             @click="${x => (!x.readonly ? x.toggleFlyout(true) : () => {})}"
             ?readonly="${x => x.readonly}"
             placeholder="${x => x.placeholder}"
+            @blur="${x => x.handleBlur()}"
+            @focus="${x => x.handleFocus()}"
+            @keyup="${(x, c) => x.handleKeyup(c.event)}"
         >
             <div slot="end">&#128197;</div>
         </${textField}>
-        <${context.tagFor(AnchoredRegion)}
-            class="flyout ${x => (x.flyoutOpen ? "show" : "")}"
-            part="flyout"
-            :anchorElement="${x => x.textField}"
-            vertical-positioning-mode="dynamic"
-            vertical-default-position="bottom"
-            horizontal-positioning-mode="dynamic"
-            horizontal-inset="true"
-            horizontal-default-position="start"
-        >
-            ${when(
-                x => x.type === "datetime-local" || x.type === "time",
-                html`
-                    ${x => timePickerTemplate(context, x.getTimes())}
+        ${when(
+            x => !x.readonly,
+            html`
+            <${anchoredRegion}
+                class="flyout ${x => (x.flyoutOpen ? "show" : "")}"
+                part="flyout"
+                :anchorElement="${x => x.textField}"
+                vertical-positioning-mode="dynamic"
+                vertical-default-position="bottom"
+                horizontal-positioning-mode="dynamic"
+                horizontal-inset="true"
+                horizontal-default-position="start"
+            >
+                ${when(
+                    x => x.type === "datetime-local" || x.type === "time",
+                    html`
+                        ${x => timePickerTemplate(context, x.getTimes())}
+                    `
+                )}
+                ${when(
+                    x => x.showCalendar,
+                    html`
+                    <${calendar}
+                        selected-dates="${x => `${x.date || ""}`}"
+                        class="calendar"
+                        @dateselected="${(x, c) =>
+                            x.handleDateClicked((c.event as MouseEvent).detail)}"
+                        part="calendar"
+                        locale="${x => x.locale}"
+                        month="${x => x.calendarMonth}"
+                        year="${x => x.calendarYear}"
+                        min-weeks="6">
+                            <div
+                                slot="title"
+                                class="calendar-title-wrap"
+                                @click="${x => x.monthPickerDispay()}"
+                                >
+                                <${button} class="calendar-title ${x =>
+                        x.type === "datetime-local"
+                            ? "interactive-title"
+                            : ""}" part="calendar-title">
+                                    ${x => x.calendarTitle}
+                                </${button}>
+                                <div class="calendar-controls" part="calendar-controls">
+                                    <${button} @click="${x =>
+                        x.previousCalendar()}" class="calendar-control">&downarrow;</${button}>
+                                    <${button} @click="${x =>
+                        x.nextCalendar()}" class="calendar-control">&uparrow;</${button}>
+                                </div>
+                            </div>
+                        </${calendar}>
                 `
-            )}
-            ${when(
-                x => x.type === "date" || x.type === "datetime-local",
-                html`
-                <${calendar}
-                    selected-dates="${x => `${x.date || ""}`}"
-                    class="calendar"
-                    @dateselected="${(x, c) =>
-                        x.handleDateClicked((c.event as MouseEvent).detail)}"
-                    part="calendar"
-                    locale="${x => x.locale}"
-                    month="${x => x.calendarMonth}"
-                    year="${x => x.calendarYear}"
-                    min-weeks="6">
-                        <div class="calendar-controls" part="calendar-controls">
-                            <${button} @click="${x =>
-                    x.previousCalendar()}" class="calendar-control">&downarrow;</${button}>
-                            <${button} @click="${x =>
-                    x.nextCalendar()}" class="calendar-control">&uparrow;</${button}>
-                        </div>
-                    </${calendar}>
-            `
-            )}
-            ${when(
-                x => (x.type === "date" && !x.showYearPicker) || x.type === "month",
-                x =>
-                    pickerTemplate(
-                        context,
-                        x.arrayToMatrix(x.getMonths(), 4),
-                        {
-                            text: x.dateFormatter.getYear(x.monthView),
-                            action: () => {
-                                x.showYearPicker = true;
+                )}
+                ${when(
+                    x => x.showMonthPicker,
+                    x =>
+                        pickerTemplate(
+                            context,
+                            x.arrayToMatrix(x.getMonths(), 4),
+                            {
+                                text: x.dateFormatter.getYear(x.monthView),
+                                action: x.yearPickerDisplay.bind(x),
+                                isInteractive: x.type.indexOf("date") >= 0,
                             },
-                        },
-                        () => {
-                            x.monthView -= 1;
-                        },
-                        () => {
-                            x.monthView += 1;
-                        },
-                        x.type.indexOf("date") >= 0 ? resetButton : () => {}
-                    )
-            )}
-            ${when(
-                x => x.type === "month" || x.type === "year" || x.showYearPicker,
-                x => {
-                    const years = x.getYears();
-                    const start = years[0].text;
-                    const end = years[years.length - 1].text;
-                    return pickerTemplate(
-                        context,
-                        x.arrayToMatrix(years, 4),
-                        {
-                            text: `${start} - ${end}`,
-                            action: () => {
-                                x.showYearPicker = false;
+                            () => {
+                                x.monthView -= 1;
                             },
-                        },
-                        () => (x.yearView -= 12),
-                        () => (x.yearView += 12),
-                        x.type.indexOf("date") >= 0 ? resetButton : () => {}
-                    );
-                }
-            )}
-        </${context.tagFor(AnchoredRegion)}>
+                            () => {
+                                x.monthView += 1;
+                            },
+                            x.type.indexOf("date") >= 0 ? resetButton : () => {}
+                        )
+                )}
+                ${when(
+                    x => x.showYearPicker,
+                    x => {
+                        const years = x.getYears();
+                        const start = years[0].text;
+                        const end = years[years.length - 1].text;
+                        return pickerTemplate(
+                            context,
+                            x.arrayToMatrix(years, 4),
+                            {
+                                text: `${start} - ${end}`,
+                                action: x.yearPickerDisplay.bind(x, false),
+                                isInteractive: x.type.indexOf("date") >= 0,
+                            },
+                            () => (x.yearView -= 12),
+                            () => (x.yearView += 12),
+                            x.type.indexOf("date") >= 0 ? resetButton : () => {}
+                        );
+                    }
+                )}
+            </${anchoredRegion}>
+        `
+        )}
     </template>
 `;
 };

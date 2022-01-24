@@ -744,26 +744,40 @@ export class DateFormatter {
     yearFormat: YearFormat;
 }
 
-// @public (undocumented)
+// @alpha
 export class DatePicker extends FoundationElement {
+    // @public
     allowTextInput: boolean;
+    // @public
     appearance: string;
     arrayToMatrix(array: any[], itemsPerRow: number): any[][];
+    // @public
+    calendarMonth: number;
+    // @public
+    calendarYear: number;
+    // @public
     closeFlyout(force?: boolean): void;
+    // @public
     connectedCallback(): void;
+    // @public
     date: string;
+    // @public
     dateFormatter: DateFormatter;
-    day: number;
+    // @public
     dayFormat: DayFormat;
+    // @public
     disabled: boolean;
     disabledDates: string;
+    // @public
     disconnectedCallback(): void;
+    // @public
     flyoutOpen: boolean;
     getMonths(): {
         action: () => void;
         selected: boolean;
         text: string;
     }[];
+    // @public
     getTimes(): {
         hours: {
             text: string;
@@ -780,60 +794,91 @@ export class DatePicker extends FoundationElement {
             action: () => void;
         }[];
     };
+    // @public
     getYears(): {
         action: () => void;
         text: string;
     }[];
+    // @public
+    handleBlur(): void;
+    // @public
     handleDateClicked({ day, month, year }: {
         day: any;
         month: any;
         year: any;
     }): void;
+    // @public
     handleHourClicked(hour: number): void;
+    // @public
     handleMeridianClicked(meridian: "AM" | "PM"): void;
+    // @public
     handleMinuteClicked(minute: number): void;
-    handleMonthClicked(month: number): void;
+    // @public
+    handleMonthClicked(month: number, year: number): void;
+    // @public
     handleYearClicked(year: number): void;
-    hour: number;
+    // @public
+    hour12: boolean;
+    // @public
+    hourFormat: string;
+    // @public
     locale: string;
+    // @public
     max: number;
-    meridian: "AM" | "PM";
+    // @public
     min: number;
-    minute: number;
-    month: number;
+    // @public
+    minuteFormat: string;
+    // @public
     monthFormat: MonthFormat;
+    // @public
     monthView: number;
+    // @public
     name: string;
     nextCalendar(): void;
+    // @public
     openFlyout(force?: boolean): void;
+    // @public
     overFlyout: boolean;
+    // @public
     placeholder: string;
     previousCalendar(): void;
+    // @public
     readonly: boolean;
+    // @public
     required: boolean;
-    // (undocumented)
-    reset: string;
     resetCalendar(): void;
+    // @public
+    resetText: string;
+    // @public
     setValue(values: any): void;
+    // (undocumented)
+    setViews(): void;
+    // @public
     showYearPicker: boolean;
-    // (undocumented)
     textField: any;
+    // @public
     toggleFlyout(force?: boolean): void;
-    // (undocumented)
+    // @public
     type: "date" | "datetime-local" | "month" | "year" | "time";
+    // @public
     value: string;
     // (undocumented)
     valueChanged(previous: any, next: any): void;
+    // @public
     weekdayFormat: WeekdayFormat;
-    year: number;
+    // @public
     yearFormat: YearFormat;
-    yearRangeView: number;
+    // @public
     yearView: number;
 }
 
-// @public (undocumented)
+// @alpha
 export type DatePickerOptions = FoundationElementDefinition & {};
 
+// Warning: (ae-incompatible-release-tags) The symbol "datePickerTemplate" is marked as @public, but its signature references "DatePickerOptions" which is marked as @alpha
+// Warning: (ae-incompatible-release-tags) The symbol "datePickerTemplate" is marked as @public, but its signature references "DatePicker" which is marked as @alpha
+//
 // @public (undocumented)
 export const datePickerTemplate: (Context: ElementDefinitionContext, definition: DatePickerOptions) => ViewTemplate<DatePicker>;
 
