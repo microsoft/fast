@@ -140,6 +140,19 @@ Some context properties are opt-in because they are more costly to update. So, f
 </ul>
 ```
 
+Whether or not a repeat directive re-uses item views can be controlled with the `recycle` option setting. When `recycle: true`, which is the default value, the repeat directive may reuse views rather than create new ones from the template.  When `recycle: false` 
+previously used views are always discarded and each item will always be assigned a new view. Recyling previously used views may improve performance in some situations but may also be "dirty" from the previously displayed item.
+
+**Example: List Rendering without view recycling**
+
+```html
+<ul>
+  ${repeat(x => x.friends, html<string>`
+    <li>${(x, c) => c.index} ${x => x}</li>
+  `, { recycle: false })}
+</ul>
+```
+
 In addition to providing a template to render the items with, you can also provide an expression that evaluates to a template. This enables you to dynamically change what you are using to render the items. Each item will still be rendered with the same template, but you can use techniques from "Composing Templates" below to render a different template depending on the item itself.
 
 ### Composing templates

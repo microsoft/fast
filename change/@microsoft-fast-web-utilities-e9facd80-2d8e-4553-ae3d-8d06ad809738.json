@@ -1,0 +1,7 @@
+{
+  "type": "minor",
+  "comment": "add findLastIndex and inRange functions to fast-web-utilities",
+  "packageName": "@microsoft/fast-web-utilities",
+  "email": "john.kreitlow@microsoft.com",
+  "dependentChangeType": "patch"
+}
