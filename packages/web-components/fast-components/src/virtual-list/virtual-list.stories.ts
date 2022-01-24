@@ -12,16 +12,16 @@ const imageItemTemplate = html`
             position: absolute;
             height:  ${(x, c) =>
             c.parent.orientation === Orientation.vertical
-                ? `${c.parent.spanMap[c.index]?.span}px`
+                ? `${c.parent.visibleItemSpans[c.index]?.span}px`
                 : `100%`};
             width:  ${(x, c) =>
             c.parent.orientation === Orientation.vertical
                 ? `100%`
-                : `${c.parent.spanMap[c.index]?.span}px`};
+                : `${c.parent.visibleItemSpans[c.index]?.span}px`};
             transform: ${(x, c) =>
             c.parent.orientation === Orientation.horizontal
-                ? `translateX(${c.parent.spanMap[c.index]?.start}px)`
-                : `translateY(${c.parent.spanMap[c.index]?.start}px)`};
+                ? `translateX(${c.parent.visibleItemSpans[c.index]?.start}px)`
+                : `translateY(${c.parent.visibleItemSpans[c.index]?.start}px)`};
         "
     >
         <div style="margin: 5px 20px 0 20px; color: white">
@@ -59,16 +59,16 @@ const gridItemTemplate = html`
             position: absolute;
             height:  ${(x, c) =>
             c.parent.orientation === Orientation.vertical
-                ? `${c.parent.spanMap[c.index]?.span}px`
+                ? `${c.parent.visibleItemSpans[c.index]?.span}px`
                 : `100%`};
             width:  ${(x, c) =>
             c.parent.orientation === Orientation.vertical
                 ? `100%`
-                : `${c.parent.spanMap[c.index]?.span}px`};
+                : `${c.parent.visibleItemSpans[c.index]?.span}px`};
             transform: ${(x, c) =>
             c.parent.orientation === Orientation.horizontal
-                ? `translateX(${c.parent.spanMap[c.index]?.start}px)`
-                : `translateY(${c.parent.spanMap[c.index]?.start}px)`};
+                ? `translateX(${c.parent.visibleItemSpans[c.index]?.start}px)`
+                : `translateY(${c.parent.visibleItemSpans[c.index]?.start}px)`};
         "
     >
         <div
@@ -104,9 +104,10 @@ const rowItemTemplate = html`
         style="
             display: block;
             position: absolute;
-            height:  ${(x, c) => `${c.parent.spanMap[c.index]?.span}px`};
+            height:  ${(x, c) => `${c.parent.visibleItemSpans[c.index]?.span}px`};
             width:  100%;
-            transform: ${(x, c) => `translateY(${c.parent.spanMap[c.index]?.start}px)`};
+            transform: ${(x, c) =>
+            `translateY(${c.parent.visibleItemSpans[c.index]?.start}px)`};
         "
     ></fast-virtual-list>
 `;

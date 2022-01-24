@@ -18,7 +18,7 @@ Whenever prompted to update its layout, either by having the `update()` function
 
 When the positioning information is updated on the next frame the component determines which portion of the item container overlaps with the viewport and calculates which items would fall into that range.  Those items are then used to populate the observable `visibleItems` property which is bound to a repeat directive which renders the visible items using the provided `itemTemplate`.  
 
-The component also populates a `spanMap` observable property with the positioning information for each object in the `visibleItems` array using the SpanMap interface.    
+The component also populates a `visibleItemSpans` observable property with the positioning information for each object in the `visibleItems` array using the SpanMap interface.    
 
 ```
 export interface SpanMap {
@@ -36,20 +36,19 @@ const defaultItemTemplate: ViewTemplate<any> = html`
         style="
             overflow-wrap: anywhere;
             overflow: hidden;
-            grid-row: 1;
-            grid-column: 1;
+            position: absolute;
             height:  ${(x, c) =>
             c.parent.orientation === Orientation.vertical
-                ? `${c.parent.spanMap[c.index]?.span}px`
+                ? `${c.parent.visibleItemSpans[c.index]?.span}px`
                 : `100%`};
             width:  ${(x, c) =>
             c.parent.orientation === Orientation.vertical
                 ? `100%`
-                : `${c.parent.spanMap[c.index]?.span}px`};
+                : `${c.parent.visibleItemSpans[c.index]?.span}px`};
             transform: ${(x, c) =>
             c.parent.orientation === Orientation.horizontal
-                ? `translateX(${c.parent.spanMap[c.index]?.start}px)`
-                : `translateY(${c.parent.spanMap[c.index]?.start}px)`};
+                ? `translateX(${c.parent.visibleItemSpans[c.index]?.start}px)`
+                : `translateY(${c.parent.visibleItemSpans[c.index]?.start}px)`};
         "
     >
         ${x => JSON.stringify(x)}
