@@ -13,16 +13,16 @@ const imageItemTemplate = html`
             contain: size;
             height:  ${(x, c) =>
             c.parent.orientation === Orientation.vertical
-                ? `${c.parent.spanMap[c.index]?.span}px`
+                ? `${c.parent.visibleItemSpans[c.index]?.span}px`
                 : `200px`};
             width:  ${(x, c) =>
             c.parent.orientation === Orientation.vertical
                 ? `200px`
-                : `${c.parent.spanMap[c.index]?.span}px`};
+                : `${c.parent.visibleItemSpans[c.index]?.span}px`};
             transform: ${(x, c) =>
             c.parent.orientation === Orientation.horizontal
-                ? `translateX(${c.parent.spanMap[c.index]?.start}px)`
-                : `translateY(${c.parent.spanMap[c.index]?.start}px)`};
+                ? `translateX(${c.parent.visibleItemSpans[c.index]?.start}px)`
+                : `translateY(${c.parent.visibleItemSpans[c.index]?.start}px)`};
         "
     >
         <div style="position: absolute; margin: 5px 20px 0 20px;">
@@ -54,22 +54,21 @@ const imageItemTemplate = html`
 `;
 
 const gridItemTemplate = html`
-    <fast-loader-card
-        load-delay="100"
+    <div
         style="
             position: absolute;
             background: lightblue;
             contain: strict;
             height:  100%;
-            width:  ${(x, c) => `${c.parent.spanMap[c.index]?.span}px`};
-            transform: ${(x, c) => `translateX(${c.parent.spanMap[c.index]?.start}px)`};
+            width:  ${(x, c) => `${c.parent.visibleItemSpans[c.index]?.span}px`};
+            transform: ${(x, c) =>
+            `translateX(${c.parent.visibleItemSpans[c.index]?.start}px)`};
         "
     >
         <div style="position: absolute; margin: 5px 20px 0 20px;">
             ${x => x.title}
         </div>
         <image
-            slot="delay-load"
             style="
                 position:absolute;
                 height:100%;
@@ -77,7 +76,7 @@ const gridItemTemplate = html`
             "
             src="${x => x.url}"
         ></image>
-    </fast-loader-card>
+    </div>
 `;
 
 const rowItemTemplate = html`
@@ -93,8 +92,9 @@ const rowItemTemplate = html`
             contain: size;
             position: absolute;
             width:  100%;
-            height:  ${(x, c) => `${c.parent.spanMap[c.index]?.span}px`};
-            transform: ${(x, c) => `translateY(${c.parent.spanMap[c.index]?.start}px)`};
+            height:  ${(x, c) => `${c.parent.visibleItemSpans[c.index]?.span}px`};
+            transform: ${(x, c) =>
+            `translateY(${c.parent.visibleItemSpans[c.index]?.start}px)`};
         "
     ></fast-virtual-list>
 `;

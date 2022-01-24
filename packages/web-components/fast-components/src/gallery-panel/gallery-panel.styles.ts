@@ -38,7 +38,10 @@ export const galleryPanelStyles: (
     definition: FoundationElementDefinition
 ) =>
     css`
-        .gallery-title {
+        .gallery-panel {
+            width: 100%;
+        }
+        .gallery-panel-title {
             font-family: ${bodyFont};
             font-size: ${typeRampBaseFontSize};
             line-height: ${typeRampBaseLineHeight};

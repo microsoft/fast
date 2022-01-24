@@ -17,9 +17,15 @@ export const galleryPanelTemplate: (
 ) => {
     return html<GalleryPanel>`
         <template>
-            <div class="gallery-title">
-                TEST!
+            <div class="gallery-panel-title">
+                ${x => x.panelData?.title}
             </div>
+            <fast-virtual-list
+                auto-update-mode="auto"
+                item-span="200"
+                viewport-buffer="200"
+                ${ref("galleryListElement")}
+            ></fast-virtual-list>
         </template>
     `;
 };

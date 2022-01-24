@@ -39,20 +39,21 @@ export interface SpanMap {
 const defaultItemTemplate: ViewTemplate<any> = html`
     <div
         style="
+            position: absolute;
             overflow-wrap: anywhere;
             overflow: hidden;
             height:  ${(x, c) =>
             c.parent.orientation === Orientation.vertical
-                ? `${c.parent.spanMap[c.index]?.span}px`
+                ? `${c.parent.visibleItemSpans[c.index]?.span}px`
                 : `50px`};
             width:  ${(x, c) =>
             c.parent.orientation === Orientation.vertical
                 ? `50px`
-                : `${c.parent.spanMap[c.index]?.span}px`};
+                : `${c.parent.visibleItemSpans[c.index]?.span}px`};
             transform: ${(x, c) =>
             c.parent.orientation === Orientation.horizontal
-                ? `translateX(${c.parent.spanMap[c.index]?.start}px)`
-                : `translateY(${c.parent.spanMap[c.index]?.start}px)`};
+                ? `translateX(${c.parent.visibleItemSpans[c.index]?.start}px)`
+                : `translateY(${c.parent.visibleItemSpans[c.index]?.start}px)`};
         "
     >
         ${x => JSON.stringify(x)}
@@ -96,7 +97,6 @@ export class VirtualList extends FoundationElement {
 
     /**
      * The span in pixels of each item along the virtualization axis
-     * Note used when a spanMap is provided
      *
      * @beta
      * @remarks
@@ -188,7 +188,7 @@ export class VirtualList extends FoundationElement {
      * @public
      */
     @observable
-    public spanMap: SpanMap[] = [];
+    public visibleItemSpans: SpanMap[] = [];
 
     /**
      * The ViewTemplate used to render items.
@@ -308,7 +308,7 @@ export class VirtualList extends FoundationElement {
         this.cancelPendingPositionUpdates();
         this.unobserveItems();
         this.visibleItems = [];
-        this.spanMap = [];
+        this.visibleItemSpans = [];
         this.disconnectResizeDetector();
     }
 
@@ -450,7 +450,7 @@ export class VirtualList extends FoundationElement {
         this.itemsRepeatBehavior = new RepeatDirective(
             x => x.visibleItems,
             x => x.itemTemplate,
-            { positioning: true }
+            { positioning: true, recycle: false }
         ).createBehavior(this.itemsPlaceholder);
         this.$fastController.addBehaviors([this.itemsRepeatBehavior]);
     }
@@ -611,7 +611,7 @@ export class VirtualList extends FoundationElement {
     private updateVisibleItems = (): void => {
         if (this.items === undefined) {
             this.visibleItems = [];
-            this.spanMap = [];
+            this.visibleItemSpans = [];
             this.startSpacerSpan = 0;
             this.endSpacerSpan = 0;
             this.visibleRangeStart = -1;
@@ -621,7 +621,7 @@ export class VirtualList extends FoundationElement {
 
         if (!this.virtualize) {
             this.visibleItems.splice(0, this.visibleItems.length, ...this.items);
-            this.updateSpanMap(0, this.visibleItems.length - 1);
+            this.updateVisibleItemSpans(0, this.visibleItems.length - 1);
             return;
         }
 
@@ -687,17 +687,17 @@ export class VirtualList extends FoundationElement {
         );
 
         this.visibleItems.splice(0, this.visibleItems.length, ...newVisibleItems);
-        this.updateSpanMap(newFirstRenderedIndex, newLastRenderedIndex);
+        this.updateVisibleItemSpans(newFirstRenderedIndex, newLastRenderedIndex);
     };
 
     /**
      *  Updates the span map
      */
-    private updateSpanMap(
+    private updateVisibleItemSpans(
         newFirstRenderedIndex: number,
         newLastRenderedIndex: number
     ): void {
-        const newSpanMap: SpanMap[] = [];
+        const newVisibleItemSpans: SpanMap[] = [];
 
         let top: number = this.startSpacerSpan;
 
@@ -708,10 +708,14 @@ export class VirtualList extends FoundationElement {
                 span: this.itemSpan,
             };
             top = thisSpanMap.end;
-            newSpanMap.push(thisSpanMap);
+            newVisibleItemSpans.push(thisSpanMap);
         }
 
-        this.spanMap.splice(0, this.spanMap.length, ...newSpanMap);
+        this.visibleItemSpans.splice(
+            0,
+            this.visibleItemSpans.length,
+            ...newVisibleItemSpans
+        );
         this.updateRenderedRange(newFirstRenderedIndex, newLastRenderedIndex);
     }
 

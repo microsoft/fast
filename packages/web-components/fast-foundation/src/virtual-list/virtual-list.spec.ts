@@ -98,12 +98,12 @@ describe("VirtualList", () => {
         await disconnect();
     });
 
-    it("should have a default spanMap of 'undefined'", async () => {
+    it("should have a default visibleItemSpans of 'undefined'", async () => {
         const { element, connect, disconnect } = await setup();
 
         await connect();
 
-        expect(element.spanMap).to.equal(undefined);
+        expect(element.visibleItemSpans).to.equal(undefined);
 
         await disconnect();
     });

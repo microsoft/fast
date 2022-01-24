@@ -39,7 +39,7 @@ function generateGalleryItems(itemCount: number, prefix: string): GalleryItemDat
     for (let i = 1; i <= itemCount; i++) {
         newItems.push({
             title: `item #${i}`,
-            image: `https://picsum.photos/200/300?random=${prefix}${1000 + i}`,
+            image: `https://picsum.photos/200/200?random=${prefix}${1000 + i}`,
         });
     }
     return newItems;

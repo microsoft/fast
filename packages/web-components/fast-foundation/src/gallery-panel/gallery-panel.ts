@@ -1,4 +1,5 @@
 import { attr, DOM, FASTElement, observable } from "@microsoft/fast-element";
+import type { VirtualList } from "..";
 import { FoundationElement } from "../foundation-element";
 
 /**
@@ -60,20 +61,26 @@ export class GalleryPanel extends FoundationElement {
      */
     @observable
     public panelData: GalleryPanelData;
+    private panelDataChanged(): void {
+        if (this.$fastController.isConnected) {
+            this.galleryListElement.items = this.panelData.galleries;
+        }
+    }
 
-    /**
-     *
-     *
-     * @internal
-     */
-    public testButton: HTMLElement;
+    public galleryListElement: VirtualList;
 
     public connectedCallback(): void {
         super.connectedCallback();
-        this.testButton.textContent = "BOO";
+        DOM.queueUpdate(() => {
+            this.initialize();
+        });
     }
 
     public disconnectedCallback(): void {
         super.disconnectedCallback();
+    }
+
+    private initialize(): void {
+        this.galleryListElement.viewportElement = document.documentElement;
     }
 }

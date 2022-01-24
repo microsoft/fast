@@ -1316,10 +1316,10 @@ export class GalleryPanel extends FoundationElement {
     // (undocumented)
     disconnectedCallback(): void;
     // (undocumented)
+    galleryListElement: VirtualList;
+    // (undocumented)
     panelData: GalleryPanelData;
-    // @internal (undocumented)
-    testButton: HTMLElement;
-}
+    }
 
 // @public (undocumented)
 export interface GalleryPanelData {
@@ -2864,7 +2864,6 @@ export class VirtualList extends FoundationElement {
     orientation: Orientation;
     requestPositionUpdates: () => void;
     protected reset(): void;
-    spanMap: SpanMap[];
     // @internal
     startSpacerSpan: number;
     // @internal
@@ -2880,6 +2879,7 @@ export class VirtualList extends FoundationElement {
     virtualize: boolean;
     // @internal
     visibleItems: any[];
+    visibleItemSpans: SpanMap[];
     }
 
 // @beta
