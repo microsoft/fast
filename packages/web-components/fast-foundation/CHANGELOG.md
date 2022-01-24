@@ -1,8 +1,21 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Thu, 20 Jan 2022 07:12:04 GMT and should not be manually modified.
+This log was last generated on Sun, 23 Jan 2022 07:13:56 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.32.0
+
+Sun, 23 Jan 2022 07:13:56 GMT
+
+### Minor changes
+
+- feat: add `orientation` to divider (jes@microsoft.com)
+
+### Patches
+
+- use default slot in accordion (mathieulavoie94@gmail.com)
+- Bump @microsoft/fast-element to v1.7.0 (scomea@microsoft.com)
 
 ## 2.31.0
 
