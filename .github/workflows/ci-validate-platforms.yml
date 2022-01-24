@@ -225,8 +225,6 @@ jobs:
       env:
         PLAYWRIGHT_BROWSER: webkit
 
-
-
   lighthouse-check:
     runs-on: ubuntu-latest
     steps:
