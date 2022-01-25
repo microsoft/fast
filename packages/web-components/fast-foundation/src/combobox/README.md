@@ -81,10 +81,10 @@ This component is built with the expectation that focus is delegated to the inpu
 
 ### Option
 
-See [listbox-option](../listbox-option/README.md) for more information.
+See [listbox-option](/docs/components/listbox-option) for more information.
 
 ## Additional resources
 
--   [Component explorer examples](https://explore.fast.design/components/fast-combobox)
--   [Component technical specification](https://github.com/microsoft/fast/tree/master/packages/web-components/fast-foundation/src/combobox)
--   [W3C Component Aria Practices](https://w3c.github.io/aria-practices/#combobox)
+- [Component explorer examples](https://explore.fast.design/components/fast-combobox)
+- [Component technical specification](https://github.com/microsoft/fast/tree/master/packages/web-components/fast-foundation/src/combobox)
+- [W3C Component Aria Practices](https://w3c.github.io/aria-practices/#combobox)
