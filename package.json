@@ -118,6 +118,7 @@
     "@types/react": "*",
     "browserslist": "^4.16.5",
     "clean-css": "^4.2.3",
+    "css-select": "^4.2.1",
     "dns-packet": "^1.3.4",
     "favicons/colors": "1.4.0",
     "glob-parent": "^5.1.2",
