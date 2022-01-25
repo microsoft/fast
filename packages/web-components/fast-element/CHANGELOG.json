@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-element",
   "entries": [
     {
+      "date": "Sun, 23 Jan 2022 07:13:56 GMT",
+      "tag": "@microsoft/fast-element_v1.7.0",
+      "version": "1.7.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "add recyle option to repeat directive",
+            "author": "scomea@microsoft.com",
+            "commit": "897c39862b58a63ad9900426ae6ae2f95d222e1e",
+            "package": "@microsoft/fast-element"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 12 Jan 2022 07:11:42 GMT",
       "tag": "@microsoft/fast-element_v1.6.2",
       "version": "1.6.2",

@@ -461,7 +461,8 @@ export class RepeatDirective<TSource = any> extends HTMLDirective {
 
 // @public
 export interface RepeatOptions {
-    positioning: boolean;
+    positioning?: boolean;
+    recycle?: boolean;
 }
 
 // Warning: (ae-internal-missing-underscore) The name "setCurrentEvent" should be prefixed with an underscore because the declaration is marked as @internal
