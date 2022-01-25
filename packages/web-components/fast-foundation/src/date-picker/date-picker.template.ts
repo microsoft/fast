@@ -181,8 +181,7 @@ export const datePickerTemplate: (
                     <${calendar}
                         selected-dates="${x => `${x.date || ""}`}"
                         class="calendar"
-                        @dateselected="${(x, c) =>
-                            x.handleDateClicked((c.event as MouseEvent).detail)}"
+                        @dateselected="${(x, c) => x.handleDateClicked(c.event)}"
                         part="calendar"
                         locale="${x => x.locale}"
                         month="${x => x.calendarMonth}"

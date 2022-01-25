@@ -611,7 +611,8 @@ export class DatePicker extends FormAssociatedDatePicker {
      * @param date - The date clicked
      * @public
      */
-    public handleDateClicked({ day, month, year }): void {
+    public handleDateClicked(event: MouseEvent): void {
+        const { day, month, year } = event.detail as any;
         this.setValue({ day, month, year });
     }
 
