@@ -1,9 +1,10 @@
 import { Action, createStore } from "redux";
 import { ColorRGBA64, parseColorHexRGB } from "@microsoft/fast-colors";
 import {
-    accentPalette,
-    neutralPalette,
+    accentColor,
+    neutralColor,
     PaletteRGB,
+    Swatch,
     SwatchRGB,
 } from "@microsoft/fast-components";
 import { defaultAccentColor, defaultNeutralColor } from "./colors";
@@ -58,13 +59,13 @@ function setPalette(
     const paletteState: string = palette + "Palette";
     const baseColor: string = palette + "BaseColor";
     return (state: AppState, value: ColorRGBA64): AppState => {
-        const pRGB: PaletteRGB = PaletteRGB.from(
-            SwatchRGB.from(parseColorHexRGB(value.toStringHexRGB())!)
-        );
+        const swatch: Swatch = SwatchRGB.from(parseColorHexRGB(value.toStringHexRGB()));
+        const pRGB: PaletteRGB = PaletteRGB.from(swatch as SwatchRGB);
+
         if (palette === "accent") {
-            accentPalette.setValueFor(document.body, pRGB);
+            accentColor.setValueFor(document.body, swatch);
         } else {
-            neutralPalette.setValueFor(document.body, pRGB);
+            neutralColor.setValueFor(document.body, swatch);
         }
 
         return {

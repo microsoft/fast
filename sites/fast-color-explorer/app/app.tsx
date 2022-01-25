@@ -104,7 +104,7 @@ class App extends React.Component<AppProps, {}> {
     };
 
     private renderContents = (): React.ReactNode => {
-        if (this.props.componentType === ComponentTypes.sample) {
+        if (this.props.component === ComponentTypes.sample) {
             return (
                 <div style={{ display: "flex", overflow: "auto" }}>
                     {this.renderSampleApp()}
@@ -181,7 +181,7 @@ class App extends React.Component<AppProps, {}> {
                 <app-color-block
                     index={index}
                     component={this.props.component}
-                    background-color={color}
+                    color={color}
                     layer-name={props.data[props.index].title}
                 ></app-color-block>
             </div>
@@ -217,6 +217,7 @@ class App extends React.Component<AppProps, {}> {
         luminance: number
     ): Array<{ color: string; title: string }> => {
         const designSystem = document.createElement("div");
+        document.body.appendChild(designSystem);
         baseLayerLuminance.setValueFor(designSystem, luminance);
         return this.backgroundRecipes
             .map((conf: [DesignToken<ColorRecipe>, string]): {
