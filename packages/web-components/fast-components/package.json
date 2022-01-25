@@ -67,7 +67,7 @@
     "@types/chai-spies": "^1.0.1",
     "@types/karma": "^5.0.0",
     "@types/mocha": "^8.2.0",
-    "@types/node": "^10.12.12",
+    "@types/node": "^15.0.1",
     "@types/webpack-env": "^1.15.2",
     "ajv": "^6.12.2",
     "chai": "^4.2.0",
