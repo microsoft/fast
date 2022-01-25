@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Sun, 23 Jan 2022 07:13:56 GMT and should not be manually modified.
+This log was last generated on Tue, 25 Jan 2022 07:11:53 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.32.1
+
+Tue, 25 Jan 2022 07:11:53 GMT
+
+### Patches
+
+- Bump @microsoft/fast-web-utilities to v5.1.0 (john.kreitlow@microsoft.com)
 
 ## 2.32.0
 
