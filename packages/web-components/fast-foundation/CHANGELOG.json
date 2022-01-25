@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-foundation",
   "entries": [
     {
+      "date": "Tue, 25 Jan 2022 07:11:53 GMT",
+      "tag": "@microsoft/fast-foundation_v2.32.1",
+      "version": "2.32.1",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-web-utilities to v5.1.0",
+            "author": "john.kreitlow@microsoft.com",
+            "commit": "97f653f8ee62c74d47df9b60024ff8eef05c79d1",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sun, 23 Jan 2022 07:13:56 GMT",
       "tag": "@microsoft/fast-foundation_v2.32.0",
       "version": "2.32.0",
