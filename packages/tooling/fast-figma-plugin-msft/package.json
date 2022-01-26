@@ -6,7 +6,7 @@
   "private": true,
   "scripts": {
     "build": "webpack --progress --mode=production",
-    "watch": "webpack --progress --watch --mode=production",
+    "watch": "webpack --progress --watch --mode=development",
     "prettier": "prettier --config ../../../.prettierrc --write \"**/*.{ts,tsx}\"",
     "prettier:diff": "prettier --config ../../../.prettierrc \"**/*.{ts,tsx}\" --list-different",
     "test": "yarn eslint && yarn build",
@@ -28,15 +28,9 @@
   "devDependencies": {
     "@babel/core": "^7.12.13",
     "@babel/preset-env": "^7.12.13",
-    "@microsoft/fast-colors": "^5.1.5",
-    "@microsoft/fast-components": "^2.21.5",
-    "@microsoft/fast-components-react-msft": "^4.32.0",
-    "@microsoft/fast-components-styles-msft": "^4.29.0",
-    "@microsoft/fast-element": "^1.7.0",
-    "@types/figma": "^1.0.2",
+    "@types/figma": "^1.0.4",
     "@types/node": "^15.0.1",
     "@types/react": "^16.9.17",
-    "@types/react-color": "^2.0.0",
     "@types/react-dom": "^16.9.4",
     "babel-loader": "^8.2.2",
     "clean-webpack-plugin": "^3.0.0",
@@ -45,6 +39,7 @@
     "eslint-config-prettier": "^6.10.1",
     "html-webpack-inline-source-plugin": "^0.0.10",
     "prettier": "2.0.2",
+    "raw-loader": "^4.0.2",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
     "style-loader": "^1.1.2",
@@ -55,6 +50,12 @@
     "webpack-cli": "^3.3.10"
   },
   "dependencies": {
+    "@fluentui/web-components": "^2.2.1",
+    "@microsoft/fast-colors": "^5.1.5",
+    "@microsoft/fast-components": "^2.21.5",
+    "@microsoft/fast-components-react-msft": "^4.32.0",
+    "@microsoft/fast-components-styles-msft": "^4.29.0",
+    "@microsoft/fast-element": "^1.7.0",
     "react-color": "^2.18.0"
   }
 }

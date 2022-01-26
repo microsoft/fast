@@ -1,11 +1,3 @@
-import {
-    ActionTrigger,
-    ActionTriggerAppearance,
-    Checkbox,
-    Divider,
-    Label,
-    Radio,
-} from "@microsoft/fast-components-react-msft";
 import React from "react";
 import {
     DesignSystem,
@@ -13,10 +5,11 @@ import {
     StandardLuminance,
 } from "@microsoft/fast-components-styles-msft";
 import { ColorRGBA64, parseColorHexRGB } from "@microsoft/fast-colors";
-import { BlockPicker } from "react-color";
 import { MessageAction, MessageTypes, UIMessage } from "../messaging";
 import { RecipeData, RecipeTypes } from "../recipe-registry";
-import { detach, refresh, revertChanges } from "./glyphs";
+// import DetachIcon from "./assets/detach.svg";
+// import RefreshIcon from "./assets/refresh.svg";
+// import RevertIcon from "./assets/revert.svg";
 import { CornerRadius, Drawer, Swatch } from "./components";
 
 /* tslint:disable:no-unused-expression */
@@ -89,7 +82,7 @@ export class PluginUI extends React.Component<PluginUIProps> {
 
         return (
             <div style={{ overflow: "hidden" }}>
-                <Divider />
+                <plugin-divider></plugin-divider>
                 <div
                     style={{
                         display: "flex",
@@ -111,30 +104,26 @@ export class PluginUI extends React.Component<PluginUIProps> {
                             .join(" | ") || "No selection"}
                     </p>
                     <div style={{ display: "flex" }}>
-                        <ActionTrigger
-                            style={{ fontSize: 11 }}
-                            glyph={revertChanges}
-                            appearance={ActionTriggerAppearance.stealth}
-                            title={revertLabel}
+                        <plugin-button
+                            appearance="stealth"
                             aria-label={revertLabel}
                             onClick={this.props.dispatch.bind(this, {
                                 type: MessageTypes.reset,
                                 nodeIds: this.props.selectedNodes.map(node => node.id),
                             })}
-                            children="Reset"
-                        />
-                        <ActionTrigger
-                            style={{ fontSize: 11 }}
-                            glyph={refresh}
-                            appearance={ActionTriggerAppearance.stealth}
-                            title={refreshLabel}
+                        >
+                            Reset
+                        </plugin-button>
+                        <plugin-button
+                            appearance="stealth"
                             aria-label={refreshLabel}
                             onClick={this.props.dispatch.bind(this, {
                                 type: MessageTypes.sync,
                                 nodeIds: this.props.selectedNodes.map(node => node.id),
                             })}
-                            children="Sync"
-                        />
+                        >
+                            Sync
+                        </plugin-button>
                     </div>
                 </div>
             </div>
@@ -182,21 +171,16 @@ export class PluginUI extends React.Component<PluginUIProps> {
                                                 <span>
                                                     {recipe.value.replace("#", "")}
                                                 </span>
-                                                <ActionTrigger
-                                                    glyph={detach}
-                                                    appearance={
-                                                        ActionTriggerAppearance.stealth
-                                                    }
-                                                    title={"Detach"}
-                                                    aria-label={"Detach"}
+                                                <plugin-button
+                                                    appearance="stealth"
+                                                    aria-label="Detach"
                                                     onClick={this.removeRecipe.bind(
                                                         this,
                                                         RecipeTypes.backgroundFills
                                                     )}
-                                                    jssStyleSheet={{
-                                                        actionTrigger: { padding: "6px" },
-                                                    }}
-                                                />
+                                                >
+                                                    Detach
+                                                </plugin-button>
                                             </div>
                                         </p>
                                     ))}
@@ -219,21 +203,16 @@ export class PluginUI extends React.Component<PluginUIProps> {
                                                 <span>
                                                     {recipe.value.replace("#", "")}
                                                 </span>
-                                                <ActionTrigger
-                                                    glyph={detach}
-                                                    appearance={
-                                                        ActionTriggerAppearance.stealth
-                                                    }
-                                                    title={"Detach"}
-                                                    aria-label={"Detach"}
+                                                <plugin-button
+                                                    appearance="stealth"
+                                                    aria-label="Detach"
                                                     onClick={this.removeRecipe.bind(
                                                         this,
                                                         RecipeTypes.foregroundFills
                                                     )}
-                                                    jssStyleSheet={{
-                                                        actionTrigger: { padding: "6px" },
-                                                    }}
-                                                />
+                                                >
+                                                    Detach
+                                                </plugin-button>
                                             </div>
                                         </p>
                                     ))}
@@ -256,21 +235,16 @@ export class PluginUI extends React.Component<PluginUIProps> {
                                                 <span>
                                                     {recipe.value.replace("#", "")}
                                                 </span>
-                                                <ActionTrigger
-                                                    glyph={detach}
-                                                    appearance={
-                                                        ActionTriggerAppearance.stealth
-                                                    }
-                                                    title={"Detach"}
-                                                    aria-label={"Detach"}
+                                                <plugin-button
+                                                    appearance="stealth"
+                                                    aria-label="Detach"
                                                     onClick={this.removeRecipe.bind(
                                                         this,
                                                         RecipeTypes.strokeFills
                                                     )}
-                                                    jssStyleSheet={{
-                                                        actionTrigger: { padding: "6px" },
-                                                    }}
-                                                />
+                                                >
+                                                    Detach
+                                                </plugin-button>
                                             </div>
                                         </p>
                                     ))}
@@ -351,7 +325,9 @@ export class PluginUI extends React.Component<PluginUIProps> {
                                                     </td-swatch>
                                                 );
                                             })}
-                                        <Divider style={{ marginTop: 12 }} />
+                                        <plugin-divider
+                                            style={{ marginTop: 12 }}
+                                        ></plugin-divider>
                                         {this.recipeOptionsByType(RecipeTypes.strokeFills)
                                             .filter(
                                                 recipe =>
@@ -466,21 +442,16 @@ export class PluginUI extends React.Component<PluginUIProps> {
                                         </td-corner-radius>
                                         <div>
                                             <span>{recipe.value}</span>
-                                            <ActionTrigger
-                                                glyph={detach}
-                                                appearance={
-                                                    ActionTriggerAppearance.stealth
-                                                }
-                                                title={"Detach"}
-                                                aria-label={"Detach"}
+                                            <plugin-button
+                                                appearance="stealth"
+                                                aria-label="Detach"
                                                 onClick={this.removeRecipe.bind(
                                                     this,
                                                     RecipeTypes.cornerRadius
                                                 )}
-                                                jssStyleSheet={{
-                                                    actionTrigger: { padding: "6px" },
-                                                }}
-                                            />
+                                            >
+                                                Detach
+                                            </plugin-button>
                                         </div>
                                     </p>
                                 ))}
@@ -500,8 +471,8 @@ export class PluginUI extends React.Component<PluginUIProps> {
             .map(node => node.designSystem[type])
             .filter(value => !!value);
 
-        const onChange = (value: any, e: React.ChangeEvent<HTMLInputElement>): void => {
-            const hex: string = value.hex;
+        const onChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+            const hex: string = e.target.value;
             const parsed = parseColorHexRGB(hex);
 
             if (parsed instanceof ColorRGBA64) {
@@ -515,23 +486,26 @@ export class PluginUI extends React.Component<PluginUIProps> {
             }
         };
 
+        const labelStyle = {
+            fontFamily: "var(--body-font)",
+            color: "var(--neutral-foreground-rest)",
+            cursor: "pointer",
+            fontSize: "var(--type-ramp-base-font-size)",
+            lineHeight: "var(--type-ramp-base-line-height)",
+            marginInlineEnd: "12px",
+        };
+
         return (
             <p className="inset">
-                <Label style={{ width: "100%" }}>
-                    <p>Accent color</p>
-                    <BlockPicker
-                        color={values.length ? values[0] : DesignSystemDefaults[type]}
-                        onChangeComplete={onChange as any}
-                        colors={[
-                            "#128475",
-                            "#1C881E",
-                            "#FDB82C",
-                            "#0078D4",
-                            "#8664C3",
-                            "#6A2A2B",
-                        ]}
-                    />
-                </Label>
+                <label htmlFor="accentColor" style={labelStyle}>
+                    Accent color
+                </label>
+                <input
+                    type="color"
+                    id="accentColor"
+                    value={values.length ? values[0] : DesignSystemDefaults[type]}
+                    onChange={onChange}
+                ></input>
             </p>
         );
     }
@@ -622,7 +596,7 @@ export class PluginUI extends React.Component<PluginUIProps> {
         const nodeIds = nodes.map(node => node.id);
 
         const style = {
-            marginInlineEnd: "12px",
+            marginBlockEnd: "12px",
         };
 
         const setLightTheme = this.setDesignSystemProperty.bind(
@@ -643,39 +617,29 @@ export class PluginUI extends React.Component<PluginUIProps> {
 
         return (
             <div style={{ padding: "4px 16px 4px" }}>
-                <Checkbox
-                    inputId={"theme-toggle"}
+                <plugin-checkbox
                     checked={themesApplied.length > 0}
                     onChange={themesApplied.length ? removeTheme : setLightTheme}
                     style={style}
                 >
-                    <Label slot="label" htmlFor={"theme-toggle"}>
-                        Theme
-                    </Label>
-                </Checkbox>
-                <Radio
-                    inputId={"light-theme"}
-                    checked={themesApplied.includes(StandardLuminance.LightMode)}
-                    disabled={themesApplied.length === 0}
-                    name="theme"
-                    style={style}
-                    onChange={setLightTheme}
-                >
-                    <Label slot="label" htmlFor={"light-theme"}>
-                        Light
-                    </Label>
-                </Radio>
-                <Radio
-                    inputId={"dark-theme"}
-                    checked={themesApplied.includes(StandardLuminance.DarkMode)}
-                    disabled={themesApplied.length === 0}
-                    name="theme"
-                    onChange={setDarkTheme}
-                >
-                    <Label slot="label" htmlFor={"dark-theme"}>
-                        Dark
-                    </Label>
-                </Radio>
+                    Theme selected
+                </plugin-checkbox>
+                <plugin-radio-group name="mode" disabled={themesApplied.length === 0}>
+                    <plugin-radio
+                        checked={themesApplied.includes(StandardLuminance.LightMode)}
+                        value={StandardLuminance.LightMode}
+                        onClick={setLightTheme}
+                    >
+                        Light mode
+                    </plugin-radio>
+                    <plugin-radio
+                        checked={themesApplied.includes(StandardLuminance.DarkMode)}
+                        value={StandardLuminance.DarkMode}
+                        onClick={setDarkTheme}
+                    >
+                        Dark mode
+                    </plugin-radio>
+                </plugin-radio-group>
             </div>
         );
     }

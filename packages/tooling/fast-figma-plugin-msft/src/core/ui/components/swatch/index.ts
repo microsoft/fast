@@ -3,7 +3,7 @@ import {
     controlCornerRadius,
     neutralFillStealthHover,
     neutralForegroundHint,
-} from "@microsoft/fast-components";
+} from "@fluentui/web-components";
 
 const template = html`
     <template

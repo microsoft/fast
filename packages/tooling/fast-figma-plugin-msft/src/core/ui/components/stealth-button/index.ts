@@ -6,7 +6,7 @@ import {
     neutralFillStealthRest,
     neutralForegroundRest,
     neutralStrokeRest,
-} from "@microsoft/fast-components";
+} from "@fluentui/web-components";
 import { css, customElement, FASTElement, html } from "@microsoft/fast-element";
 
 const template = html`
