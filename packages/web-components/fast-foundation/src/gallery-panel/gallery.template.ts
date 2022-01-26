@@ -1,23 +1,20 @@
-import { html, ref } from "@microsoft/fast-element";
+import { html, ref, when } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
 import type { FoundationElementDefinition } from "../foundation-element";
 import type { ElementDefinitionContext } from "../design-system";
 import { VirtualList } from "../virtual-list";
-import type { GalleryPanel } from "./gallery-panel";
-import { Gallery } from "./gallery";
+import { GalleryItem } from "./gallery-item";
+import type { Gallery } from "./gallery";
 
 function createItemTemplate(context): ViewTemplate {
-    const galleryTag = context.tagFor(Gallery);
+    const galleryItemTag = context.tagFor(GalleryItem);
     return html`
-    <${galleryTag}
+    <${galleryItemTag}
         style="
             position: absolute;
-            height:  ${(x, c) => `${c.parent.visibleItemSpans[c.index]?.span}px`};
-            transform: ${(x, c) =>
-                `translateY(${c.parent.visibleItemSpans[c.index]?.start}px)`};
+            width: 100%;
         "
-        :galleryData="${x => x}"
-    ></${galleryTag}>
+    ></${galleryItemTag}>
 `;
 }
 
@@ -25,7 +22,7 @@ function createItemTemplate(context): ViewTemplate {
  * Creates a template for the {@link @microsoft/fast-foundation#(Tooltip:class)} component using the provided prefix.
  * @public
  */
-export const galleryPanelTemplate: (
+export const galleryTemplate: (
     context: ElementDefinitionContext,
     definition: FoundationElementDefinition
 ) => ViewTemplate = (
@@ -34,21 +31,22 @@ export const galleryPanelTemplate: (
 ) => {
     const itemTemplate: ViewTemplate = createItemTemplate(context);
     const virtualListTag = context.tagFor(VirtualList);
-    return html<GalleryPanel>`
-        <template class="gallery-panel">
-            <div class="gallery-panel-title">
-                ${x => x.panelData?.title}
+    return html<Gallery>`
+        <template class="gallery">
+            <div class="gallery-title">
+                ${x => x.galleryData?.title}
             </div>
             <${virtualListTag}
-                class="gallery-panel-list"
                 style="
+                    height: 200px;
                     width: 100%;
                 "
+                orientation="horizontal"
                 auto-update-mode="auto"
-                item-span="280"
+                item-span="200"
                 viewport-buffer="200"
                 :itemTemplate="${itemTemplate}"
-                ${ref("galleriesListElement")}
+                ${ref("galleryListElement")}
             ></${virtualListTag}>
         </template>
     `;

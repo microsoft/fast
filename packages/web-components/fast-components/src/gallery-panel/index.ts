@@ -1,12 +1,17 @@
 import {
-    galleryPanelTemplate as template,
+    galleryPanelTemplate,
     GalleryPanel,
+    galleryTemplate,
+    Gallery,
+    galleryItemTemplate,
+    GalleryItem,
 } from "@microsoft/fast-foundation";
-import { galleryPanelStyles as styles } from "./gallery-panel.styles";
+import { galleryStyles } from "./gallery.styles";
+import { galleryItemStyles } from "./gallery-item.styles";
+import { galleryPanelStyles } from "./gallery-panel.styles";
 
 /**
- * A function that returns a {@link @microsoft/fast-foundation#GalleryPanel} registration for configuring the component with a DesignSystem.
- * Implements {@link @microsoft/fast-foundation#galleryPanelTemplate}
+ *
  *
  *
  * @public
@@ -15,8 +20,8 @@ import { galleryPanelStyles as styles } from "./gallery-panel.styles";
  */
 export const fastGalleryPanel = GalleryPanel.compose({
     baseName: "gallery-panel",
-    template,
-    styles,
+    template: galleryPanelTemplate,
+    styles: galleryPanelStyles,
     shadowOptions: null,
 });
 
@@ -26,4 +31,51 @@ export const fastGalleryPanel = GalleryPanel.compose({
  */
 export { GalleryPanel };
 
-export { styles as galleryPanelStyles };
+export { galleryPanelStyles };
+
+/**
+ *
+ *
+ *
+ * @public
+ * @remarks
+ * Generates HTML Element: `<fast-gallery>`
+ */
+export const fastGallery = Gallery.compose({
+    baseName: "gallery",
+    template: galleryTemplate,
+    styles: galleryStyles,
+    baseClass: Gallery,
+    shadowOptions: null,
+});
+
+/**
+ * Base class for Gallery Panel
+ * @public
+ */
+export { Gallery };
+
+export { galleryStyles };
+
+/**
+ *
+ *
+ *
+ * @public
+ * @remarks
+ * Generates HTML Element: `<fast-gallery-item>`
+ */
+export const fastGalleryItem = GalleryItem.compose({
+    baseName: "gallery-item",
+    template: galleryItemTemplate,
+    baseClass: GalleryItem,
+    styles: galleryItemStyles,
+});
+
+/**
+ * Base class for Gallery Panel
+ * @public
+ */
+export { GalleryItem };
+
+export { galleryItemStyles };

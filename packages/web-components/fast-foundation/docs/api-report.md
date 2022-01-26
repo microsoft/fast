@@ -1294,11 +1294,33 @@ export class FoundationElementRegistry<TDefinition extends FoundationElementDefi
 export type FoundationElementTemplate<T, K extends FoundationElementDefinition = FoundationElementDefinition> = LazyFoundationOption<T, K>;
 
 // @public (undocumented)
+export class Gallery extends FoundationElement {
+    // (undocumented)
+    connectedCallback(): void;
+    // (undocumented)
+    disconnectedCallback(): void;
+    // (undocumented)
+    galleryData: GalleryData;
+    // (undocumented)
+    galleryListElement: VirtualList;
+}
+
+// @public (undocumented)
 export interface GalleryData {
     // (undocumented)
     items: GalleryItemData[];
     // (undocumented)
     title: string;
+}
+
+// @public (undocumented)
+export class GalleryItem extends FoundationElement {
+    // (undocumented)
+    connectedCallback(): void;
+    // (undocumented)
+    disconnectedCallback(): void;
+    // (undocumented)
+    galleryItemData: GalleryItemData;
 }
 
 // @public (undocumented)
@@ -1309,6 +1331,9 @@ export interface GalleryItemData {
     title: string;
 }
 
+// @public
+export const galleryItemTemplate: (context: ElementDefinitionContext, definition: FoundationElementDefinition) => ViewTemplate;
+
 // @public (undocumented)
 export class GalleryPanel extends FoundationElement {
     // (undocumented)
@@ -1316,7 +1341,7 @@ export class GalleryPanel extends FoundationElement {
     // (undocumented)
     disconnectedCallback(): void;
     // (undocumented)
-    galleryListElement: VirtualList;
+    galleriesListElement: VirtualList;
     // (undocumented)
     panelData: GalleryPanelData;
     }
@@ -1331,6 +1356,9 @@ export interface GalleryPanelData {
 
 // @public
 export const galleryPanelTemplate: (context: ElementDefinitionContext, definition: FoundationElementDefinition) => ViewTemplate;
+
+// @public
+export const galleryTemplate: (context: ElementDefinitionContext, definition: FoundationElementDefinition) => ViewTemplate;
 
 // @public
 export enum GenerateHeaderOptions {

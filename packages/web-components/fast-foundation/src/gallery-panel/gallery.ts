@@ -1,14 +1,14 @@
 import { attr, DOM, FASTElement, observable } from "@microsoft/fast-element";
 import type { VirtualList } from "..";
 import { FoundationElement } from "../foundation-element";
-import type { GalleryData } from "./gallery";
+import type { GalleryItemData } from "./gallery-item";
 
 /**
  *
  *
  * @public
  */
-export interface GalleryPanelData {
+export interface GalleryData {
     /**
      *
      */
@@ -17,7 +17,7 @@ export interface GalleryPanelData {
     /**
      *
      */
-    galleries: GalleryData[];
+    items: GalleryItemData[];
 }
 
 /**
@@ -25,34 +25,27 @@ export interface GalleryPanelData {
  *
  * @public
  */
-export class GalleryPanel extends FoundationElement {
+export class Gallery extends FoundationElement {
     /**
      *
      *
      * @public
      */
     @observable
-    public panelData: GalleryPanelData;
-    private panelDataChanged(): void {
+    public galleryData: GalleryData;
+    private galleryDataChanged(): void {
         if (this.$fastController.isConnected) {
-            this.galleriesListElement.items = this.panelData.galleries;
+            this.galleryListElement.items = this.galleryData.items;
         }
     }
 
-    public galleriesListElement: VirtualList;
+    public galleryListElement: VirtualList;
 
     public connectedCallback(): void {
         super.connectedCallback();
-        DOM.queueUpdate(() => {
-            this.initialize();
-        });
     }
 
     public disconnectedCallback(): void {
         super.disconnectedCallback();
-    }
-
-    private initialize(): void {
-        this.galleriesListElement.viewportElement = document.documentElement;
     }
 }

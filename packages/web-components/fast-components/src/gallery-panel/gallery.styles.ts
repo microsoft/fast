@@ -27,10 +27,10 @@ import {
 import { heightNumber } from "../styles";
 
 /**
- * Styles for Tooltip
+ * Styles for
  * @public
  */
-export const galleryPanelStyles: (
+export const galleryStyles: (
     context: ElementDefinitionContext,
     definition: FoundationElementDefinition
 ) => ElementStyles = (
@@ -38,15 +38,10 @@ export const galleryPanelStyles: (
     definition: FoundationElementDefinition
 ) =>
     css`
-        .gallery-panel {
-            width: 100%;
+        .gallery {
+            height: 280px;
         }
-        .gallery-panel-list {
-            width: 100%;
-            display: block;
-            contain: size;
-        }
-        .gallery-panel-title {
+        .gallery-title {
             font-family: ${bodyFont};
             font-size: ${typeRampBaseFontSize};
             line-height: ${typeRampBaseLineHeight};
