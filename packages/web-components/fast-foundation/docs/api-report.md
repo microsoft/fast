@@ -713,6 +713,16 @@ export enum DataGridRowTypes {
 export const dataGridTemplate: (context: any, definition: any) => ViewTemplate<DataGrid>;
 
 // @public
+export type DateData = {
+    year?: number;
+    month?: number;
+    day?: number;
+    hour?: number;
+    minute?: number;
+    meridian?: "AM" | "PM";
+};
+
+// @public
 export class DateFormatter {
     constructor(config?: any);
     date: Date;
@@ -744,8 +754,10 @@ export class DateFormatter {
     yearFormat: YearFormat;
 }
 
+// Warning: (ae-forgotten-export) The symbol "FormAssociatedDatePicker" needs to be exported by the entry point index.d.ts
+//
 // @alpha
-export class DatePicker extends FoundationElement {
+export class DatePicker extends FormAssociatedDatePicker {
     // @public
     allowTextInput: boolean;
     // @public
@@ -753,8 +765,13 @@ export class DatePicker extends FoundationElement {
     arrayToMatrix(array: any[], itemsPerRow: number): any[][];
     // @public
     calendarMonth: number;
+    // (undocumented)
+    calendarMonthChanged(previous: any, next: any): void;
+    calendarTitle: string;
     // @public
     calendarYear: number;
+    // (undocumented)
+    calendarYearChanged(previous: any, next: any): void;
     // @public
     closeFlyout(force?: boolean): void;
     // @public
@@ -768,10 +785,13 @@ export class DatePicker extends FoundationElement {
     // @public
     disabled: boolean;
     disabledDates: string;
+    // (undocumented)
+    disabledYears: string;
     // @public
     disconnectedCallback(): void;
     // @public
     flyoutOpen: boolean;
+    // @public
     getMonths(): {
         action: () => void;
         selected: boolean;
@@ -802,13 +822,12 @@ export class DatePicker extends FoundationElement {
     // @public
     handleBlur(): void;
     // @public
-    handleDateClicked({ day, month, year }: {
-        day: any;
-        month: any;
-        year: any;
-    }): void;
+    handleDateClicked(event: MouseEvent): void;
+    // @public
+    handleFocus(): void;
     // @public
     handleHourClicked(hour: number): void;
+    handleKeyup(event: KeyboardEvent): void;
     // @public
     handleMeridianClicked(meridian: "AM" | "PM"): void;
     // @public
@@ -820,21 +839,24 @@ export class DatePicker extends FoundationElement {
     // @public
     hour12: boolean;
     // @public
-    hourFormat: string;
+    hourFormat: "numeric" | "2-digit";
     // @public
     locale: string;
     // @public
-    max: number;
+    max: string;
     // @public
-    min: number;
+    min: string;
     // @public
-    minuteFormat: string;
+    minuteFormat: "numeric" | "2-digit";
     // @public
     monthFormat: MonthFormat;
+    // @public
+    monthPickerDispay(open?: boolean): void;
     // @public
     monthView: number;
     // @public
     name: string;
+    // @public
     nextCalendar(): void;
     // @public
     openFlyout(force?: boolean): void;
@@ -842,25 +864,40 @@ export class DatePicker extends FoundationElement {
     overFlyout: boolean;
     // @public
     placeholder: string;
+    // @public
     previousCalendar(): void;
     // @public
     readonly: boolean;
     // @public
     required: boolean;
+    // @public
     resetCalendar(): void;
     // @public
     resetText: string;
-    // @public
-    setValue(values: any): void;
     // (undocumented)
+    setCalendarTitle(): void;
+    // (undocumented)
+    setDisabledDates(): void;
+    // @public
+    setValue(values: {} | string | Date): void;
+    // @public
     setViews(): void;
     // @public
+    showCalendar: boolean;
+    // @public
+    showMonthPicker: boolean;
+    // @public
     showYearPicker: boolean;
+    // @public
     textField: any;
+    // (undocumented)
+    textFieldChanged(previous: any, next: any): void;
     // @public
     toggleFlyout(force?: boolean): void;
     // @public
     type: "date" | "datetime-local" | "month" | "year" | "time";
+    // (undocumented)
+    typeChanged(previous: any, next: any): void;
     // @public
     value: string;
     // (undocumented)
@@ -869,6 +906,7 @@ export class DatePicker extends FoundationElement {
     weekdayFormat: WeekdayFormat;
     // @public
     yearFormat: YearFormat;
+    yearPickerDisplay(open?: boolean): void;
     // @public
     yearView: number;
 }

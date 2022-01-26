@@ -245,6 +245,12 @@ export class DatePicker extends FormAssociatedDatePicker {
         if (this.min || this.max) {
             const start = new Date(this.min) || null;
             const end = new Date(this.max) || null;
+            if ((start && start.getTime()) || (end && end.getTime())) {
+                const dateIsInRange = date => {
+                    const time = date.getTime();
+                    return (!start || start <= time) && (!end || end >= time);
+                };
+            }
         }
     }
 
@@ -416,7 +422,7 @@ export class DatePicker extends FormAssociatedDatePicker {
                     this.selectedDate?.minute ?? new Date().getMinutes();
                 const value: number = (minute + index) % 60;
                 const minuteDate: Date = new date(1, value);
-                const parts = partFormatter.formatToParts(minuteDate);
+                const parts = (partFormatter as any).formatToParts(minuteDate);
                 const minutePart = parts.find(part => part.type === "minute");
                 const text: string = minutePart.value;
 
@@ -428,7 +434,7 @@ export class DatePicker extends FormAssociatedDatePicker {
             });
 
         const getDayPeriod = hour => {
-            const parts = partFormatter.formatToParts(new date(hour, 0));
+            const parts = (partFormatter as any).formatToParts(new date(hour, 0));
             const part = parts.find(part => part.type === "dayPeriod");
             return part.value;
         };
@@ -718,7 +724,7 @@ export class DatePicker extends FormAssociatedDatePicker {
      * Handler for the keyup event on the text field
      * @param event - Keyboard event for key press
      */
-    public handleKeyup(event: Event & KeyboardEvent) {
+    public handleKeyup(event: KeyboardEvent) {
         const key = event.key;
 
         switch (key) {

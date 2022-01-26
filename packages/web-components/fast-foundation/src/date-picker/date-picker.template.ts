@@ -152,7 +152,7 @@ export const datePickerTemplate: (
             ?required="${x => x.required}"
             @blur="${x => x.handleBlur()}"
             @focus="${x => x.handleFocus()}"
-            @keyup="${(x, c) => x.handleKeyup(c.event)}"
+            @keyup="${(x, c) => x.handleKeyup(c.event as KeyboardEvent)}"
         >
             <div slot="end">&#128197;</div>
         </${textField}>
