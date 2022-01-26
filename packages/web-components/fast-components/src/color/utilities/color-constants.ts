@@ -13,7 +13,8 @@ export const black = SwatchRGB.create(0, 0, 0);
 /**
  * @internal
  */
-export const middleGrey = SwatchRGB.create(0.5, 0.5, 0.5);
+/* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */
+export const middleGrey = SwatchRGB.from(parseColorHexRGB("#808080")!);
 
 /**
  * @internal
