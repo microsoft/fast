@@ -186,6 +186,7 @@ export const datePickerTemplate: (
                         locale="${x => x.locale}"
                         month="${x => x.calendarMonth}"
                         year="${x => x.calendarYear}"
+                        disabled-dates="${x => x.disabledDates}"
                         min-weeks="6">
                             <div
                                 slot="title"

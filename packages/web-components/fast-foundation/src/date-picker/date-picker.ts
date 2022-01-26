@@ -205,12 +205,12 @@ export class DatePicker extends FormAssociatedDatePicker {
      */
     @observable
     private selectedDate: {
-        day: number;
-        month: number;
-        year: number;
-        hour: number;
-        minute: number;
-        meridian: "AM" | "PM";
+        day?: number;
+        month?: number;
+        year?: number;
+        hour?: number;
+        minute?: number;
+        meridian?: "AM" | "PM";
     };
 
     /**
@@ -240,19 +240,6 @@ export class DatePicker extends FormAssociatedDatePicker {
      */
     @attr({ attribute: "disabled-dates" })
     public disabledDates: string;
-
-    public setDisabledDates() {
-        if (this.min || this.max) {
-            const start = new Date(this.min) || null;
-            const end = new Date(this.max) || null;
-            if ((start && start.getTime()) || (end && end.getTime())) {
-                const dateIsInRange = date => {
-                    const time = date.getTime();
-                    return (!start || start <= time) && (!end || end >= time);
-                };
-            }
-        }
-    }
 
     @observable
     public disabledYears: string;
@@ -351,7 +338,12 @@ export class DatePicker extends FormAssociatedDatePicker {
      */
     public setViews(): void {
         if (this.selectedDate) {
-            const { year, month, day } = this.selectedDate;
+            const now = new Date();
+            const {
+                year = now.getFullYear(),
+                month = now.getMonth() + 1,
+                day = now.getDate(),
+            } = this.selectedDate;
             if (year && month && day) {
                 this.date = `${month}-${day}-${year}`;
             }
@@ -743,7 +735,16 @@ export class DatePicker extends FormAssociatedDatePicker {
      * @param date
      * @returns
      */
-    private getDateAsObject(date: Date | string = new Date()): {} {
+    private getDateAsObject(
+        date: Date | string = new Date()
+    ): {
+        day?: number;
+        month?: number;
+        year?: number;
+        hour?: number;
+        minute?: number;
+        meridian?: "AM" | "PM";
+    } {
         if (typeof date === "string") {
             date = new Date(date);
         }
@@ -828,17 +829,36 @@ export class DatePicker extends FormAssociatedDatePicker {
             this.closeFlyout(true);
         }
 
-        this.selectedDate = Object.assign({}, this.getDateAsObject(), this.selectedDate);
-        const { year, month, day, hour, minute, meridian } = this.selectedDate;
+        const selectedDate = Object.assign({}, this.getDateAsObject(), this.selectedDate);
+        const now = new Date();
+        const {
+            year = now.getFullYear(),
+            month = now.getMonth(),
+            day,
+            hour = now.getHours(),
+            minute,
+            meridian,
+        } = selectedDate;
         const formatting = this.getFormatting();
 
-        const date = new Date(
+        let date = new Date(
             year,
             month - 1,
             day,
             hour + (meridian === "PM" ? 12 : 0),
             minute
         );
+
+        const start = new Date(this.min);
+        const end = new Date(this.max);
+        if (date.getTime() < start.getTime()) {
+            date = start;
+        } else if (date.getTime() > end.getTime()) {
+            date = end;
+        }
+
+        this.selectedDate = this.getDateAsObject(date);
+
         const dateString: string = date.getTime()
             ? this.dateFormatter.getDate(date, formatting)
             : "";

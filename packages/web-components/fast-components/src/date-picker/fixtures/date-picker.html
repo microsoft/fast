@@ -1,8 +1,5 @@
 <h1>Date picker</h1>
 
-<h2>With min and max dates</h2>
-<fast-date-picker min="1/10/2022" max="1/24/2022"></fast-date-picker>
-
 <h2>Default</h2>
 <fast-date-picker></fast-date-picker>
 
@@ -39,6 +36,18 @@
     month-format="short"
     year-format="2-digit"
 ></fast-date-picker>
+
+<h2>With min and max dates</h2>
+<fast-date-picker id="min-max" min="1-4-2022" max="1-21-2022"></fast-date-picker>
+<script>
+    var now = new Date();
+    var month = now.getMonth() + 1;
+    var year = now.getFullYear();
+    var dateString = day => `${month}-${day}-${year}`;
+    var target = document.getElementById("min-max");
+    target.setAttribute("min", dateString(4));
+    target.setAttribute("max", dateString(21));
+</script>
 
 <h2>With date set</h2>
 <fast-date-picker value="November 22, 1963"></fast-date-picker>
