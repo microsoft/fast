@@ -1,12 +1,14 @@
-import { fastAnchor } from "@microsoft/fast-components";
-import { DesignSystem } from "@microsoft/fast-foundation";
+import {
+    allComponents as fastComponents,
+    provideFASTDesignSystem,
+} from "@microsoft/fast-components";
 import React from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import App from "./app";
 import { store } from "./state";
 
-DesignSystem.getOrCreate().register(fastAnchor());
+provideFASTDesignSystem().register(fastComponents);
 
 /**
  * Create the root node

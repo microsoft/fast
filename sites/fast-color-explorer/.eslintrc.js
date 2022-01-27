@@ -5,7 +5,10 @@ module.exports = {
         "prettier",
     ],
     rules: {
+        "@typescript-eslint/explicit-function-return-type": "off",
+        "@typescript-eslint/no-non-null-assertion": "off",
         "@typescript-eslint/no-unused-vars": "off",
+        "@typescript-eslint/typedef": "off",
         "react/display-name": "off",
         "@typescript-eslint/ban-types": [
             "error",
@@ -16,5 +19,6 @@ module.exports = {
                 extendDefaults: true,
             },
         ],
+        "no-unused-expressions": "off",
     },
 };
