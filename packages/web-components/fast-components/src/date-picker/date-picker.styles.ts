@@ -37,6 +37,7 @@ export const datePickerStyles: (
         --panel-size: 240px;
         position: relative;
     }
+
     .flyout {
         border: calc(${strokeWidth} * 1px) solid transparent;
         border-radius: calc(${controlCornerRadius} * 1px);
@@ -46,14 +47,11 @@ export const datePickerStyles: (
         z-index: 1;
         display: none;
         color: ${neutralForegroundRest};
+        gap: calc(${designUnit} * 5px);
     }
 
     .flyout.show {
         display: inline-flex;
-    }
-
-    .flyout > * + * {
-        margin: 0 0 0 calc(${designUnit} * 5px);
     }
 
     .calendar {
@@ -73,8 +71,7 @@ export const datePickerStyles: (
     }
 
     .calendar-title::part(control) {
-        aign-items: left;
-        justify-content: left;
+        justify-content: start;
         font-weight: bold;
     }
 
@@ -99,7 +96,7 @@ export const datePickerStyles: (
 
     .picker-title .title-action::part(control) {
         aign-items: left;
-        justify-content: left;
+        justify-content: start;
         font-weight: bold;
     }
 
@@ -146,14 +143,11 @@ export const datePickerStyles: (
         padding: calc(${designUnit} * 2px);
         display: grid;
         grid-template-columns: 1fr 20px 1fr 1fr;
+        gap: calc(${designUnit} * 2px);
     }
 
     .time-list {
         overflow-y: hidden;
-    }
-
-    .time-list + .time-list {
-        margin-left: calc(${designUnit} * 2px);
     }
 
     .time-list:hover {
@@ -161,6 +155,7 @@ export const datePickerStyles: (
     }
 
     .time-separate {
-        padding: 15px calc(${designUnit} * 2px) 0;
+        padding: 15px 0 0;
+        text-align: center;
     }
 `;
