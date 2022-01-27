@@ -1,9 +1,5 @@
 import { html, ViewTemplate } from "@microsoft/fast-element";
-import {
-    Button,
-    ElementDefinitionContext,
-    OverrideFoundationElementDefinition,
-} from "@microsoft/fast-foundation";
+import { Button, FoundationElementTemplate } from "@microsoft/fast-foundation";
 import type { DemoCard, DemoCardDefinitionOptions } from "./card";
 
 /**
@@ -23,10 +19,10 @@ import type { DemoCard, DemoCardDefinitionOptions } from "./card";
  * "like-button" slotted content. If supplied this will be used across all instances of this card,
  * overriding what was originally built-in.
  */
-export const template = (
-    context: ElementDefinitionContext,
-    definition: OverrideFoundationElementDefinition<DemoCardDefinitionOptions>
-): ViewTemplate<DemoCard> => {
+export const template: FoundationElementTemplate<
+    ViewTemplate<DemoCard>,
+    DemoCardDefinitionOptions
+> = (context, definition) => {
     const buttonTag = context.tagFor(Button);
 
     return html`

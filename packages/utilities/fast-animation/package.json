@@ -1,7 +1,7 @@
 {
   "name": "@microsoft/fast-animation",
   "description": "An animation library that simplifies interactions and animations using the Web Animation API.",
-  "version": "4.1.6",
+  "version": "4.1.7",
   "author": {
     "name": "Microsoft",
     "url": "https://discord.gg/FcSNfg4"
@@ -87,7 +87,6 @@
     "html-webpack-plugin": "^3.2.0",
     "jest": "^25.4.0",
     "mini-css-extract-plugin": "^1.6.1",
-    "modernizr-webpack-plugin": "^1.0.5",
     "postcss": "^8.3.5",
     "postcss-loader": "^4.2.0",
     "prettier": "2.0.2",
@@ -104,6 +103,6 @@
     "webpack-dev-server": "^3.11.0"
   },
   "dependencies": {
-    "@microsoft/fast-web-utilities": "^5.0.2"
+    "@microsoft/fast-web-utilities": "^5.1.0"
   }
 }
