@@ -30,7 +30,6 @@ This component is used as a building block for other components in this library 
 
 - `disabled` - Disables the control.
 - `options` - An array of all options in the `listbox`.
-- `role` - The role of the element, defaults to "listbox".
 - `selectedOptions` - A collection of the selected options in the `listbox`.
 - `selectedIndex` - The index of the first selected option, or `-1` if nothing is selected. Setting the `selectedIndex` property will update the `selected` state of the option at the new index. Out of range values will reset the `selectedIndex` to `-1`.
 - `size` - The maximum number of options that should be visible in the `listbox` scroll area.

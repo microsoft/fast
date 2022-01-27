@@ -85,9 +85,10 @@ jobs:
         name: ${{ env.ARTIFACT_NAME }}
         path: ${{ env.AZURE_WEBAPP_DIST_PATH }}
 
-    - name: Deploy Component Explorer
+    - name: Deploy Color Explorer
       id: deploypr
       uses: Azure/static-web-apps-deploy@v0.0.1-preview
+      continue-on-error: ${{ (github.event_name == 'pull_request' && github.event.action != 'closed') }}
       with:
         azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APP_COLOR_PR_TOKEN }}
         repo_token: ${{ secrets.GITHUB_TOKEN }}

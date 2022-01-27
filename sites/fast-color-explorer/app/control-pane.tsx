@@ -4,7 +4,6 @@ import manageJss, {
     ComponentStyleSheet,
     ManagedClasses,
 } from "@microsoft/fast-jss-manager-react";
-import { format } from "@microsoft/fast-jss-utilities";
 import { Pane } from "@microsoft/fast-layouts-react";
 import classnames from "classnames";
 import {
@@ -20,22 +19,13 @@ import {
 import React from "react";
 import { SketchPicker } from "react-color";
 import { connect } from "react-redux";
-import { height } from "@microsoft/fast-components-styles-msft";
+import { DesignSystem } from "@microsoft/fast-components-styles-msft";
 import {
     AccentColors,
     defaultAccentColor,
     defaultNeutralColor,
     neutralColors,
 } from "./colors";
-import { bridge, ColorsDesignSystem } from "./design-system";
-import {
-    backgroundColor,
-    focusStrokeOuter,
-    neutralFillInputRest,
-    neutralForegroundRest,
-    neutralStrokeDividerRest,
-    neutralStrokeRest,
-} from "./recipes";
 import {
     AppState,
     ComponentTypes,
@@ -54,7 +44,6 @@ export interface ControlPaneClassNameContract {
 
 export interface ControlPaneProps extends ManagedClasses<ControlPaneClassNameContract> {
     componentType: ComponentTypes;
-    designSystem: ColorsDesignSystem;
     setComponentType: (value: string) => any;
     setNeutralBaseColor: (value: ColorRGBA64) => any;
     setAccentBaseColor: (value: ColorRGBA64) => any;
@@ -69,11 +58,12 @@ export interface ControlPaneState {
 
 const accentShortcuts: string[] = values(AccentColors);
 
-const styles: ComponentStyleSheet<any, ColorsDesignSystem> = {
+const styles: ComponentStyleSheet<any, DesignSystem> = {
     "@global": {
         body: {
             fontFamily: '"Segoe UI", Arial, sans-serif',
             fontSize: "14px",
+            lineHeight: "20px",
             margin: "0",
         },
         ".sketch-picker": {
@@ -109,21 +99,21 @@ const styles: ComponentStyleSheet<any, ColorsDesignSystem> = {
         },
         ".sketch-picker input": {
             boxShadow: "none !important",
-            background: neutralFillInputRest,
-            color: neutralForegroundRest,
-            border: format("1px solid {0} !important", neutralStrokeRest),
-            height: bridge(height()),
+            background: "#181818",
+            color: "#E5E5E5",
+            border: "1px solid #5A5A5A !important",
+            height: "32px",
             fontSize: "14px !important",
             borderRadius: "3px !important",
             paddingTop: "0 !important",
             paddingBottom: "0 !important",
             "&:focus": {
                 outline: "none",
-                boxShadow: format("0 0 0 2px {0} inset !important", focusStrokeOuter),
+                boxShadow: "0 0 0 2px #717171 inset !important",
             },
         },
-        ".sketch-picker .flexbox-fix span": {
-            color: format("{0} !important", neutralForegroundRest),
+        ".sketch-picker .flexbox-fix label": {
+            color: "#E5E5E5 !important",
         },
     },
     controlPane: {
@@ -131,11 +121,11 @@ const styles: ComponentStyleSheet<any, ColorsDesignSystem> = {
         zIndex: "1",
         padding: "12px",
         boxSizing: "border-box",
-        color: neutralForegroundRest,
+        color: "#E5E5E5",
         height: "100%",
         maxWidth: "300px",
-        borderLeft: format("1px solid {0}", neutralStrokeDividerRest),
-        background: backgroundColor,
+        borderLeft: "1px solid #2E2E2E",
+        background: "#181818",
         overflow: "auto",
     },
 };
@@ -344,7 +334,7 @@ class ControlPaneBase extends React.Component<ControlPaneProps, ControlPaneState
                         onChange={this.handleRecommendedBackgroundsChange}
                     >
                         <Label slot="label" htmlFor={id}>
-                            Show recommended backgrounds only
+                            Show neutral layer backgrounds only
                         </Label>
                     </Checkbox>
                 </div>
