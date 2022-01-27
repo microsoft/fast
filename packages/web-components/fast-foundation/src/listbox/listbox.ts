@@ -202,13 +202,16 @@ export abstract class Listbox extends FoundationElement {
     protected focusAndScrollOptionIntoView(
         optionToFocus: ListboxOption | null = this.firstSelectedOption
     ): void {
-        if (this.contains(document.activeElement)) {
-            if (optionToFocus) {
-                optionToFocus.focus();
-                requestAnimationFrame(() => {
-                    optionToFocus.scrollIntoView({ block: "nearest" });
-                });
-            }
+        // To ensure that the browser handles both `focus()` and `scrollIntoView()`, the
+        // timing here needs to guarantee that they happen on different frames. Since this
+        // function is typically called from the `openChanged` observer, `DOM.queueUpdate`
+        // causes the calls to be grouped into the same frame. To prevent this,
+        // `requestAnimationFrame` is used instead of `DOM.queueUpdate`.
+        if (this.contains(document.activeElement) && optionToFocus !== null) {
+            optionToFocus.focus();
+            requestAnimationFrame(() => {
+                optionToFocus.scrollIntoView({ block: "nearest" });
+            });
         }
     }
 
