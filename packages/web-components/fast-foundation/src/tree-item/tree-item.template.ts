@@ -1,20 +1,17 @@
 import { children, elements, html, ref, slotted, when } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
 import { endSlotTemplate, startSlotTemplate } from "../patterns/start-end";
-import type { ElementDefinitionContext } from "../design-system";
+import type { FoundationElementTemplate } from "../foundation-element";
 import type { TreeItem, TreeItemOptions } from "./tree-item";
 
 /**
  * The template for the {@link @microsoft/fast-foundation#(TreeItem:class)} component.
  * @public
  */
-export const treeItemTemplate: (
-    context: ElementDefinitionContext,
-    definition: TreeItemOptions
-) => ViewTemplate<TreeItem> = (
-    context: ElementDefinitionContext,
-    definition: TreeItemOptions
-) => html`
+export const treeItemTemplate: FoundationElementTemplate<
+    ViewTemplate<TreeItem>,
+    TreeItemOptions
+> = (context, definition) => html`
     <template
         role="treeitem"
         slot="${x => (x.isNestedItem() ? "item" : void 0)}"
