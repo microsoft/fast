@@ -1,20 +1,17 @@
 import { html, ref } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
 import { endSlotTemplate, startSlotTemplate } from "../patterns/start-end";
-import type { ElementDefinitionContext } from "../design-system";
+import type { FoundationElementTemplate } from "../foundation-element";
 import type { AccordionItem, AccordionItemOptions } from "./accordion-item";
 
 /**
  * The template for the {@link @microsoft/fast-foundation#(AccordionItem:class)} component.
  * @public
  */
-export const accordionItemTemplate: (
-    context: ElementDefinitionContext,
-    definition: AccordionItemOptions
-) => ViewTemplate<AccordionItem> = (
-    context: ElementDefinitionContext,
-    definition: AccordionItemOptions
-) => html`
+export const accordionItemTemplate: FoundationElementTemplate<
+    ViewTemplate<AccordionItem>,
+    AccordionItemOptions
+> = (context, definition) => html`
     <template class="${x => (x.expanded ? "expanded" : "")}">
         <div
             class="heading"
