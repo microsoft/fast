@@ -17,9 +17,11 @@ export const galleryItemTemplate: (
 ) => {
     return html<GalleryItem>`
         <template>
+        <fast-loader-card
             <div class="gallery-item-title">
                 ${x => x.galleryItemData?.title}
             </div>
+        </fast-loader-card>
         </template>
     `;
 };

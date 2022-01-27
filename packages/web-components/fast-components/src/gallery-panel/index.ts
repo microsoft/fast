@@ -1,10 +1,10 @@
 import {
-    galleryPanelTemplate,
-    GalleryPanel,
-    galleryTemplate,
     Gallery,
-    galleryItemTemplate,
     GalleryItem,
+    galleryItemTemplate,
+    GalleryPanel,
+    galleryPanelTemplate,
+    galleryTemplate,
 } from "@microsoft/fast-foundation";
 import { galleryStyles } from "./gallery.styles";
 import { galleryItemStyles } from "./gallery-item.styles";
@@ -70,6 +70,7 @@ export const fastGalleryItem = GalleryItem.compose({
     template: galleryItemTemplate,
     baseClass: GalleryItem,
     styles: galleryItemStyles,
+    shadowOptions: null,
 });
 
 /**

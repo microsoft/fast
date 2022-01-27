@@ -42,9 +42,8 @@ export const galleryPanelStyles: (
             width: 100%;
         }
         .gallery-panel-list {
+            contain: paint;
             width: 100%;
-            display: block;
-            contain: size;
         }
         .gallery-panel-title {
             font-family: ${bodyFont};

@@ -12,9 +12,14 @@ function createItemTemplate(context): ViewTemplate {
     <${galleryItemTag}
         style="
             position: absolute;
-            width: 100%;
+            height: 100%;
+            width:  ${(x, c) => `${c.parent.visibleItemSpans[c.index]?.span}px`};
+            transform: ${(x, c) =>
+                `translateX(${c.parent.visibleItemSpans[c.index]?.start}px)`};
         "
-    ></${galleryItemTag}>
+    >
+        ${x => x.title}
+    </${galleryItemTag}>
 `;
 }
 
@@ -37,14 +42,12 @@ export const galleryTemplate: (
                 ${x => x.galleryData?.title}
             </div>
             <${virtualListTag}
-                style="
-                    height: 200px;
-                    width: 100%;
-                "
+                class="gallery-list"
                 orientation="horizontal"
                 auto-update-mode="auto"
                 item-span="200"
-                viewport-buffer="200"
+                viewport-buffer="600"
+                :items="${x => x.galleryData?.items}"
                 :itemTemplate="${itemTemplate}"
                 ${ref("galleryListElement")}
             ></${virtualListTag}>

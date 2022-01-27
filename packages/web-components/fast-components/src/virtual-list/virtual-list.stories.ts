@@ -145,7 +145,7 @@ function newDataSet(rowCount: number, prefix: number): object[] {
         newData.push({
             value: `${i}`,
             title: `item #${i}`,
-            url: `https://picsum.photos/200/300?random=${prefix * 1000 + i}`,
+            url: `https://picsum.photos/200/200?random=${prefix * 1000 + i}`,
         });
     }
     return newData;

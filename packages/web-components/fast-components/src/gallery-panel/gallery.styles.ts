@@ -39,13 +39,21 @@ export const galleryStyles: (
 ) =>
     css`
         .gallery {
-            height: 280px;
+            background: black;
+            height: 300px;
+            width: 100%;
+        }
+        .gallery-list {
+            width: 100%;
+            height: 200px;
+            overflow-x: scroll;
+            overflow-y: hidden;
         }
         .gallery-title {
+            height: 30px;
             font-family: ${bodyFont};
             font-size: ${typeRampBaseFontSize};
             line-height: ${typeRampBaseLineHeight};
-            height: calc(${heightNumber} * 1px);
             padding: calc(${designUnit} * 5px) calc(${designUnit} * 4px);
             color: ${neutralForegroundHint};
         }

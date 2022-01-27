@@ -41,11 +41,8 @@ export const galleryPanelTemplate: (
             </div>
             <${virtualListTag}
                 class="gallery-panel-list"
-                style="
-                    width: 100%;
-                "
                 auto-update-mode="auto"
-                item-span="280"
+                item-span="300"
                 viewport-buffer="200"
                 :itemTemplate="${itemTemplate}"
                 ${ref("galleriesListElement")}
