@@ -5,6 +5,7 @@ import {
     ElementDefinitionContext,
     focusVisible,
     forcedColorsStylesheetBehavior,
+    FoundationElementTemplate,
     TextFieldOptions,
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
@@ -33,10 +34,10 @@ import { heightNumber } from "../styles/index";
  * Styles for Text Field
  * @public
  */
-export const textFieldStyles: (
-    context: ElementDefinitionContext,
-    definition: TextFieldOptions
-) => ElementStyles = (context: ElementDefinitionContext, definition: TextFieldOptions) =>
+export const textFieldStyles: FoundationElementTemplate<
+    ElementStyles,
+    TextFieldOptions
+> = (context, definition) =>
     css`
     ${display("inline-block")} :host {
         font-family: ${bodyFont};
