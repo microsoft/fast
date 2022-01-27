@@ -2,6 +2,50 @@
   "name": "@microsoft/fast-foundation",
   "entries": [
     {
+      "date": "Tue, 25 Jan 2022 07:11:53 GMT",
+      "tag": "@microsoft/fast-foundation_v2.32.1",
+      "version": "2.32.1",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-web-utilities to v5.1.0",
+            "author": "john.kreitlow@microsoft.com",
+            "commit": "97f653f8ee62c74d47df9b60024ff8eef05c79d1",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sun, 23 Jan 2022 07:13:56 GMT",
+      "tag": "@microsoft/fast-foundation_v2.32.0",
+      "version": "2.32.0",
+      "comments": {
+        "patch": [
+          {
+            "comment": "use default slot in accordion",
+            "author": "mathieulavoie94@gmail.com",
+            "commit": "415e7a49570ead5856ab8a4587aa6dfddf8c898e",
+            "package": "@microsoft/fast-foundation"
+          },
+          {
+            "comment": "Bump @microsoft/fast-element to v1.7.0",
+            "author": "scomea@microsoft.com",
+            "commit": "897c39862b58a63ad9900426ae6ae2f95d222e1e",
+            "package": "@microsoft/fast-foundation"
+          }
+        ],
+        "minor": [
+          {
+            "comment": "feat: add `orientation` to divider",
+            "author": "jes@microsoft.com",
+            "commit": "9f8e045d9fa4b8cc35b9c1d8ebe72cb7da0fd4ff",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 20 Jan 2022 07:12:04 GMT",
       "tag": "@microsoft/fast-foundation_v2.31.0",
       "version": "2.31.0",
