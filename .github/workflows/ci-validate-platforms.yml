@@ -55,7 +55,7 @@ jobs:
             ${{ runner.os }}-yarn-
 
       - name: Install package dependencies
-        run: yarn install --frozen-lockfile --ignore-scripts --network-timeout=36000
+        run: yarn install --frozen-lockfile --ignore-scripts --network-timeout=360000 --prefer-offline
 
       - name: Test Prettier format
         run: yarn format:check
