@@ -73,34 +73,54 @@ const pickerTemplate = (context, items, title, previousAction, nextAction, reset
     return html`
       <div class="picker" part="picker">
         <div class="picker-title" part="picker-title">
-            <${button} class="title-action ${x =>
-        title.isInteractive ? "interactive-title" : ""}" @click="${x => title.action()}">
-            ${x => title.text}
+            <${button}
+                class="title-action ${x =>
+                    title.isInteractive ? "interactive-title" : ""}"
+                @click="${x => title.action()}"
+            >
+                ${x => title.text}
             </${button}>
-            <${button} class="arrow" part="arrow-previous" @click="${x =>
-        previousAction()}">
-            &downarrow;
+            <${button}
+                class="arrow"
+                part="arrow-previous"
+                @click="${x => previousAction()}"
+            >
+                &downarrow;
             </${button}>
-            <${button} class="arrow" part="arrow-next" @click="${x => nextAction()}">
-            &uparrow;
+            <${button}
+                class="arrow"
+                part="arrow-next"
+                @click="${x => nextAction()}"
+            >
+                &uparrow;
             </${button}>
         </div>
-      <${grid} class="picker-grid" part="picker-grid" generate-header="none">
+      <${grid}
+        class="picker-grid"
+        part="picker-grid"
+        generate-header="none"
+    >
         ${repeat(
             x => items,
             html`
-          <${row} role="row" role-type="default" class="picker-row" part="picker-row" grid-template-columns="1fr 1fr 1fr 1fr">
+            <${row}
+                role="row"
+                role-type="default"
+                class="picker-row"
+                part="picker-row"
+                grid-template-columns="1fr 1fr 1fr 1fr"
+            >
             ${repeat(
                 x => x,
                 html`
-              <${cell}
-                tabindex="-1"
-                class="picker-cell ${x => (x.selected ? "selected" : "")}"
-                part="picker-cell"
-                grid-column="${(x, c) => c.index + 1}"
-                @click="${x => x.action()}"
-                @keydown="${(x, c) => x.action()}"
-              >
+                <${cell}
+                    tabindex="-1"
+                    class="picker-cell ${x => (x.selected ? "selected" : "")}"
+                    part="picker-cell"
+                    grid-column="${(x, c) => c.index + 1}"
+                    @click="${x => x.action()}"
+                    @keyup="${(x, c) => x.keyup(c.event)}"
+                >
                 ${x => x.text}
               </${cell}>
             `,

@@ -481,6 +481,7 @@ export class DatePicker extends FormAssociatedDatePicker {
         return new Array(12).fill(null).map((_, index) => {
             return {
                 action: () => this.handleMonthClicked(index + 1, this.monthView),
+                keyup: this.handleMonthKeyup.bind(this, index + 1, this.monthView),
                 selected:
                     this.calendarMonth === index + 1 &&
                     this.calendarYear === this.yearView,
@@ -503,6 +504,7 @@ export class DatePicker extends FormAssociatedDatePicker {
             const text = this.dateFormatter.getYear(year);
             return {
                 action: () => this.handleYearClicked(year),
+                keyup: this.handleYearKeyup.bind(this, year),
                 text,
             };
         });
@@ -520,6 +522,11 @@ export class DatePicker extends FormAssociatedDatePicker {
      */
     @observable
     public flyoutOpen: boolean = false;
+    public flyoutOpenChanged(previous, next) {
+        window[`${next ? "add" : "remove"}EventListener`]("click", () =>
+            this.closeFlyout()
+        );
+    }
 
     /**
      * Opens the flyout used for picking a date or time
@@ -633,6 +640,19 @@ export class DatePicker extends FormAssociatedDatePicker {
     }
 
     /**
+     * Handler for keyboard actions for a month
+     * @param event - keyboard event
+     * @returns - true
+     */
+    public handleMonthKeyup(month: number, year: number, event: KeyboardEvent): boolean {
+        switch (event.key) {
+            case "Enter":
+                this.handleMonthClicked(month, year);
+        }
+        return true;
+    }
+
+    /**
      * Handler for selecting a year in the year picker
      * @param year - The year clicked
      * @public
@@ -645,6 +665,19 @@ export class DatePicker extends FormAssociatedDatePicker {
         } else if (this.type === "date" || this.type === "datetime-local") {
             this.yearPickerDisplay(false);
         }
+    }
+
+    /**
+     * Handler for keyboard actions for a year
+     * @param event - keyboard event
+     * @returns - true
+     */
+    public handleYearKeyup(year: number, event: KeyboardEvent): boolean {
+        switch (event.key) {
+            case "Enter":
+                this.handleYearClicked(year);
+        }
+        return true;
     }
 
     /**
@@ -891,8 +924,6 @@ export class DatePicker extends FormAssociatedDatePicker {
         this.showCalendar = this.type.indexOf("date") >= 0;
         this.showMonthPicker = this.type === "date" || this.type === "month";
         this.showYearPicker = this.type === "month" || this.type === "year";
-
-        window.addEventListener("click", () => this.closeFlyout());
     }
 
     /**
