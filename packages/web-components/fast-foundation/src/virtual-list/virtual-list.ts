@@ -307,8 +307,11 @@ export class VirtualList extends FoundationElement {
         }
         this.cancelPendingPositionUpdates();
         this.unobserveItems();
-        this.visibleItems = [];
-        this.visibleItemSpans = [];
+        this.visibleItems = this.visibleItems.splice(0, this.visibleItems.length);
+        this.visibleItemSpans = this.visibleItemSpans.splice(
+            0,
+            this.visibleItemSpans.length
+        );
         this.disconnectResizeDetector();
     }
 
@@ -630,12 +633,6 @@ export class VirtualList extends FoundationElement {
      */
     private updateVisibleItems = (): void => {
         if (this.items === undefined) {
-            this.visibleItems = [];
-            this.visibleItemSpans = [];
-            this.startSpacerSpan = 0;
-            this.endSpacerSpan = 0;
-            this.visibleRangeStart = -1;
-            this.visibleRangeEnd = -1;
             return;
         }
 
