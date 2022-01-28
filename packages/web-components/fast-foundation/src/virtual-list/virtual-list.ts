@@ -381,7 +381,8 @@ export class VirtualList extends FoundationElement {
 
     /**
      * the position in the stack (in pixels) of the a particular item index in the
-     * base source data
+     * base source data.  Note that this does not necessarily mean the item is currently
+     * being rendered.
      *
      * @public
      */
@@ -407,24 +408,25 @@ export class VirtualList extends FoundationElement {
      * get position updates
      */
     public requestPositionUpdates = (): void => {
-        if (!this.virtualize || this.pendingPositioningUpdate) {
-            this.finalUpdate = true;
+        if (!this.virtualize) {
             this.updateVisibleItems();
+            return;
+        }
+        if (this.pendingPositioningUpdate) {
+            this.finalUpdate = true;
             return;
         }
         this.finalUpdate = false;
         this.pendingPositioningUpdate = true;
 
-        DOM.queueUpdate(() => {
-            VirtualList.intersectionService.requestPosition(
-                this.containerElement,
-                this.handleIntersection
-            );
-            VirtualList.intersectionService.requestPosition(
-                this.viewportElement,
-                this.handleIntersection
-            );
-        });
+        VirtualList.intersectionService.requestPosition(
+            this.containerElement,
+            this.handleIntersection
+        );
+        VirtualList.intersectionService.requestPosition(
+            this.viewportElement,
+            this.handleIntersection
+        );
     };
 
     /**
