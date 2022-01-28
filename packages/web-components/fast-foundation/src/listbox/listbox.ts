@@ -282,9 +282,6 @@ export abstract class Listbox extends FoundationElement {
                 );
                 break;
             }
-
-            default:
-            // impossible!
         }
 
         return this.options.indexOf(nextSelectableOption as any);
