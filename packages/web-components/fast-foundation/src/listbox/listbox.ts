@@ -475,9 +475,10 @@ export abstract class Listbox extends FoundationElement {
     ): void {
         const filteredNext = next.filter(Listbox.slottedOptionFilter);
         this.options?.forEach(o => {
-            Observable.getNotifier(o).unsubscribe(this, "selected");
+            const notifier = Observable.getNotifier(o);
+            notifier.unsubscribe(this, "selected");
             o.selected = filteredNext.includes(o);
-            Observable.getNotifier(o).subscribe(this, "selected");
+            notifier.subscribe(this, "selected");
         });
     }
 
