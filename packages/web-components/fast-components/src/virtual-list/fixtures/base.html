@@ -28,7 +28,7 @@
         width: 100%;
         overflow-x: scroll;
         overflow-y: hidden;
-        background: gray;
+        display: block;
     "
 ></fast-virtual-list>
 
@@ -47,7 +47,7 @@
         width: 100%;
         overflow-x: scroll;
         overflow-y: hidden;
-        background: gray;
+        display: block;
     "
 ></fast-virtual-list>
 
@@ -123,7 +123,18 @@
         auto-update-mode="auto"
         item-span="200"
         id="stackv1"
-        style="grid-column: 1; width: 200px; background: gray;"
+        style="
+            grid-column: 1;
+            width: 200px;
+            background: repeating-linear-gradient(
+                90deg,
+                transparent,
+                transparent 200px,
+                gray 200px,
+                gray 400px
+            );
+        "
+        );
     ></fast-virtual-list>
 
     <fast-virtual-list
@@ -136,7 +147,6 @@
             grid-column: 3;
             overflow-y: scroll;
             overflow-x: hidden;
-            background: gray;
         "
     ></fast-virtual-list>
 </div>
