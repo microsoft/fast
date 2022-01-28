@@ -10,10 +10,8 @@ A component that uses a template to render an array of objects based on whether 
 ## Usage
 
 ```html live
-<fast-design-system-provider>
     <fast-virtual-list>
     </fast-virtual-list>
-</fast-design-system-provider>
 ```
 
 ## Applying custom styles
