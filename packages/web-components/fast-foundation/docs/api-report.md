@@ -808,7 +808,7 @@ export class DelegatesARIAListbox {
     ariaActiveDescendant: string;
     ariaDisabled: "true" | "false";
     ariaExpanded: "true" | "false" | undefined;
-    ariaMultiselectable: "true" | "false" | undefined;
+    ariaMultiSelectable: "true" | "false" | undefined;
 }
 
 // @internal

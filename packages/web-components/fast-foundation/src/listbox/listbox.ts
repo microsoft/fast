@@ -434,7 +434,7 @@ export abstract class Listbox extends FoundationElement {
      * @internal
      */
     public multipleChanged(prev: boolean | undefined, next: boolean): void {
-        this.ariaMultiselectable = next ? "true" : undefined;
+        this.ariaMultiSelectable = next ? "true" : undefined;
     }
 
     /**
@@ -656,7 +656,7 @@ export class DelegatesARIAListbox {
      * HTML Attribute: `aria-multiselectable`
      */
     @observable
-    public ariaMultiselectable: "true" | "false" | undefined;
+    public ariaMultiSelectable: "true" | "false" | undefined;
 }
 
 /**
