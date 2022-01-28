@@ -29,7 +29,6 @@ export const virtualListTemplate: (
                 x.orientation !== Orientation.vertical
                     ? "100%"
                     : `${x.totalStackSpan}px`};
-                position: relative;
             "
             ${ref("containerElement")}
         >

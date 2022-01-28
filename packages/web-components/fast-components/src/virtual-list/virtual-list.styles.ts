@@ -11,8 +11,7 @@ export const virtualListStyles: (
     context: ElementDefinitionContext,
     definition: FoundationElementDefinition
 ) => css`
-    :host {
-        display: block;
-        contain: size;
+    .container {
+        position: relative;
     }
 `;
