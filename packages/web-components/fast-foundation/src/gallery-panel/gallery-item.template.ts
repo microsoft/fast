@@ -16,12 +16,20 @@ export const galleryItemTemplate: (
     definition: FoundationElementDefinition
 ) => {
     return html<GalleryItem>`
-        <template>
         <fast-loader-card
+            class="gallery-item"
+            load-delay="0"
+        >
             <div class="gallery-item-title">
                 ${x => x.galleryItemData?.title}
             </div>
+            <div
+                class="gallery-item-image"
+                slot="delay-load"
+                style="
+                    background-image: url('${x => x.galleryItemData?.image}');
+                "
+            </div>
         </fast-loader-card>
-        </template>
     `;
 };

@@ -9,7 +9,7 @@
     default viewport is the stack element itself.
     <p>
         The item templates in each of the examples consist of a fast-card element with a
-        title.
+        title, a skeleton element and an image.
     </p>
 </h3>
 
@@ -28,7 +28,7 @@
         width: 100%;
         overflow-x: scroll;
         overflow-y: hidden;
-        background: gray;
+        display: block;
     "
 ></fast-virtual-list>
 
@@ -47,7 +47,7 @@
         width: 100%;
         overflow-x: scroll;
         overflow-y: hidden;
-        background: gray;
+        display: block;
     "
 ></fast-virtual-list>
 
@@ -89,9 +89,13 @@
 </div>
 
 <h3>
-    Grid test A vertical virtual list hosting horizontal virtual lists of images that
-    virtualizes on both axis. (1000 rows of 1000 images)
+    Grid test
 </h3>
+
+<h4>
+    A vertical virtual list containing 1000 rows, each row is an horizontal virtual list
+    with 1000 images. The grid virtualizes on both axis using a common viewport.
+</h4>
 <div
     id="gridcontainer"
     style="height: 800px; width: 800px; overflow-x: scroll; overflow-y: scroll;"
@@ -110,7 +114,7 @@
 <div
     style="
         margin-top: 100px;
-        width: 440px;
+        width: 240px;
         display: grid;
         grid-template-columns: 1fr 20px 1fr 20px 1fr;
     "
@@ -119,7 +123,18 @@
         auto-update-mode="auto"
         item-span="200"
         id="stackv1"
-        style="grid-column: 1; width: 200px; background: gray;"
+        style="
+            grid-column: 1;
+            width: 200px;
+            background: repeating-linear-gradient(
+                90deg,
+                transparent,
+                transparent 200px,
+                gray 200px,
+                gray 400px
+            );
+        "
+        );
     ></fast-virtual-list>
 
     <fast-virtual-list
@@ -132,7 +147,6 @@
             grid-column: 3;
             overflow-y: scroll;
             overflow-x: hidden;
-            background: gray;
         "
     ></fast-virtual-list>
 </div>

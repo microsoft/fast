@@ -13,7 +13,7 @@ addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
     if (name.toLowerCase().startsWith("gallery-panel")) {
         const galleryPanelData: GalleryPanelData = {
             title: "A gallery panel",
-            galleries: generateGalleries(1000, ""),
+            galleries: generateGalleries(1000),
         };
 
         const galleryPanel = document.getElementById(
@@ -23,23 +23,23 @@ addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
     }
 });
 
-function generateGalleries(galleryCount: number, prefix: string): GalleryData[] {
+function generateGalleries(galleryCount: number): GalleryData[] {
     const newGalleries: GalleryData[] = [];
     for (let i = 1; i <= galleryCount; i++) {
         newGalleries.push({
             title: `gallery #${i}`,
-            items: generateGalleryItems(1000, prefix),
+            items: generateGalleryItems(1000, i),
         });
     }
     return newGalleries;
 }
 
-function generateGalleryItems(itemCount: number, prefix: string): GalleryItemData[] {
+function generateGalleryItems(itemCount: number, galleryNum: number): GalleryItemData[] {
     const newItems: GalleryItemData[] = [];
     for (let i = 1; i <= itemCount; i++) {
         newItems.push({
             title: `item #${i}`,
-            image: `https://picsum.photos/200/200?random=${prefix}${1000 + i}`,
+            image: `https://picsum.photos/200/200?random=${galleryNum * 100 + i}`,
         });
     }
     return newItems;

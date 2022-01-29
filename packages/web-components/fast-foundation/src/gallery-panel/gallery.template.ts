@@ -10,6 +10,7 @@ function createItemTemplate(context): ViewTemplate {
     const galleryItemTag = context.tagFor(GalleryItem);
     return html`
     <${galleryItemTag}
+        :galleryItemData="${x => x}"
         style="
             position: absolute;
             height: 100%;
@@ -18,7 +19,6 @@ function createItemTemplate(context): ViewTemplate {
                 `translateX(${c.parent.visibleItemSpans[c.index]?.start}px)`};
         "
     >
-        ${x => x.title}
     </${galleryItemTag}>
 `;
 }

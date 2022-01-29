@@ -39,13 +39,13 @@ export const galleryStyles: (
 ) =>
     css`
         .gallery {
-            background: black;
-            height: 300px;
+            height: 400px;
             width: 100%;
         }
         .gallery-list {
+            display: block;
             width: 100%;
-            height: 200px;
+            height: 300px;
             overflow-x: scroll;
             overflow-y: hidden;
         }

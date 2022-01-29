@@ -19,6 +19,7 @@ export const virtualListTemplate: (
     <template>
         <div
             class="container"
+            part="container"
             style="
                 width: ${x =>
                 x.orientation === Orientation.vertical
@@ -28,7 +29,6 @@ export const virtualListTemplate: (
                 x.orientation !== Orientation.vertical
                     ? "100%"
                     : `${x.totalStackSpan}px`};
-                position: relative;
             "
             ${ref("containerElement")}
         >

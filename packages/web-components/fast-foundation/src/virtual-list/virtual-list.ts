@@ -1,7 +1,6 @@
 import {
     attr,
     DOM,
-    enableArrayObservation,
     html,
     Notifier,
     nullableNumberConverter,
@@ -24,6 +23,9 @@ import type { ResizeObserverClassDefinition } from "../utilities/resize-observer
  */
 export type VirtualListAutoUpdateMode = "manual" | "viewport-resize" | "auto";
 
+/**
+ * Used to describe the position of an element within the list
+ */
 export interface SpanMap {
     start: number;
     end: number;
@@ -33,22 +35,21 @@ export interface SpanMap {
 /**
  * The default item template
  * Authors will typically want to provide a template specific to their needs
- * as the default one
- *
+ * as the default display isn't particularly useful
  */
 const defaultItemTemplate: ViewTemplate<any> = html`
     <div
         style="
-            position: absolute;
             overflow-wrap: anywhere;
             overflow: hidden;
+            position: absolute;
             height:  ${(x, c) =>
             c.parent.orientation === Orientation.vertical
                 ? `${c.parent.visibleItemSpans[c.index]?.span}px`
-                : `50px`};
+                : `100%`};
             width:  ${(x, c) =>
             c.parent.orientation === Orientation.vertical
-                ? `50px`
+                ? `100%`
                 : `${c.parent.visibleItemSpans[c.index]?.span}px`};
             transform: ${(x, c) =>
             c.parent.orientation === Orientation.horizontal
@@ -122,7 +123,7 @@ export class VirtualList extends FoundationElement {
     public viewportBuffer: number = 100;
 
     /**
-     * Whether the stack is oriented vertically or horizontally.
+     * Whether the list is oriented vertically or horizontally.
      * Default is vertical
      *
      * @beta
@@ -183,14 +184,6 @@ export class VirtualList extends FoundationElement {
     }
 
     /**
-     * tbd
-     *
-     * @public
-     */
-    @observable
-    public visibleItemSpans: SpanMap[] = [];
-
-    /**
      * The ViewTemplate used to render items.
      *
      * @public
@@ -205,6 +198,14 @@ export class VirtualList extends FoundationElement {
      */
     @observable
     public visibleItems: any[] = [];
+
+    /**
+     * The positions of the currently rendered items in the list
+     *
+     * @internal
+     */
+    @observable
+    public visibleItemSpans: SpanMap[] = [];
 
     /**
      * The calculated span of the total stack.
@@ -291,7 +292,6 @@ export class VirtualList extends FoundationElement {
             this.appendChild(this.itemsPlaceholder);
         }
 
-        enableArrayObservation();
         this.initializeRepeatBehavior();
         this.initializeResizeDetector();
         this.doReset();
@@ -307,8 +307,11 @@ export class VirtualList extends FoundationElement {
         }
         this.cancelPendingPositionUpdates();
         this.unobserveItems();
-        this.visibleItems = [];
-        this.visibleItemSpans = [];
+        this.visibleItems = this.visibleItems.splice(0, this.visibleItems.length);
+        this.visibleItemSpans = this.visibleItemSpans.splice(
+            0,
+            this.visibleItemSpans.length
+        );
         this.disconnectResizeDetector();
     }
 
@@ -381,7 +384,8 @@ export class VirtualList extends FoundationElement {
 
     /**
      * the position in the stack (in pixels) of the a particular item index in the
-     * base source data
+     * base source data.  Note that this does not necessarily mean the item is currently
+     * being rendered.
      *
      * @public
      */
@@ -391,31 +395,41 @@ export class VirtualList extends FoundationElement {
             return 0;
         }
 
-        return itemIndex * this.itemSpan;
+        let returnVal = 0;
+
+        if (this.visibleItemSpans !== undefined) {
+            // todo
+            returnVal = 0;
+        } else {
+            returnVal = itemIndex * this.itemSpan;
+        }
+
+        return returnVal;
     };
 
     /**
      * get position updates
      */
     public requestPositionUpdates = (): void => {
-        if (!this.virtualize || this.pendingPositioningUpdate) {
-            this.finalUpdate = true;
+        if (!this.virtualize) {
             this.updateVisibleItems();
+            return;
+        }
+        if (this.pendingPositioningUpdate) {
+            this.finalUpdate = true;
             return;
         }
         this.finalUpdate = false;
         this.pendingPositioningUpdate = true;
 
-        DOM.queueUpdate(() => {
-            VirtualList.intersectionService.requestPosition(
-                this.containerElement,
-                this.handleIntersection
-            );
-            VirtualList.intersectionService.requestPosition(
-                this.viewportElement,
-                this.handleIntersection
-            );
-        });
+        VirtualList.intersectionService.requestPosition(
+            this.containerElement,
+            this.handleIntersection
+        );
+        VirtualList.intersectionService.requestPosition(
+            this.viewportElement,
+            this.handleIntersection
+        );
     };
 
     /**
@@ -443,6 +457,9 @@ export class VirtualList extends FoundationElement {
         this.updateDimensions();
     }
 
+    /**
+     * initialize repeat behavior for visible items
+     */
     private initializeRepeatBehavior(): void {
         if (this.itemsRepeatBehavior !== null) {
             return;
@@ -455,6 +472,9 @@ export class VirtualList extends FoundationElement {
         this.$fastController.addBehaviors([this.itemsRepeatBehavior]);
     }
 
+    /**
+     * cancel any pending position update requests
+     */
     private cancelPendingPositionUpdates(): void {
         if (this.pendingPositioningUpdate) {
             this.pendingPositioningUpdate = false;
@@ -471,6 +491,9 @@ export class VirtualList extends FoundationElement {
         }
     }
 
+    /**
+     * Handles changes to auto-update-mode
+     */
     private resetAutoUpdateMode(
         prevMode: VirtualListAutoUpdateMode,
         newMode: VirtualListAutoUpdateMode
@@ -610,12 +633,6 @@ export class VirtualList extends FoundationElement {
      */
     private updateVisibleItems = (): void => {
         if (this.items === undefined) {
-            this.visibleItems = [];
-            this.visibleItemSpans = [];
-            this.startSpacerSpan = 0;
-            this.endSpacerSpan = 0;
-            this.visibleRangeStart = -1;
-            this.visibleRangeEnd = -1;
             return;
         }
 
