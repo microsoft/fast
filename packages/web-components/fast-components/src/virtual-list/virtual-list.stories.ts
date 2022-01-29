@@ -1,27 +1,19 @@
 import { html } from "@microsoft/fast-element";
 import addons from "@storybook/addons";
 import { STORY_RENDERED } from "@storybook/core-events";
-import { Orientation } from "@microsoft/fast-web-utilities";
 import { VirtualList as FoundationVirtualList } from "@microsoft/fast-foundation";
 import VirtualListTemplate from "./fixtures/base.html";
 import "./index";
 
-const imageItemTemplate = html`
+const horizontalImageItemTemplate = html`
     <fast-card
         style="
             position: absolute;
-            height:  ${(x, c) =>
-            c.parent.orientation === Orientation.vertical
-                ? `${c.parent.visibleItemSpans[c.index]?.span}px`
-                : `100%`};
-            width:  ${(x, c) =>
-            c.parent.orientation === Orientation.vertical
-                ? `100%`
-                : `${c.parent.visibleItemSpans[c.index]?.span}px`};
+            contain: strict;
+            height:  100%;
+            width:  ${(x, c) => `${c.parent.visibleItemSpans[c.index]?.span}px`};
             transform: ${(x, c) =>
-            c.parent.orientation === Orientation.horizontal
-                ? `translateX(${c.parent.visibleItemSpans[c.index]?.start}px)`
-                : `translateY(${c.parent.visibleItemSpans[c.index]?.start}px)`};
+            `translateX(${c.parent.visibleItemSpans[c.index]?.start}px)`};
         "
     >
         <div style="margin: 5px 20px 0 20px; color: white">
@@ -39,16 +31,55 @@ const imageItemTemplate = html`
             shape="rect"
         ></fast-skeleton>
 
-        <image
+        <div
             style="
                 background: gray;
                 height: 160px;
                 width:160px;
                 margin:10px 20px 10px 20px;
+                position: absolute;
+                background-image: url('${x => x.url}');
+            "
+        ></div>
+    </fast-card>
+`;
+
+const verticalImageItemTemplate = html`
+    <fast-card
+        style="
+            position: absolute;
+            contain: strict;
+            height:  200px;
+            width:  100%;
+            transform: ${(x, c) =>
+            `translateY(${c.parent.visibleItemSpans[c.index]?.start}px)`};
+        "
+    >
+        <div style="margin: 5px 20px 0 20px; color: white">
+            ${x => x.title}
+        </div>
+
+        <fast-skeleton
+            style="
+                border-radius: 4px;
+                height: 160px;
+                width:160px;
+                margin:10px 20px 10px 20px;
                 position: absolute
             "
-            src="${x => x.url}"
-        ></image>
+            shape="rect"
+        ></fast-skeleton>
+
+        <div
+            style="
+                background: gray;
+                height: 160px;
+                width:160px;
+                margin:10px 20px 10px 20px;
+                position: absolute;
+                background-image: url('${x => x.url}');
+            "
+        ></div>
     </fast-card>
 `;
 
@@ -57,18 +88,10 @@ const gridItemTemplate = html`
         style="
             contain: strict;
             position: absolute;
-            height:  ${(x, c) =>
-            c.parent.orientation === Orientation.vertical
-                ? `${c.parent.visibleItemSpans[c.index]?.span}px`
-                : `100%`};
-            width:  ${(x, c) =>
-            c.parent.orientation === Orientation.vertical
-                ? `100%`
-                : `${c.parent.visibleItemSpans[c.index]?.span}px`};
+            height: 200px;
+            width:  200px;
             transform: ${(x, c) =>
-            c.parent.orientation === Orientation.horizontal
-                ? `translateX(${c.parent.visibleItemSpans[c.index]?.start}px)`
-                : `translateY(${c.parent.visibleItemSpans[c.index]?.start}px)`};
+            `translateX(${c.parent.visibleItemSpans[c.index]?.start}px)`};
         "
     >
         <div
@@ -81,14 +104,14 @@ const gridItemTemplate = html`
             ${x => x.title}
         </div>
 
-        <image
+        <div
             style="
                 background: gray;
                 height:100%;
                 width:100%;
+                background-image: url('${x => x.url}');
             "
-            src="${x => x.url}"
-        ></image>
+        ></div>
     </div>
 `;
 
@@ -104,7 +127,7 @@ const rowItemTemplate = html`
         style="
             display: block;
             position: absolute;
-            height:  ${(x, c) => `${c.parent.visibleItemSpans[c.index]?.span}px`};
+            height:  200px;
             width:  100%;
             transform: ${(x, c) =>
             `translateY(${c.parent.visibleItemSpans[c.index]?.start}px)`};
@@ -125,15 +148,15 @@ addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
         }
 
         const stackh1 = document.getElementById("stackh1") as FoundationVirtualList;
-        stackh1.itemTemplate = imageItemTemplate;
+        stackh1.itemTemplate = horizontalImageItemTemplate;
         stackh1.items = data;
 
         const stackh2 = document.getElementById("stackh2") as FoundationVirtualList;
-        stackh2.itemTemplate = imageItemTemplate;
+        stackh2.itemTemplate = horizontalImageItemTemplate;
         stackh2.items = data;
 
         const stackh5 = document.getElementById("stackh5") as FoundationVirtualList;
-        stackh5.itemTemplate = imageItemTemplate;
+        stackh5.itemTemplate = horizontalImageItemTemplate;
         stackh5.items = newDataSet(100, 1);
 
         const stackGrid = document.getElementById("stackgrid") as FoundationVirtualList;
@@ -142,12 +165,12 @@ addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
         stackGrid.items = gridData;
 
         const stackv1 = document.getElementById("stackv1") as FoundationVirtualList;
-        stackv1.itemTemplate = imageItemTemplate;
+        stackv1.itemTemplate = verticalImageItemTemplate;
         stackv1.viewportElement = document.documentElement;
         stackv1.items = data;
 
         const stackv2 = document.getElementById("stackv2") as FoundationVirtualList;
-        stackv2.itemTemplate = imageItemTemplate;
+        stackv2.itemTemplate = verticalImageItemTemplate;
         stackv2.items = data;
     }
 });
