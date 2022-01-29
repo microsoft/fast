@@ -20,20 +20,8 @@ const horizontalImageItemTemplate = html`
             ${x => x.title}
         </div>
 
-        <fast-skeleton
-            style="
-                border-radius: 4px;
-                height: 160px;
-                width:160px;
-                margin:10px 20px 10px 20px;
-                position: absolute
-            "
-            shape="rect"
-        ></fast-skeleton>
-
         <div
             style="
-                background: gray;
                 height: 160px;
                 width:160px;
                 margin:10px 20px 10px 20px;
@@ -59,20 +47,8 @@ const verticalImageItemTemplate = html`
             ${x => x.title}
         </div>
 
-        <fast-skeleton
-            style="
-                border-radius: 4px;
-                height: 160px;
-                width:160px;
-                margin:10px 20px 10px 20px;
-                position: absolute
-            "
-            shape="rect"
-        ></fast-skeleton>
-
         <div
             style="
-                background: gray;
                 height: 160px;
                 width:160px;
                 margin:10px 20px 10px 20px;
@@ -98,7 +74,6 @@ const gridItemTemplate = html`
             style="
             position: absolute;
             margin: 90px 20px 0 20px;
-            color: white
         "
         >
             ${x => x.title}
@@ -137,7 +112,7 @@ const rowItemTemplate = html`
 
 addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
     if (name.toLowerCase().startsWith("virtual-list")) {
-        const data = newDataSet(50000, 1);
+        const data = newDataSet(10000, 1);
 
         const gridData: object[] = [];
 
