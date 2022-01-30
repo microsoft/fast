@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "convert functions to templates",
-  "packageName": "@microsoft/fast-components",
-  "email": "mathieulavoie94@gmail.com",
-  "dependentChangeType": "patch"
-}

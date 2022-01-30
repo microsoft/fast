@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-animation",
   "entries": [
     {
+      "date": "Sun, 30 Jan 2022 07:12:35 GMT",
+      "tag": "@microsoft/fast-animation_v4.1.8",
+      "version": "4.1.8",
+      "comments": {
+        "patch": [
+          {
+            "comment": "remove webpack-modernizr-plugin from fast-animation",
+            "author": "john.kreitlow@microsoft.com",
+            "commit": "34b614535176643a2424bba5a17e75373c345de5",
+            "package": "@microsoft/fast-animation"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 25 Jan 2022 07:11:53 GMT",
       "tag": "@microsoft/fast-animation_v4.1.7",
       "version": "4.1.7",

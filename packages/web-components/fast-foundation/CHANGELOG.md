@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Tue, 25 Jan 2022 07:11:53 GMT and should not be manually modified.
+This log was last generated on Sun, 30 Jan 2022 07:12:35 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.32.2
+
+Sun, 30 Jan 2022 07:12:35 GMT
+
+### Patches
+
+- convert functions to templates (mathieulavoie94@gmail.com)
 
 ## 2.32.1
 
