@@ -101,7 +101,7 @@ const rowItemTemplate = html`
 
 addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
     if (name.toLowerCase().startsWith("virtual-list")) {
-        const data = newDataSet(100000, 1);
+        const data = newDataSet(10000, 1);
 
         const gridData: object[] = [];
 

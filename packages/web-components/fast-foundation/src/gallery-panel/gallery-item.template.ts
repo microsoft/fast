@@ -16,6 +16,7 @@ export const galleryItemTemplate: (
     definition: FoundationElementDefinition
 ) => {
     return html<GalleryItem>`
+
         <fast-loader-card
             class="gallery-item"
             load-delay="0"
@@ -31,5 +32,6 @@ export const galleryItemTemplate: (
                 "
             </div>
         </fast-loader-card>
+
     `;
 };

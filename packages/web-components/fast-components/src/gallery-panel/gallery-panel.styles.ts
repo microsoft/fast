@@ -46,11 +46,5 @@ export const galleryPanelStyles: (
             width: 100%;
         }
         .gallery-panel-title {
-            font-family: ${bodyFont};
-            font-size: ${typeRampBaseFontSize};
-            line-height: ${typeRampBaseLineHeight};
-            height: calc(${heightNumber} * 1px);
-            padding: calc(${designUnit} * 5px) calc(${designUnit} * 4px);
-            color: ${neutralForegroundHint};
         }
     `.withBehaviors(forcedColorsStylesheetBehavior(css``));

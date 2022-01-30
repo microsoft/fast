@@ -42,6 +42,11 @@ export const galleryStyles: (
             height: 400px;
             width: 100%;
         }
+        .gallery-item {
+            position: absolute;
+            height: 300px;
+            width: 200px;
+        }
         .gallery-list {
             display: block;
             width: 100%;
@@ -50,11 +55,5 @@ export const galleryStyles: (
             overflow-y: hidden;
         }
         .gallery-title {
-            height: 30px;
-            font-family: ${bodyFont};
-            font-size: ${typeRampBaseFontSize};
-            line-height: ${typeRampBaseLineHeight};
-            padding: calc(${designUnit} * 5px) calc(${designUnit} * 4px);
-            color: ${neutralForegroundHint};
         }
     `.withBehaviors(forcedColorsStylesheetBehavior(css``));
