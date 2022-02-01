@@ -70,6 +70,17 @@ module.exports = (env, args) => {
                         },
                     ],
                 },
+                {
+                    test: /\.svg$/,
+                    use: [
+                        {
+                            loader: "svg-inline-loader",
+                            options: {
+                                removeSVGTagAttrs: false,
+                            },
+                        },
+                    ],
+                },
             ],
         },
         plugins: [
@@ -101,7 +112,7 @@ module.exports = (env, args) => {
             }),
         ],
         resolve: {
-            extensions: [".js", ".tsx", ".ts", ".json"],
+            extensions: [".svg", ".js", ".tsx", ".ts", ".json"],
         },
         devServer: {
             compress: false,

@@ -1,8 +1,32 @@
 # Change Log - @microsoft/site-utilities
 
-This log was last generated on Sun, 23 Jan 2022 07:13:56 GMT and should not be manually modified.
+This log was last generated on Sun, 30 Jan 2022 07:12:35 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.9.0
+
+Sun, 30 Jan 2022 07:12:35 GMT
+
+### Patches
+
+- Bump @microsoft/fast-components to v2.20.1 (mathieulavoie94@gmail.com)
+
+## 0.9.0
+
+Wed, 26 Jan 2022 07:11:18 GMT
+
+### Patches
+
+- Bump @microsoft/fast-components to v2.20.0 (47367562+bheston@users.noreply.github.com)
+
+## 0.9.0
+
+Tue, 25 Jan 2022 07:11:53 GMT
+
+### Patches
+
+- Bump @microsoft/fast-components to v2.19.1 (john.kreitlow@microsoft.com)
 
 ## 0.9.0
 

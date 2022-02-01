@@ -1,8 +1,33 @@
 # Change Log - @microsoft/fast-components
 
-This log was last generated on Sun, 23 Jan 2022 07:13:56 GMT and should not be manually modified.
+This log was last generated on Sun, 30 Jan 2022 07:12:35 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.20.1
+
+Sun, 30 Jan 2022 07:12:35 GMT
+
+### Patches
+
+- convert functions to templates (mathieulavoie94@gmail.com)
+
+## 2.20.0
+
+Wed, 26 Jan 2022 07:11:18 GMT
+
+### Minor changes
+
+- Updated the color blocks and swatches to web components (47367562+bheston@users.noreply.github.com)
+- Added accent and neutral base color attributes to the design system provider Updated DSP to handle a change in base layer luminance Cleaned up the delta tokens to not render in css (47367562+bheston@users.noreply.github.com)
+
+## 2.19.1
+
+Tue, 25 Jan 2022 07:11:53 GMT
+
+### Patches
+
+- Bump @microsoft/fast-web-utilities to v5.1.0 (john.kreitlow@microsoft.com)
 
 ## 2.19.0
 
