@@ -58,10 +58,10 @@ export type AccordionItemOptions = FoundationElementDefinition & StartEndOptions
 };
 
 // @public
-export const accordionItemTemplate: (context: ElementDefinitionContext, definition: AccordionItemOptions) => ViewTemplate<AccordionItem>;
+export const accordionItemTemplate: FoundationElementTemplate<ViewTemplate<AccordionItem>, AccordionItemOptions>;
 
 // @public
-export const accordionTemplate: (context: ElementDefinitionContext, definition: FoundationElementDefinition) => ViewTemplate<Accordion>;
+export const accordionTemplate: FoundationElementTemplate<ViewTemplate<Accordion>>;
 
 // @public
 export const all: (key: any, searchAncestors?: boolean | undefined) => ReturnType<typeof DI.inject>;
@@ -128,13 +128,13 @@ export class AnchoredRegion extends FoundationElement {
 export type AnchoredRegionPositionLabel = "start" | "insetStart" | "insetEnd" | "end" | "center";
 
 // @beta
-export const anchoredRegionTemplate: (context: ElementDefinitionContext, definition: FoundationElementDefinition) => ViewTemplate<AnchoredRegion>;
+export const anchoredRegionTemplate: FoundationElementTemplate<ViewTemplate<AnchoredRegion>>;
 
 // @public
 export type AnchorOptions = FoundationElementDefinition & StartEndOptions;
 
 // @public
-export const anchorTemplate: (context: ElementDefinitionContext, definition: AnchorOptions) => ViewTemplate<Anchor>;
+export const anchorTemplate: FoundationElementTemplate<ViewTemplate<Anchor>, AnchorOptions>;
 
 // @public
 export function applyMixins(derivedCtor: any, ...baseCtors: any[]): void;
@@ -181,7 +181,7 @@ export type AvatarOptions = FoundationElementDefinition & {
 };
 
 // @public
-export const avatarTemplate: (context: ElementDefinitionContext, definition: AvatarOptions) => ViewTemplate<Avatar>;
+export const avatarTemplate: FoundationElementTemplate<ViewTemplate<Avatar>, AvatarOptions>;
 
 // @beta
 export type AxisPositioningMode = "uncontrolled" | "locktodefault" | "dynamic";
@@ -199,7 +199,7 @@ export class Badge extends FoundationElement {
 }
 
 // @public
-export const badgeTemplate: (context: ElementDefinitionContext, definition: FoundationElementDefinition) => ViewTemplate<Badge>;
+export const badgeTemplate: FoundationElementTemplate<ViewTemplate<Badge>>;
 
 // @public
 export class BaseProgress extends FoundationElement {
@@ -240,10 +240,10 @@ export type BreadcrumbItemOptions = FoundationElementDefinition & StartEndOption
 };
 
 // @public
-export const breadcrumbItemTemplate: (context: ElementDefinitionContext, definition: BreadcrumbItemOptions) => ViewTemplate<BreadcrumbItem>;
+export const breadcrumbItemTemplate: FoundationElementTemplate<ViewTemplate<BreadcrumbItem>, BreadcrumbItemOptions>;
 
 // @public
-export const breadcrumbTemplate: (context: ElementDefinitionContext, definition: FoundationElementDefinition) => ViewTemplate<Breadcrumb>;
+export const breadcrumbTemplate: FoundationElementTemplate<ViewTemplate<Breadcrumb>>;
 
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
 // Warning: (ae-forgotten-export) The symbol "FormAssociatedButton" needs to be exported by the entry point index.d.ts
@@ -276,7 +276,7 @@ export interface Button extends StartEnd, DelegatesARIAButton {
 export type ButtonOptions = FoundationElementDefinition & StartEndOptions;
 
 // @public
-export const buttonTemplate: (context: ElementDefinitionContext, definition: ButtonOptions) => ViewTemplate<Button>;
+export const buttonTemplate: FoundationElementTemplate<ViewTemplate<Button>, ButtonOptions>;
 
 // @public
 export class Calendar extends FoundationElement {
@@ -344,7 +344,7 @@ export class Card extends FoundationElement {
 }
 
 // @public
-export const cardTemplate: (context: ElementDefinitionContext, definition: FoundationElementDefinition) => ViewTemplate<Card>;
+export const cardTemplate: FoundationElementTemplate<ViewTemplate<Card>>;
 
 // @alpha (undocumented)
 export function CheckableFormAssociated<T extends ConstructableFormAssociated>(BaseCtor: T): T;
@@ -396,7 +396,7 @@ export type CheckboxOptions = FoundationElementDefinition & {
 };
 
 // @public
-export const checkboxTemplate: (context: ElementDefinitionContext, definition: CheckboxOptions) => ViewTemplate<Checkbox>;
+export const checkboxTemplate: FoundationElementTemplate<ViewTemplate<Checkbox>, CheckboxOptions>;
 
 // @public
 export interface ColumnDefinition {
@@ -649,7 +649,7 @@ export class DataGridCell extends FoundationElement {
     }
 
 // @public
-export const dataGridCellTemplate: (context: ElementDefinitionContext, definition: FoundationElementDefinition) => ViewTemplate<DataGridCell>;
+export const dataGridCellTemplate: FoundationElementTemplate<ViewTemplate<DataGridCell>>;
 
 // @public
 export enum DataGridCellTypes {
@@ -697,7 +697,7 @@ export class DataGridRow extends FoundationElement {
     }
 
 // @public
-export const dataGridRowTemplate: (context: ElementDefinitionContext, definition: FoundationElementDefinition) => ViewTemplate<DataGridRow>;
+export const dataGridRowTemplate: FoundationElementTemplate<ViewTemplate<DataGridRow>>;
 
 // @public
 export enum DataGridRowTypes {
@@ -710,7 +710,7 @@ export enum DataGridRowTypes {
 }
 
 // @public
-export const dataGridTemplate: (context: any, definition: any) => ViewTemplate<DataGrid>;
+export const dataGridTemplate: FoundationElementTemplate<ViewTemplate<DataGrid>>;
 
 // @public
 export type DateData = {
@@ -995,6 +995,7 @@ export interface DelegatesARIAListbox extends ARIAGlobalStatesAndProperties {
 //
 // @public
 export class DelegatesARIAListboxOption {
+    ariaChecked: "true" | "false" | undefined;
     ariaPosInSet: string;
     ariaSelected: "true" | "false" | undefined;
     ariaSetSize: string;
@@ -1160,7 +1161,7 @@ export class Dialog extends FoundationElement {
     }
 
 // @public
-export const dialogTemplate: (context: ElementDefinitionContext, definition: FoundationElementDefinition) => ViewTemplate<Dialog>;
+export const dialogTemplate: FoundationElementTemplate<ViewTemplate<Dialog>>;
 
 // @public
 export const disabledCursor = "not-allowed";
@@ -1183,13 +1184,14 @@ export class Disclosure extends FoundationElement {
 }
 
 // @public
-export const disclosureTemplate: (context: ElementDefinitionContext, definition: FoundationElementDefinition) => ViewTemplate<Disclosure>;
+export const disclosureTemplate: FoundationElementTemplate<ViewTemplate<Disclosure>>;
 
 // @public
 export function display(displayValue: CSSDisplayPropertyValue): string;
 
 // @public
 export class Divider extends FoundationElement {
+    orientation: Orientation;
     role: DividerRole;
 }
 
@@ -1200,7 +1202,7 @@ export enum DividerRole {
 }
 
 // @public
-export const dividerTemplate: (context: ElementDefinitionContext, definition: FoundationElementDefinition) => ViewTemplate<Divider>;
+export const dividerTemplate: FoundationElementTemplate<ViewTemplate<Divider>>;
 
 // @public
 export type ElementDefinitionCallback = (ctx: ElementDefinitionContext) => void;
@@ -1289,7 +1291,7 @@ export type FlipperOptions = FoundationElementDefinition & {
 };
 
 // @public
-export const flipperTemplate: (context: ElementDefinitionContext, definition: FlipperOptions) => ViewTemplate<Flipper>;
+export const flipperTemplate: FoundationElementTemplate<ViewTemplate<Flipper>, FlipperOptions>;
 
 // @public
 export const focusVisible: string;
@@ -1592,6 +1594,8 @@ export class ListboxElement extends Listbox {
 // @public
 export class ListboxOption extends FoundationElement {
     constructor(text?: string, value?: string, defaultSelected?: boolean, selected?: boolean);
+    checked?: boolean;
+    protected checkedChanged(prev: boolean | unknown, next?: boolean): void;
     defaultSelected: boolean;
     // (undocumented)
     protected defaultSelectedChanged(): void;
@@ -1733,10 +1737,10 @@ export enum MenuItemRole {
 }
 
 // @public
-export const menuItemTemplate: (context: ElementDefinitionContext, definition: MenuItemOptions) => ViewTemplate<MenuItem>;
+export const menuItemTemplate: FoundationElementTemplate<ViewTemplate<MenuItem>, MenuItemOptions>;
 
 // @public
-export const menuTemplate: (context: ElementDefinitionContext, definition: FoundationElementDefinition) => ViewTemplate<Menu>;
+export const menuTemplate: FoundationElementTemplate<ViewTemplate<Menu>>;
 
 // @public
 export type MonthFormat = "2-digit" | "long" | "narrow" | "numeric" | "short";
@@ -1797,6 +1801,8 @@ export class NumberField extends FormAssociatedNumberField {
     step: number;
     stepDown(): void;
     stepUp(): void;
+    get valueAsNumber(): number;
+    set valueAsNumber(next: number);
     // @internal
     valueChanged(previous: string, next: string): void;
 }
@@ -1812,7 +1818,7 @@ export type NumberFieldOptions = FoundationElementDefinition & StartEndOptions &
 };
 
 // @public
-export const numberFieldTemplate: (context: ElementDefinitionContext, definition: NumberFieldOptions) => ViewTemplate<NumberField>;
+export const numberFieldTemplate: FoundationElementTemplate<ViewTemplate<NumberField>, NumberFieldOptions>;
 
 // @public
 export const optional: (key: any) => any;
@@ -1916,12 +1922,12 @@ export class PickerListItem extends FoundationElement {
 // Warning: (ae-incompatible-release-tags) The symbol "pickerListItemTemplate" is marked as @public, but its signature references "PickerListItem" which is marked as @alpha
 //
 // @public (undocumented)
-export const pickerListItemTemplate: (context: any, definition: any) => ViewTemplate<PickerListItem>;
+export const pickerListItemTemplate: FoundationElementTemplate<ViewTemplate<PickerListItem>>;
 
 // Warning: (ae-incompatible-release-tags) The symbol "pickerListTemplate" is marked as @public, but its signature references "PickerList" which is marked as @alpha
 //
 // @public (undocumented)
-export const pickerListTemplate: (context: any, definition: any) => ViewTemplate<PickerList>;
+export const pickerListTemplate: FoundationElementTemplate<ViewTemplate<PickerList>>;
 
 // @alpha
 export class PickerMenu extends FoundationElement {
@@ -1957,17 +1963,17 @@ export class PickerMenuOption extends FoundationElement {
 // Warning: (ae-incompatible-release-tags) The symbol "pickerMenuOptionTemplate" is marked as @public, but its signature references "PickerMenuOption" which is marked as @alpha
 //
 // @public (undocumented)
-export const pickerMenuOptionTemplate: (context: any, definition: any) => ViewTemplate<PickerMenuOption>;
+export const pickerMenuOptionTemplate: FoundationElementTemplate<ViewTemplate<PickerMenuOption>>;
 
 // Warning: (ae-incompatible-release-tags) The symbol "pickerMenuTemplate" is marked as @public, but its signature references "PickerMenu" which is marked as @alpha
 //
 // @public
-export const pickerMenuTemplate: (context: any, definition: any) => ViewTemplate<PickerMenu>;
+export const pickerMenuTemplate: FoundationElementTemplate<ViewTemplate<PickerMenu>>;
 
 // Warning: (ae-incompatible-release-tags) The symbol "pickerTemplate" is marked as @public, but its signature references "Picker" which is marked as @alpha
 //
 // @public
-export const pickerTemplate: (context: any, definition: any) => ViewTemplate<Picker>;
+export const pickerTemplate: FoundationElementTemplate<ViewTemplate<Picker>>;
 
 // @public
 export type ProgressOptions = FoundationElementDefinition & {
@@ -1981,10 +1987,10 @@ export type ProgressRingOptions = FoundationElementDefinition & {
 };
 
 // @public
-export const progressRingTemplate: (context: ElementDefinitionContext, definition: ProgressRingOptions) => ViewTemplate<BaseProgress>;
+export const progressRingTemplate: FoundationElementTemplate<ViewTemplate<BaseProgress>, ProgressRingOptions>;
 
 // @public
-export const progressTemplate: (context: ElementDefinitionContext, defintion: ProgressOptions) => ViewTemplate<BaseProgress>;
+export const progressTemplate: FoundationElementTemplate<ViewTemplate<BaseProgress>, ProgressOptions>;
 
 // @public
 export class PropertyStyleSheetBehavior implements Behavior {
@@ -2051,7 +2057,7 @@ export class RadioGroup extends FoundationElement {
 }
 
 // @public
-export const radioGroupTemplate: (context: ElementDefinitionContext, definition: FoundationElementDefinition) => ViewTemplate<RadioGroup>;
+export const radioGroupTemplate: FoundationElementTemplate<ViewTemplate<RadioGroup>>;
 
 // @public
 export type RadioOptions = FoundationElementDefinition & {
@@ -2059,7 +2065,7 @@ export type RadioOptions = FoundationElementDefinition & {
 };
 
 // @public
-export const radioTemplate: (context: ElementDefinitionContext, definition: RadioOptions) => ViewTemplate<Radio>;
+export const radioTemplate: FoundationElementTemplate<ViewTemplate<Radio>, RadioOptions>;
 
 // @public
 export type RegisterSelf<T extends Constructable> = {
@@ -2197,7 +2203,7 @@ export interface Search extends StartEnd, DelegatesARIASearch {
 export type SearchOptions = FoundationElementDefinition & StartEndOptions;
 
 // @public
-export const searchTemplate: (context: ElementDefinitionContext, definition: SearchOptions) => ViewTemplate<Search>;
+export const searchTemplate: FoundationElementTemplate<ViewTemplate<Search>, SearchOptions>;
 
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
 // Warning: (ae-forgotten-export) The symbol "FormAssociatedSelect" needs to be exported by the entry point index.d.ts
@@ -2294,7 +2300,7 @@ export class Skeleton extends FoundationElement {
 export type SkeletonShape = "rect" | "circle";
 
 // @public
-export const skeletonTemplate: (context: ElementDefinitionContext, definition: FoundationElementDefinition) => ViewTemplate<Skeleton>;
+export const skeletonTemplate: FoundationElementTemplate<ViewTemplate<Skeleton>>;
 
 // Warning: (ae-forgotten-export) The symbol "FormAssociatedSlider" needs to be exported by the entry point index.d.ts
 //
@@ -2338,6 +2344,8 @@ export class Slider extends FormAssociatedSlider implements SliderConfiguration 
     trackMinWidth: number;
     // @internal (undocumented)
     trackWidth: number;
+    get valueAsNumber(): number;
+    set valueAsNumber(next: number);
     // @internal (undocumented)
     valueChanged(previous: any, next: any): void;
     valueTextFormatter: (value: string) => string | null;
@@ -2385,7 +2393,7 @@ export class SliderLabel extends FoundationElement {
 }
 
 // @public
-export const sliderLabelTemplate: (context: ElementDefinitionContext, definition: FoundationElementDefinition) => ViewTemplate<SliderLabel>;
+export const sliderLabelTemplate: FoundationElementTemplate<ViewTemplate<SliderLabel>>;
 
 // @public
 export enum SliderMode {
@@ -2399,7 +2407,7 @@ export type SliderOptions = FoundationElementDefinition & {
 };
 
 // @public
-export const sliderTemplate: (context: ElementDefinitionContext, definition: SliderOptions) => ViewTemplate<Slider>;
+export const sliderTemplate: FoundationElementTemplate<ViewTemplate<Slider>, SliderOptions>;
 
 // @public
 export class StartEnd {
@@ -2461,7 +2469,7 @@ export type SwitchOptions = FoundationElementDefinition & {
 };
 
 // @public
-export const switchTemplate: (context: ElementDefinitionContext, definition: SwitchOptions) => ViewTemplate<Switch>;
+export const switchTemplate: FoundationElementTemplate<ViewTemplate<Switch>, SwitchOptions>;
 
 // @public
 export class Tab extends FoundationElement {
@@ -2473,7 +2481,7 @@ export class TabPanel extends FoundationElement {
 }
 
 // @public
-export const tabPanelTemplate: (context: ElementDefinitionContext, definition: FoundationElementDefinition) => ViewTemplate<TabPanel>;
+export const tabPanelTemplate: FoundationElementTemplate<ViewTemplate<TabPanel>>;
 
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
 // Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "Tabs" because one of its declarations is marked as @internal
@@ -2521,10 +2529,10 @@ export enum TabsOrientation {
 }
 
 // @public
-export const tabsTemplate: (context: ElementDefinitionContext, definition: TabsOptions) => ViewTemplate<Tabs>;
+export const tabsTemplate: FoundationElementTemplate<ViewTemplate<Tabs>, TabsOptions>;
 
 // @public
-export const tabTemplate: (context: ElementDefinitionContext, definition: FoundationElementDefinition) => ViewTemplate<Tab>;
+export const tabTemplate: FoundationElementTemplate<ViewTemplate<Tab>>;
 
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
 // Warning: (ae-forgotten-export) The symbol "FormAssociatedTextArea" needs to be exported by the entry point index.d.ts
@@ -2567,7 +2575,7 @@ export enum TextAreaResize {
 }
 
 // @public
-export const textAreaTemplate: (context: ElementDefinitionContext, definition: FoundationElementDefinition) => ViewTemplate<TextArea>;
+export const textAreaTemplate: FoundationElementTemplate<ViewTemplate<TextArea>>;
 
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
 // Warning: (ae-forgotten-export) The symbol "FormAssociatedTextField" needs to be exported by the entry point index.d.ts
@@ -2605,7 +2613,7 @@ export interface TextField extends StartEnd, DelegatesARIATextbox {
 export type TextFieldOptions = FoundationElementDefinition & StartEndOptions;
 
 // @public
-export const textFieldTemplate: (context: ElementDefinitionContext, definition: TextFieldOptions) => ViewTemplate<TextField>;
+export const textFieldTemplate: FoundationElementTemplate<ViewTemplate<TextField>, TextFieldOptions>;
 
 // @public
 export enum TextFieldType {
@@ -2658,7 +2666,7 @@ export interface Toolbar extends StartEnd, DelegatesARIAToolbar {
 export type ToolbarOptions = FoundationElementDefinition & StartEndOptions;
 
 // @public
-export const toolbarTemplate: (context: ElementDefinitionContext, definition: ToolbarOptions) => ViewTemplate<Toolbar>;
+export const toolbarTemplate: FoundationElementTemplate<ViewTemplate<Toolbar>, ToolbarOptions>;
 
 // @public
 export class Tooltip extends FoundationElement {
@@ -2714,7 +2722,7 @@ export enum TooltipPosition {
 }
 
 // @public
-export const tooltipTemplate: (context: ElementDefinitionContext, definition: FoundationElementDefinition) => ViewTemplate;
+export const tooltipTemplate: FoundationElementTemplate<ViewTemplate<Tooltip>>;
 
 // @public
 type Transformer_2<K> = (instance: Resolved<K>) => Resolved<K>;
@@ -2770,7 +2778,7 @@ export type TreeItemOptions = FoundationElementDefinition & StartEndOptions & {
 };
 
 // @public
-export const treeItemTemplate: (context: ElementDefinitionContext, definition: TreeItemOptions) => ViewTemplate<TreeItem>;
+export const treeItemTemplate: FoundationElementTemplate<ViewTemplate<TreeItem>, TreeItemOptions>;
 
 // @public
 export class TreeView extends FoundationElement {
@@ -2795,7 +2803,7 @@ export class TreeView extends FoundationElement {
 }
 
 // @public
-export const treeViewTemplate: (context: ElementDefinitionContext, definition: FoundationElementDefinition) => ViewTemplate<TreeView>;
+export const treeViewTemplate: FoundationElementTemplate<ViewTemplate<TreeView>>;
 
 // Warning: (ae-internal-missing-underscore) The name "validateKey" should be prefixed with an underscore because the declaration is marked as @internal
 //

@@ -22,11 +22,17 @@ export interface RepeatOptions {
     /**
      * Enables index, length, and dependent positioning updates in item templates.
      */
-    positioning: boolean;
+    positioning?: boolean;
+
+    /**
+     * Enables view recycling
+     */
+    recycle?: boolean;
 }
 
 const defaultRepeatOptions: RepeatOptions = Object.freeze({
     positioning: false,
+    recycle: true,
 });
 
 function bindWithoutPositioning(
@@ -206,7 +212,9 @@ export class RepeatBehavior<TSource = any> implements Behavior, Subscriber {
                 const neighbor = views[addIndex];
                 const location = neighbor ? neighbor.firstChild : this.location;
                 const view =
-                    totalRemoved.length > 0 ? totalRemoved.shift()! : template.create();
+                    this.options.recycle && totalRemoved.length > 0
+                        ? totalRemoved.shift()!
+                        : template.create();
 
                 views.splice(addIndex, 0, view);
                 bindView(view, items, addIndex, childContext);
