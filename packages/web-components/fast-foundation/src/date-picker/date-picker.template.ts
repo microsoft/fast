@@ -17,7 +17,11 @@ import type { DatePicker, DatePickerOptions } from "./date-picker";
  * @returns - A time picker template
  * @public
  */
-export const timePickerTemplate = (context: ElementDefinitionContext, times) => {
+export const timePickerTemplate = (
+    context: ElementDefinitionContext,
+    times,
+    timeKeydown
+) => {
     const listbox = context.tagFor(ListboxElement);
     const listboxOption = context.tagFor(ListboxOption);
     return html`
@@ -26,7 +30,7 @@ export const timePickerTemplate = (context: ElementDefinitionContext, times) => 
                 class="time-list"
                 ${ref("hourSelect")}
                 size="7"
-                @keydown="${(x, c) => x.handleTimeKeydown("hour", c.event)}"
+                @keydown="${(x, c) => timeKeydown("hour", c.event)}"
             >
                 ${repeat(
                     () => times.hours,
@@ -42,7 +46,7 @@ export const timePickerTemplate = (context: ElementDefinitionContext, times) => 
                 class="time-list"
                 ${ref("minuteSelect")}
                 size="7"
-                @keydown="${(x, c) => x.handleTimeKeydown("minute", c.event)}"
+                @keydown="${(x, c) => timeKeydown("minute", c.event)}"
             >
                 ${repeat(
                     () => times.minutes,
@@ -57,7 +61,7 @@ export const timePickerTemplate = (context: ElementDefinitionContext, times) => 
                 class="time-list"
                 ${ref("meridianSelect")}
                 size="7"
-                @keydown="${(x, c) => x.handleTimeKeydown("meridian", c.event)}"
+                @keydown="${(x, c) => timeKeydown("meridian", c.event)}"
             >
                 ${repeat(
                     () => times.meridians,
@@ -213,7 +217,12 @@ export const datePickerTemplate: (
                 ${when(
                     x => x.type === "datetime-local" || x.type === "time",
                     html`
-                        ${x => timePickerTemplate(context, x.getTimes())}
+                        ${x =>
+                            timePickerTemplate(
+                                context,
+                                x.getTimes(),
+                                x.handleTimeKeydown
+                            )}
                     `
                 )}
                 ${when(
