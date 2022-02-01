@@ -1,6 +1,3 @@
-const path = require("path");
-const fs = require("fs-extra");
-
 module.exports = {
     title: "FAST",
     tagline: "The adaptive interface system for modern web experiences",
@@ -17,6 +14,7 @@ module.exports = {
         },
     ],
     themes: [require.resolve("@docusaurus/theme-live-codeblock")],
+    staticDirectories: ["static"],
     themeConfig: {
         colorMode: {
             defaultMode: "dark",
@@ -138,33 +136,5 @@ module.exports = {
                 },
             },
         ],
-    ],
-    plugins: [
-        // Work around an issue where Docusaurus resolves modules based on relative paths,
-        // which doesn't work properly when in the context of a monorepo.
-        // https://github.com/facebook/docusaurus/issues/3515
-        function webpackOverride() {
-            return {
-                configureWebpack() {
-                    return {
-                        resolve: {
-                            modules: [
-                                path.resolve(
-                                    path.dirname(
-                                        require.resolve("@docusaurus/core/package.json")
-                                    ),
-                                    "node_modules"
-                                ),
-                                "node_modules",
-                                path.resolve(
-                                    fs.realpathSync(process.cwd()),
-                                    "node_modules"
-                                ),
-                            ],
-                        },
-                    };
-                },
-            };
-        },
     ],
 };

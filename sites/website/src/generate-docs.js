@@ -1,8 +1,7 @@
 const path = require("path");
-const fs = require("fs-extra");
-const glob = require("glob");
 const { createInterface } = require("readline");
 const { exec } = require("child_process");
+const fs = require("fs-extra");
 
 const fastFoundation = path.dirname(
     require.resolve("@microsoft/fast-foundation/package.json")
@@ -18,8 +17,6 @@ const projectRoot = path.resolve(__dirname, "../");
 const root = path.resolve(projectRoot, "../../");
 
 const outputDir = path.resolve(projectRoot, "docs");
-
-const staticOutputDir = path.resolve(projectRoot, "static");
 
 function findFiles(startPath, filter, paths = []) {
     if (!fs.existsSync(startPath)) {
@@ -262,10 +259,8 @@ async function copyArticleMarkdown() {
 // Copy the api.json files from the web-components packages.
 async function copyAPI() {
     for (const pkg of packages) {
-        const packageDir = glob.sync(path.resolve(root, `packages/**/${pkg}`))[0];
-
         await safeCopy(
-            path.resolve(packageDir, `dist/${pkg}.api.json`),
+            require.resolve(`@microsoft/${pkg}/dist/${pkg}.api.json`),
             `./src/docs/api/${pkg}.api.json`
         );
     }

@@ -32,7 +32,7 @@
     "@microsoft/eslint-config-fast-dna": "^2.0.0",
     "@microsoft/site-utilities": "^0.9.0",
     "@types/lodash": "^4.14.120",
-    "@types/node": "^10.12.12",
+    "@types/node": "^15.0.1",
     "@types/react": "^16.7.17",
     "@types/react-dom": "^16.0.11",
     "@types/react-redux": "^6.0.12",
