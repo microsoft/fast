@@ -62,6 +62,7 @@ import type { DesignSystemProvider } from "./design-system-provider/index.js";
 import type { Disclosure } from "./disclosure/index.js";
 import type { HorizontalScroll } from "./horizontal-scroll/index.js";
 import type { Listbox } from "./listbox/index.js";
+import type { Menu } from "./menu/index.js";
 import type { Picker, PickerMenu } from "./picker/index.js";
 import type { Search } from "./search/index.js";
 import type { SliderLabel } from "./slider-label/index.js";
