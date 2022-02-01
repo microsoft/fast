@@ -1,9 +1,28 @@
-import { Menu, menuTemplate as template } from "@microsoft/fast-foundation";
+import {
+    Menu as FoundationMenu,
+    menuTemplate as template,
+} from "@microsoft/fast-foundation";
+import { fillColor, neutralLayerFloating } from "../design-tokens";
 import { menuStyles as styles } from "./menu.styles";
 
 /**
- * A function that returns a {@link @microsoft/fast-foundation#Menu} registration for configuring the component with a DesignSystem.
- * Implements {@link @microsoft/fast-foundation#menuTemplate}
+ * The FAST menu class
+ * @public
+ */
+export class Menu extends FoundationMenu {
+    /**
+     * @internal
+     */
+    public connectedCallback(): void {
+        super.connectedCallback();
+
+        fillColor.setValueFor(this, neutralLayerFloating);
+    }
+}
+
+/**
+ * The FAST Menu Element. Implements {@link @microsoft/fast-foundation#Menu},
+ * {@link @microsoft/fast-foundation#menuTemplate}
  *
  *
  * @public
@@ -17,9 +36,7 @@ export const fastMenu = Menu.compose({
 });
 
 /**
- * Base class for Menu
+ * Styles for Menu
  * @public
  */
-export { Menu };
-
-export { styles as menuStyles };
+export const menuStyles = styles;

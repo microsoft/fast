@@ -19,33 +19,26 @@ export const fastMenuItem = MenuItem.compose<MenuItemOptions>({
     template,
     styles,
     checkboxIndicator: `
-        <svg
-            part="checkbox-indicator"
-            class="checkbox-indicator"
-            viewBox="0 0 20 20"
-            xmlns="http://www.w3.org/2000/svg"
-        >
-            <path
-                fill-rule="evenodd"
-                clip-rule="evenodd"
-                d="M8.143 12.6697L15.235 4.5L16.8 5.90363L8.23812 15.7667L3.80005 11.2556L5.27591 9.7555L8.143 12.6697Z"
-            />
+        <svg width="16" height="16" xmlns="http://www.w3.org/2000/svg">
+          <path d="M13.86 3.66a.5.5 0 01-.02.7l-7.93 7.48a.6.6 0 01-.84-.02L2.4 9.1a.5.5 0 01.72-.7l2.4 2.44 7.65-7.2a.5.5 0 01.7.02z"/>
         </svg>
     `,
     expandCollapseGlyph: `
         <svg
-            viewBox="0 0 16 16"
-            xmlns="http://www.w3.org/2000/svg"
-            class="expand-collapse-glyph"
-            part="expand-collapse-glyph"
+          width="16"
+          height="16"
+          viewBox="0 0 16 16"
+          xmlns="http://www.w3.org/2000/svg"
         >
-            <path
-                d="M5.00001 12.3263C5.00124 12.5147 5.05566 12.699 5.15699 12.8578C5.25831 13.0167 5.40243 13.1437 5.57273 13.2242C5.74304 13.3047 5.9326 13.3354 6.11959 13.3128C6.30659 13.2902 6.4834 13.2152 6.62967 13.0965L10.8988 8.83532C11.0739 8.69473 11.2153 8.51658 11.3124 8.31402C11.4096 8.11146 11.46 7.88966 11.46 7.66499C11.46 7.44033 11.4096 7.21853 11.3124 7.01597C11.2153 6.81341 11.0739 6.63526 10.8988 6.49467L6.62967 2.22347C6.48274 2.10422 6.30501 2.02912 6.11712 2.00691C5.92923 1.9847 5.73889 2.01628 5.56823 2.09799C5.39757 2.17969 5.25358 2.30817 5.153 2.46849C5.05241 2.62882 4.99936 2.8144 5.00001 3.00369V12.3263Z"
-            />
-        </svg>
+          <path
+            d="M7.57 11.84A1 1 0 0 1 6 11.02V4.98a1 1 0 0 1 1.57-.82l3.79 2.62c.85.59.85 1.85 0 2.44l-3.79 2.62ZM7 11.02l3.78-2.61a.5.5 0 0 0 0-.82L7 4.98v6.04Z"
+          />
+      </svg>
     `,
     radioIndicator: `
-        <span part="radio-indicator" class="radio-indicator"></span>
+        <svg width="16" height="16" xmlns="http://www.w3.org/2000/svg">
+          <path d="M13.86 3.66a.5.5 0 01-.02.7l-7.93 7.48a.6.6 0 01-.84-.02L2.4 9.1a.5.5 0 01.72-.7l2.4 2.44 7.65-7.2a.5.5 0 01.7.02z"/>
+        </svg>
     `,
 });
 
