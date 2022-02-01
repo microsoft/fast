@@ -22,31 +22,49 @@ export const timePickerTemplate = (context: ElementDefinitionContext, times) => 
     const listboxOption = context.tagFor(ListboxOption);
     return html`
         <div class="time-picker">
-            <${listbox} class="time-list" size="7">
+            <${listbox}
+                class="time-list"
+                ${ref("hourSelect")}
+                size="7"
+                @keydown="${(x, c) => x.handleTimeKeydown("hour", c.event)}"
+            >
                 ${repeat(
                     () => times.hours,
                     html`
-                    <${listboxOption} @click="${x => x.action()}">${x =>
-                        x.text}</${listboxOption}>
-                `
+                        <${listboxOption} @click="${x => x.action()}">
+                            ${x => x.text}
+                        </${listboxOption}>
+                    `
                 )}
             </${listbox}>
             <div class="time-separate">:</div>
-            <${listbox} class="time-list" size="7">
+            <${listbox}
+                class="time-list"
+                ${ref("minuteSelect")}
+                size="7"
+                @keydown="${(x, c) => x.handleTimeKeydown("minute", c.event)}"
+            >
                 ${repeat(
                     () => times.minutes,
                     html`
-                    <${listboxOption} @click="${x => x.action()}">${x =>
-                        x.text}</${listboxOption}>
+                        <${listboxOption} @click="${x => x.action()}">
+                            ${x => x.text}
+                        </${listboxOption}>
                 `
                 )}
             </${listbox}>
-            <${listbox} class="time-list" size="7">
+            <${listbox}
+                class="time-list"
+                ${ref("meridianSelect")}
+                size="7"
+                @keydown="${(x, c) => x.handleTimeKeydown("meridian", c.event)}"
+            >
                 ${repeat(
                     () => times.meridians,
                     html`
-                    <${listboxOption} @click="${x => x.action()}">${x =>
-                        x.text}</${listboxOption}>
+                        <${listboxOption} @click="${x => x.action()}">
+                            ${x => x.text}
+                        </${listboxOption}>
                 `
                 )}
             </${listbox}>
@@ -77,6 +95,7 @@ const pickerTemplate = (context, items, title, previousAction, nextAction, reset
                 class="title-action ${x =>
                     title.isInteractive ? "interactive-title" : ""}"
                 @click="${x => title.action()}"
+                @keydown="${(x, c) => title.action(c.event)}"
             >
                 ${x => title.text}
             </${button}>
@@ -84,6 +103,7 @@ const pickerTemplate = (context, items, title, previousAction, nextAction, reset
                 class="arrow"
                 part="arrow-previous"
                 @click="${x => previousAction()}"
+                @keydown="${(x, c) => previousAction(c.event)}"
             >
                 &downarrow;
             </${button}>
@@ -91,6 +111,7 @@ const pickerTemplate = (context, items, title, previousAction, nextAction, reset
                 class="arrow"
                 part="arrow-next"
                 @click="${x => nextAction()}"
+                @keydown="${(x, c) => nextAction(c.event)}"
             >
                 &uparrow;
             </${button}>
@@ -211,19 +232,36 @@ export const datePickerTemplate: (
                             <div
                                 slot="title"
                                 class="calendar-title-wrap"
-                                @click="${x => x.monthPickerDispay()}"
                                 >
-                                <${button} class="calendar-title ${x =>
-                        x.type === "datetime-local"
-                            ? "interactive-title"
-                            : ""}" part="calendar-title">
+                                <${button}
+                                    class="calendar-title ${x =>
+                                        x.type === "datetime-local"
+                                            ? "interactive-title"
+                                            : ""}"
+                                    part="calendar-title"
+                                    @click="${x => x.monthPickerDispay()}"
+                                    @keydown="${(x, c) =>
+                                        x.handleCalendarTitleKeydown(c.event)}"
+                                >
                                     ${x => x.calendarTitle}
                                 </${button}>
                                 <div class="calendar-controls" part="calendar-controls">
-                                    <${button} @click="${x =>
-                        x.previousCalendar()}" class="calendar-control">&downarrow;</${button}>
-                                    <${button} @click="${x =>
-                        x.nextCalendar()}" class="calendar-control">&uparrow;</${button}>
+                                    <${button} class="calendar-control"
+                                        @click="${x => x.previousCalendar()}"
+                                        @keydown="${(x, c) =>
+                                            x.handleCalendarChangeKeydown(
+                                                "previous",
+                                                c.event
+                                            )}"
+                                    >&downarrow;</${button}>
+                                    <${button} class="calendar-control"
+                                        @click="${x => x.nextCalendar()}"
+                                        @keydown="${(x, c) =>
+                                            x.handleCalendarChangeKeydown(
+                                                "next",
+                                                c.event
+                                            )}"
+                                    >&uparrow;</${button}>
                                 </div>
                             </div>
                         </${calendar}>
@@ -237,7 +275,7 @@ export const datePickerTemplate: (
                             x.arrayToMatrix(x.getMonths(), 4),
                             {
                                 text: x.dateFormatter.getYear(x.monthView),
-                                action: x.yearPickerDisplay.bind(x),
+                                action: x.yearPickerDisplay.bind(x, true),
                                 isInteractive: x.type.indexOf("date") >= 0,
                             },
                             () => {

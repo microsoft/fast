@@ -1,9 +1,13 @@
+import { attr, booleanConverter, DOM, observable } from "@microsoft/fast-element";
 import {
-    attr,
-    booleanConverter,
-    nullableNumberConverter,
-    observable,
-} from "@microsoft/fast-element";
+    keyArrowDown,
+    keyArrowLeft,
+    keyArrowRight,
+    keyArrowUp,
+    keyEnter,
+    keyEscape,
+    keySpace,
+} from "@microsoft/fast-web-utilities";
 import type { FoundationElementDefinition } from "../foundation-element";
 import {
     DateFormatter,
@@ -258,6 +262,27 @@ export class DatePicker extends FormAssociatedDatePicker {
     }
 
     /**
+     * The hour select listbox
+     * @public
+     */
+    @observable
+    public hourSelect;
+
+    /**
+     * The minute select listbox
+     * @public
+     */
+    @observable
+    public minuteSelect;
+
+    /**
+     * The meridian select listbox
+     * @public
+     */
+    @observable
+    public meridianSelect;
+
+    /**
      * The Calendar month
      * @public
      */
@@ -277,6 +302,10 @@ export class DatePicker extends FormAssociatedDatePicker {
         this.setCalendarTitle();
     }
 
+    /**
+     * Sets the calendar title text
+     * @public
+     */
     public setCalendarTitle() {
         if (this.calendarMonth && this.calendarYear) {
             const text = this.dateFormatter.getDate(
@@ -292,6 +321,53 @@ export class DatePicker extends FormAssociatedDatePicker {
      */
     @observable
     public calendarTitle: string = "";
+
+    /**
+     * Keyboard handler for the calendar title
+     * @param e - Keyboard event fired
+     * @returns should bubble
+     * @public
+     */
+    public handleCalendarTitleKeydown(e: KeyboardEvent): boolean {
+        const key: string = e.key;
+
+        switch (key) {
+            case keyEnter:
+                e.preventDefault();
+                this.monthPickerDispay();
+                return false;
+            case keyArrowDown:
+                e.preventDefault();
+                this.previousCalendar();
+                return false;
+            case keyArrowUp:
+                e.preventDefault();
+                this.nextCalendar();
+                return false;
+        }
+
+        return true;
+    }
+
+    public handleCalendarChangeKeydown(
+        direction: "previous" | "next",
+        e: KeyboardEvent
+    ): boolean {
+        const key: string = e.key;
+
+        switch (key) {
+            case keyEnter: {
+                e.preventDefault();
+                const functionName = `${direction}Calendar`;
+                if (this[functionName]) {
+                    this[functionName]();
+                }
+                return false;
+            }
+        }
+
+        return true;
+    }
 
     /**
      * Switches the calendar to the previous month
@@ -435,8 +511,14 @@ export class DatePicker extends FormAssociatedDatePicker {
 
         /* An array of meridians */
         const meridians: { text: string; action: () => void }[] = [
-            { text: amText, action: () => this.handleMeridianClicked("AM") },
-            { text: pmText, action: () => this.handleMeridianClicked("PM") },
+            {
+                text: amText,
+                action: this.handleMeridianClicked.bind(this, "AM"),
+            },
+            {
+                text: pmText,
+                action: this.handleMeridianClicked.bind(this, "PM"),
+            },
         ];
         const meridian: string =
             this.selectedDate?.meridian || (new Date().getHours() >= 12 ? "PM" : "AM");
@@ -600,15 +682,21 @@ export class DatePicker extends FormAssociatedDatePicker {
      * @param open - should show the year picker
      * @returns void
      */
-    public yearPickerDisplay(open: boolean = true): void {
-        if (this.type === "month" || this.type === "year") {
-            return;
+    public yearPickerDisplay(open: boolean = true, e?: KeyboardEvent): boolean {
+        if (!e || e.key === keyEnter) {
+            if (this.type === "month" || this.type === "year") {
+                return true;
+            }
+
+            this.showYearPicker = open;
+            if (this.type === "date" || this.type === "datetime-local") {
+                this.showMonthPicker = !open;
+            }
+
+            return false;
         }
 
-        this.showYearPicker = open;
-        if (this.type === "date" || this.type === "datetime-local") {
-            this.showMonthPicker = !open;
-        }
+        return true;
     }
 
     /**
@@ -642,7 +730,7 @@ export class DatePicker extends FormAssociatedDatePicker {
     /**
      * Handler for keyboard actions for a month
      * @param event - keyboard event
-     * @returns - true
+     * @returns true
      */
     public handleMonthKeyup(month: number, year: number, event: KeyboardEvent): boolean {
         switch (event.key) {
@@ -670,7 +758,7 @@ export class DatePicker extends FormAssociatedDatePicker {
     /**
      * Handler for keyboard actions for a year
      * @param event - keyboard event
-     * @returns - true
+     * @returns true
      */
     public handleYearKeyup(year: number, event: KeyboardEvent): boolean {
         switch (event.key) {
@@ -708,6 +796,80 @@ export class DatePicker extends FormAssociatedDatePicker {
     }
 
     /**
+     * Updates the time based on the select values
+     * @param keys - time keys to be updated
+     * @public
+     */
+    public setTime(keys: string | string[] = ["hour", "minute", "meridian"]): void {
+        const setKeyValues = (values: {}, key: string): {} => {
+            const select = this[`${key}Select`];
+            if (select) {
+                const options = select.selectedOptions;
+                if (options && options.length >= 1) {
+                    let text = options[0].innerText;
+                    text = key === "meridian" ? text : parseInt(text);
+                    if (text) {
+                        values[key] = text;
+                    }
+                }
+            }
+
+            return values;
+        };
+
+        this.setValue((!Array.isArray(keys) ? [keys] : keys).reduce(setKeyValues, {}));
+    }
+
+    /**
+     * Handles keyboard events for time entry
+     * @param unit - unit of time being updated
+     * @param e - Keyboard event that was fired
+     * @returns - should bubble
+     * @public
+     */
+    public handleTimeKeydown(unit: string, event: KeyboardEvent): boolean {
+        const key: string = event.key;
+        const move: (direction?: number) => void = (direction = 1) => {
+            const units: string[] = ["hour", "minute", "meridian"];
+            const nextIndex: number = units.findIndex(time => time === unit) + direction;
+            const unitKey: string =
+                units[
+                    nextIndex === units.length
+                        ? 0
+                        : nextIndex < 0
+                        ? units.length - 1
+                        : nextIndex
+                ];
+            const selectKey: string = `${unitKey}Select`;
+            if (this[selectKey]) {
+                this[selectKey].focus();
+            }
+        };
+
+        switch (key) {
+            case keyEnter:
+                this.setTime();
+                break;
+            case keySpace:
+                event.preventDefault();
+                this.setTime(unit);
+                DOM.nextUpdate().then(move.bind(this, 1));
+                return false;
+            case keyArrowLeft:
+                move(-1);
+                break;
+            case keyArrowRight:
+                move();
+                break;
+            case keyEscape:
+                this.closeFlyout(true);
+                break;
+        }
+
+        return true;
+    }
+
+    /**
      * Handler for the blur event on the text field
      * @public
      */
@@ -717,7 +879,7 @@ export class DatePicker extends FormAssociatedDatePicker {
             this.textField.control.value &&
             this.textField.control.value !== this.value
         ) {
-            let value = this.textField.control.value;
+            let value: string = this.textField.control.value;
             if (this.type === "time") {
                 if (value.indexOf(":") < 0) {
                     value = value.replace(/(\d)( *[a|p]?m?\D*)$/i, "$1:00$2");
@@ -726,7 +888,7 @@ export class DatePicker extends FormAssociatedDatePicker {
             } else if (this.type === "year" && value.indexOf("/") < 0) {
                 value = "1/1/" + value;
             }
-            const date = new Date(value);
+            const date: Date = new Date(value);
             if (date.getTime()) {
                 this.setValue(value);
             } else {
@@ -749,18 +911,26 @@ export class DatePicker extends FormAssociatedDatePicker {
      * Handler for the keyup event on the text field
      * @param event - Keyboard event for key press
      */
-    public handleKeyup(event: KeyboardEvent) {
+    public handleKeyup(event: KeyboardEvent): boolean {
         const key = event.key;
 
         switch (key) {
-            case "Escape":
+            case keyEscape:
                 if (this.textField) {
                     this.textField.control.value = "";
-                    this.textField.control.blur();
-                    this.closeFlyout(true);
+                    if (this.flyoutOpen) {
+                        this.closeFlyout(true);
+                    } else {
+                        this.textField.control.blur();
+                    }
                 }
                 break;
+            case keyEnter:
+                this.openFlyout(true);
+                break;
         }
+
+        return true;
     }
 
     /**
