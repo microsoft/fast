@@ -2,6 +2,29 @@
   "name": "@microsoft/fast-components",
   "entries": [
     {
+      "date": "Wed, 02 Feb 2022 07:13:39 GMT",
+      "tag": "@microsoft/fast-components_v2.20.2",
+      "version": "2.20.2",
+      "comments": {
+        "none": [
+          {
+            "comment": "update node types to 15.0.1",
+            "author": "john.kreitlow@microsoft.com",
+            "commit": "48779abc5f0f746dc5d67b9d3c2875f455374ee6",
+            "package": "@microsoft/fast-components"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-foundation to v2.32.3",
+            "author": "robarb@microsoft.com",
+            "commit": "72efc898ed23b08c9e7668844bc3a97f81b2bde9",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sun, 30 Jan 2022 07:12:35 GMT",
       "tag": "@microsoft/fast-components_v2.20.1",
       "version": "2.20.1",
