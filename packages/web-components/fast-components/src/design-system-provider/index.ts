@@ -192,18 +192,26 @@ export class DesignSystemProvider extends FoundationElement {
      * @remarks
      * HTML attribute: accent-color
      */
-    @observable
-    @designToken(neutralPalette)
-    public neutralPalette?: Palette;
+    @attr({
+        attribute: "accent-color",
+        converter: swatchConverter,
+        mode: "fromView",
+    })
+    @designToken(accentColor)
+    public accentColor?: Swatch;
 
     /**
      * Set the neutral color
      * @remarks
      * HTML attribute: neutral-color
      */
-    @observable
-    @designToken(accentPalette)
-    public accentPalette?: Palette;
+    @attr({
+        attribute: "neutral-color",
+        converter: swatchConverter,
+        mode: "fromView",
+    })
+    @designToken(neutralColor)
+    public neutralColor?: Swatch;
 
     /**
      *

@@ -568,8 +568,8 @@ export const anchorStyles: FoundationElementTemplate<ElementStyles, AnchorOption
 
 // @public
 export class Avatar extends Avatar_2 {
-    alt: string;
-    imgSrc: string;
+    alt: string | undefined;
+    imgSrc: string | undefined;
 }
 
 // @public
@@ -680,6 +680,7 @@ export const density: import("@microsoft/fast-foundation").CSSDesignToken<number
 // @internal
 export class DesignSystemProvider extends FoundationElement {
     constructor();
+    accentColor?: Swatch;
     accentFillActiveDelta?: number;
     accentFillFocusDelta?: number;
     accentFillHoverDelta?: number;
@@ -688,7 +689,6 @@ export class DesignSystemProvider extends FoundationElement {
     accentForegroundFocusDelta?: number;
     accentForegroundHoverDelta?: number;
     accentForegroundRestDelta?: number;
-    accentPalette?: Palette;
     baseHeightMultiplier?: number;
     baseHorizontalSpacingMultiplier?: number;
     baseLayerLuminance?: number;
@@ -699,6 +699,7 @@ export class DesignSystemProvider extends FoundationElement {
     disabledOpacity?: number;
     fillColor?: Swatch;
     focusStrokeWidth?: number;
+    neutralColor?: Swatch;
     neutralFillActiveDelta?: number;
     neutralFillFocusDelta?: number;
     neutralFillHoverDelta?: number;
@@ -715,7 +716,6 @@ export class DesignSystemProvider extends FoundationElement {
     neutralFillStrongActiveDelta?: number;
     neutralFillStrongFocusDelta?: number;
     neutralFillStrongHoverDelta?: number;
-    neutralPalette?: Palette;
     neutralStrokeActiveDelta?: number;
     neutralStrokeDividerRestDelta?: number;
     neutralStrokeFocusDelta?: number;
