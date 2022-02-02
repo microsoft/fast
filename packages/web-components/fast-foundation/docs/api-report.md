@@ -710,7 +710,7 @@ export enum DataGridRowTypes {
 }
 
 // @public
-export const dataGridTemplate: (context: ElementDefinitionContext, definition: FoundationElementDefinition) => ViewTemplate<DataGrid>;
+export const dataGridTemplate: FoundationElementTemplate<ViewTemplate<DataGrid>>;
 
 // @public
 export class DateFormatter {
@@ -1746,12 +1746,12 @@ export class PickerListItem extends FoundationElement {
 // Warning: (ae-incompatible-release-tags) The symbol "pickerListItemTemplate" is marked as @public, but its signature references "PickerListItem" which is marked as @alpha
 //
 // @public (undocumented)
-export const pickerListItemTemplate: (context: ElementDefinitionContext, definition: FoundationElementDefinition) => ViewTemplate<PickerListItem>;
+export const pickerListItemTemplate: FoundationElementTemplate<ViewTemplate<PickerListItem>>;
 
 // Warning: (ae-incompatible-release-tags) The symbol "pickerListTemplate" is marked as @public, but its signature references "PickerList" which is marked as @alpha
 //
 // @public (undocumented)
-export const pickerListTemplate: (context: ElementDefinitionContext, definition: FoundationElementDefinition) => ViewTemplate<PickerList>;
+export const pickerListTemplate: FoundationElementTemplate<ViewTemplate<PickerList>>;
 
 // @alpha
 export class PickerMenu extends FoundationElement {
@@ -1787,17 +1787,17 @@ export class PickerMenuOption extends FoundationElement {
 // Warning: (ae-incompatible-release-tags) The symbol "pickerMenuOptionTemplate" is marked as @public, but its signature references "PickerMenuOption" which is marked as @alpha
 //
 // @public (undocumented)
-export const pickerMenuOptionTemplate: (context: ElementDefinitionContext, definition: FoundationElementDefinition) => ViewTemplate<PickerMenuOption>;
+export const pickerMenuOptionTemplate: FoundationElementTemplate<ViewTemplate<PickerMenuOption>>;
 
 // Warning: (ae-incompatible-release-tags) The symbol "pickerMenuTemplate" is marked as @public, but its signature references "PickerMenu" which is marked as @alpha
 //
 // @public
-export const pickerMenuTemplate: (context: ElementDefinitionContext, definition: FoundationElementDefinition) => ViewTemplate<PickerMenu>;
+export const pickerMenuTemplate: FoundationElementTemplate<ViewTemplate<PickerMenu>>;
 
 // Warning: (ae-incompatible-release-tags) The symbol "pickerTemplate" is marked as @public, but its signature references "Picker" which is marked as @alpha
 //
 // @public
-export const pickerTemplate: (context: ElementDefinitionContext, definition: FoundationElementDefinition) => ViewTemplate<Picker>;
+export const pickerTemplate: FoundationElementTemplate<ViewTemplate<Picker>>;
 
 // @public
 export type ProgressOptions = FoundationElementDefinition & {

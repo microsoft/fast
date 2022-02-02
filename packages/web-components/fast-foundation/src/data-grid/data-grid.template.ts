@@ -1,9 +1,9 @@
 import { children, elements, html } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
 import type { FoundationElementTemplate } from "../foundation-element";
+import type { ElementDefinitionContext } from "../design-system";
 import type { DataGrid } from "./data-grid";
 import { DataGridRow } from "./data-grid-row";
-import type { ElementDefinitionContext } from "../design-system";
 
 function createRowItemTemplate(context: ElementDefinitionContext): ViewTemplate {
     const rowTag = context.tagFor(DataGridRow);
