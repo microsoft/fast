@@ -1,6 +1,6 @@
 {
   "type": "none",
-  "comment": "update rollup-plugin-filesize from 8.0.2 to 9.1.2",
+  "comment": "update node types to 15.0.1",
   "packageName": "@microsoft/fast-components",
   "email": "john.kreitlow@microsoft.com",
   "dependentChangeType": "none"

@@ -2,6 +2,125 @@
   "name": "@microsoft/fast-foundation",
   "entries": [
     {
+      "date": "Sun, 30 Jan 2022 07:12:35 GMT",
+      "tag": "@microsoft/fast-foundation_v2.32.2",
+      "version": "2.32.2",
+      "comments": {
+        "patch": [
+          {
+            "comment": "convert functions to templates",
+            "author": "mathieulavoie94@gmail.com",
+            "commit": "690b6218efc355985e3d97283ad043e7d085ef3c",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 25 Jan 2022 07:11:53 GMT",
+      "tag": "@microsoft/fast-foundation_v2.32.1",
+      "version": "2.32.1",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-web-utilities to v5.1.0",
+            "author": "john.kreitlow@microsoft.com",
+            "commit": "97f653f8ee62c74d47df9b60024ff8eef05c79d1",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sun, 23 Jan 2022 07:13:56 GMT",
+      "tag": "@microsoft/fast-foundation_v2.32.0",
+      "version": "2.32.0",
+      "comments": {
+        "patch": [
+          {
+            "comment": "use default slot in accordion",
+            "author": "mathieulavoie94@gmail.com",
+            "commit": "415e7a49570ead5856ab8a4587aa6dfddf8c898e",
+            "package": "@microsoft/fast-foundation"
+          },
+          {
+            "comment": "Bump @microsoft/fast-element to v1.7.0",
+            "author": "scomea@microsoft.com",
+            "commit": "897c39862b58a63ad9900426ae6ae2f95d222e1e",
+            "package": "@microsoft/fast-foundation"
+          }
+        ],
+        "minor": [
+          {
+            "comment": "feat: add `orientation` to divider",
+            "author": "jes@microsoft.com",
+            "commit": "9f8e045d9fa4b8cc35b9c1d8ebe72cb7da0fd4ff",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 20 Jan 2022 07:12:04 GMT",
+      "tag": "@microsoft/fast-foundation_v2.31.0",
+      "version": "2.31.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "add checked property to listbox-option",
+            "author": "john.kreitlow@microsoft.com",
+            "commit": "89cb932580c74aa070e05a9cc04a3fbe1495c1f3",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sun, 16 Jan 2022 07:11:36 GMT",
+      "tag": "@microsoft/fast-foundation_v2.30.0",
+      "version": "2.30.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "Add valueAsNumber to number field and slider",
+            "author": "5454342+brianehenry@users.noreply.github.com",
+            "commit": "53475edb39a2f87f603858718fb2abd8095ab5f9",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 12 Jan 2022 07:11:42 GMT",
+      "tag": "@microsoft/fast-foundation_v2.29.0",
+      "version": "2.29.0",
+      "comments": {
+        "none": [
+          {
+            "comment": "update verbiage and add FAST snippets plugin to vs code page",
+            "author": "steph@huynhicode.dev",
+            "commit": "cf702d75b566afb396ceead5378d13d8a6b7c432",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 11 Jan 2022 07:09:27 GMT",
+      "tag": "@microsoft/fast-foundation_v2.29.0",
+      "version": "2.29.0",
+      "comments": {
+        "none": [
+          {
+            "comment": "update rollup-plugin-filesize from 8.0.2 to 9.1.2",
+            "author": "john.kreitlow@microsoft.com",
+            "commit": "af847f2749ff605cced426e55a1580ea85c89cb0",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sun, 09 Jan 2022 07:11:51 GMT",
       "tag": "@microsoft/fast-foundation_v2.29.0",
       "version": "2.29.0",

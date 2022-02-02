@@ -1,20 +1,17 @@
 import { html, ref, slotted, when } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
 import { endSlotTemplate, startSlotTemplate } from "../patterns";
-import type { ElementDefinitionContext } from "../design-system";
+import type { FoundationElementTemplate } from "../foundation-element";
 import type { NumberField, NumberFieldOptions } from "./number-field";
 
 /**
  * The template for the {@link @microsoft/fast-foundation#(NumberField:class)} component.
  * @public
  */
-export const numberFieldTemplate: (
-    context: ElementDefinitionContext,
-    definition: NumberFieldOptions
-) => ViewTemplate<NumberField> = (
-    context: ElementDefinitionContext,
-    definition: NumberFieldOptions
-) => html`
+export const numberFieldTemplate: FoundationElementTemplate<
+    ViewTemplate<NumberField>,
+    NumberFieldOptions
+> = (context, definition) => html`
     <template class="${x => (x.readOnly ? "readonly" : "")}">
         <label
             part="label"

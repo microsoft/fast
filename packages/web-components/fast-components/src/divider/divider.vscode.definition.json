@@ -21,6 +21,18 @@
                     ],
                     "default": "separator",
                     "required": false
+                },
+                {
+                    "name": "orientation",
+                    "title": "Orientation",
+                    "description": "The orientation of the divider",
+                    "default": "horizontal",
+                    "values": [
+                        { "name": "horizontal" },
+                        { "name": "vertical" }
+                    ],
+                    "required": false,
+                    "type": "string"
                 }
             ],
             "slots": []

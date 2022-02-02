@@ -183,6 +183,19 @@ export class NumberField extends FormAssociatedNumberField {
     private isUserInput: boolean = false;
 
     /**
+     * The value property, typed as a number.
+     *
+     * @public
+     */
+    public get valueAsNumber(): number {
+        return parseFloat(super.value);
+    }
+
+    public set valueAsNumber(next: number) {
+        this.value = next.toString();
+    }
+
+    /**
      * Validates that the value is a number between the min and max
      * @param previous - previous stored value
      * @param next - value being updated
@@ -213,7 +226,6 @@ export class NumberField extends FormAssociatedNumberField {
     /**
      * Sets the internal value to a valid number between the min and max properties
      * @param value - user input
-     * @param updateControl - should the text field update to the valid value
      *
      * @internal
      */

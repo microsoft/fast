@@ -26,6 +26,7 @@ Extends FAST Element
 
 *Attributes:*
 - `role` - The permitted roles of the divider. Defaults to `separator`.
+- `orientation` - Horizontal or vertical values allowed. Defaults to horizontal.
 
 ### Anatomy and Appearance
 
@@ -44,6 +45,9 @@ Extends FAST Element
 ```
 ```html
 <fast-divider role="presentation"></fast-divider>
+```
+```html
+<fast-divider orientation="vertical"></fast-divider>
 ```
 
 
