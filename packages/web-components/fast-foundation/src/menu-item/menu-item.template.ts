@@ -2,7 +2,7 @@ import { html, ref, when } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
 import { AnchoredRegion } from "../anchored-region";
 import { endSlotTemplate, startSlotTemplate } from "../patterns/start-end";
-import type { ElementDefinitionContext } from "../design-system";
+import type { FoundationElementTemplate } from "../foundation-element";
 import { MenuItemRole } from "./menu-item";
 import type { MenuItem, MenuItemOptions } from "./menu-item";
 
@@ -12,13 +12,10 @@ import type { MenuItem, MenuItemOptions } from "./menu-item";
  *
  * @public
  */
-export const menuItemTemplate: (
-    context: ElementDefinitionContext,
-    definition: MenuItemOptions
-) => ViewTemplate<MenuItem> = (
-    context: ElementDefinitionContext,
-    definition: MenuItemOptions
-) => html<MenuItem>`
+export const menuItemTemplate: FoundationElementTemplate<
+    ViewTemplate<MenuItem>,
+    MenuItemOptions
+> = (context, definition) => html<MenuItem>`
     <template
         role="${x => x.role}"
         aria-haspopup="${x => (x.hasSubmenu ? "menu" : void 0)}"

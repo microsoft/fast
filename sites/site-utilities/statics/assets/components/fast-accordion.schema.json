@@ -19,10 +19,10 @@
       "mapsToAttribute": "expand-mode",
       "type": "string"
     },
-    "SlotItem": {
-      "title": "Item slot",
+    "Slot": {
+      "title": "Default slot",
       "description": "The default slot for accordion items",
-      "mapsToSlot": "item",
+      "mapsToSlot": "",
       "@microsoft/fast-tooling/dictionary-link": true,
       "pluginId": "@microsoft/fast-tooling/linked-data",
       "type": "array",

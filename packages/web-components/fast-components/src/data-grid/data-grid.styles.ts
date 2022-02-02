@@ -1,19 +1,13 @@
 import { css, ElementStyles } from "@microsoft/fast-element";
-import {
-    ElementDefinitionContext,
-    FoundationElementDefinition,
-} from "@microsoft/fast-foundation";
+import { FoundationElementTemplate } from "@microsoft/fast-foundation";
 
 /**
  * Styles for Data Grid
  * @public
  */
-export const dataGridStyles: (
-    context: ElementDefinitionContext,
-    definition: FoundationElementDefinition
-) => ElementStyles = (
-    context: ElementDefinitionContext,
-    definition: FoundationElementDefinition
+export const dataGridStyles: FoundationElementTemplate<ElementStyles> = (
+    context,
+    definition
 ) => css`
     :host {
         display: flex;
