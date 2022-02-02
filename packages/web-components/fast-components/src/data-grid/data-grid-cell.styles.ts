@@ -1,10 +1,9 @@
 import { css, ElementStyles } from "@microsoft/fast-element";
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
-    ElementDefinitionContext,
     focusVisible,
     forcedColorsStylesheetBehavior,
-    FoundationElementDefinition,
+    FoundationElementTemplate,
 } from "@microsoft/fast-foundation";
 import {
     bodyFont,
@@ -21,12 +20,9 @@ import {
  * Styles for Data Grid cell
  * @public
  */
-export const dataGridCellStyles: (
-    context: ElementDefinitionContext,
-    definition: FoundationElementDefinition
-) => ElementStyles = (
-    context: ElementDefinitionContext,
-    definition: FoundationElementDefinition
+export const dataGridCellStyles: FoundationElementTemplate<ElementStyles> = (
+    context,
+    definition
 ) =>
     css`
     :host {

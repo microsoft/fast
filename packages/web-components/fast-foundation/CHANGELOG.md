@@ -1,8 +1,46 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Thu, 20 Jan 2022 07:12:04 GMT and should not be manually modified.
+This log was last generated on Wed, 02 Feb 2022 07:13:39 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.32.3
+
+Wed, 02 Feb 2022 07:13:39 GMT
+
+### Patches
+
+- fix: February tests are failing in calendar tests (robarb@microsoft.com)
+- fix broken links and formatting (john.kreitlow@microsoft.com)
+
+## 2.32.2
+
+Sun, 30 Jan 2022 07:12:35 GMT
+
+### Patches
+
+- convert functions to templates (mathieulavoie94@gmail.com)
+
+## 2.32.1
+
+Tue, 25 Jan 2022 07:11:53 GMT
+
+### Patches
+
+- Bump @microsoft/fast-web-utilities to v5.1.0 (john.kreitlow@microsoft.com)
+
+## 2.32.0
+
+Sun, 23 Jan 2022 07:13:56 GMT
+
+### Minor changes
+
+- feat: add `orientation` to divider (jes@microsoft.com)
+
+### Patches
+
+- use default slot in accordion (mathieulavoie94@gmail.com)
+- Bump @microsoft/fast-element to v1.7.0 (scomea@microsoft.com)
 
 ## 2.31.0
 
