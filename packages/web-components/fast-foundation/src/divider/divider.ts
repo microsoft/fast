@@ -1,4 +1,5 @@
 import { attr } from "@microsoft/fast-element";
+import { Orientation } from "@microsoft/fast-web-utilities";
 import { FoundationElement } from "../foundation-element";
 import { DividerRole } from "./divider.options";
 
@@ -21,4 +22,14 @@ export class Divider extends FoundationElement {
      */
     @attr
     public role: DividerRole = DividerRole.separator;
+
+    /**
+     * The orientation of the divider.
+     *
+     * @public
+     * @remarks
+     * HTML Attribute: orientation
+     */
+    @attr
+    public orientation: Orientation = Orientation.horizontal;
 }

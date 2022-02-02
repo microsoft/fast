@@ -52,7 +52,6 @@ Extends [`listbox`](../listbox/listbox.spec.md) and [form associated custom elem
 
 - `options` - An array of all options.
 - `placeholder` - Sets the placeholder of the element, generally used to provide a hint to the user.
-- `role` - The role of the element.
 - `value` - Reflects the value of the first selected option. Setting the `value` property will update the `selected` state of the first option that matches the value, if any.
 
 *Events*:

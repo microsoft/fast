@@ -1,18 +1,19 @@
 import { Action, createStore } from "redux";
-import { ColorRGBA64 } from "@microsoft/fast-colors";
-import { PaletteRGB, SwatchRGB } from "@microsoft/fast-components";
-import { Swatch } from "./recipes";
+import { ColorRGBA64, parseColorHexRGB } from "@microsoft/fast-colors";
 import {
-    ColorsDesignSystem,
-    colorsDesignSystem,
-    swatchToSwatchRGB,
-} from "./design-system";
-import { defaultNeutralColor } from "./colors";
+    accentColor,
+    neutralColor,
+    PaletteRGB,
+    Swatch,
+    SwatchRGB,
+} from "@microsoft/fast-components";
+import { defaultAccentColor, defaultNeutralColor } from "./colors";
 
 export enum ComponentTypes {
     backplate = "backplate",
     text = "text",
     form = "form",
+    sample = "sample",
 }
 
 /**
@@ -25,11 +26,6 @@ const SET_SHOW_ONLY_APPROVED_BACKGROUNDS: symbol = Symbol();
 
 export interface AppState {
     /**
-     * The root level design system
-     */
-    designSystem: ColorsDesignSystem;
-
-    /**
      * The component type being displayed
      */
     componentType: ComponentTypes;
@@ -37,12 +33,16 @@ export interface AppState {
     /**
      * The source color that the neutral palette is derived from
      */
-    neutralBaseColor: Swatch;
+    neutralBaseColor: string;
+
+    neutralPalette: string[];
 
     /**
      * The source color that the accent palette is derived from
      */
-    accentBaseColor: Swatch;
+    accentBaseColor: string;
+
+    accentPalette: string[];
 
     /**
      * If the app should only display the approved background colors
@@ -57,25 +57,21 @@ function setPalette(
     palette: "accent" | "neutral"
 ): (state: AppState, value: ColorRGBA64) => AppState {
     const paletteState: string = palette + "Palette";
-    const paletteStateRGB: string = palette + "PaletteRGB";
     const baseColor: string = palette + "BaseColor";
     return (state: AppState, value: ColorRGBA64): AppState => {
-        const pRGB: PaletteRGB = PaletteRGB.create(
-            swatchToSwatchRGB(value.toStringHexRGB())
-        );
-        const designSystem: ColorsDesignSystem = {
-            ...state.designSystem,
-            [paletteState]: pRGB.swatches.map((x: SwatchRGB) => x.toColorString()),
-            [paletteStateRGB]: pRGB,
-        };
+        const swatch: Swatch = SwatchRGB.from(parseColorHexRGB(value.toStringHexRGB()));
+        const pRGB: PaletteRGB = PaletteRGB.from(swatch as SwatchRGB);
+
         if (palette === "accent") {
-            designSystem.accentBaseColor = value.toStringHexRGB();
+            accentColor.setValueFor(document.body, swatch);
+        } else {
+            neutralColor.setValueFor(document.body, swatch);
         }
 
         return {
             ...state,
-            designSystem,
             [baseColor]: value.toStringHexRGB(),
+            [paletteState]: pRGB.swatches.map((x: SwatchRGB) => x.toColorString()),
         };
     };
 }
@@ -99,10 +95,15 @@ function rootReducer(state: AppState, action: any): AppState {
 }
 
 export const store: any = createStore(rootReducer, {
-    designSystem: colorsDesignSystem,
     componentType: ComponentTypes.backplate,
     neutralBaseColor: defaultNeutralColor,
-    accentBaseColor: colorsDesignSystem.accentBaseColor,
+    neutralPalette: PaletteRGB.from(
+        SwatchRGB.from(parseColorHexRGB(defaultNeutralColor)!)
+    ).swatches.map((x: SwatchRGB) => x.toColorString()),
+    accentBaseColor: defaultAccentColor,
+    accentPalette: PaletteRGB.from(
+        SwatchRGB.from(parseColorHexRGB(defaultAccentColor)!)
+    ).swatches.map((x: SwatchRGB) => x.toColorString()),
     showOnlyRecommendedBackgrounds: true,
 });
 

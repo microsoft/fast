@@ -1,8 +1,82 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Sun, 19 Dec 2021 07:12:39 GMT and should not be manually modified.
+This log was last generated on Wed, 02 Feb 2022 07:13:39 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.32.3
+
+Wed, 02 Feb 2022 07:13:39 GMT
+
+### Patches
+
+- fix: February tests are failing in calendar tests (robarb@microsoft.com)
+- fix broken links and formatting (john.kreitlow@microsoft.com)
+
+## 2.32.2
+
+Sun, 30 Jan 2022 07:12:35 GMT
+
+### Patches
+
+- convert functions to templates (mathieulavoie94@gmail.com)
+
+## 2.32.1
+
+Tue, 25 Jan 2022 07:11:53 GMT
+
+### Patches
+
+- Bump @microsoft/fast-web-utilities to v5.1.0 (john.kreitlow@microsoft.com)
+
+## 2.32.0
+
+Sun, 23 Jan 2022 07:13:56 GMT
+
+### Minor changes
+
+- feat: add `orientation` to divider (jes@microsoft.com)
+
+### Patches
+
+- use default slot in accordion (mathieulavoie94@gmail.com)
+- Bump @microsoft/fast-element to v1.7.0 (scomea@microsoft.com)
+
+## 2.31.0
+
+Thu, 20 Jan 2022 07:12:04 GMT
+
+### Minor changes
+
+- add checked property to listbox-option (john.kreitlow@microsoft.com)
+
+## 2.30.0
+
+Sun, 16 Jan 2022 07:11:36 GMT
+
+### Minor changes
+
+- Add valueAsNumber to number field and slider (5454342+brianehenry@users.noreply.github.com)
+
+## 2.29.0
+
+Sun, 09 Jan 2022 07:11:51 GMT
+
+### Minor changes
+
+- fix accessibility for listbox, select, and combobox (john.kreitlow@microsoft.com)
+
+## 2.28.0
+
+Thu, 06 Jan 2022 07:11:52 GMT
+
+### Minor changes
+
+- fix: prevent events to propagate from disabled button (#4884) (email not defined)
+
+### Patches
+
+- tooltip uses "center" (scomea@microsoft.com)
 
 ## 2.27.3
 
