@@ -1,8 +1,24 @@
 # Change Log - fast-design-system-demo
 
-This log was last generated on Wed, 26 Jan 2022 07:11:18 GMT and should not be manually modified.
+This log was last generated on Wed, 02 Feb 2022 07:13:39 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.0.0
+
+Wed, 02 Feb 2022 07:13:39 GMT
+
+### Patches
+
+- Bump @microsoft/fast-components to v2.20.2 (robarb@microsoft.com)
+
+## 1.0.0
+
+Sun, 30 Jan 2022 07:12:35 GMT
+
+### Patches
+
+- Bump @microsoft/fast-components to v2.20.1 (mathieulavoie94@gmail.com)
 
 ## 1.0.0
 

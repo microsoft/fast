@@ -1,5 +1,6 @@
 import { html, ref, ViewTemplate, when } from "@microsoft/fast-element";
 import { AnchoredRegion } from "../anchored-region";
+import type { FoundationElementTemplate } from "../foundation-element";
 import type { Picker } from "./picker";
 import { PickerMenu } from "./picker-menu";
 import { PickerMenuOption } from "./picker-menu-option";
@@ -32,7 +33,7 @@ function createDefaultMenuOptionTemplate(context): ViewTemplate {
  * The template for the List Picker component.
  * @public
  */
-export const pickerTemplate: (context, definition) => ViewTemplate<Picker> = (
+export const pickerTemplate: FoundationElementTemplate<ViewTemplate<Picker>> = (
     context,
     definition
 ) => {

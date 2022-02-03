@@ -2,6 +2,42 @@
   "name": "@microsoft/fast-foundation",
   "entries": [
     {
+      "date": "Wed, 02 Feb 2022 07:13:39 GMT",
+      "tag": "@microsoft/fast-foundation_v2.32.3",
+      "version": "2.32.3",
+      "comments": {
+        "patch": [
+          {
+            "comment": "fix: February tests are failing in calendar tests",
+            "author": "robarb@microsoft.com",
+            "commit": "72efc898ed23b08c9e7668844bc3a97f81b2bde9",
+            "package": "@microsoft/fast-foundation"
+          },
+          {
+            "comment": "fix broken links and formatting",
+            "author": "john.kreitlow@microsoft.com",
+            "commit": "48779abc5f0f746dc5d67b9d3c2875f455374ee6",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sun, 30 Jan 2022 07:12:35 GMT",
+      "tag": "@microsoft/fast-foundation_v2.32.2",
+      "version": "2.32.2",
+      "comments": {
+        "patch": [
+          {
+            "comment": "convert functions to templates",
+            "author": "mathieulavoie94@gmail.com",
+            "commit": "690b6218efc355985e3d97283ad043e7d085ef3c",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 25 Jan 2022 07:11:53 GMT",
       "tag": "@microsoft/fast-foundation_v2.32.1",
       "version": "2.32.1",
