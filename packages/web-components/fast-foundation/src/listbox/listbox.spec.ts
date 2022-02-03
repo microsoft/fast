@@ -89,6 +89,26 @@ describe("Listbox", () => {
         await disconnect();
     });
 
+    it("should set the `selectedIndex` to match the selected option after connection", async () => {
+        const { element, connect, disconnect, option1, option2, option3 } = await setup();
+
+        await connect();
+
+        expect(element.selectedIndex).to.equal(0);
+
+        option2.setAttribute("selected", "");
+
+        expect(element.selectedIndex).to.equal(1);
+
+        expect(element.selectedOptions).to.not.contain(option1);
+
+        expect(element.selectedOptions).to.contain(option2);
+
+        expect(element.selectedOptions).to.not.contain(option3);
+
+        await disconnect();
+    });
+
     it("should set the `size` property to match the `size` attribute", async () => {
         const { element, connect, disconnect } = await setup();
 
@@ -216,6 +236,26 @@ describe("Listbox", () => {
         await DOM.nextUpdate();
 
         expect(element.getAttribute("aria-activedescendant")).to.equal(option3.id);
+
+        await disconnect();
+    });
+
+    it("should set the `aria-multiselectable` attribute to match the `multiple` attribute", async () => {
+        const { element, connect, disconnect } = await setup();
+
+        await connect();
+
+        element.multiple = true;
+
+        await DOM.nextUpdate();
+
+        expect(element.getAttribute("aria-multiselectable")).to.equal("true");
+
+        element.multiple = false;
+
+        await DOM.nextUpdate();
+
+        expect(element.getAttribute("aria-multiselectable")).to.not.exist;
 
         await disconnect();
     });
