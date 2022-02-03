@@ -20,7 +20,12 @@ import { fastDialog } from "./dialog/index";
 import { fastDisclosure } from "./disclosure/index";
 import { fastDivider } from "./divider/index";
 import { fastFlipper } from "./flipper/index";
-import { fastGalleryPanel, fastGallery, fastGalleryItem } from "./gallery-panel/index";
+import {
+    fastGalleryPanel,
+    fastGallery,
+    fastGalleryGroup,
+    fastGalleryItem,
+} from "./gallery-panel/index";
 import { fastHorizontalScroll } from "./horizontal-scroll/index";
 import { fastOption } from "./listbox-option/index";
 import { fastLoaderCard } from "./loader-card/index";
@@ -102,6 +107,7 @@ export {
     fastFlipper,
     fastGalleryPanel,
     fastGallery,
+    fastGalleryGroup,
     fastGalleryItem,
     fastHorizontalScroll,
     fastLoaderCard,
@@ -168,6 +174,7 @@ export const allComponents = {
     fastFlipper,
     fastGalleryPanel,
     fastGallery,
+    fastGalleryGroup,
     fastGalleryItem,
     fastHorizontalScroll,
     fastLoaderCard,

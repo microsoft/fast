@@ -1,4 +1,4 @@
-import { attr, DOM, observable, ViewTemplate } from "@microsoft/fast-element";
+import { attr, DOM, FASTElement, observable } from "@microsoft/fast-element";
 import type { VirtualList } from "..";
 import { FoundationElement } from "../foundation-element";
 import type { GalleryData, GallerySpanMap } from "./gallery-data";
@@ -8,7 +8,7 @@ import type { GalleryData, GallerySpanMap } from "./gallery-data";
  *
  * @public
  */
-export class Gallery extends FoundationElement {
+export class GalleryGroup extends FoundationElement {
     /**
      *
      *
@@ -18,7 +18,7 @@ export class Gallery extends FoundationElement {
     public galleryData: GalleryData;
     private galleryDataChanged(): void {
         if (this.$fastController.isConnected) {
-            this.galleryListElement.items = this.galleryData.items as GalleryData[];
+            this.galleriesListElement.items = this.galleryData.items as GalleryData[];
         }
     }
 
@@ -29,8 +29,13 @@ export class Gallery extends FoundationElement {
      */
     @observable
     public spanmap: GallerySpanMap[] = [];
+    private spanmapChanged(): void {
+        if (this.$fastController.isConnected) {
+            this.galleriesListElement.spanmap = this.spanmap;
+        }
+    }
 
-    public galleryListElement: VirtualList;
+    public galleriesListElement: VirtualList;
 
     public connectedCallback(): void {
         super.connectedCallback();
@@ -44,6 +49,8 @@ export class Gallery extends FoundationElement {
     }
 
     private initialize(): void {
-        this.galleryListElement.items = this.galleryData.items as GalleryData[];
+        this.galleriesListElement.viewportElement = document.documentElement;
+        this.galleriesListElement.items = this.galleryData.items as GalleryData[];
+        this.galleriesListElement.spanmap = this.spanmap;
     }
 }

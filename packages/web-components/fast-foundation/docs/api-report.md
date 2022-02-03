@@ -1303,15 +1303,38 @@ export class Gallery extends FoundationElement {
     galleryData: GalleryData;
     // (undocumented)
     galleryListElement: VirtualList;
+    // (undocumented)
+    spanmap: GallerySpanMap[];
 }
 
 // @public (undocumented)
 export interface GalleryData {
     // (undocumented)
-    items: GalleryItemData[];
+    galleryType: GalleryType;
+    // (undocumented)
+    image?: string;
+    // (undocumented)
+    items?: GalleryData[];
     // (undocumented)
     title: string;
 }
+
+// @public (undocumented)
+export class GalleryGroup extends FoundationElement {
+    // (undocumented)
+    connectedCallback(): void;
+    // (undocumented)
+    disconnectedCallback(): void;
+    // (undocumented)
+    galleriesListElement: VirtualList;
+    // (undocumented)
+    galleryData: GalleryData;
+    // (undocumented)
+    spanmap: GallerySpanMap[];
+    }
+
+// @public
+export const galleryGroupTemplate: (context: ElementDefinitionContext, definition: FoundationElementDefinition) => ViewTemplate;
 
 // @public (undocumented)
 export class GalleryItem extends FoundationElement {
@@ -1320,15 +1343,7 @@ export class GalleryItem extends FoundationElement {
     // (undocumented)
     disconnectedCallback(): void;
     // (undocumented)
-    galleryItemData: GalleryItemData;
-}
-
-// @public (undocumented)
-export interface GalleryItemData {
-    // (undocumented)
-    image: string;
-    // (undocumented)
-    title: string;
+    galleryItemData: GalleryData;
 }
 
 // @public
@@ -1341,24 +1356,25 @@ export class GalleryPanel extends FoundationElement {
     // (undocumented)
     disconnectedCallback(): void;
     // (undocumented)
-    galleriesListElement: VirtualList;
+    galleryData: GalleryData;
     // (undocumented)
-    panelData: GalleryPanelData;
+    galleryGroupElement: GalleryGroup;
     }
-
-// @public (undocumented)
-export interface GalleryPanelData {
-    // (undocumented)
-    galleries: GalleryData[];
-    // (undocumented)
-    title: string;
-}
 
 // @public
 export const galleryPanelTemplate: (context: ElementDefinitionContext, definition: FoundationElementDefinition) => ViewTemplate;
 
+// @public (undocumented)
+export interface GallerySpanMap extends SpanMap {
+    // (undocumented)
+    children?: SpanMap[];
+}
+
 // @public
 export const galleryTemplate: (context: ElementDefinitionContext, definition: FoundationElementDefinition) => ViewTemplate;
+
+// @public (undocumented)
+export type GalleryType = "gallery-group" | "gallery" | "gallery-item";
 
 // @public
 export enum GenerateHeaderOptions {
@@ -2892,6 +2908,7 @@ export class VirtualList extends FoundationElement {
     orientation: Orientation;
     requestPositionUpdates: () => void;
     protected reset(): void;
+    spanmap: SpanMap[];
     // @internal
     startSpacerSpan: number;
     // @internal

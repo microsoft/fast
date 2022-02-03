@@ -1,18 +1,7 @@
 import { attr, DOM, FASTElement, observable } from "@microsoft/fast-element";
 import type { VirtualList } from "..";
 import { FoundationElement } from "../foundation-element";
-
-export interface GalleryItemData {
-    /**
-     *
-     */
-    title: string;
-
-    /**
-     *
-     */
-    image: string;
-}
+import type { GalleryData } from "./gallery-data";
 
 /**
  *
@@ -26,7 +15,7 @@ export class GalleryItem extends FoundationElement {
      * @public
      */
     @observable
-    public galleryItemData: GalleryItemData;
+    public galleryItemData: GalleryData;
     // private galleryItemDataChanged(): void {
     //     if (this.$fastController.isConnected) {
     //         this.galleryListElement.items = this.galleryItemData.items;

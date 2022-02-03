@@ -18,16 +18,20 @@ export const galleryItemStyles: (
 ) =>
     css`
         .gallery-item {
-            width: 100%;
-            height: 100%;
+            position: absolute;
+            margin-top: 10px;
+            width: 200px;
+            height: 260px;
             contain: strict;
+            background: olive;
         }
         .gallery-item-image {
-            margin: 30px 20px 10px 20px;
+            margin: 0 10px 10px 10px;
             position: absolute;
-            height: 160px;
-            width: 160px;
+            height: 180px;
+            width: 180px;
         }
         .gallery-item-title {
+            margin: 5px 10px 5px 10px;
         }
     `.withBehaviors(forcedColorsStylesheetBehavior(css``));

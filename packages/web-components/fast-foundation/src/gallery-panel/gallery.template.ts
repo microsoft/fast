@@ -6,7 +6,7 @@ import { VirtualList } from "../virtual-list";
 import { GalleryItem } from "./gallery-item";
 import type { Gallery } from "./gallery";
 
-function createItemTemplate(context): ViewTemplate {
+function createGalleryItemTemplate(context): ViewTemplate {
     const galleryItemTag = context.tagFor(GalleryItem);
     return html`
     <${galleryItemTag}
@@ -32,18 +32,16 @@ export const galleryTemplate: (
     context: ElementDefinitionContext,
     definition: FoundationElementDefinition
 ) => {
-    const itemTemplate: ViewTemplate = createItemTemplate(context);
+    const itemTemplate: ViewTemplate = createGalleryItemTemplate(context);
     const virtualListTag = context.tagFor(VirtualList);
     return html<Gallery>`
         <template class="gallery">
-            <div class="gallery-title">
-                ${x => x.galleryData?.title}
-            </div>
+            <h3 class="gallery-title">${x => x.galleryData?.title}</h3>
             <${virtualListTag}
                 class="gallery-list"
                 orientation="horizontal"
                 auto-update-mode="auto"
-                item-span="200"
+                item-span="260"
                 viewport-buffer="600"
                 :items="${x => x.galleryData?.items}"
                 :itemTemplate="${itemTemplate}"

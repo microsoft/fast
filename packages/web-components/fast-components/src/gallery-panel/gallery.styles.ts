@@ -39,13 +39,15 @@ export const galleryStyles: (
 ) =>
     css`
         .gallery {
-            height: 400px;
+            height: 320px;
             width: 100%;
+        }
+        .gallery-title {
+            margin: 10px;
+            height: 20px;
         }
         .gallery-item {
             position: absolute;
-            height: 300px;
-            width: 200px;
         }
         .gallery-list {
             display: block;
@@ -53,7 +55,6 @@ export const galleryStyles: (
             height: 300px;
             overflow-x: scroll;
             overflow-y: hidden;
-        }
-        .gallery-title {
+            background: darkgray;
         }
     `.withBehaviors(forcedColorsStylesheetBehavior(css``));
