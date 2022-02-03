@@ -159,6 +159,23 @@ css`
     }
 `;
 
+/* Comment-style */
+
+/* html */ `<div></div>`;
+/* html<TBase, any> */ `<div></div>`;
+/*           html            */ `<div></div>`;
+
+/* css */ ``;
+/* css */ `.css {}`;
+/* css */ `.${exp} {}`;
+/*              css          */ ``;
+
 // should not match
 let b = `${something}.css`;
 b = `something else`;
+
+/* html */
+`<template></template>`;
+
+/* css */
+`.class {}`;
