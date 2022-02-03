@@ -19,7 +19,7 @@ export const galleryItemStyles: (
     css`
         .gallery-item {
             position: absolute;
-            margin-top: 10px;
+            margin: 10px 5px 0 5px;
             width: 200px;
             height: 260px;
             contain: strict;

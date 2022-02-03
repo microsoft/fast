@@ -41,7 +41,7 @@ export const galleryTemplate: (
                 class="gallery-list"
                 orientation="horizontal"
                 auto-update-mode="auto"
-                item-span="260"
+                item-span="210"
                 viewport-buffer="600"
                 :items="${x => x.galleryData?.items}"
                 :itemTemplate="${itemTemplate}"
