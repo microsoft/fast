@@ -1,8 +1,8 @@
 import { css, ElementStyles } from "@microsoft/fast-element";
 import {
     display,
-    ElementDefinitionContext,
     forcedColorsStylesheetBehavior,
+    FoundationElementTemplate,
     TabsOptions,
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
@@ -21,10 +21,10 @@ import { heightNumber } from "../styles/index";
  * Styles for Tabs
  * @public
  */
-export const tabsStyles: (
-    context: ElementDefinitionContext,
-    definition: TabsOptions
-) => ElementStyles = (context: ElementDefinitionContext, definition: TabsOptions) =>
+export const tabsStyles: FoundationElementTemplate<ElementStyles, TabsOptions> = (
+    context,
+    definition
+) =>
     css`
         ${display("grid")} :host {
             box-sizing: border-box;
@@ -89,9 +89,10 @@ export const tabsStyles: (
             position: relative;
             width: max-content;
             justify-self: end;
+            align-self: flex-start;
             width: 100%;
-            padding: calc((${heightNumber} - ${designUnit}) * 1px)
-                calc(${designUnit} * 4px) calc((${heightNumber} - ${designUnit}) * 1px) 0;
+            padding: 0 calc(${designUnit} * 4px)
+                calc((${heightNumber} - ${designUnit}) * 1px) 0;
         }
 
         :host([orientation="vertical"]) .tabpanel {

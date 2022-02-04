@@ -38,7 +38,7 @@ A pre-bundled script that contains all APIs needed to use FAST Foundation is ava
 <html lang="en">
     <head>
         <script type="module">
-          import { Anchor } from "https://unpkg.com/@microsoft/fast-foundation";
+          import { Anchor } from "https://cdn.jsdelivr.net/npm/@microsoft/fast-foundation/dist/fast-foundation.min.js";
 
           // your code here
         </script>
@@ -47,6 +47,12 @@ A pre-bundled script that contains all APIs needed to use FAST Foundation is ava
 </html>
 ```
 
-The above CDN location points to the latest release of `fast-foundation`. It is advised that when you deploy your site or app, you import the specific version you have developed and tested with.
+The markup above always references the latest release. When deploying to production, you will want to ship with a specific version. Here's an example of the markup for that:
 
+```html
+<script type="module" src="https://cdn.jsdelivr.net/npm/@microsoft/fast-foundation@2.26.2/dist/fast-foundation.min.js"></script>
+```
+
+:::note
 For simplicity, examples throughout the documentation will assume the library has been installed from NPM, but you can always replace the import location with the CDN URL.
+:::

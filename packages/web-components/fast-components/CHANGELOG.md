@@ -1,8 +1,144 @@
 # Change Log - @microsoft/fast-components
 
-This log was last generated on Sun, 14 Nov 2021 07:11:13 GMT and should not be manually modified.
+This log was last generated on Wed, 02 Feb 2022 07:13:39 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.20.2
+
+Wed, 02 Feb 2022 07:13:39 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.32.3 (robarb@microsoft.com)
+
+## 2.20.1
+
+Sun, 30 Jan 2022 07:12:35 GMT
+
+### Patches
+
+- convert functions to templates (mathieulavoie94@gmail.com)
+
+## 2.20.0
+
+Wed, 26 Jan 2022 07:11:18 GMT
+
+### Minor changes
+
+- Updated the color blocks and swatches to web components (47367562+bheston@users.noreply.github.com)
+- Added accent and neutral base color attributes to the design system provider Updated DSP to handle a change in base layer luminance Cleaned up the delta tokens to not render in css (47367562+bheston@users.noreply.github.com)
+
+## 2.19.1
+
+Tue, 25 Jan 2022 07:11:53 GMT
+
+### Patches
+
+- Bump @microsoft/fast-web-utilities to v5.1.0 (john.kreitlow@microsoft.com)
+
+## 2.19.0
+
+Sun, 23 Jan 2022 07:13:56 GMT
+
+### Minor changes
+
+- feat: add `orientation` to divider (jes@microsoft.com)
+
+### Patches
+
+- use default slot in accordion (mathieulavoie94@gmail.com)
+- Bump @microsoft/fast-element to v1.7.0 (scomea@microsoft.com)
+- Bump @microsoft/fast-foundation to v2.32.0 (jes@microsoft.com)
+
+## 2.18.0
+
+Thu, 20 Jan 2022 07:12:04 GMT
+
+### Minor changes
+
+- add checked property to listbox-option (john.kreitlow@microsoft.com)
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.31.0 (john.kreitlow@microsoft.com)
+
+## 2.17.1
+
+Sun, 16 Jan 2022 07:11:36 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.30.0 (5454342+brianehenry@users.noreply.github.com)
+
+## 2.17.0
+
+Sun, 09 Jan 2022 07:11:51 GMT
+
+### Minor changes
+
+- remove configurable role attribute from listbox, select, and combobox (john.kreitlow@microsoft.com)
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.29.0 (john.kreitlow@microsoft.com)
+
+## 2.16.10
+
+Thu, 06 Jan 2022 07:11:52 GMT
+
+### Patches
+
+- tooltip uses "center" (scomea@microsoft.com)
+
+## 2.16.9
+
+Sun, 19 Dec 2021 07:12:39 GMT
+
+### Patches
+
+- add horizontal scroll example for use with fast-components (sethdonohue@Admins-MBP.guest.corp.microsoft.com)
+
+## 2.16.8
+
+Wed, 15 Dec 2021 07:14:44 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.27.2 (john.kreitlow@microsoft.com)
+
+## 2.16.7
+
+Sun, 12 Dec 2021 07:12:52 GMT
+
+### Patches
+
+- fix: incorrect z-index in fast-menu slot="submenu" (email not defined)
+
+## 2.16.6
+
+Tue, 30 Nov 2021 07:13:40 GMT
+
+### Patches
+
+- fix: vertical tabs fromm jumping (jes@microsoft.com)
+
+## 2.16.5
+
+Tue, 23 Nov 2021 07:12:23 GMT
+
+### Patches
+
+- add `size` attribute to listbox element (john.kreitlow@microsoft.com)
+- fix: disabled flipper button clicks (jes@microsoft.com)
+
+## 2.16.4
+
+Sun, 21 Nov 2021 07:10:36 GMT
+
+### Patches
+
+- fix: proper css targeting for flipper (jes@microsoft.com)
 
 ## 2.16.3
 

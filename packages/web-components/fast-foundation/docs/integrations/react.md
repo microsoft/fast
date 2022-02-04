@@ -43,6 +43,10 @@ npm install --save @microsoft/fast-components @microsoft/fast-foundation @micros
 }
 ```
 
+:::note
+The above will not work on Windows. You can adjust the scripts to use [cross-env](https://www.npmjs.com/package/cross-env) to add Windows support.
+:::
+
 **Override the `eslintConfig` field to turn off the 'no-unused-expressions' rule**
 
 ```jsonc
@@ -228,6 +232,8 @@ FAST makes use of decorators to define components. At this time, `create-react-a
 - [Define components without decorators](https://fast.design/docs/fast-element/defining-elements#working-without-decorators)
 - [Eject](https://create-react-app.dev/docs/available-scripts#npm-run-eject)`create-react-app` and change Babel to support decorators 
 - Use an intermediary like [react-app-rewired](https://www.npmjs.com/package/react-app-rewired)
+
+You can read more about decorator configuration issues [here.](https://github.com/microsoft/fast/issues/4503)
   
 ### Working without the fast-react-wrapper
 

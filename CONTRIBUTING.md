@@ -54,7 +54,7 @@ lerna run prepare
 ```
 
 ### Developing in `fast-components`
-If you're interested in contributing changes to the `fast-component` design system start by navigating to the `fast-components` directory and starting the Storybook local server there.
+If you're interested in contributing changes to the `fast-component` design system, start by navigating to the `fast-components` directory and starting the Storybook local server there.
 
 ```bash
 cd packages/web-components/fast-components
@@ -99,7 +99,7 @@ When working across feature branches, you'll need to target the branch using the
 }
 ```
 
-Running `yarn change` will walk you through a CLI process for generating change files. The process will walk you through selecting the type of change as well as ask you to provide a description of any changes. As a convenience, the utiliity looks to provide recent commit messages for use in the description. *For changes which do not affect the published package(s), please use "none" when selecting the change type*.
+Running `yarn change` will walk you through a CLI process for generating change files. The process will walk you through selecting the type of change as well as ask you to provide a description of any changes. As a convenience, the utility looks to provide recent commit messages for use in the description. *For changes which do not affect the published package(s), please use "none" when selecting the change type*.
 
 More information on the change process and change types can be found on the [beachball website](https://microsoft.github.io/beachball/cli/change.html#change).
 
@@ -183,7 +183,7 @@ All pull requests must be approved by a *collaborator* before the pull request c
 
 Before a pull request is accepted, time should be given to receive input from *collaborators* or *code owners* with the expertise to evaluate the changes. The amount of time can vary but at least 3 days during the typical working week and 5 days over weekends should be given to account for international time differences and work schedules.
 
-When a pull request : (a) has a significant impact on the project, (b) is inherently controversial, or (c) has not reached consensus with *collaborators*; add a "controversial" label to the pull request for the *steering committee* to review the pull request. Pull requests labeled with "controversial" are not approved until the *steering committee* reviews the issue and makes a decision.
+When a pull request : (a) has a significant impact on the project, (b) is inherently controversial, or (c) has not reached consensus with *collaborators*; add a "status:controversial" label to the pull request for the *steering committee* to review the pull request. Pull requests labeled with "status:controversial" are not approved until the *steering committee* reviews the issue and makes a decision.
 
 Additionally, *owners*, can temporarily enable [interaction limits](https://help.github.com/articles/limiting-interactions-with-your-repository/) to allow a "cool-down" period when hot topics become disruptive.
 
@@ -191,7 +191,7 @@ Specific *collaborators* or *code owners*  can be added to a pull request by inc
 
 ## Stability policy
 
-An essential consideration in every pull request is its impact on the system. To manage impacts, we work collectively to ensure that we do not introduce unnecessary breaking changes, performance or functional regressions, or negative impacts on usability for users or supported partners.
+An essential consideration in every pull request is its impact on the system. To manage impacts, we work collectively to ensure that we do not introduce unnecessary breaking changes, performance or functional regressions, or negative impacts on usability for users or supported partners. To learn more about our approaches to planning and releases, see [our release planning document](https://www.fast.design/docs/community/release-planning).
 
 ## Developer's Certificate of Origin 1.1
 

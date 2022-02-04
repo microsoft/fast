@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-element
 
-This log was last generated on Sun, 31 Oct 2021 07:17:45 GMT and should not be manually modified.
+This log was last generated on Sun, 23 Jan 2022 07:13:56 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.7.0
+
+Sun, 23 Jan 2022 07:13:56 GMT
+
+### Minor changes
+
+- add recyle option to repeat directive (scomea@microsoft.com)
 
 ## 1.6.2
 

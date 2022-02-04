@@ -1,16 +1,13 @@
-import {
-    attr,
-    Observable,
-    observable,
-    SyntheticViewTemplate,
-} from "@microsoft/fast-element";
+import { attr, Observable, observable } from "@microsoft/fast-element";
+import type { SyntheticViewTemplate } from "@microsoft/fast-element";
 import { limit, uniqueId } from "@microsoft/fast-web-utilities";
-import type { ListboxOption } from "../listbox-option/listbox-option";
-import { ARIAGlobalStatesAndProperties } from "../patterns/aria-global";
-import { StartEnd, StartEndOptions } from "../patterns/start-end";
-import { SelectPosition, SelectRole } from "../select/select.options";
-import { applyMixins } from "../utilities/apply-mixins";
 import type { FoundationElementDefinition } from "../foundation-element";
+import { DelegatesARIAListbox } from "../listbox";
+import type { ListboxOption } from "../listbox-option/listbox-option";
+import { StartEnd } from "../patterns/start-end";
+import type { StartEndOptions } from "../patterns/start-end";
+import { SelectPosition } from "../select/select.options";
+import { applyMixins } from "../utilities/apply-mixins";
 import { FormAssociatedCombobox } from "./combobox.form-associated";
 import { ComboboxAutocomplete } from "./combobox.options";
 
@@ -137,11 +134,17 @@ export class Combobox extends FormAssociatedCombobox {
     @attr({ attribute: "open", mode: "boolean" })
     public open: boolean = false;
     protected openChanged() {
-        this.ariaExpanded = this.open ? "true" : "false";
         if (this.open) {
+            this.ariaControls = this.listbox.id;
+            this.ariaExpanded = "true";
+
             this.setPositioning();
             this.focusAndScrollOptionIntoView();
+            return;
         }
+
+        this.ariaControls = "";
+        this.ariaExpanded = "false";
     }
 
     /**
@@ -196,15 +199,6 @@ export class Combobox extends FormAssociatedCombobox {
      */
     @observable
     public position: SelectPosition = SelectPosition.below;
-
-    /**
-     * The role of the element.
-     *
-     * @public
-     * @remarks
-     * HTML Attribute: role
-     */
-    public role: SelectRole = SelectRole.combobox;
 
     /**
      * The value property.
@@ -264,12 +258,13 @@ export class Combobox extends FormAssociatedCombobox {
 
             this.selectedOptions = [captured];
             this.control.value = captured.text;
+            this.updateValue(true);
         }
 
         this.open = !this.open;
 
-        if (!this.open) {
-            this.updateValue(true);
+        if (this.open) {
+            this.control.focus();
         }
 
         return true;
@@ -280,6 +275,10 @@ export class Combobox extends FormAssociatedCombobox {
         this.forcedPosition = !!this.positionAttribute;
         if (this.value) {
             this.initialValue = this.value;
+        }
+
+        if (!this.listbox.id) {
+            this.listbox.id = uniqueId("listbox-");
         }
     }
 
@@ -322,6 +321,24 @@ export class Combobox extends FormAssociatedCombobox {
             this._options.forEach(o => {
                 o.hidden = !this.filteredOptions.includes(o);
             });
+        }
+    }
+
+    /**
+     * Focus the control and scroll the first selected option into view.
+     *
+     * @internal
+     * @remarks
+     * Overrides: `Listbox.focusAndScrollOptionIntoView`
+     */
+    protected focusAndScrollOptionIntoView(): void {
+        if (this.contains(document.activeElement)) {
+            this.control.focus();
+            if (this.firstSelectedOption) {
+                requestAnimationFrame(() => {
+                    this.firstSelectedOption.scrollIntoView({ block: "nearest" });
+                });
+            }
         }
     }
 
@@ -629,13 +646,24 @@ export class Combobox extends FormAssociatedCombobox {
  */
 export class DelegatesARIACombobox {
     /**
-     * See {@link https://w3c.github.io/aria/#aria-autocomplete} for more information
+     * See {@link https://www.w3.org/TR/wai-aria-1.2/#aria-autocomplete} for more information.
+     *
      * @public
      * @remarks
-     * HTML Attribute: aria-autocomplete
+     * HTML Attribute: `aria-autocomplete`
      */
-    @attr({ attribute: "aria-autocomplete", mode: "fromView" })
-    public ariaAutocomplete: "inline" | "list" | "both" | "none" | undefined;
+    @observable
+    public ariaAutoComplete: "inline" | "list" | "both" | "none" | undefined;
+
+    /**
+     * See {@link https://www.w3.org/TR/wai-aria-1.2/#aria-controls} for more information.
+     *
+     * @public
+     * @remarks
+     * HTML Attribute: `aria-controls`
+     */
+    @observable
+    public ariaControls: string;
 }
 
 /**
@@ -644,8 +672,8 @@ export class DelegatesARIACombobox {
  * TODO: https://github.com/microsoft/fast/issues/3317
  * @internal
  */
-export interface DelegatesARIACombobox extends ARIAGlobalStatesAndProperties {}
-applyMixins(DelegatesARIACombobox, ARIAGlobalStatesAndProperties);
+export interface DelegatesARIACombobox extends DelegatesARIAListbox {}
+applyMixins(DelegatesARIACombobox, DelegatesARIAListbox);
 
 /**
  * Mark internal because exporting class and interface of the same name

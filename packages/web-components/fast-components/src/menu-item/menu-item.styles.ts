@@ -2,9 +2,9 @@ import { css, ElementStyles } from "@microsoft/fast-element";
 import {
     disabledCursor,
     display,
-    ElementDefinitionContext,
     focusVisible,
     forcedColorsStylesheetBehavior,
+    FoundationElementTemplate,
     MenuItemOptions,
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
@@ -32,10 +32,10 @@ import { DirectionalStyleSheetBehavior, heightNumber } from "../styles/index";
  * Styles for Menu item
  * @public
  */
-export const menuItemStyles: (
-    context: ElementDefinitionContext,
-    definition: MenuItemOptions
-) => ElementStyles = (context: ElementDefinitionContext, definition: MenuItemOptions) =>
+export const menuItemStyles: FoundationElementTemplate<ElementStyles, MenuItemOptions> = (
+    context,
+    definition
+) =>
     css`
     ${display("grid")} :host {
         contain: layout;
@@ -58,6 +58,11 @@ export const menuItemStyles: (
         line-height: ${typeRampBaseLineHeight};
         border-radius: calc(${controlCornerRadius} * 1px);
         border: calc(${focusStrokeWidth} * 1px) solid transparent;
+    }
+
+    :host(:hover) {
+        position: relative;
+        z-index: 1;
     }
 
     :host(.indent-0) {

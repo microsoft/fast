@@ -308,3 +308,98 @@
         </svg>
     </fast-menu-item>
 </fast-menu>
+
+<h4>Z-index handling</h4>
+<style>
+    .flex-menus {
+        display: flex;
+    }
+
+    .flex-menus > fast-menu {
+        width: 370px;
+    }
+
+    .flex-menus fast-menu-item {
+        z-index: 3;
+    }
+
+    .flex-menus > * + * {
+        margin: 0 0 0 10px;
+    }
+
+    .flex-menus > div {
+        width: 250px;
+        height: 250px;
+        padding: 20px;
+        box-sizing: border-box;
+        background: var(--neutral-layer-floating);
+        color: var(--neutral-foreground-rest);
+        font-family: var(--body-font);
+        font-size: small;
+        position: relative;
+        z-index: 2;
+    }
+</style>
+<div style="display: flex;" class="flex-menus">
+    <fast-menu>
+        <fast-menu-item>Menu item 1</fast-menu-item>
+        <fast-menu-item>Menu item 2</fast-menu-item>
+        <fast-menu-item disabled="true">Menu item 3</fast-menu-item>
+        <fast-menu-item>
+            Menu item 4
+            <div slot="end">
+                Shortcut text
+            </div>
+        </fast-menu-item>
+        <fast-menu-item>
+            Menu item 5
+            <fast-menu>
+                <fast-menu-item>Nested Menu item 1.1</fast-menu-item>
+                <fast-menu-item>Nested Menu item 1.2</fast-menu-item>
+                <fast-menu-item>Nested Menu item 1.3</fast-menu-item>
+            </fast-menu>
+        </fast-menu-item>
+        <fast-menu-item>
+            Menu item 6
+            <div slot="end">
+                Shortcut text
+            </div>
+            <fast-menu>
+                <fast-menu-item>Nested Menu item 1.1</fast-menu-item>
+                <fast-menu-item>Nested Menu item 1.2</fast-menu-item>
+                <fast-menu-item>Nested Menu item 1.3</fast-menu-item>
+            </fast-menu>
+        </fast-menu-item>
+    </fast-menu>
+    <fast-menu style="margin: 0 0 0 10px;">
+        <fast-menu-item>Menu item 1</fast-menu-item>
+        <fast-menu-item>Menu item 2</fast-menu-item>
+        <fast-menu-item disabled="true">Menu item 3</fast-menu-item>
+        <fast-menu-item>
+            Menu item 4
+            <div slot="end">
+                Shortcut text
+            </div>
+        </fast-menu-item>
+        <fast-menu-item>
+            Menu item 5
+            <fast-menu>
+                <fast-menu-item>Nested Menu item 1.1</fast-menu-item>
+                <fast-menu-item>Nested Menu item 1.2</fast-menu-item>
+                <fast-menu-item>Nested Menu item 1.3</fast-menu-item>
+            </fast-menu>
+        </fast-menu-item>
+        <fast-menu-item>
+            Menu item 6
+            <div slot="end">
+                Shortcut text
+            </div>
+            <fast-menu>
+                <fast-menu-item>Nested Menu item 1.1</fast-menu-item>
+                <fast-menu-item>Nested Menu item 1.2</fast-menu-item>
+                <fast-menu-item>Nested Menu item 1.3</fast-menu-item>
+            </fast-menu>
+        </fast-menu-item>
+    </fast-menu>
+    <div>Test div</div>
+</div>

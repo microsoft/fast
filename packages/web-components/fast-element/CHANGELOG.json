@@ -2,6 +2,111 @@
   "name": "@microsoft/fast-element",
   "entries": [
     {
+      "date": "Sun, 23 Jan 2022 07:13:56 GMT",
+      "tag": "@microsoft/fast-element_v1.7.0",
+      "version": "1.7.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "add recyle option to repeat directive",
+            "author": "scomea@microsoft.com",
+            "commit": "897c39862b58a63ad9900426ae6ae2f95d222e1e",
+            "package": "@microsoft/fast-element"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 12 Jan 2022 07:11:42 GMT",
+      "tag": "@microsoft/fast-element_v1.6.2",
+      "version": "1.6.2",
+      "comments": {
+        "none": [
+          {
+            "comment": "add links back to cheat sheet",
+            "author": "steph@huynhicode.dev",
+            "commit": "962ca2a330f8c277ac489613f0ff55cac08896e8",
+            "package": "@microsoft/fast-element"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 11 Jan 2022 07:09:27 GMT",
+      "tag": "@microsoft/fast-element_v1.6.2",
+      "version": "1.6.2",
+      "comments": {
+        "none": [
+          {
+            "comment": "update rollup-plugin-filesize from 8.0.2 to 9.1.2",
+            "author": "john.kreitlow@microsoft.com",
+            "commit": "af847f2749ff605cced426e55a1580ea85c89cb0",
+            "package": "@microsoft/fast-element"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sun, 19 Dec 2021 07:12:39 GMT",
+      "tag": "@microsoft/fast-element_v1.6.2",
+      "version": "1.6.2",
+      "comments": {
+        "none": [
+          {
+            "comment": "minor fixes",
+            "author": "steph@huynhicode.dev",
+            "commit": "5056e83234e1c758375fa4882943d104fb476ca2",
+            "package": "@microsoft/fast-element"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 14 Dec 2021 07:12:12 GMT",
+      "tag": "@microsoft/fast-element_v1.6.2",
+      "version": "1.6.2",
+      "comments": {
+        "none": [
+          {
+            "comment": "docs(using-directives): clarify slotted directive practices",
+            "author": "roeisenb@microsoft.com",
+            "commit": "babdb99e832319eaee76465765f9e6b72911d473",
+            "package": "@microsoft/fast-element"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 08 Dec 2021 07:10:04 GMT",
+      "tag": "@microsoft/fast-element_v1.6.2",
+      "version": "1.6.2",
+      "comments": {
+        "none": [
+          {
+            "comment": "docs: add .NET acknowledgement",
+            "author": "roeisenb@microsoft.com",
+            "commit": "bd7d84152a823cc21aab0dfa196da9d663ad0778",
+            "package": "@microsoft/fast-element"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 02 Dec 2021 07:11:13 GMT",
+      "tag": "@microsoft/fast-element_v1.6.2",
+      "version": "1.6.2",
+      "comments": {
+        "none": [
+          {
+            "comment": "docs: corrections to cdn links",
+            "author": "roeisenb@microsoft.com",
+            "commit": "2ec536794820959f771ebbfe25efd5a4489e7a76",
+            "package": "@microsoft/fast-element"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sun, 31 Oct 2021 07:17:45 GMT",
       "tag": "@microsoft/fast-element_v1.6.2",
       "version": "1.6.2",

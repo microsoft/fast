@@ -1,8 +1,96 @@
 # Change Log - @microsoft/fast-react-wrapper
 
-This log was last generated on Thu, 11 Nov 2021 07:15:33 GMT and should not be manually modified.
+This log was last generated on Wed, 02 Feb 2022 07:13:39 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.1.26
+
+Wed, 02 Feb 2022 07:13:39 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.32.3 (robarb@microsoft.com)
+
+## 0.1.25
+
+Sun, 30 Jan 2022 07:12:35 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.32.2 (mathieulavoie94@gmail.com)
+
+## 0.1.24
+
+Tue, 25 Jan 2022 07:11:53 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.32.1 (john.kreitlow@microsoft.com)
+
+## 0.1.23
+
+Sun, 23 Jan 2022 07:13:56 GMT
+
+### Patches
+
+- Bump @microsoft/fast-element to v1.7.0 (scomea@microsoft.com)
+
+## 0.1.22
+
+Thu, 20 Jan 2022 07:12:04 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.31.0 (john.kreitlow@microsoft.com)
+
+## 0.1.21
+
+Sun, 16 Jan 2022 07:11:36 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.30.0 (5454342+brianehenry@users.noreply.github.com)
+
+## 0.1.20
+
+Sun, 09 Jan 2022 07:11:51 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.29.0 (john.kreitlow@microsoft.com)
+
+## 0.1.19
+
+Thu, 06 Jan 2022 07:11:52 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.28.0 (email not defined)
+
+## 0.1.18
+
+Wed, 15 Dec 2021 07:14:44 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.27.2 (john.kreitlow@microsoft.com)
+
+## 0.1.17
+
+Tue, 23 Nov 2021 07:12:23 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.27.0 (john.kreitlow@microsoft.com)
+
+## 0.1.16
+
+Wed, 17 Nov 2021 07:12:14 GMT
+
+### Patches
+
+- fix(react-wrapper): change peer dependency for `react` (vaibhavkshinde20@gmail.com)
 
 ## 0.1.15
 
