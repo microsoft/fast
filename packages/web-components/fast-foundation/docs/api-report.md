@@ -808,6 +808,7 @@ export class DelegatesARIAListbox {
     ariaActiveDescendant: string;
     ariaDisabled: "true" | "false";
     ariaExpanded: "true" | "false" | undefined;
+    ariaMultiSelectable: "true" | "false" | undefined;
 }
 
 // @internal
@@ -1348,22 +1349,34 @@ export abstract class Listbox extends FoundationElement {
     // @internal
     get firstSelectedOption(): ListboxOption;
     // @internal
-    protected focusAndScrollOptionIntoView(): void;
+    protected focusAndScrollOptionIntoView(optionToFocus?: ListboxOption | null): void;
     // @internal
     focusinHandler(e: FocusEvent): void;
+    // @internal
+    protected getSelectableIndex(prev: number | undefined, next: number): number;
+    // @internal
+    protected getTypeaheadMatches(): ListboxOption[];
+    // @internal
+    handleChange(source: any, propertyName: string): void;
+    // @internal
     handleTypeAhead(key: string): void;
+    // @internal
+    protected get hasSelectableOptions(): boolean;
     // @internal
     keydownHandler(e: KeyboardEvent): boolean | void;
     get length(): number;
     // @internal
     mousedownHandler(e: MouseEvent): boolean | void;
+    multiple: boolean;
+    // @internal
+    multipleChanged(prev: boolean | undefined, next: boolean): void;
     get options(): ListboxOption[];
     set options(value: ListboxOption[]);
     // @internal
     protected _options: ListboxOption[];
     selectedIndex: number;
     // @internal
-    selectedIndexChanged(prev: number, next: number): void;
+    selectedIndexChanged(prev: number | undefined, next: number): void;
     selectedOptions: ListboxOption[];
     // @internal
     protected selectedOptionsChanged(prev: ListboxOption[] | undefined, next: ListboxOption[]): void;
@@ -1383,7 +1396,7 @@ export abstract class Listbox extends FoundationElement {
     // @internal
     slottedOptions: Element[];
     // @internal
-    slottedOptionsChanged(prev: Element[] | unknown, next: Element[]): void;
+    slottedOptionsChanged(prev: Element[] | undefined, next: Element[]): void;
     // @internal
     protected static readonly TYPE_AHEAD_TIMEOUT_MS = 1000;
     // @internal
@@ -1405,11 +1418,57 @@ export interface Listbox extends DelegatesARIAListbox {
 
 // @public
 export class ListboxElement extends Listbox {
+    // @internal
+    protected activeIndex: number;
+    // @internal
+    protected activeIndexChanged(prev: number | undefined, next: number): void;
+    // @internal
+    get activeOption(): ListboxOption | null;
+    // @internal
+    protected checkActiveIndex(): void;
+    // @internal
+    protected get checkedOptions(): ListboxOption[];
+    // @internal
+    protected checkFirstOption(preserveChecked?: boolean): void;
+    // @internal
+    protected checkLastOption(preserveChecked?: boolean): void;
+    // @internal
+    protected checkNextOption(preserveChecked?: boolean): void;
+    // @internal
+    protected checkPreviousOption(preserveChecked?: boolean): void;
+    // @internal @override
+    clickHandler(e: MouseEvent): boolean | void;
+    // @internal @override (undocumented)
+    connectedCallback(): void;
+    // @internal @override (undocumented)
+    disconnectedCallback(): void;
+    // @internal
+    get firstSelectedOptionIndex(): number;
+    // @internal @override (undocumented)
+    protected focusAndScrollOptionIntoView(): void;
+    // @internal @override
+    focusinHandler(e: FocusEvent): boolean | void;
+    // @internal
+    focusoutHandler(e: FocusEvent): void;
+    // @internal @override
+    keydownHandler(e: KeyboardEvent): boolean | void;
     // @internal @override
     mousedownHandler(e: MouseEvent): boolean | void;
+    // @internal @override
+    multipleChanged(prev: boolean | undefined, next: boolean): void;
+    // @internal
+    protected rangeStartIndex: number;
+    // @override
+    protected setSelectedOptions(): void;
     size: number;
     // @internal
     protected sizeChanged(prev: number | unknown, next: number): void;
+    // @internal
+    toggleSelectedForAllCheckedOptions(): void;
+    // @internal @override (undocumented)
+    typeaheadBufferChanged(prev: string, next: string): void;
+    // @internal
+    protected uncheckAllOptions(preserveChecked?: boolean): void;
 }
 
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag

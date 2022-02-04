@@ -1,7 +1,7 @@
 {
   "type": "patch",
-  "comment": "fix: February tests are failing in calendar tests",
+  "comment": "ensure menu items update",
   "packageName": "@microsoft/fast-foundation",
-  "email": "robarb@microsoft.com",
+  "email": "scomea@microsoft.com",
   "dependentChangeType": "patch"
 }
