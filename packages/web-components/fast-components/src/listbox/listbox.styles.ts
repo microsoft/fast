@@ -7,9 +7,11 @@ import {
 } from "@microsoft/fast-foundation";
 import type { FoundationElementTemplate } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
+import { disabledCursor } from "@microsoft/fast-foundation";
 import {
     controlCornerRadius,
     designUnit,
+    disabledOpacity,
     focusStrokeOuter,
     focusStrokeWidth,
     neutralLayerFloating,
@@ -40,6 +42,12 @@ export const listboxStyles: FoundationElementTemplate<ElementStyles> = (
             border-color: ${focusStrokeOuter};
             box-shadow: 0 0 0 calc((${focusStrokeWidth} - ${strokeWidth}) * 1px)
                 ${focusStrokeOuter} inset;
+        }
+
+        :host([disabled]) ::slotted(*) {
+            opacity: ${disabledOpacity};
+            cursor: ${disabledCursor};
+            pointer-events: none;
         }
 
         :host([size]) {
