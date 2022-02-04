@@ -73,6 +73,18 @@ describe("Listbox", () => {
         await disconnect();
     });
 
+    it("should not select the first option when listbox is `disabled`", async () => {
+        const { element, connect, disconnect, option1, option2, option3 } = await setup();
+        element.disabled = true;
+        await connect();
+        //await DOM.nextUpdate();
+        expect(element.selectedOptions).to.not.contain(option1);
+        expect(element.selectedOptions).to.not.contain(option2);
+        expect(element.selectedOptions).to.not.contain(option3);
+
+        await disconnect();
+    });
+
     it("should select the option with a `selected` attribute", async () => {
         const { element, connect, disconnect, option1, option2, option3 } = await setup();
 
