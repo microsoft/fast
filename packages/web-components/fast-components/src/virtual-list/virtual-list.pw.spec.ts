@@ -118,7 +118,7 @@ describe("FASTVirtualList", function () {
         )) as ElementHandle<fastVirtualList>;
 
 
-        expect(await element.evaluate(node => (node as fastVirtualList).totalStackSpan)).to.equal(10000);
+        expect(await element.evaluate(node => (node as fastVirtualList).totalListSpan)).to.equal(10000);
     });
 
 });
