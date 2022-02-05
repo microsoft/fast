@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { limit, wrapInBounds } from "./numbers";
+import { inRange, limit, wrapInBounds } from "./numbers";
 
 describe("wrapInBounds", () => {
     it("should not throw if any parameters are null", () => {
@@ -74,5 +74,47 @@ describe("limit", () => {
 
     it("should return the value if `value` is not less min or greater than max", () => {
         expect(limit(0, 10, 5)).to.equal(5);
+    });
+});
+
+describe("inRange", () => {
+    it("should not throw if any parameters are null", () => {
+        expect(() => {
+            inRange(null, null, null);
+        }).not.to.throw();
+        expect(() => {
+            inRange(0, null, null);
+        }).not.to.throw();
+        expect(() => {
+            inRange(0, null, 1);
+        }).not.to.throw();
+        expect(() => {
+            inRange(0, 10, null);
+        }).not.to.throw();
+    });
+
+    it("should return `true` if `value` is within range of `min` and `max`", () => {
+        expect(inRange(10, 0, 20)).to.be.true;
+        expect(inRange(10, 20)).to.be.true;
+    });
+
+    it("should return `false` when `value` is less than `min` and `max`", () => {
+        expect(inRange(10, 20, 30)).to.be.false;
+    });
+
+    it("should return `false` when `value` is greater than `min` and `max`", () => {
+        expect(inRange(10, 0, 5)).to.be.false;
+    });
+
+    it("should return `false` when `value` is equal to `max`", () => {
+        expect(inRange(10, 0, 10)).to.be.false;
+    });
+
+    it("should return `true` when `value` is less than `min` and `max` is omitted", () => {
+        expect(inRange(10, 20)).to.be.true;
+    });
+
+    it("should return `false` when `value` is less than 0 and `max` is omitted", () => {
+        expect(inRange(-10, 20)).to.be.false;
     });
 });

@@ -70,6 +70,7 @@ export const BaseButtonStyles = css`
         border-radius: inherit;
         fill: inherit;
         cursor: inherit;
+        font-weight: inherit;
         font-family: inherit;
         font-size: inherit;
         line-height: inherit;
@@ -127,7 +128,7 @@ export const BaseButtonStyles = css`
               color: ${SystemColors.ButtonText};
               fill: currentColor;
             }
-    
+
             :host(:hover) .control {
               forced-color-adjust: none;
               background-color: ${SystemColors.Highlight};

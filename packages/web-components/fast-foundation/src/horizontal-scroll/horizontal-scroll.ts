@@ -1,6 +1,7 @@
 import {
     attr,
     booleanConverter,
+    DOM,
     nullableNumberConverter,
     observable,
 } from "@microsoft/fast-element";
@@ -223,7 +224,7 @@ export class HorizontalScroll extends FoundationElement {
      */
     public scrollItemsChanged(previous, next) {
         if (next && !this.updatingItems) {
-            this.setStops();
+            DOM.queueUpdate(() => this.setStops());
         }
     }
 
