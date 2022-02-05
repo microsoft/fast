@@ -214,7 +214,7 @@ export class VirtualList extends FoundationElement {
      * @internal
      */
     @observable
-    public totalStackSpan: number = 0;
+    public totalListSpan: number = 0;
 
     /**
      * The size in pixels of the start "spacer"
@@ -620,9 +620,9 @@ export class VirtualList extends FoundationElement {
      */
     private updateDimensions = (): void => {
         if (this.items === undefined) {
-            this.totalStackSpan = 0;
+            this.totalListSpan = 0;
         } else {
-            this.totalStackSpan = this.itemSpan * this.items.length;
+            this.totalListSpan = this.itemSpan * this.items.length;
         }
 
         this.requestPositionUpdates();
