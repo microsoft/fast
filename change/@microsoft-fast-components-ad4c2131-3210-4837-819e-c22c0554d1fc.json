@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "fix: font-weight to inherit to button control part",
+  "packageName": "@microsoft/fast-components",
+  "email": "jes@microsoft.com",
+  "dependentChangeType": "patch"
+}
