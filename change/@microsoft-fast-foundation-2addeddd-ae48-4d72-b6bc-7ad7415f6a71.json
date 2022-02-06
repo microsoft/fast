@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "ensure menu items update",
-  "packageName": "@microsoft/fast-foundation",
-  "email": "scomea@microsoft.com",
-  "dependentChangeType": "patch"
-}

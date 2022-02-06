@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "fix: diabled listbox missing styles & allows click",
-  "packageName": "@microsoft/fast-components",
-  "email": "jes@microsoft.com",
-  "dependentChangeType": "patch"
-}

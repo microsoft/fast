@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "fix: allow slider to show small increment changes",
-  "packageName": "@microsoft/fast-components",
-  "email": "jes@microsoft.com",
-  "dependentChangeType": "patch"
-}
