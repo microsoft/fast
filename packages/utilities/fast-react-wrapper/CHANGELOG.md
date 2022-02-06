@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-react-wrapper
 
-This log was last generated on Wed, 02 Feb 2022 07:13:39 GMT and should not be manually modified.
+This log was last generated on Sun, 06 Feb 2022 07:15:20 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.1.27
+
+Sun, 06 Feb 2022 07:15:20 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.33.0 (scomea@microsoft.com)
 
 ## 0.1.26
 

@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "tooltip anchor attribute updates work",
-  "packageName": "@microsoft/fast-components",
-  "email": "scomea@microsoft.com",
-  "dependentChangeType": "patch"
-}

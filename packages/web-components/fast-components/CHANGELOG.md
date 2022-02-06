@@ -1,8 +1,25 @@
 # Change Log - @microsoft/fast-components
 
-This log was last generated on Wed, 02 Feb 2022 07:13:39 GMT and should not be manually modified.
+This log was last generated on Sun, 06 Feb 2022 07:15:20 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.21.0
+
+Sun, 06 Feb 2022 07:15:20 GMT
+
+### Minor changes
+
+- add multiselect functionality to listbox (john.kreitlow@microsoft.com)
+- add menu positioning to picker (scomea@microsoft.com)
+
+### Patches
+
+- fix: allow slider to show small increment changes (jes@microsoft.com)
+- fix: diabled listbox missing styles & allows click (jes@microsoft.com)
+- fix: font-weight to inherit to button control part (jes@microsoft.com)
+- tooltip anchor attribute updates work (scomea@microsoft.com)
+- Bump @microsoft/fast-foundation to v2.33.0 (scomea@microsoft.com)
 
 ## 2.20.2
 
