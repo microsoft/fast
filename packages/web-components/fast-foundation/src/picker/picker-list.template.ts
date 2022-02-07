@@ -1,11 +1,12 @@
 import { html, ViewTemplate } from "@microsoft/fast-element";
+import type { FoundationElementTemplate } from "../foundation-element";
 import type { PickerList } from "./picker-list";
 
 /**
  *
  * @public
  */
-export const pickerListTemplate: (context, definition) => ViewTemplate<PickerList> = (
+export const pickerListTemplate: FoundationElementTemplate<ViewTemplate<PickerList>> = (
     context,
     definition
 ) => {

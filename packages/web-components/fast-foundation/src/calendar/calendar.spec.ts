@@ -147,7 +147,7 @@ describe("Calendar", () => {
         it("Should return this month by default for getMonth()", () => {
             const formatter = new DateFormatter();
             const today = new Date();
-            const months = ["January", "Febuary", "March", "April", "May", "June",
+            const months = ["January", "February", "March", "April", "May", "June",
                 "July", "August", "September", "October", "November", "December" ];
 
             expect(formatter.getMonth()).to.equal(months[today.getMonth()]);
@@ -275,7 +275,7 @@ describe("Calendar", () => {
             await disconnect();
         });
 
-        it("Should be 28 days in Febuary", async () => {
+        it("Should be 28 days in February", async () => {
             const { element, disconnect } = await setup({month: 2, year: 2021});
 
             const info = (element as Calendar).getMonthInfo();
@@ -288,7 +288,7 @@ describe("Calendar", () => {
             await disconnect();
         });
 
-        it("Should be 29 days in Febuary for a leap year", async () => {
+        it("Should be 29 days in February for a leap year", async () => {
             const { element, disconnect } = await setup({month: 2, year: 2020});
 
             const info = (element as Calendar).getMonthInfo();
@@ -313,7 +313,7 @@ describe("Calendar", () => {
             await disconnect();
         });
 
-        it("Should start on Monday for Febuary 2021", async () => {
+        it("Should start on Monday for February 2021", async () => {
             const { element, disconnect } = await setup({month: 2, year: 2021});
 
             const info = (element as Calendar).getMonthInfo();

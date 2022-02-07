@@ -2,14 +2,9 @@ const path = require("path");
 const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 const MiniCSSExtractPlugin = require("mini-css-extract-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const ModernizrWebpackPlugin = require("modernizr-webpack-plugin");
 
 const appDir = path.resolve("./client/examples/app");
 const outDir = path.resolve("./www");
-
-const modernizrConfig = {
-    options: ["setClasses"],
-};
 
 module.exports = (env, args) => {
     const isProduction = args.mode === "production";
@@ -72,7 +67,6 @@ module.exports = (env, args) => {
                 title: "Animation system examples",
                 template: path.resolve(appDir, "index.html"),
             }),
-            new ModernizrWebpackPlugin(modernizrConfig),
             new MiniCSSExtractPlugin({
                 filename: "fast-animation-package.css",
             }),

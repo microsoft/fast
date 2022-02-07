@@ -77,6 +77,13 @@
                     "required": false
                 },
                 {
+                    "name": "menu-placement",
+                    "description": "The menu-placement attribute",
+                    "type": "string",
+                    "default": "",
+                    "required": false
+                },
+                {
                     "name": "placeholder",
                     "description": "The placeholder attribute",
                     "type": "string",

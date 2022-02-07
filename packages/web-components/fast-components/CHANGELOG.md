@@ -1,8 +1,112 @@
 # Change Log - @microsoft/fast-components
 
-This log was last generated on Sun, 19 Dec 2021 07:12:39 GMT and should not be manually modified.
+This log was last generated on Sun, 06 Feb 2022 07:15:20 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.21.0
+
+Sun, 06 Feb 2022 07:15:20 GMT
+
+### Minor changes
+
+- add multiselect functionality to listbox (john.kreitlow@microsoft.com)
+- add menu positioning to picker (scomea@microsoft.com)
+
+### Patches
+
+- fix: allow slider to show small increment changes (jes@microsoft.com)
+- fix: diabled listbox missing styles & allows click (jes@microsoft.com)
+- fix: font-weight to inherit to button control part (jes@microsoft.com)
+- tooltip anchor attribute updates work (scomea@microsoft.com)
+- Bump @microsoft/fast-foundation to v2.33.0 (scomea@microsoft.com)
+
+## 2.20.2
+
+Wed, 02 Feb 2022 07:13:39 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.32.3 (robarb@microsoft.com)
+
+## 2.20.1
+
+Sun, 30 Jan 2022 07:12:35 GMT
+
+### Patches
+
+- convert functions to templates (mathieulavoie94@gmail.com)
+
+## 2.20.0
+
+Wed, 26 Jan 2022 07:11:18 GMT
+
+### Minor changes
+
+- Updated the color blocks and swatches to web components (47367562+bheston@users.noreply.github.com)
+- Added accent and neutral base color attributes to the design system provider Updated DSP to handle a change in base layer luminance Cleaned up the delta tokens to not render in css (47367562+bheston@users.noreply.github.com)
+
+## 2.19.1
+
+Tue, 25 Jan 2022 07:11:53 GMT
+
+### Patches
+
+- Bump @microsoft/fast-web-utilities to v5.1.0 (john.kreitlow@microsoft.com)
+
+## 2.19.0
+
+Sun, 23 Jan 2022 07:13:56 GMT
+
+### Minor changes
+
+- feat: add `orientation` to divider (jes@microsoft.com)
+
+### Patches
+
+- use default slot in accordion (mathieulavoie94@gmail.com)
+- Bump @microsoft/fast-element to v1.7.0 (scomea@microsoft.com)
+- Bump @microsoft/fast-foundation to v2.32.0 (jes@microsoft.com)
+
+## 2.18.0
+
+Thu, 20 Jan 2022 07:12:04 GMT
+
+### Minor changes
+
+- add checked property to listbox-option (john.kreitlow@microsoft.com)
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.31.0 (john.kreitlow@microsoft.com)
+
+## 2.17.1
+
+Sun, 16 Jan 2022 07:11:36 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.30.0 (5454342+brianehenry@users.noreply.github.com)
+
+## 2.17.0
+
+Sun, 09 Jan 2022 07:11:51 GMT
+
+### Minor changes
+
+- remove configurable role attribute from listbox, select, and combobox (john.kreitlow@microsoft.com)
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.29.0 (john.kreitlow@microsoft.com)
+
+## 2.16.10
+
+Thu, 06 Jan 2022 07:11:52 GMT
+
+### Patches
+
+- tooltip uses "center" (scomea@microsoft.com)
 
 ## 2.16.9
 

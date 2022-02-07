@@ -1,7 +1,6 @@
 import { children, elements, html, slotted } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
-import type { ElementDefinitionContext } from "../design-system";
-import type { FoundationElementDefinition } from "../foundation-element";
+import type { FoundationElementTemplate } from "../foundation-element";
 import type { DataGridRow } from "./data-grid-row";
 import { DataGridCell } from "./data-grid-cell";
 
@@ -34,12 +33,9 @@ function createHeaderCellItemTemplate(context): ViewTemplate {
  *
  * @public
  */
-export const dataGridRowTemplate: (
-    context: ElementDefinitionContext,
-    definition: FoundationElementDefinition
-) => ViewTemplate<DataGridRow> = (
-    context: ElementDefinitionContext,
-    definition: FoundationElementDefinition
+export const dataGridRowTemplate: FoundationElementTemplate<ViewTemplate<DataGridRow>> = (
+    context,
+    definition
 ) => {
     const cellItemTemplate: ViewTemplate = createCellItemTemplate(context);
     const headerCellItemTemplate: ViewTemplate = createHeaderCellItemTemplate(context);
