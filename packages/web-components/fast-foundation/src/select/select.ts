@@ -67,11 +67,7 @@ export class Select extends FormAssociatedSelect {
     public set value(next: string) {
         const prev = `${this._value}`;
 
-        if (
-            this.$fastController.isConnected &&
-            this.options &&
-            this.options.length !== 0
-        ) {
+        if (this.options?.length) {
             const selectedIndex = this.options.findIndex(el => el.value === next);
 
             const prevSelectedOption = this.options[this.selectedIndex];
@@ -93,8 +89,6 @@ export class Select extends FormAssociatedSelect {
             if (this.firstSelectedOption) {
                 next = this.firstSelectedOption.value;
             }
-        } else if (this.options.length === 0 && this.children.length !== 0) {
-            this.markInitialSelectedOptionElement(next);
         }
 
         if (prev !== next) {
@@ -118,22 +112,6 @@ export class Select extends FormAssociatedSelect {
                 bubbles: true,
                 composed: undefined,
             });
-        }
-    }
-
-    private markInitialSelectedOptionElement(value: string) {
-        const optionElements = Array.from(this.children).filter(child =>
-            Listbox.slottedOptionFilter(child as HTMLElement)
-        ) as ListboxOption[];
-        for (const option of optionElements) {
-            // clear previous selection, if applicable
-            option.removeAttribute("selected");
-        }
-        const matchingOptionElement = optionElements.find(
-            option => option.getAttribute("value") === value || option.value === value
-        );
-        if (matchingOptionElement) {
-            matchingOptionElement.setAttribute("selected", "");
         }
     }
 
@@ -257,7 +235,7 @@ export class Select extends FormAssociatedSelect {
      */
     public formResetCallback(): void {
         this.setProxyOptions();
-        this.setDefaultSelectedOption();
+        super.setDefaultSelectedOption();
         this.value = this.firstSelectedOption.value;
     }
 
@@ -331,6 +309,25 @@ export class Select extends FormAssociatedSelect {
         super.slottedOptionsChanged(prev, next);
         this.setProxyOptions();
         this.updateValue();
+    }
+
+    protected setDefaultSelectedOption(): void {
+        const options: ListboxOption[] =
+            this.options ?? Array.from(this.children).filter(Listbox.slottedOptionFilter);
+
+        const selectedIndex = options?.findIndex(
+            el =>
+                el.getAttribute("selected") !== null ||
+                el.selected ||
+                el.value === this.value
+        );
+
+        if (selectedIndex !== -1) {
+            this.selectedIndex = selectedIndex;
+            return;
+        }
+
+        this.selectedIndex = 0;
     }
 
     /**

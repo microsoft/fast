@@ -2047,6 +2047,8 @@ export class Select extends FormAssociatedSelect {
     role: SelectRole;
     // @internal
     selectedIndexChanged(prev: any, next: any): void;
+    // (undocumented)
+    protected setDefaultSelectedOption(): void;
     setPositioning(): void;
     // @internal
     slottedOptionsChanged(prev: any, next: any): void;
