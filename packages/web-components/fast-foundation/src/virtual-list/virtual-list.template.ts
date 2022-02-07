@@ -22,13 +22,9 @@ export const virtualListTemplate: (
             part="container"
             style="
                 width: ${x =>
-                x.orientation === Orientation.vertical
-                    ? "100%"
-                    : `${x.totalStackSpan}px`};
+                x.orientation === Orientation.vertical ? "100%" : `${x.totalListSpan}px`};
                 height: ${x =>
-                x.orientation !== Orientation.vertical
-                    ? "100%"
-                    : `${x.totalStackSpan}px`};
+                x.orientation !== Orientation.vertical ? "100%" : `${x.totalListSpan}px`};
             "
             ${ref("containerElement")}
         >

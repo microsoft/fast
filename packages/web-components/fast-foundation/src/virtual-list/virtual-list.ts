@@ -227,7 +227,7 @@ export class VirtualList extends FoundationElement {
      * @internal
      */
     @observable
-    public totalStackSpan: number = 0;
+    public totalListSpan: number = 0;
 
     /**
      * The size in pixels of the start "spacer"
@@ -399,22 +399,21 @@ export class VirtualList extends FoundationElement {
      *
      * @public
      */
-    public getGeneratedItemPosition = (itemIndex: number): number => {
+    public getItemSpanMap = (itemIndex: number): SpanMap | null => {
         if (itemIndex < 0 || itemIndex >= this.items.length) {
             // out of range
-            return 0;
+            return null;
         }
 
-        let returnVal = 0;
-
-        if (this.visibleItemSpans !== undefined) {
-            // todo
-            returnVal = 0;
-        } else {
-            returnVal = itemIndex * this.itemSpan;
+        if (this.spanmap !== undefined) {
+            return this.spanmap[itemIndex];
         }
 
-        return returnVal;
+        return {
+            start: itemIndex * this.itemSpan,
+            end: itemIndex * this.itemSpan + this.itemSpan,
+            span: this.itemSpan,
+        };
     };
 
     /**
@@ -630,14 +629,14 @@ export class VirtualList extends FoundationElement {
      */
     private updateDimensions = (): void => {
         if (this.items === undefined) {
-            this.totalStackSpan = 0;
+            this.totalListSpan = 0;
             return;
         }
         if (this.spanmap !== undefined) {
-            this.totalStackSpan =
+            this.totalListSpan =
                 this.spanmap.length > 0 ? this.spanmap[this.spanmap.length - 1].end : 0;
         } else {
-            this.totalStackSpan = this.itemSpan * this.items.length;
+            this.totalListSpan = this.itemSpan * this.items.length;
         }
 
         this.requestPositionUpdates();

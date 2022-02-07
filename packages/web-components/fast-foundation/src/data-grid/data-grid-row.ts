@@ -105,6 +105,9 @@ export class DataGridRow extends FoundationElement {
      */
     @observable
     public rowIndex: number;
+    private rowIndexChanged(): void {
+        console.debug(`rowindex: ${this.rowIndex}`);
+    }
 
     /**
      * Whether focus is on/in a cell within this row.

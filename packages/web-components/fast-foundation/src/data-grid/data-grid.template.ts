@@ -54,7 +54,7 @@ export const dataGridTemplate: FoundationElementTemplate<ViewTemplate<DataGrid>>
                 style="
                     grid-template-columns: 1fr;
                     display: grid;
-                    height: ${x => x.totalStackSpan}px;
+                    height: ${x => x.totalListSpan}px;
                     grid-template-rows: ${x => x.startSpacerSpan}px repeat(${x =>
                     x.visibleItems.length}, ${x => x.itemSpan}px) ${x =>
                     x.endSpacerSpan}px;
