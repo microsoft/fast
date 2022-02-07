@@ -2,6 +2,80 @@
   "name": "@microsoft/fast-foundation",
   "entries": [
     {
+      "date": "Sun, 06 Feb 2022 07:15:20 GMT",
+      "tag": "@microsoft/fast-foundation_v2.33.0",
+      "version": "2.33.0",
+      "comments": {
+        "patch": [
+          {
+            "comment": "ensure menu items update",
+            "author": "scomea@microsoft.com",
+            "commit": "37af91137f47310968d6a919173cc9af52556309",
+            "package": "@microsoft/fast-foundation"
+          },
+          {
+            "comment": "fix: diabled listbox missing styles & allows click",
+            "author": "jes@microsoft.com",
+            "commit": "eff36b2834b7709cc2281738007019fd264c3d31",
+            "package": "@microsoft/fast-foundation"
+          },
+          {
+            "comment": "fix: allow slider to show small increment changes",
+            "author": "jes@microsoft.com",
+            "commit": "5ed29351c24596c9190d39d7742bcb4e2d604324",
+            "package": "@microsoft/fast-foundation"
+          },
+          {
+            "comment": "fix: flippersHiddenFromAT shouldn't map to aria-hidden",
+            "author": "robarb@microsoft.com",
+            "commit": "e00944dc842ccb169bdffea88f040f74643577b6",
+            "package": "@microsoft/fast-foundation"
+          },
+          {
+            "comment": "tooltip anchor attribute updates work",
+            "author": "scomea@microsoft.com",
+            "commit": "5d514c718d70a68aee835018b27782555f903b59",
+            "package": "@microsoft/fast-foundation"
+          }
+        ],
+        "minor": [
+          {
+            "comment": "add menu positioning to picker",
+            "author": "scomea@microsoft.com",
+            "commit": "41f6eb951d79573f3a79547c6100485e0935dad3",
+            "package": "@microsoft/fast-foundation"
+          },
+          {
+            "comment": "add multiselect functionality to listbox",
+            "author": "john.kreitlow@microsoft.com",
+            "commit": "45116d16f62f2087e3daf1ed0d5c25f8e5ce1ad3",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 02 Feb 2022 07:13:39 GMT",
+      "tag": "@microsoft/fast-foundation_v2.32.3",
+      "version": "2.32.3",
+      "comments": {
+        "patch": [
+          {
+            "comment": "fix: February tests are failing in calendar tests",
+            "author": "robarb@microsoft.com",
+            "commit": "72efc898ed23b08c9e7668844bc3a97f81b2bde9",
+            "package": "@microsoft/fast-foundation"
+          },
+          {
+            "comment": "fix broken links and formatting",
+            "author": "john.kreitlow@microsoft.com",
+            "commit": "48779abc5f0f746dc5d67b9d3c2875f455374ee6",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sun, 30 Jan 2022 07:12:35 GMT",
       "tag": "@microsoft/fast-foundation_v2.32.2",
       "version": "2.32.2",
