@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "`focusStrokeWidth` not applied on text-field and number-field Fixes #5565",
+  "packageName": "@microsoft/fast-components",
+  "email": "fcollonval@gmail.com",
+  "dependentChangeType": "patch"
+}
