@@ -124,6 +124,31 @@ export class AnchoredRegion extends FoundationElement {
     viewportElement: HTMLElement | null;
     }
 
+// @public
+export interface AnchoredRegionConfig {
+    // Warning: (ae-incompatible-release-tags) The symbol "autoUpdateMode" is marked as @public, but its signature references "AutoUpdateMode" which is marked as @beta
+    readonly autoUpdateMode?: AutoUpdateMode;
+    readonly fixedPlacement?: boolean;
+    // Warning: (ae-incompatible-release-tags) The symbol "horizontalDefaultPosition" is marked as @public, but its signature references "HorizontalPosition" which is marked as @beta
+    readonly horizontalDefaultPosition?: HorizontalPosition;
+    readonly horizontalInset?: boolean;
+    // Warning: (ae-incompatible-release-tags) The symbol "horizontalPositioningMode" is marked as @public, but its signature references "AxisPositioningMode" which is marked as @beta
+    readonly horizontalPositioningMode?: AxisPositioningMode;
+    // Warning: (ae-incompatible-release-tags) The symbol "horizontalScaling" is marked as @public, but its signature references "AxisScalingMode" which is marked as @beta
+    readonly horizontalScaling?: AxisScalingMode;
+    readonly horizontalThreshold?: number;
+    readonly horizontalViewportLock?: boolean;
+    // Warning: (ae-incompatible-release-tags) The symbol "verticalDefaultPosition" is marked as @public, but its signature references "VerticalPosition" which is marked as @beta
+    readonly verticalDefaultPosition?: VerticalPosition;
+    readonly verticalInset?: boolean;
+    // Warning: (ae-incompatible-release-tags) The symbol "verticalPositioningMode" is marked as @public, but its signature references "AxisPositioningMode" which is marked as @beta
+    readonly verticalPositioningMode?: AxisPositioningMode;
+    // Warning: (ae-incompatible-release-tags) The symbol "verticalScaling" is marked as @public, but its signature references "AxisScalingMode" which is marked as @beta
+    readonly verticalScaling?: AxisScalingMode;
+    readonly verticalThreshold?: number;
+    readonly verticalViewportLock?: boolean;
+}
+
 // @beta
 export type AnchoredRegionPositionLabel = "start" | "insetStart" | "insetEnd" | "end" | "center";
 
@@ -1119,6 +1144,24 @@ export type FlipperOptions = FoundationElementDefinition & {
 export const flipperTemplate: FoundationElementTemplate<ViewTemplate<Flipper>, FlipperOptions>;
 
 // @public
+export const FlyoutPosBottom: AnchoredRegionConfig;
+
+// @public
+export const FlyoutPosBottomFill: AnchoredRegionConfig;
+
+// @public
+export const FlyoutPosTallest: AnchoredRegionConfig;
+
+// @public
+export const FlyoutPosTallestFill: AnchoredRegionConfig;
+
+// @public
+export const FlyoutPosTop: AnchoredRegionConfig;
+
+// @public
+export const FlyoutPosTopFill: AnchoredRegionConfig;
+
+// @public
 export const focusVisible: string;
 
 // @public
@@ -1563,6 +1606,9 @@ export class Menu extends FoundationElement {
     items: HTMLSlotElement;
     }
 
+// @beta
+export type menuConfigs = "bottom" | "bottom-fill" | "tallest" | "tallest-fill" | "top" | "top-fill";
+
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
 // Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "MenuItem" because one of its declarations is marked as @internal
 //
@@ -1755,6 +1801,8 @@ export class Picker extends FormAssociatedPicker {
     loadingText: string;
     maxSelected: number | undefined;
     // @internal
+    menuConfig: AnchoredRegionConfig;
+    // @internal
     menuElement: PickerMenu;
     // @internal
     menuFocusIndex: number;
@@ -1764,6 +1812,7 @@ export class Picker extends FormAssociatedPicker {
     menuId: string;
     menuOptionContentsTemplate: ViewTemplate;
     menuOptionTemplate: ViewTemplate;
+    menuPlacement: menuConfigs;
     // @internal
     menuTag: string;
     noSuggestionsText: string;

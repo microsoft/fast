@@ -552,7 +552,7 @@ export abstract class Listbox extends FoundationElement {
      * @public
      */
     protected setSelectedOptions() {
-        if (this.options?.length) {
+        if (this.options?.length && !this.disabled) {
             this.selectedOptions = [this.options[this.selectedIndex]];
             this.ariaActiveDescendant = this.firstSelectedOption?.id ?? "";
             this.focusAndScrollOptionIntoView();
