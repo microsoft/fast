@@ -334,7 +334,7 @@ export class Slider extends FormAssociatedSlider implements SliderConfiguration 
             Number(this.max),
             direction
         );
-        const percentage: number = Math.round((1 - newPct) * 100);
+        const percentage: number = (1 - newPct) * 100;
         if (this.orientation === Orientation.horizontal) {
             this.position = this.isDragging
                 ? `right: ${percentage}%; transition: none;`

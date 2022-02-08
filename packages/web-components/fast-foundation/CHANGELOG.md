@@ -1,8 +1,34 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Sun, 30 Jan 2022 07:12:35 GMT and should not be manually modified.
+This log was last generated on Sun, 06 Feb 2022 07:15:20 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.33.0
+
+Sun, 06 Feb 2022 07:15:20 GMT
+
+### Minor changes
+
+- add menu positioning to picker (scomea@microsoft.com)
+- add multiselect functionality to listbox (john.kreitlow@microsoft.com)
+
+### Patches
+
+- ensure menu items update (scomea@microsoft.com)
+- fix: diabled listbox missing styles & allows click (jes@microsoft.com)
+- fix: allow slider to show small increment changes (jes@microsoft.com)
+- fix: flippersHiddenFromAT shouldn't map to aria-hidden (robarb@microsoft.com)
+- tooltip anchor attribute updates work (scomea@microsoft.com)
+
+## 2.32.3
+
+Wed, 02 Feb 2022 07:13:39 GMT
+
+### Patches
+
+- fix: February tests are failing in calendar tests (robarb@microsoft.com)
+- fix broken links and formatting (john.kreitlow@microsoft.com)
 
 ## 2.32.2
 

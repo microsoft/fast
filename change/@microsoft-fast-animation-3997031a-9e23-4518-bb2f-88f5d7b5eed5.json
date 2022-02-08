@@ -1,7 +1,0 @@
-{
-  "type": "none",
-  "comment": "update node types to 15.0.1",
-  "packageName": "@microsoft/fast-animation",
-  "email": "john.kreitlow@microsoft.com",
-  "dependentChangeType": "none"
-}
