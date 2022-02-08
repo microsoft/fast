@@ -87,9 +87,21 @@ function calcRgbOverlay(
     rgbBackground: ColorRGBA64,
     rgbOverlay: ColorRGBA64
 ): number {
-    const rChannel: number = calcChannelOverlay(rgbMatch.r, rgbBackground.r, rgbOverlay.r);
-    const gChannel: number = calcChannelOverlay(rgbMatch.g, rgbBackground.g, rgbOverlay.g);
-    const bChannel: number = calcChannelOverlay(rgbMatch.b, rgbBackground.b, rgbOverlay.b);
+    const rChannel: number = calcChannelOverlay(
+        rgbMatch.r,
+        rgbBackground.r,
+        rgbOverlay.r
+    );
+    const gChannel: number = calcChannelOverlay(
+        rgbMatch.g,
+        rgbBackground.g,
+        rgbOverlay.g
+    );
+    const bChannel: number = calcChannelOverlay(
+        rgbMatch.b,
+        rgbBackground.b,
+        rgbOverlay.b
+    );
     return (rChannel + gChannel + bChannel) / 3;
 }
 
