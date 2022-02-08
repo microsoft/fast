@@ -17,6 +17,7 @@ import {
     designUnit,
     disabledOpacity,
     focusStrokeOuter,
+    focusStrokeWidth,
     neutralFillHover,
     neutralFillInputHover,
     neutralFillInputRest,
@@ -151,7 +152,7 @@ export const numberFieldStyles: FoundationElementTemplate<
 
     :host(:focus-within:not([disabled])) .root {
         border-color: ${focusStrokeOuter};
-        box-shadow: 0 0 0 1px ${focusStrokeOuter} inset;
+        box-shadow: 0 0 0 calc(${focusStrokeWidth} * 1px) ${focusStrokeOuter} inset;
     }
 
     :host(:hover:not([disabled])) .controls,
