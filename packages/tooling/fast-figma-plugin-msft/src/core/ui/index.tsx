@@ -1,70 +1,26 @@
 import React from "react";
-import {
-    DesignSystem,
-    DesignSystemDefaults,
-    StandardLuminance,
-} from "@microsoft/fast-components-styles-msft";
 import { ColorRGBA64, parseColorHexRGB } from "@microsoft/fast-colors";
-import { MessageAction, MessageTypes, UIMessage } from "../messaging";
-import { RecipeData, RecipeTypes } from "../recipe-registry";
+import { StandardLuminance, Swatch, SwatchRGB } from "@fluentui/web-components";
 // import DetachIcon from "./assets/detach.svg";
-// import RefreshIcon from "./assets/refresh.svg";
 // import RevertIcon from "./assets/revert.svg";
-import { CornerRadius, Drawer, Swatch } from "./components";
+import { CornerRadius, Drawer, Swatch as SwatchComponent } from "./components";
+import { DesignTokenType } from "./design-token-registry";
+import { PluginUINodeData, UIController } from "./ui-controller";
 
 /* tslint:disable:no-unused-expression */
-Drawer;
-Swatch;
 CornerRadius;
+Drawer;
+SwatchComponent;
 /* tslint:enable:no-unused-expression */
 
-export interface PluginUIActiveNodeRecipeSupportOptions {
-    label: string;
-    options: RecipeData[];
-}
-
-export interface PluginUIActiveNodeData {
-    /**
-     * The ID of the node
-     */
-    id: string;
-
-    /**
-     * The node types
-     */
-    type: string;
-
-    /**
-     * The IDs of all recipes assigned to the item
-     */
-    recipes: string[];
-
-    /**
-     * The recipe types that the node supports
-     */
-    supports: Array<RecipeTypes | "designSystem">;
-
-    /**
-     * Any design system overrides applied to the node
-     */
-    designSystem: Partial<DesignSystem>;
-}
-
-export interface RecipeTypeOptions {
-    type: RecipeTypes;
-    options: RecipeData[];
-}
-
 export interface PluginUIProps {
-    selectedNodes: PluginUIActiveNodeData[];
-    recipeOptions: RecipeTypeOptions[];
-    dispatch: (message: UIMessage) => void;
+    selectedNodes: PluginUINodeData[];
+    dispatch: (nodes: PluginUINodeData[]) => void;
 }
 
 export class PluginUI extends React.Component<PluginUIProps> {
     public static defaultProps: PluginUIProps = {
         selectedNodes: [],
-        recipeOptions: [],
         dispatch: (): void => {
             throw new Error(
                 `The UI message could not be dispatched - please provide a valid dispatch function the the PluginUI`
@@ -72,12 +28,21 @@ export class PluginUI extends React.Component<PluginUIProps> {
         },
     };
 
+    private readonly controller: UIController;
+
+    constructor(props: PluginUIProps) {
+        super(props);
+
+        this.controller = new UIController((nodes) => this.dispatchState(nodes));
+    }
+
     public render(): JSX.Element {
+        this.controller.setSelectedNodes(this.props.selectedNodes);
+
         return this.renderBody();
     }
 
     private renderFooter(): JSX.Element {
-        const refreshLabel = "Sync selected - will re-evaluate all applied recipes.";
         const revertLabel = "Remove all plugin data from the current selection.";
 
         return (
@@ -107,22 +72,9 @@ export class PluginUI extends React.Component<PluginUIProps> {
                         <plugin-button
                             appearance="stealth"
                             aria-label={revertLabel}
-                            onClick={this.props.dispatch.bind(this, {
-                                type: MessageTypes.reset,
-                                nodeIds: this.props.selectedNodes.map(node => node.id),
-                            })}
+                            onClick={this.controller.resetNodes.bind(this)}
                         >
                             Reset
-                        </plugin-button>
-                        <plugin-button
-                            appearance="stealth"
-                            aria-label={refreshLabel}
-                            onClick={this.props.dispatch.bind(this, {
-                                type: MessageTypes.sync,
-                                nodeIds: this.props.selectedNodes.map(node => node.id),
-                            })}
-                        >
-                            Sync
                         </plugin-button>
                     </div>
                 </div>
@@ -131,12 +83,20 @@ export class PluginUI extends React.Component<PluginUIProps> {
     }
 
     private renderBody(): JSX.Element {
-        const backgroundRecipes = this.appliedRecipes(RecipeTypes.backgroundFills);
-        const foregroundRecipes = this.appliedRecipes(RecipeTypes.foregroundFills);
-        const strokeRecipes = this.appliedRecipes(RecipeTypes.strokeFills);
-        const cornerRadiusRecipes = this.appliedRecipes(RecipeTypes.cornerRadius);
+        const designTokens = this.controller.appliedDesignTokens();
+        const layerRecipes = this.controller.appliedRecipes(DesignTokenType.layerFill);
+        const backgroundRecipes = this.controller.appliedRecipes(
+            DesignTokenType.backgroundFill
+        );
+        const foregroundRecipes = this.controller.appliedRecipes(
+            DesignTokenType.foregroundFill
+        );
+        const strokeRecipes = this.controller.appliedRecipes(DesignTokenType.strokeFill);
+        const cornerRadiusRecipes = this.controller.appliedRecipes(
+            DesignTokenType.cornerRadius
+        );
         const supportsDesignSystem = this.props.selectedNodes.some(node =>
-            node.supports.includes("designSystem")
+            node.supports.includes(DesignTokenType.designToken)
         );
 
         return (
@@ -149,19 +109,56 @@ export class PluginUI extends React.Component<PluginUIProps> {
             >
                 <div style={{ overflowY: "overlay" as any }}>
                     <td-drawer name="Theme">
-                        {supportsDesignSystem ? this.renderThemeSwitcher() : null}
-                        {supportsDesignSystem ? this.renderColorPicker() : null}
+                        <div slot="collapsed-content">
+                            {designTokens.length ? (
+                                <>
+                                    {designTokens.map(designToken => (
+                                        <p className="applied-recipe" key={designToken.definition.id}>
+                                            <div className="horizontal">
+                                                {designToken.definition.name}
+                                            </div>
+                                            <div>
+                                                <span>
+                                                    {designToken.value}
+                                                </span>
+                                                <plugin-button
+                                                    appearance="stealth"
+                                                    aria-label="Detach"
+                                                    onClick={this.controller.removeDesignToken.bind(
+                                                        this.controller,
+                                                        designToken.definition
+                                                    )}
+                                                >
+                                                    Detach
+                                                </plugin-button>
+                                            </div>
+                                        </p>
+                                    ))}
+                                </>
+                            ) : null}
+                        </div>
+                        <div>
+                            {supportsDesignSystem ? this.renderThemeSwitcher() : null}
+                            {supportsDesignSystem
+                                ? this.renderColorPicker("neutralBaseColor")
+                                : null}
+                            {supportsDesignSystem
+                                ? this.renderColorPicker("accentBaseColor")
+                                : null}
+                        </div>
                     </td-drawer>
                     <td-drawer name="Color">
                         <div slot="collapsed-content">
-                            {backgroundRecipes.length ? (
+                            {layerRecipes.length ? (
                                 <>
-                                    <p className="title inset">Background</p>
-                                    {backgroundRecipes.map(recipe => (
+                                    <p className="title inset">Layer</p>
+                                    {layerRecipes.map(recipe => (
                                         <p className="applied-recipe" key={recipe.id}>
                                             <td-swatch
                                                 circular
-                                                value={recipe.value}
+                                                value={this.controller.getDefaultDesignTokenValue(
+                                                    recipe.token
+                                                )}
                                                 orientation="horizontal"
                                             >
                                                 {recipe.name}
@@ -169,14 +166,54 @@ export class PluginUI extends React.Component<PluginUIProps> {
 
                                             <div>
                                                 <span>
-                                                    {recipe.value.replace("#", "")}
+                                                    {this.controller
+                                                        .getDefaultDesignTokenValue(
+                                                            recipe.token
+                                                        )}
                                                 </span>
                                                 <plugin-button
                                                     appearance="stealth"
                                                     aria-label="Detach"
-                                                    onClick={this.removeRecipe.bind(
-                                                        this,
-                                                        RecipeTypes.backgroundFills
+                                                    onClick={this.controller.removeRecipe.bind(
+                                                        this.controller,
+                                                        recipe
+                                                    )}
+                                                >
+                                                    Detach
+                                                </plugin-button>
+                                            </div>
+                                        </p>
+                                    ))}
+                                </>
+                            ) : null}
+                            {backgroundRecipes.length ? (
+                                <>
+                                    <p className="title inset">Background</p>
+                                    {backgroundRecipes.map(recipe => (
+                                        <p className="applied-recipe" key={recipe.id}>
+                                            <td-swatch
+                                                circular
+                                                value={this.controller.getDefaultDesignTokenValue(
+                                                    recipe.token
+                                                )}
+                                                orientation="horizontal"
+                                            >
+                                                {recipe.name}
+                                            </td-swatch>
+
+                                            <div>
+                                                <span>
+                                                    {this.controller
+                                                        .getDefaultDesignTokenValue(
+                                                            recipe.token
+                                                        )}
+                                                </span>
+                                                <plugin-button
+                                                    appearance="stealth"
+                                                    aria-label="Detach"
+                                                    onClick={this.controller.removeRecipe.bind(
+                                                        this.controller,
+                                                        recipe
                                                     )}
                                                 >
                                                     Detach
@@ -193,7 +230,9 @@ export class PluginUI extends React.Component<PluginUIProps> {
                                         <p className="applied-recipe" key={recipe.id}>
                                             <td-swatch
                                                 circular
-                                                value={recipe.value}
+                                                value={this.controller.getDefaultDesignTokenValue(
+                                                    recipe.token
+                                                )}
                                                 orientation="horizontal"
                                             >
                                                 {recipe.name}
@@ -201,14 +240,17 @@ export class PluginUI extends React.Component<PluginUIProps> {
 
                                             <div>
                                                 <span>
-                                                    {recipe.value.replace("#", "")}
+                                                    {this.controller
+                                                        .getDefaultDesignTokenValue(
+                                                            recipe.token
+                                                        )}
                                                 </span>
                                                 <plugin-button
                                                     appearance="stealth"
                                                     aria-label="Detach"
-                                                    onClick={this.removeRecipe.bind(
-                                                        this,
-                                                        RecipeTypes.foregroundFills
+                                                    onClick={this.controller.removeRecipe.bind(
+                                                        this.controller,
+                                                        recipe
                                                     )}
                                                 >
                                                     Detach
@@ -225,7 +267,9 @@ export class PluginUI extends React.Component<PluginUIProps> {
                                         <p className="applied-recipe" key={recipe.id}>
                                             <td-swatch
                                                 circular
-                                                value={recipe.value}
+                                                value={this.controller.getDefaultDesignTokenValue(
+                                                    recipe.token
+                                                )}
                                                 orientation="horizontal"
                                                 type="border"
                                             >
@@ -233,14 +277,17 @@ export class PluginUI extends React.Component<PluginUIProps> {
                                             </td-swatch>
                                             <div>
                                                 <span>
-                                                    {recipe.value.replace("#", "")}
+                                                    {this.controller
+                                                        .getDefaultDesignTokenValue(
+                                                            recipe.token
+                                                        )}
                                                 </span>
                                                 <plugin-button
                                                     appearance="stealth"
                                                     aria-label="Detach"
-                                                    onClick={this.removeRecipe.bind(
-                                                        this,
-                                                        RecipeTypes.strokeFills
+                                                    onClick={this.controller.removeRecipe.bind(
+                                                        this.controller,
+                                                        recipe
                                                     )}
                                                 >
                                                     Detach
@@ -253,107 +300,33 @@ export class PluginUI extends React.Component<PluginUIProps> {
                         </div>
                         <div>
                             {this.props.selectedNodes.some(node =>
-                                node.supports.includes(RecipeTypes.backgroundFills)
+                                node.supports.includes(DesignTokenType.layerFill)
                             ) ? (
                                 <>
-                                    <p className="title inset">Page backgrounds</p>
-                                    <div className="swatch-grid">
-                                        {this.pageBackgroundIds()
-                                            .map(id =>
-                                                this.recipeOptionsByType(
-                                                    RecipeTypes.backgroundFills
-                                                ).find(item => item.id === id)
-                                            )
-                                            .filter(
-                                                (recipe): recipe is RecipeData => !!recipe
-                                            )
-                                            .map(recipe => {
-                                                return (
-                                                    <td-swatch
-                                                        key={recipe.id}
-                                                        value={recipe.value}
-                                                        title={recipe.value}
-                                                        interactive
-                                                        selected={
-                                                            !!this.recipeIsAssigned(
-                                                                recipe.id
-                                                            ).length
-                                                        }
-                                                        onClick={this.setRecipe.bind(
-                                                            this,
-                                                            recipe.id,
-                                                            recipe.type
-                                                        )}
-                                                    >
-                                                        {recipe.name}
-                                                    </td-swatch>
-                                                );
-                                            })}
-                                    </div>
-                                    <p className="title inset">Backgrounds and borders</p>
+                                    <p className="title inset">Layer backgrounds</p>
                                     <div className="swatch-stack">
-                                        {this.recipeOptionsByType(
-                                            RecipeTypes.backgroundFills
-                                        )
-                                            .filter(
-                                                recipe =>
-                                                    !this.pageBackgroundIds().includes(
-                                                        recipe.id
-                                                    )
+                                        {this.controller
+                                            .recipeOptionsByType(
+                                                DesignTokenType.layerFill
                                             )
                                             .map(recipe => {
                                                 return (
                                                     <td-swatch
                                                         key={recipe.id}
                                                         circular
-                                                        value={recipe.value}
-                                                        title={recipe.value}
-                                                        orientation="horizontal"
-                                                        interactive
-                                                        selected={
-                                                            !!this.recipeIsAssigned(
-                                                                recipe.id
-                                                            ).length
-                                                        }
-                                                        onClick={this.setRecipe.bind(
-                                                            this,
-                                                            recipe.id,
-                                                            recipe.type
+                                                        value={this.controller.getDefaultDesignTokenValue(
+                                                            recipe.token
                                                         )}
-                                                    >
-                                                        {recipe.name}
-                                                    </td-swatch>
-                                                );
-                                            })}
-                                        <plugin-divider
-                                            style={{ marginTop: 12 }}
-                                        ></plugin-divider>
-                                        {this.recipeOptionsByType(RecipeTypes.strokeFills)
-                                            .filter(
-                                                recipe =>
-                                                    !this.pageBackgroundIds().includes(
-                                                        recipe.id
-                                                    )
-                                            )
-                                            .map(recipe => {
-                                                return (
-                                                    <td-swatch
-                                                        key={recipe.id}
-                                                        circular
-                                                        value={recipe.value}
-                                                        title={recipe.value}
                                                         orientation="horizontal"
                                                         interactive
-                                                        type="border"
                                                         selected={
-                                                            !!this.recipeIsAssigned(
+                                                            !!this.controller.recipeIsAssigned(
                                                                 recipe.id
                                                             ).length
                                                         }
-                                                        onClick={this.setRecipe.bind(
-                                                            this,
-                                                            recipe.id,
-                                                            recipe.type
+                                                        onClick={this.controller.assignRecipe.bind(
+                                                            this.controller,
+                                                            recipe
                                                         )}
                                                     >
                                                         {recipe.name}
@@ -364,33 +337,112 @@ export class PluginUI extends React.Component<PluginUIProps> {
                                 </>
                             ) : null}
                             {this.props.selectedNodes.some(node =>
-                                node.supports.includes(RecipeTypes.foregroundFills)
+                                node.supports.includes(DesignTokenType.backgroundFill)
+                            ) ? (
+                                <>
+                                    <p className="title inset">Fills</p>
+                                    <div className="swatch-stack">
+                                        {this.controller
+                                            .recipeOptionsByType(
+                                                DesignTokenType.backgroundFill
+                                            )
+                                            .map(recipe => {
+                                                return (
+                                                    <td-swatch
+                                                        key={recipe.id}
+                                                        circular
+                                                        value={this.controller.getDefaultDesignTokenValue(
+                                                            recipe.token
+                                                        )}
+                                                        orientation="horizontal"
+                                                        interactive
+                                                        selected={
+                                                            !!this.controller.recipeIsAssigned(
+                                                                recipe.id
+                                                            ).length
+                                                        }
+                                                        onClick={this.controller.assignRecipe.bind(
+                                                            this.controller,
+                                                            recipe
+                                                        )}
+                                                    >
+                                                        {recipe.name}
+                                                    </td-swatch>
+                                                );
+                                            })}
+                                    </div>
+                                </>
+                            ) : null}
+                            {this.props.selectedNodes.some(node =>
+                                node.supports.includes(DesignTokenType.strokeFill)
+                            ) ? (
+                                <>
+                                    <p className="title inset">Strokes</p>
+                                    <div className="swatch-stack">
+                                        {this.controller
+                                            .recipeOptionsByType(
+                                                DesignTokenType.strokeFill
+                                            )
+                                            .map(recipe => {
+                                                return (
+                                                    <td-swatch
+                                                        key={recipe.id}
+                                                        circular
+                                                        value={this.controller.getDefaultDesignTokenValue(
+                                                            recipe.token
+                                                        )}
+                                                        orientation="horizontal"
+                                                        interactive
+                                                        type="border"
+                                                        selected={
+                                                            !!this.controller.recipeIsAssigned(
+                                                                recipe.id
+                                                            ).length
+                                                        }
+                                                        onClick={this.controller.assignRecipe.bind(
+                                                            this.controller,
+                                                            recipe
+                                                        )}
+                                                    >
+                                                        {recipe.name}
+                                                    </td-swatch>
+                                                );
+                                            })}
+                                    </div>
+                                </>
+                            ) : null}
+                            {this.props.selectedNodes.some(node =>
+                                node.supports.includes(DesignTokenType.foregroundFill)
                             ) ? (
                                 <>
                                     <p className="title inset">Foregrounds</p>
-                                    <div className="swatch-grid">
-                                        {this.recipeOptionsByType(
-                                            RecipeTypes.foregroundFills
-                                        ).map(recipe => (
-                                            <td-swatch
-                                                key={recipe.id}
-                                                circular
-                                                value={recipe.value}
-                                                title={recipe.value}
-                                                interactive
-                                                selected={
-                                                    !!this.recipeIsAssigned(recipe.id)
-                                                        .length
-                                                }
-                                                onClick={this.setRecipe.bind(
-                                                    this,
-                                                    recipe.id,
-                                                    recipe.type
-                                                )}
-                                            >
-                                                {recipe.name}
-                                            </td-swatch>
-                                        ))}
+                                    <div className="swatch-stack">
+                                        {this.controller
+                                            .recipeOptionsByType(
+                                                DesignTokenType.foregroundFill
+                                            )
+                                            .map(recipe => (
+                                                <td-swatch
+                                                    key={recipe.id}
+                                                    circular
+                                                    value={this.controller.getDefaultDesignTokenValue(
+                                                        recipe.token
+                                                    )}
+                                                    orientation="horizontal"
+                                                    interactive
+                                                    selected={
+                                                        !!this.controller.recipeIsAssigned(
+                                                            recipe.id
+                                                        ).length
+                                                    }
+                                                    onClick={this.controller.assignRecipe.bind(
+                                                        this.controller,
+                                                        recipe
+                                                    )}
+                                                >
+                                                    {recipe.name}
+                                                </td-swatch>
+                                            ))}
                                     </div>
                                 </>
                             ) : null}
@@ -398,31 +450,33 @@ export class PluginUI extends React.Component<PluginUIProps> {
                     </td-drawer>
                     <td-drawer name="Corner Radius">
                         {this.props.selectedNodes.some(node =>
-                            node.supports.includes(RecipeTypes.cornerRadius)
+                            node.supports.includes(DesignTokenType.cornerRadius)
                         ) ? (
                             <div className="swatch-grid" style={{ marginTop: 8 }}>
-                                {this.recipeOptionsByType(RecipeTypes.cornerRadius).map(
-                                    recipe => {
+                                {this.controller
+                                    .recipeOptionsByType(DesignTokenType.cornerRadius)
+                                    .map(recipe => {
                                         return (
                                             <td-corner-radius
                                                 key={recipe.id}
-                                                value={recipe.value}
+                                                value={this.controller.getDefaultDesignTokenValue(
+                                                    recipe.token
+                                                )}
                                                 interactive
                                                 selected={
-                                                    !!this.recipeIsAssigned(recipe.id)
-                                                        .length
+                                                    !!this.controller.recipeIsAssigned(
+                                                        recipe.id
+                                                    ).length
                                                 }
-                                                onClick={this.setRecipe.bind(
-                                                    this,
-                                                    recipe.id,
-                                                    recipe.type
+                                                onClick={this.controller.assignRecipe.bind(
+                                                    this.controller,
+                                                    recipe
                                                 )}
                                             >
                                                 {recipe.name}
                                             </td-corner-radius>
                                         );
-                                    }
-                                )}
+                                    })}
                             </div>
                         ) : null}
                         {cornerRadiusRecipes.length ? (
@@ -430,24 +484,29 @@ export class PluginUI extends React.Component<PluginUIProps> {
                                 {cornerRadiusRecipes.map(recipe => (
                                     <p className="applied-recipe" key={recipe.id}>
                                         <td-corner-radius
-                                            value={recipe.value}
+                                            value={this.controller.getDefaultDesignTokenValue(
+                                                recipe.token
+                                            )}
                                             orientation="horizontal"
-                                            onClick={this.setRecipe.bind(
-                                                this,
-                                                recipe.id,
-                                                recipe.type
+                                            onClick={this.controller.assignRecipe.bind(
+                                                this.controller,
+                                                recipe
                                             )}
                                         >
                                             {recipe.name}
                                         </td-corner-radius>
                                         <div>
-                                            <span>{recipe.value}</span>
+                                            <span>
+                                                {this.controller.getDefaultDesignTokenValue(
+                                                    recipe.token
+                                                )}
+                                            </span>
                                             <plugin-button
                                                 appearance="stealth"
                                                 aria-label="Detach"
-                                                onClick={this.removeRecipe.bind(
-                                                    this,
-                                                    RecipeTypes.cornerRadius
+                                                onClick={this.controller.removeRecipe.bind(
+                                                    this.controller,
+                                                    recipe
                                                 )}
                                             >
                                                 Detach
@@ -458,31 +517,48 @@ export class PluginUI extends React.Component<PluginUIProps> {
                             </div>
                         ) : null}
                     </td-drawer>
-                    <button className="button">Export</button>
                 </div>
                 {this.renderFooter()}
             </div>
         );
     }
 
-    private renderColorPicker(): JSX.Element {
-        const type = "accentBaseColor";
+    private renderColorPicker(tokenId: string): JSX.Element {
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        const colorToken = this.controller.getDesignTokenDefinition<Swatch>(tokenId)!;
+        const defaultValue = this.controller
+            .getDefaultDesignTokenValue(colorToken.token);
         const values = this.props.selectedNodes
-            .map(node => node.designSystem[type])
+            .map(node => this.controller.getDesignTokenValue(node, colorToken.token))
             .filter(value => !!value);
+
+        let value = values.length ? values[0].toColorString() : defaultValue;
 
         const onChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
             const hex: string = e.target.value;
             const parsed = parseColorHexRGB(hex);
 
             if (parsed instanceof ColorRGBA64) {
-                this.props.dispatch({
-                    nodeIds: this.props.selectedNodes.map(node => node.id),
-                    type: MessageTypes.designSystem,
-                    action: MessageAction.assign,
-                    value: hex.toUpperCase(),
-                    property: type,
-                });
+                value = parsed.toStringHexRGB();
+                (document.getElementById(
+                    colorToken.id + "Hex"
+                ) as HTMLInputElement).value = value;
+                const swatch = SwatchRGB.from(parsed);
+                this.controller.assignDesignToken(colorToken, swatch);
+            }
+        };
+
+        const onChangeHex = (e: React.FocusEvent<HTMLInputElement>): void => {
+            const hex: string = e.target.value;
+            const parsed = parseColorHexRGB(hex);
+
+            if (parsed instanceof ColorRGBA64) {
+                value = parsed.toStringHexRGB();
+                (document.getElementById(
+                    colorToken.id
+                ) as HTMLInputElement).value = value;
+                const swatch = SwatchRGB.from(parsed);
+                this.controller.assignDesignToken(colorToken, swatch);
             }
         };
 
@@ -495,147 +571,71 @@ export class PluginUI extends React.Component<PluginUIProps> {
             marginInlineEnd: "12px",
         };
 
+        const inputStyle = {
+            marginInlineStart: "12px",
+        };
+
         return (
             <p className="inset">
-                <label htmlFor="accentColor" style={labelStyle}>
-                    Accent color
+                <label htmlFor={colorToken.id} style={labelStyle}>
+                    {colorToken.name}
                 </label>
                 <input
                     type="color"
-                    id="accentColor"
-                    value={values.length ? values[0] : DesignSystemDefaults[type]}
+                    id={colorToken.id}
+                    value={value}
                     onChange={onChange}
+                ></input>
+                <input
+                    type="text"
+                    id={colorToken.id + "Hex"}
+                    style={inputStyle}
+                    value={value}
+                    onBlur={onChangeHex}
                 ></input>
             </p>
         );
     }
 
-    private appliedRecipes(type: RecipeTypes) {
-        const set = new Set();
-        const recipes: RecipeData[] = [];
-
-        this.props.selectedNodes.forEach(node =>
-            node.recipes.forEach(recipe => set.add(recipe))
-        );
-
-        this.props.recipeOptions.forEach(optionSet => {
-            optionSet.options.forEach(option => {
-                if (set.has(option.id)) {
-                    recipes.push(option);
-                }
-            });
-        });
-
-        return recipes.filter(recipe => recipe.type === type);
-    }
-
-    private recipeOptionsByType(type: RecipeTypes): RecipeData[] {
-        const found = this.props.recipeOptions.find(x => x.type === type);
-
-        const val = found ? found.options : [];
-        return val;
-    }
-
-    private pageBackgroundIds() {
-        return [
-            "neutralLayerL1",
-            "neutralLayerL1Alt",
-            "neutralLayerL2",
-            "neutralLayerL3",
-            "neutralLayerL4",
-            "neutralLayerL5",
-            "neutralLayerCard",
-        ];
-    }
-
-    /**
-     * Returns the node ID's in which the recipe is assigned
-     * @param id - the recipe ID
-     */
-    private recipeIsAssigned(id: string): string[] {
-        return this.props.selectedNodes
-            .filter(node => {
-                return node.recipes.includes(id);
-            })
-            .map(node => node.id);
-    }
-
-    private removeRecipe = (type: RecipeTypes): void => {
-        const nodeIds = this.props.selectedNodes
-            .filter(node => node.supports.includes(type))
-            .map(node => node.id);
-
-        this.props.dispatch({
-            type: MessageTypes.recipe,
-            nodeIds,
-            action: MessageAction.delete,
-            recipeType: type,
-        });
-    };
-
-    private setRecipe = (recipeId: string, type: RecipeTypes): void => {
-        const nodeIds = this.props.selectedNodes
-            .filter(node => node.supports.includes(type))
-            .map(node => node.id);
-
-        this.props.dispatch({
-            id: recipeId,
-            type: MessageTypes.recipe,
-            nodeIds,
-            action: MessageAction.assign,
-        });
-    };
-
     private renderThemeSwitcher(): JSX.Element {
-        const key: keyof DesignSystem = "baseLayerLuminance";
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        const def = this.controller.getDesignTokenDefinition<number>(
+            "baseLayerLuminance"
+        )!;
+        const defaultValue = this.controller.getDefaultDesignTokenValue(def.token);
         const nodes = this.props.selectedNodes.filter(node =>
-            node.supports.includes("designSystem")
+            node.supports.includes(DesignTokenType.designToken)
         );
-        const themeData = nodes.map(node => node.designSystem.baseLayerLuminance);
+        const themeData = nodes.map(node =>
+            this.controller.getDesignTokenValue(node, def.token)
+        );
         const themesApplied = themeData.filter(value => typeof value === "number");
-        const nodeIds = nodes.map(node => node.id);
 
-        const style = {
-            marginBlockEnd: "12px",
+        const lightModeOnChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+            this.controller.assignDesignToken(def, StandardLuminance.LightMode);
         };
 
-        const setLightTheme = this.setDesignSystemProperty.bind(
-            this,
-            key,
-            StandardLuminance.LightMode,
-            nodeIds
-        );
+        const darkModeOnChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+            this.controller.assignDesignToken(def, StandardLuminance.DarkMode);
+        };
 
-        const setDarkTheme = this.setDesignSystemProperty.bind(
-            this,
-            key,
-            StandardLuminance.DarkMode,
-            nodeIds
-        );
-
-        const removeTheme = this.deleteDesignSystemProperty.bind(this, key, nodeIds);
-
+        // TODO handle multiple selection better.
         return (
             <div style={{ padding: "4px 16px 4px" }}>
-                <plugin-checkbox
-                    checked={themesApplied.length > 0}
-                    onChange={themesApplied.length ? removeTheme : setLightTheme}
-                    style={style}
+                <plugin-radio-group
+                    name="luminanceMode"
+                    value={themesApplied.length ? themesApplied[0] : defaultValue}
+                    disabled={themesApplied.length === 0}
                 >
-                    Theme selected
-                </plugin-checkbox>
-                <plugin-radio-group name="mode" disabled={themesApplied.length === 0}>
                     <plugin-radio
-                        checked={themesApplied.includes(StandardLuminance.LightMode)}
                         value={StandardLuminance.LightMode}
-                        onClick={setLightTheme}
+                        onClick={lightModeOnChange}
                     >
                         Light mode
                     </plugin-radio>
                     <plugin-radio
-                        checked={themesApplied.includes(StandardLuminance.DarkMode)}
                         value={StandardLuminance.DarkMode}
-                        onClick={setDarkTheme}
+                        onClick={darkModeOnChange}
                     >
                         Dark mode
                     </plugin-radio>
@@ -644,29 +644,7 @@ export class PluginUI extends React.Component<PluginUIProps> {
         );
     }
 
-    private setDesignSystemProperty<K extends keyof DesignSystem>(
-        property: K,
-        value: DesignSystem[K],
-        nodeIds: string[]
-    ): void {
-        this.props.dispatch({
-            type: MessageTypes.designSystem,
-            action: MessageAction.assign,
-            property,
-            value,
-            nodeIds,
-        });
-    }
-
-    private deleteDesignSystemProperty<K extends keyof DesignSystem>(
-        property: K,
-        nodeIds: string[]
-    ): void {
-        this.props.dispatch({
-            type: MessageTypes.designSystem,
-            action: MessageAction.delete,
-            property,
-            nodeIds,
-        });
+    private dispatchState(selectedNodes: PluginUINodeData[]): void {
+        this.props.dispatch(selectedNodes);
     }
 }

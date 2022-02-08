@@ -5,7 +5,11 @@
         "outDir": "./dist",
         "declaration": false,
         "jsx": "react",
-        "allowSyntheticDefaultImports": true
+        "allowSyntheticDefaultImports": true,
+        "typeRoots": [
+            "../../../node_modules/@types",
+            "../../../node_modules/@figma"
+        ]
     },
     "include": [
         "src/**/*.ts",

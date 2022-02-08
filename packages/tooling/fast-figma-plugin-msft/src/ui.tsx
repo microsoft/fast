@@ -3,20 +3,23 @@ import ReactDOM from "react-dom";
 import { DesignSystem } from "@microsoft/fast-foundation";
 import {
     fluentButton,
-    fluentCheckbox,
     fluentDesignSystemProvider,
     fluentDivider,
     fluentRadio,
     fluentRadioGroup,
 } from "@fluentui/web-components";
 import { PluginUI, PluginUIProps } from "./core/ui";
-import { UIMessage } from "./core/messaging";
+import { PluginUINodeData } from "./core/ui/ui-controller";
+import {
+    deserializeUINodes,
+    PluginUISerializableNodeData,
+    serializeUINodes,
+} from "./figma/controller";
 
 DesignSystem.getOrCreate()
     .withPrefix("plugin")
     .register(
         fluentButton(),
-        fluentCheckbox(),
         fluentDesignSystemProvider(),
         fluentDivider(),
         fluentRadio(),
@@ -28,24 +31,28 @@ const styles = require("./global.css");
 /* eslint-enable */
 
 /**
- * Dispatches a UI message to the host
- * @param message The message to dispatch
+ * Dispatches UI updates to the host Controller
+ * @param nodes The return node data
  */
-function dispatchMessage(message: UIMessage): void {
-    parent.postMessage({ pluginMessage: message }, "*");
+function dispatchMessage(nodes: PluginUINodeData[]): void {
+    parent.postMessage({ pluginMessage: serializeUINodes(nodes) }, "*");
 }
 
 const root = document.querySelector("plugin-design-system-provider");
 
-function render(props?: PluginUIProps): void {
+function render(props?: Omit<PluginUIProps, "dispatch">): void {
     ReactDOM.render(<PluginUI {...props} dispatch={dispatchMessage} />, root);
 }
 
 /**
- * Wire iframe's onmessage to render function
+ * Update UI from Controller's message
  */
 window.onmessage = (e: any): void => {
-    render(e.data.pluginMessage);
+    const nodes = e.data.pluginMessage.selectedNodes as Array<
+        PluginUISerializableNodeData
+    >;
+    const deserializedNodes = deserializeUINodes(nodes);
+    render({ selectedNodes: deserializedNodes });
 };
 
 // Render UI

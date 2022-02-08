@@ -20,6 +20,7 @@ declare global {
             "plugin-radio-group": {
                 disabled?: boolean;
                 name: string;
+                value?: any;
                 onChange?: any;
                 children?: React.ReactNode;
             };

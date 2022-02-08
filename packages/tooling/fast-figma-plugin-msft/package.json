@@ -6,7 +6,7 @@
   "private": true,
   "scripts": {
     "build": "webpack --progress --mode=production",
-    "watch": "webpack --progress --watch --mode=development",
+    "watch": "webpack --progress --watch --mode=production",
     "prettier": "prettier --config ../../../.prettierrc --write \"**/*.{ts,tsx}\"",
     "prettier:diff": "prettier --config ../../../.prettierrc \"**/*.{ts,tsx}\" --list-different",
     "test": "yarn eslint && yarn build",
@@ -28,7 +28,7 @@
   "devDependencies": {
     "@babel/core": "^7.12.13",
     "@babel/preset-env": "^7.12.13",
-    "@types/figma": "^1.0.4",
+    "@figma/plugin-typings": "^1.41.1",
     "@types/node": "^15.0.1",
     "@types/react": "^16.9.17",
     "@types/react-dom": "^16.9.4",
@@ -53,9 +53,6 @@
     "@fluentui/web-components": "^2.2.1",
     "@microsoft/fast-colors": "^5.1.5",
     "@microsoft/fast-components": "^2.21.5",
-    "@microsoft/fast-components-react-msft": "^4.32.0",
-    "@microsoft/fast-components-styles-msft": "^4.29.0",
-    "@microsoft/fast-element": "^1.7.0",
-    "react-color": "^2.18.0"
+    "@microsoft/fast-element": "^1.7.0"
   }
 }

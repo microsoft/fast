@@ -1,51 +1,110 @@
 import { Controller } from "../core/controller";
-import { PluginNodeData } from "../core/node";
+import { AppliedDesignTokens, AppliedRecipes, RecipeEvaluations } from "../core/model";
 import { PluginUIProps } from "../core/ui";
-import { canHaveChildren, FigmaPluginNode, isInstanceNode } from "./node";
+import { DesignTokenType } from "../core/ui/design-token-registry";
+import { PluginUINodeData } from "../core/ui/ui-controller";
+import { FigmaPluginNode } from "./node";
+
+/**
+ * Serializable version of PluginUINodeData that works across Figma's iframe sandbox setup.
+ */
+export interface PluginUISerializableNodeData {
+    id: string;
+    type: string;
+    supports: Array<DesignTokenType>;
+    children: PluginUISerializableNodeData[];
+    inheritedDesignTokens: string;
+    componentDesignTokens?: string;
+    designTokens: string;
+    componentRecipes?: string;
+    recipes: string;
+    recipeEvaluations: string;
+}
+
+/**
+ * Converts node data from the UI to serializable format.
+ * @param nodes Node data in the UI format.
+ * @returns Node data in the serializable format.
+ */
+export function serializeUINodes(
+    nodes: PluginUINodeData[]
+): PluginUISerializableNodeData[] {
+    const serializedNodes = nodes.map(
+        (node): PluginUISerializableNodeData => {
+            return {
+                id: node.id,
+                type: node.type,
+                supports: node.supports,
+                children: serializeUINodes(node.children),
+                inheritedDesignTokens: (node.inheritedDesignTokens as AppliedDesignTokens).serialize(),
+                componentDesignTokens: (node.componentDesignTokens as AppliedDesignTokens)?.serialize(),
+                designTokens: node.designTokens.serialize(),
+                componentRecipes: (node.componentRecipes as AppliedRecipes)?.serialize(),
+                recipes: node.recipes.serialize(),
+                recipeEvaluations: node.recipeEvaluations.serialize(),
+            };
+        }
+    );
+
+    return serializedNodes;
+}
+
+/**
+ * Converts node data from the serializable to UI format.
+ * @param nodes Node data in the serializable format.
+ * @returns Node data in the UI format.
+ */
+export function deserializeUINodes(
+    nodes: PluginUISerializableNodeData[]
+): PluginUINodeData[] {
+    const deserializedNodes = nodes.map(
+        (node): PluginUINodeData => {
+            const inheritedDesignTokens = new AppliedDesignTokens();
+            inheritedDesignTokens.deserialize(node.inheritedDesignTokens);
+            const componentDesignTokens = new AppliedDesignTokens();
+            componentDesignTokens.deserialize(node.componentDesignTokens);
+            const designTokens = new AppliedDesignTokens();
+            designTokens.deserialize(node.designTokens);
+            const recipes = new AppliedRecipes();
+            recipes.deserialize(node.recipes);
+            const componentRecipes = new AppliedRecipes();
+            componentRecipes.deserialize(node.componentRecipes);
+            const recipeEvaluations = new RecipeEvaluations();
+            recipeEvaluations.deserialize(node.recipeEvaluations);
+
+            return {
+                id: node.id,
+                type: node.type,
+                supports: node.supports,
+                children: deserializeUINodes(node.children),
+                inheritedDesignTokens,
+                componentDesignTokens,
+                designTokens,
+                componentRecipes,
+                recipes,
+                recipeEvaluations,
+            };
+        }
+    );
+
+    return deserializedNodes;
+}
 
 export class FigmaController extends Controller {
-    private syncInstanceWithMaster(target: InstanceNode): void {
-        const source = target.masterComponent;
-
-        function sync(_source: BaseNode, _target: BaseNode): void {
-            const pluginDataKeys: Array<keyof PluginNodeData> = [
-                "recipes",
-                "designSystem",
-            ];
-            pluginDataKeys.forEach((key: "recipes" | "designSystem") => {
-                _target.setPluginData(key, _source.getPluginData(key));
-            });
-
-            if (canHaveChildren(_source) && canHaveChildren(_target)) {
-                _source.children.forEach((child: any, index: number) => {
-                    sync(child, _target.children[index]);
-                });
-            }
-        }
-
-        sync(source, target);
-
-        // Invalidate the cache
-        new FigmaPluginNode(target.id).invalidateDesignSystemCache();
-    }
-
     public getNode(id: string): FigmaPluginNode | null {
-        try {
-            return new FigmaPluginNode(id);
-        } catch (e) {
+        const node = figma.getNodeById(id);
+        if (node) {
+            return new FigmaPluginNode(node);
+        } else {
             return null;
         }
     }
 
-    public syncNodes(ids: string[]): void {
-        ids.map((id: string) => figma.getNodeById(id))
-            .filter(isInstanceNode)
-            .map(this.syncInstanceWithMaster);
+    public setPluginUIState(state: Omit<PluginUIProps, "dispatch">): void {
+        const message = {
+            selectedNodes: serializeUINodes(state.selectedNodes),
+        };
 
-        super.syncNodes(ids);
-    }
-
-    public setPluginUIState(message: PluginUIProps): void {
         figma.ui.postMessage(message);
     }
 }

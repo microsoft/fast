@@ -1,6 +1,7 @@
 import { ColorRGBA64, parseColor } from "@microsoft/fast-colors";
-import { PluginNode, PluginNodeData } from "../core/node";
-import { RecipeData, RecipeTypes } from "../core/recipe-registry";
+import { AppliedRecipes, PluginNodeData, RecipeEvaluation } from "../core/model";
+import { PluginNode } from "../core/node";
+import { DesignTokenType } from "../core/ui/design-token-registry";
 
 function isNodeType<T extends BaseNode>(type: NodeType): (node: BaseNode) => node is T {
     return (node: BaseNode): node is T => node.type === type;
@@ -67,25 +68,46 @@ export class FigmaPluginNode extends PluginNode {
     public id: string;
     public type: string;
     private node: BaseNode;
-    constructor(id: string) {
-        super();
-        const node = figma.getNodeById(id);
 
-        if (node === null) {
-            throw new Error(`Node of ID "${id} does not exist`);
-        }
+    constructor(node: BaseNode) {
+        super();
+
+        // console.log("  new FigmaPluginNode", node.id, node.name, node);
 
         this.node = node;
-        this.id = id;
+        this.id = node.id;
         this.type = node.type;
+
+        // Load all recipes attached to the node.
+        const recipesJson = this.getPluginData("recipes");
+        this._recipes.deserialize(recipesJson);
+
+        // If it's an instance node, the `recipes` may also include main component settings. Deduplicate them.
+        if (isInstanceNode(this.node)) {
+            const mainNode = (this.node as InstanceNode).mainComponent;
+            if (mainNode) {
+                this._componentRecipes = new AppliedRecipes();
+                const componentRecipesJson = mainNode.getPluginData("recipes");
+                this._componentRecipes.deserialize(componentRecipesJson);
+
+                this._componentRecipes.forEach((recipe, recipeId) => {
+                    this._recipes.delete(recipeId)
+                });
+            }
+        }
+
+        if (this._recipes.size) {
+            // console.log("    recipes", this._recipes.serialize());
+        }
     }
 
     public children(): FigmaPluginNode[] {
         if (canHaveChildren(this.node)) {
             const children: FigmaPluginNode[] = [];
 
+            // console.log("  get children");
             for (const child of this.node.children) {
-                children.push(new FigmaPluginNode(child.id));
+                children.push(new FigmaPluginNode(child));
             }
 
             return children;
@@ -94,39 +116,45 @@ export class FigmaPluginNode extends PluginNode {
         }
     }
 
-    public supports(): Array<RecipeTypes | "designSystem"> {
-        return Object.keys(RecipeTypes)
-            .concat("designSystem")
-            .filter((key: string) => {
-                switch (key) {
-                    case RecipeTypes.backgroundFills:
-                    case RecipeTypes.strokeFills:
-                    case RecipeTypes.cornerRadius:
-                    case "designSystem":
-                        return [
-                            isFrameNode,
-                            isRectangleNode,
-                            isPolygonNode,
-                            isStarNode,
-                            isComponentNode,
-                            isInstanceNode,
-                        ].some((test: (node: BaseNode) => boolean) => test(this.node));
-                    case RecipeTypes.foregroundFills:
-                        return isTextNode(this.node);
-                    default:
-                        return false;
-                }
-            }) as Array<RecipeTypes | "designSystem">;
+    public supports(): Array<DesignTokenType> {
+        return Object.keys(DesignTokenType).filter((key: string) => {
+            switch (key) {
+                case DesignTokenType.layerFill:
+                case DesignTokenType.backgroundFill:
+                case DesignTokenType.strokeFill:
+                case DesignTokenType.cornerRadius:
+                case DesignTokenType.designToken:
+                    return [
+                        (node: BaseNode) =>
+                            isDocumentNode(node) && key === DesignTokenType.designToken,
+                        (node: BaseNode) =>
+                            isPageNode(node) &&
+                            (key === DesignTokenType.designToken ||
+                                key === DesignTokenType.backgroundFill),
+                        isFrameNode,
+                        isRectangleNode,
+                        isPolygonNode,
+                        isStarNode,
+                        isComponentNode,
+                        isInstanceNode,
+                    ].some((test: (node: BaseNode) => boolean) => test(this.node));
+                case DesignTokenType.foregroundFill:
+                    return isTextNode(this.node);
+                default:
+                    return false;
+            }
+        }) as Array<DesignTokenType>;
     }
 
-    public paint(data: RecipeData): void {
+    public paint(data: RecipeEvaluation): void {
         switch (data.type) {
-            case RecipeTypes.strokeFills:
-            case RecipeTypes.backgroundFills:
-            case RecipeTypes.foregroundFills:
+            case DesignTokenType.strokeFill:
+            case DesignTokenType.layerFill:
+            case DesignTokenType.backgroundFill:
+            case DesignTokenType.foregroundFill:
                 this.paintColor(data);
                 break;
-            case RecipeTypes.cornerRadius:
+            case DesignTokenType.cornerRadius:
                 this.paintCornerRadius(data);
                 break;
             default:
@@ -141,10 +169,11 @@ export class FigmaPluginNode extends PluginNode {
             return null;
         }
 
-        return new FigmaPluginNode(parent.id);
+        // console.log("  get parent");
+        return new FigmaPluginNode(parent);
     }
 
-    public getEffectiveBackgroundColor(): ColorRGBA64 {
+    public getEffectiveFillColor(): ColorRGBA64 | null {
         let node: BaseNode | null = this.node;
 
         while (node !== null) {
@@ -156,9 +185,7 @@ export class FigmaPluginNode extends PluginNode {
                         (fill: Paint) => fill.type === "SOLID"
                     );
 
-                    /**
-                     * TODO: how do we process multiple paints?
-                     */
+                    // TODO: how do we process multiple paints?
                     if (paints.length === 1) {
                         const parsed = ColorRGBA64.fromObject(paints[0].color);
                         if (parsed instanceof ColorRGBA64) {
@@ -171,31 +198,36 @@ export class FigmaPluginNode extends PluginNode {
             node = node.parent;
         }
 
-        return new ColorRGBA64(1, 1, 1);
+        return null;
     }
 
-    protected getPluginData<K extends keyof PluginNodeData>(key: K): PluginNodeData[K] {
-        try {
-            return JSON.parse(this.node.getPluginData(key as string));
-        } catch (e) {
-            return key === "designSystem" ? ({} as any) : [];
+    protected getPluginData<K extends keyof PluginNodeData>(key: K): string | undefined {
+        let value: string | undefined = this.node.getPluginData(key as string);
+        if (value === "") {
+            value = undefined;
         }
-    }
+        // console.log("    getPluginData", this.node.id, this.node.type, key, value);
 
-    protected setPluginData<K extends keyof PluginNodeData>(
-        key: K,
-        value: PluginNodeData[K]
-    ): void {
-        let raw: string;
-        try {
-            raw = JSON.stringify(value);
-        } catch (e) {
-            raw = "";
+        if (isInstanceNode(this.node)) {
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            const mainNode = (this.node as InstanceNode).mainComponent!;
+            // console.log("    getPluginData", mainNode.id, mainNode.type, key, mainNode.getPluginData(key));
         }
-        this.node.setPluginData(key, raw);
+
+        return value;
     }
 
-    private paintColor(data: RecipeData): void {
+    protected setPluginData<K extends keyof PluginNodeData>(key: K, value: string): void {
+        // console.log("    setPluginData", this.node.id, this.node.type, key, value);
+        this.node.setPluginData(key, value);
+    }
+
+    protected deletePluginData<K extends keyof PluginNodeData>(key: K): void {
+        // console.log("    deletePluginData", this.node.id, this.node.type, key);
+        this.node.setPluginData(key, "");
+    }
+
+    private paintColor(data: RecipeEvaluation): void {
         const color = parseColor(data.value);
 
         if (color === null) {
@@ -217,17 +249,18 @@ export class FigmaPluginNode extends PluginNode {
             },
         };
         switch (data.type) {
-            case RecipeTypes.backgroundFills:
-            case RecipeTypes.foregroundFills:
+            case DesignTokenType.layerFill:
+            case DesignTokenType.backgroundFill:
+            case DesignTokenType.foregroundFill:
                 (this.node as any).fills = [paint];
                 break;
-            case RecipeTypes.strokeFills:
+            case DesignTokenType.strokeFill:
                 (this.node as any).strokes = [paint];
                 break;
         }
     }
 
-    private paintCornerRadius(data: RecipeData): void {
+    private paintCornerRadius(data: RecipeEvaluation): void {
         (this.node as any).cornerRadius = data.value;
     }
 }

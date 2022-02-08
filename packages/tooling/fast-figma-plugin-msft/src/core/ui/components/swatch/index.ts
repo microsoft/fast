@@ -107,7 +107,7 @@ const styles = css`
     }
 `;
 
-export enum SwatchTypes {
+export enum SwatchType {
     background = "background",
     border = "border",
 }
@@ -119,7 +119,7 @@ export enum SwatchTypes {
 })
 export class Swatch extends FASTElement {
     @attr
-    public type: SwatchTypes = SwatchTypes.background;
+    public type: SwatchType = SwatchType.background;
 
     @attr({ mode: "boolean" })
     public circular: boolean = false;
