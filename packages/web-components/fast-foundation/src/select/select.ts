@@ -235,6 +235,8 @@ export class Select extends FormAssociatedSelect {
      */
     public formResetCallback(): void {
         this.setProxyOptions();
+        // Call the base class's implementation setDefaultSelectedOption instead of the select's
+        // override, in order to reset the selectedIndex without using the value property.
         super.setDefaultSelectedOption();
         this.value = this.firstSelectedOption.value;
     }
@@ -316,10 +318,7 @@ export class Select extends FormAssociatedSelect {
             this.options ?? Array.from(this.children).filter(Listbox.slottedOptionFilter);
 
         const selectedIndex = options?.findIndex(
-            el =>
-                el.getAttribute("selected") !== null ||
-                el.selected ||
-                el.value === this.value
+            el => el.hasAttribute("selected") || el.selected || el.value === this.value
         );
 
         if (selectedIndex !== -1) {
