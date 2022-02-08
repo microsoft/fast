@@ -1,11 +1,9 @@
 /* eslint-disable */
-import { html } from "lit";
-import { html as fhtml, when, repeat } from "@microsoft/fast-element";
+import { html, when, repeat } from "@microsoft/fast-element";
 import * as Components from "./components";
 Components;
 
-export function myTemplate() {
-    return html`
+const template = html`
         <!DOCTYPE html>
         <html lang="en">
             <head>
@@ -17,11 +15,10 @@ export function myTemplate() {
             </body>
         </html>
     `;
-}
 
-export function myViewTemplate() {
+export function viewTemplate() {
     /*html*/
-    return fhtml`
+    return html`
         <!DOCTYPE html>
         <html lang="en">
             <head>
@@ -30,16 +27,18 @@ export function myViewTemplate() {
             <body>
                 <p :property-bind=${x => "property bind"}>idl attr binding</p>
                 <p attribute-bind=${x => "attribute bind"}>content attr binding</p>
-                <p ?boolean-attribute-bind-true=${x =>
-                    true}>boolean attr binding: true</p>
-                <p ?boolean-attribute-bind-false=${x =>
-                    false}>boolean attr binding: false</p>
+                <p ?boolean-attribute-bind-true=${x => true}>
+                    boolean attr binding: true
+                </p>
+                <p ?boolean-attribute-bind-false=${x => false}>
+                    boolean attr binding: false
+                </p>
                 <p @click=${() => console.log("foobar")}></p>
                 <!-- when directive -->
-                ${when(x => true, fhtml``)}
+                ${when(x => true, html``)}
 
                 <!-- repeat directive -->
-                ${repeat(x => [1, 2, 3], fhtml``)}
+                ${repeat(x => [1, 2, 3], html``)}
             </body>
         </html>
     `;

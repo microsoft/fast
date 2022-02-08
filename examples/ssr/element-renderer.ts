@@ -1,7 +1,7 @@
 /* eslint-disable */
 import { ElementRenderer, RenderInfo } from "@lit-labs/ssr";
 import { FASTElement } from "@microsoft/fast-element";
-import { render } from "./render";
+import { renderViewTemplate } from "./view-template-renderer";
 
 export class FASTElementRenderer extends ElementRenderer {
     public readonly element!: HTMLElement & FASTElement;
@@ -28,7 +28,9 @@ export class FASTElementRenderer extends ElementRenderer {
     *renderShadow(renderInfo: RenderInfo): IterableIterator<string> {
         const { $fastController } = this.element;
 
-        yield* render($fastController.getShadowRoot()!, renderInfo);
+        // TODO: implement renderViewTemplate
+        // yield* renderViewTemplate()
+        // yield* render($fastController.getShadowRoot()!, renderInfo);
     }
 
     attributeChangedCallback(

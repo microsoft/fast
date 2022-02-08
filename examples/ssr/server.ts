@@ -4,7 +4,7 @@ import "./fast-element-dom-shim";
 import { render } from "@lit-labs/ssr/lib/render-lit-html";
 import { Readable } from "stream";
 import { FASTElementRenderer } from "./element-renderer";
-import { myTemplate, myViewTemplate } from "./experience";
+import { viewTemplate } from "./experience";
 import { renderViewTemplate } from "./view-template-renderer";
 
 function handleRequest(req: Request, res: Response) {
@@ -14,23 +14,8 @@ function handleRequest(req: Request, res: Response) {
         customElementInstanceStack: [],
     };
 
-    const viewTemplateRenderer = renderViewTemplate(
-        myViewTemplate(),
-        undefined,
-        renderInfo
-    );
-    let currentValue = viewTemplateRenderer.next();
-    let output = "";
-
-    while (!currentValue.done) {
-        console.log(currentValue.value);
-        output = output + currentValue.value;
-        currentValue = viewTemplateRenderer.next();
-    }
-
     res.set("Content-Type", "text/html");
-    const templateResult = myTemplate();
-    const ssrResult = render(templateResult, renderInfo);
+    const ssrResult = renderViewTemplate(viewTemplate(), undefined, renderInfo);
     const stream = (Readable as any).from(ssrResult);
     stream.on("readable", function (this: any) {
         let data: string;

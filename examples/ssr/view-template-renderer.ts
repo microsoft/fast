@@ -162,7 +162,6 @@ function getTemplateOpCodes(template: ViewTemplate): Op[] {
                 flushTo(node.sourceCodeLocation.startOffset);
                 const directiveId = extractInterpolationMarkerId(node)!;
                 const directive = template.directives[directiveId];
-                // console.log(directive)
                 // TODO: Do something with interpolation.
             } else if (isCommentNode(node) && isMarkerComment(node)) {
                 flushTo(node.sourceCodeLocation!.startOffset);
@@ -356,12 +355,10 @@ export function* renderViewTemplate(
                 }
                 break;
             }
-
             case "custom-element-close": {
                 renderInfo.customElementInstanceStack.pop();
                 break;
             }
-
             case "custom-element-attributes": {
                 const instance = getLast(renderInfo.customElementInstanceStack);
 
