@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-components",
   "entries": [
     {
+      "date": "Tue, 08 Feb 2022 07:14:26 GMT",
+      "tag": "@microsoft/fast-components_v2.21.1",
+      "version": "2.21.1",
+      "comments": {
+        "patch": [
+          {
+            "comment": "`focusStrokeWidth` not applied on text-field and number-field Fixes #5565",
+            "author": "fcollonval@gmail.com",
+            "commit": "ec5ceaefe295bf410b7e3db34867ac600f4a0d0e",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sun, 06 Feb 2022 07:15:20 GMT",
       "tag": "@microsoft/fast-components_v2.21.0",
       "version": "2.21.0",
