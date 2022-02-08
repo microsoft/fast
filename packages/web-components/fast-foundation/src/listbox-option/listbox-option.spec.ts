@@ -90,7 +90,7 @@ describe("ListboxOption", () => {
         await disconnect();
     });
 
-    it("should have an empty string `value` when the `value` attribute exists", async () => {
+    it("should have an empty string `value` when the `value` attribute exists and is empty", async () => {
         const { connect, element, disconnect } = await setup();
 
         await connect();
