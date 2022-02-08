@@ -65,7 +65,6 @@ describe("ListboxOption", () => {
     it("should set the `aria-checked` attribute to match the `checked` property", async () => {
         const { element, connect, disconnect } = await setup();
 
-
         await connect();
 
         expect(element.hasAttribute("aria-checked")).to.be.false;
@@ -87,6 +86,35 @@ describe("ListboxOption", () => {
         await DOM.nextUpdate();
 
         expect(element.hasAttribute("aria-checked")).to.be.false;
+
+        await disconnect();
+    });
+
+    it("should have an empty string `value` when the `value` attribute exists", async () => {
+        const { connect, element, disconnect } = await setup();
+
+        await connect();
+
+        element.setAttribute("value", "");
+        element.innerText = "hello";
+
+        expect(element.text).to.equal("hello");
+
+        expect(element.value).to.equal("");
+
+        await disconnect();
+    });
+
+    it("should return the text content when the `value` attribute does not exist", async () => {
+        const { connect, element, disconnect } = await setup();
+
+        await connect();
+
+        element.innerText = "hello";
+
+        expect(element.text).to.equal("hello");
+
+        expect(element.value).to.equal("hello");
 
         await disconnect();
     });
