@@ -18,6 +18,17 @@
       "description": "The ARIA role for the divider",
       "mapsToAttribute": "role",
       "type": "string"
+    },
+    "orientation": {
+      "enum": [
+        "horizontal",
+        "vertical"
+      ],
+      "default": "horizontal",
+      "title": "Orientation",
+      "description": "The orientation of the divider",
+      "mapsToAttribute": "orientation",
+      "type": "string"
     }
   }
 }

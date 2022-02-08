@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-web-utilities
 
-This log was last generated on Sun, 31 Oct 2021 07:17:45 GMT and should not be manually modified.
+This log was last generated on Tue, 25 Jan 2022 07:11:53 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 5.1.0
+
+Tue, 25 Jan 2022 07:11:53 GMT
+
+### Minor changes
+
+- add findLastIndex and inRange functions to fast-web-utilities (john.kreitlow@microsoft.com)
 
 ## 5.0.2
 

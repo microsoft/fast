@@ -13,8 +13,9 @@ export const listboxTemplate: FoundationElementTemplate<ViewTemplate<ListboxElem
 ) => html`
     <template
         aria-activedescendant="${x => x.ariaActiveDescendant}"
+        aria-multiselectable="${x => x.ariaMultiSelectable}"
         class="listbox"
-        role="${x => x.role}"
+        role="listbox"
         tabindex="${x => (!x.disabled ? "0" : null)}"
         @click="${(x, c) => x.clickHandler(c.event as MouseEvent)}"
         @focusin="${(x, c) => x.focusinHandler(c.event as FocusEvent)}"

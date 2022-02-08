@@ -270,6 +270,67 @@ describe("Picker", () => {
         await disconnect();
     });
 
+    it("picker should apply settings to place scaling menu below input by default", async () => {
+        const { element, connect, disconnect } = await setupPicker();
+        await connect();
+
+        await DOM.nextUpdate();
+
+        expect(element.menuConfig.verticalDefaultPosition).to.equal("bottom");
+        expect(element.menuConfig.verticalScaling).to.equal("fill");
+
+        await disconnect();
+    });
+
+    it("picker should apply menu placement selections", async () => {
+        const { element, connect, disconnect } = await setupPicker();
+        element.menuPlacement = "top-fill";
+        await connect();
+
+        await DOM.nextUpdate();
+
+        expect(element.menuConfig.verticalDefaultPosition).to.equal("top");
+        expect(element.menuConfig.verticalPositioningMode).to.equal("locktodefault");
+        expect(element.menuConfig.verticalScaling).to.equal("fill");
+
+        element.menuPlacement = "top";
+        await DOM.nextUpdate();
+
+        expect(element.menuConfig.verticalDefaultPosition).to.equal("top");
+        expect(element.menuConfig.verticalPositioningMode).to.equal("locktodefault");
+        expect(element.menuConfig.verticalScaling).to.equal("content");
+
+        element.menuPlacement = "bottom";
+        await DOM.nextUpdate();
+
+        expect(element.menuConfig.verticalDefaultPosition).to.equal("bottom");
+        expect(element.menuConfig.verticalPositioningMode).to.equal("locktodefault");
+        expect(element.menuConfig.verticalScaling).to.equal("content");
+
+        element.menuPlacement = "bottom-fill";
+        await DOM.nextUpdate();
+
+        expect(element.menuConfig.verticalDefaultPosition).to.equal("bottom");
+        expect(element.menuConfig.verticalPositioningMode).to.equal("locktodefault");
+        expect(element.menuConfig.verticalScaling).to.equal("fill");
+
+        element.menuPlacement = "tallest-fill";
+        await DOM.nextUpdate();
+
+        expect(element.menuConfig.verticalDefaultPosition).to.equal(undefined);
+        expect(element.menuConfig.verticalPositioningMode).to.equal("dynamic");
+        expect(element.menuConfig.verticalScaling).to.equal("fill");
+
+        element.menuPlacement = "tallest";
+        await DOM.nextUpdate();
+
+        expect(element.menuConfig.verticalDefaultPosition).to.equal(undefined);
+        expect(element.menuConfig.verticalPositioningMode).to.equal("dynamic");
+        expect(element.menuConfig.verticalScaling).to.equal("content");
+
+        await disconnect();
+    });
+
     /**
      *  Picker-list tests
      */
