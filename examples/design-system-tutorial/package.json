@@ -11,10 +11,10 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@microsoft/fast-colors": "^5.1.4",
+    "@microsoft/fast-colors": "^5.1.5",
     "@microsoft/fast-element": "^1.7.0",
-    "@microsoft/fast-foundation": "^2.33.0",
-    "@microsoft/fast-components": "^2.21.1",
+    "@microsoft/fast-foundation": "^2.33.1",
+    "@microsoft/fast-components": "^2.21.2",
     "tslib": "^1.11.1"
   },
   "devDependencies": {
