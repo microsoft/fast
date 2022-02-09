@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-foundation",
   "entries": [
     {
+      "date": "Wed, 09 Feb 2022 07:14:00 GMT",
+      "tag": "@microsoft/fast-foundation_v2.33.1",
+      "version": "2.33.1",
+      "comments": {
+        "patch": [
+          {
+            "comment": "allow empty string values for listbox-option value attribute",
+            "author": "john.kreitlow@microsoft.com",
+            "commit": "273749d704826d646141a45c8f0f82763376b3f9",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sun, 06 Feb 2022 07:15:20 GMT",
       "tag": "@microsoft/fast-foundation_v2.33.0",
       "version": "2.33.0",

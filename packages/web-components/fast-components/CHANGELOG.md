@@ -1,8 +1,24 @@
 # Change Log - @microsoft/fast-components
 
-This log was last generated on Sun, 06 Feb 2022 07:15:20 GMT and should not be manually modified.
+This log was last generated on Wed, 09 Feb 2022 07:14:00 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.21.2
+
+Wed, 09 Feb 2022 07:14:00 GMT
+
+### Patches
+
+- Bump @microsoft/fast-colors to v5.1.5 (47367562+bheston@users.noreply.github.com)
+
+## 2.21.1
+
+Tue, 08 Feb 2022 07:14:26 GMT
+
+### Patches
+
+- `focusStrokeWidth` not applied on text-field and number-field Fixes #5565 (fcollonval@gmail.com)
 
 ## 2.21.0
 
