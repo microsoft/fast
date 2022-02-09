@@ -74,11 +74,42 @@ export function contrastRatio(a: ColorRGBA64, b: ColorRGBA64): number {
         : calculateContrastRatio(luminanceB, luminanceA);
 }
 
+function calcChannelOverlay(match: number, background: number, overlay: number): number {
+    if (overlay - background === 0) {
+        return 0;
+    } else {
+        return (match - background) / (overlay - background);
+    }
+}
+
+function calcRgbOverlay(
+    rgbMatch: ColorRGBA64,
+    rgbBackground: ColorRGBA64,
+    rgbOverlay: ColorRGBA64
+): number {
+    const rChannel: number = calcChannelOverlay(
+        rgbMatch.r,
+        rgbBackground.r,
+        rgbOverlay.r
+    );
+    const gChannel: number = calcChannelOverlay(
+        rgbMatch.g,
+        rgbBackground.g,
+        rgbOverlay.g
+    );
+    const bChannel: number = calcChannelOverlay(
+        rgbMatch.b,
+        rgbBackground.b,
+        rgbOverlay.b
+    );
+    return (rChannel + gChannel + bChannel) / 3;
+}
+
 /**
- * Calculate an overlay color that uses rgba (rgb + alpha) that matches the appareance of a given solid color when placed on the same background
+ * Calculate an overlay color that uses rgba (rgb + alpha) that matches the appearance of a given solid color when placed on the same background
  * @param rgbMatch - The solid color the overlay should match in appearance when placed over the rgbBackground
  * @param rgbBackground - The background on which the overlay rests
- * @param rgbOverlay - The rgb color of the overlay. Typically this is either pure white or pure black. This color will be used in the returned output
+ * @param rgbOverlay - The rgb color of the overlay. Typically this is either pure white or pure black and when not provided will be determined automatically. This color will be used in the returned output
  * @returns The rgba (rgb + alpha) color of the overlay
  *
  * @public
@@ -86,16 +117,24 @@ export function contrastRatio(a: ColorRGBA64, b: ColorRGBA64): number {
 export function calculateOverlayColor(
     rgbMatch: ColorRGBA64,
     rgbBackground: ColorRGBA64,
-    rgbOverlay: ColorRGBA64
+    rgbOverlay: ColorRGBA64 = null
 ): ColorRGBA64 {
-    const rChannel: number =
-        (rgbMatch.r - rgbBackground.r) / (rgbOverlay.r - rgbBackground.r);
-    const gChannel: number =
-        (rgbMatch.g - rgbBackground.g) / (rgbOverlay.g - rgbBackground.g);
-    const bChannel: number =
-        (rgbMatch.b - rgbBackground.b) / (rgbOverlay.b - rgbBackground.b);
-    const alpha: number = (rChannel + gChannel + bChannel) / 3;
-    return new ColorRGBA64(rgbOverlay.r, rgbOverlay.g, rgbOverlay.b, alpha);
+    let alpha: number = 0;
+    let overlay: ColorRGBA64 = rgbOverlay;
+
+    if (overlay !== null) {
+        alpha = calcRgbOverlay(rgbMatch, rgbBackground, overlay);
+    } else {
+        overlay = new ColorRGBA64(0, 0, 0, 1);
+        alpha = calcRgbOverlay(rgbMatch, rgbBackground, overlay);
+        if (alpha <= 0) {
+            overlay = new ColorRGBA64(1, 1, 1, 1);
+            alpha = calcRgbOverlay(rgbMatch, rgbBackground, overlay);
+        }
+    }
+    alpha = Math.round(alpha * 1000) / 1000;
+
+    return new ColorRGBA64(overlay.r, overlay.g, overlay.b, alpha);
 }
 
 /**
@@ -291,7 +330,7 @@ export function lchToLAB(lch: ColorLCH): ColorLAB {
  */
 export function labToLCH(lab: ColorLAB): ColorLCH {
     let h: number = 0;
-    // Because of the discontuity at 0 if a number is very close to 0 - often due to floating point errors - then
+    // Because of the discontinuity at 0 if a number is very close to 0 - often due to floating point errors - then
     // it gives unexpected results. EG: 0.000000000001 gives a different result than 0. So just avoid any number
     // that has both a and b very close to zero and lump it in with the h = 0 case.
     if (Math.abs(lab.b) > 0.001 || Math.abs(lab.a) > 0.001) {
