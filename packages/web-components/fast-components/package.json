@@ -2,7 +2,7 @@
   "name": "@microsoft/fast-components",
   "description": "A library of Web Components",
   "sideEffects": false,
-  "version": "2.18.0",
+  "version": "2.21.2",
   "author": {
     "name": "Microsoft",
     "url": "https://discord.gg/FcSNfg4"
@@ -67,7 +67,7 @@
     "@types/chai-spies": "^1.0.1",
     "@types/karma": "^5.0.0",
     "@types/mocha": "^8.2.0",
-    "@types/node": "^10.12.12",
+    "@types/node": "^15.0.1",
     "@types/webpack-env": "^1.15.2",
     "ajv": "^6.12.2",
     "chai": "^4.2.0",
@@ -109,10 +109,10 @@
     "webpack": "^4.44.0"
   },
   "dependencies": {
-    "@microsoft/fast-colors": "^5.1.4",
-    "@microsoft/fast-element": "^1.6.2",
-    "@microsoft/fast-foundation": "^2.31.0",
-    "@microsoft/fast-web-utilities": "^5.0.2",
+    "@microsoft/fast-colors": "^5.1.5",
+    "@microsoft/fast-element": "^1.7.0",
+    "@microsoft/fast-foundation": "^2.33.1",
+    "@microsoft/fast-web-utilities": "^5.1.0",
     "tslib": "^1.13.0",
     "vscode-html-languageservice": "^4.0.3"
   }

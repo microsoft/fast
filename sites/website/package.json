@@ -14,6 +14,7 @@
     "prebuild": "yarn clean && yarn generate && yarn copy-static",
     "build": "docusaurus build",
     "prestart": "yarn prebuild",
+    "serve": "docusaurus serve",
     "start": "docusaurus start"
   },
   "browserslist": {
@@ -29,9 +30,9 @@
     ]
   },
   "devDependencies": {
-    "@docusaurus/core": "2.0.0-beta.1",
-    "@docusaurus/preset-classic": "2.0.0-beta.1",
-    "@docusaurus/theme-live-codeblock": "2.0.0-beta.1",
+    "@docusaurus/core": "2.0.0-beta.15",
+    "@docusaurus/preset-classic": "2.0.0-beta.15",
+    "@docusaurus/theme-live-codeblock": "2.0.0-beta.15",
     "@microsoft/api-documenter": "7.8.13",
     "concurrently": "^6.2.0"
   }

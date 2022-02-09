@@ -2,9 +2,9 @@ import { css, ElementStyles } from "@microsoft/fast-element";
 import {
     disabledCursor,
     display,
-    ElementDefinitionContext,
     focusVisible,
     forcedColorsStylesheetBehavior,
+    FoundationElementTemplate,
     NumberFieldOptions,
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
@@ -17,6 +17,7 @@ import {
     designUnit,
     disabledOpacity,
     focusStrokeOuter,
+    focusStrokeWidth,
     neutralFillHover,
     neutralFillInputHover,
     neutralFillInputRest,
@@ -33,13 +34,10 @@ import { heightNumber } from "../styles/index";
  * Styles for Number Field
  * @public
  */
-export const numberFieldStyles: (
-    context: ElementDefinitionContext,
-    definition: NumberFieldOptions
-) => ElementStyles = (
-    context: ElementDefinitionContext,
-    definition: NumberFieldOptions
-) =>
+export const numberFieldStyles: FoundationElementTemplate<
+    ElementStyles,
+    NumberFieldOptions
+> = (context, definition) =>
     css`
     ${display("inline-block")} :host {
         font-family: ${bodyFont};
@@ -154,7 +152,7 @@ export const numberFieldStyles: (
 
     :host(:focus-within:not([disabled])) .root {
         border-color: ${focusStrokeOuter};
-        box-shadow: 0 0 0 1px ${focusStrokeOuter} inset;
+        box-shadow: 0 0 0 calc(${focusStrokeWidth} * 1px) ${focusStrokeOuter} inset;
     }
 
     :host(:hover:not([disabled])) .controls,

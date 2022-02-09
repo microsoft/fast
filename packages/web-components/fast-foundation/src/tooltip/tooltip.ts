@@ -46,7 +46,7 @@ export class Tooltip extends FoundationElement {
     public anchor: string = "";
     private anchorChanged(): void {
         if ((this as FASTElement).$fastController.isConnected) {
-            this.updateLayout();
+            this.anchorElement = this.getAnchor();
         }
     }
 
@@ -264,8 +264,6 @@ export class Tooltip extends FoundationElement {
     public connectedCallback(): void {
         super.connectedCallback();
         this.anchorElement = this.getAnchor();
-
-        this.updateLayout();
         this.updateTooltipVisibility();
     }
 

@@ -2,9 +2,9 @@ import { css, ElementStyles } from "@microsoft/fast-element";
 import {
     disabledCursor,
     display,
-    ElementDefinitionContext,
     focusVisible,
     forcedColorsStylesheetBehavior,
+    FoundationElementTemplate,
     TextFieldOptions,
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
@@ -17,6 +17,7 @@ import {
     designUnit,
     disabledOpacity,
     focusStrokeOuter,
+    focusStrokeWidth,
     neutralFillHover,
     neutralFillInputHover,
     neutralFillInputRest,
@@ -33,10 +34,10 @@ import { heightNumber } from "../styles/index";
  * Styles for Text Field
  * @public
  */
-export const textFieldStyles: (
-    context: ElementDefinitionContext,
-    definition: TextFieldOptions
-) => ElementStyles = (context: ElementDefinitionContext, definition: TextFieldOptions) =>
+export const textFieldStyles: FoundationElementTemplate<
+    ElementStyles,
+    TextFieldOptions
+> = (context, definition) =>
     css`
     ${display("inline-block")} :host {
         font-family: ${bodyFont};
@@ -126,7 +127,7 @@ export const textFieldStyles: (
 
     :host(:focus-within:not([disabled])) .root {
         border-color: ${focusStrokeOuter};
-        box-shadow: 0 0 0 1px ${focusStrokeOuter} inset;
+        box-shadow: 0 0 0 calc(${focusStrokeWidth} * 1px) ${focusStrokeOuter} inset;
     }
 
     :host([appearance="filled"]) .root {

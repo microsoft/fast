@@ -22,7 +22,11 @@ async function setup() {
     const button = document.createElement("button");
     button.id = "anchor";
 
+    const button2 = document.createElement("button");
+    button2.id = "anchor2";
+
     parent.insertBefore(button, element);
+    parent.insertBefore(button2, element);
 
     element.setAttribute("anchor", "anchor");
     element.id = "tooltip";
@@ -313,4 +317,19 @@ describe("Tooltip", () => {
 
         await disconnect();
     });
+
+    it("should change anchor element when the anchor attribute changes", async () => {
+        const { element, connect, disconnect } = await setup();
+        const tooltip: Tooltip = element;
+
+        await connect();
+
+        expect(tooltip.anchorElement?.id).to.equal("anchor");
+        tooltip.setAttribute("anchor", "anchor2")
+        expect(tooltip.anchorElement?.id).to.equal("anchor2");
+
+        await disconnect();
+    });
+
+
 });
