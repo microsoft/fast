@@ -2,6 +2,66 @@
   "name": "@microsoft/site-utilities",
   "entries": [
     {
+      "date": "Wed, 09 Feb 2022 07:14:00 GMT",
+      "tag": "@microsoft/site-utilities_v0.9.0",
+      "version": "0.9.0",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-components to v2.21.2",
+            "author": "47367562+bheston@users.noreply.github.com",
+            "commit": "be9de4b5ceb5df6938a107d277cfbf61e8d7eae1",
+            "package": "@microsoft/site-utilities"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 08 Feb 2022 07:14:26 GMT",
+      "tag": "@microsoft/site-utilities_v0.9.0",
+      "version": "0.9.0",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-components to v2.21.1",
+            "author": "fcollonval@gmail.com",
+            "commit": "ec5ceaefe295bf410b7e3db34867ac600f4a0d0e",
+            "package": "@microsoft/site-utilities"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sun, 06 Feb 2022 07:15:20 GMT",
+      "tag": "@microsoft/site-utilities_v0.9.0",
+      "version": "0.9.0",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-components to v2.21.0",
+            "author": "john.kreitlow@microsoft.com",
+            "commit": "45116d16f62f2087e3daf1ed0d5c25f8e5ce1ad3",
+            "package": "@microsoft/site-utilities"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 02 Feb 2022 07:13:39 GMT",
+      "tag": "@microsoft/site-utilities_v0.9.0",
+      "version": "0.9.0",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-components to v2.20.2",
+            "author": "robarb@microsoft.com",
+            "commit": "72efc898ed23b08c9e7668844bc3a97f81b2bde9",
+            "package": "@microsoft/site-utilities"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sun, 30 Jan 2022 07:12:35 GMT",
       "tag": "@microsoft/site-utilities_v0.9.0",
       "version": "0.9.0",

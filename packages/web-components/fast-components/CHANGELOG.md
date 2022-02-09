@@ -1,8 +1,49 @@
 # Change Log - @microsoft/fast-components
 
-This log was last generated on Sun, 30 Jan 2022 07:12:35 GMT and should not be manually modified.
+This log was last generated on Wed, 09 Feb 2022 07:14:00 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.21.2
+
+Wed, 09 Feb 2022 07:14:00 GMT
+
+### Patches
+
+- Bump @microsoft/fast-colors to v5.1.5 (47367562+bheston@users.noreply.github.com)
+
+## 2.21.1
+
+Tue, 08 Feb 2022 07:14:26 GMT
+
+### Patches
+
+- `focusStrokeWidth` not applied on text-field and number-field Fixes #5565 (fcollonval@gmail.com)
+
+## 2.21.0
+
+Sun, 06 Feb 2022 07:15:20 GMT
+
+### Minor changes
+
+- add multiselect functionality to listbox (john.kreitlow@microsoft.com)
+- add menu positioning to picker (scomea@microsoft.com)
+
+### Patches
+
+- fix: allow slider to show small increment changes (jes@microsoft.com)
+- fix: diabled listbox missing styles & allows click (jes@microsoft.com)
+- fix: font-weight to inherit to button control part (jes@microsoft.com)
+- tooltip anchor attribute updates work (scomea@microsoft.com)
+- Bump @microsoft/fast-foundation to v2.33.0 (scomea@microsoft.com)
+
+## 2.20.2
+
+Wed, 02 Feb 2022 07:13:39 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.32.3 (robarb@microsoft.com)
 
 ## 2.20.1
 
