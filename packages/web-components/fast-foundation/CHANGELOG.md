@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Sun, 06 Feb 2022 07:15:20 GMT and should not be manually modified.
+This log was last generated on Wed, 09 Feb 2022 07:14:00 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.33.1
+
+Wed, 09 Feb 2022 07:14:00 GMT
+
+### Patches
+
+- allow empty string values for listbox-option value attribute (john.kreitlow@microsoft.com)
 
 ## 2.33.0
 
