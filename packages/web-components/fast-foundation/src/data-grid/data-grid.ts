@@ -466,7 +466,10 @@ export class DataGrid extends VirtualList {
      * @internal
      */
     public handleKeydown(e: KeyboardEvent): void {
-        if (e.defaultPrevented || this.rowElements.length === 0) {
+        if (
+            e.defaultPrevented ||
+            (this.rowsData.length === 0 && this.authoredRowCount === 0)
+        ) {
             return;
         }
 
@@ -477,39 +480,42 @@ export class DataGrid extends VirtualList {
             newFocusRowIndex = this.getFirstRowIndexInView();
         }
 
-        if (newFocusRowIndex === -1) {
-            return;
-        }
-
         const maxIndex = this.rowsData.length + this.authoredRowCount - 1;
-        const currentGridBottom: number = this.scrollTop + this.clientHeight;
-        // const lastRow: HTMLElement = this.rowElements[maxIndex] as HTMLElement;
+        const nextPageDown: number = this.scrollTop + this.clientHeight;
+        const nextPageUp: number = this.scrollTop + this.clientHeight;
 
-        let thisRowBottom: number = 0;
         let nextItemSpanMap: SpanMap | null = null;
 
         switch (e.key) {
             case keyArrowUp:
                 e.preventDefault();
+                if (newFocusRowIndex === -1 || this.setFocusOnItemsChanged) {
+                    return;
+                }
                 // focus up one row
                 this.focusOnCell(newFocusRowIndex - 1, this.focusColumnIndex, false);
                 return;
 
             case keyArrowDown:
                 e.preventDefault();
+                if (newFocusRowIndex === -1 || this.setFocusOnItemsChanged) {
+                    return;
+                }
                 // focus down one row
                 this.focusOnCell(newFocusRowIndex + 1, this.focusColumnIndex, false);
                 return;
 
             case keyPageUp:
                 e.preventDefault();
+                if (newFocusRowIndex === -1 || this.setFocusOnItemsChanged) {
+                    return;
+                }
 
                 // focus up one "page"
                 for (newFocusRowIndex; newFocusRowIndex >= 0; newFocusRowIndex--) {
                     if (
                         newFocusRowIndex < this.authoredRowCount &&
-                        this.rowElements[newFocusRowIndex].offsetTop <=
-                            this.scrollTop - this.clientHeight
+                        this.rowElements[newFocusRowIndex].offsetTop <= nextPageUp
                     ) {
                         this.focusOnCell(newFocusRowIndex, this.focusColumnIndex, true);
                         return;
@@ -519,29 +525,25 @@ export class DataGrid extends VirtualList {
                         newFocusRowIndex - this.authoredRowCount
                     );
 
-                    if (
-                        nextItemSpanMap !== null &&
-                        nextItemSpanMap.end <= this.scrollTop - this.clientHeight
-                    ) {
+                    if (nextItemSpanMap !== null && nextItemSpanMap.end <= nextPageUp) {
                         this.focusOnCell(newFocusRowIndex, this.focusColumnIndex, true);
                         return;
                     }
                 }
 
+                this.focusOnCell(0, this.focusColumnIndex, true);
                 break;
 
             case keyPageDown:
                 e.preventDefault();
+                if (newFocusRowIndex === -1 || this.setFocusOnItemsChanged) {
+                    return;
+                }
 
-                for (
-                    newFocusRowIndex;
-                    newFocusRowIndex < this.rowElements.length;
-                    newFocusRowIndex++
-                ) {
+                for (newFocusRowIndex; newFocusRowIndex <= maxIndex; newFocusRowIndex++) {
                     if (
                         newFocusRowIndex < this.authoredRowCount &&
-                        this.rowElements[newFocusRowIndex].offsetTop >=
-                            this.scrollTop + this.clientHeight
+                        this.rowElements[newFocusRowIndex].offsetTop >= nextPageDown
                     ) {
                         this.focusOnCell(newFocusRowIndex, this.focusColumnIndex, true);
                         return;
@@ -553,18 +555,22 @@ export class DataGrid extends VirtualList {
 
                     if (
                         nextItemSpanMap !== null &&
-                        nextItemSpanMap.start >= this.scrollTop + this.clientHeight
+                        nextItemSpanMap.start >= nextPageDown
                     ) {
                         this.focusOnCell(newFocusRowIndex, this.focusColumnIndex, true);
                         return;
                     }
                 }
 
+                this.focusOnCell(maxIndex, this.focusColumnIndex, true);
                 break;
 
             case keyHome:
                 if (e.ctrlKey) {
                     e.preventDefault();
+                    if (newFocusRowIndex === -1 || this.setFocusOnItemsChanged) {
+                        return;
+                    }
                     // focus first cell of first row
                     this.focusOnCell(0, 0, false);
                 }
@@ -573,6 +579,9 @@ export class DataGrid extends VirtualList {
             case keyEnd:
                 if (e.ctrlKey && this.columnDefinitions !== null) {
                     e.preventDefault();
+                    if (newFocusRowIndex === -1 || this.setFocusOnItemsChanged) {
+                        return;
+                    }
                     // focus last cell of last row
                     this.focusOnCell(
                         this.authoredRowCount + this.rowsData.length - 1,
@@ -615,12 +624,6 @@ export class DataGrid extends VirtualList {
         columnIndex: number,
         forceScrollToTop: boolean
     ): void => {
-        if (this.rowElements.length === 0) {
-            return;
-        }
-
-        console.debug("focusoncell");
-
         // constrain to number of total rows
         const maxRowIndex = this.rowsData.length + this.authoredRowCount - 1;
         if (rowIndex < 0) {
@@ -661,7 +664,6 @@ export class DataGrid extends VirtualList {
 
         const focusRowPosition: number = itemSpanMap === null ? 0 : itemSpanMap.start;
 
-        console.debug(`Rowindex: ${rowIndex}`);
         if (focusRowPosition === this.scrollTop && rowIndex === this.focusRowIndex) {
             // waiting for cells to load
             DOM.nextUpdate().then(() => this.updateFocus());
@@ -677,7 +679,6 @@ export class DataGrid extends VirtualList {
         this.isUpdatingFocus = true;
         this.focusRowIndex = rowIndex;
         this.isUpdatingFocus = false;
-        console.debug("virtualized row");
     };
 
     private queueFocusUpdate(): void {
