@@ -7,6 +7,7 @@ import type { ListboxOption } from "../listbox-option/listbox-option";
 import { StartEnd } from "../patterns/start-end";
 import type { StartEndOptions } from "../patterns/start-end";
 import { applyMixins } from "../utilities/apply-mixins";
+import { Listbox } from "../listbox";
 import { FormAssociatedSelect } from "./select.form-associated";
 import { SelectPosition } from "./select.options";
 
@@ -70,7 +71,7 @@ export class Select extends FormAssociatedSelect {
     public set value(next: string) {
         const prev = `${this._value}`;
 
-        if (this.$fastController.isConnected && this.options) {
+        if (this.options?.length) {
             const selectedIndex = this.options.findIndex(el => el.value === next);
 
             const prevSelectedOption = this.options[this.selectedIndex];
@@ -229,7 +230,9 @@ export class Select extends FormAssociatedSelect {
      */
     public formResetCallback(): void {
         this.setProxyOptions();
-        this.setDefaultSelectedOption();
+        // Call the base class's implementation setDefaultSelectedOption instead of the select's
+        // override, in order to reset the selectedIndex without using the value property.
+        super.setDefaultSelectedOption();
         this.value = this.firstSelectedOption.value;
     }
 
@@ -303,6 +306,22 @@ export class Select extends FormAssociatedSelect {
         super.slottedOptionsChanged(prev, next);
         this.setProxyOptions();
         this.updateValue();
+    }
+
+    protected setDefaultSelectedOption(): void {
+        const options: ListboxOption[] =
+            this.options ?? Array.from(this.children).filter(Listbox.slottedOptionFilter);
+
+        const selectedIndex = options?.findIndex(
+            el => el.hasAttribute("selected") || el.selected || el.value === this.value
+        );
+
+        if (selectedIndex !== -1) {
+            this.selectedIndex = selectedIndex;
+            return;
+        }
+
+        this.selectedIndex = 0;
     }
 
     /**

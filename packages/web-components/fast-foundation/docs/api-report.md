@@ -2168,6 +2168,8 @@ export class Select extends FormAssociatedSelect {
     positionAttribute: SelectPosition;
     // @internal
     selectedIndexChanged(prev: number, next: number): void;
+    // (undocumented)
+    protected setDefaultSelectedOption(): void;
     setPositioning(): void;
     // @internal
     slottedOptionsChanged(prev: Element[], next: Element[]): void;
