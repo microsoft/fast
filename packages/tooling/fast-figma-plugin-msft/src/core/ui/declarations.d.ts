@@ -59,6 +59,16 @@ declare global {
                 interactive?: boolean;
                 selected?: boolean;
             };
+            "td-generic-recipe": {
+                key?: string;
+                value: string;
+                icon?: string;
+                children?: React.ReactNode;
+                orientation?: "horizontal" | "vertical";
+                onClick?: any;
+                interactive?: boolean;
+                selected?: boolean;
+            };
         }
     }
 }

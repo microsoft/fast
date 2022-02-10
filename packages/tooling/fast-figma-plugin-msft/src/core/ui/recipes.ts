@@ -4,6 +4,7 @@ import {
     accentFillRest,
     accentForegroundRest,
     baseLayerLuminance,
+    bodyFont,
     controlCornerRadius,
     fillColor,
     focusStrokeInner,
@@ -32,6 +33,24 @@ import {
     neutralStrokeRest,
     neutralStrokeStrongRest,
     Swatch,
+    typeRampBaseFontSize,
+    typeRampBaseLineHeight,
+    typeRampMinus1FontSize,
+    typeRampMinus1LineHeight,
+    typeRampMinus2FontSize,
+    typeRampMinus2LineHeight,
+    typeRampPlus1FontSize,
+    typeRampPlus1LineHeight,
+    typeRampPlus2FontSize,
+    typeRampPlus2LineHeight,
+    typeRampPlus3FontSize,
+    typeRampPlus3LineHeight,
+    typeRampPlus4FontSize,
+    typeRampPlus4LineHeight,
+    typeRampPlus5FontSize,
+    typeRampPlus5LineHeight,
+    typeRampPlus6FontSize,
+    typeRampPlus6LineHeight,
 } from "@fluentui/web-components";
 import {
     DesignTokenDefinition,
@@ -41,6 +60,7 @@ import {
 
 interface DesignTokenStore<T> {
     [key: string]: {
+        type?: DesignTokenType;
         token: DesignToken<T>;
         name: string;
     };
@@ -110,8 +130,102 @@ const cornerRadiusRecipes: DesignTokenStore<number> = {
     layerCornerRadius: { token: layerCornerRadius, name: "Layer" },
 };
 
+const textRecipes: DesignTokenStore<any> = {
+    bodyFont: { type: DesignTokenType.fontName, token: bodyFont, name: "Font" },
+    typeRampPlus6FontSize: {
+        type: DesignTokenType.fontSize,
+        token: typeRampPlus6FontSize,
+        name: "Plus 6 font size",
+    },
+    typeRampPlus6LineHeight: {
+        type: DesignTokenType.lineHeight,
+        token: typeRampPlus6LineHeight,
+        name: "Plus 6 line height",
+    },
+    typeRampPlus5FontSize: {
+        type: DesignTokenType.fontSize,
+        token: typeRampPlus5FontSize,
+        name: "Plus 5 font size",
+    },
+    typeRampPlus5LineHeight: {
+        type: DesignTokenType.lineHeight,
+        token: typeRampPlus5LineHeight,
+        name: "Plus 5 line height",
+    },
+    typeRampPlus4FontSize: {
+        type: DesignTokenType.fontSize,
+        token: typeRampPlus4FontSize,
+        name: "Plus 4 font size",
+    },
+    typeRampPlus4LineHeight: {
+        type: DesignTokenType.lineHeight,
+        token: typeRampPlus4LineHeight,
+        name: "Plus 4 line height",
+    },
+    typeRampPlus3FontSize: {
+        type: DesignTokenType.fontSize,
+        token: typeRampPlus3FontSize,
+        name: "Plus 3 font size",
+    },
+    typeRampPlus3LineHeight: {
+        type: DesignTokenType.lineHeight,
+        token: typeRampPlus3LineHeight,
+        name: "Plus 3 line height",
+    },
+    typeRampPlus2FontSize: {
+        type: DesignTokenType.fontSize,
+        token: typeRampPlus2FontSize,
+        name: "Plus 2 font size",
+    },
+    typeRampPlus2LineHeight: {
+        type: DesignTokenType.lineHeight,
+        token: typeRampPlus2LineHeight,
+        name: "Plus 2 line height",
+    },
+    typeRampPlus1FontSize: {
+        type: DesignTokenType.fontSize,
+        token: typeRampPlus1FontSize,
+        name: "Plus 1 font size",
+    },
+    typeRampPlus1LineHeight: {
+        type: DesignTokenType.lineHeight,
+        token: typeRampPlus1LineHeight,
+        name: "Plus 1 line height",
+    },
+    typeRampBaseFontSize: {
+        type: DesignTokenType.fontSize,
+        token: typeRampBaseFontSize,
+        name: "Base font size",
+    },
+    typeRampBaseLineHeight: {
+        type: DesignTokenType.lineHeight,
+        token: typeRampBaseLineHeight,
+        name: "Base line height",
+    },
+    typeRampMinus1FontSize: {
+        type: DesignTokenType.fontSize,
+        token: typeRampMinus1FontSize,
+        name: "Minus 1 font size",
+    },
+    typeRampMinus1LineHeight: {
+        type: DesignTokenType.lineHeight,
+        token: typeRampMinus1LineHeight,
+        name: "Minus 1 line height",
+    },
+    typeRampMinus2FontSize: {
+        type: DesignTokenType.fontSize,
+        token: typeRampMinus2FontSize,
+        name: "Minus 2 font size",
+    },
+    typeRampMinus2LineHeight: {
+        type: DesignTokenType.lineHeight,
+        token: typeRampMinus2LineHeight,
+        name: "Minus 2 line height",
+    },
+};
+
 function registerStore<T>(
-    type: DesignTokenType,
+    type: DesignTokenType | null,
     store: DesignTokenStore<T>,
     title: string,
     registry: DesignTokenRegistry
@@ -119,19 +233,18 @@ function registerStore<T>(
     Object.keys(store).forEach((key: string) => {
         const entry = store[key];
 
+        const thisType = type || entry.type;
+        if (thisType === null) {
+            throw `DesignTokenType not specified for ${key}`;
+        }
+
         const definition: DesignTokenDefinition = {
             id: key,
             name: entry.name,
             groupTitle: title,
-            type,
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            type: thisType!,
             token: entry.token,
-            evaluate: (element: HTMLElement) => {
-                let val = entry.token.getValueFor(element);
-                if (typeof (val as any).toColorString === "function") {
-                    val = (val as any).toColorString();
-                }
-                return val;
-            },
         };
 
         registry.register(definition);
@@ -158,4 +271,5 @@ export const registerRecipes = (registry: DesignTokenRegistry) => {
         "Corner radius",
         registry
     );
+    registerStore(null, textRecipes, "Text", registry);
 };

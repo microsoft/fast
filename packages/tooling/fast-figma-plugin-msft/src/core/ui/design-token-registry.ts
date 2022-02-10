@@ -7,6 +7,9 @@ export enum DesignTokenType {
     foregroundFill = "foregroundFill",
     strokeFill = "strokeFill",
     cornerRadius = "cornerRadius",
+    fontName = "fontName",
+    fontSize = "fontSize",
+    lineHeight = "lineHeight",
 }
 
 /**
@@ -43,11 +46,6 @@ export interface DesignTokenDefinition<T extends {} = any> {
      * The underlying DesignToken for the plugin definition
      */
     token: DesignToken<T>;
-
-    /**
-     * Evaluates a design token
-     */
-    evaluate: (element: HTMLElement) => T;
 }
 
 export class DesignTokenRegistry {
