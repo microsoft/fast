@@ -24,18 +24,7 @@ export class NumberField extends FoundationNumberField {
      * HTML Attribute: appearance
      */
     @attr
-    public appearance: NumberFieldAppearance;
-
-    /**
-     * @internal
-     */
-    public connectedCallback() {
-        super.connectedCallback();
-
-        if (!this.appearance) {
-            this.appearance = "outline";
-        }
-    }
+    public appearance: NumberFieldAppearance = "outline";
 }
 
 /**
