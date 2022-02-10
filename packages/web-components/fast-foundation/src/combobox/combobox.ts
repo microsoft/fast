@@ -620,7 +620,7 @@ export class Combobox extends FormAssociatedCombobox {
      *
      * @internal
      */
-    public slottedOptionsChanged(prev: unknown, next: HTMLElement[]): void {
+    public slottedOptionsChanged(prev: Element[], next: HTMLElement[]): void {
         super.slottedOptionsChanged(prev, next);
         this.updateValue();
     }

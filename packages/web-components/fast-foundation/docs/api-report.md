@@ -492,7 +492,7 @@ export class Combobox extends FormAssociatedCombobox {
     setDefaultSelectedOption(): void;
     setPositioning(): void;
     // @internal
-    slottedOptionsChanged(prev: unknown, next: HTMLElement[]): void;
+    slottedOptionsChanged(prev: Element[], next: HTMLElement[]): void;
     get value(): string;
     set value(next: string);
     }
@@ -2170,7 +2170,7 @@ export class Select extends FormAssociatedSelect {
     selectedIndexChanged(prev: number, next: number): void;
     setPositioning(): void;
     // @internal
-    slottedOptionsChanged(prev: unknown, next: ListboxOption[]): void;
+    slottedOptionsChanged(prev: Element[], next: Element[]): void;
     get value(): string;
     set value(next: string);
     }
