@@ -21,6 +21,7 @@ const reservedReactProperties = new Set([
 ]);
 
 const emptyProps = Object.freeze(Object.create(null));
+const wrappersCache = new Map();
 
 /**
  * Event signatures for a React wrapper.
@@ -199,7 +200,6 @@ export function provideReactWrapper(React: any, designSystem?: DesignSystem) {
             registrations = [];
         },
     };
-    const wrappersCache = new Map();
 
     /**
      * Creates a React component for a custom element. Properties are distinguished
@@ -243,114 +243,117 @@ export function provideReactWrapper(React: any, designSystem?: DesignSystem) {
             type = type.type as any;
         }
 
-        if (!wrappersCache.has(type)) {
-            class ReactComponent extends React.Component<InternalProps> {
-                private _element: TElement | null = null;
-                private _elementProps!: { [index: string]: unknown };
-                private _userRef?: ReactModule.Ref<unknown>;
-                private _ref?: (element: TElement | null) => void;
+        const cachedWrapper = wrappersCache.get(type);
+        if (cachedWrapper) {
+            return cachedWrapper;
+        }
 
-                private _updateElement(oldProps?: InternalProps) {
-                    const element = this._element;
+        class ReactComponent extends React.Component<InternalProps> {
+            private _element: TElement | null = null;
+            private _elementProps!: { [index: string]: unknown };
+            private _userRef?: ReactModule.Ref<unknown>;
+            private _ref?: (element: TElement | null) => void;
 
-                    if (element === null) {
-                        return;
-                    }
+            private _updateElement(oldProps?: InternalProps) {
+                const element = this._element;
 
-                    const currentProps = this.props;
-                    const previousProps = oldProps || emptyProps;
-                    const events = getElementEvents(config);
+                if (element === null) {
+                    return;
+                }
 
-                    for (const key in this._elementProps) {
-                        const newValue = currentProps[key];
-                        const event = events[key as keyof TEvents];
+                const currentProps = this.props;
+                const previousProps = oldProps || emptyProps;
+                const events = getElementEvents(config);
 
-                        if (event === undefined) {
-                            element[
-                                key as keyof TElement
-                            ] = newValue as TElement[keyof TElement];
-                        } else {
-                            const oldValue = previousProps[key];
+                for (const key in this._elementProps) {
+                    const newValue = currentProps[key];
+                    const event = events[key as keyof TEvents];
 
-                            if (newValue === oldValue) {
-                                continue;
-                            }
+                    if (event === undefined) {
+                        element[
+                            key as keyof TElement
+                        ] = newValue as TElement[keyof TElement];
+                    } else {
+                        const oldValue = previousProps[key];
 
-                            if (oldValue !== undefined) {
-                                element.removeEventListener(event, oldValue);
-                            }
+                        if (newValue === oldValue) {
+                            continue;
+                        }
 
-                            if (newValue !== undefined) {
-                                element.addEventListener(event, newValue);
-                            }
+                        if (oldValue !== undefined) {
+                            element.removeEventListener(event, oldValue);
+                        }
+
+                        if (newValue !== undefined) {
+                            element.addEventListener(event, newValue);
                         }
                     }
-                }
-
-                componentDidMount() {
-                    this._updateElement();
-                }
-
-                componentDidUpdate(old: InternalProps) {
-                    this._updateElement(old);
-                }
-
-                render() {
-                    // Since refs only get fulfilled once, pass a new one if the user's
-                    // ref changed. This allows refs to be fulfilled as expected, going from
-                    // having a value to null.
-                    const userRef = this.props.__forwardedRef as ReactModule.Ref<unknown>;
-                    if (this._ref === undefined || this._userRef !== userRef) {
-                        this._ref = (value: TElement | null) => {
-                            if (this._element === null) {
-                                this._element = value;
-                            }
-                            if (userRef !== null) {
-                                setRef(userRef, value);
-                            }
-                            this._userRef = userRef;
-                        };
-                    }
-
-                    // Filter class properties and pass the remaining attributes to React.
-                    // This allows attributes to use framework rules
-                    // for setting attributes and render correctly under SSR.
-                    const newReactProps: any = { ref: this._ref };
-                    const newElementProps = (this._elementProps = {} as any);
-                    const elementKeys = getElementKeys(type, config);
-                    const currentProps = this.props;
-
-                    for (const k in currentProps) {
-                        const v = currentProps[k];
-
-                        if (elementKeys.has(k)) {
-                            newElementProps[k] = v;
-                        } else {
-                            // React does *not* handle `className` for custom elements so
-                            // coerce it to `class` so it's handled correctly.
-                            newReactProps[k === "className" ? "class" : k] = v;
-                        }
-                    }
-
-                    return React.createElement(getTagName(type, config), newReactProps);
                 }
             }
 
-            const reactComponent = React.forwardRef(
-                (
-                    props?: ReactWrapperProps<TElement, TEvents>,
-                    ref?: ReactModule.Ref<unknown>
-                ) =>
-                    React.createElement(
-                        ReactComponent,
-                        { ...props, __forwardedRef: ref } as InternalProps,
-                        props?.children
-                    )
-            ) as ReactWrapper<TElement, TEvents>;
-            wrappersCache.set(type, reactComponent);
+            componentDidMount() {
+                this._updateElement();
+            }
+
+            componentDidUpdate(old: InternalProps) {
+                this._updateElement(old);
+            }
+
+            render() {
+                // Since refs only get fulfilled once, pass a new one if the user's
+                // ref changed. This allows refs to be fulfilled as expected, going from
+                // having a value to null.
+                const userRef = this.props.__forwardedRef as ReactModule.Ref<unknown>;
+                if (this._ref === undefined || this._userRef !== userRef) {
+                    this._ref = (value: TElement | null) => {
+                        if (this._element === null) {
+                            this._element = value;
+                        }
+                        if (userRef !== null) {
+                            setRef(userRef, value);
+                        }
+                        this._userRef = userRef;
+                    };
+                }
+
+                // Filter class properties and pass the remaining attributes to React.
+                // This allows attributes to use framework rules
+                // for setting attributes and render correctly under SSR.
+                const newReactProps: any = { ref: this._ref };
+                const newElementProps = (this._elementProps = {} as any);
+                const elementKeys = getElementKeys(type, config);
+                const currentProps = this.props;
+
+                for (const k in currentProps) {
+                    const v = currentProps[k];
+
+                    if (elementKeys.has(k)) {
+                        newElementProps[k] = v;
+                    } else {
+                        // React does *not* handle `className` for custom elements so
+                        // coerce it to `class` so it's handled correctly.
+                        newReactProps[k === "className" ? "class" : k] = v;
+                    }
+                }
+
+                return React.createElement(getTagName(type, config), newReactProps);
+            }
         }
 
-        return wrappersCache.get(type);
+        const reactComponent = React.forwardRef(
+            (
+                props?: ReactWrapperProps<TElement, TEvents>,
+                ref?: ReactModule.Ref<unknown>
+            ) =>
+                React.createElement(
+                    ReactComponent,
+                    { ...props, __forwardedRef: ref } as InternalProps,
+                    props?.children
+                )
+        ) as ReactWrapper<TElement, TEvents>;
+
+        wrappersCache.set(type, reactComponent);
+        return reactComponent;
     }
 
     return { wrap, registry };
