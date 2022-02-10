@@ -1,4 +1,4 @@
-import { observable } from "@microsoft/fast-element";
+import { DOM, observable } from "@microsoft/fast-element";
 import {
     isHTMLElement,
     keyArrowDown,
@@ -27,14 +27,15 @@ export class Menu extends FoundationElement {
     @observable
     public items: HTMLSlotElement;
     private itemsChanged(oldValue, newValue): void {
-        if (this.$fastController.isConnected) {
-            this.menuItems = this.domChildren();
-            this.resetItems(oldValue);
+        // only update children after the component is connected and
+        // the setItems has run on connectedCallback
+        // (menuItems is undefined until then)
+        if (this.$fastController.isConnected && this.menuItems !== undefined) {
             this.setItems();
         }
     }
 
-    private menuItems: Element[];
+    private menuItems: Element[] | undefined;
 
     private expandedItem: MenuItem | null = null;
 
@@ -51,7 +52,11 @@ export class Menu extends FoundationElement {
      */
     public connectedCallback(): void {
         super.connectedCallback();
-        this.menuItems = this.domChildren();
+        DOM.queueUpdate(() => {
+            // wait until children have had a chance to
+            // connect before setting/checking their props/attributes
+            this.setItems();
+        });
 
         this.addEventListener("change", this.changeHandler);
     }
@@ -61,7 +66,8 @@ export class Menu extends FoundationElement {
      */
     public disconnectedCallback(): void {
         super.disconnectedCallback();
-        this.menuItems = [];
+        this.removeItemListeners();
+        this.menuItems = undefined;
         this.removeEventListener("change", this.changeHandler);
     }
 
@@ -101,7 +107,7 @@ export class Menu extends FoundationElement {
      * @internal
      */
     public handleMenuKeyDown(e: KeyboardEvent): void | boolean {
-        if (e.defaultPrevented) {
+        if (e.defaultPrevented || this.menuItems === undefined) {
             return;
         }
         switch (e.key) {
@@ -133,7 +139,7 @@ export class Menu extends FoundationElement {
      * @internal
      */
     public handleFocusOut = (e: FocusEvent) => {
-        if (!this.contains(e.relatedTarget as Element)) {
+        if (!this.contains(e.relatedTarget as Element) && this.menuItems !== undefined) {
             this.collapseExpandedItem();
             // find our first focusable element
             const focusIndex: number = this.menuItems.findIndex(this.isFocusableElement);
@@ -149,7 +155,10 @@ export class Menu extends FoundationElement {
     private handleItemFocus = (e: FocusEvent) => {
         const targetItem: HTMLElement = e.target as HTMLElement;
 
-        if (targetItem !== this.menuItems[this.focusIndex]) {
+        if (
+            this.menuItems !== undefined &&
+            targetItem !== this.menuItems[this.focusIndex]
+        ) {
             this.menuItems[this.focusIndex].setAttribute("tabindex", "-1");
             this.focusIndex = this.menuItems.indexOf(targetItem);
             targetItem.setAttribute("tabindex", "0");
@@ -160,6 +169,7 @@ export class Menu extends FoundationElement {
         if (
             e.defaultPrevented ||
             e.target === null ||
+            this.menuItems === undefined ||
             this.menuItems.indexOf(e.target as Element) < 0
         ) {
             return;
@@ -189,7 +199,21 @@ export class Menu extends FoundationElement {
         }
     };
 
+    private removeItemListeners = (): void => {
+        if (this.menuItems !== undefined) {
+            this.menuItems.forEach((item: HTMLElement) => {
+                item.removeEventListener("expanded-change", this.handleExpandedChanged);
+                item.removeEventListener("focus", this.handleItemFocus);
+            });
+        }
+    };
+
     private setItems = (): void => {
+        const newItems: Element[] = this.domChildren();
+
+        this.removeItemListeners();
+        this.menuItems = newItems;
+
         const menuItems = this.menuItems.filter(this.isMenuItemElement);
 
         // if our focus index is not -1 we have items
@@ -238,17 +262,13 @@ export class Menu extends FoundationElement {
         });
     };
 
-    private resetItems = (oldValue: HTMLElement[]): void => {
-        oldValue.forEach((item: HTMLElement) => {
-            item.removeEventListener("expanded-change", this.handleExpandedChanged);
-            item.removeEventListener("focus", this.handleItemFocus);
-        });
-    };
-
     /**
      * handle change from child element
      */
     private changeHandler = (e: CustomEvent): void => {
+        if (this.menuItems === undefined) {
+            return;
+        }
         const changedMenuItem: MenuItem = e.target as MenuItem;
         const changeItemIndex: number = this.menuItems.indexOf(changedMenuItem);
 

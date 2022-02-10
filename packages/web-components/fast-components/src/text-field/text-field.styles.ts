@@ -2,7 +2,6 @@ import { css, ElementStyles } from "@microsoft/fast-element";
 import {
     disabledCursor,
     display,
-    ElementDefinitionContext,
     focusVisible,
     forcedColorsStylesheetBehavior,
     FoundationElementTemplate,
@@ -18,6 +17,7 @@ import {
     designUnit,
     disabledOpacity,
     focusStrokeOuter,
+    focusStrokeWidth,
     neutralFillHover,
     neutralFillInputHover,
     neutralFillInputRest,
@@ -134,7 +134,7 @@ export const textFieldStyles: FoundationElementTemplate<
 
     :host(:focus-within:not([disabled])) .root {
         border-color: ${focusStrokeOuter};
-        box-shadow: 0 0 0 1px ${focusStrokeOuter} inset;
+        box-shadow: 0 0 0 calc(${focusStrokeWidth} * 1px) ${focusStrokeOuter} inset;
     }
 
     :host([appearance="filled"]) .root {

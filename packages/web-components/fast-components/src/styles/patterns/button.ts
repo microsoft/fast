@@ -70,6 +70,7 @@ export const BaseButtonStyles = css`
         border-radius: inherit;
         fill: inherit;
         cursor: inherit;
+        font-weight: inherit;
         font-family: inherit;
         font-size: inherit;
         line-height: inherit;
