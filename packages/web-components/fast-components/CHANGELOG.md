@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-components
 
-This log was last generated on Wed, 09 Feb 2022 07:14:00 GMT and should not be manually modified.
+This log was last generated on Thu, 10 Feb 2022 07:12:01 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.21.3
+
+Thu, 10 Feb 2022 07:12:01 GMT
+
+### Patches
+
+- remove strictPropertyInitialization in components (mathieu.lavoie@shopify.com)
 
 ## 2.21.2
 
