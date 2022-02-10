@@ -1,15 +1,9 @@
-import { css, ElementStyles } from "@microsoft/fast-element";
-import {
-    ElementDefinitionContext,
-    FoundationElementDefinition,
-} from "@microsoft/fast-foundation";
-
-export const virtualListStyles: (
-    context: ElementDefinitionContext,
-    definition: FoundationElementDefinition
-) => ElementStyles = (
-    context: ElementDefinitionContext,
-    definition: FoundationElementDefinition
+import { css } from "@microsoft/fast-element";
+import type { ElementStyles } from "@microsoft/fast-element";
+import type { FoundationElementTemplate } from "@microsoft/fast-foundation";
+export const virtualListStyles: FoundationElementTemplate<ElementStyles> = (
+    context,
+    definition
 ) => css`
     .container {
         position: relative;
