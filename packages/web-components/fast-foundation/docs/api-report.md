@@ -2623,7 +2623,7 @@ export type SliderOptions = {
 // @public
 export function sliderTemplate<T extends FASTSlider>(options?: SliderOptions): ElementViewTemplate<T>;
 
-// @public
+// @beta
 export interface SpanMap {
     // (undocumented)
     end: number;
@@ -2816,7 +2816,7 @@ export class VirtualList extends FoundationElement {
     endSpacerSpan: number;
     // @internal
     firstRenderedIndex: number;
-    getGeneratedItemPosition: (itemIndex: number) => number;
+    getGeneratedItemPosition(itemIndex: number): number;
     // @internal
     handleChange(source: any, splices: Splice[]): void;
     items: object[];
@@ -2827,7 +2827,7 @@ export class VirtualList extends FoundationElement {
     lastRenderedIndex: number;
     // @beta
     orientation: Orientation;
-    requestPositionUpdates: () => void;
+    requestPositionUpdates(): void;
     protected reset(): void;
     // @internal
     startSpacerSpan: number;
@@ -2852,7 +2852,7 @@ export class VirtualList extends FoundationElement {
 export type VirtualListAutoUpdateMode = "manual" | "viewport-resize" | "auto";
 
 // @public
-export const virtualListTemplate: (context: ElementDefinitionContext, definition: FoundationElementDefinition) => ViewTemplate<VirtualList>;
+export const virtualListTemplate: FoundationElementTemplate<ViewTemplate<VirtualList>>;
 
 // @public
 export type WeekdayFormat = "long" | "narrow" | "short";

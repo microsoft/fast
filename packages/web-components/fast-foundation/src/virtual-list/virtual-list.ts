@@ -25,6 +25,8 @@ export type VirtualListAutoUpdateMode = "manual" | "viewport-resize" | "auto";
 
 /**
  * Used to describe the position of an element within the list
+ *
+ * @beta
  */
 export interface SpanMap {
     start: number;
@@ -282,9 +284,8 @@ export class VirtualList extends FoundationElement {
      */
     connectedCallback() {
         super.connectedCallback();
-        if (this.viewportElement === undefined) {
-            this.viewportElement = this.getViewport();
-        }
+
+        this.viewportElement = this.viewportElement ?? this.getViewport();
         this.resetAutoUpdateMode("manual", this.autoUpdateMode);
 
         if (this.itemsPlaceholder === undefined) {
@@ -323,9 +324,7 @@ export class VirtualList extends FoundationElement {
             return;
         }
 
-        if (this.itemsObserver !== null) {
-            this.unobserveItems();
-        }
+        this.unobserveItems();
 
         // TODO:  we don't use splices calculated by array change events
         // look for cheaper observer implementation later
@@ -348,16 +347,11 @@ export class VirtualList extends FoundationElement {
      * @internal
      */
     public handleChange(source: any, splices: Splice[]): void {
-        const firstRenderedIndex =
-            this.firstRenderedIndex >= this.items.length
-                ? this.items.length - 1
-                : this.firstRenderedIndex;
-        const lastRenderedIndex =
-            this.lastRenderedIndex >= this.items.length
-                ? this.items.length - 1
-                : this.lastRenderedIndex;
+        const itemsLength = this.items.length;
+        const firstRenderedIndex = Math.min(this.firstRenderedIndex, itemsLength - 1);
+        const lastRenderedIndex = Math.min(this.lastRenderedIndex, itemsLength - 1);
 
-        const newVisibleItems: object[] = this.items.slice(
+        const newVisibleItems = this.items.slice(
             firstRenderedIndex,
             lastRenderedIndex + 1
         );
@@ -387,7 +381,7 @@ export class VirtualList extends FoundationElement {
      *
      * @public
      */
-    public getGeneratedItemPosition = (itemIndex: number): number => {
+    public getGeneratedItemPosition(itemIndex: number): number {
         if (itemIndex < 0 || itemIndex >= this.items.length) {
             // out of range
             return 0;
@@ -403,12 +397,12 @@ export class VirtualList extends FoundationElement {
         }
 
         return returnVal;
-    };
+    }
 
     /**
      * get position updates
      */
-    public requestPositionUpdates = (): void => {
+    public requestPositionUpdates(): void {
         if (!this.virtualize) {
             this.updateVisibleItems();
             return;
@@ -428,7 +422,7 @@ export class VirtualList extends FoundationElement {
             this.viewportElement,
             this.handleIntersection
         );
-    };
+    }
 
     /**
      * request reset
@@ -546,26 +540,26 @@ export class VirtualList extends FoundationElement {
     /**
      * starts the viewport resize detector
      */
-    private startViewportResizeDetector = (): void => {
+    private startViewportResizeDetector(): void {
         if (this.resizeDetector !== null && this.viewportElement !== null) {
             this.resizeDetector.observe(this.viewportElement);
         }
-    };
+    }
 
     /**
      * stops the viewport resize detector
      */
-    private stopViewportResizeDetector = (): void => {
+    private stopViewportResizeDetector(): void {
         if (this.resizeDetector !== null && this.viewportElement !== null) {
             this.resizeDetector.unobserve(this.viewportElement);
         }
-    };
+    }
 
     /**
      * starts window level event listeners that can trigger auto updating
      * (scroll and resize)
      */
-    private startWindowUpdateEventListeners = (): void => {
+    private startWindowUpdateEventListeners(): void {
         window.addEventListener(eventResize, this.handleResizeEvent, {
             passive: true,
         });
@@ -573,7 +567,7 @@ export class VirtualList extends FoundationElement {
             passive: true,
             capture: true,
         });
-    };
+    }
 
     /**
      * handle scroll events
@@ -592,31 +586,31 @@ export class VirtualList extends FoundationElement {
     /**
      * stops event listeners that can trigger auto updating
      */
-    private stopWindowEventListeners = (): void => {
+    private stopWindowEventListeners(): void {
         window.removeEventListener(eventResize, this.requestPositionUpdates);
         window.removeEventListener(eventScroll, this.requestPositionUpdates);
-    };
+    }
 
     /**
      * Gets the viewport element by id, or defaults to element
      */
-    private getViewport = (): HTMLElement => {
+    private getViewport(): HTMLElement {
         return document.getElementById(this.viewport) ?? this;
-    };
+    }
 
     /**
      * updates the dimensions of the stack
      */
-    private updateDimensions = (): void => {
+    private updateDimensions(): void {
         this.totalListSpan = this.itemSpan * (this.items?.length ?? 0);
         this.requestPositionUpdates();
-    };
+    }
 
     /**
      *  Updates the visible items
      */
-    private updateVisibleItems = (): void => {
-        if (this.items === undefined) {
+    private updateVisibleItems(): void {
+        if (!this.items) {
             return;
         }
 
@@ -626,22 +620,25 @@ export class VirtualList extends FoundationElement {
             return;
         }
 
-        if (this.containerRect === undefined || this.viewportRect === undefined) {
+        if (!this.containerRect || !this.viewportRect) {
             return;
         }
 
-        let viewportStart: number = this.viewportRect.top;
-        let viewportEnd: number = this.viewportRect.bottom;
-        let containerStart: number = this.containerRect.top;
-        let containerEnd: number = this.containerRect.bottom;
-        let containerSpan: number = this.containerRect.height;
+        let { top: viewportStart, bottom: viewportEnd } = this.viewportRect;
+
+        let {
+            top: containerStart,
+            bottom: containerEnd,
+            height: containerSpan,
+        } = this.containerRect;
 
         if (this.orientation === Orientation.horizontal) {
-            viewportStart = this.viewportRect.left;
-            viewportEnd = this.viewportRect.right;
-            containerStart = this.containerRect.left;
-            containerEnd = this.containerRect.right;
-            containerSpan = this.containerRect.width;
+            ({ left: viewportStart, right: viewportEnd } = this.viewportRect);
+            ({
+                left: containerStart,
+                right: containerEnd,
+                width: containerSpan,
+            } = this.containerRect);
         }
 
         if (viewportStart >= containerEnd) {
@@ -670,26 +667,21 @@ export class VirtualList extends FoundationElement {
         let newLastRenderedIndex: number =
             newFirstRenderedIndex + Math.ceil(visibleRangeLength / this.itemSpan);
 
-        if (newFirstRenderedIndex < 0) {
-            newFirstRenderedIndex = 0;
-        }
-
-        if (newLastRenderedIndex >= this.items.length) {
-            newLastRenderedIndex = this.items.length - 1;
-        }
+        newFirstRenderedIndex = Math.max(0, newFirstRenderedIndex);
+        newLastRenderedIndex = Math.min(newLastRenderedIndex, this.items.length - 1);
 
         this.startSpacerSpan = newFirstRenderedIndex * this.itemSpan;
         this.endSpacerSpan =
             (this.items.length - newLastRenderedIndex - 1) * this.itemSpan;
 
-        const newVisibleItems: object[] = this.items.slice(
+        const newVisibleItems = this.items.slice(
             newFirstRenderedIndex,
             newLastRenderedIndex + 1
         );
 
         this.visibleItems.splice(0, this.visibleItems.length, ...newVisibleItems);
         this.updateVisibleItemSpans(newFirstRenderedIndex, newLastRenderedIndex);
-    };
+    }
 
     /**
      *  Updates the span map
@@ -702,7 +694,7 @@ export class VirtualList extends FoundationElement {
 
         let top: number = this.startSpacerSpan;
 
-        for (let i: number = newFirstRenderedIndex; i <= newLastRenderedIndex; i++) {
+        for (let i = newFirstRenderedIndex; i <= newLastRenderedIndex; i++) {
             const thisSpanMap: SpanMap = {
                 start: top,
                 end: top + this.itemSpan,
@@ -754,28 +746,25 @@ export class VirtualList extends FoundationElement {
             this.requestPositionUpdates();
         }
 
-        const containerEntry: IntersectionObserverEntry | undefined = entries.find(
-            x => x.target === this.containerElement
-        );
-        const viewportEntry: IntersectionObserverEntry | undefined = entries.find(
-            x => x.target === this.viewportElement
-        );
+        const containerEntry = entries.find(x => x.target === this.containerElement);
+        const viewportEntry = entries.find(x => x.target === this.viewportElement);
 
-        if (containerEntry === undefined || viewportEntry === undefined) {
+        if (!containerEntry || !viewportEntry) {
             return;
         }
 
-        this.containerRect = containerEntry.boundingClientRect;
-        if (this.viewportElement === document.documentElement) {
-            this.viewportRect = new DOMRectReadOnly(
-                viewportEntry.boundingClientRect.x + document.documentElement.scrollLeft,
-                viewportEntry.boundingClientRect.y + document.documentElement.scrollTop,
-                viewportEntry.boundingClientRect.width,
-                viewportEntry.boundingClientRect.height
+        const documentElement = document.documentElement;
+        let viewportRect = viewportEntry.boundingClientRect;
+        if (this.viewportElement === documentElement) {
+            viewportRect = new DOMRectReadOnly(
+                viewportRect.x + documentElement.scrollLeft,
+                viewportRect.y + documentElement.scrollTop,
+                viewportRect.width,
+                viewportRect.height
             );
-        } else {
-            this.viewportRect = viewportEntry.boundingClientRect;
         }
+        this.containerRect = containerEntry.boundingClientRect;
+        this.viewportRect = viewportRect;
 
         this.updateVisibleItems();
     };
