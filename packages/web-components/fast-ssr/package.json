@@ -1,0 +1,38 @@
+{
+  "name": "@microsoft/fast-ssr",
+  "version": "0.1.0",
+  "type": "module",
+  "author": {
+    "name": "Microsoft",
+    "url": "https://discord.gg/FcSNfg4"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Microsoft/fast.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Microsoft/fast/issues/new/choose"
+  },
+  "scripts": {
+      "pretest": "tsc -p tsconfig.json",
+      "test": "playwright test -c dist",
+      "test-server": "node dist/src/template-renderer/test/server.js",
+      "install-playwright-browsers": "npx playwright install"
+  },
+  "description": "A package rendering FAST components outside the browser.",
+  "main": "index.js",
+  "private": true,
+  "dependencies": {
+    "@lit-labs/ssr": "^1.0.0-rc.2",
+    "@microsoft/fast-element": "^1.5.0",
+    "tslib": "^1.11.1"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.18.0",
+    "@types/express": "^4.17.13",
+    "@types/node": "^17.0.17",
+    "express": "^4.17.1",
+    "typescript": "^3.8.3"
+  }
+}
