@@ -1,4 +1,4 @@
-import { attr, html } from "@microsoft/fast-element";
+import { attr } from "@microsoft/fast-element";
 import {
     NumberField as FoundationNumberField,
     NumberFieldOptions,
@@ -57,10 +57,10 @@ export const fastNumberField = NumberField.compose<NumberFieldOptions>({
     shadowOptions: {
         delegatesFocus: true,
     },
-    stepDownGlyph: html`
+    stepDownGlyph: /* html */ `
         <span class="step-down-glyph" part="step-down-glyph"></span>
     `,
-    stepUpGlyph: html`
+    stepUpGlyph: /* html */ `
         <span class="step-up-glyph" part="step-up-glyph"></span>
     `,
 });

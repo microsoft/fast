@@ -1,4 +1,3 @@
-import { html } from "@microsoft/fast-element";
 import {
     MenuItem,
     MenuItemOptions,
@@ -19,7 +18,7 @@ export const fastMenuItem = MenuItem.compose<MenuItemOptions>({
     baseName: "menu-item",
     template,
     styles,
-    checkboxIndicator: html`
+    checkboxIndicator: /* html */ `
         <svg
             part="checkbox-indicator"
             class="checkbox-indicator"
@@ -33,7 +32,7 @@ export const fastMenuItem = MenuItem.compose<MenuItemOptions>({
             />
         </svg>
     `,
-    expandCollapseGlyph: html`
+    expandCollapseGlyph: /* html */ `
         <svg
             viewBox="0 0 16 16"
             xmlns="http://www.w3.org/2000/svg"
@@ -45,7 +44,7 @@ export const fastMenuItem = MenuItem.compose<MenuItemOptions>({
             />
         </svg>
     `,
-    radioIndicator: html`
+    radioIndicator: /* html */ `
         <span part="radio-indicator" class="radio-indicator"></span>
     `,
 });
