@@ -15,13 +15,13 @@ import {
 } from "../design-tokens";
 import { DirectionalStyleSheetBehavior } from "../styles";
 
-const rtl = (context: ElementDefinitionContext, definition: AvatarOptions) => css`
+const rtl: FoundationElementTemplate<ElementStyles> = (context, definition) => css`
     ::slotted(${context.tagFor(Badge)}) {
         left: 0;
     }
 `;
 
-const ltr = (context: ElementDefinitionContext, definition: AvatarOptions) => css`
+const ltr: FoundationElementTemplate<ElementStyles> = (context, definition) => css`
     ::slotted(${context.tagFor(Badge)}) {
         right: 0;
     }
