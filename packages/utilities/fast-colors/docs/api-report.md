@@ -53,7 +53,7 @@ export function blendScreen(bottom: ColorRGBA64, top: ColorRGBA64): ColorRGBA64;
 export function blendScreenChannel(bottom: number, top: number): number;
 
 // @public
-export function calculateOverlayColor(rgbMatch: ColorRGBA64, rgbBackground: ColorRGBA64, rgbOverlay: ColorRGBA64): ColorRGBA64;
+export function calculateOverlayColor(rgbMatch: ColorRGBA64, rgbBackground: ColorRGBA64, rgbOverlay?: ColorRGBA64): ColorRGBA64;
 
 // @public
 export function centeredRescale(input: ColorRGBA64[], config?: CenteredRescaleConfig): ColorRGBA64[];

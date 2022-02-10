@@ -15,6 +15,14 @@
                     "required": false
                 },
                 {
+                    "name": "multiple",
+                    "title": "Multiple",
+                    "description": "Indicates if the listbox is in multi-selection mode",
+                    "type": "boolean",
+                    "default": false,
+                    "required": false
+                },
+                {
                     "name": "size",
                     "title": "Size",
                     "description": "The maximum number of visible options",
