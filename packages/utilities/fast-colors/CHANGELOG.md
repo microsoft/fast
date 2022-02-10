@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-colors
 
-This log was last generated on Sun, 31 Oct 2021 07:17:45 GMT and should not be manually modified.
+This log was last generated on Wed, 09 Feb 2022 07:14:00 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 5.1.5
+
+Wed, 09 Feb 2022 07:14:00 GMT
+
+### Patches
+
+- Updated calculateOverlayColor to automatically determine the overlay color (47367562+bheston@users.noreply.github.com)
 
 ## 5.1.4
 
