@@ -46,10 +46,10 @@ export const fastNumberField = NumberField.compose<NumberFieldOptions>({
     shadowOptions: {
         delegatesFocus: true,
     },
-    stepDownGlyph: `
+    stepDownGlyph: /* html */ `
         <span class="step-down-glyph" part="step-down-glyph"></span>
     `,
-    stepUpGlyph: `
+    stepUpGlyph: /* html */ `
         <span class="step-up-glyph" part="step-up-glyph"></span>
     `,
 });
