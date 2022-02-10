@@ -1,20 +1,14 @@
-import { html, ref } from "@microsoft/fast-element";
-import type { ViewTemplate } from "@microsoft/fast-element";
+import { html, ref, ViewTemplate } from "@microsoft/fast-element";
 import { Orientation } from "@microsoft/fast-web-utilities";
-import type { ElementDefinitionContext } from "../design-system";
-import type { FoundationElementDefinition } from "../foundation-element";
+import type { FoundationElementTemplate } from "../foundation-element";
 import type { VirtualList } from "./virtual-list";
-
 /**
  * The template for the {@link @microsoft/fast-foundation#VirtualList} component.
  * @public
  */
-export const virtualListTemplate: (
-    context: ElementDefinitionContext,
-    definition: FoundationElementDefinition
-) => ViewTemplate<VirtualList> = (
-    context: ElementDefinitionContext,
-    definition: FoundationElementDefinition
+export const virtualListTemplate: FoundationElementTemplate<ViewTemplate<VirtualList>> = (
+    context,
+    definition
 ) => html`
     <template>
         <div
