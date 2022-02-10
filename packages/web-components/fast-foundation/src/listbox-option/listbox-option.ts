@@ -169,7 +169,7 @@ export class ListboxOption extends FoundationElement {
     }
 
     public get label() {
-        return this.value ? this.value : this.textContent ? this.textContent : "";
+        return this.value ?? this.textContent ?? "";
     }
 
     public get text(): string {
@@ -190,7 +190,7 @@ export class ListboxOption extends FoundationElement {
 
     public get value(): string {
         Observable.track(this, "value");
-        return this._value ? this._value : this.text;
+        return this._value ?? this.textContent ?? "";
     }
 
     public get form(): HTMLFormElement | null {
@@ -204,7 +204,6 @@ export class ListboxOption extends FoundationElement {
         selected?: boolean
     ) {
         super();
-        this.initialValue = this.initialValue || "";
 
         if (text) {
             this.textContent = text;

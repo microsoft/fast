@@ -73,6 +73,18 @@ describe("Listbox", () => {
         await disconnect();
     });
 
+    it("should not select the first option when listbox is `disabled`", async () => {
+        const { element, connect, disconnect, option1, option2, option3 } = await setup();
+        element.disabled = true;
+        await connect();
+        //await DOM.nextUpdate();
+        expect(element.selectedOptions).to.not.contain(option1);
+        expect(element.selectedOptions).to.not.contain(option2);
+        expect(element.selectedOptions).to.not.contain(option3);
+
+        await disconnect();
+    });
+
     it("should select the option with a `selected` attribute", async () => {
         const { element, connect, disconnect, option1, option2, option3 } = await setup();
 
@@ -84,6 +96,26 @@ describe("Listbox", () => {
 
         expect(element.selectedOptions).to.not.contain(option1);
         expect(element.selectedOptions).to.contain(option2);
+        expect(element.selectedOptions).to.not.contain(option3);
+
+        await disconnect();
+    });
+
+    it("should set the `selectedIndex` to match the selected option after connection", async () => {
+        const { element, connect, disconnect, option1, option2, option3 } = await setup();
+
+        await connect();
+
+        expect(element.selectedIndex).to.equal(0);
+
+        option2.setAttribute("selected", "");
+
+        expect(element.selectedIndex).to.equal(1);
+
+        expect(element.selectedOptions).to.not.contain(option1);
+
+        expect(element.selectedOptions).to.contain(option2);
+
         expect(element.selectedOptions).to.not.contain(option3);
 
         await disconnect();
@@ -216,6 +248,26 @@ describe("Listbox", () => {
         await DOM.nextUpdate();
 
         expect(element.getAttribute("aria-activedescendant")).to.equal(option3.id);
+
+        await disconnect();
+    });
+
+    it("should set the `aria-multiselectable` attribute to match the `multiple` attribute", async () => {
+        const { element, connect, disconnect } = await setup();
+
+        await connect();
+
+        element.multiple = true;
+
+        await DOM.nextUpdate();
+
+        expect(element.getAttribute("aria-multiselectable")).to.equal("true");
+
+        element.multiple = false;
+
+        await DOM.nextUpdate();
+
+        expect(element.getAttribute("aria-multiselectable")).to.not.exist;
 
         await disconnect();
     });

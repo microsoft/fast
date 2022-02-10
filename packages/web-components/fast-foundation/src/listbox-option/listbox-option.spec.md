@@ -2,9 +2,9 @@
 
 ## Overview
 
-The `<fast-option>` component is an option that is intended to be used with `<fast-listbox>` and `<fast-select>`.
+The `<fast-option>` component is an option that is intended to be used with `<fast-listbox>`, `<fast-combobox>`, and `<fast-select>`.
 
-**Note**: To avoid namespace collisions with the [Option() constructor](https://developer.mozilla.org/en-US/docs/Web/API/HTMLOptionElement/Option), the component class is `ListboxOption`, and our implementation is defined as `<fast-option>`. This makes the class distinct and keeps the component tag name familiar for authors.
+**Note**: To avoid namespace collisions with the [`Option()` constructor](https://developer.mozilla.org/en-US/docs/Web/API/HTMLOptionElement/Option), the component class is `ListboxOption`, and our implementation is defined as `<fast-option>`. This makes the class distinct and keeps the component tag name familiar for authors.
 
 ### API
 
@@ -59,6 +59,7 @@ The `<fast-option>` component is an option that is intended to be used with `<fa
 
 ### States
 
+- `checked` - The checked state is used when the parent `<fast-listbox>` or `<fast-select>` is in multiple selection mode. To avoid accessibility conflicts, the `checked` state should not be present in single selection mode.
 - `disabled` - when disabled, user interaction has no effect. Disabling the parent `<fast-listbox>` or `<fast-select>` will also prevent user interaction on the `<fast-option>`.
 - `selected` - The selected state is primarily controlled by user interactions on the parent `listbox` component. Changing the `selected` property directly will force the state to change.
 
