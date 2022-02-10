@@ -11,6 +11,42 @@ import { TextField } from "../text-field";
 import type { DatePicker, DatePickerOptions } from "./date-picker";
 
 /**
+ *  Generic template for handling a time element selection
+ * @param context - Control context
+ * @param values - List of objects of possible values
+ * @param keydownHandler - keyboard handler
+ * @param type - type of time select
+ * @returns template
+ */
+const timeElementSelect = (
+    context: ElementDefinitionContext,
+    keydownHandler: (type: string, event: Event) => {},
+    values: {}[],
+    type: string
+) => {
+    const listbox = context.tagFor(ListboxElement);
+    const listboxOption = context.tagFor(ListboxOption);
+
+    return html`
+            <${listbox}
+                class="time-list"
+                ${ref(`${type}Select`)}
+                size="7"
+                @keydown="${(x, c) => keydownHandler(type, c.event)}"
+            >
+                ${repeat(
+                    () => values,
+                    html`
+                        <${listboxOption} @click="${x => x.action()}">
+                            ${x => x.text}
+                        </${listboxOption}>
+                    `
+                )}
+            </${listbox}>
+`;
+};
+
+/**
  * Template to render a time picker menu
  * @param context - Control context
  * @param times - labels and values for times, hours, minutes and meridian
@@ -22,56 +58,13 @@ export const timePickerTemplate = (
     times,
     timeKeydown
 ) => {
-    const listbox = context.tagFor(ListboxElement);
-    const listboxOption = context.tagFor(ListboxOption);
+    const timeSelectTemplate = timeElementSelect.bind(this, context, timeKeydown);
     return html`
         <div class="time-picker">
-            <${listbox}
-                class="time-list"
-                ${ref("hourSelect")}
-                size="7"
-                @keydown="${(x, c) => timeKeydown("hour", c.event)}"
-            >
-                ${repeat(
-                    () => times.hours,
-                    html`
-                        <${listboxOption} @click="${x => x.action()}">
-                            ${x => x.text}
-                        </${listboxOption}>
-                    `
-                )}
-            </${listbox}>
+            ${x => timeSelectTemplate(times.hours, "hour")}
             <div class="time-separate">:</div>
-            <${listbox}
-                class="time-list"
-                ${ref("minuteSelect")}
-                size="7"
-                @keydown="${(x, c) => timeKeydown("minute", c.event)}"
-            >
-                ${repeat(
-                    () => times.minutes,
-                    html`
-                        <${listboxOption} @click="${x => x.action()}">
-                            ${x => x.text}
-                        </${listboxOption}>
-                `
-                )}
-            </${listbox}>
-            <${listbox}
-                class="time-list"
-                ${ref("meridianSelect")}
-                size="7"
-                @keydown="${(x, c) => timeKeydown("meridian", c.event)}"
-            >
-                ${repeat(
-                    () => times.meridians,
-                    html`
-                        <${listboxOption} @click="${x => x.action()}">
-                            ${x => x.text}
-                        </${listboxOption}>
-                `
-                )}
-            </${listbox}>
+            ${x => timeSelectTemplate(times.minutes, "minute")}
+            ${x => timeSelectTemplate(times.meridians, "meridian")}
         </div>
     `;
 };
@@ -221,7 +214,7 @@ export const datePickerTemplate: (
                             timePickerTemplate(
                                 context,
                                 x.getTimes(),
-                                x.handleTimeKeydown
+                                x.handleTimeKeydown.bind(x)
                             )}
                     `
                 )}
@@ -229,13 +222,14 @@ export const datePickerTemplate: (
                     x => x.showCalendar,
                     html`
                     <${calendar}
-                        selected-dates="${x => `${x.date || ""}`}"
                         class="calendar"
-                        @dateselected="${(x, c) => x.handleDateClicked(c.event)}"
                         part="calendar"
+                        @dateselected="${(x, c) => x.handleDateClicked(c.event)}"
+                        @keydown="${(x, c) => x.handleCalendarKeydown(button, c.event)}"
                         locale="${x => x.locale}"
                         month="${x => x.calendarMonth}"
                         year="${x => x.calendarYear}"
+                        selected-dates="${x => `${x.date || ""}`}"
                         disabled-dates="${x => x.disabledDates}"
                         min-weeks="6">
                             <div
@@ -258,18 +252,12 @@ export const datePickerTemplate: (
                                     <${button} class="calendar-control"
                                         @click="${x => x.previousCalendar()}"
                                         @keydown="${(x, c) =>
-                                            x.handleCalendarChangeKeydown(
-                                                "previous",
-                                                c.event
-                                            )}"
+                                            x.handleCalendarChangeKeydown(-1, c.event)}"
                                     >&downarrow;</${button}>
                                     <${button} class="calendar-control"
                                         @click="${x => x.nextCalendar()}"
                                         @keydown="${(x, c) =>
-                                            x.handleCalendarChangeKeydown(
-                                                "next",
-                                                c.event
-                                            )}"
+                                            x.handleCalendarChangeKeydown(1, c.event)}"
                                     >&uparrow;</${button}>
                                 </div>
                             </div>
@@ -287,12 +275,8 @@ export const datePickerTemplate: (
                                 action: x.yearPickerDisplay.bind(x, true),
                                 isInteractive: x.type.indexOf("date") >= 0,
                             },
-                            () => {
-                                x.monthView -= 1;
-                            },
-                            () => {
-                                x.monthView += 1;
-                            },
+                            x.handleMonthChange.bind(x, -1),
+                            x.handleMonthChange.bind(x, 1),
                             x.type.indexOf("date") >= 0 ? resetButton : () => {}
                         )
                 )}

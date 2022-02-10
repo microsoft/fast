@@ -9,6 +9,7 @@ import {
     keySpace,
 } from "@microsoft/fast-web-utilities";
 import type { FoundationElementDefinition } from "../foundation-element";
+import type { ListboxElement } from "../listbox";
 import {
     DateFormatter,
     DayFormat,
@@ -26,6 +27,7 @@ export type DatePickerOptions = FoundationElementDefinition & {};
 
 /**
  * Struct for holding parsed data from a specific Date
+ * @public
  */
 export type DateData = {
     year?: number;
@@ -265,22 +267,19 @@ export class DatePicker extends FormAssociatedDatePicker {
      * The hour select listbox
      * @public
      */
-    @observable
-    public hourSelect;
+    public hourSelect: ListboxElement;
 
     /**
      * The minute select listbox
      * @public
      */
-    @observable
-    public minuteSelect;
+    public minuteSelect: ListboxElement;
 
     /**
      * The meridian select listbox
      * @public
      */
-    @observable
-    public meridianSelect;
+    public meridianSelect: ListboxElement;
 
     /**
      * The Calendar month
@@ -349,21 +348,58 @@ export class DatePicker extends FormAssociatedDatePicker {
         return true;
     }
 
-    public handleCalendarChangeKeydown(
-        direction: "previous" | "next",
-        e: KeyboardEvent
-    ): boolean {
+    public handleCalendarKeydown(targets, event: KeyboardEvent) {
+        const target = event.target as HTMLElement;
+        const { key } = event;
+        if (target && target.parentNode) {
+            console.log({ key, target, targets, parent: target.parentNode });
+        }
+    }
+
+    public handleCalendarChangeKeydown(direction: number = 1, e: KeyboardEvent): boolean {
         const key: string = e.key;
+        const changeCalendar = direction => {
+            e.preventDefault();
+            const functionName = `${direction ? "next" : "previous"}Calendar`;
+            if (this[functionName]) {
+                this[functionName]();
+            }
+            return false;
+        };
+        const moveFocus = direction => {
+            const target: HTMLElement = e.target as HTMLElement;
+            const { parentNode } = target;
+            if (parentNode?.children) {
+                const { children } = parentNode;
+                const index = Array.from(children).findIndex(child => child === target);
+                let newIndex = index + direction;
+                if (newIndex < 0) {
+                    newIndex = children.length - 1;
+                }
+                if (newIndex >= children.length) {
+                    newIndex = 0;
+                }
+                (children[newIndex] as HTMLElement).focus();
+            }
+        };
 
         switch (key) {
-            case keyEnter: {
-                e.preventDefault();
-                const functionName = `${direction}Calendar`;
-                if (this[functionName]) {
-                    this[functionName]();
-                }
-                return false;
-            }
+            case keyEnter:
+            case keySpace:
+                changeCalendar(direction);
+                break;
+            case keyArrowDown:
+                changeCalendar(-1);
+                break;
+            case keyArrowUp:
+                changeCalendar(1);
+                break;
+            case keyArrowLeft:
+                moveFocus(-1);
+                break;
+            case keyArrowRight:
+                moveFocus(1);
+                break;
         }
 
         return true;
@@ -910,6 +946,7 @@ export class DatePicker extends FormAssociatedDatePicker {
     /**
      * Handler for the keyup event on the text field
      * @param event - Keyboard event for key press
+     * @public
      */
     public handleKeyup(event: KeyboardEvent): boolean {
         const key = event.key;
@@ -934,9 +971,50 @@ export class DatePicker extends FormAssociatedDatePicker {
     }
 
     /**
+     *
+     * @param direction - previous or next month
+     * @param event - keyboard or mouse event triggered
+     * @returns should bubble
+     * @public
+     */
+    public handleMonthChange(
+        direction: number = 1,
+        event: KeyboardEvent | MouseEvent
+    ): boolean {
+        if (event instanceof KeyboardEvent) {
+            const { key, target } = event;
+            const updateMonth = value => {
+                event.preventDefault();
+                this.monthView += value;
+                DOM.nextUpdate().then(() => {
+                    (target as HTMLElement)?.focus();
+                    console.log(target);
+                });
+                return false;
+            };
+
+            switch (key) {
+                case keyEnter:
+                case keySpace:
+                    updateMonth(direction);
+                    break;
+                case keyArrowDown:
+                    updateMonth(-1);
+                    break;
+                case keyArrowUp:
+                    updateMonth(1);
+                    break;
+            }
+        } else {
+            this.monthView += direction;
+        }
+        return true;
+    }
+
+    /**
      * Converst a Date or string to a date object. Defaults to todays date
-     * @param date
-     * @returns
+     * @param date - a Date object or string, defaults to the current date
+     * @returns an object representing the date
      */
     private getDateAsObject(
         date: Date | string = new Date()
@@ -968,8 +1046,7 @@ export class DatePicker extends FormAssociatedDatePicker {
 
     /**
      * Creates an object for date and time formatting based on the date-picker type
-     * @returns
-     * @private
+     * @returns date formatting
      */
     private getFormatting() {
         const keyToFormat = (formatObject, key) => {

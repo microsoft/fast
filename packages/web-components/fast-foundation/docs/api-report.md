@@ -816,6 +816,8 @@ export class DatePicker extends FormAssociatedDatePicker {
     disconnectedCallback(): void;
     // @public
     flyoutOpen: boolean;
+    // (undocumented)
+    flyoutOpenChanged(previous: any, next: any): void;
     // @public
     getMonths(): {
         action: () => void;
@@ -846,33 +848,52 @@ export class DatePicker extends FormAssociatedDatePicker {
     }[];
     // @public
     handleBlur(): void;
+    // (undocumented)
+    handleCalendarChangeKeydown(direction: number | undefined, e: KeyboardEvent): boolean;
+    // (undocumented)
+    handleCalendarKeydown(targets: any, event: KeyboardEvent): void;
+    // @public
+    handleCalendarTitleKeydown(e: KeyboardEvent): boolean;
     // @public
     handleDateClicked(event: MouseEvent): void;
     // @public
     handleFocus(): void;
     // @public
     handleHourClicked(hour: number): void;
-    handleKeyup(event: KeyboardEvent): void;
+    // @public
+    handleKeyup(event: KeyboardEvent): boolean;
     // @public
     handleMeridianClicked(meridian: "AM" | "PM"): void;
     // @public
     handleMinuteClicked(minute: number): void;
+    // @public (undocumented)
+    handleMonthChange(direction: number | undefined, event: KeyboardEvent | MouseEvent): boolean;
     // @public
     handleMonthClicked(month: number, year: number): void;
+    handleMonthKeyup(month: number, year: number, event: KeyboardEvent): boolean;
+    // @public
+    handleTimeKeydown(unit: string, event: KeyboardEvent): boolean;
     // @public
     handleYearClicked(year: number): void;
+    handleYearKeyup(year: number, event: KeyboardEvent): boolean;
     // @public
     hour12: boolean;
     // @public
     hourFormat: "numeric" | "2-digit";
     // @public
+    hourSelect: ListboxElement;
+    // @public
     locale: string;
     // @public
     max: string;
     // @public
+    meridianSelect: ListboxElement;
+    // @public
     min: string;
     // @public
     minuteFormat: "numeric" | "2-digit";
+    // @public
+    minuteSelect: ListboxElement;
     // @public
     monthFormat: MonthFormat;
     // @public
@@ -899,10 +920,10 @@ export class DatePicker extends FormAssociatedDatePicker {
     resetCalendar(): void;
     // @public
     resetText: string;
-    // (undocumented)
+    // @public
     setCalendarTitle(): void;
-    // (undocumented)
-    setDisabledDates(): void;
+    // @public
+    setTime(keys?: string | string[]): void;
     // @public
     setValue(values: {} | string | Date): void;
     // @public
@@ -931,7 +952,7 @@ export class DatePicker extends FormAssociatedDatePicker {
     weekdayFormat: WeekdayFormat;
     // @public
     yearFormat: YearFormat;
-    yearPickerDisplay(open?: boolean): void;
+    yearPickerDisplay(open?: boolean, e?: KeyboardEvent): boolean;
     // @public
     yearView: number;
 }
@@ -2735,7 +2756,7 @@ export enum TextFieldType {
 }
 
 // @public
-export const timePickerTemplate: (context: ElementDefinitionContext, times: any) => ViewTemplate<any, any>;
+export const timePickerTemplate: (context: ElementDefinitionContext, times: any, timeKeydown: any) => ViewTemplate<any, any>;
 
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
 // Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "Toolbar" because one of its declarations is marked as @internal
