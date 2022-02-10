@@ -103,7 +103,7 @@ describe("VirtualList", () => {
 
         await connect();
 
-        expect(element.visibleItemSpans).to.equal(undefined);
+        expect(element.visibleItemSpans).to.be.empty;
 
         await disconnect();
     });
@@ -113,7 +113,7 @@ describe("VirtualList", () => {
 
         await connect();
 
-        expect(element.itemTemplate).to.not.equal(undefined);
+        expect(element.itemTemplate).to.not.be.empty;
 
         await disconnect();
     });

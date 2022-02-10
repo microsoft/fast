@@ -338,10 +338,8 @@ export class VirtualList extends FoundationElement {
      * stops observing the items array
      */
     private unobserveItems(): void {
-        if (this.itemsObserver !== null) {
-            this.itemsObserver.unsubscribe(this);
-            this.itemsObserver = null;
-        }
+        this.itemsObserver?.unsubscribe(this);
+        this.itemsObserver = null;
     }
 
     /**
@@ -603,28 +601,14 @@ export class VirtualList extends FoundationElement {
      * Gets the viewport element by id, or defaults to element
      */
     private getViewport = (): HTMLElement => {
-        let viewportElement: HTMLElement | null = null;
-        if (typeof this.viewport === "string") {
-            viewportElement = document.getElementById(this.viewport);
-        }
-
-        if (viewportElement !== null) {
-            return viewportElement;
-        }
-
-        return this;
+        return document.getElementById(this.viewport) ?? this;
     };
 
     /**
      * updates the dimensions of the stack
      */
     private updateDimensions = (): void => {
-        if (this.items === undefined) {
-            this.totalListSpan = 0;
-        } else {
-            this.totalListSpan = this.itemSpan * this.items.length;
-        }
-
+        this.totalListSpan = this.itemSpan * (this.items?.length ?? 0);
         this.requestPositionUpdates();
     };
 
