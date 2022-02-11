@@ -5,7 +5,7 @@ import {
     forcedColorsStylesheetBehavior,
     TextFieldOptions,
 } from "@microsoft/fast-foundation";
-import { designUnit } from "../design-tokens";
+import { density, designUnit } from "../design-tokens";
 import {
     inputFilledForcedColorStyles,
     inputFilledStyles,
@@ -79,15 +79,26 @@ export const searchStyles = (context, definition) =>
         }
 
         .clear-button {
-            position: absolute;
-            right: 0;
-            top: 1px;
+            display: inline-flex;
+            align-items: center;
+            margin: 1px;
             height: calc(100% - 2px);
             opacity: 0;
+            background: transparent;
+            fill: currentcolor;
+            border: none;
+            outline: none;
+            padding: 0 calc((10 + (${designUnit} * 2 * ${density})) * 1px);
         }
 
         .clear-button__hidden {
             opacity: 0;
+        }
+
+        .input-wrapper {
+            display: flex;
+            position: relative;
+            width: 100%;
         }
 
         :host(:hover:not([disabled], [readOnly])) .clear-button,
