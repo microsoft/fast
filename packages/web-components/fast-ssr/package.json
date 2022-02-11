@@ -15,10 +15,11 @@
     "url": "https://github.com/Microsoft/fast/issues/new/choose"
   },
   "scripts": {
-      "pretest": "tsc -p tsconfig.json",
-      "test": "playwright test -c dist",
-      "test-server": "node dist/src/template-renderer/test/server.js",
-      "install-playwright-browsers": "npx playwright install"
+    "build": "tsc -b --clean src && tsc -b src",
+    "pretest": "tsc -b server",
+    "test": "playwright test -c test",
+    "test-server": "node server/dist/server.js",
+    "install-playwright-browsers": "npx playwright install"
   },
   "description": "A package rendering FAST components outside the browser.",
   "main": "index.js",
