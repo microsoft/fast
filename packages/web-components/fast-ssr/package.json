@@ -16,7 +16,8 @@
   },
   "scripts": {
     "build": "tsc -b --clean src && tsc -b src",
-    "pretest": "tsc -b server",
+    "build-server": "tsc -b server",
+    "pretest": "npm run build-server",
     "test": "playwright test -c test",
     "test-server": "node server/dist/server.js",
     "install-playwright-browsers": "npx playwright install"
