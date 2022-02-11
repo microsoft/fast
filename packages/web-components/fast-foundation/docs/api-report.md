@@ -2159,6 +2159,8 @@ export class Select extends FormAssociatedSelect {
     // @internal
     listbox: HTMLDivElement;
     // @internal
+    listboxId: string;
+    // @internal
     maxHeight: number;
     // @internal
     open: boolean;
