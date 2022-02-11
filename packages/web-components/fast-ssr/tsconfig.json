@@ -9,6 +9,7 @@
     "emitDecoratorMetadata": true,
     "noEmitOnError": true,
     "strict": true,
+    "skipLibCheck": true,
     "lib": [
       "dom",
       "esnext"
