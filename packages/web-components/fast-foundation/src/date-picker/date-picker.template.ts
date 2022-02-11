@@ -1,5 +1,9 @@
 import { html, ref, repeat, when } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
+import type {
+    FoundationElementTemplate,
+    OverrideFoundationElementDefinition,
+} from "../foundation-element";
 import type { ElementDefinitionContext } from "../design-system";
 import { AnchoredRegion } from "../anchored-region";
 import { Button } from "../button";
@@ -80,7 +84,15 @@ export const timePickerTemplate = (
  * @returns - A picker template used by month and year pickers
  * @public
  */
-const pickerTemplate = (context, items, title, previousAction, nextAction, reset) => {
+const pickerTemplate = (
+    context,
+    definition,
+    items,
+    title,
+    previousAction,
+    nextAction,
+    reset
+) => {
     const button = context.tagFor(Button);
     const grid = context.tagFor(DataGrid);
     const row = context.tagFor(DataGridRow);
@@ -102,7 +114,11 @@ const pickerTemplate = (context, items, title, previousAction, nextAction, reset
                 @click="${x => previousAction()}"
                 @keydown="${(x, c) => previousAction(c.event)}"
             >
-                &downarrow;
+                ${
+                    definition.previousIcon instanceof Function
+                        ? definition.previousIcon(context, definition)
+                        : definition.previousIcon ?? ""
+                }
             </${button}>
             <${button}
                 class="arrow"
@@ -110,7 +126,11 @@ const pickerTemplate = (context, items, title, previousAction, nextAction, reset
                 @click="${x => nextAction()}"
                 @keydown="${(x, c) => nextAction(c.event)}"
             >
-                &uparrow;
+                ${
+                    definition.nextIcon instanceof Function
+                        ? definition.nextIcon(context, definition)
+                        : definition.nextIcon ?? ""
+                }
             </${button}>
         </div>
       <${grid}
@@ -160,13 +180,10 @@ const pickerTemplate = (context, items, title, previousAction, nextAction, reset
  * @returns - A ViewTemplate
  * @public
  */
-export const datePickerTemplate: (
-    Context: ElementDefinitionContext,
-    definition: DatePickerOptions
-) => ViewTemplate<DatePicker> = (
-    context: ElementDefinitionContext,
-    definition: DatePickerOptions
-) => {
+export const datePickerTemplate: FoundationElementTemplate<
+    ViewTemplate<DatePicker>,
+    DatePickerOptions
+> = (context, definition) => {
     const textField = context.tagFor(TextField);
     const anchoredRegion = context.tagFor(AnchoredRegion);
     const button = context.tagFor(Button);
@@ -192,7 +209,11 @@ export const datePickerTemplate: (
             @focus="${x => x.handleFocus()}"
             @keyup="${(x, c) => x.handleKeyup(c.event as KeyboardEvent)}"
         >
-            <div slot="end">&#128197;</div>
+            <div slot="end">${
+                definition.calendarIcon instanceof Function
+                    ? definition.calendarIcon(context, definition)
+                    : definition.calendarIcon ?? ""
+            }</div>
         </${textField}>
         ${when(
             x => !x.readonly && !x.disabled,
@@ -253,12 +274,20 @@ export const datePickerTemplate: (
                                         @click="${x => x.previousCalendar()}"
                                         @keydown="${(x, c) =>
                                             x.handleCalendarChangeKeydown(-1, c.event)}"
-                                    >&downarrow;</${button}>
+                                    >${
+                                        definition.previousIcon instanceof Function
+                                            ? definition.previousIcon(context, definition)
+                                            : definition.previousIcon ?? ""
+                                    }</${button}>
                                     <${button} class="calendar-control"
                                         @click="${x => x.nextCalendar()}"
                                         @keydown="${(x, c) =>
                                             x.handleCalendarChangeKeydown(1, c.event)}"
-                                    >&uparrow;</${button}>
+                                    >${
+                                        definition.nextIcon instanceof Function
+                                            ? definition.nextIcon(context, definition)
+                                            : definition.nextIcon ?? ""
+                                    }</${button}>
                                 </div>
                             </div>
                         </${calendar}>
@@ -269,6 +298,7 @@ export const datePickerTemplate: (
                     x =>
                         pickerTemplate(
                             context,
+                            definition,
                             x.arrayToMatrix(x.getMonths(), 4),
                             {
                                 text: x.dateFormatter.getYear(x.monthView),
@@ -288,6 +318,7 @@ export const datePickerTemplate: (
                         const end = years[years.length - 1].text;
                         return pickerTemplate(
                             context,
+                            definition,
                             x.arrayToMatrix(years, 4),
                             {
                                 text: `${start} - ${end}`,

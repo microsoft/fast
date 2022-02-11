@@ -958,13 +958,17 @@ export class DatePicker extends FormAssociatedDatePicker {
 }
 
 // @alpha
-export type DatePickerOptions = FoundationElementDefinition & {};
+export type DatePickerOptions = FoundationElementDefinition & {
+    calendarIcon?: FoundationElementTemplate<SyntheticViewTemplate<any, DatePicker>, DatePickerOptions> | SyntheticViewTemplate | string;
+    previousIcon?: FoundationElementTemplate<SyntheticViewTemplate<any, DatePicker>, DatePickerOptions> | SyntheticViewTemplate | string;
+    nextIcon?: FoundationElementTemplate<SyntheticViewTemplate<any, DatePicker>, DatePickerOptions> | SyntheticViewTemplate | string;
+};
 
-// Warning: (ae-incompatible-release-tags) The symbol "datePickerTemplate" is marked as @public, but its signature references "DatePickerOptions" which is marked as @alpha
 // Warning: (ae-incompatible-release-tags) The symbol "datePickerTemplate" is marked as @public, but its signature references "DatePicker" which is marked as @alpha
+// Warning: (ae-incompatible-release-tags) The symbol "datePickerTemplate" is marked as @public, but its signature references "DatePickerOptions" which is marked as @alpha
 //
 // @public (undocumented)
-export const datePickerTemplate: (Context: ElementDefinitionContext, definition: DatePickerOptions) => ViewTemplate<DatePicker>;
+export const datePickerTemplate: FoundationElementTemplate<ViewTemplate<DatePicker>, DatePickerOptions>;
 
 // @public
 export type DayFormat = "2-digit" | "numeric";

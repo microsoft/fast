@@ -25,7 +25,15 @@ import {
 import { elevation } from "../styles/elevation";
 import { DirectionalStyleSheetBehavior } from "../styles";
 
-export const datePickerStyles: (
+/**
+ * Styles for the fast-date-picker component
+ * @param context - control context
+ * @param definition - foundation element definition
+ * @returns styles
+ *
+ * @public
+ */
+export const DatePickerStyles: (
     context: ElementDefinitionContext,
     definition: FoundationElementDefinition
 ) => ElementStyles = (

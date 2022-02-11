@@ -1,4 +1,10 @@
-import { attr, booleanConverter, DOM, observable } from "@microsoft/fast-element";
+import {
+    attr,
+    booleanConverter,
+    DOM,
+    observable,
+    SyntheticViewTemplate,
+} from "@microsoft/fast-element";
 import {
     keyArrowDown,
     keyArrowLeft,
@@ -8,7 +14,10 @@ import {
     keyEscape,
     keySpace,
 } from "@microsoft/fast-web-utilities";
-import type { FoundationElementDefinition } from "../foundation-element";
+import type {
+    FoundationElementDefinition,
+    FoundationElementTemplate,
+} from "../foundation-element";
 import type { ListboxElement } from "../listbox";
 import {
     DateFormatter,
@@ -23,7 +32,29 @@ import { FormAssociatedDatePicker } from "./date-picker.form-associated";
  * Date picker options
  * @alpha
  */
-export type DatePickerOptions = FoundationElementDefinition & {};
+export type DatePickerOptions = FoundationElementDefinition & {
+    calendarIcon?:
+        | FoundationElementTemplate<
+              SyntheticViewTemplate<any, DatePicker>,
+              DatePickerOptions
+          >
+        | SyntheticViewTemplate
+        | string;
+    previousIcon?:
+        | FoundationElementTemplate<
+              SyntheticViewTemplate<any, DatePicker>,
+              DatePickerOptions
+          >
+        | SyntheticViewTemplate
+        | string;
+    nextIcon?:
+        | FoundationElementTemplate<
+              SyntheticViewTemplate<any, DatePicker>,
+              DatePickerOptions
+          >
+        | SyntheticViewTemplate
+        | string;
+};
 
 /**
  * Struct for holding parsed data from a specific Date
