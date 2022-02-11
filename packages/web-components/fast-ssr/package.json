@@ -22,7 +22,7 @@
     "test-server": "node server/dist/server.js",
     "install-playwright-browsers": "npx playwright install"
   },
-  "description": "A package rendering FAST components outside the browser.",
+  "description": "A package for rendering FAST components outside the browser.",
   "main": "index.js",
   "private": true,
   "dependencies": {
