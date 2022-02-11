@@ -83,22 +83,22 @@ export const radioStyles: (
             outline-offset: calc(${strokeWidth} * 1px);
         }
 
-        :host(.checked) .control {
+        :host([aria-checked="true"]) .control {
             background: ${accentFillRest};
             border-color: ${accentFillRest};
         }
 
-        :host(.checked:enabled:hover) .control {
+        :host([aria-checked="true"]:enabled:hover) .control {
             background: ${accentFillHover};
             border-color: ${accentFillHover};
         }
 
-        :host(.checked:enabled:active) .control {
+        :host([aria-checked="true"]:enabled:active) .control {
             background: ${accentFillActive};
             border-color: ${accentFillActive};
         }
 
-        :host(.checked:enabled:${focusVisible}) .control {
+        :host([aria-checked="true"]:enabled:${focusVisible}) .control {
             background: ${accentFillFocus};
             border-color: ${accentFillFocus};
         }
@@ -142,7 +142,7 @@ export const radioStyles: (
             cursor: ${disabledCursor};
         }
 
-        :host(.checked) slot[name="checked-indicator"] {
+        :host([aria-checked="true"]) slot[name="checked-indicator"] {
             opacity: 1;
         }
 
@@ -163,31 +163,31 @@ export const radioStyles: (
                     background: ${SystemColors.Field};
                 }
 
-                :host(.checked) .control {
+                :host([aria-checked="true"]) .control {
                     background: ${SystemColors.Highlight};
                     border-color: ${SystemColors.Highlight};
                 }
 
-                :host(.checked:enabled:hover) .control,
+                :host([aria-checked="true"]:enabled:hover) .control,
                 .control:active {
                     border-color: ${SystemColors.Highlight};
                     background: ${SystemColors.HighlightText};
                 }
 
                 :host(:${focusVisible}) .control,
-                :host(.checked:enabled:${focusVisible}) .control {
+                :host([aria-checked="true"]:enabled:${focusVisible}) .control {
                     background: ${SystemColors.Field};
                     border-color: ${SystemColors.FieldText};
                     outline: calc(${focusStrokeWidth} * 1px) solid ${SystemColors.FieldText};
                     outline-offset: calc(${strokeWidth} * 1px);
                 }
 
-                :host(.checked) slot[name="checked-indicator"] {
+                :host([aria-checked="true"]) slot[name="checked-indicator"] {
                     fill: ${SystemColors.HighlightText};
                 }
 
-                :host(.checked:enabled:hover) slot[name="checked-indicator"],
-                :host(.checked:enabled:${focusVisible}) slot[name="checked-indicator"] {
+                :host([aria-checked="true"]:enabled:hover) slot[name="checked-indicator"],
+                :host([aria-checked="true"]:enabled:${focusVisible}) slot[name="checked-indicator"] {
                     fill: ${SystemColors.Highlight};
                 }
 
@@ -200,14 +200,14 @@ export const radioStyles: (
                 }
 
                 :host([disabled]) .control,
-                :host(.checked[disabled]:hover) .control,
+                :host([aria-checked="true"][disabled]:hover) .control,
                 .control:active {
                     background: ${SystemColors.Field};
                     border-color: ${SystemColors.GrayText};
                 }
 
                 :host([disabled]) slot[name="checked-indicator"],
-                :host(.checked[disabled]) .control:hover slot[name="checked-indicator"] {
+                :host([aria-checked="true"][disabled]) .control:hover slot[name="checked-indicator"] {
                     fill: ${SystemColors.GrayText};
                 }
             `
