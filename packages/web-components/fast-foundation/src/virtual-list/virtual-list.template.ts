@@ -2,6 +2,38 @@ import { html, ref, ViewTemplate } from "@microsoft/fast-element";
 import { Orientation } from "@microsoft/fast-web-utilities";
 import type { FoundationElementTemplate } from "../foundation-element";
 import type { VirtualList } from "./virtual-list";
+import { VirtualListItem } from "./virtual-list-item";
+
+function createDefaultVerticalItemTemplate(context): ViewTemplate {
+    const listItemTag = context.tagFor(VirtualListItem);
+    return html`
+    <${listItemTag}
+        :itemData="${x => x}"
+        :contentTemplate="${(x, c) => c.parent.itemContentsTemplate}"
+        style="
+            height:  ${(x, c) => `${c.parent.visibleItemSpans[c.index]?.span}px`};
+            transform: ${(x, c) =>
+                `translateY(${c.parent.visibleItemSpans[c.index]?.start}px)`};
+        "
+    ></${listItemTag}>
+`;
+}
+
+function createDefaultHorizontalItemTemplate(context): ViewTemplate {
+    const listItemTag = context.tagFor(VirtualListItem);
+    return html`
+    <${listItemTag}
+        :itemData="${x => x}"
+        :contentTemplate="${(x, c) => c.parent.itemContentsTemplate}"
+        style="
+            width:  ${(x, c) => `${c.parent.visibleItemSpans[c.index]?.span}px`};
+            transform: ${(x, c) =>
+                `translateX(${c.parent.visibleItemSpans[c.index]?.start}px)`};
+        "
+    ></${listItemTag}>
+`;
+}
+
 /**
  * The template for the {@link @microsoft/fast-foundation#VirtualList} component.
  * @public
@@ -9,20 +41,35 @@ import type { VirtualList } from "./virtual-list";
 export const virtualListTemplate: FoundationElementTemplate<ViewTemplate<VirtualList>> = (
     context,
     definition
-) => html`
-    <template>
-        <div
-            class="container"
-            part="container"
-            style="
-                width: ${x =>
-                x.orientation === Orientation.vertical ? "100%" : `${x.totalListSpan}px`};
-                height: ${x =>
-                x.orientation !== Orientation.vertical ? "100%" : `${x.totalListSpan}px`};
-            "
-            ${ref("containerElement")}
+) => {
+    const defaultVerticalItemTemplate: ViewTemplate = createDefaultVerticalItemTemplate(
+        context
+    );
+    const defaultHorizontalItemTemplate: ViewTemplate = createDefaultHorizontalItemTemplate(
+        context
+    );
+    return html<VirtualList>`
+        <template
+            :defaultVerticalItemTemplate="${defaultVerticalItemTemplate}"
+            :defaultHorizontalItemTemplate="${defaultHorizontalItemTemplate}"
         >
-            <slot></slot>
-        </div>
-    </template>
-`;
+            <div
+                class="container"
+                part="container"
+                style="
+                width: ${x =>
+                    x.orientation === Orientation.vertical
+                        ? "100%"
+                        : `${x.totalListSpan}px`};
+                height: ${x =>
+                    x.orientation !== Orientation.vertical
+                        ? "100%"
+                        : `${x.totalListSpan}px`};
+            "
+                ${ref("containerElement")}
+            >
+                <slot></slot>
+            </div>
+        </template>
+    `;
+};
