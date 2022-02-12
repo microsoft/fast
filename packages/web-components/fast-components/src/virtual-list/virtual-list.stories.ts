@@ -123,7 +123,7 @@ addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
         }
 
         const stackh1 = document.getElementById("stackh1") as FoundationVirtualList;
-        stackh1.itemTemplate = horizontalImageItemTemplate;
+        // stackh1.itemTemplate = horizontalImageItemTemplate;
         stackh1.items = data;
 
         const stackh2 = document.getElementById("stackh2") as FoundationVirtualList;
