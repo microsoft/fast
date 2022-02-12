@@ -1,7 +1,6 @@
 import {
     attr,
     DOM,
-    html,
     Notifier,
     nullableNumberConverter,
     Observable,
@@ -33,35 +32,6 @@ export interface SpanMap {
     end: number;
     span: number;
 }
-
-/**
- * The default item template
- * Authors will typically want to provide a template specific to their needs
- * as the default display isn't particularly useful
- */
-const defaultItemTemplate: ViewTemplate<any> = html`
-    <div
-        style="
-            overflow-wrap: anywhere;
-            overflow: hidden;
-            position: absolute;
-            height:  ${(x, c) =>
-            c.parent.orientation === Orientation.vertical
-                ? `${c.parent.visibleItemSpans[c.index]?.span}px`
-                : `100%`};
-            width:  ${(x, c) =>
-            c.parent.orientation === Orientation.vertical
-                ? `100%`
-                : `${c.parent.visibleItemSpans[c.index]?.span}px`};
-            transform: ${(x, c) =>
-            c.parent.orientation === Orientation.horizontal
-                ? `translateX(${c.parent.visibleItemSpans[c.index]?.start}px)`
-                : `translateY(${c.parent.visibleItemSpans[c.index]?.start}px)`};
-        "
-    >
-        ${x => JSON.stringify(x)}
-    </div>
-`;
 
 /**
  *  The VirtualList class
@@ -191,7 +161,32 @@ export class VirtualList extends FoundationElement {
      * @public
      */
     @observable
-    public itemTemplate: ViewTemplate = defaultItemTemplate;
+    public itemTemplate: ViewTemplate;
+
+    /**
+     * The ViewTemplate used to render item contents. This behavior depends
+     * on the itemTemplate using virtual-item or equivalent to render list items.
+     *
+     * @public
+     */
+    @observable
+    public itemContentsTemplate: ViewTemplate;
+
+    /**
+     * The default ViewTemplate used to render items vertically.
+     *
+     * @internal
+     */
+    @observable
+    public defaultVerticalItemTemplate: ViewTemplate;
+
+    /**
+     * The default ViewTemplate used to render items horizontally.
+     *
+     * @internal
+     */
+    @observable
+    public defaultHorizontalItemTemplate: ViewTemplate;
 
     /**
      * The items that are currently visible (includes buffer regions)
@@ -291,6 +286,13 @@ export class VirtualList extends FoundationElement {
         if (this.itemsPlaceholder === undefined) {
             this.itemsPlaceholder = document.createComment("");
             this.appendChild(this.itemsPlaceholder);
+        }
+
+        if (!this.itemTemplate) {
+            this.itemTemplate =
+                this.orientation === Orientation.vertical
+                    ? this.defaultVerticalItemTemplate
+                    : this.defaultHorizontalItemTemplate;
         }
 
         this.initializeRepeatBehavior();
@@ -456,6 +458,7 @@ export class VirtualList extends FoundationElement {
         if (this.itemsRepeatBehavior !== null) {
             return;
         }
+
         this.itemsRepeatBehavior = new RepeatDirective(
             x => x.visibleItems,
             x => x.itemTemplate,
