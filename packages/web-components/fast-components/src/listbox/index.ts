@@ -26,7 +26,7 @@ export class Listbox extends FoundationListboxElement {
      *
      * @internal
      */
-    protected sizeChanged(prev: number | unknown, next: number): void {
+    protected sizeChanged(prev: number | undefined, next: number): void {
         super.sizeChanged(prev, next);
 
         if (this.sizeStylesheet) {
@@ -57,6 +57,7 @@ export class Listbox extends FoundationListboxElement {
  */
 export const fastListbox = Listbox.compose({
     baseName: "listbox",
+    baseClass: FoundationListboxElement,
     template,
     styles,
 });

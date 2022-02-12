@@ -1,6 +1,7 @@
 import { css } from "@microsoft/fast-element";
 import type { ElementStyles } from "@microsoft/fast-element";
 import {
+    DesignToken,
     disabledCursor,
     display,
     focusVisible,
@@ -16,8 +17,10 @@ import {
     accentFillFocus,
     accentFillHover,
     accentFillRest,
+    baseHeightMultiplier,
     bodyFont,
     controlCornerRadius,
+    density,
     designUnit,
     disabledOpacity,
     focusStrokeInner,
@@ -35,7 +38,15 @@ import {
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
 } from "../design-tokens.js";
-import { heightNumber } from "../styles/size.js";
+
+export const optionHeight = DesignToken.create<number>("option-height").withDefault(
+    target => {
+        return (
+            (baseHeightMultiplier.getValueFor(target) + density.getValueFor(target)) *
+            designUnit.getValueFor(target)
+        );
+    }
+);
 
 /**
  * Styles for the {@link @microsoft/fast-components#fastOption | Listbox Option} component.
@@ -62,7 +73,7 @@ export const optionStyles: FoundationElementTemplate<
         flex: 0 0 auto;
         fill: currentcolor;
         font-size: ${typeRampBaseFontSize};
-        height: calc(${heightNumber} * 1px);
+        height: calc(${optionHeight} * 1px);
         line-height: ${typeRampBaseLineHeight};
         margin: 0 calc((${designUnit} - ${focusStrokeWidth}) * 1px);
         outline: none;

@@ -57,6 +57,17 @@ export class ListboxElement extends Listbox {
     }
 
     /**
+     * Indicates if the listbox is in multi-selection mode.
+     *
+     * @remarks
+     * HTML Attribute: `multiple`
+     *
+     * @public
+     */
+    @attr({ mode: "boolean" })
+    public multiple: boolean;
+
+    /**
      * The start index when checking a range of options.
      *
      * @internal
@@ -407,20 +418,15 @@ export class ListboxElement extends Listbox {
     /**
      * Switches between single-selection and multi-selection mode.
      *
-     * @override
      * @internal
      */
     public multipleChanged(prev: boolean | undefined, next: boolean): void {
-        super.multipleChanged(prev, next);
+        this.ariaMultiSelectable = next ? "true" : undefined;
         this.options?.forEach(o => {
             o.checked = next ? false : undefined;
         });
 
         this.setSelectedOptions();
-
-        if (next && !this.size) {
-            this.size = 0;
-        }
     }
 
     /**
@@ -450,7 +456,7 @@ export class ListboxElement extends Listbox {
      * @internal
      */
     protected sizeChanged(prev: number | unknown, next: number): void {
-        const size = Math.max(0, parseInt(next.toFixed(), 10));
+        const size = Math.max(0, parseInt(next?.toFixed() ?? "", 10));
         if (size !== next) {
             DOM.queueUpdate(() => {
                 this.size = size;

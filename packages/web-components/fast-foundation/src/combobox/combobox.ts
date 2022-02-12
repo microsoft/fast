@@ -118,11 +118,6 @@ export class Combobox extends FormAssociatedCombobox {
      */
     @observable
     public maxHeight: number = 0;
-    private maxHeightChanged(): void {
-        if (this.listbox) {
-            this.listbox.style.setProperty("--max-height", `${this.maxHeight}px`);
-        }
-    }
 
     /**
      * The open attribute.
@@ -133,6 +128,15 @@ export class Combobox extends FormAssociatedCombobox {
      */
     @attr({ attribute: "open", mode: "boolean" })
     public open: boolean = false;
+
+    /**
+     * Sets focus and synchronize ARIA attributes when the open property changes.
+     *
+     * @param prev - the previous open value
+     * @param next - the current open value
+     *
+     * @internal
+     */
     protected openChanged() {
         if (this.open) {
             this.ariaControls = this.listboxId;
@@ -506,11 +510,12 @@ export class Combobox extends FormAssociatedCombobox {
     /**
      * Ensure that the selectedIndex is within the current allowable filtered range.
      *
+     * @param prev - the previous selected index value
+     * @param next - the current selected index value
+     *
      * @internal
-     * @remarks
-     * Overrides: `Listbox.selectedIndexChanged`
      */
-    public selectedIndexChanged(prev: number, next: number): void {
+    public selectedIndexChanged(prev: number | undefined, next: number): void {
         if (this.$fastController.isConnected) {
             next = limit(-1, this.options.length - 1, next);
 
@@ -604,11 +609,17 @@ export class Combobox extends FormAssociatedCombobox {
     /**
      * Ensure that the entire list of options is used when setting the selected property.
      *
+     * @param prev - the previous list of selected options
+     * @param next - the current list of selected options
+     *
      * @internal
      * @remarks
      * Overrides: `Listbox.selectedOptionsChanged`
      */
-    public selectedOptionsChanged(prev: unknown, next: HTMLElement[]): void {
+    public selectedOptionsChanged(
+        prev: ListboxOption[] | undefined,
+        next: ListboxOption[]
+    ): void {
         if (this.$fastController.isConnected) {
             this._options.forEach(o => {
                 o.selected = next.includes(o);
@@ -624,12 +635,16 @@ export class Combobox extends FormAssociatedCombobox {
      *
      * @internal
      */
-    public slottedOptionsChanged(prev: Element[], next: HTMLElement[]): void {
+    public slottedOptionsChanged(prev: Element[] | undefined, next: Element[]): void {
         super.slottedOptionsChanged(prev, next);
         this.updateValue();
     }
 
     /**
+     * Sets the value and to match the first selected option.
+     *
+     * @param shouldEmit - if true, the change event will be emitted
+     *
      * @internal
      */
     private updateValue(shouldEmit?: boolean) {
