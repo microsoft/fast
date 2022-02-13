@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "use html instead of string templating",
-  "packageName": "@microsoft/fast-components",
-  "email": "mathieulavoie94@gmail.com",
-  "dependentChangeType": "patch"
-}

@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-components
 
-This log was last generated on Thu, 10 Feb 2022 07:12:01 GMT and should not be manually modified.
+This log was last generated on Sun, 13 Feb 2022 07:13:39 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.21.4
+
+Sun, 13 Feb 2022 07:13:39 GMT
+
+### Patches
+
+- use html instead of string templating (mathieulavoie94@gmail.com)
 
 ## 2.21.3
 
