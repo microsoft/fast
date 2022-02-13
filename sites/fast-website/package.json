@@ -10,7 +10,7 @@
     "@babel/core": "^7.12.13",
     "@babel/preset-env": "^7.12.13",
     "@fluentui/svg-icons": "^1.1.139",
-    "@microsoft/fast-components": "^2.21.3",
+    "@microsoft/fast-components": "^2.21.4",
     "@microsoft/fast-element": "^1.7.0",
     "@microsoft/fast-foundation": "^2.33.2",
     "@microsoft/fast-web-utilities": "^5.1.0",
