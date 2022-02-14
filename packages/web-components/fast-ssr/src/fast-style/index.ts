@@ -13,9 +13,10 @@ export default class FASTStyle extends HTMLElement {
     private static cache: StyleCache = {};
     private static hashIdDataSetName: string = "data-style-id";
 
-    constructor() {
-        super();
-
+    /**
+     * @internal
+     */
+    public connectedCallback(): void {
         const hashId: string = this.getAttribute(FASTStyle.hashIdDataSetName) as string;
         const css: string = this.getAttribute("css") as string;
         this.registerStyles(hashId, css);
