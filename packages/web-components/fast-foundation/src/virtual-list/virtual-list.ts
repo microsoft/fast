@@ -18,14 +18,14 @@ import type { ResizeObserverClassDefinition } from "../utilities/resize-observer
 /**
  * Defines when the component updates its position automatically.
  *
- * @beta
+ * @public
  */
 export type VirtualListAutoUpdateMode = "manual" | "viewport-resize" | "auto";
 
 /**
  * Used to describe the position of an element within the list
  *
- * @beta
+ * @public
  */
 export interface SpanMap {
     start: number;
@@ -42,7 +42,7 @@ export class VirtualList extends FoundationElement {
     /**
      *  Whether or not the display should virtualize
      *
-     * @beta
+     * @public
      */
     @attr({ attribute: "virtualize", mode: "boolean" })
     public virtualize: boolean = true;
@@ -55,7 +55,7 @@ export class VirtualList extends FoundationElement {
     /**
      * The HTML ID of the viewport element
      *
-     * @beta
+     * @public
      * @remarks
      * HTML Attribute: anchor
      */
@@ -71,7 +71,7 @@ export class VirtualList extends FoundationElement {
     /**
      * The span in pixels of each item along the virtualization axis
      *
-     * @beta
+     * @public
      * @remarks
      * HTML Attribute: item-span
      */
@@ -87,7 +87,7 @@ export class VirtualList extends FoundationElement {
      * Defines an area in pixels on either end of the viewport where items outside the viewport
      * will still be rendered.
      *
-     * @beta
+     * @public
      * @remarks
      * HTML Attribute: viewport-buffer
      */
@@ -98,7 +98,7 @@ export class VirtualList extends FoundationElement {
      * Whether the list is oriented vertically or horizontally.
      * Default is vertical
      *
-     * @beta
+     * @public
      * @remarks
      * HTML Attribute: orientation
      */
@@ -114,7 +114,7 @@ export class VirtualList extends FoundationElement {
      * Auto update mode defines what prompts the component to check the dimensions of elements
      * in the DOM and reset the visible items accordingly.  Calling update() always provokes an update.
      *
-     * @beta
+     * @public
      * @remarks
      * HTML Attribute: auto-update-mode
      */
@@ -253,25 +253,35 @@ export class VirtualList extends FoundationElement {
      */
     public containerElement: HTMLDivElement;
 
+    // reference to the intersection service to request position updates
     private static intersectionService: IntersectionService = new IntersectionService();
+
+    // reference to the resize observer used to detect viewport resize events
     private resizeDetector: ResizeObserverClassDefinition | null = null;
 
+    // whether there is a pending position update
+    // (ie. an intersection service is in progress)
     private pendingPositioningUpdate: boolean = false;
+
+    // whether a reset is already queued
     private pendingReset: boolean = false;
 
-    private visibleRangeStart: number = 0;
-    private visibleRangeEnd: number = 0;
+    // flag that indicates whether an additional position update should be requested
+    // after the current one resolves (ie. possible geometry changes after the last request)
+    private finalUpdate: boolean = false;
 
+    // stored geometry for the viewport and internal container elements
     private viewportRect: ClientRect | DOMRect | undefined;
     private containerRect: ClientRect | DOMRect | undefined;
 
+    // reference to the repeat behavior used to render items
     private itemsRepeatBehavior: RepeatBehavior | null = null;
+
+    // the placeholder element used by the repeat behavior
     private itemsPlaceholder: Node;
 
+    // notifier used to trigger updates after changes to items array
     private itemsObserver: Notifier | null = null;
-    private itemCount: number = 0;
-
-    private finalUpdate: boolean = false;
 
     /**
      * @internal
@@ -359,10 +369,7 @@ export class VirtualList extends FoundationElement {
 
         this.visibleItems.splice(0, this.visibleItems.length, ...newVisibleItems);
 
-        if (this.itemCount !== this.items.length) {
-            this.itemCount = this.items.length;
-            this.updateDimensions();
-        }
+        this.updateDimensions();
         this.requestPositionUpdates();
     }
 
@@ -643,29 +650,29 @@ export class VirtualList extends FoundationElement {
             } = this.containerRect);
         }
 
+        let renderedRangeStart = this.firstRenderedIndex;
+        let renderedRangeEnd = this.lastRenderedIndex;
+
         if (viewportStart >= containerEnd) {
-            this.visibleRangeStart = containerSpan;
-            this.visibleRangeEnd = containerSpan;
+            renderedRangeStart = containerSpan;
+            renderedRangeEnd = containerSpan;
         } else if (viewportEnd <= containerStart) {
-            this.visibleRangeStart = 0;
-            this.visibleRangeEnd = 0;
+            renderedRangeStart = 0;
+            renderedRangeEnd = 0;
         } else {
-            this.visibleRangeStart = viewportStart - containerStart - this.viewportBuffer;
-            this.visibleRangeEnd =
+            renderedRangeStart = viewportStart - containerStart - this.viewportBuffer;
+            renderedRangeEnd =
                 containerSpan - (containerEnd - (viewportEnd + this.viewportBuffer));
 
-            this.visibleRangeStart =
-                this.visibleRangeStart < 0 ? 0 : this.visibleRangeStart;
-            this.visibleRangeEnd =
-                this.visibleRangeEnd > containerSpan
-                    ? containerSpan
-                    : this.visibleRangeEnd;
+            renderedRangeStart = renderedRangeStart < 0 ? 0 : renderedRangeStart;
+            renderedRangeEnd =
+                renderedRangeEnd > containerSpan ? containerSpan : renderedRangeEnd;
         }
 
         let newFirstRenderedIndex: number = Math.floor(
-            this.visibleRangeStart / this.itemSpan
+            renderedRangeStart / this.itemSpan
         );
-        const visibleRangeLength = this.visibleRangeEnd - this.visibleRangeStart;
+        const visibleRangeLength = renderedRangeEnd - renderedRangeStart;
         let newLastRenderedIndex: number =
             newFirstRenderedIndex + Math.ceil(visibleRangeLength / this.itemSpan);
 
