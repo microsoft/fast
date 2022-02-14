@@ -9,7 +9,7 @@ function createDefaultVerticalItemTemplate(context): ViewTemplate {
     return html`
     <${listItemTag}
         :itemData="${x => x}"
-        :contentTemplate="${(x, c) => c.parent.itemContentsTemplate}"
+        :listItemContext="${(x, c) => c.parent.listItemContext}"
         style="
             height:  ${(x, c) => `${c.parent.visibleItemSpans[c.index]?.span}px`};
             transform: ${(x, c) =>
@@ -24,7 +24,7 @@ function createDefaultHorizontalItemTemplate(context): ViewTemplate {
     return html`
     <${listItemTag}
         :itemData="${x => x}"
-        :contentTemplate="${(x, c) => c.parent.itemContentsTemplate}"
+        :listItemContext="${(x, c) => c.parent.listItemContext}"
         style="
             width:  ${(x, c) => `${c.parent.visibleItemSpans[c.index]?.span}px`};
             transform: ${(x, c) =>

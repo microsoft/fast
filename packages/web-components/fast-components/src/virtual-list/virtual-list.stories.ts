@@ -1,7 +1,10 @@
-import { html } from "@microsoft/fast-element";
+import { html, when } from "@microsoft/fast-element";
 import addons from "@storybook/addons";
 import { STORY_RENDERED } from "@storybook/core-events";
-import { VirtualList as FoundationVirtualList } from "@microsoft/fast-foundation";
+import {
+    VirtualList as FoundationVirtualList,
+    VirtualListItem,
+} from "@microsoft/fast-foundation";
 import VirtualListTemplate from "./fixtures/base.html";
 import "./index";
 
@@ -110,6 +113,42 @@ const rowItemTemplate = html`
     ></fast-virtual-list>
 `;
 
+const listItemTemplate = html`
+    <fast-card>
+        <div style="margin: 5px 20px 0 20px; color: white">
+            ${x => x.itemData.title}
+        </div>
+
+        <div
+            style="
+                height: 160px;
+                width:160px;
+                margin:10px 20px 10px 20px;
+                position: absolute;
+                background-image: url('${x => x.itemData.url}');
+            "
+        ></div>
+        ${when(
+            x => x.shouldLoad,
+            html<VirtualListItem>`
+                <div
+                    style="
+                    margin:10px;
+                    position: absolute;
+                "
+                >
+                    <fast-button>A</fast-button>
+                    <fast-button>B</fast-button>
+                    <fast-button>C</fast-button>
+                    <fast-button>D</fast-button>
+                    <fast-button>E</fast-button>
+                    <fast-button>F</fast-button>
+                </div>
+            `
+        )}
+    </fast-card>
+`;
+
 addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
     if (name.toLowerCase().startsWith("virtual-list")) {
         const data = newDataSet(10000, 1);
@@ -124,6 +163,9 @@ addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
 
         const stackh1 = document.getElementById("stackh1") as FoundationVirtualList;
         // stackh1.itemTemplate = horizontalImageItemTemplate;
+        stackh1.listItemContext = {
+            listItemTemplate: listItemTemplate,
+        };
         stackh1.items = data;
 
         const stackh2 = document.getElementById("stackh2") as FoundationVirtualList;
