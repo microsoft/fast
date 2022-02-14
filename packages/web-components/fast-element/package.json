@@ -16,6 +16,7 @@
     "url": "https://github.com/Microsoft/fast/issues/new/choose"
   },
   "main": "dist/esm/index.js",
+  "type": "module",
   "types": "dist/fast-element.d.ts",
   "unpkg": "dist/fast-element.min.js",
   "scripts": {
