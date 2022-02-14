@@ -1,15 +1,15 @@
-import type { FASTElement } from "../components/fast-element";
-import { isString } from "../interfaces";
-import type { Behavior } from "../observation/behavior";
-import { CSSDirective } from "./css-directive";
-import { ComposableStyles, ElementStyles } from "./element-styles";
+import type { FASTElement } from "../components/fast-element.js";
+import { isString } from "../interfaces.js";
+import type { Behavior } from "../observation/behavior.js";
+import { CSSDirective } from "./css-directive.js";
+import { ComposableStyles, ElementStyles } from "./element-styles.js";
 
 function collectStyles(
     strings: TemplateStringsArray,
     values: (ComposableStyles | CSSDirective)[]
 ): { styles: ComposableStyles[]; behaviors: Behavior<HTMLElement>[] } {
     const styles: ComposableStyles[] = [];
-    let cssString = "";
+    let cssString = ".js";
     const behaviors: Behavior<HTMLElement>[] = [];
 
     for (let i = 0, ii = strings.length - 1; i < ii; ++i) {
@@ -28,7 +28,7 @@ function collectStyles(
         if (value instanceof ElementStyles || value instanceof CSSStyleSheet) {
             if (cssString.trim() !== "") {
                 styles.push(cssString);
-                cssString = "";
+                cssString = ".js";
             }
 
             styles.push(value);
@@ -67,7 +67,7 @@ export function css(
 }
 
 class CSSPartial extends CSSDirective implements Behavior<HTMLElement> {
-    private css: string = "";
+    private css: string = ".js";
     private styles?: ElementStyles;
     constructor(styles: ComposableStyles[], private behaviors: Behavior<HTMLElement>[]) {
         super();

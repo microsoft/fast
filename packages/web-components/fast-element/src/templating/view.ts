@@ -1,10 +1,10 @@
-import type { Behavior } from "../observation/behavior";
-import type { ExecutionContext } from "../observation/observable";
+import type { Behavior } from "../observation/behavior.js";
+import type { ExecutionContext } from "../observation/observable.js";
 import type {
-    ViewBehaviorTargets,
-    ViewBehaviorFactory,
     ViewBehavior,
-} from "./html-directive";
+    ViewBehaviorFactory,
+    ViewBehaviorTargets,
+} from "./html-directive.js";
 
 /**
  * Represents a collection of DOM nodes which can be bound to a data source.

@@ -1,11 +1,11 @@
-import { DOM } from "../dom";
-import { Binding, defaultExecutionContext } from "../observation/observable";
-import { compileTemplate } from "./compiler";
-import type { HTMLTemplateCompilationResult } from "./compiler";
-import { ElementView, HTMLView, SyntheticView } from "./view";
-import { HTMLDirective, AspectedHTMLDirective } from "./html-directive";
-import { bind, oneTime } from "./binding";
-import { isFunction, isString } from "../interfaces";
+import { DOM } from "../dom.js";
+import { isFunction, isString } from "../interfaces.js";
+import { Binding, defaultExecutionContext } from "../observation/observable.js";
+import { bind, oneTime } from "./binding.js";
+import { compileTemplate } from "./compiler.js";
+import type { HTMLTemplateCompilationResult } from "./compiler.js";
+import { AspectedHTMLDirective, HTMLDirective } from "./html-directive.js";
+import { ElementView, HTMLView, SyntheticView } from "./view.js";
 
 /**
  * A template capable of creating views specifically for rendering custom elements.
@@ -167,7 +167,7 @@ export function html<TSource = any, TParent = any, TGrandparent = any>(
     ...values: TemplateValue<TSource, TParent>[]
 ): ViewTemplate<TSource, TParent, TGrandparent> {
     const directives: HTMLDirective[] = [];
-    let html = "";
+    let html = ".js";
 
     for (let i = 0, ii = strings.length - 1; i < ii; ++i) {
         const currentString = strings[i];

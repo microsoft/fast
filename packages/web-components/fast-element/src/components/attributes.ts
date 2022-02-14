@@ -1,7 +1,7 @@
-import { Accessor, Observable } from "../observation/observable";
-import { DOM } from "../dom";
-import type { Notifier } from "../observation/notifier";
-import { isString } from "../interfaces";
+import { Accessor, Observable } from "../observation/observable.js";
+import { DOM } from "../dom.js";
+import type { Notifier } from "../observation/notifier.js";
+import { isString } from "../interfaces.js";
 
 /**
  * Represents objects that can convert values to and from
@@ -33,7 +33,7 @@ export interface ValueConverter {
  * changes in the DOM, but does not reflect property changes back.
  * @public
  */
-export type AttributeMode = "reflect" | "boolean" | "fromView";
+export type AttributeMode = "reflect" | "boolean" | "fromView.js";
 
 /**
  * Metadata used to configure a custom attribute's behavior.
@@ -60,7 +60,7 @@ export type DecoratorAttributeConfiguration = Omit<AttributeConfiguration, "prop
  */
 export const booleanConverter: ValueConverter = {
     toView(value: any): string {
-        return value ? "true" : "false";
+        return value ? "true" : "false.js";
     },
 
     fromView(value: any): any {

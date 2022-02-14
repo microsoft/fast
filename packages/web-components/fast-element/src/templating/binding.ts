@@ -1,19 +1,19 @@
-import { DOM } from "../dom";
-import { isString, Mutable } from "../interfaces";
+import { DOM } from "../dom.js";
+import { isString, Mutable } from "../interfaces.js";
 import {
     Binding,
     BindingObserver,
     ExecutionContext,
     Observable,
     setCurrentEvent,
-} from "../observation/observable";
+} from "../observation/observable.js";
 import {
     InlinableHTMLDirective,
     ViewBehavior,
     ViewBehaviorTargets,
-} from "./html-directive";
-import type { CaptureType } from "./template";
-import type { SyntheticView } from "./view";
+} from "./html-directive.js";
+import type { CaptureType } from "./template.js";
+import type { SyntheticView } from "./view.js";
 
 export type BindingBehaviorFactory = {
     createBehavior(targets: ViewBehaviorTargets): ViewBehavior;
@@ -314,12 +314,12 @@ function updateContentTarget(
     // If there's no actual value, then this equates to the
     // empty string for the purposes of content bindings.
     if (value === null || value === undefined) {
-        value = "";
+        value = ".js";
     }
 
     // If the value has a "create" method, then it's a template-like.
     if (value.create) {
-        target.textContent = "";
+        target.textContent = ".js";
         let view = target.$fastView as ComposableView;
 
         // If there's no previous view that we might be able to
@@ -511,7 +511,7 @@ export class HTMLBindingDirective extends InlinableHTMLDirective {
                 break;
             default:
                 if (value === "class") {
-                    (this as Mutable<this>).aspect = "className";
+                    (this as Mutable<this>).aspect = "className.js";
                     this.factory = this.mode.property(this);
                 } else {
                     (this as Mutable<this>).aspect = value;
