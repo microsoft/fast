@@ -3,6 +3,23 @@ import { Orientation } from "@microsoft/fast-web-utilities";
 import { FoundationElement } from "../foundation-element";
 
 /**
+ * Defines the loading behavior of the virtual list item
+ *
+ * @public
+ */
+export type VirtualListLoadMode = "none" | "idle";
+
+/**
+ *
+ *
+ * @public
+ */
+export interface VirtualListItemContext {
+    listItemTemplate: ViewTemplate;
+    loadMode: VirtualListLoadMode;
+}
+
+/**
  *  The VirtualListItem class
  *
  * @public
@@ -14,53 +31,69 @@ export class VirtualListItem extends FoundationElement {
      * @public
      */
     @observable
-    public contentTemplate: ViewTemplate;
+    public itemData: object;
 
     /**
-     * The ViewTemplate used to render contents.
+     *  Custom context provided to the parent virtual list
      *
      * @public
      */
     @observable
-    public itemData: object;
+    public listItemContext: VirtualListItemContext;
 
     /**
-     * The default ViewTemplate used to render contents.
      *
-     * @internal
+     *
+     * @public
      */
     @observable
-    public defaultContentsTemplate: ViewTemplate;
-
-    private contentsView: HTMLView | null = null;
+    public shouldLoad: boolean = false;
 
     /**
      * @internal
      */
     connectedCallback() {
         super.connectedCallback();
-        this.updateContentsView();
+        if (this.listItemContext) {
+            return;
+        }
+
+        // const loadMode: VirtualListLoadMode = (this.listItemContext as VirtualListItemContext).loadMode;
+
+        // switch (loadMode){
+        //     case "idle":
+        //         this.initializeIdleLoad();
+        //         break;
+
+        //     default:
+        //         this.shouldLoad = true;
+        // }
     }
 
     /**
      * @internal
      */
-    public disconnectedCallback(): void {
+    disconnectedCallback(): void {
         super.disconnectedCallback();
-        this.disconnectContentsView();
     }
 
-    private updateContentsView(): void {
-        this.disconnectContentsView();
-        const templateToRender: ViewTemplate =
-            this.contentTemplate ?? this.defaultContentsTemplate;
-        this.contentsView = templateToRender.render(this, this);
+    /**
+     * @internal
+     */
+    resolveTemplate(): ViewTemplate {
+        return this.listItemContext.listItemTemplate;
     }
 
-    private disconnectContentsView(): void {
-        if (this.contentsView !== null) {
-            this.contentsView.dispose();
-            this.contentsView = null;
-        }
-    }
+    // private initializeIdleLoad(): void {
+    //     if ('requestIdleCallback' in window) {
+    //         window.cancelIdleCallback(0);
+    //         window.requestIdleCallback(this.handleIdleCallback, { timeout: 1000 });
+    //         return;
+    //     }
+    //     this.shouldLoad = true;
+    // }
+
+    // private handleIdleCallback(): void {
+    //     this.shouldLoad = true;
+    // }
 }

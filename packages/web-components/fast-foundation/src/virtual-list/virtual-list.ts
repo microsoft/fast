@@ -145,7 +145,7 @@ export class VirtualList extends FoundationElement {
     /**
      * The HTML element being used as the viewport
      *
-     * @beta
+     * @public
      */
     @observable
     public viewportElement: HTMLElement;
@@ -164,13 +164,12 @@ export class VirtualList extends FoundationElement {
     public itemTemplate: ViewTemplate;
 
     /**
-     * The ViewTemplate used to render item contents. This behavior depends
-     * on the itemTemplate using virtual-item or equivalent to render list items.
+     * Used to pass custom context objects to list items.
      *
      * @public
      */
     @observable
-    public itemContentsTemplate: ViewTemplate;
+    public listItemContext: object;
 
     /**
      * The default ViewTemplate used to render items vertically.
