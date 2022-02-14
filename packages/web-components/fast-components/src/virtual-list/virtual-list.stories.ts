@@ -128,24 +128,6 @@ const listItemTemplate = html`
                 background-image: url('${x => x.itemData.url}');
             "
         ></div>
-        ${when(
-            x => x.shouldLoad,
-            html<VirtualListItem>`
-                <div
-                    style="
-                    margin:10px;
-                    position: absolute;
-                "
-                >
-                    <fast-button>A</fast-button>
-                    <fast-button>B</fast-button>
-                    <fast-button>C</fast-button>
-                    <fast-button>D</fast-button>
-                    <fast-button>E</fast-button>
-                    <fast-button>F</fast-button>
-                </div>
-            `
-        )}
     </fast-card>
 `;
 
@@ -162,22 +144,26 @@ addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
         }
 
         const stackh1 = document.getElementById("stackh1") as FoundationVirtualList;
-        // stackh1.itemTemplate = horizontalImageItemTemplate;
         stackh1.listItemContext = {
             listItemTemplate: listItemTemplate,
         };
-        stackh1.items = data;
+        stackh1.items = newDataSet(100, 1);
 
         const stackh2 = document.getElementById("stackh2") as FoundationVirtualList;
-        stackh2.itemTemplate = horizontalImageItemTemplate;
+        stackh2.listItemContext = {
+            listItemTemplate: listItemTemplate,
+        };
         stackh2.items = data;
 
-        const stackh5 = document.getElementById("stackh5") as FoundationVirtualList;
-        stackh5.itemTemplate = horizontalImageItemTemplate;
-        stackh5.items = newDataSet(100, 1);
+        const stackh3 = document.getElementById("stackh3") as FoundationVirtualList;
+        stackh3.itemTemplate = horizontalImageItemTemplate;
+        stackh3.items = data;
+
+        const stackh4 = document.getElementById("stackh4") as FoundationVirtualList;
+        stackh4.itemTemplate = horizontalImageItemTemplate;
+        stackh4.items = data;
 
         const stackGrid = document.getElementById("stackgrid") as FoundationVirtualList;
-
         stackGrid.itemTemplate = rowItemTemplate;
         stackGrid.items = gridData;
 
@@ -187,8 +173,10 @@ addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
         stackv1.items = data;
 
         const stackv2 = document.getElementById("stackv2") as FoundationVirtualList;
-        stackv2.itemTemplate = verticalImageItemTemplate;
         stackv2.items = data;
+        stackv2.listItemContext = {
+            listItemTemplate: listItemTemplate,
+        };
     }
 });
 

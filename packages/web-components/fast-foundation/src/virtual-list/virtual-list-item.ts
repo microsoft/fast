@@ -1,22 +1,13 @@
-import { HTMLView, observable, ViewTemplate } from "@microsoft/fast-element";
-import { Orientation } from "@microsoft/fast-web-utilities";
+import { observable, ViewTemplate } from "@microsoft/fast-element";
 import { FoundationElement } from "../foundation-element";
 
 /**
- * Defines the loading behavior of the virtual list item
- *
- * @public
- */
-export type VirtualListLoadMode = "none" | "idle";
-
-/**
- *
+ * List item context interface
  *
  * @public
  */
 export interface VirtualListItemContext {
     listItemTemplate: ViewTemplate;
-    loadMode: VirtualListLoadMode;
 }
 
 /**
@@ -42,32 +33,13 @@ export class VirtualListItem extends FoundationElement {
     public listItemContext: VirtualListItemContext;
 
     /**
-     *
-     *
-     * @public
-     */
-    @observable
-    public shouldLoad: boolean = false;
-
-    /**
      * @internal
      */
     connectedCallback() {
         super.connectedCallback();
-        if (this.listItemContext) {
+        if (!this.listItemContext) {
             return;
         }
-
-        // const loadMode: VirtualListLoadMode = (this.listItemContext as VirtualListItemContext).loadMode;
-
-        // switch (loadMode){
-        //     case "idle":
-        //         this.initializeIdleLoad();
-        //         break;
-
-        //     default:
-        //         this.shouldLoad = true;
-        // }
     }
 
     /**
@@ -83,17 +55,4 @@ export class VirtualListItem extends FoundationElement {
     resolveTemplate(): ViewTemplate {
         return this.listItemContext.listItemTemplate;
     }
-
-    // private initializeIdleLoad(): void {
-    //     if ('requestIdleCallback' in window) {
-    //         window.cancelIdleCallback(0);
-    //         window.requestIdleCallback(this.handleIdleCallback, { timeout: 1000 });
-    //         return;
-    //     }
-    //     this.shouldLoad = true;
-    // }
-
-    // private handleIdleCallback(): void {
-    //     this.shouldLoad = true;
-    // }
 }

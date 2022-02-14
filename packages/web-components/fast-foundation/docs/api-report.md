@@ -2887,20 +2887,13 @@ export class VirtualListItem extends FoundationElement {
     listItemContext: VirtualListItemContext;
     // @internal (undocumented)
     resolveTemplate(): ViewTemplate;
-    // (undocumented)
-    shouldLoad: boolean;
-}
-
-// @public (undocumented)
-export interface VirtualListItemContext {
-    // (undocumented)
-    listItemTemplate: ViewTemplate;
-    // (undocumented)
-    loadMode: VirtualListLoadMode;
 }
 
 // @public
-export type VirtualListLoadMode = "none" | "idle";
+export interface VirtualListItemContext {
+    // (undocumented)
+    listItemTemplate: ViewTemplate;
+}
 
 // @public
 export const virtualListTemplate: FoundationElementTemplate<ViewTemplate<VirtualList>>;

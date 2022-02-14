@@ -14,7 +14,7 @@
 </h3>
 
 <h3>
-    Virtualization off
+    Default, Virtualization off
 </h3>
 
 <fast-virtual-list
@@ -22,7 +22,7 @@
     orientation="horizontal"
     item-span="200"
     auto-update-mode="auto"
-    id="stackh5"
+    id="stackh1"
     style="
         height: 220px;
         width: 100%;
@@ -33,7 +33,7 @@
 ></fast-virtual-list>
 
 <h3>
-    Virtualization on
+    Horizontal with fast-list-item
 </h3>
 
 <fast-virtual-list
@@ -41,7 +41,26 @@
     item-span="200"
     viewport-buffer="200"
     auto-update-mode="auto"
-    id="stackh1"
+    id="stackh2"
+    style="
+        height: 220px;
+        width: 100%;
+        overflow-x: scroll;
+        overflow-y: hidden;
+        display: block;
+    "
+></fast-virtual-list>
+
+<h3>
+    Horizontal with custom item-template
+</h3>
+
+<fast-virtual-list
+    orientation="horizontal"
+    item-span="200"
+    viewport-buffer="200"
+    auto-update-mode="auto"
+    id="stackh3"
     style="
         height: 220px;
         width: 100%;
@@ -63,8 +82,8 @@
         orientation="horizontal"
         auto-update-mode="auto"
         item-span="200"
-        id="stackh2"
-        viewport="viewporth2"
+        id="stackh4"
+        viewport="viewporth4"
         style="
             grid-row: 1;
             height: 220px;
@@ -75,7 +94,7 @@
         "
     ></fast-virtual-list>
     <div
-        id="viewporth2"
+        id="viewporth4"
         style="
             grid-row: 1;
             pointer-events: none;
@@ -117,14 +136,19 @@
         width: 240px;
         display: grid;
         grid-template-columns: 1fr 20px 1fr 20px 1fr;
+        grid-template-rows: 100px 1fr;
     "
 >
+    <h3 style="grid-column: 1; grid-row: 1;">
+        vertical spans whole page
+    </h3>
     <fast-virtual-list
         auto-update-mode="auto"
         item-span="200"
         id="stackv1"
         style="
             grid-column: 1;
+            grid-row: 2;
             width: 200px;
             background: repeating-linear-gradient(
                 90deg,
@@ -134,19 +158,26 @@
                 gray 400px
             );
         "
-        );
     ></fast-virtual-list>
 
+    <h3 style="grid-column: 3; grid-row: 1;">
+        vertical with fast-list-item
+    </h3>
+
     <fast-virtual-list
-        auto-update-mode="auto"
+        orientation="vertical"
         item-span="200"
+        viewport-buffer="200"
+        auto-update-mode="auto"
         id="stackv2"
         style="
-            width: 220px;
-            height: 400px;
             grid-column: 3;
+            grid-row: 2;
+            height: 800px;
+            width: 200px;
             overflow-y: scroll;
             overflow-x: hidden;
+            display: block;
         "
     ></fast-virtual-list>
 </div>
