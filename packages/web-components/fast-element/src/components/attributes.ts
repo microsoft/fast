@@ -33,7 +33,7 @@ export interface ValueConverter {
  * changes in the DOM, but does not reflect property changes back.
  * @public
  */
-export type AttributeMode = "reflect" | "boolean" | "fromView.js";
+export type AttributeMode = "reflect" | "boolean" | "fromView";
 
 /**
  * Metadata used to configure a custom attribute's behavior.
@@ -60,7 +60,7 @@ export type DecoratorAttributeConfiguration = Omit<AttributeConfiguration, "prop
  */
 export const booleanConverter: ValueConverter = {
     toView(value: any): string {
-        return value ? "true" : "false.js";
+        return value ? "true" : "false";
     },
 
     fromView(value: any): any {

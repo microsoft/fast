@@ -12,7 +12,7 @@ export class CSSDirective {
      * @returns - the string to interpolate into CSS
      */
     public createCSS(): ComposableStyles {
-        return ".js";
+        return "";
     }
 
     /**

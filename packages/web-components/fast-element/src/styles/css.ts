@@ -9,7 +9,7 @@ function collectStyles(
     values: (ComposableStyles | CSSDirective)[]
 ): { styles: ComposableStyles[]; behaviors: Behavior<HTMLElement>[] } {
     const styles: ComposableStyles[] = [];
-    let cssString = ".js";
+    let cssString = "";
     const behaviors: Behavior<HTMLElement>[] = [];
 
     for (let i = 0, ii = strings.length - 1; i < ii; ++i) {
@@ -28,7 +28,7 @@ function collectStyles(
         if (value instanceof ElementStyles || value instanceof CSSStyleSheet) {
             if (cssString.trim() !== "") {
                 styles.push(cssString);
-                cssString = ".js";
+                cssString = "";
             }
 
             styles.push(value);
@@ -67,7 +67,7 @@ export function css(
 }
 
 class CSSPartial extends CSSDirective implements Behavior<HTMLElement> {
-    private css: string = ".js";
+    private css: string = "";
     private styles?: ElementStyles;
     constructor(styles: ComposableStyles[], private behaviors: Behavior<HTMLElement>[]) {
         super();

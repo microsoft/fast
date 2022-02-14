@@ -140,7 +140,7 @@ function createAggregateBinding(parts: (string | HTMLDirective)[]): HTMLDirectiv
     });
 
     const binding = (scope: unknown, context: ExecutionContext): string => {
-        let output = ".js";
+        let output = "";
 
         for (let i = 0; i < partCount; ++i) {
             output += finalParts[i](scope, context);
@@ -255,7 +255,7 @@ function compileContent(
         if (isString(currentPart)) {
             currentNode.textContent = currentPart;
         } else {
-            currentNode.textContent = " .js";
+            currentNode.textContent = " ";
             context.addFactory(currentPart, parentId, nodeId, nodeIndex);
         }
 

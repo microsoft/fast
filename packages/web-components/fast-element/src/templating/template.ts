@@ -167,7 +167,7 @@ export function html<TSource = any, TParent = any, TGrandparent = any>(
     ...values: TemplateValue<TSource, TParent>[]
 ): ViewTemplate<TSource, TParent, TGrandparent> {
     const directives: HTMLDirective[] = [];
-    let html = ".js";
+    let html = "";
 
     for (let i = 0, ii = strings.length - 1; i < ii; ++i) {
         const currentString = strings[i];

@@ -314,12 +314,12 @@ function updateContentTarget(
     // If there's no actual value, then this equates to the
     // empty string for the purposes of content bindings.
     if (value === null || value === undefined) {
-        value = ".js";
+        value = "";
     }
 
     // If the value has a "create" method, then it's a template-like.
     if (value.create) {
-        target.textContent = ".js";
+        target.textContent = "";
         let view = target.$fastView as ComposableView;
 
         // If there's no previous view that we might be able to
@@ -511,7 +511,7 @@ export class HTMLBindingDirective extends InlinableHTMLDirective {
                 break;
             default:
                 if (value === "class") {
-                    (this as Mutable<this>).aspect = "className.js";
+                    (this as Mutable<this>).aspect = "className";
                     this.factory = this.mode.property(this);
                 } else {
                     (this as Mutable<this>).aspect = value;

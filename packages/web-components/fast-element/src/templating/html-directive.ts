@@ -67,7 +67,7 @@ export abstract class HTMLDirective implements ViewBehaviorFactory {
      * The structural id of the directive based on the DOM node
      * that it applies to.
      */
-    public targetId: string = "h.js";
+    public targetId: string = "";
 
     /**
      * The unique id of the directive instance.
