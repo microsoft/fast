@@ -10,8 +10,8 @@ interface StyleCache {
  * - data-style-id - a dataset attribute used as an identifier for the CSS attr string
  */
 export default class FASTStyle extends HTMLElement {
-    static cache: StyleCache = {};
-    static hashIdDataSetName: string = "data-style-id";
+    private static cache: StyleCache = {};
+    private static hashIdDataSetName: string = "data-style-id";
 
     constructor() {
         super();
@@ -24,7 +24,7 @@ export default class FASTStyle extends HTMLElement {
     /**
      * Register styles if they are not part of the cache and attach them
      */
-    registerStyles = (hashId: string, css: string): void => {
+    private registerStyles = (hashId: string, css: string): void => {
         if (DOM.supportsAdoptedStyleSheets) {
             if (!(hashId in FASTStyle.cache)) {
                 this.memoizeAdoptedStylesheetStyles(hashId, css);
@@ -41,7 +41,7 @@ export default class FASTStyle extends HTMLElement {
     /**
      * Memoize CSSStyleSheets
      */
-    memoizeAdoptedStylesheetStyles(hashId: string, css: string) {
+    private memoizeAdoptedStylesheetStyles(hashId: string, css: string) {
         const sheet = new CSSStyleSheet();
         (sheet as any).replaceSync(css);
         FASTStyle.cache[hashId] = sheet;
@@ -50,7 +50,7 @@ export default class FASTStyle extends HTMLElement {
     /**
      * Attach CSSStyleSheets
      */
-    attachAdoptedStylesheetStyles(shadowRoot: StyleTarget, hashId: string) {
+    private attachAdoptedStylesheetStyles(shadowRoot: StyleTarget, hashId: string) {
         shadowRoot.adoptedStyleSheets = [
             ...shadowRoot.adoptedStyleSheets!,
             FASTStyle.cache[hashId] as CSSStyleSheet,
@@ -60,14 +60,14 @@ export default class FASTStyle extends HTMLElement {
     /**
      * Memoize css strings
      */
-    memoizeStyleElementStyles(hashId: string, css: string) {
+    private memoizeStyleElementStyles(hashId: string, css: string) {
         FASTStyle.cache[hashId] = css;
     }
 
     /**
      * Attach style elements
      */
-    attachStyleElementStyles(shadowRoot: StyleTarget, hashId: string) {
+    private attachStyleElementStyles(shadowRoot: StyleTarget, hashId: string) {
         const element = document.createElement("style");
         element.innerHTML = FASTStyle.cache[hashId] as string;
         shadowRoot.append(element);
