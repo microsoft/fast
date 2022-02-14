@@ -92,7 +92,9 @@ _Properties:_
 
 -  `viewportElement` -  The HTML element being used as the viewport.
 
--  `itemTemplate` -  The ViewTemplate used to render items.
+-  `itemTemplate` -  The ViewTemplate used to generate list items in the repeat directive.
+
+-  `listItemContext` -  Used to pass a custom context object to the child list items.
 
 _Slots:_
 
@@ -101,6 +103,16 @@ _Slots:_
 _Events_
 
 -   `rendered-range-change` - Event fired when the range of items being rendered changes.
+
+#### The SpanMap interface
+
+Used for virtual lists with varying height elements.  Authors can provide a "map" which corresponds to the spans of the child items.  Authors who use this approach will need to have a quick way of calculating this data. This will not be as fast as a uniform span list, but can still enable the ability to virtualize large data sets if generating the map is fast enough.  
+
+The component also uses the SpanMap interface to expose the position of visible elements as part of the `visibleItemSpans` observable property which child items use to position themselves in the list.
+
+- `start`: The start position of the item in pixels.  
+- `span`: The span of the element in pixels.
+- `end`: The end position of the element in pixels.
 
 
 ### Anatomy and Appearance
