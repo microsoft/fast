@@ -379,14 +379,13 @@ export class DatePicker extends FormAssociatedDatePicker {
         return true;
     }
 
-    public handleCalendarKeydown(targets, event: KeyboardEvent) {
-        const target = event.target as HTMLElement;
-        const { key } = event;
-        if (target && target.parentNode) {
-            console.log({ key, target, targets, parent: target.parentNode });
-        }
-    }
-
+    /**
+     * Handler for the calendar change buttons
+     * @param direction - previous or next calendar
+     * @param e - the keyboard event
+     * @returns should bubble
+     * @public
+     */
     public handleCalendarChangeKeydown(direction: number = 1, e: KeyboardEvent): boolean {
         const key: string = e.key;
         const changeCalendar = direction => {

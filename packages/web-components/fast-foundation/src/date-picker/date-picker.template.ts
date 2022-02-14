@@ -246,7 +246,6 @@ export const datePickerTemplate: FoundationElementTemplate<
                         class="calendar"
                         part="calendar"
                         @dateselected="${(x, c) => x.handleDateClicked(c.event)}"
-                        @keydown="${(x, c) => x.handleCalendarKeydown(button, c.event)}"
                         locale="${x => x.locale}"
                         month="${x => x.calendarMonth}"
                         year="${x => x.calendarYear}"
