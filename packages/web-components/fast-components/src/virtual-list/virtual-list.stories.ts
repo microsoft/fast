@@ -116,7 +116,7 @@ const rowItemTemplate = html`
 const listItemTemplate = html`
     <fast-card>
         <div style="margin: 5px 20px 0 20px; color: white">
-            ${x => x.itemData.title}
+            ${x => x.listItemContext.titleString} ${x => x.itemData.title}
         </div>
 
         <div
@@ -146,13 +146,15 @@ addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
 
         const stackh1 = document.getElementById("stackh1") as FoundationVirtualList;
         stackh1.listItemContext = {
-            listItemTemplate: listItemTemplate,
+            listItemContentsTemplate: listItemTemplate,
+            titleString: "title:",
         };
         stackh1.items = newDataSet(100, 1);
 
         const stackh2 = document.getElementById("stackh2") as FoundationVirtualList;
         stackh2.listItemContext = {
-            listItemTemplate: listItemTemplate,
+            listItemContentsTemplate: listItemTemplate,
+            titleString: "title:",
         };
         stackh2.items = data;
 
@@ -176,14 +178,16 @@ addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
         const stackv2 = document.getElementById("stackv2") as FoundationVirtualList;
         stackv2.items = data;
         stackv2.listItemContext = {
-            listItemTemplate: listItemTemplate,
+            listItemContentsTemplate: listItemTemplate,
+            titleString: "title:",
         };
 
         const stackv3 = document.getElementById("stackv3") as FoundationVirtualList;
         stackv3.spanmap = dataSpanMap;
         stackv3.items = data;
         stackv3.listItemContext = {
-            listItemTemplate: listItemTemplate,
+            listItemContentsTemplate: listItemTemplate,
+            titleString: "title:",
         };
     }
 });
