@@ -133,17 +133,21 @@ describe("VirtualList", () => {
     it("should emit an event when rendered range changes", async () => {
         const { element, connect, disconnect } = await setup();
 
+        const newItems  =  newDataSet(100);
         await connect();
 
-        const eventEmitted = await Promise.race([
-            new Promise(resolve => {
-                element.addEventListener("rendered-range-change", () => resolve(true));
-                element.items = newDataSet(100);
-            }),
-            timeout().then(() => false),
-        ]);
+        await DOM.nextUpdate();
 
-        expect(eventEmitted).to.be.false;
+        let eventEmitted = false;
+        element.addEventListener("rendered-range-change", e => {
+            eventEmitted = true;
+        });
+
+        element.items = newItems;
+
+        await DOM.nextUpdate();
+
+        expect(eventEmitted).to.be.true;
 
         await disconnect();
     });
