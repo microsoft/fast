@@ -25,7 +25,7 @@ export class Anchor extends FoundationAnchor {
      * HTML Attribute: appearance
      */
     @attr
-    public appearance: AnchorAppearance;
+    public appearance: AnchorAppearance = "neutral";
     public appearanceChanged(
         oldValue: AnchorAppearance,
         newValue: AnchorAppearance
@@ -33,14 +33,6 @@ export class Anchor extends FoundationAnchor {
         if (oldValue !== newValue) {
             this.classList.add(newValue);
             this.classList.remove(oldValue);
-        }
-    }
-
-    public connectedCallback() {
-        super.connectedCallback();
-
-        if (!this.appearance) {
-            this.appearance = "neutral";
         }
     }
 

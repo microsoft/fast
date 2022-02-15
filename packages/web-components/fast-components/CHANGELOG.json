@@ -2,6 +2,36 @@
   "name": "@microsoft/fast-components",
   "entries": [
     {
+      "date": "Sun, 13 Feb 2022 07:13:39 GMT",
+      "tag": "@microsoft/fast-components_v2.21.4",
+      "version": "2.21.4",
+      "comments": {
+        "patch": [
+          {
+            "comment": "use html instead of string templating",
+            "author": "mathieulavoie94@gmail.com",
+            "commit": "d2185e297f3786787e548b7137953f27045ae96f",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 10 Feb 2022 07:12:01 GMT",
+      "tag": "@microsoft/fast-components_v2.21.3",
+      "version": "2.21.3",
+      "comments": {
+        "patch": [
+          {
+            "comment": "remove strictPropertyInitialization in components",
+            "author": "mathieu.lavoie@shopify.com",
+            "commit": "14025d5e6fbcc838a2b3f3a113a6aafddf29cb44",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 09 Feb 2022 07:14:00 GMT",
       "tag": "@microsoft/fast-components_v2.21.2",
       "version": "2.21.2",
