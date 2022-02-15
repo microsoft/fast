@@ -21,6 +21,7 @@ const reservedReactProperties = new Set([
 ]);
 
 const emptyProps = Object.freeze(Object.create(null));
+const wrappersCache = new Map();
 
 /**
  * Event signatures for a React wrapper.
@@ -242,6 +243,11 @@ export function provideReactWrapper(React: any, designSystem?: DesignSystem) {
             type = type.type as any;
         }
 
+        const cachedWrapper = wrappersCache.get(type);
+        if (cachedWrapper) {
+            return cachedWrapper;
+        }
+
         class ReactComponent extends React.Component<InternalProps> {
             private _element: TElement | null = null;
             private _elementProps!: { [index: string]: unknown };
@@ -334,7 +340,7 @@ export function provideReactWrapper(React: any, designSystem?: DesignSystem) {
             }
         }
 
-        return React.forwardRef(
+        const reactComponent = React.forwardRef(
             (
                 props?: ReactWrapperProps<TElement, TEvents>,
                 ref?: ReactModule.Ref<unknown>
@@ -345,6 +351,9 @@ export function provideReactWrapper(React: any, designSystem?: DesignSystem) {
                     props?.children
                 )
         ) as ReactWrapper<TElement, TEvents>;
+
+        wrappersCache.set(type, reactComponent);
+        return reactComponent;
     }
 
     return { wrap, registry };
