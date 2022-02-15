@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-components
 
-This log was last generated on Sun, 13 Feb 2022 07:13:39 GMT and should not be manually modified.
+This log was last generated on Tue, 15 Feb 2022 07:11:28 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.21.5
+
+Tue, 15 Feb 2022 07:11:28 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.33.3 (mathieu.lavoie@shopify.com)
 
 ## 2.21.4
 
