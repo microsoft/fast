@@ -20,39 +20,48 @@ When the positioning information is updated on the next frame the component dete
 
 The component also populates a `visibleItemSpans` observable property with the positioning information for each object in the `visibleItems` array using the SpanMap interface.    
 
-```
-export interface SpanMap {
-    start: number;
-    end: number;
-    span: number;
-}
-```
-
 The item templates can then bind to the appropriate `SpanMap` using its index and use that to position itself correctly in the layout.
 
 ```
-const defaultItemTemplate: ViewTemplate<any> = html`
-    <div
+const itemTemplate: ViewTemplate<any> = html`
+    <fast-virtual-list-item
+        :itemData="${x => x}"
+        :listItemContext="${(x, c) => c.parent.listItemContext}"
         style="
-            overflow-wrap: anywhere;
-            overflow: hidden;
-            position: absolute;
-            height:  ${(x, c) =>
-            c.parent.orientation === Orientation.vertical
-                ? `${c.parent.visibleItemSpans[c.index]?.span}px`
-                : `100%`};
-            width:  ${(x, c) =>
-            c.parent.orientation === Orientation.vertical
-                ? `100%`
-                : `${c.parent.visibleItemSpans[c.index]?.span}px`};
+            height:  ${(x, c) => `${c.parent.visibleItemSpans[c.index]?.span}px`};
             transform: ${(x, c) =>
-            c.parent.orientation === Orientation.horizontal
-                ? `translateX(${c.parent.visibleItemSpans[c.index]?.start}px)`
-                : `translateY(${c.parent.visibleItemSpans[c.index]?.start}px)`};
+                `translateY(${c.parent.visibleItemSpans[c.index]?.start}px)`};
         "
     >
-        ${x => JSON.stringify(x)}
-    </div>
+    </fast-virtual-list-item>
+```
+
+Authors can provide a custom 'itemTemplate` to specify what type of "items" are created and how they are positioned - although translate transforms are typically used other approaches, like a grid, could work. 
+
+If no itemTemplate is specifed the list will be populated by `fast-virtual-list-item` elements.  Authors will still need to specify a template to display the data provided in the items array.  This is done using the `listItemContext` property of the virtual list that should be populated with a `VirtualListItemContext` object to set the template:
+
+```
+const myContentsTemplate = html`
+    <fast-card>
+        <div style="margin: 5px 20px 0 20px; color: white">
+            ${x => x.itemData.title}
+        </div>
+
+        <div
+            style="
+                height: 160px;
+                width:160px;
+                margin:10px 20px 10px 20px;
+                position: absolute;
+                background-image: url('${x => x.itemData.url}');
+            "
+        ></div>
+    </fast-card>
+`;
+
+myVirtualList.listItemContext = {
+    listItemContentsTemplate: myContentsTemplate,
+};
 ```
 
 ### Non-goals
@@ -79,7 +88,7 @@ _Attributes:_
 
 - `orientation` - Whether the list is oriented vertically or horizontally. Default is vertical.
 
-- `auto-update-mode` - Auto update mode defines what prompts the component to check the dimensions of elements in the DOM and reset the visible items accordingly.  Calling update() always provokes an update.  Default is 'manual'.  Note that an 
+- `auto-update-mode` - Auto update mode defines what prompts the component to check the dimensions of elements in the DOM and reset the visible items accordingly.  Calling update() always provokes an update.  Default is 'manual'.  Possible settings are:
 
     - manual: checks only when update() is called.
     - viewport-resize: checks on viewport resize.
@@ -90,19 +99,37 @@ _Properties:_
 
 -  `items` -  The array of objects to be displayed.
 
+- `spanmap` - When the array elements are of varying spans authors can pass an array of `SpanMap` objects that corresponds to the position and span of each element in the `items` array.  
+
 -  `viewportElement` -  The HTML element being used as the viewport.
 
 -  `itemTemplate` -  The ViewTemplate used to generate list items in the repeat directive.
 
--  `listItemContext` -  Used to pass a custom context object to the child list items.
+-  `listItemContext` -  Used to pass a custom context object to the child list items.  The default object type to pass here is a `VirtualListItemContext`.  Authors that specify custom child types could pass their own custom context objects here as well.
 
 _Slots:_
 
 -   `default`
 
-_Events_
+#### Virtual List Item  API
 
--   `rendered-range-change` - Event fired when the range of items being rendered changes.
+_Component name:_
+
+- `fast-virtual-list-item`
+
+_Properties:_
+
+- `itemData` - The data associated with this list item.  Properties can be bound to in the template as `${x => x.itemData.myProperty}`.
+
+- `itemIndex` - The index of the item in the items array. Properties can be bound to in the template as `${x => x.index}`.
+
+-  `listItemContext` - The `listItemContext` assigned to the parent `virtual-list`. It has the following properties:
+
+    - `listItemContentsTemplate` - The `ViewTemplate` to use to use as the template for the `list-context-item`.
+
+    Note that authors can extend the `VirtualListItemContext` type that `virtual-list-item` expects to add their own properties that would then be accessible in the `listItemContentsTemplate` they have provided with a `${x => x.listItemContext.myCustomProp}` binding.
+
+
 
 #### The SpanMap interface
 

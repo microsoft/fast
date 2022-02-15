@@ -12,6 +12,7 @@ function createDefaultVerticalItemTemplate(
     return html`
     <${listItemTag}
         :itemData="${x => x}"
+        :itemIndex="${(x, c) => c.index + c.parent.firstRenderedIndex}"
         :listItemContext="${(x, c) => c.parent.listItemContext}"
         style="
             height:  ${(x, c) => `${c.parent.visibleItemSpans[c.index]?.span}px`};
@@ -29,6 +30,7 @@ function createDefaultHorizontalItemTemplate(
     return html`
     <${listItemTag}
         :itemData="${x => x}"
+        :itemIndex="${(x, c) => c.index + c.parent.firstRenderedIndex}"
         :listItemContext="${(x, c) => c.parent.listItemContext}"
         style="
             width:  ${(x, c) => `${c.parent.visibleItemSpans[c.index]?.span}px`};
