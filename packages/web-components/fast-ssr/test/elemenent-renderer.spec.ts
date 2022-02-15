@@ -1,6 +1,6 @@
-import { test, expect, ElementHandle } from '@playwright/test';
 import { FASTElement } from "@microsoft/fast-element";
-import { FASTElementRenderer} from "../src";
+import { expect, test } from '@playwright/test';
+import { FASTElementRenderer } from "../src/index.js";
 
 describe("FASTElementRenderer", () => {
     describe("should have a 'matchesClass' method", () => {

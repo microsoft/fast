@@ -1,1 +1,1 @@
-export { FASTElementRenderer } from "./element-renderer";
+export { FASTElementRenderer } from "./element-renderer.js";

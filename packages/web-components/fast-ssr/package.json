@@ -17,6 +17,8 @@
   "scripts": {
     "build": "tsc -b --clean src && tsc -b src",
     "build-server": "tsc -b server",
+    "eslint": "eslint . --ext .ts",
+    "eslint:fix": "eslint . --ext .ts --fix",
     "pretest": "npm run build-server",
     "test": "playwright test -c test",
     "test-server": "node server/dist/server.js",
