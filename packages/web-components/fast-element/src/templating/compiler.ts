@@ -1,14 +1,14 @@
+import { _interpolationEnd, _interpolationStart, DOM } from "../dom.js";
+import { isString } from "../interfaces.js";
+import type { ExecutionContext } from "../observation/observable.js";
+import { bind, oneTime } from "./binding.js";
 import type {
     AspectedHTMLDirective,
     HTMLDirective,
     InlinableHTMLDirective,
     ViewBehaviorFactory,
     ViewBehaviorTargets,
-} from "./html-directive";
-import { _interpolationEnd, _interpolationStart, DOM } from "../dom";
-import type { ExecutionContext } from "../observation/observable";
-import { bind, oneTime } from "./binding";
-import { isString } from "../interfaces";
+} from "./html-directive.js";
 
 const targetIdFrom = (parentId: string, nodeIndex: number) => `${parentId}.${nodeIndex}`;
 const descriptorCache: PropertyDescriptorMap = {};

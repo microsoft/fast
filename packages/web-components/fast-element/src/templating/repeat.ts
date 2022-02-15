@@ -1,19 +1,19 @@
-import { DOM } from "../dom";
+import { DOM } from "../dom.js";
+import { isFunction } from "../interfaces.js";
+import type { Splice } from "../observation/array-change-records.js";
+import { enableArrayObservation } from "../observation/array-observer.js";
+import type { Behavior } from "../observation/behavior.js";
+import type { Notifier, Subscriber } from "../observation/notifier.js";
 import {
     Binding,
     BindingObserver,
     ExecutionContext,
     Observable,
-} from "../observation/observable";
-import type { Notifier, Subscriber } from "../observation/notifier";
-import { enableArrayObservation } from "../observation/array-observer";
-import type { Splice } from "../observation/array-change-records";
-import type { Behavior } from "../observation/behavior";
-import { emptyArray } from "../platform";
-import { ViewBehaviorTargets, HTMLDirective } from "./html-directive";
-import { HTMLView, SyntheticView } from "./view";
-import type { CaptureType, SyntheticViewTemplate } from "./template";
-import { isFunction } from "../interfaces";
+} from "../observation/observable.js";
+import { emptyArray } from "../platform.js";
+import { HTMLDirective, ViewBehaviorTargets } from "./html-directive.js";
+import type { CaptureType, SyntheticViewTemplate } from "./template.js";
+import { HTMLView, SyntheticView } from "./view.js";
 
 /**
  * Options for configuring repeat behavior.

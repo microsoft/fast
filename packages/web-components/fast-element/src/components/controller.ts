@@ -1,4 +1,3 @@
-import { DOM } from "../dom.js";
 import type { Mutable } from "../interfaces.js";
 import type { Behavior } from "../observation/behavior.js";
 import { PropertyChangeNotifier } from "../observation/notifier.js";

@@ -1,9 +1,9 @@
-import type { ExecutionContext } from "../observation/observable";
-import { emptyArray } from "../platform";
+import type { ExecutionContext } from "../observation/observable.js";
+import { emptyArray } from "../platform.js";
 import {
     StatelessAttachedAttributeDirective,
     ViewBehaviorTargets,
-} from "./html-directive";
+} from "./html-directive.js";
 
 /**
  * Options for configuring node observation behavior.

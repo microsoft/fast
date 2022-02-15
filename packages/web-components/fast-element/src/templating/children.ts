@@ -1,6 +1,6 @@
-import { isString } from "../interfaces";
-import { NodeObservationDirective, NodeBehaviorOptions } from "./node-observation";
-import type { CaptureType } from "./template";
+import { isString } from "../interfaces.js";
+import { NodeBehaviorOptions, NodeObservationDirective } from "./node-observation.js";
+import type { CaptureType } from "./template.js";
 
 /**
  * The options used to configure child list observation.
