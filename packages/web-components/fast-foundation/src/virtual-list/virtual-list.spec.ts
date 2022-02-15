@@ -151,4 +151,53 @@ describe("VirtualList", () => {
 
         await disconnect();
     });
+
+    it("should use spanmap to calculate spans when one is provided", async () => {
+        const { element, connect, disconnect } = await setup();
+
+        element.items = newDataSet(3);
+        element.virtualize = false;
+        element.spanmap = [
+            {start: 0, span: 100, end: 100},
+            {start: 100, span: 200, end: 300},
+            {start: 300, span: 300, end: 600},
+        ]
+        await connect();
+
+        expect(element.totalListSpan).to.equal(600);
+
+        await disconnect();
+    });
+
+    it("should return the correct spanMap when getItemSpanMap is called and spanmap is specified", async () => {
+        const { element, connect, disconnect } = await setup();
+
+        element.items = newDataSet(3);
+        element.virtualize = false;
+        element.spanmap = [
+            {start: 0, span: 100, end: 100},
+            {start: 100, span: 200, end: 300},
+            {start: 300, span: 300, end: 600},
+        ];
+        await connect();
+
+        expect(element.getItemSpanMap(0)?.end).to.equal(100);
+        expect(element.getItemSpanMap(2)?.end).to.equal(600);
+
+        await disconnect();
+    });
+
+    it("should return the correct spanMap when getItemSpanMap is called when no spanmap is specified", async () => {
+        const { element, connect, disconnect } = await setup();
+
+        element.items = newDataSet(3);
+        element.virtualize = false;
+
+        await connect();
+
+        expect(element.getItemSpanMap(0)?.end).to.equal(50);
+        expect(element.getItemSpanMap(2)?.end).to.equal(150);
+
+        await disconnect();
+    });
 });

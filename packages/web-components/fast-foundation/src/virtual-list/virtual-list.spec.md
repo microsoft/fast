@@ -111,6 +111,13 @@ _Slots:_
 
 -   `default`
 
+
+_functions:_
+
+- `getItemSpanMap = (itemIndex: number): SpanMap | null` - Returns the spanmap object that corresponds to the provided item index.
+
+- `public update(): void` - Requests a layout update.  
+
 #### Virtual List Item  API
 
 _Component name:_

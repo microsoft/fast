@@ -358,6 +358,39 @@ export class VirtualList extends FoundationElement {
     }
 
     /**
+     * Request a layout update
+     *
+     * @public
+     */
+    public update(): void {
+        this.requestPositionUpdates();
+    }
+
+    /**
+     * the position in the stack (in pixels) of the a particular item index in the
+     * base source data.  Note that this does not necessarily mean the item is currently
+     * being rendered.
+     *
+     * @public
+     */
+    public getItemSpanMap = (itemIndex: number): SpanMap | null => {
+        if (itemIndex < 0 || itemIndex >= this.items.length) {
+            // out of range
+            return null;
+        }
+
+        if (this.spanmap !== undefined) {
+            return this.spanmap[itemIndex];
+        }
+
+        return {
+            start: itemIndex * this.itemSpan,
+            end: itemIndex * this.itemSpan + this.itemSpan,
+            span: this.itemSpan,
+        };
+    };
+
+    /**
      * starts observing the items array
      */
     private observeItems(): void {
@@ -404,42 +437,9 @@ export class VirtualList extends FoundationElement {
     }
 
     /**
-     * Request a layout update
-     *
-     * @public
-     */
-    public update(): void {
-        this.requestPositionUpdates();
-    }
-
-    /**
-     * the position in the stack (in pixels) of the a particular item index in the
-     * base source data.  Note that this does not necessarily mean the item is currently
-     * being rendered.
-     *
-     * @public
-     */
-    public getItemSpanMap = (itemIndex: number): SpanMap | null => {
-        if (itemIndex < 0 || itemIndex >= this.items.length) {
-            // out of range
-            return null;
-        }
-
-        if (this.spanmap !== undefined) {
-            return this.spanmap[itemIndex];
-        }
-
-        return {
-            start: itemIndex * this.itemSpan,
-            end: itemIndex * this.itemSpan + this.itemSpan,
-            span: this.itemSpan,
-        };
-    };
-
-    /**
      * get position updates
      */
-    public requestPositionUpdates(): void {
+    protected requestPositionUpdates(): void {
         if (!this.virtualize) {
             this.updateVisibleItems();
             return;
