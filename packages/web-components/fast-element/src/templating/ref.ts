@@ -1,9 +1,9 @@
-import type { CaptureType } from "./template";
+import type { ExecutionContext } from "../observation/observable.js";
 import {
     StatelessAttachedAttributeDirective,
     ViewBehaviorTargets,
-} from "./html-directive";
-import type { ExecutionContext } from "../observation/observable";
+} from "./html-directive.js";
+import type { CaptureType } from "./template.js";
 
 /**
  * The runtime behavior for template references.

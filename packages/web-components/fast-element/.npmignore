@@ -9,7 +9,7 @@ src/
 
 # config files
 .eslintignore
-.eslintrc.js
+.eslintrc.cjs
 .mocharc.json
 .prettierignore
 api-extractor.json
