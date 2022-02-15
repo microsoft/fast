@@ -32,7 +32,7 @@ export class TreeView extends FoundationElement {
     private nested: boolean;
 
     @observable slottedTreeItems: HTMLElement[];
-    private slottedTreeItemsChanged(oldValue, newValue): void {
+    private slottedTreeItemsChanged(oldValue: unknown, newValue: HTMLElement[]): void {
         if (this.$fastController.isConnected) {
             // filter the tree items until that's done for us in the framework
             this.resetItems();

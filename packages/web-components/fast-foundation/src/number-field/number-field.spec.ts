@@ -9,7 +9,7 @@ const FASTNumberField = NumberField.compose({
     template,
 })
 
-async function setup(props?) {
+async function setup(props?: Partial<NumberField>) {
     const { element, connect, disconnect, parent } = await fixture(FASTNumberField());
 
     if(props) {
@@ -579,7 +579,7 @@ describe("NumberField", () => {
 
         it("should set value to max when value is greater than max", async () => {
             const max = 10;
-            const value = 20;
+            const value = '20';
             const { element, disconnect } = await setup({value, max});
 
             expect(element.value).to.equal(max.toString());
@@ -589,7 +589,7 @@ describe("NumberField", () => {
 
         it("should set value to max if the max changes to a value less than the value", async () => {
             const max = 10;
-            const value = 10 + max;
+            const value = `${10 + max}`;
             const { element, disconnect } = await setup({value});
 
             expect(element.value).to.equal(value.toString());
@@ -604,7 +604,7 @@ describe("NumberField", () => {
 
         it("should set value to min when value is less than min", async () => {
             const min = 10;
-            const value = min - 8;
+            const value = `${min - 8}`;
             const { element, disconnect } = await setup({value, min});
 
             expect(element.value).to.equal(min.toString());
@@ -618,7 +618,7 @@ describe("NumberField", () => {
 
         it("should set value to min if the min changes to a value more than the value", async () => {
             const min = 20;
-            const value = min - 10;
+            const value = `${min - 10}`;
             const { element, disconnect } = await setup({value});
 
             expect(element.value).to.equal(value.toString());
@@ -669,7 +669,7 @@ describe("NumberField", () => {
         it("should increment the value by the step amount", async () => {
             const step = 2;
             const value = 5;
-            const { element, disconnect } = await setup({step, value});
+            const { element, disconnect } = await setup({step, value: value.toString()});
 
             element.stepUp();
 
@@ -681,7 +681,7 @@ describe("NumberField", () => {
         it("should decrement the value by the step amount", async () => {
             const step = 2;
             const value = 5;
-            const { element, disconnect } = await setup({step, value});
+            const { element, disconnect } = await setup({step, value: value.toString()});
 
             element.stepDown();
 
@@ -790,7 +790,7 @@ describe("NumberField", () => {
         it("should update the proxy value when incrementing the value", async () => {
             const step = 2;
             const value = 5;
-            const { element, disconnect } = await setup({step, value});
+            const { element, disconnect } = await setup({step, value: value.toString()});
 
             element.stepUp();
 
@@ -803,7 +803,7 @@ describe("NumberField", () => {
         it("should update the proxy value when decrementing the value", async () => {
             const step = 2;
             const value = 5;
-            const { element, disconnect } = await setup({step, value});
+            const { element, disconnect } = await setup({step, value: value.toString()});
 
             element.stepDown();
 

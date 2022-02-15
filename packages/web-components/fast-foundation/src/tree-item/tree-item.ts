@@ -66,7 +66,7 @@ export class TreeItem extends FoundationElement {
 
     @observable
     public items: HTMLElement[];
-    private itemsChanged(oldValue, newValue): void {
+    private itemsChanged(oldValue: unknown, newValue: HTMLElement[]): void {
         if (this.$fastController.isConnected) {
             this.items.forEach((node: HTMLElement) => {
                 if (isTreeItemElement(node)) {

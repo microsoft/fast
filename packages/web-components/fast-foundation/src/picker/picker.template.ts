@@ -1,13 +1,14 @@
 import { html, ref, ViewTemplate, when } from "@microsoft/fast-element";
 import { AnchoredRegion } from "../anchored-region";
 import type { FoundationElementTemplate } from "../foundation-element";
+import type { ElementDefinitionContext } from "../design-system";
 import type { Picker } from "./picker";
 import { PickerMenu } from "./picker-menu";
 import { PickerMenuOption } from "./picker-menu-option";
 import { PickerList } from "./picker-list";
 import { PickerListItem } from "./picker-list-item";
 
-function createDefaultListItemTemplate(context): ViewTemplate {
+function createDefaultListItemTemplate(context: ElementDefinitionContext): ViewTemplate {
     const pickerListItemTag: string = context.tagFor(PickerListItem);
     return html`
     <${pickerListItemTag}
@@ -18,7 +19,9 @@ function createDefaultListItemTemplate(context): ViewTemplate {
     `;
 }
 
-function createDefaultMenuOptionTemplate(context): ViewTemplate {
+function createDefaultMenuOptionTemplate(
+    context: ElementDefinitionContext
+): ViewTemplate {
     const pickerMenuOptionTag: string = context.tagFor(PickerMenuOption);
     return html`
     <${pickerMenuOptionTag}
