@@ -91,7 +91,7 @@ export class FigmaPluginNode extends PluginNode {
                 this._componentRecipes.deserialize(componentRecipesJson);
 
                 this._componentRecipes.forEach((recipe, recipeId) => {
-                    this._recipes.delete(recipeId)
+                    this._recipes.delete(recipeId);
                 });
             }
         }

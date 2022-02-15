@@ -33,7 +33,7 @@ export class PluginUI extends React.Component<PluginUIProps> {
     constructor(props: PluginUIProps) {
         super(props);
 
-        this.controller = new UIController((nodes) => this.dispatchState(nodes));
+        this.controller = new UIController(nodes => this.dispatchState(nodes));
     }
 
     public render(): JSX.Element {
@@ -113,14 +113,15 @@ export class PluginUI extends React.Component<PluginUIProps> {
                             {designTokens.length ? (
                                 <>
                                     {designTokens.map(designToken => (
-                                        <p className="applied-recipe" key={designToken.definition.id}>
+                                        <p
+                                            className="applied-recipe"
+                                            key={designToken.definition.id}
+                                        >
                                             <div className="horizontal">
                                                 {designToken.definition.name}
                                             </div>
                                             <div>
-                                                <span>
-                                                    {designToken.value}
-                                                </span>
+                                                <span>{designToken.value}</span>
                                                 <plugin-button
                                                     appearance="stealth"
                                                     aria-label="Detach"
@@ -166,10 +167,9 @@ export class PluginUI extends React.Component<PluginUIProps> {
 
                                             <div>
                                                 <span>
-                                                    {this.controller
-                                                        .getDefaultDesignTokenValue(
-                                                            recipe.token
-                                                        )}
+                                                    {this.controller.getDefaultDesignTokenValue(
+                                                        recipe.token
+                                                    )}
                                                 </span>
                                                 <plugin-button
                                                     appearance="stealth"
@@ -203,10 +203,9 @@ export class PluginUI extends React.Component<PluginUIProps> {
 
                                             <div>
                                                 <span>
-                                                    {this.controller
-                                                        .getDefaultDesignTokenValue(
-                                                            recipe.token
-                                                        )}
+                                                    {this.controller.getDefaultDesignTokenValue(
+                                                        recipe.token
+                                                    )}
                                                 </span>
                                                 <plugin-button
                                                     appearance="stealth"
@@ -240,10 +239,9 @@ export class PluginUI extends React.Component<PluginUIProps> {
 
                                             <div>
                                                 <span>
-                                                    {this.controller
-                                                        .getDefaultDesignTokenValue(
-                                                            recipe.token
-                                                        )}
+                                                    {this.controller.getDefaultDesignTokenValue(
+                                                        recipe.token
+                                                    )}
                                                 </span>
                                                 <plugin-button
                                                     appearance="stealth"
@@ -277,10 +275,9 @@ export class PluginUI extends React.Component<PluginUIProps> {
                                             </td-swatch>
                                             <div>
                                                 <span>
-                                                    {this.controller
-                                                        .getDefaultDesignTokenValue(
-                                                            recipe.token
-                                                        )}
+                                                    {this.controller.getDefaultDesignTokenValue(
+                                                        recipe.token
+                                                    )}
                                                 </span>
                                                 <plugin-button
                                                     appearance="stealth"
@@ -526,8 +523,7 @@ export class PluginUI extends React.Component<PluginUIProps> {
     private renderColorPicker(tokenId: string): JSX.Element {
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         const colorToken = this.controller.getDesignTokenDefinition<Swatch>(tokenId)!;
-        const defaultValue = this.controller
-            .getDefaultDesignTokenValue(colorToken.token);
+        const defaultValue = this.controller.getDefaultDesignTokenValue(colorToken.token);
         const values = this.props.selectedNodes
             .map(node => this.controller.getDesignTokenValue(node, colorToken.token))
             .filter(value => !!value);
