@@ -7,7 +7,7 @@ import { FoundationElement } from "../foundation-element";
  * @public
  */
 export interface VirtualListItemContext {
-    listItemTemplate: ViewTemplate;
+    listItemContentsTemplate: ViewTemplate;
 }
 
 /**
@@ -23,6 +23,14 @@ export class VirtualListItem extends FoundationElement {
      */
     @observable
     public itemData: object;
+
+    /**
+     * The index of the item in the items array.
+     *
+     * @public
+     */
+    @observable
+    public itemIndex: number;
 
     /**
      *  Custom context provided to the parent virtual list
@@ -53,6 +61,6 @@ export class VirtualListItem extends FoundationElement {
      * @internal
      */
     resolveTemplate(): ViewTemplate {
-        return this.listItemContext.listItemTemplate;
+        return this.listItemContext.listItemContentsTemplate;
     }
 }
