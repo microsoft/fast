@@ -1,19 +1,19 @@
-import { DOM } from "../dom";
-import { isString, Mutable } from "../interfaces";
+import { DOM } from "../dom.js";
+import { isString, Mutable } from "../interfaces.js";
 import {
     Binding,
     BindingObserver,
     ExecutionContext,
     Observable,
     setCurrentEvent,
-} from "../observation/observable";
+} from "../observation/observable.js";
 import {
     InlinableHTMLDirective,
     ViewBehavior,
     ViewBehaviorTargets,
-} from "./html-directive";
-import type { CaptureType } from "./template";
-import type { SyntheticView } from "./view";
+} from "./html-directive.js";
+import type { CaptureType } from "./template.js";
+import type { SyntheticView } from "./view.js";
 
 export type BindingBehaviorFactory = {
     createBehavior(targets: ViewBehaviorTargets): ViewBehavior;

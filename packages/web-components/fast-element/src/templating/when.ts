@@ -1,6 +1,6 @@
-import { isFunction } from "../interfaces";
-import type { Binding, ExecutionContext } from "../observation/observable";
-import type { CaptureType, SyntheticViewTemplate } from "./template";
+import { isFunction } from "../interfaces.js";
+import type { Binding, ExecutionContext } from "../observation/observable.js";
+import type { CaptureType, SyntheticViewTemplate } from "./template.js";
 
 /**
  * A directive that enables basic conditional rendering in a template.

@@ -1,6 +1,6 @@
-import { DOM, nextId } from "../dom";
-import type { Behavior } from "../observation/behavior";
-import type { Binding, ExecutionContext } from "../observation/observable";
+import { DOM, nextId } from "../dom.js";
+import type { Behavior } from "../observation/behavior.js";
+import type { Binding, ExecutionContext } from "../observation/observable.js";
 
 /**
  * The target nodes available to a behavior.
