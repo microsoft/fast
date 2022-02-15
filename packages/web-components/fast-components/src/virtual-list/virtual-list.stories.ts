@@ -106,7 +106,6 @@ const rowItemTemplate = html`
             display: block;
             position: absolute;
             height:  200px;
-            width:  100%;
             transform: ${(x, c) =>
             `translateY(${c.parent.visibleItemSpans[c.index]?.start}px)`};
         "

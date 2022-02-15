@@ -2,7 +2,7 @@
 
 ## Overview
 
-The `virtual-list` component enables authors to display an array of data objects as a horizontal or vertical list.  Authors will specify a `viewTemplate` that each object will be bound to for rendering.  
+The `virtual-list` component enables authors to display an array of data objects as a horizontal or vertical list.  Authors can specify the templates to use to generate items as well as the template used to render the item contents allowing a high degree of customization and optimization possibilities
 
 Additionally, the component is able to render only the elements in or near a 'viewport' element that the author can specify.  This virtualization capability enables the component to display large collections of data effectively.  
 
@@ -67,8 +67,6 @@ myVirtualList.listItemContext = {
 ### Non-goals
 
 - The first version of the component uses native scroll bars which have upper limits in terms of how tall/wide the scrollable region can be before scrolling fails.  It's a big number and may vary from browser to browser.  TODO: add numbers.
-
-- Variable span elements will not be supported in the first iteration, but should be added later to support virtualizing tree-view component, for example.
 
 ### API
 
