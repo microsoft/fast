@@ -1,10 +1,13 @@
 import { html, ref, ViewTemplate } from "@microsoft/fast-element";
 import { Orientation } from "@microsoft/fast-web-utilities";
+import type { ElementDefinitionContext } from "..";
 import type { FoundationElementTemplate } from "../foundation-element";
 import type { VirtualList } from "./virtual-list";
 import { VirtualListItem } from "./virtual-list-item";
 
-function createDefaultVerticalItemTemplate(context): ViewTemplate {
+function createDefaultVerticalItemTemplate(
+    context: ElementDefinitionContext
+): ViewTemplate {
     const listItemTag = context.tagFor(VirtualListItem);
     return html`
     <${listItemTag}
@@ -19,7 +22,9 @@ function createDefaultVerticalItemTemplate(context): ViewTemplate {
 `;
 }
 
-function createDefaultHorizontalItemTemplate(context): ViewTemplate {
+function createDefaultHorizontalItemTemplate(
+    context: ElementDefinitionContext
+): ViewTemplate {
     const listItemTag = context.tagFor(VirtualListItem);
     return html`
     <${listItemTag}
