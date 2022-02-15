@@ -1,5 +1,3 @@
-import { DOM, StyleTarget } from "@microsoft/fast-element";
-
 interface StyleCache {
     [key: string]: CSSStyleSheet | string;
 }
@@ -12,6 +10,9 @@ interface StyleCache {
 export default class FASTStyle extends HTMLElement {
     private static cache: StyleCache = {};
     private static hashIdDataSetName: string = "data-style-id";
+    private static supportsAdoptedStyleSheets: boolean =
+        Array.isArray((document as any).adoptedStyleSheets) &&
+        "replace" in CSSStyleSheet.prototype;
 
     /**
      * @internal
@@ -26,16 +27,16 @@ export default class FASTStyle extends HTMLElement {
      * Register styles if they are not part of the cache and attach them
      */
     private registerStyles = (hashId: string, css: string): void => {
-        if (DOM.supportsAdoptedStyleSheets) {
+        if (FASTStyle.supportsAdoptedStyleSheets) {
             if (!(hashId in FASTStyle.cache)) {
                 this.memoizeAdoptedStylesheetStyles(hashId, css);
             }
-            this.attachAdoptedStylesheetStyles(this.parentNode as StyleTarget, hashId);
+            this.attachAdoptedStylesheetStyles(this.parentNode as ShadowRoot, hashId);
         } else {
             if (!(hashId in FASTStyle.cache)) {
                 this.memoizeStyleElementStyles(hashId, css);
             }
-            this.attachStyleElementStyles(this.parentNode as StyleTarget, hashId);
+            this.attachStyleElementStyles(this.parentNode as ShadowRoot, hashId);
         }
     };
 
@@ -51,9 +52,9 @@ export default class FASTStyle extends HTMLElement {
     /**
      * Attach CSSStyleSheets
      */
-    private attachAdoptedStylesheetStyles(shadowRoot: StyleTarget, hashId: string) {
-        shadowRoot.adoptedStyleSheets = [
-            ...shadowRoot.adoptedStyleSheets!,
+    private attachAdoptedStylesheetStyles(shadowRoot: ShadowRoot, hashId: string) {
+        (shadowRoot as any).adoptedStyleSheets = [
+            ...(shadowRoot as any).adoptedStyleSheets!,
             FASTStyle.cache[hashId] as CSSStyleSheet,
         ];
     }
@@ -68,7 +69,7 @@ export default class FASTStyle extends HTMLElement {
     /**
      * Attach style elements
      */
-    private attachStyleElementStyles(shadowRoot: StyleTarget, hashId: string) {
+    private attachStyleElementStyles(shadowRoot: ShadowRoot, hashId: string) {
         const element = document.createElement("style");
         element.innerHTML = FASTStyle.cache[hashId] as string;
         shadowRoot.append(element);
