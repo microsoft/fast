@@ -222,21 +222,22 @@ export class Menu extends FoundationElement {
         }
 
         function elementIndent(el: HTMLElement): MenuItemColumnCount {
-            if (!(el instanceof MenuItem)) {
-                return 1;
+            const role = el.getAttribute("role");
+            if (!role) {
+                return 0;
             }
             if (
-                el.role !== MenuItemRole.menuitem &&
+                role !== MenuItemRole.menuitem &&
                 el.querySelector("[slot=start]") === null
             ) {
                 return 1;
             } else if (
-                el.role === MenuItemRole.menuitem &&
+                role === MenuItemRole.menuitem &&
                 el.querySelector("[slot=start]") !== null
             ) {
                 return 1;
             } else if (
-                el.role !== MenuItemRole.menuitem &&
+                role !== MenuItemRole.menuitem &&
                 el.querySelector("[slot=start]") !== null
             ) {
                 return 2;
