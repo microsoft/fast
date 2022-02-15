@@ -2804,7 +2804,6 @@ export type WeekdayText = {
     abbr?: string;
 };
 export class VirtualList extends FoundationElement {
-    // @beta
     autoUpdateMode: VirtualListAutoUpdateMode;
     // @internal (undocumented)
     connectedCallback(): void;
@@ -2820,31 +2819,27 @@ export class VirtualList extends FoundationElement {
     endSpacerSpan: number;
     // @internal
     firstRenderedIndex: number;
-    getGeneratedItemPosition(itemIndex: number): number;
+    getItemSpanMap: (itemIndex: number) => SpanMap | null;
     // @internal
     handleChange(source: any, splices: Splice[]): void;
     items: object[];
-    // @beta
     itemSpan: number;
     itemTemplate: ViewTemplate;
     // @internal
     lastRenderedIndex: number;
     listItemContext: object;
-    // @beta
     orientation: Orientation;
     requestPositionUpdates(): void;
     protected reset(): void;
+    spanmap: SpanMap[];
     // @internal
     startSpacerSpan: number;
     // @internal
     totalListSpan: number;
     update(): void;
-    // @beta
     viewport: string;
-    // @beta
     viewportBuffer: number;
     viewportElement: HTMLElement;
-    // @beta
     virtualize: boolean;
     // @internal
     visibleItems: any[];

@@ -180,4 +180,25 @@
             display: block;
         "
     ></fast-virtual-list>
+
+    <h3 style="grid-column: 5; grid-row: 1;">
+        Variable heights
+    </h3>
+
+    <fast-virtual-list
+        orientation="vertical"
+        item-span="200"
+        viewport-buffer="200"
+        auto-update-mode="auto"
+        id="stackv3"
+        style="
+            grid-column: 5;
+            grid-row: 2;
+            height: 800px;
+            width: 200px;
+            overflow-y: scroll;
+            overflow-x: hidden;
+            display: block;
+        "
+    ></fast-virtual-list>
 </div>
