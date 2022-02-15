@@ -1,7 +1,7 @@
-import { DOM } from "../dom";
-import { PropertyChangeNotifier, SubscriberSet } from "./notifier";
-import type { Notifier, Subscriber } from "./notifier";
-import { isFunction, isString } from "../interfaces";
+import { DOM } from "../dom.js";
+import { isFunction, isString } from "../interfaces.js";
+import { PropertyChangeNotifier, SubscriberSet } from "./notifier.js";
+import type { Notifier, Subscriber } from "./notifier.js";
 
 const volatileRegex = /(:|&&|\|\||if)/;
 const notifierLookup = new WeakMap<any, Notifier>();
