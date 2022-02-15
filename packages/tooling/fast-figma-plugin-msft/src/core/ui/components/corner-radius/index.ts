@@ -1,8 +1,5 @@
 import { attr, css, customElement, FASTElement, html } from "@microsoft/fast-element";
-import {
-    neutralFillStealthHover,
-    neutralForegroundHint,
-} from "@microsoft/fast-components";
+import { neutralFillStealthHover, neutralForegroundHint } from "@fluentui/web-components";
 
 const template = html<CornerRadius>`
     <template
