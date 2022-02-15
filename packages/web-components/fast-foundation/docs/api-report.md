@@ -2851,6 +2851,7 @@ export class VirtualList extends FoundationElement {
     lastRenderedIndex: number;
     listItemContext: object;
     orientation: Orientation;
+    recycle: boolean;
     requestPositionUpdates(): void;
     protected reset(): void;
     spanmap: SpanMap[];
