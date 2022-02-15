@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "add a caching system for react wrappers",
-  "packageName": "@microsoft/fast-react-wrapper",
-  "email": "mathieulavoie94@gmail.com",
-  "dependentChangeType": "patch"
-}

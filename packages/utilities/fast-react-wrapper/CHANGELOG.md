@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-react-wrapper
 
-This log was last generated on Thu, 10 Feb 2022 07:12:01 GMT and should not be manually modified.
+This log was last generated on Tue, 15 Feb 2022 07:11:28 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.1.30
+
+Tue, 15 Feb 2022 07:11:28 GMT
+
+### Patches
+
+- add a caching system for react wrappers (mathieulavoie94@gmail.com)
 
 ## 0.1.29
 
