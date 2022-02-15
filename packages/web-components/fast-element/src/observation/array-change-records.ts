@@ -1,4 +1,4 @@
-import { emptyArray } from "../platform";
+import { emptyArray } from "../platform.js";
 
 const enum Edit {
     leave = 0,

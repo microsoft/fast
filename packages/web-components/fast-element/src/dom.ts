@@ -1,5 +1,5 @@
-import type { Callable } from "./interfaces";
-import { $global, TrustedTypesPolicy } from "./platform";
+import type { Callable } from "./interfaces.js";
+import { $global, TrustedTypesPolicy } from "./platform.js";
 
 /* eslint-disable */
 const fastHTMLPolicy: TrustedTypesPolicy = $global.trustedTypes.createPolicy(
