@@ -130,6 +130,21 @@ export class VirtualList extends FoundationElement {
     }
 
     /**
+     * Whether or not to recycle the html container used to display items.
+     * May help performance but containers may retain artifacts from previous use that
+     * developers will need to clear.
+     *
+     * @public
+     */
+    @attr({ attribute: "recycle", mode: "boolean" })
+    public recycle: boolean = false;
+    // private recycleChanged(): void {
+    //     if (this.$fastController.isConnected) {
+    //         TODO: implement this
+    //     }
+    // }
+
+    /**
      *  The array of items to be displayed
      *
      * @public
@@ -482,7 +497,7 @@ export class VirtualList extends FoundationElement {
         this.itemsRepeatBehavior = new RepeatDirective(
             x => x.visibleItems,
             x => x.itemTemplate,
-            { positioning: true, recycle: false }
+            { positioning: true, recycle: this.recycle }
         ).createBehavior(this.itemsPlaceholder);
         this.$fastController.addBehaviors([this.itemsRepeatBehavior]);
     }
