@@ -143,6 +143,21 @@ export class VirtualList extends FoundationElement {
     }
 
     /**
+     * The spanmap for the items
+     * Authors need to provide a spanmap for arrays of irregular span items,
+     * when the items have a uniform span use the 'item-span' attribute instead.
+     *
+     * @public
+     */
+    @observable
+    public spanmap: SpanMap[];
+    private spanmapChanged(): void {
+        if (this.$fastController.isConnected) {
+            this.updateDimensions();
+        }
+    }
+
+    /**
      * The HTML element being used as the viewport
      *
      * @public
@@ -389,23 +404,22 @@ export class VirtualList extends FoundationElement {
      *
      * @public
      */
-    public getGeneratedItemPosition(itemIndex: number): number {
+    public getItemSpanMap = (itemIndex: number): SpanMap | null => {
         if (itemIndex < 0 || itemIndex >= this.items.length) {
             // out of range
-            return 0;
+            return null;
         }
 
-        let returnVal = 0;
-
-        if (this.visibleItemSpans !== undefined) {
-            // todo
-            returnVal = 0;
-        } else {
-            returnVal = itemIndex * this.itemSpan;
+        if (this.spanmap !== undefined) {
+            return this.spanmap[itemIndex];
         }
 
-        return returnVal;
-    }
+        return {
+            start: itemIndex * this.itemSpan,
+            end: itemIndex * this.itemSpan + this.itemSpan,
+            span: this.itemSpan,
+        };
+    };
 
     /**
      * get position updates
@@ -608,12 +622,22 @@ export class VirtualList extends FoundationElement {
     }
 
     /**
-     * updates the dimensions of the stack
+     * updates the dimensions of the list
      */
-    private updateDimensions(): void {
-        this.totalListSpan = this.itemSpan * (this.items?.length ?? 0);
+    private updateDimensions = (): void => {
+        if (this.items === undefined) {
+            this.totalListSpan = 0;
+            return;
+        }
+        if (this.spanmap !== undefined) {
+            this.totalListSpan =
+                this.spanmap.length > 0 ? this.spanmap[this.spanmap.length - 1].end : 0;
+        } else {
+            this.totalListSpan = this.itemSpan * this.items.length;
+        }
+
         this.requestPositionUpdates();
-    }
+    };
 
     /**
      *  Updates the visible items
@@ -669,27 +693,52 @@ export class VirtualList extends FoundationElement {
                 renderedRangeEnd > containerSpan ? containerSpan : renderedRangeEnd;
         }
 
-        let newFirstRenderedIndex: number = Math.floor(
-            renderedRangeStart / this.itemSpan
-        );
         const visibleRangeLength = renderedRangeEnd - renderedRangeStart;
-        let newLastRenderedIndex: number =
-            newFirstRenderedIndex + Math.ceil(visibleRangeLength / this.itemSpan);
+        let newFirstRenderedIndex: number = 0;
+        let newLastRenderedIndex: number = 0;
 
-        newFirstRenderedIndex = Math.max(0, newFirstRenderedIndex);
-        newLastRenderedIndex = Math.min(newLastRenderedIndex, this.items.length - 1);
+        if (this.spanmap === undefined) {
+            newFirstRenderedIndex = Math.floor(renderedRangeStart / this.itemSpan);
+            newLastRenderedIndex =
+                newFirstRenderedIndex + Math.ceil(visibleRangeLength / this.itemSpan);
 
-        this.startSpacerSpan = newFirstRenderedIndex * this.itemSpan;
-        this.endSpacerSpan =
-            (this.items.length - newLastRenderedIndex - 1) * this.itemSpan;
+            newFirstRenderedIndex = Math.max(0, newFirstRenderedIndex);
+            newLastRenderedIndex = Math.min(newLastRenderedIndex, this.items.length - 1);
+
+            this.startSpacerSpan = newFirstRenderedIndex * this.itemSpan;
+            this.endSpacerSpan =
+                (this.items.length - newLastRenderedIndex - 1) * this.itemSpan;
+        } else {
+            const firstVisibleItem: SpanMap | undefined = this.spanmap.find(
+                x => x.end >= renderedRangeStart
+            );
+            if (firstVisibleItem !== undefined) {
+                newFirstRenderedIndex = this.spanmap.indexOf(firstVisibleItem);
+                const lastVisibleItem: SpanMap | undefined = this.spanmap.find(
+                    x => x.start >= renderedRangeEnd
+                );
+                newLastRenderedIndex =
+                    lastVisibleItem === undefined
+                        ? this.spanmap.length - 1
+                        : this.spanmap.indexOf(lastVisibleItem);
+            }
+
+            newFirstRenderedIndex = Math.max(0, newFirstRenderedIndex);
+            newLastRenderedIndex = Math.min(newLastRenderedIndex, this.items.length - 1);
+
+            this.startSpacerSpan = this.spanmap[newFirstRenderedIndex].start;
+            this.endSpacerSpan =
+                this.spanmap[this.spanmap.length - 1].end -
+                this.spanmap[newLastRenderedIndex].end;
+        }
 
         const newVisibleItems = this.items.slice(
             newFirstRenderedIndex,
             newLastRenderedIndex + 1
         );
 
-        this.visibleItems.splice(0, this.visibleItems.length, ...newVisibleItems);
         this.updateVisibleItemSpans(newFirstRenderedIndex, newLastRenderedIndex);
+        this.visibleItems.splice(0, this.visibleItems.length, ...newVisibleItems);
     }
 
     /**
@@ -703,21 +752,30 @@ export class VirtualList extends FoundationElement {
 
         let top: number = this.startSpacerSpan;
 
-        for (let i = newFirstRenderedIndex; i <= newLastRenderedIndex; i++) {
-            const thisSpanMap: SpanMap = {
-                start: top,
-                end: top + this.itemSpan,
-                span: this.itemSpan,
-            };
-            top = thisSpanMap.end;
-            newVisibleItemSpans.push(thisSpanMap);
+        if (this.spanmap === undefined) {
+            for (let i: number = newFirstRenderedIndex; i <= newLastRenderedIndex; i++) {
+                const thisSpanMap: SpanMap = {
+                    start: top,
+                    end: top + this.itemSpan,
+                    span: this.itemSpan,
+                };
+                top = thisSpanMap.end;
+                newVisibleItemSpans.push(thisSpanMap);
+            }
+
+            this.visibleItemSpans.splice(
+                0,
+                this.visibleItemSpans.length,
+                ...newVisibleItemSpans
+            );
+        } else {
+            this.visibleItemSpans.splice(
+                0,
+                this.visibleItemSpans.length,
+                ...this.spanmap.slice(newFirstRenderedIndex, newLastRenderedIndex + 1)
+            );
         }
 
-        this.visibleItemSpans.splice(
-            0,
-            this.visibleItemSpans.length,
-            ...newVisibleItemSpans
-        );
         this.updateRenderedRange(newFirstRenderedIndex, newLastRenderedIndex);
     }
 

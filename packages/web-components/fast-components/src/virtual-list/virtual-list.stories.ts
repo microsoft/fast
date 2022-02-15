@@ -1,9 +1,9 @@
-import { html, when } from "@microsoft/fast-element";
+import { html } from "@microsoft/fast-element";
 import addons from "@storybook/addons";
 import { STORY_RENDERED } from "@storybook/core-events";
 import {
     VirtualList as FoundationVirtualList,
-    VirtualListItem,
+    SpanMap,
 } from "@microsoft/fast-foundation";
 import VirtualListTemplate from "./fixtures/base.html";
 import "./index";
@@ -134,6 +134,7 @@ const listItemTemplate = html`
 addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
     if (name.toLowerCase().startsWith("virtual-list")) {
         const data = newDataSet(10000, 1);
+        const dataSpanMap = generateSpanMap(data);
 
         const gridData: object[] = [];
 
@@ -177,6 +178,13 @@ addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
         stackv2.listItemContext = {
             listItemTemplate: listItemTemplate,
         };
+
+        const stackv3 = document.getElementById("stackv3") as FoundationVirtualList;
+        stackv3.spanmap = dataSpanMap;
+        stackv3.items = data;
+        stackv3.listItemContext = {
+            listItemTemplate: listItemTemplate,
+        };
     }
 });
 
@@ -190,6 +198,23 @@ function newDataSet(rowCount: number, prefix: number): object[] {
         });
     }
     return newData;
+}
+
+function generateSpanMap(data: object[]) {
+    const spanmap: SpanMap[] = [];
+    const itemsCount: number = data.length;
+    let currentPosition: number = 0;
+    for (let i = 0; i < itemsCount; i++) {
+        const nextSpan: number = 200 + Math.floor(Math.random() * 200);
+        const spanEnd = nextSpan + currentPosition;
+        spanmap.push({
+            start: currentPosition,
+            span: nextSpan,
+            end: spanEnd,
+        });
+        currentPosition = spanEnd;
+    }
+    return spanmap;
 }
 
 export default {
