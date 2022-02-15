@@ -45,9 +45,9 @@ function handleStyleRequest(req: Request, res: Response) {
 }
 
 function handleStyleScriptRequest(req: Request, res: Response) {
-    res.set("Content-Type", "text/plain");
+    res.set("Content-Type", "application/javascript");
     fs.readFile(
-        path.resolve(__dirname, "./dist/fast-style.min.js"),
+        path.resolve(__dirname, "./dist/fast-style/index.js"),
         { encoding: "utf8" },
         (err, data) => {
             const stream = (Readable as any).from(data);
@@ -68,5 +68,5 @@ function handleStyleScriptRequest(req: Request, res: Response) {
 const app = express();
 app.get("/", handleRequest);
 app.get("/fast-style", handleStyleRequest);
-app.get("/fast-style.min.js", handleStyleScriptRequest);
+app.get("/fast-style.js", handleStyleScriptRequest);
 app.listen(PORT);
