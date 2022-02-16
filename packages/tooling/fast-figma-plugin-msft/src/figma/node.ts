@@ -13,6 +13,7 @@ export const isSliceNode = isNodeType<SliceNode>("SLICE");
 export const isFrameNode = isNodeType<FrameNode>("FRAME");
 export const isGroupNode = isNodeType<GroupNode>("GROUP");
 export const isComponentNode = isNodeType<ComponentNode>("COMPONENT");
+export const isComponentSetNode = isNodeType<ComponentNode>("COMPONENT_SET");
 export const isInstanceNode = isNodeType<InstanceNode>("INSTANCE");
 export const isBooleanOperationNode = isNodeType<BooleanOperationNode>(
     "BOOLEAN_OPERATION"
@@ -31,6 +32,7 @@ export function isSceneNode(node: BaseNode): node is SceneNode {
         isFrameNode,
         isGroupNode,
         isComponentNode,
+        isComponentSetNode,
         isInstanceNode,
         isBooleanOperationNode,
         isVectorNode,
@@ -52,7 +54,8 @@ export function canHaveChildren(
     | GroupNode
     | BooleanOperationNode
     | InstanceNode
-    | ComponentNode {
+    | ComponentNode
+    | ComponentSetNode {
     return [
         isDocumentNode,
         isPageNode,
@@ -61,6 +64,7 @@ export function canHaveChildren(
         isBooleanOperationNode,
         isInstanceNode,
         isComponentNode,
+        isComponentSetNode,
     ].some((test: (node: BaseNode) => boolean) => test(node));
 }
 
@@ -78,9 +82,9 @@ export class FigmaPluginNode extends PluginNode {
         this.id = node.id;
         this.type = node.type;
 
-        // Load all recipes attached to the node.
-        const recipesJson = this.getPluginData("recipes");
-        this._recipes.deserialize(recipesJson);
+        this.loadLocalDesignTokens();
+        this.loadRecipes();
+        this.loadRecipeEvaluations();
 
         // If it's an instance node, the `recipes` may also include main component settings. Deduplicate them.
         if (isInstanceNode(this.node)) {
@@ -99,6 +103,12 @@ export class FigmaPluginNode extends PluginNode {
         if (this._recipes.size) {
             // console.log("    recipes", this._recipes.serialize());
         }
+
+        this.setupFillColor();
+    }
+
+    public canHaveChildren(): boolean {
+        return canHaveChildren(this.node);
     }
 
     public children(): FigmaPluginNode[] {
@@ -123,14 +133,10 @@ export class FigmaPluginNode extends PluginNode {
                 case DesignTokenType.backgroundFill:
                 case DesignTokenType.strokeFill:
                 case DesignTokenType.cornerRadius:
-                case DesignTokenType.designToken:
                     return [
+                        (node: BaseNode) => isDocumentNode(node),
                         (node: BaseNode) =>
-                            isDocumentNode(node) && key === DesignTokenType.designToken,
-                        (node: BaseNode) =>
-                            isPageNode(node) &&
-                            (key === DesignTokenType.designToken ||
-                                key === DesignTokenType.backgroundFill),
+                            isPageNode(node) && key === DesignTokenType.backgroundFill,
                         isFrameNode,
                         isRectangleNode,
                         isPolygonNode,
@@ -139,11 +145,12 @@ export class FigmaPluginNode extends PluginNode {
                         isInstanceNode,
                     ].some((test: (node: BaseNode) => boolean) => test(this.node));
                 case DesignTokenType.foregroundFill:
-                    return isTextNode(this.node);
                 case DesignTokenType.fontName:
                 case DesignTokenType.fontSize:
                 case DesignTokenType.lineHeight:
                     return isTextNode(this.node);
+                case DesignTokenType.designToken:
+                    return true;
                 default:
                     return false;
             }

@@ -23,6 +23,8 @@ const DesignTokenCache: Map<string, ReadonlyAppliedDesignTokens> = new Map();
 export abstract class PluginNode {
     protected _recipes: AppliedRecipes = new AppliedRecipes();
     protected _componentRecipes?: AppliedRecipes;
+    protected _localDesignTokens: AppliedDesignTokens = new AppliedDesignTokens();
+    protected _recipeEvaluations: RecipeEvaluations = new RecipeEvaluations();
 
     /**
      * Retrieves the design token overrides on ancestor nodes.
@@ -36,18 +38,8 @@ export abstract class PluginNode {
         let designTokens = new AppliedDesignTokens();
         const parent = this.parent();
         if (parent !== null) {
-            // This is a bit fragile, but seems like the best way to incorporate this under the current model.
-            const fillColorMap = new AppliedDesignTokens();
-            const parentFillColor = parent.getEffectiveFillColor();
-            if (parentFillColor) {
-                const fillColorToken = new AppliedDesignToken<string>();
-                fillColorToken.value = parentFillColor.toStringHexRGB();
-                // console.log("  PluginNode.inheritedDesignTokens - parent fillColor", parent.id, parent.type, fillColorToken.value);
-                fillColorMap.set("fillColor", fillColorToken);
-            }
             designTokens = new AppliedDesignTokens([
                 ...parent.inheritedDesignTokens,
-                ...fillColorMap,
                 ...parent.localDesignTokens,
             ]);
         }
@@ -57,6 +49,11 @@ export abstract class PluginNode {
         DesignTokenCache.set(this.id, designTokens);
 
         return designTokens;
+    }
+
+    protected loadRecipes(): void {
+        const recipesJson = this.getPluginData("recipes");
+        this._recipes.deserialize(recipesJson);
     }
 
     /**
@@ -71,6 +68,7 @@ export abstract class PluginNode {
      * @param recipes The complete applied recipes map.
      */
     public setRecipes(recipes: AppliedRecipes) {
+        this._recipes = recipes;
         if (recipes.size) {
             const json = recipes.serialize();
             this.setPluginData("recipes", json);
@@ -83,14 +81,16 @@ export abstract class PluginNode {
         return this._componentRecipes as ReadonlyAppliedRecipes;
     }
 
+    protected loadLocalDesignTokens(): void {
+        const json = this.getPluginData("designTokens");
+        this._localDesignTokens.deserialize(json);
+    }
+
     /**
      * Gets a readonly map of design token overrides applied to this node.
      */
     public get localDesignTokens(): ReadonlyAppliedDesignTokens {
-        const json = this.getPluginData("designTokens");
-        const map = new AppliedDesignTokens();
-        map.deserialize(json);
-        return map;
+        return this._localDesignTokens;
     }
 
     public get componentDesignTokens(): ReadonlyAppliedDesignTokens {
@@ -99,6 +99,7 @@ export abstract class PluginNode {
 
     public abstract id: string;
     public abstract type: string;
+    public abstract canHaveChildren(): boolean;
     public abstract children(): PluginNode[];
     public abstract parent(): PluginNode | null;
     public abstract supports(): Array<DesignTokenType>;
@@ -108,6 +109,7 @@ export abstract class PluginNode {
      * @param tokens The complete design tokens override map.
      */
     public setDesignTokens(tokens: AppliedDesignTokens) {
+        this._localDesignTokens = tokens;
         if (tokens.size) {
             const json = tokens.serialize();
             this.setPluginData("designTokens", json);
@@ -118,17 +120,20 @@ export abstract class PluginNode {
         this.invalidateDesignTokenCache();
     }
 
+    protected loadRecipeEvaluations(): void {
+        const json = this.getPluginData("recipeEvaluations");
+        this._recipeEvaluations.deserialize(json);
+    }
+
     /**
      * Gets a readonly map of recipe evaluations applied to this node.
      */
     public get recipeEvaluations(): ReadonlyRecipeEvaluations {
-        const json = this.getPluginData("recipeEvaluations");
-        const map = new RecipeEvaluations();
-        map.deserialize(json);
-        return map;
+        return this._recipeEvaluations;
     }
 
     public setRecipeEvaluations(evaluations: RecipeEvaluations) {
+        this._recipeEvaluations = evaluations;
         if (evaluations.size) {
             const json = evaluations.serialize();
             this.setPluginData("recipeEvaluations", json);
@@ -144,6 +149,36 @@ export abstract class PluginNode {
      * This color is communicated to color recipes as the fillColor context for a node.
      */
     public abstract getEffectiveFillColor(): ColorRGBA64 | null;
+
+    /**
+     * Setup special handling for fillColor. It should either be a recipe or a fixed color applied in the design tool.
+     * Must be called after design tokens and recipe evaluations are loaded.
+     * We'll hide it as a regular design token, so it shouldn't get set manually.
+     */
+    protected setupFillColor(): void {
+        if (this.canHaveChildren()) {
+            let foundFill = false;
+            this._recipeEvaluations.forEach(evaluations => {
+                evaluations.forEach(evaluation => {
+                    if (
+                        evaluation.type === DesignTokenType.backgroundFill ||
+                        evaluation.type === DesignTokenType.layerFill
+                    ) {
+                        foundFill = true;
+                    }
+                });
+            });
+            if (!foundFill) {
+                const nodeFillColor = this.getEffectiveFillColor();
+                if (nodeFillColor) {
+                    const fillColorToken = new AppliedDesignToken();
+                    fillColorToken.value = nodeFillColor.toStringHexRGB();
+                    // console.log("  PluginNode.setupFillColor - setting fillColor", this.id, this.type, fillColorToken.value);
+                    this._localDesignTokens.set("fillColor", fillColorToken);
+                }
+            }
+        }
+    }
 
     /**
      * Delete entries in the design token cache for this node and any child nodes.
