@@ -19,7 +19,7 @@
     "build-server": "tsc -b server",
     "eslint": "eslint . --ext .ts",
     "eslint:fix": "eslint . --ext .ts --fix",
-    "pretest": "npm run build-server",
+    "pretest": "npm run build-server && npm run build",
     "test": "playwright test --config=playwright.config.cjs",
     "test-server": "node server/dist/server.js",
     "install-playwright-browsers": "npx playwright install"
