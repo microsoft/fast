@@ -1,0 +1,7 @@
+{
+  "type": "major",
+  "comment": "`HTMLDirective` - The `targetIndex: number` property has been replaced by a `targetId: string` property. The `createBehavior` method no longer takes a target `Node` but instead takes a `BehaviorTargets` instance. The actual target can be looked up on the `BehaviorTargets` instance by indexing with the `targetId` property.",
+  "packageName": "@microsoft/fast-element",
+  "email": "roeisenb@microsoft.com",
+  "dependentChangeType": "patch"
+}
