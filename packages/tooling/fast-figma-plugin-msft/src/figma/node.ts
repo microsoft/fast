@@ -140,6 +140,10 @@ export class FigmaPluginNode extends PluginNode {
                     ].some((test: (node: BaseNode) => boolean) => test(this.node));
                 case DesignTokenType.foregroundFill:
                     return isTextNode(this.node);
+                case DesignTokenType.fontName:
+                case DesignTokenType.fontSize:
+                case DesignTokenType.lineHeight:
+                    return isTextNode(this.node);
                 default:
                     return false;
             }
@@ -156,6 +160,35 @@ export class FigmaPluginNode extends PluginNode {
                 break;
             case DesignTokenType.cornerRadius:
                 this.paintCornerRadius(data);
+                break;
+            case DesignTokenType.fontName:
+                {
+                    // TODO Handle font list better and font weight
+                    const families = data.value.split(",");
+                    const fontName = { family: families[0], style: "Regular" };
+                    figma.loadFontAsync(fontName).then(x => {
+                        (this.node as TextNode).fontName = fontName;
+                    });
+                }
+                break;
+            case DesignTokenType.fontSize:
+                {
+                    const textNode = this.node as TextNode;
+                    figma.loadFontAsync(textNode.fontName as FontName).then(x => {
+                        textNode.fontSize = Number.parseFloat(data.value);
+                    });
+                }
+                break;
+            case DesignTokenType.lineHeight:
+                {
+                    const textNode = this.node as TextNode;
+                    figma.loadFontAsync(textNode.fontName as FontName).then(x => {
+                        textNode.lineHeight = {
+                            value: Number.parseFloat(data.value),
+                            unit: "PIXELS",
+                        };
+                    });
+                }
                 break;
             default:
                 throw new Error(`Recipe could not be painted ${JSON.stringify(data)}`);
@@ -210,7 +243,7 @@ export class FigmaPluginNode extends PluginNode {
 
         if (isInstanceNode(this.node)) {
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            const mainNode = (this.node as InstanceNode).mainComponent!;
+            // const mainNode = (this.node as InstanceNode).mainComponent!;
             // console.log("    getPluginData", mainNode.id, mainNode.type, key, mainNode.getPluginData(key));
         }
 
