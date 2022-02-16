@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "use tabbable for shadow dom",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "scomea@microsoft.com",
+  "dependentChangeType": "patch"
+}
