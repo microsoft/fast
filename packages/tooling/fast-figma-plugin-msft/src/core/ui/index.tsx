@@ -3,13 +3,19 @@ import { ColorRGBA64, parseColorHexRGB } from "@microsoft/fast-colors";
 import { StandardLuminance, Swatch, SwatchRGB } from "@fluentui/web-components";
 // import DetachIcon from "./assets/detach.svg";
 // import RevertIcon from "./assets/revert.svg";
-import { CornerRadius, Drawer, Swatch as SwatchComponent } from "./components";
+import {
+    CornerRadius,
+    Drawer,
+    GenericRecipe,
+    Swatch as SwatchComponent,
+} from "./components";
 import { DesignTokenType } from "./design-token-registry";
 import { PluginUINodeData, UIController } from "./ui-controller";
 
 /* tslint:disable:no-unused-expression */
 CornerRadius;
 Drawer;
+GenericRecipe;
 SwatchComponent;
 /* tslint:enable:no-unused-expression */
 
@@ -95,6 +101,11 @@ export class PluginUI extends React.Component<PluginUIProps> {
         const cornerRadiusRecipes = this.controller.appliedRecipes(
             DesignTokenType.cornerRadius
         );
+        const textRecipes = [
+            ...this.controller.appliedRecipes(DesignTokenType.fontName),
+            ...this.controller.appliedRecipes(DesignTokenType.fontSize),
+            ...this.controller.appliedRecipes(DesignTokenType.lineHeight),
+        ];
         const supportsDesignSystem = this.props.selectedNodes.some(node =>
             node.supports.includes(DesignTokenType.designToken)
         );
@@ -492,6 +503,83 @@ export class PluginUI extends React.Component<PluginUIProps> {
                                         >
                                             {recipe.name}
                                         </td-corner-radius>
+                                        <div>
+                                            <span>
+                                                {this.controller.getDefaultDesignTokenValue(
+                                                    recipe.token
+                                                )}
+                                            </span>
+                                            <plugin-button
+                                                appearance="stealth"
+                                                aria-label="Detach"
+                                                onClick={this.controller.removeRecipe.bind(
+                                                    this.controller,
+                                                    recipe
+                                                )}
+                                            >
+                                                Detach
+                                            </plugin-button>
+                                        </div>
+                                    </p>
+                                ))}
+                            </div>
+                        ) : null}
+                    </td-drawer>
+                    <td-drawer name="Text">
+                        {this.props.selectedNodes.some(node =>
+                            node.supports.includes(DesignTokenType.fontName)
+                        ) ? (
+                            <div className="swatch-grid" style={{ marginTop: 8 }}>
+                                {[
+                                    ...this.controller.recipeOptionsByType(
+                                        DesignTokenType.fontName
+                                    ),
+                                    ...this.controller.recipeOptionsByType(
+                                        DesignTokenType.fontSize
+                                    ),
+                                    ...this.controller.recipeOptionsByType(
+                                        DesignTokenType.lineHeight
+                                    ),
+                                ].map(recipe => {
+                                    return (
+                                        <td-generic-recipe
+                                            key={recipe.id}
+                                            value={this.controller.getDefaultDesignTokenValue(
+                                                recipe.token
+                                            )}
+                                            interactive
+                                            selected={
+                                                !!this.controller.recipeIsAssigned(
+                                                    recipe.id
+                                                ).length
+                                            }
+                                            onClick={this.controller.assignRecipe.bind(
+                                                this.controller,
+                                                recipe
+                                            )}
+                                        >
+                                            {recipe.name}
+                                        </td-generic-recipe>
+                                    );
+                                })}
+                            </div>
+                        ) : null}
+                        {textRecipes.length ? (
+                            <div slot="collapsed-content">
+                                {textRecipes.map(recipe => (
+                                    <p className="applied-recipe" key={recipe.id}>
+                                        <td-generic-recipe
+                                            value={this.controller.getDefaultDesignTokenValue(
+                                                recipe.token
+                                            )}
+                                            orientation="horizontal"
+                                            onClick={this.controller.assignRecipe.bind(
+                                                this.controller,
+                                                recipe
+                                            )}
+                                        >
+                                            {recipe.name}
+                                        </td-generic-recipe>
                                         <div>
                                             <span>
                                                 {this.controller.getDefaultDesignTokenValue(
