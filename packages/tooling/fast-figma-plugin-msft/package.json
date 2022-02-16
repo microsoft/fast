@@ -53,6 +53,7 @@
     "@fluentui/web-components": "^2.2.1",
     "@microsoft/fast-colors": "^5.1.5",
     "@microsoft/fast-components": "^2.21.5",
-    "@microsoft/fast-element": "^1.7.0"
+    "@microsoft/fast-element": "^1.7.0",
+    "@microsoft/fast-react-wrapper": "^0.1.29"
   }
 }

@@ -13,8 +13,8 @@ export class DesignTokenScope {
 /**
  * A design token value applied to a node and optionally scoped.
  */
-export class AppliedDesignToken<T> extends DesignTokenScope {
-    public value?: T;
+export class AppliedDesignToken extends DesignTokenScope {
+    public value?: string;
 }
 
 /**
@@ -86,15 +86,12 @@ export class SerializableMap<K, V> extends Map<K, V> {
 /**
  * Map of design tokens applied to a node. The key is the design token ID.
  */
-export class AppliedDesignTokens extends SerializableMap<
-    string,
-    AppliedDesignToken<any>
-> {}
+export class AppliedDesignTokens extends SerializableMap<string, AppliedDesignToken> {}
 
 /**
  * Readonly Map of design tokens applied to a node. The key is the design token ID.
  */
-export type ReadonlyAppliedDesignTokens = ReadonlyMap<string, AppliedDesignToken<any>>;
+export type ReadonlyAppliedDesignTokens = ReadonlyMap<string, AppliedDesignToken>;
 
 /**
  * Map of recipes applied to a node. The key is the recipe ID.

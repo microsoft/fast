@@ -66,9 +66,14 @@ export interface UIDesignTokenValue {
     definition: DesignTokenDefinition;
 
     /**
-     * Represents the design token value or values.
+     * Represents the design token value if all selected nodes have the same value.
      */
-    value: string;
+    value?: string;
+
+    /**
+     * If the selected nodes have multiple different values this will be a list for display.
+     */
+    multipleValues?: string;
 }
 
 /**
@@ -150,10 +155,12 @@ export class UIController {
 
         allDesignTokens.forEach(designToken => {
             if (tokenValues.has(designToken.id)) {
+                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                const set = tokenValues.get(designToken.id)!;
                 designTokens.push({
                     definition: designToken,
-                    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-                    value: [...tokenValues.get(designToken.id)!].join(", ") || "",
+                    value: set.size === 1 ? set.values().next().value : undefined,
+                    multipleValues: set.size > 1 ? [...set].join(", ") : undefined,
                 });
             }
         });
@@ -235,13 +242,13 @@ export class UIController {
 
             allRecipeIds.reduceRight<Array<DesignTokenDefinition>>(
                 (previousRecipes, currentId, index, array) => {
-                    // console.log(previous, current, index, array);
+                    // console.log(previousRecipes, currentId, index, array);
                     const currentRecipe = this._recipeRegistry.get(currentId);
                     if (
                         currentRecipe &&
                         !previousRecipes.find(value => value.type === currentRecipe.type)
                     ) {
-                        // console.log("adding", currentDef);
+                        // console.log("adding", currentRecipe);
                         this.evaluateRecipe(currentRecipe, node);
                         previousRecipes.push(currentRecipe);
                     }
@@ -342,8 +349,17 @@ export class UIController {
                         (SwatchRGB.from(color) as unknown) as DesignTokenValue<T>
                     );
                 } else {
-                    // console.log("    setting DesignToken value (NOT color)", token.name, value);
-                    token.setValueFor(nodeElement, value as DesignTokenValue<T>);
+                    const num = Number.parseFloat((value as unknown) as string);
+                    if (!Number.isNaN(num)) {
+                        // console.log("    setting DesignToken value (number)", token.name, value);
+                        token.setValueFor(
+                            nodeElement,
+                            (num as unknown) as DesignTokenValue<T>
+                        );
+                    } else {
+                        // console.log("    setting DesignToken value (unconverted)", token.name, value);
+                        token.setValueFor(nodeElement, value as DesignTokenValue<T>);
+                    }
                 }
             } else {
                 token.deleteValueFor(nodeElement);
@@ -384,11 +400,16 @@ export class UIController {
     }
 
     private valueToString(value: any): string {
+        // TODO figure out a better way to handle storage data types
         if (typeof value.toColorString === "function") {
             return value.toColorString();
         } else {
             return "" + value;
         }
+    }
+
+    public getDesignTokenDefinitions(): DesignTokenDefinition<any>[] {
+        return this._designTokenRegistry.find(DesignTokenType.designToken);
     }
 
     public getDesignTokenDefinition<T>(id: string): DesignTokenDefinition<T> | null {
@@ -418,13 +439,8 @@ export class UIController {
         value: T | null
     ): void {
         if (value) {
-            const designToken = new AppliedDesignToken<T>();
-            // TODO figure out a better way to handle storage data types
-            if (typeof (value as any).toColorString === "function") {
-                designToken.value = (value as any).toColorString();
-            } else {
-                designToken.value = value;
-            }
+            const designToken = new AppliedDesignToken();
+            designToken.value = this.valueToString(value);
             node.designTokens.set(definition.id, designToken);
         } else {
             node.designTokens.delete(definition.id);
@@ -444,7 +460,7 @@ export class UIController {
         );
 
         // console.log("--------------------------------");
-        // console.log("UIController.assignDesignToken", definition.id, value, typeof value, nodes);
+        // console.log("UIController.assignDesignToken", definition, value, typeof value, nodes);
 
         nodes.forEach(node => this.setDesignTokenForNode(node, definition, value));
 

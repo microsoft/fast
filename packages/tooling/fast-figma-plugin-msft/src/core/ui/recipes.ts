@@ -56,21 +56,35 @@ import {
     DesignTokenDefinition,
     DesignTokenRegistry,
     DesignTokenType,
+    FormControlId,
 } from "./design-token-registry";
 
 interface DesignTokenStore<T> {
     [key: string]: {
-        type?: DesignTokenType;
-        token: DesignToken<T>;
         name: string;
+        token: DesignToken<T>;
+        type?: DesignTokenType;
+        formControlId?: string;
     };
 }
 
 const designTokens: DesignTokenStore<any> = {
-    accentBaseColor: { token: accentBaseColor, name: "Accent color" },
-    neutralBaseColor: { token: neutralBaseColor, name: "Neutral color" },
+    accentBaseColor: {
+        token: accentBaseColor,
+        name: "Accent color",
+        formControlId: FormControlId.color,
+    },
+    neutralBaseColor: {
+        token: neutralBaseColor,
+        name: "Neutral color",
+        formControlId: FormControlId.color,
+    },
     baseLayerLuminance: { token: baseLayerLuminance, name: "Base layer luminance" },
-    fillColor: { token: fillColor, name: "Fill color" },
+    fillColor: {
+        token: fillColor,
+        name: "Fill color",
+        formControlId: FormControlId.color,
+    },
 };
 
 const layerRecipes: DesignTokenStore<Swatch> = {
@@ -233,8 +247,8 @@ function registerStore<T>(
     Object.keys(store).forEach((key: string) => {
         const entry = store[key];
 
-        const thisType = type || entry.type;
-        if (thisType === null) {
+        const entryType = type || entry.type;
+        if (entryType === null) {
             throw `DesignTokenType not specified for ${key}`;
         }
 
@@ -243,7 +257,8 @@ function registerStore<T>(
             name: entry.name,
             groupTitle: title,
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            type: thisType!,
+            type: entryType!,
+            formControlId: entry.formControlId,
             token: entry.token,
         };
 
@@ -252,7 +267,15 @@ function registerStore<T>(
 }
 
 export const registerTokens = (registry: DesignTokenRegistry) => {
-    registerStore(DesignTokenType.designToken, designTokens, "Design token", registry);
+    registerStore(DesignTokenType.designToken, designTokens, "Global tokens", registry);
+    // This could be optimized, but some tokens are intended to be modified as well as applied as recipes.
+    registerStore(DesignTokenType.designToken, textRecipes, "Text", registry);
+    registerStore(
+        DesignTokenType.designToken,
+        cornerRadiusRecipes,
+        "Corner radius",
+        registry
+    );
 };
 
 export const registerRecipes = (registry: DesignTokenRegistry) => {
