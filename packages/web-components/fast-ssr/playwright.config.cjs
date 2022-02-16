@@ -1,6 +1,5 @@
-// playwright.config.ts
-import { PlaywrightTestConfig } from "@playwright/test";
-const config: PlaywrightTestConfig = {
+module.exports = {
+    testDir: "./dist/esm",
     webServer: {
         command: "npm run test-server",
         port: 8080,
@@ -8,4 +7,3 @@ const config: PlaywrightTestConfig = {
         reuseExistingServer: false,
     },
 };
-export default config;
