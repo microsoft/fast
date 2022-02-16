@@ -235,7 +235,10 @@ export class FigmaPluginNode extends PluginNode {
     }
 
     protected getPluginData<K extends keyof PluginNodeData>(key: K): string | undefined {
-        let value: string | undefined = this.node.getPluginData(key as string);
+        let value: string | undefined = this.node.getSharedPluginData(
+            "fast",
+            key as string
+        );
         if (value === "") {
             value = undefined;
         }
@@ -252,12 +255,12 @@ export class FigmaPluginNode extends PluginNode {
 
     protected setPluginData<K extends keyof PluginNodeData>(key: K, value: string): void {
         // console.log("    setPluginData", this.node.id, this.node.type, key, value);
-        this.node.setPluginData(key, value);
+        this.node.setSharedPluginData("fast", key, value);
     }
 
     protected deletePluginData<K extends keyof PluginNodeData>(key: K): void {
         // console.log("    deletePluginData", this.node.id, this.node.type, key);
-        this.node.setPluginData(key, "");
+        this.node.setSharedPluginData("fast", key, "");
     }
 
     private paintColor(data: RecipeEvaluation): void {
