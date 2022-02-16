@@ -1,0 +1,7 @@
+{
+  "type": "major",
+  "comment": "`class` - Bindings to `class` are now more nuanced. Binding directly to `class` will simply set the `className` property. If you need to bind to `class` knowing that manual JS will also manipulate the `classList` in addition to the binding, then you should now bind to `:classList` instead. This allows for performance optimizations in the simple, most common case.",
+  "packageName": "@microsoft/fast-element",
+  "email": "roeisenb@microsoft.com",
+  "dependentChangeType": "patch"
+}
