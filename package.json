@@ -42,7 +42,7 @@
   "scripts": {
     "bump": "beachball bump",
     "change": "beachball change",
-    "checkchange": "beachball check  --scope \"!sites/*\" --changehint \"Run 'yarn change' to generate a change file\" -b features/fast-element-2",
+    "checkchange": "beachball check  --scope \"!sites/*\" --changehint \"Run 'yarn change' to generate a change file\" -b \"features/fast-element-2\"",
     "check": "beachball check ",
     "publish": "beachball publish",
     "publish-ci": "beachball publish -y --access public",
