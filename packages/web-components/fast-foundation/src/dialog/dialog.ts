@@ -1,6 +1,6 @@
 import { attr, DOM, Notifier, Observable } from "@microsoft/fast-element";
 import { keyEscape, keyTab } from "@microsoft/fast-web-utilities";
-import { isTabbable, tabbable } from "tabbable";
+import { FocusableElement, isTabbable, tabbable } from "tabbable";
 import { FoundationElement } from "../foundation-element";
 
 /**
@@ -207,10 +207,12 @@ export class Dialog extends FoundationElement {
             return;
         }
 
-        if (e.shiftKey && e.target === bounds[0]) {
+        const composed: EventTarget[] = e.composedPath();
+
+        if (e.shiftKey && composed.includes(bounds[0])) {
             bounds[bounds.length - 1].focus();
             e.preventDefault();
-        } else if (!e.shiftKey && e.target === bounds[bounds.length - 1]) {
+        } else if (!e.shiftKey && composed.includes(bounds[bounds.length - 1])) {
             bounds[0].focus();
             e.preventDefault();
         }
@@ -218,17 +220,19 @@ export class Dialog extends FoundationElement {
         return;
     };
 
-    private getTabQueueBounds = (): (HTMLElement | SVGElement)[] => {
-        // const bounds: HTMLElement[] = [];
-
-        return tabbable(this);
+    private getTabQueueBounds = (): FocusableElement[] => {
+        return tabbable(this, {
+            getShadowRoot: () => {
+                return undefined;
+            },
+        });
     };
 
     /**
      * focus on first element of tab queue
      */
     private focusFirstElement = (): void => {
-        const bounds: (HTMLElement | SVGElement)[] = this.getTabQueueBounds();
+        const bounds: FocusableElement[] = this.getTabQueueBounds();
 
         if (bounds.length > 0) {
             bounds[0].focus();
@@ -254,7 +258,7 @@ export class Dialog extends FoundationElement {
     };
 
     /**
-     *
+     * Updates trap focus state
      *
      * @internal
      */
@@ -279,63 +283,4 @@ export class Dialog extends FoundationElement {
             document.removeEventListener("focusin", this.handleDocumentFocus);
         }
     };
-
-    /**
-     * Reduce a collection to only its focusable elements.
-     *
-     * @param elements - Collection of elements to reduce
-     * @param element - The current element
-     *
-     * @internal
-     */
-    private static reduceTabbableItems(
-        elements: HTMLElement[],
-        element: FoundationElement & HTMLElement
-    ): HTMLElement[] {
-        if (element.getAttribute("tabindex") === "-1") {
-            return elements;
-        }
-
-        if (
-            isTabbable(element) ||
-            (Dialog.isFocusableFastElement(element) && Dialog.hasTabbableShadow(element))
-        ) {
-            elements.push(element);
-            return elements;
-        }
-
-        if (element.childElementCount) {
-            return elements.concat(
-                Array.from(element.children).reduce(Dialog.reduceTabbableItems, [])
-            );
-        }
-
-        return elements;
-    }
-
-    /**
-     * Test if element is focusable fast element
-     *
-     * @param element - The element to check
-     *
-     * @internal
-     */
-    private static isFocusableFastElement(
-        element: FoundationElement & HTMLElement
-    ): boolean {
-        return !!element.$fastController?.definition.shadowOptions?.delegatesFocus;
-    }
-
-    /**
-     * Test if the element has a focusable shadow
-     *
-     * @param element - The element to check
-     *
-     * @internal
-     */
-    private static hasTabbableShadow(element: FoundationElement & HTMLElement) {
-        return Array.from(element.shadowRoot?.querySelectorAll("*") ?? []).some(x => {
-            return isTabbable(x);
-        });
-    }
 }
