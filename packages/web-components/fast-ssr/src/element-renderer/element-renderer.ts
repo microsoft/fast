@@ -35,7 +35,7 @@ export class FASTElementRenderer extends ElementRenderer {
             this.element = new ctor();
         } else {
             throw new Error(
-                `FASTElementRenderer was unable not find a constructor for a custom element with a tag name '${tagName}'.`
+                `FASTElementRenderer was unable to find a constructor for a custom element with the tag name '${tagName}'.`
             );
         }
     }
