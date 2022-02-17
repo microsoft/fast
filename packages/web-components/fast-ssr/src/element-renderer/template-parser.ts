@@ -8,11 +8,12 @@ const opCache: Map<ViewTemplate, Op[]> = new Map();
  * @param template - The template to parse
  */
 export function parseTemplateToOpCodes(template: ViewTemplate): Op[] {
-    if (opCache.has(template)) {
-        return opCache.get(template)!;
+    let ops: Op[] | undefined = opCache.get(template);
+    if (ops !== undefined) {
+        return ops;
     }
 
-    const ops: Op[] = [];
+    ops = [];
     const { html } = template;
 
     if (typeof html !== "string") {

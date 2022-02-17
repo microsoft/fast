@@ -15,7 +15,9 @@
     "url": "https://github.com/Microsoft/fast/issues/new/choose"
   },
   "scripts": {
-    "build": "tsc -b --clean src && tsc -b src",
+    "clean": "tsc -b --clean src",
+    "build": "tsc -b src",
+    "prepare": "yarn run clean && yarn run build",
     "build-server": "tsc -b server",
     "eslint": "eslint . --ext .ts",
     "eslint:fix": "eslint . --ext .ts --fix",
