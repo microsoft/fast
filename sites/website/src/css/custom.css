@@ -62,6 +62,36 @@ html[data-theme='dark'] .DocSearch {
   );
 }
 
+html[data-theme='light'] .DocSearch-Hit[aria-selected="true"] a {
+  background: var(--ifm-color-white);
+  border: 3px solid var(--ifm-color-primary);
+}
+
+html[data-theme='light'] .DocSearch-Hit[aria-selected="true"] a * {
+  color: var(--ifm-font-color-base) !important;
+}
+
+html[data-theme='light'] .DocSearch-Hit[aria-selected="true"] a mark {
+  color: var(--ifm-color-primary) !important;
+}
+
+html[data-theme='light'] .DocSearch-Hit[aria-selected="true"] a div {
+  color: var(--ifm-color-blue) !important;
+}
+
+html[data-theme='dark'] .DocSearch-Hit[aria-selected="true"] a {
+  background: rgba(47, 55, 69, 0.7);
+  border: 3px solid var(--ifm-color-primary);
+}
+
+html[data-theme='dark'] .DocSearch-Hit[aria-selected="true"] a * {
+  color: var(--ifm-font-color-base) !important;
+}
+
+html[data-theme='dark'] .DocSearch-Hit[aria-selected="true"] a mark {
+  color: var(--ifm-color-primary) !important;
+}
+
 .docusaurus-highlight-code-line {
   background-color: #212121;
   display: block;
