@@ -1,6 +1,6 @@
 import { attr, FASTElement, observable, Observable } from "@microsoft/fast-element";
 import { ArrowKeys, Direction, limit, Orientation } from "@microsoft/fast-web-utilities";
-import { FocusableElement, tabbable } from "tabbable";
+import { FocusableElement, isFocusable, tabbable } from "tabbable";
 import { FoundationElement, FoundationElementDefinition } from "../foundation-element";
 import { ARIAGlobalStatesAndProperties } from "../patterns/aria-global";
 import { StartEnd, StartEndOptions } from "../patterns/start-end";
@@ -230,12 +230,54 @@ export class Toolbar extends FoundationElement {
      * @internal
      */
     protected reduceFocusableElements(): void {
-        this.focusableElements = tabbable(this, {
-            getShadowRoot: () => {
-                return undefined;
-            },
-        });
+        this.focusableElements = this.allSlottedItems.reduce(
+            Toolbar.reduceFocusableItems,
+            []
+        );
+        // this.focusableElements = tabbable(this, {
+        //     getShadowRoot: () => {
+        //         return undefined;
+        //     },
+        // });
         this.setFocusableElements();
+    }
+
+    /**
+     * Reduce a collection to only its focusable elements.
+     *
+     * @param elements - Collection of elements to reduce
+     * @param element - The current element
+     *
+     * @internal
+     */
+    private static reduceFocusableItems(
+        elements: HTMLElement[],
+        element: FASTElement & HTMLElement
+    ): HTMLElement[] {
+        const isRoleRadio = element.getAttribute("role") === "radio";
+        const isFocusableFastElement =
+            element.$fastController?.definition.shadowOptions?.delegatesFocus;
+        const hasFocusableShadow = Array.from(
+            element.shadowRoot?.querySelectorAll("*") ?? []
+        ).some(x => isFocusable(x));
+
+        if (
+            isFocusable(element) ||
+            isRoleRadio ||
+            isFocusableFastElement ||
+            hasFocusableShadow
+        ) {
+            elements.push(element);
+            return elements;
+        }
+
+        if (element.childElementCount) {
+            return elements.concat(
+                Array.from(element.children).reduce(Toolbar.reduceFocusableItems, [])
+            );
+        }
+
+        return elements;
     }
 
     /**

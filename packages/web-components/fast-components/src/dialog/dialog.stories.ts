@@ -26,7 +26,7 @@ addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
             "dialog2"
         ) as FoundationDialog;
 
-        const shadowButton1: HTMLButtonElement = document.createElement("button");
+        const shadowButton1: HTMLElement = document.createElement("fast-button");
         shadowButton1.textContent = "Shadow Button 1";
         dialog2.dialog.prepend(shadowButton1);
 
