@@ -78,9 +78,14 @@ Packages are located within the `packages` folder of the repository. Each packag
 
 ### Submitting a pull request
 
-If you'd like to contribute by fixing a bug, implementing a feature, or even correcting typos in our documentation, you'll want to submit a pull request. Before submitting a pull request, be sure to [rebase](https://www.atlassian.com/git/tutorials/merging-vs-rebasing) your branch from master or use the *merge* button provided by GitHub.
+If you'd like to contribute by fixing a bug, implementing a feature, or even correcting typos in our documentation, you'll want to submit a pull request. Before submitting a pull request, be sure to [rebase](https://www.atlassian.com/git/tutorials/merging-vs-rebasing) your branch (typically from master) or use the *merge* button provided by GitHub.
+
+:::note
+For additional details on branch management read the [branch guide](./BRANCH_GUIDE.md) documentation.
+:::
 
 #### Change Files
+
 Any pull request which includes changes within the `packages/*` directory requires a corresponding change file. Before pushing your changes to create a pull request, be sure you have included the necessary change file(s). To generate a change file, run `yarn change` in the root of the repository. The generated file will be checked into the repo automatically for you as part of the process.
 
 :::note
@@ -105,6 +110,10 @@ More information on the change process and change types can be found on the [bea
 
 :::note
 If you are addressing multiple issues which are unrelated, consider either doing multiple pull requests, or generate separate change files to ensure accurate generation of changelogs and versioning of packages.
+:::
+
+:::note
+If you are finding that your changes are either breaking changes or require multiple pull requests, open an issue to discuss this.
 :::
 
 ### Merging a pull request
