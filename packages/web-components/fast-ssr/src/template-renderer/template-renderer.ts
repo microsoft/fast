@@ -1,3 +1,6 @@
+import { ViewTemplate } from "@microsoft/fast-element";
+import { RenderInfo } from "@lit-labs/ssr";
+
 export type ComponentDOMEmissionMode = "shadow" | "light";
 export interface TemplateRendererConfiguration {
     /**
@@ -15,5 +18,13 @@ export class TemplateRenderer implements Readonly<TemplateRendererConfiguration>
         if (config) {
             Object.assign(this, config);
         }
+    }
+
+    public *render(
+        template: ViewTemplate,
+        renderInfo: RenderInfo,
+        source?: unknown
+    ): IterableIterator<string> {
+        yield "";
     }
 }

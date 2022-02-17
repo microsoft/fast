@@ -14,6 +14,6 @@ test.describe("TemplateRenderer", () => {
         test("that emits to light DOM", () => {
             const instance = new TemplateRenderer({componentDOMEmissionMode: "light"});
             expect(instance.componentDOMEmissionMode).toBe("light")
-        })
-    })
+        });
+    });
 });
