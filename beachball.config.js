@@ -1,5 +1,5 @@
 module.exports = {
-    disallowedChangeTypes: ["major"],
+    branch: "origin/features/fast-element-2",
     ignorePatterns: [
         ".ignore",
         ".github/",
