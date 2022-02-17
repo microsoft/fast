@@ -1,1 +1,1 @@
-export default "fast-ssr";
+export { FASTElementRenderer } from "./element-renderer/element-renderer.js";

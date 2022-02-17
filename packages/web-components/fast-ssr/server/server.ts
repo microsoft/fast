@@ -47,7 +47,7 @@ function handleStyleRequest(req: Request, res: Response) {
 function handleStyleScriptRequest(req: Request, res: Response) {
     res.set("Content-Type", "application/javascript");
     fs.readFile(
-        path.resolve(__dirname, "./dist/fast-style/index.js"),
+        path.resolve(__dirname, "./dist/esm/fast-style/index.js"),
         { encoding: "utf8" },
         (err, data) => {
             const stream = (Readable as any).from(data);
