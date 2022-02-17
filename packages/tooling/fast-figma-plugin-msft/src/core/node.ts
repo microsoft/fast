@@ -1,6 +1,6 @@
 import { ColorRGBA64 } from "@microsoft/fast-colors";
 import {
-    AppliedDesignToken,
+    AdditionalData,
     AppliedDesignTokens,
     AppliedRecipes,
     PluginNodeData,
@@ -9,6 +9,7 @@ import {
     ReadonlyRecipeEvaluations,
     RecipeEvaluation,
     RecipeEvaluations,
+    TOOL_FILL_COLOR_TOKEN,
 } from "./model";
 import { DesignTokenType } from "./ui/design-token-registry";
 
@@ -25,6 +26,7 @@ export abstract class PluginNode {
     protected _componentRecipes?: AppliedRecipes;
     protected _localDesignTokens: AppliedDesignTokens = new AppliedDesignTokens();
     protected _recipeEvaluations: RecipeEvaluations = new RecipeEvaluations();
+    protected _additionalData: AdditionalData = new AdditionalData();
 
     /**
      * Retrieves the design token overrides on ancestor nodes.
@@ -142,6 +144,10 @@ export abstract class PluginNode {
         }
     }
 
+    public get additionalData(): AdditionalData {
+        return this._additionalData;
+    }
+
     public abstract paint(data: RecipeEvaluation): void;
 
     /**
@@ -151,15 +157,17 @@ export abstract class PluginNode {
     public abstract getEffectiveFillColor(): ColorRGBA64 | null;
 
     /**
-     * Setup special handling for fillColor. It should either be a recipe or a fixed color applied in the design tool.
+     * Setup special handling for fill color. It should either be a recipe or a fixed color applied in the design tool.
      * Must be called after design tokens and recipe evaluations are loaded.
-     * We'll hide it as a regular design token, so it shouldn't get set manually.
      */
     protected setupFillColor(): void {
         if (this.canHaveChildren()) {
+            // console.log("  PluginNode.setupFillColor - checking", this.id, this.type);
+            // If the fill color comes from a recipe, don't pass it again.
             let foundFill = false;
             this._recipeEvaluations.forEach(evaluations => {
                 evaluations.forEach(evaluation => {
+                    // console.log("    evaluation", evaluation.type, "value", evaluation.value);
                     if (
                         evaluation.type === DesignTokenType.backgroundFill ||
                         evaluation.type === DesignTokenType.layerFill
@@ -170,11 +178,13 @@ export abstract class PluginNode {
             });
             if (!foundFill) {
                 const nodeFillColor = this.getEffectiveFillColor();
+                // console.log("    fill not found - effective color", nodeFillColor?.toStringHexRGB());
                 if (nodeFillColor) {
-                    const fillColorToken = new AppliedDesignToken();
-                    fillColorToken.value = nodeFillColor.toStringHexRGB();
-                    // console.log("  PluginNode.setupFillColor - setting fillColor", this.id, this.type, fillColorToken.value);
-                    this._localDesignTokens.set("fillColor", fillColorToken);
+                    // console.log("      PluginNode.setupFillColor - setting", TOOL_FILL_COLOR_TOKEN, this.id, this.type, nodeFillColor.toStringHexRGB());
+                    this._additionalData.set(
+                        TOOL_FILL_COLOR_TOKEN,
+                        nodeFillColor.toStringHexRGB()
+                    );
                 }
             }
         }

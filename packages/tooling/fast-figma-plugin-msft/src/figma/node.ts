@@ -104,7 +104,11 @@ export class FigmaPluginNode extends PluginNode {
             // console.log("    recipes", this._recipes.serialize());
         }
 
-        this.setupFillColor();
+        // TODO This isn't working and is causing a lot of token evaluation issues. It would be nice if _some_ layers
+        // in the design tool could have a fixed color and provide that to the tokens, but the logic for _which_
+        // layers turns out to be pretty complicated.
+        // For now the requirement is basing the adaptive design with a "layer" recipe.
+        // this.setupFillColor();
     }
 
     public canHaveChildren(): boolean {
@@ -222,7 +226,7 @@ export class FigmaPluginNode extends PluginNode {
 
                 if (Array.isArray(fills)) {
                     const paints: SolidPaint[] = fills.filter(
-                        (fill: Paint) => fill.type === "SOLID"
+                        (fill: Paint) => fill.type === "SOLID" && fill.visible
                     );
 
                     // TODO: how do we process multiple paints?

@@ -1,6 +1,11 @@
 import { DesignTokenType } from "./ui/design-token-registry";
 
 /**
+ * A key for passing the fill color from the tool to the plugin. Keeping it out of main design tokens to avoid a lo more special handling.
+ */
+export const TOOL_FILL_COLOR_TOKEN = "fillColor";
+
+/**
  * Optional scoping for a design token value. For instance, apply a token to a particular component or all "rest" states of any component.
  */
 export class DesignTokenScope {
@@ -112,6 +117,11 @@ export class RecipeEvaluations extends SerializableMap<string, Array<RecipeEvalu
  * Readonly Map of recipe evaluations applied to a node. The key is the recipe ID.
  */
 export type ReadonlyRecipeEvaluations = ReadonlyMap<string, Array<RecipeEvaluation>>;
+
+/**
+ * Map of additional data exchanged between the design tool and plugin. Not persisted.
+ */
+export class AdditionalData extends SerializableMap<string, any> {}
 
 /**
  * Defines the data stored by the plugin on a node instance.

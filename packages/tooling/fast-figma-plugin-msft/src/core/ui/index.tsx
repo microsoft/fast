@@ -90,19 +90,16 @@ export class PluginUI extends React.Component<PluginUIProps> {
 
     private renderBody(): JSX.Element {
         // Get all applied design tokens except fillColor because it's handled through a recipe or plain color from the design tool.
-        const appliedDesignTokens = this.controller
-            .appliedDesignTokens()
-            .filter(token => token.definition.id !== "fillColor");
+        const appliedDesignTokens = this.controller.appliedDesignTokens();
+        //.filter(token => token.definition.id !== "fillColor");
 
         // Get all design tokens that can be added, which is the full list except any already applied or fillColor (see above).
-        const availableDesignTokens = this.controller
-            .getDesignTokenDefinitions()
-            .filter(
-                definition =>
-                    !appliedDesignTokens.find(
-                        appliedToken => appliedToken.definition.id === definition.id
-                    ) && definition.id !== "fillColor"
-            );
+        const availableDesignTokens = this.controller.getDesignTokenDefinitions().filter(
+            definition =>
+                !appliedDesignTokens.find(
+                    appliedToken => appliedToken.definition.id === definition.id
+                ) //&& definition.id !== "fillColor"
+        );
 
         const layerRecipes = this.controller.appliedRecipes(DesignTokenType.layerFill);
         const backgroundRecipes = this.controller.appliedRecipes(
