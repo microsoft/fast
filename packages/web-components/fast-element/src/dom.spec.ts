@@ -25,7 +25,7 @@ function watchSetTimeoutForErrors<TError = any>() {
 }
 
 describe("The DOM facade", () => {
-    context("when updating DOM", () => {
+    context("when updating DOM asynchronously", () => {
         it("calls task in a future turn", done => {
             let called = false;
 
@@ -428,6 +428,102 @@ describe("The DOM facade", () => {
 
                 done();
             }, waitMilliseconds);
+        });
+    });
+
+    context("when updating DOM synchronously", () => {
+        beforeEach(() => {
+            DOM.setUpdateMode(false);
+        });
+
+        afterEach(() => {
+            DOM.setUpdateMode(true);
+        });
+
+        it("calls task immediately", () => {
+            let called = false;
+
+            DOM.queueUpdate(() => {
+                called = true;
+            });
+
+            expect(called).to.equal(true);
+        });
+
+        it("calls task.call method immediately", () => {
+            let called = false;
+
+            DOM.queueUpdate({
+                call: () => {
+                    called = true;
+                }
+            });
+
+            expect(called).to.equal(true);
+        });
+
+        it("calls multiple tasks in order", () => {
+            const calls:number[] = [];
+
+            DOM.queueUpdate(() =>  {
+                calls.push(0);
+            });
+            DOM.queueUpdate(() =>  {
+                calls.push(1);
+            });
+            DOM.queueUpdate(() =>  {
+                calls.push(2);
+            });
+
+            expect(calls).to.eql([0, 1, 2]);
+        });
+
+        it("can schedule tasks recursively", () => {
+            const steps: number[] = [];
+
+            DOM.queueUpdate(() => {
+                steps.push(0);
+                DOM.queueUpdate(() => {
+                    steps.push(2);
+                    DOM.queueUpdate(() => {
+                        steps.push(4);
+                    });
+                    steps.push(3);
+                });
+                steps.push(1);
+            });
+
+            expect(steps).to.eql([0, 1, 2, 3, 4]);
+        });
+
+        it(`can recurse ${maxRecursion} tasks deep`, () => {
+            let recurseCount = 0;
+            function go() {
+                if (++recurseCount < maxRecursion) {
+                    DOM.queueUpdate(go);
+                }
+            }
+
+            DOM.queueUpdate(go);
+
+            expect(recurseCount).to.equal(maxRecursion);
+        });
+
+        it("throws errors immediately", () => {
+            const calls: number[] = [];
+            let caught: any;
+
+            try {
+                DOM.queueUpdate(() => {
+                    calls.push(0);
+                    throw 0;
+                });
+            } catch(error) {
+                caught = error;
+            }
+
+            expect(calls).to.eql([0]);
+            expect(caught).to.eql(0);
         });
     });
 });
