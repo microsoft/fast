@@ -17,13 +17,16 @@
   "scripts": {
     "build": "tsc -b --clean src && tsc -b src",
     "build-server": "tsc -b server",
-    "pretest": "npm run build-server",
-    "test": "playwright test -c test",
+    "eslint": "eslint . --ext .ts",
+    "eslint:fix": "eslint . --ext .ts --fix",
+    "pretest": "npm run build-server && npm run build",
+    "test": "playwright test --config=playwright.config.cjs",
     "test-server": "node server/dist/server.js",
     "install-playwright-browsers": "npx playwright install"
   },
   "description": "A package for rendering FAST components outside the browser.",
-  "main": "index.js",
+  "main": "./dist/esm/index.js",
+  "types": "./dist/dts/index.d.ts",
   "private": true,
   "dependencies": {
     "@lit-labs/ssr": "^1.0.0-rc.2",
