@@ -1,9 +1,7 @@
 <fast-button id="button1">
-    Show dialog
+    Basic Dialog
 </fast-button>
 <p></p>
-
-tab queue detected automatically
 
 <fast-dialog
     id="dialog1"
@@ -25,4 +23,32 @@ tab queue detected automatically
     </fast-toolbar>
     <p></p>
     (esc to close)
+</fast-dialog>
+
+<fast-button id="button2">
+    With shadow dom elements
+</fast-button>
+<p></p>
+
+<fast-dialog
+    id="dialog2"
+    aria-label="Simple dialog"
+    modal="true"
+    trap-focus="true"
+    hidden="true"
+>
+    <h2>With shadow dom elements</h2>
+    <fast-button>Button A</fast-button>
+    <p></p>
+    <button>Button B</button>
+    <p></p>
+    <fast-checkbox>A checkbox</fast-checkbox>
+    <p></p>
+    <fast-toolbar>
+        <fast-button>One</fast-button>
+        <fast-button>Three</fast-button>
+    </fast-toolbar>
+    <p></p>
+    (esc to close)
+    <p></p>
 </fast-dialog>
