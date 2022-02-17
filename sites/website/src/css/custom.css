@@ -22,38 +22,20 @@ html {
 }
 
 html[data-theme='light'] .DocSearch {
-  --docsearch-primary-color: var(--ifm-color-primary);
-  --docsearch-text-color: var(--ifm-font-color-base);
   --docsearch-muted-color: var(--ifm-color-secondary-darkest);
   --docsearch-container-background: rgba(94, 100, 112, 0.7);
-  /* Modal */
   --docsearch-modal-background: var(--ifm-color-secondary-lighter);
-  /* Search box */
   --docsearch-searchbox-background: var(--ifm-color-secondary);
   --docsearch-searchbox-focus-background: var(--ifm-color-white);
-  /* Hit */
- --docsearch-hit-color: var(--ifm-font-color-base);
-  --docsearch-hit-active-color: var(--ifm-color-white);
-  --docsearch-hit-background: var(--ifm-color-white);
-  --docsearch-hit-container: var(--ifm-color-purple);
-  /* Footer */
   --docsearch-footer-background: var(--ifm-color-white);
 }
 
 html[data-theme='dark'] .DocSearch {
-  --docsearch-text-color: var(--ifm-font-color-base);
   --docsearch-muted-color: var(--ifm-color-secondary-darkest);
   --docsearch-container-background: rgba(47, 55, 69, 0.7);
-  /* Modal */
   --docsearch-modal-background: var(--ifm-background-color);
-  /* Search box */
   --docsearch-searchbox-background: var(--ifm-background-color);
   --docsearch-searchbox-focus-background: var(--ifm-color-black);
-  /* Hit */
-  --docsearch-hit-color: var(--ifm-font-color-base);
-  --docsearch-hit-active-color: var(--ifm-color-white);
-  --docsearch-hit-background: var(--ifm-color-emphasis-100);
-  /* Footer */
   --docsearch-footer-background: var(--ifm-background-surface-color);
   --docsearch-key-gradient: linear-gradient(
     -26.5deg,
@@ -73,10 +55,6 @@ html[data-theme='light'] .DocSearch-Hit[aria-selected="true"] a * {
 
 html[data-theme='light'] .DocSearch-Hit[aria-selected="true"] a mark {
   color: var(--ifm-color-primary) !important;
-}
-
-html[data-theme='light'] .DocSearch-Hit[aria-selected="true"] a div {
-  color: var(--ifm-color-blue) !important;
 }
 
 html[data-theme='dark'] .DocSearch-Hit[aria-selected="true"] a {
