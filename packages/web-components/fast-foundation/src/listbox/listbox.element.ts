@@ -377,10 +377,8 @@ export class ListboxElement extends Listbox {
             }
 
             case keyEscape: {
-                if (this.multiple) {
-                    this.uncheckAllOptions();
-                    this.checkActiveIndex();
-                }
+                this.uncheckAllOptions();
+                this.checkActiveIndex();
                 return true;
             }
 
@@ -388,8 +386,8 @@ export class ListboxElement extends Listbox {
                 e.preventDefault();
                 if (this.typeAheadExpired) {
                     this.toggleSelectedForAllCheckedOptions();
+                    return;
                 }
-                return;
             }
 
             // Send key to Typeahead handler
@@ -494,13 +492,11 @@ export class ListboxElement extends Listbox {
 
         if (this.$fastController.isConnected) {
             const typeaheadMatches = this.getTypeaheadMatches();
-            if (typeaheadMatches) {
-                const activeIndex = this.options.indexOf(this.getTypeaheadMatches[0]);
-                if (activeIndex > -1) {
-                    this.activeIndex = activeIndex;
-                    this.uncheckAllOptions();
-                    this.checkActiveIndex();
-                }
+            const activeIndex = this.options.indexOf(typeaheadMatches[0]);
+            if (activeIndex > -1) {
+                this.activeIndex = activeIndex;
+                this.uncheckAllOptions();
+                this.checkActiveIndex();
             }
 
             this.typeAheadExpired = false;
