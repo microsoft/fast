@@ -13,6 +13,8 @@ const fastHTMLPolicy: TrustedTypesPolicy = $global.trustedTypes.createPolicy(
 let htmlPolicy: TrustedTypesPolicy = fastHTMLPolicy;
 const updateQueue: Callable[] = [];
 const pendingErrors: any[] = [];
+const rAF = $global.requestAnimationFrame;
+let updateAsync = true;
 
 function throwFirstError(): void {
     if (pendingErrors.length) {
@@ -24,8 +26,13 @@ function tryRunTask(task: Callable): void {
     try {
         (task as any).call();
     } catch (error) {
-        pendingErrors.push(error);
-        setTimeout(throwFirstError, 0);
+        if (updateAsync) {
+            pendingErrors.push(error);
+            setTimeout(throwFirstError, 0);
+        } else {
+            updateQueue.length = 0;
+            throw error;
+        }
     }
 }
 
@@ -129,15 +136,29 @@ export const DOM = Object.freeze({
     },
 
     /**
+     * Sets the update mode used by queueUpdate.
+     * @param isAsync Indicates whether DOM updates should be asynchronous.
+     * @remarks
+     * By default, the update mode is asynchronous, since that provides the best
+     * performance in the browser. Passing false to setUpdateMode will instead cause
+     * the queue to be immediately processed for each call to queueUpdate. However,
+     * ordering will still be preserved so that nested tasks do not run until
+     * after parent tasks complete.
+     */
+    setUpdateMode(isAsync: boolean) {
+        updateAsync = isAsync;
+    },
+
+    /**
      * Schedules DOM update work in the next async batch.
      * @param callable - The callable function or object to queue.
      */
     queueUpdate(callable: Callable) {
-        if (updateQueue.length < 1) {
-            $global.requestAnimationFrame(DOM.processUpdates);
-        }
-
         updateQueue.push(callable);
+
+        if (updateQueue.length < 2) {
+            updateAsync ? rAF(DOM.processUpdates) : DOM.processUpdates();
+        }
     },
 
     /**
