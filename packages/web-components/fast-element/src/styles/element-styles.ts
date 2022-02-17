@@ -92,7 +92,27 @@ export class ElementStyles {
         /** @internal */
         public readonly styles: ReadonlyArray<ComposableStyles>
     ) {
-        this.behaviors = reduceBehaviors(styles);
+        this.behaviors = styles
+            .map((x: ComposableStyles) =>
+                x instanceof ElementStyles ? x.behaviors : null
+            )
+            .reduce(
+                (
+                    prev: Behavior<HTMLElement>[] | null,
+                    curr: Behavior<HTMLElement>[] | null
+                ) => {
+                    if (curr === null) {
+                        return prev;
+                    }
+
+                    if (prev === null) {
+                        prev = [];
+                    }
+
+                    return prev.concat(curr);
+                },
+                null as Behavior<HTMLElement>[] | null
+            );
     }
 
     /** @internal */
@@ -138,30 +158,6 @@ function reduceStyles(
             x instanceof ElementStyles ? reduceStyles(x.styles) : [x]
         )
         .reduce((prev: string[], curr: string[]) => prev.concat(curr), []);
-}
-
-function reduceBehaviors(
-    styles: ReadonlyArray<ComposableStyles>
-): ReadonlyArray<Behavior<HTMLElement>> | null {
-    return styles
-        .map((x: ComposableStyles) => (x instanceof ElementStyles ? x.behaviors : null))
-        .reduce(
-            (
-                prev: Behavior<HTMLElement>[] | null,
-                curr: Behavior<HTMLElement>[] | null
-            ) => {
-                if (curr === null) {
-                    return prev;
-                }
-
-                if (prev === null) {
-                    prev = [];
-                }
-
-                return prev.concat(curr);
-            },
-            null as Behavior<HTMLElement>[] | null
-        );
 }
 
 /**
