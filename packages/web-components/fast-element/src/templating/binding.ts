@@ -33,7 +33,7 @@ export interface BindingMode {
     event: BindingType;
 }
 
-export interface BindingConfig<T = any> {
+export interface BindingConfig {
     mode: BindingMode;
     options: any;
 }
@@ -62,247 +62,27 @@ class BindingBase {
     }
 }
 
-class TargetUpdateBinding extends BindingBase {
-    constructor(directive: HTMLBindingDirective, protected updateTarget: UpdateTarget) {
-        super(directive);
-    }
+function createContentBinding(
+    BaseType: typeof TargetUpdateBinding
+): typeof TargetUpdateBinding {
+    return class extends BaseType {
+        unbind(
+            source: any,
+            context: ExecutionContext,
+            targets: ViewBehaviorTargets
+        ): void {
+            super.unbind(source, context, targets);
 
-    static createBindingConfig<T>(defaultOptions: T, eventType?: BindingType) {
-        const config: BindingConfig &
-            ((options?: typeof defaultOptions) => BindingConfig) = (
-            options: typeof defaultOptions
-        ): BindingConfig => {
-            return {
-                mode: config.mode,
-                options: Object.assign({}, defaultOptions, options),
-            };
-        };
+            const target = targets[this.directive.targetId] as ContentTarget;
+            const view = target.$fastView as ComposableView;
 
-        config.options = defaultOptions;
-        config.mode = this.createBindingMode(eventType);
-
-        return config;
-    }
-
-    static createBindingMode(
-        eventType: BindingType = notSupportedBindingType
-    ): BindingMode {
-        return Object.freeze({
-            attribute: this.createType(DOM.setAttribute),
-            booleanAttribute: this.createType(DOM.setBooleanAttribute),
-            property: this.createType(
-                (target, aspect, value) => (target[aspect] = value)
-            ),
-            content: createContentBinding(this).createType(updateContentTarget),
-            tokenList: this.createType(updateTokenListTarget),
-            event: eventType,
-        });
-    }
-
-    private static createType(updateTarget: UpdateTarget) {
-        return directive => new this(directive, updateTarget);
-    }
-}
-
-class OneTimeBinding extends TargetUpdateBinding {
-    bind(source: any, context: ExecutionContext, targets: ViewBehaviorTargets): void {
-        const directive = this.directive;
-        const target = targets[directive.targetId];
-        this.updateTarget(
-            target,
-            directive.aspect!,
-            directive.binding(source, context),
-            source,
-            context
-        );
-    }
-}
-
-const signals: Record<string, undefined | Function | Function[]> = Object.create(null);
-
-export function sendSignal(signal: string) {
-    const found = signals[signal];
-    if (found) {
-        Array.isArray(found) ? found.forEach(x => x()) : found();
-    }
-}
-
-class OnSignalBinding extends TargetUpdateBinding {
-    bind(
-        source: any,
-        context: ExecutionContext<any, any>,
-        targets: ViewBehaviorTargets
-    ): void {
-        const directive = this.directive;
-        const target = targets[directive.targetId];
-        const signal = this.getSignal(source, context);
-        const handler = (target[directive.uniqueId] = () => {
-            this.updateTarget(
-                target,
-                directive.aspect!,
-                directive.binding(source, context),
-                source,
-                context
-            );
-        });
-
-        handler();
-
-        const found = signals[signal];
-
-        if (found) {
-            Array.isArray(found)
-                ? found.push(handler)
-                : (signals[signal] = [found, handler]);
-        } else {
-            signals[signal] = handler;
-        }
-    }
-
-    unbind(
-        source: any,
-        context: ExecutionContext<any, any>,
-        targets: ViewBehaviorTargets
-    ): void {
-        const signal = this.getSignal(source, context);
-        const found = signals[signal];
-
-        if (found && Array.isArray(found)) {
-            const directive = this.directive;
-            const target = targets[directive.targetId];
-            const handler = target[directive.uniqueId];
-            const index = found.indexOf(handler);
-            if (index !== -1) {
-                found.splice(index, 1);
+            if (view !== void 0 && view.isComposed) {
+                view.unbind();
+                view.needsBindOnly = true;
             }
-        } else {
-            signals[signal] = void 0;
         }
-    }
-
-    private getSignal(source: any, context: ExecutionContext<any, any>) {
-        const options = this.directive.options;
-        return isString(options) ? options : options(source, context);
-    }
+    };
 }
-
-class OnChangeBinding extends TargetUpdateBinding {
-    private isBindingVolatile: boolean;
-
-    constructor(directive: HTMLBindingDirective, updateTarget: UpdateTarget) {
-        super(directive, updateTarget);
-        this.isBindingVolatile = Observable.isVolatileBinding(directive.binding);
-    }
-
-    bind(source: any, context: ExecutionContext, targets: ViewBehaviorTargets): void {
-        const directive = this.directive;
-        const target = targets[directive.targetId];
-        const observer: BindingObserver =
-            target[directive.uniqueId] ??
-            (target[directive.uniqueId] = Observable.binding(
-                directive.binding,
-                this,
-                this.isBindingVolatile
-            ));
-
-        (observer as any).target = target;
-        (observer as any).source = source;
-        (observer as any).context = context;
-
-        this.updateTarget(
-            target,
-            directive.aspect!,
-            observer.observe(source, context),
-            source,
-            context
-        );
-    }
-
-    unbind(source: any, context: ExecutionContext, targets: ViewBehaviorTargets): void {
-        const target = targets[this.directive.targetId];
-        const observer = target[this.directive.uniqueId];
-        observer.disconnect();
-        observer.target = null;
-        observer.source = null;
-        observer.context = null;
-    }
-
-    /** @internal */
-    public handleChange(binding: Binding, observer: BindingObserver): void {
-        const target = (observer as any).target;
-        const source = (observer as any).source;
-        const context = (observer as any).context;
-        this.updateTarget(
-            target,
-            this.directive.aspect!,
-            observer.observe(source, context!),
-            source,
-            context
-        );
-    }
-}
-
-interface TokenListState {
-    v: {};
-    c: number;
-}
-
-function updateTokenListTarget(
-    this: UpdateTargetThis,
-    target: Element,
-    aspect: string,
-    value: any
-): void {
-    const directive = this.directive;
-    const state: TokenListState =
-        target[directive.uniqueId] ??
-        (target[directive.uniqueId] = { c: 0, v: Object.create(null) });
-    const versions = state.v;
-    let currentVersion = state.c;
-    const tokenList = target[aspect] as DOMTokenList;
-
-    // Add the classes, tracking the version at which they were added.
-    if (value !== null && value !== undefined && value.length) {
-        const names = value.split(/\s+/);
-
-        for (let i = 0, ii = names.length; i < ii; ++i) {
-            const currentName = names[i];
-
-            if (currentName === "") {
-                continue;
-            }
-
-            versions[currentName] = currentVersion;
-            tokenList.add(currentName);
-        }
-    }
-
-    state.v = currentVersion + 1;
-
-    // If this is the first call to add classes, there's no need to remove old ones.
-    if (currentVersion === 0) {
-        return;
-    }
-
-    // Remove classes from the previous version.
-    currentVersion -= 1;
-
-    for (const name in versions) {
-        if (versions[name] === currentVersion) {
-            tokenList.remove(name);
-        }
-    }
-}
-
-type ComposableView = SyntheticView & {
-    isComposed?: boolean;
-    needsBindOnly?: boolean;
-};
-
-type ContentTarget = Node & {
-    $fastView?: ComposableView;
-    $fastTemplate?: { create(): SyntheticView };
-};
 
 function updateContentTarget(
     target: ContentTarget,
@@ -373,21 +153,250 @@ function updateContentTarget(
     }
 }
 
-function createContentBinding(BaseType: typeof TargetUpdateBinding) {
-    return class extends BaseType {
-        unbind(source: any, context: ExecutionContext, targets: ViewBehaviorTargets) {
-            super.unbind(source, context, targets);
-
-            const target = targets[this.directive.targetId] as ContentTarget;
-            const view = target.$fastView as ComposableView;
-
-            if (view !== void 0 && view.isComposed) {
-                view.unbind();
-                view.needsBindOnly = true;
-            }
-        }
-    };
+interface TokenListState {
+    v: {};
+    c: number;
 }
+
+function updateTokenListTarget(
+    this: UpdateTargetThis,
+    target: Element,
+    aspect: string,
+    value: any
+): void {
+    const directive = this.directive;
+    const state: TokenListState =
+        target[directive.uniqueId] ??
+        (target[directive.uniqueId] = { c: 0, v: Object.create(null) });
+    const versions = state.v;
+    let currentVersion = state.c;
+    const tokenList = target[aspect] as DOMTokenList;
+
+    // Add the classes, tracking the version at which they were added.
+    if (value !== null && value !== undefined && value.length) {
+        const names = value.split(/\s+/);
+
+        for (let i = 0, ii = names.length; i < ii; ++i) {
+            const currentName = names[i];
+
+            if (currentName === "") {
+                continue;
+            }
+
+            versions[currentName] = currentVersion;
+            tokenList.add(currentName);
+        }
+    }
+
+    state.v = currentVersion + 1;
+
+    // If this is the first call to add classes, there's no need to remove old ones.
+    if (currentVersion === 0) {
+        return;
+    }
+
+    // Remove classes from the previous version.
+    currentVersion -= 1;
+
+    for (const name in versions) {
+        if (versions[name] === currentVersion) {
+            tokenList.remove(name);
+        }
+    }
+}
+
+class TargetUpdateBinding extends BindingBase {
+    constructor(directive: HTMLBindingDirective, protected updateTarget: UpdateTarget) {
+        super(directive);
+    }
+
+    static createBindingConfig<T>(
+        defaultOptions: T,
+        eventType?: BindingType
+    ): BindingConfig {
+        const config: BindingConfig &
+            ((options?: typeof defaultOptions) => BindingConfig) = (
+            options: typeof defaultOptions
+        ): BindingConfig => {
+            return {
+                mode: config.mode,
+                options: Object.assign({}, defaultOptions, options),
+            };
+        };
+
+        config.options = defaultOptions;
+        config.mode = this.createBindingMode(eventType);
+
+        return config;
+    }
+
+    static createBindingMode(
+        eventType: BindingType = notSupportedBindingType
+    ): BindingMode {
+        return Object.freeze({
+            attribute: this.createType(DOM.setAttribute),
+            booleanAttribute: this.createType(DOM.setBooleanAttribute),
+            property: this.createType(
+                (target, aspect, value) => (target[aspect] = value)
+            ),
+            content: createContentBinding(this).createType(updateContentTarget),
+            tokenList: this.createType(updateTokenListTarget),
+            event: eventType,
+        });
+    }
+
+    private static createType(updateTarget: UpdateTarget) {
+        return directive => new this(directive, updateTarget);
+    }
+}
+
+class OneTimeBinding extends TargetUpdateBinding {
+    bind(source: any, context: ExecutionContext, targets: ViewBehaviorTargets): void {
+        const directive = this.directive;
+        const target = targets[directive.targetId];
+        this.updateTarget(
+            target,
+            directive.aspect!,
+            directive.binding(source, context),
+            source,
+            context
+        );
+    }
+}
+
+const signals: Record<string, undefined | Function | Function[]> = Object.create(null);
+
+export function sendSignal(signal: string): void {
+    const found = signals[signal];
+    if (found) {
+        Array.isArray(found) ? found.forEach(x => x()) : found();
+    }
+}
+
+class OnSignalBinding extends TargetUpdateBinding {
+    bind(
+        source: any,
+        context: ExecutionContext<any, any>,
+        targets: ViewBehaviorTargets
+    ): void {
+        const directive = this.directive;
+        const target = targets[directive.targetId];
+        const signal = this.getSignal(source, context);
+        const handler = (target[directive.uniqueId] = () => {
+            this.updateTarget(
+                target,
+                directive.aspect!,
+                directive.binding(source, context),
+                source,
+                context
+            );
+        });
+
+        handler();
+
+        const found = signals[signal];
+
+        if (found) {
+            Array.isArray(found)
+                ? found.push(handler)
+                : (signals[signal] = [found, handler]);
+        } else {
+            signals[signal] = handler;
+        }
+    }
+
+    unbind(
+        source: any,
+        context: ExecutionContext<any, any>,
+        targets: ViewBehaviorTargets
+    ): void {
+        const signal = this.getSignal(source, context);
+        const found = signals[signal];
+
+        if (found && Array.isArray(found)) {
+            const directive = this.directive;
+            const target = targets[directive.targetId];
+            const handler = target[directive.uniqueId];
+            const index = found.indexOf(handler);
+            if (index !== -1) {
+                found.splice(index, 1);
+            }
+        } else {
+            signals[signal] = void 0;
+        }
+    }
+
+    private getSignal(source: any, context: ExecutionContext<any, any>): string {
+        const options = this.directive.options;
+        return isString(options) ? options : options(source, context);
+    }
+}
+
+class OnChangeBinding extends TargetUpdateBinding {
+    private isBindingVolatile: boolean;
+
+    constructor(directive: HTMLBindingDirective, updateTarget: UpdateTarget) {
+        super(directive, updateTarget);
+        this.isBindingVolatile = Observable.isVolatileBinding(directive.binding);
+    }
+
+    bind(source: any, context: ExecutionContext, targets: ViewBehaviorTargets): void {
+        const directive = this.directive;
+        const target = targets[directive.targetId];
+        const observer: BindingObserver =
+            target[directive.uniqueId] ??
+            (target[directive.uniqueId] = Observable.binding(
+                directive.binding,
+                this,
+                this.isBindingVolatile
+            ));
+
+        (observer as any).target = target;
+        (observer as any).source = source;
+        (observer as any).context = context;
+
+        this.updateTarget(
+            target,
+            directive.aspect!,
+            observer.observe(source, context),
+            source,
+            context
+        );
+    }
+
+    unbind(source: any, context: ExecutionContext, targets: ViewBehaviorTargets): void {
+        const target = targets[this.directive.targetId];
+        const observer = target[this.directive.uniqueId];
+        observer.disconnect();
+        observer.target = null;
+        observer.source = null;
+        observer.context = null;
+    }
+
+    /** @internal */
+    public handleChange(binding: Binding, observer: BindingObserver): void {
+        const target = (observer as any).target;
+        const source = (observer as any).source;
+        const context = (observer as any).context;
+        this.updateTarget(
+            target,
+            this.directive.aspect!,
+            observer.observe(source, context!),
+            source,
+            context
+        );
+    }
+}
+
+type ComposableView = SyntheticView & {
+    isComposed?: boolean;
+    needsBindOnly?: boolean;
+};
+
+type ContentTarget = Node & {
+    $fastView?: ComposableView;
+    $fastTemplate?: { create(): SyntheticView };
+};
 
 type FASTEventSource = Node & {
     $fastSource: any;
@@ -407,7 +416,7 @@ class EventListener extends BindingBase {
         this.removeEventListener(targets[this.directive.targetId] as FASTEventSource);
     }
 
-    protected removeEventListener(target: FASTEventSource) {
+    protected removeEventListener(target: FASTEventSource): void {
         target.$fastSource = null;
         target.$fastContext = null;
         target.removeEventListener(this.directive.aspect!, this, this.directive.options);
@@ -429,7 +438,7 @@ class EventListener extends BindingBase {
 }
 
 class OneTimeEventListener extends EventListener {
-    handleEvent(event: Event) {
+    handleEvent(event: Event): void {
         super.handleEvent(event);
         this.removeEventListener(event.currentTarget as FASTEventSource);
     }
@@ -455,7 +464,7 @@ export const oneTime = OneTimeBinding.createBindingConfig(
 
 const signalMode: BindingMode = OnSignalBinding.createBindingMode();
 
-export const signal = <T = any>(options: string | Binding<T>): BindingConfig<T> => {
+export const signal = <T = any>(options: string | Binding<T>): BindingConfig => {
     return { mode: signalMode, options };
 };
 
@@ -476,7 +485,7 @@ export class HTMLBindingDirective extends InlinableHTMLDirective {
         super();
     }
 
-    public setAspect(value: string) {
+    public setAspect(value: string): void {
         (this as Mutable<this>).rawAspect = value;
 
         if (!value) {
@@ -528,7 +537,7 @@ export class HTMLBindingDirective extends InlinableHTMLDirective {
 
 export function bind<T = any>(
     binding: Binding<T>,
-    config: BindingConfig<T> | DefaultBindingOptions = onChange
+    config: BindingConfig | DefaultBindingOptions = onChange
 ): CaptureType<T> {
     if (!("mode" in config)) {
         config = onChange(config);

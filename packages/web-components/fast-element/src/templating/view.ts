@@ -88,7 +88,7 @@ export interface SyntheticView<TSource = any, TParent = any, TGrandparent = any>
     dispose(): void;
 }
 
-function removeNodeSequence(firstNode: Node, lastNode: Node) {
+function removeNodeSequence(firstNode: Node, lastNode: Node): void {
     const parent = firstNode.parentNode!;
     let current = firstNode;
     let next: ChildNode | null;
