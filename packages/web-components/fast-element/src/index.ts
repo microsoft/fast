@@ -11,7 +11,8 @@ export type { Callable, Constructable, Mutable } from "./interfaces.js";
 export * from "./templating/compiler.js";
 export {
     ElementStyles,
-    ElementStyleFactory,
+    StyleStrategyFactory,
+    StyleStrategy,
     ComposableStyles,
     StyleTarget,
 } from "./styles/element-styles.js";

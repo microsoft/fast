@@ -224,22 +224,19 @@ export const elements: (selector?: string | undefined) => ElementsFilter;
 export type ElementsFilter = (value: Node, index: number, array: Node[]) => boolean;
 
 // @public
-export type ElementStyleFactory = (styles: ReadonlyArray<ComposableStyles>) => ElementStyles;
-
-// @public
-export abstract class ElementStyles {
+export class ElementStyles {
     constructor(
-    styles: ReadonlyArray<ComposableStyles>,
-    behaviors: ReadonlyArray<Behavior<HTMLElement>> | null);
+    styles: ReadonlyArray<ComposableStyles>);
     // @internal (undocumented)
     addStylesTo(target: StyleTarget): void;
     // @internal (undocumented)
     readonly behaviors: ReadonlyArray<Behavior<HTMLElement>> | null;
-    static readonly create: ElementStyleFactory;
     // @internal (undocumented)
     isAttachedTo(target: StyleTarget): boolean;
     // @internal (undocumented)
     removeStylesFrom(target: StyleTarget): void;
+    // (undocumented)
+    static setStrategyFactory(factory: StyleStrategyFactory): void;
     // @internal (undocumented)
     readonly styles: ReadonlyArray<ComposableStyles>;
     withBehaviors(...behaviors: Behavior<HTMLElement>[]): this;
@@ -500,6 +497,19 @@ export class Splice {
     static normalize(previous: unknown[] | undefined, current: unknown[], changes: Splice[] | undefined): Splice[] | undefined;
     removed: any[];
 }
+
+// @public (undocumented)
+export interface StyleStrategy {
+    // (undocumented)
+    addStylesTo(target: StyleTarget): void;
+    // (undocumented)
+    normalizeTarget(target: StyleTarget): StyleTarget;
+    // (undocumented)
+    removeStylesFrom(target: StyleTarget): void;
+}
+
+// @public
+export type StyleStrategyFactory = (styles: ReadonlyArray<ComposableStyles>) => StyleStrategy;
 
 // @public
 export interface StyleTarget {
