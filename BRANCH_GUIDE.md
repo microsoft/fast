@@ -12,7 +12,7 @@ If a large feature or a breaking change has been defined, a feature branch may b
 
 ### Changelog
 
-Due to the default behavior of beachball (the package publishing utility used in this repository) the script in `package.json` using `beachball check` which defaults to checking for changes against the default branch must be updated. The branch creation should start by targeting the check for changes against the feature branch specifically, to do this refer to the branch settings in [beachball options](https://github.com/microsoft/beachball/blob/master/docs/overview/configuration.md#options). This change must be reverted before inclusion to the default branch.
+Due to the default behavior of beachball (the package publishing utility used in this repository) the `beachball.config.js` which defaults to checking for changes against the default branch must be updated to point to the feature branch, and if necessary, allowed to add major changes. The branch creation should start by updating `beachball.config.js`, to do this refer to the [beachball options](https://github.com/microsoft/beachball/blob/master/docs/overview/configuration.md#options). This change must be reverted before inclusion to the default branch.
 
 ### Merging
 
