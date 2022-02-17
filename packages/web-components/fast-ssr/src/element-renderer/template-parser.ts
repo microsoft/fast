@@ -13,6 +13,13 @@ export function parseTemplateToOpCodes(template: ViewTemplate): Op[] {
     }
 
     const ops: Op[] = [];
+    const { html } = template;
+
+    if (typeof html !== "string") {
+        throw new Error(
+            "@microsoft/fast-ssr does not support rendering a ViewTemplate with an HTMLTemplateElement html source."
+        );
+    }
 
     return ops;
 }
