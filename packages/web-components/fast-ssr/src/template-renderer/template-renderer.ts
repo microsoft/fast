@@ -20,6 +20,12 @@ export class TemplateRenderer implements Readonly<TemplateRendererConfiguration>
         }
     }
 
+    /**
+     *
+     * @param template - The template to render.
+     * @param renderInfo - Information about the rendering context.
+     * @param source - Any source data to render the template and evaluate bindings with.
+     */
     public *render(
         template: ViewTemplate,
         renderInfo: RenderInfo,
