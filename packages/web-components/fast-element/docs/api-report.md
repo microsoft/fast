@@ -209,6 +209,7 @@ export const DOM: Readonly<{
     createInterpolationPlaceholder(index: number): string;
     createCustomAttributePlaceholder(index: number): string;
     createBlockPlaceholder(index: number): string;
+    setUpdateMode(isAsync: boolean): void;
     queueUpdate(callable: Callable): void;
     nextUpdate(): Promise<void>;
     processUpdates(): void;
