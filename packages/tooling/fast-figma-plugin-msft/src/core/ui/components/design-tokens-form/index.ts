@@ -71,6 +71,14 @@ export class DesignTokensForm extends FASTElement {
     }
 
     detachHandler(token: UIDesignTokenValue) {
+        // Remove the item from the list
+        let detachIndex: number = -1;
+        this.designTokens.find((curToken, index) => {
+            detachIndex = index;
+            return curToken === token;
+        });
+        this.designTokens.splice(detachIndex, 1);
+
         this.$emit("detach", token.definition);
     }
 }

@@ -17,7 +17,7 @@ DesignTokenField;
 
 const template = html<DesignTokenAdd>`
     <select @change="${(x, c) => x.selectHandler(c)}">
-        <option disabled selected>Add design token override...</option>
+        <option selected value="-">Add design token override...</option>
         ${repeat(
             x => x.designTokens,
             html<DesignTokenDefinition, DesignTokenAdd>`
@@ -44,6 +44,16 @@ const template = html<DesignTokenAdd>`
                     ${CheckmarkIcon}
                 </plugin-button>
             </div>
+        `
+    )}
+    ${when(
+        x => x.showMessageTemporary,
+        html<DesignTokenAdd>`
+            <p>
+                Design token added. Please select another layer then come back to this to
+                modify.
+            </p>
+            <p>This will be fixed asap.</p>
         `
     )}
 `;
@@ -73,23 +83,44 @@ export class DesignTokenAdd extends FASTElement {
     @observable
     selectedDesignToken?: DesignTokenDefinition;
 
+    selectedDesignTokenIndex: number;
+
     field: DesignTokenField;
+
+    @observable
+    showMessageTemporary: boolean;
+
+    designTokensChanged() {
+        this.showMessageTemporary = false;
+    }
 
     selectHandler(c: ExecutionContext) {
         const selectedTokenId = (c.event.target as HTMLSelectElement).value;
 
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        this.selectedDesignToken = this.designTokens.find(
-            token => token.id === selectedTokenId
-        )!;
+        if (selectedTokenId !== "-") {
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            this.selectedDesignToken = this.designTokens.find((token, index) => {
+                this.selectedDesignTokenIndex = index;
+                return token.id === selectedTokenId;
+            })!;
+            if (this.field) {
+                this.field.value = null;
+            }
+        }
     }
 
     addHandler() {
+        // Remove the item from the list
+        this.designTokens.splice(this.selectedDesignTokenIndex, 1);
+
         this.$emit("add", {
             definition: this.selectedDesignToken,
             value: this.field.value,
         });
 
         this.selectedDesignToken = undefined;
+
+        // Hack until rebuilt in web components to show a message to refresh selection.
+        this.showMessageTemporary = true;
     }
 }
