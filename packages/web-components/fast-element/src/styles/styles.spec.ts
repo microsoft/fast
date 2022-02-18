@@ -16,8 +16,7 @@ if (DOM.supportsAdoptedStyleSheets) {
     describe("AdoptedStyleSheetsStrategy", () => {
         context("when removing styles", () => {
             it("should remove an associated stylesheet", () => {
-                const cache = new Map();
-                const strategy = new AdoptedStyleSheetsStrategy([``], cache);
+                const strategy = new AdoptedStyleSheetsStrategy([``]);
                 const target: Pick<StyleTarget, "adoptedStyleSheets"> = {
                     adoptedStyleSheets: [],
                 };
@@ -30,8 +29,7 @@ if (DOM.supportsAdoptedStyleSheets) {
             });
 
             it("should not remove unassociated styles", () => {
-                const cache = new Map();
-                const strategy = new AdoptedStyleSheetsStrategy(["test"], cache);
+                const strategy = new AdoptedStyleSheetsStrategy(["test"]);
                 const style = new CSSStyleSheet();
                 const target: Pick<StyleTarget, "adoptedStyleSheets"> = {
                     adoptedStyleSheets: [style],
@@ -39,12 +37,12 @@ if (DOM.supportsAdoptedStyleSheets) {
                 strategy.addStylesTo(target as StyleTarget);
 
                 expect(target.adoptedStyleSheets!.length).to.equal(2);
-                expect(target.adoptedStyleSheets).to.contain(cache.get("test"));
+                expect(target.adoptedStyleSheets).to.contain(strategy.sheets[0]);
 
                 strategy.removeStylesFrom(target as StyleTarget);
 
                 expect(target.adoptedStyleSheets!.length).to.equal(1);
-                expect(target.adoptedStyleSheets).not.to.contain(cache.get("test"));
+                expect(target.adoptedStyleSheets).not.to.contain(strategy.sheets[0]);
             });
 
             it("should track when added and removed from a target", () => {
@@ -64,9 +62,8 @@ if (DOM.supportsAdoptedStyleSheets) {
             });
 
             it("should order HTMLStyleElement order by addStyleTo() call order", () => {
-                const cache = new Map();
-                const red = new AdoptedStyleSheetsStrategy(['r'], cache);
-                const green = new AdoptedStyleSheetsStrategy(['g'], cache);
+                const red = new AdoptedStyleSheetsStrategy(['r']);
+                const green = new AdoptedStyleSheetsStrategy(['g']);
                 const target: Pick<StyleTarget, "adoptedStyleSheets"> = {
                     adoptedStyleSheets: [],
                 };
@@ -74,20 +71,19 @@ if (DOM.supportsAdoptedStyleSheets) {
                 red.addStylesTo(target as StyleTarget);
                 green.addStylesTo(target as StyleTarget);
 
-                expect((target.adoptedStyleSheets![0])).to.equal(cache.get('r'));
-                expect((target.adoptedStyleSheets![1])).to.equal(cache.get('g'));
+                expect((target.adoptedStyleSheets![0])).to.equal(red.sheets[0]);
+                expect((target.adoptedStyleSheets![1])).to.equal(green.sheets[0]);
             });
             it("should order HTMLStyleElements in array order of provided sheets", () => {
-                const cache = new Map();
-                const red = new AdoptedStyleSheetsStrategy(['r', 'g'], cache);
+                const red = new AdoptedStyleSheetsStrategy(['r', 'g']);
                 const target: Pick<StyleTarget, "adoptedStyleSheets"> = {
                     adoptedStyleSheets: [],
                 };
 
                 red.addStylesTo(target as StyleTarget);
 
-                expect((target.adoptedStyleSheets![0])).to.equal(cache.get('r'));
-                expect((target.adoptedStyleSheets![1])).to.equal(cache.get('g'));
+                expect((target.adoptedStyleSheets![0])).to.equal(red.sheets[0]);
+                expect((target.adoptedStyleSheets![1])).to.equal(red.sheets[1]);
             });
         });
     });
@@ -97,7 +93,7 @@ describe("StyleElementStrategy", () => {
     it("can add and remove from the document directly", () => {
         const styles = [``];
         const elementStyles = new ElementStyles(styles)
-            .withStrategy(new StyleElementStrategy(styles));
+            .withStrategy(StyleElementStrategy);
         document.body.innerHTML = "";
 
         elementStyles.addStylesTo(document);

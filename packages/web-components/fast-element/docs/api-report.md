@@ -151,6 +151,11 @@ export type Constructable<T = {}> = {
 };
 
 // @public
+export type ConstructibleStyleStrategy = {
+    new (styles: (string | CSSStyleSheet)[]): StyleStrategy;
+};
+
+// @public
 export class Controller extends PropertyChangeNotifier {
     // @internal
     constructor(element: HTMLElement, definition: FASTElementDefinition);
@@ -235,11 +240,12 @@ export class ElementStyles {
     isAttachedTo(target: StyleTarget): boolean;
     // @internal (undocumented)
     removeStylesFrom(target: StyleTarget): void;
-    static setStrategyFactory(factory: StyleStrategyFactory): void;
+    static setDefaultStrategy(Strategy: ConstructibleStyleStrategy): void;
+    get strategy(): StyleStrategy;
     // @internal (undocumented)
     readonly styles: ReadonlyArray<ComposableStyles>;
     withBehaviors(...behaviors: Behavior<HTMLElement>[]): this;
-    withStrategy(strategy: StyleStrategy): this;
+    withStrategy(Strategy: ConstructibleStyleStrategy): this;
 }
 
 // @public
@@ -503,9 +509,6 @@ export interface StyleStrategy {
     addStylesTo(target: StyleTarget): void;
     removeStylesFrom(target: StyleTarget): void;
 }
-
-// @public
-export type StyleStrategyFactory = (styles: (string | CSSStyleSheet)[]) => StyleStrategy;
 
 // @public
 export interface StyleTarget {

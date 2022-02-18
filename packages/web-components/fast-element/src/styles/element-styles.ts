@@ -39,39 +39,36 @@ export type ComposableStyles = string | ElementStyles | CSSStyleSheet;
 /**
  * Implemented to provide specific behavior when adding/removing styles
  * for elements.
+ * @public
  */
 export interface StyleStrategy {
     /**
      * Adds styles to the target.
-     * @param target The target to add the styles to.
+     * @param target - The target to add the styles to.
      */
     addStylesTo(target: StyleTarget): void;
 
     /**
      * Removes styles from the target.
-     * @param target The target to remove the styles from.
+     * @param target - The target to remove the styles from.
      */
     removeStylesFrom(target: StyleTarget): void;
 }
 
 /**
- * Creates a strategy capable of adding/removing styles for custom elements.
+ * A type that instantiates a StyleStrategy.
  * @public
  */
-export type StyleStrategyFactory = (styles: (string | CSSStyleSheet)[]) => StyleStrategy;
+export type ConstructibleStyleStrategy = {
+    /**
+     * Creates an instance of the strategy.
+     * @param styles - The styles to initialize the strategy with.
+     */
+    new (styles: (string | CSSStyleSheet)[]): StyleStrategy;
+};
 
-let styleStrategyFactory: StyleStrategyFactory = (() => {
-    if (DOM.supportsAdoptedStyleSheets) {
-        const styleSheetCache = new Map();
-        return (styles: (string | CSSStyleSheet)[]) =>
-            // eslint-disable-next-line @typescript-eslint/no-use-before-define
-            new AdoptedStyleSheetsStrategy(styles, styleSheetCache);
-    }
-
-    // eslint-disable-next-line @typescript-eslint/no-use-before-define
-    return (styles: (string | CSSStyleSheet)[]) =>
-        new StyleElementStrategy(styles as string[]);
-})();
+const styleSheetCache = new Map<string, CSSStyleSheet>();
+let DefaultStyleStrategy: ConstructibleStyleStrategy;
 
 function reduceStyles(
     styles: ReadonlyArray<ComposableStyles>
@@ -94,15 +91,22 @@ export class ElementStyles {
     /** @internal */
     public readonly behaviors: ReadonlyArray<Behavior<HTMLElement>> | null;
 
-    private get strategy(): StyleStrategy {
+    /**
+     * Gets the StyleStrategy associated with these element styles.
+     */
+    public get strategy(): StyleStrategy {
         if (this._strategy === null) {
-            this._strategy = styleStrategyFactory(reduceStyles(this.styles));
+            this.withStrategy(DefaultStyleStrategy);
         }
 
-        return this._strategy;
+        return this._strategy!;
     }
 
-    constructor(
+    /**
+     * Creates an instance of ElementStyles.
+     * @param styles - The styles that will be associated with elements.
+     */
+    public constructor(
         /** @internal */
         public readonly styles: ReadonlyArray<ComposableStyles>
     ) {
@@ -114,17 +118,7 @@ export class ElementStyles {
                 (
                     prev: Behavior<HTMLElement>[] | null,
                     curr: Behavior<HTMLElement>[] | null
-                ) => {
-                    if (curr === null) {
-                        return prev;
-                    }
-
-                    if (prev === null) {
-                        prev = [];
-                    }
-
-                    return prev.concat(curr);
-                },
+                ) => (curr === null ? prev : prev === null ? curr : prev.concat(curr)),
                 null as Behavior<HTMLElement>[] | null
             );
     }
@@ -159,19 +153,19 @@ export class ElementStyles {
 
     /**
      * Sets the strategy that handles adding/removing these styles for an element.
-     * @param strategy The strategy to use.
+     * @param strategy - The strategy to use.
      */
-    public withStrategy(strategy: StyleStrategy): this {
-        this._strategy = strategy;
+    public withStrategy(Strategy: ConstructibleStyleStrategy): this {
+        this._strategy = new Strategy(reduceStyles(this.styles));
         return this;
     }
 
     /**
-     * Sets the default factory used when creating style strategies.
-     * @param factory The factory to use.
+     * Sets the default strategy type to use when creating style strategies.
+     * @param Strategy - The strategy type to construct.
      */
-    public static setStrategyFactory(factory: StyleStrategyFactory) {
-        styleStrategyFactory = factory;
+    public static setDefaultStrategy(Strategy: ConstructibleStyleStrategy) {
+        DefaultStyleStrategy = Strategy;
     }
 }
 
@@ -182,12 +176,10 @@ export class ElementStyles {
  * @internal
  */
 export class AdoptedStyleSheetsStrategy implements StyleStrategy {
-    private sheets: CSSStyleSheet[];
+    /** @internal */
+    public readonly sheets: CSSStyleSheet[];
 
-    public constructor(
-        styles: (string | CSSStyleSheet)[],
-        styleSheetCache: Map<string, CSSStyleSheet>
-    ) {
+    public constructor(styles: (string | CSSStyleSheet)[]) {
         this.sheets = styles.map((x: string | CSSStyleSheet) => {
             if (x instanceof CSSStyleSheet) {
                 return x;
@@ -227,7 +219,7 @@ function usableTarget(target: StyleTarget): StyleTarget {
 export class StyleElementStrategy implements StyleStrategy {
     private readonly styleClass: string;
 
-    public constructor(private styles: string[]) {
+    public constructor(private readonly styles: string[]) {
         this.styleClass = nextId();
     }
 
@@ -257,3 +249,7 @@ export class StyleElementStrategy implements StyleStrategy {
         }
     }
 }
+
+ElementStyles.setDefaultStrategy(
+    DOM.supportsAdoptedStyleSheets ? AdoptedStyleSheetsStrategy : StyleElementStrategy
+);
