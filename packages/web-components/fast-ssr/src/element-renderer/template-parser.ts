@@ -3,7 +3,15 @@
  * with changes as necessary to render FAST components. A big thank you to those who contributed to lit's code above.
  */
 import { ViewTemplate } from "@microsoft/fast-element";
-import { DefaultTreeNode, DefaultTreeParentNode, parseFragment } from "parse5";
+import {
+    DefaultTreeCommentNode,
+    DefaultTreeDocumentFragment,
+    DefaultTreeElement,
+    DefaultTreeNode,
+    DefaultTreeParentNode,
+    DefaultTreeTextNode,
+    parseFragment,
+} from "parse5";
 import { Op } from "./op-codes.js";
 
 const opCache: Map<ViewTemplate, Op[]> = new Map();
@@ -35,6 +43,38 @@ function traverse(node: DefaultTreeNode | DefaultTreeParentNode, visitor: Visito
 }
 
 /**
+ * Test if a node is a comment node.
+ * @param node - the node to test
+ */
+function isCommentNode(node: DefaultTreeNode): node is DefaultTreeCommentNode {
+    return node.nodeName === "#comment";
+}
+
+/**
+ * Test if a node is a document fragment node.
+ * @param node - the node to test
+ */
+function isDocumentFragment(node: DefaultTreeNode): node is DefaultTreeDocumentFragment {
+    return node.nodeName === "#document-fragment";
+}
+
+/**
+ * Test if a node is a text node.
+ * @param node - the node to test
+ */
+function isTextNode(node: DefaultTreeNode): node is DefaultTreeTextNode {
+    return node.nodeName === "#text";
+}
+
+/**
+ * Test if a node is an element node
+ * @param node - the node to test
+ */
+function isElementNode(node: DefaultTreeNode): node is DefaultTreeElement {
+    return (node as DefaultTreeElement).tagName !== undefined;
+}
+
+/**
  * Parses a template into a set of operation instructions
  * @param template - The template to parse
  */
@@ -59,6 +99,11 @@ export function parseTemplateToOpCodes(template: ViewTemplate): Op[] {
         // I'm not sure when exactly this is encountered but the type system seems to say it's possible.
         throw new Error(`Error parsing template:\n${template}`);
     }
+
+    traverse(ast, {
+        visit(node) {},
+        leave(node) {},
+    });
 
     return ops;
 }
