@@ -184,9 +184,9 @@ export class Calendar extends FoundationElement {
         month: number = this.month,
         year: number = this.year
     ): CalendarInfo {
-        const getFirstDay: (Date) => number = (date: Date) =>
+        const getFirstDay = (date: Date) =>
             new Date(date.getFullYear(), date.getMonth(), 1).getDay();
-        const getLength = date => {
+        const getLength = (date: Date) => {
             const nextMonth = new Date(date.getFullYear(), date.getMonth() + 1, 1);
             return new Date(nextMonth.getTime() - this.oneDayInMs).getDate();
         };

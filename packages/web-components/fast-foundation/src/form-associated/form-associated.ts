@@ -1,10 +1,9 @@
 import {
     attr,
+    booleanConverter,
     DOM,
     emptyArray,
     observable,
-    Observable,
-    booleanConverter,
 } from "@microsoft/fast-element";
 import type { Constructable, FASTElement } from "@microsoft/fast-element";
 import { keyEnter } from "@microsoft/fast-web-utilities";
@@ -122,12 +121,12 @@ export interface FormAssociated extends Omit<ElementInternals, "labels"> {
     disabledChanged?(previous: boolean, next: boolean): void;
     formDisabledCallback?(disabled: boolean): void;
     formResetCallback(): void;
-    initialValueChanged?(previous, next): void;
-    nameChanged?(previous, next): void;
+    initialValueChanged?(previous: string, next: string): void;
+    nameChanged?(previous: string, next: string): void;
     requiredChanged(prev: boolean, next: boolean): void;
     stopPropagation(e: Event): void;
     validate(): void;
-    valueChanged(previous, next): void;
+    valueChanged(previous: string, next: string): void;
 }
 
 /**
@@ -162,9 +161,9 @@ export interface FormAssociatedProxy {
     disabledChanged?(previous: boolean, next: boolean): void;
     formDisabledCallback?(disabled: boolean): void;
     formResetCallback?(): void;
-    initialValueChanged?(previous, next): void;
-    valueChanged?(previous, next): void;
-    nameChanged?(previous, next): void;
+    initialValueChanged?(previous: string, next: string): void;
+    valueChanged?(previous: string, next: string): void;
+    nameChanged?(previous: string, next: string): void;
 }
 
 /**
@@ -416,7 +415,7 @@ export function FormAssociated<T extends ConstructableFormAssociated>(BaseCtor: 
          * They must be sure to invoke `super.nameChanged(previous, next)` to ensure
          * proper functioning of `FormAssociated`
          */
-        public nameChanged(previous, next): void {
+        public nameChanged(previous: string, next: string): void {
             if (this.proxy instanceof HTMLElement) {
                 this.proxy.name = this.name;
             }
