@@ -1,5 +1,10 @@
 import { Controller } from "../core/controller";
-import { AppliedDesignTokens, AppliedRecipes, RecipeEvaluations } from "../core/model";
+import {
+    AdditionalData,
+    AppliedDesignTokens,
+    AppliedRecipes,
+    RecipeEvaluations,
+} from "../core/model";
 import { PluginUIProps } from "../core/ui";
 import { DesignTokenType } from "../core/ui/design-token-registry";
 import { PluginUINodeData } from "../core/ui/ui-controller";
@@ -19,6 +24,7 @@ export interface PluginUISerializableNodeData {
     componentRecipes?: string;
     recipes: string;
     recipeEvaluations: string;
+    additionalData: string;
 }
 
 /**
@@ -42,6 +48,7 @@ export function serializeUINodes(
                 componentRecipes: (node.componentRecipes as AppliedRecipes)?.serialize(),
                 recipes: node.recipes.serialize(),
                 recipeEvaluations: node.recipeEvaluations.serialize(),
+                additionalData: node.additionalData.serialize(),
             };
         }
     );
@@ -71,6 +78,8 @@ export function deserializeUINodes(
             componentRecipes.deserialize(node.componentRecipes);
             const recipeEvaluations = new RecipeEvaluations();
             recipeEvaluations.deserialize(node.recipeEvaluations);
+            const additionalData = new AdditionalData();
+            additionalData.deserialize(node.additionalData);
 
             return {
                 id: node.id,
@@ -83,6 +92,7 @@ export function deserializeUINodes(
                 componentRecipes,
                 recipes,
                 recipeEvaluations,
+                additionalData,
             };
         }
     );

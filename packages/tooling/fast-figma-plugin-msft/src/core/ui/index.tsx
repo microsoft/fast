@@ -1,10 +1,10 @@
 import React from "react";
-import { ColorRGBA64, parseColorHexRGB } from "@microsoft/fast-colors";
-import { StandardLuminance, Swatch, SwatchRGB } from "@fluentui/web-components";
 // import DetachIcon from "./assets/detach.svg";
 // import RevertIcon from "./assets/revert.svg";
 import {
     CornerRadius,
+    DesignTokenAddReact,
+    DesignTokensFormReact,
     Drawer,
     GenericRecipe,
     Swatch as SwatchComponent,
@@ -89,7 +89,18 @@ export class PluginUI extends React.Component<PluginUIProps> {
     }
 
     private renderBody(): JSX.Element {
-        const designTokens = this.controller.appliedDesignTokens();
+        // Get all applied design tokens except fillColor because it's handled through a recipe or plain color from the design tool.
+        const appliedDesignTokens = this.controller.appliedDesignTokens();
+        //.filter(token => token.definition.id !== "fillColor");
+
+        // Get all design tokens that can be added, which is the full list except any already applied or fillColor (see above).
+        const availableDesignTokens = this.controller.getDesignTokenDefinitions().filter(
+            definition =>
+                !appliedDesignTokens.find(
+                    appliedToken => appliedToken.definition.id === definition.id
+                ) //&& definition.id !== "fillColor"
+        );
+
         const layerRecipes = this.controller.appliedRecipes(DesignTokenType.layerFill);
         const backgroundRecipes = this.controller.appliedRecipes(
             DesignTokenType.backgroundFill
@@ -118,325 +129,419 @@ export class PluginUI extends React.Component<PluginUIProps> {
                     height: "100%",
                 }}
             >
-                <div style={{ overflowY: "overlay" as any }}>
-                    <td-drawer name="Theme">
-                        <div slot="collapsed-content">
-                            {designTokens.length ? (
-                                <>
-                                    {designTokens.map(designToken => (
-                                        <p
-                                            className="applied-recipe"
-                                            key={designToken.definition.id}
-                                        >
-                                            <div className="horizontal">
-                                                {designToken.definition.name}
-                                            </div>
-                                            <div>
-                                                <span>{designToken.value}</span>
-                                                <plugin-button
-                                                    appearance="stealth"
-                                                    aria-label="Detach"
-                                                    onClick={this.controller.removeDesignToken.bind(
-                                                        this.controller,
-                                                        designToken.definition
-                                                    )}
-                                                >
-                                                    Detach
-                                                </plugin-button>
-                                            </div>
-                                        </p>
-                                    ))}
-                                </>
-                            ) : null}
-                        </div>
-                        <div>
-                            {supportsDesignSystem ? this.renderThemeSwitcher() : null}
-                            {supportsDesignSystem
-                                ? this.renderColorPicker("neutralBaseColor")
-                                : null}
-                            {supportsDesignSystem
-                                ? this.renderColorPicker("accentBaseColor")
-                                : null}
-                        </div>
-                    </td-drawer>
-                    <td-drawer name="Color">
-                        <div slot="collapsed-content">
-                            {layerRecipes.length ? (
-                                <>
-                                    <p className="title inset">Layer</p>
-                                    {layerRecipes.map(recipe => (
-                                        <p className="applied-recipe" key={recipe.id}>
-                                            <td-swatch
-                                                circular
-                                                value={this.controller.getDefaultDesignTokenValue(
-                                                    recipe.token
-                                                )}
-                                                orientation="horizontal"
-                                            >
-                                                {recipe.name}
-                                            </td-swatch>
-
-                                            <div>
-                                                <span>
-                                                    {this.controller.getDefaultDesignTokenValue(
-                                                        recipe.token
-                                                    )}
-                                                </span>
-                                                <plugin-button
-                                                    appearance="stealth"
-                                                    aria-label="Detach"
-                                                    onClick={this.controller.removeRecipe.bind(
-                                                        this.controller,
-                                                        recipe
-                                                    )}
-                                                >
-                                                    Detach
-                                                </plugin-button>
-                                            </div>
-                                        </p>
-                                    ))}
-                                </>
-                            ) : null}
-                            {backgroundRecipes.length ? (
-                                <>
-                                    <p className="title inset">Background</p>
-                                    {backgroundRecipes.map(recipe => (
-                                        <p className="applied-recipe" key={recipe.id}>
-                                            <td-swatch
-                                                circular
-                                                value={this.controller.getDefaultDesignTokenValue(
-                                                    recipe.token
-                                                )}
-                                                orientation="horizontal"
-                                            >
-                                                {recipe.name}
-                                            </td-swatch>
-
-                                            <div>
-                                                <span>
-                                                    {this.controller.getDefaultDesignTokenValue(
-                                                        recipe.token
-                                                    )}
-                                                </span>
-                                                <plugin-button
-                                                    appearance="stealth"
-                                                    aria-label="Detach"
-                                                    onClick={this.controller.removeRecipe.bind(
-                                                        this.controller,
-                                                        recipe
-                                                    )}
-                                                >
-                                                    Detach
-                                                </plugin-button>
-                                            </div>
-                                        </p>
-                                    ))}
-                                </>
-                            ) : null}
-                            {foregroundRecipes.length ? (
-                                <>
-                                    <p className="title inset">Foreground</p>
-                                    {foregroundRecipes.map(recipe => (
-                                        <p className="applied-recipe" key={recipe.id}>
-                                            <td-swatch
-                                                circular
-                                                value={this.controller.getDefaultDesignTokenValue(
-                                                    recipe.token
-                                                )}
-                                                orientation="horizontal"
-                                            >
-                                                {recipe.name}
-                                            </td-swatch>
-
-                                            <div>
-                                                <span>
-                                                    {this.controller.getDefaultDesignTokenValue(
-                                                        recipe.token
-                                                    )}
-                                                </span>
-                                                <plugin-button
-                                                    appearance="stealth"
-                                                    aria-label="Detach"
-                                                    onClick={this.controller.removeRecipe.bind(
-                                                        this.controller,
-                                                        recipe
-                                                    )}
-                                                >
-                                                    Detach
-                                                </plugin-button>
-                                            </div>
-                                        </p>
-                                    ))}
-                                </>
-                            ) : null}
-                            {strokeRecipes.length ? (
-                                <>
-                                    <p className="title inset">Border</p>
-                                    {strokeRecipes.map(recipe => (
-                                        <p className="applied-recipe" key={recipe.id}>
-                                            <td-swatch
-                                                circular
-                                                value={this.controller.getDefaultDesignTokenValue(
-                                                    recipe.token
-                                                )}
-                                                orientation="horizontal"
-                                                type="border"
-                                            >
-                                                {recipe.name}
-                                            </td-swatch>
-                                            <div>
-                                                <span>
-                                                    {this.controller.getDefaultDesignTokenValue(
-                                                        recipe.token
-                                                    )}
-                                                </span>
-                                                <plugin-button
-                                                    appearance="stealth"
-                                                    aria-label="Detach"
-                                                    onClick={this.controller.removeRecipe.bind(
-                                                        this.controller,
-                                                        recipe
-                                                    )}
-                                                >
-                                                    Detach
-                                                </plugin-button>
-                                            </div>
-                                        </p>
-                                    ))}
-                                </>
-                            ) : null}
-                        </div>
-                        <div>
-                            {this.props.selectedNodes.some(node =>
-                                node.supports.includes(DesignTokenType.layerFill)
-                            ) ? (
-                                <>
-                                    <p className="title inset">Layer backgrounds</p>
-                                    <div className="swatch-stack">
-                                        {this.controller
-                                            .recipeOptionsByType(
-                                                DesignTokenType.layerFill
-                                            )
-                                            .map(recipe => {
-                                                return (
-                                                    <td-swatch
-                                                        key={recipe.id}
-                                                        circular
-                                                        value={this.controller.getDefaultDesignTokenValue(
-                                                            recipe.token
-                                                        )}
-                                                        orientation="horizontal"
-                                                        interactive
-                                                        selected={
-                                                            !!this.controller.recipeIsAssigned(
-                                                                recipe.id
-                                                            ).length
-                                                        }
-                                                        onClick={this.controller.assignRecipe.bind(
-                                                            this.controller,
-                                                            recipe
-                                                        )}
-                                                    >
-                                                        {recipe.name}
-                                                    </td-swatch>
-                                                );
-                                            })}
-                                    </div>
-                                </>
-                            ) : null}
-                            {this.props.selectedNodes.some(node =>
-                                node.supports.includes(DesignTokenType.backgroundFill)
-                            ) ? (
-                                <>
-                                    <p className="title inset">Fills</p>
-                                    <div className="swatch-stack">
-                                        {this.controller
-                                            .recipeOptionsByType(
-                                                DesignTokenType.backgroundFill
-                                            )
-                                            .map(recipe => {
-                                                return (
-                                                    <td-swatch
-                                                        key={recipe.id}
-                                                        circular
-                                                        value={this.controller.getDefaultDesignTokenValue(
-                                                            recipe.token
-                                                        )}
-                                                        orientation="horizontal"
-                                                        interactive
-                                                        selected={
-                                                            !!this.controller.recipeIsAssigned(
-                                                                recipe.id
-                                                            ).length
-                                                        }
-                                                        onClick={this.controller.assignRecipe.bind(
-                                                            this.controller,
-                                                            recipe
-                                                        )}
-                                                    >
-                                                        {recipe.name}
-                                                    </td-swatch>
-                                                );
-                                            })}
-                                    </div>
-                                </>
-                            ) : null}
-                            {this.props.selectedNodes.some(node =>
-                                node.supports.includes(DesignTokenType.strokeFill)
-                            ) ? (
-                                <>
-                                    <p className="title inset">Strokes</p>
-                                    <div className="swatch-stack">
-                                        {this.controller
-                                            .recipeOptionsByType(
-                                                DesignTokenType.strokeFill
-                                            )
-                                            .map(recipe => {
-                                                return (
-                                                    <td-swatch
-                                                        key={recipe.id}
-                                                        circular
-                                                        value={this.controller.getDefaultDesignTokenValue(
-                                                            recipe.token
-                                                        )}
-                                                        orientation="horizontal"
-                                                        interactive
-                                                        type="border"
-                                                        selected={
-                                                            !!this.controller.recipeIsAssigned(
-                                                                recipe.id
-                                                            ).length
-                                                        }
-                                                        onClick={this.controller.assignRecipe.bind(
-                                                            this.controller,
-                                                            recipe
-                                                        )}
-                                                    >
-                                                        {recipe.name}
-                                                    </td-swatch>
-                                                );
-                                            })}
-                                    </div>
-                                </>
-                            ) : null}
-                            {this.props.selectedNodes.some(node =>
-                                node.supports.includes(DesignTokenType.foregroundFill)
-                            ) ? (
-                                <>
-                                    <p className="title inset">Foregrounds</p>
-                                    <div className="swatch-stack">
-                                        {this.controller
-                                            .recipeOptionsByType(
-                                                DesignTokenType.foregroundFill
-                                            )
-                                            .map(recipe => (
-                                                <td-swatch
+                <plugin-tabs activeid="recipes">
+                    <plugin-tab id="recipes">Recipes</plugin-tab>
+                    <plugin-tab id="tokens">Design Tokens</plugin-tab>
+                    <plugin-tab-panel id="recipesPanel">
+                        <div style={{ overflowY: "overlay" as any }}>
+                            <td-drawer name="Color">
+                                <div slot="collapsed-content">
+                                    {layerRecipes.length ? (
+                                        <>
+                                            <p className="title inset">Layer</p>
+                                            {layerRecipes.map(recipe => (
+                                                <p
+                                                    className="applied-recipe"
                                                     key={recipe.id}
-                                                    circular
+                                                >
+                                                    <td-swatch
+                                                        circular
+                                                        value={this.controller.getDefaultDesignTokenValue(
+                                                            recipe.token
+                                                        )}
+                                                        orientation="horizontal"
+                                                    >
+                                                        {recipe.name}
+                                                    </td-swatch>
+
+                                                    <div>
+                                                        <span>
+                                                            {this.controller.getDefaultDesignTokenValue(
+                                                                recipe.token
+                                                            )}
+                                                        </span>
+                                                        <plugin-button
+                                                            appearance="stealth"
+                                                            aria-label="Detach"
+                                                            onClick={this.controller.removeRecipe.bind(
+                                                                this.controller,
+                                                                recipe
+                                                            )}
+                                                        >
+                                                            Detach
+                                                        </plugin-button>
+                                                    </div>
+                                                </p>
+                                            ))}
+                                        </>
+                                    ) : null}
+                                    {backgroundRecipes.length ? (
+                                        <>
+                                            <p className="title inset">Background</p>
+                                            {backgroundRecipes.map(recipe => (
+                                                <p
+                                                    className="applied-recipe"
+                                                    key={recipe.id}
+                                                >
+                                                    <td-swatch
+                                                        circular
+                                                        value={this.controller.getDefaultDesignTokenValue(
+                                                            recipe.token
+                                                        )}
+                                                        orientation="horizontal"
+                                                    >
+                                                        {recipe.name}
+                                                    </td-swatch>
+
+                                                    <div>
+                                                        <span>
+                                                            {this.controller.getDefaultDesignTokenValue(
+                                                                recipe.token
+                                                            )}
+                                                        </span>
+                                                        <plugin-button
+                                                            appearance="stealth"
+                                                            aria-label="Detach"
+                                                            onClick={this.controller.removeRecipe.bind(
+                                                                this.controller,
+                                                                recipe
+                                                            )}
+                                                        >
+                                                            Detach
+                                                        </plugin-button>
+                                                    </div>
+                                                </p>
+                                            ))}
+                                        </>
+                                    ) : null}
+                                    {foregroundRecipes.length ? (
+                                        <>
+                                            <p className="title inset">Foreground</p>
+                                            {foregroundRecipes.map(recipe => (
+                                                <p
+                                                    className="applied-recipe"
+                                                    key={recipe.id}
+                                                >
+                                                    <td-swatch
+                                                        circular
+                                                        value={this.controller.getDefaultDesignTokenValue(
+                                                            recipe.token
+                                                        )}
+                                                        orientation="horizontal"
+                                                    >
+                                                        {recipe.name}
+                                                    </td-swatch>
+
+                                                    <div>
+                                                        <span>
+                                                            {this.controller.getDefaultDesignTokenValue(
+                                                                recipe.token
+                                                            )}
+                                                        </span>
+                                                        <plugin-button
+                                                            appearance="stealth"
+                                                            aria-label="Detach"
+                                                            onClick={this.controller.removeRecipe.bind(
+                                                                this.controller,
+                                                                recipe
+                                                            )}
+                                                        >
+                                                            Detach
+                                                        </plugin-button>
+                                                    </div>
+                                                </p>
+                                            ))}
+                                        </>
+                                    ) : null}
+                                    {strokeRecipes.length ? (
+                                        <>
+                                            <p className="title inset">Border</p>
+                                            {strokeRecipes.map(recipe => (
+                                                <p
+                                                    className="applied-recipe"
+                                                    key={recipe.id}
+                                                >
+                                                    <td-swatch
+                                                        circular
+                                                        value={this.controller.getDefaultDesignTokenValue(
+                                                            recipe.token
+                                                        )}
+                                                        orientation="horizontal"
+                                                        type="border"
+                                                    >
+                                                        {recipe.name}
+                                                    </td-swatch>
+                                                    <div>
+                                                        <span>
+                                                            {this.controller.getDefaultDesignTokenValue(
+                                                                recipe.token
+                                                            )}
+                                                        </span>
+                                                        <plugin-button
+                                                            appearance="stealth"
+                                                            aria-label="Detach"
+                                                            onClick={this.controller.removeRecipe.bind(
+                                                                this.controller,
+                                                                recipe
+                                                            )}
+                                                        >
+                                                            Detach
+                                                        </plugin-button>
+                                                    </div>
+                                                </p>
+                                            ))}
+                                        </>
+                                    ) : null}
+                                </div>
+                                <div>
+                                    {this.props.selectedNodes.some(node =>
+                                        node.supports.includes(DesignTokenType.layerFill)
+                                    ) ? (
+                                        <>
+                                            <p className="title inset">
+                                                Layer backgrounds
+                                            </p>
+                                            <div className="swatch-stack">
+                                                {this.controller
+                                                    .recipeOptionsByType(
+                                                        DesignTokenType.layerFill
+                                                    )
+                                                    .map(recipe => {
+                                                        return (
+                                                            <td-swatch
+                                                                key={recipe.id}
+                                                                circular
+                                                                value={this.controller.getDefaultDesignTokenValue(
+                                                                    recipe.token
+                                                                )}
+                                                                orientation="horizontal"
+                                                                interactive
+                                                                selected={
+                                                                    !!this.controller.recipeIsAssigned(
+                                                                        recipe.id
+                                                                    ).length
+                                                                }
+                                                                onClick={this.controller.assignRecipe.bind(
+                                                                    this.controller,
+                                                                    recipe
+                                                                )}
+                                                            >
+                                                                {recipe.name}
+                                                            </td-swatch>
+                                                        );
+                                                    })}
+                                            </div>
+                                        </>
+                                    ) : null}
+                                    {this.props.selectedNodes.some(node =>
+                                        node.supports.includes(
+                                            DesignTokenType.backgroundFill
+                                        )
+                                    ) ? (
+                                        <>
+                                            <p className="title inset">Fills</p>
+                                            <div className="swatch-stack">
+                                                {this.controller
+                                                    .recipeOptionsByType(
+                                                        DesignTokenType.backgroundFill
+                                                    )
+                                                    .map(recipe => {
+                                                        return (
+                                                            <td-swatch
+                                                                key={recipe.id}
+                                                                circular
+                                                                value={this.controller.getDefaultDesignTokenValue(
+                                                                    recipe.token
+                                                                )}
+                                                                orientation="horizontal"
+                                                                interactive
+                                                                selected={
+                                                                    !!this.controller.recipeIsAssigned(
+                                                                        recipe.id
+                                                                    ).length
+                                                                }
+                                                                onClick={this.controller.assignRecipe.bind(
+                                                                    this.controller,
+                                                                    recipe
+                                                                )}
+                                                            >
+                                                                {recipe.name}
+                                                            </td-swatch>
+                                                        );
+                                                    })}
+                                            </div>
+                                        </>
+                                    ) : null}
+                                    {this.props.selectedNodes.some(node =>
+                                        node.supports.includes(DesignTokenType.strokeFill)
+                                    ) ? (
+                                        <>
+                                            <p className="title inset">Strokes</p>
+                                            <div className="swatch-stack">
+                                                {this.controller
+                                                    .recipeOptionsByType(
+                                                        DesignTokenType.strokeFill
+                                                    )
+                                                    .map(recipe => {
+                                                        return (
+                                                            <td-swatch
+                                                                key={recipe.id}
+                                                                circular
+                                                                value={this.controller.getDefaultDesignTokenValue(
+                                                                    recipe.token
+                                                                )}
+                                                                orientation="horizontal"
+                                                                interactive
+                                                                type="border"
+                                                                selected={
+                                                                    !!this.controller.recipeIsAssigned(
+                                                                        recipe.id
+                                                                    ).length
+                                                                }
+                                                                onClick={this.controller.assignRecipe.bind(
+                                                                    this.controller,
+                                                                    recipe
+                                                                )}
+                                                            >
+                                                                {recipe.name}
+                                                            </td-swatch>
+                                                        );
+                                                    })}
+                                            </div>
+                                        </>
+                                    ) : null}
+                                    {this.props.selectedNodes.some(node =>
+                                        node.supports.includes(
+                                            DesignTokenType.foregroundFill
+                                        )
+                                    ) ? (
+                                        <>
+                                            <p className="title inset">Foregrounds</p>
+                                            <div className="swatch-stack">
+                                                {this.controller
+                                                    .recipeOptionsByType(
+                                                        DesignTokenType.foregroundFill
+                                                    )
+                                                    .map(recipe => (
+                                                        <td-swatch
+                                                            key={recipe.id}
+                                                            circular
+                                                            value={this.controller.getDefaultDesignTokenValue(
+                                                                recipe.token
+                                                            )}
+                                                            orientation="horizontal"
+                                                            interactive
+                                                            selected={
+                                                                !!this.controller.recipeIsAssigned(
+                                                                    recipe.id
+                                                                ).length
+                                                            }
+                                                            onClick={this.controller.assignRecipe.bind(
+                                                                this.controller,
+                                                                recipe
+                                                            )}
+                                                        >
+                                                            {recipe.name}
+                                                        </td-swatch>
+                                                    ))}
+                                            </div>
+                                        </>
+                                    ) : null}
+                                </div>
+                            </td-drawer>
+                            <td-drawer name="Corner Radius">
+                                {this.props.selectedNodes.some(node =>
+                                    node.supports.includes(DesignTokenType.cornerRadius)
+                                ) ? (
+                                    <div className="swatch-grid" style={{ marginTop: 8 }}>
+                                        {this.controller
+                                            .recipeOptionsByType(
+                                                DesignTokenType.cornerRadius
+                                            )
+                                            .map(recipe => {
+                                                return (
+                                                    <td-corner-radius
+                                                        key={recipe.id}
+                                                        value={this.controller.getDefaultDesignTokenValue(
+                                                            recipe.token
+                                                        )}
+                                                        interactive
+                                                        selected={
+                                                            !!this.controller.recipeIsAssigned(
+                                                                recipe.id
+                                                            ).length
+                                                        }
+                                                        onClick={this.controller.assignRecipe.bind(
+                                                            this.controller,
+                                                            recipe
+                                                        )}
+                                                    >
+                                                        {recipe.name}
+                                                    </td-corner-radius>
+                                                );
+                                            })}
+                                    </div>
+                                ) : null}
+                                {cornerRadiusRecipes.length ? (
+                                    <div slot="collapsed-content">
+                                        {cornerRadiusRecipes.map(recipe => (
+                                            <p className="applied-recipe" key={recipe.id}>
+                                                <td-corner-radius
                                                     value={this.controller.getDefaultDesignTokenValue(
                                                         recipe.token
                                                     )}
                                                     orientation="horizontal"
+                                                    onClick={this.controller.assignRecipe.bind(
+                                                        this.controller,
+                                                        recipe
+                                                    )}
+                                                >
+                                                    {recipe.name}
+                                                </td-corner-radius>
+                                                <div>
+                                                    <span>
+                                                        {this.controller.getDefaultDesignTokenValue(
+                                                            recipe.token
+                                                        )}
+                                                    </span>
+                                                    <plugin-button
+                                                        appearance="stealth"
+                                                        aria-label="Detach"
+                                                        onClick={this.controller.removeRecipe.bind(
+                                                            this.controller,
+                                                            recipe
+                                                        )}
+                                                    >
+                                                        Detach
+                                                    </plugin-button>
+                                                </div>
+                                            </p>
+                                        ))}
+                                    </div>
+                                ) : null}
+                            </td-drawer>
+                            <td-drawer name="Text">
+                                {this.props.selectedNodes.some(node =>
+                                    node.supports.includes(DesignTokenType.fontName)
+                                ) ? (
+                                    <div className="swatch-grid" style={{ marginTop: 8 }}>
+                                        {[
+                                            ...this.controller.recipeOptionsByType(
+                                                DesignTokenType.fontName
+                                            ),
+                                            ...this.controller.recipeOptionsByType(
+                                                DesignTokenType.fontSize
+                                            ),
+                                            ...this.controller.recipeOptionsByType(
+                                                DesignTokenType.lineHeight
+                                            ),
+                                        ].map(recipe => {
+                                            return (
+                                                <td-generic-recipe
+                                                    key={recipe.id}
+                                                    value={this.controller.getDefaultDesignTokenValue(
+                                                        recipe.token
+                                                    )}
                                                     interactive
                                                     selected={
                                                         !!this.controller.recipeIsAssigned(
@@ -449,281 +554,94 @@ export class PluginUI extends React.Component<PluginUIProps> {
                                                     )}
                                                 >
                                                     {recipe.name}
-                                                </td-swatch>
-                                            ))}
+                                                </td-generic-recipe>
+                                            );
+                                        })}
                                     </div>
-                                </>
-                            ) : null}
+                                ) : null}
+                                {textRecipes.length ? (
+                                    <div slot="collapsed-content">
+                                        {textRecipes.map(recipe => (
+                                            <p className="applied-recipe" key={recipe.id}>
+                                                <td-generic-recipe
+                                                    value={this.controller.getDefaultDesignTokenValue(
+                                                        recipe.token
+                                                    )}
+                                                    orientation="horizontal"
+                                                    onClick={this.controller.assignRecipe.bind(
+                                                        this.controller,
+                                                        recipe
+                                                    )}
+                                                >
+                                                    {recipe.name}
+                                                </td-generic-recipe>
+                                                <div>
+                                                    <span>
+                                                        {this.controller.getDefaultDesignTokenValue(
+                                                            recipe.token
+                                                        )}
+                                                    </span>
+                                                    <plugin-button
+                                                        appearance="stealth"
+                                                        aria-label="Detach"
+                                                        onClick={this.controller.removeRecipe.bind(
+                                                            this.controller,
+                                                            recipe
+                                                        )}
+                                                    >
+                                                        Detach
+                                                    </plugin-button>
+                                                </div>
+                                            </p>
+                                        ))}
+                                    </div>
+                                ) : null}
+                            </td-drawer>
                         </div>
-                    </td-drawer>
-                    <td-drawer name="Corner Radius">
-                        {this.props.selectedNodes.some(node =>
-                            node.supports.includes(DesignTokenType.cornerRadius)
-                        ) ? (
-                            <div className="swatch-grid" style={{ marginTop: 8 }}>
-                                {this.controller
-                                    .recipeOptionsByType(DesignTokenType.cornerRadius)
-                                    .map(recipe => {
-                                        return (
-                                            <td-corner-radius
-                                                key={recipe.id}
-                                                value={this.controller.getDefaultDesignTokenValue(
-                                                    recipe.token
-                                                )}
-                                                interactive
-                                                selected={
-                                                    !!this.controller.recipeIsAssigned(
-                                                        recipe.id
-                                                    ).length
-                                                }
-                                                onClick={this.controller.assignRecipe.bind(
-                                                    this.controller,
-                                                    recipe
-                                                )}
-                                            >
-                                                {recipe.name}
-                                            </td-corner-radius>
-                                        );
-                                    })}
+                    </plugin-tab-panel>
+                    <plugin-tab-panel id="tokensPanel">
+                        {supportsDesignSystem ? (
+                            <div
+                                style={{
+                                    display: "grid",
+                                    gridTemplateRows: "auto 1fr",
+                                    height: "100%",
+                                }}
+                            >
+                                <div>
+                                    <DesignTokenAddReact
+                                        designTokens={availableDesignTokens}
+                                        onAdd={(e: CustomEvent) => {
+                                            this.controller.assignDesignToken(
+                                                e.detail.definition,
+                                                e.detail.value
+                                            );
+                                        }}
+                                    ></DesignTokenAddReact>
+                                    <plugin-divider></plugin-divider>
+                                </div>
+                                <div style={{ overflowY: "overlay" as any }}>
+                                    <DesignTokensFormReact
+                                        designTokens={appliedDesignTokens}
+                                        onTokenChange={(e: CustomEvent) =>
+                                            this.controller.assignDesignToken(
+                                                e.detail.definition,
+                                                e.detail.value
+                                            )
+                                        }
+                                        onDetach={(e: CustomEvent) =>
+                                            this.controller.removeDesignToken(e.detail)
+                                        }
+                                    ></DesignTokensFormReact>
+                                </div>
                             </div>
-                        ) : null}
-                        {cornerRadiusRecipes.length ? (
-                            <div slot="collapsed-content">
-                                {cornerRadiusRecipes.map(recipe => (
-                                    <p className="applied-recipe" key={recipe.id}>
-                                        <td-corner-radius
-                                            value={this.controller.getDefaultDesignTokenValue(
-                                                recipe.token
-                                            )}
-                                            orientation="horizontal"
-                                            onClick={this.controller.assignRecipe.bind(
-                                                this.controller,
-                                                recipe
-                                            )}
-                                        >
-                                            {recipe.name}
-                                        </td-corner-radius>
-                                        <div>
-                                            <span>
-                                                {this.controller.getDefaultDesignTokenValue(
-                                                    recipe.token
-                                                )}
-                                            </span>
-                                            <plugin-button
-                                                appearance="stealth"
-                                                aria-label="Detach"
-                                                onClick={this.controller.removeRecipe.bind(
-                                                    this.controller,
-                                                    recipe
-                                                )}
-                                            >
-                                                Detach
-                                            </plugin-button>
-                                        </div>
-                                    </p>
-                                ))}
-                            </div>
-                        ) : null}
-                    </td-drawer>
-                    <td-drawer name="Text">
-                        {this.props.selectedNodes.some(node =>
-                            node.supports.includes(DesignTokenType.fontName)
-                        ) ? (
-                            <div className="swatch-grid" style={{ marginTop: 8 }}>
-                                {[
-                                    ...this.controller.recipeOptionsByType(
-                                        DesignTokenType.fontName
-                                    ),
-                                    ...this.controller.recipeOptionsByType(
-                                        DesignTokenType.fontSize
-                                    ),
-                                    ...this.controller.recipeOptionsByType(
-                                        DesignTokenType.lineHeight
-                                    ),
-                                ].map(recipe => {
-                                    return (
-                                        <td-generic-recipe
-                                            key={recipe.id}
-                                            value={this.controller.getDefaultDesignTokenValue(
-                                                recipe.token
-                                            )}
-                                            interactive
-                                            selected={
-                                                !!this.controller.recipeIsAssigned(
-                                                    recipe.id
-                                                ).length
-                                            }
-                                            onClick={this.controller.assignRecipe.bind(
-                                                this.controller,
-                                                recipe
-                                            )}
-                                        >
-                                            {recipe.name}
-                                        </td-generic-recipe>
-                                    );
-                                })}
-                            </div>
-                        ) : null}
-                        {textRecipes.length ? (
-                            <div slot="collapsed-content">
-                                {textRecipes.map(recipe => (
-                                    <p className="applied-recipe" key={recipe.id}>
-                                        <td-generic-recipe
-                                            value={this.controller.getDefaultDesignTokenValue(
-                                                recipe.token
-                                            )}
-                                            orientation="horizontal"
-                                            onClick={this.controller.assignRecipe.bind(
-                                                this.controller,
-                                                recipe
-                                            )}
-                                        >
-                                            {recipe.name}
-                                        </td-generic-recipe>
-                                        <div>
-                                            <span>
-                                                {this.controller.getDefaultDesignTokenValue(
-                                                    recipe.token
-                                                )}
-                                            </span>
-                                            <plugin-button
-                                                appearance="stealth"
-                                                aria-label="Detach"
-                                                onClick={this.controller.removeRecipe.bind(
-                                                    this.controller,
-                                                    recipe
-                                                )}
-                                            >
-                                                Detach
-                                            </plugin-button>
-                                        </div>
-                                    </p>
-                                ))}
-                            </div>
-                        ) : null}
-                    </td-drawer>
-                </div>
+                        ) : (
+                            <div>Selected layers don't support design tokens</div>
+                        )}
+                    </plugin-tab-panel>
+                </plugin-tabs>
+
                 {this.renderFooter()}
-            </div>
-        );
-    }
-
-    private renderColorPicker(tokenId: string): JSX.Element {
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        const colorToken = this.controller.getDesignTokenDefinition<Swatch>(tokenId)!;
-        const defaultValue = this.controller.getDefaultDesignTokenValue(colorToken.token);
-        const values = this.props.selectedNodes
-            .map(node => this.controller.getDesignTokenValue(node, colorToken.token))
-            .filter(value => !!value);
-
-        let value = values.length ? values[0].toColorString() : defaultValue;
-
-        const onChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-            const hex: string = e.target.value;
-            const parsed = parseColorHexRGB(hex);
-
-            if (parsed instanceof ColorRGBA64) {
-                value = parsed.toStringHexRGB();
-                (document.getElementById(
-                    colorToken.id + "Hex"
-                ) as HTMLInputElement).value = value;
-                const swatch = SwatchRGB.from(parsed);
-                this.controller.assignDesignToken(colorToken, swatch);
-            }
-        };
-
-        const onChangeHex = (e: React.FocusEvent<HTMLInputElement>): void => {
-            const hex: string = e.target.value;
-            const parsed = parseColorHexRGB(hex);
-
-            if (parsed instanceof ColorRGBA64) {
-                value = parsed.toStringHexRGB();
-                (document.getElementById(
-                    colorToken.id
-                ) as HTMLInputElement).value = value;
-                const swatch = SwatchRGB.from(parsed);
-                this.controller.assignDesignToken(colorToken, swatch);
-            }
-        };
-
-        const labelStyle = {
-            fontFamily: "var(--body-font)",
-            color: "var(--neutral-foreground-rest)",
-            cursor: "pointer",
-            fontSize: "var(--type-ramp-base-font-size)",
-            lineHeight: "var(--type-ramp-base-line-height)",
-            marginInlineEnd: "12px",
-        };
-
-        const inputStyle = {
-            marginInlineStart: "12px",
-        };
-
-        return (
-            <p className="inset">
-                <label htmlFor={colorToken.id} style={labelStyle}>
-                    {colorToken.name}
-                </label>
-                <input
-                    type="color"
-                    id={colorToken.id}
-                    value={value}
-                    onChange={onChange}
-                ></input>
-                <input
-                    type="text"
-                    id={colorToken.id + "Hex"}
-                    style={inputStyle}
-                    value={value}
-                    onBlur={onChangeHex}
-                ></input>
-            </p>
-        );
-    }
-
-    private renderThemeSwitcher(): JSX.Element {
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        const def = this.controller.getDesignTokenDefinition<number>(
-            "baseLayerLuminance"
-        )!;
-        const defaultValue = this.controller.getDefaultDesignTokenValue(def.token);
-        const nodes = this.props.selectedNodes.filter(node =>
-            node.supports.includes(DesignTokenType.designToken)
-        );
-        const themeData = nodes.map(node =>
-            this.controller.getDesignTokenValue(node, def.token)
-        );
-        const themesApplied = themeData.filter(value => typeof value === "number");
-
-        const lightModeOnChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-            this.controller.assignDesignToken(def, StandardLuminance.LightMode);
-        };
-
-        const darkModeOnChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-            this.controller.assignDesignToken(def, StandardLuminance.DarkMode);
-        };
-
-        // TODO handle multiple selection better.
-        return (
-            <div style={{ padding: "4px 16px 4px" }}>
-                <plugin-radio-group
-                    name="luminanceMode"
-                    value={themesApplied.length ? themesApplied[0] : defaultValue}
-                    disabled={themesApplied.length === 0}
-                >
-                    <plugin-radio
-                        value={StandardLuminance.LightMode}
-                        onClick={lightModeOnChange}
-                    >
-                        Light mode
-                    </plugin-radio>
-                    <plugin-radio
-                        value={StandardLuminance.DarkMode}
-                        onClick={darkModeOnChange}
-                    >
-                        Dark mode
-                    </plugin-radio>
-                </plugin-radio-group>
             </div>
         );
     }
