@@ -206,6 +206,8 @@ function updateTokenListTarget(
     }
 }
 
+type BindingConfigResolver<T> = (options: T) => BindingConfig<T>;
+
 class TargetUpdateBinding extends BindingBase {
     constructor(directive: HTMLBindingDirective, protected updateTarget: UpdateTarget) {
         super(directive);
@@ -214,11 +216,10 @@ class TargetUpdateBinding extends BindingBase {
     static createBindingConfig<T>(
         defaultOptions: T,
         eventType?: BindingType
-    ): BindingConfig<T> {
-        const config: BindingConfig &
-            ((options?: typeof defaultOptions) => BindingConfig) = (
-            options: typeof defaultOptions
-        ): BindingConfig => {
+    ): BindingConfig<T> & BindingConfigResolver<T> {
+        const config: BindingConfig<T> & BindingConfigResolver<T> = (
+            options: T
+        ): BindingConfig<T> => {
             return {
                 mode: config.mode,
                 options: Object.assign({}, defaultOptions, options),
