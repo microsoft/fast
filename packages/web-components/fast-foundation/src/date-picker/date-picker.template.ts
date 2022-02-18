@@ -59,8 +59,12 @@ const timeElementSelect = (
  */
 export const timePickerTemplate = (
     context: ElementDefinitionContext,
-    times,
-    timeKeydown
+    times: {
+        hours: {}[];
+        minutes: {}[];
+        meridians: {}[];
+    },
+    timeKeydown: (unit: string, event: KeyboardEvent) => boolean
 ) => {
     const timeSelectTemplate = timeElementSelect.bind(this, context, timeKeydown);
     return html`
@@ -85,13 +89,17 @@ export const timePickerTemplate = (
  * @public
  */
 const pickerTemplate = (
-    context,
-    definition,
-    items,
-    title,
-    previousAction,
-    nextAction,
-    reset
+    context: ElementDefinitionContext,
+    definition: any,
+    items: {}[],
+    title: {
+        text: string;
+        isInteractive: boolean;
+        action: (event?: Event) => void;
+    },
+    previousAction: (event?: Event) => void,
+    nextAction: (event?: Event) => void,
+    reset: ViewTemplate<DatePicker>
 ) => {
     const button = context.tagFor(Button);
     const grid = context.tagFor(DataGrid);
@@ -168,7 +176,7 @@ const pickerTemplate = (
         `
         )}
       </${grid}>
-      ${reset}
+      ${when(x => x.type.indexOf("date") >= 0, reset)}
     </div>
   `;
 };
@@ -184,11 +192,11 @@ export const datePickerTemplate: FoundationElementTemplate<
     ViewTemplate<DatePicker>,
     DatePickerOptions
 > = (context, definition) => {
-    const textField = context.tagFor(TextField);
-    const anchoredRegion = context.tagFor(AnchoredRegion);
-    const button = context.tagFor(Button);
-    const calendar = context.tagFor(Calendar);
-    const resetButton = html`<${button} class="reset-text" part="reset-text" @click="${x =>
+    const textField: string = context.tagFor(TextField);
+    const anchoredRegion: string = context.tagFor(AnchoredRegion);
+    const button: string = context.tagFor(Button);
+    const calendar: string = context.tagFor(Calendar);
+    const resetButton: ViewTemplate<DatePicker> = html`<${button} class="reset-text" part="reset-text" @click="${x =>
         x.resetCalendar()}">${x => x.resetText}</${button}>`;
 
     return html`
@@ -199,7 +207,7 @@ export const datePickerTemplate: FoundationElementTemplate<
         <${textField}
             ${ref("textField")}
             name=${x => x.name}
-            @click="${x => (!x.readonly ? x.toggleFlyout(true) : () => {})}"
+            @click="${x => (!x.readonly ? x.toggleFlyout(true) : () => true)}"
             ?readonly="${x => x.readonly}"
             placeholder="${x => x.placeholder}"
             appearance="${x => x.appearance}"
@@ -306,7 +314,7 @@ export const datePickerTemplate: FoundationElementTemplate<
                             },
                             x.handleMonthChange.bind(x, -1),
                             x.handleMonthChange.bind(x, 1),
-                            x.type.indexOf("date") >= 0 ? resetButton : () => {}
+                            resetButton
                         )
                 )}
                 ${when(
@@ -326,7 +334,7 @@ export const datePickerTemplate: FoundationElementTemplate<
                             },
                             () => (x.yearView -= 12),
                             () => (x.yearView += 12),
-                            x.type.indexOf("date") >= 0 ? resetButton : () => {}
+                            resetButton
                         );
                     }
                 )}

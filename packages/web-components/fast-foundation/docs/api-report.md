@@ -790,13 +790,13 @@ export class DatePicker extends FormAssociatedDatePicker {
     arrayToMatrix(array: any[], itemsPerRow: number): any[][];
     // @public
     calendarMonth: number;
-    // (undocumented)
-    calendarMonthChanged(previous: any, next: any): void;
+    // @public
+    calendarMonthChanged(previous: number, next: number): void;
     calendarTitle: string;
     // @public
     calendarYear: number;
-    // (undocumented)
-    calendarYearChanged(previous: any, next: any): void;
+    // @public
+    calendarYearChanged(previous: number, next: number): void;
     // @public
     closeFlyout(force?: boolean): void;
     // @public
@@ -810,14 +810,12 @@ export class DatePicker extends FormAssociatedDatePicker {
     // @public
     disabled: boolean;
     disabledDates: string;
-    // (undocumented)
-    disabledYears: string;
     // @public
     disconnectedCallback(): void;
     // @public
     flyoutOpen: boolean;
-    // (undocumented)
-    flyoutOpenChanged(previous: any, next: any): void;
+    // @public
+    flyoutOpenChanged(previous: boolean, next: boolean): void;
     // @public
     getMonths(): {
         action: () => void;
@@ -848,10 +846,8 @@ export class DatePicker extends FormAssociatedDatePicker {
     }[];
     // @public
     handleBlur(): void;
-    // (undocumented)
+    // @public
     handleCalendarChangeKeydown(direction: number | undefined, e: KeyboardEvent): boolean;
-    // (undocumented)
-    handleCalendarKeydown(targets: any, event: KeyboardEvent): void;
     // @public
     handleCalendarTitleKeydown(e: KeyboardEvent): boolean;
     // @public
@@ -866,7 +862,7 @@ export class DatePicker extends FormAssociatedDatePicker {
     handleMeridianClicked(meridian: "AM" | "PM"): void;
     // @public
     handleMinuteClicked(minute: number): void;
-    // @public (undocumented)
+    // @public
     handleMonthChange(direction: number | undefined, event: KeyboardEvent | MouseEvent): boolean;
     // @public
     handleMonthClicked(month: number, year: number): void;
@@ -935,19 +931,18 @@ export class DatePicker extends FormAssociatedDatePicker {
     // @public
     showYearPicker: boolean;
     // @public
-    textField: any;
-    // (undocumented)
-    textFieldChanged(previous: any, next: any): void;
+    textField: TextField;
+    // @public
+    textFieldChanged(previous: TextField, next: TextField): void;
     // @public
     toggleFlyout(force?: boolean): void;
     // @public
     type: "date" | "datetime-local" | "month" | "year" | "time";
-    // (undocumented)
-    typeChanged(previous: any, next: any): void;
+    // @public
+    typeChanged(previous: string, next: string): void;
     // @public
     value: string;
-    // (undocumented)
-    valueChanged(previous: any, next: any): void;
+    valueChanged(previous: string, next: string): void;
     // @public
     weekdayFormat: WeekdayFormat;
     // @public
@@ -2760,7 +2755,11 @@ export enum TextFieldType {
 }
 
 // @public
-export const timePickerTemplate: (context: ElementDefinitionContext, times: any, timeKeydown: any) => ViewTemplate<any, any>;
+export const timePickerTemplate: (context: ElementDefinitionContext, times: {
+    hours: {}[];
+    minutes: {}[];
+    meridians: {}[];
+}, timeKeydown: (unit: string, event: KeyboardEvent) => boolean) => ViewTemplate<any, any>;
 
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
 // Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "Toolbar" because one of its declarations is marked as @internal

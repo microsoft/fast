@@ -83,7 +83,7 @@ const FASTDatePicker = DatePicker.compose({
  * @param props - An obect with properties as keys and values as key-values
  * @returns - An object with a handle to the element, the document and connect and disconnect handlers
  */
-async function setup(props?) {
+async function setup(props?: {}) {
     const { document, element, connect, disconnect }: {
         document: Document,
         element: HTMLElement & DatePicker,

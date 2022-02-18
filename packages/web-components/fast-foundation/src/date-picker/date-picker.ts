@@ -26,6 +26,7 @@ import {
     WeekdayFormat,
     YearFormat,
 } from "../calendar/date-formatter";
+import type { TextField } from "../text-field";
 import { FormAssociatedDatePicker } from "./date-picker.form-associated";
 
 /**
@@ -80,9 +81,16 @@ export class DatePicker extends FormAssociatedDatePicker {
      */
     @attr
     public type: "date" | "datetime-local" | "month" | "year" | "time" = "date";
-    public typeChanged(previous, next): void {
+
+    /**
+     * Ensures that the value is valid for the updated type
+     * @param previous - previous type
+     * @param next - updated type
+     * @public
+     */
+    public typeChanged(previous: string, next: string): void {
         if (next && this.value) {
-            this.valueChanged(null, this.value);
+            this.valueChanged("", this.value);
         }
     }
 
@@ -92,7 +100,14 @@ export class DatePicker extends FormAssociatedDatePicker {
      */
     @attr
     public value: string;
-    public valueChanged(previous, next): void {
+
+    /**
+     * Validates that the value is a valid date
+     * @param previous - the previous selected value
+     * @param next - the updated selected value
+     * @publc
+     */
+    public valueChanged(previous: string, next: string): void {
         super.valueChanged(previous, next);
         if (previous !== next) {
             if (!previous) {
@@ -278,17 +293,21 @@ export class DatePicker extends FormAssociatedDatePicker {
     @attr({ attribute: "disabled-dates" })
     public disabledDates: string;
 
-    @observable
-    public disabledYears: string;
-
     /**
      * The text field used for date entry
      * @public
      */
     @observable
-    public textField;
-    public textFieldChanged(previous, next) {
-        // Once the textfield is loaded, format it's value
+    public textField: TextField;
+
+    /**
+     * Adds the value to the textfield when it's attached to the dom
+     * @param previous - previous textfield element
+     * @param next - updated textfield
+     * @public
+     */
+    public textFieldChanged(previous: TextField, next: TextField) {
+        // Once the textfield is loaded, format its value
         if (!previous && !!next && this.value) {
             this.textField.value = this.value;
         }
@@ -318,7 +337,14 @@ export class DatePicker extends FormAssociatedDatePicker {
      */
     @observable
     public calendarMonth: number = new Date().getMonth() + 1;
-    public calendarMonthChanged(previous, next) {
+
+    /**
+     * Handles changing the calendar view month
+     * @param previous - the current month value
+     * @param next - the next month value
+     * @public
+     */
+    public calendarMonthChanged(previous: number, next: number) {
         this.setCalendarTitle();
     }
 
@@ -328,7 +354,14 @@ export class DatePicker extends FormAssociatedDatePicker {
      */
     @observable
     public calendarYear: number = new Date().getFullYear();
-    public calendarYearChanged(previous, next) {
+
+    /**
+     * Handles changing the calendar view year
+     * @param previous - the current calendar year view
+     * @param next - the next calendar year view
+     * @public
+     */
+    public calendarYearChanged(previous: number, next: number) {
         this.setCalendarTitle();
     }
 
@@ -388,7 +421,7 @@ export class DatePicker extends FormAssociatedDatePicker {
      */
     public handleCalendarChangeKeydown(direction: number = 1, e: KeyboardEvent): boolean {
         const key: string = e.key;
-        const changeCalendar = direction => {
+        const changeCalendar = (direction: number) => {
             e.preventDefault();
             const functionName = `${direction ? "next" : "previous"}Calendar`;
             if (this[functionName]) {
@@ -396,7 +429,7 @@ export class DatePicker extends FormAssociatedDatePicker {
             }
             return false;
         };
-        const moveFocus = direction => {
+        const moveFocus = (direction: number) => {
             const target: HTMLElement = e.target as HTMLElement;
             const { parentNode } = target;
             if (parentNode?.children) {
@@ -518,7 +551,10 @@ export class DatePicker extends FormAssociatedDatePicker {
             action: () => void;
         }[];
     } {
-        const date: (hour: number, minute: number) => void = Date.bind(Date, 2000, 1, 1);
+        const date: (hour: number, minute: number) => Date = (
+            hour: number,
+            minute: number
+        ) => new Date(2000, 1, 1, hour, minute);
         /* Creates an array of hours data */
         const hours: { text: string; value: number; action: () => void }[] = new Array(12)
             .fill(null)
@@ -528,7 +564,7 @@ export class DatePicker extends FormAssociatedDatePicker {
                 if (value > 12) {
                     value -= 12;
                 }
-                const hourDate: Date = new date(value, 1);
+                const hourDate: Date = date(value, 1);
                 const text: string = this.dateFormatter
                     .getDate(hourDate, { hour: "numeric" })
                     .replace(/ *[ap][m]/i, "");
@@ -555,9 +591,11 @@ export class DatePicker extends FormAssociatedDatePicker {
                 const minute: number =
                     this.selectedDate?.minute ?? new Date().getMinutes();
                 const value: number = (minute + index) % 60;
-                const minuteDate: Date = new date(1, value);
+                const minuteDate: Date = date(1, value);
                 const parts = (partFormatter as any).formatToParts(minuteDate);
-                const minutePart = parts.find(part => part.type === "minute");
+                const minutePart = parts.find(
+                    (part: { type: string; value: string }) => part.type === "minute"
+                );
                 const text: string = minutePart.value;
 
                 return {
@@ -567,13 +605,15 @@ export class DatePicker extends FormAssociatedDatePicker {
                 };
             });
 
-        const getDayPeriod = hour => {
-            const parts = (partFormatter as any).formatToParts(new date(hour, 0));
-            const part = parts.find(part => part.type === "dayPeriod");
+        const getDayPeriod = (hour: number) => {
+            const parts = (partFormatter as any).formatToParts(date(hour, 0));
+            const part = parts.find(
+                (part: { type: string; value: string }) => part.type === "dayPeriod"
+            );
             return part.value;
         };
-        const amText = getDayPeriod(1);
-        const pmText = getDayPeriod(13);
+        const amText: string = getDayPeriod(1);
+        const pmText: string = getDayPeriod(13);
 
         /* An array of meridians */
         const meridians: { text: string; action: () => void }[] = [
@@ -670,7 +710,14 @@ export class DatePicker extends FormAssociatedDatePicker {
      */
     @observable
     public flyoutOpen: boolean = false;
-    public flyoutOpenChanged(previous, next) {
+
+    /**
+     * Handles opening and closing of the picker flyout
+     * @param previous - current state of the flyout
+     * @param next - flyout state to update to
+     * @public
+     */
+    public flyoutOpenChanged(previous: boolean, next: boolean) {
         window[`${next ? "add" : "remove"}EventListener`]("click", () =>
             this.closeFlyout()
         );
@@ -1001,7 +1048,7 @@ export class DatePicker extends FormAssociatedDatePicker {
     }
 
     /**
-     *
+     * Handles chaning the calendar month view
      * @param direction - previous or next month
      * @param event - keyboard or mouse event triggered
      * @returns should bubble
@@ -1013,7 +1060,7 @@ export class DatePicker extends FormAssociatedDatePicker {
     ): boolean {
         if (event instanceof KeyboardEvent) {
             const { key, target } = event;
-            const updateMonth = value => {
+            const updateMonth = (value: number) => {
                 event.preventDefault();
                 this.monthView += value;
                 DOM.nextUpdate().then(() => {
@@ -1079,7 +1126,7 @@ export class DatePicker extends FormAssociatedDatePicker {
      * @returns date formatting
      */
     private getFormatting() {
-        const keyToFormat = (formatObject, key) => {
+        const keyToFormat = (formatObject: {}, key: string) => {
             const formatKey = `${key}Format`;
             if (this[formatKey]) {
                 formatObject[key] = this[formatKey];
