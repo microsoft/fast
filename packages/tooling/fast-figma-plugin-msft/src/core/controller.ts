@@ -55,6 +55,7 @@ export abstract class Controller {
                     id: node.id,
                     type: node.type,
                     supports: node.supports(),
+                    additionalData: node.additionalData,
                     children,
                     inheritedDesignTokens,
                     componentDesignTokens: node.componentDesignTokens,
