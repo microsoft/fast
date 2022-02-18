@@ -40,7 +40,7 @@ const marker = `fast-${Math.random().toString(36).substring(2, 8)}`;
 let id = 0;
 
 /** @internal */
-export const nextId = () => `${marker}-${++id}`;
+export const nextId = (): string => `${marker}-${++id}`;
 
 /** @internal */
 export const _interpolationStart = `${marker}{`;

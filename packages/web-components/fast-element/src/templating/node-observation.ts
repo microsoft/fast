@@ -32,7 +32,7 @@ export interface NodeBehaviorOptions<T = any> {
  */
 export type ElementsFilter = (value: Node, index: number, array: Node[]) => boolean;
 
-const selectElements = value => value.nodeType === 1;
+const selectElements = (value: Node): boolean => value.nodeType === 1;
 
 /**
  * Creates a function that can be used to filter a Node array, selecting only elements.
