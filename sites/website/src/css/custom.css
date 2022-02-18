@@ -21,6 +21,55 @@ html {
   overflow-x: hidden;
 }
 
+html[data-theme='light'] .DocSearch {
+  --docsearch-muted-color: var(--ifm-color-secondary-darkest);
+  --docsearch-container-background: rgba(94, 100, 112, 0.7);
+  --docsearch-modal-background: var(--ifm-color-secondary-lighter);
+  --docsearch-searchbox-background: var(--ifm-color-secondary);
+  --docsearch-searchbox-focus-background: var(--ifm-color-white);
+  --docsearch-footer-background: var(--ifm-color-white);
+}
+
+html[data-theme='dark'] .DocSearch {
+  --docsearch-muted-color: var(--ifm-color-secondary-darkest);
+  --docsearch-container-background: rgba(47, 55, 69, 0.7);
+  --docsearch-modal-background: var(--ifm-background-color);
+  --docsearch-searchbox-background: var(--ifm-background-color);
+  --docsearch-searchbox-focus-background: var(--ifm-color-black);
+  --docsearch-footer-background: var(--ifm-background-surface-color);
+  --docsearch-key-gradient: linear-gradient(
+    -26.5deg,
+    var(--ifm-color-emphasis-200) 0%,
+    var(--ifm-color-emphasis-100) 100%
+  );
+}
+
+html[data-theme='light'] .DocSearch-Hit[aria-selected="true"] a {
+  background: var(--ifm-color-white);
+  border: 3px solid var(--ifm-color-primary);
+}
+
+html[data-theme='light'] .DocSearch-Hit[aria-selected="true"] a * {
+  color: var(--ifm-font-color-base) !important;
+}
+
+html[data-theme='light'] .DocSearch-Hit[aria-selected="true"] a mark {
+  color: var(--ifm-color-primary) !important;
+}
+
+html[data-theme='dark'] .DocSearch-Hit[aria-selected="true"] a {
+  background: rgba(47, 55, 69, 0.7);
+  border: 3px solid var(--ifm-color-primary);
+}
+
+html[data-theme='dark'] .DocSearch-Hit[aria-selected="true"] a * {
+  color: var(--ifm-font-color-base) !important;
+}
+
+html[data-theme='dark'] .DocSearch-Hit[aria-selected="true"] a mark {
+  color: var(--ifm-color-primary) !important;
+}
+
 .docusaurus-highlight-code-line {
   background-color: #212121;
   display: block;
