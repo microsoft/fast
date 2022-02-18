@@ -214,7 +214,7 @@ class TargetUpdateBinding extends BindingBase {
     static createBindingConfig<T>(
         defaultOptions: T,
         eventType?: BindingType
-    ): BindingConfig {
+    ): BindingConfig<T> {
         const config: BindingConfig &
             ((options?: typeof defaultOptions) => BindingConfig) = (
             options: typeof defaultOptions
