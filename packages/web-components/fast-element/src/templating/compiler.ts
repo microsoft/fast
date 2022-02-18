@@ -10,11 +10,17 @@ import type {
     ViewBehaviorTargets,
 } from "./html-directive.js";
 
-const targetIdFrom = (parentId: string, nodeIndex: number) => `${parentId}.${nodeIndex}`;
+const targetIdFrom = (parentId: string, nodeIndex: number): string =>
+    `${parentId}.${nodeIndex}`;
 const descriptorCache: PropertyDescriptorMap = {};
 
+interface NextNode {
+    index: number;
+    node: ChildNode | null;
+}
+
 // used to prevent creating lots of objects just to track node and index while compiling
-const next = {
+const next: NextNode = {
     index: 0,
     node: null as ChildNode | null,
 };
@@ -86,7 +92,11 @@ class CompilationContext implements HTMLTemplateCompilationResult {
         return targets;
     }
 
-    private addTargetDescriptor(parentId: string, targetId: string, targetIndex: number) {
+    private addTargetDescriptor(
+        parentId: string,
+        targetId: string,
+        targetIndex: number
+    ): void {
         const descriptors = this.descriptors;
 
         if (
@@ -229,7 +239,7 @@ function compileContent(
     parentId,
     nodeId,
     nodeIndex
-) {
+): NextNode {
     const parseResult = parseContent(context, node.textContent!);
     if (parseResult === null) {
         next.node = node.nextSibling;
@@ -267,11 +277,16 @@ function compileContent(
     return next;
 }
 
-function compileChildren(context: CompilationContext, parent: Node, parentId: string) {
+function compileChildren(
+    context: CompilationContext,
+    parent: Node,
+    parentId: string
+): void {
     let nodeIndex = 0;
     let childNode = parent.firstChild;
 
     while (childNode) {
+        /* eslint-disable-next-line @typescript-eslint/no-use-before-define */
         const result = compileNode(context, parentId, childNode, nodeIndex);
         childNode = result.node;
         nodeIndex = result.index;
@@ -283,7 +298,7 @@ function compileNode(
     parentId: string,
     node: Node,
     nodeIndex: number
-) {
+): NextNode {
     const nodeId = targetIdFrom(parentId, nodeIndex);
 
     switch (node.nodeType) {

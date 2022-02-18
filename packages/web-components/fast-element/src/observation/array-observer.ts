@@ -60,7 +60,7 @@ class ArrayObserver extends SubscriberSet {
         this.notify(Splice.normalize(oldCollection, this.subject, splices));
     }
 
-    private enqueue() {
+    private enqueue(): void {
         if (this.needsQueue) {
             this.needsQueue = false;
             DOM.queueUpdate(this);
@@ -77,9 +77,9 @@ const sort = proto.sort;
 const splice = proto.splice;
 const unshift = proto.unshift;
 const arrayOverrides = {
-    pop() {
+    pop(...args) {
         const notEmpty = this.length > 0;
-        const result = pop.apply(this, arguments);
+        const result = pop.apply(this, args);
         const o = this.$fastController as ArrayObserver;
 
         if (o !== void 0 && notEmpty) {
@@ -89,23 +89,20 @@ const arrayOverrides = {
         return result;
     },
 
-    push() {
-        const result = push.apply(this, arguments);
+    push(...args) {
+        const result = push.apply(this, args);
         const o = this.$fastController as ArrayObserver;
 
         if (o !== void 0) {
             o.addSplice(
-                adjustIndex(
-                    new Splice(this.length - arguments.length, [], arguments.length),
-                    this
-                )
+                adjustIndex(new Splice(this.length - args.length, [], args.length), this)
             );
         }
 
         return result;
     },
 
-    reverse() {
+    reverse(...args) {
         let oldArray;
         const o = this.$fastController as ArrayObserver;
 
@@ -114,7 +111,7 @@ const arrayOverrides = {
             oldArray = this.slice();
         }
 
-        const result = reverse.apply(this, arguments);
+        const result = reverse.apply(this, args);
 
         if (o !== void 0) {
             o.reset(oldArray);
@@ -123,9 +120,9 @@ const arrayOverrides = {
         return result;
     },
 
-    shift() {
+    shift(...args) {
         const notEmpty = this.length > 0;
-        const result = shift.apply(this, arguments);
+        const result = shift.apply(this, args);
         const o = this.$fastController as ArrayObserver;
 
         if (o !== void 0 && notEmpty) {
@@ -135,7 +132,7 @@ const arrayOverrides = {
         return result;
     },
 
-    sort() {
+    sort(...args) {
         let oldArray;
         const o = this.$fastController as ArrayObserver;
 
@@ -144,7 +141,7 @@ const arrayOverrides = {
             oldArray = this.slice();
         }
 
-        const result = sort.apply(this, arguments);
+        const result = sort.apply(this, args);
 
         if (o !== void 0) {
             o.reset(oldArray);
@@ -153,18 +150,14 @@ const arrayOverrides = {
         return result;
     },
 
-    splice() {
-        const result = splice.apply(this, arguments);
+    splice(...args) {
+        const result = splice.apply(this, args);
         const o = this.$fastController as ArrayObserver;
 
         if (o !== void 0) {
             o.addSplice(
                 adjustIndex(
-                    new Splice(
-                        +arguments[0],
-                        result,
-                        arguments.length > 2 ? arguments.length - 2 : 0
-                    ),
+                    new Splice(+args[0], result, args.length > 2 ? args.length - 2 : 0),
                     this
                 )
             );
@@ -173,12 +166,12 @@ const arrayOverrides = {
         return result;
     },
 
-    unshift() {
-        const result = unshift.apply(this, arguments);
+    unshift(...args) {
+        const result = unshift.apply(this, args);
         const o = this.$fastController as ArrayObserver;
 
         if (o !== void 0) {
-            o.addSplice(adjustIndex(new Splice(0, [], arguments.length), this));
+            o.addSplice(adjustIndex(new Splice(0, [], args.length), this));
         }
 
         return result;
