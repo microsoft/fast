@@ -95,9 +95,9 @@ if (DOM.supportsAdoptedStyleSheets) {
 
 describe("StyleElementStrategy", () => {
     it("can add and remove from the document directly", () => {
-        const styles = ``;
-        const strategy = new StyleElementStrategy([styles]);
-        const elementStyles = new ElementStyles([styles], strategy);
+        const styles = [``];
+        const elementStyles = new ElementStyles(styles)
+            .withStrategy(new StyleElementStrategy(styles));
         document.body.innerHTML = "";
 
         elementStyles.addStylesTo(document);

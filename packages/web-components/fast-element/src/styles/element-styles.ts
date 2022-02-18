@@ -18,13 +18,6 @@ export interface StyleTarget {
     append(styles: HTMLStyleElement): void;
 
     /**
-     * Adds styles to the target by prepending the styles.
-     * @param styles - The styles element to add.
-     * @deprecated - use append()
-     */
-    prepend(styles: HTMLStyleElement): void;
-
-    /**
      * Removes styles from the target.
      * @param styles - The styles element to remove.
      */
@@ -43,14 +36,26 @@ export interface StyleTarget {
  */
 export type ComposableStyles = string | ElementStyles | CSSStyleSheet;
 
+/**
+ * Implemented to provide specific behavior when adding/removing styles
+ * for elements.
+ */
 export interface StyleStrategy {
+    /**
+     * Adds styles to the target.
+     * @param target The target to add the styles to.
+     */
     addStylesTo(target: StyleTarget): void;
+
+    /**
+     * Removes styles from the target.
+     * @param target The target to remove the styles from.
+     */
     removeStylesFrom(target: StyleTarget): void;
-    normalizeTarget(target: StyleTarget): StyleTarget;
 }
 
 /**
- * Creates a strategy capable of handling styles for custom elements.
+ * Creates a strategy capable of adding/removing styles for custom elements.
  * @public
  */
 export type StyleStrategyFactory = (styles: (string | CSSStyleSheet)[]) => StyleStrategy;
@@ -84,12 +89,12 @@ function reduceStyles(
  */
 export class ElementStyles {
     private targets: WeakSet<StyleTarget> = new WeakSet();
-    private _strategy: StyleStrategy | null;
+    private _strategy: StyleStrategy | null = null;
 
     /** @internal */
     public readonly behaviors: ReadonlyArray<Behavior<HTMLElement>> | null;
 
-    private get strategy() {
+    private get strategy(): StyleStrategy {
         if (this._strategy === null) {
             this._strategy = styleStrategyFactory(reduceStyles(this.styles));
         }
@@ -99,10 +104,8 @@ export class ElementStyles {
 
     constructor(
         /** @internal */
-        public readonly styles: ReadonlyArray<ComposableStyles>,
-        strategy: StyleStrategy | null = null
+        public readonly styles: ReadonlyArray<ComposableStyles>
     ) {
-        this._strategy = strategy;
         this.behaviors = styles
             .map((x: ComposableStyles) =>
                 x instanceof ElementStyles ? x.behaviors : null
@@ -128,21 +131,19 @@ export class ElementStyles {
 
     /** @internal */
     public addStylesTo(target: StyleTarget): void {
-        target = this.strategy.normalizeTarget(target);
         this.strategy.addStylesTo(target);
         this.targets.add(target);
     }
 
     /** @internal */
     public removeStylesFrom(target: StyleTarget): void {
-        target = this.strategy.normalizeTarget(target);
         this.strategy.removeStylesFrom(target);
         this.targets.delete(target);
     }
 
     /** @internal */
     public isAttachedTo(target: StyleTarget): boolean {
-        return this.targets.has(this.strategy.normalizeTarget(target));
+        return this.targets.has(target);
     }
 
     /**
@@ -156,6 +157,19 @@ export class ElementStyles {
         return this;
     }
 
+    /**
+     * Sets the strategy that handles adding/removing these styles for an element.
+     * @param strategy The strategy to use.
+     */
+    public withStrategy(strategy: StyleStrategy): this {
+        this._strategy = strategy;
+        return this;
+    }
+
+    /**
+     * Sets the default factory used when creating style strategies.
+     * @param factory The factory to use.
+     */
     public static setStrategyFactory(factory: StyleStrategyFactory) {
         styleStrategyFactory = factory;
     }
@@ -201,10 +215,10 @@ export class AdoptedStyleSheetsStrategy implements StyleStrategy {
             (x: CSSStyleSheet) => sheets.indexOf(x) === -1
         );
     }
+}
 
-    public normalizeTarget(target: StyleTarget): StyleTarget {
-        return target;
-    }
+function usableTarget(target: StyleTarget): StyleTarget {
+    return target === document ? document.body : target;
 }
 
 /**
@@ -218,6 +232,8 @@ export class StyleElementStrategy implements StyleStrategy {
     }
 
     public addStylesTo(target: StyleTarget): void {
+        target = usableTarget(target);
+
         const styles = this.styles;
         const styleClass = this.styleClass;
 
@@ -234,12 +250,10 @@ export class StyleElementStrategy implements StyleStrategy {
             `.${this.styleClass}`
         );
 
+        target = usableTarget(target);
+
         for (let i = 0, ii = styles.length; i < ii; ++i) {
             target.removeChild(styles[i]);
         }
-    }
-
-    public normalizeTarget(target: StyleTarget): StyleTarget {
-        return target === document ? document.body : target;
     }
 }

@@ -226,7 +226,7 @@ export type ElementsFilter = (value: Node, index: number, array: Node[]) => bool
 // @public
 export class ElementStyles {
     constructor(
-    styles: ReadonlyArray<ComposableStyles>, strategy?: StyleStrategy | null);
+    styles: ReadonlyArray<ComposableStyles>);
     // @internal (undocumented)
     addStylesTo(target: StyleTarget): void;
     // @internal (undocumented)
@@ -235,11 +235,11 @@ export class ElementStyles {
     isAttachedTo(target: StyleTarget): boolean;
     // @internal (undocumented)
     removeStylesFrom(target: StyleTarget): void;
-    // (undocumented)
     static setStrategyFactory(factory: StyleStrategyFactory): void;
     // @internal (undocumented)
     readonly styles: ReadonlyArray<ComposableStyles>;
     withBehaviors(...behaviors: Behavior<HTMLElement>[]): this;
+    withStrategy(strategy: StyleStrategy): this;
 }
 
 // @public
@@ -498,13 +498,9 @@ export class Splice {
     removed: any[];
 }
 
-// @public (undocumented)
+// @public
 export interface StyleStrategy {
-    // (undocumented)
     addStylesTo(target: StyleTarget): void;
-    // (undocumented)
-    normalizeTarget(target: StyleTarget): StyleTarget;
-    // (undocumented)
     removeStylesFrom(target: StyleTarget): void;
 }
 
@@ -515,8 +511,6 @@ export type StyleStrategyFactory = (styles: (string | CSSStyleSheet)[]) => Style
 export interface StyleTarget {
     adoptedStyleSheets?: CSSStyleSheet[];
     append(styles: HTMLStyleElement): void;
-    // @deprecated
-    prepend(styles: HTMLStyleElement): void;
     querySelectorAll<E extends Element = Element>(selectors: string): NodeListOf<E>;
     removeChild(styles: HTMLStyleElement): void;
 }
