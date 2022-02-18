@@ -53,21 +53,30 @@ export interface StyleStrategy {
  * Creates a strategy capable of handling styles for custom elements.
  * @public
  */
-export type StyleStrategyFactory = (
-    styles: ReadonlyArray<ComposableStyles>
-) => StyleStrategy;
+export type StyleStrategyFactory = (styles: (string | CSSStyleSheet)[]) => StyleStrategy;
 
 let styleStrategyFactory: StyleStrategyFactory = (() => {
     if (DOM.supportsAdoptedStyleSheets) {
         const styleSheetCache = new Map();
-        return (styles: ComposableStyles[]) =>
+        return (styles: (string | CSSStyleSheet)[]) =>
             // eslint-disable-next-line @typescript-eslint/no-use-before-define
             new AdoptedStyleSheetsStrategy(styles, styleSheetCache);
     }
 
     // eslint-disable-next-line @typescript-eslint/no-use-before-define
-    return (styles: ComposableStyles[]) => new StyleElementStrategy(styles);
+    return (styles: (string | CSSStyleSheet)[]) =>
+        new StyleElementStrategy(styles as string[]);
 })();
+
+function reduceStyles(
+    styles: ReadonlyArray<ComposableStyles>
+): (string | CSSStyleSheet)[] {
+    return styles
+        .map((x: ComposableStyles) =>
+            x instanceof ElementStyles ? reduceStyles(x.styles) : [x]
+        )
+        .reduce((prev: string[], curr: string[]) => prev.concat(curr), []);
+}
 
 /**
  * Represents styles that can be applied to a custom element.
@@ -75,14 +84,14 @@ let styleStrategyFactory: StyleStrategyFactory = (() => {
  */
 export class ElementStyles {
     private targets: WeakSet<StyleTarget> = new WeakSet();
-    private _strategy: StyleStrategy | null = null;
+    private _strategy: StyleStrategy | null;
 
     /** @internal */
     public readonly behaviors: ReadonlyArray<Behavior<HTMLElement>> | null;
 
     private get strategy() {
         if (this._strategy === null) {
-            this._strategy = styleStrategyFactory(this.styles);
+            this._strategy = styleStrategyFactory(reduceStyles(this.styles));
         }
 
         return this._strategy;
@@ -90,8 +99,10 @@ export class ElementStyles {
 
     constructor(
         /** @internal */
-        public readonly styles: ReadonlyArray<ComposableStyles>
+        public readonly styles: ReadonlyArray<ComposableStyles>,
+        strategy: StyleStrategy | null = null
     ) {
+        this._strategy = strategy;
         this.behaviors = styles
             .map((x: ComposableStyles) =>
                 x instanceof ElementStyles ? x.behaviors : null
@@ -150,16 +161,6 @@ export class ElementStyles {
     }
 }
 
-function reduceStyles(
-    styles: ReadonlyArray<ComposableStyles>
-): (string | CSSStyleSheet)[] {
-    return styles
-        .map((x: ComposableStyles) =>
-            x instanceof ElementStyles ? reduceStyles(x.styles) : [x]
-        )
-        .reduce((prev: string[], curr: string[]) => prev.concat(curr), []);
-}
-
 /**
  * https://wicg.github.io/construct-stylesheets/
  * https://developers.google.com/web/updates/2019/02/constructable-stylesheets
@@ -167,13 +168,13 @@ function reduceStyles(
  * @internal
  */
 export class AdoptedStyleSheetsStrategy implements StyleStrategy {
-    private styleSheets: CSSStyleSheet[];
+    private sheets: CSSStyleSheet[];
 
     public constructor(
-        styles: ComposableStyles[],
+        styles: (string | CSSStyleSheet)[],
         styleSheetCache: Map<string, CSSStyleSheet>
     ) {
-        this.styleSheets = reduceStyles(styles).map((x: string | CSSStyleSheet) => {
+        this.sheets = styles.map((x: string | CSSStyleSheet) => {
             if (x instanceof CSSStyleSheet) {
                 return x;
             }
@@ -191,13 +192,13 @@ export class AdoptedStyleSheetsStrategy implements StyleStrategy {
     }
 
     public addStylesTo(target: StyleTarget): void {
-        target.adoptedStyleSheets = [...target.adoptedStyleSheets!, ...this.styleSheets];
+        target.adoptedStyleSheets = [...target.adoptedStyleSheets!, ...this.sheets];
     }
 
     public removeStylesFrom(target: StyleTarget): void {
-        const styleSheets = this.styleSheets;
+        const sheets = this.sheets;
         target.adoptedStyleSheets = target.adoptedStyleSheets!.filter(
-            (x: CSSStyleSheet) => styleSheets.indexOf(x) === -1
+            (x: CSSStyleSheet) => sheets.indexOf(x) === -1
         );
     }
 
@@ -210,21 +211,19 @@ export class AdoptedStyleSheetsStrategy implements StyleStrategy {
  * @internal
  */
 export class StyleElementStrategy implements StyleStrategy {
-    private readonly styleSheets: string[];
     private readonly styleClass: string;
 
-    public constructor(styles: ComposableStyles[]) {
-        this.styleSheets = reduceStyles(styles) as string[];
+    public constructor(private styles: string[]) {
         this.styleClass = nextId();
     }
 
     public addStylesTo(target: StyleTarget): void {
-        const styleSheets = this.styleSheets;
+        const styles = this.styles;
         const styleClass = this.styleClass;
 
-        for (let i = 0; i < styleSheets.length; i++) {
+        for (let i = 0; i < styles.length; i++) {
             const element = document.createElement("style");
-            element.innerHTML = styleSheets[i];
+            element.innerHTML = styles[i];
             element.className = styleClass;
             target.append(element);
         }

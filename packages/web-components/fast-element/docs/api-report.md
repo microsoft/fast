@@ -226,7 +226,7 @@ export type ElementsFilter = (value: Node, index: number, array: Node[]) => bool
 // @public
 export class ElementStyles {
     constructor(
-    styles: ReadonlyArray<ComposableStyles>);
+    styles: ReadonlyArray<ComposableStyles>, strategy?: StyleStrategy | null);
     // @internal (undocumented)
     addStylesTo(target: StyleTarget): void;
     // @internal (undocumented)
@@ -509,7 +509,7 @@ export interface StyleStrategy {
 }
 
 // @public
-export type StyleStrategyFactory = (styles: ReadonlyArray<ComposableStyles>) => StyleStrategy;
+export type StyleStrategyFactory = (styles: (string | CSSStyleSheet)[]) => StyleStrategy;
 
 // @public
 export interface StyleTarget {
