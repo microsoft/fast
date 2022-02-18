@@ -19,7 +19,7 @@ export class SlottedDirective extends NodeObservationDirective<SlottedDirectiveO
      * Begins observation of the nodes.
      * @param target - The target to observe.
      */
-    observe(target: EventSource) {
+    observe(target: EventSource): void {
         target.addEventListener("slotchange", this);
     }
 
@@ -27,7 +27,7 @@ export class SlottedDirective extends NodeObservationDirective<SlottedDirectiveO
      * Disconnects observation of the nodes.
      * @param target - The target to unobserve.
      */
-    disconnect(target: EventSource) {
+    disconnect(target: EventSource): void {
         target.removeEventListener("slotchange", this);
     }
 
