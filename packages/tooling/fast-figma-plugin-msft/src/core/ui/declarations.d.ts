@@ -17,18 +17,16 @@ declare global {
             "plugin-divider": {
                 style?: CSSProperties;
             };
-            "plugin-radio-group": {
-                disabled?: boolean;
-                name: string;
-                value?: any;
-                onChange?: any;
+            "plugin-tab": {
+                id: string;
                 children?: React.ReactNode;
             };
-            "plugin-radio": {
-                checked?: boolean;
-                disabled?: boolean;
-                value?: any;
-                onClick?: any;
+            "plugin-tab-panel": {
+                id: string;
+                children?: React.ReactNode;
+            };
+            "plugin-tabs": {
+                activeid: string;
                 children?: React.ReactNode;
             };
             "td-drawer": {

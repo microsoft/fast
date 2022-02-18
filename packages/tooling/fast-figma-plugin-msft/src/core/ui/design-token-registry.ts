@@ -12,6 +12,11 @@ export enum DesignTokenType {
     lineHeight = "lineHeight",
 }
 
+export enum FormControlId {
+    text = "text",
+    color = "color",
+}
+
 /**
  * An interface where all keys of DesignTokenTypes map to a type
  */
@@ -41,6 +46,11 @@ export interface DesignTokenDefinition<T extends {} = any> {
      * The type of design token
      */
     type: DesignTokenType;
+
+    /**
+     * The type of form control to edit this value. Following convention from fast-tooling.
+     */
+    formControlId?: string;
 
     /**
      * The underlying DesignToken for the plugin definition
