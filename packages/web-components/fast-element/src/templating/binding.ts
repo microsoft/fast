@@ -33,7 +33,8 @@ export interface BindingMode {
     event: BindingType;
 }
 
-export interface BindingConfig {
+/* eslint-disable-next-line @typescript-eslint/no-unused-vars */
+export interface BindingConfig<T = any> {
     mode: BindingMode;
     options: any;
 }
@@ -464,7 +465,7 @@ export const oneTime = OneTimeBinding.createBindingConfig(
 
 const signalMode: BindingMode = OnSignalBinding.createBindingMode();
 
-export const signal = <T = any>(options: string | Binding<T>): BindingConfig => {
+export const signal = <T = any>(options: string | Binding<T>): BindingConfig<T> => {
     return { mode: signalMode, options };
 };
 
@@ -537,7 +538,7 @@ export class HTMLBindingDirective extends InlinableHTMLDirective {
 
 export function bind<T = any>(
     binding: Binding<T>,
-    config: BindingConfig | DefaultBindingOptions = onChange
+    config: BindingConfig<T> | DefaultBindingOptions = onChange
 ): CaptureType<T> {
     if (!("mode" in config)) {
         config = onChange(config);
