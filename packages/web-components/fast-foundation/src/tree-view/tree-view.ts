@@ -37,18 +37,6 @@ export class TreeView extends FoundationElement {
     @observable
     public currentSelected: HTMLElement | TreeItem | null;
 
-    @observable
-    private nested: boolean;
-
-    @observable slottedTreeItems: HTMLElement[];
-    private slottedTreeItemsChanged(oldValue: unknown, newValue: HTMLElement[]): void {
-        if (this.$fastController.isConnected) {
-            if (isTreeItemElement(oldValue)) {
-                (oldValue as TreeItem).selected = false;
-            }
-        }
-    }
-
     /**
      *  Slotted children
      *
