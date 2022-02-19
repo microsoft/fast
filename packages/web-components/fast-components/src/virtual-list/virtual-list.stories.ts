@@ -1,8 +1,9 @@
-import { html } from "@microsoft/fast-element";
+import { html, when } from "@microsoft/fast-element";
 import addons from "@storybook/addons";
 import { STORY_RENDERED } from "@storybook/core-events";
 import {
     VirtualList as FoundationVirtualList,
+    VirtualListItem,
     SpanMap,
 } from "@microsoft/fast-foundation";
 import VirtualListTemplate from "./fixtures/base.html";
@@ -112,21 +113,50 @@ const rowItemTemplate = html`
     ></fast-virtual-list>
 `;
 
-const listItemTemplate = html`
+const listItemContentsTemplate = html`
     <fast-card>
         <div style="margin: 5px 20px 0 20px; color: white">
             ${x => x.listItemContext.titleString} ${x => x.itemData.title}
         </div>
-
-        <div
-            style="
+        ${when(
+            x => x.loadContent,
+            html`
+                <div
+                    style="
                 height: 160px;
                 width:160px;
                 margin:10px 20px 10px 20px;
                 position: absolute;
                 background-image: url('${x => x.itemData.url}');
             "
-        ></div>
+                ></div>
+                <fast-slider></fast-slider>
+                <fast-slider></fast-slider>
+                <fast-slider></fast-slider>
+                <fast-slider></fast-slider>
+                <fast-slider></fast-slider>
+                <fast-slider></fast-slider>
+                <fast-slider></fast-slider>
+                <fast-slider></fast-slider>
+                <fast-slider></fast-slider>
+                <fast-slider></fast-slider>
+                <fast-slider></fast-slider>
+                <fast-slider></fast-slider>
+            `
+        )}
+        ${when(
+            x => !x.loadContent,
+            html`
+                <fast-progress-ring
+                    style="
+                    height: 160px;
+                    width:160px;
+                    margin:10px 20px 10px 20px;
+                    position: absolute;
+            "
+                ></fast-progress-ring>
+            `
+        )}
     </fast-card>
 `;
 
@@ -145,14 +175,14 @@ addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
 
         const stackh1 = document.getElementById("stackh1") as FoundationVirtualList;
         stackh1.listItemContext = {
-            listItemContentsTemplate: listItemTemplate,
+            listItemContentsTemplate: listItemContentsTemplate,
             titleString: "title:",
         };
         stackh1.items = newDataSet(100, 1);
 
         const stackh2 = document.getElementById("stackh2") as FoundationVirtualList;
         stackh2.listItemContext = {
-            listItemContentsTemplate: listItemTemplate,
+            listItemContentsTemplate: listItemContentsTemplate,
             titleString: "title:",
         };
         stackh2.items = data;
@@ -177,7 +207,7 @@ addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
         const stackv2 = document.getElementById("stackv2") as FoundationVirtualList;
         stackv2.items = data;
         stackv2.listItemContext = {
-            listItemContentsTemplate: listItemTemplate,
+            listItemContentsTemplate: listItemContentsTemplate,
             titleString: "title:",
         };
 
@@ -185,7 +215,7 @@ addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
         stackv3.spanmap = dataSpanMap;
         stackv3.items = data;
         stackv3.listItemContext = {
-            listItemContentsTemplate: listItemTemplate,
+            listItemContentsTemplate: listItemContentsTemplate,
             titleString: "title:",
         };
     }
