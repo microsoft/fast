@@ -3,15 +3,6 @@ import { FoundationElement } from "../foundation-element";
 import { IdleCallbackQueue } from "../utilities/idle-callback-queue";
 
 /**
- * List item context interface
- *
- * @public
- */
-export interface VirtualListItemContext {
-    listItemContentsTemplate: ViewTemplate;
-}
-
-/**
  * Defines the possible loading behaviors a Virtual List Item
  *
  * immediate: Sets loadContent to true on connect, this is the default.
@@ -23,6 +14,19 @@ export interface VirtualListItemContext {
  * @public
  */
 export type VirtualListItemLoadMode = "immediate" | "manual" | "idle";
+
+/**
+ * List item context interface
+ *
+ * @public
+ */
+export interface VirtualListItemContext {
+    // the template to use to render the list item
+    listItemContentsTemplate: ViewTemplate;
+
+    // Sets the behavior for how the component updates the loadContent prop
+    loadMode?: VirtualListItemLoadMode;
+}
 
 /**
  *  The VirtualListItem class
@@ -65,19 +69,11 @@ export class VirtualListItem extends FoundationElement {
     public loadContent: boolean = false;
 
     /**
-     *  Sets the behavior for how the component updates the loadContent prop
-     *
-     * @public
-     */
-    @observable
-    public loadMode: VirtualListItemLoadMode;
-
-    /**
      * @internal
      */
     connectedCallback() {
         super.connectedCallback();
-        switch (this.loadMode) {
+        switch (this.listItemContext.loadMode) {
             case "idle":
                 this.queueForIdleLoad();
                 break;
@@ -92,7 +88,7 @@ export class VirtualListItem extends FoundationElement {
      * @internal
      */
     disconnectedCallback(): void {
-        if (!this.loadContent && this.loadMode === "idle") {
+        if (!this.loadContent && this.listItemContext.loadMode === "idle") {
             VirtualListItem.idleCallbackQueue.cancelIdleCallback(this);
         }
         super.disconnectedCallback();

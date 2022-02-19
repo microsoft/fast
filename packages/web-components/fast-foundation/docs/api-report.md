@@ -2883,7 +2883,6 @@ export class VirtualListItem extends FoundationElement {
     itemIndex: number;
     listItemContext: VirtualListItemContext;
     loadContent: boolean;
-    loadMode: VirtualListItemLoadMode;
     // @internal (undocumented)
     resolveTemplate(): ViewTemplate;
 }
@@ -2892,6 +2891,8 @@ export class VirtualListItem extends FoundationElement {
 export interface VirtualListItemContext {
     // (undocumented)
     listItemContentsTemplate: ViewTemplate;
+    // (undocumented)
+    loadMode?: VirtualListItemLoadMode;
 }
 
 // @public
