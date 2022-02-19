@@ -9,10 +9,8 @@ function createDefaultVerticalItemTemplate(
     context: ElementDefinitionContext
 ): ViewTemplate {
     const listItemTag = context.tagFor(VirtualListItem);
-    const loadMode = "idle";
     return html`
     <${listItemTag}
-        :loadMode="${() => loadMode}"
         :itemData="${x => x}"
         :itemIndex="${(x, c) => c.index + c.parent.firstRenderedIndex}"
         :listItemContext="${(x, c) => c.parent.listItemContext}"
@@ -29,10 +27,8 @@ function createDefaultHorizontalItemTemplate(
     context: ElementDefinitionContext
 ): ViewTemplate {
     const listItemTag = context.tagFor(VirtualListItem);
-    const loadMode = "immediate";
     return html`
     <${listItemTag}
-        :loadMode="${() => loadMode}"
         :itemData="${x => x}"
         :itemIndex="${(x, c) => c.index + c.parent.firstRenderedIndex}"
         :listItemContext="${(x, c) => c.parent.listItemContext}"
