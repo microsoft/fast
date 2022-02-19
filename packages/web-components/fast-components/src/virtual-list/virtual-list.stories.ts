@@ -187,6 +187,14 @@ addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
         };
         stackh2.items = data;
 
+        const stackhIdle = document.getElementById("stackhidle") as FoundationVirtualList;
+        stackhIdle.listItemContext = {
+            listItemContentsTemplate: listItemContentsTemplate,
+            loadMode: "idle",
+            titleString: "title:",
+        };
+        stackhIdle.items = data;
+
         const stackh3 = document.getElementById("stackh3") as FoundationVirtualList;
         stackh3.itemTemplate = horizontalImageItemTemplate;
         stackh3.items = data;
