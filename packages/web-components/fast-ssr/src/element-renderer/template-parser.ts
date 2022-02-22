@@ -96,7 +96,9 @@ class TemplateParser implements Visitor {
     public readonly opCodes: Op[] = [];
     public visit(node: DefaultTreeNode): void {}
     public leave(node: DefaultTreeNode): void {}
-    public complete() {}
+    public complete() {
+        this.flushTo();
+    }
 
     /**
      * Flushes a string value to op codes
