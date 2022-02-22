@@ -151,6 +151,11 @@ export type Constructable<T = {}> = {
 };
 
 // @public
+export type ConstructibleStyleStrategy = {
+    new (styles: (string | CSSStyleSheet)[]): StyleStrategy;
+};
+
+// @public
 export class Controller extends PropertyChangeNotifier {
     // @internal
     constructor(element: HTMLElement, definition: FASTElementDefinition);
@@ -224,25 +229,23 @@ export const elements: (selector?: string | undefined) => ElementsFilter;
 export type ElementsFilter = (value: Node, index: number, array: Node[]) => boolean;
 
 // @public
-export type ElementStyleFactory = (styles: ReadonlyArray<ComposableStyles>) => ElementStyles;
-
-// @public
-export abstract class ElementStyles {
+export class ElementStyles {
     constructor(
-    styles: ReadonlyArray<ComposableStyles>,
-    behaviors: ReadonlyArray<Behavior<HTMLElement>> | null);
+    styles: ReadonlyArray<ComposableStyles>);
     // @internal (undocumented)
     addStylesTo(target: StyleTarget): void;
     // @internal (undocumented)
     readonly behaviors: ReadonlyArray<Behavior<HTMLElement>> | null;
-    static readonly create: ElementStyleFactory;
     // @internal (undocumented)
     isAttachedTo(target: StyleTarget): boolean;
     // @internal (undocumented)
     removeStylesFrom(target: StyleTarget): void;
+    static setDefaultStrategy(Strategy: ConstructibleStyleStrategy): void;
+    get strategy(): StyleStrategy;
     // @internal (undocumented)
     readonly styles: ReadonlyArray<ComposableStyles>;
     withBehaviors(...behaviors: Behavior<HTMLElement>[]): this;
+    withStrategy(Strategy: ConstructibleStyleStrategy): this;
 }
 
 // @public
@@ -502,11 +505,15 @@ export class Splice {
 }
 
 // @public
+export interface StyleStrategy {
+    addStylesTo(target: StyleTarget): void;
+    removeStylesFrom(target: StyleTarget): void;
+}
+
+// @public
 export interface StyleTarget {
     adoptedStyleSheets?: CSSStyleSheet[];
     append(styles: HTMLStyleElement): void;
-    // @deprecated
-    prepend(styles: HTMLStyleElement): void;
     querySelectorAll<E extends Element = Element>(selectors: string): NodeListOf<E>;
     removeChild(styles: HTMLStyleElement): void;
 }
