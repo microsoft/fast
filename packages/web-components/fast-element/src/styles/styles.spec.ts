@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import {
-    AdoptedStyleSheetsStyles,
-    StyleElementStyles,
+    AdoptedStyleSheetsStrategy,
+    StyleElementStrategy,
     StyleTarget,
     ElementStyles,
 } from "./element-styles";
@@ -13,44 +13,41 @@ import { defaultExecutionContext } from "../observation/observable";
 import type { FASTElement } from "..";
 
 if (DOM.supportsAdoptedStyleSheets) {
-    describe("AdoptedStyleSheetsStyles", () => {
+    describe("AdoptedStyleSheetsStrategy", () => {
         context("when removing styles", () => {
             it("should remove an associated stylesheet", () => {
-                const cache = new Map();
-                const sheet = new AdoptedStyleSheetsStyles([``], cache);
+                const strategy = new AdoptedStyleSheetsStrategy([``]);
                 const target: Pick<StyleTarget, "adoptedStyleSheets"> = {
                     adoptedStyleSheets: [],
                 };
 
-                sheet.addStylesTo(target as StyleTarget);
+                strategy.addStylesTo(target as StyleTarget);
                 expect(target.adoptedStyleSheets!.length).to.equal(1);
 
-                sheet.removeStylesFrom(target as StyleTarget);
+                strategy.removeStylesFrom(target as StyleTarget);
                 expect(target.adoptedStyleSheets!.length).to.equal(0);
             });
 
             it("should not remove unassociated styles", () => {
-                const cache = new Map();
-                const sheet = new AdoptedStyleSheetsStyles(["test"], cache);
+                const strategy = new AdoptedStyleSheetsStrategy(["test"]);
                 const style = new CSSStyleSheet();
                 const target: Pick<StyleTarget, "adoptedStyleSheets"> = {
                     adoptedStyleSheets: [style],
                 };
-                sheet.addStylesTo(target as StyleTarget);
+                strategy.addStylesTo(target as StyleTarget);
 
                 expect(target.adoptedStyleSheets!.length).to.equal(2);
-                expect(target.adoptedStyleSheets).to.contain(cache.get("test"));
+                expect(target.adoptedStyleSheets).to.contain(strategy.sheets[0]);
 
-                sheet.removeStylesFrom(target as StyleTarget);
+                strategy.removeStylesFrom(target as StyleTarget);
 
                 expect(target.adoptedStyleSheets!.length).to.equal(1);
-                expect(target.adoptedStyleSheets).not.to.contain(cache.get("test"));
+                expect(target.adoptedStyleSheets).not.to.contain(strategy.sheets[0]);
             });
 
             it("should track when added and removed from a target", () => {
-                const cache = new Map();
                 const styles = ``;
-                const elementStyles = new AdoptedStyleSheetsStyles([styles], cache);
+                const elementStyles = new ElementStyles([styles]);
                 const target = {
                     adoptedStyleSheets: [],
                 } as unknown as StyleTarget;
@@ -65,9 +62,8 @@ if (DOM.supportsAdoptedStyleSheets) {
             });
 
             it("should order HTMLStyleElement order by addStyleTo() call order", () => {
-                const cache = new Map();
-                const red = new AdoptedStyleSheetsStyles(['r'], cache);
-                const green = new AdoptedStyleSheetsStyles(['g'], cache);
+                const red = new AdoptedStyleSheetsStrategy(['r']);
+                const green = new AdoptedStyleSheetsStrategy(['g']);
                 const target: Pick<StyleTarget, "adoptedStyleSheets"> = {
                     adoptedStyleSheets: [],
                 };
@@ -75,29 +71,29 @@ if (DOM.supportsAdoptedStyleSheets) {
                 red.addStylesTo(target as StyleTarget);
                 green.addStylesTo(target as StyleTarget);
 
-                expect((target.adoptedStyleSheets![0])).to.equal(cache.get('r'));
-                expect((target.adoptedStyleSheets![1])).to.equal(cache.get('g'));
+                expect((target.adoptedStyleSheets![0])).to.equal(red.sheets[0]);
+                expect((target.adoptedStyleSheets![1])).to.equal(green.sheets[0]);
             });
             it("should order HTMLStyleElements in array order of provided sheets", () => {
-                const cache = new Map();
-                const red = new AdoptedStyleSheetsStyles(['r', 'g'], cache);
+                const red = new AdoptedStyleSheetsStrategy(['r', 'g']);
                 const target: Pick<StyleTarget, "adoptedStyleSheets"> = {
                     adoptedStyleSheets: [],
                 };
 
                 red.addStylesTo(target as StyleTarget);
 
-                expect((target.adoptedStyleSheets![0])).to.equal(cache.get('r'));
-                expect((target.adoptedStyleSheets![1])).to.equal(cache.get('g'));
+                expect((target.adoptedStyleSheets![0])).to.equal(red.sheets[0]);
+                expect((target.adoptedStyleSheets![1])).to.equal(red.sheets[1]);
             });
         });
     });
 }
 
-describe("StyleSheetStyles", () => {
+describe("StyleElementStrategy", () => {
     it("can add and remove from the document directly", () => {
-        const styles = ``;
-        const elementStyles = new StyleElementStyles([styles]);
+        const styles = [``];
+        const elementStyles = new ElementStyles(styles)
+            .withStrategy(StyleElementStrategy);
         document.body.innerHTML = "";
 
         elementStyles.addStylesTo(document);
@@ -111,23 +107,24 @@ describe("StyleSheetStyles", () => {
 
     it("can add and remove from a ShadowRoot", () => {
         const styles = ``;
-        const elementStyles = new StyleElementStyles([styles]);
+        const strategy = new StyleElementStrategy([styles]);
         document.body.innerHTML = "";
 
         const element = document.createElement("div");
         const shadowRoot = element.attachShadow({ mode: "open" });
 
-        elementStyles.addStylesTo(shadowRoot);
+        strategy.addStylesTo(shadowRoot);
 
         expect(shadowRoot.childNodes[0]).to.be.instanceof(HTMLStyleElement);
 
-        elementStyles.removeStylesFrom(shadowRoot);
+        strategy.removeStylesFrom(shadowRoot);
 
         expect(shadowRoot.childNodes.length).to.equal(0);
     });
+
     it("should track when added and removed from a target", () => {
         const styles = ``;
-        const elementStyles = new StyleElementStyles([styles]);
+        const elementStyles = new ElementStyles([styles]);
         document.body.innerHTML = "";
 
         expect(elementStyles.isAttachedTo(document)).to.equal(false)
@@ -140,8 +137,8 @@ describe("StyleSheetStyles", () => {
     });
 
     it("should order HTMLStyleElement order by addStyleTo() call order", () => {
-        const red = new StyleElementStyles([`body:{color:red;}`]);
-        const green = new StyleElementStyles([`body:{color:green;}`]);
+        const red = new StyleElementStrategy([`body:{color:red;}`]);
+        const green = new StyleElementStrategy([`body:{color:green;}`]);
         document.body.innerHTML = "";
 
         const element = document.createElement("div");
@@ -152,8 +149,9 @@ describe("StyleSheetStyles", () => {
         expect((shadowRoot.childNodes[0] as HTMLStyleElement).innerHTML).to.equal("body:{color:red;}");
         expect((shadowRoot.childNodes[1] as HTMLStyleElement).innerHTML).to.equal("body:{color:green;}");
     });
+
     it("should order the HTMLStyleElements in array order of provided sheets", () => {
-        const red = new StyleElementStyles([`body:{color:red;}`, `body:{color:green;}`]);
+        const red = new StyleElementStrategy([`body:{color:red;}`, `body:{color:green;}`]);
         document.body.innerHTML = "";
 
         const element = document.createElement("div");
@@ -168,14 +166,14 @@ describe("StyleSheetStyles", () => {
 describe("ElementStyles", () => {
     it("can create from a string", () => {
         const css = ".class { color: red; }";
-        const styles = ElementStyles.create([css]);
+        const styles = new ElementStyles([css]);
         expect(styles.styles).to.contain(css);
     });
 
     it("can create from multiple strings", () => {
         const css1 = ".class { color: red; }";
         const css2 = ".class2 { color: red; }";
-        const styles = ElementStyles.create([css1, css2]);
+        const styles = new ElementStyles([css1, css2]);
         expect(styles.styles).to.contain(css1);
         expect(styles.styles.indexOf(css1)).to.equal(0);
         expect(styles.styles).to.contain(css2);
@@ -183,17 +181,17 @@ describe("ElementStyles", () => {
 
     it("can create from an ElementStyles", () => {
         const css = ".class { color: red; }";
-        const existingStyles = ElementStyles.create([css]);
-        const styles = ElementStyles.create([existingStyles]);
+        const existingStyles = new ElementStyles([css]);
+        const styles = new ElementStyles([existingStyles]);
         expect(styles.styles).to.contain(existingStyles);
     });
 
     it("can create from multiple ElementStyles", () => {
         const css1 = ".class { color: red; }";
         const css2 = ".class2 { color: red; }";
-        const existingStyles1 = ElementStyles.create([css1]);
-        const existingStyles2 = ElementStyles.create([css2]);
-        const styles = ElementStyles.create([existingStyles1, existingStyles2]);
+        const existingStyles1 = new ElementStyles([css1]);
+        const existingStyles2 = new ElementStyles([css2]);
+        const styles = new ElementStyles([existingStyles1, existingStyles2]);
         expect(styles.styles).to.contain(existingStyles1);
         expect(styles.styles.indexOf(existingStyles1)).to.equal(0);
         expect(styles.styles).to.contain(existingStyles2);
@@ -202,8 +200,8 @@ describe("ElementStyles", () => {
     it("can create from mixed strings and ElementStyles", () => {
         const css1 = ".class { color: red; }";
         const css2 = ".class2 { color: red; }";
-        const existingStyles2 = ElementStyles.create([css2]);
-        const styles = ElementStyles.create([css1, existingStyles2]);
+        const existingStyles2 = new ElementStyles([css2]);
+        const styles = new ElementStyles([css1, existingStyles2]);
         expect(styles.styles).to.contain(css1);
         expect(styles.styles.indexOf(css1)).to.equal(0);
         expect(styles.styles).to.contain(existingStyles2);
@@ -212,14 +210,14 @@ describe("ElementStyles", () => {
     if (DOM.supportsAdoptedStyleSheets) {
         it("can create from a CSSStyleSheet", () => {
             const styleSheet = new CSSStyleSheet();
-            const styles = ElementStyles.create([styleSheet]);
+            const styles = new ElementStyles([styleSheet]);
             expect(styles.styles).to.contain(styleSheet);
         });
 
         it("can create from multiple CSSStyleSheets", () => {
             const styleSheet1 = new CSSStyleSheet();
             const styleSheet2 = new CSSStyleSheet();
-            const styles = ElementStyles.create([styleSheet1, styleSheet2]);
+            const styles = new ElementStyles([styleSheet1, styleSheet2]);
             expect(styles.styles).to.contain(styleSheet1);
             expect(styles.styles.indexOf(styleSheet1)).to.equal(0);
             expect(styles.styles).to.contain(styleSheet2);
@@ -228,9 +226,9 @@ describe("ElementStyles", () => {
         it("can create from mixed strings, ElementStyles, and CSSStyleSheets", () => {
             const css1 = ".class { color: red; }";
             const css2 = ".class2 { color: red; }";
-            const existingStyles2 = ElementStyles.create([css2]);
+            const existingStyles2 = new ElementStyles([css2]);
             const styleSheet3 = new CSSStyleSheet();
-            const styles = ElementStyles.create([css1, existingStyles2, styleSheet3]);
+            const styles = new ElementStyles([css1, existingStyles2, styleSheet3]);
             expect(styles.styles).to.contain(css1);
             expect(styles.styles.indexOf(css1)).to.equal(0);
             expect(styles.styles).to.contain(existingStyles2);
