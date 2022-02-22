@@ -1,9 +1,24 @@
 /**
- * Operation to output static text
+ * Allows fast identification of operation types
+ */
+export enum OpType {
+    text,
+    customElementClose,
+}
+
+/**
+ * Operation to emit static text
  */
 export type TextOp = {
-    type: "text";
+    type: OpType.text;
     value: string;
 };
 
-export type Op = TextOp;
+/**
+ * Operation to close a custom element
+ */
+export type CustomElementCloseOp = {
+    type: OpType.customElementClose;
+};
+
+export type Op = TextOp | CustomElementCloseOp;

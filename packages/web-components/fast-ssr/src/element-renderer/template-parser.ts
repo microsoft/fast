@@ -12,24 +12,29 @@ import {
     DefaultTreeTextNode,
     parseFragment,
 } from "parse5";
-import { Op } from "./op-codes.js";
+import { Op, OpType } from "./op-codes.js";
 
 const opCache: Map<ViewTemplate, Op[]> = new Map();
 
 interface Visitor {
     visit?: (node: DefaultTreeNode) => void;
     leave?: (node: DefaultTreeNode) => void;
+    complete?: () => void;
 }
 
+// Will be 0 when starting and ending traversal.
+let counter = 0;
 /**
  * Traverses a tree of nodes depth-first, invoking callbacks from visitor for each node as it goes.
  * @param node - the node to traverse
  * @param visitor - callbacks to be invoked during node traversal
  */
 function traverse(node: DefaultTreeNode | DefaultTreeParentNode, visitor: Visitor) {
+    counter++;
     if (visitor.visit) {
         visitor.visit(node);
     }
+
     if ("childNodes" in node) {
         const { childNodes } = node;
         for (const child of childNodes) {
@@ -39,6 +44,12 @@ function traverse(node: DefaultTreeNode | DefaultTreeParentNode, visitor: Visito
 
     if (visitor.leave) {
         visitor.leave(node);
+    }
+
+    counter--;
+
+    if (counter === 0 && visitor.complete) {
+        visitor.complete();
     }
 }
 
@@ -74,14 +85,71 @@ function isElementNode(node: DefaultTreeNode): node is DefaultTreeElement {
     return (node as DefaultTreeElement).tagName !== undefined;
 }
 
+class TemplateParser implements Visitor {
+    private lastOffset: number | undefined = 0;
+    private get lastOp() {
+        return this.opCodes[this.opCodes.length - 1];
+    }
+
+    constructor(private template: string) {}
+
+    public readonly opCodes: Op[] = [];
+    public visit(node: DefaultTreeNode): void {}
+    public leave(node: DefaultTreeNode): void {}
+    public complete() {}
+
+    /**
+     * Flushes a string value to op codes
+     * @param value - The value to flush
+     */
+    private flush(value: string): void {
+        const last = this.lastOp;
+        if (last?.type === OpType.text) {
+            last.value += value;
+        } else {
+            this.opCodes.push({ type: OpType.text, value });
+        }
+    }
+
+    private flushTo(offset?: number) {
+        if (this.lastOffset === undefined) {
+            throw new Error(
+                `Cannot flush template content from a  last offset that is ${typeof this
+                    .lastOffset}.`
+            );
+        }
+
+        const prev = this.lastOffset;
+        this.lastOffset = offset;
+        this.flush(this.template.substring(prev, offset));
+    }
+
+    private skipTo(offset: number) {
+        if (this.lastOffset === undefined) {
+            throw new Error(
+                `Cannot skip to offset '${offset}' when lastOffset is ${typeof this
+                    .lastOffset}`
+            );
+        }
+        if (offset < this.lastOffset) {
+            throw new Error(`offset must be greater than lastOffset.
+                offset: ${offset}
+                lastOffset: ${this.lastOffset}
+            `);
+        }
+
+        this.lastOffset = offset;
+    }
+}
+
 /**
  * Parses a template into a set of operation instructions
  * @param template - The template to parse
  */
 export function parseTemplateToOpCodes(template: ViewTemplate): Op[] {
-    let ops: Op[] | undefined = opCache.get(template);
-    if (ops !== undefined) {
-        return ops;
+    const cached: Op[] | undefined = opCache.get(template);
+    if (cached !== undefined) {
+        return cached;
     }
 
     const { html } = template;
@@ -92,7 +160,6 @@ export function parseTemplateToOpCodes(template: ViewTemplate): Op[] {
         );
     }
 
-    ops = [];
     const ast = parseFragment(html, { sourceCodeLocationInfo: true });
 
     if (!("nodeName" in ast)) {
@@ -100,10 +167,11 @@ export function parseTemplateToOpCodes(template: ViewTemplate): Op[] {
         throw new Error(`Error parsing template:\n${template}`);
     }
 
-    traverse(ast, {
-        visit(node) {},
-        leave(node) {},
-    });
+    const ops: Op[] = [];
+    const visitor = new TemplateParser(html);
+    opCache.set(template, visitor.opCodes);
 
-    return ops;
+    traverse(ast, visitor);
+
+    return visitor.opCodes;
 }
