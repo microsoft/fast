@@ -1,9 +1,6 @@
 import { html, ref, repeat, when } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
-import type {
-    FoundationElementTemplate,
-    OverrideFoundationElementDefinition,
-} from "../foundation-element";
+import type { FoundationElementTemplate } from "../foundation-element";
 import type { ElementDefinitionContext } from "../design-system";
 import { AnchoredRegion } from "../anchored-region";
 import { Button } from "../button";
@@ -205,6 +202,8 @@ export const datePickerTemplate: FoundationElementTemplate<
         @mouseout="${x => (x.overFlyout = false)}"
     >
         <${textField}
+            class="text-field"
+            part="text-field"
             ${ref("textField")}
             name=${x => x.name}
             @click="${x => (!x.readonly ? x.toggleFlyout(true) : () => true)}"
@@ -217,13 +216,15 @@ export const datePickerTemplate: FoundationElementTemplate<
             @focus="${x => x.handleFocus()}"
             @keyup="${(x, c) => x.handleKeyup(c.event as KeyboardEvent)}"
         >
-            <slot slot="start"></slot>
+            <slot slot="start" name="start" part="start"></slot>
             <slot></slot>
-            <div slot="end">${
-                definition.calendarIcon instanceof Function
-                    ? definition.calendarIcon(context, definition)
-                    : definition.calendarIcon ?? ""
-            }</div>
+            <slot name="end" slot="end" part="end">
+                ${
+                    definition.calendarIcon instanceof Function
+                        ? definition.calendarIcon(context, definition)
+                        : definition.calendarIcon ?? ""
+                }
+            </slot>
         </${textField}>
         ${when(
             x => !x.readonly && !x.disabled,
