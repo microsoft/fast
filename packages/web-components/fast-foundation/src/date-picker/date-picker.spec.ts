@@ -123,25 +123,28 @@ describe("DatePicker", () => {
         });
 
         it("Should default day format to numeric", async () => {
-            const { element, disconnect } = await setup();
+            const { element, disconnect } = await setup({value: 'december 31, 1999'});
 
             expect(element.dayFormat).to.equal("numeric");
+            expect(element.value).to.equal("12/31/1999");
 
             await disconnect();
         });
 
         it("Should default month format to numeric", async () => {
-            const { element, disconnect } = await setup();
+            const { element, disconnect } = await setup({value: 'november 5, 2015'});
 
             expect(element.monthFormat).to.equal("numeric");
+            expect(element.value).to.equal("11/5/2015");
 
             await disconnect();
         });
 
         it("Should default year format to numeric", async () => {
-            const { element, disconnect } = await setup();
+            const { element, disconnect } = await setup({value: 'august 8, 09'});
 
             expect(element.yearFormat).to.equal("numeric");
+            expect(element.value).to.equal("8/8/2009");
 
             await disconnect();
         });
@@ -190,15 +193,14 @@ describe("DatePicker", () => {
             await disconnect();
         });
 
-        /*
-        it("", async () => {
-            const { element, disconnect } = await setup();
+        it("Flyout should be closed by default", async () => {
+            const { element, disconnect } = await setup({value: 'december 12, 20'});
 
-            expect(element).to.equal();
+            expect(element.flyoutOpen).to.equal(false);
+
 
             await disconnect();
         });
-        */
     });
 
     describe("Date picker types", () => {
@@ -347,5 +349,17 @@ describe("DatePicker", () => {
 
             await disconnect();
         });
+    });
+
+    describe("Interactions", () => {
+        /*
+        it("", async () => {
+            const { element, disconnect } = await setup();
+
+            expect(element).to.equal();
+
+            await disconnect();
+        });
+        */
     });
 });
