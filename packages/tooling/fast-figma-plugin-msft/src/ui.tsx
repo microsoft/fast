@@ -5,8 +5,9 @@ import {
     fluentButton,
     fluentDesignSystemProvider,
     fluentDivider,
-    fluentRadio,
-    fluentRadioGroup,
+    fluentTab,
+    fluentTabPanel,
+    fluentTabs,
 } from "@fluentui/web-components";
 import { PluginUI, PluginUIProps } from "./core/ui";
 import { PluginUINodeData } from "./core/ui/ui-controller";
@@ -22,8 +23,9 @@ DesignSystem.getOrCreate()
         fluentButton(),
         fluentDesignSystemProvider(),
         fluentDivider(),
-        fluentRadio(),
-        fluentRadioGroup()
+        fluentTab(),
+        fluentTabs(),
+        fluentTabPanel()
     );
 
 /* eslint-disable */
