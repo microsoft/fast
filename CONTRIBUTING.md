@@ -113,7 +113,7 @@ If you are addressing multiple issues which are unrelated, consider either doing
 :::
 
 :::note
-If you are finding that your changes are either breaking changes or require multiple pull requests, open an issue to discuss this.
+If you are finding that your changes are either breaking changes or require multiple pull requests, open a [discussion](https://github.com/microsoft/fast/discussions) to discuss this.
 :::
 
 ### Merging a pull request
