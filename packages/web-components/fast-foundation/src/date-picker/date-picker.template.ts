@@ -70,7 +70,7 @@ export const timePickerTemplate = (
     return html`
         <div class="time-picker">
             ${x => timeSelectTemplate(times.hours, "hour")}
-            <div class="time-separate">:</div>
+            <div class="time-separator">:</div>
             ${x => timeSelectTemplate(times.minutes, "minute")}
             ${x => timeSelectTemplate(times.meridians, "meridian")}
         </div>
@@ -217,6 +217,8 @@ export const datePickerTemplate: FoundationElementTemplate<
             @focus="${x => x.handleFocus()}"
             @keyup="${(x, c) => x.handleKeyup(c.event as KeyboardEvent)}"
         >
+            <slot slot="start"></slot>
+            <slot></slot>
             <div slot="end">${
                 definition.calendarIcon instanceof Function
                     ? definition.calendarIcon(context, definition)

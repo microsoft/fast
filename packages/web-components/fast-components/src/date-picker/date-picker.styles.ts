@@ -120,7 +120,7 @@ export const DatePickerStyles: (
     .picker-cell {
         display: flex;
         align-items: center;
-        justify-content: left;
+        justify-content: center;
         text-align: center;
         cursor: pointer;
     }
@@ -162,7 +162,7 @@ export const DatePickerStyles: (
         overflow-y: auto;
     }
 
-    .time-separate {
+    .time-separator {
         padding: 15px 0 0;
         text-align: center;
     }
