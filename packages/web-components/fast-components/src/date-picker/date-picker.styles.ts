@@ -10,6 +10,7 @@ import {
     accentForegroundActive,
     bodyFont,
     controlCornerRadius,
+    density,
     designUnit,
     disabledOpacity,
     fillColor,
@@ -42,7 +43,7 @@ export const DatePickerStyles: (
 ) => css`
     :host {
         --elevation: 14;
-        --panel-size: 240px;
+        --panel-size: calc(${designUnit} * (8 + ${density}) * 7px);
         position: relative;
     }
 
