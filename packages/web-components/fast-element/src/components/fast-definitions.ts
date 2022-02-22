@@ -170,10 +170,10 @@ export class FASTElementDefinition<TType extends Function = Function> {
             nameOrConfig.styles === void 0
                 ? void 0
                 : Array.isArray(nameOrConfig.styles)
-                ? ElementStyles.create(nameOrConfig.styles)
+                ? new ElementStyles(nameOrConfig.styles)
                 : nameOrConfig.styles instanceof ElementStyles
                 ? nameOrConfig.styles
-                : ElementStyles.create([nameOrConfig.styles]);
+                : new ElementStyles([nameOrConfig.styles]);
     }
 
     /**
