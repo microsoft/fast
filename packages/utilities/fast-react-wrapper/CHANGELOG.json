@@ -2,6 +2,36 @@
   "name": "@microsoft/fast-react-wrapper",
   "entries": [
     {
+      "date": "Sun, 20 Feb 2022 07:16:20 GMT",
+      "tag": "@microsoft/fast-react-wrapper_v0.1.31",
+      "version": "0.1.31",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-foundation to v2.33.4",
+            "author": "scomea@microsoft.com",
+            "commit": "6cadbdf6f4001a087dddba6c863604055a1da4d2",
+            "package": "@microsoft/fast-react-wrapper"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 15 Feb 2022 07:11:28 GMT",
+      "tag": "@microsoft/fast-react-wrapper_v0.1.30",
+      "version": "0.1.30",
+      "comments": {
+        "patch": [
+          {
+            "comment": "add a caching system for react wrappers",
+            "author": "mathieulavoie94@gmail.com",
+            "commit": "bce03c56195d9ba967729b41f85c438f310f8433",
+            "package": "@microsoft/fast-react-wrapper"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 10 Feb 2022 07:12:01 GMT",
       "tag": "@microsoft/fast-react-wrapper_v0.1.29",
       "version": "0.1.29",

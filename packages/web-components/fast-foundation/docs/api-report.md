@@ -23,7 +23,7 @@ export class Accordion extends FoundationElement {
     // @internal (undocumented)
     accordionItems: HTMLElement[];
     // @internal (undocumented)
-    accordionItemsChanged(oldValue: any, newValue: any): void;
+    accordionItemsChanged(oldValue: HTMLElement[], newValue: HTMLElement[]): void;
     expandmode: AccordionExpandMode;
     }
 
@@ -232,7 +232,7 @@ export class BaseProgress extends FoundationElement {
     connectedCallback(): void;
     max: number;
     min: number;
-    paused: any;
+    paused: boolean;
     // @internal
     percentComplete: number;
     value: number | null;
@@ -362,7 +362,7 @@ export const calendarTemplate: FoundationElementTemplate<ViewTemplate<Calendar>,
 export const CalendarTitleTemplate: ViewTemplate<Calendar>;
 
 // @public
-export const calendarWeekdayTemplate: (context: any) => ViewTemplate;
+export const calendarWeekdayTemplate: (context: ElementDefinitionContext) => ViewTemplate;
 
 // @public
 export class Card extends FoundationElement {
@@ -485,14 +485,14 @@ export class Combobox extends FormAssociatedCombobox {
     // @internal
     selectedIndexChanged(prev: number, next: number): void;
     // @internal
-    selectedOptionsChanged(prev: any, next: any): void;
+    selectedOptionsChanged(prev: unknown, next: HTMLElement[]): void;
     // @internal
     selectPreviousOption(): void;
     // @internal
     setDefaultSelectedOption(): void;
     setPositioning(): void;
     // @internal
-    slottedOptionsChanged(prev: any, next: any): void;
+    slottedOptionsChanged(prev: Element[], next: HTMLElement[]): void;
     get value(): string;
     set value(next: string);
     }
@@ -739,7 +739,7 @@ export const dataGridTemplate: FoundationElementTemplate<ViewTemplate<DataGrid>>
 
 // @public
 export class DateFormatter {
-    constructor(config?: any);
+    constructor(config?: {});
     date: Date;
     dayFormat: DayFormat;
     // (undocumented)
@@ -925,8 +925,8 @@ export const DesignSystem: Readonly<{
 export interface DesignSystemRegistrationContext {
     readonly elementPrefix: string;
     // @deprecated
-    tryDefineElement(name: string, type: Constructable, callback: ElementDefinitionCallback): any;
-    tryDefineElement(params: ElementDefinitionParams): any;
+    tryDefineElement(name: string, type: Constructable, callback: ElementDefinitionCallback): void;
+    tryDefineElement(params: ElementDefinitionParams): void;
 }
 
 // @public
@@ -1197,13 +1197,13 @@ export interface FormAssociated extends Omit<ElementInternals, "labels"> {
     // (undocumented)
     initialValue: string;
     // (undocumented)
-    initialValueChanged?(previous: any, next: any): void;
+    initialValueChanged?(previous: string, next: string): void;
     // (undocumented)
     readonly labels: ReadonlyArray<Node[]>;
     // (undocumented)
     name: string;
     // (undocumented)
-    nameChanged?(previous: any, next: any): void;
+    nameChanged?(previous: string, next: string): void;
     // (undocumented)
     required: boolean;
     // (undocumented)
@@ -1215,7 +1215,7 @@ export interface FormAssociated extends Omit<ElementInternals, "labels"> {
     // (undocumented)
     value: string;
     // (undocumented)
-    valueChanged(previous: any, next: any): void;
+    valueChanged(previous: string, next: string): void;
 }
 
 // @alpha
@@ -1230,13 +1230,13 @@ export interface FormAssociatedProxy {
     // (undocumented)
     formResetCallback?(): void;
     // (undocumented)
-    initialValueChanged?(previous: any, next: any): void;
+    initialValueChanged?(previous: string, next: string): void;
     // (undocumented)
-    nameChanged?(previous: any, next: any): void;
+    nameChanged?(previous: string, next: string): void;
     // (undocumented)
     proxy: ProxyElement;
     // (undocumented)
-    valueChanged?(previous: any, next: any): void;
+    valueChanged?(previous: string, next: string): void;
 }
 
 // @public
@@ -1321,7 +1321,7 @@ export class HorizontalScroll extends FoundationElement {
     // @internal
     scrollingChanged(prev: unknown, next: boolean): void;
     scrollItems: HTMLElement[];
-    scrollItemsChanged(previous: any, next: any): void;
+    scrollItemsChanged(previous: HTMLElement[], next: HTMLElement[]): void;
     scrollToNext(): void;
     scrollToPosition(newPosition: number, position?: number): void;
     scrollToPrevious(): void;
@@ -1528,7 +1528,7 @@ export class ListboxOption extends FoundationElement {
     dirtyValue: boolean;
     disabled: boolean;
     // (undocumented)
-    protected disabledChanged(prev: any, next: any): void;
+    protected disabledChanged(prev: boolean, next: boolean): void;
     // (undocumented)
     get form(): HTMLFormElement | null;
     protected initialValue: string;
@@ -1929,7 +1929,7 @@ export class PropertyStyleSheetBehavior implements Behavior {
     constructor(propertyName: string, value: any, styles: ElementStyles);
     bind(elementInstance: FASTElement): void;
     // @internal
-    handleChange(source: FASTElement, key: any): void;
+    handleChange(source: FASTElement, key: string): void;
     // @internal
     unbind(source: typeof FASTElement & HTMLElement): void;
     }
@@ -2167,12 +2167,12 @@ export class Select extends FormAssociatedSelect {
     position: SelectPosition;
     positionAttribute: SelectPosition;
     // @internal
-    selectedIndexChanged(prev: any, next: any): void;
+    selectedIndexChanged(prev: number, next: number): void;
     // (undocumented)
     protected setDefaultSelectedOption(): void;
     setPositioning(): void;
     // @internal
-    slottedOptionsChanged(prev: any, next: any): void;
+    slottedOptionsChanged(prev: Element[], next: Element[]): void;
     get value(): string;
     set value(next: string);
     }
@@ -2281,7 +2281,7 @@ export class Slider extends FormAssociatedSlider implements SliderConfiguration 
     get valueAsNumber(): number;
     set valueAsNumber(next: number);
     // @internal (undocumented)
-    valueChanged(previous: any, next: any): void;
+    valueChanged(previous: string, next: string): void;
     valueTextFormatter: (value: string) => string | null;
 }
 
@@ -2673,28 +2673,29 @@ export function transient<T extends Constructable>(target: T & Partial<RegisterS
 //
 // @public
 export class TreeItem extends FoundationElement {
-    // (undocumented)
+    // @internal
     childItemLength(): number;
-    // (undocumented)
+    // @internal (undocumented)
     childItems: HTMLElement[];
     disabled: boolean;
-    // (undocumented)
+    // @internal
     expandCollapseButton: HTMLDivElement;
     expanded: boolean;
-    // (undocumented)
+    // @internal
     focusable: boolean;
     static focusItem(el: HTMLElement): void;
-    // (undocumented)
-    handleClick: (e: MouseEvent) => void | boolean;
-    // (undocumented)
+    // @internal
+    handleBlur: (e: FocusEvent) => void;
+    // @internal
     handleExpandCollapseButtonClick: (e: MouseEvent) => void;
-    // (undocumented)
+    // @internal
+    handleFocus: (e: FocusEvent) => void;
     readonly isNestedItem: () => boolean;
-    // (undocumented)
+    // @internal
     items: HTMLElement[];
-    // @internal (undocumented)
+    // @internal
     nested: boolean;
-    // (undocumented)
+    // @internal (undocumented)
     renderCollapsedChildren: boolean;
     selected: boolean;
     }
@@ -2715,21 +2716,23 @@ export const treeItemTemplate: FoundationElementTemplate<ViewTemplate<TreeItem>,
 export class TreeView extends FoundationElement {
     // (undocumented)
     connectedCallback(): void;
-    // (undocumented)
+    // @internal
     currentFocused: HTMLElement | TreeItem | null;
-    // (undocumented)
     currentSelected: HTMLElement | TreeItem | null;
-    // (undocumented)
+    // @internal
     handleBlur: (e: FocusEvent) => void;
-    // (undocumented)
+    // @internal
+    handleClick(e: Event): boolean | void;
+    // @internal
     handleFocus: (e: FocusEvent) => void;
-    // (undocumented)
-    handleKeyDown: (e: KeyboardEvent) => void | boolean;
-    // (undocumented)
+    // @internal
+    handleKeyDown: (e: KeyboardEvent) => boolean | void;
+    // @internal
+    handleSelectedChange: (e: Event) => boolean | void;
     renderCollapsedNodes: boolean;
-    // (undocumented)
+    // @internal
     slottedTreeItems: HTMLElement[];
-    // (undocumented)
+    // @internal
     treeView: HTMLElement;
 }
 
