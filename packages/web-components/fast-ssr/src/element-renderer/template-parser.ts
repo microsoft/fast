@@ -111,6 +111,10 @@ class TemplateParser implements Visitor {
         }
     }
 
+    /**
+     * Flush template content from lastIndex to provided offset
+     * @param offset - the offset to flush to
+     */
     private flushTo(offset?: number) {
         if (this.lastOffset === undefined) {
             throw new Error(
@@ -122,23 +126,6 @@ class TemplateParser implements Visitor {
         const prev = this.lastOffset;
         this.lastOffset = offset;
         this.flush(this.template.substring(prev, offset));
-    }
-
-    private skipTo(offset: number) {
-        if (this.lastOffset === undefined) {
-            throw new Error(
-                `Cannot skip to offset '${offset}' when lastOffset is ${typeof this
-                    .lastOffset}`
-            );
-        }
-        if (offset < this.lastOffset) {
-            throw new Error(`offset must be greater than lastOffset.
-                offset: ${offset}
-                lastOffset: ${this.lastOffset}
-            `);
-        }
-
-        this.lastOffset = offset;
     }
 }
 
