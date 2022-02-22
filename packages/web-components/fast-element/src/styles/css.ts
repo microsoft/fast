@@ -62,7 +62,7 @@ export function css(
     ...values: (ComposableStyles | CSSDirective)[]
 ): ElementStyles {
     const { styles, behaviors } = collectStyles(strings, values);
-    const elementStyles = ElementStyles.create(styles);
+    const elementStyles = new ElementStyles(styles);
     return behaviors.length ? elementStyles.withBehaviors(...behaviors) : elementStyles;
 }
 
@@ -91,7 +91,7 @@ class CSSPartial extends CSSDirective implements Behavior<HTMLElement> {
         );
 
         if (stylesheets.length) {
-            this.styles = ElementStyles.create(stylesheets);
+            this.styles = new ElementStyles(stylesheets);
         }
     }
 
