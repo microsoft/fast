@@ -16,4 +16,4 @@ Due to the default behavior of beachball (the package publishing utility used in
 
 ### Merging
 
-When merging a feature branch to the default branch, changes should not be squashed to preserve history. This will require a special action from someone with the necessary security privileges.
+When merging a feature branch to the default branch, changes should not be squashed to preserve history. This will require a special action from someone with the necessary security privileges to change the settings in the repository for pull requests to merge without squashing. The user performing this action will, after merging the feature branch in, need to change this setting back.
