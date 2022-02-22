@@ -33,7 +33,7 @@ describe("FASTElementDefinition", () => {
 
         it("can accept ElementStyles", () => {
             const css = ".class { color: red; }";
-            const styles = ElementStyles.create([css]);
+            const styles = new ElementStyles([css]);
             const options = {
                 name: "test-element",
                 styles,
@@ -45,8 +45,8 @@ describe("FASTElementDefinition", () => {
         it("can accept multiple ElementStyles", () => {
             const css1 = ".class { color: red; }";
             const css2 = ".class2 { color: red; }";
-            const existingStyles1 = ElementStyles.create([css1]);
-            const existingStyles2 = ElementStyles.create([css2]);
+            const existingStyles1 = new ElementStyles([css1]);
+            const existingStyles2 = new ElementStyles([css2]);
             const options = {
                 name: "test-element",
                 styles: [existingStyles1, existingStyles2],
@@ -60,7 +60,7 @@ describe("FASTElementDefinition", () => {
         it("can accept mixed strings and ElementStyles", () => {
             const css1 = ".class { color: red; }";
             const css2 = ".class2 { color: red; }";
-            const existingStyles2 = ElementStyles.create([css2]);
+            const existingStyles2 = new ElementStyles([css2]);
             const options = {
                 name: "test-element",
                 styles: [css1, existingStyles2],
@@ -98,7 +98,7 @@ describe("FASTElementDefinition", () => {
             it("can accept mixed strings, ElementStyles, and CSSStyleSheets", () => {
                 const css1 = ".class { color: red; }";
                 const css2 = ".class2 { color: red; }";
-                const existingStyles2 = ElementStyles.create([css2]);
+                const existingStyles2 = new ElementStyles([css2]);
                 const styleSheet3 = new CSSStyleSheet();
                 const options = {
                     name: "test-element",
