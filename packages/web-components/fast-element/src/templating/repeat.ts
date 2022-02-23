@@ -1,4 +1,4 @@
-import { DOM } from "../dom.js";
+import { Markup } from "./markup.js";
 import { isFunction } from "../interfaces.js";
 import type { Splice } from "../observation/array-change-records.js";
 import { enableArrayObservation } from "../observation/array-observer.js";
@@ -307,7 +307,7 @@ export class RepeatDirective<TSource = any> extends HTMLDirective {
      * Creates a placeholder string based on the directive's index within the template.
      * @param index - The index of the directive within the template.
      */
-    public createPlaceholder: (index: number) => string = DOM.createBlockPlaceholder;
+    public createPlaceholder: (index: number) => string = Markup.comment;
 
     /**
      * Creates an instance of RepeatDirective.
