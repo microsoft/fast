@@ -1,11 +1,9 @@
-import { _interpolationEnd, _interpolationStart, DOM } from "../dom.js";
+import { Markup, Parser } from "./markup.js";
 import { isString } from "../interfaces.js";
-import type { ExecutionContext } from "../observation/observable.js";
 import { bind, oneTime } from "./binding.js";
 import type {
     AspectedHTMLDirective,
     HTMLDirective,
-    InlinableHTMLDirective,
     ViewBehaviorFactory,
     ViewBehaviorTargets,
 } from "./html-directive.js";
@@ -133,70 +131,10 @@ class CompilationContext implements HTMLTemplateCompilationResult {
     }
 }
 
-function createAggregateBinding(parts: (string | HTMLDirective)[]): HTMLDirective {
-    if (parts.length === 1) {
-        return parts[0] as HTMLDirective;
-    }
+const marker = Markup.marker;
 
-    let aspect: string | undefined;
-    const partCount = parts.length;
-    const finalParts = parts.map((x: string | InlinableHTMLDirective) => {
-        if (isString(x)) {
-            return (): string => x;
-        }
-
-        aspect = x.rawAspect || aspect;
-        return x.binding;
-    });
-
-    const binding = (scope: unknown, context: ExecutionContext): string => {
-        let output = "";
-
-        for (let i = 0; i < partCount; ++i) {
-            output += finalParts[i](scope, context);
-        }
-
-        return output;
-    };
-
-    const directive = bind(binding) as AspectedHTMLDirective;
-    directive.setAspect(aspect!);
-    return directive;
-}
-
-const interpolationEndLength = _interpolationEnd.length;
-
-function parseContent(
-    context: CompilationContext,
-    value: string
-): (string | HTMLDirective)[] | null {
-    const valueParts = value.split(_interpolationStart);
-
-    if (valueParts.length === 1) {
-        return null;
-    }
-
-    const bindingParts: any[] = [];
-
-    for (let i = 0, ii = valueParts.length; i < ii; ++i) {
-        const current = valueParts[i];
-        const index = current.indexOf(_interpolationEnd);
-        let literal;
-
-        if (index === -1) {
-            literal = current;
-        } else {
-            const directiveIndex = parseInt(current.substring(0, index));
-            bindingParts.push(context.directives[directiveIndex]);
-            literal = current.substring(index + interpolationEndLength);
-        }
-
-        if (literal !== "") {
-            bindingParts.push(literal);
-        }
-    }
-
-    return bindingParts;
+function isMarker(node: Node): node is Comment {
+    return node && node.nodeType === 8 && (node as Comment).data.startsWith(marker);
 }
 
 function compileAttributes(
@@ -208,11 +146,12 @@ function compileAttributes(
     includeBasicValues: boolean = false
 ): void {
     const attributes = node.attributes;
+    const directives = context.directives;
 
     for (let i = 0, ii = attributes.length; i < ii; ++i) {
         const attr = attributes[i];
         const attrValue = attr.value;
-        const parseResult = parseContent(context, attrValue);
+        const parseResult = Parser.parse(attrValue, directives);
         let result: HTMLDirective | null = null;
 
         if (parseResult === null) {
@@ -221,7 +160,7 @@ function compileAttributes(
                 (result as AspectedHTMLDirective).setAspect(attr.name);
             }
         } else {
-            result = createAggregateBinding(parseResult);
+            result = Parser.aggregate(parseResult);
         }
 
         if (result !== null) {
@@ -240,7 +179,7 @@ function compileContent(
     nodeId,
     nodeIndex
 ): NextNode {
-    const parseResult = parseContent(context, node.textContent!);
+    const parseResult = Parser.parse(node.textContent!, context.directives);
     if (parseResult === null) {
         next.node = node.nextSibling;
         next.index = nodeIndex + 1;
@@ -309,9 +248,9 @@ function compileNode(
         case 3: // text node
             return compileContent(context, node as Text, parentId, nodeId, nodeIndex);
         case 8: // comment
-            if (DOM.isMarker(node)) {
+            if (isMarker(node)) {
                 context.addFactory(
-                    context.directives[DOM.extractDirectiveIndexFromMarker(node)],
+                    context.directives[Markup.indexFromComment(node)],
                     parentId,
                     nodeId,
                     nodeIndex
@@ -351,7 +290,7 @@ export function compileTemplate(
         // because something like a when, repeat, etc. could add nodes before the marker.
         // To mitigate this, we insert a stable first node. However, if we insert a node,
         // that will alter the result of the TreeWalker. So, we also need to offset the target index.
-        DOM.isMarker(fragment.firstChild!) ||
+        isMarker(fragment.firstChild!) ||
         // Or if there is only one node, it means the template's content
         // is *only* the directive. In that case, HTMLView.dispose() misses any nodes inserted by
         // the directive. Inserting a new node ensures proper disposal of nodes added by the directive.
