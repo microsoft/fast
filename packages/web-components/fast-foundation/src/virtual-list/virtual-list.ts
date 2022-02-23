@@ -137,7 +137,7 @@ export class VirtualList extends FoundationElement {
      * @public
      */
     @attr({ attribute: "recycle", mode: "boolean" })
-    public recycle: boolean = false;
+    public recycle: boolean = true;
     // private recycleChanged(): void {
     //     if (this.$fastController.isConnected) {
     //         TODO: implement this
@@ -180,7 +180,7 @@ export class VirtualList extends FoundationElement {
     @observable
     public viewportElement: HTMLElement;
     private viewportElementChanged(): void {
-        if ((this as FoundationElement).$fastController.isConnected) {
+        if (this.$fastController.isConnected) {
             this.resetAutoUpdateMode(this.autoUpdateMode, this.autoUpdateMode);
         }
     }
@@ -296,10 +296,6 @@ export class VirtualList extends FoundationElement {
     // whether a reset is already queued
     private pendingReset: boolean = false;
 
-    // flag that indicates whether an additional position update should be requested
-    // after the current one resolves (ie. possible geometry changes after the last request)
-    private finalUpdate: boolean = false;
-
     // stored geometry for the viewport and internal container elements
     private viewportRect: ClientRect | DOMRect | undefined;
     private containerRect: ClientRect | DOMRect | undefined;
@@ -312,6 +308,12 @@ export class VirtualList extends FoundationElement {
 
     // notifier used to trigger updates after changes to items array
     private itemsObserver: Notifier | null = null;
+
+    /**
+     * flag that indicates whether an additional position update should be requested
+     * after the current one resolves (ie. possible geometry changes after the last request)
+     */
+    private finalUpdateNeeded: boolean = false;
 
     /**
      * @internal
@@ -445,10 +447,10 @@ export class VirtualList extends FoundationElement {
             return;
         }
         if (this.pendingPositioningUpdate) {
-            this.finalUpdate = true;
+            this.finalUpdateNeeded = true;
             return;
         }
-        this.finalUpdate = false;
+        this.finalUpdateNeeded = false;
         this.pendingPositioningUpdate = true;
 
         VirtualList.intersectionService.requestPosition(
@@ -824,7 +826,7 @@ export class VirtualList extends FoundationElement {
 
         this.pendingPositioningUpdate = false;
 
-        if (this.finalUpdate) {
+        if (this.finalUpdateNeeded) {
             this.requestPositionUpdates();
         }
 

@@ -86,7 +86,7 @@ _Attributes:_
 
 - `orientation` - Whether the list is oriented vertically or horizontally. Default is vertical.
 
-- `recycle` - Boolean flag that indicates whether the component should reuse html element instances to show new items.
+- `recycle` - Boolean flag that indicates whether the component should reuse html element instances to show new items. Default is true.
 
 - `auto-update-mode` - Auto update mode defines what prompts the component to check the dimensions of elements in the DOM and reset the visible items accordingly.  Calling update() always provokes an update.  Default is 'manual'.  Possible settings are:
 

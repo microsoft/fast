@@ -23,15 +23,12 @@ export const virtualListItemStyles: (
     css`
         :host {
             position: absolute;
-            --elevation: 4;
             display: block;
-            contain: strict;
+            contain: size layout;
             box-sizing: border-box;
             height: 100%;
             width: 100%;
             background: ${fillColor};
-            border-radius: calc(${controlCornerRadius} * 1px);
-            ${elevation}
         }
     `.withBehaviors(
         forcedColorsStylesheetBehavior(
