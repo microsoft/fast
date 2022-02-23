@@ -1,4 +1,9 @@
-import { Behavior, HTMLDirective, DOM, BehaviorTargets } from "@microsoft/fast-element";
+import {
+    Behavior,
+    HTMLDirective,
+    DOM,
+    ViewBehaviorTargets,
+} from "@microsoft/fast-element";
 import {
     NavigationCommitPhaseHook,
     NavigationPhaseHook,
@@ -45,10 +50,10 @@ class NavigationContributorDirective extends HTMLDirective {
     }
 
     createPlaceholder(index: number) {
-        return DOM.createCustomAttributePlaceholder("fast-navigation-contributor", index);
+        return DOM.createCustomAttributePlaceholder(index);
     }
 
-    createBehavior(targets: BehaviorTargets) {
+    createBehavior(targets: ViewBehaviorTargets) {
         return new NavigationContributorBehavior(
             targets[this.targetId] as HTMLElement & NavigationContributor,
             this.options
