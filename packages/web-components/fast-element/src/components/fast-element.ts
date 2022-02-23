@@ -54,7 +54,11 @@ export interface FASTElement extends HTMLElement {
      * This method is invoked by the platform whenever an observed
      * attribute of FASTElement has a value change.
      */
-    attributeChangedCallback(name: string, oldValue: string, newValue: string): void;
+    attributeChangedCallback(
+        name: string,
+        oldValue: string | null,
+        newValue: string | null
+    ): void;
 }
 
 /* eslint-disable-next-line @typescript-eslint/explicit-function-return-type */
@@ -88,8 +92,8 @@ function createFASTElement<T extends typeof HTMLElement>(
 
         public attributeChangedCallback(
             name: string,
-            oldValue: string,
-            newValue: string
+            oldValue: string | null,
+            newValue: string | null
         ): void {
             this.$fastController.onAttributeChangedCallback(name, oldValue, newValue);
         }
