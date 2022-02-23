@@ -189,6 +189,8 @@ describe("FASTHorizontalScroll", function () {
             }
         });
 
+        await element.waitForElementState("stable");
+
         expect(
             await element.evaluate(node =>
                 node.shadowRoot?.querySelector(".scroll-next")
@@ -264,9 +266,9 @@ describe("FASTHorizontalScroll", function () {
 
         await this.page.evaluateHandle(node => {
             if (node.firstElementChild) {
-            node.scrollContainer.scrollLeft =
-                node.scrollContainer.scrollWidth -
-                node.scrollContainer.offsetWidth -
+                node.scrollContainer.scrollLeft =
+                    node.scrollContainer.scrollWidth -
+                    node.scrollContainer.offsetWidth -
                     node.firstElementChild.clientWidth;
             }
         }, element);
