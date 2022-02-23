@@ -13,7 +13,7 @@ const enum Edit {
 // followed by an add. By retaining this, we optimize for "keeping" the
 // maximum array items in the original array. For example:
 //
-//   'xxxx123' -> '123yyyy'
+//   'xxxx123' to '123yyyy'
 //
 // With 1-edit updates, the shortest path would be just to update all seven
 // characters. With 2-edit updates, we delete 4, leave 3, and add 4. This
@@ -169,7 +169,7 @@ function intersect(start1: number, end1: number, start2: number, end2: number): 
  * was transformed into a new array of items. Conceptually it is a list of
  * tuples of
  *
- *   <index, removed, addedCount>
+ *   (index, removed, addedCount)
  *
  * which are kept in ascending index order of. The tuple represents that at
  * the |index|, |removed| sequence of items were removed, and counting forward
