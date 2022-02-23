@@ -109,10 +109,10 @@ export class DefaultComponentPresentation implements ComponentPresentation {
             styles === void 0
                 ? null
                 : Array.isArray(styles)
-                ? ElementStyles.create(styles)
+                ? new ElementStyles(styles)
                 : styles instanceof ElementStyles
                 ? styles
-                : ElementStyles.create([styles]);
+                : new ElementStyles([styles]);
     }
 
     /**
