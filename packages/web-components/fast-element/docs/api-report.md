@@ -209,11 +209,6 @@ export const DOM: Readonly<{
     supportsAdoptedStyleSheets: boolean;
     setHTMLPolicy(policy: TrustedTypesPolicy): void;
     createHTML(html: string): string;
-    isMarker(node: Node): node is Comment;
-    extractDirectiveIndexFromMarker(node: Comment): number;
-    createInterpolationPlaceholder(index: number): string;
-    createCustomAttributePlaceholder(index: number): string;
-    createBlockPlaceholder(index: number): string;
     setUpdateMode(isAsync: boolean): void;
     queueUpdate(callable: Callable): void;
     nextUpdate(): Promise<void>;
@@ -355,13 +350,22 @@ export class HTMLView<TSource = any, TParent = any, TGrandparent = any> implemen
     unbind(): void;
 }
 
-// @public (undocumented)
+// @public
 export abstract class InlinableHTMLDirective extends AspectedHTMLDirective {
     // (undocumented)
     abstract readonly binding: Binding;
     // (undocumented)
     abstract readonly rawAspect?: string;
 }
+
+// @public
+export const Markup: Readonly<{
+    marker: string;
+    interpolation(index: number): string;
+    attribute(index: number): string;
+    comment(index: number): string;
+    indexFromComment(node: Comment): number;
+}>;
 
 // Warning: (ae-internal-missing-underscore) The name "Mutable" should be prefixed with an underscore because the declaration is marked as @internal
 //
@@ -416,6 +420,12 @@ export const onChange: BindingConfig<DefaultBindingOptions> & BindingConfigResol
 
 // @public (undocumented)
 export const oneTime: BindingConfig<DefaultBindingOptions> & BindingConfigResolver<DefaultBindingOptions>;
+
+// @public
+export const Parser: Readonly<{
+    parse(value: string, directives: readonly HTMLDirective[]): (string | HTMLDirective)[] | null;
+    aggregate(parts: (string | HTMLDirective)[]): InlinableHTMLDirective;
+}>;
 
 // @public
 export interface PartialFASTElementDefinition {

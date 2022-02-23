@@ -1,0 +1,7 @@
+{
+  "type": "major",
+  "comment": "feat: expose official Markup and Parser APIs",
+  "packageName": "@microsoft/fast-element",
+  "email": "roeisenb@microsoft.com",
+  "dependentChangeType": "patch"
+}
