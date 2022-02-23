@@ -1,6 +1,5 @@
 import {
     attr,
-    HTMLDirective,
     observable,
     RepeatBehavior,
     RepeatDirective,
