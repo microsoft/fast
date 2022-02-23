@@ -5,11 +5,19 @@
  */
 export class IdleCallbackQueue {
     /**
-     *
+     * Timeout value used in idle callback requests (milliseconds)
+     * (ie. max delay before a callback regardless of system load)
      *
      * @internal
      */
-    public idleCallbackTimeout: number = 200;
+    public idleCallbackTimeout: number = 1000;
+
+    /**
+     * Interval in ms between getting an idle callback and requesting another.
+     *
+     * @internal
+     */
+    private idleCallbackInterval: number = 20;
 
     private callBackQueue: Map<Element, () => void> = new Map<Element, () => void>();
 
@@ -84,6 +92,6 @@ export class IdleCallbackQueue {
         this.currentCallback = undefined;
         window.setTimeout(() => {
             this.nextCallback();
-        }, 20);
+        }, this.idleCallbackInterval);
     };
 }

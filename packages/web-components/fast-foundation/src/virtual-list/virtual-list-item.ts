@@ -5,11 +5,11 @@ import { IdleCallbackQueue } from "../utilities/idle-callback-queue";
 /**
  * Defines the possible loading behaviors a Virtual List Item
  *
- * immediate: Sets loadContent to true on connect, this is the default.
+ * immediate: Sets loadContent to true on connect.
  *
  * manual: Developer takes ownership of setting loadContent, it will otherwise remain false.
  *
- * idle: The component will load content based on available idle time.
+ * idle: The component will load content based on available idle time, this is the default.
  *
  * @public
  */
@@ -45,7 +45,7 @@ export class VirtualListItem extends FoundationElement {
     public itemData: object;
 
     /**
-     * The index of the item in the items array.
+    //  * The index of the item in the items array.
      *
      * @public
      */
@@ -68,12 +68,17 @@ export class VirtualListItem extends FoundationElement {
     @observable
     public loadContent: boolean = false;
 
+    private idleLoadRequested: boolean = false;
+
     /**
      * @internal
      */
     connectedCallback() {
         super.connectedCallback();
         switch (this.listItemContext.loadMode) {
+            case "manual":
+                break;
+
             case "idle":
                 this.queueForIdleLoad();
                 break;
@@ -88,9 +93,11 @@ export class VirtualListItem extends FoundationElement {
      * @internal
      */
     disconnectedCallback(): void {
-        if (!this.loadContent && this.listItemContext.loadMode === "idle") {
+        if (!this.loadContent && this.idleLoadRequested) {
             VirtualListItem.idleCallbackQueue.cancelIdleCallback(this);
         }
+        this.loadContent = false;
+        this.idleLoadRequested = false;
         super.disconnectedCallback();
     }
 
@@ -105,6 +112,10 @@ export class VirtualListItem extends FoundationElement {
      * Queue up for idle loading
      */
     private queueForIdleLoad(): void {
+        if (this.idleLoadRequested) {
+            return;
+        }
+        this.idleLoadRequested = true;
         VirtualListItem.idleCallbackQueue.requestIdleCallback(
             this,
             this.handleIdleCallback

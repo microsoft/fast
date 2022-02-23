@@ -14,7 +14,7 @@
 </h3>
 
 <h3>
-    Default, Virtualization off
+    Virtualization off
 </h3>
 
 <fast-virtual-list
@@ -35,40 +35,48 @@
 <h3>
     Horizontal with fast-list-item
 </h3>
-
-<fast-virtual-list
-    orientation="horizontal"
-    item-span="200"
-    viewport-buffer="200"
-    auto-update-mode="auto"
-    id="stackh2"
-    style="
-        height: 220px;
-        width: 100%;
-        overflow-x: scroll;
-        overflow-y: hidden;
-        display: block;
-    "
-></fast-virtual-list>
+<fast-button id="reloadidle">
+    Reload
+</fast-button>
+<p>
+    <fast-virtual-list
+        orientation="horizontal"
+        item-span="200"
+        viewport-buffer="200"
+        auto-update-mode="auto"
+        id="stackh2"
+        style="
+            height: 220px;
+            width: 100%;
+            overflow-x: scroll;
+            overflow-y: hidden;
+            display: block;
+        "
+    ></fast-virtual-list>
+</p>
 
 <h3>
-    Horizontal with fast-list-item and idle loading
+    Horizontal with fast-list-item and immediate loading
 </h3>
-
-<fast-virtual-list
-    orientation="horizontal"
-    item-span="200"
-    viewport-buffer="200"
-    auto-update-mode="auto"
-    id="stackhidle"
-    style="
-        height: 220px;
-        width: 100%;
-        overflow-x: scroll;
-        overflow-y: hidden;
-        display: block;
-    "
-></fast-virtual-list>
+<fast-button id="reloadimmediate">
+    Reload
+</fast-button>
+<p>
+    <fast-virtual-list
+        orientation="horizontal"
+        item-span="200"
+        viewport-buffer="200"
+        auto-update-mode="auto"
+        id="stackhimmediate"
+        style="
+            height: 220px;
+            width: 100%;
+            overflow-x: scroll;
+            overflow-y: hidden;
+            display: block;
+        "
+    ></fast-virtual-list>
+</p>
 
 <h3>
     Horizontal with custom item-template
@@ -159,13 +167,12 @@
     "
 >
     <h3 style="grid-column: 1; grid-row: 1;">
-        vertical spans whole page with recycling
+        vertical spans whole page
     </h3>
     <fast-virtual-list
         auto-update-mode="auto"
         item-span="200"
         id="stackv1"
-        recycle="true"
         style="
             grid-column: 1;
             grid-row: 2;

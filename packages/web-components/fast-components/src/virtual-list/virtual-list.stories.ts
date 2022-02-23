@@ -3,11 +3,14 @@ import addons from "@storybook/addons";
 import { STORY_RENDERED } from "@storybook/core-events";
 import {
     VirtualList as FoundationVirtualList,
-    VirtualListItem,
     SpanMap,
 } from "@microsoft/fast-foundation";
 import VirtualListTemplate from "./fixtures/base.html";
 import "./index";
+
+let data;
+let dataSpanMap;
+let gridData: object[];
 
 const horizontalImageItemTemplate = html`
     <fast-card
@@ -130,31 +133,111 @@ const listItemContentsTemplate = html`
                 background-image: url('${x => x.itemData.url}');
             "
                 ></div>
-                <fast-slider></fast-slider>
-                <fast-slider></fast-slider>
-                <fast-slider></fast-slider>
-                <fast-slider></fast-slider>
-                <fast-slider></fast-slider>
-                <fast-slider></fast-slider>
-                <fast-slider></fast-slider>
-                <fast-slider></fast-slider>
-                <fast-slider></fast-slider>
-                <fast-slider></fast-slider>
-                <fast-slider></fast-slider>
-                <fast-slider></fast-slider>
+                <div
+                    style="
+                        height: 120px;
+                        margin:60px 10px 10px 10px;
+                        opacity: 0.5;
+                        display: flex;
+                        flex-direction: row;
+                    "
+                >
+                    <fast-slider
+                        orientation="vertical"
+                        style="height: 100%; min-width: 15px;"
+                    ></fast-slider>
+                    <fast-slider
+                        orientation="vertical"
+                        style="height: 100%; min-width: 15px;"
+                    ></fast-slider>
+                    <fast-slider
+                        orientation="vertical"
+                        style="height: 100%; min-width: 15px;"
+                    ></fast-slider>
+                    <fast-slider
+                        orientation="vertical"
+                        style="height: 100%; min-width: 15px;"
+                    ></fast-slider>
+                    <fast-slider
+                        orientation="vertical"
+                        style="height: 100%; min-width: 15px;"
+                    ></fast-slider>
+                    <fast-slider
+                        orientation="vertical"
+                        style="height: 100%; min-width: 15px;"
+                    ></fast-slider>
+                    <fast-slider
+                        orientation="vertical"
+                        style="height: 100%; min-width: 15px;"
+                    ></fast-slider>
+                    <fast-slider
+                        orientation="vertical"
+                        style="height: 100%; min-width: 15px;"
+                    ></fast-slider>
+                    <fast-slider
+                        orientation="vertical"
+                        style="height: 100%; min-width: 15px;"
+                    ></fast-slider>
+                    <fast-slider
+                        orientation="vertical"
+                        style="height: 100%; min-width: 15px;"
+                    ></fast-slider>
+                    <fast-slider
+                        orientation="vertical"
+                        style="height: 100%; min-width: 15px;"
+                    ></fast-slider>
+                    <fast-slider
+                        orientation="vertical"
+                        style="height: 100%; min-width: 15px;"
+                    ></fast-slider>
+                    <fast-slider
+                        orientation="vertical"
+                        style="height: 100%; min-width: 15px;"
+                    ></fast-slider>
+                    <fast-slider
+                        orientation="vertical"
+                        style="height: 100%; min-width: 15px;"
+                    ></fast-slider>
+                    <fast-slider
+                        orientation="vertical"
+                        style="height: 100%; min-width: 15px;"
+                    ></fast-slider>
+                    <fast-slider
+                        orientation="vertical"
+                        style="height: 100%; min-width: 15px;"
+                    ></fast-slider>
+                    <fast-slider
+                        orientation="vertical"
+                        style="height: 100%; min-width: 15px;"
+                    ></fast-slider>
+                    <fast-slider
+                        orientation="vertical"
+                        style="height: 100%; min-width: 15px;"
+                    ></fast-slider>
+                    <fast-slider
+                        orientation="vertical"
+                        style="height: 100%; min-width: 15px;"
+                    ></fast-slider>
+                    <fast-slider
+                        orientation="vertical"
+                        style="height: 100%; min-width: 15px;"
+                    ></fast-slider>
+                </div>
             `
         )}
         ${when(
             x => !x.loadContent,
             html`
-                <fast-progress-ring
+                <div
                     style="
+                    background: white;
+                    opacity: 0.2;
                     height: 160px;
                     width:160px;
                     margin:10px 20px 10px 20px;
                     position: absolute;
             "
-                ></fast-progress-ring>
+                ></div>
             `
         )}
     </fast-card>
@@ -162,10 +245,10 @@ const listItemContentsTemplate = html`
 
 addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
     if (name.toLowerCase().startsWith("virtual-list")) {
-        const data = newDataSet(10000, 1);
-        const dataSpanMap = generateSpanMap(data);
+        data = newDataSet(10000, 1);
+        dataSpanMap = generateSpanMap(data);
 
-        const gridData: object[] = [];
+        gridData = [];
 
         for (let i = 1; i <= 1000; i++) {
             gridData.push({
@@ -176,24 +259,27 @@ addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
         const stackh1 = document.getElementById("stackh1") as FoundationVirtualList;
         stackh1.listItemContext = {
             listItemContentsTemplate: listItemContentsTemplate,
+            loadMode: "idle",
             titleString: "title:",
         };
-        stackh1.items = newDataSet(100, 1);
+        stackh1.items = newDataSet(50, 1);
 
         const stackh2 = document.getElementById("stackh2") as FoundationVirtualList;
         stackh2.listItemContext = {
             listItemContentsTemplate: listItemContentsTemplate,
+            loadMode: "idle",
             titleString: "title:",
         };
         stackh2.items = data;
 
-        const stackhIdle = document.getElementById("stackhidle") as FoundationVirtualList;
-        stackhIdle.listItemContext = {
+        const stackhImmediate = document.getElementById(
+            "stackhimmediate"
+        ) as FoundationVirtualList;
+        stackhImmediate.listItemContext = {
             listItemContentsTemplate: listItemContentsTemplate,
-            loadMode: "idle",
             titleString: "title:",
         };
-        stackhIdle.items = data;
+        stackhImmediate.items = data;
 
         const stackh3 = document.getElementById("stackh3") as FoundationVirtualList;
         stackh3.itemTemplate = horizontalImageItemTemplate;
@@ -215,6 +301,7 @@ addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
         const stackv2 = document.getElementById("stackv2") as FoundationVirtualList;
         stackv2.items = data;
         stackv2.listItemContext = {
+            loadMode: "idle",
             listItemContentsTemplate: listItemContentsTemplate,
             titleString: "title:",
         };
@@ -223,11 +310,40 @@ addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
         stackv3.spanmap = dataSpanMap;
         stackv3.items = data;
         stackv3.listItemContext = {
+            loadMode: "idle",
             listItemContentsTemplate: listItemContentsTemplate,
             titleString: "title:",
         };
+
+        const reloadImmediateButton = document.getElementById("reloadimmediate");
+        if (reloadImmediateButton) {
+            reloadImmediateButton.onclick = reloadImmediate;
+        }
+
+        const reloadIdleButton = document.getElementById("reloadidle");
+        if (reloadIdleButton) {
+            reloadIdleButton.onclick = reloadIdle;
+        }
     }
 });
+
+function reloadImmediate(): void {
+    const stackhImmediate = document.getElementById(
+        "stackhimmediate"
+    ) as FoundationVirtualList;
+    stackhImmediate.items = [];
+    window.setTimeout(() => {
+        stackhImmediate.items = data;
+    }, 50);
+}
+
+function reloadIdle(): void {
+    const stackhIdle = document.getElementById("stackh2") as FoundationVirtualList;
+    stackhIdle.items = [];
+    window.setTimeout(() => {
+        stackhIdle.items = data;
+    }, 50);
+}
 
 function newDataSet(rowCount: number, prefix: number): object[] {
     const newData: object[] = [];
