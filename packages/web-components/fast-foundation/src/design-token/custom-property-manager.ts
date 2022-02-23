@@ -39,7 +39,7 @@ class ConstructableStyleSheetTarget extends QueuedStyleSheetTarget {
 
         const sheet = new CSSStyleSheet();
         this.target = (sheet.cssRules[sheet.insertRule(":host{}")] as CSSStyleRule).style;
-        source.$fastController.addStyles(ElementStyles.create([sheet]));
+        source.$fastController.addStyles(new ElementStyles([sheet]));
     }
 }
 
