@@ -1,5 +1,6 @@
 import {
     attr,
+    HTMLDirective,
     observable,
     RepeatBehavior,
     RepeatDirective,
@@ -175,11 +176,14 @@ export class DataGridRow extends FoundationElement {
 
             this.updateItemTemplate();
 
-            this.cellsRepeatBehavior = new RepeatDirective(
+            const cellsRepeatDirective = new RepeatDirective(
                 x => x.columnDefinitions,
                 x => x.activeCellItemTemplate,
                 { positioning: true }
-            ).createBehavior(this.cellsPlaceholder);
+            );
+            this.cellsRepeatBehavior = cellsRepeatDirective.createBehavior({
+                [cellsRepeatDirective.targetId]: this.cellsPlaceholder,
+            });
             /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */
             this.$fastController.addBehaviors([this.cellsRepeatBehavior!]);
         }
