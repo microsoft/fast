@@ -95,10 +95,10 @@ export class FASTElementLayout implements Layout {
             styles === void 0 || styles === null
                 ? null
                 : Array.isArray(styles)
-                ? ElementStyles.create(styles)
+                ? new ElementStyles(styles)
                 : styles instanceof ElementStyles
                 ? styles
-                : ElementStyles.create([styles]);
+                : new ElementStyles([styles]);
     }
 
     async beforeCommit(routerElement: HTMLElement) {
