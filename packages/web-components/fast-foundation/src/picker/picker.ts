@@ -539,11 +539,14 @@ export class Picker extends FormAssociatedPicker {
         this.updateListItemTemplate();
         this.updateOptionTemplate();
 
-        this.itemsRepeatBehavior = new RepeatDirective(
+        const itemsRepeatDirective = new RepeatDirective(
             x => x.selectedItems,
             x => x.activeListItemTemplate,
             { positioning: true }
-        ).createBehavior(this.itemsPlaceholderElement);
+        );
+        this.itemsRepeatBehavior = itemsRepeatDirective.createBehavior({
+            [itemsRepeatDirective.targetId]: this.itemsPlaceholderElement,
+        });
 
         this.inputElement.addEventListener("input", this.handleTextInput);
         this.inputElement.addEventListener("click", this.handleInputClick);
@@ -556,11 +559,14 @@ export class Picker extends FormAssociatedPicker {
             this.handleMenuOptionsUpdated
         );
 
-        this.optionsRepeatBehavior = new RepeatDirective(
+        const optionsRepeatDirective = new RepeatDirective(
             x => x.filteredOptionsList,
             x => x.activeMenuOptionTemplate,
             { positioning: true }
-        ).createBehavior(this.optionsPlaceholder);
+        );
+        this.optionsRepeatBehavior = optionsRepeatDirective.createBehavior({
+            [optionsRepeatDirective.targetId]: this.optionsPlaceholder,
+        });
 
         /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */
         this.$fastController.addBehaviors([this.optionsRepeatBehavior!]);
