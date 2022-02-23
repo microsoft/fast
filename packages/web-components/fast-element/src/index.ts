@@ -24,6 +24,7 @@ export { Splice } from "./observation/array-change-records.js";
 export { enableArrayObservation } from "./observation/array-observer.js";
 export { DOM } from "./dom.js";
 export type { Behavior } from "./observation/behavior.js";
+export { Markup, Parser } from "./templating/markup.js";
 export {
     bind,
     oneTime,

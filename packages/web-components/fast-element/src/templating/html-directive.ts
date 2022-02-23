@@ -1,4 +1,4 @@
-import { DOM, nextId } from "../dom.js";
+import { Markup, nextId } from "./markup.js";
 import type { Behavior } from "../observation/behavior.js";
 import type { Binding, ExecutionContext } from "../observation/observable.js";
 
@@ -99,10 +99,13 @@ export abstract class AspectedHTMLDirective extends HTMLDirective {
      * Creates a placeholder string based on the directive's index within the template.
      * @param index - The index of the directive within the template.
      */
-    public createPlaceholder: (index: number) => string =
-        DOM.createInterpolationPlaceholder;
+    public createPlaceholder: (index: number) => string = Markup.interpolation;
 }
 
+/**
+ * A {@link HTMLDirective} that can be inlined within an attribute or text content.
+ * @public
+ */
 export abstract class InlinableHTMLDirective extends AspectedHTMLDirective {
     abstract readonly binding: Binding;
     abstract readonly rawAspect?: string;
@@ -134,7 +137,7 @@ export abstract class StatelessAttachedAttributeDirective<T> extends HTMLDirecti
      * Creates a custom attribute placeholder.
      */
     public createPlaceholder(index: number): string {
-        return DOM.createCustomAttributePlaceholder(index);
+        return Markup.attribute(index);
     }
 
     /**
