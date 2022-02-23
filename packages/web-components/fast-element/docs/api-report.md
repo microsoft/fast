@@ -49,7 +49,7 @@ export class AttributeDefinition implements Accessor {
     onAttributeChangedCallback(element: HTMLElement, value: any): void;
     readonly Owner: Function;
     setValue(source: HTMLElement, newValue: any): void;
-    }
+}
 
 // @public
 export type AttributeMode = "reflect" | "boolean" | "fromView";
@@ -467,14 +467,14 @@ export class RepeatBehavior<TSource = any> implements Behavior, Subscriber {
     // @internal (undocumented)
     handleChange(source: any, args: Splice[]): void;
     unbind(): void;
-    }
+}
 
 // @public
 export class RepeatDirective<TSource = any> extends HTMLDirective {
     constructor(itemsBinding: Binding, templateBinding: Binding<TSource, SyntheticViewTemplate>, options: RepeatOptions);
     createBehavior(targets: ViewBehaviorTargets): RepeatBehavior<TSource>;
     createPlaceholder: (index: number) => string;
-    }
+}
 
 // @public
 export interface RepeatOptions {
@@ -617,14 +617,13 @@ export class ViewTemplate<TSource = any, TParent = any, TGrandparent = any> impl
     readonly directives: ReadonlyArray<HTMLDirective>;
     readonly html: string | HTMLTemplateElement;
     render(source: TSource, host: Node, hostBindingTarget?: Element): HTMLView<TSource, TParent, TGrandparent>;
-    }
+}
 
 // @public
 export function volatile(target: {}, name: string | Accessor, descriptor: PropertyDescriptor): PropertyDescriptor;
 
 // @public
 export function when<TSource = any, TReturn = any>(binding: Binding<TSource, TReturn>, templateOrTemplateBinding: SyntheticViewTemplate | Binding<TSource, SyntheticViewTemplate>): CaptureType<TSource>;
-
 
 // (No @packageDocumentation comment for this package)
 

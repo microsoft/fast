@@ -1,9 +1,12 @@
+import { AspectedHTMLDirective } from "@microsoft/fast-element";
+
 /**
  * Allows fast identification of operation types
  */
 export enum OpType {
     text,
     customElementClose,
+    directive,
 }
 
 /**
@@ -21,4 +24,12 @@ export type CustomElementCloseOp = {
     type: OpType.customElementClose;
 };
 
-export type Op = TextOp | CustomElementCloseOp;
+/**
+ * Operation to emit static text
+ */
+export type DirectiveOp = {
+    type: OpType.directive;
+    directive: AspectedHTMLDirective;
+};
+
+export type Op = TextOp | CustomElementCloseOp | DirectiveOp;

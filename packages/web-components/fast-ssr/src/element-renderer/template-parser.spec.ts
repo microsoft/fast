@@ -17,12 +17,22 @@ test.describe("parseTemplateToOpCodes", () => {
 		}).not.toThrow();
 	});
 
-	const fixtures: {input: ViewTemplate, result: Op[]}[] = [
+	interface Fixture {
+		input: ViewTemplate,
+		result: Op[];
+	}
+
+	const fixtures: ( (()=> Fixture) | Fixture )[] = [
 		{input: html`<p>Hello world</p>`, result: [{type: OpType.text, value: "<p>Hello world</p>"}]},
-		{input: html`<!DOCTYPE html><html><head></head><body></body></html>`, result: [{type: OpType.text, value: "<!DOCTYPE html><html><head></head><body></body></html>"}]}
+		{input: html`<!DOCTYPE html><html><head></head><body></body></html>`, result: [{type: OpType.text, value: "<!DOCTYPE html><html><head></head><body></body></html>"}]},
+		() => {
+			const input = html`${() => "hello world"}`;
+			return { input, result: [{ type: OpType.directive, directive: input.directives[0]}] } as Fixture
+		}
 	];
 
-	fixtures.forEach(({ input, result}, index) => {
+	fixtures.forEach((fixture, index) => {
+		const { input, result } = typeof fixture === "function" ? fixture() : fixture;
 		test(`should parse template to op codes for fixture ${index}`, () => {
 			expect(parseTemplateToOpCodes(input)).toEqual(result)
 		})

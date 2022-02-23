@@ -2,7 +2,12 @@
  * This code is largely a fork of lit's rendering implementation: https://github.com/lit/lit/blob/main/packages/labs/ssr/src/lib/render-lit-html.ts
  * with changes as necessary to render FAST components. A big thank you to those who contributed to lit's code above.
  */
-import { ViewTemplate } from "@microsoft/fast-element";
+import {
+    ViewTemplate,
+    AspectedHTMLDirective,
+    HTMLDirective,
+    DOM,
+} from "@microsoft/fast-element";
 import {
     DefaultTreeCommentNode,
     DefaultTreeDocumentFragment,
@@ -11,8 +16,14 @@ import {
     DefaultTreeParentNode,
     DefaultTreeTextNode,
     parseFragment,
+    CommentNode,
 } from "parse5";
 import { Op, OpType } from "./op-codes.js";
+import {
+    isInterpolationMarker,
+    isMarkerComment,
+    extractInterpolationMarkerId,
+} from "./marker.js";
 
 const opCache: Map<ViewTemplate, Op[]> = new Map();
 
@@ -91,10 +102,30 @@ class TemplateParser implements Visitor {
         return this.opCodes[this.opCodes.length - 1];
     }
 
-    constructor(private template: string) {}
+    constructor(private template: string, private directives: readonly HTMLDirective[]) {}
 
     public readonly opCodes: Op[] = [];
-    public visit(node: DefaultTreeNode): void {}
+    public visit(node: DefaultTreeNode): void {
+        if (this.isInterpolationMarkerNode(node) || this.isCommentMarkerNode(node)) {
+            this.flushTo(node.sourceCodeLocation.startOffset);
+
+            // TODO: clean this up when new APIs from fast-element get integrated.
+            const directive = this.directives[
+                this.isInterpolationMarkerNode(node)
+                    ? extractInterpolationMarkerId(node)!
+                    : DOM.extractDirectiveIndexFromMarker((node as unknown) as Comment)
+            ];
+            if (directive instanceof AspectedHTMLDirective) {
+                this.opCodes.push({ type: OpType.directive, directive });
+            } else {
+                throw new Error(
+                    `Unexpected directive type encountered. It is a ${directive}.`
+                );
+            }
+            this.skipTo(node.sourceCodeLocation.endOffset);
+        }
+    }
+
     public leave(node: DefaultTreeNode): void {}
     public complete() {
         this.flushTo();
@@ -127,7 +158,53 @@ class TemplateParser implements Visitor {
 
         const prev = this.lastOffset;
         this.lastOffset = offset;
-        this.flush(this.template.substring(prev, offset));
+        const value = this.template.substring(prev, offset);
+
+        if (value !== "") {
+            this.flush(value);
+        }
+    }
+
+    private skipTo(offset: number) {
+        if (this.lastOffset === undefined) {
+            throw new Error("Could not skip from an undefined offset");
+        }
+        if (offset < this.lastOffset) {
+            throw new Error(`offset must be greater than lastOffset.
+                offset: ${offset}
+                lastOffset: ${this.lastOffset}
+            `);
+        }
+
+        this.lastOffset = offset;
+    }
+
+    /**
+     * Tests if a node is an interpolated FAST marker
+     * @param node - the node to test
+     */
+    private isInterpolationMarkerNode(
+        node: DefaultTreeNode
+    ): node is Required<DefaultTreeTextNode> {
+        return (
+            isTextNode(node) &&
+            node.sourceCodeLocation !== undefined &&
+            isInterpolationMarker(node)
+        );
+    }
+
+    /**
+     * Tests if a node is a FAST comment marker
+     * @param node - the node to test
+     */
+    private isCommentMarkerNode(
+        node: DefaultTreeNode
+    ): node is Required<DefaultTreeCommentNode> {
+        return (
+            isCommentNode(node) &&
+            node.sourceCodeLocation !== undefined &&
+            isMarkerComment(node)
+        );
     }
 }
 
@@ -157,7 +234,7 @@ export function parseTemplateToOpCodes(template: ViewTemplate): Op[] {
     }
 
     const ops: Op[] = [];
-    const visitor = new TemplateParser(html);
+    const visitor = new TemplateParser(html, template.directives);
     opCache.set(template, visitor.opCodes);
 
     traverse(ast, visitor);
