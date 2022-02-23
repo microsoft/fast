@@ -3,10 +3,10 @@
  * with changes as necessary to render FAST components. A big thank you to those who contributed to lit's code above.
  */
 import {
-    ViewTemplate,
     AspectedHTMLDirective,
-    HTMLDirective,
     DOM,
+    HTMLDirective,
+    ViewTemplate,
 } from "@microsoft/fast-element";
 import {
     DefaultTreeCommentNode,
@@ -16,14 +16,13 @@ import {
     DefaultTreeParentNode,
     DefaultTreeTextNode,
     parseFragment,
-    CommentNode,
 } from "parse5";
-import { Op, OpType } from "./op-codes.js";
 import {
+    extractInterpolationMarkerId,
     isInterpolationMarker,
     isMarkerComment,
-    extractInterpolationMarkerId,
 } from "./marker.js";
+import { Op, OpType } from "./op-codes.js";
 
 const opCache: Map<ViewTemplate, Op[]> = new Map();
 
