@@ -310,11 +310,14 @@ export class DataGrid extends FoundationElement {
 
         this.toggleGeneratedHeader();
 
-        this.rowsRepeatBehavior = new RepeatDirective(
+        const rowsRepeatDirective = new RepeatDirective(
             x => x.rowsData,
             x => x.rowItemTemplate,
             { positioning: true }
-        ).createBehavior(this.rowsPlaceholder);
+        );
+        this.rowsRepeatBehavior = rowsRepeatDirective.createBehavior({
+            [rowsRepeatDirective.targetId]: this.rowsPlaceholder,
+        });
 
         /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */
         this.$fastController.addBehaviors([this.rowsRepeatBehavior!]);
