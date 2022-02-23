@@ -154,6 +154,10 @@ export class Select extends FormAssociatedSelect {
      */
     @observable
     public position: SelectPosition = SelectPosition.below;
+    positionChanged() {
+        this.positionAttribute = this.position;
+        this.setPositioning();
+    }
 
     /**
      * Reference to the internal listbox element.
