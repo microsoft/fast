@@ -36,18 +36,6 @@ function tryRunTask(task: Callable): void {
     }
 }
 
-const marker = `fast-${Math.random().toString(36).substring(2, 8)}`;
-let id = 0;
-
-/** @internal */
-export const nextId = (): string => `${marker}-${++id}`;
-
-/** @internal */
-export const _interpolationStart = `${marker}{`;
-
-/** @internal */
-export const _interpolationEnd = `}${marker}`;
-
 /**
  * Common DOM APIs.
  * @public
@@ -87,57 +75,8 @@ export const DOM = Object.freeze({
     },
 
     /**
-     * Determines if the provided node is a template marker used by the runtime.
-     * @param node - The node to test.
-     */
-    isMarker(node: Node): node is Comment {
-        return node && node.nodeType === 8 && (node as Comment).data.startsWith(marker);
-    },
-
-    /**
-     * Given a marker node, extract the {@link HTMLDirective} index from the placeholder.
-     * @param node - The marker node to extract the index from.
-     */
-    extractDirectiveIndexFromMarker(node: Comment): number {
-        return parseInt(node.data.replace(`${marker}:`, ""));
-    },
-
-    /**
-     * Creates a placeholder string suitable for marking out a location *within*
-     * an attribute value or HTML content.
-     * @param index - The directive index to create the placeholder for.
-     * @remarks
-     * Used internally by binding directives.
-     */
-    createInterpolationPlaceholder(index: number): string {
-        return `${_interpolationStart}${index}${_interpolationEnd}`;
-    },
-
-    /**
-     * Creates a placeholder that manifests itself as an attribute on an
-     * element.
-     * @param attributeName - The name of the custom attribute.
-     * @param index - The directive index to create the placeholder for.
-     * @remarks
-     * Used internally by attribute directives such as `ref`, `slotted`, and `children`.
-     */
-    createCustomAttributePlaceholder(index: number): string {
-        return `${nextId()}="${this.createInterpolationPlaceholder(index)}"`;
-    },
-
-    /**
-     * Creates a placeholder that manifests itself as a marker within the DOM structure.
-     * @param index - The directive index to create the placeholder for.
-     * @remarks
-     * Used internally by structural directives such as `repeat`.
-     */
-    createBlockPlaceholder(index: number): string {
-        return `<!--${marker}:${index}-->`;
-    },
-
-    /**
      * Sets the update mode used by queueUpdate.
-     * @param isAsync Indicates whether DOM updates should be asynchronous.
+     * @param isAsync - Indicates whether DOM updates should be asynchronous.
      * @remarks
      * By default, the update mode is asynchronous, since that provides the best
      * performance in the browser. Passing false to setUpdateMode will instead cause

@@ -1,6 +1,7 @@
 import { expect } from "chai";
-import { customElement, FASTElement } from "../components/fast-element";
 import { DOM } from "../dom";
+import { customElement, FASTElement } from "../components/fast-element";
+import { Markup } from './markup';
 import { defaultExecutionContext } from "../observation/observable";
 import { css } from "../styles/css";
 import type { StyleTarget } from "../styles/element-styles";
@@ -18,7 +19,7 @@ describe("The template compiler", () => {
     }
 
     function inline(index: number) {
-        return DOM.createInterpolationPlaceholder(index);
+        return Markup.interpolation(index);
     }
 
     function binding(result = "result") {

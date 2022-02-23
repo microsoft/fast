@@ -49,7 +49,7 @@ export class AttributeDefinition implements Accessor {
     onAttributeChangedCallback(element: HTMLElement, value: any): void;
     readonly Owner: Function;
     setValue(source: HTMLElement, newValue: any): void;
-}
+    }
 
 // @public
 export type AttributeMode = "reflect" | "boolean" | "fromView";
@@ -209,11 +209,6 @@ export const DOM: Readonly<{
     supportsAdoptedStyleSheets: boolean;
     setHTMLPolicy(policy: TrustedTypesPolicy): void;
     createHTML(html: string): string;
-    isMarker(node: Node): node is Comment;
-    extractDirectiveIndexFromMarker(node: Comment): number;
-    createInterpolationPlaceholder(index: number): string;
-    createCustomAttributePlaceholder(index: number): string;
-    createBlockPlaceholder(index: number): string;
     setUpdateMode(isAsync: boolean): void;
     queueUpdate(callable: Callable): void;
     nextUpdate(): Promise<void>;
@@ -355,13 +350,22 @@ export class HTMLView<TSource = any, TParent = any, TGrandparent = any> implemen
     unbind(): void;
 }
 
-// @public (undocumented)
+// @public
 export abstract class InlinableHTMLDirective extends AspectedHTMLDirective {
     // (undocumented)
     abstract readonly binding: Binding;
     // (undocumented)
     abstract readonly rawAspect?: string;
 }
+
+// @public
+export const Markup: Readonly<{
+    marker: string;
+    interpolation(index: number): string;
+    attribute(index: number): string;
+    comment(index: number): string;
+    indexFromComment(node: Comment): number;
+}>;
 
 // Warning: (ae-internal-missing-underscore) The name "Mutable" should be prefixed with an underscore because the declaration is marked as @internal
 //
@@ -418,6 +422,12 @@ export const onChange: BindingConfig<DefaultBindingOptions> & BindingConfigResol
 export const oneTime: BindingConfig<DefaultBindingOptions> & BindingConfigResolver<DefaultBindingOptions>;
 
 // @public
+export const Parser: Readonly<{
+    parse(value: string, directives: readonly HTMLDirective[]): (string | HTMLDirective)[] | null;
+    aggregate(parts: (string | HTMLDirective)[]): InlinableHTMLDirective;
+}>;
+
+// @public
 export interface PartialFASTElementDefinition {
     readonly attributes?: (AttributeConfiguration | string)[];
     readonly elementOptions?: ElementDefinitionOptions;
@@ -457,14 +467,14 @@ export class RepeatBehavior<TSource = any> implements Behavior, Subscriber {
     // @internal (undocumented)
     handleChange(source: any, args: Splice[]): void;
     unbind(): void;
-}
+    }
 
 // @public
 export class RepeatDirective<TSource = any> extends HTMLDirective {
     constructor(itemsBinding: Binding, templateBinding: Binding<TSource, SyntheticViewTemplate>, options: RepeatOptions);
     createBehavior(targets: ViewBehaviorTargets): RepeatBehavior<TSource>;
     createPlaceholder: (index: number) => string;
-}
+    }
 
 // @public
 export interface RepeatOptions {
@@ -607,13 +617,14 @@ export class ViewTemplate<TSource = any, TParent = any, TGrandparent = any> impl
     readonly directives: ReadonlyArray<HTMLDirective>;
     readonly html: string | HTMLTemplateElement;
     render(source: TSource, host: Node, hostBindingTarget?: Element): HTMLView<TSource, TParent, TGrandparent>;
-}
+    }
 
 // @public
 export function volatile(target: {}, name: string | Accessor, descriptor: PropertyDescriptor): PropertyDescriptor;
 
 // @public
 export function when<TSource = any, TReturn = any>(binding: Binding<TSource, TReturn>, templateOrTemplateBinding: SyntheticViewTemplate | Binding<TSource, SyntheticViewTemplate>): CaptureType<TSource>;
+
 
 // (No @packageDocumentation comment for this package)
 
