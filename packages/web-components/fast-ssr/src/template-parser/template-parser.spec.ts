@@ -18,23 +18,44 @@ test.describe("parseTemplateToOpCodes", () => {
 	});
 
 	interface Fixture {
+		title: string,
 		input: ViewTemplate,
 		result: Op[];
 	}
 
 	const fixtures: ( (()=> Fixture) | Fixture )[] = [
-		{input: html`<p>Hello world</p>`, result: [{type: OpType.text, value: "<p>Hello world</p>"}]},
-		{input: html`<!DOCTYPE html><html><head></head><body></body></html>`, result: [{type: OpType.text, value: "<!DOCTYPE html><html><head></head><body></body></html>"}]},
+		{
+			title: "should emit a single text op for a template with no bindings or directives",
+			input: html`<p>Hello world</p>`, result: [{type: OpType.text, value: "<p>Hello world</p>"}]
+		},
+		{
+			title: "should emit doctype, html, head, and body elements as part of text op",
+			input: html`<!DOCTYPE html><html><head></head><body></body></html>`, result: [{type: OpType.text, value: "<!DOCTYPE html><html><head></head><body></body></html>"}]
+		},
 		() => {
 			const input = html`${() => "hello world"}`;
-			return { input, result: [{ type: OpType.directive, directive: input.directives[0]}] } as Fixture
-		}
+			return {
+				title: "should emit a directive op from a binding",
+				input,
+				result: [{ type: OpType.directive, directive: input.directives[0]}] } as Fixture
+		},
+		() => {
+			const input = html`<p>${() => "hello world"}</p>`;
+			return {
+				title: "should sandwich directive ops between text ops when binding native element content",
+				input,
+				result: [
+					{ type: OpType.text, value: "<p>"},
+					{ type: OpType.directive, directive: input.directives[0]},
+					{ type: OpType.text, value: "</p>"},
+			]} as Fixture
+		},
 	];
 
 	fixtures.forEach((fixture, index) => {
-		const { input, result } = typeof fixture === "function" ? fixture() : fixture;
-		test(`should parse template to op codes for fixture ${index}`, () => {
+		const { input, result, title } = typeof fixture === "function" ? fixture() : fixture;
+		test(title, () => {
 			expect(parseTemplateToOpCodes(input)).toEqual(result)
-		})
+		});
 	})
 })
