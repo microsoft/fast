@@ -1,0 +1,7 @@
+{
+  "type": "none",
+  "comment": "Update the API report based on foundation updates for FAST element 2.0",
+  "packageName": "@microsoft/fast-components",
+  "email": "7559015+janechu@users.noreply.github.com",
+  "dependentChangeType": "none"
+}
