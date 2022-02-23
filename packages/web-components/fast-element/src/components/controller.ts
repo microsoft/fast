@@ -333,8 +333,8 @@ export class Controller extends PropertyChangeNotifier {
      */
     public onAttributeChangedCallback(
         name: string,
-        oldValue: string,
-        newValue: string
+        oldValue: string | null,
+        newValue: string | null
     ): void {
         const attrDef = this.definition.attributeLookup[name];
 
