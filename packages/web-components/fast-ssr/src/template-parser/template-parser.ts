@@ -4,30 +4,27 @@
  */
 import {
     AspectedHTMLDirective,
-    DOM,
     HTMLDirective,
-    ViewTemplate,
     Markup,
-    attr,
     Parser,
+    ViewTemplate,
 } from "@microsoft/fast-element";
 import {
+    Attribute,
     DefaultTreeCommentNode,
-    DefaultTreeDocumentFragment,
     DefaultTreeElement,
     DefaultTreeNode,
     DefaultTreeParentNode,
     DefaultTreeTextNode,
     parseFragment,
-    Attribute,
 } from "parse5";
+import { AttributeType, attributeTypeRegExp } from "./attributes.js";
 import {
     extractInterpolationMarkerId,
     isInterpolationMarker,
     isMarkerComment,
 } from "./marker.js";
 import { Op, OpType } from "./op-codes.js";
-import { AttributeType, attributeTypeRegExp } from "./attributes.js";
 
 const opCache: Map<ViewTemplate, Op[]> = new Map();
 
@@ -80,14 +77,6 @@ function traverse(node: DefaultTreeNode | DefaultTreeParentNode, visitor: Visito
  */
 function isCommentNode(node: DefaultTreeNode): node is DefaultTreeCommentNode {
     return node.nodeName === "#comment";
-}
-
-/**
- * Test if a node is a document fragment node.
- * @param node - the node to test
- */
-function isDocumentFragment(node: DefaultTreeNode): node is DefaultTreeDocumentFragment {
-    return node.nodeName === "#document-fragment";
 }
 
 /**
@@ -186,7 +175,7 @@ class TemplateParser implements Visitor {
         }
 
         if (attributes.dynamic.length) {
-            for (let attr of attributes.dynamic) {
+            for (const attr of attributes.dynamic) {
                 const location = node.sourceCodeLocation!.attrs[attr.name];
                 this.flushTo(location.startOffset);
                 const attributeType = this.getAttributeType(attr);
@@ -223,7 +212,13 @@ class TemplateParser implements Visitor {
     }
 
     private getAttributeType(attr: Attribute): AttributeType {
-        const [, prefix] = attributeTypeRegExp.exec(attr.name)!;
+        const result = attributeTypeRegExp.exec(attr.name);
+
+        if (result === null) {
+            throw new Error("Failure to determine attribute binding type");
+        }
+
+        const prefix = result[1];
 
         return prefix === ":"
             ? AttributeType.idl
@@ -336,7 +331,6 @@ export function parseTemplateToOpCodes(template: ViewTemplate): Op[] {
         throw new Error(`Error parsing template:\n${template}`);
     }
 
-    const ops: Op[] = [];
     const visitor = new TemplateParser(html, template.directives);
     opCache.set(template, visitor.opCodes);
 
