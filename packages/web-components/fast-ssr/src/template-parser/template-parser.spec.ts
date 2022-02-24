@@ -3,7 +3,8 @@ import "@lit-labs/ssr/lib/install-global-dom-shim.js";
 import { test, expect } from "@playwright/test";
 import { parseTemplateToOpCodes} from "./template-parser.js";
 import { ViewTemplate, html, FASTElement, customElement } from "@microsoft/fast-element"
-import { Op, OpType } from "./op-codes.js";
+import { Op, OpType, CustomElementOpenOp, AttributeBindingOp } from "./op-codes.js";
+import { AttributeType } from "./attributes.js";
 
 @customElement("hello-world")
 class HelloWorld extends FASTElement {}
@@ -56,5 +57,23 @@ test.describe("parseTemplateToOpCodes", () => {
 				{type: OpType.customElementClose},
 				{type: OpType.text, value: "</hello-world>"}
 			])
-	})
+	});
+	test("should emit static attributes of a custom element custom element open, close, attribute, and shadow ops for a defined custom element", () => {
+			const input = html`<hello-world string-value="test" bool-value></hello-world>`;
+			const code = parseTemplateToOpCodes(input).find((op) => op.type ===OpType.customElementOpen) as CustomElementOpenOp | undefined ;
+			expect(code).not.toBeUndefined();
+			expect(code?.staticAttributes.get("string-value")).toBe("test");
+			expect(code?.staticAttributes.get("bool-value")).toBe("");
+			expect(code?.staticAttributes.size).toBe(2);
+	});
+	test("should emit attributes binding ops for a native element with attribute bindings", () => {
+			const input = html`<p string-value="${x => "value"}" ?bool-value="${x => false}" :property-value="${x => "value"}" @event="${x => {}}"></p>`;
+			const codes = parseTemplateToOpCodes(input).filter(x => x.type === OpType.attributeBinding) as AttributeBindingOp[];
+
+			expect(codes.length).toBe(4);
+			expect(codes[0].attributeType).toBe(AttributeType.content);
+			expect(codes[1].attributeType).toBe(AttributeType.booleanContent);
+			expect(codes[2].attributeType).toBe(AttributeType.idl);
+			expect(codes[3].attributeType).toBe(AttributeType.event);
+	});
 })

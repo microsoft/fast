@@ -1,4 +1,5 @@
 import { AspectedHTMLDirective } from "@microsoft/fast-element";
+import { AttributeType } from "./attributes";
 
 /**
  * Allows fast identification of operation types
@@ -8,6 +9,7 @@ export enum OpType {
     customElementClose,
     customElementAttributes,
     customElementShadow,
+    attributeBinding,
     directive,
     text,
 }
@@ -62,6 +64,17 @@ export type DirectiveOp = {
 };
 
 /**
+ * Operation to emit a bound attribute
+ */
+export type AttributeBindingOp = {
+    type: OpType.attributeBinding;
+    directive: AspectedHTMLDirective;
+    name: string;
+    attributeType: AttributeType;
+    useCustomElementInstance: boolean;
+};
+
+/**
  * Operation to emit to custom-element attributes
  */
 export type CustomElementAttributes = {
@@ -69,6 +82,7 @@ export type CustomElementAttributes = {
 };
 
 export type Op =
+    | AttributeBindingOp
     | TextOp
     | CustomElementOpenOp
     | CustomElementCloseOp

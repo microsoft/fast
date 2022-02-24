@@ -8,6 +8,8 @@ import {
     HTMLDirective,
     ViewTemplate,
     Markup,
+    attr,
+    Parser,
 } from "@microsoft/fast-element";
 import {
     DefaultTreeCommentNode,
@@ -17,6 +19,7 @@ import {
     DefaultTreeParentNode,
     DefaultTreeTextNode,
     parseFragment,
+    Attribute,
 } from "parse5";
 import {
     extractInterpolationMarkerId,
@@ -24,6 +27,7 @@ import {
     isMarkerComment,
 } from "./marker.js";
 import { Op, OpType } from "./op-codes.js";
+import { AttributeType, attributeTypeRegExp } from "./attributes.js";
 
 const opCache: Map<ViewTemplate, Op[]> = new Map();
 
@@ -149,6 +153,21 @@ class TemplateParser implements Visitor {
         let writeTag = false;
         const { tagName } = node;
         let ctor: typeof HTMLElement | undefined;
+        const attributes: {
+            static: Map<string, string>;
+            dynamic: Attribute[];
+        } = node.attrs.reduce(
+            (prev, current) => {
+                if (isInterpolationMarker(current)) {
+                    prev.dynamic.push(current);
+                } else {
+                    prev.static.set(current.name, current.value);
+                }
+
+                return prev;
+            },
+            { static: new Map(), dynamic: [] as Attribute[] }
+        );
 
         // If custom element
         if (node.tagName.includes("-")) {
@@ -161,10 +180,29 @@ class TemplateParser implements Visitor {
                     type: OpType.customElementOpen,
                     tagName,
                     ctor,
-                    staticAttributes: new Map(
-                        node.attrs.map(attr => [attr.name, attr.value])
-                    ),
+                    staticAttributes: attributes.static,
                 });
+            }
+        }
+
+        if (attributes.dynamic.length) {
+            for (let attr of attributes.dynamic) {
+                const location = node.sourceCodeLocation!.attrs[attr.name];
+                this.flushTo(location.startOffset);
+                const attributeType = this.getAttributeType(attr);
+                const parsed = Parser.parse(attr.value, this.directives);
+
+                if (parsed !== null) {
+                    writeTag = true;
+                    this.opCodes.push({
+                        type: OpType.attributeBinding,
+                        name: attr.name,
+                        directive: Parser.aggregate(parsed),
+                        attributeType,
+                        useCustomElementInstance: Boolean(node.isDefinedCustomElement),
+                    });
+                    this.skipTo(location.endOffset);
+                }
             }
         }
 
@@ -182,6 +220,18 @@ class TemplateParser implements Visitor {
         if (ctor !== undefined) {
             this.opCodes.push({ type: OpType.customElementShadow });
         }
+    }
+
+    private getAttributeType(attr: Attribute): AttributeType {
+        const [, prefix] = attributeTypeRegExp.exec(attr.name)!;
+
+        return prefix === ":"
+            ? AttributeType.idl
+            : prefix === "?"
+            ? AttributeType.booleanContent
+            : prefix === "@"
+            ? AttributeType.event
+            : AttributeType.content;
     }
 
     /**
