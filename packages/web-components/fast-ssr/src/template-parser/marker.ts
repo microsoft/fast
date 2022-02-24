@@ -1,6 +1,7 @@
-import { marker } from "@microsoft/fast-element";
 import { DefaultTreeCommentNode } from "parse5";
+import { Markup } from "@microsoft/fast-element";
 
+const { marker } = Markup;
 const blockMarker = new RegExp(`${marker}:\\d+`);
 export function isMarkerComment(node: DefaultTreeCommentNode): boolean {
     return blockMarker.test(node.data);

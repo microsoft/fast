@@ -7,6 +7,7 @@ import {
     DOM,
     HTMLDirective,
     ViewTemplate,
+    Markup,
 } from "@microsoft/fast-element";
 import {
     DefaultTreeCommentNode,
@@ -112,7 +113,7 @@ class TemplateParser implements Visitor {
             const directive = this.directives[
                 this.isInterpolationMarkerNode(node)
                     ? extractInterpolationMarkerId(node)!
-                    : DOM.extractDirectiveIndexFromMarker((node as unknown) as Comment)
+                    : Markup.indexFromComment((node as unknown) as Comment)
             ];
             if (directive instanceof AspectedHTMLDirective) {
                 this.opCodes.push({ type: OpType.directive, directive });
