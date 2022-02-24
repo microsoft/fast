@@ -5,8 +5,6 @@ import { SubscriberSet } from "./notifier";
 import type { Notifier } from "./notifier";
 import { Observable } from "./observable";
 
-let arrayObservationEnabled = false;
-
 function adjustIndex(changeRecord: Splice, array: any[]): Splice {
     let index = changeRecord.index;
     const arrayLength = array.length;
@@ -98,11 +96,13 @@ class ArrayObserver extends SubscriberSet {
  * @public
  */
 export function enableArrayObservation(): void {
-    if (arrayObservationEnabled) {
+    const arrayProto = Array.prototype;
+
+    if ((arrayProto as any).$fastObservation) {
         return;
     }
 
-    arrayObservationEnabled = true;
+    (arrayProto as any).$fastObservation = true;
 
     Observable.setArrayObserverFactory(
         (collection: any[]): Notifier => {
@@ -110,7 +110,6 @@ export function enableArrayObservation(): void {
         }
     );
 
-    const arrayProto = Array.prototype;
     const pop = arrayProto.pop;
     const push = arrayProto.push;
     const reverse = arrayProto.reverse;
