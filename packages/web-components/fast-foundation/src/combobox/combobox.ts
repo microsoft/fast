@@ -1,4 +1,4 @@
-import { attr, Observable, observable } from "@microsoft/fast-element";
+import { attr, DOM, Observable, observable } from "@microsoft/fast-element";
 import type { SyntheticViewTemplate } from "@microsoft/fast-element";
 import { limit, uniqueId } from "@microsoft/fast-web-utilities";
 import type { FoundationElementDefinition } from "../foundation-element";
@@ -105,7 +105,7 @@ export class Combobox extends FormAssociatedCombobox {
     }
 
     /**
-     * The unique id of the internal listbox.
+     * The unique id for the internal listbox element.
      *
      * @internal
      */
@@ -135,11 +135,15 @@ export class Combobox extends FormAssociatedCombobox {
     public open: boolean = false;
     protected openChanged() {
         if (this.open) {
-            this.ariaControls = this.listbox.id;
+            this.ariaControls = this.listboxId;
             this.ariaExpanded = "true";
 
             this.setPositioning();
             this.focusAndScrollOptionIntoView();
+
+            // focus is directed to the element when `open` is changed programmatically
+            DOM.queueUpdate(() => this.focus());
+
             return;
         }
 
@@ -280,10 +284,6 @@ export class Combobox extends FormAssociatedCombobox {
         if (this.value) {
             this.initialValue = this.value;
         }
-
-        if (!this.listbox.id) {
-            this.listbox.id = uniqueId("listbox-");
-        }
     }
 
     /**
@@ -340,7 +340,7 @@ export class Combobox extends FormAssociatedCombobox {
             this.control.focus();
             if (this.firstSelectedOption) {
                 requestAnimationFrame(() => {
-                    this.firstSelectedOption.scrollIntoView({ block: "nearest" });
+                    this.firstSelectedOption?.scrollIntoView({ block: "nearest" });
                 });
             }
         }
