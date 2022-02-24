@@ -5,6 +5,8 @@ import { SubscriberSet } from "./notifier";
 import type { Notifier } from "./notifier";
 import { Observable } from "./observable";
 
+let arrayObservationEnabled = false;
+
 function adjustIndex(changeRecord: Splice, array: any[]): Splice {
     let index = changeRecord.index;
     const arrayLength = array.length;
@@ -96,19 +98,27 @@ class ArrayObserver extends SubscriberSet {
  * @public
  */
 export function enableArrayObservation(): void {
-    const arrayProto = Array.prototype;
-
-    if ((arrayProto as any).$fastObservation) {
+    if (arrayObservationEnabled) {
         return;
     }
 
-    (arrayProto as any).$fastObservation = true;
+    arrayObservationEnabled = true;
 
     Observable.setArrayObserverFactory(
         (collection: any[]): Notifier => {
             return new ArrayObserver(collection);
         }
     );
+
+    const arrayProto = Array.prototype;
+
+    // Don't patch Array if it has already been patched
+    // by another copy of fast-element.
+    if ((arrayProto as any).$fastObservation) {
+        return;
+    }
+
+    (arrayProto as any).$fastObservation = true;
 
     const pop = arrayProto.pop;
     const push = arrayProto.push;
