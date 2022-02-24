@@ -110,25 +110,25 @@ export function enableArrayObservation(): void {
         }
     );
 
-    const arrayProto = Array.prototype;
+    const proto = Array.prototype;
 
     // Don't patch Array if it has already been patched
     // by another copy of fast-element.
-    if ((arrayProto as any).$fastObservation) {
+    if ((proto as any).$fastPatch) {
         return;
     }
 
-    (arrayProto as any).$fastObservation = true;
+    (proto as any).$fastPatch = true;
 
-    const pop = arrayProto.pop;
-    const push = arrayProto.push;
-    const reverse = arrayProto.reverse;
-    const shift = arrayProto.shift;
-    const sort = arrayProto.sort;
-    const splice = arrayProto.splice;
-    const unshift = arrayProto.unshift;
+    const pop = proto.pop;
+    const push = proto.push;
+    const reverse = proto.reverse;
+    const shift = proto.shift;
+    const sort = proto.sort;
+    const splice = proto.splice;
+    const unshift = proto.unshift;
 
-    arrayProto.pop = function () {
+    proto.pop = function () {
         const notEmpty = this.length > 0;
         const methodCallResult = pop.apply(this, arguments as any);
         const o = (this as any).$fastController as ArrayObserver;
@@ -140,7 +140,7 @@ export function enableArrayObservation(): void {
         return methodCallResult;
     };
 
-    arrayProto.push = function () {
+    proto.push = function () {
         const methodCallResult = push.apply(this, arguments as any);
         const o = (this as any).$fastController as ArrayObserver;
 
@@ -156,7 +156,7 @@ export function enableArrayObservation(): void {
         return methodCallResult;
     };
 
-    arrayProto.reverse = function () {
+    proto.reverse = function () {
         let oldArray;
         const o = (this as any).$fastController as ArrayObserver;
 
@@ -174,7 +174,7 @@ export function enableArrayObservation(): void {
         return methodCallResult;
     };
 
-    arrayProto.shift = function () {
+    proto.shift = function () {
         const notEmpty = this.length > 0;
         const methodCallResult = shift.apply(this, arguments as any);
         const o = (this as any).$fastController as ArrayObserver;
@@ -186,7 +186,7 @@ export function enableArrayObservation(): void {
         return methodCallResult;
     };
 
-    arrayProto.sort = function () {
+    proto.sort = function () {
         let oldArray;
         const o = (this as any).$fastController as ArrayObserver;
 
@@ -204,7 +204,7 @@ export function enableArrayObservation(): void {
         return methodCallResult;
     };
 
-    arrayProto.splice = function () {
+    proto.splice = function () {
         const methodCallResult = splice.apply(this, arguments as any);
         const o = (this as any).$fastController as ArrayObserver;
 
@@ -224,7 +224,7 @@ export function enableArrayObservation(): void {
         return methodCallResult;
     };
 
-    arrayProto.unshift = function () {
+    proto.unshift = function () {
         const methodCallResult = unshift.apply(this, arguments as any);
         const o = (this as any).$fastController as ArrayObserver;
 
