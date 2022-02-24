@@ -178,6 +178,8 @@ const arrayOverrides = {
     },
 };
 
+let needsEnablement = true;
+
 /* eslint-disable prefer-rest-params */
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 /**
@@ -189,19 +191,20 @@ const arrayOverrides = {
  * @public
  */
 export function enableArrayObservation(): void {
-    if ((proto as any).$fastObservation) {
-        return;
-    }
+    if (needsEnablement) {
+        needsEnablement = false;
 
-    (proto as any).$fastObservation = true;
+        Observable.setArrayObserverFactory(
+            (collection: any[]): Notifier => {
+                return new ArrayObserver(collection);
+            }
+        );
 
-    Observable.setArrayObserverFactory(
-        (collection: any[]): Notifier => {
-            return new ArrayObserver(collection);
+        if (!(proto as any).$fastPatch) {
+            (proto as any).$fastPatch = true;
+            Object.assign(proto, arrayOverrides);
         }
-    );
-
-    Object.assign(proto, arrayOverrides);
+    }
 }
 /* eslint-enable prefer-rest-params */
 /* eslint-enable @typescript-eslint/explicit-function-return-type */
