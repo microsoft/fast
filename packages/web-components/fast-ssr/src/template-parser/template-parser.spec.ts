@@ -76,4 +76,14 @@ test.describe("parseTemplateToOpCodes", () => {
         expect(codes[2].attributeType).toBe(AttributeType.idl);
         expect(codes[3].attributeType).toBe(AttributeType.event);
     });
+    test("should emit attributes binding ops for a custom element with attribute bindings", () => {
+        const input = html`<hello-world string-value="${x => "value"}" ?bool-value="${x => false}" :property-value="${x => "value"}" @event="${x => {}}"></hello-world>`;
+        const codes = parseTemplateToOpCodes(input).filter(x => x.type === OpType.attributeBinding) as AttributeBindingOp[];
+
+        expect(codes.length).toBe(4);
+        expect(codes[0].attributeType).toBe(AttributeType.content);
+        expect(codes[1].attributeType).toBe(AttributeType.booleanContent);
+        expect(codes[2].attributeType).toBe(AttributeType.idl);
+        expect(codes[3].attributeType).toBe(AttributeType.event);
+    });
 })
