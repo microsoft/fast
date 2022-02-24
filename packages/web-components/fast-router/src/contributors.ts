@@ -1,7 +1,7 @@
 import {
     Behavior,
     HTMLDirective,
-    DOM,
+    Markup,
     ViewBehaviorTargets,
 } from "@microsoft/fast-element";
 import {
@@ -50,7 +50,7 @@ class NavigationContributorDirective extends HTMLDirective {
     }
 
     createPlaceholder(index: number) {
-        return DOM.createCustomAttributePlaceholder(index);
+        return Markup.attribute(index);
     }
 
     createBehavior(targets: ViewBehaviorTargets) {
