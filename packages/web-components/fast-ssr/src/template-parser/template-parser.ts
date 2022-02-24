@@ -33,6 +33,12 @@ interface Visitor {
     complete?: () => void;
 }
 
+declare module "parse5" {
+    interface DefaultTreeElement {
+        isDefinedCustomElement?: boolean;
+    }
+}
+
 // Will be 0 when starting and ending traversal.
 let counter = 0;
 /**
@@ -122,13 +128,60 @@ class TemplateParser implements Visitor {
                     `Unexpected directive type encountered. It is a ${directive}.`
                 );
             }
+
             this.skipTo(node.sourceCodeLocation.endOffset);
+        } else if (isElementNode(node)) {
+            this.collectElementOps(node);
         }
     }
 
-    public leave(node: DefaultTreeNode): void {}
+    public leave(node: DefaultTreeNode): void {
+        if (isElementNode(node) && node.isDefinedCustomElement) {
+            this.opCodes.push({ type: OpType.customElementClose });
+        }
+    }
+
     public complete() {
         this.flushTo();
+    }
+
+    private collectElementOps(node: DefaultTreeElement): void {
+        let writeTag = false;
+        const { tagName } = node;
+        let ctor: typeof HTMLElement | undefined;
+
+        // If custom element
+        if (node.tagName.includes("-")) {
+            ctor = customElements.get(tagName);
+
+            if (ctor !== undefined) {
+                writeTag = true;
+                node.isDefinedCustomElement = true;
+                this.opCodes.push({
+                    type: OpType.customElementOpen,
+                    tagName,
+                    ctor,
+                    staticAttributes: new Map(
+                        node.attrs.map(attr => [attr.name, attr.value])
+                    ),
+                });
+            }
+        }
+
+        if (writeTag) {
+            if (ctor) {
+                this.flushTo(node.sourceCodeLocation!.startTag.endOffset - 1);
+                this.opCodes.push({ type: OpType.customElementAttributes });
+                this.flush(">");
+                this.skipTo(node.sourceCodeLocation!.startTag.endOffset);
+            } else {
+                this.flushTo(node.sourceCodeLocation!.startTag.endOffset);
+            }
+        }
+
+        if (ctor !== undefined) {
+            this.opCodes.push({ type: OpType.customElementShadow });
+        }
     }
 
     /**
