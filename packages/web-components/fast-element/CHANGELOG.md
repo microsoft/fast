@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-element
 
-This log was last generated on Sun, 23 Jan 2022 07:13:56 GMT and should not be manually modified.
+This log was last generated on Thu, 24 Feb 2022 22:21:55 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.7.1
+
+Thu, 24 Feb 2022 22:21:55 GMT
+
+### Patches
+
+- fix: prevent duplicative array observation patch (roeisenb@microsoft.com)
 
 ## 1.7.0
 

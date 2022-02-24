@@ -2,6 +2,33 @@
   "name": "@microsoft/fast-foundation",
   "entries": [
     {
+      "date": "Thu, 24 Feb 2022 22:21:55 GMT",
+      "tag": "@microsoft/fast-foundation_v2.33.5",
+      "version": "2.33.5",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Format improvement to match standards",
+            "author": "16669785+awentzel@users.noreply.github.com",
+            "commit": "59fa5dada57dc5f3313d34ff6bd2d9b0bac0dbfb",
+            "package": "@microsoft/fast-foundation"
+          },
+          {
+            "comment": "fix combobox and select position when set after init",
+            "author": "corylaviska@microsoft.com",
+            "commit": "ebe1234f5590f90a77493ff5ae0a30f850876f0a",
+            "package": "@microsoft/fast-foundation"
+          },
+          {
+            "comment": "allow programmatic control of the open property for select and combobox",
+            "author": "john.kreitlow@microsoft.com",
+            "commit": "2caf345e541780600f1f961c17a2be2a6300a02c",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sun, 20 Feb 2022 07:16:20 GMT",
       "tag": "@microsoft/fast-foundation_v2.33.4",
       "version": "2.33.4",

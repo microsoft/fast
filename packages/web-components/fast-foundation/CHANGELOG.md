@@ -1,8 +1,18 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Sun, 20 Feb 2022 07:16:20 GMT and should not be manually modified.
+This log was last generated on Thu, 24 Feb 2022 22:21:55 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.33.5
+
+Thu, 24 Feb 2022 22:21:55 GMT
+
+### Patches
+
+- Format improvement to match standards (16669785+awentzel@users.noreply.github.com)
+- fix combobox and select position when set after init (corylaviska@microsoft.com)
+- allow programmatic control of the open property for select and combobox (john.kreitlow@microsoft.com)
 
 ## 2.33.4
 
