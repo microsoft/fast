@@ -1,8 +1,24 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Thu, 10 Feb 2022 07:12:01 GMT and should not be manually modified.
+This log was last generated on Sun, 20 Feb 2022 07:16:20 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.33.4
+
+Sun, 20 Feb 2022 07:16:20 GMT
+
+### Patches
+
+- tree view events (scomea@microsoft.com)
+
+## 2.33.3
+
+Tue, 15 Feb 2022 07:11:28 GMT
+
+### Patches
+
+- disable noImplicitAny in fast-foundation (mathieu.lavoie@shopify.com)
 
 ## 2.33.2
 

@@ -604,7 +604,7 @@ export class Combobox extends FormAssociatedCombobox {
      * @remarks
      * Overrides: `Listbox.selectedOptionsChanged`
      */
-    public selectedOptionsChanged(prev, next): void {
+    public selectedOptionsChanged(prev: unknown, next: HTMLElement[]): void {
         if (this.$fastController.isConnected) {
             this._options.forEach(o => {
                 o.selected = next.includes(o);
@@ -620,7 +620,7 @@ export class Combobox extends FormAssociatedCombobox {
      *
      * @internal
      */
-    public slottedOptionsChanged(prev, next): void {
+    public slottedOptionsChanged(prev: Element[], next: HTMLElement[]): void {
         super.slottedOptionsChanged(prev, next);
         this.updateValue();
     }

@@ -211,7 +211,7 @@ This code uses the FAST Design System to register the `<fast-card>` and `<fast-b
       line-height: var(--type-ramp-plus-5-line-height);
     }
 
-    fast-card > fast-button{
+    fast-card > fast-button {
       align-self: flex-end;
     }
   </style>

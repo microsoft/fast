@@ -98,7 +98,7 @@ export class MenuItem extends FoundationElement {
      */
     @attr({ mode: "boolean" })
     public checked: boolean;
-    private checkedChanged(oldValue, newValue): void {
+    private checkedChanged(oldValue: boolean, newValue: boolean): void {
         if (this.$fastController.isConnected) {
             this.$emit("change");
         }
