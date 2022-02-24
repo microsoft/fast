@@ -243,7 +243,7 @@ export class Toolbar extends FoundationElement {
     private static reduceFocusableItems(
         elements: HTMLElement[],
         element: FASTElement & HTMLElement
-    ) {
+    ): HTMLElement[] {
         const isRoleRadio = element.getAttribute("role") === "radio";
         const isFocusableFastElement =
             element.$fastController?.definition.shadowOptions?.delegatesFocus;

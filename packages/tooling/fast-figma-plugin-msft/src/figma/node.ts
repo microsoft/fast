@@ -1,6 +1,7 @@
 import { ColorRGBA64, parseColor } from "@microsoft/fast-colors";
-import { PluginNode, PluginNodeData } from "../core/node";
-import { RecipeData, RecipeTypes } from "../core/recipe-registry";
+import { AppliedRecipes, PluginNodeData, RecipeEvaluation } from "../core/model";
+import { PluginNode } from "../core/node";
+import { DesignTokenType } from "../core/ui/design-token-registry";
 
 function isNodeType<T extends BaseNode>(type: NodeType): (node: BaseNode) => node is T {
     return (node: BaseNode): node is T => node.type === type;
@@ -12,6 +13,7 @@ export const isSliceNode = isNodeType<SliceNode>("SLICE");
 export const isFrameNode = isNodeType<FrameNode>("FRAME");
 export const isGroupNode = isNodeType<GroupNode>("GROUP");
 export const isComponentNode = isNodeType<ComponentNode>("COMPONENT");
+export const isComponentSetNode = isNodeType<ComponentNode>("COMPONENT_SET");
 export const isInstanceNode = isNodeType<InstanceNode>("INSTANCE");
 export const isBooleanOperationNode = isNodeType<BooleanOperationNode>(
     "BOOLEAN_OPERATION"
@@ -30,6 +32,7 @@ export function isSceneNode(node: BaseNode): node is SceneNode {
         isFrameNode,
         isGroupNode,
         isComponentNode,
+        isComponentSetNode,
         isInstanceNode,
         isBooleanOperationNode,
         isVectorNode,
@@ -51,7 +54,8 @@ export function canHaveChildren(
     | GroupNode
     | BooleanOperationNode
     | InstanceNode
-    | ComponentNode {
+    | ComponentNode
+    | ComponentSetNode {
     return [
         isDocumentNode,
         isPageNode,
@@ -60,6 +64,7 @@ export function canHaveChildren(
         isBooleanOperationNode,
         isInstanceNode,
         isComponentNode,
+        isComponentSetNode,
     ].some((test: (node: BaseNode) => boolean) => test(node));
 }
 
@@ -67,25 +72,56 @@ export class FigmaPluginNode extends PluginNode {
     public id: string;
     public type: string;
     private node: BaseNode;
-    constructor(id: string) {
-        super();
-        const node = figma.getNodeById(id);
 
-        if (node === null) {
-            throw new Error(`Node of ID "${id} does not exist`);
-        }
+    constructor(node: BaseNode) {
+        super();
+
+        // console.log("  new FigmaPluginNode", node.id, node.name, node);
 
         this.node = node;
-        this.id = id;
+        this.id = node.id;
         this.type = node.type;
+
+        this.loadLocalDesignTokens();
+        this.loadRecipes();
+        this.loadRecipeEvaluations();
+
+        // If it's an instance node, the `recipes` may also include main component settings. Deduplicate them.
+        if (isInstanceNode(this.node)) {
+            const mainNode = (this.node as InstanceNode).mainComponent;
+            if (mainNode) {
+                this._componentRecipes = new AppliedRecipes();
+                const componentRecipesJson = mainNode.getPluginData("recipes");
+                this._componentRecipes.deserialize(componentRecipesJson);
+
+                this._componentRecipes.forEach((recipe, recipeId) => {
+                    this._recipes.delete(recipeId);
+                });
+            }
+        }
+
+        if (this._recipes.size) {
+            // console.log("    recipes", this._recipes.serialize());
+        }
+
+        // TODO This isn't working and is causing a lot of token evaluation issues. It would be nice if _some_ layers
+        // in the design tool could have a fixed color and provide that to the tokens, but the logic for _which_
+        // layers turns out to be pretty complicated.
+        // For now the requirement is basing the adaptive design with a "layer" recipe.
+        // this.setupFillColor();
+    }
+
+    public canHaveChildren(): boolean {
+        return canHaveChildren(this.node);
     }
 
     public children(): FigmaPluginNode[] {
         if (canHaveChildren(this.node)) {
             const children: FigmaPluginNode[] = [];
 
+            // console.log("  get children");
             for (const child of this.node.children) {
-                children.push(new FigmaPluginNode(child.id));
+                children.push(new FigmaPluginNode(child));
             }
 
             return children;
@@ -94,40 +130,76 @@ export class FigmaPluginNode extends PluginNode {
         }
     }
 
-    public supports(): Array<RecipeTypes | "designSystem"> {
-        return Object.keys(RecipeTypes)
-            .concat("designSystem")
-            .filter((key: string) => {
-                switch (key) {
-                    case RecipeTypes.backgroundFills:
-                    case RecipeTypes.strokeFills:
-                    case RecipeTypes.cornerRadius:
-                    case "designSystem":
-                        return [
-                            isFrameNode,
-                            isRectangleNode,
-                            isPolygonNode,
-                            isStarNode,
-                            isComponentNode,
-                            isInstanceNode,
-                        ].some((test: (node: BaseNode) => boolean) => test(this.node));
-                    case RecipeTypes.foregroundFills:
-                        return isTextNode(this.node);
-                    default:
-                        return false;
-                }
-            }) as Array<RecipeTypes | "designSystem">;
+    public supports(): Array<DesignTokenType> {
+        return Object.keys(DesignTokenType).filter((key: string) => {
+            switch (key) {
+                case DesignTokenType.layerFill:
+                case DesignTokenType.backgroundFill:
+                case DesignTokenType.strokeFill:
+                case DesignTokenType.cornerRadius:
+                    return [
+                        (node: BaseNode) => isDocumentNode(node),
+                        (node: BaseNode) =>
+                            isPageNode(node) && key === DesignTokenType.backgroundFill,
+                        isFrameNode,
+                        isRectangleNode,
+                        isPolygonNode,
+                        isStarNode,
+                        isComponentNode,
+                        isInstanceNode,
+                    ].some((test: (node: BaseNode) => boolean) => test(this.node));
+                case DesignTokenType.foregroundFill:
+                case DesignTokenType.fontName:
+                case DesignTokenType.fontSize:
+                case DesignTokenType.lineHeight:
+                    return isTextNode(this.node);
+                case DesignTokenType.designToken:
+                    return true;
+                default:
+                    return false;
+            }
+        }) as Array<DesignTokenType>;
     }
 
-    public paint(data: RecipeData): void {
+    public paint(data: RecipeEvaluation): void {
         switch (data.type) {
-            case RecipeTypes.strokeFills:
-            case RecipeTypes.backgroundFills:
-            case RecipeTypes.foregroundFills:
+            case DesignTokenType.strokeFill:
+            case DesignTokenType.layerFill:
+            case DesignTokenType.backgroundFill:
+            case DesignTokenType.foregroundFill:
                 this.paintColor(data);
                 break;
-            case RecipeTypes.cornerRadius:
+            case DesignTokenType.cornerRadius:
                 this.paintCornerRadius(data);
+                break;
+            case DesignTokenType.fontName:
+                {
+                    // TODO Handle font list better and font weight
+                    const families = data.value.split(",");
+                    const fontName = { family: families[0], style: "Regular" };
+                    figma.loadFontAsync(fontName).then(x => {
+                        (this.node as TextNode).fontName = fontName;
+                    });
+                }
+                break;
+            case DesignTokenType.fontSize:
+                {
+                    const textNode = this.node as TextNode;
+                    figma.loadFontAsync(textNode.fontName as FontName).then(x => {
+                        textNode.fontSize = Number.parseFloat(data.value);
+                    });
+                }
+                break;
+            case DesignTokenType.lineHeight:
+                {
+                    const textNode = this.node as TextNode;
+                    figma.loadFontAsync(textNode.fontName as FontName).then(x => {
+                        textNode.lineHeight = {
+                            value: Number.parseFloat(data.value),
+                            unit: "PIXELS",
+                        };
+                    });
+                }
                 break;
             default:
                 throw new Error(`Recipe could not be painted ${JSON.stringify(data)}`);
@@ -141,10 +213,11 @@ export class FigmaPluginNode extends PluginNode {
             return null;
         }
 
-        return new FigmaPluginNode(parent.id);
+        // console.log("  get parent");
+        return new FigmaPluginNode(parent);
     }
 
-    public getEffectiveBackgroundColor(): ColorRGBA64 {
+    public getEffectiveFillColor(): ColorRGBA64 | null {
         let node: BaseNode | null = this.node;
 
         while (node !== null) {
@@ -153,12 +226,10 @@ export class FigmaPluginNode extends PluginNode {
 
                 if (Array.isArray(fills)) {
                     const paints: SolidPaint[] = fills.filter(
-                        (fill: Paint) => fill.type === "SOLID"
+                        (fill: Paint) => fill.type === "SOLID" && fill.visible
                     );
 
-                    /**
-                     * TODO: how do we process multiple paints?
-                     */
+                    // TODO: how do we process multiple paints?
                     if (paints.length === 1) {
                         const parsed = ColorRGBA64.fromObject(paints[0].color);
                         if (parsed instanceof ColorRGBA64) {
@@ -171,31 +242,39 @@ export class FigmaPluginNode extends PluginNode {
             node = node.parent;
         }
 
-        return new ColorRGBA64(1, 1, 1);
+        return null;
     }
 
-    protected getPluginData<K extends keyof PluginNodeData>(key: K): PluginNodeData[K] {
-        try {
-            return JSON.parse(this.node.getPluginData(key as string));
-        } catch (e) {
-            return key === "designSystem" ? ({} as any) : [];
+    protected getPluginData<K extends keyof PluginNodeData>(key: K): string | undefined {
+        let value: string | undefined = this.node.getSharedPluginData(
+            "fast",
+            key as string
+        );
+        if (value === "") {
+            value = undefined;
         }
-    }
+        // console.log("    getPluginData", this.node.id, this.node.type, key, value);
 
-    protected setPluginData<K extends keyof PluginNodeData>(
-        key: K,
-        value: PluginNodeData[K]
-    ): void {
-        let raw: string;
-        try {
-            raw = JSON.stringify(value);
-        } catch (e) {
-            raw = "";
+        if (isInstanceNode(this.node)) {
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            // const mainNode = (this.node as InstanceNode).mainComponent!;
+            // console.log("    getPluginData", mainNode.id, mainNode.type, key, mainNode.getPluginData(key));
         }
-        this.node.setPluginData(key, raw);
+
+        return value;
     }
 
-    private paintColor(data: RecipeData): void {
+    protected setPluginData<K extends keyof PluginNodeData>(key: K, value: string): void {
+        // console.log("    setPluginData", this.node.id, this.node.type, key, value);
+        this.node.setSharedPluginData("fast", key, value);
+    }
+
+    protected deletePluginData<K extends keyof PluginNodeData>(key: K): void {
+        // console.log("    deletePluginData", this.node.id, this.node.type, key);
+        this.node.setSharedPluginData("fast", key, "");
+    }
+
+    private paintColor(data: RecipeEvaluation): void {
         const color = parseColor(data.value);
 
         if (color === null) {
@@ -217,17 +296,18 @@ export class FigmaPluginNode extends PluginNode {
             },
         };
         switch (data.type) {
-            case RecipeTypes.backgroundFills:
-            case RecipeTypes.foregroundFills:
+            case DesignTokenType.layerFill:
+            case DesignTokenType.backgroundFill:
+            case DesignTokenType.foregroundFill:
                 (this.node as any).fills = [paint];
                 break;
-            case RecipeTypes.strokeFills:
+            case DesignTokenType.strokeFill:
                 (this.node as any).strokes = [paint];
                 break;
         }
     }
 
-    private paintCornerRadius(data: RecipeData): void {
+    private paintCornerRadius(data: RecipeEvaluation): void {
         (this.node as any).cornerRadius = data.value;
     }
 }

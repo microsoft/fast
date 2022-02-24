@@ -1,8 +1,40 @@
 # Change Log - @microsoft/fast-components
 
-This log was last generated on Wed, 09 Feb 2022 07:14:00 GMT and should not be manually modified.
+This log was last generated on Sun, 20 Feb 2022 07:16:20 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.21.6
+
+Sun, 20 Feb 2022 07:16:20 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.33.4 (scomea@microsoft.com)
+
+## 2.21.5
+
+Tue, 15 Feb 2022 07:11:28 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.33.3 (mathieu.lavoie@shopify.com)
+
+## 2.21.4
+
+Sun, 13 Feb 2022 07:13:39 GMT
+
+### Patches
+
+- use html instead of string templating (mathieulavoie94@gmail.com)
+
+## 2.21.3
+
+Thu, 10 Feb 2022 07:12:01 GMT
+
+### Patches
+
+- remove strictPropertyInitialization in components (mathieu.lavoie@shopify.com)
 
 ## 2.21.2
 
