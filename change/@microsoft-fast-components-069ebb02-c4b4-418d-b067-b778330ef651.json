@@ -1,7 +1,0 @@
-{
-  "type": "none",
-  "comment": "wait for stable state in horizontal-scroll playwright test",
-  "packageName": "@microsoft/fast-components",
-  "email": "john.kreitlow@microsoft.com",
-  "dependentChangeType": "none"
-}

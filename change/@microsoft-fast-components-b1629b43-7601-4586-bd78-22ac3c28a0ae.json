@@ -1,7 +1,0 @@
-{
-  "type": "none",
-  "comment": "allow programmatic control of the open property for select and combobox",
-  "packageName": "@microsoft/fast-components",
-  "email": "john.kreitlow@microsoft.com",
-  "dependentChangeType": "none"
-}

@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "Format improvement to match standards",
-  "packageName": "@microsoft/fast-foundation",
-  "email": "16669785+awentzel@users.noreply.github.com",
-  "dependentChangeType": "patch"
-}
