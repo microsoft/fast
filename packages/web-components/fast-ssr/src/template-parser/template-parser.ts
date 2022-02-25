@@ -156,9 +156,9 @@ export function parseTemplateToOpCodes(template: ViewTemplate): Op[] {
      * below, so store in a new var that is just a string type
      */
     const templateString = html;
-    const ast = parseFragment(html, { sourceCodeLocationInfo: true });
+    const nodeTree = parseFragment(html, { sourceCodeLocationInfo: true });
 
-    if (!("nodeName" in ast)) {
+    if (!("nodeName" in nodeTree)) {
         // I'm not sure when exactly this is encountered but the type system seems to say it's possible.
         throw new Error(`Error parsing template:\n${template}`);
     }
@@ -310,7 +310,7 @@ export function parseTemplateToOpCodes(template: ViewTemplate): Op[] {
         lastOffset = offset;
     }
 
-    traverse(ast, {
+    traverse(nodeTree, {
         visit(node: DefaultTreeNode): void {
             if (isCommentMarkerNode(node)) {
                 flushTo(node.sourceCodeLocation.startOffset);
