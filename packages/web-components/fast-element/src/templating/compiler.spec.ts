@@ -10,6 +10,7 @@ import { bind, HTMLBindingDirective } from "./binding";
 import { compileTemplate } from "./compiler";
 import type { HTMLDirective } from "./html-directive";
 import { html } from "./template";
+import { when } from "./when";
 
 describe("The template compiler", () => {
     function compile(html: string, directives: HTMLDirective[]) {
@@ -174,6 +175,52 @@ describe("The template compiler", () => {
                         );
                     }
                 }
+            });
+        });
+    });
+
+    context("when compiling FAST bindings", () => {
+        const scenarios = [
+            {
+                type: "when",
+                html: `<div>${inline(0)}</div>`,
+                directives: [when(() => true, html`test`) as HTMLBindingDirective],
+                fragment: `<div>test</div>`,
+                targetIds: ['r.1'],
+                childCount: 2,
+            },
+        ];
+
+        scenarios.forEach(x => {
+            it(`handles ${x.type} binding expression(s)`, () => {
+                const { fragment, factories } = compile(x.html, x.directives);
+
+                expect(toHTML(fragment)).to.equal(x.fragment);
+                expect(toHTML(fragment.cloneNode(true) as DocumentFragment)).to.equal(
+                    x.fragment
+                );
+
+                if (x.childCount) {
+                    expect(fragment.childNodes.length).to.equal(x.childCount);
+                    expect(fragment.cloneNode(true).childNodes.length).to.equal(
+                        x.childCount
+                    );
+                }
+
+                const length = factories.length;
+
+                expect(length).to.equal(x.directives.length);
+
+                if (x.targetIds) {
+                    expect(length).to.equal(x.targetIds.length);
+
+                    for (let i = 0; i < length; ++i) {
+                        expect(factories[i].targetId).to.equal(
+                            x.targetIds[i]
+                        );
+                    }
+                }
+                console.log("FRAGMENT", fragment);
             });
         });
     });
