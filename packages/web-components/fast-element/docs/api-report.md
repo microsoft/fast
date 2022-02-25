@@ -160,7 +160,7 @@ export class Controller extends PropertyChangeNotifier {
     // @internal
     constructor(element: HTMLElement, definition: FASTElementDefinition);
     addBehaviors(behaviors: ReadonlyArray<Behavior<HTMLElement>>): void;
-    addStyles(styles: ElementStyles | HTMLStyleElement): void;
+    addStyles(styles: ElementStyles | HTMLStyleElement | null | undefined): void;
     readonly definition: FASTElementDefinition;
     readonly element: HTMLElement;
     emit(type: string, detail?: any, options?: Omit<CustomEventInit, "detail">): void | boolean;
@@ -170,7 +170,7 @@ export class Controller extends PropertyChangeNotifier {
     onConnectedCallback(): void;
     onDisconnectedCallback(): void;
     removeBehaviors(behaviors: ReadonlyArray<Behavior<HTMLElement>>, force?: boolean): void;
-    removeStyles(styles: ElementStyles | HTMLStyleElement): void;
+    removeStyles(styles: ElementStyles | HTMLStyleElement | null | undefined): void;
     get styles(): ElementStyles | null;
     set styles(value: ElementStyles | null);
     get template(): ElementViewTemplate | null;
