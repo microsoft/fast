@@ -60,18 +60,18 @@ export interface Behavior<TSource = any, TParent = any, TGrandparent = any> {
     unbind(source: TSource, context: ExecutionContext<TParent, TGrandparent>): void;
 }
 
-// @public (undocumented)
+// @alpha (undocumented)
 export function bind<T = any>(binding: Binding<T>, config?: BindingConfig<T> | DefaultBindingOptions): CaptureType<T>;
 
 // @public
 export type Binding<TSource = any, TReturn = any, TParent = any> = (source: TSource, context: ExecutionContext<TParent>) => TReturn;
 
-// @public (undocumented)
+// @alpha (undocumented)
 export type BindingBehaviorFactory = {
     createBehavior(targets: ViewBehaviorTargets): ViewBehavior;
 };
 
-// @public (undocumented)
+// @alpha (undocumented)
 export interface BindingConfig<T = any> {
     // (undocumented)
     mode: BindingMode;
@@ -79,7 +79,7 @@ export interface BindingConfig<T = any> {
     options: any;
 }
 
-// @public (undocumented)
+// @alpha (undocumented)
 export interface BindingMode {
     // (undocumented)
     attribute: BindingType;
@@ -104,7 +104,7 @@ export interface BindingObserver<TSource = any, TReturn = any, TParent = any> ex
 
 // Warning: (ae-forgotten-export) The symbol "HTMLBindingDirective" needs to be exported by the entry point index.d.ts
 //
-// @public (undocumented)
+// @alpha (undocumented)
 export type BindingType = (directive: HTMLBindingDirective) => BindingBehaviorFactory;
 
 // @public
@@ -196,7 +196,7 @@ export function customElement(nameOrDef: string | PartialFASTElementDefinition):
 // @public
 export type DecoratorAttributeConfiguration = Omit<AttributeConfiguration, "property">;
 
-// @public (undocumented)
+// @alpha (undocumented)
 export type DefaultBindingOptions = {
     capture?: boolean;
 };
@@ -415,10 +415,10 @@ export interface ObservationRecord {
 
 // Warning: (ae-forgotten-export) The symbol "BindingConfigResolver" needs to be exported by the entry point index.d.ts
 //
-// @public (undocumented)
+// @alpha (undocumented)
 export const onChange: BindingConfig<DefaultBindingOptions> & BindingConfigResolver<DefaultBindingOptions>;
 
-// @public (undocumented)
+// @alpha (undocumented)
 export const oneTime: BindingConfig<DefaultBindingOptions> & BindingConfigResolver<DefaultBindingOptions>;
 
 // @public
