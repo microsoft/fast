@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-element
 
-This log was last generated on Thu, 24 Feb 2022 22:21:55 GMT and should not be manually modified.
+This log was last generated on Fri, 25 Feb 2022 17:09:32 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.7.2
+
+Fri, 25 Feb 2022 17:09:32 GMT
+
+### Patches
+
+- fix: defend against for/in use on arrays (roeisenb@microsoft.com)
 
 ## 1.7.1
 
