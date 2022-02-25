@@ -3,8 +3,7 @@
  * with changes as necessary to render FAST components. A big thank you to those who contributed to lit's code above.
  */
 import {
-    AspectedHTMLDirective,
-    HTMLDirective,
+    InlinableHTMLDirective,
     Markup,
     Parser,
     ViewTemplate,
@@ -19,19 +18,17 @@ import {
     parseFragment,
 } from "parse5";
 import { AttributeType, attributeTypeRegExp } from "./attributes.js";
-import {
-    extractInterpolationMarkerId,
-    isInterpolationMarker,
-    isMarkerComment,
-} from "./marker.js";
+import { isInterpolationMarker, isMarkerComment } from "./marker.js";
 import { Op, OpType } from "./op-codes.js";
 
+/**
+ * Cache the results of template parsing.
+ */
 const opCache: Map<ViewTemplate, Op[]> = new Map();
 
 interface Visitor {
     visit?: (node: DefaultTreeNode) => void;
     leave?: (node: DefaultTreeNode) => void;
-    complete?: () => void;
 }
 
 declare module "parse5" {
@@ -40,15 +37,12 @@ declare module "parse5" {
     }
 }
 
-// Will be 0 when starting and ending traversal.
-let counter = 0;
 /**
  * Traverses a tree of nodes depth-first, invoking callbacks from visitor for each node as it goes.
  * @param node - the node to traverse
  * @param visitor - callbacks to be invoked during node traversal
  */
 function traverse(node: DefaultTreeNode | DefaultTreeParentNode, visitor: Visitor) {
-    counter++;
     if (visitor.visit) {
         visitor.visit(node);
     }
@@ -62,12 +56,6 @@ function traverse(node: DefaultTreeNode | DefaultTreeParentNode, visitor: Visito
 
     if (visitor.leave) {
         visitor.leave(node);
-    }
-
-    counter--;
-
-    if (counter === 0 && visitor.complete) {
-        visitor.complete();
     }
 }
 
@@ -95,215 +83,54 @@ function isElementNode(node: DefaultTreeNode): node is DefaultTreeElement {
     return (node as DefaultTreeElement).tagName !== undefined;
 }
 
-class TemplateParser implements Visitor {
-    private lastOffset: number | undefined = 0;
-    private get lastOp() {
-        return this.opCodes[this.opCodes.length - 1];
+/**
+ * Determines which type of attribute binding an attribute is
+ * @param attr - The attribute to inspect
+ */
+function getAttributeType(attr: Attribute): AttributeType {
+    const result = attributeTypeRegExp.exec(attr.name);
+
+    if (result === null) {
+        throw new Error("Failure to determine attribute binding type");
     }
 
-    constructor(private template: string, private directives: readonly HTMLDirective[]) {}
+    const prefix = result[1];
 
-    public readonly opCodes: Op[] = [];
-    public visit(node: DefaultTreeNode): void {
-        if (this.isInterpolationMarkerNode(node) || this.isCommentMarkerNode(node)) {
-            this.flushTo(node.sourceCodeLocation.startOffset);
+    return prefix === ":"
+        ? AttributeType.idl
+        : prefix === "?"
+        ? AttributeType.booleanContent
+        : prefix === "@"
+        ? AttributeType.event
+        : AttributeType.content;
+}
 
-            // TODO: clean this up when new APIs from fast-element get integrated.
-            const directive = this.directives[
-                this.isInterpolationMarkerNode(node)
-                    ? extractInterpolationMarkerId(node)!
-                    : Markup.indexFromComment((node as unknown) as Comment)
-            ];
-            if (directive instanceof AspectedHTMLDirective) {
-                this.opCodes.push({ type: OpType.directive, directive });
-            } else {
-                throw new Error(
-                    `Unexpected directive type encountered. It is a ${directive}.`
-                );
-            }
+/**
+ * Tests if a node is an interpolated FAST marker
+ * @param node - the node to test
+ */
+function isInterpolationMarkerNode(
+    node: DefaultTreeNode
+): node is Required<DefaultTreeTextNode> {
+    return (
+        isTextNode(node) &&
+        node.sourceCodeLocation !== undefined &&
+        isInterpolationMarker(node)
+    );
+}
 
-            this.skipTo(node.sourceCodeLocation.endOffset);
-        } else if (isElementNode(node)) {
-            this.collectElementOps(node);
-        }
-    }
-
-    public leave(node: DefaultTreeNode): void {
-        if (isElementNode(node) && node.isDefinedCustomElement) {
-            this.opCodes.push({ type: OpType.customElementClose });
-        }
-    }
-
-    public complete() {
-        this.flushTo();
-    }
-
-    private collectElementOps(node: DefaultTreeElement): void {
-        let writeTag = false;
-        const { tagName } = node;
-        let ctor: typeof HTMLElement | undefined;
-        const attributes: {
-            static: Map<string, string>;
-            dynamic: Attribute[];
-        } = node.attrs.reduce(
-            (prev, current) => {
-                if (isInterpolationMarker(current)) {
-                    prev.dynamic.push(current);
-                } else {
-                    prev.static.set(current.name, current.value);
-                }
-
-                return prev;
-            },
-            { static: new Map(), dynamic: [] as Attribute[] }
-        );
-
-        // If custom element
-        if (node.tagName.includes("-")) {
-            ctor = customElements.get(tagName);
-
-            if (ctor !== undefined) {
-                writeTag = true;
-                node.isDefinedCustomElement = true;
-                this.opCodes.push({
-                    type: OpType.customElementOpen,
-                    tagName,
-                    ctor,
-                    staticAttributes: attributes.static,
-                });
-            }
-        }
-
-        if (attributes.dynamic.length) {
-            for (const attr of attributes.dynamic) {
-                const location = node.sourceCodeLocation!.attrs[attr.name];
-                this.flushTo(location.startOffset);
-                const attributeType = this.getAttributeType(attr);
-                const parsed = Parser.parse(attr.value, this.directives);
-
-                if (parsed !== null) {
-                    writeTag = true;
-                    this.opCodes.push({
-                        type: OpType.attributeBinding,
-                        name: attr.name,
-                        directive: Parser.aggregate(parsed),
-                        attributeType,
-                        useCustomElementInstance: Boolean(node.isDefinedCustomElement),
-                    });
-                    this.skipTo(location.endOffset);
-                }
-            }
-        }
-
-        if (writeTag) {
-            if (ctor) {
-                this.flushTo(node.sourceCodeLocation!.startTag.endOffset - 1);
-                this.opCodes.push({ type: OpType.customElementAttributes });
-                this.flush(">");
-                this.skipTo(node.sourceCodeLocation!.startTag.endOffset);
-            } else {
-                this.flushTo(node.sourceCodeLocation!.startTag.endOffset);
-            }
-        }
-
-        if (ctor !== undefined) {
-            this.opCodes.push({ type: OpType.customElementShadow });
-        }
-    }
-
-    private getAttributeType(attr: Attribute): AttributeType {
-        const result = attributeTypeRegExp.exec(attr.name);
-
-        if (result === null) {
-            throw new Error("Failure to determine attribute binding type");
-        }
-
-        const prefix = result[1];
-
-        return prefix === ":"
-            ? AttributeType.idl
-            : prefix === "?"
-            ? AttributeType.booleanContent
-            : prefix === "@"
-            ? AttributeType.event
-            : AttributeType.content;
-    }
-
-    /**
-     * Flushes a string value to op codes
-     * @param value - The value to flush
-     */
-    private flush(value: string): void {
-        const last = this.lastOp;
-        if (last?.type === OpType.text) {
-            last.value += value;
-        } else {
-            this.opCodes.push({ type: OpType.text, value });
-        }
-    }
-
-    /**
-     * Flush template content from lastIndex to provided offset
-     * @param offset - the offset to flush to
-     */
-    private flushTo(offset?: number) {
-        if (this.lastOffset === undefined) {
-            throw new Error(
-                `Cannot flush template content from a  last offset that is ${typeof this
-                    .lastOffset}.`
-            );
-        }
-
-        const prev = this.lastOffset;
-        this.lastOffset = offset;
-        const value = this.template.substring(prev, offset);
-
-        if (value !== "") {
-            this.flush(value);
-        }
-    }
-
-    private skipTo(offset: number) {
-        if (this.lastOffset === undefined) {
-            throw new Error("Could not skip from an undefined offset");
-        }
-        if (offset < this.lastOffset) {
-            throw new Error(`offset must be greater than lastOffset.
-                offset: ${offset}
-                lastOffset: ${this.lastOffset}
-            `);
-        }
-
-        this.lastOffset = offset;
-    }
-
-    /**
-     * Tests if a node is an interpolated FAST marker
-     * @param node - the node to test
-     */
-    private isInterpolationMarkerNode(
-        node: DefaultTreeNode
-    ): node is Required<DefaultTreeTextNode> {
-        return (
-            isTextNode(node) &&
-            node.sourceCodeLocation !== undefined &&
-            isInterpolationMarker(node)
-        );
-    }
-
-    /**
-     * Tests if a node is a FAST comment marker
-     * @param node - the node to test
-     */
-    private isCommentMarkerNode(
-        node: DefaultTreeNode
-    ): node is Required<DefaultTreeCommentNode> {
-        return (
-            isCommentNode(node) &&
-            node.sourceCodeLocation !== undefined &&
-            isMarkerComment(node)
-        );
-    }
+/**
+ * Tests if a node is a FAST comment marker
+ * @param node - the node to test
+ */
+function isCommentMarkerNode(
+    node: DefaultTreeNode
+): node is Required<DefaultTreeCommentNode> {
+    return (
+        isCommentNode(node) &&
+        node.sourceCodeLocation !== undefined &&
+        isMarkerComment(node)
+    );
 }
 
 /**
@@ -324,6 +151,11 @@ export function parseTemplateToOpCodes(template: ViewTemplate): Op[] {
         );
     }
 
+    /**
+     * Typescript thinks that `html` is a string | HTMLTemplateElement inside the functions defined
+     * below, so store in a new var that is just a string type
+     */
+    const templateString = html;
     const ast = parseFragment(html, { sourceCodeLocationInfo: true });
 
     if (!("nodeName" in ast)) {
@@ -331,10 +163,189 @@ export function parseTemplateToOpCodes(template: ViewTemplate): Op[] {
         throw new Error(`Error parsing template:\n${template}`);
     }
 
-    const visitor = new TemplateParser(html, template.directives);
-    opCache.set(template, visitor.opCodes);
+    /**
+     * Tracks the offset location in the source template string where the last
+     * flushing / skip took place.
+     */
+    let lastOffset: number | undefined = 0;
 
-    traverse(ast, visitor);
+    /**
+     * Collection of op codes
+     */
+    const opCodes: Op[] = [];
+    opCache.set(template, opCodes);
 
-    return visitor.opCodes;
+    const { directives } = template;
+
+    /**
+     * Parses an Element node, pushing all op codes for the element into
+     * the collection of ops for the template
+     * @param node - The element node to parse
+     */
+    function parseElementNode(node: DefaultTreeElement): void {
+        // Track whether the opening tag of an element should be augmented.
+        // All constructable custom elements will need to be augmented,
+        // as well as any element with attribute bindings
+        let augmentOpeningTag = false;
+        const { tagName } = node;
+        let ctor: typeof HTMLElement | undefined;
+
+        // Sort attributes by whether they're related to a binding or if they have
+        // static value
+        const attributes: {
+            static: Map<string, string>;
+            dynamic: Attribute[];
+        } = node.attrs.reduce(
+            (prev, current) => {
+                if (isInterpolationMarker(current)) {
+                    prev.dynamic.push(current);
+                } else {
+                    prev.static.set(current.name, current.value);
+                }
+
+                return prev;
+            },
+            { static: new Map(), dynamic: [] as Attribute[] }
+        );
+
+        // Special processing for any custom element
+        if (node.tagName.includes("-")) {
+            ctor = customElements.get(tagName);
+
+            if (ctor !== undefined) {
+                augmentOpeningTag = true;
+                node.isDefinedCustomElement = true;
+                opCodes.push({
+                    type: OpType.customElementOpen,
+                    tagName,
+                    ctor,
+                    staticAttributes: attributes.static,
+                });
+            }
+        }
+
+        // Push attribute binding op codes for any attributes that
+        // are dynamic
+        if (attributes.dynamic.length) {
+            for (const attr of attributes.dynamic) {
+                const location = node.sourceCodeLocation!.attrs[attr.name];
+                flushTo(location.startOffset);
+                const attributeType = getAttributeType(attr);
+                const parsed = Parser.parse(attr.value, directives);
+
+                if (parsed !== null) {
+                    augmentOpeningTag = true;
+                    opCodes.push({
+                        type: OpType.attributeBinding,
+                        name: attr.name,
+                        directive: Parser.aggregate(parsed),
+                        attributeType,
+                        useCustomElementInstance: Boolean(node.isDefinedCustomElement),
+                    });
+                    skipTo(location.endOffset);
+                }
+            }
+        }
+
+        if (augmentOpeningTag) {
+            if (ctor) {
+                flushTo(node.sourceCodeLocation!.startTag.endOffset - 1);
+                opCodes.push({ type: OpType.customElementAttributes });
+                flush(">");
+                skipTo(node.sourceCodeLocation!.startTag.endOffset);
+            } else {
+                flushTo(node.sourceCodeLocation!.startTag.endOffset);
+            }
+        }
+
+        if (ctor !== undefined) {
+            opCodes.push({ type: OpType.customElementShadow });
+        }
+    }
+
+    /**
+     * Flushes a string value to op codes
+     * @param value - The value to flush
+     */
+    function flush(value: string): void {
+        const last = opCodes[opCodes.length - 1];
+        if (last?.type === OpType.text) {
+            last.value += value;
+        } else {
+            opCodes.push({ type: OpType.text, value });
+        }
+    }
+
+    /**
+     * Flush template content from lastIndex to provided offset
+     * @param offset - the offset to flush to
+     */
+    function flushTo(offset?: number) {
+        if (lastOffset === undefined) {
+            throw new Error(
+                `Cannot flush template content from a  last offset that is ${typeof lastOffset}.`
+            );
+        }
+
+        const prev = lastOffset;
+        lastOffset = offset;
+        const value = templateString.substring(prev, offset);
+
+        if (value !== "") {
+            flush(value);
+        }
+    }
+
+    function skipTo(offset: number) {
+        if (lastOffset === undefined) {
+            throw new Error("Could not skip from an undefined offset");
+        }
+        if (offset < lastOffset) {
+            throw new Error(`offset must be greater than lastOffset.
+                offset: ${offset}
+                lastOffset: ${lastOffset}
+            `);
+        }
+
+        lastOffset = offset;
+    }
+
+    traverse(ast, {
+        visit(node: DefaultTreeNode): void {
+            if (isCommentMarkerNode(node)) {
+                flushTo(node.sourceCodeLocation.startOffset);
+                const directive = directives[
+                    Markup.indexFromComment((node as unknown) as Comment)
+                ] as InlinableHTMLDirective;
+
+                opCodes.push({ type: OpType.directive, directive });
+                skipTo(node.sourceCodeLocation.endOffset);
+            } else if (isInterpolationMarkerNode(node)) {
+                flushTo(node.sourceCodeLocation.startOffset);
+                const parsed = Parser.parse(node.value, directives);
+
+                if (parsed) {
+                    opCodes.push({
+                        type: OpType.directive,
+                        directive: Parser.aggregate(parsed),
+                    });
+                }
+
+                skipTo(node.sourceCodeLocation.endOffset);
+            } else if (isElementNode(node)) {
+                parseElementNode(node);
+            }
+        },
+
+        leave(node: DefaultTreeNode): void {
+            if (isElementNode(node) && node.isDefinedCustomElement) {
+                opCodes.push({ type: OpType.customElementClose });
+            }
+        },
+    });
+
+    // Flush the remaining string content before returning op codes.
+    flushTo();
+
+    return opCodes;
 }

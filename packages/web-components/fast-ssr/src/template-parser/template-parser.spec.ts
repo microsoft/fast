@@ -2,8 +2,8 @@
 import "@lit-labs/ssr/lib/install-global-dom-shim.js";
 import { test, expect } from "@playwright/test";
 import { parseTemplateToOpCodes} from "./template-parser.js";
-import { ViewTemplate, html, FASTElement, customElement } from "@microsoft/fast-element"
-import { Op, OpType, CustomElementOpenOp, AttributeBindingOp } from "./op-codes.js";
+import { ViewTemplate, html, FASTElement, customElement, defaultExecutionContext } from "@microsoft/fast-element"
+import { Op, OpType, CustomElementOpenOp, AttributeBindingOp, DirectiveOp } from "./op-codes.js";
 import { AttributeType } from "./attributes.js";
 
 @customElement("hello-world")
@@ -30,8 +30,16 @@ test.describe("parseTemplateToOpCodes", () => {
     test("should emit a directive op from a binding", () => {
             const input = html`${() => "hello world"}`;
             expect(parseTemplateToOpCodes(input)).toEqual([{ type: OpType.directive, directive: input.directives[0]}])
-    })
+    });
+    test("should emit a directive op from text and a binding ", () => {
+            const input = html`Hello ${() => "World"}.`;
 
+            const codes = parseTemplateToOpCodes(input);
+            const code = codes[0] as DirectiveOp;
+            expect(codes.length).toBe(1);
+            expect(code.type).toBe(OpType.directive);
+            expect(code.directive.binding(null, defaultExecutionContext)).toBe("Hello World.")
+    });
     test("should sandwich directive ops between text ops when binding native element content", () => {
 
             const input = html`<p>${() => "hello world"}</p>`;

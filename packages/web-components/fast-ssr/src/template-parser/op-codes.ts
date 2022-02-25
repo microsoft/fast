@@ -1,5 +1,5 @@
-import { AspectedHTMLDirective } from "@microsoft/fast-element";
-import { AttributeType } from "./attributes";
+import { InlinableHTMLDirective } from "@microsoft/fast-element";
+import { AttributeType } from "./attributes.js";
 
 /**
  * Allows fast identification of operation types
@@ -60,7 +60,7 @@ export type CustomElementShadowOp = {
  */
 export type DirectiveOp = {
     type: OpType.directive;
-    directive: AspectedHTMLDirective;
+    directive: InlinableHTMLDirective;
 };
 
 /**
@@ -68,7 +68,7 @@ export type DirectiveOp = {
  */
 export type AttributeBindingOp = {
     type: OpType.attributeBinding;
-    directive: AspectedHTMLDirective;
+    directive: InlinableHTMLDirective;
     name: string;
     attributeType: AttributeType;
     useCustomElementInstance: boolean;
