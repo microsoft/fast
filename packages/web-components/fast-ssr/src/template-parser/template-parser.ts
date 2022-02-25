@@ -147,7 +147,7 @@ export function parseTemplateToOpCodes(template: ViewTemplate): Op[] {
 
     if (typeof html !== "string") {
         throw new Error(
-            "@microsoft/fast-ssr does not support rendering a ViewTemplate with an HTMLTemplateElement html source."
+            "@microsoft/fast-ssr only supports rendering a ViewTemplate with a string source."
         );
     }
 
