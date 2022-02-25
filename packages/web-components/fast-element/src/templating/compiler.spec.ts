@@ -220,7 +220,6 @@ describe("The template compiler", () => {
                         );
                     }
                 }
-                console.log("FRAGMENT", fragment);
             });
         });
     });
