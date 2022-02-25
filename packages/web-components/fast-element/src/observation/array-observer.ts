@@ -34,7 +34,11 @@ class ArrayObserver extends SubscriberSet {
 
     constructor(source: any[]) {
         super(source);
-        (source as any).$fastController = this;
+
+        Reflect.defineProperty(source, "$fastController", {
+            value: this,
+            enumerable: false,
+        });
     }
 
     public addSplice(splice: Splice): void {
@@ -118,7 +122,10 @@ export function enableArrayObservation(): void {
         return;
     }
 
-    (proto as any).$fastPatch = true;
+    Reflect.defineProperty(proto, "$fastPatch", {
+        value: 1,
+        enumerable: false,
+    });
 
     const pop = proto.pop;
     const push = proto.push;
