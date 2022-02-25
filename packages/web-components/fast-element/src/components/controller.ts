@@ -77,11 +77,24 @@ export class Controller extends PropertyChangeNotifier {
      * @remarks
      * This value can only be accurately read after connect but can be set at any time.
      */
-    get template(): ElementViewTemplate | null {
+    public get template(): ElementViewTemplate | null {
+        // 1. Template overrides take top precedence.
+        if (this._template === null) {
+            const definition = this.definition;
+
+            if ((this.element as any).resolveTemplate) {
+                // 2. Allow for element instance overrides next.
+                this._template = (this.element as any).resolveTemplate();
+            } else if (definition.template) {
+                // 3. Default to the static definition.
+                this._template = definition.template ?? null;
+            }
+        }
+
         return this._template;
     }
 
-    set template(value: ElementViewTemplate | null) {
+    public set template(value: ElementViewTemplate | null) {
         if (this._template === value) {
             return;
         }
@@ -98,11 +111,24 @@ export class Controller extends PropertyChangeNotifier {
      * @remarks
      * This value can only be accurately read after connect but can be set at any time.
      */
-    get styles(): ElementStyles | null {
+    public get styles(): ElementStyles | null {
+        // 1. Styles overrides take top precedence.
+        if (this._styles === null) {
+            const definition = this.definition;
+
+            if ((this.element as any).resolveStyles) {
+                // 2. Allow for element instance overrides next.
+                this._styles = (this.element as any).resolveStyles();
+            } else if (definition.styles) {
+                // 3. Default to the static definition.
+                this._styles = definition.styles ?? null;
+            }
+        }
+
         return this._styles;
     }
 
-    set styles(value: ElementStyles | null) {
+    public set styles(value: ElementStyles | null) {
         if (this._styles === value) {
             return;
         }
@@ -113,7 +139,7 @@ export class Controller extends PropertyChangeNotifier {
 
         this._styles = value;
 
-        if (!this.needsInitialization && value !== null) {
+        if (!this.needsInitialization) {
             this.addStyles(value);
         }
     }
@@ -165,7 +191,11 @@ export class Controller extends PropertyChangeNotifier {
      * Adds styles to this element. Providing an HTMLStyleElement will attach the element instance to the shadowRoot.
      * @param styles - The styles to add.
      */
-    public addStyles(styles: ElementStyles | HTMLStyleElement): void {
+    public addStyles(styles: ElementStyles | HTMLStyleElement | null | undefined): void {
+        if (!styles) {
+            return;
+        }
+
         const target =
             getShadowRoot(this.element) ||
             ((this.element.getRootNode() as any) as StyleTarget);
@@ -186,7 +216,13 @@ export class Controller extends PropertyChangeNotifier {
      * Removes styles from this element. Providing an HTMLStyleElement will detach the element instance from the shadowRoot.
      * @param styles - the styles to remove.
      */
-    public removeStyles(styles: ElementStyles | HTMLStyleElement): void {
+    public removeStyles(
+        styles: ElementStyles | HTMLStyleElement | null | undefined
+    ): void {
+        if (!styles) {
+            return;
+        }
+
         const target =
             getShadowRoot(this.element) ||
             ((this.element.getRootNode() as any) as StyleTarget);
@@ -381,41 +417,8 @@ export class Controller extends PropertyChangeNotifier {
             this.boundObservables = null;
         }
 
-        const definition = this.definition;
-
-        // 1. Template overrides take top precedence.
-        if (this._template === null) {
-            if ((this.element as any).resolveTemplate) {
-                // 2. Allow for element instance overrides next.
-                this._template = (this.element as any).resolveTemplate();
-            } else if (definition.template) {
-                // 3. Default to the static definition.
-                this._template = definition.template ?? null;
-            }
-        }
-
-        // If we have a template after the above process, render it.
-        // If there's no template, then the element author has opted into
-        // custom rendering and they will managed the shadow root's content themselves.
-        if (this._template !== null) {
-            this.renderTemplate(this._template);
-        }
-
-        // 1. Styles overrides take top precedence.
-        if (this._styles === null) {
-            if ((this.element as any).resolveStyles) {
-                // 2. Allow for element instance overrides next.
-                this._styles = (this.element as any).resolveStyles();
-            } else if (definition.styles) {
-                // 3. Default to the static definition.
-                this._styles = definition.styles ?? null;
-            }
-        }
-
-        // If we have styles after the above process, add them.
-        if (this._styles !== null) {
-            this.addStyles(this._styles);
-        }
+        this.renderTemplate(this.template);
+        this.addStyles(this.styles);
 
         this.needsInitialization = false;
     }
