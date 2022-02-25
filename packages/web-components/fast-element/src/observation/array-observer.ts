@@ -4,6 +4,13 @@ import { SubscriberSet } from "./notifier.js";
 import type { Notifier } from "./notifier.js";
 import { Observable } from "./observable.js";
 
+function setNonEnumerable(target: any, property: string, value: any) {
+    Reflect.defineProperty(target, property, {
+        value,
+        enumerable: false,
+    });
+}
+
 class ArrayObserver extends SubscriberSet {
     private oldCollection: any[] | undefined = void 0;
     private splices: Splice[] | undefined = void 0;
@@ -12,7 +19,7 @@ class ArrayObserver extends SubscriberSet {
 
     constructor(subject: any[]) {
         super(subject);
-        (subject as any).$fastController = this;
+        setNonEnumerable(subject, "$fastController", this);
     }
 
     public addSplice(splice: Splice): void {
@@ -81,7 +88,7 @@ export function enableArrayObservation(): void {
     const proto = Array.prototype;
 
     if (!(proto as any).$fastPatch) {
-        (proto as any).$fastPatch = true;
+        setNonEnumerable(proto, "$fastPatch", 1);
 
         const pop = proto.pop;
         const push = proto.push;
