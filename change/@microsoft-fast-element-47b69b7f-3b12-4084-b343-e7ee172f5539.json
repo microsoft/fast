@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "refactor: move template/style resolution to lazy getter",
+  "packageName": "@microsoft/fast-element",
+  "email": "roeisenb@microsoft.com",
+  "dependentChangeType": "patch"
+}
