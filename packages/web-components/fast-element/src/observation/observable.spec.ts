@@ -61,14 +61,6 @@ describe("The Observable", () => {
     }
 
     context("facade", () => {
-        it("can set an array observer factory", () => {
-            const fakeObserver = new SubscriberSet([]);
-            Observable.setArrayObserverFactory((array: any[]) => fakeObserver);
-            const array = [];
-            const observer = Observable.getNotifier(array);
-            expect(observer).to.equal(fakeObserver);
-        });
-
         it("can get a notifier for an object", () => {
             const instance = new Model();
             const notifier = Observable.getNotifier(instance);
@@ -84,19 +76,11 @@ describe("The Observable", () => {
             expect(notifier).to.equal(notifier2);
         });
 
-        it("can get a notifier for an array", () => {
-            enableArrayObservation();
-            const array = [];
-            const notifier = Observable.getNotifier(array);
-            expect(notifier).to.be.instanceOf(SubscriberSet);
-        });
+        it("gets different notifiers for different objects", () => {
+            const notifier = Observable.getNotifier(new Model());
+            const notifier2 = Observable.getNotifier(new Model());
 
-        it("gets the same notifier for the same array", () => {
-            enableArrayObservation();
-            const array = [];
-            const notifier = Observable.getNotifier(array);
-            const notifier2 = Observable.getNotifier(array);
-            expect(notifier).to.equal(notifier2);
+            expect(notifier).to.not.equal(notifier2);
         });
 
         it("can notify a change on an object", () => {

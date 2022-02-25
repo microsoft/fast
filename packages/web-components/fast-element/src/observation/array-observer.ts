@@ -80,9 +80,7 @@ export function enableArrayObservation(): void {
     enabled = true;
 
     Observable.setArrayObserverFactory(
-        (collection: any[]): Notifier => {
-            return new ArrayObserver(collection);
-        }
+        (collection: any[]): Notifier => new ArrayObserver(collection)
     );
 
     const proto = Array.prototype;
