@@ -15,15 +15,30 @@ import {
 import type { CaptureType } from "./template.js";
 import type { SyntheticView } from "./view.js";
 
+// TODO: Fix the code docs in this file.
+
+/**
+ * @alpha
+ */
 export type BindingBehaviorFactory = {
     createBehavior(targets: ViewBehaviorTargets): ViewBehavior;
 };
 
+/**
+ * @alpha
+ */
 export type BindingType = (directive: HTMLBindingDirective) => BindingBehaviorFactory;
+
+/**
+ * @alpha
+ */
 export const notSupportedBindingType: BindingType = () => {
     throw new Error();
 };
 
+/**
+ * @alpha
+ */
 export interface BindingMode {
     attribute: BindingType;
     booleanAttribute: BindingType;
@@ -33,7 +48,9 @@ export interface BindingMode {
     event: BindingType;
 }
 
-/* eslint-disable-next-line @typescript-eslint/no-unused-vars */
+/**
+ * @alpha
+ */
 export interface BindingConfig<T = any> {
     mode: BindingMode;
     options: any;
@@ -268,6 +285,9 @@ class OneTimeBinding extends TargetUpdateBinding {
 
 const signals: Record<string, undefined | Function | Function[]> = Object.create(null);
 
+/**
+ * @alpha
+ */
 export function sendSignal(signal: string): void {
     const found = signals[signal];
     if (found) {
@@ -446,6 +466,9 @@ class OneTimeEventListener extends EventListener {
     }
 }
 
+/**
+ * @alpha
+ */
 export type DefaultBindingOptions = {
     capture?: boolean;
 };
@@ -454,11 +477,17 @@ const defaultBindingOptions: DefaultBindingOptions = {
     capture: false,
 };
 
+/**
+ * @alpha
+ */
 export const onChange = OnChangeBinding.createBindingConfig(
     defaultBindingOptions,
     directive => new EventListener(directive)
 );
 
+/**
+ * @alpha
+ */
 export const oneTime = OneTimeBinding.createBindingConfig(
     defaultBindingOptions,
     directive => new OneTimeEventListener(directive)
@@ -466,6 +495,9 @@ export const oneTime = OneTimeBinding.createBindingConfig(
 
 const signalMode: BindingMode = OnSignalBinding.createBindingMode();
 
+/**
+ * @alpha
+ */
 export const signal = <T = any>(options: string | Binding<T>): BindingConfig<T> => {
     return { mode: signalMode, options };
 };
@@ -537,6 +569,9 @@ export class HTMLBindingDirective extends InlinableHTMLDirective {
     }
 }
 
+/**
+ * @alpha
+ */
 export function bind<T = any>(
     binding: Binding<T>,
     config: BindingConfig<T> | DefaultBindingOptions = onChange
