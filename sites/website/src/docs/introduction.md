@@ -21,7 +21,7 @@ One of FAST's driving principals is "strive to adopt open, web standards-based a
 
 ### How can FAST help me?
 
-To understand how FAST can help you, let's take a look at the **FAST tech stack from top to bottom**.
+To understand how FAST can help you, let's take a look at the **FAST tech stack from top to bottom**. 
 
 At the top of the stack, FAST provides a set of Web Components: **`@microsoft/fast-components`**. This library include a common set of components found in many websites and apps. 
 
@@ -62,9 +62,7 @@ For example, if you wanted to implement Google's Material Design, you could do t
 
 Perhaps the most valuable feature of the foundation is that it provides base component behaviors and templates for the standard components. So, if you want to implement a tree-view in your design system, for example, you would use the foundation base component behavior and template, but combine it with your own styles. 
 
-The foundation components implement the state management, accessibility, keyboard navigation, and extensibility/composition model so you don't have to write that code. Additionally, foundation provides facilities for dynamic style behaviors, CSS property management, algorithmic color, RTL, high contrast, and more. You don't have to write any of that. Just assemble the building blocks and add your styles to create your own component library, expressing your own design system.
-
-So far we've talked about using existing components and creating new design systems and component libraries from existing pieces. But FAST enables you to create completely new web components as well. 
+The foundation components implement the state management, accessibility, keyboard navigation, and extensibility/composition model so you don't have to write that code. Additionally, foundation provides facilities for dynamic style behaviors, CSS property management, algorithmic color, RTL, high contrast, and more. You don't have to write any of that. Just assemble the building blocks and add your styles to create your own component library, expressing your own design system. So far we've talked about using existing components and creating new design systems and component libraries from existing pieces. But FAST enables you to create completely new web components as well. 
 
 Enter **`@microsoft/fast-element`**, the lowest level part of the FAST tech stack. A lightweight library for building performant, memory-efficient, standards-compliant Web Components.
 
@@ -74,7 +72,7 @@ flowchart
     direction TB
     FastComponents("@microsoft/fast-components\n(Component library that implements FAST Frame Design System)")
     FastFoundation("@microsoft/fast-foundation\n(Building blocks for custom design system/component libraries)")
-    FastElement("@microsoft/fast-element\n(Ingredients to build custom web components)")
+    FastElement("@microsoft/fast-element\n(Lightweight library for building custom web components)")
     FastComponents -.-> FastFoundation -.-> FastElement 
   end
 
