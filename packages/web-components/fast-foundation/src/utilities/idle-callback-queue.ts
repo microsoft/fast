@@ -14,10 +14,11 @@ export class IdleCallbackQueue {
 
     /**
      * Interval in ms between getting an idle callback and requesting another.
+     * (once per 60fps frame)
      *
      * @internal
      */
-    private idleCallbackInterval: number = 20;
+    private idleCallbackInterval: number = 17;
 
     private callBackQueue: Map<Element, () => void> = new Map<Element, () => void>();
 
@@ -61,8 +62,7 @@ export class IdleCallbackQueue {
     }
 
     /**
-     *
-     *
+     * Queue up the next item
      */
     private nextCallback = (): void => {
         if (this.currentCallbackId || this.callBackQueue.size === 0) {
