@@ -153,6 +153,17 @@ describe("Data grid", () => {
         await disconnect();
     });
 
+    it("should not generate a header when rowsData is empty", async () => {
+        const {  document, element, connect, disconnect } = await setup();
+        await connect();
+
+        const rows: DataGridRow[] = Array.from(element.querySelectorAll('[role="row"]'));
+
+        expect(rows.length).to.equal(0);
+
+        await disconnect();
+    });
+
     it("should generate a sticky header when generateHeader is set to 'sticky'", async () => {
         const {  document, element, connect, disconnect } = await setup();
         element.rowsData = newDataSet(5);
