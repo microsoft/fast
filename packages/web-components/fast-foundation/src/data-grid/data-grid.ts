@@ -614,14 +614,12 @@ export class DataGrid extends FoundationElement {
             if (this.generatedGridTemplateColumns === "" && this.rowElements.length > 0) {
                 const firstRow = this.rowElements[0] as DataGridRow;
 
-                let templateColumns: string = "";
+                this.generatedGridTemplateColumns = "";
                 firstRow.cellElements.forEach(() => {
-                    templateColumns = `${templateColumns}${
-                        templateColumns === "" ? "" : " "
-                    }${"1fr"}`;
+                    this.generatedGridTemplateColumns = `${
+                        this.generatedGridTemplateColumns
+                    }${this.generatedGridTemplateColumns === "" ? "" : " "}${"1fr"}`;
                 });
-
-                this.generatedGridTemplateColumns = templateColumns;
             }
 
             newGridTemplateColumns = this.generatedGridTemplateColumns;
