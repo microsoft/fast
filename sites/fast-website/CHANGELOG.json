@@ -2,6 +2,51 @@
   "name": "@microsoft/fast-website",
   "entries": [
     {
+      "date": "Fri, 25 Feb 2022 17:09:32 GMT",
+      "tag": "@microsoft/fast-website_v1.3.16",
+      "version": "1.3.16",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/site-utilities to v0.9.0",
+            "author": "roeisenb@microsoft.com",
+            "commit": "76a9c866277cd13a92a9ca6b3518eae2fb625d79",
+            "package": "@microsoft/fast-website"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 24 Feb 2022 22:21:55 GMT",
+      "tag": "@microsoft/fast-website_v1.3.16",
+      "version": "1.3.16",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/site-utilities to v0.9.0",
+            "author": "roeisenb@microsoft.com",
+            "commit": "9dfb9bb20afa48320eef2c6157e26ec2b10cfd3e",
+            "package": "@microsoft/fast-website"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sun, 20 Feb 2022 07:16:20 GMT",
+      "tag": "@microsoft/fast-website_v1.3.16",
+      "version": "1.3.16",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/site-utilities to v0.9.0",
+            "author": "scomea@microsoft.com",
+            "commit": "6cadbdf6f4001a087dddba6c863604055a1da4d2",
+            "package": "@microsoft/fast-website"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 15 Feb 2022 07:11:28 GMT",
       "tag": "@microsoft/fast-website_v1.3.16",
       "version": "1.3.16",

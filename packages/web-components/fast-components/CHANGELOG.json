@@ -2,6 +2,65 @@
   "name": "@microsoft/fast-components",
   "entries": [
     {
+      "date": "Fri, 25 Feb 2022 17:09:32 GMT",
+      "tag": "@microsoft/fast-components_v2.21.8",
+      "version": "2.21.8",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-element to v1.7.2",
+            "author": "roeisenb@microsoft.com",
+            "commit": "76a9c866277cd13a92a9ca6b3518eae2fb625d79",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 24 Feb 2022 22:21:55 GMT",
+      "tag": "@microsoft/fast-components_v2.21.7",
+      "version": "2.21.7",
+      "comments": {
+        "none": [
+          {
+            "comment": "wait for stable state in horizontal-scroll playwright test",
+            "author": "john.kreitlow@microsoft.com",
+            "commit": "24eca78a436323804c05155e5760de9532e124a5",
+            "package": "@microsoft/fast-components"
+          },
+          {
+            "comment": "allow programmatic control of the open property for select and combobox",
+            "author": "john.kreitlow@microsoft.com",
+            "commit": "2caf345e541780600f1f961c17a2be2a6300a02c",
+            "package": "@microsoft/fast-components"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-element to v1.7.1",
+            "author": "roeisenb@microsoft.com",
+            "commit": "9dfb9bb20afa48320eef2c6157e26ec2b10cfd3e",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sun, 20 Feb 2022 07:16:20 GMT",
+      "tag": "@microsoft/fast-components_v2.21.6",
+      "version": "2.21.6",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-foundation to v2.33.4",
+            "author": "scomea@microsoft.com",
+            "commit": "6cadbdf6f4001a087dddba6c863604055a1da4d2",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 15 Feb 2022 07:11:28 GMT",
       "tag": "@microsoft/fast-components_v2.21.5",
       "version": "2.21.5",

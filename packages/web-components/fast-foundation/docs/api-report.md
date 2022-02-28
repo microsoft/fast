@@ -482,6 +482,8 @@ export class Combobox extends FormAssociatedCombobox {
     protected placeholderChanged(): void;
     position: SelectPosition;
     positionAttribute: SelectPosition;
+    // (undocumented)
+    protected positionChanged(): void;
     // @internal
     selectedIndexChanged(prev: number, next: number): void;
     // @internal
@@ -2355,6 +2357,8 @@ export class Select extends FormAssociatedSelect {
     // @internal
     listbox: HTMLDivElement;
     // @internal
+    listboxId: string;
+    // @internal
     maxHeight: number;
     // @internal
     open: boolean;
@@ -2362,6 +2366,8 @@ export class Select extends FormAssociatedSelect {
     protected openChanged(): void;
     position: SelectPosition;
     positionAttribute: SelectPosition;
+    // (undocumented)
+    protected positionChanged(): void;
     // @internal
     selectedIndexChanged(prev: number, next: number): void;
     // (undocumented)
