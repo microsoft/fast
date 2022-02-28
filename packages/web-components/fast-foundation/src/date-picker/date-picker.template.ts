@@ -17,7 +17,7 @@ import type { DatePicker, DatePickerOptions } from "./date-picker";
  * @param items
  * @returns
  */
-export const timeSelectorTemplate = (context, reference, items) => {
+export const timeSelectorTemplate = (context, reference, items, action) => {
     const listbox = context.tagFor(Listbox);
     const listboxOption = context.tagFor(ListboxOption);
 
@@ -27,7 +27,8 @@ export const timeSelectorTemplate = (context, reference, items) => {
                 ${repeat(
                     x => items,
                     html`
-                    <${listboxOption} value="${x => x.value}" @click="${x => x.action()}">
+                    <${listboxOption} value="${x => x.value}" @click="${x =>
+                        action(x.value)}">
                         ${x => x.text}
                     </${listboxOption}>
                 `
@@ -48,10 +49,27 @@ export const timePickerTemplate: (
 ) => ViewTemplate = (context: ElementDefinitionContext, times: any) => {
     return html`
         <div class="time-picker">
-            ${x => timeSelectorTemplate(context, "hour-ref", times.hours)}
-            <div class="seperator">:</div>
-            ${x => timeSelectorTemplate(context, "minute-ref", times.minutes)}
-            ${x => timeSelectorTemplate(context, "meridian-ref", times.meridians)}
+            ${x =>
+                timeSelectorTemplate(
+                    context,
+                    "hour-ref",
+                    times.hours,
+                    x.handleHourSelect.bind(x)
+                )}
+            ${x =>
+                timeSelectorTemplate(
+                    context,
+                    "minute-ref",
+                    times.minutes,
+                    x.handleMinuteSelect.bind(x)
+                )}
+            ${x =>
+                timeSelectorTemplate(
+                    context,
+                    "meridian-ref",
+                    times.meridians,
+                    x.handleMeridianSelect.bind(x)
+                )}
         </div>
     `;
 };
@@ -167,8 +185,9 @@ export const datePickerTemplate: (
                     type="text"
                     class="control"
                     part="control"
-                    value="${x => x.value}"
+                    ${ref("control")}
                     placeholder="${x => x.placeholder}"
+                    @blur="${x => x.handleBlur()}"
                 />
                 <span class="icon" @click="${(x, c) => x.toggleMenu(true, c.event)}">
                     <slot name="icon" aria-label="Choose date">&#128197;</slot>
@@ -178,15 +197,23 @@ export const datePickerTemplate: (
                 ${when(
                     x => x.type === "date" || x.type === "datetime-local",
                     html`
-                        <${calendar} class="calendar"></${calendar}>
+                        <${calendar}
+                            class="calendar"
+                            month="${x => x.month}"
+                            year="${x => x.year}"
+                            selected-dates="${x => x.selectedDate}"
+                            @dateselected="${(x, c) => x.handleDateSelect(c.event)}"
+                            locale="${x => x.locale}"
+                        ></${calendar}>
                     `
                 )}
                 ${when(
                     x => x.type === "date" || x.type === "month",
                     html`
                         ${x => {
+                            const dateFormatter = x.getFormatter("yearFormat");
                             return pickerTemplate(context, x.getMatrix(), {
-                                text: x.yearView,
+                                text: dateFormatter.getYear(x.yearView),
                                 next: () => (x.yearView += 1),
                                 previous: () => (x.yearView -= 1),
                                 action: () => void 0,
@@ -198,8 +225,11 @@ export const datePickerTemplate: (
                     x => x.type === "month" || x.type === "year",
                     html`
                         ${x => {
+                            const dateFormatter = x.getFormatter("yearFormat");
                             return pickerTemplate(context, x.getMatrix("year"), {
-                                text: `${x.yearsView} - ${x.yearsView + 11}`,
+                                text: `${dateFormatter.getYear(
+                                    x.yearsView
+                                )} - ${dateFormatter.getYear(x.yearsView + 11)}`,
                                 next: () => (x.yearsView += 12),
                                 previous: () => (x.yearsView -= 12),
                                 action: () => void 0,

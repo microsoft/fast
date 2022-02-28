@@ -22,6 +22,8 @@ export type MonthFormat = "2-digit" | "long" | "narrow" | "numeric" | "short";
  */
 export type YearFormat = "2-digit" | "numeric";
 
+export type TimeFormat = "full" | "long" | "medium" | "short";
+
 /**
  * Date formatting utility
  * @public
@@ -56,6 +58,12 @@ export class DateFormatter {
      * @public
      */
     public yearFormat: YearFormat = "numeric";
+
+    /**
+     * Formatting for the time
+     * @public
+     */
+    public timeFormat: TimeFormat = "medium";
 
     /**
      * Date used for formatting
@@ -209,5 +217,25 @@ export class DateFormatter {
         return Array(7)
             .fill(null)
             .map((_, day) => this.getWeekday(day, format, locale));
+    }
+
+    public getTime(
+        time: string,
+        format: TimeFormat = this.timeFormat,
+        locale: string = this.locale
+    ): string {
+        const parts = time.match(/(\d*):(\d*) ?(am|pm)/i);
+
+        if (parts && parts.length > 3) {
+            const date = new Date(
+                `2000-01-01T${
+                    parseInt(parts[1]) + (parts[3].toLowerCase() === "pm" ? 12 : 0)
+                }:${parts[2]}:00`
+            );
+            console.log(date);
+
+            return this.getDate(date, { timeStyle: format } as any, locale);
+        }
+        return "";
     }
 }

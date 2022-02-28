@@ -726,10 +726,23 @@ export class DateFormatter {
 export class DatePicker extends FoundationElement {
     allowTextInput: boolean;
     appearance: string;
-    closeMenu(): void;
+    // (undocumented)
+    calendarMonth: number;
+    // (undocumented)
+    calendarYear: number;
+    // @internal
+    closeMenu(force?: boolean): void;
+    // (undocumented)
+    connectedCallback(): void;
+    // (undocumented)
+    control: HTMLInputElement;
     day: number;
+    // (undocumented)
+    dayFormat: DayFormat;
     disabled: boolean;
     disabledDates: string;
+    // (undocumented)
+    getFormatter(...options: any[]): DateFormatter;
     getMatrix(type?: "month" | "year", start?: number, locale?: string, format?: string): any;
     getTimes(): {
         hours: {
@@ -748,7 +761,20 @@ export class DatePicker extends FoundationElement {
             action: () => void;
         }[];
     };
+    // @internal
     handleClick(): void;
+    // (undocumented)
+    handleDateSelect(event: CustomEvent): void;
+    // (undocumented)
+    handleHourSelect(hour: any): void;
+    // (undocumented)
+    handleMeridianSelect(): void;
+    // (undocumented)
+    handleMinuteSelect(minute: any): void;
+    // (undocumented)
+    handleMonthSelect(month: any): void;
+    // (undocumented)
+    handleYearSelect(year: any): void;
     hour: number;
     // (undocumented)
     inputfield: any;
@@ -759,22 +785,34 @@ export class DatePicker extends FoundationElement {
     min: number;
     minute: number;
     month: number;
+    // (undocumented)
+    monthFormat: MonthFormat;
     monthView: number;
     name: string;
-    openMenu(): void;
+    // @internal
+    openMenu(force?: boolean): void;
     overMenu: boolean;
     placeholder: string;
     readonly: boolean;
     required: boolean;
+    // (undocumented)
+    selectedDate: string;
     times: {
         hours: number[];
         minutes: number[];
         meridian: string[];
     };
-    toggleMenu(): void;
+    // @internal
+    toggleMenu(force?: boolean, e?: Event): void;
     type: string;
     value: string;
+    // (undocumented)
+    valueChanged(previous: any, next: any): void;
+    // (undocumented)
+    weekdayFormat: WeekdayFormat;
     year: number;
+    // (undocumented)
+    yearFormat: YearFormat;
     // (undocumented)
     yearsView: number;
     yearView: number;
