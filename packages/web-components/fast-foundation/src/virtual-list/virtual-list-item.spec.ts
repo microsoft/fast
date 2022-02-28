@@ -46,4 +46,44 @@ describe("VirtualListItem", () => {
 
         await disconnect();
     });
+
+    it("should set loadContent to true if no loadMode provided", async () => {
+        const { element, connect, disconnect } = await setup();
+
+        await connect();
+
+        expect(element.loadContent).to.equal(true);
+
+        await disconnect();
+    });
+
+    it("should set loadContent to false if loadMode is set to 'manual'", async () => {
+        const { element, connect, disconnect } = await setup();
+
+        element.listItemContext.loadMode = "manual";
+
+        await connect();
+
+        expect(element.loadContent).to.equal(false);
+
+        await disconnect();
+    });
+
+
+    it("should set loadContent to false and then true if loadMode is set to 'idle'", async () => {
+        const { element, connect, disconnect } = await setup();
+
+        element.listItemContext.loadMode = "idle";
+        VirtualListItem.idleCallbackQueue.idleCallbackTimeout = 0;
+
+        await connect();
+
+        expect(element.loadContent).to.equal(false);
+
+        await DOM.nextUpdate();
+
+        expect(element.loadContent).to.equal(true);
+
+        await disconnect();
+    });
 });

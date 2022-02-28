@@ -2857,6 +2857,10 @@ export class VirtualListItem extends FoundationElement {
     connectedCallback(): void;
     // @internal (undocumented)
     disconnectedCallback(): void;
+    // Warning: (ae-forgotten-export) The symbol "IdleCallbackQueue" needs to be exported by the entry point index.d.ts
+    //
+    // (undocumented)
+    static idleCallbackQueue: IdleCallbackQueue;
     itemData: object;
     itemIndex: number;
     listItemContext: VirtualListItemContext;
