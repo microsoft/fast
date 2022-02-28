@@ -36,7 +36,7 @@ flowchart
   style FastComponents fill:#f4f4f4,stroke:#fb356d,stroke-width:3px,color:#333
 ```
 
-Example components include button, menu, tree-view, tab, card, modal, and more. `@microsoft/fast-components` provides an industry-focused design system, which we call "FAST Frame". If you're looking to integrate FAST components into an existing site or app, or if you need more control over the theme of the components, this is the option you'll want to start with.
+Example components include button, card, modal, menu, tab, tree-view, and more. `@microsoft/fast-components` provides an industry-focused design system, which we call "FAST Frame". If you're looking to integrate FAST components into an existing site or app, or if you need more control over the theme of the components, this is the option you'll want to start with.
 
 **What if you're not just looking for a set of components to use, but you also need to implement a custom *design system*?** 
 
@@ -47,7 +47,7 @@ flowchart
   subgraph FAST [ ]
     direction TB
     FastComponents("@microsoft/fast-components\n(Component library that implements FAST Frame Design System)")
-    FastFoundation("@microsoft/fast-foundation\n(Building blocks for custom design system/component libraries)")
+    FastFoundation("@microsoft/fast-foundation\n(Building blocks for custom design systems/component libraries)")
     FastComponents -.-> FastFoundation
   end
 
@@ -64,14 +64,14 @@ Perhaps the most valuable feature of the foundation is that it provides base com
 
 The foundation components implement the state management, accessibility, keyboard navigation, and extensibility/composition model so you don't have to write that code. Additionally, foundation provides facilities for dynamic style behaviors, CSS property management, algorithmic color, RTL, high contrast, and more. You don't have to write any of that. Just assemble the building blocks and add your styles to create your own component library, expressing your own design system. So far we've talked about using existing components and creating new design systems and component libraries from existing pieces. But FAST enables you to create completely new web components as well. 
 
-Enter **`@microsoft/fast-element`**, the lowest level part of the FAST tech stack. A lightweight library for building performant, memory-efficient, standards-compliant Web Components.
+Enter **`@microsoft/fast-element`**, the lowest level part of the FAST tech stack. This is a lightweight library for building performant, memory-efficient, standards-compliant Web Components.
 
 ```mermaid
 flowchart
   subgraph FAST [ ]
     direction TB
     FastComponents("@microsoft/fast-components\n(Component library that implements FAST Frame Design System)")
-    FastFoundation("@microsoft/fast-foundation\n(Building blocks for custom design system/component libraries)")
+    FastFoundation("@microsoft/fast-foundation\n(Building blocks for custom design systems/component libraries)")
     FastElement("@microsoft/fast-element\n(Lightweight library for building custom web components)")
     FastComponents -.-> FastFoundation -.-> FastElement 
   end
