@@ -614,7 +614,6 @@ export class DataGrid extends FoundationElement {
             if (this.generatedGridTemplateColumns === "" && this.rowElements.length > 0) {
                 const firstRow = this.rowElements[0] as DataGridRow;
 
-                this.generatedGridTemplateColumns = "";
                 firstRow.cellElements.forEach(() => {
                     this.generatedGridTemplateColumns = `${
                         this.generatedGridTemplateColumns
