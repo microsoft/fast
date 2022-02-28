@@ -856,6 +856,7 @@ export class DatePicker extends FormAssociatedDatePicker {
     handleDateClicked(event: MouseEvent): void;
     // @public
     handleFocus(): void;
+    handleFocusOut(event: Event): void;
     // @public
     handleHourClicked(hour: number): void;
     // @public

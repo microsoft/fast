@@ -200,6 +200,7 @@ export const datePickerTemplate: FoundationElementTemplate<
     <template
         @mouseover="${x => (x.overFlyout = true)}"
         @mouseout="${x => (x.overFlyout = false)}"
+        @focusout="${(x, c) => x.handleFocusOut(c.event)}"
     >
         <${textField}
             class="text-field"

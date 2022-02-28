@@ -121,7 +121,7 @@ export class DatePicker extends FormAssociatedDatePicker {
      * @public
      */
     @attr({ attribute: "reset-text" })
-    public resetText: string = "Go to today";
+    public resetText: string;
 
     /**
      * date formatter utitlity for getting localized strings
@@ -1021,6 +1021,16 @@ export class DatePicker extends FormAssociatedDatePicker {
     }
 
     /**
+     * Handler for when the control loses focus
+     * @param event Mouse or keyboard event
+     */
+    public handleFocusOut(event: Event): void {
+        if ((event as any).relatedTarget && (event as any).relatedTarget !== this) {
+            this.closeFlyout(true);
+        }
+    }
+
+    /**
      * Handler for the keyup event on the text field
      * @param event - Keyboard event for key press
      * @public
@@ -1248,6 +1258,9 @@ export class DatePicker extends FormAssociatedDatePicker {
         this.showCalendar = this.type.indexOf("date") >= 0;
         this.showMonthPicker = this.type === "date" || this.type === "month";
         this.showYearPicker = this.type === "month" || this.type === "year";
+        if (!this.resetText) {
+            this.resetText = this.dateFormatter.getDate(new Date(), this.getFormatting());
+        }
     }
 
     /**
