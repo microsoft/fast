@@ -34,7 +34,7 @@ export interface VirtualListItemContext {
  * @public
  */
 export class VirtualListItem extends FoundationElement {
-    private static idleCallbackQueue: IdleCallbackQueue = new IdleCallbackQueue();
+    public static idleCallbackQueue: IdleCallbackQueue = new IdleCallbackQueue();
 
     /**
      * The ViewTemplate used to render contents.
