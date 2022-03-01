@@ -167,6 +167,9 @@ export class DataGrid extends FoundationElement {
         if (this.columnDefinitions === null && this.rowsData.length > 0) {
             this.columnDefinitions = DataGrid.generateColumns(this.rowsData[0]);
         }
+        if (this.$fastController.isConnected) {
+            this.toggleGeneratedHeader();
+        }
     }
 
     /**
@@ -551,7 +554,10 @@ export class DataGrid extends FoundationElement {
             this.generatedHeader = null;
         }
 
-        if (this.generateHeader !== GenerateHeaderOptions.none) {
+        if (
+            this.generateHeader !== GenerateHeaderOptions.none &&
+            this.rowsData.length > 0
+        ) {
             const generatedHeaderElement: HTMLElement = document.createElement(
                 this.rowElementTag
             );
@@ -601,10 +607,18 @@ export class DataGrid extends FoundationElement {
     };
 
     private updateRowIndexes = (): void => {
-        const newGridTemplateColumns =
-            this.gridTemplateColumns === undefined
-                ? this.generatedGridTemplateColumns
-                : this.gridTemplateColumns;
+        let newGridTemplateColumns = this.gridTemplateColumns;
+
+        if (newGridTemplateColumns === undefined) {
+            // try to generate columns based on manual rows
+            if (this.generatedGridTemplateColumns === "" && this.rowElements.length > 0) {
+                this.generatedGridTemplateColumns = new Array(this.rowElements.length)
+                    .fill("1fr")
+                    .join(" ");
+            }
+
+            newGridTemplateColumns = this.generatedGridTemplateColumns;
+        }
 
         this.rowElements.forEach((element: Element, index: number): void => {
             const thisRow = element as DataGridRow;
