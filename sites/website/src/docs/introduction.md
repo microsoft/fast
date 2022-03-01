@@ -25,6 +25,8 @@ To understand how FAST can help you, let's take a look at the **FAST tech stack 
 
 At the top of the stack, FAST provides a set of Web Components: **`@microsoft/fast-components`**. This library include a common set of components found in many websites and apps. 
 
+<div markdown="1" style={{ display:"flex", justifyContent:"center", margin:"30px" }}>
+
 ```mermaid
 flowchart
   subgraph FAST [ ]
@@ -36,11 +38,15 @@ flowchart
   style FastComponents fill:#f4f4f4,stroke:#fb356d,stroke-width:3px,color:#333
 ```
 
+</div>
+
 Example components include button, card, modal, menu, tab, tree-view, and more. `@microsoft/fast-components` provides an industry-focused design system, which we call "FAST Frame". If you're looking to integrate FAST components into an existing site or app, or if you need more control over the theme of the components, this is the option you'll want to start with.
 
 **What if you're not just looking for a set of components to use, but you also need to implement a custom *design system*?** 
 
 This is where the second level of the stack comes into play. **`@microsoft/fast-foundation`** provides foundational building blocks that can be assembled to create new design systems and component libraries. 
+
+<div markdown="1" style={{ display:"flex", justifyContent:"center", margin:"30px" }}>
 
 ```mermaid
 flowchart
@@ -55,6 +61,7 @@ flowchart
   style FastComponents fill:#f4f4f4,stroke:#f4f4f4,color:#333
   style FastFoundation fill:#f4f4f4,stroke:#fb356d,stroke-width:3px,color:#333
 ```
+</div>
 
 For example, if you wanted to implement Google's Material Design, you could do that using `@microsoft/fast-foundation`; you could also implement something like Twitter Bootstrap. `@microsoft/fast-components` assemble the building blocks of `@microsoft/fast-foundation` to create its component sets. 
 
@@ -65,6 +72,8 @@ Perhaps the most valuable feature of the foundation is that it provides base com
 The foundation components implement the state management, accessibility, keyboard navigation, and extensibility/composition model so you don't have to write that code. Additionally, foundation provides facilities for dynamic style behaviors, CSS property management, algorithmic color, RTL, high contrast, and more. You don't have to write any of that. Just assemble the building blocks and add your styles to create your own component library, expressing your own design system. So far we've talked about using existing components and creating new design systems and component libraries from existing pieces. But FAST enables you to create completely new web components as well. 
 
 Enter **`@microsoft/fast-element`**, the lowest level part of the FAST tech stack. This is a lightweight library for building performant, memory-efficient, standards-compliant Web Components.
+
+<div markdown="1" style={{ display:"flex", justifyContent:"center", margin:"30px" }}>
 
 ```mermaid
 flowchart
@@ -81,6 +90,7 @@ flowchart
   style FastFoundation fill:#f4f4f4,stroke:#f4f4f4,color:#333
   style FastElement fill:#f4f4f4,stroke:#fb356d,stroke-width:3px,color:#333
 ```
+</div>
 
 `@microsoft/fast-element` provides a thin layer of opinion on top of Web Components, lifting the level of abstraction just enough to make it easier and faster to build components. `@microsoft/fast-element` helps by providing attribute/property syncing, rich Model-View-ViewModel (MVVM), efficient template rendering/update, style composition, and much more. The entire `@microsoft/fast-element` library, *without* tree-shaking, is around 10kb minified and GZipped. It was designed for tree-shaking from the beginning, so any feature you don't use when building a component will be removed during build, allowing for highly efficient optimized payloads as small as 4.5k.
 
