@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "fix: form attribute in button doesn't work and throws error",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "corylaviska@microsoft.com",
+  "dependentChangeType": "patch"
+}
