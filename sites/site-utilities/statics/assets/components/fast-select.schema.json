@@ -20,6 +20,18 @@
       "mapsToAttribute": "name",
       "type": "string"
     },
+    "multiple": {
+      "title": "Multiple",
+      "description": "Indicates if the select is in multi-selection mode",
+      "mapsToAttribute": "multiple",
+      "type": "boolean"
+    },
+    "size": {
+      "title": "Size",
+      "description": "The maximum number of visible options",
+      "mapsToAttribute": "size",
+      "type": "string"
+    },
     "Slot": {
       "title": "Default slot",
       "description": "Supports fast-option or option elements",
