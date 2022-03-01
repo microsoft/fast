@@ -13,7 +13,9 @@ import {
 import { eventResize, eventScroll, Orientation } from "@microsoft/fast-web-utilities";
 import { FoundationElement } from "../foundation-element";
 import { IntersectionService } from "../utilities/intersection-service";
+import { IdleCallbackQueue } from "../utilities/idle-callback-queue";
 import type { ResizeObserverClassDefinition } from "../utilities/resize-observer";
+import { VirtualListItem } from ".";
 
 /**
  * Defines when the component updates its position automatically.
@@ -200,6 +202,27 @@ export class VirtualList extends FoundationElement {
      */
     @observable
     public listItemContext: object;
+    private listItemContextChanged(): void {
+        if (this.listItemContext.hasOwnProperty("idleCallbackQueue")) {
+            this.listItemContext["idleCallbackQueue"] = this.idleCallbackQueue;
+        }
+    }
+
+    /**
+     * Defines the idle callback timeout value.
+     * Defaults to 1000
+     *
+     * @public
+     * @remarks
+     * HTML Attribute: idle-callback-timeout
+     */
+    @attr({ attribute: "idle-callback-timeout", converter: nullableNumberConverter })
+    public idleCallbackTimeout: number = 1000;
+    private idleCallbackTimeoutChanged(): void {
+        if (this.$fastController.isConnected) {
+            this.idleCallbackQueue.idleCallbackTimeout = this.idleCallbackTimeout;
+        }
+    }
 
     /**
      * The default ViewTemplate used to render items vertically.
@@ -315,12 +338,16 @@ export class VirtualList extends FoundationElement {
      */
     private finalUpdateNeeded: boolean = false;
 
+    // the idle callback queue for this list instance
+    private idleCallbackQueue: IdleCallbackQueue = new IdleCallbackQueue();
+
     /**
      * @internal
      */
     connectedCallback() {
         super.connectedCallback();
 
+        this.idleCallbackQueue.idleCallbackTimeout = this.idleCallbackTimeout;
         this.viewportElement = this.viewportElement ?? this.getViewport();
         this.resetAutoUpdateMode("manual", this.autoUpdateMode);
 
