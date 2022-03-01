@@ -612,13 +612,9 @@ export class DataGrid extends FoundationElement {
         if (newGridTemplateColumns === undefined) {
             // try to generate columns based on manual rows
             if (this.generatedGridTemplateColumns === "" && this.rowElements.length > 0) {
-                const firstRow = this.rowElements[0] as DataGridRow;
-
-                firstRow.cellElements.forEach(() => {
-                    this.generatedGridTemplateColumns = `${
-                        this.generatedGridTemplateColumns
-                    }${this.generatedGridTemplateColumns === "" ? "" : " "}${"1fr"}`;
-                });
+                this.generatedGridTemplateColumns = new Array(this.rowElements.length)
+                    .fill("1fr")
+                    .join(" ");
             }
 
             newGridTemplateColumns = this.generatedGridTemplateColumns;
