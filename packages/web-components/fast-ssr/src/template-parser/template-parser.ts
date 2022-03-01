@@ -2,12 +2,7 @@
  * This code is largely a fork of lit's rendering implementation: https://github.com/lit/lit/blob/main/packages/labs/ssr/src/lib/render-lit-html.ts
  * with changes as necessary to render FAST components. A big thank you to those who contributed to lit's code above.
  */
-import {
-    InlinableHTMLDirective,
-    Markup,
-    Parser,
-    ViewTemplate,
-} from "@microsoft/fast-element";
+import { Parser, ViewTemplate } from "@microsoft/fast-element";
 import {
     Attribute,
     DefaultTreeCommentNode,
@@ -18,7 +13,6 @@ import {
     parseFragment,
 } from "parse5";
 import { AttributeType, attributeTypeRegExp } from "./attributes.js";
-import { isInterpolationMarker, isMarkerComment } from "./marker.js";
 import { Op, OpType } from "./op-codes.js";
 
 /**
@@ -106,34 +100,6 @@ function getAttributeType(attr: Attribute): AttributeType {
 }
 
 /**
- * Tests if a node is an interpolated FAST marker
- * @param node - the node to test
- */
-function isInterpolationMarkerNode(
-    node: DefaultTreeNode
-): node is Required<DefaultTreeTextNode> {
-    return (
-        isTextNode(node) &&
-        node.sourceCodeLocation !== undefined &&
-        isInterpolationMarker(node)
-    );
-}
-
-/**
- * Tests if a node is a FAST comment marker
- * @param node - the node to test
- */
-function isCommentMarkerNode(
-    node: DefaultTreeNode
-): node is Required<DefaultTreeCommentNode> {
-    return (
-        isCommentNode(node) &&
-        node.sourceCodeLocation !== undefined &&
-        isMarkerComment(node)
-    );
-}
-
-/**
  * Parses a template into a set of operation instructions
  * @param template - The template to parse
  */
@@ -197,7 +163,7 @@ export function parseTemplateToOpCodes(template: ViewTemplate): Op[] {
             dynamic: Attribute[];
         } = node.attrs.reduce(
             (prev, current) => {
-                if (isInterpolationMarker(current)) {
+                if (Parser.parse(current.value, directives)) {
                     prev.dynamic.push(current);
                 } else {
                     prev.static.set(current.name, current.value);
@@ -312,26 +278,20 @@ export function parseTemplateToOpCodes(template: ViewTemplate): Op[] {
 
     traverse(nodeTree, {
         visit(node: DefaultTreeNode): void {
-            if (isCommentMarkerNode(node)) {
-                flushTo(node.sourceCodeLocation.startOffset);
-                const directive = directives[
-                    Markup.indexFromComment((node as unknown) as Comment)
-                ] as InlinableHTMLDirective;
-
-                opCodes.push({ type: OpType.directive, directive });
-                skipTo(node.sourceCodeLocation.endOffset);
-            } else if (isInterpolationMarkerNode(node)) {
-                flushTo(node.sourceCodeLocation.startOffset);
-                const parsed = Parser.parse(node.value, directives);
+            if (isCommentNode(node) || isTextNode(node)) {
+                const value =
+                    (node as DefaultTreeCommentNode).data ||
+                    (node as DefaultTreeTextNode).value;
+                const parsed = Parser.parse(value, directives);
 
                 if (parsed) {
+                    flushTo(node.sourceCodeLocation!.startOffset);
                     opCodes.push({
                         type: OpType.directive,
                         directive: Parser.aggregate(parsed),
                     });
+                    skipTo(node.sourceCodeLocation!.endOffset);
                 }
-
-                skipTo(node.sourceCodeLocation.endOffset);
             } else if (isElementNode(node)) {
                 parseElementNode(node);
             }
