@@ -26,6 +26,7 @@ export class Controller extends PropertyChangeNotifier {
     private boundObservables: Record<string, any> | null = null;
     private behaviors: Map<Behavior<HTMLElement>, number> | null = null;
     private needsInitialization: boolean = true;
+    private hasExistingShadowRoot = false;
     private _template: ElementViewTemplate | null = null;
     private _styles: ElementStyles | null = null;
     private _isConnected: boolean = false;
@@ -159,10 +160,16 @@ export class Controller extends PropertyChangeNotifier {
         const shadowOptions = definition.shadowOptions;
 
         if (shadowOptions !== void 0) {
-            const shadowRoot = element.attachShadow(shadowOptions);
+            let shadowRoot = element.shadowRoot;
 
-            if (shadowOptions.mode === "closed") {
-                shadowRoots.set(element, shadowRoot);
+            if (shadowRoot) {
+                this.hasExistingShadowRoot = true;
+            } else {
+                shadowRoot = element.attachShadow(shadowOptions);
+
+                if (shadowOptions.mode === "closed") {
+                    shadowRoots.set(element, shadowRoot);
+                }
             }
         }
 
@@ -434,7 +441,9 @@ export class Controller extends PropertyChangeNotifier {
             // If there's already a view, we need to unbind and remove through dispose.
             this.view.dispose();
             (this as Mutable<this>).view = null;
-        } else if (!this.needsInitialization) {
+        } else if (!this.needsInitialization || this.hasExistingShadowRoot) {
+            this.hasExistingShadowRoot = false;
+
             // If there was previous custom rendering, we need to clear out the host.
             for (let child = host.firstChild; child !== null; child = host.firstChild) {
                 host.removeChild(child);
