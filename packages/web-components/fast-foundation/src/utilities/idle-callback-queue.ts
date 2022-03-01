@@ -18,7 +18,7 @@ export class IdleCallbackQueue {
      *
      * @internal
      */
-    private idleCallbackInterval: number = 17;
+    private idleCallbackInterval: number = 18;
 
     private callBackQueue: Map<Element, () => void> = new Map<Element, () => void>();
 
