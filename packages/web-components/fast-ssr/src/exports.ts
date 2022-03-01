@@ -1,8 +1,9 @@
+import { RenderInfo } from "@lit-labs/ssr";
+import { FASTElementRenderer } from "./element-renderer/element-renderer.js";
 import {
     TemplateRenderer,
     TemplateRendererConfiguration,
 } from "./template-renderer/template-renderer.js";
-import { FASTElementRenderer } from "./element-renderer/element-renderer.js";
 
 export type Configuration = TemplateRendererConfiguration;
 
@@ -12,27 +13,33 @@ export type Configuration = TemplateRendererConfiguration;
  *
  * @example
  * ```ts
+ * import "@lit-labs/ssr/lib/install-global-dom-shim.js";
  * import { html } from "@microsoft/fast-element";
  * import fastSSR from "@microsoft/fast-ssr";
- * const { templateRenderer, elementRenderer } = fastSSR();
- * const renderInfo = {
- *   elementRenderers: [elementRenderer],
- *   customElementHostStack: [],
- *   customElementInstanceStack: []
- * };
+ * const { templateRenderer, defaultRenderInfo } = fastSSR();
  *
- * const streamableSSRResult = templateRenderer.render(html`...`, renderInfo);
+ * const streamableSSRResult = templateRenderer.render(html`...`, defaultRenderInfo);
  * ```
  */
 export default function (
-    config: Configuration
-): { templateRenderer: TemplateRenderer; elementRenderer: typeof FASTElementRenderer } {
+    config?: Configuration
+): {
+    templateRenderer: TemplateRenderer;
+    elementRenderer: typeof FASTElementRenderer;
+    defaultRenderInfo: RenderInfo;
+} {
     const templateRenderer = new TemplateRenderer(config);
+    const elementRenderer = class extends FASTElementRenderer {
+        protected templateRenderer: TemplateRenderer = templateRenderer;
+    };
 
     return {
         templateRenderer,
-        elementRenderer: class extends FASTElementRenderer {
-            protected templateRenderer: TemplateRenderer = templateRenderer;
+        elementRenderer,
+        defaultRenderInfo: {
+            elementRenderers: [elementRenderer],
+            customElementHostStack: [],
+            customElementInstanceStack: [],
         },
-    } as any;
+    };
 }
