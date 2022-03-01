@@ -326,4 +326,19 @@ describe("Data grid", () => {
 
         await disconnect();
     });
+
+    it("should auto generate grid-columns from a manual row", async () => {
+        const {  document, element, connect, disconnect } = await setup();
+
+        const row = new DataGridRow();
+        row.appendChild(new DataGridCell());
+        row.appendChild(new DataGridCell());
+        element.appendChild(row);
+        await connect();
+        await DOM.nextUpdate();
+
+        expect(row.gridTemplateColumns).to.equal("1fr 1fr");
+
+        await disconnect();
+    });
 });
