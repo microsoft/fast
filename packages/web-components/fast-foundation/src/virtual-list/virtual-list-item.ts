@@ -1,6 +1,6 @@
 import { observable, ViewTemplate } from "@microsoft/fast-element";
 import { FoundationElement } from "../foundation-element";
-import { IdleCallbackQueue } from "../utilities/idle-callback-queue";
+import type { IdleCallbackQueue } from "../utilities/idle-callback-queue";
 
 /**
  * Defines the possible loading behaviors a Virtual List Item
@@ -26,6 +26,9 @@ export interface VirtualListItemContext {
 
     // Sets the behavior for how the component updates the loadContent prop
     loadMode?: VirtualListItemLoadMode;
+
+    // the idle callback queue for this virtual list
+    idleCallbackQueue?: IdleCallbackQueue;
 }
 
 /**
@@ -34,8 +37,6 @@ export interface VirtualListItemContext {
  * @public
  */
 export class VirtualListItem extends FoundationElement {
-    public static idleCallbackQueue: IdleCallbackQueue = new IdleCallbackQueue();
-
     /**
      * The ViewTemplate used to render contents.
      *
@@ -45,7 +46,7 @@ export class VirtualListItem extends FoundationElement {
     public itemData: object;
 
     /**
-    //  * The index of the item in the items array.
+     * The index of the item in the items array.
      *
      * @public
      */
@@ -94,7 +95,7 @@ export class VirtualListItem extends FoundationElement {
      */
     disconnectedCallback(): void {
         if (!this.loadContent && this.idleLoadRequested) {
-            VirtualListItem.idleCallbackQueue.cancelIdleCallback(this);
+            this.listItemContext.idleCallbackQueue?.cancelIdleCallback(this);
         }
         this.loadContent = false;
         this.idleLoadRequested = false;
@@ -116,7 +117,7 @@ export class VirtualListItem extends FoundationElement {
             return;
         }
         this.idleLoadRequested = true;
-        VirtualListItem.idleCallbackQueue.requestIdleCallback(
+        this.listItemContext.idleCallbackQueue?.requestIdleCallback(
             this,
             this.handleIdleCallback
         );

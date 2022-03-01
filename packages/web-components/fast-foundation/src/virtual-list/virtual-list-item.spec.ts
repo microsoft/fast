@@ -4,6 +4,7 @@ import { fixture } from "../test-utilities/fixture";
 import { Orientation } from "@microsoft/fast-web-utilities";
 import { DOM, customElement, html } from "@microsoft/fast-element";
 import { timeout } from "../test-utilities/timeout";
+import { IdleCallbackQueue } from "../utilities/idle-callback-queue";
 
 const FASTVirtualListItem = VirtualListItem.compose({
     baseName: "virtual-list-item"
@@ -74,7 +75,9 @@ describe("VirtualListItem", () => {
         const { element, connect, disconnect } = await setup();
 
         element.listItemContext.loadMode = "idle";
-        VirtualListItem.idleCallbackQueue.idleCallbackTimeout = 0;
+        element.listItemContext.idleCallbackQueue = new IdleCallbackQueue();
+        element.listItemContext.idleCallbackQueue.idleCallbackTimeout = 0;
+
 
         await connect();
 
