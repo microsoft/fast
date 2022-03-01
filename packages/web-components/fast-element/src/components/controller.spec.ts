@@ -388,6 +388,7 @@ describe("The Controller", () => {
 
         expect(element.shadowRoot?.contains(style)).to.equal(false);
     });
+
     it("should attach and detach the HTMLStyleElement supplied to .addStyles() and .removeStyles() to the shadowRoot", () => {
         const { controller, element } = createController({
             shadowOptions: {
@@ -510,5 +511,29 @@ describe("The Controller", () => {
             controller.removeBehaviors([behavior], true);
             expect(behavior.bound).to.equal(false);
         });
-    })
+    });
+
+    context("with pre-existing shadow dom on the host", () => {
+        it("re-renders the view during connect", async () => {
+            const name = uniqueElementName();
+            const element = document.createElement(name);
+            const root = element.attachShadow({ mode: 'open' });
+            root.innerHTML = 'Test 1';
+
+            document.body.append(element);
+
+            new FASTElementDefinition(
+                class TestElement extends FASTElement {
+                    static definition = {
+                        name,
+                        template: html`Test 2`
+                    };
+                }
+            ).define();
+
+            expect(root.innerHTML).to.equal("<!---->Test 2");
+
+            document.body.removeChild(element);
+        });
+    });
 });
