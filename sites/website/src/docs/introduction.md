@@ -25,7 +25,7 @@ To understand how FAST can help you, let's take a look at the **FAST tech stack 
 
 At the top of the stack, FAST provides a set of Web Components: **`@microsoft/fast-components`**. This library include a common set of components found in many websites and apps. 
 
-<div markdown="1" style={{ display:"flex", justifyContent:"center", margin:"30px" }}>
+<div markdown="1" style={{ display:"flex", justifyContent:"center", marginBottom:"20px" }}>
 
 ```mermaid
 flowchart
@@ -34,7 +34,7 @@ flowchart
     FastComponents("@microsoft/fast-components\n(Component library that implements FAST Frame Design System)")
   end
 
-  style FAST fill:transparent,stroke:#ddd
+  style FAST fill:transparent,stroke:none
   style FastComponents fill:#f4f4f4,stroke:#fb356d,stroke-width:3px,color:#333
 ```
 
@@ -46,7 +46,7 @@ Example components include button, card, modal, menu, tab, tree-view, and more. 
 
 This is where the second level of the stack comes into play. **`@microsoft/fast-foundation`** provides foundational building blocks that can be assembled to create new design systems and component libraries. 
 
-<div markdown="1" style={{ display:"flex", justifyContent:"center", margin:"30px" }}>
+<div markdown="1" style={{ display:"flex", justifyContent:"center", marginBottom:"20px" }}>
 
 ```mermaid
 flowchart
@@ -57,7 +57,7 @@ flowchart
     FastComponents -.-> FastFoundation
   end
 
-  style FAST fill:transparent,stroke:#ddd
+  style FAST fill:transparent,stroke:none
   style FastComponents fill:#f4f4f4,stroke:#f4f4f4,color:#333
   style FastFoundation fill:#f4f4f4,stroke:#fb356d,stroke-width:3px,color:#333
 ```
@@ -73,7 +73,7 @@ The foundation components implement the state management, accessibility, keyboar
 
 Enter **`@microsoft/fast-element`**, the lowest level part of the FAST tech stack. This is a lightweight library for building performant, memory-efficient, standards-compliant Web Components.
 
-<div markdown="1" style={{ display:"flex", justifyContent:"center", margin:"30px" }}>
+<div markdown="1" style={{ display:"flex", justifyContent:"center", marginBottom:"20px" }}>
 
 ```mermaid
 flowchart
@@ -85,7 +85,7 @@ flowchart
     FastComponents -.-> FastFoundation -.-> FastElement 
   end
 
-  style FAST fill:transparent,stroke:#ddd
+  style FAST fill:transparent,stroke:none
   style FastComponents fill:#f4f4f4,stroke:#f4f4f4,color:#333
   style FastFoundation fill:#f4f4f4,stroke:#f4f4f4,color:#333
   style FastElement fill:#f4f4f4,stroke:#fb356d,stroke-width:3px,color:#333
