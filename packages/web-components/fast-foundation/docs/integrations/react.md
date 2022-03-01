@@ -184,7 +184,7 @@ class _MyComponent extends FASTElement {
 export const MyComponent = provideReactWrapper(React).wrap(_MyComponent);
 ```
 :::note
-When using decorators in create-react-app, you would most likely get this error `Support for the experimental syntax 'decorators-legacy' isn't currently enabled`. Go to Additional Notes for options to add support for decorators.
+When using decorators in a create-react-app setup, you will most likely get this error `Support for the experimental syntax 'decorators-legacy' isn't currently enabled`. See the "Additional Notes" below for options to add support for decorators.
 :::
 ### Wrapping VanillaJS Web Components
 
@@ -240,21 +240,21 @@ FAST makes use of decorators to define components. At this time, `create-react-a
 You can read more about decorator configuration issues [here.](https://github.com/microsoft/fast/issues/4503)
 ### Configure ejected create-react-app
 
-Eject create-react-app
+Eject create-react-app:
 ```shell
 npm run eject
 ```
 
-Install babel plugins
+Install babel plugins:
 ```shell
 npm i --save-dev @babel/plugin-proposal-decorators @babel/preset-env
 ```
 #### Configure babel-loader options
 
-Go to `webpack.config.js` file under the `config` folder and find where `babel-loader` is (around line 407).
+Go to the `webpack.config.js` file under the `config` folder and find where `babel-loader` is (around line 407).
 
-Add `@babel/preset-env` to presets, this allows you to use latest JavaScript features.
-Targeting specific browser versions prevents Babel to transpile down too much to support old JavaScript versions and increasing file size.
+Add `@babel/preset-env` to presets. This allows you to use the latest JavaScript features.
+Targeting specific browser versions prevents Babel from transpiling too much to support old JavaScript versions, increasing file size.
 
 ```js
 presets: [
