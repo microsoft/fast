@@ -30,8 +30,8 @@
     "install-playwright-browsers": "npx playwright install"
   },
   "description": "A package for rendering FAST components outside the browser.",
-  "main": "./dist/esm/index.js",
-  "types": "./dist/dts/index.d.ts",
+  "main": "./dist/esm/exports.js",
+  "types": "./dist/dts/exports.d.ts",
   "private": true,
   "dependencies": {
     "@lit-labs/ssr": "^1.0.0-rc.2",
