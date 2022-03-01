@@ -1,7 +1,8 @@
 import { ElementRenderer, RenderInfo } from "@lit-labs/ssr";
 import { FASTElement } from "@microsoft/fast-element";
+import { TemplateRenderer } from "../template-renderer/template-renderer.js";
 
-export class FASTElementRenderer extends ElementRenderer {
+export abstract class FASTElementRenderer extends ElementRenderer {
     /**
      * The element instance represented by the {@link FASTElementRenderer}.
      */
@@ -21,6 +22,11 @@ export class FASTElementRenderer extends ElementRenderer {
     public connectedCallback(): void {
         this.element.connectedCallback();
     }
+
+    /**
+     * The template renderer to use when rendering a component template
+     */
+    protected abstract templateRenderer: TemplateRenderer;
 
     /**
      * Constructs a new {@link FASTElementRenderer}.
