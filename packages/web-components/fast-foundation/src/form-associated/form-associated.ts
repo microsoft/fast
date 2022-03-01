@@ -599,12 +599,19 @@ export function FormAssociated<T extends ConstructableFormAssociated>(BaseCtor: 
                 // still undefined. We should find a better way to address this.
                 this.proxy.disabled = this.disabled;
                 this.proxy.required = this.required;
+
                 if (typeof this.name === "string") {
                     this.proxy.name = this.name;
                 }
 
                 if (typeof this.value === "string") {
                     this.proxy.value = this.value;
+                }
+
+                if (this.hasAttribute("form")) {
+                    this.proxy.setAttribute("form", this.getAttribute("form") as string);
+                } else {
+                    this.proxy.removeAttribute("form");
                 }
 
                 this.proxy.setAttribute("slot", proxySlotName);

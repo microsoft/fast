@@ -537,6 +537,33 @@ describe("Button", () => {
 
             await disconnect();
         });
+
+        it ("should submit the associated form when the button is outside of the form and has the form attribute", async () => {
+            const { element, connect, disconnect, parent } = await setup();
+            const form = document.createElement("form");
+
+            form.id = 'a';
+            element.setAttribute('type', 'submit');
+            element.setAttribute('form', 'a');
+
+            parent.appendChild(form);
+            parent.appendChild(element);
+
+            await connect();
+
+            const wasSubmitted = await new Promise(resolve => {
+                form.addEventListener("submit", event => {
+                    event.preventDefault();
+                    resolve(true);
+                });
+                element.click();
+                DOM.queueUpdate(() => resolve(false));
+            });
+
+            expect(wasSubmitted).to.equal(true);
+
+            await disconnect();
+        });
     });
 
     describe("of type 'reset'", () => {
@@ -609,7 +636,7 @@ describe("Button", () => {
                spans.forEach((span: HTMLSpanElement) => {
                    span.click()
                    expect(wasClicked).to.equal(false);
-               }) 
+               })
             }
 
             await disconnect();
