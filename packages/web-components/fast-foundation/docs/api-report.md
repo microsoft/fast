@@ -2821,6 +2821,10 @@ export class VirtualList extends FoundationElement {
     getItemSpanMap: (itemIndex: number) => SpanMap | null;
     // @internal
     handleChange(source: any, splices: Splice[]): void;
+    // Warning: (ae-forgotten-export) The symbol "IdleCallbackQueue" needs to be exported by the entry point index.d.ts
+    //
+    // @internal
+    idleCallbackQueue: IdleCallbackQueue;
     idleCallbackTimeout: number;
     items: object[];
     itemSpan: number;
@@ -2857,6 +2861,7 @@ export class VirtualListItem extends FoundationElement {
     connectedCallback(): void;
     // @internal (undocumented)
     disconnectedCallback(): void;
+    idleCallbackQueue: IdleCallbackQueue;
     itemData: object;
     itemIndex: number;
     listItemContext: VirtualListItemContext;
@@ -2867,10 +2872,6 @@ export class VirtualListItem extends FoundationElement {
 
 // @public
 export interface VirtualListItemContext {
-    // Warning: (ae-forgotten-export) The symbol "IdleCallbackQueue" needs to be exported by the entry point index.d.ts
-    //
-    // (undocumented)
-    idleCallbackQueue?: IdleCallbackQueue;
     // (undocumented)
     listItemContentsTemplate: ViewTemplate;
     // (undocumented)

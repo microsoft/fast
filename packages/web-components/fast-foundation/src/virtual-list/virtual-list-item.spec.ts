@@ -75,8 +75,8 @@ describe("VirtualListItem", () => {
         const { element, connect, disconnect } = await setup();
 
         element.listItemContext.loadMode = "idle";
-        element.listItemContext.idleCallbackQueue = new IdleCallbackQueue();
-        element.listItemContext.idleCallbackQueue.idleCallbackTimeout = 0;
+        element.idleCallbackQueue = new IdleCallbackQueue();
+        element.idleCallbackQueue.idleCallbackTimeout = 0;
 
 
         await connect();

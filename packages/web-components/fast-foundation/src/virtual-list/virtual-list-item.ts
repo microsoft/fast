@@ -26,9 +26,6 @@ export interface VirtualListItemContext {
 
     // Sets the behavior for how the component updates the loadContent prop
     loadMode?: VirtualListItemLoadMode;
-
-    // the idle callback queue for this virtual list
-    idleCallbackQueue?: IdleCallbackQueue;
 }
 
 /**
@@ -69,6 +66,14 @@ export class VirtualListItem extends FoundationElement {
     @observable
     public loadContent: boolean = false;
 
+    /**
+     *  idleCallbackQueue instance
+     *
+     * @public
+     */
+    @observable
+    public idleCallbackQueue: IdleCallbackQueue;
+
     private idleLoadRequested: boolean = false;
 
     /**
@@ -95,7 +100,7 @@ export class VirtualListItem extends FoundationElement {
      */
     disconnectedCallback(): void {
         if (!this.loadContent && this.idleLoadRequested) {
-            this.listItemContext.idleCallbackQueue?.cancelIdleCallback(this);
+            this.idleCallbackQueue?.cancelIdleCallback(this);
         }
         this.loadContent = false;
         this.idleLoadRequested = false;
@@ -113,14 +118,11 @@ export class VirtualListItem extends FoundationElement {
      * Queue up for idle loading
      */
     private queueForIdleLoad(): void {
-        if (this.idleLoadRequested) {
+        if (this.idleLoadRequested && this.idleCallbackQueue) {
             return;
         }
         this.idleLoadRequested = true;
-        this.listItemContext.idleCallbackQueue?.requestIdleCallback(
-            this,
-            this.handleIdleCallback
-        );
+        this.idleCallbackQueue?.requestIdleCallback(this, this.handleIdleCallback);
     }
 
     /**
