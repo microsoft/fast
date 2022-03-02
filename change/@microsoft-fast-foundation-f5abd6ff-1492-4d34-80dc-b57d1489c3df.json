@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "Fixing no previous scroll when only 2 items",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "robarb@microsoft.com",
+  "dependentChangeType": "patch"
+}
