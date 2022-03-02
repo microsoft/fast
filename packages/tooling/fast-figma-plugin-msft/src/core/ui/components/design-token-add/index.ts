@@ -27,25 +27,20 @@ const template = html<DesignTokenAdd>`
             `
         )}
     </select>
-    ${when(
-        x => x.selectedDesignToken,
-        html<DesignTokenAdd>`
-            <div class="add-form">
-                <td-design-token-field
-                    :designToken=${x => x.selectedDesignToken}
-                    ${ref("field")}
-                ></td-design-token-field>
-                <plugin-button
-                    appearance="stealth"
-                    aria-label="Add"
-                    title="Add"
-                    @click="${(x, c) => x.addHandler()}"
-                >
-                    ${CheckmarkIcon}
-                </plugin-button>
-            </div>
-        `
-    )}
+    <div class="add-form" ?hidden="${x => !x.selectedDesignToken}">
+        <td-design-token-field
+            :designToken=${x => x.selectedDesignToken}
+            ${ref("field")}
+        ></td-design-token-field>
+        <plugin-button
+            appearance="stealth"
+            aria-label="Add"
+            title="Add"
+            @click="${(x, c) => x.addHandler()}"
+        >
+            ${CheckmarkIcon}
+        </plugin-button>
+    </div>
     ${when(
         x => x.showMessageTemporary,
         html<DesignTokenAdd>`
@@ -68,6 +63,10 @@ const styles = css`
         display: flex;
         gap: 8px;
         padding: 4px 0;
+    }
+
+    .add-form[hidden] {
+        display: none;
     }
 `;
 
@@ -104,23 +103,26 @@ export class DesignTokenAdd extends FASTElement {
                 return token.id === selectedTokenId;
             })!;
             if (this.field) {
-                this.field.value = null;
+                this.field.value = undefined;
             }
         }
     }
 
     addHandler() {
-        // Remove the item from the list
-        this.designTokens.splice(this.selectedDesignTokenIndex, 1);
+        if (this.field.value) {
+            // Remove the item from the list
+            this.designTokens.splice(this.selectedDesignTokenIndex, 1);
 
-        this.$emit("add", {
-            definition: this.selectedDesignToken,
-            value: this.field.value,
-        });
+            this.$emit("add", {
+                definition: this.selectedDesignToken,
+                value: this.field.value,
+            });
 
-        this.selectedDesignToken = undefined;
+            this.field.value = undefined;
+            this.selectedDesignToken = undefined;
 
-        // Hack until rebuilt in web components to show a message to refresh selection.
-        this.showMessageTemporary = true;
+            // Hack until rebuilt in web components to show a message to refresh selection.
+            this.showMessageTemporary = true;
+        }
     }
 }

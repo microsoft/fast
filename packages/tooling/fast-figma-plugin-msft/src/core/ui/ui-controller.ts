@@ -399,6 +399,17 @@ export class UIController {
         return element;
     }
 
+    private appliedDesignTokensHandler(
+        nodeElement: HTMLElement
+    ): (value: AppliedDesignToken, key: string) => void {
+        return (value: AppliedDesignToken, key: string): void => {
+            const def = this._designTokenRegistry.get(key);
+            if (def) {
+                this.setDesignTokenForElement(nodeElement, def.token, value.value);
+            }
+        };
+    }
+
     private setupDesignTokenElement(element: HTMLElement, node: PluginUINodeData) {
         // console.log("  setupDesignTokenElement - node", node, "parent", element.id);
 
@@ -409,21 +420,21 @@ export class UIController {
 
         // Set all the inherited design token values for the local element.
         // console.log("    setting inherited tokens");
-        node.inheritedDesignTokens.forEach((value, key) => {
-            const def = this._designTokenRegistry.get(key);
-            if (def) {
-                this.setDesignTokenForElement(nodeElement, def.token, value.value);
-            }
-        }, this);
+        node.inheritedDesignTokens.forEach(
+            this.appliedDesignTokensHandler(nodeElement),
+            this
+        );
+
+        // Set all design token values from the main component for the local element (an instance component).
+        // console.log("    setting main component tokens", node.componentDesignTokens);
+        node.componentDesignTokens?.forEach(
+            this.appliedDesignTokensHandler(nodeElement),
+            this
+        );
 
         // Set all the design token override values for the local element.
         // console.log("    setting local tokens");
-        node.designTokens.forEach((value, key) => {
-            const def = this._designTokenRegistry.get(key);
-            if (def) {
-                this.setDesignTokenForElement(nodeElement, def.token, value.value);
-            }
-        }, this);
+        node.designTokens.forEach(this.appliedDesignTokensHandler(nodeElement), this);
 
         // Handle any additional data. Keys are provided as design token ids.
         node.additionalData.forEach((value, key) => {

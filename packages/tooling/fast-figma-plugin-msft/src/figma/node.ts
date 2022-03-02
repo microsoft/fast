@@ -1,5 +1,10 @@
 import { ColorRGBA64, parseColor } from "@microsoft/fast-colors";
-import { AppliedRecipes, PluginNodeData, RecipeEvaluation } from "../core/model";
+import {
+    AppliedDesignTokens,
+    AppliedRecipes,
+    PluginNodeData,
+    RecipeEvaluation,
+} from "../core/model";
 import { PluginNode } from "../core/node";
 import { DesignTokenType } from "../core/ui/design-token-registry";
 
@@ -90,27 +95,45 @@ export class FigmaPluginNode extends PluginNode {
 
         // If it's an instance node, the `recipes` may also include main component settings. Deduplicate them.
         if (isInstanceNode(this.node)) {
-            const mainNode = (this.node as InstanceNode).mainComponent;
-            if (mainNode) {
-                this._componentRecipes = new AppliedRecipes();
-                const componentRecipesJson = mainNode.getPluginData("recipes");
-                this._componentRecipes.deserialize(componentRecipesJson);
-
-                this._componentRecipes.forEach((recipe, recipeId) => {
-                    this._recipes.delete(recipeId);
-                });
+            const mainComponentNode = (this.node as InstanceNode).mainComponent;
+            if (mainComponentNode) {
+                this.deduplicateComponentDesignTokens(mainComponentNode);
+                this.deduplicateComponentRecipes(mainComponentNode);
             }
         }
 
-        if (this._recipes.size) {
-            // console.log("    recipes", this._recipes.serialize());
-        }
+        // if (this._recipes.size) {
+        //     console.log("    final recipes", this._recipes.serialize());
+        // }
 
         // TODO This isn't working and is causing a lot of token evaluation issues. It would be nice if _some_ layers
         // in the design tool could have a fixed color and provide that to the tokens, but the logic for _which_
         // layers turns out to be pretty complicated.
         // For now the requirement is basing the adaptive design with a "layer" recipe.
         // this.setupFillColor();
+    }
+
+    private deduplicateComponentDesignTokens(node: BaseNode) {
+        this._componentDesignTokens = new AppliedDesignTokens();
+        const componentDesignTokensJson = node.getSharedPluginData(
+            "fast",
+            "designTokens"
+        );
+        this._componentDesignTokens.deserialize(componentDesignTokensJson);
+
+        this._componentDesignTokens.forEach((token, tokenId) => {
+            this._localDesignTokens.delete(tokenId);
+        });
+    }
+
+    private deduplicateComponentRecipes(node: BaseNode) {
+        this._componentRecipes = new AppliedRecipes();
+        const componentRecipesJson = node.getSharedPluginData("fast", "recipes");
+        this._componentRecipes.deserialize(componentRecipesJson);
+
+        this._componentRecipes.forEach((recipe, recipeId) => {
+            this._recipes.delete(recipeId);
+        });
     }
 
     public canHaveChildren(): boolean {
