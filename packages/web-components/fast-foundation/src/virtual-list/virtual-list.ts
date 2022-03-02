@@ -15,8 +15,6 @@ import { FoundationElement } from "../foundation-element";
 import { IntersectionService } from "../utilities/intersection-service";
 import { IdleCallbackQueue } from "../utilities/idle-callback-queue";
 import type { ResizeObserverClassDefinition } from "../utilities/resize-observer";
-import { VirtualListItem } from ".";
-
 /**
  * Defines when the component updates its position automatically.
  *
@@ -300,6 +298,14 @@ export class VirtualList extends FoundationElement {
     public lastRenderedIndex: number = -1;
 
     /**
+     * the idle callback queue for this list instance
+     *
+     * @internal
+     */
+    @observable
+    public idleCallbackQueue: IdleCallbackQueue = new IdleCallbackQueue();
+
+    /**
      * reference to the container element
      *
      * @internal
@@ -337,9 +343,6 @@ export class VirtualList extends FoundationElement {
      * after the current one resolves (ie. possible geometry changes after the last request)
      */
     private finalUpdateNeeded: boolean = false;
-
-    // the idle callback queue for this list instance
-    private idleCallbackQueue: IdleCallbackQueue = new IdleCallbackQueue();
 
     /**
      * @internal

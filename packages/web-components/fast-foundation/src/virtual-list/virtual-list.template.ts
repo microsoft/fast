@@ -14,6 +14,7 @@ function createDefaultVerticalItemTemplate(
         :itemData="${x => x}"
         :itemIndex="${(x, c) => c.index + c.parent.firstRenderedIndex}"
         :listItemContext="${(x, c) => c.parent.listItemContext}"
+        :idleCallbackQueue="${(x, c) => c.parent.idleCallbackQueue}"
         style="
             height:  ${(x, c) => `${c.parent.visibleItemSpans[c.index]?.span}px`};
             transform: ${(x, c) =>
@@ -32,6 +33,7 @@ function createDefaultHorizontalItemTemplate(
         :itemData="${x => x}"
         :itemIndex="${(x, c) => c.index + c.parent.firstRenderedIndex}"
         :listItemContext="${(x, c) => c.parent.listItemContext}"
+        :idleCallbackQueue="${(x, c) => c.parent.idleCallbackQueue}"
         style="
             width:  ${(x, c) => `${c.parent.visibleItemSpans[c.index]?.span}px`};
             transform: ${(x, c) =>
