@@ -49,6 +49,8 @@ export class PluginUI extends React.Component<PluginUIProps> {
     }
 
     private renderFooter(): JSX.Element {
+        const syncLabel =
+            "Evaluate and apply all design tokens and recipes to the curren selection.";
         const revertLabel = "Remove all plugin data from the current selection.";
 
         return (
@@ -74,11 +76,21 @@ export class PluginUI extends React.Component<PluginUIProps> {
                             .map(node => `${node.type}`)
                             .join(" | ") || "No selection"}
                     </p>
-                    <div style={{ display: "flex" }}>
+                    <div style={{ display: "flex", gap: "8px" }}>
+                        <plugin-button
+                            appearance="accent"
+                            aria-label={syncLabel}
+                            style={{ display: this.controller.autoRefresh ? "none" : "" }}
+                            onClick={this.controller.refreshSelectedNodes.bind(
+                                this.controller
+                            )}
+                        >
+                            Sync
+                        </plugin-button>
                         <plugin-button
                             appearance="stealth"
                             aria-label={revertLabel}
-                            onClick={this.controller.resetNodes.bind(this)}
+                            onClick={this.controller.resetNodes.bind(this.controller)}
                         >
                             Reset
                         </plugin-button>

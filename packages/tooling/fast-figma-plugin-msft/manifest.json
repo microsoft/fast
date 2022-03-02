@@ -1,5 +1,5 @@
 {
-  "name": "Fluent UI Design Tokens (Alpha)",
+  "name": "Fluent UI WC Designer (Alpha)",
   "api": "1.0.0",
   "main": "./dist/main.js",
   "ui": "./dist/index.html",

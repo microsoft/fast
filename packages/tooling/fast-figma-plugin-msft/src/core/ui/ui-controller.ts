@@ -87,7 +87,9 @@ export interface UIDesignTokenValue {
  * applying design tokens and recipes and evaluating the changes for the selected nodes.
  */
 export class UIController {
-    private _updateState: (selectedNodes: PluginUINodeData[]) => void | undefined;
+    private readonly _updateStateCallback: (
+        selectedNodes: PluginUINodeData[]
+    ) => void | undefined;
 
     // This is adapting the new token model to the previous plugin structure. Recipes are now just tokens,
     // but the separation is useful for now in that a token is where you set a value and a recipe you apply to some visual element.
@@ -104,10 +106,10 @@ export class UIController {
 
     /**
      * Create a new UI controller.
-     * @param updateState Callback function to handle updated design token and recipe application and evaluation.
+     * @param updateStateCallback Callback function to handle updated design token and recipe application and evaluation.
      */
-    constructor(updateState: (selectedNodes: PluginUINodeData[]) => void) {
-        this._updateState = updateState;
+    constructor(updateStateCallback: (selectedNodes: PluginUINodeData[]) => void) {
+        this._updateStateCallback = updateStateCallback;
 
         registerTokens(this._designTokenRegistry);
         registerRecipes(this._recipeRegistry);
@@ -115,6 +117,12 @@ export class UIController {
         this._rootElement = document.createElement("div");
         this._rootElement.id = "designTokenRoot";
         document.body.appendChild(this._rootElement);
+    }
+
+    public get autoRefresh(): boolean {
+        return !(
+            this._selectedNodes.length === 1 && this._selectedNodes[0].type === "PAGE"
+        );
     }
 
     /**
@@ -132,9 +140,15 @@ export class UIController {
         );
         nodes.forEach(node => this.setupDesignTokenElement(this._rootElement, node));
 
+        if (this.autoRefresh) {
+            this.refreshSelectedNodes("setSelectedNodes");
+        }
+    }
+
+    public refreshSelectedNodes(reason: string = "refreshSelectedNodes"): void {
         this.evaluateRecipes(this._selectedNodes);
 
-        this.dispatchState();
+        this.dispatchState(reason);
     }
 
     /**
@@ -233,7 +247,7 @@ export class UIController {
             node.recipeEvaluations.clear();
         });
 
-        this.dispatchState();
+        this.dispatchState("resetNodes");
     }
 
     private evaluateRecipes(nodes: PluginUINodeData[]) {
@@ -306,7 +320,7 @@ export class UIController {
 
         this.evaluateRecipes(this._selectedNodes);
 
-        this.dispatchState();
+        this.dispatchState("removeRecipe");
     }
 
     public assignRecipe(recipe: DesignTokenDefinition): void {
@@ -337,7 +351,7 @@ export class UIController {
             // console.log("  node", node);
         });
 
-        this.dispatchState();
+        this.dispatchState("assignRecipe");
     }
 
     private setDesignTokenForElement<T>(
@@ -485,7 +499,7 @@ export class UIController {
         // console.log("  Evaluating all recipes for all selected nodes");
         this.evaluateRecipes(this._selectedNodes);
 
-        this.dispatchState();
+        this.dispatchState("assignDesignToken " + definition.id);
     }
 
     public removeDesignToken(definition: DesignTokenDefinition): void {
@@ -501,10 +515,11 @@ export class UIController {
         // console.log("  Evaluating all recipes for all selected nodes");
         this.evaluateRecipes(this._selectedNodes);
 
-        this.dispatchState();
+        this.dispatchState("removeDesignToken");
     }
 
-    private dispatchState(): void {
-        this._updateState(this._selectedNodes);
+    private dispatchState(reason: string): void {
+        // console.log("UIController.dispatchState", reason);
+        this._updateStateCallback(this._selectedNodes);
     }
 }

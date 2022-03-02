@@ -5,6 +5,7 @@ declare global {
         interface IntrinsicElements {
             "plugin-button": {
                 appearance?: string;
+                style?: CSSProperties;
                 onClick?: any;
                 children?: React.ReactNode;
             };

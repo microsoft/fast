@@ -76,6 +76,8 @@ export class FigmaPluginNode extends PluginNode {
     constructor(node: BaseNode) {
         super();
 
+        // Controller.nodeCount++;
+
         // console.log("  new FigmaPluginNode", node.id, node.name, node);
 
         this.node = node;
@@ -293,13 +295,6 @@ export class FigmaPluginNode extends PluginNode {
             value = undefined;
         }
         // console.log("    getPluginData", this.node.id, this.node.type, key, value);
-
-        if (isInstanceNode(this.node)) {
-            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            // const mainNode = (this.node as InstanceNode).mainComponent!;
-            // console.log("    getPluginData", mainNode.id, mainNode.type, key, mainNode.getPluginData(key));
-        }
-
         return value;
     }
 
