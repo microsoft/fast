@@ -122,7 +122,9 @@ export class VirtualListItem extends FoundationElement {
             return;
         }
         this.idleLoadRequested = true;
-        this.idleCallbackQueue?.requestIdleCallback(this, this.handleIdleCallback);
+        this.idleCallbackQueue?.requestIdleCallback(this, () =>
+            this.handleIdleCallback()
+        );
     }
 
     /**
