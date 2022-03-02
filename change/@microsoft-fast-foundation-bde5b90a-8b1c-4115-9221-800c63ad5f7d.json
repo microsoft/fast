@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "auto columns fix",
-  "packageName": "@microsoft/fast-foundation",
-  "email": "scomea@microsoft.com",
-  "dependentChangeType": "patch"
-}

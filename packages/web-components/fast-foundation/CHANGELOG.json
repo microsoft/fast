@@ -2,6 +2,41 @@
   "name": "@microsoft/fast-foundation",
   "entries": [
     {
+      "date": "Wed, 02 Mar 2022 07:12:58 GMT",
+      "tag": "@microsoft/fast-foundation_v2.34.0",
+      "version": "2.34.0",
+      "comments": {
+        "patch": [
+          {
+            "comment": "generate grid columns for manual grid",
+            "author": "scomea@microsoft.com",
+            "commit": "3c557446160ecdc358b46fd35d72d53555f02fe5",
+            "package": "@microsoft/fast-foundation"
+          },
+          {
+            "comment": "auto columns fix",
+            "author": "scomea@microsoft.com",
+            "commit": "8da160bf10fc106917053350491fb88162d8bc45",
+            "package": "@microsoft/fast-foundation"
+          },
+          {
+            "comment": "Fixing no previous scroll when only 2 items",
+            "author": "robarb@microsoft.com",
+            "commit": "9306471bb094e369ceb42de732d48bd9e519f1eb",
+            "package": "@microsoft/fast-foundation"
+          }
+        ],
+        "minor": [
+          {
+            "comment": "add mermaid support",
+            "author": "steph@huynhicode.dev",
+            "commit": "638bd1e86cd3ecf4223371b48a4290cc7c75d765",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 25 Feb 2022 17:09:32 GMT",
       "tag": "@microsoft/fast-foundation_v2.33.6",
       "version": "2.33.6",

@@ -1,7 +1,0 @@
-{
-  "type": "minor",
-  "comment": "add mermaid support",
-  "packageName": "@microsoft/fast-foundation",
-  "email": "steph@huynhicode.dev",
-  "dependentChangeType": "patch"
-}
