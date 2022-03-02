@@ -63,6 +63,7 @@ import {
     DesignTokenType,
     FormControlId,
 } from "./design-token-registry";
+import { docBaseColor, docFillRest, docForeground } from "./custom-recipes";
 
 interface DesignTokenStore<T> {
     [key: string]: {
@@ -88,6 +89,11 @@ const designTokens: DesignTokenStore<any> = {
     fillColor: {
         token: fillColor,
         name: "Fill color",
+        formControlId: FormControlId.color,
+    },
+    docBaseColor: {
+        token: docBaseColor,
+        name: "Doc color",
         formControlId: FormControlId.color,
     },
 };
@@ -123,6 +129,7 @@ const fillRecipes: DesignTokenStore<Swatch> = {
     },
     neutralFillStealthRest: { token: neutralFillStealthRest, name: "Neutral Stealth" },
     neutralFillStrongRest: { token: neutralFillStrongRest, name: "Neutral Strong" },
+    docFillRest: { token: docFillRest, name: "Doc" },
 };
 
 const strokeRecipes: DesignTokenStore<Swatch> = {
@@ -150,6 +157,7 @@ const textFillRecipes: DesignTokenStore<Swatch> = {
     neutralForegroundHint: { token: neutralForegroundHint, name: "Hint" },
     accentForegroundRest: { token: accentForegroundRest, name: "Accent" },
     foregroundOnAccentRest: { token: foregroundOnAccentRest, name: "On Accent" },
+    docForegroundRest: { token: docForeground, name: "Doc" },
 };
 
 const cornerRadiusRecipes: DesignTokenStore<number> = {
