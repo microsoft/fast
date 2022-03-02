@@ -1,10 +1,10 @@
 
 import "@lit-labs/ssr/lib/install-global-dom-shim.js";
-import { test, expect } from "@playwright/test";
-import { parseTemplateToOpCodes} from "./template-parser.js";
-import { ViewTemplate, html, FASTElement, customElement, defaultExecutionContext } from "@microsoft/fast-element"
-import { Op, OpType, CustomElementOpenOp, AttributeBindingOp, DirectiveOp, TemplateElementOpenOp, TextOp } from "./op-codes.js";
+import { customElement, FASTElement, html, ViewTemplate } from "@microsoft/fast-element";
+import { expect, test } from "@playwright/test";
 import { AttributeType } from "./attributes.js";
+import { AttributeBindingOp, CustomElementOpenOp, DirectiveOp, OpType, TemplateElementOpenOp, TextOp } from "./op-codes.js";
+import { parseTemplateToOpCodes } from "./template-parser.js";
 
 @customElement("hello-world")
 class HelloWorld extends FASTElement {}

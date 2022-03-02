@@ -1,5 +1,11 @@
-import { ViewTemplate } from "@microsoft/fast-element";
 import { RenderInfo } from "@lit-labs/ssr";
+import {
+    defaultExecutionContext,
+    InlinableHTMLDirective,
+    ViewTemplate,
+} from "@microsoft/fast-element";
+import { OpType } from "../template-parser/op-codes.js";
+import { parseTemplateToOpCodes } from "../template-parser/template-parser.js";
 
 export type ComponentDOMEmissionMode = "shadow" | "light";
 export interface TemplateRendererConfiguration {
@@ -31,6 +37,42 @@ export class TemplateRenderer implements Readonly<TemplateRendererConfiguration>
         renderInfo: RenderInfo,
         source?: unknown
     ): IterableIterator<string> {
-        yield "";
+        const codes = parseTemplateToOpCodes(template);
+
+        for (const code of codes) {
+            switch (code.type) {
+                case OpType.text:
+                    yield code.value;
+                    break;
+                case OpType.directive: {
+                    const { directive } = code;
+
+                    if (directive instanceof InlinableHTMLDirective) {
+                        const result = directive.binding(source, defaultExecutionContext);
+
+                        // If the result is a template, render the template
+                        if (result instanceof ViewTemplate) {
+                            yield* this.render(result, renderInfo, source);
+                        } else if (result === null || result === undefined) {
+                            // Don't yield anything if result is null
+                            break;
+                        } else {
+                            // debugging error - we should handle all result cases
+                            throw new Error(
+                                `Unknown InlineableHTMLDirective result found: ${result}`
+                            );
+                        }
+                    } else {
+                        // Throw if a SSR directive implementation cannot be found.
+                        throw new Error(`Unable to process HTMLDirective: ${directive}`);
+                    }
+
+                    break;
+                }
+
+                default:
+                    throw new Error(`Unable to interpret op code '${OpType[code.type]}'`);
+            }
+        }
     }
 }

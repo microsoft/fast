@@ -2,7 +2,13 @@
  * This code is largely a fork of lit's rendering implementation: https://github.com/lit/lit/blob/main/packages/labs/ssr/src/lib/render-lit-html.ts
  * with changes as necessary to render FAST components. A big thank you to those who contributed to lit's code above.
  */
-import { Compiler, Parser, ViewTemplate } from "@microsoft/fast-element";
+import {
+    Compiler,
+    HTMLDirective,
+    Markup,
+    Parser,
+    ViewTemplate,
+} from "@microsoft/fast-element";
 import {
     Attribute,
     DefaultTreeCommentNode,
@@ -287,16 +293,25 @@ export function parseTemplateToOpCodes(template: ViewTemplate): Op[] {
     traverse(nodeTree, {
         visit(node: DefaultTreeNode): void {
             if (isCommentNode(node) || isTextNode(node)) {
-                const value =
-                    (node as DefaultTreeCommentNode).data ||
-                    (node as DefaultTreeTextNode).value;
-                const parsed = Parser.parse(value, directives);
+                // TODO: clean this up to only use Parser.parse() and Parser.aggregate()
+                // when https://github.com/microsoft/fast/issues/5694 goes in.
+                let directive: HTMLDirective | null = null;
 
-                if (parsed) {
+                if (isCommentNode(node)) {
+                    directive = directives[Markup.indexFromComment(node as any)];
+                } else {
+                    const parsed = Parser.parse(node.value, directives);
+
+                    if (parsed) {
+                        directive = Parser.aggregate(parsed);
+                    }
+                }
+
+                if (directive) {
                     flushTo(node.sourceCodeLocation!.startOffset);
                     opCodes.push({
                         type: OpType.directive,
-                        directive: Compiler.aggregate(parsed),
+                        directive,
                     });
                     skipTo(node.sourceCodeLocation!.endOffset);
                 }
