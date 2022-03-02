@@ -32,6 +32,20 @@ export type Global = typeof globalThis & {
      * Enables working with trusted types.
      */
     trustedTypes: TrustedTypes;
+
+    /**
+     * The FAST global.
+     * @internal
+     */
+    readonly FAST: {
+        /**
+         * Gets a cross FAST instance shared value.
+         * @param id - The id to get the value for.
+         * @param initialize - Creates the initial value for the id if not already existing.
+         * @internal
+         */
+        get<T>(id: string, initialize: () => T): T;
+    };
 };
 
 declare const global: any;
@@ -77,6 +91,28 @@ export const $global: Global = (function () {
 // API-only Polyfill for trustedTypes
 if ($global.trustedTypes === void 0) {
     $global.trustedTypes = { createPolicy: (n: string, r: TrustedTypesPolicy) => r };
+}
+
+if ($global.FAST === void 0) {
+    const storage = Object.create(null);
+    const FAST = Object.create(null);
+    const settings = {
+        configurable: false,
+        enumerable: false,
+        writable: false,
+    };
+
+    Reflect.defineProperty(FAST, "get", {
+        value<T>(id: string, initialize: () => T): T {
+            return storage[id] ?? (storage[id] = initialize());
+        },
+        ...settings,
+    });
+
+    Reflect.defineProperty($global, "FAST", {
+        value: FAST,
+        ...settings,
+    });
 }
 
 /**

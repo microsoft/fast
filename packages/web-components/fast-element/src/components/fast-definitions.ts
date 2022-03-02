@@ -1,3 +1,4 @@
+import { $global } from "..";
 import type { Mutable } from "../interfaces";
 import { Observable } from "../observation/observable";
 import { ComposableStyles, ElementStyles } from "../styles/element-styles";
@@ -6,7 +7,20 @@ import { AttributeConfiguration, AttributeDefinition } from "./attributes";
 
 const defaultShadowOptions: ShadowRootInit = { mode: "open" };
 const defaultElementOptions: ElementDefinitionOptions = {};
-const fastDefinitions = new Map<Function, FASTElementDefinition>();
+const definitions = $global.FAST.get("d", () => {
+    const lookup = new Map<Function, FASTElementDefinition>();
+
+    return Object.freeze({
+        set(key: Function, value: FASTElementDefinition): void {
+            if (!lookup.has(key)) {
+                lookup.set(key, value);
+            }
+        },
+        get<TType extends Function>(key: TType): FASTElementDefinition | undefined {
+            return lookup.get(key);
+        },
+    });
+});
 
 /**
  * Represents metadata configuration for a custom element.
@@ -178,7 +192,7 @@ export class FASTElementDefinition<TType extends Function = Function> {
                 enumerable: true,
             });
 
-            fastDefinitions.set(type, this);
+            definitions.set(type, this);
             (this as Mutable<this>).isDefined = true;
         }
 
@@ -193,9 +207,5 @@ export class FASTElementDefinition<TType extends Function = Function> {
      * Gets the element definition associated with the specified type.
      * @param type - The custom element type to retrieve the definition for.
      */
-    static forType<TType extends Function>(
-        type: TType
-    ): FASTElementDefinition | undefined {
-        return fastDefinitions.get(type);
-    }
+    static forType = definitions.get;
 }

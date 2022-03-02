@@ -215,8 +215,8 @@ export const DOM: Readonly<{
     createInterpolationPlaceholder(index: number): string;
     createCustomAttributePlaceholder(attributeName: string, index: number): string;
     createBlockPlaceholder(index: number): string;
-    queueUpdate(callable: Callable): void;
-    processUpdates(): void;
+    queueUpdate: (callable: Callable) => void;
+    processUpdates: () => void;
     nextUpdate(): Promise<void>;
     setAttribute(element: HTMLElement, attributeName: string, value: any): void;
     setBooleanAttribute(element: HTMLElement, attributeName: string, value: boolean): void;
@@ -280,6 +280,8 @@ export class ExecutionContext<TParent = any, TGrandparent = any> {
     length: number;
     parent: TParent;
     parentContext: ExecutionContext<TGrandparent>;
+    // @internal
+    static setEvent(event: Event | null): void;
 }
 
 // @public
@@ -307,7 +309,7 @@ export class FASTElementDefinition<TType extends Function = Function> {
     readonly attributes: ReadonlyArray<AttributeDefinition>;
     define(registry?: CustomElementRegistry): this;
     readonly elementOptions?: ElementDefinitionOptions;
-    static forType<TType extends Function>(type: TType): FASTElementDefinition | undefined;
+    static forType: <TType_1 extends Function>(key: TType_1) => FASTElementDefinition<Function> | undefined;
     readonly isDefined: boolean;
     readonly name: string;
     readonly propertyLookup: Record<string, AttributeDefinition>;
@@ -320,6 +322,9 @@ export class FASTElementDefinition<TType extends Function = Function> {
 // @public
 export type Global = typeof globalThis & {
     trustedTypes: TrustedTypes;
+    readonly FAST: {
+        get<T>(id: string, initialize: () => T): T;
+    };
 };
 
 // @public
@@ -392,7 +397,7 @@ export const nullableNumberConverter: ValueConverter;
 // @public
 export const Observable: Readonly<{
     setArrayObserverFactory(factory: (collection: any[]) => Notifier): void;
-    getNotifier(source: any): Notifier;
+    getNotifier: (source: any) => Notifier;
     track(source: unknown, propertyName: string): void;
     trackVolatile(): void;
     notify(source: unknown, args: any): void;
@@ -464,11 +469,6 @@ export interface RepeatOptions {
     positioning?: boolean;
     recycle?: boolean;
 }
-
-// Warning: (ae-internal-missing-underscore) The name "setCurrentEvent" should be prefixed with an underscore because the declaration is marked as @internal
-//
-// @internal (undocumented)
-export function setCurrentEvent(event: Event | null): void;
 
 // @public
 export function slotted<T = any>(propertyOrOptions: (keyof T & string) | SlottedBehaviorOptions<keyof T & string>): CaptureType<T>;
