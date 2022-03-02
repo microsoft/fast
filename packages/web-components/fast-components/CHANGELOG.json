@@ -2,6 +2,27 @@
   "name": "@microsoft/fast-components",
   "entries": [
     {
+      "date": "Wed, 02 Mar 2022 07:12:58 GMT",
+      "tag": "@microsoft/fast-components_v2.21.9",
+      "version": "2.21.9",
+      "comments": {
+        "patch": [
+          {
+            "comment": "generate grid columns for manual grid",
+            "author": "scomea@microsoft.com",
+            "commit": "3c557446160ecdc358b46fd35d72d53555f02fe5",
+            "package": "@microsoft/fast-components"
+          },
+          {
+            "comment": "Fixing no previous scroll when only 2 items",
+            "author": "robarb@microsoft.com",
+            "commit": "9306471bb094e369ceb42de732d48bd9e519f1eb",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 25 Feb 2022 17:09:32 GMT",
       "tag": "@microsoft/fast-components_v2.21.8",
       "version": "2.21.8",

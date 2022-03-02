@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "generate grid columns for manual grid",
-  "packageName": "@microsoft/fast-foundation",
-  "email": "scomea@microsoft.com",
-  "dependentChangeType": "patch"
-}

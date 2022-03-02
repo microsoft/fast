@@ -136,6 +136,7 @@ module.exports = {
                     sidebarPath: require.resolve("./sidebars.js"),
                     showLastUpdateTime: true,
                     editUrl: "https://github.com/microsoft/fast",
+                    remarkPlugins: [require("mdx-mermaid")],
                 },
                 theme: {
                     customCss: require.resolve("./src/css/custom.css"),
