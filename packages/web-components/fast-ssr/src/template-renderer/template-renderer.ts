@@ -1,4 +1,5 @@
 import { RenderInfo } from "@lit-labs/ssr";
+import { getElementRenderer } from "@lit-labs/ssr/lib/element-renderer.js";
 import {
     defaultExecutionContext,
     InlinableHTMLDirective,
@@ -67,6 +68,64 @@ export class TemplateRenderer implements Readonly<TemplateRendererConfiguration>
                         throw new Error(`Unable to process HTMLDirective: ${directive}`);
                     }
 
+                    break;
+                }
+                case OpType.customElementOpen: {
+                    const renderer = getElementRenderer(
+                        renderInfo,
+                        code.tagName,
+                        code.ctor,
+                        code.staticAttributes
+                    );
+
+                    if (renderer !== undefined) {
+                        for (const [name, value] of code.staticAttributes) {
+                            renderer.setAttribute(name, value);
+                        }
+
+                        renderInfo.customElementInstanceStack.push(renderer);
+                    }
+
+                    break;
+                }
+
+                case OpType.customElementClose: {
+                    renderInfo.customElementInstanceStack.pop();
+                    break;
+                }
+
+                case OpType.customElementAttributes: {
+                    const currentRenderer =
+                        renderInfo.customElementInstanceStack[
+                            renderInfo.customElementInstanceStack.length - 1
+                        ];
+                    if (currentRenderer) {
+                        // simulate DOM connection
+                        currentRenderer.connectedCallback();
+
+                        // Allow the renderer to hoist any attribute values it needs to
+                        yield* currentRenderer.renderAttributes();
+                    }
+
+                    break;
+                }
+
+                case OpType.customElementShadow: {
+                    yield '<template shadowroot="open">';
+
+                    const currentRenderer =
+                        renderInfo.customElementInstanceStack[
+                            renderInfo.customElementInstanceStack.length - 1
+                        ];
+                    if (currentRenderer) {
+                        const shadow = currentRenderer.renderShadow(renderInfo);
+
+                        if (shadow) {
+                            yield* shadow;
+                        }
+                    }
+
+                    yield "</template>";
                     break;
                 }
 

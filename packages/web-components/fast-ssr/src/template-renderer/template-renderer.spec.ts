@@ -1,9 +1,8 @@
 import "@lit-labs/ssr/lib/install-global-dom-shim.js";
-import { test, expect } from "@playwright/test";
-import { TemplateRenderer } from "./template-renderer.js";
+import { customElement, FASTElement, html, when } from "@microsoft/fast-element";
+import { expect, test } from "@playwright/test";
 import fastSSR from "../exports.js";
-import { html, when, repeat } from "@microsoft/fast-element";
-import { string } from "yargs";
+import { TemplateRenderer } from "./template-renderer.js";
 
 function consolidate(strings: IterableIterator<string>): string {
     let str = "";
@@ -17,6 +16,13 @@ function consolidate(strings: IterableIterator<string>): string {
     return str;
 }
 
+@customElement("hello-world")
+class HelloWorld extends FASTElement {}
+
+@customElement({name: "with-slot", template: html`
+    <slot></slot>
+`})
+class WithSlot extends FASTElement {}
 test.describe("TemplateRenderer", () => {
     test.describe("should have an initial configuration", () => {
         test("that emits to shadow DOM", () => {
@@ -37,6 +43,26 @@ test.describe("TemplateRenderer", () => {
         const result = templateRenderer.render(html`<p>Hello world</p>`, defaultRenderInfo)
 
         expect(consolidate(result)).toBe("<p>Hello world</p>")
+    });
+
+    test("should emit un-registerd custom elements without any shadow DOM", () => {
+        const { templateRenderer, defaultRenderInfo} = fastSSR();
+        const result = templateRenderer.render(html`<unregistered-element>Hello world</unregistered-element>`, defaultRenderInfo)
+
+        expect(consolidate(result)).toBe("<unregistered-element>Hello world</unregistered-element>");
+    });
+    test("should emit template element with shadowroot attribute for defined custom element", () => {
+        const { templateRenderer, defaultRenderInfo} = fastSSR();
+        const result = templateRenderer.render(html`<hello-world></hello-world>`, defaultRenderInfo)
+
+        expect(consolidate(result)).toBe("<hello-world><template shadowroot=\"open\"></template></hello-world>");
+    });
+    // TODO: enable. This is disabled because fast-element throws during element connection
+    test.skip("should emit static shadow DOM template for a defined custom element", () => {
+        const { templateRenderer, defaultRenderInfo} = fastSSR();
+        const result = templateRenderer.render(html`<with-slot></with-slot>`, defaultRenderInfo)
+
+        expect(consolidate(result)).toBe("<with-slot><template shadowroot=\"open\"><slot></slot></template></with-slot>");
     });
 
     /**
