@@ -1,8 +1,17 @@
 # Change Log - @microsoft/fast-components
 
-This log was last generated on Fri, 25 Feb 2022 17:09:32 GMT and should not be manually modified.
+This log was last generated on Wed, 02 Mar 2022 07:12:58 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.21.9
+
+Wed, 02 Mar 2022 07:12:58 GMT
+
+### Patches
+
+- generate grid columns for manual grid (scomea@microsoft.com)
+- Fixing no previous scroll when only 2 items (robarb@microsoft.com)
 
 ## 2.21.8
 
