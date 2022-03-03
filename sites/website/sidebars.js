@@ -7,12 +7,18 @@ module.exports = {
         {
             type: "category",
             label: "Using the Components",
+            link: {
+                type: "generated-index",
+            },
             items: [
                 "components/getting-started",
                 "design-systems/fast-frame",
                 {
                     type: "category",
                     label: "Components",
+                    link: {
+                        type: "generated-index",
+                    },
                     items: [
                         "components/accordion",
                         "components/anchor",
@@ -54,6 +60,9 @@ module.exports = {
         {
             type: "category",
             label: "Building Components",
+            link: {
+                type: "generated-index",
+            },
             items: [
                 "fast-element/getting-started",
                 "fast-element/defining-elements",
@@ -68,6 +77,9 @@ module.exports = {
         {
             type: "category",
             label: "Creating Design Systems",
+            link: {
+                type: "generated-index",
+            },
             items: [
                 "design-systems/overview",
                 "design-systems/creating-a-component-library",
@@ -80,11 +92,17 @@ module.exports = {
         {
             type: "category",
             label: "Apps and Experiences",
+            link: {
+                type: "generated-index",
+            },
             items: ["apps-and-experiences/dependency-injection"],
         },
         {
             type: "category",
             label: "Integrations",
+            link: {
+                type: "generated-index",
+            },
             items: [
                 "integrations/introduction",
                 "integrations/angular",
@@ -100,6 +118,9 @@ module.exports = {
         {
             type: "category",
             label: "Tools",
+            link: {
+                type: "generated-index",
+            },
             items: [
                 "tools/component-explorer",
                 "tools/vscode",
@@ -109,6 +130,9 @@ module.exports = {
         {
             type: "category",
             label: "API Reference",
+            link: {
+                type: "generated-index",
+            },
             items: [
                 "api/fast-animation",
                 "api/fast-colors",
@@ -120,6 +144,9 @@ module.exports = {
         {
             type: "category",
             label: "Community Contribution",
+            link: {
+                type: "generated-index",
+            },
             items: [
                 "community/join",
                 "community/code-of-conduct",
@@ -128,6 +155,9 @@ module.exports = {
                 {
                     type: "category",
                     label: "Engineering Process",
+                    link: {
+                        type: "generated-index",
+                    },
                     items: ["community/issue-management", "community/release-planning"],
                 },
             ],
@@ -135,6 +165,9 @@ module.exports = {
         {
             type: "category",
             label: "Resources",
+            link: {
+                type: "generated-index",
+            },
             items: [
                 "resources/why-web-components",
                 "resources/license",

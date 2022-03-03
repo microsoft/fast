@@ -35,5 +35,9 @@
     "@docusaurus/theme-live-codeblock": "2.0.0-beta.15",
     "@microsoft/api-documenter": "7.8.13",
     "concurrently": "^6.2.0"
+  },
+  "dependencies": {
+    "mdx-mermaid": "^1.2.1",
+    "mermaid": "^8.14.0"
   }
 }
