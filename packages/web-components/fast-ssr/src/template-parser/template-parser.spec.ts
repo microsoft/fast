@@ -97,6 +97,18 @@ test.describe("parseTemplateToOpCodes", () => {
         expect(codes[3].attributeType).toBe(AttributeType.event);
         expect(codes[3].name).toBe("event");
     });
+
+    test("should emit names to attribute bindings ops that do not contain attribute type prefixes", () => {
+        const input = html`<hello-world string-value="${x => "value"}" ?bool-value="${x => false}" :property-value="${x => "value"}" @event="${x => {}}"></hello-world>`;
+        const codes = parseTemplateToOpCodes(input).filter(x => x.type === OpType.attributeBinding) as AttributeBindingOp[];
+
+        expect(codes.length).toBe(4);
+        expect(codes[0].name).toBe("string-value");
+        expect(codes[1].name).toBe("bool-value");
+        expect(codes[2].name).toBe("property-value");
+        expect(codes[3].name).toBe("event");
+    });
+
     test("should emit template open and close ops for a template element", () => {
         const input = html`<template></template>`;
         const codes = parseTemplateToOpCodes(input);
@@ -151,4 +163,3 @@ test.describe("parseTemplateToOpCodes", () => {
         expect((codes[3] as TextOp).value).toBe(`</div>`);
     })
 });
-// TODO add test that name for property, bool, and event attrs has the prefix removed.

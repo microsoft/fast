@@ -1,5 +1,5 @@
 import "@lit-labs/ssr/lib/install-global-dom-shim.js";
-import { customElement, FASTElement, html, when } from "@microsoft/fast-element";
+import { customElement, FASTElement, html, when, defaultExecutionContext } from "@microsoft/fast-element";
 import { expect, test } from "@playwright/test";
 import fastSSR from "../exports.js";
 import { TemplateRenderer } from "./template-renderer.js";
@@ -45,7 +45,7 @@ test.describe("TemplateRenderer", () => {
         expect(consolidate(result)).toBe("<p>Hello world</p>")
     });
 
-    test("should emit un-registerd custom elements without any shadow DOM", () => {
+    test("should emit un-registered custom elements without any shadow DOM", () => {
         const { templateRenderer, defaultRenderInfo} = fastSSR();
         const result = templateRenderer.render(html`<unregistered-element>Hello world</unregistered-element>`, defaultRenderInfo)
 
@@ -77,6 +77,15 @@ test.describe("TemplateRenderer", () => {
         expect(source).toBe(calledWith);
     });
 
+    test("should provide the defaultExecutionContext object to a binding", () => {
+        let calledWith: any;
+        const { templateRenderer, defaultRenderInfo} = fastSSR();
+        consolidate(templateRenderer.render(html`${(x, c) => {calledWith = c}}`, defaultRenderInfo));
+
+        expect(calledWith).toBe(defaultExecutionContext);
+    });
+
+
     test("should not emit string content from a binding that returns a null value", () => {
         const { templateRenderer, defaultRenderInfo} = fastSSR();
         const result = consolidate(templateRenderer.render(html`${(x) => null}`, defaultRenderInfo));
@@ -89,6 +98,25 @@ test.describe("TemplateRenderer", () => {
         const result = consolidate(templateRenderer.render(html`${(x) => undefined}`, defaultRenderInfo));
 
         expect(result).toBe("");
+    });
+
+    test("should emit an element with an attribute when the attr binding returns a string", () => {
+        const { templateRenderer, defaultRenderInfo} = fastSSR();
+        const result = consolidate(templateRenderer.render(html`<p id="${(x) => "test"}"></p>`, defaultRenderInfo));
+
+        expect(result).toBe(`<p id="test"></p>`);
+    });
+    test("should emit an element with a boolean attribute when the attr binding returns true", () => {
+        const { templateRenderer, defaultRenderInfo} = fastSSR();
+        const result = consolidate(templateRenderer.render(html`<input type="checkbox" ?checked="${(x) => true}" />`, defaultRenderInfo));
+
+        expect(result).toBe(`<input type="checkbox" checked />`);
+    });
+    test("should not emit an attribute for a boolean attribute that returns false", () => {
+        const { templateRenderer, defaultRenderInfo} = fastSSR();
+        const result = consolidate(templateRenderer.render(html`<input type="checkbox" ?checked="${(x) => false}" />`, defaultRenderInfo));
+
+        expect(result).toBe(`<input type="checkbox"  />`);
     });
 
     /**

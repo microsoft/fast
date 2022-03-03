@@ -5,6 +5,7 @@ import {
     InlinableHTMLDirective,
     ViewTemplate,
 } from "@microsoft/fast-element";
+import { AttributeType } from "../template-parser/attributes.js";
 import { OpType } from "../template-parser/op-codes.js";
 import { parseTemplateToOpCodes } from "../template-parser/template-parser.js";
 import { DirectiveRenderer } from "./directives.js";
@@ -135,8 +136,49 @@ export class TemplateRenderer implements Readonly<TemplateRendererConfiguration>
                     break;
                 }
 
+                case OpType.attributeBinding: {
+                    const { attributeType } = code;
+
+                    // Don't emit anything for events.
+                    if (attributeType === AttributeType.event) {
+                        break;
+                    }
+
+                    let result = code.directive.binding(source, defaultExecutionContext);
+                    const { name } = code;
+
+                    switch (attributeType) {
+                        case AttributeType.booleanContent:
+                            if (!!result) {
+                                result = "";
+                                yield name;
+                            }
+                            break;
+                        case AttributeType.content:
+                            if (result !== null && result !== undefined) {
+                                yield `${name}="${result}"`;
+                            }
+                            break;
+                    }
+
+                    if (code.useCustomElementInstance) {
+                        const instance =
+                            renderInfo.customElementInstanceStack[
+                                renderInfo.customElementInstanceStack.length - 1
+                            ];
+
+                        if (instance) {
+                            (attributeType === AttributeType.idl
+                                ? instance.setProperty
+                                : instance.setAttribute)(name, result);
+                        }
+                    }
+
+                    break;
+                }
+
                 default:
-                    throw new Error(`Unable to interpret op code '${OpType[code.type]}'`);
+                    throw new Error(`Unable to interpret op code '${code}'`);
             }
         }
     }

@@ -1,10 +1,6 @@
 import { RenderInfo } from "@lit-labs/ssr";
-import { RepeatDirective } from "@microsoft/fast-element";
 import { FASTElementRenderer } from "./element-renderer/element-renderer.js";
-import {
-    RepeatDirectiveRenderer,
-    defaultFASTDirectiveRenderers,
-} from "./template-renderer/directives.js";
+import { defaultFASTDirectiveRenderers } from "./template-renderer/directives.js";
 import {
     TemplateRenderer,
     TemplateRendererConfiguration,
