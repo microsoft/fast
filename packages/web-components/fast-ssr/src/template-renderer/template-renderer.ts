@@ -7,6 +7,7 @@ import {
 } from "@microsoft/fast-element";
 import { OpType } from "../template-parser/op-codes.js";
 import { parseTemplateToOpCodes } from "../template-parser/template-parser.js";
+import { DirectiveRenderer } from "./directives.js";
 
 export type ComponentDOMEmissionMode = "shadow" | "light";
 export interface TemplateRendererConfiguration {
@@ -17,6 +18,7 @@ export interface TemplateRendererConfiguration {
 }
 
 export class TemplateRenderer implements Readonly<TemplateRendererConfiguration> {
+    private directiveRenderers: Map<any, DirectiveRenderer<any>> = new Map();
     /**
      * {@inheritDoc TemplateRendererConfiguration.componentDOMEmissionMode}
      */
@@ -47,8 +49,12 @@ export class TemplateRenderer implements Readonly<TemplateRendererConfiguration>
                     break;
                 case OpType.directive: {
                     const { directive } = code;
-
-                    if (directive instanceof InlinableHTMLDirective) {
+                    const ctor = directive.constructor;
+                    if (this.directiveRenderers.has(ctor)) {
+                        yield* this.directiveRenderers
+                            .get(ctor)!
+                            .render(directive, source, this);
+                    } else if (directive instanceof InlinableHTMLDirective) {
                         const result = directive.binding(source, defaultExecutionContext);
 
                         // If the result is a template, render the template
@@ -132,6 +138,12 @@ export class TemplateRenderer implements Readonly<TemplateRendererConfiguration>
                 default:
                     throw new Error(`Unable to interpret op code '${OpType[code.type]}'`);
             }
+        }
+    }
+
+    public withDirectiveRenderer(...directives: DirectiveRenderer<any>[]): void {
+        for (const renderer of directives) {
+            this.directiveRenderers.set(renderer.matcher, renderer);
         }
     }
 }

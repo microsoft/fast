@@ -1,5 +1,7 @@
 import { RenderInfo } from "@lit-labs/ssr";
+import { RepeatDirective } from "@microsoft/fast-element";
 import { FASTElementRenderer } from "./element-renderer/element-renderer.js";
+import { RepeatDirectiveRenderer } from "./template-renderer/directives.js";
 import {
     TemplateRenderer,
     TemplateRendererConfiguration,
@@ -32,6 +34,8 @@ export default function (
     const elementRenderer = class extends FASTElementRenderer {
         protected templateRenderer: TemplateRenderer = templateRenderer;
     };
+
+    templateRenderer.withDirectiveRenderer(RepeatDirectiveRenderer);
 
     return {
         templateRenderer,
