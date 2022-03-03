@@ -117,10 +117,16 @@ if ($global.FAST === void 0) {
     });
 }
 
-if ($global.FAST.getById === void 0) {
+/**
+ * The FAST global.
+ * @internal
+ */
+export const FAST = $global.FAST;
+
+if (FAST.getById === void 0) {
     const storage = Object.create(null);
 
-    Reflect.defineProperty($global.FAST, "getById", {
+    Reflect.defineProperty(FAST, "getById", {
         value<T>(id: string | number, initialize?: () => T): T | null {
             let found = storage[id];
 
@@ -134,14 +140,8 @@ if ($global.FAST.getById === void 0) {
     });
 }
 
-// TODO: Replace with ??= after TS 4.x update
-($global.FAST.versions ?? (($global.FAST as any).versions = [])).push("1.8.0");
-
-/**
- * The FAST global.
- * @internal
- */
-export const FAST = $global.FAST;
+// TODO: Replace with ??= after TS 4.x update (Issue #5198)
+(FAST.versions ?? ((FAST as any).versions = [])).push("1.8.0");
 
 /**
  * Core services shared across FAST instances.
