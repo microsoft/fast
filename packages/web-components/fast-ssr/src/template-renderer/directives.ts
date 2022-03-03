@@ -1,3 +1,4 @@
+import { RenderInfo } from "@lit-labs/ssr";
 import { Constructable, RepeatDirective } from "@microsoft/fast-element";
 import { TemplateRenderer } from "./template-renderer.js";
 
@@ -7,6 +8,7 @@ import { TemplateRenderer } from "./template-renderer.js";
 export interface DirectiveRenderer<T extends Constructable> {
     render(
         directive: InstanceType<T>,
+        renderInfo: RenderInfo,
         source: any,
         renderer: TemplateRenderer
     ): IterableIterator<string>;
@@ -18,6 +20,7 @@ export const RepeatDirectiveRenderer: DirectiveRenderer<typeof RepeatDirective> 
         matcher: RepeatDirective,
         *render(
             directive: InstanceType<typeof RepeatDirective>,
+            renderInfo: RenderInfo,
             source: any,
             renderer: TemplateRenderer
         ): IterableIterator<string> {

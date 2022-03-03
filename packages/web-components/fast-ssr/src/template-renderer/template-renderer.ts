@@ -53,7 +53,7 @@ export class TemplateRenderer implements Readonly<TemplateRendererConfiguration>
                     if (this.directiveRenderers.has(ctor)) {
                         yield* this.directiveRenderers
                             .get(ctor)!
-                            .render(directive, source, this);
+                            .render(directive, renderInfo, source, this);
                     } else if (directive instanceof InlinableHTMLDirective) {
                         const result = directive.binding(source, defaultExecutionContext);
 
