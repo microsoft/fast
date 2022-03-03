@@ -44,6 +44,7 @@ export type Global = typeof globalThis & {
          * @param initialize - Creates the initial value for the id if not already existing.
          * @internal
          */
+        get<T>(id: string): T | null;
         get<T>(id: string, initialize: () => T): T;
     };
 };
@@ -93,25 +94,33 @@ if ($global.trustedTypes === void 0) {
     $global.trustedTypes = { createPolicy: (n: string, r: TrustedTypesPolicy) => r };
 }
 
+const propConfig = {
+    configurable: false,
+    enumerable: false,
+    writable: false,
+};
+
 if ($global.FAST === void 0) {
-    const storage = Object.create(null);
-    const FAST = Object.create(null);
-    const settings = {
-        configurable: false,
-        enumerable: false,
-        writable: false,
-    };
-
-    Reflect.defineProperty(FAST, "get", {
-        value<T>(id: string, initialize: () => T): T {
-            return storage[id] ?? (storage[id] = initialize());
-        },
-        ...settings,
-    });
-
     Reflect.defineProperty($global, "FAST", {
-        value: FAST,
-        ...settings,
+        value: Object.create(null),
+        ...propConfig,
+    });
+}
+
+if ($global.FAST.get === void 0) {
+    const storage = Object.create(null);
+
+    Reflect.defineProperty($global.FAST, "get", {
+        value<T>(id: string, initialize?: () => T): T | null {
+            let found = storage[id];
+
+            if (found === void 0) {
+                found = initialize ? (storage[id] = initialize()) : null;
+            }
+
+            return found;
+        },
+        ...propConfig,
     });
 }
 

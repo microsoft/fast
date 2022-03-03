@@ -323,6 +323,7 @@ export class FASTElementDefinition<TType extends Function = Function> {
 export type Global = typeof globalThis & {
     trustedTypes: TrustedTypes;
     readonly FAST: {
+        get<T>(id: string): T | null;
         get<T>(id: string, initialize: () => T): T;
     };
 };
