@@ -1,7 +1,7 @@
 import type { Callable } from "./interfaces";
 import { $global, TrustedTypesPolicy } from "./platform";
 
-const updateQueue = $global.FAST.get("q", () => {
+const updateQueue = $global.FAST.getById("q", () => {
     const tasks = [] as Callable[];
     const pendingErrors: any[] = [];
 

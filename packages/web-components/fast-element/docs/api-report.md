@@ -324,8 +324,8 @@ export type Global = typeof globalThis & {
     trustedTypes: TrustedTypes;
     readonly FAST: {
         readonly versions: string[];
-        get<T>(id: string): T | null;
-        get<T>(id: string, initialize: () => T): T;
+        getById<T>(id: string): T | null;
+        getById<T>(id: string, initialize: () => T): T;
     };
 };
 

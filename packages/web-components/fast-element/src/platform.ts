@@ -24,6 +24,25 @@ export type TrustedTypes = {
 };
 
 /**
+ * The FAST global.
+ * @internal
+ */
+export interface FASTGlobal {
+    /**
+     * The list of loaded versions.
+     */
+    readonly versions: string[];
+
+    /**
+     * Gets a cross FAST instance shared value.
+     * @param id - The id to get the value for.
+     * @param initialize - Creates the initial value for the id if not already existing.
+     */
+    getById<T>(id: string): T | null;
+    getById<T>(id: string, initialize: () => T): T;
+}
+
+/**
  * The platform global type.
  * @public
  */
@@ -37,19 +56,7 @@ export type Global = typeof globalThis & {
      * The FAST global.
      * @internal
      */
-    readonly FAST: {
-        /**
-         * The list of loaded versions.
-         */
-        readonly versions: string[];
-        /**
-         * Gets a cross FAST instance shared value.
-         * @param id - The id to get the value for.
-         * @param initialize - Creates the initial value for the id if not already existing.
-         */
-        get<T>(id: string): T | null;
-        get<T>(id: string, initialize: () => T): T;
-    };
+    readonly FAST: FASTGlobal;
 };
 
 declare const global: any;
@@ -110,10 +117,10 @@ if ($global.FAST === void 0) {
     });
 }
 
-if ($global.FAST.get === void 0) {
+if ($global.FAST.getById === void 0) {
     const storage = Object.create(null);
 
-    Reflect.defineProperty($global.FAST, "get", {
+    Reflect.defineProperty($global.FAST, "getById", {
         value<T>(id: string, initialize?: () => T): T | null {
             let found = storage[id];
 

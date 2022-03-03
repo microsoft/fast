@@ -89,7 +89,7 @@ export interface BindingObserver<TSource = any, TReturn = any, TParent = any>
  * Common Observable APIs.
  * @public
  */
-export const Observable = $global.FAST.get("o", () => {
+export const Observable = $global.FAST.getById("o", () => {
     const volatileRegex = /(:|&&|\|\||if)/;
     const notifierLookup = new WeakMap<any, Notifier>();
     const accessorLookup = new WeakMap<any, Accessor[]>();
@@ -433,7 +433,7 @@ export function volatile(
     });
 }
 
-const contextEvent = $global.FAST.get("ce", () => {
+const contextEvent = $global.FAST.getById("ce", () => {
     let current: Event | null = null;
 
     return {
