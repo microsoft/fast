@@ -1,7 +1,7 @@
 import { DOM } from "../dom";
 import { PropertyChangeNotifier, SubscriberSet } from "./notifier";
 import type { Notifier, Subscriber } from "./notifier";
-import { $global } from "../platform";
+import { FAST, KernelServiceId } from "../platform";
 
 /**
  * Represents a getter/setter property accessor on an object.
@@ -89,7 +89,7 @@ export interface BindingObserver<TSource = any, TReturn = any, TParent = any>
  * Common Observable APIs.
  * @public
  */
-export const Observable = $global.FAST.getById("o", () => {
+export const Observable = FAST.getById(KernelServiceId.observable, () => {
     const volatileRegex = /(:|&&|\|\||if)/;
     const notifierLookup = new WeakMap<any, Notifier>();
     const accessorLookup = new WeakMap<any, Accessor[]>();
@@ -433,7 +433,7 @@ export function volatile(
     });
 }
 
-const contextEvent = $global.FAST.getById("ce", () => {
+const contextEvent = FAST.getById(KernelServiceId.contextEvent, () => {
     let current: Event | null = null;
 
     return {

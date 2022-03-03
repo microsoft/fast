@@ -284,6 +284,11 @@ export class ExecutionContext<TParent = any, TGrandparent = any> {
     static setEvent(event: Event | null): void;
 }
 
+// Warning: (ae-internal-missing-underscore) The name "FAST" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal
+export const FAST: FASTGlobal;
+
 // @public
 export interface FASTElement {
     $emit(type: string, detail?: any, options?: Omit<CustomEventInit, "detail">): boolean | void;
@@ -319,14 +324,20 @@ export class FASTElementDefinition<TType extends Function = Function> {
     readonly type: TType;
 }
 
+// Warning: (ae-internal-missing-underscore) The name "FASTGlobal" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal
+export interface FASTGlobal {
+    getById<T>(id: string | number): T | null;
+    // (undocumented)
+    getById<T>(id: string | number, initialize: () => T): T;
+    readonly versions: string[];
+}
+
 // @public
 export type Global = typeof globalThis & {
     trustedTypes: TrustedTypes;
-    readonly FAST: {
-        readonly versions: string[];
-        getById<T>(id: string): T | null;
-        getById<T>(id: string, initialize: () => T): T;
-    };
+    readonly FAST: FASTGlobal;
 };
 
 // @public
@@ -364,6 +375,20 @@ export class HTMLView implements ElementView, SyntheticView {
     remove(): void;
     source: any | null;
     unbind(): void;
+}
+
+// Warning: (ae-internal-missing-underscore) The name "KernelServiceId" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal
+export const enum KernelServiceId {
+    // (undocumented)
+    contextEvent = 3,
+    // (undocumented)
+    elementDefinitions = 4,
+    // (undocumented)
+    observable = 2,
+    // (undocumented)
+    updateQueue = 1
 }
 
 // Warning: (ae-internal-missing-underscore) The name "Mutable" should be prefixed with an underscore because the declaration is marked as @internal

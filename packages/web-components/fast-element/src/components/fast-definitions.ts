@@ -1,4 +1,4 @@
-import { $global } from "../platform";
+import { FAST, KernelServiceId } from "../platform";
 import type { Mutable } from "../interfaces";
 import { Observable } from "../observation/observable";
 import { ComposableStyles, ElementStyles } from "../styles/element-styles";
@@ -7,7 +7,7 @@ import { AttributeConfiguration, AttributeDefinition } from "./attributes";
 
 const defaultShadowOptions: ShadowRootInit = { mode: "open" };
 const defaultElementOptions: ElementDefinitionOptions = {};
-const definitions = $global.FAST.getById("d", () => {
+const definitions = FAST.getById(KernelServiceId.elementDefinitions, () => {
     const lookup = new Map<Function, FASTElementDefinition>();
 
     return Object.freeze({

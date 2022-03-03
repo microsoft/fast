@@ -34,12 +34,12 @@ export interface FASTGlobal {
     readonly versions: string[];
 
     /**
-     * Gets a cross FAST instance shared value.
+     * Gets a kernel value.
      * @param id - The id to get the value for.
      * @param initialize - Creates the initial value for the id if not already existing.
      */
-    getById<T>(id: string): T | null;
-    getById<T>(id: string, initialize: () => T): T;
+    getById<T>(id: string | number): T | null;
+    getById<T>(id: string | number, initialize: () => T): T;
 }
 
 /**
@@ -121,7 +121,7 @@ if ($global.FAST.getById === void 0) {
     const storage = Object.create(null);
 
     Reflect.defineProperty($global.FAST, "getById", {
-        value<T>(id: string, initialize?: () => T): T | null {
+        value<T>(id: string | number, initialize?: () => T): T | null {
             let found = storage[id];
 
             if (found === void 0) {
@@ -136,6 +136,23 @@ if ($global.FAST.getById === void 0) {
 
 // TODO: Replace with ??= after TS 4.x update
 ($global.FAST.versions ?? (($global.FAST as any).versions = [])).push("1.8.0");
+
+/**
+ * The FAST global.
+ * @internal
+ */
+export const FAST = $global.FAST;
+
+/**
+ * Core services shared across FAST instances.
+ * @internal
+ */
+export const enum KernelServiceId {
+    updateQueue = 1,
+    observable = 2,
+    contextEvent = 3,
+    elementDefinitions = 4,
+}
 
 /**
  * A readonly, empty array.
