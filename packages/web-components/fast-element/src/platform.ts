@@ -39,10 +39,13 @@ export type Global = typeof globalThis & {
      */
     readonly FAST: {
         /**
+         * The list of loaded versions.
+         */
+        readonly versions: string[];
+        /**
          * Gets a cross FAST instance shared value.
          * @param id - The id to get the value for.
          * @param initialize - Creates the initial value for the id if not already existing.
-         * @internal
          */
         get<T>(id: string): T | null;
         get<T>(id: string, initialize: () => T): T;
@@ -123,6 +126,9 @@ if ($global.FAST.get === void 0) {
         ...propConfig,
     });
 }
+
+// TODO: Replace with ??= after TS 4.x update
+($global.FAST.versions ?? (($global.FAST as any).versions = [])).push("1.8.0");
 
 /**
  * A readonly, empty array.
