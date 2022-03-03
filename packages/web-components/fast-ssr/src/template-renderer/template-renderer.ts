@@ -147,20 +147,6 @@ export class TemplateRenderer implements Readonly<TemplateRendererConfiguration>
                     let result = code.directive.binding(source, defaultExecutionContext);
                     const { name } = code;
 
-                    switch (attributeType) {
-                        case AttributeType.booleanContent:
-                            if (!!result) {
-                                result = "";
-                                yield name;
-                            }
-                            break;
-                        case AttributeType.content:
-                            if (result !== null && result !== undefined) {
-                                yield `${name}="${result}"`;
-                            }
-                            break;
-                    }
-
                     if (code.useCustomElementInstance) {
                         const instance =
                             renderInfo.customElementInstanceStack[
@@ -168,9 +154,26 @@ export class TemplateRenderer implements Readonly<TemplateRendererConfiguration>
                             ];
 
                         if (instance) {
-                            (attributeType === AttributeType.idl
-                                ? instance.setProperty
-                                : instance.setAttribute)(name, result);
+                            attributeType === AttributeType.idl
+                                ? instance.setProperty(name, result)
+                                : instance.setAttribute(name, result);
+                        }
+                    } else {
+                        // Only yield attributes as strings for native elements.
+                        // All custom-element attributes are emitted in the
+                        // OpType.customElementAttributes case
+                        switch (attributeType) {
+                            case AttributeType.booleanContent:
+                                if (!!result) {
+                                    result = "";
+                                    yield name;
+                                }
+                                break;
+                            case AttributeType.content:
+                                if (result !== null && result !== undefined) {
+                                    yield `${name}="${result}"`;
+                                }
+                                break;
                         }
                     }
 

@@ -57,6 +57,8 @@ test.describe("TemplateRenderer", () => {
 
         expect(consolidate(result)).toBe("<hello-world><template shadowroot=\"open\"></template></hello-world>");
     });
+
+
     // TODO: enable. This is disabled because fast-element throws during element connection
     test.skip("should emit static shadow DOM template for a defined custom element", () => {
         const { templateRenderer, defaultRenderInfo} = fastSSR();
@@ -100,11 +102,18 @@ test.describe("TemplateRenderer", () => {
         expect(result).toBe("");
     });
 
-    test("should emit an element with an attribute when the attr binding returns a string", () => {
+    test("should emit a native element with an attribute when the attr binding returns a string", () => {
         const { templateRenderer, defaultRenderInfo} = fastSSR();
         const result = consolidate(templateRenderer.render(html`<p id="${(x) => "test"}"></p>`, defaultRenderInfo));
 
         expect(result).toBe(`<p id="test"></p>`);
+    });
+
+    test("should emit a custom element with an attribute binding when the attr binding returns a string", () => {
+        const { templateRenderer, defaultRenderInfo} = fastSSR();
+        const result = templateRenderer.render(html`<hello-world my-attr=${x => "foobar"}></hello-world>`, defaultRenderInfo)
+
+        expect(consolidate(result)).toBe(`<hello-world  my-attr="foobar"><template shadowroot=\"open\"></template></hello-world>`);
     });
     test("should emit an element with a boolean attribute when the attr binding returns true", () => {
         const { templateRenderer, defaultRenderInfo} = fastSSR();
