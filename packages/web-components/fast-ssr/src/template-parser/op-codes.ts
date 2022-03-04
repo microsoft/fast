@@ -11,6 +11,8 @@ export enum OpType {
     customElementShadow,
     attributeBinding,
     directive,
+    templateElementOpen,
+    templateElementClose,
     text,
 }
 
@@ -75,6 +77,25 @@ export type AttributeBindingOp = {
 };
 
 /**
+ * Operation to emit a template element open tag
+ */
+export type TemplateElementOpen = {
+    type: OpType.templateElementOpen;
+    staticAttributes: Map<string, string>;
+    dynamicAttributes: Map<
+        string,
+        Pick<AttributeBindingOp, "name" | "attributeType" | "directive">
+    >;
+};
+
+/**
+ * Operation to emit a template element closing tag
+ */
+export type TemplateElementClose = {
+    type: OpType.templateElementClose;
+};
+
+/**
  * Operation to emit to custom-element attributes
  */
 export type CustomElementAttributes = {
@@ -83,9 +104,11 @@ export type CustomElementAttributes = {
 
 export type Op =
     | AttributeBindingOp
-    | TextOp
     | CustomElementOpenOp
     | CustomElementCloseOp
     | DirectiveOp
     | CustomElementAttributes
-    | CustomElementShadowOp;
+    | CustomElementShadowOp
+    | TemplateElementOpen
+    | TemplateElementClose
+    | TextOp;
