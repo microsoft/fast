@@ -4,10 +4,9 @@ import {
     defaultExecutionContext,
     InlinableHTMLDirective,
     ViewTemplate,
-    HTMLDirective,
 } from "@microsoft/fast-element";
 import { AttributeType } from "../template-parser/attributes.js";
-import { OpType, Op } from "../template-parser/op-codes.js";
+import { Op, OpType } from "../template-parser/op-codes.js";
 import { parseTemplateToOpCodes } from "../template-parser/template-parser.js";
 import { DirectiveRenderer } from "./directives.js";
 
