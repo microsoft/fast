@@ -188,6 +188,13 @@ export function parseTemplateToOpCodes(template: ViewTemplate): Op[] {
                     staticAttributes: attributes.static,
                 });
             }
+        } else if (node.tagName === "template") {
+            flushTo(node.sourceCodeLocation?.startTag.startOffset);
+            opCodes.push({
+                type: OpType.templateElementOpen,
+                staticAttributes: attributes.static,
+            });
+            skipTo(node.sourceCodeLocation!.startTag.endOffset);
         }
 
         // Push attribute binding op codes for any attributes that
@@ -213,7 +220,7 @@ export function parseTemplateToOpCodes(template: ViewTemplate): Op[] {
             }
         }
 
-        if (augmentOpeningTag) {
+        if (augmentOpeningTag && node.tagName !== "template") {
             if (ctor) {
                 flushTo(node.sourceCodeLocation!.startTag.endOffset - 1);
                 opCodes.push({ type: OpType.customElementAttributes });
@@ -298,8 +305,14 @@ export function parseTemplateToOpCodes(template: ViewTemplate): Op[] {
         },
 
         leave(node: DefaultTreeNode): void {
-            if (isElementNode(node) && node.isDefinedCustomElement) {
-                opCodes.push({ type: OpType.customElementClose });
+            if (isElementNode(node)) {
+                if (node.isDefinedCustomElement) {
+                    opCodes.push({ type: OpType.customElementClose });
+                } else if (node.tagName === "template") {
+                    flushTo(node.sourceCodeLocation?.endTag.startOffset);
+                    opCodes.push({ type: OpType.templateElementClose });
+                    skipTo(node.sourceCodeLocation!.endTag.endOffset);
+                }
             }
         },
     });

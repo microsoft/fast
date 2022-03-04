@@ -82,10 +82,9 @@ export type AttributeBindingOp = {
 export type TemplateElementOpen = {
     type: OpType.templateElementOpen;
     staticAttributes: Map<string, string>;
-    dynamicAttributes: Map<
-        string,
-        Pick<AttributeBindingOp, "name" | "attributeType" | "directive">
-    >;
+    // We need dynamic attributes here so we can emit the `<template`, all attributes, and then `>`
+    // from one operation
+    dynamicAttributes: Pick<AttributeBindingOp, "name" | "attributeType" | "directive">[];
 };
 
 /**

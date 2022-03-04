@@ -94,4 +94,12 @@ test.describe("parseTemplateToOpCodes", () => {
         expect(codes[2].attributeType).toBe(AttributeType.idl);
         expect(codes[3].attributeType).toBe(AttributeType.event);
     });
+    test("should emit template open and close ops for a template element", () => {
+        const input = html`<template></template>`;
+        const codes = parseTemplateToOpCodes(input);
+
+        expect(codes.length).toBe(2);
+        expect(codes[0].type).toBe(OpType.templateElementOpen);
+        expect(codes[1].type).toBe(OpType.templateElementClose);
+    })
 })
