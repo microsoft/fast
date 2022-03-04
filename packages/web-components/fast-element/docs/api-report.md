@@ -49,7 +49,7 @@ export class AttributeDefinition implements Accessor {
     onAttributeChangedCallback(element: HTMLElement, value: any): void;
     readonly Owner: Function;
     setValue(source: HTMLElement, newValue: any): void;
-    }
+}
 
 // @public
 export type AttributeMode = "reflect" | "boolean" | "fromView";
@@ -60,18 +60,18 @@ export interface Behavior<TSource = any, TParent = any, TGrandparent = any> {
     unbind(source: TSource, context: ExecutionContext<TParent, TGrandparent>): void;
 }
 
-// @public (undocumented)
+// @alpha (undocumented)
 export function bind<T = any>(binding: Binding<T>, config?: BindingConfig<T> | DefaultBindingOptions): CaptureType<T>;
 
 // @public
 export type Binding<TSource = any, TReturn = any, TParent = any> = (source: TSource, context: ExecutionContext<TParent>) => TReturn;
 
-// @public (undocumented)
+// @alpha (undocumented)
 export type BindingBehaviorFactory = {
     createBehavior(targets: ViewBehaviorTargets): ViewBehavior;
 };
 
-// @public (undocumented)
+// @alpha (undocumented)
 export interface BindingConfig<T = any> {
     // (undocumented)
     mode: BindingMode;
@@ -79,7 +79,7 @@ export interface BindingConfig<T = any> {
     options: any;
 }
 
-// @public (undocumented)
+// @alpha (undocumented)
 export interface BindingMode {
     // (undocumented)
     attribute: BindingType;
@@ -104,7 +104,7 @@ export interface BindingObserver<TSource = any, TReturn = any, TParent = any> ex
 
 // Warning: (ae-forgotten-export) The symbol "HTMLBindingDirective" needs to be exported by the entry point index.d.ts
 //
-// @public (undocumented)
+// @alpha (undocumented)
 export type BindingType = (directive: HTMLBindingDirective) => BindingBehaviorFactory;
 
 // @public
@@ -160,7 +160,7 @@ export class Controller extends PropertyChangeNotifier {
     // @internal
     constructor(element: HTMLElement, definition: FASTElementDefinition);
     addBehaviors(behaviors: ReadonlyArray<Behavior<HTMLElement>>): void;
-    addStyles(styles: ElementStyles | HTMLStyleElement): void;
+    addStyles(styles: ElementStyles | HTMLStyleElement | null | undefined): void;
     readonly definition: FASTElementDefinition;
     readonly element: HTMLElement;
     emit(type: string, detail?: any, options?: Omit<CustomEventInit, "detail">): void | boolean;
@@ -170,7 +170,7 @@ export class Controller extends PropertyChangeNotifier {
     onConnectedCallback(): void;
     onDisconnectedCallback(): void;
     removeBehaviors(behaviors: ReadonlyArray<Behavior<HTMLElement>>, force?: boolean): void;
-    removeStyles(styles: ElementStyles | HTMLStyleElement): void;
+    removeStyles(styles: ElementStyles | HTMLStyleElement | null | undefined): void;
     get styles(): ElementStyles | null;
     set styles(value: ElementStyles | null);
     get template(): ElementViewTemplate | null;
@@ -196,7 +196,7 @@ export function customElement(nameOrDef: string | PartialFASTElementDefinition):
 // @public
 export type DecoratorAttributeConfiguration = Omit<AttributeConfiguration, "property">;
 
-// @public (undocumented)
+// @alpha (undocumented)
 export type DefaultBindingOptions = {
     capture?: boolean;
 };
@@ -209,11 +209,6 @@ export const DOM: Readonly<{
     supportsAdoptedStyleSheets: boolean;
     setHTMLPolicy(policy: TrustedTypesPolicy): void;
     createHTML(html: string): string;
-    isMarker(node: Node): node is Comment;
-    extractDirectiveIndexFromMarker(node: Comment): number;
-    createInterpolationPlaceholder(index: number): string;
-    createCustomAttributePlaceholder(index: number): string;
-    createBlockPlaceholder(index: number): string;
     setUpdateMode(isAsync: boolean): void;
     queueUpdate(callable: Callable): void;
     nextUpdate(): Promise<void>;
@@ -355,13 +350,22 @@ export class HTMLView<TSource = any, TParent = any, TGrandparent = any> implemen
     unbind(): void;
 }
 
-// @public (undocumented)
+// @public
 export abstract class InlinableHTMLDirective extends AspectedHTMLDirective {
     // (undocumented)
     abstract readonly binding: Binding;
     // (undocumented)
     abstract readonly rawAspect?: string;
 }
+
+// @public
+export const Markup: Readonly<{
+    marker: string;
+    interpolation(index: number): string;
+    attribute(index: number): string;
+    comment(index: number): string;
+    indexFromComment(node: Comment): number;
+}>;
 
 // Warning: (ae-internal-missing-underscore) The name "Mutable" should be prefixed with an underscore because the declaration is marked as @internal
 //
@@ -411,11 +415,17 @@ export interface ObservationRecord {
 
 // Warning: (ae-forgotten-export) The symbol "BindingConfigResolver" needs to be exported by the entry point index.d.ts
 //
-// @public (undocumented)
+// @alpha (undocumented)
 export const onChange: BindingConfig<DefaultBindingOptions> & BindingConfigResolver<DefaultBindingOptions>;
 
-// @public (undocumented)
+// @alpha (undocumented)
 export const oneTime: BindingConfig<DefaultBindingOptions> & BindingConfigResolver<DefaultBindingOptions>;
+
+// @public
+export const Parser: Readonly<{
+    parse(value: string, directives: readonly HTMLDirective[]): (string | HTMLDirective)[] | null;
+    aggregate(parts: (string | HTMLDirective)[]): InlinableHTMLDirective;
+}>;
 
 // @public
 export interface PartialFASTElementDefinition {
@@ -457,14 +467,14 @@ export class RepeatBehavior<TSource = any> implements Behavior, Subscriber {
     // @internal (undocumented)
     handleChange(source: any, args: Splice[]): void;
     unbind(): void;
-    }
+}
 
 // @public
 export class RepeatDirective<TSource = any> extends HTMLDirective {
     constructor(itemsBinding: Binding, templateBinding: Binding<TSource, SyntheticViewTemplate>, options: RepeatOptions);
     createBehavior(targets: ViewBehaviorTargets): RepeatBehavior<TSource>;
     createPlaceholder: (index: number) => string;
-    }
+}
 
 // @public
 export interface RepeatOptions {
@@ -607,14 +617,13 @@ export class ViewTemplate<TSource = any, TParent = any, TGrandparent = any> impl
     readonly directives: ReadonlyArray<HTMLDirective>;
     readonly html: string | HTMLTemplateElement;
     render(source: TSource, host: Node, hostBindingTarget?: Element): HTMLView<TSource, TParent, TGrandparent>;
-    }
+}
 
 // @public
 export function volatile(target: {}, name: string | Accessor, descriptor: PropertyDescriptor): PropertyDescriptor;
 
 // @public
 export function when<TSource = any, TReturn = any>(binding: Binding<TSource, TReturn>, templateOrTemplateBinding: SyntheticViewTemplate | Binding<TSource, SyntheticViewTemplate>): CaptureType<TSource>;
-
 
 // (No @packageDocumentation comment for this package)
 

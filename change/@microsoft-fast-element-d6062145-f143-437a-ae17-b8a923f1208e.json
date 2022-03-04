@@ -1,0 +1,7 @@
+{
+  "type": "none",
+  "comment": "docs: add alpha tags to unfinished binding APIs",
+  "packageName": "@microsoft/fast-element",
+  "email": "roeisenb@microsoft.com",
+  "dependentChangeType": "none"
+}

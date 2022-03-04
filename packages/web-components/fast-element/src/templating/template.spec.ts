@@ -1,8 +1,8 @@
 import { expect } from "chai";
 import { html, ViewTemplate } from "./template";
-import { DOM } from "../dom";
+import { Markup } from "./markup";
 import { HTMLBindingDirective } from "./binding";
-import { HTMLDirective, AspectedHTMLDirective } from "./html-directive";
+import { HTMLDirective } from "./html-directive";
 import { bind, Binding, InlinableHTMLDirective, ViewBehaviorTargets } from "..";
 
 describe(`The html tag template helper`, () => {
@@ -17,7 +17,7 @@ describe(`The html tag template helper`, () => {
         }
 
         createPlaceholder(index: number) {
-            return DOM.createBlockPlaceholder(index);
+            return Markup.comment(index);
         }
     }
 
@@ -51,40 +51,40 @@ describe(`The html tag template helper`, () => {
             type: "number",
             location: "at the beginning",
             template: html`${numberValue} end`,
-            result: `${DOM.createInterpolationPlaceholder(0)} end`,
+            result: `${Markup.interpolation(0)} end`,
         },
         {
             type: "number",
             location: "in the middle",
             template: html`beginning ${numberValue} end`,
-            result: `beginning ${DOM.createInterpolationPlaceholder(0)} end`,
+            result: `beginning ${Markup.interpolation(0)} end`,
         },
         {
             type: "number",
             location: "at the end",
             template: html`beginning ${numberValue}`,
-            result: `beginning ${DOM.createInterpolationPlaceholder(0)}`,
+            result: `beginning ${Markup.interpolation(0)}`,
         },
         // expression interpolation
         {
             type: "expression",
             location: "at the beginning",
             template: html<Model>`${x => x.value} end`,
-            result: `${DOM.createInterpolationPlaceholder(0)} end`,
+            result: `${Markup.interpolation(0)} end`,
             expectDirectives: [HTMLBindingDirective],
         },
         {
             type: "expression",
             location: "in the middle",
             template: html<Model>`beginning ${x => x.value} end`,
-            result: `beginning ${DOM.createInterpolationPlaceholder(0)} end`,
+            result: `beginning ${Markup.interpolation(0)} end`,
             expectDirectives: [HTMLBindingDirective],
         },
         {
             type: "expression",
             location: "at the end",
             template: html<Model>`beginning ${x => x.value}`,
-            result: `beginning ${DOM.createInterpolationPlaceholder(0)}`,
+            result: `beginning ${Markup.interpolation(0)}`,
             expectDirectives: [HTMLBindingDirective],
         },
         // directive interpolation
@@ -92,21 +92,21 @@ describe(`The html tag template helper`, () => {
             type: "directive",
             location: "at the beginning",
             template: html`${new TestDirective()} end`,
-            result: `${DOM.createBlockPlaceholder(0)} end`,
+            result: `${Markup.comment(0)} end`,
             expectDirectives: [TestDirective],
         },
         {
             type: "directive",
             location: "in the middle",
             template: html`beginning ${new TestDirective()} end`,
-            result: `beginning ${DOM.createBlockPlaceholder(0)} end`,
+            result: `beginning ${Markup.comment(0)} end`,
             expectDirectives: [TestDirective],
         },
         {
             type: "directive",
             location: "at the end",
             template: html`beginning ${new TestDirective()}`,
-            result: `beginning ${DOM.createBlockPlaceholder(0)}`,
+            result: `beginning ${Markup.comment(0)}`,
             expectDirectives: [TestDirective],
         },
         // template interpolation
@@ -114,21 +114,21 @@ describe(`The html tag template helper`, () => {
             type: "template",
             location: "at the beginning",
             template: html`${html`sub-template`} end`,
-            result: `${DOM.createInterpolationPlaceholder(0)} end`,
+            result: `${Markup.interpolation(0)} end`,
             expectDirectives: [HTMLBindingDirective],
         },
         {
             type: "template",
             location: "in the middle",
             template: html`beginning ${html`sub-template`} end`,
-            result: `beginning ${DOM.createInterpolationPlaceholder(0)} end`,
+            result: `beginning ${Markup.interpolation(0)} end`,
             expectDirectives: [HTMLBindingDirective],
         },
         {
             type: "template",
             location: "at the end",
             template: html`beginning ${html`sub-template`}`,
-            result: `beginning ${DOM.createInterpolationPlaceholder(0)}`,
+            result: `beginning ${Markup.interpolation(0)}`,
             expectDirectives: [HTMLBindingDirective],
         },
         // mixed interpolation
@@ -136,33 +136,33 @@ describe(`The html tag template helper`, () => {
             type: "mixed, back-to-back string, number, expression, and directive",
             location: "at the beginning",
             template: html<Model>`${stringValue}${numberValue}${x => x.value}${new TestDirective()} end`,
-            result: `${stringValue}${DOM.createInterpolationPlaceholder(
+            result: `${stringValue}${Markup.interpolation(
                 0
-            )}${DOM.createInterpolationPlaceholder(
+            )}${Markup.interpolation(
                 1
-            )}${DOM.createBlockPlaceholder(2)} end`,
+            )}${Markup.comment(2)} end`,
             expectDirectives: [HTMLBindingDirective, HTMLBindingDirective, TestDirective],
         },
         {
             type: "mixed, back-to-back string, number, expression, and directive",
             location: "in the middle",
             template: html<Model>`beginning ${stringValue}${numberValue}${x => x.value}${new TestDirective()} end`,
-            result: `beginning ${stringValue}${DOM.createInterpolationPlaceholder(
+            result: `beginning ${stringValue}${Markup.interpolation(
                 0
-            )}${DOM.createInterpolationPlaceholder(
+            )}${Markup.interpolation(
                 1
-            )}${DOM.createBlockPlaceholder(2)} end`,
+            )}${Markup.comment(2)} end`,
             expectDirectives: [HTMLBindingDirective, HTMLBindingDirective, TestDirective],
         },
         {
             type: "mixed, back-to-back string, number, expression, and directive",
             location: "at the end",
             template: html<Model>`beginning ${stringValue}${numberValue}${x => x.value}${new TestDirective()}`,
-            result: `beginning ${stringValue}${DOM.createInterpolationPlaceholder(
+            result: `beginning ${stringValue}${Markup.interpolation(
                 0
-            )}${DOM.createInterpolationPlaceholder(
+            )}${Markup.interpolation(
                 1
-            )}${DOM.createBlockPlaceholder(2)}`,
+            )}${Markup.comment(2)}`,
             expectDirectives: [HTMLBindingDirective, HTMLBindingDirective, TestDirective],
         },
         {
@@ -170,11 +170,11 @@ describe(`The html tag template helper`, () => {
             location: "at the beginning",
             template: html<Model>`${stringValue}separator${numberValue}separator${x =>
                     x.value}separator${new TestDirective()} end`,
-            result: `${stringValue}separator${DOM.createInterpolationPlaceholder(
+            result: `${stringValue}separator${Markup.interpolation(
                 0
-            )}separator${DOM.createInterpolationPlaceholder(
+            )}separator${Markup.interpolation(
                 1
-            )}separator${DOM.createBlockPlaceholder(2)} end`,
+            )}separator${Markup.comment(2)} end`,
             expectDirectives: [HTMLBindingDirective, HTMLBindingDirective, TestDirective],
         },
         {
@@ -182,11 +182,11 @@ describe(`The html tag template helper`, () => {
             location: "in the middle",
             template: html<Model>`beginning ${stringValue}separator${numberValue}separator${x =>
                     x.value}separator${new TestDirective()} end`,
-            result: `beginning ${stringValue}separator${DOM.createInterpolationPlaceholder(
+            result: `beginning ${stringValue}separator${Markup.interpolation(
                 0
-            )}separator${DOM.createInterpolationPlaceholder(
+            )}separator${Markup.interpolation(
                 1
-            )}separator${DOM.createBlockPlaceholder(2)} end`,
+            )}separator${Markup.comment(2)} end`,
             expectDirectives: [HTMLBindingDirective, HTMLBindingDirective, TestDirective],
         },
         {
@@ -194,11 +194,11 @@ describe(`The html tag template helper`, () => {
             location: "at the end",
             template: html<Model>`beginning ${stringValue}separator${numberValue}separator${x =>
                     x.value}separator${new TestDirective()}`,
-            result: `beginning ${stringValue}separator${DOM.createInterpolationPlaceholder(
+            result: `beginning ${stringValue}separator${Markup.interpolation(
                 0
-            )}separator${DOM.createInterpolationPlaceholder(
+            )}separator${Markup.interpolation(
                 1
-            )}separator${DOM.createBlockPlaceholder(2)}`,
+            )}separator${Markup.comment(2)}`,
             expectDirectives: [HTMLBindingDirective, HTMLBindingDirective, TestDirective],
         },
     ];
@@ -218,7 +218,7 @@ describe(`The html tag template helper`, () => {
 
     it(`captures a case-sensitive property name when used with an expression`, () => {
         const template = html<Model>`<my-element :someAttribute=${x => x.value}></my-element>`;
-        const placeholder = DOM.createInterpolationPlaceholder(0);
+        const placeholder = Markup.interpolation(0);
 
         expect(template.html).to.equal(
             `<my-element :someAttribute=${placeholder}></my-element>`
@@ -230,7 +230,7 @@ describe(`The html tag template helper`, () => {
 
     it(`captures a case-sensitive property name when used with a binding`, () => {
         const template = html<Model>`<my-element :someAttribute=${bind(x => x.value)}></my-element>`;
-        const placeholder = DOM.createInterpolationPlaceholder(0);
+        const placeholder = Markup.interpolation(0);
 
         expect(template.html).to.equal(
             `<my-element :someAttribute=${placeholder}></my-element>`
@@ -255,7 +255,7 @@ describe(`The html tag template helper`, () => {
         }
 
         const template = html<Model>`<my-element :someAttribute=${new TestDirective()}></my-element>`;
-        const placeholder = DOM.createInterpolationPlaceholder(0);
+        const placeholder = Markup.interpolation(0);
 
         expect(template.html).to.equal(
             `<my-element :someAttribute=${placeholder}></my-element>`
