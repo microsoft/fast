@@ -31,6 +31,7 @@ export * from "./templating/when";
 export * from "./templating/repeat";
 export * from "./templating/slotted";
 export * from "./templating/children";
+export * from "./templating/focusgroup";
 export {
     elements,
     ElementsFilter,

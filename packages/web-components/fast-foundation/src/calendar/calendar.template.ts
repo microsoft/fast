@@ -1,4 +1,4 @@
-import { html, repeat, when } from "@microsoft/fast-element";
+import { focusgroup, html, repeat, when } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
 import { endTemplate, startTemplate } from "../patterns/start-end";
 import { DataGrid, DataGridCell, DataGridRow } from "../data-grid";
@@ -163,7 +163,7 @@ export const noninteractiveCalendarTemplate: (todayString: string) => ViewTempla
     todayString: string
 ) => {
     return html`
-        <div class="days" part="days">
+        <div class="days" part="days" ${focusgroup({ wrap: "both" })}>
             <div class="week-days" part="week-days">
                 ${repeat(
                     x => x.getWeekdayText(),
@@ -201,6 +201,7 @@ export const noninteractiveCalendarTemplate: (todayString: string) => ViewTempla
                                             `${x.month}-${x.day}-${x.year}`
                                                 ? "today"
                                                 : "date"}"
+                                        tabindex="-1"
                                     >
                                         ${(x, c) =>
                                             c.parentContext.parent.dateFormatter.getDay(
