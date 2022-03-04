@@ -4,9 +4,10 @@ import {
     defaultExecutionContext,
     InlinableHTMLDirective,
     ViewTemplate,
+    HTMLDirective,
 } from "@microsoft/fast-element";
 import { AttributeType } from "../template-parser/attributes.js";
-import { OpType } from "../template-parser/op-codes.js";
+import { OpType, Op } from "../template-parser/op-codes.js";
 import { parseTemplateToOpCodes } from "../template-parser/template-parser.js";
 import { DirectiveRenderer } from "./directives.js";
 
@@ -43,6 +44,21 @@ export class TemplateRenderer implements Readonly<TemplateRendererConfiguration>
     ): IterableIterator<string> {
         const codes = parseTemplateToOpCodes(template);
 
+        yield* this.renderOpCodes(codes, renderInfo, source);
+    }
+
+    /**
+     * Render a set of op codes.
+     * @internal
+     * @param codes
+     * @param renderInfo
+     * @param source
+     */
+    public *renderOpCodes(
+        codes: Op[],
+        renderInfo: RenderInfo,
+        source?: unknown
+    ): IterableIterator<string> {
         for (const code of codes) {
             switch (code.type) {
                 case OpType.text:
@@ -186,6 +202,10 @@ export class TemplateRenderer implements Readonly<TemplateRendererConfiguration>
         }
     }
 
+    /**
+     * Registers DirectiveRenderers to use when rendering templates.
+     * @param directives - The directive renderers to register
+     */
     public withDirectiveRenderer(...directives: DirectiveRenderer<any>[]): void {
         for (const renderer of directives) {
             this.directiveRenderers.set(renderer.matcher, renderer);
