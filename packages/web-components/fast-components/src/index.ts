@@ -27,6 +27,7 @@ export * from "./dialog/index";
 export * from "./disclosure/index";
 export * from "./divider/index";
 export * from "./flipper/index";
+export * from "./focusgroup/index";
 export * from "./horizontal-scroll/index";
 export * from "./listbox/index";
 export * from "./listbox-option/index";

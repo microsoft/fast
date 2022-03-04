@@ -74,6 +74,10 @@ export class FocusgroupBehavior implements Behavior {
                 ? node
                 : node.children.length > 0
                 ? (getFocused(Array.from(node.children)) as any).flat()
+                : node instanceof HTMLSlotElement
+                ? (Array.from(node.assignedElements())
+                      .map(getFocused)
+                      .filter(el => el !== null) as any).flat()
                 : null;
         const getIndex = (node: HTMLElement): number =>
             parseInt(node.getAttribute("tabindex") || "-1");

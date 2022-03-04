@@ -20,6 +20,7 @@ import { fastDialog } from "./dialog/index";
 import { fastDisclosure } from "./disclosure/index";
 import { fastDivider } from "./divider/index";
 import { fastFlipper } from "./flipper/index";
+import { fastFocusgroup } from "./focusgroup/index";
 import { fastHorizontalScroll } from "./horizontal-scroll/index";
 import { fastOption } from "./listbox-option/index";
 import { fastListbox } from "./listbox/index";
@@ -95,6 +96,7 @@ export {
     fastDisclosure,
     fastDivider,
     fastFlipper,
+    fastFocusgroup,
     fastHorizontalScroll,
     fastListbox,
     fastOption,
@@ -156,6 +158,7 @@ export const allComponents = {
     fastDisclosure,
     fastDivider,
     fastFlipper,
+    fastFocusgroup,
     fastHorizontalScroll,
     fastListbox,
     fastOption,

@@ -30,6 +30,7 @@ export * from "./dialog/index";
 export * from "./disclosure/index";
 export * from "./divider/index";
 export * from "./flipper/index";
+export * from "./focusgroup/index";
 export * from "./form-associated/index";
 export * from "./foundation-element/index";
 export * from "./listbox-option/index";

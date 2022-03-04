@@ -1,0 +1,170 @@
+<h1>Focusgroup</h1>
+
+<style>
+    .link-space {
+        display: flex;
+        gap: 20px;
+    }
+
+    .link-space a {
+        color: inherit;
+    }
+
+    td {
+        padding: 10px;
+    }
+</style>
+
+<h2>Basic focusgroup</h2>
+<fast-focusgroup>
+    <div class="link-space">
+        <a href="javascript:void(0);">Link 1</a>
+        <a href="javascript:void(0);">Link 2</a>
+        <a href="javascript:void(0);">Link 3</a>
+        <a href="javascript:void(0);">Link 4</a>
+        <a href="javascript:void(0);">Link 5</a>
+    </div>
+</fast-focusgroup>
+
+<h2>Focusgroup with wrapping</h2>
+<fast-focusgroup wrap="horizontal">
+    <div class="link-space">
+        <a href="javascript:void(0);">Link 1</a>
+        <a href="javascript:void(0);">Link 2</a>
+        <a href="javascript:void(0);">Link 3</a>
+        <a href="javascript:void(0);">Link 4</a>
+        <a href="javascript:void(0);">Link 5</a>
+    </div>
+</fast-focusgroup>
+
+<h2>Grid focusgroup</h2>
+<fast-focusgroup>
+    <table>
+        <tr>
+            <td tabindex="-1">Cell 1.1</td>
+            <td tabindex="-1">Cell 1.2</td>
+            <td tabindex="-1">Cell 1.3</td>
+            <td tabindex="-1">Cell 1.4</td>
+            <td tabindex="-1">Cell 1.5</td>
+            <td tabindex="-1">Cell 1.6</td>
+            <td tabindex="-1">Cell 1.7</td>
+            <td tabindex="-1">Cell 1.8</td>
+        </tr>
+        <tr>
+            <td tabindex="-1">Cell 2.1</td>
+            <td tabindex="-1">Cell 2.2</td>
+            <td tabindex="-1">Cell 2.3</td>
+            <td tabindex="-1">Cell 2.4</td>
+            <td tabindex="-1">Cell 2.5</td>
+            <td tabindex="-1">Cell 2.6</td>
+            <td tabindex="-1">Cell 2.7</td>
+            <td tabindex="-1">Cell 2.8</td>
+        </tr>
+        <tr>
+            <td tabindex="-1">Cell 3.1</td>
+            <td tabindex="-1">Cell 3.2</td>
+            <td tabindex="-1">Cell 3.3</td>
+            <td tabindex="-1">Cell 3.4</td>
+            <td tabindex="-1">Cell 3.5</td>
+            <td tabindex="-1">Cell 3.6</td>
+            <td tabindex="-1">Cell 3.7</td>
+            <td tabindex="-1">Cell 3.8</td>
+        </tr>
+        <tr>
+            <td tabindex="-1">Cell 4.1</td>
+            <td tabindex="-1">Cell 4.2</td>
+            <td tabindex="-1">Cell 4.3</td>
+            <td tabindex="-1">Cell 4.4</td>
+            <td tabindex="-1">Cell 4.5</td>
+            <td tabindex="-1">Cell 4.6</td>
+            <td tabindex="-1">Cell 4.7</td>
+            <td tabindex="-1">Cell 4.8</td>
+        </tr>
+        <tr>
+            <td tabindex="-1">Cell 5.1</td>
+            <td tabindex="-1">Cell 5.2</td>
+            <td tabindex="-1">Cell 5.3</td>
+            <td tabindex="-1">Cell 5.4</td>
+            <td tabindex="-1">Cell 5.5</td>
+            <td tabindex="-1">Cell 5.6</td>
+            <td tabindex="-1">Cell 5.7</td>
+            <td tabindex="-1">Cell 5.8</td>
+        </tr>
+        <tr>
+            <td tabindex="-1">Cell 6.1</td>
+            <td tabindex="-1">Cell 6.2</td>
+            <td tabindex="-1">Cell 6.3</td>
+            <td tabindex="-1">Cell 6.4</td>
+            <td tabindex="-1">Cell 6.5</td>
+            <td tabindex="-1">Cell 6.6</td>
+            <td tabindex="-1">Cell 6.7</td>
+            <td tabindex="-1">Cell 6.8</td>
+        </tr>
+    </table>
+</fast-focusgroup>
+
+<h2>Grid focusgroup with wrapping</h2>
+<fast-focusgroup wrap="both">
+    <table>
+        <tr>
+            <td tabindex="-1">Cell 1.1</td>
+            <td tabindex="-1">Cell 1.2</td>
+            <td tabindex="-1">Cell 1.3</td>
+            <td tabindex="-1">Cell 1.4</td>
+            <td tabindex="-1">Cell 1.5</td>
+            <td tabindex="-1">Cell 1.6</td>
+            <td tabindex="-1">Cell 1.7</td>
+            <td tabindex="-1">Cell 1.8</td>
+        </tr>
+        <tr>
+            <td tabindex="-1">Cell 2.1</td>
+            <td tabindex="-1">Cell 2.2</td>
+            <td tabindex="-1">Cell 2.3</td>
+            <td tabindex="-1">Cell 2.4</td>
+            <td tabindex="-1">Cell 2.5</td>
+            <td tabindex="-1">Cell 2.6</td>
+            <td tabindex="-1">Cell 2.7</td>
+            <td tabindex="-1">Cell 2.8</td>
+        </tr>
+        <tr>
+            <td tabindex="-1">Cell 3.1</td>
+            <td tabindex="-1">Cell 3.2</td>
+            <td tabindex="-1">Cell 3.3</td>
+            <td tabindex="-1">Cell 3.4</td>
+            <td tabindex="-1">Cell 3.5</td>
+            <td tabindex="-1">Cell 3.6</td>
+            <td tabindex="-1">Cell 3.7</td>
+            <td tabindex="-1">Cell 3.8</td>
+        </tr>
+        <tr>
+            <td tabindex="-1">Cell 4.1</td>
+            <td tabindex="-1">Cell 4.2</td>
+            <td tabindex="-1">Cell 4.3</td>
+            <td tabindex="-1">Cell 4.4</td>
+            <td tabindex="-1">Cell 4.5</td>
+            <td tabindex="-1">Cell 4.6</td>
+            <td tabindex="-1">Cell 4.7</td>
+            <td tabindex="-1">Cell 4.8</td>
+        </tr>
+        <tr>
+            <td tabindex="-1">Cell 5.1</td>
+            <td tabindex="-1">Cell 5.2</td>
+            <td tabindex="-1">Cell 5.3</td>
+            <td tabindex="-1">Cell 5.4</td>
+            <td tabindex="-1">Cell 5.5</td>
+            <td tabindex="-1">Cell 5.6</td>
+            <td tabindex="-1">Cell 5.7</td>
+            <td tabindex="-1">Cell 5.8</td>
+        </tr>
+        <tr>
+            <td tabindex="-1">Cell 6.1</td>
+            <td tabindex="-1">Cell 6.2</td>
+            <td tabindex="-1">Cell 6.3</td>
+            <td tabindex="-1">Cell 6.4</td>
+            <td tabindex="-1">Cell 6.5</td>
+            <td tabindex="-1">Cell 6.6</td>
+            <td tabindex="-1">Cell 6.7</td>
+            <td tabindex="-1">Cell 6.8</td>
+        </tr>
+    </table>
+</fast-focusgroup>

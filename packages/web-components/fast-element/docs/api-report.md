@@ -325,7 +325,6 @@ export class FocusgroupBehavior implements Behavior {
     constructor(target: HTMLElement, options: FocusgroupBehaviorOptions);
     bind(source: any, context: ExecutionContext): void;
     getFocusItems(node?: HTMLElement): HTMLElement[];
-    // (undocumented)
     handleFocus(): void;
     handleKeydown(event: KeyboardEvent): boolean;
     setPositions(wrap: any): void;
