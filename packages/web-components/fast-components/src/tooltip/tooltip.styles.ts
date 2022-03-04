@@ -61,7 +61,6 @@ export const tooltipStyles: (
                 align-items: center;
                 overflow: visible;
                 flex-direction: row;
-                pointer-events: none;
             }
 
             ${anchoredRegionTag}.right,
