@@ -317,17 +317,18 @@ export class FASTElementDefinition<TType extends Function = Function> {
     readonly type: TType;
 }
 
-// @public (undocumented)
+// @public
 export function focusgroup<T = any>(options: FocusgroupBehaviorOptions): CaptureType<T>;
 
-// @public (undocumented)
+// @public
 export class FocusgroupBehavior implements Behavior {
     constructor(target: HTMLElement, options: FocusgroupBehaviorOptions);
-    // (undocumented)
     bind(source: any, context: ExecutionContext): void;
+    getFocusItems(node?: HTMLElement): HTMLElement[];
     // (undocumented)
-    getFocusItems(node: Element): Element[];
-    // (undocumented)
+    handleFocus(): void;
+    handleKeydown(event: KeyboardEvent): boolean;
+    setPositions(wrap: any): void;
     unbind(): void;
 }
 

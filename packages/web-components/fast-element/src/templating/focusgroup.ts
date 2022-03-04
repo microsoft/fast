@@ -66,13 +66,7 @@ export class FocusgroupBehavior implements Behavior {
                 HTMLSelectElement,
                 HTMLTextAreaElement,
                 HTMLButtonElement,
-            ].find(type => {
-                if (node instanceof type) {
-                    node.setAttribute("tabindex", "-1");
-                    return true;
-                }
-                return false;
-            });
+            ].find(type => node instanceof type);
         const getFocused = (node: Element | Element[]): Array<HTMLElement> =>
             Array.isArray(node)
                 ? (node.map(getFocused).filter(el => el !== null) as any).flat()
@@ -81,20 +75,25 @@ export class FocusgroupBehavior implements Behavior {
                 : node.children.length > 0
                 ? (getFocused(Array.from(node.children)) as any).flat()
                 : null;
+        const getIndex = (node: HTMLElement): number =>
+            parseInt(node.getAttribute("tabindex") || "-1");
         return getFocused(Array.from(node.children))
-            .sort((a: HTMLElement, b: HTMLElement) => {
-                return (
-                    parseInt(b.getAttribute("tabindex") as any) -
-                    parseInt(a.getAttribute("tabindex") as any)
-                );
-            })
-            .map((item, index) => {
-                item.setAttribute("tabindex", index ? "-1" : "0");
+            .sort((a: HTMLElement, b: HTMLElement) => getIndex(a) - getIndex(b))
+            .map((item: HTMLElement, index: number) => {
+                let tabindex = "-1";
                 if (index === 0) {
-                    (item as HTMLElement).focus();
+                    tabindex = "0";
+                    item.focus();
                 }
-                return item as HTMLElement;
+                item.setAttribute("tabindex", tabindex);
+                return item;
             });
+    }
+
+    public handleFocus(): void {
+        this.setPositions(this.options.wrap);
+        this.target.removeAttribute("tabindex");
+        this.target.removeEventListener("focus", this.handleFocus);
     }
 
     /**
@@ -105,12 +104,7 @@ export class FocusgroupBehavior implements Behavior {
      */
     public bind(source: any, context: ExecutionContext): void {
         this.target.setAttribute("tabindex", "0");
-        this.target.addEventListener("focus", e => {
-            if (!this.positions) {
-                this.setPositions(this.options.wrap);
-            }
-        });
-
+        this.target.addEventListener("focus", this.handleFocus.bind(this));
         this.target.addEventListener("keydown", this.handleKeydown.bind(this));
     }
 
@@ -120,6 +114,7 @@ export class FocusgroupBehavior implements Behavior {
      */
     public unbind(): void {
         this.target.removeEventListener("keydown", this.handleKeydown);
+        this.target.removeEventListener("focus", this.handleFocus);
     }
 
     /**
@@ -129,40 +124,49 @@ export class FocusgroupBehavior implements Behavior {
      */
     public setPositions(wrap): void {
         this.focusItems = this.getFocusItems();
-
-        const itemNav = this.focusItems
-            .map((child: HTMLElement) => {
-                const overlap = (a, b, axis = "x"): number =>
-                    Math.min(a[`${axis}2`], b[`${axis}2`]) - Math.max(a[axis], b[axis]);
-                const offset = (a, b, axis = "x"): number =>
-                    a[axis] > b[axis] ? b[`${axis}2`] - a[axis] : b[axis] - a[`${axis}2`];
-                const { offsetWidth, offsetHeight, offsetLeft: x, offsetTop: y } = child;
-                type dataStruct = {
-                    x: number;
-                    y: number;
-                    x2: number;
-                    y2: number;
-                    context?: any;
-                };
-                const data: dataStruct = {
-                    x,
-                    y,
-                    x2: x + offsetWidth,
-                    y2: y + offsetHeight,
-                };
-                data.context = compare => ({
-                    x: {
-                        overlap: overlap(data, compare, "y"),
-                        offset: offset(data, compare),
-                    },
-                    y: {
-                        overlap: overlap(data, compare),
-                        offset: offset(data, compare, "y"),
-                    },
-                });
-                return data;
-            })
-            .map((child, index, areas) =>
+        type dataStruct = {
+            x: number;
+            y: number;
+            x2: number;
+            y2: number;
+            context?: any;
+        };
+        this.positions = this.focusItems
+            .map(
+                (child: HTMLElement): dataStruct => {
+                    const overlap = (a, b, axis = "x"): number =>
+                        Math.min(a[`${axis}2`], b[`${axis}2`]) -
+                        Math.max(a[axis], b[axis]);
+                    const offset = (a, b, axis = "x"): number =>
+                        a[axis] > b[axis]
+                            ? b[`${axis}2`] - a[axis]
+                            : b[axis] - a[`${axis}2`];
+                    const {
+                        offsetWidth,
+                        offsetHeight,
+                        offsetLeft: x,
+                        offsetTop: y,
+                    } = child;
+                    const data: dataStruct = {
+                        x,
+                        y,
+                        x2: x + offsetWidth,
+                        y2: y + offsetHeight,
+                    };
+                    data.context = compare => ({
+                        x: {
+                            overlap: overlap(data, compare, "y"),
+                            offset: offset(data, compare),
+                        },
+                        y: {
+                            overlap: overlap(data, compare),
+                            offset: offset(data, compare, "y"),
+                        },
+                    });
+                    return data;
+                }
+            )
+            .map((child: dataStruct, index: number, areas: dataStruct[]) =>
                 areas.reduce(
                     (directions, child2, ci) => {
                         if (ci !== index) {
@@ -213,8 +217,6 @@ export class FocusgroupBehavior implements Behavior {
                     { up: { index }, right: { index }, down: { index }, left: { index } }
                 )
             );
-
-        this.positions = itemNav;
     }
 
     /**
@@ -224,7 +226,7 @@ export class FocusgroupBehavior implements Behavior {
      * @public
      */
     public handleKeydown(event: KeyboardEvent): boolean {
-        const current = this.focusItems.findIndex(
+        const current: number = this.focusItems.findIndex(
             (item: HTMLElement) => parseInt(item.getAttribute("tabindex") || "-1") >= 0
         );
         const position = this.positions[current];
