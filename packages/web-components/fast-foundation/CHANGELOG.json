@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-foundation",
   "entries": [
     {
+      "date": "Thu, 03 Mar 2022 07:12:03 GMT",
+      "tag": "@microsoft/fast-foundation_v2.34.0",
+      "version": "2.34.0",
+      "comments": {
+        "none": [
+          {
+            "comment": "add documentation to support decorators in cra",
+            "author": "email not defined",
+            "commit": "26ce299730c2a97d931a4a87fc64ef6f92b5580c",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 02 Mar 2022 07:12:58 GMT",
       "tag": "@microsoft/fast-foundation_v2.34.0",
       "version": "2.34.0",
