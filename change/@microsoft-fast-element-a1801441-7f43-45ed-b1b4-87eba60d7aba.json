@@ -1,0 +1,7 @@
+{
+  "type": "minor",
+  "comment": "Basic focusgroup behavior",
+  "packageName": "@microsoft/fast-element",
+  "email": "robarb@microsoft.com",
+  "dependentChangeType": "patch"
+}

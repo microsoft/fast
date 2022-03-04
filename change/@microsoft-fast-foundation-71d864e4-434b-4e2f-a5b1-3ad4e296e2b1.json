@@ -1,0 +1,7 @@
+{
+  "type": "minor",
+  "comment": "Basic focusgroup behavior",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "robarb@microsoft.com",
+  "dependentChangeType": "patch"
+}
