@@ -1,6 +1,6 @@
 {
   "type": "patch",
-  "comment": "generate grid columns for manual grid",
+  "comment": "passive handlers",
   "packageName": "@microsoft/fast-foundation",
   "email": "scomea@microsoft.com",
   "dependentChangeType": "patch"

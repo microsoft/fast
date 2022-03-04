@@ -42,6 +42,14 @@ _Attributes:_
     -   right
     -   start
     -   end
+    -   top-left
+    -   top-right
+    -   bottom-left
+    -   bottom-right
+    -   top-start
+    -   top-end
+    -   bottom-start
+    -   bottom-end
 
 - auto-update-mode - Corresponds to anchored region's auto update mode and governs when the tooltip checks its position.  Default is "auto".
 
@@ -81,7 +89,7 @@ _Template:_
 
 ```
 <button id="foo" aria-describedby="tooltip">Foo</button>
-<fast-tooltip anchor="foo" id="tooltip">This is a tooltip. It does not recieve focus.</fast-tooltip>
+<fast-tooltip anchor="foo" id="tooltip">This is a tooltip. It does not receive focus.</fast-tooltip>
 ```
 
 ### Accessibility
