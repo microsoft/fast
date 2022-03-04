@@ -40,6 +40,12 @@ module.exports = {
             },
             items: [
                 {
+                    type: "doc",
+                    docId: "introduction",
+                    label: "Docs",
+                    position: "left",
+                },
+                {
                     href: "https://www.fast.design",
                     label: "Home",
                     position: "right",
