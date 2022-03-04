@@ -13,7 +13,7 @@ import {
     parseFragment,
 } from "parse5";
 import { AttributeType, attributeTypeRegExp } from "./attributes.js";
-import { Op, OpType } from "./op-codes.js";
+import { AttributeBindingOp, Op, OpType } from "./op-codes.js";
 
 /**
  * Cache the results of template parsing.
@@ -154,69 +154,70 @@ export function parseTemplateToOpCodes(template: ViewTemplate): Op[] {
         // as well as any element with attribute bindings
         let augmentOpeningTag = false;
         const { tagName } = node;
-        let ctor: typeof HTMLElement | undefined;
+        const ctor: typeof HTMLElement | undefined = customElements.get(node.tagName);
 
         // Sort attributes by whether they're related to a binding or if they have
         // static value
         const attributes: {
             static: Map<string, string>;
-            dynamic: Attribute[];
+            dynamic: Map<Attribute, AttributeBindingOp>;
         } = node.attrs.reduce(
             (prev, current) => {
-                if (Parser.parse(current.value, directives)) {
-                    prev.dynamic.push(current);
+                const parsed = Parser.parse(current.value, directives);
+                const attributeType = getAttributeType(current);
+                if (parsed) {
+                    prev.dynamic.set(current, {
+                        type: OpType.attributeBinding,
+                        name:
+                            attributeType === AttributeType.content
+                                ? current.name
+                                : current.name.substring(1),
+                        directive: Parser.aggregate(parsed),
+                        attributeType,
+                        useCustomElementInstance: Boolean(node.isDefinedCustomElement),
+                    });
                 } else {
                     prev.static.set(current.name, current.value);
                 }
 
                 return prev;
             },
-            { static: new Map(), dynamic: [] as Attribute[] }
+            {
+                static: new Map<string, string>(),
+                dynamic: new Map<Attribute, AttributeBindingOp>(),
+            }
         );
 
         // Special processing for any custom element
-        if (node.tagName.includes("-")) {
-            ctor = customElements.get(tagName);
-
-            if (ctor !== undefined) {
-                augmentOpeningTag = true;
-                node.isDefinedCustomElement = true;
-                opCodes.push({
-                    type: OpType.customElementOpen,
-                    tagName,
-                    ctor,
-                    staticAttributes: attributes.static,
-                });
-            }
+        if (ctor !== undefined) {
+            augmentOpeningTag = true;
+            node.isDefinedCustomElement = true;
+            opCodes.push({
+                type: OpType.customElementOpen,
+                tagName,
+                ctor,
+                staticAttributes: attributes.static,
+            });
         } else if (node.tagName === "template") {
             flushTo(node.sourceCodeLocation?.startTag.startOffset);
             opCodes.push({
                 type: OpType.templateElementOpen,
                 staticAttributes: attributes.static,
+                dynamicAttributes: Array.from(attributes.dynamic.values()),
             });
             skipTo(node.sourceCodeLocation!.startTag.endOffset);
+            return;
         }
 
         // Push attribute binding op codes for any attributes that
         // are dynamic
-        if (attributes.dynamic.length) {
-            for (const attr of attributes.dynamic) {
+        if (attributes.dynamic.size) {
+            for (const [attr, code] of attributes.dynamic) {
                 const location = node.sourceCodeLocation!.attrs[attr.name];
                 flushTo(location.startOffset);
-                const attributeType = getAttributeType(attr);
-                const parsed = Parser.parse(attr.value, directives);
-
-                if (parsed !== null) {
-                    augmentOpeningTag = true;
-                    opCodes.push({
-                        type: OpType.attributeBinding,
-                        name: attr.name,
-                        directive: Parser.aggregate(parsed),
-                        attributeType,
-                        useCustomElementInstance: Boolean(node.isDefinedCustomElement),
-                    });
-                    skipTo(location.endOffset);
-                }
+                augmentOpeningTag = true;
+                opCodes.push(code);
+                skipTo(location.endOffset);
             }
         }
 

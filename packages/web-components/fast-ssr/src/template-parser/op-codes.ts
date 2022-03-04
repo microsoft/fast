@@ -79,7 +79,7 @@ export type AttributeBindingOp = {
 /**
  * Operation to emit a template element open tag
  */
-export type TemplateElementOpen = {
+export type TemplateElementOpenOp = {
     type: OpType.templateElementOpen;
     staticAttributes: Map<string, string>;
     // We need dynamic attributes here so we can emit the `<template`, all attributes, and then `>`
@@ -90,7 +90,7 @@ export type TemplateElementOpen = {
 /**
  * Operation to emit a template element closing tag
  */
-export type TemplateElementClose = {
+export type TemplateElementCloseOp = {
     type: OpType.templateElementClose;
 };
 
@@ -108,6 +108,6 @@ export type Op =
     | DirectiveOp
     | CustomElementAttributes
     | CustomElementShadowOp
-    | TemplateElementOpen
-    | TemplateElementClose
+    | TemplateElementOpenOp
+    | TemplateElementCloseOp
     | TextOp;
