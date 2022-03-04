@@ -376,12 +376,10 @@ export class Tooltip extends FoundationElement {
      * starts the hide timer
      */
     private startHideDelayTimer = (): void => {
+        this.clearHideDelayTimer();
+
         if (!this.tooltipVisible) {
             return;
-        }
-
-        if (this.hideDelayTimer !== null) {
-            this.clearHideDelayTimer();
         }
 
         // allow 60 ms for account for pointer to move between anchor/tooltip
