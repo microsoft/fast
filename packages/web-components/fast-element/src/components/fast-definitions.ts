@@ -1,5 +1,4 @@
 import { FAST, KernelServiceId } from "../platform";
-import type { Mutable } from "../interfaces";
 import { Observable } from "../observation/observable";
 import { ComposableStyles, ElementStyles } from "../styles/element-styles";
 import type { ElementViewTemplate } from "../templating/template";
@@ -7,17 +6,20 @@ import { AttributeConfiguration, AttributeDefinition } from "./attributes";
 
 const defaultShadowOptions: ShadowRootInit = { mode: "open" };
 const defaultElementOptions: ElementDefinitionOptions = {};
-const definitions = FAST.getById(KernelServiceId.elementDefinitions, () => {
-    const lookup = new Map<Function, FASTElementDefinition>();
+const fastRegistry = FAST.getById(KernelServiceId.elementRegistry, () => {
+    const typeToDefinition = new Map<Function, FASTElementDefinition>();
 
     return Object.freeze({
-        set(key: Function, value: FASTElementDefinition): void {
-            if (!lookup.has(key)) {
-                lookup.set(key, value);
+        register(definition: FASTElementDefinition): boolean {
+            if (typeToDefinition.has(definition.type)) {
+                return false;
             }
+
+            typeToDefinition.set(definition.type, definition);
+            return true;
         },
-        get<TType extends Function>(key: TType): FASTElementDefinition | undefined {
-            return lookup.get(key);
+        getByType<TType extends Function>(key: TType): FASTElementDefinition | undefined {
+            return typeToDefinition.get(key);
         },
     });
 });
@@ -73,7 +75,9 @@ export class FASTElementDefinition<TType extends Function = Function> {
     /**
      * Indicates if this element has been defined in at least one registry.
      */
-    public readonly isDefined: boolean;
+    public get isDefined(): boolean {
+        return !!fastRegistry.getByType(this.type);
+    }
 
     /**
      * The name of the custom element.
@@ -179,7 +183,7 @@ export class FASTElementDefinition<TType extends Function = Function> {
     public define(registry: CustomElementRegistry = customElements): this {
         const type = this.type;
 
-        if (!this.isDefined) {
+        if (fastRegistry.register(this)) {
             const attributes = this.attributes;
             const proto = type.prototype;
 
@@ -191,9 +195,6 @@ export class FASTElementDefinition<TType extends Function = Function> {
                 value: this.observedAttributes,
                 enumerable: true,
             });
-
-            definitions.set(type, this);
-            (this as Mutable<this>).isDefined = true;
         }
 
         if (!registry.get(this.name)) {
@@ -207,5 +208,5 @@ export class FASTElementDefinition<TType extends Function = Function> {
      * Gets the element definition associated with the specified type.
      * @param type - The custom element type to retrieve the definition for.
      */
-    static forType = definitions.get;
+    static readonly forType = fastRegistry.getByType;
 }

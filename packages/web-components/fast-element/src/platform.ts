@@ -151,7 +151,7 @@ export const enum KernelServiceId {
     updateQueue = 1,
     observable = 2,
     contextEvent = 3,
-    elementDefinitions = 4,
+    elementRegistry = 4,
 }
 
 /**

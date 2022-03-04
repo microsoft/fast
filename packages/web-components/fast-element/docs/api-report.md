@@ -104,7 +104,7 @@ export class BindingBehavior implements Behavior {
 // @public
 export interface BindingObserver<TSource = any, TReturn = any, TParent = any> extends Notifier {
     disconnect(): void;
-    observe(source: TSource, context: ExecutionContext): TReturn;
+    observe(source: TSource, context: ExecutionContext<TParent>): TReturn;
     records(): IterableIterator<ObservationRecord>;
 }
 
@@ -314,8 +314,8 @@ export class FASTElementDefinition<TType extends Function = Function> {
     readonly attributes: ReadonlyArray<AttributeDefinition>;
     define(registry?: CustomElementRegistry): this;
     readonly elementOptions?: ElementDefinitionOptions;
-    static forType: <TType_1 extends Function>(key: TType_1) => FASTElementDefinition<Function> | undefined;
-    readonly isDefined: boolean;
+    static readonly forType: <TType_1 extends Function>(key: TType_1) => FASTElementDefinition<Function> | undefined;
+    get isDefined(): boolean;
     readonly name: string;
     readonly propertyLookup: Record<string, AttributeDefinition>;
     readonly shadowOptions?: ShadowRootInit;
@@ -384,7 +384,7 @@ export const enum KernelServiceId {
     // (undocumented)
     contextEvent = 3,
     // (undocumented)
-    elementDefinitions = 4,
+    elementRegistry = 4,
     // (undocumented)
     observable = 2,
     // (undocumented)
@@ -429,7 +429,7 @@ export const Observable: Readonly<{
     trackVolatile(): void;
     notify(source: unknown, args: any): void;
     defineProperty(target: {}, nameOrAccessor: string | Accessor): void;
-    getAccessors(target: {}): Accessor[];
+    getAccessors: (target: {}) => Accessor[];
     binding<TSource = any, TReturn = any, TParent = any>(binding: Binding<TSource, TReturn, TParent>, initialSubscriber?: Subscriber | undefined, isVolatileBinding?: boolean): BindingObserver<TSource, TReturn, TParent>;
     isVolatileBinding<TSource_1 = any, TReturn_1 = any, TParent_1 = any>(binding: Binding<TSource_1, TReturn_1, TParent_1>): boolean;
 }>;

@@ -62,7 +62,6 @@ interface SubscriptionRecord extends ObservationRecord {
  * Enables evaluation of and subscription to a binding.
  * @public
  */
-/* eslint-disable-next-line @typescript-eslint/no-unused-vars */
 export interface BindingObserver<TSource = any, TReturn = any, TParent = any>
     extends Notifier {
     /**
@@ -71,7 +70,7 @@ export interface BindingObserver<TSource = any, TReturn = any, TParent = any>
      * @param context - The execution context to execute the binding within.
      * @returns The value of the binding.
      */
-    observe(source: TSource, context: ExecutionContext): TReturn;
+    observe(source: TSource, context: ExecutionContext<TParent>): TReturn;
 
     /**
      * Unsubscribe from all dependent observables of the binding.
@@ -113,6 +112,29 @@ export const Observable = FAST.getById(KernelServiceId.observable, () => {
         return found;
     }
 
+    function getAccessors(target: {}): Accessor[] {
+        let accessors = accessorLookup.get(target);
+
+        if (accessors === void 0) {
+            let currentTarget = Reflect.getPrototypeOf(target);
+
+            while (accessors === void 0 && currentTarget !== null) {
+                accessors = accessorLookup.get(currentTarget);
+                currentTarget = Reflect.getPrototypeOf(currentTarget);
+            }
+
+            if (accessors === void 0) {
+                accessors = [];
+            } else {
+                accessors = accessors.slice(0);
+            }
+
+            accessorLookup.set(target, accessors);
+        }
+
+        return accessors;
+    }
+
     class DefaultObservableAccessor implements Accessor {
         private field: string;
         private callback: string;
@@ -143,7 +165,6 @@ export const Observable = FAST.getById(KernelServiceId.observable, () => {
                     callback.call(source, oldValue, newValue);
                 }
 
-                /* eslint-disable-next-line @typescript-eslint/no-use-before-define */
                 getNotifier(source).notify(this.name);
             }
         }
@@ -198,7 +219,6 @@ export const Observable = FAST.getById(KernelServiceId.observable, () => {
             }
         }
 
-        /** @internal */
         public watch(propertySource: unknown, propertyName: string): void {
             const prev = this.last;
             const notifier = getNotifier(propertySource);
@@ -232,7 +252,6 @@ export const Observable = FAST.getById(KernelServiceId.observable, () => {
             this.last = current!;
         }
 
-        /** @internal */
         handleChange(): void {
             if (this.needsQueue) {
                 this.needsQueue = false;
@@ -240,7 +259,6 @@ export const Observable = FAST.getById(KernelServiceId.observable, () => {
             }
         }
 
-        /** @internal */
         call(): void {
             if (this.last !== null) {
                 this.needsQueue = true;
@@ -314,7 +332,6 @@ export const Observable = FAST.getById(KernelServiceId.observable, () => {
          * @param args - The change args to pass to subscribers.
          */
         notify(source: unknown, args: any): void {
-            /* eslint-disable-next-line @typescript-eslint/no-use-before-define */
             getNotifier(source).notify(args);
         },
 
@@ -329,7 +346,7 @@ export const Observable = FAST.getById(KernelServiceId.observable, () => {
                 nameOrAccessor = new DefaultObservableAccessor(nameOrAccessor);
             }
 
-            this.getAccessors(target).push(nameOrAccessor);
+            getAccessors(target).push(nameOrAccessor);
 
             Reflect.defineProperty(target, nameOrAccessor.name, {
                 enumerable: true,
@@ -347,28 +364,7 @@ export const Observable = FAST.getById(KernelServiceId.observable, () => {
          * including its prototype chain.
          * @param target - The target object to search for accessor on.
          */
-        getAccessors(target: {}): Accessor[] {
-            let accessors = accessorLookup.get(target);
-
-            if (accessors === void 0) {
-                let currentTarget = Reflect.getPrototypeOf(target);
-
-                while (accessors === void 0 && currentTarget !== null) {
-                    accessors = accessorLookup.get(currentTarget);
-                    currentTarget = Reflect.getPrototypeOf(currentTarget);
-                }
-
-                if (accessors === void 0) {
-                    accessors = [];
-                } else {
-                    accessors = accessors.slice(0);
-                }
-
-                accessorLookup.set(target, accessors);
-            }
-
-            return accessors;
-        },
+        getAccessors,
 
         /**
          * Creates a {@link BindingObserver} that can watch the
@@ -382,7 +378,6 @@ export const Observable = FAST.getById(KernelServiceId.observable, () => {
             initialSubscriber?: Subscriber,
             isVolatileBinding: boolean = this.isVolatileBinding(binding)
         ): BindingObserver<TSource, TReturn, TParent> {
-            /* eslint-disable-next-line @typescript-eslint/no-use-before-define */
             return new BindingObserverImplementation(
                 binding,
                 initialSubscriber,
