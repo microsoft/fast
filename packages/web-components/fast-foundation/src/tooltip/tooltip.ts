@@ -183,12 +183,14 @@ export class Tooltip extends FoundationElement {
 
     /**
      * @internal
+     * @defaultValue "dynamic"
      */
     @observable
     public verticalPositioningMode: AxisPositioningMode = "dynamic";
 
     /**
      * @internal
+     * @defaultValue "dynamic"
      */
     @observable
     public horizontalPositioningMode: AxisPositioningMode = "dynamic";
@@ -374,11 +376,12 @@ export class Tooltip extends FoundationElement {
      * updated the properties being passed to the anchored region
      */
     private updateLayout(): void {
+        this.verticalPositioningMode = "locktodefault";
+        this.horizontalPositioningMode = "locktodefault";
+
         switch (this.position) {
             case TooltipPosition.top:
             case TooltipPosition.bottom:
-                this.verticalPositioningMode = "locktodefault";
-                this.horizontalPositioningMode = "locktodefault";
                 this.verticalDefaultPosition = this.position;
                 this.horizontalDefaultPosition = "center";
                 break;
@@ -387,10 +390,48 @@ export class Tooltip extends FoundationElement {
             case TooltipPosition.left:
             case TooltipPosition.start:
             case TooltipPosition.end:
-                this.verticalPositioningMode = "locktodefault";
-                this.horizontalPositioningMode = "locktodefault";
                 this.verticalDefaultPosition = "center";
                 this.horizontalDefaultPosition = this.position;
+                break;
+
+            case TooltipPosition.topLeft:
+                this.verticalDefaultPosition = "top";
+                this.horizontalDefaultPosition = "left";
+                break;
+
+            case TooltipPosition.topRight:
+                this.verticalDefaultPosition = "top";
+                this.horizontalDefaultPosition = "right";
+                break;
+
+            case TooltipPosition.bottomLeft:
+                this.verticalDefaultPosition = "bottom";
+                this.horizontalDefaultPosition = "left";
+                break;
+
+            case TooltipPosition.bottomRight:
+                this.verticalDefaultPosition = "bottom";
+                this.horizontalDefaultPosition = "right";
+                break;
+
+            case TooltipPosition.topStart:
+                this.verticalDefaultPosition = "top";
+                this.horizontalDefaultPosition = "start";
+                break;
+
+            case TooltipPosition.topEnd:
+                this.verticalDefaultPosition = "top";
+                this.horizontalDefaultPosition = "end";
+                break;
+
+            case TooltipPosition.bottomStart:
+                this.verticalDefaultPosition = "bottom";
+                this.horizontalDefaultPosition = "start";
+                break;
+
+            case TooltipPosition.bottomEnd:
+                this.verticalDefaultPosition = "bottom";
+                this.horizontalDefaultPosition = "end";
                 break;
 
             default:
