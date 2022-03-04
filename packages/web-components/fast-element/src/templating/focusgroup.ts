@@ -90,6 +90,10 @@ export class FocusgroupBehavior implements Behavior {
             });
     }
 
+    /**
+     * Initializes position data for keyboard navigation
+     * @public
+     */
     public handleFocus(): void {
         this.setPositions(this.options.wrap);
         this.target.removeAttribute("tabindex");
