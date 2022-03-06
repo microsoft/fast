@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "passive handlers",
-  "packageName": "@microsoft/fast-foundation",
-  "email": "scomea@microsoft.com",
-  "dependentChangeType": "patch"
-}

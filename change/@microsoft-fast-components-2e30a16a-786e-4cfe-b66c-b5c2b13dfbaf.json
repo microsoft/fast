@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "set fast-anchor appearance after connecting",
-  "packageName": "@microsoft/fast-components",
-  "email": "john.kreitlow@microsoft.com",
-  "dependentChangeType": "patch"
-}
