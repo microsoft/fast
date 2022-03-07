@@ -3,7 +3,7 @@ import "@lit-labs/ssr/lib/install-global-dom-shim.js";
 import { test, expect } from "@playwright/test";
 import { parseTemplateToOpCodes} from "./template-parser.js";
 import { ViewTemplate, html, FASTElement, customElement, defaultExecutionContext } from "@microsoft/fast-element"
-import { Op, OpType, CustomElementOpenOp, AttributeBindingOp, DirectiveOp } from "./op-codes.js";
+import { Op, OpType, CustomElementOpenOp, AttributeBindingOp, DirectiveOp, TemplateElementOpenOp, TextOp } from "./op-codes.js";
 import { AttributeType } from "./attributes.js";
 
 @customElement("hello-world")
@@ -90,8 +90,66 @@ test.describe("parseTemplateToOpCodes", () => {
 
         expect(codes.length).toBe(4);
         expect(codes[0].attributeType).toBe(AttributeType.content);
+        expect(codes[0].name).toBe("string-value");
         expect(codes[1].attributeType).toBe(AttributeType.booleanContent);
+        expect(codes[1].name).toBe("bool-value");
         expect(codes[2].attributeType).toBe(AttributeType.idl);
+        expect(codes[2].name).toBe("property-value");
         expect(codes[3].attributeType).toBe(AttributeType.event);
+        expect(codes[3].name).toBe("event");
     });
-})
+    test("should emit template open and close ops for a template element", () => {
+        const input = html`<template></template>`;
+        const codes = parseTemplateToOpCodes(input);
+
+        expect(codes.length).toBe(2);
+        expect(codes[0].type).toBe(OpType.templateElementOpen);
+        expect(codes[1].type).toBe(OpType.templateElementClose);
+    });
+    test("should emit template open ops with static attributes", () => {
+        const input = html`<template id="foo" boolean></template>`;
+        const open = parseTemplateToOpCodes(input)[0] as TemplateElementOpenOp;
+
+        expect(open.staticAttributes.get("id")).toBe("foo");
+        expect(open.staticAttributes.get("boolean")).toBe("");
+    });
+    test("should emit template open ops with dynamic attributes", () => {
+        const input = html`<template id=${x => "foo"} ?boolean=${x => true} @event=${x => undefined} :property=${x => "value"}></template>`;
+        const open = parseTemplateToOpCodes(input)[0] as TemplateElementOpenOp;
+
+        const attrs = new Map(open.dynamicAttributes.map(x => {
+            return [x.name, x];
+        }))
+
+        expect(attrs.has("id")).toBe(true);
+        expect(attrs.get("id")!.attributeType).toBe(AttributeType.content);
+        expect(attrs.has("boolean")).toBe(true);
+        expect(attrs.get("boolean")!.attributeType).toBe(AttributeType.booleanContent);
+        expect(attrs.has("event")).toBe(true);
+        expect(attrs.get("event")!.attributeType).toBe(AttributeType.event);
+        expect(attrs.has("property")).toBe(true);
+        expect(attrs.get("property")!.attributeType).toBe(AttributeType.idl);
+    });
+    test("should emit template open ops with static and dynamic attributes", () => {
+        const input = html`<template id="foo" ?boolean=${x => true}></template>`;
+        const open = parseTemplateToOpCodes(input)[0] as TemplateElementOpenOp;
+
+        expect(open.staticAttributes.size).toBe(1);
+        expect(open.staticAttributes.get("id")).toBe("foo");
+        expect(open.dynamicAttributes.length).toBe(1);
+        expect(open.dynamicAttributes[0].name).toBe("boolean");
+    });
+
+    test("should emit template template ops between other ops when nested inside of another element", () => {
+        const input = html`<div><template></template></div>`;
+        const codes = parseTemplateToOpCodes(input);
+
+        expect(codes[0].type).toBe(OpType.text);
+        expect((codes[0] as TextOp).value).toBe(`<div>`);
+        expect(codes[1].type).toBe(OpType.templateElementOpen);
+        expect(codes[2].type).toBe(OpType.templateElementClose);
+        expect(codes[3].type).toBe(OpType.text);
+        expect((codes[3] as TextOp).value).toBe(`</div>`);
+    })
+});
+// TODO add test that name for property, bool, and event attrs has the prefix removed.
