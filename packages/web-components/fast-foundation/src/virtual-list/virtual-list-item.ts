@@ -118,7 +118,7 @@ export class VirtualListItem extends FoundationElement {
      * Queue up for idle loading
      */
     private queueForIdleLoad(): void {
-        if (this.idleLoadRequested && this.idleCallbackQueue) {
+        if (this.idleLoadRequested || !this.idleCallbackQueue) {
             return;
         }
         this.idleLoadRequested = true;
@@ -132,5 +132,6 @@ export class VirtualListItem extends FoundationElement {
      */
     private handleIdleCallback = (): void => {
         this.loadContent = true;
+        this.idleLoadRequested = false;
     };
 }

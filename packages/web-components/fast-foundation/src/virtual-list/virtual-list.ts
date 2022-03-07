@@ -138,11 +138,6 @@ export class VirtualList extends FoundationElement {
      */
     @attr({ attribute: "recycle", mode: "boolean" })
     public recycle: boolean = true;
-    // private recycleChanged(): void {
-    //     if (this.$fastController.isConnected) {
-    //         TODO: implement this
-    //     }
-    // }
 
     /**
      *  The array of items to be displayed
