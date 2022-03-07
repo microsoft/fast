@@ -74,6 +74,13 @@ export const timePickerTemplate = (
     `;
 };
 
+/**
+ * Template for displaying a picker title
+ * @param context - control context
+ * @param text - title text
+ * @param showYears - should show the year menu on click
+ * @returns - title template
+ */
 const pickerTitleTemplate = (
     context: ElementDefinitionContext,
     text: string,
@@ -93,6 +100,13 @@ const pickerTitleTemplate = (
     `;
 };
 
+/**
+ * Template for change controls to change the displayed range
+ * @param context - control context
+ * @param definition - date picker options
+ * @param changeAction - action when clicking on controls
+ * @returns changer template
+ */
 const pickerChangeControlsTemplate = (
     context: ElementDefinitionContext,
     definition: any,
@@ -128,6 +142,12 @@ const pickerChangeControlsTemplate = (
     `;
 };
 
+/**
+ * Template for display a grid of items
+ * @param context - control context
+ * @param items - Items to display in the grid
+ * @returns grid template
+ */
 const pickerGridTemplate = (context: ElementDefinitionContext, items: {}[]) => {
     const grid = context.tagFor(DataGrid);
     const row = context.tagFor(DataGridRow);
