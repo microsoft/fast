@@ -12,6 +12,8 @@ export const FocusgroupTemplate: FoundationElementTemplate<ViewTemplate<Focusgro
                 <span
                     ${focusgroup({
                         wrap: x.wrap,
+                        direction: x.direction,
+                        extend: x.extend,
                     })}
                 >
                     <slot></slot>

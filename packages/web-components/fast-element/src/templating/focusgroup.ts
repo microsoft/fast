@@ -13,7 +13,10 @@ import type { CaptureType } from "./template";
  * @public
  */
 export interface FocusgroupBehaviorOptions {
-    wrap?: "none" | "both" | "vertical" | "horizontal";
+    wrap?: "both" | "horizontal" | "none" | "vertical";
+    direction?: "both" | "horizontal" | "vertical";
+    extend?: boolean;
+    bubble?: boolean;
 }
 
 /**
@@ -22,10 +25,24 @@ export interface FocusgroupBehaviorOptions {
  * @public
  */
 export class FocusgroupBehavior implements Behavior {
+    private source: any;
+
     public constructor(
         private target: HTMLElement,
         private options: FocusgroupBehaviorOptions
-    ) {}
+    ) {
+        this.options = Object.assign(
+            {},
+            {
+                wrap: "both",
+                direction: "both",
+                extend: true,
+                bubble: false,
+            },
+            options
+        );
+        this.target = target;
+    }
 
     private focusItems: HTMLElement[];
 
@@ -72,9 +89,9 @@ export class FocusgroupBehavior implements Behavior {
                 ? (node.map(getFocused).filter(el => el !== null) as any).flat()
                 : node.hasAttribute("tabindex") || isFocusElement(node)
                 ? node
-                : node.children.length > 0
+                : node.children.length > 0 && this.options.extend
                 ? (getFocused(Array.from(node.children)) as any).flat()
-                : node instanceof HTMLSlotElement
+                : node instanceof HTMLSlotElement && this.options.extend
                 ? (Array.from(node.assignedElements())
                       .map(getFocused)
                       .filter(el => el !== null) as any).flat()
@@ -111,6 +128,7 @@ export class FocusgroupBehavior implements Behavior {
      * @public
      */
     public bind(source: any, context: ExecutionContext): void {
+        this.source = source;
         this.target.setAttribute("tabindex", "0");
         this.target.addEventListener("focus", this.handleFocus.bind(this));
         this.target.addEventListener("keydown", this.handleKeydown.bind(this));
@@ -239,11 +257,16 @@ export class FocusgroupBehavior implements Behavior {
         );
         const position = this.positions[current];
         const moveToIndex = (next): boolean => {
-            event.preventDefault();
+            if (this.options.bubble === false) {
+                event.preventDefault();
+            }
             this.focusItems[current].setAttribute("tabindex", "-1");
             this.focusItems[next].setAttribute("tabindex", "0");
             this.focusItems[next].focus();
-            return true;
+            if (next !== current) {
+                this.source.$emit("focuschanged");
+            }
+            return !!this.options.bubble;
         };
 
         switch (event.key) {

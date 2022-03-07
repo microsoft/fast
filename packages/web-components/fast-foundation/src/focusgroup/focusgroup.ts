@@ -3,7 +3,24 @@ import { FoundationElement } from "../foundation-element";
 
 /**
  * Focusgroup wrapping element
+ * @alpha
  */
 export class Focusgroup extends FoundationElement {
-    @attr wrap: "none" | "horizontal" | "vertical" | "both" | undefined = "none";
+    /**
+     * Wrapping behavior
+     * @public
+     */
+    @attr wrap: "both" | "horizontal" | "none" | "vertical" | undefined = "none";
+
+    /**
+     * Directions allowed to move
+     * @public
+     */
+    @attr direction: "both" | "horizontal" | "vertical" = "both";
+
+    /**
+     * Should extend beyond direct children nodes
+     * @public
+     */
+    @attr extend: boolean = true;
 }

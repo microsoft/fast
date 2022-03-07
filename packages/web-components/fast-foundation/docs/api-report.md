@@ -1166,7 +1166,11 @@ export const FlyoutPosTopFill: AnchoredRegionConfig;
 // @public
 export class Focusgroup extends FoundationElement {
     // (undocumented)
-    wrap: "none" | "horizontal" | "vertical" | "both" | undefined;
+    direction: "both" | "horizontal" | "vertical";
+    // (undocumented)
+    extend: boolean;
+    // (undocumented)
+    wrap: "both" | "horizontal" | "none" | "vertical" | undefined;
 }
 
 // @public (undocumented)

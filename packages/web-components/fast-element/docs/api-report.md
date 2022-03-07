@@ -334,7 +334,13 @@ export class FocusgroupBehavior implements Behavior {
 // @public
 export interface FocusgroupBehaviorOptions {
     // (undocumented)
-    wrap?: "none" | "both" | "vertical" | "horizontal";
+    bubble?: boolean;
+    // (undocumented)
+    direction?: "both" | "horizontal" | "vertical";
+    // (undocumented)
+    extend?: boolean;
+    // (undocumented)
+    wrap?: "both" | "horizontal" | "none" | "vertical";
 }
 
 // @public
