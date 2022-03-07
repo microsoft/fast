@@ -188,7 +188,7 @@ As subject matter experts, *code owners* approve pull requests on the packages t
 
 Acceptance of contributions follows the consensus-seeking process.
 
-All pull requests must be approved by a *collaborator* before the pull request can be accepted. A *collaborator* will be assigned as the designated reviewer of a pull request within [a reasonable period of time](#response-time) of the pull request creation. Other users may provide reviews, however the *collaborator* assigned to the pull request will have final say on approval.
+All pull requests must be approved by an assigned *collaborator* before the pull request can be accepted. A *collaborator* will be assigned as the designated reviewer of a pull request within [a reasonable period of time](#response-time) of the pull request creation. Other users may provide reviews, however the *collaborator* assigned to the pull request will have final say on approval.
 
 Before a pull request is accepted, [a reasonable period of time](#response-time) should be given to receive input from *collaborators* or *code owners* with the expertise to evaluate the changes.
 
