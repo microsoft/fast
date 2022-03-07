@@ -790,6 +790,8 @@ export class DatePicker extends FormAssociatedDatePicker {
     // @public
     appearance: string;
     arrayToMatrix(array: any[], itemsPerRow: number): any[][];
+    // (undocumented)
+    calendarChange(direction?: number): void;
     // @public
     calendarMonth: number;
     // @public
@@ -849,7 +851,7 @@ export class DatePicker extends FormAssociatedDatePicker {
     // @public
     handleBlur(): void;
     // @public
-    handleCalendarChangeKeydown(direction: number | undefined, e: KeyboardEvent): boolean;
+    handleCalendarChange(direction?: number, e?: KeyboardEvent | MouseEvent | undefined): boolean;
     // @public
     handleCalendarTitleKeydown(e: KeyboardEvent): boolean;
     // @public
@@ -902,15 +904,11 @@ export class DatePicker extends FormAssociatedDatePicker {
     // @public
     name: string;
     // @public
-    nextCalendar(): void;
-    // @public
     openFlyout(force?: boolean): void;
     // @public
     overFlyout: boolean;
     // @public
     placeholder: string;
-    // @public
-    previousCalendar(): void;
     // @public
     readonly: boolean;
     // @public

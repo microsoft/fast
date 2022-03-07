@@ -74,77 +74,73 @@ export const timePickerTemplate = (
     `;
 };
 
-/**
- *
- * @param context - The date picker context
- * @param items  - An array of items to display
- * @param title - The picker title text
- * @param previousAction - Action to show previous options
- * @param nextAction - Action to show next options
- * @param reset - Reset views action
- * @returns - A picker template used by month and year pickers
- * @public
- */
-const pickerTemplate = (
+const pickerTitleTemplate = (
     context: ElementDefinitionContext,
-    definition: any,
-    items: {}[],
-    title: {
-        text: string;
-        isInteractive: boolean;
-        action: (event?: Event) => void;
-    },
-    previousAction: (event?: Event) => void,
-    nextAction: (event?: Event) => void,
-    reset: ViewTemplate<DatePicker>
+    text: string,
+    showYears: boolean
 ) => {
     const button = context.tagFor(Button);
+
+    return html`
+        <${button}
+            class="title-action ${x =>
+                x.type.indexOf("date") >= 0 ? "interactive-title" : ""}"
+            @click="${x => x.yearPickerDisplay(showYears)}"
+            @keydown="${(x, c) => x.yearPickerDisplay(showYears, c.event)}"
+        >
+            ${text}
+        </${button}>
+    `;
+};
+
+const pickerChangeControlsTemplate = (
+    context: ElementDefinitionContext,
+    definition: any,
+    changeAction: (direction: number, event?: Event) => boolean
+) => {
+    const button = context.tagFor(Button);
+
+    return html`
+        <${button}
+            class="arrow"
+            part="arrow-previous"
+            @click="${x => changeAction(-1)}"
+            @keydown="${(x, c) => changeAction(-1, c.event)}"
+        >
+            ${
+                definition.previousIcon instanceof Function
+                    ? definition.previousIcon(context, definition)
+                    : definition.previousIcon ?? ""
+            }
+        </${button}>
+        <${button}
+            class="arrow"
+            part="arrow-next"
+            @click="${x => changeAction(1)}"
+            @keydown="${(x, c) => changeAction(1, c.event)}"
+        >
+            ${
+                definition.nextIcon instanceof Function
+                    ? definition.nextIcon(context, definition)
+                    : definition.nextIcon ?? ""
+            }
+        </${button}>
+    `;
+};
+
+const pickerGridTemplate = (context: ElementDefinitionContext, items: {}[]) => {
     const grid = context.tagFor(DataGrid);
     const row = context.tagFor(DataGridRow);
     const cell = context.tagFor(DataGridCell);
+
     return html`
-      <div class="picker" part="picker">
-        <div class="picker-title" part="picker-title">
-            <${button}
-                class="title-action ${x =>
-                    title.isInteractive ? "interactive-title" : ""}"
-                @click="${x => title.action()}"
-                @keydown="${(x, c) => title.action(c.event)}"
-            >
-                ${x => title.text}
-            </${button}>
-            <${button}
-                class="arrow"
-                part="arrow-previous"
-                @click="${x => previousAction()}"
-                @keydown="${(x, c) => previousAction(c.event)}"
-            >
-                ${
-                    definition.previousIcon instanceof Function
-                        ? definition.previousIcon(context, definition)
-                        : definition.previousIcon ?? ""
-                }
-            </${button}>
-            <${button}
-                class="arrow"
-                part="arrow-next"
-                @click="${x => nextAction()}"
-                @keydown="${(x, c) => nextAction(c.event)}"
-            >
-                ${
-                    definition.nextIcon instanceof Function
-                        ? definition.nextIcon(context, definition)
-                        : definition.nextIcon ?? ""
-                }
-            </${button}>
-        </div>
-      <${grid}
-        class="picker-grid"
-        part="picker-grid"
-        generate-header="none"
-    >
+        <${grid}
+            class="picker-grid"
+            part="picker-grid"
+            generate-header="none"
+        >
         ${repeat(
-            x => items,
+            x => x.arrayToMatrix(items, 4),
             html`
             <${row}
                 role="row"
@@ -172,10 +168,8 @@ const pickerTemplate = (
           </${row}>
         `
         )}
-      </${grid}>
-      ${when(x => x.type.indexOf("date") >= 0, reset)}
-    </div>
-  `;
+        </${grid}>
+    `;
 };
 
 /**
@@ -201,6 +195,7 @@ export const datePickerTemplate: FoundationElementTemplate<
         @mouseover="${x => (x.overFlyout = true)}"
         @mouseout="${x => (x.overFlyout = false)}"
         @focusout="${(x, c) => x.handleFocusOut(c.event)}"
+        @focus="${x => x.handleFocus()}"
     >
         <${textField}
             class="text-field"
@@ -214,7 +209,6 @@ export const datePickerTemplate: FoundationElementTemplate<
             ?disabled="${x => x.disabled}"
             ?required="${x => x.required}"
             @blur="${x => x.handleBlur()}"
-            @focus="${x => x.handleFocus()}"
             @keyup="${(x, c) => x.handleKeyup(c.event as KeyboardEvent)}"
         >
             <slot slot="start" name="start" part="start"></slot>
@@ -239,6 +233,7 @@ export const datePickerTemplate: FoundationElementTemplate<
                 horizontal-positioning-mode="dynamic"
                 horizontal-inset="true"
                 horizontal-default-position="start"
+                @keydown="${(x, c) => x.handleFlyoutKeydown(c.event)}"
             >
                 ${when(
                     x => x.type === "datetime-local" || x.type === "time",
@@ -274,7 +269,7 @@ export const datePickerTemplate: FoundationElementTemplate<
                                             ? "interactive-title"
                                             : ""}"
                                     part="calendar-title"
-                                    @click="${x => x.monthPickerDispay()}"
+                                    @click="${x => x.monthPickerDisplay()}"
                                     @keydown="${(x, c) =>
                                         x.handleCalendarTitleKeydown(c.event)}"
                                 >
@@ -282,18 +277,20 @@ export const datePickerTemplate: FoundationElementTemplate<
                                 </${button}>
                                 <div class="calendar-controls" part="calendar-controls">
                                     <${button} class="calendar-control"
-                                        @click="${x => x.previousCalendar()}"
+                                        @click="${(x, c) =>
+                                            x.handleCalendarChange(-1, c.event)}"
                                         @keydown="${(x, c) =>
-                                            x.handleCalendarChangeKeydown(-1, c.event)}"
+                                            x.handleCalendarChange(-1, c.event)}"
                                     >${
                                         definition.previousIcon instanceof Function
                                             ? definition.previousIcon(context, definition)
                                             : definition.previousIcon ?? ""
                                     }</${button}>
                                     <${button} class="calendar-control"
-                                        @click="${x => x.nextCalendar()}"
+                                        @click="${(x, c) =>
+                                            x.handleCalendarChange(1, c.event)}"
                                         @keydown="${(x, c) =>
-                                            x.handleCalendarChangeKeydown(1, c.event)}"
+                                            x.handleCalendarChange(1, c.event)}"
                                     >${
                                         definition.nextIcon instanceof Function
                                             ? definition.nextIcon(context, definition)
@@ -306,41 +303,53 @@ export const datePickerTemplate: FoundationElementTemplate<
                 )}
                 ${when(
                     x => x.showMonthPicker,
-                    x =>
-                        pickerTemplate(
-                            context,
-                            definition,
-                            x.arrayToMatrix(x.getMonths(), 4),
-                            {
-                                text: x.dateFormatter.getYear(x.monthView),
-                                action: x.yearPickerDisplay.bind(x, true),
-                                isInteractive: x.type.indexOf("date") >= 0,
-                            },
-                            x.handleMonthChange.bind(x, -1),
-                            x.handleMonthChange.bind(x, 1),
-                            resetButton
-                        )
+                    html`
+                        <div class="picker" part="picker">
+                            <div class="picker-title" part="picker-title">
+                                ${x =>
+                                    pickerTitleTemplate(
+                                        context,
+                                        x.dateFormatter.getYear(x.monthView),
+                                        true
+                                    )}
+                                ${x =>
+                                    pickerChangeControlsTemplate(
+                                        context,
+                                        definition,
+                                        x.handleMonthChange.bind(x)
+                                    )}
+                            </div>
+                            ${x => pickerGridTemplate(context, x.getMonths())}
+                            ${resetButton}
+                        </div>
+                    `
                 )}
                 ${when(
                     x => x.showYearPicker,
-                    x => {
-                        const years = x.getYears();
-                        const start = years[0].text;
-                        const end = years[years.length - 1].text;
-                        return pickerTemplate(
-                            context,
-                            definition,
-                            x.arrayToMatrix(years, 4),
-                            {
-                                text: `${start} - ${end}`,
-                                action: x.yearPickerDisplay.bind(x, false),
-                                isInteractive: x.type.indexOf("date") >= 0,
-                            },
-                            () => (x.yearView -= 12),
-                            () => (x.yearView += 12),
-                            resetButton
-                        );
-                    }
+                    html`
+                        <div class="picker" part="picker">
+                            <div class="picker-title" part="picker-title">
+                                ${x => {
+                                    const years = x.getYears();
+                                    return pickerTitleTemplate(
+                                        context,
+                                        `${years[0].text} - ${
+                                            years[years.length - 1].text
+                                        }`,
+                                        false
+                                    );
+                                }}
+                                ${x =>
+                                    pickerChangeControlsTemplate(
+                                        context,
+                                        definition,
+                                        x.handleYearsChange.bind(x)
+                                    )}
+                            </div>
+                            ${x => pickerGridTemplate(context, x.getMonths())}
+                            ${resetButton}
+                        </div>
+                    `
                 )}
             </${anchoredRegion}>
         `
