@@ -16,7 +16,7 @@ function isFastElement(element: HTMLElement | FASTElement): element is FASTEleme
 
 interface PropertyTarget {
     setProperty(name: string, value: string | null): void;
-    removeProperty(name: string);
+    removeProperty(name: string): void;
 }
 
 abstract class QueuedStyleSheetTarget implements PropertyTarget {
