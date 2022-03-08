@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "Fix programmatic disable/enable of tabs",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "5454342+brianehenry@users.noreply.github.com",
+  "dependentChangeType": "patch"
+}
