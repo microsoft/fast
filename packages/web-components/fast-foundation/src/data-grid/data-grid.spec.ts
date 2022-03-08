@@ -100,7 +100,7 @@ describe("Data grid", () => {
 
     it("should have a tabIndex of -1 when no-tabbing is true", async () => {
         const {  document, element, connect, disconnect } = await setup();
-        element.setAttribute("no-tabbing", "true");
+        element.noTabbing = true;
         await connect();
 
         expect(element.getAttribute("tabindex")).to.equal("-1");

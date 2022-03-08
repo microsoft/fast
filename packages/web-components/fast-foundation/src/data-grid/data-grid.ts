@@ -356,6 +356,10 @@ export class DataGrid extends FoundationElement {
         // only observe if nodes are added or removed
         this.observer.observe(this, { childList: true });
 
+        if (this.noTabbing) {
+            this.setAttribute("tabindex", "-1");
+        }
+
         DOM.queueUpdate(this.queueRowIndexUpdate);
     }
 
