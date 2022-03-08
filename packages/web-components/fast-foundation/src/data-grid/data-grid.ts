@@ -127,7 +127,8 @@ export class DataGrid extends FoundationElement {
     }
 
     /**
-     *
+     * When true the component will not add itself to the tab queue.
+     * Default is false.
      *
      * @public
      * @remarks
