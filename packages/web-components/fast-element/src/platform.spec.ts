@@ -29,13 +29,4 @@ describe("The FAST global", () => {
             expect(found).to.be.null;
         });
     });
-
-    context("versions", () => {
-        it("should store the current version", () => {
-            expect(FAST.versions.length).to.equal(1);
-            expect(FAST.versions[0]).matches(
-                /(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?/gm
-            );
-        });
-    });
 });

@@ -140,9 +140,6 @@ if (FAST.getById === void 0) {
     });
 }
 
-// TODO: Replace with ??= after TS 4.x update (Issue #5198)
-(FAST.versions ?? ((FAST as any).versions = [])).push("1.7.2");
-
 /**
  * Core services shared across FAST instances.
  * @internal
