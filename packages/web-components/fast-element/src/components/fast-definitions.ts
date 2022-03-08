@@ -1,5 +1,6 @@
-import { isString, Mutable } from "../interfaces.js";
+import { isString } from "../interfaces.js";
 import { Observable } from "../observation/observable.js";
+import { FAST, KernelServiceId } from "../platform.js";
 import { ComposableStyles, ElementStyles } from "../styles/element-styles.js";
 import type { ElementViewTemplate } from "../templating/template.js";
 import { AttributeConfiguration, AttributeDefinition } from "./attributes.js";
