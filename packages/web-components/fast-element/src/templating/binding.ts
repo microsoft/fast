@@ -5,7 +5,6 @@ import {
     BindingObserver,
     ExecutionContext,
     Observable,
-    setCurrentEvent,
 } from "../observation/observable.js";
 import {
     InlinableHTMLDirective,
@@ -449,9 +448,9 @@ class EventListener extends BindingBase {
         const source = target.$fastSource;
         const context = target.$fastContext;
 
-        setCurrentEvent(event);
+        ExecutionContext.setEvent(event);
         const result = this.directive.binding(source, context);
-        setCurrentEvent(null);
+        ExecutionContext.setEvent(null);
 
         if (result !== true) {
             event.preventDefault();
