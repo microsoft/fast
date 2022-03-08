@@ -46,5 +46,8 @@
     "bugs": {
         "url": "https://github.com/Microsoft/fast/issues/new/choose"
     },
-    "icon": "images/fast-logo.png"
+    "icon": "images/fast-logo.png",
+    "beachball": {
+        "shouldPublish": false
+    }
 }
