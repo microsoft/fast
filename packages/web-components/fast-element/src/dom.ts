@@ -1,5 +1,5 @@
 import type { Callable } from "./interfaces.js";
-import { $global, TrustedTypesPolicy } from "./platform.js";
+import { $global, KernelServiceId, TrustedTypesPolicy } from "./platform.js";
 
 /* eslint-disable */
 const fastHTMLPolicy: TrustedTypesPolicy = $global.trustedTypes.createPolicy(
@@ -10,31 +10,82 @@ const fastHTMLPolicy: TrustedTypesPolicy = $global.trustedTypes.createPolicy(
 );
 /* eslint-enable */
 
-let htmlPolicy: TrustedTypesPolicy = fastHTMLPolicy;
-const updateQueue: Callable[] = [];
-const pendingErrors: any[] = [];
-const rAF = $global.requestAnimationFrame;
-let updateAsync = true;
+const updateQueue = $global.FAST.getById(KernelServiceId.updateQueue, () => {
+    const tasks: Callable[] = [];
+    const pendingErrors: any[] = [];
+    const rAF = $global.requestAnimationFrame;
+    let updateAsync = true;
 
-function throwFirstError(): void {
-    if (pendingErrors.length) {
-        throw pendingErrors.shift();
-    }
-}
-
-function tryRunTask(task: Callable): void {
-    try {
-        (task as any).call();
-    } catch (error) {
-        if (updateAsync) {
-            pendingErrors.push(error);
-            setTimeout(throwFirstError, 0);
-        } else {
-            updateQueue.length = 0;
-            throw error;
+    function throwFirstError(): void {
+        if (pendingErrors.length) {
+            throw pendingErrors.shift();
         }
     }
-}
+
+    function tryRunTask(task: Callable): void {
+        try {
+            (task as any).call();
+        } catch (error) {
+            if (updateAsync) {
+                pendingErrors.push(error);
+                setTimeout(throwFirstError, 0);
+            } else {
+                tasks.length = 0;
+                throw error;
+            }
+        }
+    }
+
+    function process(): void {
+        const capacity = 1024;
+        let index = 0;
+
+        while (index < tasks.length) {
+            tryRunTask(tasks[index]);
+            index++;
+
+            // Prevent leaking memory for long chains of recursive calls to `DOM.queueUpdate`.
+            // If we call `DOM.queueUpdate` within a task scheduled by `DOM.queueUpdate`, the queue will
+            // grow, but to avoid an O(n) walk for every task we execute, we don't
+            // shift tasks off the queue after they have been executed.
+            // Instead, we periodically shift 1024 tasks off the queue.
+            if (index > capacity) {
+                // Manually shift all values starting at the index back to the
+                // beginning of the queue.
+                for (
+                    let scan = 0, newLength = tasks.length - index;
+                    scan < newLength;
+                    scan++
+                ) {
+                    tasks[scan] = tasks[scan + index];
+                }
+
+                tasks.length -= index;
+                index = 0;
+            }
+        }
+
+        tasks.length = 0;
+    }
+
+    function enqueue(callable: Callable): void {
+        tasks.push(callable);
+
+        if (tasks.length < 2) {
+            updateAsync ? rAF(process) : process();
+        }
+    }
+
+    return Object.freeze({
+        enqueue,
+        process,
+        setUpdateMode(isAsync: boolean) {
+            updateAsync = isAsync;
+        },
+    });
+});
+
+let htmlPolicy: TrustedTypesPolicy = fastHTMLPolicy;
 
 /**
  * Common DOM APIs.
@@ -84,27 +135,19 @@ export const DOM = Object.freeze({
      * ordering will still be preserved so that nested tasks do not run until
      * after parent tasks complete.
      */
-    setUpdateMode(isAsync: boolean) {
-        updateAsync = isAsync;
-    },
+    setUpdateMode: updateQueue.setUpdateMode,
 
     /**
      * Schedules DOM update work in the next async batch.
      * @param callable - The callable function or object to queue.
      */
-    queueUpdate(callable: Callable) {
-        updateQueue.push(callable);
-
-        if (updateQueue.length < 2) {
-            updateAsync ? rAF(DOM.processUpdates) : DOM.processUpdates();
-        }
-    },
+    queueUpdate: updateQueue.enqueue,
 
     /**
      * Resolves with the next DOM update.
      */
     nextUpdate(): Promise<void> {
-        return new Promise(DOM.queueUpdate);
+        return new Promise(updateQueue.enqueue);
     },
 
     /**
@@ -114,37 +157,7 @@ export const DOM = Object.freeze({
      * This also forces nextUpdate promises
      * to resolve.
      */
-    processUpdates(): void {
-        const capacity = 1024;
-        let index = 0;
-
-        while (index < updateQueue.length) {
-            tryRunTask(updateQueue[index]);
-            index++;
-
-            // Prevent leaking memory for long chains of recursive calls to `DOM.queueUpdate`.
-            // If we call `DOM.queueUpdate` within a task scheduled by `DOM.queueUpdate`, the queue will
-            // grow, but to avoid an O(n) walk for every task we execute, we don't
-            // shift tasks off the queue after they have been executed.
-            // Instead, we periodically shift 1024 tasks off the queue.
-            if (index > capacity) {
-                // Manually shift all values starting at the index back to the
-                // beginning of the queue.
-                for (
-                    let scan = 0, newLength = updateQueue.length - index;
-                    scan < newLength;
-                    scan++
-                ) {
-                    updateQueue[scan] = updateQueue[scan + index];
-                }
-
-                updateQueue.length -= index;
-                index = 0;
-            }
-        }
-
-        updateQueue.length = 0;
-    },
+    processUpdates: updateQueue.process,
 
     /**
      * Sets an attribute value on an element.
