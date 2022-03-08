@@ -61,14 +61,6 @@ describe("The Observable", () => {
     }
 
     context("facade", () => {
-        it("can set an array observer factory", () => {
-            const fakeObserver = new SubscriberSet([]);
-            Observable.setArrayObserverFactory((array: any[]) => fakeObserver);
-            const array = [];
-            const observer = Observable.getNotifier(array);
-            expect(observer).to.equal(fakeObserver);
-        });
-
         it("can get a notifier for an object", () => {
             const instance = new Model();
             const notifier = Observable.getNotifier(instance);

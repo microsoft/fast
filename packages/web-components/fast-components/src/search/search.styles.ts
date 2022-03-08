@@ -50,6 +50,7 @@ export const searchStyles: FoundationElementTemplate<ElementStyles, TextFieldOpt
         border-radius: calc(${controlCornerRadius} * 1px);
         border: calc(${strokeWidth} * 1px) solid ${accentFillRest};
         height: calc(${heightNumber} * 1px);
+        align-items: baseline;
     }
 
     .control {
@@ -107,6 +108,12 @@ export const searchStyles: FoundationElementTemplate<ElementStyles, TextFieldOpt
     .label__hidden {
         display: none;
         visibility: hidden;
+    }
+
+    .input-wrapper,
+    .start,
+    .end {
+        align-self: center;
     }
 
     .start,

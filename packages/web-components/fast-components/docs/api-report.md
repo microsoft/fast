@@ -512,15 +512,7 @@ export const allComponents: {
             delegatesFocus: true;
         };
     }, typeof TextField>;
-    fastTooltip: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<{
-        baseName: string;
-        template: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition>) => import("@microsoft/fast-element").ViewTemplate<import("@microsoft/fast-foundation").Tooltip, any>;
-        styles: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition>) => import("@microsoft/fast-element").ElementStyles;
-    }> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<{
-        baseName: string;
-        template: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition>) => import("@microsoft/fast-element").ViewTemplate<import("@microsoft/fast-foundation").Tooltip, any>;
-        styles: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition>) => import("@microsoft/fast-element").ElementStyles;
-    }, typeof import("@microsoft/fast-foundation").Tooltip>;
+    fastTooltip: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FoundationElementDefinition, typeof import("@microsoft/fast-foundation").Tooltip>;
     fastToolbar: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<{
         baseName: string;
         baseClass: typeof import("@microsoft/fast-foundation").Toolbar;
@@ -1291,15 +1283,7 @@ export const fastToolbar: (overrideDefinition?: import("@microsoft/fast-foundati
 }, typeof Toolbar>;
 
 // @public
-export const fastTooltip: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<{
-    baseName: string;
-    template: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition>) => import("@microsoft/fast-element").ViewTemplate<Tooltip, any>;
-    styles: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition>) => import("@microsoft/fast-element").ElementStyles;
-}> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<{
-    baseName: string;
-    template: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition>) => import("@microsoft/fast-element").ViewTemplate<Tooltip, any>;
-    styles: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition>) => import("@microsoft/fast-element").ElementStyles;
-}, typeof Tooltip>;
+export const fastTooltip: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FoundationElementDefinition, typeof Tooltip>;
 
 // @public
 export const fastTreeItem: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<TreeItemOptions> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<TreeItemOptions, import("@microsoft/fast-element").Constructable<import("@microsoft/fast-foundation").FoundationElement>>;
@@ -1848,7 +1832,7 @@ export const toolbarStyles: FoundationElementTemplate<ElementStyles, ToolbarOpti
 export { Tooltip }
 
 // @public
-export const tooltipStyles: FoundationElementTemplate<ElementStyles>;
+export const tooltipStyles: (context: ElementDefinitionContext, definition: FoundationElementDefinition) => ElementStyles;
 
 export { TreeItem }
 

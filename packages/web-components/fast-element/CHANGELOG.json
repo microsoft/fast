@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-element",
   "entries": [
     {
+      "date": "Tue, 08 Mar 2022 07:12:45 GMT",
+      "tag": "@microsoft/fast-element_v1.8.0",
+      "version": "1.8.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "feat: enable multiple fast-element instances in browser at once",
+            "author": "roeisenb@microsoft.com",
+            "commit": "0e506c6c67a8a7d75e4ef9cfbd000f9da810dc14",
+            "package": "@microsoft/fast-element"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 25 Feb 2022 17:09:32 GMT",
       "tag": "@microsoft/fast-element_v1.7.2",
       "version": "1.7.2",

@@ -2,6 +2,66 @@
   "name": "@microsoft/fast-react-wrapper",
   "entries": [
     {
+      "date": "Tue, 08 Mar 2022 07:12:45 GMT",
+      "tag": "@microsoft/fast-react-wrapper_v0.1.36",
+      "version": "0.1.36",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-element to v1.8.0",
+            "author": "roeisenb@microsoft.com",
+            "commit": "0e506c6c67a8a7d75e4ef9cfbd000f9da810dc14",
+            "package": "@microsoft/fast-react-wrapper"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sun, 06 Mar 2022 07:13:48 GMT",
+      "tag": "@microsoft/fast-react-wrapper_v0.1.35",
+      "version": "0.1.35",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-foundation to v2.35.0",
+            "author": "sethdonohue@Admins-MBP.guest.corp.microsoft.com",
+            "commit": "bdeeb23bbaa56433d650660387e852c5eef87fee",
+            "package": "@microsoft/fast-react-wrapper"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 03 Mar 2022 07:12:03 GMT",
+      "tag": "@microsoft/fast-react-wrapper_v0.1.34",
+      "version": "0.1.34",
+      "comments": {
+        "none": [
+          {
+            "comment": "Bump @microsoft/fast-foundation to v2.34.0",
+            "author": "email not defined",
+            "commit": "26ce299730c2a97d931a4a87fc64ef6f92b5580c",
+            "package": "@microsoft/fast-react-wrapper"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 02 Mar 2022 07:12:58 GMT",
+      "tag": "@microsoft/fast-react-wrapper_v0.1.34",
+      "version": "0.1.34",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-foundation to v2.34.0",
+            "author": "steph@huynhicode.dev",
+            "commit": "638bd1e86cd3ecf4223371b48a4290cc7c75d765",
+            "package": "@microsoft/fast-react-wrapper"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 25 Feb 2022 17:09:32 GMT",
       "tag": "@microsoft/fast-react-wrapper_v0.1.33",
       "version": "0.1.33",

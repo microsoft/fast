@@ -30,9 +30,9 @@ export class Anchor extends FoundationAnchor {
         oldValue: AnchorAppearance,
         newValue: AnchorAppearance
     ): void {
-        if (oldValue !== newValue) {
-            this.classList.add(newValue);
+        if (this.$fastController.isConnected) {
             this.classList.remove(oldValue);
+            this.classList.add(newValue);
         }
     }
 
