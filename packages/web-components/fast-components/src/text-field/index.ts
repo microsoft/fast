@@ -24,18 +24,7 @@ export class TextField extends FoundationTextField {
      * HTML Attribute: appearance
      */
     @attr
-    public appearance: TextFieldAppearance;
-
-    /**
-     * @internal
-     */
-    public connectedCallback() {
-        super.connectedCallback();
-
-        if (!this.appearance) {
-            this.appearance = "outline";
-        }
-    }
+    public appearance: TextFieldAppearance = "outline";
 }
 
 /**

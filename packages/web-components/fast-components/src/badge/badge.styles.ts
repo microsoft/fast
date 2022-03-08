@@ -1,9 +1,5 @@
 import { css, ElementStyles } from "@microsoft/fast-element";
-import {
-    display,
-    ElementDefinitionContext,
-    FoundationElementDefinition,
-} from "@microsoft/fast-foundation";
+import { display, FoundationElementTemplate } from "@microsoft/fast-foundation";
 import {
     accentForegroundRest,
     bodyFont,
@@ -19,12 +15,9 @@ import { heightNumber } from "../styles/index";
  * Styles for Badge
  * @public
  */
-export const badgeStyles: (
-    context: ElementDefinitionContext,
-    definition: FoundationElementDefinition
-) => ElementStyles = (
-    context: ElementDefinitionContext,
-    definition: FoundationElementDefinition
+export const badgeStyles: FoundationElementTemplate<ElementStyles> = (
+    context,
+    definition
 ) =>
     css`
         ${display("inline-block")} :host {

@@ -170,9 +170,11 @@ provideFASTDesignSystem()
 The `wrap` helper can also wrap any FAST Web Component defined using the `@customElement` decorator or by manually calling `FASTElement.define`. To do so, pass the custom element class to the wrapper.
 
 ```ts
+import { FASTElement, customElement, html } from '@microsoft/fast-element';
+
 @customElement({
   name: 'my-component',
-  template:...,
+  template: html`...`,
   styles:...
 })
 class _MyComponent extends FASTElement {
@@ -181,7 +183,9 @@ class _MyComponent extends FASTElement {
 
 export const MyComponent = provideReactWrapper(React).wrap(_MyComponent);
 ```
-
+:::note
+When using decorators in a create-react-app setup, you will most likely get this error `Support for the experimental syntax 'decorators-legacy' isn't currently enabled`. See the "Additional Notes" below for options to add support for decorators.
+:::
 ### Wrapping VanillaJS Web Components
 
 If you have a component from a 3rd party library, not written with FAST, or a VanillaJS Web Component, you can wrap that as well. In this scenario you will have to provide some additional information, such as the element name and the list of properties that should be handled by the wrapper rather than React. Components created with libraries like `Lit` require the element name to be configured but not the properties, while some other libraries or hand-written components may also require the property list. This depends on how the component was defined. Below is an example of configuring both the name and the property list.
@@ -232,7 +236,43 @@ FAST makes use of decorators to define components. At this time, `create-react-a
 - [Define components without decorators](https://fast.design/docs/fast-element/defining-elements#working-without-decorators)
 - [Eject](https://create-react-app.dev/docs/available-scripts#npm-run-eject)`create-react-app` and change Babel to support decorators 
 - Use an intermediary like [react-app-rewired](https://www.npmjs.com/package/react-app-rewired)
-  
+
+You can read more about decorator configuration issues [here.](https://github.com/microsoft/fast/issues/4503)
+### Configure ejected create-react-app
+
+Eject create-react-app:
+```shell
+npm run eject
+```
+
+Install babel plugins:
+```shell
+npm i --save-dev @babel/plugin-proposal-decorators @babel/preset-env
+```
+#### Configure babel-loader options
+
+Go to the `webpack.config.js` file under the `config` folder and find where `babel-loader` is (around line 407).
+
+Add `@babel/preset-env` to presets. This allows you to use the latest JavaScript features.
+Targeting specific browser versions prevents Babel from transpiling too much to support old JavaScript versions, increasing file size.
+
+```js
+presets: [
+  ["@babel/preset-env", {
+    "targets": {
+      "browsers": ["last 2 versions", "safari >= 7"]
+    }
+  }],
+  ...
+```
+Add `@babel/plugin-proposal-decorators` to support decorators.
+
+```js
+plugins: [
+  ["@babel/plugin-proposal-decorators", { "legacy": true }],
+  ...
+```
+
 ### Working without the fast-react-wrapper
 
 The `@microsoft/fast-react-wrapper` library described above addresses all the challenges involved in using Web Components from React. We strongly recommend using this library for integration. However, if you cannot use this library or want to explore other options, below you'll find information on alternative approaches.

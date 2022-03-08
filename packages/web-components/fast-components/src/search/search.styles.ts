@@ -2,9 +2,9 @@ import { css, ElementStyles } from "@microsoft/fast-element";
 import {
     disabledCursor,
     display,
-    ElementDefinitionContext,
     focusVisible,
     forcedColorsStylesheetBehavior,
+    FoundationElementTemplate,
     TextFieldOptions,
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
@@ -29,10 +29,10 @@ import {
 } from "../design-tokens";
 import { heightNumber } from "../styles/index";
 
-export const searchStyles: (
-    context: ElementDefinitionContext,
-    definition: TextFieldOptions
-) => ElementStyles = (context: ElementDefinitionContext, definition: TextFieldOptions) =>
+export const searchStyles: FoundationElementTemplate<ElementStyles, TextFieldOptions> = (
+    context,
+    definition
+) =>
     css`
     ${display("inline-block")} :host {
         font-family: ${bodyFont};
@@ -50,6 +50,7 @@ export const searchStyles: (
         border-radius: calc(${controlCornerRadius} * 1px);
         border: calc(${strokeWidth} * 1px) solid ${accentFillRest};
         height: calc(${heightNumber} * 1px);
+        align-items: baseline;
     }
 
     .control {
@@ -107,6 +108,12 @@ export const searchStyles: (
     .label__hidden {
         display: none;
         visibility: hidden;
+    }
+
+    .input-wrapper,
+    .start,
+    .end {
+        align-self: center;
     }
 
     .start,

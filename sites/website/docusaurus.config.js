@@ -1,6 +1,3 @@
-const path = require("path");
-const fs = require("fs-extra");
-
 module.exports = {
     title: "FAST",
     tagline: "The adaptive interface system for modern web experiences",
@@ -17,7 +14,14 @@ module.exports = {
         },
     ],
     themes: [require.resolve("@docusaurus/theme-live-codeblock")],
+    staticDirectories: ["static"],
     themeConfig: {
+        algolia: {
+            appId: "PG0CVQLQ81",
+            apiKey: "396cf95de6551ef90bde2de3142e158a",
+            indexName: "FAST",
+            contextualSearch: true,
+        },
         colorMode: {
             defaultMode: "dark",
         },
@@ -35,6 +39,12 @@ module.exports = {
                 }),
             },
             items: [
+                {
+                    type: "doc",
+                    docId: "introduction",
+                    label: "Docs",
+                    position: "left",
+                },
                 {
                     href: "https://www.fast.design",
                     label: "Home",
@@ -130,40 +140,14 @@ module.exports = {
             {
                 docs: {
                     sidebarPath: require.resolve("./sidebars.js"),
+                    showLastUpdateTime: true,
                     editUrl: "https://github.com/microsoft/fast",
+                    remarkPlugins: [require("mdx-mermaid")],
                 },
                 theme: {
                     customCss: require.resolve("./src/css/custom.css"),
                 },
             },
         ],
-    ],
-    plugins: [
-        // Work around an issue where Docusaurus resolves modules based on relative paths,
-        // which doesn't work properly when in the context of a monorepo.
-        // https://github.com/facebook/docusaurus/issues/3515
-        function webpackOverride() {
-            return {
-                configureWebpack() {
-                    return {
-                        resolve: {
-                            modules: [
-                                path.resolve(
-                                    path.dirname(
-                                        require.resolve("@docusaurus/core/package.json")
-                                    ),
-                                    "node_modules"
-                                ),
-                                "node_modules",
-                                path.resolve(
-                                    fs.realpathSync(process.cwd()),
-                                    "node_modules"
-                                ),
-                            ],
-                        },
-                    };
-                },
-            };
-        },
     ],
 };

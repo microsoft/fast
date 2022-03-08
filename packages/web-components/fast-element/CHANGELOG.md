@@ -1,8 +1,32 @@
 # Change Log - @microsoft/fast-element
 
-This log was last generated on Sun, 31 Oct 2021 07:17:45 GMT and should not be manually modified.
+This log was last generated on Fri, 25 Feb 2022 17:09:32 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.7.2
+
+Fri, 25 Feb 2022 17:09:32 GMT
+
+### Patches
+
+- fix: defend against for/in use on arrays (roeisenb@microsoft.com)
+
+## 1.7.1
+
+Thu, 24 Feb 2022 22:21:55 GMT
+
+### Patches
+
+- fix: prevent duplicative array observation patch (roeisenb@microsoft.com)
+
+## 1.7.0
+
+Sun, 23 Jan 2022 07:13:56 GMT
+
+### Minor changes
+
+- add recyle option to repeat directive (scomea@microsoft.com)
 
 ## 1.6.2
 

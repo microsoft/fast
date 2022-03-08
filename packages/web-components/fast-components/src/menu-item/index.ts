@@ -18,7 +18,7 @@ export const fastMenuItem = MenuItem.compose<MenuItemOptions, typeof MenuItem>({
     baseName: "menu-item",
     template,
     styles,
-    checkboxIndicator: `
+    checkboxIndicator: /* html */ `
         <svg
             part="checkbox-indicator"
             class="checkbox-indicator"
@@ -32,7 +32,7 @@ export const fastMenuItem = MenuItem.compose<MenuItemOptions, typeof MenuItem>({
             />
         </svg>
     `,
-    expandCollapseGlyph: `
+    expandCollapseGlyph: /* html */ `
         <svg
             viewBox="0 0 16 16"
             xmlns="http://www.w3.org/2000/svg"
@@ -44,7 +44,7 @@ export const fastMenuItem = MenuItem.compose<MenuItemOptions, typeof MenuItem>({
             />
         </svg>
     `,
-    radioIndicator: `
+    radioIndicator: /* html */ `
         <span part="radio-indicator" class="radio-indicator"></span>
     `,
 });

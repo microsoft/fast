@@ -21,7 +21,7 @@ export const fastAccordionItem = AccordionItem.compose<
     baseName: "accordion-item",
     template,
     styles,
-    collapsedIcon: `
+    collapsedIcon: /* html */ `
         <svg
             width="20"
             height="20"
@@ -35,7 +35,7 @@ export const fastAccordionItem = AccordionItem.compose<
             />
         </svg>
     `,
-    expandedIcon: `
+    expandedIcon: /* html */ `
         <svg
             width="20"
             height="20"

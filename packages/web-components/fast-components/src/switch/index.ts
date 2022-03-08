@@ -18,7 +18,7 @@ export const fastSwitch = Switch.compose<SwitchOptions, typeof Switch>({
     baseName: "switch",
     template,
     styles,
-    switch: `
+    switch: /* html */ `
         <span class="checked-indicator" part="checked-indicator"></span>
     `,
 });

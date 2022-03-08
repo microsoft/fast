@@ -214,9 +214,9 @@ describe(`The inject decorator`, function () {
     it(`can decorate constructor parameters explicitly`, function () {
         class Foo {
             public constructor(
-                @inject(Dep1) dep1,
-                @inject(Dep2) dep2,
-                @inject(Dep3) dep3
+                @inject(Dep1) dep1: Dep1,
+                @inject(Dep2) dep2: Dep2,
+                @inject(Dep3) dep3: Dep3
             ) {
                 return;
             }
@@ -244,9 +244,9 @@ describe(`The inject decorator`, function () {
     it(`can decorate properties explicitly`, function () {
         // @ts-ignore
         class Foo {
-            @inject(Dep1) public dep1;
-            @inject(Dep2) public dep2;
-            @inject(Dep3) public dep3;
+            @inject(Dep1) public dep1: Dep1;
+            @inject(Dep2) public dep2: Dep2;
+            @inject(Dep3) public dep3: Dep3;
         }
 
         const instance = new Foo();
@@ -452,8 +452,8 @@ describe(`The Factory class`, function () {
         it(`registers the transformer`, function () {
             const container = DI.createContainer();
             class Foo {
-                public bar;
-                public baz;
+                public bar: string;
+                public baz: string;
             }
             const sut = new FactoryImpl(Foo, DI.getDependencies(Foo));
             // eslint-disable-next-line prefer-object-spread

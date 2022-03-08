@@ -29,14 +29,7 @@ export class Button extends FoundationButton {
      * HTML Attribute: appearance
      */
     @attr
-    public appearance: ButtonAppearance;
-
-    public connectedCallback() {
-        super.connectedCallback();
-        if (!this.appearance) {
-            this.appearance = "neutral";
-        }
-    }
+    public appearance: ButtonAppearance = "neutral";
 
     /**
      * Applies 'icon-only' class when there is only an SVG in the default slot

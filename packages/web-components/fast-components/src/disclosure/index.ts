@@ -18,11 +18,11 @@ export class Disclosure extends FoundationDisclosure {
     /**
      * Disclosure default height
      */
-    private height: number;
+    private height: number = 0;
     /**
      * Disclosure height after it's expanded
      */
-    private totalHeight: number;
+    private totalHeight: number = 0;
 
     /**
      * The appearance the anchor should have.
@@ -32,7 +32,7 @@ export class Disclosure extends FoundationDisclosure {
      * HTML Attribute: appearance
      */
     @attr
-    public appearance: DisclosureAppearance;
+    public appearance: DisclosureAppearance = "accent";
     public appearanceChanged(
         oldValue: DisclosureAppearance,
         newValue: DisclosureAppearance
@@ -58,9 +58,6 @@ export class Disclosure extends FoundationDisclosure {
      */
     protected setup() {
         super.setup();
-        if (!this.appearance) {
-            this.appearance = "accent";
-        }
 
         const getCurrentHeight = () => this.details.getBoundingClientRect().height;
         this.show();

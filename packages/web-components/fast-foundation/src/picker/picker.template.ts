@@ -1,12 +1,14 @@
 import { html, ref, ViewTemplate, when } from "@microsoft/fast-element";
 import { AnchoredRegion } from "../anchored-region";
+import type { FoundationElementTemplate } from "../foundation-element";
+import type { ElementDefinitionContext } from "../design-system";
 import type { Picker } from "./picker";
 import { PickerMenu } from "./picker-menu";
 import { PickerMenuOption } from "./picker-menu-option";
 import { PickerList } from "./picker-list";
 import { PickerListItem } from "./picker-list-item";
 
-function createDefaultListItemTemplate(context): ViewTemplate {
+function createDefaultListItemTemplate(context: ElementDefinitionContext): ViewTemplate {
     const pickerListItemTag: string = context.tagFor(PickerListItem);
     return html`
     <${pickerListItemTag}
@@ -17,7 +19,9 @@ function createDefaultListItemTemplate(context): ViewTemplate {
     `;
 }
 
-function createDefaultMenuOptionTemplate(context): ViewTemplate {
+function createDefaultMenuOptionTemplate(
+    context: ElementDefinitionContext
+): ViewTemplate {
     const pickerMenuOptionTag: string = context.tagFor(PickerMenuOption);
     return html`
     <${pickerMenuOptionTag}
@@ -32,7 +36,7 @@ function createDefaultMenuOptionTemplate(context): ViewTemplate {
  * The template for the List Picker component.
  * @public
  */
-export const pickerTemplate: (context, definition) => ViewTemplate<Picker> = (
+export const pickerTemplate: FoundationElementTemplate<ViewTemplate<Picker>> = (
     context,
     definition
 ) => {
@@ -63,16 +67,23 @@ export const pickerTemplate: (context, definition) => ViewTemplate<Picker> = (
                 html<Picker>`
                 <${anchoredRegionTag}
                     class="region"
-                    auto-update-mode="auto"
-                    fixed-placement="true"
-                    vertical-positioning-mode="locktodefault"
-                    vertical-default-position="bottom"
-                    vertical-scaling="content"
-                    vertical-inset="false"
-                    horizontal-positioning-mode="locktodefault"
-                    horizontal-default-position="right"
-                    horizontal-scaling="anchor"
-                    horizontal-inset="true"
+                    part="region"
+                    auto-update-mode="${x => x.menuConfig.autoUpdateMode}"
+                    fixed-placement="${x => x.menuConfig.fixedPlacement}"
+                    vertical-positioning-mode="${x =>
+                        x.menuConfig.verticalPositioningMode}"
+                    vertical-default-position="${x =>
+                        x.menuConfig.verticalDefaultPosition}"
+                    vertical-scaling="${x => x.menuConfig.verticalScaling}"
+                    vertical-inset="${x => x.menuConfig.verticalInset}"
+                    vertical-viewport-lock="${x => x.menuConfig.verticalViewportLock}"
+                    horizontal-positioning-mode="${x =>
+                        x.menuConfig.horizontalPositioningMode}"
+                    horizontal-default-position="${x =>
+                        x.menuConfig.horizontalDefaultPosition}"
+                    horizontal-scaling="${x => x.menuConfig.horizontalScaling}"
+                    horizontal-inset="${x => x.menuConfig.horizontalInset}"
+                    horizontal-viewport-lock="${x => x.menuConfig.horizontalViewportLock}"
                     @loaded="${(x, c) => x.handleRegionLoaded(c.event as Event)}"
                     ${ref("region")}
                 >

@@ -19,7 +19,7 @@ export const fastSelect = Select.compose<SelectOptions, typeof Select>({
     baseName: "select",
     template,
     styles,
-    indicator: `
+    indicator: /* html */ `
         <svg
             class="select-indicator"
             part="select-indicator"

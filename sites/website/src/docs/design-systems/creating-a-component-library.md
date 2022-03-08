@@ -94,7 +94,7 @@ const counterStyles = (context: ElementDefinitionContext) => {
 
 #### What is the `FoundationElementDefinition`?
 
-The `FoundationElementDefinition` is the configuration for the element itself. This argument allows you to inspect the aggregated options configured for the component, giving you access the `shadowOptions`, `elementOptions`, and more.
+The `FoundationElementDefinition` is the configuration for the element itself. This argument allows you to inspect the aggregated options configured for the component, giving you access to the `shadowOptions`, `elementOptions`, and more.
 
 This definition can also be arbitrarily extended by library authors, allowing custom configuration to flow through the registration process. For example, this mechanism can facilitate default slotted content overrides. To see how our `Counter` could leverage this, let's enable the `Button` content to be overridden by the application developer. Here's what that would look like:
 

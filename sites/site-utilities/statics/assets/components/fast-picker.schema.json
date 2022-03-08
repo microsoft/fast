@@ -60,6 +60,11 @@
       "mapsToAttribute": "labelledby",
       "type": "string"
     },
+    "menu-placement": {
+      "description": "The menu-placement attribute",
+      "mapsToAttribute": "menu-placement",
+      "type": "string"
+    },
     "placeholder": {
       "description": "The placeholder attribute",
       "mapsToAttribute": "placeholder",

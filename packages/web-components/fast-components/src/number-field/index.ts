@@ -24,18 +24,7 @@ export class NumberField extends FoundationNumberField {
      * HTML Attribute: appearance
      */
     @attr
-    public appearance: NumberFieldAppearance;
-
-    /**
-     * @internal
-     */
-    public connectedCallback() {
-        super.connectedCallback();
-
-        if (!this.appearance) {
-            this.appearance = "outline";
-        }
-    }
+    public appearance: NumberFieldAppearance = "outline";
 }
 
 /**
@@ -60,10 +49,10 @@ export const fastNumberField = NumberField.compose<
     shadowOptions: {
         delegatesFocus: true,
     },
-    stepDownGlyph: `
+    stepDownGlyph: /* html */ `
         <span class="step-down-glyph" part="step-down-glyph"></span>
     `,
-    stepUpGlyph: `
+    stepUpGlyph: /* html */ `
         <span class="step-up-glyph" part="step-up-glyph"></span>
     `,
 });

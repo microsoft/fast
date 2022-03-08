@@ -1,8 +1,144 @@
 # Change Log - @microsoft/fast-react-wrapper
 
-This log was last generated on Wed, 15 Dec 2021 07:14:44 GMT and should not be manually modified.
+This log was last generated on Sun, 06 Mar 2022 07:13:48 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.1.35
+
+Sun, 06 Mar 2022 07:13:48 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.35.0 (sethdonohue@Admins-MBP.guest.corp.microsoft.com)
+
+## 0.1.34
+
+Wed, 02 Mar 2022 07:12:58 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.34.0 (steph@huynhicode.dev)
+
+## 0.1.33
+
+Fri, 25 Feb 2022 17:09:32 GMT
+
+### Patches
+
+- Bump @microsoft/fast-element to v1.7.2 (roeisenb@microsoft.com)
+
+## 0.1.32
+
+Thu, 24 Feb 2022 22:21:55 GMT
+
+### Patches
+
+- Bump @microsoft/fast-element to v1.7.1 (roeisenb@microsoft.com)
+
+## 0.1.31
+
+Sun, 20 Feb 2022 07:16:20 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.33.4 (scomea@microsoft.com)
+
+## 0.1.30
+
+Tue, 15 Feb 2022 07:11:28 GMT
+
+### Patches
+
+- add a caching system for react wrappers (mathieulavoie94@gmail.com)
+
+## 0.1.29
+
+Thu, 10 Feb 2022 07:12:01 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.33.2 (5454342+brianehenry@users.noreply.github.com)
+
+## 0.1.28
+
+Wed, 09 Feb 2022 07:14:00 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.33.1 (john.kreitlow@microsoft.com)
+
+## 0.1.27
+
+Sun, 06 Feb 2022 07:15:20 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.33.0 (scomea@microsoft.com)
+
+## 0.1.26
+
+Wed, 02 Feb 2022 07:13:39 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.32.3 (robarb@microsoft.com)
+
+## 0.1.25
+
+Sun, 30 Jan 2022 07:12:35 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.32.2 (mathieulavoie94@gmail.com)
+
+## 0.1.24
+
+Tue, 25 Jan 2022 07:11:53 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.32.1 (john.kreitlow@microsoft.com)
+
+## 0.1.23
+
+Sun, 23 Jan 2022 07:13:56 GMT
+
+### Patches
+
+- Bump @microsoft/fast-element to v1.7.0 (scomea@microsoft.com)
+
+## 0.1.22
+
+Thu, 20 Jan 2022 07:12:04 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.31.0 (john.kreitlow@microsoft.com)
+
+## 0.1.21
+
+Sun, 16 Jan 2022 07:11:36 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.30.0 (5454342+brianehenry@users.noreply.github.com)
+
+## 0.1.20
+
+Sun, 09 Jan 2022 07:11:51 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.29.0 (john.kreitlow@microsoft.com)
+
+## 0.1.19
+
+Thu, 06 Jan 2022 07:11:52 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.28.0 (email not defined)
 
 ## 0.1.18
 

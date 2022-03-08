@@ -17,7 +17,7 @@ export class Listbox extends FoundationListboxElement {
      *
      * @internal
      */
-    private sizeStylesheet: ElementStyles | void;
+    private sizeStylesheet: ElementStyles | void | undefined;
 
     /**
      * Updates the component dimensions when the size property is changed.

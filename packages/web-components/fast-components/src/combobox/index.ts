@@ -21,7 +21,7 @@ export const fastCombobox = Combobox.compose<ComboboxOptions, typeof Combobox>({
     shadowOptions: {
         delegatesFocus: true,
     },
-    indicator: `
+    indicator: /* html */ `
         <svg
             class="select-indicator"
             part="select-indicator"

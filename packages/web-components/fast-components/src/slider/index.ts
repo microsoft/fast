@@ -18,7 +18,7 @@ export const fastSlider = Slider.compose<SliderOptions, typeof Slider>({
     baseName: "slider",
     template,
     styles,
-    thumb: `
+    thumb: /* html */ `
         <div class="thumb-cursor"></div>
     `,
 });
