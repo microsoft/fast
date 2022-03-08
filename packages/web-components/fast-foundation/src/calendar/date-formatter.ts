@@ -62,7 +62,7 @@ export class DateFormatter {
      */
     public date: Date = new Date();
 
-    constructor(config?) {
+    constructor(config?: {}) {
         /**
          * Add properties on construction
          */

@@ -71,12 +71,12 @@ export const mySelect = Select.compose<SelectOptions>({
 
 ### Option
 
-See [listbox-option](../listbox-option/README.md) for more information.
+See [listbox-option](/docs/components/listbox-option) for more information.
 
 ## Additional resources
 
--   [Component explorer examples](https://explore.fast.design/components/fast-select)
--   [Component technical specification](https://github.com/microsoft/fast/blob/master/packages/web-components/fast-foundation/src/select/select.spec.md)
--   [W3C Component Aria Practices](https://www.w3.org/TR/wai-aria-practices-1.1/#Listbox)
--   [Open UI Analysis](https://open-ui.org/components/select.research)
--   [Open UI Proposal](https://open-ui.org/components/select)
+- [Component explorer examples](https://explore.fast.design/components/fast-select)
+- [Component technical specification](https://github.com/microsoft/fast/blob/master/packages/web-components/fast-foundation/src/select/select.spec.md)
+- [W3C Component Aria Practices](https://www.w3.org/TR/wai-aria-practices-1.1/#Listbox)
+- [Open UI Analysis](https://open-ui.org/components/select.research)
+- [Open UI Proposal](https://open-ui.org/components/select)

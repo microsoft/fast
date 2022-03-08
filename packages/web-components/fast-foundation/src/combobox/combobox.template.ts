@@ -18,6 +18,7 @@ export const comboboxTemplate: FoundationElementTemplate<
         autocomplete="${x => x.autocomplete}"
         class="${x => (x.open ? "open" : "")} ${x =>
             x.disabled ? "disabled" : ""} ${x => x.position}"
+        ?open="${x => x.open}"
         tabindex="${x => (!x.disabled ? "0" : null)}"
         @click="${(x, c) => x.clickHandler(c.event as MouseEvent)}"
         @focusout="${(x, c) => x.focusoutHandler(c.event as FocusEvent)}"
@@ -55,6 +56,7 @@ export const comboboxTemplate: FoundationElementTemplate<
         </div>
         <div
             class="listbox"
+            id="${x => x.listboxId}"
             part="listbox"
             role="listbox"
             ?disabled="${x => x.disabled}"

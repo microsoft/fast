@@ -507,15 +507,7 @@ export const allComponents: {
             delegatesFocus: true;
         };
     }, typeof TextField>;
-    fastTooltip: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<{
-        baseName: string;
-        template: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition>) => import("@microsoft/fast-element").ViewTemplate<import("@microsoft/fast-foundation").Tooltip, any>;
-        styles: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition>) => import("@microsoft/fast-element").ElementStyles;
-    }> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<{
-        baseName: string;
-        template: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition>) => import("@microsoft/fast-element").ViewTemplate<import("@microsoft/fast-foundation").Tooltip, any>;
-        styles: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition>) => import("@microsoft/fast-element").ElementStyles;
-    }, typeof import("@microsoft/fast-foundation").Tooltip>;
+    fastTooltip: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FoundationElementDefinition, typeof import("@microsoft/fast-foundation").Tooltip>;
     fastToolbar: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<{
         baseName: string;
         baseClass: typeof import("@microsoft/fast-foundation").Toolbar;
@@ -551,8 +543,6 @@ export class Anchor extends Anchor_2 {
     appearance: AnchorAppearance;
     // (undocumented)
     appearanceChanged(oldValue: AnchorAppearance, newValue: AnchorAppearance): void;
-    // (undocumented)
-    connectedCallback(): void;
     // @internal
     defaultSlottedContentChanged(oldValue: any, newValue: any): void;
 }
@@ -570,8 +560,8 @@ export const anchorStyles: FoundationElementTemplate<ElementStyles, AnchorOption
 
 // @public
 export class Avatar extends Avatar_2 {
-    alt: string;
-    imgSrc: string;
+    alt: string | undefined;
+    imgSrc: string | undefined;
 }
 
 // @public
@@ -614,8 +604,6 @@ export const breadcrumbStyles: FoundationElementTemplate<ElementStyles>;
 export class Button extends Button_2 {
     // @public
     appearance: ButtonAppearance;
-    // (undocumented)
-    connectedCallback(): void;
     // @public
     defaultSlottedContentChanged(oldValue: any, newValue: any): void;
 }
@@ -684,67 +672,67 @@ export const density: import("@microsoft/fast-foundation").CSSDesignToken<number
 // @internal
 export class DesignSystemProvider extends FoundationElement {
     constructor();
-    accentColor: Swatch;
-    accentFillActiveDelta: number;
-    accentFillFocusDelta: number;
-    accentFillHoverDelta: number;
-    accentFillRestDelta: number;
-    accentForegroundActiveDelta: number;
-    accentForegroundFocusDelta: number;
-    accentForegroundHoverDelta: number;
-    accentForegroundRestDelta: number;
-    baseHeightMultiplier: number;
-    baseHorizontalSpacingMultiplier: number;
-    baseLayerLuminance: number;
-    controlCornerRadius: number;
-    density: number;
-    designUnit: number;
-    direction: Direction;
-    disabledOpacity: number;
-    fillColor: Swatch;
-    focusStrokeWidth: number;
-    neutralColor: Swatch;
-    neutralFillActiveDelta: number;
-    neutralFillFocusDelta: number;
-    neutralFillHoverDelta: number;
-    neutralFillInputActiveDelta: number;
-    neutralFillInputFocusDelta: number;
-    neutralFillInputHoverDelta: number;
-    neutralFillInputRestDelta: number;
-    neutralFillLayerRestDelta: number;
-    neutralFillRestDelta: number;
-    neutralFillStealthActiveDelta: number;
-    neutralFillStealthFocusDelta: number;
-    neutralFillStealthHoverDelta: number;
-    neutralFillStealthRestDelta: number;
-    neutralFillStrongActiveDelta: number;
-    neutralFillStrongFocusDelta: number;
-    neutralFillStrongHoverDelta: number;
-    neutralStrokeActiveDelta: number;
-    neutralStrokeDividerRestDelta: number;
-    neutralStrokeFocusDelta: number;
-    neutralStrokeHoverDelta: number;
-    neutralStrokeRestDelta: number;
+    accentColor?: Swatch;
+    accentFillActiveDelta?: number;
+    accentFillFocusDelta?: number;
+    accentFillHoverDelta?: number;
+    accentFillRestDelta?: number;
+    accentForegroundActiveDelta?: number;
+    accentForegroundFocusDelta?: number;
+    accentForegroundHoverDelta?: number;
+    accentForegroundRestDelta?: number;
+    baseHeightMultiplier?: number;
+    baseHorizontalSpacingMultiplier?: number;
+    baseLayerLuminance?: number;
+    controlCornerRadius?: number;
+    density?: number;
+    designUnit?: number;
+    direction?: Direction;
+    disabledOpacity?: number;
+    fillColor?: Swatch;
+    focusStrokeWidth?: number;
+    neutralColor?: Swatch;
+    neutralFillActiveDelta?: number;
+    neutralFillFocusDelta?: number;
+    neutralFillHoverDelta?: number;
+    neutralFillInputActiveDelta?: number;
+    neutralFillInputFocusDelta?: number;
+    neutralFillInputHoverDelta?: number;
+    neutralFillInputRestDelta?: number;
+    neutralFillLayerRestDelta?: number;
+    neutralFillRestDelta?: number;
+    neutralFillStealthActiveDelta?: number;
+    neutralFillStealthFocusDelta?: number;
+    neutralFillStealthHoverDelta?: number;
+    neutralFillStealthRestDelta?: number;
+    neutralFillStrongActiveDelta?: number;
+    neutralFillStrongFocusDelta?: number;
+    neutralFillStrongHoverDelta?: number;
+    neutralStrokeActiveDelta?: number;
+    neutralStrokeDividerRestDelta?: number;
+    neutralStrokeFocusDelta?: number;
+    neutralStrokeHoverDelta?: number;
+    neutralStrokeRestDelta?: number;
     noPaint: boolean;
-    strokeWidth: number;
-    typeRampBaseFontSize: string;
-    typeRampBaseLineHeight: string;
-    typeRampMinus1FontSize: string;
-    typeRampMinus1LineHeight: string;
-    typeRampMinus2FontSize: string;
-    typeRampMinus2LineHeight: string;
-    typeRampPlus1FontSize: string;
-    typeRampPlus1LineHeight: string;
-    typeRampPlus2FontSize: string;
-    typeRampPlus2LineHeight: string;
-    typeRampPlus3FontSize: string;
-    typeRampPlus3LineHeight: string;
-    typeRampPlus4FontSize: string;
-    typeRampPlus4LineHeight: string;
-    typeRampPlus5FontSize: string;
-    typeRampPlus5LineHeight: string;
-    typeRampPlus6FontSize: string;
-    typeRampPlus6LineHeight: string;
+    strokeWidth?: number;
+    typeRampBaseFontSize?: string;
+    typeRampBaseLineHeight?: string;
+    typeRampMinus1FontSize?: string;
+    typeRampMinus1LineHeight?: string;
+    typeRampMinus2FontSize?: string;
+    typeRampMinus2LineHeight?: string;
+    typeRampPlus1FontSize?: string;
+    typeRampPlus1LineHeight?: string;
+    typeRampPlus2FontSize?: string;
+    typeRampPlus2LineHeight?: string;
+    typeRampPlus3FontSize?: string;
+    typeRampPlus3LineHeight?: string;
+    typeRampPlus4FontSize?: string;
+    typeRampPlus4LineHeight?: string;
+    typeRampPlus5FontSize?: string;
+    typeRampPlus5LineHeight?: string;
+    typeRampPlus6FontSize?: string;
+    typeRampPlus6LineHeight?: string;
 }
 
 // @public
@@ -1280,15 +1268,7 @@ export const fastToolbar: (overrideDefinition?: import("@microsoft/fast-foundati
 }, typeof Toolbar>;
 
 // @public
-export const fastTooltip: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<{
-    baseName: string;
-    template: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition>) => import("@microsoft/fast-element").ViewTemplate<Tooltip, any>;
-    styles: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition>) => import("@microsoft/fast-element").ElementStyles;
-}> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<{
-    baseName: string;
-    template: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition>) => import("@microsoft/fast-element").ViewTemplate<Tooltip, any>;
-    styles: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition>) => import("@microsoft/fast-element").ElementStyles;
-}, typeof Tooltip>;
+export const fastTooltip: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").FoundationElementDefinition, typeof Tooltip>;
 
 // @public
 export const fastTreeItem: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<TreeItemOptions> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<TreeItemOptions, import("@microsoft/fast-element").Constructable<import("@microsoft/fast-foundation").FoundationElement>>;
@@ -1625,8 +1605,6 @@ export const neutralStrokeRestDelta: DesignToken<number>;
 export class NumberField extends NumberField_2 {
     // @public
     appearance: NumberFieldAppearance;
-    // (undocumented)
-    connectedCallback(): void;
 }
 
 // @public
@@ -1803,8 +1781,6 @@ export const tabStyles: FoundationElementTemplate<ElementStyles>;
 export class TextArea extends TextArea_2 {
     // @public
     appearance: TextAreaAppearance;
-    // (undocumented)
-    connectedCallback(): void;
 }
 
 // @public
@@ -1819,8 +1795,6 @@ export const textAreaStyles: FoundationElementTemplate<ElementStyles>;
 export class TextField extends TextField_2 {
     // @public
     appearance: TextFieldAppearance;
-    // (undocumented)
-    connectedCallback(): void;
 }
 
 // @public
@@ -1843,7 +1817,7 @@ export const toolbarStyles: FoundationElementTemplate<ElementStyles, ToolbarOpti
 export { Tooltip }
 
 // @public
-export const tooltipStyles: FoundationElementTemplate<ElementStyles>;
+export const tooltipStyles: (context: ElementDefinitionContext, definition: FoundationElementDefinition) => ElementStyles;
 
 export { TreeItem }
 
@@ -1925,7 +1899,7 @@ export const verticalSliderLabelStyles: ElementStyles;
 // dist/dts/custom-elements.d.ts:339:5 - (ae-incompatible-release-tags) The symbol "fastSliderLabel" is marked as @public, but its signature references "SliderLabel" which is marked as @internal
 // dist/dts/custom-elements.d.ts:378:5 - (ae-incompatible-release-tags) The symbol "fastTextArea" is marked as @public, but its signature references "TextArea" which is marked as @internal
 // dist/dts/custom-elements.d.ts:395:5 - (ae-incompatible-release-tags) The symbol "fastTextField" is marked as @public, but its signature references "TextField" which is marked as @internal
-// dist/dts/custom-elements.d.ts:421:5 - (ae-incompatible-release-tags) The symbol "fastToolbar" is marked as @public, but its signature references "Toolbar" which is marked as @internal
+// dist/dts/custom-elements.d.ts:413:5 - (ae-incompatible-release-tags) The symbol "fastToolbar" is marked as @public, but its signature references "Toolbar" which is marked as @internal
 
 // (No @packageDocumentation comment for this package)
 

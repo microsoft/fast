@@ -2,6 +2,302 @@
   "name": "@microsoft/fast-components",
   "entries": [
     {
+      "date": "Sun, 06 Mar 2022 07:13:48 GMT",
+      "tag": "@microsoft/fast-components_v2.22.0",
+      "version": "2.22.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "add corner position styling to tooltip",
+            "author": "sethdonohue@Admins-MBP.guest.corp.microsoft.com",
+            "commit": "bdeeb23bbaa56433d650660387e852c5eef87fee",
+            "package": "@microsoft/fast-components"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "set fast-anchor appearance after connecting",
+            "author": "john.kreitlow@microsoft.com",
+            "commit": "ef742a592c77891281dca25e92f496181da145d8",
+            "package": "@microsoft/fast-components"
+          },
+          {
+            "comment": "tooltip hover",
+            "author": "scomea@microsoft.com",
+            "commit": "b9eb24ed3dd66f2daf51efc8594900213934d4c7",
+            "package": "@microsoft/fast-components"
+          },
+          {
+            "comment": "Bump @microsoft/fast-foundation to v2.35.0",
+            "author": "sethdonohue@Admins-MBP.guest.corp.microsoft.com",
+            "commit": "bdeeb23bbaa56433d650660387e852c5eef87fee",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 03 Mar 2022 07:12:03 GMT",
+      "tag": "@microsoft/fast-components_v2.21.9",
+      "version": "2.21.9",
+      "comments": {
+        "none": [
+          {
+            "comment": "Bump @microsoft/fast-foundation to v2.34.0",
+            "author": "email not defined",
+            "commit": "26ce299730c2a97d931a4a87fc64ef6f92b5580c",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 02 Mar 2022 07:12:58 GMT",
+      "tag": "@microsoft/fast-components_v2.21.9",
+      "version": "2.21.9",
+      "comments": {
+        "patch": [
+          {
+            "comment": "generate grid columns for manual grid",
+            "author": "scomea@microsoft.com",
+            "commit": "3c557446160ecdc358b46fd35d72d53555f02fe5",
+            "package": "@microsoft/fast-components"
+          },
+          {
+            "comment": "Fixing no previous scroll when only 2 items",
+            "author": "robarb@microsoft.com",
+            "commit": "9306471bb094e369ceb42de732d48bd9e519f1eb",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 25 Feb 2022 17:09:32 GMT",
+      "tag": "@microsoft/fast-components_v2.21.8",
+      "version": "2.21.8",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-element to v1.7.2",
+            "author": "roeisenb@microsoft.com",
+            "commit": "76a9c866277cd13a92a9ca6b3518eae2fb625d79",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 24 Feb 2022 22:21:55 GMT",
+      "tag": "@microsoft/fast-components_v2.21.7",
+      "version": "2.21.7",
+      "comments": {
+        "none": [
+          {
+            "comment": "wait for stable state in horizontal-scroll playwright test",
+            "author": "john.kreitlow@microsoft.com",
+            "commit": "24eca78a436323804c05155e5760de9532e124a5",
+            "package": "@microsoft/fast-components"
+          },
+          {
+            "comment": "allow programmatic control of the open property for select and combobox",
+            "author": "john.kreitlow@microsoft.com",
+            "commit": "2caf345e541780600f1f961c17a2be2a6300a02c",
+            "package": "@microsoft/fast-components"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-element to v1.7.1",
+            "author": "roeisenb@microsoft.com",
+            "commit": "9dfb9bb20afa48320eef2c6157e26ec2b10cfd3e",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sun, 20 Feb 2022 07:16:20 GMT",
+      "tag": "@microsoft/fast-components_v2.21.6",
+      "version": "2.21.6",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-foundation to v2.33.4",
+            "author": "scomea@microsoft.com",
+            "commit": "6cadbdf6f4001a087dddba6c863604055a1da4d2",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 15 Feb 2022 07:11:28 GMT",
+      "tag": "@microsoft/fast-components_v2.21.5",
+      "version": "2.21.5",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-foundation to v2.33.3",
+            "author": "mathieu.lavoie@shopify.com",
+            "commit": "bbf4e532cf9263727ef1bd8afbc30d79d1104c03",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sun, 13 Feb 2022 07:13:39 GMT",
+      "tag": "@microsoft/fast-components_v2.21.4",
+      "version": "2.21.4",
+      "comments": {
+        "patch": [
+          {
+            "comment": "use html instead of string templating",
+            "author": "mathieulavoie94@gmail.com",
+            "commit": "d2185e297f3786787e548b7137953f27045ae96f",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 10 Feb 2022 07:12:01 GMT",
+      "tag": "@microsoft/fast-components_v2.21.3",
+      "version": "2.21.3",
+      "comments": {
+        "patch": [
+          {
+            "comment": "remove strictPropertyInitialization in components",
+            "author": "mathieu.lavoie@shopify.com",
+            "commit": "14025d5e6fbcc838a2b3f3a113a6aafddf29cb44",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 09 Feb 2022 07:14:00 GMT",
+      "tag": "@microsoft/fast-components_v2.21.2",
+      "version": "2.21.2",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-colors to v5.1.5",
+            "author": "47367562+bheston@users.noreply.github.com",
+            "commit": "be9de4b5ceb5df6938a107d277cfbf61e8d7eae1",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 08 Feb 2022 07:14:26 GMT",
+      "tag": "@microsoft/fast-components_v2.21.1",
+      "version": "2.21.1",
+      "comments": {
+        "patch": [
+          {
+            "comment": "`focusStrokeWidth` not applied on text-field and number-field Fixes #5565",
+            "author": "fcollonval@gmail.com",
+            "commit": "ec5ceaefe295bf410b7e3db34867ac600f4a0d0e",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sun, 06 Feb 2022 07:15:20 GMT",
+      "tag": "@microsoft/fast-components_v2.21.0",
+      "version": "2.21.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "add multiselect functionality to listbox",
+            "author": "john.kreitlow@microsoft.com",
+            "commit": "45116d16f62f2087e3daf1ed0d5c25f8e5ce1ad3",
+            "package": "@microsoft/fast-components"
+          },
+          {
+            "comment": "add menu positioning to picker",
+            "author": "scomea@microsoft.com",
+            "commit": "41f6eb951d79573f3a79547c6100485e0935dad3",
+            "package": "@microsoft/fast-components"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "fix: allow slider to show small increment changes",
+            "author": "jes@microsoft.com",
+            "commit": "5ed29351c24596c9190d39d7742bcb4e2d604324",
+            "package": "@microsoft/fast-components"
+          },
+          {
+            "comment": "fix: diabled listbox missing styles & allows click",
+            "author": "jes@microsoft.com",
+            "commit": "eff36b2834b7709cc2281738007019fd264c3d31",
+            "package": "@microsoft/fast-components"
+          },
+          {
+            "comment": "fix: font-weight to inherit to button control part",
+            "author": "jes@microsoft.com",
+            "commit": "9f14b4edc45820f984bd35844f4e10ca75cd012a",
+            "package": "@microsoft/fast-components"
+          },
+          {
+            "comment": "tooltip anchor attribute updates work",
+            "author": "scomea@microsoft.com",
+            "commit": "5d514c718d70a68aee835018b27782555f903b59",
+            "package": "@microsoft/fast-components"
+          },
+          {
+            "comment": "Bump @microsoft/fast-foundation to v2.33.0",
+            "author": "scomea@microsoft.com",
+            "commit": "41f6eb951d79573f3a79547c6100485e0935dad3",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 02 Feb 2022 07:13:39 GMT",
+      "tag": "@microsoft/fast-components_v2.20.2",
+      "version": "2.20.2",
+      "comments": {
+        "none": [
+          {
+            "comment": "update node types to 15.0.1",
+            "author": "john.kreitlow@microsoft.com",
+            "commit": "48779abc5f0f746dc5d67b9d3c2875f455374ee6",
+            "package": "@microsoft/fast-components"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-foundation to v2.32.3",
+            "author": "robarb@microsoft.com",
+            "commit": "72efc898ed23b08c9e7668844bc3a97f81b2bde9",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sun, 30 Jan 2022 07:12:35 GMT",
+      "tag": "@microsoft/fast-components_v2.20.1",
+      "version": "2.20.1",
+      "comments": {
+        "patch": [
+          {
+            "comment": "convert functions to templates",
+            "author": "mathieulavoie94@gmail.com",
+            "commit": "690b6218efc355985e3d97283ad043e7d085ef3c",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 26 Jan 2022 07:11:18 GMT",
       "tag": "@microsoft/fast-components_v2.20.0",
       "version": "2.20.0",

@@ -176,7 +176,7 @@ Tests include
   - Returns the correct number of weeks
   - Highlights the current date
 - month info
-  - Correct number of days. 31 for January, 28 for Febuary, 29 for Febuary on a leap year
+  - Correct number of days. 31 for January, 28 for February, 29 for February on a leap year
   - Month starts on the correct first day
 - labels
   - Month labeling. Correct labeling in different formats
