@@ -260,6 +260,24 @@ describe("Menu", () => {
         await disconnect();
     });
 
+    it("should set class on menu items to 0 columns when non fast-menu-item is present", async () => {
+        const { element, connect, disconnect, menuItem1, menuItem2, menuItem3 } = await setup();
+
+        const anchor = document.createElement("a");
+        anchor.setAttribute("role", "menuitem");
+
+        element.insertBefore(anchor, menuItem2);
+
+        await connect();
+        await DOM.nextUpdate();
+
+        const item1 = element.querySelector('[id="id1"]');
+
+        expect(item1?.className).to.contain("indent-0");
+
+        await disconnect();
+    });
+
     it("should set class on menu items to 1 column", async () => {
         const { element, connect, disconnect, menuItem1, menuItem2, menuItem3 } = await setup();
 
