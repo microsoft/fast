@@ -1,4 +1,4 @@
-import { attr, Observable, observable } from "@microsoft/fast-element";
+import { attr, DOM, Observable, observable } from "@microsoft/fast-element";
 import type { SyntheticViewTemplate } from "@microsoft/fast-element";
 import { limit, uniqueId } from "@microsoft/fast-web-utilities";
 import type { FoundationElementDefinition } from "../foundation-element";
@@ -105,7 +105,7 @@ export class Combobox extends FormAssociatedCombobox {
     }
 
     /**
-     * The unique id of the internal listbox.
+     * The unique id for the internal listbox element.
      *
      * @internal
      */
@@ -135,11 +135,15 @@ export class Combobox extends FormAssociatedCombobox {
     public open: boolean = false;
     protected openChanged() {
         if (this.open) {
-            this.ariaControls = this.listbox.id;
+            this.ariaControls = this.listboxId;
             this.ariaExpanded = "true";
 
             this.setPositioning();
             this.focusAndScrollOptionIntoView();
+
+            // focus is directed to the element when `open` is changed programmatically
+            DOM.queueUpdate(() => this.focus());
+
             return;
         }
 
@@ -199,6 +203,10 @@ export class Combobox extends FormAssociatedCombobox {
      */
     @observable
     public position: SelectPosition = SelectPosition.below;
+    protected positionChanged() {
+        this.positionAttribute = this.position;
+        this.setPositioning();
+    }
 
     /**
      * The value property.
@@ -276,10 +284,6 @@ export class Combobox extends FormAssociatedCombobox {
         if (this.value) {
             this.initialValue = this.value;
         }
-
-        if (!this.listbox.id) {
-            this.listbox.id = uniqueId("listbox-");
-        }
     }
 
     /**
@@ -336,7 +340,7 @@ export class Combobox extends FormAssociatedCombobox {
             this.control.focus();
             if (this.firstSelectedOption) {
                 requestAnimationFrame(() => {
-                    this.firstSelectedOption.scrollIntoView({ block: "nearest" });
+                    this.firstSelectedOption?.scrollIntoView({ block: "nearest" });
                 });
             }
         }
@@ -604,7 +608,7 @@ export class Combobox extends FormAssociatedCombobox {
      * @remarks
      * Overrides: `Listbox.selectedOptionsChanged`
      */
-    public selectedOptionsChanged(prev, next): void {
+    public selectedOptionsChanged(prev: unknown, next: HTMLElement[]): void {
         if (this.$fastController.isConnected) {
             this._options.forEach(o => {
                 o.selected = next.includes(o);
@@ -620,7 +624,7 @@ export class Combobox extends FormAssociatedCombobox {
      *
      * @internal
      */
-    public slottedOptionsChanged(prev, next): void {
+    public slottedOptionsChanged(prev: Element[], next: HTMLElement[]): void {
         super.slottedOptionsChanged(prev, next);
         this.updateValue();
     }

@@ -1,8 +1,8 @@
-import { attr, Observable, observable } from "@microsoft/fast-element";
+import { attr, DOM, Observable, observable } from "@microsoft/fast-element";
 import type { SyntheticViewTemplate } from "@microsoft/fast-element";
 import { uniqueId } from "@microsoft/fast-web-utilities";
 import type { FoundationElementDefinition } from "../foundation-element";
-import { DelegatesARIAListbox } from "../listbox";
+import { DelegatesARIAListbox, Listbox } from "../listbox";
 import type { ListboxOption } from "../listbox-option/listbox-option";
 import { StartEnd } from "../patterns/start-end";
 import type { StartEndOptions } from "../patterns/start-end";
@@ -35,12 +35,16 @@ export class Select extends FormAssociatedSelect {
     public open: boolean = false;
     protected openChanged() {
         if (this.open) {
-            this.ariaControls = this.listbox.id;
+            this.ariaControls = this.listboxId;
             this.ariaExpanded = "true";
 
             this.setPositioning();
             this.focusAndScrollOptionIntoView();
             this.indexWhenOpened = this.selectedIndex;
+
+            // focus is directed to the element when `open` is changed programmatically
+            DOM.queueUpdate(() => this.focus());
+
             return;
         }
 
@@ -70,7 +74,7 @@ export class Select extends FormAssociatedSelect {
     public set value(next: string) {
         const prev = `${this._value}`;
 
-        if (this.$fastController.isConnected && this.options) {
+        if (this.options?.length) {
             const selectedIndex = this.options.findIndex(el => el.value === next);
 
             const prevSelectedOption = this.options[this.selectedIndex];
@@ -126,7 +130,7 @@ export class Select extends FormAssociatedSelect {
      *
      * @internal
      */
-    public selectedIndexChanged(prev, next): void {
+    public selectedIndexChanged(prev: number, next: number): void {
         super.selectedIndexChanged(prev, next);
         this.updateValue();
     }
@@ -153,6 +157,10 @@ export class Select extends FormAssociatedSelect {
      */
     @observable
     public position: SelectPosition = SelectPosition.below;
+    protected positionChanged() {
+        this.positionAttribute = this.position;
+        this.setPositioning();
+    }
 
     /**
      * Reference to the internal listbox element.
@@ -160,6 +168,13 @@ export class Select extends FormAssociatedSelect {
      * @internal
      */
     public listbox: HTMLDivElement;
+
+    /**
+     * The unique id for the internal listbox element.
+     *
+     * @internal
+     */
+    public listboxId: string = uniqueId("listbox-");
 
     /**
      * Calculate and apply listbox positioning based on available viewport space.
@@ -229,7 +244,9 @@ export class Select extends FormAssociatedSelect {
      */
     public formResetCallback(): void {
         this.setProxyOptions();
-        this.setDefaultSelectedOption();
+        // Call the base class's implementation setDefaultSelectedOption instead of the select's
+        // override, in order to reset the selectedIndex without using the value property.
+        super.setDefaultSelectedOption();
         this.value = this.firstSelectedOption.value;
     }
 
@@ -299,10 +316,26 @@ export class Select extends FormAssociatedSelect {
      *
      * @internal
      */
-    public slottedOptionsChanged(prev, next): void {
+    public slottedOptionsChanged(prev: Element[], next: Element[]): void {
         super.slottedOptionsChanged(prev, next);
         this.setProxyOptions();
         this.updateValue();
+    }
+
+    protected setDefaultSelectedOption(): void {
+        const options: ListboxOption[] =
+            this.options ?? Array.from(this.children).filter(Listbox.slottedOptionFilter);
+
+        const selectedIndex = options?.findIndex(
+            el => el.hasAttribute("selected") || el.selected || el.value === this.value
+        );
+
+        if (selectedIndex !== -1) {
+            this.selectedIndex = selectedIndex;
+            return;
+        }
+
+        this.selectedIndex = 0;
     }
 
     /**
@@ -379,10 +412,6 @@ export class Select extends FormAssociatedSelect {
     public connectedCallback() {
         super.connectedCallback();
         this.forcedPosition = !!this.positionAttribute;
-
-        if (!this.listbox.id) {
-            this.listbox.id = uniqueId("listbox-");
-        }
     }
 }
 

@@ -17,7 +17,7 @@ FAST helps by both providing a highly configurable design system that you can dr
 
 ### Design Tokens
 
-Design Tokens are powerful tools that are used to express design abstractions like color, typography, spacing units, and other design-led values. FAST exposes powerful tools for creating and using Design Tokens for your Design System. Both FAST Frame and the Fluent UI Web Components leverage FAST's design tokens extensively. FAST Frame's use of design tokens is so extensive that you might be able to create your own design system simply by modifying the existing tokens. Of course, you can always create your own tokens and even base your tokens on compositions of existing tokens. To learn more [see our documentation on design tokens](/docs/design-systems/design-tokens).
+Design Tokens are powerful tools that are used to express design abstractions like color, typography, spacing units, and other design-led values. FAST exposes powerful tools for creating and using Design Tokens for your Design System. FAST Frame leverages FAST's design tokens extensively. FAST Frame's use of design tokens is so extensive that you might be able to create your own design system simply by modifying the existing tokens. Of course, you can always create your own tokens and even base your tokens on compositions of existing tokens. To learn more [see our documentation on design tokens](/docs/design-systems/design-tokens).
 
 ## Your own design system based on FAST components
 

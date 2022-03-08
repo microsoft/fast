@@ -23,18 +23,7 @@ export class TextArea extends FoundationTextArea {
      * HTML Attribute: appearance
      */
     @attr
-    public appearance: TextAreaAppearance;
-
-    /**
-     * @internal
-     */
-    public connectedCallback() {
-        super.connectedCallback();
-
-        if (!this.appearance) {
-            this.appearance = "outline";
-        }
-    }
+    public appearance: TextAreaAppearance = "outline";
 }
 
 /**

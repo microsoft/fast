@@ -135,6 +135,18 @@ describe("Select", () => {
         expect(element.value).to.equal("two");
     });
 
+    it('should return the same value when the value property is set during connect', async () => {
+        const { element, connect, disconnect } = await setup();
+
+        const connectTask = connect();
+        element.value = 'two';
+        await connectTask;
+
+        expect(element.value).to.equal('two');
+
+        await disconnect();
+    });
+
     it("should return the same value when the value property is set after connect", async () => {
         const { element, connect, disconnect } = await setup();
 
@@ -157,6 +169,18 @@ describe("Select", () => {
         await DOM.nextUpdate();
 
         expect(element.getAttribute("aria-expanded")).to.equal("true");
+
+        await disconnect();
+    });
+
+    it("should display the listbox when the `open` property is true before connecting", async () => {
+        const { element, connect, disconnect } = await setup();
+
+        element.open = true;
+
+        await connect();
+
+        expect(element.hasAttribute("open")).to.be.true;
 
         await disconnect();
     });
@@ -793,9 +817,7 @@ describe("Select", () => {
 
         const listboxId = element.listbox.id;
 
-        expect(element.getAttribute("aria-controls")).to.exist;
-
-        expect(element.getAttribute("aria-controls")).to.be.empty;
+        expect(element.getAttribute("aria-controls")).to.exist.and.be.empty;
 
         element.open = true;
 
