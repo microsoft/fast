@@ -1,10 +1,7 @@
-# Change Log
+## 0.0.1
 
-All notable changes to this project will be documented in this file.
-See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
+Wed, 08 Dec 2021 01:13:59 GMT
 
-## [0.0.1] - 2020-10-01
+### Patches
 
-### Added
-
-- Initial source
+- Initial source (john.kreitlow@microsoft.com)

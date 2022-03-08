@@ -6,7 +6,16 @@
 
 ## Screenshots
 
+### CSS Tagged Templates
+
+Both tagged template literals (``css`.style {}`;``) and comment-style untagged template literals (``/* css */`.style {}`;``) are supported.
+
 ![CSS tagged template](images/css.png)
+
+### HTML Tagged Templates
+
+In addition to the standard styles, the `html` syntax highlighting also allows for optional generics in Typescript (``html<any>`<div></div>`;`` and ``/* html<Generic> */`<div></div>`;``).
+
 ![HTML tagged template](images/html.png)
 
 The theme used in the screenshots is [Boxy Tomorrow](https://marketplace.visualstudio.com/items?itemName=trongthanh.theme-boxythemekit#boxy-tomorrow).

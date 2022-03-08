@@ -7,7 +7,6 @@
         "url": "https://discord.gg/FcSNfg4"
     },
     "version": "0.0.1",
-    "private": "true",
     "license": "MIT",
     "engines": {
         "vscode": "^1.49.0"
