@@ -1,7 +1,0 @@
-{
-  "type": "minor",
-  "comment": "add corner position styling to tooltip",
-  "packageName": "@microsoft/fast-components",
-  "email": "sethdonohue@Admins-MBP.guest.corp.microsoft.com",
-  "dependentChangeType": "patch"
-}

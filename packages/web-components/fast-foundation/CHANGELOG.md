@@ -1,8 +1,29 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Wed, 02 Mar 2022 07:12:58 GMT and should not be manually modified.
+This log was last generated on Tue, 08 Mar 2022 07:12:45 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.35.1
+
+Tue, 08 Mar 2022 07:12:45 GMT
+
+### Patches
+
+- Fix programmatic disable/enable of tabs (5454342+brianehenry@users.noreply.github.com)
+
+## 2.35.0
+
+Sun, 06 Mar 2022 07:13:48 GMT
+
+### Minor changes
+
+- add corner positions to tooltip (sethdonohue@Admins-MBP.guest.corp.microsoft.com)
+
+### Patches
+
+- passive handlers (scomea@microsoft.com)
+- tooltip hover (scomea@microsoft.com)
 
 ## 2.34.0
 

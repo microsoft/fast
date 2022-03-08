@@ -1,50 +1,52 @@
 {
-    "name": "fast-tagged-templates",
-    "displayName": "FAST Tagged Template Literals",
-    "description": "Syntax highlighting support for CSS and HTML tagged template literals",
-    "author": {
-        "name": "Microsoft",
-        "url": "https://discord.gg/FcSNfg4"
-    },
-    "version": "0.0.1",
-    "private": "true",
-    "license": "MIT",
-    "engines": {
-        "vscode": "^1.49.0"
-    },
-    "categories": [
-        "Programming Languages"
-    ],
-    "contributes": {
-        "grammars": [
-            {
-                "embeddedLanguages": {
-                    "meta.embedded.block.css": "css",
-                    "meta.embedded.block.html": "html"
-                },
-                "injectTo": [
-                    "source.js",
-                    "source.ts"
-                ],
-                "path": "./syntaxes/fast-tagged-templates.tmLanguage.json",
-                "scopeName": "source.js.tagged-templates.injection"
-            },
-            {
-                "path": "./syntaxes/injection.json",
-                "scopeName": "invalid-expression-comment.injection",
-                "injectTo": [
-                    "source.js",
-                    "source.ts"
-                ]
-            }
+  "name": "fast-tagged-templates",
+  "displayName": "FAST Tagged Template Literals",
+  "description": "Syntax highlighting support for CSS and HTML tagged template literals",
+  "author": {
+    "name": "Microsoft",
+    "url": "https://discord.gg/FcSNfg4"
+  },
+  "version": "0.1.0",
+  "license": "MIT",
+  "engines": {
+    "vscode": "^1.49.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "contributes": {
+    "grammars": [
+      {
+        "embeddedLanguages": {
+          "meta.embedded.block.css": "css",
+          "meta.embedded.block.html": "html"
+        },
+        "injectTo": [
+          "source.js",
+          "source.ts"
+        ],
+        "path": "./syntaxes/fast-tagged-templates.tmLanguage.json",
+        "scopeName": "source.js.tagged-templates.injection"
+      },
+      {
+        "path": "./syntaxes/injection.json",
+        "scopeName": "invalid-expression-comment.injection",
+        "injectTo": [
+          "source.js",
+          "source.ts"
         ]
-    },
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/microsoft/fast.git"
-    },
-    "bugs": {
-        "url": "https://github.com/Microsoft/fast/issues/new/choose"
-    },
-    "icon": "images/fast-logo.png"
+      }
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/microsoft/fast.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Microsoft/fast/issues/new/choose"
+  },
+  "icon": "images/fast-logo.png",
+  "beachball": {
+    "shouldPublish": false
+  }
 }

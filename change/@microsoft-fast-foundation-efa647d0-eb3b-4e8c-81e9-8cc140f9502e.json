@@ -1,7 +1,0 @@
-{
-  "type": "minor",
-  "comment": "add corner positions to tooltip",
-  "packageName": "@microsoft/fast-foundation",
-  "email": "sethdonohue@Admins-MBP.guest.corp.microsoft.com",
-  "dependentChangeType": "patch"
-}
