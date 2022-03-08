@@ -125,3 +125,13 @@ The component visuals should not change when in RTL scenarios as the component i
 ### Test Plan
 
 While testing is still TBD for our web components, I would expect this to align with the testing strategy and not require any additional test support.
+
+### Caveat
+
+> Document elements display precedence is formed by the imaginary z-axis [stacking context](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Positioning/Understanding_z_index/The_stacking_context), commonly by order of which elements are rendered and special properties (e.g. _z-index_).
+
+Dialog component is a low level element, unaware of its document context, but in most cases required to overlay on top of all elements.
+
+A common practice used in apps / frameworks to promote a dialog component to top other elements z-axis, is to utilise a service that dynamically appends a dialog component to the **end of the body element**, when called for.
+
+This helps ensure elements don't render over top a dialog undesirebly.

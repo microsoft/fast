@@ -222,7 +222,7 @@ export class HorizontalScroll extends FoundationElement {
      * @param next - new updated scroll items
      * @public
      */
-    public scrollItemsChanged(previous, next) {
+    public scrollItemsChanged(previous: HTMLElement[], next: HTMLElement[]) {
         if (next && !this.updatingItems) {
             DOM.queueUpdate(() => this.setStops());
         }
@@ -380,7 +380,7 @@ export class HorizontalScroll extends FoundationElement {
             stop => Math.abs(stop) + this.width > right
         );
 
-        if (nextIndex > current || nextIndex === -1) {
+        if (nextIndex >= current || nextIndex === -1) {
             nextIndex = current > 0 ? current - 1 : 0;
         }
 

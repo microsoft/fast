@@ -16,6 +16,12 @@ module.exports = {
     themes: [require.resolve("@docusaurus/theme-live-codeblock")],
     staticDirectories: ["static"],
     themeConfig: {
+        algolia: {
+            appId: "PG0CVQLQ81",
+            apiKey: "396cf95de6551ef90bde2de3142e158a",
+            indexName: "FAST",
+            contextualSearch: true,
+        },
         colorMode: {
             defaultMode: "dark",
         },
@@ -33,6 +39,12 @@ module.exports = {
                 }),
             },
             items: [
+                {
+                    type: "doc",
+                    docId: "introduction",
+                    label: "Docs",
+                    position: "left",
+                },
                 {
                     href: "https://www.fast.design",
                     label: "Home",
@@ -130,6 +142,7 @@ module.exports = {
                     sidebarPath: require.resolve("./sidebars.js"),
                     showLastUpdateTime: true,
                     editUrl: "https://github.com/microsoft/fast",
+                    remarkPlugins: [require("mdx-mermaid")],
                 },
                 theme: {
                     customCss: require.resolve("./src/css/custom.css"),

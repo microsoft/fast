@@ -18,7 +18,7 @@ export const fastCheckbox = Checkbox.compose<CheckboxOptions>({
     baseName: "checkbox",
     template,
     styles,
-    checkedIndicator: `
+    checkedIndicator: /* html */ `
         <svg
             part="checked-indicator"
             class="checked-indicator"
@@ -32,7 +32,7 @@ export const fastCheckbox = Checkbox.compose<CheckboxOptions>({
             />
         </svg>
     `,
-    indeterminateIndicator: `
+    indeterminateIndicator: /* html */ `
         <div part="indeterminate-indicator" class="indeterminate-indicator"></div>
     `,
 });

@@ -1,0 +1,7 @@
+{
+  "type": "minor",
+  "comment": "feat: enable multiple fast-element instances in browser at once",
+  "packageName": "@microsoft/fast-element",
+  "email": "roeisenb@microsoft.com",
+  "dependentChangeType": "patch"
+}
