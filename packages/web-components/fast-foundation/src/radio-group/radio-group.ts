@@ -117,7 +117,7 @@ export class RadioGroup extends FoundationElement {
      */
     @observable
     public slottedRadioButtons: HTMLElement[];
-    private slottedRadioButtonsChanged(oldValue, newValue): void {
+    private slottedRadioButtonsChanged(oldValue: unknown, newValue: HTMLElement[]): void {
         if (this.slottedRadioButtons && this.slottedRadioButtons.length > 0) {
             this.setupRadioButtons();
         }

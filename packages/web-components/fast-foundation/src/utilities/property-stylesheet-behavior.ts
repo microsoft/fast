@@ -47,9 +47,10 @@ export class PropertyStyleSheetBehavior implements Behavior {
     /**
      * Change event for the provided element.
      * @param source - the element for which to attach or detach styles.
+     * @param key - the key to lookup to know if the element already has the styles
      * @internal
      */
-    public handleChange(source: FASTElement, key) {
+    public handleChange(source: FASTElement, key: string) {
         if (source[key] === this.value) {
             source.$fastController.addStyles(this.styles);
         } else {

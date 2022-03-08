@@ -1,122 +1,205 @@
-import { DesignSystem } from "@microsoft/fast-components-styles-msft";
 import { ColorRGBA64 } from "@microsoft/fast-colors";
-import { RecipeData, RecipeTypes } from "./recipe-registry";
+import {
+    AdditionalData,
+    AppliedDesignTokens,
+    AppliedRecipes,
+    PluginNodeData,
+    ReadonlyAppliedDesignTokens,
+    ReadonlyAppliedRecipes,
+    ReadonlyRecipeEvaluations,
+    RecipeEvaluation,
+    RecipeEvaluations,
+    TOOL_FILL_COLOR_TOKEN,
+} from "./model";
+import { DesignTokenType } from "./ui/design-token-registry";
+
+const DesignTokenCache: Map<string, ReadonlyAppliedDesignTokens> = new Map();
 
 /**
- * Defines the data stored by the plugin on a node instance
- */
-export interface PluginNodeData {
-    /**
-     * A set of recipe IDs applied to the node
-     */
-    recipes: string[];
-
-    /**
-     * Design system overrides applied to the node
-     */
-    designSystem: Partial<DesignSystem>;
-}
-
-const DesignSystemCache: Map<string, Partial<DesignSystem>> = new Map();
-
-/**
- * The abstract class the plugin controller interacts with
+ * The abstract class the plugin Controller interacts with.
+ * Acts as a basic intermediary for node structure and data storage only.
  * Implementation details of this class will need to be created
  * for each design tool.
  */
 export abstract class PluginNode {
-    /**
-     * Retrieves the contextual design system for the node
-     */
-    public get designSystem(): Partial<DesignSystem> {
-        // Retrun value from the cache if we have it
-        if (DesignSystemCache.has(this.id)) {
-            return DesignSystemCache.get(this.id) as Partial<DesignSystem>;
-        }
-
-        /* eslint-disable-next-line @typescript-eslint/no-this-alias */
-        let node: PluginNode | null = this;
-        const designSystems: Array<Partial<DesignSystem>> = [];
-
-        while (node !== null) {
-            designSystems.push(node.getPluginData("designSystem"));
-            node = node.parent();
-        }
-
-        const designSystem = designSystems.reduceRight(
-            (prev: Partial<DesignSystem>, next: Partial<DesignSystem>) => ({
-                ...prev,
-                ...next,
-            })
-        );
-        DesignSystemCache.set(this.id, designSystem);
-
-        return designSystem;
-    }
-
-    public get recipes(): string[] {
-        const recipes = this.getPluginData("recipes");
-        return recipes;
-    }
-
-    public set recipes(recipes: string[]) {
-        this.setPluginData("recipes", recipes);
-    }
+    protected _recipes: AppliedRecipes = new AppliedRecipes();
+    protected _componentDesignTokens?: AppliedDesignTokens;
+    protected _componentRecipes?: AppliedRecipes;
+    protected _localDesignTokens: AppliedDesignTokens = new AppliedDesignTokens();
+    protected _recipeEvaluations: RecipeEvaluations = new RecipeEvaluations();
+    protected _additionalData: AdditionalData = new AdditionalData();
 
     /**
-     * Returns all design system overrides applied to the node
+     * Retrieves the design token overrides on ancestor nodes.
      */
-    public get designSystemOverrides(): Partial<DesignSystem> {
-        return this.getPluginData("designSystem");
+    public get inheritedDesignTokens(): ReadonlyAppliedDesignTokens {
+        // Return value from the cache if we have it
+        if (DesignTokenCache.has(this.id)) {
+            return DesignTokenCache.get(this.id) as ReadonlyAppliedDesignTokens;
+        }
+
+        let designTokens = new AppliedDesignTokens();
+        const parent = this.parent();
+        if (parent !== null) {
+            designTokens = new AppliedDesignTokens([
+                ...parent.inheritedDesignTokens,
+                ...(parent.componentDesignTokens
+                    ? parent.componentDesignTokens
+                    : new AppliedDesignTokens()),
+                ...parent.localDesignTokens,
+            ]);
+        }
+
+        // console.log("  PluginNode.inheritedDesignTokens", this.id, this.type, designTokens.entries());
+
+        DesignTokenCache.set(this.id, designTokens);
+
+        return designTokens;
     }
+
+    protected loadRecipes(): void {
+        const json = this.getPluginData("recipes");
+        // console.log("  loadRecipes", this.id, this.type, json);
+        this._recipes.deserialize(json);
+    }
+
+    /**
+     * Gets a readonly map of recipes applied to this node.
+     */
+    public get recipes(): ReadonlyAppliedRecipes {
+        return this._recipes as ReadonlyAppliedRecipes;
+    }
+
+    /**
+     * Sets the recipes to the node and design tool.
+     * @param recipes The complete applied recipes map.
+     */
+    public setRecipes(recipes: AppliedRecipes) {
+        this._recipes = recipes;
+        if (recipes.size) {
+            const json = recipes.serialize();
+            this.setPluginData("recipes", json);
+        } else {
+            this.deletePluginData("recipes");
+        }
+    }
+
+    public get componentRecipes(): ReadonlyAppliedRecipes | undefined {
+        return this._componentRecipes as ReadonlyAppliedRecipes;
+    }
+
+    protected loadLocalDesignTokens(): void {
+        const json = this.getPluginData("designTokens");
+        // console.log("  loadLocalDesignTokens", this.id, this.type, json);
+        this._localDesignTokens.deserialize(json);
+    }
+
+    /**
+     * Gets a readonly map of design token overrides applied to this node.
+     */
+    public get localDesignTokens(): ReadonlyAppliedDesignTokens {
+        return this._localDesignTokens;
+    }
+
+    public get componentDesignTokens(): ReadonlyAppliedDesignTokens {
+        return this._componentDesignTokens as ReadonlyAppliedDesignTokens;
+    }
+
     public abstract id: string;
     public abstract type: string;
+    public abstract canHaveChildren(): boolean;
     public abstract children(): PluginNode[];
     public abstract parent(): PluginNode | null;
-    public abstract supports(): Array<RecipeTypes | "designSystem">;
+    public abstract supports(): Array<DesignTokenType>;
 
     /**
-     * Set a property of the design system on this node
-     * @param key - the design system property name
-     * @param value - the design system property value
+     * Sets the design tokens to the node and design tool.
+     * @param tokens The complete design tokens override map.
      */
-    public setDesignSystemProperty<K extends keyof DesignSystem>(
-        key: K,
-        value: DesignSystem[K]
-    ): void {
-        this.setPluginData("designSystem", {
-            ...this.getPluginData("designSystem"),
-            [key]: value,
-        });
+    public setDesignTokens(tokens: AppliedDesignTokens) {
+        this._localDesignTokens = tokens;
+        if (tokens.size) {
+            const json = tokens.serialize();
+            this.setPluginData("designTokens", json);
+        } else {
+            this.deletePluginData("designTokens");
+        }
 
-        this.invalidateDesignSystemCache();
+        this.invalidateDesignTokenCache();
+    }
+
+    protected loadRecipeEvaluations(): void {
+        const json = this.getPluginData("recipeEvaluations");
+        this._recipeEvaluations.deserialize(json);
     }
 
     /**
-     * Remove a property from the design system on this node
-     * @param key The key of the design system to remove
+     * Gets a readonly map of recipe evaluations applied to this node.
      */
-    public deleteDesignSystemProperty<K extends keyof DesignSystem>(key: K): void {
-        const data = this.getPluginData("designSystem");
-        delete data[key];
-        this.setPluginData("designSystem", data);
-        this.invalidateDesignSystemCache();
+    public get recipeEvaluations(): ReadonlyRecipeEvaluations {
+        return this._recipeEvaluations;
     }
 
-    public abstract paint(data: RecipeData): void;
+    public setRecipeEvaluations(evaluations: RecipeEvaluations) {
+        this._recipeEvaluations = evaluations;
+        if (evaluations.size) {
+            const json = evaluations.serialize();
+            this.setPluginData("recipeEvaluations", json);
+        } else {
+            this.deletePluginData("recipeEvaluations");
+        }
+    }
+
+    public get additionalData(): AdditionalData {
+        return this._additionalData;
+    }
+
+    public abstract paint(data: RecipeEvaluation): void;
 
     /**
-     * Retrieve the effective background color for the node.
-     * This color is communicated to color recipes as the
-     * backgroundColor context for a node
+     * Retrieve the effective fill color for the node.
+     * This color is communicated to color recipes as the fillColor context for a node.
      */
-    public abstract getEffectiveBackgroundColor(): ColorRGBA64;
+    public abstract getEffectiveFillColor(): ColorRGBA64 | null;
 
     /**
-     * Delete entries in the design system cache for this node
-     * and any child nodes
+     * Setup special handling for fill color. It should either be a recipe or a fixed color applied in the design tool.
+     * Must be called after design tokens and recipe evaluations are loaded.
      */
-    public invalidateDesignSystemCache(): void {
+    protected setupFillColor(): void {
+        if (this.canHaveChildren()) {
+            // console.log("  PluginNode.setupFillColor - checking", this.id, this.type);
+            // If the fill color comes from a recipe, don't pass it again.
+            let foundFill = false;
+            this._recipeEvaluations.forEach(evaluations => {
+                evaluations.forEach(evaluation => {
+                    // console.log("    evaluation", evaluation.type, "value", evaluation.value);
+                    if (
+                        evaluation.type === DesignTokenType.backgroundFill ||
+                        evaluation.type === DesignTokenType.layerFill
+                    ) {
+                        foundFill = true;
+                    }
+                });
+            });
+            if (!foundFill) {
+                const nodeFillColor = this.getEffectiveFillColor();
+                // console.log("    fill not found - effective color", nodeFillColor?.toStringHexRGB());
+                if (nodeFillColor) {
+                    // console.log("      PluginNode.setupFillColor - setting", TOOL_FILL_COLOR_TOKEN, this.id, this.type, nodeFillColor.toStringHexRGB());
+                    this._additionalData.set(
+                        TOOL_FILL_COLOR_TOKEN,
+                        nodeFillColor.toStringHexRGB()
+                    );
+                }
+            }
+        }
+    }
+
+    /**
+     * Delete entries in the design token cache for this node and any child nodes.
+     */
+    private invalidateDesignTokenCache(): void {
         function getIds(node: PluginNode): string[] {
             let found = [node.id];
 
@@ -127,13 +210,30 @@ export abstract class PluginNode {
             return found;
         }
 
-        getIds(this).forEach((id: string) => DesignSystemCache.delete(id));
+        getIds(this).forEach((id: string) => DesignTokenCache.delete(id));
     }
+
+    /**
+     * Gets custom data from the design tool storage.
+     * @param key The data storage key.
+     */
     protected abstract getPluginData<K extends keyof PluginNodeData>(
         key: K
-    ): PluginNodeData[K];
+    ): string | undefined;
+
+    /**
+     * Sets custom data to the design tool storage.
+     * @param key The data storage key.
+     * @param value The new serialized value.
+     */
     protected abstract setPluginData<K extends keyof PluginNodeData>(
         key: K,
-        value: PluginNodeData[K]
+        value: string
     ): void;
+
+    /**
+     * Deletes custom data from the design tool storage.
+     * @param key The data storage key.
+     */
+    protected abstract deletePluginData<K extends keyof PluginNodeData>(key: K): void;
 }

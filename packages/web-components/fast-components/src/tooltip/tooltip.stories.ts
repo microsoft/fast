@@ -13,6 +13,14 @@ function onShowClick(): void {
         tooltipInstance.visible = !tooltipInstance.visible;
     }
 }
+function onShowCornersClick(): void {
+    for (let i = 1; i <= 4; i++) {
+        const tooltipInstance = document.getElementById(
+            `tooltip-show-corners-${i}`
+        ) as FoundationTooltip;
+        tooltipInstance.visible = !tooltipInstance.visible;
+    }
+}
 
 //check changing anchor by changing anchorElement
 function onAnchorMouseEnterProp(e: MouseEvent): void {
@@ -54,6 +62,10 @@ addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
 
         const showButton = document.getElementById("anchor-show") as HTMLElement;
         showButton.addEventListener("click", onShowClick);
+        const showButtonCorners = document.getElementById(
+            "anchor-show-corners"
+        ) as HTMLElement;
+        showButtonCorners.addEventListener("click", onShowCornersClick);
     }
 });
 

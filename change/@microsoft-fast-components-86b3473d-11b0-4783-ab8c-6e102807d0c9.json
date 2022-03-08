@@ -1,7 +1,7 @@
 {
   "type": "patch",
-  "comment": "use html instead of string templating",
+  "comment": "flex items should be aligned on cross axis.",
   "packageName": "@microsoft/fast-components",
-  "email": "mathieulavoie94@gmail.com",
+  "email": "srdsecond@gmail.com",
   "dependentChangeType": "patch"
 }
