@@ -23,7 +23,7 @@ export class Accordion extends FoundationElement {
     // @internal (undocumented)
     accordionItems: HTMLElement[];
     // @internal (undocumented)
-    accordionItemsChanged(oldValue: any, newValue: any): void;
+    accordionItemsChanged(oldValue: HTMLElement[], newValue: HTMLElement[]): void;
     expandmode: AccordionExpandMode;
     }
 
@@ -124,6 +124,31 @@ export class AnchoredRegion extends FoundationElement {
     viewportElement: HTMLElement | null;
     }
 
+// @public
+export interface AnchoredRegionConfig {
+    // Warning: (ae-incompatible-release-tags) The symbol "autoUpdateMode" is marked as @public, but its signature references "AutoUpdateMode" which is marked as @beta
+    readonly autoUpdateMode?: AutoUpdateMode;
+    readonly fixedPlacement?: boolean;
+    // Warning: (ae-incompatible-release-tags) The symbol "horizontalDefaultPosition" is marked as @public, but its signature references "HorizontalPosition" which is marked as @beta
+    readonly horizontalDefaultPosition?: HorizontalPosition;
+    readonly horizontalInset?: boolean;
+    // Warning: (ae-incompatible-release-tags) The symbol "horizontalPositioningMode" is marked as @public, but its signature references "AxisPositioningMode" which is marked as @beta
+    readonly horizontalPositioningMode?: AxisPositioningMode;
+    // Warning: (ae-incompatible-release-tags) The symbol "horizontalScaling" is marked as @public, but its signature references "AxisScalingMode" which is marked as @beta
+    readonly horizontalScaling?: AxisScalingMode;
+    readonly horizontalThreshold?: number;
+    readonly horizontalViewportLock?: boolean;
+    // Warning: (ae-incompatible-release-tags) The symbol "verticalDefaultPosition" is marked as @public, but its signature references "VerticalPosition" which is marked as @beta
+    readonly verticalDefaultPosition?: VerticalPosition;
+    readonly verticalInset?: boolean;
+    // Warning: (ae-incompatible-release-tags) The symbol "verticalPositioningMode" is marked as @public, but its signature references "AxisPositioningMode" which is marked as @beta
+    readonly verticalPositioningMode?: AxisPositioningMode;
+    // Warning: (ae-incompatible-release-tags) The symbol "verticalScaling" is marked as @public, but its signature references "AxisScalingMode" which is marked as @beta
+    readonly verticalScaling?: AxisScalingMode;
+    readonly verticalThreshold?: number;
+    readonly verticalViewportLock?: boolean;
+}
+
 // @beta
 export type AnchoredRegionPositionLabel = "start" | "insetStart" | "insetEnd" | "end" | "center";
 
@@ -207,7 +232,7 @@ export class BaseProgress extends FoundationElement {
     connectedCallback(): void;
     max: number;
     min: number;
-    paused: any;
+    paused: boolean;
     // @internal
     percentComplete: number;
     value: number | null;
@@ -337,7 +362,7 @@ export const calendarTemplate: FoundationElementTemplate<ViewTemplate<Calendar>,
 export const CalendarTitleTemplate: ViewTemplate<Calendar>;
 
 // @public
-export const calendarWeekdayTemplate: (context: any) => ViewTemplate;
+export const calendarWeekdayTemplate: (context: ElementDefinitionContext) => ViewTemplate;
 
 // @public
 export class Card extends FoundationElement {
@@ -457,17 +482,19 @@ export class Combobox extends FormAssociatedCombobox {
     protected placeholderChanged(): void;
     position: SelectPosition;
     positionAttribute: SelectPosition;
+    // (undocumented)
+    protected positionChanged(): void;
     // @internal
     selectedIndexChanged(prev: number, next: number): void;
     // @internal
-    selectedOptionsChanged(prev: any, next: any): void;
+    selectedOptionsChanged(prev: unknown, next: HTMLElement[]): void;
     // @internal
     selectPreviousOption(): void;
     // @internal
     setDefaultSelectedOption(): void;
     setPositioning(): void;
     // @internal
-    slottedOptionsChanged(prev: any, next: any): void;
+    slottedOptionsChanged(prev: Element[], next: HTMLElement[]): void;
     get value(): string;
     set value(next: string);
     }
@@ -714,7 +741,7 @@ export const dataGridTemplate: FoundationElementTemplate<ViewTemplate<DataGrid>>
 
 // @public
 export class DateFormatter {
-    constructor(config?: any);
+    constructor(config?: {});
     date: Date;
     dayFormat: DayFormat;
     // (undocumented)
@@ -808,6 +835,7 @@ export class DelegatesARIAListbox {
     ariaActiveDescendant: string;
     ariaDisabled: "true" | "false";
     ariaExpanded: "true" | "false" | undefined;
+    ariaMultiSelectable: "true" | "false" | undefined;
 }
 
 // @internal
@@ -899,8 +927,8 @@ export const DesignSystem: Readonly<{
 export interface DesignSystemRegistrationContext {
     readonly elementPrefix: string;
     // @deprecated
-    tryDefineElement(name: string, type: Constructable, callback: ElementDefinitionCallback): any;
-    tryDefineElement(params: ElementDefinitionParams): any;
+    tryDefineElement(name: string, type: Constructable, callback: ElementDefinitionCallback): void;
+    tryDefineElement(params: ElementDefinitionParams): void;
 }
 
 // @public
@@ -1118,6 +1146,24 @@ export type FlipperOptions = FoundationElementDefinition & {
 export const flipperTemplate: FoundationElementTemplate<ViewTemplate<Flipper>, FlipperOptions>;
 
 // @public
+export const FlyoutPosBottom: AnchoredRegionConfig;
+
+// @public
+export const FlyoutPosBottomFill: AnchoredRegionConfig;
+
+// @public
+export const FlyoutPosTallest: AnchoredRegionConfig;
+
+// @public
+export const FlyoutPosTallestFill: AnchoredRegionConfig;
+
+// @public
+export const FlyoutPosTop: AnchoredRegionConfig;
+
+// @public
+export const FlyoutPosTopFill: AnchoredRegionConfig;
+
+// @public
 export const focusVisible: string;
 
 // @public
@@ -1153,13 +1199,13 @@ export interface FormAssociated extends Omit<ElementInternals, "labels"> {
     // (undocumented)
     initialValue: string;
     // (undocumented)
-    initialValueChanged?(previous: any, next: any): void;
+    initialValueChanged?(previous: string, next: string): void;
     // (undocumented)
     readonly labels: ReadonlyArray<Node[]>;
     // (undocumented)
     name: string;
     // (undocumented)
-    nameChanged?(previous: any, next: any): void;
+    nameChanged?(previous: string, next: string): void;
     // (undocumented)
     required: boolean;
     // (undocumented)
@@ -1171,7 +1217,7 @@ export interface FormAssociated extends Omit<ElementInternals, "labels"> {
     // (undocumented)
     value: string;
     // (undocumented)
-    valueChanged(previous: any, next: any): void;
+    valueChanged(previous: string, next: string): void;
 }
 
 // @alpha
@@ -1186,13 +1232,13 @@ export interface FormAssociatedProxy {
     // (undocumented)
     formResetCallback?(): void;
     // (undocumented)
-    initialValueChanged?(previous: any, next: any): void;
+    initialValueChanged?(previous: string, next: string): void;
     // (undocumented)
-    nameChanged?(previous: any, next: any): void;
+    nameChanged?(previous: string, next: string): void;
     // (undocumented)
     proxy: ProxyElement;
     // (undocumented)
-    valueChanged?(previous: any, next: any): void;
+    valueChanged?(previous: string, next: string): void;
 }
 
 // @public
@@ -1277,7 +1323,7 @@ export class HorizontalScroll extends FoundationElement {
     // @internal
     scrollingChanged(prev: unknown, next: boolean): void;
     scrollItems: HTMLElement[];
-    scrollItemsChanged(previous: any, next: any): void;
+    scrollItemsChanged(previous: HTMLElement[], next: HTMLElement[]): void;
     scrollToNext(): void;
     scrollToPosition(newPosition: number, position?: number): void;
     scrollToPrevious(): void;
@@ -1348,22 +1394,34 @@ export abstract class Listbox extends FoundationElement {
     // @internal
     get firstSelectedOption(): ListboxOption;
     // @internal
-    protected focusAndScrollOptionIntoView(): void;
+    protected focusAndScrollOptionIntoView(optionToFocus?: ListboxOption | null): void;
     // @internal
     focusinHandler(e: FocusEvent): void;
+    // @internal
+    protected getSelectableIndex(prev: number | undefined, next: number): number;
+    // @internal
+    protected getTypeaheadMatches(): ListboxOption[];
+    // @internal
+    handleChange(source: any, propertyName: string): void;
+    // @internal
     handleTypeAhead(key: string): void;
+    // @internal
+    protected get hasSelectableOptions(): boolean;
     // @internal
     keydownHandler(e: KeyboardEvent): boolean | void;
     get length(): number;
     // @internal
     mousedownHandler(e: MouseEvent): boolean | void;
+    multiple: boolean;
+    // @internal
+    multipleChanged(prev: boolean | undefined, next: boolean): void;
     get options(): ListboxOption[];
     set options(value: ListboxOption[]);
     // @internal
     protected _options: ListboxOption[];
     selectedIndex: number;
     // @internal
-    selectedIndexChanged(prev: number, next: number): void;
+    selectedIndexChanged(prev: number | undefined, next: number): void;
     selectedOptions: ListboxOption[];
     // @internal
     protected selectedOptionsChanged(prev: ListboxOption[] | undefined, next: ListboxOption[]): void;
@@ -1383,7 +1441,7 @@ export abstract class Listbox extends FoundationElement {
     // @internal
     slottedOptions: Element[];
     // @internal
-    slottedOptionsChanged(prev: Element[] | unknown, next: Element[]): void;
+    slottedOptionsChanged(prev: Element[] | undefined, next: Element[]): void;
     // @internal
     protected static readonly TYPE_AHEAD_TIMEOUT_MS = 1000;
     // @internal
@@ -1405,11 +1463,57 @@ export interface Listbox extends DelegatesARIAListbox {
 
 // @public
 export class ListboxElement extends Listbox {
+    // @internal
+    protected activeIndex: number;
+    // @internal
+    protected activeIndexChanged(prev: number | undefined, next: number): void;
+    // @internal
+    get activeOption(): ListboxOption | null;
+    // @internal
+    protected checkActiveIndex(): void;
+    // @internal
+    protected get checkedOptions(): ListboxOption[];
+    // @internal
+    protected checkFirstOption(preserveChecked?: boolean): void;
+    // @internal
+    protected checkLastOption(preserveChecked?: boolean): void;
+    // @internal
+    protected checkNextOption(preserveChecked?: boolean): void;
+    // @internal
+    protected checkPreviousOption(preserveChecked?: boolean): void;
+    // @internal @override
+    clickHandler(e: MouseEvent): boolean | void;
+    // @internal @override (undocumented)
+    connectedCallback(): void;
+    // @internal @override (undocumented)
+    disconnectedCallback(): void;
+    // @internal
+    get firstSelectedOptionIndex(): number;
+    // @internal @override (undocumented)
+    protected focusAndScrollOptionIntoView(): void;
+    // @internal @override
+    focusinHandler(e: FocusEvent): boolean | void;
+    // @internal
+    focusoutHandler(e: FocusEvent): void;
+    // @internal @override
+    keydownHandler(e: KeyboardEvent): boolean | void;
     // @internal @override
     mousedownHandler(e: MouseEvent): boolean | void;
+    // @internal @override
+    multipleChanged(prev: boolean | undefined, next: boolean): void;
+    // @internal
+    protected rangeStartIndex: number;
+    // @override
+    protected setSelectedOptions(): void;
     size: number;
     // @internal
     protected sizeChanged(prev: number | unknown, next: number): void;
+    // @internal
+    toggleSelectedForAllCheckedOptions(): void;
+    // @internal @override (undocumented)
+    typeaheadBufferChanged(prev: string, next: string): void;
+    // @internal
+    protected uncheckAllOptions(preserveChecked?: boolean): void;
 }
 
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
@@ -1426,7 +1530,7 @@ export class ListboxOption extends FoundationElement {
     dirtyValue: boolean;
     disabled: boolean;
     // (undocumented)
-    protected disabledChanged(prev: any, next: any): void;
+    protected disabledChanged(prev: boolean, next: boolean): void;
     // (undocumented)
     get form(): HTMLFormElement | null;
     protected initialValue: string;
@@ -1503,6 +1607,9 @@ export class Menu extends FoundationElement {
     // @internal (undocumented)
     items: HTMLSlotElement;
     }
+
+// @beta
+export type menuConfigs = "bottom" | "bottom-fill" | "tallest" | "tallest-fill" | "top" | "top-fill";
 
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
 // Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "MenuItem" because one of its declarations is marked as @internal
@@ -1696,6 +1803,8 @@ export class Picker extends FormAssociatedPicker {
     loadingText: string;
     maxSelected: number | undefined;
     // @internal
+    menuConfig: AnchoredRegionConfig;
+    // @internal
     menuElement: PickerMenu;
     // @internal
     menuFocusIndex: number;
@@ -1705,6 +1814,7 @@ export class Picker extends FormAssociatedPicker {
     menuId: string;
     menuOptionContentsTemplate: ViewTemplate;
     menuOptionTemplate: ViewTemplate;
+    menuPlacement: menuConfigs;
     // @internal
     menuTag: string;
     noSuggestionsText: string;
@@ -1821,7 +1931,7 @@ export class PropertyStyleSheetBehavior implements Behavior {
     constructor(propertyName: string, value: any, styles: ElementStyles);
     bind(elementInstance: FASTElement): void;
     // @internal
-    handleChange(source: FASTElement, key: any): void;
+    handleChange(source: FASTElement, key: string): void;
     // @internal
     unbind(source: typeof FASTElement & HTMLElement): void;
     }
@@ -2051,6 +2161,8 @@ export class Select extends FormAssociatedSelect {
     // @internal
     listbox: HTMLDivElement;
     // @internal
+    listboxId: string;
+    // @internal
     maxHeight: number;
     // @internal
     open: boolean;
@@ -2058,11 +2170,15 @@ export class Select extends FormAssociatedSelect {
     protected openChanged(): void;
     position: SelectPosition;
     positionAttribute: SelectPosition;
+    // (undocumented)
+    protected positionChanged(): void;
     // @internal
-    selectedIndexChanged(prev: any, next: any): void;
+    selectedIndexChanged(prev: number, next: number): void;
+    // (undocumented)
+    protected setDefaultSelectedOption(): void;
     setPositioning(): void;
     // @internal
-    slottedOptionsChanged(prev: any, next: any): void;
+    slottedOptionsChanged(prev: Element[], next: Element[]): void;
     get value(): string;
     set value(next: string);
     }
@@ -2171,7 +2287,7 @@ export class Slider extends FormAssociatedSlider implements SliderConfiguration 
     get valueAsNumber(): number;
     set valueAsNumber(next: number);
     // @internal (undocumented)
-    valueChanged(previous: any, next: any): void;
+    valueChanged(previous: string, next: string): void;
     valueTextFormatter: (value: string) => string | null;
 }
 
@@ -2535,11 +2651,19 @@ export class Tooltip extends FoundationElement {
 // @public
 export enum TooltipPosition {
     bottom = "bottom",
+    bottomEnd = "bottom-end",
+    bottomLeft = "bottom-left",
+    bottomRight = "bottom-right",
+    bottomStart = "bottom-start",
     end = "end",
     left = "left",
     right = "right",
     start = "start",
-    top = "top"
+    top = "top",
+    topEnd = "top-end",
+    topLeft = "top-left",
+    topRight = "top-right",
+    topStart = "top-start"
 }
 
 // @public
@@ -2563,28 +2687,29 @@ export function transient<T extends Constructable>(target: T & Partial<RegisterS
 //
 // @public
 export class TreeItem extends FoundationElement {
-    // (undocumented)
+    // @internal
     childItemLength(): number;
-    // (undocumented)
+    // @internal (undocumented)
     childItems: HTMLElement[];
     disabled: boolean;
-    // (undocumented)
+    // @internal
     expandCollapseButton: HTMLDivElement;
     expanded: boolean;
-    // (undocumented)
+    // @internal
     focusable: boolean;
     static focusItem(el: HTMLElement): void;
-    // (undocumented)
-    handleClick: (e: MouseEvent) => void | boolean;
-    // (undocumented)
+    // @internal
+    handleBlur: (e: FocusEvent) => void;
+    // @internal
     handleExpandCollapseButtonClick: (e: MouseEvent) => void;
-    // (undocumented)
+    // @internal
+    handleFocus: (e: FocusEvent) => void;
     readonly isNestedItem: () => boolean;
-    // (undocumented)
+    // @internal
     items: HTMLElement[];
-    // @internal (undocumented)
+    // @internal
     nested: boolean;
-    // (undocumented)
+    // @internal (undocumented)
     renderCollapsedChildren: boolean;
     selected: boolean;
     }
@@ -2605,21 +2730,23 @@ export const treeItemTemplate: FoundationElementTemplate<ViewTemplate<TreeItem>,
 export class TreeView extends FoundationElement {
     // (undocumented)
     connectedCallback(): void;
-    // (undocumented)
+    // @internal
     currentFocused: HTMLElement | TreeItem | null;
-    // (undocumented)
     currentSelected: HTMLElement | TreeItem | null;
-    // (undocumented)
+    // @internal
     handleBlur: (e: FocusEvent) => void;
-    // (undocumented)
+    // @internal
+    handleClick(e: Event): boolean | void;
+    // @internal
     handleFocus: (e: FocusEvent) => void;
-    // (undocumented)
-    handleKeyDown: (e: KeyboardEvent) => void | boolean;
-    // (undocumented)
+    // @internal
+    handleKeyDown: (e: KeyboardEvent) => boolean | void;
+    // @internal
+    handleSelectedChange: (e: Event) => boolean | void;
     renderCollapsedNodes: boolean;
-    // (undocumented)
+    // @internal
     slottedTreeItems: HTMLElement[];
-    // (undocumented)
+    // @internal
     treeView: HTMLElement;
 }
 

@@ -280,7 +280,7 @@ export class Dialog extends FoundationElement {
     private static reduceTabbableItems(
         elements: HTMLElement[],
         element: FoundationElement & HTMLElement
-    ) {
+    ): HTMLElement[] {
         if (element.getAttribute("tabindex") === "-1") {
             return elements;
         }

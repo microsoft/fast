@@ -14,6 +14,12 @@
       "mapsToAttribute": "disabled",
       "type": "boolean"
     },
+    "multiple": {
+      "title": "Multiple",
+      "description": "Indicates if the listbox is in multi-selection mode",
+      "mapsToAttribute": "multiple",
+      "type": "boolean"
+    },
     "size": {
       "title": "Size",
       "description": "The maximum number of visible options",

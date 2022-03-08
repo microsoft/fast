@@ -5,7 +5,7 @@ sidebar_label: listbox
 custom_edit_url: https://github.com/microsoft/fast/edit/master/packages/web-components/fast-foundation/src/listbox/README.md
 ---
 
-An implementation of a [listbox](https://w3c.github.io/aria-practices/#Listbox). While any DOM content is permissible as a child of the listbox, only [`fast-option`](/docs/components/listbox-option) elements, `option` elements, and slotted items with `role="option"` will be treated as options and receive keyboard support.
+An implementation of a [listbox](https://www.w3.org/TR/wai-aria-practices-1.2/#Listbox). While any DOM content is permissible as a child of the listbox, only [`fast-option`](/docs/components/listbox-option) elements, `option` elements, and slotted items with `role="option"` will be treated as options and receive keyboard support.
 
 The `listbox` component has no internals related to form association. For a form-associated `listbox`, see the [`fast-select` component](/docs/components/select).
 
@@ -59,4 +59,4 @@ See [listbox-option](/docs/components/listbox-option) for more information.
 
 - [Component explorer examples](https://explore.fast.design/components/fast-listbox)
 - [Component technical specification](https://github.com/microsoft/fast/blob/master/packages/web-components/fast-foundation/src/listbox/listbox.spec.md)
-- [W3C Component Aria Practices](https://w3c.github.io/aria-practices/#Listbox)
+- [W3C Component Aria Practices](https://www.w3.org/TR/wai-aria-practices-1.2/#Listbox)

@@ -1,4 +1,5 @@
 const path = require("path");
+const webpack = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const HtmlWebpackInlineSourcePlugin = require("html-webpack-inline-source-plugin");
 const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
@@ -37,21 +38,23 @@ module.exports = (env, args) => {
                 },
                 {
                     test: /\.css$/,
-                    use: [
-                        {
-                            loader: "style-loader",
-                        },
-                        {
-                            loader: "css-loader",
-                        },
-                    ],
+                    use: ["style-loader", "css-loader"],
+                    exclude: /node_modules/,
+                },
+                {
+                    test: /\.svg$/,
+                    loader: "raw-loader",
+                    exclude: /node_modules/,
                 },
             ],
         },
         plugins: [
             new CleanWebpackPlugin(),
+            new webpack.DefinePlugin({
+                global: {}, // Fix missing symbol error when running in developer VM
+            }),
             new HtmlWebpackPlugin({
-                title: "FAST MSFT Figma Plugin",
+                title: "Fluent UI Design Tokens",
                 contentBase: outDir,
                 chunks: ["ui"],
                 inlineSource: "(js)$",
@@ -64,7 +67,7 @@ module.exports = (env, args) => {
             }),
         ],
         resolve: {
-            extensions: [".js", ".jsx", ".tsx", ".ts"],
+            extensions: [".js", ".jsx", ".svg", ".tsx", ".ts"],
         },
     };
 };
