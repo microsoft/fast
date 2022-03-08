@@ -482,6 +482,8 @@ export class Combobox extends FormAssociatedCombobox {
     protected placeholderChanged(): void;
     position: SelectPosition;
     positionAttribute: SelectPosition;
+    // (undocumented)
+    protected positionChanged(): void;
     // @internal
     selectedIndexChanged(prev: number, next: number): void;
     // @internal
@@ -2159,6 +2161,8 @@ export class Select extends FormAssociatedSelect {
     // @internal
     listbox: HTMLDivElement;
     // @internal
+    listboxId: string;
+    // @internal
     maxHeight: number;
     // @internal
     open: boolean;
@@ -2166,6 +2170,8 @@ export class Select extends FormAssociatedSelect {
     protected openChanged(): void;
     position: SelectPosition;
     positionAttribute: SelectPosition;
+    // (undocumented)
+    protected positionChanged(): void;
     // @internal
     selectedIndexChanged(prev: number, next: number): void;
     // (undocumented)
@@ -2645,11 +2651,19 @@ export class Tooltip extends FoundationElement {
 // @public
 export enum TooltipPosition {
     bottom = "bottom",
+    bottomEnd = "bottom-end",
+    bottomLeft = "bottom-left",
+    bottomRight = "bottom-right",
+    bottomStart = "bottom-start",
     end = "end",
     left = "left",
     right = "right",
     start = "start",
-    top = "top"
+    top = "top",
+    topEnd = "top-end",
+    topLeft = "top-left",
+    topRight = "top-right",
+    topStart = "top-start"
 }
 
 // @public

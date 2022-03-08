@@ -23,6 +23,7 @@ const DesignTokenCache: Map<string, ReadonlyAppliedDesignTokens> = new Map();
  */
 export abstract class PluginNode {
     protected _recipes: AppliedRecipes = new AppliedRecipes();
+    protected _componentDesignTokens?: AppliedDesignTokens;
     protected _componentRecipes?: AppliedRecipes;
     protected _localDesignTokens: AppliedDesignTokens = new AppliedDesignTokens();
     protected _recipeEvaluations: RecipeEvaluations = new RecipeEvaluations();
@@ -42,6 +43,9 @@ export abstract class PluginNode {
         if (parent !== null) {
             designTokens = new AppliedDesignTokens([
                 ...parent.inheritedDesignTokens,
+                ...(parent.componentDesignTokens
+                    ? parent.componentDesignTokens
+                    : new AppliedDesignTokens()),
                 ...parent.localDesignTokens,
             ]);
         }
@@ -54,8 +58,9 @@ export abstract class PluginNode {
     }
 
     protected loadRecipes(): void {
-        const recipesJson = this.getPluginData("recipes");
-        this._recipes.deserialize(recipesJson);
+        const json = this.getPluginData("recipes");
+        // console.log("  loadRecipes", this.id, this.type, json);
+        this._recipes.deserialize(json);
     }
 
     /**
@@ -85,6 +90,7 @@ export abstract class PluginNode {
 
     protected loadLocalDesignTokens(): void {
         const json = this.getPluginData("designTokens");
+        // console.log("  loadLocalDesignTokens", this.id, this.type, json);
         this._localDesignTokens.deserialize(json);
     }
 
@@ -96,7 +102,7 @@ export abstract class PluginNode {
     }
 
     public get componentDesignTokens(): ReadonlyAppliedDesignTokens {
-        return new AppliedDesignTokens();
+        return this._componentDesignTokens as ReadonlyAppliedDesignTokens;
     }
 
     public abstract id: string;

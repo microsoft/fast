@@ -1,8 +1,40 @@
 # Change Log - @microsoft/fast-figma-plugin-msft
 
-This log was last generated on Sun, 20 Feb 2022 07:16:20 GMT and should not be manually modified.
+This log was last generated on Sun, 06 Mar 2022 07:13:48 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.8.16
+
+Sun, 06 Mar 2022 07:13:48 GMT
+
+### Patches
+
+- Bump @microsoft/fast-components to v2.22.0 (sethdonohue@Admins-MBP.guest.corp.microsoft.com)
+
+## 0.8.16
+
+Wed, 02 Mar 2022 07:12:58 GMT
+
+### Patches
+
+- Bump @microsoft/fast-components to v2.21.9 (scomea@microsoft.com)
+
+## 0.8.16
+
+Fri, 25 Feb 2022 17:09:32 GMT
+
+### Patches
+
+- Bump @microsoft/fast-element to v1.7.2 (roeisenb@microsoft.com)
+
+## 0.8.16
+
+Thu, 24 Feb 2022 22:21:55 GMT
+
+### Patches
+
+- Bump @microsoft/fast-element to v1.7.1 (roeisenb@microsoft.com)
 
 ## 0.8.16
 

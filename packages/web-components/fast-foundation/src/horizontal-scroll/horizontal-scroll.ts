@@ -380,7 +380,7 @@ export class HorizontalScroll extends FoundationElement {
             stop => Math.abs(stop) + this.width > right
         );
 
-        if (nextIndex > current || nextIndex === -1) {
+        if (nextIndex >= current || nextIndex === -1) {
             nextIndex = current > 0 ? current - 1 : 0;
         }
 
