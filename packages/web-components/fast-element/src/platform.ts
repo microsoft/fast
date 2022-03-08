@@ -47,6 +47,53 @@ if (FAST.error === void 0) {
     });
 }
 
+const propConfig = {
+    configurable: false,
+    enumerable: false,
+    writable: false,
+};
+
+if ($global.FAST === void 0) {
+    Reflect.defineProperty($global, "FAST", {
+        value: Object.create(null),
+        ...propConfig,
+    });
+}
+
+/**
+ * The FAST global.
+ * @internal
+ */
+export const FAST = $global.FAST;
+
+if (FAST.getById === void 0) {
+    const storage = Object.create(null);
+
+    Reflect.defineProperty(FAST, "getById", {
+        value<T>(id: string | number, initialize?: () => T): T | null {
+            let found = storage[id];
+
+            if (found === void 0) {
+                found = initialize ? (storage[id] = initialize()) : null;
+            }
+
+            return found;
+        },
+        ...propConfig,
+    });
+}
+
+/**
+ * Core services shared across FAST instances.
+ * @internal
+ */
+export const enum KernelServiceId {
+    updateQueue = 1,
+    observable = 2,
+    contextEvent = 3,
+    elementRegistry = 4,
+}
+
 /**
  * A readonly, empty array.
  * @remarks
