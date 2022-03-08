@@ -14,7 +14,7 @@ const defaultTokenTemplate = html<DesignTokenField>`
     <input
         value="${x => x.value}"
         @change="${(x, c) => {
-            x.value = (c.event.target as HTMLInputElement).value;
+            x.updateValue((c.event.target as HTMLInputElement).value);
         }}"
     />
 `;
@@ -23,7 +23,7 @@ const colorInputChangeHandler = (x: DesignTokenField, c: ExecutionContext) => {
     const hex: string = (c.event.target as HTMLInputElement).value;
     const parsed = parseColorHexRGB(hex);
     if (parsed instanceof ColorRGBA64) {
-        x.value = hex;
+        x.updateValue(hex);
     }
 };
 
@@ -46,9 +46,10 @@ const tokenTemplatesByType = {
     luminance: html<DesignTokenField>`
         <select
             @change="${(x, c) => {
-                x.value = (c.event.target as HTMLSelectElement).value;
+                x.updateValue((c.event.target as HTMLSelectElement).value);
             }}"
         >
+            <option></option>
             <option
                 value="${StandardLuminance.LightMode}"
                 ?selected="${x =>
@@ -116,7 +117,9 @@ export class DesignTokenField extends FASTElement {
 
     @observable
     value?: any;
-    valueChanged() {
+
+    updateValue(value: any) {
+        this.value = value;
         this.$emit("change", this.value);
     }
 

@@ -49,6 +49,8 @@ export class PluginUI extends React.Component<PluginUIProps> {
     }
 
     private renderFooter(): JSX.Element {
+        const syncLabel =
+            "Evaluate and apply all design tokens and recipes to the curren selection.";
         const revertLabel = "Remove all plugin data from the current selection.";
 
         return (
@@ -74,11 +76,21 @@ export class PluginUI extends React.Component<PluginUIProps> {
                             .map(node => `${node.type}`)
                             .join(" | ") || "No selection"}
                     </p>
-                    <div style={{ display: "flex" }}>
+                    <div style={{ display: "flex", gap: "8px" }}>
+                        <plugin-button
+                            appearance="accent"
+                            aria-label={syncLabel}
+                            style={{ display: this.controller.autoRefresh ? "none" : "" }}
+                            onClick={this.controller.refreshSelectedNodes.bind(
+                                this.controller
+                            )}
+                        >
+                            Sync
+                        </plugin-button>
                         <plugin-button
                             appearance="stealth"
                             aria-label={revertLabel}
-                            onClick={this.controller.resetNodes.bind(this)}
+                            onClick={this.controller.resetNodes.bind(this.controller)}
                         >
                             Reset
                         </plugin-button>
@@ -109,6 +121,9 @@ export class PluginUI extends React.Component<PluginUIProps> {
             DesignTokenType.foregroundFill
         );
         const strokeRecipes = this.controller.appliedRecipes(DesignTokenType.strokeFill);
+        const strokeWidthRecipes = this.controller.appliedRecipes(
+            DesignTokenType.strokeWidth
+        );
         const cornerRadiusRecipes = this.controller.appliedRecipes(
             DesignTokenType.cornerRadius
         );
@@ -448,6 +463,77 @@ export class PluginUI extends React.Component<PluginUIProps> {
                                         </>
                                     ) : null}
                                 </div>
+                            </td-drawer>
+                            <td-drawer name="Stroke Width">
+                                {this.props.selectedNodes.some(node =>
+                                    node.supports.includes(DesignTokenType.strokeWidth)
+                                ) ? (
+                                    <div className="swatch-grid" style={{ marginTop: 8 }}>
+                                        {this.controller
+                                            .recipeOptionsByType(
+                                                DesignTokenType.strokeWidth
+                                            )
+                                            .map(recipe => {
+                                                return (
+                                                    <td-generic-recipe
+                                                        key={recipe.id}
+                                                        value={this.controller.getDefaultDesignTokenValue(
+                                                            recipe.token
+                                                        )}
+                                                        interactive
+                                                        selected={
+                                                            !!this.controller.recipeIsAssigned(
+                                                                recipe.id
+                                                            ).length
+                                                        }
+                                                        onClick={this.controller.assignRecipe.bind(
+                                                            this.controller,
+                                                            recipe
+                                                        )}
+                                                    >
+                                                        {recipe.name}
+                                                    </td-generic-recipe>
+                                                );
+                                            })}
+                                    </div>
+                                ) : null}
+                                {strokeWidthRecipes.length ? (
+                                    <div slot="collapsed-content">
+                                        {strokeWidthRecipes.map(recipe => (
+                                            <p className="applied-recipe" key={recipe.id}>
+                                                <td-generic-recipe
+                                                    value={this.controller.getDefaultDesignTokenValue(
+                                                        recipe.token
+                                                    )}
+                                                    orientation="horizontal"
+                                                    onClick={this.controller.assignRecipe.bind(
+                                                        this.controller,
+                                                        recipe
+                                                    )}
+                                                >
+                                                    {recipe.name}
+                                                </td-generic-recipe>
+                                                <div>
+                                                    <span>
+                                                        {this.controller.getDefaultDesignTokenValue(
+                                                            recipe.token
+                                                        )}
+                                                    </span>
+                                                    <plugin-button
+                                                        appearance="stealth"
+                                                        aria-label="Detach"
+                                                        onClick={this.controller.removeRecipe.bind(
+                                                            this.controller,
+                                                            recipe
+                                                        )}
+                                                    >
+                                                        Detach
+                                                    </plugin-button>
+                                                </div>
+                                            </p>
+                                        ))}
+                                    </div>
+                                ) : null}
                             </td-drawer>
                             <td-drawer name="Corner Radius">
                                 {this.props.selectedNodes.some(node =>

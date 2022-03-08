@@ -1,0 +1,7 @@
+{
+  "type": "none",
+  "comment": "Fix CSS typo in radio group stories",
+  "packageName": "@microsoft/fast-components",
+  "email": "fcollonval@gmail.com",
+  "dependentChangeType": "none"
+}
