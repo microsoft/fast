@@ -1,7 +1,0 @@
-{
-  "type": "minor",
-  "comment": "add comment-style tags for syntax highlighting",
-  "packageName": "fast-tagged-templates",
-  "email": "john.kreitlow@microsoft.com",
-  "dependentChangeType": "patch"
-}

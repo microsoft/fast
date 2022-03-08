@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-components
 
-This log was last generated on Sun, 06 Mar 2022 07:13:48 GMT and should not be manually modified.
+This log was last generated on Tue, 08 Mar 2022 07:12:45 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.22.1
+
+Tue, 08 Mar 2022 07:12:45 GMT
+
+### Patches
+
+- flex items should be aligned on cross axis. (srdsecond@gmail.com)
 
 ## 2.22.0
 
