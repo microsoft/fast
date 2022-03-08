@@ -49,7 +49,7 @@ export class AttributeDefinition implements Accessor {
     onAttributeChangedCallback(element: HTMLElement, value: any): void;
     readonly Owner: Function;
     setValue(source: HTMLElement, newValue: any): void;
-}
+    }
 
 // @public
 export type AttributeMode = "reflect" | "boolean" | "fromView";
@@ -209,10 +209,10 @@ export const DOM: Readonly<{
     supportsAdoptedStyleSheets: boolean;
     setHTMLPolicy(policy: TrustedTypesPolicy): void;
     createHTML(html: string): string;
-    setUpdateMode(isAsync: boolean): void;
-    queueUpdate(callable: Callable): void;
+    setUpdateMode: (isAsync: boolean) => void;
+    queueUpdate: (callable: Callable) => void;
     nextUpdate(): Promise<void>;
-    processUpdates(): void;
+    processUpdates: () => void;
     setAttribute(element: HTMLElement, attributeName: string, value: any): void;
     setBooleanAttribute(element: HTMLElement, attributeName: string, value: boolean): void;
 }>;
@@ -274,7 +274,14 @@ export class ExecutionContext<TParent = any, TGrandparent = any> {
     length: number;
     parent: TParent;
     parentContext: ExecutionContext<TGrandparent>;
+    // @internal
+    static setEvent(event: Event | null): void;
 }
+
+// Warning: (ae-internal-missing-underscore) The name "FAST" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal
+export const FAST: FASTGlobal;
 
 // @public
 export interface FASTElement extends HTMLElement {
@@ -301,8 +308,8 @@ export class FASTElementDefinition<TType extends Function = Function> {
     readonly attributes: ReadonlyArray<AttributeDefinition>;
     define(registry?: CustomElementRegistry): this;
     readonly elementOptions?: ElementDefinitionOptions;
-    static forType<TType extends Function>(type: TType): FASTElementDefinition | undefined;
-    readonly isDefined: boolean;
+    static readonly forType: <TType_1 extends Function>(key: TType_1) => FASTElementDefinition<Function> | undefined;
+    get isDefined(): boolean;
     readonly name: string;
     readonly propertyLookup: Record<string, AttributeDefinition>;
     readonly shadowOptions?: ShadowRootInit;
@@ -311,9 +318,20 @@ export class FASTElementDefinition<TType extends Function = Function> {
     readonly type: TType;
 }
 
+// Warning: (ae-internal-missing-underscore) The name "FASTGlobal" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal
+export interface FASTGlobal {
+    getById<T>(id: string | number): T | null;
+    // (undocumented)
+    getById<T>(id: string | number, initialize: () => T): T;
+    readonly versions: string[];
+}
+
 // @public
 export type Global = typeof globalThis & {
     trustedTypes: TrustedTypes;
+    readonly FAST: FASTGlobal;
 };
 
 // @public
@@ -358,6 +376,20 @@ export abstract class InlinableHTMLDirective extends AspectedHTMLDirective {
     abstract readonly rawAspect?: string;
 }
 
+// Warning: (ae-internal-missing-underscore) The name "KernelServiceId" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal
+export const enum KernelServiceId {
+    // (undocumented)
+    contextEvent = 3,
+    // (undocumented)
+    elementRegistry = 4,
+    // (undocumented)
+    observable = 2,
+    // (undocumented)
+    updateQueue = 1
+}
+
 // @public
 export const Markup: Readonly<{
     marker: string;
@@ -394,12 +426,12 @@ export const nullableNumberConverter: ValueConverter;
 // @public
 export const Observable: Readonly<{
     setArrayObserverFactory(factory: (collection: any[]) => Notifier): void;
-    getNotifier(source: any): Notifier;
+    getNotifier: (source: any) => Notifier;
     track(source: unknown, propertyName: string): void;
     trackVolatile(): void;
     notify(source: unknown, args: any): void;
     defineProperty(target: {}, nameOrAccessor: string | Accessor): void;
-    getAccessors(target: {}): Accessor[];
+    getAccessors: (target: {}) => Accessor[];
     binding<TSource = any, TReturn = any, TParent = any>(binding: Binding<TSource, TReturn, TParent>, initialSubscriber?: Subscriber | undefined, isVolatileBinding?: boolean): BindingObserver<TSource, TReturn, TParent>;
     isVolatileBinding<TSource_1 = any, TReturn_1 = any, TParent_1 = any>(binding: Binding<TSource_1, TReturn_1, TParent_1>): boolean;
 }>;
@@ -467,25 +499,20 @@ export class RepeatBehavior<TSource = any> implements Behavior, Subscriber {
     // @internal (undocumented)
     handleChange(source: any, args: Splice[]): void;
     unbind(): void;
-}
+    }
 
 // @public
 export class RepeatDirective<TSource = any> extends HTMLDirective {
     constructor(itemsBinding: Binding, templateBinding: Binding<TSource, SyntheticViewTemplate>, options: RepeatOptions);
     createBehavior(targets: ViewBehaviorTargets): RepeatBehavior<TSource>;
     createPlaceholder: (index: number) => string;
-}
+    }
 
 // @public
 export interface RepeatOptions {
     positioning?: boolean;
     recycle?: boolean;
 }
-
-// Warning: (ae-internal-missing-underscore) The name "setCurrentEvent" should be prefixed with an underscore because the declaration is marked as @internal
-//
-// @internal (undocumented)
-export function setCurrentEvent(event: Event | null): void;
 
 // @public
 export function slotted<T = any>(propertyOrOptions: (keyof T & string) | SlottedDirectiveOptions<keyof T & string>): CaptureType<T>;
@@ -617,13 +644,14 @@ export class ViewTemplate<TSource = any, TParent = any, TGrandparent = any> impl
     readonly directives: ReadonlyArray<HTMLDirective>;
     readonly html: string | HTMLTemplateElement;
     render(source: TSource, host: Node, hostBindingTarget?: Element): HTMLView<TSource, TParent, TGrandparent>;
-}
+    }
 
 // @public
 export function volatile(target: {}, name: string | Accessor, descriptor: PropertyDescriptor): PropertyDescriptor;
 
 // @public
 export function when<TSource = any, TReturn = any>(binding: Binding<TSource, TReturn>, templateOrTemplateBinding: SyntheticViewTemplate | Binding<TSource, SyntheticViewTemplate>): CaptureType<TSource>;
+
 
 // (No @packageDocumentation comment for this package)
 
