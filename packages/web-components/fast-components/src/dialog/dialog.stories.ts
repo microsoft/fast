@@ -30,6 +30,11 @@ addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
         shadowButton1.textContent = "Shadow Button 1";
         dialog2.dialog.prepend(shadowButton1);
 
+        const shadowNumberField: HTMLElement = document.createElement(
+            "fast-number-field"
+        );
+        dialog2.dialog.prepend(shadowNumberField);
+
         const shadowButton2: HTMLButtonElement = document.createElement("button");
         shadowButton2.textContent = "Shadow Button 2";
         dialog2.dialog.appendChild(shadowButton2);
