@@ -28,6 +28,7 @@ addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
 
         const shadowButton1: HTMLElement = document.createElement("fast-button");
         shadowButton1.textContent = "Shadow Button 1";
+        shadowButton1.setAttribute("tabindex", "0");
         dialog2.dialog.prepend(shadowButton1);
 
         const shadowNumberField: HTMLElement = document.createElement(
