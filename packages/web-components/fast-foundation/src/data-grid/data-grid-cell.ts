@@ -188,7 +188,6 @@ export class DataGridCell extends FoundationElement {
         if (
             e.defaultPrevented ||
             this.columnDefinition === null ||
-            this.columnDefinition === undefined ||
             (this.cellType === DataGridCellTypes.default &&
                 this.columnDefinition.cellInternalFocusQueue !== true) ||
             (this.cellType === DataGridCellTypes.columnHeader &&
@@ -208,9 +207,12 @@ export class DataGridCell extends FoundationElement {
                 }
 
                 switch (this.cellType) {
-                    case DataGridCellTypes.default:
-                        if (this.columnDefinition.cellFocusTargetCallback !== undefined) {
-                            const focusTarget: HTMLElement = this.columnDefinition.cellFocusTargetCallback(
+                    case DataGridCellTypes.columnHeader:
+                        if (
+                            this.columnDefinition.headerCellFocusTargetCallback !==
+                            undefined
+                        ) {
+                            const focusTarget: HTMLElement = this.columnDefinition.headerCellFocusTargetCallback(
                                 this
                             );
                             if (focusTarget !== null) {
@@ -220,12 +222,9 @@ export class DataGridCell extends FoundationElement {
                         }
                         break;
 
-                    case DataGridCellTypes.columnHeader:
-                        if (
-                            this.columnDefinition.headerCellFocusTargetCallback !==
-                            undefined
-                        ) {
-                            const focusTarget: HTMLElement = this.columnDefinition.headerCellFocusTargetCallback(
+                    default:
+                        if (this.columnDefinition.cellFocusTargetCallback !== undefined) {
+                            const focusTarget: HTMLElement = this.columnDefinition.cellFocusTargetCallback(
                                 this
                             );
                             if (focusTarget !== null) {
