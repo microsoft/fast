@@ -60,7 +60,7 @@ export const BaseButtonStyles = css`
         box-sizing: border-box;
         display: inline-flex;
         justify-content: center;
-        align-items: center;
+        align-items: baseline;
         padding: 0 calc((10 + (${designUnit} * 2 * ${density})) * 1px);
         white-space: nowrap;
         outline: none;
@@ -91,6 +91,12 @@ export const BaseButtonStyles = css`
 
     .control::-moz-focus-inner {
         border: 0;
+    }
+
+    .start,
+    .content,
+    .end {
+        align-self: center;
     }
 
     .start,

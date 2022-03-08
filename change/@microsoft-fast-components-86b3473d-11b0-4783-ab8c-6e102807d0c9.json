@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "flex items should be aligned on cross axis.",
+  "packageName": "@microsoft/fast-components",
+  "email": "srdsecond@gmail.com",
+  "dependentChangeType": "patch"
+}
