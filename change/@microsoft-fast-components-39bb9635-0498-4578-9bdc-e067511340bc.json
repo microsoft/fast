@@ -1,0 +1,7 @@
+{
+  "type": "minor",
+  "comment": "enable no tabbing",
+  "packageName": "@microsoft/fast-components",
+  "email": "scomea@microsoft.com",
+  "dependentChangeType": "patch"
+}
