@@ -1,8 +1,69 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Tue, 15 Feb 2022 07:11:28 GMT and should not be manually modified.
+This log was last generated on Tue, 08 Mar 2022 07:12:45 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.35.1
+
+Tue, 08 Mar 2022 07:12:45 GMT
+
+### Patches
+
+- Fix programmatic disable/enable of tabs (5454342+brianehenry@users.noreply.github.com)
+
+## 2.35.0
+
+Sun, 06 Mar 2022 07:13:48 GMT
+
+### Minor changes
+
+- add corner positions to tooltip (sethdonohue@Admins-MBP.guest.corp.microsoft.com)
+
+### Patches
+
+- passive handlers (scomea@microsoft.com)
+- tooltip hover (scomea@microsoft.com)
+
+## 2.34.0
+
+Wed, 02 Mar 2022 07:12:58 GMT
+
+### Minor changes
+
+- add mermaid support (steph@huynhicode.dev)
+
+### Patches
+
+- generate grid columns for manual grid (scomea@microsoft.com)
+- auto columns fix (scomea@microsoft.com)
+- Fixing no previous scroll when only 2 items (robarb@microsoft.com)
+
+## 2.33.6
+
+Fri, 25 Feb 2022 17:09:32 GMT
+
+### Patches
+
+- Bump @microsoft/fast-element to v1.7.2 (roeisenb@microsoft.com)
+
+## 2.33.5
+
+Thu, 24 Feb 2022 22:21:55 GMT
+
+### Patches
+
+- Format improvement to match standards (16669785+awentzel@users.noreply.github.com)
+- fix combobox and select position when set after init (corylaviska@microsoft.com)
+- allow programmatic control of the open property for select and combobox (john.kreitlow@microsoft.com)
+
+## 2.33.4
+
+Sun, 20 Feb 2022 07:16:20 GMT
+
+### Patches
+
+- tree view events (scomea@microsoft.com)
 
 ## 2.33.3
 

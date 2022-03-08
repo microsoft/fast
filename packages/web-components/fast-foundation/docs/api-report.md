@@ -482,6 +482,8 @@ export class Combobox extends FormAssociatedCombobox {
     protected placeholderChanged(): void;
     position: SelectPosition;
     positionAttribute: SelectPosition;
+    // (undocumented)
+    protected positionChanged(): void;
     // @internal
     selectedIndexChanged(prev: number, next: number): void;
     // @internal
@@ -2159,6 +2161,8 @@ export class Select extends FormAssociatedSelect {
     // @internal
     listbox: HTMLDivElement;
     // @internal
+    listboxId: string;
+    // @internal
     maxHeight: number;
     // @internal
     open: boolean;
@@ -2166,6 +2170,8 @@ export class Select extends FormAssociatedSelect {
     protected openChanged(): void;
     position: SelectPosition;
     positionAttribute: SelectPosition;
+    // (undocumented)
+    protected positionChanged(): void;
     // @internal
     selectedIndexChanged(prev: number, next: number): void;
     // (undocumented)
@@ -2645,11 +2651,19 @@ export class Tooltip extends FoundationElement {
 // @public
 export enum TooltipPosition {
     bottom = "bottom",
+    bottomEnd = "bottom-end",
+    bottomLeft = "bottom-left",
+    bottomRight = "bottom-right",
+    bottomStart = "bottom-start",
     end = "end",
     left = "left",
     right = "right",
     start = "start",
-    top = "top"
+    top = "top",
+    topEnd = "top-end",
+    topLeft = "top-left",
+    topRight = "top-right",
+    topStart = "top-start"
 }
 
 // @public
@@ -2673,28 +2687,29 @@ export function transient<T extends Constructable>(target: T & Partial<RegisterS
 //
 // @public
 export class TreeItem extends FoundationElement {
-    // (undocumented)
+    // @internal
     childItemLength(): number;
-    // (undocumented)
+    // @internal (undocumented)
     childItems: HTMLElement[];
     disabled: boolean;
-    // (undocumented)
+    // @internal
     expandCollapseButton: HTMLDivElement;
     expanded: boolean;
-    // (undocumented)
+    // @internal
     focusable: boolean;
     static focusItem(el: HTMLElement): void;
-    // (undocumented)
-    handleClick: (e: MouseEvent) => void | boolean;
-    // (undocumented)
+    // @internal
+    handleBlur: (e: FocusEvent) => void;
+    // @internal
     handleExpandCollapseButtonClick: (e: MouseEvent) => void;
-    // (undocumented)
+    // @internal
+    handleFocus: (e: FocusEvent) => void;
     readonly isNestedItem: () => boolean;
-    // (undocumented)
+    // @internal
     items: HTMLElement[];
-    // @internal (undocumented)
+    // @internal
     nested: boolean;
-    // (undocumented)
+    // @internal (undocumented)
     renderCollapsedChildren: boolean;
     selected: boolean;
     }
@@ -2715,21 +2730,23 @@ export const treeItemTemplate: FoundationElementTemplate<ViewTemplate<TreeItem>,
 export class TreeView extends FoundationElement {
     // (undocumented)
     connectedCallback(): void;
-    // (undocumented)
+    // @internal
     currentFocused: HTMLElement | TreeItem | null;
-    // (undocumented)
     currentSelected: HTMLElement | TreeItem | null;
-    // (undocumented)
+    // @internal
     handleBlur: (e: FocusEvent) => void;
-    // (undocumented)
+    // @internal
+    handleClick(e: Event): boolean | void;
+    // @internal
     handleFocus: (e: FocusEvent) => void;
-    // (undocumented)
-    handleKeyDown: (e: KeyboardEvent) => void | boolean;
-    // (undocumented)
+    // @internal
+    handleKeyDown: (e: KeyboardEvent) => boolean | void;
+    // @internal
+    handleSelectedChange: (e: Event) => boolean | void;
     renderCollapsedNodes: boolean;
-    // (undocumented)
+    // @internal
     slottedTreeItems: HTMLElement[];
-    // (undocumented)
+    // @internal
     treeView: HTMLElement;
 }
 

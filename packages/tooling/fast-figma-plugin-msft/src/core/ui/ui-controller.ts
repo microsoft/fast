@@ -2,6 +2,7 @@ import { SwatchRGB } from "@fluentui/web-components";
 import { parseColorHexRGB } from "@microsoft/fast-colors";
 import { DesignToken, DesignTokenValue } from "@microsoft/fast-foundation";
 import {
+    AdditionalData,
     AppliedDesignToken,
     AppliedRecipe,
     PluginNodeData,
@@ -36,6 +37,11 @@ export interface PluginUINodeData extends PluginNodeData {
     supports: Array<DesignTokenType>;
 
     /**
+     * For other transient data exchanged between the design tool and the plugin.
+     */
+    additionalData: AdditionalData;
+
+    /**
      * The design token values inherited by this node from layer hierarchy.
      */
     inheritedDesignTokens: ReadonlyAppliedDesignTokens;
@@ -66,9 +72,14 @@ export interface UIDesignTokenValue {
     definition: DesignTokenDefinition;
 
     /**
-     * Represents the design token value or values.
+     * Represents the design token value if all selected nodes have the same value.
      */
-    value: string;
+    value?: string;
+
+    /**
+     * If the selected nodes have multiple different values this will be a list for display.
+     */
+    multipleValues?: string;
 }
 
 /**
@@ -76,7 +87,9 @@ export interface UIDesignTokenValue {
  * applying design tokens and recipes and evaluating the changes for the selected nodes.
  */
 export class UIController {
-    private _updateState: (selectedNodes: PluginUINodeData[]) => void | undefined;
+    private readonly _updateStateCallback: (
+        selectedNodes: PluginUINodeData[]
+    ) => void | undefined;
 
     // This is adapting the new token model to the previous plugin structure. Recipes are now just tokens,
     // but the separation is useful for now in that a token is where you set a value and a recipe you apply to some visual element.
@@ -93,10 +106,10 @@ export class UIController {
 
     /**
      * Create a new UI controller.
-     * @param updateState Callback function to handle updated design token and recipe application and evaluation.
+     * @param updateStateCallback Callback function to handle updated design token and recipe application and evaluation.
      */
-    constructor(updateState: (selectedNodes: PluginUINodeData[]) => void) {
-        this._updateState = updateState;
+    constructor(updateStateCallback: (selectedNodes: PluginUINodeData[]) => void) {
+        this._updateStateCallback = updateStateCallback;
 
         registerTokens(this._designTokenRegistry);
         registerRecipes(this._recipeRegistry);
@@ -104,6 +117,12 @@ export class UIController {
         this._rootElement = document.createElement("div");
         this._rootElement.id = "designTokenRoot";
         document.body.appendChild(this._rootElement);
+    }
+
+    public get autoRefresh(): boolean {
+        return !(
+            this._selectedNodes.length === 1 && this._selectedNodes[0].type === "PAGE"
+        );
     }
 
     /**
@@ -121,9 +140,15 @@ export class UIController {
         );
         nodes.forEach(node => this.setupDesignTokenElement(this._rootElement, node));
 
+        if (this.autoRefresh) {
+            this.refreshSelectedNodes("setSelectedNodes");
+        }
+    }
+
+    public refreshSelectedNodes(reason: string = "refreshSelectedNodes"): void {
         this.evaluateRecipes(this._selectedNodes);
 
-        this.dispatchState();
+        this.dispatchState(reason);
     }
 
     /**
@@ -150,10 +175,12 @@ export class UIController {
 
         allDesignTokens.forEach(designToken => {
             if (tokenValues.has(designToken.id)) {
+                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                const set = tokenValues.get(designToken.id)!;
                 designTokens.push({
                     definition: designToken,
-                    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-                    value: [...tokenValues.get(designToken.id)!].join(", ") || "",
+                    value: set.size === 1 ? set.values().next().value : undefined,
+                    multipleValues: set.size > 1 ? [...set].join(", ") : undefined,
                 });
             }
         });
@@ -220,7 +247,7 @@ export class UIController {
             node.recipeEvaluations.clear();
         });
 
-        this.dispatchState();
+        this.dispatchState("resetNodes");
     }
 
     private evaluateRecipes(nodes: PluginUINodeData[]) {
@@ -235,13 +262,13 @@ export class UIController {
 
             allRecipeIds.reduceRight<Array<DesignTokenDefinition>>(
                 (previousRecipes, currentId, index, array) => {
-                    // console.log(previous, current, index, array);
+                    // console.log(previousRecipes, currentId, index, array);
                     const currentRecipe = this._recipeRegistry.get(currentId);
                     if (
                         currentRecipe &&
                         !previousRecipes.find(value => value.type === currentRecipe.type)
                     ) {
-                        // console.log("adding", currentDef);
+                        // console.log("adding", currentRecipe);
                         this.evaluateRecipe(currentRecipe, node);
                         previousRecipes.push(currentRecipe);
                     }
@@ -272,7 +299,8 @@ export class UIController {
             // console.log("      Fill recipe, setting fillColor design token");
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             const def = this._designTokenRegistry.get("fillColor")!;
-            this.setDesignTokenForNode(node, def, value);
+            const element = this.getElementForNode(node);
+            this.setDesignTokenForElement(element, def.token, value);
 
             this.evaluateRecipes(node.children);
         }
@@ -292,7 +320,7 @@ export class UIController {
 
         this.evaluateRecipes(this._selectedNodes);
 
-        this.dispatchState();
+        this.dispatchState("removeRecipe");
     }
 
     public assignRecipe(recipe: DesignTokenDefinition): void {
@@ -323,7 +351,7 @@ export class UIController {
             // console.log("  node", node);
         });
 
-        this.dispatchState();
+        this.dispatchState("assignRecipe");
     }
 
     private setDesignTokenForElement<T>(
@@ -342,8 +370,17 @@ export class UIController {
                         (SwatchRGB.from(color) as unknown) as DesignTokenValue<T>
                     );
                 } else {
-                    // console.log("    setting DesignToken value (NOT color)", token.name, value);
-                    token.setValueFor(nodeElement, value as DesignTokenValue<T>);
+                    const num = Number.parseFloat((value as unknown) as string);
+                    if (!Number.isNaN(num)) {
+                        // console.log("    setting DesignToken value (number)", token.name, value);
+                        token.setValueFor(
+                            nodeElement,
+                            (num as unknown) as DesignTokenValue<T>
+                        );
+                    } else {
+                        // console.log("    setting DesignToken value (unconverted)", token.name, value);
+                        token.setValueFor(nodeElement, value as DesignTokenValue<T>);
+                    }
                 }
             } else {
                 token.deleteValueFor(nodeElement);
@@ -352,6 +389,25 @@ export class UIController {
             // console.warn("    token error", e);
             // Ignore, token not found
         }
+    }
+
+    private getElementForNode(node: PluginUINodeData): HTMLElement {
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        const element = this._rootElement.querySelector(
+            `#${CSS.escape(node.id)}`
+        )! as HTMLElement;
+        return element;
+    }
+
+    private appliedDesignTokensHandler(
+        nodeElement: HTMLElement
+    ): (value: AppliedDesignToken, key: string) => void {
+        return (value: AppliedDesignToken, key: string): void => {
+            const def = this._designTokenRegistry.get(key);
+            if (def) {
+                this.setDesignTokenForElement(nodeElement, def.token, value.value);
+            }
+        };
     }
 
     private setupDesignTokenElement(element: HTMLElement, node: PluginUINodeData) {
@@ -364,19 +420,28 @@ export class UIController {
 
         // Set all the inherited design token values for the local element.
         // console.log("    setting inherited tokens");
-        node.inheritedDesignTokens.forEach((value, key) => {
-            const def = this._designTokenRegistry.get(key);
-            if (def) {
-                this.setDesignTokenForElement(nodeElement, def.token, value.value);
-            }
-        }, this);
+        node.inheritedDesignTokens.forEach(
+            this.appliedDesignTokensHandler(nodeElement),
+            this
+        );
+
+        // Set all design token values from the main component for the local element (an instance component).
+        // console.log("    setting main component tokens", node.componentDesignTokens);
+        node.componentDesignTokens?.forEach(
+            this.appliedDesignTokensHandler(nodeElement),
+            this
+        );
 
         // Set all the design token override values for the local element.
         // console.log("    setting local tokens");
-        node.designTokens.forEach((value, key) => {
+        node.designTokens.forEach(this.appliedDesignTokensHandler(nodeElement), this);
+
+        // Handle any additional data. Keys are provided as design token ids.
+        node.additionalData.forEach((value, key) => {
             const def = this._designTokenRegistry.get(key);
             if (def) {
-                this.setDesignTokenForElement(nodeElement, def.token, value.value);
+                // console.log("      setting token value on element", def, "value", value);
+                this.setDesignTokenForElement(nodeElement, def.token, value);
             }
         }, this);
 
@@ -384,11 +449,16 @@ export class UIController {
     }
 
     private valueToString(value: any): string {
+        // TODO figure out a better way to handle storage data types
         if (typeof value.toColorString === "function") {
             return value.toColorString();
         } else {
             return "" + value;
         }
+    }
+
+    public getDesignTokenDefinitions(): DesignTokenDefinition<any>[] {
+        return this._designTokenRegistry.find(DesignTokenType.designToken);
     }
 
     public getDesignTokenDefinition<T>(id: string): DesignTokenDefinition<T> | null {
@@ -402,12 +472,9 @@ export class UIController {
     }
 
     public getDesignTokenValue<T>(node: PluginUINodeData, token: DesignToken<T>): T {
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        const nodeElement = this._rootElement.querySelector(
-            `#${CSS.escape(node.id)}`
-        )! as HTMLElement;
         // Evaluate the token based on the tokens provided to the element.
-        const val = token.getValueFor(nodeElement);
+        const element = this.getElementForNode(node);
+        const val = token.getValueFor(element);
         // console.log("      getDesignTokenValue", node.id, node.type, token.name, "value", this.valueToString(val));
         return val;
     }
@@ -418,24 +485,16 @@ export class UIController {
         value: T | null
     ): void {
         if (value) {
-            const designToken = new AppliedDesignToken<T>();
-            // TODO figure out a better way to handle storage data types
-            if (typeof (value as any).toColorString === "function") {
-                designToken.value = (value as any).toColorString();
-            } else {
-                designToken.value = value;
-            }
+            const designToken = new AppliedDesignToken();
+            designToken.value = this.valueToString(value);
             node.designTokens.set(definition.id, designToken);
         } else {
             node.designTokens.delete(definition.id);
         }
         // console.log("  after set designTokens", node.id, node.type, node.designTokens);
 
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        const nodeElement = this._rootElement.querySelector(
-            `#${CSS.escape(node.id)}`
-        )! as HTMLElement;
-        this.setDesignTokenForElement(nodeElement, definition.token, value);
+        const element = this.getElementForNode(node);
+        this.setDesignTokenForElement(element, definition.token, value);
     }
 
     public assignDesignToken<T>(definition: DesignTokenDefinition<T>, value: T): void {
@@ -444,14 +503,14 @@ export class UIController {
         );
 
         // console.log("--------------------------------");
-        // console.log("UIController.assignDesignToken", definition.id, value, typeof value, nodes);
+        // console.log("UIController.assignDesignToken", definition, value, typeof value, nodes);
 
         nodes.forEach(node => this.setDesignTokenForNode(node, definition, value));
 
         // console.log("  Evaluating all recipes for all selected nodes");
         this.evaluateRecipes(this._selectedNodes);
 
-        this.dispatchState();
+        this.dispatchState("assignDesignToken " + definition.id);
     }
 
     public removeDesignToken(definition: DesignTokenDefinition): void {
@@ -467,10 +526,11 @@ export class UIController {
         // console.log("  Evaluating all recipes for all selected nodes");
         this.evaluateRecipes(this._selectedNodes);
 
-        this.dispatchState();
+        this.dispatchState("removeDesignToken");
     }
 
-    private dispatchState(): void {
-        this._updateState(this._selectedNodes);
+    private dispatchState(reason: string): void {
+        // console.log("UIController.dispatchState", reason);
+        this._updateStateCallback(this._selectedNodes);
     }
 }

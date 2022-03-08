@@ -6,7 +6,16 @@ export enum DesignTokenType {
     backgroundFill = "backgroundFill",
     foregroundFill = "foregroundFill",
     strokeFill = "strokeFill",
+    strokeWidth = "strokeWidth",
     cornerRadius = "cornerRadius",
+    fontName = "fontName",
+    fontSize = "fontSize",
+    lineHeight = "lineHeight",
+}
+
+export enum FormControlId {
+    text = "text",
+    color = "color",
 }
 
 /**
@@ -40,14 +49,14 @@ export interface DesignTokenDefinition<T extends {} = any> {
     type: DesignTokenType;
 
     /**
+     * The type of form control to edit this value. Following convention from fast-tooling.
+     */
+    formControlId?: string;
+
+    /**
      * The underlying DesignToken for the plugin definition
      */
     token: DesignToken<T>;
-
-    /**
-     * Evaluates a design token
-     */
-    evaluate: (element: HTMLElement) => T;
 }
 
 export class DesignTokenRegistry {

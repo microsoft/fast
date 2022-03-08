@@ -5,6 +5,7 @@ declare global {
         interface IntrinsicElements {
             "plugin-button": {
                 appearance?: string;
+                style?: CSSProperties;
                 onClick?: any;
                 children?: React.ReactNode;
             };
@@ -17,18 +18,16 @@ declare global {
             "plugin-divider": {
                 style?: CSSProperties;
             };
-            "plugin-radio-group": {
-                disabled?: boolean;
-                name: string;
-                value?: any;
-                onChange?: any;
+            "plugin-tab": {
+                id: string;
                 children?: React.ReactNode;
             };
-            "plugin-radio": {
-                checked?: boolean;
-                disabled?: boolean;
-                value?: any;
-                onClick?: any;
+            "plugin-tab-panel": {
+                id: string;
+                children?: React.ReactNode;
+            };
+            "plugin-tabs": {
+                activeid: string;
                 children?: React.ReactNode;
             };
             "td-drawer": {
@@ -53,6 +52,16 @@ declare global {
             "td-corner-radius": {
                 key?: string;
                 value: string;
+                children?: React.ReactNode;
+                orientation?: "horizontal" | "vertical";
+                onClick?: any;
+                interactive?: boolean;
+                selected?: boolean;
+            };
+            "td-generic-recipe": {
+                key?: string;
+                value: string;
+                icon?: string;
                 children?: React.ReactNode;
                 orientation?: "horizontal" | "vertical";
                 onClick?: any;

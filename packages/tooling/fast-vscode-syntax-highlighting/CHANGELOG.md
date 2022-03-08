@@ -1,10 +1,21 @@
-# Change Log
+# Change Log - fast-tagged-templates
 
-All notable changes to this project will be documented in this file.
-See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
+This log was last generated on Tue, 08 Mar 2022 07:12:45 GMT and should not be manually modified.
 
-## [0.0.1] - 2020-10-01
+<!-- Start content -->
 
-### Added
+## 0.1.0
 
-- Initial source
+Tue, 08 Mar 2022 07:12:45 GMT
+
+### Minor changes
+
+- add comment-style tags for syntax highlighting (john.kreitlow@microsoft.com)
+
+## 0.0.1
+
+Wed, 08 Dec 2021 01:13:59 GMT
+
+### Patches
+
+- Initial source (john.kreitlow@microsoft.com)
