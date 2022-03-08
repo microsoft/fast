@@ -1,0 +1,20 @@
+{
+  "name": "fast-tagged-templates",
+  "entries": [
+    {
+      "date": "Tue, 08 Mar 2022 07:12:45 GMT",
+      "tag": "fast-tagged-templates_v0.1.0",
+      "version": "0.1.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "add comment-style tags for syntax highlighting",
+            "author": "john.kreitlow@microsoft.com",
+            "commit": "bc22a1f65b18528613605e866b0bf39b5245d51c",
+            "package": "fast-tagged-templates"
+          }
+        ]
+      }
+    }
+  ]
+}

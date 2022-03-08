@@ -3,12 +3,14 @@ import {
     accentBaseColor,
     accentFillRest,
     accentForegroundRest,
+    accentStrokeControlRest,
     baseLayerLuminance,
     bodyFont,
     controlCornerRadius,
     fillColor,
     focusStrokeInner,
     focusStrokeOuter,
+    focusStrokeWidth,
     foregroundOnAccentRest,
     layerCornerRadius,
     neutralBaseColor,
@@ -28,10 +30,13 @@ import {
     neutralLayer4,
     neutralLayerCardContainer,
     neutralLayerFloating,
+    neutralStrokeControlRest,
     neutralStrokeDividerRest,
+    neutralStrokeInputRest,
     neutralStrokeLayerRest,
     neutralStrokeRest,
     neutralStrokeStrongRest,
+    strokeWidth,
     Swatch,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
@@ -58,6 +63,7 @@ import {
     DesignTokenType,
     FormControlId,
 } from "./design-token-registry";
+import { docBaseColor, docFillRest, docForeground } from "./custom-recipes";
 
 interface DesignTokenStore<T> {
     [key: string]: {
@@ -83,6 +89,11 @@ const designTokens: DesignTokenStore<any> = {
     fillColor: {
         token: fillColor,
         name: "Fill color",
+        formControlId: FormControlId.color,
+    },
+    docBaseColor: {
+        token: docBaseColor,
+        name: "Doc color",
         formControlId: FormControlId.color,
     },
 };
@@ -118,18 +129,27 @@ const fillRecipes: DesignTokenStore<Swatch> = {
     },
     neutralFillStealthRest: { token: neutralFillStealthRest, name: "Neutral Stealth" },
     neutralFillStrongRest: { token: neutralFillStrongRest, name: "Neutral Strong" },
+    docFillRest: { token: docFillRest, name: "Doc" },
 };
 
 const strokeRecipes: DesignTokenStore<Swatch> = {
-    // accentStrokeControlRest: { token: accentStrokeControlRest, name: "Accent Control" }, // Gradient
+    accentStrokeControlRest: { token: accentStrokeControlRest, name: "Accent Control" },
     focusStrokeOuter: { token: focusStrokeOuter, name: "Focus Outer" },
     focusStrokeInner: { token: focusStrokeInner, name: "Focus Inner" },
     neutralStrokeDividerRest: { token: neutralStrokeDividerRest, name: "Divider" },
     neutralStrokeLayerRest: { token: neutralStrokeLayerRest, name: "Layer" },
     neutralStrokeRest: { token: neutralStrokeRest, name: "Neutral" },
     neutralStrokeStrongRest: { token: neutralStrokeStrongRest, name: "Neutral Strong" },
-    // neutralStrokeControlRest: { token: neutralStrokeControlRest, name: "Neutral Control" }, // Gradient
-    // neutralStrokeInputRest: { token: neutralStrokeInputRest, name: "Neutral Input" }, // Gradient
+    neutralStrokeControlRest: {
+        token: neutralStrokeControlRest,
+        name: "Neutral Control",
+    },
+    neutralStrokeInputRest: { token: neutralStrokeInputRest, name: "Neutral Input" },
+};
+
+const strokeWidthRecipes: DesignTokenStore<number> = {
+    strokeWidth: { token: strokeWidth, name: "Stroke width" },
+    focusStrokeWidth: { token: focusStrokeWidth, name: "Focus stroke width" },
 };
 
 const textFillRecipes: DesignTokenStore<Swatch> = {
@@ -137,6 +157,7 @@ const textFillRecipes: DesignTokenStore<Swatch> = {
     neutralForegroundHint: { token: neutralForegroundHint, name: "Hint" },
     accentForegroundRest: { token: accentForegroundRest, name: "Accent" },
     foregroundOnAccentRest: { token: foregroundOnAccentRest, name: "On Accent" },
+    docForegroundRest: { token: docForeground, name: "Doc" },
 };
 
 const cornerRadiusRecipes: DesignTokenStore<number> = {
@@ -272,6 +293,12 @@ export const registerTokens = (registry: DesignTokenRegistry) => {
     registerStore(DesignTokenType.designToken, textRecipes, "Text", registry);
     registerStore(
         DesignTokenType.designToken,
+        strokeWidthRecipes,
+        "Stroke width",
+        registry
+    );
+    registerStore(
+        DesignTokenType.designToken,
         cornerRadiusRecipes,
         "Corner radius",
         registry
@@ -288,6 +315,12 @@ export const registerRecipes = (registry: DesignTokenRegistry) => {
         registry
     );
     registerStore(DesignTokenType.strokeFill, strokeRecipes, "Stroke", registry);
+    registerStore(
+        DesignTokenType.strokeWidth,
+        strokeWidthRecipes,
+        "Stroke width",
+        registry
+    );
     registerStore(
         DesignTokenType.cornerRadius,
         cornerRadiusRecipes,

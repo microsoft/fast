@@ -2855,11 +2855,19 @@ export class Tooltip extends FoundationElement {
 // @public
 export enum TooltipPosition {
     bottom = "bottom",
+    bottomEnd = "bottom-end",
+    bottomLeft = "bottom-left",
+    bottomRight = "bottom-right",
+    bottomStart = "bottom-start",
     end = "end",
     left = "left",
     right = "right",
     start = "start",
-    top = "top"
+    top = "top",
+    topEnd = "top-end",
+    topLeft = "top-left",
+    topRight = "top-right",
+    topStart = "top-start"
 }
 
 // @public

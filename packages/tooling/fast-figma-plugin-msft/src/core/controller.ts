@@ -13,7 +13,9 @@ export abstract class Controller {
     /**
      * Track the currently selected node.
      */
-    private _selectedNode: string[] = [];
+    private _selectedNodeIds: string[] = [];
+
+    // public static nodeCount: number = 0;
 
     /**
      * Retrieve a Node from the design tool by ID.
@@ -23,20 +25,24 @@ export abstract class Controller {
     public abstract getNode(id: string): PluginNode | null;
 
     /**
-     * Retrieve the selected node IDs.
-     */
-    public getSelectedNodes(): string[] {
-        return this._selectedNode;
-    }
-
-    /**
      * Set the selected node IDs - Setting the IDs will trigger a UI refresh.
      * @param ids The node IDs.
      */
     public setSelectedNodes(ids: string[]): void {
-        this._selectedNode = ids;
+        this._selectedNodeIds = ids;
+        // Controller.nodeCount = 0;
+
+        // console.log("--------------------------------");
+        // console.log("Controller.setSelectedNodes begin - selected nodes", ids);
+
+        // const timeStart = new Date().getTime();
 
         this.setPluginUIState(this.getPluginUIState());
+
+        // const timeEnd = new Date().getTime();
+        // const timeDiff = timeEnd - timeStart;
+        // console.log("Controller.setSelectedNodes end - timing", timeDiff, "node count", Controller.nodeCount);
+        // console.log("--------------------------------");
     }
 
     private pluginNodesToUINodes(
@@ -71,7 +77,7 @@ export abstract class Controller {
     }
 
     private getPluginUIState(): Omit<PluginUIProps, "dispatch"> {
-        const selectedNodes = this.getSelectedNodes()
+        const selectedNodes = this._selectedNodeIds
             .map(id => this.getNode(id))
             .filter((node): node is PluginNode => node !== null);
 
@@ -86,9 +92,16 @@ export abstract class Controller {
      */
     public handleMessage(nodes: PluginUINodeData[]): void {
         // console.log("--------------------------------");
-        // console.log("Controller.handleMessage", nodes);
+        // console.log("Controller.handleMessage begin", nodes);
+
+        // const timeStart = new Date().getTime();
 
         this.syncPluginNodes(nodes);
+
+        // const timeEnd = new Date().getTime();
+        // const timeDiff = timeEnd - timeStart;
+        // console.log("Controller.handleMessage end - timing", timeDiff);
+        // console.log("--------------------------------");
     }
 
     private syncPluginNodes(nodes: PluginUINodeData[]) {
