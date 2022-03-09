@@ -8,14 +8,21 @@ import type { StyleTarget } from "../styles/element-styles";
 import { toHTML, uniqueElementName } from "../__test__/helpers";
 import { bind, HTMLBindingDirective } from "./binding";
 import { compileTemplate } from "./compiler";
-import type { HTMLDirective } from "./html-directive";
+import type { HTMLDirective, ViewBehaviorFactory } from "./html-directive";
 import { html } from "./template";
+
+/**
+ * Used to satisfy TS by exposing some internal properties of the
+ * compilation result that we want to make assertions against.
+ */
+interface CompilationResultInternals {
+    readonly fragment: DocumentFragment;
+    readonly factories: ViewBehaviorFactory[];
+}
 
 describe("The template compiler", () => {
     function compile(html: string, directives: HTMLDirective[]) {
-        const template = document.createElement("template");
-        template.innerHTML = html;
-        return compileTemplate(template, directives);
+        return compileTemplate(html, directives) as any as CompilationResultInternals;
     }
 
     function inline(index: number) {
