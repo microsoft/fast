@@ -20,7 +20,7 @@ export class IdleCallbackQueue {
      */
     private idleCallbackInterval: number = 20;
 
-    private callBackQueue: Map<Element, () => void> = new Map<Element, () => void>();
+    private callbackQueue: Map<Element, () => void> = new Map<Element, () => void>();
 
     private currentCallbackId: number | undefined;
     private currentCallbackElement: Element | undefined;
@@ -32,10 +32,10 @@ export class IdleCallbackQueue {
      * @internal
      */
     public requestIdleCallback(target: Element, callback: () => void): void {
-        if (this.callBackQueue.has(target)) {
+        if (this.callbackQueue.has(target)) {
             return;
         }
-        this.callBackQueue.set(target, callback);
+        this.callbackQueue.set(target, callback);
         this.nextCallback();
     }
 
@@ -45,8 +45,8 @@ export class IdleCallbackQueue {
      * @internal
      */
     public cancelIdleCallback(target: Element): void {
-        if (this.callBackQueue.has(target)) {
-            this.callBackQueue.delete(target);
+        if (this.callbackQueue.has(target)) {
+            this.callbackQueue.delete(target);
             return;
         }
 
@@ -65,13 +65,13 @@ export class IdleCallbackQueue {
      * Queue up the next item
      */
     private nextCallback = (): void => {
-        if (this.currentCallbackId || this.callBackQueue.size === 0) {
+        if (this.currentCallbackId || this.callbackQueue.size === 0) {
             return;
         }
 
-        const [nextCallbackElement] = this.callBackQueue.keys();
-        this.currentCallback = this.callBackQueue.get(nextCallbackElement);
-        this.callBackQueue.delete(nextCallbackElement);
+        const [nextCallbackElement] = this.callbackQueue.keys();
+        this.currentCallback = this.callbackQueue.get(nextCallbackElement);
+        this.callbackQueue.delete(nextCallbackElement);
         this.currentCallbackElement = nextCallbackElement;
 
         this.currentCallbackId = ((window as unknown) as WindowWithIdleCallback).requestIdleCallback(
