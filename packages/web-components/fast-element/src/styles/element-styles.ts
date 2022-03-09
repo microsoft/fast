@@ -165,7 +165,7 @@ export class ElementStyles {
      * Sets the default strategy type to use when creating style strategies.
      * @param Strategy - The strategy type to construct.
      */
-    public static setDefaultStrategy(Strategy: ConstructibleStyleStrategy) {
+    public static setDefaultStrategy(Strategy: ConstructibleStyleStrategy): void {
         DefaultStyleStrategy = Strategy;
     }
 }
