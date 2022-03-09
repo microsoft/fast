@@ -292,7 +292,7 @@ export class AnchoredRegion extends FoundationElement {
     }
 
     /**
-     *
+     * Defines what triggers the anchored region to revaluate positioning
      *
      * @public
      * @remarks
