@@ -1,7 +1,0 @@
-{
-  "type": "none",
-  "comment": "Remove `card-background-color` from doc and story",
-  "packageName": "@microsoft/fast-components",
-  "email": "fcollonval@gmail.com",
-  "dependentChangeType": "none"
-}
