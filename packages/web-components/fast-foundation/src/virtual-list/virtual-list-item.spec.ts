@@ -84,6 +84,7 @@ describe("VirtualListItem", () => {
         expect(element.loadContent).to.equal(false);
 
         await DOM.nextUpdate();
+        await DOM.nextUpdate();
 
         expect(element.loadContent).to.equal(true);
 
