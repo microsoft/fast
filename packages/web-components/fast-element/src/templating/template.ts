@@ -1,11 +1,9 @@
-import { DOM } from "../dom.js";
 import { isFunction, isString } from "../interfaces.js";
 import { Binding, defaultExecutionContext } from "../observation/observable.js";
 import { bind, oneTime } from "./binding.js";
-import { compileTemplate } from "./compiler.js";
-import type { HTMLTemplateCompilationResult } from "./compiler.js";
+import { compileTemplate as compileFASTTemplate } from "./compiler.js";
 import { AspectedHTMLDirective, HTMLDirective } from "./html-directive.js";
-import { ElementView, HTMLView, SyntheticView } from "./view.js";
+import type { ElementView, HTMLView, SyntheticView } from "./view.js";
 
 /**
  * A template capable of creating views specifically for rendering custom elements.
@@ -42,6 +40,36 @@ export interface SyntheticViewTemplate<TSource = any, TParent = any, TGrandparen
      */
     create(): SyntheticView<TSource, TParent, TGrandparent>;
 }
+
+/**
+ * The result of a template compilation operation.
+ * @public
+ */
+export interface HTMLTemplateCompilationResult {
+    /**
+     * Creates a view instance.
+     * @param hostBindingTarget - The host binding target for the view.
+     */
+    createView(hostBindingTarget?: Element): HTMLView;
+}
+
+/**
+ * A function capable of compiling a template from the preprocessed form produced
+ * by the html template function into a result that can instantiate views.
+ * @public
+ */
+export type HTMLTemplateCompiler = (
+    /**
+     * The preprocessed HTML string or template to compile.
+     */
+    html: string | HTMLTemplateElement,
+    /**
+     * The directives used within the html that is being compiled.
+     */
+    directives: readonly HTMLDirective[]
+) => HTMLTemplateCompilationResult;
+
+let compileTemplate: HTMLTemplateCompiler;
 
 /**
  * A template capable of creating HTMLView instances or rendering directly to DOM.
@@ -83,33 +111,10 @@ export class ViewTemplate<TSource = any, TParent = any, TGrandparent = any>
      */
     public create(hostBindingTarget?: Element): HTMLView<TSource, TParent, TGrandparent> {
         if (this.result === null) {
-            let template: HTMLTemplateElement;
-            const html = this.html;
-
-            if (isString(html)) {
-                template = document.createElement("template");
-                template.innerHTML = DOM.createHTML(html);
-
-                const fec = template.content.firstElementChild;
-
-                if (fec !== null && fec.tagName === "TEMPLATE") {
-                    template = fec as HTMLTemplateElement;
-                }
-            } else {
-                template = html;
-            }
-
-            this.result = compileTemplate(template, this.directives);
+            this.result = compileTemplate(this.html, this.directives);
         }
 
-        const result = this.result;
-        const fragment = result.fragment.cloneNode(true) as DocumentFragment;
-
-        return new HTMLView<TSource, TParent, TGrandparent>(
-            fragment,
-            result.factories,
-            result.createTargets(fragment, hostBindingTarget)
-        );
+        return this.result!.createView(hostBindingTarget);
     }
 
     /**
@@ -129,7 +134,18 @@ export class ViewTemplate<TSource = any, TParent = any, TGrandparent = any>
         view.appendTo(host);
         return view;
     }
+
+    /**
+     * Sets the default compiler that will be used by the ViewTemplate whenever
+     * it needs to compile a view preprocessed with the html template function.
+     * @param compiler - The compiler to use when compiling templates.
+     */
+    public static setDefaultCompiler(compiler: HTMLTemplateCompiler): void {
+        compileTemplate = compiler;
+    }
 }
+
+ViewTemplate.setDefaultCompiler(compileFASTTemplate);
 
 // Much thanks to LitHTML for working this out!
 const lastAttributeNameRegex =
@@ -154,7 +170,7 @@ export type TemplateValue<TSource, TParent = any> =
     | CaptureType<TSource>;
 
 /**
- * Transforms a template literal string into a renderable ViewTemplate.
+ * Transforms a template literal string into a ViewTemplate.
  * @param strings - The string fragments that are interpolated with the values.
  * @param values - The values that are interpolated with the string fragments.
  * @remarks

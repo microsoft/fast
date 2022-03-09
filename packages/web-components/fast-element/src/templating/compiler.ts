@@ -1,12 +1,14 @@
-import { Markup, Parser } from "./markup.js";
 import { isString } from "../interfaces.js";
+import { DOM } from "../dom.js";
+import { Markup, Parser } from "./markup.js";
 import { bind, oneTime } from "./binding.js";
 import type {
     AspectedHTMLDirective,
     HTMLDirective,
     ViewBehaviorFactory,
-    ViewBehaviorTargets,
 } from "./html-directive.js";
+import type { HTMLTemplateCompilationResult } from "./template.js";
+import { HTMLView } from "./view.js";
 
 const targetIdFrom = (parentId: string, nodeIndex: number): string =>
     `${parentId}.${nodeIndex}`;
@@ -22,30 +24,6 @@ const next: NextNode = {
     index: 0,
     node: null as ChildNode | null,
 };
-
-/**
- * The result of compiling a template and its directives.
- * @public
- */
-export interface HTMLTemplateCompilationResult {
-    /**
-     * A cloneable DocumentFragment representing the compiled HTML.
-     */
-    readonly fragment: DocumentFragment;
-
-    /**
-     * The behaviors that should be applied to the template's HTML.
-     */
-    readonly factories: ReadonlyArray<ViewBehaviorFactory>;
-
-    /**
-     * Creates a behavior target lookup object.
-     * @param host - The host element.
-     * @param root - The root element.
-     * @returns A lookup object for behavior targets.
-     */
-    createTargets(root: Node, host?: Node): ViewBehaviorTargets;
-}
 
 class CompilationContext implements HTMLTemplateCompilationResult {
     private proto: any = null;
@@ -78,18 +56,6 @@ class CompilationContext implements HTMLTemplateCompilationResult {
         return this;
     }
 
-    public createTargets(root: Node, host?: Node): ViewBehaviorTargets {
-        const targets = Object.create(this.proto);
-        targets.r = root;
-        targets.h = host ?? root;
-
-        for (const id of this.targetIds) {
-            targets[id]; // trigger locator
-        }
-
-        return targets;
-    }
-
     private addTargetDescriptor(
         parentId: string,
         targetId: string,
@@ -107,8 +73,8 @@ class CompilationContext implements HTMLTemplateCompilationResult {
 
         if (!descriptors[parentId]) {
             const index = parentId.lastIndexOf(".");
-            const grandparentId = parentId.substr(0, index);
-            const childIndex = parseInt(parentId.substr(index + 1));
+            const grandparentId = parentId.substring(0, index);
+            const childIndex = parseInt(parentId.substring(index + 1));
             this.addTargetDescriptor(grandparentId, parentId, childIndex);
         }
 
@@ -128,6 +94,20 @@ class CompilationContext implements HTMLTemplateCompilationResult {
         }
 
         descriptors[targetId] = descriptor;
+    }
+
+    public createView(hostBindingTarget?: Element): HTMLView {
+        const fragment = this.fragment.cloneNode(true) as DocumentFragment;
+        const targets = Object.create(this.proto);
+
+        targets.r = fragment;
+        targets.h = hostBindingTarget ?? fragment;
+
+        for (const id of this.targetIds) {
+            targets[id]; // trigger locator
+        }
+
+        return new HTMLView(fragment, this.factories, targets);
     }
 }
 
@@ -265,10 +245,9 @@ function compileNode(
 }
 
 /**
- * Compiles a template and associated directives into a raw compilation
- * result which include a cloneable DocumentFragment and factories capable
- * of attaching runtime behavior to nodes within the fragment.
- * @param template - The template to compile.
+ * Compiles a template and associated directives into a compilation
+ * result which can be used to create views.
+ * @param html - The html string or template element to compile.
  * @param directives - The directives referenced by the template.
  * @remarks
  * The template that is provided for compilation is altered in-place
@@ -277,9 +256,24 @@ function compileNode(
  * @public
  */
 export function compileTemplate(
-    template: HTMLTemplateElement,
+    html: string | HTMLTemplateElement,
     directives: ReadonlyArray<HTMLDirective>
 ): HTMLTemplateCompilationResult {
+    let template: HTMLTemplateElement;
+
+    if (isString(html)) {
+        template = document.createElement("template");
+        template.innerHTML = DOM.createHTML(html);
+
+        const fec = template.content.firstElementChild;
+
+        if (fec !== null && fec.tagName === "TEMPLATE") {
+            template = fec as HTMLTemplateElement;
+        }
+    } else {
+        template = html;
+    }
+
     // https://bugs.chromium.org/p/chromium/issues/detail?id=1111864
     const fragment = document.adoptNode(template.content);
     const context = new CompilationContext(fragment, directives);
