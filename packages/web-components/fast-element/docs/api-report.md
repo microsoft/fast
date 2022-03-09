@@ -140,7 +140,7 @@ export class ChildrenDirective extends NodeObservationDirective<ChildrenDirectiv
 export type ChildrenDirectiveOptions<T = any> = ChildListDirectiveOptions<T> | SubtreeDirectiveOptions<T>;
 
 // @public
-export function compileTemplate(template: HTMLTemplateElement, directives: ReadonlyArray<HTMLDirective>): HTMLTemplateCompilationResult;
+export function compileTemplate(html: string | HTMLTemplateElement, directives: ReadonlyArray<HTMLDirective>): HTMLTemplateCompilationResult;
 
 // @public
 export type ComposableStyles = string | ElementStyles | CSSStyleSheet;
@@ -347,10 +347,13 @@ export abstract class HTMLDirective implements ViewBehaviorFactory {
 
 // @public
 export interface HTMLTemplateCompilationResult {
-    createTargets(root: Node, host?: Node): ViewBehaviorTargets;
-    readonly factories: ReadonlyArray<ViewBehaviorFactory>;
-    readonly fragment: DocumentFragment;
+    createView(hostBindingTarget?: Element): HTMLView;
 }
+
+// @public
+export type HTMLTemplateCompiler = (
+html: string | HTMLTemplateElement,
+directives: readonly HTMLDirective[]) => HTMLTemplateCompilationResult;
 
 // @public
 export class HTMLView<TSource = any, TParent = any, TGrandparent = any> implements ElementView<TSource, TParent, TGrandparent>, SyntheticView<TSource, TParent, TGrandparent> {
@@ -644,7 +647,8 @@ export class ViewTemplate<TSource = any, TParent = any, TGrandparent = any> impl
     readonly directives: ReadonlyArray<HTMLDirective>;
     readonly html: string | HTMLTemplateElement;
     render(source: TSource, host: Node, hostBindingTarget?: Element): HTMLView<TSource, TParent, TGrandparent>;
-    }
+    static setDefaultCompiler(compiler: HTMLTemplateCompiler): void;
+}
 
 // @public
 export function volatile(target: {}, name: string | Accessor, descriptor: PropertyDescriptor): PropertyDescriptor;
