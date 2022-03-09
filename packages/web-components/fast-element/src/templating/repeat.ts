@@ -1,4 +1,3 @@
-import { Markup } from "./markup.js";
 import { isFunction } from "../interfaces.js";
 import type { Splice } from "../observation/array-change-records.js";
 import { enableArrayObservation } from "../observation/array-observer.js";
@@ -11,6 +10,7 @@ import {
     Observable,
 } from "../observation/observable.js";
 import { emptyArray } from "../platform.js";
+import { Markup } from "./markup.js";
 import { HTMLDirective, ViewBehaviorTargets } from "./html-directive.js";
 import type { CaptureType, SyntheticViewTemplate } from "./template.js";
 import { HTMLView, SyntheticView } from "./view.js";
