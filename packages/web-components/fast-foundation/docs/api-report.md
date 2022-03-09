@@ -96,7 +96,6 @@ export class AnchoredRegion extends FoundationElement {
     adoptedCallback(): void;
     anchor: string;
     anchorElement: HTMLElement | null;
-    // (undocumented)
     autoUpdateMode: AutoUpdateMode;
     // @internal (undocumented)
     connectedCallback(): void;
