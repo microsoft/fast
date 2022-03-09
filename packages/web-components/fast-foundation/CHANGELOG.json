@@ -2,6 +2,150 @@
   "name": "@microsoft/fast-foundation",
   "entries": [
     {
+      "date": "Tue, 08 Mar 2022 07:12:45 GMT",
+      "tag": "@microsoft/fast-foundation_v2.35.1",
+      "version": "2.35.1",
+      "comments": {
+        "none": [
+          {
+            "comment": "docs: clarify the need for z-index on dialogs",
+            "author": "yinon@hotmail.com",
+            "commit": "44585c02af4e1cb31f168a7188b4b5fc1d499557",
+            "package": "@microsoft/fast-foundation"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "Fix programmatic disable/enable of tabs",
+            "author": "5454342+brianehenry@users.noreply.github.com",
+            "commit": "8f5549b87ef12ce892ab29f61f8a51269b1674b0",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sun, 06 Mar 2022 07:13:48 GMT",
+      "tag": "@microsoft/fast-foundation_v2.35.0",
+      "version": "2.35.0",
+      "comments": {
+        "patch": [
+          {
+            "comment": "passive handlers",
+            "author": "scomea@microsoft.com",
+            "commit": "0a25cee7a43743313e2eb9073dcdd89caae1342a",
+            "package": "@microsoft/fast-foundation"
+          },
+          {
+            "comment": "tooltip hover",
+            "author": "scomea@microsoft.com",
+            "commit": "b9eb24ed3dd66f2daf51efc8594900213934d4c7",
+            "package": "@microsoft/fast-foundation"
+          }
+        ],
+        "minor": [
+          {
+            "comment": "add corner positions to tooltip",
+            "author": "sethdonohue@Admins-MBP.guest.corp.microsoft.com",
+            "commit": "bdeeb23bbaa56433d650660387e852c5eef87fee",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 03 Mar 2022 07:12:03 GMT",
+      "tag": "@microsoft/fast-foundation_v2.34.0",
+      "version": "2.34.0",
+      "comments": {
+        "none": [
+          {
+            "comment": "add documentation to support decorators in cra",
+            "author": "email not defined",
+            "commit": "26ce299730c2a97d931a4a87fc64ef6f92b5580c",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 02 Mar 2022 07:12:58 GMT",
+      "tag": "@microsoft/fast-foundation_v2.34.0",
+      "version": "2.34.0",
+      "comments": {
+        "patch": [
+          {
+            "comment": "generate grid columns for manual grid",
+            "author": "scomea@microsoft.com",
+            "commit": "3c557446160ecdc358b46fd35d72d53555f02fe5",
+            "package": "@microsoft/fast-foundation"
+          },
+          {
+            "comment": "auto columns fix",
+            "author": "scomea@microsoft.com",
+            "commit": "8da160bf10fc106917053350491fb88162d8bc45",
+            "package": "@microsoft/fast-foundation"
+          },
+          {
+            "comment": "Fixing no previous scroll when only 2 items",
+            "author": "robarb@microsoft.com",
+            "commit": "9306471bb094e369ceb42de732d48bd9e519f1eb",
+            "package": "@microsoft/fast-foundation"
+          }
+        ],
+        "minor": [
+          {
+            "comment": "add mermaid support",
+            "author": "steph@huynhicode.dev",
+            "commit": "638bd1e86cd3ecf4223371b48a4290cc7c75d765",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 25 Feb 2022 17:09:32 GMT",
+      "tag": "@microsoft/fast-foundation_v2.33.6",
+      "version": "2.33.6",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-element to v1.7.2",
+            "author": "roeisenb@microsoft.com",
+            "commit": "76a9c866277cd13a92a9ca6b3518eae2fb625d79",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 24 Feb 2022 22:21:55 GMT",
+      "tag": "@microsoft/fast-foundation_v2.33.5",
+      "version": "2.33.5",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Format improvement to match standards",
+            "author": "16669785+awentzel@users.noreply.github.com",
+            "commit": "59fa5dada57dc5f3313d34ff6bd2d9b0bac0dbfb",
+            "package": "@microsoft/fast-foundation"
+          },
+          {
+            "comment": "fix combobox and select position when set after init",
+            "author": "corylaviska@microsoft.com",
+            "commit": "ebe1234f5590f90a77493ff5ae0a30f850876f0a",
+            "package": "@microsoft/fast-foundation"
+          },
+          {
+            "comment": "allow programmatic control of the open property for select and combobox",
+            "author": "john.kreitlow@microsoft.com",
+            "commit": "2caf345e541780600f1f961c17a2be2a6300a02c",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sun, 20 Feb 2022 07:16:20 GMT",
       "tag": "@microsoft/fast-foundation_v2.33.4",
       "version": "2.33.4",

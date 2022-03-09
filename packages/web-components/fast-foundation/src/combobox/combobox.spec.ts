@@ -138,6 +138,18 @@ describe("Combobox", () => {
         await disconnect();
     });
 
+    it("should display the listbox when the `open` property is true before connecting", async () => {
+        const { element, connect, disconnect } = await setup();
+
+        element.open = true;
+
+        await connect();
+
+        expect(element.hasAttribute("open")).to.be.true;
+
+        await disconnect();
+    });
+
     describe("should NOT emit a 'change' event when the value changes by user input while open", () => {
         it("via arrow down key", async () => {
             const { element, connect, disconnect } = await setup();

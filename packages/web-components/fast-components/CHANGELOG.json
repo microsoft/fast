@@ -2,6 +2,144 @@
   "name": "@microsoft/fast-components",
   "entries": [
     {
+      "date": "Tue, 08 Mar 2022 07:12:45 GMT",
+      "tag": "@microsoft/fast-components_v2.22.1",
+      "version": "2.22.1",
+      "comments": {
+        "none": [
+          {
+            "comment": "Fix CSS typo in radio group stories",
+            "author": "fcollonval@gmail.com",
+            "commit": "638cf9870c50b314b4b34cc055a3f59862e301ca",
+            "package": "@microsoft/fast-components"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "flex items should be aligned on cross axis.",
+            "author": "srdsecond@gmail.com",
+            "commit": "bb9c277af2b51fa445e75282c7432346c081f674",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sun, 06 Mar 2022 07:13:48 GMT",
+      "tag": "@microsoft/fast-components_v2.22.0",
+      "version": "2.22.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "add corner position styling to tooltip",
+            "author": "sethdonohue@Admins-MBP.guest.corp.microsoft.com",
+            "commit": "bdeeb23bbaa56433d650660387e852c5eef87fee",
+            "package": "@microsoft/fast-components"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "set fast-anchor appearance after connecting",
+            "author": "john.kreitlow@microsoft.com",
+            "commit": "ef742a592c77891281dca25e92f496181da145d8",
+            "package": "@microsoft/fast-components"
+          },
+          {
+            "comment": "tooltip hover",
+            "author": "scomea@microsoft.com",
+            "commit": "b9eb24ed3dd66f2daf51efc8594900213934d4c7",
+            "package": "@microsoft/fast-components"
+          },
+          {
+            "comment": "Bump @microsoft/fast-foundation to v2.35.0",
+            "author": "sethdonohue@Admins-MBP.guest.corp.microsoft.com",
+            "commit": "bdeeb23bbaa56433d650660387e852c5eef87fee",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 03 Mar 2022 07:12:03 GMT",
+      "tag": "@microsoft/fast-components_v2.21.9",
+      "version": "2.21.9",
+      "comments": {
+        "none": [
+          {
+            "comment": "Bump @microsoft/fast-foundation to v2.34.0",
+            "author": "email not defined",
+            "commit": "26ce299730c2a97d931a4a87fc64ef6f92b5580c",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 02 Mar 2022 07:12:58 GMT",
+      "tag": "@microsoft/fast-components_v2.21.9",
+      "version": "2.21.9",
+      "comments": {
+        "patch": [
+          {
+            "comment": "generate grid columns for manual grid",
+            "author": "scomea@microsoft.com",
+            "commit": "3c557446160ecdc358b46fd35d72d53555f02fe5",
+            "package": "@microsoft/fast-components"
+          },
+          {
+            "comment": "Fixing no previous scroll when only 2 items",
+            "author": "robarb@microsoft.com",
+            "commit": "9306471bb094e369ceb42de732d48bd9e519f1eb",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 25 Feb 2022 17:09:32 GMT",
+      "tag": "@microsoft/fast-components_v2.21.8",
+      "version": "2.21.8",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-element to v1.7.2",
+            "author": "roeisenb@microsoft.com",
+            "commit": "76a9c866277cd13a92a9ca6b3518eae2fb625d79",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 24 Feb 2022 22:21:55 GMT",
+      "tag": "@microsoft/fast-components_v2.21.7",
+      "version": "2.21.7",
+      "comments": {
+        "none": [
+          {
+            "comment": "wait for stable state in horizontal-scroll playwright test",
+            "author": "john.kreitlow@microsoft.com",
+            "commit": "24eca78a436323804c05155e5760de9532e124a5",
+            "package": "@microsoft/fast-components"
+          },
+          {
+            "comment": "allow programmatic control of the open property for select and combobox",
+            "author": "john.kreitlow@microsoft.com",
+            "commit": "2caf345e541780600f1f961c17a2be2a6300a02c",
+            "package": "@microsoft/fast-components"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-element to v1.7.1",
+            "author": "roeisenb@microsoft.com",
+            "commit": "9dfb9bb20afa48320eef2c6157e26ec2b10cfd3e",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sun, 20 Feb 2022 07:16:20 GMT",
       "tag": "@microsoft/fast-components_v2.21.6",
       "version": "2.21.6",
