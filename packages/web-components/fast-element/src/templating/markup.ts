@@ -19,11 +19,6 @@ export const nextId = (): string => `${marker}-${++id}`;
  */
 export const Markup = Object.freeze({
     /**
-     * Gets the unique marker used by FAST to annotate templates.
-     */
-    marker,
-
-    /**
      * Creates a placeholder string suitable for marking out a location *within*
      * an attribute value or HTML content.
      * @param index - The directive index to create the placeholder for.
@@ -53,15 +48,7 @@ export const Markup = Object.freeze({
      * Used internally by structural directives such as `repeat`.
      */
     comment(index: number): string {
-        return `<!--${marker}:${index}-->`;
-    },
-
-    /**
-     * Given a marker node, extract the {@link HTMLDirective} index from the placeholder.
-     * @param node - The marker node to extract the index from.
-     */
-    indexFromComment(node: Comment): number {
-        return parseInt(node.data.replace(`${marker}:`, ""));
+        return `<!--${interpolationStart}${index}${interpolationEnd}-->`;
     },
 });
 
@@ -82,16 +69,16 @@ export const Parser = Object.freeze({
         value: string,
         directives: readonly HTMLDirective[]
     ): (string | HTMLDirective)[] | null {
-        const valueParts = value.split(interpolationStart);
+        const parts = value.split(interpolationStart);
 
-        if (valueParts.length === 1) {
+        if (parts.length === 1) {
             return null;
         }
 
-        const bindingParts: (string | HTMLDirective)[] = [];
+        const result: (string | HTMLDirective)[] = [];
 
-        for (let i = 0, ii = valueParts.length; i < ii; ++i) {
-            const current = valueParts[i];
+        for (let i = 0, ii = parts.length; i < ii; ++i) {
+            const current = parts[i];
             const index = current.indexOf(interpolationEnd);
             let literal: string | HTMLDirective;
 
@@ -99,16 +86,16 @@ export const Parser = Object.freeze({
                 literal = current;
             } else {
                 const directiveIndex = parseInt(current.substring(0, index));
-                bindingParts.push(directives[directiveIndex]);
+                result.push(directives[directiveIndex]);
                 literal = current.substring(index + interpolationEndLength);
             }
 
             if (literal !== "") {
-                bindingParts.push(literal);
+                result.push(literal);
             }
         }
 
-        return bindingParts;
+        return result;
     },
 
     /**

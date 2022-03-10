@@ -111,12 +111,6 @@ class CompilationContext implements HTMLTemplateCompilationResult {
     }
 }
 
-const marker = Markup.marker;
-
-function isMarker(node: Node): node is Comment {
-    return node && node.nodeType === 8 && (node as Comment).data.startsWith(marker);
-}
-
 function compileAttributes(
     context: CompilationContext,
     parentId: string,
@@ -228,13 +222,9 @@ function compileNode(
         case 3: // text node
             return compileContent(context, node as Text, parentId, nodeId, nodeIndex);
         case 8: // comment
-            if (isMarker(node)) {
-                context.addFactory(
-                    context.directives[Markup.indexFromComment(node)],
-                    parentId,
-                    nodeId,
-                    nodeIndex
-                );
+            const parts = Parser.parse((node as Comment).data, context.directives);
+            if (parts !== null) {
+                context.addFactory(Parser.aggregate(parts), parentId, nodeId, nodeIndex);
             }
             break;
     }
@@ -242,6 +232,15 @@ function compileNode(
     next.index = nodeIndex + 1;
     next.node = node.nextSibling;
     return next;
+}
+
+function isMarker(node: Node, directives: ReadonlyArray<HTMLDirective>): boolean {
+    if (node && node.nodeType === Node.COMMENT_NODE) {
+        const result = Parser.parse((node as Comment).data, directives);
+        return result !== null;
+    }
+
+    return false;
 }
 
 /**
@@ -284,7 +283,7 @@ export function compileTemplate(
         // because something like a when, repeat, etc. could add nodes before the marker.
         // To mitigate this, we insert a stable first node. However, if we insert a node,
         // that will alter the result of the TreeWalker. So, we also need to offset the target index.
-        isMarker(fragment.firstChild!) ||
+        isMarker(fragment.firstChild!, directives) ||
         // Or if there is only one node, it means the template's content
         // is *only* the directive. In that case, HTMLView.dispose() misses any nodes inserted by
         // the directive. Inserting a new node ensures proper disposal of nodes added by the directive.
