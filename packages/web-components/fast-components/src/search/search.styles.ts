@@ -36,7 +36,7 @@ import {
 } from "../design-tokens";
 import { heightNumber } from "../styles/index";
 
-const clearButtonHover = DesignToken.create<Swatch>("close-button-hover").withDefault(
+const clearButtonHover = DesignToken.create<Swatch>("clear-button-hover").withDefault(
     (target: HTMLElement) => {
         const buttonRecipe = neutralFillStealthRecipe.getValueFor(target);
         const inputRecipe = neutralFillRecipe.getValueFor(target);
