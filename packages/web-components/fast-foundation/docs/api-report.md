@@ -1163,16 +1163,18 @@ export const FlyoutPosTop: AnchoredRegionConfig;
 // @public
 export const FlyoutPosTopFill: AnchoredRegionConfig;
 
-// @public
+// @alpha
 export class Focusgroup extends FoundationElement {
-    // (undocumented)
+    // @public
     direction: "both" | "horizontal" | "vertical";
-    // (undocumented)
+    // @public
     extend: boolean;
-    // (undocumented)
+    // @public
     wrap: "both" | "horizontal" | "none" | "vertical" | undefined;
 }
 
+// Warning: (ae-incompatible-release-tags) The symbol "FocusgroupTemplate" is marked as @public, but its signature references "Focusgroup" which is marked as @alpha
+//
 // @public (undocumented)
 export const FocusgroupTemplate: FoundationElementTemplate<ViewTemplate<Focusgroup>>;
 

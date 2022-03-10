@@ -183,10 +183,12 @@ export class FocusgroupBehavior implements Behavior {
                         x: {
                             overlap: overlap(data, compare, "y"),
                             offset: offset(data, compare),
+                            direction: data.x < compare.x ? "right" : "left",
                         },
                         y: {
                             overlap: overlap(data, compare),
                             offset: offset(data, compare, "y"),
+                            direction: data.y < compare.y ? "down" : "up",
                         },
                     });
                     return data;
@@ -198,20 +200,20 @@ export class FocusgroupBehavior implements Behavior {
                         if (ci !== index) {
                             const context = child.context(child2);
                             ["x", "y"].forEach(axis => {
-                                const { overlap, offset } = context[axis];
+                                const { overlap, offset, direction } = context[axis];
                                 if (overlap > 0) {
                                     const sides = {
                                         x: { false: "left", true: "right" },
                                         y: { false: "up", true: "down" },
                                     };
-                                    const side = sides[axis][offset >= 0];
-                                    const opposite = sides[axis][offset < 0];
+                                    const side = direction;
+                                    const opposite = sides[axis][direction === false];
                                     const dside = directions[side];
                                     const oside = directions[opposite];
                                     if (
-                                        !dside.offset ||
+                                        dside.offset === undefined ||
                                         sides[axis][dside.offset >= 0] !== side ||
-                                        Math.abs(offset) < Math.abs(dside.offset) ||
+                                        Math.abs(offset) <= Math.abs(dside.offset) ||
                                         (Math.abs(offset) === Math.abs(dside.offset) &&
                                             overlap > dside.overlap)
                                     ) {
@@ -252,6 +254,10 @@ export class FocusgroupBehavior implements Behavior {
      * @public
      */
     public handleKeydown(event: KeyboardEvent): boolean {
+        const { target } = event;
+        if (!this.focusItems.find(item => item === target)) {
+            return true;
+        }
         const current: number = this.focusItems.findIndex(
             (item: HTMLElement) => parseInt(item.getAttribute("tabindex") || "-1") >= 0
         );
@@ -278,9 +284,9 @@ export class FocusgroupBehavior implements Behavior {
                 return moveToIndex(position.down.index);
             case keyArrowLeft:
                 return moveToIndex(position.left.index);
-            default:
-                return true;
         }
+
+        return true;
     }
 }
 
