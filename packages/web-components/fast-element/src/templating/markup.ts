@@ -104,9 +104,9 @@ export const Parser = Object.freeze({
      * directives.
      * @returns A single inline directive that aggregates the behavior of all the parts.
      */
-    aggregate(parts: (string | HTMLDirective)[]): InlinableHTMLDirective {
+    aggregate(parts: (string | HTMLDirective)[]): HTMLDirective {
         if (parts.length === 1) {
-            return parts[0] as InlinableHTMLDirective;
+            return parts[0] as HTMLDirective;
         }
 
         let aspect: string | undefined;

@@ -1,6 +1,6 @@
 import { isString } from "../interfaces.js";
 import { DOM } from "../dom.js";
-import { Markup, Parser } from "./markup.js";
+import { Parser } from "./markup.js";
 import { bind, oneTime } from "./binding.js";
 import type {
     AspectedHTMLDirective,
