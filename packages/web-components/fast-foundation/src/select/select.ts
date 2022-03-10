@@ -244,9 +244,7 @@ export class Select extends FormAssociatedSelect {
      */
     public formResetCallback(): void {
         this.setProxyOptions();
-        // Call the base class's implementation setDefaultSelectedOption instead of the select's
-        // override, in order to reset the selectedIndex without using the value property.
-        super.setDefaultSelectedOption();
+        this.selectedIndex = 0;
         this.value = this.firstSelectedOption.value;
     }
 

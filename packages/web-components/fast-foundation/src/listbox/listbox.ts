@@ -541,8 +541,6 @@ export abstract class Listbox extends FoundationElement {
                 this.selectedIndex = selectedIndex;
                 return;
             }
-
-            this.selectedIndex = 0;
         }
     }
 
@@ -552,7 +550,7 @@ export abstract class Listbox extends FoundationElement {
      * @public
      */
     protected setSelectedOptions() {
-        if (this.options?.length && !this.disabled) {
+        if (this.options?.length) {
             this.selectedOptions = [this.options[this.selectedIndex]];
             this.ariaActiveDescendant = this.firstSelectedOption?.id ?? "";
             this.focusAndScrollOptionIntoView();
