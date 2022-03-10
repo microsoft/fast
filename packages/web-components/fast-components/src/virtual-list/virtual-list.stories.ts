@@ -3,13 +3,13 @@ import addons from "@storybook/addons";
 import { STORY_RENDERED } from "@storybook/core-events";
 import {
     VirtualList as FoundationVirtualList,
-    SpanMap,
+    SizeMap,
 } from "@microsoft/fast-foundation";
 import VirtualListTemplate from "./fixtures/base.html";
 import "./index";
 
 let data;
-let dataSpanMap;
+let dataSizeMap;
 let gridData: object[];
 
 const horizontalImageItemTemplate = html`
@@ -18,9 +18,9 @@ const horizontalImageItemTemplate = html`
             position: absolute;
             contain: strict;
             height:  100%;
-            width:  ${(x, c) => `${c.parent.visibleItemSpans[c.index]?.span}px`};
+            width:  ${(x, c) => `${c.parent.visibleItemMap[c.index]?.size}px`};
             transform: ${(x, c) =>
-            `translateX(${c.parent.visibleItemSpans[c.index]?.start}px)`};
+            `translateX(${c.parent.visibleItemMap[c.index]?.start}px)`};
         "
     >
         <div style="margin: 5px 20px 0 20px; color: white">
@@ -47,7 +47,7 @@ const verticalImageItemTemplate = html`
             height:  200px;
             width:  100%;
             transform: ${(x, c) =>
-            `translateY(${c.parent.visibleItemSpans[c.index]?.start}px)`};
+            `translateY(${c.parent.visibleItemMap[c.index]?.start}px)`};
         "
     >
         <div style="margin: 5px 20px 0 20px; color: white">
@@ -74,7 +74,7 @@ const gridItemTemplate = html`
             height: 200px;
             width:  200px;
             transform: ${(x, c) =>
-            `translateX(${c.parent.visibleItemSpans[c.index]?.start}px)`};
+            `translateX(${c.parent.visibleItemMap[c.index]?.start}px)`};
         "
     >
         <div
@@ -101,7 +101,7 @@ const rowItemTemplate = html`
     <fast-virtual-list
         auto-update-mode="auto"
         orientation="horizontal"
-        item-span="200"
+        item-size="200"
         viewport-buffer="100"
         :viewportElement="${(x, c) => c.parent.viewportElement}"
         :itemTemplate="${gridItemTemplate}"
@@ -111,7 +111,7 @@ const rowItemTemplate = html`
             position: absolute;
             height:  200px;
             transform: ${(x, c) =>
-            `translateY(${c.parent.visibleItemSpans[c.index]?.start}px)`};
+            `translateY(${c.parent.visibleItemMap[c.index]?.start}px)`};
         "
     ></fast-virtual-list>
 `;
@@ -165,7 +165,7 @@ const listItemContentsTemplate = html`
 addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
     if (name.toLowerCase().startsWith("virtual-list")) {
         data = newDataSet(10000, 1);
-        dataSpanMap = generateSpanMap(data);
+        dataSizeMap = generateSizeMap(data);
 
         gridData = [];
 
@@ -226,7 +226,7 @@ addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
         };
 
         const stackv3 = document.getElementById("stackv3") as FoundationVirtualList;
-        stackv3.spanmap = dataSpanMap;
+        stackv3.sizemap = dataSizeMap;
         stackv3.items = data;
         stackv3.listItemContext = {
             loadMode: "idle",
@@ -276,21 +276,21 @@ function newDataSet(rowCount: number, prefix: number): object[] {
     return newData;
 }
 
-function generateSpanMap(data: object[]) {
-    const spanmap: SpanMap[] = [];
+function generateSizeMap(data: object[]) {
+    const sizemap: SizeMap[] = [];
     const itemsCount: number = data.length;
     let currentPosition: number = 0;
     for (let i = 0; i < itemsCount; i++) {
-        const nextSpan: number = 200 + Math.floor(Math.random() * 200);
-        const spanEnd = nextSpan + currentPosition;
-        spanmap.push({
+        const nextSize: number = 200 + Math.floor(Math.random() * 200);
+        const mapEnd = nextSize + currentPosition;
+        sizemap.push({
             start: currentPosition,
-            span: nextSpan,
-            end: spanEnd,
+            size: nextSize,
+            end: mapEnd,
         });
-        currentPosition = spanEnd;
+        currentPosition = mapEnd;
     }
-    return spanmap;
+    return sizemap;
 }
 
 export default {

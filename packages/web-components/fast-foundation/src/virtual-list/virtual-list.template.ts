@@ -16,9 +16,9 @@ function createDefaultVerticalItemTemplate(
         :listItemContext="${(x, c) => c.parent.listItemContext}"
         :idleCallbackQueue="${(x, c) => c.parent.idleCallbackQueue}"
         style="
-            height:  ${(x, c) => `${c.parent.visibleItemSpans[c.index]?.span}px`};
+            height:  ${(x, c) => `${c.parent.visibleItemMap[c.index]?.size}px`};
             transform: ${(x, c) =>
-                `translateY(${c.parent.visibleItemSpans[c.index]?.start}px)`};
+                `translateY(${c.parent.visibleItemMap[c.index]?.start}px)`};
         "
     ></${listItemTag}>
 `;
@@ -35,9 +35,9 @@ function createDefaultHorizontalItemTemplate(
         :listItemContext="${(x, c) => c.parent.listItemContext}"
         :idleCallbackQueue="${(x, c) => c.parent.idleCallbackQueue}"
         style="
-            width:  ${(x, c) => `${c.parent.visibleItemSpans[c.index]?.span}px`};
+            width:  ${(x, c) => `${c.parent.visibleItemMap[c.index]?.size}px`};
             transform: ${(x, c) =>
-                `translateX(${c.parent.visibleItemSpans[c.index]?.start}px)`};
+                `translateX(${c.parent.visibleItemMap[c.index]?.start}px)`};
         "
     ></${listItemTag}>
 `;
@@ -69,11 +69,11 @@ export const virtualListTemplate: FoundationElementTemplate<ViewTemplate<Virtual
                 width: ${x =>
                     x.orientation === Orientation.vertical
                         ? "100%"
-                        : `${x.totalListSpan}px`};
+                        : `${x.totalListSize}px`};
                 height: ${x =>
                     x.orientation !== Orientation.vertical
                         ? "100%"
-                        : `${x.totalListSpan}px`};
+                        : `${x.totalListSize}px`};
             "
                 ${ref("containerElement")}
             >
