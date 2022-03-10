@@ -21,10 +21,10 @@
       "mapsToAttribute": "viewport",
       "type": "string"
     },
-    "item-span": {
-      "title": "Item span",
+    "item-size": {
+      "title": "Item size",
       "description": "The space reserved for each item in the list in pixels",
-      "mapsToAttribute": "item-span",
+      "mapsToAttribute": "item-size",
       "type": "number"
     },
     "viewport-buffer": {

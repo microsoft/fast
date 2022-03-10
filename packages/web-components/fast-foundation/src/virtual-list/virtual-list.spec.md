@@ -18,9 +18,9 @@ Whenever prompted to update its layout, either by having the `update()` function
 
 When the positioning information is updated on the next frame the component determines which portion of the item container overlaps with the viewport and calculates which items would fall into that range.  Those items are then used to populate the observable `visibleItems` property which is bound to a repeat directive which renders the visible items using the provided `itemTemplate`.  
 
-The component also populates a `visibleItemSpans` observable property with the positioning information for each object in the `visibleItems` array using the SpanMap interface.    
+The component also populates a `visibleItemMap` observable property with the positioning information for each object in the `visibleItems` array using the SizeMap interface.    
 
-The item templates can then bind to the appropriate `SpanMap` using its index and use that to position itself correctly in the layout.
+The item templates can then bind to the appropriate `SizeMap` using its index and use that to position itself correctly in the layout.
 
 ```
 const itemTemplate: ViewTemplate<any> = html`
@@ -28,9 +28,9 @@ const itemTemplate: ViewTemplate<any> = html`
         :itemData="${x => x}"
         :listItemContext="${(x, c) => c.parent.listItemContext}"
         style="
-            height:  ${(x, c) => `${c.parent.visibleItemSpans[c.index]?.span}px`};
+            height:  ${(x, c) => `${c.parent.visibleItemMap[c.index]?.size}px`};
             transform: ${(x, c) =>
-                `translateY(${c.parent.visibleItemSpans[c.index]?.start}px)`};
+                `translateY(${c.parent.visibleItemMap[c.index]?.start}px)`};
         "
     >
     </fast-virtual-list-item>
@@ -80,7 +80,7 @@ _Attributes:_
 
 - `viewport` - The string ID of the HTMLElement to be used as the 'viewport'. Used to determine which elements should render when virtualizing.
 
-- `item-span` - The size in pixels of each item along the choosen axis (ie. vertical or horizontal).  Default is 50.
+- `item-size` - The size in pixels of each item along the choosen axis (ie. vertical or horizontal).  Default is 50.
 
 - `viewport-buffer` - Defines an area in pixels on either end of the viewport where items outside the viewport will still be rendered.
 
@@ -99,7 +99,7 @@ _Properties:_
 
 -  `items` -  The array of objects to be displayed.
 
-- `spanmap` - When the array elements are of varying spans authors can pass an array of `SpanMap` objects that corresponds to the position and span of each element in the `items` array.  
+- `sizemap` - When the array elements are of varying sizes authors can pass an array of `SizeMap` objects that corresponds to the position and size of each element in the `items` array.  
 
 -  `viewportElement` -  The HTML element being used as the viewport.
 
@@ -114,7 +114,7 @@ _Slots:_
 
 _functions:_
 
-- `getItemSpanMap = (itemIndex: number): SpanMap | null` - Returns the spanmap object that corresponds to the provided item index.
+- `getItemSizeMap = (itemIndex: number): SizeMap | null` - Returns the size map object that corresponds to the provided item index.
 
 - `public update(): void` - Requests a layout update.  
 
@@ -138,14 +138,14 @@ _Properties:_
 
 
 
-#### The SpanMap interface
+#### The SizeMap interface
 
-Used for virtual lists with varying height elements.  Authors can provide a "map" which corresponds to the spans of the child items.  Authors who use this approach will need to have a quick way of calculating this data. This will not be as fast as a uniform span list, but can still enable the ability to virtualize large data sets if generating the map is fast enough.  
+Used for virtual lists with varying height elements.  Authors can provide a "map" which corresponds to the sizes of the child items.  Authors who use this approach will need to have a quick way of calculating this data. This will not be as fast as a uniform size list, but can still enable the ability to virtualize large data sets if generating the map is fast enough.  
 
-The component also uses the SpanMap interface to expose the position of visible elements as part of the `visibleItemSpans` observable property which child items use to position themselves in the list.
+The component also uses the SizeMap interface to expose the position of visible elements as part of the `visibleMap` observable property which child items use to position themselves in the list.
 
 - `start`: The start position of the item in pixels.  
-- `span`: The span of the element in pixels.
+- `size`: The size of the element in pixels.
 - `end`: The end position of the element in pixels.
 
 
@@ -169,7 +169,7 @@ _Template:_
 ```
 <fast-virtual-list
     orientation="horizontal"
-    item-span="200"
+    item-size="200"
     viewport-buffer="800"
     auto-update-mode="auto"
 ></fast-virtual-list>
