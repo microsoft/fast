@@ -284,10 +284,10 @@ export function compileTemplate(
         // To mitigate this, we insert a stable first node. However, if we insert a node,
         // that will alter the result of the TreeWalker. So, we also need to offset the target index.
         isMarker(fragment.firstChild!, directives) ||
-        // Or if there is only one node, it means the template's content
+        // Or if there is only one node and a directive, it means the template's content
         // is *only* the directive. In that case, HTMLView.dispose() misses any nodes inserted by
         // the directive. Inserting a new node ensures proper disposal of nodes added by the directive.
-        fragment.childNodes.length === 1
+        (fragment.childNodes.length === 1 && directives.length)
     ) {
         fragment.insertBefore(document.createComment(""), fragment.firstChild);
     }

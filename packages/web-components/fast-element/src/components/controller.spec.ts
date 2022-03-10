@@ -531,7 +531,7 @@ describe("The Controller", () => {
                 }
             ).define();
 
-            expect(root.innerHTML).to.equal("<!---->Test 2");
+            expect(root.innerHTML).to.equal("Test 2");
 
             document.body.removeChild(element);
         });
