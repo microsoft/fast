@@ -235,12 +235,11 @@ function compileNode(
 }
 
 function isMarker(node: Node, directives: ReadonlyArray<HTMLDirective>): boolean {
-    if (node && node.nodeType === Node.COMMENT_NODE) {
-        const result = Parser.parse((node as Comment).data, directives);
-        return result !== null;
-    }
-
-    return false;
+    return (
+        node &&
+        node.nodeType == 8 &&
+        Parser.parse((node as Comment).data, directives) !== null
+    );
 }
 
 /**
