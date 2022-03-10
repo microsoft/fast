@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "Fix for default selection behavior for listbox and select",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "26874831+atmgrifter00@users.noreply.github.com",
+  "dependentChangeType": "patch"
+}
