@@ -104,12 +104,9 @@ export const searchStyles: FoundationElementTemplate<ElementStyles, TextFieldOpt
     }
 
     .clear-button {
-        margin: 1px;
-        position: absolute;
-        top: 1px;
-        margin: 1px 1px 1px 0;
         height: calc(100% - 2px);
         opacity: 0;
+        margin: 1px;
         background: transparent;
         color: ${neutralForegroundRest};
         fill: currentcolor;
@@ -143,6 +140,7 @@ export const searchStyles: FoundationElementTemplate<ElementStyles, TextFieldOpt
         display: flex;
         position: relative;
         width: 100%;
+        height: 100%;
     }
 
     .label {
@@ -178,6 +176,7 @@ export const searchStyles: FoundationElementTemplate<ElementStyles, TextFieldOpt
 
     .end {
         margin-inline-end: 1px;
+        height: calc(100% - 2px);
     }
 
     ::slotted(svg) {
