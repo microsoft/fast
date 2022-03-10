@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-foundation",
   "entries": [
     {
+      "date": "Wed, 09 Mar 2022 07:12:32 GMT",
+      "tag": "@microsoft/fast-foundation_v2.35.2",
+      "version": "2.35.2",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Fix bug with menu-item indention",
+            "author": "20542556+mollykreis@users.noreply.github.com",
+            "commit": "b4549c8a383d6ac43d2967491e5596bbffb87d80",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 08 Mar 2022 07:12:45 GMT",
       "tag": "@microsoft/fast-foundation_v2.35.1",
       "version": "2.35.1",
