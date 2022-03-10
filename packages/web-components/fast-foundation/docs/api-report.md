@@ -856,6 +856,8 @@ export class DatePicker extends FormAssociatedDatePicker {
     handleCalendarTitleKeydown(e: KeyboardEvent): boolean;
     // @public
     handleDateClicked(event: MouseEvent): void;
+    // (undocumented)
+    handleFlyoutKeydown(e: KeyboardEvent): boolean;
     // @public
     handleFocus(): void;
     handleFocusOut(event: Event): void;
@@ -868,7 +870,7 @@ export class DatePicker extends FormAssociatedDatePicker {
     // @public
     handleMinuteClicked(minute: number): void;
     // @public
-    handleMonthChange(direction: number | undefined, event: KeyboardEvent | MouseEvent): boolean;
+    handleMonthChange(direction: number | undefined, event: KeyboardEvent | MouseEvent | undefined): boolean;
     // @public
     handleMonthClicked(month: number, year: number): void;
     handleMonthKeyup(month: number, year: number, event: KeyboardEvent): boolean;
@@ -877,6 +879,8 @@ export class DatePicker extends FormAssociatedDatePicker {
     // @public
     handleYearClicked(year: number): void;
     handleYearKeyup(year: number, event: KeyboardEvent): boolean;
+    // (undocumented)
+    handleYearsChange(direction: number | undefined, event: KeyboardEvent | MouseEvent | undefined): boolean;
     // @public
     hour12: boolean;
     // @public
@@ -898,7 +902,7 @@ export class DatePicker extends FormAssociatedDatePicker {
     // @public
     monthFormat: MonthFormat;
     // @public
-    monthPickerDispay(open?: boolean): void;
+    monthPickerDisplay(open?: boolean): void;
     // @public
     monthView: number;
     // @public
