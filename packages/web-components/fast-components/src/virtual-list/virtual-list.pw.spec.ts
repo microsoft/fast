@@ -19,7 +19,7 @@ describe("FASTVirtualList", function () {
     const componentWidth = 400;
     const componentHeight = 400;
     const viewportBuffer = 0;
-    const itemSpan = 100;
+    const itemSize = 100;
 
     beforeEach(async function () {
         if (!this.page && !this.browser) {
@@ -27,14 +27,14 @@ describe("FASTVirtualList", function () {
         }
 
         await this.page.evaluateHandle(
-            ({ baseData, componentWidth, componentHeight, viewportBuffer, itemSpan }) => {
+            ({ baseData, componentWidth, componentHeight, viewportBuffer, itemSize }) => {
                 const element = document.createElement(
                     "fast-virtual-list"
                 ) as fastVirtualList;
 
                 element.items = baseData;
                 element.viewportBuffer = viewportBuffer;
-                element.itemSpan = itemSpan;
+                element.itemSize = itemSize;
                 element.autoUpdateMode = "auto";
                 element.style.setProperty("width", `${componentWidth}px`);
                 element.style.setProperty("height", `${componentHeight}px`);
@@ -47,7 +47,7 @@ describe("FASTVirtualList", function () {
                 return element;
             },
             {
-                baseData, componentWidth, componentHeight, viewportBuffer, itemSpan,
+                baseData, componentWidth, componentHeight, viewportBuffer, itemSize,
             }
         );
     });
@@ -112,13 +112,13 @@ describe("FASTVirtualList", function () {
         expect(await element.evaluate(node => (node as fastVirtualList).lastRenderedIndex)).to.equal(8);
     });
 
-    it("should correctly calculate total stack span", async function () {
+    it("should correctly calculate total stack size", async function () {
         let element = (await this.page.waitForSelector(
             "fast-virtual-list"
         )) as ElementHandle<fastVirtualList>;
 
 
-        expect(await element.evaluate(node => (node as fastVirtualList).totalListSpan)).to.equal(10000);
+        expect(await element.evaluate(node => (node as fastVirtualList).totalListSize)).to.equal(10000);
     });
 
 });

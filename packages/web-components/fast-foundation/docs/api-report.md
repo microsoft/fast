@@ -2578,6 +2578,49 @@ export type SelectPosition = typeof SelectPosition[keyof typeof SelectPosition];
 export function selectTemplate<T extends FASTSelect>(options?: SelectOptions): ElementViewTemplate<T>;
 
 // @public
+export interface ServiceLocator {
+    get<K extends Key>(key: K): Resolved<K>;
+    get<K extends Key>(key: Key): Resolved<K>;
+    get<K extends Key>(key: K | Key): Resolved<K>;
+    getAll<K extends Key>(key: K, searchAncestors?: boolean): readonly Resolved<K>[];
+    getAll<K extends Key>(key: Key, searchAncestors?: boolean): readonly Resolved<K>[];
+    getAll<K extends Key>(key: K | Key, searchAncestors?: boolean): readonly Resolved<K>[];
+    has<K extends Key>(key: K | Key, searchAncestors: boolean): boolean;
+}
+
+// @public
+export const ServiceLocator: ContextDecorator<ServiceLocator>;
+
+// Warning: (ae-forgotten-export) The symbol "singletonDecorator" needs to be exported by the entry point index.d.ts
+//
+// @public
+export function singleton<T extends Constructable>(): typeof singletonDecorator;
+
+// @public (undocumented)
+export function singleton<T extends Constructable>(options?: SingletonOptions): typeof singletonDecorator;
+
+// @public
+export function singleton<T extends Constructable>(target: T & Partial<RegisterSelf<T>>): T & RegisterSelf<T>;
+
+// @public
+export interface SizeMap {
+    // (undocumented)
+    end: number;
+    // (undocumented)
+    size: number;
+    // (undocumented)
+    start: number;
+}
+
+// @public
+export class Skeleton extends FoundationElement {
+    fill: string;
+    pattern: string;
+    shape: SkeletonShape;
+    shimmer: boolean;
+}
+
+// @public
 export const SkeletonShape: {
     readonly rect: "rect";
     readonly circle: "circle";
@@ -2621,16 +2664,6 @@ export type SliderOptions = {
 
 // @public
 export function sliderTemplate<T extends FASTSlider>(options?: SliderOptions): ElementViewTemplate<T>;
-
-// @public
-export interface SpanMap {
-    // (undocumented)
-    end: number;
-    // (undocumented)
-    span: number;
-    // (undocumented)
-    start: number;
-}
 
 // @public
 export class StartEnd {
@@ -2815,10 +2848,10 @@ export class VirtualList extends FoundationElement {
     // @internal (undocumented)
     disconnectedCallback(): void;
     // @internal
-    endSpacerSpan: number;
+    endSpacerSize: number;
     // @internal
     firstRenderedIndex: number;
-    getItemSpanMap: (itemIndex: number) => SpanMap | null;
+    getItemSizeMap: (itemIndex: number) => SizeMap | null;
     // @internal
     handleChange(source: any, splices: Splice[]): void;
     // Warning: (ae-forgotten-export) The symbol "IdleCallbackQueue" needs to be exported by the entry point index.d.ts
@@ -2827,7 +2860,7 @@ export class VirtualList extends FoundationElement {
     idleCallbackQueue: IdleCallbackQueue;
     idleCallbackTimeout: number;
     items: object[];
-    itemSpan: number;
+    itemSize: number;
     itemTemplate: ViewTemplate;
     // @internal
     lastRenderedIndex: number;
@@ -2836,20 +2869,20 @@ export class VirtualList extends FoundationElement {
     recycle: boolean;
     protected requestPositionUpdates(): void;
     protected reset(): void;
-    spanmap: SpanMap[];
+    sizemap: SizeMap[];
     // @internal
-    startSpacerSpan: number;
+    startSpacerSize: number;
     // @internal
-    totalListSpan: number;
+    totalListSize: number;
     update(): void;
     viewport: string;
     viewportBuffer: number;
     viewportElement: HTMLElement;
     virtualize: boolean;
     // @internal
-    visibleItems: any[];
+    visibleItemMap: SizeMap[];
     // @internal
-    visibleItemSpans: SpanMap[];
+    visibleItems: any[];
 }
 
 // @public
