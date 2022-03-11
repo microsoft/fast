@@ -6,6 +6,7 @@
 
 import { AttributeConfiguration } from '@microsoft/fast-element';
 import { Behavior } from '@microsoft/fast-element';
+import { CaptureType } from '@microsoft/fast-element';
 import { ComposableStyles } from '@microsoft/fast-element';
 import { Constructable } from '@microsoft/fast-element';
 import { CSSDirective } from '@microsoft/fast-element';
@@ -2000,6 +2001,9 @@ export type RadioOptions = FoundationElementDefinition & {
 
 // @public
 export const radioTemplate: FoundationElementTemplate<ViewTemplate<Radio>, RadioOptions>;
+
+// @beta
+export function reflectAttributes<T = any>(...attributes: string[]): CaptureType<T>;
 
 // @public
 export type RegisterSelf<T extends Constructable> = {
