@@ -89,7 +89,7 @@ class ReflectAttrBehavior implements Behavior {
 
     public handleChange(source: HTMLElement, arg: string): void {
         // In cases where two or more ReflectAttrBehavior instances are bound to the same element,
-        // the will share a Subscriber implementation. In that case, this handle change can be invoked with for
+        // they will share a Subscriber implementation. In that case, this handle change can be invoked with
         // attributes an instances doesn't need to reflect. This guards against reflecting attrs
         // that shouldn't be reflected.
         if (this.attributes.includes(arg)) {
