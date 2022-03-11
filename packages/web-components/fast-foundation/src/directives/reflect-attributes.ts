@@ -3,6 +3,7 @@ import {
     Behavior,
     Subscriber,
     SubscriberSet,
+    DOM,
 } from "@microsoft/fast-element";
 import type { CaptureType } from "@microsoft/fast-element";
 
@@ -92,10 +93,7 @@ class ReflectAttrBehavior implements Behavior {
         // attributes an instances doesn't need to reflect. This guards against reflecting attrs
         // that shouldn't be reflected.
         if (this.attributes.includes(arg)) {
-            const value = source.getAttribute(arg);
-            value === null
-                ? this.target.removeAttribute(arg)
-                : this.target.setAttribute(arg, value);
+            DOM.setAttribute(this.target, arg, source.getAttribute(arg));
         }
     }
 }

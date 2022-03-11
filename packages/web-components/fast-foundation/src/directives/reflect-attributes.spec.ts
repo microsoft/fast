@@ -43,7 +43,7 @@ function connect(el: HTMLElement) {
         document.body.removeChild(el);
     }
 }
-describe.only("reflectAttributes", () => {
+describe("reflectAttributes", () => {
     it("should reflect configured attributes that exist on the host after connection", () => {
         const el = create();
         el.setAttribute("foo", "bar");
