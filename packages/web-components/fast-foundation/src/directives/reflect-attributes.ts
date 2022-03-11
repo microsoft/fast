@@ -100,6 +100,12 @@ class ReflectAttrBehavior implements Behavior {
     }
 }
 
+/**
+ * Reflects attributes from the host element to the target element of the directive.
+ * @param attributes - The attributes to reflect
+ *
+ * @beta
+ */
 export function reflectAttributes<T = any>(...attributes: string[]): CaptureType<T> {
     return new AttachedBehaviorHTMLDirective(
         "fast-reflect-attr",
