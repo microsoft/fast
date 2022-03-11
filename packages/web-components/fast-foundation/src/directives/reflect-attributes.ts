@@ -105,6 +105,16 @@ class ReflectAttrBehavior implements Behavior {
  * @param attributes - The attributes to reflect
  *
  * @beta
+ * @example
+ * ```ts
+ * const template = html`
+ *     <button
+ *         ${reflectAttributes("aria-label", "aria-describedby")}
+ *     >
+ *          hello world
+ *     </button
+ * `
+ * ```
  */
 export function reflectAttributes<T = any>(...attributes: string[]): CaptureType<T> {
     return new AttachedBehaviorHTMLDirective(
