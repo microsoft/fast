@@ -2876,7 +2876,7 @@ export class VirtualList extends FoundationElement {
     viewport: string;
     viewportBuffer: number;
     viewportElement: HTMLElement;
-    virtualize: boolean;
+    virtualizationEnabled: boolean;
     // @internal
     visibleItemMap: SizeMap[];
     // @internal

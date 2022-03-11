@@ -58,12 +58,12 @@ describe("VirtualList", () => {
         await disconnect();
     });
 
-    it("should have a default virtualize attr of 'true'", async () => {
+    it("should have a default virtualization-enabled attr of 'true'", async () => {
         const { element, connect, disconnect } = await setup();
 
         await connect();
 
-        expect(element.virtualize).to.equal(true);
+        expect(element.virtualizationEnabled).to.equal(true);
 
         await disconnect();
     });
@@ -118,11 +118,11 @@ describe("VirtualList", () => {
         await disconnect();
     });
 
-    it("should render all items when virtualize is false", async () => {
+    it("should render all items when virtualization-enabled is false", async () => {
         const { element, connect, disconnect } = await setup();
 
         element.items = newDataSet(100);
-        element.virtualize = false;
+        element.virtualizationEnabled = false;
         await connect();
 
         expect(element.visibleItems.length).to.equal(100);
@@ -156,7 +156,7 @@ describe("VirtualList", () => {
         const { element, connect, disconnect } = await setup();
 
         element.items = newDataSet(3);
-        element.virtualize = false;
+        element.virtualizationEnabled = false;
         element.sizemap = [
             {start: 0, size: 100, end: 100},
             {start: 100, size: 200, end: 300},
@@ -173,7 +173,7 @@ describe("VirtualList", () => {
         const { element, connect, disconnect } = await setup();
 
         element.items = newDataSet(3);
-        element.virtualize = false;
+        element.virtualizationEnabled = false;
         element.sizemap = [
             {start: 0, size: 100, end: 100},
             {start: 100, size: 200, end: 300},
@@ -191,7 +191,7 @@ describe("VirtualList", () => {
         const { element, connect, disconnect } = await setup();
 
         element.items = newDataSet(3);
-        element.virtualize = false;
+        element.virtualizationEnabled = false;
 
         await connect();
 
