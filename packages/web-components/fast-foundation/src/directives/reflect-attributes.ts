@@ -1,6 +1,9 @@
-import { Behavior, observable, Subscriber, Observable } from "@microsoft/fast-element";
-import { SubscriberSet } from "@microsoft/fast-element";
-import { AttachedBehaviorHTMLDirective } from "@microsoft/fast-element";
+import {
+    AttachedBehaviorHTMLDirective,
+    Behavior,
+    Subscriber,
+    SubscriberSet,
+} from "@microsoft/fast-element";
 import type { CaptureType } from "@microsoft/fast-element";
 
 const observer = new MutationObserver((mutations: MutationRecord[]) => {
@@ -23,6 +26,12 @@ class AttributeReflectionSubscriptionSet extends SubscriberSet {
             this.watchedAttributes.add(subscriber.attributes);
             this.observe();
         }
+    }
+
+    constructor(source: any) {
+        super(source);
+
+        AttributeReflectionSubscriptionSet.subscriberCache.set(source, this);
     }
 
     public unsubscribe(subscriber: Subscriber & ReflectAttrBehavior) {
@@ -63,6 +72,14 @@ class ReflectAttrBehavior implements Behavior {
 
     public bind(source: HTMLElement): void {
         AttributeReflectionSubscriptionSet.getOrCreateFor(source).subscribe(this);
+
+        // Reflect any existing attributes because MutationObserver will only
+        // handle *changes* to attributes.
+        if (source.hasAttributes()) {
+            for (let i = 0; i < source.attributes.length; i++) {
+                this.handleChange(source, source.attributes[i].name);
+            }
+        }
     }
 
     public unbind(source: any): void {
