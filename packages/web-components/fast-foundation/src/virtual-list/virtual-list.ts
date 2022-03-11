@@ -44,9 +44,9 @@ export class VirtualList extends FoundationElement {
      *
      * @public
      */
-    @attr({ attribute: "virtualize", mode: "boolean" })
-    public virtualize: boolean = true;
-    private virtualizeChanged(): void {
+    @attr({ attribute: "virtualization-enabled", mode: "boolean" })
+    public virtualizationEnabled: boolean = true;
+    private virtualizationEnabledChanged(): void {
         if (this.$fastController.isConnected) {
             this.reset();
         }
@@ -464,7 +464,7 @@ export class VirtualList extends FoundationElement {
      * get position updates
      */
     protected requestPositionUpdates(): void {
-        if (!this.virtualize) {
+        if (!this.virtualizationEnabled) {
             this.updateVisibleItems();
             return;
         }
@@ -686,7 +686,7 @@ export class VirtualList extends FoundationElement {
             return;
         }
 
-        if (!this.virtualize) {
+        if (!this.virtualizationEnabled) {
             this.visibleItems.splice(0, this.visibleItems.length, ...this.items);
             this.updateVisibleItemSizes(0, this.visibleItems.length - 1);
             return;
