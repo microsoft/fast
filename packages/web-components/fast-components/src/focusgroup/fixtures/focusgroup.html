@@ -26,6 +26,32 @@
         color: inherit;
         padding: 10px;
     }
+
+    .article {
+        width: 600px;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        border: 1px solid;
+        padding: 12px;
+        margin: 12px;
+        display: inline-block;
+    }
+
+    .article a {
+        text-decoration: none;
+        color: inherit;
+    }
+
+    .article ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        gap: 12px;
+        float: right;
+    }
+
+    .article ul li {
+    }
 </style>
 
 <h2>Basic focusgroup</h2>
@@ -37,6 +63,31 @@
         <a href="javascript:void(0);">Link 4</a>
         <a href="javascript:void(0);">Link 5</a>
     </div>
+</fast-focusgroup>
+
+<h2>Focusgroup with multiple elements</h2>
+<fast-focusgroup class="article">
+    <h2><a href="javascript: void(0)">Article title</a></h2>
+    <cite>
+        Source:
+        <a href="javascript: void(0)">source.site.com</a>
+    </cite>
+    <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus a rhoncus ante,
+        vitae ornare tellus. Proin dignissim sagittis lorem, nec
+        <a href="javascript: void(0)">semper mauris</a>
+        scelerisque a. Curabitur cursus varius est. Integer quis nulla congue, vestibulum
+        eros sit amet, tempor urna. Sed scelerisque pretium turpis a lobortis. Vestibulum
+        rhoncus enim vel ultricies commodo. Class aptent taciti sociosqu ad litora
+        torquent per conubia nostra, per inceptos himenaeos. Pellentesque egestas, neque
+        vitae consequat tincidunt, sem ipsum scelerisque lectus, ut commodo lectus purus
+        quis neque.
+    </p>
+    <ul>
+        <li><a href="javascript: void(0)">Like</a></li>
+        <li><a href="javascript: void(0)">Share</a></li>
+        <li><a href="javascript: void(0)">Feedback</a></li>
+    </ul>
 </fast-focusgroup>
 
 <h2>Focusgroup with wrapping</h2>

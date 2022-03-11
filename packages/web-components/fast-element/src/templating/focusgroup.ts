@@ -202,34 +202,52 @@ export class FocusgroupBehavior implements Behavior {
                             ["x", "y"].forEach(axis => {
                                 const { overlap, offset, direction } = context[axis];
                                 if (overlap > 0) {
-                                    const sides = {
-                                        x: { false: "left", true: "right" },
-                                        y: { false: "up", true: "down" },
-                                    };
-                                    const side = direction;
-                                    const opposite = sides[axis][direction === false];
-                                    const dside = directions[side];
+                                    const sides = [
+                                        ["left", "right"],
+                                        ["up", "down"],
+                                    ];
+                                    const opSide = (dir: string): string =>
+                                        sides
+                                            .find(a => !!a.find(b => b === dir))
+                                            ?.filter(a => a !== dir)[0] || "up";
+                                    const opposite = opSide(direction);
+                                    const dside = directions[direction];
                                     const oside = directions[opposite];
                                     if (
+                                        // is not set yet
                                         dside.offset === undefined ||
-                                        sides[axis][dside.offset >= 0] !== side ||
+                                        // child is the same direction and previous was opposite
+                                        dside.direction === opposite ||
+                                        // child is closer than previous
                                         Math.abs(offset) <= Math.abs(dside.offset) ||
+                                        // child is same distance but has more overlap
                                         (Math.abs(offset) === Math.abs(dside.offset) &&
                                             overlap > dside.overlap)
                                     ) {
-                                        directions[side] = Object.assign(
+                                        directions[direction] = Object.assign(
                                             {},
                                             { index: ci },
                                             context[axis]
                                         );
                                     }
                                     if (
-                                        ((wrap === "both" ||
-                                            (axis === "x" && wrap === "horizontal") ||
-                                            (axis === "y" && wrap === "vertical")) &&
-                                            !oside.offset) ||
-                                        (opposite === sides[axis][oside.offset < 0] &&
-                                            Math.abs(oside.offset) < Math.abs(offset))
+                                        // wrapping is enabled
+                                        (this.options.wrap === "both" ||
+                                            (axis === "x" &&
+                                                this.options.wrap === "horizontal") ||
+                                            (axis === "y" &&
+                                                this.options.wrap === "vertical")) &&
+                                        // no opposite side yet
+                                        (oside.offset === undefined ||
+                                            // current is in opposite direction
+                                            (oside.direction === direction &&
+                                                // child is farther away
+                                                (Math.abs(oside.offset) <
+                                                    Math.abs(offset) ||
+                                                    // same distance but more overlap
+                                                    (Math.abs(oside.offset) ===
+                                                        Math.abs(offset) &&
+                                                        oside.overlap < overlap))))
                                     ) {
                                         directions[opposite] = Object.assign(
                                             {},
