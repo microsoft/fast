@@ -15,12 +15,15 @@
     ],
     "repository": {
         "css-tagged-template": {
-            "begin": "(?<!\\.)(css)\\s*(`)",
+            "begin": "(?i)(?<!\\.)(css|((?:\\/\\*\\s*?)css(?:\\s*\\*\\/)))\\s*(`)",
             "beginCaptures": {
                 "1": {
                     "name": "entity.name.function.tagged-template.ts"
                 },
                 "2": {
+                    "name": "comment.block"
+                },
+                "3": {
                     "name": "punctuation.definition.string.template.begin.ts"
                 }
             },
@@ -38,7 +41,7 @@
             ]
         },
         "html-tagged-template": {
-            "begin": "(?<!\\.)(html)(<.*?>)?(`)",
+            "begin": "(?i)((?<!\\.)html(<.*?>)?|((?:\\/\\*\\s*)html(<.*?>)?(?:\\s*\\*\\/)))\\s*?(`)",
             "beginCaptures": {
                 "1": {
                     "name": "entity.name.function.tagged-template.ts"
@@ -51,6 +54,16 @@
                     ]
                 },
                 "3": {
+                    "name": "comment.block"
+                },
+                "4": {
+                    "patterns": [
+                        {
+                            "include": "source.ts#type-parameters"
+                        }
+                    ]
+                },
+                "5": {
                     "name": "punctuation.definition.string.template.begin.ts"
                 }
             },

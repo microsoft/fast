@@ -2,6 +2,52 @@
   "name": "@microsoft/fast-components",
   "entries": [
     {
+      "date": "Wed, 09 Mar 2022 07:12:32 GMT",
+      "tag": "@microsoft/fast-components_v2.22.2",
+      "version": "2.22.2",
+      "comments": {
+        "none": [
+          {
+            "comment": "Remove `card-background-color` from doc and story",
+            "author": "fcollonval@gmail.com",
+            "commit": "b784c1ea3581e62b94083d6defa17d9202a308c3",
+            "package": "@microsoft/fast-components"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-foundation to v2.35.2",
+            "author": "20542556+mollykreis@users.noreply.github.com",
+            "commit": "b4549c8a383d6ac43d2967491e5596bbffb87d80",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 08 Mar 2022 07:12:45 GMT",
+      "tag": "@microsoft/fast-components_v2.22.1",
+      "version": "2.22.1",
+      "comments": {
+        "none": [
+          {
+            "comment": "Fix CSS typo in radio group stories",
+            "author": "fcollonval@gmail.com",
+            "commit": "638cf9870c50b314b4b34cc055a3f59862e301ca",
+            "package": "@microsoft/fast-components"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "flex items should be aligned on cross axis.",
+            "author": "srdsecond@gmail.com",
+            "commit": "bb9c277af2b51fa445e75282c7432346c081f674",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sun, 06 Mar 2022 07:13:48 GMT",
       "tag": "@microsoft/fast-components_v2.22.0",
       "version": "2.22.0",

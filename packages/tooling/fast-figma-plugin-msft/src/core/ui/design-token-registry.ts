@@ -6,6 +6,7 @@ export enum DesignTokenType {
     backgroundFill = "backgroundFill",
     foregroundFill = "foregroundFill",
     strokeFill = "strokeFill",
+    strokeWidth = "strokeWidth",
     cornerRadius = "cornerRadius",
     fontName = "fontName",
     fontSize = "fontSize",

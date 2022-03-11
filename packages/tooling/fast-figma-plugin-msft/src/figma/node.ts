@@ -1,5 +1,10 @@
 import { ColorRGBA64, parseColor } from "@microsoft/fast-colors";
-import { AppliedRecipes, PluginNodeData, RecipeEvaluation } from "../core/model";
+import {
+    AppliedDesignTokens,
+    AppliedRecipes,
+    PluginNodeData,
+    RecipeEvaluation,
+} from "../core/model";
 import { PluginNode } from "../core/node";
 import { DesignTokenType } from "../core/ui/design-token-registry";
 
@@ -76,6 +81,8 @@ export class FigmaPluginNode extends PluginNode {
     constructor(node: BaseNode) {
         super();
 
+        // Controller.nodeCount++;
+
         // console.log("  new FigmaPluginNode", node.id, node.name, node);
 
         this.node = node;
@@ -88,27 +95,45 @@ export class FigmaPluginNode extends PluginNode {
 
         // If it's an instance node, the `recipes` may also include main component settings. Deduplicate them.
         if (isInstanceNode(this.node)) {
-            const mainNode = (this.node as InstanceNode).mainComponent;
-            if (mainNode) {
-                this._componentRecipes = new AppliedRecipes();
-                const componentRecipesJson = mainNode.getPluginData("recipes");
-                this._componentRecipes.deserialize(componentRecipesJson);
-
-                this._componentRecipes.forEach((recipe, recipeId) => {
-                    this._recipes.delete(recipeId);
-                });
+            const mainComponentNode = (this.node as InstanceNode).mainComponent;
+            if (mainComponentNode) {
+                this.deduplicateComponentDesignTokens(mainComponentNode);
+                this.deduplicateComponentRecipes(mainComponentNode);
             }
         }
 
-        if (this._recipes.size) {
-            // console.log("    recipes", this._recipes.serialize());
-        }
+        // if (this._recipes.size) {
+        //     console.log("    final recipes", this._recipes.serialize());
+        // }
 
         // TODO This isn't working and is causing a lot of token evaluation issues. It would be nice if _some_ layers
         // in the design tool could have a fixed color and provide that to the tokens, but the logic for _which_
         // layers turns out to be pretty complicated.
         // For now the requirement is basing the adaptive design with a "layer" recipe.
         // this.setupFillColor();
+    }
+
+    private deduplicateComponentDesignTokens(node: BaseNode) {
+        this._componentDesignTokens = new AppliedDesignTokens();
+        const componentDesignTokensJson = node.getSharedPluginData(
+            "fast",
+            "designTokens"
+        );
+        this._componentDesignTokens.deserialize(componentDesignTokensJson);
+
+        this._componentDesignTokens.forEach((token, tokenId) => {
+            this._localDesignTokens.delete(tokenId);
+        });
+    }
+
+    private deduplicateComponentRecipes(node: BaseNode) {
+        this._componentRecipes = new AppliedRecipes();
+        const componentRecipesJson = node.getSharedPluginData("fast", "recipes");
+        this._componentRecipes.deserialize(componentRecipesJson);
+
+        this._componentRecipes.forEach((recipe, recipeId) => {
+            this._recipes.delete(recipeId);
+        });
     }
 
     public canHaveChildren(): boolean {
@@ -135,20 +160,56 @@ export class FigmaPluginNode extends PluginNode {
             switch (key) {
                 case DesignTokenType.layerFill:
                 case DesignTokenType.backgroundFill:
-                case DesignTokenType.strokeFill:
-                case DesignTokenType.cornerRadius:
                     return [
-                        (node: BaseNode) => isDocumentNode(node),
-                        (node: BaseNode) =>
-                            isPageNode(node) && key === DesignTokenType.backgroundFill,
+                        isDocumentNode,
+                        isPageNode,
                         isFrameNode,
                         isRectangleNode,
+                        isEllipseNode,
+                        isPolygonNode,
+                        isStarNode,
+                        isBooleanOperationNode,
+                        isVectorNode,
+                        isComponentNode,
+                        isInstanceNode,
+                    ].some((test: (node: BaseNode) => boolean) => test(this.node));
+                case DesignTokenType.strokeFill:
+                case DesignTokenType.strokeWidth:
+                    return [
+                        isFrameNode,
+                        isRectangleNode,
+                        isEllipseNode,
+                        isPolygonNode,
+                        isStarNode,
+                        isLineNode,
+                        isVectorNode,
+                        isComponentNode,
+                        isInstanceNode,
+                    ].some((test: (node: BaseNode) => boolean) => test(this.node));
+                case DesignTokenType.cornerRadius:
+                    return [
+                        isFrameNode,
+                        isRectangleNode,
+                        isEllipseNode,
                         isPolygonNode,
                         isStarNode,
                         isComponentNode,
                         isInstanceNode,
                     ].some((test: (node: BaseNode) => boolean) => test(this.node));
                 case DesignTokenType.foregroundFill:
+                    return [
+                        isFrameNode,
+                        isRectangleNode,
+                        isEllipseNode,
+                        isPolygonNode,
+                        isLineNode,
+                        isStarNode,
+                        isBooleanOperationNode,
+                        isVectorNode,
+                        isComponentNode,
+                        isInstanceNode,
+                        isTextNode,
+                    ].some((test: (node: BaseNode) => boolean) => test(this.node));
                 case DesignTokenType.fontName:
                 case DesignTokenType.fontSize:
                 case DesignTokenType.lineHeight:
@@ -168,6 +229,9 @@ export class FigmaPluginNode extends PluginNode {
             case DesignTokenType.backgroundFill:
             case DesignTokenType.foregroundFill:
                 this.paintColor(data);
+                break;
+            case DesignTokenType.strokeWidth:
+                this.paintStrokeWidth(data);
                 break;
             case DesignTokenType.cornerRadius:
                 this.paintCornerRadius(data);
@@ -254,13 +318,6 @@ export class FigmaPluginNode extends PluginNode {
             value = undefined;
         }
         // console.log("    getPluginData", this.node.id, this.node.type, key, value);
-
-        if (isInstanceNode(this.node)) {
-            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            // const mainNode = (this.node as InstanceNode).mainComponent!;
-            // console.log("    getPluginData", mainNode.id, mainNode.type, key, mainNode.getPluginData(key));
-        }
-
         return value;
     }
 
@@ -275,26 +332,92 @@ export class FigmaPluginNode extends PluginNode {
     }
 
     private paintColor(data: RecipeEvaluation): void {
-        const color = parseColor(data.value);
+        let paint: Paint | null = null;
 
-        if (color === null) {
-            throw new Error(
-                `The value "${data.value}" could not be converted to a ColorRGBA64`
-            );
+        if (data.value.startsWith("linear-gradient")) {
+            const linearMatch = /linear-gradient\((?<params>.+)\)/;
+            const matches = data.value.match(linearMatch);
+            if (matches && matches.groups) {
+                const array = matches.groups.params.split(",").map(p => p.trim());
+
+                let degrees: number = 90;
+                if (array[0].endsWith("deg")) {
+                    const angle = array.shift()?.replace("deg", "") || "90";
+                    degrees = Number.parseFloat(angle);
+                }
+                const radians: number = degrees * (Math.PI / 180);
+
+                const paramMatch = /(?<color>#[\w\d]+)( (?<pos>.+))?/;
+                const stops = array.map((p, index, array) => {
+                    const paramMatches = p.match(paramMatch);
+                    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                    const color = parseColor(paramMatches?.groups?.color || "FF00FF")!;
+                    let position: number = 0;
+                    if (paramMatches?.groups && paramMatches?.groups?.pos) {
+                        if (paramMatches.groups.pos.endsWith("%")) {
+                            position = Number.parseFloat(paramMatches.groups.pos) / 100;
+                        } else if (paramMatches.groups.pos.startsWith("calc(100% - ")) {
+                            const px = Number.parseFloat(
+                                paramMatches.groups.pos
+                                    .replace("calc(100% - ", "")
+                                    .replace("px)", "")
+                            );
+                            const size =
+                                degrees === 90 || degrees === 270
+                                    ? (this.node as LayoutMixin).height
+                                    : (this.node as LayoutMixin).width;
+                            position = (size - px) / size;
+                        }
+                    } else if (index === array.length - 1) {
+                        position = 1;
+                    }
+                    const stop: ColorStop = {
+                        position,
+                        color: {
+                            r: color.r,
+                            g: color.g,
+                            b: color.b,
+                            a: color.a,
+                        },
+                    };
+                    return stop;
+                });
+
+                const gradientPaint: GradientPaint = {
+                    type: "GRADIENT_LINEAR",
+                    gradientStops: stops,
+                    gradientTransform: [
+                        [Math.cos(radians), Math.sin(radians), 0],
+                        [Math.sin(radians) * -1, Math.cos(radians), 1],
+                    ],
+                };
+                paint = gradientPaint;
+            }
+        } else {
+            // Assume it's solid
+            const color = parseColor(data.value);
+
+            if (color === null) {
+                throw new Error(
+                    `The value "${data.value}" could not be converted to a ColorRGBA64`
+                );
+            }
+
+            const colorObject = color.toObject();
+            const solidPaint: SolidPaint = {
+                type: "SOLID",
+                visible: true,
+                opacity: colorObject.a,
+                blendMode: "NORMAL",
+                color: {
+                    r: colorObject.r,
+                    g: colorObject.g,
+                    b: colorObject.b,
+                },
+            };
+            paint = solidPaint;
         }
 
-        const colorObject = color.toObject();
-        const paint: SolidPaint = {
-            type: "SOLID",
-            visible: true,
-            opacity: colorObject.a,
-            blendMode: "NORMAL",
-            color: {
-                r: colorObject.r,
-                g: colorObject.g,
-                b: colorObject.b,
-            },
-        };
         switch (data.type) {
             case DesignTokenType.layerFill:
             case DesignTokenType.backgroundFill:
@@ -305,6 +428,10 @@ export class FigmaPluginNode extends PluginNode {
                 (this.node as any).strokes = [paint];
                 break;
         }
+    }
+
+    private paintStrokeWidth(data: RecipeEvaluation): void {
+        (this.node as any).strokeWeight = Number.parseFloat(data.value);
     }
 
     private paintCornerRadius(data: RecipeEvaluation): void {

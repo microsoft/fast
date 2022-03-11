@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "use WeakMap to prevent leaking element references from FormAssociated",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "nicholasrice@users.noreply.github.com",
+  "dependentChangeType": "patch"
+}

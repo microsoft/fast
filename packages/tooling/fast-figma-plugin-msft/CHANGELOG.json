@@ -2,6 +2,44 @@
   "name": "@microsoft/fast-figma-plugin-msft",
   "entries": [
     {
+      "date": "Wed, 09 Mar 2022 07:12:32 GMT",
+      "tag": "@microsoft/fast-figma-plugin-msft_v0.8.16",
+      "version": "0.8.16",
+      "comments": {
+        "none": [
+          {
+            "comment": "Bump @microsoft/fast-components to v2.22.2",
+            "author": "fcollonval@gmail.com",
+            "commit": "b784c1ea3581e62b94083d6defa17d9202a308c3",
+            "package": "@microsoft/fast-figma-plugin-msft"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-react-wrapper to v0.1.37",
+            "author": "20542556+mollykreis@users.noreply.github.com",
+            "commit": "b4549c8a383d6ac43d2967491e5596bbffb87d80",
+            "package": "@microsoft/fast-figma-plugin-msft"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 08 Mar 2022 07:12:45 GMT",
+      "tag": "@microsoft/fast-figma-plugin-msft_v0.8.16",
+      "version": "0.8.16",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-components to v2.22.1",
+            "author": "srdsecond@gmail.com",
+            "commit": "bb9c277af2b51fa445e75282c7432346c081f674",
+            "package": "@microsoft/fast-figma-plugin-msft"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sun, 06 Mar 2022 07:13:48 GMT",
       "tag": "@microsoft/fast-figma-plugin-msft_v0.8.16",
       "version": "0.8.16",

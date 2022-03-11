@@ -1,8 +1,24 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Sun, 06 Mar 2022 07:13:48 GMT and should not be manually modified.
+This log was last generated on Wed, 09 Mar 2022 07:12:32 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.35.2
+
+Wed, 09 Mar 2022 07:12:32 GMT
+
+### Patches
+
+- Fix bug with menu-item indention (20542556+mollykreis@users.noreply.github.com)
+
+## 2.35.1
+
+Tue, 08 Mar 2022 07:12:45 GMT
+
+### Patches
+
+- Fix programmatic disable/enable of tabs (5454342+brianehenry@users.noreply.github.com)
 
 ## 2.35.0
 
