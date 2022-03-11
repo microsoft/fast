@@ -2,6 +2,35 @@
   "name": "@microsoft/fast-foundation",
   "entries": [
     {
+      "date": "Fri, 11 Mar 2022 23:46:34 GMT",
+      "tag": "@microsoft/fast-foundation_v2.36.0",
+      "version": "2.36.0",
+      "comments": {
+        "patch": [
+          {
+            "comment": "use WeakMap to prevent leaking element references from FormAssociated",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "05aef922b364f63d3d56e165eeb46840dec43f32",
+            "package": "@microsoft/fast-foundation"
+          }
+        ],
+        "minor": [
+          {
+            "comment": "BREAKING CHANGE: replace WC button with stock HTML button",
+            "author": "jes@microsoft.com",
+            "commit": "9b838f36e388958f927c1f6d80d6fa736186897c",
+            "package": "@microsoft/fast-foundation"
+          },
+          {
+            "comment": "implement attribute reflection directive",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "efe6e62397cac815b68a688624ae35a31b826a53",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 09 Mar 2022 07:12:32 GMT",
       "tag": "@microsoft/fast-foundation_v2.35.2",
       "version": "2.35.2",

@@ -1,7 +1,0 @@
-{
-  "type": "minor",
-  "comment": "implement attribute reflection directive",
-  "packageName": "@microsoft/fast-foundation",
-  "email": "nicholasrice@users.noreply.github.com",
-  "dependentChangeType": "patch"
-}
