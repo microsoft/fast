@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "Fix bug with menu-item indention",
-  "packageName": "@microsoft/fast-foundation",
-  "email": "20542556+mollykreis@users.noreply.github.com",
-  "dependentChangeType": "patch"
-}
