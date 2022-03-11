@@ -835,7 +835,7 @@ export class VirtualList extends FoundationElement {
         this.firstRenderedIndex = newFirstRenderedIndex;
         this.lastRenderedIndex = newLastRenderedIndex;
 
-        this.$emit("rendered-range-change", this, { bubbles: false });
+        this.$emit("renderedrangechange", this, { bubbles: false });
     }
 
     /**
