@@ -139,7 +139,7 @@ describe("VirtualList", () => {
         await DOM.nextUpdate();
 
         let eventEmitted = false;
-        element.addEventListener("rendered-range-change", e => {
+        element.addEventListener("renderedrangechange", e => {
             eventEmitted = true;
         });
 
