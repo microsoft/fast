@@ -98,7 +98,7 @@ export const supportsElementInternals =
     ElementInternalsKey in window &&
     "setFormValue" in window[ElementInternalsKey].prototype;
 
-const InternalsMap = new Map();
+const InternalsMap = new WeakMap();
 
 /**
  * Base class for providing Custom Element Form Association.
