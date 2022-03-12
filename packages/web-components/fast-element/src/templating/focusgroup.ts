@@ -3,6 +3,10 @@ import {
     keyArrowLeft,
     keyArrowRight,
     keyArrowUp,
+    keyEnd,
+    keyHome,
+    keyPageDown,
+    keyPageUp,
 } from "@microsoft/fast-web-utilities";
 import { AttachedBehaviorHTMLDirective, ExecutionContext } from "..";
 import type { Behavior } from "../observation/behavior";
@@ -18,6 +22,39 @@ export interface FocusgroupBehaviorOptions {
     extend?: boolean;
     bubble?: boolean;
 }
+
+export type DirectionGuide = {
+    up: {
+        index: number;
+        overlap?: number;
+        offset?: number;
+    };
+    right: {
+        index: number;
+        overlap?: number;
+        offset?: number;
+    };
+    down: {
+        index: number;
+        overlap?: number;
+        offset?: number;
+    };
+    left: {
+        index: number;
+        overlap?: number;
+        offset?: number;
+    };
+    top: {
+        index: number;
+        overlap?: number;
+        offset?: number;
+    };
+    bottom: {
+        index: number;
+        overlap?: number;
+        offset?: number;
+    };
+};
 
 /**
  * Focusgroup behavior
@@ -46,28 +83,19 @@ export class FocusgroupBehavior implements Behavior {
 
     private focusItems: HTMLElement[];
 
-    private positions: {
-        up: {
-            index: number;
-            overlap?: number;
-            offset?: number;
-        };
-        right: {
-            index: number;
-            overlap?: number;
-            offset?: number;
-        };
-        down: {
-            index: number;
-            overlap?: number;
-            offset?: number;
-        };
-        left: {
-            index: number;
-            overlap?: number;
-            offset?: number;
-        };
-    }[];
+    private positions: DirectionGuide[];
+
+    private firstElement: {
+        node: HTMLElement;
+        distance: number;
+        index: number;
+    };
+
+    private lastElement: {
+        node: HTMLElement;
+        distance: number;
+        index: number;
+    };
 
     /**
      * Gets the elements under the focusgroup that are focusable
@@ -155,11 +183,13 @@ export class FocusgroupBehavior implements Behavior {
             y: number;
             x2: number;
             y2: number;
+            distance: number;
+            fromEnd: number;
             context?: any;
         };
         this.positions = this.focusItems
             .map(
-                (child: HTMLElement): dataStruct => {
+                (child: HTMLElement, index: number): dataStruct => {
                     const overlap = (a, b, axis = "x"): number =>
                         Math.min(a[`${axis}2`], b[`${axis}2`]) -
                         Math.max(a[axis], b[axis]);
@@ -178,7 +208,30 @@ export class FocusgroupBehavior implements Behavior {
                         y,
                         x2: x + offsetWidth,
                         y2: y + offsetHeight,
+                        distance: Math.hypot(x, y),
+                        fromEnd: Math.hypot(x + offsetWidth, y + offsetWidth),
                     };
+
+                    if (
+                        !this.firstElement ||
+                        this.firstElement.distance > data.distance
+                    ) {
+                        this.firstElement = {
+                            node: child,
+                            distance: data.distance,
+                            index,
+                        };
+                    }
+
+                    if (!this.lastElement || this.lastElement.distance < data.fromEnd) {
+                        this.lastElement = {
+                            node: child,
+                            distance: data.fromEnd,
+                            index,
+                        };
+                    }
+                    const getClosestPoint = (a: number[], b: number[]): number =>
+                        Math.min(...a.map(c => b.map(d => Math.abs(d - c))).flat());
                     data.context = compare => ({
                         x: {
                             overlap: overlap(data, compare, "y"),
@@ -190,13 +243,17 @@ export class FocusgroupBehavior implements Behavior {
                             offset: offset(data, compare, "y"),
                             direction: data.y < compare.y ? "down" : "up",
                         },
+                        distance: Math.hypot(
+                            getClosestPoint([data.x, data.x2], [compare.x, compare.x2]),
+                            getClosestPoint([data.y, data.y2], [compare.y, compare.y2])
+                        ),
                     });
                     return data;
                 }
             )
             .map((child: dataStruct, index: number, areas: dataStruct[]) =>
                 areas.reduce(
-                    (directions, child2, ci) => {
+                    (directions: DirectionGuide, child2: dataStruct, ci: number) => {
                         if (ci !== index) {
                             const context = child.context(child2);
                             ["x", "y"].forEach(axis => {
@@ -255,12 +312,45 @@ export class FocusgroupBehavior implements Behavior {
                                             context[axis]
                                         );
                                     }
+
+                                    if (
+                                        direction === "up" &&
+                                        (directions.top.offset === undefined ||
+                                            Math.abs(offset) >
+                                                Math.abs(directions.top.offset))
+                                    ) {
+                                        directions.top = Object.assign(
+                                            {},
+                                            { index: ci },
+                                            context[axis]
+                                        );
+                                    }
+
+                                    if (
+                                        direction === "down" &&
+                                        (directions.bottom.offset === undefined ||
+                                            Math.abs(offset) >
+                                                Math.abs(directions.bottom.offset))
+                                    ) {
+                                        directions.bottom = Object.assign(
+                                            {},
+                                            { index: ci },
+                                            context[axis]
+                                        );
+                                    }
                                 }
                             });
                         }
                         return directions;
                     },
-                    { up: { index }, right: { index }, down: { index }, left: { index } }
+                    {
+                        up: { index },
+                        right: { index },
+                        down: { index },
+                        left: { index },
+                        top: { index },
+                        bottom: { index },
+                    }
                 )
             );
     }
@@ -302,6 +392,14 @@ export class FocusgroupBehavior implements Behavior {
                 return moveToIndex(position.down.index);
             case keyArrowLeft:
                 return moveToIndex(position.left.index);
+            case keyHome:
+                return moveToIndex(this.firstElement.index);
+            case keyEnd:
+                return moveToIndex(this.lastElement.index);
+            case keyPageDown:
+                return moveToIndex(position.bottom.index);
+            case keyPageUp:
+                return moveToIndex(position.top.index);
         }
 
         return true;
