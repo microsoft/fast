@@ -1,5 +1,6 @@
 {
   "type": "major",
+  "comment": "feat: aspected html directive exposes metadata",
   "packageName": "@microsoft/fast-element",
   "email": "roeisenb@microsoft.com",
   "dependentChangeType": "patch"
