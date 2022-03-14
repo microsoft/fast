@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "anchored region not beta",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "scomea@microsoft.com",
+  "dependentChangeType": "patch"
+}
