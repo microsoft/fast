@@ -1,4 +1,4 @@
-import { InlinableHTMLDirective } from "@microsoft/fast-element";
+import { HTMLDirective } from "@microsoft/fast-element";
 import { AttributeType } from "./attributes.js";
 
 /**
@@ -62,7 +62,7 @@ export type CustomElementShadowOp = {
  */
 export type DirectiveOp = {
     type: OpType.directive;
-    directive: InlinableHTMLDirective;
+    directive: HTMLDirective;
 };
 
 /**
@@ -70,7 +70,7 @@ export type DirectiveOp = {
  */
 export type AttributeBindingOp = {
     type: OpType.attributeBinding;
-    directive: InlinableHTMLDirective;
+    directive: HTMLDirective;
     name: string;
     attributeType: AttributeType;
     useCustomElementInstance: boolean;

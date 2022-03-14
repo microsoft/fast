@@ -38,7 +38,6 @@ test.describe("parseTemplateToOpCodes", () => {
             const code = codes[0] as DirectiveOp;
             expect(codes.length).toBe(1);
             expect(code.type).toBe(OpType.directive);
-            expect(code.directive.binding(null, defaultExecutionContext)).toBe("Hello World.")
     });
     test("should sandwich directive ops between text ops when binding native element content", () => {
 

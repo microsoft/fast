@@ -49,7 +49,7 @@ export class AttributeDefinition implements Accessor {
     onAttributeChangedCallback(element: HTMLElement, value: any): void;
     readonly Owner: Function;
     setValue(source: HTMLElement, newValue: any): void;
-    }
+}
 
 // @public
 export type AttributeMode = "reflect" | "boolean" | "fromView";
@@ -395,11 +395,9 @@ export const enum KernelServiceId {
 
 // @public
 export const Markup: Readonly<{
-    marker: string;
     interpolation(index: number): string;
     attribute(index: number): string;
     comment(index: number): string;
-    indexFromComment(node: Comment): number;
 }>;
 
 // Warning: (ae-internal-missing-underscore) The name "Mutable" should be prefixed with an underscore because the declaration is marked as @internal
@@ -459,7 +457,7 @@ export const oneTime: BindingConfig<DefaultBindingOptions> & BindingConfigResolv
 // @public
 export const Parser: Readonly<{
     parse(value: string, directives: readonly HTMLDirective[]): (string | HTMLDirective)[] | null;
-    aggregate(parts: (string | HTMLDirective)[]): InlinableHTMLDirective;
+    aggregate(parts: (string | HTMLDirective)[]): HTMLDirective;
 }>;
 
 // @public
@@ -502,14 +500,14 @@ export class RepeatBehavior<TSource = any> implements Behavior, Subscriber {
     // @internal (undocumented)
     handleChange(source: any, args: Splice[]): void;
     unbind(): void;
-    }
+}
 
 // @public
 export class RepeatDirective<TSource = any> extends HTMLDirective {
     constructor(itemsBinding: Binding, templateBinding: Binding<TSource, SyntheticViewTemplate>, options: RepeatOptions);
     createBehavior(targets: ViewBehaviorTargets): RepeatBehavior<TSource>;
     createPlaceholder: (index: number) => string;
-    }
+}
 
 // @public
 export interface RepeatOptions {
@@ -655,7 +653,6 @@ export function volatile(target: {}, name: string | Accessor, descriptor: Proper
 
 // @public
 export function when<TSource = any, TReturn = any>(binding: Binding<TSource, TReturn>, templateOrTemplateBinding: SyntheticViewTemplate | Binding<TSource, SyntheticViewTemplate>): CaptureType<TSource>;
-
 
 // (No @packageDocumentation comment for this package)
 
