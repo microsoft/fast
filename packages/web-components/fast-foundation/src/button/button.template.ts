@@ -3,6 +3,7 @@ import type { ViewTemplate } from "@microsoft/fast-element";
 import { endSlotTemplate, startSlotTemplate } from "../patterns/start-end";
 import type { FoundationElementTemplate } from "../foundation-element";
 import type { Button, ButtonOptions } from "./button";
+import { reflectAttributes } from "../directives/reflect-attributes";
 
 /**
  * The template for the {@link @microsoft/fast-foundation#(Button:class)} component.
@@ -17,36 +18,38 @@ export const buttonTemplate: FoundationElementTemplate<
         part="control"
         ?autofocus="${x => x.autofocus}"
         ?disabled="${x => x.disabled}"
-        form="${x => x.formId}"
-        formaction="${x => x.formaction}"
-        formenctype="${x => x.formenctype}"
-        formmethod="${x => x.formmethod}"
-        formnovalidate="${x => x.formnovalidate}"
-        formtarget="${x => x.formtarget}"
-        name="${x => x.name}"
-        type="${x => x.type}"
-        value="${x => x.value}"
-        aria-atomic="${x => x.ariaAtomic}"
-        aria-busy="${x => x.ariaBusy}"
-        aria-controls="${x => x.ariaControls}"
-        aria-current="${x => x.ariaCurrent}"
-        aria-describedby="${x => x.ariaDescribedby}"
-        aria-details="${x => x.ariaDetails}"
-        aria-disabled="${x => x.ariaDisabled}"
-        aria-errormessage="${x => x.ariaErrormessage}"
-        aria-expanded="${x => x.ariaExpanded}"
-        aria-flowto="${x => x.ariaFlowto}"
-        aria-haspopup="${x => x.ariaHaspopup}"
-        aria-hidden="${x => x.ariaHidden}"
-        aria-invalid="${x => x.ariaInvalid}"
-        aria-keyshortcuts="${x => x.ariaKeyshortcuts}"
-        aria-label="${x => x.ariaLabel}"
-        aria-labelledby="${x => x.ariaLabelledby}"
-        aria-live="${x => x.ariaLive}"
-        aria-owns="${x => x.ariaOwns}"
-        aria-pressed="${x => x.ariaPressed}"
-        aria-relevant="${x => x.ariaRelevant}"
-        aria-roledescription="${x => x.ariaRoledescription}"
+        ${reflectAttributes(
+            "form",
+            "formaction",
+            "formenctype",
+            "formmethod",
+            "formnovalidate",
+            "formtarget",
+            "name",
+            "type",
+            "value",
+            "aria-atomic",
+            "aria-busy",
+            "aria-controls",
+            "aria-current",
+            "aria-describedby",
+            "aria-details",
+            "aria-disabled",
+            "aria-errormessage",
+            "aria-expanded",
+            "aria-flowto",
+            "aria-haspopup",
+            "aria-hidden",
+            "aria-invalid",
+            "aria-keyshortcuts",
+            "aria-label",
+            "aria-labelledby",
+            "aria-live",
+            "aria-owns",
+            "aria-pressed",
+            "aria-relevant",
+            "aria-roledescription"
+        )}
         ${ref("control")}
     >
         ${startSlotTemplate(context, definition)}

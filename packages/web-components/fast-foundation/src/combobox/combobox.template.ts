@@ -4,6 +4,7 @@ import type { FoundationElementTemplate } from "../foundation-element";
 import { Listbox } from "../listbox/listbox";
 import { endSlotTemplate, startSlotTemplate } from "../patterns/start-end";
 import type { Combobox, ComboboxOptions } from "./combobox";
+import { reflectAttributes } from "../directives/reflect-attributes";
 
 /**
  * The template for the {@link @microsoft/fast-foundation#(Combobox:class)} component.
@@ -30,18 +31,20 @@ export const comboboxTemplate: FoundationElementTemplate<
                 <input
                     aria-activedescendant="${x =>
                         x.open ? x.ariaActiveDescendant : null}"
-                    aria-autocomplete="${x => x.ariaAutoComplete}"
-                    aria-controls="${x => x.ariaControls}"
-                    aria-disabled="${x => x.ariaDisabled}"
-                    aria-expanded="${x => x.ariaExpanded}"
                     aria-haspopup="listbox"
                     class="selected-value"
                     part="selected-value"
-                    placeholder="${x => x.placeholder}"
                     role="combobox"
                     type="text"
                     ?disabled="${x => x.disabled}"
                     :value="${x => x.value}"
+                    ${reflectAttributes(
+                        "aria-autocomplete",
+                        "aria-controls",
+                        "aria-disabled",
+                        "aria-expanded",
+                        "placeholder"
+                    )}
                     @input="${(x, c) => x.inputHandler(c.event as InputEvent)}"
                     @keyup="${(x, c) => x.keyupHandler(c.event as KeyboardEvent)}"
                     ${ref("control")}
