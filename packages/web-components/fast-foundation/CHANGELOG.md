@@ -1,8 +1,21 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Wed, 09 Mar 2022 07:12:32 GMT and should not be manually modified.
+This log was last generated on Fri, 11 Mar 2022 23:46:34 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.36.0
+
+Fri, 11 Mar 2022 23:46:34 GMT
+
+### Minor changes
+
+- BREAKING CHANGE: replace WC button with stock HTML button (jes@microsoft.com)
+- implement attribute reflection directive (nicholasrice@users.noreply.github.com)
+
+### Patches
+
+- use WeakMap to prevent leaking element references from FormAssociated (nicholasrice@users.noreply.github.com)
 
 ## 2.35.2
 
