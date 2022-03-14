@@ -223,7 +223,10 @@ export class TreeView extends FoundationElement {
 
         const item: TreeItem = e.target as TreeItem;
 
-        if (item.selected && this.currentSelected !== item) {
+        if (item.selected) {
+            if (this.currentSelected && this.currentSelected !== item) {
+                (this.currentSelected as TreeItem).selected = false;
+            }
             // new selected item
             this.currentSelected = item;
         } else if (!item.selected && this.currentSelected === item) {
