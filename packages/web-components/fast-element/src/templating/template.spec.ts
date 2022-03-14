@@ -2,7 +2,7 @@ import { expect } from "chai";
 import { html, ViewTemplate } from "./template";
 import { Markup } from "./markup";
 import { HTMLBindingDirective } from "./binding";
-import { AspectedHTMLDirective, HTMLAspect, HTMLDirective } from "./html-directive";
+import { AspectedHTMLDirective, Aspect, HTMLDirective } from "./html-directive";
 import { bind, Binding, ViewBehaviorTargets } from "..";
 
 describe(`The html tag template helper`, () => {
@@ -23,7 +23,9 @@ describe(`The html tag template helper`, () => {
 
     class Model {
         value: "value";
+        doSomething() {}
     }
+
     const stringValue = "string value";
     const numberValue = 42;
     const interpolationScenarios = [
@@ -210,42 +212,114 @@ describe(`The html tag template helper`, () => {
 
             if (x.expectDirectives) {
                 x.expectDirectives.forEach((type, index) => {
-                    expect(x.template.directives[index]).to.be.instanceOf(type);
+                    const directive = x.template.directives[index];
+
+                    expect(directive).to.be.instanceOf(type);
+
+                    if (directive instanceof HTMLBindingDirective) {
+                        expect(directive.aspect).to.equal(Aspect.content);
+                    }
                 });
             }
         });
     });
 
-    it(`captures a case-sensitive property name when used with an expression`, () => {
+    it(`captures an attribute with an expression`, () => {
+        const template = html<Model>`<my-element some-attribute=${x => x.value}></my-element>`;
+        const placeholder = Markup.interpolation(0);
+        const directive = template.directives[0] as HTMLBindingDirective;
+
+        expect(template.html).to.equal(
+            `<my-element some-attribute=${placeholder}></my-element>`
+        );
+
+        expect(directive).to.be.instanceOf(HTMLBindingDirective);
+        expect(directive.source).to.equal("some-attribute");
+        expect(directive.target).to.equal("some-attribute");
+        expect(directive.aspect).to.equal(Aspect.attribute);
+    });
+
+    it(`captures an attribute with a binding`, () => {
+        const template = html<Model>`<my-element some-attribute=${bind(x => x.value)}></my-element>`;
+        const placeholder = Markup.interpolation(0);
+        const directive = template.directives[0] as HTMLBindingDirective;
+
+        expect(template.html).to.equal(
+            `<my-element some-attribute=${placeholder}></my-element>`
+        );
+
+        expect(directive).to.be.instanceOf(HTMLBindingDirective);
+        expect(directive.source).to.equal("some-attribute");
+        expect(directive.target).to.equal("some-attribute");
+        expect(directive.aspect).to.equal(Aspect.attribute);
+    });
+
+    it(`captures a boolean attribute with an expression`, () => {
+        const template = html<Model>`<my-element ?some-attribute=${x => x.value}></my-element>`;
+        const placeholder = Markup.interpolation(0);
+        const directive = template.directives[0] as HTMLBindingDirective;
+
+        expect(template.html).to.equal(
+            `<my-element ?some-attribute=${placeholder}></my-element>`
+        );
+
+        expect(directive).to.be.instanceOf(HTMLBindingDirective);
+        expect(directive.source).to.equal("?some-attribute");
+        expect(directive.target).to.equal("some-attribute");
+        expect(directive.aspect).to.equal(Aspect.booleanAttribute);
+    });
+
+    it(`captures a boolean attribute with a binding`, () => {
+        const template = html<Model>`<my-element ?some-attribute=${bind(x => x.value)}></my-element>`;
+        const placeholder = Markup.interpolation(0);
+        const directive = template.directives[0] as HTMLBindingDirective;
+
+        expect(template.html).to.equal(
+            `<my-element ?some-attribute=${placeholder}></my-element>`
+        );
+
+        expect(directive).to.be.instanceOf(HTMLBindingDirective);
+        expect(directive.source).to.equal("?some-attribute");
+        expect(directive.target).to.equal("some-attribute");
+        expect(directive.aspect).to.equal(Aspect.booleanAttribute);
+    });
+
+    it(`captures a case-sensitive property with an expression`, () => {
         const template = html<Model>`<my-element :someAttribute=${x => x.value}></my-element>`;
         const placeholder = Markup.interpolation(0);
+        const directive = template.directives[0] as HTMLBindingDirective;
 
         expect(template.html).to.equal(
             `<my-element :someAttribute=${placeholder}></my-element>`
         );
-        expect((template.directives[0] as HTMLBindingDirective).source).to.equal(
-            ":someAttribute"
-        );
+
+        expect(directive).to.be.instanceOf(HTMLBindingDirective);
+        expect(directive.source).to.equal(":someAttribute");
+        expect(directive.target).to.equal("someAttribute");
+        expect(directive.aspect).to.equal(Aspect.property);
     });
 
-    it(`captures a case-sensitive property name when used with a binding`, () => {
+    it(`captures a case-sensitive property with a binding`, () => {
         const template = html<Model>`<my-element :someAttribute=${bind(x => x.value)}></my-element>`;
         const placeholder = Markup.interpolation(0);
+        const directive = template.directives[0] as HTMLBindingDirective;
 
         expect(template.html).to.equal(
             `<my-element :someAttribute=${placeholder}></my-element>`
         );
-        expect((template.directives[0] as HTMLBindingDirective).source).to.equal(
-            ":someAttribute"
-        );
+
+        expect(directive).to.be.instanceOf(HTMLBindingDirective);
+        expect(directive.source).to.equal(":someAttribute");
+        expect(directive.target).to.equal("someAttribute");
+        expect(directive.aspect).to.equal(Aspect.property);
     });
 
-    it(`captures a case-sensitive property name when used with an inline directive`, () => {
+    it(`captures a case-sensitive property with an inline directive`, () => {
         class TestDirective extends AspectedHTMLDirective {
             binding: Binding;
             source: string;
             target: string;
-            type = HTMLAspect.property;
+            aspect = Aspect.property;
 
             captureSource(value) {
                 this.source = value;
@@ -265,6 +339,21 @@ describe(`The html tag template helper`, () => {
         expect((template.directives[0] as TestDirective).source).to.equal(
             ":someAttribute"
         );
+    });
+
+    it(`captures a case-sensitive event when used with an expression`, () => {
+        const template = html<Model>`<my-element @someEvent=${x => x.doSomething()}></my-element>`;
+        const placeholder = Markup.interpolation(0);
+        const directive = template.directives[0] as HTMLBindingDirective;
+
+        expect(template.html).to.equal(
+            `<my-element @someEvent=${placeholder}></my-element>`
+        );
+
+        expect(directive).to.be.instanceOf(HTMLBindingDirective);
+        expect(directive.source).to.equal("@someEvent");
+        expect(directive.target).to.equal("someEvent");
+        expect(directive.aspect).to.equal(Aspect.event);
     });
 
     it("should dispose of embedded ViewTemplate when the rendering template contains *only* the embedded template", () => {

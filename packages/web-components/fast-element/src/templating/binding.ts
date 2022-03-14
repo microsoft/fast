@@ -7,8 +7,8 @@ import {
     Observable,
 } from "../observation/observable.js";
 import {
+    Aspect,
     AspectedHTMLDirective,
-    HTMLAspect,
     ViewBehavior,
     ViewBehaviorTargets,
 } from "./html-directive.js";
@@ -39,7 +39,7 @@ export const notSupportedBindingType: BindingType = () => {
 /**
  * @alpha
  */
-export type BindingMode = Record<HTMLAspect, BindingType>;
+export type BindingMode = Record<Aspect, BindingType>;
 
 /**
  * @alpha
@@ -246,14 +246,12 @@ class TargetUpdateBinding extends BindingBase {
         eventType: BindingType = notSupportedBindingType
     ): BindingMode {
         return Object.freeze({
-            [HTMLAspect.attribute]: this.createType(DOM.setAttribute),
-            [HTMLAspect.booleanAttribute]: this.createType(DOM.setBooleanAttribute),
-            [HTMLAspect.property]: this.createType((t, a, v) => (t[a] = v)),
-            [HTMLAspect.content]: createContentBinding(this).createType(
-                updateContentTarget
-            ),
-            [HTMLAspect.tokenList]: this.createType(updateTokenListTarget),
-            [HTMLAspect.event]: eventType,
+            [Aspect.attribute]: this.createType(DOM.setAttribute),
+            [Aspect.booleanAttribute]: this.createType(DOM.setBooleanAttribute),
+            [Aspect.property]: this.createType((t, a, v) => (t[a] = v)),
+            [Aspect.content]: createContentBinding(this).createType(updateContentTarget),
+            [Aspect.tokenList]: this.createType(updateTokenListTarget),
+            [Aspect.event]: eventType,
         });
     }
 
@@ -503,7 +501,7 @@ export class HTMLBindingDirective extends AspectedHTMLDirective {
 
     public readonly source: string = "";
     public readonly target: string = "";
-    public readonly type: HTMLAspect = HTMLAspect.content;
+    public readonly aspect: Aspect = Aspect.content;
 
     public constructor(
         public binding: Binding,
@@ -528,31 +526,31 @@ export class HTMLBindingDirective extends AspectedHTMLDirective {
                         const binding = this.binding;
                         /* eslint-disable-next-line */
                         this.binding = (s, c) => DOM.createHTML(binding(s, c));
-                        (this as Mutable<this>).type = HTMLAspect.property;
+                        (this as Mutable<this>).aspect = Aspect.property;
                         break;
                     case "classList":
-                        (this as Mutable<this>).type = HTMLAspect.tokenList;
+                        (this as Mutable<this>).aspect = Aspect.tokenList;
                         break;
                     default:
-                        (this as Mutable<this>).type = HTMLAspect.property;
+                        (this as Mutable<this>).aspect = Aspect.property;
                         break;
                 }
                 break;
             case "?":
                 (this as Mutable<this>).target = value.substring(1);
-                (this as Mutable<this>).type = HTMLAspect.booleanAttribute;
+                (this as Mutable<this>).aspect = Aspect.booleanAttribute;
                 break;
             case "@":
                 (this as Mutable<this>).target = value.substring(1);
-                (this as Mutable<this>).type = HTMLAspect.event;
+                (this as Mutable<this>).aspect = Aspect.event;
                 break;
             default:
                 if (value === "class") {
                     (this as Mutable<this>).target = "className";
-                    (this as Mutable<this>).type = HTMLAspect.property;
+                    (this as Mutable<this>).aspect = Aspect.property;
                 } else {
                     (this as Mutable<this>).target = value;
-                    (this as Mutable<this>).type = HTMLAspect.attribute;
+                    (this as Mutable<this>).aspect = Aspect.attribute;
                 }
                 break;
         }
@@ -560,7 +558,7 @@ export class HTMLBindingDirective extends AspectedHTMLDirective {
 
     createBehavior(targets: ViewBehaviorTargets): ViewBehavior {
         if (this.factory == null) {
-            this.factory = this.mode[this.type](this);
+            this.factory = this.mode[this.aspect](this);
         }
 
         return this.factory.createBehavior(targets);

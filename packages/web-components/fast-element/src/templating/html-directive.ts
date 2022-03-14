@@ -90,7 +90,7 @@ export abstract class HTMLDirective implements ViewBehaviorFactory {
 /**
  * The type of HTML aspect to target.
  */
-export enum HTMLAspect {
+export enum Aspect {
     /**
      * An attribute.
      */
@@ -136,7 +136,7 @@ export abstract class AspectedHTMLDirective extends HTMLDirective {
     /**
      * The type of aspect to target.
      */
-    abstract readonly type: HTMLAspect;
+    abstract readonly aspect: Aspect;
 
     /**
      * A binding to apply to the target, if applicable.

@@ -16,13 +16,13 @@ export interface Accessor {
 
 // @public
 export abstract class AspectedHTMLDirective extends HTMLDirective {
+    // Warning: (ae-forgotten-export) The symbol "Aspect" needs to be exported by the entry point index.d.ts
+    abstract readonly aspect: Aspect;
     abstract readonly binding?: Binding;
     abstract captureSource(source: string): void;
     createPlaceholder: (index: number) => string;
     abstract readonly source: string;
     abstract readonly target: string;
-    // Warning: (ae-forgotten-export) The symbol "HTMLAspect" needs to be exported by the entry point index.d.ts
-    abstract readonly type: HTMLAspect;
 }
 
 // @public
@@ -84,7 +84,7 @@ export interface BindingConfig<T = any> {
 }
 
 // @alpha (undocumented)
-export type BindingMode = Record<HTMLAspect, BindingType>;
+export type BindingMode = Record<Aspect, BindingType>;
 
 // @public
 export interface BindingObserver<TSource = any, TReturn = any, TParent = any> extends Notifier {
