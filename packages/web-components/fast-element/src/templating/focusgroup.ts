@@ -9,6 +9,7 @@ import {
     keyPageUp,
     keyTab,
 } from "@microsoft/fast-web-utilities";
+import { isTabbable } from "tabbable";
 import { AttachedBehaviorHTMLDirective, ExecutionContext } from "..";
 import type { Behavior } from "../observation/behavior";
 import type { CaptureType } from "./template";
@@ -24,37 +25,27 @@ export interface FocusgroupBehaviorOptions {
     bubble?: boolean;
 }
 
+export type DirectionData = {
+    index: number;
+    horizontal?: {
+        overlap?: number;
+        offset?: number;
+    };
+    vertical?: {
+        overlap?: number;
+        offset?: number;
+    };
+    distance?: number;
+    radians?: number;
+};
+
 export type DirectionGuide = {
-    up: {
-        index: number;
-        overlap?: number;
-        offset?: number;
-    };
-    right: {
-        index: number;
-        overlap?: number;
-        offset?: number;
-    };
-    down: {
-        index: number;
-        overlap?: number;
-        offset?: number;
-    };
-    left: {
-        index: number;
-        overlap?: number;
-        offset?: number;
-    };
-    top: {
-        index: number;
-        overlap?: number;
-        offset?: number;
-    };
-    bottom: {
-        index: number;
-        overlap?: number;
-        offset?: number;
-    };
+    up: DirectionData;
+    right: DirectionData;
+    down: DirectionData;
+    left: DirectionData;
+    top: DirectionData;
+    bottom: DirectionData;
 };
 
 /**
@@ -106,17 +97,13 @@ export class FocusgroupBehavior implements Behavior {
      */
     public getFocusItems(node: HTMLElement = this.target): HTMLElement[] {
         const isFocusElement = (node): boolean =>
-            !![
-                HTMLAnchorElement,
-                HTMLInputElement,
-                HTMLSelectElement,
-                HTMLTextAreaElement,
-                HTMLButtonElement,
-            ].find(type => node instanceof type);
+            isTabbable(node) ||
+            !!node.$fastController?.definition.shadowOptions?.delegatesFocus ||
+            node.hasAttribute("tabindex");
         const getFocused = (node: Element | Element[]): Array<HTMLElement> =>
             Array.isArray(node)
                 ? (node.map(getFocused).filter(el => el !== null) as any).flat()
-                : node.hasAttribute("tabindex") || isFocusElement(node)
+                : isFocusElement(node)
                 ? node
                 : node.children.length > 0 && this.options.extend
                 ? (getFocused(Array.from(node.children)) as any).flat()
@@ -194,10 +181,6 @@ export class FocusgroupBehavior implements Behavior {
                     const overlap = (a, b, axis = "x"): number =>
                         Math.min(a[`${axis}2`], b[`${axis}2`]) -
                         Math.max(a[axis], b[axis]);
-                    const offset = (a, b, axis = "x"): number =>
-                        a[axis] > b[axis]
-                            ? b[`${axis}2`] - a[axis]
-                            : b[axis] - a[`${axis}2`];
                     const {
                         offsetWidth,
                         offsetHeight,
@@ -231,26 +214,38 @@ export class FocusgroupBehavior implements Behavior {
                             index,
                         };
                     }
-                    const getClosestPoint = (a: number[], b: number[]): number =>
+                    const minDifference = (a: number[], b: number[]): number =>
                         Math.min(
                             ...(a.map(c => b.map(d => Math.abs(d - c))) as any).flat()
                         );
-                    data.context = compare => ({
-                        x: {
-                            overlap: overlap(data, compare, "y"),
-                            offset: offset(data, compare),
-                            direction: data.x < compare.x ? "right" : "left",
-                        },
-                        y: {
-                            overlap: overlap(data, compare),
-                            offset: offset(data, compare, "y"),
-                            direction: data.y < compare.y ? "down" : "up",
-                        },
-                        distance: Math.hypot(
-                            getClosestPoint([data.x, data.x2], [compare.x, compare.x2]),
-                            getClosestPoint([data.y, data.y2], [compare.y, compare.y2])
-                        ),
-                    });
+                    data.context = compare => {
+                        const dx = minDifference(
+                            [data.x, data.x2],
+                            [compare.x, compare.x2]
+                        );
+                        const dy = minDifference(
+                            [data.y, data.y2],
+                            [compare.y, compare.y2]
+                        );
+                        const center = (d: any): any => ({
+                            x: d.x + (d.x2 - d.x) / 2,
+                            y: d.y + (d.y2 - d.y) / 2,
+                        });
+                        const dcenter = center(data);
+                        const ccenter = center(compare);
+                        return {
+                            horizontal: {
+                                overlap: overlap(data, compare, "y"),
+                            },
+                            vertical: {
+                                overlap: overlap(data, compare),
+                            },
+                            distance: Math.hypot(dx, dy),
+                            radians:
+                                Math.atan2(dcenter.y - ccenter.y, dcenter.x - ccenter.x) /
+                                Math.PI,
+                        };
+                    };
                     return data;
                 }
             )
@@ -258,91 +253,79 @@ export class FocusgroupBehavior implements Behavior {
                 areas.reduce(
                     (directions: DirectionGuide, child2: dataStruct, ci: number) => {
                         if (ci !== index) {
-                            const context = child.context(child2);
-                            ["x", "y"].forEach(axis => {
-                                const { overlap, offset, direction } = context[axis];
-                                if (overlap > 0) {
-                                    const sides = [
-                                        ["left", "right"],
-                                        ["up", "down"],
-                                    ];
-                                    const opSide = (dir: string): string =>
-                                        sides
-                                            .find(a => !!a.find(b => b === dir))
-                                            ?.filter(a => a !== dir)[0] || "up";
-                                    const opposite = opSide(direction);
-                                    const dside = directions[direction];
-                                    const oside = directions[opposite];
-                                    if (
-                                        // is not set yet
-                                        dside.offset === undefined ||
-                                        // child is the same direction and previous was opposite
-                                        dside.direction === opposite ||
-                                        // child is closer than previous
-                                        Math.abs(offset) <= Math.abs(dside.offset) ||
-                                        // child is same distance but has more overlap
-                                        (Math.abs(offset) === Math.abs(dside.offset) &&
-                                            overlap > dside.overlap)
-                                    ) {
-                                        directions[direction] = Object.assign(
-                                            {},
-                                            { index: ci },
-                                            context[axis]
-                                        );
-                                    }
-                                    if (
-                                        // wrapping is enabled
-                                        (this.options.wrap === "both" ||
-                                            (axis === "x" &&
-                                                this.options.wrap === "horizontal") ||
-                                            (axis === "y" &&
-                                                this.options.wrap === "vertical")) &&
-                                        // no opposite side yet
-                                        (oside.offset === undefined ||
-                                            // current is in opposite direction
-                                            (oside.direction === direction &&
-                                                // child is farther away
-                                                (Math.abs(oside.offset) <
-                                                    Math.abs(offset) ||
-                                                    // same distance but more overlap
-                                                    (Math.abs(oside.offset) ===
-                                                        Math.abs(offset) &&
-                                                        oside.overlap < overlap))))
-                                    ) {
-                                        directions[opposite] = Object.assign(
-                                            {},
-                                            { index: ci },
-                                            context[axis]
-                                        );
-                                    }
-
-                                    if (
-                                        direction === "up" &&
-                                        (directions.top.offset === undefined ||
-                                            Math.abs(offset) >
-                                                Math.abs(directions.top.offset))
-                                    ) {
-                                        directions.top = Object.assign(
-                                            {},
-                                            { index: ci },
-                                            context[axis]
-                                        );
-                                    }
-
-                                    if (
-                                        direction === "down" &&
-                                        (directions.bottom.offset === undefined ||
-                                            Math.abs(offset) >
-                                                Math.abs(directions.bottom.offset))
-                                    ) {
-                                        directions.bottom = Object.assign(
-                                            {},
-                                            { index: ci },
-                                            context[axis]
-                                        );
+                            const context = Object.assign(
+                                {},
+                                { index: ci },
+                                child.context(child2)
+                            );
+                            const sides = {
+                                vertical: {
+                                    up: {
+                                        match: r => r > 0 && r < 1,
+                                    },
+                                    down: {
+                                        match: r => r < 0 && r > -1,
+                                    },
+                                },
+                                horizontal: {
+                                    left: {
+                                        match: r => Math.abs(r) < 0.5,
+                                    },
+                                    right: {
+                                        match: r => Math.abs(r) > 0.5,
+                                    },
+                                },
+                            };
+                            for (const axisKey in sides) {
+                                const axis = sides[axisKey];
+                                for (const sideKey in axis) {
+                                    const side = axis[sideKey];
+                                    const dside = directions[sideKey];
+                                    if (side.match(context.radians)) {
+                                        if (
+                                            dside.distance === undefined ||
+                                            !side.match(dside.radians) ||
+                                            dside.distance > context.distance
+                                        ) {
+                                            directions[sideKey] = context;
+                                        }
+                                        if (context.vertical.overlap > 0) {
+                                            if (
+                                                sideKey === "up" &&
+                                                side.match(context.radians) &&
+                                                (directions.top.distance === undefined ||
+                                                    directions.top.distance <
+                                                        context.distance)
+                                            ) {
+                                                directions.top = context;
+                                            }
+                                            if (
+                                                sideKey === "down" &&
+                                                (directions.bottom.distance ===
+                                                    undefined ||
+                                                    directions.bottom.distance <
+                                                        context.distance)
+                                            ) {
+                                                directions.bottom = context;
+                                            }
+                                        }
+                                    } else {
+                                        if (
+                                            (this.options.wrap === "both" ||
+                                                this.options.wrap === axisKey) &&
+                                            context[axisKey].overlap > 0 &&
+                                            (directions[sideKey].distance === undefined ||
+                                                (!side.match(
+                                                    directions[sideKey].radians
+                                                ) &&
+                                                    directions[sideKey].distance <=
+                                                        context.distance))
+                                        ) {
+                                            directions[sideKey] = context;
+                                        }
                                     }
                                 }
-                            });
+                            }
                         }
                         return directions;
                     },
