@@ -1,0 +1,7 @@
+{
+  "type": "minor",
+  "comment": "update foundation elements which delegate focus to use reflectAttributes where allowed",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "chhol@microsoft.com",
+  "dependentChangeType": "patch"
+}
