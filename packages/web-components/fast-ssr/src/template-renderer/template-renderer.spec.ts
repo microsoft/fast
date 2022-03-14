@@ -113,7 +113,7 @@ test.describe("TemplateRenderer", () => {
         const { templateRenderer, defaultRenderInfo} = fastSSR();
         const result = templateRenderer.render(html`<hello-world my-attr=${x => "foobar"}></hello-world>`, defaultRenderInfo)
 
-        expect(consolidate(result)).toBe(`<hello-world  my-attr="foobar"><template shadowroot=\"open\"></template></hello-world>`);
+        expect(consolidate(result)).toBe(`<hello-world my-attr="foobar"><template shadowroot=\"open\"></template></hello-world>`);
     });
     test("should emit an element with a boolean attribute when the attr binding returns true", () => {
         const { templateRenderer, defaultRenderInfo} = fastSSR();

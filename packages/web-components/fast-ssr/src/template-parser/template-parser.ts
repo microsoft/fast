@@ -2,13 +2,7 @@
  * This code is largely a fork of lit's rendering implementation: https://github.com/lit/lit/blob/main/packages/labs/ssr/src/lib/render-lit-html.ts
  * with changes as necessary to render FAST components. A big thank you to those who contributed to lit's code above.
  */
-import {
-    Compiler,
-    HTMLDirective,
-    Markup,
-    Parser,
-    ViewTemplate,
-} from "@microsoft/fast-element";
+import { InlinableHTMLDirective, Parser, ViewTemplate } from "@microsoft/fast-element";
 import {
     Attribute,
     DefaultTreeCommentNode,
@@ -172,13 +166,20 @@ export function parseTemplateToOpCodes(template: ViewTemplate): Op[] {
                 const parsed = Parser.parse(current.value, directives);
                 const attributeType = getAttributeType(current);
                 if (parsed) {
+                    const directive = Parser.aggregate(parsed);
+                    if (!(directive instanceof InlinableHTMLDirective)) {
+                        throw new Error(
+                            "Unable to convert attribute binding into a directive that can be evaluated"
+                        );
+                    }
+
                     prev.dynamic.set(current, {
                         type: OpType.attributeBinding,
                         name:
                             attributeType === AttributeType.content
                                 ? current.name
                                 : current.name.substring(1),
-                        directive: Compiler.aggregate(parsed),
+                        directive,
                         attributeType,
                         useCustomElementInstance: Boolean(node.isDefinedCustomElement),
                     });
@@ -293,25 +294,17 @@ export function parseTemplateToOpCodes(template: ViewTemplate): Op[] {
     traverse(nodeTree, {
         visit(node: DefaultTreeNode): void {
             if (isCommentNode(node) || isTextNode(node)) {
-                // TODO: clean this up to only use Parser.parse() and Parser.aggregate()
-                // when https://github.com/microsoft/fast/issues/5694 goes in.
-                let directive: HTMLDirective | null = null;
+                const parsed = Parser.parse(
+                    (node as DefaultTreeCommentNode)?.data ||
+                        (node as DefaultTreeTextNode).value,
+                    directives
+                );
 
-                if (isCommentNode(node)) {
-                    directive = directives[Markup.indexFromComment(node as any)];
-                } else {
-                    const parsed = Parser.parse(node.value, directives);
-
-                    if (parsed) {
-                        directive = Parser.aggregate(parsed);
-                    }
-                }
-
-                if (directive) {
+                if (parsed) {
                     flushTo(node.sourceCodeLocation!.startOffset);
                     opCodes.push({
                         type: OpType.directive,
-                        directive,
+                        directive: Parser.aggregate(parsed),
                     });
                     skipTo(node.sourceCodeLocation!.endOffset);
                 }
