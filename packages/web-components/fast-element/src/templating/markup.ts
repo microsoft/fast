@@ -22,9 +22,7 @@ export const Markup = Object.freeze({
      * @remarks
      * Used internally by binding directives.
      */
-    interpolation(index: number): string {
-        return `${interpolationStart}${index}${interpolationEnd}`;
-    },
+    interpolation: (index: number) => `${interpolationStart}${index}${interpolationEnd}`,
 
     /**
      * Creates a placeholder that manifests itself as an attribute on an
@@ -34,9 +32,8 @@ export const Markup = Object.freeze({
      * @remarks
      * Used internally by attribute directives such as `ref`, `slotted`, and `children`.
      */
-    attribute(index: number): string {
-        return `${nextId()}="${this.interpolation(index)}"`;
-    },
+    attribute: (index: number) =>
+        `${nextId()}="${interpolationStart}${index}${interpolationEnd}"`,
 
     /**
      * Creates a placeholder that manifests itself as a marker within the DOM structure.
@@ -44,9 +41,7 @@ export const Markup = Object.freeze({
      * @remarks
      * Used internally by structural directives such as `repeat`.
      */
-    comment(index: number): string {
-        return `<!--${interpolationStart}${index}${interpolationEnd}-->`;
-    },
+    comment: (index: number) => `<!--${interpolationStart}${index}${interpolationEnd}-->`,
 });
 
 /**

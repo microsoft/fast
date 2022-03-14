@@ -382,9 +382,9 @@ export const enum KernelServiceId {
 
 // @public
 export const Markup: Readonly<{
-    interpolation(index: number): string;
-    attribute(index: number): string;
-    comment(index: number): string;
+    interpolation: (index: number) => string;
+    attribute: (index: number) => string;
+    comment: (index: number) => string;
 }>;
 
 // Warning: (ae-internal-missing-underscore) The name "Mutable" should be prefixed with an underscore because the declaration is marked as @internal
