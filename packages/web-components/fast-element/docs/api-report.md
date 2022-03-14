@@ -16,9 +16,13 @@ export interface Accessor {
 
 // @public
 export abstract class AspectedHTMLDirective extends HTMLDirective {
+    abstract readonly binding?: Binding;
+    abstract captureSource(source: string): void;
     createPlaceholder: (index: number) => string;
-    // (undocumented)
-    abstract setAspect(value: string): void;
+    abstract readonly source: string;
+    abstract readonly target: string;
+    // Warning: (ae-forgotten-export) The symbol "HTMLAspect" needs to be exported by the entry point index.d.ts
+    abstract readonly type: HTMLAspect;
 }
 
 // @public
@@ -80,20 +84,7 @@ export interface BindingConfig<T = any> {
 }
 
 // @alpha (undocumented)
-export interface BindingMode {
-    // (undocumented)
-    attribute: BindingType;
-    // (undocumented)
-    booleanAttribute: BindingType;
-    // (undocumented)
-    content: BindingType;
-    // (undocumented)
-    event: BindingType;
-    // (undocumented)
-    property: BindingType;
-    // (undocumented)
-    tokenList: BindingType;
-}
+export type BindingMode = Record<HTMLAspect, BindingType>;
 
 // @public
 export interface BindingObserver<TSource = any, TReturn = any, TParent = any> extends Notifier {
@@ -140,7 +131,16 @@ export class ChildrenDirective extends NodeObservationDirective<ChildrenDirectiv
 export type ChildrenDirectiveOptions<T = any> = ChildListDirectiveOptions<T> | SubtreeDirectiveOptions<T>;
 
 // @public
-export function compileTemplate(html: string | HTMLTemplateElement, directives: ReadonlyArray<HTMLDirective>): HTMLTemplateCompilationResult;
+export type CompilationStrategy = (
+html: string | HTMLTemplateElement,
+directives: readonly HTMLDirective[]) => HTMLTemplateCompilationResult;
+
+// @public
+export const Compiler: {
+    compile(html: string | HTMLTemplateElement, directives: ReadonlyArray<HTMLDirective>): HTMLTemplateCompilationResult;
+    setDefaultStrategy(strategy: CompilationStrategy): void;
+    aggregate(parts: (string | HTMLDirective)[]): HTMLDirective;
+};
 
 // @public
 export type ComposableStyles = string | ElementStyles | CSSStyleSheet;
@@ -351,11 +351,6 @@ export interface HTMLTemplateCompilationResult {
 }
 
 // @public
-export type HTMLTemplateCompiler = (
-html: string | HTMLTemplateElement,
-directives: readonly HTMLDirective[]) => HTMLTemplateCompilationResult;
-
-// @public
 export class HTMLView<TSource = any, TParent = any, TGrandparent = any> implements ElementView<TSource, TParent, TGrandparent>, SyntheticView<TSource, TParent, TGrandparent> {
     constructor(fragment: DocumentFragment, factories: ReadonlyArray<ViewBehaviorFactory>, targets: ViewBehaviorTargets);
     appendTo(node: Node): void;
@@ -369,14 +364,6 @@ export class HTMLView<TSource = any, TParent = any, TGrandparent = any> implemen
     remove(): void;
     source: TSource | null;
     unbind(): void;
-}
-
-// @public
-export abstract class InlinableHTMLDirective extends AspectedHTMLDirective {
-    // (undocumented)
-    abstract readonly binding: Binding;
-    // (undocumented)
-    abstract readonly rawAspect?: string;
 }
 
 // Warning: (ae-internal-missing-underscore) The name "KernelServiceId" should be prefixed with an underscore because the declaration is marked as @internal
@@ -457,7 +444,6 @@ export const oneTime: BindingConfig<DefaultBindingOptions> & BindingConfigResolv
 // @public
 export const Parser: Readonly<{
     parse(value: string, directives: readonly HTMLDirective[]): (string | HTMLDirective)[] | null;
-    aggregate(parts: (string | HTMLDirective)[]): HTMLDirective;
 }>;
 
 // @public
@@ -645,7 +631,6 @@ export class ViewTemplate<TSource = any, TParent = any, TGrandparent = any> impl
     readonly directives: ReadonlyArray<HTMLDirective>;
     readonly html: string | HTMLTemplateElement;
     render(source: TSource, host: Node, hostBindingTarget?: Element): HTMLView<TSource, TParent, TGrandparent>;
-    static setDefaultCompiler(compiler: HTMLTemplateCompiler): void;
 }
 
 // @public

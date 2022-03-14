@@ -1,7 +1,4 @@
-import { isString } from "../interfaces.js";
-import type { ExecutionContext } from "../observation/observable.js";
-import { bind } from "./binding.js";
-import type { HTMLDirective, InlinableHTMLDirective } from "./html-directive.js";
+import type { HTMLDirective } from "./html-directive.js";
 
 const marker = `fast-${Math.random().toString(36).substring(2, 8)}`;
 const interpolationStart = `${marker}{`;
@@ -96,42 +93,5 @@ export const Parser = Object.freeze({
         }
 
         return result;
-    },
-
-    /**
-     * Aggregates an array of strings and directives into a single directive.
-     * @param parts - A heterogeneous array of static strings interspersed with
-     * directives.
-     * @returns A single inline directive that aggregates the behavior of all the parts.
-     */
-    aggregate(parts: (string | HTMLDirective)[]): HTMLDirective {
-        if (parts.length === 1) {
-            return parts[0] as HTMLDirective;
-        }
-
-        let aspect: string | undefined;
-        const partCount = parts.length;
-        const finalParts = parts.map((x: string | InlinableHTMLDirective) => {
-            if (isString(x)) {
-                return (): string => x;
-            }
-
-            aspect = x.rawAspect || aspect;
-            return x.binding;
-        });
-
-        const binding = (scope: unknown, context: ExecutionContext): string => {
-            let output = "";
-
-            for (let i = 0; i < partCount; ++i) {
-                output += finalParts[i](scope, context);
-            }
-
-            return output;
-        };
-
-        const directive = bind(binding) as InlinableHTMLDirective;
-        directive.setAspect(aspect!);
-        return directive;
     },
 });

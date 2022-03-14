@@ -2,8 +2,8 @@ import { expect } from "chai";
 import { html, ViewTemplate } from "./template";
 import { Markup } from "./markup";
 import { HTMLBindingDirective } from "./binding";
-import { HTMLDirective } from "./html-directive";
-import { bind, Binding, InlinableHTMLDirective, ViewBehaviorTargets } from "..";
+import { AspectedHTMLDirective, HTMLAspect, HTMLDirective } from "./html-directive";
+import { bind, Binding, ViewBehaviorTargets } from "..";
 
 describe(`The html tag template helper`, () => {
     it(`transforms a string into a ViewTemplate.`, () => {
@@ -223,7 +223,7 @@ describe(`The html tag template helper`, () => {
         expect(template.html).to.equal(
             `<my-element :someAttribute=${placeholder}></my-element>`
         );
-        expect((template.directives[0] as HTMLBindingDirective).rawAspect).to.equal(
+        expect((template.directives[0] as HTMLBindingDirective).source).to.equal(
             ":someAttribute"
         );
     });
@@ -235,18 +235,20 @@ describe(`The html tag template helper`, () => {
         expect(template.html).to.equal(
             `<my-element :someAttribute=${placeholder}></my-element>`
         );
-        expect((template.directives[0] as HTMLBindingDirective).rawAspect).to.equal(
+        expect((template.directives[0] as HTMLBindingDirective).source).to.equal(
             ":someAttribute"
         );
     });
 
     it(`captures a case-sensitive property name when used with an inline directive`, () => {
-        class TestDirective extends InlinableHTMLDirective {
+        class TestDirective extends AspectedHTMLDirective {
             binding: Binding;
-            rawAspect: string;
+            source: string;
+            target: string;
+            type = HTMLAspect.property;
 
-            setAspect(value) {
-                this.rawAspect = value;
+            captureSource(value) {
+                this.source = value;
             }
 
             createBehavior(targets: ViewBehaviorTargets) {
@@ -260,7 +262,7 @@ describe(`The html tag template helper`, () => {
         expect(template.html).to.equal(
             `<my-element :someAttribute=${placeholder}></my-element>`
         );
-        expect((template.directives[0] as TestDirective).rawAspect).to.equal(
+        expect((template.directives[0] as TestDirective).source).to.equal(
             ":someAttribute"
         );
     });

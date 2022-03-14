@@ -41,7 +41,6 @@ export {
     ViewBehaviorFactory,
     HTMLDirective,
     AspectedHTMLDirective,
-    InlinableHTMLDirective,
 } from "./templating/html-directive.js";
 export * from "./templating/ref.js";
 export * from "./templating/when.js";

@@ -7,7 +7,8 @@ import {
     Observable,
 } from "../observation/observable.js";
 import {
-    InlinableHTMLDirective,
+    AspectedHTMLDirective,
+    HTMLAspect,
     ViewBehavior,
     ViewBehaviorTargets,
 } from "./html-directive.js";
@@ -38,14 +39,7 @@ export const notSupportedBindingType: BindingType = () => {
 /**
  * @alpha
  */
-export interface BindingMode {
-    attribute: BindingType;
-    booleanAttribute: BindingType;
-    property: BindingType;
-    content: BindingType;
-    tokenList: BindingType;
-    event: BindingType;
-}
+export type BindingMode = Record<HTMLAspect, BindingType>;
 
 /**
  * @alpha
@@ -252,14 +246,14 @@ class TargetUpdateBinding extends BindingBase {
         eventType: BindingType = notSupportedBindingType
     ): BindingMode {
         return Object.freeze({
-            attribute: this.createType(DOM.setAttribute),
-            booleanAttribute: this.createType(DOM.setBooleanAttribute),
-            property: this.createType(
-                (target, aspect, value) => (target[aspect] = value)
+            [HTMLAspect.attribute]: this.createType(DOM.setAttribute),
+            [HTMLAspect.booleanAttribute]: this.createType(DOM.setBooleanAttribute),
+            [HTMLAspect.property]: this.createType((t, a, v) => (t[a] = v)),
+            [HTMLAspect.content]: createContentBinding(this).createType(
+                updateContentTarget
             ),
-            content: createContentBinding(this).createType(updateContentTarget),
-            tokenList: this.createType(updateTokenListTarget),
-            event: eventType,
+            [HTMLAspect.tokenList]: this.createType(updateTokenListTarget),
+            [HTMLAspect.event]: eventType,
         });
     }
 
@@ -274,7 +268,7 @@ class OneTimeBinding extends TargetUpdateBinding {
         const target = targets[directive.targetId];
         this.updateTarget(
             target,
-            directive.aspect!,
+            directive.target!,
             directive.binding(source, context),
             source,
             context
@@ -306,7 +300,7 @@ class OnSignalBinding extends TargetUpdateBinding {
         const handler = (target[directive.uniqueId] = () => {
             this.updateTarget(
                 target,
-                directive.aspect!,
+                directive.target!,
                 directive.binding(source, context),
                 source,
                 context
@@ -378,7 +372,7 @@ class OnChangeBinding extends TargetUpdateBinding {
 
         this.updateTarget(
             target,
-            directive.aspect!,
+            directive.target!,
             observer.observe(source, context),
             source,
             context
@@ -401,7 +395,7 @@ class OnChangeBinding extends TargetUpdateBinding {
         const context = (observer as any).context;
         this.updateTarget(
             target,
-            this.directive.aspect!,
+            this.directive.target!,
             observer.observe(source, context!),
             source,
             context
@@ -430,7 +424,7 @@ class EventListener extends BindingBase {
         const target = targets[directive.targetId] as FASTEventSource;
         target.$fastSource = source;
         target.$fastContext = context;
-        target.addEventListener(directive.aspect!, this, directive.options);
+        target.addEventListener(directive.target!, this, directive.options);
     }
 
     unbind(source: any, context: ExecutionContext, targets: ViewBehaviorTargets): void {
@@ -440,7 +434,7 @@ class EventListener extends BindingBase {
     protected removeEventListener(target: FASTEventSource): void {
         target.$fastSource = null;
         target.$fastContext = null;
-        target.removeEventListener(this.directive.aspect!, this, this.directive.options);
+        target.removeEventListener(this.directive.target!, this, this.directive.options);
     }
 
     handleEvent(event: Event): void {
@@ -504,11 +498,12 @@ export const signal = <T = any>(options: string | Binding<T>): BindingConfig<T> 
 /**
  * @internal
  */
-export class HTMLBindingDirective extends InlinableHTMLDirective {
-    private factory!: BindingBehaviorFactory;
+export class HTMLBindingDirective extends AspectedHTMLDirective {
+    private factory: BindingBehaviorFactory | null = null;
 
-    public readonly rawAspect?: string;
-    public readonly aspect?: string;
+    public readonly source: string = "";
+    public readonly target: string = "";
+    public readonly type: HTMLAspect = HTMLAspect.content;
 
     public constructor(
         public binding: Binding,
@@ -518,8 +513,8 @@ export class HTMLBindingDirective extends InlinableHTMLDirective {
         super();
     }
 
-    public setAspect(value: string): void {
-        (this as Mutable<this>).rawAspect = value;
+    public captureSource(value: string): void {
+        (this as Mutable<this>).source = value;
 
         if (!value) {
             return;
@@ -527,44 +522,48 @@ export class HTMLBindingDirective extends InlinableHTMLDirective {
 
         switch (value[0]) {
             case ":":
-                (this as Mutable<this>).aspect = value.substr(1);
-                switch (this.aspect) {
+                (this as Mutable<this>).target = value.substring(1);
+                switch (this.target) {
                     case "innerHTML":
                         const binding = this.binding;
                         /* eslint-disable-next-line */
                         this.binding = (s, c) => DOM.createHTML(binding(s, c));
-                        this.factory = this.mode.property(this);
+                        (this as Mutable<this>).type = HTMLAspect.property;
                         break;
                     case "classList":
-                        this.factory = this.mode.tokenList(this);
+                        (this as Mutable<this>).type = HTMLAspect.tokenList;
                         break;
                     default:
-                        this.factory = this.mode.property(this);
+                        (this as Mutable<this>).type = HTMLAspect.property;
                         break;
                 }
                 break;
             case "?":
-                (this as Mutable<this>).aspect = value.substr(1);
-                this.factory = this.mode.booleanAttribute(this);
+                (this as Mutable<this>).target = value.substring(1);
+                (this as Mutable<this>).type = HTMLAspect.booleanAttribute;
                 break;
             case "@":
-                (this as Mutable<this>).aspect = value.substr(1);
-                this.factory = this.mode.event(this);
+                (this as Mutable<this>).target = value.substring(1);
+                (this as Mutable<this>).type = HTMLAspect.event;
                 break;
             default:
                 if (value === "class") {
-                    (this as Mutable<this>).aspect = "className";
-                    this.factory = this.mode.property(this);
+                    (this as Mutable<this>).target = "className";
+                    (this as Mutable<this>).type = HTMLAspect.property;
                 } else {
-                    (this as Mutable<this>).aspect = value;
-                    this.factory = this.mode.attribute(this);
+                    (this as Mutable<this>).target = value;
+                    (this as Mutable<this>).type = HTMLAspect.attribute;
                 }
                 break;
         }
     }
 
     createBehavior(targets: ViewBehaviorTargets): ViewBehavior {
-        return (this.factory ?? this.mode.content(this)).createBehavior(targets);
+        if (this.factory == null) {
+            this.factory = this.mode[this.type](this);
+        }
+
+        return this.factory.createBehavior(targets);
     }
 }
 
