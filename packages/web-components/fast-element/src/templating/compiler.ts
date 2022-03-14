@@ -1,6 +1,6 @@
 import { isString } from "../interfaces.js";
 import { DOM } from "../dom.js";
-import { Markup, Parser } from "./markup.js";
+import { Parser } from "./markup.js";
 import { bind, oneTime } from "./binding.js";
 import type {
     AspectedHTMLDirective,
@@ -109,12 +109,6 @@ class CompilationContext implements HTMLTemplateCompilationResult {
 
         return new HTMLView(fragment, this.factories, targets);
     }
-}
-
-const marker = Markup.marker;
-
-function isMarker(node: Node): node is Comment {
-    return node && node.nodeType === 8 && (node as Comment).data.startsWith(marker);
 }
 
 function compileAttributes(
@@ -228,13 +222,9 @@ function compileNode(
         case 3: // text node
             return compileContent(context, node as Text, parentId, nodeId, nodeIndex);
         case 8: // comment
-            if (isMarker(node)) {
-                context.addFactory(
-                    context.directives[Markup.indexFromComment(node)],
-                    parentId,
-                    nodeId,
-                    nodeIndex
-                );
+            const parts = Parser.parse((node as Comment).data, context.directives);
+            if (parts !== null) {
+                context.addFactory(Parser.aggregate(parts), parentId, nodeId, nodeIndex);
             }
             break;
     }
@@ -242,6 +232,14 @@ function compileNode(
     next.index = nodeIndex + 1;
     next.node = node.nextSibling;
     return next;
+}
+
+function isMarker(node: Node, directives: ReadonlyArray<HTMLDirective>): boolean {
+    return (
+        node &&
+        node.nodeType == 8 &&
+        Parser.parse((node as Comment).data, directives) !== null
+    );
 }
 
 /**
@@ -284,11 +282,11 @@ export function compileTemplate(
         // because something like a when, repeat, etc. could add nodes before the marker.
         // To mitigate this, we insert a stable first node. However, if we insert a node,
         // that will alter the result of the TreeWalker. So, we also need to offset the target index.
-        isMarker(fragment.firstChild!) ||
-        // Or if there is only one node, it means the template's content
+        isMarker(fragment.firstChild!, directives) ||
+        // Or if there is only one node and a directive, it means the template's content
         // is *only* the directive. In that case, HTMLView.dispose() misses any nodes inserted by
         // the directive. Inserting a new node ensures proper disposal of nodes added by the directive.
-        fragment.childNodes.length === 1
+        (fragment.childNodes.length === 1 && directives.length)
     ) {
         fragment.insertBefore(document.createComment(""), fragment.firstChild);
     }
