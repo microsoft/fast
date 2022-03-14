@@ -7,6 +7,7 @@ import {
     keyHome,
     keyPageDown,
     keyPageUp,
+    keyTab,
 } from "@microsoft/fast-web-utilities";
 import { AttachedBehaviorHTMLDirective, ExecutionContext } from "..";
 import type { Behavior } from "../observation/behavior";
@@ -87,13 +88,13 @@ export class FocusgroupBehavior implements Behavior {
 
     private firstElement: {
         node: HTMLElement;
-        distance: number;
+        fromStart: number;
         index: number;
     };
 
     private lastElement: {
         node: HTMLElement;
-        distance: number;
+        fromEnd: number;
         index: number;
     };
 
@@ -183,7 +184,7 @@ export class FocusgroupBehavior implements Behavior {
             y: number;
             x2: number;
             y2: number;
-            distance: number;
+            fromStart: number;
             fromEnd: number;
             context?: any;
         };
@@ -208,30 +209,32 @@ export class FocusgroupBehavior implements Behavior {
                         y,
                         x2: x + offsetWidth,
                         y2: y + offsetHeight,
-                        distance: Math.hypot(x, y),
+                        fromStart: Math.hypot(x, y),
                         fromEnd: Math.hypot(x + offsetWidth, y + offsetWidth),
                     };
 
                     if (
                         !this.firstElement ||
-                        this.firstElement.distance > data.distance
+                        this.firstElement.fromStart > data.fromStart
                     ) {
                         this.firstElement = {
                             node: child,
-                            distance: data.distance,
+                            fromStart: data.fromStart,
                             index,
                         };
                     }
 
-                    if (!this.lastElement || this.lastElement.distance < data.fromEnd) {
+                    if (!this.lastElement || this.lastElement.fromEnd < data.fromEnd) {
                         this.lastElement = {
                             node: child,
-                            distance: data.fromEnd,
+                            fromEnd: data.fromEnd,
                             index,
                         };
                     }
                     const getClosestPoint = (a: number[], b: number[]): number =>
-                        Math.min(...a.map(c => b.map(d => Math.abs(d - c))).flat());
+                        Math.min(
+                            ...(a.map(c => b.map(d => Math.abs(d - c))) as any).flat()
+                        );
                     data.context = compare => ({
                         x: {
                             overlap: overlap(data, compare, "y"),
@@ -364,6 +367,11 @@ export class FocusgroupBehavior implements Behavior {
     public handleKeydown(event: KeyboardEvent): boolean {
         const { target } = event;
         if (!this.focusItems.find(item => item === target)) {
+            if (event.key === keyTab) {
+                event.preventDefault();
+                this.focusItems.find(e => e.getAttribute("tabindex") == "0")?.focus();
+                return false;
+            }
             return true;
         }
         const current: number = this.focusItems.findIndex(
