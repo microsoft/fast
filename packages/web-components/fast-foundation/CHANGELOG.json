@@ -2,6 +2,27 @@
   "name": "@microsoft/fast-foundation",
   "entries": [
     {
+      "date": "Tue, 15 Mar 2022 07:12:38 GMT",
+      "tag": "@microsoft/fast-foundation_v2.36.1",
+      "version": "2.36.1",
+      "comments": {
+        "patch": [
+          {
+            "comment": "anchored region not beta",
+            "author": "scomea@microsoft.com",
+            "commit": "b996b057e3adbd8642ca07fc1dc6245aea2d3e50",
+            "package": "@microsoft/fast-foundation"
+          },
+          {
+            "comment": "tree view single select",
+            "author": "scomea@microsoft.com",
+            "commit": "a8aada16c7b089728a13a6bb7d98b8b928bb2b4f",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
       "date": "Fri, 11 Mar 2022 23:46:34 GMT",
       "tag": "@microsoft/fast-foundation_v2.36.0",
       "version": "2.36.0",

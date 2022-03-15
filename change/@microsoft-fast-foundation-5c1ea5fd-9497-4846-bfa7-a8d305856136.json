@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "tree view single select",
-  "packageName": "@microsoft/fast-foundation",
-  "email": "scomea@microsoft.com",
-  "dependentChangeType": "patch"
-}
