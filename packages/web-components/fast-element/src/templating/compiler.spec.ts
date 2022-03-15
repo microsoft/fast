@@ -7,7 +7,7 @@ import { css } from "../styles/css";
 import type { StyleTarget } from "../styles/element-styles";
 import { toHTML, uniqueElementName } from "../__test__/helpers";
 import { bind, HTMLBindingDirective } from "./binding";
-import { compileTemplate } from "./compiler";
+import { Compiler } from "./compiler";
 import type { HTMLDirective, ViewBehaviorFactory } from "./html-directive";
 import { html } from "./template";
 
@@ -22,7 +22,7 @@ interface CompilationResultInternals {
 
 describe("The template compiler", () => {
     function compile(html: string, directives: HTMLDirective[]) {
-        return compileTemplate(html, directives) as any as CompilationResultInternals;
+        return Compiler.compile(html, directives) as any as CompilationResultInternals;
     }
 
     function inline(index: number) {
