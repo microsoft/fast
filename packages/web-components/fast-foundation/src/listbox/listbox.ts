@@ -532,16 +532,7 @@ export abstract class Listbox extends FoundationElement {
      * @internal
      */
     protected setDefaultSelectedOption() {
-        if (this.$fastController.isConnected) {
-            const selectedIndex = this.options?.findIndex(
-                el => el.getAttribute("selected") !== null
-            );
-
-            if (selectedIndex !== -1) {
-                this.selectedIndex = selectedIndex;
-                return;
-            }
-        }
+        this.selectedIndex = this.options?.findIndex(el => el.defaultSelected) ?? -1;
     }
 
     /**
