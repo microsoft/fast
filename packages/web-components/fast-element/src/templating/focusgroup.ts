@@ -133,6 +133,7 @@ export class FocusgroupBehavior implements Behavior {
      */
     public handleFocus(): void {
         this.setPositions(this.options.wrap);
+        // console.log({positions: this.positions, focusItems: this.focusItems, target: this.target, tabindex: this.target.getAttribute("tabindex"), host: (this.target.parentNode as any).host});
         this.target.removeAttribute("tabindex");
         this.target.removeEventListener("focus", this.handleFocus);
     }

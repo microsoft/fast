@@ -206,37 +206,28 @@ export type DecoratorAttributeConfiguration = Omit<AttributeConfiguration, "prop
 export const defaultExecutionContext: ExecutionContext<any, any>;
 
 // @public (undocumented)
+export type DirectionData = {
+    index: number;
+    horizontal?: {
+        overlap?: number;
+        offset?: number;
+    };
+    vertical?: {
+        overlap?: number;
+        offset?: number;
+    };
+    distance?: number;
+    radians?: number;
+};
+
+// @public (undocumented)
 export type DirectionGuide = {
-    up: {
-        index: number;
-        overlap?: number;
-        offset?: number;
-    };
-    right: {
-        index: number;
-        overlap?: number;
-        offset?: number;
-    };
-    down: {
-        index: number;
-        overlap?: number;
-        offset?: number;
-    };
-    left: {
-        index: number;
-        overlap?: number;
-        offset?: number;
-    };
-    top: {
-        index: number;
-        overlap?: number;
-        offset?: number;
-    };
-    bottom: {
-        index: number;
-        overlap?: number;
-        offset?: number;
-    };
+    up: DirectionData;
+    right: DirectionData;
+    down: DirectionData;
+    left: DirectionData;
+    top: DirectionData;
+    bottom: DirectionData;
 };
 
 // @public

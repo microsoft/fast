@@ -30,15 +30,31 @@
     .article {
         width: 600px;
         font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-        border: 1px solid;
+        border: 1px solid #555;
         padding: 12px;
         margin: 12px;
         display: inline-block;
+        background: #222;
+        color: #ccc;
+        border-radius: 6px;
+        box-shadow: -2px 2px 10px rgba(0, 0, 0, 0.3);
     }
 
-    .article a {
+    #root .article h2 {
+        font-weight: 200;
+        margin: 0;
+        color: inherit;
+    }
+
+    .article a,
+    #root .article p {
         text-decoration: none;
         color: inherit;
+    }
+
+    .article p a,
+    .article cite a {
+        text-decoration: underline;
     }
 
     .article ul {
@@ -48,9 +64,6 @@
         display: flex;
         gap: 12px;
         float: right;
-    }
-
-    .article ul li {
     }
 </style>
 
@@ -377,6 +390,37 @@
             <a href="javascript:void(0)">Link</a>
         </fast-focusgroup>
     </div>
+    <div class="tile">
+        <fast-focusgroup tabindex="-1">
+            <a href="javascript:void(0)">Link</a>
+            <a href="javascript:void(0)">Link</a>
+            <a href="javascript:void(0)">Link</a>
+            <a href="javascript:void(0)">Link</a>
+            <a href="javascript:void(0)">Link</a>
+            <a href="javascript:void(0)">Link</a>
+        </fast-focusgroup>
+    </div>
+    <div class="tile">
+        <fast-focusgroup tabindex="-1">
+            <a href="javascript:void(0)">Link</a>
+            <a href="javascript:void(0)">Link</a>
+            <a href="javascript:void(0)">Link</a>
+            <a href="javascript:void(0)">Link</a>
+            <a href="javascript:void(0)">Link</a>
+            <a href="javascript:void(0)">Link</a>
+        </fast-focusgroup>
+    </div>
+    <div class="tile">
+        <fast-focusgroup tabindex="-1">
+            <a href="javascript:void(0)">Link</a>
+            <a href="javascript:void(0)">Link</a>
+            <a href="javascript:void(0)">Link</a>
+            <a href="javascript:void(0)">Link</a>
+            <a href="javascript:void(0)">Link</a>
+            <a href="javascript:void(0)">Link</a>
+        </fast-focusgroup>
+    </div>
+    <br />
     <div class="tile">
         <fast-focusgroup tabindex="-1">
             <a href="javascript:void(0)">Link</a>
