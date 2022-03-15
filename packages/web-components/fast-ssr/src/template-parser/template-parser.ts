@@ -2,7 +2,7 @@
  * This code is largely a fork of lit's rendering implementation: https://github.com/lit/lit/blob/main/packages/labs/ssr/src/lib/render-lit-html.ts
  * with changes as necessary to render FAST components. A big thank you to those who contributed to lit's code above.
  */
-import { Parser, ViewTemplate } from "@microsoft/fast-element";
+import { Compiler, Parser, ViewTemplate } from "@microsoft/fast-element";
 import {
     Attribute,
     DefaultTreeCommentNode,
@@ -172,7 +172,7 @@ export function parseTemplateToOpCodes(template: ViewTemplate): Op[] {
                             attributeType === AttributeType.content
                                 ? current.name
                                 : current.name.substring(1),
-                        directive: Parser.aggregate(parsed),
+                        directive: Compiler.aggregate(parsed),
                         attributeType,
                         useCustomElementInstance: Boolean(node.isDefinedCustomElement),
                     });
@@ -296,7 +296,7 @@ export function parseTemplateToOpCodes(template: ViewTemplate): Op[] {
                     flushTo(node.sourceCodeLocation!.startOffset);
                     opCodes.push({
                         type: OpType.directive,
-                        directive: Parser.aggregate(parsed),
+                        directive: Compiler.aggregate(parsed),
                     });
                     skipTo(node.sourceCodeLocation!.endOffset);
                 }
