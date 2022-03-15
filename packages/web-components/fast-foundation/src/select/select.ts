@@ -245,7 +245,9 @@ export class Select extends FormAssociatedSelect {
     public formResetCallback(): void {
         this.setProxyOptions();
         super.setDefaultSelectedOption();
-        this.selectedIndex = 0;
+        if (this.selectedIndex === -1) {
+            this.selectedIndex = 0;
+        }
     }
 
     /**
