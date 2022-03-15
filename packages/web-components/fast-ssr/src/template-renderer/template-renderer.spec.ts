@@ -19,9 +19,7 @@ function consolidate(strings: IterableIterator<string>): string {
 @customElement("hello-world")
 class HelloWorld extends FASTElement {}
 
-@customElement({name: "with-slot", template: html`
-    <slot></slot>
-`})
+@customElement({name: "with-slot", template: html`<slot></slot>`})
 class WithSlot extends FASTElement {}
 test.describe("TemplateRenderer", () => {
     test.describe("should have an initial configuration", () => {
@@ -60,7 +58,7 @@ test.describe("TemplateRenderer", () => {
 
 
     // TODO: enable. This is disabled because fast-element throws during element connection
-    test.skip("should emit static shadow DOM template for a defined custom element", () => {
+    test("should emit static shadow DOM template for a defined custom element", () => {
         const { templateRenderer, defaultRenderInfo} = fastSSR();
         const result = templateRenderer.render(html`<with-slot></with-slot>`, defaultRenderInfo)
 

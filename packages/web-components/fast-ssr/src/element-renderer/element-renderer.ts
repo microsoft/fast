@@ -1,6 +1,7 @@
 import { ElementRenderer, RenderInfo } from "@lit-labs/ssr";
 import { FASTElement } from "@microsoft/fast-element";
 import { TemplateRenderer } from "../template-renderer/template-renderer.js";
+import { SSRView } from "../view.js";
 
 export abstract class FASTElementRenderer extends ElementRenderer {
     /**
@@ -60,8 +61,17 @@ export abstract class FASTElementRenderer extends ElementRenderer {
      * @param renderInfo - information about the current rendering context.
      */
     *renderShadow(renderInfo: RenderInfo): IterableIterator<string> {
-        // TODO - this will yield out the element's template using the template renderer
-        yield "";
+        const view = this.element.$fastController.view;
+
+        if (view === null) {
+            return;
+        }
+
+        yield* this.templateRenderer.renderOpCodes(
+            ((view as unknown) as SSRView).codes,
+            renderInfo,
+            this.element
+        );
     }
 
     /**

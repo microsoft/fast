@@ -5,6 +5,7 @@
 import {
     AspectedHTMLDirective,
     Compiler,
+    HTMLDirective,
     Parser,
     ViewTemplate,
 } from "@microsoft/fast-element";
@@ -127,11 +128,21 @@ export function parseTemplateToOpCodes(template: ViewTemplate): Op[] {
      * below, so store in a new var that is just a string type
      */
     const templateString = html;
-    const nodeTree = parseFragment(html, { sourceCodeLocationInfo: true });
+
+    const codes = parseStringToOpCodes(templateString, template.directives);
+    opCache.set(template, codes);
+    return codes;
+}
+
+export function parseStringToOpCodes(
+    templateString: string,
+    directives: ReadonlyArray<HTMLDirective>
+): Op[] {
+    const nodeTree = parseFragment(templateString, { sourceCodeLocationInfo: true });
 
     if (!("nodeName" in nodeTree)) {
         // I'm not sure when exactly this is encountered but the type system seems to say it's possible.
-        throw new Error(`Error parsing template:\n${template}`);
+        throw new Error(`Error parsing template`);
     }
 
     /**
@@ -144,9 +155,6 @@ export function parseTemplateToOpCodes(template: ViewTemplate): Op[] {
      * Collection of op codes
      */
     const opCodes: Op[] = [];
-    opCache.set(template, opCodes);
-
-    const { directives } = template;
 
     /**
      * Parses an Element node, pushing all op codes for the element into
