@@ -201,6 +201,24 @@ export class TemplateRenderer implements Readonly<TemplateRendererConfiguration>
                     break;
                 }
 
+                case OpType.templateElementOpen:
+                    yield "<template";
+                    for (const [name, value] of code.staticAttributes) {
+                        yield ` ${name}="${value}"`;
+                    }
+
+                    for (const attr of code.dynamicAttributes) {
+                        const value = attr.directive.binding
+                            ? attr.directive.binding(source, defaultExecutionContext)
+                            : "";
+                        yield ` ${attr.name}="${value}"`;
+                    }
+                    yield ">";
+                    break;
+                case OpType.templateElementClose:
+                    yield "</template>";
+                    break;
+
                 default:
                     throw new Error(`Unable to interpret op code '${code}'`);
             }

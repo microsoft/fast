@@ -36,6 +36,52 @@ test.describe("TemplateRenderer", () => {
         });
     });
 
+    test.describe("rendering <template> elements", () => {
+        test("should render a template element without attributes", () => {
+            const { templateRenderer, defaultRenderInfo} = fastSSR();
+            const result = templateRenderer.render(html`<template></template>`, defaultRenderInfo)
+
+            expect(consolidate(result)).toBe("<template></template>");
+        });
+        test("should render a template element with static attributes", () => {
+            const { templateRenderer, defaultRenderInfo} = fastSSR();
+            const result = templateRenderer.render(html`<template name="foo" id="bar"></template>`, defaultRenderInfo)
+
+            expect(consolidate(result)).toBe(`<template name="foo" id="bar"></template>`);
+        });
+        test("should render a template element with dynamic attributes", () => {
+            const { templateRenderer, defaultRenderInfo} = fastSSR();
+            const result = templateRenderer.render(html`<template name=${x => "bar"} id=${x => "bat"}></template>`, defaultRenderInfo)
+
+            expect(consolidate(result)).toBe(`<template name="bar" id="bat"></template>`);
+        });
+        test("should render a template element with both static and dynamic attributes", () => {
+            const { templateRenderer, defaultRenderInfo} = fastSSR();
+            const result = templateRenderer.render(html`<template id="bar" name=${x => "foo"}></template>`, defaultRenderInfo)
+
+            expect(consolidate(result)).toBe(`<template id="bar" name="foo"></template>`);
+        });
+        test("should render with static attributes preceding dynamic attributes", () => {
+            // Attribute order changes are due to attribute categorization during template parsing.
+            const { templateRenderer, defaultRenderInfo} = fastSSR();
+            const result = templateRenderer.render(html`<template name=${x => "foo"} id="bar"></template>`, defaultRenderInfo)
+
+            expect(consolidate(result)).toBe(`<template id="bar" name="foo"></template>`);
+        });
+        test("should render a template with content", () => {
+            const { templateRenderer, defaultRenderInfo} = fastSSR();
+            const result = templateRenderer.render(html`<template name="bar"><p>Hello world</p></template>`, defaultRenderInfo)
+
+            expect(consolidate(result)).toBe(`<template name="bar"><p>Hello world</p></template>`);
+        });
+        test("should render a template as a child element", () => {
+            const { templateRenderer, defaultRenderInfo} = fastSSR();
+            const result = templateRenderer.render(html`<p><template name="bar"></template></p>`, defaultRenderInfo)
+
+            expect(consolidate(result)).toBe(`<p><template name="bar"></template></p>`);
+        });
+    });
+
     test("should emit a single element template", () => {
         const { templateRenderer, defaultRenderInfo} = fastSSR();
         const result = templateRenderer.render(html`<p>Hello world</p>`, defaultRenderInfo)
