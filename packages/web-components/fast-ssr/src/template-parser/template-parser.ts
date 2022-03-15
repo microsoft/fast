@@ -2,7 +2,12 @@
  * This code is largely a fork of lit's rendering implementation: https://github.com/lit/lit/blob/main/packages/labs/ssr/src/lib/render-lit-html.ts
  * with changes as necessary to render FAST components. A big thank you to those who contributed to lit's code above.
  */
-import { InlinableHTMLDirective, Parser, ViewTemplate } from "@microsoft/fast-element";
+import {
+    AspectedHTMLDirective,
+    Compiler,
+    Parser,
+    ViewTemplate,
+} from "@microsoft/fast-element";
 import {
     Attribute,
     DefaultTreeCommentNode,
@@ -166,8 +171,8 @@ export function parseTemplateToOpCodes(template: ViewTemplate): Op[] {
                 const parsed = Parser.parse(current.value, directives);
                 const attributeType = getAttributeType(current);
                 if (parsed) {
-                    const directive = Parser.aggregate(parsed);
-                    if (!(directive instanceof InlinableHTMLDirective)) {
+                    const directive = Compiler.aggregate(parsed);
+                    if (!(directive instanceof AspectedHTMLDirective)) {
                         throw new Error(
                             "Unable to convert attribute binding into a directive that can be evaluated"
                         );
@@ -304,7 +309,7 @@ export function parseTemplateToOpCodes(template: ViewTemplate): Op[] {
                     flushTo(node.sourceCodeLocation!.startOffset);
                     opCodes.push({
                         type: OpType.directive,
-                        directive: Parser.aggregate(parsed),
+                        directive: Compiler.aggregate(parsed),
                     });
                     skipTo(node.sourceCodeLocation!.endOffset);
                 }

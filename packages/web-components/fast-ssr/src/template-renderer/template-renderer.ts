@@ -1,8 +1,8 @@
 import { RenderInfo } from "@lit-labs/ssr";
 import { getElementRenderer } from "@lit-labs/ssr/lib/element-renderer.js";
 import {
+    AspectedHTMLDirective,
     defaultExecutionContext,
-    InlinableHTMLDirective,
     ViewTemplate,
 } from "@microsoft/fast-element";
 import { AttributeType } from "../template-parser/attributes.js";
@@ -70,7 +70,10 @@ export class TemplateRenderer implements Readonly<TemplateRendererConfiguration>
                         yield* this.directiveRenderers
                             .get(ctor)!
                             .render(directive, renderInfo, source, this);
-                    } else if (directive instanceof InlinableHTMLDirective) {
+                    } else if (
+                        directive instanceof AspectedHTMLDirective &&
+                        directive.binding
+                    ) {
                         const result = directive.binding(source, defaultExecutionContext);
 
                         // If the result is a template, render the template
@@ -154,8 +157,11 @@ export class TemplateRenderer implements Readonly<TemplateRendererConfiguration>
                 case OpType.attributeBinding: {
                     const { attributeType } = code;
 
-                    // Don't emit anything for events.
-                    if (attributeType === AttributeType.event) {
+                    // Don't emit anything for events or directives without bindings
+                    if (
+                        attributeType === AttributeType.event ||
+                        !code.directive.binding
+                    ) {
                         break;
                     }
 
