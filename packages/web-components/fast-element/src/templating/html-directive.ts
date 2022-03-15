@@ -1,6 +1,6 @@
-import { Markup, nextId } from "./markup.js";
 import type { Behavior } from "../observation/behavior.js";
 import type { Binding, ExecutionContext } from "../observation/observable.js";
+import { Markup, nextId } from "./markup.js";
 
 /**
  * The target nodes available to a behavior.
@@ -88,27 +88,72 @@ export abstract class HTMLDirective implements ViewBehaviorFactory {
 }
 
 /**
+ * The type of HTML aspect to target.
+ */
+export enum Aspect {
+    /**
+     * An attribute.
+     */
+    attribute = 0,
+    /**
+     * A boolean attribute.
+     */
+    booleanAttribute = 1,
+    /**
+     * A property.
+     */
+    property = 2,
+    /**
+     * Content
+     */
+    content = 3,
+    /**
+     * A token list.
+     */
+    tokenList = 4,
+    /**
+     * An event.
+     */
+    event = 5,
+}
+
+/**
  * A {@link HTMLDirective} that targets a particular aspect
  * (attribute, property, event, etc.) of a node.
  * @public
  */
 export abstract class AspectedHTMLDirective extends HTMLDirective {
-    abstract setAspect(value: string): void;
+    /**
+     * The original source aspect exactly as represented in the HTML.
+     */
+    abstract readonly source: string;
+
+    /**
+     * The evaluated target aspect, determined after processing the source.
+     */
+    abstract readonly target: string;
+
+    /**
+     * The type of aspect to target.
+     */
+    abstract readonly aspect: Aspect;
+
+    /**
+     * A binding to apply to the target, if applicable.
+     */
+    abstract readonly binding?: Binding;
+
+    /**
+     * Captures the original source aspect from HTML.
+     * @param source - The original source aspect.
+     */
+    abstract captureSource(source: string): void;
 
     /**
      * Creates a placeholder string based on the directive's index within the template.
      * @param index - The index of the directive within the template.
      */
     public createPlaceholder: (index: number) => string = Markup.interpolation;
-}
-
-/**
- * A {@link HTMLDirective} that can be inlined within an attribute or text content.
- * @public
- */
-export abstract class InlinableHTMLDirective extends AspectedHTMLDirective {
-    abstract readonly binding: Binding;
-    abstract readonly rawAspect?: string;
 }
 
 /** @internal */
@@ -136,9 +181,7 @@ export abstract class StatelessAttachedAttributeDirective<T> extends HTMLDirecti
      * @remarks
      * Creates a custom attribute placeholder.
      */
-    public createPlaceholder(index: number): string {
-        return Markup.attribute(index);
-    }
+    public createPlaceholder: (index: number) => string = Markup.attribute;
 
     /**
      * Bind this behavior to the source.

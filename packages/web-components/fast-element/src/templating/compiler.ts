@@ -1,5 +1,6 @@
 import { isString } from "../interfaces.js";
 import { DOM } from "../dom.js";
+import type { ExecutionContext } from "../observation/observable.js";
 import { Parser } from "./markup.js";
 import { bind, oneTime } from "./binding.js";
 import type {
@@ -7,7 +8,7 @@ import type {
     HTMLDirective,
     ViewBehaviorFactory,
 } from "./html-directive.js";
-import type { HTMLTemplateCompilationResult } from "./template.js";
+import type { HTMLTemplateCompilationResult as TemplateCompilationResult } from "./template.js";
 import { HTMLView } from "./view.js";
 
 const targetIdFrom = (parentId: string, nodeIndex: number): string =>
@@ -25,7 +26,7 @@ const next: NextNode = {
     node: null as ChildNode | null,
 };
 
-class CompilationContext implements HTMLTemplateCompilationResult {
+class CompilationContext implements TemplateCompilationResult {
     private proto: any = null;
     private targetIds = new Set<string>();
     private descriptors: PropertyDescriptorMap = {};
@@ -51,7 +52,7 @@ class CompilationContext implements HTMLTemplateCompilationResult {
         this.factories.push(factory);
     }
 
-    public freeze(): HTMLTemplateCompilationResult {
+    public freeze(): TemplateCompilationResult {
         this.proto = Object.create(null, this.descriptors);
         return this;
     }
@@ -131,10 +132,11 @@ function compileAttributes(
         if (parseResult === null) {
             if (includeBasicValues) {
                 result = bind(() => attrValue, oneTime) as AspectedHTMLDirective;
-                (result as AspectedHTMLDirective).setAspect(attr.name);
+                (result as AspectedHTMLDirective).captureSource(attr.name);
             }
         } else {
-            result = Parser.aggregate(parseResult);
+            /* eslint-disable-next-line @typescript-eslint/no-use-before-define */
+            result = Compiler.aggregate(parseResult);
         }
 
         if (result !== null) {
@@ -224,7 +226,13 @@ function compileNode(
         case 8: // comment
             const parts = Parser.parse((node as Comment).data, context.directives);
             if (parts !== null) {
-                context.addFactory(Parser.aggregate(parts), parentId, nodeId, nodeIndex);
+                /* eslint-disable-next-line @typescript-eslint/no-use-before-define */
+                context.addFactory(
+                    Compiler.aggregate(parts),
+                    parentId,
+                    nodeId,
+                    nodeIndex
+                );
             }
             break;
     }
@@ -243,55 +251,125 @@ function isMarker(node: Node, directives: ReadonlyArray<HTMLDirective>): boolean
 }
 
 /**
- * Compiles a template and associated directives into a compilation
- * result which can be used to create views.
- * @param html - The html string or template element to compile.
- * @param directives - The directives referenced by the template.
- * @remarks
- * The template that is provided for compilation is altered in-place
- * and cannot be compiled again. If the original template must be preserved,
- * it is recommended that you clone the original and pass the clone to this API.
+ * A function capable of compiling a template from the preprocessed form produced
+ * by the html template function into a result that can instantiate views.
  * @public
  */
-export function compileTemplate(
+export type CompilationStrategy = (
+    /**
+     * The preprocessed HTML string or template to compile.
+     */
     html: string | HTMLTemplateElement,
-    directives: ReadonlyArray<HTMLDirective>
-): HTMLTemplateCompilationResult {
-    let template: HTMLTemplateElement;
+    /**
+     * The directives used within the html that is being compiled.
+     */
+    directives: readonly HTMLDirective[]
+) => TemplateCompilationResult;
 
-    if (isString(html)) {
-        template = document.createElement("template");
-        template.innerHTML = DOM.createHTML(html);
+const templateTag = "TEMPLATE";
 
-        const fec = template.content.firstElementChild;
+/**
+ * Common APIs related to compilation.
+ * @public
+ */
+export const Compiler = {
+    /**
+     * Compiles a template and associated directives into a compilation
+     * result which can be used to create views.
+     * @param html - The html string or template element to compile.
+     * @param directives - The directives referenced by the template.
+     * @remarks
+     * The template that is provided for compilation is altered in-place
+     * and cannot be compiled again. If the original template must be preserved,
+     * it is recommended that you clone the original and pass the clone to this API.
+     * @public
+     */
+    compile(
+        html: string | HTMLTemplateElement,
+        directives: ReadonlyArray<HTMLDirective>
+    ): TemplateCompilationResult {
+        let template: HTMLTemplateElement;
 
-        if (fec !== null && fec.tagName === "TEMPLATE") {
-            template = fec as HTMLTemplateElement;
+        if (isString(html)) {
+            template = document.createElement(templateTag) as HTMLTemplateElement;
+            template.innerHTML = DOM.createHTML(html);
+
+            const fec = template.content.firstElementChild;
+
+            if (fec !== null && fec.tagName === templateTag) {
+                template = fec as HTMLTemplateElement;
+            }
+        } else {
+            template = html;
         }
-    } else {
-        template = html;
-    }
 
-    // https://bugs.chromium.org/p/chromium/issues/detail?id=1111864
-    const fragment = document.adoptNode(template.content);
-    const context = new CompilationContext(fragment, directives);
-    compileAttributes(context, "", template, /* host */ "h", 0, true);
+        // https://bugs.chromium.org/p/chromium/issues/detail?id=1111864
+        const fragment = document.adoptNode(template.content);
+        const context = new CompilationContext(fragment, directives);
+        compileAttributes(context, "", template, /* host */ "h", 0, true);
 
-    if (
-        // If the first node in a fragment is a marker, that means it's an unstable first node,
-        // because something like a when, repeat, etc. could add nodes before the marker.
-        // To mitigate this, we insert a stable first node. However, if we insert a node,
-        // that will alter the result of the TreeWalker. So, we also need to offset the target index.
-        isMarker(fragment.firstChild!, directives) ||
-        // Or if there is only one node and a directive, it means the template's content
-        // is *only* the directive. In that case, HTMLView.dispose() misses any nodes inserted by
-        // the directive. Inserting a new node ensures proper disposal of nodes added by the directive.
-        (fragment.childNodes.length === 1 && directives.length)
-    ) {
-        fragment.insertBefore(document.createComment(""), fragment.firstChild);
-    }
+        if (
+            // If the first node in a fragment is a marker, that means it's an unstable first node,
+            // because something like a when, repeat, etc. could add nodes before the marker.
+            // To mitigate this, we insert a stable first node. However, if we insert a node,
+            // that will alter the result of the TreeWalker. So, we also need to offset the target index.
+            isMarker(fragment.firstChild!, directives) ||
+            // Or if there is only one node and a directive, it means the template's content
+            // is *only* the directive. In that case, HTMLView.dispose() misses any nodes inserted by
+            // the directive. Inserting a new node ensures proper disposal of nodes added by the directive.
+            (fragment.childNodes.length === 1 && directives.length)
+        ) {
+            fragment.insertBefore(document.createComment(""), fragment.firstChild);
+        }
 
-    compileChildren(context, fragment, /* root */ "r");
-    next.node = null; // prevent leaks
-    return context.freeze();
-}
+        compileChildren(context, fragment, /* root */ "r");
+        next.node = null; // prevent leaks
+        return context.freeze();
+    },
+
+    /**
+     * Sets the default compilation strategy that will be used by the ViewTemplate whenever
+     * it needs to compile a view preprocessed with the html template function.
+     * @param strategy - The compilation strategy to use when compiling templates.
+     */
+    setDefaultStrategy(strategy: CompilationStrategy): void {
+        this.compile = strategy;
+    },
+
+    /**
+     * Aggregates an array of strings and directives into a single directive.
+     * @param parts - A heterogeneous array of static strings interspersed with
+     * directives.
+     * @returns A single inline directive that aggregates the behavior of all the parts.
+     */
+    aggregate(parts: (string | HTMLDirective)[]): HTMLDirective {
+        if (parts.length === 1) {
+            return parts[0] as HTMLDirective;
+        }
+
+        let source: string | undefined;
+        const partCount = parts.length;
+        const finalParts = parts.map((x: string | AspectedHTMLDirective) => {
+            if (isString(x)) {
+                return (): string => x;
+            }
+
+            source = x.source || source;
+            return x.binding!;
+        });
+
+        const binding = (scope: unknown, context: ExecutionContext): string => {
+            let output = "";
+
+            for (let i = 0; i < partCount; ++i) {
+                output += finalParts[i](scope, context);
+            }
+
+            return output;
+        };
+
+        const directive = bind(binding) as AspectedHTMLDirective;
+        directive.captureSource(source!);
+        return directive;
+    },
+};
