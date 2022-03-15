@@ -6,7 +6,7 @@ import { VirtualList } from "../virtual-list";
 import { GalleryItem } from "./gallery-item";
 import type { Gallery } from "./gallery";
 
-function createGalleryItemTemplate(context): ViewTemplate {
+function createGalleryItemTemplate(context: ElementDefinitionContext): ViewTemplate {
     const galleryItemTag = context.tagFor(GalleryItem);
     return html`
     <${galleryItemTag}

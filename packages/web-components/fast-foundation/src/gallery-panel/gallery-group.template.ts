@@ -7,7 +7,7 @@ import { GalleryGroup } from "./gallery-group";
 import { Gallery } from "./gallery";
 import type { GalleryData } from "./gallery-data";
 
-function createItemTemplate(context): ViewTemplate {
+function createItemTemplate(context: ElementDefinitionContext): ViewTemplate {
     const galleryTag = context.tagFor(Gallery);
     const galleryGroupTag = context.tagFor(GalleryGroup);
     return html<GalleryData>`
