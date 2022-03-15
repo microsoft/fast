@@ -1,7 +1,7 @@
 import { isFunction, isString } from "../interfaces.js";
 import { Binding, defaultExecutionContext } from "../observation/observable.js";
 import { bind, oneTime } from "./binding.js";
-import { compileTemplate as compileFASTTemplate } from "./compiler.js";
+import { Compiler } from "./compiler.js";
 import { AspectedHTMLDirective, HTMLDirective } from "./html-directive.js";
 import type { ElementView, HTMLView, SyntheticView } from "./view.js";
 
@@ -54,24 +54,6 @@ export interface HTMLTemplateCompilationResult {
 }
 
 /**
- * A function capable of compiling a template from the preprocessed form produced
- * by the html template function into a result that can instantiate views.
- * @public
- */
-export type HTMLTemplateCompiler = (
-    /**
-     * The preprocessed HTML string or template to compile.
-     */
-    html: string | HTMLTemplateElement,
-    /**
-     * The directives used within the html that is being compiled.
-     */
-    directives: readonly HTMLDirective[]
-) => HTMLTemplateCompilationResult;
-
-let compileTemplate: HTMLTemplateCompiler;
-
-/**
  * A template capable of creating HTMLView instances or rendering directly to DOM.
  * @public
  */
@@ -111,7 +93,7 @@ export class ViewTemplate<TSource = any, TParent = any, TGrandparent = any>
      */
     public create(hostBindingTarget?: Element): HTMLView<TSource, TParent, TGrandparent> {
         if (this.result === null) {
-            this.result = compileTemplate(this.html, this.directives);
+            this.result = Compiler.compile(this.html, this.directives);
         }
 
         return this.result!.createView(hostBindingTarget);
@@ -134,18 +116,7 @@ export class ViewTemplate<TSource = any, TParent = any, TGrandparent = any>
         view.appendTo(host);
         return view;
     }
-
-    /**
-     * Sets the default compiler that will be used by the ViewTemplate whenever
-     * it needs to compile a view preprocessed with the html template function.
-     * @param compiler - The compiler to use when compiling templates.
-     */
-    public static setDefaultCompiler(compiler: HTMLTemplateCompiler): void {
-        compileTemplate = compiler;
-    }
 }
-
-ViewTemplate.setDefaultCompiler(compileFASTTemplate);
 
 // Much thanks to LitHTML for working this out!
 const lastAttributeNameRegex =
@@ -201,7 +172,7 @@ export function html<TSource = any, TParent = any, TGrandparent = any>(
             if (currentValue instanceof AspectedHTMLDirective) {
                 const match = lastAttributeNameRegex.exec(currentString);
                 if (match !== null) {
-                    currentValue.setAspect(match[2]);
+                    currentValue.captureSource(match[2]);
                 }
             }
 
