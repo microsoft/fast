@@ -46,7 +46,8 @@ export class DataGridRow extends FoundationElement {
      * HTML Attribute: row-type
      */
     @attr({ attribute: "row-type" })
-    public rowType: DataGridRowTypes = DataGridRowTypes.default;
+    public rowType: DataGridRowTypes | "default" | "header" | "sticky-header" =
+        DataGridRowTypes.default;
     private rowTypeChanged(): void {
         if (this.$fastController.isConnected) {
             this.updateItemTemplate();
