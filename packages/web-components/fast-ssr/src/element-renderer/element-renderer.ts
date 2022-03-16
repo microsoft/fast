@@ -1,5 +1,10 @@
 import { ElementRenderer, RenderInfo } from "@lit-labs/ssr";
-import { FASTElement } from "@microsoft/fast-element";
+import {
+    FASTElement,
+    defaultExecutionContext,
+    AspectedHTMLDirective,
+    Aspect,
+} from "@microsoft/fast-element";
 import { TemplateRenderer } from "../template-renderer/template-renderer.js";
 import { SSRView } from "../view.js";
 
@@ -21,6 +26,36 @@ export abstract class FASTElementRenderer extends ElementRenderer {
      * Indicate to the {@link FASTElementRenderer} that the instance should execute DOM connection behavior.
      */
     public connectedCallback(): void {
+        const view = this.element.$fastController.view;
+
+        if (view && SSRView.isSSRView(view)) {
+            if (view.hostStaticAttributes) {
+                view.hostStaticAttributes.forEach((value, key) => {
+                    this.element.setAttribute(key, value);
+                });
+            }
+
+            if (view.hostDynamicAttributes) {
+                for (const attr of view.hostDynamicAttributes) {
+                    if (attr.directive.binding) {
+                        const result = attr.directive.binding(
+                            this.element,
+                            defaultExecutionContext
+                        );
+
+                        switch (attr.directive.aspect) {
+                            case Aspect.property:
+                                (this.element as any)[attr.name] = result;
+                                break;
+                            case Aspect.attribute:
+                            case Aspect.content:
+                                this.element.setAttribute(attr.name, result);
+                                break;
+                        }
+                    }
+                }
+            }
+        }
         this.element.connectedCallback();
     }
 

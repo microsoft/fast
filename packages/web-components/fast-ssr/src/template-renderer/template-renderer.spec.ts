@@ -21,6 +21,9 @@ class HelloWorld extends FASTElement {}
 
 @customElement({name: "with-slot", template: html`<slot></slot>`})
 class WithSlot extends FASTElement {}
+
+@customElement({name: "with-host-attributes", template: html`<template static="static" dynamic="${x => "dynamic"}"><slot></slot></template>`})
+class WithHostAttributes extends FASTElement {}
 test.describe("TemplateRenderer", () => {
     test.describe("should have an initial configuration", () => {
         test("that emits to shadow DOM", () => {
@@ -82,6 +85,35 @@ test.describe("TemplateRenderer", () => {
         });
     });
 
+    test.describe("rendering declarative shadow DOM", () => {
+        test("should emit static shadow DOM template for a defined custom element", () => {
+            const { templateRenderer, defaultRenderInfo} = fastSSR();
+            const result = templateRenderer.render(html`<with-slot></with-slot>`, defaultRenderInfo)
+
+            expect(consolidate(result)).toBe("<with-slot><template shadowroot=\"open\"><slot></slot></template></with-slot>");
+        });
+        test("should emit template element with shadowroot attribute for defined custom element", () => {
+            const { templateRenderer, defaultRenderInfo} = fastSSR();
+            const result = templateRenderer.render(html`<hello-world></hello-world>`, defaultRenderInfo)
+
+            expect(consolidate(result)).toBe("<hello-world><template shadowroot=\"open\"></template></hello-world>");
+        });
+        test.only("should a custom element with a static attribute", () => {
+            const { templateRenderer, defaultRenderInfo} = fastSSR();
+            const result = templateRenderer.render(html`<hello-world id="test"></hello-world>`, defaultRenderInfo)
+
+            // You are here - why is id being reflected twice?
+            expect(consolidate(result)).toBe(`<hello-world id="test"><template shadowroot=\"open\"></template></hello-world>`);
+        });
+
+        test("should emit kflasjd", () => {
+            const { templateRenderer, defaultRenderInfo} = fastSSR();
+            const result = templateRenderer.render(html`<with-host-attributes id="foo"></with-host-attributes>`, defaultRenderInfo)
+
+            expect(consolidate(result)).toBe(`<with-host-attributes id="foo" static="static" dynamic="dynamic"><template shadowroot=\"open\"><slot></slot></template></with-host-attributes>`);
+        })
+    })
+
     test("should emit a single element template", () => {
         const { templateRenderer, defaultRenderInfo} = fastSSR();
         const result = templateRenderer.render(html`<p>Hello world</p>`, defaultRenderInfo)
@@ -94,21 +126,6 @@ test.describe("TemplateRenderer", () => {
         const result = templateRenderer.render(html`<unregistered-element>Hello world</unregistered-element>`, defaultRenderInfo)
 
         expect(consolidate(result)).toBe("<unregistered-element>Hello world</unregistered-element>");
-    });
-    test("should emit template element with shadowroot attribute for defined custom element", () => {
-        const { templateRenderer, defaultRenderInfo} = fastSSR();
-        const result = templateRenderer.render(html`<hello-world></hello-world>`, defaultRenderInfo)
-
-        expect(consolidate(result)).toBe("<hello-world><template shadowroot=\"open\"></template></hello-world>");
-    });
-
-
-    // TODO: enable. This is disabled because fast-element throws during element connection
-    test("should emit static shadow DOM template for a defined custom element", () => {
-        const { templateRenderer, defaultRenderInfo} = fastSSR();
-        const result = templateRenderer.render(html`<with-slot></with-slot>`, defaultRenderInfo)
-
-        expect(consolidate(result)).toBe("<with-slot><template shadowroot=\"open\"><slot></slot></template></with-slot>");
     });
 
     /**
