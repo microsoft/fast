@@ -643,7 +643,6 @@ export class DataGrid extends FoundationElement {
     // @internal (undocumented)
     handleRowFocus(e: Event): void;
     headerCellItemTemplate?: ViewTemplate;
-    // (undocumented)
     noTabbing: boolean;
     // @internal
     rowElements: HTMLElement[];

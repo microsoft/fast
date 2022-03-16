@@ -63,7 +63,7 @@ export interface ColumnDefinition {
      * When headerCellInternalFocusQueue is false this function is called when the cell is first focused
      * to immediately move focus to a cell element, for example a cell that is a checkbox could move
      * focus directly to the checkbox.
-     * When ueuheaderCellInternalFocusQe is true this function is called when the user hits Enter or F2
+     * When headerCellInternalFocusQueue is true this function is called when the user hits Enter or F2
      */
     headerCellFocusTargetCallback?: (cell: DataGridCell) => HTMLElement;
 
