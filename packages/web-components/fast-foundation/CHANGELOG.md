@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Tue, 15 Mar 2022 07:12:38 GMT and should not be manually modified.
+This log was last generated on Wed, 16 Mar 2022 07:12:41 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.37.0
+
+Wed, 16 Mar 2022 07:12:41 GMT
+
+### Minor changes
+
+- enable no tabbing (scomea@microsoft.com)
 
 ## 2.36.1
 
