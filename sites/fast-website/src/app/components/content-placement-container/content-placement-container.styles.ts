@@ -129,6 +129,31 @@ export const ContentPlacementContainerStyles = css`
         padding-bottom: 94px;
     }
 
+    :host([section="product"]) {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .fast-product svg {
+        height: 60px;
+        width: 120px;
+        fill: white;
+        stroke: white;
+        margin: 20px;
+    }
+
+    .fast-product path {
+        fill: white;
+    }
+
+    .fast-product:hover svg,
+    .fast-product:focus svg,
+    .fast-product:hover path,
+    .fast-product:focus path {
+        fill: var(--accent-foreground-rest);
+        stroke: var(--accent-foreground-rest);
+    }
+
     @media screen and (max-width: 1330px) {
         :host([section="feature"]) {
             --flow: row;

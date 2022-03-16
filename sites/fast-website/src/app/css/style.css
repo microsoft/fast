@@ -94,6 +94,16 @@
     grid-column: 2;
 }
 
+.product-subsection {
+    margin-top: 50px;
+}
+
+.product-subsection p {
+    font-size: var(--type-ramp-plus-1-font-size);
+    margin-top: 30px;
+    text-align: center;
+}
+
 @media screen and (max-width: 899px) {
     .hero-section {
         margin-top: 150px;
