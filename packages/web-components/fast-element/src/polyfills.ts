@@ -1,6 +1,5 @@
-import {
+import type {
     FASTGlobal,
-    KernelServiceId,
     StyleStrategy,
     StyleTarget,
     TrustedTypesPolicy,
@@ -118,5 +117,5 @@ export class StyleElementStrategy implements StyleStrategy {
 }
 
 if (!supportsAdoptedStyleSheets) {
-    FAST.getById(KernelServiceId.styleSheetStrategy, () => StyleElementStrategy);
+    FAST.getById(/* KernelServiceId.styleSheetStrategy */ 5, () => StyleElementStrategy);
 }
