@@ -1,5 +1,4 @@
 import { isString, TrustedTypesPolicy } from "../interfaces.js";
-import { DOM } from "../dom.js";
 import type { ExecutionContext } from "../observation/observable.js";
 import { Parser } from "./markup.js";
 import { bind, oneTime } from "./binding.js";
@@ -267,10 +266,11 @@ export type CompilationStrategy = (
 ) => TemplateCompilationResult;
 
 const templateTag = "TEMPLATE";
-const fastHTMLPolicy: TrustedTypesPolicy = { createHTML: html => html };
+const policyOptions: TrustedTypesPolicy = { createHTML: html => html };
 let htmlPolicy: TrustedTypesPolicy = globalThis.trustedTypes
-    ? globalThis.trustedTypes.createPolicy("fast-html", fastHTMLPolicy)
-    : fastHTMLPolicy;
+    ? globalThis.trustedTypes.createPolicy("fast-html", policyOptions)
+    : policyOptions;
+const fastHTMLPolicy = htmlPolicy;
 
 /**
  * Common APIs related to compilation.
