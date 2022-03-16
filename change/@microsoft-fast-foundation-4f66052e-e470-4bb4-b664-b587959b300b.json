@@ -1,0 +1,7 @@
+{
+  "type": "minor",
+  "comment": "enable no tabbing",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "scomea@microsoft.com",
+  "dependentChangeType": "patch"
+}
