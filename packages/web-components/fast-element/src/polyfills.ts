@@ -32,13 +32,11 @@ declare const global: any;
 })();
 
 // API-only Polyfill for trustedTypes
-(function ensureTrustedTypes() {
-    if (!globalThis.trustedTypes) {
-        globalThis.trustedTypes = {
-            createPolicy: (n: string, r: TrustedTypesPolicy) => r,
-        };
-    }
-})();
+if (!globalThis.trustedTypes) {
+    globalThis.trustedTypes = {
+        createPolicy: (n: string, r: TrustedTypesPolicy) => r,
+    };
+}
 
 // ensure FAST global - duplicated in platform.ts
 const propConfig = {
