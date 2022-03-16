@@ -1,0 +1,7 @@
+{
+  "type": "minor",
+  "comment": "`vscode-html-languageservice` as dev dependency",
+  "packageName": "@microsoft/fast-components",
+  "email": "fcollonval@gmail.com",
+  "dependentChangeType": "patch"
+}
