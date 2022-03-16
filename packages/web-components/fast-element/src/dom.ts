@@ -1,8 +1,8 @@
-import type { Callable } from "./interfaces.js";
-import { $global, KernelServiceId, TrustedTypesPolicy } from "./platform.js";
+import { Callable, KernelServiceId, TrustedTypesPolicy } from "./interfaces.js";
+import { FAST } from "./platform.js";
 
 /* eslint-disable */
-const fastHTMLPolicy: TrustedTypesPolicy = $global.trustedTypes.createPolicy(
+const fastHTMLPolicy: TrustedTypesPolicy = globalThis.trustedTypes.createPolicy(
     "fast-html",
     {
         createHTML: html => html,
@@ -10,10 +10,10 @@ const fastHTMLPolicy: TrustedTypesPolicy = $global.trustedTypes.createPolicy(
 );
 /* eslint-enable */
 
-const updateQueue = $global.FAST.getById(KernelServiceId.updateQueue, () => {
+const updateQueue = FAST.getById(KernelServiceId.updateQueue, () => {
     const tasks: Callable[] = [];
     const pendingErrors: any[] = [];
-    const rAF = $global.requestAnimationFrame;
+    const rAF = globalThis.requestAnimationFrame;
     let updateAsync = true;
 
     function throwFirstError(): void {
