@@ -226,8 +226,8 @@ function compileNode(
         case 8: // comment
             const parts = Parser.parse((node as Comment).data, context.directives);
             if (parts !== null) {
-                /* eslint-disable-next-line @typescript-eslint/no-use-before-define */
                 context.addFactory(
+                    /* eslint-disable-next-line @typescript-eslint/no-use-before-define */
                     Compiler.aggregate(parts),
                     parentId,
                     nodeId,

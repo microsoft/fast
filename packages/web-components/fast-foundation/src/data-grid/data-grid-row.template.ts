@@ -42,7 +42,7 @@ export const dataGridRowTemplate: FoundationElementTemplate<ViewTemplate<DataGri
     return html<DataGridRow>`
         <template
             role="row"
-            class="${x => (x.rowType !== "default" ? x.rowType : "")}"
+            :classList="${x => (x.rowType !== "default" ? x.rowType : "")}"
             :defaultCellItemTemplate="${cellItemTemplate}"
             :defaultHeaderCellItemTemplate="${headerCellItemTemplate}"
             ${children({

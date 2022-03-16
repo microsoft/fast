@@ -176,9 +176,9 @@ function updateTokenListTarget(
     value: any
 ): void {
     const directive = this.directive;
+    const lookup = `${directive.uniqueId}-token-list`;
     const state: TokenListState =
-        target[directive.uniqueId] ??
-        (target[directive.uniqueId] = { c: 0, v: Object.create(null) });
+        target[lookup] ?? (target[lookup] = { c: 0, v: Object.create(null) });
     const versions = state.v;
     let currentVersion = state.c;
     const tokenList = target[aspect] as DOMTokenList;
