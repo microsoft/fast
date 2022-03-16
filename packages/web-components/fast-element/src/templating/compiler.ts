@@ -1,4 +1,4 @@
-import { isString } from "../interfaces.js";
+import { isString, TrustedTypesPolicy } from "../interfaces.js";
 import { DOM } from "../dom.js";
 import type { ExecutionContext } from "../observation/observable.js";
 import { Parser } from "./markup.js";
@@ -267,12 +267,30 @@ export type CompilationStrategy = (
 ) => TemplateCompilationResult;
 
 const templateTag = "TEMPLATE";
+const fastHTMLPolicy: TrustedTypesPolicy = { createHTML: html => html };
+let htmlPolicy: TrustedTypesPolicy = globalThis.trustedTypes
+    ? globalThis.trustedTypes.createPolicy("fast-html", fastHTMLPolicy)
+    : fastHTMLPolicy;
 
 /**
  * Common APIs related to compilation.
  * @public
  */
 export const Compiler = {
+    /**
+     * Sets the HTML trusted types policy used by the compiler.
+     * @param policy - The policy to set for HTML.
+     * @remarks
+     * This API can only be called once, for security reasons. It should be
+     * called by the application developer at the start of their program.
+     */
+    setHTMLPolicy(policy: TrustedTypesPolicy) {
+        if (htmlPolicy !== fastHTMLPolicy) {
+            throw new Error("The HTML policy can only be set once.");
+        }
+
+        htmlPolicy = policy;
+    },
     /**
      * Compiles a template and associated directives into a compilation
      * result which can be used to create views.
@@ -292,7 +310,7 @@ export const Compiler = {
 
         if (isString(html)) {
             template = document.createElement(templateTag) as HTMLTemplateElement;
-            template.innerHTML = DOM.createHTML(html);
+            template.innerHTML = htmlPolicy.createHTML(html);
 
             const fec = template.content.firstElementChild;
 

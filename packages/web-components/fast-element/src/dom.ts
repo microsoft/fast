@@ -1,14 +1,5 @@
-import { Callable, KernelServiceId, TrustedTypesPolicy } from "./interfaces.js";
+import { Callable, KernelServiceId } from "./interfaces.js";
 import { FAST } from "./platform.js";
-
-/* eslint-disable */
-const fastHTMLPolicy: TrustedTypesPolicy = globalThis.trustedTypes.createPolicy(
-    "fast-html",
-    {
-        createHTML: html => html,
-    }
-);
-/* eslint-enable */
 
 const updateQueue = FAST.getById(KernelServiceId.updateQueue, () => {
     const tasks: Callable[] = [];
@@ -85,8 +76,6 @@ const updateQueue = FAST.getById(KernelServiceId.updateQueue, () => {
     });
 });
 
-let htmlPolicy: TrustedTypesPolicy = fastHTMLPolicy;
-
 /**
  * Common DOM APIs.
  * @public
@@ -98,32 +87,6 @@ export const DOM = Object.freeze({
     supportsAdoptedStyleSheets:
         Array.isArray((document as any).adoptedStyleSheets) &&
         "replace" in CSSStyleSheet.prototype,
-
-    /**
-     * Sets the HTML trusted types policy used by the templating engine.
-     * @param policy - The policy to set for HTML.
-     * @remarks
-     * This API can only be called once, for security reasons. It should be
-     * called by the application developer at the start of their program.
-     */
-    setHTMLPolicy(policy: TrustedTypesPolicy) {
-        if (htmlPolicy !== fastHTMLPolicy) {
-            throw new Error("The HTML policy can only be set once.");
-        }
-
-        htmlPolicy = policy;
-    },
-
-    /**
-     * Turns a string into trusted HTML using the configured trusted types policy.
-     * @param html - The string to turn into trusted HTML.
-     * @remarks
-     * Used internally by the template engine when creating templates
-     * and setting innerHTML.
-     */
-    createHTML(html: string): string {
-        return htmlPolicy.createHTML(html);
-    },
 
     /**
      * Sets the update mode used by queueUpdate.

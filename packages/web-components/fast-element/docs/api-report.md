@@ -156,6 +156,7 @@ directives: readonly HTMLDirective[]) => HTMLTemplateCompilationResult;
 
 // @public
 export const Compiler: {
+    setHTMLPolicy(policy: TrustedTypesPolicy): void;
     compile(html: string | HTMLTemplateElement, directives: ReadonlyArray<HTMLDirective>): HTMLTemplateCompilationResult;
     setDefaultStrategy(strategy: CompilationStrategy): void;
     aggregate(parts: (string | HTMLDirective)[]): HTMLDirective;
@@ -226,8 +227,6 @@ export const defaultExecutionContext: ExecutionContext<any, any>;
 // @public
 export const DOM: Readonly<{
     supportsAdoptedStyleSheets: boolean;
-    setHTMLPolicy(policy: TrustedTypesPolicy): void;
-    createHTML(html: string): string;
     setUpdateMode: (isAsync: boolean) => void;
     queueUpdate: (callable: Callable) => void;
     nextUpdate(): Promise<void>;
