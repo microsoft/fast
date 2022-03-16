@@ -1,7 +1,6 @@
 import { HTMLDirective, HTMLTemplateCompilationResult } from "@microsoft/fast-element";
 import { Op, OpType, TemplateElementOpenOp } from "./template-parser/op-codes.js";
 import { parseStringToOpCodes } from "./template-parser/template-parser.js";
-import { first } from "lodash-es";
 
 /**
  * SSR implementation of {@link @microsoft/fast-element#HTMLView}. Due to
@@ -28,7 +27,6 @@ export class SSRView {
         // which uses Element.firstElementChild to check for template elements.
         if (codes.length) {
             const firstCode = codes[0];
-            console.log(firstCode);
             if (
                 firstCode.type === OpType.templateElementOpen &&
                 codes[codes.length - 1].type === OpType.templateElementClose

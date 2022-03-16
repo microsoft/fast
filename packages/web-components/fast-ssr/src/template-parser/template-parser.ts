@@ -208,7 +208,7 @@ export function parseStringToOpCodes(
             }
         );
 
-        // Special processing for any custom element
+        // Emit a CustomElementOpenOp when the custom element is defined
         if (ctor !== undefined) {
             augmentOpeningTag = true;
             node.isDefinedCustomElement = true;
@@ -219,6 +219,9 @@ export function parseStringToOpCodes(
                 staticAttributes: attributes.static,
             });
         } else if (node.tagName === "template") {
+            // Template elements need special handling due to the host directive behavior
+            // when used as the root element in a custom element template
+            // (https://www.fast.design/docs/fast-element/using-directives#host-directives).
             flushTo(node.sourceCodeLocation?.startTag.startOffset);
             opCodes.push({
                 type: OpType.templateElementOpen,
@@ -229,14 +232,21 @@ export function parseStringToOpCodes(
             return;
         }
 
-        // Push attribute binding op codes for any attributes that
-        // are dynamic
-        if (attributes.dynamic.size) {
-            for (const [attr, code] of attributes.dynamic) {
+        // Iterate attributes in-order so that codes can be pushed for dynamic attributes in-order.
+        // All dynamic attributes will be rendered from an AttributeBindingOp. Additionally, When the
+        // node is a custom element, all static attributes will be rendered via the CustomElementOpenOp,
+        // so this code skips over static attributes in that case.
+        for (const attr of node.attrs) {
+            if (attributes.dynamic.has(attr)) {
                 const location = node.sourceCodeLocation!.attrs[attr.name];
+                const code = attributes.dynamic.get(attr)!;
                 flushTo(location.startOffset);
                 augmentOpeningTag = true;
                 opCodes.push(code);
+                skipTo(location.endOffset);
+            } else if (node.isDefinedCustomElement) {
+                const location = node.sourceCodeLocation!.attrs[attr.name];
+                flushTo(location.startOffset);
                 skipTo(location.endOffset);
             }
         }

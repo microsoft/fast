@@ -3,6 +3,7 @@ import { customElement, FASTElement, html, when, defaultExecutionContext } from 
 import { expect, test } from "@playwright/test";
 import fastSSR from "../exports.js";
 import { TemplateRenderer } from "./template-renderer.js";
+import { parseTemplateToOpCodes } from "../template-parser/template-parser.js";
 
 function consolidate(strings: IterableIterator<string>): string {
     let str = "";
@@ -98,19 +99,18 @@ test.describe("TemplateRenderer", () => {
 
             expect(consolidate(result)).toBe("<hello-world><template shadowroot=\"open\"></template></hello-world>");
         });
-        test.only("should a custom element with a static attribute", () => {
+        test("should a custom element with a static attribute", () => {
             const { templateRenderer, defaultRenderInfo} = fastSSR();
             const result = templateRenderer.render(html`<hello-world id="test"></hello-world>`, defaultRenderInfo)
 
-            // You are here - why is id being reflected twice?
-            expect(consolidate(result)).toBe(`<hello-world id="test"><template shadowroot=\"open\"></template></hello-world>`);
+            expect(consolidate(result)).toBe(`<hello-world  id="test"><template shadowroot=\"open\"></template></hello-world>`);
         });
 
-        test("should emit kflasjd", () => {
+        test("should emit a custom element with attributes reflected from an element's root <template> element", () => {
             const { templateRenderer, defaultRenderInfo} = fastSSR();
             const result = templateRenderer.render(html`<with-host-attributes id="foo"></with-host-attributes>`, defaultRenderInfo)
 
-            expect(consolidate(result)).toBe(`<with-host-attributes id="foo" static="static" dynamic="dynamic"><template shadowroot=\"open\"><slot></slot></template></with-host-attributes>`);
+            expect(consolidate(result)).toBe(`<with-host-attributes  id="foo" static="static" dynamic="dynamic"><template shadowroot=\"open\"><slot></slot></template></with-host-attributes>`);
         })
     })
 
