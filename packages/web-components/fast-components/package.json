@@ -106,6 +106,7 @@
     "ts-node": "^8.9.1",
     "tsconfig-paths": "^3.9.0",
     "typescript": "^3.9.0",
+    "vscode-html-languageservice": "^4.0.3",
     "webpack": "^4.44.0"
   },
   "dependencies": {
@@ -113,7 +114,6 @@
     "@microsoft/fast-element": "^1.8.0",
     "@microsoft/fast-foundation": "^2.37.0",
     "@microsoft/fast-web-utilities": "^5.1.0",
-    "tslib": "^1.13.0",
-    "vscode-html-languageservice": "^4.0.3"
+    "tslib": "^1.13.0"
   }
 }
