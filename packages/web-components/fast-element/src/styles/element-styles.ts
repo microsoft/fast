@@ -1,60 +1,12 @@
 import type { Behavior } from "../observation/behavior.js";
-import { DOM } from "../dom.js";
-import { nextId } from "../templating/markup.js";
-
-/**
- * A node that can be targeted by styles.
- * @public
- */
-export interface StyleTarget {
-    /**
-     * Stylesheets to be adopted by the node.
-     */
-    adoptedStyleSheets?: CSSStyleSheet[];
-
-    /**
-     * Adds styles to the target by appending the styles.
-     * @param styles - The styles element to add.
-     */
-    append(styles: HTMLStyleElement): void;
-
-    /**
-     * Removes styles from the target.
-     * @param styles - The styles element to remove.
-     */
-    removeChild(styles: HTMLStyleElement): void;
-
-    /**
-     * Returns all element descendants of node that match selectors.
-     * @param selectors - The CSS selector to use for the query.
-     */
-    querySelectorAll<E extends Element = Element>(selectors: string): NodeListOf<E>;
-}
+import { FAST } from "../platform.js";
+import { KernelServiceId, StyleStrategy, StyleTarget } from "../interfaces.js";
 
 /**
  * Represents styles that can be composed into the ShadowDOM of a custom element.
  * @public
  */
 export type ComposableStyles = string | ElementStyles | CSSStyleSheet;
-
-/**
- * Implemented to provide specific behavior when adding/removing styles
- * for elements.
- * @public
- */
-export interface StyleStrategy {
-    /**
-     * Adds styles to the target.
-     * @param target - The target to add the styles to.
-     */
-    addStylesTo(target: StyleTarget): void;
-
-    /**
-     * Removes styles from the target.
-     * @param target - The target to remove the styles from.
-     */
-    removeStylesFrom(target: StyleTarget): void;
-}
 
 /**
  * A type that instantiates a StyleStrategy.
@@ -210,47 +162,6 @@ export class AdoptedStyleSheetsStrategy implements StyleStrategy {
     }
 }
 
-function usableTarget(target: StyleTarget): StyleTarget {
-    return target === document ? document.body : target;
-}
-
-/**
- * @internal
- */
-export class StyleElementStrategy implements StyleStrategy {
-    private readonly styleClass: string;
-
-    public constructor(private readonly styles: string[]) {
-        this.styleClass = nextId();
-    }
-
-    public addStylesTo(target: StyleTarget): void {
-        target = usableTarget(target);
-
-        const styles = this.styles;
-        const styleClass = this.styleClass;
-
-        for (let i = 0; i < styles.length; i++) {
-            const element = document.createElement("style");
-            element.innerHTML = styles[i];
-            element.className = styleClass;
-            target.append(element);
-        }
-    }
-
-    public removeStylesFrom(target: StyleTarget): void {
-        const styles: NodeListOf<HTMLStyleElement> = target.querySelectorAll(
-            `.${this.styleClass}`
-        );
-
-        target = usableTarget(target);
-
-        for (let i = 0, ii = styles.length; i < ii; ++i) {
-            target.removeChild(styles[i]);
-        }
-    }
-}
-
 ElementStyles.setDefaultStrategy(
-    DOM.supportsAdoptedStyleSheets ? AdoptedStyleSheetsStrategy : StyleElementStrategy
+    FAST.getById(KernelServiceId.styleSheetStrategy, () => AdoptedStyleSheetsStrategy)
 );

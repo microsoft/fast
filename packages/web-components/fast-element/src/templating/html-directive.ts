@@ -89,6 +89,7 @@ export abstract class HTMLDirective implements ViewBehaviorFactory {
 
 /**
  * The type of HTML aspect to target.
+ * @public
  */
 export enum Aspect {
     /**
@@ -156,7 +157,10 @@ export abstract class AspectedHTMLDirective extends HTMLDirective {
     public createPlaceholder: (index: number) => string = Markup.interpolation;
 }
 
-/** @internal */
+/**
+ * A base class used for attribute directives that don't need internal state.
+ * @public
+ */
 export abstract class StatelessAttachedAttributeDirective<T> extends HTMLDirective
     implements ViewBehavior {
     /**

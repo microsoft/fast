@@ -13,7 +13,7 @@ export const radioTemplate: FoundationElementTemplate<
 > = (context, definition) => html`
     <template
         role="radio"
-        class="${x => (x.checked ? "checked" : "")} ${x =>
+        :classList="${x => (x.checked ? "checked" : "")} ${x =>
             x.readOnly ? "readonly" : ""}"
         aria-checked="${x => x.checked}"
         aria-required="${x => x.required}"
