@@ -22,7 +22,7 @@
     "start": "webpack-dev-server --config=./template/webpack.dev.js --history-api-fallback --progress",
     "test": "npm run eslint && npm run test:e2e",
     "serve": "node ./template/server.js",
-    "test:e2e": "npm run build && playwright test --config=./template/playwright.config.js"
+    "test:e2e": "npm run build && npx playwright test --config=./template/playwright.config.js"
   },
   "dependencies": {
     "@microsoft/fast-element": "^1.7.0"
