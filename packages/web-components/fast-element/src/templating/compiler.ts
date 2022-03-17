@@ -1,5 +1,4 @@
-import { isString } from "../interfaces.js";
-import { DOM } from "../dom.js";
+import { isString, TrustedTypesPolicy } from "../interfaces.js";
 import type { ExecutionContext } from "../observation/observable.js";
 import { Parser } from "./markup.js";
 import { bind, oneTime } from "./binding.js";
@@ -226,8 +225,8 @@ function compileNode(
         case 8: // comment
             const parts = Parser.parse((node as Comment).data, context.directives);
             if (parts !== null) {
-                /* eslint-disable-next-line @typescript-eslint/no-use-before-define */
                 context.addFactory(
+                    /* eslint-disable-next-line @typescript-eslint/no-use-before-define */
                     Compiler.aggregate(parts),
                     parentId,
                     nodeId,
@@ -267,12 +266,31 @@ export type CompilationStrategy = (
 ) => TemplateCompilationResult;
 
 const templateTag = "TEMPLATE";
+const policyOptions: TrustedTypesPolicy = { createHTML: html => html };
+let htmlPolicy: TrustedTypesPolicy = globalThis.trustedTypes
+    ? globalThis.trustedTypes.createPolicy("fast-html", policyOptions)
+    : policyOptions;
+const fastHTMLPolicy = htmlPolicy;
 
 /**
  * Common APIs related to compilation.
  * @public
  */
 export const Compiler = {
+    /**
+     * Sets the HTML trusted types policy used by the compiler.
+     * @param policy - The policy to set for HTML.
+     * @remarks
+     * This API can only be called once, for security reasons. It should be
+     * called by the application developer at the start of their program.
+     */
+    setHTMLPolicy(policy: TrustedTypesPolicy) {
+        if (htmlPolicy !== fastHTMLPolicy) {
+            throw new Error("The HTML policy can only be set once.");
+        }
+
+        htmlPolicy = policy;
+    },
     /**
      * Compiles a template and associated directives into a compilation
      * result which can be used to create views.
@@ -292,7 +310,7 @@ export const Compiler = {
 
         if (isString(html)) {
             template = document.createElement(templateTag) as HTMLTemplateElement;
-            template.innerHTML = DOM.createHTML(html);
+            template.innerHTML = htmlPolicy.createHTML(html);
 
             const fec = template.content.firstElementChild;
 

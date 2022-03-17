@@ -1,6 +1,6 @@
 import { DOM } from "../dom.js";
-import { isFunction, isString } from "../interfaces.js";
-import { FAST, KernelServiceId } from "../platform.js";
+import { isFunction, isString, KernelServiceId } from "../interfaces.js";
+import { FAST } from "../platform.js";
 import { PropertyChangeNotifier, SubscriberSet } from "./notifier.js";
 import type { Notifier, Subscriber } from "./notifier.js";
 

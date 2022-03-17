@@ -4,7 +4,7 @@ import { SubscriberSet } from "./notifier.js";
 import type { Notifier } from "./notifier.js";
 import { Observable } from "./observable.js";
 
-function setNonEnumerable(target: any, property: string, value: any) {
+function setNonEnumerable(target: any, property: string, value: any): void {
     Reflect.defineProperty(target, property, {
         value,
         enumerable: false,
@@ -95,8 +95,7 @@ export function enableArrayObservation(): void {
         const sort = proto.sort;
         const splice = proto.splice;
         const unshift = proto.unshift;
-
-        function adjustIndex(changeRecord: Splice, array: any[]): Splice {
+        const adjustIndex = (changeRecord: Splice, array: any[]): Splice => {
             let index = changeRecord.index;
             const arrayLength = array.length;
 
@@ -112,7 +111,7 @@ export function enableArrayObservation(): void {
 
             changeRecord.index = index < 0 ? 0 : index;
             return changeRecord;
-        }
+        };
 
         Object.assign(proto, {
             pop(...args) {

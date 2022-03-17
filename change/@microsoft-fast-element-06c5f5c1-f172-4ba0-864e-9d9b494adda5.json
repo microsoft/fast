@@ -1,0 +1,7 @@
+{
+  "type": "major",
+  "comment": "refactor: extract polyfill and polyfill-like code to an optional module",
+  "packageName": "@microsoft/fast-element",
+  "email": "roeisenb@microsoft.com",
+  "dependentChangeType": "patch"
+}
