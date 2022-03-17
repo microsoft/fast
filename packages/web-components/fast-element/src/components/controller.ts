@@ -1,8 +1,8 @@
-import type { Mutable } from "../interfaces.js";
+import type { Mutable, StyleTarget } from "../interfaces.js";
 import type { Behavior } from "../observation/behavior.js";
 import { PropertyChangeNotifier } from "../observation/notifier.js";
 import { defaultExecutionContext, Observable } from "../observation/observable.js";
-import type { ElementStyles, StyleTarget } from "../styles/element-styles.js";
+import type { ElementStyles } from "../styles/element-styles.js";
 import type { ElementViewTemplate } from "../templating/template.js";
 import type { ElementView } from "../templating/view.js";
 import { FASTElementDefinition } from "./fast-definitions.js";
