@@ -24,7 +24,6 @@
     "test:e2e": "npm run build && playwright test --config=./template/playwright.config.js"
   },
   "dependencies": {
-    "@microsoft/fast-cli": "^1.0.0",
     "@microsoft/fast-element": "^1.7.0"
   },
   "devDependencies": {
