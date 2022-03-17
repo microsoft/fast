@@ -247,7 +247,9 @@ export class Select extends FormAssociatedSelect {
         // Call the base class's implementation setDefaultSelectedOption instead of the select's
         // override, in order to reset the selectedIndex without using the value property.
         super.setDefaultSelectedOption();
-        this.value = this.firstSelectedOption.value;
+        if (this.selectedIndex === -1) {
+            this.selectedIndex = 0;
+        }
     }
 
     /**
