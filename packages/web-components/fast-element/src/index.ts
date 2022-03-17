@@ -1,28 +1,28 @@
 export * from "./platform.js";
 export * from "./templating/template.js";
 export * from "./components/fast-element.js";
-export {
-    FASTElementDefinition,
-    PartialFASTElementDefinition,
-} from "./components/fast-definitions.js";
+export * from "./components/fast-definitions.js";
 export * from "./components/attributes.js";
 export * from "./components/controller.js";
-export type { Callable, Constructable, Mutable } from "./interfaces.js";
-export * from "./templating/compiler.js";
-export {
-    ElementStyles,
+export type {
+    Callable,
+    Constructable,
+    FASTGlobal,
+    Mutable,
     StyleStrategy,
-    ConstructibleStyleStrategy,
-    ComposableStyles,
     StyleTarget,
-} from "./styles/element-styles.js";
-export { css, cssPartial } from "./styles/css.js";
-export { CSSDirective } from "./styles/css-directive.js";
+    TrustedTypes,
+    TrustedTypesPolicy,
+} from "./interfaces.js";
+export * from "./templating/compiler.js";
+export * from "./styles/element-styles.js";
+export * from "./styles/css.js";
+export * from "./styles/css-directive.js";
 export * from "./observation/observable.js";
 export * from "./observation/notifier.js";
-export { Splice } from "./observation/array-change-records.js";
-export { enableArrayObservation } from "./observation/array-observer.js";
-export { DOM } from "./dom.js";
+export * from "./observation/array-change-records.js";
+export * from "./observation/array-observer.js";
+export * from "./dom.js";
 export type { Behavior } from "./observation/behavior.js";
 export { Markup, Parser } from "./templating/markup.js";
 export {
@@ -35,21 +35,11 @@ export {
     BindingBehaviorFactory,
     DefaultBindingOptions,
 } from "./templating/binding.js";
-export {
-    ViewBehaviorTargets,
-    ViewBehavior,
-    ViewBehaviorFactory,
-    HTMLDirective,
-    AspectedHTMLDirective,
-} from "./templating/html-directive.js";
+export * from "./templating/html-directive.js";
 export * from "./templating/ref.js";
 export * from "./templating/when.js";
 export * from "./templating/repeat.js";
 export * from "./templating/slotted.js";
 export * from "./templating/children.js";
 export * from "./templating/view.js";
-export {
-    elements,
-    ElementsFilter,
-    NodeBehaviorOptions,
-} from "./templating/node-observation.js";
+export * from "./templating/node-observation.js";

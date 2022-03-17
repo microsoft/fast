@@ -4,12 +4,12 @@ import { customElement, FASTElement } from "../components/fast-element";
 import { Markup } from './markup';
 import { defaultExecutionContext } from "../observation/observable";
 import { css } from "../styles/css";
-import type { StyleTarget } from "../styles/element-styles";
 import { toHTML, uniqueElementName } from "../__test__/helpers";
 import { bind, HTMLBindingDirective } from "./binding";
 import { Compiler } from "./compiler";
 import type { HTMLDirective, ViewBehaviorFactory } from "./html-directive";
 import { html } from "./template";
+import type { StyleTarget } from "../interfaces";
 
 /**
  * Used to satisfy TS by exposing some internal properties of the
