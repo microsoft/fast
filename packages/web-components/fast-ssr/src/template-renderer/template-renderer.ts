@@ -1,6 +1,7 @@
 import { RenderInfo } from "@lit-labs/ssr";
 import { getElementRenderer } from "@lit-labs/ssr/lib/element-renderer.js";
 import {
+    Aspect,
     AspectedHTMLDirective,
     defaultExecutionContext,
     ViewTemplate,
@@ -82,10 +83,12 @@ export class TemplateRenderer implements Readonly<TemplateRendererConfiguration>
                         } else if (result === null || result === undefined) {
                             // Don't yield anything if result is null
                             break;
+                        } else if (directive.aspect === Aspect.content) {
+                            yield result;
                         } else {
                             // debugging error - we should handle all result cases
                             throw new Error(
-                                `Unknown InlineableHTMLDirective result found: ${result}`
+                                `Unknown AspectedHTMLDirective result found: ${result}`
                             );
                         }
                     } else {

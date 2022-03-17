@@ -54,6 +54,10 @@ function traverse(node: DefaultTreeNode | DefaultTreeParentNode, visitor: Visito
         }
     }
 
+    if (node.nodeName === "template") {
+        traverse((node as any).content, visitor);
+    }
+
     if (visitor.leave) {
         visitor.leave(node);
     }

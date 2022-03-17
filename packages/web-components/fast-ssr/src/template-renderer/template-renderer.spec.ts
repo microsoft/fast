@@ -110,7 +110,6 @@ test.describe("TemplateRenderer", () => {
             const { templateRenderer, defaultRenderInfo} = fastSSR();
             const result = templateRenderer.render(html`<with-host-attributes id="foo"></with-host-attributes>`, defaultRenderInfo)
 
-            // You're here - why is the internal binding rending as a interpolation?
             expect(consolidate(result)).toBe(`<with-host-attributes  id="foo" static="static" dynamic="dynamic" bool-true><template shadowroot=\"open\">value<slot></slot></template></with-host-attributes>`);
         })
     })
