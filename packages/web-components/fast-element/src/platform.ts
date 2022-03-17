@@ -53,8 +53,8 @@ const propConfig = {
     writable: false,
 };
 
-if ($global.FAST === void 0) {
-    Reflect.defineProperty($global, "FAST", {
+if (globalThis.FAST === void 0) {
+    Reflect.defineProperty(globalThis, "FAST", {
         value: Object.create(null),
         ...propConfig,
     });
@@ -64,7 +64,7 @@ if ($global.FAST === void 0) {
  * The FAST global.
  * @internal
  */
-export const FAST = $global.FAST;
+export const FAST: FASTGlobal = globalThis.FAST;
 
 if (FAST.getById === void 0) {
     const storage = Object.create(null);
@@ -81,17 +81,6 @@ if (FAST.getById === void 0) {
         },
         ...propConfig,
     });
-}
-
-/**
- * Core services shared across FAST instances.
- * @internal
- */
-export const enum KernelServiceId {
-    updateQueue = 1,
-    observable = 2,
-    contextEvent = 3,
-    elementRegistry = 4,
 }
 
 /**
