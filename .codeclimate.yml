@@ -52,6 +52,7 @@ exclude_patterns:
 - "**/*.d.ts"
 - "**/__tests__/"
 - "**/__snapshots__/"
+- "**/*.json"
 - "**/*.spec.ts"
 - "**/*.spec.tsx"
 - "**/*.test.ts"
