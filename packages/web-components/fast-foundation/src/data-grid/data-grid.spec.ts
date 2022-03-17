@@ -98,6 +98,16 @@ describe("Data grid", () => {
         await disconnect();
     });
 
+    it("should have a tabIndex of -1 when no-tabbing is true", async () => {
+        const {  document, element, connect, disconnect } = await setup();
+        element.noTabbing = true;
+        await connect();
+
+        expect(element.getAttribute("tabindex")).to.equal("-1");
+
+        await disconnect();
+    });
+
     it("should have a tabIndex of -1 when a cell is focused", async () => {
         const { document, element, connect, disconnect } = await setup();
 
