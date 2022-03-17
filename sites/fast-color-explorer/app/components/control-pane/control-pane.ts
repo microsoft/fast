@@ -1,17 +1,17 @@
-import { attr } from "@microsoft/fast-element";
+import { observable } from "@microsoft/fast-element";
 import { FoundationElement } from "@microsoft/fast-foundation";
 
 export class ControlPane extends FoundationElement {
-    @attr({ attribute: "component-type" })
+    @observable
     componentType: string;
 
-    @attr({ attribute: "accent-color" })
+    @observable
     accentColor: string;
 
-    @attr({ attribute: "neutral-color" })
+    @observable
     neutralColor: string;
 
-    @attr({ attribute: "show-only-layer-backgrounds", mode: "boolean" })
+    @observable
     showOnlyLayerBackgrounds: boolean = true;
 
     updateFormValue(field: string, value: any) {

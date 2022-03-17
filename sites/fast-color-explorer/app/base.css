@@ -5,4 +5,5 @@ body {
     margin: 0px;
     padding: 0px;
     font-family: var(--body-font);
+    background-color: var(--fill-color);
 }

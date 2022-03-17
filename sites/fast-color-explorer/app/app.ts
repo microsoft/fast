@@ -91,13 +91,13 @@ const template = html<App>`
                     <div class="row gradient">
                         <app-gradient
                             :colors="${x => x.neutralPalette}"
-                            marked-color="${x => x.neutralColor}"
+                            :markedColor="${x => x.neutralColor}"
                         ></app-gradient>
                     </div>
                     <div class="row gradient">
                         <app-gradient
                             :colors="${x => x.accentPalette}"
-                            marked-color="${x => x.accentColor}"
+                            :markedColor="${x => x.accentColor}"
                         ></app-gradient>
                     </div>
                     <div class="row fill">
@@ -122,10 +122,10 @@ const template = html<App>`
                     background-layer-recipe="L2"
                 >
                     <app-control-pane
-                        component-type="${x => x.componentType}"
-                        neutral-color="${x => x.neutralColor}"
-                        accent-color="${x => x.accentColor}"
-                        ?show-only-layer-backgrounds="${x => x.showOnlyLayerBackgrounds}"
+                        :componentType="${x => x.componentType}"
+                        :neutralColor="${x => x.neutralColor}"
+                        :accentColor="${x => x.accentColor}"
+                        :showOnlyLayerBackgrounds="${x => x.showOnlyLayerBackgrounds}"
                         @formvaluechange="${(x, c) =>
                             x.controlPaneHandler(c.event as CustomEvent)}"
                     ></app-control-pane>
