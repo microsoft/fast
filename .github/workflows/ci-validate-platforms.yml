@@ -73,8 +73,8 @@ jobs:
 
       - name: Install playwright dependencies and browsers
         run: |
-          yarn playwright install-deps
-          yarn playwright install
+          npx playwright install-deps
+          npx playwright install
 
       - name: Build Playwright tests
         run: yarn workspace @microsoft/fast-components build:pw
