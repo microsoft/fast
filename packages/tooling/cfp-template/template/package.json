@@ -3,6 +3,7 @@
     "scripts": {
         "build": "webpack --config=./webpack.prod.js",
         "eslint": "eslint . --ext .ts",
+        "eslint:fix": "eslint . --ext .ts --fix",
         "start": "webpack-dev-server --config=./webpack.dev.js --history-api-fallback --progress",
         "test": "npm run eslint && npm run test:e2e",
         "test:serve": "node ./test-server.js",

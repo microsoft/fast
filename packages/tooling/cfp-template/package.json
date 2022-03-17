@@ -18,6 +18,7 @@
   "scripts": {
     "build": "webpack --config=./template/webpack.prod.js",
     "eslint": "eslint . --ext .ts",
+    "eslint:fix": "eslint . --ext .ts --fix",
     "start": "webpack-dev-server --config=./template/webpack.dev.js --history-api-fallback --progress",
     "test": "npm run eslint && npm run test:e2e",
     "serve": "node ./template/server.js",
