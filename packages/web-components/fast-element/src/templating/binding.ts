@@ -176,9 +176,9 @@ function updateTokenListTarget(
     value: any
 ): void {
     const directive = this.directive;
+    const lookup = `${directive.uniqueId}-token-list`;
     const state: TokenListState =
-        target[directive.uniqueId] ??
-        (target[directive.uniqueId] = { c: 0, v: Object.create(null) });
+        target[lookup] ?? (target[lookup] = { c: 0, v: Object.create(null) });
     const versions = state.v;
     let currentVersion = state.c;
     const tokenList = target[aspect] as DOMTokenList;
@@ -493,6 +493,19 @@ export const signal = <T = any>(options: string | Binding<T>): BindingConfig<T> 
     return { mode: signalMode, options };
 };
 
+declare class TrustedHTML {}
+const createInnerHTMLBinding = globalThis.TrustedHTML
+    ? (binding: Binding) => (s, c) => {
+          const value = binding(s, c);
+
+          if (value instanceof TrustedHTML) {
+              return value;
+          }
+
+          throw new Error("To bind innerHTML, you must use a TrustedTypesPolicy.");
+      }
+    : (binding: Binding) => binding;
+
 /**
  * @internal
  */
@@ -523,9 +536,7 @@ export class HTMLBindingDirective extends AspectedHTMLDirective {
                 (this as Mutable<this>).target = value.substring(1);
                 switch (this.target) {
                     case "innerHTML":
-                        const binding = this.binding;
-                        /* eslint-disable-next-line */
-                        this.binding = (s, c) => DOM.createHTML(binding(s, c));
+                        this.binding = createInnerHTMLBinding(this.binding);
                         (this as Mutable<this>).aspect = Aspect.property;
                         break;
                     case "classList":
