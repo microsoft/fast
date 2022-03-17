@@ -4,6 +4,7 @@ import { expect, test } from "@playwright/test";
 import fastSSR from "../exports.js";
 import { TemplateRenderer } from "./template-renderer.js";
 import { parseTemplateToOpCodes } from "../template-parser/template-parser.js";
+import exp from "constants";
 
 function consolidate(strings: IterableIterator<string>): string {
     let str = "";
@@ -25,6 +26,7 @@ class WithSlot extends FASTElement {}
 
 @customElement({name: "with-host-attributes", template: html`<template static="static" dynamic="${x => "dynamic"}" ?bool-true=${x => true} ?bool-false=${x => false} :property=${x => "value"}>${x => x.property}<slot></slot></template>`})
 class WithHostAttributes extends FASTElement {}
+
 test.describe("TemplateRenderer", () => {
     test.describe("should have an initial configuration", () => {
         test("that emits to shadow DOM", () => {
@@ -111,7 +113,7 @@ test.describe("TemplateRenderer", () => {
             const result = templateRenderer.render(html`<with-host-attributes id="foo"></with-host-attributes>`, defaultRenderInfo)
 
             expect(consolidate(result)).toBe(`<with-host-attributes  id="foo" static="static" dynamic="dynamic" bool-true><template shadowroot=\"open\">value<slot></slot></template></with-host-attributes>`);
-        })
+        });
     })
 
     test("should emit a single element template", () => {
@@ -188,6 +190,15 @@ test.describe("TemplateRenderer", () => {
 
         expect(result).toBe(`<input type="checkbox"  />`);
     });
+
+    test.only("should emit embedded templates", () =>{
+        const { templateRenderer, defaultRenderInfo} = fastSSR();
+        const codes = parseTemplateToOpCodes(html`<p>Hello ${html`<span>world</span>`}</p>`);
+
+console.log(codes)
+        const result = consolidate(templateRenderer.render(html`<p>Hello ${html`<span>world</span>`}</p>`, defaultRenderInfo))
+        expect(result).toBe(`<p>Hello <span>world</span></p>`);
+    })
 
     /**
      * Directive tests
