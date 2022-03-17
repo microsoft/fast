@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "fix: cache wrapper does not differentiate component of same type using react wrapper",
-  "packageName": "@microsoft/fast-react-wrapper",
-  "email": "fcollonval@gmail.com",
-  "dependentChangeType": "patch"
-}

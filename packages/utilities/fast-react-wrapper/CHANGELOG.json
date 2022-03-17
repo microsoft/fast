@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-react-wrapper",
   "entries": [
     {
+      "date": "Thu, 17 Mar 2022 07:11:51 GMT",
+      "tag": "@microsoft/fast-react-wrapper_v0.1.41",
+      "version": "0.1.41",
+      "comments": {
+        "patch": [
+          {
+            "comment": "fix: cache wrapper does not differentiate component of same type using react wrapper",
+            "author": "fcollonval@gmail.com",
+            "commit": "acec687292c19fdd56f851a6275447c2d2dbd889",
+            "package": "@microsoft/fast-react-wrapper"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 16 Mar 2022 07:12:41 GMT",
       "tag": "@microsoft/fast-react-wrapper_v0.1.40",
       "version": "0.1.40",
