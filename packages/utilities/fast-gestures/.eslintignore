@@ -6,3 +6,5 @@ dist
 coverage
 # don't lint tests
 *.spec.*
+# don't lint code from external source
+src/base
