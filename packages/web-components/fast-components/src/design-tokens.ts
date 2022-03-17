@@ -1,33 +1,26 @@
 import { DesignToken } from "@microsoft/fast-foundation";
 import { Direction } from "@microsoft/fast-web-utilities";
 import { Palette, PaletteRGB } from "./color/palette.js";
+import { InteractiveSwatchSet } from "./color/recipe.js";
 import { Swatch, SwatchRGB } from "./color/swatch.js";
-import { accentFill as accentFillAlgorithm } from "./color/recipes/accent-fill.js";
-import { accentForeground as accentForegroundAlgorithm } from "./color/recipes/accent-foreground.js";
-import { foregroundOnAccent as foregroundOnAccentAlgorithm } from "./color/recipes/foreground-on-accent.js";
-import { neutralFill as neutralFillAlgorithm } from "./color/recipes/neutral-fill.js";
-import { neutralFillInput as neutralFillInputAlgorithm } from "./color/recipes/neutral-fill-input.js";
-import { neutralFillLayer as neutralFillLayerAlgorithm } from "./color/recipes/neutral-fill-layer.js";
-import { neutralFillStealth as neutralFillStealthAlgorithm } from "./color/recipes/neutral-fill-stealth.js";
-import { neutralFillContrast as neutralFillContrastAlgorithm } from "./color/recipes/neutral-fill-contrast.js";
-import { contrastSetRecipe as contrastSetAlgorithm } from "./color/recipes/contrast-set-recipe.js";
+import { contrastAndDeltaSwatchSet } from "./color/recipes/contrast-and-delta-swatch-set.js";
+import { contrastSwatch } from "./color/recipes/contrast-swatch.js";
+import { contrastSwatchSet } from "./color/recipes/contrast-swatch-set.js";
+import { deltaSwatch } from "./color/recipes/delta-swatch.js";
+import { deltaSwatchSet } from "./color/recipes/delta-swatch-set.js";
 import {
     focusStrokeInner as focusStrokeInnerAlgorithm,
     focusStrokeOuter as focusStrokeOuterAlgorithm,
 } from "./color/recipes/focus-stroke.js";
-import { neutralForeground as neutralForegroundAlgorithm } from "./color/recipes/neutral-foreground.js";
-import { neutralForegroundHint as neutralForegroundHintAlgorithm } from "./color/recipes/neutral-foreground-hint.js";
-import { neutralLayerCardContainer as neutralLayerCardContainerAlgorithm } from "./color/recipes/neutral-layer-card-container.js";
-import { neutralLayerFloating as neutralLayerFloatingAlgorithm } from "./color/recipes/neutral-layer-floating.js";
+import { foregroundOnAccent as foregroundOnAccentAlgorithm } from "./color/recipes/foreground-on-accent.js";
 import { neutralLayer1 as neutralLayer1Algorithm } from "./color/recipes/neutral-layer-1.js";
 import { neutralLayer2 as neutralLayer2Algorithm } from "./color/recipes/neutral-layer-2.js";
 import { neutralLayer3 as neutralLayer3Algorithm } from "./color/recipes/neutral-layer-3.js";
 import { neutralLayer4 as neutralLayer4Algorithm } from "./color/recipes/neutral-layer-4.js";
-import { neutralStroke as neutralStrokeAlgorithm } from "./color/recipes/neutral-stroke.js";
-import { neutralStrokeDivider as neutralStrokeDividerAlgorithm } from "./color/recipes/neutral-stroke-divider.js";
+import { neutralLayerFloating as neutralLayerFloatingAlgorithm } from "./color/recipes/neutral-layer-floating.js";
 import { StandardLuminance } from "./color/utilities/base-layer-luminance.js";
 import { accentBase, middleGrey } from "./color/utilities/color-constants.js";
-import { InteractiveSwatchSet } from "./color/recipe.js";
+import { idealColorDeltaSwatchSet } from "./color/recipes/ideal-color-delta-swatch-set.js";
 
 /** @public @deprecated Use ColorRecipe instead */
 export interface Recipe<T> {
@@ -276,6 +269,14 @@ export const neutralFillStrongFocusDelta = createNonCss<number>(
 export const neutralFillLayerRestDelta = createNonCss<number>(
     "neutral-fill-layer-rest-delta"
 ).withDefault(2);
+/** @public */
+export const neutralFillLayerHoverDelta = createNonCss<number>(
+    "neutral-fill-layer-hover-delta"
+).withDefault(2);
+/** @public */
+export const neutralFillLayerActiveDelta = createNonCss<number>(
+    "neutral-fill-layer-active-delta"
+).withDefault(2);
 
 /** @public */
 export const neutralStrokeRestDelta = createNonCss<number>(
@@ -295,12 +296,12 @@ export const neutralStrokeFocusDelta = createNonCss<number>(
 ).withDefault(49);
 
 /** @public */
-export const neutralStrokeDividerRestDelta = create<number>(
+export const neutralStrokeDividerRestDelta = createNonCss<number>(
     "neutral-stroke-divider-rest-delta"
 ).withDefault(8);
 
 /** @public */
-export const neutralStrokeInputFilledRestDelta = create<number>(
+export const neutralStrokeInputFilledRestDelta = createNonCss<number>(
     "neutral-stroke-input-filled-rest-delta"
 ).withDefault(4);
 /** @public */
@@ -344,7 +345,7 @@ export const neutralLayerCardContainerRecipe = createNonCss<ColorRecipe>(
     "neutral-layer-card-container-recipe"
 ).withDefault({
     evaluate: (element: HTMLElement): Swatch =>
-        neutralLayerCardContainerAlgorithm(
+        neutralLayer2Algorithm(
             neutralPalette.getValueFor(element),
             baseLayerLuminance.getValueFor(element),
             neutralFillLayerRestDelta.getValueFor(element)
@@ -406,10 +407,7 @@ export const neutralLayer2Recipe = createNonCss<ColorRecipe>(
         neutralLayer2Algorithm(
             neutralPalette.getValueFor(element),
             baseLayerLuminance.getValueFor(element),
-            neutralFillLayerRestDelta.getValueFor(element),
-            neutralFillRestDelta.getValueFor(element),
-            neutralFillHoverDelta.getValueFor(element),
-            neutralFillActiveDelta.getValueFor(element)
+            neutralFillLayerRestDelta.getValueFor(element)
         ),
 });
 
@@ -429,10 +427,7 @@ export const neutralLayer3Recipe = createNonCss<ColorRecipe>(
         neutralLayer3Algorithm(
             neutralPalette.getValueFor(element),
             baseLayerLuminance.getValueFor(element),
-            neutralFillLayerRestDelta.getValueFor(element),
-            neutralFillRestDelta.getValueFor(element),
-            neutralFillHoverDelta.getValueFor(element),
-            neutralFillActiveDelta.getValueFor(element)
+            neutralFillLayerRestDelta.getValueFor(element)
         ),
 });
 
@@ -452,10 +447,7 @@ export const neutralLayer4Recipe = createNonCss<ColorRecipe>(
         neutralLayer4Algorithm(
             neutralPalette.getValueFor(element),
             baseLayerLuminance.getValueFor(element),
-            neutralFillLayerRestDelta.getValueFor(element),
-            neutralFillRestDelta.getValueFor(element),
-            neutralFillHoverDelta.getValueFor(element),
-            neutralFillActiveDelta.getValueFor(element)
+            neutralFillLayerRestDelta.getValueFor(element)
         ),
 });
 
@@ -478,21 +470,19 @@ enum ContrastTarget {
 
 // Accent Fill
 /** @public */
-export const accentFillRecipe = create<InteractiveColorRecipe>({
-    name: "accent-fill-recipe",
-    cssCustomPropertyName: null,
-}).withDefault({
+export const accentFillRecipe = createNonCss<InteractiveColorRecipe>(
+    "accent-fill-recipe"
+).withDefault({
     evaluate: (element: HTMLElement, reference?: Swatch): InteractiveSwatchSet =>
-        accentFillAlgorithm(
+        idealColorDeltaSwatchSet(
             accentPalette.getValueFor(element),
-            neutralPalette.getValueFor(element),
+            accentPalette.getValueFor(element).source,
             reference || fillColor.getValueFor(element),
+            ContrastTarget.normal,
+            accentFillRestDelta.getValueFor(element),
             accentFillHoverDelta.getValueFor(element),
             accentFillActiveDelta.getValueFor(element),
-            accentFillFocusDelta.getValueFor(element),
-            neutralFillRestDelta.getValueFor(element),
-            neutralFillHoverDelta.getValueFor(element),
-            neutralFillActiveDelta.getValueFor(element)
+            accentFillFocusDelta.getValueFor(element)
         ),
 });
 
@@ -614,27 +604,22 @@ export const foregroundOnAccentFocusLarge = create<Swatch>(
 );
 
 // Accent Foreground
-const accentForegroundByContrast = (contrast: number) => (
-    element: HTMLElement,
-    reference?: Swatch
-) =>
-    accentForegroundAlgorithm(
-        accentPalette.getValueFor(element),
-        reference || fillColor.getValueFor(element),
-        contrast,
-        accentForegroundRestDelta.getValueFor(element),
-        accentForegroundHoverDelta.getValueFor(element),
-        accentForegroundActiveDelta.getValueFor(element),
-        accentForegroundFocusDelta.getValueFor(element)
-    );
 
 /** @public */
-export const accentForegroundRecipe = create<InteractiveColorRecipe>({
-    name: "accent-foreground-recipe",
-    cssCustomPropertyName: null,
-}).withDefault({
+export const accentForegroundRecipe = createNonCss<InteractiveColorRecipe>(
+    "accent-foreground-recipe"
+).withDefault({
     evaluate: (element: HTMLElement, reference?: Swatch): InteractiveSwatchSet =>
-        accentForegroundByContrast(ContrastTarget.normal)(element, reference),
+        idealColorDeltaSwatchSet(
+            accentPalette.getValueFor(element),
+            accentPalette.getValueFor(element).source,
+            reference || fillColor.getValueFor(element),
+            ContrastTarget.normal,
+            accentForegroundRestDelta.getValueFor(element),
+            accentForegroundHoverDelta.getValueFor(element),
+            accentForegroundActiveDelta.getValueFor(element),
+            accentForegroundFocusDelta.getValueFor(element)
+        ),
 });
 
 /** @public */
@@ -666,12 +651,11 @@ export const accentForegroundFocus = create<Swatch>(
 
 // Neutral Fill
 /** @public */
-export const neutralFillRecipe = create<InteractiveColorRecipe>({
-    name: "neutral-fill-recipe",
-    cssCustomPropertyName: null,
-}).withDefault({
+export const neutralFillRecipe = createNonCss<InteractiveColorRecipe>(
+    "neutral-fill-recipe"
+).withDefault({
     evaluate: (element: HTMLElement, reference?: Swatch): InteractiveSwatchSet =>
-        neutralFillAlgorithm(
+        deltaSwatchSet(
             neutralPalette.getValueFor(element),
             reference || fillColor.getValueFor(element),
             neutralFillRestDelta.getValueFor(element),
@@ -703,12 +687,11 @@ export const neutralFillFocus = create<Swatch>("neutral-fill-focus").withDefault
 
 // Neutral Fill Input
 /** @public */
-export const neutralFillInputRecipe = create<InteractiveColorRecipe>({
-    name: "neutral-fill-input-recipe",
-    cssCustomPropertyName: null,
-}).withDefault({
+export const neutralFillInputRecipe = createNonCss<InteractiveColorRecipe>(
+    "neutral-fill-input-recipe"
+).withDefault({
     evaluate: (element: HTMLElement, reference?: Swatch): InteractiveSwatchSet =>
-        neutralFillInputAlgorithm(
+        deltaSwatchSet(
             neutralPalette.getValueFor(element),
             reference || fillColor.getValueFor(element),
             neutralFillInputRestDelta.getValueFor(element),
@@ -747,22 +730,17 @@ export const neutralFillInputFocus = create<Swatch>(
 
 // Neutral Fill Stealth
 /** @public */
-export const neutralFillStealthRecipe = create<InteractiveColorRecipe>({
-    name: "neutral-fill-stealth-recipe",
-    cssCustomPropertyName: null,
-}).withDefault({
+export const neutralFillStealthRecipe = createNonCss<InteractiveColorRecipe>(
+    "neutral-fill-stealth-recipe"
+).withDefault({
     evaluate: (element: HTMLElement, reference?: Swatch): InteractiveSwatchSet =>
-        neutralFillStealthAlgorithm(
+        deltaSwatchSet(
             neutralPalette.getValueFor(element),
             reference || fillColor.getValueFor(element),
             neutralFillStealthRestDelta.getValueFor(element),
             neutralFillStealthHoverDelta.getValueFor(element),
             neutralFillStealthActiveDelta.getValueFor(element),
-            neutralFillStealthFocusDelta.getValueFor(element),
-            neutralFillRestDelta.getValueFor(element),
-            neutralFillHoverDelta.getValueFor(element),
-            neutralFillActiveDelta.getValueFor(element),
-            neutralFillFocusDelta.getValueFor(element)
+            neutralFillStealthFocusDelta.getValueFor(element)
         ),
 });
 
@@ -797,14 +775,14 @@ export const neutralFillStealthFocus = create<Swatch>(
 
 // Neutral Fill Strong
 /** @public */
-export const neutralFillStrongRecipe = create<InteractiveColorRecipe>({
-    name: "neutral-fill-strong-recipe",
-    cssCustomPropertyName: null,
-}).withDefault({
+export const neutralFillStrongRecipe = createNonCss<InteractiveColorRecipe>(
+    "neutral-fill-strong-recipe"
+).withDefault({
     evaluate: (element: HTMLElement, reference?: Swatch): InteractiveSwatchSet =>
-        neutralFillContrastAlgorithm(
+        contrastAndDeltaSwatchSet(
             neutralPalette.getValueFor(element),
             reference || fillColor.getValueFor(element),
+            ContrastTarget.normal,
             neutralFillStrongRestDelta.getValueFor(element),
             neutralFillStrongHoverDelta.getValueFor(element),
             neutralFillStrongActiveDelta.getValueFor(element),
@@ -843,21 +821,44 @@ export const neutralFillStrongFocus = create<Swatch>(
 
 // Neutral Fill Layer
 /** @public */
-export const neutralFillLayerRecipe = createNonCss<ColorRecipe>(
+export const neutralFillLayerRecipe = createNonCss<InteractiveColorRecipe>(
     "neutral-fill-layer-recipe"
 ).withDefault({
-    evaluate: (element: HTMLElement, reference?: Swatch): Swatch =>
-        neutralFillLayerAlgorithm(
+    evaluate: (element: HTMLElement, reference?: Swatch): InteractiveSwatchSet =>
+        deltaSwatchSet(
             neutralPalette.getValueFor(element),
             reference || fillColor.getValueFor(element),
+            neutralFillLayerRestDelta.getValueFor(element),
+            neutralFillLayerHoverDelta.getValueFor(element),
+            neutralFillLayerActiveDelta.getValueFor(element),
             neutralFillLayerRestDelta.getValueFor(element)
         ),
 });
 /** @public */
-export const neutralFillLayerRest = create<Swatch>(
-    "neutral-fill-layer-rest"
-).withDefault((element: HTMLElement) =>
-    neutralFillLayerRecipe.getValueFor(element).evaluate(element)
+export const neutralFillLayerRest = create<Swatch>("neutral-fill-layer-rest").withDefault(
+    (element: HTMLElement) =>
+        neutralFillLayerRecipe.getValueFor(element).evaluate(element).rest
+);
+/** @public */
+export const neutralFillLayerHover = create<Swatch>(
+    "neutral-fill-layer-hover"
+).withDefault(
+    (element: HTMLElement) =>
+        neutralFillLayerRecipe.getValueFor(element).evaluate(element).hover
+);
+/** @public */
+export const neutralFillLayerActive = create<Swatch>(
+    "neutral-fill-layer-active"
+).withDefault(
+    (element: HTMLElement) =>
+        neutralFillLayerRecipe.getValueFor(element).evaluate(element).active
+);
+/** @public */
+export const neutralFillLayerFocus = create<Swatch>(
+    "neutral-fill-layer-focus"
+).withDefault(
+    (element: HTMLElement) =>
+        neutralFillLayerRecipe.getValueFor(element).evaluate(element).focus
 );
 
 // Focus Stroke Outer
@@ -901,12 +902,11 @@ export const focusStrokeInner = create<Swatch>(
 
 // Stroke Control Strong
 /** @public */
-export const strokeControlStrongRecipe = create<InteractiveColorRecipe>({
-    name: "stroke-control-strong-recipe",
-    cssCustomPropertyName: null,
-}).withDefault({
+export const strokeControlStrongRecipe = createNonCss<InteractiveColorRecipe>(
+    "stroke-control-strong-recipe"
+).withDefault({
     evaluate: (element: HTMLElement, reference?: Swatch): InteractiveSwatchSet =>
-        contrastSetAlgorithm(
+        contrastSwatchSet(
             neutralPalette.getValueFor(element),
             reference || fillColor.getValueFor(element),
             10,
@@ -952,9 +952,10 @@ export const neutralForegroundHintRecipe = createNonCss<ColorRecipe>(
     "neutral-foreground-hint-recipe"
 ).withDefault({
     evaluate: (element: HTMLElement): Swatch =>
-        neutralForegroundHintAlgorithm(
+        contrastSwatch(
             neutralPalette.getValueFor(element),
-            fillColor.getValueFor(element)
+            fillColor.getValueFor(element),
+            ContrastTarget.normal
         ),
 });
 
@@ -971,10 +972,11 @@ export const neutralForegroundRecipe = createNonCss<InteractiveColorRecipe>(
     "neutral-foreground-recipe"
 ).withDefault({
     evaluate: (element: HTMLElement): InteractiveSwatchSet =>
-        neutralForegroundAlgorithm(
+        contrastAndDeltaSwatchSet(
             neutralPalette.getValueFor(element),
             fillColor.getValueFor(element),
             10,
+            24,
             24,
             24,
             24
@@ -1012,20 +1014,18 @@ export const neutralForegroundFocus = create<Swatch>(
 
 // Neutral Stroke
 /** @public */
-export const neutralStrokeRecipe = create<InteractiveColorRecipe>({
-    name: "neutral-stroke-recipe",
-    cssCustomPropertyName: null,
-}).withDefault({
-    evaluate: (element: HTMLElement): InteractiveSwatchSet => {
-        return neutralStrokeAlgorithm(
+export const neutralStrokeRecipe = createNonCss<InteractiveColorRecipe>(
+    "neutral-stroke-recipe"
+).withDefault({
+    evaluate: (element: HTMLElement): InteractiveSwatchSet =>
+        deltaSwatchSet(
             neutralPalette.getValueFor(element),
             fillColor.getValueFor(element),
             neutralStrokeRestDelta.getValueFor(element),
             neutralStrokeHoverDelta.getValueFor(element),
             neutralStrokeActiveDelta.getValueFor(element),
             neutralStrokeFocusDelta.getValueFor(element)
-        );
-    },
+        ),
 });
 
 /** @public */
@@ -1051,20 +1051,18 @@ export const neutralStrokeFocus = create<Swatch>("neutral-stroke-focus").withDef
 
 // Neutral Stroke Input Filled
 /** @public */
-export const neutralStrokeInputFilledRecipe = create<InteractiveColorRecipe>({
-    name: "neutral-stroke-input-filled-recipe",
-    cssCustomPropertyName: null,
-}).withDefault({
-    evaluate: (element: HTMLElement): InteractiveSwatchSet => {
-        return neutralStrokeAlgorithm(
+export const neutralStrokeInputFilledRecipe = createNonCss<InteractiveColorRecipe>(
+    "neutral-stroke-input-filled-recipe"
+).withDefault({
+    evaluate: (element: HTMLElement): InteractiveSwatchSet =>
+        deltaSwatchSet(
             neutralPalette.getValueFor(element),
             fillColor.getValueFor(element),
             neutralStrokeInputFilledRestDelta.getValueFor(element),
             neutralStrokeInputFilledHoverDelta.getValueFor(element),
             neutralStrokeInputFilledActiveDelta.getValueFor(element),
             neutralStrokeInputFilledFocusDelta.getValueFor(element)
-        );
-    },
+        ),
 });
 
 /** @public */
@@ -1102,7 +1100,7 @@ export const neutralStrokeDividerRecipe = createNonCss<ColorRecipe>(
     "neutral-stroke-divider-recipe"
 ).withDefault({
     evaluate: (element: HTMLElement, reference?: Swatch): Swatch =>
-        neutralStrokeDividerAlgorithm(
+        deltaSwatch(
             neutralPalette.getValueFor(element),
             reference || fillColor.getValueFor(element),
             neutralStrokeDividerRestDelta.getValueFor(element)

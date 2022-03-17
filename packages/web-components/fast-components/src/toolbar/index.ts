@@ -22,7 +22,7 @@ export class Toolbar extends FoundationToolbar {
                 (target: HTMLElement): Swatch =>
                     neutralFillLayerRecipe
                         .getValueFor(target)
-                        .evaluate(target, fillColor.getValueFor(parent))
+                        .evaluate(target, fillColor.getValueFor(parent)).rest
             );
         }
     }

@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import { SwatchRGB } from "../swatch.js";
 import { black } from "../utilities/color-constants.js";
-import { foregroundOnAccent } from './foreground-on-accent';
+import { foregroundOnAccent } from './foreground-on-accent.js';
 
 describe("Cut text", (): void => {
     it("should return black when background does not meet contrast ratio", (): void => {
