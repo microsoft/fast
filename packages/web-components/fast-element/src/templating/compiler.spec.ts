@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import { DOM } from "../dom";
 import { customElement, FASTElement } from "../components/fast-element";
-import { Markup } from './markup';
+import { Markup, Parser } from './markup';
 import { defaultExecutionContext } from "../observation/observable";
 import { css } from "../styles/css";
 import type { StyleTarget } from "../styles/element-styles";
@@ -408,3 +408,13 @@ describe("The template compiler", () => {
         });
     }
 });
+
+it.only("odd Compiler.aggregate behavior", () => {
+    const template = html`<p>hello ${html`<span>world</span>`}</p>`;
+    const parsed = Parser.parse(template.html as string, template.directives);
+    const agg = Compiler.aggregate(parsed!) as HTMLBindingDirective;
+    const result = agg.binding(undefined, defaultExecutionContext);
+
+    // This becomes "<p>hello [object Object]</p>"
+    expect(result).to.equal("<p>hello <span>world</span></span>");
+})
