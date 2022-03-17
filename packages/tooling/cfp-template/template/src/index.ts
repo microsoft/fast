@@ -1,7 +1,4 @@
-import { Welcome } from "./components";
-
-// prevent tree shaking
-Welcome;
+import "./components";
 
 /**
  * Normalize body styles
