@@ -31,12 +31,12 @@ test.describe("parseTemplateToOpCodes", () => {
             const input = html`${() => "hello world"}`;
             expect(parseTemplateToOpCodes(input)).toEqual([{ type: OpType.directive, directive: input.directives[0]}])
     });
-    test("should emit a directive op from text and a binding ", () => {
+    test("should emit a directive op from a content binding", () => {
             const input = html`Hello ${() => "World"}.`;
 
             const codes = parseTemplateToOpCodes(input);
-            const code = codes[0] as DirectiveOp;
-            expect(codes.length).toBe(1);
+            const code = codes[1] as DirectiveOp;
+            expect(codes.length).toBe(3);
             expect(code.type).toBe(OpType.directive);
     });
     test("should sandwich directive ops between text ops when binding native element content", () => {

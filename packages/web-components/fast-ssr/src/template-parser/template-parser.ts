@@ -329,12 +329,27 @@ export function parseStringToOpCodes(
 
                 if (parsed) {
                     flushTo(node.sourceCodeLocation!.startOffset);
-                    opCodes.push({
-                        type: OpType.directive,
-                        directive: Compiler.aggregate(parsed),
-                    });
+                    for (const part of parsed) {
+                        if (typeof part === "string") {
+                            flush(part);
+                        } else {
+                            opCodes.push({
+                                type: OpType.directive,
+                                directive: part,
+                            });
+                        }
+                    }
                     skipTo(node.sourceCodeLocation!.endOffset);
                 }
+
+                // if (parsed) {
+                //     flushTo(node.sourceCodeLocation!.startOffset);
+                //     opCodes.push({
+                //         type: OpType.directive,
+                //         directive: Compiler.aggregate(parsed),
+                //     });
+                //     skipTo(node.sourceCodeLocation!.endOffset);
+                // }
             } else if (isElementNode(node)) {
                 parseElementNode(node);
             }

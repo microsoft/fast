@@ -191,11 +191,9 @@ test.describe("TemplateRenderer", () => {
         expect(result).toBe(`<input type="checkbox"  />`);
     });
 
-    test.only("should emit embedded templates", () =>{
+    test("should emit embedded templates", () =>{
         const { templateRenderer, defaultRenderInfo} = fastSSR();
-        const codes = parseTemplateToOpCodes(html`<p>Hello ${html`<span>world</span>`}</p>`);
 
-console.log(codes)
         const result = consolidate(templateRenderer.render(html`<p>Hello ${html`<span>world</span>`}</p>`, defaultRenderInfo))
         expect(result).toBe(`<p>Hello <span>world</span></p>`);
     })
