@@ -23,7 +23,7 @@ class HelloWorld extends FASTElement {}
 @customElement({name: "with-slot", template: html`<slot></slot>`})
 class WithSlot extends FASTElement {}
 
-@customElement({name: "with-host-attributes", template: html`<template static="static" dynamic="${x => "dynamic"}"><slot></slot></template>`})
+@customElement({name: "with-host-attributes", template: html`<template static="static" dynamic="${x => "dynamic"}" ?bool-true=${x => true} ?bool-false=${x => false} :property=${x => "value"}>${x => x.property}<slot></slot></template>`})
 class WithHostAttributes extends FASTElement {}
 test.describe("TemplateRenderer", () => {
     test.describe("should have an initial configuration", () => {
@@ -106,11 +106,12 @@ test.describe("TemplateRenderer", () => {
             expect(consolidate(result)).toBe(`<hello-world  id="test"><template shadowroot=\"open\"></template></hello-world>`);
         });
 
-        test("should emit a custom element with attributes reflected from an element's root <template> element", () => {
+        test("should emit a custom element with attributes and properties reflected from an element's root <template> element", () => {
             const { templateRenderer, defaultRenderInfo} = fastSSR();
             const result = templateRenderer.render(html`<with-host-attributes id="foo"></with-host-attributes>`, defaultRenderInfo)
 
-            expect(consolidate(result)).toBe(`<with-host-attributes  id="foo" static="static" dynamic="dynamic"><template shadowroot=\"open\"><slot></slot></template></with-host-attributes>`);
+            // You're here - why is the internal binding rending as a interpolation?
+            expect(consolidate(result)).toBe(`<with-host-attributes  id="foo" static="static" dynamic="dynamic" bool-true><template shadowroot=\"open\">value<slot></slot></template></with-host-attributes>`);
         })
     })
 

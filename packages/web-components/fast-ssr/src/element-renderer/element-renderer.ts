@@ -1,5 +1,10 @@
 import { ElementRenderer, RenderInfo } from "@lit-labs/ssr";
-import { Aspect, defaultExecutionContext, FASTElement } from "@microsoft/fast-element";
+import {
+    Aspect,
+    defaultExecutionContext,
+    FASTElement,
+    DOM,
+} from "@microsoft/fast-element";
 import { TemplateRenderer } from "../template-renderer/template-renderer.js";
 import { SSRView } from "../view.js";
 
@@ -44,8 +49,10 @@ export abstract class FASTElementRenderer extends ElementRenderer {
                                 (this.element as any)[attr.name] = result;
                                 break;
                             case Aspect.attribute:
-                            case Aspect.content:
-                                this.element.setAttribute(attr.name, result);
+                                DOM.setAttribute(this.element, attr.name, result);
+                                break;
+                            case Aspect.booleanAttribute:
+                                DOM.setBooleanAttribute(this.element, attr.name, result);
                                 break;
                         }
                     }
