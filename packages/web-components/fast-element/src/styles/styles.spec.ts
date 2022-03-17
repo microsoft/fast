@@ -1,8 +1,6 @@
 import { expect } from "chai";
 import {
     AdoptedStyleSheetsStrategy,
-    StyleElementStrategy,
-    StyleTarget,
     ElementStyles,
 } from "./element-styles";
 import { DOM } from "../dom";
@@ -11,6 +9,8 @@ import { css, cssPartial } from "./css";
 import type { Behavior } from "../observation/behavior";
 import { defaultExecutionContext } from "../observation/observable";
 import type { FASTElement } from "..";
+import { StyleElementStrategy } from "../polyfills";
+import type { StyleTarget } from "../interfaces";
 
 if (DOM.supportsAdoptedStyleSheets) {
     describe("AdoptedStyleSheetsStrategy", () => {

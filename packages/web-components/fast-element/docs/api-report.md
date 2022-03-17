@@ -5,18 +5,37 @@
 ```ts
 
 // @public
-export const $global: Global;
-
-// @public
 export interface Accessor {
     getValue(source: any): any;
     name: string;
     setValue(source: any, value: any): void;
 }
 
+// Warning: (ae-internal-missing-underscore) The name "AdoptedStyleSheetsStrategy" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal
+export class AdoptedStyleSheetsStrategy implements StyleStrategy {
+    constructor(styles: (string | CSSStyleSheet)[]);
+    // (undocumented)
+    addStylesTo(target: StyleTarget): void;
+    // (undocumented)
+    removeStylesFrom(target: StyleTarget): void;
+    // (undocumented)
+    readonly sheets: CSSStyleSheet[];
+}
+
+// @public
+export enum Aspect {
+    attribute = 0,
+    booleanAttribute = 1,
+    content = 3,
+    event = 5,
+    property = 2,
+    tokenList = 4
+}
+
 // @public
 export abstract class AspectedHTMLDirective extends HTMLDirective {
-    // Warning: (ae-forgotten-export) The symbol "Aspect" needs to be exported by the entry point index.d.ts
     abstract readonly aspect: Aspect;
     abstract readonly binding?: Binding;
     abstract captureSource(source: string): void;
@@ -117,7 +136,7 @@ export interface ChildListDirectiveOptions<T = any> extends NodeBehaviorOptions<
 // @public
 export function children<T = any>(propertyOrOptions: (keyof T & string) | ChildListDirectiveOptions<keyof T & string>): CaptureType<T>;
 
-// Warning: (ae-forgotten-export) The symbol "NodeObservationDirective" needs to be exported by the entry point index.d.ts
+// Warning: (ae-incompatible-release-tags) The symbol "ChildrenDirective" is marked as @public, but its signature references "NodeObservationDirective" which is marked as @internal
 //
 // @public
 export class ChildrenDirective extends NodeObservationDirective<ChildrenDirectiveOptions> {
@@ -137,6 +156,7 @@ directives: readonly HTMLDirective[]) => HTMLTemplateCompilationResult;
 
 // @public
 export const Compiler: {
+    setHTMLPolicy(policy: TrustedTypesPolicy): void;
     compile(html: string | HTMLTemplateElement, directives: ReadonlyArray<HTMLDirective>): HTMLTemplateCompilationResult;
     setDefaultStrategy(strategy: CompilationStrategy): void;
     aggregate(parts: (string | HTMLDirective)[]): HTMLDirective;
@@ -207,8 +227,6 @@ export const defaultExecutionContext: ExecutionContext<any, any>;
 // @public
 export const DOM: Readonly<{
     supportsAdoptedStyleSheets: boolean;
-    setHTMLPolicy(policy: TrustedTypesPolicy): void;
-    createHTML(html: string): string;
     setUpdateMode: (isAsync: boolean) => void;
     queueUpdate: (callable: Callable) => void;
     nextUpdate(): Promise<void>;
@@ -329,12 +347,6 @@ export interface FASTGlobal {
 }
 
 // @public
-export type Global = typeof globalThis & {
-    trustedTypes: TrustedTypes;
-    readonly FAST: FASTGlobal;
-};
-
-// @public
 export function html<TSource = any, TParent = any, TGrandparent = any>(strings: TemplateStringsArray, ...values: TemplateValue<TSource, TParent>[]): ViewTemplate<TSource, TParent, TGrandparent>;
 
 // @public
@@ -366,20 +378,6 @@ export class HTMLView<TSource = any, TParent = any, TGrandparent = any> implemen
     unbind(): void;
 }
 
-// Warning: (ae-internal-missing-underscore) The name "KernelServiceId" should be prefixed with an underscore because the declaration is marked as @internal
-//
-// @internal
-export const enum KernelServiceId {
-    // (undocumented)
-    contextEvent = 3,
-    // (undocumented)
-    elementRegistry = 4,
-    // (undocumented)
-    observable = 2,
-    // (undocumented)
-    updateQueue = 1
-}
-
 // @public
 export const Markup: Readonly<{
     interpolation: (index: number) => string;
@@ -398,6 +396,19 @@ export type Mutable<T> = {
 export interface NodeBehaviorOptions<T = any> {
     filter?: ElementsFilter;
     property: T;
+}
+
+// Warning: (ae-internal-missing-underscore) The name "NodeObservationDirective" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal
+export abstract class NodeObservationDirective<T extends NodeBehaviorOptions> extends StatelessAttachedAttributeDirective<T> {
+    bind(source: any, context: ExecutionContext<any, any>, targets: ViewBehaviorTargets): void;
+    protected computeNodes(target: any): Node[];
+    protected abstract disconnect(target: any): void;
+    protected abstract getNodes(target: any): Node[];
+    protected abstract observe(target: any): void;
+    unbind(source: any, context: ExecutionContext<any, any>, targets: ViewBehaviorTargets): void;
+    protected updateTarget(source: any, value: ReadonlyArray<any>): void;
 }
 
 // @public
@@ -468,8 +479,6 @@ export class PropertyChangeNotifier implements Notifier {
 // @public
 export const ref: <T = any>(propertyName: keyof T & string) => CaptureType<T>;
 
-// Warning: (ae-forgotten-export) The symbol "StatelessAttachedAttributeDirective" needs to be exported by the entry point index.d.ts
-//
 // @public
 export class RefDirective extends StatelessAttachedAttributeDirective<string> {
     bind(source: any, context: ExecutionContext, targets: ViewBehaviorTargets): void;
@@ -504,6 +513,8 @@ export interface RepeatOptions {
 // @public
 export function slotted<T = any>(propertyOrOptions: (keyof T & string) | SlottedDirectiveOptions<keyof T & string>): CaptureType<T>;
 
+// Warning: (ae-incompatible-release-tags) The symbol "SlottedDirective" is marked as @public, but its signature references "NodeObservationDirective" which is marked as @internal
+//
 // @public
 export class SlottedDirective extends NodeObservationDirective<SlottedDirectiveOptions> {
     disconnect(target: EventSource): void;
@@ -528,6 +539,17 @@ export class Splice {
     // (undocumented)
     static normalize(previous: unknown[] | undefined, current: unknown[], changes: Splice[] | undefined): Splice[] | undefined;
     removed: any[];
+}
+
+// @public
+export abstract class StatelessAttachedAttributeDirective<T> extends HTMLDirective implements ViewBehavior {
+    constructor(options: T);
+    abstract bind(source: any, context: ExecutionContext, targets: ViewBehaviorTargets): void;
+    createBehavior(targets: ViewBehaviorTargets): ViewBehavior;
+    createPlaceholder: (index: number) => string;
+    // (undocumented)
+    protected options: T;
+    abstract unbind(source: any, context: ExecutionContext, targets: ViewBehaviorTargets): void;
 }
 
 // @public
