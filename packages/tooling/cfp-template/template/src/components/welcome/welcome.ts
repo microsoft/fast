@@ -22,5 +22,5 @@ export class Welcome extends FASTElement {
      * HTML Attribute: theme
      */
     @attr()
-    public theme: string = Theme.light;
+    public theme: Theme = Theme.light;
 }
