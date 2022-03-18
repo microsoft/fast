@@ -1,11 +1,7 @@
 import { attr, customElement, FASTElement } from "@microsoft/fast-element";
 import { welcomeStyles as styles } from "./welcome.styles";
 import { welcomeTemplate as template } from "./welcome.template";
-
-export enum Theme {
-    dark = "dark",
-    light = "light",
-}
+import { Theme } from "./welcome.options";
 
 /**
  * A Custom HTML Element.
