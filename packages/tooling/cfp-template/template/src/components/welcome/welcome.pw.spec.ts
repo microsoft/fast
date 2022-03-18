@@ -7,6 +7,7 @@ test.describe("fast-welcome", () => {
 
     test("should add a dark class", async ({ page }) => {
         const element = page.locator("fast-welcome > div");
+
         await expect(element).toHaveClass("dark");
     });
 });
