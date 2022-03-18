@@ -16,9 +16,10 @@ module.exports = (env, args) => {
     return {
         devtool: isProduction ? "none" : "inline-source-map",
         entry: {
-            main: path.resolve(appDir, "index.tsx"),
+            main: path.resolve(appDir, "index.ts"),
             serviceWorker: path.resolve(appDir, "service-worker-registration.ts"),
             focusVisible: require.resolve("focus-visible/dist/focus-visible.min.js"),
+            footer: path.resolve(appDir, "site-footer.ts"),
         },
         output: {
             path: outDir,
@@ -49,10 +50,22 @@ module.exports = (env, args) => {
         module: {
             rules: [
                 {
-                    test: /.tsx?$/,
+                    test: /\.ts$/,
                     use: [
                         {
                             loader: "ts-loader",
+                        },
+                    ],
+                    exclude: /node_modules/
+                },
+                {
+                    test: /\.ejs$/,
+                    use: [
+                        {
+                            loader: "ejs-loader",
+                            options: {
+                                esModule: false,
+                            },
                         },
                     ],
                 },
@@ -112,7 +125,7 @@ module.exports = (env, args) => {
             }),
         ],
         resolve: {
-            extensions: [".svg", ".js", ".tsx", ".ts", ".json"],
+            extensions: [".svg", ".js", ".ts", ".json"],
         },
         devServer: {
             compress: false,
