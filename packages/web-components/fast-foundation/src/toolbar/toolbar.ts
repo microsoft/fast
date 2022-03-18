@@ -137,6 +137,17 @@ export class Toolbar extends FoundationElement {
     public connectedCallback() {
         super.connectedCallback();
         this.direction = getDirection(this);
+        this.start.addEventListener("slotchange", this.startEndSlotChange);
+        this.end.addEventListener("slotchange", this.startEndSlotChange);
+    }
+
+    /**
+     * @internal
+     */
+    public disconnectedCallback() {
+        super.disconnectedCallback();
+        this.start.removeEventListener("slotchange", this.startEndSlotChange);
+        this.end.removeEventListener("slotchange", this.startEndSlotChange);
     }
 
     /**
@@ -278,6 +289,12 @@ export class Toolbar extends FoundationElement {
             this.focusableElements.forEach((element, index) => {
                 element.tabIndex = this.activeIndex === index ? 0 : -1;
             });
+        }
+    }
+
+    private startEndSlotChange = (): void => {
+        if (this.$fastController.isConnected) {
+            this.reduceFocusableElements();
         }
     }
 }
