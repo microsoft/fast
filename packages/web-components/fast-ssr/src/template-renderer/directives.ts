@@ -1,8 +1,11 @@
 import { RenderInfo } from "@lit-labs/ssr";
 import {
+    ChildrenDirective,
     Constructable,
     ExecutionContext,
+    RefDirective,
     RepeatDirective,
+    SlottedDirective,
     ViewTemplate,
 } from "@microsoft/fast-element";
 import { TemplateRenderer } from "./template-renderer.js";
@@ -64,6 +67,35 @@ export const RepeatDirectiveRenderer: DirectiveRenderer<typeof RepeatDirective> 
     }
 );
 
+export const ChildrenDirectiveRenderer: DirectiveRenderer<typeof ChildrenDirective> = Object.freeze(
+    {
+        matcher: ChildrenDirective,
+        *render(): IterableIterator<string> {
+            yield "";
+        },
+    }
+);
+
+export const RefDirectiveRenderer: DirectiveRenderer<typeof RefDirective> = Object.freeze(
+    {
+        matcher: RefDirective,
+        *render(): IterableIterator<string> {
+            yield "";
+        },
+    }
+);
+export const SlottedDirectiveRenderer: DirectiveRenderer<typeof SlottedDirective> = Object.freeze(
+    {
+        matcher: SlottedDirective,
+        *render(): IterableIterator<string> {
+            yield "";
+        },
+    }
+);
+
 export const defaultFASTDirectiveRenderers: DirectiveRenderer<any>[] = [
     RepeatDirectiveRenderer,
+    ChildrenDirectiveRenderer,
+    RefDirectiveRenderer,
+    SlottedDirectiveRenderer,
 ];

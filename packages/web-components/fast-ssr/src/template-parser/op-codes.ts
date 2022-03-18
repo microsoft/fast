@@ -4,7 +4,7 @@ import { AttributeType } from "./attributes.js";
 /**
  * Allows fast identification of operation types
  */
-export enum OpType {
+export const enum OpType {
     customElementOpen,
     customElementClose,
     customElementAttributes,

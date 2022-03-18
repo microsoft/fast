@@ -184,22 +184,21 @@ export function parseStringToOpCodes(
                 const attributeType = getAttributeType(current);
                 if (parsed) {
                     const directive = Compiler.aggregate(parsed);
-                    if (!(directive instanceof AspectedHTMLDirective)) {
-                        throw new Error(
-                            "Unable to convert attribute binding into a directive that can be evaluated"
-                        );
+                    // Guard against directives like children, ref, and slotted
+                    if (directive instanceof AspectedHTMLDirective) {
+                        prev.dynamic.set(current, {
+                            type: OpType.attributeBinding,
+                            name:
+                                attributeType === AttributeType.content
+                                    ? current.name
+                                    : current.name.substring(1),
+                            directive,
+                            attributeType,
+                            useCustomElementInstance: Boolean(
+                                node.isDefinedCustomElement
+                            ),
+                        });
                     }
-
-                    prev.dynamic.set(current, {
-                        type: OpType.attributeBinding,
-                        name:
-                            attributeType === AttributeType.content
-                                ? current.name
-                                : current.name.substring(1),
-                        directive,
-                        attributeType,
-                        useCustomElementInstance: Boolean(node.isDefinedCustomElement),
-                    });
                 } else {
                     prev.static.set(current.name, current.value);
                 }
