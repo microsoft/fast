@@ -296,7 +296,7 @@ export class Toolbar extends FoundationElement {
         if (this.$fastController.isConnected) {
             this.reduceFocusableElements();
         }
-    }
+    };
 }
 
 /**
