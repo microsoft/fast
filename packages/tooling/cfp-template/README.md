@@ -1,3 +1,3 @@
 # Introduction
 
-This is the package containing the default starter template provided by the FAST CLI.
+This is the Create Fast Project (cfp) default template package which will be used by the FAST CLI.
