@@ -33,6 +33,7 @@ module.exports = {
     plugins: [
         new HtmlWebpackPlugin({
             title: "Welcome to FAST!",
+            template: path.resolve(appDir, "index.html"),
         }),
     ],
 };
