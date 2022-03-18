@@ -107,7 +107,12 @@ export abstract class FASTElementRenderer extends ElementRenderer {
         yield* this.templateRenderer.renderOpCodes(
             ((view as unknown) as SSRView).codes,
             renderInfo,
-            this.element
+            this.element,
+            // renderShadow can be called by external code that cant know about execution context,
+            // so that data can't come from a method argument. Provide defaultExecutionContext, but I
+            // am unsure if this behavior will *always* match fast-element's behavior. If it doesn't,
+            // we'll need to implement a executionContext lookup.
+            defaultExecutionContext
         );
     }
 

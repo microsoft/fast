@@ -4,6 +4,7 @@ import {
     Aspect,
     AspectedHTMLDirective,
     defaultExecutionContext,
+    ExecutionContext,
     ViewTemplate,
 } from "@microsoft/fast-element";
 import { AttributeType } from "../template-parser/attributes.js";
@@ -40,11 +41,12 @@ export class TemplateRenderer implements Readonly<TemplateRendererConfiguration>
     public *render(
         template: ViewTemplate,
         renderInfo: RenderInfo,
-        source?: unknown
+        source: unknown = undefined,
+        context: ExecutionContext = defaultExecutionContext
     ): IterableIterator<string> {
         const codes = parseTemplateToOpCodes(template);
 
-        yield* this.renderOpCodes(codes, renderInfo, source);
+        yield* this.renderOpCodes(codes, renderInfo, source, context);
     }
 
     /**
@@ -57,7 +59,8 @@ export class TemplateRenderer implements Readonly<TemplateRendererConfiguration>
     public *renderOpCodes(
         codes: Op[],
         renderInfo: RenderInfo,
-        source?: unknown
+        source: unknown,
+        context: ExecutionContext
     ): IterableIterator<string> {
         for (const code of codes) {
             switch (code.type) {
@@ -70,16 +73,16 @@ export class TemplateRenderer implements Readonly<TemplateRendererConfiguration>
                     if (this.directiveRenderers.has(ctor)) {
                         yield* this.directiveRenderers
                             .get(ctor)!
-                            .render(directive, renderInfo, source, this);
+                            .render(directive, renderInfo, source, this, context);
                     } else if (
                         directive instanceof AspectedHTMLDirective &&
                         directive.binding
                     ) {
-                        const result = directive.binding(source, defaultExecutionContext);
+                        const result = directive.binding(source, context);
 
                         // If the result is a template, render the template
                         if (result instanceof ViewTemplate) {
-                            yield* this.render(result, renderInfo, source);
+                            yield* this.render(result, renderInfo, source, context);
                         } else if (result === null || result === undefined) {
                             // Don't yield anything if result is null
                             break;
@@ -168,7 +171,7 @@ export class TemplateRenderer implements Readonly<TemplateRendererConfiguration>
                         break;
                     }
 
-                    let result = code.directive.binding(source, defaultExecutionContext);
+                    let result = code.directive.binding(source, context);
                     const { name } = code;
 
                     if (code.useCustomElementInstance) {

@@ -1,5 +1,5 @@
 import "@lit-labs/ssr/lib/install-global-dom-shim.js";
-import { customElement, FASTElement, html, when, defaultExecutionContext } from "@microsoft/fast-element";
+import { customElement, FASTElement, html, when, defaultExecutionContext, repeat } from "@microsoft/fast-element";
 import { expect, test } from "@playwright/test";
 import fastSSR from "../exports.js";
 import { TemplateRenderer } from "./template-renderer.js";
@@ -201,16 +201,54 @@ test.describe("TemplateRenderer", () => {
     /**
      * Directive tests
      */
-    test("should render a 'when' directive's content when the binding evaluates true", () => {
-        const { templateRenderer, defaultRenderInfo} = fastSSR();
-        const result = templateRenderer.render(html`${when(x => true, html`<p>Hello world</p>`)}`, defaultRenderInfo)
+    test.describe("with a 'when' directive", () => {
+        test("should render a 'when' directive's content when the binding evaluates true", () => {
+            const { templateRenderer, defaultRenderInfo} = fastSSR();
+            const result = templateRenderer.render(html`${when(x => true, html`<p>Hello world</p>`)}`, defaultRenderInfo)
 
-        expect(consolidate(result)).toBe("<p>Hello world</p>")
+            expect(consolidate(result)).toBe("<p>Hello world</p>")
+        });
+        test("should emit nothing when a 'when' directive's binding evaluates false ", () => {
+            const { templateRenderer, defaultRenderInfo} = fastSSR();
+            const result = templateRenderer.render(html`${when(x => false, html`<p>Hello world</p>`)}`, defaultRenderInfo)
+
+            expect(consolidate(result)).toBe("");
+        });
     });
-    test("should emit nothing when a 'when' directive's binding evaluates false ", () => {
-        const { templateRenderer, defaultRenderInfo} = fastSSR();
-        const result = templateRenderer.render(html`${when(x => false, html`<p>Hello world</p>`)}`, defaultRenderInfo)
 
-        expect(consolidate(result)).toBe("");
+    test.describe("with a 'repeat' directive", () => {
+        test("should provide parent and parentContext to execution context of bindings in child template", () => {
+
+            const { templateRenderer, defaultRenderInfo} = fastSSR();
+            const source = {
+                data: ["foo", "bar", "bat"]
+            };
+            const ctx = Object.create(defaultExecutionContext);
+            consolidate(templateRenderer.render(html<typeof source>`${repeat(x => x.data, html<string>`${(x, c) => {
+                expect(c.parent).toBe(source);
+                expect(c.parentContext).toBe(ctx)
+            }}`, { positioning: true})}`, defaultRenderInfo, source, ctx))
+        });
+        test("should provide positioning information when invoked with the positioning config", () => {
+
+            const { templateRenderer, defaultRenderInfo} = fastSSR();
+            const source = {
+                data: ["foo", "bar", "bat"]
+            };
+            let i = 0;
+            consolidate(templateRenderer.render(html<typeof source>`${repeat(x => x.data, html<string>`${(x, c) => {
+                expect(c.index).toBe(i);
+                i++;
+                expect(c.length).toBe(c.parent.data.length)
+            }}`, { positioning: true})}`, defaultRenderInfo, source))
+        });
+        test("should render the provided template with the instance as the source data", () => {
+            const { templateRenderer, defaultRenderInfo} = fastSSR();
+            const source = {
+                data: ["foo", "bar", "bat"]
+            };
+            const result = templateRenderer.render(html<typeof source>`${repeat(x => x.data, html<string>`${x => x}`)}`, defaultRenderInfo, source)
+            expect(consolidate( result )).toBe("foobarbat");
+        });
     });
 });
