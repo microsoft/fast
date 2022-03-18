@@ -35,16 +35,6 @@ export enum Aspect {
 }
 
 // @public
-export enum Aspect {
-    attribute = 0,
-    booleanAttribute = 1,
-    content = 3,
-    event = 5,
-    property = 2,
-    tokenList = 4
-}
-
-// @public
 export abstract class AspectedHTMLDirective extends HTMLDirective {
     abstract readonly aspect: Aspect;
     abstract readonly binding?: Binding;

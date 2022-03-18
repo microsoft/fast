@@ -2,8 +2,8 @@ import { ElementRenderer, RenderInfo } from "@lit-labs/ssr";
 import {
     Aspect,
     defaultExecutionContext,
-    FASTElement,
     DOM,
+    FASTElement,
 } from "@microsoft/fast-element";
 import { TemplateRenderer } from "../template-renderer/template-renderer.js";
 import { SSRView } from "../view.js";
