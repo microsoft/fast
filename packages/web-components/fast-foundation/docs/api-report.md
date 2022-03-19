@@ -321,7 +321,74 @@ export type CSSDisplayPropertyValue = "block" | "contents" | "flex" | "grid" | "
 export const darkModeStylesheetBehavior: (styles: ElementStyles) => MatchMediaStyleSheetBehavior;
 
 // @public
-export function dataGridCellTemplate<T extends FASTDataGridCell>(): ElementViewTemplate<T>;
+export class DataGrid extends FoundationElement {
+    constructor();
+    cellItemTemplate?: ViewTemplate;
+    // (undocumented)
+    clickSelect: boolean;
+    columnDefinitions: ColumnDefinition[] | null;
+    // (undocumented)
+    protected columnDefinitionsChanged(): void;
+    // @internal (undocumented)
+    connectedCallback(): void;
+    // @internal
+    defaultRowItemTemplate: ViewTemplate;
+    // @internal (undocumented)
+    disconnectedCallback(): void;
+    focusColumnIndex: number;
+    focusRowIndex: number;
+    static generateColumns: (row: object) => ColumnDefinition[];
+    generateHeader: GenerateHeaderOptions;
+    gridTemplateColumns: string;
+    // (undocumented)
+    protected gridTemplateColumnsChanged(): void;
+    // @internal (undocumented)
+    handleClick(e: MouseEvent): void;
+    // @internal (undocumented)
+    handleFocus(e: FocusEvent): void;
+    // @internal (undocumented)
+    handleFocusOut(e: FocusEvent): void;
+    // @internal (undocumented)
+    handleKeydown(e: KeyboardEvent): void;
+    // @internal (undocumented)
+    handleRowFocus(e: Event): void;
+    headerCellItemTemplate?: ViewTemplate;
+    noTabbing: boolean;
+    // (undocumented)
+    protected noTabbingChanged(): void;
+    // @internal
+    rowElements: HTMLElement[];
+    rowElementTag: string;
+    rowItemTemplate: ViewTemplate;
+    rowsData: object[];
+    // (undocumented)
+    protected rowsDataChanged(): void;
+}
+
+// @public
+export class DataGridCell extends FoundationElement {
+    cellType: DataGridCellTypes;
+    columnDefinition: ColumnDefinition | null;
+    // (undocumented)
+    protected columnDefinitionChanged(oldValue: ColumnDefinition | null, newValue: ColumnDefinition | null): void;
+    // @internal (undocumented)
+    connectedCallback(): void;
+    // @internal (undocumented)
+    disconnectedCallback(): void;
+    gridColumn: string;
+    // (undocumented)
+    protected gridColumnChanged(): void;
+    // (undocumented)
+    handleFocusin(e: FocusEvent): void;
+    // (undocumented)
+    handleFocusout(e: FocusEvent): void;
+    // (undocumented)
+    handleKeydown(e: KeyboardEvent): void;
+    rowData: object | null;
+}
+
+// @public
+export const dataGridCellTemplate: FoundationElementTemplate<ViewTemplate<DataGridCell>>;
 
 // @public
 export const DataGridCellTypes: {
@@ -352,7 +419,18 @@ export const DataGridRowTypes: {
 export type DataGridRowTypes = ValuesOf<typeof DataGridRowTypes>;
 
 // @public
-export function dataGridTemplate<T extends FASTDataGrid>(options: DataGridOptions): ElementViewTemplate<T>;
+export interface DataGridSelectedRange {
+    endCol: number;
+    endRow: number;
+    startCol: number;
+    startRow: number;
+}
+
+// @public
+export type DataGridSelectionMode = "none" | "singleRow" | "multiRow" | "range";
+
+// @public
+export const dataGridTemplate: FoundationElementTemplate<ViewTemplate<DataGrid>>;
 
 // @public
 export class DateFormatter {

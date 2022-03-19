@@ -212,6 +212,22 @@ export class FASTDataGridRow extends FASTElement {
         this.removeEventListener(eventKeyDown, this.handleKeydown);
     }
 
+    /**
+     * Sets the selection state of the row
+     *
+     * @public
+     */
+    public setSelected(selected: boolean): void {
+        const currentlySelected = this.getAttribute("aria-selected") === true;
+        if (currentlySelected === selected) {
+            return;
+        }
+        this.$emit("selected", this);
+    }
+
+    /**
+     * @internal
+     */
     public handleFocusout(e: FocusEvent): void {
         if (!this.contains(e.target as Element)) {
             this.isActiveRow = false;
@@ -219,6 +235,9 @@ export class FASTDataGridRow extends FASTElement {
         }
     }
 
+    /**
+     * @internal
+     */
     public handleCellFocus(e: Event): void {
         this.isActiveRow = true;
         this.focusColumnIndex = this.cellElements.indexOf(e.target as HTMLElement);

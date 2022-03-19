@@ -1,0 +1,129 @@
+<h1>Data grid</h1>
+
+<h2>Default</h2>
+<fast-data-grid
+    selection-mode="multiRow"
+    id="defaultGrid"
+    style="max-height: 400px; overflow-y: auto;"
+></fast-data-grid>
+
+<h3 style="margin-bottom: 20px; margin-top: 20px;">Grid controls</h3>
+<fast-divider style="margin-bottom: 40px; margin-top: 20px;"></fast-divider>
+<div>
+    <fast-button id="btnfocusleft">hover for focus left</fast-button>
+    <fast-button id="btnfocusright">hover for focus right</fast-button>
+    <fast-button id="btnfocusup">hover for focus up</fast-button>
+    <fast-button id="btnfocusdown">hover for focus down</fast-button>
+    <fast-divider style="margin-bottom: 20px; margin-top: 20px;"></fast-divider>
+    <fast-button id="btnreset">Reset</fast-button>
+    <fast-button id="btndefaultcols">Default columns</fast-button>
+    <fast-button id="btntemplatecols">Template columns</fast-button>
+    <fast-divider style="margin-bottom: 20px; margin-top: 20px;"></fast-divider>
+    <fast-button id="btnaddrow">Add row</fast-button>
+    <fast-button id="btnremoverow">Remove row</fast-button>
+    <fast-divider style="margin-bottom: 20px; margin-top: 20px;"></fast-divider>
+    <fast-button id="btnnoheader">No header</fast-button>
+    <fast-button id="btndefaultheader">Default header</fast-button>
+    <fast-button id="btnstickyheader">Sticky header</fast-button>
+    <fast-divider style="margin-bottom: 20px; margin-top: 20px;"></fast-divider>
+    <fast-button id="btndefaultrowtemplate">Default row item template</fast-button>
+    <fast-button id="btncustomrowtemplate">Custom row item template</fast-button>
+    <fast-divider style="margin-bottom: 20px; margin-top: 20px;"></fast-divider>
+    <fast-button id="btndefaultcelltemplate">Default cell item template</fast-button>
+    <fast-button id="btncustomcelltemplate">Custom cell item template</fast-button>
+    <fast-button id="btndefaultheadercelltemplate">
+        Default header cell item template
+    </fast-button>
+    <fast-button id="btncustomheadercelltemplate">
+        Custom header cell item template
+    </fast-button>
+</div>
+<fast-divider style="margin-bottom: 20px; margin-top: 20px;"></fast-divider>
+
+<h2>Header</h2>
+<fast-data-grid-row
+    row-type="header"
+    id="defaultHeader"
+    grid-template-columns="1fr 1fr 1fr 1fr"
+></fast-data-grid-row>
+
+<h2>Header with cell template</h2>
+<fast-data-grid-row
+    row-type="header"
+    id="headerTemplateRow"
+    grid-template-columns="1fr 1fr 1fr 1fr"
+></fast-data-grid-row>
+
+<h2>Row</h2>
+<fast-data-grid-row
+    id="defaultRow"
+    grid-template-columns="1fr 1fr 1fr 1fr"
+></fast-data-grid-row>
+
+<h2>Row with cell template</h2>
+<fast-data-grid-row
+    id="cellTemplateRow"
+    grid-template-columns="1fr 1fr 1fr 1fr"
+></fast-data-grid-row>
+
+<h2>Cell</h2>
+<fast-data-grid-cell id="defaultCell"></fast-data-grid-cell>
+
+<h2>Header cell</h2>
+<fast-data-grid-cell id="headerCell" cell-type="columnheader"></fast-data-grid-cell>
+
+<h2>Manual grid</h2>
+<fast-data-grid id="manualGrid">
+    <fast-data-grid-row>
+        <fast-data-grid-cell grid-column="1">1.1</fast-data-grid-cell>
+        <fast-data-grid-cell grid-column="2">1.2</fast-data-grid-cell>
+    </fast-data-grid-row>
+    <fast-data-grid-row>
+        <fast-data-grid-cell grid-column="1">2.1</fast-data-grid-cell>
+        <fast-data-grid-cell grid-column="2">2.2</fast-data-grid-cell>
+    </fast-data-grid-row>
+</fast-data-grid>
+
+<h2>nested grid</h2>
+<fast-data-grid id="nestedGrid" grid-template-columns="1fr 1fr" generate-header="none">
+    <fast-data-grid-row>
+        <fast-data-grid-cell grid-column="1">1.1</fast-data-grid-cell>
+        <fast-data-grid-cell grid-column="2" id="nestedCell1">
+            <fast-data-grid
+                grid-template-columns="1fr 1fr"
+                generate-header="none"
+                no-tabbing="true"
+                style="background-color: darkolivegreen;"
+            >
+                <fast-data-grid-row>
+                    <fast-data-grid-cell grid-column="1">1.2.1.1</fast-data-grid-cell>
+                    <fast-data-grid-cell grid-column="2">1.2.1.2</fast-data-grid-cell>
+                </fast-data-grid-row>
+                <fast-data-grid-row>
+                    <fast-data-grid-cell grid-column="1">1.2.2.1</fast-data-grid-cell>
+                    <fast-data-grid-cell grid-column="2">1.2.2.2</fast-data-grid-cell>
+                </fast-data-grid-row>
+            </fast-data-grid>
+        </fast-data-grid-cell>
+    </fast-data-grid-row>
+    <fast-data-grid-row>
+        <fast-data-grid-cell grid-column="1">2.1</fast-data-grid-cell>
+        <fast-data-grid-cell grid-column="2" id="nestedCell2">
+            <fast-data-grid
+                grid-template-columns="1fr 1fr"
+                generate-header="none"
+                no-tabbing="true"
+                style="background-color: darkolivegreen;"
+            >
+                <fast-data-grid-row>
+                    <fast-data-grid-cell grid-column="1">2.2.1.1</fast-data-grid-cell>
+                    <fast-data-grid-cell grid-column="2">2.2.1.2</fast-data-grid-cell>
+                </fast-data-grid-row>
+                <fast-data-grid-row>
+                    <fast-data-grid-cell grid-column="1">2.2.2.1</fast-data-grid-cell>
+                    <fast-data-grid-cell grid-column="2">2.2.2.2</fast-data-grid-cell>
+                </fast-data-grid-row>
+            </fast-data-grid>
+        </fast-data-grid-cell>
+    </fast-data-grid-row>
+</fast-data-grid>
