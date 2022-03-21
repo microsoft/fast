@@ -9,11 +9,12 @@ import {
 } from "../../data/framework.data";
 import { FeatureCardData, featureCardData } from "../../data/feature.data";
 import { ProductData, productData } from "../../data/product.data";
+import { DesignSystemData, designSystemData } from "../../data/design-system.data";
 import frameworkTemplate from "./templates/framework.template";
 import featureTemplate from "./templates/feature.template";
 import communityTemplate from "./templates/community.template";
 import productTemplate from "./templates/product.template";
-
+import designSystemTemplate from "./templates/design-system.template";
 export class ContentPlacementContainer extends FASTElement {
     @attr section: string;
 
@@ -23,12 +24,14 @@ export class ContentPlacementContainer extends FASTElement {
         x => x.header !== "Medium"
     );
     productData: ProductData[] = productData;
+    designSystemData: DesignSystemData[] = designSystemData;
 
     dataByType = {
         framework: this.frameworkData,
         feature: this.featureData,
         community: this.communityData,
         product: this.productData,
+        designSystem: this.designSystemData,
     };
 
     templateByType = {
@@ -36,6 +39,7 @@ export class ContentPlacementContainer extends FASTElement {
         feature: featureTemplate,
         community: communityTemplate,
         product: productTemplate,
+        designSystem: designSystemTemplate,
     };
 
     selectTemplate() {

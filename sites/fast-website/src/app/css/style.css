@@ -94,11 +94,11 @@
     grid-column: 2;
 }
 
-.product-subsection {
+.community-subsection {
     margin-top: 50px;
 }
 
-.product-subsection p {
+.community-subsection p {
     font-size: var(--type-ramp-plus-1-font-size);
     margin-top: 30px;
     text-align: center;

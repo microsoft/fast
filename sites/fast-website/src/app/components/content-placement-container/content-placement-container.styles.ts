@@ -129,7 +129,8 @@ export const ContentPlacementContainerStyles = css`
         padding-bottom: 94px;
     }
 
-    :host([section="product"]) {
+    :host([section="product"]),
+    :host([section="designSystem"]) {
         display: flex;
         flex-wrap: wrap;
     }
@@ -150,6 +151,26 @@ export const ContentPlacementContainerStyles = css`
     .fast-product:focus svg,
     .fast-product:hover path,
     .fast-product:focus path {
+        fill: var(--accent-foreground-rest);
+        stroke: var(--accent-foreground-rest);
+    }
+
+    .fast-design-system svg {
+        height: 60px;
+        width: 120px;
+        fill: white;
+        stroke: white;
+        margin: 20px;
+    }
+
+    .fast-design-system path {
+        fill: white;
+    }
+
+    .fast-design-system:hover svg,
+    .fast-design-system:focus svg,
+    .fast-design-system:hover path,
+    .fast-design-system:focus path {
         fill: var(--accent-foreground-rest);
         stroke: var(--accent-foreground-rest);
     }
