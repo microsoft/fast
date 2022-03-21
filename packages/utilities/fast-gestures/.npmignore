@@ -13,8 +13,10 @@ src/
 .prettierignore
 api-extractor.json
 rollup.config.js
-tsconfig.json
 babel.config.js
+.mocharc.json
+karma.conf.js
+tsconfig.json
 
 # cache
 .rollupcache
