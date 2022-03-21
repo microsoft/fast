@@ -17,6 +17,7 @@ babel.config.js
 .mocharc.json
 karma.conf.js
 tsconfig.json
+babel.config.js
 
 # cache
 .rollupcache
