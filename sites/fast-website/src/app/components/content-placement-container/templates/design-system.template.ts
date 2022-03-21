@@ -2,12 +2,14 @@ import { html } from "@microsoft/fast-element";
 
 const designSystemTemplate = html`
     <a
-        class="fast-design-system"
         href="${x => x.url}"
+        class="fast-design-system-link"
         target="_blank"
         rel="noopener noreferrer"
-        :innerHTML=${x => x.icon}
-    />
+    >
+        <span class="fast-product" :innerHTML=${x => x.icon}></span>
+        <p>${x => x.label}</p>
+    </a>
 `;
 
 export default designSystemTemplate;

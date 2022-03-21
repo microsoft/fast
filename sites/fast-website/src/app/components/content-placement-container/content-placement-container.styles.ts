@@ -135,26 +135,7 @@ export const ContentPlacementContainerStyles = css`
         flex-wrap: wrap;
     }
 
-    .fast-product svg {
-        height: 60px;
-        width: 120px;
-        fill: white;
-        stroke: white;
-        margin: 20px;
-    }
-
-    .fast-product path {
-        fill: white;
-    }
-
-    .fast-product:hover svg,
-    .fast-product:focus svg,
-    .fast-product:hover path,
-    .fast-product:focus path {
-        fill: var(--accent-foreground-rest);
-        stroke: var(--accent-foreground-rest);
-    }
-
+    .fast-product svg,
     .fast-design-system svg {
         height: 60px;
         width: 120px;
@@ -163,16 +144,42 @@ export const ContentPlacementContainerStyles = css`
         margin: 20px;
     }
 
+    .fast-product path,
     .fast-design-system path {
         fill: white;
     }
 
+    .fast-product:hover svg,
+    .fast-product:focus svg,
+    .fast-product:hover path,
+    .fast-product:focus path,
     .fast-design-system:hover svg,
     .fast-design-system:focus svg,
     .fast-design-system:hover path,
     .fast-design-system:focus path {
         fill: var(--accent-foreground-rest);
         stroke: var(--accent-foreground-rest);
+    }
+
+    .fast-product-link,
+    .fast-design-system-link {
+        color: white;
+        text-decoration: none;
+        text-align: center;
+    }
+
+    .fast-product,
+    .fast-design-system p {
+        margin: 0;
+        font-size: 5px;
+        color: red;
+    }
+
+    .fast-product-link,
+    .fast-design-system-link p {
+        margin: 0;
+        margin-top: -18px;
+        font-size: 12px;
     }
 
     @media screen and (max-width: 1330px) {

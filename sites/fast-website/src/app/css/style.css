@@ -95,13 +95,20 @@
 }
 
 .community-subsection {
-    margin-top: 50px;
-}
-
-.community-subsection p {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
     font-size: var(--type-ramp-plus-1-font-size);
     margin-top: 30px;
+    max-width: 1000px;
+}
+
+.community-subsection h3 {
+    font-size: 16px;
+    font-weight: normal;
+    min-width: 270px;
     text-align: center;
+    margin: 30px;
 }
 
 @media screen and (max-width: 899px) {
