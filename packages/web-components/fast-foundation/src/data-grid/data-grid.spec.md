@@ -121,6 +121,10 @@ Can be either "none", "default" or "sticky" (the `GeneratHeaderOptions` enum). A
 - `grid-template-columns`  
 String that gets applied to the the css gridTemplateColumns attribute of child rows. Corresponds to the [grid-template-columns css attribute](https://developer.mozilla.org/en-US/docs/Web/CSS/grid-template-columns)
 
+- `no-tabbing`
+Boolean, defaults to false.  When true the grid does not add itself to the tab queue.
+Useful when a grid is nested within a parent grid cell.
+
 *properties:*
 - `rowsData`  
 An array of objects that contain the data to be displayed. Each object corresponds to one row.
