@@ -1,5 +1,5 @@
 import "@lit-labs/ssr/lib/install-global-dom-shim.js";
-import { customElement, FASTElement, html, when, defaultExecutionContext, repeat, children } from "@microsoft/fast-element";
+import { customElement, FASTElement, html, when, defaultExecutionContext, repeat, children, slotted, ref } from "@microsoft/fast-element";
 import { expect, test } from "@playwright/test";
 import fastSSR from "../exports.js";
 import { TemplateRenderer } from "./template-renderer.js";
@@ -251,13 +251,15 @@ test.describe("TemplateRenderer", () => {
             expect(consolidate( result )).toBe("foobarbat");
         });
     });
-    test.describe("with 'children' directive", () => {
-        test.skip("should interpolate empty string", () => {
-            const { templateRenderer, defaultRenderInfo} = fastSSR();
-            const source = {}
-            const result = templateRenderer.render(html`<ul ${children('items')}><li>Hello</li><li>World</li></ul>`, defaultRenderInfo, source);
+    for (let directive of [children, ref, slotted ]) {
+        test.describe(`with '${directive.name}' directive`, () => {
+            test("should interpolate empty string", () => {
+                const { templateRenderer, defaultRenderInfo} = fastSSR();
+                const source = {}
+                const result = templateRenderer.render(html`<ul ${directive('items')}><li>Hello</li><li>World</li></ul>`, defaultRenderInfo, source);
 
-            expect(consolidate(result)).toBe("<ul><li>Hello</li><li>World</li></ul>")
-        });
-    })
+                expect(consolidate(result)).toBe("<ul ><li>Hello</li><li>World</li></ul>")
+            });
+        })
+    }
 });

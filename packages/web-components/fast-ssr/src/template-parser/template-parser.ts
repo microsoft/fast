@@ -226,6 +226,16 @@ export function parseStringToOpCodes(
                 augmentOpeningTag = true;
                 opCodes.push(code);
                 skipTo(location.endOffset);
+            } else if (!attributes.static.has(attr.name)) {
+                // Handle interpolated directives like children, ref, and slotted
+                const parsed = Parser.parse(attr.value, directives);
+                if (parsed) {
+                    const location = node.sourceCodeLocation!.attrs[attr.name];
+                    const directive = Compiler.aggregate(parsed);
+                    flushTo(location.startOffset);
+                    opCodes.push({ type: OpType.directive, directive });
+                    skipTo(location.endOffset);
+                }
             } else if (node.isDefinedCustomElement) {
                 const location = node.sourceCodeLocation!.attrs[attr.name];
                 flushTo(location.startOffset);
