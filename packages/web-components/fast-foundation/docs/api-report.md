@@ -2514,6 +2514,17 @@ export enum TextAreaResize {
 // @public
 export const textAreaTemplate: FoundationElementTemplate<ViewTemplate<TextArea>>;
 
+// @public
+export class TextEditor extends FoundationElement {
+    // @internal (undocumented)
+    connectedCallback(): void;
+    // @internal (undocumented)
+    disconnectedCallback(): void;
+    }
+
+// @public
+export const textEditorTemplate: FoundationElementTemplate<ViewTemplate<TextEditor>>;
+
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
 // Warning: (ae-forgotten-export) The symbol "FormAssociatedTextField" needs to be exported by the entry point index.d.ts
 // Warning: (ae-internal-mixed-release-tag) Mixed release tags are not allowed for "TextField" because one of its declarations is marked as @internal

@@ -86,6 +86,8 @@ import fastTabsDefinition from "./tabs/tabs.vscode.definition.json";
 export { fastTabsDefinition };
 import fastTextAreaDefinition from "./text-area/text-area.vscode.definition.json";
 export { fastTextAreaDefinition };
+import fastTextEditorDefinition from "./text-editor/text-editor.vscode.definition.json";
+export { fastTextEditorDefinition };
 import fastTextFieldDefinition from "./text-field/text-field.vscode.definition.json";
 export { fastTextFieldDefinition };
 import fastToolbarDefinition from "./toolbar/toolbar.vscode.definition.json";

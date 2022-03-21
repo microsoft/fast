@@ -91,6 +91,7 @@
   "dependencies": {
     "@microsoft/fast-element": "^1.8.0",
     "@microsoft/fast-web-utilities": "^5.1.0",
+    "roosterjs": "^8.11.5",
     "tabbable": "^5.2.0",
     "tslib": "^1.13.0"
   }

@@ -1,0 +1,19 @@
+{
+    "version": 1.1,
+    "tags": [
+        {
+            "name": "fast-text-editor",
+            "title": "Text Editor",
+            "description": "The FAST text-editor element",
+            "attributes": [
+            ],
+            "slots": [
+                {
+                    "name": "",
+                    "title": "Default slot",
+                    "description": "The dialog content"
+                }
+            ]
+        }
+    ]
+}

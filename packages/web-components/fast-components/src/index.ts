@@ -47,6 +47,7 @@ export * from "./styles/direction";
 export * from "./switch/index";
 export * from "./tabs/index";
 export * from "./text-area/index";
+export * from "./text-editor/index";
 export * from "./text-field/index";
 export * from "./toolbar/index";
 export * from "./tooltip/index";

@@ -45,6 +45,7 @@ import { fastSlider } from "./slider/index";
 import { fastSwitch } from "./switch/index";
 import { fastTab, fastTabPanel, fastTabs } from "./tabs/index";
 import { fastTextArea } from "./text-area/index";
+import { fastTextEditor } from "./text-editor/index";
 import { fastTextField } from "./text-field/index";
 import { fastToolbar } from "./toolbar/index";
 import { fastTooltip } from "./tooltip/index";
@@ -120,6 +121,7 @@ export {
     fastTab,
     fastTabPanel,
     fastTextArea,
+    fastTextEditor,
     fastTextField,
     fastTooltip,
     fastToolbar,
@@ -181,6 +183,7 @@ export const allComponents = {
     fastTab,
     fastTabPanel,
     fastTextArea,
+    fastTextEditor,
     fastTextField,
     fastTooltip,
     fastToolbar,
