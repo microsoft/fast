@@ -319,15 +319,6 @@ export function parseStringToOpCodes(
                     }
                     skipTo(node.sourceCodeLocation!.endOffset);
                 }
-
-                // if (parsed) {
-                //     flushTo(node.sourceCodeLocation!.startOffset);
-                //     opCodes.push({
-                //         type: OpType.directive,
-                //         directive: Compiler.aggregate(parsed),
-                //     });
-                //     skipTo(node.sourceCodeLocation!.endOffset);
-                // }
             } else if (isElementNode(node)) {
                 parseElementNode(node);
             }
