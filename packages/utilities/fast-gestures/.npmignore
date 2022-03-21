@@ -13,7 +13,6 @@ src/
 .prettierignore
 api-extractor.json
 rollup.config.js
-babel.config.js
 .mocharc.json
 karma.conf.js
 tsconfig.json
