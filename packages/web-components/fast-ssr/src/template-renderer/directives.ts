@@ -67,29 +67,26 @@ export const RepeatDirectiveRenderer: DirectiveRenderer<typeof RepeatDirective> 
     }
 );
 
+function* noop() {
+    yield "";
+}
 export const ChildrenDirectiveRenderer: DirectiveRenderer<typeof ChildrenDirective> = Object.freeze(
     {
         matcher: ChildrenDirective,
-        *render(): IterableIterator<string> {
-            yield "";
-        },
+        render: noop,
     }
 );
 
 export const RefDirectiveRenderer: DirectiveRenderer<typeof RefDirective> = Object.freeze(
     {
         matcher: RefDirective,
-        *render(): IterableIterator<string> {
-            yield "";
-        },
+        render: noop,
     }
 );
 export const SlottedDirectiveRenderer: DirectiveRenderer<typeof SlottedDirective> = Object.freeze(
     {
         matcher: SlottedDirective,
-        *render(): IterableIterator<string> {
-            yield "";
-        },
+        render: noop,
     }
 );
 
