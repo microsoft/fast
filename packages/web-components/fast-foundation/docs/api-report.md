@@ -324,7 +324,6 @@ export const darkModeStylesheetBehavior: (styles: ElementStyles) => MatchMediaSt
 export class DataGrid extends FoundationElement {
     constructor();
     cellItemTemplate?: ViewTemplate;
-    // (undocumented)
     clickSelect: boolean;
     columnDefinitions: ColumnDefinition[] | null;
     // (undocumented)
@@ -343,8 +342,6 @@ export class DataGrid extends FoundationElement {
     // (undocumented)
     protected gridTemplateColumnsChanged(): void;
     // @internal (undocumented)
-    handleClick(e: MouseEvent): void;
-    // @internal (undocumented)
     handleFocus(e: FocusEvent): void;
     // @internal (undocumented)
     handleFocusOut(e: FocusEvent): void;
@@ -352,6 +349,8 @@ export class DataGrid extends FoundationElement {
     handleKeydown(e: KeyboardEvent): void;
     // @internal (undocumented)
     handleRowFocus(e: Event): void;
+    // (undocumented)
+    handleRowSelectedChange(e: CustomEvent): void;
     headerCellItemTemplate?: ViewTemplate;
     noTabbing: boolean;
     // (undocumented)
@@ -385,7 +384,9 @@ export class DataGridCell extends FoundationElement {
     // (undocumented)
     handleKeydown(e: KeyboardEvent): void;
     rowData: object | null;
-}
+    // @internal
+    selected: boolean;
+    }
 
 // @public
 export const dataGridCellTemplate: FoundationElementTemplate<ViewTemplate<DataGridCell>>;
@@ -401,9 +402,48 @@ export const DataGridCellTypes: {
 export type DataGridCellTypes = ValuesOf<typeof DataGridCellTypes>;
 
 // @public
-export type DataGridOptions = {
-    dataGridRow: TemplateElementDependency;
-};
+export class DataGridRow extends FoundationElement {
+    // @internal
+    activeCellItemTemplate?: ViewTemplate;
+    // @internal
+    cellElements: HTMLElement[];
+    cellItemTemplate?: ViewTemplate;
+    // @internal
+    clickSelect: boolean;
+    columnDefinitions: ColumnDefinition[] | null;
+    // @internal (undocumented)
+    connectedCallback(): void;
+    // @internal
+    defaultCellItemTemplate?: ViewTemplate;
+    // @internal
+    defaultHeaderCellItemTemplate?: ViewTemplate;
+    // @internal (undocumented)
+    disconnectedCallback(): void;
+    // @internal (undocumented)
+    focusColumnIndex: number;
+    gridTemplateColumns: string;
+    // @internal (undocumented)
+    handleCellFocus(e: Event): void;
+    // @internal (undocumented)
+    handleClick(e: MouseEvent): void;
+    // @internal (undocumented)
+    handleFocusout(e: FocusEvent): void;
+    // (undocumented)
+    handleKeydown(e: KeyboardEvent): void;
+    headerCellItemTemplate?: ViewTemplate;
+    // @internal
+    isActiveRow: boolean;
+    // @internal
+    isSelectable: boolean;
+    rowData: object | null;
+    // (undocumented)
+    protected rowDataChanged(): void;
+    rowIndex: number;
+    rowType: DataGridRowTypes;
+    // @internal (undocumented)
+    slottedCellElements: HTMLElement[];
+    toggleSelected(newValue: boolean, e?: MouseEvent | KeyboardEvent): void;
+    }
 
 // @public
 export function dataGridRowTemplate<T extends FASTDataGridRow>(options: CellItemTemplateOptions): ElementViewTemplate<T>;
