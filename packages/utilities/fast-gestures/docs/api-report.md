@@ -246,7 +246,7 @@ export class PointerGestureHandler extends Disposable implements IDisposable {
     // (undocumented)
     get target(): PointerTarget;
     set target(target: PointerTarget);
-    }
+}
 
 // @public (undocumented)
 export enum PointerRotationDirection {
@@ -272,7 +272,6 @@ export enum PointerTranslationDirection {
     // (undocumented)
     Vertical = "vertical"
 }
-
 
 // (No @packageDocumentation comment for this package)
 

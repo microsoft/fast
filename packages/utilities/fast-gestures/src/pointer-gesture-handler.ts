@@ -88,10 +88,10 @@ export class PointerGestureHandler extends DefaultDisposable implements Disposab
         this.addEventListeners();
     }
 
-    private activePointer: PointerInfoInternal;
+    private activePointer: PointerInfoInternal | undefined;
     private previousPosition: Point = { x: 0, y: 0 };
     private previousPointerType: string | undefined = undefined;
-    private previousPanDirection: PointerGesture;
+    private previousPanDirection: PointerGesture | undefined;
     private longPressRAFId: number = 0;
     private doubleTapTimerId: number = 0;
     private doubleTapIsWaiting: boolean = false;
@@ -481,22 +481,24 @@ export class PointerGestureHandler extends DefaultDisposable implements Disposab
                     ) || this._pointers.values().next().value;
             }
 
-            this.activePointer.gestureType = PointerGesture.Start;
-            this.activePointer.initialPressTime = performance.now();
-            this.activePointer.xInitial = this.activePointer.x;
-            this.activePointer.yInitial = this.activePointer.y;
-            this.activePointer.screenXInitial = e.screenX;
-            this.activePointer.screenYInitial = e.screenY;
+            if (this.activePointer) {
+                this.activePointer.gestureType = PointerGesture.Start;
+                this.activePointer.initialPressTime = performance.now();
+                this.activePointer.xInitial = this.activePointer.x;
+                this.activePointer.yInitial = this.activePointer.y;
+                this.activePointer.screenXInitial = e.screenX;
+                this.activePointer.screenYInitial = e.screenY;
 
-            if (this.shouldDetectGesture[PointerGestureFeature.LongPress]) {
-                this.startLongPress();
+                if (this.shouldDetectGesture[PointerGestureFeature.LongPress]) {
+                    this.startLongPress();
+                }
+
+                if (this.options.shouldSetFocusOnActiveElement && this._target.tabIndex) {
+                    this._target.tabIndex = -1;
+                }
+
+                this.emit(PointerGesture.Start, this.activePointer, true);
             }
-
-            if (this.options.shouldSetFocusOnActiveElement && this._target.tabIndex) {
-                this._target.tabIndex = -1;
-            }
-
-            this.emit(PointerGesture.Start, this.activePointer, true);
         }
     };
 
@@ -562,7 +564,9 @@ export class PointerGestureHandler extends DefaultDisposable implements Disposab
                         ) || this._pointers.values().next().value;
                 }
 
-                this.emit(PointerGesture.Drag, this.activePointer, true);
+                if (this.activePointer) {
+                    this.emit(PointerGesture.Drag, this.activePointer, true);
+                }
             } else {
                 this.emit(PointerGesture.MouseMove, this.activePointer, true);
             }
@@ -601,7 +605,7 @@ export class PointerGestureHandler extends DefaultDisposable implements Disposab
             // If Swipe is valid then get the Swipe Direction from previous Pan direction
             if (isValidSwipe) {
                 this.activePointer.gestureType = getSwipeDirection(
-                    this.previousPanDirection
+                    this.previousPanDirection ?? PointerGesture.Swipe
                 );
 
                 this.emit(PointerGesture.Swipe, this.activePointer);
@@ -704,13 +708,17 @@ export class PointerGestureHandler extends DefaultDisposable implements Disposab
     }
 
     private resetLongPress(): void {
-        if (this.activePointer !== undefined) {
+        if (this.activePointer) {
             this.activePointer.longPressProgress = 0;
             this.activePointer.isLongPressComplete = false;
         }
     }
 
     private handleLongPress = (raf: number): void => {
+        if (!this.activePointer) {
+            return;
+        }
+
         // Note that because of fuzzing of timers, it is possible for this number to be negative without Math.max
         const currentLongPressTime: number = Math.max(
             0,
@@ -746,7 +754,7 @@ export class PointerGestureHandler extends DefaultDisposable implements Disposab
             this.stopLongPress();
         }
 
-        Object.keys(this.handlers).every((pointerGestureKey: string): void => {
+        Object.keys(this.handlers).every((pointerGestureKey: PointerGesture): void => {
             this.handlers[pointerGestureKey].dispose();
         });
 
@@ -772,9 +780,11 @@ export class PointerGestureHandler extends DefaultDisposable implements Disposab
                     (this.shouldDetectGesture[gestureType] = true)
             );
         } else {
-            for (const gestureType of Object.keys(PointerGestureFeature)) {
+            for (const gestureType of Object.keys(PointerGestureFeature).filter(
+                (x: string) => !(parseInt(x) >= 0)
+            )) {
                 if (gesture.startsWith(gestureType.toLowerCase())) {
-                    this.shouldDetectGesture[PointerGestureFeature[gestureType]] = true;
+                    this.shouldDetectGesture[gestureType as PointerGestureFeature] = true;
                 }
             }
         }
