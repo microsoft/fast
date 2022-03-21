@@ -252,7 +252,7 @@ test.describe("TemplateRenderer", () => {
         });
     });
     test.describe("with 'children' directive", () => {
-        test.only("should interpolate empty string", () => {
+        test.skip("should interpolate empty string", () => {
             const { templateRenderer, defaultRenderInfo} = fastSSR();
             const source = {}
             const result = templateRenderer.render(html`<ul ${children('items')}><li>Hello</li><li>World</li></ul>`, defaultRenderInfo, source);

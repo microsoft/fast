@@ -38,23 +38,19 @@ export abstract class FASTElementRenderer extends ElementRenderer {
 
             if (view.hostDynamicAttributes) {
                 for (const attr of view.hostDynamicAttributes) {
-                    if (attr.directive.binding) {
-                        const result = attr.directive.binding(
-                            this.element,
-                            defaultExecutionContext
-                        );
+                    const result = attr.binding(this.element, defaultExecutionContext);
 
-                        switch (attr.directive.aspect) {
-                            case Aspect.property:
-                                (this.element as any)[attr.name] = result;
-                                break;
-                            case Aspect.attribute:
-                                DOM.setAttribute(this.element, attr.name, result);
-                                break;
-                            case Aspect.booleanAttribute:
-                                DOM.setBooleanAttribute(this.element, attr.name, result);
-                                break;
-                        }
+                    const { target } = attr;
+                    switch (attr.aspect) {
+                        case Aspect.property:
+                            (this.element as any)[target] = result;
+                            break;
+                        case Aspect.attribute:
+                            DOM.setAttribute(this.element, target, result);
+                            break;
+                        case Aspect.booleanAttribute:
+                            DOM.setBooleanAttribute(this.element, target, result);
+                            break;
                     }
                 }
             }

@@ -3,6 +3,7 @@
  * with changes as necessary to render FAST components. A big thank you to those who contributed to lit's code above.
  */
 import {
+    Aspect,
     AspectedHTMLDirective,
     Compiler,
     HTMLDirective,
@@ -18,7 +19,6 @@ import {
     DefaultTreeTextNode,
     parseFragment,
 } from "parse5";
-import { AttributeType, attributeTypeRegExp } from "./attributes.js";
 import { AttributeBindingOp, Op, OpType } from "./op-codes.js";
 
 /**
@@ -85,28 +85,6 @@ function isTextNode(node: DefaultTreeNode): node is DefaultTreeTextNode {
  */
 function isElementNode(node: DefaultTreeNode): node is DefaultTreeElement {
     return (node as DefaultTreeElement).tagName !== undefined;
-}
-
-/**
- * Determines which type of attribute binding an attribute is
- * @param attr - The attribute to inspect
- */
-function getAttributeType(attr: Attribute): AttributeType {
-    const result = attributeTypeRegExp.exec(attr.name);
-
-    if (result === null) {
-        throw new Error("Failure to determine attribute binding type");
-    }
-
-    const prefix = result[1];
-
-    return prefix === ":"
-        ? AttributeType.idl
-        : prefix === "?"
-        ? AttributeType.booleanContent
-        : prefix === "@"
-        ? AttributeType.event
-        : AttributeType.content;
 }
 
 /**
@@ -181,19 +159,20 @@ export function parseStringToOpCodes(
         } = node.attrs.reduce(
             (prev, current) => {
                 const parsed = Parser.parse(current.value, directives);
-                const attributeType = getAttributeType(current);
                 if (parsed) {
                     const directive = Compiler.aggregate(parsed);
                     // Guard against directives like children, ref, and slotted
-                    if (directive instanceof AspectedHTMLDirective) {
+                    if (
+                        directive instanceof AspectedHTMLDirective &&
+                        directive.binding &&
+                        directive.aspect !== Aspect.content &&
+                        directive.aspect !== Aspect.tokenList
+                    ) {
                         prev.dynamic.set(current, {
                             type: OpType.attributeBinding,
-                            name:
-                                attributeType === AttributeType.content
-                                    ? current.name
-                                    : current.name.substring(1),
-                            directive,
-                            attributeType,
+                            binding: directive.binding,
+                            aspect: directive.aspect,
+                            target: directive.target,
                             useCustomElementInstance: Boolean(
                                 node.isDefinedCustomElement
                             ),

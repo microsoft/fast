@@ -7,7 +7,6 @@ import {
     ExecutionContext,
     ViewTemplate,
 } from "@microsoft/fast-element";
-import { AttributeType } from "../template-parser/attributes.js";
 import { Op, OpType } from "../template-parser/op-codes.js";
 import { parseTemplateToOpCodes } from "../template-parser/template-parser.js";
 import { DirectiveRenderer } from "./directives.js";
@@ -161,18 +160,13 @@ export class TemplateRenderer implements Readonly<TemplateRendererConfiguration>
                 }
 
                 case OpType.attributeBinding: {
-                    const { attributeType } = code;
-
+                    const { aspect, target, binding } = code;
                     // Don't emit anything for events or directives without bindings
-                    if (
-                        attributeType === AttributeType.event ||
-                        !code.directive.binding
-                    ) {
+                    if (aspect === Aspect.event) {
                         break;
                     }
 
-                    let result = code.directive.binding(source, context);
-                    const { name } = code;
+                    let result = binding(source, context);
 
                     if (code.useCustomElementInstance) {
                         const instance =
@@ -181,24 +175,24 @@ export class TemplateRenderer implements Readonly<TemplateRendererConfiguration>
                             ];
 
                         if (instance) {
-                            attributeType === AttributeType.idl
-                                ? instance.setProperty(name, result)
-                                : instance.setAttribute(name, result);
+                            aspect === Aspect.property
+                                ? instance.setProperty(target, result)
+                                : instance.setAttribute(target, result);
                         }
                     } else {
                         // Only yield attributes as strings for native elements.
                         // All custom-element attributes are emitted in the
                         // OpType.customElementAttributes case
-                        switch (attributeType) {
-                            case AttributeType.booleanContent:
+                        switch (aspect) {
+                            case Aspect.booleanAttribute:
                                 if (!!result) {
                                     result = "";
-                                    yield name;
+                                    yield target;
                                 }
                                 break;
-                            case AttributeType.content:
+                            case Aspect.attribute:
                                 if (result !== null && result !== undefined) {
-                                    yield `${name}="${result}"`;
+                                    yield `${target}="${result}"`;
                                 }
                                 break;
                         }
@@ -214,10 +208,7 @@ export class TemplateRenderer implements Readonly<TemplateRendererConfiguration>
                     }
 
                     for (const attr of code.dynamicAttributes) {
-                        const value = attr.directive.binding
-                            ? attr.directive.binding(source, defaultExecutionContext)
-                            : "";
-                        yield ` ${attr.name}="${value}"`;
+                        yield ` ${attr.target}="${attr.binding(source, context)}"`;
                     }
                     yield ">";
                     break;
