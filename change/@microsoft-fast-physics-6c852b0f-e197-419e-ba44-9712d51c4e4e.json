@@ -1,0 +1,7 @@
+{
+  "type": "none",
+  "comment": "Added placeholder package for physics utility.",
+  "packageName": "@microsoft/fast-physics",
+  "email": "mlijanto@microsoft.com",
+  "dependentChangeType": "none"
+}
