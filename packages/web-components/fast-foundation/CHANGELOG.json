@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-foundation",
   "entries": [
     {
+      "date": "Sun, 20 Mar 2022 07:15:44 GMT",
+      "tag": "@microsoft/fast-foundation_v2.37.1",
+      "version": "2.37.1",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Fix for default selection behavior for listbox and select",
+            "author": "26874831+atmgrifter00@users.noreply.github.com",
+            "commit": "1898cd9a73f2cf9496a2a78d18e13bd87aa012df",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 16 Mar 2022 07:12:41 GMT",
       "tag": "@microsoft/fast-foundation_v2.37.0",
       "version": "2.37.0",
