@@ -46,22 +46,27 @@ export const textEditorTemplate: FoundationElementTemplate<ViewTemplate<TextEdit
                     @loaded="${(x, c) => x.handleRegionLoaded(c.event as Event)}"
                     ${ref("region")}
                 >
-                    <${toolbarTag}
-                        class="toolbar"
-                        part="toolbar"
-                    >
-                        <${buttonTag}
-                            @click="${(x, c) => x.toggleBold(c.event as Event)}"
+                <div class="toolbar-display" part="toolbar-display">
+                    <slot name="toolbar-region">
+                        <${toolbarTag}
+                            class="toolbar"
+                            part="toolbar"
+                            slot="toolbar-region"
                         >
-                            Bold
-                        </${buttonTag}>
+                            <${buttonTag}
+                                @click="${(x, c) => x.toggleBold(c.event as Event)}"
+                            >
+                                Bold
+                            </${buttonTag}>
 
-                        <${buttonTag}
-                            @click="${(x, c) => x.toggleItalic(c.event as Event)}"
-                        >
-                            Italic
-                        </${buttonTag}>
-                    </${toolbarTag}>
+                            <${buttonTag}
+                                @click="${(x, c) => x.toggleItalic(c.event as Event)}"
+                            >
+                                Italic
+                            </${buttonTag}>
+                        </${toolbarTag}>
+                    </slot>
+                </div>
             </${anchoredRegionTag}>
         `
             )}

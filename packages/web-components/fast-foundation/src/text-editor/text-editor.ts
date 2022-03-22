@@ -1,6 +1,7 @@
 import { attr, DOM, observable } from "@microsoft/fast-element";
 import { eventFocusIn, eventFocusOut } from "@microsoft/fast-web-utilities";
-import { createEditor, IEditor, toggleBold, toggleItalic } from "roosterjs";
+import { createEditor, IEditor } from "roosterjs";
+import { toggleBold, toggleItalic } from "roosterjs-editor-api";
 import { FoundationElement } from "../foundation-element";
 import {
     AnchoredRegion,
@@ -132,9 +133,9 @@ export class TextEditor extends FoundationElement {
      * @public
      */
     public toggleBold(e: Event): void {
-        // if (this.editor){
-        //     toggleBold(this.editor);
-        // }
+        if (this.editor) {
+            toggleBold(this.editor);
+        }
     }
 
     /**
@@ -143,9 +144,9 @@ export class TextEditor extends FoundationElement {
      * @public
      */
     public toggleItalic(e: Event): void {
-        // if (this.editor){
-        //     toggleItalic(this.editor);
-        // }
+        if (this.editor) {
+            toggleItalic(this.editor);
+        }
     }
 
     /**

@@ -20614,7 +20614,7 @@ roosterjs-color-utils@1.0.0:
     color "^3.0.0"
     roosterjs-editor-types "8.2.8"
 
-roosterjs-editor-api@8.18.0:
+roosterjs-editor-api@8.18.0, roosterjs-editor-api@^8.18.0:
   version "8.18.0"
   resolved "https://registry.yarnpkg.com/roosterjs-editor-api/-/roosterjs-editor-api-8.18.0.tgz#fb9537ebcc64d4e22848d6a0cfda2009569069af"
   integrity sha512-HQEgj6lnOofoNelIDRW6TQdoFd8a582IxacrEidXxbQUl0UcAb/kLqdtICjbRjbzQlgsx+qOwWDjgNSluMW22Q==
@@ -20660,7 +20660,7 @@ roosterjs-editor-types@8.2.8:
   dependencies:
     "@types/dom-inputevent" "^1.0.3"
 
-roosterjs@^8.11.5:
+roosterjs@^8.18.0:
   version "8.18.0"
   resolved "https://registry.yarnpkg.com/roosterjs/-/roosterjs-8.18.0.tgz#eb24adb83a46c467617bd177ec2cb2b38b32ac03"
   integrity sha512-oDZwPLKL6pEiE1G+Th58CIb3qWJf/kN9e7L8GwE9CRtuebGcPMIT4k/BmIXe+0BG8Z/0cd18r6RoNkL0ypqwTg==
