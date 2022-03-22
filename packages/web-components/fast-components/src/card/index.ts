@@ -30,21 +30,18 @@ export class Card extends FoundationCard {
 
 /**
  * A function that returns a {@link @microsoft/fast-foundation#Card} registration for configuring the component with a DesignSystem.
- * Implements {@link @microsoft/fast-foundation#CardTemplate}
+ * Implements {@link @microsoft/fast-foundation#cardTemplate}
  *
  *
  * @public
  * @remarks
- * Generates HTML Element: \<fast-card\>
+ * Generates HTML Element: `<fast-card>`
  */
 export const fastCard = Card.compose({
     baseName: "card",
+    baseClass: FoundationCard,
     template,
     styles,
 });
 
-/**
- * Styles for Card
- * @public
- */
-export const cardStyles = styles;
+export { styles as cardStyles };

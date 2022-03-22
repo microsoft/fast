@@ -1,8 +1,97 @@
 # Change Log - @microsoft/fast-element
 
-This log was last generated on Fri, 21 May 2021 17:48:08 GMT and should not be manually modified.
+This log was last generated on Tue, 08 Mar 2022 07:12:45 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.8.0
+
+Tue, 08 Mar 2022 07:12:45 GMT
+
+### Minor changes
+
+- feat: enable multiple fast-element instances in browser at once (roeisenb@microsoft.com)
+
+## 1.7.2
+
+Fri, 25 Feb 2022 17:09:32 GMT
+
+### Patches
+
+- fix: defend against for/in use on arrays (roeisenb@microsoft.com)
+
+## 1.7.1
+
+Thu, 24 Feb 2022 22:21:55 GMT
+
+### Patches
+
+- fix: prevent duplicative array observation patch (roeisenb@microsoft.com)
+
+## 1.7.0
+
+Sun, 23 Jan 2022 07:13:56 GMT
+
+### Minor changes
+
+- add recyle option to repeat directive (scomea@microsoft.com)
+
+## 1.6.2
+
+Sun, 31 Oct 2021 07:17:45 GMT
+
+### Patches
+
+- update fast eslint package version (chhol@microsoft.com)
+
+## 1.6.1
+
+Wed, 13 Oct 2021 22:45:16 GMT
+
+### Patches
+
+- build(fast-element): exclude empty js files from esm index.js (markwhitfeld@users.noreply.github.com)
+
+## 1.6.0
+
+Fri, 08 Oct 2021 19:53:11 GMT
+
+### Minor changes
+
+- feat(fast-element): expose a method for processing the update queue (roeisenb@microsoft.com)
+
+## 1.5.1
+
+Wed, 08 Sep 2021 07:16:17 GMT
+
+### Patches
+
+- perf(Controller): reduce object allocation needed for isConnected prop (roeisenb@microsoft.com)
+
+## 1.5.0
+
+Fri, 27 Aug 2021 14:14:26 GMT
+
+### Minor changes
+
+- Adds capability to Observable to subscribe to any observable property change for an object (nicholasrice@users.noreply.github.com)
+- ensure HTMLStyleElement DOM order matches call addStylesTo() call order (nicholasrice@users.noreply.github.com)
+
+## 1.4.2
+
+Thu, 26 Aug 2021 07:17:43 GMT
+
+### Patches
+
+- feat(fast-element): make the task queue resilient to task exceptions (roeisenb@microsoft.com)
+
+## 1.4.1
+
+Wed, 28 Jul 2021 07:17:22 GMT
+
+### Patches
+
+- implement patch to work around Angular optimization bug (nicholasrice@users.noreply.github.com)
 
 ## 1.4.0
 

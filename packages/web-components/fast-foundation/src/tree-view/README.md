@@ -1,39 +1,99 @@
 ---
 id: tree-view
-title: tree-view
+title: fast-tree-view
 sidebar_label: tree-view
 custom_edit_url: https://github.com/microsoft/fast/edit/master/packages/web-components/fast-foundation/src/tree-view/README.md
 ---
 
-An implementation of a [tree](https://w3c.github.io/aria/#tree) as a web-component.
+As defined by the [W3C](https://w3c.github.io/aria/#tree):
+
+> A tree view widget presents a hierarchical list. Any item in the hierarchy may have child items, and items that have children may be expanded or collapsed to show or hide the children. For example, in a file system navigator that uses a tree view to display folders and files, an item representing a folder can be expanded to reveal the contents of the folder, which may be files, folders, or both.
+
+## Setup
+
+### Basic Setup
+
+```ts
+import {
+    provideFASTDesignSystem,
+    fastTreeItem,
+    fastTreeView
+} from "@microsoft/fast-components";
+
+provideFASTDesignSystem()
+    .register(
+        fastTreeItem(),
+        fastTreeView()
+    );
+```
+
+### Customizing the Glyph
+
+```ts
+import {
+    provideFASTDesignSystem,
+    fastTreeItem,
+    fastTreeView
+} from "@microsoft/fast-components";
+
+provideFASTDesignSystem()
+    .register(
+        fastTreeItem({
+            expandCollapseGlyph: `...your expand/collapse glyph`
+        }),
+        fastTreeView()
+    );
+```
 
 ## Usage
 
 ```html live
-<fast-design-system-provider use-defaults>
-    <fast-tree-view>
-        Root
-        <fast-tree-item>
-            Item 1
-            <fast-tree-item>Sub-item 1</fast-tree-item>
-            <fast-tree-item>Sub-item 2</fast-tree-item>
-        </fast-tree-item>
-        <fast-tree-item>Item 2</fast-tree-item>
-    </fast-tree-view>
-</fast-design-system-provider>
+<fast-tree-view>
+    Root
+    <fast-tree-item>
+        Item 1
+        <fast-tree-item>Sub-item 1</fast-tree-item>
+        <fast-tree-item>Sub-item 2</fast-tree-item>
+    </fast-tree-item>
+    <fast-tree-item>Item 2</fast-tree-item>
+</fast-tree-view>
 ```
 
-## Applying custom styles
+## Create your own design
+
+### TreeItem
 
 ```ts
-import { customElement } from "@microsoft/fast-element";
-import { TreeView, TreeViewTemplate as template } from "@microsoft/fast-foundation";
-import { TreeViewStyles as styles } from "./tree-view.styles";
+import {
+    treeItemTemplate as template,
+    TreeItem,
+    TreeItemOptions,
+} from "@microsoft/fast-foundation";
+import { treeItemStyles as styles } from "./my-tree-item.styles";
 
-@customElement({
-    name: "fast-tree-view",
+export const myTreeItem = TreeItem.compose<TreeItemOptions>({
+    baseName: "tree-item",
     template,
     styles,
-})
-export class FASTTreeView extends TreeView {}
+    expandCollapseGlyph: `...default expand/collapse glyph`,
+});
 ```
+
+### TreeView
+
+```ts
+import { treeViewTemplate as template, TreeView } from "@microsoft/fast-foundation";
+import { treeViewStyles as styles } from "./tree-view.styles";
+
+export const myTreeView = TreeView.compose({
+    baseName: "tree-view",
+    template,
+    styles,
+});
+```
+
+## Additional resources
+
+* [Component explorer examples](https://explore.fast.design/components/fast-tree-view)
+* [Component technical specification](https://github.com/microsoft/fast/blob/master/packages/web-components/fast-foundation/src/tree-view/tree-view.spec.md)
+* [W3C Component Aria Practices](https://www.w3.org/TR/wai-aria/#tree)

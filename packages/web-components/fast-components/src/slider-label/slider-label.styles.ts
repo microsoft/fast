@@ -1,9 +1,8 @@
 import { css, ElementStyles } from "@microsoft/fast-element";
 import {
     display,
-    ElementDefinitionContext,
     forcedColorsStylesheetBehavior,
-    FoundationElementDefinition,
+    FoundationElementTemplate,
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
@@ -15,7 +14,11 @@ import {
 } from "../design-tokens";
 import { heightNumber } from "../styles/index";
 
-export const horizontalSliderStyles = css`
+/**
+ * Styles for Horizontal Slider label
+ * @public
+ */
+export const horizontalSliderLabelStyles = css`
     :host {
         align-self: start;
         grid-row: 2;
@@ -32,7 +35,11 @@ export const horizontalSliderStyles = css`
     }
 `;
 
-export const verticalSliderStyles = css`
+/**
+ * Styles for Vertical slider label
+ * @public
+ */
+export const verticalSliderLabelStyles = css`
     :host {
         justify-self: start;
         grid-column: 2;
@@ -56,12 +63,13 @@ export const verticalSliderStyles = css`
     }
 `;
 
-export const sliderLabelStyles: (
-    context: ElementDefinitionContext,
-    definition: FoundationElementDefinition
-) => ElementStyles = (
-    context: ElementDefinitionContext,
-    definition: FoundationElementDefinition
+/**
+ * Styles for Slider Label
+ * @public
+ */
+export const sliderLabelStyles: FoundationElementTemplate<ElementStyles> = (
+    context,
+    definition
 ) =>
     css`
         ${display("block")} :host {

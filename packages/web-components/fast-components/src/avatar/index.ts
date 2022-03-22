@@ -20,7 +20,7 @@ export class Avatar extends FoundationAvatar {
      * HTML Attribute: src
      */
     @attr({ attribute: "src" })
-    public imgSrc: string;
+    public imgSrc: string | undefined;
 
     /**
      * Indicates the Avatar should have alt text
@@ -29,7 +29,7 @@ export class Avatar extends FoundationAvatar {
      * @remarks
      * HTML Attribute: alt
      */
-    @attr public alt: string;
+    @attr public alt: string | undefined;
 }
 
 /**
@@ -54,15 +54,16 @@ export const imgTemplate = html<Avatar>`
 
 /**
  * A function that returns a {@link @microsoft/fast-foundation#Avatar} registration for configuring the component with a DesignSystem.
- *  {@link @microsoft/fast-foundation#AvatarTemplate}
+ *  {@link @microsoft/fast-foundation#avatarTemplate}
  *
  *
  * @public
  * @remarks
- * Generates HTML Element: \<fast-avatar\>
+ * Generates HTML Element: `<fast-avatar>`
  */
 export const fastAvatar = Avatar.compose<AvatarOptions>({
     baseName: "avatar",
+    baseClass: FoundationAvatar,
     template,
     styles,
     media: imgTemplate,
@@ -71,8 +72,4 @@ export const fastAvatar = Avatar.compose<AvatarOptions>({
     },
 });
 
-/**
- * Styles for Badge
- * @public
- */
-export const avatarStyles = styles;
+export { styles as avatarStyles };

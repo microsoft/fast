@@ -2,10 +2,9 @@ import { css, ElementStyles } from "@microsoft/fast-element";
 import {
     disabledCursor,
     display,
-    ElementDefinitionContext,
     focusVisible,
     forcedColorsStylesheetBehavior,
-    FoundationElementDefinition,
+    FoundationElementTemplate,
 } from "@microsoft/fast-foundation";
 import {
     accentFillActive,
@@ -29,12 +28,13 @@ import {
 } from "../design-tokens";
 import { heightNumber } from "../styles/index";
 
-export const textAreaStyles: (
-    context: ElementDefinitionContext,
-    definition: FoundationElementDefinition
-) => ElementStyles = (
-    context: ElementDefinitionContext,
-    definition: FoundationElementDefinition
+/**
+ * Styles for Text Area
+ * @public
+ */
+export const textAreaStyles: FoundationElementTemplate<ElementStyles> = (
+    context,
+    definition
 ) =>
     css`
     ${display("inline-block")} :host {

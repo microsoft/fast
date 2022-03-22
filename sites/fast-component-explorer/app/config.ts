@@ -58,7 +58,7 @@ function generateMenu(componentSchemas: SchemaDictionary): MenuItem[] {
         ...Object.entries(componentSchemas).map(
             ([id]: [string, any]): MenuItem => {
                 return {
-                    displayName: componentSchemas[id].title,
+                    displayName: componentSchemas[id].title.replace("(FAST)", ""),
                     location: `/components/${id}`,
                 };
             }

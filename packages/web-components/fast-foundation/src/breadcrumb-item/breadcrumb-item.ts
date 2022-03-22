@@ -1,16 +1,17 @@
 import { observable, SyntheticViewTemplate } from "@microsoft/fast-element";
 import type { FoundationElementDefinition } from "../foundation-element";
 import { Anchor, DelegatesARIALink } from "../anchor";
-import { StartEnd } from "../patterns/index";
+import { StartEnd, StartEndOptions } from "../patterns/index";
 import { applyMixins } from "../utilities/apply-mixins";
 
 /**
  * Breadcrumb Item configuration options
  * @public
  */
-export type BreadcrumbItemOptions = FoundationElementDefinition & {
-    separator?: string | SyntheticViewTemplate;
-};
+export type BreadcrumbItemOptions = FoundationElementDefinition &
+    StartEndOptions & {
+        separator?: string | SyntheticViewTemplate;
+    };
 
 /**
  * A Breadcrumb Item Custom HTML Element.

@@ -2,9 +2,9 @@ import { css, ElementStyles } from "@microsoft/fast-element";
 import {
     BreadcrumbItemOptions,
     display,
-    ElementDefinitionContext,
     focusVisible,
     forcedColorsStylesheetBehavior,
+    FoundationElementTemplate,
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
@@ -20,13 +20,14 @@ import {
 } from "../design-tokens";
 import { heightNumber } from "../styles/index";
 
-export const breadcrumbItemStyles: (
-    context: ElementDefinitionContext,
-    definition: BreadcrumbItemOptions
-) => ElementStyles = (
-    context: ElementDefinitionContext,
-    definition: BreadcrumbItemOptions
-) =>
+/**
+ * Styles for Breadcrumb item
+ * @public
+ */
+export const breadcrumbItemStyles: FoundationElementTemplate<
+    ElementStyles,
+    BreadcrumbItemOptions
+> = (context, definition) =>
     css`
     ${display("inline-flex")} :host {
         background: transparent;
@@ -37,6 +38,7 @@ export const breadcrumbItemStyles: (
         line-height: ${typeRampBaseLineHeight};
         min-width: calc(${heightNumber} * 1px);
         outline: none;
+        color: ${neutralForegroundRest}
     }
 
     .listitem {
@@ -47,6 +49,7 @@ export const breadcrumbItemStyles: (
 
     .separator {
         margin: 0 6px;
+        display: flex;
     }
 
     .control {
@@ -112,10 +115,8 @@ export const breadcrumbItemStyles: (
     }
 
     ::slotted(svg) {
-        ${
-            /* Glyph size and margin-left is temporary - 
-            replace when adaptive typography is figured out */ ""
-        } width: 16px;
+        /* TODO: adaptive typography https://github.com/microsoft/fast/issues/2432 */
+        width: 16px;
         height: 16px;
     }
 

@@ -1,22 +1,18 @@
 import { elements, html, slotted } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
-import { endTemplate, startTemplate } from "../patterns";
-import type { Toolbar } from "./toolbar";
-import type { FoundationElementDefinition } from "../foundation-element";
-import type { ElementDefinitionContext } from "../design-system";
+import type { FoundationElementTemplate } from "../foundation-element";
+import { endSlotTemplate, startSlotTemplate } from "../patterns";
+import type { Toolbar, ToolbarOptions } from "./toolbar";
 
 /**
  * The template for the {@link @microsoft/fast-foundation#(Toolbar:class)} component.
  *
  * @public
  */
-export const toolbarTemplate: (
-    context: ElementDefinitionContext,
-    definition: FoundationElementDefinition
-) => ViewTemplate<Toolbar> = (
-    context: ElementDefinitionContext,
-    definition: FoundationElementDefinition
-) => html`
+export const toolbarTemplate: FoundationElementTemplate<
+    ViewTemplate<Toolbar>,
+    ToolbarOptions
+> = (context, definition) => html`
     <template
         aria-label="${x => x.ariaLabel}"
         aria-labelledby="${x => x.ariaLabelledby}"
@@ -29,14 +25,14 @@ export const toolbarTemplate: (
     >
         <slot name="label"></slot>
         <div class="positioning-region" part="positioning-region">
-            ${startTemplate}
+            ${startSlotTemplate(context, definition)}
             <slot
                 ${slotted({
                     filter: elements(),
                     property: "slottedItems",
                 })}
             ></slot>
-            ${endTemplate}
+            ${endSlotTemplate(context, definition)}
         </div>
     </template>
 `;

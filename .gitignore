@@ -37,9 +37,19 @@ storybook-static
 # Ignore Mac .DS_Store
 .DS_Store
 
-# Ignore VSCode in Root
-/.vscode/
-/.vs/
+#Ignore VSCode in Root
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
+
+# Local History for Visual Studio Code
+.history/
+
+# Stores VSCode versions used for testing VSCode extensions
+.vscode-test
 
 # Ignore Intellij IDEA
 .idea
@@ -58,9 +68,6 @@ sites/website/src/docs/api/
 sites/website/yarn.lock
 sites/website/node_modules
 sites/website/i18n/
-
-# Docusaurus package readme's
-docs/en/packages/*/README.md
 
 # GitHub Actions Local Testing
 .github/workflows/testing/*.json

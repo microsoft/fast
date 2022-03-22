@@ -1,21 +1,6 @@
-import {
-    attr,
-    Notifier,
-    observable,
-    Observable,
-    SyntheticViewTemplate,
-} from "@microsoft/fast-element";
-import {
-    getDisplayedNodes,
-    isHTMLElement,
-    keyCodeArrowDown,
-    keyCodeArrowLeft,
-    keyCodeArrowRight,
-    keyCodeArrowUp,
-    keyCodeEnter,
-} from "@microsoft/fast-web-utilities";
-import { StartEnd } from "../patterns/start-end";
-import type { TreeView } from "../tree-view";
+import { attr, observable, SyntheticViewTemplate } from "@microsoft/fast-element";
+import { isHTMLElement } from "@microsoft/fast-web-utilities";
+import { StartEnd, StartEndOptions } from "../patterns/start-end";
 import { applyMixins } from "../utilities/apply-mixins";
 import { FoundationElement, FoundationElementDefinition } from "../foundation-element";
 
@@ -33,9 +18,10 @@ export function isTreeItemElement(el: Element): el is HTMLElement {
  * Tree Item configuration options
  * @public
  */
-export type TreeItemOptions = FoundationElementDefinition & {
-    expandCollapseGlyph?: string | SyntheticViewTemplate;
-};
+export type TreeItemOptions = FoundationElementDefinition &
+    StartEndOptions & {
+        expandCollapseGlyph?: string | SyntheticViewTemplate;
+    };
 
 /**
  * A Tree item Custom HTML Element.
@@ -51,6 +37,11 @@ export class TreeItem extends FoundationElement {
      */
     @attr({ mode: "boolean" })
     public expanded: boolean = false;
+    private expandedChanged(): void {
+        if (this.$fastController.isConnected) {
+            this.$emit("expanded-change", this);
+        }
+    }
 
     /**
      * When true, the control will appear selected by user interaction.
@@ -60,6 +51,11 @@ export class TreeItem extends FoundationElement {
      */
     @attr({ mode: "boolean" })
     public selected: boolean;
+    private selectedChanged(): void {
+        if (this.$fastController.isConnected) {
+            this.$emit("selected-change", this);
+        }
+    }
 
     /**
      * When true, the control will be immutable by user interaction. See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/disabled | disabled HTML attribute} for more information.
@@ -70,17 +66,37 @@ export class TreeItem extends FoundationElement {
     @attr({ mode: "boolean" })
     public disabled: boolean;
 
+    /**
+     *  Reference to the expand/collapse button
+     *
+     * @internal
+     */
     public expandCollapseButton: HTMLDivElement;
 
+    /**
+     * Whether the item is focusable
+     *
+     * @internal
+     */
     @observable
     public focusable: boolean = false;
 
+    /**
+     *
+     *
+     * @internal
+     */
     @observable
     public childItems: HTMLElement[];
 
+    /**
+     * The slotted child tree items
+     *
+     * @internal
+     */
     @observable
     public items: HTMLElement[];
-    private itemsChanged(oldValue, newValue): void {
+    private itemsChanged(oldValue: unknown, newValue: HTMLElement[]): void {
         if (this.$fastController.isConnected) {
             this.items.forEach((node: HTMLElement) => {
                 if (isTreeItemElement(node)) {
@@ -88,131 +104,79 @@ export class TreeItem extends FoundationElement {
                     (node as TreeItem).nested = true;
                 }
             });
-            this.enabledChildTreeItems = this.items.filter((item: HTMLElement) => {
-                return isTreeItemElement(item) && !item.hasAttribute("disabled");
-            });
         }
     }
 
     /**
+     * Indicates if the tree item is nested
+     *
      * @internal
      */
     @observable
     public nested: boolean;
 
+    /**
+     *
+     *
+     * @internal
+     */
     @observable
     public renderCollapsedChildren: boolean;
 
-    private notifier: Notifier;
-    private enabledChildTreeItems: HTMLElement[] = [];
-
-    private getParentTreeNode(): HTMLElement | null | undefined {
-        const parentNode: Element | null | undefined = this.parentElement!.closest(
-            "[role='tree']"
-        );
-        return parentNode as HTMLElement;
-    }
-
     /**
-     * @internal
-     */
-    public connectedCallback(): void {
-        super.connectedCallback();
-
-        const parentTreeNode: HTMLElement | null | undefined = this.getParentTreeNode();
-
-        if (parentTreeNode) {
-            if (parentTreeNode.hasAttribute("render-collapsed-nodes")) {
-                this.renderCollapsedChildren =
-                    parentTreeNode.getAttribute("render-collapsed-nodes") === "true";
-            }
-            this.notifier = Observable.getNotifier(parentTreeNode);
-            this.notifier.subscribe(this, "renderCollapsedNodes");
-        }
-    }
-
-    /**
-     * @internal
-     */
-    public disconnectedCallback(): void {
-        super.disconnectedCallback();
-        if (this.notifier) {
-            this.notifier.unsubscribe(this, "renderCollapsedNodes");
-        }
-    }
-
-    /**
-     * Places document focus on a tree item and adds the item to the sequential tab order.
+     * Places document focus on a tree item
+     *
+     * @public
      * @param el - the element to focus
      */
     public static focusItem(el: HTMLElement) {
-        el.setAttribute("tabindex", "0");
         (el as TreeItem).focusable = true;
         el.focus();
     }
 
-    public handleChange(source: any, propertyName: string) {
-        switch (propertyName) {
-            case "renderCollapsedNodes":
-                this.renderCollapsedChildren = (source as TreeView).renderCollapsedNodes;
-                break;
-        }
-    }
+    /**
+     * Whether the tree is nested
+     *
+     * @public
+     */
+    public readonly isNestedItem = (): boolean => {
+        return isTreeItemElement(this.parentElement as Element);
+    };
 
     /**
-     * The keyboarding on treeview should conform to the following spec
-     * https://w3c.github.io/aria-practices/#keyboard-interaction-23
-     * @param e - Event object for keyDown event
+     * Handle expand button click
+     *
+     * @internal
      */
-    public handleKeyDown = (e: KeyboardEvent): void | boolean => {
-        if (e.target !== e.currentTarget) {
-            return true;
-        }
-
-        switch (e.keyCode) {
-            case keyCodeArrowLeft:
-                // preventDefault to ensure we don't scroll the page
-                e.preventDefault();
-                this.collapseOrFocusParent();
-                break;
-            case keyCodeArrowRight:
-                // preventDefault to ensure we don't scroll the page
-                e.preventDefault();
-                this.expandOrFocusFirstChild();
-                break;
-            case keyCodeArrowDown:
-                // preventDefault to ensure we don't scroll the page
-                e.preventDefault();
-                this.focusNextNode(1);
-                break;
-            case keyCodeArrowUp:
-                // preventDefault to ensure we don't scroll the page
-                e.preventDefault();
-                this.focusNextNode(-1);
-                break;
-            case keyCodeEnter:
-                // In single-select trees where selection does not follow focus (see note below),
-                // the default action is typically to select the focused node.
-                this.handleSelected(e);
-                break;
-        }
-
-        return true;
-    };
-
     public handleExpandCollapseButtonClick = (e: MouseEvent): void => {
-        if (!this.disabled) {
-            e.preventDefault();
-            this.setExpanded(!this.expanded);
+        if (!this.disabled && !e.defaultPrevented) {
+            this.expanded = !this.expanded;
         }
     };
 
-    public handleClick = (e: MouseEvent): void => {
-        if (!e.defaultPrevented && !this.disabled) {
-            this.handleSelected(e);
-        }
+    /**
+     * Handle focus events
+     *
+     * @internal
+     */
+    public handleFocus = (e: FocusEvent): void => {
+        this.setAttribute("tabindex", "0");
     };
 
+    /**
+     * Handle blur events
+     *
+     * @internal
+     */
+    public handleBlur = (e: FocusEvent): void => {
+        this.setAttribute("tabindex", "-1");
+    };
+
+    /**
+     * Gets number of children
+     *
+     * @internal
+     */
     public childItemLength(): number {
         const treeChildren: HTMLElement[] = this.childItems.filter(
             (item: HTMLElement) => {
@@ -220,89 +184,6 @@ export class TreeItem extends FoundationElement {
             }
         );
         return treeChildren ? treeChildren.length : 0;
-    }
-
-    public readonly isNestedItem = (): boolean => {
-        return isTreeItemElement(this.parentElement as Element);
-    };
-
-    private collapseOrFocusParent(): void {
-        if (this.expanded) {
-            this.setExpanded(false);
-        } else if (isHTMLElement(this.parentElement)) {
-            const parentTreeItemNode:
-                | Element
-                | null
-                | undefined = this.parentElement!.closest("[role='treeitem']");
-
-            if (isHTMLElement(parentTreeItemNode)) {
-                TreeItem.focusItem(parentTreeItemNode as HTMLElement);
-            }
-        }
-    }
-
-    private expandOrFocusFirstChild(): void {
-        if (typeof this.expanded !== "boolean") {
-            return;
-        }
-
-        if (!this.expanded && this.childItemLength() > 0) {
-            this.setExpanded(true);
-        } else {
-            if (this.enabledChildTreeItems.length > 0) {
-                TreeItem.focusItem(this.enabledChildTreeItems[0]);
-            }
-        }
-    }
-
-    private focusNextNode(delta: number): void {
-        const visibleNodes: HTMLElement[] | void = this.getVisibleNodes();
-        if (!visibleNodes) {
-            return;
-        }
-
-        const currentIndex: number = visibleNodes.indexOf(this);
-        if (currentIndex !== -1) {
-            let nextElement: HTMLElement | undefined = visibleNodes[currentIndex + delta];
-            if (nextElement !== undefined) {
-                while (nextElement.hasAttribute("disabled")) {
-                    const offset: number = delta >= 0 ? 1 : -1;
-                    nextElement = visibleNodes[currentIndex + delta + offset];
-                    if (!nextElement) {
-                        break;
-                    }
-                }
-            }
-
-            if (isHTMLElement(nextElement)) {
-                TreeItem.focusItem(nextElement);
-            }
-        }
-    }
-
-    private getVisibleNodes(): HTMLElement[] | void {
-        return getDisplayedNodes(this.getTreeRoot()!, "[role='treeitem']");
-    }
-
-    private getTreeRoot(): HTMLElement | null {
-        /* eslint-disable-next-line  @typescript-eslint/no-this-alias */
-        const currentNode: HTMLElement = this;
-
-        if (!isHTMLElement(currentNode)) {
-            return null;
-        }
-
-        return currentNode.closest("[role='tree']") as HTMLElement;
-    }
-
-    private handleSelected(e?: Event): void {
-        this.selected = !this.selected;
-        this.$emit("selected-change", e);
-    }
-
-    private setExpanded(expanded: boolean): void {
-        this.expanded = expanded;
-        this.$emit("expanded-change", this);
     }
 }
 

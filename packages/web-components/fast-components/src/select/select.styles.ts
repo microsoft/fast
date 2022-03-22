@@ -1,10 +1,13 @@
-import { css, ElementStyles } from "@microsoft/fast-element";
+import { css } from "@microsoft/fast-element";
+import type { ElementStyles } from "@microsoft/fast-element";
 import {
     disabledCursor,
     display,
-    ElementDefinitionContext,
     focusVisible,
     forcedColorsStylesheetBehavior,
+} from "@microsoft/fast-foundation";
+import type {
+    FoundationElementTemplate,
     SelectOptions,
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
@@ -35,10 +38,14 @@ import {
 import { elevation } from "../styles/elevation";
 import { heightNumber } from "../styles/size";
 
-export const selectStyles: (
-    context: ElementDefinitionContext,
-    definition: SelectOptions
-) => ElementStyles = (context: ElementDefinitionContext, definition: SelectOptions) =>
+/**
+ * Styles for Select
+ * @public
+ */
+export const selectStyles: FoundationElementTemplate<ElementStyles, SelectOptions> = (
+    context,
+    definition
+) =>
     css`
     ${display("inline-flex")} :host {
         --elevation: 14;
@@ -126,15 +133,14 @@ export const selectStyles: (
     :host(:not([disabled])) .control:active {
         background: ${neutralFillInputActive};
         border-color: ${accentFillActive};
+        border-radius: calc(${controlCornerRadius} * 1px);
     }
 
-    :host([open][position="above"]) .listbox,
-    :host([open][position="below"]) .control {
+    :host([open][position="above"]) .listbox {
         border-bottom-left-radius: 0;
         border-bottom-right-radius: 0;
     }
 
-    :host([open][position="above"]) .control,
     :host([open][position="below"]) .listbox {
         border-top-left-radius: 0;
         border-top-right-radius: 0;
@@ -184,7 +190,7 @@ export const selectStyles: (
     .indicator,
     .select-indicator,
     ::slotted(svg) {
-        ${`` /* Glyph size is temporary - replace when glyph-size var is added */}
+        /* TODO: adaptive typography https://github.com/microsoft/fast/issues/2432 */
         fill: currentcolor;
         height: 1em;
         min-height: calc(${designUnit} * 4px);

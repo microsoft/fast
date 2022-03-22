@@ -1,21 +1,17 @@
 import { html, ref, slotted } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
-import { endTemplate, startTemplate } from "../patterns/start-end";
-import type { Anchor } from "./anchor";
-import type { ElementDefinitionContext } from "../design-system";
-import type { FoundationElementDefinition } from "../foundation-element";
+import { endSlotTemplate, startSlotTemplate } from "../patterns/start-end";
+import type { FoundationElementTemplate } from "../foundation-element";
+import type { Anchor, AnchorOptions } from "./anchor";
 
 /**
  * The template for the {@link @microsoft/fast-foundation#(Anchor:class)} component.
  * @public
  */
-export const anchorTemplate: (
-    context: ElementDefinitionContext,
-    definition: FoundationElementDefinition
-) => ViewTemplate<Anchor> = (
-    context: ElementDefinitionContext,
-    definition: FoundationElementDefinition
-) => html`
+export const anchorTemplate: FoundationElementTemplate<
+    ViewTemplate<Anchor>,
+    AnchorOptions
+> = (context, definition) => html`
     <a
         class="control"
         part="control"
@@ -31,7 +27,7 @@ export const anchorTemplate: (
         aria-busy="${x => x.ariaBusy}"
         aria-controls="${x => x.ariaControls}"
         aria-current="${x => x.ariaCurrent}"
-        aria-describedBy="${x => x.ariaDescribedby}"
+        aria-describedby="${x => x.ariaDescribedby}"
         aria-details="${x => x.ariaDetails}"
         aria-disabled="${x => x.ariaDisabled}"
         aria-errormessage="${x => x.ariaErrormessage}"
@@ -49,10 +45,10 @@ export const anchorTemplate: (
         aria-roledescription="${x => x.ariaRoledescription}"
         ${ref("control")}
     >
-        ${startTemplate}
+        ${startSlotTemplate(context, definition)}
         <span class="content" part="content">
             <slot ${slotted("defaultSlottedContent")}></slot>
         </span>
-        ${endTemplate}
+        ${endSlotTemplate(context, definition)}
     </a>
 `;

@@ -1,31 +1,33 @@
 import { html } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
-import { endTemplate, startTemplate } from "../patterns/start-end";
-import type { ListboxOption } from "./listbox-option";
-import type { FoundationElementDefinition } from "../foundation-element";
-import type { ElementDefinitionContext } from "../design-system";
+import type { FoundationElementTemplate } from "../foundation-element";
+import { endSlotTemplate, startSlotTemplate } from "../patterns/start-end";
+import type { ListboxOption, ListboxOptionOptions } from "./listbox-option";
 
 /**
  * The template for the {@link @microsoft/fast-foundation#(ListboxOption:class)} component.
  * @public
  */
-export const listboxOptionTemplate: (
-    context: ElementDefinitionContext,
-    definition: FoundationElementDefinition
-) => ViewTemplate<ListboxOption> = (
-    context: ElementDefinitionContext,
-    definition: FoundationElementDefinition
-) => html`
+export const listboxOptionTemplate: FoundationElementTemplate<
+    ViewTemplate<ListboxOption>,
+    ListboxOptionOptions
+> = (context, definition) => html`
     <template
-        aria-selected="${x => x.selected}"
-        class="${x => (x.selected ? "selected" : "")} ${x =>
-            x.disabled ? "disabled" : ""}"
+        aria-checked="${x => x.ariaChecked}"
+        aria-disabled="${x => x.ariaDisabled}"
+        aria-posinset="${x => x.ariaPosInSet}"
+        aria-selected="${x => x.ariaSelected}"
+        aria-setsize="${x => x.ariaSetSize}"
+        class="${x =>
+            [x.checked && "checked", x.selected && "selected", x.disabled && "disabled"]
+                .filter(Boolean)
+                .join(" ")}"
         role="option"
     >
-        ${startTemplate}
+        ${startSlotTemplate(context, definition)}
         <span class="content" part="content">
             <slot></slot>
         </span>
-        ${endTemplate}
+        ${endSlotTemplate(context, definition)}
     </template>
 `;

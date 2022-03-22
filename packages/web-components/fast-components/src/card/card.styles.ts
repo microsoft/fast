@@ -1,20 +1,20 @@
 import { css, ElementStyles } from "@microsoft/fast-element";
 import {
     display,
-    ElementDefinitionContext,
     forcedColorsStylesheetBehavior,
-    FoundationElementDefinition,
+    FoundationElementTemplate,
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import { controlCornerRadius, fillColor } from "../design-tokens";
 import { elevation } from "../styles/index";
 
-export const cardStyles: (
-    context: ElementDefinitionContext,
-    definition: FoundationElementDefinition
-) => ElementStyles = (
-    context: ElementDefinitionContext,
-    definition: FoundationElementDefinition
+/**
+ * Styles for Card
+ * @public
+ */
+export const cardStyles: FoundationElementTemplate<ElementStyles> = (
+    context,
+    definition
 ) =>
     css`
         ${display("block")} :host {

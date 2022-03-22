@@ -1,4 +1,3 @@
-/* eslint-env node */
 import commonJS from "rollup-plugin-commonjs";
 import filesize from "rollup-plugin-filesize";
 import resolve from "rollup-plugin-node-resolve";

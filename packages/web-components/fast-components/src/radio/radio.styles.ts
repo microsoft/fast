@@ -2,9 +2,9 @@ import { css, ElementStyles } from "@microsoft/fast-element";
 import {
     disabledCursor,
     display,
-    ElementDefinitionContext,
     focusVisible,
     forcedColorsStylesheetBehavior,
+    FoundationElementTemplate,
     RadioOptions,
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
@@ -32,23 +32,23 @@ import {
     typeRampBaseLineHeight,
 } from "../design-tokens";
 import { heightNumber } from "../styles/index";
-
-export const radioStyles: (
-    context: ElementDefinitionContext,
-    definition: RadioOptions
-) => ElementStyles = (context: ElementDefinitionContext, definition: RadioOptions) =>
+/**
+ * Styles for Radio
+ * @public
+ */
+export const radioStyles: FoundationElementTemplate<ElementStyles, RadioOptions> = (
+    context,
+    definition
+) =>
     css`
     ${display("inline-flex")} :host {
         --input-size: calc((${heightNumber} / 2) + ${designUnit});
         align-items: center;
         outline: none;
         margin: calc(${designUnit} * 1px) 0;
-        ${
-            /*
-             * Chromium likes to select label text or the default slot when
-             * the radio button is clicked. Maybe there is a better solution here?
-             */ ""
-        } user-select: none;
+        /* Chromium likes to select label text or the default slot when
+            the radio is clicked. Maybe there is a better solution here? */
+        user-select: none;
         position: relative;
         flex-direction: row;
         transition: all 0.2s ease-in-out;
@@ -69,9 +69,9 @@ export const radioStyles: (
     .label {
         font-family: ${bodyFont};
         color: ${neutralForegroundRest};
-        ${
-            /* Need to discuss with Brian how HorizontalSpacingNumber can work. https://github.com/microsoft/fast/issues/2766 */ ""
-        } padding-inline-start: calc(${designUnit} * 2px + 2px);
+        /* Need to discuss with Brian how HorizontalSpacingNumber can work.
+            https://github.com/microsoft/fast/issues/2766 */
+        padding-inline-start: calc(${designUnit} * 2px + 2px);
         margin-inline-end: calc(${designUnit} * 2px + 2px);
         cursor: pointer;
         font-size: ${typeRampBaseFontSize};

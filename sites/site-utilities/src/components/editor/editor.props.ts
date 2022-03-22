@@ -1,9 +1,10 @@
-import { DataDictionary } from "@microsoft/fast-tooling";
+import { DataDictionary, SchemaDictionary } from "@microsoft/fast-tooling";
 import { StandardLuminance } from "@microsoft/fast-components";
 import { Direction } from "@microsoft/fast-web-utilities";
 
 /* eslint-disable-next-line @typescript-eslint/no-empty-interface */
 export interface EditorState {
+    schemaDictionary: SchemaDictionary;
     dataDictionary: DataDictionary<unknown>;
     viewerWidth: number;
     viewerHeight: number;

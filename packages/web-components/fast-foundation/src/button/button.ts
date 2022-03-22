@@ -1,7 +1,18 @@
 import { attr, observable } from "@microsoft/fast-element";
-import { ARIAGlobalStatesAndProperties, StartEnd } from "../patterns/index";
+import {
+    ARIAGlobalStatesAndProperties,
+    StartEnd,
+    StartEndOptions,
+} from "../patterns/index";
 import { applyMixins } from "../utilities/apply-mixins";
+import type { FoundationElementDefinition } from "../foundation-element";
 import { FormAssociatedButton } from "./button.form-associated";
+
+/**
+ * Button configuration options
+ * @public
+ */
+export type ButtonOptions = FoundationElementDefinition & StartEndOptions;
 
 /**
  * A Button Custom HTML Element.
@@ -145,7 +156,39 @@ export class Button extends FormAssociatedButton {
         super.connectedCallback();
 
         this.proxy.setAttribute("type", this.type);
+        this.handleUnsupportedDelegatesFocus();
+
+        const elements = Array.from(this.control?.children) as HTMLSpanElement[];
+        if (elements) {
+            elements.forEach((span: HTMLSpanElement) => {
+                span.addEventListener("click", this.handleClick);
+            });
+        }
     }
+
+    /**
+     * @internal
+     */
+    public disconnectedCallback(): void {
+        super.disconnectedCallback();
+
+        const elements = Array.from(this.control?.children) as HTMLSpanElement[];
+        if (elements) {
+            elements.forEach((span: HTMLSpanElement) => {
+                span.removeEventListener("click", this.handleClick);
+            });
+        }
+    }
+
+    /**
+     * Prevent events to propagate if disabled and has no slotted content wrapped in HTML elements
+     * @internal
+     */
+    private handleClick = (e: Event) => {
+        if (this.disabled && this.defaultSlottedContent?.length <= 1) {
+            e.stopPropagation();
+        }
+    };
 
     /**
      * Submits the parent form
@@ -180,6 +223,24 @@ export class Button extends FormAssociatedButton {
     };
 
     public control: HTMLButtonElement;
+
+    /**
+     * Overrides the focus call for where delegatesFocus is unsupported.
+     * This check works for Chrome, Edge Chromium, FireFox, and Safari
+     * Relevant PR on the Firefox browser: https://phabricator.services.mozilla.com/D123858
+     */
+    private handleUnsupportedDelegatesFocus = () => {
+        // Check to see if delegatesFocus is supported
+        if (
+            window.ShadowRoot &&
+            !window.ShadowRoot.prototype.hasOwnProperty("delegatesFocus") &&
+            this.$fastController.definition.shadowOptions?.delegatesFocus
+        ) {
+            this.focus = () => {
+                this.control.focus();
+            };
+        }
+    };
 }
 
 /**
@@ -213,7 +274,6 @@ export class DelegatesARIAButton {
  * TODO: https://github.com/microsoft/fast/issues/3317
  * @internal
  */
-/* eslint-disable-next-line */
 export interface DelegatesARIAButton extends ARIAGlobalStatesAndProperties {}
 applyMixins(DelegatesARIAButton, ARIAGlobalStatesAndProperties);
 

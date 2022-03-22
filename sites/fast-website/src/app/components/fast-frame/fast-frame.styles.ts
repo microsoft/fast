@@ -248,6 +248,10 @@ export const FastFrameStyles = css`
         min-width: unset;
     }
 
+    fast-tab-panel:not([hidden]) {
+        display: flex;
+    }
+
     fast-tab-panel {
         background: ${neutralFillLayerRest};
         height: 100%;

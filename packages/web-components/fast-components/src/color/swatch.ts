@@ -28,6 +28,28 @@ export const SwatchRGB = Object.freeze({
 });
 
 /**
+ * Runtime test for an objects conformance with the SwatchRGB interface.
+ * @internal
+ */
+export function isSwatchRGB(value: { [key: string]: any }): value is SwatchRGB {
+    const test: SwatchRGB = {
+        r: 0,
+        g: 0,
+        b: 0,
+        toColorString: () => "",
+        contrast: () => 0,
+        relativeLuminance: 0,
+    };
+
+    for (const key in test) {
+        if (typeof test[key] !== typeof value[key]) {
+            return false;
+        }
+    }
+
+    return true;
+}
+/**
  * A RGB implementation of {@link Swatch}
  * @internal
  */

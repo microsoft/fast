@@ -31,6 +31,16 @@
                     "required": false
                 },
                 {
+                    "name": "auto-update-mode",
+                    "title": "Auto update mode",
+                    "description":
+                        "Controls when the tooltip updates its position.",
+                    "type": "string",
+                    "values": [{ "name": "anchor" }, { "name": "auto" }],
+                    "default": "anchor",
+                    "required": false
+                },
+                {
                     "name": "position",
                     "title": "Position",
                     "description":
@@ -44,6 +54,22 @@
                         { "name": "end" }
                     ],
                     "type": "string",
+                    "required,": false
+                },
+                {
+                    "name": "horizontal-viewport-lock",
+                    "title": "Horizontal viewport lock",
+                    "description": "Controls if the tooltip will always remain fully in the viewport on the horizontal axis",
+                    "type": "boolean",
+                    "default": false,
+                    "required": false
+                },
+                {
+                    "name": "vertical-viewport-lock",
+                    "title": "Vertical viewport lock",
+                    "description": "Controls if the tooltip will always remain fully in the viewport on the vertical axis",
+                    "type": "boolean",
+                    "default": false,
                     "required": false
                 }
             ],

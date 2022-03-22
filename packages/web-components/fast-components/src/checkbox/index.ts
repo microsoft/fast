@@ -12,15 +12,14 @@ import { checkboxStyles as styles } from "./checkbox.styles";
  *
  * @public
  * @remarks
- * Generates HTML Element: \<fast-checkbox\>
+ * Generates HTML Element: `<fast-checkbox>`
  */
 export const fastCheckbox = Checkbox.compose<CheckboxOptions>({
     baseName: "checkbox",
     template,
     styles,
-    checkedIndicator: `
+    checkedIndicator: /* html */ `
         <svg
-            aria-hidden="true"
             part="checked-indicator"
             class="checked-indicator"
             viewBox="0 0 20 20"
@@ -33,19 +32,15 @@ export const fastCheckbox = Checkbox.compose<CheckboxOptions>({
             />
         </svg>
     `,
-    indeterminateIndicator: `
+    indeterminateIndicator: /* html */ `
         <div part="indeterminate-indicator" class="indeterminate-indicator"></div>
     `,
 });
-
-/**
- * Styles for Checkbox
- * @public
- */
-export const checkboxStyles = styles;
 
 /**
  * Base class for Checkbox
  * @public
  */
 export { Checkbox };
+
+export { styles as checkboxStyles };

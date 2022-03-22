@@ -1,22 +1,18 @@
 import { html, slotted } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
+import type { FoundationElementTemplate } from "../foundation-element";
 import type { Menu } from "./menu";
-import type { FoundationElementDefinition } from "../foundation-element";
-import type { ElementDefinitionContext } from "../design-system";
 
 /**
  * The template for the {@link @microsoft/fast-foundation#Menu} component.
  * @public
  */
-export const menuTemplate: (
-    context: ElementDefinitionContext,
-    definition: FoundationElementDefinition
-) => ViewTemplate<Menu> = (
-    context: ElementDefinitionContext,
-    definition: FoundationElementDefinition
+export const menuTemplate: FoundationElementTemplate<ViewTemplate<Menu>> = (
+    context,
+    definition
 ) => html`
     <template
-        slot="${x => (x.isNestedMenu() ? "submenu" : void 0)}"
+        slot="${x => (x.slot ? x.slot : x.isNestedMenu() ? "submenu" : void 0)}"
         role="menu"
         @keydown="${(x, c) => x.handleMenuKeyDown(c.event as KeyboardEvent)}"
         @focusout="${(x, c) => x.handleFocusOut(c.event as FocusEvent)}"

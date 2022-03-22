@@ -13,7 +13,7 @@ The core component library is referenced with a single script tag in the `index.
 Additionally, we configure the design system in the `index.html` so that it applies to the entire application. That is done with this markup:
 
 ```html
-<fluent-design-system-provider use-defaults>
+<fluent-design-system-provider>
     <app>Loading...</app>
 
     <div id="blazor-error-ui">

@@ -1,31 +1,35 @@
-import { elements, html, ref, slotted, when } from "@microsoft/fast-element";
-import type { ViewTemplate } from "@microsoft/fast-element";
-import { endTemplate, startTemplate } from "../patterns";
+import {
+    elements,
+    html,
+    ref,
+    slotted,
+    ViewTemplate,
+    when,
+} from "@microsoft/fast-element";
+import type { FoundationElementTemplate } from "../foundation-element";
+import { endSlotTemplate, startSlotTemplate } from "../patterns";
 import type { HorizontalScroll, HorizontalScrollOptions } from "./horizontal-scroll";
-import type { ElementDefinitionContext } from "../design-system";
 
 /**
  * @public
  */
-export const horizontalScrollTemplate: (
-    context: ElementDefinitionContext,
-    definition: HorizontalScrollOptions
-) => ViewTemplate<HorizontalScroll> = (
-    context: ElementDefinitionContext,
-    definition: HorizontalScrollOptions
-) => html`
+export const horizontalScrollTemplate: FoundationElementTemplate<
+    ViewTemplate<HorizontalScroll>,
+    HorizontalScrollOptions
+> = (context, definition) => html`
     <template
         class="horizontal-scroll"
         @keyup="${(x, c) => x.keyupHandler(c.event as KeyboardEvent)}"
     >
-        ${startTemplate}
-        <div class="scroll-area">
+        ${startSlotTemplate(context, definition)}
+        <div class="scroll-area" part="scroll-area">
             <div
                 class="scroll-view"
+                part="scroll-view"
                 @scroll="${x => x.scrolled()}"
                 ${ref("scrollContainer")}
             >
-                <div class="content-container">
+                <div class="content-container" part="content-container" ${ref("content")}>
                     <slot
                         ${slotted({
                             property: "scrollItems",
@@ -42,9 +46,11 @@ export const horizontalScrollTemplate: (
                         part="scroll-prev"
                         ${ref("previousFlipperContainer")}
                     >
-                        <div class="scroll-action">
+                        <div class="scroll-action" part="scroll-action-previous">
                             <slot name="previous-flipper">
-                                ${definition.previousFlipper || ""}
+                                ${definition.previousFlipper instanceof Function
+                                    ? definition.previousFlipper(context, definition)
+                                    : definition.previousFlipper ?? ""}
                             </slot>
                         </div>
                     </div>
@@ -53,15 +59,17 @@ export const horizontalScrollTemplate: (
                         part="scroll-next"
                         ${ref("nextFlipperContainer")}
                     >
-                        <div class="scroll-action">
+                        <div class="scroll-action" part="scroll-action-next">
                             <slot name="next-flipper">
-                                ${definition.nextFlipper || ""}
+                                ${definition.nextFlipper instanceof Function
+                                    ? definition.nextFlipper(context, definition)
+                                    : definition.nextFlipper ?? ""}
                             </slot>
                         </div>
                     </div>
                 `
             )}
         </div>
-        ${endTemplate}
+        ${endSlotTemplate(context, definition)}
     </template>
 `;

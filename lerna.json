@@ -3,8 +3,6 @@
     "packages/**/*",
     "sites/fast-color-explorer",
     "sites/fast-component-explorer",
-    "sites/fast-creator",
-    "sites/fast-tooling-examples",
     "sites/fast-website"
   ],
   "version": "independent",

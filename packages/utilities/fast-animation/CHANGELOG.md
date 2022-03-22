@@ -1,8 +1,41 @@
 # Change Log - @microsoft/fast-animation
 
-This log was last generated on Thu, 08 Jul 2021 07:17:00 GMT and should not be manually modified.
+This log was last generated on Sun, 30 Jan 2022 07:12:35 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 4.1.8
+
+Sun, 30 Jan 2022 07:12:35 GMT
+
+### Patches
+
+- remove webpack-modernizr-plugin from fast-animation (john.kreitlow@microsoft.com)
+
+## 4.1.7
+
+Tue, 25 Jan 2022 07:11:53 GMT
+
+### Patches
+
+- Bump @microsoft/fast-web-utilities to v5.1.0 (john.kreitlow@microsoft.com)
+
+## 4.1.6
+
+Sun, 31 Oct 2021 07:17:45 GMT
+
+### Patches
+
+- Bump @microsoft/eslint-config-fast-dna to v2.0.0 (chhol@microsoft.com)
+
+## 4.1.5
+
+Wed, 13 Oct 2021 01:53:37 GMT
+
+### Patches
+
+- use requestAnimationFrame in fast-animation (john.kreitlow@microsoft.com)
+- refactor: remove lodash-es as a dependency (connor@peet.io)
 
 ## 4.1.4
 

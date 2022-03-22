@@ -6,10 +6,12 @@ custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/src
 ---
 
 ## Styling components using forced-colors.
+
 High contrast mode uses the CSS media feature, [`forced-colors`](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/forced-colors). When `forced-colors` is set to `active`, the user agent will apply a limited color palette to the component.
 
 
 **Example:**
+
 ```css
 @media (forced-colors: active) {
     :host {
@@ -25,6 +27,7 @@ The reason for this behavior is to avoid the runtime cost of applying `forced-co
 :::
 
 **Example**
+
 ```ts
 export const ComponentStyles = css`
     /* ... */
@@ -40,6 +43,7 @@ export const ComponentStyles = css`
 ```
 
 ## System Color Keyword
+
 In `forced-colors` mode, the colors on the component are reduced to a limited color palette chosen by the user. The [System Color keywords](https://developer.mozilla.org/en-US/docs/web/css/color_value#System_Colors) defined by the CSS Color Module Level 4 specification expose these user-chosen colors.
 
 FAST provides a [`SystemColors`](https://github.com/microsoft/fast/blob/master/packages/utilities/fast-web-utilities/src/system-colors.ts) enum to use when setting the color value keywords in a `forced-colors` stylesheet.
@@ -60,6 +64,7 @@ export const ComponentStyles = css`
 ```
 
 ## Forced colors and Windows High Contrast themes
+
 `forced-colors` works with Windows high contrast mode in Windows, located in Ease of Access within Settings. There are two default themes to test high contrast, `High Contrast Black` and `High Contrast White`.
 
 ![High contrast black theme](https://static.fast.design/assets/high-contrast/hc-black.png)
@@ -86,21 +91,21 @@ Here is a simple example of adding high contrast to style an accent button. It h
 ```ts
 export const AccentButtonStyles = css`
     :host([appearance="accent"]) {
-        background: ${accentFillRestBehavior.var};
-        color: ${accentForegroundCutRestBehavior.var};
+        background: ${accentFillRest};
+        color: ${foregroundOnAccentRest};
     }
     :host([appearance="accent"]:hover) {
-        background: ${accentFillHoverBehavior.var};
+        background: ${accentFillHover};
     }
     :host([appearance="accent"]:active) .control:active {
-        background: ${accentFillActiveBehavior.var};
+        background: ${accentFillActive};
     }
     :host([appearance="accent"]) .control:${focusVisible} {
-        box-shadow: 0 0 0 calc(var(--focus-outline-width) * 1px) inset ${neutralFocusInnerAccentBehavior.var};
+        box-shadow: 0 0 0 calc(${focusStrokeWidth} * 1px) inset ${focusStrokeInner};
     }
     :host([appearance="accent"][disabled]) {
-        opacity: var(--disabled-opacity);
-        background: ${accentFillRestBehavior.var};
+        opacity: ${disabledOpacity};
+        background: ${accentFillRest};
     }
 `
 ```

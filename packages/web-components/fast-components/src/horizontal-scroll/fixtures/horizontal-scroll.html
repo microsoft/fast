@@ -33,6 +33,9 @@
         width: 600px;
         height: 300px;
     }
+    .window-resize {
+        max-width: unset;
+    }
 </style>
 <script>
     function setCards(container, count = 12) {
@@ -52,9 +55,75 @@
         }
     }, 2000);
 </script>
-
 <h2>Default</h2>
 <fast-horizontal-scroll>
+    <fast-card>
+        Card number 1
+        <fast-button>A button</fast-button>
+    </fast-card>
+    <fast-card>
+        Card number 2
+        <fast-button>A button</fast-button>
+    </fast-card>
+    <fast-card>
+        Card number 3
+        <fast-button>A button</fast-button>
+    </fast-card>
+    <fast-card>
+        Card number 4
+        <fast-button>A button</fast-button>
+    </fast-card>
+    <fast-card>
+        Card number 5
+        <fast-button>A button</fast-button>
+    </fast-card>
+    <fast-card>
+        Card number 6
+        <fast-button>A button</fast-button>
+    </fast-card>
+    <fast-card>
+        Card number 7
+        <fast-button>A button</fast-button>
+    </fast-card>
+    <fast-card>
+        Card number 8
+        <fast-button>A button</fast-button>
+    </fast-card>
+    <fast-card>
+        Card number 9
+        <fast-button>A button</fast-button>
+    </fast-card>
+    <fast-card>
+        Card number 10
+        <fast-button>A button</fast-button>
+    </fast-card>
+    <fast-card>
+        Card number 11
+        <fast-button>A button</fast-button>
+    </fast-card>
+    <fast-card>
+        Card number 12
+        <fast-button>A button</fast-button>
+    </fast-card>
+    <fast-card>
+        Card number 13
+        <fast-button>A button</fast-button>
+    </fast-card>
+    <fast-card>
+        Card number 14
+        <fast-button>A button</fast-button>
+    </fast-card>
+    <fast-card>
+        Card number 15
+        <fast-button>A button</fast-button>
+    </fast-card>
+    <fast-card>
+        Card number 16
+        <fast-button>A button</fast-button>
+    </fast-card>
+</fast-horizontal-scroll>
+<h2>2 column layout</h2>
+<fast-horizontal-scroll style="width: 245px;">
     <fast-card>
         Card number 1
         <fast-button>A button</fast-button>
@@ -136,6 +205,66 @@
 
 <h2>Slow scroll (200 pixels/second)</h2>
 <fast-horizontal-scroll speed="200">
+    <fast-card>Card number 1</fast-card>
+    <fast-card>Card number 2</fast-card>
+    <fast-card>Card number 3</fast-card>
+    <fast-card>Card number 4</fast-card>
+    <fast-card>Card number 5</fast-card>
+    <fast-card>Card number 6</fast-card>
+    <fast-card>Card number 7</fast-card>
+    <fast-card>Card number 8</fast-card>
+    <fast-card>Card number 9</fast-card>
+    <fast-card>Card number 10</fast-card>
+    <fast-card>Card number 11</fast-card>
+    <fast-card>Card number 12</fast-card>
+    <fast-card>Card number 13</fast-card>
+    <fast-card>Card number 14</fast-card>
+    <fast-card>Card number 15</fast-card>
+    <fast-card>Card number 16</fast-card>
+</fast-horizontal-scroll>
+
+<h2>Slow scroll (2s duration)</h2>
+<fast-horizontal-scroll duration="2s">
+    <fast-card>Card number 1</fast-card>
+    <fast-card>Card number 2</fast-card>
+    <fast-card>Card number 3</fast-card>
+    <fast-card>Card number 4</fast-card>
+    <fast-card>Card number 5</fast-card>
+    <fast-card>Card number 6</fast-card>
+    <fast-card>Card number 7</fast-card>
+    <fast-card>Card number 8</fast-card>
+    <fast-card>Card number 9</fast-card>
+    <fast-card>Card number 10</fast-card>
+    <fast-card>Card number 11</fast-card>
+    <fast-card>Card number 12</fast-card>
+    <fast-card>Card number 13</fast-card>
+    <fast-card>Card number 14</fast-card>
+    <fast-card>Card number 15</fast-card>
+    <fast-card>Card number 16</fast-card>
+</fast-horizontal-scroll>
+
+<h2>Immedate scroll (speed=0)</h2>
+<fast-horizontal-scroll speed="0">
+    <fast-card>Card number 1</fast-card>
+    <fast-card>Card number 2</fast-card>
+    <fast-card>Card number 3</fast-card>
+    <fast-card>Card number 4</fast-card>
+    <fast-card>Card number 5</fast-card>
+    <fast-card>Card number 6</fast-card>
+    <fast-card>Card number 7</fast-card>
+    <fast-card>Card number 8</fast-card>
+    <fast-card>Card number 9</fast-card>
+    <fast-card>Card number 10</fast-card>
+    <fast-card>Card number 11</fast-card>
+    <fast-card>Card number 12</fast-card>
+    <fast-card>Card number 13</fast-card>
+    <fast-card>Card number 14</fast-card>
+    <fast-card>Card number 15</fast-card>
+    <fast-card>Card number 16</fast-card>
+</fast-horizontal-scroll>
+
+<h2>Immedate scroll (duration=0s)</h2>
+<fast-horizontal-scroll duration="0s">
     <fast-card>Card number 1</fast-card>
     <fast-card>Card number 2</fast-card>
     <fast-card>Card number 3</fast-card>
@@ -274,30 +403,12 @@
     <fast-card>Card number 16</fast-card>
 </fast-horizontal-scroll>
 
-<h2>RTL horizontal-scroll</h2>
-<fast-design-system-provider
-    id="design-system"
-    use-defaults
-    no-paint
-    direction="rtl"
-    dir="rtl"
->
-    <fast-horizontal-scroll class="right-gradient">
-        <fast-card>Card number 1</fast-card>
-        <fast-card>Card number 2</fast-card>
-        <fast-card>Card number 3</fast-card>
-        <fast-card>Card number 4</fast-card>
-        <fast-card>Card number 5</fast-card>
-        <fast-card>Card number 6</fast-card>
-        <fast-card>Card number 7</fast-card>
-        <fast-card>Card number 8</fast-card>
-        <fast-card>Card number 9</fast-card>
-        <fast-card>Card number 10</fast-card>
-        <fast-card>Card number 11</fast-card>
-        <fast-card>Card number 12</fast-card>
-        <fast-card>Card number 13</fast-card>
-        <fast-card>Card number 14</fast-card>
-        <fast-card>Card number 15</fast-card>
-        <fast-card>Card number 16</fast-card>
-    </fast-horizontal-scroll>
-</fast-design-system-provider>
+<h2>Window Resize with Fast Components</h2>
+<fast-horizontal-scroll class="window-resize">
+    <fast-button>button number 1</fast-button>
+    <fast-button>button number 2</fast-button>
+    <fast-button>button number 3</fast-button>
+    <fast-button>button number 4</fast-button>
+    <fast-button>button number 5</fast-button>
+    <fast-button>button number 6</fast-button>
+</fast-horizontal-scroll>

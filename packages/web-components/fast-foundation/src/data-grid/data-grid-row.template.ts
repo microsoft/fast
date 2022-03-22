@@ -1,14 +1,15 @@
 import { children, elements, html, slotted } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
+import type { FoundationElementTemplate } from "../foundation-element";
+import type { ElementDefinitionContext } from "../design-system";
 import type { DataGridRow } from "./data-grid-row";
 import { DataGridCell } from "./data-grid-cell";
-import type { FoundationElementDefinition } from "../foundation-element";
-import type { ElementDefinitionContext } from "../design-system";
 
-function createCellItemTemplate(context): ViewTemplate {
+function createCellItemTemplate(context: ElementDefinitionContext): ViewTemplate {
     const cellTag = context.tagFor(DataGridCell);
     return html`
     <${cellTag}
+        cell-type="${x => (x.isRowHeader ? "rowheader" : undefined)}"
         grid-column="${(x, c) => c.index + 1}"
         :rowData="${(x, c) => c.parent.rowData}"
         :columnDefinition="${x => x}"
@@ -16,7 +17,7 @@ function createCellItemTemplate(context): ViewTemplate {
 `;
 }
 
-function createHeaderCellItemTemplate(context): ViewTemplate {
+function createHeaderCellItemTemplate(context: ElementDefinitionContext): ViewTemplate {
     const cellTag = context.tagFor(DataGridCell);
     return html`
     <${cellTag}
@@ -33,12 +34,9 @@ function createHeaderCellItemTemplate(context): ViewTemplate {
  *
  * @public
  */
-export const dataGridRowTemplate: (
-    context: ElementDefinitionContext,
-    definition: FoundationElementDefinition
-) => ViewTemplate<DataGridRow> = (
-    context: ElementDefinitionContext,
-    definition: FoundationElementDefinition
+export const dataGridRowTemplate: FoundationElementTemplate<ViewTemplate<DataGridRow>> = (
+    context,
+    definition
 ) => {
     const cellItemTemplate: ViewTemplate = createCellItemTemplate(context);
     const headerCellItemTemplate: ViewTemplate = createHeaderCellItemTemplate(context);
@@ -50,7 +48,9 @@ export const dataGridRowTemplate: (
             :defaultHeaderCellItemTemplate="${headerCellItemTemplate}"
             ${children({
                 property: "cellElements",
-                filter: elements('[role="cell"],[role="gridcell"],[role="columnheader"]'),
+                filter: elements(
+                    '[role="cell"],[role="gridcell"],[role="columnheader"],[role="rowheader"]'
+                ),
             })}
         >
             <slot ${slotted("slottedCellElements")}></slot>

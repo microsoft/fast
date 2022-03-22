@@ -1,4 +1,3 @@
-/* eslint-env node */
 module.exports = {
     docs: [
         {
@@ -7,34 +6,39 @@ module.exports = {
         },
         {
             type: "category",
-            label: "Tutorials",
-            items: ["tutorials/site-rebrand"],
-        },
-        {
-            type: "category",
-            label: "Using FAST Components",
+            label: "Using the Components",
+            link: {
+                type: "generated-index",
+            },
             items: [
                 "components/getting-started",
+                "design-systems/fast-frame",
                 {
                     type: "category",
                     label: "Components",
+                    link: {
+                        type: "generated-index",
+                    },
                     items: [
                         "components/accordion",
                         "components/anchor",
+                        "components/anchored-region",
+                        "components/avatar",
                         "components/badge",
                         "components/breadcrumb",
-                        "components/breadcrumb-item",
                         "components/button",
                         "components/card",
                         "components/checkbox",
+                        "components/combobox",
                         "components/data-grid",
                         "components/dialog",
+                        "components/disclosure",
                         "components/divider",
                         "components/flipper",
+                        "components/horizontal-scroll",
                         "components/listbox",
                         "components/listbox-option",
                         "components/menu",
-                        "components/menu-item",
                         "components/number-field",
                         "components/progress",
                         "components/radio",
@@ -42,29 +46,23 @@ module.exports = {
                         "components/select",
                         "components/skeleton",
                         "components/slider",
-                        "components/slider-label",
                         "components/switch",
                         "components/tabs",
                         "components/text-area",
                         "components/text-field",
+                        "components/toolbar",
                         "components/tooltip",
                         "components/tree-view",
-                    ],
-                },
-                {
-                    type: "category",
-                    label: "Design",
-                    items: [
-                        "design/introduction",
-                        "design/localization",
-                        "design/match-media-stylesheets",
                     ],
                 },
             ],
         },
         {
             type: "category",
-            label: "Using FAST Element",
+            label: "Building Components",
+            link: {
+                type: "generated-index",
+            },
             items: [
                 "fast-element/getting-started",
                 "fast-element/defining-elements",
@@ -78,18 +76,51 @@ module.exports = {
         },
         {
             type: "category",
-            label: "Design Systems",
+            label: "Creating Design Systems",
+            link: {
+                type: "generated-index",
+            },
             items: [
                 "design-systems/overview",
-                "design-systems/fast-frame",
-                "design-systems/using-the-design-system",
-                "design-systems/creating-a-design-system",
+                "design-systems/creating-a-component-library",
+                "design-systems/design-tokens",
                 "design-systems/high-contrast",
+                "design/match-media-stylesheets",
+                "design/localization",
+            ],
+        },
+        {
+            type: "category",
+            label: "Apps and Experiences",
+            link: {
+                type: "generated-index",
+            },
+            items: ["apps-and-experiences/dependency-injection"],
+        },
+        {
+            type: "category",
+            label: "Integrations",
+            link: {
+                type: "generated-index",
+            },
+            items: [
+                "integrations/introduction",
+                "integrations/angular",
+                "integrations/aspnet",
+                "integrations/aurelia",
+                "integrations/blazor",
+                "integrations/ember",
+                "integrations/react",
+                "integrations/vue",
+                "integrations/webpack",
             ],
         },
         {
             type: "category",
             label: "Tools",
+            link: {
+                type: "generated-index",
+            },
             items: [
                 "tools/component-explorer",
                 "tools/vscode",
@@ -98,21 +129,10 @@ module.exports = {
         },
         {
             type: "category",
-            label: "Integrations",
-            items: [
-                "integrations/introduction",
-                "integrations/angular",
-                "integrations/aspnet",
-                "integrations/aurelia",
-                "integrations/blazor",
-                "integrations/react",
-                "integrations/vue",
-                "integrations/webpack",
-            ],
-        },
-        {
-            type: "category",
             label: "API Reference",
+            link: {
+                type: "generated-index",
+            },
             items: [
                 "api/fast-animation",
                 "api/fast-colors",
@@ -124,22 +144,38 @@ module.exports = {
         {
             type: "category",
             label: "Community Contribution",
+            link: {
+                type: "generated-index",
+            },
             items: [
                 "community/join",
                 "community/code-of-conduct",
                 "community/contributor-guide",
                 "community/writing-documentation",
+                {
+                    type: "category",
+                    label: "Engineering Process",
+                    link: {
+                        type: "generated-index",
+                    },
+                    items: ["community/issue-management", "community/release-planning"],
+                },
             ],
         },
         {
             type: "category",
             label: "Resources",
+            link: {
+                type: "generated-index",
+            },
             items: [
+                "resources/why-web-components",
                 "resources/license",
                 "resources/security",
                 "resources/browser-support",
                 "resources/acknowledgements",
                 "resources/glossary",
+                "resources/cheat-sheet",
                 "resources/faq",
             ],
         },

@@ -2,7 +2,7 @@
 
 ## Overview
 
-An avatar is a graphical represention of a user or object.
+An avatar is a graphical representation of a user or object.
 
 ### Use Cases
 

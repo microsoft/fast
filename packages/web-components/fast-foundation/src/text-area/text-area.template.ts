@@ -1,20 +1,16 @@
 import { html, ref, slotted } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
+import type { FoundationElementTemplate } from "../foundation-element";
 import { TextAreaResize } from "./text-area";
 import type { TextArea } from "./text-area";
-import type { ElementDefinitionContext } from "../design-system";
-import type { FoundationElementDefinition } from "../foundation-element";
 
 /**
  * The template for the {@link @microsoft/fast-foundation#(TextArea:class)} component.
  * @public
  */
-export const textAreaTemplate: (
-    context: ElementDefinitionContext,
-    definition: FoundationElementDefinition
-) => ViewTemplate<TextArea> = (
-    context: ElementDefinitionContext,
-    definition: FoundationElementDefinition
+export const textAreaTemplate: FoundationElementTemplate<ViewTemplate<TextArea>> = (
+    context,
+    definition
 ) => html`
     <template
         class="
@@ -53,7 +49,7 @@ export const textAreaTemplate: (
             aria-busy="${x => x.ariaBusy}"
             aria-controls="${x => x.ariaControls}"
             aria-current="${x => x.ariaCurrent}"
-            aria-describedBy="${x => x.ariaDescribedby}"
+            aria-describedby="${x => x.ariaDescribedby}"
             aria-details="${x => x.ariaDetails}"
             aria-disabled="${x => x.ariaDisabled}"
             aria-errormessage="${x => x.ariaErrormessage}"

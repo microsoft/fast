@@ -1,11 +1,14 @@
-import { css, ElementStyles } from "@microsoft/fast-element";
+import { css } from "@microsoft/fast-element";
+import type { ElementStyles } from "@microsoft/fast-element";
 import {
     disabledCursor,
     display,
-    ElementDefinitionContext,
     focusVisible,
     forcedColorsStylesheetBehavior,
-    FoundationElementDefinition,
+} from "@microsoft/fast-foundation";
+import type {
+    FoundationElementTemplate,
+    ListboxOptionOptions,
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
@@ -26,35 +29,45 @@ import {
     foregroundOnAccentRest,
     neutralFillHover,
     neutralForegroundRest,
+    neutralLayer3,
+    neutralLayerFloating,
+    neutralStrokeRest,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
 } from "../design-tokens";
 import { heightNumber } from "../styles/size";
 
-export const optionStyles: (
-    context: ElementDefinitionContext,
-    definition: FoundationElementDefinition
-) => ElementStyles = (
-    context: ElementDefinitionContext,
-    definition: FoundationElementDefinition
-) =>
+/**
+ * Styles for the {@link @microsoft/fast-components#fastOption | Listbox Option} component.
+ *
+ * @param context - the element definition context
+ * @param definition - the foundation element definition
+ * @returns The element styles for the listbox option component
+ *
+ * @public
+ */
+export const optionStyles: FoundationElementTemplate<
+    ElementStyles,
+    ListboxOptionOptions
+> = (context, definition) =>
     css`
     ${display("inline-flex")} :host {
         align-items: center;
         font-family: ${bodyFont};
         border-radius: calc(${controlCornerRadius} * 1px);
-        border: calc(${focusStrokeWidth} * 1px) solid transparent;
+        border: calc(${focusStrokeWidth} * 1px) solid ${neutralLayerFloating};
         box-sizing: border-box;
         color: ${neutralForegroundRest};
         cursor: pointer;
+        flex: 0 0 auto;
         fill: currentcolor;
         font-size: ${typeRampBaseFontSize};
         height: calc(${heightNumber} * 1px);
         line-height: ${typeRampBaseLineHeight};
-        margin: 0 calc(${designUnit} * 1px);
+        margin: 0 calc((${designUnit} - ${focusStrokeWidth}) * 1px);
         outline: none;
         overflow: hidden;
-        padding: 0 calc(${designUnit} * 2.25px);
+        padding: 0 1ch;
         user-select: none;
         white-space: nowrap;
     }
@@ -81,11 +94,7 @@ export const optionStyles: (
         color: ${foregroundOnAccentActive};
     }
 
-    :host(:not([aria-selected="true"]):hover) {
-        background: ${neutralFillHover};
-        color: ${neutralForegroundRest};
-    }
-
+    :host(:not([aria-selected="true"]):hover),
     :host(:not([aria-selected="true"]):active) {
         background: ${neutralFillHover};
         color: ${neutralForegroundRest};
@@ -114,9 +123,7 @@ export const optionStyles: (
     }
 
     ::slotted(svg) {
-        ${
-            /* Glyph size and margin-left is temporary - replace when adaptive typography is figured out */ ""
-        }
+        /* TODO: adaptive typography https://github.com/microsoft/fast/issues/2432 */
         height: calc(${designUnit} * 4px);
         width: calc(${designUnit} * 4px);
     }
@@ -127,6 +134,27 @@ export const optionStyles: (
 
     ::slotted([slot="start"]) {
         margin-inline-end: 1ch;
+    }
+
+    :host([aria-checked="true"][aria-selected="false"]) {
+        border-color: ${neutralStrokeRest};
+        background: ${neutralLayer3};
+        color: ${neutralForegroundRest};
+    }
+
+    :host([aria-checked="true"][aria-selected="false"]:not([disabled]):hover) {
+        background: ${neutralFillHover};
+    }
+
+    :host([aria-checked="true"][aria-selected="true"]) {
+        border-color: ${focusStrokeOuter};
+        background: ${accentFillFocus};
+        color: ${foregroundOnAccentFocus};
+    }
+
+    :host([aria-checked="true"][aria-selected="true"]:hover) {
+        background: ${accentFillHover};
+        color: ${foregroundOnAccentHover};
     }
 
 `.withBehaviors(
@@ -146,11 +174,24 @@ export const optionStyles: (
                 }
 
                 :host([disabled]),
-                :host([disabled]:not([aria-selected="true"]):hover) {
+                :host([disabled][aria-selected="false"]:hover) {
                     background: ${SystemColors.Canvas};
                     color: ${SystemColors.GrayText};
                     fill: currentcolor;
                     opacity: 1;
+                }
+
+                :host([aria-checked="true"][aria-selected="false"]) {
+                    background: ${SystemColors.ButtonFace};
+                    color: ${SystemColors.ButtonText};
+                    border-color: ${SystemColors.ButtonText};
+                }
+
+                :host([aria-checked="true"][aria-selected="true"]),
+                :host([aria-checked="true"][aria-selected="true"]:hover) {
+                    background: ${SystemColors.Highlight};
+                    color: ${SystemColors.HighlightText};
+                    border-color: ${SystemColors.ButtonText};
                 }
             `
         )

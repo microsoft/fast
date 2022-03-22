@@ -1,4 +1,5 @@
 export * from "./aria";
+export * from "./array";
 export * from "./class-names";
 export * from "./dom";
 export * from "./events";

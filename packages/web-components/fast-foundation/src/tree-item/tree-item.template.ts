@@ -1,24 +1,21 @@
 import { children, elements, html, ref, slotted, when } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
-import { endTemplate, startTemplate } from "../patterns/start-end";
+import { endSlotTemplate, startSlotTemplate } from "../patterns/start-end";
+import type { FoundationElementTemplate } from "../foundation-element";
 import type { TreeItem, TreeItemOptions } from "./tree-item";
-import type { ElementDefinitionContext } from "../design-system";
 
 /**
  * The template for the {@link @microsoft/fast-foundation#(TreeItem:class)} component.
  * @public
  */
-export const treeItemTemplate: (
-    context: ElementDefinitionContext,
-    definition: TreeItemOptions
-) => ViewTemplate<TreeItem> = (
-    context: ElementDefinitionContext,
-    definition: TreeItemOptions
-) => html`
+export const treeItemTemplate: FoundationElementTemplate<
+    ViewTemplate<TreeItem>,
+    TreeItemOptions
+> = (context, definition) => html`
     <template
         role="treeitem"
         slot="${x => (x.isNestedItem() ? "item" : void 0)}"
-        tabindex="${x => (x.disabled || !x.focusable ? void 0 : 0)}"
+        tabindex="-1"
         class="${x => (x.expanded ? "expanded" : "")} ${x =>
             x.selected ? "selected" : ""} ${x => (x.nested ? "nested" : "")}
             ${x => (x.disabled ? "disabled" : "")}"
@@ -26,8 +23,8 @@ export const treeItemTemplate: (
             x.childItems && x.childItemLength() > 0 ? x.expanded : void 0}"
         aria-selected="${x => x.selected}"
         aria-disabled="${x => x.disabled}"
-        @keydown="${(x, c) => x.handleKeyDown(c.event as KeyboardEvent)}"
-        @click="${(x, c) => x.handleClick(c.event as MouseEvent)}"
+        @focusin="${(x, c) => x.handleFocus(c.event as FocusEvent)}"
+        @focusout="${(x, c) => x.handleBlur(c.event as FocusEvent)}"
         ${children({
             property: "childItems",
             filter: elements(),
@@ -52,9 +49,9 @@ export const treeItemTemplate: (
                         </div>
                     `
                 )}
-                ${startTemplate}
+                ${startSlotTemplate(context, definition)}
                 <slot></slot>
-                ${endTemplate}
+                ${endSlotTemplate(context, definition)}
             </div>
         </div>
         ${when(

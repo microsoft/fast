@@ -28,14 +28,7 @@ export class Button extends FoundationButton {
      * HTML Attribute: appearance
      */
     @attr
-    public appearance: ButtonAppearance;
-
-    public connectedCallback() {
-        super.connectedCallback();
-        if (!this.appearance) {
-            this.appearance = "neutral";
-        }
-    }
+    public appearance: ButtonAppearance = "neutral";
 
     /**
      * Applies 'icon-only' class when there is only an SVG in the default slot
@@ -62,12 +55,13 @@ export class Button extends FoundationButton {
  *
  * @public
  * @remarks
- * Generates HTML Element: \<fast-button\>
+ * Generates HTML Element: `<fast-button>`
  *
  * {@link https://developer.mozilla.org/en-US/docs/Web/API/ShadowRoot/delegatesFocus | delegatesFocus}
  */
 export const fastButton = Button.compose({
     baseName: "button",
+    baseClass: FoundationButton,
     template,
     styles,
     shadowOptions: {
@@ -75,8 +69,4 @@ export const fastButton = Button.compose({
     },
 });
 
-/**
- * Styles for Button
- * @public
- */
-export const buttonStyles = styles;
+export { styles as buttonStyles };

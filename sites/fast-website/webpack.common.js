@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
-/* eslint-disable no-undef */
 const _ = require("lodash");
 const path = require("path");
 const webpack = require("webpack");

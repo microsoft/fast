@@ -1,48 +1,47 @@
-import { assert, expect } from "chai";
 import { DOM } from "@microsoft/fast-element";
-import { KeyCodes } from "@microsoft/fast-web-utilities";
-import { fixture } from "../test-utilities/fixture";
+import { keyArrowDown, keyArrowUp, keyEnd, keyHome } from "@microsoft/fast-web-utilities";
+import { expect } from "chai";
 import { ListboxOption, listboxOptionTemplate } from "../listbox-option";
+import { fixture } from "../test-utilities/fixture";
 import { timeout } from "../test-utilities/timeout";
 import { Select, selectTemplate as template } from "./index";
 
-const FASTSelect = Select.compose({
-    baseName: "select",
-    template
-})
-
-const FASTOption = ListboxOption.compose({
-    baseName: "option",
-    template: listboxOptionTemplate,
-})
-
-async function setup() {
-    const { element, connect, disconnect, parent } = await fixture([FASTSelect(), FASTOption()]);
-
-    const option1 = document.createElement("fast-option") as ListboxOption;
-    option1.value = "one";
-
-    const option2 = document.createElement("fast-option") as ListboxOption;
-    option2.value = "two";
-
-    const option3 = document.createElement("fast-option") as ListboxOption;
-    option3.value = "three";
-
-    element.appendChild(option1);
-    element.appendChild(option2);
-    element.appendChild(option3);
-
-    return { element, connect, disconnect, document, option1, option2, option3, parent };
-}
-
-// TODO: Need to add tests for keyboard handling & focus management
 describe("Select", () => {
-    it("should include a role of `combobox`", async () => {
+    const FASTSelect = Select.compose({
+        baseName: "select",
+        template
+    })
+
+    const FASTOption = ListboxOption.compose({
+        baseName: "option",
+        template: listboxOptionTemplate,
+    });
+
+    async function setup() {
+        const { element, connect, disconnect, parent } = await fixture([FASTSelect(), FASTOption()]);
+
+        const option1 = document.createElement("fast-option") as ListboxOption;
+        option1.value = "one";
+
+        const option2 = document.createElement("fast-option") as ListboxOption;
+        option2.value = "two";
+
+        const option3 = document.createElement("fast-option") as ListboxOption;
+        option3.value = "three";
+
+        element.appendChild(option1);
+        element.appendChild(option2);
+        element.appendChild(option3);
+
+        return { element, connect, disconnect, document, option1, option2, option3, parent };
+    }
+
+    it("should have a role of `combobox`", async () => {
         const { element, connect, disconnect } = await setup();
 
         await connect();
 
-        assert.strictEqual(element.getAttribute("role"), "combobox");
+        expect(element.getAttribute("role")).to.equal("combobox");
 
         await disconnect();
     });
@@ -111,8 +110,42 @@ describe("Select", () => {
         await disconnect();
     });
 
+    it("should set its value to the first enabled option when disabled", async () => {
+        const { element, connect, disconnect, option1, option2, option3 } = await setup();
+        element.disabled = true;
+
+        await connect();
+
+        expect(element.value).to.equal("one");
+        expect(element.selectedIndex).to.equal(0);
+
+        expect(element.selectedOptions).to.contain(option1);
+        expect(element.selectedOptions).to.not.contain(option2);
+        expect(element.selectedOptions).to.not.contain(option3);
+
+        await disconnect();
+    });
+
     it("should select the first option with a `selected` attribute", async () => {
         const { element, connect, disconnect, option1, option2, option3 } = await setup();
+
+        option2.setAttribute("selected", "");
+
+        await connect();
+
+        expect(element.value).to.equal("two");
+        expect(element.selectedIndex).to.equal(1);
+
+        expect(element.selectedOptions).to.not.contain(option1);
+        expect(element.selectedOptions).to.contain(option2);
+        expect(element.selectedOptions).to.not.contain(option3);
+
+        await disconnect();
+    });
+
+    it("should select the first option with a `selected` attribute when disabled", async () => {
+        const { element, connect, disconnect, option1, option2, option3 } = await setup();
+        element.disabled = true;
 
         option2.setAttribute("selected", "");
 
@@ -134,6 +167,18 @@ describe("Select", () => {
         element.value = "two";
 
         expect(element.value).to.equal("two");
+    });
+
+    it('should return the same value when the value property is set during connect', async () => {
+        const { element, connect, disconnect } = await setup();
+
+        const connectTask = connect();
+        element.value = 'two';
+        await connectTask;
+
+        expect(element.value).to.equal('two');
+
+        await disconnect();
     });
 
     it("should return the same value when the value property is set after connect", async () => {
@@ -162,6 +207,18 @@ describe("Select", () => {
         await disconnect();
     });
 
+    it("should display the listbox when the `open` property is true before connecting", async () => {
+        const { element, connect, disconnect } = await setup();
+
+        element.open = true;
+
+        await connect();
+
+        expect(element.hasAttribute("open")).to.be.true;
+
+        await disconnect();
+    });
+
     describe("should NOT emit a 'change' event when the value changes by user input while open", () => {
         it("via arrow down key", async () => {
             const { element, connect, disconnect } = await setup();
@@ -173,8 +230,7 @@ describe("Select", () => {
             expect(element.open).to.be.true;
 
             const event = new KeyboardEvent("keydown", {
-                key: "ArrowDown",
-                keyCode: KeyCodes.arrowDown,
+                key: keyArrowDown,
             } as KeyboardEventInit);
 
             const wasChanged = await Promise.race([
@@ -206,8 +262,7 @@ describe("Select", () => {
             expect(element.open).to.be.true;
 
             const event = new KeyboardEvent("keydown", {
-                key: "ArrowUp",
-                keyCode: KeyCodes.arrowUp,
+                key: keyArrowUp,
             } as KeyboardEventInit);
 
             const wasChanged = await Promise.race([
@@ -235,8 +290,7 @@ describe("Select", () => {
             expect(element.open).to.be.true;
 
             const event = new KeyboardEvent("keydown", {
-                key: "Home",
-                keyCode: KeyCodes.home,
+                key: keyHome,
             } as KeyboardEventInit);
 
             const wasChanged = await Promise.race([
@@ -266,8 +320,7 @@ describe("Select", () => {
             expect(element.open).to.be.true;
 
             const event = new KeyboardEvent("keydown", {
-                key: "End",
-                keyCode: KeyCodes.end,
+                key: keyEnd,
             } as KeyboardEventInit);
 
             const wasChanged = await Promise.race([
@@ -297,8 +350,7 @@ describe("Select", () => {
             expect(element.open).to.be.true;
 
             const event = new KeyboardEvent("keydown", {
-                key: "ArrowDown",
-                keyCode: KeyCodes.arrowDown,
+                key: keyArrowDown,
             } as KeyboardEventInit);
 
             const wasInput = await Promise.race([
@@ -330,8 +382,7 @@ describe("Select", () => {
             expect(element.open).to.be.true;
 
             const event = new KeyboardEvent("keydown", {
-                key: "ArrowUp",
-                keyCode: KeyCodes.arrowUp,
+                key: keyArrowUp,
             } as KeyboardEventInit);
 
             const wasInput = await Promise.race([
@@ -359,8 +410,7 @@ describe("Select", () => {
             expect(element.open).to.be.true;
 
             const event = new KeyboardEvent("keydown", {
-                key: "Home",
-                keyCode: KeyCodes.home,
+                key: "Home"
             } as KeyboardEventInit);
 
             const wasInput = await Promise.race([
@@ -390,8 +440,7 @@ describe("Select", () => {
             expect(element.open).to.be.true;
 
             const event = new KeyboardEvent("keydown", {
-                key: "End",
-                keyCode: KeyCodes.end,
+                key: keyEnd,
             } as KeyboardEventInit);
 
             const wasInput = await Promise.race([
@@ -423,8 +472,7 @@ describe("Select", () => {
             expect(element.open).to.be.false;
 
             const event = new KeyboardEvent("keydown", {
-                key: "ArrowDown",
-                keyCode: KeyCodes.arrowDown,
+                key: keyArrowDown,
             } as KeyboardEventInit);
 
             const wasChanged = await Promise.race([
@@ -454,8 +502,7 @@ describe("Select", () => {
             expect(element.open).to.be.false;
 
             const event = new KeyboardEvent("keydown", {
-                key: "ArrowUp",
-                keyCode: KeyCodes.arrowUp,
+                key: keyArrowUp
             } as KeyboardEventInit);
 
             const wasChanged = await Promise.race([
@@ -485,8 +532,7 @@ describe("Select", () => {
             expect(element.open).to.be.false;
 
             const event = new KeyboardEvent("keydown", {
-                key: "Home",
-                keyCode: KeyCodes.home,
+                key: keyHome,
             } as KeyboardEventInit);
 
             const wasChanged = await Promise.race([
@@ -512,8 +558,7 @@ describe("Select", () => {
             expect(element.open).to.be.false;
 
             const event = new KeyboardEvent("keydown", {
-                key: "End",
-                keyCode: KeyCodes.end,
+                key: keyEnd
             } as KeyboardEventInit);
 
             const wasChanged = await Promise.race([
@@ -546,13 +591,11 @@ describe("Select", () => {
             expect(element.open).to.be.false;
 
             const arrowDownEvent = new KeyboardEvent("keydown", {
-                key: "ArrowDown",
-                keyCode: KeyCodes.arrowDown,
+                key: keyArrowDown,
             } as KeyboardEventInit);
 
             const arrowUpEvent = new KeyboardEvent("keydown", {
-                key: "ArrowUp",
-                keyCode: KeyCodes.arrowUp,
+                key: keyArrowUp,
             } as KeyboardEventInit);
 
             expect(await Promise.race([
@@ -592,8 +635,7 @@ describe("Select", () => {
             expect(element.open).to.be.false;
 
             const event = new KeyboardEvent("keydown", {
-                key: "ArrowDown",
-                keyCode: KeyCodes.arrowDown,
+                key: keyArrowDown,
             } as KeyboardEventInit);
 
             const wasInput = await Promise.race([
@@ -623,8 +665,7 @@ describe("Select", () => {
             expect(element.open).to.be.false;
 
             const event = new KeyboardEvent("keydown", {
-                key: "ArrowUp",
-                keyCode: KeyCodes.arrowUp,
+                key: keyArrowUp,
             } as KeyboardEventInit);
 
             const wasInput = await Promise.race([
@@ -654,8 +695,7 @@ describe("Select", () => {
             expect(element.open).to.be.false;
 
             const event = new KeyboardEvent("keydown", {
-                key: "Home",
-                keyCode: KeyCodes.home,
+                key: keyHome,
             } as KeyboardEventInit);
 
             const wasInput = await Promise.race([
@@ -681,8 +721,7 @@ describe("Select", () => {
             expect(element.open).to.be.false;
 
             const event = new KeyboardEvent("keydown", {
-                key: "End",
-                keyCode: KeyCodes.end,
+                key: "End"
             } as KeyboardEventInit);
 
             const wasInput = await Promise.race([
@@ -777,5 +816,55 @@ describe("Select", () => {
 
             await disconnect();
         });
+    });
+
+    it("should set the `aria-activedescendant` attribute to the ID of the currently selected option", async () => {
+        const { connect, disconnect, element, option1, option2, option3 } = await setup();
+
+        await connect();
+
+        await DOM.nextUpdate();
+
+        expect(element.getAttribute("aria-activedescendant")).to.exist.and.equal(option1.id);
+
+        element.selectNextOption();
+
+        await DOM.nextUpdate();
+
+        expect(element.getAttribute("aria-activedescendant")).to.equal(option2.id);
+
+        element.selectNextOption();
+
+        await DOM.nextUpdate();
+
+        expect(element.getAttribute("aria-activedescendant")).to.equal(option3.id);
+
+        await disconnect();
+    });
+
+    it("should set the `aria-controls` attribute to the ID of the internal listbox element while open", async () => {
+        const { connect, disconnect, element } = await setup();
+
+        await connect();
+
+        expect(element.listbox).to.exist;
+
+        const listboxId = element.listbox.id;
+
+        expect(element.getAttribute("aria-controls")).to.exist.and.be.empty;
+
+        element.open = true;
+
+        await DOM.nextUpdate();
+
+        expect(element.getAttribute("aria-controls")).to.equal(listboxId);
+
+        element.open = false;
+
+        await DOM.nextUpdate();
+
+        expect(element.getAttribute("aria-controls")).to.be.empty;
+
+        await disconnect();
     });
 });

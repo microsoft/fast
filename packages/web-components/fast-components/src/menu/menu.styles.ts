@@ -1,9 +1,8 @@
 import { css, ElementStyles } from "@microsoft/fast-element";
 import {
     display,
-    ElementDefinitionContext,
     forcedColorsStylesheetBehavior,
-    FoundationElementDefinition,
+    FoundationElementTemplate,
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
@@ -15,12 +14,13 @@ import {
 } from "../design-tokens";
 import { elevation } from "../styles/index";
 
-export const menuStyles: (
-    context: ElementDefinitionContext,
-    definition: FoundationElementDefinition
-) => ElementStyles = (
-    context: ElementDefinitionContext,
-    definition: FoundationElementDefinition
+/**
+ * Styles for Menu
+ * @public
+ */
+export const menuStyles: FoundationElementTemplate<ElementStyles> = (
+    context,
+    definition
 ) =>
     css`
         ${display("block")} :host {

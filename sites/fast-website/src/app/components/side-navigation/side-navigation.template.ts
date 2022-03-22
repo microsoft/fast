@@ -11,7 +11,7 @@ export const SideNavigationTemplate = html<SideNavigation>`
                     html`
                         <li class="list-item">
                             <fast-anchor
-                                href=${x => x.actionLink}
+                                href=${x => x.url}
                                 appearance="lightweight"
                                 aria-label=${x => x.actionText}
                             >

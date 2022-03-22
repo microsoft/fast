@@ -90,6 +90,10 @@ describe("pascalCase", (): void => {
     it("should correctly manage all caps strings", (): void => {
         expect(pascalCase("STRING EXTENSIONS")).to.equal("StringExtensions");
     });
+
+    it("should no-op on existing pascal case", (): void => {
+        expect(pascalCase("StringExtensions")).to.equal("StringExtensions");
+    });
 });
 
 describe("spinalCase", () => {

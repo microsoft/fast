@@ -1,17 +1,17 @@
 import { expect } from "chai";
 import { fixture } from "../test-utilities/fixture";
-import { 
-    dataGridTemplate, 
-    DataGrid, 
-    DataGridRow, 
-    dataGridRowTemplate, 
+import {
+    dataGridTemplate,
+    DataGrid,
+    DataGridRow,
+    dataGridRowTemplate,
     DataGridCell,
-    dataGridCellTemplate 
+    dataGridCellTemplate
 } from "./index";
 import type { ColumnDefinition } from "./data-grid";
 import { DataGridRowTypes, GenerateHeaderOptions } from "./data-grid.options";
 import { DOM } from "@microsoft/fast-element";
-import { KeyCodes } from "@microsoft/fast-web-utilities";
+import { keyArrowDown, keyArrowUp, keyEnd, keyHome } from "@microsoft/fast-web-utilities";
 
 const FASTDataGridCell = DataGridCell.compose({
     baseName: "data-grid-cell",
@@ -49,27 +49,23 @@ export function newDataRow(id: string): object {
 }
 
 const arrowUpEvent = new KeyboardEvent("keydown", {
-    key: "ArrowUp",
-    keyCode: KeyCodes.arrowUp,
+    key: keyArrowUp,
     bubbles: true,
 } as KeyboardEventInit);
 
 const arrowDownEvent = new KeyboardEvent("keydown", {
-    key: "ArrowDown",
-    keyCode: KeyCodes.arrowDown,
+    key: keyArrowDown,
     bubbles: true,
 } as KeyboardEventInit);
 
 const homeEvent = new KeyboardEvent("keydown", {
-    key: "Home",
-    keyCode: KeyCodes.home,
+    key: keyHome,
     bubbles: true,
     ctrlKey: true,
 } as KeyboardEventInit);
 
 const endEvent = new KeyboardEvent("keydown", {
-    key: "End",
-    keyCode: KeyCodes.end,
+    key: keyEnd,
     bubbles: true,
     ctrlKey: true,
 } as KeyboardEventInit);
@@ -98,6 +94,16 @@ describe("Data grid", () => {
         await connect();
 
         expect(element.getAttribute("tabindex")).to.equal("0");
+
+        await disconnect();
+    });
+
+    it("should have a tabIndex of -1 when no-tabbing is true", async () => {
+        const {  document, element, connect, disconnect } = await setup();
+        element.noTabbing = true;
+        await connect();
+
+        expect(element.getAttribute("tabindex")).to.equal("-1");
 
         await disconnect();
     });
@@ -153,6 +159,17 @@ describe("Data grid", () => {
 
         expect(rows.length).to.equal(5);
         expect(rows[0].rowType).to.equal(DataGridRowTypes.default);
+
+        await disconnect();
+    });
+
+    it("should not generate a header when rowsData is empty", async () => {
+        const {  document, element, connect, disconnect } = await setup();
+        await connect();
+
+        const rows: DataGridRow[] = Array.from(element.querySelectorAll('[role="row"]'));
+
+        expect(rows.length).to.equal(0);
 
         await disconnect();
     });
@@ -316,6 +333,21 @@ describe("Data grid", () => {
         element.focusColumnIndex = 7;
         await DOM.nextUpdate();
         expect(document.activeElement?.textContent).to.contain("item6");
+
+        await disconnect();
+    });
+
+    it("should auto generate grid-columns from a manual row", async () => {
+        const {  document, element, connect, disconnect } = await setup();
+
+        const row = new DataGridRow();
+        row.appendChild(new DataGridCell());
+        row.appendChild(new DataGridCell());
+        element.appendChild(row);
+        await connect();
+        await DOM.nextUpdate();
+
+        expect(row.gridTemplateColumns).to.equal("1fr 1fr");
 
         await disconnect();
     });

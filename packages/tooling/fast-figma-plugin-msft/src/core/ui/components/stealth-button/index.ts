@@ -6,7 +6,7 @@ import {
     neutralFillStealthRest,
     neutralForegroundRest,
     neutralStrokeRest,
-} from "@microsoft/fast-components";
+} from "@fluentui/web-components";
 import { css, customElement, FASTElement, html } from "@microsoft/fast-element";
 
 const template = html`
@@ -66,9 +66,10 @@ const styles = css`
     },
 })
 export class StealthButton extends FASTElement {
-    public glyph: HTMLSlotElement;
-    public content: HTMLSlotElement;
+    public glyph?: HTMLSlotElement;
+    public content?: HTMLSlotElement;
     public connectedCallback(): void {
+        super.connectedCallback();
         if (this.hasGlyph()) {
             this.classList.add("has-glyph");
         }

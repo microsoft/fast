@@ -12,15 +12,14 @@ import { menuItemStyles as styles } from "./menu-item.styles";
  *
  * @public
  * @remarks
- * Generates HTML Element: \<fast-menu-item\>
+ * Generates HTML Element: `<fast-menu-item>`
  */
 export const fastMenuItem = MenuItem.compose<MenuItemOptions>({
     baseName: "menu-item",
     template,
     styles,
-    checkboxIndicator: `
+    checkboxIndicator: /* html */ `
         <svg
-            aria-hidden="true"
             part="checkbox-indicator"
             class="checkbox-indicator"
             viewBox="0 0 20 20"
@@ -33,7 +32,7 @@ export const fastMenuItem = MenuItem.compose<MenuItemOptions>({
             />
         </svg>
     `,
-    expandCollapseGlyph: `
+    expandCollapseGlyph: /* html */ `
         <svg
             viewBox="0 0 16 16"
             xmlns="http://www.w3.org/2000/svg"
@@ -45,19 +44,15 @@ export const fastMenuItem = MenuItem.compose<MenuItemOptions>({
             />
         </svg>
     `,
-    radioIndicator: `
+    radioIndicator: /* html */ `
         <span part="radio-indicator" class="radio-indicator"></span>
     `,
 });
-
-/**
- * Styles for MenuItem
- * @public
- */
-export const menuItemStyles = styles;
 
 /**
  * Base class for MenuItem
  * @public
  */
 export { MenuItem };
+
+export { styles as menuItemStyles };

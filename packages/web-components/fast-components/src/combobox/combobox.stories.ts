@@ -1,4 +1,3 @@
-import "../design-system-provider";
 import "../listbox-option";
 import Examples from "./fixtures/base.html";
 import "./index";

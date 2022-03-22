@@ -24,25 +24,8 @@ export class NumberField extends FoundationNumberField {
      * HTML Attribute: appearance
      */
     @attr
-    public appearance: NumberFieldAppearance;
-
-    /**
-     * @internal
-     */
-    public connectedCallback() {
-        super.connectedCallback();
-
-        if (!this.appearance) {
-            this.appearance = "outline";
-        }
-    }
+    public appearance: NumberFieldAppearance = "outline";
 }
-
-/**
- * Styles for NumberField
- * @public
- */
-export const numberFieldStyles = styles;
 
 /**
  * A function that returns a {@link @microsoft/fast-foundation#NumberField} registration for configuring the component with a DesignSystem.
@@ -51,21 +34,24 @@ export const numberFieldStyles = styles;
  *
  * @public
  * @remarks
- * Generates HTML Element: \<fast-number-field\>
+ * Generates HTML Element: `<fast-number-field>`
  *
  * {@link https://developer.mozilla.org/en-US/docs/Web/API/ShadowRoot/delegatesFocus | delegatesFocus}
  */
 export const fastNumberField = NumberField.compose<NumberFieldOptions>({
     baseName: "number-field",
+    baseClass: FoundationNumberField,
     styles,
     template,
     shadowOptions: {
         delegatesFocus: true,
     },
-    stepDownGlyph: `
+    stepDownGlyph: /* html */ `
         <span class="step-down-glyph" part="step-down-glyph"></span>
     `,
-    stepUpGlyph: `
+    stepUpGlyph: /* html */ `
         <span class="step-up-glyph" part="step-up-glyph"></span>
     `,
 });
+
+export { styles as numberFieldStyles };

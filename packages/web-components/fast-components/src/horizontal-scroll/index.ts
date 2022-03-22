@@ -1,5 +1,6 @@
 import { html } from "@microsoft/fast-element";
 import {
+    Flipper,
     HorizontalScroll as FoundationHorizontalScroll,
     HorizontalScrollOptions,
     horizontalScrollTemplate as template,
@@ -32,23 +33,26 @@ export class HorizontalScroll extends FoundationHorizontalScroll {
  *
  * @public
  * @remarks
- * Generates HTML Element: \<fast-horizontal-scroll\>
+ * Generates HTML Element: `<fast-horizontal-scroll>`
  */
 export const fastHorizontalScroll = HorizontalScroll.compose<HorizontalScrollOptions>({
     baseName: "horizontal-scroll",
+    baseClass: FoundationHorizontalScroll,
     template,
     styles,
-    nextFlipper: html`
-        <fast-flipper
+    nextFlipper: context => html`
+        <${context.tagFor(Flipper)}
             @click="${x => x.scrollToNext()}"
             aria-hidden="${x => x.flippersHiddenFromAT}"
-        ></fast-flipper>
+        ></${context.tagFor(Flipper)}>
     `,
-    previousFlipper: html`
-        <fast-flipper
+    previousFlipper: context => html`
+        <${context.tagFor(Flipper)}
             @click="${x => x.scrollToPrevious()}"
             direction="previous"
             aria-hidden="${x => x.flippersHiddenFromAT}"
-        ></fast-flipper>
+        ></${context.tagFor(Flipper)}>
     `,
 });
+
+export { ActionsStyles, styles as horizontalScrollStyles };

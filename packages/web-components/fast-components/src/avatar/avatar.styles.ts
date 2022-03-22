@@ -1,8 +1,9 @@
 import { css, ElementStyles } from "@microsoft/fast-element";
 import {
     AvatarOptions,
+    Badge,
     display,
-    ElementDefinitionContext,
+    FoundationElementTemplate,
 } from "@microsoft/fast-foundation";
 import {
     baseHeightMultiplier,
@@ -14,22 +15,26 @@ import {
 } from "../design-tokens";
 import { DirectionalStyleSheetBehavior } from "../styles";
 
-const rtl = css`
-    ::slotted(fast-badge) {
+const rtl = (context, definition) => css`
+    ::slotted(${context.tagFor(Badge)}) {
         left: 0;
     }
 `;
 
-const ltr = css`
-    ::slotted(fast-badge) {
+const ltr = (context, definition) => css`
+    ::slotted(${context.tagFor(Badge)}) {
         right: 0;
     }
 `;
 
-export const avatarStyles: (
-    context: ElementDefinitionContext,
-    definition: AvatarOptions
-) => ElementStyles = (context: ElementDefinitionContext, definition: AvatarOptions) =>
+/**
+ * Styles for Avatar
+ * @public
+ */
+export const avatarStyles: FoundationElementTemplate<ElementStyles, AvatarOptions> = (
+    context,
+    definition
+) =>
     css`
         ${display("flex")} :host {
             position: relative;
@@ -89,8 +94,13 @@ export const avatarStyles: (
             min-height: var(--avatar-size, var(--avatar-size-default));
         }
 
-        ::slotted(fast-badge) {
+        ::slotted(${context.tagFor(Badge)}) {
             position: absolute;
             display: block;
         }
-    `.withBehaviors(new DirectionalStyleSheetBehavior(ltr, rtl));
+    `.withBehaviors(
+        new DirectionalStyleSheetBehavior(
+            ltr(context, definition),
+            rtl(context, definition)
+        )
+    );

@@ -8,7 +8,7 @@ import { skeletonStyles as styles } from "./skeleton.styles";
  *
  * @public
  * @remarks
- * Generates HTML Element: \<fast-skeleton\>
+ * Generates HTML Element: `<fast-skeleton>`
  */
 export const fastSkeleton = Skeleton.compose({
     baseName: "skeleton",
@@ -17,13 +17,9 @@ export const fastSkeleton = Skeleton.compose({
 });
 
 /**
- * Styles for Skeleton
- * @public
- */
-export const skeletonStyles = styles;
-
-/**
  * Base class for Skeleton
  * @public
  */
 export { Skeleton };
+
+export { styles as skeletonStyles };

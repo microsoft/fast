@@ -1,19 +1,16 @@
 import { html, when } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
+import type { FoundationElementTemplate } from "../foundation-element";
 import type { BaseProgress, ProgressOptions } from "./base-progress";
-import type { ElementDefinitionContext } from "../design-system";
 
 /**
  * The template for the {@link @microsoft/fast-foundation#BaseProgress} component.
  * @public
  */
-export const progressTemplate: (
-    context: ElementDefinitionContext,
-    defintion: ProgressOptions
-) => ViewTemplate<BaseProgress> = (
-    context: ElementDefinitionContext,
-    defintion: ProgressOptions
-) => html`
+export const progressTemplate: FoundationElementTemplate<
+    ViewTemplate<BaseProgress>,
+    ProgressOptions
+> = (context, defintion) => html`
     <template
         role="progressbar"
         aria-valuenow="${x => x.value}"
@@ -28,7 +25,7 @@ export const progressTemplate: (
                     <div
                         class="determinate"
                         part="determinate"
-                        style="width: ${x => x.value}%"
+                        style="width: ${x => x.percentComplete}%"
                     ></div>
                 </div>
             `

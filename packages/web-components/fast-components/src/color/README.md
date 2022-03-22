@@ -2,7 +2,6 @@
 
 Color recipes are named colors who's value is algorithmically defined from a variety of inputs. `@microsoft/fast-components` relies on these recipes heavily to achieve expressive theming options while maintaining color accessability targets.
 
-
 ## Swatch
 A Swatch is a representation of a color that has a `relativeLuminance` value and a method to convert the swatch to a color string. It is used by recipes to determine which colors to use for UI.
 
@@ -23,6 +22,12 @@ A palette is a collection `Swatch` instances, ordered by relative luminance, and
 An implementation of `Palette` of `SwatchRGB` instances. 
 
 ```ts
-// Create a palette from the red swatch
-const palette = PaletteRGB.create(red):
+// Create a PaletteRGB from a SwatchRGB 
+const redPalette = PaletteRGB.from(red):
+
+// Create a PaletteRGB from an object
+const greenPalette = PaletteRGB.from({r: 0, g: 1, b: 0});
+
+// Create a PaletteRGB from R, G, and B arguments
+const bluePalette = PaletteRGB.create(0, 0, 1);
 ```

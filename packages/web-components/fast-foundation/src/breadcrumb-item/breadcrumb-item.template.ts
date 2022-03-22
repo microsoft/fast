@@ -1,21 +1,18 @@
 import { html, when } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
 import { anchorTemplate } from "../anchor";
-import { endTemplate, startTemplate } from "../patterns/start-end";
+import { endSlotTemplate, startSlotTemplate } from "../patterns/start-end";
+import type { FoundationElementTemplate } from "../foundation-element";
 import type { BreadcrumbItem, BreadcrumbItemOptions } from "./breadcrumb-item";
-import type { ElementDefinitionContext } from "../design-system";
 
 /**
  * The template for the {@link @microsoft/fast-foundation#(BreadcrumbItem:class)} component.
  * @public
  */
-export const breadcrumbItemTemplate: (
-    context: ElementDefinitionContext,
-    definition: BreadcrumbItemOptions
-) => ViewTemplate<BreadcrumbItem> = (
-    context: ElementDefinitionContext,
-    definition: BreadcrumbItemOptions
-) => html`
+export const breadcrumbItemTemplate: FoundationElementTemplate<
+    ViewTemplate<BreadcrumbItem>,
+    BreadcrumbItemOptions
+> = (context, definition) => html`
     <div role="listitem" class="listitem" part="listitem">
         ${when(
             x => x.href && x.href.length > 0,
@@ -26,9 +23,9 @@ export const breadcrumbItemTemplate: (
         ${when(
             x => !x.href,
             html<BreadcrumbItem>`
-                ${startTemplate}
+                ${startSlotTemplate(context, definition)}
                 <slot></slot>
-                ${endTemplate}
+                ${endSlotTemplate(context, definition)}
             `
         )}
         ${when(

@@ -2,9 +2,9 @@ import { css, ElementStyles } from "@microsoft/fast-element";
 import {
     disabledCursor,
     display,
-    ElementDefinitionContext,
     focusVisible,
     forcedColorsStylesheetBehavior,
+    FoundationElementTemplate,
     MenuItemOptions,
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
@@ -16,6 +16,7 @@ import {
     disabledOpacity,
     focusStrokeOuter,
     focusStrokeWidth,
+    foregroundOnAccentRest,
     neutralFillStealthRest,
     neutralForegroundHint,
     neutralForegroundRest,
@@ -27,10 +28,14 @@ import {
 } from "../design-tokens";
 import { DirectionalStyleSheetBehavior, heightNumber } from "../styles/index";
 
-export const menuItemStyles: (
-    context: ElementDefinitionContext,
-    definition: MenuItemOptions
-) => ElementStyles = (context: ElementDefinitionContext, definition: MenuItemOptions) =>
+/**
+ * Styles for Menu item
+ * @public
+ */
+export const menuItemStyles: FoundationElementTemplate<ElementStyles, MenuItemOptions> = (
+    context,
+    definition
+) =>
     css`
     ${display("grid")} :host {
         contain: layout;
@@ -55,6 +60,11 @@ export const menuItemStyles: (
         border: calc(${focusStrokeWidth} * 1px) solid transparent;
     }
 
+    :host(:hover) {
+        position: relative;
+        z-index: 1;
+    }
+
     :host(.indent-0) {
         grid-template-columns: auto 1fr minmax(42px, auto);
     }
@@ -62,6 +72,10 @@ export const menuItemStyles: (
         grid-column: 1;
         grid-row: 1;
         margin-inline-start: 10px;
+    }
+    :host(.indent-0) .expand-collapse-glyph-container {
+        grid-column: 5;
+        grid-row: 1;
     }
     :host(.indent-2) {
         grid-template-columns: minmax(42px, auto) minmax(42px, auto) 1fr minmax(42px, auto) minmax(42px, auto);
@@ -118,10 +132,8 @@ export const menuItemStyles: (
     }
 
     .expand-collapse-glyph {
-        ${
-            /* Glyph size is temporary - 
-            replace when glyph-size var is added */ ""
-        } width: 16px;
+        /* TODO: adaptive typography https://github.com/microsoft/fast/issues/2432 */
+        width: 16px;
         height: 16px;
         fill: currentcolor;
     }
@@ -140,10 +152,8 @@ export const menuItemStyles: (
     }
 
     ::slotted(svg) {
-        ${
-            /* Glyph size and margin-left is temporary - 
-            replace when adaptive typography is figured out */ ""
-        } width: 16px;
+        /* TODO: adaptive typography https://github.com/microsoft/fast/issues/2432 */
+        width: 16px;
         height: 16px;
     }
 
@@ -154,6 +164,13 @@ export const menuItemStyles: (
     :host(:active) .end,
     :host(:active)::slotted(svg) {
         fill: ${neutralForegroundRest};
+    }
+
+    :host(.indent-0[aria-haspopup="menu"]) {
+        display: grid;
+        grid-template-columns: minmax(42px, auto) auto 1fr minmax(42px, auto) minmax(42px, auto);
+        align-items: center;
+        min-height: 32px;
     }
 
     :host(.indent-1[aria-haspopup="menu"]),
@@ -185,6 +202,10 @@ export const menuItemStyles: (
     :host([role="menuitemcheckbox"]) .content,
     :host([role="menuitemradio"]) .content {
         grid-column-start: 3;
+    }
+
+    :host([aria-haspopup="menu"].indent-0) .content {
+        grid-column-start: 1;
     }
 
     :host([aria-haspopup="menu"]) .end,
@@ -245,7 +266,7 @@ export const menuItemStyles: (
         width: 100%;
         height: 100%;
         display: block;
-        fill: ${neutralForegroundRest};
+        fill: ${foregroundOnAccentRest};
         pointer-events: none;
     }
 
@@ -257,7 +278,7 @@ export const menuItemStyles: (
         bottom: 4px;
         border-radius: 999px;
         display: block;
-        background: ${neutralForegroundRest};
+        background: ${foregroundOnAccentRest};
         pointer-events: none;
     }
 
