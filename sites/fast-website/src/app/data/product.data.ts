@@ -9,38 +9,38 @@ import Windows11Icon from "svg/icon-windows11.svg";
 export interface ProductData {
     icon: string;
     url: string;
-    label: string;
+    anchorText: string;
 }
 
 export const productData = [
     {
         url: "https://dotnet.microsoft.com/en-us/apps/aspnet",
+        anchorText: "ASP.NET",
         icon: ASPNetIcon,
-        label: "ASP.NET",
-    },
-    {
-        url: "https://developer.microsoft.com/en-us/fluentui#/",
-        icon: FASTIcon, // replace with Fluent UI logo
-        label: "FluentUI",
     },
     {
         url: "https://www.microsoft.com/en-us/edge",
+        anchorText: "Edge",
         icon: EdgeIcon,
-        label: "Microsoft Edge",
+    },
+    {
+        url: "https://developer.microsoft.com/en-us/fluentui#/",
+        anchorText: "Fluent UI",
+        icon: FASTIcon, // replace with Fluent UI logo
     },
     {
         url: "https://www.msn.com/en-us",
+        anchorText: "MSN",
         icon: MSNIcon,
-        label: "MSN",
     },
     {
         url: "https://code.visualstudio.com/",
+        anchorText: "VS Code",
         icon: VSCodeIcon,
-        label: "VS Code",
     },
     {
         url: "https://www.microsoft.com/en-us/windows/windows-11?r=1",
+        anchorText: "Windows 11",
         icon: Windows11Icon,
-        label: "Windows 11",
     },
 ];

@@ -137,11 +137,11 @@ export const ContentPlacementContainerStyles = css`
 
     .fast-product svg,
     .fast-design-system svg {
-        height: 60px;
-        width: 120px;
+        height: 40px;
+        width: 80px;
         fill: white;
         stroke: white;
-        margin: 20px;
+        margin: 5px 40px 5px;
     }
 
     .fast-product path,
@@ -149,37 +149,23 @@ export const ContentPlacementContainerStyles = css`
         fill: white;
     }
 
-    .fast-product:hover svg,
-    .fast-product:focus svg,
-    .fast-product:hover path,
-    .fast-product:focus path,
-    .fast-design-system:hover svg,
-    .fast-design-system:focus svg,
-    .fast-design-system:hover path,
-    .fast-design-system:focus path {
-        fill: var(--accent-foreground-rest);
-        stroke: var(--accent-foreground-rest);
-    }
-
     .fast-product-link,
     .fast-design-system-link {
         color: white;
-        text-decoration: none;
+        text-decoration: underline;
         text-align: center;
+        border-radius: 3px;
+        font-size: var(--type-ramp-base-font-size);
     }
 
-    .fast-product,
-    .fast-design-system p {
-        margin: 0;
-        font-size: 5px;
-        color: red;
-    }
-
-    .fast-product-link,
-    .fast-design-system-link p {
-        margin: 0;
-        margin-top: -18px;
-        font-size: 12px;
+    .fast-product-link:hover,
+    .fast-product-link:focus,
+    .fast-design-system-link:hover,
+    .fast-design-system-link:focus {
+        background: rgba(0, 0, 0, 0.5);
+        text-decoration: underline;
+        text-decoration-color: var(--accent-foreground-rest);
+        text-decoration-thickness: 2px;
     }
 
     @media screen and (max-width: 1330px) {

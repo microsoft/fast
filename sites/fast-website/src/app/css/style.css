@@ -98,8 +98,6 @@
     align-items: center;
     display: flex;
     flex-direction: column;
-    font-size: var(--type-ramp-plus-1-font-size);
-    margin-top: 30px;
     max-width: 1000px;
 }
 
@@ -108,7 +106,8 @@
     font-weight: normal;
     min-width: 270px;
     text-align: center;
-    margin: 30px;
+    margin: 40px 0 40px 0;
+    font-size: var(--type-ramp-plus-1-font-size);
 }
 
 @media screen and (max-width: 899px) {

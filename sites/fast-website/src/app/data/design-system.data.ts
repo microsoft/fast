@@ -6,28 +6,28 @@ import VSCodeIcon from "svg/icon-vscode.svg";
 export interface DesignSystemData {
     icon: string;
     url: string;
-    label: string;
+    anchorText: string;
 }
 
 export const designSystemData = [
     {
         url: "https://www.fast.design/docs/design-systems/fast-frame",
+        anchorText: "FAST Frame",
         icon: FastIcon,
-        label: "FAST Frame",
     },
     {
         url: "https://developer.microsoft.com/en-us/fluentui#/",
+        anchorText: "Fluent UI",
         icon: FastIcon,
-        label: "Fluent UI",
     },
     {
         url: "https://backlight.dev/blog/introducing-furious-a-fast-design-system/",
-        icon: FastIcon, // update to FuriousIcon
-        label: "Furious",
+        anchorText: "Furious",
+        icon: FastIcon,
     },
     {
         url: "https://code.visualstudio.com/",
+        anchorText: "VS Code",
         icon: VSCodeIcon,
-        label: "VS Code",
     },
 ];
