@@ -42,16 +42,16 @@ export const RepeatDirectiveRenderer: DirectiveRenderer<typeof RepeatDirective> 
 
             if (template instanceof ViewTemplate) {
                 if (directive.options.positioning) {
-                    for (let i = 0; i < items.length; i++) {
+                    for (let i = 0, length = items.length; i < length; i++) {
                         const ctx: ExecutionContext = Object.create(childContext);
                         // Match fast-element context creation behavior. Perhaps this should be abstracted
                         // So both fast-ssr and fast-element leverage the same context creation code?
                         ctx.index = i;
-                        ctx.length = items.length;
+                        ctx.length = length;
                         yield* renderer.render(template, renderInfo, items[i], ctx);
                     }
                 } else {
-                    for (let i = 0; i < items.length; i++) {
+                    for (let i = 0, length = items.length; i < length; i++) {
                         yield* renderer.render(
                             template,
                             renderInfo,
