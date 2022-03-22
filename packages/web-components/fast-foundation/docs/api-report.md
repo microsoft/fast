@@ -2520,6 +2520,24 @@ export class TextEditor extends FoundationElement {
     connectedCallback(): void;
     // @internal (undocumented)
     disconnectedCallback(): void;
+    // @internal
+    editorHost: HTMLDivElement;
+    // @internal (undocumented)
+    handleFocusIn(e: FocusEvent): void;
+    // @internal (undocumented)
+    handleFocusOut(e: FocusEvent): void;
+    // @internal
+    handleRegionLoaded(e: Event): void;
+    // @internal
+    region: AnchoredRegion;
+    // @internal
+    showToolbar: boolean;
+    toggleBold(e: Event): void;
+    toggleItalic(e: Event): void;
+    // @internal
+    toolbarConfig: AnchoredRegionConfig;
+    // Warning: (ae-incompatible-release-tags) The symbol "toolbarPlacement" is marked as @public, but its signature references "toolbarPlacement" which is marked as @beta
+    toolbarPlacement: toolbarPlacement;
     }
 
 // @public
@@ -2609,6 +2627,9 @@ export interface Toolbar extends StartEnd, DelegatesARIAToolbar {
 
 // @public
 export type ToolbarOptions = FoundationElementDefinition & StartEndOptions;
+
+// @beta
+export type toolbarPlacement = "bottom" | "tallest" | "top";
 
 // @public
 export const toolbarTemplate: FoundationElementTemplate<ViewTemplate<Toolbar>, ToolbarOptions>;
