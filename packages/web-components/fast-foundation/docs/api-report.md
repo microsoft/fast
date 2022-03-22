@@ -6,6 +6,7 @@
 
 import { AttributeConfiguration } from '@microsoft/fast-element';
 import { Behavior } from '@microsoft/fast-element';
+import { CaptureType } from '@microsoft/fast-element';
 import { ComposableStyles } from '@microsoft/fast-element';
 import { Constructable } from '@microsoft/fast-element';
 import { CSSDirective } from '@microsoft/fast-element';
@@ -90,13 +91,12 @@ export class Anchor extends FoundationElement {
 export interface Anchor extends StartEnd, DelegatesARIALink {
 }
 
-// @beta
+// @public
 export class AnchoredRegion extends FoundationElement {
     // @internal (undocumented)
     adoptedCallback(): void;
     anchor: string;
     anchorElement: HTMLElement | null;
-    // (undocumented)
     autoUpdateMode: AutoUpdateMode;
     // @internal (undocumented)
     connectedCallback(): void;
@@ -126,33 +126,26 @@ export class AnchoredRegion extends FoundationElement {
 
 // @public
 export interface AnchoredRegionConfig {
-    // Warning: (ae-incompatible-release-tags) The symbol "autoUpdateMode" is marked as @public, but its signature references "AutoUpdateMode" which is marked as @beta
     readonly autoUpdateMode?: AutoUpdateMode;
     readonly fixedPlacement?: boolean;
-    // Warning: (ae-incompatible-release-tags) The symbol "horizontalDefaultPosition" is marked as @public, but its signature references "HorizontalPosition" which is marked as @beta
     readonly horizontalDefaultPosition?: HorizontalPosition;
     readonly horizontalInset?: boolean;
-    // Warning: (ae-incompatible-release-tags) The symbol "horizontalPositioningMode" is marked as @public, but its signature references "AxisPositioningMode" which is marked as @beta
     readonly horizontalPositioningMode?: AxisPositioningMode;
-    // Warning: (ae-incompatible-release-tags) The symbol "horizontalScaling" is marked as @public, but its signature references "AxisScalingMode" which is marked as @beta
     readonly horizontalScaling?: AxisScalingMode;
     readonly horizontalThreshold?: number;
     readonly horizontalViewportLock?: boolean;
-    // Warning: (ae-incompatible-release-tags) The symbol "verticalDefaultPosition" is marked as @public, but its signature references "VerticalPosition" which is marked as @beta
     readonly verticalDefaultPosition?: VerticalPosition;
     readonly verticalInset?: boolean;
-    // Warning: (ae-incompatible-release-tags) The symbol "verticalPositioningMode" is marked as @public, but its signature references "AxisPositioningMode" which is marked as @beta
     readonly verticalPositioningMode?: AxisPositioningMode;
-    // Warning: (ae-incompatible-release-tags) The symbol "verticalScaling" is marked as @public, but its signature references "AxisScalingMode" which is marked as @beta
     readonly verticalScaling?: AxisScalingMode;
     readonly verticalThreshold?: number;
     readonly verticalViewportLock?: boolean;
 }
 
-// @beta
+// @public
 export type AnchoredRegionPositionLabel = "start" | "insetStart" | "insetEnd" | "end" | "center";
 
-// @beta
+// @public
 export const anchoredRegionTemplate: FoundationElementTemplate<ViewTemplate<AnchoredRegion>>;
 
 // @public
@@ -187,7 +180,7 @@ export class ARIAGlobalStatesAndProperties {
     ariaRoledescription: string;
 }
 
-// @beta
+// @public
 export type AutoUpdateMode = "anchor" | "auto";
 
 // @public
@@ -208,10 +201,10 @@ export type AvatarOptions = FoundationElementDefinition & {
 // @public
 export const avatarTemplate: FoundationElementTemplate<ViewTemplate<Avatar>, AvatarOptions>;
 
-// @beta
+// @public
 export type AxisPositioningMode = "uncontrolled" | "locktodefault" | "dynamic";
 
-// @beta
+// @public
 export type AxisScalingMode = "anchor" | "fill" | "content";
 
 // @public
@@ -650,6 +643,7 @@ export class DataGrid extends FoundationElement {
     // @internal (undocumented)
     handleRowFocus(e: Event): void;
     headerCellItemTemplate?: ViewTemplate;
+    noTabbing: boolean;
     // @internal
     rowElements: HTMLElement[];
     rowElementTag: string;
@@ -1500,7 +1494,7 @@ export const getDirection: (rootNode: HTMLElement) => Direction;
 // @public
 export const hidden = ":host([hidden]){display:none}";
 
-// @beta
+// @public
 export type HorizontalPosition = "start" | "end" | "left" | "right" | "center" | "unset";
 
 // @public
@@ -2200,6 +2194,9 @@ export type RadioOptions = FoundationElementDefinition & {
 // @public
 export const radioTemplate: FoundationElementTemplate<ViewTemplate<Radio>, RadioOptions>;
 
+// @beta
+export function reflectAttributes<T = any>(...attributes: string[]): CaptureType<T>;
+
 // @public
 export type RegisterSelf<T extends Constructable> = {
     register(container: Container): Resolver<InstanceType<T>>;
@@ -2815,7 +2812,6 @@ export const toolbarTemplate: FoundationElementTemplate<ViewTemplate<Toolbar>, T
 export class Tooltip extends FoundationElement {
     anchor: string;
     anchorElement: HTMLElement | null;
-    // Warning: (ae-incompatible-release-tags) The symbol "autoUpdateMode" is marked as @public, but its signature references "AutoUpdateMode" which is marked as @beta
     autoUpdateMode: AutoUpdateMode;
     // (undocumented)
     connectedCallback(): void;
@@ -2964,7 +2960,7 @@ export const treeViewTemplate: FoundationElementTemplate<ViewTemplate<TreeView>>
 // @internal (undocumented)
 export function validateKey(key: any): void;
 
-// @beta
+// @public
 export type VerticalPosition = "top" | "bottom" | "center" | "unset";
 
 // @public

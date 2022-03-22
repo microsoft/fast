@@ -1,8 +1,46 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Wed, 09 Mar 2022 07:12:32 GMT and should not be manually modified.
+This log was last generated on Sun, 20 Mar 2022 07:15:44 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.37.1
+
+Sun, 20 Mar 2022 07:15:44 GMT
+
+### Patches
+
+- Fix for default selection behavior for listbox and select (26874831+atmgrifter00@users.noreply.github.com)
+
+## 2.37.0
+
+Wed, 16 Mar 2022 07:12:41 GMT
+
+### Minor changes
+
+- enable no tabbing (scomea@microsoft.com)
+
+## 2.36.1
+
+Tue, 15 Mar 2022 07:12:38 GMT
+
+### Patches
+
+- anchored region not beta (scomea@microsoft.com)
+- tree view single select (scomea@microsoft.com)
+
+## 2.36.0
+
+Fri, 11 Mar 2022 23:46:34 GMT
+
+### Minor changes
+
+- BREAKING CHANGE: replace WC button with stock HTML button (jes@microsoft.com)
+- implement attribute reflection directive (nicholasrice@users.noreply.github.com)
+
+### Patches
+
+- use WeakMap to prevent leaking element references from FormAssociated (nicholasrice@users.noreply.github.com)
 
 ## 2.35.2
 

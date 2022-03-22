@@ -1,8 +1,48 @@
 # Change Log - @microsoft/fast-react-wrapper
 
-This log was last generated on Wed, 09 Mar 2022 07:12:32 GMT and should not be manually modified.
+This log was last generated on Sun, 20 Mar 2022 07:15:44 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.1.42
+
+Sun, 20 Mar 2022 07:15:44 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.37.1 (26874831+atmgrifter00@users.noreply.github.com)
+
+## 0.1.41
+
+Thu, 17 Mar 2022 07:11:51 GMT
+
+### Patches
+
+- fix: cache wrapper does not differentiate component of same type using react wrapper (fcollonval@gmail.com)
+
+## 0.1.40
+
+Wed, 16 Mar 2022 07:12:41 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.37.0 (scomea@microsoft.com)
+
+## 0.1.39
+
+Tue, 15 Mar 2022 07:12:38 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.36.1 (scomea@microsoft.com)
+
+## 0.1.38
+
+Fri, 11 Mar 2022 23:46:34 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.36.0 (jes@microsoft.com)
 
 ## 0.1.37
 

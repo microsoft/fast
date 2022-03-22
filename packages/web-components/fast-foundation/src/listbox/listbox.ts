@@ -532,18 +532,7 @@ export abstract class Listbox extends FoundationElement {
      * @internal
      */
     protected setDefaultSelectedOption() {
-        if (this.$fastController.isConnected) {
-            const selectedIndex = this.options?.findIndex(
-                el => el.getAttribute("selected") !== null
-            );
-
-            if (selectedIndex !== -1) {
-                this.selectedIndex = selectedIndex;
-                return;
-            }
-
-            this.selectedIndex = 0;
-        }
+        this.selectedIndex = this.options?.findIndex(el => el.defaultSelected) ?? -1;
     }
 
     /**
@@ -552,7 +541,7 @@ export abstract class Listbox extends FoundationElement {
      * @public
      */
     protected setSelectedOptions() {
-        if (this.options?.length && !this.disabled) {
+        if (this.options?.length) {
             this.selectedOptions = [this.options[this.selectedIndex]];
             this.ariaActiveDescendant = this.firstSelectedOption?.id ?? "";
             this.focusAndScrollOptionIntoView();
