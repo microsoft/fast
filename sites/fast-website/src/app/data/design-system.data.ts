@@ -1,5 +1,5 @@
 import FastIcon from "svg/icon-brand.svg";
-// import FluentUIIcon from "svg/icon-fluentui-temp.svg";
+import FluentUIIcon from "svg/icon-fluentui.svg";
 // import FuriousIcon from "svg/icon-furious.svg";
 import VSCodeIcon from "svg/icon-vscode.svg";
 
@@ -18,7 +18,7 @@ export const designSystemData = [
     {
         url: "https://developer.microsoft.com/en-us/fluentui#/",
         anchorText: "Fluent UI",
-        icon: FastIcon,
+        icon: FluentUIIcon,
     },
     {
         url: "https://backlight.dev/blog/introducing-furious-a-fast-design-system/",

@@ -1,6 +1,6 @@
 import ASPNetIcon from "svg/icon-aspnet-temp.svg";
 import EdgeIcon from "svg/icon-edge.svg";
-// import FluentUIIcon from "svg/icon-fluentui-temp.svg";
+import FluentUIIcon from "svg/icon-fluentui.svg";
 import FASTIcon from "svg/icon-brand.svg";
 import MSNIcon from "svg/icon-msn.svg";
 import VSCodeIcon from "svg/icon-vscode.svg";
@@ -26,7 +26,7 @@ export const productData = [
     {
         url: "https://developer.microsoft.com/en-us/fluentui#/",
         anchorText: "Fluent UI",
-        icon: FASTIcon, // replace with Fluent UI logo
+        icon: FluentUIIcon,
     },
     {
         url: "https://www.msn.com/en-us",
