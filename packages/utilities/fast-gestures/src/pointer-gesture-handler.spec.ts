@@ -28,12 +28,9 @@ describe("PointerGestureHandler", () => {
         expect(pointerGestureHandler.target).toEqual(containerElement);
     });
 
-    const onGestureStart = pointerGestureHandler.onGesture(
-        PointerGesture.Start,
-        () => {
-            //
-        }
-    );
+    const onGestureStart = pointerGestureHandler.onGesture(PointerGesture.Start, () => {
+        //
+    });
 
     test("should register a callback function", () => {
         expect(onGestureStart).toBeInstanceOf(Object);
