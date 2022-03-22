@@ -1,0 +1,7 @@
+{
+  "type": "none",
+  "comment": "Added PointerGestureHandler utility.",
+  "packageName": "@microsoft/fast-gestures",
+  "email": "mlijanto@microsoft.com",
+  "dependentChangeType": "none"
+}
