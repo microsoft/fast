@@ -6,7 +6,7 @@ import {
     FASTStyleStyleRenderer,
     StyleElementStyleRenderer,
     StyleRenderer,
-} from "./fast-style/style-renderer.js";
+} from "./styles/style-renderer.js";
 import { defaultFASTDirectiveRenderers } from "./template-renderer/directives.js";
 import {
     TemplateRenderer,

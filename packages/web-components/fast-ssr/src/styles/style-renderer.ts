@@ -1,5 +1,5 @@
 import { ComposableStyles, ElementStyles } from "@microsoft/fast-element";
-import { fastStyleTagName } from "./index.js";
+import { fastStyleTagName } from "./fast-style.js";
 function collectStyles(style: ComposableStyles): string {
     let content: string = "";
     if (typeof style === "string") {

@@ -15,7 +15,7 @@ function getSheet(element: string): string | null {
         return result[1];
     }
 }
-test.describe.only("FASTStyleStyleRenderer", () => {
+test.describe("FASTStyleStyleRenderer", () => {
     test("should return a '<fast-style'> element", () => {
         const style = css``;
         const renderer = new FASTStyleStyleRenderer();

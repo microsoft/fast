@@ -8,7 +8,7 @@ import {
 } from "@microsoft/fast-element";
 import { TemplateRenderer } from "../template-renderer/template-renderer.js";
 import { SSRView } from "../view.js";
-import { StyleRenderer } from "../fast-style/style-renderer.js";
+import { StyleRenderer } from "../styles/style-renderer.js";
 
 const prefix = "fast-style";
 let id = 0;
