@@ -14,6 +14,7 @@ import { Direction } from '@microsoft/fast-web-utilities';
 import { ElementStyles } from '@microsoft/fast-element';
 import { ElementViewTemplate } from '@microsoft/fast-element';
 import { FASTElement } from '@microsoft/fast-element';
+import { IEditor } from 'roosterjs';
 import { Orientation } from '@microsoft/fast-web-utilities';
 import { PartialFASTElementDefinition } from '@microsoft/fast-element';
 import { SyntheticViewTemplate } from '@microsoft/fast-element';
@@ -2532,16 +2533,27 @@ export class TextEditor extends FoundationElement {
     region: AnchoredRegion;
     // @internal
     showToolbar: boolean;
-    toggleBold(e: Event): void;
-    toggleItalic(e: Event): void;
     // @internal
     toolbarConfig: AnchoredRegionConfig;
     // Warning: (ae-incompatible-release-tags) The symbol "toolbarPlacement" is marked as @public, but its signature references "toolbarPlacement" which is marked as @beta
     toolbarPlacement: toolbarPlacement;
+    // @internal
+    toolbarTag: string;
     }
 
 // @public
 export const textEditorTemplate: FoundationElementTemplate<ViewTemplate<TextEditor>>;
+
+// @alpha
+export class TextEditorToolbar extends Toolbar {
+    // @internal (undocumented)
+    editor: IEditor;
+}
+
+// Warning: (ae-incompatible-release-tags) The symbol "textEditorToolbarTemplate" is marked as @public, but its signature references "TextEditorToolbar" which is marked as @alpha
+//
+// @public
+export const textEditorToolbarTemplate: FoundationElementTemplate<ViewTemplate<TextEditorToolbar>>;
 
 // Warning: (ae-different-release-tags) This symbol has another declaration with a different release tag
 // Warning: (ae-forgotten-export) The symbol "FormAssociatedTextField" needs to be exported by the entry point index.d.ts

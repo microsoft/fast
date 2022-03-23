@@ -2,9 +2,8 @@ import { html, ref, when } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
 import type { FoundationElementTemplate } from "../foundation-element";
 import { AnchoredRegion } from "../anchored-region";
-import { Button } from "../button";
-import { Toolbar } from "../toolbar";
 import type { TextEditor } from "./text-editor";
+import { TextEditorToolbar } from "./text-editor-toolbar";
 
 /**
  * The template for the {@link @microsoft/fast-foundation#TextEditor} component.
@@ -15,11 +14,10 @@ export const textEditorTemplate: FoundationElementTemplate<ViewTemplate<TextEdit
     definition
 ) => {
     const anchoredRegionTag: string = context.tagFor(AnchoredRegion);
-    const toolbarTag: string = context.tagFor(Toolbar);
-    const buttonTag: string = context.tagFor(Button);
+    const toolbarTag: string = context.tagFor(TextEditorToolbar);
     return html<TextEditor>`
-        <template>
-            <slot></slot>
+        <template :toolbarTag="${() => toolbarTag}">
+            <slot name="editor-region"></slot>
             ${when(
                 x => x.showToolbar,
                 html<TextEditor>`
@@ -46,29 +44,10 @@ export const textEditorTemplate: FoundationElementTemplate<ViewTemplate<TextEdit
                     @loaded="${(x, c) => x.handleRegionLoaded(c.event as Event)}"
                     ${ref("region")}
                 >
-                <div class="toolbar-display" part="toolbar-display">
                     <slot name="toolbar-region">
-                        <${toolbarTag}
-                            class="toolbar"
-                            part="toolbar"
-                            slot="toolbar-region"
-                        >
-                            <${buttonTag}
-                                @click="${(x, c) => x.toggleBold(c.event as Event)}"
-                            >
-                                Bold
-                            </${buttonTag}>
-
-                            <${buttonTag}
-                                @click="${(x, c) => x.toggleItalic(c.event as Event)}"
-                            >
-                                Italic
-                            </${buttonTag}>
-                        </${toolbarTag}>
                     </slot>
-                </div>
-            </${anchoredRegionTag}>
-        `
+                </${anchoredRegionTag}>
+            `
             )}
         </template>
     `;

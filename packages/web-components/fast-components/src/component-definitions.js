@@ -88,6 +88,8 @@ import fastTextAreaDefinition from "./text-area/text-area.vscode.definition.json
 export { fastTextAreaDefinition };
 import fastTextEditorDefinition from "./text-editor/text-editor.vscode.definition.json";
 export { fastTextEditorDefinition };
+import fastTextEditorToolbarDefinition from "./text-editor/text-editor-toolbar.vscode.definition.json";
+export { fastTextEditorToolbarDefinition };
 import fastTextFieldDefinition from "./text-field/text-field.vscode.definition.json";
 export { fastTextFieldDefinition };
 import fastToolbarDefinition from "./toolbar/toolbar.vscode.definition.json";

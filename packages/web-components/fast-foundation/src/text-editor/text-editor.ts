@@ -1,7 +1,6 @@
 import { attr, DOM, observable } from "@microsoft/fast-element";
 import { eventFocusIn, eventFocusOut } from "@microsoft/fast-web-utilities";
 import { createEditor, IEditor } from "roosterjs";
-import { toggleBold, toggleItalic } from "roosterjs-editor-api";
 import { FoundationElement } from "../foundation-element";
 import {
     AnchoredRegion,
@@ -10,6 +9,8 @@ import {
     FlyoutPosTallest,
     FlyoutPosTop,
 } from "../anchored-region";
+import type { Toolbar } from "../toolbar";
+import type { TextEditorToolbar } from "./text-editor-toolbar";
 
 /**
  * Defines the vertical positioning options for an anchored region
@@ -71,6 +72,14 @@ export class TextEditor extends FoundationElement {
     public region: AnchoredRegion;
 
     /**
+     * The tag for the text editor toolbar element (ie. "fast-text-editor-toolbar" vs. "fluent-text-editor-toolbar")
+     *
+     * @internal
+     */
+    @observable
+    public toolbarTag: string;
+
+    /**
      * reference to the editor host div
      *
      * @internal
@@ -78,6 +87,7 @@ export class TextEditor extends FoundationElement {
     public editorHost: HTMLDivElement;
 
     private editor: IEditor | undefined;
+    private toolbarElement: TextEditorToolbar;
 
     /**
      * @internal
@@ -85,11 +95,29 @@ export class TextEditor extends FoundationElement {
     public connectedCallback(): void {
         super.connectedCallback();
         this.editorHost = document.createElement("div");
+        this.editorHost.slot = "editor-region";
+        this.editorHost.setAttribute("role", "textbox");
+        this.editorHost.tabIndex = 0;
         this.appendChild(this.editorHost);
         this.editor = createEditor(this.editorHost);
         this.addEventListener(eventFocusIn, this.handleFocusIn);
         this.addEventListener(eventFocusOut, this.handleFocusOut);
+
         this.updateToolbarConfig();
+
+        const match: string = this.toolbarTag.toUpperCase();
+        this.toolbarElement = Array.from(this.children).find((element: HTMLElement) => {
+            return element.tagName === match;
+        }) as TextEditorToolbar;
+
+        if (this.toolbarElement === undefined) {
+            this.toolbarElement = document.createElement(
+                this.toolbarTag
+            ) as TextEditorToolbar;
+            this.appendChild(this.toolbarElement);
+        }
+
+        this.toolbarElement.editor = this.editor;
     }
 
     /**
@@ -125,28 +153,6 @@ export class TextEditor extends FoundationElement {
         DOM.queueUpdate(() => {
             this.$emit("toolbarloaded", { bubbles: false });
         });
-    }
-
-    /**
-     * Toggle selected text bold
-     *
-     * @public
-     */
-    public toggleBold(e: Event): void {
-        if (this.editor) {
-            toggleBold(this.editor);
-        }
-    }
-
-    /**
-     * Toggle selected text italic
-     *
-     * @public
-     */
-    public toggleItalic(e: Event): void {
-        if (this.editor) {
-            toggleItalic(this.editor);
-        }
     }
 
     /**
