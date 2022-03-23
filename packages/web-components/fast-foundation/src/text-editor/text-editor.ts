@@ -1,4 +1,4 @@
-import { attr, DOM, observable } from "@microsoft/fast-element";
+import { attr, DOM, observable, ViewTemplate } from "@microsoft/fast-element";
 import { eventFocusIn, eventFocusOut } from "@microsoft/fast-web-utilities";
 import { createEditor, IEditor } from "roosterjs";
 import { FoundationElement } from "../foundation-element";
@@ -9,7 +9,6 @@ import {
     FlyoutPosTallest,
     FlyoutPosTop,
 } from "../anchored-region";
-import type { Toolbar } from "../toolbar";
 import type { TextEditorToolbar } from "./text-editor-toolbar";
 
 /**
@@ -41,6 +40,34 @@ export class TextEditor extends FoundationElement {
     }
 
     /**
+     * Sets the template to use to generate the toolbar.
+     * Set the the text editor.
+     *
+     * @public
+     */
+    @observable
+    public toolbarTemplate: ViewTemplate<TextEditorToolbar>;
+    private toolbarTemplateChanged(): void {
+        if (this.$fastController.isConnected && this.toolbarElement) {
+            this.toolbarElement.toolbarTemplate = this.toolbarTemplate;
+        }
+    }
+
+    /**
+     * Sets the template to use to generate the toolbar.
+     * Set the the text editor.
+     *
+     * @public
+     */
+    @observable
+    public toolbarResources: object;
+    private toolbarResourcesChanged(): void {
+        if (this.$fastController.isConnected && this.toolbarElement) {
+            this.toolbarElement.resources = this.toolbarResources;
+        }
+    }
+
+    /**
      *  Controls toolbar visibility
      *
      * @internal
@@ -50,9 +77,9 @@ export class TextEditor extends FoundationElement {
     private showToolbarChanged(): void {
         if (this.showToolbar) {
             DOM.queueUpdate(this.setRegionProps);
-            this.$emit("toolbaropening", { bubbles: false });
+            this.$emit("toolbaropening");
         } else {
-            this.$emit("toolbarclosing", { bubbles: false });
+            this.$emit("toolbarclosing");
         }
     }
 
@@ -87,7 +114,7 @@ export class TextEditor extends FoundationElement {
     public editorHost: HTMLDivElement;
 
     private editor: IEditor | undefined;
-    private toolbarElement: TextEditorToolbar;
+    private toolbarElement: TextEditorToolbar | undefined;
 
     /**
      * @internal
@@ -105,19 +132,15 @@ export class TextEditor extends FoundationElement {
 
         this.updateToolbarConfig();
 
-        const match: string = this.toolbarTag.toUpperCase();
-        this.toolbarElement = Array.from(this.children).find((element: HTMLElement) => {
-            return element.tagName === match;
-        }) as TextEditorToolbar;
-
-        if (this.toolbarElement === undefined) {
-            this.toolbarElement = document.createElement(
-                this.toolbarTag
-            ) as TextEditorToolbar;
-            this.appendChild(this.toolbarElement);
-        }
-
+        this.toolbarElement = document.createElement(
+            this.toolbarTag
+        ) as TextEditorToolbar;
         this.toolbarElement.editor = this.editor;
+        this.toolbarElement.toolbarTemplate = this.toolbarTemplate;
+        if (this.toolbarResources) {
+            this.toolbarElement.resources = this.toolbarResources;
+        }
+        this.appendChild(this.toolbarElement);
     }
 
     /**
@@ -125,6 +148,7 @@ export class TextEditor extends FoundationElement {
      */
     public disconnectedCallback() {
         this.editor = undefined;
+        this.toolbarElement = undefined;
         this.removeEventListener(eventFocusIn, this.handleFocusIn);
         this.removeEventListener(eventFocusOut, this.handleFocusOut);
         super.disconnectedCallback();

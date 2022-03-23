@@ -9,12 +9,22 @@ import { Toolbar } from "../toolbar";
  */
 export class TextEditorToolbar extends Toolbar {
     /**
-     * Sets the template to use to generate the toolbar
+     * Sets the template to use to generate the toolbar.
+     * Set the the text editor.
      *
-     * @public
+     * @internal
      */
     @observable
     public toolbarTemplate: ViewTemplate<TextEditorToolbar>;
+
+    /**
+     * Sets the template to use to generate the toolbar.
+     * Set the the text editor.
+     *
+     * @internal
+     */
+    @observable
+    public resources: object = {};
 
     /**
      *

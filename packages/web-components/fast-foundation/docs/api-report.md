@@ -2537,8 +2537,11 @@ export class TextEditor extends FoundationElement {
     toolbarConfig: AnchoredRegionConfig;
     // Warning: (ae-incompatible-release-tags) The symbol "toolbarPlacement" is marked as @public, but its signature references "toolbarPlacement" which is marked as @beta
     toolbarPlacement: toolbarPlacement;
+    toolbarResources: object;
     // @internal
     toolbarTag: string;
+    // Warning: (ae-incompatible-release-tags) The symbol "toolbarTemplate" is marked as @public, but its signature references "TextEditorToolbar" which is marked as @alpha
+    toolbarTemplate: ViewTemplate<TextEditorToolbar>;
     }
 
 // @public
@@ -2552,7 +2555,9 @@ export class TextEditorToolbar extends Toolbar {
     defaultToolbarTemplate: ViewTemplate<TextEditorToolbar>;
     // @internal (undocumented)
     editor: IEditor;
-    // @public
+    // @internal
+    resources: object;
+    // @internal
     toolbarTemplate: ViewTemplate<TextEditorToolbar>;
     }
 

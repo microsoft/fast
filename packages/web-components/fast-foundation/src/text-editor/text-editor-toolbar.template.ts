@@ -20,12 +20,12 @@ function createDefaultToolbarTemplate(
             <${buttonTag}
                 @click="${x => toggleBold(x.editor)}"
             >
-            Bold
+            ${x => x.resources["boldButtonTitle"]}
             </${buttonTag}>
             <${buttonTag}
                 @click="${x => toggleItalic(x.editor)}"
             >
-            Italic
+            ${x => x.resources["italicButtonTitle"]}
             </${buttonTag}>
         </${toolbarTag}>
 `;
