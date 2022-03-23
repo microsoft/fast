@@ -1,8 +1,64 @@
 # Change Log - @microsoft/fast-components
 
-This log was last generated on Tue, 08 Mar 2022 07:12:45 GMT and should not be manually modified.
+This log was last generated on Sun, 20 Mar 2022 07:15:44 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.25.1
+
+Sun, 20 Mar 2022 07:15:44 GMT
+
+### Patches
+
+- Fix for default selection behavior for listbox and select (26874831+atmgrifter00@users.noreply.github.com)
+
+## 2.25.0
+
+Thu, 17 Mar 2022 07:11:51 GMT
+
+### Minor changes
+
+- `vscode-html-languageservice` as dev dependency (fcollonval@gmail.com)
+
+## 2.24.0
+
+Wed, 16 Mar 2022 07:12:41 GMT
+
+### Minor changes
+
+- enable no tabbing (scomea@microsoft.com)
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.37.0 (scomea@microsoft.com)
+
+## 2.23.1
+
+Tue, 15 Mar 2022 07:12:38 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.36.1 (scomea@microsoft.com)
+
+## 2.23.0
+
+Fri, 11 Mar 2022 23:46:34 GMT
+
+### Minor changes
+
+- BREAKING CHANGE: replace WC button with stock HTML button (jes@microsoft.com)
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.36.0 (jes@microsoft.com)
+
+## 2.22.2
+
+Wed, 09 Mar 2022 07:12:32 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.35.2 (20542556+mollykreis@users.noreply.github.com)
 
 ## 2.22.1
 

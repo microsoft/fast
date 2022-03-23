@@ -59,25 +59,13 @@ describe("Listbox", () => {
         await disconnect();
     });
 
-    it("should select the first option when no options have the `selected` attribute", async () => {
+    it("should select nothing when no options have the `selected` attribute", async () => {
         const { element, connect, disconnect, option1, option2, option3 } = await setup();
 
         await connect();
 
-        expect(element.selectedIndex).to.equal(0);
+        expect(element.selectedIndex).to.equal(-1);
 
-        expect(element.selectedOptions).to.contain(option1);
-        expect(element.selectedOptions).to.not.contain(option2);
-        expect(element.selectedOptions).to.not.contain(option3);
-
-        await disconnect();
-    });
-
-    it("should not select the first option when listbox is `disabled`", async () => {
-        const { element, connect, disconnect, option1, option2, option3 } = await setup();
-        element.disabled = true;
-        await connect();
-        //await DOM.nextUpdate();
         expect(element.selectedOptions).to.not.contain(option1);
         expect(element.selectedOptions).to.not.contain(option2);
         expect(element.selectedOptions).to.not.contain(option3);
@@ -106,7 +94,7 @@ describe("Listbox", () => {
 
         await connect();
 
-        expect(element.selectedIndex).to.equal(0);
+        expect(element.selectedIndex).to.equal(-1);
 
         option2.setAttribute("selected", "");
 
@@ -232,6 +220,10 @@ describe("Listbox", () => {
         const { connect, disconnect, element, option1, option2, option3 } = await setup();
 
         await connect();
+
+        await DOM.nextUpdate();
+
+        element.selectNextOption();
 
         await DOM.nextUpdate();
 

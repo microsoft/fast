@@ -2,6 +2,120 @@
   "name": "@microsoft/fast-components",
   "entries": [
     {
+      "date": "Sun, 20 Mar 2022 07:15:44 GMT",
+      "tag": "@microsoft/fast-components_v2.25.1",
+      "version": "2.25.1",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Fix for default selection behavior for listbox and select",
+            "author": "26874831+atmgrifter00@users.noreply.github.com",
+            "commit": "1898cd9a73f2cf9496a2a78d18e13bd87aa012df",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 17 Mar 2022 07:11:51 GMT",
+      "tag": "@microsoft/fast-components_v2.25.0",
+      "version": "2.25.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "`vscode-html-languageservice` as dev dependency",
+            "author": "fcollonval@gmail.com",
+            "commit": "7927947eacacda558b37df0158988adbaabeb49f",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 16 Mar 2022 07:12:41 GMT",
+      "tag": "@microsoft/fast-components_v2.24.0",
+      "version": "2.24.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "enable no tabbing",
+            "author": "scomea@microsoft.com",
+            "commit": "09b97ab3e9d7c1d71a048667d0aa0368569ab64a",
+            "package": "@microsoft/fast-components"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-foundation to v2.37.0",
+            "author": "scomea@microsoft.com",
+            "commit": "09b97ab3e9d7c1d71a048667d0aa0368569ab64a",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 15 Mar 2022 07:12:38 GMT",
+      "tag": "@microsoft/fast-components_v2.23.1",
+      "version": "2.23.1",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-foundation to v2.36.1",
+            "author": "scomea@microsoft.com",
+            "commit": "b996b057e3adbd8642ca07fc1dc6245aea2d3e50",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 11 Mar 2022 23:46:34 GMT",
+      "tag": "@microsoft/fast-components_v2.23.0",
+      "version": "2.23.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "BREAKING CHANGE: replace WC button with stock HTML button",
+            "author": "jes@microsoft.com",
+            "commit": "9b838f36e388958f927c1f6d80d6fa736186897c",
+            "package": "@microsoft/fast-components"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-foundation to v2.36.0",
+            "author": "jes@microsoft.com",
+            "commit": "9b838f36e388958f927c1f6d80d6fa736186897c",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 09 Mar 2022 07:12:32 GMT",
+      "tag": "@microsoft/fast-components_v2.22.2",
+      "version": "2.22.2",
+      "comments": {
+        "none": [
+          {
+            "comment": "Remove `card-background-color` from doc and story",
+            "author": "fcollonval@gmail.com",
+            "commit": "b784c1ea3581e62b94083d6defa17d9202a308c3",
+            "package": "@microsoft/fast-components"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-foundation to v2.35.2",
+            "author": "20542556+mollykreis@users.noreply.github.com",
+            "commit": "b4549c8a383d6ac43d2967491e5596bbffb87d80",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
       "date": "Tue, 08 Mar 2022 07:12:45 GMT",
       "tag": "@microsoft/fast-components_v2.22.1",
       "version": "2.22.1",
