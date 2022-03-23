@@ -190,7 +190,7 @@ export class TextEditor extends FoundationElement {
             DOM.queueUpdate(this.setRegionProps);
             return;
         }
-        this.region.anchorElement = this.editorHost;
+        this.region.anchorElement = this;
     };
 
     /**

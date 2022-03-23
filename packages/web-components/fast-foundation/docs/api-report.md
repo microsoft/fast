@@ -14,6 +14,7 @@ import { Direction } from '@microsoft/fast-web-utilities';
 import { ElementStyles } from '@microsoft/fast-element';
 import { ElementViewTemplate } from '@microsoft/fast-element';
 import { FASTElement } from '@microsoft/fast-element';
+import { FormatState } from 'roosterjs';
 import { IEditor } from 'roosterjs';
 import { Orientation } from '@microsoft/fast-web-utilities';
 import { PartialFASTElementDefinition } from '@microsoft/fast-element';
@@ -2555,6 +2556,8 @@ export class TextEditorToolbar extends Toolbar {
     defaultToolbarTemplate: ViewTemplate<TextEditorToolbar>;
     // @internal (undocumented)
     editor: IEditor;
+    // @internal (undocumented)
+    formatState: FormatState;
     // @internal
     resources: object;
     // @internal

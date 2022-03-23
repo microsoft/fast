@@ -1,5 +1,6 @@
 import { HTMLView, observable, ViewTemplate } from "@microsoft/fast-element";
-import type { IEditor } from "roosterjs";
+import type { FormatState, IEditor } from "roosterjs";
+import { getFormatState } from "roosterjs-editor-api";
 import { Toolbar } from "../toolbar";
 
 /**
@@ -40,6 +41,14 @@ export class TextEditorToolbar extends Toolbar {
     public editor: IEditor;
 
     /**
+     *
+     *
+     * @internal
+     */
+    @observable
+    public formatState: FormatState;
+
+    /**
      * The default toolbar template.  Set by the component template.
      *
      * @internal
@@ -50,11 +59,49 @@ export class TextEditorToolbar extends Toolbar {
     private toolbarView: HTMLView | null = null;
 
     /**
+     * The timer that tracks format state updates
+     */
+    private formatStateUpdateTimer: number | null = null;
+
+    /**
      * @internal
      */
     public connectedCallback(): void {
         super.connectedCallback();
+        this.updateFormatState();
         this.updateView();
+        this.startFormatStateUpdateTimer();
+    }
+
+    private updateFormatState(): void {
+        this.formatState = getFormatState(this.editor);
+        this.startFormatStateUpdateTimer();
+    }
+
+    /**
+     * starts the update timer
+     */
+    private startFormatStateUpdateTimer(): void {
+        this.clearFormatStateUpdateTimer();
+
+        this.formatStateUpdateTimer = window.setTimeout((): void => {
+            this.handleFormatStateUpdateTimerTick();
+        }, 200);
+    }
+
+    /**
+     * clears the update timer
+     */
+    private clearFormatStateUpdateTimer(): void {
+        if (this.formatStateUpdateTimer !== null) {
+            clearTimeout(this.formatStateUpdateTimer);
+            this.formatStateUpdateTimer = null;
+        }
+    }
+
+    private handleFormatStateUpdateTimerTick(): void {
+        this.updateFormatState();
+        this.startFormatStateUpdateTimer();
     }
 
     private updateView(): void {

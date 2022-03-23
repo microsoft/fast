@@ -18,11 +18,13 @@ function createDefaultToolbarTemplate(
             part="toolbar"
         >
             <${buttonTag}
+                aria-selected="${x => x.formatState.isBold}"
                 @click="${x => toggleBold(x.editor)}"
             >
             ${x => x.resources["boldButtonTitle"]}
             </${buttonTag}>
             <${buttonTag}
+                aria-selected="${x => x.formatState.isItalic}"
                 @click="${x => toggleItalic(x.editor)}"
             >
             ${x => x.resources["italicButtonTitle"]}
