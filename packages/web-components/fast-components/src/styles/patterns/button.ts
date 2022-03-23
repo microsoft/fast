@@ -76,6 +76,10 @@ export const BaseButtonStyles = css`
         line-height: inherit;
     }
 
+    :host([aria-pressed="true"]) {
+        background: ${accentFillActive}
+    }
+
     :host(:hover) {
         background-color: ${neutralFillHover};
     }
