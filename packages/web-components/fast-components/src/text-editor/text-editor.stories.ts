@@ -13,15 +13,23 @@ addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
     if (name.toLowerCase().startsWith("text-editor")) {
         const toolbarResources: object = {
             boldButtonTitle: "Bold",
+            boldButtonTooltip: "Click to bold text",
             italicButtonTitle: "Italic",
+            italicButtonTooltip: "Click to italicize text",
+            alignLeftButtonTitle: "Left",
+            alignLeftButtonTooltip: "Click to align left",
+            alignCenterButtonTitle: "Center",
+            alignCenterButtonTooltip: "Click to align center",
+            alignRightButtonTitle: "Right",
+            alignRightButtonTooltip: "Click to align right",
         };
 
         const customToolbarTemplate: ViewTemplate = html<TextEditorToolbar>`
             <fast-toolbar class="toolbar" part="toolbar">
-                <fast-button appearance="outline" @click="${x => toggleBold(x.editor)}">
+                <fast-button @click="${x => toggleBold(x.editor)}">
                     Template Bold
                 </fast-button>
-                <fast-button appearance="outline" @click="${x => toggleItalic(x.editor)}">
+                <fast-button @click="${x => toggleItalic(x.editor)}">
                     ${x => x.resources["italicButtonTitle"]}
                 </fast-button>
             </fast-toolbar>

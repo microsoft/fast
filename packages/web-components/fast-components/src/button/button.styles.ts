@@ -7,6 +7,7 @@ import {
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
+    accentFillActive,
     accentFillRest,
     accentForegroundRest,
     disabledOpacity,
@@ -120,6 +121,10 @@ export const buttonStyles: FoundationElementTemplate<ElementStyles, ButtonOption
                 :host([appearance="outline"][disabled]:active) {
                     background: transparent;
                     border-color: ${accentFillRest};
+                }
+
+                :host([appearance="outline"][aria-pressed="true"]) {
+                    background: ${accentFillActive};
                 }
 
                 ${OutlineButtonStyles}

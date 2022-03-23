@@ -1,4 +1,5 @@
 import { HTMLView, observable, ViewTemplate } from "@microsoft/fast-element";
+import { uniqueId } from "@microsoft/fast-web-utilities";
 import type { FormatState, IEditor } from "roosterjs";
 import { getFormatState } from "roosterjs-editor-api";
 import { Toolbar } from "../toolbar";
@@ -55,6 +56,13 @@ export class TextEditorToolbar extends Toolbar {
      */
     @observable
     public defaultToolbarTemplate: ViewTemplate<TextEditorToolbar>;
+
+    /**
+     * Unique id of this toolbar
+     *
+     * @internal
+     */
+    public instanceId: string = uniqueId("toolbar-id-");
 
     private toolbarView: HTMLView | null = null;
 

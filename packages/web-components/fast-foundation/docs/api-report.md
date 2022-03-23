@@ -2559,6 +2559,8 @@ export class TextEditorToolbar extends Toolbar {
     // @internal (undocumented)
     formatState: FormatState;
     // @internal
+    instanceId: string;
+    // @internal
     resources: object;
     // @internal
     toolbarTemplate: ViewTemplate<TextEditorToolbar>;
