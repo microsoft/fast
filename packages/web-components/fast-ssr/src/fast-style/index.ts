@@ -76,4 +76,5 @@ export default class FASTStyle extends HTMLElement {
     }
 }
 
-customElements.define("fast-style", FASTStyle);
+export const fastStyleTagName = "fast-style";
+customElements.define(fastStyleTagName, FASTStyle);

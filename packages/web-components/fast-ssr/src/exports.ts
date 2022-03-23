@@ -2,6 +2,11 @@ import { RenderInfo } from "@lit-labs/ssr";
 import { Compiler, ElementStyles, HTMLDirective } from "@microsoft/fast-element";
 import { FASTElementRenderer } from "./element-renderer/element-renderer.js";
 import { FASTSSRStyleStrategy } from "./element-renderer/style-strategy.js";
+import {
+    FASTStyleStyleRenderer,
+    StyleElementStyleRenderer,
+    StyleRenderer,
+} from "./fast-style/style-renderer.js";
 import { defaultFASTDirectiveRenderers } from "./template-renderer/directives.js";
 import {
     TemplateRenderer,
@@ -48,6 +53,9 @@ export default function (
     const templateRenderer = new TemplateRenderer(config);
     const elementRenderer = class extends FASTElementRenderer {
         protected templateRenderer: TemplateRenderer = templateRenderer;
+        protected styleRenderer: StyleRenderer = config?.useFASTStyle
+            ? new FASTStyleStyleRenderer()
+            : new StyleElementStyleRenderer();
     };
 
     templateRenderer.withDirectiveRenderer(...defaultFASTDirectiveRenderers);

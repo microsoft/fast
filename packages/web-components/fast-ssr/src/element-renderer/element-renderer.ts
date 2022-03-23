@@ -8,6 +8,13 @@ import {
 } from "@microsoft/fast-element";
 import { TemplateRenderer } from "../template-renderer/template-renderer.js";
 import { SSRView } from "../view.js";
+import { StyleRenderer } from "../fast-style/style-renderer.js";
+
+const prefix = "fast-style";
+let id = 0;
+function nextId(): string {
+    return `${prefix}-${id++}`;
+}
 
 export abstract class FASTElementRenderer extends ElementRenderer {
     /**
@@ -19,6 +26,11 @@ export abstract class FASTElementRenderer extends ElementRenderer {
      * The template renderer to use when rendering a component template
      */
     protected abstract templateRenderer: TemplateRenderer;
+
+    /**
+     * Responsible for rendering stylesheets
+     */
+    protected abstract styleRenderer: StyleRenderer;
 
     /**
      * Tests a constructor to determine if it should be managed by a {@link FASTElementRenderer}.
@@ -112,10 +124,8 @@ export abstract class FASTElementRenderer extends ElementRenderer {
         const view = this.element.$fastController.view;
         const styles = this.element.$fastController.styles;
 
-        if (styles && styles.styles.length) {
-            for (const style of styles.styles) {
-                yield this.renderStyle(style);
-            }
+        if (styles) {
+            yield this.styleRenderer.render(styles);
         }
 
         if (view !== null) {
@@ -130,28 +140,5 @@ export abstract class FASTElementRenderer extends ElementRenderer {
                 defaultExecutionContext
             );
         }
-    }
-
-    private collectStyles(style: ComposableStyles): string {
-        let content: string = "";
-        if (typeof style === "string") {
-            content = style;
-        } else if (style instanceof CSSStyleSheet) {
-            const rules = style.cssRules;
-
-            for (let i = 0, length = rules.length; i < length; i++) {
-                content += rules[i].cssText;
-            }
-        } else {
-            for (const s of style.styles) {
-                content += this.collectStyles(s);
-            }
-        }
-
-        return content;
-    }
-
-    private renderStyle(style: ComposableStyles): string {
-        return `<style>${this.collectStyles(style)}</style>`;
     }
 }
