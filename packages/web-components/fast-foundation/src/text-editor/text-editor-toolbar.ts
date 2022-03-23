@@ -1,7 +1,5 @@
-import { html, observable, ViewTemplate } from "@microsoft/fast-element";
-import { toggleBold, toggleItalic } from "roosterjs-editor-api";
+import { HTMLView, observable, ViewTemplate } from "@microsoft/fast-element";
 import type { IEditor } from "roosterjs";
-import type { ElementDefinitionContext } from "..";
 import { Toolbar } from "../toolbar";
 
 /**
@@ -11,10 +9,53 @@ import { Toolbar } from "../toolbar";
  */
 export class TextEditorToolbar extends Toolbar {
     /**
+     * Sets the template to use to generate the toolbar
+     *
+     * @public
+     */
+    @observable
+    public toolbarTemplate: ViewTemplate<TextEditorToolbar>;
+
+    /**
      *
      *
      * @internal
      */
     @observable
     public editor: IEditor;
+
+    /**
+     * The default toolbar template.  Set by the component template.
+     *
+     * @internal
+     */
+    @observable
+    public defaultToolbarTemplate: ViewTemplate<TextEditorToolbar>;
+
+    private toolbarView: HTMLView | null = null;
+
+    /**
+     * @internal
+     */
+    public connectedCallback(): void {
+        super.connectedCallback();
+        this.updateView();
+    }
+
+    private updateView(): void {
+        this.disconnectView();
+
+        if (this.toolbarTemplate !== undefined) {
+            this.toolbarView = this.toolbarTemplate.render(this, this);
+        } else {
+            this.toolbarView = this.defaultToolbarTemplate.render(this, this);
+        }
+    }
+
+    private disconnectView(): void {
+        if (this.toolbarView !== null) {
+            this.toolbarView.dispose();
+            this.toolbarView = null;
+        }
+    }
 }

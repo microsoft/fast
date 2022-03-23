@@ -2547,8 +2547,14 @@ export const textEditorTemplate: FoundationElementTemplate<ViewTemplate<TextEdit
 // @alpha
 export class TextEditorToolbar extends Toolbar {
     // @internal (undocumented)
+    connectedCallback(): void;
+    // @internal
+    defaultToolbarTemplate: ViewTemplate<TextEditorToolbar>;
+    // @internal (undocumented)
     editor: IEditor;
-}
+    // @public
+    toolbarTemplate: ViewTemplate<TextEditorToolbar>;
+    }
 
 // Warning: (ae-incompatible-release-tags) The symbol "textEditorToolbarTemplate" is marked as @public, but its signature references "TextEditorToolbar" which is marked as @alpha
 //
