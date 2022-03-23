@@ -4,12 +4,12 @@ interface StyleCache {
 
 /**
  * The FASTStyle web component that takes attributes:
- * - css - a string version of the CSS to be applied to the parent web component, this can be omitted if the data-style-id has been used in the DOM as the cached value will be fetched
- * - data-style-id - a dataset attribute used as an identifier for the CSS attr string
+ * - css - a string version of the CSS to be applied to the parent web component, this can be omitted if the style-id has been used in the DOM as the cached value will be fetched
+ * - style-id - a dataset attribute used as an identifier for the CSS attr string
  */
 export default class FASTStyle extends HTMLElement {
     private static cache: StyleCache = {};
-    private static hashIdDataSetName: string = "data-style-id";
+    private static hashIdDataSetName: string = "style-id";
     private static supportsAdoptedStyleSheets: boolean =
         Array.isArray((document as any).adoptedStyleSheets) &&
         "replace" in CSSStyleSheet.prototype;

@@ -42,7 +42,7 @@ export class FASTStyleStyleRenderer implements StyleRenderer {
             contentAttr = `css="${content}"`;
         }
 
-        return `<${fastStyleTagName} data-style-id="${id}" ${contentAttr}></${fastStyleTagName}>`;
+        return `<${fastStyleTagName} style-id="${id}" ${contentAttr}></${fastStyleTagName}>`;
     }
 }
 
