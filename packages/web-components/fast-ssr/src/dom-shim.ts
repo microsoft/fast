@@ -10,7 +10,7 @@ class PatchedHTMLElement extends HTMLElement {
     get shadowRoot() {
         return this.#shadowRoot;
     }
-    attachShadow(init: { mode: "open" | "closed" }) {
+    attachShadow(init: ShadowRootInit) {
         const root = super.attachShadow(init);
 
         if (init.mode === "open") {
