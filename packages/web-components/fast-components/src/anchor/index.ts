@@ -25,22 +25,14 @@ export class Anchor extends FoundationAnchor {
      * HTML Attribute: appearance
      */
     @attr
-    public appearance: AnchorAppearance;
+    public appearance: AnchorAppearance = "neutral";
     public appearanceChanged(
         oldValue: AnchorAppearance,
         newValue: AnchorAppearance
     ): void {
-        if (oldValue !== newValue) {
-            this.classList.add(newValue);
+        if (this.$fastController.isConnected) {
             this.classList.remove(oldValue);
-        }
-    }
-
-    public connectedCallback() {
-        super.connectedCallback();
-
-        if (!this.appearance) {
-            this.appearance = "neutral";
+            this.classList.add(newValue);
         }
     }
 
@@ -63,19 +55,13 @@ export class Anchor extends FoundationAnchor {
 }
 
 /**
- * Styles for Anchor
- * @public
- */
-export const anchorStyles = styles;
-
-/**
  * A function that returns a {@link @microsoft/fast-foundation#Anchor} registration for configuring the component with a DesignSystem.
  * Implements {@link @microsoft/fast-foundation#anchorTemplate}
  *
  *
  * @public
  * @remarks
- * Generates HTML Element: \<fast-anchor\>
+ * Generates HTML Element: `<fast-anchor>`
  *
  * {@link https://developer.mozilla.org/en-US/docs/Web/API/ShadowRoot/delegatesFocus | delegatesFocus}
  */
@@ -88,3 +74,5 @@ export const fastAnchor = Anchor.compose({
         delegatesFocus: true,
     },
 });
+
+export { styles as anchorStyles };

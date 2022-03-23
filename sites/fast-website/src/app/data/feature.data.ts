@@ -1,4 +1,4 @@
-interface FeatureLink {
+export interface FeatureLink {
     anchorText: string;
     url: string;
 }

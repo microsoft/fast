@@ -6,13 +6,13 @@ custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/src
 [![License: MIT](/badges/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![npm version](/badges/fast-components.svg)](https://www.npmjs.com/package/@microsoft/fast-components)
 
-The `@microsoft/fast-components` and `@fluentui/web-components` libraries contain Web Components built on top of our standard component and design system foundation. `@microsoft/fast-components` expresses the FAST design language (FAST Frame) while `@fluentui/web-components` expresses Microsoft's Fluent design language.
+The `@microsoft/fast-components` library contains Web Components built on top of our standard component and design system foundation. `@microsoft/fast-components` expresses the FAST design language (FAST Frame). 
 
 ## Installation
 
 ### From NPM
 
-To install the components, first, choose between `@microsoft/fast-components` and `@fluentui/web-components`. Assuming a selection of `@microsoft/fast-components`, you would use either `npm` or `yarn` as follows:
+To install the components:
 
 ```shell
 npm install --save @microsoft/fast-components
@@ -36,21 +36,7 @@ provideFASTDesignSystem()
     );
 ```
 
-The same pattern is used for `@fluentui/web-components`:
-
-```js
-import { 
-    fluentButton, 
-    provideFluentDesignSystem 
-} from "@fluentui/web-components";
-
-provideFluentDesignSystem()
-    .register(
-        fluentButton()
-    );
-```
-
-As a shortcut, if you wish to easily register all available components, rather than registering each one, you can use the following pattern with either design system:
+As a shortcut, if you wish to easily register all available components, rather than registering each one, you can use the following pattern:
 
 ```js
 import { 
@@ -77,17 +63,19 @@ A pre-bundled script that contains all APIs needed to use the components is avai
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <script type="module" src="https://unpkg.com/@microsoft/fast-components"></script>
+        <script type="module" src="https://cdn.jsdelivr.net/npm/@microsoft/fast-components/dist/fast-components.min.js"></script>
     </head>
     <!-- ... -->
 </html>
 ```
 
-When using either the FAST or Fluent Web Components from CDN, there is no need to register the components. The CDN script includes code that automatically sets up the design system and registers all the components.
+The markup above always references the latest release of the components. When deploying to production, you will want to ship with a specific version. Here's an example of the markup for that:
 
-:::important
-The above CDN location points to the latest release of `@microsoft/fast-components`. It is advised that when you deploy your site or app, you import the specific version you have developed and tested with.
-:::
+```html
+<script type="module" src="https://cdn.jsdelivr.net/npm/@microsoft/fast-components@2.16.0/dist/fast-components.min.js"></script>
+```
+
+When using FAST from CDN, there is no need to register the components. The CDN script includes code that automatically sets up the design system and registers all the components.
 
 :::note
 For simplicity, examples throughout the documentation will assume the library has been installed from NPM, but you can always replace the import location with the CDN URL.

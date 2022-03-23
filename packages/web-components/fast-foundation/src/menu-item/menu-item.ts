@@ -12,9 +12,9 @@ import type { Menu } from "../menu/menu";
 import { StartEnd, StartEndOptions } from "../patterns/start-end";
 import { getDirection } from "../utilities/";
 import { applyMixins } from "../utilities/apply-mixins";
-import { MenuItemRole } from "./menu-item.options";
+import { MenuItemRole, roleForMenuItem } from "./menu-item.options";
 
-export { MenuItemRole };
+export { MenuItemRole, roleForMenuItem };
 
 /**
  * Types of menu item column count.
@@ -98,7 +98,7 @@ export class MenuItem extends FoundationElement {
      */
     @attr({ mode: "boolean" })
     public checked: boolean;
-    private checkedChanged(oldValue, newValue): void {
+    private checkedChanged(oldValue: boolean, newValue: boolean): void {
         if (this.$fastController.isConnected) {
             this.$emit("change");
         }
@@ -269,7 +269,6 @@ export class MenuItem extends FoundationElement {
         switch (this.role) {
             case MenuItemRole.menuitemcheckbox:
                 this.checked = !this.checked;
-                this.$emit("change");
                 break;
 
             case MenuItemRole.menuitem:

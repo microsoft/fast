@@ -55,7 +55,7 @@ describe(`The DI object`, function () {
         it(`finds the host for a shadowed element by default`, function () {
             @customElement({name: "test-child"})
             class TestChild extends FASTElement {}
-            @customElement({name: "test-parent", template: html`<test-child ${ref("child")}></test-child>`}) 
+            @customElement({name: "test-parent", template: html`<test-child ${ref("child")}></test-child>`})
             class TestParent extends FASTElement {
                 public child: TestChild;
             }
@@ -77,7 +77,7 @@ describe(`The DI object`, function () {
 
             const parentContainer = DI.getOrCreateDOMContainer(parent);
             const childContainer = DI.getOrCreateDOMContainer(
-                child, 
+                child,
                 { responsibleForOwnerRequests: true }
             );
 
@@ -214,9 +214,9 @@ describe(`The inject decorator`, function () {
     it(`can decorate constructor parameters explicitly`, function () {
         class Foo {
             public constructor(
-                @inject(Dep1) dep1,
-                @inject(Dep2) dep2,
-                @inject(Dep3) dep3
+                @inject(Dep1) dep1: Dep1,
+                @inject(Dep2) dep2: Dep2,
+                @inject(Dep3) dep3: Dep3
             ) {
                 return;
             }
@@ -244,9 +244,9 @@ describe(`The inject decorator`, function () {
     it(`can decorate properties explicitly`, function () {
         // @ts-ignore
         class Foo {
-            @inject(Dep1) public dep1;
-            @inject(Dep2) public dep2;
-            @inject(Dep3) public dep3;
+            @inject(Dep1) public dep1: Dep1;
+            @inject(Dep2) public dep2: Dep2;
+            @inject(Dep3) public dep3: Dep3;
         }
 
         const instance = new Foo();
@@ -308,13 +308,7 @@ describe(`The Resolver class`, function () {
     });
 
     describe(`register()`, function () {
-        it(`registers the resolver to the container with the provided key`, function () {
-            const sut = new ResolverImpl("foo", 0, null);
-            sut.register(container, "bar");
-            expect(container.registerResolver).called.with("bar", sut);
-        });
-
-        it(`registers the resolver to the container with its own`, function () {
+        it(`registers the resolver to the container with its own key`, function () {
             const sut = new ResolverImpl("foo", 0, null);
             sut.register(container);
             expect(container.registerResolver).called.with("foo", sut);
@@ -458,8 +452,8 @@ describe(`The Factory class`, function () {
         it(`registers the transformer`, function () {
             const container = DI.createContainer();
             class Foo {
-                public bar;
-                public baz;
+                public bar: string;
+                public baz: string;
             }
             const sut = new FactoryImpl(Foo, DI.getDependencies(Foo));
             // eslint-disable-next-line prefer-object-spread
@@ -478,133 +472,149 @@ describe(`The Container class`, function () {
     function createFixture() {
         const sut = DI.createContainer();
         const register = chai.spy();
-        return { sut, register };
+        return { sut, register, context: {} };
     }
 
-    describe(`register()`, function () {
-        it(`calls register() on {register}`, function () {
-            const { sut, register } = createFixture();
-            sut.register({ register });
+    const registrationMethods = [
+        {
+            name: 'register',
+            createTest() {
+                const { sut, register } = createFixture();
 
-            expect(register).called.with(sut);
-        });
+                return {
+                    register,
+                    test: (...args: any[]) => {
+                        sut.register(...args);
 
-        it(`calls register() on {register},{register}`, function () {
-            const { sut, register } = createFixture();
-            sut.register({ register }, { register });
-            expect(register).to.have.been.first.called.with(sut);
-            expect(register).to.have.been.second.called.with(sut);
-        });
+                        expect(register).to.have.been.first.called.with(sut);
 
-        it(`calls register() on [{register},{register}]`, function () {
-            const { sut, register } = createFixture();
-            sut.register([{ register }, { register }] as any);
-
-            expect(register).to.have.been.first.called.with(sut);
-            expect(register).to.have.been.second.called.with(sut);
-        });
-
-        it(`calls register() on {foo:{register}}`, function () {
-            const { sut, register } = createFixture();
-            sut.register({ foo: { register } });
-            expect(register).to.have.been.first.called.with(sut);
-        });
-
-        it(`calls register() on {foo:{register}},{foo:{register}}`, function () {
-            const { sut, register } = createFixture();
-            sut.register({ foo: { register } }, { foo: { register } });
-
-            expect(register).to.have.been.first.called.with(sut);
-            expect(register).to.have.been.second.called.with(sut);
-        });
-
-        it(`calls register() on [{foo:{register}},{foo:{register}}]`, function () {
-            const { sut, register } = createFixture();
-            sut.register([{ foo: { register } }, { foo: { register } }] as any);
-            expect(register).to.have.been.first.called.with(sut);
-            expect(register).to.have.been.second.called.with(sut);
-        });
-
-        it(`calls register() on {register},{foo:{register}}`, function () {
-            const { sut, register } = createFixture();
-            sut.register({ register }, { foo: { register } });
-
-            expect(register).to.have.been.first.called.with(sut);
-            expect(register).to.have.been.second.called.with(sut);
-        });
-
-        it(`calls register() on [{register},{foo:{register}}]`, function () {
-            const { sut, register } = createFixture();
-            sut.register([{ register }, { foo: { register } }] as any);
-
-            expect(register).to.have.been.first.called.with(sut);
-            expect(register).to.have.been.second.called.with(sut);
-        });
-
-        it(`calls register() on [{register},{}]`, function () {
-            const { sut, register } = createFixture();
-            sut.register([{ register }, {}] as any);
-
-            expect(register).to.have.been.first.called.with(sut);
-        });
-
-        it(`calls register() on [{},{register}]`, function () {
-            const { sut, register } = createFixture();
-            sut.register([{}, { register }] as any);
-
-            expect(register).to.have.been.first.called.with(sut);
-        });
-
-        it(`calls register() on [{foo:{register}},{foo:{}}]`, function () {
-            const { sut, register } = createFixture();
-            sut.register([{ foo: { register } }, { foo: {} }] as any);
-
-            expect(register).to.have.been.first.called.with(sut);
-        });
-
-        it(`calls register() on [{foo:{}},{foo:{register}}]`, function () {
-            const { sut, register } = createFixture();
-            sut.register([{ foo: {} }, { foo: { register } }] as any);
-
-            expect(register).to.have.been.first.called.with(sut);
-        });
-
-        describe(`does NOT throw when attempting to register primitive values`, function () {
-            for (const value of [
-                void 0,
-                null,
-                true,
-                false,
-                "",
-                "asdf",
-                NaN,
-                Infinity,
-                0,
-                42,
-                Symbol(),
-                Symbol("a"),
-            ]) {
-                it(`{foo:${String(value)}}`, function () {
-                    const { sut } = createFixture();
-                    sut.register({ foo: value });
-                });
-
-                it(`{foo:{bar:${String(value)}}}`, function () {
-                    const { sut } = createFixture();
-                    sut.register({ foo: { bar: value } });
-                });
-
-                it(`[${String(value)}]`, function () {
-                    const { sut } = createFixture();
-                    sut.register([value]);
-                });
-
-                it(`${String(value)}`, function () {
-                    const { sut } = createFixture();
-                    sut.register(value);
-                });
+                        if (args.length === 2) {
+                            expect(register).to.have.been.second.called.with(sut);
+                        }
+                    }
+                };
             }
+        },
+        {
+            name: 'registerWithContext',
+            createTest() {
+                const { sut, register, context } = createFixture();
+
+                return {
+                    register,
+                    test: (...args: any[]) => {
+                        sut.registerWithContext(context, ...args);
+
+                        expect(register).to.have.been.first.called.with(sut, context);
+
+                        if (args.length === 2) {
+                            expect(register).to.have.been.second.called.with(sut, context);
+                        }
+                    }
+                }
+            }
+        }
+    ];
+
+    for (const method of registrationMethods) {
+        describe(`${method.name}()`, () => {
+            it(`calls ${method.name}() on {register}`, () => {
+                const { test, register } = method.createTest();
+                test({ register });
+            });
+
+            it(`calls ${method.name}() on {register},{register}`, () => {
+                const { test, register } = method.createTest();
+                test({ register }, { register });
+            });
+
+            it(`calls ${method.name}() on [{register},{register}]`, () => {
+                const { test, register } = method.createTest();
+                test([{ register }, { register }]);
+            });
+
+            it(`calls ${method.name}() on {foo:{register}}`, () => {
+                const { test, register } = method.createTest();
+                test({ foo: { register } });
+            });
+
+            it(`calls ${method.name}() on {foo:{register}},{foo:{register}}`, () => {
+                const { test, register } = method.createTest();
+                test({ foo: { register } }, { foo: { register } });
+            });
+
+            it(`calls ${method.name}() on [{foo:{register}},{foo:{register}}]`, () => {
+                const { test, register } = method.createTest();
+                test([{ foo: { register } }, { foo: { register } }]);
+            });
+
+            it(`calls ${method.name}() on {register},{foo:{register}}`, () => {
+                const { test, register } = method.createTest();
+                test({ register }, { foo: { register } });
+            });
+
+            it(`calls ${method.name}() on [{register},{foo:{register}}]`, () => {
+                const { test, register } = method.createTest();
+                test([{ register }, { foo: { register } }]);
+            });
+
+            it(`calls ${method.name}() on [{register},{}]`, () => {
+                const { test, register } = method.createTest();
+                test([{ register }, {}]);
+            });
+
+            it(`calls ${method.name}() on [{},{register}]`, () => {
+                const { test, register } = method.createTest();
+                test([{}, { register }]);
+            });
+
+            it(`calls ${method.name}() on [{foo:{register}},{foo:{}}]`, () => {
+                const { test, register } = method.createTest();
+                test([{ foo: { register } }, { foo: {} }]);
+            });
+
+            it(`calls ${method.name}() on [{foo:{}},{foo:{register}}]`, () => {
+                const { test, register } = method.createTest();
+                test([{ foo: {} }, { foo: { register } }]);
+            });
         });
+    }
+
+    describe(`does NOT throw when attempting to register primitive values`, () => {
+        for (const value of [
+            void 0,
+            null,
+            true,
+            false,
+            "",
+            "asdf",
+            NaN,
+            Infinity,
+            0,
+            42,
+            Symbol(),
+            Symbol("a"),
+        ]) {
+            it(`{foo:${String(value)}}`, () => {
+                const { sut } = createFixture();
+                sut.register({ foo: value });
+            });
+
+            it(`{foo:{bar:${String(value)}}}`, () => {
+                const { sut } = createFixture();
+                sut.register({ foo: { bar: value } });
+            });
+
+            it(`[${String(value)}]`, () => {
+                const { sut } = createFixture();
+                sut.register([value]);
+            });
+
+            it(`${String(value)}`, () => {
+                const { sut } = createFixture();
+                sut.register(value);
+            });
+        }
     });
 
     describe(`registerResolver()`, function () {

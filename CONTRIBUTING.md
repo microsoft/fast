@@ -54,7 +54,7 @@ lerna run prepare
 ```
 
 ### Developing in `fast-components`
-If you're interested in contributing changes to the `fast-component` design system start by navigating to the `fast-components` directory and starting the Storybook local server there.
+If you're interested in contributing changes to the `fast-component` design system, start by navigating to the `fast-components` directory and starting the Storybook local server there.
 
 ```bash
 cd packages/web-components/fast-components
@@ -78,9 +78,14 @@ Packages are located within the `packages` folder of the repository. Each packag
 
 ### Submitting a pull request
 
-If you'd like to contribute by fixing a bug, implementing a feature, or even correcting typos in our documentation, you'll want to submit a pull request. Before submitting a pull request, be sure to [rebase](https://www.atlassian.com/git/tutorials/merging-vs-rebasing) your branch from master or use the *merge* button provided by GitHub.
+If you'd like to contribute by fixing a bug, implementing a feature, or even correcting typos in our documentation, you'll want to submit a pull request. Before submitting a pull request, be sure to [rebase](https://www.atlassian.com/git/tutorials/merging-vs-rebasing) your branch (typically from master) or use the *merge* button provided by GitHub.
+
+:::note
+For additional details on branch management read the [branch guide](./BRANCH_GUIDE.md) documentation.
+:::
 
 #### Change Files
+
 Any pull request which includes changes within the `packages/*` directory requires a corresponding change file. Before pushing your changes to create a pull request, be sure you have included the necessary change file(s). To generate a change file, run `yarn change` in the root of the repository. The generated file will be checked into the repo automatically for you as part of the process.
 
 :::note
@@ -99,12 +104,16 @@ When working across feature branches, you'll need to target the branch using the
 }
 ```
 
-Running `yarn change` will walk you through a CLI process for generating change files. The process will walk you through selecting the type of change as well as ask you to provide a description of any changes. As a convenience, the utiliity looks to provide recent commit messages for use in the description. *For changes which do not affect the published package(s), please use "none" when selecting the change type*.
+Running `yarn change` will walk you through a CLI process for generating change files. The process will walk you through selecting the type of change as well as ask you to provide a description of any changes. As a convenience, the utility looks to provide recent commit messages for use in the description. *For changes which do not affect the published package(s), please use "none" when selecting the change type*.
 
 More information on the change process and change types can be found on the [beachball website](https://microsoft.github.io/beachball/cli/change.html#change).
 
 :::note
 If you are addressing multiple issues which are unrelated, consider either doing multiple pull requests, or generate separate change files to ensure accurate generation of changelogs and versioning of packages.
+:::
+
+:::note
+If you are finding that your changes are either breaking changes or require multiple pull requests, open a [discussion](https://github.com/microsoft/fast/discussions) to discuss this.
 :::
 
 ### Merging a pull request
@@ -183,7 +192,7 @@ All pull requests must be approved by a *collaborator* before the pull request c
 
 Before a pull request is accepted, time should be given to receive input from *collaborators* or *code owners* with the expertise to evaluate the changes. The amount of time can vary but at least 3 days during the typical working week and 5 days over weekends should be given to account for international time differences and work schedules.
 
-When a pull request : (a) has a significant impact on the project, (b) is inherently controversial, or (c) has not reached consensus with *collaborators*; add a "controversial" label to the pull request for the *steering committee* to review the pull request. Pull requests labeled with "controversial" are not approved until the *steering committee* reviews the issue and makes a decision.
+When a pull request : (a) has a significant impact on the project, (b) is inherently controversial, or (c) has not reached consensus with *collaborators*; add a "status:controversial" label to the pull request for the *steering committee* to review the pull request. Pull requests labeled with "status:controversial" are not approved until the *steering committee* reviews the issue and makes a decision.
 
 Additionally, *owners*, can temporarily enable [interaction limits](https://help.github.com/articles/limiting-interactions-with-your-repository/) to allow a "cool-down" period when hot topics become disruptive.
 
@@ -191,7 +200,7 @@ Specific *collaborators* or *code owners*  can be added to a pull request by inc
 
 ## Stability policy
 
-An essential consideration in every pull request is its impact on the system. To manage impacts, we work collectively to ensure that we do not introduce unnecessary breaking changes, performance or functional regressions, or negative impacts on usability for users or supported partners.
+An essential consideration in every pull request is its impact on the system. To manage impacts, we work collectively to ensure that we do not introduce unnecessary breaking changes, performance or functional regressions, or negative impacts on usability for users or supported partners. To learn more about our approaches to planning and releases, see [our release planning document](https://www.fast.design/docs/community/release-planning).
 
 ## Developer's Certificate of Origin 1.1
 

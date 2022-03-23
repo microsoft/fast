@@ -37,7 +37,7 @@ footer {
 
 .hero-text {
   border-radius: calc(var(--corner-radius, 10) * 1px);
-  background-color: var(--background-color);
+  background-color: var(--fill-color);
   color: var(--neutral-foreground-rest);
   width: 400px;
   display: flex;
@@ -593,7 +593,7 @@ h2,
 
 .featurette-heading {
   font-size: var(--type-ramp-plus-6-font-size);
-  margin-top: 7rem; 
+  margin-top: 7rem;
 }
 
 /* Add the CSS needed for the new FAST design system */

@@ -24,6 +24,7 @@
     suggestions-available-text="Suggestions available"
     loading-text="Loading"
     label="Select some things"
+    placeholder="Select some things"
 ></fast-picker>
 
 <h2>Filter query and filter selection off</h2>
@@ -56,7 +57,25 @@
     options="apples,oranges,bananas,pears,pineapples,strawberries"
     label="Select some things"
 >
-    <fast-picker-menu id="custom-menu">
+    <fast-picker-menu>
+        <fast-picker-menu-option slot="header-region">
+            pre-option
+        </fast-picker-menu-option>
+        <div>Group 1</div>
+        <fast-picker-menu-option value="option 1"></fast-picker-menu-option>
+        <fast-picker-menu-option value="option 2"></fast-picker-menu-option>
+        <div>Group 2</div>
+        <fast-picker-menu-option value="option 3"></fast-picker-menu-option>
+        <fast-picker-menu-option value="option 4"></fast-picker-menu-option>
+        <fast-picker-menu-option slot="footer-region">
+            post-option
+        </fast-picker-menu-option>
+    </fast-picker-menu>
+</fast-picker>
+
+<h2>Custom menu no options</h2>
+<fast-picker default-selection="" selection="" label="Select some things">
+    <fast-picker-menu>
         <fast-picker-menu-option slot="header-region">
             pre-option
         </fast-picker-menu-option>
@@ -102,6 +121,42 @@
     suggestions-available-text="Suggestions available"
     loading-text="Loading"
     label="Select some things"
+></fast-picker>
+
+<h2>Menu above</h2>
+<fast-picker
+    default-selection=""
+    selection=""
+    options="apples,oranges,bananas,pears,pineapples,strawberries"
+    no-suggestions-text="No suggestions available"
+    suggestions-available-text="Suggestions available"
+    loading-text="Loading"
+    label="Select some things"
+    menu-placement="top-fill"
+></fast-picker>
+
+<h2>Menu above or below</h2>
+<fast-picker
+    default-selection=""
+    selection=""
+    options="apples,oranges,bananas,pears,pineapples,strawberries"
+    no-suggestions-text="No suggestions available"
+    suggestions-available-text="Suggestions available"
+    loading-text="Loading"
+    label="Select some things"
+    menu-placement="tallest-fill"
+></fast-picker>
+
+<h2>Menu above or below, not scaling</h2>
+<fast-picker
+    default-selection=""
+    selection=""
+    options="apples,oranges,bananas,pears,pineapples,strawberries"
+    no-suggestions-text="No suggestions available"
+    suggestions-available-text="Suggestions available"
+    loading-text="Loading"
+    label="Select some things"
+    menu-placement="tallest"
 ></fast-picker>
 
 <div style="height: 400px; opacity: 0;"></div>

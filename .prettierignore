@@ -9,3 +9,4 @@
 **/temp
 default-palette.ts
 testData.ts
+packages/tooling/fast-vscode-syntax-highlighting/test

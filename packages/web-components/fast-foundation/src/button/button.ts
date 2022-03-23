@@ -157,7 +157,38 @@ export class Button extends FormAssociatedButton {
 
         this.proxy.setAttribute("type", this.type);
         this.handleUnsupportedDelegatesFocus();
+
+        const elements = Array.from(this.control?.children) as HTMLSpanElement[];
+        if (elements) {
+            elements.forEach((span: HTMLSpanElement) => {
+                span.addEventListener("click", this.handleClick);
+            });
+        }
     }
+
+    /**
+     * @internal
+     */
+    public disconnectedCallback(): void {
+        super.disconnectedCallback();
+
+        const elements = Array.from(this.control?.children) as HTMLSpanElement[];
+        if (elements) {
+            elements.forEach((span: HTMLSpanElement) => {
+                span.removeEventListener("click", this.handleClick);
+            });
+        }
+    }
+
+    /**
+     * Prevent events to propagate if disabled and has no slotted content wrapped in HTML elements
+     * @internal
+     */
+    private handleClick = (e: Event) => {
+        if (this.disabled && this.defaultSlottedContent?.length <= 1) {
+            e.stopPropagation();
+        }
+    };
 
     /**
      * Submits the parent form
@@ -243,7 +274,6 @@ export class DelegatesARIAButton {
  * TODO: https://github.com/microsoft/fast/issues/3317
  * @internal
  */
-/* eslint-disable-next-line */
 export interface DelegatesARIAButton extends ARIAGlobalStatesAndProperties {}
 applyMixins(DelegatesARIAButton, ARIAGlobalStatesAndProperties);
 

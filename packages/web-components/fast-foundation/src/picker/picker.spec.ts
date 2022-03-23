@@ -149,6 +149,22 @@ describe("Picker", () => {
         await disconnect();
     });
 
+    it("picker 'combobox' should reflect label/labbelledby/placeholder attributes on picker", async () => {
+        const { element, connect, disconnect } = await setupPicker();
+
+        element.label = "test label";
+        element.labelledBy = "test labelledby";
+        element.placeholder = "test placeholder";
+
+        await connect();
+
+        expect(element.inputElement?.getAttribute("aria-label")).to.equal("test label");
+        expect(element.inputElement?.getAttribute("aria-labelledby")).to.equal("test labelledby");
+        expect(element.inputElement?.getAttribute("placeholder")).to.equal("test placeholder");
+
+        await disconnect();
+    });
+
     it("picker should create a menu element when instanciated", async () => {
         const { element, connect, disconnect } = await setupPicker();
         await connect();
@@ -250,6 +266,67 @@ describe("Picker", () => {
         listItems = Array.from(element.querySelectorAll("fast-picker-list-item"));
         expect(listItems.length).to.equal(1);
         expect(element.selection).to.equal("apples");
+
+        await disconnect();
+    });
+
+    it("picker should apply settings to place scaling menu below input by default", async () => {
+        const { element, connect, disconnect } = await setupPicker();
+        await connect();
+
+        await DOM.nextUpdate();
+
+        expect(element.menuConfig.verticalDefaultPosition).to.equal("bottom");
+        expect(element.menuConfig.verticalScaling).to.equal("fill");
+
+        await disconnect();
+    });
+
+    it("picker should apply menu placement selections", async () => {
+        const { element, connect, disconnect } = await setupPicker();
+        element.menuPlacement = "top-fill";
+        await connect();
+
+        await DOM.nextUpdate();
+
+        expect(element.menuConfig.verticalDefaultPosition).to.equal("top");
+        expect(element.menuConfig.verticalPositioningMode).to.equal("locktodefault");
+        expect(element.menuConfig.verticalScaling).to.equal("fill");
+
+        element.menuPlacement = "top";
+        await DOM.nextUpdate();
+
+        expect(element.menuConfig.verticalDefaultPosition).to.equal("top");
+        expect(element.menuConfig.verticalPositioningMode).to.equal("locktodefault");
+        expect(element.menuConfig.verticalScaling).to.equal("content");
+
+        element.menuPlacement = "bottom";
+        await DOM.nextUpdate();
+
+        expect(element.menuConfig.verticalDefaultPosition).to.equal("bottom");
+        expect(element.menuConfig.verticalPositioningMode).to.equal("locktodefault");
+        expect(element.menuConfig.verticalScaling).to.equal("content");
+
+        element.menuPlacement = "bottom-fill";
+        await DOM.nextUpdate();
+
+        expect(element.menuConfig.verticalDefaultPosition).to.equal("bottom");
+        expect(element.menuConfig.verticalPositioningMode).to.equal("locktodefault");
+        expect(element.menuConfig.verticalScaling).to.equal("fill");
+
+        element.menuPlacement = "tallest-fill";
+        await DOM.nextUpdate();
+
+        expect(element.menuConfig.verticalDefaultPosition).to.equal(undefined);
+        expect(element.menuConfig.verticalPositioningMode).to.equal("dynamic");
+        expect(element.menuConfig.verticalScaling).to.equal("fill");
+
+        element.menuPlacement = "tallest";
+        await DOM.nextUpdate();
+
+        expect(element.menuConfig.verticalDefaultPosition).to.equal(undefined);
+        expect(element.menuConfig.verticalPositioningMode).to.equal("dynamic");
+        expect(element.menuConfig.verticalScaling).to.equal("content");
 
         await disconnect();
     });

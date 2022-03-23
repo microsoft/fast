@@ -11,16 +11,15 @@ import {
 } from "@microsoft/fast-element";
 import { composedParent } from "../utilities";
 import { composedContains } from "../utilities/composed-contains";
-import { PropertyTargetManager } from "./custom-property-manager";
+import { PropertyTargetManager, RootStyleSheetTarget } from "./custom-property-manager";
 import type {
     DerivedDesignTokenValue,
     DesignTokenConfiguration,
     DesignTokenValue,
     StaticDesignTokenValue,
 } from "./interfaces";
-
-const defaultElement = document.body;
-
+import { defaultElement } from "./custom-property-manager";
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 /**
  * Describes a DesignToken instance.
  * @public
@@ -737,8 +736,6 @@ class DesignTokenNode implements Behavior, Subscriber {
                 token,
                 this.target
             );
-
-            DesignTokenNode.cssCustomPropertyReflector;
         }
     }
 
@@ -838,7 +835,7 @@ class DesignTokenNode implements Behavior, Subscriber {
         return false;
     }
 }
-
+/* eslint-disable @typescript-eslint/no-unused-vars */
 function create<T extends Function>(
     nameOrConfig: string | DesignTokenConfiguration
 ): never;
@@ -857,7 +854,7 @@ function create<T>(
 function create<T>(nameOrConfig: string | DesignTokenConfiguration): any {
     return DesignTokenImpl.from(nameOrConfig);
 }
-
+/* eslint-enable @typescript-eslint/no-unused-vars */
 /**
  * Factory object for creating {@link (DesignToken:interface)} instances.
  * @public
@@ -910,4 +907,24 @@ export const DesignToken = Object.freeze({
         DesignTokenNode.getOrCreate(element).unbind();
         return true;
     },
+
+    /**
+     * Registers and element or document as a DesignToken root.
+     * {@link CSSDesignToken | CSSDesignTokens} with default values assigned via
+     * {@link (DesignToken:interface).withDefault} will emit CSS custom properties to all
+     * registered roots.
+     * @param target - The root to register
+     */
+    registerRoot(target: HTMLElement | Document = defaultElement) {
+        RootStyleSheetTarget.registerRoot(target);
+    },
+
+    /**
+     * Unregister an element or document as a DesignToken root.
+     * @param target - The root to deregister
+     */
+    unregisterRoot(target: HTMLElement | Document = defaultElement) {
+        RootStyleSheetTarget.unregisterRoot(target);
+    },
 });
+/* eslint-enable @typescript-eslint/no-non-null-assertion */

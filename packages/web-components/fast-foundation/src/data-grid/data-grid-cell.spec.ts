@@ -54,12 +54,33 @@ describe("Data grid cell", () => {
         await disconnect();
     });
 
+
+    it("should set role to 'rowheader' when cell-type is 'rowheader'", async () => {
+        const { element, connect, disconnect } = await setup();
+        element.setAttribute("cell-type", "rowheader");
+        await connect();
+
+        expect(element.getAttribute("role")).to.equal("rowheader");
+
+        await disconnect();
+    });
+
     it("should apply 'column-header' css class when cell-type is 'columnheader'", async () => {
         const { element, connect, disconnect } = await setup();
         element.setAttribute("cell-type", "columnheader");
         await connect();
 
         expect(element.className).to.contain("column-header");
+
+        await disconnect();
+    });
+
+    it("should apply 'row-header' css class when cell-type is 'rowheader'", async () => {
+        const { element, connect, disconnect } = await setup();
+        element.setAttribute("cell-type", "rowheader");
+        await connect();
+
+        expect(element.className).to.contain("row-header");
 
         await disconnect();
     });

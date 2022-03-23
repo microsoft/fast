@@ -1,20 +1,17 @@
 import { html, ref, slotted } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
 import { endSlotTemplate, startSlotTemplate } from "../patterns/start-end";
-import type { ElementDefinitionContext } from "../design-system";
+import type { FoundationElementTemplate } from "../foundation-element";
 import type { Anchor, AnchorOptions } from "./anchor";
 
 /**
  * The template for the {@link @microsoft/fast-foundation#(Anchor:class)} component.
  * @public
  */
-export const anchorTemplate: (
-    context: ElementDefinitionContext,
-    definition: AnchorOptions
-) => ViewTemplate<Anchor> = (
-    context: ElementDefinitionContext,
-    definition: AnchorOptions
-) => html`
+export const anchorTemplate: FoundationElementTemplate<
+    ViewTemplate<Anchor>,
+    AnchorOptions
+> = (context, definition) => html`
     <a
         class="control"
         part="control"
@@ -30,7 +27,7 @@ export const anchorTemplate: (
         aria-busy="${x => x.ariaBusy}"
         aria-controls="${x => x.ariaControls}"
         aria-current="${x => x.ariaCurrent}"
-        aria-describedBy="${x => x.ariaDescribedby}"
+        aria-describedby="${x => x.ariaDescribedby}"
         aria-details="${x => x.ariaDetails}"
         aria-disabled="${x => x.ariaDisabled}"
         aria-errormessage="${x => x.ariaErrormessage}"

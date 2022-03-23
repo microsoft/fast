@@ -54,15 +54,14 @@ export class Accordion extends FoundationElement {
     /**
      * @internal
      */
-    public accordionItemsChanged(oldValue, newValue): void {
+    public accordionItemsChanged(oldValue: HTMLElement[], newValue: HTMLElement[]): void {
         if (this.$fastController.isConnected) {
             this.removeItemListeners(oldValue);
-            this.accordionIds = this.getItemIds();
             this.setItems();
         }
     }
 
-    private activeid: string;
+    private activeid: string | null;
     private activeItemIndex: number = 0;
     private accordionIds: Array<string | null>;
 
@@ -70,7 +69,19 @@ export class Accordion extends FoundationElement {
         this.$emit("change");
     };
 
+    private findExpandedItem(): AccordionItem | null {
+        for (let item: number = 0; item < this.accordionItems.length; item++) {
+            if (this.accordionItems[item].getAttribute("expanded") === "true") {
+                return this.accordionItems[item] as AccordionItem;
+            }
+        }
+        return null;
+    }
+
     private setItems = (): void => {
+        if (this.accordionItems.length === 0) {
+            return;
+        }
         this.accordionIds = this.getItemIds();
         this.accordionItems.forEach((item: HTMLElement, index: number) => {
             if (item instanceof AccordionItem) {
@@ -90,6 +101,11 @@ export class Accordion extends FoundationElement {
             item.addEventListener("keydown", this.handleItemKeyDown);
             item.addEventListener("focus", this.handleItemFocus);
         });
+        if (this.isSingleExpandMode()) {
+            const expandedItem: AccordionItem | null =
+                this.findExpandedItem() ?? (this.accordionItems[0] as AccordionItem);
+            expandedItem.setAttribute("aria-disabled", "true");
+        }
     };
 
     private resetItems(): void {
@@ -106,13 +122,19 @@ export class Accordion extends FoundationElement {
         });
     };
 
-    private activeItemChange = (event): void => {
-        const selectedItem = event.target as HTMLElement;
+    private activeItemChange = (event: Event): void => {
+        const selectedItem = event.target as AccordionItem;
+        this.activeid = selectedItem.getAttribute("id");
         if (this.isSingleExpandMode()) {
             this.resetItems();
-            event.target.expanded = true;
+            selectedItem.expanded = true;
+            selectedItem.setAttribute("aria-disabled", "true");
+            this.accordionItems.forEach((item: HTMLElement) => {
+                if (!item.hasAttribute("disabled") && item.id !== this.activeid) {
+                    item.removeAttribute("aria-disabled");
+                }
+            });
         }
-        this.activeid = event.target.getAttribute("id");
         this.activeItemIndex = Array.from(this.accordionItems).indexOf(selectedItem);
         this.change();
     };

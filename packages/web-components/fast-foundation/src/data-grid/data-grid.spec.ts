@@ -98,6 +98,16 @@ describe("Data grid", () => {
         await disconnect();
     });
 
+    it("should have a tabIndex of -1 when no-tabbing is true", async () => {
+        const {  document, element, connect, disconnect } = await setup();
+        element.noTabbing = true;
+        await connect();
+
+        expect(element.getAttribute("tabindex")).to.equal("-1");
+
+        await disconnect();
+    });
+
     it("should have a tabIndex of -1 when a cell is focused", async () => {
         const { document, element, connect, disconnect } = await setup();
 
@@ -149,6 +159,17 @@ describe("Data grid", () => {
 
         expect(rows.length).to.equal(5);
         expect(rows[0].rowType).to.equal(DataGridRowTypes.default);
+
+        await disconnect();
+    });
+
+    it("should not generate a header when rowsData is empty", async () => {
+        const {  document, element, connect, disconnect } = await setup();
+        await connect();
+
+        const rows: DataGridRow[] = Array.from(element.querySelectorAll('[role="row"]'));
+
+        expect(rows.length).to.equal(0);
 
         await disconnect();
     });
@@ -312,6 +333,21 @@ describe("Data grid", () => {
         element.focusColumnIndex = 7;
         await DOM.nextUpdate();
         expect(document.activeElement?.textContent).to.contain("item6");
+
+        await disconnect();
+    });
+
+    it("should auto generate grid-columns from a manual row", async () => {
+        const {  document, element, connect, disconnect } = await setup();
+
+        const row = new DataGridRow();
+        row.appendChild(new DataGridCell());
+        row.appendChild(new DataGridCell());
+        element.appendChild(row);
+        await connect();
+        await DOM.nextUpdate();
+
+        expect(row.gridTemplateColumns).to.equal("1fr 1fr");
 
         await disconnect();
     });

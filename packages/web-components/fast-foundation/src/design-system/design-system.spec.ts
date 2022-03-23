@@ -1,10 +1,11 @@
-import type { Constructable } from "@microsoft/fast-element";
+import { Constructable, DOM } from "@microsoft/fast-element";
 import { expect } from "chai";
 import { FoundationElement } from "..";
-import { Container, DI } from "../di";
+import { Container, DI, Registration } from "../di";
 import { uniqueElementName } from "../test-utilities/fixture";
 import { DesignSystem, ElementDisambiguation } from "./design-system";
-import { DesignSystemRegistrationContext } from "./registration-context";
+import type { DesignSystemRegistrationContext } from "./registration-context";
+import { DesignToken } from "../design-token/design-token";
 
 describe("DesignSystem", () => {
     it("Should return the same instance for the same element", () => {
@@ -32,8 +33,8 @@ describe("DesignSystem", () => {
 
         DesignSystem.getOrCreate(host)
             .register({
-                register(container: Container) {
-                    prefix = container.get(DesignSystemRegistrationContext).elementPrefix;
+                register(container: Container, context: DesignSystemRegistrationContext) {
+                    prefix = context.elementPrefix;
                 }
             });
 
@@ -47,8 +48,8 @@ describe("DesignSystem", () => {
         DesignSystem.getOrCreate(host)
             .withPrefix("custom")
             .register({
-                register(container: Container) {
-                    prefix = container.get(DesignSystemRegistrationContext).elementPrefix;
+                register(container: Container, context: DesignSystemRegistrationContext) {
+                    prefix = context.elementPrefix;
                 }
             });
 
@@ -75,9 +76,8 @@ describe("DesignSystem", () => {
         const host = document.createElement("div");
         DesignSystem.getOrCreate(host)
             .register({
-                register(container: Container) {
-                    capturedDefine = container.get(DesignSystemRegistrationContext)
-                        .tryDefineElement;
+                register(container: Container, context: DesignSystemRegistrationContext) {
+                    capturedDefine = context.tryDefineElement;
                 },
             });
 
@@ -90,9 +90,8 @@ describe("DesignSystem", () => {
         DesignSystem.getOrCreate(host)
             .withPrefix("custom")
             .register({
-                register(container: Container) {
-                    capturePrefix = container.get(DesignSystemRegistrationContext)
-                        .elementPrefix;
+                register(container: Container, context: DesignSystemRegistrationContext) {
+                    capturePrefix = context.elementPrefix;
                 },
             });
 
@@ -108,8 +107,7 @@ describe("DesignSystem", () => {
 
         DesignSystem.getOrCreate(host)
             .register({
-                register(container: Container) {
-                    const context = container.get(DesignSystemRegistrationContext);
+                register(container: Container, context: DesignSystemRegistrationContext) {
                     context.tryDefineElement({
                         name: elementName,
                         type: customElement,
@@ -130,8 +128,7 @@ describe("DesignSystem", () => {
 
         DesignSystem.getOrCreate(host)
             .register({
-                register(container: Container) {
-                    const context = container.get(DesignSystemRegistrationContext);
+                register(container: Container, context: DesignSystemRegistrationContext) {
                     context.tryDefineElement(elementName, customElement, x => x.defineElement());
                 },
             });
@@ -149,8 +146,7 @@ describe("DesignSystem", () => {
 
         DesignSystem.getOrCreate(host)
             .register({
-                register(container: Container) {
-                    const context = container.get(DesignSystemRegistrationContext);
+                register(container: Container, context: DesignSystemRegistrationContext) {
                     context.tryDefineElement({
                         name: elementName,
                         type: customElement,
@@ -177,8 +173,7 @@ describe("DesignSystem", () => {
             })
             .register(
                 {
-                    register(container: Container) {
-                        const context = container.get(DesignSystemRegistrationContext);
+                    register(container: Container, context: DesignSystemRegistrationContext) {
                         context.tryDefineElement({
                             name: elementName,
                             type: class extends HTMLElement {},
@@ -187,8 +182,7 @@ describe("DesignSystem", () => {
                     },
                 },
                 {
-                    register(container: Container) {
-                        const context = container.get(DesignSystemRegistrationContext);
+                    register(container: Container, context: DesignSystemRegistrationContext) {
                         context.tryDefineElement({
                             name: elementName,
                             type: class extends HTMLElement {},
@@ -213,8 +207,7 @@ describe("DesignSystem", () => {
         expect(() => {
             system.register(
                 {
-                    register(container: Container) {
-                        const context = container.get(DesignSystemRegistrationContext);
+                    register(container: Container, context: DesignSystemRegistrationContext) {
                         context.tryDefineElement({
                             name: elementName,
                             type: customElement,
@@ -223,8 +216,7 @@ describe("DesignSystem", () => {
                     },
                 },
                 {
-                    register(container: Container) {
-                        const context = container.get(DesignSystemRegistrationContext);
+                    register(container: Container, context: DesignSystemRegistrationContext) {
                         context.tryDefineElement({
                             name: elementName,
                             type: class extends HTMLElement {},
@@ -253,8 +245,7 @@ describe("DesignSystem", () => {
         expect(() => {
             system.register(
                 {
-                    register(container: Container) {
-                        const context = container.get(DesignSystemRegistrationContext);
+                    register(container: Container, context: DesignSystemRegistrationContext) {
                         context.tryDefineElement({
                             name: elementName,
                             type: customElement,
@@ -264,8 +255,7 @@ describe("DesignSystem", () => {
                     },
                 },
                 {
-                    register(container: Container) {
-                        const context = container.get(DesignSystemRegistrationContext);
+                    register(container: Container, context: DesignSystemRegistrationContext) {
                         context.tryDefineElement({
                             name: elementName,
                             type: class extends HTMLElement {},
@@ -289,8 +279,8 @@ describe("DesignSystem", () => {
 
         DesignSystem.getOrCreate(host)
             .register({
-                register(container: Container) {
-                    container.get(DesignSystemRegistrationContext)
+                register(container: Container, context: DesignSystemRegistrationContext) {
+                    context
                         .tryDefineElement(elementName, FoundationElement, x => {
                             x.defineElement();
                         });
@@ -312,8 +302,7 @@ describe("DesignSystem", () => {
 
         DesignSystem.getOrCreate(host)
             .register({
-                register(container: Container) {
-                    const context = container.get(DesignSystemRegistrationContext);
+                register(container: Container, context: DesignSystemRegistrationContext) {
                     context.tryDefineElement({
                         name: elementName,
                         type: customElement,
@@ -337,8 +326,7 @@ describe("DesignSystem", () => {
         DesignSystem.getOrCreate(host)
             .withShadowRootMode('open')
             .register({
-                register(container: Container) {
-                    const context = container.get(DesignSystemRegistrationContext);
+                register(container: Container, context: DesignSystemRegistrationContext) {
                     context.tryDefineElement({
                         name: elementName,
                         type: customElement,
@@ -362,8 +350,7 @@ describe("DesignSystem", () => {
         DesignSystem.getOrCreate(host)
             .withShadowRootMode('closed')
             .register({
-                register(container: Container) {
-                    const context = container.get(DesignSystemRegistrationContext);
+                register(container: Container, context: DesignSystemRegistrationContext) {
                     context.tryDefineElement({
                         name: elementName,
                         type: customElement,
@@ -376,5 +363,77 @@ describe("DesignSystem", () => {
             });
 
         expect(mode).to.equal('closed');
+    });
+
+    it("should enable DI service overrides through the design system", () => {
+        interface Test {}
+
+        class DefaultTest implements Test {}
+        class AltTest implements Test {}
+
+        const Test = DI.createInterface<Test>(x => x.singleton(DefaultTest));
+
+        const host = document.createElement("div");
+        DesignSystem.getOrCreate(host)
+            .register(
+                Registration.singleton(Test, AltTest)
+            );
+
+        const found = DI.getOrCreateDOMContainer(host).get(Test);
+
+        expect(found).to.be.instanceOf(AltTest);
+    });
+
+    it("should set the DesignToken root to the default root when register is invoked", async () => {
+        const token = DesignToken.create<number>("design-system-registration").withDefault(12);
+        const host = document.createElement("div");
+        expect(window.getComputedStyle(document.body).getPropertyValue(token.cssCustomProperty)).to.equal("");
+
+        DesignSystem.getOrCreate(host)
+            .register({
+                register(container: Container, context: DesignSystemRegistrationContext) {}
+            });
+
+
+        await DOM.nextUpdate();
+        expect(window.getComputedStyle(document.body).getPropertyValue(token.cssCustomProperty)).to.equal("12");
+
+        DesignToken.unregisterRoot();
+        await DOM.nextUpdate();
+    });
+
+    it("should provide a way to specify the DesignToken root", async () => {
+        const token = DesignToken.create<number>("custom-design-system-registration").withDefault(12);
+        const host = document.createElement("div");
+        expect(window.getComputedStyle(document.body).getPropertyValue(token.cssCustomProperty)).to.equal("");
+
+        DesignSystem.getOrCreate(host)
+            .withDesignTokenRoot(host)
+            .register({
+                register(container: Container, context: DesignSystemRegistrationContext) {}
+            });
+
+
+        await DOM.nextUpdate();
+        const value = host.style.getPropertyValue(token.cssCustomProperty)
+        expect(value).to.equal("12");
+        expect(window.getComputedStyle(document.body).getPropertyValue(token.cssCustomProperty)).to.equal("");
+        DesignToken.unregisterRoot(host);
+        await DOM.nextUpdate();
+        expect(window.getComputedStyle(document.body).getPropertyValue(token.cssCustomProperty)).to.equal("");
+    });
+    it("should provide a way to disable DesignToken root registration", async () => {
+        const token = DesignToken.create<number>("disabled-design-system-registration").withDefault(12);
+        expect(window.getComputedStyle(document.body).getPropertyValue(token.cssCustomProperty)).to.equal("");
+
+        DesignSystem.getOrCreate()
+            .withDesignTokenRoot(null)
+            .register({
+                register(container: Container, context: DesignSystemRegistrationContext) {}
+            });
+
+
+        await DOM.nextUpdate();
+        expect(window.getComputedStyle(document.body).getPropertyValue(token.cssCustomProperty)).to.equal("");
     });
 });

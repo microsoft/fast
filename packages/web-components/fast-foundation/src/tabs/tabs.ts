@@ -42,7 +42,16 @@ export class Tabs extends FoundationElement {
      */
     @attr
     public orientation: TabsOrientation = TabsOrientation.horizontal;
-
+    /**
+     * @internal
+     */
+    public orientationChanged(): void {
+        if (this.$fastController.isConnected) {
+            this.setTabs();
+            this.setTabPanels();
+            this.handleActiveIndicatorPosition();
+        }
+    }
     /**
      * The id of the active tab
      *
@@ -55,11 +64,14 @@ export class Tabs extends FoundationElement {
     /**
      * @internal
      */
-    public activeidChanged(): void {
+    public activeidChanged(oldValue: string, newValue: string): void {
         if (
             this.$fastController.isConnected &&
             this.tabs.length <= this.tabpanels.length
         ) {
+            this.prevActiveTabIndex = this.tabs.findIndex(
+                (item: HTMLElement) => item.id === oldValue
+            );
             this.setTabs();
             this.setTabPanels();
             this.handleActiveIndicatorPosition();
@@ -161,14 +173,20 @@ export class Tabs extends FoundationElement {
     }
 
     private setTabs = (): void => {
-        const gridProperty: string = this.isHorizontal() ? "gridColumn" : "gridRow";
+        const gridHorizontalProperty: string = "gridColumn";
+        const gridVerticalProperty: string = "gridRow";
+        const gridProperty: string = this.isHorizontal()
+            ? gridHorizontalProperty
+            : gridVerticalProperty;
         this.tabIds = this.getTabIds();
         this.tabpanelIds = this.getTabPanelIds();
         this.activeTabIndex = this.getActiveIndex();
         this.showActiveIndicator = false;
         this.tabs.forEach((tab: HTMLElement, index: number) => {
-            if (tab.slot === "tab" && this.isFocusableElement(tab)) {
-                if (this.activeindicator) {
+            if (tab.slot === "tab") {
+                const isActiveTab =
+                    this.activeTabIndex === index && this.isFocusableElement(tab);
+                if (this.activeindicator && this.isFocusableElement(tab)) {
                     this.showActiveIndicator = true;
                 }
                 const tabId: string | null = this.tabIds[index];
@@ -177,21 +195,23 @@ export class Tabs extends FoundationElement {
                     "id",
                     typeof tabId !== "string" ? `tab-${index + 1}` : tabId
                 );
-                tab.setAttribute(
-                    "aria-selected",
-                    this.activeTabIndex === index ? "true" : "false"
-                );
+                tab.setAttribute("aria-selected", isActiveTab ? "true" : "false");
                 tab.setAttribute(
                     "aria-controls",
                     typeof tabpanelId !== "string" ? `panel-${index + 1}` : tabpanelId
                 );
                 tab.addEventListener("click", this.handleTabClick);
                 tab.addEventListener("keydown", this.handleTabKeyDown);
-                tab.setAttribute("tabindex", this.activeTabIndex === index ? "0" : "-1");
-                if (this.activeTabIndex === index) {
+                tab.setAttribute("tabindex", isActiveTab ? "0" : "-1");
+                if (isActiveTab) {
                     this.activetab = tab;
                 }
             }
+
+            // If the original property isn't emptied out,
+            // the next set will morph into a grid-area style setting that is not what we want
+            tab.style[gridHorizontalProperty] = "";
+            tab.style[gridVerticalProperty] = "";
             tab.style[gridProperty] = `${index + 1}`;
             !this.isHorizontal()
                 ? tab.classList.add("vertical")
@@ -234,10 +254,6 @@ export class Tabs extends FoundationElement {
     private setComponent(): void {
         if (this.activeTabIndex !== this.prevActiveTabIndex) {
             this.activeid = this.tabIds[this.activeTabIndex] as string;
-            this.change();
-            this.setTabs();
-            this.handleActiveIndicatorPosition();
-            this.setTabPanels();
             this.focusTab();
             this.change();
         }
@@ -245,7 +261,7 @@ export class Tabs extends FoundationElement {
 
     private handleTabClick = (event: MouseEvent): void => {
         const selectedTab = event.currentTarget as HTMLElement;
-        if (selectedTab.nodeType === 1) {
+        if (selectedTab.nodeType === 1 && this.isFocusableElement(selectedTab)) {
             this.prevActiveTabIndex = this.activeTabIndex;
             this.activeTabIndex = this.tabs.indexOf(selectedTab);
             this.setComponent();

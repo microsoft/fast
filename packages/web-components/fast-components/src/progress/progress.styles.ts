@@ -1,8 +1,8 @@
 import { css, ElementStyles } from "@microsoft/fast-element";
 import {
     display,
-    ElementDefinitionContext,
     forcedColorsStylesheetBehavior,
+    FoundationElementTemplate,
     ProgressOptions,
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
@@ -13,10 +13,14 @@ import {
     neutralForegroundHint,
 } from "../design-tokens";
 
-export const progressStyles: (
-    context: ElementDefinitionContext,
-    definition: ProgressOptions
-) => ElementStyles = (context: ElementDefinitionContext, definition: ProgressOptions) =>
+/**
+ * Styles for Progress
+ * @public
+ */
+export const progressStyles: FoundationElementTemplate<ElementStyles, ProgressOptions> = (
+    context,
+    definition
+) =>
     css`
         ${display("flex")} :host {
             align-items: center;

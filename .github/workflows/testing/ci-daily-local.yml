@@ -11,10 +11,10 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    
+
     - name: Add/Update packages
       run: |
-        sudo apt-get update 
+        sudo apt-get update
         sudo apt-get install yarn
         sudo yarn global upgrade typescript
         sudo yarn global add lerna
@@ -30,12 +30,11 @@ jobs:
 
     - name: Collect and upload code coverage to Code Climate
       uses: paambaati/codeclimate-action@v2.6.0
-      env: 
+      env:
         CC_TEST_REPORTER_ID: 08a773cb4ea5811add5a45e12873e5cd2634c005568705cc37abfd5217617a32
       with:
         coverageCommand: lerna run coverage
         coverageLocations: |
-          ${{github.workspace}}/packages/tooling/fast-tooling-react/coverage/lcov.info:lcov
           ${{github.workspace}}/packages/utilities/fast-animation/coverage/lcov.info:lcov
           ${{github.workspace}}/packages/utilities/fast-colors/coverage/lcov.info:lcov
           ${{github.workspace}}/sites/fast-component-explorer/coverage/lcov.info:lcov

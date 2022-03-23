@@ -18,14 +18,23 @@ import {
     keyDelete,
     keyEnter,
     keyEscape,
+    uniqueId,
 } from "@microsoft/fast-web-utilities";
-import uniqueId from "lodash-es/uniqueId";
-import type { AnchoredRegion } from "../anchored-region";
+import {
+    AnchoredRegion,
+    AnchoredRegionConfig,
+    FlyoutPosBottom,
+    FlyoutPosBottomFill,
+    FlyoutPosTallest,
+    FlyoutPosTallestFill,
+    FlyoutPosTop,
+    FlyoutPosTopFill,
+} from "../anchored-region";
 import type { PickerMenu } from "./picker-menu";
 import { PickerMenuOption } from "./picker-menu-option";
 import { PickerListItem } from "./picker-list-item";
 import { FormAssociatedPicker } from "./picker.form-associated";
-import type { PickerList } from ".";
+import type { PickerList } from "./picker-list";
 
 const pickerInputTemplate: ViewTemplate = html<Picker>`
     <input
@@ -37,9 +46,23 @@ const pickerInputTemplate: ViewTemplate = html<Picker>`
         haspopup="list"
         aria-label="${x => x.label}"
         aria-labelledby="${x => x.labelledBy}"
+        placeholder="${x => x.placeholder}"
         ${ref("inputElement")}
     ></input>
 `;
+
+/**
+ * Defines the vertical positioning options for an anchored region
+ *
+ * @beta
+ */
+export type menuConfigs =
+    | "bottom"
+    | "bottom-fill"
+    | "tallest"
+    | "tallest-fill"
+    | "top"
+    | "top-fill";
 
 /**
  * A Picker Custom HTML Element.  This is an early "alpha" version of the component.
@@ -162,6 +185,31 @@ export class Picker extends FormAssociatedPicker {
      */
     @attr({ attribute: "labelledby" })
     public labelledBy: string;
+
+    /**
+     * Applied to the placeholder attribute of the input element
+     *
+     * @alpha
+     * @remarks
+     * HTML Attribute: placholder
+     */
+    @attr({ attribute: "placeholder" })
+    public placeholder: string;
+
+    /**
+     * Controls menu placement
+     *
+     * @alpha
+     * @remarks
+     * HTML Attribute: menu-placement
+     */
+    @attr({ attribute: "menu-placement" })
+    public menuPlacement: menuConfigs = "bottom-fill";
+    private menuPlacementChanged(): void {
+        if (this.$fastController.isConnected) {
+            this.updateMenuConfig();
+        }
+    }
 
     /**
      * Whether to display a loading state if the menu is opened.
@@ -295,8 +343,10 @@ export class Picker extends FormAssociatedPicker {
     public filteredOptionsList: string[] = [];
     private filteredOptionsListChanged(): void {
         if (this.$fastController.isConnected) {
-            this.showNoOptions = this.filteredOptionsList.length === 0;
-            this.setFocusedOption(this.filteredOptionsList.length === 0 ? -1 : 0);
+            this.showNoOptions =
+                this.filteredOptionsList.length === 0 &&
+                this.menuElement.querySelectorAll('[role="listitem"]').length === 0;
+            this.setFocusedOption(this.showNoOptions ? -1 : 0);
         }
     }
 
@@ -370,6 +420,14 @@ export class Picker extends FormAssociatedPicker {
             });
         }
     }
+
+    /**
+     *  The anchored region config to apply.
+     *
+     * @internal
+     */
+    @observable
+    public menuConfig: AnchoredRegionConfig;
 
     /**
      *  Reference to the placeholder element for the repeat directive
@@ -450,6 +508,8 @@ export class Picker extends FormAssociatedPicker {
         this.optionsPlaceholder = document.createComment("");
         this.menuElement.append(this.optionsPlaceholder);
 
+        this.updateMenuConfig();
+
         DOM.queueUpdate(() => this.initialize());
     }
 
@@ -487,6 +547,7 @@ export class Picker extends FormAssociatedPicker {
 
         this.inputElement.addEventListener("input", this.handleTextInput);
         this.inputElement.addEventListener("click", this.handleInputClick);
+        /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */
         this.$fastController.addBehaviors([this.itemsRepeatBehavior!]);
 
         this.menuElement.suggestionsAvailableText = this.suggestionsAvailableText;
@@ -501,6 +562,7 @@ export class Picker extends FormAssociatedPicker {
             { positioning: true }
         ).createBehavior(this.optionsPlaceholder);
 
+        /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */
         this.$fastController.addBehaviors([this.optionsRepeatBehavior!]);
 
         this.handleSelectionChange();
@@ -817,8 +879,10 @@ export class Picker extends FormAssociatedPicker {
                     e.target.value
                 }`;
             }
-            this.toggleFlyout(false);
             this.inputElement.value = "";
+            this.query = "";
+            this.inputElement.focus();
+            this.toggleFlyout(false);
             return false;
         }
 
@@ -953,4 +1017,35 @@ export class Picker extends FormAssociatedPicker {
             );
         }
     }
+
+    /**
+     * Updates the menu configuration
+     */
+    private updateMenuConfig(): void {
+        let newConfig = this.configLookup[this.menuPlacement];
+
+        if (newConfig === null) {
+            newConfig = FlyoutPosBottomFill;
+        }
+
+        this.menuConfig = {
+            ...newConfig,
+            autoUpdateMode: "auto",
+            fixedPlacement: true,
+            horizontalViewportLock: false,
+            verticalViewportLock: false,
+        };
+    }
+
+    /**
+     * matches menu placement values with the associated menu config
+     */
+    private configLookup: object = {
+        top: FlyoutPosTop,
+        bottom: FlyoutPosBottom,
+        tallest: FlyoutPosTallest,
+        "top-fill": FlyoutPosTopFill,
+        "bottom-fill": FlyoutPosBottomFill,
+        "tallest-fill": FlyoutPosTallestFill,
+    };
 }

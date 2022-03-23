@@ -18,6 +18,7 @@ export enum GenerateHeaderOptions {
 export enum DataGridCellTypes {
     default = "default",
     columnHeader = "columnheader",
+    rowHeader = "rowheader",
 }
 
 /**

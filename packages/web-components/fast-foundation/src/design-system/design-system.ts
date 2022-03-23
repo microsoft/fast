@@ -1,15 +1,16 @@
 import { Constructable, FASTElementDefinition } from "@microsoft/fast-element";
 import { FoundationElement } from "../foundation-element/foundation-element";
 import { Container, DI, Registration } from "../di/di";
+import { DesignToken } from "../design-token/design-token";
 import { ComponentPresentation } from "./component-presentation";
-import {
+import type {
     ContextualElementDefinition,
     DesignSystemRegistrationContext,
     ElementDefinitionCallback,
     ElementDefinitionContext,
     ElementDefinitionParams,
 } from "./registration-context";
-
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 /**
  * Indicates what to do with an ambiguous (duplicate) element.
  * @public
@@ -90,6 +91,17 @@ export interface DesignSystem {
      * @public
      */
     withElementDisambiguation(callback: ElementDisambiguationCallback): DesignSystem;
+
+    /**
+     * Overrides the {@link (DesignToken:interface)} root, controlling where
+     * {@link (DesignToken:interface)} default value CSS custom properties
+     * are emitted.
+     *
+     * Providing `null` disables automatic DesignToken registration.
+     * @param root - the root to register
+     * @public
+     */
+    withDesignTokenRoot(root: HTMLElement | Document | null): DesignSystem;
 }
 
 let rootDesignSystem: DesignSystem | null = null;
@@ -170,10 +182,27 @@ export const DesignSystem = Object.freeze({
     },
 });
 
+function extractTryDefineElementParams(
+    params: string | ElementDefinitionParams,
+    elementDefinitionType?: Constructable,
+    elementDefinitionCallback?: ElementDefinitionCallback
+): ElementDefinitionParams {
+    if (typeof params === "string") {
+        return {
+            name: params,
+            type: elementDefinitionType!,
+            callback: elementDefinitionCallback!,
+        };
+    } else {
+        return params;
+    }
+}
+
 class DefaultDesignSystem implements DesignSystem {
+    private designTokensInitialized: boolean = false;
+    private designTokenRoot: HTMLElement | null | undefined;
     private prefix: string = "fast";
     private shadowRootMode: ShadowRootMode | undefined = undefined;
-    private context: DesignSystemRegistrationContext;
     private disambiguate: ElementDisambiguationCallback = () =>
         ElementDisambiguation.definitionCallbackOnly;
 
@@ -181,10 +210,6 @@ class DefaultDesignSystem implements DesignSystem {
         if (owner !== null) {
             owner.$$designSystem$$ = this;
         }
-
-        container.register(
-            Registration.callback(DesignSystemRegistrationContext, () => this.context)
-        );
     }
 
     public withPrefix(prefix: string): DesignSystem {
@@ -204,97 +229,85 @@ class DefaultDesignSystem implements DesignSystem {
         return this;
     }
 
+    public withDesignTokenRoot(root: HTMLElement | null): DesignSystem {
+        this.designTokenRoot = root;
+        return this;
+    }
+
     public register(...registrations: any[]): DesignSystem {
         const container = this.container;
         const elementDefinitionEntries: ElementDefinitionEntry[] = [];
         const disambiguate = this.disambiguate;
         const shadowRootMode = this.shadowRootMode;
+        const context: DesignSystemRegistrationContext = {
+            elementPrefix: this.prefix,
+            tryDefineElement(
+                params: string | ElementDefinitionParams,
+                elementDefinitionType?: Constructable,
+                elementDefinitionCallback?: ElementDefinitionCallback
+            ) {
+                const extractedParams = extractTryDefineElementParams(
+                    params,
+                    elementDefinitionType,
+                    elementDefinitionCallback
+                );
+                const { name, callback, baseClass } = extractedParams;
+                let { type } = extractedParams;
+                let elementName: string | null = name;
 
-        const extractTryDefineElementParams = (
-            params: string | ElementDefinitionParams,
-            elementDefinitionType?: Constructable,
-            elementDefinitionCallback?: ElementDefinitionCallback
-        ): ElementDefinitionParams => {
-            if (typeof params === "string") {
-                return {
-                    name: params,
-                    type: elementDefinitionType!,
-                    callback: elementDefinitionCallback!,
-                };
-            } else {
-                return params;
-            }
+                let typeFoundByName = elementTypesByTag.get(elementName);
+                let needsDefine = true;
+
+                while (typeFoundByName) {
+                    const result = disambiguate(elementName, type, typeFoundByName);
+
+                    switch (result) {
+                        case ElementDisambiguation.ignoreDuplicate:
+                            return;
+                        case ElementDisambiguation.definitionCallbackOnly:
+                            needsDefine = false;
+                            typeFoundByName = void 0;
+                            break;
+                        default:
+                            elementName = result as string;
+                            typeFoundByName = elementTypesByTag.get(elementName);
+                            break;
+                    }
+                }
+
+                if (needsDefine) {
+                    if (elementTagsByType.has(type) || type === FoundationElement) {
+                        type = class extends type {};
+                    }
+                    elementTypesByTag.set(elementName, type);
+                    elementTagsByType.set(type, elementName);
+                    if (baseClass) {
+                        elementTagsByType.set(baseClass, elementName!);
+                    }
+                }
+
+                elementDefinitionEntries.push(
+                    new ElementDefinitionEntry(
+                        container,
+                        elementName,
+                        type,
+                        shadowRootMode,
+                        callback,
+                        needsDefine
+                    )
+                );
+            },
         };
 
-        function tryDefineElement(params: ElementDefinitionParams);
-        function tryDefineElement(
-            name: string,
-            type: Constructable,
-            callback: ElementDefinitionCallback
-        );
-        function tryDefineElement(
-            params: string | ElementDefinitionParams,
-            elementDefinitionType?: Constructable,
-            elementDefinitionCallback?: ElementDefinitionCallback
-        ) {
-            const extractedParams = extractTryDefineElementParams(
-                params,
-                elementDefinitionType,
-                elementDefinitionCallback
-            );
-            const { name, callback, baseClass } = extractedParams;
-            let { type } = extractedParams;
-            let elementName: string | null = name;
+        if (!this.designTokensInitialized) {
+            this.designTokensInitialized = true;
 
-            let typeFoundByName = elementTypesByTag.get(elementName);
-            let needsDefine = true;
-
-            while (typeFoundByName) {
-                const result = disambiguate(elementName, type, typeFoundByName);
-
-                switch (result) {
-                    case ElementDisambiguation.ignoreDuplicate:
-                        return;
-                    case ElementDisambiguation.definitionCallbackOnly:
-                        needsDefine = false;
-                        typeFoundByName = void 0;
-                        break;
-                    default:
-                        elementName = result as string;
-                        typeFoundByName = elementTypesByTag.get(elementName);
-                        break;
-                }
+            if (this.designTokenRoot !== null) {
+                DesignToken.registerRoot(this.designTokenRoot);
             }
-
-            if (needsDefine) {
-                if (elementTagsByType.has(type) || type === FoundationElement) {
-                    type = class extends type {};
-                }
-                elementTypesByTag.set(elementName, type);
-                elementTagsByType.set(type, elementName);
-                if (baseClass) {
-                    elementTagsByType.set(baseClass, elementName!);
-                }
-            }
-
-            elementDefinitionEntries.push(
-                new ElementDefinitionEntry(
-                    container,
-                    elementName,
-                    type,
-                    shadowRootMode,
-                    callback,
-                    needsDefine
-                )
-            );
         }
 
-        this.context = {
-            elementPrefix: this.prefix,
-            tryDefineElement,
-        };
-
-        container.register(...registrations);
+        container.registerWithContext(context, ...registrations);
 
         for (const entry of elementDefinitionEntries) {
             entry.callback(entry);
@@ -335,3 +348,4 @@ class ElementDefinitionEntry implements ElementDefinitionContext {
         return DesignSystem.tagFor(type)!;
     }
 }
+/* eslint-enable @typescript-eslint/no-non-null-assertion */

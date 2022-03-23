@@ -2,6 +2,87 @@
   "name": "@microsoft/fast-animation",
   "entries": [
     {
+      "date": "Wed, 02 Feb 2022 07:13:39 GMT",
+      "tag": "@microsoft/fast-animation_v4.1.8",
+      "version": "4.1.8",
+      "comments": {
+        "none": [
+          {
+            "comment": "update node types to 15.0.1",
+            "author": "john.kreitlow@microsoft.com",
+            "commit": "48779abc5f0f746dc5d67b9d3c2875f455374ee6",
+            "package": "@microsoft/fast-animation"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sun, 30 Jan 2022 07:12:35 GMT",
+      "tag": "@microsoft/fast-animation_v4.1.8",
+      "version": "4.1.8",
+      "comments": {
+        "patch": [
+          {
+            "comment": "remove webpack-modernizr-plugin from fast-animation",
+            "author": "john.kreitlow@microsoft.com",
+            "commit": "34b614535176643a2424bba5a17e75373c345de5",
+            "package": "@microsoft/fast-animation"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 25 Jan 2022 07:11:53 GMT",
+      "tag": "@microsoft/fast-animation_v4.1.7",
+      "version": "4.1.7",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-web-utilities to v5.1.0",
+            "author": "john.kreitlow@microsoft.com",
+            "commit": "97f653f8ee62c74d47df9b60024ff8eef05c79d1",
+            "package": "@microsoft/fast-animation"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sun, 31 Oct 2021 07:17:45 GMT",
+      "tag": "@microsoft/fast-animation_v4.1.6",
+      "version": "4.1.6",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/eslint-config-fast-dna to v2.0.0",
+            "author": "chhol@microsoft.com",
+            "commit": "a150068ee196e73fe7a4f7b538a38752e0e506ba",
+            "package": "@microsoft/fast-animation"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 13 Oct 2021 01:53:37 GMT",
+      "tag": "@microsoft/fast-animation_v4.1.5",
+      "version": "4.1.5",
+      "comments": {
+        "patch": [
+          {
+            "comment": "use requestAnimationFrame in fast-animation",
+            "author": "john.kreitlow@microsoft.com",
+            "commit": "696d66c1382aebedc9410b83362c4dbda131a638",
+            "package": "@microsoft/fast-animation"
+          },
+          {
+            "comment": "refactor: remove lodash-es as a dependency",
+            "author": "connor@peet.io",
+            "commit": "4ef4b325f8259dd0f648b5fe1b393ef8839e643e",
+            "package": "@microsoft/fast-animation"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 08 Jul 2021 07:17:00 GMT",
       "tag": "@microsoft/fast-animation_v4.1.4",
       "version": "4.1.4",

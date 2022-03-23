@@ -82,6 +82,5 @@ export class AccordionItem extends FoundationElement {
  * TODO: https://github.com/microsoft/fast/issues/3317
  * @internal
  */
-/* eslint-disable-next-line */
 export interface AccordionItem extends StartEnd {}
 applyMixins(AccordionItem, StartEnd);

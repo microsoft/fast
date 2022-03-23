@@ -86,6 +86,11 @@ export interface ColumnDefinition {
      */
 
     cellFocusTargetCallback?: (cell: DataGridCell) => HTMLElement;
+
+    /**
+     * Whether this column is the row header
+     */
+    isRowHeader?: boolean;
 }
 
 /**
@@ -119,6 +124,32 @@ export class DataGrid extends FoundationElement {
             }${"1fr"}`;
         });
         return templateColumns;
+    }
+
+    /**
+     * When true the component will not add itself to the tab queue.
+     * Default is false.
+     *
+     * @public
+     * @remarks
+     * HTML Attribute: no-tabbing
+     */
+    @attr({ attribute: "no-tabbing", mode: "boolean" })
+    public noTabbing: boolean = false;
+    private noTabbingChanged(): void {
+        if (this.$fastController.isConnected) {
+            if (this.noTabbing) {
+                this.setAttribute("tabIndex", "-1");
+            } else {
+                this.setAttribute(
+                    "tabIndex",
+                    this.contains(document.activeElement) ||
+                        this === document.activeElement
+                        ? "-1"
+                        : "0"
+                );
+            }
+        }
     }
 
     /**
@@ -161,6 +192,9 @@ export class DataGrid extends FoundationElement {
     private rowsDataChanged(): void {
         if (this.columnDefinitions === null && this.rowsData.length > 0) {
             this.columnDefinitions = DataGrid.generateColumns(this.rowsData[0]);
+        }
+        if (this.$fastController.isConnected) {
+            this.toggleGeneratedHeader();
         }
     }
 
@@ -311,6 +345,7 @@ export class DataGrid extends FoundationElement {
             { positioning: true }
         ).createBehavior(this.rowsPlaceholder);
 
+        /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */
         this.$fastController.addBehaviors([this.rowsRepeatBehavior!]);
 
         this.addEventListener("row-focused", this.handleRowFocus);
@@ -321,6 +356,10 @@ export class DataGrid extends FoundationElement {
         this.observer = new MutationObserver(this.onChildListChange);
         // only observe if nodes are added or removed
         this.observer.observe(this, { childList: true });
+
+        if (this.noTabbing) {
+            this.setAttribute("tabindex", "-1");
+        }
 
         DOM.queueUpdate(this.queueRowIndexUpdate);
     }
@@ -367,7 +406,7 @@ export class DataGrid extends FoundationElement {
      */
     public handleFocusOut(e: FocusEvent): void {
         if (e.relatedTarget === null || !this.contains(e.relatedTarget as Element)) {
-            this.setAttribute("tabIndex", "0");
+            this.setAttribute("tabIndex", this.noTabbing ? "-1" : "0");
         }
     }
 
@@ -501,7 +540,7 @@ export class DataGrid extends FoundationElement {
         const focusRow: Element = this.rowElements[focusRowIndex];
 
         const cells: NodeListOf<Element> = focusRow.querySelectorAll(
-            '[role="cell"], [role="gridcell"], [role="columnheader"]'
+            '[role="cell"], [role="gridcell"], [role="columnheader"], [role="rowheader"]'
         );
 
         const focusColumnIndex = Math.max(0, Math.min(cells.length - 1, columnIndex));
@@ -545,7 +584,10 @@ export class DataGrid extends FoundationElement {
             this.generatedHeader = null;
         }
 
-        if (this.generateHeader !== GenerateHeaderOptions.none) {
+        if (
+            this.generateHeader !== GenerateHeaderOptions.none &&
+            this.rowsData.length > 0
+        ) {
             const generatedHeaderElement: HTMLElement = document.createElement(
                 this.rowElementTag
             );
@@ -571,7 +613,7 @@ export class DataGrid extends FoundationElement {
         /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
         observer: MutationObserver
     ): void => {
-        if (mutations!.length) {
+        if (mutations && mutations.length) {
             mutations.forEach((mutation: MutationRecord): void => {
                 mutation.addedNodes.forEach((newNode: Node): void => {
                     if (
@@ -595,10 +637,21 @@ export class DataGrid extends FoundationElement {
     };
 
     private updateRowIndexes = (): void => {
-        const newGridTemplateColumns =
-            this.gridTemplateColumns === undefined
-                ? this.generatedGridTemplateColumns
-                : this.gridTemplateColumns;
+        let newGridTemplateColumns = this.gridTemplateColumns;
+
+        if (newGridTemplateColumns === undefined) {
+            // try to generate columns based on manual rows
+            if (this.generatedGridTemplateColumns === "" && this.rowElements.length > 0) {
+                const firstRow: DataGridRow = this.rowElements[0] as DataGridRow;
+                this.generatedGridTemplateColumns = new Array(
+                    firstRow.cellElements.length
+                )
+                    .fill("1fr")
+                    .join(" ");
+            }
+
+            newGridTemplateColumns = this.generatedGridTemplateColumns;
+        }
 
         this.rowElements.forEach((element: Element, index: number): void => {
             const thisRow = element as DataGridRow;

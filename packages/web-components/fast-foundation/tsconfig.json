@@ -3,21 +3,15 @@
     "compilerOptions": {
         "declarationDir": "dist/dts",
         "outDir": "dist/esm",
-        "strictNullChecks": true,
         "experimentalDecorators": true,
+        "suppressImplicitAnyIndexErrors": true,
+        "strictPropertyInitialization": false,
         "importsNotUsedAsValues": "error",
         "target": "es2015",
         "module": "ESNext",
         "importHelpers": true,
-        "types": [
-            "mocha",
-            "webpack-env"
-        ],
-        "lib": [
-            "DOM",
-            "ES2015",
-            "ES2016.Array.Include"
-        ]
+        "types": ["mocha", "webpack-env"],
+        "lib": ["DOM", "ES2015", "ES2016.Array.Include"]
     },
     "include": ["src"]
 }

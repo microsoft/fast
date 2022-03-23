@@ -40,7 +40,7 @@ if (process.env.WEBSITE_HOSTNAME.indexOf("create") > -1) {
 var publicDir = path.resolve(__dirname);
 
 // Set static application options
-app.use("/", express.static(publicDir, { maxAge: "0d" }));
+app.use("/", express.static(publicDir));
 
 // Set fallback application options
 app.use(fallback("index.html", { root: publicDir }));

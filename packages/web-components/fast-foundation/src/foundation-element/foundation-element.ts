@@ -9,7 +9,7 @@ import {
     ComponentPresentation,
     DefaultComponentPresentation,
 } from "../design-system/component-presentation";
-import {
+import type {
     DesignSystemRegistrationContext,
     ElementDefinitionContext,
 } from "../design-system/registration-context";
@@ -208,6 +208,7 @@ function resolveOption<T, K extends FoundationElementDefinition>(
  *
  * @internal
  */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 export class FoundationElementRegistry<
     TDefinition extends FoundationElementDefinition,
     TType
@@ -225,10 +226,9 @@ export class FoundationElementRegistry<
         } as OverrideFoundationElementDefinition<TDefinition>;
     }
 
-    public register(container: Container) {
+    public register(container: Container, context: DesignSystemRegistrationContext) {
         const definition = this.definition;
         const overrideDefinition = this.overrideDefinition;
-        const context = container.get(DesignSystemRegistrationContext);
         const prefix = definition.prefix || context.elementPrefix;
         const name = `${prefix}-${definition.baseName}`;
 
@@ -285,3 +285,4 @@ export class FoundationElementRegistry<
         });
     }
 }
+/* eslint-enable @typescript-eslint/no-unused-vars */

@@ -17,11 +17,11 @@ export class Disclosure extends FoundationDisclosure {
     /**
      * Disclosure default height
      */
-    private height: number;
+    private height: number = 0;
     /**
      * Disclosure height after it's expanded
      */
-    private totalHeight: number;
+    private totalHeight: number = 0;
 
     /**
      * The appearance the anchor should have.
@@ -31,7 +31,7 @@ export class Disclosure extends FoundationDisclosure {
      * HTML Attribute: appearance
      */
     @attr
-    public appearance: DisclosureAppearance;
+    public appearance: DisclosureAppearance = "accent";
     public appearanceChanged(
         oldValue: DisclosureAppearance,
         newValue: DisclosureAppearance
@@ -57,9 +57,6 @@ export class Disclosure extends FoundationDisclosure {
      */
     protected setup() {
         super.setup();
-        if (!this.appearance) {
-            this.appearance = "accent";
-        }
 
         const getCurrentHeight = () => this.details.getBoundingClientRect().height;
         this.show();
@@ -78,19 +75,13 @@ export class Disclosure extends FoundationDisclosure {
 }
 
 /**
- * Styles for Disclosure
- * @public
- */
-export const disclosureStyles = styles;
-
-/**
  * A function that returns a {@link @microsoft/fast-foundation#Disclosure} registration for configuring the component with a DesignSystem.
  * Implements {@link @microsoft/fast-foundation#disclosureTemplate}
  *
  *
  * @public
  * @remarks
- * Generates HTML Element: \<fast-Disclosure\>
+ * Generates HTML Element: `<fast-Disclosure>`
  *
  */
 export const fastDisclosure = Disclosure.compose({
@@ -99,3 +90,5 @@ export const fastDisclosure = Disclosure.compose({
     template,
     styles,
 });
+
+export { styles as disclosureStyles };

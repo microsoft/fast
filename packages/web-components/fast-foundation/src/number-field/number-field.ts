@@ -119,17 +119,22 @@ export class NumberField extends FormAssociatedNumberField {
      */
     @attr({ converter: nullableNumberConverter })
     public max: number;
-    public maxChanged(previousValue, nextValue): void {
-        const numb: number = parseFloat(nextValue);
-        if (numb !== undefined) {
-            if (this.min !== undefined && numb < this.min) {
-                this.max = this.min;
-                this.min = numb;
-            } else {
-                this.max = numb;
-            }
+
+    /**
+     * Ensures that the max is greater than the min and that the value
+     *  is less than the max
+     * @param previous - the previous max value
+     * @param next - updated max value
+     *
+     * @internal
+     */
+    public maxChanged(previous: number, next: number): void {
+        this.max = Math.max(next, this.min ?? next);
+        const min = Math.min(this.min, this.max);
+        if (this.min !== undefined && this.min !== min) {
+            this.min = min;
         }
-        this.updateValue(this.value);
+        this.value = this.getValidValue(this.value);
     }
 
     /**
@@ -140,20 +145,26 @@ export class NumberField extends FormAssociatedNumberField {
      */
     @attr({ converter: nullableNumberConverter })
     public min: number;
-    public minChanged(previousValue, nextValue): void {
-        const numb: number = parseFloat(nextValue);
-        if (numb !== undefined) {
-            if (this.max !== undefined && numb > this.max) {
-                this.min = this.max;
-                this.max = numb;
-            } else {
-                this.min = numb;
-            }
+
+    /**
+     * Ensures that the min is less than the max and that the value
+     *  is greater than the min
+     * @param previous - previous min value
+     * @param next - updated min value
+     *
+     * @internal
+     */
+    public minChanged(previous: number, next: number): void {
+        this.min = Math.min(next, this.max ?? next);
+        const max = Math.max(this.min, this.max);
+        if (this.max !== undefined && this.max !== max) {
+            this.max = max;
         }
-        this.updateValue(this.value);
+        this.value = this.getValidValue(this.value);
     }
 
     /**
+     * The default slotted items
      * @internal
      */
     @observable
@@ -166,45 +177,68 @@ export class NumberField extends FormAssociatedNumberField {
     public control: HTMLInputElement;
 
     /**
-     *
-     * @param previousValue - previous stored value
-     * @param nextValue - value being updated
+     * Flag to indicate that the value change is from the user input
+     * @internal
      */
-    public valueChanged(previousValue, nextValue): void {
-        super.valueChanged(previousValue, nextValue);
+    private isUserInput: boolean = false;
 
-        this.updateValue(nextValue);
+    /**
+     * The value property, typed as a number.
+     *
+     * @public
+     */
+    public get valueAsNumber(): number {
+        return parseFloat(super.value);
+    }
+
+    public set valueAsNumber(next: number) {
+        this.value = next.toString();
     }
 
     /**
-     * Updates the value. Validates that it's a number, between the min
-     *  and max, updates the proxy and emits events.
-     *
-     * @param value - value to be validated
+     * Validates that the value is a number between the min and max
+     * @param previous - previous stored value
+     * @param next - value being updated
+     * @param updateControl - should the text field be updated with value, defaults to true
      * @internal
      */
-    private updateValue(value): void {
-        if (value === "" || isNaN(parseFloat(value))) {
-            value = "";
-        } else {
-            value = parseFloat(value);
-            if (this.min !== undefined && value < this.min) {
-                value = this.min;
-            } else if (this.max !== undefined && value > this.max) {
-                value = this.max;
-            }
+    public valueChanged(previous: string, next: string): void {
+        this.value = this.getValidValue(next);
 
-            value = parseFloat(value.toPrecision(12)).toString();
+        if (next !== this.value) {
+            return;
         }
 
-        if (value != this.value) {
-            this.value = value;
-            if (this.proxy instanceof HTMLInputElement) {
-                this.proxy.value = this.value;
-            }
+        if (this.control && !this.isUserInput) {
+            this.control.value = this.value;
+        }
+
+        super.valueChanged(previous, this.value);
+
+        if (previous !== undefined && !this.isUserInput) {
             this.$emit("input");
             this.$emit("change");
         }
+
+        this.isUserInput = false;
+    }
+
+    /**
+     * Sets the internal value to a valid number between the min and max properties
+     * @param value - user input
+     *
+     * @internal
+     */
+    private getValidValue(value: string): string {
+        let validValue: number | string = parseFloat(parseFloat(value).toPrecision(12));
+        if (isNaN(validValue)) {
+            validValue = "";
+        } else {
+            validValue = Math.min(validValue, this.max ?? validValue);
+            validValue = Math.max(validValue, this.min ?? validValue).toString();
+        }
+
+        return validValue;
     }
 
     /**
@@ -213,8 +247,18 @@ export class NumberField extends FormAssociatedNumberField {
      * @public
      */
     public stepUp(): void {
-        const stepUpValue = this.step + (parseFloat(this.value) || 0);
-        this.updateValue(stepUpValue);
+        const value = parseFloat(this.value);
+        const stepUpValue = !isNaN(value)
+            ? value + this.step
+            : this.min > 0
+            ? this.min
+            : this.max < 0
+            ? this.max
+            : !this.min
+            ? this.step
+            : 0;
+
+        this.value = stepUpValue.toString();
     }
 
     /**
@@ -223,11 +267,22 @@ export class NumberField extends FormAssociatedNumberField {
      * @public
      */
     public stepDown(): void {
-        const stepDownValue = (parseFloat(this.value) || 0) - this.step;
-        this.updateValue(stepDownValue);
+        const value = parseFloat(this.value);
+        const stepDownValue = !isNaN(value)
+            ? value - this.step
+            : this.min > 0
+            ? this.min
+            : this.max < 0
+            ? this.max
+            : !this.min
+            ? 0 - this.step
+            : 0;
+
+        this.value = stepDownValue.toString();
     }
 
     /**
+     * Sets up the initial state of the number field
      * @internal
      */
     public connectedCallback(): void {
@@ -235,6 +290,7 @@ export class NumberField extends FormAssociatedNumberField {
 
         this.proxy.setAttribute("type", "number");
         this.validate();
+        this.control.value = this.value;
 
         if (this.autofocus) {
             DOM.queueUpdate(() => {
@@ -248,6 +304,8 @@ export class NumberField extends FormAssociatedNumberField {
      * @internal
      */
     public handleTextInput(): void {
+        this.control.value = this.control.value.replace(/[^0-9\-+e.]/g, "");
+        this.isUserInput = true;
         this.value = this.control.value;
     }
 
@@ -282,6 +340,15 @@ export class NumberField extends FormAssociatedNumberField {
         }
 
         return true;
+    }
+
+    /**
+     * Handles populating the input field with a validated value when
+     *  leaving the input field.
+     * @internal
+     */
+    public handleBlur(): void {
+        this.control.value = this.value;
     }
 }
 

@@ -1,8 +1,11 @@
 import { attr, observable, Observable } from "@microsoft/fast-element";
 import { isHTMLElement } from "@microsoft/fast-web-utilities";
-import { StartEnd, StartEndOptions } from "../patterns/start-end";
+import { FoundationElement } from "../foundation-element";
+import type { FoundationElementDefinition } from "../foundation-element";
+import { ARIAGlobalStatesAndProperties } from "../patterns";
+import { StartEnd } from "../patterns/start-end";
+import type { StartEndOptions } from "../patterns/start-end";
 import { applyMixins } from "../utilities/apply-mixins";
-import { FoundationElement, FoundationElementDefinition } from "../foundation-element";
 
 /**
  * Listbox option configuration options
@@ -42,6 +45,33 @@ export class ListboxOption extends FoundationElement {
     public proxy: HTMLOptionElement;
 
     /**
+     * The checked state is used when the parent listbox is in multiple selection mode.
+     * To avoid accessibility conflicts, the checked state should not be present in
+     * single selection mode.
+     *
+     * @public
+     */
+    @observable
+    public checked?: boolean;
+
+    /**
+     * Updates the ariaChecked property when the checked property changes.
+     *
+     * @param prev - the previous checked value
+     * @param next - the current checked value
+     *
+     * @public
+     */
+    protected checkedChanged(prev: boolean | unknown, next?: boolean): void {
+        if (typeof next === "boolean") {
+            this.ariaChecked = next ? "true" : "false";
+            return;
+        }
+
+        this.ariaChecked = undefined;
+    }
+
+    /**
      * The defaultSelected state of the option.
      * @public
      */
@@ -71,7 +101,9 @@ export class ListboxOption extends FoundationElement {
      */
     @attr({ mode: "boolean" })
     public disabled: boolean;
-    protected disabledChanged(prev, next): void {
+    protected disabledChanged(prev: boolean, next: boolean): void {
+        this.ariaDisabled = this.disabled ? "true" : "false";
+
         if (this.proxy instanceof HTMLOptionElement) {
             this.proxy.disabled = this.disabled;
         }
@@ -102,14 +134,14 @@ export class ListboxOption extends FoundationElement {
     @observable
     public selected: boolean = this.defaultSelected;
     protected selectedChanged(): void {
-        if (this.$fastController.isConnected) {
-            if (!this.dirtySelected) {
-                this.dirtySelected = true;
-            }
+        this.ariaSelected = this.selected ? "true" : "false";
 
-            if (this.proxy instanceof HTMLOptionElement) {
-                this.proxy.selected = this.selected;
-            }
+        if (!this.dirtySelected) {
+            this.dirtySelected = true;
+        }
+
+        if (this.proxy instanceof HTMLOptionElement) {
+            this.proxy.selected = this.selected;
         }
     }
 
@@ -137,7 +169,7 @@ export class ListboxOption extends FoundationElement {
     }
 
     public get label() {
-        return this.value ? this.value : this.textContent ? this.textContent : "";
+        return this.value ?? this.textContent ?? "";
     }
 
     public get text(): string {
@@ -158,7 +190,7 @@ export class ListboxOption extends FoundationElement {
 
     public get value(): string {
         Observable.track(this, "value");
-        return this._value ? this._value : this.text;
+        return this._value ?? this.textContent ?? "";
     }
 
     public get form(): HTMLFormElement | null {
@@ -172,7 +204,6 @@ export class ListboxOption extends FoundationElement {
         selected?: boolean
     ) {
         super();
-        this.initialValue = this.initialValue || "";
 
         if (text) {
             this.textContent = text;
@@ -201,7 +232,64 @@ export class ListboxOption extends FoundationElement {
 }
 
 /**
- * @internal
+ * States and properties relating to the ARIA `option` role.
+ *
+ * @public
  */
-export interface ListboxOption extends StartEnd {}
-applyMixins(ListboxOption, StartEnd);
+export class DelegatesARIAListboxOption {
+    /**
+     * See {@link https://www.w3.org/TR/wai-aria-1.2/#option} for more information.
+     * @public
+     * @remarks
+     * HTML Attribute: `aria-checked`
+     */
+    @observable
+    public ariaChecked: "true" | "false" | undefined;
+
+    /**
+     * See {@link https://www.w3.org/TR/wai-aria-1.2/#option} for more information.
+     * @public
+     * @remarks
+     * HTML Attribute: `aria-posinset`
+     */
+    @observable
+    ariaPosInSet: string;
+
+    /**
+     * See {@link https://www.w3.org/TR/wai-aria-1.2/#option} for more information.
+     * @public
+     * @remarks
+     * HTML Attribute: `aria-selected`
+     */
+    @observable
+    ariaSelected: "true" | "false" | undefined;
+
+    /**
+     * See {@link https://www.w3.org/TR/wai-aria-1.2/#option} for more information.
+     * @public
+     * @remarks
+     * HTML Attribute: `aria-setsize`
+     */
+    @observable
+    ariaSetSize: string;
+}
+
+/**
+ * @internal
+ * @privateRemarks
+ * Mark internal because exporting class and interface of the same name
+ * confuses API documenter.
+ * TODO: https://github.com/microsoft/fast/issues/3317
+ */
+export interface DelegatesARIAListboxOption extends ARIAGlobalStatesAndProperties {}
+applyMixins(DelegatesARIAListboxOption, ARIAGlobalStatesAndProperties);
+
+/**
+ * @internal
+ * @privateRemarks
+ * Mark internal because exporting class and interface of the same name
+ * confuses API documenter.
+ * TODO: https://github.com/microsoft/fast/issues/3317
+ */
+export interface ListboxOption extends StartEnd, DelegatesARIAListboxOption {}
+applyMixins(ListboxOption, StartEnd, DelegatesARIAListboxOption);

@@ -1,0 +1,108 @@
+{
+    "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+    "injectionSelector": "L:source.js -comment, L:source.ts -comment",
+    "name": "FAST Tagged Template Literals",
+    "patterns": [
+        {
+            "include": "#css-tagged-template"
+        },
+        {
+            "include": "#html-tagged-template"
+        },
+        {
+            "include": "source.ts#template-substitution-element"
+        }
+    ],
+    "repository": {
+        "css-tagged-template": {
+            "begin": "(?i)(?<!\\.)(css|((?:\\/\\*\\s*?)css(?:\\s*\\*\\/)))\\s*(`)",
+            "beginCaptures": {
+                "1": {
+                    "name": "entity.name.function.tagged-template.ts"
+                },
+                "2": {
+                    "name": "comment.block"
+                },
+                "3": {
+                    "name": "punctuation.definition.string.template.begin.ts"
+                }
+            },
+            "contentName": "meta.embedded.block.css",
+            "end": "(`)",
+            "endCaptures": {
+                "1": {
+                    "name": "punctuation.definition.string.template.end.ts"
+                }
+            },
+            "patterns": [
+                {
+                    "include": "source.css"
+                }
+            ]
+        },
+        "html-tagged-template": {
+            "begin": "(?i)((?<!\\.)html(<.*?>)?|((?:\\/\\*\\s*)html(<.*?>)?(?:\\s*\\*\\/)))\\s*?(`)",
+            "beginCaptures": {
+                "1": {
+                    "name": "entity.name.function.tagged-template.ts"
+                },
+                "2": {
+                    "patterns": [
+                        {
+                            "include": "source.ts#type-parameters"
+                        }
+                    ]
+                },
+                "3": {
+                    "name": "comment.block"
+                },
+                "4": {
+                    "patterns": [
+                        {
+                            "include": "source.ts#type-parameters"
+                        }
+                    ]
+                },
+                "5": {
+                    "name": "punctuation.definition.string.template.begin.ts"
+                }
+            },
+            "contentName": "meta.embedded.block.html",
+            "end": "(`)",
+            "endCaptures": {
+                "1": {
+                    "name": "punctuation.definition.string.template.end.ts"
+                }
+            },
+            "patterns": [
+                {
+                    "begin": "(</?)(?=\\$\\{)",
+                    "beginCaptures": {
+                        "1": {
+                            "name": "punctuation.definition.tag.begin.html"
+                        }
+                    },
+                    "end": "((?: ?/)?>)",
+                    "endCaptures": {
+                        "1": {
+                            "name": "punctuation.definition.tag.end.html"
+                        }
+                    },
+                    "name": "meta.tag.other.unrecognized.html.derivative",
+                    "patterns": [
+                        {
+                            "include": "source.ts#template-subsitution-element"
+                        },
+                        {
+                            "include": "text.html.basic#attribute"
+                        }
+                    ]
+                },
+                {
+                    "include": "text.html.derivative"
+                }
+            ]
+        }
+    },
+    "scopeName": "source.js.tagged-templates.injection"
+}

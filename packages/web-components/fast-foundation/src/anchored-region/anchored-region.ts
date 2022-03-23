@@ -1,52 +1,40 @@
 import { attr, DOM, observable } from "@microsoft/fast-element";
 import { Direction, eventResize, eventScroll } from "@microsoft/fast-web-utilities";
 import { FoundationElement } from "../foundation-element";
-import { getDirection } from "../utilities";
-import { IntersectionService } from "./intersection-service";
+import { getDirection } from "../utilities/direction";
+import { IntersectionService } from "../utilities/intersection-service";
 import type {
-    ConstructibleResizeObserver,
     ResizeObserverClassDefinition,
-} from "./resize-observer";
-import type { ResizeObserverEntry } from "./resize-observer-entry";
-
-// TODO: the Resize Observer related files are a temporary stopgap measure until
-// Resize Observer types are pulled into TypeScript, which seems imminent
-// At that point these files should be deleted.
-// https://github.com/microsoft/TypeScript/issues/37861
-
-declare global {
-    interface WindowWithResizeObserver extends Window {
-        ResizeObserver: ConstructibleResizeObserver;
-    }
-}
+    ResizeObserverEntry,
+} from "../utilities/resize-observer";
 
 /**
  * Defines the base behavior of an anchored region on a particular axis
  *
- * @beta
+ * @public
  */
 export type AxisPositioningMode = "uncontrolled" | "locktodefault" | "dynamic";
 
 /**
  * Defines the scaling behavior of an anchored region on a particular axis
  *
- * @beta
+ * @public
  */
 export type AxisScalingMode = "anchor" | "fill" | "content";
 
 /**
  * Defines the horizontal positioning options for an anchored region
  *
- * @beta
+ * @public
  */
-export type HorizontalPosition = "start" | "end" | "left" | "right" | "unset";
+export type HorizontalPosition = "start" | "end" | "left" | "right" | "center" | "unset";
 
 /**
  * Defines the vertical positioning options for an anchored region
  *
- * @beta
+ * @public
  */
-export type VerticalPosition = "top" | "bottom" | "unset";
+export type VerticalPosition = "top" | "bottom" | "center" | "unset";
 
 /**
  * Defines if the component updates its position automatically. Calling update() always provokes an update.
@@ -58,7 +46,7 @@ export type VerticalPosition = "top" | "bottom" | "unset";
  * - the viewport resizes
  * - any scroll event in the document
  *
- * @beta
+ * @public
  */
 export type AutoUpdateMode = "anchor" | "auto";
 
@@ -66,9 +54,14 @@ export type AutoUpdateMode = "anchor" | "auto";
  * Describes the possible positions of the region relative
  * to its anchor. Depending on the axis start = left/top, end = right/bottom
  *
- * @beta
+ * @public
  */
-export type AnchoredRegionPositionLabel = "start" | "insetStart" | "insetEnd" | "end";
+export type AnchoredRegionPositionLabel =
+    | "start"
+    | "insetStart"
+    | "insetEnd"
+    | "end"
+    | "center";
 
 /**
  * @internal
@@ -81,13 +74,13 @@ interface Dimension {
 /**
  * An anchored region Custom HTML Element.
  *
- * @beta
+ * @public
  */
 export class AnchoredRegion extends FoundationElement {
     /**
      * The HTML ID of the anchor element this region is positioned relative to
      *
-     * @beta
+     * @public
      * @remarks
      * HTML Attribute: anchor
      */
@@ -102,7 +95,7 @@ export class AnchoredRegion extends FoundationElement {
     /**
      * The HTML ID of the viewport element this region is positioned relative to
      *
-     * @beta
+     * @public
      * @remarks
      * HTML Attribute: anchor
      */
@@ -120,7 +113,7 @@ export class AnchoredRegion extends FoundationElement {
      * 'dynamic' decides placement based on available space
      * 'uncontrolled' does not control placement on the horizontal axis
      *
-     * @beta
+     * @public
      * @remarks
      * HTML Attribute: horizontal-positioning-mode
      */
@@ -133,7 +126,7 @@ export class AnchoredRegion extends FoundationElement {
     /**
      * The default horizontal position of the region relative to the anchor element
      *
-     * @beta
+     * @public
      * @remarks
      * HTML Attribute: horizontal-default-position
      */
@@ -146,7 +139,7 @@ export class AnchoredRegion extends FoundationElement {
     /**
      * Whether the region remains in the viewport (ie. detaches from the anchor) on the horizontal axis
      *
-     * @beta
+     * @public
      * @remarks
      * HTML Attribute: horizontal-viewport-lock
      */
@@ -159,7 +152,7 @@ export class AnchoredRegion extends FoundationElement {
     /**
      * Whether the region overlaps the anchor on the horizontal axis
      *
-     * @beta
+     * @public
      * @remarks
      * HTML Attribute: horizontal-inset
      */
@@ -173,7 +166,7 @@ export class AnchoredRegion extends FoundationElement {
      * How narrow the space allocated to the default position has to be before the widest area
      * is selected for layout
      *
-     * @beta
+     * @public
      * @remarks
      * HTML Attribute: horizontal-threshold
      */
@@ -186,7 +179,7 @@ export class AnchoredRegion extends FoundationElement {
     /**
      * Defines how the width of the region is calculated
      *
-     * @beta
+     * @public
      * @remarks
      * HTML Attribute: horizontal-scaling
      */
@@ -202,7 +195,7 @@ export class AnchoredRegion extends FoundationElement {
      * 'dynamic' decides placement based on available space
      * 'uncontrolled' does not control placement on the vertical axis
      *
-     * @beta
+     * @public
      * @remarks
      * HTML Attribute: vertical-positioning-mode
      */
@@ -215,7 +208,7 @@ export class AnchoredRegion extends FoundationElement {
     /**
      * The default vertical position of the region relative to the anchor element
      *
-     * @beta
+     * @public
      * @remarks
      * HTML Attribute: vertical-default-position
      */
@@ -228,7 +221,7 @@ export class AnchoredRegion extends FoundationElement {
     /**
      * Whether the region remains in the viewport (ie. detaches from the anchor) on the vertical axis
      *
-     * @beta
+     * @public
      * @remarks
      * HTML Attribute: vertical-viewport-lock
      */
@@ -241,7 +234,7 @@ export class AnchoredRegion extends FoundationElement {
     /**
      * Whether the region overlaps the anchor on the vertical axis
      *
-     * @beta
+     * @public
      * @remarks
      * HTML Attribute: vertical-inset
      */
@@ -255,7 +248,7 @@ export class AnchoredRegion extends FoundationElement {
      * How short the space allocated to the default position has to be before the tallest area
      * is selected for layout
      *
-     * @beta
+     * @public
      * @remarks
      * HTML Attribute: vertical-threshold
      */
@@ -268,7 +261,7 @@ export class AnchoredRegion extends FoundationElement {
     /**
      * Defines how the height of the region is calculated
      *
-     * @beta
+     * @public
      * @remarks
      * HTML Attribute: vertical-scaling
      */
@@ -283,7 +276,7 @@ export class AnchoredRegion extends FoundationElement {
      * Otherwise the region uses "position: absolute".
      * Fixed placement allows the region to break out of parent containers,
      *
-     * @beta
+     * @public
      * @remarks
      * HTML Attribute: fixed-placement
      */
@@ -299,9 +292,9 @@ export class AnchoredRegion extends FoundationElement {
     }
 
     /**
+     * Defines what triggers the anchored region to revaluate positioning
      *
-     *
-     * @beta
+     * @public
      * @remarks
      * HTML Attribute: auto-update-mode
      */
@@ -328,7 +321,7 @@ export class AnchoredRegion extends FoundationElement {
     /**
      * The HTML element being used as the anchor
      *
-     * @beta
+     * @public
      */
     @observable
     public anchorElement: HTMLElement | null = null;
@@ -339,7 +332,7 @@ export class AnchoredRegion extends FoundationElement {
     /**
      * The HTML element being used as the viewport
      *
-     * @beta
+     * @public
      */
     @observable
     public viewportElement: HTMLElement | null = null;
@@ -398,6 +391,10 @@ export class AnchoredRegion extends FoundationElement {
     private pendingReset: boolean = false;
     private currentDirection: Direction = Direction.ltr;
     private regionVisible: boolean = false;
+
+    // indicates that a layout update should occur even if geometry has not changed
+    // used to ensure some attribute changes are applied
+    private forceUpdate: boolean = false;
 
     // defines how big a difference in pixels there must be between states to
     // justify a layout update that affects the dom (prevents repeated sub-pixel corrections)
@@ -472,6 +469,7 @@ export class AnchoredRegion extends FoundationElement {
             (this as FoundationElement).$fastController.isConnected &&
             this.initialLayoutComplete
         ) {
+            this.forceUpdate = true;
             this.update();
         }
     }
@@ -522,6 +520,8 @@ export class AnchoredRegion extends FoundationElement {
 
         this.style.opacity = "0";
         this.style.pointerEvents = "none";
+
+        this.forceUpdate = false;
 
         this.style.position = this.fixedPlacement ? "fixed" : "absolute";
         this.updatePositionClasses();
@@ -658,6 +658,7 @@ export class AnchoredRegion extends FoundationElement {
         // don't update the dom unless there is a significant difference in rect positions
         if (
             !this.regionVisible ||
+            this.forceUpdate ||
             this.regionRect === undefined ||
             this.anchorRect === undefined ||
             this.viewportRect === undefined ||
@@ -681,6 +682,8 @@ export class AnchoredRegion extends FoundationElement {
             }
 
             this.updateRegionOffset();
+
+            this.forceUpdate = false;
 
             return true;
         }
@@ -765,7 +768,9 @@ export class AnchoredRegion extends FoundationElement {
                 this.horizontalInset
             );
 
-            if (this.horizontalDefaultPosition !== "unset") {
+            if (this.horizontalDefaultPosition === "center") {
+                desiredHorizontalPosition = "center";
+            } else if (this.horizontalDefaultPosition !== "unset") {
                 let dirCorrectedHorizontalDefaultPosition: string = this
                     .horizontalDefaultPosition;
 
@@ -865,7 +870,9 @@ export class AnchoredRegion extends FoundationElement {
             const verticalOptions: AnchoredRegionPositionLabel[] = this.getPositioningOptions(
                 this.verticalInset
             );
-            if (this.verticalDefaultPosition !== "unset") {
+            if (this.verticalDefaultPosition === "center") {
+                desiredVerticalPosition = "center";
+            } else if (this.verticalDefaultPosition !== "unset") {
                 switch (this.verticalDefaultPosition) {
                     case "top":
                         desiredVerticalPosition = this.verticalInset
@@ -985,11 +992,13 @@ export class AnchoredRegion extends FoundationElement {
         this.classList.toggle("bottom", this.verticalPosition === "end");
         this.classList.toggle("inset-top", this.verticalPosition === "insetStart");
         this.classList.toggle("inset-bottom", this.verticalPosition === "insetEnd");
+        this.classList.toggle("vertical-center", this.verticalPosition === "center");
 
         this.classList.toggle("left", this.horizontalPosition === "start");
         this.classList.toggle("right", this.horizontalPosition === "end");
         this.classList.toggle("inset-left", this.horizontalPosition === "insetStart");
         this.classList.toggle("inset-right", this.horizontalPosition === "insetEnd");
+        this.classList.toggle("horizontal-center", this.horizontalPosition === "center");
     };
 
     /**
@@ -1022,6 +1031,8 @@ export class AnchoredRegion extends FoundationElement {
                 this.regionWidth = "unset";
                 break;
         }
+
+        let sizeDelta: number = 0;
 
         switch (desiredHorizontalPosition) {
             case "start":
@@ -1071,6 +1082,29 @@ export class AnchoredRegion extends FoundationElement {
                         (this.anchorRect.right - this.viewportRect.left);
                 }
                 break;
+
+            case "center":
+                sizeDelta = (this.anchorRect.width - nextRegionWidth) / 2;
+                this.translateX = this.baseHorizontalOffset + sizeDelta;
+                if (this.horizontalViewportLock) {
+                    const regionLeft: number = this.anchorRect.left + sizeDelta;
+                    const regionRight: number = this.anchorRect.right - sizeDelta;
+
+                    if (
+                        regionLeft < this.viewportRect.left &&
+                        !(regionRight > this.viewportRect.right)
+                    ) {
+                        this.translateX =
+                            this.translateX - (regionLeft - this.viewportRect.left);
+                    } else if (
+                        regionRight > this.viewportRect.right &&
+                        !(regionLeft < this.viewportRect.left)
+                    ) {
+                        this.translateX =
+                            this.translateX - (regionRight - this.viewportRect.right);
+                    }
+                }
+                break;
         }
 
         this.horizontalPosition = desiredHorizontalPosition;
@@ -1106,6 +1140,8 @@ export class AnchoredRegion extends FoundationElement {
                 this.regionHeight = "unset";
                 break;
         }
+
+        let sizeDelta: number = 0;
 
         switch (desiredVerticalPosition) {
             case "start":
@@ -1155,6 +1191,28 @@ export class AnchoredRegion extends FoundationElement {
                         (this.anchorRect.bottom - this.viewportRect.top);
                 }
                 break;
+
+            case "center":
+                sizeDelta = (this.anchorRect.height - nextRegionHeight) / 2;
+                this.translateY = this.baseVerticalOffset + sizeDelta;
+                if (this.verticalViewportLock) {
+                    const regionTop: number = this.anchorRect.top + sizeDelta;
+                    const regionBottom: number = this.anchorRect.bottom - sizeDelta;
+
+                    if (
+                        regionTop < this.viewportRect.top &&
+                        !(regionBottom > this.viewportRect.bottom)
+                    ) {
+                        this.translateY =
+                            this.translateY - (regionTop - this.viewportRect.top);
+                    } else if (
+                        regionBottom > this.viewportRect.bottom &&
+                        !(regionTop < this.viewportRect.top)
+                    ) {
+                        this.translateY =
+                            this.translateY - (regionBottom - this.viewportRect.bottom);
+                    }
+                }
         }
 
         this.verticalPosition = desiredVerticalPosition;
@@ -1193,6 +1251,8 @@ export class AnchoredRegion extends FoundationElement {
                 return spaceEnd + anchorSpan;
             case "end":
                 return spaceEnd;
+            case "center":
+                return Math.min(spaceStart, spaceEnd) * 2 + anchorSpan;
         }
     };
 

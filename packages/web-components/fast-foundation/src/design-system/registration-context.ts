@@ -1,8 +1,8 @@
-import { Container, DI, InterfaceSymbol } from "../di/di";
 import type {
     Constructable,
     PartialFASTElementDefinition,
 } from "@microsoft/fast-element";
+import type { Container } from "../di/di";
 import type { ComponentPresentation } from "./component-presentation";
 
 /**
@@ -117,21 +117,12 @@ export interface DesignSystemRegistrationContext {
         name: string,
         type: Constructable,
         callback: ElementDefinitionCallback
-    );
+    ): void;
 
     /**
      * Used to attempt to define a custom element.
      * @param params - The custom element definition.
      * @public
      */
-    tryDefineElement(params: ElementDefinitionParams);
+    tryDefineElement(params: ElementDefinitionParams): void;
 }
-
-/**
- * Design system contextual APIs and configuration usable within component
- * registries.
- * @public
- */
-export const DesignSystemRegistrationContext: InterfaceSymbol<DesignSystemRegistrationContext> = DI.createInterface<
-    DesignSystemRegistrationContext
->();

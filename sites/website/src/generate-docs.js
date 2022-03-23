@@ -1,8 +1,7 @@
 const path = require("path");
-const fs = require("fs-extra");
-const glob = require("glob");
 const { createInterface } = require("readline");
 const { exec } = require("child_process");
+const fs = require("fs-extra");
 
 const fastFoundation = path.dirname(
     require.resolve("@microsoft/fast-foundation/package.json")
@@ -18,8 +17,6 @@ const projectRoot = path.resolve(__dirname, "../");
 const root = path.resolve(projectRoot, "../../");
 
 const outputDir = path.resolve(projectRoot, "docs");
-
-const staticOutputDir = path.resolve(projectRoot, "static");
 
 function findFiles(startPath, filter, paths = []) {
     if (!fs.existsSync(startPath)) {
@@ -62,6 +59,10 @@ function identifyPackage(path) {
 }
 
 async function safeCopy(source, dest) {
+    if (!fs.existsSync(source)) {
+        return;
+    }
+
     if (fs.existsSync(dest)) {
         await fs.copyFile(source, dest);
     } else {
@@ -179,17 +180,17 @@ async function copyArticleMarkdown() {
                     "https://github.com/microsoft/fast/edit/master/packages/web-components/fast-element/README.md",
             },
         },
-        {
-            src: path.resolve(root, "examples/site-rebrand-tutorial/README.md"),
-            dest: path.resolve(outputDir, "tutorials/site-rebrand.md"),
-            metadata: {
-                id: "site-rebrand",
-                title: "Using FAST to Rebrand an Existing Website",
-                sidebar_label: "Rebranding an Existing Site",
-                custom_edit_url:
-                    "https://github.com/microsoft/fast/blob/master/examples/site-rebrand-tutorial/README.md",
-            },
-        },
+        // {
+        //     src: path.resolve(root, "examples/site-rebrand-tutorial/README.md"),
+        //     dest: path.resolve(outputDir, "tutorials/site-rebrand.md"),
+        //     metadata: {
+        //         id: "site-rebrand",
+        //         title: "Using FAST to Rebrand an Existing Website",
+        //         sidebar_label: "Rebranding an Existing Site",
+        //         custom_edit_url:
+        //             "https://github.com/microsoft/fast/blob/master/examples/site-rebrand-tutorial/README.md",
+        //     },
+        // },
     ];
 
     for (const file of mergeDocs) {
@@ -258,10 +259,8 @@ async function copyArticleMarkdown() {
 // Copy the api.json files from the web-components packages.
 async function copyAPI() {
     for (const pkg of packages) {
-        const packageDir = glob.sync(path.resolve(root, `packages/**/${pkg}`))[0];
-
         await safeCopy(
-            path.resolve(packageDir, `dist/${pkg}.api.json`),
+            require.resolve(`@microsoft/${pkg}/dist/${pkg}.api.json`),
             `./src/docs/api/${pkg}.api.json`
         );
     }
@@ -355,50 +354,49 @@ async function buildAPIMarkdown() {
 }
 
 async function copyImages() {
-    const images = [
-        {
-            src: path.resolve(root, "examples/site-rebrand-tutorial/website.png"),
-            dest: path.resolve(
-                staticOutputDir,
-                "examples/site-rebrand-tutorial/website.png"
-            ),
-        },
-        {
-            src: path.resolve(root, "examples/site-rebrand-tutorial/site-structure.png"),
-            dest: path.resolve(
-                staticOutputDir,
-                "examples/site-rebrand-tutorial/site-structure.png"
-            ),
-        },
-        {
-            src: path.resolve(
-                root,
-                "examples/site-rebrand-tutorial/example-controls.png"
-            ),
-            dest: path.resolve(
-                staticOutputDir,
-                "examples/site-rebrand-tutorial/example-controls.png"
-            ),
-        },
-        {
-            src: path.resolve(root, "examples/site-rebrand-tutorial/side-by-side.png"),
-            dest: path.resolve(
-                staticOutputDir,
-                "examples/site-rebrand-tutorial/side-by-side.png"
-            ),
-        },
-        {
-            src: path.resolve(root, "examples/site-rebrand-tutorial/design-panel.png"),
-            dest: path.resolve(
-                staticOutputDir,
-                "examples/site-rebrand-tutorial/design-panel.png"
-            ),
-        },
-    ];
-
-    for (const img of images) {
-        await safeCopy(img.src, img.dest);
-    }
+    // const images = [
+    //     {
+    //         src: path.resolve(root, "examples/site-rebrand-tutorial/website.png"),
+    //         dest: path.resolve(
+    //             staticOutputDir,
+    //             "examples/site-rebrand-tutorial/website.png"
+    //         ),
+    //     },
+    //     {
+    //         src: path.resolve(root, "examples/site-rebrand-tutorial/site-structure.png"),
+    //         dest: path.resolve(
+    //             staticOutputDir,
+    //             "examples/site-rebrand-tutorial/site-structure.png"
+    //         ),
+    //     },
+    //     {
+    //         src: path.resolve(
+    //             root,
+    //             "examples/site-rebrand-tutorial/example-controls.png"
+    //         ),
+    //         dest: path.resolve(
+    //             staticOutputDir,
+    //             "examples/site-rebrand-tutorial/example-controls.png"
+    //         ),
+    //     },
+    //     {
+    //         src: path.resolve(root, "examples/site-rebrand-tutorial/side-by-side.png"),
+    //         dest: path.resolve(
+    //             staticOutputDir,
+    //             "examples/site-rebrand-tutorial/side-by-side.png"
+    //         ),
+    //     },
+    //     {
+    //         src: path.resolve(root, "examples/site-rebrand-tutorial/design-panel.png"),
+    //         dest: path.resolve(
+    //             staticOutputDir,
+    //             "examples/site-rebrand-tutorial/design-panel.png"
+    //         ),
+    //     },
+    // ];
+    // for (const img of images) {
+    //     await safeCopy(img.src, img.dest);
+    // }
 }
 
 async function main() {

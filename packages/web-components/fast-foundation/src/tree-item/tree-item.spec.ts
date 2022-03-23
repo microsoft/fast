@@ -179,26 +179,24 @@ describe("TreeItem", () => {
         await disconnect();
     });
 
-    it("should NOT set a tabindex when disabled is `true`", async () => {
+    it("should set a tabindex of -1", async () => {
         const { element, connect, disconnect } = await setup();
-
-        element.disabled = true;
 
         await connect();
 
-        expect(element.hasAttribute("tabindex")).to.equal(false);
-        expect(element.getAttribute("tabindex")).to.equal(null);
+        expect(element.hasAttribute("tabindex")).to.equal(true);
+        expect(element.getAttribute("tabindex")).to.equal("-1");
 
         await disconnect();
     });
 
-    it("should set a tabindex when `focusable` is true", async () => {
+    it("should set a tabindex of 0 when focused", async () => {
         const { element, connect, disconnect } = await setup();
-
-        element.focusable = true;
 
         await connect();
 
+        element.focus();
+        await DOM.nextUpdate();
         expect(element.hasAttribute("tabindex")).to.equal(true);
         expect(element.getAttribute("tabindex")).to.equal("0");
 
@@ -328,56 +326,25 @@ describe("TreeItem", () => {
             const nestedItem = document.createElement("fast-tree-item");
             element.appendChild(nestedItem);
 
-            let wasClicked = false;
+            let wasSelected = false;
 
             element.addEventListener("selected-change", e => {
                 e.preventDefault();
 
-                wasClicked = true;
+                wasSelected = true;
             });
 
             await connect();
+
+            element.setAttribute("selected", "true");
             await DOM.nextUpdate();
 
-            let container = element.shadowRoot?.querySelector(
-                ".positioning-region"
-            ) as any;
-            container?.click();
-
-            await DOM.nextUpdate();
-
-            expect(wasClicked).to.equal(true);
+            expect(wasSelected).to.equal(true);
 
             await disconnect();
         });
 
-        it("should toggle the selected state when the component is clicked", async () => {
-            const { element, connect, disconnect } = await setup();
-            const nestedItem = document.createElement("fast-tree-item");
-
-            element.appendChild(nestedItem);
-
-            await connect();
-            await DOM.nextUpdate();
-
-            element.click();
-
-            await DOM.nextUpdate();
-
-            expect(element.selected).to.equal(true);
-            expect(element.getAttribute("aria-selected")).to.equal("true");
-
-            element.click();
-
-            await DOM.nextUpdate();
-
-            expect(element.selected).to.equal(false);
-            expect(element.getAttribute("aria-selected")).to.equal("false");
-
-            await disconnect();
-        });
-
-        it("should NOT toggle the selected state when the element is clicked when disabled", async () => {
+        it("should NOT set selected state when the element is clicked when disabled", async () => {
             const { element, connect, disconnect } = await setup();
             const nestedItem = document.createElement("fast-tree-item");
 
@@ -393,6 +360,42 @@ describe("TreeItem", () => {
 
             expect(element.selected).to.not.equal(true);
             expect(element.getAttribute("aria-selected")).to.equal(null);
+
+            await disconnect();
+        });
+
+        it("should fire an event when expanded state changes", async () => {
+            const { element, connect, disconnect } = await setup();
+
+            await connect();
+
+            const wasExpanded = await new Promise(resolve => {
+                element.addEventListener("expanded-change", () => resolve(true));
+
+                element.setAttribute("expanded", "true");
+
+                DOM.queueUpdate(() => resolve(false));
+            });
+
+            expect(wasExpanded).to.equal(true);
+
+            await disconnect();
+        });
+
+        it("should fire an event when selected state changes", async () => {
+            const { element, connect, disconnect } = await setup();
+
+            await connect();
+
+            const wasSelected = await new Promise(resolve => {
+                element.addEventListener("selected-change", () => resolve(true));
+
+                element.setAttribute("selected", "true");
+
+                DOM.queueUpdate(() => resolve(false));
+            });
+
+            expect(wasSelected).to.equal(true);
 
             await disconnect();
         });

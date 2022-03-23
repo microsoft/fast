@@ -1,9 +1,5 @@
 import { css, ElementStyles } from "@microsoft/fast-element";
-import {
-    display,
-    ElementDefinitionContext,
-    FoundationElementDefinition,
-} from "@microsoft/fast-foundation";
+import { display, FoundationElementTemplate } from "@microsoft/fast-foundation";
 import {
     density,
     designUnit,
@@ -11,12 +7,13 @@ import {
     typeRampBaseLineHeight,
 } from "../design-tokens";
 
-export const tabPanelStyles: (
-    context: ElementDefinitionContext,
-    definition: FoundationElementDefinition
-) => ElementStyles = (
-    context: ElementDefinitionContext,
-    definition: FoundationElementDefinition
+/**
+ * Styles for Tab Panel
+ * @public
+ */
+export const tabPanelStyles: FoundationElementTemplate<ElementStyles> = (
+    context,
+    definition
 ) => css`
     ${display("block")} :host {
         box-sizing: border-box;

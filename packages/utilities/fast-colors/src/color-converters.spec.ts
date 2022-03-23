@@ -1,4 +1,5 @@
 import {
+    calculateOverlayColor,
     ColorHSL,
     ColorHSV,
     ColorLAB,
@@ -62,6 +63,31 @@ describe("Color converter functions", () => {
             expect(contrastRatio(bottom, top)).toBeCloseTo(data.contrast, testPrecision);
         }
         for (const data of testData.colorPairs) {
+            testPair(data);
+        }
+    });
+
+    test("calculateOverlayColor", () => {
+        function testPair(data: any): void {
+            const match: ColorRGBA64 = new ColorRGBA64(
+                data.match.r,
+                data.match.g,
+                data.match.b,
+                1
+            );
+            const background: ColorRGBA64 = new ColorRGBA64(
+                data.background.r,
+                data.background.g,
+                data.background.b,
+                1
+            );
+            const rgb: ColorRGBA64 = calculateOverlayColor(match, background);
+            expect(rgb.r).toBeCloseTo(data.overlayColorResult.r, testPrecision);
+            expect(rgb.g).toBeCloseTo(data.overlayColorResult.g, testPrecision);
+            expect(rgb.b).toBeCloseTo(data.overlayColorResult.b, testPrecision);
+            expect(rgb.a).toBeCloseTo(data.overlayColorResult.a, testPrecision);
+        }
+        for (const data of testData.overlayPairs) {
             testPair(data);
         }
     });

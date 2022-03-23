@@ -35,7 +35,7 @@ export class Toolbar extends FoundationToolbar {
  * @public
  * @remarks
  *
- * Generates HTML Element: \<fast-toolbar\>
+ * Generates HTML Element: `<fast-toolbar>`
  *
  */
 export const fastToolbar = Toolbar.compose({
@@ -47,8 +47,5 @@ export const fastToolbar = Toolbar.compose({
         delegatesFocus: true,
     },
 });
-/**
- * Styles for Toolbar.
- * @public
- */
-export const toolbarStyles = styles;
+
+export { styles as toolbarStyles };
