@@ -4,14 +4,12 @@
         "module": "commonjs",
         "target": "ES6",
         "baseUrl": ".",
-        "jsx": "react",
         "esModuleInterop": true,
         "allowSyntheticDefaultImports": true,
         "experimentalDecorators": true
     },
     "include": [
-        "app/**/*",
-        "src/**/*"
+        "app/**/*"
     ],
     "exclude": [
         "node_modules"
