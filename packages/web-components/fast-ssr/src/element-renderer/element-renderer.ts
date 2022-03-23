@@ -1,6 +1,7 @@
 import { ElementRenderer, RenderInfo } from "@lit-labs/ssr";
 import {
     Aspect,
+    ComposableStyles,
     defaultExecutionContext,
     DOM,
     FASTElement,
@@ -13,6 +14,11 @@ export abstract class FASTElementRenderer extends ElementRenderer {
      * The element instance represented by the {@link FASTElementRenderer}.
      */
     public readonly element!: FASTElement;
+
+    /**
+     * The template renderer to use when rendering a component template
+     */
+    protected abstract templateRenderer: TemplateRenderer;
 
     /**
      * Tests a constructor to determine if it should be managed by a {@link FASTElementRenderer}.
@@ -58,9 +64,18 @@ export abstract class FASTElementRenderer extends ElementRenderer {
     }
 
     /**
-     * The template renderer to use when rendering a component template
+     * Indicate to the {@link FASTElementRenderer} that an attribute has been changed.
+     * @param name - The name of the changed attribute
+     * @param old - The old attribute value
+     * @param value - The new attribute value
      */
-    protected abstract templateRenderer: TemplateRenderer;
+    public attributeChangedCallback(
+        name: string,
+        old: string | null,
+        value: string | null
+    ): void {
+        this.element.attributeChangedCallback(name, old, value);
+    }
 
     /**
      * Constructs a new {@link FASTElementRenderer}.
@@ -84,7 +99,7 @@ export abstract class FASTElementRenderer extends ElementRenderer {
      * Renders the component internals to light DOM instead of shadow DOM.
      * @param renderInfo - information about the current rendering context.
      */
-    *renderLight(renderInfo: RenderInfo): IterableIterator<string> {
+    public *renderLight(renderInfo: RenderInfo): IterableIterator<string> {
         // TODO - this will yield out the element's template using the template renderer, skipping any shadow-DOM specific emission.
         yield "";
     }
@@ -93,36 +108,50 @@ export abstract class FASTElementRenderer extends ElementRenderer {
      * Render the component internals to shadow DOM.
      * @param renderInfo - information about the current rendering context.
      */
-    *renderShadow(renderInfo: RenderInfo): IterableIterator<string> {
+    public *renderShadow(renderInfo: RenderInfo): IterableIterator<string> {
         const view = this.element.$fastController.view;
+        const styles = this.element.$fastController.styles;
 
-        if (view === null) {
-            return;
+        if (styles && styles.styles.length) {
+            for (const style of styles.styles) {
+                yield this.renderStyle(style);
+            }
         }
 
-        yield* this.templateRenderer.renderOpCodes(
-            ((view as unknown) as SSRView).codes,
-            renderInfo,
-            this.element,
-            // renderShadow can be called by external code that cant know about execution context,
-            // so that data can't come from a method argument. Provide defaultExecutionContext, but I
-            // am unsure if this behavior will *always* match fast-element's behavior. If it doesn't,
-            // we'll need to implement a executionContext lookup.
-            defaultExecutionContext
-        );
+        if (view !== null) {
+            yield* this.templateRenderer.renderOpCodes(
+                ((view as unknown) as SSRView).codes,
+                renderInfo,
+                this.element,
+                // renderShadow can be called by external code that cant know about execution context,
+                // so that data can't come from a method argument. Provide defaultExecutionContext, but I
+                // am unsure if this behavior will *always* match fast-element's behavior. If it doesn't,
+                // we'll need to implement a executionContext lookup.
+                defaultExecutionContext
+            );
+        }
     }
 
-    /**
-     * Indicate to the {@link FASTElementRenderer} that an attribute has been changed.
-     * @param name - The name of the changed attribute
-     * @param old - The old attribute value
-     * @param value - The new attribute value
-     */
-    attributeChangedCallback(
-        name: string,
-        old: string | null,
-        value: string | null
-    ): void {
-        this.element.attributeChangedCallback(name, old, value);
+    private collectStyles(style: ComposableStyles): string {
+        let content: string = "";
+        if (typeof style === "string") {
+            content = style;
+        } else if (style instanceof CSSStyleSheet) {
+            const rules = style.cssRules;
+
+            for (let i = 0, length = rules.length; i < length; i++) {
+                content += rules[i].cssText;
+            }
+        } else {
+            for (const s of style.styles) {
+                content += this.collectStyles(s);
+            }
+        }
+
+        return content;
+    }
+
+    private renderStyle(style: ComposableStyles): string {
+        return `<style>${this.collectStyles(style)}</style>`;
     }
 }

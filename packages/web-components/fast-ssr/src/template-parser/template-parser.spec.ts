@@ -1,5 +1,5 @@
 
-import "@lit-labs/ssr/lib/install-global-dom-shim.js";
+import "../dom-shim.js";
 import { Aspect, customElement, FASTElement, html, ViewTemplate } from "@microsoft/fast-element";
 import { expect, test } from "@playwright/test";
 import { AttributeBindingOp, CustomElementOpenOp, DirectiveOp, OpType, TemplateElementOpenOp, TextOp } from "./op-codes.js";

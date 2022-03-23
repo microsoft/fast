@@ -1,22 +1,9 @@
-import "@lit-labs/ssr/lib/install-global-dom-shim.js";
-import { customElement, FASTElement, html, when, defaultExecutionContext, repeat, children, slotted, ref } from "@microsoft/fast-element";
+import "../dom-shim.js";
+import { children, customElement, defaultExecutionContext, FASTElement, html, ref, repeat, slotted, when } from "@microsoft/fast-element";
 import { expect, test } from "@playwright/test";
 import fastSSR from "../exports.js";
+import { consolidate } from "../test-utils.js";
 import { TemplateRenderer } from "./template-renderer.js";
-import { parseTemplateToOpCodes } from "../template-parser/template-parser.js";
-import exp from "constants";
-
-function consolidate(strings: IterableIterator<string>): string {
-    let str = "";
-    let current = strings.next();
-
-    while(!current.done) {
-        str = str.concat(current.value)
-        current = strings.next();
-    }
-
-    return str;
-}
 
 @customElement("hello-world")
 class HelloWorld extends FASTElement {}
@@ -260,6 +247,6 @@ test.describe("TemplateRenderer", () => {
 
                 expect(consolidate(result)).toBe("<ul ><li>Hello</li><li>World</li></ul>")
             });
-        })
+        });
     }
 });

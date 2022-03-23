@@ -15,16 +15,29 @@ export type ComponentDOMEmissionMode = "shadow" | "light";
 export interface TemplateRendererConfiguration {
     /**
      * Controls whether the template renderer should emit component template code to the component's shadow DOM or to its light DOM.
+     * @default "shadow"
      */
-    componentDOMEmissionMode: ComponentDOMEmissionMode;
+    componentDOMEmissionMode?: ComponentDOMEmissionMode;
+
+    /**
+     * Controls whether the template renderer should emit FASTStyle elements for stylesheets.
+     * Using FASTStyle can help reduce the SSR payload by only emitting stylesheet content once,
+     * and leveraging a Custom Element to map those stylesheets back to FAST element's on the client.
+     * @default false
+     */
+    useFASTStyle?: boolean;
 }
 
-export class TemplateRenderer implements Readonly<TemplateRendererConfiguration> {
+export class TemplateRenderer
+    implements Readonly<Required<TemplateRendererConfiguration>> {
     private directiveRenderers: Map<any, DirectiveRenderer<any>> = new Map();
     /**
      * {@inheritDoc TemplateRendererConfiguration.componentDOMEmissionMode}
      */
     public readonly componentDOMEmissionMode: ComponentDOMEmissionMode = "shadow";
+
+    /** {@inheritdoc TemplateRendererConfiguration.useFASTStyle} */
+    public readonly useFASTStyle: boolean = false;
     constructor(config?: TemplateRendererConfiguration) {
         if (config) {
             Object.assign(this, config);
