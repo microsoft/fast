@@ -1,6 +1,11 @@
 import { css, ElementStyles } from "@microsoft/fast-element";
-import { FoundationElementTemplate } from "@microsoft/fast-foundation";
-import { controlCornerRadius, fillColor, strokeWidth } from "../design-tokens";
+import { focusVisible, FoundationElementTemplate } from "@microsoft/fast-foundation";
+import {
+    controlCornerRadius,
+    fillColor,
+    neutralStrokeFocus,
+    strokeWidth,
+} from "../design-tokens";
 import { elevation } from "../styles/elevation";
 
 /**
@@ -11,10 +16,7 @@ export const textEditorStyles: FoundationElementTemplate<ElementStyles> = (
     context,
     definition
 ) => css`
-    :host {
-        :host([contenteditable]) {
-            border: 1px solid #000;
-            padding: 0.25rem 0.5rem;
-        }
+    ::slotted([slot="editor-region"]) {
+        border: 2px solid green;
     }
 `;

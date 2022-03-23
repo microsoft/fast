@@ -16,6 +16,11 @@ export class TextEditorToolbar extends Toolbar {
      */
     @observable
     public toolbarTemplate: ViewTemplate<TextEditorToolbar>;
+    private toolbarTemplateChanged(): void {
+        if (this.$fastController.isConnected) {
+            this.updateView();
+        }
+    }
 
     /**
      * Sets the template to use to generate the toolbar.

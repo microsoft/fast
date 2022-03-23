@@ -1,16 +1,32 @@
 import { STORY_RENDERED } from "@storybook/core-events";
+import { toggleBold, toggleItalic } from "roosterjs-editor-api";
 import addons from "@storybook/addons";
-import { TextEditor as foundationTextEditor } from "@microsoft/fast-foundation";
+import { html, ViewTemplate } from "@microsoft/fast-element";
+import {
+    TextEditor as foundationTextEditor,
+    TextEditorToolbar,
+} from "@microsoft/fast-foundation";
 import TextEditorTemplate from "./fixtures/base.html";
 import "./index";
 
 addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
-    const toolbarResources: object = {
-        boldButtonTitle: "Bold",
-        italicButtonTitle: "Italic",
-    };
-
     if (name.toLowerCase().startsWith("text-editor")) {
+        const toolbarResources: object = {
+            boldButtonTitle: "Bold",
+            italicButtonTitle: "Italic",
+        };
+
+        const customToolbarTemplate: ViewTemplate = html<TextEditorToolbar>`
+            <fast-toolbar class="toolbar" part="toolbar">
+                <fast-button appearance="outline" @click="${x => toggleBold(x.editor)}">
+                    Template Bold
+                </fast-button>
+                <fast-button appearance="outline" @click="${x => toggleItalic(x.editor)}">
+                    ${x => x.resources["italicButtonTitle"]}
+                </fast-button>
+            </fast-toolbar>
+        `;
+
         const editor1: foundationTextEditor = document.getElementById(
             "editor1"
         ) as foundationTextEditor;
@@ -20,6 +36,7 @@ addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
             "editor2"
         ) as foundationTextEditor;
         editor2.toolbarResources = toolbarResources;
+        editor2.toolbarTemplate = customToolbarTemplate;
 
         const editor3: foundationTextEditor = document.getElementById(
             "editor3"
