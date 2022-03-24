@@ -150,6 +150,7 @@ export function parseStringToOpCodes(
         let augmentOpeningTag = false;
         const { tagName } = node;
         const ctor: typeof HTMLElement | undefined = customElements.get(node.tagName);
+        node.isDefinedCustomElement = !!ctor;
 
         // Sort attributes by whether they're related to a binding or if they have
         // static value
@@ -165,8 +166,7 @@ export function parseStringToOpCodes(
                     if (
                         directive instanceof AspectedHTMLDirective &&
                         directive.binding &&
-                        directive.aspect !== Aspect.content &&
-                        directive.aspect !== Aspect.tokenList
+                        directive.aspect !== Aspect.content
                     ) {
                         prev.dynamic.set(current, {
                             type: OpType.attributeBinding,
@@ -193,7 +193,6 @@ export function parseStringToOpCodes(
         // Emit a CustomElementOpenOp when the custom element is defined
         if (ctor !== undefined) {
             augmentOpeningTag = true;
-            node.isDefinedCustomElement = true;
             opCodes.push({
                 type: OpType.customElementOpen,
                 tagName,

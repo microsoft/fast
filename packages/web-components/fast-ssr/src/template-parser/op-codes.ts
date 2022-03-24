@@ -71,7 +71,12 @@ export type AttributeBindingOp = {
     type: OpType.attributeBinding;
     binding: Binding;
     target: string;
-    aspect: Aspect.attribute | Aspect.booleanAttribute | Aspect.event | Aspect.property;
+    aspect:
+        | Aspect.attribute
+        | Aspect.booleanAttribute
+        | Aspect.event
+        | Aspect.property
+        | Aspect.tokenList;
     useCustomElementInstance: boolean;
 };
 

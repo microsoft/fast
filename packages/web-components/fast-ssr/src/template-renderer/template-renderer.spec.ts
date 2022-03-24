@@ -183,7 +183,22 @@ test.describe("TemplateRenderer", () => {
 
         const result = consolidate(templateRenderer.render(html`<p>Hello ${html`<span>world</span>`}</p>`, defaultRenderInfo))
         expect(result).toBe(`<p>Hello <span>world</span></p>`);
-    })
+    });
+
+    test.describe("binding the the classList", () => {
+        test("should emit class attribute to native elements", () => {
+            const { templateRenderer, defaultRenderInfo} = fastSSR();
+
+            const result = consolidate(templateRenderer.render(html`<p :classList=${ x => "foo bar"}>Hello world</p>`, defaultRenderInfo))
+            expect(result).toBe(`<p class="foo bar">Hello world</p>`);
+        });
+        test("should emit class attribute to custom elements", () => {
+            const { templateRenderer, defaultRenderInfo} = fastSSR();
+
+            const result = consolidate(templateRenderer.render(html`<hello-world :classList=${x => "foo bar"}></hello-world>`, defaultRenderInfo))
+            expect(result).toBe(`<hello-world  class="foo bar"><template shadowroot="open"></template></hello-world>`);
+        });
+    });
 
     /**
      * Directive tests

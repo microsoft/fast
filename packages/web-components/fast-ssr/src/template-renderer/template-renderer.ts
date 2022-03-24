@@ -188,9 +188,17 @@ export class TemplateRenderer
                             ];
 
                         if (instance) {
-                            aspect === Aspect.property
-                                ? instance.setProperty(target, result)
-                                : instance.setAttribute(target, result);
+                            switch (aspect) {
+                                case Aspect.property:
+                                    instance.setProperty(target, result);
+                                    break;
+                                case Aspect.tokenList:
+                                    instance.setAttribute("class", result);
+                                    break;
+                                default:
+                                    instance.setAttribute(target, result);
+                                    break;
+                            }
                         }
                     } else {
                         // Only yield attributes as strings for native elements.
@@ -206,6 +214,11 @@ export class TemplateRenderer
                             case Aspect.attribute:
                                 if (result !== null && result !== undefined) {
                                     yield `${target}="${result}"`;
+                                }
+                                break;
+                            case Aspect.tokenList:
+                                if (code.target === "classList") {
+                                    yield `class="${result}"`;
                                 }
                                 break;
                         }
