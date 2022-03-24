@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-foundation",
   "entries": [
     {
+      "date": "Thu, 24 Mar 2022 07:12:08 GMT",
+      "tag": "@microsoft/fast-foundation_v2.37.2",
+      "version": "2.37.2",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Detect changes to start and end slots in toolbar",
+            "author": "20542556+mollykreis@users.noreply.github.com",
+            "commit": "03a237b0007f6e446242043ae17b142e5cbb5359",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sun, 20 Mar 2022 07:15:44 GMT",
       "tag": "@microsoft/fast-foundation_v2.37.1",
       "version": "2.37.1",

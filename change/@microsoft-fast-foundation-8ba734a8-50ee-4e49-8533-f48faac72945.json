@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "Detect changes to start and end slots in toolbar",
-  "packageName": "@microsoft/fast-foundation",
-  "email": "20542556+mollykreis@users.noreply.github.com",
-  "dependentChangeType": "patch"
-}
