@@ -1,20 +1,40 @@
-import { html } from "@microsoft/fast-element";
-import type { ViewTemplate } from "@microsoft/fast-element";
+import { html, repeat, ViewTemplate } from "@microsoft/fast-element";
 import { Alignment } from "roosterjs";
-import { setAlignment, toggleBold, toggleItalic } from "roosterjs-editor-api";
+import {
+    FONT_SIZES,
+    setAlignment,
+    setFontSize,
+    toggleBold,
+    toggleItalic,
+} from "roosterjs-editor-api";
 import type { FoundationElementTemplate } from "../foundation-element";
 import type { ElementDefinitionContext } from "../design-system";
 import { Button } from "../button";
+import { Combobox } from "../combobox";
+import { ListboxOption } from "../listbox-option";
+import { Picker } from "../picker";
+import { Select } from "../select";
 import { Toolbar } from "../toolbar";
 import { Tooltip } from "../tooltip";
 import type { TextEditorToolbar } from "./text-editor-toolbar";
+
+function createPickerFontItemTemplate(context: ElementDefinitionContext): ViewTemplate {
+    return html`
+        ${x => `${x.value}pt`}
+    `;
+}
 
 function createDefaultToolbarTemplate(
     context: ElementDefinitionContext
 ): ViewTemplate<TextEditorToolbar> {
     const toolbarTag: string = context.tagFor(Toolbar);
     const buttonTag: string = context.tagFor(Button);
+    const comboboxTag: string = context.tagFor(Combobox);
     const tooltipTag: string = context.tagFor(Tooltip);
+    const pickerTag: string = context.tagFor(Picker);
+    const selectTag: string = context.tagFor(Select);
+    const optionTag: string = context.tagFor(ListboxOption);
+    const fontSizePickerContentsTemplate = createPickerFontItemTemplate(context);
     return html`
         <${toolbarTag}
             class="toolbar"
@@ -125,8 +145,27 @@ function createDefaultToolbarTemplate(
                 anchor="${x => `${x.instanceId}-redo-button`}"
             >
                 ${x => x.resources["redoButtonTooltip"]}
-            </${tooltipTag}>
+            </${tooltipTag}>'
 
+            <${comboboxTag}
+                :value="${x => x.formatState.fontSize}"
+                @change="${(x, c) => {
+                    if (c.event.target) {
+                        const newsize: string = (c.event.target as Select).value.trim();
+                        console.debug(newsize);
+                        setFontSize(x.editor, newsize);
+                    }
+                }}"
+            >
+                ${repeat(
+                    x => FONT_SIZES,
+                    html<string>`
+                    <${optionTag}>
+                        ${x => `${x}pt`}
+                    </${optionTag}>
+                `
+                )}
+            </${comboboxTag}>
         </${toolbarTag}>
 `;
 }
