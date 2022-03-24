@@ -97,6 +97,36 @@ function createDefaultToolbarTemplate(
                 ${x => x.resources["alignRightButtonTooltip"]}
             </${tooltipTag}>
 
+            <${buttonTag}
+                id="${x => `${x.instanceId}-undo-button`}"
+                appearance="outline"
+                disabled="${x => !x.formatState.canUndo}"
+            >
+                ${x => x.resources["undoButtonTitle"]}
+            </${buttonTag}>
+            <${tooltipTag}
+                position="bottom"
+                horizontal-viewport-lock="true"
+                anchor="${x => `${x.instanceId}-undo-button`}"
+            >
+                ${x => x.resources["undoButtonTooltip"]}
+            </${tooltipTag}>
+
+            <${buttonTag}
+                id="${x => `${x.instanceId}-redo-button`}"
+                appearance="outline"
+                disabled="${x => !x.formatState.canRedo}"
+            >
+                ${x => x.resources["redoButtonTitle"]}
+            </${buttonTag}>
+            <${tooltipTag}
+                position="bottom"
+                horizontal-viewport-lock="true"
+                anchor="${x => `${x.instanceId}-redo-button`}"
+            >
+                ${x => x.resources["redoButtonTooltip"]}
+            </${tooltipTag}>
+
         </${toolbarTag}>
 `;
 }

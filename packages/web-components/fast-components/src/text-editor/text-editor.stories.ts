@@ -22,6 +22,10 @@ addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
             alignCenterButtonTooltip: "Click to align center",
             alignRightButtonTitle: "Right",
             alignRightButtonTooltip: "Click to align right",
+            undoButtonTitle: "Undo",
+            undoButtonTooltip: "Click to redo",
+            redoButtonTitle: "Undo",
+            reddoButtonTooltip: "Click to undo",
         };
 
         const customToolbarTemplate: ViewTemplate = html<TextEditorToolbar>`
