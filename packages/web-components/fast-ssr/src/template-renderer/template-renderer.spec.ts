@@ -14,6 +14,7 @@ class WithSlot extends FASTElement {}
 @customElement({name: "with-host-attributes", template: html`<template static="static" dynamic="${x => "dynamic"}" ?bool-true=${x => true} ?bool-false=${x => false} :property=${x => "value"}>${x => x.property}<slot></slot></template>`})
 class WithHostAttributes extends FASTElement {}
 
+
 test.describe("TemplateRenderer", () => {
     test.describe("should have an initial configuration", () => {
         test("that emits to shadow DOM", () => {
@@ -163,7 +164,7 @@ test.describe("TemplateRenderer", () => {
         const { templateRenderer, defaultRenderInfo} = fastSSR();
         const result = templateRenderer.render(html`<hello-world my-attr=${x => "foobar"}></hello-world>`, defaultRenderInfo)
 
-        expect(consolidate(result)).toBe(`<hello-world my-attr="foobar"><template shadowroot=\"open\"></template></hello-world>`);
+        expect(consolidate(result)).toBe(`<hello-world  my-attr="foobar"><template shadowroot=\"open\"></template></hello-world>`);
     });
     test("should emit an element with a boolean attribute when the attr binding returns true", () => {
         const { templateRenderer, defaultRenderInfo} = fastSSR();

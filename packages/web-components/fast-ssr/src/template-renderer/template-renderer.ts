@@ -8,7 +8,10 @@ import {
     ViewTemplate,
 } from "@microsoft/fast-element";
 import { Op, OpType } from "../template-parser/op-codes.js";
-import { parseTemplateToOpCodes } from "../template-parser/template-parser.js";
+import {
+    parseTemplateToOpCodes,
+    parseStringToOpCodes,
+} from "../template-parser/template-parser.js";
 import { DirectiveRenderer } from "./directives.js";
 
 export type ComponentDOMEmissionMode = "shadow" | "light";
@@ -51,12 +54,15 @@ export class TemplateRenderer
      * @param source - Any source data to render the template and evaluate bindings with.
      */
     public *render(
-        template: ViewTemplate,
+        template: ViewTemplate | string,
         renderInfo: RenderInfo,
         source: unknown = undefined,
         context: ExecutionContext = defaultExecutionContext
     ): IterableIterator<string> {
-        const codes = parseTemplateToOpCodes(template);
+        const codes =
+            template instanceof ViewTemplate
+                ? parseTemplateToOpCodes(template)
+                : parseStringToOpCodes(template, []);
 
         yield* this.renderOpCodes(codes, renderInfo, source, context);
     }
