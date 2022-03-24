@@ -32,12 +32,20 @@ This is a community requested component.
 
 - **Calendar view:** Opens a calendar view for selecting a date.
 
-- **Localization:** Formats that date for the local market. MM--DD-YYYY, DD--MM-YYYY, etc.
+- **Time view:** Opens time selection view with select boxes for selecting hour, minute and meridian.
+
+- **Month view:** Opens a month selection view. Used for quickly changing the calendar view or for selecting a month when type="month".
+
+- **Year view:** Opens a year selection view. Used for quickly changing the calendar view, month select view or for selecting a year when type="year".
+
+- **Localization:** Formats that date for the local market. MM--DD-YYYY, DD--MM-YYYY, etc. It supports country, language, numbering type and calendar type.
 
 ### Risks and Challenges
 
 *Notable risks or challenges associated with implementing the component. Would we need to make any breaking changes in order to achieve this component's goals?*
 
+- Many different calendar types, even within the same market.
+- Time zone differences. These may be different between client and server.
 
 
 ### Prior Art/Examples
@@ -74,6 +82,8 @@ This is a community requested component.
 - `allowTextInput` - Whether the date-picker allows input of a date string directly or not.
 - `ariaLabel` - Aria label for screen reader.
 - `type` - Type of picker. Supports all of the HTML types. `date` | `month` | `week` | `time` | `datetime-local`
+- `selected-dates` - Dates to be selected.
+- `disabled-dates` - Dates that cannot be selected.
 
 *Methods*
 
@@ -144,7 +154,7 @@ This is a community requested component.
 *Keyboard Navigation and Focus*
 Should be able to tab to the date control and arrow over to the calendar icon.
 Enter and space keys should open the calendar view.
-Esc key should close the calendar view.
+Esc key should close the picker view.
 Focus should be set to either a selected date (the current date), or the first of the month if the current date is not on the current month.
 Should be able to navigate between the months.
 Should be able to arrow around the month to pick a specific date.
@@ -172,16 +182,18 @@ Different date formatting for different markets. This will be obtained through t
 
 Not applicable.
 
-This is a form field. Any required security will be handled by the developer using the component such as form injection.
+This is a form field. Any required security will be handled by the developer using the component such as form injection mitigation.
 
 ### Performance
 
-Performance should be pretty straight forward. Any perf considerations would occur in the calendar component. The date picker itself is primarily a shell that will includ validation.
+Performance should be pretty straight forward. Any perf considerations would occur in the calendar component. The date picker itself is primarily a shell that will include validation.
 
 ### Dependencies
 
-Needs to use the fast-calendar component.
-Will need to be able to use the defined defaults in vNext.
+*fast-calendar* - Used for date picking
+*fast-data-grid* - Used for month and year pickers
+*fast-select* - Used for time selection
+*fast-button* - Used for various controls, next and previous buttons in month and year pickers.
 
 ### Test Plan
 
@@ -209,6 +221,3 @@ This will use standard unit tests and examples in Storybook for end-to-end tests
 ### Next Steps
 
 - *Week view* - An option to pick the week of the year.
-- *Weekday view* - Selection of the day of the week. Monday, Tuesday, Wednesday, etc.
-- *Time picker* - A method for selecting a specific time.
-- *Date and time view* - Option to include both date and time picking.
