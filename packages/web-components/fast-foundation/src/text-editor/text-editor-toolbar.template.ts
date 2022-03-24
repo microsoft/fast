@@ -3,7 +3,9 @@ import { Alignment } from "roosterjs";
 import {
     FONT_SIZES,
     setAlignment,
+    setBackgroundColor,
     setFontSize,
+    setTextColor,
     toggleBold,
     toggleItalic,
 } from "roosterjs-editor-api";
@@ -18,12 +20,6 @@ import { Toolbar } from "../toolbar";
 import { Tooltip } from "../tooltip";
 import type { TextEditorToolbar } from "./text-editor-toolbar";
 
-function createPickerFontItemTemplate(context: ElementDefinitionContext): ViewTemplate {
-    return html`
-        ${x => `${x.value}pt`}
-    `;
-}
-
 function createDefaultToolbarTemplate(
     context: ElementDefinitionContext
 ): ViewTemplate<TextEditorToolbar> {
@@ -34,7 +30,6 @@ function createDefaultToolbarTemplate(
     const pickerTag: string = context.tagFor(Picker);
     const selectTag: string = context.tagFor(Select);
     const optionTag: string = context.tagFor(ListboxOption);
-    const fontSizePickerContentsTemplate = createPickerFontItemTemplate(context);
     return html`
         <${toolbarTag}
             class="toolbar"
@@ -117,6 +112,79 @@ function createDefaultToolbarTemplate(
                 ${x => x.resources["alignRightButtonTooltip"]}
             </${tooltipTag}>
 
+            <${comboboxTag}
+                :value="${x => x.formatState.fontSize}"
+                @change="${(x, c) => {
+                    if (c.event.target) {
+                        const newSize: string = (c.event.target as Combobox).value.trim();
+                        setFontSize(x.editor, newSize);
+                    }
+                }}"
+            >
+                ${repeat(
+                    x => FONT_SIZES,
+                    html<string>`
+                    <${optionTag}>
+                        ${x => `${x}pt`}
+                    </${optionTag}>
+                `
+                )}
+            </${comboboxTag}>
+
+            <${comboboxTag}
+                :value="${x => x.formatState.backgroundColor}"
+                @change="${(x, c) => {
+                    if (c.event.target) {
+                        const newColor: string = (c.event
+                            .target as Combobox).value.trim();
+                        setBackgroundColor(x.editor, newColor);
+                    }
+                }}"
+            >
+            <${optionTag}>
+                    rgb(0,0,0)
+                </${optionTag}>
+                <${optionTag}>
+                    rgb(255,255,255)
+                </${optionTag}>
+                <${optionTag}>
+                    rgb(255,0,0)
+                </${optionTag}>
+                <${optionTag}>
+                    rgb(0,255,0)
+                </${optionTag}>
+                <${optionTag}>
+                    rgb(0,0,255)
+                </${optionTag}>
+            </${comboboxTag}>
+
+            <${comboboxTag}
+                :value="${x => x.formatState.textColor}"
+                @change="${(x, c) => {
+                    if (c.event.target) {
+                        const newColor: string = (c.event
+                            .target as Combobox).value.trim();
+                        setTextColor(x.editor, newColor);
+                    }
+                }}"
+            >
+                <${optionTag}>
+                    rgb(0,0,0)
+                </${optionTag}>
+                <${optionTag}>
+                    rgb(255,255,255)
+                </${optionTag}>
+                <${optionTag}>
+                    rgb(255,0,0)
+                </${optionTag}>
+                <${optionTag}>
+                    rgb(0,255,0)
+                </${optionTag}>
+                <${optionTag}>
+                    rgb(0,0,255)
+                </${optionTag}>
+            </${comboboxTag}>
+
             <${buttonTag}
                 id="${x => `${x.instanceId}-undo-button`}"
                 appearance="outline"
@@ -145,27 +213,7 @@ function createDefaultToolbarTemplate(
                 anchor="${x => `${x.instanceId}-redo-button`}"
             >
                 ${x => x.resources["redoButtonTooltip"]}
-            </${tooltipTag}>'
-
-            <${comboboxTag}
-                :value="${x => x.formatState.fontSize}"
-                @change="${(x, c) => {
-                    if (c.event.target) {
-                        const newsize: string = (c.event.target as Select).value.trim();
-                        console.debug(newsize);
-                        setFontSize(x.editor, newsize);
-                    }
-                }}"
-            >
-                ${repeat(
-                    x => FONT_SIZES,
-                    html<string>`
-                    <${optionTag}>
-                        ${x => `${x}pt`}
-                    </${optionTag}>
-                `
-                )}
-            </${comboboxTag}>
+            </${tooltipTag}>
         </${toolbarTag}>
 `;
 }
