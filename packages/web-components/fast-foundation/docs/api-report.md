@@ -805,6 +805,8 @@ export class DatePicker extends FormAssociatedDatePicker {
     dateFormatter: DateFormatter;
     // @public
     dayFormat: DayFormat;
+    // @internal (undocumented)
+    defaultSlottedNodes: Node[];
     // @public
     disabled: boolean;
     disabledDates: string;
@@ -845,36 +847,36 @@ export class DatePicker extends FormAssociatedDatePicker {
     // @public
     handleBlur(): void;
     // @public
-    handleCalendarChange(direction?: number, e?: KeyboardEvent | MouseEvent | undefined): boolean;
+    handleCalendarChange(direction?: number, e?: KeyboardEvent | MouseEvent | undefined): void;
     // @public
-    handleCalendarTitleKeydown(e: KeyboardEvent): boolean;
+    handleCalendarTitleKeydown(e: KeyboardEvent): void;
     // @public
     handleDateClicked(event: MouseEvent): void;
     // (undocumented)
-    handleFlyoutKeydown(e: KeyboardEvent): boolean;
+    handleFlyoutKeydown(e: KeyboardEvent): void;
     // @public
     handleFocus(): void;
     handleFocusOut(event: Event): void;
     // @public
     handleHourClicked(hour: number): void;
     // @public
-    handleKeyup(event: KeyboardEvent): boolean;
+    handleKeyup(event: KeyboardEvent): void;
     // @public
     handleMeridianClicked(meridian: "AM" | "PM"): void;
     // @public
     handleMinuteClicked(minute: number): void;
     // @public
-    handleMonthChange(direction: number | undefined, event: KeyboardEvent | MouseEvent | undefined): boolean;
+    handleMonthChange(direction: number | undefined, event: KeyboardEvent | MouseEvent | undefined): void;
     // @public
     handleMonthClicked(month: number, year: number): void;
-    handleMonthKeyup(month: number, year: number, event: KeyboardEvent): boolean;
+    handleMonthKeyup(month: number, year: number, event: KeyboardEvent): void;
     // @public
-    handleTimeKeydown(unit: string, event: KeyboardEvent): boolean;
+    handleTimeKeydown(unit: string, event: KeyboardEvent): void;
     // @public
     handleYearClicked(year: number): void;
-    handleYearKeyup(year: number, event: KeyboardEvent): boolean;
+    handleYearKeyup(year: number, event: KeyboardEvent): void;
     // (undocumented)
-    handleYearsChange(direction: number | undefined, event: KeyboardEvent | MouseEvent | undefined): boolean;
+    handleYearsChange(direction: number | undefined, event: KeyboardEvent | MouseEvent | undefined): void;
     // @public
     hour12: boolean;
     // @public

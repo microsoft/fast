@@ -1,7 +1,8 @@
-import { html, ref, repeat, when } from "@microsoft/fast-element";
+import { html, ref, repeat, slotted, when } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
 import type { FoundationElementTemplate } from "../foundation-element";
 import type { ElementDefinitionContext } from "../design-system";
+import { whitespaceFilter } from "../utilities";
 import { AnchoredRegion } from "../anchored-region";
 import { Button } from "../button";
 import { Calendar } from "../calendar";
@@ -217,7 +218,7 @@ export const datePickerTemplate: FoundationElementTemplate<
         @focusout="${(x, c) => x.handleFocusOut(c.event)}"
         @focus="${x => x.handleFocus()}"
     >
-        <${textField}
+       <${textField}
             class="text-field"
             part="text-field"
             ${ref("textField")}
@@ -366,7 +367,7 @@ export const datePickerTemplate: FoundationElementTemplate<
                                         x.handleYearsChange.bind(x)
                                     )}
                             </div>
-                            ${x => pickerGridTemplate(context, x.getMonths())}
+                            ${x => pickerGridTemplate(context, x.getYears())}
                             ${resetButton}
                         </div>
                     `
