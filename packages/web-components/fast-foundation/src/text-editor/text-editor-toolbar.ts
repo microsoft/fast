@@ -82,6 +82,9 @@ export class TextEditorToolbar extends Toolbar {
     }
 
     private updateFormatState(): void {
+        if (!this.editor) {
+            return;
+        }
         this.formatState = getFormatState(this.editor);
         this.startFormatStateUpdateTimer();
     }

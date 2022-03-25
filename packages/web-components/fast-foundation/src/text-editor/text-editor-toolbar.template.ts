@@ -229,10 +229,7 @@ export const textEditorToolbarTemplate: FoundationElementTemplate<ViewTemplate<
         context
     );
     return html<TextEditorToolbar>`
-        <template
-            slot="toolbar-region"
-            :defaultToolbarTemplate="${defaultToolbarTemplate}"
-        >
+        <template :defaultToolbarTemplate="${defaultToolbarTemplate}">
             <slot></slot>
         </template>
     `;

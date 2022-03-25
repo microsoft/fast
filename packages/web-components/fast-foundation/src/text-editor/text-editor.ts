@@ -54,8 +54,7 @@ export class TextEditor extends FoundationElement {
     }
 
     /**
-     * Sets the template to use to generate the toolbar.
-     * Set the the text editor.
+     *
      *
      * @public
      */
@@ -75,11 +74,15 @@ export class TextEditor extends FoundationElement {
     @observable
     public showToolbar: boolean = false;
     private showToolbarChanged(): void {
-        if (this.showToolbar) {
-            DOM.queueUpdate(this.setRegionProps);
-            this.$emit("toolbaropening");
-        } else {
-            this.$emit("toolbarclosing");
+        if (this.$fastController.isConnected) {
+            if (this.showToolbar) {
+                // this.addToolbarElement();
+                DOM.queueUpdate(this.setRegionProps);
+                this.$emit("toolbaropening");
+            } else {
+                // this.removeToolbarElement();
+                this.$emit("toolbarclosing");
+            }
         }
     }
 
@@ -113,7 +116,7 @@ export class TextEditor extends FoundationElement {
      */
     public editorHost: HTMLDivElement;
 
-    private editor: IEditor | undefined;
+    public editor: IEditor | undefined;
     private toolbarElement: TextEditorToolbar | undefined;
 
     /**
@@ -121,26 +124,13 @@ export class TextEditor extends FoundationElement {
      */
     public connectedCallback(): void {
         super.connectedCallback();
-        this.editorHost = document.createElement("div");
-        this.editorHost.slot = "editor-region";
-        this.editorHost.setAttribute("role", "textbox");
-        this.editorHost.tabIndex = 0;
-        this.appendChild(this.editorHost);
+
         this.editor = createEditor(this.editorHost);
+
         this.addEventListener(eventFocusIn, this.handleFocusIn);
         this.addEventListener(eventFocusOut, this.handleFocusOut);
 
         this.updateToolbarConfig();
-
-        this.toolbarElement = document.createElement(
-            this.toolbarTag
-        ) as TextEditorToolbar;
-        this.toolbarElement.editor = this.editor;
-        this.toolbarElement.toolbarTemplate = this.toolbarTemplate;
-        if (this.toolbarResources) {
-            this.toolbarElement.resources = this.toolbarResources;
-        }
-        this.appendChild(this.toolbarElement);
     }
 
     /**
@@ -148,7 +138,6 @@ export class TextEditor extends FoundationElement {
      */
     public disconnectedCallback() {
         this.editor = undefined;
-        this.toolbarElement = undefined;
         this.removeEventListener(eventFocusIn, this.handleFocusIn);
         this.removeEventListener(eventFocusOut, this.handleFocusOut);
         super.disconnectedCallback();
@@ -165,7 +154,9 @@ export class TextEditor extends FoundationElement {
      * @internal
      */
     public handleFocusOut(e: FocusEvent): void {
-        this.showToolbar = false;
+        if (!e.relatedTarget || !this.contains(e.relatedTarget as Node)) {
+            this.showToolbar = false;
+        }
     }
 
     /**

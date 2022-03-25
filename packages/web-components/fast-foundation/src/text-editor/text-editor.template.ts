@@ -17,7 +17,7 @@ export const textEditorTemplate: FoundationElementTemplate<ViewTemplate<TextEdit
     const toolbarTag: string = context.tagFor(TextEditorToolbar);
     return html<TextEditor>`
         <template :toolbarTag="${() => toolbarTag}">
-            <slot name="editor-region"></slot>
+            <div class="editor" role="textbox" tabindex="0" ${ref("editorHost")}></div>
             ${when(
                 x => x.showToolbar,
                 html<TextEditor>`
@@ -44,8 +44,12 @@ export const textEditorTemplate: FoundationElementTemplate<ViewTemplate<TextEdit
                     @loaded="${(x, c) => x.handleRegionLoaded(c.event as Event)}"
                     ${ref("region")}
                 >
-                    <slot name="toolbar-region">
-                    </slot>
+                    <${toolbarTag}
+                        :editor="${x => x.editor}"
+                        :toolbarTemplate="${x => x.toolbarTemplate}"
+                        :resources="${x => x.toolbarResources}"
+                    >
+                    </${toolbarTag}>
                 </${anchoredRegionTag}>
             `
             )}

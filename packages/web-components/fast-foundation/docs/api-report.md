@@ -2522,6 +2522,8 @@ export class TextEditor extends FoundationElement {
     connectedCallback(): void;
     // @internal (undocumented)
     disconnectedCallback(): void;
+    // (undocumented)
+    editor: IEditor | undefined;
     // @internal
     editorHost: HTMLDivElement;
     // @internal (undocumented)
@@ -2538,6 +2540,7 @@ export class TextEditor extends FoundationElement {
     toolbarConfig: AnchoredRegionConfig;
     // Warning: (ae-incompatible-release-tags) The symbol "toolbarPlacement" is marked as @public, but its signature references "toolbarPlacement" which is marked as @beta
     toolbarPlacement: toolbarPlacement;
+    // (undocumented)
     toolbarResources: object;
     // @internal
     toolbarTag: string;

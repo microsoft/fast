@@ -20614,42 +20614,42 @@ roosterjs-color-utils@1.0.0:
     color "^3.0.0"
     roosterjs-editor-types "8.2.8"
 
-roosterjs-editor-api@8.18.0, roosterjs-editor-api@^8.18.0:
-  version "8.18.0"
-  resolved "https://registry.yarnpkg.com/roosterjs-editor-api/-/roosterjs-editor-api-8.18.0.tgz#fb9537ebcc64d4e22848d6a0cfda2009569069af"
-  integrity sha512-HQEgj6lnOofoNelIDRW6TQdoFd8a582IxacrEidXxbQUl0UcAb/kLqdtICjbRjbzQlgsx+qOwWDjgNSluMW22Q==
+roosterjs-editor-api@8.18.0-dev.0:
+  version "8.18.0-dev.0"
+  resolved "https://registry.yarnpkg.com/roosterjs-editor-api/-/roosterjs-editor-api-8.18.0-dev.0.tgz#97986dedf0957d0d3a7f2b804fa628097d8d0206"
+  integrity sha512-/A8+6AyznevcgTLqP3WOeT7X8dbhXqOjqqGASrW0bLO01RrCjFutFur33l8dPgsrVdo3Zc54xFnfAr1kwZZyAg==
   dependencies:
-    roosterjs-editor-dom "8.18.0"
-    roosterjs-editor-types "8.18.0"
+    roosterjs-editor-dom "8.18.0-dev.0"
+    roosterjs-editor-types "8.18.0-dev.0"
 
-roosterjs-editor-core@8.18.0:
-  version "8.18.0"
-  resolved "https://registry.yarnpkg.com/roosterjs-editor-core/-/roosterjs-editor-core-8.18.0.tgz#1a57257039f1080c15e5802d6eb41a0772e69d45"
-  integrity sha512-tTpGGTID/USTATwr51LBL7lW7Kt6/JeHt3WYKluZ7hWaAxiBisIG9o1LwokiySLZOd17y8coKxq6hiVrT/GFEg==
+roosterjs-editor-core@8.18.0-dev.0:
+  version "8.18.0-dev.0"
+  resolved "https://registry.yarnpkg.com/roosterjs-editor-core/-/roosterjs-editor-core-8.18.0-dev.0.tgz#a98173a5ee8e699d4cbee47e94e89f8b79a315bd"
+  integrity sha512-z8V5rnm9be4mpdRQrrcffGdnddrZDlyqe83gkHoUc2LEh8hIDRqoGf4K39pyj1wqBPFioEQi11CbcyC1Ua+10Q==
   dependencies:
-    roosterjs-editor-dom "8.18.0"
-    roosterjs-editor-types "8.18.0"
+    roosterjs-editor-dom "8.18.0-dev.0"
+    roosterjs-editor-types "8.18.0-dev.0"
 
-roosterjs-editor-dom@8.18.0:
-  version "8.18.0"
-  resolved "https://registry.yarnpkg.com/roosterjs-editor-dom/-/roosterjs-editor-dom-8.18.0.tgz#5e691e7d3ca6da2f8a1d7e9375105598d19601b8"
-  integrity sha512-fDqBAY1DpZFmIIKZ7g7wW6KV4FyfNUUjDafGp+A0qStgb6kplf5LwmeAMRGX1Dg9hAUbRH8iuw2tkR0M3fGdYg==
+roosterjs-editor-dom@8.18.0-dev.0:
+  version "8.18.0-dev.0"
+  resolved "https://registry.yarnpkg.com/roosterjs-editor-dom/-/roosterjs-editor-dom-8.18.0-dev.0.tgz#5d6d8563b9e8ad1c99a4f82f737729907e45f6e4"
+  integrity sha512-0xaBcPQG0BXr7XmQSLN1+dVKd69VsJpDQVf3yWHBzYd0/TF22dRGVLm+3FIO4qd0hiX0GljaKlLf1a0DvPLimQ==
   dependencies:
-    roosterjs-editor-types "8.18.0"
+    roosterjs-editor-types "8.18.0-dev.0"
 
-roosterjs-editor-plugins@8.18.0:
-  version "8.18.0"
-  resolved "https://registry.yarnpkg.com/roosterjs-editor-plugins/-/roosterjs-editor-plugins-8.18.0.tgz#917de796204cecb8a039891cd15bb845a363d46c"
-  integrity sha512-ri9vz5tnlT+lDgwxjpD9SEGfDBMM1dlK8hXGjJgtKOY6nIi/rxQ5ziGucKHBkyNtSlo7N7i44eGPoT3zNXayEw==
+roosterjs-editor-plugins@8.18.0-dev.0:
+  version "8.18.0-dev.0"
+  resolved "https://registry.yarnpkg.com/roosterjs-editor-plugins/-/roosterjs-editor-plugins-8.18.0-dev.0.tgz#247cdb92989d2ab3fa17011701578adf66dd226a"
+  integrity sha512-mNr6o99BInIYyM4wUxh902SOXxkObrLdhJLA1+Pfrh9jZ2mUdBzmUHL7sJjhRyFnLgbWbVDVjtZ2nbbaiwbpiA==
   dependencies:
-    roosterjs-editor-api "8.18.0"
-    roosterjs-editor-dom "8.18.0"
-    roosterjs-editor-types "8.18.0"
+    roosterjs-editor-api "8.18.0-dev.0"
+    roosterjs-editor-dom "8.18.0-dev.0"
+    roosterjs-editor-types "8.18.0-dev.0"
 
-roosterjs-editor-types@8.18.0:
-  version "8.18.0"
-  resolved "https://registry.yarnpkg.com/roosterjs-editor-types/-/roosterjs-editor-types-8.18.0.tgz#215545b4cc2feb216e556d29c594fe2e7ec619f2"
-  integrity sha512-x5Y32eHMoD4PywB/0VH1dd+mRXYVimUWERFRO/Emsy97vjfaw9QufxagV1s6Ib7VHeu8q+GrxTGMWojzT9+h9w==
+roosterjs-editor-types@8.18.0-dev.0:
+  version "8.18.0-dev.0"
+  resolved "https://registry.yarnpkg.com/roosterjs-editor-types/-/roosterjs-editor-types-8.18.0-dev.0.tgz#fc1c8d8587ef740d5fcc5a33f090d28e3d12e550"
+  integrity sha512-xa0O3vNs3QcqIHE5UBzBATMgLbp/YXsDu2ZbAav3dCH/f+lRTpRcYoLkjFFnrUPAV/f23Bzqp5IZ+iSPOwg9/g==
   dependencies:
     "@types/dom-inputevent" "^1.0.3"
 
@@ -20660,17 +20660,17 @@ roosterjs-editor-types@8.2.8:
   dependencies:
     "@types/dom-inputevent" "^1.0.3"
 
-roosterjs@^8.18.0:
-  version "8.18.0"
-  resolved "https://registry.yarnpkg.com/roosterjs/-/roosterjs-8.18.0.tgz#eb24adb83a46c467617bd177ec2cb2b38b32ac03"
-  integrity sha512-oDZwPLKL6pEiE1G+Th58CIb3qWJf/kN9e7L8GwE9CRtuebGcPMIT4k/BmIXe+0BG8Z/0cd18r6RoNkL0ypqwTg==
+roosterjs@8.18.0-dev.0:
+  version "8.18.0-dev.0"
+  resolved "https://registry.yarnpkg.com/roosterjs/-/roosterjs-8.18.0-dev.0.tgz#9af4bcca86547cc27259e43f3e48868c27ea7e5a"
+  integrity sha512-mm6zNlforMTUvNdXutm4TsfBRQxWGyOFy9W/mbfvtk6eb00AjX92IeD3gLpJ+Roo0fgcVJ47wns26H3muZX/VQ==
   dependencies:
     roosterjs-color-utils "1.0.0"
-    roosterjs-editor-api "8.18.0"
-    roosterjs-editor-core "8.18.0"
-    roosterjs-editor-dom "8.18.0"
-    roosterjs-editor-plugins "8.18.0"
-    roosterjs-editor-types "8.18.0"
+    roosterjs-editor-api "8.18.0-dev.0"
+    roosterjs-editor-core "8.18.0-dev.0"
+    roosterjs-editor-dom "8.18.0-dev.0"
+    roosterjs-editor-plugins "8.18.0-dev.0"
+    roosterjs-editor-types "8.18.0-dev.0"
 
 rst-selector-parser@^2.2.3:
   version "2.2.3"

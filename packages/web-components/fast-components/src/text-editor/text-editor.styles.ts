@@ -19,4 +19,7 @@ export const textEditorStyles: FoundationElementTemplate<ElementStyles> = (
     ::slotted([slot="editor-region"]) {
         border: 2px solid green;
     }
+    .editor {
+        min-height: 60px;
+    }
 `;
