@@ -97,26 +97,91 @@ This is a community requested component.
 **Structure:**
 
 ```html
-<div class="date-picker">
-  <div class="label"></div>
-  <div class="date-input">
-    <input type="text" placeholder="${x => x.placeholder}" value=${x => x.value} />
-    <span class="calendar-icon"
-      @click=${x => x.openCalendar()}
-    >
-      <slot name="calendar-icon" aria-label="Choose date">&#128197;</slot>
-    </span>
-  </div>
-  <div class="calendar ${x => x.calendarOpen ? '' : 'hide'}">
-    <slot name="calendar" @mouseover=${x => x.overCalendar = true} @mouseout=${x => x.overCalendar = false} @click=${(x, c) => x.handleCalendarClick(c.event)}>
+<template>
+  <fast-text-field>
+    <slot slot="start" name="start"></slot>
+    <slot></slot>
+    <slot slot="end" name="end">
+      <span class="calendar-icon"
+        @click=${x => x.openCalendar()}
+      >
+        <span aria-label="Choose date">&#128197;</span>
+      </span>
+    </slot>
+  </fast-text-field>
+  <fast-anchored-region>
+    ${when(
+        x => x.type === "datetime-local" || x.type === "time",
+        html`
+            ${x =>
+                timePickerTemplate(
+                    context,
+                    x.getTimes(),
+                    x.handleTimeKeydown.bind(x)
+                )}
+        `
+    )}
+    ${when(
+      x => x.showCalendar,
+      html`
       <fast-calendar monthFormat="short" weekdayFormat="narrow" month="${x => x.calendarMonth}" year="${x => x.calendarYear}">
         <div class="calendar-change" slot="start">
           <div class="arrow" @click="${x => x.stepDownCalendar()}">&darr;</div>
           <div class="arrow" @click="${x => x.stepUpCalendar()}">&uarr;</div>
         </div>
       </fast-calendar>
-    </slot>
-  </div>
+      `
+    )}
+    ${when(x => x.showMonthPicker,
+    html`
+      <div class="picker" part="picker">
+          <div class="picker-title" part="picker-title">
+              ${x =>
+                  pickerTitleTemplate(
+                      context,
+                      x.dateFormatter.getYear(x.monthView),
+                      true
+                  )}
+              ${x =>
+                  pickerChangeControlsTemplate(
+                      context,
+                      definition,
+                      x.handleMonthChange.bind(x)
+                  )}
+          </div>
+          ${x => pickerGridTemplate(context, x.getMonths())}
+          ${resetButton}
+      </div>
+    `
+    )}
+    ${when(
+        x => x.showYearPicker,
+        html`
+            <div class="picker" part="picker">
+                <div class="picker-title" part="picker-title">
+                    ${x => {
+                        const years = x.getYears();
+                        return pickerTitleTemplate(
+                            context,
+                            `${years[0].text} - ${
+                                years[years.length - 1].text
+                            }`,
+                            false
+                        );
+                    }}
+                    ${x =>
+                        pickerChangeControlsTemplate(
+                            context,
+                            definition,
+                            x.handleYearsChange.bind(x)
+                        )}
+                </div>
+                ${x => pickerGridTemplate(context, x.getMonths())}
+                ${resetButton}
+            </div>
+        `
+    )}
+  </fast-anchored-region>
 </div>
 ```
 
@@ -221,3 +286,4 @@ This will use standard unit tests and examples in Storybook for end-to-end tests
 ### Next Steps
 
 - *Week view* - An option to pick the week of the year.
+- *Date range selection* - The ability to select more than a single date.
