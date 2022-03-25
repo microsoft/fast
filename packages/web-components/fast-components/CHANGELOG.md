@@ -1,8 +1,24 @@
 # Change Log - @microsoft/fast-components
 
-This log was last generated on Thu, 17 Mar 2022 07:11:51 GMT and should not be manually modified.
+This log was last generated on Thu, 24 Mar 2022 07:12:08 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.25.2
+
+Thu, 24 Mar 2022 07:12:08 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.37.2 (20542556+mollykreis@users.noreply.github.com)
+
+## 2.25.1
+
+Sun, 20 Mar 2022 07:15:44 GMT
+
+### Patches
+
+- Fix for default selection behavior for listbox and select (26874831+atmgrifter00@users.noreply.github.com)
 
 ## 2.25.0
 
