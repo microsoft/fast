@@ -19,6 +19,9 @@ export type ButtonOptions = FoundationElementDefinition & StartEndOptions;
  * Based largely on the {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button | <button> element }.
  *
  * @public
+ * @slot start - Slot for placing content, such as icons, in front of the default content.
+ * @slot content - (Default) The default content for the button.
+ * @slot end - Slot for placing content, such as icons, after the default content.
  */
 export class Button extends FormAssociatedButton {
     /**
