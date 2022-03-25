@@ -69,7 +69,22 @@ export class Tooltip extends FoundationElement {
      * HTML Attribute: position
      */
     @attr
-    public position: TooltipPosition;
+    public position:
+        | TooltipPosition
+        | "top"
+        | "right"
+        | "bottom"
+        | "left"
+        | "start"
+        | "end"
+        | "top-left"
+        | "top-right"
+        | "bottom-left"
+        | "bottom-right"
+        | "top-start"
+        | "top-end"
+        | "bottom-start"
+        | "bottom-end";
     private positionChanged(): void {
         if ((this as FASTElement).$fastController.isConnected) {
             this.updateLayout();

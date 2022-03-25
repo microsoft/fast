@@ -107,7 +107,7 @@ export class RadioGroup extends FoundationElement {
      * HTML Attribute: orientation
      */
     @attr
-    public orientation: Orientation = Orientation.horizontal;
+    public orientation: Orientation | "horizontal" | "vertical" = Orientation.horizontal;
 
     @observable
     public childItems: HTMLElement[];
