@@ -34,7 +34,8 @@ export class TextArea extends FormAssociatedTextArea {
      * HTML Attribute: resize
      */
     @attr
-    public resize: TextAreaResize = TextAreaResize.none;
+    public resize: TextAreaResize | "none" | "both" | "horizontal" | "vertical" =
+        TextAreaResize.none;
 
     /**
      * A reference to the internal textarea element

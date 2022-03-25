@@ -56,7 +56,7 @@ module.exports = (env, args) => {
                             loader: "ts-loader",
                         },
                     ],
-                    exclude: /node_modules/
+                    exclude: /node_modules/,
                 },
                 {
                     test: /\.ejs$/,
