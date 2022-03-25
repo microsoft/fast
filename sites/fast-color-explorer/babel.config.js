@@ -8,6 +8,5 @@ module.exports = {
                 },
             },
         ],
-        "@babel/react",
     ],
 };

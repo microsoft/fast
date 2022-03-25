@@ -25,6 +25,14 @@
                         "Value that gets applied to the the css gridTemplateColumns attribute of child rows",
                     "type": "string",
                     "required": false
+                },
+                {
+                    "name": "no-tabbing",
+                    "title": "Disable tabbing",
+                    "description":
+                        "When true the component will not add itself or its children to the tab queue",
+                    "type": "boolean",
+                    "required": false
                 }
             ],
             "slots": [

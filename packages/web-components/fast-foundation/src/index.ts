@@ -27,6 +27,7 @@ export {
 } from "./design-token/interfaces";
 export * from "./di/index";
 export * from "./dialog/index";
+export { reflectAttributes } from "./directives/reflect-attributes";
 export * from "./disclosure/index";
 export * from "./divider/index";
 export * from "./flipper/index";
