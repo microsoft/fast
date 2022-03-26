@@ -102,11 +102,7 @@ This is a community requested component.
     <slot slot="start" name="start"></slot>
     <slot></slot>
     <slot slot="end" name="end">
-      <span class="calendar-icon"
-        @click=${x => x.openCalendar()}
-      >
-        <span aria-label="Choose date">&#128197;</span>
-      </span>
+      &#128197;
     </slot>
   </fast-text-field>
   <fast-anchored-region>
