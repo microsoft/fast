@@ -20,6 +20,9 @@ export const fastTextEditor = TextEditor.compose({
     baseName: "text-editor",
     template: textEditorTemplate,
     styles: textEditorStyles,
+    shadowOptions: {
+        delegatesFocus: true,
+    },
 });
 
 /**
@@ -43,6 +46,9 @@ export const fastTextEditorToolbar = TextEditorToolbar.compose({
     baseName: "text-editor-toolbar",
     template: textEditorToolbarTemplate,
     styles: textEditorToolbarStyles,
+    shadowOptions: {
+        delegatesFocus: true,
+    },
 });
 
 /**

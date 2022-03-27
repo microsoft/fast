@@ -85,7 +85,11 @@ export class TextEditorToolbar extends Toolbar {
         if (!this.editor) {
             return;
         }
-        this.formatState = getFormatState(this.editor);
+        const newFormatState = getFormatState(this.editor);
+        //todo: faster comparison
+        if (JSON.stringify(newFormatState) !== JSON.stringify(this.formatState)) {
+            this.formatState = newFormatState;
+        }
         this.startFormatStateUpdateTimer();
     }
 
