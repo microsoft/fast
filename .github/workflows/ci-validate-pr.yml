@@ -14,6 +14,8 @@ on:
 jobs:
   build_linux:
     runs-on: ubuntu-latest
+    env:
+      PLAYWRIGHT_BROWSERS_PATH: 0
 
     steps:
     - uses: actions/checkout@v2
@@ -47,6 +49,11 @@ jobs:
 
     - name: Prepare workspaces
       run: yarn prepare
+
+    - name: Install playwright dependencies and browsers
+      run: |
+        yarn playwright install-deps
+        yarn playwright install
 
     - name: Testing unit tests
       run: yarn lerna run test --stream
