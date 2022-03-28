@@ -1,10 +1,9 @@
-import { HTMLDirective } from "@microsoft/fast-element";
-import { AttributeType } from "./attributes.js";
+import { Aspect, Binding, HTMLDirective } from "@microsoft/fast-element";
 
 /**
  * Allows fast identification of operation types
  */
-export enum OpType {
+export const enum OpType {
     customElementOpen,
     customElementClose,
     customElementAttributes,
@@ -70,9 +69,14 @@ export type DirectiveOp = {
  */
 export type AttributeBindingOp = {
     type: OpType.attributeBinding;
-    directive: HTMLDirective;
-    name: string;
-    attributeType: AttributeType;
+    binding: Binding;
+    target: string;
+    aspect:
+        | Aspect.attribute
+        | Aspect.booleanAttribute
+        | Aspect.event
+        | Aspect.property
+        | Aspect.tokenList;
     useCustomElementInstance: boolean;
 };
 
@@ -84,7 +88,7 @@ export type TemplateElementOpenOp = {
     staticAttributes: Map<string, string>;
     // We need dynamic attributes here so we can emit the `<template`, all attributes, and then `>`
     // from one operation
-    dynamicAttributes: Pick<AttributeBindingOp, "name" | "attributeType" | "directive">[];
+    dynamicAttributes: Pick<AttributeBindingOp, "binding" | "target" | "aspect">[];
 };
 
 /**
