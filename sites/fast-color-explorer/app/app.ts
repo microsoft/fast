@@ -4,6 +4,7 @@ import {
     baseLayerLuminance,
     ColorRecipe,
     neutralColor,
+    neutralFillLayerRestDelta,
     neutralLayer1Recipe,
     neutralLayer2Recipe,
     neutralLayer3Recipe,
@@ -11,6 +12,7 @@ import {
     neutralLayerCardContainerRecipe,
     neutralLayerFloatingRecipe,
     PaletteRGB,
+    registerFastStyle,
     StandardLuminance,
     Swatch,
     SwatchRGB,
@@ -31,6 +33,7 @@ import { AppColorBlock } from "./components/color-block";
 import { AppControlPane } from "./components/control-pane";
 import { AppGradient } from "./components/gradient";
 import { AppSampleApp } from "./components/sample-app";
+import { registerMinecraftStyle } from "./style-minecraft";
 
 AppColorBlock;
 AppControlPane;
@@ -44,6 +47,21 @@ export enum ComponentTypes {
     sample = "sample",
 }
 
+export enum DesignSystem {
+    fast = "FAST",
+    minecraft = "Minecraft",
+}
+
+export class LuminanceSettings {
+    @observable
+    public lightMode: number = StandardLuminance.LightMode;
+
+    @observable
+    public darkMode: number = 0.2; // StandardLuminance.DarkMode;
+}
+
+export const luminanceSettings: LuminanceSettings = new LuminanceSettings();
+
 const sampleTemplate = html<App>`
     <fast-design-system-provider
         neutral-color="${x => x.neutralColor}"
@@ -52,19 +70,23 @@ const sampleTemplate = html<App>`
     >
         <app-layer-background
             id="light-mode"
-            base-layer-luminance="${StandardLuminance.LightMode}"
+            base-layer-luminance="${x => x.luminanceSettings.lightMode}"
             background-layer-recipe="L4"
             style="flex-grow: 1; padding: 100px;"
         >
-            <app-sample-app></app-sample-app>
+            <app-layer-background background-layer-recipe="L3">
+                <app-sample-app></app-sample-app>
+            </app-layer-background>
         </app-layer-background>
         <app-layer-background
             id="dark-mode"
-            base-layer-luminance="${StandardLuminance.DarkMode}"
+            base-layer-luminance="${x => x.luminanceSettings.darkMode}"
             background-layer-recipe="L4"
             style="flex-grow: 1; padding: 100px;"
         >
-            <app-sample-app></app-sample-app>
+            <app-layer-background background-layer-recipe="L3">
+                <app-sample-app></app-sample-app>
+            </app-layer-background>
         </app-layer-background>
     </fast-design-system-provider>
 `;
@@ -185,6 +207,11 @@ const styles = css`
     app-color-block {
         min-width: 400px;
     }
+
+    #light-mode,
+    #dark-mode {
+        background: transparent;
+    }
 `;
 
 export interface SwatchInfo {
@@ -199,10 +226,25 @@ export interface SwatchInfo {
     styles,
 })
 export class App extends FASTElement {
+    public static instance: App;
+
     canvasElement: HTMLDivElement;
 
+    @observable
+    luminanceSettings: LuminanceSettings = luminanceSettings;
+
+    @observable
+    designSystem: DesignSystem = DesignSystem.fast;
+    private designSystemChanged(prev: string, next: string) {
+        if (next === DesignSystem.minecraft) {
+            registerMinecraftStyle();
+        } else {
+            registerFastStyle();
+        }
+    }
+
     @attr({ attribute: "component-type" })
-    componentType: ComponentTypes = ComponentTypes.backplate;
+    componentType: ComponentTypes = ComponentTypes.sample;
 
     @attr({ attribute: "neutral-color" })
     neutralColor: string;
@@ -243,6 +285,7 @@ export class App extends FASTElement {
         super.connectedCallback();
         this.neutralColorChanged(undefined, this.neutralColor);
         this.accentColorChanged(undefined, this.accentColor);
+        App.instance = this;
     }
 
     backgrounds(): Array<SwatchInfo> {
@@ -320,11 +363,11 @@ export class App extends FASTElement {
     };
 
     private get lightModeLayers(): Array<SwatchInfo> {
-        return this.resolveLayerRecipes(StandardLuminance.LightMode);
+        return this.resolveLayerRecipes(this.luminanceSettings.lightMode);
     }
 
     private get darkModeLayers(): Array<SwatchInfo> {
-        return this.resolveLayerRecipes(StandardLuminance.DarkMode);
+        return this.resolveLayerRecipes(this.luminanceSettings.darkMode);
     }
 
     controlPaneHandler(e: CustomEvent) {

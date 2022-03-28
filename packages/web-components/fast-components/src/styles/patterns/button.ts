@@ -18,7 +18,6 @@ import {
     accentForegroundHover,
     accentForegroundRest,
     bodyFont,
-    controlCornerRadius,
     density,
     designUnit,
     focusStrokeInner,
@@ -27,18 +26,10 @@ import {
     foregroundOnAccentActive,
     foregroundOnAccentHover,
     foregroundOnAccentRest,
-    neutralFillActive,
-    neutralFillFocus,
-    neutralFillHover,
-    neutralFillRest,
     neutralFillStealthActive,
     neutralFillStealthFocus,
     neutralFillStealthHover,
     neutralFillStealthRest,
-    neutralForegroundActive,
-    neutralForegroundFocus,
-    neutralForegroundHover,
-    neutralForegroundRest,
     strokeControlStrongActive,
     strokeControlStrongHover,
     strokeControlStrongRest,
@@ -46,6 +37,7 @@ import {
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
 } from "../../design-tokens.js";
+import { styleModuleBehavior } from "../../style-module/index.js";
 
 /**
  * @internal
@@ -66,13 +58,10 @@ export const BaseButtonStyles = (
             line-height: ${typeRampBaseLineHeight};
             height: calc(${heightNumber} * 1px);
             min-width: calc(${heightNumber} * 1px);
-            border-radius: calc(${controlCornerRadius} * 1px);
             fill: currentcolor;
             cursor: pointer;
         }
         :host .control {
-            background: ${neutralFillRest};
-            color: ${neutralForegroundRest};
             border: calc(${strokeWidth} * 1px) solid transparent;
             flex-grow: 1;
             box-sizing: border-box;
@@ -100,19 +89,9 @@ export const BaseButtonStyles = (
             padding: 0;
             line-height: 0;
         }
-        :host .control${interactivitySelector}:hover {
-            background: ${neutralFillHover};
-            color: ${neutralForegroundHover};
-        }
-        :host .control${interactivitySelector}:active {
-            background: ${neutralFillActive};
-            color: ${neutralForegroundActive};
-        }
         :host .control:${focusVisible} {
-            background: ${neutralFillFocus};
             border-color: ${focusStrokeOuter} ;
             box-shadow: 0 0 0 calc(${focusStrokeWidth} * 1px) ${focusStrokeOuter} inset ;
-            color: ${neutralForegroundFocus};
         }
         .control::-moz-focus-inner {
             border: 0;
@@ -137,6 +116,11 @@ export const BaseButtonStyles = (
             margin-inline-start: 11px;
         }
   `.withBehaviors(
+        styleModuleBehavior(
+            context.type,
+            interactivitySelector,
+            nonInteractivitySelector
+        ),
         forcedColorsStylesheetBehavior(
             css`
               :host .control {

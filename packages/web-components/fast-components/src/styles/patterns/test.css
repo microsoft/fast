@@ -1,0 +1,9 @@
+:host {
+    color: red;
+}
+
+.test,
+.test1,
+.test2[enabled]:hover {
+    color: blue;
+}

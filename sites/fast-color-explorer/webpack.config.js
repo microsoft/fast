@@ -94,6 +94,10 @@ module.exports = (env, args) => {
                         },
                     ],
                 },
+                {
+                    test: /\.(jpg|png|woff|woff2)$/,
+                    use: ["file-loader"],
+                },
             ],
         },
         plugins: [
@@ -119,6 +123,14 @@ module.exports = (env, args) => {
                             __dirname,
                             "../site-utilities/statics/assets/favicon.ico"
                         ),
+                        to: outDir,
+                    },
+                    {
+                        from: path.resolve(__dirname, "app/angled-corners.js"),
+                        to: outDir,
+                    },
+                    {
+                        from: path.resolve(__dirname, "app/corner-shape.js"),
                         to: outDir,
                     },
                 ],

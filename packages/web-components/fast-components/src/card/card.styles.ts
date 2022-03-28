@@ -11,12 +11,7 @@ import {
     neutralForegroundRest,
     strokeWidth,
 } from "../design-tokens.js";
-import {
-    elevationShadowCardActive,
-    elevationShadowCardFocus,
-    elevationShadowCardHover,
-    elevationShadowCardRest,
-} from "../styles/index.js";
+import { styleModuleBehavior } from "../style-module/index.js";
 
 /**
  * Styles for Card
@@ -36,22 +31,13 @@ export const cardStyles: FoundationElementTemplate<ElementStyles> = (
             background: ${fillColor};
             border: calc(${strokeWidth} * 1px) solid transparent;
             border-radius: calc(${layerCornerRadius} * 1px);
-            box-shadow: ${elevationShadowCardRest};
             color: ${neutralForegroundRest};
-        }
-        :host(:hover) {
-            box-shadow: ${elevationShadowCardHover};
-        }
-        :host(:active) {
-            box-shadow: ${elevationShadowCardActive};
-        }
-        :host(:focus-within) {
-            box-shadow: ${elevationShadowCardFocus};
         }
         :host {
             content-visibility: auto;
         }
     `.withBehaviors(
+        styleModuleBehavior(context.type),
         forcedColorsStylesheetBehavior(
             css`
                 :host {

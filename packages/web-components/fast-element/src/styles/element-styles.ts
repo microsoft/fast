@@ -41,7 +41,7 @@ export interface StyleTarget {
  * Represents styles that can be composed into the ShadowDOM of a custom element.
  * @public
  */
-export type ComposableStyles = string | ElementStyles | CSSStyleSheet;
+export type ComposableStyles = string | number | ElementStyles | CSSStyleSheet;
 
 /**
  * Creates an ElementStyles instance for an array of ComposableStyles.
@@ -108,7 +108,7 @@ export abstract class ElementStyles {
 
 function reduceStyles(
     styles: ReadonlyArray<ComposableStyles>
-): (string | CSSStyleSheet)[] {
+): (string | number | CSSStyleSheet)[] {
     return styles
         .map((x: ComposableStyles) =>
             x instanceof ElementStyles ? reduceStyles(x.styles) : [x]

@@ -6,7 +6,6 @@ import {
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
-    controlCornerRadius,
     designUnit,
     fillColor,
     layerCornerRadius,
@@ -14,7 +13,7 @@ import {
     neutralStrokeDividerRest,
     strokeWidth,
 } from "../design-tokens.js";
-import { elevationShadowFlyout } from "../styles/index.js";
+import { styleModuleBehavior } from "../style-module/index.js";
 
 /**
  * Styles for Menu
@@ -29,9 +28,8 @@ export const menuStyles: FoundationElementTemplate<ElementStyles> = (
             background: ${fillColor};
             border: calc(${strokeWidth} * 1px) solid transparent;
             border-radius: calc(${layerCornerRadius} * 1px);
-            box-shadow: ${elevationShadowFlyout};
             margin: 0;
-            border-radius: calc(${controlCornerRadius} * 1px);
+            border-radius: calc(${layerCornerRadius} * 1px);
             padding: calc((${designUnit} * 2) * 1px);
             max-width: 368px;
             min-width: 64px;
@@ -49,6 +47,7 @@ export const menuStyles: FoundationElementTemplate<ElementStyles> = (
             border-top: calc(${strokeWidth} * 1px) solid ${neutralStrokeDividerRest};
         }
     `.withBehaviors(
+        styleModuleBehavior(context.type),
         forcedColorsStylesheetBehavior(
             css`
                 :host {

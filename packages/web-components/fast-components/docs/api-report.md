@@ -26,7 +26,10 @@ import { Checkbox } from '@microsoft/fast-foundation';
 import { CheckboxOptions } from '@microsoft/fast-foundation';
 import { Combobox as Combobox_2 } from '@microsoft/fast-foundation';
 import { ComboboxOptions } from '@microsoft/fast-foundation';
+import { Constructable } from '@microsoft/fast-element';
 import { Container } from '@microsoft/fast-foundation';
+import { CSSDesignToken } from '@microsoft/fast-foundation';
+import { CSSDirective } from '@microsoft/fast-element';
 import { DataGrid } from '@microsoft/fast-foundation';
 import { DataGridCell } from '@microsoft/fast-foundation';
 import { DataGridRow } from '@microsoft/fast-foundation';
@@ -564,6 +567,9 @@ export const anchoredRegionStyles: FoundationElementTemplate<ElementStyles>;
 // @public
 export const anchorStyles: FoundationElementTemplate<ElementStyles, AnchorOptions>;
 
+// @public (undocumented)
+export function attributeValue(attribute: string, value: string | number | CSSDesignToken<any>): StyleModuleEvaluate;
+
 // @public
 export class Avatar extends Avatar_2 {
     alt: string | undefined;
@@ -593,6 +599,9 @@ export { BaseProgress as ProgressRing }
 
 // @public (undocumented)
 export const bodyFont: import("@microsoft/fast-foundation").CSSDesignToken<string>;
+
+// @public (undocumented)
+export function borderRadius(...radius: Array<number | CSSDesignToken<number>>): StyleModuleEvaluate;
 
 export { Breadcrumb }
 
@@ -679,6 +688,15 @@ export const dataGridRowStyles: FoundationElementTemplate<ElementStyles>;
 
 // @public
 export const dataGridStyles: FoundationElementTemplate<ElementStyles>;
+
+// @public (undocumented)
+export function deleteAllStyleModules(): void;
+
+// @public (undocumented)
+export function deleteStyleModule(component: Constructable, id: string): void;
+
+// @public (undocumented)
+export function deleteStyleModulesForComponent(component: Constructable): void;
 
 // @public (undocumented)
 export const density: import("@microsoft/fast-foundation").CSSDesignToken<number>;
@@ -1359,6 +1377,11 @@ export const foregroundOnAccentRest: import("@microsoft/fast-foundation").CSSDes
 // @public (undocumented)
 export const foregroundOnAccentRestLarge: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
 
+// Warning: (ae-forgotten-export) The symbol "StyleModuleRegistration" needs to be exported by the entry point index.d.ts
+//
+// @public (undocumented)
+export function getStyleModules(component: Constructable): StyleModuleRegistration[] | undefined;
+
 // @public
 export const heightNumberAsToken: DesignToken<number>;
 
@@ -1378,6 +1401,12 @@ export const horizontalSliderLabelStyles: ElementStyles;
 
 // @public
 export const imgTemplate: import("@microsoft/fast-element").ViewTemplate<Avatar, any>;
+
+// @public (undocumented)
+export function interactionColor(attribute: string, rest: CSSDesignToken<Swatch>, hover: CSSDesignToken<Swatch>, active: CSSDesignToken<Swatch>, focus: CSSDesignToken<Swatch>): StyleModuleEvaluate;
+
+// @public (undocumented)
+export function interactionState(attribute: string, rest: CSSDesignToken<any>, hover?: CSSDesignToken<any>, active?: CSSDesignToken<any>, focus?: CSSDesignToken<any>, focusSelector?: string): StyleModuleEvaluate;
 
 // @public (undocumented)
 export interface InteractiveColorRecipe {
@@ -1767,6 +1796,12 @@ export interface Recipe<T> {
     evaluate(element: HTMLElement, reference?: Swatch): T;
 }
 
+// @public (undocumented)
+export function registerFastStyle(): void;
+
+// @public (undocumented)
+export function registerStyleModule(component: Constructable, id: string, childSelector: string | undefined, module: StyleModuleEvaluate): void;
+
 // Warning: (ae-internal-missing-underscore) The name "Search" should be prefixed with an underscore because the declaration is marked as @internal
 //
 // @internal (undocumented)
@@ -1846,6 +1881,30 @@ export const strokeControlStrongRest: import("@microsoft/fast-foundation").CSSDe
 
 // @public (undocumented)
 export const strokeWidth: import("@microsoft/fast-foundation").CSSDesignToken<number>;
+
+// @public
+export function styleModuleBehavior(type: Constructable, interactivitySelector?: string, nonInteractivitySelector?: string): StyleModuleStyleSheetBehavior;
+
+// @public (undocumented)
+export type StyleModuleEvaluate = (params: StyleModuleEvaluateParameters) => CSSDirective;
+
+// @public (undocumented)
+export interface StyleModuleEvaluateParameters {
+    // (undocumented)
+    baseSelector: string;
+    // (undocumented)
+    interactivitySelector: string;
+    // (undocumented)
+    nonInteractivitySelector: string;
+}
+
+// @public
+export class StyleModuleStyleSheetBehavior implements Behavior {
+    constructor(type: Constructable, interactivitySelector: string, nonInteractivitySelector: string);
+    bind(elementInstance: FASTElement): void;
+    // @internal
+    unbind(source: typeof FASTElement & HTMLElement): void;
+}
 
 // @public
 export interface Swatch extends RelativeLuminance {
@@ -1948,6 +2007,9 @@ export { TreeView }
 
 // @public
 export const treeViewStyles: FoundationElementTemplate<ElementStyles>;
+
+// @public (undocumented)
+export function triggerStyleModuleRefresh(): void;
 
 // @public (undocumented)
 export const typeRampBaseFontSize: import("@microsoft/fast-foundation").CSSDesignToken<string>;

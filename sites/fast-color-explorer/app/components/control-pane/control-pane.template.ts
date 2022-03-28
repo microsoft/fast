@@ -1,7 +1,7 @@
-import { Checkbox, RadioGroup } from "@microsoft/fast-components";
+import { Checkbox, RadioGroup, Select } from "@microsoft/fast-components";
 import { ColorPicker } from "@microsoft/fast-tooling/dist/dts/web-components/color-picker/color-picker";
 import { html, repeat } from "@microsoft/fast-element";
-import { ComponentTypes } from "../../app";
+import { ComponentTypes, DesignSystem } from "../../app";
 import { ControlPane } from "./control-pane";
 
 function titleCase(str: string): string {
@@ -15,6 +15,24 @@ function titleCase(str: string): string {
 export const controlPaneTemplate = html<ControlPane>`
     <template>
         <p class="title">Settings</p>
+        <fast-select
+            name="designSystem"
+            @change="${(x, c) => {
+                x.updateFormValue("designSystem", (c.event.target as Select).value);
+            }}"
+        >
+            ${repeat(
+                x => Object.keys(DesignSystem),
+                html<string>`
+                    <fast-option
+                        value="${x => x}"
+                        ?checked="${(x, c) => c.parent.designSystem === x}"
+                    >
+                        ${x => DesignSystem[x]}
+                    </fast-radio>
+                `
+            )}
+        </fast-select>
         <fast-radio-group
             name="componentType"
             orientation="vertical"

@@ -1,0 +1,164 @@
+{
+    "type": {
+        "palette": {
+            "$type": "typedef",
+            "$value": {
+                "source": {
+                    "$type": "color",
+                    "$required": true
+                },
+                "swatches": {
+                    "$type": "array",
+                    "$direction": "out"
+                }
+            }
+        }
+    },
+    "algorithm": {
+        "deltaSwatchSet": {
+            "$type": "typedef",
+            "$value": {
+                "palette": {
+                    "$type": "{type.palette}",
+                    "$required": true
+                },
+                "restDelta": {
+                    "$type": "number",
+                    "$required": true
+                },
+                "rest": {
+                    "$type": "color",
+                    "$direction": "out"
+                }
+            }
+        }
+    },
+    "color": {
+        "$type": "color",
+        "accent-base": {
+            "$value": "#0078D4"
+        },
+        "neutral-base": {
+            "$value": "#808080"
+        }
+    },
+    "palette": {
+        "$type": "{type.palette}",
+        "accent": {
+            "$value": {
+                "source": "{color.accent-base}"
+            }
+        },
+        "neutral": {
+            "$value": {
+                "source": "{color.neutral-base}"
+            }
+        }
+    },
+    "recipe": {
+        "neutral-fill": {
+            "$type": "{algorithm.deltaSwatchSet}",
+            "$value": {
+                "palette": "{palette.neutral}",
+                "restDelta": 5
+            }
+        }
+    },
+    "Button": {
+        "root": {
+            "background": {
+                "$value": "{recipe.neutral-fill.rest}"
+            }
+        }
+    },
+
+    "deltaSwatchSet-hold": {
+        "hoverDelta": {
+            "type": "number",
+            "required": true
+        },
+        "activeDelta": {
+            "type": "number",
+            "required": true
+        },
+        "focusDelta": {
+            "type": "number",
+            "required": true
+        },
+        "hover": {
+            "type": "color",
+            "required": true,
+            "direction": "out"
+        },
+        "active": {
+            "type": "color",
+            "required": true,
+            "direction": "out"
+        },
+        "focus": {
+            "type": "color",
+            "required": true,
+            "direction": "out"
+        }
+    },
+    "color1": {
+        "$type": "color",
+        "accent-base": {
+            "$value": "#0078D4"
+        },
+        "neutral-base": {
+            "$value": "#808080"
+        }
+    },
+    "palette1": {
+        "neutral": {
+            "$type": "PaletteRGB",
+            "$value": {
+                "source": "{color.neutral-base}"
+            },
+            "$extensions": {
+                "com.microsoft.adaptive-ui": {
+                    "type": "palette-rgb"
+                }
+            }
+        }
+    },
+    "corner-radius": {
+        "$type": "dimension",
+        "control": {
+            "$value": "4px"
+        },
+        "layer": {
+            "$value": "8px"
+        }
+    },
+    "recipes1": {
+        "neutral-fill": {
+            "$type": "deltaSwatchSet",
+            "$value": {
+                "palette": "{palette.neutral}",
+                "restDelta": 7,
+                "hoverDelta": 4,
+                "activeDelta": 10,
+                "focusDelta": 7,
+                "rest": null,
+                "hover": null,
+                "active": null,
+                "focus": null
+            }
+        }
+    },
+    "Button1": {
+        "control": {
+            "background": {
+                "$value": "{recipes.neutral-fill.rest}"
+            },
+            "radius": {
+                "$value": "{corner-radius.control}"
+            }
+        },
+        "start": {
+            "$value": "x"
+        }
+    }
+}

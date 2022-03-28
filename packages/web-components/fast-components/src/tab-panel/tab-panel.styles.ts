@@ -6,6 +6,7 @@ import {
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
 } from "../design-tokens.js";
+import { styleModuleBehavior } from "../style-module/index.js";
 
 /**
  * Styles for Tab Panel
@@ -14,11 +15,12 @@ import {
 export const tabPanelStyles: FoundationElementTemplate<ElementStyles> = (
     context,
     definition
-) => css`
-    ${display("block")} :host {
-        box-sizing: border-box;
-        font-size: ${typeRampBaseFontSize};
-        line-height: ${typeRampBaseLineHeight};
-        padding: 0 calc((6 + (${designUnit} * 2 * ${density})) * 1px);
-    }
-`;
+) =>
+    css`
+        ${display("block")} :host {
+            box-sizing: border-box;
+            font-size: ${typeRampBaseFontSize};
+            line-height: ${typeRampBaseLineHeight};
+            padding: 0 calc((6 + (${designUnit} * 2 * ${density})) * 1px);
+        }
+    `.withBehaviors(styleModuleBehavior(context.type));

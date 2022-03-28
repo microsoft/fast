@@ -15,6 +15,7 @@ import {
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
 } from "../design-tokens.js";
+import { styleModuleBehavior } from "../style-module/index.js";
 import { heightNumber } from "../styles/index.js";
 
 /**
@@ -94,6 +95,7 @@ export const tabsStyles: FoundationElementTemplate<ElementStyles, TabsOptions> =
             grid-row: 3;
         }
     `.withBehaviors(
+        styleModuleBehavior(context.type),
         forcedColorsStylesheetBehavior(
             css`
                 .activeIndicator,

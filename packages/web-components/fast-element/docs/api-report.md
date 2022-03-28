@@ -154,7 +154,7 @@ export interface CompilationResult {
 export function compileTemplate(template: HTMLTemplateElement, directives: ReadonlyArray<HTMLDirective>): CompilationResult;
 
 // @public
-export type ComposableStyles = string | ElementStyles | CSSStyleSheet;
+export type ComposableStyles = string | number | ElementStyles | CSSStyleSheet;
 
 // @public
 export type Constructable<T = {}> = {

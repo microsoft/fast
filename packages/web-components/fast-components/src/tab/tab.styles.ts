@@ -9,7 +9,6 @@ import {
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
     accentFillActive,
-    accentFillFocus,
     accentFillHover,
     accentFillRest,
     bodyFont,
@@ -17,7 +16,6 @@ import {
     density,
     designUnit,
     disabledOpacity,
-    focusStrokeInner,
     focusStrokeOuter,
     focusStrokeWidth,
     neutralFillActive,
@@ -35,6 +33,7 @@ import {
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
 } from "../design-tokens.js";
+import { styleModuleBehavior } from "../style-module/index.js";
 import { heightNumber } from "../styles/size.js";
 
 /**
@@ -121,6 +120,7 @@ export const tabStyles: FoundationElementTemplate<ElementStyles> = (
             grid-column: 2 / 3;
         }
     `.withBehaviors(
+        styleModuleBehavior(context.type),
         forcedColorsStylesheetBehavior(
             css`
                 :host {

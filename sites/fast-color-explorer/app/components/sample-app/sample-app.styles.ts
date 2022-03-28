@@ -31,11 +31,6 @@ export const sampleAppStyles = css`
         --gutter: 20;
     }
 
-    app-layer-background {
-        display: flex;
-        flex-grow: 1;
-    }
-
     p {
         margin: 0;
     }
@@ -47,6 +42,7 @@ export const sampleAppStyles = css`
     .wrapper {
         display: flex;
         flex-direction: column;
+        flex-grow: 1;
         width: 100%;
         position: relative;
     }
@@ -64,7 +60,7 @@ export const sampleAppStyles = css`
     }
 
     fast-tabs::part(tablist) {
-        padding: 0 4px;
+        padding: 0;
         align-self: start;
     }
 
@@ -74,6 +70,7 @@ export const sampleAppStyles = css`
 
     fast-tab {
         padding: calc(${designUnit} * 5px) calc(${designUnit} * 3px);
+        margin: 0 4px;
     }
 
     fast-tab-panel {
@@ -87,6 +84,8 @@ export const sampleAppStyles = css`
         width: 100%;
         text-align: start;
         box-shadow: none;
+        padding: 12px;
+        gap: 12px;
     }
 
     .pane {

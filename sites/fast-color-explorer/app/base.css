@@ -1,3 +1,13 @@
+@font-face {
+    font-family: "Minecraft";
+    src: url("MinecraftSeven.woff") format("woff");
+}
+
+@font-face {
+    font-family: "Blender Pro";
+    src: url("BlenderPro-Medium.woff") format("woff");
+}
+
 html,
 body {
     width: 100%;
@@ -5,5 +15,8 @@ body {
     margin: 0px;
     padding: 0px;
     font-family: var(--body-font);
-    background-color: var(--fill-color);
+    /*background-color: var(--fill-color);*/
+    /* background-image: url("cyberpunk.png"); */
+    background-image: url("minecraft.jpg");
+    background-size: cover;
 }
