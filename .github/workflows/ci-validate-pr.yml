@@ -48,6 +48,11 @@ jobs:
     - name: Prepare workspaces
       run: yarn prepare
 
+    - name: Install playwright dependencies and browsers
+      run: |
+        yarn playwright install-deps
+        yarn playwright install
+
     - name: Testing unit tests
       run: yarn lerna run test --stream
 
