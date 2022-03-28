@@ -10,7 +10,4 @@ import { elevation } from "../styles/elevation";
 export const textEditorToolbarStyles: FoundationElementTemplate<ElementStyles> = (
     context,
     definition
-) => css`
-    :host {
-    }
-`;
+) => css``;

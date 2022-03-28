@@ -21,8 +21,8 @@ addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
             bulletButtonTitle: "Bullet",
             bulletButtonTooltip: "Click to bullet text",
 
-            codeButtonTitle: "Clear button",
-            codeButtonTooltip: "Click to make it code",
+            codeButtonTitle: "Code",
+            codeButtonTooltip: "Click to toggle code format",
 
             clearFormatButtonTitle: "Clear format",
             clearFormatButtonTooltip: "Click to clear format",

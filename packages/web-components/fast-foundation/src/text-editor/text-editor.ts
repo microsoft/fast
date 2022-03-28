@@ -32,7 +32,7 @@ export class TextEditor extends FoundationElement {
      * HTML Attribute: menu-placement
      */
     @attr({ attribute: "toolbar-placement" })
-    public toolbarPlacement: toolbarPlacement = "top";
+    public toolbarPlacement: toolbarPlacement = "tallest";
     private toolbarPlacementChanged(): void {
         if (this.$fastController.isConnected) {
             this.updateToolbarConfig();

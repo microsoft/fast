@@ -49,7 +49,8 @@ function createDefaultToolbarTemplate(
             part="toolbar"
         >
             <${buttonTag}
-                id="${x => `${x.instanceId}-bold-button`}"
+                id="bold-button"
+                class="toolbar-item"
                 appearance="outline"
                 aria-pressed="${x => x.formatState.isBold}"
                 @click="${x => toggleBold(x.editor)}"
@@ -58,14 +59,16 @@ function createDefaultToolbarTemplate(
             </${buttonTag}>
             <${tooltipTag}
                 position="bottom"
+                class="tooltip"
                 horizontal-viewport-lock="true"
-                anchor="${x => `${x.instanceId}-bold-button`}"
+                anchor="bold-button"
             >
                 ${x => x.resources["boldButtonTooltip"]}
             </${tooltipTag}>
 
             <${buttonTag}
-                id="${x => `${x.instanceId}-italic-button`}"
+                id="italic-button"
+                class="toolbar-item"
                 appearance="outline"
                 aria-pressed="${x => x.formatState.isItalic}"
                 @click="${x => toggleItalic(x.editor)}"
@@ -74,14 +77,16 @@ function createDefaultToolbarTemplate(
             </${buttonTag}>
             <${tooltipTag}
                 position="bottom"
+                class="tooltip"
                 horizontal-viewport-lock="true"
-                anchor="${x => `${x.instanceId}-italic-button`}"
+                anchor="italic-button"
             >
                 ${x => x.resources["italicButtonTooltip"]}
             </${tooltipTag}>
 
             <${buttonTag}
-                id="${x => `${x.instanceId}-align-left-button`}"
+                id="align-left-button"
+                class="toolbar-item"
                 appearance="outline"
                 @click="${x => setAlignment(x.editor, Alignment.Left)}"
             >
@@ -89,6 +94,7 @@ function createDefaultToolbarTemplate(
             </${buttonTag}>
             <${tooltipTag}
                 position="bottom"
+                class="tooltip"
                 horizontal-viewport-lock="true"
                 anchor="${x => `${x.instanceId}-align-left-button`}"
             >
@@ -96,7 +102,8 @@ function createDefaultToolbarTemplate(
             </${tooltipTag}>
 
             <${buttonTag}
-                id="${x => `${x.instanceId}-align-center-button`}"
+                id="align-center-button"
+                class="toolbar-item"
                 appearance="outline"
                 @click="${x => setAlignment(x.editor, Alignment.Center)}"
             >
@@ -104,14 +111,16 @@ function createDefaultToolbarTemplate(
             </${buttonTag}>
             <${tooltipTag}
                 position="bottom"
+                class="tooltip"
                 horizontal-viewport-lock="true"
-                anchor="${x => `${x.instanceId}-align-center-button`}"
+                anchor="align-center-button"
             >
                 ${x => x.resources["alignCenterButtonTooltip"]}
             </${tooltipTag}>
 
             <${buttonTag}
-                id="${x => `${x.instanceId}-align-right-button`}"
+                id="align-right-button"
+                class="toolbar-item"
                 appearance="outline"
                 @click="${x => setAlignment(x.editor, Alignment.Right)}"
             >
@@ -119,6 +128,7 @@ function createDefaultToolbarTemplate(
             </${buttonTag}>
             <${tooltipTag}
                 position="bottom"
+                class="tooltip"
                 horizontal-viewport-lock="true"
                 anchor="${x => `${x.instanceId}-align-right-button`}"
             >
@@ -126,7 +136,8 @@ function createDefaultToolbarTemplate(
             </${tooltipTag}>
 
             <${buttonTag}
-                id="${x => `bullet-button`}"
+                id="bullet-button"
+                class="toolbar-item"
                 appearance="outline"
                 @click="${x => toggleBullet(x.editor)}"
             >
@@ -134,14 +145,16 @@ function createDefaultToolbarTemplate(
             </${buttonTag}>
             <${tooltipTag}
                 position="bottom"
+                class="tooltip"
                 horizontal-viewport-lock="true"
-                anchor="${x => `bullet-button`}"
+                anchor="bullet-button"
             >
                 ${x => x.resources["bulletButtonTooltip"]}
             </${tooltipTag}>
 
             <${buttonTag}
-                id="${x => `code-button`}"
+                id="code-button"
+                class="toolbar-item"
                 appearance="outline"
                 @click="${x => toggleCodeBlock(x.editor)}"
             >
@@ -149,14 +162,16 @@ function createDefaultToolbarTemplate(
             </${buttonTag}>
             <${tooltipTag}
                 position="bottom"
+                class="tooltip"
                 horizontal-viewport-lock="true"
-                anchor="${x => `code-button`}"
+                anchor="code-button"
             >
                 ${x => x.resources["codeButtonTooltip"]}
             </${tooltipTag}>
 
-            <${comboboxTag}
+            <${selectTag}
                 :value="${x => x.formatState.fontSize}"
+                class="toolbar-item font-size-combobox"
                 @change="${(x, c) => {
                     if (c.event.target) {
                         const newSize: string = (c.event.target as Combobox).value.trim();
@@ -167,15 +182,14 @@ function createDefaultToolbarTemplate(
                 ${repeat(
                     x => FONT_SIZES,
                     html<string>`
-                    <${optionTag}>
-                        ${x => `${x}pt`}
-                    </${optionTag}>
+                    <${optionTag}>${x => `${x}pt`}</${optionTag}>
                 `
                 )}
-            </${comboboxTag}>
+            </${selectTag}>
 
-            <${comboboxTag}
+            <${selectTag}
                 :value="${x => x.formatState.backgroundColor}"
+                class="toolbar-item color-combobox"
                 @change="${(x, c) => {
                     if (c.event.target) {
                         const newColor: string = (c.event
@@ -184,82 +198,33 @@ function createDefaultToolbarTemplate(
                     }
                 }}"
             >
-            <${optionTag}>
-                    rgb(0,0,0)
-                </${optionTag}>
-                <${optionTag}>
-                    rgb(255,255,255)
-                </${optionTag}>
-                <${optionTag}>
-                    rgb(255,0,0)
-                </${optionTag}>
-                <${optionTag}>
-                    rgb(0,255,0)
-                </${optionTag}>
-                <${optionTag}>
-                    rgb(0,0,255)
-                </${optionTag}>
-            </${comboboxTag}>
+                <${optionTag}>rgb(0, 0, 0)</${optionTag}>
+                <${optionTag}>rgb(255, 255, 255)</${optionTag}>
+                <${optionTag}>rgb(255, 0, 0)</${optionTag}>
+                <${optionTag}>rgb(0, 255, 0)</${optionTag}>
+                <${optionTag}>rgb(0, 0, 255)</${optionTag}>
+            </${selectTag}>
 
-            <${comboboxTag}
+            <${selectTag}
                 :value="${x => x.formatState.textColor}"
+                class="toolbar-item color-combobox"
                 @change="${(x, c) => {
                     if (c.event.target) {
-                        const newColor: string = (c.event
-                            .target as Combobox).value.trim();
+                        const newColor: string = (c.event.target as Select).value;
                         setTextColor(x.editor, newColor);
                     }
                 }}"
             >
-                <${optionTag}>
-                    rgb(0,0,0)
-                </${optionTag}>
-                <${optionTag}>
-                    rgb(255,255,255)
-                </${optionTag}>
-                <${optionTag}>
-                    rgb(255,0,0)
-                </${optionTag}>
-                <${optionTag}>
-                    rgb(0,255,0)
-                </${optionTag}>
-                <${optionTag}>
-                    rgb(0,0,255)
-                </${optionTag}>
-            </${comboboxTag}>
+                <${optionTag}>rgb(0, 0, 0)</${optionTag}>
+                <${optionTag}>rgb(255, 255, 255)</${optionTag}>
+                <${optionTag}>rgb(255, 0, 0)</${optionTag}>
+                <${optionTag}>rgb(0, 255, 0)</${optionTag}>
+                <${optionTag}>rgb(0, 0, 255)</${optionTag}>
+            </${selectTag}>
 
             <${buttonTag}
-                id="${x => `${x.instanceId}-undo-button`}"
-                appearance="outline"
-                disabled="${x => !x.formatState.canUndo}"
-            >
-                ${x => x.resources["undoButtonTitle"]}
-            </${buttonTag}>
-            <${tooltipTag}
-                position="bottom"
-                horizontal-viewport-lock="true"
-                anchor="${x => `${x.instanceId}-undo-button`}"
-            >
-                ${x => x.resources["undoButtonTooltip"]}
-            </${tooltipTag}>
-
-            <${buttonTag}
-                id="${x => `${x.instanceId}-redo-button`}"
-                appearance="outline"
-                disabled="${x => !x.formatState.canRedo}"
-            >
-                ${x => x.resources["redoButtonTitle"]}
-            </${buttonTag}>
-            <${tooltipTag}
-                position="bottom"
-                horizontal-viewport-lock="true"
-                anchor="${x => `${x.instanceId}-redo-button`}"
-            >
-                ${x => x.resources["redoButtonTooltip"]}
-            </${tooltipTag}>
-
-            <${buttonTag}
-                id="${x => `clear-format-button`}"
+                id="clear-format-button"
+                class="toolbar-item"
                 appearance="outline"
                 @click="${x => clearFormatApi(x.editor)}"
             >
@@ -267,14 +232,16 @@ function createDefaultToolbarTemplate(
             </${buttonTag}>
             <${tooltipTag}
                 position="bottom"
+                class="tooltip"
                 horizontal-viewport-lock="true"
-                anchor="${x => `clear-format-button`}"
+                anchor="clear-format-button"
             >
                 ${x => x.resources["clearFormatButtonTooltip"]}
             </${tooltipTag}>
 
             <${buttonTag}
-                id="${x => `increase-size-button`}"
+                id="increase-size-button"
+                class="toolbar-item"
                 appearance="outline"
                 @click="${x => changeFontSize(x.editor, FontSizeChange.Increase)}"
             >
@@ -282,14 +249,16 @@ function createDefaultToolbarTemplate(
             </${buttonTag}>
             <${tooltipTag}
                 position="bottom"
+                class="tooltip"
                 horizontal-viewport-lock="true"
-                anchor="${x => `increase-size-button`}"
+                anchor="increase-size-button"
             >
                 ${x => x.resources["increaseFontSizeButtonTooltip"]}
             </${tooltipTag}>
 
             <${buttonTag}
-                id="${x => `decrease-size-button`}"
+                id="decrease-size-button"
+                class="toolbar-item"
                 appearance="outline"
                 @click="${x => changeFontSize(x.editor, FontSizeChange.Decrease)}"
             >
@@ -297,14 +266,16 @@ function createDefaultToolbarTemplate(
             </${buttonTag}>
             <${tooltipTag}
                 position="bottom"
+                class="tooltip"
                 horizontal-viewport-lock="true"
-                anchor="${x => `decrease-size-button`}"
+                anchor="decrease-size-button"
             >
                 ${x => x.resources["decreaseSizeButtonTooltip"]}
             </${tooltipTag}>
 
             <${buttonTag}
-                id="${x => `increase-indent-button`}"
+                id="increase-indent-button"
+                class="toolbar-item"
                 appearance="outline"
                 @click="${x => setIndentation(x.editor, Indentation.Increase)}"
             >
@@ -312,14 +283,16 @@ function createDefaultToolbarTemplate(
             </${buttonTag}>
             <${tooltipTag}
                 position="bottom"
+                class="tooltip"
                 horizontal-viewport-lock="true"
-                anchor="${x => `increase-indent-button`}"
+                anchor="increase-indent-button"
             >
                 ${x => x.resources["increaseIndentButtonTooltip"]}
             </${tooltipTag}>
 
             <${buttonTag}
-                id="${x => `decrease-indent-button`}"
+                id="decrease-indent-button"
+                class="toolbar-item"
                 appearance="outline"
                 @click="${x => setIndentation(x.editor, Indentation.Decrease)}"
             >
@@ -327,14 +300,16 @@ function createDefaultToolbarTemplate(
             </${buttonTag}>
             <${tooltipTag}
                 position="bottom"
+                class="tooltip"
                 horizontal-viewport-lock="true"
-                anchor="${x => `decrease-indent-button`}"
+                anchor="decrease-indent-button"
             >
                 ${x => x.resources["decreaseIndentButtonTooltip"]}
             </${tooltipTag}>
 
             <${buttonTag}
-                id="${x => `underline-button`}"
+                id="underline-button"
+                class="toolbar-item"
                 appearance="outline"
                 aria-pressed="${x => x.formatState.isUnderline}"
                 @click="${x => toggleUnderline(x.editor)}"
@@ -343,14 +318,16 @@ function createDefaultToolbarTemplate(
             </${buttonTag}>
             <${tooltipTag}
                 position="bottom"
+                class="tooltip"
                 horizontal-viewport-lock="true"
-                anchor="${x => `underline-button`}"
+                anchor="underline-button"
             >
                 ${x => x.resources["underlineButtonTooltip"]}
             </${tooltipTag}>
 
             <${buttonTag}
-                id="${x => `superscript-button`}"
+                id="superscript-button"
+                class="toolbar-item"
                 appearance="outline"
                 aria-pressed="${x => x.formatState.isSuperscript}"
                 @click="${x => toggleSuperscript(x.editor)}"
@@ -359,6 +336,7 @@ function createDefaultToolbarTemplate(
             </${buttonTag}>
             <${tooltipTag}
                 position="bottom"
+                class="tooltip"
                 horizontal-viewport-lock="true"
                 anchor="${x => `superscript-button`}"
             >
@@ -366,7 +344,8 @@ function createDefaultToolbarTemplate(
             </${tooltipTag}>
 
             <${buttonTag}
-                id="${x => `subscript-button`}"
+                id="subscript-button"
+                class="toolbar-item"
                 appearance="outline"
                 aria-pressed="${x => x.formatState.isSubscript}"
                 @click="${x => toggleSubscript(x.editor)}"
@@ -375,6 +354,7 @@ function createDefaultToolbarTemplate(
             </${buttonTag}>
             <${tooltipTag}
                 position="bottom"
+                class="tooltip"
                 horizontal-viewport-lock="true"
                 anchor="${x => `subscript-button`}"
             >
@@ -382,7 +362,8 @@ function createDefaultToolbarTemplate(
             </${tooltipTag}>
 
             <${buttonTag}
-                id="${x => `rtl-button`}"
+                id="rtl-button"
+                class="toolbar-item"
                 appearance="outline"
                 @click="${x => setDirection(x.editor, Direction.RightToLeft)}"
             >
@@ -390,14 +371,16 @@ function createDefaultToolbarTemplate(
             </${buttonTag}>
             <${tooltipTag}
                 position="bottom"
+                class="tooltip"
                 horizontal-viewport-lock="true"
-                anchor="${x => `rtl-button`}"
+                anchor="rtl-button"
             >
                 ${x => x.resources["rtlButtonTooltip"]}
             </${tooltipTag}>
 
             <${buttonTag}
-                id="${x => `ltr-button`}"
+                id="ltr-button"
+                class="toolbar-item"
                 appearance="outline"
                 @click="${x => setDirection(x.editor, Direction.LeftToRight)}"
             >
@@ -405,14 +388,16 @@ function createDefaultToolbarTemplate(
             </${buttonTag}>
             <${tooltipTag}
                 position="bottom"
+                class="tooltip"
                 horizontal-viewport-lock="true"
-                anchor="${x => `ltr-button`}"
+                anchor="ltr-button"
             >
                 ${x => x.resources["ltrButtonTooltip"]}
             </${tooltipTag}>
 
             <${buttonTag}
-                id="${x => `strikethrough-button`}"
+                id="strikethrough-button"
+                class="toolbar-item"
                 appearance="outline"
                 aria-pressed="${x => x.formatState.isStrikeThrough}"
                 @click="${x => toggleStrikethrough(x.editor)}"
@@ -421,14 +406,16 @@ function createDefaultToolbarTemplate(
             </${buttonTag}>
             <${tooltipTag}
                 position="bottom"
+                class="tooltip"
                 horizontal-viewport-lock="true"
-                anchor="${x => `strikethrough-button`}"
+                anchor="strikethrough-button"
             >
                 ${x => x.resources["strikethroughButtonTooltip"]}
             </${tooltipTag}>
 
             <${buttonTag}
-                id="${x => `blockquote-button`}"
+                id="blockquote-button"
+                class="toolbar-item"
                 appearance="outline"
                 aria-pressed="${x => x.formatState.isBlockQuote}"
                 @click="${x => toggleBlockQuote(x.editor)}"
@@ -437,14 +424,16 @@ function createDefaultToolbarTemplate(
             </${buttonTag}>
             <${tooltipTag}
                 position="bottom"
+                class="tooltip"
                 horizontal-viewport-lock="true"
-                anchor="${x => `blockquote-button`}"
+                anchor="blockquote-button"
             >
                 ${x => x.resources["blockquoteButtonTooltip"]}
             </${tooltipTag}>
 
             <${buttonTag}
-                id="${x => `numbering-button`}"
+                id="numbering-button"
+                class="toolbar-item"
                 appearance="outline"
                 aria-pressed="${x => x.formatState.isNumbering}"
                 @click="${x => toggleNumbering(x.editor)}"
@@ -453,10 +442,45 @@ function createDefaultToolbarTemplate(
             </${buttonTag}>
             <${tooltipTag}
                 position="bottom"
+                class="tooltip"
                 horizontal-viewport-lock="true"
-                anchor="${x => `numbering-button`}"
+                anchor="numbering-button"
             >
                 ${x => x.resources["numberingButtonTooltip"]}
+            </${tooltipTag}>
+
+            <${buttonTag}
+                id="undo-button"
+                class="toolbar-item"
+                appearance="outline"
+                disabled="${x => !x.formatState.canUndo}"
+            >
+                ${x => x.resources["undoButtonTitle"]}
+            </${buttonTag}>
+            <${tooltipTag}
+                position="bottom"
+                class="tooltip"
+                horizontal-viewport-lock="true"
+                anchor="undo-button"
+            >
+                ${x => x.resources["undoButtonTooltip"]}
+            </${tooltipTag}>
+
+            <${buttonTag}
+                id="redo-button"
+                class="toolbar-item"
+                appearance="outline"
+                disabled="${x => !x.formatState.canRedo}"
+            >
+                ${x => x.resources["redoButtonTitle"]}
+            </${buttonTag}>
+            <${tooltipTag}
+                position="bottom"
+                class="tooltip"
+                horizontal-viewport-lock="true"
+                anchor="redo-button"
+            >
+                ${x => x.resources["redoButtonTooltip"]}
             </${tooltipTag}>
         </${toolbarTag}>
 `;
