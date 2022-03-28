@@ -502,6 +502,12 @@ export class RepeatDirective<TSource = any> extends HTMLDirective {
     constructor(itemsBinding: Binding, templateBinding: Binding<TSource, SyntheticViewTemplate>, options: RepeatOptions);
     createBehavior(targets: ViewBehaviorTargets): RepeatBehavior<TSource>;
     createPlaceholder: (index: number) => string;
+    // (undocumented)
+    readonly itemsBinding: Binding;
+    // (undocumented)
+    readonly options: RepeatOptions;
+    // (undocumented)
+    readonly templateBinding: Binding<TSource, SyntheticViewTemplate>;
 }
 
 // @public

@@ -2,7 +2,14 @@
  * This code is largely a fork of lit's rendering implementation: https://github.com/lit/lit/blob/main/packages/labs/ssr/src/lib/render-lit-html.ts
  * with changes as necessary to render FAST components. A big thank you to those who contributed to lit's code above.
  */
-import { Compiler, Parser, ViewTemplate } from "@microsoft/fast-element";
+import {
+    Aspect,
+    AspectedHTMLDirective,
+    Compiler,
+    HTMLDirective,
+    Parser,
+    ViewTemplate,
+} from "@microsoft/fast-element";
 import {
     Attribute,
     DefaultTreeCommentNode,
@@ -12,7 +19,6 @@ import {
     DefaultTreeTextNode,
     parseFragment,
 } from "parse5";
-import { AttributeType, attributeTypeRegExp } from "./attributes.js";
 import { AttributeBindingOp, Op, OpType } from "./op-codes.js";
 
 /**
@@ -48,6 +54,10 @@ function traverse(node: DefaultTreeNode | DefaultTreeParentNode, visitor: Visito
         }
     }
 
+    if (node.nodeName === "template") {
+        traverse((node as any).content, visitor);
+    }
+
     if (visitor.leave) {
         visitor.leave(node);
     }
@@ -78,28 +88,6 @@ function isElementNode(node: DefaultTreeNode): node is DefaultTreeElement {
 }
 
 /**
- * Determines which type of attribute binding an attribute is
- * @param attr - The attribute to inspect
- */
-function getAttributeType(attr: Attribute): AttributeType {
-    const result = attributeTypeRegExp.exec(attr.name);
-
-    if (result === null) {
-        throw new Error("Failure to determine attribute binding type");
-    }
-
-    const prefix = result[1];
-
-    return prefix === ":"
-        ? AttributeType.idl
-        : prefix === "?"
-        ? AttributeType.booleanContent
-        : prefix === "@"
-        ? AttributeType.event
-        : AttributeType.content;
-}
-
-/**
  * Parses a template into a set of operation instructions
  * @param template - The template to parse
  */
@@ -122,11 +110,21 @@ export function parseTemplateToOpCodes(template: ViewTemplate): Op[] {
      * below, so store in a new var that is just a string type
      */
     const templateString = html;
-    const nodeTree = parseFragment(html, { sourceCodeLocationInfo: true });
+
+    const codes = parseStringToOpCodes(templateString, template.directives);
+    opCache.set(template, codes);
+    return codes;
+}
+
+export function parseStringToOpCodes(
+    templateString: string,
+    directives: ReadonlyArray<HTMLDirective>
+): Op[] {
+    const nodeTree = parseFragment(templateString, { sourceCodeLocationInfo: true });
 
     if (!("nodeName" in nodeTree)) {
         // I'm not sure when exactly this is encountered but the type system seems to say it's possible.
-        throw new Error(`Error parsing template:\n${template}`);
+        throw new Error(`Error parsing template`);
     }
 
     /**
@@ -139,9 +137,6 @@ export function parseTemplateToOpCodes(template: ViewTemplate): Op[] {
      * Collection of op codes
      */
     const opCodes: Op[] = [];
-    opCache.set(template, opCodes);
-
-    const { directives } = template;
 
     /**
      * Parses an Element node, pushing all op codes for the element into
@@ -155,6 +150,7 @@ export function parseTemplateToOpCodes(template: ViewTemplate): Op[] {
         let augmentOpeningTag = false;
         const { tagName } = node;
         const ctor: typeof HTMLElement | undefined = customElements.get(node.tagName);
+        node.isDefinedCustomElement = !!ctor;
 
         // Sort attributes by whether they're related to a binding or if they have
         // static value
@@ -164,18 +160,24 @@ export function parseTemplateToOpCodes(template: ViewTemplate): Op[] {
         } = node.attrs.reduce(
             (prev, current) => {
                 const parsed = Parser.parse(current.value, directives);
-                const attributeType = getAttributeType(current);
                 if (parsed) {
-                    prev.dynamic.set(current, {
-                        type: OpType.attributeBinding,
-                        name:
-                            attributeType === AttributeType.content
-                                ? current.name
-                                : current.name.substring(1),
-                        directive: Compiler.aggregate(parsed),
-                        attributeType,
-                        useCustomElementInstance: Boolean(node.isDefinedCustomElement),
-                    });
+                    const directive = Compiler.aggregate(parsed);
+                    // Guard against directives like children, ref, and slotted
+                    if (
+                        directive instanceof AspectedHTMLDirective &&
+                        directive.binding &&
+                        directive.aspect !== Aspect.content
+                    ) {
+                        prev.dynamic.set(current, {
+                            type: OpType.attributeBinding,
+                            binding: directive.binding,
+                            aspect: directive.aspect,
+                            target: directive.target,
+                            useCustomElementInstance: Boolean(
+                                node.isDefinedCustomElement
+                            ),
+                        });
+                    }
                 } else {
                     prev.static.set(current.name, current.value);
                 }
@@ -188,10 +190,9 @@ export function parseTemplateToOpCodes(template: ViewTemplate): Op[] {
             }
         );
 
-        // Special processing for any custom element
+        // Emit a CustomElementOpenOp when the custom element is defined
         if (ctor !== undefined) {
             augmentOpeningTag = true;
-            node.isDefinedCustomElement = true;
             opCodes.push({
                 type: OpType.customElementOpen,
                 tagName,
@@ -199,6 +200,9 @@ export function parseTemplateToOpCodes(template: ViewTemplate): Op[] {
                 staticAttributes: attributes.static,
             });
         } else if (node.tagName === "template") {
+            // Template elements need special handling due to the host directive behavior
+            // when used as the root element in a custom element template
+            // (https://www.fast.design/docs/fast-element/using-directives#host-directives).
             flushTo(node.sourceCodeLocation?.startTag.startOffset);
             opCodes.push({
                 type: OpType.templateElementOpen,
@@ -209,14 +213,31 @@ export function parseTemplateToOpCodes(template: ViewTemplate): Op[] {
             return;
         }
 
-        // Push attribute binding op codes for any attributes that
-        // are dynamic
-        if (attributes.dynamic.size) {
-            for (const [attr, code] of attributes.dynamic) {
+        // Iterate attributes in-order so that codes can be pushed for dynamic attributes in-order.
+        // All dynamic attributes will be rendered from an AttributeBindingOp. Additionally, When the
+        // node is a custom element, all static attributes will be rendered via the CustomElementOpenOp,
+        // so this code skips over static attributes in that case.
+        for (const attr of node.attrs) {
+            if (attributes.dynamic.has(attr)) {
                 const location = node.sourceCodeLocation!.attrs[attr.name];
+                const code = attributes.dynamic.get(attr)!;
                 flushTo(location.startOffset);
                 augmentOpeningTag = true;
                 opCodes.push(code);
+                skipTo(location.endOffset);
+            } else if (!attributes.static.has(attr.name)) {
+                // Handle interpolated directives like children, ref, and slotted
+                const parsed = Parser.parse(attr.value, directives);
+                if (parsed) {
+                    const location = node.sourceCodeLocation!.attrs[attr.name];
+                    const directive = Compiler.aggregate(parsed);
+                    flushTo(location.startOffset);
+                    opCodes.push({ type: OpType.directive, directive });
+                    skipTo(location.endOffset);
+                }
+            } else if (node.isDefinedCustomElement) {
+                const location = node.sourceCodeLocation!.attrs[attr.name];
+                flushTo(location.startOffset);
                 skipTo(location.endOffset);
             }
         }
@@ -287,17 +308,24 @@ export function parseTemplateToOpCodes(template: ViewTemplate): Op[] {
     traverse(nodeTree, {
         visit(node: DefaultTreeNode): void {
             if (isCommentNode(node) || isTextNode(node)) {
-                const value =
-                    (node as DefaultTreeCommentNode).data ||
-                    (node as DefaultTreeTextNode).value;
-                const parsed = Parser.parse(value, directives);
+                const parsed = Parser.parse(
+                    (node as DefaultTreeCommentNode)?.data ||
+                        (node as DefaultTreeTextNode).value,
+                    directives
+                );
 
                 if (parsed) {
                     flushTo(node.sourceCodeLocation!.startOffset);
-                    opCodes.push({
-                        type: OpType.directive,
-                        directive: Compiler.aggregate(parsed),
-                    });
+                    for (const part of parsed) {
+                        if (typeof part === "string") {
+                            flush(part);
+                        } else {
+                            opCodes.push({
+                                type: OpType.directive,
+                                directive: part,
+                            });
+                        }
+                    }
                     skipTo(node.sourceCodeLocation!.endOffset);
                 }
             } else if (isElementNode(node)) {
