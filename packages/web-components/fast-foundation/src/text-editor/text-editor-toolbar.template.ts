@@ -60,6 +60,7 @@ function createDefaultToolbarTemplate(
             <${tooltipTag}
                 position="bottom"
                 class="tooltip"
+                auto-update-mode="auto"
                 horizontal-viewport-lock="true"
                 anchor="bold-button"
             >
@@ -96,7 +97,7 @@ function createDefaultToolbarTemplate(
                 position="bottom"
                 class="tooltip"
                 horizontal-viewport-lock="true"
-                anchor="${x => `${x.instanceId}-align-left-button`}"
+                anchor="align-left-button"
             >
                 ${x => x.resources["alignLeftButtonTooltip"]}
             </${tooltipTag}>
@@ -130,7 +131,7 @@ function createDefaultToolbarTemplate(
                 position="bottom"
                 class="tooltip"
                 horizontal-viewport-lock="true"
-                anchor="${x => `${x.instanceId}-align-right-button`}"
+                anchor="align-right-button"
             >
                 ${x => x.resources["alignRightButtonTooltip"]}
             </${tooltipTag}>
@@ -253,7 +254,7 @@ function createDefaultToolbarTemplate(
                 horizontal-viewport-lock="true"
                 anchor="increase-size-button"
             >
-                ${x => x.resources["increaseFontSizeButtonTooltip"]}
+                ${x => x.resources["increaseSizeButtonTooltip"]}
             </${tooltipTag}>
 
             <${buttonTag}

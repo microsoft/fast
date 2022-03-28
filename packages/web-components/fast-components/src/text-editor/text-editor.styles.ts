@@ -25,6 +25,7 @@ export const textEditorStyles: FoundationElementTemplate<ElementStyles> = (
 
     .tooltip {
         margin: 0;
+        z-index: 100;
     }
 
     .toolbar-item {
