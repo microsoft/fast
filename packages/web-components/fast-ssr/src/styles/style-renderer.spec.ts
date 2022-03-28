@@ -2,7 +2,6 @@ import "../dom-shim.js";
 import { test, expect } from "@playwright/test";
 import { FASTStyleStyleRenderer } from "./style-renderer.js";
 import { css } from "@microsoft/fast-element";
-import { first } from "lodash-es";
 
 
 const cssSheetRegex = /css="?(.+)"/m;
@@ -19,7 +18,8 @@ test.describe("FASTStyleStyleRenderer", () => {
     test("should return a '<fast-style'> element", () => {
         const style = css``;
         const renderer = new FASTStyleStyleRenderer();
-        expect(renderer.render(style)).toBe(`<fast-style style-id="fast-style-0" css=""></fast-style>`);
+        const tester = /<fast-style .+><\/fast-style>/
+        expect(tester.test(renderer.render(style))).not.toBeNull()
     });
     test("should return a '<fast-style'> element without a 'css' attribute when the sheet has already been rendered", () => {
         const renderer = new FASTStyleStyleRenderer();
