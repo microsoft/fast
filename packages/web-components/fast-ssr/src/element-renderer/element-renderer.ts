@@ -1,11 +1,36 @@
 import { ElementRenderer, RenderInfo } from "@lit-labs/ssr";
-import { FASTElement } from "@microsoft/fast-element";
+import {
+    Aspect,
+    ComposableStyles,
+    defaultExecutionContext,
+    DOM,
+    FASTElement,
+} from "@microsoft/fast-element";
+import { TemplateRenderer } from "../template-renderer/template-renderer.js";
+import { SSRView } from "../view.js";
+import { StyleRenderer } from "../styles/style-renderer.js";
 
-export class FASTElementRenderer extends ElementRenderer {
+const prefix = "fast-style";
+let id = 0;
+function nextId(): string {
+    return `${prefix}-${id++}`;
+}
+
+export abstract class FASTElementRenderer extends ElementRenderer {
     /**
      * The element instance represented by the {@link FASTElementRenderer}.
      */
     public readonly element!: FASTElement;
+
+    /**
+     * The template renderer to use when rendering a component template
+     */
+    protected abstract templateRenderer: TemplateRenderer;
+
+    /**
+     * Responsible for rendering stylesheets
+     */
+    protected abstract styleRenderer: StyleRenderer;
 
     /**
      * Tests a constructor to determine if it should be managed by a {@link FASTElementRenderer}.
@@ -20,6 +45,48 @@ export class FASTElementRenderer extends ElementRenderer {
      */
     public connectedCallback(): void {
         this.element.connectedCallback();
+        const view = this.element.$fastController.view;
+
+        if (view && SSRView.isSSRView(view)) {
+            if (view.hostStaticAttributes) {
+                view.hostStaticAttributes.forEach((value, key) => {
+                    this.element.setAttribute(key, value);
+                });
+            }
+
+            if (view.hostDynamicAttributes) {
+                for (const attr of view.hostDynamicAttributes) {
+                    const result = attr.binding(this.element, defaultExecutionContext);
+
+                    const { target } = attr;
+                    switch (attr.aspect) {
+                        case Aspect.property:
+                            (this.element as any)[target] = result;
+                            break;
+                        case Aspect.attribute:
+                            DOM.setAttribute(this.element, target, result);
+                            break;
+                        case Aspect.booleanAttribute:
+                            DOM.setBooleanAttribute(this.element, target, result);
+                            break;
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Indicate to the {@link FASTElementRenderer} that an attribute has been changed.
+     * @param name - The name of the changed attribute
+     * @param old - The old attribute value
+     * @param value - The new attribute value
+     */
+    public attributeChangedCallback(
+        name: string,
+        old: string | null,
+        value: string | null
+    ): void {
+        this.element.attributeChangedCallback(name, old, value);
     }
 
     /**
@@ -44,7 +111,7 @@ export class FASTElementRenderer extends ElementRenderer {
      * Renders the component internals to light DOM instead of shadow DOM.
      * @param renderInfo - information about the current rendering context.
      */
-    *renderLight(renderInfo: RenderInfo): IterableIterator<string> {
+    public *renderLight(renderInfo: RenderInfo): IterableIterator<string> {
         // TODO - this will yield out the element's template using the template renderer, skipping any shadow-DOM specific emission.
         yield "";
     }
@@ -53,22 +120,21 @@ export class FASTElementRenderer extends ElementRenderer {
      * Render the component internals to shadow DOM.
      * @param renderInfo - information about the current rendering context.
      */
-    *renderShadow(renderInfo: RenderInfo): IterableIterator<string> {
-        // TODO - this will yield out the element's template using the template renderer
-        yield "";
-    }
+    public *renderShadow(renderInfo: RenderInfo): IterableIterator<string> {
+        const view = this.element.$fastController.view;
+        const styles = this.element.$fastController.styles;
 
-    /**
-     * Indicate to the {@link FASTElementRenderer} that an attribute has been changed.
-     * @param name - The name of the changed attribute
-     * @param old - The old attribute value
-     * @param value - The new attribute value
-     */
-    attributeChangedCallback(
-        name: string,
-        old: string | null,
-        value: string | null
-    ): void {
-        this.element.attributeChangedCallback(name, old, value);
+        if (styles) {
+            yield this.styleRenderer.render(styles);
+        }
+
+        if (view !== null) {
+            yield* this.templateRenderer.renderOpCodes(
+                ((view as unknown) as SSRView).codes,
+                renderInfo,
+                this.element,
+                defaultExecutionContext
+            );
+        }
     }
 }
