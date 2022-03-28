@@ -1,6 +1,6 @@
 import type { FASTGlobal } from "./interfaces.js";
 
-// ensure FAST global - duplicated in polyfills.ts
+// ensure FAST global - duplicated in polyfills.ts and debug.ts
 const propConfig = {
     configurable: false,
     enumerable: false,
@@ -34,6 +34,16 @@ if (FAST.getById === void 0) {
             return found;
         },
         ...propConfig,
+    });
+}
+
+if (FAST.error === void 0) {
+    Object.assign(FAST, {
+        warn() {},
+        error(code: number) {
+            return new Error(`Code ${code}`);
+        },
+        addMessages() {},
     });
 }
 

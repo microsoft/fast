@@ -1,7 +1,8 @@
-import type { Mutable, StyleTarget } from "../interfaces.js";
+import { Message, Mutable, StyleTarget } from "../interfaces.js";
 import type { Behavior } from "../observation/behavior.js";
 import { PropertyChangeNotifier } from "../observation/notifier.js";
 import { defaultExecutionContext, Observable } from "../observation/observable.js";
+import { FAST } from "../platform.js";
 import type { ElementStyles } from "../styles/element-styles.js";
 import type { ElementViewTemplate } from "../templating/template.js";
 import type { ElementView } from "../templating/view.js";
@@ -17,6 +18,8 @@ const defaultEventOptions: CustomEventInit = {
 function getShadowRoot(element: HTMLElement): ShadowRoot | null {
     return element.shadowRoot ?? shadowRoots.get(element) ?? null;
 }
+
+const isConnectedPropertyName = "isConnected";
 
 /**
  * Controls the lifecycle and rendering of a `FASTElement`.
@@ -64,13 +67,13 @@ export class Controller extends PropertyChangeNotifier {
      * connected to the document.
      */
     public get isConnected(): boolean {
-        Observable.track(this, "isConnected");
+        Observable.track(this, isConnectedPropertyName);
         return this._isConnected;
     }
 
     private setIsConnected(value: boolean): void {
         this._isConnected = value;
-        Observable.notify(this, "isConnected");
+        Observable.notify(this, isConnectedPropertyName);
     }
 
     /**
@@ -474,7 +477,7 @@ export class Controller extends PropertyChangeNotifier {
         const definition = FASTElementDefinition.forType(element.constructor);
 
         if (definition === void 0) {
-            throw new Error("Missing FASTElement definition.");
+            throw FAST.error(Message.missingElementDefinition);
         }
 
         return ((element as any).$fastController = new Controller(element, definition));
