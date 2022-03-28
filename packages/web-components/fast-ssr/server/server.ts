@@ -48,11 +48,11 @@ function handlePathRequest(
 const app = express();
 app.get("/", handleRequest);
 app.get("/fast-style", (req: Request, res: Response) =>
-    handlePathRequest("./src/fast-style/index.fixture.html", "text/html", req, res)
+    handlePathRequest("./src/styles/fast-style.fixture.html", "text/html", req, res)
 );
 app.get("/fast-style.js", (req: Request, res: Response) =>
     handlePathRequest(
-        "./dist/esm/fast-style/index.js",
+        "./dist/esm/styles/fast-style.js",
         "application/javascript",
         req,
         res

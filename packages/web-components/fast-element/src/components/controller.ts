@@ -207,7 +207,7 @@ export class Controller extends PropertyChangeNotifier {
             getShadowRoot(this.element) ||
             ((this.element.getRootNode() as any) as StyleTarget);
 
-        if (styles instanceof HTMLStyleElement) {
+        if (styles instanceof HTMLElement) {
             target.append(styles);
         } else if (!styles.isAttachedTo(target)) {
             const sourceBehaviors = styles.behaviors;
@@ -234,7 +234,7 @@ export class Controller extends PropertyChangeNotifier {
             getShadowRoot(this.element) ||
             ((this.element.getRootNode() as any) as StyleTarget);
 
-        if (styles instanceof HTMLStyleElement) {
+        if (styles instanceof HTMLElement) {
             target.removeChild(styles);
         } else if (styles.isAttachedTo(target)) {
             const sourceBehaviors = styles.behaviors;
