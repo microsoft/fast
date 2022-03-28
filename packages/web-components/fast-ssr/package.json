@@ -27,7 +27,7 @@
     "test": "playwright test --config=playwright.config.cjs",
     "test:watch": "chokidar '**/*.spec.ts' -c 'npm run build && npm run test'",
     "test-server": "node server/dist/server.js",
-    "install-playwright-browsers": "npx playwright install"
+    "install-playwright-browsers": "yarn playwright install"
   },
   "description": "A package for rendering FAST components outside the browser.",
   "main": "./dist/esm/exports.js",

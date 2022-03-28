@@ -52,8 +52,7 @@ jobs:
 
     - name: Install playwright dependencies and browsers
       run: |
-        yarn playwright install-deps
-        yarn playwright install
+        yarn lerna run install-playwright-browsers
 
     - name: Testing unit tests
       run: yarn lerna run test --stream
