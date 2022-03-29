@@ -54,6 +54,105 @@ export const myAnchor = Anchor.compose({
 This component is built with the expectation that focus is delegated to the anchor element rendered into the shadow DOM.
 :::
 
+## API
+
+### `src/anchor/anchor.template.ts`:
+
+#### Functions
+
+| Name             | Description                                                                       | Parameters            | Return |
+| ---------------- | --------------------------------------------------------------------------------- | --------------------- | ------ |
+| `anchorTemplate` | The template for the {@link @microsoft/fast-foundation#(Anchor:class)} component. | `context, definition` |        |
+
+<hr/>
+
+#### Exports
+
+| Kind | Name             | Declaration    | Module                        | Package |
+| ---- | ---------------- | -------------- | ----------------------------- | ------- |
+| `js` | `anchorTemplate` | anchorTemplate | src/anchor/anchor.template.ts |         |
+
+### `src/anchor/anchor.ts`:
+
+#### class: `Anchor`
+
+##### Superclass
+
+| Name                | Module                  | Package |
+| ------------------- | ----------------------- | ------- |
+| `FoundationElement` | /src/foundation-element |         |
+
+##### Static Methods
+
+| Name      | Privacy | Description                                                                     | Parameters                      | Return                                                                                                             | Inherited From    |
+| --------- | ------- | ------------------------------------------------------------------------------- | ------------------------------- | ------------------------------------------------------------------------------------------------------------------ | ----------------- |
+| `compose` | public  | Defines an element registry function with a set of element definition defaults. | `this: K, elementDefinition: T` | `(         overrideDefinition?: OverrideFoundationElementDefinition<T>     ) => FoundationElementRegistry<T, K>` | FoundationElement |
+
+##### Fields
+
+| Name                              | Privacy | Type                                         | Default  | Description                                                                                                                                                                                                                               | Inherited From    |
+| --------------------------------- | ------- | -------------------------------------------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
+| `download`                        | public  | `string`                                     |          | Prompts the user to save the linked URL. See {@link https\://developer.mozilla.org/en-US/docs/Web/HTML/Element/a \| \<a> element } for more information.                                                                                  |                   |
+| `href`                            | public  | `string`                                     |          | The URL the hyperlink references. See {@link https\://developer.mozilla.org/en-US/docs/Web/HTML/Element/a \| \<a> element } for more information.                                                                                         |                   |
+| `hreflang`                        | public  | `string`                                     |          | Hints at the language of the referenced resource. See {@link https\://developer.mozilla.org/en-US/docs/Web/HTML/Element/a \| \<a> element } for more information.                                                                         |                   |
+| `ping`                            | public  | `string`                                     |          | See {@link https\://developer.mozilla.org/en-US/docs/Web/HTML/Element/a \| \<a> element } for more information.                                                                                                                           |                   |
+| `referrerpolicy`                  | public  | `string`                                     |          | See {@link https\://developer.mozilla.org/en-US/docs/Web/HTML/Element/a \| \<a> element } for more information.                                                                                                                           |                   |
+| `rel`                             | public  | `string`                                     |          | See {@link https\://developer.mozilla.org/en-US/docs/Web/HTML/Element/a \| \<a> element } for more information.                                                                                                                           |                   |
+| `target`                          | public  | `"_self" \| "_blank" \| "_parent" \| "_top"` |          | See {@link https\://developer.mozilla.org/en-US/docs/Web/HTML/Element/a \| \<a> element } for more information.                                                                                                                           |                   |
+| `type`                            | public  | `string`                                     |          | See {@link https\://developer.mozilla.org/en-US/docs/Web/HTML/Element/a \| \<a> element } for more information.                                                                                                                           |                   |
+| `control`                         | public  | `HTMLAnchorElement`                          |          | References the root element                                                                                                                                                                                                               |                   |
+| `handleUnsupportedDelegatesFocus` | private |                                              |          | Overrides the focus call for where delegatesFocus is unsupported.&#xD;&#xA;This check works for Chrome, Edge Chromium, FireFox, and Safari&#xD;&#xA;Relevant PR on the Firefox browser: https\://phabricator.services.mozilla.com/D123858 |                   |
+| `_presentation`                   | private | `ComponentPresentation \| null \| undefined` | `void 0` |                                                                                                                                                                                                                                           | FoundationElement |
+| `$presentation`                   | public  | `ComponentPresentation \| null`              |          | A property which resolves the ComponentPresentation instance&#xD;&#xA;for the current component.                                                                                                                                          | FoundationElement |
+| `template`                        | public  | `ElementViewTemplate \| void \| null`        |          | Sets the template of the element instance. When undefined,&#xD;&#xA;the element will attempt to resolve the template from&#xD;&#xA;the associated presentation or custom element definition.                                              | FoundationElement |
+| `styles`                          | public  | `ElementStyles \| void \| null`              |          | Sets the default styles for the element instance. When undefined,&#xD;&#xA;the element will attempt to resolve default styles from&#xD;&#xA;the associated presentation or custom element definition.                                     | FoundationElement |
+
+##### Methods
+
+| Name              | Privacy   | Description | Parameters | Return | Inherited From    |
+| ----------------- | --------- | ----------- | ---------- | ------ | ----------------- |
+| `templateChanged` | protected |             |            | `void` | FoundationElement |
+| `stylesChanged`   | protected |             |            | `void` | FoundationElement |
+
+##### Attributes
+
+| Name             | Field          | Inherited From |
+| ---------------- | -------------- | -------------- |
+| `download`       | download       |                |
+| `href`           | href           |                |
+| `hreflang`       | hreflang       |                |
+| `ping`           | ping           |                |
+| `referrerpolicy` | referrerpolicy |                |
+| `rel`            | rel            |                |
+| `target`         | target         |                |
+| `type`           | type           |                |
+
+<hr/>
+
+#### class: `DelegatesARIALink`
+
+##### Fields
+
+| Name           | Privacy | Type                             | Default | Description                                                                  | Inherited From |
+| -------------- | ------- | -------------------------------- | ------- | ---------------------------------------------------------------------------- | -------------- |
+| `ariaExpanded` | public  | `"true" \| "false" \| undefined` |         | See {@link https\://www\.w3.org/WAI/PF/aria/roles#link} for more information |                |
+
+##### Attributes
+
+| Name            | Field        | Inherited From |
+| --------------- | ------------ | -------------- |
+| `aria-expanded` | ariaExpanded |                |
+
+<hr/>
+
+#### Exports
+
+| Kind | Name                | Declaration       | Module               | Package |
+| ---- | ------------------- | ----------------- | -------------------- | ------- |
+| `js` | `Anchor`            | Anchor            | src/anchor/anchor.ts |         |
+| `js` | `DelegatesARIALink` | DelegatesARIALink | src/anchor/anchor.ts |         |
+
+
 ## Additional resources
 
 * [Component explorer examples](https://explore.fast.design/components/fast-anchor)

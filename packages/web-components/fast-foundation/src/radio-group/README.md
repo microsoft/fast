@@ -50,6 +50,102 @@ export const myRadioGroup = RadioGroup.compose({
 });
 ```
 
+## API
+
+### `src/radio-group/radio-group.template.ts`:
+
+#### Functions
+
+| Name                 | Description                                                                   | Parameters            | Return |
+| -------------------- | ----------------------------------------------------------------------------- | --------------------- | ------ |
+| `radioGroupTemplate` | The template for the {@link @microsoft/fast-foundation#RadioGroup} component. | `context, definition` |        |
+
+<hr/>
+
+#### Exports
+
+| Kind | Name                 | Declaration        | Module                                  | Package |
+| ---- | -------------------- | ------------------ | --------------------------------------- | ------- |
+| `js` | `radioGroupTemplate` | radioGroupTemplate | src/radio-group/radio-group.template.ts |         |
+
+### `src/radio-group/radio-group.ts`:
+
+#### class: `RadioGroup`
+
+##### Superclass
+
+| Name                | Module                  | Package |
+| ------------------- | ----------------------- | ------- |
+| `FoundationElement` | /src/foundation-element |         |
+
+##### Static Methods
+
+| Name      | Privacy | Description                                                                     | Parameters                      | Return                                                                                                             | Inherited From    |
+| --------- | ------- | ------------------------------------------------------------------------------- | ------------------------------- | ------------------------------------------------------------------------------------------------------------------ | ----------------- |
+| `compose` | public  | Defines an element registry function with a set of element definition defaults. | `this: K, elementDefinition: T` | `(         overrideDefinition?: OverrideFoundationElementDefinition<T>     ) => FoundationElementRegistry<T, K>` | FoundationElement |
+
+##### Fields
+
+| Name                           | Privacy | Type                                         | Default  | Description                                                                                                                                                                                            | Inherited From    |
+| ------------------------------ | ------- | -------------------------------------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------- |
+| `readOnly`                     | public  | `boolean`                                    |          | When true, the child radios will be immutable by user interaction. See {@link https\://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/readonly \| readonly HTML attribute} for more information. |                   |
+| `disabled`                     | public  | `boolean`                                    |          | Disables the radio group and child radios.                                                                                                                                                             |                   |
+| `name`                         | public  | `string`                                     |          | The name of the radio group. Setting this value will set the name value&#xD;&#xA;for all child radio elements.                                                                                         |                   |
+| `value`                        | public  | `string`                                     |          | The value of the checked radio                                                                                                                                                                         |                   |
+| `orientation`                  | public  | `Orientation \| "horizontal" \| "vertical"`  |          | The orientation of the group                                                                                                                                                                           |                   |
+| `childItems`                   | public  | `HTMLElement[]`                              |          |                                                                                                                                                                                                        |                   |
+| `selectedRadio`                | private | `HTMLInputElement \| null`                   |          |                                                                                                                                                                                                        |                   |
+| `focusedRadio`                 | private | `HTMLInputElement \| null`                   |          |                                                                                                                                                                                                        |                   |
+| `direction`                    | private | `Direction`                                  |          |                                                                                                                                                                                                        |                   |
+| `parentToolbar`                | private | `HTMLElement \| null`                        |          |                                                                                                                                                                                                        |                   |
+| `isInsideToolbar`              | private | `boolean`                                    |          |                                                                                                                                                                                                        |                   |
+| `isInsideFoundationToolbar`    | private | `boolean`                                    |          |                                                                                                                                                                                                        |                   |
+| `radioChangeHandler`           | private |                                              |          |                                                                                                                                                                                                        |                   |
+| `moveToRadioByIndex`           | private |                                              |          |                                                                                                                                                                                                        |                   |
+| `moveRightOffGroup`            | private |                                              |          |                                                                                                                                                                                                        |                   |
+| `moveLeftOffGroup`             | private |                                              |          |                                                                                                                                                                                                        |                   |
+| `shouldMoveOffGroupToTheRight` | private |                                              |          |                                                                                                                                                                                                        |                   |
+| `shouldMoveOffGroupToTheLeft`  | private |                                              |          |                                                                                                                                                                                                        |                   |
+| `checkFocusedRadio`            | private |                                              |          |                                                                                                                                                                                                        |                   |
+| `moveRight`                    | private |                                              |          |                                                                                                                                                                                                        |                   |
+| `moveLeft`                     | private |                                              |          |                                                                                                                                                                                                        |                   |
+| `_presentation`                | private | `ComponentPresentation \| null \| undefined` | `void 0` |                                                                                                                                                                                                        | FoundationElement |
+| `$presentation`                | public  | `ComponentPresentation \| null`              |          | A property which resolves the ComponentPresentation instance&#xD;&#xA;for the current component.                                                                                                       | FoundationElement |
+| `template`                     | public  | `ElementViewTemplate \| void \| null`        |          | Sets the template of the element instance. When undefined,&#xD;&#xA;the element will attempt to resolve the template from&#xD;&#xA;the associated presentation or custom element definition.           | FoundationElement |
+| `styles`                       | public  | `ElementStyles \| void \| null`              |          | Sets the default styles for the element instance. When undefined,&#xD;&#xA;the element will attempt to resolve default styles from&#xD;&#xA;the associated presentation or custom element definition.  | FoundationElement |
+
+##### Methods
+
+| Name                         | Privacy   | Description | Parameters                                   | Return | Inherited From    |
+| ---------------------------- | --------- | ----------- | -------------------------------------------- | ------ | ----------------- |
+| `readOnlyChanged`            | private   |             |                                              | `void` |                   |
+| `disabledChanged`            | private   |             |                                              | `void` |                   |
+| `nameChanged`                | protected |             |                                              | `void` |                   |
+| `valueChanged`               | protected |             |                                              | `void` |                   |
+| `slottedRadioButtonsChanged` | private   |             | `oldValue: unknown, newValue: HTMLElement[]` | `void` |                   |
+| `setupRadioButtons`          | private   |             |                                              | `void` |                   |
+| `templateChanged`            | protected |             |                                              | `void` | FoundationElement |
+| `stylesChanged`              | protected |             |                                              | `void` | FoundationElement |
+
+##### Attributes
+
+| Name          | Field       | Inherited From |
+| ------------- | ----------- | -------------- |
+| `readonly`    | readOnly    |                |
+| `disabled`    | disabled    |                |
+| `name`        | name        |                |
+| `value`       | value       |                |
+| `orientation` | orientation |                |
+
+<hr/>
+
+#### Exports
+
+| Kind | Name         | Declaration | Module                         | Package |
+| ---- | ------------ | ----------- | ------------------------------ | ------- |
+| `js` | `RadioGroup` | RadioGroup  | src/radio-group/radio-group.ts |         |
+
+
 ## Additional resources
 
 * [Component explorer examples](https://explore.fast.design/components/fast-radio-group)

@@ -4,14 +4,6 @@
       {
         "tagName": "@test",
         "syntaxKind": "block"
-      },
-      {
-        "tagName": "@slot",
-        "syntaxKind": "block",
-        "allowMultiple": true
       }
-    ],
-    "supportForTags": {
-      "@slot": true
-    }
+    ]
   }

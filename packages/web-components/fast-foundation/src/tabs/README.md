@@ -101,6 +101,101 @@ export const myTabs = Tabs.compose({
 });
 ```
 
+## API
+
+### `src/tabs/tabs.template.ts`:
+
+#### Functions
+
+| Name           | Description                                                                     | Parameters            | Return |
+| -------------- | ------------------------------------------------------------------------------- | --------------------- | ------ |
+| `tabsTemplate` | The template for the {@link @microsoft/fast-foundation#(Tabs:class)} component. | `context, definition` |        |
+
+<hr/>
+
+#### Exports
+
+| Kind | Name           | Declaration  | Module                    | Package |
+| ---- | -------------- | ------------ | ------------------------- | ------- |
+| `js` | `tabsTemplate` | tabsTemplate | src/tabs/tabs.template.ts |         |
+
+### `src/tabs/tabs.ts`:
+
+#### class: `Tabs`
+
+##### Superclass
+
+| Name                | Module                  | Package |
+| ------------------- | ----------------------- | ------- |
+| `FoundationElement` | /src/foundation-element |         |
+
+##### Static Methods
+
+| Name      | Privacy | Description                                                                     | Parameters                      | Return                                                                                                             | Inherited From    |
+| --------- | ------- | ------------------------------------------------------------------------------- | ------------------------------- | ------------------------------------------------------------------------------------------------------------------ | ----------------- |
+| `compose` | public  | Defines an element registry function with a set of element definition defaults. | `this: K, elementDefinition: T` | `(         overrideDefinition?: OverrideFoundationElementDefinition<T>     ) => FoundationElementRegistry<T, K>` | FoundationElement |
+
+##### Fields
+
+| Name                 | Privacy | Type                                         | Default  | Description                                                                                                                                                                                           | Inherited From    |
+| -------------------- | ------- | -------------------------------------------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
+| `orientation`        | public  | `TabsOrientation`                            |          | The orientation                                                                                                                                                                                       |                   |
+| `activeid`           | public  | `string`                                     |          | The id of the active tab                                                                                                                                                                              |                   |
+| `activeindicator`    | public  | `boolean`                                    | `true`   | Whether or not to show the active indicator                                                                                                                                                           |                   |
+| `activetab`          | public  | `HTMLElement`                                |          | A reference to the active tab                                                                                                                                                                         |                   |
+| `prevActiveTabIndex` | private | `number`                                     | `0`      |                                                                                                                                                                                                       |                   |
+| `activeTabIndex`     | private | `number`                                     | `0`      |                                                                                                                                                                                                       |                   |
+| `ticking`            | private | `boolean`                                    | `false`  |                                                                                                                                                                                                       |                   |
+| `tabIds`             | private | `Array<string \| null>`                      |          |                                                                                                                                                                                                       |                   |
+| `tabpanelIds`        | private | `Array<string \| null>`                      |          |                                                                                                                                                                                                       |                   |
+| `change`             | private |                                              |          |                                                                                                                                                                                                       |                   |
+| `isDisabledElement`  | private |                                              |          |                                                                                                                                                                                                       |                   |
+| `isFocusableElement` | private |                                              |          |                                                                                                                                                                                                       |                   |
+| `setTabs`            | private |                                              |          |                                                                                                                                                                                                       |                   |
+| `setTabPanels`       | private |                                              |          |                                                                                                                                                                                                       |                   |
+| `handleTabClick`     | private |                                              |          |                                                                                                                                                                                                       |                   |
+| `handleTabKeyDown`   | private |                                              |          |                                                                                                                                                                                                       |                   |
+| `adjustForward`      | private |                                              |          |                                                                                                                                                                                                       |                   |
+| `adjustBackward`     | private |                                              |          |                                                                                                                                                                                                       |                   |
+| `moveToTabByIndex`   | private |                                              |          |                                                                                                                                                                                                       |                   |
+| `_presentation`      | private | `ComponentPresentation \| null \| undefined` | `void 0` |                                                                                                                                                                                                       | FoundationElement |
+| `$presentation`      | public  | `ComponentPresentation \| null`              |          | A property which resolves the ComponentPresentation instance&#xD;&#xA;for the current component.                                                                                                      | FoundationElement |
+| `template`           | public  | `ElementViewTemplate \| void \| null`        |          | Sets the template of the element instance. When undefined,&#xD;&#xA;the element will attempt to resolve the template from&#xD;&#xA;the associated presentation or custom element definition.          | FoundationElement |
+| `styles`             | public  | `ElementStyles \| void \| null`              |          | Sets the default styles for the element instance. When undefined,&#xD;&#xA;the element will attempt to resolve default styles from&#xD;&#xA;the associated presentation or custom element definition. | FoundationElement |
+
+##### Methods
+
+| Name                            | Privacy   | Description                    | Parameters           | Return                  | Inherited From    |
+| ------------------------------- | --------- | ------------------------------ | -------------------- | ----------------------- | ----------------- |
+| `getActiveIndex`                | private   |                                |                      | `number`                |                   |
+| `getTabIds`                     | private   |                                |                      | `Array<string \| null>` |                   |
+| `getTabPanelIds`                | private   |                                |                      | `Array<string \| null>` |                   |
+| `setComponent`                  | private   |                                |                      | `void`                  |                   |
+| `isHorizontal`                  | private   |                                |                      | `boolean`               |                   |
+| `handleActiveIndicatorPosition` | private   |                                |                      |                         |                   |
+| `animateActiveIndicator`        | private   |                                |                      | `void`                  |                   |
+| `adjust`                        | public    | The adjust method for FASTTabs | `adjustment: number` | `void`                  |                   |
+| `focusTab`                      | private   |                                |                      | `void`                  |                   |
+| `templateChanged`               | protected |                                |                      | `void`                  | FoundationElement |
+| `stylesChanged`                 | protected |                                |                      | `void`                  | FoundationElement |
+
+##### Attributes
+
+| Name          | Field           | Inherited From |
+| ------------- | --------------- | -------------- |
+| `orientation` | orientation     |                |
+| `activeid`    | activeid        |                |
+|               | activeindicator |                |
+
+<hr/>
+
+#### Exports
+
+| Kind | Name   | Declaration | Module           | Package |
+| ---- | ------ | ----------- | ---------------- | ------- |
+| `js` | `Tabs` | Tabs        | src/tabs/tabs.ts |         |
+
+
 ## Additional resources
 
 * [Component explorer examples](https://explore.fast.design/components/fast-tabs)

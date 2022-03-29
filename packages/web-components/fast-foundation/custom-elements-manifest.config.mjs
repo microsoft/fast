@@ -6,7 +6,7 @@ export default {
     /** Directory to output CEM to */
     outdir: 'dist',
     /** Run in dev mode, provides extra logging */
-    dev: true,
+    dev: false,
     /** Enable special handling for fast */
     fast: true,
 }

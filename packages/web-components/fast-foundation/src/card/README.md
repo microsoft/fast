@@ -47,6 +47,65 @@ export const myCard = Card.compose({
 });
 ```
 
+## API
+
+### `src/card/card.template.ts`:
+
+#### Functions
+
+| Name           | Description                                                             | Parameters            | Return |
+| -------------- | ----------------------------------------------------------------------- | --------------------- | ------ |
+| `cardTemplate` | The template for the {@link @microsoft/fast-foundation#Card} component. | `context, definition` |        |
+
+<hr/>
+
+#### Exports
+
+| Kind | Name           | Declaration  | Module                    | Package |
+| ---- | -------------- | ------------ | ------------------------- | ------- |
+| `js` | `cardTemplate` | cardTemplate | src/card/card.template.ts |         |
+
+### `src/card/card.ts`:
+
+#### class: `Card`
+
+##### Superclass
+
+| Name                | Module                  | Package |
+| ------------------- | ----------------------- | ------- |
+| `FoundationElement` | /src/foundation-element |         |
+
+##### Static Methods
+
+| Name      | Privacy | Description                                                                     | Parameters                      | Return                                                                                                             | Inherited From    |
+| --------- | ------- | ------------------------------------------------------------------------------- | ------------------------------- | ------------------------------------------------------------------------------------------------------------------ | ----------------- |
+| `compose` | public  | Defines an element registry function with a set of element definition defaults. | `this: K, elementDefinition: T` | `(         overrideDefinition?: OverrideFoundationElementDefinition<T>     ) => FoundationElementRegistry<T, K>` | FoundationElement |
+
+##### Fields
+
+| Name            | Privacy | Type                                         | Default  | Description                                                                                                                                                                                           | Inherited From    |
+| --------------- | ------- | -------------------------------------------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
+| `_presentation` | private | `ComponentPresentation \| null \| undefined` | `void 0` |                                                                                                                                                                                                       | FoundationElement |
+| `$presentation` | public  | `ComponentPresentation \| null`              |          | A property which resolves the ComponentPresentation instance&#xD;&#xA;for the current component.                                                                                                      | FoundationElement |
+| `template`      | public  | `ElementViewTemplate \| void \| null`        |          | Sets the template of the element instance. When undefined,&#xD;&#xA;the element will attempt to resolve the template from&#xD;&#xA;the associated presentation or custom element definition.          | FoundationElement |
+| `styles`        | public  | `ElementStyles \| void \| null`              |          | Sets the default styles for the element instance. When undefined,&#xD;&#xA;the element will attempt to resolve default styles from&#xD;&#xA;the associated presentation or custom element definition. | FoundationElement |
+
+##### Methods
+
+| Name              | Privacy   | Description | Parameters | Return | Inherited From    |
+| ----------------- | --------- | ----------- | ---------- | ------ | ----------------- |
+| `templateChanged` | protected |             |            | `void` | FoundationElement |
+| `stylesChanged`   | protected |             |            | `void` | FoundationElement |
+
+<hr/>
+
+#### Exports
+
+| Kind | Name   | Declaration | Module           | Package |
+| ---- | ------ | ----------- | ---------------- | ------- |
+| `js` | `Card` | Card        | src/card/card.ts |         |
+
+
 ## Additional resources
 
 * [Component explorer examples](https://explore.fast.design/components/fast-card)

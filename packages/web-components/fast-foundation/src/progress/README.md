@@ -101,6 +101,82 @@ export const myProgressRing = ProgressRing.compose<ProgressRingOptions>({
 });
 ```
 
+## API
+
+### `src/progress/base-progress.ts`:
+
+#### class: `BaseProgress`
+
+##### Superclass
+
+| Name                | Module                  | Package |
+| ------------------- | ----------------------- | ------- |
+| `FoundationElement` | /src/foundation-element |         |
+
+##### Static Methods
+
+| Name      | Privacy | Description                                                                     | Parameters                      | Return                                                                                                             | Inherited From    |
+| --------- | ------- | ------------------------------------------------------------------------------- | ------------------------------- | ------------------------------------------------------------------------------------------------------------------ | ----------------- |
+| `compose` | public  | Defines an element registry function with a set of element definition defaults. | `this: K, elementDefinition: T` | `(         overrideDefinition?: OverrideFoundationElementDefinition<T>     ) => FoundationElementRegistry<T, K>` | FoundationElement |
+
+##### Fields
+
+| Name            | Privacy | Type                                         | Default  | Description                                                                                                                                                                                           | Inherited From    |
+| --------------- | ------- | -------------------------------------------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
+| `value`         | public  | `number \| null`                             |          | The value of the progress                                                                                                                                                                             |                   |
+| `min`           | public  | `number`                                     |          | The minimum value                                                                                                                                                                                     |                   |
+| `max`           | public  | `number`                                     |          | The maximum value                                                                                                                                                                                     |                   |
+| `paused`        | public  | `boolean`                                    |          | Indicates the progress is paused                                                                                                                                                                      |                   |
+| `_presentation` | private | `ComponentPresentation \| null \| undefined` | `void 0` |                                                                                                                                                                                                       | FoundationElement |
+| `$presentation` | public  | `ComponentPresentation \| null`              |          | A property which resolves the ComponentPresentation instance&#xD;&#xA;for the current component.                                                                                                      | FoundationElement |
+| `template`      | public  | `ElementViewTemplate \| void \| null`        |          | Sets the template of the element instance. When undefined,&#xD;&#xA;the element will attempt to resolve the template from&#xD;&#xA;the associated presentation or custom element definition.          | FoundationElement |
+| `styles`        | public  | `ElementStyles \| void \| null`              |          | Sets the default styles for the element instance. When undefined,&#xD;&#xA;the element will attempt to resolve default styles from&#xD;&#xA;the associated presentation or custom element definition. | FoundationElement |
+
+##### Methods
+
+| Name                    | Privacy   | Description | Parameters | Return | Inherited From    |
+| ----------------------- | --------- | ----------- | ---------- | ------ | ----------------- |
+| `valueChanged`          | private   |             |            | `void` |                   |
+| `minChanged`            | private   |             |            | `void` |                   |
+| `maxChanged`            | private   |             |            | `void` |                   |
+| `updatePercentComplete` | private   |             |            | `void` |                   |
+| `templateChanged`       | protected |             |            | `void` | FoundationElement |
+| `stylesChanged`         | protected |             |            | `void` | FoundationElement |
+
+##### Attributes
+
+| Name | Field  | Inherited From |
+| ---- | ------ | -------------- |
+|      | value  |                |
+|      | min    |                |
+|      | max    |                |
+|      | paused |                |
+
+<hr/>
+
+#### Exports
+
+| Kind | Name           | Declaration  | Module                        | Package |
+| ---- | -------------- | ------------ | ----------------------------- | ------- |
+| `js` | `BaseProgress` | BaseProgress | src/progress/base-progress.ts |         |
+
+### `src/progress/progress.template.ts`:
+
+#### Functions
+
+| Name               | Description                                                                     | Parameters           | Return |
+| ------------------ | ------------------------------------------------------------------------------- | -------------------- | ------ |
+| `progressTemplate` | The template for the {@link @microsoft/fast-foundation#BaseProgress} component. | `context, defintion` |        |
+
+<hr/>
+
+#### Exports
+
+| Kind | Name               | Declaration      | Module                            | Package |
+| ---- | ------------------ | ---------------- | --------------------------------- | ------- |
+| `js` | `progressTemplate` | progressTemplate | src/progress/progress.template.ts |         |
+
+
 ## Additional resources
 
 * [Component explorer examples for `progress`](https://explore.fast.design/components/fast-progress)

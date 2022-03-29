@@ -92,6 +92,82 @@ export const myTreeView = TreeView.compose({
 });
 ```
 
+## API
+
+### `src/tree-view/tree-view.template.ts`:
+
+#### Functions
+
+| Name               | Description                                                                 | Parameters            | Return |
+| ------------------ | --------------------------------------------------------------------------- | --------------------- | ------ |
+| `treeViewTemplate` | The template for the {@link @microsoft/fast-foundation#TreeView} component. | `context, definition` |        |
+
+<hr/>
+
+#### Exports
+
+| Kind | Name               | Declaration      | Module                               | Package |
+| ---- | ------------------ | ---------------- | ------------------------------------ | ------- |
+| `js` | `treeViewTemplate` | treeViewTemplate | src/tree-view/tree-view\.template.ts |         |
+
+### `src/tree-view/tree-view.ts`:
+
+#### class: `TreeView`
+
+##### Superclass
+
+| Name                | Module                  | Package |
+| ------------------- | ----------------------- | ------- |
+| `FoundationElement` | /src/foundation-element |         |
+
+##### Static Methods
+
+| Name      | Privacy | Description                                                                     | Parameters                      | Return                                                                                                             | Inherited From    |
+| --------- | ------- | ------------------------------------------------------------------------------- | ------------------------------- | ------------------------------------------------------------------------------------------------------------------ | ----------------- |
+| `compose` | public  | Defines an element registry function with a set of element definition defaults. | `this: K, elementDefinition: T` | `(         overrideDefinition?: OverrideFoundationElementDefinition<T>     ) => FoundationElementRegistry<T, K>` | FoundationElement |
+
+##### Fields
+
+| Name                   | Privacy | Type                                         | Default  | Description                                                                                                                                                                                           | Inherited From    |
+| ---------------------- | ------- | -------------------------------------------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
+| `renderCollapsedNodes` | public  | `boolean`                                    |          | /\*\*&#xD;&#xA;   When true, the control will be appear expanded by user interaction.                                                                                                                 |                   |
+| `currentSelected`      | public  | `HTMLElement \| TreeItem \| null`            |          | The currently selected tree item                                                                                                                                                                      |                   |
+| `nested`               | private | `boolean`                                    |          |                                                                                                                                                                                                       |                   |
+| `setItems`             | private |                                              |          | Updates the tree view when slottedTreeItems changes                                                                                                                                                   |                   |
+| `isFocusableElement`   | private |                                              |          | check if the item is focusable                                                                                                                                                                        |                   |
+| `isSelectedElement`    | private |                                              |          |                                                                                                                                                                                                       |                   |
+| `_presentation`        | private | `ComponentPresentation \| null \| undefined` | `void 0` |                                                                                                                                                                                                       | FoundationElement |
+| `$presentation`        | public  | `ComponentPresentation \| null`              |          | A property which resolves the ComponentPresentation instance&#xD;&#xA;for the current component.                                                                                                      | FoundationElement |
+| `template`             | public  | `ElementViewTemplate \| void \| null`        |          | Sets the template of the element instance. When undefined,&#xD;&#xA;the element will attempt to resolve the template from&#xD;&#xA;the associated presentation or custom element definition.          | FoundationElement |
+| `styles`               | public  | `ElementStyles \| void \| null`              |          | Sets the default styles for the element instance. When undefined,&#xD;&#xA;the element will attempt to resolve default styles from&#xD;&#xA;the associated presentation or custom element definition. | FoundationElement |
+
+##### Methods
+
+| Name                      | Privacy   | Description                                                          | Parameters                      | Return                            | Inherited From    |
+| ------------------------- | --------- | -------------------------------------------------------------------- | ------------------------------- | --------------------------------- | ----------------- |
+| `slottedTreeItemsChanged` | private   |                                                                      |                                 | `void`                            |                   |
+| `focusNextNode`           | private   | Move focus to a tree item based on its offset from the provided item | `delta: number, item: TreeItem` | `void`                            |                   |
+| `getValidFocusableItem`   | private   | checks if there are any nested tree items                            |                                 | `null \| HTMLElement \| TreeItem` |                   |
+| `checkForNestedItems`     | private   | checks if there are any nested tree items                            |                                 | `boolean`                         |                   |
+| `getVisibleNodes`         | private   |                                                                      |                                 | `HTMLElement[]`                   |                   |
+| `templateChanged`         | protected |                                                                      |                                 | `void`                            | FoundationElement |
+| `stylesChanged`           | protected |                                                                      |                                 | `void`                            | FoundationElement |
+
+##### Attributes
+
+| Name                     | Field                | Inherited From |
+| ------------------------ | -------------------- | -------------- |
+| `render-collapsed-nodes` | renderCollapsedNodes |                |
+
+<hr/>
+
+#### Exports
+
+| Kind | Name       | Declaration | Module                      | Package |
+| ---- | ---------- | ----------- | --------------------------- | ------- |
+| `js` | `TreeView` | TreeView    | src/tree-view/tree-view\.ts |         |
+
+
 ## Additional resources
 
 * [Component explorer examples](https://explore.fast.design/components/fast-tree-view)

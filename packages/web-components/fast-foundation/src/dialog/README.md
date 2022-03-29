@@ -48,6 +48,92 @@ export const myDialog = Dialog.compose({
 });
 ```
 
+## API
+
+### `src/dialog/dialog.template.ts`:
+
+#### Functions
+
+| Name             | Description                                                               | Parameters            | Return |
+| ---------------- | ------------------------------------------------------------------------- | --------------------- | ------ |
+| `dialogTemplate` | The template for the {@link @microsoft/fast-foundation#Dialog} component. | `context, definition` |        |
+
+<hr/>
+
+#### Exports
+
+| Kind | Name             | Declaration    | Module                        | Package |
+| ---- | ---------------- | -------------- | ----------------------------- | ------- |
+| `js` | `dialogTemplate` | dialogTemplate | src/dialog/dialog.template.ts |         |
+
+### `src/dialog/dialog.ts`:
+
+#### class: `Dialog`
+
+##### Superclass
+
+| Name                | Module                  | Package |
+| ------------------- | ----------------------- | ------- |
+| `FoundationElement` | /src/foundation-element |         |
+
+##### Static Methods
+
+| Name      | Privacy | Description                                                                     | Parameters                      | Return                                                                                                             | Inherited From    |
+| --------- | ------- | ------------------------------------------------------------------------------- | ------------------------------- | ------------------------------------------------------------------------------------------------------------------ | ----------------- |
+| `compose` | public  | Defines an element registry function with a set of element definition defaults. | `this: K, elementDefinition: T` | `(         overrideDefinition?: OverrideFoundationElementDefinition<T>     ) => FoundationElementRegistry<T, K>` | FoundationElement |
+
+##### Fields
+
+| Name                    | Privacy | Type                                         | Default  | Description                                                                                                                                                                                                            | Inherited From    |
+| ----------------------- | ------- | -------------------------------------------- | -------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
+| `modal`                 | public  | `boolean`                                    | `true`   | Indicates the element is modal. When modal, user mouse interaction will be limited to the contents of the element by a modal&#xD;&#xA;overlay.  Clicks on the overlay will cause the dialog to emit a "dismiss" event. |                   |
+| `hidden`                | public  | `boolean`                                    | `false`  | The hidden state of the element.                                                                                                                                                                                       |                   |
+| `trapFocus`             | public  | `boolean`                                    | `true`   | Indicates that the dialog should trap focus.                                                                                                                                                                           |                   |
+| `trapFocusChanged`      | private |                                              |          |                                                                                                                                                                                                                        |                   |
+| `ariaDescribedby`       | public  | `string`                                     |          | The id of the element describing the dialog.                                                                                                                                                                           |                   |
+| `ariaLabelledby`        | public  | `string`                                     |          | The id of the element labeling the dialog.                                                                                                                                                                             |                   |
+| `ariaLabel`             | public  | `string`                                     |          | The label surfaced to assistive technologies.                                                                                                                                                                          |                   |
+| `handleDocumentKeydown` | private |                                              |          |                                                                                                                                                                                                                        |                   |
+| `handleDocumentFocus`   | private |                                              |          |                                                                                                                                                                                                                        |                   |
+| `handleTabKeyDown`      | private |                                              |          |                                                                                                                                                                                                                        |                   |
+| `getTabQueueBounds`     | private |                                              |          |                                                                                                                                                                                                                        |                   |
+| `focusFirstElement`     | private |                                              |          | focus on first element of tab queue                                                                                                                                                                                    |                   |
+| `shouldForceFocus`      | private |                                              |          | we should only focus if focus has not already been brought to the dialog                                                                                                                                               |                   |
+| `shouldTrapFocus`       | private |                                              |          | we should we be active trapping focus                                                                                                                                                                                  |                   |
+| `_presentation`         | private | `ComponentPresentation \| null \| undefined` | `void 0` |                                                                                                                                                                                                                        | FoundationElement |
+| `$presentation`         | public  | `ComponentPresentation \| null`              |          | A property which resolves the ComponentPresentation instance&#xD;&#xA;for the current component.                                                                                                                       | FoundationElement |
+| `template`              | public  | `ElementViewTemplate \| void \| null`        |          | Sets the template of the element instance. When undefined,&#xD;&#xA;the element will attempt to resolve the template from&#xD;&#xA;the associated presentation or custom element definition.                           | FoundationElement |
+| `styles`                | public  | `ElementStyles \| void \| null`              |          | Sets the default styles for the element instance. When undefined,&#xD;&#xA;the element will attempt to resolve default styles from&#xD;&#xA;the associated presentation or custom element definition.                  | FoundationElement |
+
+##### Methods
+
+| Name              | Privacy   | Description                    | Parameters | Return | Inherited From    |
+| ----------------- | --------- | ------------------------------ | ---------- | ------ | ----------------- |
+| `show`            | public    | The method to show the dialog. |            | `void` |                   |
+| `hide`            | public    | The method to hide the dialog. |            | `void` |                   |
+| `templateChanged` | protected |                                |            | `void` | FoundationElement |
+| `stylesChanged`   | protected |                                |            | `void` | FoundationElement |
+
+##### Attributes
+
+| Name               | Field           | Inherited From |
+| ------------------ | --------------- | -------------- |
+|                    | modal           |                |
+|                    | hidden          |                |
+| `trap-focus`       | trapFocus       |                |
+| `aria-describedby` | ariaDescribedby |                |
+| `aria-labelledby`  | ariaLabelledby  |                |
+| `aria-label`       | ariaLabel       |                |
+
+<hr/>
+
+#### Exports
+
+| Kind | Name     | Declaration | Module               | Package |
+| ---- | -------- | ----------- | -------------------- | ------- |
+| `js` | `Dialog` | Dialog      | src/dialog/dialog.ts |         |
+
+
 ## Additional resources
 
 * [Component explorer examples](https://explore.fast.design/components/fast-dialog)

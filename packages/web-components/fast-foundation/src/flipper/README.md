@@ -73,6 +73,78 @@ export const myFlipper = Flipper.compose<FlipperOptions>({
 });
 ```
 
+## API
+
+### `src/flipper/flipper.template.ts`:
+
+#### Functions
+
+| Name              | Description                                                                | Parameters            | Return |
+| ----------------- | -------------------------------------------------------------------------- | --------------------- | ------ |
+| `flipperTemplate` | The template for the {@link @microsoft/fast-foundation#Flipper} component. | `context, definition` |        |
+
+<hr/>
+
+#### Exports
+
+| Kind | Name              | Declaration     | Module                          | Package |
+| ---- | ----------------- | --------------- | ------------------------------- | ------- |
+| `js` | `flipperTemplate` | flipperTemplate | src/flipper/flipper.template.ts |         |
+
+### `src/flipper/flipper.ts`:
+
+#### class: `Flipper`
+
+##### Superclass
+
+| Name                | Module                  | Package |
+| ------------------- | ----------------------- | ------- |
+| `FoundationElement` | /src/foundation-element |         |
+
+##### Static Methods
+
+| Name      | Privacy | Description                                                                     | Parameters                      | Return                                                                                                             | Inherited From    |
+| --------- | ------- | ------------------------------------------------------------------------------- | ------------------------------- | ------------------------------------------------------------------------------------------------------------------ | ----------------- |
+| `compose` | public  | Defines an element registry function with a set of element definition defaults. | `this: K, elementDefinition: T` | `(         overrideDefinition?: OverrideFoundationElementDefinition<T>     ) => FoundationElementRegistry<T, K>` | FoundationElement |
+
+##### Fields
+
+| Name            | Privacy | Type                                         | Default  | Description                                                                                                                                                                                           | Inherited From    |
+| --------------- | ------- | -------------------------------------------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
+| `disabled`      | public  | `boolean`                                    |          | The disabled state of the flipper.                                                                                                                                                                    |                   |
+| `hiddenFromAT`  | public  | `boolean`                                    | `true`   | Indicates the flipper should be hidden from assistive technology. Because flippers are often supplementary navigation, they are often hidden from assistive technology.                               |                   |
+| `direction`     | public  | `FlipperDirection \| "next" \| "previous"`   |          | The direction that the flipper implies navigating.                                                                                                                                                    |                   |
+| `_presentation` | private | `ComponentPresentation \| null \| undefined` | `void 0` |                                                                                                                                                                                                       | FoundationElement |
+| `$presentation` | public  | `ComponentPresentation \| null`              |          | A property which resolves the ComponentPresentation instance&#xD;&#xA;for the current component.                                                                                                      | FoundationElement |
+| `template`      | public  | `ElementViewTemplate \| void \| null`        |          | Sets the template of the element instance. When undefined,&#xD;&#xA;the element will attempt to resolve the template from&#xD;&#xA;the associated presentation or custom element definition.          | FoundationElement |
+| `styles`        | public  | `ElementStyles \| void \| null`              |          | Sets the default styles for the element instance. When undefined,&#xD;&#xA;the element will attempt to resolve default styles from&#xD;&#xA;the associated presentation or custom element definition. | FoundationElement |
+
+##### Methods
+
+| Name              | Privacy   | Description                                                                                                                             | Parameters                 | Return | Inherited From    |
+| ----------------- | --------- | --------------------------------------------------------------------------------------------------------------------------------------- | -------------------------- | ------ | ----------------- |
+| `keyupHandler`    | public    | Simulate a click event when the flipper has focus and the user hits enter or space keys&#xD;&#xA;Blur focus if the user hits escape key | `e: Event & KeyboardEvent` |        |                   |
+| `templateChanged` | protected |                                                                                                                                         |                            | `void` | FoundationElement |
+| `stylesChanged`   | protected |                                                                                                                                         |                            | `void` | FoundationElement |
+
+##### Attributes
+
+| Name          | Field        | Inherited From |
+| ------------- | ------------ | -------------- |
+|               | disabled     |                |
+| `aria-hidden` | hiddenFromAT |                |
+| `direction`   | direction    |                |
+
+<hr/>
+
+#### Exports
+
+| Kind | Name               | Declaration      | Module                 | Package |
+| ---- | ------------------ | ---------------- | ---------------------- | ------- |
+| `js` | `FlipperDirection` | FlipperDirection | src/flipper/flipper.ts |         |
+| `js` | `Flipper`          | Flipper          | src/flipper/flipper.ts |         |
+
+
 ## Additional resources
 
 * [Component explorer examples](https://explore.fast.design/components/fast-flipper)

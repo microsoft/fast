@@ -50,6 +50,102 @@ export const myTextArea = TextArea.compose({
 This component is built with the expectation that focus is delegated to the input element rendered into the shadow DOM.
 :::
 
+## API
+
+### `src/text-area/text-area.template.ts`:
+
+#### Functions
+
+| Name               | Description                                                                         | Parameters            | Return |
+| ------------------ | ----------------------------------------------------------------------------------- | --------------------- | ------ |
+| `textAreaTemplate` | The template for the {@link @microsoft/fast-foundation#(TextArea:class)} component. | `context, definition` |        |
+
+<hr/>
+
+#### Exports
+
+| Kind | Name               | Declaration      | Module                              | Package |
+| ---- | ------------------ | ---------------- | ----------------------------------- | ------- |
+| `js` | `textAreaTemplate` | textAreaTemplate | src/text-area/text-area.template.ts |         |
+
+### `src/text-area/text-area.ts`:
+
+#### class: `TextArea`
+
+##### Superclass
+
+| Name                     | Module                                   | Package |
+| ------------------------ | ---------------------------------------- | ------- |
+| `FormAssociatedTextArea` | /src/text-area/text-area.form-associated |         |
+
+##### Static Methods
+
+| Name      | Privacy | Description                                                                     | Parameters                      | Return                                                                                                             | Inherited From    |
+| --------- | ------- | ------------------------------------------------------------------------------- | ------------------------------- | ------------------------------------------------------------------------------------------------------------------ | ----------------- |
+| `compose` | public  | Defines an element registry function with a set of element definition defaults. | `this: K, elementDefinition: T` | `(         overrideDefinition?: OverrideFoundationElementDefinition<T>     ) => FoundationElementRegistry<T, K>` | FoundationElement |
+
+##### Fields
+
+| Name            | Privacy | Type                                                               | Default  | Description                                                                                                                                                                                                    | Inherited From         |
+| --------------- | ------- | ------------------------------------------------------------------ | -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------- |
+| `readOnly`      | public  | `boolean`                                                          |          | When true, the control will be immutable by user interaction. See {@link https\://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/readonly \| readonly HTML attribute} for more information.              |                        |
+| `resize`        | public  | `TextAreaResize \| "none" \| "both" \| "horizontal" \| "vertical"` |          | The resize mode of the element.                                                                                                                                                                                |                        |
+| `autofocus`     | public  | `boolean`                                                          |          | Indicates that this element should get focus after the page finishes loading.                                                                                                                                  |                        |
+| `formId`        | public  | `string`                                                           |          | The {@link https\://developer.mozilla.org/en-US/docs/Web/HTML/Global\_attributes/id \| id} of the {@link https\://developer.mozilla.org/en-US/docs/Web/HTML/Element/form \| form} the element is associated to |                        |
+| `list`          | public  | `string`                                                           |          | Allows associating a {@link https\://developer.mozilla.org/en-US/docs/Web/HTML/Element/datalist \| datalist} to the element by {@link https\://developer.mozilla.org/en-US/docs/Web/API/Element/id}.           |                        |
+| `maxlength`     | public  | `number`                                                           |          | The maximum number of characters a user can enter.                                                                                                                                                             |                        |
+| `minlength`     | public  | `number`                                                           |          | The minimum number of characters a user can enter.                                                                                                                                                             |                        |
+| `name`          | public  | `string`                                                           |          | The name of the element.                                                                                                                                                                                       |                        |
+| `placeholder`   | public  | `string`                                                           |          | Sets the placeholder value of the element, generally used to provide a hint to the user.                                                                                                                       |                        |
+| `cols`          | public  | `number`                                                           | `20`     | Sizes the element horizontally by a number of character columns.                                                                                                                                               |                        |
+| `rows`          | public  | `number`                                                           |          | Sizes the element vertically by a number of character rows.                                                                                                                                                    |                        |
+| `spellcheck`    | public  | `boolean`                                                          |          | Sets if the element is eligible for spell checking&#xD;&#xA;but the UA.                                                                                                                                        |                        |
+| `proxy`         |         |                                                                    |          |                                                                                                                                                                                                                | FormAssociatedTextArea |
+| `_presentation` | private | `ComponentPresentation \| null \| undefined`                       | `void 0` |                                                                                                                                                                                                                | FoundationElement      |
+| `$presentation` | public  | `ComponentPresentation \| null`                                    |          | A property which resolves the ComponentPresentation instance&#xD;&#xA;for the current component.                                                                                                               | FoundationElement      |
+| `template`      | public  | `ElementViewTemplate \| void \| null`                              |          | Sets the template of the element instance. When undefined,&#xD;&#xA;the element will attempt to resolve the template from&#xD;&#xA;the associated presentation or custom element definition.                   | FoundationElement      |
+| `styles`        | public  | `ElementStyles \| void \| null`                                    |          | Sets the default styles for the element instance. When undefined,&#xD;&#xA;the element will attempt to resolve default styles from&#xD;&#xA;the associated presentation or custom element definition.          | FoundationElement      |
+
+##### Methods
+
+| Name                | Privacy   | Description | Parameters | Return | Inherited From    |
+| ------------------- | --------- | ----------- | ---------- | ------ | ----------------- |
+| `readOnlyChanged`   | private   |             |            | `void` |                   |
+| `autofocusChanged`  | private   |             |            | `void` |                   |
+| `listChanged`       | private   |             |            | `void` |                   |
+| `maxlengthChanged`  | private   |             |            | `void` |                   |
+| `minlengthChanged`  | private   |             |            | `void` |                   |
+| `spellcheckChanged` | private   |             |            | `void` |                   |
+| `templateChanged`   | protected |             |            | `void` | FoundationElement |
+| `stylesChanged`     | protected |             |            | `void` | FoundationElement |
+
+##### Attributes
+
+| Name          | Field       | Inherited From |
+| ------------- | ----------- | -------------- |
+|               | readOnly    |                |
+| `resize`      | resize      |                |
+|               | autofocus   |                |
+| `form`        | formId      |                |
+| `list`        | list        |                |
+|               | maxlength   |                |
+|               | minlength   |                |
+| `name`        | name        |                |
+| `placeholder` | placeholder |                |
+|               | cols        |                |
+|               | rows        |                |
+|               | spellcheck  |                |
+
+<hr/>
+
+#### Exports
+
+| Kind | Name             | Declaration    | Module                     | Package |
+| ---- | ---------------- | -------------- | -------------------------- | ------- |
+| `js` | `TextAreaResize` | TextAreaResize | src/text-area/text-area.ts |         |
+| `js` | `TextArea`       | TextArea       | src/text-area/text-area.ts |         |
+
+
 ## Additional resources
 
 * [Component explorer examples](https://explore.fast.design/components/fast-text-area)

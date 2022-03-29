@@ -74,6 +74,76 @@ export const myRadio = Radio.compose<RadioOptions>({
 });
 ```
 
+## API
+
+### `src/radio/radio.template.ts`:
+
+#### Functions
+
+| Name            | Description                                                                      | Parameters            | Return |
+| --------------- | -------------------------------------------------------------------------------- | --------------------- | ------ |
+| `radioTemplate` | The template for the {@link @microsoft/fast-foundation#(Radio:class)} component. | `context, definition` |        |
+
+<hr/>
+
+#### Exports
+
+| Kind | Name            | Declaration   | Module                      | Package |
+| ---- | --------------- | ------------- | --------------------------- | ------- |
+| `js` | `radioTemplate` | radioTemplate | src/radio/radio.template.ts |         |
+
+### `src/radio/radio.ts`:
+
+#### class: `Radio`
+
+##### Superclass
+
+| Name                  | Module                           | Package |
+| --------------------- | -------------------------------- | ------- |
+| `FormAssociatedRadio` | /src/radio/radio.form-associated |         |
+
+##### Static Methods
+
+| Name      | Privacy | Description                                                                     | Parameters                      | Return                                                                                                             | Inherited From    |
+| --------- | ------- | ------------------------------------------------------------------------------- | ------------------------------- | ------------------------------------------------------------------------------------------------------------------ | ----------------- |
+| `compose` | public  | Defines an element registry function with a set of element definition defaults. | `this: K, elementDefinition: T` | `(         overrideDefinition?: OverrideFoundationElementDefinition<T>     ) => FoundationElementRegistry<T, K>` | FoundationElement |
+
+##### Fields
+
+| Name            | Privacy | Type                                         | Default  | Description                                                                                                                                                                                           | Inherited From      |
+| --------------- | ------- | -------------------------------------------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------- |
+| `readOnly`      | public  | `boolean`                                    |          | When true, the control will be immutable by user interaction. See {@link https\://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/readonly \| readonly HTML attribute} for more information.     |                     |
+| `name`          | public  | `string`                                     |          | The name of the radio. See {@link https\://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#htmlattrdefname \| name attribute} for more info.                                                  |                     |
+| `proxy`         |         |                                              |          |                                                                                                                                                                                                       | FormAssociatedRadio |
+| `_presentation` | private | `ComponentPresentation \| null \| undefined` | `void 0` |                                                                                                                                                                                                       | FoundationElement   |
+| `$presentation` | public  | `ComponentPresentation \| null`              |          | A property which resolves the ComponentPresentation instance&#xD;&#xA;for the current component.                                                                                                      | FoundationElement   |
+| `template`      | public  | `ElementViewTemplate \| void \| null`        |          | Sets the template of the element instance. When undefined,&#xD;&#xA;the element will attempt to resolve the template from&#xD;&#xA;the associated presentation or custom element definition.          | FoundationElement   |
+| `styles`        | public  | `ElementStyles \| void \| null`              |          | Sets the default styles for the element instance. When undefined,&#xD;&#xA;the element will attempt to resolve default styles from&#xD;&#xA;the associated presentation or custom element definition. | FoundationElement   |
+
+##### Methods
+
+| Name                 | Privacy   | Description | Parameters | Return    | Inherited From    |
+| -------------------- | --------- | ----------- | ---------- | --------- | ----------------- |
+| `readOnlyChanged`    | private   |             |            | `void`    |                   |
+| `isInsideRadioGroup` | private   |             |            | `boolean` |                   |
+| `templateChanged`    | protected |             |            | `void`    | FoundationElement |
+| `stylesChanged`      | protected |             |            | `void`    | FoundationElement |
+
+##### Attributes
+
+| Name       | Field    | Inherited From |
+| ---------- | -------- | -------------- |
+| `readonly` | readOnly |                |
+
+<hr/>
+
+#### Exports
+
+| Kind | Name    | Declaration | Module             | Package |
+| ---- | ------- | ----------- | ------------------ | ------- |
+| `js` | `Radio` | Radio       | src/radio/radio.ts |         |
+
+
 ## Additional resources
 
 * [Component explorer examples](https://explore.fast.design/components/fast-radio)
