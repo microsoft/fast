@@ -113,6 +113,8 @@ export class DatePicker extends FormAssociatedDatePicker {
             if (!previous) {
                 this.setValue(next);
             }
+            this.$emit("change");
+            this.$emit("input");
         }
     }
 
