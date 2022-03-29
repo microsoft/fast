@@ -6,7 +6,7 @@
  */
 
 .cardContainer {
-  height: 8rem;
+  height: 10rem;
   color: var(--ifm-color-emphasis-800);
   --ifm-link-color: var(--ifm-color-emphasis-800);
   --ifm-link-hover-color: var(--ifm-color-emphasis-800);

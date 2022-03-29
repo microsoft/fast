@@ -8,9 +8,9 @@ import React from "react";
 import Link from "@docusaurus/Link";
 import { findFirstCategoryLink, useDocById } from "@docusaurus/theme-common";
 import clsx from "clsx";
-import styles from "./styles.module.css";
 import isInternalUrl from "@docusaurus/isInternalUrl";
 import { translate } from "@docusaurus/Translate";
+import styles from "./styles.module.css";
 
 function CardContainer({ href, children }) {
     const className = clsx(
@@ -33,10 +33,7 @@ function CardLayout({ href, icon, title, description }) {
             <h2 className={clsx("text--truncate", styles.cardTitle)} title={title}>
                 {icon} {title}
             </h2>
-            <div
-                className={clsx("text--truncate", styles.cardDescription)}
-                title={description}
-            >
+            <div className={clsx("text", styles.cardDescription)} title={description}>
                 {description}
             </div>
         </CardContainer>
@@ -48,7 +45,7 @@ function CardCategory({ item }) {
     return (
         <CardLayout
             href={href}
-            icon="🗃️"
+            icon=""
             title={item.label}
             description={translate(
                 {
@@ -66,7 +63,7 @@ function CardCategory({ item }) {
 }
 
 function CardLink({ item }) {
-    const icon = isInternalUrl(item.href) ? "📄️" : "🔗";
+    const icon = isInternalUrl(item.href) ? "" : "🔗";
     const doc = useDocById(item.docId ?? undefined);
     return (
         <CardLayout
