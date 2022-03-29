@@ -1,11 +1,12 @@
 import { DOM } from "../dom.js";
-import { isString, Mutable } from "../interfaces.js";
+import { isString, Message, Mutable } from "../interfaces.js";
 import {
     Binding,
     BindingObserver,
     ExecutionContext,
     Observable,
 } from "../observation/observable.js";
+import { FAST } from "../platform.js";
 import {
     Aspect,
     AspectedHTMLDirective,
@@ -502,7 +503,7 @@ const createInnerHTMLBinding = globalThis.TrustedHTML
               return value;
           }
 
-          throw new Error("To bind innerHTML, you must use a TrustedTypesPolicy.");
+          throw FAST.error(Message.bindingInnerHTMLRequiresTrustedTypes);
       }
     : (binding: Binding) => binding;
 

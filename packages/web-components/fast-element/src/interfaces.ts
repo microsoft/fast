@@ -63,6 +63,26 @@ export interface FASTGlobal {
      */
     getById<T>(id: string | number): T | null;
     getById<T>(id: string | number, initialize: () => T): T;
+
+    /**
+     * Sends a warning to the developer.
+     * @param code - The warning code to send.
+     * @param args - Args relevant for the warning.
+     */
+    warn(code: number, ...args: any[]): void;
+
+    /**
+     * Creates an error.
+     * @param code - The error code to send.
+     * @param args - Args relevant for the error.
+     */
+    error(code: number, ...args: any[]): Error;
+
+    /**
+     * Adds debug messages for errors and warnings.
+     * @param messages - The message dictionary to add.
+     */
+    addMessages(messages: Record<number, string>): void;
 }
 
 /**
@@ -75,6 +95,7 @@ export const enum KernelServiceId {
     contextEvent = 3,
     elementRegistry = 4,
     styleSheetStrategy = 5,
+    developerChannel = 6,
 }
 
 /**
@@ -123,6 +144,22 @@ export interface StyleStrategy {
      * @param target - The target to remove the styles from.
      */
     removeStylesFrom(target: StyleTarget): void;
+}
+
+/**
+ * Warning and error messages.
+ * @internal
+ */
+export const enum Message {
+    // 1000 - 1100 Kernel
+    // 1101 - 1200 Observation
+    needsArrayObservation = 1101,
+    // 1201 - 1300 Templating
+    onlySetHTMLPolicyOnce = 1201,
+    bindingInnerHTMLRequiresTrustedTypes = 1202,
+    // 1301 - 1400 Styles
+    // 1401 - 1500 Components
+    missingElementDefinition = 1401,
 }
 
 /**
