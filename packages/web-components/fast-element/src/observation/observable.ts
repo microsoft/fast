@@ -1,5 +1,5 @@
 import { DOM } from "../dom.js";
-import { isFunction, isString, KernelServiceId } from "../interfaces.js";
+import { isFunction, isString, KernelServiceId, Message } from "../interfaces.js";
 import { FAST } from "../platform.js";
 import { PropertyChangeNotifier, SubscriberSet } from "./notifier.js";
 import type { Notifier, Subscriber } from "./notifier.js";
@@ -97,7 +97,7 @@ export const Observable = FAST.getById(KernelServiceId.observable, () => {
     const accessorLookup = new WeakMap<any, Accessor[]>();
     let watcher: BindingObserverImplementation | undefined = void 0;
     let createArrayObserver = (array: any[]): Notifier => {
-        throw new Error("Must call enableArrayObservation before observing arrays.");
+        throw FAST.error(Message.needsArrayObservation);
     };
 
     function getNotifier(source: any): Notifier {
