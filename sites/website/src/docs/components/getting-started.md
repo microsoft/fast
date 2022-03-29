@@ -1,8 +1,14 @@
 ---
 title: Components QuickStart
 sidebar_label: QuickStart
+<<<<<<< HEAD
 custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/src/docs/components/getting-started.md
+=======
+custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/src/docs/fast-foundation/getting-started.md
+description: The @microsoft/fast-components library contains Web Components built on top of our standard component and design system foundation.
+>>>>>>> 51f1b0347 (update card descriptions for using the components page)
 ---
+
 [![License: MIT](/badges/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![npm version](/badges/fast-components.svg)](https://www.npmjs.com/package/@microsoft/fast-components)
 
