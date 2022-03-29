@@ -7,6 +7,7 @@ import {
 } from "@microsoft/fast-foundation";
 import {
     baseHeightMultiplier,
+    bodyFont,
     controlCornerRadius,
     density,
     designUnit,
@@ -85,6 +86,7 @@ export const avatarStyles: FoundationElementTemplate<ElementStyles, AvatarOption
         }
 
         .content {
+            font-family: ${bodyFont};
             font-size: calc(
                 (var(--avatar-text-size) + var(--avatar-size, var(--avatar-size-default))) /
                     var(--avatar-text-ratio)

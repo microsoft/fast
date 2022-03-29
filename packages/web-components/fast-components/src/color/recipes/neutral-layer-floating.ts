@@ -10,5 +10,5 @@ export function neutralLayerFloating(
     baseLayerLuminance: number,
     layerDelta: number
 ): Swatch {
-    return palette.get(neutralLayer1Index(palette, baseLayerLuminance) - layerDelta);
+    return palette.get(neutralLayer1Index(palette, baseLayerLuminance) + layerDelta);
 }
