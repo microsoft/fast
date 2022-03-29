@@ -1,5 +1,6 @@
-import { isString, TrustedTypesPolicy } from "../interfaces.js";
+import { isString, Message, TrustedTypesPolicy } from "../interfaces.js";
 import type { ExecutionContext } from "../observation/observable.js";
+import { FAST } from "../platform.js";
 import { Parser } from "./markup.js";
 import { bind, oneTime } from "./binding.js";
 import type {
@@ -286,7 +287,7 @@ export const Compiler = {
      */
     setHTMLPolicy(policy: TrustedTypesPolicy) {
         if (htmlPolicy !== fastHTMLPolicy) {
-            throw new Error("The HTML policy can only be set once.");
+            throw FAST.error(Message.onlySetHTMLPolicyOnce);
         }
 
         htmlPolicy = policy;
