@@ -22,6 +22,9 @@ export interface ValueConverter {
     fromView(value: any): any;
 }
 
+const booleanMode = "boolean";
+const reflectMode = "reflect";
+
 /**
  * The mode that specifies the runtime behavior of the attribute.
  * @remarks
@@ -33,7 +36,7 @@ export interface ValueConverter {
  * changes in the DOM, but does not reflect property changes back.
  * @public
  */
-export type AttributeMode = "reflect" | "boolean" | "fromView";
+export type AttributeMode = typeof reflectMode | typeof booleanMode | "fromView";
 
 /**
  * Metadata used to configure a custom attribute's behavior.
@@ -149,7 +152,7 @@ export class AttributeDefinition implements Accessor {
         Owner: Function,
         name: string,
         attribute: string = name.toLowerCase(),
-        mode: AttributeMode = "reflect",
+        mode: AttributeMode = reflectMode,
         converter?: ValueConverter
     ) {
         this.Owner = Owner;
@@ -161,7 +164,7 @@ export class AttributeDefinition implements Accessor {
         this.callbackName = `${name}Changed`;
         this.hasCallback = this.callbackName in Owner.prototype;
 
-        if (mode === "boolean" && converter === void 0) {
+        if (mode === booleanMode && converter === void 0) {
             this.converter = booleanConverter;
         }
     }
@@ -226,7 +229,7 @@ export class AttributeDefinition implements Accessor {
             const latestValue = element[this.fieldName];
 
             switch (mode) {
-                case "reflect":
+                case reflectMode:
                     const converter = this.converter;
                     DOM.setAttribute(
                         element,
@@ -234,7 +237,7 @@ export class AttributeDefinition implements Accessor {
                         converter !== void 0 ? converter.toView(latestValue) : latestValue
                     );
                     break;
-                case "boolean":
+                case booleanMode:
                     DOM.setBooleanAttribute(element, this.attribute, latestValue);
                     break;
             }
