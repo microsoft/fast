@@ -1,7 +1,6 @@
 {
   "name": "@microsoft/fast-element",
   "description": "A library for constructing Web Components",
-  "sideEffects": false,
   "version": "1.7.0",
   "author": {
     "name": "Microsoft",
@@ -19,6 +18,10 @@
   "type": "module",
   "types": "dist/fast-element.d.ts",
   "unpkg": "dist/fast-element.min.js",
+  "sideEffects": [
+    "./dist/esm/debug.js",
+    "./dist/esm/polyfills.js"
+  ],
   "scripts": {
     "clean:dist": "node ../../../build/clean.js dist",
     "doc": "api-extractor run --local",

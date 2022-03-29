@@ -74,8 +74,11 @@ export class AttributeDefinition implements Accessor {
     setValue(source: HTMLElement, newValue: any): void;
 }
 
+// Warning: (ae-forgotten-export) The symbol "reflectMode" needs to be exported by the entry point index.d.ts
+// Warning: (ae-forgotten-export) The symbol "booleanMode" needs to be exported by the entry point index.d.ts
+//
 // @public
-export type AttributeMode = "reflect" | "boolean" | "fromView";
+export type AttributeMode = typeof reflectMode | typeof booleanMode | "fromView";
 
 // @public
 export interface Behavior<TSource = any, TParent = any, TGrandparent = any> {
@@ -340,10 +343,13 @@ export class FASTElementDefinition<TType extends Function = Function> {
 //
 // @internal
 export interface FASTGlobal {
+    addMessages(messages: Record<number, string>): void;
+    error(code: number, ...args: any[]): Error;
     getById<T>(id: string | number): T | null;
     // (undocumented)
     getById<T>(id: string | number, initialize: () => T): T;
     readonly versions: string[];
+    warn(code: number, ...args: any[]): void;
 }
 
 // @public

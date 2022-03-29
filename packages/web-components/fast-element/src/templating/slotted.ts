@@ -2,6 +2,8 @@ import { isString } from "../interfaces.js";
 import { NodeBehaviorOptions, NodeObservationDirective } from "./node-observation.js";
 import type { CaptureType } from "./template.js";
 
+const slotEvent = "slotchange";
+
 /**
  * The options used to configure slotted node observation.
  * @public
@@ -20,7 +22,7 @@ export class SlottedDirective extends NodeObservationDirective<SlottedDirectiveO
      * @param target - The target to observe.
      */
     observe(target: EventSource): void {
-        target.addEventListener("slotchange", this);
+        target.addEventListener(slotEvent, this);
     }
 
     /**
@@ -28,7 +30,7 @@ export class SlottedDirective extends NodeObservationDirective<SlottedDirectiveO
      * @param target - The target to unobserve.
      */
     disconnect(target: EventSource): void {
-        target.removeEventListener("slotchange", this);
+        target.removeEventListener(slotEvent, this);
     }
 
     /**
