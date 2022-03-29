@@ -78,7 +78,7 @@ This is a community requested component.
 - 'disabled` - If the control is disabled.
 - `required` - The date field is required or optional.
 - `min` - Earliest allowed date.
-- `max` - Latest allowed date.cx
+- `max` - Latest allowed date.
 - `allowTextInput` - Whether the date-picker allows input of a date string directly or not.
 - `ariaLabel` - Aria label for screen reader.
 - `type` - Type of picker. Supports all of the HTML types. `date` | `month` | `week` | `time` | `datetime-local`
@@ -90,7 +90,8 @@ This is a community requested component.
 
 *Events*
 
-- `change` - callback fired when the entered date has changed.
+- `change` - callback fired when picking a date or bubbled from text-field component.
+- `input` - callback fired when picking a date or bubbled from text-field component.
 
 ### Anatomy 
 
