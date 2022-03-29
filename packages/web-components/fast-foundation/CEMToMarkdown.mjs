@@ -18,12 +18,18 @@ for(var i = 0; i < fullManifest.modules.length; i++)
 
         // Determine the component name from the path. This name will be used to group following modules.
         const currName = getComponentNameFromPath(fullManifest.modules[i].path);
+        const componentIndex = i;
 
         // Add it to the manifest.
         componentManifest.modules.push(fullManifest.modules[i]);
 
         // Continue looping through the main manifest, adding modules to the small manifest until we find a module with a different name.
-        while(i<fullManifest.modules.length-1 && currName === getComponentNameFromPath(fullManifest.modules[i+1].path))
+        while(i<fullManifest.modules.length-1 &&
+            (
+                currName === getComponentNameFromPath(fullManifest.modules[i+1].path) ||
+                currName+"-item" === getComponentNameFromPath(fullManifest.modules[i+1].path)
+            )
+        )
         {
             componentManifest.modules.push(fullManifest.modules[i+1]);
             i++;
@@ -57,12 +63,38 @@ for(var i = 0; i < fullManifest.modules.length; i++)
             }
         }
 
-        // Determine the output path and name for the markdown file.
-        let path = fullManifest.modules[i].path + "";
-        path = path.replace("src/","dist/esm/").replace(".ts",".cem.md");
+        // Get the README.md file
+        let path = fullManifest.modules[componentIndex].path.split('/');
+        path[path.length-1] = "README.md";
+        path = path.join('/');
+        if(fs.existsSync(path))
+        {
+            let readMe = fs.readFileSync(path, 'utf-8');
+            let apiLoc = readMe.indexOf("## API");
+            let resourcesLoc = readMe.indexOf("## Additional resources");
+            if(apiLoc===-1)
+            {
+                // no API section yet so add it
+                if(resourcesLoc>0)
+                {
+                    // add API section above Additional Resources
+                    readMe = readMe.replace("## Additional resources","## API\r\n\r\n## Additional resources");
+                }
+                else
+                {
+                    // add API to the end
+                    readMe+="\r\n\r\n## API";
+                }
+                apiLoc = readMe.indexOf("## API");
+                resourcesLoc = readMe.indexOf("## Additional resources")
+            }
+            const startIndex = apiLoc;
+            const endIndex = resourcesLoc >=0 ? resourcesLoc : readMe.length-1;
 
-        // Write out the markdown.
-        fs.writeFileSync(path, markdown);
+            readMe = readMe.replace(readMe.slice(startIndex,endIndex),"## API\r\n\r\n"+markdown+"\r\n\r\n");
+
+            fs.writeFileSync(path, readMe);
+        }
 
     }
 }
