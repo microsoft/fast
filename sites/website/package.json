@@ -15,7 +15,8 @@
     "build": "docusaurus build",
     "prestart": "yarn prebuild",
     "serve": "docusaurus serve",
-    "start": "docusaurus start"
+    "start": "docusaurus start",
+    "swizzle": "docusaurus swizzle"
   },
   "browserslist": {
     "production": [
@@ -38,6 +39,7 @@
   },
   "dependencies": {
     "mdx-mermaid": "^1.2.1",
-    "mermaid": "^8.14.0"
+    "mermaid": "^8.14.0",
+    "swizzle": "^1.1.0"
   }
 }
