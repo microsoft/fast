@@ -353,9 +353,6 @@ export class DataGrid extends FoundationElement {
     handleRowSelectedChange(e: CustomEvent): void;
     headerCellItemTemplate?: ViewTemplate;
     noTabbing: boolean;
-    // (undocumented)
-    protected noTabbingChanged(): void;
-    // @internal
     rowElements: HTMLElement[];
     rowElementTag: string;
     rowItemTemplate: ViewTemplate;
@@ -439,7 +436,9 @@ export class DataGridRow extends FoundationElement {
     // (undocumented)
     protected rowDataChanged(): void;
     rowIndex: number;
-    rowType: DataGridRowTypes;
+    rowType: DataGridRowTypes | "default" | "header" | "sticky-header";
+    // @internal
+    selected: boolean;
     // @internal (undocumented)
     slottedCellElements: HTMLElement[];
     toggleSelected(newValue: boolean, e?: MouseEvent | KeyboardEvent): void;

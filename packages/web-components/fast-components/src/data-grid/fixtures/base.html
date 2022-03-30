@@ -2,7 +2,6 @@
 
 <h2>Default</h2>
 <fast-data-grid
-    selection-mode="multiRow"
     id="defaultGrid"
     style="max-height: 400px; overflow-y: auto;"
 ></fast-data-grid>
@@ -10,11 +9,6 @@
 <h3 style="margin-bottom: 20px; margin-top: 20px;">Grid controls</h3>
 <fast-divider style="margin-bottom: 40px; margin-top: 20px;"></fast-divider>
 <div>
-    <fast-button id="btnfocusleft">hover for focus left</fast-button>
-    <fast-button id="btnfocusright">hover for focus right</fast-button>
-    <fast-button id="btnfocusup">hover for focus up</fast-button>
-    <fast-button id="btnfocusdown">hover for focus down</fast-button>
-    <fast-divider style="margin-bottom: 20px; margin-top: 20px;"></fast-divider>
     <fast-button id="btnreset">Reset</fast-button>
     <fast-button id="btndefaultcols">Default columns</fast-button>
     <fast-button id="btntemplatecols">Template columns</fast-button>
@@ -127,3 +121,17 @@
         </fast-data-grid-cell>
     </fast-data-grid-row>
 </fast-data-grid>
+
+<h2>Single row selection</h2>
+<fast-data-grid
+    selection-mode="singleRow"
+    id="singleRowSelectGrid"
+    style="max-height: 400px; overflow-y: auto;"
+></fast-data-grid>
+
+<h2>MultiRow selection</h2>
+<fast-data-grid
+    selection-mode="multiRow"
+    id="multiRowSelectGrid"
+    style="max-height: 400px; overflow-y: auto;"
+></fast-data-grid>
