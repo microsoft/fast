@@ -273,13 +273,16 @@ export class Calendar extends FoundationElement {
      * @public
      */
     public dateInString(date: Date | string, datesString: string): boolean {
+        if (!date || !datesString) {
+            return false;
+        }
         const dates = datesString.split(",").map(str => str.trim());
         date =
             typeof date === "string"
                 ? date
                 : `${date.getMonth() + 1}-${date.getDate()}-${date.getFullYear()}`;
 
-        return dates.some(d => d === date);
+        return dates && dates.some(d => d === date);
     }
 
     /**
