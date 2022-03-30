@@ -3,6 +3,7 @@ id: avatar
 title: fast-avatar
 sidebar_label: avatar
 custom_edit_url: https://github.com/microsoft/fast/edit/master/packages/web-components/fast-foundation/src/avatar/README.md
+description: fast-avatar is a web component used to graphically represent a user or an object.
 ---
 
 The `fast-avatar` component is used to graphically represent a user or an object.

@@ -3,6 +3,7 @@ id: combobox
 title: fast-combobox
 sidebar_label: combobox
 custom_edit_url: https://github.com/microsoft/fast/edit/master/packages/web-components/fast-foundation/src/combobox/README.md
+description: fast-combobox is a web component implementation of a combobox.
 ---
 
 As defined by the [W3C](https://w3c.github.io/aria-practices/#combobox):

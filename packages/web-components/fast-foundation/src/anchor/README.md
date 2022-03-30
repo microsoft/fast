@@ -3,6 +3,7 @@ id: anchor
 title: fast-anchor
 sidebar_label: anchor
 custom_edit_url: https://github.com/microsoft/fast/edit/master/packages/web-components/fast-foundation/src/anchor/README.md
+description: fast-anchor is a web component implementation of an anchor element. 
 ---
 
 As defined by the W3C:

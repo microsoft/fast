@@ -3,6 +3,7 @@ id: select
 title: fast-select
 sidebar_label: select
 custom_edit_url: https://github.com/microsoft/fast/edit/master/packages/web-components/fast-foundation/src/select/README.md
+description: fast-select is a web component implementation of a select element.
 ---
 
 An implementation of an [HTML select element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/select) as a form-connected web-component.

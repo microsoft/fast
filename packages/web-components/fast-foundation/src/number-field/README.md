@@ -3,6 +3,7 @@ id: number-field
 title: fast-number-field
 sidebar_label: number-field
 custom_edit_url: https://github.com/microsoft/fast/edit/master/packages/web-components/fast-foundation/src/number-field/README.md
+description: fast-number-field is a web component implementation of a text field.
 ---
 
 An implementation of a [text field](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/Input/text) as a form-connected web-component. The `fast-number-field` supports two visual appearances, outline and filled, with the control defaulting to the outline appearance.

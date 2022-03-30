@@ -3,6 +3,7 @@ id: data-grid
 title: fast-data-grid
 sidebar_label: data-grid
 custom_edit_url: https://github.com/microsoft/fast/edit/master/packages/web-components/fast-foundation/src/data-grid/README.md
+description: fast-data-grid is a web component that enables authors to display an array of data in a tabular layout.
 ---
 The `fast-data-grid` component is used to display tabular data.  The `fast-data-grid-row` and `fast-data-grid-cell` components are typically created programmatically by the parent grid but some authors may find it useful to create them manually.
 
