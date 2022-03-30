@@ -52,39 +52,23 @@ export const myRadioGroup = RadioGroup.compose({
 
 ## API
 
-### `src/radio-group/radio-group.template.ts`:
+## `src/radio-group/radio-group.ts`:
 
-#### Functions
+### class: `RadioGroup`
 
-| Name                 | Description                                                                   | Parameters            | Return |
-| -------------------- | ----------------------------------------------------------------------------- | --------------------- | ------ |
-| `radioGroupTemplate` | The template for the {@link @microsoft/fast-foundation#RadioGroup} component. | `context, definition` |        |
-
-<hr/>
-
-#### Exports
-
-| Kind | Name                 | Declaration        | Module                                  | Package |
-| ---- | -------------------- | ------------------ | --------------------------------------- | ------- |
-| `js` | `radioGroupTemplate` | radioGroupTemplate | src/radio-group/radio-group.template.ts |         |
-
-### `src/radio-group/radio-group.ts`:
-
-#### class: `RadioGroup`
-
-##### Superclass
+#### Superclass
 
 | Name                | Module                  | Package |
 | ------------------- | ----------------------- | ------- |
 | `FoundationElement` | /src/foundation-element |         |
 
-##### Static Methods
+#### Static Methods
 
 | Name      | Privacy | Description                                                                     | Parameters                      | Return                                                                                                             | Inherited From    |
 | --------- | ------- | ------------------------------------------------------------------------------- | ------------------------------- | ------------------------------------------------------------------------------------------------------------------ | ----------------- |
 | `compose` | public  | Defines an element registry function with a set of element definition defaults. | `this: K, elementDefinition: T` | `(         overrideDefinition?: OverrideFoundationElementDefinition<T>     ) => FoundationElementRegistry<T, K>` | FoundationElement |
 
-##### Fields
+#### Fields
 
 | Name                           | Privacy | Type                                         | Default  | Description                                                                                                                                                                                            | Inherited From    |
 | ------------------------------ | ------- | -------------------------------------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------- |
@@ -114,7 +98,7 @@ export const myRadioGroup = RadioGroup.compose({
 | `template`                     | public  | `ElementViewTemplate \| void \| null`        |          | Sets the template of the element instance. When undefined,&#xD;&#xA;the element will attempt to resolve the template from&#xD;&#xA;the associated presentation or custom element definition.           | FoundationElement |
 | `styles`                       | public  | `ElementStyles \| void \| null`              |          | Sets the default styles for the element instance. When undefined,&#xD;&#xA;the element will attempt to resolve default styles from&#xD;&#xA;the associated presentation or custom element definition.  | FoundationElement |
 
-##### Methods
+#### Methods
 
 | Name                         | Privacy   | Description | Parameters                                   | Return | Inherited From    |
 | ---------------------------- | --------- | ----------- | -------------------------------------------- | ------ | ----------------- |
@@ -127,7 +111,7 @@ export const myRadioGroup = RadioGroup.compose({
 | `templateChanged`            | protected |             |                                              | `void` | FoundationElement |
 | `stylesChanged`              | protected |             |                                              | `void` | FoundationElement |
 
-##### Attributes
+#### Attributes
 
 | Name          | Field       | Inherited From |
 | ------------- | ----------- | -------------- |
@@ -139,7 +123,7 @@ export const myRadioGroup = RadioGroup.compose({
 
 <hr/>
 
-#### Exports
+### Exports
 
 | Kind | Name         | Declaration | Module                         | Package |
 | ---- | ------------ | ----------- | ------------------------------ | ------- |

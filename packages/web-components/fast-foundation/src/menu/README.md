@@ -134,45 +134,29 @@ export const myMenuItem = MenuItem.compose<MenuItemOptions>({
 
 ## API
 
-### `src/menu/menu.template.ts`:
+## `src/menu/menu.ts`:
 
-#### Functions
+### class: `Menu`
 
-| Name           | Description                                                             | Parameters            | Return |
-| -------------- | ----------------------------------------------------------------------- | --------------------- | ------ |
-| `menuTemplate` | The template for the {@link @microsoft/fast-foundation#Menu} component. | `context, definition` |        |
-
-<hr/>
-
-#### Exports
-
-| Kind | Name           | Declaration  | Module                    | Package |
-| ---- | -------------- | ------------ | ------------------------- | ------- |
-| `js` | `menuTemplate` | menuTemplate | src/menu/menu.template.ts |         |
-
-### `src/menu/menu.ts`:
-
-#### class: `Menu`
-
-##### Superclass
+#### Superclass
 
 | Name                | Module                  | Package |
 | ------------------- | ----------------------- | ------- |
 | `FoundationElement` | /src/foundation-element |         |
 
-##### Static Fields
+#### Static Fields
 
 | Name                    | Privacy | Type                        | Default           | Description | Inherited From |
 | ----------------------- | ------- | --------------------------- | ----------------- | ----------- | -------------- |
 | `focusableElementRoles` | private | `{ [key: string]: string }` | `roleForMenuItem` |             |                |
 
-##### Static Methods
+#### Static Methods
 
 | Name      | Privacy | Description                                                                     | Parameters                      | Return                                                                                                             | Inherited From    |
 | --------- | ------- | ------------------------------------------------------------------------------- | ------------------------------- | ------------------------------------------------------------------------------------------------------------------ | ----------------- |
 | `compose` | public  | Defines an element registry function with a set of element definition defaults. | `this: K, elementDefinition: T` | `(         overrideDefinition?: OverrideFoundationElementDefinition<T>     ) => FoundationElementRegistry<T, K>` | FoundationElement |
 
-##### Fields
+#### Fields
 
 | Name                    | Privacy | Type                                         | Default  | Description                                                                                                                                                                                           | Inherited From    |
 | ----------------------- | ------- | -------------------------------------------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
@@ -191,7 +175,7 @@ export const myMenuItem = MenuItem.compose<MenuItemOptions>({
 | `template`              | public  | `ElementViewTemplate \| void \| null`        |          | Sets the template of the element instance. When undefined,&#xD;&#xA;the element will attempt to resolve the template from&#xD;&#xA;the associated presentation or custom element definition.          | FoundationElement |
 | `styles`                | public  | `ElementStyles \| void \| null`              |          | Sets the default styles for the element instance. When undefined,&#xD;&#xA;the element will attempt to resolve default styles from&#xD;&#xA;the associated presentation or custom element definition. | FoundationElement |
 
-##### Methods
+#### Methods
 
 | Name                   | Privacy   | Description                         | Parameters                                         | Return      | Inherited From    |
 | ---------------------- | --------- | ----------------------------------- | -------------------------------------------------- | ----------- | ----------------- |
@@ -205,45 +189,29 @@ export const myMenuItem = MenuItem.compose<MenuItemOptions>({
 
 <hr/>
 
-#### Exports
+### Exports
 
 | Kind | Name   | Declaration | Module           | Package |
 | ---- | ------ | ----------- | ---------------- | ------- |
 | `js` | `Menu` | Menu        | src/menu/menu.ts |         |
 
-### `src/menu-item/menu-item.template.ts`:
+## `src/menu-item/menu-item.ts`:
 
-#### Functions
+### class: `MenuItem`
 
-| Name               | Description                                                                                                                    | Parameters            | Return |
-| ------------------ | ------------------------------------------------------------------------------------------------------------------------------ | --------------------- | ------ |
-| `menuItemTemplate` | Generates a template for the {@link @microsoft/fast-foundation#(MenuItem:class)} component using&#xD;&#xA;the provided prefix. | `context, definition` |        |
-
-<hr/>
-
-#### Exports
-
-| Kind | Name               | Declaration      | Module                              | Package |
-| ---- | ------------------ | ---------------- | ----------------------------------- | ------- |
-| `js` | `menuItemTemplate` | menuItemTemplate | src/menu-item/menu-item.template.ts |         |
-
-### `src/menu-item/menu-item.ts`:
-
-#### class: `MenuItem`
-
-##### Superclass
+#### Superclass
 
 | Name                | Module                  | Package |
 | ------------------- | ----------------------- | ------- |
 | `FoundationElement` | /src/foundation-element |         |
 
-##### Static Methods
+#### Static Methods
 
 | Name      | Privacy | Description                                                                     | Parameters                      | Return                                                                                                             | Inherited From    |
 | --------- | ------- | ------------------------------------------------------------------------------- | ------------------------------- | ------------------------------------------------------------------------------------------------------------------ | ----------------- |
 | `compose` | public  | Defines an element registry function with a set of element definition defaults. | `this: K, elementDefinition: T` | `(         overrideDefinition?: OverrideFoundationElementDefinition<T>     ) => FoundationElementRegistry<T, K>` | FoundationElement |
 
-##### Fields
+#### Fields
 
 | Name                 | Privacy | Type                                                                  | Default  | Description                                                                                                                                                                                           | Inherited From    |
 | -------------------- | ------- | --------------------------------------------------------------------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
@@ -258,7 +226,7 @@ export const myMenuItem = MenuItem.compose<MenuItemOptions>({
 | `template`           | public  | `ElementViewTemplate \| void \| null`                                 |          | Sets the template of the element instance. When undefined,&#xD;&#xA;the element will attempt to resolve the template from&#xD;&#xA;the associated presentation or custom element definition.          | FoundationElement |
 | `styles`             | public  | `ElementStyles \| void \| null`                                       |          | Sets the default styles for the element instance. When undefined,&#xD;&#xA;the element will attempt to resolve default styles from&#xD;&#xA;the associated presentation or custom element definition. | FoundationElement |
 
-##### Methods
+#### Methods
 
 | Name              | Privacy   | Description                        | Parameters                             | Return      | Inherited From    |
 | ----------------- | --------- | ---------------------------------- | -------------------------------------- | ----------- | ----------------- |
@@ -268,7 +236,7 @@ export const myMenuItem = MenuItem.compose<MenuItemOptions>({
 | `templateChanged` | protected |                                    |                                        | `void`      | FoundationElement |
 | `stylesChanged`   | protected |                                    |                                        | `void`      | FoundationElement |
 
-##### Attributes
+#### Attributes
 
 | Name   | Field    | Inherited From |
 | ------ | -------- | -------------- |
@@ -279,7 +247,7 @@ export const myMenuItem = MenuItem.compose<MenuItemOptions>({
 
 <hr/>
 
-#### Exports
+### Exports
 
 | Kind | Name              | Declaration     | Module                     | Package |
 | ---- | ----------------- | --------------- | -------------------------- | ------- |

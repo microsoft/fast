@@ -6,9 +6,9 @@ For more information view the [specification](https://github.com/microsoft/fast/
 
 ## API
 
-### `src/form-associated/form-associated.ts`:
+## `src/form-associated/form-associated.ts`:
 
-#### Variables
+### Variables
 
 | Name                       | Description | Type |
 | -------------------------- | ----------- | ---- |
@@ -16,7 +16,7 @@ For more information view the [specification](https://github.com/microsoft/fast/
 
 <hr/>
 
-#### Functions
+### Functions
 
 | Name                      | Description                                                  | Parameters    | Return |
 | ------------------------- | ------------------------------------------------------------ | ------------- | ------ |
@@ -25,7 +25,7 @@ For more information view the [specification](https://github.com/microsoft/fast/
 
 <hr/>
 
-#### Exports
+### Exports
 
 | Kind | Name                       | Declaration              | Module                                 | Package |
 | ---- | -------------------------- | ------------------------ | -------------------------------------- | ------- |

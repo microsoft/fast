@@ -56,39 +56,23 @@ This component is built with the expectation that focus is delegated to the butt
 
 ## API
 
-### `src/button/button.template.ts`:
+## `src/button/button.ts`:
 
-#### Functions
+### class: `Button`
 
-| Name             | Description                                                                       | Parameters            | Return |
-| ---------------- | --------------------------------------------------------------------------------- | --------------------- | ------ |
-| `buttonTemplate` | The template for the {@link @microsoft/fast-foundation#(Button:class)} component. | `context, definition` |        |
-
-<hr/>
-
-#### Exports
-
-| Kind | Name             | Declaration    | Module                        | Package |
-| ---- | ---------------- | -------------- | ----------------------------- | ------- |
-| `js` | `buttonTemplate` | buttonTemplate | src/button/button.template.ts |         |
-
-### `src/button/button.ts`:
-
-#### class: `Button`
-
-##### Superclass
+#### Superclass
 
 | Name                   | Module                             | Package |
 | ---------------------- | ---------------------------------- | ------- |
 | `FormAssociatedButton` | /src/button/button.form-associated |         |
 
-##### Static Methods
+#### Static Methods
 
 | Name      | Privacy | Description                                                                     | Parameters                      | Return                                                                                                             | Inherited From    |
 | --------- | ------- | ------------------------------------------------------------------------------- | ------------------------------- | ------------------------------------------------------------------------------------------------------------------ | ----------------- |
 | `compose` | public  | Defines an element registry function with a set of element definition defaults. | `this: K, elementDefinition: T` | `(         overrideDefinition?: OverrideFoundationElementDefinition<T>     ) => FoundationElementRegistry<T, K>` | FoundationElement |
 
-##### Fields
+#### Fields
 
 | Name                              | Privacy | Type                                         | Default  | Description                                                                                                                                                                                                                               | Inherited From       |
 | --------------------------------- | ------- | -------------------------------------------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------- |
@@ -111,7 +95,7 @@ This component is built with the expectation that focus is delegated to the butt
 | `template`                        | public  | `ElementViewTemplate \| void \| null`        |          | Sets the template of the element instance. When undefined,&#xD;&#xA;the element will attempt to resolve the template from&#xD;&#xA;the associated presentation or custom element definition.                                              | FoundationElement    |
 | `styles`                          | public  | `ElementStyles \| void \| null`              |          | Sets the default styles for the element instance. When undefined,&#xD;&#xA;the element will attempt to resolve default styles from&#xD;&#xA;the associated presentation or custom element definition.                                     | FoundationElement    |
 
-##### Methods
+#### Methods
 
 | Name                    | Privacy   | Description | Parameters                                                                                 | Return | Inherited From    |
 | ----------------------- | --------- | ----------- | ------------------------------------------------------------------------------------------ | ------ | ----------------- |
@@ -124,7 +108,7 @@ This component is built with the expectation that focus is delegated to the butt
 | `templateChanged`       | protected |             |                                                                                            | `void` | FoundationElement |
 | `stylesChanged`         | protected |             |                                                                                            | `void` | FoundationElement |
 
-##### Attributes
+#### Attributes
 
 | Name          | Field          | Inherited From |
 | ------------- | -------------- | -------------- |
@@ -139,16 +123,16 @@ This component is built with the expectation that focus is delegated to the butt
 
 <hr/>
 
-#### class: `DelegatesARIAButton`
+### class: `DelegatesARIAButton`
 
-##### Fields
+#### Fields
 
 | Name           | Privacy | Type                                        | Default | Description                                                                    | Inherited From |
 | -------------- | ------- | ------------------------------------------- | ------- | ------------------------------------------------------------------------------ | -------------- |
 | `ariaExpanded` | public  | `"true" \| "false" \| undefined`            |         | See {@link https\://www\.w3.org/WAI/PF/aria/roles#button} for more information |                |
 | `ariaPressed`  | public  | `"true" \| "false" \| "mixed" \| undefined` |         | See {@link https\://www\.w3.org/WAI/PF/aria/roles#button} for more information |                |
 
-##### Attributes
+#### Attributes
 
 | Name            | Field        | Inherited From |
 | --------------- | ------------ | -------------- |
@@ -157,7 +141,7 @@ This component is built with the expectation that focus is delegated to the butt
 
 <hr/>
 
-#### Exports
+### Exports
 
 | Kind | Name                  | Declaration         | Module               | Package |
 | ---- | --------------------- | ------------------- | -------------------- | ------- |

@@ -53,39 +53,23 @@ export const myBadge = Badge.compose({
 
 ## API
 
-### `src/badge/badge.template.ts`:
+## `src/badge/badge.ts`:
 
-#### Functions
+### class: `Badge`
 
-| Name            | Description                                                              | Parameters            | Return |
-| --------------- | ------------------------------------------------------------------------ | --------------------- | ------ |
-| `badgeTemplate` | The template for the {@link @microsoft/fast-foundation#Badge} component. | `context, definition` |        |
-
-<hr/>
-
-#### Exports
-
-| Kind | Name            | Declaration   | Module                      | Package |
-| ---- | --------------- | ------------- | --------------------------- | ------- |
-| `js` | `badgeTemplate` | badgeTemplate | src/badge/badge.template.ts |         |
-
-### `src/badge/badge.ts`:
-
-#### class: `Badge`
-
-##### Superclass
+#### Superclass
 
 | Name                | Module                  | Package |
 | ------------------- | ----------------------- | ------- |
 | `FoundationElement` | /src/foundation-element |         |
 
-##### Static Methods
+#### Static Methods
 
 | Name      | Privacy | Description                                                                     | Parameters                      | Return                                                                                                             | Inherited From    |
 | --------- | ------- | ------------------------------------------------------------------------------- | ------------------------------- | ------------------------------------------------------------------------------------------------------------------ | ----------------- |
 | `compose` | public  | Defines an element registry function with a set of element definition defaults. | `this: K, elementDefinition: T` | `(         overrideDefinition?: OverrideFoundationElementDefinition<T>     ) => FoundationElementRegistry<T, K>` | FoundationElement |
 
-##### Fields
+#### Fields
 
 | Name                 | Privacy | Type                                         | Default  | Description                                                                                                                                                                                           | Inherited From    |
 | -------------------- | ------- | -------------------------------------------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
@@ -98,14 +82,14 @@ export const myBadge = Badge.compose({
 | `template`           | public  | `ElementViewTemplate \| void \| null`        |          | Sets the template of the element instance. When undefined,&#xD;&#xA;the element will attempt to resolve the template from&#xD;&#xA;the associated presentation or custom element definition.          | FoundationElement |
 | `styles`             | public  | `ElementStyles \| void \| null`              |          | Sets the default styles for the element instance. When undefined,&#xD;&#xA;the element will attempt to resolve default styles from&#xD;&#xA;the associated presentation or custom element definition. | FoundationElement |
 
-##### Methods
+#### Methods
 
 | Name              | Privacy   | Description | Parameters | Return | Inherited From    |
 | ----------------- | --------- | ----------- | ---------- | ------ | ----------------- |
 | `templateChanged` | protected |             |            | `void` | FoundationElement |
 | `stylesChanged`   | protected |             |            | `void` | FoundationElement |
 
-##### Attributes
+#### Attributes
 
 | Name    | Field    | Inherited From |
 | ------- | -------- | -------------- |
@@ -115,7 +99,7 @@ export const myBadge = Badge.compose({
 
 <hr/>
 
-#### Exports
+### Exports
 
 | Kind | Name    | Declaration | Module             | Package |
 | ---- | ------- | ----------- | ------------------ | ------- |

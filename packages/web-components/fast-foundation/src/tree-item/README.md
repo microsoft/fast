@@ -36,40 +36,24 @@ export class FASTTreeItem extends TreeItem {}
 
 ## API
 
-### `src/tree-item/tree-item.template.ts`:
+## `src/tree-item/tree-item.ts`:
 
-#### Functions
+### class: `TreeItem`
 
-| Name               | Description                                                                         | Parameters            | Return |
-| ------------------ | ----------------------------------------------------------------------------------- | --------------------- | ------ |
-| `treeItemTemplate` | The template for the {@link @microsoft/fast-foundation#(TreeItem:class)} component. | `context, definition` |        |
-
-<hr/>
-
-#### Exports
-
-| Kind | Name               | Declaration      | Module                              | Package |
-| ---- | ------------------ | ---------------- | ----------------------------------- | ------- |
-| `js` | `treeItemTemplate` | treeItemTemplate | src/tree-item/tree-item.template.ts |         |
-
-### `src/tree-item/tree-item.ts`:
-
-#### class: `TreeItem`
-
-##### Superclass
+#### Superclass
 
 | Name                | Module                  | Package |
 | ------------------- | ----------------------- | ------- |
 | `FoundationElement` | /src/foundation-element |         |
 
-##### Static Methods
+#### Static Methods
 
 | Name        | Privacy | Description                                                                     | Parameters                      | Return                                                                                                             | Inherited From    |
 | ----------- | ------- | ------------------------------------------------------------------------------- | ------------------------------- | ------------------------------------------------------------------------------------------------------------------ | ----------------- |
 | `focusItem` | public  | Places document focus on a tree item                                            | `el: HTMLElement`               |                                                                                                                    |                   |
 | `compose`   | public  | Defines an element registry function with a set of element definition defaults. | `this: K, elementDefinition: T` | `(         overrideDefinition?: OverrideFoundationElementDefinition<T>     ) => FoundationElementRegistry<T, K>` | FoundationElement |
 
-##### Fields
+#### Fields
 
 | Name            | Privacy | Type                                         | Default  | Description                                                                                                                                                                                           | Inherited From    |
 | --------------- | ------- | -------------------------------------------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
@@ -82,7 +66,7 @@ export class FASTTreeItem extends TreeItem {}
 | `template`      | public  | `ElementViewTemplate \| void \| null`        |          | Sets the template of the element instance. When undefined,&#xD;&#xA;the element will attempt to resolve the template from&#xD;&#xA;the associated presentation or custom element definition.          | FoundationElement |
 | `styles`        | public  | `ElementStyles \| void \| null`              |          | Sets the default styles for the element instance. When undefined,&#xD;&#xA;the element will attempt to resolve default styles from&#xD;&#xA;the associated presentation or custom element definition. | FoundationElement |
 
-##### Methods
+#### Methods
 
 | Name              | Privacy   | Description | Parameters                                   | Return | Inherited From    |
 | ----------------- | --------- | ----------- | -------------------------------------------- | ------ | ----------------- |
@@ -92,7 +76,7 @@ export class FASTTreeItem extends TreeItem {}
 | `templateChanged` | protected |             |                                              | `void` | FoundationElement |
 | `stylesChanged`   | protected |             |                                              | `void` | FoundationElement |
 
-##### Attributes
+#### Attributes
 
 | Name | Field    | Inherited From |
 | ---- | -------- | -------------- |
@@ -102,7 +86,7 @@ export class FASTTreeItem extends TreeItem {}
 
 <hr/>
 
-#### Functions
+### Functions
 
 | Name                | Description                      | Parameters    | Return              |
 | ------------------- | -------------------------------- | ------------- | ------------------- |
@@ -110,7 +94,7 @@ export class FASTTreeItem extends TreeItem {}
 
 <hr/>
 
-#### Exports
+### Exports
 
 | Kind | Name                | Declaration       | Module                     | Package |
 | ---- | ------------------- | ----------------- | -------------------------- | ------- |

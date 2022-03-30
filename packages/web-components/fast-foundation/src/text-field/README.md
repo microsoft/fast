@@ -57,39 +57,23 @@ This component is built with the expectation that focus is delegated to the inpu
 
 ## API
 
-### `src/text-field/text-field.template.ts`:
+## `src/text-field/text-field.ts`:
 
-#### Functions
+### class: `TextField`
 
-| Name                | Description                                                                          | Parameters            | Return |
-| ------------------- | ------------------------------------------------------------------------------------ | --------------------- | ------ |
-| `textFieldTemplate` | The template for the {@link @microsoft/fast-foundation#(TextField:class)} component. | `context, definition` |        |
-
-<hr/>
-
-#### Exports
-
-| Kind | Name                | Declaration       | Module                                | Package |
-| ---- | ------------------- | ----------------- | ------------------------------------- | ------- |
-| `js` | `textFieldTemplate` | textFieldTemplate | src/text-field/text-field.template.ts |         |
-
-### `src/text-field/text-field.ts`:
-
-#### class: `TextField`
-
-##### Superclass
+#### Superclass
 
 | Name                      | Module                                     | Package |
 | ------------------------- | ------------------------------------------ | ------- |
 | `FormAssociatedTextField` | /src/text-field/text-field.form-associated |         |
 
-##### Static Methods
+#### Static Methods
 
 | Name      | Privacy | Description                                                                     | Parameters                      | Return                                                                                                             | Inherited From    |
 | --------- | ------- | ------------------------------------------------------------------------------- | ------------------------------- | ------------------------------------------------------------------------------------------------------------------ | ----------------- |
 | `compose` | public  | Defines an element registry function with a set of element definition defaults. | `this: K, elementDefinition: T` | `(         overrideDefinition?: OverrideFoundationElementDefinition<T>     ) => FoundationElementRegistry<T, K>` | FoundationElement |
 
-##### Fields
+#### Fields
 
 | Name            | Privacy | Type                                                                 | Default  | Description                                                                                                                                                                                                                       | Inherited From          |
 | --------------- | ------- | -------------------------------------------------------------------- | -------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------- |
@@ -109,7 +93,7 @@ This component is built with the expectation that focus is delegated to the inpu
 | `template`      | public  | `ElementViewTemplate \| void \| null`                                |          | Sets the template of the element instance. When undefined,&#xD;&#xA;the element will attempt to resolve the template from&#xD;&#xA;the associated presentation or custom element definition.                                      | FoundationElement       |
 | `styles`        | public  | `ElementStyles \| void \| null`                                      |          | Sets the default styles for the element instance. When undefined,&#xD;&#xA;the element will attempt to resolve default styles from&#xD;&#xA;the associated presentation or custom element definition.                             | FoundationElement       |
 
-##### Methods
+#### Methods
 
 | Name                 | Privacy   | Description | Parameters | Return | Inherited From    |
 | -------------------- | --------- | ----------- | ---------- | ------ | ----------------- |
@@ -126,7 +110,7 @@ This component is built with the expectation that focus is delegated to the inpu
 | `templateChanged`    | protected |             |            | `void` | FoundationElement |
 | `stylesChanged`      | protected |             |            | `void` | FoundationElement |
 
-##### Attributes
+#### Attributes
 
 | Name          | Field       | Inherited From |
 | ------------- | ----------- | -------------- |
@@ -143,11 +127,11 @@ This component is built with the expectation that focus is delegated to the inpu
 
 <hr/>
 
-#### class: `DelegatesARIATextbox`
+### class: `DelegatesARIATextbox`
 
 <hr/>
 
-#### Exports
+### Exports
 
 | Kind | Name                   | Declaration          | Module                       | Package |
 | ---- | ---------------------- | -------------------- | ---------------------------- | ------- |

@@ -45,39 +45,23 @@ export const myOption = ListboxOption.compose({
 
 ## API
 
-### `src/listbox-option/listbox-option.template.ts`:
+## `src/listbox-option/listbox-option.ts`:
 
-#### Functions
+### class: `ListboxOption`
 
-| Name                    | Description                                                                              | Parameters            | Return |
-| ----------------------- | ---------------------------------------------------------------------------------------- | --------------------- | ------ |
-| `listboxOptionTemplate` | The template for the {@link @microsoft/fast-foundation#(ListboxOption:class)} component. | `context, definition` |        |
-
-<hr/>
-
-#### Exports
-
-| Kind | Name                    | Declaration           | Module                                        | Package |
-| ---- | ----------------------- | --------------------- | --------------------------------------------- | ------- |
-| `js` | `listboxOptionTemplate` | listboxOptionTemplate | src/listbox-option/listbox-option.template.ts |         |
-
-### `src/listbox-option/listbox-option.ts`:
-
-#### class: `ListboxOption`
-
-##### Superclass
+#### Superclass
 
 | Name                | Module                  | Package |
 | ------------------- | ----------------------- | ------- |
 | `FoundationElement` | /src/foundation-element |         |
 
-##### Static Methods
+#### Static Methods
 
 | Name      | Privacy | Description                                                                     | Parameters                      | Return                                                                                                             | Inherited From    |
 | --------- | ------- | ------------------------------------------------------------------------------- | ------------------------------- | ------------------------------------------------------------------------------------------------------------------ | ----------------- |
 | `compose` | public  | Defines an element registry function with a set of element definition defaults. | `this: K, elementDefinition: T` | `(         overrideDefinition?: OverrideFoundationElementDefinition<T>     ) => FoundationElementRegistry<T, K>` | FoundationElement |
 
-##### Fields
+#### Fields
 
 | Name                | Privacy   | Type                                         | Default                                                                                                                                                     | Description                                                                                                                                                                                            | Inherited From    |
 | ------------------- | --------- | -------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------- |
@@ -92,17 +76,17 @@ export const myOption = ListboxOption.compose({
 | `text`              | public    | `string`                                     |                                                                                                                                                             |                                                                                                                                                                                                        |                   |
 | `value`             | public    | `string`                                     |                                                                                                                                                             |                                                                                                                                                                                                        |                   |
 | `form`              | public    | `HTMLFormElement \| null`                    |                                                                                                                                                             |                                                                                                                                                                                                        |                   |
-| `proxy`             |           |                                              | ``new Option(             `${this.textContent}`,
-            this.initialValue,
-            this.defaultSelected,
-            this.selected
+| `proxy`             |           |                                              | ``new Option(             `${this.textContent}`,
+            this.initialValue,
+            this.defaultSelected,
+            this.selected
         )`` |                                                                                                                                                                                                        |                   |
 | `_presentation`     | private   | `ComponentPresentation \| null \| undefined` | `void 0`                                                                                                                                                    |                                                                                                                                                                                                        | FoundationElement |
 | `$presentation`     | public    | `ComponentPresentation \| null`              |                                                                                                                                                             | A property which resolves the ComponentPresentation instance&#xD;&#xA;for the current component.                                                                                                       | FoundationElement |
 | `template`          | public    | `ElementViewTemplate \| void \| null`        |                                                                                                                                                             | Sets the template of the element instance. When undefined,&#xD;&#xA;the element will attempt to resolve the template from&#xD;&#xA;the associated presentation or custom element definition.           | FoundationElement |
 | `styles`            | public    | `ElementStyles \| void \| null`              |                                                                                                                                                             | Sets the default styles for the element instance. When undefined,&#xD;&#xA;the element will attempt to resolve default styles from&#xD;&#xA;the associated presentation or custom element definition.  | FoundationElement |
 
-##### Methods
+#### Methods
 
 | Name                       | Privacy   | Description                                                         | Parameters                                | Return | Inherited From    |
 | -------------------------- | --------- | ------------------------------------------------------------------- | ----------------------------------------- | ------ | ----------------- |
@@ -115,7 +99,7 @@ export const myOption = ListboxOption.compose({
 | `templateChanged`          | protected |                                                                     |                                           | `void` | FoundationElement |
 | `stylesChanged`            | protected |                                                                     |                                           | `void` | FoundationElement |
 
-##### Attributes
+#### Attributes
 
 | Name       | Field             | Inherited From |
 | ---------- | ----------------- | -------------- |
@@ -125,9 +109,9 @@ export const myOption = ListboxOption.compose({
 
 <hr/>
 
-#### class: `DelegatesARIAListboxOption`
+### class: `DelegatesARIAListboxOption`
 
-##### Fields
+#### Fields
 
 | Name           | Privacy | Type                             | Default | Description                                                                    | Inherited From |
 | -------------- | ------- | -------------------------------- | ------- | ------------------------------------------------------------------------------ | -------------- |
@@ -138,7 +122,7 @@ export const myOption = ListboxOption.compose({
 
 <hr/>
 
-#### Functions
+### Functions
 
 | Name              | Description                                                  | Parameters             | Return                |
 | ----------------- | ------------------------------------------------------------ | ---------------------- | --------------------- |
@@ -146,7 +130,7 @@ export const myOption = ListboxOption.compose({
 
 <hr/>
 
-#### Exports
+### Exports
 
 | Kind | Name                         | Declaration                | Module                               | Package |
 | ---- | ---------------------------- | -------------------------- | ------------------------------------ | ------- |

@@ -108,9 +108,9 @@ export const mySliderLabel = SliderLabel.compose({
 
 ## API
 
-### `src/slider/slider-utilities.ts`:
+## `src/slider/slider-utilities.ts`:
 
-#### Functions
+### Functions
 
 | Name                    | Description                                                                | Parameters                                                                         | Return   |
 | ----------------------- | -------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | -------- |
@@ -118,45 +118,29 @@ export const mySliderLabel = SliderLabel.compose({
 
 <hr/>
 
-#### Exports
+### Exports
 
 | Kind | Name                    | Declaration           | Module                         | Package |
 | ---- | ----------------------- | --------------------- | ------------------------------ | ------- |
 | `js` | `convertPixelToPercent` | convertPixelToPercent | src/slider/slider-utilities.ts |         |
 
-### `src/slider/slider.template.ts`:
+## `src/slider/slider.ts`:
 
-#### Functions
+### class: `Slider`
 
-| Name             | Description                                                                       | Parameters            | Return |
-| ---------------- | --------------------------------------------------------------------------------- | --------------------- | ------ |
-| `sliderTemplate` | The template for the {@link @microsoft/fast-foundation#(Slider:class)} component. | `context, definition` |        |
-
-<hr/>
-
-#### Exports
-
-| Kind | Name             | Declaration    | Module                        | Package |
-| ---- | ---------------- | -------------- | ----------------------------- | ------- |
-| `js` | `sliderTemplate` | sliderTemplate | src/slider/slider.template.ts |         |
-
-### `src/slider/slider.ts`:
-
-#### class: `Slider`
-
-##### Superclass
+#### Superclass
 
 | Name                   | Module                             | Package |
 | ---------------------- | ---------------------------------- | ------- |
 | `FormAssociatedSlider` | /src/slider/slider.form-associated |         |
 
-##### Static Methods
+#### Static Methods
 
 | Name      | Privacy | Description                                                                     | Parameters                      | Return                                                                                                             | Inherited From    |
 | --------- | ------- | ------------------------------------------------------------------------------- | ------------------------------- | ------------------------------------------------------------------------------------------------------------------ | ----------------- |
 | `compose` | public  | Defines an element registry function with a set of element definition defaults. | `this: K, elementDefinition: T` | `(         overrideDefinition?: OverrideFoundationElementDefinition<T>     ) => FoundationElementRegistry<T, K>` | FoundationElement |
 
-##### Fields
+#### Fields
 
 | Name                        | Privacy   | Type                                         | Default  | Description                                                                                                                                                                                           | Inherited From       |
 | --------------------------- | --------- | -------------------------------------------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------- |
@@ -185,7 +169,7 @@ export const mySliderLabel = SliderLabel.compose({
 | `template`                  | public    | `ElementViewTemplate \| void \| null`        |          | Sets the template of the element instance. When undefined,&#xD;&#xA;the element will attempt to resolve the template from&#xD;&#xA;the associated presentation or custom element definition.          | FoundationElement    |
 | `styles`                    | public    | `ElementStyles \| void \| null`              |          | Sets the default styles for the element instance. When undefined,&#xD;&#xA;the element will attempt to resolve default styles from&#xD;&#xA;the associated presentation or custom element definition. | FoundationElement    |
 
-##### Methods
+#### Methods
 
 | Name                             | Privacy   | Description                                                                                              | Parameters             | Return | Inherited From    |
 | -------------------------------- | --------- | -------------------------------------------------------------------------------------------------------- | ---------------------- | ------ | ----------------- |
@@ -202,7 +186,7 @@ export const mySliderLabel = SliderLabel.compose({
 | `templateChanged`                | protected |                                                                                                          |                        | `void` | FoundationElement |
 | `stylesChanged`                  | protected |                                                                                                          |                        | `void` | FoundationElement |
 
-##### Attributes
+#### Attributes
 
 | Name          | Field       | Inherited From |
 | ------------- | ----------- | -------------- |
@@ -215,7 +199,7 @@ export const mySliderLabel = SliderLabel.compose({
 
 <hr/>
 
-#### Exports
+### Exports
 
 | Kind | Name     | Declaration | Module               | Package |
 | ---- | -------- | ----------- | -------------------- | ------- |

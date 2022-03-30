@@ -40,39 +40,23 @@ export class FASTTextField extends TextField {}
 
 ## API
 
-### `src/picker/picker-list-item.template.ts`:
+## `src/picker/picker-list-item.ts`:
 
-#### Functions
+### class: `PickerListItem`
 
-| Name                     | Description | Parameters            | Return |
-| ------------------------ | ----------- | --------------------- | ------ |
-| `pickerListItemTemplate` |             | `context, definition` |        |
-
-<hr/>
-
-#### Exports
-
-| Kind | Name                     | Declaration            | Module                                  | Package |
-| ---- | ------------------------ | ---------------------- | --------------------------------------- | ------- |
-| `js` | `pickerListItemTemplate` | pickerListItemTemplate | src/picker/picker-list-item.template.ts |         |
-
-### `src/picker/picker-list-item.ts`:
-
-#### class: `PickerListItem`
-
-##### Superclass
+#### Superclass
 
 | Name                | Module                  | Package |
 | ------------------- | ----------------------- | ------- |
 | `FoundationElement` | /src/foundation-element |         |
 
-##### Static Methods
+#### Static Methods
 
 | Name      | Privacy | Description                                                                     | Parameters                      | Return                                                                                                             | Inherited From    |
 | --------- | ------- | ------------------------------------------------------------------------------- | ------------------------------- | ------------------------------------------------------------------------------------------------------------------ | ----------------- |
 | `compose` | public  | Defines an element registry function with a set of element definition defaults. | `this: K, elementDefinition: T` | `(         overrideDefinition?: OverrideFoundationElementDefinition<T>     ) => FoundationElementRegistry<T, K>` | FoundationElement |
 
-##### Fields
+#### Fields
 
 | Name               | Privacy | Type                                         | Default  | Description                                                                                                                                                                                           | Inherited From    |
 | ------------------ | ------- | -------------------------------------------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
@@ -84,7 +68,7 @@ export class FASTTextField extends TextField {}
 | `template`         | public  | `ElementViewTemplate \| void \| null`        |          | Sets the template of the element instance. When undefined,&#xD;&#xA;the element will attempt to resolve the template from&#xD;&#xA;the associated presentation or custom element definition.          | FoundationElement |
 | `styles`           | public  | `ElementStyles \| void \| null`              |          | Sets the default styles for the element instance. When undefined,&#xD;&#xA;the element will attempt to resolve default styles from&#xD;&#xA;the associated presentation or custom element definition. | FoundationElement |
 
-##### Methods
+#### Methods
 
 | Name                      | Privacy   | Description | Parameters         | Return    | Inherited From    |
 | ------------------------- | --------- | ----------- | ------------------ | --------- | ----------------- |
@@ -97,7 +81,7 @@ export class FASTTextField extends TextField {}
 | `templateChanged`         | protected |             |                    | `void`    | FoundationElement |
 | `stylesChanged`           | protected |             |                    | `void`    | FoundationElement |
 
-##### Attributes
+#### Attributes
 
 | Name    | Field | Inherited From |
 | ------- | ----- | -------------- |
@@ -105,45 +89,29 @@ export class FASTTextField extends TextField {}
 
 <hr/>
 
-#### Exports
+### Exports
 
 | Kind | Name             | Declaration    | Module                         | Package |
 | ---- | ---------------- | -------------- | ------------------------------ | ------- |
 | `js` | `PickerListItem` | PickerListItem | src/picker/picker-list-item.ts |         |
 
-### `src/picker/picker-list.template.ts`:
+## `src/picker/picker-list.ts`:
 
-#### Functions
+### class: `PickerList`
 
-| Name                 | Description | Parameters            | Return |
-| -------------------- | ----------- | --------------------- | ------ |
-| `pickerListTemplate` |             | `context, definition` |        |
-
-<hr/>
-
-#### Exports
-
-| Kind | Name                 | Declaration        | Module                             | Package |
-| ---- | -------------------- | ------------------ | ---------------------------------- | ------- |
-| `js` | `pickerListTemplate` | pickerListTemplate | src/picker/picker-list.template.ts |         |
-
-### `src/picker/picker-list.ts`:
-
-#### class: `PickerList`
-
-##### Superclass
+#### Superclass
 
 | Name                | Module                  | Package |
 | ------------------- | ----------------------- | ------- |
 | `FoundationElement` | /src/foundation-element |         |
 
-##### Static Methods
+#### Static Methods
 
 | Name      | Privacy | Description                                                                     | Parameters                      | Return                                                                                                             | Inherited From    |
 | --------- | ------- | ------------------------------------------------------------------------------- | ------------------------------- | ------------------------------------------------------------------------------------------------------------------ | ----------------- |
 | `compose` | public  | Defines an element registry function with a set of element definition defaults. | `this: K, elementDefinition: T` | `(         overrideDefinition?: OverrideFoundationElementDefinition<T>     ) => FoundationElementRegistry<T, K>` | FoundationElement |
 
-##### Fields
+#### Fields
 
 | Name            | Privacy | Type                                         | Default  | Description                                                                                                                                                                                           | Inherited From    |
 | --------------- | ------- | -------------------------------------------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
@@ -152,7 +120,7 @@ export class FASTTextField extends TextField {}
 | `template`      | public  | `ElementViewTemplate \| void \| null`        |          | Sets the template of the element instance. When undefined,&#xD;&#xA;the element will attempt to resolve the template from&#xD;&#xA;the associated presentation or custom element definition.          | FoundationElement |
 | `styles`        | public  | `ElementStyles \| void \| null`              |          | Sets the default styles for the element instance. When undefined,&#xD;&#xA;the element will attempt to resolve default styles from&#xD;&#xA;the associated presentation or custom element definition. | FoundationElement |
 
-##### Methods
+#### Methods
 
 | Name              | Privacy   | Description | Parameters | Return | Inherited From    |
 | ----------------- | --------- | ----------- | ---------- | ------ | ----------------- |
@@ -161,45 +129,29 @@ export class FASTTextField extends TextField {}
 
 <hr/>
 
-#### Exports
+### Exports
 
 | Kind | Name         | Declaration | Module                    | Package |
 | ---- | ------------ | ----------- | ------------------------- | ------- |
 | `js` | `PickerList` | PickerList  | src/picker/picker-list.ts |         |
 
-### `src/picker/picker-menu-option.template.ts`:
+## `src/picker/picker-menu-option.ts`:
 
-#### Functions
+### class: `PickerMenuOption`
 
-| Name                       | Description | Parameters            | Return |
-| -------------------------- | ----------- | --------------------- | ------ |
-| `pickerMenuOptionTemplate` |             | `context, definition` |        |
-
-<hr/>
-
-#### Exports
-
-| Kind | Name                       | Declaration              | Module                                    | Package |
-| ---- | -------------------------- | ------------------------ | ----------------------------------------- | ------- |
-| `js` | `pickerMenuOptionTemplate` | pickerMenuOptionTemplate | src/picker/picker-menu-option.template.ts |         |
-
-### `src/picker/picker-menu-option.ts`:
-
-#### class: `PickerMenuOption`
-
-##### Superclass
+#### Superclass
 
 | Name                | Module                  | Package |
 | ------------------- | ----------------------- | ------- |
 | `FoundationElement` | /src/foundation-element |         |
 
-##### Static Methods
+#### Static Methods
 
 | Name      | Privacy | Description                                                                     | Parameters                      | Return                                                                                                             | Inherited From    |
 | --------- | ------- | ------------------------------------------------------------------------------- | ------------------------------- | ------------------------------------------------------------------------------------------------------------------ | ----------------- |
 | `compose` | public  | Defines an element registry function with a set of element definition defaults. | `this: K, elementDefinition: T` | `(         overrideDefinition?: OverrideFoundationElementDefinition<T>     ) => FoundationElementRegistry<T, K>` | FoundationElement |
 
-##### Fields
+#### Fields
 
 | Name               | Privacy | Type                                         | Default  | Description                                                                                                                                                                                           | Inherited From    |
 | ------------------ | ------- | -------------------------------------------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
@@ -211,7 +163,7 @@ export class FASTTextField extends TextField {}
 | `template`         | public  | `ElementViewTemplate \| void \| null`        |          | Sets the template of the element instance. When undefined,&#xD;&#xA;the element will attempt to resolve the template from&#xD;&#xA;the associated presentation or custom element definition.          | FoundationElement |
 | `styles`           | public  | `ElementStyles \| void \| null`              |          | Sets the default styles for the element instance. When undefined,&#xD;&#xA;the element will attempt to resolve default styles from&#xD;&#xA;the associated presentation or custom element definition. | FoundationElement |
 
-##### Methods
+#### Methods
 
 | Name                      | Privacy   | Description | Parameters      | Return    | Inherited From    |
 | ------------------------- | --------- | ----------- | --------------- | --------- | ----------------- |
@@ -223,7 +175,7 @@ export class FASTTextField extends TextField {}
 | `templateChanged`         | protected |             |                 | `void`    | FoundationElement |
 | `stylesChanged`           | protected |             |                 | `void`    | FoundationElement |
 
-##### Attributes
+#### Attributes
 
 | Name    | Field | Inherited From |
 | ------- | ----- | -------------- |
@@ -231,45 +183,29 @@ export class FASTTextField extends TextField {}
 
 <hr/>
 
-#### Exports
+### Exports
 
 | Kind | Name               | Declaration      | Module                           | Package |
 | ---- | ------------------ | ---------------- | -------------------------------- | ------- |
 | `js` | `PickerMenuOption` | PickerMenuOption | src/picker/picker-menu-option.ts |         |
 
-### `src/picker/picker-menu.template.ts`:
+## `src/picker/picker-menu.ts`:
 
-#### Functions
+### class: `PickerMenu`
 
-| Name                 | Description                                 | Parameters            | Return |
-| -------------------- | ------------------------------------------- | --------------------- | ------ |
-| `pickerMenuTemplate` | The template for the List Picker component. | `context, definition` |        |
-
-<hr/>
-
-#### Exports
-
-| Kind | Name                 | Declaration        | Module                             | Package |
-| ---- | -------------------- | ------------------ | ---------------------------------- | ------- |
-| `js` | `pickerMenuTemplate` | pickerMenuTemplate | src/picker/picker-menu.template.ts |         |
-
-### `src/picker/picker-menu.ts`:
-
-#### class: `PickerMenu`
-
-##### Superclass
+#### Superclass
 
 | Name                | Module                  | Package |
 | ------------------- | ----------------------- | ------- |
 | `FoundationElement` | /src/foundation-element |         |
 
-##### Static Methods
+#### Static Methods
 
 | Name      | Privacy | Description                                                                     | Parameters                      | Return                                                                                                             | Inherited From    |
 | --------- | ------- | ------------------------------------------------------------------------------- | ------------------------------- | ------------------------------------------------------------------------------------------------------------------ | ----------------- |
 | `compose` | public  | Defines an element registry function with a set of element definition defaults. | `this: K, elementDefinition: T` | `(         overrideDefinition?: OverrideFoundationElementDefinition<T>     ) => FoundationElementRegistry<T, K>` | FoundationElement |
 
-##### Fields
+#### Fields
 
 | Name                       | Privacy | Type                                         | Default  | Description                                                                                                                                                                                           | Inherited From    |
 | -------------------------- | ------- | -------------------------------------------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
@@ -279,7 +215,7 @@ export class FASTTextField extends TextField {}
 | `template`                 | public  | `ElementViewTemplate \| void \| null`        |          | Sets the template of the element instance. When undefined,&#xD;&#xA;the element will attempt to resolve the template from&#xD;&#xA;the associated presentation or custom element definition.          | FoundationElement |
 | `styles`                   | public  | `ElementStyles \| void \| null`              |          | Sets the default styles for the element instance. When undefined,&#xD;&#xA;the element will attempt to resolve default styles from&#xD;&#xA;the associated presentation or custom element definition. | FoundationElement |
 
-##### Methods
+#### Methods
 
 | Name                    | Privacy   | Description | Parameters                    | Return | Inherited From    |
 | ----------------------- | --------- | ----------- | ----------------------------- | ------ | ----------------- |
@@ -293,45 +229,29 @@ export class FASTTextField extends TextField {}
 
 <hr/>
 
-#### Exports
+### Exports
 
 | Kind | Name         | Declaration | Module                    | Package |
 | ---- | ------------ | ----------- | ------------------------- | ------- |
 | `js` | `PickerMenu` | PickerMenu  | src/picker/picker-menu.ts |         |
 
-### `src/picker/picker.template.ts`:
+## `src/picker/picker.ts`:
 
-#### Functions
+### class: `Picker`
 
-| Name             | Description                                 | Parameters            | Return |
-| ---------------- | ------------------------------------------- | --------------------- | ------ |
-| `pickerTemplate` | The template for the List Picker component. | `context, definition` |        |
-
-<hr/>
-
-#### Exports
-
-| Kind | Name             | Declaration    | Module                        | Package |
-| ---- | ---------------- | -------------- | ----------------------------- | ------- |
-| `js` | `pickerTemplate` | pickerTemplate | src/picker/picker.template.ts |         |
-
-### `src/picker/picker.ts`:
-
-#### class: `Picker`
-
-##### Superclass
+#### Superclass
 
 | Name                   | Module                             | Package |
 | ---------------------- | ---------------------------------- | ------- |
 | `FormAssociatedPicker` | /src/picker/picker.form-associated |         |
 
-##### Static Methods
+#### Static Methods
 
 | Name      | Privacy | Description                                                                     | Parameters                      | Return                                                                                                             | Inherited From    |
 | --------- | ------- | ------------------------------------------------------------------------------- | ------------------------------- | ------------------------------------------------------------------------------------------------------------------ | ----------------- |
 | `compose` | public  | Defines an element registry function with a set of element definition defaults. | `this: K, elementDefinition: T` | `(         overrideDefinition?: OverrideFoundationElementDefinition<T>     ) => FoundationElementRegistry<T, K>` | FoundationElement |
 
-##### Fields
+#### Fields
 
 | Name                         | Privacy | Type                                         | Default                                                                                                                                                                                                                                         | Description                                                                                                                                                                                           | Inherited From       |
 | ---------------------------- | ------- | -------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------- |
@@ -371,7 +291,7 @@ export class FASTTextField extends TextField {}
 | `template`                   | public  | `ElementViewTemplate \| void \| null`        |                                                                                                                                                                                                                                                 | Sets the template of the element instance. When undefined,&#xD;&#xA;the element will attempt to resolve the template from&#xD;&#xA;the associated presentation or custom element definition.          | FoundationElement    |
 | `styles`                     | public  | `ElementStyles \| void \| null`              |                                                                                                                                                                                                                                                 | Sets the default styles for the element instance. When undefined,&#xD;&#xA;the element will attempt to resolve default styles from&#xD;&#xA;the associated presentation or custom element definition. | FoundationElement    |
 
-##### Methods
+#### Methods
 
 | Name                               | Privacy   | Description                                                                                        | Parameters            | Return    | Inherited From    |
 | ---------------------------------- | --------- | -------------------------------------------------------------------------------------------------- | --------------------- | --------- | ----------------- |
@@ -410,7 +330,7 @@ export class FASTTextField extends TextField {}
 | `templateChanged`                  | protected |                                                                                                    |                       | `void`    | FoundationElement |
 | `stylesChanged`                    | protected |                                                                                                    |                       | `void`    | FoundationElement |
 
-##### Attributes
+#### Attributes
 
 | Name                         | Field                    | Inherited From |
 | ---------------------------- | ------------------------ | -------------- |
@@ -429,7 +349,7 @@ export class FASTTextField extends TextField {}
 
 <hr/>
 
-#### Exports
+### Exports
 
 | Kind | Name     | Declaration | Module               | Package |
 | ---- | -------- | ----------- | -------------------- | ------- |

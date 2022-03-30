@@ -57,9 +57,9 @@ export const myAnchoredRegion = AnchoredRegion.compose({
 
 ## API
 
-### `src/anchored-region/anchored-region-config.ts`:
+## `src/anchored-region/anchored-region-config.ts`:
 
-#### Variables
+### Variables
 
 | Name                   | Description                                                                                                                                                                   | Type                   |
 | ---------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------- |
@@ -72,7 +72,7 @@ export const myAnchoredRegion = AnchoredRegion.compose({
 
 <hr/>
 
-#### Exports
+### Exports
 
 | Kind | Name                   | Declaration          | Module                                        | Package |
 | ---- | ---------------------- | -------------------- | --------------------------------------------- | ------- |
@@ -83,45 +83,29 @@ export const myAnchoredRegion = AnchoredRegion.compose({
 | `js` | `FlyoutPosBottomFill`  | FlyoutPosBottomFill  | src/anchored-region/anchored-region-config.ts |         |
 | `js` | `FlyoutPosTallestFill` | FlyoutPosTallestFill | src/anchored-region/anchored-region-config.ts |         |
 
-### `src/anchored-region/anchored-region.template.ts`:
+## `src/anchored-region/anchored-region.ts`:
 
-#### Functions
+### class: `AnchoredRegion`
 
-| Name                     | Description                                                                               | Parameters            | Return |
-| ------------------------ | ----------------------------------------------------------------------------------------- | --------------------- | ------ |
-| `anchoredRegionTemplate` | The template for the {@link @microsoft/fast-foundation#(AnchoredRegion:class)} component. | `context, definition` |        |
-
-<hr/>
-
-#### Exports
-
-| Kind | Name                     | Declaration            | Module                                          | Package |
-| ---- | ------------------------ | ---------------------- | ----------------------------------------------- | ------- |
-| `js` | `anchoredRegionTemplate` | anchoredRegionTemplate | src/anchored-region/anchored-region.template.ts |         |
-
-### `src/anchored-region/anchored-region.ts`:
-
-#### class: `AnchoredRegion`
-
-##### Superclass
+#### Superclass
 
 | Name                | Module                  | Package |
 | ------------------- | ----------------------- | ------- |
 | `FoundationElement` | /src/foundation-element |         |
 
-##### Static Fields
+#### Static Fields
 
 | Name                  | Privacy | Type                  | Default                     | Description | Inherited From |
 | --------------------- | ------- | --------------------- | --------------------------- | ----------- | -------------- |
 | `intersectionService` | private | `IntersectionService` | `new IntersectionService()` |             |                |
 
-##### Static Methods
+#### Static Methods
 
 | Name      | Privacy | Description                                                                     | Parameters                      | Return                                                                                                             | Inherited From    |
 | --------- | ------- | ------------------------------------------------------------------------------- | ------------------------------- | ------------------------------------------------------------------------------------------------------------------ | ----------------- |
 | `compose` | public  | Defines an element registry function with a set of element definition defaults. | `this: K, elementDefinition: T` | `(         overrideDefinition?: OverrideFoundationElementDefinition<T>     ) => FoundationElementRegistry<T, K>` | FoundationElement |
 
-##### Fields
+#### Fields
 
 | Name                            | Privacy | Type                                         | Default          | Description                                                                                                                                                                                                                                                        | Inherited From    |
 | ------------------------------- | ------- | -------------------------------------------- | ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------- |
@@ -188,7 +172,7 @@ export const myAnchoredRegion = AnchoredRegion.compose({
 | `template`                      | public  | `ElementViewTemplate \| void \| null`        |                  | Sets the template of the element instance. When undefined,&#xD;&#xA;the element will attempt to resolve the template from&#xD;&#xA;the associated presentation or custom element definition.                                                                       | FoundationElement |
 | `styles`                        | public  | `ElementStyles \| void \| null`              |                  | Sets the default styles for the element instance. When undefined,&#xD;&#xA;the element will attempt to resolve default styles from&#xD;&#xA;the associated presentation or custom element definition.                                                              | FoundationElement |
 
-##### Methods
+#### Methods
 
 | Name                               | Privacy   | Description                                                   | Parameters                                          | Return | Inherited From    |
 | ---------------------------------- | --------- | ------------------------------------------------------------- | --------------------------------------------------- | ------ | ----------------- |
@@ -219,7 +203,7 @@ export const myAnchoredRegion = AnchoredRegion.compose({
 | `templateChanged`                  | protected |                                                               |                                                     | `void` | FoundationElement |
 | `stylesChanged`                    | protected |                                                               |                                                     | `void` | FoundationElement |
 
-##### Attributes
+#### Attributes
 
 | Name                          | Field                     | Inherited From |
 | ----------------------------- | ------------------------- | -------------- |
@@ -242,7 +226,7 @@ export const myAnchoredRegion = AnchoredRegion.compose({
 
 <hr/>
 
-#### Exports
+### Exports
 
 | Kind | Name             | Declaration    | Module                                 | Package |
 | ---- | ---------------- | -------------- | -------------------------------------- | ------- |

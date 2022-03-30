@@ -92,39 +92,23 @@ export const myDataGrid = DataGrid.compose({
 
 ## API
 
-### `src/data-grid/data-grid-cell.template.ts`:
+## `src/data-grid/data-grid-cell.ts`:
 
-#### Functions
+### class: `DataGridCell`
 
-| Name                   | Description                                                                                                                | Parameters            | Return |
-| ---------------------- | -------------------------------------------------------------------------------------------------------------------------- | --------------------- | ------ |
-| `dataGridCellTemplate` | Generates a template for the {@link @microsoft/fast-foundation#DataGridCell} component using&#xD;&#xA;the provided prefix. | `context, definition` |        |
-
-<hr/>
-
-#### Exports
-
-| Kind | Name                   | Declaration          | Module                                   | Package |
-| ---- | ---------------------- | -------------------- | ---------------------------------------- | ------- |
-| `js` | `dataGridCellTemplate` | dataGridCellTemplate | src/data-grid/data-grid-cell.template.ts |         |
-
-### `src/data-grid/data-grid-cell.ts`:
-
-#### class: `DataGridCell`
-
-##### Superclass
+#### Superclass
 
 | Name                | Module                  | Package |
 | ------------------- | ----------------------- | ------- |
 | `FoundationElement` | /src/foundation-element |         |
 
-##### Static Methods
+#### Static Methods
 
 | Name      | Privacy | Description                                                                     | Parameters                      | Return                                                                                                             | Inherited From    |
 | --------- | ------- | ------------------------------------------------------------------------------- | ------------------------------- | ------------------------------------------------------------------------------------------------------------------ | ----------------- |
 | `compose` | public  | Defines an element registry function with a set of element definition defaults. | `this: K, elementDefinition: T` | `(         overrideDefinition?: OverrideFoundationElementDefinition<T>     ) => FoundationElementRegistry<T, K>` | FoundationElement |
 
-##### Fields
+#### Fields
 
 | Name               | Privacy | Type                                                              | Default  | Description                                                                                                                                                                                           | Inherited From    |
 | ------------------ | ------- | ----------------------------------------------------------------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
@@ -140,7 +124,7 @@ export const myDataGrid = DataGrid.compose({
 | `template`         | public  | `ElementViewTemplate \| void \| null`                             |          | Sets the template of the element instance. When undefined,&#xD;&#xA;the element will attempt to resolve the template from&#xD;&#xA;the associated presentation or custom element definition.          | FoundationElement |
 | `styles`           | public  | `ElementStyles \| void \| null`                                   |          | Sets the default styles for the element instance. When undefined,&#xD;&#xA;the element will attempt to resolve default styles from&#xD;&#xA;the associated presentation or custom element definition. | FoundationElement |
 
-##### Methods
+#### Methods
 
 | Name                      | Privacy   | Description | Parameters                                                               | Return | Inherited From    |
 | ------------------------- | --------- | ----------- | ------------------------------------------------------------------------ | ------ | ----------------- |
@@ -155,7 +139,7 @@ export const myDataGrid = DataGrid.compose({
 | `templateChanged`         | protected |             |                                                                          | `void` | FoundationElement |
 | `stylesChanged`           | protected |             |                                                                          | `void` | FoundationElement |
 
-##### Attributes
+#### Attributes
 
 | Name          | Field      | Inherited From |
 | ------------- | ---------- | -------------- |
@@ -164,46 +148,30 @@ export const myDataGrid = DataGrid.compose({
 
 <hr/>
 
-#### Exports
+### Exports
 
 | Kind | Name                | Declaration       | Module                          | Package |
 | ---- | ------------------- | ----------------- | ------------------------------- | ------- |
 | `js` | `DataGridCellTypes` | DataGridCellTypes | src/data-grid/data-grid-cell.ts |         |
 | `js` | `DataGridCell`      | DataGridCell      | src/data-grid/data-grid-cell.ts |         |
 
-### `src/data-grid/data-grid-row.template.ts`:
+## `src/data-grid/data-grid-row.ts`:
 
-#### Functions
+### class: `DataGridRow`
 
-| Name                  | Description                                                                                                               | Parameters            | Return |
-| --------------------- | ------------------------------------------------------------------------------------------------------------------------- | --------------------- | ------ |
-| `dataGridRowTemplate` | Generates a template for the {@link @microsoft/fast-foundation#DataGridRow} component using&#xD;&#xA;the provided prefix. | `context, definition` |        |
-
-<hr/>
-
-#### Exports
-
-| Kind | Name                  | Declaration         | Module                                   | Package |
-| ---- | --------------------- | ------------------- | ---------------------------------------- | ------- |
-| `js` | `dataGridRowTemplate` | dataGridRowTemplate | src/data-grid/data-grid-row\.template.ts |         |
-
-### `src/data-grid/data-grid-row.ts`:
-
-#### class: `DataGridRow`
-
-##### Superclass
+#### Superclass
 
 | Name                | Module                  | Package |
 | ------------------- | ----------------------- | ------- |
 | `FoundationElement` | /src/foundation-element |         |
 
-##### Static Methods
+#### Static Methods
 
 | Name      | Privacy | Description                                                                     | Parameters                      | Return                                                                                                             | Inherited From    |
 | --------- | ------- | ------------------------------------------------------------------------------- | ------------------------------- | ------------------------------------------------------------------------------------------------------------------ | ----------------- |
 | `compose` | public  | Defines an element registry function with a set of element definition defaults. | `this: K, elementDefinition: T` | `(         overrideDefinition?: OverrideFoundationElementDefinition<T>     ) => FoundationElementRegistry<T, K>` | FoundationElement |
 
-##### Fields
+#### Fields
 
 | Name                     | Privacy | Type                                                           | Default  | Description                                                                                                                                                                                           | Inherited From    |
 | ------------------------ | ------- | -------------------------------------------------------------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
@@ -223,7 +191,7 @@ export const myDataGrid = DataGrid.compose({
 | `template`               | public  | `ElementViewTemplate \| void \| null`                          |          | Sets the template of the element instance. When undefined,&#xD;&#xA;the element will attempt to resolve the template from&#xD;&#xA;the associated presentation or custom element definition.          | FoundationElement |
 | `styles`                 | public  | `ElementStyles \| void \| null`                                |          | Sets the default styles for the element instance. When undefined,&#xD;&#xA;the element will attempt to resolve default styles from&#xD;&#xA;the associated presentation or custom element definition. | FoundationElement |
 
-##### Methods
+#### Methods
 
 | Name                            | Privacy   | Description | Parameters         | Return | Inherited From    |
 | ------------------------------- | --------- | ----------- | ------------------ | ------ | ----------------- |
@@ -239,7 +207,7 @@ export const myDataGrid = DataGrid.compose({
 | `templateChanged`               | protected |             |                    | `void` | FoundationElement |
 | `stylesChanged`                 | protected |             |                    | `void` | FoundationElement |
 
-##### Attributes
+#### Attributes
 
 | Name                    | Field               | Inherited From |
 | ----------------------- | ------------------- | -------------- |
@@ -248,52 +216,36 @@ export const myDataGrid = DataGrid.compose({
 
 <hr/>
 
-#### Exports
+### Exports
 
 | Kind | Name          | Declaration | Module                          | Package |
 | ---- | ------------- | ----------- | ------------------------------- | ------- |
 | `js` | `DataGridRow` | DataGridRow | src/data-grid/data-grid-row\.ts |         |
 
-### `src/data-grid/data-grid.template.ts`:
+## `src/data-grid/data-grid.ts`:
 
-#### Functions
+### class: `DataGrid`
 
-| Name               | Description                                                                                                            | Parameters            | Return |
-| ------------------ | ---------------------------------------------------------------------------------------------------------------------- | --------------------- | ------ |
-| `dataGridTemplate` | Generates a template for the {@link @microsoft/fast-foundation#DataGrid} component using&#xD;&#xA;the provided prefix. | `context, definition` |        |
-
-<hr/>
-
-#### Exports
-
-| Kind | Name               | Declaration      | Module                              | Package |
-| ---- | ------------------ | ---------------- | ----------------------------------- | ------- |
-| `js` | `dataGridTemplate` | dataGridTemplate | src/data-grid/data-grid.template.ts |         |
-
-### `src/data-grid/data-grid.ts`:
-
-#### class: `DataGrid`
-
-##### Superclass
+#### Superclass
 
 | Name                | Module                  | Package |
 | ------------------- | ----------------------- | ------- |
 | `FoundationElement` | /src/foundation-element |         |
 
-##### Static Fields
+#### Static Fields
 
 | Name              | Privacy | Type | Default | Description                                                      | Inherited From |
 | ----------------- | ------- | ---- | ------- | ---------------------------------------------------------------- | -------------- |
 | `generateColumns` | public  |      |         | generates a basic column definition by examining sample row data |                |
 
-##### Static Methods
+#### Static Methods
 
 | Name                      | Privacy | Description                                                                     | Parameters                              | Return                                                                                                             | Inherited From    |
 | ------------------------- | ------- | ------------------------------------------------------------------------------- | --------------------------------------- | ------------------------------------------------------------------------------------------------------------------ | ----------------- |
 | `generateTemplateColumns` | private | generates a gridTemplateColumns based on columndata array                       | `columnDefinitions: ColumnDefinition[]` | `string`                                                                                                           |                   |
 | `compose`                 | public  | Defines an element registry function with a set of element definition defaults. | `this: K, elementDefinition: T`         | `(         overrideDefinition?: OverrideFoundationElementDefinition<T>     ) => FoundationElementRegistry<T, K>` | FoundationElement |
 
-##### Fields
+#### Fields
 
 | Name                           | Privacy | Type                                                       | Default  | Description                                                                                                                                                                                                                                                                        | Inherited From    |
 | ------------------------------ | ------- | ---------------------------------------------------------- | -------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
@@ -326,7 +278,7 @@ export const myDataGrid = DataGrid.compose({
 | `template`                     | public  | `ElementViewTemplate \| void \| null`                      |          | Sets the template of the element instance. When undefined,&#xD;&#xA;the element will attempt to resolve the template from&#xD;&#xA;the associated presentation or custom element definition.                                                                                       | FoundationElement |
 | `styles`                       | public  | `ElementStyles \| void \| null`                            |          | Sets the default styles for the element instance. When undefined,&#xD;&#xA;the element will attempt to resolve default styles from&#xD;&#xA;the associated presentation or custom element definition.                                                                              | FoundationElement |
 
-##### Methods
+#### Methods
 
 | Name                            | Privacy   | Description | Parameters | Return | Inherited From    |
 | ------------------------------- | --------- | ----------- | ---------- | ------ | ----------------- |
@@ -344,7 +296,7 @@ export const myDataGrid = DataGrid.compose({
 | `templateChanged`               | protected |             |            | `void` | FoundationElement |
 | `stylesChanged`                 | protected |             |            | `void` | FoundationElement |
 
-##### Attributes
+#### Attributes
 
 | Name                    | Field               | Inherited From |
 | ----------------------- | ------------------- | -------------- |
@@ -354,7 +306,7 @@ export const myDataGrid = DataGrid.compose({
 
 <hr/>
 
-#### Exports
+### Exports
 
 | Kind | Name                    | Declaration           | Module                     | Package |
 | ---- | ----------------------- | --------------------- | -------------------------- | ------- |

@@ -101,39 +101,23 @@ export const myAccordionItem = AccordionItem.compose<AccordionItemOptions>({
 
 ## API
 
-### `src/accordion/accordion.template.ts`:
+## `src/accordion/accordion.ts`:
 
-#### Functions
+### class: `Accordion`
 
-| Name                | Description                                                                  | Parameters            | Return |
-| ------------------- | ---------------------------------------------------------------------------- | --------------------- | ------ |
-| `accordionTemplate` | The template for the {@link @microsoft/fast-foundation#Accordion} component. | `context, definition` |        |
-
-<hr/>
-
-#### Exports
-
-| Kind | Name                | Declaration       | Module                              | Package |
-| ---- | ------------------- | ----------------- | ----------------------------------- | ------- |
-| `js` | `accordionTemplate` | accordionTemplate | src/accordion/accordion.template.ts |         |
-
-### `src/accordion/accordion.ts`:
-
-#### class: `Accordion`
-
-##### Superclass
+#### Superclass
 
 | Name                | Module                  | Package |
 | ------------------- | ----------------------- | ------- |
 | `FoundationElement` | /src/foundation-element |         |
 
-##### Static Methods
+#### Static Methods
 
 | Name      | Privacy | Description                                                                     | Parameters                      | Return                                                                                                             | Inherited From    |
 | --------- | ------- | ------------------------------------------------------------------------------- | ------------------------------- | ------------------------------------------------------------------------------------------------------------------ | ----------------- |
 | `compose` | public  | Defines an element registry function with a set of element definition defaults. | `this: K, elementDefinition: T` | `(         overrideDefinition?: OverrideFoundationElementDefinition<T>     ) => FoundationElementRegistry<T, K>` | FoundationElement |
 
-##### Fields
+#### Fields
 
 | Name                  | Privacy | Type                                         | Default  | Description                                                                                                                                                                                           | Inherited From    |
 | --------------------- | ------- | -------------------------------------------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
@@ -152,7 +136,7 @@ export const myAccordionItem = AccordionItem.compose<AccordionItemOptions>({
 | `template`            | public  | `ElementViewTemplate \| void \| null`        |          | Sets the template of the element instance. When undefined,&#xD;&#xA;the element will attempt to resolve the template from&#xD;&#xA;the associated presentation or custom element definition.          | FoundationElement |
 | `styles`              | public  | `ElementStyles \| void \| null`              |          | Sets the default styles for the element instance. When undefined,&#xD;&#xA;the element will attempt to resolve default styles from&#xD;&#xA;the associated presentation or custom element definition. | FoundationElement |
 
-##### Methods
+#### Methods
 
 | Name                 | Privacy   | Description | Parameters           | Return                  | Inherited From    |
 | -------------------- | --------- | ----------- | -------------------- | ----------------------- | ----------------- |
@@ -165,7 +149,7 @@ export const myAccordionItem = AccordionItem.compose<AccordionItemOptions>({
 | `templateChanged`    | protected |             |                      | `void`                  | FoundationElement |
 | `stylesChanged`      | protected |             |                      | `void`                  | FoundationElement |
 
-##### Attributes
+#### Attributes
 
 | Name          | Field      | Inherited From |
 | ------------- | ---------- | -------------- |
@@ -173,45 +157,29 @@ export const myAccordionItem = AccordionItem.compose<AccordionItemOptions>({
 
 <hr/>
 
-#### Exports
+### Exports
 
 | Kind | Name        | Declaration | Module                     | Package |
 | ---- | ----------- | ----------- | -------------------------- | ------- |
 | `js` | `Accordion` | Accordion   | src/accordion/accordion.ts |         |
 
-### `src/accordion-item/accordion-item.template.ts`:
+## `src/accordion-item/accordion-item.ts`:
 
-#### Functions
+### class: `AccordionItem`
 
-| Name                    | Description                                                                              | Parameters            | Return |
-| ----------------------- | ---------------------------------------------------------------------------------------- | --------------------- | ------ |
-| `accordionItemTemplate` | The template for the {@link @microsoft/fast-foundation#(AccordionItem:class)} component. | `context, definition` |        |
-
-<hr/>
-
-#### Exports
-
-| Kind | Name                    | Declaration           | Module                                        | Package |
-| ---- | ----------------------- | --------------------- | --------------------------------------------- | ------- |
-| `js` | `accordionItemTemplate` | accordionItemTemplate | src/accordion-item/accordion-item.template.ts |         |
-
-### `src/accordion-item/accordion-item.ts`:
-
-#### class: `AccordionItem`
-
-##### Superclass
+#### Superclass
 
 | Name                | Module                  | Package |
 | ------------------- | ----------------------- | ------- |
 | `FoundationElement` | /src/foundation-element |         |
 
-##### Static Methods
+#### Static Methods
 
 | Name      | Privacy | Description                                                                     | Parameters                      | Return                                                                                                             | Inherited From    |
 | --------- | ------- | ------------------------------------------------------------------------------- | ------------------------------- | ------------------------------------------------------------------------------------------------------------------ | ----------------- |
 | `compose` | public  | Defines an element registry function with a set of element definition defaults. | `this: K, elementDefinition: T` | `(         overrideDefinition?: OverrideFoundationElementDefinition<T>     ) => FoundationElementRegistry<T, K>` | FoundationElement |
 
-##### Fields
+#### Fields
 
 | Name            | Privacy | Type                                         | Default  | Description                                                                                                                                                                                           | Inherited From    |
 | --------------- | ------- | -------------------------------------------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
@@ -224,14 +192,14 @@ export const myAccordionItem = AccordionItem.compose<AccordionItemOptions>({
 | `template`      | public  | `ElementViewTemplate \| void \| null`        |          | Sets the template of the element instance. When undefined,&#xD;&#xA;the element will attempt to resolve the template from&#xD;&#xA;the associated presentation or custom element definition.          | FoundationElement |
 | `styles`        | public  | `ElementStyles \| void \| null`              |          | Sets the default styles for the element instance. When undefined,&#xD;&#xA;the element will attempt to resolve default styles from&#xD;&#xA;the associated presentation or custom element definition. | FoundationElement |
 
-##### Methods
+#### Methods
 
 | Name              | Privacy   | Description | Parameters | Return | Inherited From    |
 | ----------------- | --------- | ----------- | ---------- | ------ | ----------------- |
 | `templateChanged` | protected |             |            | `void` | FoundationElement |
 | `stylesChanged`   | protected |             |            | `void` | FoundationElement |
 
-##### Attributes
+#### Attributes
 
 | Name            | Field        | Inherited From |
 | --------------- | ------------ | -------------- |
@@ -241,7 +209,7 @@ export const myAccordionItem = AccordionItem.compose<AccordionItemOptions>({
 
 <hr/>
 
-#### Exports
+### Exports
 
 | Kind | Name            | Declaration   | Module                               | Package |
 | ---- | --------------- | ------------- | ------------------------------------ | ------- |

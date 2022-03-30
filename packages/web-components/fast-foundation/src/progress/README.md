@@ -103,23 +103,23 @@ export const myProgressRing = ProgressRing.compose<ProgressRingOptions>({
 
 ## API
 
-### `src/progress/base-progress.ts`:
+## `src/progress/base-progress.ts`:
 
-#### class: `BaseProgress`
+### class: `BaseProgress`
 
-##### Superclass
+#### Superclass
 
 | Name                | Module                  | Package |
 | ------------------- | ----------------------- | ------- |
 | `FoundationElement` | /src/foundation-element |         |
 
-##### Static Methods
+#### Static Methods
 
 | Name      | Privacy | Description                                                                     | Parameters                      | Return                                                                                                             | Inherited From    |
 | --------- | ------- | ------------------------------------------------------------------------------- | ------------------------------- | ------------------------------------------------------------------------------------------------------------------ | ----------------- |
 | `compose` | public  | Defines an element registry function with a set of element definition defaults. | `this: K, elementDefinition: T` | `(         overrideDefinition?: OverrideFoundationElementDefinition<T>     ) => FoundationElementRegistry<T, K>` | FoundationElement |
 
-##### Fields
+#### Fields
 
 | Name            | Privacy | Type                                         | Default  | Description                                                                                                                                                                                           | Inherited From    |
 | --------------- | ------- | -------------------------------------------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
@@ -132,7 +132,7 @@ export const myProgressRing = ProgressRing.compose<ProgressRingOptions>({
 | `template`      | public  | `ElementViewTemplate \| void \| null`        |          | Sets the template of the element instance. When undefined,&#xD;&#xA;the element will attempt to resolve the template from&#xD;&#xA;the associated presentation or custom element definition.          | FoundationElement |
 | `styles`        | public  | `ElementStyles \| void \| null`              |          | Sets the default styles for the element instance. When undefined,&#xD;&#xA;the element will attempt to resolve default styles from&#xD;&#xA;the associated presentation or custom element definition. | FoundationElement |
 
-##### Methods
+#### Methods
 
 | Name                    | Privacy   | Description | Parameters | Return | Inherited From    |
 | ----------------------- | --------- | ----------- | ---------- | ------ | ----------------- |
@@ -143,7 +143,7 @@ export const myProgressRing = ProgressRing.compose<ProgressRingOptions>({
 | `templateChanged`       | protected |             |            | `void` | FoundationElement |
 | `stylesChanged`         | protected |             |            | `void` | FoundationElement |
 
-##### Attributes
+#### Attributes
 
 | Name | Field  | Inherited From |
 | ---- | ------ | -------------- |
@@ -154,27 +154,11 @@ export const myProgressRing = ProgressRing.compose<ProgressRingOptions>({
 
 <hr/>
 
-#### Exports
+### Exports
 
 | Kind | Name           | Declaration  | Module                        | Package |
 | ---- | -------------- | ------------ | ----------------------------- | ------- |
 | `js` | `BaseProgress` | BaseProgress | src/progress/base-progress.ts |         |
-
-### `src/progress/progress.template.ts`:
-
-#### Functions
-
-| Name               | Description                                                                     | Parameters           | Return |
-| ------------------ | ------------------------------------------------------------------------------- | -------------------- | ------ |
-| `progressTemplate` | The template for the {@link @microsoft/fast-foundation#BaseProgress} component. | `context, defintion` |        |
-
-<hr/>
-
-#### Exports
-
-| Kind | Name               | Declaration      | Module                            | Package |
-| ---- | ------------------ | ---------------- | --------------------------------- | ------- |
-| `js` | `progressTemplate` | progressTemplate | src/progress/progress.template.ts |         |
 
 
 ## Additional resources

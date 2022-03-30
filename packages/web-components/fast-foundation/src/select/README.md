@@ -75,45 +75,29 @@ See [listbox-option](/docs/components/listbox-option) for more information.
 
 ## API
 
-### `src/select/select.template.ts`:
+## `src/select/select.ts`:
 
-#### Functions
+### class: `Select`
 
-| Name             | Description                                                                       | Parameters            | Return |
-| ---------------- | --------------------------------------------------------------------------------- | --------------------- | ------ |
-| `selectTemplate` | The template for the {@link @microsoft/fast-foundation#(Select:class)} component. | `context, definition` |        |
-
-<hr/>
-
-#### Exports
-
-| Kind | Name             | Declaration    | Module                        | Package |
-| ---- | ---------------- | -------------- | ----------------------------- | ------- |
-| `js` | `selectTemplate` | selectTemplate | src/select/select.template.ts |         |
-
-### `src/select/select.ts`:
-
-#### class: `Select`
-
-##### Superclass
+#### Superclass
 
 | Name                   | Module                             | Package |
 | ---------------------- | ---------------------------------- | ------- |
 | `FormAssociatedSelect` | /src/select/select.form-associated |         |
 
-##### Static Fields
+#### Static Fields
 
 | Name                  | Privacy | Type | Default | Description                                         | Inherited From |
 | --------------------- | ------- | ---- | ------- | --------------------------------------------------- | -------------- |
 | `slottedOptionFilter` | public  |      |         | A static filter to include only selectable options. | Listbox        |
 
-##### Static Methods
+#### Static Methods
 
 | Name      | Privacy | Description                                                                     | Parameters                      | Return                                                                                                             | Inherited From    |
 | --------- | ------- | ------------------------------------------------------------------------------- | ------------------------------- | ------------------------------------------------------------------------------------------------------------------ | ----------------- |
 | `compose` | public  | Defines an element registry function with a set of element definition defaults. | `this: K, elementDefinition: T` | `(         overrideDefinition?: OverrideFoundationElementDefinition<T>     ) => FoundationElementRegistry<T, K>` | FoundationElement |
 
-##### Fields
+#### Fields
 
 | Name                | Privacy   | Type                                         | Default  | Description                                                                                                                                                                                           | Inherited From       |
 | ------------------- | --------- | -------------------------------------------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------- |
@@ -136,7 +120,7 @@ See [listbox-option](/docs/components/listbox-option) for more information.
 | `template`          | public    | `ElementViewTemplate \| void \| null`        |          | Sets the template of the element instance. When undefined,&#xD;&#xA;the element will attempt to resolve the template from&#xD;&#xA;the associated presentation or custom element definition.          | FoundationElement    |
 | `styles`            | public    | `ElementStyles \| void \| null`              |          | Sets the default styles for the element instance. When undefined,&#xD;&#xA;the element will attempt to resolve default styles from&#xD;&#xA;the associated presentation or custom element definition. | FoundationElement    |
 
-##### Methods
+#### Methods
 
 | Name                       | Privacy   | Description                                                                | Parameters            | Return | Inherited From    |
 | -------------------------- | --------- | -------------------------------------------------------------------------- | --------------------- | ------ | ----------------- |
@@ -151,7 +135,7 @@ See [listbox-option](/docs/components/listbox-option) for more information.
 | `templateChanged`          | protected |                                                                            |                       | `void` | FoundationElement |
 | `stylesChanged`            | protected |                                                                            |                       | `void` | FoundationElement |
 
-##### Attributes
+#### Attributes
 
 | Name       | Field             | Inherited From |
 | ---------- | ----------------- | -------------- |
@@ -161,9 +145,9 @@ See [listbox-option](/docs/components/listbox-option) for more information.
 
 <hr/>
 
-#### class: `DelegatesARIASelect`
+### class: `DelegatesARIASelect`
 
-##### Fields
+#### Fields
 
 | Name           | Privacy | Type     | Default | Description                                                                     | Inherited From |
 | -------------- | ------- | -------- | ------- | ------------------------------------------------------------------------------- | -------------- |
@@ -171,7 +155,7 @@ See [listbox-option](/docs/components/listbox-option) for more information.
 
 <hr/>
 
-#### Exports
+### Exports
 
 | Kind | Name                  | Declaration         | Module               | Package |
 | ---- | --------------------- | ------------------- | -------------------- | ------- |

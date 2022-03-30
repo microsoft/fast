@@ -45,39 +45,23 @@ export const myTooltip = Tooltip.compose({
 
 ## API
 
-### `src/tooltip/tooltip.template.ts`:
+## `src/tooltip/tooltip.ts`:
 
-#### Functions
+### class: `Tooltip`
 
-| Name              | Description                                                                                                        | Parameters            | Return |
-| ----------------- | ------------------------------------------------------------------------------------------------------------------ | --------------------- | ------ |
-| `tooltipTemplate` | Creates a template for the {@link @microsoft/fast-foundation#(Tooltip:class)} component using the provided prefix. | `context, definition` |        |
-
-<hr/>
-
-#### Exports
-
-| Kind | Name              | Declaration     | Module                          | Package |
-| ---- | ----------------- | --------------- | ------------------------------- | ------- |
-| `js` | `tooltipTemplate` | tooltipTemplate | src/tooltip/tooltip.template.ts |         |
-
-### `src/tooltip/tooltip.ts`:
-
-#### class: `Tooltip`
-
-##### Superclass
+#### Superclass
 
 | Name                | Module                  | Package |
 | ------------------- | ----------------------- | ------- |
 | `FoundationElement` | /src/foundation-element |         |
 
-##### Static Methods
+#### Static Methods
 
 | Name      | Privacy | Description                                                                     | Parameters                      | Return                                                                                                             | Inherited From    |
 | --------- | ------- | ------------------------------------------------------------------------------- | ------------------------------- | ------------------------------------------------------------------------------------------------------------------ | ----------------- |
 | `compose` | public  | Defines an element registry function with a set of element definition defaults. | `this: K, elementDefinition: T` | `(         overrideDefinition?: OverrideFoundationElementDefinition<T>     ) => FoundationElementRegistry<T, K>` | FoundationElement |
 
-##### Fields
+#### Fields
 
 | Name                      | Privacy | Type                                                                                                                                                                                                                                                                                                                             | Default    | Description                                                                                                                                                                                                                        | Inherited From    |
 | ------------------------- | ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
@@ -115,7 +99,7 @@ export const myTooltip = Tooltip.compose({
 | `template`                | public  | `ElementViewTemplate \| void \| null`                                                                                                                                                                                                                                                                                            |            | Sets the template of the element instance. When undefined,&#xD;&#xA;the element will attempt to resolve the template from&#xD;&#xA;the associated presentation or custom element definition.                                       | FoundationElement |
 | `styles`                  | public  | `ElementStyles \| void \| null`                                                                                                                                                                                                                                                                                                  |            | Sets the default styles for the element instance. When undefined,&#xD;&#xA;the element will attempt to resolve default styles from&#xD;&#xA;the associated presentation or custom element definition.                              | FoundationElement |
 
-##### Methods
+#### Methods
 
 | Name                     | Privacy   | Description                                                | Parameters                      | Return | Inherited From    |
 | ------------------------ | --------- | ---------------------------------------------------------- | ------------------------------- | ------ | ----------------- |
@@ -128,7 +112,7 @@ export const myTooltip = Tooltip.compose({
 | `templateChanged`        | protected |                                                            |                                 | `void` | FoundationElement |
 | `stylesChanged`          | protected |                                                            |                                 | `void` | FoundationElement |
 
-##### Attributes
+#### Attributes
 
 | Name                       | Field                  | Inherited From |
 | -------------------------- | ---------------------- | -------------- |
@@ -142,7 +126,7 @@ export const myTooltip = Tooltip.compose({
 
 <hr/>
 
-#### Exports
+### Exports
 
 | Kind | Name              | Declaration     | Module                 | Package |
 | ---- | ----------------- | --------------- | ---------------------- | ------- |

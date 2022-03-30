@@ -1,5 +1,9 @@
 import fs from 'fs';
 import { customElementsManifestToMarkdown } from '@custom-elements-manifest/to-markdown';
+import {default as os} from 'os';
+
+const LF = os.EOL;
+const LF2 = LF+LF;
 
 // Read the custom-elements.json file and parse the JSON
 const fullManifest = JSON.parse(fs.readFileSync('dist/custom-elements.json', 'utf-8'));
@@ -20,8 +24,11 @@ for(var i = 0; i < fullManifest.modules.length; i++)
         const currName = getComponentNameFromPath(fullManifest.modules[i].path);
         const componentIndex = i;
 
-        // Add it to the manifest.
-        componentManifest.modules.push(fullManifest.modules[i]);
+        // Add it to the manifest but ignore templates.
+        if(fullManifest.modules[i].path.indexOf("template.ts") === -1)
+        {
+            componentManifest.modules.push(fullManifest.modules[i]);
+        }
 
         // Continue looping through the main manifest, adding modules to the small manifest until we find a module with a different name.
         // Include modules with names like "component-item" so components like Accordion and Accordion-item are included in the same file.
@@ -32,12 +39,16 @@ for(var i = 0; i < fullManifest.modules.length; i++)
             )
         )
         {
-            componentManifest.modules.push(fullManifest.modules[i+1]);
+            // Add it to the manifest but ignore templates.
+            if(fullManifest.modules[i+1].path.indexOf("template.ts") === -1)
+            {
+                componentManifest.modules.push(fullManifest.modules[i+1]);
+            }
             i++;
         }
 
         // Convert out single component manifest into a markdown string.
-        let markdown = customElementsManifestToMarkdown(componentManifest,{ headingOffset:2 });
+        let markdown = customElementsManifestToMarkdown(componentManifest,{ headingOffset:1 });
 
         // Clean up unneeded new lines within `` quotes as these tend to break rendering of the markdown.
         let index = 0;
@@ -50,7 +61,7 @@ for(var i = 0; i < fullManifest.modules.length; i++)
                 if(endIndex>=0)
                 {
                     const segment = markdown.substring(startIndex,endIndex);
-                    markdown = markdown.replace(segment, segment.replaceAll('\r\n',' '));
+                    markdown = markdown.replace(segment, segment.replaceAll(LF,' '));
                     index = endIndex+1;
                 }
                 else
@@ -89,12 +100,12 @@ for(var i = 0; i < fullManifest.modules.length; i++)
                 if(resourcesLoc>0)
                 {
                     // add API section above Additional Resources
-                    readMe = readMe.replace("## Additional resources","## API\r\n\r\n## Additional resources");
+                    readMe = readMe.replace("## Additional resources","## API"+LF2+"## Additional resources");
                 }
                 else
                 {
                     // add API to the end
-                    readMe+="\r\n\r\n## API";
+                    readMe+=LF2+"## API";
                 }
 
                 // Get the updated locations
@@ -102,11 +113,19 @@ for(var i = 0; i < fullManifest.modules.length; i++)
                 resourcesLoc = readMe.indexOf("## Additional resources")
             }
 
+            // customElementsManifestToMarkdown() hard codes line endings as '/n'. This causes GIT to detect changes
+            // to the file on windows environments even if nothing but the line endings changed. If the os.EOL is '\r\n'
+            // then replace all '\n' in the markdown with '\r\n'.
+            if(LF === '\r\n')
+            {
+                markdown = markdown.replaceAll('\n','\r\n');
+            }
+
             // Replace everything in between the API and Additional Resources sections with the
             // updated markdown.
             const startIndex = apiLoc;
             const endIndex = resourcesLoc >=0 ? resourcesLoc : readMe.length-1;
-            readMe = readMe.replace(readMe.slice(startIndex,endIndex),"## API\r\n\r\n"+markdown+"\r\n\r\n");
+            readMe = readMe.replace(readMe.slice(startIndex,endIndex),"## API"+LF2+markdown+LF2);
 
             // Replace the README.md file with the new content.
             fs.writeFileSync(path, readMe);

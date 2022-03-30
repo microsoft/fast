@@ -80,39 +80,23 @@ export const myToolbar = Toolbar.compose({
 
 ## API
 
-### `src/toolbar/toolbar.template.ts`:
+## `src/toolbar/toolbar.ts`:
 
-#### Functions
+### class: `Toolbar`
 
-| Name              | Description                                                                        | Parameters            | Return |
-| ----------------- | ---------------------------------------------------------------------------------- | --------------------- | ------ |
-| `toolbarTemplate` | The template for the {@link @microsoft/fast-foundation#(Toolbar:class)} component. | `context, definition` |        |
-
-<hr/>
-
-#### Exports
-
-| Kind | Name              | Declaration     | Module                          | Package |
-| ---- | ----------------- | --------------- | ------------------------------- | ------- |
-| `js` | `toolbarTemplate` | toolbarTemplate | src/toolbar/toolbar.template.ts |         |
-
-### `src/toolbar/toolbar.ts`:
-
-#### class: `Toolbar`
-
-##### Superclass
+#### Superclass
 
 | Name                | Module                  | Package |
 | ------------------- | ----------------------- | ------- |
 | `FoundationElement` | /src/foundation-element |         |
 
-##### Static Methods
+#### Static Methods
 
 | Name      | Privacy | Description                                                                     | Parameters                      | Return                                                                                                             | Inherited From    |
 | --------- | ------- | ------------------------------------------------------------------------------- | ------------------------------- | ------------------------------------------------------------------------------------------------------------------ | ----------------- |
 | `compose` | public  | Defines an element registry function with a set of element definition defaults. | `this: K, elementDefinition: T` | `(         overrideDefinition?: OverrideFoundationElementDefinition<T>     ) => FoundationElementRegistry<T, K>` | FoundationElement |
 
-##### Fields
+#### Fields
 
 | Name                 | Privacy | Type                                         | Default  | Description                                                                                                                                                                                           | Inherited From    |
 | -------------------- | ------- | -------------------------------------------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
@@ -124,7 +108,7 @@ export const myToolbar = Toolbar.compose({
 | `template`           | public  | `ElementViewTemplate \| void \| null`        |          | Sets the template of the element instance. When undefined,&#xD;&#xA;the element will attempt to resolve the template from&#xD;&#xA;the associated presentation or custom element definition.          | FoundationElement |
 | `styles`             | public  | `ElementStyles \| void \| null`              |          | Sets the default styles for the element instance. When undefined,&#xD;&#xA;the element will attempt to resolve default styles from&#xD;&#xA;the associated presentation or custom element definition. | FoundationElement |
 
-##### Methods
+#### Methods
 
 | Name                  | Privacy   | Description | Parameters | Return | Inherited From    |
 | --------------------- | --------- | ----------- | ---------- | ------ | ----------------- |
@@ -132,7 +116,7 @@ export const myToolbar = Toolbar.compose({
 | `templateChanged`     | protected |             |            | `void` | FoundationElement |
 | `stylesChanged`       | protected |             |            | `void` | FoundationElement |
 
-##### Attributes
+#### Attributes
 
 | Name          | Field       | Inherited From |
 | ------------- | ----------- | -------------- |
@@ -140,16 +124,16 @@ export const myToolbar = Toolbar.compose({
 
 <hr/>
 
-#### class: `DelegatesARIAToolbar`
+### class: `DelegatesARIAToolbar`
 
-##### Fields
+#### Fields
 
 | Name             | Privacy | Type     | Default | Description                                   | Inherited From |
 | ---------------- | ------- | -------- | ------- | --------------------------------------------- | -------------- |
 | `ariaLabelledby` | public  | `string` |         | The id of the element labeling the toolbar.   |                |
 | `ariaLabel`      | public  | `string` |         | The label surfaced to assistive technologies. |                |
 
-##### Attributes
+#### Attributes
 
 | Name              | Field          | Inherited From |
 | ----------------- | -------------- | -------------- |
@@ -158,7 +142,7 @@ export const myToolbar = Toolbar.compose({
 
 <hr/>
 
-#### Exports
+### Exports
 
 | Kind | Name                   | Declaration          | Module                 | Package |
 | ---- | ---------------------- | -------------------- | ---------------------- | ------- |
