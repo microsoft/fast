@@ -1,13 +1,5 @@
 # Date Picker
 
-## Process
-
-- [ ] **Checkpoint 1** - Schedule a spec review meeting to cover the Overview section before proceeding to work on the Design section. Be sure to include relevant stakeholders such as members of the tools team.
-
-- [ ] **Checkpoint 2** - Schedule a spec review meeting before beginning the implementation work. Be sure to invite relevant stakeholders such as design system owners.
-
-- [ ] **Checkpoint 3** - Submit the component PR and schedule a component code review meeting or present the component in one of our Engineering Open Mic sessions. Address feedback from the review, obtain final approvals through GitHub, and merge.
-
 ## Overview
 
 As defined by the W3C:
@@ -16,16 +8,12 @@ As defined by the W3C:
 
 ### Background
 
-This is a community requested component.
+This is a community requested component. Adds a FAST version of the input[type=date] HTML element.
 
 ### Use Cases
 
 - John is booking a room online and needs to enter a date of arrival. Clicking on the calendar icon in the date field, brings up a calendar where John can select a check-in date.
 
-### Non-goals
-
-*A list of use cases, features, or functionality which are **not** goals for the component.*
-  
 ### Features
 
 - **Date validation:** Verifies that the entered string is a valid date.
@@ -41,9 +29,6 @@ This is a community requested component.
 - **Localization:** Formats that date for the local market. MM--DD-YYYY, DD--MM-YYYY, etc. It supports country, language, numbering type and calendar type.
 
 ### Risks and Challenges
-
-*Notable risks or challenges associated with implementing the component. Would we need to make any breaking changes in order to achieve this component's goals?*
-
 - Many different calendar types, even within the same market.
 - Time zone differences. These may be different between client and server.
 
@@ -53,14 +38,6 @@ This is a community requested component.
 - [FluentUI](https://developer.microsoft.com/en-us/fluentui#/controls/web/datepicker)
 
 ---
-
-## Design
-
-*Describe the design of the component, thinking through several perspectives:*
-
-- *A customer using the component on a web page.*
-- *A developer building an app with the component and interacting through HTML/CSS/JavaScript.*
-- *A designer customizing the component.*
 
 ### API
 *Component Name*
@@ -84,9 +61,19 @@ This is a community requested component.
 - `type` - Type of picker. Supports all of the HTML types. `date` | `month` | `week` | `time` | `datetime-local`
 - `selected-dates` - Dates to be selected.
 - `disabled-dates` - Dates that cannot be selected.
+- `day-format` - Formatting for days. 'numeric' (default) | '2-digit'.
+- `weekday-format` - Formatting for optional weekday. none (default) | 'long' | 'short' | 'narrrow'.
+- `month-format` - Formatting for the month. 'numeric' (default) | '2-digit' | 'long' | 'short' | 'narrow'.
+- `year-format` - Formatting for the year. 'numeric' (default) | '2-digit'.
+- `hour-format` - Formatting for the hour in time or date-time pickers. 'numeric' (default) | '2-digit'.
+- `minute-format` - Formatting for the minutes. 'numeric' (default) | '2-digit'.
+- `hour-12` - If it should be 12 or 24 hour time formatting. Defaults to true.
 
 *Methods*
-
+- `resetCalendar()` - Resets the calendar to the current month and year view.
+- `openFlyout(force: boolean = false)` - Opens the date/time picker.
+- `closeFlyout(force: boolean = false)` - Closes the date/time picker.
+- `toggleFlyout(force: boolean = false)` - Opens the flyout if closed and closes if it is open.
 
 *Events*
 
@@ -188,23 +175,70 @@ This is a community requested component.
 - `calendar-icon` - The calendar icon used to open the calendar view.
 
 - *Host Classes*
-- *Slotted Content/Slotted Classes*
-- *CSS Parts*
+*CSS Parts*
+- `text-field` - The date entry field.
+- `start` - The start slot.
+- `end` - The end slot.
+- `flyout` - The anchored region containing the pickers.
+- `calendar` - The calendar component used for picking a date.
+- `calendar-title` - The title container of the calendar component.
+- `picker` - Container for the month and year pickers.
+- `arrow-previous` - The previous month or year button.
+- `arrow-next` - The next month or year button.
+- `picker-grid` - The grid holding the month and year pickers.
+- `picker-row` - The rows for month and year pickers.
+- `picker-cell` - The cells for month and year pickers.
+- `time-picker` - The time picker container.
+- `time-separator` - The colon between hour and minute time selector.
+- `time-list` - The hour, minute and meridian select boxes.
 
-*Work closely with the visual design partner to co-develop the API and anatomy along side the visual design.
 
 ### Visual Appearance
+[FluentUI date picker](https://developer.microsoft.com/en-us/fluentui#/controls/web/datepicker)
 
-*Provide Figma files and other design assets. Be sure to account for the various component states, including hover, active, etc. as well as validity, and appearance variants. Focus primarily on the officially supported design system as well as known community scenarios as appropriate. Consider other popular design systems during this process and, where possible, ensure that common design features that may not be part of the officially supported design system can be accommodated. Work closely with engineering to co-develop the visual design along side the API and anatomy.*
 
 ---
 
 ## Implementation
-
-*Important aspects of the planned implementation with careful consideration of web standards and integration.*
+*Basic date picker*
 
 ```html
     <fast-date-picker></fast-date-picker>
+```
+
+*Month picker*
+```html
+    <fast-date-picker type="month"></fast-date-picker>
+```
+
+*Year picker*
+```html
+    <fast-date-picker type="year"></fast-date-picker>
+```
+
+*Time picker*
+```html
+    <fast-date-picker type="time"></fast-date-picker>
+```
+
+*Date and time picker*
+```html
+    <fast-date-picker type="datetime-local"></fast-date-picker>
+```
+
+*Date picker with weekday - Saturday, 1/1/2022*
+```html
+    <fast-date-picker weekday-format="long"></fast-date-picker>
+```
+
+*Date picker with long month - January 1, 2022*
+```html
+    <fast-date-picker month-format="long"></fast-date-picker>
+```
+
+*Placeholder text*
+```html
+    <fast-date-picker placeholder="Pick a date"></fast-date-picker>
 ```
 
 ### States
@@ -228,9 +262,6 @@ Should be able to arrow to the next and previous months.
 Aria labeling for the calendar icon will say 'Choose date'. Upon picking a date, the aria labeling will change to 'Change date'.
 
 ### Globalization
-
-*Consider whether the component has any special globalization needs such as:*
-
 *Special RTL handling*
 Calendar icon will appear on the right for LTR languages and on the left for RTL.
 
@@ -238,7 +269,7 @@ Calendar icon will appear on the right for LTR languages and on the left for RTL
 Is using the calendar icon good enough? The icon will be in a slot with the html entity for calendar as the default.
 
 *Localization*
-Different date formatting for different markets. This will be obtained through the browser built in localization for dates.
+Different date formatting for different markets. This will be obtained through the browser built in localization for dates. Different languages and numbering is supported through a locale string.
 
 ### Security
 
@@ -261,17 +292,6 @@ Performance should be pretty straight forward. Any perf considerations would occ
 
 This will use standard unit tests and examples in Storybook for end-to-end tests.
 
-### Tooling
-
-*Are there any special considerations for tooling? Will tooling changes need to be made? Is there a special way to light up this component in our tooling that would be compelling for developers/designers?*
-
-### Documentation
-
-*What additions or changes are needed for user documentation and demos? Are there any architectural/engineering docs we should create as well, perhaps due to some interesting technical challenge or design decisions related to this component?*
-
----
-## Appendix
-
 ### Resources
 
 [MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/date)
@@ -282,5 +302,5 @@ This will use standard unit tests and examples in Storybook for end-to-end tests
 
 ### Next Steps
 
-- *Week view* - An option to pick the week of the year.
+- *Week select* - An option to pick the week of the year.
 - *Date range selection* - The ability to select more than a single date.
