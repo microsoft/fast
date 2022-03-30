@@ -357,9 +357,12 @@ export class DataGrid extends FoundationElement {
     rowElementTag: string;
     rowItemTemplate: ViewTemplate;
     rowsData: object[];
+    // @internal
+    selectedRowIndexes: number[];
     // (undocumented)
-    protected rowsDataChanged(): void;
-}
+    selectionMode: DataGridSelectionMode;
+    selectRowHeader: boolean;
+    }
 
 // @public
 export class DataGridCell extends FoundationElement {
@@ -458,15 +461,7 @@ export const DataGridRowTypes: {
 export type DataGridRowTypes = ValuesOf<typeof DataGridRowTypes>;
 
 // @public
-export interface DataGridSelectedRange {
-    endCol: number;
-    endRow: number;
-    startCol: number;
-    startRow: number;
-}
-
-// @public
-export type DataGridSelectionMode = "none" | "singleRow" | "multiRow" | "range";
+export type DataGridSelectionMode = "none" | "singleRow" | "multiRow";
 
 // @public
 export const dataGridTemplate: FoundationElementTemplate<ViewTemplate<DataGrid>>;

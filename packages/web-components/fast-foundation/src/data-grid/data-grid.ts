@@ -31,34 +31,7 @@ export { DataGridRowTypes, GenerateHeaderOptions };
  *
  * @public
  */
-export type DataGridSelectionMode = "none" | "singleRow" | "multiRow" | "range";
-
-/**
- * Defines a column in the grid
- *
- * @public
- */
-export interface DataGridSelectedRange {
-    /**
-     * Index of column start of selection
-     */
-    startCol: number;
-
-    /**
-     * Index of row start of selection
-     */
-    endCol: number;
-
-    /**
-     * Index of row start of selection
-     */
-    startRow: number;
-
-    /**
-     * Index of row end of selection
-     */
-    endRow: number;
-}
+export type DataGridSelectionMode = "none" | "singleRow" | "multiRow";
 
 /**
  * Defines a column in the grid
@@ -256,6 +229,16 @@ export class FASTDataGrid extends FASTElement {
      */
     @attr({ attribute: "click-select", mode: "boolean" })
     public clickSelect: boolean = true;
+
+    /**
+     * Determines if the header row is selectable
+     *
+     * @public
+     * @remarks
+     * HTML Attribute: select-row-header
+     */
+    @attr({ attribute: "select-row-header", mode: "boolean" })
+    public selectRowHeader: boolean = false;
 
     /**
      * The data being displayed in the grid
@@ -748,18 +731,24 @@ export class FASTDataGrid extends FASTElement {
     }
 
     private selectAllRows(): void {
-        if (this.selectionMode !== "multiRow") {
+        if (this.selectionMode !== "multiRow" || this.rowElements.length === 0) {
             return;
         }
-        if (this.selectedRowIndexes.length === this.rowElements.length) {
+        const hasHeaderRow =
+            (this.rowElements[0] as DataGridRow).rowType === "header" ||
+            (this.rowElements[0] as DataGridRow).rowType === "sticky-header";
+        const selectableRowCount = this.rowElements.length + (hasHeaderRow ? -1 : 0);
+        if (this.selectedRowIndexes.length === selectableRowCount) {
             // deselect all if all are already selected
             this.deselectAllRows();
             return;
         }
         this.selectedRowIndexes.splice(0);
         this.rowElements.forEach(element => {
-            this.selectedRowIndexes.push((element as DataGridRow).rowIndex);
-            (element as DataGridRow).selected = true;
+            if ((element as DataGridRow).isSelectable) {
+                this.selectedRowIndexes.push((element as DataGridRow).rowIndex);
+                (element as DataGridRow).selected = true;
+            }
         });
         this.lastNotShiftSelectedRowIndex = -1;
     }
@@ -783,6 +772,7 @@ export class FASTDataGrid extends FASTElement {
             this.selectedRowIndexes.push(changedRow.rowIndex);
             this.lastNotShiftSelectedRowIndex = changedRow.rowIndex;
         } else {
+            this.deselectAllRows();
             this.selectedRowIndexes.splice(0);
             this.lastNotShiftSelectedRowIndex = -1;
         }
@@ -918,12 +908,13 @@ export class FASTDataGrid extends FASTElement {
             thisRow.gridTemplateColumns = newGridTemplateColumns;
             thisRow.clickSelect = this.clickSelect;
             if (this.selectionMode === "singleRow" || this.selectionMode === "multiRow") {
-                thisRow.isSelectable = true;
-                if (this.selectedRowIndexes.includes(index)) {
-                    thisRow.selected = true;
+                if (thisRow.rowType === "header" || thisRow.rowType === "sticky-header") {
+                    thisRow.isSelectable = this.selectRowHeader;
                 } else {
-                    thisRow.selected = false;
+                    thisRow.isSelectable = true;
                 }
+
+                thisRow.selected = this.selectedRowIndexes.includes(index);
             }
             if (this.columnDefinitionsStale) {
                 thisRow.columnDefinitions = this.columnDefinitions;
