@@ -1,0 +1,7 @@
+{
+  "type": "minor",
+  "comment": "update to typescript 4.6.2 and update ARIAMixin typings",
+  "packageName": "@microsoft/fast-colors",
+  "email": "chhol@microsoft.com",
+  "dependentChangeType": "patch"
+}

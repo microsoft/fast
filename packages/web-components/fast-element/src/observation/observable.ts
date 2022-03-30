@@ -239,6 +239,7 @@ export const Observable = FAST.getById(KernelServiceId.observable, () => {
                     watcher = void 0;
                     /* eslint-disable-next-line */
                     prevValue = prev.propertySource[prev.propertyName];
+                    /* eslint-disable-next-line @typescript-eslint/no-this-alias */
                     watcher = this;
 
                     if (propertySource === prevValue) {

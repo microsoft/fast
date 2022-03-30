@@ -562,7 +562,7 @@ export class DelegatesARIASelect {
      * HTML Attribute: `aria-controls`
      */
     @observable
-    public ariaControls: string;
+    public ariaControls: string | null;
 }
 
 /**
