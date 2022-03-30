@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "fix hidden menu items should not be included in the tabindex",
+  "packageName": "@microsoft/fast-components",
+  "email": "chhol@microsoft.com",
+  "dependentChangeType": "patch"
+}
