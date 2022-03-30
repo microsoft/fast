@@ -1,10 +1,13 @@
-import { blendMultiply, blendOverlay, saturateViaLCH } from "./color-blending";
-import { rgbToHSL } from "./color-converters";
-import { ColorHSL } from "./color-hsl";
-import { ColorInterpolationSpace, interpolateByColorSpace } from "./color-interpolation";
-import { ColorRGBA64 } from "./color-rgba-64";
-import { ColorScale, ColorScaleStop } from "./color-scale";
-import { parseColorHexRGB } from "./parse-color";
+import { blendMultiply, blendOverlay, saturateViaLCH } from "./color-blending.js";
+import { rgbToHSL } from "./color-converters.js";
+import { ColorHSL } from "./color-hsl.js";
+import {
+    ColorInterpolationSpace,
+    interpolateByColorSpace,
+} from "./color-interpolation.js";
+import { ColorRGBA64 } from "./color-rgba-64.js";
+import { ColorScale, ColorScaleStop } from "./color-scale.js";
+import { parseColorHexRGB } from "./parse-color.js";
 
 /**
  * @public

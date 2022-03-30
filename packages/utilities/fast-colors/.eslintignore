@@ -6,3 +6,5 @@ dist
 coverage
 # don't lint www
 www
+# don't lint tests
+**/*.spec.ts
