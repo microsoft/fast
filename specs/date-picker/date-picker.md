@@ -52,7 +52,7 @@ This is a community requested component. Adds a FAST version of the input[type=d
     - outline (default)
     - filled
 - `readonly` - If the date is editable.
-- 'disabled` - If the control is disabled.
+- `disabled` - If the control is disabled.
 - `required` - The date field is required or optional.
 - `min` - Earliest allowed date.
 - `max` - Latest allowed date.
