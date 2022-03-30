@@ -431,7 +431,7 @@ export abstract class Listbox extends FoundationElement {
      * @internal
      */
     public multipleChanged(prev: boolean | undefined, next: boolean): void {
-        this.ariaMultiSelectable = next ? "true" : undefined;
+        this.ariaMultiSelectable = next ? "true" : null;
     }
 
     /**
@@ -616,7 +616,7 @@ export class DelegatesARIAListbox {
      * HTML Attribute: `aria-activedescendant`
      */
     @observable
-    public ariaActiveDescendant: string;
+    public ariaActiveDescendant: string | null;
 
     /**
      * See {@link https://www.w3.org/TR/wai-aria-1.2/#listbox} for more information
@@ -625,7 +625,7 @@ export class DelegatesARIAListbox {
      * HTML Attribute: `aria-disabled`
      */
     @observable
-    public ariaDisabled: "true" | "false";
+    public ariaDisabled: "true" | "false" | string | null;
 
     /**
      * See {@link https://www.w3.org/TR/wai-aria-1.2/#listbox} for more information
@@ -634,7 +634,7 @@ export class DelegatesARIAListbox {
      * HTML Attribute: `aria-expanded`
      */
     @observable
-    public ariaExpanded: "true" | "false" | undefined;
+    public ariaExpanded: "true" | "false" | string | null;
 
     /**
      * See {@link https://w3c.github.io/aria/#listbox} for more information
@@ -643,7 +643,7 @@ export class DelegatesARIAListbox {
      * HTML Attribute: `aria-multiselectable`
      */
     @observable
-    public ariaMultiSelectable: "true" | "false" | undefined;
+    public ariaMultiSelectable: "true" | "false" | string | null;
 }
 
 /**

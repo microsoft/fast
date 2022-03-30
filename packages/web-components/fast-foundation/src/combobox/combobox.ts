@@ -657,7 +657,7 @@ export class DelegatesARIACombobox {
      * HTML Attribute: `aria-autocomplete`
      */
     @observable
-    public ariaAutoComplete: "inline" | "list" | "both" | "none" | undefined;
+    public ariaAutoComplete: "inline" | "list" | "both" | "none" | string | null;
 
     /**
      * See {@link https://www.w3.org/TR/wai-aria-1.2/#aria-controls} for more information.
@@ -667,7 +667,7 @@ export class DelegatesARIACombobox {
      * HTML Attribute: `aria-controls`
      */
     @observable
-    public ariaControls: string;
+    public ariaControls: string | null;
 }
 
 /**

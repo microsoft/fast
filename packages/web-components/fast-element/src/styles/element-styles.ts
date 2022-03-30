@@ -62,7 +62,7 @@ export abstract class ElementStyles {
     public abstract readonly styles: ReadonlyArray<ComposableStyles>;
 
     /** @internal */
-    public abstract readonly behaviors: ReadonlyArray<Behavior> | null = null;
+    public abstract readonly behaviors: ReadonlyArray<Behavior> | null;
 
     /** @internal */
     public addStylesTo(target: StyleTarget): void {

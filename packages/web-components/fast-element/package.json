@@ -51,6 +51,7 @@
     "@types/karma": "^5.0.0",
     "@types/mocha": "^7.0.2",
     "@types/webpack-env": "^1.15.2",
+    "@types/web-ie11": "^0.0.0",
     "chai": "^4.2.0",
     "esm": "^3.2.25",
     "ignore-loader": "^0.1.2",
@@ -81,7 +82,7 @@
     "ts-node": "^8.9.1",
     "tsconfig-paths": "^3.9.0",
     "tslib": "^1.11.1",
-    "typescript": "^3.9.0",
+    "typescript": "^4.6.2",
     "webpack": "^4.44.0"
   }
 }
