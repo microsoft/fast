@@ -4,3 +4,5 @@ node_modules
 dist
 # don't lint coverage output
 coverage
+# Don't lint test files
+**/*.spec.ts
