@@ -366,6 +366,8 @@ export const calendarWeekdayTemplate: (context: ElementDefinitionContext) => Vie
 
 // @public
 export class Card extends FoundationElement {
+    // (undocumented)
+    childElements: HTMLElement[];
 }
 
 // @public
@@ -1165,6 +1167,7 @@ export const FlyoutPosTopFill: AnchoredRegionConfig;
 
 // @alpha
 export class Focusgroup extends FoundationElement {
+    autofocus: boolean;
     // @public
     direction: "both" | "horizontal" | "vertical";
     // @public

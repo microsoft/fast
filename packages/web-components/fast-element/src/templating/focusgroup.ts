@@ -23,6 +23,7 @@ export interface FocusgroupBehaviorOptions {
     direction?: "both" | "horizontal" | "vertical";
     extend?: boolean;
     bubble?: boolean;
+    autofocus?: boolean;
 }
 
 export type DirectionData = {
@@ -67,6 +68,7 @@ export class FocusgroupBehavior implements Behavior {
                 direction: "both",
                 extend: true,
                 bubble: false,
+                autofocus: true,
             },
             options
         );
@@ -133,7 +135,14 @@ export class FocusgroupBehavior implements Behavior {
      */
     public handleFocus(): void {
         this.setPositions(this.options.wrap);
-        // console.log({positions: this.positions, focusItems: this.focusItems, target: this.target, tabindex: this.target.getAttribute("tabindex"), host: (this.target.parentNode as any).host});
+        console.log({
+            positions: this.positions,
+            focusItems: this.focusItems,
+            target: this.target,
+            tabindex: this.target.getAttribute("tabindex"),
+            host: (this.target.parentNode as any).host,
+            behaviors: (this.target.parentNode as any).host?.$fastController?.behaviors,
+        });
         this.target.removeAttribute("tabindex");
         this.target.removeEventListener("focus", this.handleFocus);
     }
@@ -146,6 +155,7 @@ export class FocusgroupBehavior implements Behavior {
      */
     public bind(source: any, context: ExecutionContext): void {
         this.source = source;
+        console.log({ source, context, tabindex: source.tabIndex });
         this.target.setAttribute("tabindex", "0");
         this.target.addEventListener("focus", this.handleFocus.bind(this));
         this.target.addEventListener("keydown", this.handleKeydown.bind(this));

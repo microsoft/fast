@@ -23,4 +23,9 @@ export class Focusgroup extends FoundationElement {
      * @public
      */
     @attr extend: boolean = true;
+
+    /**
+     * Should the focusgroup auto-focus on the first child
+     */
+    @attr autofocus: boolean = true;
 }
