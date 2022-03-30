@@ -847,36 +847,36 @@ export class DatePicker extends FormAssociatedDatePicker {
     // @public
     handleBlur(): void;
     // @public
-    handleCalendarChange(direction?: number, e?: KeyboardEvent | MouseEvent | undefined): void;
+    handleCalendarChange(direction?: number, e?: KeyboardEvent | MouseEvent | undefined): boolean;
     // @public
-    handleCalendarTitleKeydown(e: KeyboardEvent): void;
+    handleCalendarTitleKeydown(e: KeyboardEvent): boolean;
     // @public
     handleDateClicked(event: MouseEvent): void;
     // (undocumented)
-    handleFlyoutKeydown(e: KeyboardEvent): void;
+    handleFlyoutKeydown(e: KeyboardEvent): boolean;
     // @public
     handleFocus(): void;
     handleFocusOut(event: Event): void;
     // @public
     handleHourClicked(hour: number): void;
     // @public
-    handleKeyup(event: KeyboardEvent): void;
+    handleKeyup(event: KeyboardEvent): boolean;
     // @public
     handleMeridianClicked(meridian: "AM" | "PM"): void;
     // @public
     handleMinuteClicked(minute: number): void;
     // @public
-    handleMonthChange(direction: number | undefined, event: KeyboardEvent | MouseEvent | undefined): void;
+    handleMonthChange(direction: number | undefined, event: KeyboardEvent | MouseEvent | undefined): boolean;
     // @public
     handleMonthClicked(month: number, year: number): void;
-    handleMonthKeyup(month: number, year: number, event: KeyboardEvent): void;
+    handleMonthKeyup(month: number, year: number, event: KeyboardEvent): boolean;
     // @public
-    handleTimeKeydown(unit: string, event: KeyboardEvent): void;
+    handleTimeKeydown(unit: string, event: KeyboardEvent): boolean;
     // @public
     handleYearClicked(year: number): void;
-    handleYearKeyup(year: number, event: KeyboardEvent): void;
+    handleYearKeyup(year: number, event: KeyboardEvent): boolean;
     // (undocumented)
-    handleYearsChange(direction: number | undefined, event: KeyboardEvent | MouseEvent | undefined): void;
+    handleYearsChange(direction: number | undefined, event: KeyboardEvent | MouseEvent | undefined): boolean;
     // @public
     hour12: boolean;
     // @public

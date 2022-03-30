@@ -54,13 +54,9 @@ export const DatePickerStyles: (
         background-color: ${fillColor};
         ${elevation}
         z-index: 1;
-        display: none;
+        display: inline-flex;
         color: ${neutralForegroundRest};
         gap: calc(${designUnit} * 5px);
-    }
-
-    .flyout.show {
-        display: inline-flex;
     }
 
     .calendar {

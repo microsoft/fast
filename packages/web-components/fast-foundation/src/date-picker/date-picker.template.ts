@@ -32,6 +32,7 @@ const timeElementSelect = (
     return html`
             <${listbox}
                 class="time-list"
+                part="time-list"
                 ${ref(`${type}Select`)}
                 size="7"
                 @keydown="${(x, c) => keydownHandler(type, c.event)}"
@@ -66,9 +67,9 @@ export const timePickerTemplate = (
 ) => {
     const timeSelectTemplate = timeElementSelect.bind(this, context, timeKeydown);
     return html`
-        <div class="time-picker">
+        <div class="time-picker" part="time-picker">
             ${x => timeSelectTemplate(times.hours, "hour")}
-            <div class="time-separator">:</div>
+            <div class="time-separator" part="time-separator">:</div>
             ${x => timeSelectTemplate(times.minutes, "minute")}
             ${x => timeSelectTemplate(times.meridians, "meridian")}
         </div>
@@ -243,10 +244,10 @@ export const datePickerTemplate: FoundationElementTemplate<
             </slot>
         </${textField}>
         ${when(
-            x => !x.readonly && !x.disabled,
+            x => !x.readonly && !x.disabled && x.flyoutOpen,
             html`
             <${anchoredRegion}
-                class="flyout ${x => (x.flyoutOpen ? "show" : "")}"
+                class="flyout"
                 part="flyout"
                 :anchorElement="${x => x.textField}"
                 vertical-positioning-mode="dynamic"

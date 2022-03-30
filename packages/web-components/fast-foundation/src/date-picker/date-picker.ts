@@ -247,7 +247,7 @@ export class DatePicker extends FormAssociatedDatePicker {
     public minuteFormat: "numeric" | "2-digit" = "2-digit";
 
     /**
-     * Wether there should time output should be 24hour formatted
+     * Whether there should time output should be 24hour formatted
      * @public
      */
     @attr({ attribute: "hour-12", converter: booleanConverter })
@@ -398,19 +398,19 @@ export class DatePicker extends FormAssociatedDatePicker {
      * @returns should bubble
      * @public
      */
-    public handleCalendarTitleKeydown(e: KeyboardEvent): void {
+    public handleCalendarTitleKeydown(e: KeyboardEvent): boolean {
         const key: string = e.key;
 
         switch (key) {
             case keyEnter:
-                e.preventDefault();
                 this.monthPickerDisplay();
-                break;
+                return false;
             case keyArrowDown:
             case keyArrowUp:
-                this.handleCalendarChange(1, e);
-                break;
+                return this.handleCalendarChange(1, e);
         }
+
+        return true;
     }
 
     /**
@@ -423,28 +423,28 @@ export class DatePicker extends FormAssociatedDatePicker {
     public handleCalendarChange(
         direction: number = 1,
         e?: KeyboardEvent | MouseEvent | undefined
-    ): void {
+    ): boolean {
         if (e && e instanceof KeyboardEvent) {
             const key: string = e.key;
 
             switch (key) {
                 case keyEnter:
                 case keySpace:
-                    e.preventDefault();
                     this.calendarChange(direction);
-                    break;
+                    return false;
                 case keyArrowDown:
-                    e.preventDefault();
                     this.calendarChange(-1);
-                    break;
+                    return false;
                 case keyArrowUp:
-                    e.preventDefault();
                     this.calendarChange(1);
-                    break;
+                    return false;
             }
         } else {
             this.calendarChange(direction);
+            return false;
         }
+
+        return true;
     }
 
     public calendarChange(direction: number = 1) {
@@ -713,12 +713,15 @@ export class DatePicker extends FormAssociatedDatePicker {
         this[`${this.flyoutOpen ? "close" : "open"}Flyout`](force);
     }
 
-    public handleFlyoutKeydown(e: KeyboardEvent): void {
+    public handleFlyoutKeydown(e: KeyboardEvent): boolean {
         if (e && e.key && e.key === keyEscape) {
             e.preventDefault();
             this.closeFlyout();
             this.textField.control.focus();
+            return false;
         }
+
+        return true;
     }
 
     /**
@@ -814,11 +817,13 @@ export class DatePicker extends FormAssociatedDatePicker {
      * @param event - keyboard event
      * @returns true
      */
-    public handleMonthKeyup(month: number, year: number, event: KeyboardEvent): void {
+    public handleMonthKeyup(month: number, year: number, event: KeyboardEvent): boolean {
         switch (event.key) {
             case "Enter":
                 this.handleMonthClicked(month, year);
         }
+
+        return true;
     }
 
     /**
@@ -841,11 +846,12 @@ export class DatePicker extends FormAssociatedDatePicker {
      * @param event - keyboard event
      * @returns true
      */
-    public handleYearKeyup(year: number, event: KeyboardEvent): void {
+    public handleYearKeyup(year: number, event: KeyboardEvent): boolean {
         switch (event.key) {
             case "Enter":
                 this.handleYearClicked(year);
         }
+        return true;
     }
 
     /**
@@ -907,9 +913,9 @@ export class DatePicker extends FormAssociatedDatePicker {
      * @returns - should bubble
      * @public
      */
-    public handleTimeKeydown(unit: string, event: KeyboardEvent): void {
+    public handleTimeKeydown(unit: string, event: KeyboardEvent): boolean {
         const key: string = event.key;
-        const move: (direction?: number) => void = (direction = 1) => {
+        const move: (direction?: number) => boolean = (direction = 1) => {
             event.preventDefault();
             const units: string[] = ["hour", "minute", "meridian"];
             const nextIndex: number = units.findIndex(time => time === unit) + direction;
@@ -925,6 +931,7 @@ export class DatePicker extends FormAssociatedDatePicker {
             if (this[selectKey]) {
                 this[selectKey].focus();
             }
+            return true;
         };
 
         switch (key) {
@@ -935,17 +942,17 @@ export class DatePicker extends FormAssociatedDatePicker {
                 event.preventDefault();
                 this.setTime(unit);
                 DOM.nextUpdate().then(move.bind(this, 1));
-                break;
+                return false;
             case keyArrowLeft:
-                move(-1);
-                break;
+                return move(-1);
             case keyArrowRight:
-                move();
-                break;
+                return move();
             case keyEscape:
                 this.closeFlyout(true);
                 break;
         }
+
+        return true;
     }
 
     /**
@@ -1001,7 +1008,7 @@ export class DatePicker extends FormAssociatedDatePicker {
      * @param event - Keyboard event for key press
      * @public
      */
-    public handleKeyup(event: KeyboardEvent): void {
+    public handleKeyup(event: KeyboardEvent): boolean {
         const key = event.key;
 
         switch (key) {
@@ -1019,6 +1026,8 @@ export class DatePicker extends FormAssociatedDatePicker {
                 this.openFlyout(true);
                 break;
         }
+
+        return true;
     }
 
     /**
@@ -1031,40 +1040,41 @@ export class DatePicker extends FormAssociatedDatePicker {
     public handleMonthChange(
         direction: number = 0,
         event: KeyboardEvent | MouseEvent | undefined
-    ): void {
+    ): boolean {
         if (event instanceof KeyboardEvent) {
             const { key, currentTarget } = event;
-            const updateMonth = (value: number): void => {
+            const updateMonth = (value: number): boolean => {
                 event.preventDefault();
                 this.monthView += value;
+                return false;
             };
 
             switch (key) {
                 case keyEnter:
                 case keySpace:
-                    updateMonth(direction);
-                    break;
+                    return updateMonth(direction);
                 case keyArrowDown:
-                    updateMonth(-1);
-                    break;
+                    return updateMonth(-1);
                 case keyArrowUp:
-                    updateMonth(1);
-                    break;
+                    return updateMonth(1);
             }
         } else {
             this.monthView += direction;
         }
+
+        return true;
     }
 
     public handleYearsChange(
         direction: number = 0,
         event: KeyboardEvent | MouseEvent | undefined
-    ): void {
+    ): boolean {
         const updateYears = (dir = direction) => {
             if (event) {
                 event.preventDefault();
             }
             this.yearView += 12 * dir;
+            return false;
         };
         if (event instanceof KeyboardEvent) {
             const { key } = event;
@@ -1072,18 +1082,17 @@ export class DatePicker extends FormAssociatedDatePicker {
             switch (key) {
                 case keyEnter:
                 case keySpace:
-                    updateYears(direction);
-                    break;
+                    return updateYears(direction);
                 case keyArrowDown:
-                    updateYears(-1);
-                    break;
+                    return updateYears(-1);
                 case keyArrowUp:
-                    updateYears(1);
-                    break;
+                    return updateYears(1);
             }
         } else {
             updateYears();
         }
+
+        return true;
     }
 
     /**
