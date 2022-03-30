@@ -3510,19 +3510,6 @@
     "@microsoft/fast-web-utilities" "^4.8.1"
     vscode-html-languageservice "^3.1.3"
 
-"@microsoft/fast-tooling@^0.37.6":
-  version "0.37.6"
-  resolved "https://registry.yarnpkg.com/@microsoft/fast-tooling/-/fast-tooling-0.37.6.tgz#045847c19c2c4fd3f9b33c930b31ca7ae963eeb1"
-  integrity sha512-bMlIIrUGO9UQgEeZi1bealXNrVoZfB8sTgQfrwKN1Nu5mM/wa0NjHvDDQzqVfFrgU0/Ou7AFVUyvz0jTwsFYOQ==
-  dependencies:
-    "@microsoft/fast-colors" "^5.1.3"
-    "@microsoft/fast-components" "^2.9.2"
-    "@microsoft/fast-element" "^1.5.1"
-    "@microsoft/fast-foundation" "^2.13.1"
-    "@microsoft/fast-web-utilities" "^4.8.1"
-    vscode-html-languageservice "^3.1.3"
-    vscode-web-custom-data "^0.3.5"
-
 "@microsoft/fast-tooling@^0.7.0":
   version "0.7.0"
   resolved "https://registry.yarnpkg.com/@microsoft/fast-tooling/-/fast-tooling-0.7.0.tgz#a8487eb5ca85fc796c1b9149496f6fa7b4763e47"
@@ -23453,11 +23440,6 @@ vscode-web-custom-data@^0.3.1:
   version "0.3.3"
   resolved "https://registry.yarnpkg.com/vscode-web-custom-data/-/vscode-web-custom-data-0.3.3.tgz#9e1f2388c718d6f190038a19d144834a436b876f"
   integrity sha512-orMjjj1r4efP5ocODYZm3orpANakRBsxPZPDoD5UIrFOPKDFtMJQLp6PIH1rb3AYVRD1iYXMhDQoC6tZ+DrigA==
-
-vscode-web-custom-data@^0.3.5:
-  version "0.3.6"
-  resolved "https://registry.yarnpkg.com/vscode-web-custom-data/-/vscode-web-custom-data-0.3.6.tgz#7ff374bd39ee4a7c05c77c997d9410520e1d02bc"
-  integrity sha512-9r2DOv4YMXL/WBTBB6zxde93hmg6AM7thr7GMR6c5LvPxXe/lwD8gsrJGe0tha4CUvoz86ElUieThGVpM+4PLg==
 
 w3c-hr-time@^1.0.1, w3c-hr-time@^1.0.2:
   version "1.0.2"
