@@ -3353,19 +3353,7 @@
     raf-throttle "^2.0.3"
     react-dnd "^9.0.0"
 
-"@microsoft/fast-tooling@^0.29.0":
-  version "0.29.0"
-  resolved "https://registry.yarnpkg.com/@microsoft/fast-tooling/-/fast-tooling-0.29.0.tgz#157965479de32a6e910e152545d39db6aa2809b9"
-  integrity sha512-HlbyL5EfAs1tKbVys0GksHwCzCnFFSHmm2V41P0sje98lYqbWwApO3JAvVs2P8t6/E5sdg6/h1lnLOnr5D/n4Q==
-  dependencies:
-    "@microsoft/fast-colors" "^5.1.3"
-    "@microsoft/fast-components" "^2.9.1"
-    "@microsoft/fast-element" "^1.5.1"
-    "@microsoft/fast-foundation" "^2.13.0"
-    "@microsoft/fast-web-utilities" "^4.8.1"
-    vscode-html-languageservice "^3.1.3"
-
-"@microsoft/fast-tooling@^0.37.7":
+"@microsoft/fast-tooling@^0.29.0", "@microsoft/fast-tooling@^0.37.7", "@microsoft/fast-tooling@^0.7.0":
   version "0.37.7"
   resolved "https://registry.yarnpkg.com/@microsoft/fast-tooling/-/fast-tooling-0.37.7.tgz#2ea19b1ca5a5bd169c3d473dd2db2b2e4cdf4947"
   integrity sha512-DgVvLFbuL73Y8VucQdEqYwEJsCSiNHgnRMAqRUlkn9YQFSoV6tWON30Hk9dNVT+4zH/M2Fo1946z6GlGqzoMdg==
@@ -3377,11 +3365,6 @@
     "@microsoft/fast-web-utilities" "^4.8.1"
     vscode-html-languageservice "^3.1.3"
     vscode-web-custom-data "^0.3.5"
-
-"@microsoft/fast-tooling@^0.7.0":
-  version "0.7.0"
-  resolved "https://registry.yarnpkg.com/@microsoft/fast-tooling/-/fast-tooling-0.7.0.tgz#a8487eb5ca85fc796c1b9149496f6fa7b4763e47"
-  integrity sha512-fclz9DF6nxyEgj/h2hONM8s+49CQBEGaXA+dfZzhUpGUJJLcZRHoBA/e/Xxf8Qoot5fxiTqpU9wJqgxg7gR13A==
 
 "@microsoft/fast-web-utilities@^4.6.0", "@microsoft/fast-web-utilities@^4.8.1":
   version "4.8.1"
