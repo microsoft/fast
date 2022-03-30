@@ -159,25 +159,25 @@ export function applyMixins(derivedCtor: any, ...baseCtors: any[]): void;
 
 // @public
 export class ARIAGlobalStatesAndProperties {
-    ariaAtomic: "true" | "false";
-    ariaBusy: "true" | "false";
-    ariaControls: string;
-    ariaCurrent: "page" | "step" | "location" | "date" | "time" | "true" | "false" | string;
-    ariaDescribedby: string;
-    ariaDetails: string;
-    ariaDisabled: "true" | "false";
-    ariaErrormessage: string;
-    ariaFlowto: string;
-    ariaHaspopup: "false" | "true" | "menu" | "listbox" | "tree" | "grid" | "dialog";
-    ariaHidden: "false" | "true" | undefined;
-    ariaInvalid: "false" | "true" | "grammar" | "spelling";
-    ariaKeyshortcuts: string;
-    ariaLabel: string;
-    ariaLabelledby: string;
-    ariaLive: "assertive" | "off" | "polite";
-    ariaOwns: string;
-    ariaRelevant: "additions" | "additions text" | "all" | "removals" | "text";
-    ariaRoledescription: string;
+    ariaAtomic: "true" | "false" | string | null;
+    ariaBusy: "true" | "false" | string | null;
+    ariaControls: string | null;
+    ariaCurrent: "page" | "step" | "location" | "date" | "time" | "true" | "false" | string | null;
+    ariaDescribedby: string | null;
+    ariaDetails: string | null;
+    ariaDisabled: "true" | "false" | string | null;
+    ariaErrormessage: string | null;
+    ariaFlowto: string | null;
+    ariaHaspopup: "false" | "true" | "menu" | "listbox" | "tree" | "grid" | "dialog" | string | null;
+    ariaHidden: "false" | "true" | string | null;
+    ariaInvalid: "false" | "true" | "grammar" | "spelling" | string | null;
+    ariaKeyshortcuts: string | null;
+    ariaLabel: string | null;
+    ariaLabelledby: string | null;
+    ariaLive: "assertive" | "off" | "polite" | string | null;
+    ariaOwns: string | null;
+    ariaRelevant: "additions" | "additions text" | "all" | "removals" | "text" | string | null;
+    ariaRoledescription: string | null;
 }
 
 // @public
@@ -788,8 +788,8 @@ export const DefaultResolver: Readonly<{
 //
 // @public
 export class DelegatesARIAButton {
-    ariaExpanded: "true" | "false" | undefined;
-    ariaPressed: "true" | "false" | "mixed" | undefined;
+    ariaExpanded: "true" | "false" | string | null;
+    ariaPressed: "true" | "false" | "mixed" | string | null;
 }
 
 // @internal
@@ -801,8 +801,8 @@ export interface DelegatesARIAButton extends ARIAGlobalStatesAndProperties {
 //
 // @public
 export class DelegatesARIACombobox {
-    ariaAutoComplete: "inline" | "list" | "both" | "none" | undefined;
-    ariaControls: string;
+    ariaAutoComplete: "inline" | "list" | "both" | "none" | string | null;
+    ariaControls: string | null;
 }
 
 // @internal
@@ -814,7 +814,7 @@ export interface DelegatesARIACombobox extends DelegatesARIAListbox {
 //
 // @public
 export class DelegatesARIALink {
-    ariaExpanded: "true" | "false" | undefined;
+    ariaExpanded: "true" | "false" | string | null;
 }
 
 // @internal
@@ -826,10 +826,10 @@ export interface DelegatesARIALink extends ARIAGlobalStatesAndProperties {
 //
 // @public
 export class DelegatesARIAListbox {
-    ariaActiveDescendant: string;
-    ariaDisabled: "true" | "false";
-    ariaExpanded: "true" | "false" | undefined;
-    ariaMultiSelectable: "true" | "false" | undefined;
+    ariaActiveDescendant: string | null;
+    ariaDisabled: "true" | "false" | string | null;
+    ariaExpanded: "true" | "false" | string | null;
+    ariaMultiSelectable: "true" | "false" | string | null;
 }
 
 // @internal
@@ -841,10 +841,10 @@ export interface DelegatesARIAListbox extends ARIAGlobalStatesAndProperties {
 //
 // @public
 export class DelegatesARIAListboxOption {
-    ariaChecked: "true" | "false" | undefined;
-    ariaPosInSet: string;
-    ariaSelected: "true" | "false" | undefined;
-    ariaSetSize: string;
+    ariaChecked: "true" | "false" | string | null;
+    ariaPosInSet: string | null;
+    ariaSelected: "true" | "false" | string | null;
+    ariaSetSize: string | null;
 }
 
 // @internal (undocumented)
@@ -867,7 +867,7 @@ export interface DelegatesARIASearch extends ARIAGlobalStatesAndProperties {
 //
 // @public
 export class DelegatesARIASelect {
-    ariaControls: string;
+    ariaControls: string | null;
 }
 
 // @internal
@@ -890,8 +890,8 @@ export interface DelegatesARIATextbox extends ARIAGlobalStatesAndProperties {
 //
 // @public
 export class DelegatesARIAToolbar {
-    ariaLabel: string;
-    ariaLabelledby: string;
+    ariaLabel: string | null;
+    ariaLabelledby: string | null;
 }
 
 // @internal
@@ -972,7 +972,7 @@ export const DI: Readonly<{
     createContainer(config?: Partial<ContainerConfiguration> | undefined): Container;
     findResponsibleContainer(node: Node): Container;
     findParentContainer(node: Node): Container;
-    getOrCreateDOMContainer(node?: Node | undefined, config?: Partial<Pick<ContainerConfiguration, "responsibleForOwnerRequests" | "defaultResolver">> | undefined): Container;
+    getOrCreateDOMContainer(node?: Node | undefined, config?: Partial<Omit<ContainerConfiguration, "parentLocator">> | undefined): Container;
     getDesignParamtypes: (Type: Constructable | Injectable) => readonly Key[] | undefined;
     getAnnotationParamtypes: (Type: Constructable | Injectable) => readonly Key[] | undefined;
     getOrCreateAnnotationParamTypes(Type: Constructable | Injectable): Key[];
@@ -1169,7 +1169,7 @@ export function FormAssociated<T extends ConstructableFormAssociated>(BaseCtor: 
 // Warning: (ae-forgotten-export) The symbol "ElementInternals" needs to be exported by the entry point index.d.ts
 //
 // @alpha
-export interface FormAssociated extends Omit<ElementInternals, "labels"> {
+export interface FormAssociated extends Omit<ElementInternals_2, "labels"> {
     // (undocumented)
     attachProxy(): void;
     // (undocumented)
@@ -1183,7 +1183,7 @@ export interface FormAssociated extends Omit<ElementInternals, "labels"> {
     // (undocumented)
     disabledChanged?(previous: boolean, next: boolean): void;
     // (undocumented)
-    readonly elementInternals: ElementInternals | null;
+    readonly elementInternals: ElementInternals_2 | null;
     // (undocumented)
     readonly formAssociated: boolean;
     // (undocumented)

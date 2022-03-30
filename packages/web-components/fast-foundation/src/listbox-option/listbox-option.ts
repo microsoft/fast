@@ -68,7 +68,7 @@ export class ListboxOption extends FoundationElement {
             return;
         }
 
-        this.ariaChecked = undefined;
+        this.ariaChecked = null;
     }
 
     /**
@@ -244,7 +244,7 @@ export class DelegatesARIAListboxOption {
      * HTML Attribute: `aria-checked`
      */
     @observable
-    public ariaChecked: "true" | "false" | undefined;
+    public ariaChecked: "true" | "false" | string | null;
 
     /**
      * See {@link https://www.w3.org/TR/wai-aria-1.2/#option} for more information.
@@ -253,7 +253,7 @@ export class DelegatesARIAListboxOption {
      * HTML Attribute: `aria-posinset`
      */
     @observable
-    ariaPosInSet: string;
+    ariaPosInSet: string | null;
 
     /**
      * See {@link https://www.w3.org/TR/wai-aria-1.2/#option} for more information.
@@ -262,7 +262,7 @@ export class DelegatesARIAListboxOption {
      * HTML Attribute: `aria-selected`
      */
     @observable
-    ariaSelected: "true" | "false" | undefined;
+    ariaSelected: "true" | "false" | string | null;
 
     /**
      * See {@link https://www.w3.org/TR/wai-aria-1.2/#option} for more information.
@@ -271,7 +271,7 @@ export class DelegatesARIAListboxOption {
      * HTML Attribute: `aria-setsize`
      */
     @observable
-    ariaSetSize: string;
+    ariaSetSize: string | null;
 }
 
 /**
