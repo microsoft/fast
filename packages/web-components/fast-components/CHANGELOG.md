@@ -1,8 +1,32 @@
 # Change Log - @microsoft/fast-components
 
-This log was last generated on Sun, 20 Mar 2022 07:15:44 GMT and should not be manually modified.
+This log was last generated on Thu, 31 Mar 2022 07:13:31 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.25.4
+
+Thu, 31 Mar 2022 07:13:31 GMT
+
+### Patches
+
+- fix hidden menu items should not be included in the tabindex (chhol@microsoft.com)
+
+## 2.25.3
+
+Sun, 27 Mar 2022 07:11:50 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.38.0 (44823142+williamw2@users.noreply.github.com)
+
+## 2.25.2
+
+Thu, 24 Mar 2022 07:12:08 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.37.2 (20542556+mollykreis@users.noreply.github.com)
 
 ## 2.25.1
 

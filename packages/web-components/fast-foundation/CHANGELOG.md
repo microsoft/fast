@@ -1,8 +1,37 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Sun, 20 Mar 2022 07:15:44 GMT and should not be manually modified.
+This log was last generated on Thu, 31 Mar 2022 07:13:31 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.39.0
+
+Thu, 31 Mar 2022 07:13:31 GMT
+
+### Minor changes
+
+- remove duplicate use of heading class in accordion item and update part location (chhol@microsoft.com)
+
+### Patches
+
+- fix hidden menu items should not be included in the tabindex (chhol@microsoft.com)
+
+## 2.38.0
+
+Sun, 27 Mar 2022 07:11:50 GMT
+
+### Minor changes
+
+- Changed Select open attribute to public (44823142+williamw2@users.noreply.github.com)
+- Add string literal union types to all foundation components that use an enum for attribute options (hawkticehurst@gmail.com)
+
+## 2.37.2
+
+Thu, 24 Mar 2022 07:12:08 GMT
+
+### Patches
+
+- Detect changes to start and end slots in toolbar (20542556+mollykreis@users.noreply.github.com)
 
 ## 2.37.1
 

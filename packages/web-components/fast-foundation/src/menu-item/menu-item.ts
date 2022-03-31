@@ -87,7 +87,8 @@ export class MenuItem extends FoundationElement {
      * HTML Attribute: role
      */
     @attr
-    public role: MenuItemRole = MenuItemRole.menuitem;
+    public role: MenuItemRole | "menuitem" | "menuitemcheckbox" | "menuitemradio" =
+        MenuItemRole.menuitem;
 
     /**
      * The checked value of the element.
@@ -306,7 +307,7 @@ export class MenuItem extends FoundationElement {
      * get an array of valid DOM children
      */
     private domChildren(): Element[] {
-        return Array.from(this.children);
+        return Array.from(this.children).filter(child => !child.hasAttribute("hidden"));
     }
 }
 

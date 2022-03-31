@@ -111,7 +111,7 @@ describe("Menu", () => {
         await disconnect();
     });
 
-    it("should not set any tabindex on non menu items elements", async () => {
+    it("should not set any tabindex on non menu item elements", async () => {
         const { element, connect, disconnect, menuItem1 } = await setup();
 
         const notMenuItem = document.createElement("div");
@@ -314,6 +314,51 @@ describe("Menu", () => {
         await disconnect();
     });
 
+    it("should not navigate to hidden items", async () => {
+        const { element, connect, disconnect, menuItem3, menuItem4 } = await setup();
+
+        const hiddenItem1 = document.createElement("fast-menu-item");
+        const hiddenItem2 = document.createElement("fast-menu-item");
+
+        (hiddenItem1 as MenuItem).setAttribute("hidden", "");
+        (hiddenItem2 as MenuItem).setAttribute("hidden", "");
+
+        element.insertBefore(hiddenItem1, menuItem3);
+        element.insertBefore(hiddenItem2, menuItem4);
+
+        await connect();
+        await DOM.nextUpdate();
+
+        const item1 = element.querySelector('[id="id1"]');
+        (item1 as HTMLElement).focus();
+        expect(document.activeElement?.id).to.equal("id1");
+
+        document.activeElement?.dispatchEvent(arrowDownEvent);
+        expect(document.activeElement?.id).to.equal("id2");
+
+        document.activeElement?.dispatchEvent(arrowDownEvent);
+        expect(document.activeElement?.id).to.equal("id3");
+
+        document.activeElement?.dispatchEvent(arrowDownEvent);
+        expect(document.activeElement?.id).to.equal("id4");
+
+        document.activeElement?.dispatchEvent(arrowDownEvent);
+        expect(document.activeElement?.id).to.equal("id4");
+
+        document.activeElement?.dispatchEvent(arrowUpEvent);
+        expect(document.activeElement?.id).to.equal("id3");
+
+        document.activeElement?.dispatchEvent(arrowUpEvent);
+        expect(document.activeElement?.id).to.equal("id2");
+
+        document.activeElement?.dispatchEvent(arrowUpEvent);
+        expect(document.activeElement?.id).to.equal("id1");
+
+        document.activeElement?.dispatchEvent(arrowUpEvent);
+        expect(document.activeElement?.id).to.equal("id1");
+
+        await disconnect();
+    });
 
     it("should navigate the menu on arrow up/down keys", async () => {
         const { element, connect, disconnect, menuItem1, menuItem2, menuItem3, menuItem4 } = await setup();
