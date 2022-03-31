@@ -35,9 +35,9 @@ export class Breadcrumb extends FoundationElement {
         }
     }
 
-    private setItemSeparator(node: HTMLElement, isLastNode: boolean): void {
-        if (node instanceof BreadcrumbItem) {
-            (node as BreadcrumbItem).separator = isLastNode;
+    private setItemSeparator(item: HTMLElement, isLastNode: boolean): void {
+        if (item instanceof BreadcrumbItem) {
+            (item as BreadcrumbItem).separator = !isLastNode;
         }
     }
 
