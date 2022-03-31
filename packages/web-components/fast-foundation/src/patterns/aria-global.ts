@@ -19,7 +19,7 @@ export class ARIAGlobalStatesAndProperties {
      * @remarks
      * HTML Attribute: aria-atomic
      */
-    @attr({ attribute: "aria-atomic", mode: "fromView" })
+    @attr({ attribute: "aria-atomic" })
     public ariaAtomic: "true" | "false";
 
     /**
@@ -31,7 +31,7 @@ export class ARIAGlobalStatesAndProperties {
      * @remarks
      * HTML Attribute: aria-busy
      */
-    @attr({ attribute: "aria-busy", mode: "fromView" })
+    @attr({ attribute: "aria-busy" })
     public ariaBusy: "true" | "false";
 
     /**
@@ -42,7 +42,7 @@ export class ARIAGlobalStatesAndProperties {
      * @remarks
      * HTML Attribute: aria-controls
      */
-    @attr({ attribute: "aria-controls", mode: "fromView" })
+    @attr({ attribute: "aria-controls" })
     public ariaControls: string;
 
     /**
@@ -53,7 +53,7 @@ export class ARIAGlobalStatesAndProperties {
      * @remarks
      * HTML Attribute: aria-current
      */
-    @attr({ attribute: "aria-current", mode: "fromView" })
+    @attr({ attribute: "aria-current" })
     public ariaCurrent:
         | "page"
         | "step"
@@ -72,7 +72,7 @@ export class ARIAGlobalStatesAndProperties {
      * @remarks
      * HTML Attribute: aria-describedby
      */
-    @attr({ attribute: "aria-describedby", mode: "fromView" })
+    @attr({ attribute: "aria-describedby" })
     public ariaDescribedby: string;
 
     /**
@@ -83,7 +83,7 @@ export class ARIAGlobalStatesAndProperties {
      * @remarks
      * HTML Attribute: aria-details
      */
-    @attr({ attribute: "aria-details", mode: "fromView" })
+    @attr({ attribute: "aria-details" })
     public ariaDetails: string;
 
     /**
@@ -94,7 +94,7 @@ export class ARIAGlobalStatesAndProperties {
      * @remarks
      * HTML Attribute: aria-disabled
      */
-    @attr({ attribute: "aria-disabled", mode: "fromView" })
+    @attr({ attribute: "aria-disabled" })
     public ariaDisabled: "true" | "false";
 
     /**
@@ -105,7 +105,7 @@ export class ARIAGlobalStatesAndProperties {
      * @remarks
      * HTML Attribute: aria-errormessage
      */
-    @attr({ attribute: "aria-errormessage", mode: "fromView" })
+    @attr({ attribute: "aria-errormessage" })
     public ariaErrormessage: string;
 
     /**
@@ -117,7 +117,7 @@ export class ARIAGlobalStatesAndProperties {
      * @remarks
      * HTML Attribute: aria-flowto
      */
-    @attr({ attribute: "aria-flowto", mode: "fromView" })
+    @attr({ attribute: "aria-flowto" })
     public ariaFlowto: string;
 
     /**
@@ -129,7 +129,7 @@ export class ARIAGlobalStatesAndProperties {
      * @remarks
      * HTML Attribute: aria-haspopup
      */
-    @attr({ attribute: "aria-haspopup", mode: "fromView" })
+    @attr({ attribute: "aria-haspopup" })
     public ariaHaspopup:
         | "false"
         | "true"
@@ -147,7 +147,7 @@ export class ARIAGlobalStatesAndProperties {
      * @remarks
      * HTML Attribute: aria-hidden
      */
-    @attr({ attribute: "aria-hidden", mode: "fromView" })
+    @attr({ attribute: "aria-hidden" })
     public ariaHidden: "false" | "true" | undefined;
 
     /**
@@ -158,7 +158,7 @@ export class ARIAGlobalStatesAndProperties {
      * @remarks
      * HTML Attribute: aria-invalid
      */
-    @attr({ attribute: "aria-invalid", mode: "fromView" })
+    @attr({ attribute: "aria-invalid" })
     public ariaInvalid: "false" | "true" | "grammar" | "spelling";
 
     /**
@@ -169,7 +169,7 @@ export class ARIAGlobalStatesAndProperties {
      * @remarks
      * HTML Attribute: aria-keyshortcuts
      */
-    @attr({ attribute: "aria-keyshortcuts", mode: "fromView" })
+    @attr({ attribute: "aria-keyshortcuts" })
     public ariaKeyshortcuts: string;
 
     /**
@@ -180,7 +180,7 @@ export class ARIAGlobalStatesAndProperties {
      * @remarks
      * HTML Attribute: aria-label
      */
-    @attr({ attribute: "aria-label", mode: "fromView" })
+    @attr({ attribute: "aria-label" })
     public ariaLabel: string;
 
     /**
@@ -191,7 +191,7 @@ export class ARIAGlobalStatesAndProperties {
      * @remarks
      * HTML Attribute: aria-labelledby
      */
-    @attr({ attribute: "aria-labelledby", mode: "fromView" })
+    @attr({ attribute: "aria-labelledby" })
     public ariaLabelledby: string;
 
     /**
@@ -203,7 +203,7 @@ export class ARIAGlobalStatesAndProperties {
      * @remarks
      * HTML Attribute: aria-live
      */
-    @attr({ attribute: "aria-live", mode: "fromView" })
+    @attr({ attribute: "aria-live" })
     public ariaLive: "assertive" | "off" | "polite";
 
     /**
@@ -216,7 +216,7 @@ export class ARIAGlobalStatesAndProperties {
      * @remarks
      * HTML Attribute: aria-owns
      */
-    @attr({ attribute: "aria-owns", mode: "fromView" })
+    @attr({ attribute: "aria-owns" })
     public ariaOwns: string;
 
     /**
@@ -227,7 +227,7 @@ export class ARIAGlobalStatesAndProperties {
      * @remarks
      * HTML Attribute: aria-relevant
      */
-    @attr({ attribute: "aria-relevant", mode: "fromView" })
+    @attr({ attribute: "aria-relevant" })
     public ariaRelevant: "additions" | "additions text" | "all" | "removals" | "text";
 
     /**
@@ -238,6 +238,6 @@ export class ARIAGlobalStatesAndProperties {
      * @remarks
      * HTML Attribute: aria-roledescription
      */
-    @attr({ attribute: "aria-roledescription", mode: "fromView" })
+    @attr({ attribute: "aria-roledescription" })
     public ariaRoledescription: string;
 }

@@ -146,7 +146,7 @@ export class DelegatesARIALink {
      * @remarks
      * HTML Attribute: aria-expanded
      */
-    @attr({ attribute: "aria-expanded", mode: "fromView" })
+    @attr({ attribute: "aria-expanded" })
     public ariaExpanded: "true" | "false" | undefined;
 }
 
