@@ -18,6 +18,7 @@
   "main": "dist/esm/index.js",
   "types": "dist/fast-foundation.d.ts",
   "unpkg": "dist/fast-foundation.min.js",
+  "type": "module",
   "scripts": {
     "clean:dist": "node ../../../build/clean.js dist",
     "doc": "api-extractor run --local",
