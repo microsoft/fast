@@ -57,9 +57,9 @@
   "dependencies": {
     "@fluentui/svg-icons": "^1.1.0",
     "@microsoft/fast-colors": "^5.1.5",
-    "@microsoft/fast-components": "^2.25.3",
+    "@microsoft/fast-components": "^2.25.4",
     "@microsoft/fast-element": "^1.8.0",
-    "@microsoft/fast-foundation": "^2.38.0",
+    "@microsoft/fast-foundation": "^2.39.0",
     "@microsoft/fast-web-utilities": "^5.1.0"
   }
 }
