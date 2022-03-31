@@ -1,5 +1,6 @@
 import chai from "chai";
 import { test } from "mocha";
+import { testData } from "./__test__/testData.js";
 import {
     ColorRGBA64,
     isColorStringHexARGB,
@@ -14,8 +15,7 @@ import {
     parseColorNamed,
     parseColorWebRGB,
     parseColorWebRGBA,
-} from "../src/index.js";
-import { testData } from "./__test__/testData.js";
+} from "./index.js";
 const expect = chai.expect;
 
 const testPrecision: number = 4;

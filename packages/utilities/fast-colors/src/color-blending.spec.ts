@@ -1,5 +1,6 @@
 import chai from "chai";
 import { test } from "mocha";
+import { testData } from "./__test__/testData.js";
 import {
     blendBurn,
     blendDarken,
@@ -13,9 +14,8 @@ import {
     darkenViaLAB,
     desaturateViaLCH,
     lightenViaLAB,
-    saturateViaLCH,
-} from "../src/index.js";
-import { testData } from "./__test__/testData.js";
+    saturateViaLCH
+} from "./index.js";
 const expect = chai.expect;
 const testPrecision: number = 4;
 

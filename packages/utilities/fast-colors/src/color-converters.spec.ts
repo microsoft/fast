@@ -1,5 +1,6 @@
 import chai from "chai";
 import { test } from "mocha";
+import { testData } from "./__test__/testData.js";
 import {
     calculateOverlayColor,
     ColorHSL,
@@ -26,8 +27,7 @@ import {
     temperatureToRGB,
     xyzToLAB,
     xyzToRGB,
-} from "../src/index.js";
-import { testData } from "./__test__/testData.js";
+} from "./index.js";
 const expect = chai.expect;
 
 const testPrecision: number = 4;
