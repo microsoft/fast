@@ -11176,10 +11176,10 @@ execa@^5.0.0:
     signal-exit "^3.0.3"
     strip-final-newline "^2.0.0"
 
-exenv-es6@^1.1.0, exenv-es6@^1.0.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/exenv-es6/-/exenv-es6-1.1.0.tgz#4cea0cebdaeefaed8057b5ca6d805b5ce254dbaf"
-  integrity sha512-nB19kkMw+3m4JmIXNW11KTHzrKHAuyNNrNyvr/HScYNdDowbVyJBqc/6wJF3SM+lyC21n0/NmLPMAXvu8VWDYw==
+exenv-es6@^1.1.1, exenv-es6@^1.0.0:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/exenv-es6/-/exenv-es6-1.1.1.tgz#80b7a8c5af24d53331f755bac07e84abb1f6de67"
+  integrity sha512-vlVu3N8d6yEMpMsEm+7sUBAI81aqYYuEvfK0jNqmdb/OPXzzH7QWDDnVjMvDSY47JdHEqx/dfC/q8WkfoTmpGQ==
 
 exif-parser@^0.1.12:
   version "0.1.12"

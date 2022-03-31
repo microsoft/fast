@@ -69,6 +69,6 @@
     "typescript": "^3.9.0"
   },
   "dependencies": {
-    "exenv-es6": "^1.1.0"
+    "exenv-es6": "^1.1.1"
   }
 }
