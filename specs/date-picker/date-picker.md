@@ -43,7 +43,7 @@ This is a community requested component. Adds a FAST version of the input[type=d
 *Component Name*
 - `fast-date-picker`
 
-*Props/Attrs*
+*Attributes*
 - `value` - A predefined date or one picked by the user.
 = `locale` - Market and language
 - `placeholder` - Text to appear when a date isn't present.
@@ -56,8 +56,8 @@ This is a community requested component. Adds a FAST version of the input[type=d
 - `required` - The date field is required or optional.
 - `min` - Earliest allowed date.
 - `max` - Latest allowed date.
-- `allowTextInput` - Whether the date-picker allows input of a date string directly or not.
-- `ariaLabel` - Aria label for screen reader.
+- `allow-text-input` - Whether the date-picker allows input of a date string directly or not.
+- `aria-label` - Aria label for screen reader.
 - `type` - Type of picker. Supports all of the HTML types. `date` | `month` | `week` | `time` | `datetime-local`
 - `selected-dates` - Dates to be selected.
 - `disabled-dates` - Dates that cannot be selected.
