@@ -152,7 +152,7 @@ export const ContentPlacementContainerStyles = css`
     .fast-product-link,
     .fast-design-system-link {
         color: white;
-        text-decoration: underline;
+        text-decoration: none;
         text-align: center;
         border-radius: 3px;
         font-size: var(--type-ramp-base-font-size);

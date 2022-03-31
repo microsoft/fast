@@ -1,6 +1,6 @@
 import FastIcon from "svg/icon-brand.svg";
 import FluentUIIcon from "svg/icon-fluentui.svg";
-// import FuriousIcon from "svg/icon-furious.svg";
+import FuriousIcon from "svg/icon-furious.svg";
 import VSCodeIcon from "svg/icon-vscode.svg";
 
 export interface DesignSystemData {
@@ -23,7 +23,7 @@ export const designSystemData = [
     {
         url: "https://backlight.dev/blog/introducing-furious-a-fast-design-system/",
         anchorText: "Furious",
-        icon: FastIcon,
+        icon: FuriousIcon,
     },
     {
         url: "https://code.visualstudio.com/",
