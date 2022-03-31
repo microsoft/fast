@@ -55,33 +55,35 @@ for(var i = 0; i < modules.length; i++)
             componentManifest.modules.push(modules[i - 2]);
         }
 
+        // html encode < and > to prevent tags in comments from confusing docusaurus and remove new line characters from descriptions
+        componentManifest.modules.forEach(module=>{
+            module.declarations?.forEach(dec=>{
+                if(dec.kind != "class") return;
+                if(dec.description)
+                {
+                    dec.description = dec.description.replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll(LF, ' ');
+                }
+                dec.members?.forEach(member=>{
+                    if(member.description)
+                    {
+                        member.description = member.description.replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll(LF, ' ');
+                    }
+                    if(member.return?.type?.text)
+                    {
+                        member.return.type.text = member.return.type.text.replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll(LF, ' ');
+                    }
+                });
+                dec.attributes?.forEach(attr=>{
+                    if(attr.description)
+                    {
+                        attr.description = attr.description.replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll(LF, ' ');
+                    }
+                });
+            })
+        });
+
         // Convert the single component manifest into a markdown string.
         let markdown = customElementsManifestToMarkdown(componentManifest, { headingOffset: 1 });
-
-        // Clean up unneeded new lines within `` quotes as these tend to break rendering of the markdown.
-        let index = 0;
-        while(index < markdown.length)
-        {
-            const startIndex = markdown.indexOf('`', index);
-            if(startIndex >= 0 && startIndex < markdown.length)
-            {
-                const endIndex = markdown.indexOf('`', startIndex + 1);
-                if(endIndex >= 0)
-                {
-                    const segment = markdown.substring(startIndex, endIndex);
-                    markdown = markdown.replace(segment, segment.replaceAll(LF, ' '));
-                    index = endIndex + 1;
-                }
-                else
-                {
-                    index = markdown.length + 1;
-                }
-            }
-            else
-            {
-                index = markdown.length + 1;
-            }
-        }
 
         // Get the README.md file
         let path = modules[componentIndex].path.split('/');

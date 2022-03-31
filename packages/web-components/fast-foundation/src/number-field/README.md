@@ -86,9 +86,9 @@ This component is built with the expectation that focus is delegated to the inpu
 
 #### Static Methods
 
-| Name      | Privacy | Description                                                                     | Parameters                      | Return                                                                                                             | Inherited From    |
-| --------- | ------- | ------------------------------------------------------------------------------- | ------------------------------- | ------------------------------------------------------------------------------------------------------------------ | ----------------- |
-| `compose` | public  | Defines an element registry function with a set of element definition defaults. | `this: K, elementDefinition: T` | `(         overrideDefinition?: OverrideFoundationElementDefinition<T>     ) => FoundationElementRegistry<T, K>` | FoundationElement |
+| Name      | Privacy | Description                                                                     | Parameters                      | Return                                                                                                                          | Inherited From    |
+| --------- | ------- | ------------------------------------------------------------------------------- | ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
+| `compose` | public  | Defines an element registry function with a set of element definition defaults. | `this: K, elementDefinition: T` | `(         overrideDefinition?: OverrideFoundationElementDefinition&lt;T&gt;     ) =&gt; FoundationElementRegistry&lt;T, K&gt;` | FoundationElement |
 
 #### Fields
 
@@ -108,9 +108,9 @@ This component is built with the expectation that focus is delegated to the inpu
 | `valueAsNumber` | public  | `number`                                     |          | The value property, typed as a number.                                                                                                                                                                                            |                           |
 | `proxy`         |         |                                              |          |                                                                                                                                                                                                                                   | FormAssociatedNumberField |
 | `_presentation` | private | `ComponentPresentation \| null \| undefined` | `void 0` |                                                                                                                                                                                                                                   | FoundationElement         |
-| `$presentation` | public  | `ComponentPresentation \| null`              |          | A property which resolves the ComponentPresentation instance&#xD;&#xA;for the current component.                                                                                                                                  | FoundationElement         |
-| `template`      | public  | `ElementViewTemplate \| void \| null`        |          | Sets the template of the element instance. When undefined,&#xD;&#xA;the element will attempt to resolve the template from&#xD;&#xA;the associated presentation or custom element definition.                                      | FoundationElement         |
-| `styles`        | public  | `ElementStyles \| void \| null`              |          | Sets the default styles for the element instance. When undefined,&#xD;&#xA;the element will attempt to resolve default styles from&#xD;&#xA;the associated presentation or custom element definition.                             | FoundationElement         |
+| `$presentation` | public  | `ComponentPresentation \| null`              |          | A property which resolves the ComponentPresentation instance for the current component.                                                                                                                                           | FoundationElement         |
+| `template`      | public  | `ElementViewTemplate \| void \| null`        |          | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.                                                        | FoundationElement         |
+| `styles`        | public  | `ElementStyles \| void \| null`              |          | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition.                                               | FoundationElement         |
 
 #### Methods
 
