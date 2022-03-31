@@ -18,7 +18,7 @@ const commonChromeFlags = [
     "--disable-translate",
 ];
 
-module.exports = function (config) {
+module.exports = function (config: any) {
     let browsers;
     if (process.env.BROWSERS) {
         browsers = [process.env.BROWSERS];
@@ -135,9 +135,9 @@ module.exports = function (config) {
             loader: "istanbul-instrumenter-loader",
             options: { esModules: true },
             test: /\.[tj]s$/,
-        });
+        } as any);
         options.reporters = ["coverage-istanbul", ...options.reporters];
-        options.coverageIstanbulReporter = {
+        (options as any).coverageIstanbulReporter = {
             reports: ["html", "text-summary", "json", "lcovonly", "cobertura"],
             dir: "coverage",
             verbose: true,
@@ -151,7 +151,7 @@ module.exports = function (config) {
                 },
             },
         };
-        options.junitReporter = {
+        (options as any).junitReporter = {
             outputDir: "coverage",
             outputFile: "test-results.xml",
             useBrowserName: false,
