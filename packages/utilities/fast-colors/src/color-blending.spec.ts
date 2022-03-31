@@ -14,7 +14,7 @@ import {
     darkenViaLAB,
     desaturateViaLCH,
     lightenViaLAB,
-    saturateViaLCH
+    saturateViaLCH,
 } from "./index.js";
 const expect = chai.expect;
 const testPrecision: number = 4;
