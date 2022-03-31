@@ -2,6 +2,29 @@
   "name": "@microsoft/fast-foundation",
   "entries": [
     {
+      "date": "Thu, 31 Mar 2022 07:13:31 GMT",
+      "tag": "@microsoft/fast-foundation_v2.39.0",
+      "version": "2.39.0",
+      "comments": {
+        "patch": [
+          {
+            "comment": "fix hidden menu items should not be included in the tabindex",
+            "author": "chhol@microsoft.com",
+            "commit": "3739c60925bc91dada3aaa71a72af5392c731fc1",
+            "package": "@microsoft/fast-foundation"
+          }
+        ],
+        "minor": [
+          {
+            "comment": "remove duplicate use of heading class in accordion item and update part location",
+            "author": "chhol@microsoft.com",
+            "commit": "33a990cffd8c8044e886c9d777e212fa67f60acf",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sun, 27 Mar 2022 07:11:50 GMT",
       "tag": "@microsoft/fast-foundation_v2.38.0",
       "version": "2.38.0",
