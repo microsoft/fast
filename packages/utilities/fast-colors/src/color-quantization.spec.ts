@@ -1,9 +1,9 @@
+import chai from "chai";
+import { test } from "mocha";
 import { test200ImageData } from "./__test__/test200.js";
 import { testGrey200ImageData } from "./__test__/testGrey200.js";
 import { ArrayPixelBlob } from "./array-pixel-blob.js";
 import { quantize, QuantizedColor } from "./color-quantization.js";
-import chai from "chai";
-import { test } from "mocha";
 const expect = chai.expect;
 
 describe("Generating a histogram from an image", (): void => {

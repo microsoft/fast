@@ -1,3 +1,5 @@
+import chai from "chai";
+import { test } from "mocha";
 import {
     blendBurn,
     blendDarken,
@@ -14,8 +16,6 @@ import {
     saturateViaLCH,
 } from "../src/index.js";
 import { testData } from "./__test__/testData.js";
-import chai from "chai";
-import { test } from "mocha";
 const expect = chai.expect;
 const testPrecision: number = 4;
 
