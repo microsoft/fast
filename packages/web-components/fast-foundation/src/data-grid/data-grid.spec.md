@@ -67,6 +67,105 @@ Note: using a custom `gridColumn` property allows authors to place cells anywher
 - Manages keyboard interactions to pass focus in/out of custom cells with focusable elements.
 - Supports rendering of slotted elements.
 
+### Grid Navigation
+
+Users can navigate the component's grid cells using arrow keys as described [here](https://w3c.github.io/aria-practices/#keyboard-interaction-for-data-grids):
+
+- Right Arrow: Moves focus one cell to the right. If focus is on the right-most cell in the row, focus does not move.
+
+- Left Arrow: Moves focus one cell to the left. If focus is on the left-most cell in the row, focus does not move.
+
+- Down Arrow: Moves focus one cell down. If focus is on the bottom cell in the column, focus does not move.
+
+- Up Arrow: Moves focus one cell Up. If focus is on the top cell in the column, focus does not move.
+
+- Page Down: Moves focus down an author-determined number of rows, typically scrolling so the bottom row in the currently visible set of rows becomes one of the first visible rows. If focus is in the last row of the grid, focus does not move.
+
+- Page Up: Moves focus up an author-determined number of rows, typically scrolling so the top row in the currently visible set of rows becomes one of the last visible rows. If focus is in the first row of the grid, focus does not move.
+
+- Home: Moves focus to the first cell in the row that contains focus.
+
+- End: Moves focus to the last cell in the row that contains focus.
+
+- Control + Home: Moves focus to the first cell in the first row.
+
+- Control + End: Moves focus to the last cell in the last row.
+
+Further, authors can enable navigation within a cell as described [here](https://w3c.github.io/aria-practices/#gridNav_inside) using the `ColumnDefinition` for that cell's column.
+
+For example given a nested grid scenario like this:
+
+```
+<fast-data-grid id="nestedGrid" grid-template-columns="1fr 1fr" generate-header="none">
+    <fast-data-grid-row>
+        <fast-data-grid-cell grid-column="1">1.1</fast-data-grid-cell>
+        <fast-data-grid-cell grid-column="2">
+            <fast-data-grid
+                grid-template-columns="1fr 1fr"
+                generate-header="none"
+                no-tabbing="true"
+            >
+                <fast-data-grid-row>
+                    <fast-data-grid-cell grid-column="1">1.2.1.1</fast-data-grid-cell>
+                    <fast-data-grid-cell grid-column="2">1.2.1.2</fast-data-grid-cell>
+                </fast-data-grid-row>
+                <fast-data-grid-row>
+                    <fast-data-grid-cell grid-column="1">1.2.2.1</fast-data-grid-cell>
+                    <fast-data-grid-cell grid-column="2">1.2.2.2</fast-data-grid-cell>
+                </fast-data-grid-row>
+            </fast-data-grid>
+        </fast-data-grid-cell>
+    </fast-data-grid-row>
+</fast-data-grid>
+```
+
+An author could define a `ColumnDefinition` that specifies that the cells in that column have an internal focus queue and a callback that species where focus goes inside the cell: 
+
+```
+function getFocusTarget(cell: DataGridCell): HTMLElement {
+    return cell.children[0] as HTMLElement;
+}
+
+const nestedColumn: ColumnDefinition = {
+    ...
+    cellInternalFocusQueue: true,
+    cellFocusTargetCallback: getFocusTarget,
+    ...
+};
+
+```
+
+### Grid Selection
+
+Selection of cells and rows within the grid can be enabled via the grid's `selection-mode` attribute.  It is set to "none" by default.
+
+#### "single-row" selection mode: 
+
+When in single row selection mode a maximum of one row can be selected at a time.  All rows are labelled with `aria-selected' with any selected row having a value of "true".
+
+When the grid's `click-select` attribute is set to "true", which is the default, any click on a selectable row will select that row, or deselect if already selected.
+
+Keyboard:
+
+- Space: Selects the currently focused row, or deselects it if already selected.
+
+#### "multi-row" selection mode: 
+
+When in single row selection mode a maximum of one row can be selected at a time.  All rows are labelled with `aria-selected' with any selected row having a value of "true".
+
+When the grid's `click-select` attribute is set to "true", which is the default, any click on a selectable row will select that row, or deselect if already selected.  It will additionally deselect all other selected rows.  Holding the control key while selecting prevents deselection of other rows, and holding shift while selecting selects the row and all the rows between it and the last non-shift selected row, if any. 
+
+Keyboard: 
+
+- Space: Selects the currently focused row, or deselects it if already selected.  Deselects all other rows
+
+- Space + Shift: Selects the currently focused row and all rows between it and the last non-shift selected row, if any. 
+
+- Space + Ctrl: Selects/Deselects the currently focused row, does not affect the selection state of other rows.
+
+- "a" + Ctrl: Selects all rows, or deselects all if all rows already selected.
+
+
 ### API
 
 #### The ColumnDefinition interface
