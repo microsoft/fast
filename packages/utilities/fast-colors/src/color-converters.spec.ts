@@ -62,7 +62,10 @@ describe("Color converter functions", () => {
                 data.top.b,
                 data.top.a
             );
-            expect(contrastRatio(bottom, top)).to.be.closeTo(data.contrast, testPrecision);
+            expect(contrastRatio(bottom, top)).to.be.closeTo(
+                data.contrast,
+                testPrecision
+            );
         }
         for (const data of testData.colorPairs) {
             testPair(data);
