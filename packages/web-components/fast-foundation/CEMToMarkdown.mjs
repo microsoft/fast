@@ -34,10 +34,12 @@ for(var i = 0; i < modules.length; i++)
 
         // Continue looping through the main manifest, adding modules to the small manifest until we find a module with a different name.
         // Include modules with names like "component-item" so components like Accordion and Accordion-item are included in the same file.
+        // Include modules with names like "component-label" so components like Slider and Slider-label are included in the same file.
         while(i < modules.length-1 &&
             (
                 currName === getComponentNameFromPath(modules[i + 1].path) ||
-                currName + "-item" === getComponentNameFromPath(modules[i + 1].path)
+                currName + "-item" === getComponentNameFromPath(modules[i + 1].path) ||
+                currName + "-label" === getComponentNameFromPath(modules[i + 1].path)
             )
         )
         {

@@ -205,6 +205,62 @@ export const mySliderLabel = SliderLabel.compose({
 | ---- | -------- | ----------- | -------------------- | ------- |
 | `js` | `Slider` | Slider      | src/slider/slider.ts |         |
 
+## `src/slider-label/slider-label.ts`:
+
+### class: `SliderLabel`
+
+#### Superclass
+
+| Name                | Module                  | Package |
+| ------------------- | ----------------------- | ------- |
+| `FoundationElement` | /src/foundation-element |         |
+
+#### Static Methods
+
+| Name      | Privacy | Description                                                                     | Parameters                      | Return                                                                                                             | Inherited From    |
+| --------- | ------- | ------------------------------------------------------------------------------- | ------------------------------- | ------------------------------------------------------------------------------------------------------------------ | ----------------- |
+| `compose` | public  | Defines an element registry function with a set of element definition defaults. | `this: K, elementDefinition: T` | `(         overrideDefinition?: OverrideFoundationElementDefinition<T>     ) => FoundationElementRegistry<T, K>` | FoundationElement |
+
+#### Fields
+
+| Name                     | Privacy | Type                                         | Default  | Description                                                                                                                                                                                           | Inherited From    |
+| ------------------------ | ------- | -------------------------------------------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
+| `position`               | public  | `string`                                     |          | The position of the label relative to the min and max value of the parent {@link @microsoft/fast-foundation#(Slider:class)}.                                                                          |                   |
+| `hideMark`               | public  | `boolean`                                    | `false`  | Hides the tick mark.                                                                                                                                                                                  |                   |
+| `disabled`               | public  | `boolean`                                    |          | The disabled state of the label. This is generally controlled by the parent {@link @microsoft/fast-foundation#(Slider:class)}.                                                                        |                   |
+| `notifier`               | private | `Notifier`                                   |          |                                                                                                                                                                                                       |                   |
+| `getSliderConfiguration` | private |                                              |          |                                                                                                                                                                                                       |                   |
+| `positionAsStyle`        | private |                                              |          |                                                                                                                                                                                                       |                   |
+| `_presentation`          | private | `ComponentPresentation \| null \| undefined` | `void 0` |                                                                                                                                                                                                       | FoundationElement |
+| `$presentation`          | public  | `ComponentPresentation \| null`              |          | A property which resolves the ComponentPresentation instance&#xD;&#xA;for the current component.                                                                                                      | FoundationElement |
+| `template`               | public  | `ElementViewTemplate \| void \| null`        |          | Sets the template of the element instance. When undefined,&#xD;&#xA;the element will attempt to resolve the template from&#xD;&#xA;the associated presentation or custom element definition.          | FoundationElement |
+| `styles`                 | public  | `ElementStyles \| void \| null`              |          | Sets the default styles for the element instance. When undefined,&#xD;&#xA;the element will attempt to resolve default styles from&#xD;&#xA;the associated presentation or custom element definition. | FoundationElement |
+
+#### Methods
+
+| Name              | Privacy   | Description | Parameters  | Return                        | Inherited From    |
+| ----------------- | --------- | ----------- | ----------- | ----------------------------- | ----------------- |
+| `positionChanged` | private   |             |             | `void`                        |                   |
+| `isSliderConfig`  | private   |             | `node: any` | `node is SliderConfiguration` |                   |
+| `templateChanged` | protected |             |             | `void`                        | FoundationElement |
+| `stylesChanged`   | protected |             |             | `void`                        | FoundationElement |
+
+#### Attributes
+
+| Name        | Field    | Inherited From |
+| ----------- | -------- | -------------- |
+| `position`  | position |                |
+| `hide-mark` | hideMark |                |
+| `disabled`  | disabled |                |
+
+<hr/>
+
+### Exports
+
+| Kind | Name          | Declaration | Module                           | Package |
+| ---- | ------------- | ----------- | -------------------------------- | ------- |
+| `js` | `SliderLabel` | SliderLabel | src/slider-label/slider-label.ts |         |
+
 
 ## Additional resources
 
