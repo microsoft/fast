@@ -17,6 +17,7 @@
   },
   "main": "dist/esm/index.js",
   "types": "dist/fast-element.d.ts",
+  "type": "module",
   "unpkg": "dist/fast-element.min.js",
   "scripts": {
     "clean:dist": "node ../../../build/clean.js dist",
