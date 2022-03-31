@@ -22,9 +22,6 @@ Any time an author wants to display tabular data.
 - Authors can take advantage of multiple customization points to control the grid display.
 - Manages keyboard navigation across the grid.
 
-### Risks and Challenges
-- Unique identifiers are not required per row/data item, this may cause an unstable relationships between data rows and component representations. Authors should be cautious about storing references to grid elements as the data associated with a particular cell or row can change as data is updated.
-
 ### Prior Art/Examples
 
 [FAST React](https://github.com/microsoft/fast-react/tree/master/packages/react/fast-components-react-msft/src/data-grid)
@@ -120,6 +117,18 @@ Can be either "none", "default" or "sticky" (the `GeneratHeaderOptions` enum). A
 
 - `grid-template-columns`  
 String that gets applied to the the css gridTemplateColumns attribute of child rows. Corresponds to the [grid-template-columns css attribute](https://developer.mozilla.org/en-US/docs/Web/CSS/grid-template-columns)
+
+- `selection-mode`
+Sets how the grid handles selection.
+"none" - The default.  The grid does not enable selection.
+"single-row" - Single row elements are selectable.
+"multi-row" - Multiple rows can be selected.
+
+- `click-select`
+Whether the grid selects items based on click events or not.  Authors may wish to invoke selection directly from their own ui, like having a specific checkbox to select a row, in which case `click-select` would be disabled and `toggleSelected()` called on the desired row/cell.  Default is `true`.
+
+- `select-row-header`
+Sets whether the header row is selectable when row selection is enabled.  Default is false.
 
 - `no-tabbing`
 Boolean, defaults to false.  When true the grid does not add itself to the tab queue.

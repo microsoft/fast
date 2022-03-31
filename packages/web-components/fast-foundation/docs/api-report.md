@@ -461,7 +461,7 @@ export const DataGridRowTypes: {
 export type DataGridRowTypes = ValuesOf<typeof DataGridRowTypes>;
 
 // @public
-export type DataGridSelectionMode = "none" | "singleRow" | "multiRow";
+export type DataGridSelectionMode = "none" | "single-row" | "multi-row";
 
 // @public
 export const dataGridTemplate: FoundationElementTemplate<ViewTemplate<DataGrid>>;

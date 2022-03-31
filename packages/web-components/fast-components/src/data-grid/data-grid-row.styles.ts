@@ -57,14 +57,6 @@ export const dataGridRowStyles: FoundationElementTemplate<ElementStyles> = (
                     background: ${SystemColors.Highlight};
                     color: ${SystemColors.HighlightText};
                 }
-
-                :host([disabled]),
-                :host([disabled]:not([aria-selected="true"]):hover) {
-                    background: ${SystemColors.Canvas};
-                    color: ${SystemColors.GrayText};
-                    fill: currentcolor;
-                    opacity: 1;
-                }
             `
         )
     );
