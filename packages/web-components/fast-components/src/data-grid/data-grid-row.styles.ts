@@ -51,8 +51,6 @@ export const dataGridRowStyles: FoundationElementTemplate<ElementStyles> = (
                     color: ${SystemColors.ButtonText};
                     fill: currentcolor;
                 }
-
-                :host(:not([aria-selected="true"]):hover),
                 :host([aria-selected="true"]) {
                     background: ${SystemColors.Highlight};
                     color: ${SystemColors.HighlightText};
