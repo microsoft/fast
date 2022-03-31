@@ -1,0 +1,7 @@
+{
+  "type": "minor",
+  "comment": "update aria-current for breadcrumb items when new nodes are appended",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "chhol@microsoft.com",
+  "dependentChangeType": "patch"
+}
