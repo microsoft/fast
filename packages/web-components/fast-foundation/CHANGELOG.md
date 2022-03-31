@@ -1,8 +1,20 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Sun, 27 Mar 2022 07:11:50 GMT and should not be manually modified.
+This log was last generated on Thu, 31 Mar 2022 07:13:31 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.39.0
+
+Thu, 31 Mar 2022 07:13:31 GMT
+
+### Minor changes
+
+- remove duplicate use of heading class in accordion item and update part location (chhol@microsoft.com)
+
+### Patches
+
+- fix hidden menu items should not be included in the tabindex (chhol@microsoft.com)
 
 ## 2.38.0
 
