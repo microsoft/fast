@@ -1,7 +1,0 @@
-{
-  "type": "none",
-  "comment": "docs: clarify the need for z-index on dialogs",
-  "packageName": "@microsoft/fast-foundation",
-  "email": "yinon@hotmail.com",
-  "dependentChangeType": "none"
-}

@@ -55,6 +55,7 @@ export const textFieldStyles: FoundationElementTemplate<
         border-radius: calc(${controlCornerRadius} * 1px);
         border: calc(${strokeWidth} * 1px) solid ${accentFillRest};
         height: calc(${heightNumber} * 1px);
+        align-items: baseline;
     }
 
     .control {
@@ -92,6 +93,12 @@ export const textFieldStyles: FoundationElementTemplate<
     .label__hidden {
         display: none;
         visibility: hidden;
+    }
+
+    .start,
+    .control,
+    .end {
+        align-self: center;
     }
 
     .start,

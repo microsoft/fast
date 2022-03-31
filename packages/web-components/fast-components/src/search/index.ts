@@ -26,22 +26,6 @@ export class Search extends FoundationSearch {
      */
     @attr
     public appearance: SearchAppearance = "outline";
-    private appearanceChanged(oldValue, newValue): void {
-        // queueUpdate waits for this.root to be defined
-        DOM.queueUpdate(() => {
-            if (newValue === "filled") {
-                fillColor.setValueFor(
-                    this.root,
-                    (target: HTMLElement): Swatch =>
-                        neutralFillRecipe
-                            .getValueFor(target)
-                            .evaluate(target, fillColor.getValueFor(this)).rest
-                );
-            } else if (oldValue === "filled") {
-                fillColor.deleteValueFor(this.root);
-            }
-        });
-    }
 }
 
 /**

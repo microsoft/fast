@@ -1,5 +1,5 @@
 import { canUseDOM } from "exenv-es6";
-import { Direction } from "./localization";
+import { Direction } from "./localization.js";
 
 /**
  * Standardize left scroll conversion when direction is rtl

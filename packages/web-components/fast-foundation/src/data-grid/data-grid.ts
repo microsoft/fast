@@ -127,6 +127,32 @@ export class DataGrid extends FoundationElement {
     }
 
     /**
+     * When true the component will not add itself to the tab queue.
+     * Default is false.
+     *
+     * @public
+     * @remarks
+     * HTML Attribute: no-tabbing
+     */
+    @attr({ attribute: "no-tabbing", mode: "boolean" })
+    public noTabbing: boolean = false;
+    private noTabbingChanged(): void {
+        if (this.$fastController.isConnected) {
+            if (this.noTabbing) {
+                this.setAttribute("tabIndex", "-1");
+            } else {
+                this.setAttribute(
+                    "tabIndex",
+                    this.contains(document.activeElement) ||
+                        this === document.activeElement
+                        ? "-1"
+                        : "0"
+                );
+            }
+        }
+    }
+
+    /**
      *  Whether the grid should automatically generate a header row and its type
      *
      * @public
@@ -134,7 +160,8 @@ export class DataGrid extends FoundationElement {
      * HTML Attribute: generate-header
      */
     @attr({ attribute: "generate-header" })
-    public generateHeader: GenerateHeaderOptions = GenerateHeaderOptions.default;
+    public generateHeader: GenerateHeaderOptions | "none" | "default" | "sticky" =
+        GenerateHeaderOptions.default;
     private generateHeaderChanged(): void {
         if (this.$fastController.isConnected) {
             this.toggleGeneratedHeader();
@@ -331,6 +358,10 @@ export class DataGrid extends FoundationElement {
         // only observe if nodes are added or removed
         this.observer.observe(this, { childList: true });
 
+        if (this.noTabbing) {
+            this.setAttribute("tabindex", "-1");
+        }
+
         DOM.queueUpdate(this.queueRowIndexUpdate);
     }
 
@@ -376,7 +407,7 @@ export class DataGrid extends FoundationElement {
      */
     public handleFocusOut(e: FocusEvent): void {
         if (e.relatedTarget === null || !this.contains(e.relatedTarget as Element)) {
-            this.setAttribute("tabIndex", "0");
+            this.setAttribute("tabIndex", this.noTabbing ? "-1" : "0");
         }
     }
 

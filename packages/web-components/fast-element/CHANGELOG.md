@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-element
 
-This log was last generated on Fri, 25 Feb 2022 17:09:32 GMT and should not be manually modified.
+This log was last generated on Tue, 08 Mar 2022 07:12:45 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.8.0
+
+Tue, 08 Mar 2022 07:12:45 GMT
+
+### Minor changes
+
+- feat: enable multiple fast-element instances in browser at once (roeisenb@microsoft.com)
 
 ## 1.7.2
 

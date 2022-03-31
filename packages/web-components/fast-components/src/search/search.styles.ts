@@ -1,4 +1,5 @@
 import { css, ElementStyles } from "@microsoft/fast-element";
+import { DesignToken } from "@microsoft/fast-foundation";
 import {
     disabledCursor,
     display,
@@ -8,12 +9,14 @@ import {
     TextFieldOptions,
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
+import { Swatch } from "../color/swatch";
 import {
     accentFillActive,
     accentFillHover,
     accentFillRest,
     bodyFont,
     controlCornerRadius,
+    density,
     designUnit,
     disabledOpacity,
     fillColor,
@@ -21,6 +24,10 @@ import {
     neutralFillHover,
     neutralFillInputHover,
     neutralFillInputRest,
+    neutralFillRecipe,
+    neutralFillStealthActive,
+    neutralFillStealthHover,
+    neutralFillStealthRecipe,
     neutralForegroundRest,
     neutralStrokeRest,
     strokeWidth,
@@ -28,6 +35,22 @@ import {
     typeRampBaseLineHeight,
 } from "../design-tokens";
 import { heightNumber } from "../styles/index";
+
+const clearButtonHover = DesignToken.create<Swatch>("clear-button-hover").withDefault(
+    (target: HTMLElement) => {
+        const buttonRecipe = neutralFillStealthRecipe.getValueFor(target);
+        const inputRecipe = neutralFillRecipe.getValueFor(target);
+        return buttonRecipe.evaluate(target, inputRecipe.evaluate(target).hover).hover;
+    }
+);
+
+const clearButtonActive = DesignToken.create<Swatch>("clear-button-active").withDefault(
+    (target: HTMLElement) => {
+        const buttonRecipe = neutralFillStealthRecipe.getValueFor(target);
+        const inputRecipe = neutralFillRecipe.getValueFor(target);
+        return buttonRecipe.evaluate(target, inputRecipe.evaluate(target).hover).active;
+    }
+);
 
 export const searchStyles: FoundationElementTemplate<ElementStyles, TextFieldOptions> = (
     context,
@@ -50,6 +73,7 @@ export const searchStyles: FoundationElementTemplate<ElementStyles, TextFieldOpt
         border-radius: calc(${controlCornerRadius} * 1px);
         border: calc(${strokeWidth} * 1px) solid ${accentFillRest};
         height: calc(${heightNumber} * 1px);
+        align-items: baseline;
     }
 
     .control {
@@ -63,9 +87,7 @@ export const searchStyles: FoundationElementTemplate<ElementStyles, TextFieldOpt
         margin-top: auto;
         margin-bottom: auto;
         border: none;
-        padding: 0;
-        padding-inline-start: calc(${designUnit} * 2px + 1px);
-        padding-inline-end: calc((${designUnit} * 2px) + (${heightNumber} * 1px) + 1px);
+        padding: 0 calc(${designUnit} * 2px + 1px);
         font-size: ${typeRampBaseFontSize};
         line-height: ${typeRampBaseLineHeight};
     }
@@ -82,17 +104,43 @@ export const searchStyles: FoundationElementTemplate<ElementStyles, TextFieldOpt
     }
 
     .clear-button {
-        position: absolute;
-        right: 0;
-        top: 1px;
         height: calc(100% - 2px);
         opacity: 0;
+        margin: 1px;
+        background: transparent;
+        color: ${neutralForegroundRest};
+        fill: currentcolor;
+        border: none;
+        border-radius: calc(${controlCornerRadius} * 1px);
+        min-width: calc(${heightNumber} * 1px);
+        font-size: ${typeRampBaseFontSize};
+        line-height: ${typeRampBaseLineHeight};
+        outline: none;
+        font-family: ${bodyFont};
+        padding: 0 calc((10 + (${designUnit} * 2 * ${density})) * 1px);
+    }
+
+    .clear-button:hover {
+        background: ${neutralFillStealthHover};
+    }
+
+    .clear-button:active {
+        background: ${neutralFillStealthActive};
+    }
+
+    :host([appearance="filled"]) .clear-button:hover {
+        background: ${clearButtonHover};
+    }
+
+    :host([appearance="filled"]) .clear-button:active {
+        background: ${clearButtonActive};
     }
 
     .input-wrapper {
         display: flex;
         position: relative;
         width: 100%;
+        height: 100%;
     }
 
     .label {
@@ -109,6 +157,12 @@ export const searchStyles: FoundationElementTemplate<ElementStyles, TextFieldOpt
         visibility: hidden;
     }
 
+    .input-wrapper,
+    .start,
+    .end {
+        align-self: center;
+    }
+
     .start,
     .end {
         display: flex;
@@ -122,6 +176,7 @@ export const searchStyles: FoundationElementTemplate<ElementStyles, TextFieldOpt
 
     .end {
         margin-inline-end: 1px;
+        height: calc(100% - 2px);
     }
 
     ::slotted(svg) {
