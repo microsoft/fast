@@ -19,7 +19,7 @@
   "types": "./dist/index.d.ts",
   "type": "module",
   "scripts": {
-    "build": "tsc -p ./tsconfig.build.json",
+    "build": "tsc -p ./tsconfig.build.json && yarn doc",
     "build:tests": "tsc -p ./tsconfig.test.json",
     "clean:dist": "node ../../../build/clean.js dist",
     "doc": "api-extractor run --local",
