@@ -1,7 +1,0 @@
-{
-  "type": "minor",
-  "comment": "remove duplicate use of heading class in accordion item and update part location",
-  "packageName": "@microsoft/fast-foundation",
-  "email": "chhol@microsoft.com",
-  "dependentChangeType": "patch"
-}
