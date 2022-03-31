@@ -1,0 +1,11 @@
+{
+    "extends": "./tsconfig.json",
+    "compilerOptions": {
+        "outDir": "test",
+        "declaration": false,
+    },
+    "include": [
+        "testData.ts",
+        "src/**/*.ts"
+    ]
+}
