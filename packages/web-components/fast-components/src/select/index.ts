@@ -5,11 +5,7 @@ import {
 } from "@microsoft/fast-foundation";
 import { optionHeight } from "../listbox-option/listbox-option.styles.js";
 import { listboxSize } from "../listbox/listbox.styles.js";
-import {
-    selectMaxSize,
-    selectOptionWidth,
-    selectStyles as styles,
-} from "./select.styles.js";
+import { selectStyles as styles } from "./select.styles.js";
 
 /**
  * Base class for Select.
@@ -40,9 +36,10 @@ export class Select extends FoundationSelect {
      */
     protected maxHeightChanged(prev: number | undefined, next: number): void {
         if (this.collapsible) {
-            selectMaxSize.setValueFor(this, target => {
-                return Math.floor(this.maxHeight / optionHeight.getValueFor(this));
-            });
+            this.style.setProperty(
+                "--select-max-height",
+                `${Math.floor(this.maxHeight / optionHeight.getValueFor(this))}`
+            );
         }
     }
 

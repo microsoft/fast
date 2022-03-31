@@ -4,7 +4,6 @@ import {
     comboboxTemplate as template,
 } from "@microsoft/fast-foundation";
 import { optionHeight } from "../listbox-option/listbox-option.styles.js";
-import { selectMaxSize } from "../select/select.styles.js";
 import { comboboxStyles as styles } from "./combobox.styles.js";
 
 /**
@@ -16,9 +15,10 @@ export class Combobox extends FoundationCombobox {
      * @internal
      */
     protected maxHeightChanged(prev: number | undefined, next: number): void {
-        selectMaxSize.setValueFor(this, target => {
-            return Math.floor(this.maxHeight / optionHeight.getValueFor(target));
-        });
+        this.style.setProperty(
+            "--select-max-height",
+            `${Math.floor(this.maxHeight / optionHeight.getValueFor(this))}`
+        );
     }
 }
 

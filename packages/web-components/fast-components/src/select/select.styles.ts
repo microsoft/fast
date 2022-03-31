@@ -48,8 +48,6 @@ import { heightNumber } from "../styles/size.js";
  */
 export const selectOptionWidth = DesignToken.create<number>("option-width");
 
-export const selectMaxSize = DesignToken.create<number>("select-max-height");
-
 /**
  * Styles for Select.
  *
@@ -106,7 +104,7 @@ export const selectStyles: FoundationElementTemplate<ElementStyles, SelectOption
     }
 
     .control + .listbox {
-        max-height: calc((${selectMaxSize} * ${optionHeight} + ${listboxStrokeOffset}) * 1px);
+        max-height: calc((var(--select-max-height) * ${optionHeight} + ${listboxStrokeOffset}) * 1px);
     }
 
     ${selectContext ? css`
