@@ -1,0 +1,7 @@
+{
+  "type": "minor",
+  "comment": "Declare package as using ES modules",
+  "packageName": "@microsoft/fast-web-utilities",
+  "email": "nicholasrice@users.noreply.github.com",
+  "dependentChangeType": "patch"
+}

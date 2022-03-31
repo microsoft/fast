@@ -403,3 +403,19 @@
     </fast-menu>
     <div>Test div</div>
 </div>
+
+<h4>With hidden menu items (in menu and submenu)</h4>
+<fast-menu>
+    <fast-menu-item>Menu item 1</fast-menu-item>
+    <fast-menu-item hidden>Menu item 2</fast-menu-item>
+    <fast-menu-item disabled="true">Menu item 3</fast-menu-item>
+    <fast-menu-item>
+        Menu item 4
+        <fast-menu>
+            <fast-menu-item role="menuitemcheckbox">Checkbox 1</fast-menu-item>
+            <fast-menu-item>Nested Menu item 1.1</fast-menu-item>
+            <fast-menu-item hidden>Nested Menu item 1.2</fast-menu-item>
+            <fast-menu-item>Nested Menu item 1.3</fast-menu-item>
+        </fast-menu>
+    </fast-menu-item>
+</fast-menu>

@@ -1,8 +1,24 @@
 # Change Log - @microsoft/fast-figma-plugin-msft
 
-This log was last generated on Thu, 24 Mar 2022 07:12:08 GMT and should not be manually modified.
+This log was last generated on Thu, 31 Mar 2022 07:13:31 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.8.16
+
+Thu, 31 Mar 2022 07:13:31 GMT
+
+### Patches
+
+- Bump @microsoft/fast-components to v2.25.4 (chhol@microsoft.com)
+
+## 0.8.16
+
+Sun, 27 Mar 2022 07:11:50 GMT
+
+### Patches
+
+- Bump @microsoft/fast-react-wrapper to v0.1.44 (44823142+williamw2@users.noreply.github.com)
 
 ## 0.8.16
 
