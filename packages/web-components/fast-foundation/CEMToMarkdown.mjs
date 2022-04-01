@@ -55,28 +55,30 @@ for(var i = 0; i < modules.length; i++)
             componentManifest.modules.push(modules[i - 2]);
         }
 
-        // html encode < and > to prevent tags in comments from confusing docusaurus and remove new line characters from descriptions
+        // enclose html tags in `` to prevent tags in comments from confusing docusaurus
+        // and remove new line characters from descriptions
         componentManifest.modules.forEach(module=>{
             module.declarations?.forEach(dec=>{
                 if(dec.kind != "class") return;
                 if(dec.description)
                 {
-                    dec.description = dec.description.replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll(LF, ' ');
+                    dec.description = fixTagsInText(dec.description.replaceAll(LF, ' '));
                 }
                 dec.members?.forEach(member=>{
                     if(member.description)
                     {
-                        member.description = member.description.replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll(LF, ' ');
+                        member.description = fixTagsInText(member.description.replaceAll(LF, ' '));
                     }
                     if(member.return?.type?.text)
                     {
-                        member.return.type.text = member.return.type.text.replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll(LF, ' ');
+                        // these are already rendered inside of back-ticks so we only need to remove new lines
+                        member.return.type.text = member.return.type.text.replaceAll(LF, ' ');
                     }
                 });
                 dec.attributes?.forEach(attr=>{
                     if(attr.description)
                     {
-                        attr.description = attr.description.replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll(LF, ' ');
+                        attr.description = fixTagsInText(attr.description.replaceAll(LF, ' '));
                     }
                 });
             })
@@ -147,4 +149,11 @@ for(var i = 0; i < modules.length; i++)
 function getComponentNameFromPath(path)
 {
     return path.split('/')[1];
+}
+
+function fixTagsInText(text)
+{
+    return text.replaceAll(/\<.*\>/gi,(match)=>{
+        return '`' + match + '`';
+    });
 }

@@ -136,9 +136,9 @@ export const mySliderLabel = SliderLabel.compose({
 
 #### Static Methods
 
-| Name      | Privacy | Description                                                                     | Parameters                      | Return                                                                                                                          | Inherited From    |
-| --------- | ------- | ------------------------------------------------------------------------------- | ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
-| `compose` | public  | Defines an element registry function with a set of element definition defaults. | `this: K, elementDefinition: T` | `(         overrideDefinition?: OverrideFoundationElementDefinition&lt;T&gt;     ) =&gt; FoundationElementRegistry&lt;T, K&gt;` | FoundationElement |
+| Name      | Privacy | Description                                                                     | Parameters                      | Return                                                                                                           | Inherited From    |
+| --------- | ------- | ------------------------------------------------------------------------------- | ------------------------------- | ---------------------------------------------------------------------------------------------------------------- | ----------------- |
+| `compose` | public  | Defines an element registry function with a set of element definition defaults. | `this: K, elementDefinition: T` | `(         overrideDefinition?: OverrideFoundationElementDefinition<T>     ) => FoundationElementRegistry<T, K>` | FoundationElement |
 
 #### Fields
 
@@ -217,9 +217,9 @@ export const mySliderLabel = SliderLabel.compose({
 
 #### Static Methods
 
-| Name      | Privacy | Description                                                                     | Parameters                      | Return                                                                                                                          | Inherited From    |
-| --------- | ------- | ------------------------------------------------------------------------------- | ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
-| `compose` | public  | Defines an element registry function with a set of element definition defaults. | `this: K, elementDefinition: T` | `(         overrideDefinition?: OverrideFoundationElementDefinition&lt;T&gt;     ) =&gt; FoundationElementRegistry&lt;T, K&gt;` | FoundationElement |
+| Name      | Privacy | Description                                                                     | Parameters                      | Return                                                                                                           | Inherited From    |
+| --------- | ------- | ------------------------------------------------------------------------------- | ------------------------------- | ---------------------------------------------------------------------------------------------------------------- | ----------------- |
+| `compose` | public  | Defines an element registry function with a set of element definition defaults. | `this: K, elementDefinition: T` | `(         overrideDefinition?: OverrideFoundationElementDefinition<T>     ) => FoundationElementRegistry<T, K>` | FoundationElement |
 
 #### Fields
 

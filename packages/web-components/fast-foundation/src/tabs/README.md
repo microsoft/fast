@@ -115,9 +115,9 @@ export const myTabs = Tabs.compose({
 
 #### Static Methods
 
-| Name      | Privacy | Description                                                                     | Parameters                      | Return                                                                                                                          | Inherited From    |
-| --------- | ------- | ------------------------------------------------------------------------------- | ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
-| `compose` | public  | Defines an element registry function with a set of element definition defaults. | `this: K, elementDefinition: T` | `(         overrideDefinition?: OverrideFoundationElementDefinition&lt;T&gt;     ) =&gt; FoundationElementRegistry&lt;T, K&gt;` | FoundationElement |
+| Name      | Privacy | Description                                                                     | Parameters                      | Return                                                                                                           | Inherited From    |
+| --------- | ------- | ------------------------------------------------------------------------------- | ------------------------------- | ---------------------------------------------------------------------------------------------------------------- | ----------------- |
+| `compose` | public  | Defines an element registry function with a set of element definition defaults. | `this: K, elementDefinition: T` | `(         overrideDefinition?: OverrideFoundationElementDefinition<T>     ) => FoundationElementRegistry<T, K>` | FoundationElement |
 
 #### Fields
 
@@ -149,19 +149,19 @@ export const myTabs = Tabs.compose({
 
 #### Methods
 
-| Name                            | Privacy   | Description                    | Parameters           | Return                        | Inherited From    |
-| ------------------------------- | --------- | ------------------------------ | -------------------- | ----------------------------- | ----------------- |
-| `getActiveIndex`                | private   |                                |                      | `number`                      |                   |
-| `getTabIds`                     | private   |                                |                      | `Array&lt;string \| null&gt;` |                   |
-| `getTabPanelIds`                | private   |                                |                      | `Array&lt;string \| null&gt;` |                   |
-| `setComponent`                  | private   |                                |                      | `void`                        |                   |
-| `isHorizontal`                  | private   |                                |                      | `boolean`                     |                   |
-| `handleActiveIndicatorPosition` | private   |                                |                      |                               |                   |
-| `animateActiveIndicator`        | private   |                                |                      | `void`                        |                   |
-| `adjust`                        | public    | The adjust method for FASTTabs | `adjustment: number` | `void`                        |                   |
-| `focusTab`                      | private   |                                |                      | `void`                        |                   |
-| `templateChanged`               | protected |                                |                      | `void`                        | FoundationElement |
-| `stylesChanged`                 | protected |                                |                      | `void`                        | FoundationElement |
+| Name                            | Privacy   | Description                    | Parameters           | Return                  | Inherited From    |
+| ------------------------------- | --------- | ------------------------------ | -------------------- | ----------------------- | ----------------- |
+| `getActiveIndex`                | private   |                                |                      | `number`                |                   |
+| `getTabIds`                     | private   |                                |                      | `Array<string \| null>` |                   |
+| `getTabPanelIds`                | private   |                                |                      | `Array<string \| null>` |                   |
+| `setComponent`                  | private   |                                |                      | `void`                  |                   |
+| `isHorizontal`                  | private   |                                |                      | `boolean`               |                   |
+| `handleActiveIndicatorPosition` | private   |                                |                      |                         |                   |
+| `animateActiveIndicator`        | private   |                                |                      | `void`                  |                   |
+| `adjust`                        | public    | The adjust method for FASTTabs | `adjustment: number` | `void`                  |                   |
+| `focusTab`                      | private   |                                |                      | `void`                  |                   |
+| `templateChanged`               | protected |                                |                      | `void`                  | FoundationElement |
+| `stylesChanged`                 | protected |                                |                      | `void`                  | FoundationElement |
 
 #### Attributes
 
@@ -191,9 +191,9 @@ export const myTabs = Tabs.compose({
 
 #### Static Methods
 
-| Name      | Privacy | Description                                                                     | Parameters                      | Return                                                                                                                          | Inherited From    |
-| --------- | ------- | ------------------------------------------------------------------------------- | ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
-| `compose` | public  | Defines an element registry function with a set of element definition defaults. | `this: K, elementDefinition: T` | `(         overrideDefinition?: OverrideFoundationElementDefinition&lt;T&gt;     ) =&gt; FoundationElementRegistry&lt;T, K&gt;` | FoundationElement |
+| Name      | Privacy | Description                                                                     | Parameters                      | Return                                                                                                           | Inherited From    |
+| --------- | ------- | ------------------------------------------------------------------------------- | ------------------------------- | ---------------------------------------------------------------------------------------------------------------- | ----------------- |
+| `compose` | public  | Defines an element registry function with a set of element definition defaults. | `this: K, elementDefinition: T` | `(         overrideDefinition?: OverrideFoundationElementDefinition<T>     ) => FoundationElementRegistry<T, K>` | FoundationElement |
 
 #### Fields
 
@@ -231,9 +231,9 @@ export const myTabs = Tabs.compose({
 
 #### Static Methods
 
-| Name      | Privacy | Description                                                                     | Parameters                      | Return                                                                                                                          | Inherited From    |
-| --------- | ------- | ------------------------------------------------------------------------------- | ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
-| `compose` | public  | Defines an element registry function with a set of element definition defaults. | `this: K, elementDefinition: T` | `(         overrideDefinition?: OverrideFoundationElementDefinition&lt;T&gt;     ) =&gt; FoundationElementRegistry&lt;T, K&gt;` | FoundationElement |
+| Name      | Privacy | Description                                                                     | Parameters                      | Return                                                                                                           | Inherited From    |
+| --------- | ------- | ------------------------------------------------------------------------------- | ------------------------------- | ---------------------------------------------------------------------------------------------------------------- | ----------------- |
+| `compose` | public  | Defines an element registry function with a set of element definition defaults. | `this: K, elementDefinition: T` | `(         overrideDefinition?: OverrideFoundationElementDefinition<T>     ) => FoundationElementRegistry<T, K>` | FoundationElement |
 
 #### Fields
 

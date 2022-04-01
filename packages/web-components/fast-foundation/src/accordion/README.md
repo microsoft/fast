@@ -113,9 +113,9 @@ export const myAccordionItem = AccordionItem.compose<AccordionItemOptions>({
 
 #### Static Methods
 
-| Name      | Privacy | Description                                                                     | Parameters                      | Return                                                                                                                          | Inherited From    |
-| --------- | ------- | ------------------------------------------------------------------------------- | ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
-| `compose` | public  | Defines an element registry function with a set of element definition defaults. | `this: K, elementDefinition: T` | `(         overrideDefinition?: OverrideFoundationElementDefinition&lt;T&gt;     ) =&gt; FoundationElementRegistry&lt;T, K&gt;` | FoundationElement |
+| Name      | Privacy | Description                                                                     | Parameters                      | Return                                                                                                           | Inherited From    |
+| --------- | ------- | ------------------------------------------------------------------------------- | ------------------------------- | ---------------------------------------------------------------------------------------------------------------- | ----------------- |
+| `compose` | public  | Defines an element registry function with a set of element definition defaults. | `this: K, elementDefinition: T` | `(         overrideDefinition?: OverrideFoundationElementDefinition<T>     ) => FoundationElementRegistry<T, K>` | FoundationElement |
 
 #### Fields
 
@@ -138,16 +138,16 @@ export const myAccordionItem = AccordionItem.compose<AccordionItemOptions>({
 
 #### Methods
 
-| Name                 | Privacy   | Description | Parameters           | Return                        | Inherited From    |
-| -------------------- | --------- | ----------- | -------------------- | ----------------------------- | ----------------- |
-| `findExpandedItem`   | private   |             |                      | `AccordionItem \| null`       |                   |
-| `resetItems`         | private   |             |                      | `void`                        |                   |
-| `getItemIds`         | private   |             |                      | `Array&lt;string \| null&gt;` |                   |
-| `isSingleExpandMode` | private   |             |                      | `boolean`                     |                   |
-| `adjust`             | private   |             | `adjustment: number` | `void`                        |                   |
-| `focusItem`          | private   |             |                      | `void`                        |                   |
-| `templateChanged`    | protected |             |                      | `void`                        | FoundationElement |
-| `stylesChanged`      | protected |             |                      | `void`                        | FoundationElement |
+| Name                 | Privacy   | Description | Parameters           | Return                  | Inherited From    |
+| -------------------- | --------- | ----------- | -------------------- | ----------------------- | ----------------- |
+| `findExpandedItem`   | private   |             |                      | `AccordionItem \| null` |                   |
+| `resetItems`         | private   |             |                      | `void`                  |                   |
+| `getItemIds`         | private   |             |                      | `Array<string \| null>` |                   |
+| `isSingleExpandMode` | private   |             |                      | `boolean`               |                   |
+| `adjust`             | private   |             | `adjustment: number` | `void`                  |                   |
+| `focusItem`          | private   |             |                      | `void`                  |                   |
+| `templateChanged`    | protected |             |                      | `void`                  | FoundationElement |
+| `stylesChanged`      | protected |             |                      | `void`                  | FoundationElement |
 
 #### Attributes
 
@@ -175,9 +175,9 @@ export const myAccordionItem = AccordionItem.compose<AccordionItemOptions>({
 
 #### Static Methods
 
-| Name      | Privacy | Description                                                                     | Parameters                      | Return                                                                                                                          | Inherited From    |
-| --------- | ------- | ------------------------------------------------------------------------------- | ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
-| `compose` | public  | Defines an element registry function with a set of element definition defaults. | `this: K, elementDefinition: T` | `(         overrideDefinition?: OverrideFoundationElementDefinition&lt;T&gt;     ) =&gt; FoundationElementRegistry&lt;T, K&gt;` | FoundationElement |
+| Name      | Privacy | Description                                                                     | Parameters                      | Return                                                                                                           | Inherited From    |
+| --------- | ------- | ------------------------------------------------------------------------------- | ------------------------------- | ---------------------------------------------------------------------------------------------------------------- | ----------------- |
+| `compose` | public  | Defines an element registry function with a set of element definition defaults. | `this: K, elementDefinition: T` | `(         overrideDefinition?: OverrideFoundationElementDefinition<T>     ) => FoundationElementRegistry<T, K>` | FoundationElement |
 
 #### Fields
 
