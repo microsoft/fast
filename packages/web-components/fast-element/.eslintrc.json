@@ -1,25 +1,29 @@
-module.exports = {
-    extends: ["@microsoft/eslint-config-fast-dna", "prettier"],
-    rules: {
+{
+    "extends": ["@microsoft/eslint-config-fast-dna", "prettier"],
+    "rules": {
         "max-classes-per-file": "off",
         "no-case-declarations": "off",
         "@typescript-eslint/ban-types": [
             "error",
             {
-                types: {
+                "types": {
                     "{}": false,
-                    Function: false,
-                    Object: false,
+                    "Function": false,
+                    "Object": false
                 },
-                extendDefaults: true,
-            },
+                "extendDefaults": true
+            }
         ],
-        "@typescript-eslint/no-use-before-define": ["error", { typedefs: false }],
+        "@typescript-eslint/no-use-before-define": ["error", { "typedefs": false }],
         "@typescript-eslint/explicit-function-return-type": [
             "error",
             {
-                allowExpressions: true,
-            },
+                "allowExpressions": true
+            }
         ],
-    },
-};
+        "import/extensions": [
+            "error",
+            "always"
+        ]
+    }
+}
