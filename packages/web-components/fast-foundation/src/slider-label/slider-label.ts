@@ -1,6 +1,6 @@
 import { attr, Notifier, Observable, observable } from "@microsoft/fast-element";
 import { Direction, Orientation } from "@microsoft/fast-web-utilities";
-import type { SliderConfiguration } from "../slider/index.js";
+import type { SliderConfiguration } from "../slider/slider.js";
 import { convertPixelToPercent } from "../slider/slider-utilities.js";
 import { FoundationElement } from "../foundation-element/foundation-element.js";
 
