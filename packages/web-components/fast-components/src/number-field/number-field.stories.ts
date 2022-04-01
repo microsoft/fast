@@ -1,7 +1,7 @@
 import addons from "@storybook/addons";
 import { STORY_RENDERED } from "@storybook/core-events";
 import NumberFieldTemplate from "./fixtures/number-field.html";
-import "./index";
+import "./index.js";
 
 addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
     if (name.toLowerCase().startsWith("number-field")) {

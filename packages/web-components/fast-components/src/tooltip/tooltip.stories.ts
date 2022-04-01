@@ -2,8 +2,8 @@ import { STORY_RENDERED } from "@storybook/core-events";
 import addons from "@storybook/addons";
 import type { Tooltip as FoundationTooltip } from "@microsoft/fast-foundation";
 import TooltipTemplate from "./fixtures/base.html";
-import "../button";
-import "./index";
+import "../button.js";
+import "./index.js";
 
 function onShowClick(): void {
     for (let i = 1; i <= 4; i++) {

@@ -1,6 +1,6 @@
-import "../listbox-option";
+import "../listbox-option.js";
 import Examples from "./fixtures/base.html";
-import "./index";
+import "./index.js";
 
 export default {
     title: "Combobox",

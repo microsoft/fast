@@ -1,6 +1,6 @@
 
 import { expect } from "chai";
-import { SwatchRGB, isSwatchRGB } from "./swatch";
+import { SwatchRGB, isSwatchRGB } from "./swatch.js";
 
 const test: SwatchRGB = {
 	r: 0,

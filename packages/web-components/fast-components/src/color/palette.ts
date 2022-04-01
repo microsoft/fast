@@ -4,10 +4,10 @@ import {
     ComponentStateColorPalette,
     parseColorHexRGB,
 } from "@microsoft/fast-colors";
-import { isSwatchRGB, Swatch, SwatchRGB } from "./swatch";
-import { binarySearch } from "./utilities/binary-search";
-import { directionByIsDark } from "./utilities/direction-by-is-dark";
-import { contrast, RelativeLuminance } from "./utilities/relative-luminance";
+import { isSwatchRGB, Swatch, SwatchRGB } from "./swatch.js";
+import { binarySearch } from "./utilities/binary-search.js";
+import { directionByIsDark } from "./utilities/direction-by-is-dark.js";
+import { contrast, RelativeLuminance } from "./utilities/relative-luminance.js";
 
 /**
  * A collection of {@link Swatch} instances

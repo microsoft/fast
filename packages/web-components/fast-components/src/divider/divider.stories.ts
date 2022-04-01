@@ -1,5 +1,5 @@
 import DividerTemplate from "./fixtures/divider.html";
-import "./index";
+import "./index.js";
 
 export default {
     title: "Divider",

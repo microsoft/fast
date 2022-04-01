@@ -1,6 +1,6 @@
-import { Palette } from "../palette";
-import { Swatch } from "../swatch";
-import { neutralLayer2Index } from "./neutral-layer-2";
+import { Palette } from "../palette.js";
+import { Swatch } from "../swatch.js";
+import { neutralLayer2Index } from "./neutral-layer-2.js";
 
 /**
  * @internal

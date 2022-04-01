@@ -1,6 +1,6 @@
-import "./index";
-import "../button";
-import "../select";
+import "./index.js";
+import "../button.js";
+import "../select.js";
 import ToolbarTemplate from "./fixtures/base.html";
 
 export default {

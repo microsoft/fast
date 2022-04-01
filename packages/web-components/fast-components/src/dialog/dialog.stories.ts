@@ -1,7 +1,7 @@
 import { STORY_RENDERED } from "@storybook/core-events";
 import addons from "@storybook/addons";
 import DialogTemplate from "./fixtures/dialog.html";
-import "./index";
+import "./index.js";
 
 addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
     if (name.toLowerCase().startsWith("dialog")) {

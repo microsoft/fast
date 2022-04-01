@@ -1,7 +1,7 @@
 import Examples from "./fixtures/base.html";
-import "../tab-panel";
-import "../tab";
-import "./index";
+import "../tab-panel.js";
+import "../tab.js";
+import "./index.js";
 
 export default {
     title: "Tabs",

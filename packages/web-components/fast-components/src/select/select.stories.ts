@@ -1,7 +1,7 @@
 import Examples from "./fixtures/base.html";
-import "../listbox-option";
-import "../listbox";
-import "./index";
+import "../listbox-option.js";
+import "../listbox.js";
+import "./index.js";
 
 export default {
     title: "Select",
