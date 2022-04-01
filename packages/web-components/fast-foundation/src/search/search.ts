@@ -4,7 +4,7 @@ import {
     StartEnd,
     StartEndOptions,
 } from "../patterns/index.js";
-import { applyMixins } from "../utilities/index.js";
+import { applyMixins } from "../utilities/apply-mixins.js";
 import type { FoundationElementDefinition } from "../foundation-element/foundation-element.js";
 import { FormAssociatedSearch } from "./search.form-associated.js";
 /**
