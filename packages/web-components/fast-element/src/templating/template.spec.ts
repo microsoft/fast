@@ -257,5 +257,11 @@ describe(`The html tag template helper`, () => {
         view.dispose();
 
         expect(target.querySelector('#embedded')).to.be.equal(null)
+    });
+
+    it("Should properly interpolate HTML tags with opening / closing tags", () => {
+      const element = "button"
+      const template = html`<${element}></${element}>`
+      expect(template.html).to.equal('<button></button>')
     })
 });
