@@ -34,4 +34,3 @@ For more information view the [specification](https://github.com/microsoft/fast/
 | `js` | `CheckableFormAssociated`  | CheckableFormAssociated  | src/form-associated/form-associated.ts |         |
 
 
-I

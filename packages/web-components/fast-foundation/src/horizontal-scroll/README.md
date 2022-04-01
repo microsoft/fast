@@ -195,4 +195,3 @@ export const myHorizontalScroll = HorizontalScroll.compose<HorizontalScrollOptio
 | `js` | `HorizontalScroll` | HorizontalScroll | src/horizontal-scroll/horizontal-scroll.ts |         |
 
 
-I

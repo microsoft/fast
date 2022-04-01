@@ -148,7 +148,7 @@ for(var i = 0; i < modules.length; i++)
             // Replace everything in between the API and Additional Resources sections with the
             // updated markdown.
             const startIndex = apiLoc;
-            const endIndex = resourcesLoc >=0 ? resourcesLoc : readMe.length - 1;
+            const endIndex = resourcesLoc >=0 ? resourcesLoc : readMe.length;
             readMe = readMe.replace(readMe.slice(startIndex, endIndex), "## API" + LF2 + markdown + LF2);
 
             // Replace the README.md file with the new content.
