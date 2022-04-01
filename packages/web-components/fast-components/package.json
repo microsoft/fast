@@ -17,6 +17,7 @@
   },
   "main": "dist/esm/index.js",
   "types": "dist/fast-components.d.ts",
+  "type": "module",
   "unpkg": "dist/fast-components.min.js",
   "scripts": {
     "build-storybook": "build-storybook",
