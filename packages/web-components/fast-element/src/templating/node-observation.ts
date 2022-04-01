@@ -57,11 +57,7 @@ export abstract class NodeObservationDirective<
      * @param context - The execution context that the binding is operating within.
      * @param targets - The targets that behaviors in a view can attach to.
      */
-    bind(
-        source: any,
-        context: ExecutionContext<any, any>,
-        targets: ViewBehaviorTargets
-    ): void {
+    bind(source: any, context: ExecutionContext, targets: ViewBehaviorTargets): void {
         const target = targets[this.targetId] as any;
         target.$fastSource = source;
         this.updateTarget(source, this.computeNodes(target));
@@ -74,11 +70,7 @@ export abstract class NodeObservationDirective<
      * @param context - The execution context that the binding is operating within.
      * @param targets - The targets that behaviors in a view can attach to.
      */
-    unbind(
-        source: any,
-        context: ExecutionContext<any, any>,
-        targets: ViewBehaviorTargets
-    ): void {
+    unbind(source: any, context: ExecutionContext, targets: ViewBehaviorTargets): void {
         const target = targets[this.targetId] as any;
         this.updateTarget(source, emptyArray);
         this.disconnect(target);
