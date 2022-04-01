@@ -6,8 +6,8 @@ import {
     SyntheticViewTemplate,
 } from "@microsoft/fast-element";
 import { keyArrowDown, keyArrowUp } from "@microsoft/fast-web-utilities";
-import { StartEnd, StartEndOptions } from "../patterns/index.js";
-import { applyMixins } from "../utilities/index.js";
+import { StartEnd, StartEndOptions } from "../patterns/start-end.js";
+import { applyMixins } from "../utilities/apply-mixins.js";
 import type { FoundationElementDefinition } from "../foundation-element/foundation-element.js";
 import { DelegatesARIATextbox } from "../text-field/text-field.js";
 import { FormAssociatedNumberField } from "./number-field.form-associated.js";
