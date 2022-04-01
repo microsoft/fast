@@ -72,6 +72,10 @@ for(var i = 0; i < modules.length; i++)
                     {
                         member.description = fixTagsInText(member.description.replaceAll(LF, ' '));
                     }
+                    if(member.default)
+                    {
+                        member.default = fixTagsInText(member.default.replaceAll(LF, ' '));
+                    }
                     if(member.return?.type?.text)
                     {
                         // these are already rendered inside of back-ticks so we only need to remove new lines
