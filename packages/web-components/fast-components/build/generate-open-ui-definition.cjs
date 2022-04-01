@@ -188,7 +188,7 @@ allWebComponentDefinitionKeys.forEach(definitionKey => {
         }
 
         // Write the file
-        fs.writeFile(
+        fs.writeFileSync(
             path.resolve(definitionPath, `${definitionKey}.open-ui.definition.json`),
             JSON.stringify(fileContents, null, 2),
             "utf8",
