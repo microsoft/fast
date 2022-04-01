@@ -61,14 +61,14 @@ export const myAnchoredRegion = AnchoredRegion.compose({
 
 ### Variables
 
-| Name                   | Description                                                                                                                                                                   | Type                   |
-| ---------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------- |
-| `FlyoutPosTop`         | A region that always places itself above the anchor, has&#xD;&#xA;a width to match the anchor, and is sized vertically by content                                             | `AnchoredRegionConfig` |
-| `FlyoutPosBottom`      | A region that always places itself below the anchor, has&#xD;&#xA;a width to match the anchor, and is sized vertically by content                                             | `AnchoredRegionConfig` |
-| `FlyoutPosTallest`     | A region that places itself above or below the anchor&#xD;&#xA;based on available space, has a width to match the anchor,&#xD;&#xA;and is sized vertically by content         | `AnchoredRegionConfig` |
-| `FlyoutPosTopFill`     | A region that always places itself above the anchor, has&#xD;&#xA;a width to match the anchor, and is sized vertically by available space                                     | `AnchoredRegionConfig` |
-| `FlyoutPosBottomFill`  | A region that always places itself below the anchor, has&#xD;&#xA;a width to match the anchor, and is sized vertically by available space                                     | `AnchoredRegionConfig` |
-| `FlyoutPosTallestFill` | A region that places itself above or below the anchor&#xD;&#xA;based on available space, has a width to match the anchor,&#xD;&#xA;and is sized vertically by available space | `AnchoredRegionConfig` |
+| Name                   | Description                                                                                                                                                 | Type                   |
+| ---------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------- |
+| `FlyoutPosTop`         | A region that always places itself above the anchor, has a width to match the anchor, and is sized vertically by content                                    | `AnchoredRegionConfig` |
+| `FlyoutPosBottom`      | A region that always places itself below the anchor, has a width to match the anchor, and is sized vertically by content                                    | `AnchoredRegionConfig` |
+| `FlyoutPosTallest`     | A region that places itself above or below the anchor based on available space, has a width to match the anchor, and is sized vertically by content         | `AnchoredRegionConfig` |
+| `FlyoutPosTopFill`     | A region that always places itself above the anchor, has a width to match the anchor, and is sized vertically by available space                            | `AnchoredRegionConfig` |
+| `FlyoutPosBottomFill`  | A region that always places itself below the anchor, has a width to match the anchor, and is sized vertically by available space                            | `AnchoredRegionConfig` |
+| `FlyoutPosTallestFill` | A region that places itself above or below the anchor based on available space, has a width to match the anchor, and is sized vertically by available space | `AnchoredRegionConfig` |
 
 <hr/>
 

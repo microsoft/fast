@@ -59,10 +59,13 @@ for(var i = 0; i < modules.length; i++)
         // and remove new line characters from descriptions
         componentManifest.modules.forEach(module=>{
             module.declarations?.forEach(dec=>{
-                if(dec.kind != "class") return;
                 if(dec.description)
                 {
                     dec.description = fixTagsInText(dec.description.replaceAll(LF, ' '));
+                }
+                if(dec.default)
+                {
+                    dec.default = fixTagsInText(dec.default.replaceAll(LF, ' '));
                 }
                 dec.members?.forEach(member=>{
                     if(member.description)
