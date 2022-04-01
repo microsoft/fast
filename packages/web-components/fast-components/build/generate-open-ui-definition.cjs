@@ -1,10 +1,11 @@
-import fs from "fs";
-import path from "path";
-import glob from "glob";
-import chalk from "chalk";
-import Ajv from "ajv";
-import openUISchema from "../src/__test__/component.schema.json";
-import vsCodeCustomDataSchema from "vscode-html-languageservice/docs/customData.schema.json";
+/* eslint-disable */
+const fs = require("fs");
+const path = require("path");
+const glob = require("glob");
+const chalk = require("chalk");
+const Ajv = require("ajv");
+const openUISchema = require("../src/__test__/component.schema.json");
+const vsCodeCustomDataSchema = require("vscode-html-languageservice/docs/customData.schema.json");
 
 const ajv = new Ajv();
 ajv.addSchema(vsCodeCustomDataSchema);
@@ -165,56 +166,38 @@ allWebComponentDefinitionKeys.forEach(definitionKey => {
             })
         );
 
-        import(dictionaryOfWebComponentDefinitionLocations[definitionKey])
-            .then(
-                module => {
-                    try {
-                        const fileContents = {
-                            ...openUIDefinition,
-                            implementations: [
-                                {
-                                    type: "web-component",
-                                    implementation: definitionNormalizer(
-                                        module[Object.keys(module)[0]]
-                                    ),
-                                },
-                            ],
-                        };
+        const schema = require(dictionaryOfWebComponentDefinitionLocations[
+            definitionKey
+        ]);
 
-                        // Test the file
-                        const valid = validate(fileContents);
-
-                        if (!valid) {
-                            throw new Error(JSON.stringify(validate.errors, null, 2));
-                        }
-
-                        // Write the file
-                        fs.writeFile(
-                            path.resolve(
-                                definitionPath,
-                                `${definitionKey}.open-ui.definition.json`
-                            ),
-                            JSON.stringify(fileContents, null, 2),
-                            "utf8",
-                            err => {
-                                if (err) {
-                                    throw err;
-                                }
-                            }
-                        );
-                    } catch (e) {
-                        throw e;
-                    }
+        const fileContents = {
+            ...openUIDefinition,
+            implementations: [
+                {
+                    type: "web-component",
+                    implementation: definitionNormalizer(schema),
                 },
-                reason => {
-                    throw new Error(reason);
-                }
-            )
-            .catch(err => {
+            ],
+        };
+
+        // Test the file
+        const valid = validate(fileContents);
+
+        if (!valid) {
+            throw new Error(JSON.stringify(validate.errors, null, 2));
+        }
+
+        // Write the file
+        fs.writeFile(
+            path.resolve(definitionPath, `${definitionKey}.open-ui.definition.json`),
+            JSON.stringify(fileContents, null, 2),
+            "utf8",
+            err => {
                 if (err) {
-                    throw new Error(err.toString());
+                    throw err;
                 }
-            });
+            }
+        );
     } else {
         throw new Error(`Missing or mismatched definition: ${definitionKey}`);
     }

@@ -34,7 +34,7 @@
     "doc": "api-extractor run --local",
     "eslint:fix": "eslint . --ext .ts --fix",
     "eslint": "eslint . --ext .ts",
-    "generate-open-ui-definition": "tsc -p ./tsconfig.definitions.json && node -r esm build/generate-open-ui-definition",
+    "generate-open-ui-definition": "tsc -p ./tsconfig.definitions.json && node build/generate-open-ui-definition.cjs",
     "validate-component-definitions": "node -r esm build/validate-component-definitions",
     "prepare": "yarn clean:dist && yarn build",
     "prettier:diff": "prettier --config ../../../.prettierrc \"**/*.{ts,html}\" --list-different",
