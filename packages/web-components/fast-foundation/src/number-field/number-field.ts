@@ -6,11 +6,11 @@ import {
     SyntheticViewTemplate,
 } from "@microsoft/fast-element";
 import { keyArrowDown, keyArrowUp } from "@microsoft/fast-web-utilities";
-import { StartEnd, StartEndOptions } from "../patterns/index";
-import { applyMixins } from "../utilities/index";
-import type { FoundationElementDefinition } from "../foundation-element";
-import { DelegatesARIATextbox } from "../text-field/index";
-import { FormAssociatedNumberField } from "./number-field.form-associated";
+import { StartEnd, StartEndOptions } from "../patterns/index.js";
+import { applyMixins } from "../utilities/index.js";
+import type { FoundationElementDefinition } from "../foundation-element/foundation-element.js";
+import { DelegatesARIATextbox } from "../text-field/index.js";
+import { FormAssociatedNumberField } from "./number-field.form-associated.js";
 
 /**
  * Number Field configuration options

@@ -1,6 +1,6 @@
 import { html, ViewTemplate } from "@microsoft/fast-element";
-import type { FoundationElementTemplate } from "../foundation-element";
-import type { PickerListItem } from "./picker-list-item";
+import type { FoundationElementTemplate } from "../foundation-element/foundation-element.js";
+import type { PickerListItem } from "./picker-list-item.js";
 
 /**
  *

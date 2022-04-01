@@ -11,8 +11,8 @@ import {
     MenuItemColumnCount,
     MenuItemRole,
     roleForMenuItem,
-} from "../menu-item/index";
-import { FoundationElement } from "../foundation-element";
+} from "../menu-item/index.js";
+import { FoundationElement } from "../foundation-element/foundation-element.js";
 
 /**
  * A Menu Custom HTML Element.
