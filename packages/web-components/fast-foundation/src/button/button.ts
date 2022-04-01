@@ -255,7 +255,7 @@ export class DelegatesARIAButton {
      * @remarks
      * HTML Attribute: aria-expanded
      */
-    @attr({ attribute: "aria-expanded", mode: "fromView" })
+    @attr({ attribute: "aria-expanded" })
     public ariaExpanded: "true" | "false" | undefined;
 
     /**
@@ -264,7 +264,7 @@ export class DelegatesARIAButton {
      * @remarks
      * HTML Attribute: aria-pressed
      */
-    @attr({ attribute: "aria-pressed", mode: "fromView" })
+    @attr({ attribute: "aria-pressed" })
     public ariaPressed: "true" | "false" | "mixed" | undefined;
 }
 
