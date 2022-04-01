@@ -42,13 +42,6 @@ import { elevation } from "../styles/elevation.js";
 import { heightNumber } from "../styles/size.js";
 
 /**
- * The width of the widest option.
- *
- * @public
- */
-export const selectOptionWidth = DesignToken.create<number>("option-width");
-
-/**
  * Styles for Select.
  *
  * @public
@@ -195,7 +188,7 @@ export const selectStyles: FoundationElementTemplate<ElementStyles, SelectOption
     .selected-value {
         flex: 1 1 auto;
         font-family: inherit;
-        min-width: calc((${selectOptionWidth} * 1px) - var(--indicator-width));
+        min-width: calc((var(--option-width, 0) * 1px) - var(--indicator-width));
         overflow: hidden;
         text-align: start;
         text-overflow: ellipsis;

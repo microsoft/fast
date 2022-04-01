@@ -69,7 +69,10 @@ export class Select extends FoundationSelect {
                 this.listbox.style.setProperty("width", "auto");
                 this.listbox.hidden = false;
 
-                selectOptionWidth.setValueFor(this, this.listbox.scrollWidth);
+                this.listbox.style.setProperty(
+                    "--option-width",
+                    `${this.listbox.scrollWidth}`
+                );
 
                 this.listbox.hidden = true;
                 this.listbox.style.removeProperty("display");
@@ -81,7 +84,7 @@ export class Select extends FoundationSelect {
             return;
         }
 
-        selectOptionWidth.setValueFor(this, 0);
+        this.listbox?.style.removeProperty("--option-width");
     }
 }
 
