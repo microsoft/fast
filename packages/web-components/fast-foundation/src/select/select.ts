@@ -324,7 +324,7 @@ export class Select extends FormAssociatedSelect {
 
         super.clickHandler(e);
 
-        this.open = !this.open;
+        this.open = this.collapsible && !this.open;
 
         if (!this.open && this.indexWhenOpened !== this.selectedIndex) {
             this.updateValue(true);
