@@ -87,6 +87,11 @@ for(var i = 0; i < modules.length; i++)
         // Convert the single component manifest into a markdown string.
         let markdown = customElementsManifestToMarkdown(componentManifest, { headingOffset: 1 });
 
+        // Replace our < and > markers with backticks and < >
+        // This is necessary because customElementsManifestToMarkdown escapes the backticks during the conversion
+        // and we don't want that because then docusaurus will see the tags as real tags instead of just text.
+        markdown = markdown.replaceAll("REPLACELT","`<").replaceAll("REPLACEGT",">`");
+
         // Get the README.md file
         let path = modules[componentIndex].path.split('/');
         path[path.length - 1] = "README.md";
@@ -153,7 +158,8 @@ function getComponentNameFromPath(path)
 
 function fixTagsInText(text)
 {
+    // replace < and > characters in text with something that can be easily replaced later.
     return text.replaceAll(/\<.*\>/gi,(match)=>{
-        return '`' + match + '`';
+        return match.replace('<','REPLACELT').replace('>','REPLACEGT');
     });
 }
