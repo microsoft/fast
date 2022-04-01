@@ -1,4 +1,4 @@
-import { roundToPrecisionSmall } from "./math-utilities";
+import { roundToPrecisionSmall } from "./math-utilities.js";
 
 /**
  * This uses Hue values in "degree" format. So expect a range of [0,360]. Some other implementations instead uses radians or a normalized Hue with range [0,1]. Be aware of this when checking values or using other libraries.

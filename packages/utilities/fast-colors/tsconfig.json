@@ -4,6 +4,11 @@
         "strictNullChecks": false,
         "noImplicitAny": false,
         "strictPropertyInitialization": false,
-        "baseUrl": "."
+        "outDir": "dist",
+        "rootDir": "src",
+        "baseUrl": ".",
+        "types": [
+            "mocha"
+        ]
     }
 }
