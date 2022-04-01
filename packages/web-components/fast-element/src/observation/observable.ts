@@ -439,6 +439,16 @@ export interface RootContext {
     readonly event: Event;
 
     /**
+     * Returns the typed event detail of a custom event.
+     */
+    eventDetail<TDetail = any>(): TDetail;
+
+    /**
+     * Returns the typed event target of the event.
+     */
+    eventTarget<TTarget extends EventTarget = EventTarget>(): TTarget;
+
+    /**
      * Creates a new execution context descendent from the current context.
      * @param source - The source for the context if different than the parent.
      * @returns A child execution context.
@@ -534,42 +544,50 @@ class DefaultExecutionContext implements RootContext, ChildContext, ItemContext 
         this.parentContext = parentContext as any;
     }
 
-    public get event(): Event {
+    get event(): Event {
         return contextEvent.get()!;
     }
 
-    public get isEven(): boolean {
+    get isEven(): boolean {
         return this.index % 2 === 0;
     }
 
-    public get isOdd(): boolean {
+    get isOdd(): boolean {
         return this.index % 2 !== 0;
     }
 
-    public get isFirst(): boolean {
+    get isFirst(): boolean {
         return this.index === 0;
     }
 
-    public get isInMiddle(): boolean {
+    get isInMiddle(): boolean {
         return !this.isFirst && !this.isLast;
     }
 
-    public get isLast(): boolean {
+    get isLast(): boolean {
         return this.index === this.length - 1;
     }
 
-    public updatePosition(index: number, length: number): void {
+    eventDetail<TDetail>(): TDetail {
+        return (this.event as CustomEvent<TDetail>).detail;
+    }
+
+    eventTarget<TTarget extends EventTarget>(): TTarget {
+        return this.event.target! as TTarget;
+    }
+
+    updatePosition(index: number, length: number): void {
         this.index = index;
         this.length = length;
     }
 
-    public createChildContext<TParentSource>(
+    createChildContext<TParentSource>(
         parentSource: TParentSource
     ): ChildContext<TParentSource> {
         return new DefaultExecutionContext(parentSource, this);
     }
 
-    public createItemContext(index: number, length: number): ItemContext {
+    createItemContext(index: number, length: number): ItemContext {
         const childContext = Object.create(this);
         childContext.index = index;
         childContext.length = length;

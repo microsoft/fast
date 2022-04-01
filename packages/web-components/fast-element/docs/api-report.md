@@ -166,7 +166,7 @@ export type ChildrenDirectiveOptions<T = any> = ChildListDirectiveOptions<T> | S
 export interface ChildViewTemplate<TSource = any, TParent = any> {
     create(): SyntheticView<TSource, TParent, ChildContext<TParent>>;
     // (undocumented)
-    type: 'child';
+    type: "child";
 }
 
 // @public
@@ -288,7 +288,7 @@ export interface ElementViewTemplate<TSource = any, TParent = any> {
     create(hostBindingTarget: Element): ElementView<TSource, TParent>;
     render(source: TSource, host: Node, hostBindingTarget?: Element): ElementView<TSource, TParent>;
     // (undocumented)
-    type: 'element';
+    type: "element";
 }
 
 // Warning: (ae-internal-missing-underscore) The name "emptyArray" should be prefixed with an underscore because the declaration is marked as @internal
@@ -413,7 +413,7 @@ export interface ItemContext<TParentSource = any> extends ChildContext<TParentSo
 export interface ItemViewTemplate<TSource = any, TParent = any> {
     create(): SyntheticView<TSource, TParent, ItemContext<TParent>>;
     // (undocumented)
-    type: 'item';
+    type: "item";
 }
 
 // @public
@@ -594,6 +594,8 @@ export interface RepeatOptions {
 export interface RootContext {
     createChildContext<TParentSource>(source: TParentSource): ChildContext<TParentSource>;
     readonly event: Event;
+    eventDetail<TDetail = any>(): TDetail;
+    eventTarget<TTarget extends EventTarget = EventTarget>(): TTarget;
 }
 
 // @public
@@ -686,7 +688,7 @@ export interface SyntheticView<TSource = any, TParent = any, TContext extends Ex
 export interface SyntheticViewTemplate<TSource = any, TParent = any, TContext extends ExecutionContext<TParent> = ExecutionContext<TParent>> {
     create(): SyntheticView<TSource, TParent, TContext>;
     // (undocumented)
-    type: 'synthetic';
+    type: "synthetic";
 }
 
 // @public
