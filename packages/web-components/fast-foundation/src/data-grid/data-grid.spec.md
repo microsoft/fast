@@ -137,7 +137,9 @@ const nestedColumn: ColumnDefinition = {
 
 ### Grid Selection
 
-Selection of cells and rows within the grid can be enabled via the grid's `selection-mode` attribute.  It is set to "none" by default.
+Selection of cells and rows within the grid can be enabled via the grid's `selection-mode` attribute.  It is set to "none" by default.  
+
+Keyboard selection model is based on guidance [here](https://w3c.github.io/aria-practices/#keyboard-interaction-for-data-grids) when applicable.
 
 #### "single-row" selection mode: 
 
@@ -248,7 +250,6 @@ Custom [template](https://fast.design/docs/fast-element/declaring-templates) to 
 
 - `headerCellItemTemplate`  
 Custom [template](https://fast.design/docs/fast-element/declaring-templates) to use when generating header cells by iterating over data. The default template uses `fast-data-grid-cell`, this is where authors can change that. The component applies this to generated rows only.
-
 
 - `focusRowIndex`
 The index of the row that will receive focus the next time the grid is focused. This value changes as focus moves to different rows within the grid. Changing this value when focus is already within the grid moves focus to the specified row. Note that the header row if there is one is typically at index 0.
@@ -365,7 +366,6 @@ const baseRows: object[] = [
     { name: "Bob", age: "20" },
 ];
  ```
-
  An author could pass the data to the component from a javascript function:
 
 ```js

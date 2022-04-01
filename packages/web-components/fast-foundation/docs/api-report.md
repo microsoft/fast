@@ -350,14 +350,13 @@ export class DataGrid extends FoundationElement {
     // @internal (undocumented)
     handleRowFocus(e: Event): void;
     // (undocumented)
-    handleRowSelectedChange(e: CustomEvent): void;
+    handleToggleRowSelection(e: CustomEvent): void;
     headerCellItemTemplate?: ViewTemplate;
     noTabbing: boolean;
     rowElements: HTMLElement[];
     rowElementTag: string;
     rowItemTemplate: ViewTemplate;
     rowsData: object[];
-    // @internal
     selectedRowIndexes: number[];
     // (undocumented)
     selectionMode: DataGridSelectionMode;
@@ -440,11 +439,9 @@ export class DataGridRow extends FoundationElement {
     protected rowDataChanged(): void;
     rowIndex: number;
     rowType: DataGridRowTypes | "default" | "header" | "sticky-header";
-    // @internal
-    selected: boolean;
     // @internal (undocumented)
     slottedCellElements: HTMLElement[];
-    toggleSelected(newValue: boolean, e?: MouseEvent | KeyboardEvent): void;
+    toggleSelected(newValue: boolean, shiftKey: boolean, ctrlKey: boolean): void;
     }
 
 // @public

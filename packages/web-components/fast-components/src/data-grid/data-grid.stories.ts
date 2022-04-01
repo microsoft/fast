@@ -12,8 +12,6 @@ import { STORY_RENDERED } from "@storybook/core-events";
 import DataGridTemplate from "./fixtures/base.html";
 import "./index.js";
 
-let defaultGridElement: DataGrid | null = null;
-
 const defaultRowData: object = newDataRow("default");
 
 const columnWidths: string[] = ["1fr", "1fr", "1fr", "1fr"];
@@ -57,7 +55,6 @@ const customHeaderCellItemTemplate = html`
 
 addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
     if (name.toLowerCase().startsWith("data-grid")) {
-        defaultGridElement = document.getElementById("defaultGrid") as DataGrid;
         reset();
 
         const singleRowSelectGrid = document.getElementById(
@@ -234,6 +231,9 @@ const buttonHeaderCellTemplate = html<DataGridCell>`
 `;
 
 function reset(): void {
+    const defaultGridElement: DataGrid | null = document.getElementById(
+        "defaultGrid"
+    ) as DataGrid;
     if (defaultGridElement === null) {
         return;
     }
@@ -242,6 +242,9 @@ function reset(): void {
 }
 
 function setDefaultCols(): void {
+    const defaultGridElement: DataGrid | null = document.getElementById(
+        "defaultGrid"
+    ) as DataGrid;
     if (defaultGridElement === null) {
         return;
     }
@@ -249,6 +252,9 @@ function setDefaultCols(): void {
 }
 
 function setTemplateCols(): void {
+    const defaultGridElement: DataGrid | null = document.getElementById(
+        "defaultGrid"
+    ) as DataGrid;
     if (defaultGridElement === null) {
         return;
     }
@@ -256,6 +262,9 @@ function setTemplateCols(): void {
 }
 
 function addRow(): void {
+    const defaultGridElement: DataGrid | null = document.getElementById(
+        "defaultGrid"
+    ) as DataGrid;
     if (defaultGridElement === null || defaultGridElement.rowsData === null) {
         return;
     }
@@ -265,6 +274,9 @@ function addRow(): void {
 }
 
 function removeRow(): void {
+    const defaultGridElement: DataGrid | null = document.getElementById(
+        "defaultGrid"
+    ) as DataGrid;
     if (
         defaultGridElement === null ||
         defaultGridElement.rowsData === null ||
@@ -276,6 +288,9 @@ function removeRow(): void {
 }
 
 function setNoHeader(): void {
+    const defaultGridElement: DataGrid | null = document.getElementById(
+        "defaultGrid"
+    ) as DataGrid;
     if (defaultGridElement === null) {
         return;
     }
@@ -283,6 +298,9 @@ function setNoHeader(): void {
 }
 
 function setDefaultHeader(): void {
+    const defaultGridElement: DataGrid | null = document.getElementById(
+        "defaultGrid"
+    ) as DataGrid;
     if (defaultGridElement === null) {
         return;
     }
@@ -290,6 +308,9 @@ function setDefaultHeader(): void {
 }
 
 function setDefaultRowItemTemplate(): void {
+    const defaultGridElement: DataGrid | null = document.getElementById(
+        "defaultGrid"
+    ) as DataGrid;
     if (defaultGridElement === null) {
         return;
     }
@@ -297,6 +318,9 @@ function setDefaultRowItemTemplate(): void {
 }
 
 function setCustomRowItemTemplate(): void {
+    const defaultGridElement: DataGrid | null = document.getElementById(
+        "defaultGrid"
+    ) as DataGrid;
     if (defaultGridElement === null) {
         return;
     }
@@ -304,6 +328,9 @@ function setCustomRowItemTemplate(): void {
 }
 
 function setDefaultCellItemTemplate(): void {
+    const defaultGridElement: DataGrid | null = document.getElementById(
+        "defaultGrid"
+    ) as DataGrid;
     if (defaultGridElement === null) {
         return;
     }
@@ -311,6 +338,9 @@ function setDefaultCellItemTemplate(): void {
 }
 
 function setCustomCellItemTemplate(): void {
+    const defaultGridElement: DataGrid | null = document.getElementById(
+        "defaultGrid"
+    ) as DataGrid;
     if (defaultGridElement === null) {
         return;
     }
@@ -318,6 +348,9 @@ function setCustomCellItemTemplate(): void {
 }
 
 function setDefaultHeaderCellItemTemplate(): void {
+    const defaultGridElement: DataGrid | null = document.getElementById(
+        "defaultGrid"
+    ) as DataGrid;
     if (defaultGridElement === null) {
         return;
     }
@@ -325,36 +358,19 @@ function setDefaultHeaderCellItemTemplate(): void {
 }
 
 function setCustomHeaderCellItemTemplate(): void {
+    const defaultGridElement: DataGrid | null = document.getElementById(
+        "defaultGrid"
+    ) as DataGrid;
     if (defaultGridElement === null) {
         return;
     }
     defaultGridElement.headerCellItemTemplate = customHeaderCellItemTemplate;
 }
 
-function moveFocus(e: MouseEvent): void {
-    if (defaultGridElement === null) {
-        return;
-    }
-    switch ((e.target as HTMLElement).id) {
-        case "btnfocusleft":
-            defaultGridElement.focusColumnIndex = defaultGridElement.focusColumnIndex - 1;
-            break;
-
-        case "btnfocusright":
-            defaultGridElement.focusColumnIndex = defaultGridElement.focusColumnIndex + 1;
-            break;
-
-        case "btnfocusup":
-            defaultGridElement.focusRowIndex = defaultGridElement.focusRowIndex - 1;
-            break;
-
-        case "btnfocusdown":
-            defaultGridElement.focusRowIndex = defaultGridElement.focusRowIndex + 1;
-            break;
-    }
-}
-
 function headerTemplateButtonClick(cell: DataGridCell): void {
+    const defaultGridElement: DataGrid | null = document.getElementById(
+        "defaultGrid"
+    ) as DataGrid;
     if (
         cell.columnDefinition === null ||
         defaultGridElement === null ||
@@ -377,6 +393,9 @@ function headerTemplateButtonClick(cell: DataGridCell): void {
 }
 
 function cellTemplateButtonClick(cell: DataGridCell): void {
+    const defaultGridElement: DataGrid | null = document.getElementById(
+        "defaultGrid"
+    ) as DataGrid;
     if (
         cell.columnDefinition === null ||
         cell.rowData === null ||
@@ -404,6 +423,9 @@ function rowClick(row: DataGridRow, event: Event): void {
 }
 
 function setStickyHeader(): void {
+    const defaultGridElement: DataGrid | null = document.getElementById(
+        "defaultGrid"
+    ) as DataGrid;
     if (defaultGridElement === null) {
         return;
     }
