@@ -7,7 +7,7 @@ import {
     HTMLDirective,
     NodeBehaviorFactory,
     TargetedHTMLDirective,
-} from "./html-directive";
+} from "./html-directive.js";
 import { HTMLBindingDirective } from "./binding.js";
 
 /**

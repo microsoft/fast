@@ -5,7 +5,7 @@ import {
     BindingObserver,
     ExecutionContext,
     Observable,
-} from "../observation/observable";
+} from "../observation/observable.js";
 import { TargetedHTMLDirective } from "./html-directive.js";
 import type { SyntheticView } from "./view.js";
 

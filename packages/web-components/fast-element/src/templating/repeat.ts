@@ -4,7 +4,7 @@ import {
     BindingObserver,
     ExecutionContext,
     Observable,
-} from "../observation/observable";
+} from "../observation/observable.js";
 import type { Notifier, Subscriber } from "../observation/notifier.js";
 import { enableArrayObservation } from "../observation/array-observer.js";
 import type { Splice } from "../observation/array-change-records.js";

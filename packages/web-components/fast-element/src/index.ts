@@ -4,7 +4,7 @@ export * from "./components/fast-element.js";
 export {
     FASTElementDefinition,
     PartialFASTElementDefinition,
-} from "./components/fast-definitions";
+} from "./components/fast-definitions.js";
 export * from "./components/attributes.js";
 export * from "./components/controller.js";
 export type { Callable, Constructable, Mutable } from "./interfaces.js";
@@ -14,7 +14,7 @@ export {
     ElementStyleFactory,
     ComposableStyles,
     StyleTarget,
-} from "./styles/element-styles";
+} from "./styles/element-styles.js";
 export { css, cssPartial } from "./styles/css.js";
 export { CSSDirective } from "./styles/css-directive.js";
 export * from "./templating/view.js";
@@ -35,4 +35,4 @@ export {
     elements,
     ElementsFilter,
     NodeBehaviorOptions,
-} from "./templating/node-observation";
+} from "./templating/node-observation.js";
