@@ -649,6 +649,8 @@ export interface ColorRecipe {
 export class Combobox extends Combobox_2 {
     // @internal (undocumented)
     protected maxHeightChanged(prev: number | undefined, next: number): void;
+    // @internal
+    protected updateComputedStylesheet(): void;
 }
 
 // @public
@@ -1349,6 +1351,9 @@ export const foregroundOnAccentRest: import("@microsoft/fast-foundation").CSSDes
 // @public (undocumented)
 export const foregroundOnAccentRestLarge: import("@microsoft/fast-foundation").CSSDesignToken<Swatch>;
 
+// @public
+export const heightNumberAsToken: DesignToken<number>;
+
 // Warning: (ae-internal-missing-underscore) The name "HorizontalScroll" should be prefixed with an underscore because the declaration is marked as @internal
 //
 // @internal (undocumented)
@@ -1387,7 +1392,9 @@ export function isDark(color: Swatch): boolean;
 export class Listbox extends ListboxElement {
     // @internal
     protected sizeChanged(prev: number | undefined, next: number): void;
-    }
+    // @internal
+    protected updateComputedStylesheet(): void;
+}
 
 export { ListboxOption }
 
@@ -1704,12 +1711,18 @@ export const searchStyles: (context: import("@microsoft/fast-foundation").Elemen
 
 // @public
 export class Select extends Select_2 {
+    // @internal (undocumented)
+    protected listboxScrollWidthChanged(): void;
     // @internal
     protected maxHeightChanged(prev: number | undefined, next: number): void;
     // @internal @override
     multipleChanged(prev: boolean | undefined, next: boolean): void;
+    // (undocumented)
+    setPositioning(): void;
     // @internal @override
     protected sizeChanged(prev: number | undefined, next: number): void;
+    // @internal
+    protected updateComputedStylesheet(): void;
 }
 
 // @public
