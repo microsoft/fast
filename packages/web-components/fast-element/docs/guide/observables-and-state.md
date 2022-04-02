@@ -172,25 +172,27 @@ There are a couple of important details to note with array observation:
 * If the array is a property of an object, you will often want to observe both the property and the array. Observing the property will allow you to detect when the array instance is completely replaced on the object, while observing the array will allow you to detect changes in the array instance itself. When the property changes, be sure to unsubscribe to the old array and set up a subscription to the new array instance.
 * Observing an array only notifies on changes to the array itself. It does not notify on changes to properties on objects held within the array. Separate observers would need to be set up for those individual properties. These could be set up and torn down in response to changes in the array though.
 
-## Bindings
+## Observing Volatile Properties
 
-In addition to watching properties and arrays, you can also watch arbitrary bindings.
+In addition to watching properties and arrays, you can also watch volatile properties.
 
-**Example: Subscribing to a Binding**
+**Example: Subscribing to a Volatile Property**
 
 ```ts
-import { Observable } from '@microsoft/fast-element';
+import { Observable, defaultExecutionContext } from '@microsoft/fast-element';
 
-const binding = (x: MyClass) => x.someBoolean ? x.valueA : x.valueB;
-const bindingObserver = Observable.binding(binding);
+const myObject = new MyClass();
 const handler = {
   handleChange(source: any) {
     // respond to the change here
-    // the source is the bindingObserver itself
+    // the source is the volatile binding itself
   }
 };
+const bindingObserver = Observable.binding(myObject.computedValue, handler);
+bindingObserver.observe(myObject, defaultExecutionContext);
 
-bindingObserver.subscribe(handler);
+// Call this to dismantle the observer
+bindingObserver.disconnect();
 ```
 
 ### Records 

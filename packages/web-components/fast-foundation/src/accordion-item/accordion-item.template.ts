@@ -28,8 +28,8 @@ export const accordionItemTemplate: FoundationElementTemplate<
                 id="${x => x.id}"
                 @click="${(x, c) => x.clickHandler(c.event as MouseEvent)}"
             >
-                <span class="heading">
-                    <slot name="heading" part="heading"></slot>
+                <span class="heading-content" part="heading-content">
+                    <slot name="heading"></slot>
                 </span>
             </button>
             ${startSlotTemplate(context, definition)}
