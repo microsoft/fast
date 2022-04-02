@@ -24,22 +24,6 @@ import {
 import { heightNumber } from "../styles/size.js";
 
 /**
- * A reflection of the size attribute.
- *
- * @public
- */
-export const listboxSize = DesignToken.create<number>({
-    name: "listbox-size",
-    cssCustomPropertyName: "size",
-});
-
-export const listboxStrokeOffset = DesignToken.create<number>(
-    "stroke-offset"
-).withDefault(
-    target => designUnit.getValueFor(target) * strokeWidth.getValueFor(target) * 2
-);
-
-/**
  * Styles for Listbox
  * @public
  */
@@ -80,13 +64,9 @@ export const listboxStyles: FoundationElementTemplate<ElementStyles> = (
             }
         ` : ``}
 
-        ::slotted([aria-selected="true"][aria-checked="false"]) {
-            border-color: ${neutralLayerFloating};
-        }
-
         ${hostContext || `:host([size])`} {
             max-height: calc(
-                (${listboxSize} * ${heightNumber} + var(--stroke-offset)) * 1px
+                (var(--size) * ${heightNumber} + (${designUnit} * ${strokeWidth} * 2)) * 1px
             );
             overflow-y: auto;
         }

@@ -1,10 +1,10 @@
+import { css, ElementStyles, observable } from "@microsoft/fast-element";
 import {
     Select as FoundationSelect,
     SelectOptions,
     selectTemplate as template,
 } from "@microsoft/fast-foundation";
-import { optionHeight } from "../listbox-option/listbox-option.styles.js";
-import { listboxSize } from "../listbox/listbox.styles.js";
+import { heightNumberAsToken } from "../design-tokens.js";
 import { selectStyles as styles } from "./select.styles.js";
 
 /**
@@ -13,7 +13,56 @@ import { selectStyles as styles } from "./select.styles.js";
  */
 export class Select extends FoundationSelect {
     /**
-     * Sets the listboxSize design token when the multiple property changes.
+     * An internal stylesheet to hold calculated CSS custom properties.
+     *
+     * @internal
+     */
+    private computedStylesheet?: ElementStyles;
+
+    /**
+     * Returns the calculated max height for the listbox.
+     *
+     * @internal
+     * @remarks
+     * Used to generate the `--listbox-max-height` CSS custom property.
+     *
+     */
+    private get listboxMaxHeight(): string {
+        return Math.floor(
+            this.maxHeight / heightNumberAsToken.getValueFor(this)
+        ).toString();
+    }
+
+    /**
+     * The cached scroll width of the listbox when visible.
+     *
+     * @internal
+     */
+    @observable
+    private listboxScrollWidth: string = "";
+
+    /**
+     * @internal
+     */
+    protected listboxScrollWidthChanged(): void {
+        this.updateComputedStylesheet();
+    }
+
+    /**
+     * Returns the size value, if any. Otherwise, returns 4 if in
+     * multi-selection mode, or 0 if in single-selection mode.
+     *
+     * @internal
+     * @remarks
+     * Used to generate the `--size` CSS custom property.
+     *
+     */
+    private get selectSize(): string {
+        return `${this.size ?? (this.multiple ? 4 : 0)}`;
+    }
+
+    /**
+     * Updates the computed stylesheet when the multiple property changes.
      *
      * @param prev - the previous multiple value
      * @param next - the current multiple value
@@ -23,7 +72,7 @@ export class Select extends FoundationSelect {
      */
     public multipleChanged(prev: boolean | undefined, next: boolean): void {
         super.multipleChanged(prev, next);
-        listboxSize.setValueFor(this, this.size || (next ? 4 : 0));
+        this.updateComputedStylesheet();
     }
 
     /**
@@ -36,11 +85,13 @@ export class Select extends FoundationSelect {
      */
     protected maxHeightChanged(prev: number | undefined, next: number): void {
         if (this.collapsible) {
-            this.style.setProperty(
-                "--select-max-height",
-                `${Math.floor(this.maxHeight / optionHeight.getValueFor(this))}`
-            );
+            this.updateComputedStylesheet();
         }
+    }
+
+    public setPositioning(): void {
+        super.setPositioning();
+        this.updateComputedStylesheet();
     }
 
     /**
@@ -54,12 +105,7 @@ export class Select extends FoundationSelect {
      */
     protected sizeChanged(prev: number | undefined, next: number): void {
         super.sizeChanged(prev, next);
-
-        if (this.multiple) {
-            listboxSize.setValueFor(this, this.size || 4);
-        } else {
-            listboxSize.setValueFor(this, this.size || 0);
-        }
+        this.updateComputedStylesheet();
 
         if (this.collapsible) {
             requestAnimationFrame(() => {
@@ -69,10 +115,7 @@ export class Select extends FoundationSelect {
                 this.listbox.style.setProperty("width", "auto");
                 this.listbox.hidden = false;
 
-                this.listbox.style.setProperty(
-                    "--option-width",
-                    `${this.listbox.scrollWidth}`
-                );
+                this.listboxScrollWidth = `${this.listbox.scrollWidth}`;
 
                 this.listbox.hidden = true;
                 this.listbox.style.removeProperty("display");
@@ -84,7 +127,28 @@ export class Select extends FoundationSelect {
             return;
         }
 
-        this.listbox?.style.removeProperty("--option-width");
+        this.listboxScrollWidth = "";
+    }
+
+    /**
+     * Updates an internal stylesheet with calculated CSS custom properties.
+     *
+     * @internal
+     */
+    protected updateComputedStylesheet(): void {
+        if (this.computedStylesheet) {
+            this.$fastController.removeStyles(this.computedStylesheet);
+        }
+
+        this.computedStylesheet = css`
+            :host {
+                --listbox-max-height: ${this.listboxMaxHeight};
+                --listbox-scroll-width: ${this.listboxScrollWidth};
+                --size: ${this.selectSize};
+            }
+        `;
+
+        this.$fastController.addStyles(this.computedStylesheet);
     }
 }
 
