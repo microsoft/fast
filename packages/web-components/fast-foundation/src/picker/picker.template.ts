@@ -1,4 +1,11 @@
-import { html, ref, ViewTemplate, when } from "@microsoft/fast-element";
+import {
+    child,
+    ChildViewTemplate,
+    html,
+    ref,
+    ViewTemplate,
+    when,
+} from "@microsoft/fast-element";
 import { AnchoredRegion } from "../anchored-region";
 import type { FoundationElementTemplate } from "../foundation-element";
 import type { Picker } from "./picker";
@@ -7,9 +14,9 @@ import { PickerMenuOption } from "./picker-menu-option";
 import { PickerList } from "./picker-list";
 import { PickerListItem } from "./picker-list-item";
 
-function createDefaultListItemTemplate(context): ViewTemplate {
+function createDefaultListItemTemplate(context): ChildViewTemplate {
     const pickerListItemTag: string = context.tagFor(PickerListItem);
-    return html`
+    return child`
     <${pickerListItemTag}
         value="${x => x}"
         :contentsTemplate="${(x, c) => c.parent.listItemContentsTemplate}"
@@ -18,9 +25,9 @@ function createDefaultListItemTemplate(context): ViewTemplate {
     `;
 }
 
-function createDefaultMenuOptionTemplate(context): ViewTemplate {
+function createDefaultMenuOptionTemplate(context): ChildViewTemplate {
     const pickerMenuOptionTag: string = context.tagFor(PickerMenuOption);
-    return html`
+    return child`
     <${pickerMenuOptionTag}
         value="${x => x}"
         :contentsTemplate="${(x, c) => c.parent.menuOptionContentsTemplate}"
@@ -41,10 +48,8 @@ export const pickerTemplate: FoundationElementTemplate<ViewTemplate<Picker>> = (
     const pickerMenuTag: string = context.tagFor(PickerMenu);
     const pickerListTag: string = context.tagFor(PickerList);
     const progressRingTag: string = context.tagFor(PickerList);
-    const defaultListItemTemplate: ViewTemplate = createDefaultListItemTemplate(context);
-    const defaultMenuOptionTemplate: ViewTemplate = createDefaultMenuOptionTemplate(
-        context
-    );
+    const defaultListItemTemplate = createDefaultListItemTemplate(context);
+    const defaultMenuOptionTemplate = createDefaultMenuOptionTemplate(context);
     return html<Picker>`
         <template
             :selectedListTag="${() => pickerListTag}"

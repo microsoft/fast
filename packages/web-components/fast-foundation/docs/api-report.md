@@ -13,6 +13,7 @@ import { Direction } from '@microsoft/fast-web-utilities';
 import { ElementStyles } from '@microsoft/fast-element';
 import { ElementViewTemplate } from '@microsoft/fast-element';
 import { FASTElement } from '@microsoft/fast-element';
+import { ItemViewTemplate } from '@microsoft/fast-element';
 import { Orientation } from '@microsoft/fast-web-utilities';
 import { PartialFASTElementDefinition } from '@microsoft/fast-element';
 import { SyntheticViewTemplate } from '@microsoft/fast-element';
@@ -312,10 +313,7 @@ export class Calendar extends FoundationElement {
     getDayClassNames(date: CalendarDateInfo, todayString?: string): string;
     getDays(info?: CalendarInfo, minWeeks?: number): CalendarDateInfo[][];
     getMonthInfo(month?: number, year?: number): CalendarInfo;
-    getWeekdayText(): {
-        text: string;
-        abbr?: string;
-    }[];
+    getWeekdayText(): WeekdayText[];
     handleDateSelect(event: Event, day: CalendarDateInfo): void;
     handleKeydown(event: KeyboardEvent, date: CalendarDateInfo): boolean;
     locale: string;
@@ -330,7 +328,7 @@ export class Calendar extends FoundationElement {
     }
 
 // @public
-export const calendarCellTemplate: (context: ElementDefinitionContext, todayString: string) => ViewTemplate<CalendarDateInfo>;
+export const calendarCellTemplate: (context: ElementDefinitionContext, todayString: string) => ItemViewTemplate<CalendarDateInfo>;
 
 // @public
 export type CalendarDateInfo = {
@@ -362,7 +360,7 @@ export const calendarTemplate: FoundationElementTemplate<ViewTemplate<Calendar>,
 export const CalendarTitleTemplate: ViewTemplate<Calendar>;
 
 // @public
-export const calendarWeekdayTemplate: (context: any) => ViewTemplate;
+export const calendarWeekdayTemplate: (context: any) => ItemViewTemplate;
 
 // @public
 export class Card extends FoundationElement {
@@ -2746,6 +2744,12 @@ export type VerticalPosition = "top" | "bottom" | "center" | "unset";
 
 // @public
 export type WeekdayFormat = "long" | "narrow" | "short";
+
+// @public
+export type WeekdayText = {
+    text: string;
+    abbr?: string;
+};
 
 // @public
 export function whitespaceFilter(value: Node, index: number, array: Node[]): boolean;

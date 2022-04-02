@@ -1,11 +1,5 @@
 import { ElementRenderer, RenderInfo } from "@lit-labs/ssr";
-import {
-    Aspect,
-    ComposableStyles,
-    defaultExecutionContext,
-    DOM,
-    FASTElement,
-} from "@microsoft/fast-element";
+import { Aspect, ExecutionContext, DOM, FASTElement } from "@microsoft/fast-element";
 import { TemplateRenderer } from "../template-renderer/template-renderer.js";
 import { SSRView } from "../view.js";
 import { StyleRenderer } from "../styles/style-renderer.js";
@@ -56,7 +50,7 @@ export abstract class FASTElementRenderer extends ElementRenderer {
 
             if (view.hostDynamicAttributes) {
                 for (const attr of view.hostDynamicAttributes) {
-                    const result = attr.binding(this.element, defaultExecutionContext);
+                    const result = attr.binding(this.element, ExecutionContext.default);
 
                     const { target } = attr;
                     switch (attr.aspect) {
@@ -133,7 +127,7 @@ export abstract class FASTElementRenderer extends ElementRenderer {
                 ((view as unknown) as SSRView).codes,
                 renderInfo,
                 this.element,
-                defaultExecutionContext
+                ExecutionContext.default
             );
         }
     }

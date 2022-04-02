@@ -1,6 +1,5 @@
 import {
     ComposableStyles,
-    defaultExecutionContext,
     ElementStyles,
     ExecutionContext,
     html,
@@ -20,7 +19,7 @@ export type RouterExecutionContext = ExecutionContext & {
  */
 export const RouterExecutionContext = Object.freeze({
     create(router: Router) {
-        return Object.create(defaultExecutionContext, {
+        return Object.create(ExecutionContext.default, {
             router: {
                 value: router,
             },
