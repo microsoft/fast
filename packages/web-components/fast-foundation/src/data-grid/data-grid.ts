@@ -9,7 +9,6 @@ import {
     Updates,
 } from "@microsoft/fast-element";
 import { ViewBehaviorOrchestrator } from "@microsoft/fast-element/utilities";
-import { keySpace } from "@microsoft/fast-web-utilities";
 import {
     eventFocus,
     eventFocusOut,
