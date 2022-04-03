@@ -1,7 +1,0 @@
-{
-  "type": "minor",
-  "comment": "assign appearance in connectedCallback instead of constructor to support document.createElement",
-  "packageName": "@microsoft/fast-components",
-  "email": "chhol@microsoft.com",
-  "dependentChangeType": "patch"
-}
