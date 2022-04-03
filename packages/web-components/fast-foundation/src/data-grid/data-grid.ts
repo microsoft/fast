@@ -21,6 +21,7 @@ import {
     keyPageDown,
     keyPageUp,
 } from "@microsoft/fast-web-utilities";
+
 import type { FASTDataGridCell } from "./data-grid-cell.js";
 import type { FASTDataGridRow } from "./data-grid-row.js";
 import { DataGridRowTypes, GenerateHeaderOptions } from "./data-grid.options.js";
@@ -238,7 +239,7 @@ export class FASTDataGrid extends FASTElement {
      * HTML Attribute: select-row-header
      */
     @attr({ attribute: "select-row-header", mode: "boolean" })
-    public selectRowHeader: boolean = false;
+    public selectableHeaderRow: boolean = false;
 
     /**
      * The data being displayed in the grid
@@ -603,16 +604,18 @@ export class FASTDataGrid extends FASTElement {
         if (rowMatch) {
             e.preventDefault();
             const changedRow: DataGridRow = rowMatch as DataGridRow;
+            const changeEventDetail: DataGridRowSelectionChangedDetail = e.detail;
             switch (this.selectionMode) {
                 case "single-row":
-                    this.handleSingleRowSelection(changedRow);
-                    this.$emit("selectionchanged");
+                    this.handleSingleRowSelection(changedRow, changeEventDetail);
+                    this.queueRowIndexUpdate();
+                    DOM.queueUpdate(() => this.$emit("selectionchanged"));
                     break;
 
                 case "multi-row":
-                    if (e.detail && (e.detail as MouseEvent | KeyboardEvent).shiftKey) {
+                    if (e.detail.shiftKey) {
                         if (this.lastNotShiftSelectedRowIndex === -1) {
-                            this.handleSingleRowSelection(changedRow);
+                            this.handleSingleRowSelection(changedRow, changeEventDetail);
                         } else {
                             let i: number;
                             let dirMod: number;
@@ -629,8 +632,10 @@ export class FASTDataGrid extends FASTElement {
                                     i !== this.lastNotShiftSelectedRowIndex;
                                     i = i + dirMod
                                 ) {
-                                    (this.rowElements[i] as DataGridRow).selected = false;
-                                    this.selectedRowIndexes.splice(i, 1);
+                                    this.selectedRowIndexes.splice(
+                                        this.selectedRowIndexes.indexOf(i),
+                                        1
+                                    );
                                 }
                             }
                             dirMod =
@@ -638,62 +643,68 @@ export class FASTDataGrid extends FASTElement {
                                     ? 1
                                     : -1;
                             i = this.lastNotShiftSelectedRowIndex + dirMod;
-                            for (i; i !== changedRow.rowIndex; i = i + dirMod) {
-                                (this.rowElements[i] as DataGridRow).selected =
-                                    changedRow.selected;
+                            for (i; i !== changedRow.rowIndex + dirMod; i = i + dirMod) {
+                                const selectedRowIndex: number = this.selectedRowIndexes.indexOf(
+                                    i
+                                );
                                 if (
-                                    changedRow.selected &&
-                                    !this.selectedRowIndexes.includes(i)
+                                    !this.selectedRowIndexes.includes(
+                                        changedRow.rowIndex
+                                    ) &&
+                                    selectedRowIndex === -1
                                 ) {
                                     this.selectedRowIndexes.push(i);
                                 }
                                 if (
-                                    !changedRow.selected &&
-                                    this.selectedRowIndexes.includes(i)
+                                    this.selectedRowIndexes.includes(
+                                        changedRow.rowIndex
+                                    ) &&
+                                    selectedRowIndex !== -1
                                 ) {
-                                    this.selectedRowIndexes.splice(i, 1);
+                                    this.selectedRowIndexes.splice(selectedRowIndex, 1);
                                 }
                             }
-                            if (changedRow.selected) {
-                                if (
-                                    !this.selectedRowIndexes.includes(changedRow.rowIndex)
-                                ) {
+
+                            const changeRowIndexInSelectedIndexes = this.selectedRowIndexes.indexOf(
+                                changedRow.rowIndex
+                            );
+                            if (this.selectedRowIndexes.includes(changedRow.rowIndex)) {
+                                if (changeRowIndexInSelectedIndexes === -1) {
                                     this.selectedRowIndexes.push(changedRow.rowIndex);
                                 }
-                            } else {
-                                const deleteIndex = this.selectedRowIndexes.indexOf(
-                                    changedRow.rowIndex
+                            } else if (changeRowIndexInSelectedIndexes !== -1) {
+                                this.selectedRowIndexes.splice(
+                                    changeRowIndexInSelectedIndexes,
+                                    1
                                 );
-                                if (deleteIndex !== -1) {
-                                    this.selectedRowIndexes.splice(deleteIndex, 1);
-                                }
                             }
                         }
                         this.lastShiftSelectedRowIndex = changedRow.rowIndex;
-                    } else if (
-                        e.detail &&
-                        (e.detail as MouseEvent | KeyboardEvent).ctrlKey
-                    ) {
+                    } else if (e.detail.ctrlKey) {
                         if (
-                            changedRow.selected &&
+                            changeEventDetail.newValue &&
                             !this.selectedRowIndexes.includes(changedRow.rowIndex)
                         ) {
                             this.selectedRowIndexes.push(changedRow.rowIndex);
                             this.lastNotShiftSelectedRowIndex = changedRow.rowIndex;
                         }
                         if (
-                            !changedRow.selected &&
+                            !changeEventDetail.newValue &&
                             this.selectedRowIndexes.includes(changedRow.rowIndex)
                         ) {
-                            this.selectedRowIndexes.splice(changedRow.rowIndex, 1);
+                            this.selectedRowIndexes.splice(
+                                this.selectedRowIndexes.indexOf(changedRow.rowIndex),
+                                1
+                            );
                             this.lastNotShiftSelectedRowIndex = -1;
                         }
                         this.lastShiftSelectedRowIndex = -1;
                     } else {
-                        this.handleSingleRowSelection(changedRow);
+                        this.handleSingleRowSelection(changedRow, changeEventDetail);
                         this.lastShiftSelectedRowIndex = -1;
                     }
-                    this.$emit("selectionchanged");
+                    this.queueRowIndexUpdate();
+                    DOM.queueUpdate(() => this.$emit("selectionchanged"));
                     break;
             }
         }
@@ -737,7 +748,9 @@ export class FASTDataGrid extends FASTElement {
         const hasHeaderRow =
             (this.rowElements[0] as DataGridRow).rowType === "header" ||
             (this.rowElements[0] as DataGridRow).rowType === "sticky-header";
-        const selectableRowCount = this.rowElements.length + (hasHeaderRow ? -1 : 0);
+        const selectableRowCount =
+            this.rowElements.length +
+            (hasHeaderRow && !this.selectableHeaderRow ? -1 : 0);
         if (this.selectedRowIndexes.length === selectableRowCount) {
             // deselect all if all are already selected
             this.deselectAllRows();
@@ -745,28 +758,31 @@ export class FASTDataGrid extends FASTElement {
         }
         this.selectedRowIndexes.splice(0);
         this.rowElements.forEach(element => {
-            if ((element as DataGridRow).isSelectable) {
+            if (
+                (element as DataGridRow).rowType === "header" ||
+                (element as DataGridRow).rowType === "sticky-header"
+            ) {
+                if (this.selectableHeaderRow) {
+                    this.selectedRowIndexes.push((element as DataGridRow).rowIndex);
+                }
+            } else {
                 this.selectedRowIndexes.push((element as DataGridRow).rowIndex);
-                (element as DataGridRow).selected = true;
             }
         });
         this.lastNotShiftSelectedRowIndex = -1;
     }
 
     private deselectAllRows(): void {
-        this.rowElements.forEach(element => {
-            (element as DataGridRow).selected = false;
-        });
         this.selectedRowIndexes.splice(0);
         this.lastNotShiftSelectedRowIndex = -1;
     }
 
-    private handleSingleRowSelection(changedRow: DataGridRow): void {
-        if (changedRow.selected) {
+    private handleSingleRowSelection(
+        changedRow: DataGridRow,
+        detail: DataGridRowSelectionChangedDetail
+    ): void {
+        if (detail.newValue) {
             if (this.selectedRowIndexes.length > 0) {
-                this.selectedRowIndexes.forEach(i => {
-                    (this.rowElements[i] as DataGridRow).selected = false;
-                });
                 this.selectedRowIndexes.splice(0);
             }
             this.selectedRowIndexes.push(changedRow.rowIndex);
@@ -911,13 +927,21 @@ export class FASTDataGrid extends FASTElement {
                 this.selectionMode === "single-row" ||
                 this.selectionMode === "multi-row"
             ) {
-                if (thisRow.rowType === "header" || thisRow.rowType === "sticky-header") {
-                    thisRow.isSelectable = this.selectRowHeader;
+                if (
+                    (thisRow.rowType === "header" ||
+                        thisRow.rowType === "sticky-header") &&
+                    this.selectableHeaderRow
+                ) {
+                    thisRow.setAttribute(
+                        "aria-selected",
+                        this.selectedRowIndexes.includes(index) ? "true" : "false"
+                    );
                 } else {
-                    thisRow.isSelectable = true;
+                    thisRow.setAttribute(
+                        "aria-selected",
+                        this.selectedRowIndexes.includes(index) ? "true" : "false"
+                    );
                 }
-
-                thisRow.selected = this.selectedRowIndexes.includes(index);
             }
             if (this.columnDefinitionsStale) {
                 thisRow.columnDefinitions = this.columnDefinitions;
