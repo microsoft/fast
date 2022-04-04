@@ -29,7 +29,7 @@ import {
     FlyoutPosTallestFill,
     FlyoutPosTop,
     FlyoutPosTopFill,
-} from "../anchored-region/anchored-region.js";
+} from "../anchored-region/index.js";
 import type { PickerMenu } from "./picker-menu.js";
 import { PickerMenuOption } from "./picker-menu-option.js";
 import { PickerListItem } from "./picker-list-item.js";
