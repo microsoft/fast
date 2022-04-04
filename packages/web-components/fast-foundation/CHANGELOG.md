@@ -1,8 +1,21 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Thu, 31 Mar 2022 07:13:31 GMT and should not be manually modified.
+This log was last generated on Sun, 03 Apr 2022 07:12:01 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.40.0
+
+Sun, 03 Apr 2022 07:12:01 GMT
+
+### Minor changes
+
+- update aria-current for breadcrumb items when new nodes are appended (chhol@microsoft.com)
+- remove fromView from aria mixin attributes (chhol@microsoft.com)
+
+### Patches
+
+- Bump @microsoft/fast-web-utilities to v5.2.0 (nicholasrice@users.noreply.github.com)
 
 ## 2.39.0
 
