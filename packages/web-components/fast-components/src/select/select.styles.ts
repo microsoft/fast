@@ -58,7 +58,6 @@ export const selectStyles: FoundationElementTemplate<ElementStyles, SelectOption
 
     :host {
         --elevation: 14;
-        --indicator-width: calc(${designUnit} * 4px);
         background: ${neutralFillInputRest};
         border-radius: calc(${controlCornerRadius} * 1px);
         border: calc(${strokeWidth} * 1px) solid ${accentFillRest};
@@ -189,7 +188,7 @@ export const selectStyles: FoundationElementTemplate<ElementStyles, SelectOption
     .selected-value {
         flex: 1 1 auto;
         font-family: inherit;
-        min-width: calc((var(--listbox-scroll-width, 0) * 1px) - var(--indicator-width));
+        min-width: calc(var(--listbox-scroll-width, 0) - (${designUnit} * 4) * 1px);
         overflow: hidden;
         text-align: start;
         text-overflow: ellipsis;
@@ -224,8 +223,8 @@ export const selectStyles: FoundationElementTemplate<ElementStyles, SelectOption
         /* TODO: adaptive typography https://github.com/microsoft/fast/issues/2432 */
         fill: currentcolor;
         height: 1em;
-        min-height: var(--indicator-width);
-        min-width: var(--indicator-width);
+        min-height: calc(${designUnit} * 4px);
+        min-width: calc(${designUnit} * 4px);
         width: 1em;
     }
 
