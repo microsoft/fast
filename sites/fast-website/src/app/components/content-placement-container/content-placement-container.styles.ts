@@ -141,7 +141,13 @@ export const ContentPlacementContainerStyles = css`
         width: 80px;
         fill: white;
         stroke: white;
-        margin: 5px 40px 5px;
+        margin: 15px 40px 15px;
+    }
+
+    .fast-product svg rect,
+    .fast-design-system svg rect {
+        fill: white;
+        stroke: white;
     }
 
     .fast-product path,
