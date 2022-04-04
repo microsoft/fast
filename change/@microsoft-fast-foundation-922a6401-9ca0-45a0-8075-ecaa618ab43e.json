@@ -1,7 +1,0 @@
-{
-  "type": "minor",
-  "comment": "remove fromView from aria mixin attributes",
-  "packageName": "@microsoft/fast-foundation",
-  "email": "chhol@microsoft.com",
-  "dependentChangeType": "patch"
-}

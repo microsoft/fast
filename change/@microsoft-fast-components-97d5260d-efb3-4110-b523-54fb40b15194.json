@@ -1,7 +1,0 @@
-{
-  "type": "none",
-  "comment": "fix a bug on breadcrumb stories where multiple items were added when the button was clicked",
-  "packageName": "@microsoft/fast-components",
-  "email": "chhol@microsoft.com",
-  "dependentChangeType": "none"
-}

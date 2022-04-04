@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-colors
 
-This log was last generated on Wed, 09 Feb 2022 07:14:00 GMT and should not be manually modified.
+This log was last generated on Sun, 03 Apr 2022 07:12:01 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 5.2.0
+
+Sun, 03 Apr 2022 07:12:01 GMT
+
+### Minor changes
+
+- Convert package to type:module (nicholasrice@users.noreply.github.com)
 
 ## 5.1.5
 

@@ -1,7 +1,0 @@
-{
-  "type": "none",
-  "comment": "Update binding documentation to have an accurate example. Changes \"Bindings\" to \"Volatile Properties\".",
-  "packageName": "@microsoft/fast-element",
-  "email": "tgoze@ntst.com",
-  "dependentChangeType": "none"
-}
