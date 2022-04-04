@@ -105,7 +105,7 @@
 .community-subsection h3 {
     min-width: 270px;
     text-align: center;
-    margin: 40px 0 40px 0;
+    /* margin: 40px 0 40px 0; */
     font-size: var(--type-ramp-plus-2-font-size);
 }
 
