@@ -1,8 +1,30 @@
 # Change Log - @microsoft/fast-components
 
-This log was last generated on Sun, 27 Mar 2022 07:11:50 GMT and should not be manually modified.
+This log was last generated on Sun, 03 Apr 2022 07:12:01 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.26.0
+
+Sun, 03 Apr 2022 07:12:01 GMT
+
+### Minor changes
+
+- assign appearance in connectedCallback instead of constructor to support document.createElement (chhol@microsoft.com)
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.40.0 (nicholasrice@users.noreply.github.com)
+- Bump @microsoft/fast-web-utilities to v5.2.0 (nicholasrice@users.noreply.github.com)
+- Bump @microsoft/fast-colors to v5.2.0 (nicholasrice@users.noreply.github.com)
+
+## 2.25.4
+
+Thu, 31 Mar 2022 07:13:31 GMT
+
+### Patches
+
+- fix hidden menu items should not be included in the tabindex (chhol@microsoft.com)
 
 ## 2.25.3
 
