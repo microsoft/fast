@@ -1,7 +1,0 @@
-{
-  "type": "none",
-  "comment": "add comment-style tags for syntax highlighting (#5561)",
-  "packageName": "@microsoft/fast-element",
-  "email": "chhol@microsoft.com",
-  "dependentChangeType": "none"
-}
