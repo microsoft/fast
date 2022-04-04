@@ -1,4 +1,4 @@
-{
-    "name": "Radio",
-    "url": "https://fast.design/docs/components/radio"
-}
+export default {
+    name: "Radio",
+    url: "https://fast.design/docs/components/radio",
+};

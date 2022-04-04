@@ -1,4 +1,4 @@
-{
-    "name": "Tree view",
-    "url": "https://fast.design/docs/components/tree-view"
-}
+export default {
+    name: "Tree view",
+    url: "https://fast.design/docs/components/tree-view",
+};

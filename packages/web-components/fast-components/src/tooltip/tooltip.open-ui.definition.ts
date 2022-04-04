@@ -1,4 +1,4 @@
-{
-    "name": "Tooltip",
-    "url": "https://fast.design/docs/components/tooltip"
-} 
+export default {
+    name: "Tooltip",
+    url: "https://fast.design/docs/components/tooltip",
+};

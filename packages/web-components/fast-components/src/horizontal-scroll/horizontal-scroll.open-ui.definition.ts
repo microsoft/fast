@@ -1,4 +1,4 @@
-{
-    "name": "HorizontalScroll",
-    "url": "https://fast.design/docs/components/horizontal-scroll"
-}
+export default {
+    name: "HorizontalScroll",
+    url: "https://fast.design/docs/components/horizontal-scroll",
+};

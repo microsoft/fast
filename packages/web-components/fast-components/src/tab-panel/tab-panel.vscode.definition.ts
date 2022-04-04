@@ -1,17 +1,17 @@
-{
-    "version": 1.1,
-    "tags": [
+export default {
+    version: 1.1,
+    tags: [
         {
-            "name": "fast-tab-panel",
-            "title": "Tab panel",
-            "description": "The FAST tab-panel element",
-            "attributes": [],
-            "slots": [
+            name: "fast-tab-panel",
+            title: "Tab panel",
+            description: "The FAST tab-panel element",
+            attributes: [],
+            slots: [
                 {
-                    "name": "",
-                    "title": "Default slot"
-                }
-            ]
-        }
-    ]
-}
+                    name: "",
+                    title: "Default slot",
+                },
+            ],
+        },
+    ],
+};

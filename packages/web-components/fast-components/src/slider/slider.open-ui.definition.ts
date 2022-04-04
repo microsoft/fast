@@ -1,4 +1,4 @@
-{
-    "name": "Slider",
-    "url": "https://fast.design/docs/components/slider"
-}
+export default {
+    name: "Slider",
+    url: "https://fast.design/docs/components/slider",
+};

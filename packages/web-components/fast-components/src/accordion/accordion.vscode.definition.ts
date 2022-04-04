@@ -1,35 +1,35 @@
-{
-    "version": 1.1,
-    "tags": [
+export default {
+    version: 1.1,
+    tags: [
         {
-            "name": "fast-accordion",
-            "title": "Accordion",
-            "description": "The FAST accordion element",
-            "attributes": [
+            name: "fast-accordion",
+            title: "Accordion",
+            description: "The FAST accordion element",
+            attributes: [
                 {
-                    "name": "expand-mode",
-                    "title": "Expand mode",
-                    "description": "The way items are allowed to expand",
-                    "type": "string",
-                    "values": [
+                    name: "expand-mode",
+                    title: "Expand mode",
+                    description: "The way items are allowed to expand",
+                    type: "string",
+                    values: [
                         {
-                            "name": "single"
+                            name: "single",
                         },
                         {
-                            "name": "multi"
-                        }
+                            name: "multi",
+                        },
                     ],
-                    "default": "multi",
-                    "required": false
-                }
+                    default: "multi",
+                    required: false,
+                },
             ],
-            "slots": [
+            slots: [
                 {
-                    "name": "",
-                    "title": "Default slot",
-                    "description": "The default slot for accordion items"
-                }
-            ]
-        }
-    ]
-}
+                    name: "",
+                    title: "Default slot",
+                    description: "The default slot for accordion items",
+                },
+            ],
+        },
+    ],
+};

@@ -1,4 +1,4 @@
-{
-    "name": "Dialog",
-    "url": "https://fast.design/docs/components/dialog"
-}
+export default {
+    name: "Dialog",
+    url: "https://fast.design/docs/components/dialog",
+};

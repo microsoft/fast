@@ -1,4 +1,4 @@
-{
-    "name": "Tab panel",
-    "url": "https://fast.design/docs/components/tabs"
-}
+export default {
+    name: "Tab panel",
+    url: "https://fast.design/docs/components/tabs",
+};

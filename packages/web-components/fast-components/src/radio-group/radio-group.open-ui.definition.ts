@@ -1,4 +1,4 @@
-{
-    "name": "Radio group",
-    "url": "https://fast.design/docs/components/radio-group"
-}
+export default {
+    name: "Radio group",
+    url: "https://fast.design/docs/components/radio-group",
+};

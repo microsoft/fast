@@ -1,4 +1,4 @@
-{
-    "name": "Button",
-    "url": "https://fast.design/docs/components/button"
-}
+export default {
+    name: "Button",
+    url: "https://fast.design/docs/components/button",
+};

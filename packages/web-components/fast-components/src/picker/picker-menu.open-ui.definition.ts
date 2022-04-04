@@ -1,4 +1,4 @@
-{
-    "name": "Picker menu",
-    "url": "https://fast.design/docs/components/picker-menu"
-}
+export default {
+    name: "Picker menu",
+    url: "https://fast.design/docs/components/picker-menu",
+};
