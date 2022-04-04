@@ -1,5 +1,6 @@
 import {
     child,
+    ChildViewTemplate,
     html,
     item,
     ItemViewTemplate,
@@ -112,9 +113,9 @@ export const calendarCellTemplate: (
 export const calendarRowTemplate: (
     context: ElementDefinitionContext,
     todayString: string
-) => ViewTemplate = (context: ElementDefinitionContext, todayString: string) => {
+) => ChildViewTemplate = (context: ElementDefinitionContext, todayString: string) => {
     const rowTag = context.tagFor(DataGridRow);
-    return html`
+    return child`
         <${rowTag}
             class="week"
             part="week"
@@ -184,7 +185,7 @@ export const noninteractiveCalendarTemplate: (todayString: string) => ViewTempla
                     `
                 )}
             </div>
-            ${repeat(
+            ${repeat<Calendar>(
                 x => x.getDays(),
                 child<CalendarDateInfo[]>`
                     <div class="week">

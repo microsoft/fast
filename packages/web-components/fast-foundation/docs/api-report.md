@@ -6,6 +6,7 @@
 
 import { AttributeConfiguration } from '@microsoft/fast-element';
 import { Behavior } from '@microsoft/fast-element';
+import { ChildViewTemplate } from '@microsoft/fast-element';
 import { ComposableStyles } from '@microsoft/fast-element';
 import { Constructable } from '@microsoft/fast-element';
 import { CSSDirective } from '@microsoft/fast-element';
@@ -351,7 +352,7 @@ export type CalendarOptions = FoundationElementDefinition & StartEndOptions & {
 };
 
 // @public (undocumented)
-export const calendarRowTemplate: (context: ElementDefinitionContext, todayString: string) => ViewTemplate;
+export const calendarRowTemplate: (context: ElementDefinitionContext, todayString: string) => ChildViewTemplate;
 
 // @public
 export const calendarTemplate: FoundationElementTemplate<ViewTemplate<Calendar>, CalendarOptions>;
@@ -624,12 +625,12 @@ export const darkModeStylesheetBehavior: (styles: ElementStyles) => MatchMediaSt
 // @public
 export class DataGrid extends FoundationElement {
     constructor();
-    cellItemTemplate?: ViewTemplate;
+    cellItemTemplate?: ItemViewTemplate;
     columnDefinitions: ColumnDefinition[] | null;
     // @internal (undocumented)
     connectedCallback(): void;
     // @internal
-    defaultRowItemTemplate: ViewTemplate;
+    defaultRowItemTemplate: ItemViewTemplate;
     // @internal (undocumented)
     disconnectedCallback(): void;
     focusColumnIndex: number;
@@ -645,11 +646,11 @@ export class DataGrid extends FoundationElement {
     handleKeydown(e: KeyboardEvent): void;
     // @internal (undocumented)
     handleRowFocus(e: Event): void;
-    headerCellItemTemplate?: ViewTemplate;
+    headerCellItemTemplate?: ItemViewTemplate;
     // @internal
     rowElements: HTMLElement[];
     rowElementTag: string;
-    rowItemTemplate: ViewTemplate;
+    rowItemTemplate: ItemViewTemplate;
     rowsData: object[];
     }
 
@@ -687,17 +688,17 @@ export enum DataGridCellTypes {
 // @public
 export class DataGridRow extends FoundationElement {
     // @internal
-    activeCellItemTemplate?: ViewTemplate;
+    activeCellItemTemplate?: ItemViewTemplate;
     // @internal
     cellElements: HTMLElement[];
-    cellItemTemplate?: ViewTemplate;
+    cellItemTemplate?: ItemViewTemplate;
     columnDefinitions: ColumnDefinition[] | null;
     // @internal (undocumented)
     connectedCallback(): void;
     // @internal
-    defaultCellItemTemplate?: ViewTemplate;
+    defaultCellItemTemplate?: ItemViewTemplate;
     // @internal
-    defaultHeaderCellItemTemplate?: ViewTemplate;
+    defaultHeaderCellItemTemplate?: ItemViewTemplate;
     // @internal (undocumented)
     disconnectedCallback(): void;
     // @internal (undocumented)
@@ -709,7 +710,7 @@ export class DataGridRow extends FoundationElement {
     handleFocusout(e: FocusEvent): void;
     // (undocumented)
     handleKeydown(e: KeyboardEvent): void;
-    headerCellItemTemplate?: ViewTemplate;
+    headerCellItemTemplate?: ItemViewTemplate;
     // @internal
     isActiveRow: boolean;
     rowData: object | null;

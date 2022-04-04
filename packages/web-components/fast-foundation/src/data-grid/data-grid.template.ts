@@ -1,18 +1,18 @@
 import {
-    child,
     children,
-    ChildViewTemplate,
     elements,
     html,
+    item,
+    ItemViewTemplate,
 } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
 import type { FoundationElementTemplate } from "../foundation-element";
 import type { DataGrid } from "./data-grid";
 import { DataGridRow } from "./data-grid-row";
 
-function createRowItemTemplate(context): ChildViewTemplate<any, DataGrid> {
+function createRowItemTemplate(context): ItemViewTemplate<any, DataGrid> {
     const rowTag = context.tagFor(DataGridRow);
-    return child<any, DataGrid>`
+    return item<any, DataGrid>`
     <${rowTag}
         :rowData="${x => x}"
         :cellItemTemplate="${(x, c) => c.parent.cellItemTemplate}"
