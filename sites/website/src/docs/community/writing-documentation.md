@@ -3,6 +3,7 @@ id: writing-documentation
 title: Writing documentation
 sidebar_label: Writing documentation
 custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/src/docs/community/writing-documentation.md
+description: Thank you for your interest in contributing to our documentation. We put together this guide to help you get started.
 ---
 
 Thank you for your interest in contributing to our documentation. We put together this guide to help you get started, whether you want to fix minor spelling/grammar issues or have a more ambitious goal to write a new article.
