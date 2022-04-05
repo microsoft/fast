@@ -169,7 +169,7 @@ export class FASTDataGridRow extends FASTElement {
 
     private behaviorOrchestrator: ViewBehaviorOrchestrator | null = null;
     /**
-     * If the row is selected
+     * If the row is selected.
      *
      * @internal
      */

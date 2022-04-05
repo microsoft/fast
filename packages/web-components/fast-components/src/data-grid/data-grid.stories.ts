@@ -489,8 +489,6 @@ const baseColumns: ColumnDefinition[] = [
 
 const checkboxColumn: ColumnDefinition = {
     columnDataKey: "item1",
-    cellInternalFocusQueue: true,
-    cellFocusTargetCallback: getFocusTarget,
     cellTemplate: checkboxCellTemplate,
 };
 

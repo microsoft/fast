@@ -231,6 +231,9 @@ Whether the grid selects items based on click events or not.  Authors may wish t
 - `select-row-header`
 Sets whether the header row is selectable when row selection is enabled.  Default is false.
 
+- `initial-selection`
+ The initially selected grid elements. In the case of row selection the format should be a comma delimited list of row indexes. ie. "1,3,5"
+
 - `no-tabbing`
 Boolean, defaults to false.  When true the grid does not add itself to the tab queue.
 Useful when a grid is nested within a parent grid cell.
@@ -257,6 +260,9 @@ The index of the row that will receive focus the next time the grid is focused. 
 - `focusColumnIndex`
 The index of the column that will receive focus the next time the grid is focused. This value changes as focus moves to different rows within the grid. Changing this value when focus is already within the grid moves focus to the specified column.
 
+- `selectedRowIndexes`
+The currently selected rows. Authors may set or get the current selection via this property.
+
 *Slots:*
 - `default`  
 Custom generated rows can be placed here
@@ -266,7 +272,8 @@ Custom generated rows can be placed here
 Static function that creates a basic set of columns from an object representing a row.
 
 *Events*
-- none
+- `selectionchanged`
+Emitted when the selected elements of the grid have been updated.
 
 *parts:*
 - none
@@ -303,6 +310,20 @@ Custom [template](https://fast.design/docs/fast-element/declaring-templates) to 
 
 - `headerCellItemTemplate`  
 Custom [template](https://fast.design/docs/fast-element/declaring-templates) to use when generating header cells by iterating over data. The default template uses `fast-data-grid-cell`, this is where authors can change that.
+
+*Functions:*
+- `toggleSelected(detail: DataGridSelectionChangedDetail):`   
+Attempts to set the selected state of the row.  The detail object has the following properties:
+
+    // the new selected value
+    newValue: boolean;
+
+    // if the shiftKey is pressed
+    shiftKey: boolean;
+
+    // if the control key is pressed
+    ctrlKey: boolean;
+
 
 *Slots:*
 - `default`  
