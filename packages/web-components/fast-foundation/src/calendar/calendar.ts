@@ -53,6 +53,12 @@ export type CalendarDateInfo = {
 };
 
 /**
+ * Calendar weekday text.
+ * @public
+ */
+export type WeekdayText = { text: string; abbr?: string };
+
+/**
  * Calendar configuration options
  * @public
  */
@@ -318,7 +324,7 @@ export class Calendar extends FoundationElement {
      * @returns An array of weekday text and full text if abbreviated
      * @public
      */
-    public getWeekdayText(): { text: string; abbr?: string }[] {
+    public getWeekdayText(): WeekdayText[] {
         const weekdayText: {
             text: string;
             abbr?: string;

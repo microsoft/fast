@@ -3,14 +3,13 @@ import { getElementRenderer } from "@lit-labs/ssr/lib/element-renderer.js";
 import {
     Aspect,
     AspectedHTMLDirective,
-    defaultExecutionContext,
     ExecutionContext,
     ViewTemplate,
 } from "@microsoft/fast-element";
 import { Op, OpType } from "../template-parser/op-codes.js";
 import {
-    parseTemplateToOpCodes,
     parseStringToOpCodes,
+    parseTemplateToOpCodes,
 } from "../template-parser/template-parser.js";
 import { DirectiveRenderer } from "./directives.js";
 
@@ -57,7 +56,7 @@ export class TemplateRenderer
         template: ViewTemplate | string,
         renderInfo: RenderInfo,
         source: unknown = undefined,
-        context: ExecutionContext = defaultExecutionContext
+        context: ExecutionContext = ExecutionContext.default
     ): IterableIterator<string> {
         const codes =
             template instanceof ViewTemplate

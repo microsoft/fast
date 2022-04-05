@@ -1,4 +1,11 @@
-import { html, ref, ViewTemplate, when } from "@microsoft/fast-element";
+import {
+    child,
+    ChildViewTemplate,
+    html,
+    ref,
+    ViewTemplate,
+    when,
+} from "@microsoft/fast-element";
 import { AnchoredRegion } from "../anchored-region/anchored-region.js";
 import type { FoundationElementTemplate } from "../foundation-element/foundation-element.js";
 import type { ElementDefinitionContext } from "../design-system/registration-context.js";
@@ -8,9 +15,9 @@ import { PickerMenuOption } from "./picker-menu-option.js";
 import { PickerList } from "./picker-list.js";
 import { PickerListItem } from "./picker-list-item.js";
 
-function createDefaultListItemTemplate(context: ElementDefinitionContext): ViewTemplate {
+function createDefaultListItemTemplate(context: ElementDefinitionContext): ChildViewTemplate {
     const pickerListItemTag: string = context.tagFor(PickerListItem);
-    return html`
+    return child`
     <${pickerListItemTag}
         value="${x => x}"
         :contentsTemplate="${(x, c) => c.parent.listItemContentsTemplate}"
@@ -19,11 +26,9 @@ function createDefaultListItemTemplate(context: ElementDefinitionContext): ViewT
     `;
 }
 
-function createDefaultMenuOptionTemplate(
-    context: ElementDefinitionContext
-): ViewTemplate {
+function createDefaultMenuOptionTemplate(context: ElementDefinitionContext): ChildViewTemplate {
     const pickerMenuOptionTag: string = context.tagFor(PickerMenuOption);
-    return html`
+    return child`
     <${pickerMenuOptionTag}
         value="${x => x}"
         :contentsTemplate="${(x, c) => c.parent.menuOptionContentsTemplate}"
@@ -44,10 +49,8 @@ export const pickerTemplate: FoundationElementTemplate<ViewTemplate<Picker>> = (
     const pickerMenuTag: string = context.tagFor(PickerMenu);
     const pickerListTag: string = context.tagFor(PickerList);
     const progressRingTag: string = context.tagFor(PickerList);
-    const defaultListItemTemplate: ViewTemplate = createDefaultListItemTemplate(context);
-    const defaultMenuOptionTemplate: ViewTemplate = createDefaultMenuOptionTemplate(
-        context
-    );
+    const defaultListItemTemplate = createDefaultListItemTemplate(context);
+    const defaultMenuOptionTemplate = createDefaultMenuOptionTemplate(context);
     return html<Picker>`
         <template
             :selectedListTag="${() => pickerListTag}"

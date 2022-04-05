@@ -1,0 +1,7 @@
+{
+  "type": "major",
+  "comment": "refactor: new design for execution context",
+  "packageName": "@microsoft/fast-element",
+  "email": "roeisenb@microsoft.com",
+  "dependentChangeType": "patch"
+}

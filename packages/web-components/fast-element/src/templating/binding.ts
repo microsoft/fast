@@ -288,11 +288,7 @@ export function sendSignal(signal: string): void {
 }
 
 class OnSignalBinding extends TargetUpdateBinding {
-    bind(
-        source: any,
-        context: ExecutionContext<any, any>,
-        targets: ViewBehaviorTargets
-    ): void {
+    bind(source: any, context: ExecutionContext, targets: ViewBehaviorTargets): void {
         const directive = this.directive;
         const target = targets[directive.targetId];
         const signal = this.getSignal(source, context);
@@ -319,11 +315,7 @@ class OnSignalBinding extends TargetUpdateBinding {
         }
     }
 
-    unbind(
-        source: any,
-        context: ExecutionContext<any, any>,
-        targets: ViewBehaviorTargets
-    ): void {
+    unbind(source: any, context: ExecutionContext, targets: ViewBehaviorTargets): void {
         const signal = this.getSignal(source, context);
         const found = signals[signal];
 
@@ -340,7 +332,7 @@ class OnSignalBinding extends TargetUpdateBinding {
         }
     }
 
-    private getSignal(source: any, context: ExecutionContext<any, any>): string {
+    private getSignal(source: any, context: ExecutionContext): string {
         const options = this.directive.options;
         return isString(options) ? options : options(source, context);
     }

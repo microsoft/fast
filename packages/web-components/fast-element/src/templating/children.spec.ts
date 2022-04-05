@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import { children, ChildrenDirective } from "./children";
-import { defaultExecutionContext, observable } from "../observation/observable";
+import { ExecutionContext, observable } from "../observation/observable";
 import { elements } from "./node-observation";
 import { DOM } from "../dom";
 
@@ -57,7 +57,7 @@ describe("The children", () => {
             behavior.targetId = targetId;
             const model = new Model();
 
-            behavior.bind(model, defaultExecutionContext, targets);
+            behavior.bind(model, ExecutionContext.default, targets);
 
             expect(model.nodes).members(children);
         });
@@ -71,7 +71,7 @@ describe("The children", () => {
             behavior.targetId = targetId;
             const model = new Model();
 
-            behavior.bind(model, defaultExecutionContext, targets);
+            behavior.bind(model, ExecutionContext.default, targets);
 
             expect(model.nodes).members(children.filter(elements("foo-bar")));
         });
@@ -84,7 +84,7 @@ describe("The children", () => {
             behavior.targetId = targetId;
             const model = new Model();
 
-            behavior.bind(model, defaultExecutionContext, targets);
+            behavior.bind(model, ExecutionContext.default, targets);
 
             expect(model.nodes).members(children);
 
@@ -104,7 +104,7 @@ describe("The children", () => {
             behavior.targetId = targetId;
             const model = new Model();
 
-            behavior.bind(model, defaultExecutionContext, targets);
+            behavior.bind(model, ExecutionContext.default, targets);
 
             expect(model.nodes).members(children);
 
@@ -137,7 +137,7 @@ describe("The children", () => {
 
             const model = new Model();
 
-            behavior.bind(model, defaultExecutionContext, targets);
+            behavior.bind(model, ExecutionContext.default, targets);
 
             expect(model.nodes).members(subtreeChildren);
 
@@ -164,11 +164,11 @@ describe("The children", () => {
             behavior.targetId = targetId;
             const model = new Model();
 
-            behavior.bind(model, defaultExecutionContext, targets);
+            behavior.bind(model, ExecutionContext.default, targets);
 
             expect(model.nodes).members(children);
 
-            behavior.unbind(model, defaultExecutionContext, targets);
+            behavior.unbind(model, ExecutionContext.default, targets);
 
             expect(model.nodes).members([]);
 
