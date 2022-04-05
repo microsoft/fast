@@ -94,7 +94,7 @@ export const myTreeView = TreeView.compose({
 
 ## API
 
-## `src/tree-view/tree-view.ts`:
+
 
 ### class: `TreeView`
 
@@ -104,21 +104,15 @@ export const myTreeView = TreeView.compose({
 | ------------------- | --------------------------------------------- | ------- |
 | `FoundationElement` | /src/foundation-element/foundation-element.js |         |
 
-#### Static Methods
-
-| Name      | Privacy | Description                                                                     | Parameters                      | Return                                                                                                           | Inherited From    |
-| --------- | ------- | ------------------------------------------------------------------------------- | ------------------------------- | ---------------------------------------------------------------------------------------------------------------- | ----------------- |
-| `compose` | public  | Defines an element registry function with a set of element definition defaults. | `this: K, elementDefinition: T` | `(         overrideDefinition?: OverrideFoundationElementDefinition<T>     ) => FoundationElementRegistry<T, K>` | FoundationElement |
-
 #### Fields
 
 | Name                   | Privacy | Type                                  | Default | Description                                                                                                                                                                         | Inherited From    |
 | ---------------------- | ------- | ------------------------------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
 | `renderCollapsedNodes` | public  | `boolean`                             |         | /\*\*    When true, the control will be appear expanded by user interaction.                                                                                                        |                   |
-| `currentSelected`      | public  | `HTMLElement \| TreeItem \| null`     |         | The currently selected tree item                                                                                                                                                    |                   |
-| `$presentation`        | public  | `ComponentPresentation \| null`       |         | A property which resolves the ComponentPresentation instance for the current component.                                                                                             | FoundationElement |
-| `template`             | public  | `ElementViewTemplate \| void \| null` |         | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.          | FoundationElement |
-| `styles`               | public  | `ElementStyles \| void \| null`       |         | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition. | FoundationElement |
+| `currentSelected`      | public  | `HTMLElement or TreeItem or null`     |         | The currently selected tree item                                                                                                                                                    |                   |
+| `$presentation`        | public  | `ComponentPresentation or null`       |         | A property which resolves the ComponentPresentation instance for the current component.                                                                                             | FoundationElement |
+| `template`             | public  | `ElementViewTemplate or void or null` |         | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.          | FoundationElement |
+| `styles`               | public  | `ElementStyles or void or null`       |         | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition. | FoundationElement |
 
 #### Methods
 
@@ -134,12 +128,6 @@ export const myTreeView = TreeView.compose({
 | `render-collapsed-nodes` | renderCollapsedNodes |                |
 
 <hr/>
-
-### Exports
-
-| Kind | Name       | Declaration | Module                      | Package |
-| ---- | ---------- | ----------- | --------------------------- | ------- |
-| `js` | `TreeView` | TreeView    | src/tree-view/tree-view\.ts |         |
 
 
 ## Additional resources

@@ -52,7 +52,7 @@ export const myRadioGroup = RadioGroup.compose({
 
 ## API
 
-## `src/radio-group/radio-group.ts`:
+
 
 ### class: `RadioGroup`
 
@@ -62,25 +62,19 @@ export const myRadioGroup = RadioGroup.compose({
 | ------------------- | --------------------------------------------- | ------- |
 | `FoundationElement` | /src/foundation-element/foundation-element.js |         |
 
-#### Static Methods
-
-| Name      | Privacy | Description                                                                     | Parameters                      | Return                                                                                                           | Inherited From    |
-| --------- | ------- | ------------------------------------------------------------------------------- | ------------------------------- | ---------------------------------------------------------------------------------------------------------------- | ----------------- |
-| `compose` | public  | Defines an element registry function with a set of element definition defaults. | `this: K, elementDefinition: T` | `(         overrideDefinition?: OverrideFoundationElementDefinition<T>     ) => FoundationElementRegistry<T, K>` | FoundationElement |
-
 #### Fields
 
 | Name            | Privacy | Type                                        | Default | Description                                                                                                                                                                                            | Inherited From    |
 | --------------- | ------- | ------------------------------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------- |
-| `readOnly`      | public  | `boolean`                                   |         | When true, the child radios will be immutable by user interaction. See {@link https\://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/readonly \| readonly HTML attribute} for more information. |                   |
+| `readOnly`      | public  | `boolean`                                   |         | When true, the child radios will be immutable by user interaction. See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/readonly or readonly HTML attribute} for more information. |                   |
 | `disabled`      | public  | `boolean`                                   |         | Disables the radio group and child radios.                                                                                                                                                             |                   |
 | `name`          | public  | `string`                                    |         | The name of the radio group. Setting this value will set the name value for all child radio elements.                                                                                                  |                   |
 | `value`         | public  | `string`                                    |         | The value of the checked radio                                                                                                                                                                         |                   |
-| `orientation`   | public  | `Orientation \| "horizontal" \| "vertical"` |         | The orientation of the group                                                                                                                                                                           |                   |
+| `orientation`   | public  | `Orientation or "horizontal" or "vertical"` |         | The orientation of the group                                                                                                                                                                           |                   |
 | `childItems`    | public  | `HTMLElement[]`                             |         |                                                                                                                                                                                                        |                   |
-| `$presentation` | public  | `ComponentPresentation \| null`             |         | A property which resolves the ComponentPresentation instance for the current component.                                                                                                                | FoundationElement |
-| `template`      | public  | `ElementViewTemplate \| void \| null`       |         | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.                             | FoundationElement |
-| `styles`        | public  | `ElementStyles \| void \| null`             |         | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition.                    | FoundationElement |
+| `$presentation` | public  | `ComponentPresentation or null`             |         | A property which resolves the ComponentPresentation instance for the current component.                                                                                                                | FoundationElement |
+| `template`      | public  | `ElementViewTemplate or void or null`       |         | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.                             | FoundationElement |
+| `styles`        | public  | `ElementStyles or void or null`             |         | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition.                    | FoundationElement |
 
 #### Methods
 
@@ -102,12 +96,6 @@ export const myRadioGroup = RadioGroup.compose({
 | `orientation` | orientation |                |
 
 <hr/>
-
-### Exports
-
-| Kind | Name         | Declaration | Module                         | Package |
-| ---- | ------------ | ----------- | ------------------------------ | ------- |
-| `js` | `RadioGroup` | RadioGroup  | src/radio-group/radio-group.ts |         |
 
 
 ## Additional resources

@@ -57,7 +57,7 @@ See [listbox-option](/docs/components/listbox-option) for more information.
 
 ## API
 
-## `src/listbox/listbox.element.ts`:
+
 
 ### class: `ListboxElement`
 
@@ -73,12 +73,6 @@ See [listbox-option](/docs/components/listbox-option) for more information.
 | --------------------- | ------- | ---- | ------- | --------------------------------------------------- | -------------- |
 | `slottedOptionFilter` | public  |      |         | A static filter to include only selectable options. | Listbox        |
 
-#### Static Methods
-
-| Name      | Privacy | Description                                                                     | Parameters                      | Return                                                                                                           | Inherited From    |
-| --------- | ------- | ------------------------------------------------------------------------------- | ------------------------------- | ---------------------------------------------------------------------------------------------------------------- | ----------------- |
-| `compose` | public  | Defines an element registry function with a set of element definition defaults. | `this: K, elementDefinition: T` | `(         overrideDefinition?: OverrideFoundationElementDefinition<T>     ) => FoundationElementRegistry<T, K>` | FoundationElement |
-
 #### Fields
 
 | Name               | Privacy   | Type                                  | Default | Description                                                                                                                                                                         | Inherited From    |
@@ -91,9 +85,9 @@ See [listbox-option](/docs/components/listbox-option) for more information.
 | `multiple`         | public    | `boolean`                             |         | Indicates if the listbox is in multi-selection mode.                                                                                                                                | Listbox           |
 | `selectedIndex`    | public    | `number`                              | `-1`    | The index of the selected option.                                                                                                                                                   | Listbox           |
 | `selectedOptions`  | public    | `ListboxOption[]`                     | `[]`    | A collection of the selected options.                                                                                                                                               | Listbox           |
-| `$presentation`    | public    | `ComponentPresentation \| null`       |         | A property which resolves the ComponentPresentation instance for the current component.                                                                                             | FoundationElement |
-| `template`         | public    | `ElementViewTemplate \| void \| null` |         | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.          | FoundationElement |
-| `styles`           | public    | `ElementStyles \| void \| null`       |         | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition. | FoundationElement |
+| `$presentation`    | public    | `ComponentPresentation or null`       |         | A property which resolves the ComponentPresentation instance for the current component.                                                                                             | FoundationElement |
+| `template`         | public    | `ElementViewTemplate or void or null` |         | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.          | FoundationElement |
+| `styles`           | public    | `ElementStyles or void or null`       |         | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition. | FoundationElement |
 
 #### Methods
 
@@ -112,13 +106,7 @@ See [listbox-option](/docs/components/listbox-option) for more information.
 
 <hr/>
 
-### Exports
 
-| Kind | Name             | Declaration    | Module                         | Package |
-| ---- | ---------------- | -------------- | ------------------------------ | ------- |
-| `js` | `ListboxElement` | ListboxElement | src/listbox/listbox.element.ts |         |
-
-## `src/listbox/listbox.ts`:
 
 ### class: `Listbox`
 
@@ -134,12 +122,6 @@ See [listbox-option](/docs/components/listbox-option) for more information.
 | --------------------- | ------- | ---- | ------- | --------------------------------------------------- | -------------- |
 | `slottedOptionFilter` | public  |      |         | A static filter to include only selectable options. |                |
 
-#### Static Methods
-
-| Name      | Privacy | Description                                                                     | Parameters                      | Return                                                                                                           | Inherited From    |
-| --------- | ------- | ------------------------------------------------------------------------------- | ------------------------------- | ---------------------------------------------------------------------------------------------------------------- | ----------------- |
-| `compose` | public  | Defines an element registry function with a set of element definition defaults. | `this: K, elementDefinition: T` | `(         overrideDefinition?: OverrideFoundationElementDefinition<T>     ) => FoundationElementRegistry<T, K>` | FoundationElement |
-
 #### Fields
 
 | Name               | Privacy   | Type                                  | Default | Description                                                                                                                                                                         | Inherited From    |
@@ -151,9 +133,9 @@ See [listbox-option](/docs/components/listbox-option) for more information.
 | `multiple`         | public    | `boolean`                             |         | Indicates if the listbox is in multi-selection mode.                                                                                                                                |                   |
 | `selectedIndex`    | public    | `number`                              | `-1`    | The index of the selected option.                                                                                                                                                   |                   |
 | `selectedOptions`  | public    | `ListboxOption[]`                     | `[]`    | A collection of the selected options.                                                                                                                                               |                   |
-| `$presentation`    | public    | `ComponentPresentation \| null`       |         | A property which resolves the ComponentPresentation instance for the current component.                                                                                             | FoundationElement |
-| `template`         | public    | `ElementViewTemplate \| void \| null` |         | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.          | FoundationElement |
-| `styles`           | public    | `ElementStyles \| void \| null`       |         | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition. | FoundationElement |
+| `$presentation`    | public    | `ComponentPresentation or null`       |         | A property which resolves the ComponentPresentation instance for the current component.                                                                                             | FoundationElement |
+| `template`         | public    | `ElementViewTemplate or void or null` |         | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.          | FoundationElement |
+| `styles`           | public    | `ElementStyles or void or null`       |         | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition. | FoundationElement |
 
 #### Methods
 
@@ -179,19 +161,12 @@ See [listbox-option](/docs/components/listbox-option) for more information.
 
 | Name                   | Privacy | Type                             | Default | Description                                                                    | Inherited From |
 | ---------------------- | ------- | -------------------------------- | ------- | ------------------------------------------------------------------------------ | -------------- |
-| `ariaActiveDescendant` | public  | `string`                         |         | See {@link https\://www\.w3.org/TR/wai-aria-1.2/#listbox} for more information |                |
-| `ariaDisabled`         | public  | `"true" \| "false"`              |         | See {@link https\://www\.w3.org/TR/wai-aria-1.2/#listbox} for more information |                |
-| `ariaExpanded`         | public  | `"true" \| "false" \| undefined` |         | See {@link https\://www\.w3.org/TR/wai-aria-1.2/#listbox} for more information |                |
-| `ariaMultiSelectable`  | public  | `"true" \| "false" \| undefined` |         | See {@link https\://w3c.github.io/aria/#listbox} for more information          |                |
+| `ariaActiveDescendant` | public  | `string`                         |         | See {@link https://www\.w3.org/TR/wai-aria-1.2/#listbox} for more information |                |
+| `ariaDisabled`         | public  | `"true" or "false"`              |         | See {@link https://www\.w3.org/TR/wai-aria-1.2/#listbox} for more information |                |
+| `ariaExpanded`         | public  | `"true" or "false" or undefined` |         | See {@link https://www\.w3.org/TR/wai-aria-1.2/#listbox} for more information |                |
+| `ariaMultiSelectable`  | public  | `"true" or "false" or undefined` |         | See {@link https://w3c.github.io/aria/#listbox} for more information          |                |
 
 <hr/>
-
-### Exports
-
-| Kind | Name                   | Declaration          | Module                 | Package |
-| ---- | ---------------------- | -------------------- | ---------------------- | ------- |
-| `js` | `Listbox`              | Listbox              | src/listbox/listbox.ts |         |
-| `js` | `DelegatesARIAListbox` | DelegatesARIAListbox | src/listbox/listbox.ts |         |
 
 
 ## Additional resources

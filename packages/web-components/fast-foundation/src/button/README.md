@@ -56,7 +56,7 @@ This component is built with the expectation that focus is delegated to the butt
 
 ## API
 
-## `src/button/button.ts`:
+
 
 ### class: `Button`
 
@@ -66,30 +66,24 @@ This component is built with the expectation that focus is delegated to the butt
 | ---------------------- | ------------------------------------- | ------- |
 | `FormAssociatedButton` | /src/button/button.form-associated.js |         |
 
-#### Static Methods
-
-| Name      | Privacy | Description                                                                     | Parameters                      | Return                                                                                                           | Inherited From    |
-| --------- | ------- | ------------------------------------------------------------------------------- | ------------------------------- | ---------------------------------------------------------------------------------------------------------------- | ----------------- |
-| `compose` | public  | Defines an element registry function with a set of element definition defaults. | `this: K, elementDefinition: T` | `(         overrideDefinition?: OverrideFoundationElementDefinition<T>     ) => FoundationElementRegistry<T, K>` | FoundationElement |
-
 #### Fields
 
 | Name                    | Privacy | Type                                         | Default | Description                                                                                                                                                                         | Inherited From       |
 | ----------------------- | ------- | -------------------------------------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------- |
 | `autofocus`             | public  | `boolean`                                    |         | Determines if the element should receive document focus on page load.                                                                                                               |                      |
 | `formId`                | public  | `string`                                     |         | The id of a form to associate the element to.                                                                                                                                       |                      |
-| `formaction`            | public  | `string`                                     |         | See {@link https\://developer.mozilla.org/en-US/docs/Web/HTML/Element/button \| `<button>` element} for more details.                                                 |                      |
-| `formenctype`           | public  | `string`                                     |         | See {@link https\://developer.mozilla.org/en-US/docs/Web/HTML/Element/button \| `<button>` element} for more details.                                                 |                      |
-| `formmethod`            | public  | `string`                                     |         | See {@link https\://developer.mozilla.org/en-US/docs/Web/HTML/Element/button \| `<button>` element} for more details.                                                 |                      |
-| `formnovalidate`        | public  | `boolean`                                    |         | See {@link https\://developer.mozilla.org/en-US/docs/Web/HTML/Element/button \| `<button>` element} for more details.                                                 |                      |
-| `formtarget`            | public  | `"_self" \| "_blank" \| "_parent" \| "_top"` |         | See {@link https\://developer.mozilla.org/en-US/docs/Web/HTML/Element/button \| `<button>` element} for more details.                                                 |                      |
-| `type`                  | public  | `"submit" \| "reset" \| "button"`            |         | The button type.                                                                                                                                                                    |                      |
+| `formaction`            | public  | `string`                                     |         | See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button or `<button>` element} for more details.                                                 |                      |
+| `formenctype`           | public  | `string`                                     |         | See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button or `<button>` element} for more details.                                                 |                      |
+| `formmethod`            | public  | `string`                                     |         | See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button or `<button>` element} for more details.                                                 |                      |
+| `formnovalidate`        | public  | `boolean`                                    |         | See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button or `<button>` element} for more details.                                                 |                      |
+| `formtarget`            | public  | `"_self" or "_blank" or "_parent" or "_top"` |         | See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button or `<button>` element} for more details.                                                 |                      |
+| `type`                  | public  | `"submit" or "reset" or "button"`            |         | The button type.                                                                                                                                                                    |                      |
 | `defaultSlottedContent` | public  | `HTMLElement[]`                              |         | Default slotted content                                                                                                                                                             |                      |
 | `control`               | public  | `HTMLButtonElement`                          |         |                                                                                                                                                                                     |                      |
 | `proxy`                 |         |                                              |         |                                                                                                                                                                                     | FormAssociatedButton |
-| `$presentation`         | public  | `ComponentPresentation \| null`              |         | A property which resolves the ComponentPresentation instance for the current component.                                                                                             | FoundationElement    |
-| `template`              | public  | `ElementViewTemplate \| void \| null`        |         | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.          | FoundationElement    |
-| `styles`                | public  | `ElementStyles \| void \| null`              |         | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition. | FoundationElement    |
+| `$presentation`         | public  | `ComponentPresentation or null`              |         | A property which resolves the ComponentPresentation instance for the current component.                                                                                             | FoundationElement    |
+| `template`              | public  | `ElementViewTemplate or void or null`        |         | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.          | FoundationElement    |
+| `styles`                | public  | `ElementStyles or void or null`              |         | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition. | FoundationElement    |
 
 #### Methods
 
@@ -119,8 +113,8 @@ This component is built with the expectation that focus is delegated to the butt
 
 | Name           | Privacy | Type                                        | Default | Description                                                                    | Inherited From |
 | -------------- | ------- | ------------------------------------------- | ------- | ------------------------------------------------------------------------------ | -------------- |
-| `ariaExpanded` | public  | `"true" \| "false" \| undefined`            |         | See {@link https\://www\.w3.org/WAI/PF/aria/roles#button} for more information |                |
-| `ariaPressed`  | public  | `"true" \| "false" \| "mixed" \| undefined` |         | See {@link https\://www\.w3.org/WAI/PF/aria/roles#button} for more information |                |
+| `ariaExpanded` | public  | `"true" or "false" or undefined`            |         | See {@link https://www\.w3.org/WAI/PF/aria/roles#button} for more information |                |
+| `ariaPressed`  | public  | `"true" or "false" or "mixed" or undefined` |         | See {@link https://www\.w3.org/WAI/PF/aria/roles#button} for more information |                |
 
 #### Attributes
 
@@ -130,13 +124,6 @@ This component is built with the expectation that focus is delegated to the butt
 | `aria-pressed`  | ariaPressed  |                |
 
 <hr/>
-
-### Exports
-
-| Kind | Name                  | Declaration         | Module               | Package |
-| ---- | --------------------- | ------------------- | -------------------- | ------- |
-| `js` | `Button`              | Button              | src/button/button.ts |         |
-| `js` | `DelegatesARIAButton` | DelegatesARIAButton | src/button/button.ts |         |
 
 
 ## Additional resources

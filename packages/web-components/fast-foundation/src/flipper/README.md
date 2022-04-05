@@ -75,7 +75,7 @@ export const myFlipper = Flipper.compose<FlipperOptions>({
 
 ## API
 
-## `src/flipper/flipper.ts`:
+
 
 ### class: `Flipper`
 
@@ -85,22 +85,16 @@ export const myFlipper = Flipper.compose<FlipperOptions>({
 | ------------------- | --------------------------------------------- | ------- |
 | `FoundationElement` | /src/foundation-element/foundation-element.js |         |
 
-#### Static Methods
-
-| Name      | Privacy | Description                                                                     | Parameters                      | Return                                                                                                           | Inherited From    |
-| --------- | ------- | ------------------------------------------------------------------------------- | ------------------------------- | ---------------------------------------------------------------------------------------------------------------- | ----------------- |
-| `compose` | public  | Defines an element registry function with a set of element definition defaults. | `this: K, elementDefinition: T` | `(         overrideDefinition?: OverrideFoundationElementDefinition<T>     ) => FoundationElementRegistry<T, K>` | FoundationElement |
-
 #### Fields
 
 | Name            | Privacy | Type                                       | Default | Description                                                                                                                                                                         | Inherited From    |
 | --------------- | ------- | ------------------------------------------ | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
 | `disabled`      | public  | `boolean`                                  |         | The disabled state of the flipper.                                                                                                                                                  |                   |
 | `hiddenFromAT`  | public  | `boolean`                                  | `true`  | Indicates the flipper should be hidden from assistive technology. Because flippers are often supplementary navigation, they are often hidden from assistive technology.             |                   |
-| `direction`     | public  | `FlipperDirection \| "next" \| "previous"` |         | The direction that the flipper implies navigating.                                                                                                                                  |                   |
-| `$presentation` | public  | `ComponentPresentation \| null`            |         | A property which resolves the ComponentPresentation instance for the current component.                                                                                             | FoundationElement |
-| `template`      | public  | `ElementViewTemplate \| void \| null`      |         | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.          | FoundationElement |
-| `styles`        | public  | `ElementStyles \| void \| null`            |         | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition. | FoundationElement |
+| `direction`     | public  | `FlipperDirection or "next" or "previous"` |         | The direction that the flipper implies navigating.                                                                                                                                  |                   |
+| `$presentation` | public  | `ComponentPresentation or null`            |         | A property which resolves the ComponentPresentation instance for the current component.                                                                                             | FoundationElement |
+| `template`      | public  | `ElementViewTemplate or void or null`      |         | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.          | FoundationElement |
+| `styles`        | public  | `ElementStyles or void or null`            |         | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition. | FoundationElement |
 
 #### Methods
 
@@ -119,13 +113,6 @@ export const myFlipper = Flipper.compose<FlipperOptions>({
 | `direction`   | direction    |                |
 
 <hr/>
-
-### Exports
-
-| Kind | Name               | Declaration      | Module                 | Package |
-| ---- | ------------------ | ---------------- | ---------------------- | ------- |
-| `js` | `FlipperDirection` | FlipperDirection | src/flipper/flipper.ts |         |
-| `js` | `Flipper`          | Flipper          | src/flipper/flipper.ts |         |
 
 
 ## Additional resources

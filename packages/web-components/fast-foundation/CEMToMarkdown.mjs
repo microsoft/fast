@@ -95,13 +95,20 @@ for(var i = 0, modulesLength = modules.length; i < modulesLength; i++)
         let markdown = customElementsManifestToMarkdown(componentManifest,
             {
                 headingOffset: 1,
-                private: 'hidden'
+                private: 'hidden',
+                omitDeclarations: ['exports'],
+                omitSections: ['static-methods']
             });
 
         // Replace our < and > markers with backticks and < >
         // This is necessary because customElementsManifestToMarkdown escapes the backticks during the conversion
         // and we don't want that because then docusaurus will see the tags as real tags instead of just text.
         markdown = markdown.replaceAll("REPLACELT","`<").replaceAll("REPLACEGT",">`");
+
+        // Clean up some additional formatting issues
+        markdown = markdown.replaceAll("https\\:","https:");
+        markdown = markdown.replaceAll("\\|","or");
+        markdown = markdown.replaceAll(/## `src.*`:/g,"");
 
         // Get the README.md file
         let path = modules[componentIndex].path.split('/');

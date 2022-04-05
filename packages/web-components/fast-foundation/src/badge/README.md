@@ -53,7 +53,7 @@ export const myBadge = Badge.compose({
 
 ## API
 
-## `src/badge/badge.ts`:
+
 
 ### class: `Badge`
 
@@ -63,12 +63,6 @@ export const myBadge = Badge.compose({
 | ------------------- | --------------------------------------------- | ------- |
 | `FoundationElement` | /src/foundation-element/foundation-element.js |         |
 
-#### Static Methods
-
-| Name      | Privacy | Description                                                                     | Parameters                      | Return                                                                                                           | Inherited From    |
-| --------- | ------- | ------------------------------------------------------------------------------- | ------------------------------- | ---------------------------------------------------------------------------------------------------------------- | ----------------- |
-| `compose` | public  | Defines an element registry function with a set of element definition defaults. | `this: K, elementDefinition: T` | `(         overrideDefinition?: OverrideFoundationElementDefinition<T>     ) => FoundationElementRegistry<T, K>` | FoundationElement |
-
 #### Fields
 
 | Name                 | Privacy | Type                                  | Default | Description                                                                                                                                                                         | Inherited From    |
@@ -77,9 +71,9 @@ export const myBadge = Badge.compose({
 | `color`              | public  | `string`                              |         | Indicates the badge should have a filled style.                                                                                                                                     |                   |
 | `circular`           | public  | `boolean`                             |         | Indicates the element should be circular                                                                                                                                            |                   |
 | `generateBadgeStyle` | public  |                                       |         |                                                                                                                                                                                     |                   |
-| `$presentation`      | public  | `ComponentPresentation \| null`       |         | A property which resolves the ComponentPresentation instance for the current component.                                                                                             | FoundationElement |
-| `template`           | public  | `ElementViewTemplate \| void \| null` |         | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.          | FoundationElement |
-| `styles`             | public  | `ElementStyles \| void \| null`       |         | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition. | FoundationElement |
+| `$presentation`      | public  | `ComponentPresentation or null`       |         | A property which resolves the ComponentPresentation instance for the current component.                                                                                             | FoundationElement |
+| `template`           | public  | `ElementViewTemplate or void or null` |         | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.          | FoundationElement |
+| `styles`             | public  | `ElementStyles or void or null`       |         | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition. | FoundationElement |
 
 #### Methods
 
@@ -97,12 +91,6 @@ export const myBadge = Badge.compose({
 |         | circular |                |
 
 <hr/>
-
-### Exports
-
-| Kind | Name    | Declaration | Module             | Package |
-| ---- | ------- | ----------- | ------------------ | ------- |
-| `js` | `Badge` | Badge       | src/badge/badge.ts |         |
 
 
 ## Additional resources

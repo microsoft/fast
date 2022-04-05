@@ -101,7 +101,7 @@ export const myAccordionItem = AccordionItem.compose<AccordionItemOptions>({
 
 ## API
 
-## `src/accordion/accordion.ts`:
+
 
 ### class: `Accordion`
 
@@ -111,20 +111,14 @@ export const myAccordionItem = AccordionItem.compose<AccordionItemOptions>({
 | ------------------- | --------------------------------------------- | ------- |
 | `FoundationElement` | /src/foundation-element/foundation-element.js |         |
 
-#### Static Methods
-
-| Name      | Privacy | Description                                                                     | Parameters                      | Return                                                                                                           | Inherited From    |
-| --------- | ------- | ------------------------------------------------------------------------------- | ------------------------------- | ---------------------------------------------------------------------------------------------------------------- | ----------------- |
-| `compose` | public  | Defines an element registry function with a set of element definition defaults. | `this: K, elementDefinition: T` | `(         overrideDefinition?: OverrideFoundationElementDefinition<T>     ) => FoundationElementRegistry<T, K>` | FoundationElement |
-
 #### Fields
 
 | Name            | Privacy | Type                                  | Default | Description                                                                                                                                                                         | Inherited From    |
 | --------------- | ------- | ------------------------------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
 | `expandmode`    | public  | `AccordionExpandMode`                 |         | Controls the expand mode of the Accordion, either allowing single or multiple item expansion.                                                                                       |                   |
-| `$presentation` | public  | `ComponentPresentation \| null`       |         | A property which resolves the ComponentPresentation instance for the current component.                                                                                             | FoundationElement |
-| `template`      | public  | `ElementViewTemplate \| void \| null` |         | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.          | FoundationElement |
-| `styles`        | public  | `ElementStyles \| void \| null`       |         | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition. | FoundationElement |
+| `$presentation` | public  | `ComponentPresentation or null`       |         | A property which resolves the ComponentPresentation instance for the current component.                                                                                             | FoundationElement |
+| `template`      | public  | `ElementViewTemplate or void or null` |         | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.          | FoundationElement |
+| `styles`        | public  | `ElementStyles or void or null`       |         | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition. | FoundationElement |
 
 #### Methods
 
@@ -141,13 +135,7 @@ export const myAccordionItem = AccordionItem.compose<AccordionItemOptions>({
 
 <hr/>
 
-### Exports
 
-| Kind | Name        | Declaration | Module                     | Package |
-| ---- | ----------- | ----------- | -------------------------- | ------- |
-| `js` | `Accordion` | Accordion   | src/accordion/accordion.ts |         |
-
-## `src/accordion-item/accordion-item.ts`:
 
 ### class: `AccordionItem`
 
@@ -157,22 +145,16 @@ export const myAccordionItem = AccordionItem.compose<AccordionItemOptions>({
 | ------------------- | --------------------------------------------- | ------- |
 | `FoundationElement` | /src/foundation-element/foundation-element.js |         |
 
-#### Static Methods
-
-| Name      | Privacy | Description                                                                     | Parameters                      | Return                                                                                                           | Inherited From    |
-| --------- | ------- | ------------------------------------------------------------------------------- | ------------------------------- | ---------------------------------------------------------------------------------------------------------------- | ----------------- |
-| `compose` | public  | Defines an element registry function with a set of element definition defaults. | `this: K, elementDefinition: T` | `(         overrideDefinition?: OverrideFoundationElementDefinition<T>     ) => FoundationElementRegistry<T, K>` | FoundationElement |
-
 #### Fields
 
 | Name            | Privacy | Type                                  | Default | Description                                                                                                                                                                         | Inherited From    |
 | --------------- | ------- | ------------------------------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
-| `headinglevel`  | public  | `1 \| 2 \| 3 \| 4 \| 5 \| 6`          | `2`     | Configures the {@link https\://www\.w3.org/TR/wai-aria-1.1/#aria-level \| level} of the heading element.                                                                            |                   |
+| `headinglevel`  | public  | `1 or 2 or 3 or 4 or 5 or 6`          | `2`     | Configures the {@link https://www\.w3.org/TR/wai-aria-1.1/#aria-level or level} of the heading element.                                                                            |                   |
 | `expanded`      | public  | `boolean`                             | `false` | Expands or collapses the item.                                                                                                                                                      |                   |
 | `id`            | public  | `string`                              |         | The item ID                                                                                                                                                                         |                   |
-| `$presentation` | public  | `ComponentPresentation \| null`       |         | A property which resolves the ComponentPresentation instance for the current component.                                                                                             | FoundationElement |
-| `template`      | public  | `ElementViewTemplate \| void \| null` |         | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.          | FoundationElement |
-| `styles`        | public  | `ElementStyles \| void \| null`       |         | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition. | FoundationElement |
+| `$presentation` | public  | `ComponentPresentation or null`       |         | A property which resolves the ComponentPresentation instance for the current component.                                                                                             | FoundationElement |
+| `template`      | public  | `ElementViewTemplate or void or null` |         | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.          | FoundationElement |
+| `styles`        | public  | `ElementStyles or void or null`       |         | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition. | FoundationElement |
 
 #### Methods
 
@@ -190,12 +172,6 @@ export const myAccordionItem = AccordionItem.compose<AccordionItemOptions>({
 | `id`            | id           |                |
 
 <hr/>
-
-### Exports
-
-| Kind | Name            | Declaration   | Module                               | Package |
-| ---- | --------------- | ------------- | ------------------------------------ | ------- |
-| `js` | `AccordionItem` | AccordionItem | src/accordion-item/accordion-item.ts |         |
 
 
 ## Additional resources

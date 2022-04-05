@@ -57,7 +57,7 @@ export const myAnchoredRegion = AnchoredRegion.compose({
 
 ## API
 
-## `src/anchored-region/anchored-region-config.ts`:
+
 
 ### Variables
 
@@ -72,18 +72,7 @@ export const myAnchoredRegion = AnchoredRegion.compose({
 
 <hr/>
 
-### Exports
 
-| Kind | Name                   | Declaration          | Module                                        | Package |
-| ---- | ---------------------- | -------------------- | --------------------------------------------- | ------- |
-| `js` | `FlyoutPosTop`         | FlyoutPosTop         | src/anchored-region/anchored-region-config.ts |         |
-| `js` | `FlyoutPosBottom`      | FlyoutPosBottom      | src/anchored-region/anchored-region-config.ts |         |
-| `js` | `FlyoutPosTallest`     | FlyoutPosTallest     | src/anchored-region/anchored-region-config.ts |         |
-| `js` | `FlyoutPosTopFill`     | FlyoutPosTopFill     | src/anchored-region/anchored-region-config.ts |         |
-| `js` | `FlyoutPosBottomFill`  | FlyoutPosBottomFill  | src/anchored-region/anchored-region-config.ts |         |
-| `js` | `FlyoutPosTallestFill` | FlyoutPosTallestFill | src/anchored-region/anchored-region-config.ts |         |
-
-## `src/anchored-region/anchored-region.ts`:
 
 ### class: `AnchoredRegion`
 
@@ -92,12 +81,6 @@ export const myAnchoredRegion = AnchoredRegion.compose({
 | Name                | Module                                        | Package |
 | ------------------- | --------------------------------------------- | ------- |
 | `FoundationElement` | /src/foundation-element/foundation-element.js |         |
-
-#### Static Methods
-
-| Name      | Privacy | Description                                                                     | Parameters                      | Return                                                                                                           | Inherited From    |
-| --------- | ------- | ------------------------------------------------------------------------------- | ------------------------------- | ---------------------------------------------------------------------------------------------------------------- | ----------------- |
-| `compose` | public  | Defines an element registry function with a set of element definition defaults. | `this: K, elementDefinition: T` | `(         overrideDefinition?: OverrideFoundationElementDefinition<T>     ) => FoundationElementRegistry<T, K>` | FoundationElement |
 
 #### Fields
 
@@ -119,14 +102,14 @@ export const myAnchoredRegion = AnchoredRegion.compose({
 | `verticalScaling`           | public  | `AxisScalingMode`                          | `"content"`      | Defines how the height of the region is calculated                                                                                                                                                                                      |                   |
 | `fixedPlacement`            | public  | `boolean`                                  | `false`          | Whether the region is positioned using css "position: fixed". Otherwise the region uses "position: absolute". Fixed placement allows the region to break out of parent containers,                                                      |                   |
 | `autoUpdateMode`            | public  | `AutoUpdateMode`                           | `"anchor"`       | Defines what triggers the anchored region to revaluate positioning                                                                                                                                                                      |                   |
-| `anchorElement`             | public  | `HTMLElement \| null`                      | `null`           | The HTML element being used as the anchor                                                                                                                                                                                               |                   |
-| `viewportElement`           | public  | `HTMLElement \| null`                      | `null`           | The HTML element being used as the viewport                                                                                                                                                                                             |                   |
-| `verticalPosition`          | public  | `AnchoredRegionPositionLabel \| undefined` |                  | indicates the current horizontal position of the region                                                                                                                                                                                 |                   |
-| `horizontalPosition`        | public  | `AnchoredRegionPositionLabel \| undefined` |                  | indicates the current vertical position of the region                                                                                                                                                                                   |                   |
+| `anchorElement`             | public  | `HTMLElement or null`                      | `null`           | The HTML element being used as the anchor                                                                                                                                                                                               |                   |
+| `viewportElement`           | public  | `HTMLElement or null`                      | `null`           | The HTML element being used as the viewport                                                                                                                                                                                             |                   |
+| `verticalPosition`          | public  | `AnchoredRegionPositionLabel or undefined` |                  | indicates the current horizontal position of the region                                                                                                                                                                                 |                   |
+| `horizontalPosition`        | public  | `AnchoredRegionPositionLabel or undefined` |                  | indicates the current vertical position of the region                                                                                                                                                                                   |                   |
 | `update`                    | public  |                                            |                  | update position                                                                                                                                                                                                                         |                   |
-| `$presentation`             | public  | `ComponentPresentation \| null`            |                  | A property which resolves the ComponentPresentation instance for the current component.                                                                                                                                                 | FoundationElement |
-| `template`                  | public  | `ElementViewTemplate \| void \| null`      |                  | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.                                                              | FoundationElement |
-| `styles`                    | public  | `ElementStyles \| void \| null`            |                  | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition.                                                     | FoundationElement |
+| `$presentation`             | public  | `ComponentPresentation or null`            |                  | A property which resolves the ComponentPresentation instance for the current component.                                                                                                                                                 | FoundationElement |
+| `template`                  | public  | `ElementViewTemplate or void or null`      |                  | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.                                                              | FoundationElement |
+| `styles`                    | public  | `ElementStyles or void or null`            |                  | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition.                                                     | FoundationElement |
 
 #### Methods
 
@@ -157,12 +140,6 @@ export const myAnchoredRegion = AnchoredRegion.compose({
 | `auto-update-mode`            | autoUpdateMode            |                |
 
 <hr/>
-
-### Exports
-
-| Kind | Name             | Declaration    | Module                                 | Package |
-| ---- | ---------------- | -------------- | -------------------------------------- | ------- |
-| `js` | `AnchoredRegion` | AnchoredRegion | src/anchored-region/anchored-region.ts |         |
 
 
 ## Additional resources
