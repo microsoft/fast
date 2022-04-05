@@ -206,7 +206,7 @@ export class FASTDataGrid extends FASTElement {
     public pageSize: number | undefined;
 
     /**
-     * Controls the selection mode of the grid
+     * Defines how the grid handles row or cell selection.
      *
      * @public
      * @remarks
@@ -239,6 +239,17 @@ export class FASTDataGrid extends FASTElement {
      */
     @attr({ attribute: "select-row-header", mode: "boolean" })
     public selectableHeaderRow: boolean = false;
+
+    /**
+     * The initially selected grid elements.
+     * In the case of row selection the format should be a comma delimited list of row indexes. ie. "1,3,5"
+     *
+     * @public
+     * @remarks
+     * HTML Attribute: initial-selection
+     */
+    @attr({ attribute: "initial-selection" })
+    public initialSelection: string;
 
     /**
      * The data being displayed in the grid
@@ -366,10 +377,23 @@ export class FASTDataGrid extends FASTElement {
     /**
      * Selected row indexes
      *
-     * @internal
      */
-    @observable
-    public selectedRowIndexes: number[] = [];
+    private _selectedRowIndexes: number[] = [];
+
+    /**
+     * The selectedRowIndexes property.
+     *
+     * @public
+     */
+    public get selectedRowIndexes() {
+        return this._selectedRowIndexes.slice();
+    }
+
+    public set selectedRowIndexes(next: number[]) {
+        this._selectedRowIndexes.splice(0, this.selectedRowIndexes.length, ...next);
+        this.selectionUpdated = true;
+        this.queueRowIndexUpdate();
+    }
 
     /**
      * Selected range
@@ -399,6 +423,8 @@ export class FASTDataGrid extends FASTElement {
 
     private lastNotShiftSelectedRowIndex = -1;
     private lastShiftSelectedRowIndex = -1;
+
+    private selectionUpdated: boolean = false;
 
     constructor() {
         super();
@@ -443,6 +469,15 @@ export class FASTDataGrid extends FASTElement {
 
         if (this.noTabbing) {
             this.setAttribute("tabindex", "-1");
+        }
+
+        if (this.initialSelection) {
+            const selectionAsArray: string[] = this.initialSelection.split(",");
+            const initialSelection: number[] = [];
+            selectionAsArray.forEach((element: string): void => {
+                initialSelection.push(parseInt(element.trim()));
+            });
+            this.selectedRowIndexes = initialSelection;
         }
 
         Updates.enqueue(this.queueRowIndexUpdate);
@@ -604,11 +639,10 @@ export class FASTDataGrid extends FASTElement {
             e.preventDefault();
             const changedRow: DataGridRow = rowMatch as DataGridRow;
             const changeEventDetail: DataGridRowSelectionChangedDetail = e.detail;
+            const newSelection: number[] = this.selectedRowIndexes;
             switch (this.selectionMode) {
                 case "single-row":
                     this.handleSingleRowSelection(changedRow, changeEventDetail);
-                    this.queueRowIndexUpdate();
-                    DOM.queueUpdate(() => this.$emit("selectionchanged"));
                     break;
 
                 case "multi-row":
@@ -631,10 +665,7 @@ export class FASTDataGrid extends FASTElement {
                                     i !== this.lastNotShiftSelectedRowIndex;
                                     i = i + dirMod
                                 ) {
-                                    this.selectedRowIndexes.splice(
-                                        this.selectedRowIndexes.indexOf(i),
-                                        1
-                                    );
+                                    newSelection.splice(newSelection.indexOf(i), 1);
                                 }
                             }
                             dirMod =
@@ -643,67 +674,58 @@ export class FASTDataGrid extends FASTElement {
                                     : -1;
                             i = this.lastNotShiftSelectedRowIndex + dirMod;
                             for (i; i !== changedRow.rowIndex + dirMod; i = i + dirMod) {
-                                const selectedRowIndex: number = this.selectedRowIndexes.indexOf(
-                                    i
-                                );
+                                const selectedRowIndex: number = newSelection.indexOf(i);
                                 if (
-                                    !this.selectedRowIndexes.includes(
-                                        changedRow.rowIndex
-                                    ) &&
+                                    !newSelection.includes(changedRow.rowIndex) &&
                                     selectedRowIndex === -1
                                 ) {
-                                    this.selectedRowIndexes.push(i);
+                                    newSelection.push(i);
                                 }
                                 if (
-                                    this.selectedRowIndexes.includes(
-                                        changedRow.rowIndex
-                                    ) &&
+                                    newSelection.includes(changedRow.rowIndex) &&
                                     selectedRowIndex !== -1
                                 ) {
-                                    this.selectedRowIndexes.splice(selectedRowIndex, 1);
+                                    newSelection.splice(selectedRowIndex, 1);
                                 }
                             }
 
-                            const changeRowIndexInSelectedIndexes = this.selectedRowIndexes.indexOf(
+                            const changeRowIndexInSelectedIndexes = newSelection.indexOf(
                                 changedRow.rowIndex
                             );
-                            if (this.selectedRowIndexes.includes(changedRow.rowIndex)) {
+                            if (newSelection.includes(changedRow.rowIndex)) {
                                 if (changeRowIndexInSelectedIndexes === -1) {
-                                    this.selectedRowIndexes.push(changedRow.rowIndex);
+                                    newSelection.push(changedRow.rowIndex);
                                 }
                             } else if (changeRowIndexInSelectedIndexes !== -1) {
-                                this.selectedRowIndexes.splice(
-                                    changeRowIndexInSelectedIndexes,
-                                    1
-                                );
+                                newSelection.splice(changeRowIndexInSelectedIndexes, 1);
                             }
                         }
                         this.lastShiftSelectedRowIndex = changedRow.rowIndex;
+                        this.selectedRowIndexes = newSelection;
                     } else if (e.detail.ctrlKey) {
                         if (
                             changeEventDetail.newValue &&
-                            !this.selectedRowIndexes.includes(changedRow.rowIndex)
+                            !newSelection.includes(changedRow.rowIndex)
                         ) {
-                            this.selectedRowIndexes.push(changedRow.rowIndex);
+                            newSelection.push(changedRow.rowIndex);
                             this.lastNotShiftSelectedRowIndex = changedRow.rowIndex;
                         }
                         if (
                             !changeEventDetail.newValue &&
-                            this.selectedRowIndexes.includes(changedRow.rowIndex)
+                            newSelection.includes(changedRow.rowIndex)
                         ) {
-                            this.selectedRowIndexes.splice(
-                                this.selectedRowIndexes.indexOf(changedRow.rowIndex),
+                            newSelection.splice(
+                                newSelection.indexOf(changedRow.rowIndex),
                                 1
                             );
                             this.lastNotShiftSelectedRowIndex = -1;
                         }
                         this.lastShiftSelectedRowIndex = -1;
+                        this.selectedRowIndexes = newSelection;
                     } else {
                         this.handleSingleRowSelection(changedRow, changeEventDetail);
                         this.lastShiftSelectedRowIndex = -1;
                     }
-                    this.queueRowIndexUpdate();
-                    DOM.queueUpdate(() => this.$emit("selectionchanged"));
                     break;
             }
         }
@@ -750,29 +772,30 @@ export class FASTDataGrid extends FASTElement {
         const selectableRowCount =
             this.rowElements.length +
             (hasHeaderRow && !this.selectableHeaderRow ? -1 : 0);
-        if (this.selectedRowIndexes.length === selectableRowCount) {
+        if (this._selectedRowIndexes.length === selectableRowCount) {
             // deselect all if all are already selected
-            this.deselectAllRows();
+            this.selectedRowIndexes = [];
             return;
         }
-        this.selectedRowIndexes.splice(0);
+        const newSelection: number[] = [];
         this.rowElements.forEach(element => {
             if (
                 (element as DataGridRow).rowType === "header" ||
                 (element as DataGridRow).rowType === "sticky-header"
             ) {
                 if (this.selectableHeaderRow) {
-                    this.selectedRowIndexes.push((element as DataGridRow).rowIndex);
+                    newSelection.push((element as DataGridRow).rowIndex);
                 }
             } else {
-                this.selectedRowIndexes.push((element as DataGridRow).rowIndex);
+                newSelection.push((element as DataGridRow).rowIndex);
             }
         });
         this.lastNotShiftSelectedRowIndex = -1;
+        this.selectedRowIndexes = newSelection;
     }
 
     private deselectAllRows(): void {
-        this.selectedRowIndexes.splice(0);
+        this.selectedRowIndexes = [];
         this.lastNotShiftSelectedRowIndex = -1;
     }
 
@@ -781,14 +804,10 @@ export class FASTDataGrid extends FASTElement {
         detail: DataGridRowSelectionChangedDetail
     ): void {
         if (detail.newValue) {
-            if (this.selectedRowIndexes.length > 0) {
-                this.selectedRowIndexes.splice(0);
-            }
-            this.selectedRowIndexes.push(changedRow.rowIndex);
+            this.selectedRowIndexes = [changedRow.rowIndex];
             this.lastNotShiftSelectedRowIndex = changedRow.rowIndex;
         } else {
-            this.deselectAllRows();
-            this.selectedRowIndexes.splice(0);
+            this.selectedRowIndexes = [];
             this.lastNotShiftSelectedRowIndex = -1;
         }
     }
@@ -933,12 +952,12 @@ export class FASTDataGrid extends FASTElement {
                 ) {
                     thisRow.setAttribute(
                         "aria-selected",
-                        this.selectedRowIndexes.includes(index) ? "true" : "false"
+                        this._selectedRowIndexes.includes(index) ? "true" : "false"
                     );
                 } else {
                     thisRow.setAttribute(
                         "aria-selected",
-                        this.selectedRowIndexes.includes(index) ? "true" : "false"
+                        this._selectedRowIndexes.includes(index) ? "true" : "false"
                     );
                 }
             }
@@ -949,5 +968,9 @@ export class FASTDataGrid extends FASTElement {
 
         this.rowindexUpdateQueued = false;
         this.columnDefinitionsStale = false;
+        if (this.selectionUpdated) {
+            this.selectionUpdated = false;
+            this.$emit("selectionchanged");
+        }
     };
 }

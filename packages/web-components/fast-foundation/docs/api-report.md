@@ -352,15 +352,15 @@ export class DataGrid extends FoundationElement {
     // (undocumented)
     handleRowSelectedChange(e: CustomEvent): void;
     headerCellItemTemplate?: ViewTemplate;
+    initialSelection: string;
     noTabbing: boolean;
     rowElements: HTMLElement[];
     rowElementTag: string;
     rowItemTemplate: ViewTemplate;
     rowsData: object[];
     selectableHeaderRow: boolean;
-    // @internal
-    selectedRowIndexes: number[];
-    // (undocumented)
+    get selectedRowIndexes(): number[];
+    set selectedRowIndexes(next: number[]);
     selectionMode: DataGridSelectionMode;
     }
 
