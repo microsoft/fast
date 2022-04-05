@@ -29,7 +29,9 @@ export class Select extends FormAssociatedSelect {
     /**
      * The open attribute.
      *
-     * @internal
+     * @public
+     * @remarks
+     * HTML Attribute: open
      */
     @attr({ attribute: "open", mode: "boolean" })
     public open: boolean = false;

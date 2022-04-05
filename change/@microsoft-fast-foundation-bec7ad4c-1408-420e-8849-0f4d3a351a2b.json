@@ -1,7 +1,0 @@
-{
-  "type": "minor",
-  "comment": "Add string literal union types to all foundation components that use an enum for attribute options",
-  "packageName": "@microsoft/fast-foundation",
-  "email": "hawkticehurst@gmail.com",
-  "dependentChangeType": "patch"
-}

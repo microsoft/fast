@@ -307,7 +307,7 @@ export class MenuItem extends FoundationElement {
      * get an array of valid DOM children
      */
     private domChildren(): Element[] {
-        return Array.from(this.children);
+        return Array.from(this.children).filter(child => !child.hasAttribute("hidden"));
     }
 }
 

@@ -2161,7 +2161,6 @@ export class Select extends FormAssociatedSelect {
     listboxId: string;
     // @internal
     maxHeight: number;
-    // @internal
     open: boolean;
     // (undocumented)
     protected openChanged(): void;
@@ -2592,7 +2591,7 @@ export class Toolbar extends FoundationElement {
     protected slottedItemsChanged(): void;
     // @internal
     slottedLabel: HTMLElement[];
-}
+    }
 
 // @internal (undocumented)
 export interface Toolbar extends StartEnd, DelegatesARIAToolbar {
