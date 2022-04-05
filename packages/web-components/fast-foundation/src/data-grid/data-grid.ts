@@ -390,6 +390,14 @@ export class FASTDataGrid extends FASTElement {
     }
 
     public set selectedRowIndexes(next: number[]) {
+        if (this.selectionMode !== "multi-row" && this.selectionMode !== "single-row") {
+            return;
+        }
+        if (this.selectionMode === "single-row" && next.length > 1) {
+            this._selectedRowIndexes.splice(0, this.selectedRowIndexes.length, next[0]);
+        } else {
+            this._selectedRowIndexes.splice(0, this.selectedRowIndexes.length, ...next);
+        }
         this._selectedRowIndexes.splice(0, this.selectedRowIndexes.length, ...next);
         this.selectionUpdated = true;
         this.queueRowIndexUpdate();
@@ -471,12 +479,13 @@ export class FASTDataGrid extends FASTElement {
             this.setAttribute("tabindex", "-1");
         }
 
-        if (this.initialSelection) {
+        if (this.selectionMode !== "none" && this.initialSelection) {
             const selectionAsArray: string[] = this.initialSelection.split(",");
             const initialSelection: number[] = [];
             selectionAsArray.forEach((element: string): void => {
                 initialSelection.push(parseInt(element.trim()));
             });
+
             this.selectedRowIndexes = initialSelection;
         }
 
