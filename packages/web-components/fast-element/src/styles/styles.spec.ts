@@ -7,10 +7,10 @@ import { DOM } from "../dom";
 import { CSSDirective } from "./css-directive";
 import { css, cssPartial } from "./css";
 import type { Behavior } from "../observation/behavior";
-import { defaultExecutionContext } from "../observation/observable";
 import type { FASTElement } from "..";
 import { StyleElementStrategy } from "../polyfills";
 import type { StyleTarget } from "../interfaces";
+import { ExecutionContext } from "../observation/observable";
 
 if (DOM.supportsAdoptedStyleSheets) {
     describe("AdoptedStyleSheetsStrategy", () => {
@@ -337,7 +337,7 @@ describe("cssPartial", () => {
             }
         } as FASTElement;
 
-        partial.createBehavior()?.bind(el, defaultExecutionContext)
+        partial.createBehavior()?.bind(el, ExecutionContext.default)
     });
 
     it("should add any ElementStyles interpolated into the template function when bound to an element", () => {
@@ -353,7 +353,7 @@ describe("cssPartial", () => {
             }
         } as FASTElement;
 
-        partial.createBehavior()?.bind(el, defaultExecutionContext)
+        partial.createBehavior()?.bind(el, ExecutionContext.default)
 
         expect(called).to.be.true;
     })

@@ -1,5 +1,5 @@
 import "../dom-shim.js";
-import { children, customElement, defaultExecutionContext, FASTElement, html, ref, repeat, slotted, when } from "@microsoft/fast-element";
+import { child, children, customElement, ExecutionContext, FASTElement, html, item, ref, repeat, slotted, when } from "@microsoft/fast-element";
 import { expect, test } from "@playwright/test";
 import fastSSR from "../exports.js";
 import { consolidate } from "../test-utils.js";
@@ -135,7 +135,7 @@ test.describe("TemplateRenderer", () => {
         const { templateRenderer, defaultRenderInfo} = fastSSR();
         consolidate(templateRenderer.render(html`${(x, c) => {calledWith = c}}`, defaultRenderInfo));
 
-        expect(calledWith).toBe(defaultExecutionContext);
+        expect(calledWith).toBe(ExecutionContext.default);
     });
 
 
@@ -226,11 +226,11 @@ test.describe("TemplateRenderer", () => {
             const source = {
                 data: ["foo", "bar", "bat"]
             };
-            const ctx = Object.create(defaultExecutionContext);
-            consolidate(templateRenderer.render(html<typeof source>`${repeat(x => x.data, html<string>`${(x, c) => {
+            const ctx = ExecutionContext.default;
+            consolidate(templateRenderer.render(html<typeof source>`${repeat(x => x.data, child<string>`${(x, c) => {
                 expect(c.parent).toBe(source);
                 expect(c.parentContext).toBe(ctx)
-            }}`, { positioning: true})}`, defaultRenderInfo, source, ctx))
+            }}`)}`, defaultRenderInfo, source, ctx))
         });
         test("should provide positioning information when invoked with the positioning config", () => {
 
@@ -239,7 +239,7 @@ test.describe("TemplateRenderer", () => {
                 data: ["foo", "bar", "bat"]
             };
             let i = 0;
-            consolidate(templateRenderer.render(html<typeof source>`${repeat(x => x.data, html<string>`${(x, c) => {
+            consolidate(templateRenderer.render(html<typeof source>`${repeat(x => x.data, item<string>`${(x, c) => {
                 expect(c.index).toBe(i);
                 i++;
                 expect(c.length).toBe(c.parent.data.length)

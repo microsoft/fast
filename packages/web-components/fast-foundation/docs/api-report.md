@@ -6,7 +6,7 @@
 
 import { AttributeConfiguration } from '@microsoft/fast-element';
 import { Behavior } from '@microsoft/fast-element';
-import { CaptureType } from '@microsoft/fast-element';
+import { ChildViewTemplate } from '@microsoft/fast-element';
 import { ComposableStyles } from '@microsoft/fast-element';
 import { Constructable } from '@microsoft/fast-element';
 import { CSSDirective } from '@microsoft/fast-element';
@@ -14,6 +14,7 @@ import { Direction } from '@microsoft/fast-web-utilities';
 import { ElementStyles } from '@microsoft/fast-element';
 import { ElementViewTemplate } from '@microsoft/fast-element';
 import { FASTElement } from '@microsoft/fast-element';
+import { ItemViewTemplate } from '@microsoft/fast-element';
 import { Orientation } from '@microsoft/fast-web-utilities';
 import { PartialFASTElementDefinition } from '@microsoft/fast-element';
 import { SyntheticViewTemplate } from '@microsoft/fast-element';
@@ -24,7 +25,7 @@ export class Accordion extends FoundationElement {
     // @internal (undocumented)
     accordionItems: HTMLElement[];
     // @internal (undocumented)
-    accordionItemsChanged(oldValue: HTMLElement[], newValue: HTMLElement[]): void;
+    accordionItemsChanged(oldValue: any, newValue: any): void;
     expandmode: AccordionExpandMode;
     }
 
@@ -91,12 +92,13 @@ export class Anchor extends FoundationElement {
 export interface Anchor extends StartEnd, DelegatesARIALink {
 }
 
-// @public
+// @beta
 export class AnchoredRegion extends FoundationElement {
     // @internal (undocumented)
     adoptedCallback(): void;
     anchor: string;
     anchorElement: HTMLElement | null;
+    // (undocumented)
     autoUpdateMode: AutoUpdateMode;
     // @internal (undocumented)
     connectedCallback(): void;
@@ -126,26 +128,33 @@ export class AnchoredRegion extends FoundationElement {
 
 // @public
 export interface AnchoredRegionConfig {
+    // Warning: (ae-incompatible-release-tags) The symbol "autoUpdateMode" is marked as @public, but its signature references "AutoUpdateMode" which is marked as @beta
     readonly autoUpdateMode?: AutoUpdateMode;
     readonly fixedPlacement?: boolean;
+    // Warning: (ae-incompatible-release-tags) The symbol "horizontalDefaultPosition" is marked as @public, but its signature references "HorizontalPosition" which is marked as @beta
     readonly horizontalDefaultPosition?: HorizontalPosition;
     readonly horizontalInset?: boolean;
+    // Warning: (ae-incompatible-release-tags) The symbol "horizontalPositioningMode" is marked as @public, but its signature references "AxisPositioningMode" which is marked as @beta
     readonly horizontalPositioningMode?: AxisPositioningMode;
+    // Warning: (ae-incompatible-release-tags) The symbol "horizontalScaling" is marked as @public, but its signature references "AxisScalingMode" which is marked as @beta
     readonly horizontalScaling?: AxisScalingMode;
     readonly horizontalThreshold?: number;
     readonly horizontalViewportLock?: boolean;
+    // Warning: (ae-incompatible-release-tags) The symbol "verticalDefaultPosition" is marked as @public, but its signature references "VerticalPosition" which is marked as @beta
     readonly verticalDefaultPosition?: VerticalPosition;
     readonly verticalInset?: boolean;
+    // Warning: (ae-incompatible-release-tags) The symbol "verticalPositioningMode" is marked as @public, but its signature references "AxisPositioningMode" which is marked as @beta
     readonly verticalPositioningMode?: AxisPositioningMode;
+    // Warning: (ae-incompatible-release-tags) The symbol "verticalScaling" is marked as @public, but its signature references "AxisScalingMode" which is marked as @beta
     readonly verticalScaling?: AxisScalingMode;
     readonly verticalThreshold?: number;
     readonly verticalViewportLock?: boolean;
 }
 
-// @public
+// @beta
 export type AnchoredRegionPositionLabel = "start" | "insetStart" | "insetEnd" | "end" | "center";
 
-// @public
+// @beta
 export const anchoredRegionTemplate: FoundationElementTemplate<ViewTemplate<AnchoredRegion>>;
 
 // @public
@@ -180,7 +189,7 @@ export class ARIAGlobalStatesAndProperties {
     ariaRoledescription: string;
 }
 
-// @public
+// @beta
 export type AutoUpdateMode = "anchor" | "auto";
 
 // @public
@@ -201,10 +210,10 @@ export type AvatarOptions = FoundationElementDefinition & {
 // @public
 export const avatarTemplate: FoundationElementTemplate<ViewTemplate<Avatar>, AvatarOptions>;
 
-// @public
+// @beta
 export type AxisPositioningMode = "uncontrolled" | "locktodefault" | "dynamic";
 
-// @public
+// @beta
 export type AxisScalingMode = "anchor" | "fill" | "content";
 
 // @public
@@ -225,7 +234,7 @@ export class BaseProgress extends FoundationElement {
     connectedCallback(): void;
     max: number;
     min: number;
-    paused: boolean;
+    paused: any;
     // @internal
     percentComplete: number;
     value: number | null;
@@ -305,10 +314,7 @@ export class Calendar extends FoundationElement {
     getDayClassNames(date: CalendarDateInfo, todayString?: string): string;
     getDays(info?: CalendarInfo, minWeeks?: number): CalendarDateInfo[][];
     getMonthInfo(month?: number, year?: number): CalendarInfo;
-    getWeekdayText(): {
-        text: string;
-        abbr?: string;
-    }[];
+    getWeekdayText(): WeekdayText[];
     handleDateSelect(event: Event, day: CalendarDateInfo): void;
     handleKeydown(event: KeyboardEvent, date: CalendarDateInfo): boolean;
     locale: string;
@@ -323,7 +329,7 @@ export class Calendar extends FoundationElement {
     }
 
 // @public
-export const calendarCellTemplate: (context: ElementDefinitionContext, todayString: string) => ViewTemplate<CalendarDateInfo>;
+export const calendarCellTemplate: (context: ElementDefinitionContext, todayString: string) => ItemViewTemplate<CalendarDateInfo>;
 
 // @public
 export type CalendarDateInfo = {
@@ -346,7 +352,7 @@ export type CalendarOptions = FoundationElementDefinition & StartEndOptions & {
 };
 
 // @public (undocumented)
-export const calendarRowTemplate: (context: ElementDefinitionContext, todayString: string) => ViewTemplate;
+export const calendarRowTemplate: (context: ElementDefinitionContext, todayString: string) => ChildViewTemplate;
 
 // @public
 export const calendarTemplate: FoundationElementTemplate<ViewTemplate<Calendar>, CalendarOptions>;
@@ -355,7 +361,7 @@ export const calendarTemplate: FoundationElementTemplate<ViewTemplate<Calendar>,
 export const CalendarTitleTemplate: ViewTemplate<Calendar>;
 
 // @public
-export const calendarWeekdayTemplate: (context: ElementDefinitionContext) => ViewTemplate;
+export const calendarWeekdayTemplate: (context: any) => ItemViewTemplate;
 
 // @public
 export class Card extends FoundationElement {
@@ -436,7 +442,7 @@ export interface ColumnDefinition {
 //
 // @public
 export class Combobox extends FormAssociatedCombobox {
-    autocomplete: ComboboxAutocomplete | "inline" | "list" | "both" | "none" | undefined;
+    autocomplete: ComboboxAutocomplete | undefined;
     // @internal
     clickHandler(e: MouseEvent): boolean | void;
     // (undocumented)
@@ -475,19 +481,17 @@ export class Combobox extends FormAssociatedCombobox {
     protected placeholderChanged(): void;
     position: SelectPosition;
     positionAttribute: SelectPosition;
-    // (undocumented)
-    protected positionChanged(): void;
     // @internal
     selectedIndexChanged(prev: number, next: number): void;
     // @internal
-    selectedOptionsChanged(prev: unknown, next: HTMLElement[]): void;
+    selectedOptionsChanged(prev: any, next: any): void;
     // @internal
     selectPreviousOption(): void;
     // @internal
     setDefaultSelectedOption(): void;
     setPositioning(): void;
     // @internal
-    slottedOptionsChanged(prev: Element[], next: HTMLElement[]): void;
+    slottedOptionsChanged(prev: any, next: any): void;
     get value(): string;
     set value(next: string);
     }
@@ -621,18 +625,18 @@ export const darkModeStylesheetBehavior: (styles: ElementStyles) => MatchMediaSt
 // @public
 export class DataGrid extends FoundationElement {
     constructor();
-    cellItemTemplate?: ViewTemplate;
+    cellItemTemplate?: ItemViewTemplate;
     columnDefinitions: ColumnDefinition[] | null;
     // @internal (undocumented)
     connectedCallback(): void;
     // @internal
-    defaultRowItemTemplate: ViewTemplate;
+    defaultRowItemTemplate: ItemViewTemplate;
     // @internal (undocumented)
     disconnectedCallback(): void;
     focusColumnIndex: number;
     focusRowIndex: number;
     static generateColumns: (row: object) => ColumnDefinition[];
-    generateHeader: GenerateHeaderOptions | "none" | "default" | "sticky";
+    generateHeader: GenerateHeaderOptions;
     gridTemplateColumns: string;
     // @internal (undocumented)
     handleFocus(e: FocusEvent): void;
@@ -642,18 +646,17 @@ export class DataGrid extends FoundationElement {
     handleKeydown(e: KeyboardEvent): void;
     // @internal (undocumented)
     handleRowFocus(e: Event): void;
-    headerCellItemTemplate?: ViewTemplate;
-    noTabbing: boolean;
+    headerCellItemTemplate?: ItemViewTemplate;
     // @internal
     rowElements: HTMLElement[];
     rowElementTag: string;
-    rowItemTemplate: ViewTemplate;
+    rowItemTemplate: ItemViewTemplate;
     rowsData: object[];
     }
 
 // @public
 export class DataGridCell extends FoundationElement {
-    cellType: DataGridCellTypes | "default" | "columnheader" | "rowheader";
+    cellType: DataGridCellTypes;
     columnDefinition: ColumnDefinition | null;
     // @internal (undocumented)
     connectedCallback(): void;
@@ -685,17 +688,17 @@ export enum DataGridCellTypes {
 // @public
 export class DataGridRow extends FoundationElement {
     // @internal
-    activeCellItemTemplate?: ViewTemplate;
+    activeCellItemTemplate?: ItemViewTemplate;
     // @internal
     cellElements: HTMLElement[];
-    cellItemTemplate?: ViewTemplate;
+    cellItemTemplate?: ItemViewTemplate;
     columnDefinitions: ColumnDefinition[] | null;
     // @internal (undocumented)
     connectedCallback(): void;
     // @internal
-    defaultCellItemTemplate?: ViewTemplate;
+    defaultCellItemTemplate?: ItemViewTemplate;
     // @internal
-    defaultHeaderCellItemTemplate?: ViewTemplate;
+    defaultHeaderCellItemTemplate?: ItemViewTemplate;
     // @internal (undocumented)
     disconnectedCallback(): void;
     // @internal (undocumented)
@@ -707,12 +710,12 @@ export class DataGridRow extends FoundationElement {
     handleFocusout(e: FocusEvent): void;
     // (undocumented)
     handleKeydown(e: KeyboardEvent): void;
-    headerCellItemTemplate?: ViewTemplate;
+    headerCellItemTemplate?: ItemViewTemplate;
     // @internal
     isActiveRow: boolean;
     rowData: object | null;
     rowIndex: number;
-    rowType: DataGridRowTypes | "default" | "header" | "sticky-header";
+    rowType: DataGridRowTypes;
     // @internal (undocumented)
     slottedCellElements: HTMLElement[];
     }
@@ -735,7 +738,7 @@ export const dataGridTemplate: FoundationElementTemplate<ViewTemplate<DataGrid>>
 
 // @public
 export class DateFormatter {
-    constructor(config?: {});
+    constructor(config?: any);
     date: Date;
     dayFormat: DayFormat;
     // (undocumented)
@@ -921,8 +924,8 @@ export const DesignSystem: Readonly<{
 export interface DesignSystemRegistrationContext {
     readonly elementPrefix: string;
     // @deprecated
-    tryDefineElement(name: string, type: Constructable, callback: ElementDefinitionCallback): void;
-    tryDefineElement(params: ElementDefinitionParams): void;
+    tryDefineElement(name: string, type: Constructable, callback: ElementDefinitionCallback): any;
+    tryDefineElement(params: ElementDefinitionParams): any;
 }
 
 // @public
@@ -1038,7 +1041,7 @@ export function display(displayValue: CSSDisplayPropertyValue): string;
 // @public
 export class Divider extends FoundationElement {
     orientation: Orientation;
-    role: DividerRole | "separator" | "presentation";
+    role: DividerRole;
 }
 
 // @public
@@ -1116,7 +1119,7 @@ export class FactoryImpl<T extends Constructable = any> implements Factory<T> {
 
 // @public
 export class Flipper extends FoundationElement {
-    direction: FlipperDirection | "next" | "previous";
+    direction: FlipperDirection;
     disabled: boolean;
     hiddenFromAT: boolean;
     keyupHandler(e: Event & KeyboardEvent): void;
@@ -1193,13 +1196,13 @@ export interface FormAssociated extends Omit<ElementInternals, "labels"> {
     // (undocumented)
     initialValue: string;
     // (undocumented)
-    initialValueChanged?(previous: string, next: string): void;
+    initialValueChanged?(previous: any, next: any): void;
     // (undocumented)
     readonly labels: ReadonlyArray<Node[]>;
     // (undocumented)
     name: string;
     // (undocumented)
-    nameChanged?(previous: string, next: string): void;
+    nameChanged?(previous: any, next: any): void;
     // (undocumented)
     required: boolean;
     // (undocumented)
@@ -1211,7 +1214,7 @@ export interface FormAssociated extends Omit<ElementInternals, "labels"> {
     // (undocumented)
     value: string;
     // (undocumented)
-    valueChanged(previous: string, next: string): void;
+    valueChanged(previous: any, next: any): void;
 }
 
 // @alpha
@@ -1226,13 +1229,13 @@ export interface FormAssociatedProxy {
     // (undocumented)
     formResetCallback?(): void;
     // (undocumented)
-    initialValueChanged?(previous: string, next: string): void;
+    initialValueChanged?(previous: any, next: any): void;
     // (undocumented)
-    nameChanged?(previous: string, next: string): void;
+    nameChanged?(previous: any, next: any): void;
     // (undocumented)
     proxy: ProxyElement;
     // (undocumented)
-    valueChanged?(previous: string, next: string): void;
+    valueChanged?(previous: any, next: any): void;
 }
 
 // @public
@@ -1295,7 +1298,7 @@ export const getDirection: (rootNode: HTMLElement) => Direction;
 // @public
 export const hidden = ":host([hidden]){display:none}";
 
-// @public
+// @beta
 export type HorizontalPosition = "start" | "end" | "left" | "right" | "center" | "unset";
 
 // @public
@@ -1317,7 +1320,7 @@ export class HorizontalScroll extends FoundationElement {
     // @internal
     scrollingChanged(prev: unknown, next: boolean): void;
     scrollItems: HTMLElement[];
-    scrollItemsChanged(previous: HTMLElement[], next: HTMLElement[]): void;
+    scrollItemsChanged(previous: any, next: any): void;
     scrollToNext(): void;
     scrollToPosition(newPosition: number, position?: number): void;
     scrollToPrevious(): void;
@@ -1524,7 +1527,7 @@ export class ListboxOption extends FoundationElement {
     dirtyValue: boolean;
     disabled: boolean;
     // (undocumented)
-    protected disabledChanged(prev: boolean, next: boolean): void;
+    protected disabledChanged(prev: any, next: any): void;
     // (undocumented)
     get form(): HTMLFormElement | null;
     protected initialValue: string;
@@ -1629,7 +1632,7 @@ export class MenuItem extends FoundationElement {
     handleMouseOver: (e: MouseEvent) => boolean;
     // @internal (undocumented)
     hasSubmenu: boolean;
-    role: MenuItemRole | "menuitem" | "menuitemcheckbox" | "menuitemradio";
+    role: MenuItemRole;
     // @internal (undocumented)
     startColumnCount: MenuItemColumnCount;
     // @internal (undocumented)
@@ -1925,7 +1928,7 @@ export class PropertyStyleSheetBehavior implements Behavior {
     constructor(propertyName: string, value: any, styles: ElementStyles);
     bind(elementInstance: FASTElement): void;
     // @internal
-    handleChange(source: FASTElement, key: string): void;
+    handleChange(source: FASTElement, key: any): void;
     // @internal
     unbind(source: typeof FASTElement & HTMLElement): void;
     }
@@ -1975,7 +1978,7 @@ export class RadioGroup extends FoundationElement {
     name: string;
     // (undocumented)
     protected nameChanged(): void;
-    orientation: Orientation | "horizontal" | "vertical";
+    orientation: Orientation;
     readOnly: boolean;
     // @internal (undocumented)
     slottedRadioButtons: HTMLElement[];
@@ -1994,9 +1997,6 @@ export type RadioOptions = FoundationElementDefinition & {
 
 // @public
 export const radioTemplate: FoundationElementTemplate<ViewTemplate<Radio>, RadioOptions>;
-
-// @beta
-export function reflectAttributes<T = any>(...attributes: string[]): CaptureType<T>;
 
 // @public
 export type RegisterSelf<T extends Constructable> = {
@@ -2158,23 +2158,20 @@ export class Select extends FormAssociatedSelect {
     // @internal
     listbox: HTMLDivElement;
     // @internal
-    listboxId: string;
-    // @internal
     maxHeight: number;
+    // @internal
     open: boolean;
     // (undocumented)
     protected openChanged(): void;
-    position: SelectPosition | "above" | "below";
-    positionAttribute: SelectPosition | "above" | "below";
-    // (undocumented)
-    protected positionChanged(): void;
+    position: SelectPosition;
+    positionAttribute: SelectPosition;
     // @internal
-    selectedIndexChanged(prev: number, next: number): void;
+    selectedIndexChanged(prev: any, next: any): void;
     // (undocumented)
     protected setDefaultSelectedOption(): void;
     setPositioning(): void;
     // @internal
-    slottedOptionsChanged(prev: Element[], next: Element[]): void;
+    slottedOptionsChanged(prev: any, next: any): void;
     get value(): string;
     set value(next: string);
     }
@@ -2283,7 +2280,7 @@ export class Slider extends FormAssociatedSlider implements SliderConfiguration 
     get valueAsNumber(): number;
     set valueAsNumber(next: number);
     // @internal (undocumented)
-    valueChanged(previous: string, next: string): void;
+    valueChanged(previous: any, next: any): void;
     valueTextFormatter: (value: string) => string | null;
 }
 
@@ -2493,7 +2490,7 @@ export class TextArea extends FormAssociatedTextArea {
     name: string;
     placeholder: string;
     readOnly: boolean;
-    resize: TextAreaResize | "none" | "both" | "horizontal" | "vertical";
+    resize: TextAreaResize;
     rows: number;
     spellcheck: boolean;
     }
@@ -2538,7 +2535,7 @@ export class TextField extends FormAssociatedTextField {
     readOnly: boolean;
     size: number;
     spellcheck: boolean;
-    type: TextFieldType | "email" | "password" | "tel" | "text" | "url";
+    type: TextFieldType;
     }
 
 // @internal
@@ -2576,8 +2573,6 @@ export class Toolbar extends FoundationElement {
     connectedCallback(): void;
     // @internal
     direction: Direction;
-    // @internal (undocumented)
-    disconnectedCallback(): void;
     // @internal
     focusinHandler(e: FocusEvent): boolean | void;
     // @internal
@@ -2591,7 +2586,7 @@ export class Toolbar extends FoundationElement {
     protected slottedItemsChanged(): void;
     // @internal
     slottedLabel: HTMLElement[];
-    }
+}
 
 // @internal (undocumented)
 export interface Toolbar extends StartEnd, DelegatesARIAToolbar {
@@ -2607,6 +2602,7 @@ export const toolbarTemplate: FoundationElementTemplate<ViewTemplate<Toolbar>, T
 export class Tooltip extends FoundationElement {
     anchor: string;
     anchorElement: HTMLElement | null;
+    // Warning: (ae-incompatible-release-tags) The symbol "autoUpdateMode" is marked as @public, but its signature references "AutoUpdateMode" which is marked as @beta
     autoUpdateMode: AutoUpdateMode;
     // (undocumented)
     connectedCallback(): void;
@@ -2626,7 +2622,7 @@ export class Tooltip extends FoundationElement {
     // @internal (undocumented)
     horizontalScaling: AxisScalingMode;
     horizontalViewportLock: boolean;
-    position: TooltipPosition | "top" | "right" | "bottom" | "left" | "start" | "end" | "top-left" | "top-right" | "bottom-left" | "bottom-right" | "top-start" | "top-end" | "bottom-start" | "bottom-end";
+    position: TooltipPosition;
     // @internal
     region: AnchoredRegion;
     // @internal (undocumented)
@@ -2648,19 +2644,11 @@ export class Tooltip extends FoundationElement {
 // @public
 export enum TooltipPosition {
     bottom = "bottom",
-    bottomEnd = "bottom-end",
-    bottomLeft = "bottom-left",
-    bottomRight = "bottom-right",
-    bottomStart = "bottom-start",
     end = "end",
     left = "left",
     right = "right",
     start = "start",
-    top = "top",
-    topEnd = "top-end",
-    topLeft = "top-left",
-    topRight = "top-right",
-    topStart = "top-start"
+    top = "top"
 }
 
 // @public
@@ -2684,29 +2672,28 @@ export function transient<T extends Constructable>(target: T & Partial<RegisterS
 //
 // @public
 export class TreeItem extends FoundationElement {
-    // @internal
+    // (undocumented)
     childItemLength(): number;
-    // @internal (undocumented)
+    // (undocumented)
     childItems: HTMLElement[];
     disabled: boolean;
-    // @internal
+    // (undocumented)
     expandCollapseButton: HTMLDivElement;
     expanded: boolean;
-    // @internal
+    // (undocumented)
     focusable: boolean;
     static focusItem(el: HTMLElement): void;
-    // @internal
-    handleBlur: (e: FocusEvent) => void;
-    // @internal
+    // (undocumented)
+    handleClick: (e: MouseEvent) => void | boolean;
+    // (undocumented)
     handleExpandCollapseButtonClick: (e: MouseEvent) => void;
-    // @internal
-    handleFocus: (e: FocusEvent) => void;
+    // (undocumented)
     readonly isNestedItem: () => boolean;
-    // @internal
+    // (undocumented)
     items: HTMLElement[];
-    // @internal
-    nested: boolean;
     // @internal (undocumented)
+    nested: boolean;
+    // (undocumented)
     renderCollapsedChildren: boolean;
     selected: boolean;
     }
@@ -2727,23 +2714,21 @@ export const treeItemTemplate: FoundationElementTemplate<ViewTemplate<TreeItem>,
 export class TreeView extends FoundationElement {
     // (undocumented)
     connectedCallback(): void;
-    // @internal
+    // (undocumented)
     currentFocused: HTMLElement | TreeItem | null;
+    // (undocumented)
     currentSelected: HTMLElement | TreeItem | null;
-    // @internal
+    // (undocumented)
     handleBlur: (e: FocusEvent) => void;
-    // @internal
-    handleClick(e: Event): boolean | void;
-    // @internal
+    // (undocumented)
     handleFocus: (e: FocusEvent) => void;
-    // @internal
-    handleKeyDown: (e: KeyboardEvent) => boolean | void;
-    // @internal
-    handleSelectedChange: (e: Event) => boolean | void;
+    // (undocumented)
+    handleKeyDown: (e: KeyboardEvent) => void | boolean;
+    // (undocumented)
     renderCollapsedNodes: boolean;
-    // @internal
+    // (undocumented)
     slottedTreeItems: HTMLElement[];
-    // @internal
+    // (undocumented)
     treeView: HTMLElement;
 }
 
@@ -2755,11 +2740,17 @@ export const treeViewTemplate: FoundationElementTemplate<ViewTemplate<TreeView>>
 // @internal (undocumented)
 export function validateKey(key: any): void;
 
-// @public
+// @beta
 export type VerticalPosition = "top" | "bottom" | "center" | "unset";
 
 // @public
 export type WeekdayFormat = "long" | "narrow" | "short";
+
+// @public
+export type WeekdayText = {
+    text: string;
+    abbr?: string;
+};
 
 // @public
 export function whitespaceFilter(value: Node, index: number, array: Node[]): boolean;

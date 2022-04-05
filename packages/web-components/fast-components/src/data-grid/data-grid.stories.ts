@@ -1,4 +1,4 @@
-import { html } from "@microsoft/fast-element";
+import { html, item } from "@microsoft/fast-element";
 import type {
     Button,
     ColumnDefinition,
@@ -18,7 +18,7 @@ const defaultRowData: object = newDataRow("default");
 
 const columnWidths: string[] = ["1fr", "1fr", "1fr", "1fr"];
 
-const defaultRowItemTemplate = html`
+const defaultRowItemTemplate = item`
     <fast-data-grid-row
         :rowData="${x => x}"
         :cellItemTemplate="${(x, c) => c.parent.cellItemTemplate}"
@@ -26,7 +26,7 @@ const defaultRowItemTemplate = html`
     ></fast-data-grid-row>
 `;
 
-const customRowItemTemplate = html`
+const customRowItemTemplate = item`
     <fast-data-grid-row
         :rowData="${x => x}"
         :cellItemTemplate="${(x, c) => c.parent.cellItemTemplate}"
@@ -35,7 +35,7 @@ const customRowItemTemplate = html`
     <fast-divider style="margin-bottom: 6px; margin-top: 6px;"></fast-divider>
 `;
 
-const customCellItemTemplate = html`
+const customCellItemTemplate = item`
     <fast-data-grid-cell
         style="background: brown"
         grid-column="${(x, c) => c.index + 1}"
@@ -44,7 +44,7 @@ const customCellItemTemplate = html`
     ></fast-data-grid-cell>
 `;
 
-const customHeaderCellItemTemplate = html`
+const customHeaderCellItemTemplate = item`
     <fast-data-grid-cell
         style="background: orange"
         cell-type="columnheader"
