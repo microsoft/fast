@@ -3,6 +3,7 @@ import {
     ChildrenDirective,
     Constructable,
     ExecutionContext,
+    ItemContext,
     RefDirective,
     RepeatDirective,
     SlottedDirective,
@@ -36,18 +37,16 @@ export const RepeatDirectiveRenderer: DirectiveRenderer<typeof RepeatDirective> 
         ): IterableIterator<string> {
             const items = directive.itemsBinding(source, context);
             const template = directive.templateBinding(source, context);
-            const childContext: ExecutionContext = Object.create(context);
-            childContext.parent = source;
-            childContext.parentContext = context;
+            const childContext = context.createChildContext(source);
 
             if (template instanceof ViewTemplate) {
                 if (directive.options.positioning) {
                     for (let i = 0, length = items.length; i < length; i++) {
-                        const ctx: ExecutionContext = Object.create(childContext);
-                        // Match fast-element context creation behavior. Perhaps this should be abstracted
-                        // So both fast-ssr and fast-element leverage the same context creation code?
-                        ctx.index = i;
-                        ctx.length = length;
+                        // Match fast-element repeater item context code.
+                        const ctx: ItemContext = childContext.createItemContext(
+                            i,
+                            length
+                        );
                         yield* renderer.render(template, renderInfo, items[i], ctx);
                     }
                 } else {

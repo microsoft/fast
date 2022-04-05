@@ -1,5 +1,5 @@
 import type { Behavior } from "../observation/behavior.js";
-import type { ExecutionContext } from "../observation/observable.js";
+import type { ExecutionContext, RootContext } from "../observation/observable.js";
 import type {
     ViewBehavior,
     ViewBehaviorFactory,
@@ -10,11 +10,15 @@ import type {
  * Represents a collection of DOM nodes which can be bound to a data source.
  * @public
  */
-export interface View<TSource = any, TParent = any, TGrandparent = any> {
+export interface View<
+    TSource = any,
+    TParent = any,
+    TContext extends ExecutionContext<TParent> = ExecutionContext<TParent>
+> {
     /**
      * The execution context the view is running within.
      */
-    readonly context: ExecutionContext<TParent, TGrandparent> | null;
+    readonly context: TContext | null;
 
     /**
      * The data that the view is bound to.
@@ -26,7 +30,7 @@ export interface View<TSource = any, TParent = any, TGrandparent = any> {
      * @param source - The binding source for the view's binding behaviors.
      * @param context - The execution context to run the view within.
      */
-    bind(source: TSource, context: ExecutionContext<TParent, TGrandparent>): void;
+    bind(source: TSource, context: TContext): void;
 
     /**
      * Unbinds a view's behaviors from its binding source and context.
@@ -44,8 +48,8 @@ export interface View<TSource = any, TParent = any, TGrandparent = any> {
  * A View representing DOM nodes specifically for rendering the view of a custom element.
  * @public
  */
-export interface ElementView<TSource = any, TParent = any, TGrandparent = any>
-    extends View<TSource, TParent, TGrandparent> {
+export interface ElementView<TSource = any, TParent = any>
+    extends View<TSource, TParent, RootContext> {
     /**
      * Appends the view's DOM nodes to the referenced node.
      * @param node - The parent node to append the view's DOM nodes to.
@@ -57,8 +61,11 @@ export interface ElementView<TSource = any, TParent = any, TGrandparent = any>
  * A view representing a range of DOM nodes which can be added/removed ad hoc.
  * @public
  */
-export interface SyntheticView<TSource = any, TParent = any, TGrandparent = any>
-    extends View<TSource, TParent, TGrandparent> {
+export interface SyntheticView<
+    TSource = any,
+    TParent = any,
+    TContext extends ExecutionContext<TParent> = ExecutionContext<TParent>
+> extends View<TSource, TParent, TContext> {
     /**
      * The first DOM node in the range of nodes that make up the view.
      */
@@ -106,10 +113,11 @@ function removeNodeSequence(firstNode: Node, lastNode: Node): void {
  * The standard View implementation, which also implements ElementView and SyntheticView.
  * @public
  */
-export class HTMLView<TSource = any, TParent = any, TGrandparent = any>
-    implements
-        ElementView<TSource, TParent, TGrandparent>,
-        SyntheticView<TSource, TParent, TGrandparent> {
+export class HTMLView<
+    TSource = any,
+    TParent = any,
+    TContext extends ExecutionContext<TParent> = ExecutionContext<TParent>
+> implements ElementView<TSource, TParent>, SyntheticView<TSource, TParent, TContext> {
     private behaviors: ViewBehavior[] | null = null;
 
     /**
@@ -120,7 +128,7 @@ export class HTMLView<TSource = any, TParent = any, TGrandparent = any>
     /**
      * The execution context the view is running within.
      */
-    public context: ExecutionContext<TParent, TGrandparent> | null = null;
+    public context: TContext | null = null;
 
     /**
      * The first DOM node in the range of nodes that make up the view.
@@ -210,7 +218,7 @@ export class HTMLView<TSource = any, TParent = any, TGrandparent = any>
      * @param source - The binding source for the view's binding behaviors.
      * @param context - The execution context to run the behaviors within.
      */
-    public bind(source: TSource, context: ExecutionContext<TParent, TGrandparent>): void {
+    public bind(source: TSource, context: TContext): void {
         let behaviors = this.behaviors;
         const oldSource = this.source;
 
