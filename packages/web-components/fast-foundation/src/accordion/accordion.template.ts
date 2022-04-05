@@ -1,7 +1,7 @@
 import { elements, html, slotted } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
-import type { FoundationElementTemplate } from "../foundation-element";
-import type { Accordion } from "./accordion";
+import type { FoundationElementTemplate } from "../foundation-element/foundation-element.js";
+import type { Accordion } from "./accordion.js";
 
 /**
  * The template for the {@link @microsoft/fast-foundation#Accordion} component.

@@ -1,7 +1,7 @@
 import { attr, observable, SyntheticViewTemplate } from "@microsoft/fast-element";
 import { keySpace } from "@microsoft/fast-web-utilities";
-import type { FoundationElementDefinition } from "../foundation-element";
-import { FormAssociatedCheckbox } from "./checkbox.form-associated";
+import type { FoundationElementDefinition } from "../foundation-element/foundation-element.js";
+import { FormAssociatedCheckbox } from "./checkbox.form-associated.js";
 
 /**
  * Checkbox configuration options

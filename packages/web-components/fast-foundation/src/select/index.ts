@@ -1,3 +1,3 @@
-export * from "./select";
-export * from "./select.options";
-export * from "./select.template";
+export * from "./select.js";
+export * from "./select.options.js";
+export * from "./select.template.js";
