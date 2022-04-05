@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "support row selection",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "scomea@microsoft.com",
+  "dependentChangeType": "patch"
+}
