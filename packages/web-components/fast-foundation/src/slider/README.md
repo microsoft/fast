@@ -106,6 +106,138 @@ export const mySliderLabel = SliderLabel.compose({
 });
 ```
 
+## API
+
+## `src/slider/slider-utilities.ts`:
+
+### Functions
+
+| Name                    | Description                                                                | Parameters                                                                         | Return   |
+| ----------------------- | -------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | -------- |
+| `convertPixelToPercent` | Converts a pixel coordinate on the track to a percent of the track's range | `pixelPos: number, minPosition: number, maxPosition: number, direction: Direction` | `number` |
+
+<hr/>
+
+### Exports
+
+| Kind | Name                    | Declaration           | Module                         | Package |
+| ---- | ----------------------- | --------------------- | ------------------------------ | ------- |
+| `js` | `convertPixelToPercent` | convertPixelToPercent | src/slider/slider-utilities.ts |         |
+
+## `src/slider/slider.ts`:
+
+### class: `Slider`
+
+#### Superclass
+
+| Name                   | Module                                | Package |
+| ---------------------- | ------------------------------------- | ------- |
+| `FormAssociatedSlider` | /src/slider/slider.form-associated.js |         |
+
+#### Static Methods
+
+| Name      | Privacy | Description                                                                     | Parameters                      | Return                                                                                                           | Inherited From    |
+| --------- | ------- | ------------------------------------------------------------------------------- | ------------------------------- | ---------------------------------------------------------------------------------------------------------------- | ----------------- |
+| `compose` | public  | Defines an element registry function with a set of element definition defaults. | `this: K, elementDefinition: T` | `(         overrideDefinition?: OverrideFoundationElementDefinition<T>     ) => FoundationElementRegistry<T, K>` | FoundationElement |
+
+#### Fields
+
+| Name                 | Privacy   | Type                                  | Default | Description                                                                                                                                                                                       | Inherited From       |
+| -------------------- | --------- | ------------------------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------- |
+| `readOnly`           | public    | `boolean`                             |         | When true, the control will be immutable by user interaction. See {@link https\://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/readonly \| readonly HTML attribute} for more information. |                      |
+| `valueAsNumber`      | public    | `number`                              |         | The value property, typed as a number.                                                                                                                                                            |                      |
+| `valueTextFormatter` | public    | `(value: string) => string \| null`   |         | Custom function that generates a string for the component's "aria-valuetext" attribute based on the current value.                                                                                |                      |
+| `min`                | public    | `number`                              | `0`     | The minimum allowed value.                                                                                                                                                                        |                      |
+| `max`                | public    | `number`                              | `10`    | The maximum allowed value.                                                                                                                                                                        |                      |
+| `step`               | public    | `number`                              | `1`     | Value to increment or decrement via arrow keys, mouse click or drag.                                                                                                                              |                      |
+| `orientation`        | public    | `Orientation`                         |         | The orientation of the slider.                                                                                                                                                                    |                      |
+| `mode`               | public    | `SliderMode`                          |         | The selection mode.                                                                                                                                                                               |                      |
+| `keypressHandler`    | protected |                                       |         |                                                                                                                                                                                                   |                      |
+| `proxy`              |           |                                       |         |                                                                                                                                                                                                   | FormAssociatedSlider |
+| `$presentation`      | public    | `ComponentPresentation \| null`       |         | A property which resolves the ComponentPresentation instance for the current component.                                                                                                           | FoundationElement    |
+| `template`           | public    | `ElementViewTemplate \| void \| null` |         | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.                        | FoundationElement    |
+| `styles`             | public    | `ElementStyles \| void \| null`       |         | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition.               | FoundationElement    |
+
+#### Methods
+
+| Name                             | Privacy   | Description                                 | Parameters             | Return | Inherited From    |
+| -------------------------------- | --------- | ------------------------------------------- | ---------------------- | ------ | ----------------- |
+| `increment`                      | public    | Increment the value by the step             |                        | `void` |                   |
+| `decrement`                      | public    | Decrement the value by the step             |                        | `void` |                   |
+| `setThumbPositionForOrientation` | public    | Places the thumb based on the current value | `direction: Direction` | `void` |                   |
+| `templateChanged`                | protected |                                             |                        | `void` | FoundationElement |
+| `stylesChanged`                  | protected |                                             |                        | `void` | FoundationElement |
+
+#### Attributes
+
+| Name          | Field       | Inherited From |
+| ------------- | ----------- | -------------- |
+| `readonly`    | readOnly    |                |
+|               | min         |                |
+|               | max         |                |
+|               | step        |                |
+| `orientation` | orientation |                |
+| `mode`        | mode        |                |
+
+<hr/>
+
+### Exports
+
+| Kind | Name     | Declaration | Module               | Package |
+| ---- | -------- | ----------- | -------------------- | ------- |
+| `js` | `Slider` | Slider      | src/slider/slider.ts |         |
+
+## `src/slider-label/slider-label.ts`:
+
+### class: `SliderLabel`
+
+#### Superclass
+
+| Name                | Module                                        | Package |
+| ------------------- | --------------------------------------------- | ------- |
+| `FoundationElement` | /src/foundation-element/foundation-element.js |         |
+
+#### Static Methods
+
+| Name      | Privacy | Description                                                                     | Parameters                      | Return                                                                                                           | Inherited From    |
+| --------- | ------- | ------------------------------------------------------------------------------- | ------------------------------- | ---------------------------------------------------------------------------------------------------------------- | ----------------- |
+| `compose` | public  | Defines an element registry function with a set of element definition defaults. | `this: K, elementDefinition: T` | `(         overrideDefinition?: OverrideFoundationElementDefinition<T>     ) => FoundationElementRegistry<T, K>` | FoundationElement |
+
+#### Fields
+
+| Name            | Privacy | Type                                  | Default | Description                                                                                                                                                                         | Inherited From    |
+| --------------- | ------- | ------------------------------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
+| `position`      | public  | `string`                              |         | The position of the label relative to the min and max value of the parent {@link @microsoft/fast-foundation#(Slider:class)}.                                                        |                   |
+| `hideMark`      | public  | `boolean`                             | `false` | Hides the tick mark.                                                                                                                                                                |                   |
+| `disabled`      | public  | `boolean`                             |         | The disabled state of the label. This is generally controlled by the parent {@link @microsoft/fast-foundation#(Slider:class)}.                                                      |                   |
+| `$presentation` | public  | `ComponentPresentation \| null`       |         | A property which resolves the ComponentPresentation instance for the current component.                                                                                             | FoundationElement |
+| `template`      | public  | `ElementViewTemplate \| void \| null` |         | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.          | FoundationElement |
+| `styles`        | public  | `ElementStyles \| void \| null`       |         | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition. | FoundationElement |
+
+#### Methods
+
+| Name              | Privacy   | Description | Parameters | Return | Inherited From    |
+| ----------------- | --------- | ----------- | ---------- | ------ | ----------------- |
+| `templateChanged` | protected |             |            | `void` | FoundationElement |
+| `stylesChanged`   | protected |             |            | `void` | FoundationElement |
+
+#### Attributes
+
+| Name        | Field    | Inherited From |
+| ----------- | -------- | -------------- |
+| `position`  | position |                |
+| `hide-mark` | hideMark |                |
+| `disabled`  | disabled |                |
+
+<hr/>
+
+### Exports
+
+| Kind | Name          | Declaration | Module                           | Package |
+| ---- | ------------- | ----------- | -------------------------------- | ------- |
+| `js` | `SliderLabel` | SliderLabel | src/slider-label/slider-label.ts |         |
+
+
 ## Additional resources
 
 * [Component explorer examples](https://explore.fast.design/components/fast-slider)

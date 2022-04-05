@@ -25,8 +25,11 @@
     "doc:ci": "api-extractor run",
     "build:rollup": "rollup -c",
     "build:tsc": "tsc -p ./tsconfig.json",
-    "build": "yarn build:tsc && yarn build:rollup && yarn doc",
+    "build": "yarn build:tsc && yarn build:rollup && yarn doc && yarn cem",
     "dev": "tsc -p ./tsconfig.json -w",
+    "cem": "yarn cem-analyze && yarn cem-markdown",
+    "cem-analyze": "cem analyze",
+    "cem-markdown": "node CEMToMarkdown.mjs",
     "tdd": "yarn dev & yarn test-chrome:watch",
     "tdd:firefox": "yarn dev & yarn test-firefox:watch",
     "prepare": "yarn clean:dist && yarn build",
@@ -48,6 +51,8 @@
     "test-firefox:watch": "karma start karma.conf.cjs --browsers=FirefoxHeadless   --coverage --watch-extensions js"
   },
   "devDependencies": {
+    "@custom-elements-manifest/analyzer": "^0.5.7",
+    "@custom-elements-manifest/to-markdown": "^0.1.0",
     "@microsoft/api-extractor": "7.8.1",
     "@microsoft/tsdoc-config": "^0.13.4",
     "@types/chai": "^4.2.11",
@@ -94,5 +99,6 @@
     "@microsoft/fast-web-utilities": "^5.2.0",
     "tabbable": "^5.2.0",
     "tslib": "^1.13.0"
-  }
+  },
+  "customElements": "dist/custom-elements.json"
 }

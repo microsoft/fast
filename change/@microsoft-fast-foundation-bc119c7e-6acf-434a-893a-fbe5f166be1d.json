@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "Added CEM Analyzer and API markdown to readme files",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "44823142+williamw2@users.noreply.github.com",
+  "dependentChangeType": "patch"
+}

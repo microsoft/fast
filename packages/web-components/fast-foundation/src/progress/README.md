@@ -101,6 +101,61 @@ export const myProgressRing = ProgressRing.compose<ProgressRingOptions>({
 });
 ```
 
+## API
+
+## `src/progress/base-progress.ts`:
+
+### class: `BaseProgress`
+
+#### Superclass
+
+| Name                | Module                                        | Package |
+| ------------------- | --------------------------------------------- | ------- |
+| `FoundationElement` | /src/foundation-element/foundation-element.js |         |
+
+#### Static Methods
+
+| Name      | Privacy | Description                                                                     | Parameters                      | Return                                                                                                           | Inherited From    |
+| --------- | ------- | ------------------------------------------------------------------------------- | ------------------------------- | ---------------------------------------------------------------------------------------------------------------- | ----------------- |
+| `compose` | public  | Defines an element registry function with a set of element definition defaults. | `this: K, elementDefinition: T` | `(         overrideDefinition?: OverrideFoundationElementDefinition<T>     ) => FoundationElementRegistry<T, K>` | FoundationElement |
+
+#### Fields
+
+| Name            | Privacy | Type                                  | Default | Description                                                                                                                                                                         | Inherited From    |
+| --------------- | ------- | ------------------------------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
+| `value`         | public  | `number \| null`                      |         | The value of the progress                                                                                                                                                           |                   |
+| `min`           | public  | `number`                              |         | The minimum value                                                                                                                                                                   |                   |
+| `max`           | public  | `number`                              |         | The maximum value                                                                                                                                                                   |                   |
+| `paused`        | public  | `boolean`                             |         | Indicates the progress is paused                                                                                                                                                    |                   |
+| `$presentation` | public  | `ComponentPresentation \| null`       |         | A property which resolves the ComponentPresentation instance for the current component.                                                                                             | FoundationElement |
+| `template`      | public  | `ElementViewTemplate \| void \| null` |         | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.          | FoundationElement |
+| `styles`        | public  | `ElementStyles \| void \| null`       |         | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition. | FoundationElement |
+
+#### Methods
+
+| Name              | Privacy   | Description | Parameters | Return | Inherited From    |
+| ----------------- | --------- | ----------- | ---------- | ------ | ----------------- |
+| `templateChanged` | protected |             |            | `void` | FoundationElement |
+| `stylesChanged`   | protected |             |            | `void` | FoundationElement |
+
+#### Attributes
+
+| Name | Field  | Inherited From |
+| ---- | ------ | -------------- |
+|      | value  |                |
+|      | min    |                |
+|      | max    |                |
+|      | paused |                |
+
+<hr/>
+
+### Exports
+
+| Kind | Name           | Declaration  | Module                        | Package |
+| ---- | -------------- | ------------ | ----------------------------- | ------- |
+| `js` | `BaseProgress` | BaseProgress | src/progress/base-progress.ts |         |
+
+
 ## Additional resources
 
 * [Component explorer examples for `progress`](https://explore.fast.design/components/fast-progress)
