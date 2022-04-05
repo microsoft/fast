@@ -306,6 +306,9 @@ export const ExecutionContext: Readonly<{
     create(): RootContext;
 }>;
 
+// @public
+export type ExecutionContext<TParentSource = any> = RootContext | ChildContext<TParentSource> | ItemContext<TParentSource>;
+
 // Warning: (ae-internal-missing-underscore) The name "FAST" should be prefixed with an underscore because the declaration is marked as @internal
 //
 // @internal
