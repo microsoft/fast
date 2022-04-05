@@ -1,2 +1,2 @@
-export * from "./accordion-item.template";
-export * from "./accordion-item";
+export * from "./accordion-item.template.js";
+export * from "./accordion-item.js";
