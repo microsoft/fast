@@ -1,4 +1,4 @@
-import { FoundationElement } from "../foundation-element";
+import { FoundationElement } from "../foundation-element/foundation-element.js";
 
 /**
  * An Card Custom HTML Element.

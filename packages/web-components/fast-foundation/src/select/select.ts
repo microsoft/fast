@@ -1,14 +1,14 @@
 import { attr, DOM, Observable, observable } from "@microsoft/fast-element";
 import type { SyntheticViewTemplate } from "@microsoft/fast-element";
 import { uniqueId } from "@microsoft/fast-web-utilities";
-import type { FoundationElementDefinition } from "../foundation-element";
-import { DelegatesARIAListbox, Listbox } from "../listbox";
-import type { ListboxOption } from "../listbox-option/listbox-option";
-import { StartEnd } from "../patterns/start-end";
-import type { StartEndOptions } from "../patterns/start-end";
-import { applyMixins } from "../utilities/apply-mixins";
-import { FormAssociatedSelect } from "./select.form-associated";
-import { SelectPosition } from "./select.options";
+import type { FoundationElementDefinition } from "../foundation-element/foundation-element.js";
+import { DelegatesARIAListbox, Listbox } from "../listbox/listbox.js";
+import type { ListboxOption } from "../listbox-option/listbox-option.js";
+import { StartEnd } from "../patterns/start-end.js";
+import type { StartEndOptions } from "../patterns/start-end.js";
+import { applyMixins } from "../utilities/apply-mixins.js";
+import { FormAssociatedSelect } from "./select.form-associated.js";
+import { SelectPosition } from "./select.options.js";
 
 /**
  * Select configuration options

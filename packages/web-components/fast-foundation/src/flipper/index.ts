@@ -1,2 +1,2 @@
-export * from "./flipper.template";
-export * from "./flipper";
+export * from "./flipper.template.js";
+export * from "./flipper.js";

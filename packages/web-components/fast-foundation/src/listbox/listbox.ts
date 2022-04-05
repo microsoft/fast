@@ -11,10 +11,10 @@ import {
     keyTab,
     uniqueId,
 } from "@microsoft/fast-web-utilities";
-import { FoundationElement } from "../foundation-element";
-import { isListboxOption, ListboxOption } from "../listbox-option/listbox-option";
-import { ARIAGlobalStatesAndProperties } from "../patterns/aria-global";
-import { applyMixins } from "../utilities/apply-mixins";
+import { FoundationElement } from "../foundation-element/foundation-element.js";
+import { isListboxOption, ListboxOption } from "../listbox-option/listbox-option.js";
+import { ARIAGlobalStatesAndProperties } from "../patterns/aria-global.js";
+import { applyMixins } from "../utilities/apply-mixins.js";
 
 /**
  * A Listbox Custom HTML Element.
