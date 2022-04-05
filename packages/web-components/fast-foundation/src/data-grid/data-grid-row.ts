@@ -169,6 +169,14 @@ export class FASTDataGridRow extends FASTElement {
 
     private behaviorOrchestrator: ViewBehaviorOrchestrator | null = null;
     /**
+     * If the row is selected
+     *
+     * @internal
+     */
+    @observable
+    public selected: boolean;
+
+    /**
      * Whether click select is enabled
      *
      * @internal
@@ -241,7 +249,7 @@ export class FASTDataGridRow extends FASTElement {
     }
 
     /**
-     * Attempst to set the selected state of the row
+     * Attempts to set the selected state of the row
      *
      * @public
      */
@@ -309,7 +317,7 @@ export class FASTDataGridRow extends FASTElement {
                 break;
 
             case keySpace:
-                if (this.hasAttribute("aria-selected")) {
+                if (this.selected !== undefined) {
                     e.preventDefault();
                     this.toggleSelected({
                         newValue: !this.isSelected(),
@@ -322,18 +330,14 @@ export class FASTDataGridRow extends FASTElement {
     }
 
     private isSelected(): boolean {
-        return !(this.getAttribute("aria-selected") === "false");
+        return this.selected;
     }
 
     /**
      * @internal
      */
     public handleClick(e: MouseEvent): void {
-        if (
-            e.defaultPrevented ||
-            !this.clickSelect ||
-            !this.hasAttribute("aria-selected")
-        ) {
+        if (e.defaultPrevented || !this.clickSelect || this.selected === undefined) {
             return;
         }
         e.preventDefault();

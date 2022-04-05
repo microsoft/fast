@@ -53,19 +53,60 @@ const customHeaderCellItemTemplate = html`
     ></fast-data-grid-header-cell>
 `;
 
+const buttonCellTemplate = html<DataGridCell>`
+    <template>
+        <fast-button @click="${x => cellTemplateButtonClick(x)}" style="width: 100%;">
+            ${x =>
+                x.rowData === null ||
+                x.columnDefinition === null ||
+                x.columnDefinition.columnDataKey === null
+                    ? null
+                    : x.rowData[x.columnDefinition.columnDataKey]}
+        </fast-button>
+    </template>
+`;
+
+const checkboxCellTemplate = html<DataGridCell>`
+    <template>
+        <fast-checkbox
+            :checked="${x => (x.parentElement as DataGridRow)?.selected}"
+            @click="${(x, c) =>
+                (x.parentElement as DataGridRow)?.toggleSelected({
+                    newValue: !(x.parentElement as DataGridRow)?.selected,
+                    shiftKey: (c.event as MouseEvent).shiftKey,
+                    ctrlKey: (c.event as MouseEvent).ctrlKey,
+                })}"
+            style="width: 100%;"
+        >
+            ${x =>
+                x.rowData === null ||
+                x.columnDefinition === null ||
+                x.columnDefinition.columnDataKey === null
+                    ? null
+                    : x.rowData[x.columnDefinition.columnDataKey]}
+        </fast-checkbox>
+    </template>
+`;
+
+const buttonHeaderCellTemplate = html<DataGridCell>`
+    <template>
+        <fast-button
+            @click="${x => headerTemplateButtonClick(x)}"
+            style="width: 100%; background: green"
+        >
+            ${x =>
+                x.columnDefinition === null
+                    ? null
+                    : x.columnDefinition.title === undefined
+                    ? x.columnDefinition.columnDataKey
+                    : x.columnDefinition.title}
+        </fast-button>
+    </template>
+`;
+
 addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
     if (name.toLowerCase().startsWith("data-grid")) {
         reset();
-
-        const singleRowSelectGrid = document.getElementById(
-            "singleRowSelectGrid"
-        ) as DataGrid;
-        singleRowSelectGrid.rowsData = newDataSet(10);
-
-        const multiRowSelectGrid = document.getElementById(
-            "multiRowSelectGrid"
-        ) as DataGrid;
-        multiRowSelectGrid.rowsData = newDataSet(10);
 
         const nestedCell1 = document.getElementById("nestedCell1") as DataGridCell;
         nestedCell1.columnDefinition = nestedColumn;
@@ -198,37 +239,24 @@ addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
         if (customHeaderCellTemplateButton) {
             customHeaderCellTemplateButton.onclick = setCustomHeaderCellItemTemplate;
         }
+
+        const singleRowSelectGrid = document.getElementById(
+            "singleRowSelectGrid"
+        ) as DataGrid;
+        singleRowSelectGrid.rowsData = newDataSet(10);
+
+        const multiRowSelectGrid = document.getElementById(
+            "multiRowSelectGrid"
+        ) as DataGrid;
+        multiRowSelectGrid.rowsData = newDataSet(10);
+
+        const checkSelectGrid = document.getElementById(
+            "manual-grid-checkbox-selection"
+        ) as DataGrid;
+        checkSelectGrid.rowsData = newDataSet(10);
+        checkSelectGrid.columnDefinitions = checkboxColumns;
     }
 });
-
-const buttonCellTemplate = html<DataGridCell>`
-    <template>
-        <fast-button @click="${x => cellTemplateButtonClick(x)}" style="width: 100%;">
-            ${x =>
-                x.rowData === null ||
-                x.columnDefinition === null ||
-                x.columnDefinition.columnDataKey === null
-                    ? null
-                    : x.rowData[x.columnDefinition.columnDataKey]}
-        </fast-button>
-    </template>
-`;
-
-const buttonHeaderCellTemplate = html<DataGridCell>`
-    <template>
-        <fast-button
-            @click="${x => headerTemplateButtonClick(x)}"
-            style="width: 100%; background: green"
-        >
-            ${x =>
-                x.columnDefinition === null
-                    ? null
-                    : x.columnDefinition.title === undefined
-                    ? x.columnDefinition.columnDataKey
-                    : x.columnDefinition.title}
-        </fast-button>
-    </template>
-`;
 
 function reset(): void {
     const defaultGridElement: DataGrid | null = document.getElementById(
@@ -455,6 +483,20 @@ function newDataRow(id: string): object {
 const baseColumns: ColumnDefinition[] = [
     { columnDataKey: "rowId", isRowHeader: true },
     { columnDataKey: "item1" },
+    { columnDataKey: "item2" },
+    { columnDataKey: "item3" },
+];
+
+const checkboxColumn: ColumnDefinition = {
+    columnDataKey: "item1",
+    cellInternalFocusQueue: true,
+    cellFocusTargetCallback: getFocusTarget,
+    cellTemplate: checkboxCellTemplate,
+};
+
+const checkboxColumns: ColumnDefinition[] = [
+    { columnDataKey: "rowId", isRowHeader: true },
+    checkboxColumn,
     { columnDataKey: "item2" },
     { columnDataKey: "item3" },
 ];

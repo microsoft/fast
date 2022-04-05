@@ -954,20 +954,16 @@ export class FASTDataGrid extends FASTElement {
                 this.selectionMode === "single-row" ||
                 this.selectionMode === "multi-row"
             ) {
-                if (
-                    (thisRow.rowType === "header" ||
-                        thisRow.rowType === "sticky-header") &&
-                    this.selectableHeaderRow
-                ) {
-                    thisRow.setAttribute(
-                        "aria-selected",
-                        this._selectedRowIndexes.includes(index) ? "true" : "false"
-                    );
+                if (thisRow.rowType === "header" || thisRow.rowType === "sticky-header") {
+                    if (this.selectableHeaderRow) {
+                        thisRow.selected = this._selectedRowIndexes.includes(index)
+                            ? true
+                            : false;
+                    }
                 } else {
-                    thisRow.setAttribute(
-                        "aria-selected",
-                        this._selectedRowIndexes.includes(index) ? "true" : "false"
-                    );
+                    thisRow.selected = this._selectedRowIndexes.includes(index)
+                        ? true
+                        : false;
                 }
             }
             if (this.columnDefinitionsStale) {
