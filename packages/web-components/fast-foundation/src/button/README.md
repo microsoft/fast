@@ -62,9 +62,9 @@ This component is built with the expectation that focus is delegated to the butt
 
 #### Superclass
 
-| Name                   | Module                             | Package |
-| ---------------------- | ---------------------------------- | ------- |
-| `FormAssociatedButton` | /src/button/button.form-associated |         |
+| Name                   | Module                                | Package |
+| ---------------------- | ------------------------------------- | ------- |
+| `FormAssociatedButton` | /src/button/button.form-associated.js |         |
 
 #### Static Methods
 
@@ -74,39 +74,29 @@ This component is built with the expectation that focus is delegated to the butt
 
 #### Fields
 
-| Name                              | Privacy | Type                                         | Default  | Description                                                                                                                                                                                                             | Inherited From       |
-| --------------------------------- | ------- | -------------------------------------------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------- |
-| `autofocus`                       | public  | `boolean`                                    |          | Determines if the element should receive document focus on page load.                                                                                                                                                   |                      |
-| `formId`                          | public  | `string`                                     |          | The id of a form to associate the element to.                                                                                                                                                                           |                      |
-| `formaction`                      | public  | `string`                                     |          | See {@link https\://developer.mozilla.org/en-US/docs/Web/HTML/Element/button \| `<button>` element} for more details.                                                                                     |                      |
-| `formenctype`                     | public  | `string`                                     |          | See {@link https\://developer.mozilla.org/en-US/docs/Web/HTML/Element/button \| `<button>` element} for more details.                                                                                     |                      |
-| `formmethod`                      | public  | `string`                                     |          | See {@link https\://developer.mozilla.org/en-US/docs/Web/HTML/Element/button \| `<button>` element} for more details.                                                                                     |                      |
-| `formnovalidate`                  | public  | `boolean`                                    |          | See {@link https\://developer.mozilla.org/en-US/docs/Web/HTML/Element/button \| `<button>` element} for more details.                                                                                     |                      |
-| `formtarget`                      | public  | `"_self" \| "_blank" \| "_parent" \| "_top"` |          | See {@link https\://developer.mozilla.org/en-US/docs/Web/HTML/Element/button \| `<button>` element} for more details.                                                                                     |                      |
-| `type`                            | public  | `"submit" \| "reset" \| "button"`            |          | The button type.                                                                                                                                                                                                        |                      |
-| `defaultSlottedContent`           | public  | `HTMLElement[]`                              |          | Default slotted content                                                                                                                                                                                                 |                      |
-| `handleSubmission`                | private |                                              |          | Submits the parent form                                                                                                                                                                                                 |                      |
-| `handleFormReset`                 | private |                                              |          | Resets the parent form                                                                                                                                                                                                  |                      |
-| `control`                         | public  | `HTMLButtonElement`                          |          |                                                                                                                                                                                                                         |                      |
-| `handleUnsupportedDelegatesFocus` | private |                                              |          | Overrides the focus call for where delegatesFocus is unsupported. This check works for Chrome, Edge Chromium, FireFox, and Safari Relevant PR on the Firefox browser: https\://phabricator.services.mozilla.com/D123858 |                      |
-| `proxy`                           |         |                                              |          |                                                                                                                                                                                                                         | FormAssociatedButton |
-| `_presentation`                   | private | `ComponentPresentation \| null \| undefined` | `void 0` |                                                                                                                                                                                                                         | FoundationElement    |
-| `$presentation`                   | public  | `ComponentPresentation \| null`              |          | A property which resolves the ComponentPresentation instance for the current component.                                                                                                                                 | FoundationElement    |
-| `template`                        | public  | `ElementViewTemplate \| void \| null`        |          | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.                                              | FoundationElement    |
-| `styles`                          | public  | `ElementStyles \| void \| null`              |          | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition.                                     | FoundationElement    |
+| Name                    | Privacy | Type                                         | Default | Description                                                                                                                                                                         | Inherited From       |
+| ----------------------- | ------- | -------------------------------------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------- |
+| `autofocus`             | public  | `boolean`                                    |         | Determines if the element should receive document focus on page load.                                                                                                               |                      |
+| `formId`                | public  | `string`                                     |         | The id of a form to associate the element to.                                                                                                                                       |                      |
+| `formaction`            | public  | `string`                                     |         | See {@link https\://developer.mozilla.org/en-US/docs/Web/HTML/Element/button \| `<button>` element} for more details.                                                 |                      |
+| `formenctype`           | public  | `string`                                     |         | See {@link https\://developer.mozilla.org/en-US/docs/Web/HTML/Element/button \| `<button>` element} for more details.                                                 |                      |
+| `formmethod`            | public  | `string`                                     |         | See {@link https\://developer.mozilla.org/en-US/docs/Web/HTML/Element/button \| `<button>` element} for more details.                                                 |                      |
+| `formnovalidate`        | public  | `boolean`                                    |         | See {@link https\://developer.mozilla.org/en-US/docs/Web/HTML/Element/button \| `<button>` element} for more details.                                                 |                      |
+| `formtarget`            | public  | `"_self" \| "_blank" \| "_parent" \| "_top"` |         | See {@link https\://developer.mozilla.org/en-US/docs/Web/HTML/Element/button \| `<button>` element} for more details.                                                 |                      |
+| `type`                  | public  | `"submit" \| "reset" \| "button"`            |         | The button type.                                                                                                                                                                    |                      |
+| `defaultSlottedContent` | public  | `HTMLElement[]`                              |         | Default slotted content                                                                                                                                                             |                      |
+| `control`               | public  | `HTMLButtonElement`                          |         |                                                                                                                                                                                     |                      |
+| `proxy`                 |         |                                              |         |                                                                                                                                                                                     | FormAssociatedButton |
+| `$presentation`         | public  | `ComponentPresentation \| null`              |         | A property which resolves the ComponentPresentation instance for the current component.                                                                                             | FoundationElement    |
+| `template`              | public  | `ElementViewTemplate \| void \| null`        |         | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.          | FoundationElement    |
+| `styles`                | public  | `ElementStyles \| void \| null`              |         | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition. | FoundationElement    |
 
 #### Methods
 
-| Name                    | Privacy   | Description | Parameters                                                                                 | Return | Inherited From    |
-| ----------------------- | --------- | ----------- | ------------------------------------------------------------------------------------------ | ------ | ----------------- |
-| `formactionChanged`     | private   |             |                                                                                            | `void` |                   |
-| `formenctypeChanged`    | private   |             |                                                                                            | `void` |                   |
-| `formmethodChanged`     | private   |             |                                                                                            | `void` |                   |
-| `formnovalidateChanged` | private   |             |                                                                                            | `void` |                   |
-| `formtargetChanged`     | private   |             |                                                                                            | `void` |                   |
-| `typeChanged`           | private   |             | `previous: "submit" \| "reset" \| "button" \| void, next: "submit" \| "reset" \| "button"` | `void` |                   |
-| `templateChanged`       | protected |             |                                                                                            | `void` | FoundationElement |
-| `stylesChanged`         | protected |             |                                                                                            | `void` | FoundationElement |
+| Name              | Privacy   | Description | Parameters | Return | Inherited From    |
+| ----------------- | --------- | ----------- | ---------- | ------ | ----------------- |
+| `templateChanged` | protected |             |            | `void` | FoundationElement |
+| `stylesChanged`   | protected |             |            | `void` | FoundationElement |
 
 #### Attributes
 

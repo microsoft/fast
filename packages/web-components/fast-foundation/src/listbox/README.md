@@ -63,9 +63,9 @@ See [listbox-option](/docs/components/listbox-option) for more information.
 
 #### Superclass
 
-| Name      | Module               | Package |
-| --------- | -------------------- | ------- |
-| `Listbox` | /src/listbox/listbox |         |
+| Name      | Module                  | Package |
+| --------- | ----------------------- | ------- |
+| `Listbox` | /src/listbox/listbox.js |         |
 
 #### Static Fields
 
@@ -81,20 +81,19 @@ See [listbox-option](/docs/components/listbox-option) for more information.
 
 #### Fields
 
-| Name               | Privacy   | Type                                         | Default  | Description                                                                                                                                                                         | Inherited From    |
-| ------------------ | --------- | -------------------------------------------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
-| `size`             | public    | `number`                                     |          | The maximum number of options to display.                                                                                                                                           |                   |
-| `length`           | public    | `number`                                     |          | The number of options.                                                                                                                                                              | Listbox           |
-| `options`          | public    | `ListboxOption[]`                            |          | The list of options.                                                                                                                                                                | Listbox           |
-| `typeAheadExpired` | protected |                                              |          |                                                                                                                                                                                     | Listbox           |
-| `disabled`         | public    | `boolean`                                    |          | The disabled state of the listbox.                                                                                                                                                  | Listbox           |
-| `multiple`         | public    | `boolean`                                    |          | Indicates if the listbox is in multi-selection mode.                                                                                                                                | Listbox           |
-| `selectedIndex`    | public    | `number`                                     | `-1`     | The index of the selected option.                                                                                                                                                   | Listbox           |
-| `selectedOptions`  | public    | `ListboxOption[]`                            | `[]`     | A collection of the selected options.                                                                                                                                               | Listbox           |
-| `_presentation`    | private   | `ComponentPresentation \| null \| undefined` | `void 0` |                                                                                                                                                                                     | FoundationElement |
-| `$presentation`    | public    | `ComponentPresentation \| null`              |          | A property which resolves the ComponentPresentation instance for the current component.                                                                                             | FoundationElement |
-| `template`         | public    | `ElementViewTemplate \| void \| null`        |          | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.          | FoundationElement |
-| `styles`           | public    | `ElementStyles \| void \| null`              |          | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition. | FoundationElement |
+| Name               | Privacy   | Type                                  | Default | Description                                                                                                                                                                         | Inherited From    |
+| ------------------ | --------- | ------------------------------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
+| `size`             | public    | `number`                              |         | The maximum number of options to display.                                                                                                                                           |                   |
+| `length`           | public    | `number`                              |         | The number of options.                                                                                                                                                              | Listbox           |
+| `options`          | public    | `ListboxOption[]`                     |         | The list of options.                                                                                                                                                                | Listbox           |
+| `typeAheadExpired` | protected |                                       |         |                                                                                                                                                                                     | Listbox           |
+| `disabled`         | public    | `boolean`                             |         | The disabled state of the listbox.                                                                                                                                                  | Listbox           |
+| `multiple`         | public    | `boolean`                             |         | Indicates if the listbox is in multi-selection mode.                                                                                                                                | Listbox           |
+| `selectedIndex`    | public    | `number`                              | `-1`    | The index of the selected option.                                                                                                                                                   | Listbox           |
+| `selectedOptions`  | public    | `ListboxOption[]`                     | `[]`    | A collection of the selected options.                                                                                                                                               | Listbox           |
+| `$presentation`    | public    | `ComponentPresentation \| null`       |         | A property which resolves the ComponentPresentation instance for the current component.                                                                                             | FoundationElement |
+| `template`         | public    | `ElementViewTemplate \| void \| null` |         | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.          | FoundationElement |
+| `styles`           | public    | `ElementStyles \| void \| null`       |         | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition. | FoundationElement |
 
 #### Methods
 
@@ -125,9 +124,9 @@ See [listbox-option](/docs/components/listbox-option) for more information.
 
 #### Superclass
 
-| Name                | Module                  | Package |
-| ------------------- | ----------------------- | ------- |
-| `FoundationElement` | /src/foundation-element |         |
+| Name                | Module                                        | Package |
+| ------------------- | --------------------------------------------- | ------- |
+| `FoundationElement` | /src/foundation-element/foundation-element.js |         |
 
 #### Static Fields
 
@@ -143,19 +142,18 @@ See [listbox-option](/docs/components/listbox-option) for more information.
 
 #### Fields
 
-| Name               | Privacy   | Type                                         | Default  | Description                                                                                                                                                                         | Inherited From    |
-| ------------------ | --------- | -------------------------------------------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
-| `length`           | public    | `number`                                     |          | The number of options.                                                                                                                                                              |                   |
-| `options`          | public    | `ListboxOption[]`                            |          | The list of options.                                                                                                                                                                |                   |
-| `typeAheadExpired` | protected |                                              |          |                                                                                                                                                                                     |                   |
-| `disabled`         | public    | `boolean`                                    |          | The disabled state of the listbox.                                                                                                                                                  |                   |
-| `multiple`         | public    | `boolean`                                    |          | Indicates if the listbox is in multi-selection mode.                                                                                                                                |                   |
-| `selectedIndex`    | public    | `number`                                     | `-1`     | The index of the selected option.                                                                                                                                                   |                   |
-| `selectedOptions`  | public    | `ListboxOption[]`                            | `[]`     | A collection of the selected options.                                                                                                                                               |                   |
-| `_presentation`    | private   | `ComponentPresentation \| null \| undefined` | `void 0` |                                                                                                                                                                                     | FoundationElement |
-| `$presentation`    | public    | `ComponentPresentation \| null`              |          | A property which resolves the ComponentPresentation instance for the current component.                                                                                             | FoundationElement |
-| `template`         | public    | `ElementViewTemplate \| void \| null`        |          | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.          | FoundationElement |
-| `styles`           | public    | `ElementStyles \| void \| null`              |          | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition. | FoundationElement |
+| Name               | Privacy   | Type                                  | Default | Description                                                                                                                                                                         | Inherited From    |
+| ------------------ | --------- | ------------------------------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
+| `length`           | public    | `number`                              |         | The number of options.                                                                                                                                                              |                   |
+| `options`          | public    | `ListboxOption[]`                     |         | The list of options.                                                                                                                                                                |                   |
+| `typeAheadExpired` | protected |                                       |         |                                                                                                                                                                                     |                   |
+| `disabled`         | public    | `boolean`                             |         | The disabled state of the listbox.                                                                                                                                                  |                   |
+| `multiple`         | public    | `boolean`                             |         | Indicates if the listbox is in multi-selection mode.                                                                                                                                |                   |
+| `selectedIndex`    | public    | `number`                              | `-1`    | The index of the selected option.                                                                                                                                                   |                   |
+| `selectedOptions`  | public    | `ListboxOption[]`                     | `[]`    | A collection of the selected options.                                                                                                                                               |                   |
+| `$presentation`    | public    | `ComponentPresentation \| null`       |         | A property which resolves the ComponentPresentation instance for the current component.                                                                                             | FoundationElement |
+| `template`         | public    | `ElementViewTemplate \| void \| null` |         | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.          | FoundationElement |
+| `styles`           | public    | `ElementStyles \| void \| null`       |         | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition. | FoundationElement |
 
 #### Methods
 

@@ -103,9 +103,9 @@ This component is built with the expectation that focus is delegated to the anch
 
 #### Superclass
 
-| Name                | Module                  | Package |
-| ------------------- | ----------------------- | ------- |
-| `FoundationElement` | /src/foundation-element |         |
+| Name                | Module                                        | Package |
+| ------------------- | --------------------------------------------- | ------- |
+| `FoundationElement` | /src/foundation-element/foundation-element.js |         |
 
 #### Static Methods
 
@@ -115,23 +115,19 @@ This component is built with the expectation that focus is delegated to the anch
 
 #### Fields
 
-| Name            | Privacy | Type                                         | Default  | Description                                                                                                                                                                         | Inherited From    |
-| --------------- | ------- | -------------------------------------------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
-| `_presentation` | private | `ComponentPresentation \| null \| undefined` | `void 0` |                                                                                                                                                                                     | FoundationElement |
-| `$presentation` | public  | `ComponentPresentation \| null`              |          | A property which resolves the ComponentPresentation instance for the current component.                                                                                             | FoundationElement |
-| `template`      | public  | `ElementViewTemplate \| void \| null`        |          | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.          | FoundationElement |
-| `styles`        | public  | `ElementStyles \| void \| null`              |          | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition. | FoundationElement |
+| Name            | Privacy | Type                                  | Default | Description                                                                                                                                                                         | Inherited From    |
+| --------------- | ------- | ------------------------------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
+| `$presentation` | public  | `ComponentPresentation \| null`       |         | A property which resolves the ComponentPresentation instance for the current component.                                                                                             | FoundationElement |
+| `template`      | public  | `ElementViewTemplate \| void \| null` |         | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.          | FoundationElement |
+| `styles`        | public  | `ElementStyles \| void \| null`       |         | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition. | FoundationElement |
 
 #### Methods
 
-| Name                            | Privacy   | Description                                                                                                                                                                                                              | Parameters                               | Return                | Inherited From    |
-| ------------------------------- | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------- | --------------------- | ----------------- |
-| `slottedBreadcrumbItemsChanged` | public    |                                                                                                                                                                                                                          |                                          |                       |                   |
-| `setItemSeparator`              | private   |                                                                                                                                                                                                                          | `item: HTMLElement, isLastNode: boolean` | `void`                |                   |
-| `findChildWithHref`             | private   | Finds href on childnodes in the light DOM or shadow DOM. We look in the shadow DOM because we insert an anchor when breadcrumb-item has an href.                                                                         | `node: HTMLElement`                      | `HTMLElement \| null` |                   |
-| `setAriaCurrent`                | private   | Sets ARIA Current for the current node If child node with an anchor tag and with href is found then set aria-current to correct value for the child node, otherwise apply aria-current to the host element, with an href | `item: HTMLElement, isLastNode: boolean` | `void`                |                   |
-| `templateChanged`               | protected |                                                                                                                                                                                                                          |                                          | `void`                | FoundationElement |
-| `stylesChanged`                 | protected |                                                                                                                                                                                                                          |                                          | `void`                | FoundationElement |
+| Name                            | Privacy   | Description | Parameters | Return | Inherited From    |
+| ------------------------------- | --------- | ----------- | ---------- | ------ | ----------------- |
+| `slottedBreadcrumbItemsChanged` | public    |             |            |        |                   |
+| `templateChanged`               | protected |             |            | `void` | FoundationElement |
+| `stylesChanged`                 | protected |             |            | `void` | FoundationElement |
 
 <hr/>
 
@@ -147,9 +143,9 @@ This component is built with the expectation that focus is delegated to the anch
 
 #### Superclass
 
-| Name     | Module      | Package |
-| -------- | ----------- | ------- |
-| `Anchor` | /src/anchor |         |
+| Name     | Module                | Package |
+| -------- | --------------------- | ------- |
+| `Anchor` | /src/anchor/anchor.js |         |
 
 #### Static Methods
 
@@ -159,22 +155,20 @@ This component is built with the expectation that focus is delegated to the anch
 
 #### Fields
 
-| Name                              | Privacy | Type                                         | Default  | Description                                                                                                                                                                                                             | Inherited From    |
-| --------------------------------- | ------- | -------------------------------------------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
-| `download`                        | public  | `string`                                     |          | Prompts the user to save the linked URL. See {@link https\://developer.mozilla.org/en-US/docs/Web/HTML/Element/a \| `<a>` element } for more information.                                                 | Anchor            |
-| `href`                            | public  | `string`                                     |          | The URL the hyperlink references. See {@link https\://developer.mozilla.org/en-US/docs/Web/HTML/Element/a \| `<a>` element } for more information.                                                        | Anchor            |
-| `hreflang`                        | public  | `string`                                     |          | Hints at the language of the referenced resource. See {@link https\://developer.mozilla.org/en-US/docs/Web/HTML/Element/a \| `<a>` element } for more information.                                        | Anchor            |
-| `ping`                            | public  | `string`                                     |          | See {@link https\://developer.mozilla.org/en-US/docs/Web/HTML/Element/a \| `<a>` element } for more information.                                                                                          | Anchor            |
-| `referrerpolicy`                  | public  | `string`                                     |          | See {@link https\://developer.mozilla.org/en-US/docs/Web/HTML/Element/a \| `<a>` element } for more information.                                                                                          | Anchor            |
-| `rel`                             | public  | `string`                                     |          | See {@link https\://developer.mozilla.org/en-US/docs/Web/HTML/Element/a \| `<a>` element } for more information.                                                                                          | Anchor            |
-| `target`                          | public  | `"_self" \| "_blank" \| "_parent" \| "_top"` |          | See {@link https\://developer.mozilla.org/en-US/docs/Web/HTML/Element/a \| `<a>` element } for more information.                                                                                          | Anchor            |
-| `type`                            | public  | `string`                                     |          | See {@link https\://developer.mozilla.org/en-US/docs/Web/HTML/Element/a \| `<a>` element } for more information.                                                                                          | Anchor            |
-| `control`                         | public  | `HTMLAnchorElement`                          |          | References the root element                                                                                                                                                                                             | Anchor            |
-| `handleUnsupportedDelegatesFocus` | private |                                              |          | Overrides the focus call for where delegatesFocus is unsupported. This check works for Chrome, Edge Chromium, FireFox, and Safari Relevant PR on the Firefox browser: https\://phabricator.services.mozilla.com/D123858 | Anchor            |
-| `_presentation`                   | private | `ComponentPresentation \| null \| undefined` | `void 0` |                                                                                                                                                                                                                         | FoundationElement |
-| `$presentation`                   | public  | `ComponentPresentation \| null`              |          | A property which resolves the ComponentPresentation instance for the current component.                                                                                                                                 | FoundationElement |
-| `template`                        | public  | `ElementViewTemplate \| void \| null`        |          | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.                                              | FoundationElement |
-| `styles`                          | public  | `ElementStyles \| void \| null`              |          | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition.                                     | FoundationElement |
+| Name             | Privacy | Type                                         | Default | Description                                                                                                                                                                         | Inherited From    |
+| ---------------- | ------- | -------------------------------------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
+| `download`       | public  | `string`                                     |         | Prompts the user to save the linked URL. See {@link https\://developer.mozilla.org/en-US/docs/Web/HTML/Element/a \| `<a>` element } for more information.             | Anchor            |
+| `href`           | public  | `string`                                     |         | The URL the hyperlink references. See {@link https\://developer.mozilla.org/en-US/docs/Web/HTML/Element/a \| `<a>` element } for more information.                    | Anchor            |
+| `hreflang`       | public  | `string`                                     |         | Hints at the language of the referenced resource. See {@link https\://developer.mozilla.org/en-US/docs/Web/HTML/Element/a \| `<a>` element } for more information.    | Anchor            |
+| `ping`           | public  | `string`                                     |         | See {@link https\://developer.mozilla.org/en-US/docs/Web/HTML/Element/a \| `<a>` element } for more information.                                                      | Anchor            |
+| `referrerpolicy` | public  | `string`                                     |         | See {@link https\://developer.mozilla.org/en-US/docs/Web/HTML/Element/a \| `<a>` element } for more information.                                                      | Anchor            |
+| `rel`            | public  | `string`                                     |         | See {@link https\://developer.mozilla.org/en-US/docs/Web/HTML/Element/a \| `<a>` element } for more information.                                                      | Anchor            |
+| `target`         | public  | `"_self" \| "_blank" \| "_parent" \| "_top"` |         | See {@link https\://developer.mozilla.org/en-US/docs/Web/HTML/Element/a \| `<a>` element } for more information.                                                      | Anchor            |
+| `type`           | public  | `string`                                     |         | See {@link https\://developer.mozilla.org/en-US/docs/Web/HTML/Element/a \| `<a>` element } for more information.                                                      | Anchor            |
+| `control`        | public  | `HTMLAnchorElement`                          |         | References the root element                                                                                                                                                         | Anchor            |
+| `$presentation`  | public  | `ComponentPresentation \| null`              |         | A property which resolves the ComponentPresentation instance for the current component.                                                                                             | FoundationElement |
+| `template`       | public  | `ElementViewTemplate \| void \| null`        |         | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.          | FoundationElement |
+| `styles`         | public  | `ElementStyles \| void \| null`              |         | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition. | FoundationElement |
 
 #### Methods
 

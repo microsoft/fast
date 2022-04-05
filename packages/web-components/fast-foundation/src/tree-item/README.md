@@ -42,9 +42,9 @@ export class FASTTreeItem extends TreeItem {}
 
 #### Superclass
 
-| Name                | Module                  | Package |
-| ------------------- | ----------------------- | ------- |
-| `FoundationElement` | /src/foundation-element |         |
+| Name                | Module                                        | Package |
+| ------------------- | --------------------------------------------- | ------- |
+| `FoundationElement` | /src/foundation-element/foundation-element.js |         |
 
 #### Static Methods
 
@@ -55,26 +55,22 @@ export class FASTTreeItem extends TreeItem {}
 
 #### Fields
 
-| Name            | Privacy | Type                                         | Default  | Description                                                                                                                                                                                       | Inherited From    |
-| --------------- | ------- | -------------------------------------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
-| `expanded`      | public  | `boolean`                                    | `false`  | When true, the control will be appear expanded by user interaction.                                                                                                                               |                   |
-| `selected`      | public  | `boolean`                                    |          | When true, the control will appear selected by user interaction.                                                                                                                                  |                   |
-| `disabled`      | public  | `boolean`                                    |          | When true, the control will be immutable by user interaction. See {@link https\://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/disabled \| disabled HTML attribute} for more information. |                   |
-| `isNestedItem`  | public  |                                              |          | Whether the tree is nested                                                                                                                                                                        |                   |
-| `_presentation` | private | `ComponentPresentation \| null \| undefined` | `void 0` |                                                                                                                                                                                                   | FoundationElement |
-| `$presentation` | public  | `ComponentPresentation \| null`              |          | A property which resolves the ComponentPresentation instance for the current component.                                                                                                           | FoundationElement |
-| `template`      | public  | `ElementViewTemplate \| void \| null`        |          | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.                        | FoundationElement |
-| `styles`        | public  | `ElementStyles \| void \| null`              |          | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition.               | FoundationElement |
+| Name            | Privacy | Type                                  | Default | Description                                                                                                                                                                                       | Inherited From    |
+| --------------- | ------- | ------------------------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
+| `expanded`      | public  | `boolean`                             | `false` | When true, the control will be appear expanded by user interaction.                                                                                                                               |                   |
+| `selected`      | public  | `boolean`                             |         | When true, the control will appear selected by user interaction.                                                                                                                                  |                   |
+| `disabled`      | public  | `boolean`                             |         | When true, the control will be immutable by user interaction. See {@link https\://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/disabled \| disabled HTML attribute} for more information. |                   |
+| `isNestedItem`  | public  |                                       |         | Whether the tree is nested                                                                                                                                                                        |                   |
+| `$presentation` | public  | `ComponentPresentation \| null`       |         | A property which resolves the ComponentPresentation instance for the current component.                                                                                                           | FoundationElement |
+| `template`      | public  | `ElementViewTemplate \| void \| null` |         | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.                        | FoundationElement |
+| `styles`        | public  | `ElementStyles \| void \| null`       |         | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition.               | FoundationElement |
 
 #### Methods
 
-| Name              | Privacy   | Description | Parameters                                   | Return | Inherited From    |
-| ----------------- | --------- | ----------- | -------------------------------------------- | ------ | ----------------- |
-| `expandedChanged` | private   |             |                                              | `void` |                   |
-| `selectedChanged` | private   |             |                                              | `void` |                   |
-| `itemsChanged`    | private   |             | `oldValue: unknown, newValue: HTMLElement[]` | `void` |                   |
-| `templateChanged` | protected |             |                                              | `void` | FoundationElement |
-| `stylesChanged`   | protected |             |                                              | `void` | FoundationElement |
+| Name              | Privacy   | Description | Parameters | Return | Inherited From    |
+| ----------------- | --------- | ----------- | ---------- | ------ | ----------------- |
+| `templateChanged` | protected |             |            | `void` | FoundationElement |
+| `stylesChanged`   | protected |             |            | `void` | FoundationElement |
 
 #### Attributes
 

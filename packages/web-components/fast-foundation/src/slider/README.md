@@ -130,9 +130,9 @@ export const mySliderLabel = SliderLabel.compose({
 
 #### Superclass
 
-| Name                   | Module                             | Package |
-| ---------------------- | ---------------------------------- | ------- |
-| `FormAssociatedSlider` | /src/slider/slider.form-associated |         |
+| Name                   | Module                                | Package |
+| ---------------------- | ------------------------------------- | ------- |
+| `FormAssociatedSlider` | /src/slider/slider.form-associated.js |         |
 
 #### Static Methods
 
@@ -142,49 +142,31 @@ export const mySliderLabel = SliderLabel.compose({
 
 #### Fields
 
-| Name                        | Privacy   | Type                                         | Default  | Description                                                                                                                                                                                       | Inherited From       |
-| --------------------------- | --------- | -------------------------------------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------- |
-| `readOnly`                  | public    | `boolean`                                    |          | When true, the control will be immutable by user interaction. See {@link https\://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/readonly \| readonly HTML attribute} for more information. |                      |
-| `valueAsNumber`             | public    | `number`                                     |          | The value property, typed as a number.                                                                                                                                                            |                      |
-| `valueTextFormatter`        | public    | `(value: string) => string \| null`          |          | Custom function that generates a string for the component's "aria-valuetext" attribute based on the current value.                                                                                |                      |
-| `min`                       | public    | `number`                                     | `0`      | The minimum allowed value.                                                                                                                                                                        |                      |
-| `max`                       | public    | `number`                                     | `10`     | The maximum allowed value.                                                                                                                                                                        |                      |
-| `step`                      | public    | `number`                                     | `1`      | Value to increment or decrement via arrow keys, mouse click or drag.                                                                                                                              |                      |
-| `orientation`               | public    | `Orientation`                                |          | The orientation of the slider.                                                                                                                                                                    |                      |
-| `mode`                      | public    | `SliderMode`                                 |          | The selection mode.                                                                                                                                                                               |                      |
-| `keypressHandler`           | protected |                                              |          |                                                                                                                                                                                                   |                      |
-| `setupTrackConstraints`     | private   |                                              |          |                                                                                                                                                                                                   |                      |
-| `setupListeners`            | private   |                                              |          |                                                                                                                                                                                                   |                      |
-| `midpoint`                  | private   | `string`                                     |          |                                                                                                                                                                                                   |                      |
-| `handleThumbMouseDown`      | private   |                                              |          | Handle mouse moves during a thumb drag operation If the event handler is null it removes the events                                                                                               |                      |
-| `handleMouseMove`           | private   |                                              |          | Handle mouse moves during a thumb drag operation                                                                                                                                                  |                      |
-| `calculateNewValue`         | private   |                                              |          |                                                                                                                                                                                                   |                      |
-| `handleWindowMouseUp`       | private   |                                              |          | Handle a window mouse up during a drag operation                                                                                                                                                  |                      |
-| `stopDragging`              | private   |                                              |          |                                                                                                                                                                                                   |                      |
-| `handleMouseDown`           | private   |                                              |          |                                                                                                                                                                                                   |                      |
-| `convertToConstrainedValue` | private   |                                              |          |                                                                                                                                                                                                   |                      |
-| `proxy`                     |           |                                              |          |                                                                                                                                                                                                   | FormAssociatedSlider |
-| `_presentation`             | private   | `ComponentPresentation \| null \| undefined` | `void 0` |                                                                                                                                                                                                   | FoundationElement    |
-| `$presentation`             | public    | `ComponentPresentation \| null`              |          | A property which resolves the ComponentPresentation instance for the current component.                                                                                                           | FoundationElement    |
-| `template`                  | public    | `ElementViewTemplate \| void \| null`        |          | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.                        | FoundationElement    |
-| `styles`                    | public    | `ElementStyles \| void \| null`              |          | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition.               | FoundationElement    |
+| Name                 | Privacy   | Type                                  | Default | Description                                                                                                                                                                                       | Inherited From       |
+| -------------------- | --------- | ------------------------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------- |
+| `readOnly`           | public    | `boolean`                             |         | When true, the control will be immutable by user interaction. See {@link https\://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/readonly \| readonly HTML attribute} for more information. |                      |
+| `valueAsNumber`      | public    | `number`                              |         | The value property, typed as a number.                                                                                                                                                            |                      |
+| `valueTextFormatter` | public    | `(value: string) => string \| null`   |         | Custom function that generates a string for the component's "aria-valuetext" attribute based on the current value.                                                                                |                      |
+| `min`                | public    | `number`                              | `0`     | The minimum allowed value.                                                                                                                                                                        |                      |
+| `max`                | public    | `number`                              | `10`    | The maximum allowed value.                                                                                                                                                                        |                      |
+| `step`               | public    | `number`                              | `1`     | Value to increment or decrement via arrow keys, mouse click or drag.                                                                                                                              |                      |
+| `orientation`        | public    | `Orientation`                         |         | The orientation of the slider.                                                                                                                                                                    |                      |
+| `mode`               | public    | `SliderMode`                          |         | The selection mode.                                                                                                                                                                               |                      |
+| `keypressHandler`    | protected |                                       |         |                                                                                                                                                                                                   |                      |
+| `proxy`              |           |                                       |         |                                                                                                                                                                                                   | FormAssociatedSlider |
+| `$presentation`      | public    | `ComponentPresentation \| null`       |         | A property which resolves the ComponentPresentation instance for the current component.                                                                                                           | FoundationElement    |
+| `template`           | public    | `ElementViewTemplate \| void \| null` |         | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.                        | FoundationElement    |
+| `styles`             | public    | `ElementStyles \| void \| null`       |         | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition.               | FoundationElement    |
 
 #### Methods
 
-| Name                             | Privacy   | Description                                                                                     | Parameters             | Return | Inherited From    |
-| -------------------------------- | --------- | ----------------------------------------------------------------------------------------------- | ---------------------- | ------ | ----------------- |
-| `readOnlyChanged`                | private   |                                                                                                 |                        | `void` |                   |
-| `minChanged`                     | private   |                                                                                                 |                        | `void` |                   |
-| `maxChanged`                     | private   |                                                                                                 |                        | `void` |                   |
-| `stepChanged`                    | private   |                                                                                                 |                        | `void` |                   |
-| `orientationChanged`             | private   |                                                                                                 |                        | `void` |                   |
-| `increment`                      | public    | Increment the value by the step                                                                 |                        | `void` |                   |
-| `decrement`                      | public    | Decrement the value by the step                                                                 |                        | `void` |                   |
-| `setThumbPositionForOrientation` | public    | Places the thumb based on the current value                                                     | `direction: Direction` | `void` |                   |
-| `updateStepMultiplier`           | private   | Update the step multiplier used to ensure rounding errors from steps that are not whole numbers |                        | `void` |                   |
-| `setupDefaultValue`              | private   |                                                                                                 |                        | `void` |                   |
-| `templateChanged`                | protected |                                                                                                 |                        | `void` | FoundationElement |
-| `stylesChanged`                  | protected |                                                                                                 |                        | `void` | FoundationElement |
+| Name                             | Privacy   | Description                                 | Parameters             | Return | Inherited From    |
+| -------------------------------- | --------- | ------------------------------------------- | ---------------------- | ------ | ----------------- |
+| `increment`                      | public    | Increment the value by the step             |                        | `void` |                   |
+| `decrement`                      | public    | Decrement the value by the step             |                        | `void` |                   |
+| `setThumbPositionForOrientation` | public    | Places the thumb based on the current value | `direction: Direction` | `void` |                   |
+| `templateChanged`                | protected |                                             |                        | `void` | FoundationElement |
+| `stylesChanged`                  | protected |                                             |                        | `void` | FoundationElement |
 
 #### Attributes
 
@@ -211,9 +193,9 @@ export const mySliderLabel = SliderLabel.compose({
 
 #### Superclass
 
-| Name                | Module                  | Package |
-| ------------------- | ----------------------- | ------- |
-| `FoundationElement` | /src/foundation-element |         |
+| Name                | Module                                        | Package |
+| ------------------- | --------------------------------------------- | ------- |
+| `FoundationElement` | /src/foundation-element/foundation-element.js |         |
 
 #### Static Methods
 
@@ -223,27 +205,21 @@ export const mySliderLabel = SliderLabel.compose({
 
 #### Fields
 
-| Name                     | Privacy | Type                                         | Default  | Description                                                                                                                                                                         | Inherited From    |
-| ------------------------ | ------- | -------------------------------------------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
-| `position`               | public  | `string`                                     |          | The position of the label relative to the min and max value of the parent {@link @microsoft/fast-foundation#(Slider:class)}.                                                        |                   |
-| `hideMark`               | public  | `boolean`                                    | `false`  | Hides the tick mark.                                                                                                                                                                |                   |
-| `disabled`               | public  | `boolean`                                    |          | The disabled state of the label. This is generally controlled by the parent {@link @microsoft/fast-foundation#(Slider:class)}.                                                      |                   |
-| `notifier`               | private | `Notifier`                                   |          |                                                                                                                                                                                     |                   |
-| `getSliderConfiguration` | private |                                              |          |                                                                                                                                                                                     |                   |
-| `positionAsStyle`        | private |                                              |          |                                                                                                                                                                                     |                   |
-| `_presentation`          | private | `ComponentPresentation \| null \| undefined` | `void 0` |                                                                                                                                                                                     | FoundationElement |
-| `$presentation`          | public  | `ComponentPresentation \| null`              |          | A property which resolves the ComponentPresentation instance for the current component.                                                                                             | FoundationElement |
-| `template`               | public  | `ElementViewTemplate \| void \| null`        |          | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.          | FoundationElement |
-| `styles`                 | public  | `ElementStyles \| void \| null`              |          | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition. | FoundationElement |
+| Name            | Privacy | Type                                  | Default | Description                                                                                                                                                                         | Inherited From    |
+| --------------- | ------- | ------------------------------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
+| `position`      | public  | `string`                              |         | The position of the label relative to the min and max value of the parent {@link @microsoft/fast-foundation#(Slider:class)}.                                                        |                   |
+| `hideMark`      | public  | `boolean`                             | `false` | Hides the tick mark.                                                                                                                                                                |                   |
+| `disabled`      | public  | `boolean`                             |         | The disabled state of the label. This is generally controlled by the parent {@link @microsoft/fast-foundation#(Slider:class)}.                                                      |                   |
+| `$presentation` | public  | `ComponentPresentation \| null`       |         | A property which resolves the ComponentPresentation instance for the current component.                                                                                             | FoundationElement |
+| `template`      | public  | `ElementViewTemplate \| void \| null` |         | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.          | FoundationElement |
+| `styles`        | public  | `ElementStyles \| void \| null`       |         | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition. | FoundationElement |
 
 #### Methods
 
-| Name              | Privacy   | Description | Parameters  | Return                        | Inherited From    |
-| ----------------- | --------- | ----------- | ----------- | ----------------------------- | ----------------- |
-| `positionChanged` | private   |             |             | `void`                        |                   |
-| `isSliderConfig`  | private   |             | `node: any` | `node is SliderConfiguration` |                   |
-| `templateChanged` | protected |             |             | `void`                        | FoundationElement |
-| `stylesChanged`   | protected |             |             | `void`                        | FoundationElement |
+| Name              | Privacy   | Description | Parameters | Return | Inherited From    |
+| ----------------- | --------- | ----------- | ---------- | ------ | ----------------- |
+| `templateChanged` | protected |             |            | `void` | FoundationElement |
+| `stylesChanged`   | protected |             |            | `void` | FoundationElement |
 
 #### Attributes
 

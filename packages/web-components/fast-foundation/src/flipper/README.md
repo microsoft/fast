@@ -81,9 +81,9 @@ export const myFlipper = Flipper.compose<FlipperOptions>({
 
 #### Superclass
 
-| Name                | Module                  | Package |
-| ------------------- | ----------------------- | ------- |
-| `FoundationElement` | /src/foundation-element |         |
+| Name                | Module                                        | Package |
+| ------------------- | --------------------------------------------- | ------- |
+| `FoundationElement` | /src/foundation-element/foundation-element.js |         |
 
 #### Static Methods
 
@@ -93,15 +93,14 @@ export const myFlipper = Flipper.compose<FlipperOptions>({
 
 #### Fields
 
-| Name            | Privacy | Type                                         | Default  | Description                                                                                                                                                                         | Inherited From    |
-| --------------- | ------- | -------------------------------------------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
-| `disabled`      | public  | `boolean`                                    |          | The disabled state of the flipper.                                                                                                                                                  |                   |
-| `hiddenFromAT`  | public  | `boolean`                                    | `true`   | Indicates the flipper should be hidden from assistive technology. Because flippers are often supplementary navigation, they are often hidden from assistive technology.             |                   |
-| `direction`     | public  | `FlipperDirection \| "next" \| "previous"`   |          | The direction that the flipper implies navigating.                                                                                                                                  |                   |
-| `_presentation` | private | `ComponentPresentation \| null \| undefined` | `void 0` |                                                                                                                                                                                     | FoundationElement |
-| `$presentation` | public  | `ComponentPresentation \| null`              |          | A property which resolves the ComponentPresentation instance for the current component.                                                                                             | FoundationElement |
-| `template`      | public  | `ElementViewTemplate \| void \| null`        |          | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.          | FoundationElement |
-| `styles`        | public  | `ElementStyles \| void \| null`              |          | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition. | FoundationElement |
+| Name            | Privacy | Type                                       | Default | Description                                                                                                                                                                         | Inherited From    |
+| --------------- | ------- | ------------------------------------------ | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
+| `disabled`      | public  | `boolean`                                  |         | The disabled state of the flipper.                                                                                                                                                  |                   |
+| `hiddenFromAT`  | public  | `boolean`                                  | `true`  | Indicates the flipper should be hidden from assistive technology. Because flippers are often supplementary navigation, they are often hidden from assistive technology.             |                   |
+| `direction`     | public  | `FlipperDirection \| "next" \| "previous"` |         | The direction that the flipper implies navigating.                                                                                                                                  |                   |
+| `$presentation` | public  | `ComponentPresentation \| null`            |         | A property which resolves the ComponentPresentation instance for the current component.                                                                                             | FoundationElement |
+| `template`      | public  | `ElementViewTemplate \| void \| null`      |         | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.          | FoundationElement |
+| `styles`        | public  | `ElementStyles \| void \| null`            |         | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition. | FoundationElement |
 
 #### Methods
 

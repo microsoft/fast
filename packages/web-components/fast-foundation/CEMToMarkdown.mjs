@@ -92,7 +92,11 @@ for(var i = 0; i < modules.length; i++)
         });
 
         // Convert the single component manifest into a markdown string.
-        let markdown = customElementsManifestToMarkdown(componentManifest, { headingOffset: 1 });
+        let markdown = customElementsManifestToMarkdown(componentManifest,
+            {
+                headingOffset: 1,
+                private: 'hidden'
+            });
 
         // Replace our < and > markers with backticks and < >
         // This is necessary because customElementsManifestToMarkdown escapes the backticks during the conversion

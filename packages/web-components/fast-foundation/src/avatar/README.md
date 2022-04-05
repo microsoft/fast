@@ -126,9 +126,9 @@ This component is built with the expectation that focus is delegated to the anch
 
 #### Superclass
 
-| Name                | Module                  | Package |
-| ------------------- | ----------------------- | ------- |
-| `FoundationElement` | /src/foundation-element |         |
+| Name                | Module                                        | Package |
+| ------------------- | --------------------------------------------- | ------- |
+| `FoundationElement` | /src/foundation-element/foundation-element.js |         |
 
 #### Static Methods
 
@@ -138,16 +138,15 @@ This component is built with the expectation that focus is delegated to the anch
 
 #### Fields
 
-| Name            | Privacy | Type                                         | Default  | Description                                                                                                                                                                         | Inherited From    |
-| --------------- | ------- | -------------------------------------------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
-| `fill`          | public  | `string`                                     |          | Indicates the Avatar should have a color fill.                                                                                                                                      |                   |
-| `color`         | public  | `string`                                     |          | Indicates the Avatar should have a text color.                                                                                                                                      |                   |
-| `link`          | public  | `string`                                     |          | Indicates the Avatar should have url link                                                                                                                                           |                   |
-| `shape`         | public  | `AvatarShape`                                |          | Indicates the Avatar shape should be. By default it will be set to "circle".                                                                                                        |                   |
-| `_presentation` | private | `ComponentPresentation \| null \| undefined` | `void 0` |                                                                                                                                                                                     | FoundationElement |
-| `$presentation` | public  | `ComponentPresentation \| null`              |          | A property which resolves the ComponentPresentation instance for the current component.                                                                                             | FoundationElement |
-| `template`      | public  | `ElementViewTemplate \| void \| null`        |          | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.          | FoundationElement |
-| `styles`        | public  | `ElementStyles \| void \| null`              |          | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition. | FoundationElement |
+| Name            | Privacy | Type                                  | Default | Description                                                                                                                                                                         | Inherited From    |
+| --------------- | ------- | ------------------------------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
+| `fill`          | public  | `string`                              |         | Indicates the Avatar should have a color fill.                                                                                                                                      |                   |
+| `color`         | public  | `string`                              |         | Indicates the Avatar should have a text color.                                                                                                                                      |                   |
+| `link`          | public  | `string`                              |         | Indicates the Avatar should have url link                                                                                                                                           |                   |
+| `shape`         | public  | `AvatarShape`                         |         | Indicates the Avatar shape should be. By default it will be set to "circle".                                                                                                        |                   |
+| `$presentation` | public  | `ComponentPresentation \| null`       |         | A property which resolves the ComponentPresentation instance for the current component.                                                                                             | FoundationElement |
+| `template`      | public  | `ElementViewTemplate \| void \| null` |         | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.          | FoundationElement |
+| `styles`        | public  | `ElementStyles \| void \| null`       |         | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition. | FoundationElement |
 
 #### Methods
 
