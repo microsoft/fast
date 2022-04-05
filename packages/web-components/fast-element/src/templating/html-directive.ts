@@ -14,7 +14,7 @@ export type ViewBehaviorTargets = {
  * Represents an object that can contribute behavior to a view.
  * @public
  */
-export interface ViewBehavior<TSource = any, TParent = any, TGrandparent = any> {
+export interface ViewBehavior<TSource = any, TParent = any> {
     /**
      * Bind this behavior to the source.
      * @param source - The source to bind to.
@@ -23,7 +23,7 @@ export interface ViewBehavior<TSource = any, TParent = any, TGrandparent = any> 
      */
     bind(
         source: TSource,
-        context: ExecutionContext<TParent, TGrandparent>,
+        context: ExecutionContext<TParent>,
         targets: ViewBehaviorTargets
     ): void;
 
@@ -35,7 +35,7 @@ export interface ViewBehavior<TSource = any, TParent = any, TGrandparent = any> 
      */
     unbind(
         source: TSource,
-        context: ExecutionContext<TParent, TGrandparent>,
+        context: ExecutionContext<TParent>,
         targets: ViewBehaviorTargets
     ): void;
 }

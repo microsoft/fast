@@ -1,7 +1,7 @@
 import { Message, Mutable, StyleTarget } from "../interfaces.js";
 import type { Behavior } from "../observation/behavior.js";
 import { PropertyChangeNotifier } from "../observation/notifier.js";
-import { defaultExecutionContext, Observable } from "../observation/observable.js";
+import { ExecutionContext, Observable } from "../observation/observable.js";
 import { FAST } from "../platform.js";
 import type { ElementStyles } from "../styles/element-styles.js";
 import type { ElementViewTemplate } from "../templating/template.js";
@@ -25,12 +25,14 @@ const isConnectedPropertyName = "isConnected";
  * Controls the lifecycle and rendering of a `FASTElement`.
  * @public
  */
-export class Controller extends PropertyChangeNotifier {
+export class Controller<
+    TElement extends HTMLElement = HTMLElement
+> extends PropertyChangeNotifier {
     private boundObservables: Record<string, any> | null = null;
-    private behaviors: Map<Behavior<HTMLElement>, number> | null = null;
+    private behaviors: Map<Behavior<TElement>, number> | null = null;
     private needsInitialization: boolean = true;
     private hasExistingShadowRoot = false;
-    private _template: ElementViewTemplate | null = null;
+    private _template: ElementViewTemplate<TElement> | null = null;
     private _styles: ElementStyles | null = null;
     private _isConnected: boolean = false;
 
@@ -47,7 +49,7 @@ export class Controller extends PropertyChangeNotifier {
     /**
      * The element being controlled by this controller.
      */
-    public readonly element: HTMLElement;
+    public readonly element: TElement;
 
     /**
      * The element definition that instructs this controller
@@ -60,7 +62,7 @@ export class Controller extends PropertyChangeNotifier {
      * @remarks
      * If `null` then the element is managing its own rendering.
      */
-    public readonly view: ElementView | null = null;
+    public readonly view: ElementView<TElement> | null = null;
 
     /**
      * Indicates whether or not the custom element has been
@@ -81,7 +83,7 @@ export class Controller extends PropertyChangeNotifier {
      * @remarks
      * This value can only be accurately read after connect but can be set at any time.
      */
-    public get template(): ElementViewTemplate | null {
+    public get template(): ElementViewTemplate<TElement> | null {
         // 1. Template overrides take top precedence.
         if (this._template === null) {
             const definition = this.definition;
@@ -98,7 +100,7 @@ export class Controller extends PropertyChangeNotifier {
         return this._template;
     }
 
-    public set template(value: ElementViewTemplate | null) {
+    public set template(value: ElementViewTemplate<TElement> | null) {
         if (this._template === value) {
             return;
         }
@@ -155,8 +157,9 @@ export class Controller extends PropertyChangeNotifier {
      * controller in how to handle rendering and other platform integrations.
      * @internal
      */
-    public constructor(element: HTMLElement, definition: FASTElementDefinition) {
+    public constructor(element: TElement, definition: FASTElementDefinition) {
         super(element);
+
         this.element = element;
         this.definition = definition;
 
@@ -254,10 +257,10 @@ export class Controller extends PropertyChangeNotifier {
      * Adds behaviors to this element.
      * @param behaviors - The behaviors to add.
      */
-    public addBehaviors(behaviors: ReadonlyArray<Behavior<HTMLElement>>): void {
+    public addBehaviors(behaviors: ReadonlyArray<Behavior<TElement>>): void {
         const targetBehaviors = this.behaviors ?? (this.behaviors = new Map());
         const length = behaviors.length;
-        const behaviorsToBind: Behavior<HTMLElement>[] = [];
+        const behaviorsToBind: Behavior<TElement>[] = [];
 
         for (let i = 0; i < length; ++i) {
             const behavior = behaviors[i];
@@ -272,9 +275,10 @@ export class Controller extends PropertyChangeNotifier {
 
         if (this._isConnected) {
             const element = this.element;
+            const context = ExecutionContext.default;
 
             for (let i = 0; i < behaviorsToBind.length; ++i) {
-                behaviorsToBind[i].bind(element, defaultExecutionContext);
+                behaviorsToBind[i].bind(element, context);
             }
         }
     }
@@ -285,7 +289,7 @@ export class Controller extends PropertyChangeNotifier {
      * @param force - Forces unbinding of behaviors.
      */
     public removeBehaviors(
-        behaviors: ReadonlyArray<Behavior<HTMLElement>>,
+        behaviors: ReadonlyArray<Behavior<TElement>>,
         force: boolean = false
     ): void {
         const targetBehaviors = this.behaviors;
@@ -295,7 +299,7 @@ export class Controller extends PropertyChangeNotifier {
         }
 
         const length = behaviors.length;
-        const behaviorsToUnbind: Behavior<HTMLElement>[] = [];
+        const behaviorsToUnbind: Behavior<TElement>[] = [];
 
         for (let i = 0; i < length; ++i) {
             const behavior = behaviors[i];
@@ -311,9 +315,10 @@ export class Controller extends PropertyChangeNotifier {
 
         if (this._isConnected) {
             const element = this.element;
+            const context = ExecutionContext.default;
 
             for (let i = 0; i < behaviorsToUnbind.length; ++i) {
-                behaviorsToUnbind[i].unbind(element, defaultExecutionContext);
+                behaviorsToUnbind[i].unbind(element, context);
             }
         }
     }
@@ -327,18 +332,19 @@ export class Controller extends PropertyChangeNotifier {
         }
 
         const element = this.element;
+        const context = ExecutionContext.default;
 
         if (this.needsInitialization) {
             this.finishInitialization();
         } else if (this.view !== null) {
-            this.view.bind(element, defaultExecutionContext);
+            this.view.bind(element, context);
         }
 
         const behaviors = this.behaviors;
 
         if (behaviors !== null) {
             for (const behavior of behaviors.keys()) {
-                behavior.bind(element, defaultExecutionContext);
+                behavior.bind(element, context);
             }
         }
 
@@ -365,8 +371,10 @@ export class Controller extends PropertyChangeNotifier {
 
         if (behaviors !== null) {
             const element = this.element;
+            const context = ExecutionContext.default;
+
             for (const behavior of behaviors.keys()) {
-                behavior.unbind(element, defaultExecutionContext);
+                behavior.unbind(element, context);
             }
         }
     }

@@ -1,5 +1,11 @@
 import { isFunction, isString } from "../interfaces.js";
-import { Binding, defaultExecutionContext } from "../observation/observable.js";
+import {
+    Binding,
+    ChildContext,
+    ExecutionContext,
+    ItemContext,
+    RootContext,
+} from "../observation/observable.js";
 import { bind, oneTime } from "./binding.js";
 import { Compiler } from "./compiler.js";
 import { AspectedHTMLDirective, HTMLDirective } from "./html-directive.js";
@@ -9,12 +15,13 @@ import type { ElementView, HTMLView, SyntheticView } from "./view.js";
  * A template capable of creating views specifically for rendering custom elements.
  * @public
  */
-export interface ElementViewTemplate<TSource = any, TParent = any, TGrandparent = any> {
+export interface ElementViewTemplate<TSource = any, TParent = any> {
+    type: "element";
     /**
      * Creates an ElementView instance based on this template definition.
      * @param hostBindingTarget - The element that host behaviors will be bound to.
      */
-    create(hostBindingTarget: Element): ElementView<TSource, TParent, TGrandparent>;
+    create(hostBindingTarget: Element): ElementView<TSource, TParent>;
 
     /**
      * Creates an HTMLView from this template, binds it to the source, and then appends it to the host.
@@ -27,41 +34,90 @@ export interface ElementViewTemplate<TSource = any, TParent = any, TGrandparent 
         source: TSource,
         host: Node,
         hostBindingTarget?: Element
-    ): HTMLView<TSource, TParent, TGrandparent>;
+    ): ElementView<TSource, TParent>;
 }
 
 /**
  * A template capable of rendering views not specifically connected to custom elements.
  * @public
  */
-export interface SyntheticViewTemplate<TSource = any, TParent = any, TGrandparent = any> {
+export interface SyntheticViewTemplate<
+    TSource = any,
+    TParent = any,
+    TContext extends ExecutionContext<TParent> = ExecutionContext<TParent>
+> {
+    type: "synthetic";
     /**
      * Creates a SyntheticView instance based on this template definition.
      */
-    create(): SyntheticView<TSource, TParent, TGrandparent>;
+    create(): SyntheticView<TSource, TParent, TContext>;
+}
+
+/**
+ * A template capable of rendering child views not specifically connected to custom elements.
+ * @public
+ */
+export interface ChildViewTemplate<TSource = any, TParent = any> {
+    type: "child";
+
+    /**
+     * Creates a SyntheticView instance based on this template definition.
+     */
+    create(): SyntheticView<TSource, TParent, ChildContext<TParent>>;
+}
+
+/**
+ * A template capable of rendering item views not specifically connected to custom elements.
+ * @public
+ */
+export interface ItemViewTemplate<TSource = any, TParent = any> {
+    type: "item";
+
+    /**
+     * Creates a SyntheticView instance based on this template definition.
+     */
+    create(): SyntheticView<TSource, TParent, ItemContext<TParent>>;
 }
 
 /**
  * The result of a template compilation operation.
  * @public
  */
-export interface HTMLTemplateCompilationResult {
+export interface HTMLTemplateCompilationResult<
+    TSource = any,
+    TParent = any,
+    TContext extends ExecutionContext<TParent> = ExecutionContext<TParent>
+> {
     /**
      * Creates a view instance.
      * @param hostBindingTarget - The host binding target for the view.
      */
-    createView(hostBindingTarget?: Element): HTMLView;
+    createView(hostBindingTarget?: Element): HTMLView<TSource, TParent, TContext>;
 }
 
 /**
  * A template capable of creating HTMLView instances or rendering directly to DOM.
  * @public
  */
-export class ViewTemplate<TSource = any, TParent = any, TGrandparent = any>
+export class ViewTemplate<
+    TSource = any,
+    TParent = any,
+    TContext extends ExecutionContext<TParent> = ExecutionContext
+>
     implements
-        ElementViewTemplate<TSource, TParent, TGrandparent>,
-        SyntheticViewTemplate<TSource, TParent, TGrandparent> {
-    private result: HTMLTemplateCompilationResult | null = null;
+        ElementViewTemplate<TSource, TParent>,
+        SyntheticViewTemplate<TSource, TParent, TContext> {
+    private result: HTMLTemplateCompilationResult<
+        TSource,
+        TParent,
+        TContext
+    > | null = null;
+
+    /**
+     * Used for TypeScript purposes only.
+     * Do not sure.
+     */
+    type: any;
 
     /**
      * The html representing what this template will
@@ -91,9 +147,12 @@ export class ViewTemplate<TSource = any, TParent = any, TGrandparent = any>
      * Creates an HTMLView instance based on this template definition.
      * @param hostBindingTarget - The element that host behaviors will be bound to.
      */
-    public create(hostBindingTarget?: Element): HTMLView<TSource, TParent, TGrandparent> {
+    public create(hostBindingTarget?: Element): HTMLView<TSource, TParent, TContext> {
         if (this.result === null) {
-            this.result = Compiler.compile(this.html, this.directives);
+            this.result = Compiler.compile<TSource, TParent, TContext>(
+                this.html,
+                this.directives
+            );
         }
 
         return this.result!.createView(hostBindingTarget);
@@ -109,10 +168,11 @@ export class ViewTemplate<TSource = any, TParent = any, TGrandparent = any>
     public render(
         source: TSource,
         host: Node,
-        hostBindingTarget?: Element
-    ): HTMLView<TSource, TParent, TGrandparent> {
+        hostBindingTarget?: Element,
+        context?: TContext
+    ): HTMLView<TSource, TParent, TContext> {
         const view = this.create(hostBindingTarget ?? (host as any));
-        view.bind(source, defaultExecutionContext);
+        view.bind(source, context ?? (ExecutionContext.default as TContext));
         view.appendTo(host);
         return view;
     }
@@ -135,10 +195,11 @@ export interface CaptureType<TSource> {}
  * Represents the types of values that can be interpolated into a template.
  * @public
  */
-export type TemplateValue<TSource, TParent = any> =
-    | Binding<TSource, any, TParent>
-    | HTMLDirective
-    | CaptureType<TSource>;
+export type TemplateValue<
+    TSource,
+    TParent = any,
+    TContext extends ExecutionContext<TParent> = ExecutionContext<TParent>
+> = Binding<TSource, any, TContext> | HTMLDirective | CaptureType<TSource>;
 
 /**
  * Transforms a template literal string into a ViewTemplate.
@@ -149,10 +210,14 @@ export type TemplateValue<TSource, TParent = any> =
  * other template instances, and Directive instances.
  * @public
  */
-export function html<TSource = any, TParent = any, TGrandparent = any>(
+export function html<
+    TSource = any,
+    TParent = any,
+    TContext extends ExecutionContext<TParent> = ExecutionContext<TParent>
+>(
     strings: TemplateStringsArray,
-    ...values: TemplateValue<TSource, TParent>[]
-): ViewTemplate<TSource, TParent, TGrandparent> {
+    ...values: TemplateValue<TSource, TParent, TContext>[]
+): ViewTemplate<TSource, TParent> {
     const directives: HTMLDirective[] = [];
     let html = "";
 
@@ -188,5 +253,33 @@ export function html<TSource = any, TParent = any, TGrandparent = any>(
 
     html += strings[strings.length - 1];
 
-    return new ViewTemplate<TSource, TParent, TGrandparent>(html, directives);
+    return new ViewTemplate<TSource, TParent, any>(html, directives);
 }
+
+/**
+ * Transforms a template literal string into a ChildViewTemplate.
+ * @param strings - The string fragments that are interpolated with the values.
+ * @param values - The values that are interpolated with the string fragments.
+ * @remarks
+ * The html helper supports interpolation of strings, numbers, binding expressions,
+ * other template instances, and Directive instances.
+ * @public
+ */
+export const child: <TChild = any, TParent = any>(
+    strings: TemplateStringsArray,
+    ...values: TemplateValue<TChild, TParent, ChildContext<TParent>>[]
+) => ChildViewTemplate<TChild, TParent> = html as any;
+
+/**
+ * Transforms a template literal string into an ItemViewTemplate.
+ * @param strings - The string fragments that are interpolated with the values.
+ * @param values - The values that are interpolated with the string fragments.
+ * @remarks
+ * The html helper supports interpolation of strings, numbers, binding expressions,
+ * other template instances, and Directive instances.
+ * @public
+ */
+export const item: <TItem = any, TParent = any>(
+    strings: TemplateStringsArray,
+    ...values: TemplateValue<TItem, TParent, ItemContext<TParent>>[]
+) => ItemViewTemplate<TItem, TParent> = html as any;
