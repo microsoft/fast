@@ -65,7 +65,7 @@ function definitionNormalizer(definition) {
  */
 const openUIDefinitionLocationPattern = path.resolve(
     __dirname,
-    "../src/**/*.open-ui.definition.json"
+    "../temp/**/*.open-ui.definition.js"
 );
 const allOpenUIDefinitionLocations = glob.sync(openUIDefinitionLocationPattern);
 const allOpenUIDefinitionKeys = [];
@@ -84,7 +84,7 @@ const dictionaryOfOpenUIDefinitionLocations = getDefinitionLocations(
  */
 const webComponentDefinitionLocationPattern = path.resolve(
     __dirname,
-    "../temp/**/*.vscode.definition.json"
+    "../temp/**/*.vscode.definition.js"
 );
 
 const allWebComponentDefinitionLocations = glob.sync(
@@ -159,45 +159,39 @@ allWebComponentDefinitionKeys.forEach(definitionKey => {
                 }
             });
         }
+        Promise.all([import(dictionaryOfOpenUIDefinitionLocations[definitionKey]), import(dictionaryOfWebComponentDefinitionLocations[ definitionKey ])]).then(([openUIDefinition, schema]) => {
+            openUIDefinition = openUIDefinition.default;
+            schema = schema.default;
 
-        const openUIDefinition = JSON.parse(
-            fs.readFileSync(dictionaryOfOpenUIDefinitionLocations[definitionKey], {
-                encoding: "utf8",
-            })
-        );
+            const fileContents = {
+                ...openUIDefinition,
+                implementations: [
+                    {
+                        type: "web-component",
+                        implementation: definitionNormalizer(schema),
+                    },
+                ],
+            };
 
-        const schema = require(dictionaryOfWebComponentDefinitionLocations[
-            definitionKey
-        ]);
+            // Test the file
+            const valid = validate(fileContents);
 
-        const fileContents = {
-            ...openUIDefinition,
-            implementations: [
-                {
-                    type: "web-component",
-                    implementation: definitionNormalizer(schema),
-                },
-            ],
-        };
-
-        // Test the file
-        const valid = validate(fileContents);
-
-        if (!valid) {
-            throw new Error(JSON.stringify(validate.errors, null, 2));
-        }
-
-        // Write the file
-        fs.writeFileSync(
-            path.resolve(definitionPath, `${definitionKey}.open-ui.definition.json`),
-            JSON.stringify(fileContents, null, 2),
-            "utf8",
-            err => {
-                if (err) {
-                    throw err;
-                }
+            if (!valid) {
+                throw new Error(JSON.stringify(validate.errors, null, 2));
             }
-        );
+
+            // Write the file
+            fs.writeFileSync(
+                path.resolve(definitionPath, `${definitionKey}.open-ui.definition.js`),
+                "export default " + JSON.stringify(fileContents, null, 2),
+                "utf8",
+                err => {
+                    if (err) {
+                        throw err;
+                    }
+                }
+            );
+        })
     } else {
         throw new Error(`Missing or mismatched definition: ${definitionKey}`);
     }
