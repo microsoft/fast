@@ -15,7 +15,7 @@ const modules = fullManifest.modules
     .sort((a,b) => getComponentNameFromPath(a.path).localeCompare(getComponentNameFromPath(b.path)));
 
 // Loop through the manifest grouping modules from the same folder in order to produce one markdown file per component.
-for(var i = 0; i < modules.length; i++)
+for(var i = 0, modulesLength = modules.length; i < modulesLength; i++)
 {
     // We only care about javascript-modules.
     if(modules[i].kind === "javascript-module")
