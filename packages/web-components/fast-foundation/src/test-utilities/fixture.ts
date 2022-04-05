@@ -1,6 +1,5 @@
 import {
     Constructable,
-    defaultExecutionContext,
     ExecutionContext,
     HTMLView,
     ViewTemplate,
@@ -143,7 +142,7 @@ export async function fixture<TElement = HTMLElement>(
     const document = options.document || globalThis.document;
     const parent = options.parent || document.createElement("div");
     const source = options.source || {};
-    const context = options.context || defaultExecutionContext;
+    const context = options.context || ExecutionContext.default;
 
     if (typeof templateNameOrRegistry === "string") {
         const html = `<${templateNameOrRegistry}></${templateNameOrRegistry}>`;

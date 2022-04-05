@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import { repeat, RepeatDirective, RepeatBehavior } from "./repeat";
-import { html } from "./template";
-import { defaultExecutionContext, observable } from "../observation/observable";
+import { child, html } from "./template";
+import { ExecutionContext, observable } from "../observation/observable";
 import { DOM } from "../dom";
 import { toHTML } from "../__test__/helpers";
 
@@ -107,7 +107,7 @@ describe("The repeat", () => {
                 const behavior = directive.createBehavior(targets);
                 const vm = new ViewModel(size);
 
-                behavior.bind(vm, defaultExecutionContext);
+                behavior.bind(vm, ExecutionContext.default);
 
                 expect(toHTML(parent)).to.equal(createOutput(size));
             });
@@ -124,7 +124,7 @@ describe("The repeat", () => {
                 const behavior = directive.createBehavior(targets);
                 const data = new ViewModel(size);
 
-                behavior.bind(data, defaultExecutionContext);
+                behavior.bind(data, ExecutionContext.default);
 
                 expect(toHTML(parent)).to.equal(
                     createOutput(size, void 0, void 0, input => `<div>${input}</div>`)
@@ -157,7 +157,7 @@ describe("The repeat", () => {
                 const behavior = directive.createBehavior(targets);
                 const vm = new ViewModel(size);
 
-                behavior.bind(vm, defaultExecutionContext);
+                behavior.bind(vm, ExecutionContext.default);
                 vm.items.push({ name: "newitem" });
 
                 await DOM.nextUpdate();
@@ -177,7 +177,7 @@ describe("The repeat", () => {
                 const behavior = directive.createBehavior(targets);
                 const vm = new ViewModel(size);
 
-                behavior.bind(vm, defaultExecutionContext);
+                behavior.bind(vm, ExecutionContext.default);
 
                 const index = size - 1;
                 vm.items.splice(index, 1);
@@ -201,7 +201,7 @@ describe("The repeat", () => {
                 const behavior = directive.createBehavior(targets);
                 const vm = new ViewModel(size);
 
-                behavior.bind(vm, defaultExecutionContext);
+                behavior.bind(vm, ExecutionContext.default);
 
                 vm.items.splice(0, 1);
 
@@ -222,7 +222,7 @@ describe("The repeat", () => {
                 const behavior = directive.createBehavior(targets);
                 const vm = new ViewModel(size);
 
-                behavior.bind(vm, defaultExecutionContext);
+                behavior.bind(vm, ExecutionContext.default);
 
                 const index = size - 1;
                 vm.items.splice(index, 1, { name: "newitem1" }, { name: "newitem2" });
@@ -246,7 +246,7 @@ describe("The repeat", () => {
                 const behavior = directive.createBehavior(targets);
                 const vm = new ViewModel(size);
 
-                behavior.bind(vm, defaultExecutionContext);
+                behavior.bind(vm, ExecutionContext.default);
 
                 vm.items.splice(0, 1, { name: "newitem1" }, { name: "newitem2" });
 
@@ -269,7 +269,7 @@ describe("The repeat", () => {
                 const behavior = directive.createBehavior(targets);
                 const vm = new ViewModel(size);
 
-                behavior.bind(vm, defaultExecutionContext);
+                behavior.bind(vm, ExecutionContext.default);
 
                 expect(toHTML(parent)).to.equal(createOutput(size));
 
@@ -286,7 +286,7 @@ describe("The repeat", () => {
                 const deepItemTemplate = html<Item>`
                     parent-${x => x.name}${repeat(
                         x => x.items!,
-                        html<Item>`child-${x => x.name}root-${(x, c) => c.parentContext.parent.name}`
+                        child<Item>`child-${x => x.name}root-${(x, c) => c.parentContext.parent.name}`
                     )}
                 `;
 
@@ -299,7 +299,7 @@ describe("The repeat", () => {
                 const behavior = directive.createBehavior(targets);
                 const vm = new ViewModel(size, true);
 
-                behavior.bind(vm, defaultExecutionContext);
+                behavior.bind(vm, ExecutionContext.default);
 
                 const text = toHTML(parent);
 
@@ -321,7 +321,7 @@ describe("The repeat", () => {
                 const behavior = directive.createBehavior(targets);
                 const vm = new ViewModel(size);
 
-                behavior.bind(vm, defaultExecutionContext);
+                behavior.bind(vm, ExecutionContext.default);
 
                 vm.items.shift();
                 vm.items.unshift({ name: "shift" });
@@ -345,7 +345,7 @@ describe("The repeat", () => {
                 const behavior = directive.createBehavior(targets);
                 const vm = new ViewModel(size);
 
-                behavior.bind(vm, defaultExecutionContext);
+                behavior.bind(vm, ExecutionContext.default);
 
                 await DOM.nextUpdate();
 
@@ -353,7 +353,7 @@ describe("The repeat", () => {
 
                 await DOM.nextUpdate();
 
-                behavior.bind(vm, defaultExecutionContext);
+                behavior.bind(vm, ExecutionContext.default);
 
                 await DOM.nextUpdate();
 

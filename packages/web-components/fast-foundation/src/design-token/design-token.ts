@@ -3,7 +3,7 @@ import {
     Binding,
     BindingObserver,
     CSSDirective,
-    defaultExecutionContext,
+    ExecutionContext,
     FASTElement,
     observable,
     Observable,
@@ -383,7 +383,7 @@ class DesignTokenBindingObserver<T> {
 
             (this.observer.observe(
                 this.node.target,
-                defaultExecutionContext
+                ExecutionContext.default
             ) as unknown) as StaticDesignTokenValue<T>
         );
     }
