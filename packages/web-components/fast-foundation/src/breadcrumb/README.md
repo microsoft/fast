@@ -109,11 +109,11 @@ This component is built with the expectation that focus is delegated to the anch
 
 #### Fields
 
-| Name            | Privacy | Type                                  | Default | Description                                                                                                                                                                         | Inherited From    |
-| --------------- | ------- | ------------------------------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
-| `$presentation` | public  | `ComponentPresentation or null`       |         | A property which resolves the ComponentPresentation instance for the current component.                                                                                             | FoundationElement |
-| `template`      | public  | `ElementViewTemplate or void or null` |         | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.          | FoundationElement |
-| `styles`        | public  | `ElementStyles or void or null`       |         | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition. | FoundationElement |
+| Name            | Privacy | Type                                  | Default | Description | Inherited From    |
+| --------------- | ------- | ------------------------------------- | ------- | ----------- | ----------------- |
+| `$presentation` | public  | `ComponentPresentation or null`       |         |             | FoundationElement |
+| `template`      | public  | `ElementViewTemplate or void or null` |         |             | FoundationElement |
+| `styles`        | public  | `ElementStyles or void or null`       |         |             | FoundationElement |
 
 #### Methods
 
@@ -137,20 +137,20 @@ This component is built with the expectation that focus is delegated to the anch
 
 #### Fields
 
-| Name             | Privacy | Type                                         | Default | Description                                                                                                                                                                         | Inherited From    |
-| ---------------- | ------- | -------------------------------------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
-| `download`       | public  | `string`                                     |         | Prompts the user to save the linked URL. See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a or `<a>` element } for more information.             | Anchor            |
-| `href`           | public  | `string`                                     |         | The URL the hyperlink references. See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a or `<a>` element } for more information.                    | Anchor            |
-| `hreflang`       | public  | `string`                                     |         | Hints at the language of the referenced resource. See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a or `<a>` element } for more information.    | Anchor            |
-| `ping`           | public  | `string`                                     |         | See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a or `<a>` element } for more information.                                                      | Anchor            |
-| `referrerpolicy` | public  | `string`                                     |         | See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a or `<a>` element } for more information.                                                      | Anchor            |
-| `rel`            | public  | `string`                                     |         | See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a or `<a>` element } for more information.                                                      | Anchor            |
-| `target`         | public  | `"_self" or "_blank" or "_parent" or "_top"` |         | See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a or `<a>` element } for more information.                                                      | Anchor            |
-| `type`           | public  | `string`                                     |         | See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a or `<a>` element } for more information.                                                      | Anchor            |
-| `control`        | public  | `HTMLAnchorElement`                          |         | References the root element                                                                                                                                                         | Anchor            |
-| `$presentation`  | public  | `ComponentPresentation or null`              |         | A property which resolves the ComponentPresentation instance for the current component.                                                                                             | FoundationElement |
-| `template`       | public  | `ElementViewTemplate or void or null`        |         | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.          | FoundationElement |
-| `styles`         | public  | `ElementStyles or void or null`              |         | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition. | FoundationElement |
+| Name             | Privacy | Type                                         | Default | Description                                                                                                                                                               | Inherited From    |
+| ---------------- | ------- | -------------------------------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
+| `download`       | public  | `string`                                     |         | Prompts the user to save the linked URL. See [`<a>` element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a) for more information.          | Anchor            |
+| `href`           | public  | `string`                                     |         | The URL the hyperlink references. See [`<a>` element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a) for more information.                 | Anchor            |
+| `hreflang`       | public  | `string`                                     |         | Hints at the language of the referenced resource. See [`<a>` element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a) for more information. | Anchor            |
+| `ping`           | public  | `string`                                     |         | See [`<a>` element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a) for more information.                                                   | Anchor            |
+| `referrerpolicy` | public  | `string`                                     |         | See [`<a>` element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a) for more information.                                                   | Anchor            |
+| `rel`            | public  | `string`                                     |         | See [`<a>` element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a) for more information.                                                   | Anchor            |
+| `target`         | public  | `"_self" or "_blank" or "_parent" or "_top"` |         | See [`<a>` element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a) for more information.                                                   | Anchor            |
+| `type`           | public  | `string`                                     |         | See [`<a>` element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a) for more information.                                                   | Anchor            |
+| `control`        | public  | `HTMLAnchorElement`                          |         |                                                                                                                                                                           | Anchor            |
+| `$presentation`  | public  | `ComponentPresentation or null`              |         |                                                                                                                                                                           | FoundationElement |
+| `template`       | public  | `ElementViewTemplate or void or null`        |         |                                                                                                                                                                           | FoundationElement |
+| `styles`         | public  | `ElementStyles or void or null`              |         |                                                                                                                                                                           | FoundationElement |
 
 #### Methods
 
