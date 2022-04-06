@@ -3,7 +3,8 @@
     "rules": {
         "import/extensions": [
             "error",
-            "always"
+            "always",
+            { "styles": "never"}
         ]
     }
 }
