@@ -1,5 +1,5 @@
-import { FormAssociated } from "../form-associated/form-associated";
-import { FoundationElement } from "../foundation-element";
+import { FormAssociated } from "../form-associated/form-associated.js";
+import { FoundationElement } from "../foundation-element/foundation-element.js";
 
 class _Picker extends FoundationElement {}
 interface _Picker extends FormAssociated {}

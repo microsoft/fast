@@ -132,6 +132,104 @@ export const myMenuItem = MenuItem.compose<MenuItemOptions>({
 });
 ```
 
+## API
+
+## `src/menu/menu.ts`:
+
+### class: `Menu`
+
+#### Superclass
+
+| Name                | Module                                        | Package |
+| ------------------- | --------------------------------------------- | ------- |
+| `FoundationElement` | /src/foundation-element/foundation-element.js |         |
+
+#### Static Methods
+
+| Name      | Privacy | Description                                                                     | Parameters                      | Return                                                                                                           | Inherited From    |
+| --------- | ------- | ------------------------------------------------------------------------------- | ------------------------------- | ---------------------------------------------------------------------------------------------------------------- | ----------------- |
+| `compose` | public  | Defines an element registry function with a set of element definition defaults. | `this: K, elementDefinition: T` | `(         overrideDefinition?: OverrideFoundationElementDefinition<T>     ) => FoundationElementRegistry<T, K>` | FoundationElement |
+
+#### Fields
+
+| Name            | Privacy | Type                                  | Default | Description                                                                                                                                                                         | Inherited From    |
+| --------------- | ------- | ------------------------------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
+| `$presentation` | public  | `ComponentPresentation \| null`       |         | A property which resolves the ComponentPresentation instance for the current component.                                                                                             | FoundationElement |
+| `template`      | public  | `ElementViewTemplate \| void \| null` |         | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.          | FoundationElement |
+| `styles`        | public  | `ElementStyles \| void \| null`       |         | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition. | FoundationElement |
+
+#### Methods
+
+| Name                   | Privacy   | Description                         | Parameters | Return | Inherited From    |
+| ---------------------- | --------- | ----------------------------------- | ---------- | ------ | ----------------- |
+| `focus`                | public    | Focuses the first item in the menu. |            | `void` |                   |
+| `collapseExpandedItem` | public    | Collapses any expanded menu items.  |            | `void` |                   |
+| `templateChanged`      | protected |                                     |            | `void` | FoundationElement |
+| `stylesChanged`        | protected |                                     |            | `void` | FoundationElement |
+
+<hr/>
+
+### Exports
+
+| Kind | Name   | Declaration | Module           | Package |
+| ---- | ------ | ----------- | ---------------- | ------- |
+| `js` | `Menu` | Menu        | src/menu/menu.ts |         |
+
+## `src/menu-item/menu-item.ts`:
+
+### class: `MenuItem`
+
+#### Superclass
+
+| Name                | Module                                        | Package |
+| ------------------- | --------------------------------------------- | ------- |
+| `FoundationElement` | /src/foundation-element/foundation-element.js |         |
+
+#### Static Methods
+
+| Name      | Privacy | Description                                                                     | Parameters                      | Return                                                                                                           | Inherited From    |
+| --------- | ------- | ------------------------------------------------------------------------------- | ------------------------------- | ---------------------------------------------------------------------------------------------------------------- | ----------------- |
+| `compose` | public  | Defines an element registry function with a set of element definition defaults. | `this: K, elementDefinition: T` | `(         overrideDefinition?: OverrideFoundationElementDefinition<T>     ) => FoundationElementRegistry<T, K>` | FoundationElement |
+
+#### Fields
+
+| Name            | Privacy | Type                                                                  | Default | Description                                                                                                                                                                         | Inherited From    |
+| --------------- | ------- | --------------------------------------------------------------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
+| `disabled`      | public  | `boolean`                                                             |         | The disabled state of the element.                                                                                                                                                  |                   |
+| `expanded`      | public  | `boolean`                                                             |         | The expanded state of the element.                                                                                                                                                  |                   |
+| `role`          | public  | `MenuItemRole \| "menuitem" \| "menuitemcheckbox" \| "menuitemradio"` |         | The role of the element.                                                                                                                                                            |                   |
+| `checked`       | public  | `boolean`                                                             |         | The checked value of the element.                                                                                                                                                   |                   |
+| `$presentation` | public  | `ComponentPresentation \| null`                                       |         | A property which resolves the ComponentPresentation instance for the current component.                                                                                             | FoundationElement |
+| `template`      | public  | `ElementViewTemplate \| void \| null`                                 |         | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.          | FoundationElement |
+| `styles`        | public  | `ElementStyles \| void \| null`                                       |         | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition. | FoundationElement |
+
+#### Methods
+
+| Name              | Privacy   | Description | Parameters | Return | Inherited From    |
+| ----------------- | --------- | ----------- | ---------- | ------ | ----------------- |
+| `templateChanged` | protected |             |            | `void` | FoundationElement |
+| `stylesChanged`   | protected |             |            | `void` | FoundationElement |
+
+#### Attributes
+
+| Name   | Field    | Inherited From |
+| ------ | -------- | -------------- |
+|        | disabled |                |
+|        | expanded |                |
+| `role` | role     |                |
+|        | checked  |                |
+
+<hr/>
+
+### Exports
+
+| Kind | Name              | Declaration     | Module                     | Package |
+| ---- | ----------------- | --------------- | -------------------------- | ------- |
+| `js` | `MenuItemRole`    | MenuItemRole    | src/menu-item/menu-item.ts |         |
+| `js` | `roleForMenuItem` | roleForMenuItem | src/menu-item/menu-item.ts |         |
+| `js` | `MenuItem`        | MenuItem        | src/menu-item/menu-item.ts |         |
+
+
 ## Additional resources
 
 * [Component explorer examples](https://explore.fast.design/components/fast-menu)

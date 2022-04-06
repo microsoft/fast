@@ -29,12 +29,12 @@ import {
     FlyoutPosTallestFill,
     FlyoutPosTop,
     FlyoutPosTopFill,
-} from "../anchored-region";
-import type { PickerMenu } from "./picker-menu";
-import { PickerMenuOption } from "./picker-menu-option";
-import { PickerListItem } from "./picker-list-item";
-import { FormAssociatedPicker } from "./picker.form-associated";
-import type { PickerList } from "./picker-list";
+} from "../anchored-region/index.js";
+import type { PickerMenu } from "./picker-menu.js";
+import { PickerMenuOption } from "./picker-menu-option.js";
+import { PickerListItem } from "./picker-list-item.js";
+import { FormAssociatedPicker } from "./picker.form-associated.js";
+import type { PickerList } from "./picker-list.js";
 
 const pickerInputTemplate: ViewTemplate = html<Picker>`
     <input

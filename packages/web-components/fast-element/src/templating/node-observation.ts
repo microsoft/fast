@@ -1,6 +1,6 @@
-import type { Behavior } from "../observation/behavior";
-import { Accessor, Observable } from "../observation/observable";
-import { emptyArray } from "../platform";
+import type { Behavior } from "../observation/behavior.js";
+import { Accessor, Observable } from "../observation/observable.js";
+import { emptyArray } from "../platform.js";
 
 /**
  * Options for configuring node observation behavior.
