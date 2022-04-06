@@ -78,6 +78,76 @@ export const myToolbar = Toolbar.compose({
 });
 ```
 
+## API
+
+## `src/toolbar/toolbar.ts`:
+
+### class: `Toolbar`
+
+#### Superclass
+
+| Name                | Module                                        | Package |
+| ------------------- | --------------------------------------------- | ------- |
+| `FoundationElement` | /src/foundation-element/foundation-element.js |         |
+
+#### Static Methods
+
+| Name      | Privacy | Description                                                                     | Parameters                      | Return                                                                                                           | Inherited From    |
+| --------- | ------- | ------------------------------------------------------------------------------- | ------------------------------- | ---------------------------------------------------------------------------------------------------------------- | ----------------- |
+| `compose` | public  | Defines an element registry function with a set of element definition defaults. | `this: K, elementDefinition: T` | `(         overrideDefinition?: OverrideFoundationElementDefinition<T>     ) => FoundationElementRegistry<T, K>` | FoundationElement |
+
+#### Fields
+
+| Name            | Privacy | Type                                  | Default | Description                                                                                                                                                                         | Inherited From    |
+| --------------- | ------- | ------------------------------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
+| `activeIndex`   |         |                                       |         |                                                                                                                                                                                     |                   |
+| `orientation`   | public  | `Orientation`                         |         | The orientation of the toolbar.                                                                                                                                                     |                   |
+| `$presentation` | public  | `ComponentPresentation \| null`       |         | A property which resolves the ComponentPresentation instance for the current component.                                                                                             | FoundationElement |
+| `template`      | public  | `ElementViewTemplate \| void \| null` |         | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.          | FoundationElement |
+| `styles`        | public  | `ElementStyles \| void \| null`       |         | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition. | FoundationElement |
+
+#### Methods
+
+| Name                  | Privacy   | Description | Parameters | Return | Inherited From    |
+| --------------------- | --------- | ----------- | ---------- | ------ | ----------------- |
+| `slottedItemsChanged` | protected |             |            | `void` |                   |
+| `templateChanged`     | protected |             |            | `void` | FoundationElement |
+| `stylesChanged`       | protected |             |            | `void` | FoundationElement |
+
+#### Attributes
+
+| Name          | Field       | Inherited From |
+| ------------- | ----------- | -------------- |
+| `orientation` | orientation |                |
+
+<hr/>
+
+### class: `DelegatesARIAToolbar`
+
+#### Fields
+
+| Name             | Privacy | Type     | Default | Description                                   | Inherited From |
+| ---------------- | ------- | -------- | ------- | --------------------------------------------- | -------------- |
+| `ariaLabelledby` | public  | `string` |         | The id of the element labeling the toolbar.   |                |
+| `ariaLabel`      | public  | `string` |         | The label surfaced to assistive technologies. |                |
+
+#### Attributes
+
+| Name              | Field          | Inherited From |
+| ----------------- | -------------- | -------------- |
+| `aria-labelledby` | ariaLabelledby |                |
+| `aria-label`      | ariaLabel      |                |
+
+<hr/>
+
+### Exports
+
+| Kind | Name                   | Declaration          | Module                 | Package |
+| ---- | ---------------------- | -------------------- | ---------------------- | ------- |
+| `js` | `Toolbar`              | Toolbar              | src/toolbar/toolbar.ts |         |
+| `js` | `DelegatesARIAToolbar` | DelegatesARIAToolbar | src/toolbar/toolbar.ts |         |
+
+
 ## Additional resources
 
 * [Component explorer examples](https://explore.fast.design/components/fast-toolbar)

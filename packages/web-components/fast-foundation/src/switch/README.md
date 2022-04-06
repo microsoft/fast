@@ -67,6 +67,56 @@ export const mySwitch = Switch.compose<SwitchOptions>({
 });
 ```
 
+## API
+
+## `src/switch/switch.ts`:
+
+### class: `Switch`
+
+#### Superclass
+
+| Name                   | Module                                | Package |
+| ---------------------- | ------------------------------------- | ------- |
+| `FormAssociatedSwitch` | /src/switch/switch.form-associated.js |         |
+
+#### Static Methods
+
+| Name      | Privacy | Description                                                                     | Parameters                      | Return                                                                                                           | Inherited From    |
+| --------- | ------- | ------------------------------------------------------------------------------- | ------------------------------- | ---------------------------------------------------------------------------------------------------------------- | ----------------- |
+| `compose` | public  | Defines an element registry function with a set of element definition defaults. | `this: K, elementDefinition: T` | `(         overrideDefinition?: OverrideFoundationElementDefinition<T>     ) => FoundationElementRegistry<T, K>` | FoundationElement |
+
+#### Fields
+
+| Name            | Privacy | Type                                  | Default | Description                                                                                                                                                                                       | Inherited From       |
+| --------------- | ------- | ------------------------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------- |
+| `readOnly`      | public  | `boolean`                             |         | When true, the control will be immutable by user interaction. See {@link https\://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/readonly \| readonly HTML attribute} for more information. |                      |
+| `proxy`         |         |                                       |         |                                                                                                                                                                                                   | FormAssociatedSwitch |
+| `$presentation` | public  | `ComponentPresentation \| null`       |         | A property which resolves the ComponentPresentation instance for the current component.                                                                                                           | FoundationElement    |
+| `template`      | public  | `ElementViewTemplate \| void \| null` |         | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.                        | FoundationElement    |
+| `styles`        | public  | `ElementStyles \| void \| null`       |         | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition.               | FoundationElement    |
+
+#### Methods
+
+| Name              | Privacy   | Description | Parameters | Return | Inherited From    |
+| ----------------- | --------- | ----------- | ---------- | ------ | ----------------- |
+| `templateChanged` | protected |             |            | `void` | FoundationElement |
+| `stylesChanged`   | protected |             |            | `void` | FoundationElement |
+
+#### Attributes
+
+| Name       | Field    | Inherited From |
+| ---------- | -------- | -------------- |
+| `readonly` | readOnly |                |
+
+<hr/>
+
+### Exports
+
+| Kind | Name     | Declaration | Module               | Package |
+| ---- | -------- | ----------- | -------------------- | ------- |
+| `js` | `Switch` | Switch      | src/switch/switch.ts |         |
+
+
 ## Additional resources
 
 * [Component explorer examples](https://explore.fast.design/components/fast-switch)
