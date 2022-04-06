@@ -3537,6 +3537,19 @@
     "@microsoft/fast-web-utilities" "^4.8.1"
     vscode-html-languageservice "^3.1.3"
 
+"@microsoft/fast-tooling@^0.37.8":
+  version "0.37.8"
+  resolved "https://registry.yarnpkg.com/@microsoft/fast-tooling/-/fast-tooling-0.37.8.tgz#30d9d3b288daef1ff26522bda2e4b2dfdb8717a2"
+  integrity sha512-wGSxlBgBHhwCv5daGg3+ZQfvc/+Eg6gaN1z6LBCTzRw1MhA+yz5vpADwIGtYf5qvhIh9F8867rAX2vGlnzNreQ==
+  dependencies:
+    "@microsoft/fast-colors" "^5.1.3"
+    "@microsoft/fast-components" "^2.9.2"
+    "@microsoft/fast-element" "^1.5.1"
+    "@microsoft/fast-foundation" "^2.13.1"
+    "@microsoft/fast-web-utilities" "^4.8.1"
+    vscode-html-languageservice "^3.1.3"
+    vscode-web-custom-data "^0.3.5"
+
 "@microsoft/fast-tooling@^0.7.0":
   version "0.7.0"
   resolved "https://registry.yarnpkg.com/@microsoft/fast-tooling/-/fast-tooling-0.7.0.tgz#a8487eb5ca85fc796c1b9149496f6fa7b4763e47"
@@ -4981,7 +4994,14 @@
   dependencies:
     "@types/lodash" "*"
 
-"@types/lodash@*", "@types/lodash@^4.14.120":
+"@types/lodash-es@^4.17.6":
+  version "4.17.6"
+  resolved "https://registry.yarnpkg.com/@types/lodash-es/-/lodash-es-4.17.6.tgz#c2ed4c8320ffa6f11b43eb89e9eaeec65966a0a0"
+  integrity sha512-R+zTeVUKDdfoRxpAryaQNRKk3105Rrgx2CFRClIgRGaqDTdjsm8h6IYA8ir584W3ePzkZfst5xIgDwYrlh9HLg==
+  dependencies:
+    "@types/lodash" "*"
+
+"@types/lodash@*":
   version "4.14.168"
   resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.168.tgz#fe24632e79b7ade3f132891afff86caa5e5ce008"
   integrity sha512-oVfRvqHV/V6D1yifJbVRU3TMp8OT6o6BG+U9MkwuJ3U8/CsDHvalRpsxBqivn71ztOFZBTfJMvETbqHiaNSj7Q==
@@ -11311,7 +11331,7 @@ execa@^5.0.0:
     signal-exit "^3.0.3"
     strip-final-newline "^2.0.0"
 
-exenv-es6@^1.1.1, exenv-es6@^1.0.0:
+exenv-es6@^1.0.0, exenv-es6@^1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/exenv-es6/-/exenv-es6-1.1.1.tgz#80b7a8c5af24d53331f755bac07e84abb1f6de67"
   integrity sha512-vlVu3N8d6yEMpMsEm+7sUBAI81aqYYuEvfK0jNqmdb/OPXzzH7QWDDnVjMvDSY47JdHEqx/dfC/q8WkfoTmpGQ==
@@ -15645,12 +15665,7 @@ locate-path@^6.0.0:
   dependencies:
     p-locate "^5.0.0"
 
-lodash-es@4.17.15:
-  version "4.17.15"
-  resolved "https://registry.yarnpkg.com/lodash-es/-/lodash-es-4.17.15.tgz#21bd96839354412f23d7a10340e5eac6ee455d78"
-  integrity sha512-rlrc3yU3+JNOpZ9zj5pQtxnx2THmvRykwL4Xlxoa8I9lHBlVbbyPhgyPMioxVZ4NqyxaVVtaJnzsyOidQIhyyQ==
-
-lodash-es@^4.17.20, lodash-es@^4.2.1:
+lodash-es@4.17.21, lodash-es@^4.17.20, lodash-es@^4.2.1:
   version "4.17.21"
   resolved "https://registry.yarnpkg.com/lodash-es/-/lodash-es-4.17.21.tgz#43e626c46e6591b7750beb2b50117390c609e3ee"
   integrity sha512-mKnC+QJ9pWVzv+C4/U3rRsHapFfHvQFoFB92e52xeyGMcX6/OlIl78je1u8vePzYZSkkogMPJ2yjxxsb89cxyw==
@@ -16909,7 +16924,6 @@ minipass-fetch@^1.3.0, minipass-fetch@^1.3.2:
   resolved "https://registry.yarnpkg.com/minipass-fetch/-/minipass-fetch-1.3.3.tgz#34c7cea038c817a8658461bf35174551dce17a0a"
   integrity sha512-akCrLDWfbdAWkMLBxJEeWTdNsjML+dt5YgOI4gJ53vuO0vrmYQkUPxa6j6V65s9CcePIr2SSWqjT2EcrNseryQ==
   dependencies:
-    encoding "^0.1.12"
     minipass "^3.1.0"
     minipass-sized "^1.0.3"
     minizlib "^2.0.0"
@@ -24109,6 +24123,11 @@ vscode-web-custom-data@^0.3.1:
   version "0.3.3"
   resolved "https://registry.yarnpkg.com/vscode-web-custom-data/-/vscode-web-custom-data-0.3.3.tgz#9e1f2388c718d6f190038a19d144834a436b876f"
   integrity sha512-orMjjj1r4efP5ocODYZm3orpANakRBsxPZPDoD5UIrFOPKDFtMJQLp6PIH1rb3AYVRD1iYXMhDQoC6tZ+DrigA==
+
+vscode-web-custom-data@^0.3.5:
+  version "0.3.6"
+  resolved "https://registry.yarnpkg.com/vscode-web-custom-data/-/vscode-web-custom-data-0.3.6.tgz#7ff374bd39ee4a7c05c77c997d9410520e1d02bc"
+  integrity sha512-9r2DOv4YMXL/WBTBB6zxde93hmg6AM7thr7GMR6c5LvPxXe/lwD8gsrJGe0tha4CUvoz86ElUieThGVpM+4PLg==
 
 w3c-hr-time@^1.0.1, w3c-hr-time@^1.0.2:
   version "1.0.2"
