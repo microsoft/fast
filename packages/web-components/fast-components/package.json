@@ -57,7 +57,7 @@
     "test-pw:full": "yarn clean:test && yarn build:pw && yarn test-pw",
     "test-pw": "mocha --config ./__test__/.mocharc.json ./__test__/**/*.spec.js",
     "test-webkit:pw": "yarn cross-env PLAYWRIGHT_BROWSER=webkit yarn test-pw:full",
-    "test": "yarn test-chrome:verbose && yarn validate-component-definitions && yarn doc:ci"
+    "test": "yarn eslint && yarn test-chrome:verbose && yarn validate-component-definitions && yarn doc:ci"
   },
   "devDependencies": {
     "@microsoft/api-extractor": "7.8.1",
