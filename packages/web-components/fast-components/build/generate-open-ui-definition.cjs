@@ -6,6 +6,7 @@ const chalk = require("chalk");
 const Ajv = require("ajv");
 const openUISchema = require("../src/__test__/component.schema.json");
 const vsCodeCustomDataSchema = require("vscode-html-languageservice/docs/customData.schema.json");
+const url = require('url');
 
 const ajv = new Ajv();
 ajv.addSchema(vsCodeCustomDataSchema);
@@ -159,7 +160,18 @@ allWebComponentDefinitionKeys.forEach(definitionKey => {
                 }
             });
         }
-        Promise.all([import(dictionaryOfOpenUIDefinitionLocations[definitionKey]), import(dictionaryOfWebComponentDefinitionLocations[ definitionKey ])]).then(([openUIDefinition, schema]) => {
+        Promise.all([
+            import(
+                url.pathToFileURL(dictionaryOfOpenUIDefinitionLocations[definitionKey])
+                    .href
+            ),
+            import(
+                url.pathToFileURL(
+                    dictionaryOfWebComponentDefinitionLocations[definitionKey]
+                ).href
+            ),
+        ])
+        .then(([openUIDefinition, schema]) => {
             openUIDefinition = openUIDefinition.default;
             schema = schema.default;
 
