@@ -6,7 +6,7 @@ For more information view the [specification](https://github.com/microsoft/fast/
 
 ## API
 
-## `src/form-associated/form-associated.ts`:
+
 
 ### Variables
 
@@ -24,13 +24,5 @@ For more information view the [specification](https://github.com/microsoft/fast/
 | `CheckableFormAssociated` |                                                              | `BaseCtor: T` | `T`    |
 
 <hr/>
-
-### Exports
-
-| Kind | Name                       | Declaration              | Module                                 | Package |
-| ---- | -------------------------- | ------------------------ | -------------------------------------- | ------- |
-| `js` | `supportsElementInternals` | supportsElementInternals | src/form-associated/form-associated.ts |         |
-| `js` | `FormAssociated`           | FormAssociated           | src/form-associated/form-associated.ts |         |
-| `js` | `CheckableFormAssociated`  | CheckableFormAssociated  | src/form-associated/form-associated.ts |         |
 
 

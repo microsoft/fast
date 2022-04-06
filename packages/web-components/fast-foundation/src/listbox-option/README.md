@@ -45,7 +45,7 @@ export const myOption = ListboxOption.compose({
 
 ## API
 
-## `src/listbox-option/listbox-option.ts`:
+
 
 ### class: `ListboxOption`
 
@@ -55,17 +55,11 @@ export const myOption = ListboxOption.compose({
 | ------------------- | --------------------------------------------- | ------- |
 | `FoundationElement` | /src/foundation-element/foundation-element.js |         |
 
-#### Static Methods
-
-| Name      | Privacy | Description                                                                     | Parameters                      | Return                                                                                                           | Inherited From    |
-| --------- | ------- | ------------------------------------------------------------------------------- | ------------------------------- | ---------------------------------------------------------------------------------------------------------------- | ----------------- |
-| `compose` | public  | Defines an element registry function with a set of element definition defaults. | `this: K, elementDefinition: T` | `(         overrideDefinition?: OverrideFoundationElementDefinition<T>     ) => FoundationElementRegistry<T, K>` | FoundationElement |
-
 #### Fields
 
 | Name                | Privacy   | Type                                  | Default                                                                                                                                                 | Description                                                                                                                                                                          | Inherited From    |
 | ------------------- | --------- | ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------- |
-| `checked`           | public    | `boolean \| undefined`                |                                                                                                                                                         | The checked state is used when the parent listbox is in multiple selection mode. To avoid accessibility conflicts, the checked state should not be present in single selection mode. |                   |
+| `checked`           | public    | `boolean or undefined`                |                                                                                                                                                         | The checked state is used when the parent listbox is in multiple selection mode. To avoid accessibility conflicts, the checked state should not be present in single selection mode. |                   |
 | `defaultSelected`   | public    | `boolean`                             | `false`                                                                                                                                                 | The defaultSelected state of the option.                                                                                                                                             |                   |
 | `disabled`          | public    | `boolean`                             |                                                                                                                                                         | The disabled state of the option.                                                                                                                                                    |                   |
 | `selectedAttribute` | public    | `boolean`                             |                                                                                                                                                         | The selected attribute value. This sets the initial selected value.                                                                                                                  |                   |
@@ -75,17 +69,17 @@ export const myOption = ListboxOption.compose({
 | `label`             | public    |                                       |                                                                                                                                                         |                                                                                                                                                                                      |                   |
 | `text`              | public    | `string`                              |                                                                                                                                                         |                                                                                                                                                                                      |                   |
 | `value`             | public    | `string`                              |                                                                                                                                                         |                                                                                                                                                                                      |                   |
-| `form`              | public    | `HTMLFormElement \| null`             |                                                                                                                                                         |                                                                                                                                                                                      |                   |
+| `form`              | public    | `HTMLFormElement or null`             |                                                                                                                                                         |                                                                                                                                                                                      |                   |
 | `proxy`             |           |                                       | ``new Option(             `${this.textContent}`,             this.initialValue,             this.defaultSelected,             this.selected         )`` |                                                                                                                                                                                      |                   |
-| `$presentation`     | public    | `ComponentPresentation \| null`       |                                                                                                                                                         | A property which resolves the ComponentPresentation instance for the current component.                                                                                              | FoundationElement |
-| `template`          | public    | `ElementViewTemplate \| void \| null` |                                                                                                                                                         | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.           | FoundationElement |
-| `styles`            | public    | `ElementStyles \| void \| null`       |                                                                                                                                                         | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition.  | FoundationElement |
+| `$presentation`     | public    | `ComponentPresentation or null`       |                                                                                                                                                         | A property which resolves the ComponentPresentation instance for the current component.                                                                                              | FoundationElement |
+| `template`          | public    | `ElementViewTemplate or void or null` |                                                                                                                                                         | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.           | FoundationElement |
+| `styles`            | public    | `ElementStyles or void or null`       |                                                                                                                                                         | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition.  | FoundationElement |
 
 #### Methods
 
 | Name                       | Privacy   | Description                                                         | Parameters                                | Return | Inherited From    |
 | -------------------------- | --------- | ------------------------------------------------------------------- | ----------------------------------------- | ------ | ----------------- |
-| `checkedChanged`           | public    | Updates the ariaChecked property when the checked property changes. | `prev: boolean \| unknown, next: boolean` | `void` |                   |
+| `checkedChanged`           | public    | Updates the ariaChecked property when the checked property changes. | `prev: boolean or unknown, next: boolean` | `void` |                   |
 | `defaultSelectedChanged`   | protected |                                                                     |                                           | `void` |                   |
 | `disabledChanged`          | protected |                                                                     | `prev: boolean, next: boolean`            | `void` |                   |
 | `selectedAttributeChanged` | protected |                                                                     |                                           | `void` |                   |
@@ -108,30 +102,22 @@ export const myOption = ListboxOption.compose({
 
 #### Fields
 
-| Name           | Privacy | Type                             | Default | Description                                                                    | Inherited From |
-| -------------- | ------- | -------------------------------- | ------- | ------------------------------------------------------------------------------ | -------------- |
-| `ariaChecked`  | public  | `"true" \| "false" \| undefined` |         | See {@link https\://www\.w3.org/TR/wai-aria-1.2/#option} for more information. |                |
-| `ariaPosInSet` | public  | `string`                         |         | See {@link https\://www\.w3.org/TR/wai-aria-1.2/#option} for more information. |                |
-| `ariaSelected` | public  | `"true" \| "false" \| undefined` |         | See {@link https\://www\.w3.org/TR/wai-aria-1.2/#option} for more information. |                |
-| `ariaSetSize`  | public  | `string`                         |         | See {@link https\://www\.w3.org/TR/wai-aria-1.2/#option} for more information. |                |
+| Name           | Privacy | Type                             | Default | Description                                                            | Inherited From |
+| -------------- | ------- | -------------------------------- | ------- | ---------------------------------------------------------------------- | -------------- |
+| `ariaChecked`  | public  | `"true" or "false" or undefined` |         | See https://www.w3.org/TR/wai-aria-1.2/#option for more information. |                |
+| `ariaPosInSet` | public  | `string`                         |         | See https://www.w3.org/TR/wai-aria-1.2/#option for more information. |                |
+| `ariaSelected` | public  | `"true" or "false" or undefined` |         | See https://www.w3.org/TR/wai-aria-1.2/#option for more information. |                |
+| `ariaSetSize`  | public  | `string`                         |         | See https://www.w3.org/TR/wai-aria-1.2/#option for more information. |                |
 
 <hr/>
 
 ### Functions
 
-| Name              | Description                                                  | Parameters             | Return                |
-| ----------------- | ------------------------------------------------------------ | ---------------------- | --------------------- |
-| `isListboxOption` | Determines if the element is a {@link (ListboxOption:class)} | `el: Element, element` | `el is ListboxOption` |
+| Name              | Description                                          | Parameters             | Return                |
+| ----------------- | ---------------------------------------------------- | ---------------------- | --------------------- |
+| `isListboxOption` | Determines if the element is a (ListboxOption:class) | `el: Element, element` | `el is ListboxOption` |
 
 <hr/>
-
-### Exports
-
-| Kind | Name                         | Declaration                | Module                               | Package |
-| ---- | ---------------------------- | -------------------------- | ------------------------------------ | ------- |
-| `js` | `isListboxOption`            | isListboxOption            | src/listbox-option/listbox-option.ts |         |
-| `js` | `ListboxOption`              | ListboxOption              | src/listbox-option/listbox-option.ts |         |
-| `js` | `DelegatesARIAListboxOption` | DelegatesARIAListboxOption | src/listbox-option/listbox-option.ts |         |
 
 
 ## Additional resources

@@ -40,7 +40,7 @@ export class FASTTextField extends TextField {}
 
 ## API
 
-## `src/picker/picker-list-item.ts`:
+
 
 ### class: `PickerListItem`
 
@@ -50,21 +50,15 @@ export class FASTTextField extends TextField {}
 | ------------------- | --------------------------------------------- | ------- |
 | `FoundationElement` | /src/foundation-element/foundation-element.js |         |
 
-#### Static Methods
-
-| Name      | Privacy | Description                                                                     | Parameters                      | Return                                                                                                           | Inherited From    |
-| --------- | ------- | ------------------------------------------------------------------------------- | ------------------------------- | ---------------------------------------------------------------------------------------------------------------- | ----------------- |
-| `compose` | public  | Defines an element registry function with a set of element definition defaults. | `this: K, elementDefinition: T` | `(         overrideDefinition?: OverrideFoundationElementDefinition<T>     ) => FoundationElementRegistry<T, K>` | FoundationElement |
-
 #### Fields
 
 | Name               | Privacy | Type                                  | Default | Description                                                                                                                                                                         | Inherited From    |
 | ------------------ | ------- | ------------------------------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
 | `value`            | public  | `string`                              |         | The underlying string value of the item                                                                                                                                             |                   |
 | `contentsTemplate` | public  | `ViewTemplate`                        |         | The template used to render the contents of the list item                                                                                                                           |                   |
-| `$presentation`    | public  | `ComponentPresentation \| null`       |         | A property which resolves the ComponentPresentation instance for the current component.                                                                                             | FoundationElement |
-| `template`         | public  | `ElementViewTemplate \| void \| null` |         | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.          | FoundationElement |
-| `styles`           | public  | `ElementStyles \| void \| null`       |         | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition. | FoundationElement |
+| `$presentation`    | public  | `ComponentPresentation or null`       |         | A property which resolves the ComponentPresentation instance for the current component.                                                                                             | FoundationElement |
+| `template`         | public  | `ElementViewTemplate or void or null` |         | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.          | FoundationElement |
+| `styles`           | public  | `ElementStyles or void or null`       |         | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition. | FoundationElement |
 
 #### Methods
 
@@ -83,13 +77,7 @@ export class FASTTextField extends TextField {}
 
 <hr/>
 
-### Exports
 
-| Kind | Name             | Declaration    | Module                         | Package |
-| ---- | ---------------- | -------------- | ------------------------------ | ------- |
-| `js` | `PickerListItem` | PickerListItem | src/picker/picker-list-item.ts |         |
-
-## `src/picker/picker-list.ts`:
 
 ### class: `PickerList`
 
@@ -99,19 +87,13 @@ export class FASTTextField extends TextField {}
 | ------------------- | --------------------------------------------- | ------- |
 | `FoundationElement` | /src/foundation-element/foundation-element.js |         |
 
-#### Static Methods
-
-| Name      | Privacy | Description                                                                     | Parameters                      | Return                                                                                                           | Inherited From    |
-| --------- | ------- | ------------------------------------------------------------------------------- | ------------------------------- | ---------------------------------------------------------------------------------------------------------------- | ----------------- |
-| `compose` | public  | Defines an element registry function with a set of element definition defaults. | `this: K, elementDefinition: T` | `(         overrideDefinition?: OverrideFoundationElementDefinition<T>     ) => FoundationElementRegistry<T, K>` | FoundationElement |
-
 #### Fields
 
 | Name            | Privacy | Type                                  | Default | Description                                                                                                                                                                         | Inherited From    |
 | --------------- | ------- | ------------------------------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
-| `$presentation` | public  | `ComponentPresentation \| null`       |         | A property which resolves the ComponentPresentation instance for the current component.                                                                                             | FoundationElement |
-| `template`      | public  | `ElementViewTemplate \| void \| null` |         | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.          | FoundationElement |
-| `styles`        | public  | `ElementStyles \| void \| null`       |         | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition. | FoundationElement |
+| `$presentation` | public  | `ComponentPresentation or null`       |         | A property which resolves the ComponentPresentation instance for the current component.                                                                                             | FoundationElement |
+| `template`      | public  | `ElementViewTemplate or void or null` |         | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.          | FoundationElement |
+| `styles`        | public  | `ElementStyles or void or null`       |         | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition. | FoundationElement |
 
 #### Methods
 
@@ -122,13 +104,7 @@ export class FASTTextField extends TextField {}
 
 <hr/>
 
-### Exports
 
-| Kind | Name         | Declaration | Module                    | Package |
-| ---- | ------------ | ----------- | ------------------------- | ------- |
-| `js` | `PickerList` | PickerList  | src/picker/picker-list.ts |         |
-
-## `src/picker/picker-menu-option.ts`:
 
 ### class: `PickerMenuOption`
 
@@ -138,21 +114,15 @@ export class FASTTextField extends TextField {}
 | ------------------- | --------------------------------------------- | ------- |
 | `FoundationElement` | /src/foundation-element/foundation-element.js |         |
 
-#### Static Methods
-
-| Name      | Privacy | Description                                                                     | Parameters                      | Return                                                                                                           | Inherited From    |
-| --------- | ------- | ------------------------------------------------------------------------------- | ------------------------------- | ---------------------------------------------------------------------------------------------------------------- | ----------------- |
-| `compose` | public  | Defines an element registry function with a set of element definition defaults. | `this: K, elementDefinition: T` | `(         overrideDefinition?: OverrideFoundationElementDefinition<T>     ) => FoundationElementRegistry<T, K>` | FoundationElement |
-
 #### Fields
 
 | Name               | Privacy | Type                                  | Default | Description                                                                                                                                                                         | Inherited From    |
 | ------------------ | ------- | ------------------------------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
 | `value`            | public  | `string`                              |         | The underlying string value of the item                                                                                                                                             |                   |
 | `contentsTemplate` | public  | `ViewTemplate`                        |         | The template used to render the contents of the list item                                                                                                                           |                   |
-| `$presentation`    | public  | `ComponentPresentation \| null`       |         | A property which resolves the ComponentPresentation instance for the current component.                                                                                             | FoundationElement |
-| `template`         | public  | `ElementViewTemplate \| void \| null` |         | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.          | FoundationElement |
-| `styles`           | public  | `ElementStyles \| void \| null`       |         | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition. | FoundationElement |
+| `$presentation`    | public  | `ComponentPresentation or null`       |         | A property which resolves the ComponentPresentation instance for the current component.                                                                                             | FoundationElement |
+| `template`         | public  | `ElementViewTemplate or void or null` |         | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.          | FoundationElement |
+| `styles`           | public  | `ElementStyles or void or null`       |         | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition. | FoundationElement |
 
 #### Methods
 
@@ -170,13 +140,7 @@ export class FASTTextField extends TextField {}
 
 <hr/>
 
-### Exports
 
-| Kind | Name               | Declaration      | Module                           | Package |
-| ---- | ------------------ | ---------------- | -------------------------------- | ------- |
-| `js` | `PickerMenuOption` | PickerMenuOption | src/picker/picker-menu-option.ts |         |
-
-## `src/picker/picker-menu.ts`:
 
 ### class: `PickerMenu`
 
@@ -186,20 +150,14 @@ export class FASTTextField extends TextField {}
 | ------------------- | --------------------------------------------- | ------- |
 | `FoundationElement` | /src/foundation-element/foundation-element.js |         |
 
-#### Static Methods
-
-| Name      | Privacy | Description                                                                     | Parameters                      | Return                                                                                                           | Inherited From    |
-| --------- | ------- | ------------------------------------------------------------------------------- | ------------------------------- | ---------------------------------------------------------------------------------------------------------------- | ----------------- |
-| `compose` | public  | Defines an element registry function with a set of element definition defaults. | `this: K, elementDefinition: T` | `(         overrideDefinition?: OverrideFoundationElementDefinition<T>     ) => FoundationElementRegistry<T, K>` | FoundationElement |
-
 #### Fields
 
 | Name                       | Privacy | Type                                  | Default | Description                                                                                                                                                                         | Inherited From    |
 | -------------------------- | ------- | ------------------------------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
 | `suggestionsAvailableText` | public  | `string`                              |         | Text to display to assistive technology when suggestions are available                                                                                                              |                   |
-| `$presentation`            | public  | `ComponentPresentation \| null`       |         | A property which resolves the ComponentPresentation instance for the current component.                                                                                             | FoundationElement |
-| `template`                 | public  | `ElementViewTemplate \| void \| null` |         | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.          | FoundationElement |
-| `styles`                   | public  | `ElementStyles \| void \| null`       |         | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition. | FoundationElement |
+| `$presentation`            | public  | `ComponentPresentation or null`       |         | A property which resolves the ComponentPresentation instance for the current component.                                                                                             | FoundationElement |
+| `template`                 | public  | `ElementViewTemplate or void or null` |         | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.          | FoundationElement |
+| `styles`                   | public  | `ElementStyles or void or null`       |         | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition. | FoundationElement |
 
 #### Methods
 
@@ -213,13 +171,7 @@ export class FASTTextField extends TextField {}
 
 <hr/>
 
-### Exports
 
-| Kind | Name         | Declaration | Module                    | Package |
-| ---- | ------------ | ----------- | ------------------------- | ------- |
-| `js` | `PickerMenu` | PickerMenu  | src/picker/picker-menu.ts |         |
-
-## `src/picker/picker.ts`:
 
 ### class: `Picker`
 
@@ -229,12 +181,6 @@ export class FASTTextField extends TextField {}
 | ---------------------- | ------------------------------------- | ------- |
 | `FormAssociatedPicker` | /src/picker/picker.form-associated.js |         |
 
-#### Static Methods
-
-| Name      | Privacy | Description                                                                     | Parameters                      | Return                                                                                                           | Inherited From    |
-| --------- | ------- | ------------------------------------------------------------------------------- | ------------------------------- | ---------------------------------------------------------------------------------------------------------------- | ----------------- |
-| `compose` | public  | Defines an element registry function with a set of element definition defaults. | `this: K, elementDefinition: T` | `(         overrideDefinition?: OverrideFoundationElementDefinition<T>     ) => FoundationElementRegistry<T, K>` | FoundationElement |
-
 #### Fields
 
 | Name                         | Privacy | Type                                  | Default                      | Description                                                                                                                                                                         | Inherited From       |
@@ -243,7 +189,7 @@ export class FASTTextField extends TextField {}
 | `options`                    | public  | `string`                              |                              | Currently available options. Comma delineated string ie. "apples,oranges".                                                                                                          |                      |
 | `filterSelected`             | public  | `boolean`                             | `true`                       | Whether the component should remove an option from the list when it is in the selection                                                                                             |                      |
 | `filterQuery`                | public  | `boolean`                             | `true`                       | Whether the component should remove options based on the current query                                                                                                              |                      |
-| `maxSelected`                | public  | `number \| undefined`                 |                              | The maximum number of items that can be selected.                                                                                                                                   |                      |
+| `maxSelected`                | public  | `number or undefined`                 |                              | The maximum number of items that can be selected.                                                                                                                                   |                      |
 | `noSuggestionsText`          | public  | `string`                              | `"No suggestions available"` | The text to present to assistive technolgies when no suggestions are available.                                                                                                     |                      |
 | `suggestionsAvailableText`   | public  | `string`                              | `"Suggestions available"`    | The text to present to assistive technolgies when suggestions are available.                                                                                                        |                      |
 | `loadingText`                | public  | `string`                              | `"Loading suggestions"`      | The text to present to assistive technologies when suggestions are loading.                                                                                                         |                      |
@@ -253,18 +199,18 @@ export class FASTTextField extends TextField {}
 | `menuPlacement`              | public  | `menuConfigs`                         | `"bottom-fill"`              | Controls menu placement                                                                                                                                                             |                      |
 | `showLoading`                | public  | `boolean`                             | `false`                      | Whether to display a loading state if the menu is opened.                                                                                                                           |                      |
 | `listItemTemplate`           | public  | `ViewTemplate`                        |                              | Template used to generate selected items. This is used in a repeat directive.                                                                                                       |                      |
-| `defaultListItemTemplate`    | public  | `ViewTemplate \| undefined`           |                              | Default template to use for selected items (usually specified in the component template). This is used in a repeat directive.                                                       |                      |
+| `defaultListItemTemplate`    | public  | `ViewTemplate or undefined`           |                              | Default template to use for selected items (usually specified in the component template). This is used in a repeat directive.                                                       |                      |
 | `menuOptionTemplate`         | public  | `ViewTemplate`                        |                              | Template to use for available options. This is used in a repeat directive.                                                                                                          |                      |
-| `defaultMenuOptionTemplate`  | public  | `ViewTemplate \| undefined`           |                              | Default template to use for available options (usually specified in the template). This is used in a repeat directive.                                                              |                      |
+| `defaultMenuOptionTemplate`  | public  | `ViewTemplate or undefined`           |                              | Default template to use for available options (usually specified in the template). This is used in a repeat directive.                                                              |                      |
 | `listItemContentsTemplate`   | public  | `ViewTemplate`                        |                              | Template to use for the contents of a selected list item                                                                                                                            |                      |
 | `menuOptionContentsTemplate` | public  | `ViewTemplate`                        |                              | Template to use for the contents of menu options                                                                                                                                    |                      |
 | `optionsList`                | public  | `string[]`                            | `[]`                         | Current list of options in array form                                                                                                                                               |                      |
 | `query`                      | public  | `string`                              |                              | The text value currently in the input field                                                                                                                                         |                      |
 | `itemsPlaceholderElement`    | public  | `Node`                                |                              | Reference to the placeholder element for the repeat directive                                                                                                                       |                      |
 | `proxy`                      |         |                                       |                              |                                                                                                                                                                                     | FormAssociatedPicker |
-| `$presentation`              | public  | `ComponentPresentation \| null`       |                              | A property which resolves the ComponentPresentation instance for the current component.                                                                                             | FoundationElement    |
-| `template`                   | public  | `ElementViewTemplate \| void \| null` |                              | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.          | FoundationElement    |
-| `styles`                     | public  | `ElementStyles \| void \| null`       |                              | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition. | FoundationElement    |
+| `$presentation`              | public  | `ComponentPresentation or null`       |                              | A property which resolves the ComponentPresentation instance for the current component.                                                                                             | FoundationElement    |
+| `template`                   | public  | `ElementViewTemplate or void or null` |                              | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.          | FoundationElement    |
+| `styles`                     | public  | `ElementStyles or void or null`       |                              | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition. | FoundationElement    |
 
 #### Methods
 
@@ -299,11 +245,5 @@ export class FASTTextField extends TextField {}
 | `menu-placement`             | menuPlacement            |                |
 
 <hr/>
-
-### Exports
-
-| Kind | Name     | Declaration | Module               | Package |
-| ---- | -------- | ----------- | -------------------- | ------- |
-| `js` | `Picker` | Picker      | src/picker/picker.ts |         |
 
 
