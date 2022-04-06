@@ -1,6 +1,6 @@
 {
   "type": "patch",
-  "comment": "Improved README markdown formatting\"",
+  "comment": "Improved README markdown formatting",
   "packageName": "@microsoft/fast-foundation",
   "email": "44823142+williamw2@users.noreply.github.com",
   "dependentChangeType": "patch"
