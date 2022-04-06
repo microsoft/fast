@@ -9,6 +9,7 @@ import type {
 import { GenerateHeaderOptions } from "@microsoft/fast-foundation/dist/esm/data-grid/data-grid.options.js";
 import addons from "@storybook/addons";
 import { STORY_RENDERED } from "@storybook/core-events";
+import { TextField } from "../text-field";
 import DataGridTemplate from "./fixtures/base.html";
 import "./index.js";
 
@@ -255,6 +256,11 @@ addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
         ) as DataGrid;
         checkSelectGrid.rowsData = newDataSet(10);
         checkSelectGrid.columnDefinitions = checkboxColumns;
+
+        const setSelectionButton = document.getElementById("btnsetselection") as Button;
+        if (setSelectionButton) {
+            setSelectionButton.onclick = setSelection;
+        }
     }
 });
 
@@ -466,6 +472,23 @@ function newDataSet(rowCount: number): object[] {
         newRows.push(newDataRow(`${i + 1}`));
     }
     return newRows;
+}
+
+function setSelection(): void {
+    const checkboxSelectElement: DataGrid = document.getElementById(
+        "manual-grid-checkbox-selection"
+    ) as DataGrid;
+    const selectTextFieldElement: TextField = document.getElementById(
+        "setselection"
+    ) as TextField;
+
+    const selectionAsArray: string[] = selectTextFieldElement.value.split(",");
+    const selection: number[] = [];
+    selectionAsArray.forEach((element: string): void => {
+        selection.push(parseInt(element.trim()));
+    });
+
+    checkboxSelectElement.selectedRowIndexes = selection;
 }
 
 function newDataRow(id: string): object {
