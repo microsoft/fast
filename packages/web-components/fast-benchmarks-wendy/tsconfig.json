@@ -1,0 +1,21 @@
+{
+    "compilerOptions": {
+        "composite": true,
+        "target": "es2019",
+        "module": "esnext",
+        "lib": ["es2020", "DOM", "DOM.Iterable"],
+        "declarationDir": "dist/dts",
+        "outDir": "dist/esm",
+        "strict": true,
+        "noUnusedParameters": true,
+        "noImplicitReturns": true,
+        "noFallthroughCasesInSwitch": true,
+        "noImplicitAny": true,
+        "noImplicitThis": true,
+        "moduleResolution": "node",
+        "allowSyntheticDefaultImports": true,
+        "experimentalDecorators": true
+    },
+    "include": ["fast-element/*.ts", "utils/**/*.ts"],
+    "exclude": []
+}

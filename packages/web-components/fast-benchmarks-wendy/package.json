@@ -1,0 +1,19 @@
+{
+    "name": "fast-benchmarks-wendy",
+    "version": "1.0.0",
+    "description": "",
+    "scripts": {
+        "benchmark": "tach --config fast-element/tachometer.json",
+        "build": "tsc --build"
+    },
+    "author": "Microsoft",
+    "license": "ISC",
+    "dependencies": {
+        "@microsoft/fast-element": "^1.9.0",
+        "tachometer": "^0.5.10"
+    },
+    "devDependencies": {
+        "chromedriver": "^99.0.0",
+        "typescript": "^4.3.5"
+    }
+}
