@@ -1,1 +1,1 @@
-export * from "./foundation-element";
+export * from "./foundation-element.js";

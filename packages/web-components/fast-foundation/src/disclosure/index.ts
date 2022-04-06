@@ -1,2 +1,2 @@
-export * from "./disclosure.template";
-export * from "./disclosure";
+export * from "./disclosure.template.js";
+export * from "./disclosure.js";

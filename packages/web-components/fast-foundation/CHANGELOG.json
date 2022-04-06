@@ -2,6 +2,35 @@
   "name": "@microsoft/fast-foundation",
   "entries": [
     {
+      "date": "Wed, 06 Apr 2022 07:12:42 GMT",
+      "tag": "@microsoft/fast-foundation_v2.41.0",
+      "version": "2.41.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "convert fast-foundation to type:module",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "ddfcf336f25a3151e1c150534269900cb8131181",
+            "package": "@microsoft/fast-foundation"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "Added CEM Analyzer and API markdown to readme files",
+            "author": "44823142+williamw2@users.noreply.github.com",
+            "commit": "bab7cd7ad235cd94357019f19953ca91711f22c7",
+            "package": "@microsoft/fast-foundation"
+          },
+          {
+            "comment": "Bump @microsoft/fast-element to v1.9.0",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "ead7f7340654236f2503359e2fc6f0b41639b507",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sun, 03 Apr 2022 07:12:01 GMT",
       "tag": "@microsoft/fast-foundation_v2.40.0",
       "version": "2.40.0",

@@ -1,6 +1,6 @@
 import { observable } from "@microsoft/fast-element";
-import { BreadcrumbItem } from "../breadcrumb-item";
-import { FoundationElement } from "../foundation-element";
+import { BreadcrumbItem } from "../breadcrumb-item/breadcrumb-item.js";
+import { FoundationElement } from "../foundation-element/foundation-element.js";
 
 /**
  * A Breadcrumb Custom HTML Element.

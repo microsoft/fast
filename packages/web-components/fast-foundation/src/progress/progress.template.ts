@@ -1,7 +1,7 @@
 import { html, when } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
-import type { FoundationElementTemplate } from "../foundation-element";
-import type { BaseProgress, ProgressOptions } from "./base-progress";
+import type { FoundationElementTemplate } from "../foundation-element/foundation-element.js";
+import type { BaseProgress, ProgressOptions } from "./base-progress.js";
 
 /**
  * The template for the {@link @microsoft/fast-foundation#BaseProgress} component.

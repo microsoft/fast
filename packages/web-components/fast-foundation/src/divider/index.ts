@@ -1,2 +1,2 @@
-export * from "./divider.template";
-export * from "./divider";
+export * from "./divider.template.js";
+export * from "./divider.js";

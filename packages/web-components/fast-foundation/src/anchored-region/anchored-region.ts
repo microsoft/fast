@@ -1,12 +1,12 @@
 import { attr, DOM, observable } from "@microsoft/fast-element";
 import { Direction, eventResize, eventScroll } from "@microsoft/fast-web-utilities";
-import { FoundationElement } from "../foundation-element";
-import { getDirection } from "../utilities/direction";
-import { IntersectionService } from "../utilities/intersection-service";
+import { FoundationElement } from "../foundation-element/foundation-element.js";
+import { getDirection } from "../utilities/direction.js";
+import { IntersectionService } from "../utilities/intersection-service.js";
 import type {
     ResizeObserverClassDefinition,
     ResizeObserverEntry,
-} from "../utilities/resize-observer";
+} from "../utilities/resize-observer.js";
 
 /**
  * Defines the base behavior of an anchored region on a particular axis
