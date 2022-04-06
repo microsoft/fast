@@ -16,7 +16,7 @@ Many CSS layout properties like [flexbox](https://developer.mozilla.org/en-US/do
 **Example: Using `DirectionalStyleSheetBehavior`**
 ```ts
 import { css } from "@microsoft/fast-element";
-import { DirectionalStyleSheetBehavior } from "@fluentui/web-components";
+import { DirectionalStyleSheetBehavior } from "@microsoft/fast-components";
 
 const ltr = css`
     :host {
