@@ -76,7 +76,7 @@ export const myRadio = Radio.compose<RadioOptions>({
 
 ## API
 
-## `src/radio/radio.ts`:
+
 
 ### class: `Radio`
 
@@ -86,22 +86,16 @@ export const myRadio = Radio.compose<RadioOptions>({
 | --------------------- | ----------------------------------- | ------- |
 | `FormAssociatedRadio` | /src/radio/radio.form-associated.js |         |
 
-#### Static Methods
-
-| Name      | Privacy | Description                                                                     | Parameters                      | Return                                                                                                           | Inherited From    |
-| --------- | ------- | ------------------------------------------------------------------------------- | ------------------------------- | ---------------------------------------------------------------------------------------------------------------- | ----------------- |
-| `compose` | public  | Defines an element registry function with a set of element definition defaults. | `this: K, elementDefinition: T` | `(         overrideDefinition?: OverrideFoundationElementDefinition<T>     ) => FoundationElementRegistry<T, K>` | FoundationElement |
-
 #### Fields
 
-| Name            | Privacy | Type                                  | Default | Description                                                                                                                                                                                       | Inherited From      |
-| --------------- | ------- | ------------------------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------- |
-| `readOnly`      | public  | `boolean`                             |         | When true, the control will be immutable by user interaction. See {@link https\://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/readonly \| readonly HTML attribute} for more information. |                     |
-| `name`          | public  | `string`                              |         | The name of the radio. See {@link https\://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#htmlattrdefname \| name attribute} for more info.                                              |                     |
-| `proxy`         |         |                                       |         |                                                                                                                                                                                                   | FormAssociatedRadio |
-| `$presentation` | public  | `ComponentPresentation \| null`       |         | A property which resolves the ComponentPresentation instance for the current component.                                                                                                           | FoundationElement   |
-| `template`      | public  | `ElementViewTemplate \| void \| null` |         | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.                        | FoundationElement   |
-| `styles`        | public  | `ElementStyles \| void \| null`       |         | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition.               | FoundationElement   |
+| Name            | Privacy | Type                                  | Default | Description                                                                                                                                                                                 | Inherited From      |
+| --------------- | ------- | ------------------------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------- |
+| `readOnly`      | public  | `boolean`                             |         | When true, the control will be immutable by user interaction. See [readonly HTML attribute](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/readonly) for more information. |                     |
+| `name`          | public  | `string`                              |         | The name of the radio. See [name attribute](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#htmlattrdefname) for more info.                                              |                     |
+| `proxy`         |         |                                       |         |                                                                                                                                                                                             | FormAssociatedRadio |
+| `$presentation` | public  | `ComponentPresentation or null`       |         | A property which resolves the ComponentPresentation instance for the current component.                                                                                                     | FoundationElement   |
+| `template`      | public  | `ElementViewTemplate or void or null` |         | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.                  | FoundationElement   |
+| `styles`        | public  | `ElementStyles or void or null`       |         | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition.         | FoundationElement   |
 
 #### Methods
 
@@ -117,12 +111,6 @@ export const myRadio = Radio.compose<RadioOptions>({
 | `readonly` | readOnly |                |
 
 <hr/>
-
-### Exports
-
-| Kind | Name    | Declaration | Module             | Package |
-| ---- | ------- | ----------- | ------------------ | ------- |
-| `js` | `Radio` | Radio       | src/radio/radio.ts |         |
 
 
 ## Additional resources
