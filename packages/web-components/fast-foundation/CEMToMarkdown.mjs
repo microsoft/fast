@@ -103,19 +103,19 @@ for(var i = 0, modulesLength = modules.length; i < modulesLength; i++)
         // Replace our < and > markers with backticks and < >
         // This is necessary because customElementsManifestToMarkdown escapes the backticks during the conversion
         // and we don't want that because then docusaurus will see the tags as real tags instead of just text.
-        markdown = markdown.replaceAll("REPLACELT","`<").replaceAll("REPLACEGT",">`");
+        markdown = markdown.replaceAll("REPLACELT", "`<").replaceAll("REPLACEGT", ">`");
 
         // Clean up some additional formatting issues
         // Remove the file source header
-        markdown = markdown.replaceAll(/## `src.*`:/g,"");
+        markdown = markdown.replaceAll(/## `src.*`:/g, "");
         // Fix escape of colon in urls
-        markdown = markdown.replaceAll("https\\:","https:");
+        markdown = markdown.replaceAll("https\\:", "https:");
         // Fix escape of . in some urls
-        markdown = markdown.replaceAll("www\\.w3","www.w3");
+        markdown = markdown.replaceAll("www\\.w3", "www.w3");
         // Fix escape of open bracket on links
-        markdown = markdown.replaceAll("\\[","[");
+        markdown = markdown.replaceAll("\\[", "[");
         // Fix escape of open paren on links
-        markdown = markdown.replaceAll("\\(","(");
+        markdown = markdown.replaceAll("\\(", "(");
 
         // Replace \| with 'or'
         markdown = markdown.replaceAll("\\|","or");
@@ -195,20 +195,20 @@ function fixTagsInText(text)
 function replaceJSDOCLinksWithMDLinks(text)
 {
     let startIndex = text.indexOf('{@link');
-    if(startIndex<0) return;
+    if(startIndex < 0) return;
 
-    let endIndex = text.indexOf("}",startIndex);
-    if(endIndex<0) return;
+    let endIndex = text.indexOf("}", startIndex);
+    if(endIndex < 0) return;
 
-    const jsdocLink = text.slice(startIndex,endIndex+1);
-    let linkParts = jsdocLink.replace("{@link ", "").replace("}","").split('|');
-    if(linkParts.length===1)
+    const jsdocLink = text.slice(startIndex, endIndex + 1);
+    let linkParts = jsdocLink.replace("{@link ", "").replace("}", "").split('|');
+    if(linkParts.length === 1)
     {
-        return text.replace(jsdocLink,linkParts[0])
+        return text.replace(jsdocLink, linkParts[0]);
     }
     else
     {
-        return text.replace(jsdocLink,"["+linkParts[1].trim()+"]("+linkParts[0].trim()+")");
+        return text.replace(jsdocLink, "[" + linkParts[1].trim() + "](" + linkParts[0].trim() + ")");
     }
 
 }
