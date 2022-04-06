@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-components
 
-This log was last generated on Sun, 03 Apr 2022 07:12:01 GMT and should not be manually modified.
+This log was last generated on Wed, 06 Apr 2022 07:12:42 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.26.1
+
+Wed, 06 Apr 2022 07:12:42 GMT
+
+### Patches
+
+- Bump @microsoft/fast-element to v1.9.0 (nicholasrice@users.noreply.github.com)
 
 ## 2.26.0
 

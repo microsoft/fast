@@ -1,7 +1,0 @@
-{
-  "type": "minor",
-  "comment": "convert fast-foundation to type:module",
-  "packageName": "@microsoft/fast-foundation",
-  "email": "nicholasrice@users.noreply.github.com",
-  "dependentChangeType": "patch"
-}
