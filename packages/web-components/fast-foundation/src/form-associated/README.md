@@ -18,10 +18,10 @@ For more information view the [specification](https://github.com/microsoft/fast/
 
 ### Functions
 
-| Name                      | Description | Parameters    | Return |
-| ------------------------- | ----------- | ------------- | ------ |
-| `FormAssociated`          |             | `BaseCtor: T` | `T`    |
-| `CheckableFormAssociated` |             | `BaseCtor: T` | `T`    |
+| Name                      | Description                                                  | Parameters    | Return |
+| ------------------------- | ------------------------------------------------------------ | ------------- | ------ |
+| `FormAssociated`          | Base function for providing Custom Element Form Association. | `BaseCtor: T` | `T`    |
+| `CheckableFormAssociated` |                                                              | `BaseCtor: T` | `T`    |
 
 <hr/>
 

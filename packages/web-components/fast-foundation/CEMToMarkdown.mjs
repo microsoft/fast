@@ -195,10 +195,10 @@ function fixTagsInText(text)
 function replaceJSDOCLinksWithMDLinks(text)
 {
     let startIndex = text.indexOf('{@link');
-    if(startIndex < 0) return;
+    if(startIndex < 0) return text;
 
     let endIndex = text.indexOf("}", startIndex);
-    if(endIndex < 0) return;
+    if(endIndex < 0) return text;
 
     const jsdocLink = text.slice(startIndex, endIndex + 1);
     let linkParts = jsdocLink.replace("{@link ", "").replace("}", "").split('|');

@@ -92,13 +92,13 @@ export const myToolbar = Toolbar.compose({
 
 #### Fields
 
-| Name            | Privacy | Type                                  | Default | Description | Inherited From    |
-| --------------- | ------- | ------------------------------------- | ------- | ----------- | ----------------- |
-| `activeIndex`   |         |                                       |         |             |                   |
-| `orientation`   | public  | `Orientation`                         |         |             |                   |
-| `$presentation` | public  | `ComponentPresentation or null`       |         |             | FoundationElement |
-| `template`      | public  | `ElementViewTemplate or void or null` |         |             | FoundationElement |
-| `styles`        | public  | `ElementStyles or void or null`       |         |             | FoundationElement |
+| Name            | Privacy | Type                                  | Default | Description                                                                                                                                                                         | Inherited From    |
+| --------------- | ------- | ------------------------------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
+| `activeIndex`   |         |                                       |         |                                                                                                                                                                                     |                   |
+| `orientation`   | public  | `Orientation`                         |         | The orientation of the toolbar.                                                                                                                                                     |                   |
+| `$presentation` | public  | `ComponentPresentation or null`       |         | A property which resolves the ComponentPresentation instance for the current component.                                                                                             | FoundationElement |
+| `template`      | public  | `ElementViewTemplate or void or null` |         | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.          | FoundationElement |
+| `styles`        | public  | `ElementStyles or void or null`       |         | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition. | FoundationElement |
 
 #### Methods
 
@@ -120,10 +120,10 @@ export const myToolbar = Toolbar.compose({
 
 #### Fields
 
-| Name             | Privacy | Type     | Default | Description | Inherited From |
-| ---------------- | ------- | -------- | ------- | ----------- | -------------- |
-| `ariaLabelledby` | public  | `string` |         |             |                |
-| `ariaLabel`      | public  | `string` |         |             |                |
+| Name             | Privacy | Type     | Default | Description                                   | Inherited From |
+| ---------------- | ------- | -------- | ------- | --------------------------------------------- | -------------- |
+| `ariaLabelledby` | public  | `string` |         | The id of the element labeling the toolbar.   |                |
+| `ariaLabel`      | public  | `string` |         | The label surfaced to assistive technologies. |                |
 
 #### Attributes
 

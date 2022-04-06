@@ -87,43 +87,43 @@ See [listbox-option](/docs/components/listbox-option) for more information.
 
 #### Static Fields
 
-| Name                  | Privacy | Type | Default | Description | Inherited From |
-| --------------------- | ------- | ---- | ------- | ----------- | -------------- |
-| `slottedOptionFilter` | public  |      |         |             | Listbox        |
+| Name                  | Privacy | Type | Default | Description                                         | Inherited From |
+| --------------------- | ------- | ---- | ------- | --------------------------------------------------- | -------------- |
+| `slottedOptionFilter` | public  |      |         | A static filter to include only selectable options. | Listbox        |
 
 #### Fields
 
-| Name                | Privacy   | Type                                   | Default | Description | Inherited From       |
-| ------------------- | --------- | -------------------------------------- | ------- | ----------- | -------------------- |
-| `open`              | public    | `boolean`                              |         |             |                      |
-| `value`             | public    |                                        |         |             |                      |
-| `positionAttribute` | public    | `SelectPosition or "above" or "below"` |         |             |                      |
-| `position`          | public    | `SelectPosition or "above" or "below"` |         |             |                      |
-| `displayValue`      | public    | `string`                               |         |             |                      |
-| `proxy`             |           |                                        |         |             | FormAssociatedSelect |
-| `length`            | public    | `number`                               |         |             | Listbox              |
-| `options`           | public    | `ListboxOption[]`                      |         |             | Listbox              |
-| `typeAheadExpired`  | protected |                                        |         |             | Listbox              |
-| `disabled`          | public    | `boolean`                              |         |             | Listbox              |
-| `multiple`          | public    | `boolean`                              |         |             | Listbox              |
-| `selectedIndex`     | public    | `number`                               |         |             | Listbox              |
-| `selectedOptions`   | public    | `ListboxOption[]`                      |         |             | Listbox              |
-| `$presentation`     | public    | `ComponentPresentation or null`        |         |             | FoundationElement    |
-| `template`          | public    | `ElementViewTemplate or void or null`  |         |             | FoundationElement    |
-| `styles`            | public    | `ElementStyles or void or null`        |         |             | FoundationElement    |
+| Name                | Privacy   | Type                                   | Default | Description                                                                                                                                                                         | Inherited From       |
+| ------------------- | --------- | -------------------------------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------- |
+| `open`              | public    | `boolean`                              | `false` | The open attribute.                                                                                                                                                                 |                      |
+| `value`             | public    |                                        |         | The value property.                                                                                                                                                                 |                      |
+| `positionAttribute` | public    | `SelectPosition or "above" or "below"` |         | Reflects the placement for the listbox when the select is open.                                                                                                                     |                      |
+| `position`          | public    | `SelectPosition or "above" or "below"` |         | Holds the current state for the calculated position of the listbox.                                                                                                                 |                      |
+| `displayValue`      | public    | `string`                               | `""`    | The value displayed on the button.                                                                                                                                                  |                      |
+| `proxy`             |           |                                        |         |                                                                                                                                                                                     | FormAssociatedSelect |
+| `length`            | public    | `number`                               |         | The number of options.                                                                                                                                                              | Listbox              |
+| `options`           | public    | `ListboxOption[]`                      |         | The list of options.                                                                                                                                                                | Listbox              |
+| `typeAheadExpired`  | protected |                                        |         |                                                                                                                                                                                     | Listbox              |
+| `disabled`          | public    | `boolean`                              |         | The disabled state of the listbox.                                                                                                                                                  | Listbox              |
+| `multiple`          | public    | `boolean`                              |         | Indicates if the listbox is in multi-selection mode.                                                                                                                                | Listbox              |
+| `selectedIndex`     | public    | `number`                               | `-1`    | The index of the selected option.                                                                                                                                                   | Listbox              |
+| `selectedOptions`   | public    | `ListboxOption[]`                      | `[]`    | A collection of the selected options.                                                                                                                                               | Listbox              |
+| `$presentation`     | public    | `ComponentPresentation or null`        |         | A property which resolves the ComponentPresentation instance for the current component.                                                                                             | FoundationElement    |
+| `template`          | public    | `ElementViewTemplate or void or null`  |         | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.          | FoundationElement    |
+| `styles`            | public    | `ElementStyles or void or null`        |         | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition. | FoundationElement    |
 
 #### Methods
 
-| Name                       | Privacy   | Description | Parameters | Return | Inherited From    |
-| -------------------------- | --------- | ----------- | ---------- | ------ | ----------------- |
-| `openChanged`              | protected |             |            |        |                   |
-| `positionChanged`          | protected |             |            |        |                   |
-| `setPositioning`           | public    |             | `force`    | `void` |                   |
-| `setDefaultSelectedOption` | protected |             |            | `void` |                   |
-| `selectFirstOption`        | public    |             |            | `void` | Listbox           |
-| `setSelectedOptions`       | public    |             |            |        | Listbox           |
-| `templateChanged`          | protected |             |            | `void` | FoundationElement |
-| `stylesChanged`            | protected |             |            | `void` | FoundationElement |
+| Name                       | Privacy   | Description                                                                | Parameters | Return | Inherited From    |
+| -------------------------- | --------- | -------------------------------------------------------------------------- | ---------- | ------ | ----------------- |
+| `openChanged`              | protected |                                                                            |            |        |                   |
+| `positionChanged`          | protected |                                                                            |            |        |                   |
+| `setPositioning`           | public    | Calculate and apply listbox positioning based on available viewport space. | `force`    | `void` |                   |
+| `setDefaultSelectedOption` | protected |                                                                            |            | `void` |                   |
+| `selectFirstOption`        | public    | Moves focus to the first selectable option.                                |            | `void` | Listbox           |
+| `setSelectedOptions`       | public    | Sets an option as selected and gives it focus.                             |            |        | Listbox           |
+| `templateChanged`          | protected |                                                                            |            | `void` | FoundationElement |
+| `stylesChanged`            | protected |                                                                            |            | `void` | FoundationElement |
 
 #### Attributes
 

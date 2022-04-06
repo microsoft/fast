@@ -69,34 +69,34 @@ See [listbox-option](/docs/components/listbox-option) for more information.
 
 #### Static Fields
 
-| Name                  | Privacy | Type | Default | Description | Inherited From |
-| --------------------- | ------- | ---- | ------- | ----------- | -------------- |
-| `slottedOptionFilter` | public  |      |         |             | Listbox        |
+| Name                  | Privacy | Type | Default | Description                                         | Inherited From |
+| --------------------- | ------- | ---- | ------- | --------------------------------------------------- | -------------- |
+| `slottedOptionFilter` | public  |      |         | A static filter to include only selectable options. | Listbox        |
 
 #### Fields
 
-| Name               | Privacy   | Type                                  | Default | Description | Inherited From    |
-| ------------------ | --------- | ------------------------------------- | ------- | ----------- | ----------------- |
-| `size`             | public    | `number`                              |         |             |                   |
-| `length`           | public    | `number`                              |         |             | Listbox           |
-| `options`          | public    | `ListboxOption[]`                     |         |             | Listbox           |
-| `typeAheadExpired` | protected |                                       |         |             | Listbox           |
-| `disabled`         | public    | `boolean`                             |         |             | Listbox           |
-| `multiple`         | public    | `boolean`                             |         |             | Listbox           |
-| `selectedIndex`    | public    | `number`                              |         |             | Listbox           |
-| `selectedOptions`  | public    | `ListboxOption[]`                     |         |             | Listbox           |
-| `$presentation`    | public    | `ComponentPresentation or null`       |         |             | FoundationElement |
-| `template`         | public    | `ElementViewTemplate or void or null` |         |             | FoundationElement |
-| `styles`           | public    | `ElementStyles or void or null`       |         |             | FoundationElement |
+| Name               | Privacy   | Type                                  | Default | Description                                                                                                                                                                         | Inherited From    |
+| ------------------ | --------- | ------------------------------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
+| `size`             | public    | `number`                              |         | The maximum number of options to display.                                                                                                                                           |                   |
+| `length`           | public    | `number`                              |         | The number of options.                                                                                                                                                              | Listbox           |
+| `options`          | public    | `ListboxOption[]`                     |         | The list of options.                                                                                                                                                                | Listbox           |
+| `typeAheadExpired` | protected |                                       |         |                                                                                                                                                                                     | Listbox           |
+| `disabled`         | public    | `boolean`                             |         | The disabled state of the listbox.                                                                                                                                                  | Listbox           |
+| `multiple`         | public    | `boolean`                             |         | Indicates if the listbox is in multi-selection mode.                                                                                                                                | Listbox           |
+| `selectedIndex`    | public    | `number`                              | `-1`    | The index of the selected option.                                                                                                                                                   | Listbox           |
+| `selectedOptions`  | public    | `ListboxOption[]`                     | `[]`    | A collection of the selected options.                                                                                                                                               | Listbox           |
+| `$presentation`    | public    | `ComponentPresentation or null`       |         | A property which resolves the ComponentPresentation instance for the current component.                                                                                             | FoundationElement |
+| `template`         | public    | `ElementViewTemplate or void or null` |         | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.          | FoundationElement |
+| `styles`           | public    | `ElementStyles or void or null`       |         | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition. | FoundationElement |
 
 #### Methods
 
-| Name                 | Privacy   | Description | Parameters | Return | Inherited From    |
-| -------------------- | --------- | ----------- | ---------- | ------ | ----------------- |
-| `setSelectedOptions` | public    |             |            |        | Listbox           |
-| `selectFirstOption`  | public    |             |            | `void` | Listbox           |
-| `templateChanged`    | protected |             |            | `void` | FoundationElement |
-| `stylesChanged`      | protected |             |            | `void` | FoundationElement |
+| Name                 | Privacy   | Description                                    | Parameters | Return | Inherited From    |
+| -------------------- | --------- | ---------------------------------------------- | ---------- | ------ | ----------------- |
+| `setSelectedOptions` | public    | Sets an option as selected and gives it focus. |            |        | Listbox           |
+| `selectFirstOption`  | public    | Moves focus to the first selectable option.    |            | `void` | Listbox           |
+| `templateChanged`    | protected |                                                |            | `void` | FoundationElement |
+| `stylesChanged`      | protected |                                                |            | `void` | FoundationElement |
 
 #### Attributes
 
@@ -118,33 +118,33 @@ See [listbox-option](/docs/components/listbox-option) for more information.
 
 #### Static Fields
 
-| Name                  | Privacy | Type | Default | Description | Inherited From |
-| --------------------- | ------- | ---- | ------- | ----------- | -------------- |
-| `slottedOptionFilter` | public  |      |         |             |                |
+| Name                  | Privacy | Type | Default | Description                                         | Inherited From |
+| --------------------- | ------- | ---- | ------- | --------------------------------------------------- | -------------- |
+| `slottedOptionFilter` | public  |      |         | A static filter to include only selectable options. |                |
 
 #### Fields
 
-| Name               | Privacy   | Type                                  | Default | Description | Inherited From    |
-| ------------------ | --------- | ------------------------------------- | ------- | ----------- | ----------------- |
-| `length`           | public    | `number`                              |         |             |                   |
-| `options`          | public    | `ListboxOption[]`                     |         |             |                   |
-| `typeAheadExpired` | protected |                                       |         |             |                   |
-| `disabled`         | public    | `boolean`                             |         |             |                   |
-| `multiple`         | public    | `boolean`                             |         |             |                   |
-| `selectedIndex`    | public    | `number`                              |         |             |                   |
-| `selectedOptions`  | public    | `ListboxOption[]`                     |         |             |                   |
-| `$presentation`    | public    | `ComponentPresentation or null`       |         |             | FoundationElement |
-| `template`         | public    | `ElementViewTemplate or void or null` |         |             | FoundationElement |
-| `styles`           | public    | `ElementStyles or void or null`       |         |             | FoundationElement |
+| Name               | Privacy   | Type                                  | Default | Description                                                                                                                                                                         | Inherited From    |
+| ------------------ | --------- | ------------------------------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
+| `length`           | public    | `number`                              |         | The number of options.                                                                                                                                                              |                   |
+| `options`          | public    | `ListboxOption[]`                     |         | The list of options.                                                                                                                                                                |                   |
+| `typeAheadExpired` | protected |                                       |         |                                                                                                                                                                                     |                   |
+| `disabled`         | public    | `boolean`                             |         | The disabled state of the listbox.                                                                                                                                                  |                   |
+| `multiple`         | public    | `boolean`                             |         | Indicates if the listbox is in multi-selection mode.                                                                                                                                |                   |
+| `selectedIndex`    | public    | `number`                              | `-1`    | The index of the selected option.                                                                                                                                                   |                   |
+| `selectedOptions`  | public    | `ListboxOption[]`                     | `[]`    | A collection of the selected options.                                                                                                                                               |                   |
+| `$presentation`    | public    | `ComponentPresentation or null`       |         | A property which resolves the ComponentPresentation instance for the current component.                                                                                             | FoundationElement |
+| `template`         | public    | `ElementViewTemplate or void or null` |         | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.          | FoundationElement |
+| `styles`           | public    | `ElementStyles or void or null`       |         | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition. | FoundationElement |
 
 #### Methods
 
-| Name                 | Privacy   | Description | Parameters | Return | Inherited From    |
-| -------------------- | --------- | ----------- | ---------- | ------ | ----------------- |
-| `selectFirstOption`  | public    |             |            | `void` |                   |
-| `setSelectedOptions` | public    |             |            |        |                   |
-| `templateChanged`    | protected |             |            | `void` | FoundationElement |
-| `stylesChanged`      | protected |             |            | `void` | FoundationElement |
+| Name                 | Privacy   | Description                                    | Parameters | Return | Inherited From    |
+| -------------------- | --------- | ---------------------------------------------- | ---------- | ------ | ----------------- |
+| `selectFirstOption`  | public    | Moves focus to the first selectable option.    |            | `void` |                   |
+| `setSelectedOptions` | public    | Sets an option as selected and gives it focus. |            |        |                   |
+| `templateChanged`    | protected |                                                |            | `void` | FoundationElement |
+| `stylesChanged`      | protected |                                                |            | `void` | FoundationElement |
 
 #### Attributes
 
