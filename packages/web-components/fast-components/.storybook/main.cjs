@@ -1,5 +1,5 @@
 const CircularDependencyPlugin = require("circular-dependency-plugin");
-const ResolveTypescriptPlugin = require("./resolve-typescript-plugin.cjs");
+const ResolveTypescriptPlugin = require("resolve-typescript-plugin");
 
 module.exports = {
     features: {
