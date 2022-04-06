@@ -1,6 +1,6 @@
 {
   "type": "patch",
-  "comment": "picker in component explorer",
+  "comment": "Added the picker to the component explorer site",
   "packageName": "@microsoft/fast-components",
   "email": "scomea@microsoft.com",
   "dependentChangeType": "patch"
