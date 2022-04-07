@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-components",
   "entries": [
     {
+      "date": "Thu, 07 Apr 2022 07:12:06 GMT",
+      "tag": "@microsoft/fast-components_v2.26.2",
+      "version": "2.26.2",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Added the picker to the component explorer site",
+            "author": "scomea@microsoft.com",
+            "commit": "c9bd1b900afa95b47e0f79a6409f256dd2827fdb",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 06 Apr 2022 07:12:42 GMT",
       "tag": "@microsoft/fast-components_v2.26.1",
       "version": "2.26.1",

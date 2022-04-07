@@ -6,9 +6,9 @@ import {
     dataGridRowTemplate,
     dataGridTemplate,
 } from "@microsoft/fast-foundation";
-import { dataGridStyles } from "./data-grid.styles";
-import { dataGridRowStyles } from "./data-grid-row.styles";
-import { dataGridCellStyles } from "./data-grid-cell.styles";
+import { dataGridStyles } from "./data-grid.styles.js";
+import { dataGridRowStyles } from "./data-grid-row.styles.js";
+import { dataGridCellStyles } from "./data-grid-cell.styles.js";
 
 /**
  * A function that returns a {@link @microsoft/fast-foundation#DataGridCell} registration for configuring the component with a DesignSystem.

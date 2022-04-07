@@ -1,7 +1,7 @@
-import { Palette } from "../palette";
-import { InteractiveSwatchSet } from "../recipe";
-import { Swatch } from "../swatch";
-import { directionByIsDark } from "../utilities/direction-by-is-dark";
+import { Palette } from "../palette.js";
+import { InteractiveSwatchSet } from "../recipe.js";
+import { Swatch } from "../swatch.js";
+import { directionByIsDark } from "../utilities/direction-by-is-dark.js";
 
 /**
  * @internal

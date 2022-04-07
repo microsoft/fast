@@ -4,7 +4,7 @@ import {
     NumberFieldOptions,
     numberFieldTemplate as template,
 } from "@microsoft/fast-foundation";
-import { numberFieldStyles as styles } from "./number-field.styles";
+import { numberFieldStyles as styles } from "./number-field.styles.js";
 
 /**
  * Number field appearances
