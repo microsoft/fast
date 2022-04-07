@@ -193,12 +193,12 @@ describe("The HTML binding directive", () => {
         });
 
         it("allows interpolated HTML tags in templates", async () => {
-            const { behavior, parentNode } = contentBinding();
+            const { behavior, parentNode, targets } = contentBinding();
             const template = html`${x => html`<${x.knownValue}>Hi there!</${x.knownValue}>`}`;
             const model = new Model(template);
             model.knownValue = "button"
 
-            behavior.bind(model, defaultExecutionContext);
+            behavior.bind(model, ExecutionContext.default, targets);
 
             expect(toHTML(parentNode)).to.equal(`<button>Hi there!</button>`);
 
