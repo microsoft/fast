@@ -6,7 +6,7 @@ import {
     html,
     ViewTemplate,
 } from "@microsoft/fast-element";
-import { isFASTElementHost, Router } from "./router";
+import { isFASTElementHost, Router } from "./router.js";
 
 /**
  * @alpha
