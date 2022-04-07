@@ -1,9 +1,10 @@
 import {
-    AttachedBehaviorHTMLDirective,
-    Behavior,
     DOM,
+    ExecutionContext,
+    StatelessAttachedAttributeDirective,
     Subscriber,
     SubscriberSet,
+    ViewBehaviorTargets,
 } from "@microsoft/fast-element";
 import type { CaptureType } from "@microsoft/fast-element";
 
@@ -58,20 +59,27 @@ class AttributeReflectionSubscriptionSet extends SubscriberSet {
             }
         }
 
-        observer.observe(this.source, { attributeFilter });
+        observer.observe(this.subject, { attributeFilter });
     }
 }
 
-class ReflectAttrBehavior implements Behavior {
+class ReflectAttrBehavior extends StatelessAttachedAttributeDirective<string[]> {
     /**
      * The attributes the behavior is reflecting
      */
     public attributes: Readonly<string[]>;
-    constructor(private target: HTMLElement, attributes: string[]) {
+    private target: HTMLElement;
+    constructor(attributes: string[]) {
+        super(attributes);
         this.attributes = Object.freeze(attributes);
     }
 
-    public bind(source: HTMLElement): void {
+    public bind(
+        source: HTMLElement,
+        context: ExecutionContext,
+        targets: ViewBehaviorTargets
+    ): void {
+        this.target = targets[this.targetId] as HTMLElement;
         AttributeReflectionSubscriptionSet.getOrCreateFor(source).subscribe(this);
 
         // Reflect any existing attributes because MutationObserver will only
@@ -115,9 +123,10 @@ class ReflectAttrBehavior implements Behavior {
  * ```
  */
 export function reflectAttributes<T = any>(...attributes: string[]): CaptureType<T> {
-    return new AttachedBehaviorHTMLDirective(
-        "fast-reflect-attr",
-        ReflectAttrBehavior,
-        attributes
-    );
+    return new ReflectAttrBehavior(attributes);
+    // return new AttachedBehaviorHTMLDirective(
+    //     "fast-reflect-attr",
+    //     ReflectAttrBehavior,
+    //     attributes
+    // );
 }
