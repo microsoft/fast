@@ -52,6 +52,9 @@ export { fastMenuConfig };
 import fastNumberFieldConfig from "./fast-number-field";
 export { fastNumberFieldConfig };
 
+import fastPickerConfig from "./fast-picker";
+export { fastPickerConfig };
+
 import fastProgressConfig from "./fast-progress";
 export { fastProgressConfig };
 
