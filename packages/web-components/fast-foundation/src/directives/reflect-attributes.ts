@@ -77,7 +77,6 @@ class ReflectAttributesDirective extends StatelessAttachedAttributeDirective<str
      * The attributes the behavior is reflecting
      */
     public attributes: Readonly<string[]>;
-
     constructor(attributes: string[]) {
         super(attributes);
         this.attributes = Object.freeze(attributes);
