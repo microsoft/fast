@@ -117,7 +117,7 @@
   },
   "resolutions": {
     "@microsoft/fast-tooling": "^0.37.7",
-    "@types/react": "*",
+    "@types/react": "^16.14.0",
     "browserslist": "^4.16.5",
     "clean-css": "^4.2.3",
     "css-select": "^4.2.1",
