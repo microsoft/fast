@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-components
 
-This log was last generated on Wed, 06 Apr 2022 07:12:42 GMT and should not be manually modified.
+This log was last generated on Thu, 07 Apr 2022 07:12:06 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.26.2
+
+Thu, 07 Apr 2022 07:12:06 GMT
+
+### Patches
+
+- Added the picker to the component explorer site (scomea@microsoft.com)
 
 ## 2.26.1
 

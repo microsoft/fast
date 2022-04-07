@@ -3,7 +3,7 @@ import {
     Disclosure as FoundationDisclosure,
     disclosureTemplate as template,
 } from "@microsoft/fast-foundation";
-import { disclosureStyles as styles } from "./disclosure.styles";
+import { disclosureStyles as styles } from "./disclosure.styles.js";
 /**
  * Types of anchor appearance.
  * @public

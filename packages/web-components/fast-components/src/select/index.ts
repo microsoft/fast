@@ -3,7 +3,7 @@ import {
     SelectOptions,
     selectTemplate as template,
 } from "@microsoft/fast-foundation";
-import { selectStyles as styles } from "./select.styles";
+import { selectStyles as styles } from "./select.styles.js";
 
 /**
  * A function that returns a {@link @microsoft/fast-foundation#Select} registration for configuring the component with a DesignSystem.

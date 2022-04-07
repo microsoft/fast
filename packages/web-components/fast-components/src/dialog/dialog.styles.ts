@@ -1,7 +1,7 @@
 import { css, ElementStyles } from "@microsoft/fast-element";
 import { FoundationElementTemplate } from "@microsoft/fast-foundation";
-import { controlCornerRadius, fillColor, strokeWidth } from "../design-tokens";
-import { elevation } from "../styles/elevation";
+import { controlCornerRadius, fillColor, strokeWidth } from "../design-tokens.js";
+import { elevation } from "../styles/elevation.js";
 
 /**
  * Styles for Dialog

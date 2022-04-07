@@ -3,7 +3,7 @@ import {
     ComboboxOptions,
     comboboxTemplate as template,
 } from "@microsoft/fast-foundation";
-import { comboboxStyles as styles } from "./combobox.styles";
+import { comboboxStyles as styles } from "./combobox.styles.js";
 
 /**
  * A function that returns a {@link @microsoft/fast-foundation#Combobox} registration for configuring the component with a DesignSystem.
