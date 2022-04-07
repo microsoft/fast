@@ -8,9 +8,12 @@ import {
     keyHome,
     wrapInBounds,
 } from "@microsoft/fast-web-utilities";
-import { StartEnd, StartEndOptions } from "../patterns/start-end";
-import { applyMixins } from "../utilities/apply-mixins";
-import { FoundationElement, FoundationElementDefinition } from "../foundation-element";
+import { StartEnd, StartEndOptions } from "../patterns/start-end.js";
+import { applyMixins } from "../utilities/apply-mixins.js";
+import {
+    FoundationElement,
+    FoundationElementDefinition,
+} from "../foundation-element/foundation-element.js";
 
 /**
  * Tabs option configuration options

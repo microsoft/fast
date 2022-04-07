@@ -6,13 +6,16 @@ import {
     keyEnter,
     keySpace,
 } from "@microsoft/fast-web-utilities";
-import type { AnchoredRegion } from "../anchored-region";
-import { FoundationElement, FoundationElementDefinition } from "../foundation-element";
-import type { Menu } from "../menu/menu";
-import { StartEnd, StartEndOptions } from "../patterns/start-end";
-import { getDirection } from "../utilities/";
-import { applyMixins } from "../utilities/apply-mixins";
-import { MenuItemRole, roleForMenuItem } from "./menu-item.options";
+import type { AnchoredRegion } from "../anchored-region/anchored-region.js";
+import {
+    FoundationElement,
+    FoundationElementDefinition,
+} from "../foundation-element/foundation-element.js";
+import type { Menu } from "../menu/menu.js";
+import { StartEnd, StartEndOptions } from "../patterns/start-end.js";
+import { getDirection } from "../utilities/direction.js";
+import { applyMixins } from "../utilities/apply-mixins.js";
+import { MenuItemRole, roleForMenuItem } from "./menu-item.options.js";
 
 export { MenuItemRole, roleForMenuItem };
 
@@ -307,7 +310,7 @@ export class MenuItem extends FoundationElement {
      * get an array of valid DOM children
      */
     private domChildren(): Element[] {
-        return Array.from(this.children);
+        return Array.from(this.children).filter(child => !child.hasAttribute("hidden"));
     }
 }
 

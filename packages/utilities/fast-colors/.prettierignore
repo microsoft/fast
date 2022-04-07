@@ -1,5 +1,3 @@
-coverage/*
 dist/*
-www/*
-__test-images__/*
-testData.ts
+test/*
+src/__test__/*

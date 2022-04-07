@@ -1,8 +1,8 @@
-import { FAST, KernelServiceId } from "../platform";
-import { Observable } from "../observation/observable";
-import { ComposableStyles, ElementStyles } from "../styles/element-styles";
-import type { ElementViewTemplate } from "../templating/template";
-import { AttributeConfiguration, AttributeDefinition } from "./attributes";
+import { FAST, KernelServiceId } from "../platform.js";
+import { Observable } from "../observation/observable.js";
+import { ComposableStyles, ElementStyles } from "../styles/element-styles.js";
+import type { ElementViewTemplate } from "../templating/template.js";
+import { AttributeConfiguration, AttributeDefinition } from "./attributes.js";
 
 const defaultShadowOptions: ShadowRootInit = { mode: "open" };
 const defaultElementOptions: ElementDefinitionOptions = {};

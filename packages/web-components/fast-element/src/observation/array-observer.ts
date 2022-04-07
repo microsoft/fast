@@ -1,9 +1,9 @@
-import { DOM } from "../dom";
-import { calcSplices, newSplice, projectArraySplices } from "./array-change-records";
-import type { Splice } from "./array-change-records";
-import { SubscriberSet } from "./notifier";
-import type { Notifier } from "./notifier";
-import { Observable } from "./observable";
+import { DOM } from "../dom.js";
+import { calcSplices, newSplice, projectArraySplices } from "./array-change-records.js";
+import type { Splice } from "./array-change-records.js";
+import { SubscriberSet } from "./notifier.js";
+import type { Notifier } from "./notifier.js";
+import { Observable } from "./observable.js";
 
 let arrayObservationEnabled = false;
 

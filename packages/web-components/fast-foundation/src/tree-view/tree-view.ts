@@ -10,8 +10,8 @@ import {
     keyEnter,
     keyHome,
 } from "@microsoft/fast-web-utilities";
-import { isTreeItemElement, TreeItem } from "../tree-item";
-import { FoundationElement } from "../foundation-element";
+import { isTreeItemElement, TreeItem } from "../tree-item/tree-item.js";
+import { FoundationElement } from "../foundation-element/foundation-element.js";
 
 /**
  * A Tree view Custom HTML Element.

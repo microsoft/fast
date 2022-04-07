@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-element
 
-This log was last generated on Tue, 08 Mar 2022 07:12:45 GMT and should not be manually modified.
+This log was last generated on Wed, 06 Apr 2022 07:12:42 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.9.0
+
+Wed, 06 Apr 2022 07:12:42 GMT
+
+### Minor changes
+
+- convert fast-element to type:module (nicholasrice@users.noreply.github.com)
 
 ## 1.8.0
 

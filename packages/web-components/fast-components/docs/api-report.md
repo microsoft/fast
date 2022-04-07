@@ -545,9 +545,11 @@ export const allComponents: {
 
 // @public
 export class Anchor extends Anchor_2 {
-    appearance: AnchorAppearance;
+    appearance?: AnchorAppearance;
     // (undocumented)
     appearanceChanged(oldValue: AnchorAppearance, newValue: AnchorAppearance): void;
+    // (undocumented)
+    connectedCallback(): void;
     // @internal
     defaultSlottedContentChanged(oldValue: any, newValue: any): void;
 }
@@ -1697,7 +1699,7 @@ export interface Recipe<T> {
 export class Search extends Search_2 {
     // @public
     appearance: SearchAppearance;
-    }
+}
 
 // @public
 export type SearchAppearance = "filled" | "outline";

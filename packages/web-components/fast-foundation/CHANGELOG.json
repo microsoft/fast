@@ -2,6 +2,110 @@
   "name": "@microsoft/fast-foundation",
   "entries": [
     {
+      "date": "Thu, 07 Apr 2022 07:12:06 GMT",
+      "tag": "@microsoft/fast-foundation_v2.41.1",
+      "version": "2.41.1",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Improved README markdown formatting",
+            "author": "44823142+williamw2@users.noreply.github.com",
+            "commit": "35cc415fde15cf07627ca3007024833689284f86",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 06 Apr 2022 07:12:42 GMT",
+      "tag": "@microsoft/fast-foundation_v2.41.0",
+      "version": "2.41.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "convert fast-foundation to type:module",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "ddfcf336f25a3151e1c150534269900cb8131181",
+            "package": "@microsoft/fast-foundation"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "Added CEM Analyzer and API markdown to readme files",
+            "author": "44823142+williamw2@users.noreply.github.com",
+            "commit": "bab7cd7ad235cd94357019f19953ca91711f22c7",
+            "package": "@microsoft/fast-foundation"
+          },
+          {
+            "comment": "Bump @microsoft/fast-element to v1.9.0",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "ead7f7340654236f2503359e2fc6f0b41639b507",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sun, 03 Apr 2022 07:12:01 GMT",
+      "tag": "@microsoft/fast-foundation_v2.40.0",
+      "version": "2.40.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "update aria-current for breadcrumb items when new nodes are appended",
+            "author": "chhol@microsoft.com",
+            "commit": "77cd8a472f4e898245d3da91dbe40e2771a439e5",
+            "package": "@microsoft/fast-foundation"
+          },
+          {
+            "comment": "remove fromView from aria mixin attributes",
+            "author": "chhol@microsoft.com",
+            "commit": "f2314d034b9471c84b8e485a5e814e4482b694d4",
+            "package": "@microsoft/fast-foundation"
+          }
+        ],
+        "none": [
+          {
+            "comment": "Bump @microsoft/fast-element to v1.8.0",
+            "author": "47367562+bheston@users.noreply.github.com",
+            "commit": "35913ce3a2dcba83bebb63cce2b8edf4e9da7df9",
+            "package": "@microsoft/fast-foundation"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-web-utilities to v5.2.0",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "f6107c448ab6446667f4d9e86d9f9c11fff075aa",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 31 Mar 2022 07:13:31 GMT",
+      "tag": "@microsoft/fast-foundation_v2.39.0",
+      "version": "2.39.0",
+      "comments": {
+        "patch": [
+          {
+            "comment": "fix hidden menu items should not be included in the tabindex",
+            "author": "chhol@microsoft.com",
+            "commit": "3739c60925bc91dada3aaa71a72af5392c731fc1",
+            "package": "@microsoft/fast-foundation"
+          }
+        ],
+        "minor": [
+          {
+            "comment": "remove duplicate use of heading class in accordion item and update part location",
+            "author": "chhol@microsoft.com",
+            "commit": "33a990cffd8c8044e886c9d777e212fa67f60acf",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
       "date": "Sun, 27 Mar 2022 07:11:50 GMT",
       "tag": "@microsoft/fast-foundation_v2.38.0",
       "version": "2.38.0",

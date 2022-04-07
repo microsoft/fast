@@ -3,7 +3,7 @@ import {
     SwitchOptions,
     switchTemplate as template,
 } from "@microsoft/fast-foundation";
-import { switchStyles as styles } from "./switch.styles";
+import { switchStyles as styles } from "./switch.styles.js";
 
 /**
  * A function that returns a {@link @microsoft/fast-foundation#Switch} registration for configuring the component with a DesignSystem.

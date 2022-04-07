@@ -1,8 +1,54 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Sun, 27 Mar 2022 07:11:50 GMT and should not be manually modified.
+This log was last generated on Thu, 07 Apr 2022 07:12:06 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.41.1
+
+Thu, 07 Apr 2022 07:12:06 GMT
+
+### Patches
+
+- Improved README markdown formatting (44823142+williamw2@users.noreply.github.com)
+
+## 2.41.0
+
+Wed, 06 Apr 2022 07:12:42 GMT
+
+### Minor changes
+
+- convert fast-foundation to type:module (nicholasrice@users.noreply.github.com)
+
+### Patches
+
+- Added CEM Analyzer and API markdown to readme files (44823142+williamw2@users.noreply.github.com)
+- Bump @microsoft/fast-element to v1.9.0 (nicholasrice@users.noreply.github.com)
+
+## 2.40.0
+
+Sun, 03 Apr 2022 07:12:01 GMT
+
+### Minor changes
+
+- update aria-current for breadcrumb items when new nodes are appended (chhol@microsoft.com)
+- remove fromView from aria mixin attributes (chhol@microsoft.com)
+
+### Patches
+
+- Bump @microsoft/fast-web-utilities to v5.2.0 (nicholasrice@users.noreply.github.com)
+
+## 2.39.0
+
+Thu, 31 Mar 2022 07:13:31 GMT
+
+### Minor changes
+
+- remove duplicate use of heading class in accordion item and update part location (chhol@microsoft.com)
+
+### Patches
+
+- fix hidden menu items should not be included in the tabindex (chhol@microsoft.com)
 
 ## 2.38.0
 

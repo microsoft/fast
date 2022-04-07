@@ -1,5 +1,5 @@
-import { Histogram } from "./histogram";
-import { ColorRGBA64 } from "./color-rgba-64";
+import { Histogram } from "./histogram.js";
+import { ColorRGBA64 } from "./color-rgba-64.js";
 
 /**
  * Adds a newItem to an already sorted list without needing to do a full re-sort.

@@ -1,2 +1,2 @@
-export * from "./search.template";
-export * from "./search";
+export * from "./search.template.js";
+export * from "./search.js";

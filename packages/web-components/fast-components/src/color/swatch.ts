@@ -1,5 +1,5 @@
 import { ColorRGBA64, rgbToRelativeLuminance } from "@microsoft/fast-colors";
-import { contrast, RelativeLuminance } from "./utilities/relative-luminance";
+import { contrast, RelativeLuminance } from "./utilities/relative-luminance.js";
 
 /**
  * Represents a color in a {@link Palette}

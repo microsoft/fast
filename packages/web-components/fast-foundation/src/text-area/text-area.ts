@@ -1,8 +1,8 @@
 import { attr, nullableNumberConverter, observable } from "@microsoft/fast-element";
-import { DelegatesARIATextbox } from "../text-field/index";
-import { applyMixins } from "../utilities";
-import { FormAssociatedTextArea } from "./text-area.form-associated";
-import { TextAreaResize } from "./text-area.options";
+import { DelegatesARIATextbox } from "../text-field/text-field.js";
+import { applyMixins } from "../utilities/apply-mixins.js";
+import { FormAssociatedTextArea } from "./text-area.form-associated.js";
+import { TextAreaResize } from "./text-area.options.js";
 
 export { TextAreaResize };
 

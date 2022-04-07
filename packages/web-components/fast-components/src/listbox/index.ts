@@ -3,7 +3,7 @@ import {
     ListboxElement as FoundationListboxElement,
     listboxTemplate as template,
 } from "@microsoft/fast-foundation";
-import { listboxStyles as styles } from "./listbox.styles";
+import { listboxStyles as styles } from "./listbox.styles.js";
 
 /**
  * Base class for Listbox.

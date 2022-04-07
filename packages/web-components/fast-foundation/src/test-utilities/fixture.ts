@@ -5,12 +5,12 @@ import {
     HTMLView,
     ViewTemplate,
 } from "@microsoft/fast-element";
-import { DesignSystem, DesignSystemRegistrationContext } from "../design-system";
-import type { Container } from "../di";
+import { DesignSystem, DesignSystemRegistrationContext } from "../design-system/index.js";
+import type { Container } from "../di/di.js";
 import type {
     FoundationElementDefinition,
     FoundationElementRegistry,
-} from "../foundation-element/foundation-element";
+} from "../foundation-element/foundation-element.js";
 
 /**
  * Options used to customize the creation of the test fixture.

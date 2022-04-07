@@ -4,7 +4,7 @@ import type {
     AxisScalingMode,
     HorizontalPosition,
     VerticalPosition,
-} from "./anchored-region";
+} from "./anchored-region.js";
 
 /**
  * A utility interface to store anchored region
