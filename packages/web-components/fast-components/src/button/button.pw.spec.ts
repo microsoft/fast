@@ -1,7 +1,9 @@
 import type {
     Button as FASTButtonType
 } from "@microsoft/fast-foundation";
-import { expect } from "chai";
+import chai from "chai";
+
+const { expect } = chai;
 
 type FASTButton = HTMLElement & FASTButtonType;
 
