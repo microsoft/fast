@@ -38,7 +38,7 @@
   },
   "private": true,
   "dependencies": {
-    "@lit-labs/ssr": "^1.0.0-rc.2",
+    "@lit-labs/ssr": "^2.1.0",
     "@microsoft/fast-element": "^1.5.0",
     "parse5": "^6.0.1",
     "tslib": "^1.11.1"
