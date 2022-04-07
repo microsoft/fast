@@ -1,4 +1,5 @@
 import {
+    child,
     css,
     customElement,
     FASTElement,
@@ -14,7 +15,7 @@ const template = html<DesignTokensForm>`
     <ul>
         ${repeat(
             x => x.designTokens,
-            html<UIDesignTokenValue, DesignTokensForm>`
+            child<UIDesignTokenValue, DesignTokensForm>`
                 <li>
                     <td-design-token-field
                         :designToken=${x => x.definition}
