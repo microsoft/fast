@@ -210,9 +210,12 @@ export class Select extends FormAssociatedSelect {
      * @public
      */
     @observable
-    public position: SelectPosition = SelectPosition.below;
-    protected positionChanged() {
-        this.positionAttribute = this.position;
+    public position?: SelectPosition;
+    protected positionChanged(
+        prev: SelectPosition | undefined,
+        next: SelectPosition
+    ): void {
+        this.positionAttribute = next;
         this.setPositioning();
     }
 
