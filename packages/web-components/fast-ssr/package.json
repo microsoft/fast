@@ -32,6 +32,10 @@
   "description": "A package for rendering FAST components outside the browser.",
   "main": "./dist/esm/exports.js",
   "types": "./dist/dts/exports.d.ts",
+  "exports": {
+    "." : "./dist/esm/exports.js",
+    "./install-dom-shim": "./dist/esm/dom-shim.js"
+  },
   "private": true,
   "dependencies": {
     "@lit-labs/ssr": "^1.0.0-rc.2",
