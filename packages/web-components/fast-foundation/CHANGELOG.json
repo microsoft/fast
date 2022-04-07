@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-foundation",
   "entries": [
     {
+      "date": "Thu, 07 Apr 2022 07:12:06 GMT",
+      "tag": "@microsoft/fast-foundation_v2.41.1",
+      "version": "2.41.1",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Improved README markdown formatting",
+            "author": "44823142+williamw2@users.noreply.github.com",
+            "commit": "35cc415fde15cf07627ca3007024833689284f86",
+            "package": "@microsoft/fast-foundation"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 06 Apr 2022 07:12:42 GMT",
       "tag": "@microsoft/fast-foundation_v2.41.0",
       "version": "2.41.0",
