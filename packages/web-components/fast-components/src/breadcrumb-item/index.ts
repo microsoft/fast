@@ -3,7 +3,7 @@ import {
     BreadcrumbItemOptions,
     breadcrumbItemTemplate as template,
 } from "@microsoft/fast-foundation";
-import { breadcrumbItemStyles as styles } from "./breadcrumb-item.styles";
+import { breadcrumbItemStyles as styles } from "./breadcrumb-item.styles.js";
 
 /**
  * A function that returns a {@link @microsoft/fast-foundation#BreadcrumbItem} registration for configuring the component with a DesignSystem.

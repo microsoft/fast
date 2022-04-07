@@ -1,6 +1,6 @@
 import { css, ElementStyles } from "@microsoft/fast-element";
 import { display, FoundationElementTemplate } from "@microsoft/fast-foundation";
-import { designUnit } from "../design-tokens";
+import { designUnit } from "../design-tokens.js";
 
 /**
  * Styles for Radio Group

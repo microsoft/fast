@@ -1,5 +1,5 @@
 import { Breadcrumb, breadcrumbTemplate as template } from "@microsoft/fast-foundation";
-import { breadcrumbStyles as styles } from "./breadcrumb.styles";
+import { breadcrumbStyles as styles } from "./breadcrumb.styles.js";
 
 /**
  * A function that returns a {@link @microsoft/fast-foundation#Breadcrumb} registration for configuring the component with a DesignSystem.
