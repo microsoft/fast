@@ -10,9 +10,10 @@ import { GenerateHeaderOptions } from "@microsoft/fast-foundation";
 import addons from "@storybook/addons";
 import { STORY_RENDERED } from "@storybook/core-events";
 import DataGridTemplate from "./fixtures/base.html";
-import "./index";
+import "./index.js";
 
 let defaultGridElement: DataGrid | null = null;
+
 const defaultRowData: object = newDataRow("default");
 
 const columnWidths: string[] = ["1fr", "1fr", "1fr", "1fr"];
@@ -56,6 +57,11 @@ addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
     if (name.toLowerCase().startsWith("data-grid")) {
         defaultGridElement = document.getElementById("defaultGrid") as DataGrid;
         reset();
+
+        const nestedCell1 = document.getElementById("nestedCell1") as DataGridCell;
+        nestedCell1.columnDefinition = nestedColumn;
+        const nestedCell2 = document.getElementById("nestedCell2") as DataGridCell;
+        nestedCell2.columnDefinition = nestedColumn;
 
         const defaultGridRow = document.getElementById("defaultGridRow") as DataGridRow;
         if (defaultGridRow) {
@@ -431,6 +437,12 @@ const baseColumns: ColumnDefinition[] = [
     { columnDataKey: "item3" },
 ];
 
+const nestedColumn: ColumnDefinition = {
+    columnDataKey: "item2",
+    cellInternalFocusQueue: true,
+    cellFocusTargetCallback: getFocusTarget,
+};
+
 const templateColumns: ColumnDefinition[] = [
     {
         title: "RowID",
@@ -468,7 +480,7 @@ const templateColumns: ColumnDefinition[] = [
 ];
 
 function getFocusTarget(cell: DataGridCell): HTMLElement {
-    return cell.querySelector("fast-button") as HTMLElement;
+    return cell.children[0] as HTMLElement;
 }
 
 export default {

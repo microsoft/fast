@@ -110,8 +110,42 @@ describe("Select", () => {
         await disconnect();
     });
 
+    it("should set its value to the first enabled option when disabled", async () => {
+        const { element, connect, disconnect, option1, option2, option3 } = await setup();
+        element.disabled = true;
+
+        await connect();
+
+        expect(element.value).to.equal("one");
+        expect(element.selectedIndex).to.equal(0);
+
+        expect(element.selectedOptions).to.contain(option1);
+        expect(element.selectedOptions).to.not.contain(option2);
+        expect(element.selectedOptions).to.not.contain(option3);
+
+        await disconnect();
+    });
+
     it("should select the first option with a `selected` attribute", async () => {
         const { element, connect, disconnect, option1, option2, option3 } = await setup();
+
+        option2.setAttribute("selected", "");
+
+        await connect();
+
+        expect(element.value).to.equal("two");
+        expect(element.selectedIndex).to.equal(1);
+
+        expect(element.selectedOptions).to.not.contain(option1);
+        expect(element.selectedOptions).to.contain(option2);
+        expect(element.selectedOptions).to.not.contain(option3);
+
+        await disconnect();
+    });
+
+    it("should select the first option with a `selected` attribute when disabled", async () => {
+        const { element, connect, disconnect, option1, option2, option3 } = await setup();
+        element.disabled = true;
 
         option2.setAttribute("selected", "");
 
@@ -169,6 +203,18 @@ describe("Select", () => {
         await DOM.nextUpdate();
 
         expect(element.getAttribute("aria-expanded")).to.equal("true");
+
+        await disconnect();
+    });
+
+    it("should display the listbox when the `open` property is true before connecting", async () => {
+        const { element, connect, disconnect } = await setup();
+
+        element.open = true;
+
+        await connect();
+
+        expect(element.hasAttribute("open")).to.be.true;
 
         await disconnect();
     });
@@ -805,9 +851,7 @@ describe("Select", () => {
 
         const listboxId = element.listbox.id;
 
-        expect(element.getAttribute("aria-controls")).to.exist;
-
-        expect(element.getAttribute("aria-controls")).to.be.empty;
+        expect(element.getAttribute("aria-controls")).to.exist.and.be.empty;
 
         element.open = true;
 

@@ -3,7 +3,7 @@ import {
     TextField as FoundationTextField,
     textFieldTemplate as template,
 } from "@microsoft/fast-foundation";
-import { textFieldStyles as styles } from "./text-field.styles";
+import { textFieldStyles as styles } from "./text-field.styles.js";
 
 /**
  * Text field appearances
@@ -23,18 +23,7 @@ export class TextField extends FoundationTextField {
      * HTML Attribute: appearance
      */
     @attr
-    public appearance: TextFieldAppearance;
-
-    /**
-     * @internal
-     */
-    public connectedCallback() {
-        super.connectedCallback();
-
-        if (!this.appearance) {
-            this.appearance = "outline";
-        }
-    }
+    public appearance: TextFieldAppearance = "outline";
 }
 
 /**

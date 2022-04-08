@@ -72,7 +72,7 @@
 <fast-data-grid-cell id="headerCell" cell-type="columnheader"></fast-data-grid-cell>
 
 <h2>Manual grid</h2>
-<fast-data-grid id="manualGrid" grid-template-columns="1fr 1fr" generate-header="none">
+<fast-data-grid id="manualGrid">
     <fast-data-grid-row>
         <fast-data-grid-cell grid-column="1">1.1</fast-data-grid-cell>
         <fast-data-grid-cell grid-column="2">1.2</fast-data-grid-cell>
@@ -80,5 +80,49 @@
     <fast-data-grid-row>
         <fast-data-grid-cell grid-column="1">2.1</fast-data-grid-cell>
         <fast-data-grid-cell grid-column="2">2.2</fast-data-grid-cell>
+    </fast-data-grid-row>
+</fast-data-grid>
+
+<h2>nested grid</h2>
+<fast-data-grid id="nestedGrid" grid-template-columns="1fr 1fr" generate-header="none">
+    <fast-data-grid-row>
+        <fast-data-grid-cell grid-column="1">1.1</fast-data-grid-cell>
+        <fast-data-grid-cell grid-column="2" id="nestedCell1">
+            <fast-data-grid
+                grid-template-columns="1fr 1fr"
+                generate-header="none"
+                no-tabbing="true"
+                style="background-color: darkolivegreen;"
+            >
+                <fast-data-grid-row>
+                    <fast-data-grid-cell grid-column="1">1.2.1.1</fast-data-grid-cell>
+                    <fast-data-grid-cell grid-column="2">1.2.1.2</fast-data-grid-cell>
+                </fast-data-grid-row>
+                <fast-data-grid-row>
+                    <fast-data-grid-cell grid-column="1">1.2.2.1</fast-data-grid-cell>
+                    <fast-data-grid-cell grid-column="2">1.2.2.2</fast-data-grid-cell>
+                </fast-data-grid-row>
+            </fast-data-grid>
+        </fast-data-grid-cell>
+    </fast-data-grid-row>
+    <fast-data-grid-row>
+        <fast-data-grid-cell grid-column="1">2.1</fast-data-grid-cell>
+        <fast-data-grid-cell grid-column="2" id="nestedCell2">
+            <fast-data-grid
+                grid-template-columns="1fr 1fr"
+                generate-header="none"
+                no-tabbing="true"
+                style="background-color: darkolivegreen;"
+            >
+                <fast-data-grid-row>
+                    <fast-data-grid-cell grid-column="1">2.2.1.1</fast-data-grid-cell>
+                    <fast-data-grid-cell grid-column="2">2.2.1.2</fast-data-grid-cell>
+                </fast-data-grid-row>
+                <fast-data-grid-row>
+                    <fast-data-grid-cell grid-column="1">2.2.2.1</fast-data-grid-cell>
+                    <fast-data-grid-cell grid-column="2">2.2.2.2</fast-data-grid-cell>
+                </fast-data-grid-row>
+            </fast-data-grid>
+        </fast-data-grid-cell>
     </fast-data-grid-row>
 </fast-data-grid>

@@ -4,7 +4,7 @@ import {
     Avatar as FoundationAvatar,
     avatarTemplate as template,
 } from "@microsoft/fast-foundation";
-import { avatarStyles as styles } from "./avatar.styles";
+import { avatarStyles as styles } from "./avatar.styles.js";
 
 /**
  * The FAST Avatar Class
@@ -20,7 +20,7 @@ export class Avatar extends FoundationAvatar {
      * HTML Attribute: src
      */
     @attr({ attribute: "src" })
-    public imgSrc: string;
+    public imgSrc: string | undefined;
 
     /**
      * Indicates the Avatar should have alt text
@@ -29,7 +29,7 @@ export class Avatar extends FoundationAvatar {
      * @remarks
      * HTML Attribute: alt
      */
-    @attr public alt: string;
+    @attr public alt: string | undefined;
 }
 
 /**

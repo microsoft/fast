@@ -1,10 +1,11 @@
 import { children, elements, html } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
-import type { FoundationElementTemplate } from "../foundation-element";
-import type { DataGrid } from "./data-grid";
-import { DataGridRow } from "./data-grid-row";
+import type { FoundationElementTemplate } from "../foundation-element/foundation-element.js";
+import type { ElementDefinitionContext } from "../design-system/registration-context.js";
+import type { DataGrid } from "./data-grid.js";
+import { DataGridRow } from "./data-grid-row.js";
 
-function createRowItemTemplate(context): ViewTemplate {
+function createRowItemTemplate(context: ElementDefinitionContext): ViewTemplate {
     const rowTag = context.tagFor(DataGridRow);
     return html`
     <${rowTag}

@@ -5,7 +5,7 @@ import {
     forcedColorsStylesheetBehavior,
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
-import { heightNumber } from "../size";
+import { heightNumber } from "../size.js";
 import {
     accentFillActive,
     accentFillHover,
@@ -33,7 +33,7 @@ import {
     strokeWidth,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
-} from "../../design-tokens";
+} from "../../design-tokens.js";
 
 /**
  * @internal
@@ -60,7 +60,7 @@ export const BaseButtonStyles = css`
         box-sizing: border-box;
         display: inline-flex;
         justify-content: center;
-        align-items: center;
+        align-items: baseline;
         padding: 0 calc((10 + (${designUnit} * 2 * ${density})) * 1px);
         white-space: nowrap;
         outline: none;
@@ -91,6 +91,12 @@ export const BaseButtonStyles = css`
 
     .control::-moz-focus-inner {
         border: 0;
+    }
+
+    .start,
+    .content,
+    .end {
+        align-self: center;
     }
 
     .start,

@@ -1,5 +1,5 @@
 import { Tabs, tabsTemplate as template } from "@microsoft/fast-foundation";
-import { tabsStyles as styles } from "./tabs.styles";
+import { tabsStyles as styles } from "./tabs.styles.js";
 
 /**
  * A function that returns a {@link @microsoft/fast-foundation#Tabs} registration for configuring the component with a DesignSystem.
@@ -16,8 +16,8 @@ export const fastTabs = Tabs.compose({
     styles,
 });
 
-export * from "../tab";
-export * from "../tab-panel";
+export * from "../tab/index.js";
+export * from "../tab-panel/index.js";
 
 /**
  * Base class for Tabs

@@ -184,14 +184,17 @@ describe("FASTHorizontalScroll", function () {
 
         await element.evaluateHandle(node => {
             while (node.childElementCount > 1) {
-                node.removeChild(node.lastElementChild!);
+                if (node.lastElementChild) {
+                    node.removeChild(node.lastElementChild);
+                }
             }
         });
 
+        await element.waitForElementState("stable");
+
         expect(
             await element.evaluate(node =>
-                node
-                    .shadowRoot!.querySelector(".scroll-next")
+                node.shadowRoot?.querySelector(".scroll-next")
                     ?.classList.contains("disabled")
             )
         ).to.be.true;
@@ -204,9 +207,7 @@ describe("FASTHorizontalScroll", function () {
 
         expect(
             await element.evaluate(node =>
-                node
-                    .shadowRoot!.querySelector(".scroll-prev")
-                    ?.classList.contains("disabled")
+                node.shadowRoot?.querySelector(".scroll-prev")?.classList.contains("disabled")
             )
         ).to.be.true;
     });
@@ -265,10 +266,12 @@ describe("FASTHorizontalScroll", function () {
         )) as ElementHandle<fastHorizontalScroll>;
 
         await this.page.evaluateHandle(node => {
-            node.scrollContainer.scrollLeft =
-                node.scrollContainer.scrollWidth -
-                node.scrollContainer.offsetWidth -
-                node.firstElementChild!.clientWidth;
+            if (node.firstElementChild) {
+                node.scrollContainer.scrollLeft =
+                    node.scrollContainer.scrollWidth -
+                    node.scrollContainer.offsetWidth -
+                    node.firstElementChild.clientWidth;
+            }
         }, element);
 
         await element.evaluateHandle(node => node.scrollToNext());
@@ -297,7 +300,9 @@ describe("FASTHorizontalScroll", function () {
 
         await element.evaluateHandle(node => {
             // Move the scrollLeft almost to the end
-            node.scrollContainer.scrollLeft = node.firstElementChild!.clientWidth;
+            if (node.firstElementChild) {
+                node.scrollContainer.scrollLeft = node.firstElementChild.clientWidth;
+            }
 
             node.scrollToPrevious();
         });

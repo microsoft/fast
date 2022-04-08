@@ -5,10 +5,10 @@ import type {
     AutoUpdateMode,
     AxisPositioningMode,
     AxisScalingMode,
-} from "../anchored-region";
-import { getDirection } from "../utilities/";
-import { FoundationElement } from "../foundation-element";
-import { TooltipPosition } from "./tooltip.options";
+} from "../anchored-region/anchored-region.js";
+import { getDirection } from "../utilities/direction.js";
+import { FoundationElement } from "../foundation-element/foundation-element.js";
+import { TooltipPosition } from "./tooltip.options.js";
 
 export { TooltipPosition };
 
@@ -69,7 +69,22 @@ export class Tooltip extends FoundationElement {
      * HTML Attribute: position
      */
     @attr
-    public position: TooltipPosition;
+    public position:
+        | TooltipPosition
+        | "top"
+        | "right"
+        | "bottom"
+        | "left"
+        | "start"
+        | "end"
+        | "top-left"
+        | "top-right"
+        | "bottom-left"
+        | "bottom-right"
+        | "top-start"
+        | "top-end"
+        | "bottom-start"
+        | "bottom-end";
     private positionChanged(): void {
         if ((this as FASTElement).$fastController.isConnected) {
             this.updateLayout();
@@ -149,7 +164,7 @@ export class Tooltip extends FoundationElement {
                         .querySelectorAll(":hover")
                         .forEach(element => {
                             if (element.id === anchorId) {
-                                this.startHoverTimer();
+                                this.startShowDelayTimer();
                             }
                         });
                 }
@@ -183,12 +198,14 @@ export class Tooltip extends FoundationElement {
 
     /**
      * @internal
+     * @defaultValue "dynamic"
      */
     @observable
     public verticalPositioningMode: AxisPositioningMode = "dynamic";
 
     /**
      * @internal
+     * @defaultValue "dynamic"
      */
     @observable
     public horizontalPositioningMode: AxisPositioningMode = "dynamic";
@@ -254,12 +271,22 @@ export class Tooltip extends FoundationElement {
     /**
      * The timer that tracks delay time before the tooltip is shown on hover
      */
-    private delayTimer: number | null = null;
+    private showDelayTimer: number | null = null;
 
     /**
-     * Indicates whether the anchor is currently being hovered
+     * The timer that tracks delay time before the tooltip is hidden
+     */
+    private hideDelayTimer: number | null = null;
+
+    /**
+     * Indicates whether the anchor is currently being hovered or has focus
      */
     private isAnchorHoveredFocused: boolean = false;
+
+    /**
+     * Indicates whether the region is currently being hovered
+     */
+    private isRegionHovered: boolean = false;
 
     public connectedCallback(): void {
         super.connectedCallback();
@@ -269,7 +296,8 @@ export class Tooltip extends FoundationElement {
 
     public disconnectedCallback(): void {
         this.hideTooltip();
-        this.clearDelayTimer();
+        this.clearShowDelayTimer();
+        this.clearHideDelayTimer();
         super.disconnectedCallback();
     }
 
@@ -308,10 +336,30 @@ export class Tooltip extends FoundationElement {
     };
 
     /**
+     * mouse enters region
+     */
+    private handleRegionMouseOver = (ev: Event): void => {
+        this.isRegionHovered = true;
+    };
+
+    /**
+     * mouse leaves region
+     */
+    private handleRegionMouseOut = (ev: Event): void => {
+        this.isRegionHovered = false;
+        this.startHideDelayTimer();
+    };
+
+    /**
      * mouse enters anchor
      */
     private handleAnchorMouseOver = (ev: Event): void => {
-        this.startHoverTimer();
+        if (this.tooltipVisible) {
+            // tooltip is already visible, just set the anchor hover flag
+            this.isAnchorHoveredFocused = true;
+            return;
+        }
+        this.startShowDelayTimer();
     };
 
     /**
@@ -319,31 +367,64 @@ export class Tooltip extends FoundationElement {
      */
     private handleAnchorMouseOut = (ev: Event): void => {
         this.isAnchorHoveredFocused = false;
-        this.updateTooltipVisibility();
-        this.clearDelayTimer();
-    };
-
-    private handleAnchorFocusIn = (ev: Event): void => {
-        this.startHoverTimer();
-    };
-
-    private handleAnchorFocusOut = (ev: Event): void => {
-        this.isAnchorHoveredFocused = false;
-        this.updateTooltipVisibility();
-        this.clearDelayTimer();
+        this.clearShowDelayTimer();
+        this.startHideDelayTimer();
     };
 
     /**
-     * starts the hover timer if not currently running
+     * anchor gets focus
      */
-    private startHoverTimer = (): void => {
+    private handleAnchorFocusIn = (ev: Event): void => {
+        this.startShowDelayTimer();
+    };
+
+    /**
+     * anchor loses focus
+     */
+    private handleAnchorFocusOut = (ev: Event): void => {
+        this.isAnchorHoveredFocused = false;
+        this.clearShowDelayTimer();
+        this.startHideDelayTimer();
+    };
+
+    /**
+     * starts the hide timer
+     */
+    private startHideDelayTimer = (): void => {
+        this.clearHideDelayTimer();
+
+        if (!this.tooltipVisible) {
+            return;
+        }
+
+        // allow 60 ms for account for pointer to move between anchor/tooltip
+        // without hiding tooltip
+        this.hideDelayTimer = window.setTimeout((): void => {
+            this.updateTooltipVisibility();
+        }, 60);
+    };
+
+    /**
+     * clears the hide delay
+     */
+    private clearHideDelayTimer = (): void => {
+        if (this.hideDelayTimer !== null) {
+            clearTimeout(this.hideDelayTimer);
+            this.hideDelayTimer = null;
+        }
+    };
+
+    /**
+     * starts the show timer if not currently running
+     */
+    private startShowDelayTimer = (): void => {
         if (this.isAnchorHoveredFocused) {
             return;
         }
 
         if (this.delay > 1) {
-            if (this.delayTimer === null)
-                this.delayTimer = window.setTimeout((): void => {
+            if (this.showDelayTimer === null)
+                this.showDelayTimer = window.setTimeout((): void => {
                     this.startHover();
                 }, this.delay);
             return;
@@ -353,7 +434,7 @@ export class Tooltip extends FoundationElement {
     };
 
     /**
-     * starts the hover delay timer
+     * start hover
      */
     private startHover = (): void => {
         this.isAnchorHoveredFocused = true;
@@ -361,12 +442,12 @@ export class Tooltip extends FoundationElement {
     };
 
     /**
-     * clears the hover delay
+     * clears the show delay
      */
-    private clearDelayTimer = (): void => {
-        if (this.delayTimer !== null) {
-            clearTimeout(this.delayTimer);
-            this.delayTimer = null;
+    private clearShowDelayTimer = (): void => {
+        if (this.showDelayTimer !== null) {
+            clearTimeout(this.showDelayTimer);
+            this.showDelayTimer = null;
         }
     };
 
@@ -374,11 +455,12 @@ export class Tooltip extends FoundationElement {
      * updated the properties being passed to the anchored region
      */
     private updateLayout(): void {
+        this.verticalPositioningMode = "locktodefault";
+        this.horizontalPositioningMode = "locktodefault";
+
         switch (this.position) {
             case TooltipPosition.top:
             case TooltipPosition.bottom:
-                this.verticalPositioningMode = "locktodefault";
-                this.horizontalPositioningMode = "locktodefault";
                 this.verticalDefaultPosition = this.position;
                 this.horizontalDefaultPosition = "center";
                 break;
@@ -387,10 +469,48 @@ export class Tooltip extends FoundationElement {
             case TooltipPosition.left:
             case TooltipPosition.start:
             case TooltipPosition.end:
-                this.verticalPositioningMode = "locktodefault";
-                this.horizontalPositioningMode = "locktodefault";
                 this.verticalDefaultPosition = "center";
                 this.horizontalDefaultPosition = this.position;
+                break;
+
+            case TooltipPosition.topLeft:
+                this.verticalDefaultPosition = "top";
+                this.horizontalDefaultPosition = "left";
+                break;
+
+            case TooltipPosition.topRight:
+                this.verticalDefaultPosition = "top";
+                this.horizontalDefaultPosition = "right";
+                break;
+
+            case TooltipPosition.bottomLeft:
+                this.verticalDefaultPosition = "bottom";
+                this.horizontalDefaultPosition = "left";
+                break;
+
+            case TooltipPosition.bottomRight:
+                this.verticalDefaultPosition = "bottom";
+                this.horizontalDefaultPosition = "right";
+                break;
+
+            case TooltipPosition.topStart:
+                this.verticalDefaultPosition = "top";
+                this.horizontalDefaultPosition = "start";
+                break;
+
+            case TooltipPosition.topEnd:
+                this.verticalDefaultPosition = "top";
+                this.horizontalDefaultPosition = "end";
+                break;
+
+            case TooltipPosition.bottomStart:
+                this.verticalDefaultPosition = "bottom";
+                this.horizontalDefaultPosition = "start";
+                break;
+
+            case TooltipPosition.bottomEnd:
+                this.verticalDefaultPosition = "bottom";
+                this.horizontalDefaultPosition = "end";
                 break;
 
             default:
@@ -440,7 +560,7 @@ export class Tooltip extends FoundationElement {
             this.showTooltip();
             return;
         } else {
-            if (this.isAnchorHoveredFocused) {
+            if (this.isAnchorHoveredFocused || this.isRegionHovered) {
                 this.showTooltip();
                 return;
             }
@@ -468,6 +588,7 @@ export class Tooltip extends FoundationElement {
         if (!this.tooltipVisible) {
             return;
         }
+        this.clearHideDelayTimer();
         if (this.region !== null && this.region !== undefined) {
             (this.region as any).removeEventListener(
                 "positionchange",
@@ -475,6 +596,9 @@ export class Tooltip extends FoundationElement {
             );
             this.region.viewportElement = null;
             this.region.anchorElement = null;
+
+            this.region.removeEventListener("mouseover", this.handleRegionMouseOver);
+            this.region.removeEventListener("mouseout", this.handleRegionMouseOut);
         }
         document.removeEventListener("keydown", this.handleDocumentKeydown);
         this.tooltipVisible = false;
@@ -494,5 +618,12 @@ export class Tooltip extends FoundationElement {
             "positionchange",
             this.handlePositionChange
         );
+
+        this.region.addEventListener("mouseover", this.handleRegionMouseOver, {
+            passive: true,
+        });
+        this.region.addEventListener("mouseout", this.handleRegionMouseOut, {
+            passive: true,
+        });
     };
 }

@@ -119,6 +119,11 @@ const composedTestElement = ComposedTestElement.compose({
   template: html`<slot></slot>`
 });
 
+const composedTestElement2 = ComposedTestElement.compose({
+  baseName: composedElementName + '-bis',
+  template: html`<slot></slot>`
+});
+
 const scenarios = [
   {
     description: 'Wrapping a decorated FASTElement',
@@ -132,6 +137,14 @@ const scenarios = [
     elementName: `fast-${composedElementName}`,
     wrap: (x: any) => x(composedTestElement(), {
       events: restTestEvents
+    })
+  },
+  {
+    description: 'Wrapping a copied composed FoundationElement',
+    elementName: `fast-${composedElementName}-bis`,
+    wrap: (x: any) => x(composedTestElement2(), {
+      events: restTestEvents,
+      name: `fast-${composedElementName}-bis`
     })
   },
   {
@@ -194,6 +207,11 @@ for (const scenario of scenarios) {
       );
       el = container.querySelector(scenario.elementName)! as CustomElement;
       expect(el.textContent).to.equal('Hello World');
+    });
+
+    it('does not recreate the same component twice', async () => {
+      const SameWrappedComponent = scenario.wrap(wrap);
+      expect(WrappedComponent).to.eq(SameWrappedComponent);
     });
 
     it('wrapper renders custom element that updates', async () => {

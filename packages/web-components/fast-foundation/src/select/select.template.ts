@@ -1,9 +1,9 @@
 import { html, ref, slotted } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
-import type { FoundationElementTemplate } from "../foundation-element";
-import { Listbox } from "../listbox/listbox";
-import { endSlotTemplate, startSlotTemplate } from "../patterns/start-end";
-import type { Select, SelectOptions } from "./select";
+import type { FoundationElementTemplate } from "../foundation-element/foundation-element.js";
+import { Listbox } from "../listbox/listbox.js";
+import { endSlotTemplate, startSlotTemplate } from "../patterns/start-end.js";
+import type { Select, SelectOptions } from "./select.js";
 
 /**
  * The template for the {@link @microsoft/fast-foundation#(Select:class)} component.
@@ -21,6 +21,7 @@ export const selectTemplate: FoundationElementTemplate<
         aria-disabled="${x => x.ariaDisabled}"
         aria-expanded="${x => x.ariaExpanded}"
         aria-haspopup="listbox"
+        ?open="${x => x.open}"
         role="combobox"
         tabindex="${x => (!x.disabled ? "0" : null)}"
         @click="${(x, c) => x.clickHandler(c.event as MouseEvent)}"
@@ -43,6 +44,7 @@ export const selectTemplate: FoundationElementTemplate<
         </div>
         <div
             class="listbox"
+            id="${x => x.listboxId}"
             part="listbox"
             role="listbox"
             ?disabled="${x => x.disabled}"

@@ -1,3 +1,3 @@
-export * from "./listbox";
-export * from "./listbox.element";
-export * from "./listbox.template";
+export * from "./listbox.js";
+export * from "./listbox.element.js";
+export * from "./listbox.template.js";

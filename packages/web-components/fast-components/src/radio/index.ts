@@ -3,7 +3,7 @@ import {
     RadioOptions,
     radioTemplate as template,
 } from "@microsoft/fast-foundation";
-import { radioStyles as styles } from "./radio.styles";
+import { radioStyles as styles } from "./radio.styles.js";
 
 /**
  * A function that returns a {@link @microsoft/fast-foundation#Radio} registration for configuring the component with a DesignSystem.
@@ -18,7 +18,7 @@ export const fastRadio = Radio.compose<RadioOptions>({
     baseName: "radio",
     template,
     styles,
-    checkedIndicator: `
+    checkedIndicator: /* html */ `
         <div part="checked-indicator" class="checked-indicator"></div>
     `,
 });

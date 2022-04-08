@@ -1,5 +1,5 @@
-import { Swatch } from "../swatch";
-import { black, white } from "../utilities/color-constants";
+import { Swatch } from "../swatch.js";
+import { black, white } from "../utilities/color-constants.js";
 
 /**
  * @internal

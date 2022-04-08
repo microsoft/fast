@@ -11,8 +11,8 @@ import {
     MenuItemColumnCount,
     MenuItemRole,
     roleForMenuItem,
-} from "../menu-item/index";
-import { FoundationElement } from "../foundation-element";
+} from "../menu-item/index.js";
+import { FoundationElement } from "../foundation-element/foundation-element.js";
 
 /**
  * A Menu Custom HTML Element.
@@ -26,7 +26,7 @@ export class Menu extends FoundationElement {
      */
     @observable
     public items: HTMLSlotElement;
-    private itemsChanged(oldValue, newValue): void {
+    private itemsChanged(oldValue: HTMLElement[], newValue: HTMLElement[]): void {
         // only update children after the component is connected and
         // the setItems has run on connectedCallback
         // (menuItems is undefined until then)
@@ -222,23 +222,14 @@ export class Menu extends FoundationElement {
         }
 
         function elementIndent(el: HTMLElement): MenuItemColumnCount {
-            if (!(el instanceof MenuItem)) {
+            const role = el.getAttribute("role");
+            const startSlot = el.querySelector("[slot=start]");
+
+            if (role !== MenuItemRole.menuitem && startSlot === null) {
                 return 1;
-            }
-            if (
-                el.role !== MenuItemRole.menuitem &&
-                el.querySelector("[slot=start]") === null
-            ) {
+            } else if (role === MenuItemRole.menuitem && startSlot !== null) {
                 return 1;
-            } else if (
-                el.role === MenuItemRole.menuitem &&
-                el.querySelector("[slot=start]") !== null
-            ) {
-                return 1;
-            } else if (
-                el.role !== MenuItemRole.menuitem &&
-                el.querySelector("[slot=start]") !== null
-            ) {
+            } else if (role !== MenuItemRole.menuitem && startSlot !== null) {
                 return 2;
             } else {
                 return 0;
@@ -308,7 +299,7 @@ export class Menu extends FoundationElement {
      * get an array of valid DOM children
      */
     private domChildren(): Element[] {
-        return Array.from(this.children);
+        return Array.from(this.children).filter(child => !child.hasAttribute("hidden"));
     }
 
     /**

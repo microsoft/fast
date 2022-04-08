@@ -14,10 +14,10 @@ import {
     keyHome,
     Orientation,
 } from "@microsoft/fast-web-utilities";
-import type { FoundationElementDefinition } from "../foundation-element";
-import { getDirection } from "../utilities/direction";
-import { convertPixelToPercent } from "./slider-utilities";
-import { FormAssociatedSlider } from "./slider.form-associated";
+import type { FoundationElementDefinition } from "../foundation-element/foundation-element.js";
+import { getDirection } from "../utilities/direction.js";
+import { convertPixelToPercent } from "./slider-utilities.js";
+import { FormAssociatedSlider } from "./slider.form-associated.js";
 
 /**
  * The selection modes of a {@link @microsoft/fast-foundation#(Slider:class)}.
@@ -156,7 +156,7 @@ export class Slider extends FormAssociatedSlider implements SliderConfiguration 
     /**
      * @internal
      */
-    public valueChanged(previous, next): void {
+    public valueChanged(previous: string, next: string): void {
         super.valueChanged(previous, next);
 
         if (this.$fastController.isConnected) {
@@ -374,8 +374,12 @@ export class Slider extends FormAssociatedSlider implements SliderConfiguration 
         const eventAction = `${remove ? "remove" : "add"}EventListener`;
         this[eventAction]("keydown", this.keypressHandler);
         this[eventAction]("mousedown", this.handleMouseDown);
-        this.thumb[eventAction]("mousedown", this.handleThumbMouseDown);
-        this.thumb[eventAction]("touchstart", this.handleThumbMouseDown);
+        this.thumb[eventAction]("mousedown", this.handleThumbMouseDown, {
+            passive: true,
+        });
+        this.thumb[eventAction]("touchstart", this.handleThumbMouseDown, {
+            passive: true,
+        });
         // removes handlers attached by mousedown handlers
         if (remove) {
             this.handleMouseDown(null);
@@ -415,13 +419,12 @@ export class Slider extends FormAssociatedSlider implements SliderConfiguration 
             if (this.readOnly || this.disabled || event.defaultPrevented) {
                 return;
             }
-            event.preventDefault();
             (event.target as HTMLElement).focus();
         }
         const eventAction = `${event !== null ? "add" : "remove"}EventListener`;
         window[eventAction]("mouseup", this.handleWindowMouseUp);
-        window[eventAction]("mousemove", this.handleMouseMove);
-        window[eventAction]("touchmove", this.handleMouseMove);
+        window[eventAction]("mousemove", this.handleMouseMove, { passive: true });
+        window[eventAction]("touchmove", this.handleMouseMove, { passive: true });
         window[eventAction]("touchend", this.handleWindowMouseUp);
         this.isDragging = event !== null;
     };

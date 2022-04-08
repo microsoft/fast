@@ -17,7 +17,7 @@ import {
     FoundationElementDefinition,
 } from "@microsoft/fast-foundation";
 import { Direction, SystemColors } from "@microsoft/fast-web-utilities";
-import { Swatch, SwatchRGB } from "../color/swatch";
+import { Swatch, SwatchRGB } from "../color/swatch.js";
 import {
     accentColor,
     accentFillActiveDelta,
@@ -80,7 +80,7 @@ import {
     typeRampPlus5LineHeight,
     typeRampPlus6FontSize,
     typeRampPlus6LineHeight,
-} from "../design-tokens";
+} from "../design-tokens.js";
 
 /**
  * A {@link ValueConverter} that converts to and from `Swatch` values.
@@ -185,7 +185,7 @@ export class DesignSystemProvider extends FoundationElement {
         converter: swatchConverter,
     })
     @designToken(fillColor)
-    public fillColor: Swatch;
+    public fillColor?: Swatch;
 
     /**
      * Set the accent color
@@ -198,7 +198,7 @@ export class DesignSystemProvider extends FoundationElement {
         mode: "fromView",
     })
     @designToken(accentColor)
-    public accentColor: Swatch;
+    public accentColor?: Swatch;
 
     /**
      * Set the neutral color
@@ -211,7 +211,7 @@ export class DesignSystemProvider extends FoundationElement {
         mode: "fromView",
     })
     @designToken(neutralColor)
-    public neutralColor: Swatch;
+    public neutralColor?: Swatch;
 
     /**
      *
@@ -226,7 +226,7 @@ export class DesignSystemProvider extends FoundationElement {
         converter: nullableNumberConverter,
     })
     @designToken(density)
-    public density: number;
+    public density?: number;
 
     /**
      * The grid-unit that UI dimensions are derived from in pixels.
@@ -241,7 +241,7 @@ export class DesignSystemProvider extends FoundationElement {
         converter: nullableNumberConverter,
     })
     @designToken(designUnit)
-    public designUnit: number;
+    public designUnit?: number;
 
     /**
      * The primary document direction.
@@ -255,7 +255,7 @@ export class DesignSystemProvider extends FoundationElement {
         attribute: "direction",
     })
     @designToken(direction)
-    public direction: Direction;
+    public direction?: Direction;
 
     /**
      * The number of designUnits used for component height at the base density.
@@ -270,7 +270,7 @@ export class DesignSystemProvider extends FoundationElement {
         converter: nullableNumberConverter,
     })
     @designToken(baseHeightMultiplier)
-    public baseHeightMultiplier: number;
+    public baseHeightMultiplier?: number;
 
     /**
      * The number of designUnits used for horizontal spacing at the base density.
@@ -285,7 +285,7 @@ export class DesignSystemProvider extends FoundationElement {
         converter: nullableNumberConverter,
     })
     @designToken(baseHorizontalSpacingMultiplier)
-    public baseHorizontalSpacingMultiplier: number;
+    public baseHorizontalSpacingMultiplier?: number;
 
     /**
      * The corner radius applied to controls.
@@ -300,7 +300,7 @@ export class DesignSystemProvider extends FoundationElement {
         converter: nullableNumberConverter,
     })
     @designToken(controlCornerRadius)
-    public controlCornerRadius: number;
+    public controlCornerRadius?: number;
 
     /**
      * The width of the standard stroke applied to stroke components in pixels.
@@ -315,7 +315,7 @@ export class DesignSystemProvider extends FoundationElement {
         converter: nullableNumberConverter,
     })
     @designToken(strokeWidth)
-    public strokeWidth: number;
+    public strokeWidth?: number;
 
     /**
      * The width of the standard focus stroke in pixels.
@@ -330,7 +330,7 @@ export class DesignSystemProvider extends FoundationElement {
         converter: nullableNumberConverter,
     })
     @designToken(focusStrokeWidth)
-    public focusStrokeWidth: number;
+    public focusStrokeWidth?: number;
 
     /**
      * The opacity of a disabled control.
@@ -345,7 +345,7 @@ export class DesignSystemProvider extends FoundationElement {
         converter: nullableNumberConverter,
     })
     @designToken(disabledOpacity)
-    public disabledOpacity: number;
+    public disabledOpacity?: number;
 
     /**
      * The font-size two steps below the base font-size
@@ -359,7 +359,7 @@ export class DesignSystemProvider extends FoundationElement {
         attribute: "type-ramp-minus-2-font-size",
     })
     @designToken(typeRampMinus2FontSize)
-    public typeRampMinus2FontSize: string;
+    public typeRampMinus2FontSize?: string;
 
     /**
      * The line-height two steps below the base line-height
@@ -373,7 +373,7 @@ export class DesignSystemProvider extends FoundationElement {
         attribute: "type-ramp-minus-2-line-height",
     })
     @designToken(typeRampMinus2LineHeight)
-    public typeRampMinus2LineHeight: string;
+    public typeRampMinus2LineHeight?: string;
 
     /**
      * The font-size one step below the base font-size
@@ -387,7 +387,7 @@ export class DesignSystemProvider extends FoundationElement {
         attribute: "type-ramp-minus-1-font-size",
     })
     @designToken(typeRampMinus1FontSize)
-    public typeRampMinus1FontSize: string;
+    public typeRampMinus1FontSize?: string;
 
     /**
      * The line-height one step below the base line-height
@@ -401,7 +401,7 @@ export class DesignSystemProvider extends FoundationElement {
         attribute: "type-ramp-minus-1-line-height",
     })
     @designToken(typeRampMinus1LineHeight)
-    public typeRampMinus1LineHeight: string;
+    public typeRampMinus1LineHeight?: string;
 
     /**
      * The base font-size of the relative type-ramp scale
@@ -415,7 +415,7 @@ export class DesignSystemProvider extends FoundationElement {
         attribute: "type-ramp-base-font-size",
     })
     @designToken(typeRampBaseFontSize)
-    public typeRampBaseFontSize: string;
+    public typeRampBaseFontSize?: string;
 
     /**
      * The base line-height of the relative type-ramp scale
@@ -429,7 +429,7 @@ export class DesignSystemProvider extends FoundationElement {
         attribute: "type-ramp-base-line-height",
     })
     @designToken(typeRampBaseLineHeight)
-    public typeRampBaseLineHeight: string;
+    public typeRampBaseLineHeight?: string;
 
     /**
      * The font-size one step above the base font-size
@@ -443,7 +443,7 @@ export class DesignSystemProvider extends FoundationElement {
         attribute: "type-ramp-plus-1-font-size",
     })
     @designToken(typeRampPlus1FontSize)
-    public typeRampPlus1FontSize: string;
+    public typeRampPlus1FontSize?: string;
 
     /**
      * The line-height one step above the base line-height
@@ -457,7 +457,7 @@ export class DesignSystemProvider extends FoundationElement {
         attribute: "type-ramp-plus-1-line-height",
     })
     @designToken(typeRampPlus1LineHeight)
-    public typeRampPlus1LineHeight: string;
+    public typeRampPlus1LineHeight?: string;
 
     /**
      * The font-size two steps above the base font-size
@@ -471,7 +471,7 @@ export class DesignSystemProvider extends FoundationElement {
         attribute: "type-ramp-plus-2-font-size",
     })
     @designToken(typeRampPlus2FontSize)
-    public typeRampPlus2FontSize: string;
+    public typeRampPlus2FontSize?: string;
 
     /**
      * The line-height two steps above the base line-height
@@ -485,7 +485,7 @@ export class DesignSystemProvider extends FoundationElement {
         attribute: "type-ramp-plus-2-line-height",
     })
     @designToken(typeRampPlus2LineHeight)
-    public typeRampPlus2LineHeight: string;
+    public typeRampPlus2LineHeight?: string;
 
     /**
      * The font-size three steps above the base font-size
@@ -499,7 +499,7 @@ export class DesignSystemProvider extends FoundationElement {
         attribute: "type-ramp-plus-3-font-size",
     })
     @designToken(typeRampPlus3FontSize)
-    public typeRampPlus3FontSize: string;
+    public typeRampPlus3FontSize?: string;
 
     /**
      * The line-height three steps above the base line-height
@@ -513,7 +513,7 @@ export class DesignSystemProvider extends FoundationElement {
         attribute: "type-ramp-plus-3-line-height",
     })
     @designToken(typeRampPlus3LineHeight)
-    public typeRampPlus3LineHeight: string;
+    public typeRampPlus3LineHeight?: string;
 
     /**
      * The font-size four steps above the base font-size
@@ -527,7 +527,7 @@ export class DesignSystemProvider extends FoundationElement {
         attribute: "type-ramp-plus-4-font-size",
     })
     @designToken(typeRampPlus4FontSize)
-    public typeRampPlus4FontSize: string;
+    public typeRampPlus4FontSize?: string;
 
     /**
      * The line-height four steps above the base line-height
@@ -541,7 +541,7 @@ export class DesignSystemProvider extends FoundationElement {
         attribute: "type-ramp-plus-4-line-height",
     })
     @designToken(typeRampPlus4LineHeight)
-    public typeRampPlus4LineHeight: string;
+    public typeRampPlus4LineHeight?: string;
 
     /**
      * The font-size five steps above the base font-size
@@ -555,7 +555,7 @@ export class DesignSystemProvider extends FoundationElement {
         attribute: "type-ramp-plus-5-font-size",
     })
     @designToken(typeRampPlus5FontSize)
-    public typeRampPlus5FontSize: string;
+    public typeRampPlus5FontSize?: string;
 
     /**
      * The line-height five steps above the base line-height
@@ -569,7 +569,7 @@ export class DesignSystemProvider extends FoundationElement {
         attribute: "type-ramp-plus-5-line-height",
     })
     @designToken(typeRampPlus5LineHeight)
-    public typeRampPlus5LineHeight: string;
+    public typeRampPlus5LineHeight?: string;
 
     /**
      * The font-size six steps above the base font-size
@@ -583,7 +583,7 @@ export class DesignSystemProvider extends FoundationElement {
         attribute: "type-ramp-plus-6-font-size",
     })
     @designToken(typeRampPlus6FontSize)
-    public typeRampPlus6FontSize: string;
+    public typeRampPlus6FontSize?: string;
 
     /**
      * The line-height six steps above the base line-height
@@ -597,7 +597,7 @@ export class DesignSystemProvider extends FoundationElement {
         attribute: "type-ramp-plus-6-line-height",
     })
     @designToken(typeRampPlus6LineHeight)
-    public typeRampPlus6LineHeight: string;
+    public typeRampPlus6LineHeight?: string;
 
     /**
      * The distance from the resolved accent fill color for the rest state of the accent-fill recipe. See {@link @microsoft/fast-components#accentFillRest} for usage in CSS.
@@ -612,7 +612,7 @@ export class DesignSystemProvider extends FoundationElement {
         converter: nullableNumberConverter,
     })
     @designToken(accentFillRestDelta)
-    public accentFillRestDelta: number;
+    public accentFillRestDelta?: number;
 
     /**
      * The distance from the resolved accent fill color for the hover state of the accent-fill recipe. See {@link @microsoft/fast-components#accentFillHover} for usage in CSS.
@@ -627,7 +627,7 @@ export class DesignSystemProvider extends FoundationElement {
         converter: nullableNumberConverter,
     })
     @designToken(accentFillHoverDelta)
-    public accentFillHoverDelta: number;
+    public accentFillHoverDelta?: number;
 
     /**
      * The distance from the resolved accent fill color for the active state of the accent-fill recipe. See {@link @microsoft/fast-components#accentFillActive} for usage in CSS.
@@ -642,7 +642,7 @@ export class DesignSystemProvider extends FoundationElement {
         converter: nullableNumberConverter,
     })
     @designToken(accentFillActiveDelta)
-    public accentFillActiveDelta: number;
+    public accentFillActiveDelta?: number;
 
     /**
      * The distance from the resolved accent fill color for the focus state of the accent-fill recipe. See {@link @microsoft/fast-components#accentFillFocus} for usage in CSS.
@@ -657,7 +657,7 @@ export class DesignSystemProvider extends FoundationElement {
         converter: nullableNumberConverter,
     })
     @designToken(accentFillFocusDelta)
-    public accentFillFocusDelta: number;
+    public accentFillFocusDelta?: number;
 
     /**
      * The distance from the resolved accent foreground color for the rest state of the accent-foreground recipe. See {@link @microsoft/fast-components#accentForegroundRest} for usage in CSS.
@@ -672,7 +672,7 @@ export class DesignSystemProvider extends FoundationElement {
         converter: nullableNumberConverter,
     })
     @designToken(accentForegroundRestDelta)
-    public accentForegroundRestDelta: number;
+    public accentForegroundRestDelta?: number;
 
     /**
      * The distance from the resolved accent foreground color for the hover state of the accent-foreground recipe. See {@link @microsoft/fast-components#accentForegroundHover} for usage in CSS.
@@ -687,7 +687,7 @@ export class DesignSystemProvider extends FoundationElement {
         converter: nullableNumberConverter,
     })
     @designToken(accentForegroundHoverDelta)
-    public accentForegroundHoverDelta: number;
+    public accentForegroundHoverDelta?: number;
 
     /**
      * The distance from the resolved accent foreground color for the active state of the accent-foreground recipe. See {@link @microsoft/fast-components#accentForegroundActive} for usage in CSS.
@@ -702,7 +702,7 @@ export class DesignSystemProvider extends FoundationElement {
         converter: nullableNumberConverter,
     })
     @designToken(accentForegroundActiveDelta)
-    public accentForegroundActiveDelta: number;
+    public accentForegroundActiveDelta?: number;
 
     /**
      * The distance from the resolved accent foreground color for the focus state of the accent-foreground recipe. See {@link @microsoft/fast-components#accentForegroundFocus} for usage in CSS.
@@ -717,7 +717,7 @@ export class DesignSystemProvider extends FoundationElement {
         converter: nullableNumberConverter,
     })
     @designToken(accentForegroundFocusDelta)
-    public accentForegroundFocusDelta: number;
+    public accentForegroundFocusDelta?: number;
 
     /**
      * The distance from the resolved neutral fill color for the rest state of the neutral-fill recipe. See {@link @microsoft/fast-components#neutralFillRest} for usage in CSS.
@@ -732,7 +732,7 @@ export class DesignSystemProvider extends FoundationElement {
         converter: nullableNumberConverter,
     })
     @designToken(neutralFillRestDelta)
-    public neutralFillRestDelta: number;
+    public neutralFillRestDelta?: number;
 
     /**
      * The distance from the resolved neutral fill color for the hover state of the neutral-fill recipe. See {@link @microsoft/fast-components#neutralFillHover} for usage in CSS.
@@ -747,7 +747,7 @@ export class DesignSystemProvider extends FoundationElement {
         converter: nullableNumberConverter,
     })
     @designToken(neutralFillHoverDelta)
-    public neutralFillHoverDelta: number;
+    public neutralFillHoverDelta?: number;
 
     /**
      * The distance from the resolved neutral fill color for the active state of the neutral-fill recipe. See {@link @microsoft/fast-components#neutralFillActive} for usage in CSS.
@@ -762,7 +762,7 @@ export class DesignSystemProvider extends FoundationElement {
         converter: nullableNumberConverter,
     })
     @designToken(neutralFillActiveDelta)
-    public neutralFillActiveDelta: number;
+    public neutralFillActiveDelta?: number;
 
     /**
      * The distance from the resolved neutral fill color for the focus state of the neutral-fill recipe. See {@link @microsoft/fast-components#neutralFillFocus} for usage in CSS.
@@ -777,7 +777,7 @@ export class DesignSystemProvider extends FoundationElement {
         converter: nullableNumberConverter,
     })
     @designToken(neutralFillFocusDelta)
-    public neutralFillFocusDelta: number;
+    public neutralFillFocusDelta?: number;
 
     /**
      * The distance from the resolved neutral fill input color for the rest state of the neutral-fill-input recipe. See {@link @microsoft/fast-components#neutralFillInputRest} for usage in CSS.
@@ -792,7 +792,7 @@ export class DesignSystemProvider extends FoundationElement {
         converter: nullableNumberConverter,
     })
     @designToken(neutralFillInputRestDelta)
-    public neutralFillInputRestDelta: number;
+    public neutralFillInputRestDelta?: number;
 
     /**
      * The distance from the resolved neutral fill input color for the hover state of the neutral-fill-input recipe. See {@link @microsoft/fast-components#neutralFillInputHover} for usage in CSS.
@@ -807,7 +807,7 @@ export class DesignSystemProvider extends FoundationElement {
         converter: nullableNumberConverter,
     })
     @designToken(neutralFillInputHoverDelta)
-    public neutralFillInputHoverDelta: number;
+    public neutralFillInputHoverDelta?: number;
 
     /**
      * The distance from the resolved neutral fill input color for the active state of the neutral-fill-input recipe. See {@link @microsoft/fast-components#neutralFillInputActive} for usage in CSS.
@@ -822,7 +822,7 @@ export class DesignSystemProvider extends FoundationElement {
         converter: nullableNumberConverter,
     })
     @designToken(neutralFillInputActiveDelta)
-    public neutralFillInputActiveDelta: number;
+    public neutralFillInputActiveDelta?: number;
 
     /**
      * The distance from the resolved neutral fill input color for the focus state of the neutral-fill-input recipe. See {@link @microsoft/fast-components#neutralFillInputFocus} for usage in CSS.
@@ -837,7 +837,7 @@ export class DesignSystemProvider extends FoundationElement {
         converter: nullableNumberConverter,
     })
     @designToken(neutralFillInputFocusDelta)
-    public neutralFillInputFocusDelta: number;
+    public neutralFillInputFocusDelta?: number;
 
     /**
      * The distance from the resolved neutral fill stealth color for the rest state of the neutral-fill-stealth recipe. See {@link @microsoft/fast-components#neutralFillStealthRest} for usage in CSS.
@@ -852,7 +852,7 @@ export class DesignSystemProvider extends FoundationElement {
         converter: nullableNumberConverter,
     })
     @designToken(neutralFillStealthRestDelta)
-    public neutralFillStealthRestDelta: number;
+    public neutralFillStealthRestDelta?: number;
 
     /**
      * The distance from the resolved neutral fill stealth color for the hover state of the neutral-fill-stealth recipe. See {@link @microsoft/fast-components#neutralFillStealthHover} for usage in CSS.
@@ -867,7 +867,7 @@ export class DesignSystemProvider extends FoundationElement {
         converter: nullableNumberConverter,
     })
     @designToken(neutralFillStealthHoverDelta)
-    public neutralFillStealthHoverDelta: number;
+    public neutralFillStealthHoverDelta?: number;
 
     /**
      * The distance from the resolved neutral fill stealth color for the active state of the neutral-fill-stealth recipe. See {@link @microsoft/fast-components#neutralFillStealthActive} for usage in CSS.
@@ -882,7 +882,7 @@ export class DesignSystemProvider extends FoundationElement {
         converter: nullableNumberConverter,
     })
     @designToken(neutralFillStealthActiveDelta)
-    public neutralFillStealthActiveDelta: number;
+    public neutralFillStealthActiveDelta?: number;
 
     /**
      * The distance from the resolved neutral fill stealth color for the focus state of the neutral-fill-stealth recipe. See {@link @microsoft/fast-components#neutralFillStealthFocus} for usage in CSS.
@@ -897,7 +897,7 @@ export class DesignSystemProvider extends FoundationElement {
         converter: nullableNumberConverter,
     })
     @designToken(neutralFillStealthFocusDelta)
-    public neutralFillStealthFocusDelta: number;
+    public neutralFillStealthFocusDelta?: number;
 
     /**
      * The distance from the resolved neutral fill strong color for the hover state of the neutral-fill-strong recipe. See {@link @microsoft/fast-components#neutralFillStrongHover} for usage in CSS.
@@ -912,7 +912,7 @@ export class DesignSystemProvider extends FoundationElement {
         converter: nullableNumberConverter,
     })
     @designToken(neutralFillStrongHoverDelta)
-    public neutralFillStrongHoverDelta: number;
+    public neutralFillStrongHoverDelta?: number;
 
     /**
      * The distance from the resolved neutral fill strong color for the active state of the neutral-fill-strong recipe. See {@link @microsoft/fast-components#neutralFillStrongActive} for usage in CSS.
@@ -927,7 +927,7 @@ export class DesignSystemProvider extends FoundationElement {
         converter: nullableNumberConverter,
     })
     @designToken(neutralFillStrongActiveDelta)
-    public neutralFillStrongActiveDelta: number;
+    public neutralFillStrongActiveDelta?: number;
 
     /**
      * The distance from the resolved neutral fill strong color for the focus state of the neutral-fill-strong recipe. See {@link @microsoft/fast-components#neutralFillStrongFocus} for usage in CSS.
@@ -942,7 +942,7 @@ export class DesignSystemProvider extends FoundationElement {
         converter: nullableNumberConverter,
     })
     @designToken(neutralFillStrongFocusDelta)
-    public neutralFillStrongFocusDelta: number;
+    public neutralFillStrongFocusDelta?: number;
 
     /**
      * The {@link https://www.w3.org/WAI/GL/wiki/Relative_luminance#:~:text=WCAG%20definition%20of%20relative%20luminance,and%201%20for%20lightest%20white|relative luminance} of the base layer of the application.
@@ -959,7 +959,7 @@ export class DesignSystemProvider extends FoundationElement {
         converter: nullableNumberConverter,
     })
     @designToken(baseLayerLuminance)
-    public baseLayerLuminance: number; // 0...1
+    public baseLayerLuminance?: number; // 0...1
 
     /**
      * The distance from the background-color to resolve the card background. See {@link @microsoft/fast-components#neutralFillLayerRest} for usage in CSS.
@@ -974,7 +974,7 @@ export class DesignSystemProvider extends FoundationElement {
         converter: nullableNumberConverter,
     })
     @designToken(neutralFillLayerRestDelta)
-    public neutralFillLayerRestDelta: number;
+    public neutralFillLayerRestDelta?: number;
 
     /**
      * The distance from the resolved neutral divider color for the rest state of the neutral-foreground recipe. See {@link @microsoft/fast-components#neutralStrokeDividerRest} for usage in CSS.
@@ -989,7 +989,7 @@ export class DesignSystemProvider extends FoundationElement {
         converter: nullableNumberConverter,
     })
     @designToken(neutralStrokeDividerRestDelta)
-    public neutralStrokeDividerRestDelta: number;
+    public neutralStrokeDividerRestDelta?: number;
 
     /**
      * The distance from the resolved neutral stroke color for the rest state of the neutral-stroke recipe. See {@link @microsoft/fast-components#neutralStrokeRest} for usage in CSS.
@@ -1004,7 +1004,7 @@ export class DesignSystemProvider extends FoundationElement {
         converter: nullableNumberConverter,
     })
     @designToken(neutralStrokeRestDelta)
-    public neutralStrokeRestDelta: number;
+    public neutralStrokeRestDelta?: number;
 
     /**
      * The distance from the resolved neutral stroke color for the hover state of the neutral-stroke recipe. See {@link @microsoft/fast-components#neutralStrokeHover} for usage in CSS.
@@ -1019,7 +1019,7 @@ export class DesignSystemProvider extends FoundationElement {
         converter: nullableNumberConverter,
     })
     @designToken(neutralStrokeHoverDelta)
-    public neutralStrokeHoverDelta: number;
+    public neutralStrokeHoverDelta?: number;
 
     /**
      * The distance from the resolved neutral stroke color for the active state of the neutral-stroke recipe. See {@link @microsoft/fast-components#neutralStrokeActive} for usage in CSS.
@@ -1034,7 +1034,7 @@ export class DesignSystemProvider extends FoundationElement {
         converter: nullableNumberConverter,
     })
     @designToken(neutralStrokeActiveDelta)
-    public neutralStrokeActiveDelta: number;
+    public neutralStrokeActiveDelta?: number;
 
     /**
      * The distance from the resolved neutral stroke color for the focus state of the neutral-stroke recipe. See {@link @microsoft/fast-components#neutralStrokeFocus} for usage in CSS.
@@ -1049,7 +1049,7 @@ export class DesignSystemProvider extends FoundationElement {
         converter: nullableNumberConverter,
     })
     @designToken(neutralStrokeFocusDelta)
-    public neutralStrokeFocusDelta: number;
+    public neutralStrokeFocusDelta?: number;
 }
 
 /**

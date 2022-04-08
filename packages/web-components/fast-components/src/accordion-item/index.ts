@@ -3,7 +3,7 @@ import {
     AccordionItemOptions,
     accordionItemTemplate as template,
 } from "@microsoft/fast-foundation";
-import { accordionItemStyles as styles } from "./accordion-item.styles";
+import { accordionItemStyles as styles } from "./accordion-item.styles.js";
 
 /**
  * A function that returns a {@link @microsoft/fast-foundation#AccordionItem} registration for configuring the component with a DesignSystem.
@@ -18,7 +18,7 @@ export const fastAccordionItem = AccordionItem.compose<AccordionItemOptions>({
     baseName: "accordion-item",
     template,
     styles,
-    collapsedIcon: `
+    collapsedIcon: /* html */ `
         <svg
             width="20"
             height="20"
@@ -32,7 +32,7 @@ export const fastAccordionItem = AccordionItem.compose<AccordionItemOptions>({
             />
         </svg>
     `,
-    expandedIcon: `
+    expandedIcon: /* html */ `
         <svg
             width="20"
             height="20"

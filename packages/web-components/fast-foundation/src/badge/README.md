@@ -38,10 +38,6 @@ fast-badge {
 <fast-badge fill="danger" color="dark">Danger</fast-badge>
 ```
 
-:::note
-In addition to the color map support detailed above, the `fast-badge` from the Microsoft component implementation (`@fluentui/web-components`) includes an attribute to set default appearances which ensure WCAG 2.1 AA contrast requirements.
-:::
-
 ## Create your own design
 
 ```ts
@@ -54,6 +50,48 @@ export const myBadge = Badge.compose({
     styles,
 });
 ```
+
+## API
+
+
+
+### class: `Badge`
+
+#### Superclass
+
+| Name                | Module                                        | Package |
+| ------------------- | --------------------------------------------- | ------- |
+| `FoundationElement` | /src/foundation-element/foundation-element.js |         |
+
+#### Fields
+
+| Name                 | Privacy | Type                                  | Default | Description                                                                                                                                                                         | Inherited From    |
+| -------------------- | ------- | ------------------------------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
+| `fill`               | public  | `string`                              |         | Indicates the badge should have a filled style.                                                                                                                                     |                   |
+| `color`              | public  | `string`                              |         | Indicates the badge should have a filled style.                                                                                                                                     |                   |
+| `circular`           | public  | `boolean`                             |         | Indicates the element should be circular                                                                                                                                            |                   |
+| `generateBadgeStyle` | public  |                                       |         |                                                                                                                                                                                     |                   |
+| `$presentation`      | public  | `ComponentPresentation or null`       |         | A property which resolves the ComponentPresentation instance for the current component.                                                                                             | FoundationElement |
+| `template`           | public  | `ElementViewTemplate or void or null` |         | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.          | FoundationElement |
+| `styles`             | public  | `ElementStyles or void or null`       |         | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition. | FoundationElement |
+
+#### Methods
+
+| Name              | Privacy   | Description | Parameters | Return | Inherited From    |
+| ----------------- | --------- | ----------- | ---------- | ------ | ----------------- |
+| `templateChanged` | protected |             |            | `void` | FoundationElement |
+| `stylesChanged`   | protected |             |            | `void` | FoundationElement |
+
+#### Attributes
+
+| Name    | Field    | Inherited From |
+| ------- | -------- | -------------- |
+| `fill`  | fill     |                |
+| `color` | color    |                |
+|         | circular |                |
+
+<hr/>
+
 
 ## Additional resources
 

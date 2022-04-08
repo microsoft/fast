@@ -3,7 +3,7 @@ import {
     ListboxElement as FoundationListboxElement,
     listboxTemplate as template,
 } from "@microsoft/fast-foundation";
-import { listboxStyles as styles } from "./listbox.styles";
+import { listboxStyles as styles } from "./listbox.styles.js";
 
 /**
  * Base class for Listbox.
@@ -16,7 +16,7 @@ export class Listbox extends FoundationListboxElement {
      *
      * @internal
      */
-    private sizeStylesheet: ElementStyles | void;
+    private sizeStylesheet: ElementStyles | void | undefined;
 
     /**
      * Updates the component dimensions when the size property is changed.

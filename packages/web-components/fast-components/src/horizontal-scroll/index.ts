@@ -8,7 +8,7 @@ import {
 import {
     ActionsStyles,
     horizontalScrollStyles as styles,
-} from "./horizontal-scroll.styles";
+} from "./horizontal-scroll.styles.js";
 
 /**
  * @internal

@@ -3,7 +3,7 @@ import {
     ProgressOptions,
     progressTemplate as template,
 } from "@microsoft/fast-foundation";
-import { progressStyles as styles } from "./progress.styles";
+import { progressStyles as styles } from "./progress.styles.js";
 
 /**
  * A function that returns a {@link @microsoft/fast-foundation#BaseProgress} registration for configuring the component with a DesignSystem.
@@ -18,10 +18,10 @@ export const fastProgress = Progress.compose<ProgressOptions>({
     baseName: "progress",
     template,
     styles,
-    indeterminateIndicator1: `
+    indeterminateIndicator1: /* html */ `
         <span class="indeterminate-indicator-1" part="indeterminate-indicator-1"></span>
     `,
-    indeterminateIndicator2: `
+    indeterminateIndicator2: /* html */ `
         <span class="indeterminate-indicator-1" part="indeterminate-indicator-1"></span>
     `,
 });

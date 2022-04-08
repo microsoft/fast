@@ -2,13 +2,19 @@ import { STORY_RENDERED } from "@storybook/core-events";
 import addons from "@storybook/addons";
 import type { Tooltip as FoundationTooltip } from "@microsoft/fast-foundation";
 import TooltipTemplate from "./fixtures/base.html";
-import "../button";
-import "./index";
 
 function onShowClick(): void {
     for (let i = 1; i <= 4; i++) {
         const tooltipInstance = document.getElementById(
             `tooltip-show-${i}`
+        ) as FoundationTooltip;
+        tooltipInstance.visible = !tooltipInstance.visible;
+    }
+}
+function onShowCornersClick(): void {
+    for (let i = 1; i <= 4; i++) {
+        const tooltipInstance = document.getElementById(
+            `tooltip-show-corners-${i}`
         ) as FoundationTooltip;
         tooltipInstance.visible = !tooltipInstance.visible;
     }
@@ -54,6 +60,10 @@ addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
 
         const showButton = document.getElementById("anchor-show") as HTMLElement;
         showButton.addEventListener("click", onShowClick);
+        const showButtonCorners = document.getElementById(
+            "anchor-show-corners"
+        ) as HTMLElement;
+        showButtonCorners.addEventListener("click", onShowCornersClick);
     }
 });
 

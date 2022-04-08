@@ -6,13 +6,13 @@ import {
     observable,
 } from "@microsoft/fast-element";
 import type { SyntheticViewTemplate } from "@microsoft/fast-element";
-import { FoundationElement } from "../foundation-element";
+import { FoundationElement } from "../foundation-element/foundation-element.js";
 import type {
     FoundationElementDefinition,
     FoundationElementTemplate,
-} from "../foundation-element";
-import type { StartEndOptions } from "../patterns/start-end";
-import type { ResizeObserverClassDefinition } from "../utilities/resize-observer";
+} from "../foundation-element/foundation-element.js";
+import type { StartEndOptions } from "../patterns/start-end.js";
+import type { ResizeObserverClassDefinition } from "../utilities/resize-observer.js";
 
 /**
  * The views types for a horizontal-scroll {@link @microsoft/fast-foundation#(HorizontalScroll:class)}
@@ -222,7 +222,7 @@ export class HorizontalScroll extends FoundationElement {
      * @param next - new updated scroll items
      * @public
      */
-    public scrollItemsChanged(previous, next) {
+    public scrollItemsChanged(previous: HTMLElement[], next: HTMLElement[]) {
         if (next && !this.updatingItems) {
             DOM.queueUpdate(() => this.setStops());
         }
@@ -380,7 +380,7 @@ export class HorizontalScroll extends FoundationElement {
             stop => Math.abs(stop) + this.width > right
         );
 
-        if (nextIndex > current || nextIndex === -1) {
+        if (nextIndex >= current || nextIndex === -1) {
             nextIndex = current > 0 ? current - 1 : 0;
         }
 

@@ -4,14 +4,19 @@ import {
     SyntheticViewTemplate,
 } from "@microsoft/fast-element";
 import { keyEnter } from "@microsoft/fast-web-utilities";
-import type { StartEndOptions } from "..";
-import { FoundationElement } from "../foundation-element";
+import type { StartEndOptions } from "../patterns/start-end.js";
+import { FoundationElement } from "../foundation-element/foundation-element.js";
 import type {
     FoundationElementDefinition,
     FoundationElementTemplate,
-} from "../foundation-element";
-import type { DayFormat, MonthFormat, WeekdayFormat, YearFormat } from "./date-formatter";
-import { DateFormatter } from "./date-formatter";
+} from "../foundation-element/foundation-element.js";
+import type {
+    DayFormat,
+    MonthFormat,
+    WeekdayFormat,
+    YearFormat,
+} from "./date-formatter.js";
+import { DateFormatter } from "./date-formatter.js";
 
 /**
  * Information about a month
@@ -184,9 +189,9 @@ export class Calendar extends FoundationElement {
         month: number = this.month,
         year: number = this.year
     ): CalendarInfo {
-        const getFirstDay: (Date) => number = (date: Date) =>
+        const getFirstDay = (date: Date) =>
             new Date(date.getFullYear(), date.getMonth(), 1).getDay();
-        const getLength = date => {
+        const getLength = (date: Date) => {
             const nextMonth = new Date(date.getFullYear(), date.getMonth() + 1, 1);
             return new Date(nextMonth.getTime() - this.oneDayInMs).getDate();
         };

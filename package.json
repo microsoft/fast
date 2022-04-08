@@ -30,7 +30,8 @@
     ]
   },
   "engines": {
-    "yarn": ">=1.13 <2"
+    "yarn": ">=1.13 <2",
+    "node": ">15.0.0"
   },
   "repository": {
     "type": "git",
@@ -135,7 +136,6 @@
     "trim": "^0.0.3",
     "typescript": "^3.9.0",
     "ua-parser-js": "^0.7.28",
-    "url-parse": "^1.5.0",
     "ws": "^7.4.6",
     "xmlhttprequest-ssl": "^1.6.2"
   },

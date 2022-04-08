@@ -1,11 +1,9 @@
-import { attr, DOM } from "@microsoft/fast-element";
+import { attr } from "@microsoft/fast-element";
 import {
     Search as FoundationSearch,
     searchTemplate as template,
 } from "@microsoft/fast-foundation";
-import { Swatch } from "../color/swatch";
-import { fillColor, neutralFillRecipe } from "../design-tokens";
-import { searchStyles as styles } from "./search.styles";
+import { searchStyles as styles } from "./search.styles.js";
 
 /**
  * Search appearances
@@ -26,22 +24,6 @@ export class Search extends FoundationSearch {
      */
     @attr
     public appearance: SearchAppearance = "outline";
-    private appearanceChanged(oldValue: string, newValue: string): void {
-        // queueUpdate waits for this.root to be defined
-        DOM.queueUpdate(() => {
-            if (newValue === "filled") {
-                fillColor.setValueFor(
-                    this.root,
-                    (target: HTMLElement): Swatch =>
-                        neutralFillRecipe
-                            .getValueFor(target)
-                            .evaluate(target, fillColor.getValueFor(this)).rest
-                );
-            } else if (oldValue === "filled") {
-                fillColor.deleteValueFor(this.root);
-            }
-        });
-    }
 }
 
 /**
