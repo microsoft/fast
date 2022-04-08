@@ -30,7 +30,8 @@
     ]
   },
   "engines": {
-    "yarn": ">=1.13 <2"
+    "yarn": ">=1.13 <2",
+    "node": ">15.0.0"
   },
   "repository": {
     "type": "git",
