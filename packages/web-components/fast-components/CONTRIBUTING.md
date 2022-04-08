@@ -14,7 +14,6 @@ Create a scenario file by adding an `index.html` file inside of a `scenarios` fo
 
 ```text
 my-component/
-  └─ fixtures/
   └─ scenarios/index.html <--
   └─ my-component.stories.ts
   └─ my-component.styles.ts
@@ -42,7 +41,6 @@ First create a `.json` (JSON) file using spinal-case. This should be the name of
 
 ```text
 my-component/
-  └─ fixtures/
   └─ index.ts
   └─ my-component.vscode.definition.json <--
   └─ my-component.stories.ts
@@ -64,9 +62,8 @@ In addition to a component definition file each component must have an [Open UI 
 
 ```text
 my-component/
-  └─ fixtures/
   └─ index.ts
-  └─ my-component.vscode.definition.json 
+  └─ my-component.vscode.definition.json
   └─ my-component.open-ui.definition.json <--
   └─ my-component.stories.ts
   └─ my-component.styles.ts
@@ -76,8 +73,8 @@ my-component/
 
 ```json
 {
-  "name": "My-Component",
-  "url": "https://fast.design/docs/components/my-component"
+    "name": "My-Component",
+    "url": "https://fast.design/docs/components/my-component"
 }
 ```
 
@@ -91,32 +88,7 @@ Each component must have a [configuration](https://github.com/microsoft/fast/tre
 
 ### Storybook
 
-Each component should have a Storybook story, and an accompanying fixture to go along with it. The fixture should be a plain HTML file in the `fixtures/` directory.
-
-#### Story fixture
-
-First, make a `fixtures` directory and place a new `.html` fixture file in the directory:
-
-```text
-my-component/
-  └─ fixtures/
-    └─ base.html <--
-  └─ my-component.stories.ts
-  └─ index.ts
-  └─ ...
-```
-
-The fixture file should be plain HTML, and should contain different scenarios separated with headings:
-
-```html
-<h1>My Component</h1>
-
-<h2>Default</h2>
-<my-component></my-component>
-
-<h2>Fancy</h2>
-<my-component appearance="fancy"></my-component>
-```
+Each component should have a Storybook story.
 
 #### Story module
 
@@ -124,27 +96,46 @@ Create a `.ts` (typescript) file using spinal-case. This should be the name of y
 
 ```text
 my-component/
-  └─ fixtures/
-    └─ base.html
   └─ my-component.stories.ts <--
   └─ ...
 ```
 
-Edit the story file to import the fixture file, the component, and set up the storybook exports:
+Edit the story file to create a component template, and set up the storybook exports:
 
 ```ts
-import Fixture from "./fixtures/base.html";
-import "./index";
+import { html } from "@microsoft/fast-element";
+import { renderComponent } from "../storybook-helpers.js";
+import type { Args, Meta } from "@storybook/html";
+import type { MyComponent } from "./index.js";
+
+const componentTemplate = html<MyComponent>`
+    <my-component appearance="${x => x.appearance || null}">
+        ${repeat(
+            x => x.content,
+            html`
+                ${x => x}
+            `
+        )}
+    </my-component>
+`;
 
 export default {
-  title: "My Component",
-};
+    title: "My Component",
+    args: {
+        content: ["Hello!"]
+    }
+} as Meta<typeof MyComponent>;
 
-export MyComponent = () => Fixture;
+// The default story export
+export Primary = renderComponent(componentTemplate).bind({});
+
+// define any alternative stories as well
+export Secondary = renderComponent(componentTemplate).bind({});
+Secondary.args = {
+    appearance: "lightweight",
+}
 ```
 
 Make sure to import any other required components as side-effect only imports.
-
-_Note: the `title` field and the scenario export should match; Storybook will try to match the PascalCase export to the space-separated `title` field when generating its sidebar controls._
 
 To run Storybook locally, run `yarn start` and navigate to the local URL provided.
