@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "set disclosure appearance attribute in connected callback to ensure the element can be constructed without error",
+  "packageName": "@microsoft/fast-components",
+  "email": "chhol@microsoft.com",
+  "dependentChangeType": "patch"
+}
