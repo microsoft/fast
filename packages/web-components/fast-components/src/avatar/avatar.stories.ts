@@ -20,7 +20,7 @@ export default {
     title: "Avatar",
     decorators: [
         Story => {
-            const renderedStory = Story() as Avatar;
+            const renderedStory = Story() as DocumentFragment;
             const styles = document.createElement("style");
             styles.innerHTML = /* css */ `
                 fast-avatar {
