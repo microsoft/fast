@@ -2,8 +2,11 @@
     "name": "fast-benchmarks-wendy",
     "version": "1.0.0",
     "description": "",
+    "types": "dist/dts/**/*",
     "scripts": {
-        "benchmark": "tach --config fast-element/tachometer.json",
+        "benchmark:render": "tach --config fast-element/render/tachometer.json",
+        "benchmark:binding": "tach --config fast-element/binding/tachometer.json",
+        "debug:binding": "tach --config fast-element/binding/tachometer.json --manual",
         "build": "tsc --build"
     },
     "author": "Microsoft",

@@ -1,0 +1,63 @@
+{
+    "$schema": "https://raw.githubusercontent.com/Polymer/tachometer/master/config.schema.json",
+    "sampleSize": 20,
+    "timeout": 0,
+    "benchmarks": [
+        {
+            "url": "fast-element/binding/index.html",
+            "browser": {
+                "name": "chrome",
+                "headless": false
+            },
+            "packageVersions": {
+                "label": "master",
+                "dependencies": {
+                    "@microsoft/fast-element": {
+                        "kind": "git",
+                        "repo": "https://github.com/microsoft/fast.git",
+                        "ref": "master",
+                        "subdir": "packages/web-components/fast-element",
+                        "setupCommands": [
+                            "yarn install",
+                            "yarn --cwd ./packages/web-components/fast-element build"
+                        ]
+                    }
+                }
+            },
+            "measurement": [
+                {
+                    "mode": "performance",
+                    "entryName": "binding"
+                }
+            ]
+        },
+        {
+            "url": "fast-element/binding/index2.html",
+            "browser": {
+                "name": "chrome",
+                "headless": false
+            },
+            "packageVersions": {
+                "label": "fast-element-2",
+                "dependencies": {
+                    "@microsoft/fast-element": {
+                        "kind": "git",
+                        "repo": "https://github.com/microsoft/fast.git",
+                        "ref": "features/fast-element-2",
+                        "subdir": "packages/web-components/fast-element",
+                        "setupCommands": [
+                            "yarn install",
+                            "yarn --cwd ./packages/web-components/fast-element build"
+                        ]
+                    }
+                }
+            },
+            "measurement": [
+                {
+                    "mode": "performance",
+                    "entryName": "binding"
+                }
+            ]
+        }
+    ]
+}

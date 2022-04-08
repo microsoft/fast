@@ -4,8 +4,7 @@
         "target": "es2019",
         "module": "esnext",
         "lib": ["es2020", "DOM", "DOM.Iterable"],
-        "declarationDir": "dist/dts",
-        "outDir": "dist/esm",
+        "declaration": true,
         "strict": true,
         "noUnusedParameters": true,
         "noImplicitReturns": true,
@@ -16,6 +15,6 @@
         "allowSyntheticDefaultImports": true,
         "experimentalDecorators": true
     },
-    "include": ["fast-element/*.ts", "utils/**/*.ts"],
+    "include": ["fast-element/**/*.ts", "utils/**/*.ts"],
     "exclude": []
 }

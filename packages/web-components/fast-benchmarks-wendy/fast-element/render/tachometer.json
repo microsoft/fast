@@ -5,10 +5,10 @@
     "benchmarks": [
         {
             "name": "fast-element",
-            "url": "fast-element/index.html",
+            "url": "fast-element/render/index.html",
             "browser": {
                 "name": "chrome",
-                "headless": false
+                "headless": true
             },
             "measurement": [
                 {

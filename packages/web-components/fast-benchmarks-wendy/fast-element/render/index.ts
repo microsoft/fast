@@ -8,7 +8,7 @@ import {
     repeat,
 } from "@microsoft/fast-element";
 
-// import { _random, adjectives, colours, nouns } from "./utils";
+import { _random, adjectives, colours, nouns } from "../../utils/constants.js";
 
 const itemCount = 250;
 const updateCount = 6;
@@ -33,66 +33,6 @@ export const measureMemory = () => {
         window.usedJSHeapSize = 0;
     }
 };
-
-export const _random = (max: number) => {
-    return Math.round(Math.random() * 1000) % max;
-};
-
-export const adjectives = [
-    "pretty",
-    "large",
-    "big",
-    "small",
-    "tall",
-    "short",
-    "long",
-    "handsome",
-    "plain",
-    "quaint",
-    "clean",
-    "elegant",
-    "easy",
-    "angry",
-    "crazy",
-    "helpful",
-    "mushy",
-    "odd",
-    "unsightly",
-    "adorable",
-    "important",
-    "inexpensive",
-    "cheap",
-    "expensive",
-    "fancy",
-];
-export const colours = [
-    "red",
-    "yellow",
-    "blue",
-    "green",
-    "pink",
-    "brown",
-    "purple",
-    "brown",
-    "white",
-    "black",
-    "orange",
-];
-export const nouns = [
-    "table",
-    "chair",
-    "house",
-    "bbq",
-    "desk",
-    "car",
-    "pony",
-    "cookie",
-    "sandwich",
-    "burger",
-    "pizza",
-    "mouse",
-    "keyboard",
-];
 
 export class RandomItem {
     @observable label: string;
@@ -190,19 +130,19 @@ class XApp extends FASTElement {
     await render();
     // measureMemory();
 
-    const update = async () => {
-        const test = "update";
-        el = create();
-        const start = getTestStartName(test);
-        performance.mark(start);
-        for (let i = 0; i < updateCount; i++) {
-            el.items = i % 2 ? otherData : data;
-            await updateComplete();
-        }
-        performance.measure(test, start);
-        destroy();
-    };
-    await update();
+    // const update = async () => {
+    //     const test = "update";
+    //     el = create();
+    //     const start = getTestStartName(test);
+    //     performance.mark(start);
+    //     for (let i = 0; i < updateCount; i++) {
+    //         el.items = i % 2 ? otherData : data;
+    //         await updateComplete();
+    //     }
+    //     performance.measure(test, start);
+    //     destroy();
+    // };
+    // await update();
     // measureMemory();
 
     // Log

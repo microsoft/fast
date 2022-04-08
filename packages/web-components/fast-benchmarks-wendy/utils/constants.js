@@ -1,27 +1,6 @@
-declare global {
-    interface Window {
-        usedJSHeapSize: any;
-        gc: any;
-    }
-    interface Performance {
-        memory: any;
-    }
-}
-
-export const measureMemory = () => {
-    if ("gc" in window && "memory" in performance) {
-        // Report results in MBs\
-        window.gc();
-        window.usedJSHeapSize = performance.memory.usedJSHeapSize / 1e6;
-    } else {
-        window.usedJSHeapSize = 0;
-    }
-};
-
-export const _random = (max: number) => {
+export const _random = (max) => {
     return Math.round(Math.random() * 1000) % max;
 };
-
 export const adjectives = [
     "pretty",
     "large",
