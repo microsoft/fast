@@ -4,8 +4,6 @@
         "declarationDir": "dist/dts",
         "outDir": "dist/esm",
         "experimentalDecorators": true,
-        "suppressImplicitAnyIndexErrors": true,
-        "strictPropertyInitialization": false,
         "noImplicitAny": false,
         "target": "es2015",
         "module": "ESNext",
