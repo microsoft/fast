@@ -14,6 +14,6 @@ export const renderComponent = (template: ViewTemplate) => {
     return function (args: Args) {
         const storyFragment = new DocumentFragment();
         template.render(args, storyFragment);
-        return storyFragment.firstElementChild;
+        return storyFragment;
     };
 };
