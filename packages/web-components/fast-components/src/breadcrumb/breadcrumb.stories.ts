@@ -207,17 +207,17 @@ DynamicBreadcrumbs.args = {
 };
 DynamicBreadcrumbs.decorators = [
     Story => {
-        const storyFragment = new DocumentFragment();
-
-        const renderedStory = Story() as Breadcrumb;
-        storyFragment.appendChild(renderedStory);
+        const renderedStory = Story() as DocumentFragment;
 
         const addButton = document.createElement("fast-button") as Button;
         addButton.appearance = "accent";
         addButton.textContent = "Add Breadcrumb";
+        renderedStory.appendChild(addButton);
 
-        addButton.addEventListener("click", () => {
-            const items = renderedStory.querySelectorAll("fast-breadcrumb-item");
+        addButton.addEventListener("click", function () {
+            const root = addButton.parentElement;
+            const breadcrumbs = root?.querySelector("fast-breadcrumb");
+            const items = breadcrumbs?.querySelectorAll("fast-breadcrumb-item");
             if (!items) {
                 return;
             }
@@ -225,10 +225,10 @@ DynamicBreadcrumbs.decorators = [
             const item = document.createElement("fast-breadcrumb-item");
             item.setAttribute("href", "#");
             item.textContent = `Breadcrumb item ${items.length + 1}`;
-            renderedStory.appendChild(item);
+
+            breadcrumbs?.appendChild(item);
         });
 
-        storyFragment.appendChild(addButton);
-        return storyFragment;
+        return renderedStory;
     },
 ] as Meta["decorators"];
