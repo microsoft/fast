@@ -70,7 +70,7 @@ function CardLink({ item }) {
             href={item.href}
             icon={icon}
             title={item.label}
-            description={doc?.description}
+            description={item.customProps?.description || doc?.description}
         />
     );
 }

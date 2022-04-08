@@ -134,11 +134,45 @@ module.exports = {
                 type: "generated-index",
             },
             items: [
-                "api/fast-animation",
-                "api/fast-colors",
-                "api/fast-components",
-                "api/fast-element",
-                "api/fast-foundation",
+                {
+                    type: "doc",
+                    id: "api/fast-animation",
+                    customProps: {
+                        description: "Exlore fast-animation Classes and Functions.",
+                    },
+                },
+                {
+                    type: "doc",
+                    id: "api/fast-colors",
+                    customProps: {
+                        description:
+                            "Explore fast-colors Classes, Enumerations, Functions, Interfaces, Variables, and Type Aliases.",
+                    },
+                },
+                {
+                    type: "doc",
+                    id: "api/fast-components",
+                    customProps: {
+                        description:
+                            "Explore fast-components Classes, Enumerations, Functions, Interfaces, Variables, and Type Aliases.",
+                    },
+                },
+                {
+                    type: "doc",
+                    id: "api/fast-element",
+                    customProps: {
+                        description:
+                            "Explore fast-element Classes, Functions, Interfaces, Variables, and Type Aliases.",
+                    },
+                },
+                {
+                    type: "doc",
+                    id: "api/fast-foundation",
+                    customProps: {
+                        description:
+                            "Explore fast-foundation Classes, Enumerations, Functions, Interfaces, Variables, and Type Aliases.",
+                    },
+                },
             ],
         },
         {
