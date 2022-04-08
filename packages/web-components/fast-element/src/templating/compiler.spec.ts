@@ -7,7 +7,7 @@ import { css } from "../styles/css";
 import { toHTML, uniqueElementName } from "../__test__/helpers";
 import { bind, HTMLBindingDirective } from "./binding";
 import { Compiler } from "./compiler";
-import type { HTMLDirective, ViewBehaviorFactory } from "./html-directive";
+import type { HTMLDirective, HTMLDirectiveContext, ViewBehaviorFactory } from "./html-directive";
 import { html } from "./template";
 import type { StyleTarget } from "../interfaces";
 
@@ -22,11 +22,26 @@ interface CompilationResultInternals {
 
 describe("The template compiler", () => {
     function compile(html: string, directives: HTMLDirective[]) {
-        return Compiler.compile(html, directives) as any as CompilationResultInternals;
+        const factories: Record<string, ViewBehaviorFactory> = Object.create(null);
+        const ids: string[] = [];
+        let nextId = -1;
+        const ctx: HTMLDirectiveContext = {
+            addFactory(factory: ViewBehaviorFactory): string {
+                const id = `${++nextId}`;
+                ids.push(id);
+                factory.id = id;
+                factories[id] = factory;
+                return id;
+            }
+        };
+
+        directives.forEach(x => x.createHTML(ctx));
+
+        return Compiler.compile(html, factories) as any as CompilationResultInternals;
     }
 
     function inline(index: number) {
-        return Markup.interpolation(index);
+        return Markup.interpolation(`${index}`);
     }
 
     function binding(result = "result") {
@@ -176,7 +191,7 @@ describe("The template compiler", () => {
                     expect(length).to.equal(x.targetIds.length);
 
                     for (let i = 0; i < length; ++i) {
-                        expect(factories[i].targetId).to.equal(
+                        expect(factories[i].nodeId).to.equal(
                             x.targetIds[i]
                         );
                     }
@@ -344,7 +359,7 @@ describe("The template compiler", () => {
                     expect(length).to.equal(x.targetIds.length);
 
                     for (let i = 0; i < length; ++i) {
-                        expect(factories[i].targetId).to.equal(
+                        expect(factories[i].nodeId).to.equal(
                             x.targetIds[i]
                         );
                     }

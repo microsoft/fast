@@ -1,6 +1,6 @@
 import type { Behavior } from "../observation/behavior.js";
 import type { Binding, ExecutionContext } from "../observation/observable.js";
-import { Markup, nextId } from "./markup.js";
+import { Markup } from "./markup.js";
 
 /**
  * The target nodes available to a behavior.
@@ -47,9 +47,14 @@ export interface ViewBehavior<TSource = any, TParent = any> {
  */
 export interface ViewBehaviorFactory {
     /**
+     * The unique id of the factory.
+     */
+    id: string;
+
+    /**
      * The structural id of the DOM node to which the created behavior will apply.
      */
-    targetId: string;
+    nodeId: string;
 
     /**
      * Creates a behavior.
@@ -59,63 +64,139 @@ export interface ViewBehaviorFactory {
 }
 
 /**
+ * Contextual information and functionality available
+ * while processing an HTMLDirective.
+ * @public
+ */
+export interface HTMLDirectiveContext {
+    /**
+     * Adds a behavior factory to the current template.
+     * @param factory - The factory to add.
+     * @returns The unique id of the factory, usable in template interpolations.
+     */
+    addFactory(factory: ViewBehaviorFactory): string;
+}
+
+/**
  * Instructs the template engine to apply behavior to a node.
  * @public
  */
-export abstract class HTMLDirective implements ViewBehaviorFactory {
+export abstract class HTMLDirective {
     /**
-     * The structural id of the directive based on the DOM node
-     * that it applies to.
+     * Creates HTML to be used within a template.
+     * @param ctx - The current directive context, which can be used to add
+     * behavior factories to a template.
      */
-    public targetId: string = "h";
-
-    /**
-     * The unique id of the directive instance.
-     */
-    public readonly uniqueId: string = nextId();
-
-    /**
-     * Creates a placeholder string based on the directive's index within the template.
-     * @param index - The index of the directive within the template.
-     */
-    public abstract createPlaceholder(index: number): string;
-
-    /**
-     * Creates a behavior.
-     * @param targets - The targets available for behaviors to be attached to.
-     */
-    public abstract createBehavior(targets: ViewBehaviorTargets): Behavior | ViewBehavior;
+    public abstract createHTML(ctx: HTMLDirectiveContext): string;
 }
 
 /**
  * The type of HTML aspect to target.
  * @public
  */
-export enum Aspect {
+export const Aspect = Object.freeze({
     /**
      * An attribute.
      */
-    attribute = 0,
+    attribute: 0,
+
     /**
      * A boolean attribute.
      */
-    booleanAttribute = 1,
+    booleanAttribute: 1,
+
     /**
      * A property.
      */
-    property = 2,
+    property: 2,
+
     /**
      * Content
      */
-    content = 3,
+    content: 3,
+
     /**
      * A token list.
      */
-    tokenList = 4,
+    tokenList: 4,
+
     /**
      * An event.
      */
-    event = 5,
+    event: 5,
+
+    /**
+     *
+     * @param directive - The directive to assign the aspect to.
+     * @param value - The value to base the aspect determination on.
+     */
+    assign(directive: Aspected, value: string): void {
+        directive.sourceAspect = value;
+
+        if (!value) {
+            return;
+        }
+
+        switch (value[0]) {
+            case ":":
+                directive.targetAspect = value.substring(1);
+                switch (directive.targetAspect) {
+                    case "innerHTML":
+                        directive.aspectType = Aspect.property;
+                        break;
+                    case "classList":
+                        directive.aspectType = Aspect.tokenList;
+                        break;
+                    default:
+                        directive.aspectType = Aspect.property;
+                        break;
+                }
+                break;
+            case "?":
+                directive.targetAspect = value.substring(1);
+                directive.aspectType = Aspect.booleanAttribute;
+                break;
+            case "@":
+                directive.targetAspect = value.substring(1);
+                directive.aspectType = Aspect.event;
+                break;
+            default:
+                if (value === "class") {
+                    directive.targetAspect = "className";
+                    directive.aspectType = Aspect.property;
+                } else {
+                    directive.targetAspect = value;
+                    directive.aspectType = Aspect.attribute;
+                }
+                break;
+        }
+    },
+});
+
+/**
+ * Represents something that applies to a specific aspect of the DOM.
+ * @public
+ */
+export interface Aspected {
+    /**
+     * The original source aspect exactly as represented in markup.
+     */
+    sourceAspect: string;
+
+    /**
+     * The evaluated target aspect, determined after processing the source.
+     */
+    targetAspect: string;
+
+    /**
+     * The type of aspect to target.
+     */
+    aspectType: number;
+
+    /**
+     * A binding if one is associated with the aspect.
+     */
+    binding?: Binding;
 }
 
 /**
@@ -123,38 +204,21 @@ export enum Aspect {
  * (attribute, property, event, etc.) of a node.
  * @public
  */
-export abstract class AspectedHTMLDirective extends HTMLDirective {
+export abstract class AspectedHTMLDirective extends HTMLDirective implements Aspected {
     /**
-     * The original source aspect exactly as represented in the HTML.
+     * The original source aspect exactly as represented in markup.
      */
-    abstract readonly source: string;
+    sourceAspect: string;
 
     /**
      * The evaluated target aspect, determined after processing the source.
      */
-    abstract readonly target: string;
+    targetAspect: string;
 
     /**
      * The type of aspect to target.
      */
-    abstract readonly aspect: Aspect;
-
-    /**
-     * A binding to apply to the target, if applicable.
-     */
-    abstract readonly binding?: Binding;
-
-    /**
-     * Captures the original source aspect from HTML.
-     * @param source - The original source aspect.
-     */
-    abstract captureSource(source: string): void;
-
-    /**
-     * Creates a placeholder string based on the directive's index within the template.
-     * @param index - The index of the directive within the template.
-     */
-    public createPlaceholder: (index: number) => string = Markup.interpolation;
+    aspectType: number = Aspect.content;
 }
 
 /**
@@ -162,7 +226,17 @@ export abstract class AspectedHTMLDirective extends HTMLDirective {
  * @public
  */
 export abstract class StatelessAttachedAttributeDirective<T> extends HTMLDirective
-    implements ViewBehavior {
+    implements ViewBehaviorFactory, ViewBehavior {
+    /**
+     * The unique id of the factory.
+     */
+    id: string;
+
+    /**
+     * The structural id of the DOM node to which the created behavior will apply.
+     */
+    nodeId: string;
+
     /**
      * Creates an instance of RefDirective.
      * @param options - The options to use in configuring the directive.
@@ -185,7 +259,9 @@ export abstract class StatelessAttachedAttributeDirective<T> extends HTMLDirecti
      * @remarks
      * Creates a custom attribute placeholder.
      */
-    public createPlaceholder: (index: number) => string = Markup.attribute;
+    public createHTML(ctx: HTMLDirectiveContext): string {
+        return Markup.attribute(ctx.addFactory(this));
+    }
 
     /**
      * Bind this behavior to the source.

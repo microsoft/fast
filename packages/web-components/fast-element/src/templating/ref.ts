@@ -21,7 +21,7 @@ export class RefDirective extends StatelessAttachedAttributeDirective<string> {
         context: ExecutionContext,
         targets: ViewBehaviorTargets
     ): void {
-        source[this.options] = targets[this.targetId];
+        source[this.options] = targets[this.nodeId];
     }
 
     /**

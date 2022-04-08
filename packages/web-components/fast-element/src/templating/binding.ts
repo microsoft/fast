@@ -1,5 +1,5 @@
 import { DOM } from "../dom.js";
-import { isString, Message, Mutable } from "../interfaces.js";
+import { isString, Message } from "../interfaces.js";
 import {
     Binding,
     BindingObserver,
@@ -9,10 +9,14 @@ import {
 import { FAST } from "../platform.js";
 import {
     Aspect,
+    Aspected,
     AspectedHTMLDirective,
+    HTMLDirectiveContext,
     ViewBehavior,
+    ViewBehaviorFactory,
     ViewBehaviorTargets,
 } from "./html-directive.js";
+import { Markup } from "./markup.js";
 import type { CaptureType } from "./template.js";
 import type { SyntheticView } from "./view.js";
 
@@ -40,7 +44,7 @@ export const notSupportedBindingType: BindingType = () => {
 /**
  * @alpha
  */
-export type BindingMode = Record<Aspect, BindingType>;
+export type BindingMode = Record<number, BindingType>;
 
 /**
  * @alpha
@@ -85,7 +89,7 @@ function createContentBinding(
         ): void {
             super.unbind(source, context, targets);
 
-            const target = targets[this.directive.targetId] as ContentTarget;
+            const target = targets[this.directive.nodeId] as ContentTarget;
             const view = target.$fastView as ComposableView;
 
             if (view !== void 0 && view.isComposed) {
@@ -177,7 +181,7 @@ function updateTokenListTarget(
     value: any
 ): void {
     const directive = this.directive;
-    const lookup = `${directive.uniqueId}-token-list`;
+    const lookup = `${directive.id}-token-list`;
     const state: TokenListState =
         target[lookup] ?? (target[lookup] = { c: 0, v: Object.create(null) });
     const versions = state.v;
@@ -264,10 +268,10 @@ class TargetUpdateBinding extends BindingBase {
 class OneTimeBinding extends TargetUpdateBinding {
     bind(source: any, context: ExecutionContext, targets: ViewBehaviorTargets): void {
         const directive = this.directive;
-        const target = targets[directive.targetId];
+        const target = targets[directive.nodeId];
         this.updateTarget(
             target,
-            directive.target!,
+            directive.targetAspect!,
             directive.binding(source, context),
             source,
             context
@@ -290,12 +294,12 @@ export function sendSignal(signal: string): void {
 class OnSignalBinding extends TargetUpdateBinding {
     bind(source: any, context: ExecutionContext, targets: ViewBehaviorTargets): void {
         const directive = this.directive;
-        const target = targets[directive.targetId];
+        const target = targets[directive.nodeId];
         const signal = this.getSignal(source, context);
-        const handler = (target[directive.uniqueId] = () => {
+        const handler = (target[directive.id] = () => {
             this.updateTarget(
                 target,
-                directive.target!,
+                directive.targetAspect!,
                 directive.binding(source, context),
                 source,
                 context
@@ -321,8 +325,8 @@ class OnSignalBinding extends TargetUpdateBinding {
 
         if (found && Array.isArray(found)) {
             const directive = this.directive;
-            const target = targets[directive.targetId];
-            const handler = target[directive.uniqueId];
+            const target = targets[directive.nodeId];
+            const handler = target[directive.id];
             const index = found.indexOf(handler);
             if (index !== -1) {
                 found.splice(index, 1);
@@ -348,10 +352,10 @@ class OnChangeBinding extends TargetUpdateBinding {
 
     bind(source: any, context: ExecutionContext, targets: ViewBehaviorTargets): void {
         const directive = this.directive;
-        const target = targets[directive.targetId];
+        const target = targets[directive.nodeId];
         const observer: BindingObserver =
-            target[directive.uniqueId] ??
-            (target[directive.uniqueId] = Observable.binding(
+            target[directive.id] ??
+            (target[directive.id] = Observable.binding(
                 directive.binding,
                 this,
                 this.isBindingVolatile
@@ -363,7 +367,7 @@ class OnChangeBinding extends TargetUpdateBinding {
 
         this.updateTarget(
             target,
-            directive.target!,
+            directive.targetAspect!,
             observer.observe(source, context),
             source,
             context
@@ -371,8 +375,8 @@ class OnChangeBinding extends TargetUpdateBinding {
     }
 
     unbind(source: any, context: ExecutionContext, targets: ViewBehaviorTargets): void {
-        const target = targets[this.directive.targetId];
-        const observer = target[this.directive.uniqueId];
+        const target = targets[this.directive.nodeId];
+        const observer = target[this.directive.id];
         observer.disconnect();
         observer.target = null;
         observer.source = null;
@@ -386,7 +390,7 @@ class OnChangeBinding extends TargetUpdateBinding {
         const context = (observer as any).context;
         this.updateTarget(
             target,
-            this.directive.target!,
+            this.directive.targetAspect!,
             observer.observe(source, context!),
             source,
             context
@@ -412,20 +416,24 @@ type FASTEventSource = Node & {
 class EventListener extends BindingBase {
     bind(source: any, context: ExecutionContext, targets: ViewBehaviorTargets): void {
         const directive = this.directive;
-        const target = targets[directive.targetId] as FASTEventSource;
+        const target = targets[directive.nodeId] as FASTEventSource;
         target.$fastSource = source;
         target.$fastContext = context;
-        target.addEventListener(directive.target!, this, directive.options);
+        target.addEventListener(directive.targetAspect!, this, directive.options);
     }
 
     unbind(source: any, context: ExecutionContext, targets: ViewBehaviorTargets): void {
-        this.removeEventListener(targets[this.directive.targetId] as FASTEventSource);
+        this.removeEventListener(targets[this.directive.nodeId] as FASTEventSource);
     }
 
     protected removeEventListener(target: FASTEventSource): void {
         target.$fastSource = null;
         target.$fastContext = null;
-        target.removeEventListener(this.directive.target!, this, this.directive.options);
+        target.removeEventListener(
+            this.directive.targetAspect!,
+            this,
+            this.directive.options
+        );
     }
 
     handleEvent(event: Event): void {
@@ -502,67 +510,29 @@ const createInnerHTMLBinding = globalThis.TrustedHTML
 /**
  * @internal
  */
-export class HTMLBindingDirective extends AspectedHTMLDirective {
+export class HTMLBindingDirective extends AspectedHTMLDirective
+    implements ViewBehaviorFactory, Aspected {
     private factory: BindingBehaviorFactory | null = null;
 
-    public readonly source: string = "";
-    public readonly target: string = "";
-    public readonly aspect: Aspect = Aspect.content;
+    id: string;
+    nodeId: string;
 
-    public constructor(
-        public binding: Binding,
-        public mode: BindingMode,
-        public options: any
-    ) {
+    constructor(public binding: Binding, public mode: BindingMode, public options: any) {
         super();
+        this.aspectType = Aspect.content;
     }
 
-    public captureSource(value: string): void {
-        (this as Mutable<this>).source = value;
-
-        if (!value) {
-            return;
-        }
-
-        switch (value[0]) {
-            case ":":
-                (this as Mutable<this>).target = value.substring(1);
-                switch (this.target) {
-                    case "innerHTML":
-                        this.binding = createInnerHTMLBinding(this.binding);
-                        (this as Mutable<this>).aspect = Aspect.property;
-                        break;
-                    case "classList":
-                        (this as Mutable<this>).aspect = Aspect.tokenList;
-                        break;
-                    default:
-                        (this as Mutable<this>).aspect = Aspect.property;
-                        break;
-                }
-                break;
-            case "?":
-                (this as Mutable<this>).target = value.substring(1);
-                (this as Mutable<this>).aspect = Aspect.booleanAttribute;
-                break;
-            case "@":
-                (this as Mutable<this>).target = value.substring(1);
-                (this as Mutable<this>).aspect = Aspect.event;
-                break;
-            default:
-                if (value === "class") {
-                    (this as Mutable<this>).target = "className";
-                    (this as Mutable<this>).aspect = Aspect.property;
-                } else {
-                    (this as Mutable<this>).target = value;
-                    (this as Mutable<this>).aspect = Aspect.attribute;
-                }
-                break;
-        }
+    createHTML(ctx: HTMLDirectiveContext): string {
+        return Markup.interpolation(ctx.addFactory(this));
     }
 
     createBehavior(targets: ViewBehaviorTargets): ViewBehavior {
         if (this.factory == null) {
-            this.factory = this.mode[this.aspect](this);
+            if (this.targetAspect === "innerHTML") {
+                this.binding = createInnerHTMLBinding(this.binding);
+            }
+
+            this.factory = this.mode[this.aspectType](this);
         }
 
         return this.factory.createBehavior(targets);

@@ -2,9 +2,10 @@ import { isString, Message, TrustedTypesPolicy } from "../interfaces.js";
 import type { ExecutionContext } from "../observation/observable.js";
 import { FAST } from "../platform.js";
 import { Parser } from "./markup.js";
-import { bind, oneTime } from "./binding.js";
-import type {
-    AspectedHTMLDirective,
+import { bind, HTMLBindingDirective, oneTime } from "./binding.js";
+import {
+    Aspect,
+    Aspected,
     HTMLDirective,
     ViewBehaviorFactory,
 } from "./html-directive.js";
@@ -32,27 +33,27 @@ class CompilationContext<
     TContext extends ExecutionContext<TParent> = ExecutionContext<TParent>
 > implements TemplateCompilationResult<TSource, TParent, TContext> {
     private proto: any = null;
-    private targetIds = new Set<string>();
+    private nodeIds = new Set<string>();
     private descriptors: PropertyDescriptorMap = {};
     public readonly factories: ViewBehaviorFactory[] = [];
 
     constructor(
         public readonly fragment: DocumentFragment,
-        public readonly directives: ReadonlyArray<HTMLDirective>
+        public readonly directives: Record<string, ViewBehaviorFactory>
     ) {}
 
     public addFactory(
         factory: ViewBehaviorFactory,
         parentId: string,
-        targetId: string,
+        nodeId: string,
         targetIndex: number
     ): void {
-        if (!this.targetIds.has(targetId)) {
-            this.targetIds.add(targetId);
-            this.addTargetDescriptor(parentId, targetId, targetIndex);
+        if (!this.nodeIds.has(nodeId)) {
+            this.nodeIds.add(nodeId);
+            this.addTargetDescriptor(parentId, nodeId, targetIndex);
         }
 
-        factory.targetId = targetId;
+        factory.nodeId = nodeId;
         this.factories.push(factory);
     }
 
@@ -108,7 +109,7 @@ class CompilationContext<
         targets.r = fragment;
         targets.h = hostBindingTarget ?? fragment;
 
-        for (const id of this.targetIds) {
+        for (const id of this.nodeIds) {
             targets[id]; // trigger locator
         }
 
@@ -131,12 +132,12 @@ function compileAttributes(
         const attr = attributes[i];
         const attrValue = attr.value;
         const parseResult = Parser.parse(attrValue, directives);
-        let result: HTMLDirective | null = null;
+        let result: ViewBehaviorFactory | null = null;
 
         if (parseResult === null) {
             if (includeBasicValues) {
-                result = bind(() => attrValue, oneTime) as AspectedHTMLDirective;
-                (result as AspectedHTMLDirective).captureSource(attr.name);
+                result = bind(() => attrValue, oneTime) as ViewBehaviorFactory;
+                Aspect.assign((result as any) as Aspected, attr.name);
             }
         } else {
             /* eslint-disable-next-line @typescript-eslint/no-use-before-define */
@@ -246,7 +247,7 @@ function compileNode(
     return next;
 }
 
-function isMarker(node: Node, directives: ReadonlyArray<HTMLDirective>): boolean {
+function isMarker(node: Node, directives: Record<string, ViewBehaviorFactory>): boolean {
     return (
         node &&
         node.nodeType == 8 &&
@@ -281,7 +282,7 @@ const fastHTMLPolicy = htmlPolicy;
  * Common APIs related to compilation.
  * @public
  */
-export const Compiler = {
+export const Compiler = Object.freeze({
     /**
      * Sets the HTML trusted types policy used by the compiler.
      * @param policy - The policy to set for HTML.
@@ -313,7 +314,7 @@ export const Compiler = {
         TContext extends ExecutionContext<TParent> = ExecutionContext<TParent>
     >(
         html: string | HTMLTemplateElement,
-        directives: ReadonlyArray<HTMLDirective>
+        directives: Record<string, ViewBehaviorFactory>
     ): TemplateCompilationResult<TSource, TParent, TContext> {
         let template: HTMLTemplateElement;
 
@@ -347,7 +348,7 @@ export const Compiler = {
             // Or if there is only one node and a directive, it means the template's content
             // is *only* the directive. In that case, HTMLView.dispose() misses any nodes inserted by
             // the directive. Inserting a new node ensures proper disposal of nodes added by the directive.
-            (fragment.childNodes.length === 1 && directives.length)
+            (fragment.childNodes.length === 1 && Object.keys(directives).length > 0)
         ) {
             fragment.insertBefore(document.createComment(""), fragment.firstChild);
         }
@@ -372,20 +373,20 @@ export const Compiler = {
      * directives.
      * @returns A single inline directive that aggregates the behavior of all the parts.
      */
-    aggregate(parts: (string | HTMLDirective)[]): HTMLDirective {
+    aggregate(parts: (string | ViewBehaviorFactory)[]): ViewBehaviorFactory {
         if (parts.length === 1) {
-            return parts[0] as HTMLDirective;
+            return parts[0] as ViewBehaviorFactory;
         }
 
-        let source: string | undefined;
+        let sourceAspect: string | undefined;
         const partCount = parts.length;
-        const finalParts = parts.map((x: string | AspectedHTMLDirective) => {
+        const finalParts = parts.map((x: string | ViewBehaviorFactory) => {
             if (isString(x)) {
                 return (): string => x;
             }
 
-            source = x.source || source;
-            return x.binding!;
+            sourceAspect = ((x as any) as Aspected).sourceAspect || sourceAspect;
+            return ((x as any) as Aspected).binding!;
         });
 
         const binding = (scope: unknown, context: ExecutionContext): string => {
@@ -398,8 +399,8 @@ export const Compiler = {
             return output;
         };
 
-        const directive = bind(binding) as AspectedHTMLDirective;
-        directive.captureSource(source!);
+        const directive = bind(binding) as HTMLBindingDirective;
+        Aspect.assign(directive, sourceAspect!);
         return directive;
     },
-};
+});

@@ -25,23 +25,29 @@ export class AdoptedStyleSheetsStrategy implements StyleStrategy {
 }
 
 // @public
-export enum Aspect {
-    attribute = 0,
-    booleanAttribute = 1,
-    content = 3,
-    event = 5,
-    property = 2,
-    tokenList = 4
+export const Aspect: Readonly<{
+    attribute: number;
+    booleanAttribute: number;
+    property: number;
+    content: number;
+    tokenList: number;
+    event: number;
+    assign(directive: Aspected, value: string): void;
+}>;
+
+// @public
+export interface Aspected {
+    aspectType: number;
+    binding?: Binding;
+    sourceAspect: string;
+    targetAspect: string;
 }
 
 // @public
-export abstract class AspectedHTMLDirective extends HTMLDirective {
-    abstract readonly aspect: Aspect;
-    abstract readonly binding?: Binding;
-    abstract captureSource(source: string): void;
-    createPlaceholder: (index: number) => string;
-    abstract readonly source: string;
-    abstract readonly target: string;
+export abstract class AspectedHTMLDirective extends HTMLDirective implements Aspected {
+    aspectType: number;
+    sourceAspect: string;
+    targetAspect: string;
 }
 
 // @public
@@ -106,7 +112,7 @@ export interface BindingConfig<T = any> {
 }
 
 // @alpha (undocumented)
-export type BindingMode = Record<Aspect, BindingType>;
+export type BindingMode = Record<number, BindingType>;
 
 // @public
 export interface BindingObserver<TSource = any, TReturn = any, TParent = any> extends Notifier {
@@ -175,12 +181,12 @@ html: string | HTMLTemplateElement,
 directives: readonly HTMLDirective[]) => HTMLTemplateCompilationResult;
 
 // @public
-export const Compiler: {
+export const Compiler: Readonly<{
     setHTMLPolicy(policy: TrustedTypesPolicy): void;
-    compile<TSource = any, TParent = any, TContext extends ExecutionContext<TParent> = ExecutionContext<TParent>>(html: string | HTMLTemplateElement, directives: ReadonlyArray<HTMLDirective>): HTMLTemplateCompilationResult<TSource, TParent, TContext>;
+    compile<TSource = any, TParent = any, TContext extends ExecutionContext<TParent> = ExecutionContext<TParent>>(html: string | HTMLTemplateElement, directives: Record<string, ViewBehaviorFactory>): HTMLTemplateCompilationResult<TSource, TParent, TContext>;
     setDefaultStrategy(strategy: CompilationStrategy): void;
-    aggregate(parts: (string | HTMLDirective)[]): HTMLDirective;
-};
+    aggregate(parts: (string | ViewBehaviorFactory)[]): ViewBehaviorFactory;
+}>;
 
 // @public
 export type ComposableStyles = string | ElementStyles | CSSStyleSheet;
@@ -374,11 +380,13 @@ export interface FASTGlobal {
 export function html<TSource = any, TParent = any, TContext extends ExecutionContext<TParent> = ExecutionContext<TParent>>(strings: TemplateStringsArray, ...values: TemplateValue<TSource, TParent, TContext>[]): ViewTemplate<TSource, TParent>;
 
 // @public
-export abstract class HTMLDirective implements ViewBehaviorFactory {
-    abstract createBehavior(targets: ViewBehaviorTargets): Behavior | ViewBehavior;
-    abstract createPlaceholder(index: number): string;
-    targetId: string;
-    readonly uniqueId: string;
+export abstract class HTMLDirective {
+    abstract createHTML(ctx: HTMLDirectiveContext): string;
+}
+
+// @public
+export interface HTMLDirectiveContext {
+    addFactory(factory: ViewBehaviorFactory): string;
 }
 
 // @public
@@ -440,9 +448,9 @@ export const enum KernelServiceId {
 
 // @public
 export const Markup: Readonly<{
-    interpolation: (index: number) => string;
-    attribute: (index: number) => string;
-    comment: (index: number) => string;
+    interpolation: (id: string) => string;
+    attribute: (id: string) => string;
+    comment: (id: string) => string;
 }>;
 
 // Warning: (ae-internal-missing-underscore) The name "Mutable" should be prefixed with an underscore because the declaration is marked as @internal
@@ -514,7 +522,7 @@ export const oneTime: BindingConfig<DefaultBindingOptions> & BindingConfigResolv
 
 // @public
 export const Parser: Readonly<{
-    parse(value: string, directives: readonly HTMLDirective[]): (string | HTMLDirective)[] | null;
+    parse(value: string, factories: Record<string, ViewBehaviorFactory>): (string | ViewBehaviorFactory)[] | null;
 }>;
 
 // @public
@@ -594,12 +602,14 @@ export class RepeatBehavior<TSource = any> implements Behavior, Subscriber {
     }
 
 // @public
-export class RepeatDirective<TSource = any> extends HTMLDirective {
+export class RepeatDirective<TSource = any> extends HTMLDirective implements ViewBehaviorFactory {
     constructor(itemsBinding: Binding, templateBinding: Binding<TSource, SyntheticViewTemplate>, options: RepeatOptions);
     createBehavior(targets: ViewBehaviorTargets): RepeatBehavior<TSource>;
-    createPlaceholder: (index: number) => string;
+    createHTML(ctx: HTMLDirectiveContext): string;
+    id: string;
     // (undocumented)
     readonly itemsBinding: Binding;
+    nodeId: string;
     // (undocumented)
     readonly options: RepeatOptions;
     // (undocumented)
@@ -652,11 +662,13 @@ export class Splice {
 }
 
 // @public
-export abstract class StatelessAttachedAttributeDirective<T> extends HTMLDirective implements ViewBehavior {
+export abstract class StatelessAttachedAttributeDirective<T> extends HTMLDirective implements ViewBehaviorFactory, ViewBehavior {
     constructor(options: T);
     abstract bind(source: any, context: ExecutionContext, targets: ViewBehaviorTargets): void;
     createBehavior(targets: ViewBehaviorTargets): ViewBehavior;
-    createPlaceholder: (index: number) => string;
+    createHTML(ctx: HTMLDirectiveContext): string;
+    id: string;
+    nodeId: string;
     // (undocumented)
     protected options: T;
     abstract unbind(source: any, context: ExecutionContext, targets: ViewBehaviorTargets): void;
@@ -750,7 +762,8 @@ export interface ViewBehavior<TSource = any, TParent = any> {
 // @public
 export interface ViewBehaviorFactory {
     createBehavior(targets: ViewBehaviorTargets): Behavior | ViewBehavior;
-    targetId: string;
+    id: string;
+    nodeId: string;
 }
 
 // @public
@@ -760,9 +773,9 @@ export type ViewBehaviorTargets = {
 
 // @public
 export class ViewTemplate<TSource = any, TParent = any, TContext extends ExecutionContext<TParent> = ExecutionContext> implements ElementViewTemplate<TSource, TParent>, SyntheticViewTemplate<TSource, TParent, TContext> {
-    constructor(html: string | HTMLTemplateElement, directives: ReadonlyArray<HTMLDirective>);
+    constructor(html: string | HTMLTemplateElement, factories: Record<string, ViewBehaviorFactory>);
     create(hostBindingTarget?: Element): HTMLView<TSource, TParent, TContext>;
-    readonly directives: ReadonlyArray<HTMLDirective>;
+    readonly factories: Record<string, ViewBehaviorFactory>;
     readonly html: string | HTMLTemplateElement;
     render(source: TSource, host: Node, hostBindingTarget?: Element, context?: TContext): HTMLView<TSource, TParent, TContext>;
     type: any;
