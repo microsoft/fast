@@ -1,0 +1,7 @@
+{
+  "type": "minor",
+  "comment": "install swizzle and swizzle doccard component",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "steph@huynhicode.dev",
+  "dependentChangeType": "patch"
+}
