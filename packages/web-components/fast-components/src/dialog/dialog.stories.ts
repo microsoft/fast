@@ -1,27 +1,55 @@
-import { STORY_RENDERED } from "@storybook/core-events";
-import addons from "@storybook/addons";
-import DialogTemplate from "./fixtures/dialog.html";
-import "./index.js";
+import { html } from "@microsoft/fast-element";
+import type { Args, Meta } from "@storybook/html";
+import type { Button } from "../index-rollup.js";
+import { renderComponent } from "../storybook-helpers.js";
+import type { Dialog } from "./index.js";
 
-addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
-    if (name.toLowerCase().startsWith("dialog")) {
-        const button1 = document.getElementById("button1");
-        const dialog1 = document.getElementById("dialog1");
-
-        if (button1 && dialog1) {
-            button1.addEventListener("click", (e: MouseEvent) => {
-                dialog1.hidden = false;
-            });
-
-            dialog1.addEventListener("dismiss", (e: Event) => {
-                dialog1.hidden = true;
-            });
-        }
-    }
-});
+const componentTemplate = html<Dialog & Args>`
+    <fast-button>Show Dialog</fast-button>
+    <fast-dialog
+        hidden
+        id="${x => x.id}"
+        aria-label="${x => x.ariaLabel}"
+        modal="${x => x.modal}"
+        trap-focus="${x => x.trapFocus}"
+    >
+        ${x => x.content}
+    </fast-dialog>
+`;
 
 export default {
     title: "Dialog",
-};
+    decorators: [
+        Story => {
+            const renderedStory = Story() as DocumentFragment;
 
-export const Dialog = () => DialogTemplate;
+            const dialog = renderedStory.querySelector("fast-dialog") as Dialog;
+            dialog.addEventListener("dismiss", () => {
+                dialog.hidden = true;
+            });
+
+            const showDialogButton = renderedStory.querySelector<Button>("fast-button");
+            showDialogButton?.addEventListener("click", () => {
+                dialog.hidden = false;
+            });
+
+            return renderedStory;
+        },
+    ],
+} as Meta<Dialog>;
+
+export const Primary = renderComponent(componentTemplate).bind({});
+
+export const WithFocusableContent = renderComponent(componentTemplate).bind({});
+WithFocusableContent.args = {
+    content: html`
+        <fast-button>Button A</fast-button>
+        <button>Button B</button>
+        <fast-checkbox>A checkbox</fast-checkbox>
+        <fast-toolbar>
+            <fast-button>One</fast-button>
+            <fast-button>Three</fast-button>
+        </fast-toolbar>
+        (Press the Escape key to close)
+    `,
+};
