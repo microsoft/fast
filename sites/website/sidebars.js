@@ -17,7 +17,7 @@ module.exports = {
                     type: "category",
                     label: "Components",
                     customProps: {
-                        description: "Explore FAST Components.",
+                        description: "Explore a comprehensive list of FAST elements.",
                     },
                     link: {
                         type: "generated-index",

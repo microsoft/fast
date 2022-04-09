@@ -9,7 +9,7 @@
   height: 11rem;
   color: var(--ifm-color-emphasis-800);
   --ifm-link-color: var(--ifm-color-emphasis-800);
-  --ifm-link-hover-color: var(--ifm-color-emphasis-800);
+  --ifm-link-hover-color: var(--ifm-color-primary);
   --ifm-link-hover-decoration: none;
 
   /* box-shadow: var(--ifm-global-shadow-lw); */
@@ -40,4 +40,11 @@
 .cardDescription {
   font-size: 0.8rem;
   min-height: 0.8rem;
+}
+
+.lineClamp {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }

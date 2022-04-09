@@ -33,7 +33,10 @@ function CardLayout({ href, icon, title, description }) {
             <h2 className={clsx("text--truncate", styles.cardTitle)} title={title}>
                 {icon} {title}
             </h2>
-            <div className={clsx("text", styles.cardDescription)} title={description}>
+            <div
+                className={clsx("text", styles.cardDescription, styles.lineClamp)}
+                title={description}
+            >
                 {description}
             </div>
         </CardContainer>
