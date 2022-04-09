@@ -17,7 +17,7 @@ module.exports = {
                     type: "category",
                     label: "Components",
                     customProps: {
-                        description: "Explore a comprehensive list of FAST elements.",
+                        description: "A comprehensive list of FAST elements.",
                     },
                     link: {
                         type: "generated-index",
@@ -141,7 +141,8 @@ module.exports = {
                     type: "doc",
                     id: "api/fast-animation",
                     customProps: {
-                        description: "Exlore fast-animation Classes and Functions.",
+                        description:
+                            "Exlore the classes and functions of fast-animation.",
                     },
                 },
                 {
@@ -149,7 +150,7 @@ module.exports = {
                     id: "api/fast-colors",
                     customProps: {
                         description:
-                            "Explore fast-colors Classes, Enumerations, Functions, Interfaces, Variables, and Type Aliases.",
+                            "Explore the classes, enumerations, functions, interfaces, variables, and type aliases of fast-colors.",
                     },
                 },
                 {
@@ -157,7 +158,7 @@ module.exports = {
                     id: "api/fast-components",
                     customProps: {
                         description:
-                            "Explore fast-components Classes, Enumerations, Functions, Interfaces, Variables, and Type Aliases.",
+                            "Explore the classes, enumerations, functions, interfaces, variables, and type aliases of fast-components.",
                     },
                 },
                 {
@@ -165,7 +166,7 @@ module.exports = {
                     id: "api/fast-element",
                     customProps: {
                         description:
-                            "Explore fast-element Classes, Functions, Interfaces, Variables, and Type Aliases.",
+                            "Explore the classes, functions, interfaces, variables, and type aliases of fast-element.",
                     },
                 },
                 {
@@ -173,7 +174,7 @@ module.exports = {
                     id: "api/fast-foundation",
                     customProps: {
                         description:
-                            "Explore fast-foundation Classes, Enumerations, Functions, Interfaces, Variables, and Type Aliases.",
+                            "Explore the classes, enumerations, functions, interfaces, variables, and type aliases of fast-foundation.",
                     },
                 },
             ],
@@ -193,6 +194,10 @@ module.exports = {
                 {
                     type: "category",
                     label: "Engineering Process",
+                    customProps: {
+                        description:
+                            "Our issue management and release planning processes.",
+                    },
                     link: {
                         type: "generated-index",
                     },

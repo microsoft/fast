@@ -3,7 +3,7 @@ id: declaring-templates
 title: Declaring Templates
 sidebar_label: Declaring Templates
 custom_edit_url: https://github.com/microsoft/fast/edit/master/packages/web-components/fast-element/docs/guide/declaring-templates.md
-description: While you can create and update nodes in the Shadow DOM manually, `FASTElement` provides a streamlined templating system for the most common rendering scenarios.
+description: While you can create and update nodes in the Shadow DOM manually, FASTElement provides a streamlined templating system for the most common rendering scenarios.
 ---
 
 ## Basic templates
