@@ -801,19 +801,19 @@ export class VirtualList extends FoundationElement {
                 top = thisSizeMap.end;
                 newVisibleItemSizes.push(thisSizeMap);
             }
-
-            this.visibleItemMap.splice(
-                0,
-                this.visibleItemMap.length,
-                ...newVisibleItemSizes
-            );
         } else {
-            this.visibleItemMap.splice(
-                0,
-                this.visibleItemMap.length,
-                ...this.sizemap.slice(newFirstRenderedIndex, newLastRenderedIndex + 1)
-            );
+            for (let i: number = newFirstRenderedIndex; i <= newLastRenderedIndex; i++) {
+                const thisSizeMap: SizeMap = {
+                    start: this.sizemap[i].start,
+                    end: this.sizemap[i].end,
+                    size: this.sizemap[i].size,
+                };
+                top = thisSizeMap.end;
+                newVisibleItemSizes.push(thisSizeMap);
+            }
         }
+
+        this.visibleItemMap.splice(0, this.visibleItemMap.length, ...newVisibleItemSizes);
 
         this.updateRenderedRange(newFirstRenderedIndex, newLastRenderedIndex);
     }
