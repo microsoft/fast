@@ -2,6 +2,29 @@
   "name": "@microsoft/fast-components",
   "entries": [
     {
+      "date": "Sun, 10 Apr 2022 07:11:09 GMT",
+      "tag": "@microsoft/fast-components_v2.27.0",
+      "version": "2.27.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "Converted the fast-components package to type:module",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "ce036beba8bad7ae1875f0d7f3bbb7c304757b9c",
+            "package": "@microsoft/fast-components"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "set disclosure appearance attribute in connected callback to ensure the element can be constructed without error",
+            "author": "chhol@microsoft.com",
+            "commit": "b5a3dbbeba7182f2ac5f93d36d90a292ad558d5f",
+            "package": "@microsoft/fast-components"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 07 Apr 2022 07:12:06 GMT",
       "tag": "@microsoft/fast-components_v2.26.2",
       "version": "2.26.2",
