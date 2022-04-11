@@ -88,7 +88,6 @@ export function jsdocLinkFix() {
                     );
                 fixLinks(node, propertyDoc, context, 1);
             } else if (ts.isMethodDeclaration(node)) {
-                // TODO: handle object methods
                 if (!ts.isClassDeclaration(node.parent)) return;
                 const methodName = node.name.getText();
                 const className = node.parent.name.getText();
