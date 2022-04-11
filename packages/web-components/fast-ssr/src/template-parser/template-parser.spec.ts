@@ -2,7 +2,7 @@
 import "../dom-shim.js";
 import { Aspect, customElement, FASTElement, html, ViewBehaviorFactory, ViewTemplate } from "@microsoft/fast-element";
 import { expect, test } from "@playwright/test";
-import { AttributeBindingOp, CustomElementOpenOp, DirectiveOp, OpType, TemplateElementOpenOp, TextOp } from "./op-codes.js";
+import { AttributeBindingOp, CustomElementOpenOp, ViewBehaviorFactoryOp, OpType, TemplateElementOpenOp, TextOp } from "./op-codes.js";
 import { parseTemplateToOpCodes } from "./template-parser.js";
 
 @customElement("hello-world")
@@ -36,22 +36,22 @@ test.describe("parseTemplateToOpCodes", () => {
     })
     test("should emit a directive op from a binding", () => {
             const input = html`${() => "hello world"}`;
-            expect(parseTemplateToOpCodes(input)).toEqual([{ type: OpType.directive, factory: firstFactory(input.factories)}])
+            expect(parseTemplateToOpCodes(input)).toEqual([{ type: OpType.viewBehaviorFactory, factory: firstFactory(input.factories)}])
     });
     test("should emit a directive op from a content binding", () => {
             const input = html`Hello ${() => "World"}.`;
 
             const codes = parseTemplateToOpCodes(input);
-            const code = codes[1] as DirectiveOp;
+            const code = codes[1] as ViewBehaviorFactoryOp;
             expect(codes.length).toBe(3);
-            expect(code.type).toBe(OpType.directive);
+            expect(code.type).toBe(OpType.viewBehaviorFactory);
     });
     test("should sandwich directive ops between text ops when binding native element content", () => {
 
             const input = html`<p>${() => "hello world"}</p>`;
             expect(parseTemplateToOpCodes(input)).toEqual([
                     { type: OpType.text, value: "<p>"},
-                    { type: OpType.directive, factory: firstFactory(input.factories)},
+                    { type: OpType.viewBehaviorFactory, factory: firstFactory(input.factories)},
                     { type: OpType.text, value: "</p>"},
             ])
         });

@@ -229,7 +229,7 @@ export function parseStringToOpCodes(
                     const location = node.sourceCodeLocation!.attrs[attr.name];
                     const factory = Compiler.aggregate(parsed);
                     flushTo(location.startOffset);
-                    opCodes.push({ type: OpType.directive, factory });
+                    opCodes.push({ type: OpType.viewBehaviorFactory, factory });
                     skipTo(location.endOffset);
                 }
             } else if (node.isDefinedCustomElement) {
@@ -318,7 +318,7 @@ export function parseStringToOpCodes(
                             flush(part);
                         } else {
                             opCodes.push({
-                                type: OpType.directive,
+                                type: OpType.viewBehaviorFactory,
                                 factory: part,
                             });
                         }

@@ -33,7 +33,10 @@ export interface TemplateRendererConfiguration {
 
 export class TemplateRenderer
     implements Readonly<Required<TemplateRendererConfiguration>> {
-    private factoryRenderers: Map<any, ViewBehaviorFactoryRenderer<any>> = new Map();
+    private viewBehaviorFactoryRenderers: Map<
+        any,
+        ViewBehaviorFactoryRenderer<any>
+    > = new Map();
     /**
      * {@inheritDoc TemplateRendererConfiguration.componentDOMEmissionMode}
      */
@@ -85,11 +88,11 @@ export class TemplateRenderer
                 case OpType.text:
                     yield code.value;
                     break;
-                case OpType.directive: {
+                case OpType.viewBehaviorFactory: {
                     const factory = code.factory as ViewBehaviorFactory & Aspected;
                     const ctor = factory.constructor;
-                    if (this.factoryRenderers.has(ctor)) {
-                        yield* this.factoryRenderers
+                    if (this.viewBehaviorFactoryRenderers.has(ctor)) {
+                        yield* this.viewBehaviorFactoryRenderers
                             .get(ctor)!
                             .render(factory, renderInfo, source, this, context);
                     } else if (factory.aspectType && factory.binding) {
@@ -255,13 +258,13 @@ export class TemplateRenderer
 
     /**
      * Registers DirectiveRenderers to use when rendering templates.
-     * @param directives - The directive renderers to register
+     * @param renderers - The directive renderers to register
      */
-    public withDirectiveRenderer(
-        ...directives: ViewBehaviorFactoryRenderer<any>[]
+    public withViewBehaviorFactoryRenderers(
+        ...renderers: ViewBehaviorFactoryRenderer<any>[]
     ): void {
-        for (const renderer of directives) {
-            this.factoryRenderers.set(renderer.matcher, renderer);
+        for (const renderer of renderers) {
+            this.viewBehaviorFactoryRenderers.set(renderer.matcher, renderer);
         }
     }
 }

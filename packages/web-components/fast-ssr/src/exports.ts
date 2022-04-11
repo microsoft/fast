@@ -1,10 +1,5 @@
 import { RenderInfo } from "@lit-labs/ssr";
-import {
-    Compiler,
-    ElementStyles,
-    HTMLDirective,
-    ViewBehaviorFactory,
-} from "@microsoft/fast-element";
+import { Compiler, ElementStyles, ViewBehaviorFactory } from "@microsoft/fast-element";
 import { FASTElementRenderer } from "./element-renderer/element-renderer.js";
 import { FASTSSRStyleStrategy } from "./element-renderer/style-strategy.js";
 import {
@@ -12,7 +7,7 @@ import {
     StyleElementStyleRenderer,
     StyleRenderer,
 } from "./styles/style-renderer.js";
-import { defaultFASTDirectiveRenderers } from "./template-renderer/directives.js";
+import { defaultViewBehaviorFactoryRenderers } from "./template-renderer/directives.js";
 import {
     TemplateRenderer,
     TemplateRendererConfiguration,
@@ -66,7 +61,9 @@ export default function (
             : new StyleElementStyleRenderer();
     };
 
-    templateRenderer.withDirectiveRenderer(...defaultFASTDirectiveRenderers);
+    templateRenderer.withViewBehaviorFactoryRenderers(
+        ...defaultViewBehaviorFactoryRenderers
+    );
 
     return {
         templateRenderer,

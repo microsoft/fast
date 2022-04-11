@@ -90,7 +90,7 @@ export const SlottedDirectiveRenderer: ViewBehaviorFactoryRenderer<SlottedDirect
     }
 );
 
-export const defaultFASTDirectiveRenderers: ViewBehaviorFactoryRenderer<any>[] = [
+export const defaultViewBehaviorFactoryRenderers: ViewBehaviorFactoryRenderer<any>[] = [
     RepeatDirectiveRenderer,
     ChildrenDirectiveRenderer,
     RefDirectiveRenderer,

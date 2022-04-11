@@ -9,7 +9,7 @@ export const enum OpType {
     customElementAttributes,
     customElementShadow,
     attributeBinding,
-    directive,
+    viewBehaviorFactory,
     templateElementOpen,
     templateElementClose,
     text,
@@ -59,8 +59,8 @@ export type CustomElementShadowOp = {
 /**
  * Operation to emit static text
  */
-export type DirectiveOp = {
-    type: OpType.directive;
+export type ViewBehaviorFactoryOp = {
+    type: OpType.viewBehaviorFactory;
     factory: ViewBehaviorFactory;
 };
 
@@ -104,7 +104,7 @@ export type Op =
     | AttributeBindingOp
     | CustomElementOpenOp
     | CustomElementCloseOp
-    | DirectiveOp
+    | ViewBehaviorFactoryOp
     | CustomElementAttributes
     | CustomElementShadowOp
     | TemplateElementOpenOp
