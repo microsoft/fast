@@ -299,8 +299,8 @@ export class RepeatBehavior<TSource = any> implements Behavior, Subscriber {
  * A directive that configures list rendering.
  * @public
  */
-export class RepeatDirective<TSource = any> extends HTMLDirective
-    implements ViewBehaviorFactory {
+export class RepeatDirective<TSource = any>
+    implements HTMLDirective, ViewBehaviorFactory {
     private isItemsBindingVolatile: boolean;
     private isTemplateBindingVolatile: boolean;
 
@@ -319,7 +319,7 @@ export class RepeatDirective<TSource = any> extends HTMLDirective
      * @param index - The index of the directive within the template.
      */
     public createHTML(ctx: HTMLDirectiveContext): string {
-        return Markup.comment(ctx.addFactory(this));
+        return Markup.comment(ctx.add(this));
     }
 
     /**
@@ -333,7 +333,6 @@ export class RepeatDirective<TSource = any> extends HTMLDirective
         public readonly templateBinding: Binding<TSource, SyntheticViewTemplate>,
         public readonly options: RepeatOptions
     ) {
-        super();
         enableArrayObservation();
         this.isItemsBindingVolatile = Observable.isVolatileBinding(itemsBinding);
         this.isTemplateBindingVolatile = Observable.isVolatileBinding(templateBinding);
@@ -354,6 +353,8 @@ export class RepeatDirective<TSource = any> extends HTMLDirective
         );
     }
 }
+
+HTMLDirective.define(RepeatDirective);
 
 /**
  * A directive that enables list rendering.

@@ -5,13 +5,14 @@ import {
     ExecutionContext,
     ItemContext,
 } from "../observation/observable.js";
-import { bind, oneTime } from "./binding.js";
+import { bind, HTMLBindingDirective, oneTime } from "./binding.js";
 import { Compiler } from "./compiler.js";
 import {
     Aspect,
-    AspectedHTMLDirective,
+    Aspected,
     HTMLDirective,
     HTMLDirectiveContext,
+    HTMLDirectiveDefinition,
     ViewBehaviorFactory,
 } from "./html-directive.js";
 import { nextId } from "./markup.js";
@@ -227,7 +228,7 @@ export function html<
     let html = "";
     const factories: Record<string, ViewBehaviorFactory> = Object.create(null);
     const ctx: HTMLDirectiveContext = {
-        addFactory(factory: ViewBehaviorFactory): string {
+        add(factory: ViewBehaviorFactory): string {
             const id = factory.id ?? (factory.id = nextId());
             factories[id] = factory;
             return id;
@@ -239,25 +240,37 @@ export function html<
         let currentValue = values[i];
         html += currentString;
 
+        // fix mess stuff on Monday
+        let definition: HTMLDirectiveDefinition | undefined | null = null;
+
         if (isFunction(currentValue)) {
-            currentValue = bind(currentValue as Binding);
-        } else if (!isString(currentValue) && !(currentValue instanceof HTMLDirective)) {
+            currentValue = bind(currentValue);
+            definition = HTMLDirective.getByType(HTMLBindingDirective);
+        } else if (
+            !isString(currentValue) &&
+            (definition = HTMLDirective.getForInstance(currentValue)) === void 0
+        ) {
             const capturedValue = currentValue;
             currentValue = bind(() => capturedValue, oneTime);
+            definition = HTMLDirective.getByType(HTMLBindingDirective);
         }
 
-        if (currentValue instanceof HTMLDirective) {
-            if (currentValue instanceof AspectedHTMLDirective) {
+        if (definition === null) {
+            definition = HTMLDirective.getForInstance(currentValue);
+        }
+
+        if (definition !== void 0) {
+            if (definition.aspected) {
                 const match = lastAttributeNameRegex.exec(currentString);
                 if (match !== null) {
-                    Aspect.assign(currentValue, match[2]);
+                    Aspect.assign(currentValue as Aspected, match[2]);
                 }
             }
 
             // Since not all values are directives, we can't use i
             // as the index for the placeholder. Instead, we need to
             // use directives.length to get the next index.
-            html += currentValue.createHTML(ctx);
+            html += (currentValue as HTMLDirective).createHTML(ctx);
         } else {
             html += currentValue;
         }

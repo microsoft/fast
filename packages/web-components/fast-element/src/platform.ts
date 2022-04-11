@@ -91,3 +91,40 @@ if (FAST.getById === void 0) {
  * @internal
  */
 export const emptyArray = Object.freeze([]);
+
+export interface TypeDefinition {
+    type: Function;
+}
+
+export interface TypeRegistry<TDefinition extends TypeDefinition> {
+    register(definition: TDefinition): boolean;
+    getByType(key: Function): TDefinition | undefined;
+    getForInstance(object: any): TDefinition | undefined;
+}
+
+/**
+ * Do not change. Part of shared kernel contract.
+ * @internal
+ */
+export function createTypeRegistry<TDefinition extends TypeDefinition>(): TypeRegistry<
+    TDefinition
+> {
+    const typeToDefinition = new Map<Function, TDefinition>();
+
+    return Object.freeze({
+        register(definition: TDefinition): boolean {
+            if (typeToDefinition.has(definition.type)) {
+                return false;
+            }
+
+            typeToDefinition.set(definition.type, definition);
+            return true;
+        },
+        getByType<TType extends Function>(key: TType): TDefinition | undefined {
+            return typeToDefinition.get(key);
+        },
+        getForInstance(object: any): TDefinition | undefined {
+            return typeToDefinition.get(object.constructor);
+        },
+    });
+}

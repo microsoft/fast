@@ -26,7 +26,7 @@ describe("The template compiler", () => {
         const ids: string[] = [];
         let nextId = -1;
         const ctx: HTMLDirectiveContext = {
-            addFactory(factory: ViewBehaviorFactory): string {
+            add(factory: ViewBehaviorFactory): string {
                 const id = `${++nextId}`;
                 ids.push(id);
                 factory.id = id;

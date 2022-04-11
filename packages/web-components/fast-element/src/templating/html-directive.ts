@@ -1,5 +1,7 @@
+import type { Constructable, Mutable } from "../interfaces.js";
 import type { Behavior } from "../observation/behavior.js";
 import type { Binding, ExecutionContext } from "../observation/observable.js";
+import { createTypeRegistry } from "../platform.js";
 import { Markup } from "./markup.js";
 
 /**
@@ -74,20 +76,57 @@ export interface HTMLDirectiveContext {
      * @param factory - The factory to add.
      * @returns The unique id of the factory, usable in template interpolations.
      */
-    addFactory(factory: ViewBehaviorFactory): string;
+    add(factory: ViewBehaviorFactory): string;
 }
 
 /**
  * Instructs the template engine to apply behavior to a node.
  * @public
  */
-export abstract class HTMLDirective {
+export interface HTMLDirective {
     /**
      * Creates HTML to be used within a template.
      * @param ctx - The current directive context, which can be used to add
      * behavior factories to a template.
      */
-    public abstract createHTML(ctx: HTMLDirectiveContext): string;
+    createHTML(ctx: HTMLDirectiveContext): string;
+}
+
+export interface PartialHTMLDirectiveDefinition {
+    aspected?: boolean;
+}
+
+export interface HTMLDirectiveDefinition<TType extends Function = Function> {
+    readonly type: TType;
+    readonly aspected: boolean;
+}
+
+const registry = createTypeRegistry<HTMLDirectiveDefinition>();
+
+export const HTMLDirective = Object.freeze({
+    getForInstance: registry.getForInstance,
+    getByType: registry.getByType,
+    define<TType extends Function>(
+        type: TType,
+        options?: PartialHTMLDirectiveDefinition
+    ): TType {
+        options = options || {};
+        (options as Mutable<HTMLDirectiveDefinition>).type = type;
+        registry.register(options as HTMLDirectiveDefinition);
+        return type;
+    },
+});
+
+/**
+ * Decorator: Defines an HTMLDirective.
+ * @param options - Provides options that specify the directives application.
+ * @public
+ */
+export function htmlDirective(options?: PartialHTMLDirectiveDefinition) {
+    /* eslint-disable-next-line @typescript-eslint/explicit-function-return-type */
+    return function (type: Constructable<HTMLDirective>) {
+        HTMLDirective.define(type, options);
+    };
 }
 
 /**
@@ -200,33 +239,11 @@ export interface Aspected {
 }
 
 /**
- * A {@link HTMLDirective} that targets a particular aspect
- * (attribute, property, event, etc.) of a node.
- * @public
- */
-export abstract class AspectedHTMLDirective extends HTMLDirective implements Aspected {
-    /**
-     * The original source aspect exactly as represented in markup.
-     */
-    sourceAspect: string;
-
-    /**
-     * The evaluated target aspect, determined after processing the source.
-     */
-    targetAspect: string;
-
-    /**
-     * The type of aspect to target.
-     */
-    aspectType: number = Aspect.content;
-}
-
-/**
  * A base class used for attribute directives that don't need internal state.
  * @public
  */
-export abstract class StatelessAttachedAttributeDirective<T> extends HTMLDirective
-    implements ViewBehaviorFactory, ViewBehavior {
+export abstract class StatelessAttachedAttributeDirective<T>
+    implements HTMLDirective, ViewBehaviorFactory, ViewBehavior {
     /**
      * The unique id of the factory.
      */
@@ -241,9 +258,7 @@ export abstract class StatelessAttachedAttributeDirective<T> extends HTMLDirecti
      * Creates an instance of RefDirective.
      * @param options - The options to use in configuring the directive.
      */
-    public constructor(protected options: T) {
-        super();
-    }
+    public constructor(protected options: T) {}
 
     /**
      * Creates a behavior.
@@ -260,7 +275,7 @@ export abstract class StatelessAttachedAttributeDirective<T> extends HTMLDirecti
      * Creates a custom attribute placeholder.
      */
     public createHTML(ctx: HTMLDirectiveContext): string {
-        return Markup.attribute(ctx.addFactory(this));
+        return Markup.attribute(ctx.add(this));
     }
 
     /**

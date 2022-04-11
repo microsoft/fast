@@ -2,7 +2,7 @@ import { expect } from "chai";
 import { html, ViewTemplate } from "./template";
 import { Markup, Parser } from "./markup";
 import { HTMLBindingDirective } from "./binding";
-import { AspectedHTMLDirective, Aspect, HTMLDirective, HTMLDirectiveContext, ViewBehaviorFactory, Aspected } from "./html-directive";
+import { Aspect, HTMLDirective, HTMLDirectiveContext, ViewBehaviorFactory, Aspected, htmlDirective } from "./html-directive";
 import { bind, ViewBehaviorTargets } from "..";
 import { Constructable, isString } from "../interfaces";
 
@@ -12,7 +12,8 @@ describe(`The html tag template helper`, () => {
         expect(template).instanceOf(ViewTemplate);
     });
 
-    class TestDirective extends HTMLDirective implements ViewBehaviorFactory {
+    @htmlDirective()
+    class TestDirective implements HTMLDirective, ViewBehaviorFactory {
         id: string;
         nodeId: string;
 
@@ -21,7 +22,7 @@ describe(`The html tag template helper`, () => {
         }
 
         createHTML(ctx: HTMLDirectiveContext) {
-            return Markup.comment(ctx.addFactory(this));
+            return Markup.comment(ctx.add(this));
         }
     }
 
@@ -363,7 +364,8 @@ describe(`The html tag template helper`, () => {
     });
 
     it(`captures a case-sensitive property with an inline directive`, () => {
-        class TestDirective extends AspectedHTMLDirective {
+        @htmlDirective({ aspected: true })
+        class TestDirective implements HTMLDirective, Aspected {
             sourceAspect: string;
             targetAspect: string;
             aspectType = Aspect.property;
@@ -375,7 +377,7 @@ describe(`The html tag template helper`, () => {
             }
 
             public createHTML(ctx: HTMLDirectiveContext): string {
-                return Markup.interpolation(ctx.addFactory(this));
+                return Markup.interpolation(ctx.add(this));
             }
         }
 

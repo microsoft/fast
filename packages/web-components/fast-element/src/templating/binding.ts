@@ -10,7 +10,7 @@ import { FAST } from "../platform.js";
 import {
     Aspect,
     Aspected,
-    AspectedHTMLDirective,
+    HTMLDirective,
     HTMLDirectiveContext,
     ViewBehavior,
     ViewBehaviorFactory,
@@ -510,20 +510,22 @@ const createInnerHTMLBinding = globalThis.TrustedHTML
 /**
  * @internal
  */
-export class HTMLBindingDirective extends AspectedHTMLDirective
-    implements ViewBehaviorFactory, Aspected {
+export class HTMLBindingDirective
+    implements HTMLDirective, ViewBehaviorFactory, Aspected {
     private factory: BindingBehaviorFactory | null = null;
 
     id: string;
     nodeId: string;
+    sourceAspect: string;
+    targetAspect: string;
+    aspectType: number;
 
     constructor(public binding: Binding, public mode: BindingMode, public options: any) {
-        super();
         this.aspectType = Aspect.content;
     }
 
     createHTML(ctx: HTMLDirectiveContext): string {
-        return Markup.interpolation(ctx.addFactory(this));
+        return Markup.interpolation(ctx.add(this));
     }
 
     createBehavior(targets: ViewBehaviorTargets): ViewBehavior {
@@ -538,6 +540,8 @@ export class HTMLBindingDirective extends AspectedHTMLDirective
         return this.factory.createBehavior(targets);
     }
 }
+
+HTMLDirective.define(HTMLBindingDirective, { aspected: true });
 
 /**
  * @alpha
