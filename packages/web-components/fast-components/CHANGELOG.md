@@ -1,8 +1,20 @@
 # Change Log - @microsoft/fast-components
 
-This log was last generated on Thu, 07 Apr 2022 07:12:06 GMT and should not be manually modified.
+This log was last generated on Sun, 10 Apr 2022 07:11:09 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.27.0
+
+Sun, 10 Apr 2022 07:11:09 GMT
+
+### Minor changes
+
+- Converted the fast-components package to type:module (nicholasrice@users.noreply.github.com)
+
+### Patches
+
+- set disclosure appearance attribute in connected callback to ensure the element can be constructed without error (chhol@microsoft.com)
 
 ## 2.26.2
 
