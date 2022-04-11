@@ -140,9 +140,8 @@ module.exports = {
             {
                 docs: {
                     sidebarPath: require.resolve("./sidebars.js"),
-                    editUrl: "https://github.com/microsoft/fast",
                     showLastUpdateTime: true,
-                    showLastUpdateAuthor: false,
+                    editUrl: "https://github.com/microsoft/fast",
                     remarkPlugins: [require("mdx-mermaid")],
                 },
                 theme: {
