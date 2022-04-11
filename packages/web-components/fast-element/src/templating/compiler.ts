@@ -3,12 +3,7 @@ import type { ExecutionContext } from "../observation/observable.js";
 import { FAST } from "../platform.js";
 import { Parser } from "./markup.js";
 import { bind, HTMLBindingDirective, oneTime } from "./binding.js";
-import {
-    Aspect,
-    Aspected,
-    HTMLDirective,
-    ViewBehaviorFactory,
-} from "./html-directive.js";
+import { Aspect, Aspected, ViewBehaviorFactory } from "./html-directive.js";
 import type { HTMLTemplateCompilationResult as TemplateCompilationResult } from "./template.js";
 import { HTMLView } from "./view.js";
 
@@ -266,9 +261,9 @@ export type CompilationStrategy = (
      */
     html: string | HTMLTemplateElement,
     /**
-     * The directives used within the html that is being compiled.
+     * The behavior factories used within the html that is being compiled.
      */
-    directives: readonly HTMLDirective[]
+    factories: Record<string, ViewBehaviorFactory>
 ) => TemplateCompilationResult;
 
 const templateTag = "TEMPLATE";
@@ -282,7 +277,7 @@ const fastHTMLPolicy = htmlPolicy;
  * Common APIs related to compilation.
  * @public
  */
-export const Compiler = Object.freeze({
+export const Compiler = {
     /**
      * Sets the HTML trusted types policy used by the compiler.
      * @param policy - The policy to set for HTML.
@@ -403,4 +398,4 @@ export const Compiler = Object.freeze({
         Aspect.assign(directive, sourceAspect!);
         return directive;
     },
-});
+};

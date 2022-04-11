@@ -29,6 +29,7 @@ export class AdoptedStyleSheetsStrategy implements StyleStrategy {
 
 // @public
 export const Aspect: Readonly<{
+    none: number;
     attribute: number;
     booleanAttribute: number;
     property: number;
@@ -174,15 +175,15 @@ export interface ChildViewTemplate<TSource = any, TParent = any> {
 // @public
 export type CompilationStrategy = (
 html: string | HTMLTemplateElement,
-directives: readonly HTMLDirective[]) => HTMLTemplateCompilationResult;
+factories: Record<string, ViewBehaviorFactory>) => HTMLTemplateCompilationResult;
 
 // @public
-export const Compiler: Readonly<{
+export const Compiler: {
     setHTMLPolicy(policy: TrustedTypesPolicy): void;
     compile<TSource = any, TParent = any, TContext extends ExecutionContext<TParent> = ExecutionContext<TParent>>(html: string | HTMLTemplateElement, directives: Record<string, ViewBehaviorFactory>): HTMLTemplateCompilationResult<TSource, TParent, TContext>;
     setDefaultStrategy(strategy: CompilationStrategy): void;
     aggregate(parts: (string | ViewBehaviorFactory)[]): ViewBehaviorFactory;
-}>;
+};
 
 // @public
 export type ComposableStyles = string | ElementStyles | CSSStyleSheet;

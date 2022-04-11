@@ -1,4 +1,4 @@
-import { Aspect, Binding, HTMLDirective } from "@microsoft/fast-element";
+import { Binding, ViewBehaviorFactory } from "@microsoft/fast-element";
 
 /**
  * Allows fast identification of operation types
@@ -61,7 +61,7 @@ export type CustomElementShadowOp = {
  */
 export type DirectiveOp = {
     type: OpType.directive;
-    directive: HTMLDirective;
+    factory: ViewBehaviorFactory;
 };
 
 /**
@@ -71,12 +71,7 @@ export type AttributeBindingOp = {
     type: OpType.attributeBinding;
     binding: Binding;
     target: string;
-    aspect:
-        | Aspect.attribute
-        | Aspect.booleanAttribute
-        | Aspect.event
-        | Aspect.property
-        | Aspect.tokenList;
+    aspect: number;
     useCustomElementInstance: boolean;
 };
 

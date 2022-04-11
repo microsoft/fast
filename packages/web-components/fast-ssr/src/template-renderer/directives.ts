@@ -7,6 +7,7 @@ import {
     RefDirective,
     RepeatDirective,
     SlottedDirective,
+    ViewBehaviorFactory,
     ViewTemplate,
 } from "@microsoft/fast-element";
 import { TemplateRenderer } from "./template-renderer.js";
@@ -14,22 +15,22 @@ import { TemplateRenderer } from "./template-renderer.js";
 /**
  * Describes an implementation that can render a directive
  */
-export interface DirectiveRenderer<T extends Constructable> {
+export interface ViewBehaviorFactoryRenderer<T extends ViewBehaviorFactory> {
     render(
-        directive: InstanceType<T>,
+        behavior: T,
         renderInfo: RenderInfo,
         source: any,
         renderer: TemplateRenderer,
         context: ExecutionContext
     ): IterableIterator<string>;
-    matcher: T;
+    matcher: Constructable<T>;
 }
 
-export const RepeatDirectiveRenderer: DirectiveRenderer<typeof RepeatDirective> = Object.freeze(
+export const RepeatDirectiveRenderer: ViewBehaviorFactoryRenderer<RepeatDirective> = Object.freeze(
     {
         matcher: RepeatDirective,
         *render(
-            directive: InstanceType<typeof RepeatDirective>,
+            directive: RepeatDirective,
             renderInfo: RenderInfo,
             source: any,
             renderer: TemplateRenderer,
@@ -69,27 +70,27 @@ export const RepeatDirectiveRenderer: DirectiveRenderer<typeof RepeatDirective> 
 function* noop() {
     yield "";
 }
-export const ChildrenDirectiveRenderer: DirectiveRenderer<typeof ChildrenDirective> = Object.freeze(
+export const ChildrenDirectiveRenderer: ViewBehaviorFactoryRenderer<ChildrenDirective> = Object.freeze(
     {
         matcher: ChildrenDirective,
         render: noop,
     }
 );
 
-export const RefDirectiveRenderer: DirectiveRenderer<typeof RefDirective> = Object.freeze(
+export const RefDirectiveRenderer: ViewBehaviorFactoryRenderer<RefDirective> = Object.freeze(
     {
         matcher: RefDirective,
         render: noop,
     }
 );
-export const SlottedDirectiveRenderer: DirectiveRenderer<typeof SlottedDirective> = Object.freeze(
+export const SlottedDirectiveRenderer: ViewBehaviorFactoryRenderer<SlottedDirective> = Object.freeze(
     {
         matcher: SlottedDirective,
         render: noop,
     }
 );
 
-export const defaultFASTDirectiveRenderers: DirectiveRenderer<any>[] = [
+export const defaultFASTDirectiveRenderers: ViewBehaviorFactoryRenderer<any>[] = [
     RepeatDirectiveRenderer,
     ChildrenDirectiveRenderer,
     RefDirectiveRenderer,

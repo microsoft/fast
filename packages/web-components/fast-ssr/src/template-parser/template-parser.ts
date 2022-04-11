@@ -4,10 +4,10 @@
  */
 import {
     Aspect,
-    AspectedHTMLDirective,
+    Aspected,
     Compiler,
-    HTMLDirective,
     Parser,
+    ViewBehaviorFactory,
     ViewTemplate,
 } from "@microsoft/fast-element";
 import {
@@ -111,14 +111,14 @@ export function parseTemplateToOpCodes(template: ViewTemplate): Op[] {
      */
     const templateString = html;
 
-    const codes = parseStringToOpCodes(templateString, template.directives);
+    const codes = parseStringToOpCodes(templateString, template.factories);
     opCache.set(template, codes);
     return codes;
 }
 
 export function parseStringToOpCodes(
     templateString: string,
-    directives: ReadonlyArray<HTMLDirective>
+    factories: Record<string, ViewBehaviorFactory>
 ): Op[] {
     const nodeTree = parseFragment(templateString, { sourceCodeLocationInfo: true });
 
@@ -159,20 +159,17 @@ export function parseStringToOpCodes(
             dynamic: Map<Attribute, AttributeBindingOp>;
         } = node.attrs.reduce(
             (prev, current) => {
-                const parsed = Parser.parse(current.value, directives);
+                const parsed = Parser.parse(current.value, factories);
                 if (parsed) {
-                    const directive = Compiler.aggregate(parsed);
+                    const factory = Compiler.aggregate(parsed) as ViewBehaviorFactory &
+                        Aspected;
                     // Guard against directives like children, ref, and slotted
-                    if (
-                        directive instanceof AspectedHTMLDirective &&
-                        directive.binding &&
-                        directive.aspect !== Aspect.content
-                    ) {
+                    if (factory.binding && factory.aspectType !== Aspect.content) {
                         prev.dynamic.set(current, {
                             type: OpType.attributeBinding,
-                            binding: directive.binding,
-                            aspect: directive.aspect,
-                            target: directive.target,
+                            binding: factory.binding,
+                            aspect: factory.aspectType,
+                            target: factory.targetAspect,
                             useCustomElementInstance: Boolean(
                                 node.isDefinedCustomElement
                             ),
@@ -227,12 +224,12 @@ export function parseStringToOpCodes(
                 skipTo(location.endOffset);
             } else if (!attributes.static.has(attr.name)) {
                 // Handle interpolated directives like children, ref, and slotted
-                const parsed = Parser.parse(attr.value, directives);
+                const parsed = Parser.parse(attr.value, factories);
                 if (parsed) {
                     const location = node.sourceCodeLocation!.attrs[attr.name];
-                    const directive = Compiler.aggregate(parsed);
+                    const factory = Compiler.aggregate(parsed);
                     flushTo(location.startOffset);
-                    opCodes.push({ type: OpType.directive, directive });
+                    opCodes.push({ type: OpType.directive, factory });
                     skipTo(location.endOffset);
                 }
             } else if (node.isDefinedCustomElement) {
@@ -311,7 +308,7 @@ export function parseStringToOpCodes(
                 const parsed = Parser.parse(
                     (node as DefaultTreeCommentNode)?.data ||
                         (node as DefaultTreeTextNode).value,
-                    directives
+                    factories
                 );
 
                 if (parsed) {
@@ -322,7 +319,7 @@ export function parseStringToOpCodes(
                         } else {
                             opCodes.push({
                                 type: OpType.directive,
-                                directive: part,
+                                factory: part,
                             });
                         }
                     }

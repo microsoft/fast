@@ -146,34 +146,39 @@ export function htmlDirective(options?: PartialHTMLDirectiveDefinition) {
  */
 export const Aspect = Object.freeze({
     /**
+     * Not aspected.
+     */
+    none: 0,
+
+    /**
      * An attribute.
      */
-    attribute: 0,
+    attribute: 1,
 
     /**
      * A boolean attribute.
      */
-    booleanAttribute: 1,
+    booleanAttribute: 2,
 
     /**
      * A property.
      */
-    property: 2,
+    property: 3,
 
     /**
      * Content
      */
-    content: 3,
+    content: 4,
 
     /**
      * A token list.
      */
-    tokenList: 4,
+    tokenList: 5,
 
     /**
      * An event.
      */
-    event: 5,
+    event: 6,
 
     /**
      *
