@@ -8,10 +8,10 @@ import {
 import { bind, HTMLBindingDirective, oneTime } from "./binding.js";
 import { Compiler } from "./compiler.js";
 import {
+    AddViewBehaviorFactory,
     Aspect,
     Aspected,
     HTMLDirective,
-    HTMLDirectiveContext,
     HTMLDirectiveDefinition,
     ViewBehaviorFactory,
 } from "./html-directive.js";
@@ -208,6 +208,19 @@ export type TemplateValue<
     TContext extends ExecutionContext<TParent> = ExecutionContext<TParent>
 > = Binding<TSource, any, TContext> | HTMLDirective | CaptureType<TSource>;
 
+function createAspectedHTML(
+    value: HTMLDirective & Aspected,
+    prevString: string,
+    add: AddViewBehaviorFactory
+): string {
+    const match = lastAttributeNameRegex.exec(prevString);
+    if (match !== null) {
+        Aspect.assign(value as Aspected, match[2]);
+    }
+
+    return value.createHTML(add);
+}
+
 /**
  * Transforms a template literal string into a ViewTemplate.
  * @param strings - The string fragments that are interpolated with the values.
@@ -227,58 +240,60 @@ export function html<
 ): ViewTemplate<TSource, TParent> {
     let html = "";
     const factories: Record<string, ViewBehaviorFactory> = Object.create(null);
-    const ctx: HTMLDirectiveContext = {
-        add(factory: ViewBehaviorFactory): string {
-            const id = factory.id ?? (factory.id = nextId());
-            factories[id] = factory;
-            return id;
-        },
+    const add = (factory: ViewBehaviorFactory): string => {
+        const id = factory.id ?? (factory.id = nextId());
+        factories[id] = factory;
+        return id;
     };
 
     for (let i = 0, ii = strings.length - 1; i < ii; ++i) {
         const currentString = strings[i];
-        let currentValue = values[i];
+        const currentValue = values[i];
+        let definition: HTMLDirectiveDefinition | undefined;
+
         html += currentString;
 
-        // fix mess stuff on Monday
-        let definition: HTMLDirectiveDefinition | undefined | null = null;
-
         if (isFunction(currentValue)) {
-            currentValue = bind(currentValue);
-            definition = HTMLDirective.getByType(HTMLBindingDirective);
-        } else if (
-            !isString(currentValue) &&
-            (definition = HTMLDirective.getForInstance(currentValue)) === void 0
-        ) {
-            const capturedValue = currentValue;
-            currentValue = bind(() => capturedValue, oneTime);
-            definition = HTMLDirective.getByType(HTMLBindingDirective);
-        }
-
-        if (definition === null) {
-            definition = HTMLDirective.getForInstance(currentValue);
-        }
-
-        if (definition !== void 0) {
-            if (definition.aspected) {
-                const match = lastAttributeNameRegex.exec(currentString);
-                if (match !== null) {
-                    Aspect.assign(currentValue as Aspected, match[2]);
-                }
+            html += createAspectedHTML(
+                bind(currentValue) as HTMLBindingDirective,
+                currentString,
+                add
+            );
+        } else if (isString(currentValue)) {
+            const match = lastAttributeNameRegex.exec(currentString);
+            if (match !== null) {
+                const directive = bind(
+                    () => currentValue,
+                    oneTime
+                ) as HTMLBindingDirective;
+                Aspect.assign(directive, match[2]);
+                html += directive.createHTML(add);
+            } else {
+                html += currentValue;
             }
-
-            // Since not all values are directives, we can't use i
-            // as the index for the placeholder. Instead, we need to
-            // use directives.length to get the next index.
-            html += (currentValue as HTMLDirective).createHTML(ctx);
+        } else if ((definition = HTMLDirective.getForInstance(currentValue)) === void 0) {
+            html += createAspectedHTML(
+                bind(() => currentValue, oneTime) as HTMLBindingDirective,
+                currentString,
+                add
+            );
         } else {
-            html += currentValue;
+            if (definition.aspected) {
+                html += createAspectedHTML(
+                    currentValue as HTMLDirective & Aspected,
+                    currentString,
+                    add
+                );
+            } else {
+                html += (currentValue as HTMLDirective).createHTML(add);
+            }
         }
     }
 
-    html += strings[strings.length - 1];
-
-    return new ViewTemplate<TSource, TParent, any>(html, factories);
+    return new ViewTemplate<TSource, TParent, any>(
+        html + strings[strings.length - 1],
+        factories
+    );
 }
 
 /**

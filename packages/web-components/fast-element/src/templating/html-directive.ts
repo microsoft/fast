@@ -66,18 +66,10 @@ export interface ViewBehaviorFactory {
 }
 
 /**
- * Contextual information and functionality available
- * while processing an HTMLDirective.
+ * Used to add behavior factories when constructing templates.
  * @public
  */
-export interface HTMLDirectiveContext {
-    /**
-     * Adds a behavior factory to the current template.
-     * @param factory - The factory to add.
-     * @returns The unique id of the factory, usable in template interpolations.
-     */
-    add(factory: ViewBehaviorFactory): string;
-}
+export type AddViewBehaviorFactory = (factory: ViewBehaviorFactory) => string;
 
 /**
  * Instructs the template engine to apply behavior to a node.
@@ -86,10 +78,9 @@ export interface HTMLDirectiveContext {
 export interface HTMLDirective {
     /**
      * Creates HTML to be used within a template.
-     * @param ctx - The current directive context, which can be used to add
-     * behavior factories to a template.
+     * @param add - Can be used to add  behavior factories to a template.
      */
-    createHTML(ctx: HTMLDirectiveContext): string;
+    createHTML(add: AddViewBehaviorFactory): string;
 }
 
 export interface PartialHTMLDirectiveDefinition {
@@ -274,8 +265,8 @@ export abstract class StatelessAttachedAttributeDirective<T>
      * @remarks
      * Creates a custom attribute placeholder.
      */
-    public createHTML(ctx: HTMLDirectiveContext): string {
-        return Markup.attribute(ctx.add(this));
+    public createHTML(add: AddViewBehaviorFactory): string {
+        return Markup.attribute(add(this));
     }
 
     /**

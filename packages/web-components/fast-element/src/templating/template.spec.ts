@@ -2,7 +2,7 @@ import { expect } from "chai";
 import { html, ViewTemplate } from "./template";
 import { Markup, Parser } from "./markup";
 import { HTMLBindingDirective } from "./binding";
-import { Aspect, HTMLDirective, HTMLDirectiveContext, ViewBehaviorFactory, Aspected, htmlDirective } from "./html-directive";
+import { Aspect, HTMLDirective, ViewBehaviorFactory, Aspected, htmlDirective, AddViewBehaviorFactory } from "./html-directive";
 import { bind, ViewBehaviorTargets } from "..";
 import { Constructable, isString } from "../interfaces";
 
@@ -21,8 +21,8 @@ describe(`The html tag template helper`, () => {
             return {} as any;
         }
 
-        createHTML(ctx: HTMLDirectiveContext) {
-            return Markup.comment(ctx.add(this));
+        createHTML(add: AddViewBehaviorFactory) {
+            return Markup.comment(add(this));
         }
     }
 
@@ -376,8 +376,8 @@ describe(`The html tag template helper`, () => {
                 return { bind() {}, unbind() {} };
             }
 
-            public createHTML(ctx: HTMLDirectiveContext): string {
-                return Markup.interpolation(ctx.add(this));
+            public createHTML(add: AddViewBehaviorFactory): string {
+                return Markup.interpolation(add(this));
             }
         }
 

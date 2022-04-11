@@ -8,10 +8,10 @@ import {
 } from "../observation/observable.js";
 import { FAST } from "../platform.js";
 import {
+    AddViewBehaviorFactory,
     Aspect,
     Aspected,
     HTMLDirective,
-    HTMLDirectiveContext,
     ViewBehavior,
     ViewBehaviorFactory,
     ViewBehaviorTargets,
@@ -524,8 +524,8 @@ export class HTMLBindingDirective
         this.aspectType = Aspect.content;
     }
 
-    createHTML(ctx: HTMLDirectiveContext): string {
-        return Markup.interpolation(ctx.add(this));
+    createHTML(add: AddViewBehaviorFactory): string {
+        return Markup.interpolation(add(this));
     }
 
     createBehavior(targets: ViewBehaviorTargets): ViewBehavior {

@@ -11,6 +11,9 @@ export interface Accessor {
     setValue(source: any, value: any): void;
 }
 
+// @public
+export type AddViewBehaviorFactory = (factory: ViewBehaviorFactory) => string;
+
 // Warning: (ae-internal-missing-underscore) The name "AdoptedStyleSheetsStrategy" should be prefixed with an underscore because the declaration is marked as @internal
 //
 // @internal
@@ -379,7 +382,7 @@ export function html<TSource = any, TParent = any, TContext extends ExecutionCon
 
 // @public
 export interface HTMLDirective {
-    createHTML(ctx: HTMLDirectiveContext): string;
+    createHTML(add: AddViewBehaviorFactory): string;
 }
 
 // @public (undocumented)
@@ -391,11 +394,6 @@ export const HTMLDirective: Readonly<{
 
 // @public
 export function htmlDirective(options?: PartialHTMLDirectiveDefinition): (type: Constructable<HTMLDirective>) => void;
-
-// @public
-export interface HTMLDirectiveContext {
-    add(factory: ViewBehaviorFactory): string;
-}
 
 // @public (undocumented)
 export interface HTMLDirectiveDefinition<TType extends Function = Function> {
@@ -627,7 +625,7 @@ export class RepeatBehavior<TSource = any> implements Behavior, Subscriber {
 export class RepeatDirective<TSource = any> implements HTMLDirective, ViewBehaviorFactory {
     constructor(itemsBinding: Binding, templateBinding: Binding<TSource, SyntheticViewTemplate>, options: RepeatOptions);
     createBehavior(targets: ViewBehaviorTargets): RepeatBehavior<TSource>;
-    createHTML(ctx: HTMLDirectiveContext): string;
+    createHTML(add: AddViewBehaviorFactory): string;
     id: string;
     // (undocumented)
     readonly itemsBinding: Binding;
@@ -688,7 +686,7 @@ export abstract class StatelessAttachedAttributeDirective<T> implements HTMLDire
     constructor(options: T);
     abstract bind(source: any, context: ExecutionContext, targets: ViewBehaviorTargets): void;
     createBehavior(targets: ViewBehaviorTargets): ViewBehavior;
-    createHTML(ctx: HTMLDirectiveContext): string;
+    createHTML(add: AddViewBehaviorFactory): string;
     id: string;
     nodeId: string;
     // (undocumented)

@@ -7,7 +7,7 @@ import { css } from "../styles/css";
 import { toHTML, uniqueElementName } from "../__test__/helpers";
 import { bind, HTMLBindingDirective } from "./binding";
 import { Compiler } from "./compiler";
-import type { HTMLDirective, HTMLDirectiveContext, ViewBehaviorFactory } from "./html-directive";
+import type { HTMLDirective, ViewBehaviorFactory } from "./html-directive";
 import { html } from "./template";
 import type { StyleTarget } from "../interfaces";
 
@@ -25,17 +25,15 @@ describe("The template compiler", () => {
         const factories: Record<string, ViewBehaviorFactory> = Object.create(null);
         const ids: string[] = [];
         let nextId = -1;
-        const ctx: HTMLDirectiveContext = {
-            add(factory: ViewBehaviorFactory): string {
-                const id = `${++nextId}`;
-                ids.push(id);
-                factory.id = id;
-                factories[id] = factory;
-                return id;
-            }
+        const add = (factory: ViewBehaviorFactory): string => {
+            const id = `${++nextId}`;
+            ids.push(id);
+            factory.id = id;
+            factories[id] = factory;
+            return id;
         };
 
-        directives.forEach(x => x.createHTML(ctx));
+        directives.forEach(x => x.createHTML(add));
 
         return Compiler.compile(html, factories) as any as CompilationResultInternals;
     }

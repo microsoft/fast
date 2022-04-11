@@ -15,8 +15,8 @@ import {
 import { emptyArray } from "../platform.js";
 import { Markup } from "./markup.js";
 import {
+    AddViewBehaviorFactory,
     HTMLDirective,
-    HTMLDirectiveContext,
     ViewBehaviorFactory,
     ViewBehaviorTargets,
 } from "./html-directive.js";
@@ -318,8 +318,8 @@ export class RepeatDirective<TSource = any>
      * Creates a placeholder string based on the directive's index within the template.
      * @param index - The index of the directive within the template.
      */
-    public createHTML(ctx: HTMLDirectiveContext): string {
-        return Markup.comment(ctx.add(this));
+    public createHTML(add: AddViewBehaviorFactory): string {
+        return Markup.comment(add(this));
     }
 
     /**
