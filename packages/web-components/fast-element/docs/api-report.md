@@ -238,7 +238,7 @@ export class CSSDirective {
 export function cssPartial(strings: TemplateStringsArray, ...values: (ComposableStyles | CSSDirective)[]): CSSDirective;
 
 // @public
-export function customElement(nameOrDef: string | PartialFASTElementDefinition): (type: Function) => void;
+export function customElement(nameOrDef: string | PartialFASTElementDefinition): (type: Constructable<HTMLElement>) => void;
 
 // @public
 export type DecoratorAttributeConfiguration = Omit<AttributeConfiguration, "property">;
@@ -344,17 +344,18 @@ export const FASTElement: (new () => HTMLElement & FASTElement) & {
         new (): HTMLElement;
         prototype: HTMLElement;
     }>(BaseType: TBase): new () => InstanceType<TBase> & FASTElement;
-    define<TType extends Function>(type: TType, nameOrDef?: string | PartialFASTElementDefinition | undefined): TType;
+    define<TType extends Constructable<HTMLElement>>(type: TType, nameOrDef?: string | PartialFASTElementDefinition | undefined): TType;
 };
 
 // @public
-export class FASTElementDefinition<TType extends Function = Function> {
+export class FASTElementDefinition<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>> {
     constructor(type: TType, nameOrConfig?: PartialFASTElementDefinition | string);
     readonly attributeLookup: Record<string, AttributeDefinition>;
     readonly attributes: ReadonlyArray<AttributeDefinition>;
     define(registry?: CustomElementRegistry): this;
     readonly elementOptions?: ElementDefinitionOptions;
-    static readonly forType: (key: Function) => FASTElementDefinition<Function> | undefined;
+    static readonly getByType: (key: Function) => FASTElementDefinition<Constructable<HTMLElement>> | undefined;
+    static readonly getForInstance: (object: any) => FASTElementDefinition<Constructable<HTMLElement>> | undefined;
     get isDefined(): boolean;
     readonly name: string;
     readonly propertyLookup: Record<string, AttributeDefinition>;
@@ -385,21 +386,18 @@ export interface HTMLDirective {
     createHTML(add: AddViewBehaviorFactory): string;
 }
 
-// @public (undocumented)
+// @public
 export const HTMLDirective: Readonly<{
-    getForInstance: (object: any) => HTMLDirectiveDefinition<Function> | undefined;
-    getByType: (key: Function) => HTMLDirectiveDefinition<Function> | undefined;
-    define<TType extends Function>(type: TType, options?: PartialHTMLDirectiveDefinition | undefined): TType;
+    getForInstance: (object: any) => HTMLDirectiveDefinition<Constructable<HTMLDirective>> | undefined;
+    getByType: (key: Function) => HTMLDirectiveDefinition<Constructable<HTMLDirective>> | undefined;
+    define<TType extends Constructable<HTMLDirective>>(type: TType, options?: PartialHTMLDirectiveDefinition | undefined): TType;
 }>;
 
 // @public
 export function htmlDirective(options?: PartialHTMLDirectiveDefinition): (type: Constructable<HTMLDirective>) => void;
 
-// @public (undocumented)
-export interface HTMLDirectiveDefinition<TType extends Function = Function> {
-    // (undocumented)
-    readonly aspected: boolean;
-    // (undocumented)
+// @public
+export interface HTMLDirectiveDefinition<TType extends Constructable<HTMLDirective> = Constructable<HTMLDirective>> extends Required<PartialHTMLDirectiveDefinition> {
     readonly type: TType;
 }
 
@@ -549,9 +547,8 @@ export interface PartialFASTElementDefinition {
     readonly template?: ElementViewTemplate;
 }
 
-// @public (undocumented)
+// @public
 export interface PartialHTMLDirectiveDefinition {
-    // (undocumented)
     aspected?: boolean;
 }
 
@@ -758,13 +755,17 @@ export type TrustedTypesPolicy = {
     createHTML(html: string): string;
 };
 
-// @public (undocumented)
+// Warning: (ae-internal-missing-underscore) The name "TypeDefinition" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal
 export interface TypeDefinition {
     // (undocumented)
     type: Function;
 }
 
-// @public (undocumented)
+// Warning: (ae-internal-missing-underscore) The name "TypeRegistry" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal
 export interface TypeRegistry<TDefinition extends TypeDefinition> {
     // (undocumented)
     getByType(key: Function): TDefinition | undefined;

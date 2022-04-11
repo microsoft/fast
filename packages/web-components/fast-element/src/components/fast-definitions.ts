@@ -1,4 +1,4 @@
-import { isString, KernelServiceId } from "../interfaces.js";
+import { Constructable, isString, KernelServiceId } from "../interfaces.js";
 import { Observable } from "../observation/observable.js";
 import { createTypeRegistry, FAST, TypeRegistry } from "../platform.js";
 import { ComposableStyles, ElementStyles } from "../styles/element-styles.js";
@@ -8,7 +8,7 @@ import { AttributeConfiguration, AttributeDefinition } from "./attributes.js";
 const defaultShadowOptions: ShadowRootInit = { mode: "open" };
 const defaultElementOptions: ElementDefinitionOptions = {};
 
-const FASTElementRegistry: TypeRegistry<FASTElementDefinition> = FAST.getById(
+const fastElementRegistry: TypeRegistry<FASTElementDefinition> = FAST.getById(
     KernelServiceId.elementRegistry,
     () => createTypeRegistry<FASTElementDefinition>()
 );
@@ -53,7 +53,9 @@ export interface PartialFASTElementDefinition {
  * Defines metadata for a FASTElement.
  * @public
  */
-export class FASTElementDefinition<TType extends Function = Function> {
+export class FASTElementDefinition<
+    TType extends Constructable<HTMLElement> = Constructable<HTMLElement>
+> {
     private observedAttributes: string[];
 
     /**
@@ -65,7 +67,7 @@ export class FASTElementDefinition<TType extends Function = Function> {
      * Indicates if this element has been defined in at least one registry.
      */
     public get isDefined(): boolean {
-        return !!FASTElementRegistry.getByType(this.type);
+        return !!fastElementRegistry.getByType(this.type);
     }
 
     /**
@@ -172,7 +174,7 @@ export class FASTElementDefinition<TType extends Function = Function> {
     public define(registry: CustomElementRegistry = customElements): this {
         const type = this.type;
 
-        if (FASTElementRegistry.register(this)) {
+        if (fastElementRegistry.register(this)) {
             const attributes = this.attributes;
             const proto = type.prototype;
 
@@ -197,5 +199,11 @@ export class FASTElementDefinition<TType extends Function = Function> {
      * Gets the element definition associated with the specified type.
      * @param type - The custom element type to retrieve the definition for.
      */
-    static readonly forType = FASTElementRegistry.getByType;
+    static readonly getByType = fastElementRegistry.getByType;
+
+    /**
+     * Gets the element definition associated with the instance.
+     * @param instance - The custom element instance to retrieve the definition for.
+     */
+    static readonly getForInstance = fastElementRegistry.getForInstance;
 }

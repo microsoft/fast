@@ -92,10 +92,18 @@ if (FAST.getById === void 0) {
  */
 export const emptyArray = Object.freeze([]);
 
+/**
+ * Do not change. Part of shared kernel contract.
+ * @internal
+ */
 export interface TypeDefinition {
     type: Function;
 }
 
+/**
+ * Do not change. Part of shared kernel contract.
+ * @internal
+ */
 export interface TypeRegistry<TDefinition extends TypeDefinition> {
     register(definition: TDefinition): boolean;
     getByType(key: Function): TDefinition | undefined;

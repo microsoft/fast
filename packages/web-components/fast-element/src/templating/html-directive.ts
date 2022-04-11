@@ -60,7 +60,7 @@ export interface ViewBehaviorFactory {
 
     /**
      * Creates a behavior.
-     * @param target - The targets available for behaviors to be attached to.
+     * @param targets - The targets available for behaviors to be attached to.
      */
     createBehavior(targets: ViewBehaviorTargets): Behavior | ViewBehavior;
 }
@@ -83,21 +83,41 @@ export interface HTMLDirective {
     createHTML(add: AddViewBehaviorFactory): string;
 }
 
+/**
+ * Represents metadata configuration for an HTMLDirective.
+ * @public
+ */
 export interface PartialHTMLDirectiveDefinition {
+    /**
+     * Indicates whether the directive needs access to template contextual information
+     * such as the sourceAspect, targetAspect, and aspectType.
+     */
     aspected?: boolean;
 }
 
-export interface HTMLDirectiveDefinition<TType extends Function = Function> {
+/**
+ * Defines metadata for an HTMLDirective.
+ * @public
+ */
+export interface HTMLDirectiveDefinition<
+    TType extends Constructable<HTMLDirective> = Constructable<HTMLDirective>
+> extends Required<PartialHTMLDirectiveDefinition> {
+    /**
+     * The type that the definition provides metadata for.
+     */
     readonly type: TType;
-    readonly aspected: boolean;
 }
 
 const registry = createTypeRegistry<HTMLDirectiveDefinition>();
 
+/**
+ * Instructs the template engine to apply behavior to a node.
+ * @public
+ */
 export const HTMLDirective = Object.freeze({
     getForInstance: registry.getForInstance,
     getByType: registry.getByType,
-    define<TType extends Function>(
+    define<TType extends Constructable<HTMLDirective>>(
         type: TType,
         options?: PartialHTMLDirectiveDefinition
     ): TType {
