@@ -34,6 +34,7 @@ export {
     BindingType,
     BindingBehaviorFactory,
     DefaultBindingOptions,
+    signal,
 } from "./templating/binding.js";
 export * from "./templating/html-directive.js";
 export * from "./templating/ref.js";

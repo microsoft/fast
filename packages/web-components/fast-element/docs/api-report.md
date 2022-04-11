@@ -522,6 +522,9 @@ export interface RepeatOptions {
     recycle?: boolean;
 }
 
+// @alpha (undocumented)
+export const signal: <T = any>(options: string | Binding<T, any, any>) => BindingConfig<T>;
+
 // @public
 export function slotted<T = any>(propertyOrOptions: (keyof T & string) | SlottedDirectiveOptions<keyof T & string>): CaptureType<T>;
 
