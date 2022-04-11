@@ -129,13 +129,11 @@ export const ContentPlacementContainerStyles = css`
         padding-bottom: 94px;
     }
 
-    :host([section="product"]),
     :host([section="designSystem"]) {
         display: flex;
         flex-wrap: wrap;
     }
 
-    .fast-product svg,
     .fast-design-system svg {
         height: 40px;
         width: 80px;
@@ -144,18 +142,15 @@ export const ContentPlacementContainerStyles = css`
         margin: 15px 40px 15px;
     }
 
-    .fast-product svg rect,
     .fast-design-system svg rect {
         fill: white;
         stroke: white;
     }
 
-    .fast-product path,
     .fast-design-system path {
         fill: white;
     }
 
-    .fast-product-link,
     .fast-design-system-link {
         color: white;
         text-decoration: none;
@@ -164,8 +159,6 @@ export const ContentPlacementContainerStyles = css`
         font-size: var(--type-ramp-base-font-size);
     }
 
-    .fast-product-link:hover,
-    .fast-product-link:focus,
     .fast-design-system-link:hover,
     .fast-design-system-link:focus {
         background: rgba(0, 0, 0, 0.5);
