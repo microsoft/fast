@@ -1,7 +1,0 @@
-{
-  "type": "minor",
-  "comment": "Converted package to be of type:module",
-  "packageName": "@microsoft/fast-react-wrapper",
-  "email": "nicholasrice@users.noreply.github.com",
-  "dependentChangeType": "patch"
-}

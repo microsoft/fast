@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-router
 
-This log was last generated on Wed, 06 Apr 2022 07:12:42 GMT and should not be manually modified.
+This log was last generated on Tue, 12 Apr 2022 07:13:35 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.3.0
+
+Tue, 12 Apr 2022 07:13:35 GMT
+
+### Minor changes
+
+- Convert package to type:module (nicholasrice@users.noreply.github.com)
 
 ## 0.2.16
 

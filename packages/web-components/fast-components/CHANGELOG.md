@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-components
 
-This log was last generated on Sun, 10 Apr 2022 07:11:09 GMT and should not be manually modified.
+This log was last generated on Tue, 12 Apr 2022 07:13:35 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.27.1
+
+Tue, 12 Apr 2022 07:13:35 GMT
+
+### Patches
+
+- Merge branch 'master' into patch-1 (pradkum@microsoft.com)
 
 ## 2.27.0
 

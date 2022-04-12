@@ -1,7 +1,0 @@
-{
-  "type": "minor",
-  "comment": "Convert package to type:module",
-  "packageName": "@microsoft/fast-router",
-  "email": "nicholasrice@users.noreply.github.com",
-  "dependentChangeType": "patch"
-}

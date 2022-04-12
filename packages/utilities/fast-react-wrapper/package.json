@@ -2,7 +2,7 @@
   "name": "@microsoft/fast-react-wrapper",
   "description": "A utility for wrapping web components for use in React.",
   "sideEffects": false,
-  "version": "0.1.48",
+  "version": "0.2.0",
   "author": {
     "name": "Microsoft",
     "url": "https://discord.gg/FcSNfg4"
@@ -16,7 +16,7 @@
     "url": "https://github.com/Microsoft/fast/issues/new/choose"
   },
   "main": "dist/esm/index.js",
-  "type":"module",
+  "type": "module",
   "types": "dist/fast-react-wrapper.d.ts",
   "unpkg": "dist/fast-react-wrapper.min.js",
   "scripts": {
