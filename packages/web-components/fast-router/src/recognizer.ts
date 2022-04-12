@@ -1,5 +1,5 @@
-import { Route } from "./navigation";
-import { QueryString } from "./query-string";
+import { Route } from "./navigation.js";
+import { QueryString } from "./query-string.js";
 
 /**
  * @alpha

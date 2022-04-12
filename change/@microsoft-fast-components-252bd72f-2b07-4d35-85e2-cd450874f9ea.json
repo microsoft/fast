@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "Merge branch 'master' into patch-1",
+  "packageName": "@microsoft/fast-components",
+  "email": "pradkum@microsoft.com",
+  "dependentChangeType": "patch"
+}
