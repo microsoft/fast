@@ -3,7 +3,7 @@ id: observables-and-state
 title: Observables and State
 sidebar_label: Observables and State
 custom_edit_url: https://github.com/microsoft/fast/edit/master/packages/web-components/fast-element/docs/guide/observables-and-state.md
-description: Now that you're familiar with the robust and powerful features of FASTElement, you're ready to build your own components and apps.
+description: To enable binding tracking and change notification, properties must be decorated with either @attr or @observable.
 ---
 
 ## Reactivity
