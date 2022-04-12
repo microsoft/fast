@@ -46,7 +46,7 @@ test.describe("parseTemplateToOpCodes", () => {
             expect(codes.length).toBe(3);
             expect(code.type).toBe(OpType.viewBehaviorFactory);
     });
-    test("should sandwich directive ops between text ops when binding native element content", () => {
+    test("should sandwich viewBehaviorFactory ops between text ops when binding native element content", () => {
 
             const input = html`<p>${() => "hello world"}</p>`;
             expect(parseTemplateToOpCodes(input)).toEqual([
