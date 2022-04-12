@@ -34,7 +34,7 @@ test.describe("parseTemplateToOpCodes", () => {
     test("should emit doctype, html, head, and body elements as part of text op", () => {
         expect(parseTemplateToOpCodes(html`<!DOCTYPE html><html><head></head><body></body></html>`)).toEqual([{type: OpType.text, value: "<!DOCTYPE html><html><head></head><body></body></html>"}])
     })
-    test("should emit a directive op from a binding", () => {
+    test("should emit a viewBehaviorFactory op from a binding", () => {
             const input = html`${() => "hello world"}`;
             expect(parseTemplateToOpCodes(input)).toEqual([{ type: OpType.viewBehaviorFactory, factory: firstFactory(input.factories)}])
     });
