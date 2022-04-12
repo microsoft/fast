@@ -5,6 +5,7 @@ import { HTMLBindingDirective } from "./binding";
 import { Aspect, HTMLDirective, ViewBehaviorFactory, Aspected, htmlDirective, AddViewBehaviorFactory } from "./html-directive";
 import { bind, ViewBehaviorTargets } from "..";
 import { Constructable, isString } from "../interfaces";
+import { ExecutionContext } from "../observation/observable";
 
 describe(`The html tag template helper`, () => {
     it(`transforms a string into a ViewTemplate.`, () => {
@@ -236,29 +237,33 @@ describe(`The html tag template helper`, () => {
         });
     });
 
-    function expectAspect(
+    function getFactory<T extends Constructable<ViewBehaviorFactory>>(
         template: ViewTemplate,
-        type: Constructable<HTMLDirective>,
-        sourceAspect: string,
-        targetAspect: string,
-        aspectType: number
-    ) {
-        let directive: HTMLDirective & Aspected;
-
+        type: T
+    ): InstanceType<T> | null {
         for (const id in template.factories) {
             const potential = template.factories[id];
 
             if (potential instanceof type) {
-                directive = potential as any as HTMLDirective & Aspected;
-                expect(potential.id).equals(id);
-                break;
+                return potential as any as InstanceType<T>;
             }
         }
 
-        expect(directive!).to.be.instanceOf(type);
-        expect(directive!.sourceAspect).to.equal(sourceAspect);
-        expect(directive!.targetAspect).to.equal(targetAspect);
-        expect(directive!.aspectType).to.equal(aspectType);
+        return null;
+    }
+
+    function expectAspect<T extends Constructable<ViewBehaviorFactory>>(
+        template: ViewTemplate,
+        type: T,
+        sourceAspect: string,
+        targetAspect: string,
+        aspectType: number
+    ) {
+        const factory = getFactory(template, type) as ViewBehaviorFactory & Aspected;
+        expect(factory!).to.be.instanceOf(type);
+        expect(factory!.sourceAspect).to.equal(sourceAspect);
+        expect(factory!.targetAspect).to.equal(targetAspect);
+        expect(factory!.aspectType).to.equal(aspectType);
     }
 
     it(`captures an attribute with an expression`, () => {
@@ -295,6 +300,46 @@ describe(`The html tag template helper`, () => {
         );
     });
 
+    it(`captures an attribute with an interpolated string`, () => {
+        const template = html<Model>`<my-element some-attribute=${stringValue}></my-element>`;
+
+        expectTemplateEquals(
+            template,
+            `<my-element some-attribute=${FAKE.interpolation}></my-element>`
+        );
+
+        expectAspect(
+            template,
+            HTMLBindingDirective,
+            "some-attribute",
+            "some-attribute",
+            Aspect.attribute
+        );
+
+        const factory = getFactory(template, HTMLBindingDirective);
+        expect(factory!.binding(null, ExecutionContext.default)).equals(stringValue);
+    });
+
+    it(`captures an attribute with an interpolated number`, () => {
+        const template = html<Model>`<my-element some-attribute=${numberValue}></my-element>`;
+
+        expectTemplateEquals(
+            template,
+            `<my-element some-attribute=${FAKE.interpolation}></my-element>`
+        );
+
+        expectAspect(
+            template,
+            HTMLBindingDirective,
+            "some-attribute",
+            "some-attribute",
+            Aspect.attribute
+        );
+
+        const factory = getFactory(template, HTMLBindingDirective);
+        expect(factory!.binding(null, ExecutionContext.default)).equals(numberValue);
+    });
+
     it(`captures a boolean attribute with an expression`, () => {
         const template = html<Model>`<my-element ?some-attribute=${x => x.value}></my-element>`;
 
@@ -329,6 +374,26 @@ describe(`The html tag template helper`, () => {
         );
     });
 
+    it(`captures a boolean attribute with an interpolated boolean`, () => {
+        const template = html<Model>`<my-element ?some-attribute=${true}></my-element>`;
+
+        expectTemplateEquals(
+            template,
+            `<my-element ?some-attribute=${FAKE.interpolation}></my-element>`
+        );
+
+        expectAspect(
+            template,
+            HTMLBindingDirective,
+            "?some-attribute",
+            "some-attribute",
+            Aspect.booleanAttribute
+        );
+
+        const factory = getFactory(template, HTMLBindingDirective);
+        expect(factory!.binding(null, ExecutionContext.default)).equals(true);
+    });
+
     it(`captures a case-sensitive property with an expression`, () => {
         const template = html<Model>`<my-element :someAttribute=${x => x.value}></my-element>`;
 
@@ -361,6 +426,46 @@ describe(`The html tag template helper`, () => {
             "someAttribute",
             Aspect.property
         );
+    });
+
+    it(`captures a case-sensitive property with an interpolated string`, () => {
+        const template = html<Model>`<my-element :someAttribute=${stringValue}></my-element>`;
+
+        expectTemplateEquals(
+            template,
+            `<my-element :someAttribute=${FAKE.interpolation}></my-element>`
+        );
+
+        expectAspect(
+            template,
+            HTMLBindingDirective,
+            ":someAttribute",
+            "someAttribute",
+            Aspect.property
+        );
+
+        const factory = getFactory(template, HTMLBindingDirective);
+        expect(factory!.binding(null, ExecutionContext.default)).equals(stringValue);
+    });
+
+    it(`captures a case-sensitive property with an interpolated number`, () => {
+        const template = html<Model>`<my-element :someAttribute=${numberValue}></my-element>`;
+
+        expectTemplateEquals(
+            template,
+            `<my-element :someAttribute=${FAKE.interpolation}></my-element>`
+        );
+
+        expectAspect(
+            template,
+            HTMLBindingDirective,
+            ":someAttribute",
+            "someAttribute",
+            Aspect.property
+        );
+
+        const factory = getFactory(template, HTMLBindingDirective);
+        expect(factory!.binding(null, ExecutionContext.default)).equals(numberValue);
     });
 
     it(`captures a case-sensitive property with an inline directive`, () => {
