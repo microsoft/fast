@@ -79,7 +79,7 @@ class ReflectAttrBehavior extends StatelessAttachedAttributeDirective<string[]> 
         context: ExecutionContext,
         targets: ViewBehaviorTargets
     ): void {
-        this.target = targets[this.targetId] as HTMLElement;
+        this.target = targets[this.nodeId] as HTMLElement;
         AttributeReflectionSubscriptionSet.getOrCreateFor(source).subscribe(this);
 
         // Reflect any existing attributes because MutationObserver will only

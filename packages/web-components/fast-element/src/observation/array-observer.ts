@@ -58,6 +58,7 @@ class ArrayObserver extends SubscriberSet {
             DOM.queueUpdate(this);
         }
     }
+}
 
 let enabled = false;
 
@@ -75,7 +76,6 @@ export function enableArrayObservation(): void {
     if (enabled) {
         return;
     }
-}
 
     enabled = true;
 

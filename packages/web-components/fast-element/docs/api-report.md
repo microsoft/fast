@@ -75,7 +75,7 @@ export class AttributeDefinition implements Accessor {
     onAttributeChangedCallback(element: HTMLElement, value: any): void;
     readonly Owner: Function;
     setValue(source: HTMLElement, newValue: any): void;
-    }
+}
 
 // Warning: (ae-forgotten-export) The symbol "reflectMode" needs to be exported by the entry point index.d.ts
 // Warning: (ae-forgotten-export) The symbol "booleanMode" needs to be exported by the entry point index.d.ts
@@ -323,14 +323,6 @@ export type ExecutionContext<TParentSource = any> = RootContext | ChildContext<T
 export const FAST: FASTGlobal;
 
 // @public
-export type ExecutionContext<TParentSource = any> = RootContext | ChildContext<TParentSource> | ItemContext<TParentSource>;
-
-// Warning: (ae-internal-missing-underscore) The name "FAST" should be prefixed with an underscore because the declaration is marked as @internal
-//
-// @internal
-export const FAST: FASTGlobal;
-
-// @public
 export interface FASTElement extends HTMLElement {
     $emit(type: string, detail?: any, options?: Omit<CustomEventInit, "detail">): boolean | void;
     readonly $fastController: Controller;
@@ -443,20 +435,6 @@ export interface ItemViewTemplate<TSource = any, TParent = any> {
     create(): SyntheticView<TSource, TParent, ItemContext<TParent>>;
     // (undocumented)
     type: "item";
-}
-
-// Warning: (ae-internal-missing-underscore) The name "KernelServiceId" should be prefixed with an underscore because the declaration is marked as @internal
-//
-// @internal
-export const enum KernelServiceId {
-    // (undocumented)
-    contextEvent = 3,
-    // (undocumented)
-    elementRegistry = 4,
-    // (undocumented)
-    observable = 2,
-    // (undocumented)
-    updateQueue = 1
 }
 
 // @public
@@ -617,7 +595,7 @@ export class RepeatBehavior<TSource = any> implements Behavior, Subscriber {
     // @internal (undocumented)
     handleChange(source: any, args: Splice[]): void;
     unbind(): void;
-    }
+}
 
 // @public
 export class RepeatDirective<TSource = any> implements HTMLDirective, ViewBehaviorFactory {
@@ -824,7 +802,6 @@ export function volatile(target: {}, name: string | Accessor, descriptor: Proper
 
 // @public
 export function when<TSource = any, TReturn = any>(binding: Binding<TSource, TReturn>, templateOrTemplateBinding: SyntheticViewTemplate | Binding<TSource, SyntheticViewTemplate>): CaptureType<TSource>;
-
 
 // (No @packageDocumentation comment for this package)
 
