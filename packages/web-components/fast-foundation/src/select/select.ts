@@ -1,5 +1,5 @@
-import { attr, DOM, elements, Observable, observable, volatile } from "@microsoft/fast-element";
 import type { SyntheticViewTemplate } from "@microsoft/fast-element";
+import { attr, DOM, Observable, observable, volatile } from "@microsoft/fast-element";
 import {
     ArrowKeys,
     keyEnd,
@@ -11,10 +11,10 @@ import {
     uniqueId,
 } from "@microsoft/fast-web-utilities";
 import type { FoundationElementDefinition } from "../foundation-element/foundation-element.js";
-import { DelegatesARIAListbox, Listbox } from "../listbox/listbox.js";
 import type { ListboxOption } from "../listbox-option/listbox-option.js";
-import { StartEnd } from "../patterns/start-end.js";
+import { DelegatesARIAListbox, Listbox } from "../listbox/listbox.js";
 import type { StartEndOptions } from "../patterns/start-end.js";
+import { StartEnd } from "../patterns/start-end.js";
 import { applyMixins } from "../utilities/apply-mixins.js";
 import { FormAssociatedSelect } from "./select.form-associated.js";
 import { SelectPosition } from "./select.options.js";

@@ -34,7 +34,7 @@ import {
     strokeWidth,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
-} from "../design-tokens";
+} from "../design-tokens.js";
 import { listboxStyles } from "../listbox/listbox.styles.js";
 import { elevation } from "../styles/elevation.js";
 import { heightNumber } from "../styles/size.js";

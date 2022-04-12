@@ -1,10 +1,9 @@
 import { css, ElementStyles } from "@microsoft/fast-element";
+import type { ComboboxOptions } from "@microsoft/fast-foundation";
 import {
     Combobox as FoundationCombobox,
-    ComboboxOptions,
     comboboxTemplate as template,
 } from "@microsoft/fast-foundation";
-import type { ComboboxOptions } from "@microsoft/fast-foundation";
 import { heightNumberAsToken } from "../design-tokens.js";
 import { comboboxStyles as styles } from "./combobox.styles.js";
 

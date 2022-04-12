@@ -1,7 +1,7 @@
-import { css } from "@microsoft/fast-element";
 import type { ElementStyles } from "@microsoft/fast-element";
+import { css } from "@microsoft/fast-element";
+import type { FoundationElementTemplate } from "@microsoft/fast-foundation";
 import {
-    DesignToken,
     disabledCursor,
     display,
     focusVisible,
@@ -9,7 +9,6 @@ import {
     ListboxElement,
     ListboxOption,
 } from "@microsoft/fast-foundation";
-import type { FoundationElementTemplate } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
     controlCornerRadius,
