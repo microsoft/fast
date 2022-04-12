@@ -95,7 +95,6 @@ class ReflectAttributesDirective extends StatelessAttachedAttributeDirective<str
         // Reflect any existing attributes because MutationObserver will only
         // handle *changes* to attributes.
         if (source.hasAttributes()) {
-            console.log("has attributes");
             for (let i = 0; i < source.attributes.length; i++) {
                 console.log("sending attribute");
                 this.handleChange(subscription, source.attributes[i].name);
