@@ -1,0 +1,7 @@
+{
+  "type": "major",
+  "comment": "fix: update foundation to new APIs",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "roeisenb@microsoft.com",
+  "dependentChangeType": "patch"
+}

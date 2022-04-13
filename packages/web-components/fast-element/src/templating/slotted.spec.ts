@@ -14,11 +14,11 @@ describe("The slotted", () => {
 
     context("directive", () => {
         it("creates a behavior by returning itself", () => {
-            const targetId = 'r';
+            const nodeId = 'r';
             const directive = slotted("test") as SlottedDirective;
-            directive.targetId = targetId;
+            directive.nodeId = nodeId;
             const target = document.createElement("slot");
-            const targets = { [targetId]: target }
+            const targets = { [nodeId]: target }
             const behavior = directive.createBehavior(targets);
 
             expect(behavior).to.equal(directive);
@@ -47,18 +47,18 @@ describe("The slotted", () => {
             const slot = document.createElement("slot");
             const shadowRoot = host.attachShadow({ mode: "open" });
             const children = createAndAppendChildren(host, elementName);
-            const targetId = 'r';
-            const targets = { [targetId]: slot };
+            const nodeId = 'r';
+            const targets = { [nodeId]: slot };
 
             shadowRoot.appendChild(slot);
 
-            return { host, slot, children, targets, targetId };
+            return { host, slot, children, targets, nodeId };
         }
 
         it("gathers nodes from a slot", () => {
-            const { children, targets, targetId } = createDOM();
+            const { children, targets, nodeId } = createDOM();
             const behavior = new SlottedDirective({ property: "nodes" });
-            behavior.targetId = targetId;
+            behavior.nodeId = nodeId;
             const model = new Model();
 
             behavior.bind(model, ExecutionContext.default, targets);
@@ -67,12 +67,12 @@ describe("The slotted", () => {
         });
 
         it("gathers nodes from a slot with a filter", () => {
-            const { targets, targetId, children } = createDOM("foo-bar");
+            const { targets, nodeId, children } = createDOM("foo-bar");
             const behavior = new SlottedDirective({
                 property: "nodes",
                 filter: elements("foo-bar"),
             });
-            behavior.targetId = targetId;
+            behavior.nodeId = nodeId;
             const model = new Model();
 
             behavior.bind(model, ExecutionContext.default, targets);
@@ -81,9 +81,9 @@ describe("The slotted", () => {
         });
 
         it("updates when slotted nodes change", async () => {
-            const { host, slot, children, targets, targetId } = createDOM("foo-bar");
+            const { host, slot, children, targets, nodeId } = createDOM("foo-bar");
             const behavior = new SlottedDirective({ property: "nodes" });
-            behavior.targetId = targetId;
+            behavior.nodeId = nodeId;
             const model = new Model();
 
             behavior.bind(model, ExecutionContext.default, targets);
@@ -98,12 +98,12 @@ describe("The slotted", () => {
         });
 
         it("updates when slotted nodes change with a filter", async () => {
-            const { host, slot, children, targets, targetId } = createDOM("foo-bar");
+            const { host, slot, children, targets, nodeId } = createDOM("foo-bar");
             const behavior = new SlottedDirective({
                 property: "nodes",
                 filter: elements("foo-bar"),
             });
-            behavior.targetId = targetId;
+            behavior.nodeId = nodeId;
             const model = new Model();
 
             behavior.bind(model, ExecutionContext.default, targets);
@@ -118,9 +118,9 @@ describe("The slotted", () => {
         });
 
         it("clears and unwatches when unbound", async () => {
-            const { host, slot, children, targets, targetId } = createDOM("foo-bar");
+            const { host, slot, children, targets, nodeId } = createDOM("foo-bar");
             const behavior = new SlottedDirective({ property: "nodes" });
-            behavior.targetId = targetId;
+            behavior.nodeId = nodeId;
             const model = new Model();
 
             behavior.bind(model, ExecutionContext.default, targets);

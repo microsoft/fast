@@ -921,7 +921,7 @@ export const DesignSystem: Readonly<{
 export interface DesignSystemRegistrationContext {
     readonly elementPrefix: string;
     // @deprecated
-    tryDefineElement(name: string, type: Constructable, callback: ElementDefinitionCallback): void;
+    tryDefineElement(name: string, type: Constructable<HTMLElement>, callback: ElementDefinitionCallback): void;
     tryDefineElement(params: ElementDefinitionParams): void;
 }
 
@@ -1061,13 +1061,13 @@ export interface ElementDefinitionContext {
     readonly name: string;
     readonly shadowRootMode: ShadowRootMode | undefined;
     tagFor(type: Constructable): string;
-    readonly type: Constructable;
+    readonly type: Constructable<HTMLElement>;
     readonly willDefine: boolean;
 }
 
 // @public
 export interface ElementDefinitionParams extends Pick<ElementDefinitionContext, "name" | "type"> {
-    readonly baseClass?: Constructable;
+    readonly baseClass?: Constructable<HTMLElement>;
     callback: ElementDefinitionCallback;
 }
 
@@ -1252,7 +1252,7 @@ export class FoundationElement extends FASTElement {
 // @public
 export interface FoundationElementDefinition {
     readonly attributes?: EagerOrLazyFoundationOption<(AttributeConfiguration | string)[], this>;
-    baseClass?: Constructable;
+    baseClass?: Constructable<HTMLElement>;
     baseName: string;
     readonly elementOptions?: EagerOrLazyFoundationOption<ElementDefinitionOptions, this>;
     readonly shadowOptions?: EagerOrLazyFoundationOption<Partial<ShadowRootInit> | null, this>;

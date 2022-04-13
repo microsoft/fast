@@ -4,11 +4,14 @@
 
 ```ts
 
+import { AddViewBehaviorFactory } from '@microsoft/fast-element';
+import { Behavior } from '@microsoft/fast-element';
 import { ComposableStyles } from '@microsoft/fast-element';
 import { Constructable } from '@microsoft/fast-element';
 import { ExecutionContext } from '@microsoft/fast-element';
 import { FASTElement } from '@microsoft/fast-element';
 import { HTMLDirective } from '@microsoft/fast-element';
+import { ViewBehaviorTargets } from '@microsoft/fast-element';
 import { ViewTemplate } from '@microsoft/fast-element';
 
 // Warning: (ae-internal-missing-underscore) The name "childRouteParameter" should be prefixed with an underscore because the declaration is marked as @internal
@@ -254,8 +257,10 @@ export type NavigationContributor<TSettings = any> = Partial<Record<Exclude<Navi
     commit?: NavigationCommitPhaseHook<TSettings>;
 };
 
+// Warning: (ae-forgotten-export) The symbol "NavigationContributorDirective" needs to be exported by the entry point index.d.ts
+//
 // @alpha (undocumented)
-export function navigationContributor(options?: ContributorOptions): HTMLDirective;
+export function navigationContributor(options?: ContributorOptions): NavigationContributorDirective;
 
 // @alpha (undocumented)
 export interface NavigationHandler {

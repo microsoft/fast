@@ -184,7 +184,7 @@ export class DataGridRow extends FoundationElement {
                 { positioning: true }
             );
             this.cellsRepeatBehavior = cellsRepeatDirective.createBehavior({
-                [cellsRepeatDirective.targetId]: this.cellsPlaceholder,
+                [cellsRepeatDirective.nodeId]: this.cellsPlaceholder,
             });
             /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */
             this.$fastController.addBehaviors([this.cellsRepeatBehavior!]);

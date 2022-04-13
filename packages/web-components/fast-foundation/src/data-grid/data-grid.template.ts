@@ -11,7 +11,9 @@ import type { ElementDefinitionContext } from "../design-system/registration-con
 import type { DataGrid } from "./data-grid.js";
 import { DataGridRow } from "./data-grid-row.js";
 
-function createRowItemTemplate(context: ElementDefinitionContext): ItemViewTemplate<any, DataGrid> {
+function createRowItemTemplate(
+    context: ElementDefinitionContext
+): ItemViewTemplate<any, DataGrid> {
     const rowTag = context.tagFor(DataGridRow);
     return item<any, DataGrid>`
     <${rowTag}

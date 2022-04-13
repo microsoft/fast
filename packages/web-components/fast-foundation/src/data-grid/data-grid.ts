@@ -348,7 +348,7 @@ export class DataGrid extends FoundationElement {
             { positioning: true }
         );
         this.rowsRepeatBehavior = rowsRepeatDirective.createBehavior({
-            [rowsRepeatDirective.targetId]: this.rowsPlaceholder,
+            [rowsRepeatDirective.nodeId]: this.rowsPlaceholder,
         });
 
         /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */

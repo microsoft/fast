@@ -4,11 +4,18 @@ import {
     ChildContext,
     ExecutionContext,
     ItemContext,
-    RootContext,
 } from "../observation/observable.js";
-import { bind, oneTime } from "./binding.js";
+import { bind, HTMLBindingDirective, oneTime } from "./binding.js";
 import { Compiler } from "./compiler.js";
-import { AspectedHTMLDirective, HTMLDirective } from "./html-directive.js";
+import {
+    AddViewBehaviorFactory,
+    Aspect,
+    Aspected,
+    HTMLDirective,
+    HTMLDirectiveDefinition,
+    ViewBehaviorFactory,
+} from "./html-directive.js";
+import { nextId } from "./markup.js";
 import type { ElementView, HTMLView, SyntheticView } from "./view.js";
 
 /**
@@ -128,19 +135,19 @@ export class ViewTemplate<
     /**
      * The directives that will be connected to placeholders in the html.
      */
-    public readonly directives: ReadonlyArray<HTMLDirective>;
+    public readonly factories: Record<string, ViewBehaviorFactory>;
 
     /**
      * Creates an instance of ViewTemplate.
      * @param html - The html representing what this template will instantiate, including placeholders for directives.
-     * @param directives - The directives that will be connected to placeholders in the html.
+     * @param factories - The directives that will be connected to placeholders in the html.
      */
     public constructor(
         html: string | HTMLTemplateElement,
-        directives: ReadonlyArray<HTMLDirective>
+        factories: Record<string, ViewBehaviorFactory>
     ) {
         this.html = html;
-        this.directives = directives;
+        this.factories = factories;
     }
 
     /**
@@ -151,7 +158,7 @@ export class ViewTemplate<
         if (this.result === null) {
             this.result = Compiler.compile<TSource, TParent, TContext>(
                 this.html,
-                this.directives
+                this.factories
             );
         }
 
@@ -201,6 +208,19 @@ export type TemplateValue<
     TContext extends ExecutionContext<TParent> = ExecutionContext<TParent>
 > = Binding<TSource, any, TContext> | HTMLDirective | CaptureType<TSource>;
 
+function createAspectedHTML(
+    value: HTMLDirective & Aspected,
+    prevString: string,
+    add: AddViewBehaviorFactory
+): string {
+    const match = lastAttributeNameRegex.exec(prevString);
+    if (match !== null) {
+        Aspect.assign(value as Aspected, match[2]);
+    }
+
+    return value.createHTML(add);
+}
+
 /**
  * Transforms a template literal string into a ViewTemplate.
  * @param strings - The string fragments that are interpolated with the values.
@@ -218,42 +238,62 @@ export function html<
     strings: TemplateStringsArray,
     ...values: TemplateValue<TSource, TParent, TContext>[]
 ): ViewTemplate<TSource, TParent> {
-    const directives: HTMLDirective[] = [];
     let html = "";
+    const factories: Record<string, ViewBehaviorFactory> = Object.create(null);
+    const add = (factory: ViewBehaviorFactory): string => {
+        const id = factory.id ?? (factory.id = nextId());
+        factories[id] = factory;
+        return id;
+    };
 
     for (let i = 0, ii = strings.length - 1; i < ii; ++i) {
         const currentString = strings[i];
-        let currentValue = values[i];
+        const currentValue = values[i];
+        let definition: HTMLDirectiveDefinition | undefined;
+
         html += currentString;
 
         if (isFunction(currentValue)) {
-            currentValue = bind(currentValue as Binding);
-        } else if (!isString(currentValue) && !(currentValue instanceof HTMLDirective)) {
-            const capturedValue = currentValue;
-            currentValue = bind(() => capturedValue, oneTime);
-        }
-
-        if (currentValue instanceof HTMLDirective) {
-            if (currentValue instanceof AspectedHTMLDirective) {
-                const match = lastAttributeNameRegex.exec(currentString);
-                if (match !== null) {
-                    currentValue.captureSource(match[2]);
-                }
+            html += createAspectedHTML(
+                bind(currentValue) as HTMLBindingDirective,
+                currentString,
+                add
+            );
+        } else if (isString(currentValue)) {
+            const match = lastAttributeNameRegex.exec(currentString);
+            if (match !== null) {
+                const directive = bind(
+                    () => currentValue,
+                    oneTime
+                ) as HTMLBindingDirective;
+                Aspect.assign(directive, match[2]);
+                html += directive.createHTML(add);
+            } else {
+                html += currentValue;
             }
-
-            // Since not all values are directives, we can't use i
-            // as the index for the placeholder. Instead, we need to
-            // use directives.length to get the next index.
-            html += currentValue.createPlaceholder(directives.length);
-            directives.push(currentValue);
+        } else if ((definition = HTMLDirective.getForInstance(currentValue)) === void 0) {
+            html += createAspectedHTML(
+                bind(() => currentValue, oneTime) as HTMLBindingDirective,
+                currentString,
+                add
+            );
         } else {
-            html += currentValue;
+            if (definition.aspected) {
+                html += createAspectedHTML(
+                    currentValue as HTMLDirective & Aspected,
+                    currentString,
+                    add
+                );
+            } else {
+                html += (currentValue as HTMLDirective).createHTML(add);
+            }
         }
     }
 
-    html += strings[strings.length - 1];
-
-    return new ViewTemplate<TSource, TParent, any>(html, directives);
+    return new ViewTemplate<TSource, TParent, any>(
+        html + strings[strings.length - 1],
+        factories
+    );
 }
 
 /**
