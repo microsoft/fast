@@ -1,0 +1,7 @@
+{
+  "type": "major",
+  "comment": "feat: new CSSDirective design",
+  "packageName": "@microsoft/fast-element",
+  "email": "roeisenb@microsoft.com",
+  "dependentChangeType": "patch"
+}
