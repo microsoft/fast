@@ -132,7 +132,7 @@ describe("Tabs", () => {
         await disconnect();
     });
 
-    it("should set an `id` attribute tab items relative to the index if an `id is NOT provided", async () => {
+    it("should set an `id` attribute tab items with a unique ID when an `id is NOT provided", async () => {
         const { element, connect, disconnect } = await fixture([FASTTabs(), FASTTabPanel(), FASTTab()])
 
         for (let i = 1; i < 4; i++) {
@@ -145,10 +145,8 @@ describe("Tabs", () => {
 
         await connect();
 
-        expect(element.querySelector("fast-tab")?.getAttribute("id")).to.equal("tab-1");
-        expect(element.querySelectorAll("fast-tab")[1]?.getAttribute("id")).to.equal(
-            "tab-2"
-        );
+        expect(element.querySelector("fast-tab")?.getAttribute("id")).to.not.be.undefined;
+        expect(element.querySelectorAll("fast-tab")[1]?.getAttribute("id")).to.not.be.undefined;
 
         await disconnect();
     });
