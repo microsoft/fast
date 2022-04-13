@@ -15,7 +15,9 @@ import { PickerMenuOption } from "./picker-menu-option.js";
 import { PickerList } from "./picker-list.js";
 import { PickerListItem } from "./picker-list-item.js";
 
-function createDefaultListItemTemplate(context: ElementDefinitionContext): ChildViewTemplate {
+function createDefaultListItemTemplate(
+    context: ElementDefinitionContext
+): ChildViewTemplate {
     const pickerListItemTag: string = context.tagFor(PickerListItem);
     return child`
     <${pickerListItemTag}
@@ -26,7 +28,9 @@ function createDefaultListItemTemplate(context: ElementDefinitionContext): Child
     `;
 }
 
-function createDefaultMenuOptionTemplate(context: ElementDefinitionContext): ChildViewTemplate {
+function createDefaultMenuOptionTemplate(
+    context: ElementDefinitionContext
+): ChildViewTemplate {
     const pickerMenuOptionTag: string = context.tagFor(PickerMenuOption);
     return child`
     <${pickerMenuOptionTag}

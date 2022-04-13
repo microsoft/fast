@@ -38,7 +38,7 @@ export interface FoundationElementDefinition {
     /**
      * The actual FAST base class of the component if different from the class used to compose.
      */
-    baseClass?: Constructable;
+    baseClass?: Constructable<HTMLElement>;
 
     /**
      * The template to render for the custom element.

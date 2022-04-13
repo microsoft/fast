@@ -1,4 +1,4 @@
-import { Aspect, Binding, HTMLDirective } from "@microsoft/fast-element";
+import { Binding, ViewBehaviorFactory } from "@microsoft/fast-element";
 
 /**
  * Allows fast identification of operation types
@@ -9,7 +9,7 @@ export const enum OpType {
     customElementAttributes,
     customElementShadow,
     attributeBinding,
-    directive,
+    viewBehaviorFactory,
     templateElementOpen,
     templateElementClose,
     text,
@@ -59,9 +59,9 @@ export type CustomElementShadowOp = {
 /**
  * Operation to emit static text
  */
-export type DirectiveOp = {
-    type: OpType.directive;
-    directive: HTMLDirective;
+export type ViewBehaviorFactoryOp = {
+    type: OpType.viewBehaviorFactory;
+    factory: ViewBehaviorFactory;
 };
 
 /**
@@ -71,12 +71,7 @@ export type AttributeBindingOp = {
     type: OpType.attributeBinding;
     binding: Binding;
     target: string;
-    aspect:
-        | Aspect.attribute
-        | Aspect.booleanAttribute
-        | Aspect.event
-        | Aspect.property
-        | Aspect.tokenList;
+    aspect: number;
     useCustomElementInstance: boolean;
 };
 
@@ -109,7 +104,7 @@ export type Op =
     | AttributeBindingOp
     | CustomElementOpenOp
     | CustomElementCloseOp
-    | DirectiveOp
+    | ViewBehaviorFactoryOp
     | CustomElementAttributes
     | CustomElementShadowOp
     | TemplateElementOpenOp

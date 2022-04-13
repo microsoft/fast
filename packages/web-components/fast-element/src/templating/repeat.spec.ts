@@ -9,12 +9,12 @@ describe("The repeat", () => {
     function createLocation() {
         const parent = document.createElement("div");
         const location = document.createComment("");
-        const targetId = 'r';
-        const targets = { [targetId]: location };
+        const nodeId = 'r';
+        const targets = { [nodeId]: location };
 
         parent.appendChild(location);
 
-        return { parent, targets, targetId };
+        return { parent, targets, nodeId };
     }
 
     context("template function", () => {
@@ -29,12 +29,12 @@ describe("The repeat", () => {
 
     context("directive", () => {
         it("creates a RepeatBehavior", () => {
-            const { parent, targets, targetId } = createLocation();
+            const { targets, nodeId } = createLocation();
             const directive = repeat(
                 () => [],
                 html`test`
             ) as RepeatDirective;
-            directive.targetId = targetId;
+            directive.nodeId = nodeId;
 
             const behavior = directive.createBehavior(targets);
 
@@ -97,12 +97,12 @@ describe("The repeat", () => {
 
         zeroThroughTen.forEach(size => {
             it(`renders a template for each item in array of size ${size}`, () => {
-                const { parent, targets, targetId } = createLocation();
+                const { parent, targets, nodeId } = createLocation();
                 const directive = repeat<ViewModel>(
                     x => x.items,
                     itemTemplate
                 ) as RepeatDirective;
-                directive.targetId = targetId;
+                directive.nodeId = nodeId;
 
                 const behavior = directive.createBehavior(targets);
                 const vm = new ViewModel(size);
@@ -115,12 +115,12 @@ describe("The repeat", () => {
 
         zeroThroughTen.forEach(size => {
             it(`renders empty when an array of size ${size} is replaced with an empty array`, async () => {
-                const { parent, targets, targetId } = createLocation();
+                const { parent, targets, nodeId } = createLocation();
                 const directive = repeat<ViewModel>(
                     x => x.items,
                     wrappedItemTemplate
                 ) as RepeatDirective;
-                directive.targetId = targetId;
+                directive.nodeId = nodeId;
                 const behavior = directive.createBehavior(targets);
                 const data = new ViewModel(size);
 
@@ -148,12 +148,12 @@ describe("The repeat", () => {
 
         zeroThroughTen.forEach(size => {
             it(`updates rendered HTML when a new item is pushed into an array of size ${size}`, async () => {
-                const { parent, targets, targetId } = createLocation();
+                const { parent, targets, nodeId } = createLocation();
                 const directive = repeat<ViewModel>(
                     x => x.items,
                     itemTemplate
                 ) as RepeatDirective;
-                directive.targetId = targetId;
+                directive.nodeId = nodeId;
                 const behavior = directive.createBehavior(targets);
                 const vm = new ViewModel(size);
 
@@ -168,12 +168,12 @@ describe("The repeat", () => {
 
         oneThroughTen.forEach(size => {
             it(`updates rendered HTML when a single item is spliced from the end of an array of size ${size}`, async () => {
-                const { parent, targets, targetId } = createLocation();
+                const { parent, targets, nodeId } = createLocation();
                 const directive = repeat<ViewModel>(
                     x => x.items,
                     itemTemplate
                 ) as RepeatDirective;
-                directive.targetId = targetId;
+                directive.nodeId = nodeId;
                 const behavior = directive.createBehavior(targets);
                 const vm = new ViewModel(size);
 
@@ -192,12 +192,12 @@ describe("The repeat", () => {
 
         oneThroughTen.forEach(size => {
             it(`updates rendered HTML when a single item is spliced from the beginning of an array of size ${size}`, async () => {
-                const { parent, targets, targetId } = createLocation();
+                const { parent, targets, nodeId } = createLocation();
                 const directive = repeat<ViewModel>(
                     x => x.items,
                     itemTemplate
                 ) as RepeatDirective;
-                directive.targetId = targetId;
+                directive.nodeId = nodeId;
                 const behavior = directive.createBehavior(targets);
                 const vm = new ViewModel(size);
 
@@ -213,12 +213,12 @@ describe("The repeat", () => {
 
         oneThroughTen.forEach(size => {
             it(`updates rendered HTML when a single item is replaced from the end of an array of size ${size}`, async () => {
-                const { parent, targets, targetId } = createLocation();
+                const { parent, targets, nodeId } = createLocation();
                 const directive = repeat<ViewModel>(
                     x => x.items,
                     itemTemplate
                 ) as RepeatDirective;
-                directive.targetId = targetId;
+                directive.nodeId = nodeId;
                 const behavior = directive.createBehavior(targets);
                 const vm = new ViewModel(size);
 
@@ -237,12 +237,12 @@ describe("The repeat", () => {
 
         oneThroughTen.forEach(size => {
             it(`updates rendered HTML when a single item is replaced from the beginning of an array of size ${size}`, async () => {
-                const { parent, targets, targetId } = createLocation();
+                const { parent, targets, nodeId } = createLocation();
                 const directive = repeat<ViewModel>(
                     x => x.items,
                     itemTemplate
                 ) as RepeatDirective;
-                directive.targetId = targetId;
+                directive.nodeId = nodeId;
                 const behavior = directive.createBehavior(targets);
                 const vm = new ViewModel(size);
 
@@ -260,12 +260,12 @@ describe("The repeat", () => {
 
         oneThroughTen.forEach(size => {
             it(`updates all when the template changes for an array of size ${size}`, async () => {
-                const { parent, targets, targetId } = createLocation();
+                const { parent, targets, nodeId } = createLocation();
                 const directive = repeat<ViewModel>(
                     x => x.items,
                     x => vm.template
                 ) as RepeatDirective;
-                directive.targetId = targetId;
+                directive.nodeId = nodeId;
                 const behavior = directive.createBehavior(targets);
                 const vm = new ViewModel(size);
 
@@ -290,12 +290,12 @@ describe("The repeat", () => {
                     )}
                 `;
 
-                const { parent, targets, targetId } = createLocation();
+                const { parent, targets, nodeId } = createLocation();
                 const directive = repeat<ViewModel>(
                     x => x.items,
                     deepItemTemplate
                 ) as RepeatDirective;
-                directive.targetId = targetId;
+                directive.nodeId = nodeId;
                 const behavior = directive.createBehavior(targets);
                 const vm = new ViewModel(size, true);
 
@@ -312,12 +312,12 @@ describe("The repeat", () => {
 
         oneThroughTen.forEach(size => {
             it(`handles back to back shift operations for arrays of size ${size}`, async () => {
-                const { parent, targets, targetId } = createLocation();
+                const { parent, targets, nodeId } = createLocation();
                 const directive = repeat<ViewModel>(
                     x => x.items,
                     itemTemplate
                 ) as RepeatDirective;
-                directive.targetId = targetId;
+                directive.nodeId = nodeId;
                 const behavior = directive.createBehavior(targets);
                 const vm = new ViewModel(size);
 
@@ -336,12 +336,12 @@ describe("The repeat", () => {
 
         zeroThroughTen.forEach(size => {
             it(`updates rendered HTML when a new item is pushed into an array of size ${size} after it has been unbound and rebound`, async () => {
-                const { parent, targets, targetId } = createLocation();
+                const { parent, targets, nodeId } = createLocation();
                 const directive = repeat<ViewModel>(
                     x => x.items,
                     itemTemplate
                 ) as RepeatDirective;
-                directive.targetId = targetId;
+                directive.nodeId = nodeId;
                 const behavior = directive.createBehavior(targets);
                 const vm = new ViewModel(size);
 

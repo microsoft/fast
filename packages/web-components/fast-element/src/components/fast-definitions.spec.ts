@@ -4,7 +4,7 @@ import { FASTElementDefinition } from "./fast-definitions";
 import { ElementStyles } from "../styles/element-styles";
 
 describe("FASTElementDefinition", () => {
-    class MyElement {}
+    class MyElement extends HTMLElement {}
 
     context("styles", () => {
         it("can accept a string", () => {

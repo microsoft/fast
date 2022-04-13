@@ -1,3 +1,4 @@
+import type { Constructable } from "../interfaces.js";
 import { Controller } from "./controller.js";
 import {
     FASTElementDefinition,
@@ -121,7 +122,7 @@ export const FASTElement = Object.assign(createFASTElement(HTMLElement), {
      * @param nameOrDef - The name of the element to define or a definition object
      * that describes the element to define.
      */
-    define<TType extends Function>(
+    define<TType extends Constructable<HTMLElement>>(
         type: TType,
         nameOrDef?: string | PartialFASTElementDefinition
     ): TType {
@@ -137,7 +138,7 @@ export const FASTElement = Object.assign(createFASTElement(HTMLElement), {
  */
 export function customElement(nameOrDef: string | PartialFASTElementDefinition) {
     /* eslint-disable-next-line @typescript-eslint/explicit-function-return-type */
-    return function (type: Function) {
+    return function (type: Constructable<HTMLElement>) {
         new FASTElementDefinition(type, nameOrDef).define();
     };
 }
