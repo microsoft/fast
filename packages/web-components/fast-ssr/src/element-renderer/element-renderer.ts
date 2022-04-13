@@ -1,14 +1,8 @@
 import { ElementRenderer, RenderInfo } from "@lit-labs/ssr";
-import { Aspect, ExecutionContext, DOM, FASTElement } from "@microsoft/fast-element";
+import { Aspect, DOM, ExecutionContext, FASTElement } from "@microsoft/fast-element";
 import { TemplateRenderer } from "../template-renderer/template-renderer.js";
 import { SSRView } from "../view.js";
 import { StyleRenderer } from "../styles/style-renderer.js";
-
-const prefix = "fast-style";
-let id = 0;
-function nextId(): string {
-    return `${prefix}-${id++}`;
-}
 
 export abstract class FASTElementRenderer extends ElementRenderer {
     /**
@@ -90,10 +84,10 @@ export abstract class FASTElementRenderer extends ElementRenderer {
     constructor(tagName: string) {
         super(tagName);
 
-        const ctor: typeof FASTElement | null = customElements.get(this.tagName);
+        const ctor = customElements.get(this.tagName);
 
         if (ctor) {
-            this.element = new ctor();
+            this.element = new ctor() as FASTElement;
         } else {
             throw new Error(
                 `FASTElementRenderer was unable to find a constructor for a custom element with the tag name '${tagName}'.`

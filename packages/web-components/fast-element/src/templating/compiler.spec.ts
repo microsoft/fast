@@ -22,11 +22,24 @@ interface CompilationResultInternals {
 
 describe("The template compiler", () => {
     function compile(html: string, directives: HTMLDirective[]) {
-        return Compiler.compile(html, directives) as any as CompilationResultInternals;
+        const factories: Record<string, ViewBehaviorFactory> = Object.create(null);
+        const ids: string[] = [];
+        let nextId = -1;
+        const add = (factory: ViewBehaviorFactory): string => {
+            const id = `${++nextId}`;
+            ids.push(id);
+            factory.id = id;
+            factories[id] = factory;
+            return id;
+        };
+
+        directives.forEach(x => x.createHTML(add));
+
+        return Compiler.compile(html, factories) as any as CompilationResultInternals;
     }
 
     function inline(index: number) {
-        return Markup.interpolation(index);
+        return Markup.interpolation(`${index}`);
     }
 
     function binding(result = "result") {
@@ -176,7 +189,7 @@ describe("The template compiler", () => {
                     expect(length).to.equal(x.targetIds.length);
 
                     for (let i = 0; i < length; ++i) {
-                        expect(factories[i].targetId).to.equal(
+                        expect(factories[i].nodeId).to.equal(
                             x.targetIds[i]
                         );
                     }
@@ -344,7 +357,7 @@ describe("The template compiler", () => {
                     expect(length).to.equal(x.targetIds.length);
 
                     for (let i = 0; i < length; ++i) {
-                        expect(factories[i].targetId).to.equal(
+                        expect(factories[i].nodeId).to.equal(
                             x.targetIds[i]
                         );
                     }

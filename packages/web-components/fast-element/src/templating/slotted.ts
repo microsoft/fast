@@ -1,4 +1,5 @@
 import { isString } from "../interfaces.js";
+import { HTMLDirective } from "./html-directive.js";
 import { NodeBehaviorOptions, NodeObservationDirective } from "./node-observation.js";
 import type { CaptureType } from "./template.js";
 
@@ -48,6 +49,8 @@ export class SlottedDirective extends NodeObservationDirective<SlottedDirectiveO
         this.updateTarget(source, this.computeNodes(target));
     }
 }
+
+HTMLDirective.define(SlottedDirective);
 
 /**
  * A directive that observes the `assignedNodes()` of a slot and updates a property

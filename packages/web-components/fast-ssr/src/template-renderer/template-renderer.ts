@@ -2,8 +2,9 @@ import { RenderInfo } from "@lit-labs/ssr";
 import { getElementRenderer } from "@lit-labs/ssr/lib/element-renderer.js";
 import {
     Aspect,
-    AspectedHTMLDirective,
+    Aspected,
     ExecutionContext,
+    ViewBehaviorFactory,
     ViewTemplate,
 } from "@microsoft/fast-element";
 import { Op, OpType } from "../template-parser/op-codes.js";
@@ -11,7 +12,7 @@ import {
     parseStringToOpCodes,
     parseTemplateToOpCodes,
 } from "../template-parser/template-parser.js";
-import { DirectiveRenderer } from "./directives.js";
+import { ViewBehaviorFactoryRenderer } from "./directives.js";
 
 export type ComponentDOMEmissionMode = "shadow" | "light";
 export interface TemplateRendererConfiguration {
@@ -32,7 +33,10 @@ export interface TemplateRendererConfiguration {
 
 export class TemplateRenderer
     implements Readonly<Required<TemplateRendererConfiguration>> {
-    private directiveRenderers: Map<any, DirectiveRenderer<any>> = new Map();
+    private viewBehaviorFactoryRenderers: Map<
+        any,
+        ViewBehaviorFactoryRenderer<any>
+    > = new Map();
     /**
      * {@inheritDoc TemplateRendererConfiguration.componentDOMEmissionMode}
      */
@@ -61,7 +65,7 @@ export class TemplateRenderer
         const codes =
             template instanceof ViewTemplate
                 ? parseTemplateToOpCodes(template)
-                : parseStringToOpCodes(template, []);
+                : parseStringToOpCodes(template, {});
 
         yield* this.renderOpCodes(codes, renderInfo, source, context);
     }
@@ -84,18 +88,15 @@ export class TemplateRenderer
                 case OpType.text:
                     yield code.value;
                     break;
-                case OpType.directive: {
-                    const { directive } = code;
-                    const ctor = directive.constructor;
-                    if (this.directiveRenderers.has(ctor)) {
-                        yield* this.directiveRenderers
+                case OpType.viewBehaviorFactory: {
+                    const factory = code.factory as ViewBehaviorFactory & Aspected;
+                    const ctor = factory.constructor;
+                    if (this.viewBehaviorFactoryRenderers.has(ctor)) {
+                        yield* this.viewBehaviorFactoryRenderers
                             .get(ctor)!
-                            .render(directive, renderInfo, source, this, context);
-                    } else if (
-                        directive instanceof AspectedHTMLDirective &&
-                        directive.binding
-                    ) {
-                        const result = directive.binding(source, context);
+                            .render(factory, renderInfo, source, this, context);
+                    } else if (factory.aspectType && factory.binding) {
+                        const result = factory.binding(source, context);
 
                         // If the result is a template, render the template
                         if (result instanceof ViewTemplate) {
@@ -103,7 +104,7 @@ export class TemplateRenderer
                         } else if (result === null || result === undefined) {
                             // Don't yield anything if result is null
                             break;
-                        } else if (directive.aspect === Aspect.content) {
+                        } else if (factory.aspectType === Aspect.content) {
                             yield result;
                         } else {
                             // debugging error - we should handle all result cases
@@ -113,7 +114,9 @@ export class TemplateRenderer
                         }
                     } else {
                         // Throw if a SSR directive implementation cannot be found.
-                        throw new Error(`Unable to process HTMLDirective: ${directive}`);
+                        throw new Error(
+                            `Unable to process view behavior factory: ${factory}`
+                        );
                     }
 
                     break;
@@ -255,11 +258,13 @@ export class TemplateRenderer
 
     /**
      * Registers DirectiveRenderers to use when rendering templates.
-     * @param directives - The directive renderers to register
+     * @param renderers - The directive renderers to register
      */
-    public withDirectiveRenderer(...directives: DirectiveRenderer<any>[]): void {
-        for (const renderer of directives) {
-            this.directiveRenderers.set(renderer.matcher, renderer);
+    public withViewBehaviorFactoryRenderers(
+        ...renderers: ViewBehaviorFactoryRenderer<any>[]
+    ): void {
+        for (const renderer of renderers) {
+            this.viewBehaviorFactoryRenderers.set(renderer.matcher, renderer);
         }
     }
 }

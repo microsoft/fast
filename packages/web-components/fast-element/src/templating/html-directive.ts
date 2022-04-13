@@ -1,6 +1,8 @@
+import type { Constructable, Mutable } from "../interfaces.js";
 import type { Behavior } from "../observation/behavior.js";
 import type { Binding, ExecutionContext } from "../observation/observable.js";
-import { Markup, nextId } from "./markup.js";
+import { createTypeRegistry } from "../platform.js";
+import { Markup } from "./markup.js";
 
 /**
  * The target nodes available to a behavior.
@@ -47,129 +49,232 @@ export interface ViewBehavior<TSource = any, TParent = any> {
  */
 export interface ViewBehaviorFactory {
     /**
+     * The unique id of the factory.
+     */
+    id: string;
+
+    /**
      * The structural id of the DOM node to which the created behavior will apply.
      */
-    targetId: string;
-
-    /**
-     * Creates a behavior.
-     * @param target - The targets available for behaviors to be attached to.
-     */
-    createBehavior(targets: ViewBehaviorTargets): Behavior | ViewBehavior;
-}
-
-/**
- * Instructs the template engine to apply behavior to a node.
- * @public
- */
-export abstract class HTMLDirective implements ViewBehaviorFactory {
-    /**
-     * The structural id of the directive based on the DOM node
-     * that it applies to.
-     */
-    public targetId: string = "h";
-
-    /**
-     * The unique id of the directive instance.
-     */
-    public readonly uniqueId: string = nextId();
-
-    /**
-     * Creates a placeholder string based on the directive's index within the template.
-     * @param index - The index of the directive within the template.
-     */
-    public abstract createPlaceholder(index: number): string;
+    nodeId: string;
 
     /**
      * Creates a behavior.
      * @param targets - The targets available for behaviors to be attached to.
      */
-    public abstract createBehavior(targets: ViewBehaviorTargets): Behavior | ViewBehavior;
+    createBehavior(targets: ViewBehaviorTargets): Behavior | ViewBehavior;
+}
+
+/**
+ * Used to add behavior factories when constructing templates.
+ * @public
+ */
+export type AddViewBehaviorFactory = (factory: ViewBehaviorFactory) => string;
+
+/**
+ * Instructs the template engine to apply behavior to a node.
+ * @public
+ */
+export interface HTMLDirective {
+    /**
+     * Creates HTML to be used within a template.
+     * @param add - Can be used to add  behavior factories to a template.
+     */
+    createHTML(add: AddViewBehaviorFactory): string;
+}
+
+/**
+ * Represents metadata configuration for an HTMLDirective.
+ * @public
+ */
+export interface PartialHTMLDirectiveDefinition {
+    /**
+     * Indicates whether the directive needs access to template contextual information
+     * such as the sourceAspect, targetAspect, and aspectType.
+     */
+    aspected?: boolean;
+}
+
+/**
+ * Defines metadata for an HTMLDirective.
+ * @public
+ */
+export interface HTMLDirectiveDefinition<
+    TType extends Constructable<HTMLDirective> = Constructable<HTMLDirective>
+> extends Required<PartialHTMLDirectiveDefinition> {
+    /**
+     * The type that the definition provides metadata for.
+     */
+    readonly type: TType;
+}
+
+const registry = createTypeRegistry<HTMLDirectiveDefinition>();
+
+/**
+ * Instructs the template engine to apply behavior to a node.
+ * @public
+ */
+export const HTMLDirective = Object.freeze({
+    getForInstance: registry.getForInstance,
+    getByType: registry.getByType,
+    define<TType extends Constructable<HTMLDirective>>(
+        type: TType,
+        options?: PartialHTMLDirectiveDefinition
+    ): TType {
+        options = options || {};
+        (options as Mutable<HTMLDirectiveDefinition>).type = type;
+        registry.register(options as HTMLDirectiveDefinition);
+        return type;
+    },
+});
+
+/**
+ * Decorator: Defines an HTMLDirective.
+ * @param options - Provides options that specify the directives application.
+ * @public
+ */
+export function htmlDirective(options?: PartialHTMLDirectiveDefinition) {
+    /* eslint-disable-next-line @typescript-eslint/explicit-function-return-type */
+    return function (type: Constructable<HTMLDirective>) {
+        HTMLDirective.define(type, options);
+    };
 }
 
 /**
  * The type of HTML aspect to target.
  * @public
  */
-export enum Aspect {
+export const Aspect = Object.freeze({
+    /**
+     * Not aspected.
+     */
+    none: 0,
+
     /**
      * An attribute.
      */
-    attribute = 0,
+    attribute: 1,
+
     /**
      * A boolean attribute.
      */
-    booleanAttribute = 1,
+    booleanAttribute: 2,
+
     /**
      * A property.
      */
-    property = 2,
+    property: 3,
+
     /**
      * Content
      */
-    content = 3,
+    content: 4,
+
     /**
      * A token list.
      */
-    tokenList = 4,
+    tokenList: 5,
+
     /**
      * An event.
      */
-    event = 5,
-}
+    event: 6,
+
+    /**
+     *
+     * @param directive - The directive to assign the aspect to.
+     * @param value - The value to base the aspect determination on.
+     */
+    assign(directive: Aspected, value: string): void {
+        directive.sourceAspect = value;
+
+        if (!value) {
+            return;
+        }
+
+        switch (value[0]) {
+            case ":":
+                directive.targetAspect = value.substring(1);
+                switch (directive.targetAspect) {
+                    case "innerHTML":
+                        directive.aspectType = Aspect.property;
+                        break;
+                    case "classList":
+                        directive.aspectType = Aspect.tokenList;
+                        break;
+                    default:
+                        directive.aspectType = Aspect.property;
+                        break;
+                }
+                break;
+            case "?":
+                directive.targetAspect = value.substring(1);
+                directive.aspectType = Aspect.booleanAttribute;
+                break;
+            case "@":
+                directive.targetAspect = value.substring(1);
+                directive.aspectType = Aspect.event;
+                break;
+            default:
+                if (value === "class") {
+                    directive.targetAspect = "className";
+                    directive.aspectType = Aspect.property;
+                } else {
+                    directive.targetAspect = value;
+                    directive.aspectType = Aspect.attribute;
+                }
+                break;
+        }
+    },
+});
 
 /**
- * A {@link HTMLDirective} that targets a particular aspect
- * (attribute, property, event, etc.) of a node.
+ * Represents something that applies to a specific aspect of the DOM.
  * @public
  */
-export abstract class AspectedHTMLDirective extends HTMLDirective {
+export interface Aspected {
     /**
-     * The original source aspect exactly as represented in the HTML.
+     * The original source aspect exactly as represented in markup.
      */
-    abstract readonly source: string;
+    sourceAspect: string;
 
     /**
      * The evaluated target aspect, determined after processing the source.
      */
-    abstract readonly target: string;
+    targetAspect: string;
 
     /**
      * The type of aspect to target.
      */
-    abstract readonly aspect: Aspect;
+    aspectType: number;
 
     /**
-     * A binding to apply to the target, if applicable.
+     * A binding if one is associated with the aspect.
      */
-    abstract readonly binding?: Binding;
-
-    /**
-     * Captures the original source aspect from HTML.
-     * @param source - The original source aspect.
-     */
-    abstract captureSource(source: string): void;
-
-    /**
-     * Creates a placeholder string based on the directive's index within the template.
-     * @param index - The index of the directive within the template.
-     */
-    public createPlaceholder: (index: number) => string = Markup.interpolation;
+    binding?: Binding;
 }
 
 /**
  * A base class used for attribute directives that don't need internal state.
  * @public
  */
-export abstract class StatelessAttachedAttributeDirective<T> extends HTMLDirective
-    implements ViewBehavior {
+export abstract class StatelessAttachedAttributeDirective<T>
+    implements HTMLDirective, ViewBehaviorFactory, ViewBehavior {
+    /**
+     * The unique id of the factory.
+     */
+    id: string;
+
+    /**
+     * The structural id of the DOM node to which the created behavior will apply.
+     */
+    nodeId: string;
+
     /**
      * Creates an instance of RefDirective.
      * @param options - The options to use in configuring the directive.
      */
-    public constructor(protected options: T) {
-        super();
-    }
+    public constructor(protected options: T) {}
 
     /**
      * Creates a behavior.
@@ -185,7 +290,9 @@ export abstract class StatelessAttachedAttributeDirective<T> extends HTMLDirecti
      * @remarks
      * Creates a custom attribute placeholder.
      */
-    public createPlaceholder: (index: number) => string = Markup.attribute;
+    public createHTML(add: AddViewBehaviorFactory): string {
+        return Markup.attribute(add(this));
+    }
 
     /**
      * Bind this behavior to the source.

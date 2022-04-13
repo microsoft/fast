@@ -26,7 +26,7 @@ export interface ElementDefinitionContext {
      * The type that will be defined.
      * @public
      */
-    readonly type: Constructable;
+    readonly type: Constructable<HTMLElement>;
 
     /**
      * The dependency injection container associated with the design system.
@@ -85,7 +85,7 @@ export interface ElementDefinitionParams
      * FAST actual base class instance.
      * @public
      */
-    readonly baseClass?: Constructable;
+    readonly baseClass?: Constructable<HTMLElement>;
     /**
      * A callback to invoke if definition will happen.
      * @public
@@ -115,7 +115,7 @@ export interface DesignSystemRegistrationContext {
      */
     tryDefineElement(
         name: string,
-        type: Constructable,
+        type: Constructable<HTMLElement>,
         callback: ElementDefinitionCallback
     ): void;
 

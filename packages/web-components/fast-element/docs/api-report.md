@@ -11,6 +11,9 @@ export interface Accessor {
     setValue(source: any, value: any): void;
 }
 
+// @public
+export type AddViewBehaviorFactory = (factory: ViewBehaviorFactory) => string;
+
 // Warning: (ae-internal-missing-underscore) The name "AdoptedStyleSheetsStrategy" should be prefixed with an underscore because the declaration is marked as @internal
 //
 // @internal
@@ -25,23 +28,23 @@ export class AdoptedStyleSheetsStrategy implements StyleStrategy {
 }
 
 // @public
-export enum Aspect {
-    attribute = 0,
-    booleanAttribute = 1,
-    content = 3,
-    event = 5,
-    property = 2,
-    tokenList = 4
-}
+export const Aspect: Readonly<{
+    none: number;
+    attribute: number;
+    booleanAttribute: number;
+    property: number;
+    content: number;
+    tokenList: number;
+    event: number;
+    assign(directive: Aspected, value: string): void;
+}>;
 
 // @public
-export abstract class AspectedHTMLDirective extends HTMLDirective {
-    abstract readonly aspect: Aspect;
-    abstract readonly binding?: Binding;
-    abstract captureSource(source: string): void;
-    createPlaceholder: (index: number) => string;
-    abstract readonly source: string;
-    abstract readonly target: string;
+export interface Aspected {
+    aspectType: number;
+    binding?: Binding;
+    sourceAspect: string;
+    targetAspect: string;
 }
 
 // @public
@@ -106,7 +109,7 @@ export interface BindingConfig<T = any> {
 }
 
 // @alpha (undocumented)
-export type BindingMode = Record<Aspect, BindingType>;
+export type BindingMode = Record<number, BindingType>;
 
 // @public
 export interface BindingObserver<TSource = any, TReturn = any, TParent = any> extends Notifier {
@@ -172,14 +175,14 @@ export interface ChildViewTemplate<TSource = any, TParent = any> {
 // @public
 export type CompilationStrategy = (
 html: string | HTMLTemplateElement,
-directives: readonly HTMLDirective[]) => HTMLTemplateCompilationResult;
+factories: Record<string, ViewBehaviorFactory>) => HTMLTemplateCompilationResult;
 
 // @public
 export const Compiler: {
     setHTMLPolicy(policy: TrustedTypesPolicy): void;
-    compile<TSource = any, TParent = any, TContext extends ExecutionContext<TParent> = ExecutionContext<TParent>>(html: string | HTMLTemplateElement, directives: ReadonlyArray<HTMLDirective>): HTMLTemplateCompilationResult<TSource, TParent, TContext>;
+    compile<TSource = any, TParent = any, TContext extends ExecutionContext<TParent> = ExecutionContext<TParent>>(html: string | HTMLTemplateElement, directives: Record<string, ViewBehaviorFactory>): HTMLTemplateCompilationResult<TSource, TParent, TContext>;
     setDefaultStrategy(strategy: CompilationStrategy): void;
-    aggregate(parts: (string | HTMLDirective)[]): HTMLDirective;
+    aggregate(parts: (string | ViewBehaviorFactory)[]): ViewBehaviorFactory;
 };
 
 // @public
@@ -218,6 +221,11 @@ export class Controller<TElement extends HTMLElement = HTMLElement> extends Prop
     readonly view: ElementView<TElement> | null;
 }
 
+// Warning: (ae-internal-missing-underscore) The name "createTypeRegistry" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal
+export function createTypeRegistry<TDefinition extends TypeDefinition>(): TypeRegistry<TDefinition>;
+
 // @public
 export function css(strings: TemplateStringsArray, ...values: (ComposableStyles | CSSDirective)[]): ElementStyles;
 
@@ -231,7 +239,7 @@ export class CSSDirective {
 export function cssPartial(strings: TemplateStringsArray, ...values: (ComposableStyles | CSSDirective)[]): CSSDirective;
 
 // @public
-export function customElement(nameOrDef: string | PartialFASTElementDefinition): (type: Function) => void;
+export function customElement(nameOrDef: string | PartialFASTElementDefinition): (type: Constructable<HTMLElement>) => void;
 
 // @public
 export type DecoratorAttributeConfiguration = Omit<AttributeConfiguration, "property">;
@@ -329,17 +337,18 @@ export const FASTElement: (new () => HTMLElement & FASTElement) & {
         new (): HTMLElement;
         prototype: HTMLElement;
     }>(BaseType: TBase): new () => InstanceType<TBase> & FASTElement;
-    define<TType extends Function>(type: TType, nameOrDef?: string | PartialFASTElementDefinition | undefined): TType;
+    define<TType extends Constructable<HTMLElement>>(type: TType, nameOrDef?: string | PartialFASTElementDefinition | undefined): TType;
 };
 
 // @public
-export class FASTElementDefinition<TType extends Function = Function> {
+export class FASTElementDefinition<TType extends Constructable<HTMLElement> = Constructable<HTMLElement>> {
     constructor(type: TType, nameOrConfig?: PartialFASTElementDefinition | string);
     readonly attributeLookup: Record<string, AttributeDefinition>;
     readonly attributes: ReadonlyArray<AttributeDefinition>;
     define(registry?: CustomElementRegistry): this;
     readonly elementOptions?: ElementDefinitionOptions;
-    static readonly forType: <TType_1 extends Function>(key: TType_1) => FASTElementDefinition<Function> | undefined;
+    static readonly getByType: (key: Function) => FASTElementDefinition<Constructable<HTMLElement>> | undefined;
+    static readonly getForInstance: (object: any) => FASTElementDefinition<Constructable<HTMLElement>> | undefined;
     get isDefined(): boolean;
     readonly name: string;
     readonly propertyLookup: Record<string, AttributeDefinition>;
@@ -366,11 +375,23 @@ export interface FASTGlobal {
 export function html<TSource = any, TParent = any, TContext extends ExecutionContext<TParent> = ExecutionContext<TParent>>(strings: TemplateStringsArray, ...values: TemplateValue<TSource, TParent, TContext>[]): ViewTemplate<TSource, TParent>;
 
 // @public
-export abstract class HTMLDirective implements ViewBehaviorFactory {
-    abstract createBehavior(targets: ViewBehaviorTargets): Behavior | ViewBehavior;
-    abstract createPlaceholder(index: number): string;
-    targetId: string;
-    readonly uniqueId: string;
+export interface HTMLDirective {
+    createHTML(add: AddViewBehaviorFactory): string;
+}
+
+// @public
+export const HTMLDirective: Readonly<{
+    getForInstance: (object: any) => HTMLDirectiveDefinition<Constructable<HTMLDirective>> | undefined;
+    getByType: (key: Function) => HTMLDirectiveDefinition<Constructable<HTMLDirective>> | undefined;
+    define<TType extends Constructable<HTMLDirective>>(type: TType, options?: PartialHTMLDirectiveDefinition | undefined): TType;
+}>;
+
+// @public
+export function htmlDirective(options?: PartialHTMLDirectiveDefinition): (type: Constructable<HTMLDirective>) => void;
+
+// @public
+export interface HTMLDirectiveDefinition<TType extends Constructable<HTMLDirective> = Constructable<HTMLDirective>> extends Required<PartialHTMLDirectiveDefinition> {
+    readonly type: TType;
 }
 
 // @public
@@ -418,9 +439,9 @@ export interface ItemViewTemplate<TSource = any, TParent = any> {
 
 // @public
 export const Markup: Readonly<{
-    interpolation: (index: number) => string;
-    attribute: (index: number) => string;
-    comment: (index: number) => string;
+    interpolation: (id: string) => string;
+    attribute: (id: string) => string;
+    comment: (id: string) => string;
 }>;
 
 // Warning: (ae-internal-missing-underscore) The name "Mutable" should be prefixed with an underscore because the declaration is marked as @internal
@@ -492,7 +513,7 @@ export const oneTime: BindingConfig<DefaultBindingOptions> & BindingConfigResolv
 
 // @public
 export const Parser: Readonly<{
-    parse(value: string, directives: readonly HTMLDirective[]): (string | HTMLDirective)[] | null;
+    parse(value: string, factories: Record<string, ViewBehaviorFactory>): (string | ViewBehaviorFactory)[] | null;
 }>;
 
 // @public
@@ -503,6 +524,11 @@ export interface PartialFASTElementDefinition {
     readonly shadowOptions?: Partial<ShadowRootInit> | null;
     readonly styles?: ComposableStyles | ComposableStyles[];
     readonly template?: ElementViewTemplate;
+}
+
+// @public
+export interface PartialHTMLDirectiveDefinition {
+    aspected?: boolean;
 }
 
 // @public
@@ -572,12 +598,14 @@ export class RepeatBehavior<TSource = any> implements Behavior, Subscriber {
 }
 
 // @public
-export class RepeatDirective<TSource = any> extends HTMLDirective {
+export class RepeatDirective<TSource = any> implements HTMLDirective, ViewBehaviorFactory {
     constructor(itemsBinding: Binding, templateBinding: Binding<TSource, SyntheticViewTemplate>, options: RepeatOptions);
     createBehavior(targets: ViewBehaviorTargets): RepeatBehavior<TSource>;
-    createPlaceholder: (index: number) => string;
+    createHTML(add: AddViewBehaviorFactory): string;
+    id: string;
     // (undocumented)
     readonly itemsBinding: Binding;
+    nodeId: string;
     // (undocumented)
     readonly options: RepeatOptions;
     // (undocumented)
@@ -630,11 +658,13 @@ export class Splice {
 }
 
 // @public
-export abstract class StatelessAttachedAttributeDirective<T> extends HTMLDirective implements ViewBehavior {
+export abstract class StatelessAttachedAttributeDirective<T> implements HTMLDirective, ViewBehaviorFactory, ViewBehavior {
     constructor(options: T);
     abstract bind(source: any, context: ExecutionContext, targets: ViewBehaviorTargets): void;
     createBehavior(targets: ViewBehaviorTargets): ViewBehavior;
-    createPlaceholder: (index: number) => string;
+    createHTML(add: AddViewBehaviorFactory): string;
+    id: string;
+    nodeId: string;
     // (undocumented)
     protected options: T;
     abstract unbind(source: any, context: ExecutionContext, targets: ViewBehaviorTargets): void;
@@ -704,6 +734,26 @@ export type TrustedTypesPolicy = {
     createHTML(html: string): string;
 };
 
+// Warning: (ae-internal-missing-underscore) The name "TypeDefinition" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal
+export interface TypeDefinition {
+    // (undocumented)
+    type: Function;
+}
+
+// Warning: (ae-internal-missing-underscore) The name "TypeRegistry" should be prefixed with an underscore because the declaration is marked as @internal
+//
+// @internal
+export interface TypeRegistry<TDefinition extends TypeDefinition> {
+    // (undocumented)
+    getByType(key: Function): TDefinition | undefined;
+    // (undocumented)
+    getForInstance(object: any): TDefinition | undefined;
+    // (undocumented)
+    register(definition: TDefinition): boolean;
+}
+
 // @public
 export interface ValueConverter {
     fromView(value: any): any;
@@ -728,7 +778,8 @@ export interface ViewBehavior<TSource = any, TParent = any> {
 // @public
 export interface ViewBehaviorFactory {
     createBehavior(targets: ViewBehaviorTargets): Behavior | ViewBehavior;
-    targetId: string;
+    id: string;
+    nodeId: string;
 }
 
 // @public
@@ -738,9 +789,9 @@ export type ViewBehaviorTargets = {
 
 // @public
 export class ViewTemplate<TSource = any, TParent = any, TContext extends ExecutionContext<TParent> = ExecutionContext> implements ElementViewTemplate<TSource, TParent>, SyntheticViewTemplate<TSource, TParent, TContext> {
-    constructor(html: string | HTMLTemplateElement, directives: ReadonlyArray<HTMLDirective>);
+    constructor(html: string | HTMLTemplateElement, factories: Record<string, ViewBehaviorFactory>);
     create(hostBindingTarget?: Element): HTMLView<TSource, TParent, TContext>;
-    readonly directives: ReadonlyArray<HTMLDirective>;
+    readonly factories: Record<string, ViewBehaviorFactory>;
     readonly html: string | HTMLTemplateElement;
     render(source: TSource, host: Node, hostBindingTarget?: Element, context?: TContext): HTMLView<TSource, TParent, TContext>;
     type: any;

@@ -1,4 +1,7 @@
-import { HTMLDirective, HTMLTemplateCompilationResult } from "@microsoft/fast-element";
+import {
+    HTMLTemplateCompilationResult,
+    ViewBehaviorFactory,
+} from "@microsoft/fast-element";
 import { Op, OpType, TemplateElementOpenOp } from "./template-parser/op-codes.js";
 import { parseStringToOpCodes } from "./template-parser/template-parser.js";
 
@@ -10,16 +13,16 @@ import { parseStringToOpCodes } from "./template-parser/template-parser.js";
  */
 export class SSRView {
     public readonly html: string;
-    public readonly directives: ReadonlyArray<HTMLDirective>;
+    public readonly factories: Record<string, ViewBehaviorFactory>;
     public result: HTMLTemplateCompilationResult | null = null;
     public codes: Op[];
     public hostStaticAttributes?: TemplateElementOpenOp["staticAttributes"];
     public hostDynamicAttributes?: TemplateElementOpenOp["dynamicAttributes"];
 
-    constructor(html: string, directives: ReadonlyArray<HTMLDirective>) {
+    constructor(html: string, factories: Record<string, ViewBehaviorFactory>) {
         this.html = html;
-        this.directives = directives;
-        const codes = parseStringToOpCodes(html, directives);
+        this.factories = factories;
+        const codes = parseStringToOpCodes(html, factories);
 
         // Check to see if the root is a template element. We may need to
         // make this more sophisticated in the future because it doesn't quite

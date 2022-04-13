@@ -91,10 +91,10 @@ function factoryFromElementInstance(element: HTMLElement): ViewFactory {
     fragment.appendChild(element);
 
     const factory = navigationContributor();
-    factory.targetId = "h";
+    factory.nodeId = "h";
 
     const view = new HTMLView(fragment, [factory], {
-        [factory.targetId]: element,
+        [factory.nodeId]: element,
     });
 
     return {
@@ -196,7 +196,7 @@ export class Render implements RenderCommand {
                 } else if (typeof element === "function") {
                     // Do not cache it becase the function could return
                     // a different value each time.
-                    let def = FASTElementDefinition.forType(element);
+                    let def = FASTElementDefinition.getByType(element);
 
                     if (def) {
                         factory = factoryFromElementName(def.name);
@@ -208,7 +208,7 @@ export class Render implements RenderCommand {
                         } else if (element instanceof HTMLElement) {
                             factory = factoryFromElementInstance(element);
                         } else {
-                            def = FASTElementDefinition.forType(element as any);
+                            def = FASTElementDefinition.getByType(element);
 
                             if (def) {
                                 factory = factoryFromElementName(def.name);

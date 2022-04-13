@@ -1,4 +1,5 @@
 import {
+    AddViewBehaviorFactory,
     Behavior,
     HTMLDirective,
     Markup,
@@ -44,22 +45,25 @@ const defaultOptions: ContributorOptions = {
     parameters: true,
 };
 
-class NavigationContributorDirective extends HTMLDirective {
-    constructor(private options: Required<ContributorOptions>) {
-        super();
-    }
+class NavigationContributorDirective implements HTMLDirective {
+    id: string;
+    nodeId: string;
 
-    createPlaceholder(index: number) {
-        return Markup.attribute(index);
+    constructor(private options: Required<ContributorOptions>) {}
+
+    createHTML(add: AddViewBehaviorFactory) {
+        return Markup.attribute(add(this));
     }
 
     createBehavior(targets: ViewBehaviorTargets) {
         return new NavigationContributorBehavior(
-            targets[this.targetId] as HTMLElement & NavigationContributor,
+            targets[this.nodeId] as HTMLElement & NavigationContributor,
             this.options
         );
     }
 }
+
+HTMLDirective.define(NavigationContributorDirective);
 
 class NavigationContributorBehavior implements Behavior {
     private router: Router | null = null;
@@ -95,7 +99,9 @@ class NavigationContributorBehavior implements Behavior {
 /**
  * @alpha
  */
-export function navigationContributor(options?: ContributorOptions): HTMLDirective {
+export function navigationContributor(
+    options?: ContributorOptions
+): NavigationContributorDirective {
     return new NavigationContributorDirective(
         Object.assign({}, defaultOptions, options) as Required<ContributorOptions>
     );
