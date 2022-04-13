@@ -1,13 +1,13 @@
 import { FASTElement } from "@microsoft/fast-element";
-import { RenderCommand } from "./commands";
-import { RouterConfiguration } from "./configuration";
-import { NavigationContributor } from "./contributors";
-import { LinkHandler } from "./links";
-import { NavigationMessage, NavigationQueue } from "./navigation";
-import { NavigationPhase } from "./phases";
-import { RecognizedRoute } from "./recognizer";
-import { childRouteParameter } from "./routes";
-import { Layout, RouterExecutionContext, RouteView, Transition } from "./view";
+import { RenderCommand } from "./commands.js";
+import { RouterConfiguration } from "./configuration.js";
+import { NavigationContributor } from "./contributors.js";
+import { LinkHandler } from "./links.js";
+import { NavigationMessage, NavigationQueue } from "./navigation.js";
+import { NavigationPhase } from "./phases.js";
+import { RecognizedRoute } from "./recognizer.js";
+import { childRouteParameter } from "./routes.js";
+import { Layout, RouterExecutionContext, RouteView, Transition } from "./view.js";
 
 /**
  * @alpha

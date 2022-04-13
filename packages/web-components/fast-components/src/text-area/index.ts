@@ -3,7 +3,7 @@ import {
     TextArea as FoundationTextArea,
     textAreaTemplate as template,
 } from "@microsoft/fast-foundation";
-import { textAreaStyles as styles } from "./text-area.styles";
+import { textAreaStyles as styles } from "./text-area.styles.js";
 
 /**
  * Text area appearances

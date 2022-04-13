@@ -1,6 +1,10 @@
 import { css, ElementStyles } from "@microsoft/fast-element";
 import { FoundationElementTemplate } from "@microsoft/fast-foundation";
-import { neutralFillRest, neutralStrokeDividerRest, strokeWidth } from "../design-tokens";
+import {
+    neutralFillRest,
+    neutralStrokeDividerRest,
+    strokeWidth,
+} from "../design-tokens.js";
 
 /**
  * Styles for Data Grid row

@@ -1,6 +1,6 @@
 import AvatarTemplate from "./fixtures/base.html";
-import "../badge/index";
-import "./index";
+import "../badge/index.js";
+import "./index.js";
 
 export default {
     title: "Avatar",

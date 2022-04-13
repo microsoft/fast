@@ -2,6 +2,29 @@
   "name": "@microsoft/fast-router",
   "entries": [
     {
+      "date": "Tue, 12 Apr 2022 07:13:35 GMT",
+      "tag": "@microsoft/fast-router_v0.3.0",
+      "version": "0.3.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "Convert package to type:module",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "349ff265636d29e45cf336755083e4b997d6e6f2",
+            "package": "@microsoft/fast-router"
+          }
+        ],
+        "none": [
+          {
+            "comment": "Bump @microsoft/fast-element to v1.9.0",
+            "author": "yinon@hotmail.com",
+            "commit": "3e4d72447520f40d234b1df2cc70446dcef8bb47",
+            "package": "@microsoft/fast-router"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 06 Apr 2022 07:12:42 GMT",
       "tag": "@microsoft/fast-router_v0.2.16",
       "version": "0.2.16",
