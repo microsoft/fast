@@ -166,29 +166,6 @@ describe("Tabs", () => {
         await disconnect();
     });
 
-    it("should set an `id` attribute on tabpanel items relative to the index if an `id is NOT provided", async () => {
-        const { element, connect, disconnect } = await fixture([FASTTabs(), FASTTabPanel(), FASTTab()])
-
-        for (let i = 1; i < 4; i++) {
-            const tab = document.createElement("fast-tab") as Tab;
-            const panel = document.createElement("fast-tab-panel") as TabPanel;
-
-            element.appendChild(panel);
-            element.insertBefore(tab, element.querySelector("fast-tab-panel"));
-        }
-
-        await connect();
-
-        expect(element.querySelector("fast-tab-panel")?.getAttribute("id")).to.equal(
-            "panel-1"
-        );
-        expect(
-            element.querySelectorAll("fast-tab-panel")[1]?.getAttribute("id")
-        ).to.equal("panel-2");
-
-        await disconnect();
-    });
-
     describe("active tab", () => {
         it("should set an `aria-selected` attribute on the active tab when `activeId` is provided", async () => {
             const { element, connect, disconnect, tab2 } = await setup();
