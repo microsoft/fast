@@ -771,9 +771,11 @@ export const disabledOpacity: import("@microsoft/fast-foundation").CSSDesignToke
 // @internal (undocumented)
 export class Disclosure extends Disclosure_2 {
     // @public
-    appearance: DisclosureAppearance;
+    appearance?: DisclosureAppearance;
     // (undocumented)
     appearanceChanged(oldValue: DisclosureAppearance, newValue: DisclosureAppearance): void;
+    // (undocumented)
+    connectedCallback(): void;
     // (undocumented)
     get disclosureHeight(): number;
     // @override
