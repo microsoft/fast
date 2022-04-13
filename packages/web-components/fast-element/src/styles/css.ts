@@ -47,6 +47,15 @@ function collectStyles(
     };
 }
 
+/**
+ * Transforms a template literal string into styles.
+ * @param strings - The string fragments that are interpolated with the values.
+ * @param values - The values that are interpolated with the string fragments.
+ * @remarks
+ * The css helper supports interpolation of strings and ElementStyle instances.
+ * Use the .partial method to create partial CSS fragments.
+ * @public
+ */
 export type CSSTemplateTag = ((
     strings: TemplateStringsArray,
     ...values: (ComposableStyles | CSSDirective)[]
