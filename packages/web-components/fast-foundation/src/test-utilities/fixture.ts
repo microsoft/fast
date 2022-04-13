@@ -146,7 +146,7 @@ export async function fixture<TElement = HTMLElement>(
 
     if (typeof templateNameOrRegistry === "string") {
         const html = `<${templateNameOrRegistry}></${templateNameOrRegistry}>`;
-        templateNameOrRegistry = new ViewTemplate(html, []);
+        templateNameOrRegistry = new ViewTemplate(html, {});
     } else if (isElementRegistry(templateNameOrRegistry)) {
         templateNameOrRegistry = [templateNameOrRegistry];
     }
@@ -164,7 +164,7 @@ export async function fixture<TElement = HTMLElement>(
 
         const elementName = `${prefix}-${first.definition.baseName}`;
         const html = `<${elementName}></${elementName}>`;
-        templateNameOrRegistry = new ViewTemplate(html, []);
+        templateNameOrRegistry = new ViewTemplate(html, {});
     }
 
     const view = templateNameOrRegistry.create();

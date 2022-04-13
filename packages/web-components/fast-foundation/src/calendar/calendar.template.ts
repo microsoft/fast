@@ -46,7 +46,9 @@ export const CalendarTitleTemplate: ViewTemplate<Calendar> = html`
  * @returns - The weekday labels template
  * @public
  */
-export const calendarWeekdayTemplate: (context: ElementDefinitionContext) => ItemViewTemplate = context => {
+export const calendarWeekdayTemplate: (
+    context: ElementDefinitionContext
+) => ItemViewTemplate = context => {
     const cellTag = context.tagFor(DataGridCell);
     return item<WeekdayText>`
         <${cellTag}

@@ -1,0 +1,7 @@
+{
+  "type": "major",
+  "comment": "feat: new directive registration/identification model",
+  "packageName": "@microsoft/fast-element",
+  "email": "roeisenb@microsoft.com",
+  "dependentChangeType": "patch"
+}

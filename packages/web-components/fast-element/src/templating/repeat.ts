@@ -14,7 +14,12 @@ import {
 } from "../observation/observable.js";
 import { emptyArray } from "../platform.js";
 import { Markup } from "./markup.js";
-import { HTMLDirective, ViewBehaviorTargets } from "./html-directive.js";
+import {
+    AddViewBehaviorFactory,
+    HTMLDirective,
+    ViewBehaviorFactory,
+    ViewBehaviorTargets,
+} from "./html-directive.js";
 import type {
     CaptureType,
     ChildViewTemplate,
@@ -294,15 +299,28 @@ export class RepeatBehavior<TSource = any> implements Behavior, Subscriber {
  * A directive that configures list rendering.
  * @public
  */
-export class RepeatDirective<TSource = any> extends HTMLDirective {
+export class RepeatDirective<TSource = any>
+    implements HTMLDirective, ViewBehaviorFactory {
     private isItemsBindingVolatile: boolean;
     private isTemplateBindingVolatile: boolean;
+
+    /**
+     * The unique id of the factory.
+     */
+    id: string;
+
+    /**
+     * The structural id of the DOM node to which the created behavior will apply.
+     */
+    nodeId: string;
 
     /**
      * Creates a placeholder string based on the directive's index within the template.
      * @param index - The index of the directive within the template.
      */
-    public createPlaceholder: (index: number) => string = Markup.comment;
+    public createHTML(add: AddViewBehaviorFactory): string {
+        return Markup.comment(add(this));
+    }
 
     /**
      * Creates an instance of RepeatDirective.
@@ -315,7 +333,6 @@ export class RepeatDirective<TSource = any> extends HTMLDirective {
         public readonly templateBinding: Binding<TSource, SyntheticViewTemplate>,
         public readonly options: RepeatOptions
     ) {
-        super();
         enableArrayObservation();
         this.isItemsBindingVolatile = Observable.isVolatileBinding(itemsBinding);
         this.isTemplateBindingVolatile = Observable.isVolatileBinding(templateBinding);
@@ -327,7 +344,7 @@ export class RepeatDirective<TSource = any> extends HTMLDirective {
      */
     public createBehavior(targets: ViewBehaviorTargets): RepeatBehavior<TSource> {
         return new RepeatBehavior<TSource>(
-            targets[this.targetId],
+            targets[this.nodeId],
             this.itemsBinding,
             this.isItemsBindingVolatile,
             this.templateBinding,
@@ -336,6 +353,8 @@ export class RepeatDirective<TSource = any> extends HTMLDirective {
         );
     }
 }
+
+HTMLDirective.define(RepeatDirective);
 
 /**
  * A directive that enables list rendering.

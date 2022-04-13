@@ -1,22 +1,30 @@
 
 import "../dom-shim.js";
-import { Aspect, customElement, FASTElement, html, ViewTemplate } from "@microsoft/fast-element";
+import { Aspect, customElement, FASTElement, html, ViewBehaviorFactory, ViewTemplate } from "@microsoft/fast-element";
 import { expect, test } from "@playwright/test";
-import { AttributeBindingOp, CustomElementOpenOp, DirectiveOp, OpType, TemplateElementOpenOp, TextOp } from "./op-codes.js";
+import { AttributeBindingOp, CustomElementOpenOp, ViewBehaviorFactoryOp, OpType, TemplateElementOpenOp, TextOp } from "./op-codes.js";
 import { parseTemplateToOpCodes } from "./template-parser.js";
 
 @customElement("hello-world")
 class HelloWorld extends FASTElement {}
 
+function firstFactory(factories: Record<string, ViewBehaviorFactory>) {
+    for (const key in factories) {
+        return factories[key];
+    }
+
+    return null;
+}
+
 test.describe("parseTemplateToOpCodes", () => {
     test("should throw when invoked with a ViewTemplate with a HTMLTemplateElement template", () => {
         expect(() => {
-            parseTemplateToOpCodes(new ViewTemplate(document.createElement("template"), []));
+            parseTemplateToOpCodes(new ViewTemplate(document.createElement("template"), {}));
         }).toThrow();
     });
     test("should not throw when invoked with a ViewTemplate with a string template", () => {
         expect(() => {
-            parseTemplateToOpCodes(new ViewTemplate("", []));
+            parseTemplateToOpCodes(new ViewTemplate("", {}));
         }).not.toThrow();
     });
 
@@ -26,24 +34,24 @@ test.describe("parseTemplateToOpCodes", () => {
     test("should emit doctype, html, head, and body elements as part of text op", () => {
         expect(parseTemplateToOpCodes(html`<!DOCTYPE html><html><head></head><body></body></html>`)).toEqual([{type: OpType.text, value: "<!DOCTYPE html><html><head></head><body></body></html>"}])
     })
-    test("should emit a directive op from a binding", () => {
+    test("should emit a viewBehaviorFactory op from a binding", () => {
             const input = html`${() => "hello world"}`;
-            expect(parseTemplateToOpCodes(input)).toEqual([{ type: OpType.directive, directive: input.directives[0]}])
+            expect(parseTemplateToOpCodes(input)).toEqual([{ type: OpType.viewBehaviorFactory, factory: firstFactory(input.factories)}])
     });
     test("should emit a directive op from a content binding", () => {
             const input = html`Hello ${() => "World"}.`;
 
             const codes = parseTemplateToOpCodes(input);
-            const code = codes[1] as DirectiveOp;
+            const code = codes[1] as ViewBehaviorFactoryOp;
             expect(codes.length).toBe(3);
-            expect(code.type).toBe(OpType.directive);
+            expect(code.type).toBe(OpType.viewBehaviorFactory);
     });
-    test("should sandwich directive ops between text ops when binding native element content", () => {
+    test("should sandwich viewBehaviorFactory ops between text ops when binding native element content", () => {
 
             const input = html`<p>${() => "hello world"}</p>`;
             expect(parseTemplateToOpCodes(input)).toEqual([
                     { type: OpType.text, value: "<p>"},
-                    { type: OpType.directive, directive: input.directives[0]},
+                    { type: OpType.viewBehaviorFactory, factory: firstFactory(input.factories)},
                     { type: OpType.text, value: "</p>"},
             ])
         });

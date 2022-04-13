@@ -43,18 +43,18 @@ describe("The children", () => {
         function createDOM(elementName: string = "div") {
             const host = document.createElement("div");
             const children = createAndAppendChildren(host, elementName);
-            const targetId = 'r';
-            const targets = { [targetId]: host };
+            const nodeId = 'r';
+            const targets = { [nodeId]: host };
 
-            return { host, children, targets, targetId };
+            return { host, children, targets, nodeId };
         }
 
         it("gathers child nodes", () => {
-            const { host, children, targets, targetId } = createDOM();
+            const { host, children, targets, nodeId } = createDOM();
             const behavior = new ChildrenDirective({
                 property: "nodes",
             });
-            behavior.targetId = targetId;
+            behavior.nodeId = nodeId;
             const model = new Model();
 
             behavior.bind(model, ExecutionContext.default, targets);
@@ -63,12 +63,12 @@ describe("The children", () => {
         });
 
         it("gathers child nodes with a filter", () => {
-            const { host, children, targets, targetId } = createDOM("foo-bar");
+            const { host, children, targets, nodeId } = createDOM("foo-bar");
             const behavior = new ChildrenDirective({
                 property: "nodes",
                 filter: elements("foo-bar"),
             });
-            behavior.targetId = targetId;
+            behavior.nodeId = nodeId;
             const model = new Model();
 
             behavior.bind(model, ExecutionContext.default, targets);
@@ -77,11 +77,11 @@ describe("The children", () => {
         });
 
         it("updates child nodes when they change", async () => {
-            const { host, children, targets, targetId } = createDOM("foo-bar");
+            const { host, children, targets, nodeId } = createDOM("foo-bar");
             const behavior = new ChildrenDirective({
                 property: "nodes",
             });
-            behavior.targetId = targetId;
+            behavior.nodeId = nodeId;
             const model = new Model();
 
             behavior.bind(model, ExecutionContext.default, targets);
@@ -96,12 +96,12 @@ describe("The children", () => {
         });
 
         it("updates child nodes when they change with a filter", async () => {
-            const { host, children, targets, targetId } = createDOM("foo-bar");
+            const { host, children, targets, nodeId } = createDOM("foo-bar");
             const behavior = new ChildrenDirective({
                 property: "nodes",
                 filter: elements("foo-bar"),
             });
-            behavior.targetId = targetId;
+            behavior.nodeId = nodeId;
             const model = new Model();
 
             behavior.bind(model, ExecutionContext.default, targets);
@@ -116,7 +116,7 @@ describe("The children", () => {
         });
 
         it("updates subtree nodes when they change with a selector", async () => {
-            const { host, children, targets, targetId } = createDOM("foo-bar");
+            const { host, children, targets, nodeId } = createDOM("foo-bar");
             const subtreeElement = "foo-bar-baz";
             const subtreeChildren: HTMLElement[] = [];
 
@@ -133,7 +133,7 @@ describe("The children", () => {
                 subtree: true,
                 selector: subtreeElement,
             });
-            behavior.targetId = targetId;
+            behavior.nodeId = nodeId;
 
             const model = new Model();
 
@@ -157,11 +157,11 @@ describe("The children", () => {
         });
 
         it("clears and unwatches when unbound", async () => {
-            const { host, children, targets, targetId } = createDOM("foo-bar");
+            const { host, children, targets, nodeId } = createDOM("foo-bar");
             const behavior = new ChildrenDirective({
                 property: "nodes",
             });
-            behavior.targetId = targetId;
+            behavior.nodeId = nodeId;
             const model = new Model();
 
             behavior.bind(model, ExecutionContext.default, targets);

@@ -545,7 +545,7 @@ export class Picker extends FormAssociatedPicker {
             { positioning: true }
         );
         this.itemsRepeatBehavior = itemsRepeatDirective.createBehavior({
-            [itemsRepeatDirective.targetId]: this.itemsPlaceholderElement,
+            [itemsRepeatDirective.nodeId]: this.itemsPlaceholderElement,
         });
 
         this.inputElement.addEventListener("input", this.handleTextInput);
@@ -565,7 +565,7 @@ export class Picker extends FormAssociatedPicker {
             { positioning: true }
         );
         this.optionsRepeatBehavior = optionsRepeatDirective.createBehavior({
-            [optionsRepeatDirective.targetId]: this.optionsPlaceholder,
+            [optionsRepeatDirective.nodeId]: this.optionsPlaceholder,
         });
 
         /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */

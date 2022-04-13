@@ -58,7 +58,7 @@ export abstract class NodeObservationDirective<
      * @param targets - The targets that behaviors in a view can attach to.
      */
     bind(source: any, context: ExecutionContext, targets: ViewBehaviorTargets): void {
-        const target = targets[this.targetId] as any;
+        const target = targets[this.nodeId] as any;
         target.$fastSource = source;
         this.updateTarget(source, this.computeNodes(target));
         this.observe(target);
@@ -71,7 +71,7 @@ export abstract class NodeObservationDirective<
      * @param targets - The targets that behaviors in a view can attach to.
      */
     unbind(source: any, context: ExecutionContext, targets: ViewBehaviorTargets): void {
-        const target = targets[this.targetId] as any;
+        const target = targets[this.nodeId] as any;
         this.updateTarget(source, emptyArray);
         this.disconnect(target);
         target.$fastSource = null;

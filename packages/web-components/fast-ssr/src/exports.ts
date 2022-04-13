@@ -1,5 +1,5 @@
 import { RenderInfo } from "@lit-labs/ssr";
-import { Compiler, ElementStyles, HTMLDirective } from "@microsoft/fast-element";
+import { Compiler, ElementStyles, ViewBehaviorFactory } from "@microsoft/fast-element";
 import { FASTElementRenderer } from "./element-renderer/element-renderer.js";
 import { FASTSSRStyleStrategy } from "./element-renderer/style-strategy.js";
 import {
@@ -7,7 +7,7 @@ import {
     StyleElementStyleRenderer,
     StyleRenderer,
 } from "./styles/style-renderer.js";
-import { defaultFASTDirectiveRenderers } from "./template-renderer/directives.js";
+import { defaultViewBehaviorFactoryRenderers } from "./template-renderer/directives.js";
 import {
     TemplateRenderer,
     TemplateRendererConfiguration,
@@ -16,14 +16,17 @@ import { SSRView } from "./view.js";
 
 export type Configuration = TemplateRendererConfiguration;
 Compiler.setDefaultStrategy(
-    (html: string | HTMLTemplateElement, directives: ReadonlyArray<HTMLDirective>) => {
+    (
+        html: string | HTMLTemplateElement,
+        factories: Record<string, ViewBehaviorFactory>
+    ) => {
         if (typeof html !== "string") {
             throw new Error(
                 "SSR compiler does not support HTMLTemplateElement templates"
             );
         }
 
-        return new SSRView(html, directives) as any;
+        return new SSRView(html, factories) as any;
     }
 );
 
@@ -58,7 +61,9 @@ export default function (
             : new StyleElementStyleRenderer();
     };
 
-    templateRenderer.withDirectiveRenderer(...defaultFASTDirectiveRenderers);
+    templateRenderer.withViewBehaviorFactoryRenderers(
+        ...defaultViewBehaviorFactoryRenderers
+    );
 
     return {
         templateRenderer,
