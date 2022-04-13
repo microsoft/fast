@@ -230,7 +230,7 @@ export class Controller<TElement extends HTMLElement = HTMLElement> extends Prop
 export function createTypeRegistry<TDefinition extends TypeDefinition>(): TypeRegistry<TDefinition>;
 
 // @public
-export function css(strings: TemplateStringsArray, ...values: (ComposableStyles | CSSDirective)[]): ElementStyles;
+export const css: CSSTemplateTag;
 
 // @public
 export interface CSSDirective {
@@ -252,8 +252,10 @@ export interface CSSDirectiveDefinition<TType extends Constructable<CSSDirective
     readonly type: TType;
 }
 
-// @public
-export function cssPartial(strings: TemplateStringsArray, ...values: (ComposableStyles | CSSDirective)[]): CSSDirective;
+// @public (undocumented)
+export type CSSTemplateTag = ((strings: TemplateStringsArray, ...values: (ComposableStyles | CSSDirective)[]) => ElementStyles) & {
+    partial(strings: TemplateStringsArray, ...values: (ComposableStyles | CSSDirective)[]): CSSDirective;
+};
 
 // @public
 export function customElement(nameOrDef: string | PartialFASTElementDefinition): (type: Constructable<HTMLElement>) => void;
