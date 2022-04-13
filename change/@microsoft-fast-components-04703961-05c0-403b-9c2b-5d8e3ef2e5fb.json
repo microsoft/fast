@@ -1,7 +1,0 @@
-{
-  "type": "none",
-  "comment": "update test harness and server modules",
-  "packageName": "@microsoft/fast-components",
-  "email": "john.kreitlow@microsoft.com",
-  "dependentChangeType": "none"
-}
