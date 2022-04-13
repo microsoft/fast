@@ -1,13 +1,13 @@
 import { expect } from "chai";
 import {
     AdoptedStyleSheetsStrategy,
+    ComposableStyles,
     ElementStyles,
 } from "./element-styles";
 import { DOM } from "../dom";
-import { CSSDirective } from "./css-directive";
+import { AddBehavior, cssDirective, CSSDirective } from "./css-directive";
 import { css, cssPartial } from "./css";
 import type { Behavior } from "../observation/behavior";
-import type { FASTElement } from "..";
 import { StyleElementStrategy } from "../polyfills";
 import type { StyleTarget } from "../interfaces";
 import { ExecutionContext } from "../observation/observable";
@@ -242,7 +242,8 @@ describe("css", () => {
     describe("with a CSSDirective", () => {
         describe("should interpolate the product of CSSDirective.createCSS() into the resulting ElementStyles CSS", () => {
             it("when the result is a string", () => {
-                class Directive extends CSSDirective {
+                @cssDirective()
+                class Directive implements CSSDirective {
                     createCSS() {
                         return "red";
                     }
@@ -254,7 +255,9 @@ describe("css", () => {
 
             it("when the result is an ElementStyles", () => {
                 const _styles = css`:host{color: red}`
-                class Directive extends CSSDirective {
+
+                @cssDirective()
+                class Directive implements CSSDirective {
                     createCSS() {
                         return _styles;
                     }
@@ -267,7 +270,9 @@ describe("css", () => {
             if (DOM.supportsAdoptedStyleSheets) {
                 it("when the result is a CSSStyleSheet", () => {
                     const _styles = new CSSStyleSheet();
-                    class Directive extends CSSDirective {
+
+                    @cssDirective()
+                    class Directive implements CSSDirective {
                         createCSS() {
                             return _styles;
                         }
@@ -286,9 +291,11 @@ describe("css", () => {
                 unbind(){}
             }
 
-            class Directive extends CSSDirective {
-                createBehavior() {
-                    return behavior;
+            @cssDirective()
+            class Directive implements CSSDirective {
+                createCSS(add: AddBehavior): ComposableStyles {
+                    add(behavior);
+                    return "";
                 }
             }
 
@@ -301,16 +308,18 @@ describe("css", () => {
 
 describe("cssPartial", () => {
     it("should have a createCSS method that is the CSS string interpolated with the createCSS product of any CSSDirectives", () => {
-        class myDirective extends CSSDirective {
+        const add = () => void 0;
+
+        @cssDirective()
+        class myDirective implements CSSDirective {
             createCSS() { return "red" };
-            createBehavior() { return undefined; }
         }
 
         const partial = cssPartial`color: ${new myDirective}`;
-        expect (partial.createCSS()).to.equal("color: red");
+        expect (partial.createCSS(add)).to.equal("color: red");
     });
 
-    it("Should add behaviors from interpolated CSS directives when bound to an element", () => {
+    it("Should add behaviors from interpolated CSS directives", () => {
         const behavior = {
             bind() {},
             unbind() {},
@@ -318,26 +327,30 @@ describe("cssPartial", () => {
 
         const behavior2 = {...behavior};
 
-        class directive extends CSSDirective {
-            createCSS() { return "" };
-            createBehavior() { return behavior; }
+        @cssDirective()
+        class directive implements CSSDirective {
+            createCSS(add: AddBehavior) {
+                add(behavior);
+                return ""
+            };
         }
-        class directive2 extends CSSDirective {
-            createCSS() { return "" };
-            createBehavior() { return behavior2; }
+
+        @cssDirective()
+        class directive2 implements CSSDirective {
+            createCSS(add: AddBehavior) {
+                add(behavior2);
+                return ""
+            };
         }
 
         const partial = cssPartial`${new directive}${new directive2}`;
-        const el = {
-            $fastController: {
-                addBehaviors(behaviors: Behavior<HTMLElement>[]) {
-                    expect(behaviors[0]).to.equal(behavior);
-                    expect(behaviors[1]).to.equal(behavior2);
-                }
-            }
-        } as FASTElement;
+        const behaviors: Behavior<HTMLElement>[] = [];
+        const add = (x: Behavior) => behaviors.push(x);
 
-        partial.createBehavior()?.bind(el, ExecutionContext.default)
+        partial.createCSS(add);
+
+        expect(behaviors[0]).to.equal(behavior);
+        expect(behaviors[1]).to.equal(behavior2);
     });
 
     it("should add any ElementStyles interpolated into the template function when bound to an element", () => {
@@ -351,9 +364,15 @@ describe("cssPartial", () => {
                     called = true;
                 }
             }
-        } as FASTElement;
+        };
 
-        partial.createBehavior()?.bind(el, ExecutionContext.default)
+        const behaviors: Behavior<HTMLElement>[] = [];
+        const add = (x: Behavior) => behaviors.push(x);
+        partial.createCSS(add);
+
+        expect(behaviors[0]).to.equal(partial);
+
+        (partial as any as Behavior).bind(el, ExecutionContext.default);
 
         expect(called).to.be.true;
     })

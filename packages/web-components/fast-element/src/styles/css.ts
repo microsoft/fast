@@ -1,7 +1,7 @@
 import type { FASTElement } from "../components/fast-element.js";
 import { isString } from "../interfaces.js";
 import type { Behavior } from "../observation/behavior.js";
-import { CSSDirective } from "./css-directive.js";
+import { AddBehavior, CSSDirective } from "./css-directive.js";
 import { ComposableStyles, ElementStyles } from "./element-styles.js";
 
 function collectStyles(
@@ -11,18 +11,16 @@ function collectStyles(
     const styles: ComposableStyles[] = [];
     let cssString = "";
     const behaviors: Behavior<HTMLElement>[] = [];
+    const add = (behavior: Behavior<HTMLElement>): void => {
+        behaviors.push(behavior);
+    };
 
     for (let i = 0, ii = strings.length - 1; i < ii; ++i) {
         cssString += strings[i];
         let value = values[i];
 
-        if (value instanceof CSSDirective) {
-            const behavior = value.createBehavior();
-            value = value.createCSS();
-
-            if (behavior) {
-                behaviors.push(behavior);
-            }
+        if (CSSDirective.getForInstance(value) !== void 0) {
+            value = (value as CSSDirective).createCSS(add);
         }
 
         if (value instanceof ElementStyles || value instanceof CSSStyleSheet) {
@@ -66,12 +64,11 @@ export function css(
     return behaviors.length ? elementStyles.withBehaviors(...behaviors) : elementStyles;
 }
 
-class CSSPartial extends CSSDirective implements Behavior<HTMLElement> {
+class CSSPartial implements CSSDirective, Behavior<HTMLElement> {
     private css: string = "";
     private styles?: ElementStyles;
-    constructor(styles: ComposableStyles[], private behaviors: Behavior<HTMLElement>[]) {
-        super();
 
+    constructor(styles: ComposableStyles[], private behaviors: Behavior<HTMLElement>[]) {
         const stylesheets: ReadonlyArray<Exclude<
             ComposableStyles,
             string
@@ -85,6 +82,7 @@ class CSSPartial extends CSSDirective implements Behavior<HTMLElement> {
                 } else {
                     accumulated.push(current);
                 }
+
                 return accumulated;
             },
             []
@@ -95,34 +93,26 @@ class CSSPartial extends CSSDirective implements Behavior<HTMLElement> {
         }
     }
 
-    createBehavior(): Behavior<HTMLElement> {
-        return this;
-    }
+    createCSS(add: AddBehavior): string {
+        this.behaviors.forEach(add);
 
-    createCSS(): string {
+        if (this.styles) {
+            add(this);
+        }
+
         return this.css;
     }
 
     bind(el: FASTElement): void {
-        if (this.styles) {
-            el.$fastController.addStyles(this.styles);
-        }
-
-        if (this.behaviors.length) {
-            el.$fastController.addBehaviors(this.behaviors);
-        }
+        el.$fastController.addStyles(this.styles);
     }
 
     unbind(el: FASTElement): void {
-        if (this.styles) {
-            el.$fastController.removeStyles(this.styles);
-        }
-
-        if (this.behaviors.length) {
-            el.$fastController.removeBehaviors(this.behaviors);
-        }
+        el.$fastController.removeStyles(this.styles);
     }
 }
+
+CSSDirective.define(CSSPartial);
 
 /**
  * Transforms a template literal string into partial CSS.

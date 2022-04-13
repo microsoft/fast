@@ -12,6 +12,9 @@ export interface Accessor {
 }
 
 // @public
+export type AddBehavior = (behavior: Behavior<HTMLElement>) => void;
+
+// @public
 export type AddViewBehaviorFactory = (factory: ViewBehaviorFactory) => string;
 
 // Warning: (ae-internal-missing-underscore) The name "AdoptedStyleSheetsStrategy" should be prefixed with an underscore because the declaration is marked as @internal
@@ -230,9 +233,23 @@ export function createTypeRegistry<TDefinition extends TypeDefinition>(): TypeRe
 export function css(strings: TemplateStringsArray, ...values: (ComposableStyles | CSSDirective)[]): ElementStyles;
 
 // @public
-export class CSSDirective {
-    createBehavior(): Behavior<HTMLElement> | undefined;
-    createCSS(): ComposableStyles;
+export interface CSSDirective {
+    createCSS(add: AddBehavior): ComposableStyles;
+}
+
+// @public
+export const CSSDirective: Readonly<{
+    getForInstance: (object: any) => CSSDirectiveDefinition<Constructable<CSSDirective>> | undefined;
+    getByType: (key: Function) => CSSDirectiveDefinition<Constructable<CSSDirective>> | undefined;
+    define<TType extends Constructable<CSSDirective>>(type: any): TType;
+}>;
+
+// @public
+export function cssDirective(): (type: Constructable<CSSDirective>) => void;
+
+// @public
+export interface CSSDirectiveDefinition<TType extends Constructable<CSSDirective> = Constructable<CSSDirective>> {
+    readonly type: TType;
 }
 
 // @public
