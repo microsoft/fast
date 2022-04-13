@@ -1,3 +1,4 @@
+/* eslint-env node */
 import { chromium, firefox, webkit } from "playwright";
 
 const selectedBrowser = process.env.PLAYWRIGHT_BROWSER || "chromium";
