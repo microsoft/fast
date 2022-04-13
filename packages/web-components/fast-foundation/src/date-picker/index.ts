@@ -1,2 +1,2 @@
-export * from "./date-picker";
-export * from "./date-picker.template";
+export * from "./date-picker.js";
+export * from "./date-picker.template.js";

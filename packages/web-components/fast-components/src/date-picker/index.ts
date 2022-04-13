@@ -3,7 +3,7 @@ import {
     DatePickerOptions,
     datePickerTemplate as template,
 } from "@microsoft/fast-foundation";
-import { DatePickerStyles as styles } from "./date-picker.styles";
+import { DatePickerStyles as styles } from "./date-picker.styles.js";
 
 /**
  * The FAST Date-picker Element.
@@ -22,13 +22,7 @@ export const fastDatePicker = DatePicker.compose({
 } as DatePickerOptions);
 
 /**
- * Base class for fastDatePicker
+ * Exporting component elements
  * @alpha
  */
-export { DatePicker };
-
-/**
- * Date picker styles
- * @public
- */
-export { styles as DatePickerStyles };
+export { DatePicker, styles as DatePickerStyles, DatePickerOptions };

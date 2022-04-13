@@ -673,8 +673,10 @@ export const dataGridStyles: FoundationElementTemplate<ElementStyles>;
 
 export { DatePicker }
 
+export { DatePickerOptions }
+
 // @public
-export const DatePickerStyles: (context: ElementDefinitionContext, definition: FoundationElementDefinition) => ElementStyles;
+export const DatePickerStyles: FoundationElementTemplate<ElementStyles, DatePickerOptions>;
 
 // @public (undocumented)
 export const density: import("@microsoft/fast-foundation").CSSDesignToken<number>;
