@@ -6,7 +6,7 @@ import {
 } from "./element-styles";
 import { DOM } from "../dom";
 import { AddBehavior, cssDirective, CSSDirective } from "./css-directive";
-import { css, cssPartial } from "./css";
+import { css } from "./css";
 import type { Behavior } from "../observation/behavior";
 import { StyleElementStrategy } from "../polyfills";
 import type { StyleTarget } from "../interfaces";
@@ -315,7 +315,7 @@ describe("cssPartial", () => {
             createCSS() { return "red" };
         }
 
-        const partial = cssPartial`color: ${new myDirective}`;
+        const partial = css.partial`color: ${new myDirective}`;
         expect (partial.createCSS(add)).to.equal("color: red");
     });
 
@@ -343,7 +343,7 @@ describe("cssPartial", () => {
             };
         }
 
-        const partial = cssPartial`${new directive}${new directive2}`;
+        const partial = css.partial`${new directive}${new directive2}`;
         const behaviors: Behavior<HTMLElement>[] = [];
         const add = (x: Behavior) => behaviors.push(x);
 
@@ -355,7 +355,7 @@ describe("cssPartial", () => {
 
     it("should add any ElementStyles interpolated into the template function when bound to an element", () => {
         const styles = css`:host {color: blue; }`;
-        const partial = cssPartial`${styles}`;
+        const partial = css.partial`${styles}`;
         let called = false;
         const el = {
             $fastController: {

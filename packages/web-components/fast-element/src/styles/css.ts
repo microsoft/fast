@@ -47,6 +47,22 @@ function collectStyles(
     };
 }
 
+export type CSSTemplateTag = ((
+    strings: TemplateStringsArray,
+    ...values: (ComposableStyles | CSSDirective)[]
+) => ElementStyles) & {
+    /**
+     * Transforms a template literal string into partial CSS.
+     * @param strings - The string fragments that are interpolated with the values.
+     * @param values - The values that are interpolated with the string fragments.
+     * @public
+     */
+    partial(
+        strings: TemplateStringsArray,
+        ...values: (ComposableStyles | CSSDirective)[]
+    ): CSSDirective;
+};
+
 /**
  * Transforms a template literal string into styles.
  * @param strings - The string fragments that are interpolated with the values.
@@ -55,14 +71,14 @@ function collectStyles(
  * The css helper supports interpolation of strings and ElementStyle instances.
  * @public
  */
-export function css(
+export const css: CSSTemplateTag = ((
     strings: TemplateStringsArray,
     ...values: (ComposableStyles | CSSDirective)[]
-): ElementStyles {
+): ElementStyles => {
     const { styles, behaviors } = collectStyles(strings, values);
     const elementStyles = new ElementStyles(styles);
     return behaviors.length ? elementStyles.withBehaviors(...behaviors) : elementStyles;
-}
+}) as any;
 
 class CSSPartial implements CSSDirective, Behavior<HTMLElement> {
     private css: string = "";
@@ -114,16 +130,10 @@ class CSSPartial implements CSSDirective, Behavior<HTMLElement> {
 
 CSSDirective.define(CSSPartial);
 
-/**
- * Transforms a template literal string into partial CSS.
- * @param strings - The string fragments that are interpolated with the values.
- * @param values - The values that are interpolated with the string fragments.
- * @public
- */
-export function cssPartial(
+css.partial = (
     strings: TemplateStringsArray,
     ...values: (ComposableStyles | CSSDirective)[]
-): CSSDirective {
+): CSSDirective => {
     const { styles, behaviors } = collectStyles(strings, values);
     return new CSSPartial(styles, behaviors);
-}
+};
