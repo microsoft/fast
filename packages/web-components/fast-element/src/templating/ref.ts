@@ -1,5 +1,6 @@
 import type { ExecutionContext } from "../observation/observable.js";
 import {
+    HTMLDirective,
     StatelessAttachedAttributeDirective,
     ViewBehaviorTargets,
 } from "./html-directive.js";
@@ -21,7 +22,7 @@ export class RefDirective extends StatelessAttachedAttributeDirective<string> {
         context: ExecutionContext,
         targets: ViewBehaviorTargets
     ): void {
-        source[this.options] = targets[this.targetId];
+        source[this.options] = targets[this.nodeId];
     }
 
     /**
@@ -31,6 +32,8 @@ export class RefDirective extends StatelessAttachedAttributeDirective<string> {
     /* eslint-disable-next-line @typescript-eslint/no-empty-function */
     public unbind(): void {}
 }
+
+HTMLDirective.define(RefDirective);
 
 /**
  * A directive that observes the updates a property with a reference to the element.

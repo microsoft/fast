@@ -1,4 +1,5 @@
 import { isString } from "../interfaces.js";
+import { HTMLDirective } from "./html-directive.js";
 import { NodeBehaviorOptions, NodeObservationDirective } from "./node-observation.js";
 import type { CaptureType } from "./template.js";
 
@@ -59,8 +60,7 @@ export class ChildrenDirective extends NodeObservationDirective<
      */
     observe(target: any): void {
         const observer =
-            target[this.uniqueId] ??
-            (target[this.uniqueId] = new MutationObserver(this.handleEvent));
+            target[this.id] ?? (target[this.id] = new MutationObserver(this.handleEvent));
         observer.$fastTarget = target;
         observer.observe(target, this.options);
     }
@@ -70,7 +70,7 @@ export class ChildrenDirective extends NodeObservationDirective<
      * @param target - The target to unobserve.
      */
     disconnect(target: any): void {
-        const observer = target[this.uniqueId];
+        const observer = target[this.id];
         observer.$fastTarget = null;
         observer.disconnect();
     }
@@ -93,6 +93,8 @@ export class ChildrenDirective extends NodeObservationDirective<
         this.updateTarget(source, this.computeNodes(target));
     };
 }
+
+HTMLDirective.define(ChildrenDirective);
 
 /**
  * A directive that observes the `childNodes` of an element and updates a property

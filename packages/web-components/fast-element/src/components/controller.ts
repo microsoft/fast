@@ -482,7 +482,7 @@ export class Controller<
             return controller;
         }
 
-        const definition = FASTElementDefinition.forType(element.constructor);
+        const definition = FASTElementDefinition.getForInstance(element);
 
         if (definition === void 0) {
             throw FAST.error(Message.missingElementDefinition);

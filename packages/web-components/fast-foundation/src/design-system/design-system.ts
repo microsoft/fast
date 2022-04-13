@@ -184,7 +184,7 @@ export const DesignSystem = Object.freeze({
 
 function extractTryDefineElementParams(
     params: string | ElementDefinitionParams,
-    elementDefinitionType?: Constructable,
+    elementDefinitionType?: Constructable<HTMLElement>,
     elementDefinitionCallback?: ElementDefinitionCallback
 ): ElementDefinitionParams {
     if (typeof params === "string") {
@@ -243,7 +243,7 @@ class DefaultDesignSystem implements DesignSystem {
             elementPrefix: this.prefix,
             tryDefineElement(
                 params: string | ElementDefinitionParams,
-                elementDefinitionType?: Constructable,
+                elementDefinitionType?: Constructable<HTMLElement>,
                 elementDefinitionCallback?: ElementDefinitionCallback
             ) {
                 const extractedParams = extractTryDefineElementParams(
@@ -327,7 +327,7 @@ class ElementDefinitionEntry implements ElementDefinitionContext {
     constructor(
         public readonly container: Container,
         public readonly name: string,
-        public readonly type: Constructable,
+        public readonly type: Constructable<HTMLElement>,
         public shadowRootMode: ShadowRootMode | undefined,
         public readonly callback: ElementDefinitionCallback,
         public readonly willDefine: boolean

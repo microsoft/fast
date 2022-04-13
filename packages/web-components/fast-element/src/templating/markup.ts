@@ -1,4 +1,4 @@
-import type { HTMLDirective } from "./html-directive.js";
+import type { ViewBehaviorFactory } from "./html-directive.js";
 
 const marker = `fast-${Math.random().toString(36).substring(2, 8)}`;
 const interpolationStart = `${marker}{`;
@@ -22,7 +22,7 @@ export const Markup = Object.freeze({
      * @remarks
      * Used internally by binding directives.
      */
-    interpolation: (index: number) => `${interpolationStart}${index}${interpolationEnd}`,
+    interpolation: (id: string) => `${interpolationStart}${id}${interpolationEnd}`,
 
     /**
      * Creates a placeholder that manifests itself as an attribute on an
@@ -32,8 +32,8 @@ export const Markup = Object.freeze({
      * @remarks
      * Used internally by attribute directives such as `ref`, `slotted`, and `children`.
      */
-    attribute: (index: number) =>
-        `${nextId()}="${interpolationStart}${index}${interpolationEnd}"`,
+    attribute: (id: string) =>
+        `${nextId()}="${interpolationStart}${id}${interpolationEnd}"`,
 
     /**
      * Creates a placeholder that manifests itself as a marker within the DOM structure.
@@ -41,7 +41,7 @@ export const Markup = Object.freeze({
      * @remarks
      * Used internally by structural directives such as `repeat`.
      */
-    comment: (index: number) => `<!--${interpolationStart}${index}${interpolationEnd}-->`,
+    comment: (id: string) => `<!--${interpolationStart}${id}${interpolationEnd}-->`,
 });
 
 /**
@@ -53,32 +53,32 @@ export const Parser = Object.freeze({
      * Parses text content or HTML attribute content, separating out the static strings
      * from the directives.
      * @param value - The content or attribute string to parse.
-     * @param directives - A list of directives to search for in the string.
+     * @param factories - A list of directives to search for in the string.
      * @returns A heterogeneous array of static strings interspersed with
      * directives or null if no directives are found in the string.
      */
     parse(
         value: string,
-        directives: readonly HTMLDirective[]
-    ): (string | HTMLDirective)[] | null {
+        factories: Record<string, ViewBehaviorFactory>
+    ): (string | ViewBehaviorFactory)[] | null {
         const parts = value.split(interpolationStart);
 
         if (parts.length === 1) {
             return null;
         }
 
-        const result: (string | HTMLDirective)[] = [];
+        const result: (string | ViewBehaviorFactory)[] = [];
 
         for (let i = 0, ii = parts.length; i < ii; ++i) {
             const current = parts[i];
             const index = current.indexOf(interpolationEnd);
-            let literal: string | HTMLDirective;
+            let literal: string | ViewBehaviorFactory;
 
             if (index === -1) {
                 literal = current;
             } else {
-                const directiveIndex = parseInt(current.substring(0, index));
-                result.push(directives[directiveIndex]);
+                const factoryId = current.substring(0, index);
+                result.push(factories[factoryId]);
                 literal = current.substring(index + interpolationEndLength);
             }
 
