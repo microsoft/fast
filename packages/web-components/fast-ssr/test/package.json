@@ -1,5 +1,0 @@
-{
-	"type": "commonjs",
-	"comment": "This allows Playwright to handle TS compilation for us",
-	"private": true
-}
