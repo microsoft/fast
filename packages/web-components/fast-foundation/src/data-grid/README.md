@@ -230,7 +230,7 @@ export const myDataGrid = DataGrid.compose({
 | `selectionMode`          | public  | `DataGridSelectionMode`                                    | `"none"` | Defines how the grid handles row or cell selection.                                                                                                                                                                                                     |                   |
 | `clickSelect`            | public  | `boolean`                                                  | `true`   | Determines if clicks can automatically select                                                                                                                                                                                                           |                   |
 | `selectableHeaderRow`    | public  | `boolean`                                                  | `false`  | Determines if the header row is selectable                                                                                                                                                                                                              |                   |
-| `initialSelection`       | public  | `string`                                                   |          | The initially selected grid elements. In the case of row selection the format should be a comma delimited list of row indexes. ie. "1,3,5"                                                                                                              |                   |
+| `initialRowSelection`    | public  | `string`                                                   |          | The initially selected grid elements. In the case of row selection the format should be a comma delimited list of row indexes. ie. "1,3,5"                                                                                                              |                   |
 | `rowsData`               | public  | `object[]`                                                 | `[]`     | The data being displayed in the grid                                                                                                                                                                                                                    |                   |
 | `columnDefinitions`      | public  | `ColumnDefinition[] or null`                               | `null`   | The column definitions of the grid                                                                                                                                                                                                                      |                   |
 | `rowItemTemplate`        | public  | `ViewTemplate`                                             |          | The template to use for the programmatic generation of rows                                                                                                                                                                                             |                   |
@@ -263,7 +263,7 @@ export const myDataGrid = DataGrid.compose({
 | `selection-mode`        | selectionMode       |                |
 | `click-select`          | clickSelect         |                |
 | `select-row-header`     | selectableHeaderRow |                |
-| `initial-selection`     | initialSelection    |                |
+| `initial-row-selection` | initialRowSelection |                |
 
 #### Slots
 

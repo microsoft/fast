@@ -60,10 +60,10 @@
       "mapsToAttribute": "select-row-header",
       "type": "boolean"
     },
-    "initial-selection": {
-      "title": "Initial selection",
-      "description": "The initially selected grid elements. In the case of row selection the format should be a comma delimited list of row indexes. ie. '1,3,5'",
-      "mapsToAttribute": "initial-selection",
+    "initial-row-selection": {
+      "title": "Initial row selection",
+      "description": "The initially selected rows, the format should be a comma delimited list of row indexes. ie. '1,3,5'",
+      "mapsToAttribute": "initial-row-selection",
       "type": "boolean"
     },
     "Slot": {

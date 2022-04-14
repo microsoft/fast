@@ -231,8 +231,8 @@ Whether the grid selects items based on click events or not.  Authors may wish t
 - `select-row-header`
 Sets whether the header row is selectable when row selection is enabled.  Default is false.
 
-- `initial-selection`
- The initially selected grid elements. In the case of row selection the format should be a comma delimited list of row indexes. ie. "1,3,5"
+- `initial-row-selection`
+ The initially selected row elements. The format should be a comma delimited list of row indexes. ie. "1,3,5"
 
 - `no-tabbing`
 Boolean, defaults to false.  When true the grid does not add itself to the tab queue.

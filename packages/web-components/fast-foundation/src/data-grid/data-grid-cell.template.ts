@@ -15,7 +15,7 @@ export function dataGridCellTemplate<T extends FASTDataGridCell>(): ElementViewT
             tabindex="-1"
             role="${x => DataGridCellRole[x.cellType] ?? DataGridCellRole.default}"
             aria-selected="${x => x.selected}"
-            :classList=""
+            :classList="
             ${x =>
                 x.cellType === "columnheader"
                     ? "column-header"
