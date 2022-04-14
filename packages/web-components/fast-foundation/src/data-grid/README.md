@@ -168,19 +168,12 @@ export const myDataGrid = DataGrid.compose({
 
 #### Methods
 
-| Name                         | Privacy   | Description | Parameters         | Return | Inherited From |
-| ---------------------------- | --------- | ----------- | ------------------ | ------ | -------------- |
-| `gridTemplateColumnsChanged` | protected |             |                    | `void` |                |
-| `rowDataChanged`             | protected |             |                    | `void` |                |
-| `handleFocusout`             | public    |             | `e: FocusEvent`    | `void` |                |
-| `handleCellFocus`            | public    |             | `e: Event`         | `void` |                |
-| `handleKeydown`              | public    |             | `e: KeyboardEvent` | `void` |                |
-
-#### Events
-
-| Name          | Type | Description                                                                                                | Inherited From |
-| ------------- | ---- | ---------------------------------------------------------------------------------------------------------- | -------------- |
-| `row-focused` |      | Fires a custom 'row-focused' event when focus is on an element (usually a cell or its contents) in the row |                |
+| Name              | Privacy   | Description                                   | Parameters                                  | Return | Inherited From    |
+| ----------------- | --------- | --------------------------------------------- | ------------------------------------------- | ------ | ----------------- |
+| `toggleSelected`  | public    | Attempts to set the selected state of the row | `detail: DataGridRowSelectionChangedDetail` | `void` |                   |
+| `handleKeydown`   | public    |                                               | `e: KeyboardEvent`                          | `void` |                   |
+| `templateChanged` | protected |                                               |                                             | `void` | FoundationElement |
+| `stylesChanged`   | protected |                                               |                                             | `void` | FoundationElement |
 
 #### Attributes
 
@@ -217,9 +210,9 @@ export const myDataGrid = DataGrid.compose({
 
 #### Superclass
 
-| Name          | Module | Package                 |
-| ------------- | ------ | ----------------------- |
-| `FASTElement` |        | @microsoft/fast-element |
+| Name                | Module                  | Package |
+| ------------------- | ----------------------- | ------- |
+| `FoundationElement` | /src/foundation-element |         |
 
 #### Static Fields
 
@@ -229,29 +222,36 @@ export const myDataGrid = DataGrid.compose({
 
 #### Fields
 
-| Name                     | Privacy | Type                         | Default | Description                                                                                                                                                                                                                                                                                     | Inherited From |
-| ------------------------ | ------- | ---------------------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------- |
-| `noTabbing`              | public  | `boolean`                    | `false` | When true the component will not add itself to the tab queue. Default is false.                                                                                                                                                                                                                 |                |
-| `generateHeader`         | public  | `GenerateHeaderOptions`      |         | Whether the grid should automatically generate a header row and its type                                                                                                                                                                                                                        |                |
-| `gridTemplateColumns`    | public  | `string`                     |         | String that gets applied to the the css gridTemplateColumns attribute of child rows                                                                                                                                                                                                             |                |
-| `pageSize`               | public  | `number or undefined`        |         | The number of rows to move selection on page up/down keystrokes. When undefined the grid will use viewport height/the height of the first non-header row. If the grid itself is a scrolling container it will be considered the viewport for this purpose, otherwise the document will be used. |                |
-| `rowsData`               | public  | `object[]`                   | `[]`    | The data being displayed in the grid                                                                                                                                                                                                                                                            |                |
-| `columnDefinitions`      | public  | `ColumnDefinition[] or null` | `null`  | The column definitions of the grid                                                                                                                                                                                                                                                              |                |
-| `rowItemTemplate`        | public  | `ViewTemplate`               |         | The template to use for the programmatic generation of rows                                                                                                                                                                                                                                     |                |
-| `cellItemTemplate`       | public  | `ViewTemplate or undefined`  |         | The template used to render cells in generated rows.                                                                                                                                                                                                                                            |                |
-| `headerCellItemTemplate` | public  | `ViewTemplate or undefined`  |         | The template used to render header cells in generated rows.                                                                                                                                                                                                                                     |                |
-| `focusRowIndex`          | public  | `number`                     | `0`     | The index of the row that will receive focus the next time the grid is focused. This value changes as focus moves to different rows within the grid.  Changing this value when focus is already within the grid moves focus to the specified row.                                               |                |
-| `focusColumnIndex`       | public  | `number`                     | `0`     | The index of the column that will receive focus the next time the grid is focused. This value changes as focus moves to different rows within the grid.  Changing this value when focus is already within the grid moves focus to the specified column.                                         |                |
-| `rowElementTag`          | public  | `string`                     |         | Set by the component templates.                                                                                                                                                                                                                                                                 |                |
+| Name                     | Privacy | Type                                                       | Default  | Description                                                                                                                                                                                                                                             | Inherited From    |
+| ------------------------ | ------- | ---------------------------------------------------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
+| `noTabbing`              | public  | `boolean`                                                  | `false`  | When true the component will not add itself to the tab queue. Default is false.                                                                                                                                                                         |                   |
+| `generateHeader`         | public  | `GenerateHeaderOptions or "none" or "default" or "sticky"` |          | Whether the grid should automatically generate a header row and its type                                                                                                                                                                                |                   |
+| `gridTemplateColumns`    | public  | `string`                                                   |          | String that gets applied to the the css gridTemplateColumns attribute of child rows                                                                                                                                                                     |                   |
+| `selectionMode`          | public  | `DataGridSelectionMode`                                    | `"none"` | Defines how the grid handles row or cell selection.                                                                                                                                                                                                     |                   |
+| `clickSelect`            | public  | `boolean`                                                  | `true`   | Determines if clicks can automatically select                                                                                                                                                                                                           |                   |
+| `selectableHeaderRow`    | public  | `boolean`                                                  | `false`  | Determines if the header row is selectable                                                                                                                                                                                                              |                   |
+| `initialSelection`       | public  | `string`                                                   |          | The initially selected grid elements. In the case of row selection the format should be a comma delimited list of row indexes. ie. "1,3,5"                                                                                                              |                   |
+| `rowsData`               | public  | `object[]`                                                 | `[]`     | The data being displayed in the grid                                                                                                                                                                                                                    |                   |
+| `columnDefinitions`      | public  | `ColumnDefinition[] or null`                               | `null`   | The column definitions of the grid                                                                                                                                                                                                                      |                   |
+| `rowItemTemplate`        | public  | `ViewTemplate`                                             |          | The template to use for the programmatic generation of rows                                                                                                                                                                                             |                   |
+| `cellItemTemplate`       | public  | `ViewTemplate or undefined`                                |          | The template used to render cells in generated rows.                                                                                                                                                                                                    |                   |
+| `headerCellItemTemplate` | public  | `ViewTemplate or undefined`                                |          | The template used to render header cells in generated rows.                                                                                                                                                                                             |                   |
+| `focusRowIndex`          | public  | `number`                                                   | `0`      | The index of the row that will receive focus the next time the grid is focused. This value changes as focus moves to different rows within the grid.  Changing this value when focus is already within the grid moves focus to the specified row.       |                   |
+| `focusColumnIndex`       | public  | `number`                                                   | `0`      | The index of the column that will receive focus the next time the grid is focused. This value changes as focus moves to different rows within the grid.  Changing this value when focus is already within the grid moves focus to the specified column. |                   |
+| `rowElementTag`          | public  | `string`                                                   |          | Set by the component templates.                                                                                                                                                                                                                         |                   |
+| `rowElements`            | public  | `HTMLElement[]`                                            |          | Children that are rows                                                                                                                                                                                                                                  |                   |
+| `selectedRowIndexes`     | public  |                                                            |          | The selectedRowIndexes property.                                                                                                                                                                                                                        |                   |
+| `$presentation`          | public  | `ComponentPresentation or null`                            |          | A property which resolves the ComponentPresentation instance for the current component.                                                                                                                                                                 | FoundationElement |
+| `template`               | public  | `ElementViewTemplate or void or null`                      |          | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.                                                                              | FoundationElement |
+| `styles`                 | public  | `ElementStyles or void or null`                            |          | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition.                                                                     | FoundationElement |
 
 #### Methods
 
-| Name                         | Privacy   | Description | Parameters | Return | Inherited From |
-| ---------------------------- | --------- | ----------- | ---------- | ------ | -------------- |
-| `noTabbingChanged`           | protected |             |            | `void` |                |
-| `gridTemplateColumnsChanged` | protected |             |            | `void` |                |
-| `rowsDataChanged`            | protected |             |            | `void` |                |
-| `columnDefinitionsChanged`   | protected |             |            | `void` |                |
+| Name                      | Privacy   | Description | Parameters       | Return | Inherited From    |
+| ------------------------- | --------- | ----------- | ---------------- | ------ | ----------------- |
+| `handleRowSelectedChange` | public    |             | `e: CustomEvent` | `void` |                   |
+| `templateChanged`         | protected |             |                  | `void` | FoundationElement |
+| `stylesChanged`           | protected |             |                  | `void` | FoundationElement |
 
 #### Attributes
 
@@ -260,7 +260,10 @@ export const myDataGrid = DataGrid.compose({
 | `no-tabbing`            | noTabbing           |                |
 | `generate-header`       | generateHeader      |                |
 | `grid-template-columns` | gridTemplateColumns |                |
-| `page-size`             | pageSize            |                |
+| `selection-mode`        | selectionMode       |                |
+| `click-select`          | clickSelect         |                |
+| `select-row-header`     | selectableHeaderRow |                |
+| `initial-selection`     | initialSelection    |                |
 
 #### Slots
 
