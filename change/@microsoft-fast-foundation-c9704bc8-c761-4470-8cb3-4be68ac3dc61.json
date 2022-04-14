@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "ensure skeleton object element is not included in the accessibility tree",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "chhol@microsoft.com",
+  "dependentChangeType": "patch"
+}
