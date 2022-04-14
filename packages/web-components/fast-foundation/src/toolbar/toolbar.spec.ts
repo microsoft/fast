@@ -1,5 +1,4 @@
 import { DOM } from "@microsoft/fast-element";
-import { customElement } from "@microsoft/fast-element";
 import { keyArrowRight, Orientation } from "@microsoft/fast-web-utilities";
 import { expect } from "chai";
 import { fixture } from "../test-utilities/fixture";
@@ -36,7 +35,7 @@ async function setup() {
   element.appendChild(control2);
   element.appendChild(control3);
 
-  return { element, connect, disconnect, document, parent };
+  return { element, connect, disconnect, document, startButton, control1, control2, control3, parent };
 }
 
 async function setupEmpty() {
@@ -45,6 +44,13 @@ async function setupEmpty() {
   );
 
   return { element, connect, disconnect, document, parent };
+}
+
+function pressRightArrowKey(element: HTMLElement) {
+  const event = new KeyboardEvent("keydown", {
+      key: keyArrowRight,
+  } as KeyboardEventInit);
+  element.dispatchEvent(event);
 }
 
 describe("Toolbar", () => {
@@ -69,32 +75,100 @@ describe("Toolbar", () => {
   });
 
   it("should move focus to its first focusable element when it receives focus", async () => {
-    const { element, connect, disconnect, document } = await setup();
+    const { element, connect, disconnect, document, startButton } = await setup();
 
     await connect();
 
     element.focus();
 
-    expect(document.activeElement?.textContent).to.equal("startButton");
+    expect(document.activeElement).to.equal(startButton);
 
     await disconnect();
   });
 
   it("should move focus to next element when keyboard incrementer is pressed", async () => {
-    const { element, connect, disconnect, document } = await setup();
+    const { element, connect, disconnect, document, startButton, control1 } = await setup();
 
     await connect();
 
     element.focus();
 
-    expect(document.activeElement?.textContent).to.equal("startButton");
+    expect(document.activeElement).to.equal(startButton);
 
-    const event = new KeyboardEvent("keydown", {
-        key: keyArrowRight,
-    } as KeyboardEventInit);
-    element.dispatchEvent(event);
+    pressRightArrowKey(element);
 
-    expect(document.activeElement?.textContent).to.equal("control1");
+    expect(document.activeElement).to.equal(control1);
+
+    await disconnect();
+  });
+
+  it("should skip disabled elements when keyboard incrementer is pressed", async () => {
+    const { element, connect, disconnect, document, startButton, control1, control2 } = await setup();
+    control1.disabled = true;
+    await connect();
+
+    element.focus();
+
+    expect(document.activeElement).to.equal(startButton);
+
+    pressRightArrowKey(element);
+
+    expect(document.activeElement).to.equal(control2);
+
+    await disconnect();
+  });
+
+  it("should skip elements that change to disabled after connect when keyboard incrementer is pressed", async () => {
+    const { element, connect, disconnect, document, startButton, control1, control2 } = await setup();
+
+    await connect();
+
+    control1.disabled = true;
+    await DOM.nextUpdate();
+
+    element.focus();
+
+    expect(document.activeElement).to.equal(startButton);
+
+    pressRightArrowKey(element);
+
+    expect(document.activeElement).to.equal(control2);
+
+    await disconnect();
+  });
+
+  it("should skip hidden elements when keyboard incrementer is pressed", async () => {
+    const { element, connect, disconnect, document, startButton, control1, control2 } = await setup();
+    control1.hidden = true;
+
+    await connect();
+
+    element.focus();
+
+    expect(document.activeElement).to.equal(startButton);
+
+    pressRightArrowKey(element);
+
+    expect(document.activeElement).to.equal(control2);
+
+    await disconnect();
+  });
+
+  it("should skip elements that change to hidden after connect when keyboard incrementer is pressed", async () => {
+    const { element, connect, disconnect, document, startButton, control1, control2 } = await setup();
+
+    await connect();
+
+    control1.hidden = true;
+    await DOM.nextUpdate();
+
+    element.focus();
+
+    expect(document.activeElement).to.equal(startButton);
+
+    pressRightArrowKey(element);
+
+    expect(document.activeElement).to.equal(control2);
 
     await disconnect();
   });
@@ -121,10 +195,7 @@ describe("Toolbar", () => {
 
     expect(document.activeElement).to.equal(startButton1);
 
-    const event = new KeyboardEvent("keydown", {
-        key: keyArrowRight,
-    } as KeyboardEventInit);
-    element.dispatchEvent(event);
+    pressRightArrowKey(element);
 
     expect(document.activeElement).to.equal(startButton2);
 
@@ -153,12 +224,57 @@ describe("Toolbar", () => {
 
     expect(document.activeElement).to.equal(endButton1);
 
-    const event = new KeyboardEvent("keydown", {
-        key: keyArrowRight,
-    } as KeyboardEventInit);
-    element.dispatchEvent(event);
+    pressRightArrowKey(element);
 
     expect(document.activeElement).to.equal(endButton2);
+
+    await disconnect();
+  });
+
+  it("should maintain correct activeIndex when the set of focusable children changes", async () => {
+    const { element, connect, disconnect, document, startButton, control1, control2, control3 } = await setup();
+    startButton.disabled = true;
+
+    await connect();
+
+    element.focus();
+
+    expect(document.activeElement).to.equal(control1);
+
+    pressRightArrowKey(element);
+
+    expect(document.activeElement).to.equal(control2);
+
+    startButton.disabled = false;
+    await DOM.nextUpdate();
+
+    pressRightArrowKey(element);
+
+    expect(document.activeElement).to.equal(control3);
+
+    await disconnect();
+  });
+
+  it("should reset activeIndex to 0 when the focused item is no longer focusable", async () => {
+    const { element, connect, disconnect, document, startButton, control1, control2, control3 } = await setup();
+
+    await connect();
+
+    element.focus();
+
+    expect(document.activeElement).to.equal(startButton);
+
+    pressRightArrowKey(element);
+
+    expect(document.activeElement).to.equal(control1);
+
+    control1.disabled = true;
+    await DOM.nextUpdate();
+
+    // re-focus the element because focus is lost when control1 became disabled
+    element.focus();
+
+    expect(document.activeElement).to.equal(startButton);
 
     await disconnect();
   });
