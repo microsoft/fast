@@ -20,9 +20,8 @@ import {
     keyPageDown,
     keyPageUp,
 } from "@microsoft/fast-web-utilities";
-
 import type { FASTDataGridCell } from "./data-grid-cell.js";
-import type { FASTDataGridRow } from "./data-grid-row.js";
+import type { FASTDataGridRow, DataGridRowSelectionChangedDetail } from "./data-grid-row.js";
 import { DataGridRowTypes, GenerateHeaderOptions } from "./data-grid.options.js";
 export { DataGridRowTypes, GenerateHeaderOptions };
 
