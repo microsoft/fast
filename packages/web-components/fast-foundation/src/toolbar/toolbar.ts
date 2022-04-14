@@ -107,9 +107,7 @@ export class Toolbar extends FoundationElement {
     @observable
     public slottedItems: HTMLElement[];
     protected slottedItemsChanged(): void {
-        if (this.$fastController.isConnected) {
-            this.reduceFocusableElements();
-        }
+        this.childElementsChange();
     }
 
     /**
@@ -134,14 +132,19 @@ export class Toolbar extends FoundationElement {
         return true;
     }
 
+    private observer: MutationObserver;
+
     /**
      * @internal
      */
     public connectedCallback() {
         super.connectedCallback();
         this.direction = getDirection(this);
-        this.start.addEventListener("slotchange", this.startEndSlotChange);
-        this.end.addEventListener("slotchange", this.startEndSlotChange);
+        this.start.addEventListener("slotchange", this.childElementsChange);
+        this.end.addEventListener("slotchange", this.childElementsChange);
+        this.observer = new MutationObserver(this.childElementsChange);
+        // only observe if the disabled or hidden state of nodes change
+        this.observer.observe(this, { subtree: true, attributeFilter: [ "disabled", "hidden" ] });
     }
 
     /**
@@ -149,8 +152,9 @@ export class Toolbar extends FoundationElement {
      */
     public disconnectedCallback() {
         super.disconnectedCallback();
-        this.start.removeEventListener("slotchange", this.startEndSlotChange);
-        this.end.removeEventListener("slotchange", this.startEndSlotChange);
+        this.start.removeEventListener("slotchange", this.childElementsChange);
+        this.end.removeEventListener("slotchange", this.childElementsChange);
+        this.observer.disconnect();
     }
 
     /**
@@ -227,10 +231,22 @@ export class Toolbar extends FoundationElement {
      * @internal
      */
     protected reduceFocusableElements(): void {
+        const previousFocusedElement = this.focusableElements?.[this.activeIndex];
+
         this.focusableElements = this.allSlottedItems.reduce(
             Toolbar.reduceFocusableItems,
             []
         );
+
+        // If the previously active item is still focusable, adjust the active index to the
+        // index of that item.
+        const adjustedActiveIndex = this.focusableElements.indexOf(previousFocusedElement);
+        if (adjustedActiveIndex === -1) {
+            this.activeIndex = 0;
+        } else {
+            this.activeIndex = adjustedActiveIndex;
+        }
+
         this.setFocusableElements();
     }
 
@@ -266,10 +282,12 @@ export class Toolbar extends FoundationElement {
         ).some(x => isFocusable(x));
 
         if (
-            isFocusable(element) ||
-            isRoleRadio ||
-            isFocusableFastElement ||
-            hasFocusableShadow
+            !element.hasAttribute("disabled") &&
+            !element.hasAttribute("hidden") &&
+            (isFocusable(element) ||
+                isRoleRadio ||
+                isFocusableFastElement ||
+                hasFocusableShadow)
         ) {
             elements.push(element);
             return elements;
@@ -295,7 +313,7 @@ export class Toolbar extends FoundationElement {
         }
     }
 
-    private startEndSlotChange = (): void => {
+    private childElementsChange = (): void => {
         if (this.$fastController.isConnected) {
             this.reduceFocusableElements();
         }
