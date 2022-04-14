@@ -97,17 +97,6 @@ export abstract class Listbox extends FoundationElement {
     public disabled: boolean;
 
     /**
-     * Indicates if the listbox is in multi-selection mode.
-     *
-     * @remarks
-     * HTML Attribute: `multiple`
-     *
-     * @public
-     */
-    @attr({ mode: "boolean" })
-    public multiple: boolean;
-
-    /**
      * The index of the selected option.
      *
      * @public
@@ -420,18 +409,6 @@ export abstract class Listbox extends FoundationElement {
     public mousedownHandler(e: MouseEvent): boolean | void {
         this.shouldSkipFocus = !this.contains(document.activeElement);
         return true;
-    }
-
-    /**
-     * Switches between single-selection and multi-selection mode.
-     *
-     * @param prev - the previous value of the `multiple` attribute
-     * @param next - the next value of the `multiple` attribute
-     *
-     * @internal
-     */
-    public multipleChanged(prev: boolean | undefined, next: boolean): void {
-        this.ariaMultiSelectable = next ? "true" : undefined;
     }
 
     /**

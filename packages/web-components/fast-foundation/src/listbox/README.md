@@ -77,12 +77,12 @@ See [listbox-option](/docs/components/listbox-option) for more information.
 
 | Name               | Privacy   | Type                                  | Default | Description                                                                                                                                                                         | Inherited From    |
 | ------------------ | --------- | ------------------------------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
+| `multiple`         | public    | `boolean`                             |         | Indicates if the listbox is in multi-selection mode.                                                                                                                                |                   |
 | `size`             | public    | `number`                              |         | The maximum number of options to display.                                                                                                                                           |                   |
 | `length`           | public    | `number`                              |         | The number of options.                                                                                                                                                              | Listbox           |
 | `options`          | public    | `ListboxOption[]`                     |         | The list of options.                                                                                                                                                                | Listbox           |
 | `typeAheadExpired` | protected |                                       |         |                                                                                                                                                                                     | Listbox           |
 | `disabled`         | public    | `boolean`                             |         | The disabled state of the listbox.                                                                                                                                                  | Listbox           |
-| `multiple`         | public    | `boolean`                             |         | Indicates if the listbox is in multi-selection mode.                                                                                                                                | Listbox           |
 | `selectedIndex`    | public    | `number`                              | `-1`    | The index of the selected option.                                                                                                                                                   | Listbox           |
 | `selectedOptions`  | public    | `ListboxOption[]`                     | `[]`    | A collection of the selected options.                                                                                                                                               | Listbox           |
 | `$presentation`    | public    | `ComponentPresentation or null`       |         | A property which resolves the ComponentPresentation instance for the current component.                                                                                             | FoundationElement |
@@ -100,9 +100,10 @@ See [listbox-option](/docs/components/listbox-option) for more information.
 
 #### Attributes
 
-| Name | Field | Inherited From |
-| ---- | ----- | -------------- |
-|      | size  | Listbox        |
+| Name | Field    | Inherited From |
+| ---- | -------- | -------------- |
+|      | multiple | Listbox        |
+|      | multiple | Listbox        |
 
 <hr/>
 
@@ -130,7 +131,6 @@ See [listbox-option](/docs/components/listbox-option) for more information.
 | `options`          | public    | `ListboxOption[]`                     |         | The list of options.                                                                                                                                                                |                   |
 | `typeAheadExpired` | protected |                                       |         |                                                                                                                                                                                     |                   |
 | `disabled`         | public    | `boolean`                             |         | The disabled state of the listbox.                                                                                                                                                  |                   |
-| `multiple`         | public    | `boolean`                             |         | Indicates if the listbox is in multi-selection mode.                                                                                                                                |                   |
 | `selectedIndex`    | public    | `number`                              | `-1`    | The index of the selected option.                                                                                                                                                   |                   |
 | `selectedOptions`  | public    | `ListboxOption[]`                     | `[]`    | A collection of the selected options.                                                                                                                                               |                   |
 | `$presentation`    | public    | `ComponentPresentation or null`       |         | A property which resolves the ComponentPresentation instance for the current component.                                                                                             | FoundationElement |
@@ -151,7 +151,6 @@ See [listbox-option](/docs/components/listbox-option) for more information.
 | Name | Field    | Inherited From |
 | ---- | -------- | -------------- |
 |      | disabled |                |
-|      | multiple |                |
 
 <hr/>
 
