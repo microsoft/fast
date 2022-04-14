@@ -1,17 +1,19 @@
 {
     "$schema": "https://raw.githubusercontent.com/Polymer/tachometer/master/config.schema.json",
-    "timeout": 1,
+    "timeout": 0,
     "benchmarks": [
         {
             "name": "fast-element",
             "browser": {
                 "name": "chrome",
-                "headless": true
+                "headless": true,
+                "addArguments": ["--js-flags=--expose-gc", "--enable-precise-memory-info"]
             },
             "measurement": [
                 {
-                    "mode": "performance",
-                    "entryName": "binding"
+                    "name": "usedJSHeapSize",
+                    "mode": "expression",
+                    "expression": "window.usedJSHeapSize"
                 }
             ],
 
