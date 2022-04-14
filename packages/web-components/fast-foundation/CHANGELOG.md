@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Wed, 06 Apr 2022 07:12:42 GMT and should not be manually modified.
+This log was last generated on Thu, 07 Apr 2022 07:12:06 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.41.1
+
+Thu, 07 Apr 2022 07:12:06 GMT
+
+### Patches
+
+- Improved README markdown formatting (44823142+williamw2@users.noreply.github.com)
 
 ## 2.41.0
 

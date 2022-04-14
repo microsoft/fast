@@ -126,7 +126,7 @@ export const myHorizontalScroll = HorizontalScroll.compose<HorizontalScrollOptio
 
 ## API
 
-## `src/horizontal-scroll/horizontal-scroll.ts`:
+
 
 ### class: `HorizontalScroll`
 
@@ -135,12 +135,6 @@ export const myHorizontalScroll = HorizontalScroll.compose<HorizontalScrollOptio
 | Name                | Module                                        | Package |
 | ------------------- | --------------------------------------------- | ------- |
 | `FoundationElement` | /src/foundation-element/foundation-element.js |         |
-
-#### Static Methods
-
-| Name      | Privacy | Description                                                                     | Parameters                      | Return                                                                                                           | Inherited From    |
-| --------- | ------- | ------------------------------------------------------------------------------- | ------------------------------- | ---------------------------------------------------------------------------------------------------------------- | ----------------- |
-| `compose` | public  | Defines an element registry function with a set of element definition defaults. | `this: K, elementDefinition: T` | `(         overrideDefinition?: OverrideFoundationElementDefinition<T>     ) => FoundationElementRegistry<T, K>` | FoundationElement |
 
 #### Fields
 
@@ -155,10 +149,10 @@ export const myHorizontalScroll = HorizontalScroll.compose<HorizontalScrollOptio
 | `easing`                   | public  | `ScrollEasing`                        | `"ease-in-out"` | Attribute used for easing, defaults to ease-in-out                                                                                                                                  |                   |
 | `flippersHiddenFromAT`     | public  | `boolean`                             | `false`         | Attribute to hide flippers from assistive technology                                                                                                                                |                   |
 | `scrollItems`              | public  | `HTMLElement[]`                       |                 | The default slotted items placed in the scrolling container.                                                                                                                        |                   |
-| `view`                     | public  | `HorizontalScrollView`                |                 | View: default \| mobile                                                                                                                                                             |                   |
-| `$presentation`            | public  | `ComponentPresentation \| null`       |                 | A property which resolves the ComponentPresentation instance for the current component.                                                                                             | FoundationElement |
-| `template`                 | public  | `ElementViewTemplate \| void \| null` |                 | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.          | FoundationElement |
-| `styles`                   | public  | `ElementStyles \| void \| null`       |                 | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition. | FoundationElement |
+| `view`                     | public  | `HorizontalScrollView`                |                 | View: default or mobile                                                                                                                                                             |                   |
+| `$presentation`            | public  | `ComponentPresentation or null`       |                 | A property which resolves the ComponentPresentation instance for the current component.                                                                                             | FoundationElement |
+| `template`                 | public  | `ElementViewTemplate or void or null` |                 | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.          | FoundationElement |
+| `styles`                   | public  | `ElementStyles or void or null`       |                 | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition. | FoundationElement |
 
 #### Methods
 
@@ -185,11 +179,5 @@ export const myHorizontalScroll = HorizontalScroll.compose<HorizontalScrollOptio
 | `view`                    | view                 |                |
 
 <hr/>
-
-### Exports
-
-| Kind | Name               | Declaration      | Module                                     | Package |
-| ---- | ------------------ | ---------------- | ------------------------------------------ | ------- |
-| `js` | `HorizontalScroll` | HorizontalScroll | src/horizontal-scroll/horizontal-scroll.ts |         |
 
 

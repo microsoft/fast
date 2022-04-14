@@ -61,20 +61,20 @@ for(var i = 0, modulesLength = modules.length; i < modulesLength; i++)
             module.declarations?.forEach(dec=>{
                 if(dec.description)
                 {
-                    dec.description = fixTagsInText(dec.description.replaceAll(LF, ' '));
+                    dec.description = replaceJSDOCLinksWithMDLinks(fixTagsInText(dec.description.replaceAll(LF, ' ')));
                 }
                 if(dec.default)
                 {
-                    dec.default = fixTagsInText(dec.default.replaceAll(LF, ' '));
+                    dec.default = replaceJSDOCLinksWithMDLinks(fixTagsInText(dec.default.replaceAll(LF, ' ')));
                 }
                 dec.members?.forEach(member=>{
                     if(member.description)
                     {
-                        member.description = fixTagsInText(member.description.replaceAll(LF, ' '));
+                        member.description = replaceJSDOCLinksWithMDLinks(fixTagsInText(member.description.replaceAll(LF, ' ')));
                     }
                     if(member.default)
                     {
-                        member.default = fixTagsInText(member.default.replaceAll(LF, ' '));
+                        member.default = replaceJSDOCLinksWithMDLinks(fixTagsInText(member.default.replaceAll(LF, ' ')));
                     }
                     if(member.return?.type?.text)
                     {
@@ -85,7 +85,7 @@ for(var i = 0, modulesLength = modules.length; i < modulesLength; i++)
                 dec.attributes?.forEach(attr=>{
                     if(attr.description)
                     {
-                        attr.description = fixTagsInText(attr.description.replaceAll(LF, ' '));
+                        attr.description = replaceJSDOCLinksWithMDLinks(fixTagsInText(attr.description.replaceAll(LF, ' ')));
                     }
                 });
             })
@@ -95,13 +95,30 @@ for(var i = 0, modulesLength = modules.length; i < modulesLength; i++)
         let markdown = customElementsManifestToMarkdown(componentManifest,
             {
                 headingOffset: 1,
-                private: 'hidden'
+                private: 'hidden',
+                omitDeclarations: ['exports'],
+                omitSections: ['static-methods']
             });
 
         // Replace our < and > markers with backticks and < >
         // This is necessary because customElementsManifestToMarkdown escapes the backticks during the conversion
         // and we don't want that because then docusaurus will see the tags as real tags instead of just text.
-        markdown = markdown.replaceAll("REPLACELT","`<").replaceAll("REPLACEGT",">`");
+        markdown = markdown.replaceAll("REPLACELT", "`<").replaceAll("REPLACEGT", ">`");
+
+        // Clean up some additional formatting issues
+        // Remove the file source header
+        markdown = markdown.replaceAll(/## `src.*`:/g, "");
+        // Fix escape of colon in urls
+        markdown = markdown.replaceAll("https\\:", "https:");
+        // Fix escape of . in some urls
+        markdown = markdown.replaceAll("www\\.w3", "www.w3");
+        // Fix escape of open bracket on links
+        markdown = markdown.replaceAll("\\[", "[");
+        // Fix escape of open paren on links
+        markdown = markdown.replaceAll("\\(", "(");
+
+        // Replace \| with 'or'
+        markdown = markdown.replaceAll("\\|","or");
 
         // Get the README.md file
         let path = modules[componentIndex].path.split('/');
@@ -173,4 +190,25 @@ function fixTagsInText(text)
     return text.replaceAll(/\<.*\>/gi,(match)=>{
         return match.replace('<','REPLACELT').replace('>','REPLACEGT');
     });
+}
+
+function replaceJSDOCLinksWithMDLinks(text)
+{
+    let startIndex = text.indexOf('{@link');
+    if(startIndex < 0) return text;
+
+    let endIndex = text.indexOf("}", startIndex);
+    if(endIndex < 0) return text;
+
+    const jsdocLink = text.slice(startIndex, endIndex + 1);
+    let linkParts = jsdocLink.replace("{@link ", "").replace("}", "").split('|');
+    if(linkParts.length === 1)
+    {
+        return text.replace(jsdocLink, linkParts[0]);
+    }
+    else
+    {
+        return text.replace(jsdocLink, "[" + linkParts[1].trim() + "](" + linkParts[0].trim() + ")");
+    }
+
 }

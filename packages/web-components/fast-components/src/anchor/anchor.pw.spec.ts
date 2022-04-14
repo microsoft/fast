@@ -1,7 +1,9 @@
 import type {
     Anchor as FASTAnchorType
 } from "@microsoft/fast-foundation";
-import { expect } from "chai";
+import chai from "chai";
+
+const { expect } = chai;
 
 type FASTAnchor = HTMLElement & FASTAnchorType;
 

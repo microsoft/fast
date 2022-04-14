@@ -1,5 +1,5 @@
 import TreeViewTemplate from "./fixtures/tree-view.html";
-import "./index";
+import "./index.js";
 
 export default {
     title: "Tree View",

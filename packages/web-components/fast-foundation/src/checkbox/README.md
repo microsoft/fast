@@ -73,7 +73,7 @@ export const myCheckbox = Checkbox.compose<CheckboxOptions>({
 
 ## API
 
-## `src/checkbox/checkbox.ts`:
+
 
 ### class: `Checkbox`
 
@@ -83,22 +83,16 @@ export const myCheckbox = Checkbox.compose<CheckboxOptions>({
 | ------------------------ | ----------------------------------------- | ------- |
 | `FormAssociatedCheckbox` | /src/checkbox/checkbox.form-associated.js |         |
 
-#### Static Methods
-
-| Name      | Privacy | Description                                                                     | Parameters                      | Return                                                                                                           | Inherited From    |
-| --------- | ------- | ------------------------------------------------------------------------------- | ------------------------------- | ---------------------------------------------------------------------------------------------------------------- | ----------------- |
-| `compose` | public  | Defines an element registry function with a set of element definition defaults. | `this: K, elementDefinition: T` | `(         overrideDefinition?: OverrideFoundationElementDefinition<T>     ) => FoundationElementRegistry<T, K>` | FoundationElement |
-
 #### Fields
 
-| Name            | Privacy | Type                                  | Default | Description                                                                                                                                                                                       | Inherited From         |
-| --------------- | ------- | ------------------------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------- |
-| `readOnly`      | public  | `boolean`                             |         | When true, the control will be immutable by user interaction. See {@link https\://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/readonly \| readonly HTML attribute} for more information. |                        |
-| `indeterminate` | public  | `boolean`                             | `false` | The indeterminate state of the control                                                                                                                                                            |                        |
-| `proxy`         |         |                                       |         |                                                                                                                                                                                                   | FormAssociatedCheckbox |
-| `$presentation` | public  | `ComponentPresentation \| null`       |         | A property which resolves the ComponentPresentation instance for the current component.                                                                                                           | FoundationElement      |
-| `template`      | public  | `ElementViewTemplate \| void \| null` |         | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.                        | FoundationElement      |
-| `styles`        | public  | `ElementStyles \| void \| null`       |         | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition.               | FoundationElement      |
+| Name            | Privacy | Type                                  | Default | Description                                                                                                                                                                                 | Inherited From         |
+| --------------- | ------- | ------------------------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------- |
+| `readOnly`      | public  | `boolean`                             |         | When true, the control will be immutable by user interaction. See [readonly HTML attribute](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/readonly) for more information. |                        |
+| `indeterminate` | public  | `boolean`                             | `false` | The indeterminate state of the control                                                                                                                                                      |                        |
+| `proxy`         |         |                                       |         |                                                                                                                                                                                             | FormAssociatedCheckbox |
+| `$presentation` | public  | `ComponentPresentation or null`       |         | A property which resolves the ComponentPresentation instance for the current component.                                                                                                     | FoundationElement      |
+| `template`      | public  | `ElementViewTemplate or void or null` |         | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.                  | FoundationElement      |
+| `styles`        | public  | `ElementStyles or void or null`       |         | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition.         | FoundationElement      |
 
 #### Methods
 
@@ -114,12 +108,6 @@ export const myCheckbox = Checkbox.compose<CheckboxOptions>({
 | `readonly` | readOnly |                |
 
 <hr/>
-
-### Exports
-
-| Kind | Name       | Declaration | Module                   | Package |
-| ---- | ---------- | ----------- | ------------------------ | ------- |
-| `js` | `Checkbox` | Checkbox    | src/checkbox/checkbox.ts |         |
 
 
 ## Additional resources

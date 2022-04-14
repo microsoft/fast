@@ -1,8 +1,6 @@
 import { STORY_RENDERED } from "@storybook/core-events";
 import addons from "@storybook/addons";
 import BreadcrumbTemplate from "./fixtures/base.html";
-import "../breadcrumb-item";
-import "./index";
 
 function addItem(): void {
     const breadcrumbElement = document.getElementById("mybreadcrumb");

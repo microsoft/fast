@@ -34,8 +34,8 @@ import {
     neutralStrokeRest,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
-} from "../design-tokens";
-import { heightNumber } from "../styles/size";
+} from "../design-tokens.js";
+import { heightNumber } from "../styles/size.js";
 
 /**
  * Styles for the {@link @microsoft/fast-components#fastOption | Listbox Option} component.

@@ -1,8 +1,8 @@
 import { expect } from "chai";
-import { PaletteRGB } from "../palette";
-import { SwatchRGB } from "../swatch";
-import { accentBase, middleGrey } from "../utilities/color-constants";
-import { neutralForegroundHint } from "./neutral-foreground-hint";
+import { PaletteRGB } from "../palette.js";
+import { SwatchRGB } from "../swatch.js";
+import { accentBase, middleGrey } from "../utilities/color-constants.js";
+import { neutralForegroundHint } from "./neutral-foreground-hint.js";
 
 describe("neutralForegroundHint", (): void => {
     const neutralPalette = PaletteRGB.create(middleGrey);

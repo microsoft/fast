@@ -1,6 +1,7 @@
 import type { HorizontalScroll as HorizontalScrollType } from "@microsoft/fast-foundation";
-import { assert, expect } from "chai";
+import chai from "chai";
 import { ElementHandle } from "playwright";
+const { expect } = chai;
 
 type fastHorizontalScroll = HTMLElement & HorizontalScrollType;
 
@@ -94,7 +95,7 @@ describe("FASTHorizontalScroll", function () {
             "fast-horizontal-scroll"
         )) as ElementHandle<fastHorizontalScroll>;
 
-        assert((await element.evaluate(node => node.scrollContainer.scrollLeft)) === 0);
+        expect(await element.evaluate(node => node.scrollContainer.scrollLeft)).to.equal(0);
 
         await element.evaluateHandle(node => node.scrollToPrevious());
 

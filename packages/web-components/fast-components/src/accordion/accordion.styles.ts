@@ -7,7 +7,7 @@ import {
     strokeWidth,
     typeRampMinus1FontSize,
     typeRampMinus1LineHeight,
-} from "../design-tokens";
+} from "../design-tokens.js";
 
 /**
  * Styles for Accordion

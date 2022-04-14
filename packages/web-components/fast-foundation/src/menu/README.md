@@ -134,7 +134,7 @@ export const myMenuItem = MenuItem.compose<MenuItemOptions>({
 
 ## API
 
-## `src/menu/menu.ts`:
+
 
 ### class: `Menu`
 
@@ -144,19 +144,13 @@ export const myMenuItem = MenuItem.compose<MenuItemOptions>({
 | ------------------- | --------------------------------------------- | ------- |
 | `FoundationElement` | /src/foundation-element/foundation-element.js |         |
 
-#### Static Methods
-
-| Name      | Privacy | Description                                                                     | Parameters                      | Return                                                                                                           | Inherited From    |
-| --------- | ------- | ------------------------------------------------------------------------------- | ------------------------------- | ---------------------------------------------------------------------------------------------------------------- | ----------------- |
-| `compose` | public  | Defines an element registry function with a set of element definition defaults. | `this: K, elementDefinition: T` | `(         overrideDefinition?: OverrideFoundationElementDefinition<T>     ) => FoundationElementRegistry<T, K>` | FoundationElement |
-
 #### Fields
 
 | Name            | Privacy | Type                                  | Default | Description                                                                                                                                                                         | Inherited From    |
 | --------------- | ------- | ------------------------------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
-| `$presentation` | public  | `ComponentPresentation \| null`       |         | A property which resolves the ComponentPresentation instance for the current component.                                                                                             | FoundationElement |
-| `template`      | public  | `ElementViewTemplate \| void \| null` |         | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.          | FoundationElement |
-| `styles`        | public  | `ElementStyles \| void \| null`       |         | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition. | FoundationElement |
+| `$presentation` | public  | `ComponentPresentation or null`       |         | A property which resolves the ComponentPresentation instance for the current component.                                                                                             | FoundationElement |
+| `template`      | public  | `ElementViewTemplate or void or null` |         | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.          | FoundationElement |
+| `styles`        | public  | `ElementStyles or void or null`       |         | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition. | FoundationElement |
 
 #### Methods
 
@@ -169,13 +163,7 @@ export const myMenuItem = MenuItem.compose<MenuItemOptions>({
 
 <hr/>
 
-### Exports
 
-| Kind | Name   | Declaration | Module           | Package |
-| ---- | ------ | ----------- | ---------------- | ------- |
-| `js` | `Menu` | Menu        | src/menu/menu.ts |         |
-
-## `src/menu-item/menu-item.ts`:
 
 ### class: `MenuItem`
 
@@ -185,23 +173,17 @@ export const myMenuItem = MenuItem.compose<MenuItemOptions>({
 | ------------------- | --------------------------------------------- | ------- |
 | `FoundationElement` | /src/foundation-element/foundation-element.js |         |
 
-#### Static Methods
-
-| Name      | Privacy | Description                                                                     | Parameters                      | Return                                                                                                           | Inherited From    |
-| --------- | ------- | ------------------------------------------------------------------------------- | ------------------------------- | ---------------------------------------------------------------------------------------------------------------- | ----------------- |
-| `compose` | public  | Defines an element registry function with a set of element definition defaults. | `this: K, elementDefinition: T` | `(         overrideDefinition?: OverrideFoundationElementDefinition<T>     ) => FoundationElementRegistry<T, K>` | FoundationElement |
-
 #### Fields
 
 | Name            | Privacy | Type                                                                  | Default | Description                                                                                                                                                                         | Inherited From    |
 | --------------- | ------- | --------------------------------------------------------------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
 | `disabled`      | public  | `boolean`                                                             |         | The disabled state of the element.                                                                                                                                                  |                   |
 | `expanded`      | public  | `boolean`                                                             |         | The expanded state of the element.                                                                                                                                                  |                   |
-| `role`          | public  | `MenuItemRole \| "menuitem" \| "menuitemcheckbox" \| "menuitemradio"` |         | The role of the element.                                                                                                                                                            |                   |
+| `role`          | public  | `MenuItemRole or "menuitem" or "menuitemcheckbox" or "menuitemradio"` |         | The role of the element.                                                                                                                                                            |                   |
 | `checked`       | public  | `boolean`                                                             |         | The checked value of the element.                                                                                                                                                   |                   |
-| `$presentation` | public  | `ComponentPresentation \| null`                                       |         | A property which resolves the ComponentPresentation instance for the current component.                                                                                             | FoundationElement |
-| `template`      | public  | `ElementViewTemplate \| void \| null`                                 |         | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.          | FoundationElement |
-| `styles`        | public  | `ElementStyles \| void \| null`                                       |         | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition. | FoundationElement |
+| `$presentation` | public  | `ComponentPresentation or null`                                       |         | A property which resolves the ComponentPresentation instance for the current component.                                                                                             | FoundationElement |
+| `template`      | public  | `ElementViewTemplate or void or null`                                 |         | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.          | FoundationElement |
+| `styles`        | public  | `ElementStyles or void or null`                                       |         | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition. | FoundationElement |
 
 #### Methods
 
@@ -220,14 +202,6 @@ export const myMenuItem = MenuItem.compose<MenuItemOptions>({
 |        | checked  |                |
 
 <hr/>
-
-### Exports
-
-| Kind | Name              | Declaration     | Module                     | Package |
-| ---- | ----------------- | --------------- | -------------------------- | ------- |
-| `js` | `MenuItemRole`    | MenuItemRole    | src/menu-item/menu-item.ts |         |
-| `js` | `roleForMenuItem` | roleForMenuItem | src/menu-item/menu-item.ts |         |
-| `js` | `MenuItem`        | MenuItem        | src/menu-item/menu-item.ts |         |
 
 
 ## Additional resources

@@ -3,8 +3,8 @@ import {
     Anchor as FoundationAnchor,
     anchorTemplate as template,
 } from "@microsoft/fast-foundation";
-import { ButtonAppearance } from "../button";
-import { anchorStyles as styles } from "./anchor.styles";
+import { ButtonAppearance } from "../button/index.js";
+import { anchorStyles as styles } from "./anchor.styles.js";
 
 /**
  * Types of anchor appearance.
