@@ -288,6 +288,7 @@ describe("Dialog", () => {
 
             const button = document.createElement('button');
             button.textContent = 'close';
+            button.addEventListener("click", () => (element as unknown as Dialog).hide());
             element.append(button)
 
             await connect();
