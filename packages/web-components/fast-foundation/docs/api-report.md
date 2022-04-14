@@ -354,6 +354,7 @@ export class DataGrid extends FoundationElement {
     headerCellItemTemplate?: ViewTemplate;
     initialRowSelection: string;
     noTabbing: boolean;
+    // @internal
     rowElements: HTMLElement[];
     rowElementTag: string;
     rowItemTemplate: ViewTemplate;
