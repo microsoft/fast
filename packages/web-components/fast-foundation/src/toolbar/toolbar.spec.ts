@@ -105,6 +105,7 @@ describe("Toolbar", () => {
   it("should skip disabled elements when keyboard incrementer is pressed", async () => {
     const { element, connect, disconnect, document, startButton, control1, control2 } = await setup();
     control1.disabled = true;
+
     await connect();
 
     element.focus();
@@ -256,7 +257,7 @@ describe("Toolbar", () => {
   });
 
   it("should reset activeIndex to 0 when the focused item is no longer focusable", async () => {
-    const { element, connect, disconnect, document, startButton, control1, control2, control3 } = await setup();
+    const { element, connect, disconnect, document, startButton, control1 } = await setup();
 
     await connect();
 
