@@ -1,19 +1,16 @@
 import { html, ref, slotted, when } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
-import { endSlotTemplate, startSlotTemplate } from "../patterns/start-end";
-import type { ElementDefinitionContext } from "../design-system";
-import type { Tabs, TabsOptions } from "./tabs";
+import { endSlotTemplate, startSlotTemplate } from "../patterns/start-end.js";
+import type { FoundationElementTemplate } from "../foundation-element/foundation-element.js";
+import type { Tabs, TabsOptions } from "./tabs.js";
 
 /**
  * The template for the {@link @microsoft/fast-foundation#(Tabs:class)} component.
  * @public
  */
-export const tabsTemplate: (
-    context: ElementDefinitionContext,
-    definition: TabsOptions
-) => ViewTemplate<Tabs> = (
-    context: ElementDefinitionContext,
-    definition: TabsOptions
+export const tabsTemplate: FoundationElementTemplate<ViewTemplate<Tabs>, TabsOptions> = (
+    context,
+    definition
 ) => html`
     <template class="${x => x.orientation}">
         ${startSlotTemplate(context, definition)}

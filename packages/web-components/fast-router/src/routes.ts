@@ -1,17 +1,17 @@
+import { Constructable, FASTElement, ViewTemplate } from "@microsoft/fast-element";
 import {
-    RouteRecognizer,
-    RecognizedRoute,
-    Endpoint,
     ConfigurableRoute,
+    Endpoint,
+    RecognizedRoute,
     RouteParameterConverter,
-} from "./recognizer";
-import { NavigationCommand, Redirect, Render, Ignore } from "./commands";
-import { ViewTemplate, FASTElement, Constructable } from "@microsoft/fast-element";
-import { Layout, Transition } from "./view";
-import { RouterConfiguration } from "./configuration";
-import { Router } from "./router";
-import { QueryString } from "./query-string";
-import { Route } from "./navigation";
+    RouteRecognizer,
+} from "./recognizer.js";
+import { Ignore, NavigationCommand, Redirect, Render } from "./commands.js";
+import { Layout, Transition } from "./view.js";
+import { RouterConfiguration } from "./configuration.js";
+import { Router } from "./router.js";
+import { QueryString } from "./query-string.js";
+import { Route } from "./navigation.js";
 
 /**
  * @internal

@@ -3,9 +3,9 @@ import {
     Toolbar as FoundationToolbar,
     toolbarTemplate as template,
 } from "@microsoft/fast-foundation";
-import { Swatch } from "../color/swatch";
-import { fillColor, neutralFillLayerRecipe } from "../design-tokens";
-import { toolbarStyles as styles } from "./toolbar.styles";
+import { Swatch } from "../color/swatch.js";
+import { fillColor, neutralFillLayerRecipe } from "../design-tokens.js";
+import { toolbarStyles as styles } from "./toolbar.styles.js";
 
 /**
  * @internal
@@ -35,7 +35,7 @@ export class Toolbar extends FoundationToolbar {
  * @public
  * @remarks
  *
- * Generates HTML Element: \<fast-toolbar\>
+ * Generates HTML Element: `<fast-toolbar>`
  *
  */
 export const fastToolbar = Toolbar.compose({
@@ -47,8 +47,5 @@ export const fastToolbar = Toolbar.compose({
         delegatesFocus: true,
     },
 });
-/**
- * Styles for Toolbar.
- * @public
- */
-export const toolbarStyles = styles;
+
+export { styles as toolbarStyles };

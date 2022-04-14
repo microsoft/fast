@@ -1,13 +1,19 @@
 {
     "extends": "../../../tsconfig.json",
     "compilerOptions": {
-        "target": "es6",
         "baseUrl": ".",
         "outDir": "./dist",
         "declaration": false,
         "jsx": "react",
-        "strictNullChecks": true,
-        "experimentalDecorators": true
+        "allowSyntheticDefaultImports": true,
+        "strictPropertyInitialization": false,
+        "typeRoots": [
+            "../../../node_modules/@types",
+            "../../../node_modules/@figma"
+        ]
     },
-    "include": ["./src"]
+    "include": [
+        "src/**/*.ts",
+        "src/custom.d.ts"
+    ]
 }

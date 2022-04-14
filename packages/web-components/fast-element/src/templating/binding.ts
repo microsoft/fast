@@ -1,14 +1,13 @@
-import { DOM } from "../dom";
-import type { Behavior } from "../observation/behavior";
+import { DOM } from "../dom.js";
+import type { Behavior } from "../observation/behavior.js";
 import {
     Binding,
     BindingObserver,
     ExecutionContext,
     Observable,
-    setCurrentEvent,
-} from "../observation/observable";
-import { TargetedHTMLDirective } from "./html-directive";
-import type { SyntheticView } from "./view";
+} from "../observation/observable.js";
+import { TargetedHTMLDirective } from "./html-directive.js";
+import type { SyntheticView } from "./view.js";
 
 function normalBind(
     this: BindingBehavior,
@@ -225,7 +224,6 @@ export class HTMLBindingDirective extends TargetedHTMLDirective {
                 this.updateTarget = updatePropertyTarget;
                 if (this.cleanedTargetName === "innerHTML") {
                     const binding = this.binding;
-                    /* eslint-disable-next-line */
                     this.binding = (s, c) => DOM.createHTML(binding(s, c));
                 }
                 break;
@@ -361,9 +359,9 @@ export class BindingBehavior implements Behavior {
 
     /** @internal */
     public handleEvent(event: Event): void {
-        setCurrentEvent(event);
+        ExecutionContext.setEvent(event);
         const result = this.binding(this.source, this.context!);
-        setCurrentEvent(null);
+        ExecutionContext.setEvent(null);
 
         if (result !== true) {
             event.preventDefault();

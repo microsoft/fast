@@ -1,19 +1,15 @@
 import { html } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
-import type { FoundationElementDefinition } from "../foundation-element";
-import type { ElementDefinitionContext } from "../design-system";
-import type { Badge } from "./badge";
+import type { FoundationElementTemplate } from "../foundation-element/foundation-element.js";
+import type { Badge } from "./badge.js";
 
 /**
  * The template for the {@link @microsoft/fast-foundation#Badge} component.
  * @public
  */
-export const badgeTemplate: (
-    context: ElementDefinitionContext,
-    definition: FoundationElementDefinition
-) => ViewTemplate<Badge> = (
-    context: ElementDefinitionContext,
-    definition: FoundationElementDefinition
+export const badgeTemplate: FoundationElementTemplate<ViewTemplate<Badge>> = (
+    context,
+    definition
 ) => html`
     <template class="${x => (x.circular ? "circular" : "")}">
         <div class="control" part="control" style="${x => x.generateBadgeStyle()}">

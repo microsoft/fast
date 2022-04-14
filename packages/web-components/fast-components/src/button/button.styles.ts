@@ -2,8 +2,8 @@ import { css, ElementStyles } from "@microsoft/fast-element";
 import {
     ButtonOptions,
     disabledCursor,
-    ElementDefinitionContext,
     forcedColorsStylesheetBehavior,
+    FoundationElementTemplate,
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
@@ -12,20 +12,24 @@ import {
     disabledOpacity,
     neutralFillRest,
     neutralFillStealthRest,
-} from "../design-tokens";
+} from "../design-tokens.js";
 import {
     AccentButtonStyles,
     BaseButtonStyles,
     LightweightButtonStyles,
     OutlineButtonStyles,
     StealthButtonStyles,
-} from "../styles/index";
-import { appearanceBehavior } from "../utilities/behaviors";
+} from "../styles/index.js";
+import { appearanceBehavior } from "../utilities/behaviors.js";
 
-export const buttonStyles: (
-    context: ElementDefinitionContext,
-    definition: ButtonOptions
-) => ElementStyles = (context: ElementDefinitionContext, definition: ButtonOptions) =>
+/**
+ * Styles for Button
+ * @public
+ */
+export const buttonStyles: FoundationElementTemplate<ElementStyles, ButtonOptions> = (
+    context,
+    definition
+) =>
     css`
         :host([disabled]),
         :host([disabled]:hover),

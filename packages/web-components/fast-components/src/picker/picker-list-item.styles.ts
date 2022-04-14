@@ -1,9 +1,8 @@
 import { css, ElementStyles } from "@microsoft/fast-element";
 import {
-    ElementDefinitionContext,
     focusVisible,
     forcedColorsStylesheetBehavior,
-    FoundationElementDefinition,
+    FoundationElementTemplate,
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
@@ -18,15 +17,16 @@ import {
     neutralLayer3,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
-} from "../design-tokens";
-import { heightNumber } from "../styles/index";
+} from "../design-tokens.js";
+import { heightNumber } from "../styles/index.js";
 
-export const pickerListItemStyles: (
-    context: ElementDefinitionContext,
-    definition: FoundationElementDefinition
-) => ElementStyles = (
-    context: ElementDefinitionContext,
-    definition: FoundationElementDefinition
+/**
+ * Styles for Picker list item
+ * @public
+ */
+export const pickerListItemStyles: FoundationElementTemplate<ElementStyles> = (
+    context,
+    definition
 ) =>
     css`
 :host {

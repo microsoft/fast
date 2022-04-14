@@ -3,7 +3,7 @@ import {
     TextArea as FoundationTextArea,
     textAreaTemplate as template,
 } from "@microsoft/fast-foundation";
-import { textAreaStyles as styles } from "./text-area.styles";
+import { textAreaStyles as styles } from "./text-area.styles.js";
 
 /**
  * Text area appearances
@@ -23,18 +23,7 @@ export class TextArea extends FoundationTextArea {
      * HTML Attribute: appearance
      */
     @attr
-    public appearance: TextAreaAppearance;
-
-    /**
-     * @internal
-     */
-    public connectedCallback() {
-        super.connectedCallback();
-
-        if (!this.appearance) {
-            this.appearance = "outline";
-        }
-    }
+    public appearance: TextAreaAppearance = "outline";
 }
 
 /**
@@ -44,7 +33,7 @@ export class TextArea extends FoundationTextArea {
  *
  * @public
  * @remarks
- * Generates HTML Element: \<fast-text-area\>
+ * Generates HTML Element: `<fast-text-area>`
  *
  * {@link https://developer.mozilla.org/en-US/docs/Web/API/ShadowRoot/delegatesFocus | delegatesFocus}
  */
@@ -58,8 +47,4 @@ export const fastTextArea = TextArea.compose({
     },
 });
 
-/**
- * Styles for TextArea
- * @public
- */
-export const textAreaStyles = styles;
+export { styles as textAreaStyles };

@@ -3,7 +3,7 @@ import {
     controlCornerRadius,
     neutralFillStealthHover,
     neutralForegroundHint,
-} from "@microsoft/fast-components";
+} from "@fluentui/web-components";
 
 const template = html`
     <template
@@ -107,7 +107,7 @@ const styles = css`
     }
 `;
 
-export enum SwatchTypes {
+export enum SwatchType {
     background = "background",
     border = "border",
 }
@@ -119,7 +119,7 @@ export enum SwatchTypes {
 })
 export class Swatch extends FASTElement {
     @attr
-    public type: SwatchTypes = SwatchTypes.background;
+    public type: SwatchType = SwatchType.background;
 
     @attr({ mode: "boolean" })
     public circular: boolean = false;
@@ -131,7 +131,7 @@ export class Swatch extends FASTElement {
     public orientation: "horizontal" | "vertical" = "vertical";
 
     @attr
-    public label: string;
+    public label?: string;
 
     @attr({ mode: "boolean" })
     public interactive: boolean = false;

@@ -1,16 +1,14 @@
-import {
-    attr,
-    Observable,
-    observable,
-    SyntheticViewTemplate,
-} from "@microsoft/fast-element";
-import type { FoundationElementDefinition } from "../foundation-element";
-import type { ListboxOption } from "../listbox-option/listbox-option";
-import { ARIAGlobalStatesAndProperties } from "../patterns/aria-global";
-import { StartEnd, StartEndOptions } from "../patterns/start-end";
-import { applyMixins } from "../utilities/apply-mixins";
-import { FormAssociatedSelect } from "./select.form-associated";
-import { SelectPosition, SelectRole } from "./select.options";
+import { attr, DOM, Observable, observable } from "@microsoft/fast-element";
+import type { SyntheticViewTemplate } from "@microsoft/fast-element";
+import { uniqueId } from "@microsoft/fast-web-utilities";
+import type { FoundationElementDefinition } from "../foundation-element/foundation-element.js";
+import { DelegatesARIAListbox, Listbox } from "../listbox/listbox.js";
+import type { ListboxOption } from "../listbox-option/listbox-option.js";
+import { StartEnd } from "../patterns/start-end.js";
+import type { StartEndOptions } from "../patterns/start-end.js";
+import { applyMixins } from "../utilities/apply-mixins.js";
+import { FormAssociatedSelect } from "./select.form-associated.js";
+import { SelectPosition } from "./select.options.js";
 
 /**
  * Select configuration options
@@ -31,17 +29,29 @@ export class Select extends FormAssociatedSelect {
     /**
      * The open attribute.
      *
-     * @internal
+     * @public
+     * @remarks
+     * HTML Attribute: open
      */
     @attr({ attribute: "open", mode: "boolean" })
     public open: boolean = false;
     protected openChanged() {
-        this.ariaExpanded = this.open ? "true" : "false";
         if (this.open) {
+            this.ariaControls = this.listboxId;
+            this.ariaExpanded = "true";
+
             this.setPositioning();
             this.focusAndScrollOptionIntoView();
             this.indexWhenOpened = this.selectedIndex;
+
+            // focus is directed to the element when `open` is changed programmatically
+            DOM.queueUpdate(() => this.focus());
+
+            return;
         }
+
+        this.ariaControls = "";
+        this.ariaExpanded = "false";
     }
 
     private indexWhenOpened: number;
@@ -66,7 +76,7 @@ export class Select extends FormAssociatedSelect {
     public set value(next: string) {
         const prev = `${this._value}`;
 
-        if (this.$fastController.isConnected && this.options) {
+        if (this.options?.length) {
             const selectedIndex = this.options.findIndex(el => el.value === next);
 
             const prevSelectedOption = this.options[this.selectedIndex];
@@ -122,7 +132,7 @@ export class Select extends FormAssociatedSelect {
      *
      * @internal
      */
-    public selectedIndexChanged(prev, next): void {
+    public selectedIndexChanged(prev: number, next: number): void {
         super.selectedIndexChanged(prev, next);
         this.updateValue();
     }
@@ -133,7 +143,7 @@ export class Select extends FormAssociatedSelect {
      * @public
      */
     @attr({ attribute: "position" })
-    public positionAttribute: SelectPosition;
+    public positionAttribute: SelectPosition | "above" | "below";
 
     /**
      * Indicates the initial state of the position attribute.
@@ -143,21 +153,30 @@ export class Select extends FormAssociatedSelect {
     private forcedPosition: boolean = false;
 
     /**
-     * The role of the element.
-     *
-     * @public
-     * @remarks
-     * HTML Attribute: role
-     */
-    public role: SelectRole = SelectRole.combobox;
-
-    /**
      * Holds the current state for the calculated position of the listbox.
      *
      * @public
      */
     @observable
-    public position: SelectPosition = SelectPosition.below;
+    public position: SelectPosition | "above" | "below" = SelectPosition.below;
+    protected positionChanged() {
+        this.positionAttribute = this.position;
+        this.setPositioning();
+    }
+
+    /**
+     * Reference to the internal listbox element.
+     *
+     * @internal
+     */
+    public listbox: HTMLDivElement;
+
+    /**
+     * The unique id for the internal listbox element.
+     *
+     * @internal
+     */
+    public listboxId: string = uniqueId("listbox-");
 
     /**
      * Calculate and apply listbox positioning based on available viewport space.
@@ -191,6 +210,11 @@ export class Select extends FormAssociatedSelect {
      */
     @observable
     public maxHeight: number = 0;
+    private maxHeightChanged(): void {
+        if (this.listbox) {
+            this.listbox.style.setProperty("--max-height", `${this.maxHeight}px`);
+        }
+    }
 
     /**
      * The value displayed on the button.
@@ -220,11 +244,15 @@ export class Select extends FormAssociatedSelect {
      *
      * @internal
      */
-    public formResetCallback = (): void => {
+    public formResetCallback(): void {
         this.setProxyOptions();
-        this.setDefaultSelectedOption();
-        this.value = this.firstSelectedOption.value;
-    };
+        // Call the base class's implementation setDefaultSelectedOption instead of the select's
+        // override, in order to reset the selectedIndex without using the value property.
+        super.setDefaultSelectedOption();
+        if (this.selectedIndex === -1) {
+            this.selectedIndex = 0;
+        }
+    }
 
     /**
      * Handle opening and closing the listbox when the select is clicked.
@@ -292,10 +320,26 @@ export class Select extends FormAssociatedSelect {
      *
      * @internal
      */
-    public slottedOptionsChanged(prev, next): void {
+    public slottedOptionsChanged(prev: Element[], next: Element[]): void {
         super.slottedOptionsChanged(prev, next);
         this.setProxyOptions();
         this.updateValue();
+    }
+
+    protected setDefaultSelectedOption(): void {
+        const options: ListboxOption[] =
+            this.options ?? Array.from(this.children).filter(Listbox.slottedOptionFilter);
+
+        const selectedIndex = options?.findIndex(
+            el => el.hasAttribute("selected") || el.selected || el.value === this.value
+        );
+
+        if (selectedIndex !== -1) {
+            this.selectedIndex = selectedIndex;
+            return;
+        }
+
+        this.selectedIndex = 0;
     }
 
     /**
@@ -330,7 +374,7 @@ export class Select extends FormAssociatedSelect {
 
         switch (key) {
             case " ": {
-                if (this.typeAheadExpired) {
+                if (this.typeaheadExpired) {
                     e.preventDefault();
                     this.open = !this.open;
                 }
@@ -382,22 +426,13 @@ export class Select extends FormAssociatedSelect {
  */
 export class DelegatesARIASelect {
     /**
-     * See {@link https://www.w3.org/WAI/PF/aria/roles#button} for more information
+     * See {@link https://www.w3.org/TR/wai-aria-1.2/#combobox} for more information
      * @public
      * @remarks
-     * HTML Attribute: aria-expanded
+     * HTML Attribute: `aria-controls`
      */
     @observable
-    public ariaExpanded: "true" | "false" | undefined;
-
-    /**
-     * See {@link https://www.w3.org/WAI/PF/aria/roles#button} for more information
-     * @public
-     * @remarks
-     * HTML Attribute: aria-pressed
-     */
-    @attr({ attribute: "aria-pressed", mode: "fromView" })
-    public ariaPressed: "true" | "false" | "mixed" | undefined;
+    public ariaControls: string;
 }
 
 /**
@@ -406,8 +441,8 @@ export class DelegatesARIASelect {
  * TODO: https://github.com/microsoft/fast/issues/3317
  * @internal
  */
-export interface DelegatesARIASelect extends ARIAGlobalStatesAndProperties {}
-applyMixins(DelegatesARIASelect, ARIAGlobalStatesAndProperties);
+export interface DelegatesARIASelect extends DelegatesARIAListbox {}
+applyMixins(DelegatesARIASelect, DelegatesARIAListbox);
 
 /**
  * @internal

@@ -1,22 +1,20 @@
 import { css, ElementStyles } from "@microsoft/fast-element";
-import {
-    ElementDefinitionContext,
-    FoundationElementDefinition,
-} from "@microsoft/fast-foundation";
+import { FoundationElementTemplate } from "@microsoft/fast-foundation";
 import {
     bodyFont,
     designUnit,
     neutralLayerFloating,
     typeRampBaseFontSize,
-} from "../design-tokens";
-import { heightNumber } from "../styles/index";
+} from "../design-tokens.js";
+import { heightNumber } from "../styles/index.js";
 
-export const pickerStyles: (
-    context: ElementDefinitionContext,
-    definition: FoundationElementDefinition
-) => ElementStyles = (
-    context: ElementDefinitionContext,
-    definition: FoundationElementDefinition
+/**
+ * Styles for Picker
+ * @public
+ */
+export const pickerStyles: FoundationElementTemplate<ElementStyles> = (
+    context,
+    definition
 ) =>
     css`
         .region {

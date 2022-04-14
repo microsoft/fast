@@ -1,7 +1,7 @@
 import { Accordion, accordionTemplate as template } from "@microsoft/fast-foundation";
-import { accordionStyles as styles } from "./accordion.styles";
+import { accordionStyles as styles } from "./accordion.styles.js";
 
-export * from "../accordion-item/index";
+export * from "../accordion-item/index.js";
 
 /**
  * A function that returns a {@link @microsoft/fast-foundation#Accordion} registration for configuring the component with a DesignSystem.
@@ -10,7 +10,7 @@ export * from "../accordion-item/index";
  *
  * @public
  * @remarks
- * Generates the HTML Element: \<fast-accordion\>
+ * Generates HTML Element: `<fast-accordion>`
  */
 export const fastAccordion = Accordion.compose({
     baseName: "accordion",
@@ -19,13 +19,9 @@ export const fastAccordion = Accordion.compose({
 });
 
 /**
- * Styles for Accordion
- * @public
- */
-export const accordionStyles = styles;
-
-/**
  * Base class for Accordion
  * @public
  */
 export { Accordion };
+
+export { styles as accordionStyles };

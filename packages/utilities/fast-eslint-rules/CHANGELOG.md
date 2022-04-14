@@ -1,18 +1,16 @@
-# Change Log
+# Change Log - @microsoft/eslint-config-fast-dna
 
-All notable changes to this project will be documented in this file.
-See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
+This log was last generated on Sun, 31 Oct 2021 07:17:45 GMT and should not be manually modified.
 
-# [1.2.0](https://github.com/microsoft/fast/compare/@microsoft/eslint-config-fast-dna@1.1.4...@microsoft/eslint-config-fast-dna@1.2.0) (2020-07-14)
+<!-- Start content -->
 
+## 2.0.0
 
-### Features
+Sun, 31 Oct 2021 07:17:45 GMT
 
-* update typescript version and remove utility types dependencies for react packages ([#3422](https://github.com/microsoft/fast/issues/3422)) ([09d07b5](https://github.com/microsoft/fast/commit/09d07b580cda3bcc5d28f83d3568521f710c9576))
+### Major changes
 
-
-
-
+- update eslint-config-rules to leverage latest versions of eslint and remove react (chhol@microsoft.com)
 
 ## [1.1.4](https://github.com/microsoft/fast/compare/@microsoft/eslint-config-fast-dna@1.1.3...@microsoft/eslint-config-fast-dna@1.1.4) (2020-06-26)
 

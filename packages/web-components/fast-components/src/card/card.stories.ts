@@ -1,5 +1,5 @@
 import CardTemplate from "./fixtures/card.html";
-import "./index";
+import "./index.js";
 
 export default {
     title: "Card",

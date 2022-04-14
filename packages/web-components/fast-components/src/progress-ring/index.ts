@@ -3,7 +3,7 @@ import {
     ProgressRingOptions,
     progressRingTemplate as template,
 } from "@microsoft/fast-foundation";
-import { progressRingStyles as styles } from "./progress-ring.styles";
+import { progressRingStyles as styles } from "./progress-ring.styles.js";
 
 /**
  * A function that returns a {@link @microsoft/fast-foundation#BaseProgress} registration for configuring the component with a DesignSystem.
@@ -12,13 +12,13 @@ import { progressRingStyles as styles } from "./progress-ring.styles";
  *
  * @public
  * @remarks
- * Generates HTML Element: \<fast-progress-ring\>
+ * Generates HTML Element: `<fast-progress-ring>`
  */
 export const fastProgressRing = ProgressRing.compose<ProgressRingOptions>({
     baseName: "progress-ring",
     template,
     styles,
-    indeterminateIndicator: `
+    indeterminateIndicator: /* html */ `
         <svg class="progress" part="progress" viewBox="0 0 16 16">
             <circle
                 class="background"
@@ -39,13 +39,9 @@ export const fastProgressRing = ProgressRing.compose<ProgressRingOptions>({
 });
 
 /**
- * Styles for ProgressRing
- * @public
- */
-export const progressRingStyles = styles;
-
-/**
  * Base class for ProgressRing
  * @public
  */
 export { ProgressRing };
+
+export { styles as progressRingStyles };

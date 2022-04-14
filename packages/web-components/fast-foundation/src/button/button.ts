@@ -3,10 +3,10 @@ import {
     ARIAGlobalStatesAndProperties,
     StartEnd,
     StartEndOptions,
-} from "../patterns/index";
-import { applyMixins } from "../utilities/apply-mixins";
-import type { FoundationElementDefinition } from "../foundation-element";
-import { FormAssociatedButton } from "./button.form-associated";
+} from "../patterns/index.js";
+import { applyMixins } from "../utilities/apply-mixins.js";
+import type { FoundationElementDefinition } from "../foundation-element/foundation-element.js";
+import { FormAssociatedButton } from "./button.form-associated.js";
 
 /**
  * Button configuration options
@@ -157,7 +157,38 @@ export class Button extends FormAssociatedButton {
 
         this.proxy.setAttribute("type", this.type);
         this.handleUnsupportedDelegatesFocus();
+
+        const elements = Array.from(this.control?.children) as HTMLSpanElement[];
+        if (elements) {
+            elements.forEach((span: HTMLSpanElement) => {
+                span.addEventListener("click", this.handleClick);
+            });
+        }
     }
+
+    /**
+     * @internal
+     */
+    public disconnectedCallback(): void {
+        super.disconnectedCallback();
+
+        const elements = Array.from(this.control?.children) as HTMLSpanElement[];
+        if (elements) {
+            elements.forEach((span: HTMLSpanElement) => {
+                span.removeEventListener("click", this.handleClick);
+            });
+        }
+    }
+
+    /**
+     * Prevent events to propagate if disabled and has no slotted content wrapped in HTML elements
+     * @internal
+     */
+    private handleClick = (e: Event) => {
+        if (this.disabled && this.defaultSlottedContent?.length <= 1) {
+            e.stopPropagation();
+        }
+    };
 
     /**
      * Submits the parent form
@@ -224,7 +255,7 @@ export class DelegatesARIAButton {
      * @remarks
      * HTML Attribute: aria-expanded
      */
-    @attr({ attribute: "aria-expanded", mode: "fromView" })
+    @attr({ attribute: "aria-expanded" })
     public ariaExpanded: "true" | "false" | undefined;
 
     /**
@@ -233,7 +264,7 @@ export class DelegatesARIAButton {
      * @remarks
      * HTML Attribute: aria-pressed
      */
-    @attr({ attribute: "aria-pressed", mode: "fromView" })
+    @attr({ attribute: "aria-pressed" })
     public ariaPressed: "true" | "false" | "mixed" | undefined;
 }
 
@@ -243,7 +274,6 @@ export class DelegatesARIAButton {
  * TODO: https://github.com/microsoft/fast/issues/3317
  * @internal
  */
-/* eslint-disable-next-line */
 export interface DelegatesARIAButton extends ARIAGlobalStatesAndProperties {}
 applyMixins(DelegatesARIAButton, ARIAGlobalStatesAndProperties);
 

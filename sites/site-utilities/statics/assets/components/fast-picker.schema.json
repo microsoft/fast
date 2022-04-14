@@ -2,7 +2,7 @@
   "$schema": "http://json-schema.org/schema#",
   "$id": "fast-picker",
   "id": "fast-picker",
-  "title": "picker",
+  "title": "Picker",
   "description": "The FAST picker element",
   "type": "object",
   "version": 1.1,
@@ -58,6 +58,16 @@
     "labelledby": {
       "description": "The labelledby attribute",
       "mapsToAttribute": "labelledby",
+      "type": "string"
+    },
+    "menu-placement": {
+      "description": "The menu-placement attribute",
+      "mapsToAttribute": "menu-placement",
+      "type": "string"
+    },
+    "placeholder": {
+      "description": "The placeholder attribute",
+      "mapsToAttribute": "placeholder",
       "type": "string"
     },
     "SlotListRegion": {

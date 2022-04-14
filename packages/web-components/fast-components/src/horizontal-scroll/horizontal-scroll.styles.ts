@@ -1,10 +1,10 @@
 import { css, ElementStyles } from "@microsoft/fast-element";
 import {
     display,
-    ElementDefinitionContext,
+    FoundationElementTemplate,
     HorizontalScrollOptions,
 } from "@microsoft/fast-foundation";
-import { DirectionalStyleSheetBehavior } from "../styles";
+import { DirectionalStyleSheetBehavior } from "../styles/direction.js";
 
 const ltrActionsStyles = css`
     .scroll-prev {
@@ -51,7 +51,7 @@ const rtlActionsStyles = css`
 `;
 
 /**
- * Styles used for the flipper container and gradient fade
+ * Styles used for the flipper container and gradient fade actions
  * @public
  */
 export const ActionsStyles = css`
@@ -100,16 +100,13 @@ export const ActionsStyles = css`
 `.withBehaviors(new DirectionalStyleSheetBehavior(ltrActionsStyles, rtlActionsStyles));
 
 /**
- * Styles handling the scroll container and content
+ * Horizontal Scroll styles
  * @public
  */
-export const horizontalScrollStyles: (
-    context: ElementDefinitionContext,
-    definition: HorizontalScrollOptions
-) => ElementStyles = (
-    context: ElementDefinitionContext,
-    definition: HorizontalScrollOptions
-) => css`
+export const horizontalScrollStyles: FoundationElementTemplate<
+    ElementStyles,
+    HorizontalScrollOptions
+> = (context, definition) => css`
     ${display("block")} :host {
         --scroll-align: center;
         --scroll-item-spacing: 5px;

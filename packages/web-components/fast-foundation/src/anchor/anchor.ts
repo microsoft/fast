@@ -1,11 +1,14 @@
 import { attr, observable } from "@microsoft/fast-element";
-import { FoundationElement, FoundationElementDefinition } from "../foundation-element";
+import {
+    FoundationElement,
+    FoundationElementDefinition,
+} from "../foundation-element/foundation-element.js";
 import {
     ARIAGlobalStatesAndProperties,
     StartEnd,
     StartEndOptions,
-} from "../patterns/index";
-import { applyMixins } from "../utilities/apply-mixins";
+} from "../patterns/index.js";
+import { applyMixins } from "../utilities/apply-mixins.js";
 
 /**
  * Anchor configuration options
@@ -146,7 +149,7 @@ export class DelegatesARIALink {
      * @remarks
      * HTML Attribute: aria-expanded
      */
-    @attr({ attribute: "aria-expanded", mode: "fromView" })
+    @attr({ attribute: "aria-expanded" })
     public ariaExpanded: "true" | "false" | undefined;
 }
 
@@ -156,7 +159,6 @@ export class DelegatesARIALink {
  * TODO: https://github.com/microsoft/fast/issues/3317
  * @internal
  */
-/* eslint-disable-next-line */
 export interface DelegatesARIALink extends ARIAGlobalStatesAndProperties {}
 applyMixins(DelegatesARIALink, ARIAGlobalStatesAndProperties);
 
@@ -166,6 +168,5 @@ applyMixins(DelegatesARIALink, ARIAGlobalStatesAndProperties);
  * TODO: https://github.com/microsoft/fast/issues/3317
  * @internal
  */
-/* eslint-disable-next-line */
 export interface Anchor extends StartEnd, DelegatesARIALink {}
 applyMixins(Anchor, StartEnd, DelegatesARIALink);

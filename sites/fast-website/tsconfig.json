@@ -4,7 +4,6 @@
         "module": "ES6",
         "target": "ES6",
         "baseUrl": "./",
-        "strictNullChecks": true,
         "esModuleInterop": true,
         "allowSyntheticDefaultImports": true,
         "experimentalDecorators": true,

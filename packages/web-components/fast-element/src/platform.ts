@@ -24,6 +24,25 @@ export type TrustedTypes = {
 };
 
 /**
+ * The FAST global.
+ * @internal
+ */
+export interface FASTGlobal {
+    /**
+     * The list of loaded versions.
+     */
+    readonly versions: string[];
+
+    /**
+     * Gets a kernel value.
+     * @param id - The id to get the value for.
+     * @param initialize - Creates the initial value for the id if not already existing.
+     */
+    getById<T>(id: string | number): T | null;
+    getById<T>(id: string | number, initialize: () => T): T;
+}
+
+/**
  * The platform global type.
  * @public
  */
@@ -32,6 +51,12 @@ export type Global = typeof globalThis & {
      * Enables working with trusted types.
      */
     trustedTypes: TrustedTypes;
+
+    /**
+     * The FAST global.
+     * @internal
+     */
+    readonly FAST: FASTGlobal;
 };
 
 declare const global: any;
@@ -77,6 +102,53 @@ export const $global: Global = (function () {
 // API-only Polyfill for trustedTypes
 if ($global.trustedTypes === void 0) {
     $global.trustedTypes = { createPolicy: (n: string, r: TrustedTypesPolicy) => r };
+}
+
+const propConfig = {
+    configurable: false,
+    enumerable: false,
+    writable: false,
+};
+
+if ($global.FAST === void 0) {
+    Reflect.defineProperty($global, "FAST", {
+        value: Object.create(null),
+        ...propConfig,
+    });
+}
+
+/**
+ * The FAST global.
+ * @internal
+ */
+export const FAST = $global.FAST;
+
+if (FAST.getById === void 0) {
+    const storage = Object.create(null);
+
+    Reflect.defineProperty(FAST, "getById", {
+        value<T>(id: string | number, initialize?: () => T): T | null {
+            let found = storage[id];
+
+            if (found === void 0) {
+                found = initialize ? (storage[id] = initialize()) : null;
+            }
+
+            return found;
+        },
+        ...propConfig,
+    });
+}
+
+/**
+ * Core services shared across FAST instances.
+ * @internal
+ */
+export const enum KernelServiceId {
+    updateQueue = 1,
+    observable = 2,
+    contextEvent = 3,
+    elementRegistry = 4,
 }
 
 /**

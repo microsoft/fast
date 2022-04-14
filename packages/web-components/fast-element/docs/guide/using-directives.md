@@ -140,6 +140,19 @@ Some context properties are opt-in because they are more costly to update. So, f
 </ul>
 ```
 
+Whether or not a repeat directive re-uses item views can be controlled with the `recycle` option setting. When `recycle: true`, which is the default value, the repeat directive may reuse views rather than create new ones from the template.  When `recycle: false` 
+previously used views are always discarded and each item will always be assigned a new view. Recyling previously used views may improve performance in some situations but may also be "dirty" from the previously displayed item.
+
+**Example: List Rendering without view recycling**
+
+```html
+<ul>
+  ${repeat(x => x.friends, html<string>`
+    <li>${(x, c) => c.index} ${x => x}</li>
+  `, { positioning: true, recycle: false })}
+</ul>
+```
+
 In addition to providing a template to render the items with, you can also provide an expression that evaluates to a template. This enables you to dynamically change what you are using to render the items. Each item will still be rendered with the same template, but you can use techniques from "Composing Templates" below to render a different template depending on the item itself.
 
 ### Composing templates
@@ -317,7 +330,7 @@ const template = html<MyElement>`
   <ul>
     ${repeat(x => x.items, html`
       <li>
-        ${(x, c) = c.parent.selectTemplate(x)}
+        ${(x, c) => c.parent.selectTemplate(x)}
       </li>
     `)}
   </ul>
@@ -513,14 +526,17 @@ const template = html<MyElement>`
 export class MyElement extends FASTElement {
   @observable slottedNodes: Node[];
 
-  connectedCallback() {
-    super.connectedCallback();
-    console.log(this.slottedNodes);
+  slottedNodesChanged() {
+    // respond to changes in slotted node
   }
 }
 ```
 
 Similar to the `children` directive, the `slotted` directive will populate the `slottedNodes` property with nodes assigned to the slot. If `slottedNodes` is decorated with `@observable` then it will be updated dynamically as the assigned nodes change. Like any observable, you can optionally implement a *propertyName*Changed method to be notified when the nodes change. Additionally, you can provide an `options` object to the `slotted` directive to specify a customized configuration for the underlying [assignedNodes() API call](https://developer.mozilla.org/en-US/docs/Web/API/HTMLSlotElement/assignedNodes) or specify a `filter`.
+
+:::tip
+It's best to leverage a change handler for slotted nodes rather than assuming that the nodes will be present in the `connectedCallback`.
+:::
 
 ## Host directives
 

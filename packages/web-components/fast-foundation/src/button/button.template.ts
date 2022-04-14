@@ -1,20 +1,17 @@
 import { html, ref, slotted } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
-import { endSlotTemplate, startSlotTemplate } from "../patterns/start-end";
-import type { ElementDefinitionContext } from "../design-system";
-import type { Button, ButtonOptions } from "./button";
+import { endSlotTemplate, startSlotTemplate } from "../patterns/start-end.js";
+import type { FoundationElementTemplate } from "../foundation-element/foundation-element.js";
+import type { Button, ButtonOptions } from "./button.js";
 
 /**
  * The template for the {@link @microsoft/fast-foundation#(Button:class)} component.
  * @public
  */
-export const buttonTemplate: (
-    context: ElementDefinitionContext,
-    definition: ButtonOptions
-) => ViewTemplate<Button> = (
-    context: ElementDefinitionContext,
-    definition: ButtonOptions
-) => html`
+export const buttonTemplate: FoundationElementTemplate<
+    ViewTemplate<Button>,
+    ButtonOptions
+> = (context, definition) => html`
     <button
         class="control"
         part="control"

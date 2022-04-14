@@ -1,11 +1,14 @@
 import { attr, FASTElement, observable, Observable } from "@microsoft/fast-element";
 import { ArrowKeys, Direction, limit, Orientation } from "@microsoft/fast-web-utilities";
 import { isFocusable } from "tabbable";
-import { FoundationElement, FoundationElementDefinition } from "../foundation-element";
-import { ARIAGlobalStatesAndProperties } from "../patterns/aria-global";
-import { StartEnd, StartEndOptions } from "../patterns/start-end";
-import { applyMixins } from "../utilities/apply-mixins";
-import { getDirection } from "../utilities/direction";
+import {
+    FoundationElement,
+    FoundationElementDefinition,
+} from "../foundation-element/foundation-element.js";
+import { ARIAGlobalStatesAndProperties } from "../patterns/aria-global.js";
+import { StartEnd, StartEndOptions } from "../patterns/start-end.js";
+import { applyMixins } from "../utilities/apply-mixins.js";
+import { getDirection } from "../utilities/direction.js";
 
 /**
  * Toolbar configuration options
@@ -137,6 +140,17 @@ export class Toolbar extends FoundationElement {
     public connectedCallback() {
         super.connectedCallback();
         this.direction = getDirection(this);
+        this.start.addEventListener("slotchange", this.startEndSlotChange);
+        this.end.addEventListener("slotchange", this.startEndSlotChange);
+    }
+
+    /**
+     * @internal
+     */
+    public disconnectedCallback() {
+        super.disconnectedCallback();
+        this.start.removeEventListener("slotchange", this.startEndSlotChange);
+        this.end.removeEventListener("slotchange", this.startEndSlotChange);
     }
 
     /**
@@ -243,7 +257,7 @@ export class Toolbar extends FoundationElement {
     private static reduceFocusableItems(
         elements: HTMLElement[],
         element: FASTElement & HTMLElement
-    ) {
+    ): HTMLElement[] {
         const isRoleRadio = element.getAttribute("role") === "radio";
         const isFocusableFastElement =
             element.$fastController?.definition.shadowOptions?.delegatesFocus;
@@ -280,6 +294,12 @@ export class Toolbar extends FoundationElement {
             });
         }
     }
+
+    private startEndSlotChange = (): void => {
+        if (this.$fastController.isConnected) {
+            this.reduceFocusableElements();
+        }
+    };
 }
 
 /**

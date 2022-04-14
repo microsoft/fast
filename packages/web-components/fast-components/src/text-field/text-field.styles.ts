@@ -2,9 +2,9 @@ import { css, ElementStyles } from "@microsoft/fast-element";
 import {
     disabledCursor,
     display,
-    ElementDefinitionContext,
     focusVisible,
     forcedColorsStylesheetBehavior,
+    FoundationElementTemplate,
     TextFieldOptions,
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
@@ -17,6 +17,7 @@ import {
     designUnit,
     disabledOpacity,
     focusStrokeOuter,
+    focusStrokeWidth,
     neutralFillHover,
     neutralFillInputHover,
     neutralFillInputRest,
@@ -26,13 +27,17 @@ import {
     strokeWidth,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
-} from "../design-tokens";
-import { heightNumber } from "../styles/index";
+} from "../design-tokens.js";
+import { heightNumber } from "../styles/index.js";
 
-export const textFieldStyles: (
-    context: ElementDefinitionContext,
-    definition: TextFieldOptions
-) => ElementStyles = (context: ElementDefinitionContext, definition: TextFieldOptions) =>
+/**
+ * Styles for Text Field
+ * @public
+ */
+export const textFieldStyles: FoundationElementTemplate<
+    ElementStyles,
+    TextFieldOptions
+> = (context, definition) =>
     css`
     ${display("inline-block")} :host {
         font-family: ${bodyFont};
@@ -50,6 +55,7 @@ export const textFieldStyles: (
         border-radius: calc(${controlCornerRadius} * 1px);
         border: calc(${strokeWidth} * 1px) solid ${accentFillRest};
         height: calc(${heightNumber} * 1px);
+        align-items: baseline;
     }
 
     .control {
@@ -90,6 +96,12 @@ export const textFieldStyles: (
     }
 
     .start,
+    .control,
+    .end {
+        align-self: center;
+    }
+
+    .start,
     .end {
         display: flex;
         margin: auto;
@@ -122,7 +134,7 @@ export const textFieldStyles: (
 
     :host(:focus-within:not([disabled])) .root {
         border-color: ${focusStrokeOuter};
-        box-shadow: 0 0 0 1px ${focusStrokeOuter} inset;
+        box-shadow: 0 0 0 calc(${focusStrokeWidth} * 1px) ${focusStrokeOuter} inset;
     }
 
     :host([appearance="filled"]) .root {

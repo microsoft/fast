@@ -1,6 +1,6 @@
 import { html, ref, SyntheticViewTemplate } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
-import type { ElementDefinitionContext } from "../design-system";
+import type { ElementDefinitionContext } from "../design-system/registration-context.js";
 
 /**
  * Start configuration options

@@ -3,7 +3,7 @@ import {
     AvatarOptions,
     Badge,
     display,
-    ElementDefinitionContext,
+    FoundationElementTemplate,
 } from "@microsoft/fast-foundation";
 import {
     baseHeightMultiplier,
@@ -12,8 +12,8 @@ import {
     designUnit,
     neutralForegroundRest,
     typeRampBaseFontSize,
-} from "../design-tokens";
-import { DirectionalStyleSheetBehavior } from "../styles";
+} from "../design-tokens.js";
+import { DirectionalStyleSheetBehavior } from "../styles/direction.js";
 
 const rtl = (context, definition) => css`
     ::slotted(${context.tagFor(Badge)}) {
@@ -27,10 +27,14 @@ const ltr = (context, definition) => css`
     }
 `;
 
-export const avatarStyles: (
-    context: ElementDefinitionContext,
-    definition: AvatarOptions
-) => ElementStyles = (context: ElementDefinitionContext, definition: AvatarOptions) =>
+/**
+ * Styles for Avatar
+ * @public
+ */
+export const avatarStyles: FoundationElementTemplate<ElementStyles, AvatarOptions> = (
+    context,
+    definition
+) =>
     css`
         ${display("flex")} :host {
             position: relative;

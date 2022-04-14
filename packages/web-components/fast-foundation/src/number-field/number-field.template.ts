@@ -1,20 +1,17 @@
 import { html, ref, slotted, when } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
-import { endSlotTemplate, startSlotTemplate } from "../patterns";
-import type { ElementDefinitionContext } from "../design-system";
-import type { NumberField, NumberFieldOptions } from "./number-field";
+import { endSlotTemplate, startSlotTemplate } from "../patterns/start-end.js";
+import type { FoundationElementTemplate } from "../foundation-element/foundation-element.js";
+import type { NumberField, NumberFieldOptions } from "./number-field.js";
 
 /**
  * The template for the {@link @microsoft/fast-foundation#(NumberField:class)} component.
  * @public
  */
-export const numberFieldTemplate: (
-    context: ElementDefinitionContext,
-    definition: NumberFieldOptions
-) => ViewTemplate<NumberField> = (
-    context: ElementDefinitionContext,
-    definition: NumberFieldOptions
-) => html`
+export const numberFieldTemplate: FoundationElementTemplate<
+    ViewTemplate<NumberField>,
+    NumberFieldOptions
+> = (context, definition) => html`
     <template class="${x => (x.readOnly ? "readonly" : "")}">
         <label
             part="label"
@@ -35,6 +32,7 @@ export const numberFieldTemplate: (
                 @input="${x => x.handleTextInput()}"
                 @change="${x => x.handleChange()}"
                 @keydown="${(x, c) => x.handleKeyDown(c.event as KeyboardEvent)}"
+                @blur="${(x, c) => x.handleBlur()}"
                 ?autofocus="${x => x.autofocus}"
                 ?disabled="${x => x.disabled}"
                 list="${x => x.list}"
@@ -44,7 +42,6 @@ export const numberFieldTemplate: (
                 ?readonly="${x => x.readOnly}"
                 ?required="${x => x.required}"
                 size="${x => x.size}"
-                :value="${x => x.displayText}"
                 type="text"
                 inputmode="numeric"
                 min="${x => x.min}"

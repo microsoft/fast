@@ -2,10 +2,10 @@ import { css, ElementStyles } from "@microsoft/fast-element";
 import {
     disabledCursor,
     display,
-    ElementDefinitionContext,
     FlipperOptions,
     focusVisible,
     forcedColorsStylesheetBehavior,
+    FoundationElementTemplate,
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
@@ -23,13 +23,17 @@ import {
     neutralForegroundRest,
     neutralStrokeRest,
     strokeWidth,
-} from "../design-tokens";
-import { heightNumber } from "../styles/index";
+} from "../design-tokens.js";
+import { heightNumber } from "../styles/index.js";
 
-export const flipperStyles: (
-    context: ElementDefinitionContext,
-    definition: FlipperOptions
-) => ElementStyles = (context: ElementDefinitionContext, definition: FlipperOptions) =>
+/**
+ * Styles for Flipper
+ * @public
+ */
+export const flipperStyles: FoundationElementTemplate<ElementStyles, FlipperOptions> = (
+    context,
+    definition
+) =>
     css`
     ${display("inline-flex")} :host {
         width: calc(${heightNumber} * 1px);
@@ -73,6 +77,7 @@ export const flipperStyles: (
         cursor: ${disabledCursor};
         fill: currentcolor;
         color: ${neutralForegroundRest};
+        pointer-events: none;
     }
 
     :host([disabled])::before,

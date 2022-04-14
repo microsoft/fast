@@ -2,9 +2,9 @@ import { css, ElementStyles } from "@microsoft/fast-element";
 import {
     disabledCursor,
     display,
-    ElementDefinitionContext,
     focusVisible,
     forcedColorsStylesheetBehavior,
+    FoundationElementTemplate,
     SwitchOptions,
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
@@ -31,13 +31,17 @@ import {
     strokeWidth,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
-} from "../design-tokens";
-import { DirectionalStyleSheetBehavior, heightNumber } from "../styles/index";
+} from "../design-tokens.js";
+import { DirectionalStyleSheetBehavior, heightNumber } from "../styles/index.js";
 
-export const switchStyles: (
-    context: ElementDefinitionContext,
-    definition: SwitchOptions
-) => ElementStyles = (context: ElementDefinitionContext, definition: SwitchOptions) =>
+/**
+ * Styles for Switch
+ * @public
+ */
+export const switchStyles: FoundationElementTemplate<ElementStyles, SwitchOptions> = (
+    context,
+    definition
+) =>
     css`
     :host([hidden]) {
         display: none;
@@ -137,10 +141,9 @@ export const switchStyles: (
         visibility: hidden;
     }
 
-    ::slotted(*) {
-        ${
-            /* Need to discuss with Brian how HorizontalSpacingNumber can work. https://github.com/microsoft/fast/issues/2766 */ ""
-        } margin-inline-start: calc(${designUnit} * 2px + 2px);
+    ::slotted([slot="checked-message"]),
+    ::slotted([slot="unchecked-message"]) {
+        margin-inline-start: calc(${designUnit} * 2px + 2px);
     }
 
     :host([aria-checked="true"]) .checked-indicator {

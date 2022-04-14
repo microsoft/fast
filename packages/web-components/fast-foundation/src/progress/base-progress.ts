@@ -4,7 +4,10 @@ import {
     observable,
     SyntheticViewTemplate,
 } from "@microsoft/fast-element";
-import { FoundationElement, FoundationElementDefinition } from "../foundation-element";
+import {
+    FoundationElement,
+    FoundationElementDefinition,
+} from "../foundation-element/foundation-element.js";
 
 /**
  * Progress configuration options
@@ -78,7 +81,7 @@ export class BaseProgress extends FoundationElement {
      * HTML Attribute: paused
      */
     @attr({ mode: "boolean" })
-    public paused;
+    public paused: boolean;
 
     /**
      * Indicates progress in %

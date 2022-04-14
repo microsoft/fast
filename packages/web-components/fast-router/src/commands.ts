@@ -1,22 +1,22 @@
 import {
+    FASTElementDefinition,
     html,
     HTMLView,
     ViewTemplate,
-    FASTElementDefinition,
 } from "@microsoft/fast-element";
-import { RenderOperation, Router } from "./router";
-import { RouterConfiguration } from "./configuration";
-import { FASTElementLayout, Layout, RouteView, Transition } from "./view";
+import { RenderOperation, Router } from "./router.js";
+import { RouterConfiguration } from "./configuration.js";
+import { FASTElementLayout, Layout, RouteView, Transition } from "./view.js";
 import {
-    ElementRouteDefinition,
-    TemplateRouteDefinition,
     ElementFallbackRouteDefinition,
+    ElementRouteDefinition,
     TemplateFallbackRouteDefinition,
-} from "./routes";
-import { Route } from "./navigation";
-import { RecognizedRoute } from "./recognizer";
-import { navigationContributor, NavigationContributor } from "./contributors";
-import { NavigationCommitPhase, NavigationPhase } from "./phases";
+    TemplateRouteDefinition,
+} from "./routes.js";
+import { Route } from "./navigation.js";
+import { RecognizedRoute } from "./recognizer.js";
+import { navigationContributor, NavigationContributor } from "./contributors.js";
+import { NavigationCommitPhase, NavigationPhase } from "./phases.js";
 
 /**
  * @alpha

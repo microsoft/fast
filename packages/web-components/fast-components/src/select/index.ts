@@ -3,7 +3,7 @@ import {
     SelectOptions,
     selectTemplate as template,
 } from "@microsoft/fast-foundation";
-import { selectStyles as styles } from "./select.styles";
+import { selectStyles as styles } from "./select.styles.js";
 
 /**
  * A function that returns a {@link @microsoft/fast-foundation#Select} registration for configuring the component with a DesignSystem.
@@ -12,14 +12,14 @@ import { selectStyles as styles } from "./select.styles";
  *
  * @public
  * @remarks
- * Generates HTML Element: \<fast-select\>
+ * Generates HTML Element: `<fast-select>`
  *
  */
 export const fastSelect = Select.compose<SelectOptions>({
     baseName: "select",
     template,
     styles,
-    indicator: `
+    indicator: /* html */ `
         <svg
             class="select-indicator"
             part="select-indicator"
@@ -34,13 +34,9 @@ export const fastSelect = Select.compose<SelectOptions>({
 });
 
 /**
- * Styles for Select
- * @public
- */
-export const selectStyles = styles;
-
-/**
  * Base class for Select
  * @public
  */
 export { Select };
+
+export { styles as selectStyles };

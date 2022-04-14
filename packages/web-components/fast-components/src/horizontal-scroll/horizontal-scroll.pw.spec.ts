@@ -1,6 +1,7 @@
 import type { HorizontalScroll as HorizontalScrollType } from "@microsoft/fast-foundation";
-import { assert, expect } from "chai";
+import chai from "chai";
 import { ElementHandle } from "playwright";
+const { expect } = chai;
 
 type fastHorizontalScroll = HTMLElement & HorizontalScrollType;
 
@@ -94,7 +95,7 @@ describe("FASTHorizontalScroll", function () {
             "fast-horizontal-scroll"
         )) as ElementHandle<fastHorizontalScroll>;
 
-        assert((await element.evaluate(node => node.scrollContainer.scrollLeft)) === 0);
+        expect(await element.evaluate(node => node.scrollContainer.scrollLeft)).to.equal(0);
 
         await element.evaluateHandle(node => node.scrollToPrevious());
 
@@ -183,14 +184,17 @@ describe("FASTHorizontalScroll", function () {
 
         await element.evaluateHandle(node => {
             while (node.childElementCount > 1) {
-                node.removeChild(node.lastElementChild!);
+                if (node.lastElementChild) {
+                    node.removeChild(node.lastElementChild);
+                }
             }
         });
 
+        await element.waitForElementState("stable");
+
         expect(
             await element.evaluate(node =>
-                node
-                    .shadowRoot!.querySelector(".scroll-next")
+                node.shadowRoot?.querySelector(".scroll-next")
                     ?.classList.contains("disabled")
             )
         ).to.be.true;
@@ -203,9 +207,7 @@ describe("FASTHorizontalScroll", function () {
 
         expect(
             await element.evaluate(node =>
-                node
-                    .shadowRoot!.querySelector(".scroll-prev")
-                    ?.classList.contains("disabled")
+                node.shadowRoot?.querySelector(".scroll-prev")?.classList.contains("disabled")
             )
         ).to.be.true;
     });
@@ -264,10 +266,12 @@ describe("FASTHorizontalScroll", function () {
         )) as ElementHandle<fastHorizontalScroll>;
 
         await this.page.evaluateHandle(node => {
-            node.scrollContainer.scrollLeft =
-                node.scrollContainer.scrollWidth -
-                node.scrollContainer.offsetWidth -
-                node.firstElementChild!.clientWidth;
+            if (node.firstElementChild) {
+                node.scrollContainer.scrollLeft =
+                    node.scrollContainer.scrollWidth -
+                    node.scrollContainer.offsetWidth -
+                    node.firstElementChild.clientWidth;
+            }
         }, element);
 
         await element.evaluateHandle(node => node.scrollToNext());
@@ -296,7 +300,9 @@ describe("FASTHorizontalScroll", function () {
 
         await element.evaluateHandle(node => {
             // Move the scrollLeft almost to the end
-            node.scrollContainer.scrollLeft = node.firstElementChild!.clientWidth;
+            if (node.firstElementChild) {
+                node.scrollContainer.scrollLeft = node.firstElementChild.clientWidth;
+            }
 
             node.scrollToPrevious();
         });

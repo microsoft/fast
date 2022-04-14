@@ -1,8 +1,64 @@
 # Change Log - @microsoft/fast-element
 
-This log was last generated on Fri, 08 Oct 2021 19:53:11 GMT and should not be manually modified.
+This log was last generated on Wed, 06 Apr 2022 07:12:42 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.9.0
+
+Wed, 06 Apr 2022 07:12:42 GMT
+
+### Minor changes
+
+- convert fast-element to type:module (nicholasrice@users.noreply.github.com)
+
+## 1.8.0
+
+Tue, 08 Mar 2022 07:12:45 GMT
+
+### Minor changes
+
+- feat: enable multiple fast-element instances in browser at once (roeisenb@microsoft.com)
+
+## 1.7.2
+
+Fri, 25 Feb 2022 17:09:32 GMT
+
+### Patches
+
+- fix: defend against for/in use on arrays (roeisenb@microsoft.com)
+
+## 1.7.1
+
+Thu, 24 Feb 2022 22:21:55 GMT
+
+### Patches
+
+- fix: prevent duplicative array observation patch (roeisenb@microsoft.com)
+
+## 1.7.0
+
+Sun, 23 Jan 2022 07:13:56 GMT
+
+### Minor changes
+
+- add recyle option to repeat directive (scomea@microsoft.com)
+
+## 1.6.2
+
+Sun, 31 Oct 2021 07:17:45 GMT
+
+### Patches
+
+- update fast eslint package version (chhol@microsoft.com)
+
+## 1.6.1
+
+Wed, 13 Oct 2021 22:45:16 GMT
+
+### Patches
+
+- build(fast-element): exclude empty js files from esm index.js (markwhitfeld@users.noreply.github.com)
 
 ## 1.6.0
 

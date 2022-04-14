@@ -1,5 +1,3 @@
-/* eslint-env node, es2015 */
-/* eslint-disable @typescript-eslint/explicit-function-return-type, @typescript-eslint/no-var-requires, @typescript-eslint/typedef */
 const copyfiles = require("copyfiles");
 
 function copy(files, destination, config = { flat: true, verbose: true, up: true }) {

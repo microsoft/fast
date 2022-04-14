@@ -6,8 +6,8 @@ import {
     keyHome,
     wrapInBounds,
 } from "@microsoft/fast-web-utilities";
-import { FoundationElement } from "../foundation-element";
-import { AccordionItem } from "../accordion-item";
+import { FoundationElement } from "../foundation-element/foundation-element.js";
+import { AccordionItem } from "../accordion-item/accordion-item.js";
 
 /**
  * Expand mode for {@link Accordion}
@@ -54,14 +54,14 @@ export class Accordion extends FoundationElement {
     /**
      * @internal
      */
-    public accordionItemsChanged(oldValue, newValue): void {
+    public accordionItemsChanged(oldValue: HTMLElement[], newValue: HTMLElement[]): void {
         if (this.$fastController.isConnected) {
             this.removeItemListeners(oldValue);
             this.setItems();
         }
     }
 
-    private activeid: string | undefined;
+    private activeid: string | null;
     private activeItemIndex: number = 0;
     private accordionIds: Array<string | null>;
 
@@ -122,9 +122,9 @@ export class Accordion extends FoundationElement {
         });
     };
 
-    private activeItemChange = (event): void => {
+    private activeItemChange = (event: Event): void => {
         const selectedItem = event.target as AccordionItem;
-        this.activeid = event.target.getAttribute("id");
+        this.activeid = selectedItem.getAttribute("id");
         if (this.isSingleExpandMode()) {
             this.resetItems();
             selectedItem.expanded = true;

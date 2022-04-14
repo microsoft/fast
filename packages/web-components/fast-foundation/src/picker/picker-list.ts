@@ -1,6 +1,4 @@
-import { attr } from "@microsoft/fast-element";
-
-import { FoundationElement } from "../foundation-element";
+import { FoundationElement } from "../foundation-element/foundation-element.js";
 
 /**
  * A List Picker Menu Custom HTML Element.

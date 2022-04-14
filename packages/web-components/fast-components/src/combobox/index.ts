@@ -3,7 +3,7 @@ import {
     ComboboxOptions,
     comboboxTemplate as template,
 } from "@microsoft/fast-foundation";
-import { comboboxStyles as styles } from "./combobox.styles";
+import { comboboxStyles as styles } from "./combobox.styles.js";
 
 /**
  * A function that returns a {@link @microsoft/fast-foundation#Combobox} registration for configuring the component with a DesignSystem.
@@ -11,7 +11,7 @@ import { comboboxStyles as styles } from "./combobox.styles";
  *
  * @public
  * @remarks
- * Generates HTML Element: \<fast-combobox\>
+ * Generates HTML Element: `<fast-combobox>`
  *
  */
 export const fastCombobox = Combobox.compose<ComboboxOptions>({
@@ -21,7 +21,7 @@ export const fastCombobox = Combobox.compose<ComboboxOptions>({
     shadowOptions: {
         delegatesFocus: true,
     },
-    indicator: `
+    indicator: /* html */ `
         <svg
             class="select-indicator"
             part="select-indicator"
@@ -36,13 +36,9 @@ export const fastCombobox = Combobox.compose<ComboboxOptions>({
 });
 
 /**
- * Styles for combobox
- * @public
- */
-export const comboboxStyles = styles;
-
-/**
  * Base class for Combobox
  * @public
  */
 export { Combobox };
+
+export { styles as comboboxStyles };

@@ -1,14 +1,14 @@
-import { DOM } from "../dom";
-import type { Behavior } from "../observation/behavior";
-import { Binding, defaultExecutionContext } from "../observation/observable";
-import { compileTemplate } from "./compiler";
-import { ElementView, HTMLView, SyntheticView } from "./view";
+import { DOM } from "../dom.js";
+import type { Behavior } from "../observation/behavior.js";
+import { Binding, defaultExecutionContext } from "../observation/observable.js";
+import { compileTemplate } from "./compiler.js";
+import { ElementView, HTMLView, SyntheticView } from "./view.js";
 import {
     HTMLDirective,
     NodeBehaviorFactory,
     TargetedHTMLDirective,
-} from "./html-directive";
-import { HTMLBindingDirective } from "./binding";
+} from "./html-directive.js";
+import { HTMLBindingDirective } from "./binding.js";
 
 /**
  * A template capable of creating views specifically for rendering custom elements.
@@ -35,6 +35,7 @@ export interface ElementViewTemplate {
  * A template capable of rendering views not specifically connected to custom elements.
  * @public
  */
+/* eslint-disable-next-line @typescript-eslint/no-unused-vars */
 export interface SyntheticViewTemplate<TSource = any, TParent = any> {
     /**
      * Creates a SyntheticView instance based on this template definition.
@@ -46,6 +47,7 @@ export interface SyntheticViewTemplate<TSource = any, TParent = any> {
  * A template capable of creating HTMLView instances or rendering directly to DOM.
  * @public
  */
+/* eslint-disable-next-line @typescript-eslint/no-unused-vars */
 export class ViewTemplate<TSource = any, TParent = any>
     implements ElementViewTemplate, SyntheticViewTemplate {
     private behaviorCount: number = 0;
@@ -179,7 +181,7 @@ export class ViewTemplate<TSource = any, TParent = any>
 
 // Much thanks to LitHTML for working this out!
 const lastAttributeNameRegex =
-    // eslint-disable-next-line no-control-regex
+    /* eslint-disable-next-line no-control-regex */
     /([ \x09\x0a\x0c\x0d])([^\0-\x1F\x7F-\x9F "'>=/]+)([ \x09\x0a\x0c\x0d]*=[ \x09\x0a\x0c\x0d]*(?:[^ \x09\x0a\x0c\x0d"'`<>=]*|"[^"]*|'[^']*))$/;
 
 /**
@@ -187,7 +189,7 @@ const lastAttributeNameRegex =
  * into templates.
  * @public
  */
-/* eslint-disable-next-line @typescript-eslint/no-empty-interface */
+/* eslint-disable-next-line */
 export interface CaptureType<TSource> {}
 
 /**

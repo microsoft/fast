@@ -2,22 +2,23 @@ import { css, ElementStyles } from "@microsoft/fast-element";
 import {
     ComboboxOptions,
     disabledCursor,
-    ElementDefinitionContext,
     focusVisible,
+    FoundationElementTemplate,
 } from "@microsoft/fast-foundation";
 import {
     strokeWidth,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
-} from "../design-tokens";
-import { selectStyles } from "../select/select.styles";
+} from "../design-tokens.js";
+import { selectStyles } from "../select/select.styles.js";
 
-export const comboboxStyles: (
-    context: ElementDefinitionContext,
-    definition: ComboboxOptions
-) => ElementStyles = (
-    context: ElementDefinitionContext,
-    definition: ComboboxOptions
+/**
+ * Styles for Combobox
+ * @public
+ */
+export const comboboxStyles: FoundationElementTemplate<ElementStyles, ComboboxOptions> = (
+    context,
+    definition
 ) => css`
     ${selectStyles(context, definition)}
 

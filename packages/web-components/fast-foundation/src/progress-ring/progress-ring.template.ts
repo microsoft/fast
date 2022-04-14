@@ -1,7 +1,7 @@
 import { html, when } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
-import type { BaseProgress, ProgressRingOptions } from "../progress/base-progress";
-import type { ElementDefinitionContext } from "../design-system";
+import type { BaseProgress, ProgressRingOptions } from "../progress/base-progress.js";
+import type { FoundationElementTemplate } from "../foundation-element/foundation-element.js";
 
 const progressSegments: number = 44;
 
@@ -9,13 +9,10 @@ const progressSegments: number = 44;
  * The template for the {@link @microsoft/fast-foundation#BaseProgress} component.
  * @public
  */
-export const progressRingTemplate: (
-    context: ElementDefinitionContext,
-    definition: ProgressRingOptions
-) => ViewTemplate<BaseProgress> = (
-    context: ElementDefinitionContext,
-    definition: ProgressRingOptions
-) => html`
+export const progressRingTemplate: FoundationElementTemplate<
+    ViewTemplate<BaseProgress>,
+    ProgressRingOptions
+> = (context, definition) => html`
     <template
         role="progressbar"
         aria-valuenow="${x => x.value}"
@@ -43,7 +40,7 @@ export const progressRingTemplate: (
                         class="determinate"
                         part="determinate"
                         style="stroke-dasharray: ${x =>
-                            (progressSegments * x.percentComplete!) /
+                            (progressSegments * x.percentComplete) /
                             100}px ${progressSegments}px"
                         cx="8px"
                         cy="8px"

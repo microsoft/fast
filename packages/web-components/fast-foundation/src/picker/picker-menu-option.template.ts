@@ -1,14 +1,14 @@
 import { html, ViewTemplate } from "@microsoft/fast-element";
-import type { PickerMenuOption } from "./picker-menu-option";
+import type { FoundationElementTemplate } from "../foundation-element/foundation-element.js";
+import type { PickerMenuOption } from "./picker-menu-option.js";
 
 /**
  *
  * @public
  */
-export const pickerMenuOptionTemplate: (
-    context,
-    definition
-) => ViewTemplate<PickerMenuOption> = (context, definition) => {
+export const pickerMenuOptionTemplate: FoundationElementTemplate<ViewTemplate<
+    PickerMenuOption
+>> = (context, definition) => {
     return html<PickerMenuOption>`
         <template
             role="listitem"

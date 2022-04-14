@@ -1,8 +1,453 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Wed, 13 Oct 2021 01:53:37 GMT and should not be manually modified.
+This log was last generated on Thu, 07 Apr 2022 07:12:06 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.41.1
+
+Thu, 07 Apr 2022 07:12:06 GMT
+
+### Patches
+
+- Improved README markdown formatting (44823142+williamw2@users.noreply.github.com)
+
+## 2.41.0
+
+Wed, 06 Apr 2022 07:12:42 GMT
+
+### Minor changes
+
+- convert fast-foundation to type:module (nicholasrice@users.noreply.github.com)
+
+### Patches
+
+- Added CEM Analyzer and API markdown to readme files (44823142+williamw2@users.noreply.github.com)
+- Bump @microsoft/fast-element to v1.9.0 (nicholasrice@users.noreply.github.com)
+
+## 2.40.0
+
+Sun, 03 Apr 2022 07:12:01 GMT
+
+### Minor changes
+
+- update aria-current for breadcrumb items when new nodes are appended (chhol@microsoft.com)
+- remove fromView from aria mixin attributes (chhol@microsoft.com)
+
+### Patches
+
+- Bump @microsoft/fast-web-utilities to v5.2.0 (nicholasrice@users.noreply.github.com)
+
+## 2.39.0
+
+Thu, 31 Mar 2022 07:13:31 GMT
+
+### Minor changes
+
+- remove duplicate use of heading class in accordion item and update part location (chhol@microsoft.com)
+
+### Patches
+
+- fix hidden menu items should not be included in the tabindex (chhol@microsoft.com)
+
+## 2.38.0
+
+Sun, 27 Mar 2022 07:11:50 GMT
+
+### Minor changes
+
+- Changed Select open attribute to public (44823142+williamw2@users.noreply.github.com)
+- Add string literal union types to all foundation components that use an enum for attribute options (hawkticehurst@gmail.com)
+
+## 2.37.2
+
+Thu, 24 Mar 2022 07:12:08 GMT
+
+### Patches
+
+- Detect changes to start and end slots in toolbar (20542556+mollykreis@users.noreply.github.com)
+
+## 2.37.1
+
+Sun, 20 Mar 2022 07:15:44 GMT
+
+### Patches
+
+- Fix for default selection behavior for listbox and select (26874831+atmgrifter00@users.noreply.github.com)
+
+## 2.37.0
+
+Wed, 16 Mar 2022 07:12:41 GMT
+
+### Minor changes
+
+- enable no tabbing (scomea@microsoft.com)
+
+## 2.36.1
+
+Tue, 15 Mar 2022 07:12:38 GMT
+
+### Patches
+
+- anchored region not beta (scomea@microsoft.com)
+- tree view single select (scomea@microsoft.com)
+
+## 2.36.0
+
+Fri, 11 Mar 2022 23:46:34 GMT
+
+### Minor changes
+
+- BREAKING CHANGE: replace WC button with stock HTML button (jes@microsoft.com)
+- implement attribute reflection directive (nicholasrice@users.noreply.github.com)
+
+### Patches
+
+- use WeakMap to prevent leaking element references from FormAssociated (nicholasrice@users.noreply.github.com)
+
+## 2.35.2
+
+Wed, 09 Mar 2022 07:12:32 GMT
+
+### Patches
+
+- Fix bug with menu-item indention (20542556+mollykreis@users.noreply.github.com)
+
+## 2.35.1
+
+Tue, 08 Mar 2022 07:12:45 GMT
+
+### Patches
+
+- Fix programmatic disable/enable of tabs (5454342+brianehenry@users.noreply.github.com)
+
+## 2.35.0
+
+Sun, 06 Mar 2022 07:13:48 GMT
+
+### Minor changes
+
+- add corner positions to tooltip (sethdonohue@Admins-MBP.guest.corp.microsoft.com)
+
+### Patches
+
+- passive handlers (scomea@microsoft.com)
+- tooltip hover (scomea@microsoft.com)
+
+## 2.34.0
+
+Wed, 02 Mar 2022 07:12:58 GMT
+
+### Minor changes
+
+- add mermaid support (steph@huynhicode.dev)
+
+### Patches
+
+- generate grid columns for manual grid (scomea@microsoft.com)
+- auto columns fix (scomea@microsoft.com)
+- Fixing no previous scroll when only 2 items (robarb@microsoft.com)
+
+## 2.33.6
+
+Fri, 25 Feb 2022 17:09:32 GMT
+
+### Patches
+
+- Bump @microsoft/fast-element to v1.7.2 (roeisenb@microsoft.com)
+
+## 2.33.5
+
+Thu, 24 Feb 2022 22:21:55 GMT
+
+### Patches
+
+- Format improvement to match standards (16669785+awentzel@users.noreply.github.com)
+- fix combobox and select position when set after init (corylaviska@microsoft.com)
+- allow programmatic control of the open property for select and combobox (john.kreitlow@microsoft.com)
+
+## 2.33.4
+
+Sun, 20 Feb 2022 07:16:20 GMT
+
+### Patches
+
+- tree view events (scomea@microsoft.com)
+
+## 2.33.3
+
+Tue, 15 Feb 2022 07:11:28 GMT
+
+### Patches
+
+- disable noImplicitAny in fast-foundation (mathieu.lavoie@shopify.com)
+
+## 2.33.2
+
+Thu, 10 Feb 2022 07:12:01 GMT
+
+### Patches
+
+- Fix initial select value when set early after connect (5454342+brianehenry@users.noreply.github.com)
+
+## 2.33.1
+
+Wed, 09 Feb 2022 07:14:00 GMT
+
+### Patches
+
+- allow empty string values for listbox-option value attribute (john.kreitlow@microsoft.com)
+
+## 2.33.0
+
+Sun, 06 Feb 2022 07:15:20 GMT
+
+### Minor changes
+
+- add menu positioning to picker (scomea@microsoft.com)
+- add multiselect functionality to listbox (john.kreitlow@microsoft.com)
+
+### Patches
+
+- ensure menu items update (scomea@microsoft.com)
+- fix: diabled listbox missing styles & allows click (jes@microsoft.com)
+- fix: allow slider to show small increment changes (jes@microsoft.com)
+- fix: flippersHiddenFromAT shouldn't map to aria-hidden (robarb@microsoft.com)
+- tooltip anchor attribute updates work (scomea@microsoft.com)
+
+## 2.32.3
+
+Wed, 02 Feb 2022 07:13:39 GMT
+
+### Patches
+
+- fix: February tests are failing in calendar tests (robarb@microsoft.com)
+- fix broken links and formatting (john.kreitlow@microsoft.com)
+
+## 2.32.2
+
+Sun, 30 Jan 2022 07:12:35 GMT
+
+### Patches
+
+- convert functions to templates (mathieulavoie94@gmail.com)
+
+## 2.32.1
+
+Tue, 25 Jan 2022 07:11:53 GMT
+
+### Patches
+
+- Bump @microsoft/fast-web-utilities to v5.1.0 (john.kreitlow@microsoft.com)
+
+## 2.32.0
+
+Sun, 23 Jan 2022 07:13:56 GMT
+
+### Minor changes
+
+- feat: add `orientation` to divider (jes@microsoft.com)
+
+### Patches
+
+- use default slot in accordion (mathieulavoie94@gmail.com)
+- Bump @microsoft/fast-element to v1.7.0 (scomea@microsoft.com)
+
+## 2.31.0
+
+Thu, 20 Jan 2022 07:12:04 GMT
+
+### Minor changes
+
+- add checked property to listbox-option (john.kreitlow@microsoft.com)
+
+## 2.30.0
+
+Sun, 16 Jan 2022 07:11:36 GMT
+
+### Minor changes
+
+- Add valueAsNumber to number field and slider (5454342+brianehenry@users.noreply.github.com)
+
+## 2.29.0
+
+Sun, 09 Jan 2022 07:11:51 GMT
+
+### Minor changes
+
+- fix accessibility for listbox, select, and combobox (john.kreitlow@microsoft.com)
+
+## 2.28.0
+
+Thu, 06 Jan 2022 07:11:52 GMT
+
+### Minor changes
+
+- fix: prevent events to propagate from disabled button (#4884) (email not defined)
+
+### Patches
+
+- tooltip uses "center" (scomea@microsoft.com)
+
+## 2.27.3
+
+Sun, 19 Dec 2021 07:12:39 GMT
+
+### Patches
+
+- Replace equality check with NaN with the Number.isNan function (anthonystewart@google.com)
+- add queueUpdate for setStops in horzontal scroll (sethdonohue@Admins-MBP.guest.corp.microsoft.com)
+
+## 2.27.2
+
+Wed, 15 Dec 2021 07:14:44 GMT
+
+### Patches
+
+- focus on combobox control when clicking an associated label (john.kreitlow@microsoft.com)
+
+## 2.27.1
+
+Thu, 02 Dec 2021 07:11:13 GMT
+
+### Patches
+
+- fix: disabled tree items fire (jes@microsoft.com)
+
+## 2.27.0
+
+Tue, 23 Nov 2021 07:12:23 GMT
+
+### Minor changes
+
+- add `size` attribute to listbox element (john.kreitlow@microsoft.com)
+
+## 2.26.2
+
+Thu, 11 Nov 2021 07:15:33 GMT
+
+### Patches
+
+- convert tsdoc-config dependency to dev-dependency (nicholasrice@users.noreply.github.com)
+
+## 2.26.1
+
+Wed, 10 Nov 2021 07:12:54 GMT
+
+### Patches
+
+- Enabling setting number-field value through script (robarb@microsoft.com)
+
+## 2.26.0
+
+Tue, 09 Nov 2021 07:14:09 GMT
+
+### Minor changes
+
+- feat: add search web component (jes@microsoft.com)
+
+## 2.25.1
+
+Thu, 04 Nov 2021 07:11:59 GMT
+
+### Patches
+
+- fix: change event emitted twice (jes@microsoft.com)
+
+## 2.25.0
+
+Wed, 03 Nov 2021 07:12:39 GMT
+
+### Minor changes
+
+- add placeholder attr to picker (scomea@microsoft.com)
+
+## 2.24.0
+
+Sun, 31 Oct 2021 07:17:45 GMT
+
+### Minor changes
+
+- Added the CheckableFormAssociated mixin to better support the addition of current-checked property/attribute that allows for setting checked state via the .setAttribute() API. This change also converts two lifecycle hooks to methods from properties so that they can be handled correctly by the browser. (nicholasrice@users.noreply.github.com)
+
+### Patches
+
+- fix: number-field increment decrement logic (robarb@microsoft.com)
+- picker focus on input after selection (scomea@microsoft.com)
+- update fast eslint package version (chhol@microsoft.com)
+- Bump @microsoft/fast-element to v1.6.2 (chhol@microsoft.com)
+- Bump @microsoft/fast-web-utilities to v5.0.2 (chhol@microsoft.com)
+
+## 2.23.2
+
+Thu, 28 Oct 2021 07:15:32 GMT
+
+### Patches
+
+- fixes emission of CSS custom properties in FireFox and Safari (nicholasrice@users.noreply.github.com)
+
+## 2.23.1
+
+Wed, 27 Oct 2021 07:11:58 GMT
+
+### Patches
+
+- switch should check when using both enter and space (chhol@microsoft.com)
+
+## 2.23.0
+
+Fri, 22 Oct 2021 17:40:52 GMT
+
+### Minor changes
+
+- adds a currentValue property to form-associated to facilitate attribute-based data binding for form values (chhol@microsoft.com)
+
+### Patches
+
+- picker clear query on selection (scomea@microsoft.com)
+- Improving number field interactions and tests (robarb@microsoft.com)
+
+## 2.22.1
+
+Thu, 21 Oct 2021 07:11:42 GMT
+
+### Patches
+
+- fix broken tooltip (scomea@microsoft.com)
+
+## 2.22.0
+
+Wed, 20 Oct 2021 07:13:46 GMT
+
+### Minor changes
+
+- add centered positioning option to anchored region (scomea@microsoft.com)
+
+## 2.21.0
+
+Fri, 15 Oct 2021 23:24:14 GMT
+
+### Minor changes
+
+- Implement DesignToken root-element registration for CSS custom property emission of default token values (nicholasrice@users.noreply.github.com)
+
+### Patches
+
+- implement level-2 DOM support for DesignToken in browsers that don't support Constructable StyleSheets (nicholasrice@users.noreply.github.com)
+
+## 2.20.0
+
+Wed, 13 Oct 2021 22:45:16 GMT
+
+### Minor changes
+
+- Adding fast-calendar component (robarb@microsoft.com)
+
+### Patches
+
+- move style assignment for combobox and select into the class and off the DOM node (chhol@microsoft.com)
+- Code fixes for calendar (robarb@microsoft.com)
+- Bump @microsoft/fast-element to v1.6.1 (markwhitfeld@users.noreply.github.com)
 
 ## 2.19.0
 

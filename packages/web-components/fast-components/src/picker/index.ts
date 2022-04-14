@@ -10,11 +10,11 @@ import {
     pickerMenuTemplate,
     pickerTemplate,
 } from "@microsoft/fast-foundation";
-import { pickerStyles } from "./picker.styles";
-import { pickerMenuStyles } from "./picker-menu.styles";
-import { pickerMenuOptionStyles } from "./picker-menu-option.styles";
-import { pickerListStyles } from "./picker-list.styles";
-import { pickerListItemStyles } from "./picker-list-item.styles";
+import { pickerStyles } from "./picker.styles.js";
+import { pickerMenuStyles } from "./picker-menu.styles.js";
+import { pickerMenuOptionStyles } from "./picker-menu-option.styles.js";
+import { pickerListStyles } from "./picker-list.styles.js";
+import { pickerListItemStyles } from "./picker-list-item.styles.js";
 
 /**
  * The FAST  Picker Custom Element. Implements {@link @microsoft/fast-foundation#Picker},
@@ -23,7 +23,7 @@ import { pickerListItemStyles } from "./picker-list-item.styles";
  *
  * @alpha
  * @remarks
- * * Generates HTML Element: \<fast-picker\>
+ * * Generates HTML Element: `<fast-picker>`
  */
 export const fastPicker = Picker.compose({
     baseName: "picker",
@@ -31,12 +31,6 @@ export const fastPicker = Picker.compose({
     styles: pickerStyles,
     shadowOptions: {},
 });
-
-/**
- * Styles for Picker
- * @public
- */
-export const PickerStyles = pickerStyles;
 
 /**
  * Base class for Picker
@@ -59,12 +53,6 @@ export const fastPickerMenu = PickerMenu.compose({
 });
 
 /**
- * Styles for PickerMenu
- * @public
- */
-export const PickerMenuStyles = pickerMenuStyles;
-
-/**
  *  Component that displays available picker menu options
  *
  *
@@ -77,12 +65,6 @@ export const fastPickerMenuOption = PickerMenuOption.compose({
     template: pickerMenuOptionTemplate,
     styles: pickerMenuOptionStyles,
 });
-
-/**
- * Styles for PickerMenuOption
- * @public
- */
-export const PickerMenuOptionStyles = pickerMenuOptionStyles;
 
 /**
  * Component that displays the list of selected picker items along
@@ -100,12 +82,6 @@ export const fastPickerList = PickerList.compose({
 });
 
 /**
- * Styles for PickerList
- * @public
- */
-export const PickerListStyles = pickerListStyles;
-
-/**
  * Component that displays selected items
  *
  * @alpha
@@ -118,8 +94,4 @@ export const fastPickerListItem = PickerListItem.compose({
     styles: pickerListItemStyles,
 });
 
-/**
- * Styles for PickerListItem
- * @public
- */
-export const PickerListItemStyles = pickerListItemStyles;
+export { pickerStyles, pickerListItemStyles, pickerMenuOptionStyles, pickerMenuStyles };

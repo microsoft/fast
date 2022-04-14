@@ -1,18 +1,18 @@
-import { DOM } from "../dom";
+import { DOM } from "../dom.js";
 import {
     Binding,
     BindingObserver,
     ExecutionContext,
     Observable,
-} from "../observation/observable";
-import type { Notifier, Subscriber } from "../observation/notifier";
-import { enableArrayObservation } from "../observation/array-observer";
-import type { Splice } from "../observation/array-change-records";
-import type { Behavior } from "../observation/behavior";
-import { emptyArray } from "../platform";
-import { HTMLDirective } from "./html-directive";
-import { HTMLView, SyntheticView } from "./view";
-import type { CaptureType, SyntheticViewTemplate } from "./template";
+} from "../observation/observable.js";
+import type { Notifier, Subscriber } from "../observation/notifier.js";
+import { enableArrayObservation } from "../observation/array-observer.js";
+import type { Splice } from "../observation/array-change-records.js";
+import type { Behavior } from "../observation/behavior.js";
+import { emptyArray } from "../platform.js";
+import { HTMLDirective } from "./html-directive.js";
+import { HTMLView, SyntheticView } from "./view.js";
+import type { CaptureType, SyntheticViewTemplate } from "./template.js";
 
 /**
  * Options for configuring repeat behavior.
@@ -22,11 +22,17 @@ export interface RepeatOptions {
     /**
      * Enables index, length, and dependent positioning updates in item templates.
      */
-    positioning: boolean;
+    positioning?: boolean;
+
+    /**
+     * Enables view recycling
+     */
+    recycle?: boolean;
 }
 
 const defaultRepeatOptions: RepeatOptions = Object.freeze({
     positioning: false,
+    recycle: true,
 });
 
 function bindWithoutPositioning(
@@ -206,7 +212,9 @@ export class RepeatBehavior<TSource = any> implements Behavior, Subscriber {
                 const neighbor = views[addIndex];
                 const location = neighbor ? neighbor.firstChild : this.location;
                 const view =
-                    totalRemoved.length > 0 ? totalRemoved.shift()! : template.create();
+                    this.options.recycle && totalRemoved.length > 0
+                        ? totalRemoved.shift()!
+                        : template.create();
 
                 views.splice(addIndex, 0, view);
                 bindView(view, items, addIndex, childContext);

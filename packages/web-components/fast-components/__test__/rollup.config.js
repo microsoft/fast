@@ -1,12 +1,9 @@
-/* eslint-env node */
-/* eslint-disable @typescript-eslint/no-var-requires */
-
 import path from "path";
 import commonJS from "rollup-plugin-commonjs";
 import resolve from "rollup-plugin-node-resolve";
 import typescript from "rollup-plugin-typescript2";
 
-const copy = require("../../../../build/copy");
+const copy = require("../../../../build/copy.js");
 
 const srcDir = path.resolve(__dirname, "..", "src");
 const distDir = path.resolve(__dirname, "public");

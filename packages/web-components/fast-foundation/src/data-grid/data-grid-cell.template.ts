@@ -1,25 +1,21 @@
 import { html } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
-import type { FoundationElementDefinition } from "../foundation-element";
-import type { ElementDefinitionContext } from "../design-system";
-import type { DataGridCell } from "./data-grid-cell";
+import type { FoundationElementTemplate } from "../foundation-element/foundation-element.js";
+import type { DataGridCell } from "./data-grid-cell.js";
 
 /**
  * Generates a template for the {@link @microsoft/fast-foundation#DataGridCell} component using
  * the provided prefix.
  * @public
  */
-export const dataGridCellTemplate: (
-    context: ElementDefinitionContext,
-    definition: FoundationElementDefinition
-) => ViewTemplate<DataGridCell> = (
-    context: ElementDefinitionContext,
-    definition: FoundationElementDefinition
-) => {
+export const dataGridCellTemplate: FoundationElementTemplate<ViewTemplate<
+    DataGridCell
+>> = (context, definition) => {
     return html<DataGridCell>`
         <template
             tabindex="-1"
-            role="${x => x.cellType ?? "gridcell"}"
+            role="${x =>
+                !x.cellType || x.cellType === "default" ? "gridcell" : x.cellType}"
             class="
             ${x =>
                 x.cellType === "columnheader"

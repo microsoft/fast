@@ -2,6 +2,59 @@
   "name": "@microsoft/fast-web-utilities",
   "entries": [
     {
+      "date": "Sun, 03 Apr 2022 07:12:01 GMT",
+      "tag": "@microsoft/fast-web-utilities_v5.2.0",
+      "version": "5.2.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "Declare package as using ES modules",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "f6107c448ab6446667f4d9e86d9f9c11fff075aa",
+            "package": "@microsoft/fast-web-utilities"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "update exenv-es6 to 1.1.0 to ensure we lock to es module support",
+            "author": "chhol@microsoft.com",
+            "commit": "077a14b2e63332384349d2be205b4afa7246b13c",
+            "package": "@microsoft/fast-web-utilities"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 25 Jan 2022 07:11:53 GMT",
+      "tag": "@microsoft/fast-web-utilities_v5.1.0",
+      "version": "5.1.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "add findLastIndex and inRange functions to fast-web-utilities",
+            "author": "john.kreitlow@microsoft.com",
+            "commit": "97f653f8ee62c74d47df9b60024ff8eef05c79d1",
+            "package": "@microsoft/fast-web-utilities"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sun, 31 Oct 2021 07:17:45 GMT",
+      "tag": "@microsoft/fast-web-utilities_v5.0.2",
+      "version": "5.0.2",
+      "comments": {
+        "patch": [
+          {
+            "comment": "update fast eslint package version",
+            "author": "chhol@microsoft.com",
+            "commit": "a150068ee196e73fe7a4f7b538a38752e0e506ba",
+            "package": "@microsoft/fast-web-utilities"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 13 Oct 2021 01:53:37 GMT",
       "tag": "@microsoft/fast-web-utilities_v5.0.1",
       "version": "5.0.1",

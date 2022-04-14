@@ -1,24 +1,18 @@
 import { html, ref } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
-import { endSlotTemplate, startSlotTemplate } from "../patterns/start-end";
-import type { ElementDefinitionContext } from "../design-system";
-import type { AccordionItem, AccordionItemOptions } from "./accordion-item";
+import { endSlotTemplate, startSlotTemplate } from "../patterns/start-end.js";
+import type { FoundationElementTemplate } from "../foundation-element/foundation-element.js";
+import type { AccordionItem, AccordionItemOptions } from "./accordion-item.js";
 
 /**
  * The template for the {@link @microsoft/fast-foundation#(AccordionItem:class)} component.
  * @public
  */
-export const accordionItemTemplate: (
-    context: ElementDefinitionContext,
-    definition: AccordionItemOptions
-) => ViewTemplate<AccordionItem> = (
-    context: ElementDefinitionContext,
-    definition: AccordionItemOptions
-) => html`
-    <template
-        class="${x => (x.expanded ? "expanded" : "")}"
-        slot="item"
-    >
+export const accordionItemTemplate: FoundationElementTemplate<
+    ViewTemplate<AccordionItem>,
+    AccordionItemOptions
+> = (context, definition) => html`
+    <template class="${x => (x.expanded ? "expanded" : "")}">
         <div
             class="heading"
             part="heading"
@@ -34,8 +28,8 @@ export const accordionItemTemplate: (
                 id="${x => x.id}"
                 @click="${(x, c) => x.clickHandler(c.event as MouseEvent)}"
             >
-                <span class="heading">
-                    <slot name="heading" part="heading"></slot>
+                <span class="heading-content" part="heading-content">
+                    <slot name="heading"></slot>
                 </span>
             </button>
             ${startSlotTemplate(context, definition)}

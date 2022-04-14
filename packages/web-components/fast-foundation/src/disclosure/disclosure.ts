@@ -1,5 +1,5 @@
 import { attr } from "@microsoft/fast-element";
-import { FoundationElement } from "../foundation-element";
+import { FoundationElement } from "../foundation-element/foundation-element.js";
 /**
  * A Disclosure Custom HTML Element.
  * Based largely on the {@link https://w3c.github.io/aria-practices/#disclosure | disclosure element }.

@@ -3,7 +3,7 @@ import {
     calendarTemplate,
     CalendarTitleTemplate,
 } from "@microsoft/fast-foundation";
-import { CalendarStyles as styles } from "./calendar.styles";
+import { CalendarStyles as styles } from "./calendar.styles.js";
 
 /**
  * The FAST Calendar Element. Implements {@link @microsoft/fast-foundation#Calendar},
@@ -12,7 +12,7 @@ import { CalendarStyles as styles } from "./calendar.styles";
  *
  * @public
  * @remarks
- * HTML Element: \<fast-calendar\>
+ * HTML Element: `<fast-calendar>`
  */
 export const fastCalendar = Calendar.compose({
     baseName: "calendar",
@@ -22,13 +22,9 @@ export const fastCalendar = Calendar.compose({
 });
 
 /**
- * Styles for Calendar
- * @public
- */
-export const CalendarStyles = styles;
-
-/**
  * Base class for fastCalendar
  * @public
  */
 export { Calendar };
+
+export { styles as CalendarStyles };

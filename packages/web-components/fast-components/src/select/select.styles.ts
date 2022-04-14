@@ -1,10 +1,13 @@
-import { css, ElementStyles } from "@microsoft/fast-element";
+import { css } from "@microsoft/fast-element";
+import type { ElementStyles } from "@microsoft/fast-element";
 import {
     disabledCursor,
     display,
-    ElementDefinitionContext,
     focusVisible,
     forcedColorsStylesheetBehavior,
+} from "@microsoft/fast-foundation";
+import type {
+    FoundationElementTemplate,
     SelectOptions,
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
@@ -31,14 +34,18 @@ import {
     strokeWidth,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
-} from "../design-tokens";
-import { elevation } from "../styles/elevation";
-import { heightNumber } from "../styles/size";
+} from "../design-tokens.js";
+import { elevation } from "../styles/elevation.js";
+import { heightNumber } from "../styles/size.js";
 
-export const selectStyles: (
-    context: ElementDefinitionContext,
-    definition: SelectOptions
-) => ElementStyles = (context: ElementDefinitionContext, definition: SelectOptions) =>
+/**
+ * Styles for Select
+ * @public
+ */
+export const selectStyles: FoundationElementTemplate<ElementStyles, SelectOptions> = (
+    context,
+    definition
+) =>
     css`
     ${display("inline-flex")} :host {
         --elevation: 14;

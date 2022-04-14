@@ -13,9 +13,9 @@ import {
     keyEnd,
     keyHome,
 } from "@microsoft/fast-web-utilities";
-import { FoundationElement } from "../foundation-element";
-import type { ColumnDefinition } from "./data-grid";
-import { DataGridRowTypes } from "./data-grid.options";
+import { FoundationElement } from "../foundation-element/foundation-element.js";
+import type { ColumnDefinition } from "./data-grid.js";
+import { DataGridRowTypes } from "./data-grid.options.js";
 
 /**
  * A Data Grid Row Custom HTML Element.
@@ -46,7 +46,8 @@ export class DataGridRow extends FoundationElement {
      * HTML Attribute: row-type
      */
     @attr({ attribute: "row-type" })
-    public rowType: DataGridRowTypes = DataGridRowTypes.default;
+    public rowType: DataGridRowTypes | "default" | "header" | "sticky-header" =
+        DataGridRowTypes.default;
     private rowTypeChanged(): void {
         if (this.$fastController.isConnected) {
             this.updateItemTemplate();
@@ -180,7 +181,7 @@ export class DataGridRow extends FoundationElement {
                 x => x.activeCellItemTemplate,
                 { positioning: true }
             ).createBehavior(this.cellsPlaceholder);
-
+            /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */
             this.$fastController.addBehaviors([this.cellsRepeatBehavior!]);
         }
 

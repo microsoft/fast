@@ -1,24 +1,21 @@
 import { html, slotted } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
-import type { FoundationElementDefinition } from "../foundation-element";
-import type { ElementDefinitionContext } from "../design-system";
-import { Listbox } from "./listbox";
+import type { FoundationElementTemplate } from "../foundation-element/foundation-element.js";
+import { ListboxElement } from "./listbox.element.js";
 
 /**
  * The template for the {@link @microsoft/fast-foundation#(Listbox:class)} component.
  * @public
  */
-export const listboxTemplate: (
-    context: ElementDefinitionContext,
-    definition: FoundationElementDefinition
-) => ViewTemplate<Listbox> = (
-    context: ElementDefinitionContext,
-    definition: FoundationElementDefinition
+export const listboxTemplate: FoundationElementTemplate<ViewTemplate<ListboxElement>> = (
+    context,
+    definition
 ) => html`
     <template
         aria-activedescendant="${x => x.ariaActiveDescendant}"
+        aria-multiselectable="${x => x.ariaMultiSelectable}"
         class="listbox"
-        role="${x => x.role}"
+        role="listbox"
         tabindex="${x => (!x.disabled ? "0" : null)}"
         @click="${(x, c) => x.clickHandler(c.event as MouseEvent)}"
         @focusin="${(x, c) => x.focusinHandler(c.event as FocusEvent)}"
@@ -27,7 +24,7 @@ export const listboxTemplate: (
     >
         <slot
             ${slotted({
-                filter: Listbox.slottedOptionFilter,
+                filter: ListboxElement.slottedOptionFilter,
                 flatten: true,
                 property: "slottedOptions",
             })}

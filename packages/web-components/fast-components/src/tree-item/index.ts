@@ -3,7 +3,7 @@ import {
     TreeItem,
     TreeItemOptions,
 } from "@microsoft/fast-foundation";
-import { treeItemStyles as styles } from "./tree-item.styles";
+import { treeItemStyles as styles } from "./tree-item.styles.js";
 
 /**
  * A function that returns a {@link @microsoft/fast-foundation#TreeItem} registration for configuring the component with a DesignSystem.
@@ -12,14 +12,14 @@ import { treeItemStyles as styles } from "./tree-item.styles";
  *
  * @public
  * @remarks
- * Generates HTML Element: \<fast-tree-item\>
+ * Generates HTML Element: `<fast-tree-item>`
  *
  */
 export const fastTreeItem = TreeItem.compose<TreeItemOptions>({
     baseName: "tree-item",
     template,
     styles,
-    expandCollapseGlyph: `
+    expandCollapseGlyph: /* html */ `
         <svg
             viewBox="0 0 16 16"
             xmlns="http://www.w3.org/2000/svg"
@@ -33,13 +33,9 @@ export const fastTreeItem = TreeItem.compose<TreeItemOptions>({
 });
 
 /**
- * Styles for TreeItem
- * @public
- */
-export const treeItemStyles = styles;
-
-/**
  * Base class for TreeItem
  * @public
  */
 export { TreeItem };
+
+export { styles as treeItemStyles };

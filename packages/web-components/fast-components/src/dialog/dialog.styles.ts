@@ -1,17 +1,15 @@
 import { css, ElementStyles } from "@microsoft/fast-element";
-import {
-    ElementDefinitionContext,
-    FoundationElementDefinition,
-} from "@microsoft/fast-foundation";
-import { controlCornerRadius, fillColor, strokeWidth } from "../design-tokens";
-import { elevation } from "../styles/elevation";
+import { FoundationElementTemplate } from "@microsoft/fast-foundation";
+import { controlCornerRadius, fillColor, strokeWidth } from "../design-tokens.js";
+import { elevation } from "../styles/elevation.js";
 
-export const dialogStyles: (
-    context: ElementDefinitionContext,
-    definition: FoundationElementDefinition
-) => ElementStyles = (
-    context: ElementDefinitionContext,
-    definition: FoundationElementDefinition
+/**
+ * Styles for Dialog
+ * @public
+ */
+export const dialogStyles: FoundationElementTemplate<ElementStyles> = (
+    context,
+    definition
 ) => css`
     :host([hidden]) {
         display: none;

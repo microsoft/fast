@@ -1,11 +1,12 @@
-import { attr, FASTElement, customElement, observable, nullableNumberConverter, html, DOM } from '@microsoft/fast-element';
-import { provideReactWrapper } from './index';
+import { attr, customElement, DOM, FASTElement, html, nullableNumberConverter, observable } from '@microsoft/fast-element';
 import React from "react";
 import ReactDOM from "react-dom";
 import { uniqueElementName } from '@microsoft/fast-foundation/dist/esm/test-utilities/fixture';
 import { expect } from "chai";
 import { DesignSystem, FoundationElement } from "@microsoft/fast-foundation";
+import { provideReactWrapper } from './index';
 
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 type CustomElementProperties = {
   bool: boolean;
   str: string;
@@ -16,6 +17,8 @@ type CustomElementProperties = {
   rstr: string;
   rnum: number;
 };
+
+type CustomElement = HTMLElement & CustomElementProperties;
 
 const restTestEvents = {
   onFoo: 'foo',
@@ -116,25 +119,38 @@ const composedTestElement = ComposedTestElement.compose({
   template: html`<slot></slot>`
 });
 
+const composedTestElement2 = ComposedTestElement.compose({
+  baseName: composedElementName + '-bis',
+  template: html`<slot></slot>`
+});
+
 const scenarios = [
   {
     description: 'Wrapping a decorated FASTElement',
     elementName: decoratedElementName,
-    wrap: x => x(DecoratedTestElement, {
+    wrap: (x: any) => x(DecoratedTestElement, {
       events: restTestEvents
     })
   },
   {
     description: 'Wrapping a composed FoundationElement',
     elementName: `fast-${composedElementName}`,
-    wrap: x => x(composedTestElement(), {
+    wrap: (x: any) => x(composedTestElement(), {
       events: restTestEvents
+    })
+  },
+  {
+    description: 'Wrapping a copied composed FoundationElement',
+    elementName: `fast-${composedElementName}-bis`,
+    wrap: (x: any) => x(composedTestElement2(), {
+      events: restTestEvents,
+      name: `fast-${composedElementName}-bis`
     })
   },
   {
     description: 'Wrapping a vanilla Web Component',
     elementName: vanillaElementName,
-    wrap: x => x(VanillaElement, {
+    wrap: (x: any) => x(VanillaElement, {
       name: vanillaElementName,
       events: restTestEvents,
       properties: [
@@ -169,9 +185,10 @@ for (const scenario of scenarios) {
     const { wrap } = provideReactWrapper(React, DesignSystem.getOrCreate());
     const WrappedComponent = scenario.wrap(wrap);
 
-    let el: HTMLElement & CustomElementProperties;
+    let el: CustomElement;
 
     const renderReactComponent = (
+      /* eslint-disable-next-line @typescript-eslint/ban-types */
       props?: {}
     ) => {
       ReactDOM.render(
@@ -179,7 +196,7 @@ for (const scenario of scenarios) {
         container
       );
 
-      el = container.querySelector(scenario.elementName)!;
+      el = container.querySelector(scenario.elementName)! as CustomElement;
     };
 
     it('works with text children', async () => {
@@ -188,8 +205,13 @@ for (const scenario of scenarios) {
         <WrappedComponent>Hello {name}</WrappedComponent>,
         container
       );
-      el = container.querySelector(scenario.elementName)!;
+      el = container.querySelector(scenario.elementName)! as CustomElement;
       expect(el.textContent).to.equal('Hello World');
+    });
+
+    it('does not recreate the same component twice', async () => {
+      const SameWrappedComponent = scenario.wrap(wrap);
+      expect(WrappedComponent).to.eq(SameWrappedComponent);
     });
 
     it('wrapper renders custom element that updates', async () => {
@@ -419,3 +441,4 @@ for (const scenario of scenarios) {
     });
   });
 }
+/* eslint-enable @typescript-eslint/no-non-null-assertion */

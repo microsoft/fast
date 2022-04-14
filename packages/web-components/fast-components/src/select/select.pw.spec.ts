@@ -1,10 +1,12 @@
-import { ArrowKeys } from "@microsoft/fast-web-utilities";
 import type {
     ListboxOption as FASTOption,
-    Select as FASTSelectType,
+    Select as FASTSelectType
 } from "@microsoft/fast-foundation";
-import { expect } from "chai";
+import { ArrowKeys } from "@microsoft/fast-web-utilities";
+import chai from "chai";
 import type { ElementHandle } from "playwright";
+
+const { expect } = chai;
 
 type FASTSelect = HTMLElement & FASTSelectType;
 
@@ -306,7 +308,7 @@ describe("FASTSelect", function () {
 
             expect(
                 await selectedOption.evaluate(node => node.scrollTop)
-            ).to.be.closeTo(811, 16);
+            ).to.be.closeTo(451, 16);
 
             await element.evaluate(node => (node.selectedIndex = 0));
 

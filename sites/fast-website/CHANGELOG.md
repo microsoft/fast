@@ -1,8 +1,448 @@
 # Change Log - @microsoft/fast-website
 
-This log was last generated on Wed, 13 Oct 2021 01:53:37 GMT and should not be manually modified.
+This log was last generated on Tue, 12 Apr 2022 07:13:35 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.3.16
+
+Tue, 12 Apr 2022 07:13:35 GMT
+
+### Patches
+
+- Bump @microsoft/site-utilities to v0.9.0 (yinon@hotmail.com)
+
+## 1.3.16
+
+Sun, 10 Apr 2022 07:11:09 GMT
+
+### Patches
+
+- Bump @microsoft/site-utilities to v0.9.0 (nicholasrice@users.noreply.github.com)
+
+## 1.3.16
+
+Thu, 07 Apr 2022 07:12:06 GMT
+
+### Patches
+
+- Bump @microsoft/site-utilities to v0.9.0 (scomea@microsoft.com)
+
+## 1.3.16
+
+Wed, 06 Apr 2022 07:12:42 GMT
+
+### Patches
+
+- Bump @microsoft/site-utilities to v0.9.0 (nicholasrice@users.noreply.github.com)
+
+## 1.3.16
+
+Sun, 03 Apr 2022 07:12:01 GMT
+
+### Patches
+
+- Bump @microsoft/site-utilities to v0.9.0 (nicholasrice@users.noreply.github.com)
+
+## 1.3.16
+
+Thu, 31 Mar 2022 07:13:31 GMT
+
+### Patches
+
+- Bump @microsoft/site-utilities to v0.9.0 (chhol@microsoft.com)
+
+## 1.3.16
+
+Sun, 27 Mar 2022 07:11:50 GMT
+
+### Patches
+
+- Bump @microsoft/site-utilities to v0.9.0 (44823142+williamw2@users.noreply.github.com)
+
+## 1.3.16
+
+Thu, 24 Mar 2022 07:12:08 GMT
+
+### Patches
+
+- Bump @microsoft/site-utilities to v0.9.0 (20542556+mollykreis@users.noreply.github.com)
+
+## 1.3.16
+
+Sun, 20 Mar 2022 07:15:44 GMT
+
+### Patches
+
+- Bump @microsoft/site-utilities to v0.9.0 (26874831+atmgrifter00@users.noreply.github.com)
+
+## 1.3.16
+
+Thu, 17 Mar 2022 07:11:51 GMT
+
+### Patches
+
+- Bump @microsoft/site-utilities to v0.9.0 (fcollonval@gmail.com)
+
+## 1.3.16
+
+Wed, 16 Mar 2022 07:12:41 GMT
+
+### Patches
+
+- Bump @microsoft/site-utilities to v0.9.0 (scomea@microsoft.com)
+
+## 1.3.16
+
+Tue, 15 Mar 2022 07:12:38 GMT
+
+### Patches
+
+- Bump @microsoft/site-utilities to v0.9.0 (scomea@microsoft.com)
+
+## 1.3.16
+
+Fri, 11 Mar 2022 23:46:34 GMT
+
+### Patches
+
+- Bump @microsoft/site-utilities to v0.9.0 (jes@microsoft.com)
+
+## 1.3.16
+
+Wed, 09 Mar 2022 07:12:32 GMT
+
+### Patches
+
+- Bump @microsoft/site-utilities to v0.9.0 (20542556+mollykreis@users.noreply.github.com)
+
+## 1.3.16
+
+Tue, 08 Mar 2022 07:12:45 GMT
+
+### Patches
+
+- Bump @microsoft/site-utilities to v0.9.0 (srdsecond@gmail.com)
+
+## 1.3.16
+
+Sun, 06 Mar 2022 07:13:48 GMT
+
+### Patches
+
+- Bump @microsoft/site-utilities to v0.9.0 (sethdonohue@Admins-MBP.guest.corp.microsoft.com)
+
+## 1.3.16
+
+Wed, 02 Mar 2022 07:12:58 GMT
+
+### Patches
+
+- Bump @microsoft/site-utilities to v0.9.0 (scomea@microsoft.com)
+
+## 1.3.16
+
+Fri, 25 Feb 2022 17:09:32 GMT
+
+### Patches
+
+- Bump @microsoft/site-utilities to v0.9.0 (roeisenb@microsoft.com)
+
+## 1.3.16
+
+Thu, 24 Feb 2022 22:21:55 GMT
+
+### Patches
+
+- Bump @microsoft/site-utilities to v0.9.0 (roeisenb@microsoft.com)
+
+## 1.3.16
+
+Sun, 20 Feb 2022 07:16:20 GMT
+
+### Patches
+
+- Bump @microsoft/site-utilities to v0.9.0 (scomea@microsoft.com)
+
+## 1.3.16
+
+Tue, 15 Feb 2022 07:11:28 GMT
+
+### Patches
+
+- Bump @microsoft/site-utilities to v0.9.0 (mathieu.lavoie@shopify.com)
+
+## 1.3.16
+
+Sun, 13 Feb 2022 07:13:39 GMT
+
+### Patches
+
+- Bump @microsoft/site-utilities to v0.9.0 (mathieulavoie94@gmail.com)
+
+## 1.3.16
+
+Thu, 10 Feb 2022 07:12:01 GMT
+
+### Patches
+
+- Bump @microsoft/site-utilities to v0.9.0 (mathieu.lavoie@shopify.com)
+
+## 1.3.16
+
+Wed, 09 Feb 2022 07:14:00 GMT
+
+### Patches
+
+- Bump @microsoft/site-utilities to v0.9.0 (47367562+bheston@users.noreply.github.com)
+
+## 1.3.16
+
+Tue, 08 Feb 2022 07:14:26 GMT
+
+### Patches
+
+- Bump @microsoft/site-utilities to v0.9.0 (fcollonval@gmail.com)
+
+## 1.3.16
+
+Sun, 06 Feb 2022 07:15:20 GMT
+
+### Patches
+
+- Bump @microsoft/site-utilities to v0.9.0 (john.kreitlow@microsoft.com)
+
+## 1.3.16
+
+Wed, 02 Feb 2022 07:13:39 GMT
+
+### Patches
+
+- Bump @microsoft/site-utilities to v0.9.0 (robarb@microsoft.com)
+
+## 1.3.16
+
+Sun, 30 Jan 2022 07:12:35 GMT
+
+### Patches
+
+- Bump @microsoft/site-utilities to v0.9.0 (mathieulavoie94@gmail.com)
+
+## 1.3.16
+
+Wed, 26 Jan 2022 07:11:18 GMT
+
+### Patches
+
+- Bump @microsoft/site-utilities to v0.9.0 (47367562+bheston@users.noreply.github.com)
+
+## 1.3.16
+
+Tue, 25 Jan 2022 07:11:53 GMT
+
+### Patches
+
+- Bump @microsoft/site-utilities to v0.9.0 (john.kreitlow@microsoft.com)
+
+## 1.3.16
+
+Sun, 23 Jan 2022 07:13:56 GMT
+
+### Patches
+
+- Bump @microsoft/site-utilities to v0.9.0 (jes@microsoft.com)
+
+## 1.3.16
+
+Thu, 20 Jan 2022 07:12:04 GMT
+
+### Patches
+
+- Bump @microsoft/site-utilities to v0.9.0 (john.kreitlow@microsoft.com)
+
+## 1.3.16
+
+Sun, 16 Jan 2022 07:11:36 GMT
+
+### Patches
+
+- Bump @microsoft/site-utilities to v0.9.0 (5454342+brianehenry@users.noreply.github.com)
+
+## 1.3.16
+
+Sun, 09 Jan 2022 07:11:51 GMT
+
+### Patches
+
+- Bump @microsoft/site-utilities to v0.9.0 (john.kreitlow@microsoft.com)
+
+## 1.3.16
+
+Thu, 06 Jan 2022 07:11:52 GMT
+
+### Patches
+
+- Bump @microsoft/site-utilities to v0.9.0 (scomea@microsoft.com)
+
+## 1.3.16
+
+Sun, 19 Dec 2021 07:12:39 GMT
+
+### Patches
+
+- Bump @microsoft/site-utilities to v0.9.0 (anthonystewart@google.com)
+
+## 1.3.16
+
+Wed, 15 Dec 2021 07:14:44 GMT
+
+### Patches
+
+- Bump @microsoft/site-utilities to v0.9.0 (john.kreitlow@microsoft.com)
+
+## 1.3.16
+
+Sun, 12 Dec 2021 07:12:52 GMT
+
+### Patches
+
+- Bump @microsoft/site-utilities to v0.9.0 (email not defined)
+
+## 1.3.16
+
+Tue, 30 Nov 2021 07:13:40 GMT
+
+### Patches
+
+- Bump @microsoft/site-utilities to v0.9.0 (jes@microsoft.com)
+
+## 1.3.16
+
+Tue, 23 Nov 2021 07:12:23 GMT
+
+### Patches
+
+- Bump @microsoft/site-utilities to v0.9.0 (john.kreitlow@microsoft.com)
+
+## 1.3.16
+
+Sun, 21 Nov 2021 07:10:36 GMT
+
+### Patches
+
+- Bump @microsoft/site-utilities to v0.9.0 (jes@microsoft.com)
+
+## 1.3.16
+
+Sun, 14 Nov 2021 07:11:13 GMT
+
+### Patches
+
+- Bump @microsoft/site-utilities to v0.9.0 (robarb@microsoft.com)
+
+## 1.3.16
+
+Thu, 11 Nov 2021 07:15:33 GMT
+
+### Patches
+
+- Bump @microsoft/site-utilities to v0.9.0 (nicholasrice@users.noreply.github.com)
+
+## 1.3.16
+
+Wed, 10 Nov 2021 07:12:54 GMT
+
+### Patches
+
+- Bump @microsoft/site-utilities to v0.9.0 (robarb@microsoft.com)
+
+## 1.3.16
+
+Tue, 09 Nov 2021 07:14:09 GMT
+
+### Patches
+
+- Bump @microsoft/site-utilities to v0.9.0 (jes@microsoft.com)
+
+## 1.3.16
+
+Sun, 07 Nov 2021 07:12:36 GMT
+
+### Patches
+
+- Bump @microsoft/site-utilities to v0.9.0 (mathieu.lavoie@shopify.com)
+
+## 1.3.16
+
+Thu, 04 Nov 2021 07:11:59 GMT
+
+### Patches
+
+- Bump @microsoft/site-utilities to v0.9.0 (jes@microsoft.com)
+
+## 1.3.16
+
+Wed, 03 Nov 2021 07:12:39 GMT
+
+### Patches
+
+- Bump @microsoft/site-utilities to v0.9.0 (scomea@microsoft.com)
+
+## 1.3.16
+
+Sun, 31 Oct 2021 07:17:45 GMT
+
+### Patches
+
+- Bump @microsoft/site-utilities to v0.9.0 (chhol@microsoft.com)
+
+## 1.3.16
+
+Thu, 28 Oct 2021 07:15:32 GMT
+
+### Patches
+
+- Bump @microsoft/site-utilities to v0.9.0 (nicholasrice@users.noreply.github.com)
+
+## 1.3.16
+
+Fri, 22 Oct 2021 17:40:52 GMT
+
+### Patches
+
+- Bump @microsoft/site-utilities to v0.9.0 (robarb@microsoft.com)
+
+## 1.3.16
+
+Thu, 21 Oct 2021 07:11:42 GMT
+
+### Patches
+
+- Bump @microsoft/site-utilities to v0.9.0 (scomea@microsoft.com)
+
+## 1.3.16
+
+Wed, 20 Oct 2021 07:13:46 GMT
+
+### Patches
+
+- Bump @microsoft/site-utilities to v0.9.0 (scomea@microsoft.com)
+
+## 1.3.16
+
+Fri, 15 Oct 2021 23:24:14 GMT
+
+### Patches
+
+- Bump @microsoft/site-utilities to v0.9.0 (nicholasrice@users.noreply.github.com)
+
+## 1.3.16
+
+Wed, 13 Oct 2021 22:45:16 GMT
+
+### Patches
+
+- Bump @microsoft/site-utilities to v0.9.0 (robarb@microsoft.com)
 
 ## 1.3.16
 

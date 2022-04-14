@@ -10,7 +10,14 @@
 
 [![Maintainability](https://api.codeclimate.com/v1/badges/8a74621e634a6e9b9561/maintainability)](https://codeclimate.com/github/Microsoft/fast/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/8a74621e634a6e9b9561/test_coverage)](https://codeclimate.com/github/Microsoft/fast/test_coverage)
-![workflows](https://github.com/microsoft/fast/workflows/CI%20-%20FAST/badge.svg?branch=master&event=push)
+[![Validate PRs](https://github.com/microsoft/fast/actions/workflows/ci-validate-pr.yml/badge.svg)](https://github.com/microsoft/fast/actions/workflows/ci-validate-pr.yml)
+[![Validate Platforms/Browsers](https://github.com/microsoft/fast/actions/workflows/ci-validate-platforms.yml/badge.svg)](https://github.com/microsoft/fast/actions/workflows/ci-validate-platforms.yml)
+
+[![Deploy Documentation (staging)](https://github.com/microsoft/fast/actions/workflows/cd-deploy-www-staging.yml/badge.svg)](https://github.com/microsoft/fast/actions/workflows/cd-deploy-www-staging.yml)
+[![Deploy Documentation (production)](https://github.com/microsoft/fast/actions/workflows/cd-deploy-www-production.yml/badge.svg)](https://github.com/microsoft/fast/actions/workflows/cd-deploy-www-production.yml)
+[![Deploy CDN](https://github.com/microsoft/fast/actions/workflows/cd-deploy-cdn.yml/badge.svg)](https://github.com/microsoft/fast/actions/workflows/cd-deploy-cdn.yml)
+[![Deploy Component Explorer](https://github.com/microsoft/fast/actions/workflows/cd-deploy-explore-staging.yml/badge.svg)](https://github.com/microsoft/fast/actions/workflows/cd-deploy-explore-staging.yml)
+[![Deploy Color Explorer](https://github.com/microsoft/fast/actions/workflows/cd-deploy-color-staging.yml/badge.svg)](https://github.com/microsoft/fast/actions/workflows/cd-deploy-color-staging.yml)
 
 [![Discord](https://img.shields.io/badge/chat%20on-discord-7289da.svg)](https://discord.gg/FcSNfg4)
 [![Twitter](https://img.shields.io/twitter/follow/fast_ui.svg?style=social&label=Follow)](https://twitter.com/intent/follow?screen_name=fast_ui)
@@ -87,6 +94,8 @@ We hope you're excited by the possibilities that FAST presents. But, you may be 
 ## Joining the Community
 
 Looking to get answers to questions or engage with us in realtime? Our community is most active [on Discord](https://discord.gg/FcSNfg4). Submit requests and issues on [GitHub](https://github.com/Microsoft/fast/issues/new/choose), or join us by contributing on [some good first issues via GitHub](https://github.com/Microsoft/fast/labels/community:good-first-issue).
+
+Get started here with the [Contributor Guide](https://www.fast.design/docs/community/contributor-guide).
 
 We look forward to building an amazing open source community with you!
 

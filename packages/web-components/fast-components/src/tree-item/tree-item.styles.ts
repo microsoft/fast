@@ -3,14 +3,14 @@ import {
     DesignToken,
     disabledCursor,
     display,
-    ElementDefinitionContext,
     focusVisible,
     forcedColorsStylesheetBehavior,
+    FoundationElementTemplate,
     TreeItem,
     TreeItemOptions,
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
-import { Swatch } from "../color/swatch";
+import { Swatch } from "../color/swatch.js";
 import {
     accentForegroundRest,
     baseHeightMultiplier,
@@ -31,8 +31,8 @@ import {
     strokeWidth,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
-} from "../design-tokens";
-import { DirectionalStyleSheetBehavior, heightNumber } from "../styles/index";
+} from "../design-tokens.js";
+import { DirectionalStyleSheetBehavior, heightNumber } from "../styles/index.js";
 
 const ltr = css`
     .expand-collapse-glyph {
@@ -64,6 +64,10 @@ const rtl = css`
     }
 `;
 
+/**
+ * Tree item expand collapse button size CSS Partial
+ * @public
+ */
 export const expandCollapseButtonSize = cssPartial`((${baseHeightMultiplier} / 2) * ${designUnit}) + ((${designUnit} * ${density}) / 2)`;
 
 const expandCollapseHoverBehavior = DesignToken.create<Swatch>(
@@ -81,10 +85,14 @@ const selectedExpandCollapseHoverBehavior = DesignToken.create<Swatch>(
     return buttonRecipe.evaluate(target, baseRecipe.evaluate(target).rest).hover;
 });
 
-export const treeItemStyles: (
-    context: ElementDefinitionContext,
-    definition: TreeItemOptions
-) => ElementStyles = (context: ElementDefinitionContext, definition: TreeItemOptions) =>
+/**
+ * Styles for Tree Item
+ * @public
+ */
+export const treeItemStyles: FoundationElementTemplate<ElementStyles, TreeItemOptions> = (
+    context,
+    definition
+) =>
     css`
     ${display("block")} :host {
         contain: content;
