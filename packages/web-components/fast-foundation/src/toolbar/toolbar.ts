@@ -144,7 +144,10 @@ export class Toolbar extends FoundationElement {
         this.end.addEventListener("slotchange", this.childElementsChange);
         this.observer = new MutationObserver(this.childElementsChange);
         // only observe if the disabled or hidden state of nodes change
-        this.observer.observe(this, { subtree: true, attributeFilter: [ "disabled", "hidden" ] });
+        this.observer.observe(this, {
+            subtree: true,
+            attributeFilter: ["disabled", "hidden"],
+        });
     }
 
     /**
@@ -240,7 +243,9 @@ export class Toolbar extends FoundationElement {
 
         // If the previously active item is still focusable, adjust the active index to the
         // index of that item.
-        const adjustedActiveIndex = this.focusableElements.indexOf(previousFocusedElement);
+        const adjustedActiveIndex = this.focusableElements.indexOf(
+            previousFocusedElement
+        );
         if (adjustedActiveIndex === -1) {
             this.activeIndex = 0;
         } else {
