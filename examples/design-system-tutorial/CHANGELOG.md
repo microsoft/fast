@@ -1,8 +1,72 @@
 # Change Log - fast-design-system-demo
 
-This log was last generated on Sun, 20 Mar 2022 07:15:44 GMT and should not be manually modified.
+This log was last generated on Tue, 12 Apr 2022 07:13:35 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 1.0.0
+
+Tue, 12 Apr 2022 07:13:35 GMT
+
+### Patches
+
+- Bump @microsoft/fast-components to v2.27.1 (yinon@hotmail.com)
+
+## 1.0.0
+
+Sun, 10 Apr 2022 07:11:09 GMT
+
+### Patches
+
+- Bump @microsoft/fast-components to v2.27.0 (nicholasrice@users.noreply.github.com)
+
+## 1.0.0
+
+Thu, 07 Apr 2022 07:12:06 GMT
+
+### Patches
+
+- Bump @microsoft/fast-components to v2.26.2 (scomea@microsoft.com)
+
+## 1.0.0
+
+Wed, 06 Apr 2022 07:12:42 GMT
+
+### Patches
+
+- Bump @microsoft/fast-components to v2.26.1 (nicholasrice@users.noreply.github.com)
+
+## 1.0.0
+
+Sun, 03 Apr 2022 07:12:01 GMT
+
+### Patches
+
+- Bump @microsoft/fast-components to v2.26.0 (nicholasrice@users.noreply.github.com)
+
+## 1.0.0
+
+Thu, 31 Mar 2022 07:13:31 GMT
+
+### Patches
+
+- Bump @microsoft/fast-components to v2.25.4 (chhol@microsoft.com)
+
+## 1.0.0
+
+Sun, 27 Mar 2022 07:11:50 GMT
+
+### Patches
+
+- Bump @microsoft/fast-components to v2.25.3 (44823142+williamw2@users.noreply.github.com)
+
+## 1.0.0
+
+Thu, 24 Mar 2022 07:12:08 GMT
+
+### Patches
+
+- Bump @microsoft/fast-components to v2.25.2 (20542556+mollykreis@users.noreply.github.com)
 
 ## 1.0.0
 

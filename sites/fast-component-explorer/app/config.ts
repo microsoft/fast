@@ -19,6 +19,12 @@ import { fastDesignSystemProviderId } from "./fast-components/configs/fast-desig
 import { fastTreeItemId } from "./fast-components/configs/fast-tree-view";
 import { fastBreadcrumbItemId } from "./fast-components/configs/fast-breadcrumb";
 import { fastOptionId } from "./fast-components/configs/fast-select";
+import {
+    fastPickerListId,
+    fastPickerListItemId,
+    fastPickerMenuId,
+    fastPickerMenuOptionId,
+} from "./fast-components/configs/fast-picker";
 
 const schemaDictionary: SchemaDictionary = {
     ...fastComponentSchemas,
@@ -35,6 +41,10 @@ const menu: MenuItem[] = generateMenu(
         fastDataGridCellId,
         fastDataGridRowId,
         fastMenuItemId,
+        fastPickerListId,
+        fastPickerListItemId,
+        fastPickerMenuId,
+        fastPickerMenuOptionId,
         fastSliderLabelId,
         fastTabId,
         fastTabPanelId,

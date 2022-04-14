@@ -3,11 +3,11 @@ import {
     ARIAGlobalStatesAndProperties,
     StartEnd,
     StartEndOptions,
-} from "../patterns/index";
-import { applyMixins } from "../utilities/index";
-import type { FoundationElementDefinition } from "../foundation-element";
-import { FormAssociatedTextField } from "./text-field.form-associated";
-import { TextFieldType } from "./text-field.options";
+} from "../patterns/index.js";
+import { applyMixins } from "../utilities/apply-mixins.js";
+import type { FoundationElementDefinition } from "../foundation-element/foundation-element.js";
+import { FormAssociatedTextField } from "./text-field.form-associated.js";
+import { TextFieldType } from "./text-field.options.js";
 
 export { TextFieldType };
 
@@ -76,7 +76,8 @@ export class TextField extends FormAssociatedTextField {
      * HTML Attribute: type
      */
     @attr
-    public type: TextFieldType = TextFieldType.text;
+    public type: TextFieldType | "email" | "password" | "tel" | "text" | "url" =
+        TextFieldType.text;
     private typeChanged(): void {
         if (this.proxy instanceof HTMLInputElement) {
             this.proxy.type = this.type;

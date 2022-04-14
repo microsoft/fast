@@ -1,5 +1,5 @@
 import { attr } from "@microsoft/fast-element";
-import { FoundationElement } from "../foundation-element";
+import { FoundationElement } from "../foundation-element/foundation-element.js";
 
 /**
  * A Badge Custom HTML Element.

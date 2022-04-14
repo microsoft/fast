@@ -1,14 +1,14 @@
 import { attr, DOM, Observable, observable } from "@microsoft/fast-element";
 import type { SyntheticViewTemplate } from "@microsoft/fast-element";
 import { uniqueId } from "@microsoft/fast-web-utilities";
-import type { FoundationElementDefinition } from "../foundation-element";
-import { DelegatesARIAListbox, Listbox } from "../listbox";
-import type { ListboxOption } from "../listbox-option/listbox-option";
-import { StartEnd } from "../patterns/start-end";
-import type { StartEndOptions } from "../patterns/start-end";
-import { applyMixins } from "../utilities/apply-mixins";
-import { FormAssociatedSelect } from "./select.form-associated";
-import { SelectPosition } from "./select.options";
+import type { FoundationElementDefinition } from "../foundation-element/foundation-element.js";
+import { DelegatesARIAListbox, Listbox } from "../listbox/listbox.js";
+import type { ListboxOption } from "../listbox-option/listbox-option.js";
+import { StartEnd } from "../patterns/start-end.js";
+import type { StartEndOptions } from "../patterns/start-end.js";
+import { applyMixins } from "../utilities/apply-mixins.js";
+import { FormAssociatedSelect } from "./select.form-associated.js";
+import { SelectPosition } from "./select.options.js";
 
 /**
  * Select configuration options
@@ -29,7 +29,9 @@ export class Select extends FormAssociatedSelect {
     /**
      * The open attribute.
      *
-     * @internal
+     * @public
+     * @remarks
+     * HTML Attribute: open
      */
     @attr({ attribute: "open", mode: "boolean" })
     public open: boolean = false;
@@ -141,7 +143,7 @@ export class Select extends FormAssociatedSelect {
      * @public
      */
     @attr({ attribute: "position" })
-    public positionAttribute: SelectPosition;
+    public positionAttribute: SelectPosition | "above" | "below";
 
     /**
      * Indicates the initial state of the position attribute.
@@ -156,7 +158,7 @@ export class Select extends FormAssociatedSelect {
      * @public
      */
     @observable
-    public position: SelectPosition = SelectPosition.below;
+    public position: SelectPosition | "above" | "below" = SelectPosition.below;
     protected positionChanged() {
         this.positionAttribute = this.position;
         this.setPositioning();

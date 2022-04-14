@@ -1,2 +1,2 @@
-export * from "./toolbar.template";
-export * from "./toolbar";
+export * from "./toolbar.template.js";
+export * from "./toolbar.js";

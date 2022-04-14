@@ -48,6 +48,55 @@ export const myDialog = Dialog.compose({
 });
 ```
 
+## API
+
+
+
+### class: `Dialog`
+
+#### Superclass
+
+| Name                | Module                                        | Package |
+| ------------------- | --------------------------------------------- | ------- |
+| `FoundationElement` | /src/foundation-element/foundation-element.js |         |
+
+#### Fields
+
+| Name              | Privacy | Type                                  | Default | Description                                                                                                                                                                                                   | Inherited From    |
+| ----------------- | ------- | ------------------------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
+| `modal`           | public  | `boolean`                             | `true`  | Indicates the element is modal. When modal, user mouse interaction will be limited to the contents of the element by a modal overlay.  Clicks on the overlay will cause the dialog to emit a "dismiss" event. |                   |
+| `hidden`          | public  | `boolean`                             | `false` | The hidden state of the element.                                                                                                                                                                              |                   |
+| `trapFocus`       | public  | `boolean`                             | `true`  | Indicates that the dialog should trap focus.                                                                                                                                                                  |                   |
+| `ariaDescribedby` | public  | `string`                              |         | The id of the element describing the dialog.                                                                                                                                                                  |                   |
+| `ariaLabelledby`  | public  | `string`                              |         | The id of the element labeling the dialog.                                                                                                                                                                    |                   |
+| `ariaLabel`       | public  | `string`                              |         | The label surfaced to assistive technologies.                                                                                                                                                                 |                   |
+| `$presentation`   | public  | `ComponentPresentation or null`       |         | A property which resolves the ComponentPresentation instance for the current component.                                                                                                                       | FoundationElement |
+| `template`        | public  | `ElementViewTemplate or void or null` |         | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.                                    | FoundationElement |
+| `styles`          | public  | `ElementStyles or void or null`       |         | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition.                           | FoundationElement |
+
+#### Methods
+
+| Name              | Privacy   | Description                    | Parameters | Return | Inherited From    |
+| ----------------- | --------- | ------------------------------ | ---------- | ------ | ----------------- |
+| `show`            | public    | The method to show the dialog. |            | `void` |                   |
+| `hide`            | public    | The method to hide the dialog. |            | `void` |                   |
+| `templateChanged` | protected |                                |            | `void` | FoundationElement |
+| `stylesChanged`   | protected |                                |            | `void` | FoundationElement |
+
+#### Attributes
+
+| Name               | Field           | Inherited From |
+| ------------------ | --------------- | -------------- |
+|                    | modal           |                |
+|                    | hidden          |                |
+| `trap-focus`       | trapFocus       |                |
+| `aria-describedby` | ariaDescribedby |                |
+| `aria-labelledby`  | ariaLabelledby  |                |
+| `aria-label`       | ariaLabel       |                |
+
+<hr/>
+
+
 ## Additional resources
 
 * [Component explorer examples](https://explore.fast.design/components/fast-dialog)

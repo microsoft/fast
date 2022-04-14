@@ -1,2 +1,2 @@
-export * from "./text-area.template";
-export * from "./text-area";
+export * from "./text-area.template.js";
+export * from "./text-area.js";

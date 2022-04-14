@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-colors",
   "entries": [
     {
+      "date": "Sun, 03 Apr 2022 07:12:01 GMT",
+      "tag": "@microsoft/fast-colors_v5.2.0",
+      "version": "5.2.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "Convert package to type:module",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "317400b3f9bb9d0c74030af60472a931aee464ea",
+            "package": "@microsoft/fast-colors"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 09 Feb 2022 07:14:00 GMT",
       "tag": "@microsoft/fast-colors_v5.1.5",
       "version": "5.1.5",

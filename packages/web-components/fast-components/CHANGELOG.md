@@ -1,8 +1,82 @@
 # Change Log - @microsoft/fast-components
 
-This log was last generated on Sun, 20 Mar 2022 07:15:44 GMT and should not be manually modified.
+This log was last generated on Tue, 12 Apr 2022 07:13:35 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.27.1
+
+Tue, 12 Apr 2022 07:13:35 GMT
+
+### Patches
+
+- Merge branch 'master' into patch-1 (pradkum@microsoft.com)
+
+## 2.27.0
+
+Sun, 10 Apr 2022 07:11:09 GMT
+
+### Minor changes
+
+- Converted the fast-components package to type:module (nicholasrice@users.noreply.github.com)
+
+### Patches
+
+- set disclosure appearance attribute in connected callback to ensure the element can be constructed without error (chhol@microsoft.com)
+
+## 2.26.2
+
+Thu, 07 Apr 2022 07:12:06 GMT
+
+### Patches
+
+- Added the picker to the component explorer site (scomea@microsoft.com)
+
+## 2.26.1
+
+Wed, 06 Apr 2022 07:12:42 GMT
+
+### Patches
+
+- Bump @microsoft/fast-element to v1.9.0 (nicholasrice@users.noreply.github.com)
+
+## 2.26.0
+
+Sun, 03 Apr 2022 07:12:01 GMT
+
+### Minor changes
+
+- assign appearance in connectedCallback instead of constructor to support document.createElement (chhol@microsoft.com)
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.40.0 (nicholasrice@users.noreply.github.com)
+- Bump @microsoft/fast-web-utilities to v5.2.0 (nicholasrice@users.noreply.github.com)
+- Bump @microsoft/fast-colors to v5.2.0 (nicholasrice@users.noreply.github.com)
+
+## 2.25.4
+
+Thu, 31 Mar 2022 07:13:31 GMT
+
+### Patches
+
+- fix hidden menu items should not be included in the tabindex (chhol@microsoft.com)
+
+## 2.25.3
+
+Sun, 27 Mar 2022 07:11:50 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.38.0 (44823142+williamw2@users.noreply.github.com)
+
+## 2.25.2
+
+Thu, 24 Mar 2022 07:12:08 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.37.2 (20542556+mollykreis@users.noreply.github.com)
 
 ## 2.25.1
 

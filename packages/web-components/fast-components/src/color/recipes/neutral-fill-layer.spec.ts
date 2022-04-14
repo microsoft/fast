@@ -1,8 +1,8 @@
 import { expect } from "chai";
-import { PaletteRGB } from "../palette";
-import { SwatchRGB } from "../swatch";
-import { middleGrey } from "../utilities/color-constants";
-import { neutralFillLayer } from "./neutral-fill-layer";
+import { PaletteRGB } from "../palette.js";
+import { SwatchRGB } from "../swatch.js";
+import { middleGrey } from "../utilities/color-constants.js";
+import { neutralFillLayer } from "./neutral-fill-layer.js";
 
 const neutralPalette = PaletteRGB.create(middleGrey);
 

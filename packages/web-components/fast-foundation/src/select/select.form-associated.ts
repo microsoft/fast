@@ -1,5 +1,5 @@
-import { Listbox } from "../listbox/listbox";
-import { FormAssociated } from "../form-associated/form-associated";
+import { Listbox } from "../listbox/listbox.js";
+import { FormAssociated } from "../form-associated/form-associated.js";
 
 class _Select extends Listbox {}
 interface _Select extends FormAssociated {}

@@ -1,5 +1,7 @@
 import type { Dialog as FASTDialogType } from "@microsoft/fast-foundation";
-import { expect } from "chai";
+import chai from "chai";
+
+const { expect } = chai;
 
 type FASTDialog = HTMLElement & FASTDialogType;
 

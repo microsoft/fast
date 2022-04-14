@@ -7,9 +7,9 @@ import {
     keyEscape,
     keyFunction2,
 } from "@microsoft/fast-web-utilities";
-import { FoundationElement } from "../foundation-element";
-import type { ColumnDefinition } from "./data-grid";
-import { DataGridCellTypes } from "./data-grid.options";
+import { FoundationElement } from "../foundation-element/foundation-element.js";
+import type { ColumnDefinition } from "./data-grid.js";
+import { DataGridCellTypes } from "./data-grid.options.js";
 
 export { DataGridCellTypes };
 
@@ -49,7 +49,8 @@ export class DataGridCell extends FoundationElement {
      * HTML Attribute: cell-type
      */
     @attr({ attribute: "cell-type" })
-    public cellType: DataGridCellTypes = DataGridCellTypes.default;
+    public cellType: DataGridCellTypes | "default" | "columnheader" | "rowheader" =
+        DataGridCellTypes.default;
     private cellTypeChanged(): void {
         if (this.$fastController.isConnected) {
             this.updateCellView();

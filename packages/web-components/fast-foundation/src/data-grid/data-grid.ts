@@ -17,10 +17,10 @@ import {
     keyPageDown,
     keyPageUp,
 } from "@microsoft/fast-web-utilities";
-import { FoundationElement } from "../foundation-element";
-import type { DataGridCell } from "./data-grid-cell";
-import type { DataGridRow } from "./data-grid-row";
-import { DataGridRowTypes, GenerateHeaderOptions } from "./data-grid.options";
+import { FoundationElement } from "../foundation-element/foundation-element.js";
+import type { DataGridCell } from "./data-grid-cell.js";
+import type { DataGridRow } from "./data-grid-row.js";
+import { DataGridRowTypes, GenerateHeaderOptions } from "./data-grid.options.js";
 
 export { DataGridRowTypes, GenerateHeaderOptions };
 
@@ -160,7 +160,8 @@ export class DataGrid extends FoundationElement {
      * HTML Attribute: generate-header
      */
     @attr({ attribute: "generate-header" })
-    public generateHeader: GenerateHeaderOptions = GenerateHeaderOptions.default;
+    public generateHeader: GenerateHeaderOptions | "none" | "default" | "sticky" =
+        GenerateHeaderOptions.default;
     private generateHeaderChanged(): void {
         if (this.$fastController.isConnected) {
             this.toggleGeneratedHeader();

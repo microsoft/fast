@@ -1,5 +1,5 @@
 import BreadcrumbItemTemplate from "./fixtures/base.html";
-import "./index";
+import "./index.js";
 
 export default {
     title: "Breadcrumb Item",

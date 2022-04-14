@@ -4,7 +4,7 @@ import {
     FoundationElementTemplate,
     HorizontalScrollOptions,
 } from "@microsoft/fast-foundation";
-import { DirectionalStyleSheetBehavior } from "../styles";
+import { DirectionalStyleSheetBehavior } from "../styles/direction.js";
 
 const ltrActionsStyles = css`
     .scroll-prev {
