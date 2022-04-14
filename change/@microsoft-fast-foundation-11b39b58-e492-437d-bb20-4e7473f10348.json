@@ -1,7 +1,0 @@
-{
-  "type": "minor",
-  "comment": "Implements `<dialog>` element events on FastDialog",
-  "packageName": "@microsoft/fast-foundation",
-  "email": "web@bennypowers.com",
-  "dependentChangeType": "patch"
-}
