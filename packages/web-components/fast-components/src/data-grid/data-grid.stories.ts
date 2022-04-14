@@ -9,7 +9,7 @@ import type {
 import { GenerateHeaderOptions } from "@microsoft/fast-foundation/dist/esm/data-grid/data-grid.options.js";
 import addons from "@storybook/addons";
 import { STORY_RENDERED } from "@storybook/core-events";
-import { TextField } from "../text-field";
+import { TextField } from "../text-field/index.js";
 import DataGridTemplate from "./fixtures/base.html";
 import "./index.js";
 

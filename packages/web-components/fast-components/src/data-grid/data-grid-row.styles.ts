@@ -10,7 +10,7 @@ import {
     neutralFillRest,
     neutralStrokeDividerRest,
     strokeWidth,
-} from "../design-tokens";
+} from "../design-tokens.js";
 
 /**
  * Styles for Data Grid row

@@ -213,8 +213,23 @@ export class FASTDataGrid extends FASTElement {
      */
     @attr({ attribute: "selection-mode" })
     public selectionMode: DataGridSelectionMode = "none";
-    private selectionModeChanged(): void {
+    private selectionModeChanged(
+        prev: DataGridSelectionMode,
+        next: DataGridSelectionMode
+    ): void {
         if (this.$fastController.isConnected) {
+            if (prev === "single-row" || prev === "multi-row") {
+                this.removeEventListener(
+                    "rowselectionchanged",
+                    this.handleRowSelectedChange
+                );
+            }
+            if (next === "single-row" || next === "multi-row") {
+                this.addEventListener(
+                    "rowselectionchanged",
+                    this.handleRowSelectedChange
+                );
+            }
             this.deselectAllRows();
         }
     }
