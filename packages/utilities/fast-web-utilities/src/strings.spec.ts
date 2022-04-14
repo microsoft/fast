@@ -116,7 +116,9 @@ describe("spinalCase", () => {
         expect(spinalCase("StringExtensions")).to.equal("string-extensions");
     });
     it("should convert CamelCase with numbers", (): void => {
-        expect(spinalCase("typeRampMinus1FontSize")).to.equal("type-ramp-minus-1-font-size");
+        expect(spinalCase("typeRampMinus1FontSize")).to.equal(
+            "type-ramp-minus-1-font-size"
+        );
     });
 });
 
