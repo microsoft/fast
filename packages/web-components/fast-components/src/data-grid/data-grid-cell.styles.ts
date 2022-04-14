@@ -52,14 +52,14 @@ export const dataGridCellStyles: FoundationElementTemplate<ElementStyles> = (
         forcedColorsStylesheetBehavior(
             css`
         :host {
-            color: ${SystemColors.FieldText};
+            color: inherit;
             forced-color-adjust: none;
             border-color: transparent;
         }
 
         :host(:${focusVisible}) {
+            border-color: ${SystemColors.FieldText};
             box-shadow: 0 0 0 2px inset ${SystemColors.Field};
-            color: ${SystemColors.FieldText};
         }
         `
         )

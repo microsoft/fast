@@ -48,7 +48,7 @@ export const dataGridRowStyles: FoundationElementTemplate<ElementStyles> = (
                 :host {
                     border-color: transparent;
                     forced-color-adjust: none;
-                    color: ${SystemColors.ButtonText};
+                    color: ${SystemColors.FieldText};
                 }
                 :host([aria-selected="true"]) {
                     background: ${SystemColors.Highlight};
