@@ -22,7 +22,7 @@ export const skeletonTemplate: FoundationElementTemplate<ViewTemplate<Skeleton>>
                 <span class="shimmer"></span>
             `
         )}
-        <object type="image/svg+xml" data="${x => x.pattern}">
+        <object type="image/svg+xml" data="${x => x.pattern}" role="presentation">
             <img class="pattern" src="${x => x.pattern}" />
         </object>
         <slot></slot>
