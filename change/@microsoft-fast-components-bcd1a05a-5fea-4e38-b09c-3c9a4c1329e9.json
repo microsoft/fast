@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "feat(dialog): implement <dialog> interface",
+  "packageName": "@microsoft/fast-components",
+  "email": "web@bennypowers.com",
+  "dependentChangeType": "patch"
+}
