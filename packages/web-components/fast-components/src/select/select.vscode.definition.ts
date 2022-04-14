@@ -23,6 +23,21 @@ export default {
                     default: "",
                     required: false,
                 },
+                {
+                    name: "multiple",
+                    title: "Multiple",
+                    description: "Indicates if the select is in multi-selection mode",
+                    type: "boolean",
+                    default: false,
+                    required: false,
+                },
+                {
+                    name: "size",
+                    title: "Size",
+                    description: "The maximum number of visible options",
+                    type: "string",
+                    required: false,
+                },
             ],
             slots: [
                 {

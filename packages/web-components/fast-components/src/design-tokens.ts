@@ -965,3 +965,18 @@ export const neutralStrokeDividerRest = create<Swatch>(
 ).withDefault(element =>
     neutralStrokeDividerRecipe.getValueFor(element).evaluate(element)
 );
+
+/**
+ * The control height formula expressed as a design token.
+ * This token does not provide a CSS custom property.
+ *
+ * @public
+ */
+export const heightNumberAsToken = DesignToken.create<number>({
+    name: "height-number",
+    cssCustomPropertyName: null,
+}).withDefault(
+    target =>
+        (baseHeightMultiplier.getValueFor(target) + density.getValueFor(target)) *
+        designUnit.getValueFor(target)
+);
