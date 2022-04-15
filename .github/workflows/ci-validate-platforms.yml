@@ -76,30 +76,6 @@ jobs:
           yarn playwright install-deps
           yarn playwright install
 
-      - name: Build Playwright tests
-        run: yarn workspace @microsoft/fast-components build:pw
-
-      - name: Test Playwright (chromium)
-        run: yarn workspace @microsoft/fast-components test-pw
-        continue-on-error: true
-        timeout-minutes: 2
-        env:
-          PLAYWRIGHT_BROWSER: chromium
-
-      - name: Test Playwright (firefox)
-        run: yarn workspace @microsoft/fast-components test-pw
-        continue-on-error: true
-        timeout-minutes: 2
-        env:
-          PLAYWRIGHT_BROWSER: firefox
-
-      - name: Test Playwright (webkit)
-        run: yarn workspace @microsoft/fast-components test-pw
-        continue-on-error: true
-        timeout-minutes: 2
-        env:
-          PLAYWRIGHT_BROWSER: webkit
-
       - name: Initialize CodeQL
         if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
         uses: github/codeql-action/init@v1
