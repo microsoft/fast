@@ -1,11 +1,12 @@
 {
-    "name": "fast-benchmarks-wendy",
+    "name": "fast-benchmarks",
     "version": "1.0.0",
     "description": "",
     "scripts": {
         "benchmark:binding": "tach --config fast-element/binding/tachometer-expand.json",
         "debug:binding": "tach --config fast-element/binding/tachometer.json --manual",
-        "build": "tsc --build"
+        "build": "tsc --build",
+        "benchmark": "node scripts/index.js"
     },
     "author": "Microsoft",
     "license": "ISC",
@@ -15,6 +16,7 @@
     },
     "devDependencies": {
         "chromedriver": "^99.0.0",
+        "commander": "^9.2.0",
         "typescript": "^4.3.5"
     }
 }
