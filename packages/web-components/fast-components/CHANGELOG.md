@@ -1,8 +1,21 @@
 # Change Log - @microsoft/fast-components
 
-This log was last generated on Tue, 12 Apr 2022 07:13:35 GMT and should not be manually modified.
+This log was last generated on Thu, 14 Apr 2022 07:12:36 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.28.0
+
+Thu, 14 Apr 2022 07:12:36 GMT
+
+### Minor changes
+
+- add multiselect mode to select (john.kreitlow@microsoft.com)
+
+### Patches
+
+- feat(dialog): implement <dialog> interface (web@bennypowers.com)
+- Bump @microsoft/fast-foundation to v2.42.0 (web@bennypowers.com)
 
 ## 2.27.1
 

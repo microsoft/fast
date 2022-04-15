@@ -96,6 +96,8 @@ export class Dialog extends FoundationElement {
      */
     public dismiss(): void {
         this.$emit("dismiss");
+        // implement `<dialog>` interface
+        this.$emit("cancel");
     }
 
     /**
@@ -114,6 +116,8 @@ export class Dialog extends FoundationElement {
      */
     public hide(): void {
         this.hidden = true;
+        // implement `<dialog>` interface
+        this.$emit("close");
     }
 
     /**

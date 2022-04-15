@@ -1,9 +1,54 @@
+import { css, ElementStyles } from "@microsoft/fast-element";
+import type { ComboboxOptions } from "@microsoft/fast-foundation";
 import {
-    Combobox,
-    ComboboxOptions,
+    Combobox as FoundationCombobox,
     comboboxTemplate as template,
 } from "@microsoft/fast-foundation";
+import { heightNumberAsToken } from "../design-tokens.js";
 import { comboboxStyles as styles } from "./combobox.styles.js";
+
+/**
+ * Base class for Combobox.
+ * @public
+ */
+export class Combobox extends FoundationCombobox {
+    /**
+     * An internal stylesheet to hold calculated CSS custom properties.
+     *
+     * @internal
+     */
+    private computedStylesheet?: ElementStyles;
+
+    /**
+     * @internal
+     */
+    protected maxHeightChanged(prev: number | undefined, next: number): void {
+        this.updateComputedStylesheet();
+    }
+
+    /**
+     * Updates an internal stylesheet with calculated CSS custom properties.
+     *
+     * @internal
+     */
+    protected updateComputedStylesheet(): void {
+        if (this.computedStylesheet) {
+            this.$fastController.removeStyles(this.computedStylesheet);
+        }
+
+        const popupMaxHeight = Math.floor(
+            this.maxHeight / heightNumberAsToken.getValueFor(this)
+        ).toString();
+
+        this.computedStylesheet = css`
+            :host {
+                --listbox-max-height: ${popupMaxHeight};
+            }
+        `;
+
+        this.$fastController.addStyles(this.computedStylesheet);
+    }
+}
 
 /**
  * A function that returns a {@link @microsoft/fast-foundation#Combobox} registration for configuring the component with a DesignSystem.
@@ -16,6 +61,7 @@ import { comboboxStyles as styles } from "./combobox.styles.js";
  */
 export const fastCombobox = Combobox.compose<ComboboxOptions>({
     baseName: "combobox",
+    baseClass: FoundationCombobox,
     template,
     styles,
     shadowOptions: {
@@ -34,11 +80,5 @@ export const fastCombobox = Combobox.compose<ComboboxOptions>({
         </svg>
     `,
 });
-
-/**
- * Base class for Combobox
- * @public
- */
-export { Combobox };
 
 export { styles as comboboxStyles };
