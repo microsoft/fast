@@ -13,6 +13,7 @@ import {
 import {
     Attribute,
     DefaultTreeCommentNode,
+    DefaultTreeDocumentFragment,
     DefaultTreeElement,
     DefaultTreeNode,
     DefaultTreeParentNode,
@@ -87,6 +88,18 @@ function isElementNode(node: DefaultTreeNode): node is DefaultTreeElement {
     return (node as DefaultTreeElement).tagName !== undefined;
 }
 
+function isDocumentFragment(node: any): node is DefaultTreeDocumentFragment {
+    return node.nodeName === "#document-fragment";
+}
+
+function firstElementChild(node: DefaultTreeParentNode): DefaultTreeElement | null {
+    return (
+        (node.childNodes.find(child => isElementNode(child)) as
+            | DefaultTreeElement
+            | undefined) || null
+    );
+}
+
 /**
  * Parses a template into a set of operation instructions
  * @param template - The template to parse
@@ -117,21 +130,36 @@ export function parseTemplateToOpCodes(template: ViewTemplate): Op[] {
 }
 
 export function parseStringToOpCodes(
+    /**
+     * The string to parse
+     */
     templateString: string,
-    factories: Record<string, ViewBehaviorFactory>
+    factories: Record<string, ViewBehaviorFactory>,
+
+    /**
+     * Adjust behavior when parsing a template used
+     * as a custom element's template
+     */
+    forCustomElement = false
 ): Op[] {
     const nodeTree = parseFragment(templateString, { sourceCodeLocationInfo: true });
 
-    if (!("nodeName" in nodeTree)) {
+    if (!isDocumentFragment(nodeTree)) {
         // I'm not sure when exactly this is encountered but the type system seems to say it's possible.
         throw new Error(`Error parsing template`);
     }
+
+    // TypeScript gets confused about what 'nodeTree' is.
+    // Creating a new var clears that up.
+    let tree: DefaultTreeParentNode = nodeTree;
 
     /**
      * Tracks the offset location in the source template string where the last
      * flushing / skip took place.
      */
     let lastOffset: number | undefined = 0;
+
+    let finalOffset: number = templateString.length;
 
     /**
      * Collection of op codes
@@ -272,7 +300,7 @@ export function parseStringToOpCodes(
      * Flush template content from lastIndex to provided offset
      * @param offset - the offset to flush to
      */
-    function flushTo(offset?: number) {
+    function flushTo(offset: number = finalOffset) {
         if (lastOffset === undefined) {
             throw new Error(
                 `Cannot flush template content from a  last offset that is ${typeof lastOffset}.`
@@ -302,7 +330,23 @@ export function parseStringToOpCodes(
         lastOffset = offset;
     }
 
-    traverse(nodeTree, {
+    /**
+     * FAST leverages any <template> element that is a firstElementChild
+     * of the template as a binding target for any directives on the
+     * <template>. This block implements that behavior.
+     */
+    if (forCustomElement) {
+        const fec = firstElementChild(tree);
+
+        if (fec !== null && fec.tagName === "template") {
+            tree = fec as DefaultTreeParentNode;
+            const location = fec.sourceCodeLocation!;
+            finalOffset = location.endTag.endOffset;
+            lastOffset = location.startTag.startOffset;
+        }
+    }
+
+    traverse(tree, {
         visit(node: DefaultTreeNode): void {
             if (isCommentNode(node) || isTextNode(node)) {
                 const parsed = Parser.parse(

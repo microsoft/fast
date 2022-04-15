@@ -22,12 +22,12 @@ export class SSRView {
     constructor(html: string, factories: Record<string, ViewBehaviorFactory>) {
         this.html = html;
         this.factories = factories;
-        const codes = parseStringToOpCodes(html, factories);
+        const codes = parseStringToOpCodes(html, factories, true);
 
-        // Check to see if the root is a template element. We may need to
-        // make this more sophisticated in the future because it doesn't quite
-        // implement the same behavior as the client-side compiler
-        // which uses Element.firstElementChild to check for template elements.
+        /**
+         * If the first and last codes are template elements, populate static
+         * and dynamic attributes for the host element and remove those op codes.
+         */
         if (codes.length) {
             const firstCode = codes[0];
             if (
