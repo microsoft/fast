@@ -28,12 +28,12 @@ test.describe("FASTElementRenderer", () => {
         test(`should render stylesheets as 'style' elements by default`, () => {
             const { templateRenderer, defaultRenderInfo} = fastSSR();
             const result = consolidate(templateRenderer.render(html`<styled-element></styled-element>`, defaultRenderInfo));
-            expect(result).toBe("<styled-element><template shadowroot=\"open\"><style>:host { display: block; }:host { color: red; }</style></template></styled-element>");
+            expect(result).toBe("<styled-element><template shadowroot=\"open\"><style>:host { display: block; }</style><style>:host { color: red; }</style></template></styled-element>");
         });
         test(`should render stylesheets as 'fast-style' elements when configured`, () => {
             const { templateRenderer, defaultRenderInfo} = fastSSR({useFASTStyle: true});
             const result = consolidate(templateRenderer.render(html`<styled-element></styled-element>`, defaultRenderInfo));
-            expect(result).toBe(`<styled-element><template shadowroot=\"open\"><fast-style style-id="fast-style-0" css=":host { display: block; }:host { color: red; }"></fast-style></template></styled-element>`);
+            expect(result).toBe(`<styled-element><template shadowroot=\"open\"><fast-style style-id="fast-style-0" css=":host { display: block; }\"></fast-style><fast-style style-id=\"fast-style-1\" css=\":host { color: red; }"></fast-style></template></styled-element>`);
         });
     });
 });

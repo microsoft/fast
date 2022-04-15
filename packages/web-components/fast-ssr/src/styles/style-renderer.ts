@@ -20,18 +20,18 @@ function collectStyles(style: ComposableStyles): string {
 }
 
 export interface StyleRenderer {
-    render(styles: ElementStyles): string;
+    render(styles: ComposableStyles): string;
 }
 
 export class FASTStyleStyleRenderer implements StyleRenderer {
-    private static stylesheetCache = new Map<ElementStyles, string>();
+    private static stylesheetCache = new Map<ComposableStyles, string>();
     private static nextId = (() => {
         let id = 0;
         const prefix = "fast-style";
         return () => `${prefix}-${id++}`;
     })();
 
-    public render(styles: ElementStyles): string {
+    public render(styles: ComposableStyles): string {
         let id = FASTStyleStyleRenderer.stylesheetCache.get(styles);
         const content = id === undefined ? collectStyles(styles) : null;
         let contentAttr = "";
@@ -47,7 +47,7 @@ export class FASTStyleStyleRenderer implements StyleRenderer {
 }
 
 export class StyleElementStyleRenderer implements StyleRenderer {
-    public render(styles: ElementStyles): string {
+    public render(styles: ComposableStyles): string {
         return `<style>${collectStyles(styles)}</style>`;
     }
 }

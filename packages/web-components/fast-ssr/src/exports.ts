@@ -1,5 +1,10 @@
 import { RenderInfo } from "@lit-labs/ssr";
-import { Compiler, ElementStyles, ViewBehaviorFactory } from "@microsoft/fast-element";
+import {
+    Compiler,
+    DOM,
+    ElementStyles,
+    ViewBehaviorFactory,
+} from "@microsoft/fast-element";
 import { FASTElementRenderer } from "./element-renderer/element-renderer.js";
 import { FASTSSRStyleStrategy } from "./element-renderer/style-strategy.js";
 import {
@@ -31,6 +36,7 @@ Compiler.setDefaultStrategy(
 );
 
 ElementStyles.setDefaultStrategy(FASTSSRStyleStrategy);
+DOM.setUpdateMode(false);
 
 /**
  * Factory for creating SSR rendering assets.
@@ -38,9 +44,9 @@ ElementStyles.setDefaultStrategy(FASTSSRStyleStrategy);
  *
  * @example
  * ```ts
- * import "@lit-labs/ssr/lib/install-global-dom-shim.js";
- * import { html } from "@microsoft/fast-element";
+ * import "@microsoft/install-dom-shim";
  * import fastSSR from "@microsoft/fast-ssr";
+ * import { html } from "@microsoft/fast-element";
  * const { templateRenderer, defaultRenderInfo } = fastSSR();
  *
  * const streamableSSRResult = templateRenderer.render(html`...`, defaultRenderInfo);
