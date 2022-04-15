@@ -1,6 +1,6 @@
 {
   "type": "patch",
-  "comment": "tabs without an id should use a unique id to prevent duplicate ids when multiples are on a page",
+  "comment": "Ensured that tabs without an ID use a unique ID to prevent duplicate IDs when multiple tabs are on a page",
   "packageName": "@microsoft/fast-components",
   "email": "chhol@microsoft.com",
   "dependentChangeType": "patch"
