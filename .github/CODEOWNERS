@@ -25,7 +25,6 @@ build/ @janechu @nicholasrice @chrisdholt @awentzel @EisenbergEffect
 
 # Sites
 /sites/fast-color-explorer/ @nicholasrice @janechu @bheston
-/sites/fast-component-explorer/ @janechu @nicholasrice
 /sites/website/ @awentzel @chrisdholt @falkicon @EisenbergEffect
 
 # Package specific owners
