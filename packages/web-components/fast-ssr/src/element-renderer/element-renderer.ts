@@ -1,8 +1,9 @@
 import { ElementRenderer, RenderInfo } from "@lit-labs/ssr";
 import { Aspect, DOM, ExecutionContext, FASTElement } from "@microsoft/fast-element";
+import { StyleRenderer } from "../styles/style-renderer.js";
 import { TemplateRenderer } from "../template-renderer/template-renderer.js";
 import { SSRView } from "../view.js";
-import { StyleRenderer } from "../styles/style-renderer.js";
+import { FASTSSRStyleStrategy } from "./style-strategy.js";
 
 export abstract class FASTElementRenderer extends ElementRenderer {
     /**
@@ -110,10 +111,12 @@ export abstract class FASTElementRenderer extends ElementRenderer {
      */
     public *renderShadow(renderInfo: RenderInfo): IterableIterator<string> {
         const view = this.element.$fastController.view;
-        const styles = this.element.$fastController.styles;
+        const styles = FASTSSRStyleStrategy.getStylesFor(this.element);
 
         if (styles) {
-            yield this.styleRenderer.render(styles);
+            for (const style of styles) {
+                yield this.styleRenderer.render(style);
+            }
         }
 
         if (view !== null) {
