@@ -1,8 +1,17 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Thu, 07 Apr 2022 07:12:06 GMT and should not be manually modified.
+This log was last generated on Thu, 14 Apr 2022 07:12:36 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.42.0
+
+Thu, 14 Apr 2022 07:12:36 GMT
+
+### Minor changes
+
+- Implements `<dialog>` element events on FastDialog (web@bennypowers.com)
+- add multiselect mode to select (john.kreitlow@microsoft.com)
 
 ## 2.41.1
 
