@@ -49,16 +49,17 @@ const getXPosition = (elm: any): number | null => {
 /**
  * Templates used for content
  */
-const cardTemplate: string = `<div class="card" style="width: ${cardWidth}px; height: 100px; margin: ${cardMargin}px;"></div>`;
+const cardTemplate = (width: number = cardWidth): string => `<div class="card" style="width: ${width}px; height: 100px; margin: ${cardMargin}px;"></div>`;
 
 /**
  * Multi card templates
  * @param cnt number of cards
  */
-const getCards = (cnt: number): string => new Array(cnt).fill(cardTemplate).reduce((s, c) => s += c, '');
+const getCards = (cnt: number, width: number = cardWidth): string => new Array(cnt).fill(cardTemplate(width)).reduce((s, c) => s += c, '');
 
 async function setup(options: {
-    width?: number
+    width?: number,
+    cardWidth?: number,
 } = {}) {
     const { element, connect, disconnect }:
         {
@@ -71,7 +72,7 @@ async function setup(options: {
     element.speed = 0;
 
     element.setAttribute("style", `width: ${options && options.width ? options.width : horizontalScrollWidth}px;`);
-    element.innerHTML = getCards(8);
+    element.innerHTML = getCards(8, options.cardWidth || cardWidth);
 
     await connect();
     await DOM.nextUpdate();
@@ -92,7 +93,7 @@ describe("HorizontalScroll", () => {
         it("should disable the next flipper if content is less than horizontal-scroll width", async () => {
             const { element, disconnect } = await setup();
 
-            element.innerHTML = cardTemplate;
+            element.innerHTML = cardTemplate();
             await DOM.nextUpdate();
 
             expect(element.shadowRoot?.querySelector(".scroll-next")?.classList.contains("disabled")).to.equal(true);
@@ -176,6 +177,33 @@ describe("HorizontalScroll", () => {
 
             await disconnect();
         });
+
+        it("should disable the next flipper when it's scrolled back from the end and scrolled forward", async () => {
+            const { element, disconnect } = await setup();
+
+            element.scrollToNext();
+            await DOM.nextUpdate();
+
+            element.scrollToNext();
+            await DOM.nextUpdate();
+
+            element.scrollToNext();
+            await DOM.nextUpdate();
+
+            expect(element.shadowRoot?.querySelector(".scroll-next")?.classList.contains("disabled")).to.equal(true);
+
+            element.scrollToPrevious();
+            await DOM.nextUpdate();
+
+            expect(element.shadowRoot?.querySelector(".scroll-next")?.classList.contains("disabled")).to.equal(false);
+
+            element.scrollToNext();
+            await DOM.nextUpdate();
+
+            expect(element.shadowRoot?.querySelector(".scroll-next")?.classList.contains("disabled")).to.equal(true);
+
+            await disconnect();
+        })
     });
 
     describe("Scrolling", () => {
