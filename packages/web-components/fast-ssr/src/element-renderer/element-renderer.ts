@@ -89,6 +89,7 @@ export abstract class FASTElementRenderer extends ElementRenderer {
 
         if (ctor) {
             this.element = new ctor() as FASTElement;
+            (this.element as any).tagName = tagName;
         } else {
             throw new Error(
                 `FASTElementRenderer was unable to find a constructor for a custom element with the tag name '${tagName}'.`
