@@ -3,19 +3,19 @@ import {
     Compiler,
     DOM,
     ElementStyles,
-    ViewBehaviorFactory
+    ViewBehaviorFactory,
 } from "@microsoft/fast-element";
 import { FASTElementRenderer } from "./element-renderer/element-renderer.js";
 import { FASTSSRStyleStrategy } from "./element-renderer/style-strategy.js";
 import {
     FASTStyleStyleRenderer,
     StyleElementStyleRenderer,
-    StyleRenderer
+    StyleRenderer,
 } from "./styles/style-renderer.js";
 import { defaultViewBehaviorFactoryRenderers } from "./template-renderer/directives.js";
 import {
     TemplateRenderer,
-    TemplateRendererConfiguration
+    TemplateRendererConfiguration,
 } from "./template-renderer/template-renderer.js";
 import { SSRView } from "./view.js";
 
