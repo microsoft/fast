@@ -368,7 +368,7 @@ export class HorizontalScroll extends FoundationElement {
 
         const current = this.scrollStops.findIndex(
             (stop, index) =>
-                stop <= scrollPosition &&
+                stop >= scrollPosition &&
                 (this.isRtl ||
                     index === this.scrollStops.length - 1 ||
                     this.scrollStops[index + 1] > scrollPosition)
