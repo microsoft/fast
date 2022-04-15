@@ -225,7 +225,11 @@ export class TemplateRenderer
                                 }
                                 break;
                             case Aspect.tokenList:
-                                if (code.target === "classList") {
+                            case Aspect.property:
+                                if (
+                                    code.target === "classList" ||
+                                    code.target === "className"
+                                ) {
                                     yield `class="${result}"`;
                                 }
                                 break;
