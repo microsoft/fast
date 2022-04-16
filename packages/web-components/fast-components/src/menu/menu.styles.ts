@@ -8,7 +8,7 @@ import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
     controlCornerRadius,
     designUnit,
-    neutralLayerFloating,
+    fillColor,
     neutralStrokeDividerRest,
     strokeWidth,
 } from "../design-tokens.js";
@@ -25,7 +25,7 @@ export const menuStyles: FoundationElementTemplate<ElementStyles> = (
     css`
         ${display("block")} :host {
             --elevation: 11;
-            background: ${neutralLayerFloating};
+            background: ${fillColor};
             border: calc(${strokeWidth} * 1px) solid transparent;
             ${elevation}
             margin: 0;

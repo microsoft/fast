@@ -53,7 +53,7 @@ import { HorizontalScrollOptions } from '@microsoft/fast-foundation';
 import { ListboxElement } from '@microsoft/fast-foundation';
 import { ListboxOption } from '@microsoft/fast-foundation';
 import { ListboxOptionOptions } from '@microsoft/fast-foundation';
-import { Menu } from '@microsoft/fast-foundation';
+import { Menu as Menu_2 } from '@microsoft/fast-foundation';
 import { MenuItem } from '@microsoft/fast-foundation';
 import { MenuItemOptions } from '@microsoft/fast-foundation';
 import { NumberField as NumberField_2 } from '@microsoft/fast-foundation';
@@ -62,7 +62,7 @@ import { OverrideFoundationElementDefinition } from '@microsoft/fast-foundation'
 import { Picker } from '@microsoft/fast-foundation';
 import { PickerList } from '@microsoft/fast-foundation';
 import { PickerListItem } from '@microsoft/fast-foundation';
-import { PickerMenu } from '@microsoft/fast-foundation';
+import { PickerMenu as PickerMenu_2 } from '@microsoft/fast-foundation';
 import { PickerMenuOption } from '@microsoft/fast-foundation';
 import { ProgressOptions } from '@microsoft/fast-foundation';
 import { ProgressRingOptions } from '@microsoft/fast-foundation';
@@ -1407,7 +1407,11 @@ export { ListboxOption }
 // @public
 export const listboxStyles: FoundationElementTemplate<ElementStyles>;
 
-export { Menu }
+// @public (undocumented)
+export class Menu extends Menu_2 {
+    // @internal (undocumented)
+    connectedCallback(): void;
+}
 
 export { MenuItem }
 
@@ -1667,6 +1671,12 @@ export { Picker }
 // @public
 export const pickerListItemStyles: FoundationElementTemplate<ElementStyles>;
 
+// @public (undocumented)
+export class PickerMenu extends PickerMenu_2 {
+    // @internal (undocumented)
+    connectedCallback(): void;
+}
+
 // @public
 export const pickerMenuOptionStyles: FoundationElementTemplate<ElementStyles>;
 
@@ -1717,6 +1727,8 @@ export const searchStyles: FoundationElementTemplate<ElementStyles, TextFieldOpt
 
 // @public
 export class Select extends Select_2 {
+    // @internal (undocumented)
+    connectedCallback(): void;
     // @internal (undocumented)
     protected listboxScrollWidthChanged(): void;
     // @internal

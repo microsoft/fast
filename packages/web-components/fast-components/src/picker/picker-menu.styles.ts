@@ -7,7 +7,7 @@ import { SystemColors } from "@microsoft/fast-web-utilities";
 import {
     controlCornerRadius,
     designUnit,
-    neutralLayerFloating,
+    fillColor,
     strokeWidth,
 } from "../design-tokens.js";
 import { elevation } from "../styles/index.js";
@@ -22,7 +22,7 @@ export const pickerMenuStyles: FoundationElementTemplate<ElementStyles> = (
 ) =>
     css`
         :host {
-            background: ${neutralLayerFloating};
+            background: ${fillColor};
             --elevation: 11;
             /* TODO: a mechanism to manage z-index across components
             https://github.com/microsoft/fast/issues/3813 */
