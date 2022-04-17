@@ -1,7 +1,0 @@
-{
-  "type": "minor",
-  "comment": "Instead of matchAll, used regex replace for pascalCase and added number to add to spinalCase",
-  "packageName": "@microsoft/fast-web-utilities",
-  "email": "74849806+wannieman98@users.noreply.github.com",
-  "dependentChangeType": "patch"
-}
