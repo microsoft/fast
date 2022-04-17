@@ -1,0 +1,145 @@
+<h1>Select</h1>
+
+<h2>Default</h2>
+<fast-select id="select-multiple" multiple>
+    <fast-option>William Hartnell</fast-option>
+    <fast-option>Patrick Troughton</fast-option>
+    <fast-option>Jon Pertwee</fast-option>
+    <fast-option>Tom Baker</fast-option>
+    <fast-option>Peter Davidson</fast-option>
+    <fast-option>Colin Baker</fast-option>
+    <fast-option>Sylvester McCoy</fast-option>
+    <fast-option>Paul McGann</fast-option>
+    <fast-option>Christopher Eccleston</fast-option>
+    <fast-option>David Tenant</fast-option>
+    <fast-option>Matt Smith</fast-option>
+    <fast-option>Peter Capaldi</fast-option>
+    <fast-option>Jodie Whittaker</fast-option>
+</fast-select>
+
+<h2>Empty Select in multiple-selection mode</h2>
+<fast-select id="select-multiple-empty" multiple></fast-select>
+
+<h2>Select with size attribute in multiple-selection mode</h2>
+<fast-select id="select-multiple-with-size-0" size="0" multiple>
+    <fast-option>option 1</fast-option>
+    <fast-option>option 2</fast-option>
+    <fast-option>option 3</fast-option>
+    <fast-option>option 4</fast-option>
+    <fast-option>option 5</fast-option>
+    <fast-option>option 6</fast-option>
+</fast-select>
+<fast-select id="select-multiple-with-size-1" size="1" multiple>
+    <fast-option>option 1</fast-option>
+    <fast-option>option 2</fast-option>
+    <fast-option>option 3</fast-option>
+    <fast-option>option 4</fast-option>
+    <fast-option>option 5</fast-option>
+</fast-select>
+<fast-select id="select-multiple-with-size-2" size="2" multiple>
+    <fast-option>option 1</fast-option>
+    <fast-option>option 2</fast-option>
+    <fast-option>option 3</fast-option>
+    <fast-option>option 4</fast-option>
+    <fast-option>option 5</fast-option>
+</fast-select>
+<fast-select id="select-multiple-with-size-3" size="3" multiple>
+    <fast-option>option 1</fast-option>
+    <fast-option>option 2</fast-option>
+    <fast-option>option 3</fast-option>
+    <fast-option>option 4</fast-option>
+    <fast-option>option 5</fast-option>
+</fast-select>
+<fast-select id="select-multiple-with-size-4" size="4" multiple>
+    <fast-option>option 1</fast-option>
+    <fast-option>option 2</fast-option>
+    <fast-option>option 3</fast-option>
+    <fast-option>option 4</fast-option>
+    <fast-option>option 5</fast-option>
+</fast-select>
+<fast-select id="select-multiple-with-size-5" size="5" multiple>
+    <fast-option>option 1</fast-option>
+    <fast-option>option 2</fast-option>
+    <fast-option>option 3</fast-option>
+    <fast-option>option 4</fast-option>
+    <fast-option>option 5</fast-option>
+</fast-select>
+
+<h2>Select with adjacent label in multiple-selection mode</h2>
+<label for="select-multiple-with-adjacent-label">Adjacent Label:</label>
+<fast-select id="select-multiple-with-adjacent-label" multiple>
+    <fast-option value="s">Small</fast-option>
+    <fast-option value="m">Medium</fast-option>
+    <fast-option value="l">Large</fast-option>
+    <fast-option value="xl">Extra Large</fast-option>
+</fast-select>
+
+<h2>Select with wrapping label in multiple-selection mode</h2>
+<label>
+    Wrapping label:
+    <fast-select id="select-multiple-with-wrapping-label" multiple>
+        <fast-option value="s">Small</fast-option>
+        <fast-option value="m">Medium</fast-option>
+        <fast-option value="l">Large</fast-option>
+        <fast-option value="xl">Extra Large</fast-option>
+    </fast-select>
+</label>
+
+<h2>Disabled Select in multiple-selection mode</h2>
+<fast-select multiple disabled>
+    <fast-option>This option is not selectable</fast-option>
+    <fast-option>This option is not selectable</fast-option>
+    <fast-option>This option is not selectable</fast-option>
+</fast-select>
+
+<h2>select with a default selected item in multiple-selection mode</h2>
+<fast-select id="select-multiple-with-two-default-selected" multiple>
+    <fast-option>John</fast-option>
+    <fast-option selected>Paul</fast-option>
+    <fast-option selected>George</fast-option>
+    <fast-option>Ringo</fast-option>
+</fast-select>
+
+<h2>Select with disabled items in multiple-selection mode</h2>
+<fast-select id="select-multiple-with-every-other-disabled" multiple>
+    <fast-option>Extra Small</fast-option>
+    <fast-option disabled>Small</fast-option>
+    <fast-option>Medium</fast-option>
+    <fast-option disabled>Large</fast-option>
+    <fast-option>Extra Large</fast-option>
+</fast-select>
+<fast-select id="select-multiple-with-adjacent-disabled-start" multiple>
+    <fast-option disabled>Extra Small</fast-option>
+    <fast-option disabled>Small</fast-option>
+    <fast-option>Medium</fast-option>
+    <fast-option>Large</fast-option>
+    <fast-option>Extra Large</fast-option>
+</fast-select>
+<fast-select id="select-multiple-with-adjacent-disabled-middle" multiple>
+    <fast-option>Extra Small</fast-option>
+    <fast-option disabled>Small</fast-option>
+    <fast-option disabled>Medium</fast-option>
+    <fast-option>Large</fast-option>
+    <fast-option>Extra Large</fast-option>
+</fast-select>
+<fast-select id="select-multiple-with-adjacent-disabled-end" multiple>
+    <fast-option>Extra Small</fast-option>
+    <fast-option>Small</fast-option>
+    <fast-option>Medium</fast-option>
+    <fast-option disabled>Large</fast-option>
+    <fast-option disabled>Extra Large</fast-option>
+</fast-select>
+<fast-select id="select-multiple-with-all-but-one-disabled" multiple>
+    <fast-option disabled>Extra Small</fast-option>
+    <fast-option disabled>Small</fast-option>
+    <fast-option disabled>Medium</fast-option>
+    <fast-option disabled>Large</fast-option>
+    <fast-option>Extra Large</fast-option>
+</fast-select>
+<fast-select id="select-multiple-with-all-disabled" multiple>
+    <fast-option disabled>Extra Small</fast-option>
+    <fast-option disabled>Small</fast-option>
+    <fast-option disabled>Medium</fast-option>
+    <fast-option disabled>Large</fast-option>
+    <fast-option disabled>Extra Large</fast-option>
+</fast-select>

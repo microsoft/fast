@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "fix: scrolling back from end and forward retains next flipper in horizontal-scroll",
+  "packageName": "@microsoft/fast-foundation",
+  "email": "robarb@microsoft.com",
+  "dependentChangeType": "patch"
+}
