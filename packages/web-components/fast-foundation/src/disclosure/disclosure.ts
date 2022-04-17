@@ -13,7 +13,7 @@ export class Disclosure extends FoundationElement {
      * @public
      */
     @attr({ mode: "boolean" })
-    public expanded: boolean;
+    public expanded: boolean = false;
 
     /**
      * Invoker title
@@ -21,7 +21,7 @@ export class Disclosure extends FoundationElement {
      * @public
      */
     @attr
-    public title: string;
+    public summary: string;
 
     /**
      * @internal
