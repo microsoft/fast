@@ -94,6 +94,15 @@ export const treeItemStyles: FoundationElementTemplate<ElementStyles, TreeItemOp
     definition
 ) =>
     css`
+    @keyframes treeItemLoading {
+        0% {
+            opacity: 0;
+        }
+        100% {
+            opacity: 1;
+         }
+    }
+
     ${display("block")} :host {
         contain: content;
         position: relative;
@@ -156,7 +165,6 @@ export const treeItemStyles: FoundationElementTemplate<ElementStyles, TreeItemOp
     }
 
     .items {
-        display: none;
         /* TODO: adaptive typography https://github.com/microsoft/fast/issues/2432 */
         font-size: calc(1em + (${designUnit} + 16) * 1px);
     }
@@ -210,7 +218,9 @@ export const treeItemStyles: FoundationElementTemplate<ElementStyles, TreeItemOp
     }
 
     :host([expanded]) > .items {
-        display: block;
+        animation: treeItemLoading ease-in 10ms;
+        animation-iteration-count: 1;
+        animation-fill-mode: forwards;
     }
 
     :host([disabled]) .content-region {
