@@ -2,6 +2,21 @@
   "name": "@microsoft/fast-animation",
   "entries": [
     {
+      "date": "Sun, 03 Apr 2022 07:12:01 GMT",
+      "tag": "@microsoft/fast-animation_v4.1.9",
+      "version": "4.1.9",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-web-utilities to v5.2.0",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "f6107c448ab6446667f4d9e86d9f9c11fff075aa",
+            "package": "@microsoft/fast-animation"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 02 Feb 2022 07:13:39 GMT",
       "tag": "@microsoft/fast-animation_v4.1.8",
       "version": "4.1.8",

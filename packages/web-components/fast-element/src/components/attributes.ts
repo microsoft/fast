@@ -1,6 +1,6 @@
-import { Accessor, Observable } from "../observation/observable";
-import { DOM } from "../dom";
-import type { Notifier } from "../observation/notifier";
+import { Accessor, Observable } from "../observation/observable.js";
+import { DOM } from "../dom.js";
+import type { Notifier } from "../observation/notifier.js";
 
 /**
  * Represents objects that can convert values to and from

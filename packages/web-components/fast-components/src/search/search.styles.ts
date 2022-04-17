@@ -9,7 +9,7 @@ import {
     TextFieldOptions,
 } from "@microsoft/fast-foundation";
 import { SystemColors } from "@microsoft/fast-web-utilities";
-import { Swatch } from "../color/swatch";
+import { Swatch } from "../color/swatch.js";
 import {
     accentFillActive,
     accentFillHover,
@@ -33,8 +33,8 @@ import {
     strokeWidth,
     typeRampBaseFontSize,
     typeRampBaseLineHeight,
-} from "../design-tokens";
-import { heightNumber } from "../styles/index";
+} from "../design-tokens.js";
+import { heightNumber } from "../styles/index.js";
 
 const clearButtonHover = DesignToken.create<Swatch>("clear-button-hover").withDefault(
     (target: HTMLElement) => {

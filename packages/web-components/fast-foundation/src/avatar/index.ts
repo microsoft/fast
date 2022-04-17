@@ -1,2 +1,2 @@
-export * from "./avatar.template";
-export * from "./avatar";
+export * from "./avatar.template.js";
+export * from "./avatar.js";

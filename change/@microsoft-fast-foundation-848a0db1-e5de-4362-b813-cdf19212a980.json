@@ -1,7 +1,0 @@
-{
-  "type": "minor",
-  "comment": "BREAKING CHANGE: replace WC button with stock HTML button",
-  "packageName": "@microsoft/fast-foundation",
-  "email": "jes@microsoft.com",
-  "dependentChangeType": "patch"
-}

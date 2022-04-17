@@ -1,4 +1,4 @@
-import { Swatch } from "../swatch";
+import { Swatch } from "../swatch.js";
 
 /*
  * A color is in "dark" if there is more contrast between #000000 and a reference

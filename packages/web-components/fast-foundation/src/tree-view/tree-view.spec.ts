@@ -77,4 +77,53 @@ describe("TreeView", () => {
 
         await disconnect();
     });
+
+    it("should only allow one tree item to be selected at a time", async () => {
+        const { element, connect, disconnect } = await setup();
+        const item1 = document.createElement("fast-tree-item");
+        const item2 = document.createElement("fast-tree-item");
+        const item3 = document.createElement("fast-tree-item");
+
+        element.appendChild(item1);
+        element.appendChild(item2);
+        element.appendChild(item3);
+
+        await connect();
+        await DOM.nextUpdate();
+
+        item3.click();
+        await DOM.nextUpdate();
+        expect(item3.getAttribute("aria-selected")).to.equal("true");
+
+        item2.click();
+        await DOM.nextUpdate();
+        expect(item3.getAttribute("aria-selected")).to.equal("false");
+        expect(item2.getAttribute("aria-selected")).to.equal("true");
+
+        await disconnect();
+    });
+
+    it("should deselect a selected item when clicked", async () => {
+        const { element, connect, disconnect } = await setup();
+        const item1 = document.createElement("fast-tree-item");
+        const item2 = document.createElement("fast-tree-item");
+        const item3 = document.createElement("fast-tree-item");
+
+        element.appendChild(item1);
+        element.appendChild(item2);
+        element.appendChild(item3);
+
+        await connect();
+        await DOM.nextUpdate();
+
+        item3.click();
+        await DOM.nextUpdate();
+        expect(item3.getAttribute("aria-selected")).to.equal("true");
+
+        item3.click();
+        await DOM.nextUpdate();
+        expect(item3.getAttribute("aria-selected")).to.equal("false");
+
+        await disconnect();
+    });
 });

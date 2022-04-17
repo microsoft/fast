@@ -1,8 +1,112 @@
 # Change Log - @microsoft/fast-react-wrapper
 
-This log was last generated on Wed, 09 Mar 2022 07:12:32 GMT and should not be manually modified.
+This log was last generated on Thu, 14 Apr 2022 07:12:36 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.2.1
+
+Thu, 14 Apr 2022 07:12:36 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.42.0 (web@bennypowers.com)
+
+## 0.2.0
+
+Tue, 12 Apr 2022 07:13:35 GMT
+
+### Minor changes
+
+- Converted package to be of type:module (nicholasrice@users.noreply.github.com)
+
+## 0.1.48
+
+Thu, 07 Apr 2022 07:12:06 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.41.1 (44823142+williamw2@users.noreply.github.com)
+
+## 0.1.47
+
+Wed, 06 Apr 2022 07:12:42 GMT
+
+### Patches
+
+- Bump @microsoft/fast-element to v1.9.0 (nicholasrice@users.noreply.github.com)
+
+## 0.1.46
+
+Sun, 03 Apr 2022 07:12:01 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.40.0 (nicholasrice@users.noreply.github.com)
+
+## 0.1.45
+
+Thu, 31 Mar 2022 07:13:31 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.39.0 (chhol@microsoft.com)
+
+## 0.1.44
+
+Sun, 27 Mar 2022 07:11:50 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.38.0 (44823142+williamw2@users.noreply.github.com)
+
+## 0.1.43
+
+Thu, 24 Mar 2022 07:12:08 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.37.2 (20542556+mollykreis@users.noreply.github.com)
+
+## 0.1.42
+
+Sun, 20 Mar 2022 07:15:44 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.37.1 (26874831+atmgrifter00@users.noreply.github.com)
+
+## 0.1.41
+
+Thu, 17 Mar 2022 07:11:51 GMT
+
+### Patches
+
+- fix: cache wrapper does not differentiate component of same type using react wrapper (fcollonval@gmail.com)
+
+## 0.1.40
+
+Wed, 16 Mar 2022 07:12:41 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.37.0 (scomea@microsoft.com)
+
+## 0.1.39
+
+Tue, 15 Mar 2022 07:12:38 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.36.1 (scomea@microsoft.com)
+
+## 0.1.38
+
+Fri, 11 Mar 2022 23:46:34 GMT
+
+### Patches
+
+- Bump @microsoft/fast-foundation to v2.36.0 (jes@microsoft.com)
 
 ## 0.1.37
 

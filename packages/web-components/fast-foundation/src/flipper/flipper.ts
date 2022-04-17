@@ -1,6 +1,9 @@
 import { attr, booleanConverter, SyntheticViewTemplate } from "@microsoft/fast-element";
-import { FoundationElement, FoundationElementDefinition } from "../foundation-element";
-import { FlipperDirection } from "./flipper.options";
+import {
+    FoundationElement,
+    FoundationElementDefinition,
+} from "../foundation-element/foundation-element.js";
+import { FlipperDirection } from "./flipper.options.js";
 
 export { FlipperDirection };
 
@@ -48,7 +51,7 @@ export class Flipper extends FoundationElement {
      * HTML Attribute: direction
      */
     @attr
-    public direction: FlipperDirection = FlipperDirection.next;
+    public direction: FlipperDirection | "next" | "previous" = FlipperDirection.next;
 
     /**
      * Simulate a click event when the flipper has focus and the user hits enter or space keys

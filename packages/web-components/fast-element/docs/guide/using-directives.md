@@ -149,7 +149,7 @@ previously used views are always discarded and each item will always be assigned
 <ul>
   ${repeat(x => x.friends, html<string>`
     <li>${(x, c) => c.index} ${x => x}</li>
-  `, { recycle: false })}
+  `, { positioning: true, recycle: false })}
 </ul>
 ```
 
@@ -330,7 +330,7 @@ const template = html<MyElement>`
   <ul>
     ${repeat(x => x.items, html`
       <li>
-        ${(x, c) = c.parent.selectTemplate(x)}
+        ${(x, c) => c.parent.selectTemplate(x)}
       </li>
     `)}
   </ul>

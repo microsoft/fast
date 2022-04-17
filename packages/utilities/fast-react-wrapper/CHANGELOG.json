@@ -2,6 +2,223 @@
   "name": "@microsoft/fast-react-wrapper",
   "entries": [
     {
+      "date": "Thu, 14 Apr 2022 07:12:36 GMT",
+      "tag": "@microsoft/fast-react-wrapper_v0.2.1",
+      "version": "0.2.1",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-foundation to v2.42.0",
+            "author": "web@bennypowers.com",
+            "commit": "9f670f6b0b5df7b2c07199883226e07779d77dc5",
+            "package": "@microsoft/fast-react-wrapper"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 12 Apr 2022 07:13:35 GMT",
+      "tag": "@microsoft/fast-react-wrapper_v0.2.0",
+      "version": "0.2.0",
+      "comments": {
+        "minor": [
+          {
+            "comment": "Converted package to be of type:module",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "606ad41e2af9f547d2c18342389b2d9b50902b0f",
+            "package": "@microsoft/fast-react-wrapper"
+          }
+        ],
+        "none": [
+          {
+            "comment": "Bump @microsoft/fast-element to v1.9.0",
+            "author": "yinon@hotmail.com",
+            "commit": "3e4d72447520f40d234b1df2cc70446dcef8bb47",
+            "package": "@microsoft/fast-react-wrapper"
+          },
+          {
+            "comment": "Bump @microsoft/fast-foundation to v2.41.1",
+            "author": "yinon@hotmail.com",
+            "commit": "3e4d72447520f40d234b1df2cc70446dcef8bb47",
+            "package": "@microsoft/fast-react-wrapper"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 07 Apr 2022 07:12:06 GMT",
+      "tag": "@microsoft/fast-react-wrapper_v0.1.48",
+      "version": "0.1.48",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-foundation to v2.41.1",
+            "author": "44823142+williamw2@users.noreply.github.com",
+            "commit": "35cc415fde15cf07627ca3007024833689284f86",
+            "package": "@microsoft/fast-react-wrapper"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 06 Apr 2022 07:12:42 GMT",
+      "tag": "@microsoft/fast-react-wrapper_v0.1.47",
+      "version": "0.1.47",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-element to v1.9.0",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "ead7f7340654236f2503359e2fc6f0b41639b507",
+            "package": "@microsoft/fast-react-wrapper"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sun, 03 Apr 2022 07:12:01 GMT",
+      "tag": "@microsoft/fast-react-wrapper_v0.1.46",
+      "version": "0.1.46",
+      "comments": {
+        "none": [
+          {
+            "comment": "Bump @microsoft/fast-element to v1.8.0",
+            "author": "47367562+bheston@users.noreply.github.com",
+            "commit": "35913ce3a2dcba83bebb63cce2b8edf4e9da7df9",
+            "package": "@microsoft/fast-react-wrapper"
+          }
+        ],
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-foundation to v2.40.0",
+            "author": "nicholasrice@users.noreply.github.com",
+            "commit": "f6107c448ab6446667f4d9e86d9f9c11fff075aa",
+            "package": "@microsoft/fast-react-wrapper"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 31 Mar 2022 07:13:31 GMT",
+      "tag": "@microsoft/fast-react-wrapper_v0.1.45",
+      "version": "0.1.45",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-foundation to v2.39.0",
+            "author": "chhol@microsoft.com",
+            "commit": "33a990cffd8c8044e886c9d777e212fa67f60acf",
+            "package": "@microsoft/fast-react-wrapper"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sun, 27 Mar 2022 07:11:50 GMT",
+      "tag": "@microsoft/fast-react-wrapper_v0.1.44",
+      "version": "0.1.44",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-foundation to v2.38.0",
+            "author": "44823142+williamw2@users.noreply.github.com",
+            "commit": "8c41d877143f04377fc599b533317c4d950ebb0b",
+            "package": "@microsoft/fast-react-wrapper"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 24 Mar 2022 07:12:08 GMT",
+      "tag": "@microsoft/fast-react-wrapper_v0.1.43",
+      "version": "0.1.43",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-foundation to v2.37.2",
+            "author": "20542556+mollykreis@users.noreply.github.com",
+            "commit": "03a237b0007f6e446242043ae17b142e5cbb5359",
+            "package": "@microsoft/fast-react-wrapper"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Sun, 20 Mar 2022 07:15:44 GMT",
+      "tag": "@microsoft/fast-react-wrapper_v0.1.42",
+      "version": "0.1.42",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-foundation to v2.37.1",
+            "author": "26874831+atmgrifter00@users.noreply.github.com",
+            "commit": "1898cd9a73f2cf9496a2a78d18e13bd87aa012df",
+            "package": "@microsoft/fast-react-wrapper"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Thu, 17 Mar 2022 07:11:51 GMT",
+      "tag": "@microsoft/fast-react-wrapper_v0.1.41",
+      "version": "0.1.41",
+      "comments": {
+        "patch": [
+          {
+            "comment": "fix: cache wrapper does not differentiate component of same type using react wrapper",
+            "author": "fcollonval@gmail.com",
+            "commit": "acec687292c19fdd56f851a6275447c2d2dbd889",
+            "package": "@microsoft/fast-react-wrapper"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Wed, 16 Mar 2022 07:12:41 GMT",
+      "tag": "@microsoft/fast-react-wrapper_v0.1.40",
+      "version": "0.1.40",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-foundation to v2.37.0",
+            "author": "scomea@microsoft.com",
+            "commit": "09b97ab3e9d7c1d71a048667d0aa0368569ab64a",
+            "package": "@microsoft/fast-react-wrapper"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Tue, 15 Mar 2022 07:12:38 GMT",
+      "tag": "@microsoft/fast-react-wrapper_v0.1.39",
+      "version": "0.1.39",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-foundation to v2.36.1",
+            "author": "scomea@microsoft.com",
+            "commit": "b996b057e3adbd8642ca07fc1dc6245aea2d3e50",
+            "package": "@microsoft/fast-react-wrapper"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 11 Mar 2022 23:46:34 GMT",
+      "tag": "@microsoft/fast-react-wrapper_v0.1.38",
+      "version": "0.1.38",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Bump @microsoft/fast-foundation to v2.36.0",
+            "author": "jes@microsoft.com",
+            "commit": "9b838f36e388958f927c1f6d80d6fa736186897c",
+            "package": "@microsoft/fast-react-wrapper"
+          }
+        ]
+      }
+    },
+    {
       "date": "Wed, 09 Mar 2022 07:12:32 GMT",
       "tag": "@microsoft/fast-react-wrapper_v0.1.37",
       "version": "0.1.37",

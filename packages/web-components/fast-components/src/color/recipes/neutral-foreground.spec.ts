@@ -1,9 +1,9 @@
 import { parseColorHexRGB } from "@microsoft/fast-colors";
 import { expect } from "chai";
-import { PaletteRGB } from "../palette";
-import { neutralForeground } from "./neutral-foreground";
-import { SwatchRGB } from "../swatch";
-import { middleGrey, white } from "../utilities/color-constants";
+import { PaletteRGB } from "../palette.js";
+import { neutralForeground } from "./neutral-foreground.js";
+import { SwatchRGB } from "../swatch.js";
+import { middleGrey, white } from "../utilities/color-constants.js";
 
 describe("neutralForeground", (): void => {
     const neutralPalette = PaletteRGB.create(middleGrey);

@@ -1,7 +1,7 @@
 import { html } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
-import type { FoundationElementTemplate } from "../foundation-element";
-import type { Tab } from "./tab";
+import type { FoundationElementTemplate } from "../foundation-element/foundation-element.js";
+import type { Tab } from "./tab.js";
 
 /**
  * The template for the {@link @microsoft/fast-foundation#Tab} component.

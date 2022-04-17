@@ -1,10 +1,10 @@
 import { html, ref, when } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
-import { AnchoredRegion } from "../anchored-region";
-import { endSlotTemplate, startSlotTemplate } from "../patterns/start-end";
-import type { FoundationElementTemplate } from "../foundation-element";
-import { MenuItemRole } from "./menu-item";
-import type { MenuItem, MenuItemOptions } from "./menu-item";
+import { AnchoredRegion } from "../anchored-region/anchored-region.js";
+import { endSlotTemplate, startSlotTemplate } from "../patterns/start-end.js";
+import type { FoundationElementTemplate } from "../foundation-element/foundation-element.js";
+import { MenuItemRole } from "./menu-item.js";
+import type { MenuItem, MenuItemOptions } from "./menu-item.js";
 
 /**
  * Generates a template for the {@link @microsoft/fast-foundation#(MenuItem:class)} component using

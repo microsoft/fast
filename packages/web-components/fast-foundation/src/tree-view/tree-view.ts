@@ -10,8 +10,8 @@ import {
     keyEnter,
     keyHome,
 } from "@microsoft/fast-web-utilities";
-import { isTreeItemElement, TreeItem } from "../tree-item";
-import { FoundationElement } from "../foundation-element";
+import { isTreeItemElement, TreeItem } from "../tree-item/tree-item.js";
+import { FoundationElement } from "../foundation-element/foundation-element.js";
 
 /**
  * A Tree view Custom HTML Element.
@@ -223,7 +223,10 @@ export class TreeView extends FoundationElement {
 
         const item: TreeItem = e.target as TreeItem;
 
-        if (item.selected && this.currentSelected !== item) {
+        if (item.selected) {
+            if (this.currentSelected && this.currentSelected !== item) {
+                (this.currentSelected as TreeItem).selected = false;
+            }
             // new selected item
             this.currentSelected = item;
         } else if (!item.selected && this.currentSelected === item) {

@@ -74,6 +74,45 @@ export const myRadio = Radio.compose<RadioOptions>({
 });
 ```
 
+## API
+
+
+
+### class: `Radio`
+
+#### Superclass
+
+| Name                  | Module                              | Package |
+| --------------------- | ----------------------------------- | ------- |
+| `FormAssociatedRadio` | /src/radio/radio.form-associated.js |         |
+
+#### Fields
+
+| Name            | Privacy | Type                                  | Default | Description                                                                                                                                                                                 | Inherited From      |
+| --------------- | ------- | ------------------------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------- |
+| `readOnly`      | public  | `boolean`                             |         | When true, the control will be immutable by user interaction. See [readonly HTML attribute](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/readonly) for more information. |                     |
+| `name`          | public  | `string`                              |         | The name of the radio. See [name attribute](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#htmlattrdefname) for more info.                                              |                     |
+| `proxy`         |         |                                       |         |                                                                                                                                                                                             | FormAssociatedRadio |
+| `$presentation` | public  | `ComponentPresentation or null`       |         | A property which resolves the ComponentPresentation instance for the current component.                                                                                                     | FoundationElement   |
+| `template`      | public  | `ElementViewTemplate or void or null` |         | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.                  | FoundationElement   |
+| `styles`        | public  | `ElementStyles or void or null`       |         | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition.         | FoundationElement   |
+
+#### Methods
+
+| Name              | Privacy   | Description | Parameters | Return | Inherited From    |
+| ----------------- | --------- | ----------- | ---------- | ------ | ----------------- |
+| `templateChanged` | protected |             |            | `void` | FoundationElement |
+| `stylesChanged`   | protected |             |            | `void` | FoundationElement |
+
+#### Attributes
+
+| Name       | Field    | Inherited From |
+| ---------- | -------- | -------------- |
+| `readonly` | readOnly |                |
+
+<hr/>
+
+
 ## Additional resources
 
 * [Component explorer examples](https://explore.fast.design/components/fast-radio)

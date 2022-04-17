@@ -1,5 +1,5 @@
 import { treeViewTemplate as template, TreeView } from "@microsoft/fast-foundation";
-import { treeViewStyles as styles } from "./tree-view.styles";
+import { treeViewStyles as styles } from "./tree-view.styles.js";
 
 /**
  * A function that returns a {@link @microsoft/fast-foundation#TreeView} registration for configuring the component with a DesignSystem.
