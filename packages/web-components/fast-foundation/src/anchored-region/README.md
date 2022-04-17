@@ -55,6 +55,93 @@ export const myAnchoredRegion = AnchoredRegion.compose({
 });
 ```
 
+## API
+
+
+
+### Variables
+
+| Name                   | Description                                                                                                                                                 | Type                   |
+| ---------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------- |
+| `FlyoutPosTop`         | A region that always places itself above the anchor, has a width to match the anchor, and is sized vertically by content                                    | `AnchoredRegionConfig` |
+| `FlyoutPosBottom`      | A region that always places itself below the anchor, has a width to match the anchor, and is sized vertically by content                                    | `AnchoredRegionConfig` |
+| `FlyoutPosTallest`     | A region that places itself above or below the anchor based on available space, has a width to match the anchor, and is sized vertically by content         | `AnchoredRegionConfig` |
+| `FlyoutPosTopFill`     | A region that always places itself above the anchor, has a width to match the anchor, and is sized vertically by available space                            | `AnchoredRegionConfig` |
+| `FlyoutPosBottomFill`  | A region that always places itself below the anchor, has a width to match the anchor, and is sized vertically by available space                            | `AnchoredRegionConfig` |
+| `FlyoutPosTallestFill` | A region that places itself above or below the anchor based on available space, has a width to match the anchor, and is sized vertically by available space | `AnchoredRegionConfig` |
+
+<hr/>
+
+
+
+### class: `AnchoredRegion`
+
+#### Superclass
+
+| Name                | Module                                        | Package |
+| ------------------- | --------------------------------------------- | ------- |
+| `FoundationElement` | /src/foundation-element/foundation-element.js |         |
+
+#### Fields
+
+| Name                        | Privacy | Type                                       | Default          | Description                                                                                                                                                                                                                             | Inherited From    |
+| --------------------------- | ------- | ------------------------------------------ | ---------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
+| `anchor`                    | public  | `string`                                   | `""`             | The HTML ID of the anchor element this region is positioned relative to                                                                                                                                                                 |                   |
+| `viewport`                  | public  | `string`                                   | `""`             | The HTML ID of the viewport element this region is positioned relative to                                                                                                                                                               |                   |
+| `horizontalPositioningMode` | public  | `AxisPositioningMode`                      | `"uncontrolled"` | Sets what logic the component uses to determine horizontal placement. 'locktodefault' forces the default position 'dynamic' decides placement based on available space 'uncontrolled' does not control placement on the horizontal axis |                   |
+| `horizontalDefaultPosition` | public  | `HorizontalPosition`                       | `"unset"`        | The default horizontal position of the region relative to the anchor element                                                                                                                                                            |                   |
+| `horizontalViewportLock`    | public  | `boolean`                                  | `false`          | Whether the region remains in the viewport (ie. detaches from the anchor) on the horizontal axis                                                                                                                                        |                   |
+| `horizontalInset`           | public  | `boolean`                                  | `false`          | Whether the region overlaps the anchor on the horizontal axis                                                                                                                                                                           |                   |
+| `horizontalThreshold`       | public  | `number`                                   |                  | How narrow the space allocated to the default position has to be before the widest area is selected for layout                                                                                                                          |                   |
+| `horizontalScaling`         | public  | `AxisScalingMode`                          | `"content"`      | Defines how the width of the region is calculated                                                                                                                                                                                       |                   |
+| `verticalPositioningMode`   | public  | `AxisPositioningMode`                      | `"uncontrolled"` | Sets what logic the component uses to determine vertical placement. 'locktodefault' forces the default position 'dynamic' decides placement based on available space 'uncontrolled' does not control placement on the vertical axis     |                   |
+| `verticalDefaultPosition`   | public  | `VerticalPosition`                         | `"unset"`        | The default vertical position of the region relative to the anchor element                                                                                                                                                              |                   |
+| `verticalViewportLock`      | public  | `boolean`                                  | `false`          | Whether the region remains in the viewport (ie. detaches from the anchor) on the vertical axis                                                                                                                                          |                   |
+| `verticalInset`             | public  | `boolean`                                  | `false`          | Whether the region overlaps the anchor on the vertical axis                                                                                                                                                                             |                   |
+| `verticalThreshold`         | public  | `number`                                   |                  | How short the space allocated to the default position has to be before the tallest area is selected for layout                                                                                                                          |                   |
+| `verticalScaling`           | public  | `AxisScalingMode`                          | `"content"`      | Defines how the height of the region is calculated                                                                                                                                                                                      |                   |
+| `fixedPlacement`            | public  | `boolean`                                  | `false`          | Whether the region is positioned using css "position: fixed". Otherwise the region uses "position: absolute". Fixed placement allows the region to break out of parent containers,                                                      |                   |
+| `autoUpdateMode`            | public  | `AutoUpdateMode`                           | `"anchor"`       | Defines what triggers the anchored region to revaluate positioning                                                                                                                                                                      |                   |
+| `anchorElement`             | public  | `HTMLElement or null`                      | `null`           | The HTML element being used as the anchor                                                                                                                                                                                               |                   |
+| `viewportElement`           | public  | `HTMLElement or null`                      | `null`           | The HTML element being used as the viewport                                                                                                                                                                                             |                   |
+| `verticalPosition`          | public  | `AnchoredRegionPositionLabel or undefined` |                  | indicates the current horizontal position of the region                                                                                                                                                                                 |                   |
+| `horizontalPosition`        | public  | `AnchoredRegionPositionLabel or undefined` |                  | indicates the current vertical position of the region                                                                                                                                                                                   |                   |
+| `update`                    | public  |                                            |                  | update position                                                                                                                                                                                                                         |                   |
+| `$presentation`             | public  | `ComponentPresentation or null`            |                  | A property which resolves the ComponentPresentation instance for the current component.                                                                                                                                                 | FoundationElement |
+| `template`                  | public  | `ElementViewTemplate or void or null`      |                  | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.                                                              | FoundationElement |
+| `styles`                    | public  | `ElementStyles or void or null`            |                  | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition.                                                     | FoundationElement |
+
+#### Methods
+
+| Name              | Privacy   | Description | Parameters | Return | Inherited From    |
+| ----------------- | --------- | ----------- | ---------- | ------ | ----------------- |
+| `templateChanged` | protected |             |            | `void` | FoundationElement |
+| `stylesChanged`   | protected |             |            | `void` | FoundationElement |
+
+#### Attributes
+
+| Name                          | Field                     | Inherited From |
+| ----------------------------- | ------------------------- | -------------- |
+| `anchor`                      | anchor                    |                |
+| `viewport`                    | viewport                  |                |
+| `horizontal-positioning-mode` | horizontalPositioningMode |                |
+| `horizontal-default-position` | horizontalDefaultPosition |                |
+| `horizontal-viewport-lock`    | horizontalViewportLock    |                |
+| `horizontal-inset`            | horizontalInset           |                |
+| `horizontal-threshold`        | horizontalThreshold       |                |
+| `horizontal-scaling`          | horizontalScaling         |                |
+| `vertical-positioning-mode`   | verticalPositioningMode   |                |
+| `vertical-default-position`   | verticalDefaultPosition   |                |
+| `vertical-viewport-lock`      | verticalViewportLock      |                |
+| `vertical-inset`              | verticalInset             |                |
+| `vertical-threshold`          | verticalThreshold         |                |
+| `vertical-scaling`            | verticalScaling           |                |
+| `fixed-placement`             | fixedPlacement            |                |
+| `auto-update-mode`            | autoUpdateMode            |                |
+
+<hr/>
+
+
 ## Additional resources
 
 * [Component explorer examples](https://explore.fast.design/components/fast-anchored-region)

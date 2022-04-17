@@ -3,7 +3,7 @@ import {
     ListboxElement as FoundationListboxElement,
     listboxTemplate as template,
 } from "@microsoft/fast-foundation";
-import { listboxStyles as styles } from "./listbox.styles";
+import { listboxStyles as styles } from "./listbox.styles.js";
 
 /**
  * Base class for Listbox.
@@ -12,11 +12,11 @@ import { listboxStyles as styles } from "./listbox.styles";
  */
 export class Listbox extends FoundationListboxElement {
     /**
-     * The internal stylesheet which holds the `--size` custom property.
+     * An internal stylesheet to hold calculated CSS custom properties.
      *
      * @internal
      */
-    private sizeStylesheet: ElementStyles | void | undefined;
+    private computedStylesheet?: ElementStyles;
 
     /**
      * Updates the component dimensions when the size property is changed.
@@ -26,22 +26,30 @@ export class Listbox extends FoundationListboxElement {
      *
      * @internal
      */
-    protected sizeChanged(prev: number | unknown, next: number): void {
+    protected sizeChanged(prev: number | undefined, next: number): void {
         super.sizeChanged(prev, next);
+        this.updateComputedStylesheet();
+    }
 
-        if (this.sizeStylesheet) {
-            this.sizeStylesheet = this.$fastController.removeStyles(this.sizeStylesheet);
+    /**
+     * Updates an internal stylesheet with calculated CSS custom properties.
+     *
+     * @internal
+     */
+    protected updateComputedStylesheet(): void {
+        if (this.computedStylesheet) {
+            this.$fastController.removeStyles(this.computedStylesheet);
         }
 
-        if (this.size > 0) {
-            this.sizeStylesheet = css`
-                :host {
-                    --size: ${"" + this.size};
-                }
-            `;
+        const listboxSize = `${this.size}`;
 
-            this.$fastController.addStyles(this.sizeStylesheet);
-        }
+        this.computedStylesheet = css`
+            :host {
+                --size: ${listboxSize};
+            }
+        `;
+
+        this.$fastController.addStyles(this.computedStylesheet);
     }
 }
 
@@ -57,6 +65,7 @@ export class Listbox extends FoundationListboxElement {
  */
 export const fastListbox = Listbox.compose({
     baseName: "listbox",
+    baseClass: FoundationListboxElement,
     template,
     styles,
 });

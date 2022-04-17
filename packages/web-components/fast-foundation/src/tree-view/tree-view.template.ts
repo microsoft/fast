@@ -1,7 +1,7 @@
 import { html, ref, slotted } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
-import type { FoundationElementTemplate } from "../foundation-element";
-import type { TreeView } from "./tree-view";
+import type { FoundationElementTemplate } from "../foundation-element/foundation-element.js";
+import type { TreeView } from "./tree-view.js";
 
 /**
  * The template for the {@link @microsoft/fast-foundation#TreeView} component.

@@ -1,8 +1,136 @@
 # Change Log - @microsoft/fast-figma-plugin-msft
 
-This log was last generated on Sun, 06 Mar 2022 07:13:48 GMT and should not be manually modified.
+This log was last generated on Thu, 14 Apr 2022 07:12:36 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 0.8.16
+
+Thu, 14 Apr 2022 07:12:36 GMT
+
+### Patches
+
+- Bump @microsoft/fast-components to v2.28.0 (john.kreitlow@microsoft.com)
+
+## 0.8.16
+
+Tue, 12 Apr 2022 07:13:35 GMT
+
+### Patches
+
+- Bump @microsoft/fast-components to v2.27.1 (yinon@hotmail.com)
+
+## 0.8.16
+
+Sun, 10 Apr 2022 07:11:09 GMT
+
+### Patches
+
+- Bump @microsoft/fast-components to v2.27.0 (nicholasrice@users.noreply.github.com)
+
+## 0.8.16
+
+Thu, 07 Apr 2022 07:12:06 GMT
+
+### Patches
+
+- Bump @microsoft/fast-components to v2.26.2 (scomea@microsoft.com)
+
+## 0.8.16
+
+Wed, 06 Apr 2022 07:12:42 GMT
+
+### Patches
+
+- Bump @microsoft/fast-element to v1.9.0 (nicholasrice@users.noreply.github.com)
+
+## 0.8.16
+
+Sun, 03 Apr 2022 07:12:01 GMT
+
+### Patches
+
+- Bump @microsoft/fast-components to v2.26.0 (nicholasrice@users.noreply.github.com)
+
+## 0.8.16
+
+Thu, 31 Mar 2022 07:13:31 GMT
+
+### Patches
+
+- Bump @microsoft/fast-components to v2.25.4 (chhol@microsoft.com)
+
+## 0.8.16
+
+Sun, 27 Mar 2022 07:11:50 GMT
+
+### Patches
+
+- Bump @microsoft/fast-react-wrapper to v0.1.44 (44823142+williamw2@users.noreply.github.com)
+
+## 0.8.16
+
+Thu, 24 Mar 2022 07:12:08 GMT
+
+### Patches
+
+- Bump @microsoft/fast-react-wrapper to v0.1.43 (20542556+mollykreis@users.noreply.github.com)
+
+## 0.8.16
+
+Sun, 20 Mar 2022 07:15:44 GMT
+
+### Patches
+
+- Bump @microsoft/fast-components to v2.25.1 (26874831+atmgrifter00@users.noreply.github.com)
+
+## 0.8.16
+
+Thu, 17 Mar 2022 07:11:51 GMT
+
+### Patches
+
+- Bump @microsoft/fast-components to v2.25.0 (fcollonval@gmail.com)
+
+## 0.8.16
+
+Wed, 16 Mar 2022 07:12:41 GMT
+
+### Patches
+
+- Bump @microsoft/fast-components to v2.24.0 (scomea@microsoft.com)
+
+## 0.8.16
+
+Tue, 15 Mar 2022 07:12:38 GMT
+
+### Patches
+
+- Bump @microsoft/fast-react-wrapper to v0.1.39 (scomea@microsoft.com)
+
+## 0.8.16
+
+Fri, 11 Mar 2022 23:46:34 GMT
+
+### Patches
+
+- Bump @microsoft/fast-components to v2.23.0 (jes@microsoft.com)
+
+## 0.8.16
+
+Wed, 09 Mar 2022 07:12:32 GMT
+
+### Patches
+
+- Bump @microsoft/fast-react-wrapper to v0.1.37 (20542556+mollykreis@users.noreply.github.com)
+
+## 0.8.16
+
+Tue, 08 Mar 2022 07:12:45 GMT
+
+### Patches
+
+- Bump @microsoft/fast-components to v2.22.1 (srdsecond@gmail.com)
 
 ## 0.8.16
 

@@ -11,8 +11,8 @@ import {
     disabledOpacity,
     neutralForegroundRest,
     neutralStrokeRest,
-} from "../design-tokens";
-import { heightNumber } from "../styles/index";
+} from "../design-tokens.js";
+import { heightNumber } from "../styles/index.js";
 
 /**
  * Styles for Horizontal Slider label

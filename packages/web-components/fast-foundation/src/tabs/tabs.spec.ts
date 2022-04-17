@@ -132,11 +132,11 @@ describe("Tabs", () => {
         await disconnect();
     });
 
-    it("should set an `id` attribute tab items relative to the index if an `id is NOT provided", async () => {
+    it("should set an `id` attribute tab items with a unique ID when an `id is NOT provided", async () => {
         const { element, connect, disconnect } = await fixture([FASTTabs(), FASTTabPanel(), FASTTab()])
 
         for (let i = 1; i < 4; i++) {
-            const tab = document.createElement("fast-tab") as Tab;    
+            const tab = document.createElement("fast-tab") as Tab;
             const panel = document.createElement("fast-tab-panel") as TabPanel;
 
             element.appendChild(panel);
@@ -145,10 +145,8 @@ describe("Tabs", () => {
 
         await connect();
 
-        expect(element.querySelector("fast-tab")?.getAttribute("id")).to.equal("tab-1");
-        expect(element.querySelectorAll("fast-tab")[1]?.getAttribute("id")).to.equal(
-            "tab-2"
-        );
+        expect(element.querySelector("fast-tab")?.getAttribute("id")).to.not.be.undefined;
+        expect(element.querySelectorAll("fast-tab")[1]?.getAttribute("id")).to.not.be.undefined;
 
         await disconnect();
     });
@@ -164,29 +162,6 @@ describe("Tabs", () => {
         expect(
             element.querySelectorAll("fast-tab-panel")[1]?.getAttribute("id")
         ).to.equal("panel2");
-
-        await disconnect();
-    });
-
-    it("should set an `id` attribute on tabpanel items relative to the index if an `id is NOT provided", async () => {
-        const { element, connect, disconnect } = await fixture([FASTTabs(), FASTTabPanel(), FASTTab()])
-
-        for (let i = 1; i < 4; i++) {
-            const tab = document.createElement("fast-tab") as Tab;    
-            const panel = document.createElement("fast-tab-panel") as TabPanel;
-
-            element.appendChild(panel);
-            element.insertBefore(tab, element.querySelector("fast-tab-panel"));
-        }
-
-        await connect();
-
-        expect(element.querySelector("fast-tab-panel")?.getAttribute("id")).to.equal(
-            "panel-1"
-        );
-        expect(
-            element.querySelectorAll("fast-tab-panel")[1]?.getAttribute("id")
-        ).to.equal("panel-2");
 
         await disconnect();
     });
@@ -320,13 +295,13 @@ describe("Tabs", () => {
             for (let i = 1; i < 4; i++) {
                 const tab = document.createElement("fast-tab") as Tab;
                 tab.disabled = true;
-        
+
                 const panel = document.createElement("fast-tab-panel") as TabPanel;
                 panel.id = `panel${i}`;
                 element.appendChild(panel);
                 element.insertBefore(tab, element.querySelector("fast-tab-panel"));
             }
-            
+
             await connect();
 
             expect(element.showActiveIndicator).to.be.false;
@@ -344,7 +319,7 @@ describe("Tabs", () => {
                 if (i === 3) {
                     tab.disabled = true;
                 }
-        
+
                 const panel = document.createElement("fast-tab-panel") as TabPanel;
                 panel.id = `panel${i}`;
                 element.appendChild(panel);
@@ -352,8 +327,64 @@ describe("Tabs", () => {
             }
 
             await connect();
-            
+
             expect(element.showActiveIndicator).to.be.true;
+
+            await disconnect();
+        });
+
+        it("should not allow selecting tab that has been disabled after it has been connected", async () => {
+            const { element, connect, disconnect } = await fixture([FASTTabs(), FASTTabPanel(), FASTTab()]);
+
+            for (let i = 1; i < 4; i++) {
+                const tab = document.createElement("fast-tab") as Tab;
+                tab.id = `tab${i}`;
+
+                const panel = document.createElement("fast-tab-panel") as TabPanel;
+                panel.id = `panel${i}`;
+                element.appendChild(panel);
+                element.insertBefore(tab, element.querySelector("fast-tab-panel"));
+            }
+
+            await connect();
+
+            element.activeid = "tab1";
+            const tab3 = element.querySelectorAll("fast-tab")[2] as Tab;
+            tab3.disabled = true;
+            await DOM.nextUpdate();
+            tab3.click();
+
+            expect(element.activeid).to.equal("tab1");
+
+            await disconnect();
+        });
+
+        it("should allow selecting tab that has been enabled after it has been connected", async () => {
+            const { element, connect, disconnect } = await fixture([FASTTabs(), FASTTabPanel(), FASTTab()]);
+
+            for (let i = 1; i < 4; i++) {
+                const tab = document.createElement("fast-tab") as Tab;
+                tab.id = `tab${i}`;
+
+                if (i === 3) {
+                    tab.disabled = true;
+                }
+
+                const panel = document.createElement("fast-tab-panel") as TabPanel;
+                panel.id = `panel${i}`;
+                element.appendChild(panel);
+                element.insertBefore(tab, element.querySelector("fast-tab-panel"));
+            }
+
+            await connect();
+
+            element.activeid = "tab1";
+            const tab3 = element.querySelectorAll("fast-tab")[2] as Tab;
+            tab3.disabled = false;
+            await DOM.nextUpdate();
+            tab3.click();
+
+            expect(element.activeid).to.equal("tab3");
 
             await disconnect();
         });

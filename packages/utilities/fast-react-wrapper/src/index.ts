@@ -21,7 +21,11 @@ const reservedReactProperties = new Set([
 ]);
 
 const emptyProps = Object.freeze(Object.create(null));
-const wrappersCache = new Map();
+const DEFAULT_CACHE_NAME = "_default";
+// This will be a two levels cache Map<type, Map<name, ReactWrapper>>
+// to distinguish components of same type but different tag name.
+// Default name: '_default'
+const wrappersCache = new Map<any, Map<string, any>>();
 
 /**
  * Event signatures for a React wrapper.
@@ -243,9 +247,12 @@ export function provideReactWrapper(React: any, designSystem?: DesignSystem) {
             type = type.type as any;
         }
 
-        const cachedWrapper = wrappersCache.get(type);
-        if (cachedWrapper) {
-            return cachedWrapper;
+        const cachedCandidates = wrappersCache.get(type);
+        if (cachedCandidates) {
+            const cachedWrapper = cachedCandidates.get(config.name ?? DEFAULT_CACHE_NAME);
+            if (cachedWrapper) {
+                return cachedWrapper;
+            }
         }
 
         class ReactComponent extends React.Component<InternalProps> {
@@ -352,7 +359,12 @@ export function provideReactWrapper(React: any, designSystem?: DesignSystem) {
                 )
         ) as ReactWrapper<TElement, TEvents>;
 
-        wrappersCache.set(type, reactComponent);
+        if (!wrappersCache.has(type)) {
+            wrappersCache.set(type, new Map<string, any>());
+        }
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        wrappersCache.get(type)!.set(config.name ?? DEFAULT_CACHE_NAME, reactComponent);
+
         return reactComponent;
     }
 

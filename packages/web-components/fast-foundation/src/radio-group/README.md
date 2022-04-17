@@ -50,6 +50,54 @@ export const myRadioGroup = RadioGroup.compose({
 });
 ```
 
+## API
+
+
+
+### class: `RadioGroup`
+
+#### Superclass
+
+| Name                | Module                                        | Package |
+| ------------------- | --------------------------------------------- | ------- |
+| `FoundationElement` | /src/foundation-element/foundation-element.js |         |
+
+#### Fields
+
+| Name            | Privacy | Type                                        | Default | Description                                                                                                                                                                                      | Inherited From    |
+| --------------- | ------- | ------------------------------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------- |
+| `readOnly`      | public  | `boolean`                                   |         | When true, the child radios will be immutable by user interaction. See [readonly HTML attribute](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/readonly) for more information. |                   |
+| `disabled`      | public  | `boolean`                                   |         | Disables the radio group and child radios.                                                                                                                                                       |                   |
+| `name`          | public  | `string`                                    |         | The name of the radio group. Setting this value will set the name value for all child radio elements.                                                                                            |                   |
+| `value`         | public  | `string`                                    |         | The value of the checked radio                                                                                                                                                                   |                   |
+| `orientation`   | public  | `Orientation or "horizontal" or "vertical"` |         | The orientation of the group                                                                                                                                                                     |                   |
+| `childItems`    | public  | `HTMLElement[]`                             |         |                                                                                                                                                                                                  |                   |
+| `$presentation` | public  | `ComponentPresentation or null`             |         | A property which resolves the ComponentPresentation instance for the current component.                                                                                                          | FoundationElement |
+| `template`      | public  | `ElementViewTemplate or void or null`       |         | Sets the template of the element instance. When undefined, the element will attempt to resolve the template from the associated presentation or custom element definition.                       | FoundationElement |
+| `styles`        | public  | `ElementStyles or void or null`             |         | Sets the default styles for the element instance. When undefined, the element will attempt to resolve default styles from the associated presentation or custom element definition.              | FoundationElement |
+
+#### Methods
+
+| Name              | Privacy   | Description | Parameters | Return | Inherited From    |
+| ----------------- | --------- | ----------- | ---------- | ------ | ----------------- |
+| `nameChanged`     | protected |             |            | `void` |                   |
+| `valueChanged`    | protected |             |            | `void` |                   |
+| `templateChanged` | protected |             |            | `void` | FoundationElement |
+| `stylesChanged`   | protected |             |            | `void` | FoundationElement |
+
+#### Attributes
+
+| Name          | Field       | Inherited From |
+| ------------- | ----------- | -------------- |
+| `readonly`    | readOnly    |                |
+| `disabled`    | disabled    |                |
+| `name`        | name        |                |
+| `value`       | value       |                |
+| `orientation` | orientation |                |
+
+<hr/>
+
+
 ## Additional resources
 
 * [Component explorer examples](https://explore.fast.design/components/fast-radio-group)

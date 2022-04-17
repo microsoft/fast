@@ -6,11 +6,15 @@ import {
     keyArrowUp,
     keyEnd,
     keyHome,
+    uniqueId,
     wrapInBounds,
 } from "@microsoft/fast-web-utilities";
-import { StartEnd, StartEndOptions } from "../patterns/start-end";
-import { applyMixins } from "../utilities/apply-mixins";
-import { FoundationElement, FoundationElementDefinition } from "../foundation-element";
+import { StartEnd, StartEndOptions } from "../patterns/start-end.js";
+import { applyMixins } from "../utilities/apply-mixins.js";
+import {
+    FoundationElement,
+    FoundationElementDefinition,
+} from "../foundation-element/foundation-element.js";
 
 /**
  * Tabs option configuration options
@@ -146,8 +150,8 @@ export class Tabs extends FoundationElement {
     private prevActiveTabIndex: number = 0;
     private activeTabIndex: number = 0;
     private ticking: boolean = false;
-    private tabIds: Array<string | null>;
-    private tabpanelIds: Array<string | null>;
+    private tabIds: Array<string>;
+    private tabpanelIds: Array<string>;
 
     private change = (): void => {
         this.$emit("change", this.activetab);
@@ -183,28 +187,21 @@ export class Tabs extends FoundationElement {
         this.activeTabIndex = this.getActiveIndex();
         this.showActiveIndicator = false;
         this.tabs.forEach((tab: HTMLElement, index: number) => {
-            if (tab.slot === "tab" && this.isFocusableElement(tab)) {
-                if (this.activeindicator) {
+            if (tab.slot === "tab") {
+                const isActiveTab =
+                    this.activeTabIndex === index && this.isFocusableElement(tab);
+                if (this.activeindicator && this.isFocusableElement(tab)) {
                     this.showActiveIndicator = true;
                 }
-                const tabId: string | null = this.tabIds[index];
-                const tabpanelId: string | null = this.tabpanelIds[index];
-                tab.setAttribute(
-                    "id",
-                    typeof tabId !== "string" ? `tab-${index + 1}` : tabId
-                );
-                tab.setAttribute(
-                    "aria-selected",
-                    this.activeTabIndex === index ? "true" : "false"
-                );
-                tab.setAttribute(
-                    "aria-controls",
-                    typeof tabpanelId !== "string" ? `panel-${index + 1}` : tabpanelId
-                );
+                const tabId: string = this.tabIds[index];
+                const tabpanelId: string = this.tabpanelIds[index];
+                tab.setAttribute("id", tabId);
+                tab.setAttribute("aria-selected", isActiveTab ? "true" : "false");
+                tab.setAttribute("aria-controls", tabpanelId);
                 tab.addEventListener("click", this.handleTabClick);
                 tab.addEventListener("keydown", this.handleTabKeyDown);
-                tab.setAttribute("tabindex", this.activeTabIndex === index ? "0" : "-1");
-                if (this.activeTabIndex === index) {
+                tab.setAttribute("tabindex", isActiveTab ? "0" : "-1");
+                if (isActiveTab) {
                     this.activetab = tab;
                 }
             }
@@ -224,31 +221,25 @@ export class Tabs extends FoundationElement {
         this.tabIds = this.getTabIds();
         this.tabpanelIds = this.getTabPanelIds();
         this.tabpanels.forEach((tabpanel: HTMLElement, index: number) => {
-            const tabId: string | null = this.tabIds[index];
-            const tabpanelId: string | null = this.tabpanelIds[index];
-            tabpanel.setAttribute(
-                "id",
-                typeof tabpanelId !== "string" ? `panel-${index + 1}` : tabpanelId
-            );
-            tabpanel.setAttribute(
-                "aria-labelledby",
-                typeof tabId !== "string" ? `tab-${index + 1}` : tabId
-            );
+            const tabId: string = this.tabIds[index];
+            const tabpanelId: string = this.tabpanelIds[index];
+            tabpanel.setAttribute("id", tabpanelId);
+            tabpanel.setAttribute("aria-labelledby", tabId);
             this.activeTabIndex !== index
                 ? tabpanel.setAttribute("hidden", "")
                 : tabpanel.removeAttribute("hidden");
         });
     };
 
-    private getTabIds(): Array<string | null> {
+    private getTabIds(): Array<string> {
         return this.tabs.map((tab: HTMLElement) => {
-            return tab.getAttribute("id");
+            return tab.getAttribute("id") ?? `tab-${uniqueId()}`;
         });
     }
 
-    private getTabPanelIds(): Array<string | null> {
+    private getTabPanelIds(): Array<string> {
         return this.tabpanels.map((tabPanel: HTMLElement) => {
-            return tabPanel.getAttribute("id") as string;
+            return tabPanel.getAttribute("id") ?? `panel-${uniqueId()}`;
         });
     }
 
@@ -262,7 +253,7 @@ export class Tabs extends FoundationElement {
 
     private handleTabClick = (event: MouseEvent): void => {
         const selectedTab = event.currentTarget as HTMLElement;
-        if (selectedTab.nodeType === 1) {
+        if (selectedTab.nodeType === 1 && this.isFocusableElement(selectedTab)) {
             this.prevActiveTabIndex = this.activeTabIndex;
             this.activeTabIndex = this.tabs.indexOf(selectedTab);
             this.setComponent();

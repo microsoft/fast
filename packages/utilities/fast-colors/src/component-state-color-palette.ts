@@ -1,10 +1,10 @@
-import { ColorRGBA64 } from "./color-rgba-64";
-import { ColorPalette } from "./color-palette";
-import { hslToRGB, rgbToHSL, rgbToLinearLuminance } from "./color-converters";
-import { ColorScale, ColorScaleStop } from "./color-scale";
-import { ColorHSL } from "./color-hsl";
-import { ColorInterpolationSpace } from "./color-interpolation";
-import { parseColorHexRGB } from "./parse-color";
+import { ColorRGBA64 } from "./color-rgba-64.js";
+import { ColorPalette } from "./color-palette.js";
+import { hslToRGB, rgbToHSL, rgbToLinearLuminance } from "./color-converters.js";
+import { ColorScale, ColorScaleStop } from "./color-scale.js";
+import { ColorHSL } from "./color-hsl.js";
+import { ColorInterpolationSpace } from "./color-interpolation.js";
+import { parseColorHexRGB } from "./parse-color.js";
 
 /**
  * Configuration for {@link ComponentStateColorPalette}

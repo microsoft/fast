@@ -5,10 +5,10 @@ import type {
     AutoUpdateMode,
     AxisPositioningMode,
     AxisScalingMode,
-} from "../anchored-region";
-import { getDirection } from "../utilities/";
-import { FoundationElement } from "../foundation-element";
-import { TooltipPosition } from "./tooltip.options";
+} from "../anchored-region/anchored-region.js";
+import { getDirection } from "../utilities/direction.js";
+import { FoundationElement } from "../foundation-element/foundation-element.js";
+import { TooltipPosition } from "./tooltip.options.js";
 
 export { TooltipPosition };
 
@@ -69,7 +69,22 @@ export class Tooltip extends FoundationElement {
      * HTML Attribute: position
      */
     @attr
-    public position: TooltipPosition;
+    public position:
+        | TooltipPosition
+        | "top"
+        | "right"
+        | "bottom"
+        | "left"
+        | "start"
+        | "end"
+        | "top-left"
+        | "top-right"
+        | "bottom-left"
+        | "bottom-right"
+        | "top-start"
+        | "top-end"
+        | "bottom-start"
+        | "bottom-end";
     private positionChanged(): void {
         if ((this as FASTElement).$fastController.isConnected) {
             this.updateLayout();

@@ -9,8 +9,8 @@ import {
     keyEnter,
     Orientation,
 } from "@microsoft/fast-web-utilities";
-import { getDirection } from "../utilities";
-import { FoundationElement } from "../foundation-element";
+import { getDirection } from "../utilities/direction.js";
+import { FoundationElement } from "../foundation-element/foundation-element.js";
 
 /**
  * An Radio Group Custom HTML Element.
@@ -107,7 +107,7 @@ export class RadioGroup extends FoundationElement {
      * HTML Attribute: orientation
      */
     @attr
-    public orientation: Orientation = Orientation.horizontal;
+    public orientation: Orientation | "horizontal" | "vertical" = Orientation.horizontal;
 
     @observable
     public childItems: HTMLElement[];

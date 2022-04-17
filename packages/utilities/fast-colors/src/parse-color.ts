@@ -1,6 +1,6 @@
-import { ColorRGBA64 } from "./color-rgba-64";
-import { normalize } from "./math-utilities";
-import { NamedColors, namedColorsConfigs } from "./named-colors";
+import { ColorRGBA64 } from "./color-rgba-64.js";
+import { normalize } from "./math-utilities.js";
+import { NamedColors, namedColorsConfigs } from "./named-colors.js";
 
 // Matches rgb(R, G, B) where R, G, and B are integers [0 - 255]
 const webRGBRegex: RegExp = /^rgb\(\s*((?:(?:25[0-5]|2[0-4]\d|1\d\d|\d{1,2})\s*,\s*){2}(?:25[0-5]|2[0-4]\d|1\d\d|\d{1,2})\s*)\)$/i;
@@ -271,7 +271,7 @@ export function parseColorNamed(
 }
 
 /**
- * 
+ *
   Expects any of the following and attempts to determine which is being used
  * #RRGGBB, #AARRGGBB, rgb(RR,GG,BB) rgba(RR,GG,BB,a),
  * or any of the {@link https://www.w3schools.com/colors/colors_names.asp | CSS color names}.

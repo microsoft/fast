@@ -1,7 +1,7 @@
 import { attr, DOM, Notifier, Observable } from "@microsoft/fast-element";
 import { keyEscape, keyTab } from "@microsoft/fast-web-utilities";
 import { isTabbable } from "tabbable";
-import { FoundationElement } from "../foundation-element";
+import { FoundationElement } from "../foundation-element/foundation-element.js";
 
 /**
  * A Switch Custom HTML Element.
@@ -96,6 +96,8 @@ export class Dialog extends FoundationElement {
      */
     public dismiss(): void {
         this.$emit("dismiss");
+        // implement `<dialog>` interface
+        this.$emit("cancel");
     }
 
     /**
@@ -114,6 +116,8 @@ export class Dialog extends FoundationElement {
      */
     public hide(): void {
         this.hidden = true;
+        // implement `<dialog>` interface
+        this.$emit("close");
     }
 
     /**

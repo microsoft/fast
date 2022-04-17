@@ -1,15 +1,15 @@
 import { Constructable, FASTElementDefinition } from "@microsoft/fast-element";
-import { FoundationElement } from "../foundation-element/foundation-element";
-import { Container, DI, Registration } from "../di/di";
-import { DesignToken } from "../design-token/design-token";
-import { ComponentPresentation } from "./component-presentation";
+import { FoundationElement } from "../foundation-element/foundation-element.js";
+import { Container, DI, Registration } from "../di/di.js";
+import { DesignToken } from "../design-token/design-token.js";
+import { ComponentPresentation } from "./component-presentation.js";
 import type {
     ContextualElementDefinition,
     DesignSystemRegistrationContext,
     ElementDefinitionCallback,
     ElementDefinitionContext,
     ElementDefinitionParams,
-} from "./registration-context";
+} from "./registration-context.js";
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 /**
  * Indicates what to do with an ambiguous (duplicate) element.

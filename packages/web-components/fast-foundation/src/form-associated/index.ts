@@ -1,1 +1,1 @@
-export * from "./form-associated";
+export * from "./form-associated.js";

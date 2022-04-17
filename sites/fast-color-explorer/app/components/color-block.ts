@@ -34,7 +34,7 @@ import {
     html,
     when,
 } from "@microsoft/fast-element";
-import { ComponentTypes } from "../state";
+import { ComponentTypes } from "../app";
 import { AppSwatch } from "./swatch";
 
 AppSwatch;

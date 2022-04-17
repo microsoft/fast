@@ -1,5 +1,5 @@
-import { Palette } from "../palette";
-import { Swatch } from "../swatch";
+import { Palette } from "../palette.js";
+import { Swatch } from "../swatch.js";
 
 /**
  * @internal

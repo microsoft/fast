@@ -13,7 +13,7 @@ import {
     focusStrokeWidth,
     neutralStrokeFocus,
     strokeWidth,
-} from "../design-tokens";
+} from "../design-tokens.js";
 
 /**
  * Styles for the Toolbar

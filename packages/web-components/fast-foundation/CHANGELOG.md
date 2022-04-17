@@ -1,8 +1,134 @@
 # Change Log - @microsoft/fast-foundation
 
-This log was last generated on Sun, 06 Mar 2022 07:13:48 GMT and should not be manually modified.
+This log was last generated on Thu, 14 Apr 2022 07:12:36 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 2.42.0
+
+Thu, 14 Apr 2022 07:12:36 GMT
+
+### Minor changes
+
+- Implements `<dialog>` element events on FastDialog (web@bennypowers.com)
+- add multiselect mode to select (john.kreitlow@microsoft.com)
+
+## 2.41.1
+
+Thu, 07 Apr 2022 07:12:06 GMT
+
+### Patches
+
+- Improved README markdown formatting (44823142+williamw2@users.noreply.github.com)
+
+## 2.41.0
+
+Wed, 06 Apr 2022 07:12:42 GMT
+
+### Minor changes
+
+- convert fast-foundation to type:module (nicholasrice@users.noreply.github.com)
+
+### Patches
+
+- Added CEM Analyzer and API markdown to readme files (44823142+williamw2@users.noreply.github.com)
+- Bump @microsoft/fast-element to v1.9.0 (nicholasrice@users.noreply.github.com)
+
+## 2.40.0
+
+Sun, 03 Apr 2022 07:12:01 GMT
+
+### Minor changes
+
+- update aria-current for breadcrumb items when new nodes are appended (chhol@microsoft.com)
+- remove fromView from aria mixin attributes (chhol@microsoft.com)
+
+### Patches
+
+- Bump @microsoft/fast-web-utilities to v5.2.0 (nicholasrice@users.noreply.github.com)
+
+## 2.39.0
+
+Thu, 31 Mar 2022 07:13:31 GMT
+
+### Minor changes
+
+- remove duplicate use of heading class in accordion item and update part location (chhol@microsoft.com)
+
+### Patches
+
+- fix hidden menu items should not be included in the tabindex (chhol@microsoft.com)
+
+## 2.38.0
+
+Sun, 27 Mar 2022 07:11:50 GMT
+
+### Minor changes
+
+- Changed Select open attribute to public (44823142+williamw2@users.noreply.github.com)
+- Add string literal union types to all foundation components that use an enum for attribute options (hawkticehurst@gmail.com)
+
+## 2.37.2
+
+Thu, 24 Mar 2022 07:12:08 GMT
+
+### Patches
+
+- Detect changes to start and end slots in toolbar (20542556+mollykreis@users.noreply.github.com)
+
+## 2.37.1
+
+Sun, 20 Mar 2022 07:15:44 GMT
+
+### Patches
+
+- Fix for default selection behavior for listbox and select (26874831+atmgrifter00@users.noreply.github.com)
+
+## 2.37.0
+
+Wed, 16 Mar 2022 07:12:41 GMT
+
+### Minor changes
+
+- enable no tabbing (scomea@microsoft.com)
+
+## 2.36.1
+
+Tue, 15 Mar 2022 07:12:38 GMT
+
+### Patches
+
+- anchored region not beta (scomea@microsoft.com)
+- tree view single select (scomea@microsoft.com)
+
+## 2.36.0
+
+Fri, 11 Mar 2022 23:46:34 GMT
+
+### Minor changes
+
+- BREAKING CHANGE: replace WC button with stock HTML button (jes@microsoft.com)
+- implement attribute reflection directive (nicholasrice@users.noreply.github.com)
+
+### Patches
+
+- use WeakMap to prevent leaking element references from FormAssociated (nicholasrice@users.noreply.github.com)
+
+## 2.35.2
+
+Wed, 09 Mar 2022 07:12:32 GMT
+
+### Patches
+
+- Fix bug with menu-item indention (20542556+mollykreis@users.noreply.github.com)
+
+## 2.35.1
+
+Tue, 08 Mar 2022 07:12:45 GMT
+
+### Patches
+
+- Fix programmatic disable/enable of tabs (5454342+brianehenry@users.noreply.github.com)
 
 ## 2.35.0
 

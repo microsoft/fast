@@ -1,6 +1,6 @@
 import { html, slotted, ViewTemplate } from "@microsoft/fast-element";
-import type { FoundationElementTemplate } from "../foundation-element";
-import type { PickerMenu } from "./picker-menu";
+import type { FoundationElementTemplate } from "../foundation-element/foundation-element.js";
+import type { PickerMenu } from "./picker-menu.js";
 
 /**
  * The template for the List Picker component.

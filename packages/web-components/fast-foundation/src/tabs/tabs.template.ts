@@ -1,8 +1,8 @@
 import { html, ref, slotted, when } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
-import { endSlotTemplate, startSlotTemplate } from "../patterns/start-end";
-import type { FoundationElementTemplate } from "../foundation-element";
-import type { Tabs, TabsOptions } from "./tabs";
+import { endSlotTemplate, startSlotTemplate } from "../patterns/start-end.js";
+import type { FoundationElementTemplate } from "../foundation-element/foundation-element.js";
+import type { Tabs, TabsOptions } from "./tabs.js";
 
 /**
  * The template for the {@link @microsoft/fast-foundation#(Tabs:class)} component.

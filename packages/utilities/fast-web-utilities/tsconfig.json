@@ -8,7 +8,8 @@
         "allowJs": true,
         "types": [
             "mocha",
-            "webpack-env"
+            "webpack-env",
+            "node"
         ]
     }
 }
