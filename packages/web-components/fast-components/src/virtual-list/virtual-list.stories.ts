@@ -4,9 +4,9 @@ import { STORY_RENDERED } from "@storybook/core-events";
 import {
     VirtualList as FoundationVirtualList,
     SizeMap,
+    VirtualListItem,
 } from "@microsoft/fast-foundation";
 import VirtualListTemplate from "./fixtures/base.html";
-import "./index";
 
 let data;
 let dataSizeMap;
@@ -162,6 +162,18 @@ const listItemContentsTemplate = html`
     </fast-card>
 `;
 
+const variableHeightContentsTemplate = html`
+    <fast-button
+        style="
+            width: 100%;
+            height: 100%;
+            background-image: url('${x => x.itemData.url}');
+        "
+    >
+        ${x => x.listItemContext.titleString} ${x => x.itemData.title}
+    </fast-button>
+`;
+
 addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
     if (name.toLowerCase().startsWith("virtual-list")) {
         data = newDataSet(10000, 1);
@@ -230,9 +242,10 @@ addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
         stackv3.items = data;
         stackv3.listItemContext = {
             loadMode: "idle",
-            listItemContentsTemplate: listItemContentsTemplate,
+            listItemContentsTemplate: variableHeightContentsTemplate,
             titleString: "title:",
         };
+        stackv3.onclick = toggleSize;
 
         const reloadImmediateButton = document.getElementById("reloadimmediate");
         if (reloadImmediateButton) {
@@ -245,6 +258,42 @@ addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
         }
     }
 });
+
+function toggleSize(e: PointerEvent): void {
+    const stackv3 = document.getElementById("stackv3") as FoundationVirtualList;
+    const index: number = (e.target as VirtualListItem).itemIndex;
+
+    let currentPosition: number = 0;
+    const toggleMap: SizeMap[] = stackv3.sizemap.slice(0, index);
+
+    if (index > 0) {
+        currentPosition = toggleMap[index - 1].end;
+    }
+
+    const changeSize: number = stackv3.sizemap[index].size === 60 ? 200 : 60;
+
+    toggleMap.push({
+        start: currentPosition,
+        size: changeSize,
+        end: currentPosition + changeSize,
+    });
+
+    const mapLength: number = stackv3.sizemap.length;
+
+    for (let i: number = index + 1; i < mapLength; i++) {
+        currentPosition = toggleMap[i - 1].end;
+
+        toggleMap.push({
+            start: currentPosition,
+            size: stackv3.sizemap[i].size,
+            end: currentPosition + stackv3.sizemap[i].size,
+        });
+    }
+
+    // stackv3.sizemap.splice(0, stackv3.sizemap.length, ...toggleMap);
+
+    stackv3.sizemap = toggleMap;
+}
 
 function reloadImmediate(): void {
     const stackhImmediate = document.getElementById(
@@ -280,12 +329,12 @@ function generateSizeMap(data: object[]) {
     const sizemap: SizeMap[] = [];
     const itemsCount: number = data.length;
     let currentPosition: number = 0;
+    const itemBaseSize: number = 60;
     for (let i = 0; i < itemsCount; i++) {
-        const nextSize: number = 200 + Math.floor(Math.random() * 200);
-        const mapEnd = nextSize + currentPosition;
+        const mapEnd = itemBaseSize + currentPosition;
         sizemap.push({
             start: currentPosition,
-            size: nextSize,
+            size: itemBaseSize,
             end: mapEnd,
         });
         currentPosition = mapEnd;

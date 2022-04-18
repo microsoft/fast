@@ -28,9 +28,14 @@ export type VirtualListAutoUpdateMode = "manual" | "viewport-resize" | "auto";
  * @public
  */
 export interface SizeMap {
-    start: number;
-    end: number;
-    size: number;
+    // start position
+    readonly start: number;
+
+    // end position
+    readonly end: number;
+
+    // list item size
+    readonly size: number;
 }
 
 /**
@@ -161,8 +166,9 @@ export class VirtualList extends FoundationElement {
      */
     @observable
     public sizemap: SizeMap[];
-    private sizemapChanged(): void {
+    private sizemapChanged(previous: SizeMap[]): void {
         if (this.$fastController.isConnected) {
+            this.observeSizeMap();
             this.updateDimensions();
         }
     }
@@ -333,6 +339,9 @@ export class VirtualList extends FoundationElement {
     // notifier used to trigger updates after changes to items array
     private itemsObserver: Notifier | null = null;
 
+    // notifier used to trigger updates after changes to sizemap array
+    private sizemapObserver: Notifier | null = null;
+
     /**
      * flag that indicates whether an additional position update should be requested
      * after the current one resolves (ie. possible geometry changes after the last request)
@@ -376,8 +385,9 @@ export class VirtualList extends FoundationElement {
         }
         this.cancelPendingPositionUpdates();
         this.unobserveItems();
+        this.unobserveSizeMap();
         this.visibleItems = this.visibleItems.splice(0, this.visibleItems.length);
-        this.visibleItemMap = this.visibleItemMap.splice(0, this.visibleItemMap.length);
+        this.visibleItemMap = [];
         this.disconnectResizeDetector();
     }
 
@@ -418,11 +428,11 @@ export class VirtualList extends FoundationElement {
      * starts observing the items array
      */
     private observeItems(): void {
+        this.unobserveItems();
+
         if (!this.items) {
             return;
         }
-
-        this.unobserveItems();
 
         // TODO:  we don't use splices calculated by array change events
         // look for cheaper observer implementation later
@@ -440,24 +450,53 @@ export class VirtualList extends FoundationElement {
     }
 
     /**
+     * starts observing the items array
+     */
+    private observeSizeMap(): void {
+        this.unobserveSizeMap();
+
+        if (!this.sizemap) {
+            return;
+        }
+
+        // TODO:  we don't use splices calculated by array change events
+        // look for cheaper observer implementation later
+
+        const newObserver = (this.sizemapObserver = Observable.getNotifier(this.sizemap));
+        newObserver.subscribe(this);
+    }
+
+    /**
+     * stops observing the items array
+     */
+    private unobserveSizeMap(): void {
+        this.sizemapObserver?.unsubscribe(this);
+        this.sizemapObserver = null;
+    }
+
+    /**
      * The items list has mutated
      *
      * @internal
      */
     public handleChange(source: any, splices: Splice[]): void {
-        const itemsLength = this.items.length;
-        const firstRenderedIndex = Math.min(this.firstRenderedIndex, itemsLength - 1);
-        const lastRenderedIndex = Math.min(this.lastRenderedIndex, itemsLength - 1);
+        if (source === this.items) {
+            const itemsLength = this.items.length;
+            const firstRenderedIndex = Math.min(this.firstRenderedIndex, itemsLength - 1);
+            const lastRenderedIndex = Math.min(this.lastRenderedIndex, itemsLength - 1);
 
-        const newVisibleItems = this.items.slice(
-            firstRenderedIndex,
-            lastRenderedIndex + 1
-        );
+            const newVisibleItems = this.items.slice(
+                firstRenderedIndex,
+                lastRenderedIndex + 1
+            );
 
-        this.visibleItems.splice(0, this.visibleItems.length, ...newVisibleItems);
+            this.visibleItems.splice(0, this.visibleItems.length, ...newVisibleItems);
 
-        this.updateDimensions();
-        this.requestPositionUpdates();
+            this.updateDimensions();
+            this.requestPositionUpdates();
+        } else if (source === this.sizemap) {
+            this.updateDimensions();
+        }
     }
 
     /**
@@ -507,6 +546,7 @@ export class VirtualList extends FoundationElement {
         this.pendingReset = false;
         this.cancelPendingPositionUpdates();
         this.observeItems();
+        this.observeSizeMap();
         this.updateDimensions();
     }
 
@@ -813,7 +853,7 @@ export class VirtualList extends FoundationElement {
             }
         }
 
-        this.visibleItemMap.splice(0, this.visibleItemMap.length, ...newVisibleItemSizes);
+        this.visibleItemMap = newVisibleItemSizes;
 
         this.updateRenderedRange(newFirstRenderedIndex, newLastRenderedIndex);
     }
