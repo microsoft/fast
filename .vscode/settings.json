@@ -30,5 +30,17 @@
   "typescript.enablePromptUseWorkspaceTsdk": true,
   "typescript.format.enable": false,
   "typescript.preferences.quoteStyle": "double",
-  "typescript.tsdk": "node_modules/typescript/lib"
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "cSpell.words": [
+    "aspnet",
+    "Beachball",
+    "Blazor",
+    "combobox",
+    "fluentui",
+    "listbox",
+    "toolset",
+    "triaging",
+    "typeof",
+    "wwwroot"
+  ]
 }

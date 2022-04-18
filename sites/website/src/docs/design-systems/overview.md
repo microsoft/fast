@@ -5,7 +5,7 @@ sidebar_label: Overview
 custom_edit_url: https://github.com/microsoft/fast/edit/master/sites/website/src/docs/design-systems/overview.md
 ---
 
-A Design System can generally be thought of as a collection of resources for interactive media that promotes brand alignment. While that definition is intentionally broad, in UI development, Design Systems generally manifest as component libraries surrounded by usage guidance and design principles.
+A Design System is a collection of interactive media resources that promotes brand alignment. While that definition is intentionally broad, in UI development, Design Systems manifest as component libraries surrounded by usage guidance and design principles.
 
 ## How does FAST facilitate development of design systems?
 

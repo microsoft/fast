@@ -106,7 +106,7 @@ When working across feature branches, you'll need to target the branch using the
 
 Running `yarn change` will walk you through a CLI process for generating change files. The process will walk you through selecting the type of change as well as ask you to provide a description of any changes. As a convenience, the utility looks to provide recent commit messages for use in the description. *For changes which do not affect the published package(s), please use "none" when selecting the change type*.
 
-More information on the change process and change types can be found on the [beachball website](https://microsoft.github.io/beachball/cli/change.html#change).
+More information on the change process and change types can be found on the [Beachball website](https://microsoft.github.io/beachball/cli/change.html#change).
 
 :::note
 If you are addressing multiple issues which are unrelated, consider either doing multiple pull requests, or generate separate change files to ensure accurate generation of changelogs and versioning of packages.

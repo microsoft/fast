@@ -58,7 +58,7 @@ node_modules/@fluentui/web-components/dist/web-components.min.js
 Copy this to your `wwwroot/script` folder and reference it with a script tag as described above.
 
 :::note
-If you are setting up Fluent UI Web Components on a Blazor Server project, you will need to escape the `@` character by repeating it in the source link. For more information check out the [Razor Pages syntax documentation](/aspnet/core/mvc/views/razor).
+If you are setting up Fluent UI Web Components on a Blazor Server project, you will need to escape the `@` character by repeating it in the source link. For more information check out the [Razor Pages syntax documentation](https://docs.microsoft.com/en-us/aspnet/core/mvc/views/razor?view=aspnetcore-6.0).
 :::
 
 ### Using the FluentUI Web Components
@@ -158,7 +158,7 @@ node_modules/@microsoft/fast-components/dist/fast-components.min.js
 Copy this to your `wwwroot/script` folder and reference it with a script tag as described above.
 
 :::note
-If you are setting up Fluent UI Web Components on a Blazor Server project, you will need to escape the `@` character by repeating it in the source link. For more information check out the [Razor Pages syntax documentation](/aspnet/core/mvc/views/razor).
+If you are setting up Fluent UI Web Components on a Blazor Server project, you will need to escape the `@` character by repeating it in the source link. For more information check out the [Razor Pages syntax documentation](https://docs.microsoft.com/en-us/aspnet/core/mvc/views/razor?view=aspnetcore-6.0).
 :::
 
 ### Using the FAST Web Components
