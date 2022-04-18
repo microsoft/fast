@@ -4,7 +4,6 @@ import { DesignSystem } from "../design-system";
 import { uniqueElementName } from "../test-utilities/fixture";
 import { FoundationElement } from "../foundation-element";
 import { CSSDesignToken, DesignToken, DesignTokenChangeRecord, DesignTokenSubscriber } from "./design-token";
-import { defaultElement } from "./custom-property-manager";
 import spies from "chai-spies";
 
 chia.use(spies);
@@ -54,7 +53,8 @@ describe("A DesignToken", () => {
 
     describe("that is a CSSDesignToken", () => {
         it("should have a createCSS() method that returns a string with the name property formatted as a CSS variable", () => {
-            expect(DesignToken.create<number>("implicit").createCSS()).to.equal("var(--implicit)");
+            const add = () => void 0;
+            expect(DesignToken.create<number>("implicit").createCSS(add)).to.equal("var(--implicit)");
         });
         it("should have a readonly cssCustomProperty property that is the name formatted as a CSS custom property", () => {
             expect(DesignToken.create<number>("implicit").cssCustomProperty).to.equal("--implicit");
