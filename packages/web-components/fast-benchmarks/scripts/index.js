@@ -46,7 +46,7 @@ async function generateBenchmarks(localBranchName) {
         name: "chrome",
         headless: true,
     };
-
+    /** @type {ConfigFile["benchmarks"]} */
     const benchmarks = [];
     versions.forEach(version => {
         const isBranch = version === "local" || version === "master";
@@ -80,15 +80,28 @@ async function generateBenchmarks(localBranchName) {
     return benchmarks;
 }
 
+/**
+ * Creates a dist folder to hold the generated config file.
+ * If file already exists, it will replace the existing file with new config.
+ * @typedef {import('tachometer/lib/configfile').ConfigFile} ConfigFile Expected
+ *  See https://www.npmjs.com/package/tachometer#config-file
+ * @param {string} name
+ * @param {ConfigFile} config
+ * @returns {string} location of the newly generated config json file
+ */
 async function writeConfig(name, config) {
-    const configFile = name + ".config.json";
-    const configPath = join(__dirname, "../dist", configFile);
+    const configName = name + ".config.json";
+    const configPath = join(__dirname, "../dist", configName);
 
     await mkdir(join(__dirname, "../dist"), { recursive: true });
     await writeFile(configPath, JSON.stringify(config, null, 2), "utf8");
-    return join("dist", configFile);
+    return join("dist", configName);
 }
 
+/**
+ * Get current local git branch name
+ *  @returns {Promise}
+ */
 //TODO: add in Documentation, 'local' & 'master' as one of the versions options only works in a git repo context
 async function getLocalGitBranchName() {
     return new Promise((resolve, reject) => {
@@ -104,6 +117,7 @@ async function getLocalGitBranchName() {
 async function generateConfig() {
     const localBranchName = await getLocalGitBranchName();
     const benchmarks = await generateBenchmarks(localBranchName);
+    /** @type {ConfigFile} */
     const config = { $schema: TACH_SCHEMA, ...defaultBenchOptions, benchmarks };
 
     return await writeConfig("bye2", config);
@@ -111,6 +125,7 @@ async function generateConfig() {
 
 /**
  * Check to see if we can reach the npm repository within a timeout
+ *  @returns {Promise}
  */
 async function checkNpmRegistryIsAvailable() {
     return new Promise(resolve => {
@@ -130,6 +145,7 @@ async function checkNpmRegistryIsAvailable() {
 
 /**
  * Build tsc file
+ * @returns {Promise}
  */
 async function buildBenchmark() {
     return new Promise((resolve, reject) => {
@@ -151,6 +167,8 @@ async function buildBenchmark() {
 
 /**
  * Run generated tachometer config file
+ * @param {string} configPath
+ * @returns {Promise}
  */
 async function runBenchmark(configPath) {
     return new Promise((resolve, reject) => {
