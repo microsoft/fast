@@ -8,7 +8,7 @@ import {
     repeat,
 } from "@microsoft/fast-element";
 
-import { _random, adjectives, colours, nouns } from "../../utils/constants.js";
+import { _random, adjectives, colours, nouns } from "../../../utils/constants.js";
 import runBenchmark from "./shared.js";
 
 const itemCount = 250;

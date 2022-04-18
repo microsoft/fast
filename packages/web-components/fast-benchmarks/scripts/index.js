@@ -2,6 +2,7 @@ const { exec } = require("child_process");
 const { writeFile, mkdir } = require("fs/promises");
 const { join } = require("path");
 const { program } = require("commander");
+const { spawn } = require("cross-spawn");
 
 program
     .option("-l, --library <name>", "run benchmarks in <name> library")
@@ -13,30 +14,25 @@ program
     .parse(process.argv);
 
 const options = program.opts();
+const { library, test, versions } = options;
 
 const TACH_SCHEMA =
     "https://raw.githubusercontent.com/Polymer/tachometer/master/config.schema.json";
 
 //create tachometer schema based on options
 // TODO: these need to be moved to browser options
+// browser: "chrome",
+// headless: true,
+// addArguments: ["--js-flags=--expose-gc", "--enable-precise-memory-info"],
 const defaultBenchOptions = {
-    browser: "chrome",
-    headless: true,
-    addArguments: ["--js-flags=--expose-gc", "--enable-precise-memory-info"],
     // Tachometer default is 50, but locally let's only do 10
-    sampleSize: 20,
-    // Tachometer default is 10% but let's do 5% to save some GitHub action
-    // minutes by reducing the likelihood of needing auto-sampling. See
-    // https://github.com/Polymer/tachometer#auto-sampling
-    horizon: "5%",
+    sampleSize: 10,
     // Tachometer default is 3 minutes, but let's shrink it to 1 here to save some
     // GitHub Action minutes
     timeout: 1,
-    "window-size": "1024,768",
-    trace: false,
 };
 
-//customize measurement
+//TODO: customize measurement types
 const measurement = [
     {
         mode: "performance",
@@ -44,8 +40,7 @@ const measurement = [
     },
 ];
 
-const generateBenchmarks = async (options, localBranchName) => {
-    const { library, test, versions } = options;
+async function generateBenchmarks(localBranchName) {
     const url = `benchmarks/${library}/${test}/index.html`;
     const browser = {
         name: "chrome",
@@ -74,7 +69,6 @@ const generateBenchmarks = async (options, localBranchName) => {
                     },
                 },
             };
-            console.log(ref, "benchmark", benchmark.packageVersions.dependencies);
         } else {
             benchmark.packageVersions = {
                 label: version,
@@ -84,36 +78,105 @@ const generateBenchmarks = async (options, localBranchName) => {
         benchmarks.push(benchmark);
     });
     return benchmarks;
-};
+}
 
 async function writeConfig(name, config) {
-    const configPath = join(__dirname, "../dist", name + ".config.json");
+    const configFile = name + ".config.json";
+    const configPath = join(__dirname, "../dist", configFile);
 
     await mkdir(join(__dirname, "../dist"), { recursive: true });
     await writeFile(configPath, JSON.stringify(config, null, 2), "utf8");
-    return configPath;
+    return join("dist", configFile);
 }
 
-const generateTachometerConfig = async (options, localBranchName) => {
-    const benchmarks = await generateBenchmarks(options, localBranchName);
+//TODO: add in Documentation, 'local' & 'master' as one of the versions options only works in a git repo context
+async function getLocalGitBranchName() {
+    return new Promise((resolve, reject) => {
+        const res = exec("git branch --show-current");
+        res.stdout.on("data", data => (data ? resolve(data.trim()) : reject()));
+    }).catch(error => {
+        throw new Error(
+            `Unable to retrieve local branch name: ${error}, make sure you have "git" installed.`
+        );
+    });
+}
+
+async function generateConfig() {
+    const localBranchName = await getLocalGitBranchName();
+    const benchmarks = await generateBenchmarks(localBranchName);
     const config = { $schema: TACH_SCHEMA, ...defaultBenchOptions, benchmarks };
 
-    await writeConfig("hi", config);
+    return await writeConfig("bye2", config);
+}
+
+/**
+ * Check to see if we can reach the npm repository within a timeout
+ */
+async function checkNpmRegistryIsAvailable() {
+    return new Promise(resolve => {
+        resolve(
+            new Promise(resolve => {
+                exec("npm ping", { timeout: 1000 }, error => {
+                    resolve(error === null);
+                });
+            }).catch(error => {
+                throw error;
+            })
+        );
+    }).catch(error => {
+        throw error;
+    });
+}
+
+/**
+ * Build tsc file
+ */
+async function buildBenchmark() {
+    return new Promise((resolve, reject) => {
+        const args = ["run", "build"];
+        const child = spawn("npm", args, { stdio: "inherit" });
+        child.on("close", code => {
+            if (code !== 0) {
+                reject({
+                    command: "npm run build",
+                });
+                return;
+            }
+            resolve(void 0);
+        });
+    }).catch(error => {
+        throw error;
+    });
+}
+
+/**
+ * Run generated tachometer config file
+ */
+async function runBenchmark(configPath) {
+    return new Promise((resolve, reject) => {
+        const args = ["tach", "--config", configPath];
+        const child = spawn("npx", args, { stdio: "inherit" });
+        child.on("close", code => {
+            if (code !== 0) {
+                reject({
+                    command: `npx tach --config ${configPath}`,
+                });
+                return;
+            }
+            resolve(void 0);
+        });
+    }).catch(error => {
+        throw error;
+    });
+}
+
+const run = async () => {
+    const configPath = await generateConfig(options);
+
+    await checkNpmRegistryIsAvailable();
+    await buildBenchmark();
+
+    await runBenchmark(configPath);
 };
 
-exec("git branch --show-current", (err, stdout, stderr) => {
-    if (err) throw new Error(err);
-
-    if (stdout.trim() === "master") {
-        console.warn(
-            `You are currently on the master branch\n,` +
-                `if you want to benchmark against your local branch, switch to your branch first!\n` +
-                `"git switch [branch_name]"`
-        );
-    }
-
-    if (typeof stdout === "string") {
-        const localBranchName = stdout.trim();
-        generateTachometerConfig(options, localBranchName);
-    }
-});
+run();
