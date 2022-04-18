@@ -1,3 +1,47 @@
+import { customElement, FASTElement, html, repeat } from "@microsoft/fast-element";
+import { FormAssociated, FoundationElement } from "@microsoft/fast-foundation";
+
+const itemCount = 250;
+
+const template = html<_XItem>`
+    <slot></slot>
+`;
+
+@customElement({
+    name: "x-item",
+    template,
+})
+class _XItem extends FoundationElement {}
+// eslint-disable-next-line @typescript-eslint/naming-convention
+interface _XItem extends FormAssociated {}
+
+/**
+ * A form-associated base class for the {@link @microsoft/fast-foundation#(Button:class)} component.
+ *
+ * @internal
+ */
+export class FormAssociatedButton extends FormAssociated(_XItem) {
+    proxy = document.createElement("input");
+}
+
+const xAppTemplate = html<XApp>`
+    <div id="container">
+        ${repeat(
+            x => x.items,
+            html`
+                <x-item></x-item>
+            `
+        )}
+    </div>
+`;
+@customElement({
+    name: "x-app",
+    template: xAppTemplate,
+})
+class XApp extends FASTElement {
+    items: number[] = Array(itemCount).fill(0);
+}
+
 declare global {
     interface Window {
         usedJSHeapSize: any;
@@ -16,8 +60,8 @@ function measureMemory() {
         window.usedJSHeapSize = 0;
     }
 }
-//support older browsesrs or if we're not using modules
 
+//support older browsesrs or if we're not using modules
 export default async () => {
     const container = document.createElement("div");
     document.body.appendChild(container);
@@ -33,7 +77,8 @@ export default async () => {
     const updateComplete = () => new Promise(r => requestAnimationFrame(r));
 
     const render = async () => {
-        const test = "binding";
+        // can change to main dir file name
+        const test = "form-associated";
         const start = getTestStartName(test);
         performance.mark(start);
         create();

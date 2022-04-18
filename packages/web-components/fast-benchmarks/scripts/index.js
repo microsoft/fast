@@ -6,7 +6,7 @@ const { spawn } = require("cross-spawn");
 
 program
     .option("-l, --library <name>", "run benchmarks in <name> library")
-    .option("-t, --test <name>", "run the <name> test")
+    .option("-b, --benchmark <name>", "run the benchmark: <name>")
     .option(
         "-v, --versions [versions...]",
         "specify versions, if not specified, default is local and master"
@@ -14,7 +14,9 @@ program
     .parse(process.argv);
 
 const options = program.opts();
-const { library, test, versions } = options;
+
+//TODO: add defaults
+const { library, benchmark, versions } = options;
 
 const TACH_SCHEMA =
     "https://raw.githubusercontent.com/Polymer/tachometer/master/config.schema.json";
@@ -33,19 +35,32 @@ const defaultBenchOptions = {
 };
 
 //TODO: customize measurement types
-const measurement = [
-    {
-        mode: "performance",
-        entryName: "binding",
-    },
-];
+const isMemoryBench = benchmark.toLowerCase() === "memory";
+
+const measurement = isMemoryBench
+    ? [
+          {
+              name: "usedJSHeapSize",
+              mode: "expression",
+              expression: "window.usedJSHeapSize",
+          },
+      ]
+    : [
+          {
+              mode: "performance",
+              entryName: benchmark,
+          },
+      ];
 
 async function generateBenchmarks(localBranchName) {
-    const url = `benchmarks/${library}/${test}/index.html`;
+    const url = `benchmarks/${library}/${benchmark}/index.html`;
     const browser = {
         name: "chrome",
         headless: true,
     };
+
+    if (isMemoryBench)
+        browser.addArguments = ["--js-flags=--expose-gc", "--enable-precise-memory-info"];
     /** @type {ConfigFile["benchmarks"]} */
     const benchmarks = [];
     versions.forEach(version => {
@@ -120,7 +135,7 @@ async function generateConfig() {
     /** @type {ConfigFile} */
     const config = { $schema: TACH_SCHEMA, ...defaultBenchOptions, benchmarks };
 
-    return await writeConfig("bye2", config);
+    return await writeConfig(benchmark, config);
 }
 
 /**
