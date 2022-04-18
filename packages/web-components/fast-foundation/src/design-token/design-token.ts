@@ -128,8 +128,8 @@ export interface DesignTokenSubscriber<T extends DesignToken<any>> {
 /**
  * Implementation of {@link (DesignToken:interface)}
  */
-class DesignTokenImpl<T extends { createCSS?(): string }> extends CSSDirective
-    implements DesignToken<T> {
+class DesignTokenImpl<T extends { createCSS?(): string }>
+    implements CSSDirective, DesignToken<T> {
     public readonly name: string;
     public readonly cssCustomProperty: string | undefined;
     public readonly id: string;
@@ -201,8 +201,6 @@ class DesignTokenImpl<T extends { createCSS?(): string }> extends CSSDirective
     }
 
     constructor(configuration: Required<DesignTokenConfiguration>) {
-        super();
-
         this.name = configuration.name;
 
         if (configuration.cssCustomPropertyName !== null) {
@@ -255,7 +253,6 @@ class DesignTokenImpl<T extends { createCSS?(): string }> extends CSSDirective
 
     public withDefault(value: DesignTokenValue<T> | DesignToken<T>) {
         this.setValueFor(defaultElement, value);
-
         return this;
     }
 

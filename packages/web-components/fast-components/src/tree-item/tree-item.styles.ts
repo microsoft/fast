@@ -1,4 +1,4 @@
-import { css, cssPartial, ElementStyles } from "@microsoft/fast-element";
+import { css, ElementStyles } from "@microsoft/fast-element";
 import {
     DesignToken,
     disabledCursor,
@@ -68,7 +68,7 @@ const rtl = css`
  * Tree item expand collapse button size CSS Partial
  * @public
  */
-export const expandCollapseButtonSize = cssPartial`((${baseHeightMultiplier} / 2) * ${designUnit}) + ((${designUnit} * ${density}) / 2)`;
+export const expandCollapseButtonSize = css.partial`((${baseHeightMultiplier} / 2) * ${designUnit}) + ((${designUnit} * ${density}) / 2)`;
 
 const expandCollapseHoverBehavior = DesignToken.create<Swatch>(
     "tree-item-expand-collapse-hover"

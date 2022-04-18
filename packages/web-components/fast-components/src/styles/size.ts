@@ -1,4 +1,4 @@
-import { cssPartial } from "@microsoft/fast-element";
+import { css } from "@microsoft/fast-element";
 import { baseHeightMultiplier, density, designUnit } from "../design-tokens.js";
 
 /**
@@ -6,4 +6,4 @@ import { baseHeightMultiplier, density, designUnit } from "../design-tokens.js";
  * Use this as the value of any CSS property that
  * accepts a pixel size.
  */
-export const heightNumber = cssPartial`(${baseHeightMultiplier} + ${density}) * ${designUnit}`;
+export const heightNumber = css.partial`(${baseHeightMultiplier} + ${density}) * ${designUnit}`;
