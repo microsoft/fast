@@ -163,15 +163,25 @@ const listItemContentsTemplate = html`
 `;
 
 const variableHeightContentsTemplate = html`
-    <fast-button
+    <div
         style="
+            margin: 4px 0 4px 0;
+            width: 100%;
+            height: calc(100% - 8px);
+        "
+    >
+        <button
+            style="
             width: 100%;
             height: 100%;
             background-image: url('${x => x.itemData.url}');
         "
-    >
-        ${x => x.listItemContext.titleString} ${x => x.itemData.title}
-    </fast-button>
+        >
+            <div style="background-color: white">
+                ${x => x.listItemContext.titleString} ${x => x.itemData.title}
+            </div>
+        </button>
+    </div>
 `;
 
 addons.getChannel().addListener(STORY_RENDERED, (name: string) => {
