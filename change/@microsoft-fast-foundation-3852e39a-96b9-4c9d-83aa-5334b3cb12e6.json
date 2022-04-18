@@ -1,7 +1,0 @@
-{
-  "type": "patch",
-  "comment": "Ensured that tabs without an ID use a unique ID to prevent duplicate IDs when multiple tabs are on a page",
-  "packageName": "@microsoft/fast-foundation",
-  "email": "chhol@microsoft.com",
-  "dependentChangeType": "patch"
-}
