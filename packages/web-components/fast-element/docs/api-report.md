@@ -252,6 +252,9 @@ export interface CSSDirectiveDefinition<TType extends Constructable<CSSDirective
     readonly type: TType;
 }
 
+// @public @deprecated (undocumented)
+export const cssPartial: (strings: TemplateStringsArray, ...values: (ComposableStyles | CSSDirective)[]) => CSSDirective;
+
 // @public
 export type CSSTemplateTag = ((strings: TemplateStringsArray, ...values: (ComposableStyles | CSSDirective)[]) => ElementStyles) & {
     partial(strings: TemplateStringsArray, ...values: (ComposableStyles | CSSDirective)[]): CSSDirective;
