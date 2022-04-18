@@ -1,5 +1,3 @@
-// FIXME: #3298 Merge fast-website and website projects to replace temporary build/copy script
-
 const path = require("path");
 const copy = require("../../../build/copy");
 
