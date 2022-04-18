@@ -77,6 +77,39 @@ export interface DesignToken<
     unsubscribe(subscriber: DesignTokenSubscriber<this>, target?: HTMLElement): void;
 }
 
+export interface DesignTokenStrategy {
+    contains(host: HTMLElement, target: HTMLElement): boolean;
+    findParent(target: HTMLElement): HTMLElement | null;
+}
+
+export interface ConstructableDesignTokenStrategy {
+    new (): DesignTokenStrategy;
+}
+
+class DefaultDesignTokenStrategyImpl implements DesignTokenStrategy {
+    public contains(host: HTMLElement, target: HTMLElement): boolean {
+        return composedContains(host, target);
+    }
+    public findParent(target: HTMLElement): HTMLElement | null {
+        if (!(defaultElement === target)) {
+            let parent = composedParent(target);
+
+            while (parent !== null) {
+                if (nodeCache.has(parent)) {
+                    return parent;
+                }
+
+                parent = composedParent(parent);
+            }
+
+            return defaultElement;
+        }
+
+        return null;
+    }
+}
+
+let DefaultDeignTokenStrategy: ConstructableDesignTokenStrategy = DefaultDesignTokenStrategyImpl;
 /**
  * A {@link (DesignToken:interface)} that emits a CSS custom property.
  * @public
@@ -421,6 +454,15 @@ const childToParent = new WeakMap<DesignTokenNode, DesignTokenNode>();
  * inheritance structures.
  */
 class DesignTokenNode implements Behavior, Subscriber {
+    private static _strategy: DesignTokenStrategy | null = null;
+
+    private static get strategy() {
+        if (this._strategy === null) {
+            this._strategy = new DefaultDeignTokenStrategy();
+        }
+
+        return this._strategy;
+    }
     /**
      * Returns a DesignTokenNode for an element.
      * Creates a new instance if one does not already exist for a node,
@@ -445,21 +487,9 @@ class DesignTokenNode implements Behavior, Subscriber {
      * Null is returned if no node is found or the node provided is for a default element.
      */
     public static findParent(node: DesignTokenNode): DesignTokenNode | null {
-        if (!(defaultElement === node.target)) {
-            let parent = composedParent(node.target);
+        const target = DesignTokenNode.strategy.findParent(node.target);
 
-            while (parent !== null) {
-                if (nodeCache.has(parent)) {
-                    return nodeCache.get(parent)!;
-                }
-
-                parent = composedParent(parent);
-            }
-
-            return DesignTokenNode.getOrCreate(defaultElement);
-        }
-
-        return null;
+        return target !== null ? DesignTokenNode.getOrCreate(target) : null;
     }
 
     /**
@@ -722,7 +752,7 @@ class DesignTokenNode implements Behavior, Subscriber {
      * @param test - The node to test
      */
     public contains(test: DesignTokenNode): boolean {
-        return composedContains(this.target, test.target);
+        return DesignTokenNode.strategy.contains(this.target, test.target);
     }
 
     /**
@@ -925,6 +955,10 @@ export const DesignToken = Object.freeze({
      */
     unregisterRoot(target: HTMLElement | Document = defaultElement) {
         RootStyleSheetTarget.unregisterRoot(target);
+    },
+
+    setStrategy(strategy: ConstructableDesignTokenStrategy): void {
+        DefaultDeignTokenStrategy = strategy;
     },
 });
 /* eslint-enable @typescript-eslint/no-non-null-assertion */
