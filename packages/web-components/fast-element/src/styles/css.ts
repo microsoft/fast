@@ -1,7 +1,7 @@
 import type { FASTElement } from "../components/fast-element.js";
 import { isString } from "../interfaces.js";
 import type { Behavior } from "../observation/behavior.js";
-import { CSSDirective } from "./css-directive.js";
+import { AddBehavior, CSSDirective } from "./css-directive.js";
 import { ComposableStyles, ElementStyles } from "./element-styles.js";
 
 function collectStyles(
@@ -11,18 +11,16 @@ function collectStyles(
     const styles: ComposableStyles[] = [];
     let cssString = "";
     const behaviors: Behavior<HTMLElement>[] = [];
+    const add = (behavior: Behavior<HTMLElement>): void => {
+        behaviors.push(behavior);
+    };
 
     for (let i = 0, ii = strings.length - 1; i < ii; ++i) {
         cssString += strings[i];
         let value = values[i];
 
-        if (value instanceof CSSDirective) {
-            const behavior = value.createBehavior();
-            value = value.createCSS();
-
-            if (behavior) {
-                behaviors.push(behavior);
-            }
+        if (CSSDirective.getForInstance(value) !== void 0) {
+            value = (value as CSSDirective).createCSS(add);
         }
 
         if (value instanceof ElementStyles || value instanceof CSSStyleSheet) {
@@ -55,23 +53,47 @@ function collectStyles(
  * @param values - The values that are interpolated with the string fragments.
  * @remarks
  * The css helper supports interpolation of strings and ElementStyle instances.
+ * Use the .partial method to create partial CSS fragments.
  * @public
  */
-export function css(
+export type CSSTemplateTag = ((
     strings: TemplateStringsArray,
     ...values: (ComposableStyles | CSSDirective)[]
-): ElementStyles {
+) => ElementStyles) & {
+    /**
+     * Transforms a template literal string into partial CSS.
+     * @param strings - The string fragments that are interpolated with the values.
+     * @param values - The values that are interpolated with the string fragments.
+     * @public
+     */
+    partial(
+        strings: TemplateStringsArray,
+        ...values: (ComposableStyles | CSSDirective)[]
+    ): CSSDirective;
+};
+
+/**
+ * Transforms a template literal string into styles.
+ * @param strings - The string fragments that are interpolated with the values.
+ * @param values - The values that are interpolated with the string fragments.
+ * @remarks
+ * The css helper supports interpolation of strings and ElementStyle instances.
+ * @public
+ */
+export const css: CSSTemplateTag = ((
+    strings: TemplateStringsArray,
+    ...values: (ComposableStyles | CSSDirective)[]
+): ElementStyles => {
     const { styles, behaviors } = collectStyles(strings, values);
     const elementStyles = new ElementStyles(styles);
     return behaviors.length ? elementStyles.withBehaviors(...behaviors) : elementStyles;
-}
+}) as any;
 
-class CSSPartial extends CSSDirective implements Behavior<HTMLElement> {
+class CSSPartial implements CSSDirective, Behavior<HTMLElement> {
     private css: string = "";
     private styles?: ElementStyles;
-    constructor(styles: ComposableStyles[], private behaviors: Behavior<HTMLElement>[]) {
-        super();
 
+    constructor(styles: ComposableStyles[], private behaviors: Behavior<HTMLElement>[]) {
         const stylesheets: ReadonlyArray<Exclude<
             ComposableStyles,
             string
@@ -85,6 +107,7 @@ class CSSPartial extends CSSDirective implements Behavior<HTMLElement> {
                 } else {
                     accumulated.push(current);
                 }
+
                 return accumulated;
             },
             []
@@ -95,45 +118,37 @@ class CSSPartial extends CSSDirective implements Behavior<HTMLElement> {
         }
     }
 
-    createBehavior(): Behavior<HTMLElement> {
-        return this;
-    }
+    createCSS(add: AddBehavior): string {
+        this.behaviors.forEach(add);
 
-    createCSS(): string {
+        if (this.styles) {
+            add(this);
+        }
+
         return this.css;
     }
 
     bind(el: FASTElement): void {
-        if (this.styles) {
-            el.$fastController.addStyles(this.styles);
-        }
-
-        if (this.behaviors.length) {
-            el.$fastController.addBehaviors(this.behaviors);
-        }
+        el.$fastController.addStyles(this.styles);
     }
 
     unbind(el: FASTElement): void {
-        if (this.styles) {
-            el.$fastController.removeStyles(this.styles);
-        }
-
-        if (this.behaviors.length) {
-            el.$fastController.removeBehaviors(this.behaviors);
-        }
+        el.$fastController.removeStyles(this.styles);
     }
 }
 
-/**
- * Transforms a template literal string into partial CSS.
- * @param strings - The string fragments that are interpolated with the values.
- * @param values - The values that are interpolated with the string fragments.
- * @public
- */
-export function cssPartial(
+CSSDirective.define(CSSPartial);
+
+css.partial = (
     strings: TemplateStringsArray,
     ...values: (ComposableStyles | CSSDirective)[]
-): CSSDirective {
+): CSSDirective => {
     const { styles, behaviors } = collectStyles(strings, values);
     return new CSSPartial(styles, behaviors);
-}
+};
+
+/**
+ * @deprecated Use css.partial instead.
+ * @public
+ */
+export const cssPartial = css.partial;
