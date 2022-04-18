@@ -40,6 +40,8 @@ export interface DesignToken<
      */
     readonly appliedTo: HTMLElement[];
 
+    readonly default: StaticDesignTokenValue<T>;
+
     /**
      * Get the token value for an element.
      * @param element - The element to get the value for
@@ -174,6 +176,10 @@ class DesignTokenImpl<T extends { createCSS?(): string }> extends CSSDirective
     private _appliedTo = new Set<HTMLElement>();
     public get appliedTo() {
         return [...this._appliedTo];
+    }
+
+    public get default() {
+        return this.getValueFor(defaultElement);
     }
 
     public static from<T>(

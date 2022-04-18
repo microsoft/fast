@@ -927,6 +927,8 @@ export interface DesignSystemRegistrationContext {
 // @public
 export interface DesignToken<T extends string | number | boolean | BigInteger | null | Array<any> | symbol | {}> {
     readonly appliedTo: HTMLElement[];
+    // (undocumented)
+    readonly default: StaticDesignTokenValue<T>;
     deleteValueFor(element: HTMLElement): this;
     getValueFor(element: HTMLElement): StaticDesignTokenValue<T>;
     readonly name: string;
@@ -2776,8 +2778,8 @@ export type YearFormat = "2-digit" | "numeric";
 
 // Warnings were encountered during analysis:
 //
-// dist/dts/design-token/design-token.d.ts:98:5 - (ae-forgotten-export) The symbol "create" needs to be exported by the entry point index.d.ts
-// dist/dts/design-token/design-token.d.ts:141:5 - (ae-forgotten-export) The symbol "ConstructableDesignTokenStrategy" needs to be exported by the entry point index.d.ts
+// dist/dts/design-token/design-token.d.ts:99:5 - (ae-forgotten-export) The symbol "create" needs to be exported by the entry point index.d.ts
+// dist/dts/design-token/design-token.d.ts:142:5 - (ae-forgotten-export) The symbol "ConstructableDesignTokenStrategy" needs to be exported by the entry point index.d.ts
 // dist/dts/di/di.d.ts:513:5 - (ae-forgotten-export) The symbol "SingletonOptions" needs to be exported by the entry point index.d.ts
 
 // (No @packageDocumentation comment for this package)
