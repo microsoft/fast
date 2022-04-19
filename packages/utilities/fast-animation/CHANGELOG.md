@@ -1,8 +1,16 @@
 # Change Log - @microsoft/fast-animation
 
-This log was last generated on Sun, 03 Apr 2022 07:12:01 GMT and should not be manually modified.
+This log was last generated on Sun, 17 Apr 2022 07:11:18 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## 4.1.10
+
+Sun, 17 Apr 2022 07:11:18 GMT
+
+### Patches
+
+- Bump @microsoft/fast-web-utilities to v5.3.0 (74849806+wannieman98@users.noreply.github.com)
 
 ## 4.1.9
 
