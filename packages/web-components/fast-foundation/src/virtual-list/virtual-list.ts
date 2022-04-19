@@ -188,12 +188,20 @@ export class VirtualList extends FoundationElement {
     }
 
     /**
-     * The ViewTemplate used to render items.
+     * The ViewTemplate used in the items repeat loop
      *
      * @public
      */
     @observable
     public itemTemplate: ViewTemplate;
+
+    /**
+     * The ViewTemplate used to render a virtual list item
+     *
+     * @public
+     */
+    @observable
+    public listItemTemplate: ViewTemplate;
 
     /**
      * Used to pass custom context objects to list items.
