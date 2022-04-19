@@ -1,6 +1,6 @@
 import { attr, html, HTMLView, observable, ViewTemplate } from "@microsoft/fast-element";
 import { keyEnter } from "@microsoft/fast-web-utilities";
-import { FoundationElement } from "../foundation-element";
+import { FoundationElement } from "../foundation-element/foundation-element.js";
 
 const defaultContentsTemplate: ViewTemplate<PickerListItem> = html`
     <template>

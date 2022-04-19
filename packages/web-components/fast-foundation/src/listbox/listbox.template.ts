@@ -1,7 +1,7 @@
 import { html, slotted } from "@microsoft/fast-element";
 import type { ViewTemplate } from "@microsoft/fast-element";
-import type { FoundationElementTemplate } from "../foundation-element";
-import { ListboxElement } from "./listbox.element";
+import type { FoundationElementTemplate } from "../foundation-element/foundation-element.js";
+import { ListboxElement } from "./listbox.element.js";
 
 /**
  * The template for the {@link @microsoft/fast-foundation#(Listbox:class)} component.

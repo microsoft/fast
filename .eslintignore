@@ -9,3 +9,6 @@ dist
 
 # Never lint coverage output
 coverage
+
+# Never lint karma configs
+karma.conf.cjs

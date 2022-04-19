@@ -1,6 +1,6 @@
-import { Palette } from "../palette";
-import { Swatch } from "../swatch";
-import { baseLayerLuminanceSwatch } from "../utilities/base-layer-luminance";
+import { Palette } from "../palette.js";
+import { Swatch } from "../swatch.js";
+import { baseLayerLuminanceSwatch } from "../utilities/base-layer-luminance.js";
 
 /**
  * @internal

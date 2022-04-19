@@ -1,10 +1,9 @@
 import Examples from "./fixtures/base.html";
-import "../listbox-option";
-import "../listbox";
-import "./index";
+import Multiselect from "./fixtures/multiselect.html";
 
 export default {
     title: "Select",
 };
 
 export const Select = () => Examples;
+export const SelectMultiple = () => Multiselect;

@@ -11,10 +11,10 @@ import {
     keyTab,
     uniqueId,
 } from "@microsoft/fast-web-utilities";
-import { FoundationElement } from "../foundation-element";
-import { isListboxOption, ListboxOption } from "../listbox-option/listbox-option";
-import { ARIAGlobalStatesAndProperties } from "../patterns/aria-global";
-import { applyMixins } from "../utilities/apply-mixins";
+import { FoundationElement } from "../foundation-element/foundation-element.js";
+import { isListboxOption, ListboxOption } from "../listbox-option/listbox-option.js";
+import { ARIAGlobalStatesAndProperties } from "../patterns/aria-global.js";
+import { applyMixins } from "../utilities/apply-mixins.js";
 
 /**
  * A Listbox Custom HTML Element.
@@ -95,17 +95,6 @@ export abstract class Listbox extends FoundationElement {
      */
     @attr({ mode: "boolean" })
     public disabled: boolean;
-
-    /**
-     * Indicates if the listbox is in multi-selection mode.
-     *
-     * @remarks
-     * HTML Attribute: `multiple`
-     *
-     * @public
-     */
-    @attr({ mode: "boolean" })
-    public multiple: boolean;
 
     /**
      * The index of the selected option.
@@ -420,18 +409,6 @@ export abstract class Listbox extends FoundationElement {
     public mousedownHandler(e: MouseEvent): boolean | void {
         this.shouldSkipFocus = !this.contains(document.activeElement);
         return true;
-    }
-
-    /**
-     * Switches between single-selection and multi-selection mode.
-     *
-     * @param prev - the previous value of the `multiple` attribute
-     * @param next - the next value of the `multiple` attribute
-     *
-     * @internal
-     */
-    public multipleChanged(prev: boolean | undefined, next: boolean): void {
-        this.ariaMultiSelectable = next ? "true" : undefined;
     }
 
     /**

@@ -7,7 +7,7 @@ import {
     horizontalSliderLabelStyles,
     sliderLabelStyles as styles,
     verticalSliderLabelStyles,
-} from "./slider-label.styles";
+} from "./slider-label.styles.js";
 
 /**
  * @internal

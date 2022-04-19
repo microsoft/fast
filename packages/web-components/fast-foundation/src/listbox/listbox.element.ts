@@ -9,8 +9,8 @@ import {
     keySpace,
     keyTab,
 } from "@microsoft/fast-web-utilities";
-import type { ListboxOption } from "../listbox-option/listbox-option";
-import { Listbox } from "./listbox";
+import type { ListboxOption } from "../listbox-option/listbox-option.js";
+import { Listbox } from "./listbox.js";
 
 /**
  * A Listbox Custom HTML Element.
@@ -55,6 +55,17 @@ export class ListboxElement extends Listbox {
     public get firstSelectedOptionIndex(): number {
         return this.options.indexOf(this.firstSelectedOption);
     }
+
+    /**
+     * Indicates if the listbox is in multi-selection mode.
+     *
+     * @remarks
+     * HTML Attribute: `multiple`
+     *
+     * @public
+     */
+    @attr({ mode: "boolean" })
+    public multiple: boolean;
 
     /**
      * The start index when checking a range of options.
@@ -366,10 +377,8 @@ export class ListboxElement extends Listbox {
             }
 
             case keyEscape: {
-                if (this.multiple) {
-                    this.uncheckAllOptions();
-                    this.checkActiveIndex();
-                }
+                this.uncheckAllOptions();
+                this.checkActiveIndex();
                 return true;
             }
 
@@ -377,8 +386,8 @@ export class ListboxElement extends Listbox {
                 e.preventDefault();
                 if (this.typeAheadExpired) {
                     this.toggleSelectedForAllCheckedOptions();
+                    return;
                 }
-                return;
             }
 
             // Send key to Typeahead handler
@@ -407,20 +416,15 @@ export class ListboxElement extends Listbox {
     /**
      * Switches between single-selection and multi-selection mode.
      *
-     * @override
      * @internal
      */
     public multipleChanged(prev: boolean | undefined, next: boolean): void {
-        super.multipleChanged(prev, next);
+        this.ariaMultiSelectable = next ? "true" : undefined;
         this.options?.forEach(o => {
             o.checked = next ? false : undefined;
         });
 
         this.setSelectedOptions();
-
-        if (next && !this.size) {
-            this.size = 0;
-        }
     }
 
     /**
@@ -450,7 +454,7 @@ export class ListboxElement extends Listbox {
      * @internal
      */
     protected sizeChanged(prev: number | unknown, next: number): void {
-        const size = Math.max(0, parseInt(next.toFixed(), 10));
+        const size = Math.max(0, parseInt(next?.toFixed() ?? "", 10));
         if (size !== next) {
             DOM.queueUpdate(() => {
                 this.size = size;
@@ -488,13 +492,11 @@ export class ListboxElement extends Listbox {
 
         if (this.$fastController.isConnected) {
             const typeaheadMatches = this.getTypeaheadMatches();
-            if (typeaheadMatches) {
-                const activeIndex = this.options.indexOf(this.getTypeaheadMatches[0]);
-                if (activeIndex > -1) {
-                    this.activeIndex = activeIndex;
-                    this.uncheckAllOptions();
-                    this.checkActiveIndex();
-                }
+            const activeIndex = this.options.indexOf(typeaheadMatches[0]);
+            if (activeIndex > -1) {
+                this.activeIndex = activeIndex;
+                this.uncheckAllOptions();
+                this.checkActiveIndex();
             }
 
             this.typeAheadExpired = false;
