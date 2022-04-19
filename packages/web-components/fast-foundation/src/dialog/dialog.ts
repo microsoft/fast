@@ -14,12 +14,12 @@ export class Dialog extends FoundationElement {
      * Indicates the element is modal. When modal, user mouse interaction will be limited to the contents of the element by a modal
      * overlay.  Clicks on the overlay will cause the dialog to emit a "dismiss" event.
      * @public
-     * @defaultValue - true
+     * @defaultValue - false
      * @remarks
      * HTML Attribute: modal
      */
     @attr({ mode: "boolean" })
-    public modal: boolean = true;
+    public modal: boolean = false;
 
     /**
      * The hidden state of the element.
