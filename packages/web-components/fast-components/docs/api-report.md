@@ -320,10 +320,12 @@ export const allComponents: {
     fastHorizontalScroll: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").HorizontalScrollOptions> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<import("@microsoft/fast-foundation").HorizontalScrollOptions, import("@microsoft/fast-element").Constructable<import("@microsoft/fast-foundation").FoundationElement>>;
     fastListbox: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<{
         baseName: string;
+        baseClass: typeof import("@microsoft/fast-foundation").ListboxElement;
         template: import("@microsoft/fast-foundation").FoundationElementTemplate<import("@microsoft/fast-element").ViewTemplate<import("@microsoft/fast-foundation").ListboxElement, any>, import("@microsoft/fast-foundation").FoundationElementDefinition>;
         styles: import("@microsoft/fast-foundation").FoundationElementTemplate<import("@microsoft/fast-element").ElementStyles, import("@microsoft/fast-foundation").FoundationElementDefinition>;
     }> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<{
         baseName: string;
+        baseClass: typeof import("@microsoft/fast-foundation").ListboxElement;
         template: import("@microsoft/fast-foundation").FoundationElementTemplate<import("@microsoft/fast-element").ViewTemplate<import("@microsoft/fast-foundation").ListboxElement, any>, import("@microsoft/fast-foundation").FoundationElementDefinition>;
         styles: import("@microsoft/fast-foundation").FoundationElementTemplate<import("@microsoft/fast-element").ElementStyles, import("@microsoft/fast-foundation").FoundationElementDefinition>;
     }, typeof Listbox>;
@@ -1013,13 +1015,13 @@ export const fastHorizontalScroll: (overrideDefinition?: import("@microsoft/fast
 export const fastListbox: (overrideDefinition?: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<{
     baseName: string;
     baseClass: typeof ListboxElement;
-    template: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition>) => import("@microsoft/fast-element").ViewTemplate<ListboxElement, any>;
-    styles: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition>) => ElementStyles;
+    template: import("@microsoft/fast-foundation").FoundationElementTemplate<import("@microsoft/fast-element").ViewTemplate<ListboxElement, any>, import("@microsoft/fast-foundation").FoundationElementDefinition>;
+    styles: import("@microsoft/fast-foundation").FoundationElementTemplate<ElementStyles, import("@microsoft/fast-foundation").FoundationElementDefinition>;
 }> | undefined) => import("@microsoft/fast-foundation").FoundationElementRegistry<{
     baseName: string;
     baseClass: typeof ListboxElement;
-    template: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition>) => import("@microsoft/fast-element").ViewTemplate<ListboxElement, any>;
-    styles: (context: import("@microsoft/fast-foundation").ElementDefinitionContext, definition: import("@microsoft/fast-foundation").OverrideFoundationElementDefinition<import("@microsoft/fast-foundation").FoundationElementDefinition>) => ElementStyles;
+    template: import("@microsoft/fast-foundation").FoundationElementTemplate<import("@microsoft/fast-element").ViewTemplate<ListboxElement, any>, import("@microsoft/fast-foundation").FoundationElementDefinition>;
+    styles: import("@microsoft/fast-foundation").FoundationElementTemplate<ElementStyles, import("@microsoft/fast-foundation").FoundationElementDefinition>;
 }, typeof Listbox>;
 
 // @public

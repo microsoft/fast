@@ -1406,6 +1406,8 @@ export abstract class Listbox extends FoundationElement {
     get length(): number;
     // @internal
     mousedownHandler(e: MouseEvent): boolean | void;
+    // @internal
+    multipleChanged(prev: boolean | undefined, next: boolean): void;
     get options(): ListboxOption[];
     set options(value: ListboxOption[]);
     // @internal
