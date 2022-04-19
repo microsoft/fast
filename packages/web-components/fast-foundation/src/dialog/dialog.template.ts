@@ -10,7 +10,7 @@ import type { Dialog } from "./dialog.js";
 export const dialogTemplate: FoundationElementTemplate<ViewTemplate<Dialog>> = (
     context,
     definition
-) => html`
+) => html<Dialog>`
     <div class="positioning-region" part="positioning-region">
         ${when(
             x => x.modal,
@@ -28,7 +28,7 @@ export const dialogTemplate: FoundationElementTemplate<ViewTemplate<Dialog>> = (
             tabindex="-1"
             class="control"
             part="control"
-            aria-modal="${x => x.modal}"
+            aria-modal="${x => (x.modal ? x.modal : void 0)}"
             aria-describedby="${x => x.ariaDescribedby}"
             aria-labelledby="${x => x.ariaLabelledby}"
             aria-label="${x => x.ariaLabel}"
