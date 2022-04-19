@@ -30,9 +30,9 @@
     ]
   },
   "devDependencies": {
-    "@docusaurus/core": "2.0.0-beta.16",
-    "@docusaurus/preset-classic": "2.0.0-beta.16",
-    "@docusaurus/theme-live-codeblock": "2.0.0-beta.16",
+    "@docusaurus/core": "2.0.0-beta.18",
+    "@docusaurus/preset-classic": "2.0.0-beta.18",
+    "@docusaurus/theme-live-codeblock": "2.0.0-beta.18",
     "@microsoft/api-documenter": "7.8.13",
     "concurrently": "^6.2.0"
   },
