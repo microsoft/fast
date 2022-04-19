@@ -188,15 +188,22 @@ As subject matter experts, *code owners* approve pull requests on the packages t
 
 Acceptance of contributions follows the consensus-seeking process.
 
-All pull requests must be approved by a *collaborator* before the pull request can be accepted.
+All pull requests must be approved by an assigned *collaborator* before the pull request can be accepted. A *collaborator* will be assigned to a pull request within [a reasonable period of time](#response-time) of the pull request creation. The assignee will be responsible for:
 
-Before a pull request is accepted, time should be given to receive input from *collaborators* or *code owners* with the expertise to evaluate the changes. The amount of time can vary but at least 3 days during the typical working week and 5 days over weekends should be given to account for international time differences and work schedules.
+1. Reviewing the pull request if they are not the creator of it
+2. Adding any additional reviewers to review at their discretion
+3. Ensuring the the pull request is given feedback in [a reasonable period of time](#response-time) from *collaborators* or *code owners* with the expertise to evaluate the changes
+4. Merging the pull request
 
 When a pull request : (a) has a significant impact on the project, (b) is inherently controversial, or (c) has not reached consensus with *collaborators*; add a "status:controversial" label to the pull request for the *steering committee* to review the pull request. Pull requests labeled with "status:controversial" are not approved until the *steering committee* reviews the issue and makes a decision.
 
 Additionally, *owners*, can temporarily enable [interaction limits](https://help.github.com/articles/limiting-interactions-with-your-repository/) to allow a "cool-down" period when hot topics become disruptive.
 
-Specific *collaborators* or *code owners*  can be added to a pull request by including their user alias.
+Specific *collaborators* or *code owners* can be added to a pull request by including their user alias in the "Reviewers" section.
+
+### Response time
+
+The amount of time can vary but at least 3 days during the typical working week and 5 days over weekends should be given to account for international time differences and work schedules. This is considered a reasonable period of time.
 
 ## Stability policy
 
