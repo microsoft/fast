@@ -45,6 +45,7 @@ export class FASTVirtualList extends VirtualList{}
 
 | Name                | Privacy | Type                                  | Default | Description                                                                                                                                                                         | Inherited From    |
 | ------------------- | ------- | ------------------------------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
+| `loadMode`          | public  | `VirtualListItemLoadMode`             |         |                                                                                                                                                                                     |                   |
 | `itemData`          | public  | `object`                              |         | The ViewTemplate used to render contents.                                                                                                                                           |                   |
 | `itemIndex`         | public  | `number`                              |         | The index of the item in the items array.                                                                                                                                           |                   |
 | `listItemContext`   | public  | `VirtualListItemContext`              |         | Custom context provided to the parent virtual list                                                                                                                                  |                   |
@@ -77,6 +78,7 @@ export class FASTVirtualList extends VirtualList{}
 
 | Name                    | Privacy | Type                                  | Default    | Description                                                                                                                                                                              | Inherited From    |
 | ----------------------- | ------- | ------------------------------------- | ---------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
+| `listItemLoadMode`      | public  | `VirtualListItemLoadMode`             |            |                                                                                                                                                                                          |                   |
 | `virtualizationEnabled` | public  | `boolean`                             | `true`     | Whether or not the display should virtualize                                                                                                                                             |                   |
 | `viewport`              | public  | `string`                              | `""`       | The HTML ID of the viewport element                                                                                                                                                      |                   |
 | `itemSize`              | public  | `number`                              | `50`       | The size in pixels of each item along the virtualization axis                                                                                                                            |                   |
@@ -109,6 +111,7 @@ export class FASTVirtualList extends VirtualList{}
 
 | Name                     | Field                 | Inherited From |
 | ------------------------ | --------------------- | -------------- |
+| `list-item-load-mode`    | listItemLoadMode      |                |
 | `virtualization-enabled` | virtualizationEnabled |                |
 | `viewport`               | viewport              |                |
 | `item-size`              | itemSize              |                |
