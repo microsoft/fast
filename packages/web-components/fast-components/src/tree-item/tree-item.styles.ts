@@ -94,6 +94,11 @@ export const treeItemStyles: FoundationElementTemplate<ElementStyles, TreeItemOp
     definition
 ) =>
     css`
+    /**
+     * This animation exists because when tree item children are conditionally loaded
+     * there is a visual bug where the DOM exists but styles have not yet been applied (essentially FOUC).
+     * This subtle animation provides a ever so slight timing adjustment for loading that solves the issue.
+     */
     @keyframes treeItemLoading {
         0% {
             opacity: 0;
