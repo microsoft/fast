@@ -1024,7 +1024,7 @@ export class Disclosure extends FoundationElement {
     protected onToggle(): void;
     protected setup(): void;
     show(): void;
-    title: string;
+    summary: string;
     toggle(): void;
 }
 
